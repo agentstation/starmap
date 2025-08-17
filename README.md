@@ -1,4 +1,4 @@
-# Starmap
+# ⭐ Starmap 🗺️
 
 ```sh
                          ____  _                                 
@@ -14,15 +14,15 @@ A comprehensive AI model catalog system that provides centralized information ab
 ## Table of Contents
 
 - [Features](#features)
-- [CLI Installation](#cli-installation)
-- [CLI Usage](#cli-usage)
+- [CLI](#cli)
+  - [Installation](#installation)
   - [Basic Commands](#basic-commands)
   - [Syncing with Provider APIs](#syncing-with-provider-apis)
   - [Development Workflow](#development-workflow)
 - [HTTP Server](#http-server)
   - [Coming Soon](#coming-soon)
 - [Go Package](#go-package)
-  - [Installation](#installation)
+  - [Installation](#installation-1)
   - [Basic Usage](#basic-usage)
   - [Catalog Sources](#catalog-sources)
   - [Event Hooks](#event-hooks)
@@ -47,13 +47,13 @@ A comprehensive AI model catalog system that provides centralized information ab
 - **Automatic Synchronization**: Configurable update intervals
 - **Remote Server Support**: Future support for centralized starmap servers
 
-## CLI Installation
+## CLI
+
+### Installation
 
 ```bash
 go install github.com/agentstation/starmap/cmd/starmap@latest
 ```
-
-## CLI Usage
 
 ### Basic Commands
 
