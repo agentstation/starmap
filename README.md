@@ -410,4 +410,6 @@ The starmap interface is fully thread-safe:
 
 ## License
 
-[License information]
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). See the [LICENSE](LICENSE) file for details.
+
+The AGPL-3.0 is a copyleft license that requires anyone who distributes the code or runs it on a server to provide the source code to users, including any modifications. This ensures that improvements to Starmap remain open source and available to the community.
