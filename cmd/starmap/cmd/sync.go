@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/catalogs/operations"
 	"github.com/agentstation/starmap/internal/catalogs/persistence"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/embedded"
+	"github.com/agentstation/starmap/pkg/catalogs/files"
 	"github.com/spf13/cobra"
 
 	// Import providers to trigger registration
@@ -98,14 +99,14 @@ func runSync(cmd *cobra.Command, args []string) error {
 
 	if syncInput != "" {
 		// Create file-based catalog from input directory
-		catalogInstance, err = starmap.NewFilesCatalog(syncInput)
+		catalogInstance, err = files.New(syncInput)
 		if err != nil {
 			return fmt.Errorf("creating catalog from %s: %w", syncInput, err)
 		}
 		fmt.Printf("📁 Using catalog from: %s\n", syncInput)
 	} else {
 		// Use embedded catalog
-		catalogInstance, err = starmap.NewEmbeddedCatalog()
+		catalogInstance, err = embedded.New()
 		if err != nil {
 			return fmt.Errorf("creating embedded catalog: %w", err)
 		}

@@ -2,6 +2,32 @@
 
 A comprehensive AI model catalog system that provides centralized information about AI models, their capabilities, pricing, and providers. Use starmap as a CLI tool, HTTP server, or Go package for discovering and comparing AI models across different providers.
 
+## Table of Contents
+
+- [Features](#features)
+- [CLI Installation](#cli-installation)
+- [Usage as a CLI Tool](#usage-as-a-cli-tool)
+  - [Basic Commands](#basic-commands)
+  - [Syncing with Provider APIs](#syncing-with-provider-apis)
+  - [Development Workflow](#development-workflow)
+- [Usage as an HTTP Server](#usage-as-an-http-server)
+  - [Coming Soon](#coming-soon)
+- [Usage as a Go Package](#usage-as-a-go-package)
+  - [Go Package Installation](#go-package-installation)
+  - [Basic Usage](#basic-usage)
+  - [Using Different Catalog Sources](#using-different-catalog-sources)
+  - [Event Hooks for Model Changes](#event-hooks-for-model-changes)
+  - [Automatic Updates (Default Behavior)](#automatic-updates-default-behavior)
+  - [Automatic Updates with Custom Logic](#automatic-updates-with-custom-logic)
+  - [Manual Updates](#manual-updates)
+  - [Future: Remote Server Mode](#future-remote-server-mode)
+  - [Working with Models](#working-with-models)
+  - [Error Handling](#error-handling)
+- [Configuration](#configuration)
+- [Thread Safety](#thread-safety)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - **Model Discovery**: Find and compare AI models across different providers
@@ -152,8 +178,14 @@ func main() {
 ### Using Different Catalog Sources
 
 ```go
+import (
+    "github.com/agentstation/starmap"
+    "github.com/agentstation/starmap/pkg/catalogs/files"
+    "github.com/agentstation/starmap/pkg/catalogs/memory"
+)
+
 // Use a file-based catalog for development
-filesCatalog, err := starmap.NewFilesCatalog("./catalog-data")
+filesCatalog, err := files.New("./catalog-data")
 if err != nil {
     log.Fatal(err)
 }
@@ -163,7 +195,7 @@ sm, err := starmap.New(
 )
 
 // Use an in-memory catalog for testing
-memoryCatalog, err := starmap.NewMemoryCatalog()
+memoryCatalog, err := memory.New()
 if err != nil {
     log.Fatal(err)
 }
@@ -198,6 +230,33 @@ sm.OnModelRemoved(func(model catalogs.Model) {
 })
 ```
 
+### Automatic Updates (Default Behavior)
+
+By default, starmap automatically starts background updates when you create a new instance. Updates run every hour and will attempt to sync with provider APIs if configured.
+
+```go
+// Auto-updates are enabled by default
+sm, err := starmap.New()
+if err != nil {
+    log.Fatal(err)
+}
+// Background updates are already running!
+
+// You can customize the update interval
+sm, err := starmap.New(
+    starmap.WithAutoUpdateInterval(30 * time.Minute),
+)
+
+// Or disable auto-updates entirely
+sm, err := starmap.New(
+    starmap.WithAutoUpdates(false),
+)
+
+// You can also control auto-updates at runtime
+sm.AutoUpdatesOff() // Stop background updates
+sm.AutoUpdatesOn()  // Restart background updates
+```
+
 ### Automatic Updates with Custom Logic
 
 ```go
@@ -209,27 +268,28 @@ updateFunc := func(currentCatalog catalogs.Catalog) (catalogs.Catalog, error) {
 }
 
 sm, err := starmap.New(
-    starmap.WithUpdateInterval(30 * time.Minute),
+    starmap.WithAutoUpdateInterval(30 * time.Minute),
     starmap.WithUpdateFunc(updateFunc),
 )
 if err != nil {
     log.Fatal(err)
 }
-
-// Start automatic updates
-if err := sm.Start(); err != nil {
-    log.Fatal(err)
-}
-defer sm.Stop()
+// Auto-updates are already running with your custom logic!
 
 // Your application continues to run...
 // The catalog will be updated automatically every 30 minutes
+
+// Cleanup when your application shuts down
+defer sm.AutoUpdatesOff()
 ```
 
 ### Manual Updates
 
 ```go
-sm, err := starmap.New()
+// Disable auto-updates if you prefer manual control
+sm, err := starmap.New(
+    starmap.WithAutoUpdates(false),
+)
 if err != nil {
     log.Fatal(err)
 }
@@ -250,11 +310,11 @@ Once HTTP server support is available, you'll be able to configure starmap to us
 
 ```go
 // This will be supported in future versions
+apiKey := "sk-your-api-key"
 sm, err := starmap.New(
-    starmap.WithServerURL("https://api.starmap.ai"),
-    starmap.WithAPIKey("sk-your-api-key"),
-    starmap.WithServerOnly(true), // Don't hit provider APIs directly
-    starmap.WithUpdateInterval(5 * time.Minute),
+    starmap.WithRemoteServer("https://api.starmap.ai", &apiKey),
+    starmap.WithRemoteServerOnly(true), // Don't hit provider APIs directly
+    starmap.WithAutoUpdateInterval(5 * time.Minute),
 )
 ```
 
@@ -318,11 +378,10 @@ if err != nil {
 The starmap package supports various configuration options through the functional options pattern:
 
 - `WithInitialCatalog()` - Specify a custom catalog implementation
-- `WithUpdateInterval()` - Set automatic update frequency
+- `WithAutoUpdateInterval()` - Set automatic update frequency
 - `WithUpdateFunc()` - Provide custom update logic
-- `WithServerURL()` - Configure remote server URL (future)
-- `WithAPIKey()` - Set API key for server authentication (future)
-- `WithServerOnly()` - Disable direct provider API calls (future)
+- `WithRemoteServer()` - Configure remote server URL and API key (future)
+- `WithRemoteServerOnly()` - Disable direct provider API calls (future)
 
 ## Thread Safety
 

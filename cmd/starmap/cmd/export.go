@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/agentstation/starmap/pkg/convert"
 	"github.com/spf13/cobra"
 )
@@ -55,7 +55,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 	if exportProvider != "" {
 		// Fetch models from specific provider
 		pid := catalogs.ProviderID(exportProvider)
-		catalog, err := starmap.NewEmbeddedCatalog()
+		catalog, err := embedded.New()
 		if err != nil {
 			return fmt.Errorf("loading catalog: %w", err)
 		}
@@ -90,7 +90,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 		}
 	} else {
 		// Use embedded catalog
-		catalog, err := starmap.NewEmbeddedCatalog()
+		catalog, err := embedded.New()
 		if err != nil {
 			return fmt.Errorf("loading catalog: %w", err)
 		}

@@ -97,22 +97,48 @@ updateFunc := func(currentCatalog catalogs.Catalog) (catalogs.Catalog, error) {
 }
 
 sm, err := starmap.New(
-    starmap.WithUpdateInterval(30 * time.Minute),
+    starmap.WithAutoUpdateInterval(30 * time.Minute),
     starmap.WithUpdateFunc(updateFunc),
 )
-
-// Start background updates
-if err := sm.Start(); err != nil {
+if err != nil {
     log.Fatal(err)
 }
-defer sm.Stop()
+// Auto-updates start automatically!
+
+// Cleanup when shutting down
+defer sm.AutoUpdatesOff()
+```
+
+### Auto-Updates Configuration
+
+By default, starmap enables automatic updates. You can control this behavior:
+
+```go
+// Default: auto-updates enabled every hour
+sm, err := starmap.New()
+
+// Customize update interval
+sm, err := starmap.New(
+    starmap.WithAutoUpdateInterval(15 * time.Minute),
+)
+
+// Disable auto-updates entirely
+sm, err := starmap.New(
+    starmap.WithAutoUpdates(false),
+)
+
+// Control at runtime
+sm.AutoUpdatesOff() // Temporarily stop
+sm.AutoUpdatesOn()  // Resume updates
 ```
 
 ### Different Catalog Sources
 
 ```go
+import "github.com/agentstation/starmap/pkg/catalogs/files"
+
 // Use file-based catalog for development
-filesCatalog, err := starmap.NewFilesCatalog("./internal/embedded/catalog")
+filesCatalog, err := files.New("./internal/embedded/catalog")
 if err != nil {
     log.Fatal(err)
 }
@@ -121,8 +147,10 @@ sm, err := starmap.New(
     starmap.WithInitialCatalog(filesCatalog),
 )
 
+import "github.com/agentstation/starmap/pkg/catalogs/memory"
+
 // Use memory catalog for testing
-memoryCatalog, err := starmap.NewMemoryCatalog()
+memoryCatalog, err := memory.New()
 if err != nil {
     log.Fatal(err)
 }
@@ -136,11 +164,11 @@ sm, err := starmap.New(
 
 ```go
 // Planned for future releases
+apiKey := "sk-your-api-key"
 sm, err := starmap.New(
-    starmap.WithServerURL("https://api.starmap.ai"),
-    starmap.WithAPIKey("sk-your-api-key"),
-    starmap.WithServerOnly(true), // Don't hit provider APIs directly
-    starmap.WithUpdateInterval(5 * time.Minute),
+    starmap.WithRemoteServer("https://api.starmap.ai", &apiKey),
+    starmap.WithRemoteServerOnly(true), // If enabled, do not use any other sources for catalog updates including provider APIs
+    starmap.WithAutoUpdateInterval(5 * time.Minute),
 )
 ```
 
@@ -153,10 +181,10 @@ sm, err := starmap.New(
 - Internal state is protected by RWMutex for efficient concurrent reads
 
 ### Catalog Factory Methods
-The project provides factory methods in `catalog.go` for creating different catalog types:
-- `NewEmbeddedCatalog()` - Production catalog with embedded YAML files
-- `NewFilesCatalog(path)` - Development catalog reading from filesystem
-- `NewMemoryCatalog()` - In-memory catalog for testing
+The project provides factory methods in the respective catalog packages for creating different catalog types:
+- `embedded.New()` - Production catalog with embedded YAML files (pkg/catalogs/embedded)
+- `files.New(path)` - Development catalog reading from filesystem (pkg/catalogs/files)
+- `memory.New()` - In-memory catalog for testing (pkg/catalogs/memory)
 
 ### Options Pattern
 Configuration uses functional options in `options.go`:
@@ -197,7 +225,7 @@ The provider system uses a registry pattern similar to database drivers:
 - **Other cmd files** - Use factory methods to create catalog instances
 
 ### Important Implementation Notes
-- The CLI commands currently use the factory methods (`starmap.NewEmbeddedCatalog()`) directly
+- The CLI commands currently use the factory methods (`embedded.New()`, etc.) directly
 - The new Starmap interface (`starmap.New()`) is designed for Go package integration
 - All catalog access should go through the Starmap interface for new code
 - The embedded catalog files are in `internal/embedded/catalog/` with go:embed constraints
