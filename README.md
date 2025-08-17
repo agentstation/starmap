@@ -1,5 +1,14 @@
 # Starmap
 
+```
+                         ____  _                                 
+                        / ___|| |_ __ _ _ __ _ __ ___   __ _ _ __  
+                        \___ \| __/ _` | '__| '_ ` _ \ / _` | '_ \ 
+                         ___) | || (_| | |  | | | | | | (_| | |_) |
+                        |____/ \__\__,_|_|  |_| |_| |_|\__,_| .__/ 
+                                                            |_|    
+```
+
 A comprehensive AI model catalog system that provides centralized information about AI models, their capabilities, pricing, and providers. Use starmap as a CLI tool, HTTP server, or Go package for discovering and comparing AI models across different providers.
 
 ## Table of Contents
