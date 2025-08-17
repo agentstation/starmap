@@ -1,6 +1,6 @@
 # Starmap
 
-```
+```sh
                          ____  _                                 
                         / ___|| |_ __ _ _ __ _ __ ___   __ _ _ __  
                         \___ \| __/ _` | '__| '_ ` _ \ / _` | '_ \ 
@@ -15,21 +15,21 @@ A comprehensive AI model catalog system that provides centralized information ab
 
 - [Features](#features)
 - [CLI Installation](#cli-installation)
-- [Usage as a CLI Tool](#usage-as-a-cli-tool)
+- [CLI Usage](#cli-usage)
   - [Basic Commands](#basic-commands)
   - [Syncing with Provider APIs](#syncing-with-provider-apis)
   - [Development Workflow](#development-workflow)
-- [Usage as an HTTP Server](#usage-as-an-http-server)
+- [HTTP Server](#http-server)
   - [Coming Soon](#coming-soon)
-- [Usage as a Go Package](#usage-as-a-go-package)
-  - [Go Package Installation](#go-package-installation)
+- [Go Package](#go-package)
+  - [Installation](#installation)
   - [Basic Usage](#basic-usage)
-  - [Using Different Catalog Sources](#using-different-catalog-sources)
-  - [Event Hooks for Model Changes](#event-hooks-for-model-changes)
-  - [Automatic Updates (Default Behavior)](#automatic-updates-default-behavior)
-  - [Automatic Updates with Custom Logic](#automatic-updates-with-custom-logic)
+  - [Catalog Sources](#catalog-sources)
+  - [Event Hooks](#event-hooks)
+  - [Auto Updates](#auto-updates)
+  - [Custom Updates](#custom-updates)
   - [Manual Updates](#manual-updates)
-  - [Future: Remote Server Mode](#future-remote-server-mode)
+  - [Remote Server](#remote-server)
   - [Working with Models](#working-with-models)
   - [Error Handling](#error-handling)
 - [Configuration](#configuration)
@@ -53,7 +53,7 @@ A comprehensive AI model catalog system that provides centralized information ab
 go install github.com/agentstation/starmap/cmd/starmap@latest
 ```
 
-## Usage as a CLI Tool
+## CLI Usage
 
 ### Basic Commands
 
@@ -108,7 +108,7 @@ starmap validate
 
 For detailed CLI usage and development instructions, see [CLAUDE.md](./CLAUDE.md).
 
-## Usage as an HTTP Server
+## HTTP Server
 
 ### Coming Soon
 
@@ -136,9 +136,9 @@ GET /api/v1/providers/{id}/models
 POST /api/v1/webhooks
 ```
 
-## Usage as a Go Package
+## Go Package
 
-### Go Package Installation
+### Installation
 
 ```bash
 go get github.com/agentstation/starmap
@@ -184,7 +184,7 @@ func main() {
 }
 ```
 
-### Using Different Catalog Sources
+### Catalog Sources
 
 ```go
 import (
@@ -214,7 +214,7 @@ sm, err := starmap.New(
 )
 ```
 
-### Event Hooks for Model Changes
+### Event Hooks
 
 ```go
 sm, err := starmap.New()
@@ -239,7 +239,7 @@ sm.OnModelRemoved(func(model catalogs.Model) {
 })
 ```
 
-### Automatic Updates (Default Behavior)
+### Auto Updates
 
 By default, starmap automatically starts background updates when you create a new instance. Updates run every hour and will attempt to sync with provider APIs if configured.
 
@@ -266,7 +266,7 @@ sm.AutoUpdatesOff() // Stop background updates
 sm.AutoUpdatesOn()  // Restart background updates
 ```
 
-### Automatic Updates with Custom Logic
+### Custom Updates
 
 ```go
 // Custom update function that syncs with provider APIs
@@ -311,7 +311,7 @@ if err := sm.Update(); err != nil {
 }
 ```
 
-### Future: Remote Server Mode
+### Remote Server
 
 #### HTTP Server Integration
 
