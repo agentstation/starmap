@@ -1,13 +1,52 @@
 package starmap
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+var (
+	defaultConfig = &config{
+		autoUpdatesEnabled: true,          // Default to auto-updates enabled
+		autoUpdateInterval: 1 * time.Hour, // Default to hourly updates
+		autoUpdateFunc:     nil,           // Default to no auto-update function
+		initialCatalog:     nil,           // Default to no initial catalog
+		remoteServerURL:    nil,           // Default to no remote server
+		remoteServerAPIKey: nil,           // Default to no remote server API key
+		remoteServerOnly:   false,         // Default to not only use remote server
+	}
+)
+
+// config holds the configuration for a Starmap instance
+type config struct {
+	// Remote server configuration
+	remoteServerURL    *string
+	remoteServerAPIKey *string
+	remoteServerOnly   bool // If true (enabled), don't use any other sources for catalog updates including provider APIs
+
+	// Update configuration
+	autoUpdatesEnabled bool
+	autoUpdateInterval time.Duration
+	autoUpdateFunc     AutoUpdateFunc
+
+	// Initial catalog
+	initialCatalog *catalogs.Catalog
+}
+
 // Option is a function that configures a Starmap instance
 type Option func(*config) error
+
+// options applies the given options to the config
+func (s *starmap) options(opts ...Option) error {
+	for _, opt := range opts {
+		if err := opt(s.config); err != nil {
+			return fmt.Errorf("applying option: %w", err)
+		}
+	}
+	return nil
+}
 
 // WithRemoteServer configures the remote server for catalog updates.
 // A url is required, an api key can be provided for authentication,
@@ -43,6 +82,9 @@ func WithAutoUpdateInterval(interval time.Duration) Option {
 		return nil
 	}
 }
+
+// AutoUpdateFunc is a function that updates the catalog
+type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
 
 // WithAutoUpdateFunc configures a custom function for updating the catalog
 func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {

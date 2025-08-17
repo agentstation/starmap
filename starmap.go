@@ -10,18 +10,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-var (
-	defaultConfig = &config{
-		autoUpdatesEnabled: true,          // Default to auto-updates enabled
-		autoUpdateInterval: 1 * time.Hour, // Default to hourly updates
-		autoUpdateFunc:     nil,           // Default to no auto-update function
-		initialCatalog:     nil,           // Default to no initial catalog
-		remoteServerURL:    nil,           // Default to no remote server
-		remoteServerAPIKey: nil,           // Default to no remote server API key
-		remoteServerOnly:   false,         // Default to not only use remote server
-	}
-)
-
 // Starmap manages a catalog with automatic updates and event hooks
 type Starmap interface {
 	// Catalog returns a copy of the current catalog
@@ -61,25 +49,6 @@ type starmap struct {
 	httpClient *http.Client
 }
 
-// AutoUpdateFunc is a function that updates the catalog
-type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
-
-// config holds the configuration for a Starmap instance
-type config struct {
-	// Remote server configuration
-	remoteServerURL    *string
-	remoteServerAPIKey *string
-	remoteServerOnly   bool // If true (enabled), don't use any other sources for catalog updates including provider APIs
-
-	// Update configuration
-	autoUpdatesEnabled bool
-	autoUpdateInterval time.Duration
-	autoUpdateFunc     AutoUpdateFunc
-
-	// Initial catalog
-	initialCatalog *catalogs.Catalog
-}
-
 // New creates a new Starmap instance with the given options
 func New(opts ...Option) (Starmap, error) {
 
@@ -108,16 +77,6 @@ func New(opts ...Option) (Starmap, error) {
 	}
 
 	return sm, nil
-}
-
-// options applies the given options to the config
-func (s *starmap) options(opts ...Option) error {
-	for _, opt := range opts {
-		if err := opt(s.config); err != nil {
-			return fmt.Errorf("applying option: %w", err)
-		}
-	}
-	return nil
 }
 
 // Catalog returns a copy of the current catalog
