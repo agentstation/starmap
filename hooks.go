@@ -19,12 +19,27 @@ type (
 	ModelRemovedHook func(model catalogs.Model)
 )
 
+// OnModelAdded is a hook that registers a callback for when models are added
+func (s *starmap) OnModelAdded(fn ModelAddedHook) {
+	s.hooks.onModelAdded(fn)
+}
+
+// OnModelUpdated is a hook that registers a callback for when models are updated
+func (s *starmap) OnModelUpdated(fn ModelUpdatedHook) {
+	s.hooks.onModelUpdated(fn)
+}
+
+// OnModelRemoved is a hook that registers a callback for when models are removed
+func (s *starmap) OnModelRemoved(fn ModelRemovedHook) {
+	s.hooks.onModelRemoved(fn)
+}
+
 // hooks manages event callbacks for catalog changes
 type hooks struct {
-	mu             sync.RWMutex
-	onModelAdded   []ModelAddedHook
-	onModelUpdated []ModelUpdatedHook
-	onModelRemoved []ModelRemovedHook
+	mu           sync.RWMutex
+	modelAdded   []ModelAddedHook
+	modelUpdated []ModelUpdatedHook
+	modelRemoved []ModelRemovedHook
 }
 
 // newHooks creates a new hooks instance
@@ -32,25 +47,25 @@ func newHooks() *hooks {
 	return &hooks{}
 }
 
-// OnModelAdded registers a callback for when models are added
-func (h *hooks) OnModelAdded(fn ModelAddedHook) {
+// onModelAdded registers a callback for when models are added
+func (h *hooks) onModelAdded(fn ModelAddedHook) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
-	h.onModelAdded = append(h.onModelAdded, fn)
+	h.modelAdded = append(h.modelAdded, fn)
 }
 
-// OnModelUpdated registers a callback for when models are updated
-func (h *hooks) OnModelUpdated(fn ModelUpdatedHook) {
+// onModelUpdated registers a callback for when models are updated
+func (h *hooks) onModelUpdated(fn ModelUpdatedHook) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
-	h.onModelUpdated = append(h.onModelUpdated, fn)
+	h.modelUpdated = append(h.modelUpdated, fn)
 }
 
-// OnModelRemoved registers a callback for when models are removed
-func (h *hooks) OnModelRemoved(fn ModelRemovedHook) {
+// onModelRemoved registers a callback for when models are removed
+func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
-	h.onModelRemoved = append(h.onModelRemoved, fn)
+	h.modelRemoved = append(h.modelRemoved, fn)
 }
 
 // triggerCatalogUpdate compares old and new catalogs and triggers appropriate hooks
@@ -78,13 +93,13 @@ func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Catalog) {
 		if oldModel, exists := oldModelMap[newModel.ID]; exists {
 			// Check if model was updated
 			if !reflect.DeepEqual(oldModel, *newModel) {
-				for _, hook := range h.onModelUpdated {
+				for _, hook := range h.modelUpdated {
 					hook(oldModel, *newModel)
 				}
 			}
 		} else {
 			// Model was added
-			for _, hook := range h.onModelAdded {
+			for _, hook := range h.modelAdded {
 				hook(*newModel)
 			}
 		}
@@ -93,7 +108,7 @@ func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Catalog) {
 	// Check for removed models
 	for _, oldModel := range oldModels.List() {
 		if _, exists := newModelMap[oldModel.ID]; !exists {
-			for _, hook := range h.onModelRemoved {
+			for _, hook := range h.modelRemoved {
 				hook(*oldModel)
 			}
 		}
