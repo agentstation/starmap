@@ -1,0 +1,68 @@
+# llama3-8b-8192 - Llama language model
+id: llama3-8b-8192
+name: llama3-8b-8192
+authors:
+- id: meta
+  name: Meta
+# Model metadata
+metadata:
+  release_date: 2024-04-18
+  knowledge_cutoff: 2023-03-01
+  open_weights: true
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: false
+  seed: true
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: true
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 8192
+  output_tokens: 8192
+
+# Model pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.05
+    output:
+      per_1m: 0.08
+

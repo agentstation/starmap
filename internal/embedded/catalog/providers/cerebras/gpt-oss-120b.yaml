@@ -1,0 +1,67 @@
+# gpt-oss-120b - GPT OSS
+id: gpt-oss-120b
+name: GPT OSS
+authors:
+- id: cerebras
+  name: Cerebras
+# Model metadata
+metadata:
+  release_date: 2025-08-05
+  open_weights: true
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: false
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 131072
+  output_tokens: 32768
+
+# Model pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.25
+    output:
+      per_1m: 0.69
+

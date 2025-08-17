@@ -1,0 +1,172 @@
+# GPT-5 - OpenAI's next-generation reasoning model
+id: gpt-5
+name: GPT-5
+authors:
+  - OpenAI
+description: >
+  Next-generation language model with enhanced reasoning capabilities, 
+  improved accuracy, and advanced multimodal processing
+
+# Model metadata
+metadata:
+  release_date: "2025-01"
+  open_weights: false
+  knowledge_cutoff: "2024-10"
+  tags:
+    - reasoning
+    - coding
+    - math
+    - chat
+    - instruct
+    - multimodal
+    - research
+  architecture:
+    parameter_count: "1.8T"
+    type: transformer
+    tokenizer: gpt
+    precision: fp16
+    quantized: false
+    fine_tuned: false
+
+# Model features
+features:
+  modalities:
+    input: [text, image, audio]
+    output: [text, audio]
+
+  # Core capabilities
+  # Tool system - three aspects working together:
+  tool_calls: true # Can invoke tools in responses (outputs tool_calls JSON)
+  tools: true # Accepts tool definitions in requests (accepts tools parameter)
+  tool_choice: true # Supports tool choice strategies (auto/none/required control)
+  attachments: true
+
+  # Reasoning & Verbosity - enhanced reasoning capabilities
+  reasoning: true
+  reasoning_effort: true
+  include_reasoning: true
+  verbosity: true
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: true
+  min_p: true
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: true
+  seed: true
+  stop: true
+  logprobs: true
+  web_search: true
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+
+# Attachment support
+attachments:
+  mime_types:
+    - "image/jpeg"
+    - "image/png"
+    - "image/gif"
+    - "image/webp"
+    - "audio/wav"
+    - "audio/mp3"
+    - "audio/m4a"
+    - "text/plain"
+    - "application/pdf"
+  max_file_size: 104857600 # 100MB
+  max_files: 10
+
+# Generation configuration ranges
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 1.0
+  top_a:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+  min_p:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+  max_tokens: 32768
+  frequency_penalty:
+    min: -2.0
+    max: 2.0
+    default: 0.0
+  presence_penalty:
+    min: -2.0
+    max: 2.0
+    default: 0.0
+  top_logprobs: 5
+
+# Reasoning effort levels
+reasoning:
+  levels: [low, medium, high, maximum]
+  default: medium
+
+# Verbosity levels
+verbosity:
+  levels: [minimum, low, medium, high, maximum]
+  default: medium
+
+# Tool configuration - only applicable when tool features are enabled above
+tools:
+  # Supported tool choice strategies (requires tool_choice: true)
+  tool_choices: [auto, none, required]
+  # Web search configuration (requires web_search: true)
+  web_search:
+    max_results: 10
+    search_context_sizes: [low, medium, high]
+    default_context_size: medium
+
+# Response delivery capabilities
+delivery:
+  protocols:
+    - http
+  streaming:
+    - sse
+  formats:
+    - text
+    - json
+    - json_schema
+    - structured_output
+
+# Pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_token: 0.00000125
+      per_1m_tokens: 1.25
+    output:
+      per_token: 0.00001
+      per_1m_tokens: 10.0
+    cache:
+      read:
+        per_token: 0.000000125
+        per_1m_tokens: 0.125
+      write:
+        per_token: 0.000001875
+        per_1m_tokens: 1.875
+
+# Model limits
+limits:
+  context_window: 200000 # 200K tokens
+  output_tokens: 32768
+
+# Timestamps
+created_at: "2025-01-01"
+updated_at: "2025-01-01"

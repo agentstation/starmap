@@ -1,0 +1,68 @@
+# qwen/qwen3-32b - qwen3-32b
+id: qwen/qwen3-32b
+name: qwen3-32b
+authors:
+- id: alibaba cloud
+  name: Alibaba Cloud
+# Model metadata
+metadata:
+  release_date: 2024-12-23
+  knowledge_cutoff: 2024-11-08
+  open_weights: true
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: false
+  seed: true
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 131072
+  output_tokens: 16384
+
+# Model pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.29
+    output:
+      per_1m: 0.59
+

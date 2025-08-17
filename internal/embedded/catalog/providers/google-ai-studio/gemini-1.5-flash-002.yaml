@@ -1,0 +1,56 @@
+# gemini-1.5-flash-002 - Stable version of Gemini 1.5 Flash, our fast and versatil...
+id: gemini-1.5-flash-002
+name: Gemini 1.5 Flash 002
+authors:
+- id: google
+  name: Google
+description: >
+  Stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks, released in September of 2024.
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: true
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 1000000
+  output_tokens: 8192
+

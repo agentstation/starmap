@@ -30,3 +30,98 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+.claude
+
+# Build artifacts and binaries
+/starmap
+starmap.exe
+starmap.darwin
+starmap.linux
+starmap.windows
+dist/
+build/
+bin/
+
+# Platform-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.#*
+\#*#
+
+# Logs
+*.log
+logs/
+log/
+
+# Cache directories
+.cache/
+*.cache
+
+# OS generated files
+.fseventsd
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+*.lnk
+
+# Linux
+*~
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Node.js (if any frontend tooling is used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Python (if any tooling scripts are used)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker
+.dockerignore
+Dockerfile.dev
+docker-compose.override.yml
+
+# Local configuration overrides
+config.local.*
+*.local
+
+# models.dev repository (cloned during sync)
+models.dev/

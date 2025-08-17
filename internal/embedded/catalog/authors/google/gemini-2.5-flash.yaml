@@ -1,0 +1,154 @@
+# Gemini 2.5 Flash - Google's fast reasoning model with thinking budget
+id: gemini-2.5-flash
+name: Gemini 2.5 Flash
+authors:
+  - Google
+description: >
+  Fast multimodal model with configurable thinking budget for 
+  cost-efficient reasoning and rapid response generation
+
+# Model metadata
+metadata:
+  release_date: "2024-12"
+  open_weights: false
+  knowledge_cutoff: "2024-10"
+  tags:
+    - reasoning
+    - coding
+    - multimodal
+    - chat
+    - instruct
+    - vision
+    - creative
+  architecture:
+    parameter_count: "unknown"
+    type: transformer
+    tokenizer: gemini
+    precision: bf16
+    quantized: false
+    fine_tuned: false
+
+# Model features
+features:
+  modalities:
+    input: [text, image, audio, video, pdf]
+    output: [text]
+
+  # Core capabilities
+  # Tool system - three aspects working together:
+  tool_calls: true # Can invoke tools in responses (outputs tool_calls JSON)
+  tools: true # Accepts tool definitions in requests (accepts tools parameter)
+  tool_choice: true # Supports tool choice strategies (auto/none/required control)
+  web_search: false # No web search capabilities
+  attachments: true
+
+  # Reasoning & Verbosity - configurable thinking budget
+  reasoning: true
+  reasoning_effort: true
+  reasoning_tokens: true
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: true
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: false
+  streaming: true
+
+# Attachment support
+attachments:
+  mime_types:
+    - "image/jpeg"
+    - "image/png"
+    - "image/gif"
+    - "image/webp"
+    - "audio/wav"
+    - "audio/mp3"
+    - "audio/m4a"
+    - "audio/flac"
+    - "video/mp4"
+    - "video/avi"
+    - "video/mov"
+    - "application/pdf"
+    - "text/plain"
+  max_file_size: 1073741824 # 1GB
+  max_files: 20
+
+# Generation configuration ranges
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+  top_k:
+    min: 1
+    max: 40
+    default: 40
+  max_tokens: 8192
+
+# Reasoning effort levels - thinking budget controls cost vs quality
+reasoning:
+  levels: [low, medium, high]
+  default: low
+
+# Reasoning token allocation - precise thinking budget control
+reasoning_tokens:
+  min: 0 # Can disable thinking completely
+  max: 24576 # Maximum thinking tokens for Flash model
+  default: -1 # Dynamic thinking (model decides based on complexity)
+
+# Tool configuration - only applicable when tool features are enabled above
+tools:
+  # Supported tool choice strategies (requires tool_choice: true)
+  tool_choices: [auto, none]
+
+# Response delivery capabilities
+delivery:
+  protocols:
+    - http
+  streaming:
+    - sse
+  formats:
+    - text
+    - json
+
+# Pricing - thinking budget affects reasoning token cost
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_token: 0.0000003
+      per_1m_tokens: 0.30
+    output:
+      per_token: 0.0000006
+      per_1m_tokens: 0.60
+    reasoning:
+      per_token: 0.0000035
+      per_1m_tokens: 3.50 # Significantly higher when thinking is enabled
+
+# Model limits
+limits:
+  context_window: 1048576 # 1M tokens
+  output_tokens: 8192
+
+# Timestamps
+created_at: "2024-12-01"
+updated_at: "2024-12-01"

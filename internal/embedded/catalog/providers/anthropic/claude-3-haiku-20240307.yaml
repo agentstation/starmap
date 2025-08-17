@@ -1,0 +1,72 @@
+# claude-3-haiku-20240307 - Claude Haiku 3
+id: claude-3-haiku-20240307
+name: Claude Haiku 3
+authors:
+- id: anthropic
+  name: Anthropic
+# Model metadata
+metadata:
+  release_date: 2024-03-13
+  knowledge_cutoff: 2023-08-31
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: true
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 200000
+  output_tokens: 4096
+
+# Model pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.25
+    output:
+      per_1m: 1.25
+    cache_read:
+      per_1m: 0.03
+    cache_write:
+      per_1m: 0.30
+

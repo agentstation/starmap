@@ -1,0 +1,48 @@
+# gpt-4o-mini-audio-preview - GPT language model
+id: gpt-4o-mini-audio-preview
+name: gpt-4o-mini-audio-preview
+authors:
+- id: system
+  name: system
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: true
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+

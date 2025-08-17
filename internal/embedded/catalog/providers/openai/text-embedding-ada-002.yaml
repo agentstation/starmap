@@ -1,0 +1,46 @@
+# text-embedding-ada-002 - Text embedding model
+id: text-embedding-ada-002
+name: text-embedding-ada-002
+authors:
+- id: openai
+  name: openai-internal
+# Model features
+features:
+  modalities:
+    input:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: true
+  frequency_penalty: true
+  presence_penalty: true
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: true
+  logprobs: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
