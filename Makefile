@@ -27,7 +27,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata
+.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata demo
 
 # Default target
 all: clean fix lint test build
@@ -215,3 +215,12 @@ docs: ## Generate documentation
 	$(GOCMD) run $(MAIN_PATH) --help > docs/help.txt
 	$(GOCMD) run $(MAIN_PATH) sync --help > docs/sync-help.txt
 	@echo "$(GREEN)Documentation generated in docs/$(NC)"
+
+# Demo
+demo: ## Generate VHS demo video
+	@echo "$(BLUE)Generating demo video...$(NC)"
+	@which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/charmbracelet/vhs@latest$(NC)" && exit 1)
+	@echo "$(YELLOW)Recording terminal demo...$(NC)"
+	vhs scripts/demo.tape
+	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
+	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"

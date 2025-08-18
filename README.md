@@ -16,6 +16,7 @@ A comprehensive AI model catalog system that provides centralized information ab
 - [Features](#features)
 - [CLI](#cli)
   - [Installation](#installation)
+  - [Demo](#demo)
   - [Basic Commands](#basic-commands)
   - [Syncing with Provider APIs](#syncing-with-provider-apis)
   - [Development Workflow](#development-workflow)
@@ -54,6 +55,10 @@ A comprehensive AI model catalog system that provides centralized information ab
 ```bash
 go install github.com/agentstation/starmap/cmd/starmap@latest
 ```
+
+### Demo
+
+![Demo](./scripts/demo.svg)
 
 ### Basic Commands
 
