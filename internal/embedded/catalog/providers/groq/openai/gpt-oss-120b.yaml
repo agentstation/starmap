@@ -4,6 +4,7 @@ name: gpt-oss-120b
 authors:
 - id: openai
   name: OpenAI
+
 # Model metadata
 metadata:
   release_date: 2025-08-05

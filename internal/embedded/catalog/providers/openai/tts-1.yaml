@@ -3,14 +3,15 @@ id: tts-1
 name: tts-1
 authors:
 - id: openai
-  name: openai-internal
+  name: OpenAI
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - audio
+    - text
 
   # Core capabilities
   tool_calls: false

@@ -4,6 +4,7 @@ name: allam-2-7b
 authors:
 - id: sdaia
   name: SDAIA
+
 # Model features
 features:
   modalities:

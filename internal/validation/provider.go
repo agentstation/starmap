@@ -3,7 +3,7 @@ package validation
 import (
 	"fmt"
 
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
+	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -37,7 +37,7 @@ func ValidateProviderAccess(catalog catalogs.Catalog) (*ProviderValidationReport
 
 	// Get list of supported providers (ones with client implementations)
 	supportedProviders := make(map[catalogs.ProviderID]bool)
-	for _, pid := range registry.ListSupportedProviders() {
+	for _, pid := range providers.ListSupportedProviders() {
 		supportedProviders[pid] = true
 	}
 

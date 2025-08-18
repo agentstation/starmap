@@ -4,6 +4,7 @@ name: llama-4-maverick-17b-128e-instruct
 authors:
 - id: meta
   name: Meta
+
 # Model metadata
 metadata:
   release_date: 2025-04-05

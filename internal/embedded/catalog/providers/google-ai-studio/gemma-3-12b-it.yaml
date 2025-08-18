@@ -4,6 +4,7 @@ name: Gemma 3 12B
 authors:
 - id: google
   name: Google
+
 # Model features
 features:
   modalities:

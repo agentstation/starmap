@@ -4,6 +4,7 @@ name: llama-4-scout-17b-16e-instruct
 authors:
 - id: meta
   name: Meta
+
 # Model metadata
 metadata:
   release_date: 2025-04-05

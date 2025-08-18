@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/spf13/cobra"
-
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 )
 
 var showAPIKeys bool
@@ -35,9 +33,16 @@ func init() {
 }
 
 func runProviders(cmd *cobra.Command, args []string) error {
-	catalog, err := embedded.New()
+	// Create starmap instance (now properly loads embedded catalog by default)
+	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("loading catalog: %w", err)
+		return fmt.Errorf("creating starmap: %w", err)
+	}
+
+	// Get catalog from starmap
+	catalog, err := sm.Catalog()
+	if err != nil {
+		return fmt.Errorf("getting catalog: %w", err)
 	}
 
 	// Get all providers from the catalog
@@ -52,11 +57,14 @@ func runProviders(cmd *cobra.Command, args []string) error {
 		return providers[i].ID < providers[j].ID
 	})
 
-	// Get supported providers
-	supported := registry.ListSupportedProviders()
+	// Build supported providers map by checking each provider for client availability
 	supportedMap := make(map[catalogs.ProviderID]bool)
-	for _, pid := range supported {
-		supportedMap[pid] = true
+	for _, provider := range providers {
+		// Try to get client (with missing API key allowed to test if client exists)
+		result, _ := provider.GetClient(catalogs.WithAllowMissingAPIKey(true))
+		if result != nil && result.Client != nil {
+			supportedMap[provider.ID] = true
+		}
 	}
 
 	fmt.Printf("Found %d providers in catalog:\n\n", len(providers))

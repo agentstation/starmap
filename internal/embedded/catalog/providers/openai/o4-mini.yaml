@@ -2,8 +2,9 @@
 id: o4-mini
 name: o4-mini
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model metadata
 metadata:
   release_date: 2025-04-16

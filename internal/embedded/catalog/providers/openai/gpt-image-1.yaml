@@ -2,8 +2,9 @@
 id: gpt-image-1
 name: gpt-image-1
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

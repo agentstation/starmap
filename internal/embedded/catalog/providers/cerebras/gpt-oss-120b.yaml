@@ -1,9 +1,10 @@
-# gpt-oss-120b - GPT OSS
+# gpt-oss-120b - GPT language model
 id: gpt-oss-120b
-name: GPT OSS
+name: gpt-oss-120b
 authors:
 - id: cerebras
   name: Cerebras
+
 # Model metadata
 metadata:
   release_date: 2025-08-05
@@ -19,8 +20,8 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -47,7 +48,7 @@ features:
   logprobs: false
 
   # Response delivery
-  format_response: true
+  format_response: false
   structured_outputs: false
   streaming: true
 

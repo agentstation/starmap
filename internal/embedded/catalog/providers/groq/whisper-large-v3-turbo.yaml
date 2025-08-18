@@ -4,6 +4,7 @@ name: whisper-large-v3-turbo
 authors:
 - id: openai
   name: OpenAI
+
 # Model features
 features:
   modalities:

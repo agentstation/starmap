@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
+	"github.com/agentstation/starmap"
 	"github.com/spf13/cobra"
 )
 
@@ -27,9 +27,14 @@ func init() {
 }
 
 func runAuthors(cmd *cobra.Command, args []string) error {
-	catalog, err := embedded.New()
+	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("loading catalog: %w", err)
+		return fmt.Errorf("creating starmap: %w", err)
+	}
+
+	catalog, err := sm.Catalog()
+	if err != nil {
+		return fmt.Errorf("getting catalog: %w", err)
 	}
 
 	// Get all authors from the catalog

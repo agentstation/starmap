@@ -209,12 +209,12 @@ testdata-update: ## Update testdata for all providers (requires API keys)
 	$(GOCMD) run $(MAIN_PATH) testdata --update --verbose
 
 # Documentation
-docs: ## Generate documentation
+generate: ## Generate markdown documentation for providers and models
 	@echo "$(BLUE)Generating documentation...$(NC)"
-	@mkdir -p docs
-	$(GOCMD) run $(MAIN_PATH) --help > docs/help.txt
-	$(GOCMD) run $(MAIN_PATH) sync --help > docs/sync-help.txt
+	$(GOCMD) run $(MAIN_PATH) generate
 	@echo "$(GREEN)Documentation generated in docs/$(NC)"
+
+docs: generate ## Alias for generate command
 
 # Demo
 demo: ## Generate VHS demo video

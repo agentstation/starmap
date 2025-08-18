@@ -2,8 +2,9 @@
 id: davinci-002
 name: davinci-002
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

@@ -4,6 +4,7 @@ name: llama-prompt-guard-2-86m
 authors:
 - id: meta
   name: Meta
+
 # Model features
 features:
   modalities:

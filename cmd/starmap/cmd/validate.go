@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/validation"
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/spf13/cobra"
 )
 
@@ -28,9 +28,14 @@ func init() {
 }
 
 func runValidate(cmd *cobra.Command, args []string) error {
-	catalog, err := embedded.New()
+	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("loading catalog: %w", err)
+		return fmt.Errorf("creating starmap: %w", err)
+	}
+
+	catalog, err := sm.Catalog()
+	if err != nil {
+		return fmt.Errorf("getting catalog: %w", err)
 	}
 
 	report, err := validation.ValidateProviderAccess(catalog)

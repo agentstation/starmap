@@ -5,17 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/catalogs/operations"
 	"github.com/agentstation/starmap/internal/catalogs/persistence"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
+	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs/files"
 	"github.com/spf13/cobra"
-
-	// Import providers to trigger registration
-	_ "github.com/agentstation/starmap/internal/sources/providers"
 )
 
 var (
@@ -95,20 +92,31 @@ func runSync(cmd *cobra.Command, args []string) error {
 
 	// Get the catalog - use file catalog if input is specified, otherwise use default
 	var catalogInstance catalogs.Catalog
-	var err error
 
 	if syncInput != "" {
 		// Create file-based catalog from input directory
-		catalogInstance, err = files.New(syncInput)
+		filesCatalog, err := files.New(syncInput)
 		if err != nil {
 			return fmt.Errorf("creating catalog from %s: %w", syncInput, err)
 		}
+		sm, err := starmap.New(starmap.WithInitialCatalog(filesCatalog))
+		if err != nil {
+			return fmt.Errorf("creating starmap with files catalog: %w", err)
+		}
+		catalogInstance, err = sm.Catalog()
+		if err != nil {
+			return fmt.Errorf("getting catalog: %w", err)
+		}
 		fmt.Printf("📁 Using catalog from: %s\n", syncInput)
 	} else {
-		// Use embedded catalog
-		catalogInstance, err = embedded.New()
+		// Use default starmap with embedded catalog
+		sm, err := starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating embedded catalog: %w", err)
+			return fmt.Errorf("creating starmap: %w", err)
+		}
+		catalogInstance, err = sm.Catalog()
+		if err != nil {
+			return fmt.Errorf("getting catalog: %w", err)
 		}
 		fmt.Printf("📦 Using embedded catalog\n")
 	}
@@ -121,7 +129,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 		providersToSync = []catalogs.ProviderID{pid}
 	} else {
 		// Sync all supported providers
-		providersToSync = registry.ListSupportedProviders()
+		providersToSync = providers.ListSupportedProviders()
 	}
 
 	fmt.Printf("\nStarting sync for %d provider(s)...\n\n", len(providersToSync))

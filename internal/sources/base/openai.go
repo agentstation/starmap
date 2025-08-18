@@ -150,8 +150,10 @@ func (c *OpenAIClient) ConvertToModel(m OpenAIModelData) catalogs.Model {
 
 	// Map owner to author
 	if m.OwnedBy != "" {
+		authorID := c.normalizeAuthorID(m.OwnedBy)
+		authorName := c.normalizeAuthorName(authorID, m.OwnedBy)
 		model.Authors = []catalogs.Author{
-			{ID: c.normalizeAuthorID(m.OwnedBy), Name: m.OwnedBy},
+			{ID: authorID, Name: authorName},
 		}
 	}
 
@@ -198,7 +200,12 @@ func (c *OpenAIClient) InferFeatures(modelID string) *catalogs.ModelFeatures {
 // normalizeAuthorID normalizes the author ID to match our catalog.
 func (c *OpenAIClient) normalizeAuthorID(ownedBy string) catalogs.AuthorID {
 	switch strings.ToLower(ownedBy) {
-	case "openai":
+	case "openai", "openai-internal", "system":
+		// OpenAI API uses various owner values for their models:
+		// - "openai": for some models
+		// - "openai-internal": for older/internal models
+		// - "system": for most current models
+		// All should be attributed to OpenAI
 		return catalogs.AuthorIDOpenAI
 	case "meta":
 		return catalogs.AuthorIDMeta
@@ -212,5 +219,27 @@ func (c *OpenAIClient) normalizeAuthorID(ownedBy string) catalogs.AuthorID {
 		return catalogs.AuthorIDDeepSeek
 	default:
 		return catalogs.AuthorID(strings.ToLower(ownedBy))
+	}
+}
+
+// normalizeAuthorName normalizes the author name based on the normalized ID.
+// For OpenAI API responses, we want to use canonical names instead of raw API values.
+func (c *OpenAIClient) normalizeAuthorName(authorID catalogs.AuthorID, rawOwnedBy string) string {
+	switch authorID {
+	case catalogs.AuthorIDOpenAI:
+		return "OpenAI"
+	case catalogs.AuthorIDMeta:
+		return "Meta"
+	case catalogs.AuthorIDGoogle:
+		return "Google"
+	case catalogs.AuthorIDMistralAI:
+		return "Mistral AI"
+	case catalogs.AuthorIDMicrosoft:
+		return "Microsoft"
+	case catalogs.AuthorIDDeepSeek:
+		return "DeepSeek"
+	default:
+		// For unknown authors, still return the raw value
+		return rawOwnedBy
 	}
 }

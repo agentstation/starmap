@@ -4,6 +4,7 @@ name: gemma2-9b-it
 authors:
 - id: google
   name: Google
+
 # Model metadata
 metadata:
   release_date: 2024-06-27

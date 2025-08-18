@@ -2,8 +2,9 @@
 id: omni-moderation-2024-09-26
 name: omni-moderation-2024-09-26
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

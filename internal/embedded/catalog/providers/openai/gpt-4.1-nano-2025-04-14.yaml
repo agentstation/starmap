@@ -2,8 +2,9 @@
 id: gpt-4.1-nano-2025-04-14
 name: gpt-4.1-nano-2025-04-14
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

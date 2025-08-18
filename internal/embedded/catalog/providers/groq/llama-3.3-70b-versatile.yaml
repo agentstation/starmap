@@ -4,6 +4,7 @@ name: llama-3.3-70b-versatile
 authors:
 - id: meta
   name: Meta
+
 # Model metadata
 metadata:
   release_date: 2024-12-06

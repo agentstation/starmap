@@ -1,9 +1,10 @@
-# deepseek-chat - DeepSeek Chat
+# deepseek-chat - Language model
 id: deepseek-chat
-name: DeepSeek Chat
+name: deepseek-chat
 authors:
 - id: deepseek
-  name: deepseek
+  name: DeepSeek
+
 # Model metadata
 metadata:
   release_date: 2024-12-26
@@ -19,8 +20,8 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -47,7 +48,7 @@ features:
   logprobs: false
 
   # Response delivery
-  format_response: true
+  format_response: false
   structured_outputs: false
   streaming: true
 

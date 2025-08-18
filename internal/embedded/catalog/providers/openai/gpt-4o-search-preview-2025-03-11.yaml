@@ -2,8 +2,9 @@
 id: gpt-4o-search-preview-2025-03-11
 name: gpt-4o-search-preview-2025-03-11
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

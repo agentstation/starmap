@@ -2,8 +2,9 @@
 id: gpt-4.1-nano
 name: gpt-4.1-nano
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model metadata
 metadata:
   release_date: 2025-04-14

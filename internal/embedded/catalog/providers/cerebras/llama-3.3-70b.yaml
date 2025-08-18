@@ -1,9 +1,10 @@
-# llama-3.3-70b - Llama 3.3
+# llama-3.3-70b - Llama language model
 id: llama-3.3-70b
-name: Llama 3.3
+name: llama-3.3-70b
 authors:
 - id: cerebras
   name: Cerebras
+
 # Model features
 features:
   modalities:
@@ -14,8 +15,8 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -42,7 +43,7 @@ features:
   logprobs: false
 
   # Response delivery
-  format_response: true
+  format_response: false
   structured_outputs: false
   streaming: true
 

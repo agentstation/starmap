@@ -14,6 +14,7 @@ A comprehensive AI model catalog system that provides centralized information ab
 ## Table of Contents
 
 - [Features](#features)
+- [Documentation](#documentation)
 - [CLI](#cli)
   - [Installation](#installation)
   - [Demo](#demo)
@@ -47,6 +48,34 @@ A comprehensive AI model catalog system that provides centralized information ab
 - **Event-Driven Updates**: React to model changes with custom hooks
 - **Automatic Synchronization**: Configurable update intervals
 - **Remote Server Support**: Future support for centralized starmap servers
+
+## Documentation
+
+For detailed information about supported providers and models, see our [Model Catalog Documentation](./docs/catalog/README.md).
+
+### Browse by Provider or Author
+
+- 📋 [Browse by Provider](./docs/catalog/providers/README.md) - Models organized by AI service providers  
+- 👥 [Browse by Author](./docs/catalog/authors/README.md) - Models organized by creators/organizations
+
+### Quick Links
+
+- 🤖 [Anthropic Models](./docs/catalog/providers/anthropic/README.md)  
+- 🔥 [OpenAI Models](./docs/catalog/providers/openai/README.md)  
+- 🔍 [Google AI Studio Models](./docs/catalog/providers/google-ai-studio/README.md)  
+- ⚡ [Groq Models](./docs/catalog/providers/groq/README.md)
+
+### Generate Documentation
+
+The documentation is automatically generated from the catalog data:
+
+```bash
+# Generate documentation
+make generate
+
+# Or use the CLI directly
+starmap generate --output ./docs
+```
 
 ## CLI
 

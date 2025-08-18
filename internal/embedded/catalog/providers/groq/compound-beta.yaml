@@ -4,6 +4,7 @@ name: compound-beta
 authors:
 - id: groq
   name: Groq
+
 # Model features
 features:
   modalities:

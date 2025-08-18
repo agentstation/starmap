@@ -2,8 +2,9 @@
 id: gpt-4o
 name: gpt-4o
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model metadata
 metadata:
   release_date: 2024-05-13

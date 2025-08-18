@@ -53,14 +53,28 @@ type starmap struct {
 func New(opts ...Option) (Starmap, error) {
 
 	sm := &starmap{
-		catalog: embedded.NewCatalog(),
-		config:  defaultConfig,
-		stopCh:  make(chan struct{}),
-		hooks:   newHooks(),
+		config: defaultConfig,
+		stopCh: make(chan struct{}),
+		hooks:  newHooks(),
 	}
 
 	if err := sm.options(opts...); err != nil {
 		return nil, fmt.Errorf("applying options: %w", err)
+	}
+
+	// Use provided catalog or create default
+	if sm.config.initialCatalog != nil {
+		sm.catalog = *sm.config.initialCatalog
+	} else {
+		// Create and load default embedded catalog
+		embeddedCat := embedded.NewCatalog()
+		// Cast to the concrete type to call Load()
+		if loadable, ok := embeddedCat.(interface{ Load() error }); ok {
+			if err := loadable.Load(); err != nil {
+				return nil, fmt.Errorf("loading embedded catalog: %w", err)
+			}
+		}
+		sm.catalog = embeddedCat
 	}
 
 	if sm.config.remoteServerURL != nil {

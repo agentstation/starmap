@@ -1,9 +1,10 @@
-# deepseek-reasoner - DeepSeek Reasoner
+# deepseek-reasoner - Language model
 id: deepseek-reasoner
-name: DeepSeek Reasoner
+name: deepseek-reasoner
 authors:
 - id: deepseek
-  name: deepseek
+  name: DeepSeek
+
 # Model metadata
 metadata:
   release_date: 2025-01-20
@@ -19,15 +20,15 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
-  reasoning_tokens: true
+  reasoning_tokens: false
   include_reasoning: false
   verbosity: false
 
@@ -47,7 +48,7 @@ features:
   logprobs: false
 
   # Response delivery
-  format_response: true
+  format_response: false
   structured_outputs: false
   streaming: true
 

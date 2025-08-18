@@ -4,6 +4,7 @@ name: distil-whisper-large-v3-en
 authors:
 - id: hugging face
   name: Hugging Face
+
 # Model features
 features:
   modalities:

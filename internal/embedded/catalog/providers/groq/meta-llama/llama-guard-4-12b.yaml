@@ -4,6 +4,7 @@ name: llama-guard-4-12b
 authors:
 - id: meta
   name: Meta
+
 # Model metadata
 metadata:
   release_date: 2025-04-05

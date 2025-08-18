@@ -2,15 +2,16 @@
 id: tts-1-hd-1106
 name: tts-1-hd-1106
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - audio
+    - text
 
   # Core capabilities
   tool_calls: false

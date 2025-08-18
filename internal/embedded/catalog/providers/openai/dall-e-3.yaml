@@ -2,15 +2,16 @@
 id: dall-e-3
 name: dall-e-3
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - image
+    - text
 
   # Core capabilities
   tool_calls: false

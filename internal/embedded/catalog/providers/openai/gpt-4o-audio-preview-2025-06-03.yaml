@@ -2,8 +2,9 @@
 id: gpt-4o-audio-preview-2025-06-03
 name: gpt-4o-audio-preview-2025-06-03
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

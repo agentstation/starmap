@@ -4,6 +4,7 @@ name: Gemma 3n E2B
 authors:
 - id: google
   name: Google
+
 # Model features
 features:
   modalities:

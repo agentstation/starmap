@@ -3,12 +3,13 @@ id: whisper-1
 name: whisper-1
 authors:
 - id: openai
-  name: openai-internal
+  name: OpenAI
+
 # Model features
 features:
   modalities:
     input:
-    - audio
+    - text
     output:
     - text
 

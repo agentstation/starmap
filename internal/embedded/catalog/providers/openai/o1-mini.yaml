@@ -2,8 +2,9 @@
 id: o1-mini
 name: o1-mini
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model metadata
 metadata:
   release_date: 2024-09-12
@@ -25,10 +26,10 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
-  include_reasoning: true
+  include_reasoning: false
   verbosity: false
 
   # Generation control support flags

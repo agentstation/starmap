@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/spf13/cobra"
 )
 
@@ -46,9 +46,14 @@ func runFetch(cmd *cobra.Command, args []string) error {
 	pid := catalogs.ProviderID(fetchProvider)
 
 	// Get catalog
-	catalog, err := embedded.New()
+	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("loading catalog: %w", err)
+		return fmt.Errorf("creating starmap: %w", err)
+	}
+
+	catalog, err := sm.Catalog()
+	if err != nil {
+		return fmt.Errorf("getting catalog: %w", err)
 	}
 
 	// Get provider from catalog

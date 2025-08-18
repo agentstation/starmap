@@ -1,9 +1,10 @@
-# qwen-3-coder-480b - Qwen 3
+# qwen-3-coder-480b - Language model
 id: qwen-3-coder-480b
-name: Qwen 3
+name: qwen-3-coder-480b
 authors:
 - id: cerebras
   name: Cerebras
+
 # Model metadata
 metadata:
   release_date: 2025-07-23
@@ -20,8 +21,8 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -48,7 +49,7 @@ features:
   logprobs: false
 
   # Response delivery
-  format_response: true
+  format_response: false
   structured_outputs: false
   streaming: true
 

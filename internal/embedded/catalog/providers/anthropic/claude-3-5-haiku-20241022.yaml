@@ -4,6 +4,7 @@ name: Claude Haiku 3.5
 authors:
 - id: anthropic
   name: Anthropic
+
 # Model metadata
 metadata:
   release_date: 2024-10-22

@@ -66,6 +66,17 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	case strings.Contains(modelLower, "o1"), strings.Contains(modelLower, "o3"):
 		features.Reasoning = true
 		features.IncludeReasoning = true
+	case strings.Contains(modelLower, "gpt-5"):
+		// GPT-5 supports multimodal input and audio output
+		features.Modalities.Input = []catalogs.ModelModality{
+			catalogs.ModelModalityText, 
+			catalogs.ModelModalityImage, 
+			catalogs.ModelModalityAudio,
+		}
+		features.Modalities.Output = []catalogs.ModelModality{
+			catalogs.ModelModalityText, 
+			catalogs.ModelModalityAudio,
+		}
 	case strings.Contains(modelLower, "dall-e"):
 		features.Modalities.Input = []catalogs.ModelModality{catalogs.ModelModalityText}
 		features.Modalities.Output = []catalogs.ModelModality{catalogs.ModelModalityImage}

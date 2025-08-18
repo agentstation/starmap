@@ -2,8 +2,9 @@
 id: gpt-3.5-turbo-1106
 name: gpt-3.5-turbo-1106
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

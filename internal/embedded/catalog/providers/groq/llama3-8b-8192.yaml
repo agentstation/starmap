@@ -4,6 +4,7 @@ name: llama3-8b-8192
 authors:
 - id: meta
   name: Meta
+
 # Model metadata
 metadata:
   release_date: 2024-04-18

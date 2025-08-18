@@ -4,6 +4,7 @@ name: Claude Opus 4.1
 authors:
 - id: anthropic
   name: Anthropic
+
 # Model metadata
 metadata:
   release_date: 2025-08-05

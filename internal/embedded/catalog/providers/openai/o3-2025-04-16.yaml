@@ -2,8 +2,9 @@
 id: o3-2025-04-16
 name: o3-2025-04-16
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:
@@ -20,10 +21,10 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
-  include_reasoning: true
+  include_reasoning: false
   verbosity: false
 
   # Generation control support flags

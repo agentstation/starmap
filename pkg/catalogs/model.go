@@ -405,12 +405,16 @@ type TokenPricing struct {
 	// Advanced token types
 	Reasoning *TokenCost `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
 	Cache     *CacheCost `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
+	
+	// Alternative flat cache structure (for backward compatibility)
+	CacheRead  *TokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
+	CacheWrite *TokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
 }
 
 // TokenCost represents cost per token with flexible units.
 type TokenCost struct {
-	PerToken float64 `json:"per_token" yaml:"per_token"`         // Cost per individual token
-	Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m_tokens"` // Cost per 1M tokens
+	PerToken float64 `json:"per_token" yaml:"per_token"`   // Cost per individual token
+	Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m"` // Cost per 1M tokens
 }
 
 // CacheCost represents cache-specific pricing.

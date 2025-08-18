@@ -4,6 +4,7 @@ name: playai-tts
 authors:
 - id: playai
   name: PlayAI
+
 # Model features
 features:
   modalities:

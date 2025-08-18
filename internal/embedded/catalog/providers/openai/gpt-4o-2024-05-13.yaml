@@ -2,8 +2,9 @@
 id: gpt-4o-2024-05-13
 name: gpt-4o-2024-05-13
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
+
 # Model features
 features:
   modalities:

@@ -199,6 +199,52 @@ The provider system uses a registry pattern similar to database drivers:
 - Registry maintains a map of `ProviderID -> Client`
 - Dependency injection breaks circular imports
 - Automatic discovery of available providers
+- Clean interface through `internal/sources/providers` package with exported functions
+
+#### Provider Registration Usage
+```go
+import "github.com/agentstation/starmap/internal/sources/providers"
+
+// Get a configured client for a provider
+client, err := providers.GetClient(provider)
+
+// Check if a provider has a registered client
+if providers.HasClient(providerID) {
+    // Provider is available
+}
+
+// List all supported provider IDs
+supportedProviders := providers.ListSupportedProviders()
+```
+
+#### Plugin-Style Explicit Initialization
+The providers package supports explicit initialization for advanced use cases:
+
+```go
+import "github.com/agentstation/starmap/internal/sources/providers"
+
+// Explicit initialization (optional - happens automatically on import)
+providers.Init()
+
+// Check if providers have been initialized
+if providers.IsInitialized() {
+    // Providers are ready
+}
+
+// Future extensibility for dynamic provider loading
+opts := providers.InitOptions{
+    // Future options for selective provider loading
+}
+providers.InitWithOptions(opts)
+```
+
+**Key Benefits:**
+- **Automatic Registration**: Providers register automatically on package import (backward compatible)
+- **Explicit Control**: Optional explicit initialization for advanced scenarios
+- **Future-Proof**: Foundation for dynamic provider loading and selective initialization
+- **Thread-Safe**: All initialization functions are safe for concurrent use
+
+This eliminates the need for blank imports (`_`) and makes the import purpose clear.
 
 ## File Organization and Key Components
 

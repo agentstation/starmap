@@ -4,6 +4,7 @@ name: Claude Sonnet 3.5 (Old)
 authors:
 - id: anthropic
   name: Anthropic
+
 # Model metadata
 metadata:
   release_date: 2024-06-20
