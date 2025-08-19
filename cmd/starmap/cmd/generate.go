@@ -41,6 +41,34 @@ func init() {
 	generateCmd.Flags().StringVarP(&generateOutput, "output", "o", "./docs", "Output directory for generated documentation")
 }
 
+// formatDuration converts a time.Duration to a human-readable string
+func formatDuration(d *time.Duration) string {
+	if d == nil {
+		return "Not specified"
+	}
+	
+	duration := *d
+	if duration == 0 {
+		return "Immediate deletion"
+	}
+	
+	// Convert to days if it's a multiple of 24 hours
+	if duration%(24*time.Hour) == 0 {
+		days := int(duration / (24 * time.Hour))
+		if days == 1 {
+			return "1 day"
+		}
+		return fmt.Sprintf("%d days", days)
+	}
+	
+	// Otherwise show hours
+	hours := int(duration / time.Hour)
+	if hours == 1 {
+		return "1 hour"
+	}
+	return fmt.Sprintf("%d hours", hours)
+}
+
 func runGenerate(cmd *cobra.Command, args []string) error {
 	fmt.Printf("🚀 Generating documentation...\n")
 
@@ -512,6 +540,126 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	}
 
 	sb.WriteString(fmt.Sprintf("**Total Models**: %d\n\n", len(models)))
+
+	// API Endpoints section
+	if (provider.Catalog != nil && (provider.Catalog.DocsURL != nil || provider.Catalog.APIURL != nil)) ||
+		(provider.ChatCompletions != nil && (provider.ChatCompletions.URL != nil || provider.ChatCompletions.HealthAPIURL != nil)) {
+		sb.WriteString("## 🔗 API Endpoints\n\n")
+		
+		if provider.Catalog != nil {
+			if provider.Catalog.DocsURL != nil {
+				sb.WriteString(fmt.Sprintf("**Documentation**: [%s](%s)  \n", *provider.Catalog.DocsURL, *provider.Catalog.DocsURL))
+			}
+			if provider.Catalog.APIURL != nil {
+				sb.WriteString(fmt.Sprintf("**Models API**: [%s](%s)  \n", *provider.Catalog.APIURL, *provider.Catalog.APIURL))
+			}
+		}
+		
+		if provider.ChatCompletions != nil {
+			if provider.ChatCompletions.URL != nil {
+				sb.WriteString(fmt.Sprintf("**Chat Completions**: [%s](%s)  \n", *provider.ChatCompletions.URL, *provider.ChatCompletions.URL))
+			}
+			if provider.ChatCompletions.HealthAPIURL != nil {
+				sb.WriteString(fmt.Sprintf("**Health API**: [%s](%s)  \n", *provider.ChatCompletions.HealthAPIURL, *provider.ChatCompletions.HealthAPIURL))
+			}
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Privacy & Data Handling section
+	if provider.PrivacyPolicy != nil {
+		sb.WriteString("## 🔒 Privacy & Data Handling\n\n")
+		
+		if provider.PrivacyPolicy.PrivacyPolicyURL != nil {
+			sb.WriteString(fmt.Sprintf("**Privacy Policy**: [%s](%s)  \n", *provider.PrivacyPolicy.PrivacyPolicyURL, *provider.PrivacyPolicy.PrivacyPolicyURL))
+		}
+		if provider.PrivacyPolicy.TermsOfServiceURL != nil {
+			sb.WriteString(fmt.Sprintf("**Terms of Service**: [%s](%s)  \n", *provider.PrivacyPolicy.TermsOfServiceURL, *provider.PrivacyPolicy.TermsOfServiceURL))
+		}
+		
+		if provider.PrivacyPolicy.RetainsData != nil {
+			retainsData := "No"
+			if *provider.PrivacyPolicy.RetainsData {
+				retainsData = "Yes"
+			}
+			sb.WriteString(fmt.Sprintf("**Retains User Data**: %s  \n", retainsData))
+		}
+		
+		if provider.PrivacyPolicy.TrainsOnData != nil {
+			trainsOnData := "No"
+			if *provider.PrivacyPolicy.TrainsOnData {
+				trainsOnData = "Yes"
+			}
+			sb.WriteString(fmt.Sprintf("**Trains on User Data**: %s  \n", trainsOnData))
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Data Retention Policy section
+	if provider.RetentionPolicy != nil {
+		sb.WriteString("## ⏱️ Data Retention Policy\n\n")
+		
+		// Policy type with capitalization
+		policyType := string(provider.RetentionPolicy.Type)
+		switch policyType {
+		case "fixed":
+			policyType = "Fixed Duration"
+		case "none":
+			policyType = "No Retention"
+		case "indefinite":
+			policyType = "Indefinite"
+		case "conditional":
+			policyType = "Conditional"
+		}
+		sb.WriteString(fmt.Sprintf("**Policy Type**: %s  \n", policyType))
+		
+		// Duration
+		duration := formatDuration(provider.RetentionPolicy.Duration)
+		sb.WriteString(fmt.Sprintf("**Retention Duration**: %s  \n", duration))
+		
+		// Details if available
+		if provider.RetentionPolicy.Details != nil && *provider.RetentionPolicy.Details != "" {
+			sb.WriteString(fmt.Sprintf("**Details**: %s  \n", *provider.RetentionPolicy.Details))
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Content Moderation section
+	if provider.GovernancePolicy != nil || provider.RequiresModeration != nil {
+		sb.WriteString("## 🛡️ Content Moderation\n\n")
+		
+		if provider.RequiresModeration != nil {
+			requiresModeration := "No"
+			if *provider.RequiresModeration {
+				requiresModeration = "Yes"
+			}
+			sb.WriteString(fmt.Sprintf("**Requires Moderation**: %s  \n", requiresModeration))
+		}
+		
+		if provider.GovernancePolicy != nil {
+			if provider.GovernancePolicy.Moderated != nil {
+				moderated := "No"
+				if *provider.GovernancePolicy.Moderated {
+					moderated = "Yes"
+				}
+				sb.WriteString(fmt.Sprintf("**Content Moderated**: %s  \n", moderated))
+			}
+			
+			if provider.GovernancePolicy.Moderator != nil && *provider.GovernancePolicy.Moderator != "" {
+				// Capitalize the moderator name
+				moderator := *provider.GovernancePolicy.Moderator
+				if len(moderator) > 0 {
+					moderator = strings.Title(moderator)
+				}
+				sb.WriteString(fmt.Sprintf("**Moderated by**: %s  \n", moderator))
+			}
+		}
+		
+		sb.WriteString("\n")
+	}
 
 	// Models table
 	sb.WriteString("## Models\n\n")

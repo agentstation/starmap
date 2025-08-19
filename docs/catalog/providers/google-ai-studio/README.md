@@ -7,6 +7,31 @@
 **API Key**: Required (GOOGLE_API_KEY)  
 **Total Models**: 50
 
+## 🔗 API Endpoints
+
+**Documentation**: [https://ai.google.dev/gemini-api/docs/models](https://ai.google.dev/gemini-api/docs/models)  
+**Models API**: [https://generativelanguage.googleapis.com/v1beta/models](https://generativelanguage.googleapis.com/v1beta/models)  
+**Chat Completions**: [https://generativelanguage.googleapis.com/v1beta/models](https://generativelanguage.googleapis.com/v1beta/models)  
+
+## 🔒 Privacy & Data Handling
+
+**Privacy Policy**: [https://policies.google.com/privacy](https://policies.google.com/privacy)  
+**Terms of Service**: [https://policies.google.com/terms](https://policies.google.com/terms)  
+**Retains User Data**: Yes  
+**Trains on User Data**: No  
+
+## ⏱️ Data Retention Policy
+
+**Policy Type**: Fixed Duration  
+**Retention Duration**: 2 days  
+**Details**: Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices  
+
+## 🛡️ Content Moderation
+
+**Requires Moderation**: No  
+**Content Moderated**: Yes  
+**Moderated by**: Google-Ai-Studio  
+
 ## Models
 
 | Model | Context Window | Input Price | Output Price | Features |
