@@ -1,4 +1,4 @@
-# <img src="./logo.svg" alt="DeepSeek Logo" height="32" style="vertical-align: middle"> DeepSeek
+# <img src="./logo.svg" alt="DeepSeek Logo" height="32" style="vertical-align: middle; min-width: 32px; min-height: 32px"> DeepSeek
 
 **Headquarters**: Beijing, China  
 **Status Page**: [https://status.deepseek.com](https://status.deepseek.com)  

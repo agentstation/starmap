@@ -1,4 +1,4 @@
-# <img src="./logo.svg" alt="Cerebras Logo" height="32" style="vertical-align: middle"> Cerebras
+# <img src="./logo.svg" alt="Cerebras Logo" height="32" style="vertical-align: middle; min-width: 32px; min-height: 32px"> Cerebras
 
 **Headquarters**: Sunnyvale, CA, USA  
 **Status Page**: [https://status.cerebras.ai/](https://status.cerebras.ai/)  
