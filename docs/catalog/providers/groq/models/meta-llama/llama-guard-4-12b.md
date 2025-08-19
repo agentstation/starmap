@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `meta-llama/llama-guard-4-12b`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Meta](../../../../authors/meta/README.md)
 - **Release Date**: 2025-04-05
 - **Open Weights**: true

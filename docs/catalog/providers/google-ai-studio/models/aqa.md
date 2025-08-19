@@ -6,7 +6,7 @@ Model trained to return answers to questions that are grounded in provided sourc
 ## Overview 📋
 
 - **ID**: `aqa`
-- **Provider**: [Google AI Studio](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Context Window**: 7.2K tokens
 - **Max Output**: 1.0K tokens

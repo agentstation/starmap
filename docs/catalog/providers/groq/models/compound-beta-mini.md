@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `compound-beta-mini`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Groq](../../../authors/groq/README.md)
 - **Context Window**: 131.1K tokens
 - **Max Output**: 8.2K tokens

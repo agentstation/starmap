@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `qwen/qwen3-32b`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Alibaba Cloud](../../../../authors/alibaba cloud/README.md)
 - **Release Date**: 2024-12-23
 - **Knowledge Cutoff**: 2024-11-08

@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `whisper-large-v3`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [OpenAI](../../../authors/openai/README.md)
 - **Context Window**: 448 tokens
 - **Max Output**: 448 tokens

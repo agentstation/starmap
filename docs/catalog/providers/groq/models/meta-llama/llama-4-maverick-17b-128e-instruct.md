@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `meta-llama/llama-4-maverick-17b-128e-instruct`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Meta](../../../../authors/meta/README.md)
 - **Release Date**: 2025-04-05
 - **Knowledge Cutoff**: 2024-08-01

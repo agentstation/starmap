@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `gemma2-9b-it`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Release Date**: 2024-06-27
 - **Knowledge Cutoff**: 2024-06-01

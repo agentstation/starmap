@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `gpt-4.1-2025-04-14`
-- **Provider**: [OpenAI](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
 - **Authors**: [OpenAI](../../../authors/openai/README.md)
 
 ## Capabilities 🎯

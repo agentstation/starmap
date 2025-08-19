@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `llama-4-maverick-17b-128e-instruct`
-- **Provider**: [Cerebras](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Cerebras](../README.md)
 - **Authors**: [Cerebras](../../../authors/cerebras/README.md)
 
 ## Capabilities 🎯

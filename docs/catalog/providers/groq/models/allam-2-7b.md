@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `allam-2-7b`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [SDAIA](../../../authors/sdaia/README.md)
 - **Context Window**: 4.1K tokens
 - **Max Output**: 4.1K tokens

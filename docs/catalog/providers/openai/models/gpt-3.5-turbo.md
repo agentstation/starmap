@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `gpt-3.5-turbo`
-- **Provider**: [OpenAI](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
 - **Authors**: [OpenAI](../../../authors/openai/README.md)
 - **Release Date**: 2023-03-01
 - **Knowledge Cutoff**: 2021-09-01

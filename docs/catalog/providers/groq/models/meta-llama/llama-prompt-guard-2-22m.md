@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `meta-llama/llama-prompt-guard-2-22m`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Meta](../../../../authors/meta/README.md)
 - **Context Window**: 512 tokens
 - **Max Output**: 512 tokens

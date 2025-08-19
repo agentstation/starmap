@@ -6,7 +6,7 @@ Alias that points to the most recent stable version of Gemini 1.5 Flash, our fas
 ## Overview 📋
 
 - **ID**: `gemini-1.5-flash`
-- **Provider**: [Google AI Studio](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 8.2K tokens

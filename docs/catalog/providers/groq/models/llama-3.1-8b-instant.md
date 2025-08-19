@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `llama-3.1-8b-instant`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Meta](../../../authors/meta/README.md)
 - **Release Date**: 2024-07-23
 - **Knowledge Cutoff**: 2023-12-01

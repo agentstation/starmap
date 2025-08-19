@@ -6,7 +6,7 @@ Gemini 2.0 Flash Preview Image Generation
 ## Overview 📋
 
 - **ID**: `gemini-2.0-flash-preview-image-generation`
-- **Provider**: [Google AI Studio](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Context Window**: 32.8K tokens
 - **Max Output**: 8.2K tokens

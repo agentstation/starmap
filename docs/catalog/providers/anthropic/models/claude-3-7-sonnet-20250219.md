@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `claude-3-7-sonnet-20250219`
-- **Provider**: [Anthropic](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Anthropic](../README.md)
 - **Authors**: [Anthropic](../../../authors/anthropic/README.md)
 - **Release Date**: 2025-02-19
 - **Knowledge Cutoff**: 2024-10-31

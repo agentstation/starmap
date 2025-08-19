@@ -6,7 +6,7 @@ Alias that points to the most recent production (non-experimental) release of Ge
 ## Overview 📋
 
 - **ID**: `gemini-1.5-pro-latest`
-- **Provider**: [Google AI Studio](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Context Window**: 2.0M tokens
 - **Max Output**: 8.2K tokens

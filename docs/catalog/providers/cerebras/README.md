@@ -1,3 +1,5 @@
+<img src="./logo.svg" alt="Cerebras Logo" height="60">
+
 # Cerebras
 
 **Headquarters**: Sunnyvale, CA, USA  

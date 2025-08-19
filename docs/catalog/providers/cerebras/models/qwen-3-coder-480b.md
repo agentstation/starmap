@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `qwen-3-coder-480b`
-- **Provider**: [Cerebras](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Cerebras](../README.md)
 - **Authors**: [Cerebras](../../../authors/cerebras/README.md)
 - **Release Date**: 2025-07-23
 - **Knowledge Cutoff**: 2025-04-01

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -127,7 +128,15 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 
 	for _, provider := range providers {
 		modelCount := len(provider.Models)
-		providerLink := fmt.Sprintf("[%s](./providers/%s/README.md)", provider.Name, provider.ID)
+		
+		// Check if provider has a logo and create provider link with icon
+		logoPath := filepath.Join("internal", "embedded", "catalog", "providers", string(provider.ID), "logo.svg")
+		var providerLink string
+		if _, err := os.Stat(logoPath); err == nil {
+			providerLink = fmt.Sprintf("<img src=\"./providers/%s/logo.svg\" alt=\"\" width=\"16\" height=\"16\" style=\"vertical-align: middle\"> [%s](./providers/%s/README.md)", provider.ID, provider.Name, provider.ID)
+		} else {
+			providerLink = fmt.Sprintf("[%s](./providers/%s/README.md)", provider.Name, provider.ID)
+		}
 
 		// Get a brief description or use default
 		description := "AI model provider"
@@ -388,7 +397,13 @@ func generateProvidersOverview(providers []*catalogs.Provider, providersDir stri
 	sb.WriteString("## Providers\n\n")
 
 	for _, provider := range providers {
-		sb.WriteString(fmt.Sprintf("### [%s](./%s/README.md)\n\n", provider.Name, provider.ID))
+		// Check if provider has a logo
+		logoPath := filepath.Join("internal", "embedded", "catalog", "providers", string(provider.ID), "logo.svg")
+		if _, err := os.Stat(logoPath); err == nil {
+			sb.WriteString(fmt.Sprintf("### <img src=\"./%s/logo.svg\" alt=\"\" width=\"16\" height=\"16\" style=\"vertical-align: middle\"> [%s](./%s/README.md)\n\n", provider.ID, provider.Name, provider.ID))
+		} else {
+			sb.WriteString(fmt.Sprintf("### [%s](./%s/README.md)\n\n", provider.Name, provider.ID))
+		}
 
 		// Basic info
 		if provider.Headquarters != nil {
@@ -408,6 +423,41 @@ func generateProvidersOverview(providers []*catalogs.Provider, providersDir stri
 	return os.WriteFile(filepath.Join(providersDir, "README.md"), []byte(sb.String()), 0644)
 }
 
+// copyProviderLogo copies the provider's logo.svg file to the docs directory if it exists
+func copyProviderLogo(providerID string, providerDir string) error {
+	// Source logo path from embedded catalog
+	sourcePath := filepath.Join("internal", "embedded", "catalog", "providers", providerID, "logo.svg")
+	
+	// Check if source logo exists
+	if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
+		// Logo doesn't exist, skip quietly
+		return nil
+	}
+	
+	// Destination path in docs
+	destPath := filepath.Join(providerDir, "logo.svg")
+	
+	// Copy the file
+	sourceFile, err := os.Open(sourcePath)
+	if err != nil {
+		return fmt.Errorf("opening source logo: %w", err)
+	}
+	defer sourceFile.Close()
+	
+	destFile, err := os.Create(destPath)
+	if err != nil {
+		return fmt.Errorf("creating destination logo: %w", err)
+	}
+	defer destFile.Close()
+	
+	_, err = io.Copy(destFile, sourceFile)
+	if err != nil {
+		return fmt.Errorf("copying logo: %w", err)
+	}
+	
+	return nil
+}
+
 func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog, providersDir string) error {
 	// Create provider directory
 	providerDir := filepath.Join(providersDir, string(provider.ID))
@@ -419,6 +469,11 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	modelsDir := filepath.Join(providerDir, "models")
 	if err := os.MkdirAll(modelsDir, 0755); err != nil {
 		return fmt.Errorf("creating models directory: %w", err)
+	}
+	
+	// Copy provider logo if available
+	if err := copyProviderLogo(string(provider.ID), providerDir); err != nil {
+		return fmt.Errorf("copying provider logo: %w", err)
 	}
 
 	// Get models for this provider
@@ -434,6 +489,13 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 
 	// Generate provider README
 	var sb strings.Builder
+	
+	// Check if logo was copied and add it to the page
+	logoPath := filepath.Join(providerDir, "logo.svg")
+	if _, err := os.Stat(logoPath); err == nil {
+		sb.WriteString(fmt.Sprintf("<img src=\"./logo.svg\" alt=\"%s Logo\" height=\"60\">\n\n", provider.Name))
+	}
+	
 	sb.WriteString(fmt.Sprintf("# %s\n\n", provider.Name))
 
 	// Provider info
@@ -522,7 +584,13 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	// Overview section
 	sb.WriteString("## Overview 📋\n\n")
 	sb.WriteString(fmt.Sprintf("- **ID**: `%s`\n", model.ID))
-	sb.WriteString(fmt.Sprintf("- **Provider**: [%s](../README.md)\n", provider.Name))
+	// Check if provider logo exists and include it
+	logoPath := filepath.Join("internal", "embedded", "catalog", "providers", string(provider.ID), "logo.svg")
+	if _, err := os.Stat(logoPath); err == nil {
+		sb.WriteString(fmt.Sprintf("- **Provider**: <img src=\"../logo.svg\" alt=\"\" width=\"20\" height=\"20\" style=\"vertical-align: middle\"> [%s](../README.md)\n", provider.Name))
+	} else {
+		sb.WriteString(fmt.Sprintf("- **Provider**: [%s](../README.md)\n", provider.Name))
+	}
 
 	// Authors with links
 	if len(model.Authors) > 0 {

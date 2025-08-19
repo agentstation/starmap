@@ -1,3 +1,5 @@
+<img src="./logo.svg" alt="Groq Logo" height="60">
+
 # Groq
 
 **Headquarters**: Mountain View, CA, USA  

@@ -7,7 +7,7 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 - **Providers**: 7
 - **Authors**: 78
 - **Models**: 157
-- **Last Updated**: 2025-08-19 22:28:42 UTC
+- **Last Updated**: 2025-08-19 23:11:55 UTC
 
 ## Browse Catalog
 
@@ -23,13 +23,13 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 
 | Provider | Models | Description |
 |----------|--------|--------------|
-| [Anthropic](./providers/anthropic/README.md) | 8 | Anthropic AI models |
-| [Cerebras](./providers/cerebras/README.md) | 9 | Cerebras AI models |
-| [DeepSeek](./providers/deepseek/README.md) | 2 | DeepSeek AI models |
-| [Google AI Studio](./providers/google-ai-studio/README.md) | 50 | Google AI Studio AI models |
-| [Google Vertex AI](./providers/google-vertex/README.md) | 0 | Google Vertex AI AI models |
-| [Groq](./providers/groq/README.md) | 23 | Groq AI models |
-| [OpenAI](./providers/openai/README.md) | 63 | OpenAI AI models |
+| <img src="./providers/anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./providers/anthropic/README.md) | 8 | Anthropic AI models |
+| <img src="./providers/cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](./providers/cerebras/README.md) | 9 | Cerebras AI models |
+| <img src="./providers/deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](./providers/deepseek/README.md) | 2 | DeepSeek AI models |
+| <img src="./providers/google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](./providers/google-ai-studio/README.md) | 50 | Google AI Studio AI models |
+| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 0 | Google Vertex AI AI models |
+| <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 23 | Groq AI models |
+| <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 63 | OpenAI AI models |
 
 ## Authors
 

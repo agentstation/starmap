@@ -1,3 +1,5 @@
+<img src="./logo.svg" alt="DeepSeek Logo" height="60">
+
 # DeepSeek
 
 **Headquarters**: Beijing, China  

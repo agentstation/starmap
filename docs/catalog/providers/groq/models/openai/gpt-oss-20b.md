@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `openai/gpt-oss-20b`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [OpenAI](../../../../authors/openai/README.md)
 - **Release Date**: 2025-08-05
 - **Open Weights**: true

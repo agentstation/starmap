@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `claude-3-5-haiku-20241022`
-- **Provider**: [Anthropic](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Anthropic](../README.md)
 - **Authors**: [Anthropic](../../../authors/anthropic/README.md)
 - **Release Date**: 2024-10-22
 - **Knowledge Cutoff**: 2024-07-31

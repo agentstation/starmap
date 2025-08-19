@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `o4-mini`
-- **Provider**: [OpenAI](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
 - **Authors**: [OpenAI](../../../authors/openai/README.md)
 - **Release Date**: 2025-04-16
 - **Knowledge Cutoff**: 2024-05-01

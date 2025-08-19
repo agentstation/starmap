@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `playai-tts-arabic`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [PlayAI](../../../authors/playai/README.md)
 - **Context Window**: 8.2K tokens
 - **Max Output**: 8.2K tokens

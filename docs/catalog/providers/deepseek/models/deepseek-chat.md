@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `deepseek-chat`
-- **Provider**: [DeepSeek](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [DeepSeek](../README.md)
 - **Authors**: [DeepSeek](../../../authors/deepseek/README.md)
 - **Release Date**: 2024-12-26
 - **Knowledge Cutoff**: 2024-07-01

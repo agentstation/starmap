@@ -6,7 +6,7 @@ LearnLM 2.0 Flash Experimental
 ## Overview 📋
 
 - **ID**: `learnlm-2.0-flash-experimental`
-- **Provider**: [Google AI Studio](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 32.8K tokens

@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `deepseek-r1-distill-llama-70b`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [DeepSeek / Meta](../../../authors/deepseek / meta/README.md)
 - **Release Date**: 2025-01-20
 - **Knowledge Cutoff**: 2024-07-01

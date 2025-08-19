@@ -1,3 +1,5 @@
+<img src="./logo.svg" alt="Anthropic Logo" height="60">
+
 # Anthropic
 
 **Headquarters**: San Francisco, CA, USA  

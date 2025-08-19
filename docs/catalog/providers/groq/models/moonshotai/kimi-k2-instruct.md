@@ -3,7 +3,7 @@
 ## Overview 📋
 
 - **ID**: `moonshotai/kimi-k2-instruct`
-- **Provider**: [Groq](../README.md)
+- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Authors**: [Moonshot AI](../../../../authors/moonshot ai/README.md)
 - **Release Date**: 2025-07-14
 - **Knowledge Cutoff**: 2024-10-01
