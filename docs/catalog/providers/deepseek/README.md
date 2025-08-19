@@ -2,7 +2,8 @@
 
 **Headquarters**: Beijing, China  
 **Status Page**: [https://status.deepseek.com](https://status.deepseek.com)  
-**API Key**: Required (DEEPSEEK_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $DEEPSEEK_API_KEY  
 **Total Models**: 2
 
 ## 🔗 API Endpoints

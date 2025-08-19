@@ -2,7 +2,8 @@
 
 **Headquarters**: San Francisco, CA, USA  
 **Status Page**: [https://status.openai.com](https://status.openai.com)  
-**API Key**: Required (OPENAI_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $OPENAI_API_KEY  
 **Total Models**: 63
 
 ## 🔗 API Endpoints

@@ -2,7 +2,8 @@
 
 **Headquarters**: Mountain View, CA, USA  
 **Status Page**: [https://status.groq.com](https://status.groq.com)  
-**API Key**: Required (GROQ_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $GROQ_API_KEY  
 **Total Models**: 23
 
 ## 🔗 API Endpoints

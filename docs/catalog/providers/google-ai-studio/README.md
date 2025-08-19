@@ -2,7 +2,8 @@
 
 **Headquarters**: Mountain View, CA, USA  
 **Status Page**: [https://status.cloud.google.com](https://status.cloud.google.com)  
-**API Key**: Required (GOOGLE_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $GOOGLE_API_KEY  
 **Total Models**: 50
 
 ## 🔗 API Endpoints

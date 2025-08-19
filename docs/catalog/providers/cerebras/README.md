@@ -2,7 +2,8 @@
 
 **Headquarters**: Sunnyvale, CA, USA  
 **Status Page**: [https://status.cerebras.ai/](https://status.cerebras.ai/)  
-**API Key**: Required (CEREBRAS_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $CEREBRAS_API_KEY  
 **Total Models**: 9
 
 ## 🔗 API Endpoints

@@ -2,7 +2,8 @@
 
 **Headquarters**: San Francisco, CA, USA  
 **Status Page**: [https://status.anthropic.com](https://status.anthropic.com)  
-**API Key**: Required (ANTHROPIC_API_KEY)  
+**API Key Required**: Yes  
+**API Key Name**: $ANTHROPIC_API_KEY  
 **Total Models**: 8
 
 ## 🔗 API Endpoints

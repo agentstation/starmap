@@ -46,12 +46,12 @@ func formatDuration(d *time.Duration) string {
 	if d == nil {
 		return "Not specified"
 	}
-	
+
 	duration := *d
 	if duration == 0 {
 		return "Immediate deletion"
 	}
-	
+
 	// Convert to days if it's a multiple of 24 hours
 	if duration%(24*time.Hour) == 0 {
 		days := int(duration / (24 * time.Hour))
@@ -60,7 +60,7 @@ func formatDuration(d *time.Duration) string {
 		}
 		return fmt.Sprintf("%d days", days)
 	}
-	
+
 	// Otherwise show hours
 	hours := int(duration / time.Hour)
 	if hours == 1 {
@@ -156,7 +156,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 
 	for _, provider := range providers {
 		modelCount := len(provider.Models)
-		
+
 		// Check if provider has a logo and create provider link with icon
 		logoPath := filepath.Join("internal", "embedded", "catalog", "providers", string(provider.ID), "logo.svg")
 		var providerLink string
@@ -455,34 +455,34 @@ func generateProvidersOverview(providers []*catalogs.Provider, providersDir stri
 func copyProviderLogo(providerID string, providerDir string) error {
 	// Source logo path from embedded catalog
 	sourcePath := filepath.Join("internal", "embedded", "catalog", "providers", providerID, "logo.svg")
-	
+
 	// Check if source logo exists
 	if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
 		// Logo doesn't exist, skip quietly
 		return nil
 	}
-	
+
 	// Destination path in docs
 	destPath := filepath.Join(providerDir, "logo.svg")
-	
+
 	// Copy the file
 	sourceFile, err := os.Open(sourcePath)
 	if err != nil {
 		return fmt.Errorf("opening source logo: %w", err)
 	}
 	defer sourceFile.Close()
-	
+
 	destFile, err := os.Create(destPath)
 	if err != nil {
 		return fmt.Errorf("creating destination logo: %w", err)
 	}
 	defer destFile.Close()
-	
+
 	_, err = io.Copy(destFile, sourceFile)
 	if err != nil {
 		return fmt.Errorf("copying logo: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -498,7 +498,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	if err := os.MkdirAll(modelsDir, 0755); err != nil {
 		return fmt.Errorf("creating models directory: %w", err)
 	}
-	
+
 	// Copy provider logo if available
 	if err := copyProviderLogo(string(provider.ID), providerDir); err != nil {
 		return fmt.Errorf("copying provider logo: %w", err)
@@ -517,7 +517,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 
 	// Generate provider README
 	var sb strings.Builder
-	
+
 	// Check if logo was copied and add it inline with the title
 	logoPath := filepath.Join(providerDir, "logo.svg")
 	if _, err := os.Stat(logoPath); err == nil {
@@ -535,8 +535,10 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 		sb.WriteString(fmt.Sprintf("**Status Page**: [%s](%s)  \n", *provider.StatusPageURL, *provider.StatusPageURL))
 	}
 
+	// API info
 	if provider.APIKey != nil {
-		sb.WriteString(fmt.Sprintf("**API Key**: Required (%s)  \n", provider.APIKey.Name))
+		sb.WriteString(fmt.Sprintf("**API Key Required**: Yes  \n"))
+		sb.WriteString(fmt.Sprintf("**API Key Name**: $%s  \n", provider.APIKey.Name))
 	}
 
 	sb.WriteString(fmt.Sprintf("**Total Models**: %d\n\n", len(models)))
@@ -545,7 +547,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	if (provider.Catalog != nil && (provider.Catalog.DocsURL != nil || provider.Catalog.APIURL != nil)) ||
 		(provider.ChatCompletions != nil && (provider.ChatCompletions.URL != nil || provider.ChatCompletions.HealthAPIURL != nil)) {
 		sb.WriteString("## 🔗 API Endpoints\n\n")
-		
+
 		if provider.Catalog != nil {
 			if provider.Catalog.DocsURL != nil {
 				sb.WriteString(fmt.Sprintf("**Documentation**: [%s](%s)  \n", *provider.Catalog.DocsURL, *provider.Catalog.DocsURL))
@@ -554,7 +556,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 				sb.WriteString(fmt.Sprintf("**Models API**: [%s](%s)  \n", *provider.Catalog.APIURL, *provider.Catalog.APIURL))
 			}
 		}
-		
+
 		if provider.ChatCompletions != nil {
 			if provider.ChatCompletions.URL != nil {
 				sb.WriteString(fmt.Sprintf("**Chat Completions**: [%s](%s)  \n", *provider.ChatCompletions.URL, *provider.ChatCompletions.URL))
@@ -563,21 +565,21 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 				sb.WriteString(fmt.Sprintf("**Health API**: [%s](%s)  \n", *provider.ChatCompletions.HealthAPIURL, *provider.ChatCompletions.HealthAPIURL))
 			}
 		}
-		
+
 		sb.WriteString("\n")
 	}
 
 	// Privacy & Data Handling section
 	if provider.PrivacyPolicy != nil {
 		sb.WriteString("## 🔒 Privacy & Data Handling\n\n")
-		
+
 		if provider.PrivacyPolicy.PrivacyPolicyURL != nil {
 			sb.WriteString(fmt.Sprintf("**Privacy Policy**: [%s](%s)  \n", *provider.PrivacyPolicy.PrivacyPolicyURL, *provider.PrivacyPolicy.PrivacyPolicyURL))
 		}
 		if provider.PrivacyPolicy.TermsOfServiceURL != nil {
 			sb.WriteString(fmt.Sprintf("**Terms of Service**: [%s](%s)  \n", *provider.PrivacyPolicy.TermsOfServiceURL, *provider.PrivacyPolicy.TermsOfServiceURL))
 		}
-		
+
 		if provider.PrivacyPolicy.RetainsData != nil {
 			retainsData := "No"
 			if *provider.PrivacyPolicy.RetainsData {
@@ -585,7 +587,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 			}
 			sb.WriteString(fmt.Sprintf("**Retains User Data**: %s  \n", retainsData))
 		}
-		
+
 		if provider.PrivacyPolicy.TrainsOnData != nil {
 			trainsOnData := "No"
 			if *provider.PrivacyPolicy.TrainsOnData {
@@ -593,14 +595,14 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 			}
 			sb.WriteString(fmt.Sprintf("**Trains on User Data**: %s  \n", trainsOnData))
 		}
-		
+
 		sb.WriteString("\n")
 	}
 
 	// Data Retention Policy section
 	if provider.RetentionPolicy != nil {
 		sb.WriteString("## ⏱️ Data Retention Policy\n\n")
-		
+
 		// Policy type with capitalization
 		policyType := string(provider.RetentionPolicy.Type)
 		switch policyType {
@@ -614,23 +616,23 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 			policyType = "Conditional"
 		}
 		sb.WriteString(fmt.Sprintf("**Policy Type**: %s  \n", policyType))
-		
+
 		// Duration
 		duration := formatDuration(provider.RetentionPolicy.Duration)
 		sb.WriteString(fmt.Sprintf("**Retention Duration**: %s  \n", duration))
-		
+
 		// Details if available
 		if provider.RetentionPolicy.Details != nil && *provider.RetentionPolicy.Details != "" {
 			sb.WriteString(fmt.Sprintf("**Details**: %s  \n", *provider.RetentionPolicy.Details))
 		}
-		
+
 		sb.WriteString("\n")
 	}
 
 	// Content Moderation section
 	if provider.GovernancePolicy != nil || provider.RequiresModeration != nil {
 		sb.WriteString("## 🛡️ Content Moderation\n\n")
-		
+
 		if provider.RequiresModeration != nil {
 			requiresModeration := "No"
 			if *provider.RequiresModeration {
@@ -638,7 +640,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 			}
 			sb.WriteString(fmt.Sprintf("**Requires Moderation**: %s  \n", requiresModeration))
 		}
-		
+
 		if provider.GovernancePolicy != nil {
 			if provider.GovernancePolicy.Moderated != nil {
 				moderated := "No"
@@ -647,7 +649,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 				}
 				sb.WriteString(fmt.Sprintf("**Content Moderated**: %s  \n", moderated))
 			}
-			
+
 			if provider.GovernancePolicy.Moderator != nil && *provider.GovernancePolicy.Moderator != "" {
 				// Capitalize the moderator name
 				moderator := *provider.GovernancePolicy.Moderator
@@ -657,7 +659,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 				sb.WriteString(fmt.Sprintf("**Moderated by**: %s  \n", moderator))
 			}
 		}
-		
+
 		sb.WriteString("\n")
 	}
 
