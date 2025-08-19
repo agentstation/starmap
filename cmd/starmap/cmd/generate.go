@@ -104,7 +104,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 	var sb strings.Builder
 	sb.WriteString("# Starmap Model Catalog\n\n")
 	sb.WriteString("Comprehensive documentation for AI models, providers, and authors in the Starmap catalog.\n\n")
-	
+
 	// Statistics
 	sb.WriteString("## Overview\n\n")
 	sb.WriteString(fmt.Sprintf("- **Providers**: %d\n", len(providers)))
@@ -128,7 +128,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 	for _, provider := range providers {
 		modelCount := len(provider.Models)
 		providerLink := fmt.Sprintf("[%s](./providers/%s/README.md)", provider.Name, provider.ID)
-		
+
 		// Get a brief description or use default
 		description := "AI model provider"
 		if provider.Name != "" {
@@ -146,7 +146,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 	for _, author := range authors {
 		modelCount := len(author.Models)
 		authorLink := fmt.Sprintf("[%s](./authors/%s/README.md)", author.Name, author.ID)
-		
+
 		// Get description or use default
 		description := "AI model creator"
 		if author.Description != nil {
@@ -159,7 +159,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 	}
 
 	sb.WriteString("\n## Quick Links\n\n")
-	
+
 	// Add quick links to major providers
 	majorProviders := []string{"anthropic", "openai", "google-ai-studio", "groq"}
 	for _, providerID := range majorProviders {
@@ -170,7 +170,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 			}
 		}
 	}
-	
+
 	// Add quick links to major authors
 	majorAuthors := []string{"openai", "anthropic", "google", "meta"}
 	for _, authorID := range majorAuthors {
@@ -245,7 +245,7 @@ func generateAuthorsOverview(authors []*catalogs.Author, authorsDir string) erro
 
 	for _, author := range authors {
 		sb.WriteString(fmt.Sprintf("### [%s](./%s/README.md)\n\n", author.Name, author.ID))
-		
+
 		// Basic info
 		if author.Description != nil {
 			sb.WriteString(fmt.Sprintf("**Description**: %s  \n", *author.Description))
@@ -257,7 +257,7 @@ func generateAuthorsOverview(authors []*catalogs.Author, authorsDir string) erro
 			sb.WriteString(fmt.Sprintf("**GitHub**: [%s](%s)  \n", *author.GitHub, *author.GitHub))
 		}
 		sb.WriteString(fmt.Sprintf("**Models**: %d  \n", len(author.Models)))
-		
+
 		sb.WriteString("\n")
 	}
 
@@ -287,7 +287,7 @@ func generateAuthorPage(author *catalogs.Author, catalog catalogs.Catalog, autho
 	for _, model := range author.Models {
 		models = append(models, &model)
 	}
-	
+
 	// Sort models by ID
 	sort.Slice(models, func(i, j int) bool {
 		return models[i].ID < models[j].ID
@@ -296,7 +296,7 @@ func generateAuthorPage(author *catalogs.Author, catalog catalogs.Catalog, autho
 	// Generate author README
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("# %s\n\n", author.Name))
-	
+
 	// Author info
 	if author.Description != nil {
 		sb.WriteString(fmt.Sprintf("**Description**: %s  \n", *author.Description))
@@ -313,7 +313,7 @@ func generateAuthorPage(author *catalogs.Author, catalog catalogs.Catalog, autho
 	if author.Twitter != nil {
 		sb.WriteString(fmt.Sprintf("**Twitter**: [%s](%s)  \n", *author.Twitter, *author.Twitter))
 	}
-	
+
 	sb.WriteString(fmt.Sprintf("**Total Models**: %d\n\n", len(models)))
 
 	// Models table
@@ -324,13 +324,13 @@ func generateAuthorPage(author *catalogs.Author, catalog catalogs.Catalog, autho
 
 		for _, model := range models {
 			modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.ID, model.ID)
-			
+
 			// Context window
 			contextWindow := "N/A"
 			if model.Limits != nil && model.Limits.ContextWindow > 0 {
 				contextWindow = fmt.Sprintf("%d", model.Limits.ContextWindow)
 			}
-			
+
 			// Find which providers offer this model
 			var availableVia []string
 			allProviders := catalog.Providers().List()
@@ -343,10 +343,10 @@ func generateAuthorPage(author *catalogs.Author, catalog catalogs.Catalog, autho
 			if len(availableVia) > 0 {
 				providersText = strings.Join(availableVia, ", ")
 			}
-			
+
 			// Features
 			features := getModelFeatureBadges(model)
-			
+
 			sb.WriteString(fmt.Sprintf("| %s | %s | %s | %s |\n",
 				modelLink, contextWindow, providersText, features))
 		}
@@ -389,18 +389,19 @@ func generateProvidersOverview(providers []*catalogs.Provider, providersDir stri
 
 	for _, provider := range providers {
 		sb.WriteString(fmt.Sprintf("### [%s](./%s/README.md)\n\n", provider.Name, provider.ID))
-		
+
 		// Basic info
 		if provider.Headquarters != nil {
 			sb.WriteString(fmt.Sprintf("**Headquarters**: %s  \n", *provider.Headquarters))
 		}
 		sb.WriteString(fmt.Sprintf("**Models**: %d  \n", len(provider.Models)))
-		
+
 		// API info
 		if provider.APIKey != nil {
-			sb.WriteString(fmt.Sprintf("**API Key Required**: Yes (%s)  \n", provider.APIKey.Name))
+			sb.WriteString(fmt.Sprintf("**API Key Required**: Yes  \n"))
+			sb.WriteString(fmt.Sprintf("**API Key Name**: $%s  \n", provider.APIKey.Name))
 		}
-		
+
 		sb.WriteString("\n")
 	}
 
@@ -425,7 +426,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	for _, model := range provider.Models {
 		models = append(models, &model)
 	}
-	
+
 	// Sort models by ID
 	sort.Slice(models, func(i, j int) bool {
 		return models[i].ID < models[j].ID
@@ -434,20 +435,20 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	// Generate provider README
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("# %s\n\n", provider.Name))
-	
+
 	// Provider info
 	if provider.Headquarters != nil {
 		sb.WriteString(fmt.Sprintf("**Headquarters**: %s  \n", *provider.Headquarters))
 	}
-	
+
 	if provider.StatusPageURL != nil {
 		sb.WriteString(fmt.Sprintf("**Status Page**: [%s](%s)  \n", *provider.StatusPageURL, *provider.StatusPageURL))
 	}
-	
+
 	if provider.APIKey != nil {
 		sb.WriteString(fmt.Sprintf("**API Key**: Required (%s)  \n", provider.APIKey.Name))
 	}
-	
+
 	sb.WriteString(fmt.Sprintf("**Total Models**: %d\n\n", len(models)))
 
 	// Models table
@@ -458,13 +459,13 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 
 		for _, model := range models {
 			modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.ID, model.ID)
-			
+
 			// Context window
 			contextWindow := "N/A"
 			if model.Limits != nil && model.Limits.ContextWindow > 0 {
 				contextWindow = fmt.Sprintf("%d", model.Limits.ContextWindow)
 			}
-			
+
 			// Pricing
 			inputPrice := "N/A"
 			outputPrice := "N/A"
@@ -476,10 +477,10 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 					outputPrice = fmt.Sprintf("$%.2f/1M", model.Pricing.Tokens.Output.Per1M)
 				}
 			}
-			
+
 			// Features
 			features := getModelFeatureBadges(model)
-			
+
 			sb.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %s |\n",
 				modelLink, contextWindow, inputPrice, outputPrice, features))
 		}
@@ -509,20 +510,20 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 
 func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, modelsDir string) error {
 	var sb strings.Builder
-	
+
 	// Header
 	sb.WriteString(fmt.Sprintf("# %s\n\n", model.Name))
-	
+
 	// Description if available
 	if model.Description != "" {
 		sb.WriteString(fmt.Sprintf("%s\n\n", model.Description))
 	}
-	
+
 	// Overview section
 	sb.WriteString("## Overview 📋\n\n")
 	sb.WriteString(fmt.Sprintf("- **ID**: `%s`\n", model.ID))
 	sb.WriteString(fmt.Sprintf("- **Provider**: [%s](../README.md)\n", provider.Name))
-	
+
 	// Authors with links
 	if len(model.Authors) > 0 {
 		var authors []string
@@ -534,7 +535,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 		}
 		sb.WriteString(fmt.Sprintf("- **Authors**: %s\n", strings.Join(authors, ", ")))
 	}
-	
+
 	// Quick stats from metadata and limits
 	if model.Metadata != nil {
 		sb.WriteString(fmt.Sprintf("- **Release Date**: %s\n", model.Metadata.ReleaseDate.Format("2006-01-02")))
@@ -543,7 +544,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 		}
 		sb.WriteString(fmt.Sprintf("- **Open Weights**: %t\n", model.Metadata.OpenWeights))
 	}
-	
+
 	if model.Limits != nil {
 		if model.Limits.ContextWindow > 0 {
 			sb.WriteString(fmt.Sprintf("- **Context Window**: %s tokens\n", formatNumber(int(model.Limits.ContextWindow))))
@@ -552,31 +553,31 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 			sb.WriteString(fmt.Sprintf("- **Max Output**: %s tokens\n", formatNumber(int(model.Limits.OutputTokens))))
 		}
 	}
-	
+
 	// Architecture info if available
 	if model.Metadata != nil && model.Metadata.Architecture != nil {
 		if model.Metadata.Architecture.ParameterCount != "" {
 			sb.WriteString(fmt.Sprintf("- **Parameters**: %s\n", model.Metadata.Architecture.ParameterCount))
 		}
 	}
-	
+
 	sb.WriteString("\n")
 
 	// Capabilities section with horizontal tables
 	sb.WriteString("## Capabilities 🎯\n\n")
-	
+
 	// Input/Output Modalities Table
 	sb.WriteString("### Input/Output Modalities\n\n")
 	sb.WriteString(generateModalityTable(model))
-	
+
 	// Core Features Table
 	sb.WriteString("### Core Features\n\n")
 	sb.WriteString(generateCoreFeatureTable(model))
-	
+
 	// Response Delivery Table
 	sb.WriteString("### Response Delivery\n\n")
 	sb.WriteString(generateResponseDeliveryTable(model))
-	
+
 	// Advanced Reasoning Table (only if applicable)
 	reasoningTable := generateAdvancedReasoningTable(model)
 	if reasoningTable != "" {
@@ -585,28 +586,28 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 
 	// Technical Specifications section with horizontal tables
 	sb.WriteString("## Technical Specifications ⚙️\n\n")
-	
+
 	// Architecture table (if available)
 	architectureTable := generateArchitectureTable(model)
 	if architectureTable != "" {
 		sb.WriteString(architectureTable)
 	}
-	
+
 	// Model Tags table (if available)
 	tagsTable := generateTagsTable(model)
 	if tagsTable != "" {
 		sb.WriteString(tagsTable)
 	}
-	
+
 	// Generation Controls tables
 	sb.WriteString(generateControlsTables(model))
 
 	// Pricing section with horizontal tables
 	sb.WriteString("## Pricing 💰\n\n")
-	
+
 	// Token Pricing Table
 	sb.WriteString(generateTokenPricingTable(model))
-	
+
 	// Operation Pricing Table (if applicable)
 	operationTable := generateOperationPricingTable(model)
 	if operationTable != "" {
@@ -617,7 +618,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	hasAdvancedFeatures := false
 	advancedSection := strings.Builder{}
 	advancedSection.WriteString("## Advanced Features 🚀\n\n")
-	
+
 	// Tool configuration
 	if model.Tools != nil && len(model.Tools.ToolChoices) > 0 {
 		advancedSection.WriteString("### Tool Configuration\n\n")
@@ -628,7 +629,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 		advancedSection.WriteString(fmt.Sprintf("**Supported Tool Choices**: %s\n\n", strings.Join(choices, ", ")))
 		hasAdvancedFeatures = true
 	}
-	
+
 	// Attachments support
 	if model.Attachments != nil {
 		advancedSection.WriteString("### File Attachments\n\n")
@@ -644,7 +645,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 		advancedSection.WriteString("\n")
 		hasAdvancedFeatures = true
 	}
-	
+
 	// Delivery options
 	if model.Delivery != nil && (len(model.Delivery.Formats) > 0 || len(model.Delivery.Streaming) > 0 || len(model.Delivery.Protocols) > 0) {
 		advancedSection.WriteString("### Response Delivery\n\n")
@@ -672,7 +673,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 		advancedSection.WriteString("\n")
 		hasAdvancedFeatures = true
 	}
-	
+
 	if hasAdvancedFeatures {
 		sb.WriteString(advancedSection.String())
 	}
@@ -695,7 +696,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	providerPath := strings.Repeat("../", modelDepth+1) + "README.md"
 	providersPath := strings.Repeat("../", modelDepth+2) + "README.md"
 	mainPath := strings.Repeat("../", modelDepth+3) + "README.md"
-	
+
 	sb.WriteString("## Navigation\n\n")
 	sb.WriteString(fmt.Sprintf("- [← Back to %s](%s)\n", provider.Name, providerPath))
 	sb.WriteString(fmt.Sprintf("- [← Back to Providers](%s)\n", providersPath))
@@ -704,12 +705,12 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	// Create model file path and ensure directories exist
 	modelFilePath := filepath.Join(modelsDir, fmt.Sprintf("%s.md", model.ID))
 	modelFileDir := filepath.Dir(modelFilePath)
-	
+
 	// Create any necessary subdirectories
 	if err := os.MkdirAll(modelFileDir, 0755); err != nil {
 		return fmt.Errorf("creating model file directory: %w", err)
 	}
-	
+
 	return os.WriteFile(modelFilePath, []byte(sb.String()), 0644)
 }
 
@@ -740,28 +741,28 @@ func formatGenerationParams(model *catalogs.Model) string {
 	if model.Generation == nil {
 		return ""
 	}
-	
+
 	var params []string
 	if model.Generation.Temperature != nil {
-		params = append(params, fmt.Sprintf("**Temperature**: %.2f - %.2f (default: %.2f)", 
+		params = append(params, fmt.Sprintf("**Temperature**: %.2f - %.2f (default: %.2f)",
 			model.Generation.Temperature.Min, model.Generation.Temperature.Max, model.Generation.Temperature.Default))
 	}
 	if model.Generation.TopP != nil {
-		params = append(params, fmt.Sprintf("**Top-P**: %.2f - %.2f (default: %.2f)", 
+		params = append(params, fmt.Sprintf("**Top-P**: %.2f - %.2f (default: %.2f)",
 			model.Generation.TopP.Min, model.Generation.TopP.Max, model.Generation.TopP.Default))
 	}
 	if model.Generation.TopK != nil {
-		params = append(params, fmt.Sprintf("**Top-K**: %d - %d (default: %d)", 
+		params = append(params, fmt.Sprintf("**Top-K**: %d - %d (default: %d)",
 			model.Generation.TopK.Min, model.Generation.TopK.Max, model.Generation.TopK.Default))
 	}
 	if model.Generation.MaxTokens != nil {
 		params = append(params, fmt.Sprintf("**Max Output Tokens**: %d", *model.Generation.MaxTokens))
 	}
-	
+
 	if len(params) == 0 {
 		return ""
 	}
-	
+
 	return strings.Join(params, "  \n") + "  \n"
 }
 
@@ -770,13 +771,13 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 	if model.Pricing == nil {
 		return "Contact provider for pricing information."
 	}
-	
+
 	var lines []string
 	currency := "USD"
 	if model.Pricing.Currency != "" {
 		currency = model.Pricing.Currency
 	}
-	
+
 	// Get currency symbol
 	currencySymbol := "$"
 	switch currency {
@@ -789,11 +790,11 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 	default:
 		currencySymbol = currency + " "
 	}
-	
+
 	// Token-based pricing
 	if model.Pricing.Tokens != nil {
 		tokenPricingLines := []string{}
-		
+
 		if model.Pricing.Tokens.Input != nil {
 			if model.Pricing.Tokens.Input.Per1M > 0 {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Input Tokens**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.Input.Per1M))
@@ -801,7 +802,7 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Input Tokens**: %s%.6f per token", currencySymbol, model.Pricing.Tokens.Input.PerToken))
 			}
 		}
-		
+
 		if model.Pricing.Tokens.Output != nil {
 			if model.Pricing.Tokens.Output.Per1M > 0 {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Output Tokens**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.Output.Per1M))
@@ -809,7 +810,7 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Output Tokens**: %s%.6f per token", currencySymbol, model.Pricing.Tokens.Output.PerToken))
 			}
 		}
-		
+
 		if model.Pricing.Tokens.Reasoning != nil {
 			if model.Pricing.Tokens.Reasoning.Per1M > 0 {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Reasoning Tokens**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.Reasoning.Per1M))
@@ -817,7 +818,7 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Reasoning Tokens**: %s%.6f per token", currencySymbol, model.Pricing.Tokens.Reasoning.PerToken))
 			}
 		}
-		
+
 		// Cache pricing (nested structure)
 		if model.Pricing.Tokens.Cache != nil {
 			if model.Pricing.Tokens.Cache.Read != nil && model.Pricing.Tokens.Cache.Read.Per1M > 0 {
@@ -827,7 +828,7 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 				tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Cache Write**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.Cache.Write.Per1M))
 			}
 		}
-		
+
 		// Cache pricing (flat structure - for backward compatibility)
 		if model.Pricing.Tokens.CacheRead != nil && model.Pricing.Tokens.CacheRead.Per1M > 0 {
 			tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Cache Read**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.CacheRead.Per1M))
@@ -835,19 +836,19 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 		if model.Pricing.Tokens.CacheWrite != nil && model.Pricing.Tokens.CacheWrite.Per1M > 0 {
 			tokenPricingLines = append(tokenPricingLines, fmt.Sprintf("- **Cache Write**: %s%.2f per 1M tokens", currencySymbol, model.Pricing.Tokens.CacheWrite.Per1M))
 		}
-		
+
 		// Only add the header if we have actual token pricing data
 		if len(tokenPricingLines) > 0 {
 			lines = append(lines, "### Token Pricing")
 			lines = append(lines, tokenPricingLines...)
 		}
 	}
-	
+
 	// Operation-based pricing
 	if model.Pricing.Operations != nil {
 		hasOperations := false
 		operationLines := []string{"### Operation Pricing"}
-		
+
 		if model.Pricing.Operations.Request != nil {
 			operationLines = append(operationLines, fmt.Sprintf("- **Per Request**: %s%.6f", currencySymbol, *model.Pricing.Operations.Request))
 			hasOperations = true
@@ -876,39 +877,42 @@ func formatComprehensivePricing(model *catalogs.Model) string {
 			operationLines = append(operationLines, fmt.Sprintf("- **Video Generation**: %s%.4f per minute", currencySymbol, *model.Pricing.Operations.VideoGen))
 			hasOperations = true
 		}
-		
+
 		if hasOperations {
 			lines = append(lines, operationLines...)
 		}
 	}
-	
+
 	if len(lines) == 0 {
 		return "Contact provider for pricing information."
 	}
-	
+
 	return strings.Join(lines, "\n")
 }
 
 func getModelFeatureBadges(model *catalogs.Model) string {
 	var badges []string
-	
+
 	if model.Features == nil {
-		// If no features data, show all as unsupported
-		return `<span title="Text Processing: Not Supported">📝❌ Text</span> <span title="Vision/Image Input: Not Supported">👁️❌ Vision</span> <span title="Image Generation: Not Supported">🖼️❌ Image Gen</span> <span title="Audio Processing: Not Supported">🔊❌ Audio</span> <span title="Video Generation: Not Supported">🎥❌ Video</span> <span title="Tool Calling: Not Supported">🔧❌ Tools</span> <span title="Web Search: Not Supported">🔍❌ Search</span> <span title="Advanced Reasoning: Not Supported">🧠❌ Reasoning</span> <span title="File Attachments: Not Supported">📎❌ Files</span> <span title="Response Streaming: Not Supported">⚡❌ Streaming</span> <span title="Structured Output: Not Supported">📊❌ Structured</span>`
+		// If no features data, return empty (show no capabilities)
+		return ""
 	}
-	
+
 	// Check input modalities
 	hasVision := false
 	hasAudio := false
+	hasText := false
 	for _, modality := range model.Features.Modalities.Input {
 		switch modality {
+		case catalogs.ModelModalityText:
+			hasText = true
 		case catalogs.ModelModalityImage:
 			hasVision = true
 		case catalogs.ModelModalityAudio:
 			hasAudio = true
 		}
 	}
-	
+
 	// Check output modalities
 	hasImageGen := false
 	hasAudioGen := false
@@ -923,111 +927,82 @@ func getModelFeatureBadges(model *catalogs.Model) string {
 			hasVideoGen = true
 		}
 	}
-	
-	// Show all capabilities with ✅ or ❌ indicators
-	
+
+	// Only show features that are actually supported
+
 	// Text Processing (basic capability)
-	hasText := false
-	for _, modality := range model.Features.Modalities.Input {
-		if modality == catalogs.ModelModalityText {
-			hasText = true
-			break
-		}
-	}
 	if hasText {
-		badges = append(badges, `<span title="Text Processing: Supported">📝 Text</span>`)
-	} else {
-		badges = append(badges, `<span title="Text Processing: Not Supported">📝❌ Text</span>`)
+		badges = append(badges, `<span title="Text Processing">📝</span>`)
 	}
-	
+
 	// Vision/Image Input
 	if hasVision {
-		badges = append(badges, `<span title="Vision/Image Input: Supported">👁️ Vision</span>`)
-	} else {
-		badges = append(badges, `<span title="Vision/Image Input: Not Supported">👁️❌ Vision</span>`)
+		badges = append(badges, `<span title="Vision/Image Input">👁️</span>`)
 	}
-	
+
 	// Image Generation
 	if hasImageGen {
-		badges = append(badges, `<span title="Image Generation: Supported">🖼️ Image Gen</span>`)
-	} else {
-		badges = append(badges, `<span title="Image Generation: Not Supported">🖼️❌ Image Gen</span>`)
+		badges = append(badges, `<span title="Image Generation">🖼️</span>`)
 	}
-	
-	// Audio Processing
+
+	// Audio Processing (input or output)
 	if hasAudio || hasAudioGen {
-		badges = append(badges, `<span title="Audio Processing: Supported">🔊 Audio</span>`)
-	} else {
-		badges = append(badges, `<span title="Audio Processing: Not Supported">🔊❌ Audio</span>`)
+		badges = append(badges, `<span title="Audio Processing">🔊</span>`)
 	}
-	
+
 	// Video Generation
 	if hasVideoGen {
-		badges = append(badges, `<span title="Video Generation: Supported">🎥 Video</span>`)
-	} else {
-		badges = append(badges, `<span title="Video Generation: Not Supported">🎥❌ Video</span>`)
+		badges = append(badges, `<span title="Video Generation">🎥</span>`)
 	}
-	
+
 	// Tool Calling
 	if model.Features.Tools {
-		badges = append(badges, `<span title="Tool Calling: Supported">🔧 Tools</span>`)
-	} else {
-		badges = append(badges, `<span title="Tool Calling: Not Supported">🔧❌ Tools</span>`)
+		badges = append(badges, `<span title="Tool Calling">🔧</span>`)
 	}
-	
+
 	// Web Search
 	if model.Features.WebSearch {
-		badges = append(badges, `<span title="Web Search: Supported">🔍 Search</span>`)
-	} else {
-		badges = append(badges, `<span title="Web Search: Not Supported">🔍❌ Search</span>`)
+		badges = append(badges, `<span title="Web Search">🔍</span>`)
 	}
-	
+
 	// Advanced Reasoning
 	if model.Features.Reasoning {
-		badges = append(badges, `<span title="Advanced Reasoning: Supported">🧠 Reasoning</span>`)
-	} else {
-		badges = append(badges, `<span title="Advanced Reasoning: Not Supported">🧠❌ Reasoning</span>`)
+		badges = append(badges, `<span title="Advanced Reasoning">🧠</span>`)
 	}
-	
+
 	// File Attachments
 	if model.Features.Attachments {
-		badges = append(badges, `<span title="File Attachments: Supported">📎 Files</span>`)
-	} else {
-		badges = append(badges, `<span title="File Attachments: Not Supported">📎❌ Files</span>`)
+		badges = append(badges, `<span title="File Attachments">📎</span>`)
 	}
-	
+
 	// Response Streaming
 	if model.Features.Streaming {
-		badges = append(badges, `<span title="Response Streaming: Supported">⚡ Streaming</span>`)
-	} else {
-		badges = append(badges, `<span title="Response Streaming: Not Supported">⚡❌ Streaming</span>`)
+		badges = append(badges, `<span title="Response Streaming">⚡</span>`)
 	}
-	
+
 	// Structured Output
 	if model.Features.StructuredOutputs {
-		badges = append(badges, `<span title="Structured Output: Supported">📊 Structured</span>`)
-	} else {
-		badges = append(badges, `<span title="Structured Output: Not Supported">📊❌ Structured</span>`)
+		badges = append(badges, `<span title="Structured Output"></></span>`)
 	}
-	
+
 	return strings.Join(badges, " ")
 }
 
 func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, modelsDir string) error {
 	var sb strings.Builder
-	
+
 	// Header
 	sb.WriteString(fmt.Sprintf("# %s\n\n", model.Name))
-	
+
 	// Description if available
 	if model.Description != "" {
 		sb.WriteString(fmt.Sprintf("%s\n\n", model.Description))
 	}
-	
+
 	// Overview section
 	sb.WriteString("## Overview 📋\n\n")
 	sb.WriteString(fmt.Sprintf("- **ID**: `%s`\n", model.ID))
-	
+
 	// Authors with primary author emphasized and links to co-authors
 	if len(model.Authors) > 1 {
 		var authors []string
@@ -1047,7 +1022,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 		// Single author
 		sb.WriteString(fmt.Sprintf("- **Author**: [%s](../README.md)\n", author.Name))
 	}
-	
+
 	// Quick stats from metadata and limits
 	if model.Metadata != nil {
 		sb.WriteString(fmt.Sprintf("- **Release Date**: %s\n", model.Metadata.ReleaseDate.Format("2006-01-02")))
@@ -1056,7 +1031,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 		}
 		sb.WriteString(fmt.Sprintf("- **Open Weights**: %t\n", model.Metadata.OpenWeights))
 	}
-	
+
 	if model.Limits != nil {
 		if model.Limits.ContextWindow > 0 {
 			sb.WriteString(fmt.Sprintf("- **Context Window**: %s tokens\n", formatNumber(int(model.Limits.ContextWindow))))
@@ -1065,31 +1040,31 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 			sb.WriteString(fmt.Sprintf("- **Max Output**: %s tokens\n", formatNumber(int(model.Limits.OutputTokens))))
 		}
 	}
-	
+
 	// Architecture info if available
 	if model.Metadata != nil && model.Metadata.Architecture != nil {
 		if model.Metadata.Architecture.ParameterCount != "" {
 			sb.WriteString(fmt.Sprintf("- **Parameters**: %s\n", model.Metadata.Architecture.ParameterCount))
 		}
 	}
-	
+
 	sb.WriteString("\n")
 
 	// Capabilities section with horizontal tables
 	sb.WriteString("## Capabilities 🎯\n\n")
-	
+
 	// Input/Output Modalities Table
 	sb.WriteString("### Input/Output Modalities\n\n")
 	sb.WriteString(generateModalityTable(model))
-	
+
 	// Core Features Table
 	sb.WriteString("### Core Features\n\n")
 	sb.WriteString(generateCoreFeatureTable(model))
-	
+
 	// Response Delivery Table
 	sb.WriteString("### Response Delivery\n\n")
 	sb.WriteString(generateResponseDeliveryTable(model))
-	
+
 	// Advanced Reasoning Table (only if applicable)
 	reasoningTable := generateAdvancedReasoningTable(model)
 	if reasoningTable != "" {
@@ -1098,28 +1073,28 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 
 	// Technical Specifications section with horizontal tables
 	sb.WriteString("## Technical Specifications ⚙️\n\n")
-	
+
 	// Architecture table (if available)
 	architectureTable := generateArchitectureTable(model)
 	if architectureTable != "" {
 		sb.WriteString(architectureTable)
 	}
-	
+
 	// Model Tags table (if available)
 	tagsTable := generateTagsTable(model)
 	if tagsTable != "" {
 		sb.WriteString(tagsTable)
 	}
-	
+
 	// Generation Controls tables
 	sb.WriteString(generateControlsTables(model))
 
 	// Pricing section with horizontal tables
 	sb.WriteString("## Pricing 💰\n\n")
-	
+
 	// Token Pricing Table
 	sb.WriteString(generateTokenPricingTable(model))
-	
+
 	// Operation Pricing Table (if applicable)
 	operationTable := generateOperationPricingTable(model)
 	if operationTable != "" {
@@ -1130,7 +1105,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	hasAdvancedFeatures := false
 	advancedSection := strings.Builder{}
 	advancedSection.WriteString("## Advanced Features 🚀\n\n")
-	
+
 	// Tool configuration
 	if model.Tools != nil && len(model.Tools.ToolChoices) > 0 {
 		advancedSection.WriteString("### Tool Configuration\n\n")
@@ -1141,7 +1116,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 		advancedSection.WriteString(fmt.Sprintf("**Supported Tool Choices**: %s\n\n", strings.Join(choices, ", ")))
 		hasAdvancedFeatures = true
 	}
-	
+
 	// Attachments support
 	if model.Attachments != nil {
 		advancedSection.WriteString("### File Attachments\n\n")
@@ -1157,7 +1132,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 		advancedSection.WriteString("\n")
 		hasAdvancedFeatures = true
 	}
-	
+
 	// Delivery options
 	if model.Delivery != nil && (len(model.Delivery.Formats) > 0 || len(model.Delivery.Streaming) > 0 || len(model.Delivery.Protocols) > 0) {
 		advancedSection.WriteString("### Response Delivery\n\n")
@@ -1185,7 +1160,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 		advancedSection.WriteString("\n")
 		hasAdvancedFeatures = true
 	}
-	
+
 	if hasAdvancedFeatures {
 		sb.WriteString(advancedSection.String())
 	}
@@ -1209,7 +1184,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	authorsPath := strings.Repeat("../", modelDepth+2) + "README.md"
 	providersPath := strings.Repeat("../", modelDepth+3) + "providers/README.md"
 	mainPath := strings.Repeat("../", modelDepth+3) + "README.md"
-	
+
 	sb.WriteString("## Navigation\n\n")
 	sb.WriteString(fmt.Sprintf("- [← Back to %s](%s)\n", author.Name, authorPath))
 	sb.WriteString(fmt.Sprintf("- [← Back to Authors](%s)\n", authorsPath))
@@ -1219,12 +1194,12 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	// Create model file path and ensure directories exist
 	modelFilePath := filepath.Join(modelsDir, fmt.Sprintf("%s.md", model.ID))
 	modelFileDir := filepath.Dir(modelFilePath)
-	
+
 	// Create any necessary subdirectories
 	if err := os.MkdirAll(modelFileDir, 0755); err != nil {
 		return fmt.Errorf("creating model file directory: %w", err)
 	}
-	
+
 	return os.WriteFile(modelFilePath, []byte(sb.String()), 0644)
 }
 
@@ -1234,11 +1209,11 @@ func generateModalityTable(model *catalogs.Model) string {
 	if model.Features == nil {
 		return "No modality information available.\n\n"
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("| Direction | Text | Image | Audio | Video | PDF |\n")
 	sb.WriteString("|-----------|------|-------|-------|-------|-----|\n")
-	
+
 	// Input row
 	sb.WriteString("| Input     |")
 	allModalities := []catalogs.ModelModality{
@@ -1248,7 +1223,7 @@ func generateModalityTable(model *catalogs.Model) string {
 		catalogs.ModelModalityVideo,
 		catalogs.ModelModalityPDF,
 	}
-	
+
 	for _, modality := range allModalities {
 		hasModality := false
 		for _, inputModality := range model.Features.Modalities.Input {
@@ -1264,7 +1239,7 @@ func generateModalityTable(model *catalogs.Model) string {
 		}
 	}
 	sb.WriteString("\n")
-	
+
 	// Output row
 	sb.WriteString("| Output    |")
 	for _, modality := range allModalities {
@@ -1282,7 +1257,7 @@ func generateModalityTable(model *catalogs.Model) string {
 		}
 	}
 	sb.WriteString("\n\n")
-	
+
 	return sb.String()
 }
 
@@ -1290,47 +1265,47 @@ func generateCoreFeatureTable(model *catalogs.Model) string {
 	if model.Features == nil {
 		return "No feature information available.\n\n"
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("| Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |\n")
 	sb.WriteString("|--------------|------------------|-------------|------------|------------------|\n")
 	sb.WriteString("| ")
-	
+
 	// Tool Calling
 	if model.Features.ToolCalls {
 		sb.WriteString("✅           | ")
 	} else {
 		sb.WriteString("❌           | ")
 	}
-	
+
 	// Tool Definitions
 	if model.Features.Tools {
 		sb.WriteString("✅               | ")
 	} else {
 		sb.WriteString("❌               | ")
 	}
-	
+
 	// Tool Choice
 	if model.Features.ToolChoice {
 		sb.WriteString("✅          | ")
 	} else {
 		sb.WriteString("❌          | ")
 	}
-	
+
 	// Web Search
 	if model.Features.WebSearch {
 		sb.WriteString("✅         | ")
 	} else {
 		sb.WriteString("❌         | ")
 	}
-	
+
 	// File Attachments
 	if model.Features.Attachments {
 		sb.WriteString("✅               |\n\n")
 	} else {
 		sb.WriteString("❌               |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
@@ -1338,43 +1313,43 @@ func generateResponseDeliveryTable(model *catalogs.Model) string {
 	if model.Features == nil {
 		return "No delivery information available.\n\n"
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("| Streaming | Structured Output | JSON Mode | Function Call | Text Format |\n")
 	sb.WriteString("|-----------|-------------------|-----------|---------------|--------------|\n")
 	sb.WriteString("| ")
-	
+
 	// Streaming
 	if model.Features.Streaming {
 		sb.WriteString("✅        | ")
 	} else {
 		sb.WriteString("❌        | ")
 	}
-	
+
 	// Structured Output
 	if model.Features.StructuredOutputs {
 		sb.WriteString("✅                | ")
 	} else {
 		sb.WriteString("❌                | ")
 	}
-	
+
 	// JSON Mode (check for format response)
 	if model.Features.FormatResponse {
 		sb.WriteString("✅        | ")
 	} else {
 		sb.WriteString("❌        | ")
 	}
-	
+
 	// Function Call (same as tool calls)
 	if model.Features.ToolCalls {
 		sb.WriteString("✅            | ")
 	} else {
 		sb.WriteString("❌            | ")
 	}
-	
+
 	// Text Format (always supported if model exists)
 	sb.WriteString("✅           |\n\n")
-	
+
 	return sb.String()
 }
 
@@ -1382,51 +1357,51 @@ func generateAdvancedReasoningTable(model *catalogs.Model) string {
 	if model.Features == nil {
 		return ""
 	}
-	
+
 	// Only show this table if any reasoning features are present
-	hasReasoningFeatures := model.Features.Reasoning || model.Features.ReasoningEffort || 
+	hasReasoningFeatures := model.Features.Reasoning || model.Features.ReasoningEffort ||
 		model.Features.ReasoningTokens || model.Features.IncludeReasoning || model.Features.Verbosity
-	
+
 	if !hasReasoningFeatures {
 		return ""
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("### Advanced Reasoning\n\n")
 	sb.WriteString("| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |\n")
 	sb.WriteString("|-----------------|------------------|------------------|-------------------|-------------------|\n")
 	sb.WriteString("| ")
-	
+
 	if model.Features.Reasoning {
 		sb.WriteString("✅              | ")
 	} else {
 		sb.WriteString("❌              | ")
 	}
-	
+
 	if model.Features.ReasoningEffort {
 		sb.WriteString("✅               | ")
 	} else {
 		sb.WriteString("❌               | ")
 	}
-	
+
 	if model.Features.ReasoningTokens {
 		sb.WriteString("✅               | ")
 	} else {
 		sb.WriteString("❌               | ")
 	}
-	
+
 	if model.Features.IncludeReasoning {
 		sb.WriteString("✅                | ")
 	} else {
 		sb.WriteString("❌                | ")
 	}
-	
+
 	if model.Features.Verbosity {
 		sb.WriteString("✅                |\n\n")
 	} else {
 		sb.WriteString("❌                |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
@@ -1434,19 +1409,19 @@ func generateControlsTables(model *catalogs.Model) string {
 	if model.Features == nil {
 		return "No control information available.\n\n"
 	}
-	
+
 	var sb strings.Builder
-	
+
 	// Part 1: Core controls
 	sb.WriteString("### Generation Controls (Part 1)\n\n")
 	sb.WriteString("| Temperature | Top-P | Top-K | Top-A | Min-P | Max Tokens |\n")
 	sb.WriteString("|-------------|-------|-------|-------|-------|------------|\n")
 	sb.WriteString("| ")
-	
+
 	if model.Features.Temperature {
 		// Add range info if available from model.Generation
 		if model.Generation != nil && model.Generation.Temperature != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ", 
+			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ",
 				model.Generation.Temperature.Min, model.Generation.Temperature.Max))
 		} else {
 			sb.WriteString("✅ (0-2.0)  | ")
@@ -1454,10 +1429,10 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌          | ")
 	}
-	
+
 	if model.Features.TopP {
 		if model.Generation != nil && model.Generation.TopP != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ", 
+			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ",
 				model.Generation.TopP.Min, model.Generation.TopP.Max))
 		} else {
 			sb.WriteString("✅ (0-1) | ")
@@ -1465,10 +1440,10 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌       | ")
 	}
-	
+
 	if model.Features.TopK {
 		if model.Generation != nil && model.Generation.TopK != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%d-%d) | ", 
+			sb.WriteString(fmt.Sprintf("✅ (%d-%d) | ",
 				model.Generation.TopK.Min, model.Generation.TopK.Max))
 		} else {
 			sb.WriteString("✅        | ")
@@ -1476,19 +1451,19 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌        | ")
 	}
-	
+
 	if model.Features.TopA {
 		sb.WriteString("✅        | ")
 	} else {
 		sb.WriteString("❌        | ")
 	}
-	
+
 	if model.Features.MinP {
 		sb.WriteString("✅        | ")
 	} else {
 		sb.WriteString("❌        | ")
 	}
-	
+
 	if model.Features.MaxTokens {
 		if model.Limits != nil && model.Limits.OutputTokens > 0 {
 			sb.WriteString(fmt.Sprintf("✅ (1-%s) |\n\n", formatNumber(int(model.Limits.OutputTokens))))
@@ -1498,16 +1473,16 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌            |\n\n")
 	}
-	
+
 	// Part 2: Penalties and advanced controls
 	sb.WriteString("### Generation Controls (Part 2)\n\n")
 	sb.WriteString("| Frequency Penalty | Presence Penalty | Repetition Penalty | Logit Bias | Seed | Stop Sequences | Logprobs |\n")
 	sb.WriteString("|-------------------|------------------|--------------------|------------|------|----------------|----------|\n")
 	sb.WriteString("| ")
-	
+
 	if model.Features.FrequencyPenalty {
 		if model.Generation != nil && model.Generation.FrequencyPenalty != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)    | ", 
+			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)    | ",
 				model.Generation.FrequencyPenalty.Min, model.Generation.FrequencyPenalty.Max))
 		} else {
 			sb.WriteString("✅ (-2 to 2)      | ")
@@ -1515,10 +1490,10 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌                | ")
 	}
-	
+
 	if model.Features.PresencePenalty {
 		if model.Generation != nil && model.Generation.PresencePenalty != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)     | ", 
+			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)     | ",
 				model.Generation.PresencePenalty.Min, model.Generation.PresencePenalty.Max))
 		} else {
 			sb.WriteString("✅ (-2 to 2)     | ")
@@ -1526,31 +1501,31 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌               | ")
 	}
-	
+
 	if model.Features.RepetitionPenalty {
 		sb.WriteString("✅                 | ")
 	} else {
 		sb.WriteString("❌                 | ")
 	}
-	
+
 	if model.Features.LogitBias {
 		sb.WriteString("✅         | ")
 	} else {
 		sb.WriteString("❌         | ")
 	}
-	
+
 	if model.Features.Seed {
 		sb.WriteString("✅   | ")
 	} else {
 		sb.WriteString("❌   | ")
 	}
-	
+
 	if model.Features.Stop {
 		sb.WriteString("✅             | ")
 	} else {
 		sb.WriteString("❌             | ")
 	}
-	
+
 	if model.Features.Logprobs {
 		if model.Generation != nil && model.Generation.TopLogprobs != nil {
 			sb.WriteString(fmt.Sprintf("✅ (0-%d) |\n\n", *model.Generation.TopLogprobs))
@@ -1560,7 +1535,7 @@ func generateControlsTables(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("❌        |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
@@ -1568,51 +1543,51 @@ func generateArchitectureTable(model *catalogs.Model) string {
 	if model.Metadata == nil || model.Metadata.Architecture == nil {
 		return ""
 	}
-	
+
 	arch := model.Metadata.Architecture
 	var sb strings.Builder
-	
+
 	sb.WriteString("### Architecture Details\n\n")
 	sb.WriteString("| Parameter Count | Architecture Type | Tokenizer | Quantization | Fine-Tuned | Base Model |\n")
 	sb.WriteString("|-----------------|-------------------|-----------|--------------|------------|-----------|\n")
 	sb.WriteString("| ")
-	
+
 	if arch.ParameterCount != "" {
 		sb.WriteString(fmt.Sprintf("%-15s | ", arch.ParameterCount))
 	} else {
 		sb.WriteString("Unknown         | ")
 	}
-	
+
 	if arch.Type != "" {
 		sb.WriteString(fmt.Sprintf("%-17s | ", string(arch.Type)))
 	} else {
 		sb.WriteString("Unknown           | ")
 	}
-	
+
 	if arch.Tokenizer != "" {
 		sb.WriteString(fmt.Sprintf("%-9s | ", string(arch.Tokenizer)))
 	} else {
 		sb.WriteString("Unknown   | ")
 	}
-	
+
 	if arch.Quantization != "" {
 		sb.WriteString(fmt.Sprintf("%-12s | ", string(arch.Quantization)))
 	} else {
 		sb.WriteString("None         | ")
 	}
-	
+
 	if arch.FineTuned {
 		sb.WriteString("Yes        | ")
 	} else {
 		sb.WriteString("No         | ")
 	}
-	
+
 	if arch.BaseModel != nil && *arch.BaseModel != "" {
 		sb.WriteString(fmt.Sprintf("%s |\n\n", *arch.BaseModel))
 	} else {
 		sb.WriteString("- |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
@@ -1620,10 +1595,10 @@ func generateTagsTable(model *catalogs.Model) string {
 	if model.Metadata == nil || len(model.Metadata.Tags) == 0 {
 		return ""
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("### Model Tags\n\n")
-	
+
 	// Common tags to check for
 	commonTags := []catalogs.ModelTag{
 		catalogs.ModelTagCoding,
@@ -1634,12 +1609,12 @@ func generateTagsTable(model *catalogs.Model) string {
 		catalogs.ModelTagMultimodal,
 		catalogs.ModelTagFunctionCalling,
 	}
-	
+
 	// Create header
 	sb.WriteString("| Coding | Writing | Reasoning | Math | Chat | Multimodal | Function Calling |\n")
 	sb.WriteString("|--------|---------|-----------|------|------|------------|------------------|\n")
 	sb.WriteString("| ")
-	
+
 	// Check each common tag
 	for _, tag := range commonTags {
 		hasTag := false
@@ -1655,13 +1630,13 @@ func generateTagsTable(model *catalogs.Model) string {
 			sb.WriteString("❌     | ")
 		}
 	}
-	
+
 	// Remove the last " | " and add newline
 	result := sb.String()
 	if strings.HasSuffix(result, " | ") {
 		result = result[:len(result)-3] + " |\n\n"
 	}
-	
+
 	// Add any additional tags not in the common list
 	var additionalTags []string
 	for _, modelTag := range model.Metadata.Tags {
@@ -1676,11 +1651,11 @@ func generateTagsTable(model *catalogs.Model) string {
 			additionalTags = append(additionalTags, string(modelTag))
 		}
 	}
-	
+
 	if len(additionalTags) > 0 {
 		result += fmt.Sprintf("**Additional Tags**: %s\n\n", strings.Join(additionalTags, ", "))
 	}
-	
+
 	return result
 }
 
@@ -1688,35 +1663,35 @@ func generateTokenPricingTable(model *catalogs.Model) string {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return "Contact provider for pricing information.\n\n"
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("### Token Pricing\n\n")
-	
+
 	tokens := model.Pricing.Tokens
 	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
-	
+
 	sb.WriteString("| Input | Output | Reasoning | Cache Read | Cache Write |\n")
 	sb.WriteString("|-------|--------|-----------|------------|-------------|\n")
 	sb.WriteString("| ")
-	
+
 	if tokens.Input != nil && tokens.Input.Per1M > 0 {
 		sb.WriteString(fmt.Sprintf("%s%.2f/1M | ", currencySymbol, tokens.Input.Per1M))
 	} else {
 		sb.WriteString("- | ")
 	}
-	
+
 	if tokens.Output != nil && tokens.Output.Per1M > 0 {
 		sb.WriteString(fmt.Sprintf("%s%.2f/1M | ", currencySymbol, tokens.Output.Per1M))
 	} else {
 		sb.WriteString("- | ")
 	}
-	
+
 	if tokens.Reasoning != nil && tokens.Reasoning.Per1M > 0 {
 		sb.WriteString(fmt.Sprintf("%s%.2f/1M | ", currencySymbol, tokens.Reasoning.Per1M))
 	} else {
 		sb.WriteString("- | ")
 	}
-	
+
 	// Check both flat structure and nested cache structure
 	if tokens.CacheRead != nil && tokens.CacheRead.Per1M > 0 {
 		sb.WriteString(fmt.Sprintf("%s%.2f/1M | ", currencySymbol, tokens.CacheRead.Per1M))
@@ -1725,7 +1700,7 @@ func generateTokenPricingTable(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("- | ")
 	}
-	
+
 	if tokens.CacheWrite != nil && tokens.CacheWrite.Per1M > 0 {
 		sb.WriteString(fmt.Sprintf("%s%.2f/1M |\n\n", currencySymbol, tokens.CacheWrite.Per1M))
 	} else if tokens.Cache != nil && tokens.Cache.Write != nil && tokens.Cache.Write.Per1M > 0 {
@@ -1733,7 +1708,7 @@ func generateTokenPricingTable(model *catalogs.Model) string {
 	} else {
 		sb.WriteString("- |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
@@ -1741,60 +1716,60 @@ func generateOperationPricingTable(model *catalogs.Model) string {
 	if model.Pricing == nil || model.Pricing.Operations == nil {
 		return ""
 	}
-	
+
 	ops := model.Pricing.Operations
 	hasOperations := ops.ImageInput != nil || ops.AudioInput != nil || ops.VideoInput != nil ||
 		ops.ImageGen != nil || ops.AudioGen != nil || ops.WebSearch != nil
-	
+
 	if !hasOperations {
 		return ""
 	}
-	
+
 	var sb strings.Builder
 	sb.WriteString("### Operation Pricing\n\n")
-	
+
 	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
-	
+
 	sb.WriteString("| Image Input | Audio Input | Video Input | Image Gen | Audio Gen | Web Search |\n")
 	sb.WriteString("|-------------|-------------|-------------|-----------|-----------|------------|\n")
 	sb.WriteString("| ")
-	
+
 	if ops.ImageInput != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/img   | ", currencySymbol, *ops.ImageInput))
 	} else {
 		sb.WriteString("-           | ")
 	}
-	
+
 	if ops.AudioInput != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/min   | ", currencySymbol, *ops.AudioInput))
 	} else {
 		sb.WriteString("-           | ")
 	}
-	
+
 	if ops.VideoInput != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/min   | ", currencySymbol, *ops.VideoInput))
 	} else {
 		sb.WriteString("-           | ")
 	}
-	
+
 	if ops.ImageGen != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/img | ", currencySymbol, *ops.ImageGen))
 	} else {
 		sb.WriteString("-         | ")
 	}
-	
+
 	if ops.AudioGen != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/min | ", currencySymbol, *ops.AudioGen))
 	} else {
 		sb.WriteString("-         | ")
 	}
-	
+
 	if ops.WebSearch != nil {
 		sb.WriteString(fmt.Sprintf("%s%.3f/query |\n\n", currencySymbol, *ops.WebSearch))
 	} else {
 		sb.WriteString("-          |\n\n")
 	}
-	
+
 	return sb.String()
 }
 
