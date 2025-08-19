@@ -521,7 +521,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	// Check if logo was copied and add it inline with the title
 	logoPath := filepath.Join(providerDir, "logo.svg")
 	if _, err := os.Stat(logoPath); err == nil {
-		sb.WriteString(fmt.Sprintf("# <img src=\"./logo.svg\" alt=\"%s Logo\" height=\"32\" style=\"vertical-align: middle; min-width: 32px; min-height: 32px\"> %s\n\n", provider.Name, provider.Name))
+		sb.WriteString(fmt.Sprintf("# <img src=\"./logo.svg\" alt=\"%s Logo\" style=\"vertical-align: middle; height: 32px; width: auto; min-width: 32px\"> %s\n\n", provider.Name, provider.Name))
 	} else {
 		sb.WriteString(fmt.Sprintf("# %s\n\n", provider.Name))
 	}

@@ -7,7 +7,7 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 - **Providers**: 7
 - **Authors**: 78
 - **Models**: 157
-- **Last Updated**: 2025-08-19 23:30:49 UTC
+- **Last Updated**: 2025-08-19 23:35:20 UTC
 
 ## Browse Catalog
 
