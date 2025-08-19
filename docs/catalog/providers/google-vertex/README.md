@@ -1,6 +1,4 @@
-<img src="./logo.svg" alt="Google Vertex AI Logo" height="60">
-
-# Google Vertex AI
+# <img src="./logo.svg" alt="Google Vertex AI Logo" height="32" style="vertical-align: middle"> Google Vertex AI
 
 **Headquarters**: Mountain View, CA, USA  
 **Status Page**: [https://status.cloud.google.com](https://status.cloud.google.com)  

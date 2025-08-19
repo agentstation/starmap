@@ -1,6 +1,4 @@
-<img src="./logo.svg" alt="Google AI Studio Logo" height="60">
-
-# Google AI Studio
+# <img src="./logo.svg" alt="Google AI Studio Logo" height="32" style="vertical-align: middle"> Google AI Studio
 
 **Headquarters**: Mountain View, CA, USA  
 **Status Page**: [https://status.cloud.google.com](https://status.cloud.google.com)  

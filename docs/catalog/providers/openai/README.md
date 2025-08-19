@@ -1,6 +1,4 @@
-<img src="./logo.svg" alt="OpenAI Logo" height="60">
-
-# OpenAI
+# <img src="./logo.svg" alt="OpenAI Logo" height="32" style="vertical-align: middle"> OpenAI
 
 **Headquarters**: San Francisco, CA, USA  
 **Status Page**: [https://status.openai.com](https://status.openai.com)  

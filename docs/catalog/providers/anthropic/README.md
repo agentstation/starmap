@@ -1,6 +1,4 @@
-<img src="./logo.svg" alt="Anthropic Logo" height="60">
-
-# Anthropic
+# <img src="./logo.svg" alt="Anthropic Logo" height="32" style="vertical-align: middle"> Anthropic
 
 **Headquarters**: San Francisco, CA, USA  
 **Status Page**: [https://status.anthropic.com](https://status.anthropic.com)  
