@@ -3,14 +3,14 @@
 Stable verion of Gemini 2.5 Flash-Lite, released in July of 2025
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.5-flash-lite`
 - **Author**: [Google](../README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 65.5K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Stable verion of Gemini 2.5 Flash-Lite, released in July of 2025
 |---|---|
 | 1-65.5K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

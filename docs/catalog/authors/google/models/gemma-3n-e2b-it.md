@@ -1,13 +1,13 @@
 # Gemma 3n E2B
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemma-3n-e2b-it`
 - **Author**: [Google](../README.md)
 - **Context Window**: 8.2K tokens
 - **Max Output**: 2.0K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -42,11 +42,11 @@
 |---|---|
 | 1-2.0K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

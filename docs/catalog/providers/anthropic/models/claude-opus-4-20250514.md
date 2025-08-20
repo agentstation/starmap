@@ -1,6 +1,6 @@
 # Claude Opus 4
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `claude-opus-4-20250514`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Anthropic](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 200K tokens
 - **Max Output**: 32K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -52,7 +52,7 @@
 |---|---|
 | 1-32K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -60,7 +60,7 @@
 |-------|--------|-----------|------------|-------------|
 | $15.00/1M | $75.00/1M | - | $1.50/1M | $18.75/1M |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

@@ -3,14 +3,14 @@
 Gemini 2.5 Flash Preview TTS
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.5-flash-preview-tts`
 - **Author**: [Google](../README.md)
 - **Context Window**: 8.2K tokens
 - **Max Output**: 16.4K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Gemini 2.5 Flash Preview TTS
 |---|---|
 | 1-16.4K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

@@ -91,7 +91,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 	}
 
 	// Get the catalog - use file catalog if input is specified, otherwise use default
-	var catalogInstance catalogs.Catalog
+	var catalog catalogs.Catalog
 
 	if syncInput != "" {
 		// Create file-based catalog from input directory
@@ -103,7 +103,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("creating starmap with files catalog: %w", err)
 		}
-		catalogInstance, err = sm.Catalog()
+		catalog, err = sm.Catalog()
 		if err != nil {
 			return fmt.Errorf("getting catalog: %w", err)
 		}
@@ -114,7 +114,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("creating starmap: %w", err)
 		}
-		catalogInstance, err = sm.Catalog()
+		catalog, err = sm.Catalog()
 		if err != nil {
 			return fmt.Errorf("getting catalog: %w", err)
 		}
@@ -182,7 +182,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 		fmt.Printf("🔄 Checking %s...\n", providerID)
 
 		// Get provider from catalog
-		provider, found := catalogInstance.Providers().Get(providerID)
+		provider, found := catalog.Providers().Get(providerID)
 		if !found {
 			fmt.Printf("  ⚠️  Skipping %s: provider not found in catalog\n\n", providerID)
 			continue
@@ -237,7 +237,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 			}
 		} else {
 			// Normal sync: compare with existing models
-			existingModels, err := persistence.GetProviderModels(catalogInstance, providerID)
+			existingModels, err := persistence.GetProviderModels(catalog, providerID)
 			if err != nil {
 				fmt.Printf("  ⚠️  Error getting existing models: %v\n", err)
 				existingModels = make(map[string]catalogs.Model)
@@ -305,7 +305,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 					}
 				}
 
-				if err := persistence.ApplyChangesetToOutput(catalogInstance, changeset, syncOutput); err != nil {
+				if err := persistence.ApplyChangesetToOutput(catalog, changeset, syncOutput); err != nil {
 					return fmt.Errorf("applying changes for %s: %w", changeset.ProviderID, err)
 				}
 				if syncOutput != "" {

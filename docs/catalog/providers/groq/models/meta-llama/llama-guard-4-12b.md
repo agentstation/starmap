@@ -1,6 +1,6 @@
 # llama-guard-4-12b
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `meta-llama/llama-guard-4-12b`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 131.1K tokens
 - **Max Output**: 128 tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -57,7 +57,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -65,7 +65,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.20/1M | $0.20/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

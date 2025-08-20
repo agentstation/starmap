@@ -1,13 +1,13 @@
 # Gemma 3 12B
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemma-3-12b-it`
 - **Author**: [Google](../README.md)
 - **Context Window**: 32.8K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -42,11 +42,11 @@
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

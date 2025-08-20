@@ -3,7 +3,7 @@
 Obtain a distributed representation of a text.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `embedding-gecko-001`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Obtain a distributed representation of a text.
 - **Context Window**: 1.0K tokens
 - **Max Output**: 1 tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Obtain a distributed representation of a text.
 |---|---|
 | 1-1 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

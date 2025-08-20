@@ -1,6 +1,6 @@
 # gpt-5
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-5`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 400K tokens
 - **Max Output**: 128K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -52,7 +52,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -60,7 +60,7 @@
 |-------|--------|-----------|------------|-------------|
 | $1.25/1M | $10.00/1M | - | $0.13/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

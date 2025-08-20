@@ -3,7 +3,7 @@
 Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens, released in September of 2024.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-1.5-pro-002`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up
 - **Context Window**: 2M tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

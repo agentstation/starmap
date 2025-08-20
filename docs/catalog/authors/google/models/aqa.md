@@ -3,14 +3,14 @@
 Model trained to return answers to questions that are grounded in provided sources, along with estimating answerable probability.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `aqa`
 - **Author**: [Google](../README.md)
 - **Context Window**: 7.2K tokens
 - **Max Output**: 1.0K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Model trained to return answers to questions that are grounded in provided sourc
 |---|---|
 | 1-1.0K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

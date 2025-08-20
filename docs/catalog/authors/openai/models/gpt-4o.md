@@ -1,6 +1,6 @@
 # gpt-4o
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-4o`
 - **Author**: [OpenAI](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 128K tokens
 - **Max Output**: 16.4K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -57,7 +57,7 @@
 |---|
 | 0-20 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -65,7 +65,7 @@
 |-------|--------|-----------|------------|-------------|
 | $2.50/1M | $10.00/1M | - | $1.25/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

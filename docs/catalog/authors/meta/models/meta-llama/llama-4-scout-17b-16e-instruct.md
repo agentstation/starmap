@@ -1,6 +1,6 @@
 # llama-4-scout-17b-16e-instruct
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `meta-llama/llama-4-scout-17b-16e-instruct`
 - **Author**: [Meta](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 131.1K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -57,7 +57,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -65,7 +65,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.11/1M | $0.34/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

@@ -3,14 +3,14 @@
 Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-1.5-pro-latest`
 - **Author**: [Google](../README.md)
 - **Context Window**: 2M tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Alias that points to the most recent production (non-experimental) release of Ge
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

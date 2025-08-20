@@ -3,14 +3,14 @@
 Obtain a distributed representation of a text.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `text-embedding-004`
 - **Author**: [Google](../README.md)
 - **Context Window**: 2.0K tokens
 - **Max Output**: 1 tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Obtain a distributed representation of a text.
 |---|---|
 | 1-1 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

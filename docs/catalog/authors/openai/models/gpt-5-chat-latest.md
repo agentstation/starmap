@@ -1,6 +1,6 @@
 # gpt-5-chat-latest
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-5-chat-latest`
 - **Author**: [OpenAI](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 400K tokens
 - **Max Output**: 128K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -51,7 +51,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -59,7 +59,7 @@
 |-------|--------|-----------|------------|-------------|
 | $1.25/1M | $10.00/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

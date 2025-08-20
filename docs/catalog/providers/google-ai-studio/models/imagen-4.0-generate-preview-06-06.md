@@ -3,7 +3,7 @@
 Vertex served Imagen 4.0 model
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `imagen-4.0-generate-preview-06-06`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Vertex served Imagen 4.0 model
 - **Context Window**: 480 tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Vertex served Imagen 4.0 model
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

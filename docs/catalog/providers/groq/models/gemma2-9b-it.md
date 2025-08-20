@@ -1,6 +1,6 @@
 # gemma2-9b-it
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemma2-9b-it`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 8.2K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -58,7 +58,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -66,7 +66,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.20/1M | $0.20/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

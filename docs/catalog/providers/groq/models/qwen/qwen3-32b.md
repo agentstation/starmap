@@ -1,6 +1,6 @@
 # qwen3-32b
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `qwen/qwen3-32b`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 131.1K tokens
 - **Max Output**: 16.4K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -58,7 +58,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -66,7 +66,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.29/1M | $0.59/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

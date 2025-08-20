@@ -1,6 +1,6 @@
 # o1-mini
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `o1-mini`
 - **Author**: [OpenAI](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 128K tokens
 - **Max Output**: 65.5K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -51,7 +51,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -59,7 +59,7 @@
 |-------|--------|-----------|------------|-------------|
 | $1.10/1M | $4.40/1M | - | $0.55/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

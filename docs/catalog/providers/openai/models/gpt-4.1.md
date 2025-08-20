@@ -1,6 +1,6 @@
 # gpt-4.1
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-4.1`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 1.0M tokens
 - **Max Output**: 32.8K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -58,7 +58,7 @@
 |---|
 | 0-20 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -66,7 +66,7 @@
 |-------|--------|-----------|------------|-------------|
 | $2.00/1M | $8.00/1M | - | $0.50/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

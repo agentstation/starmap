@@ -3,14 +3,14 @@
 LearnLM 2.0 Flash Experimental
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `learnlm-2.0-flash-experimental`
 - **Author**: [Google](../README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 32.8K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ LearnLM 2.0 Flash Experimental
 |---|---|
 | 1-32.8K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

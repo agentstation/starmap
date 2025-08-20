@@ -1,6 +1,6 @@
 # gemma2-9b-it
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemma2-9b-it`
 - **Author**: [Google](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 8.2K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -57,7 +57,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -65,7 +65,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.20/1M | $0.20/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

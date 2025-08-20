@@ -3,7 +3,7 @@
 Model trained to return answers to questions that are grounded in provided sources, along with estimating answerable probability.
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `aqa`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Model trained to return answers to questions that are grounded in provided sourc
 - **Context Window**: 7.2K tokens
 - **Max Output**: 1.0K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Model trained to return answers to questions that are grounded in provided sourc
 |---|---|
 | 1-1.0K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

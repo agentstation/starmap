@@ -3,7 +3,7 @@
 Gemini 2.0 Flash (Image Generation) Experimental
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.0-flash-exp-image-generation`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Gemini 2.0 Flash (Image Generation) Experimental
 - **Context Window**: 1.0M tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Gemini 2.0 Flash (Image Generation) Experimental
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

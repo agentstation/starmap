@@ -1,6 +1,6 @@
 # gpt-oss-20b
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `openai/gpt-oss-20b`
 - **Author**: [OpenAI](../README.md)
@@ -9,7 +9,7 @@
 - **Context Window**: 131.1K tokens
 - **Max Output**: 32.8K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -56,7 +56,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -64,7 +64,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.10/1M | $0.50/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

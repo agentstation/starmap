@@ -3,7 +3,7 @@
 Gemini 2.5 Pro Preview 03-25
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.5-pro-preview-03-25`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
@@ -11,7 +11,7 @@ Gemini 2.5 Pro Preview 03-25
 - **Context Window**: 1.0M tokens
 - **Max Output**: 65.5K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -46,11 +46,11 @@ Gemini 2.5 Pro Preview 03-25
 |---|---|
 | 1-65.5K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

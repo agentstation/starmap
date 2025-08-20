@@ -1,6 +1,6 @@
 # deepseek-reasoner
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `deepseek-reasoner`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [DeepSeek](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 65.5K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -52,7 +52,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -60,7 +60,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.55/1M | $2.19/1M | - | $0.14/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

@@ -1,6 +1,6 @@
 # distil-whisper-large-v3-en
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `distil-whisper-large-v3-en`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -8,7 +8,7 @@
 - **Context Window**: 448 tokens
 - **Max Output**: 448 tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -55,11 +55,11 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

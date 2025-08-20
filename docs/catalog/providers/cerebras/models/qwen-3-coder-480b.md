@@ -1,6 +1,6 @@
 # qwen-3-coder-480b
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `qwen-3-coder-480b`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Cerebras](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 131K tokens
 - **Max Output**: 32K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -52,7 +52,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -60,7 +60,7 @@
 |-------|--------|-----------|------------|-------------|
 | $2.00/1M | $2.00/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

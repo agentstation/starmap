@@ -1,6 +1,6 @@
 # gpt-3.5-turbo
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-3.5-turbo`
 - **Author**: [OpenAI](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 16.4K tokens
 - **Max Output**: 4.1K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -57,7 +57,7 @@
 |---|
 | 0-20 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -65,7 +65,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.50/1M | $1.50/1M | - | $1.25/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

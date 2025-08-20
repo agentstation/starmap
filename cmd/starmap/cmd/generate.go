@@ -732,7 +732,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	}
 
 	// Overview section
-	sb.WriteString("## Overview 📋\n\n")
+	sb.WriteString("## 📋 Overview\n\n")
 	sb.WriteString(fmt.Sprintf("- **ID**: `%s`\n", model.ID))
 	// Check if provider logo exists and include it
 	logoPath := filepath.Join("internal", "embedded", "catalog", "providers", string(provider.ID), "logo.svg")
@@ -782,7 +782,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	sb.WriteString("\n")
 
 	// Capabilities section with horizontal tables
-	sb.WriteString("## Capabilities 🎯\n\n")
+	sb.WriteString("## 🎯 Capabilities\n\n")
 
 	// Input/Output Modalities Table
 	sb.WriteString("### Input/Output Modalities\n\n")
@@ -821,7 +821,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	sb.WriteString(generateControlsTables(model))
 
 	// Pricing section with horizontal tables
-	sb.WriteString("## Pricing 💰\n\n")
+	sb.WriteString("## 💰 Pricing\n\n")
 
 	// Token Pricing Table
 	sb.WriteString(generateTokenPricingTable(model))
@@ -897,7 +897,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	}
 
 	// Metadata section
-	sb.WriteString("## Metadata 📋\n\n")
+	sb.WriteString("## 📋 Metadata\n\n")
 	if model.Metadata != nil && len(model.Metadata.Tags) > 0 {
 		var tags []string
 		for _, tag := range model.Metadata.Tags {
@@ -1218,7 +1218,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	}
 
 	// Overview section
-	sb.WriteString("## Overview 📋\n\n")
+	sb.WriteString("## 📋 Overview\n\n")
 	sb.WriteString(fmt.Sprintf("- **ID**: `%s`\n", model.ID))
 
 	// Authors with primary author emphasized and links to co-authors
@@ -1269,7 +1269,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	sb.WriteString("\n")
 
 	// Capabilities section with horizontal tables
-	sb.WriteString("## Capabilities 🎯\n\n")
+	sb.WriteString("## 🎯 Capabilities\n\n")
 
 	// Input/Output Modalities Table
 	sb.WriteString("### Input/Output Modalities\n\n")
@@ -1308,7 +1308,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	sb.WriteString(generateControlsTables(model))
 
 	// Pricing section with horizontal tables
-	sb.WriteString("## Pricing 💰\n\n")
+	sb.WriteString("## 💰 Pricing\n\n")
 
 	// Token Pricing Table
 	sb.WriteString(generateTokenPricingTable(model))
@@ -1384,7 +1384,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	}
 
 	// Metadata section
-	sb.WriteString("## Metadata 📋\n\n")
+	sb.WriteString("## 📋 Metadata\n\n")
 	if model.Metadata != nil && len(model.Metadata.Tags) > 0 {
 		var tags []string
 		for _, tag := range model.Metadata.Tags {

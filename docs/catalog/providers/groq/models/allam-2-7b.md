@@ -1,6 +1,6 @@
 # allam-2-7b
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `allam-2-7b`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -8,7 +8,7 @@
 - **Context Window**: 4.1K tokens
 - **Max Output**: 4.1K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -55,11 +55,11 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

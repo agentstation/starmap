@@ -1,6 +1,6 @@
 # deepseek-chat
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `deepseek-chat`
 - **Author**: [DeepSeek](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 65.5K tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -51,7 +51,7 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -59,7 +59,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.27/1M | $1.10/1M | - | $0.07/1M | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

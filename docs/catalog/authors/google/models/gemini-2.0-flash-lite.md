@@ -3,14 +3,14 @@
 Gemini 2.0 Flash-Lite
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.0-flash-lite`
 - **Author**: [Google](../README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 8.2K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Gemini 2.0 Flash-Lite
 |---|---|
 | 1-8.2K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

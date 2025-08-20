@@ -1,6 +1,6 @@
 # Claude Haiku 3
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `claude-3-haiku-20240307`
 - **Author**: [Anthropic](../README.md)
@@ -10,7 +10,7 @@
 - **Context Window**: 200K tokens
 - **Max Output**: 4.1K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,7 +45,7 @@
 |---|---|
 | 1-4.1K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -53,7 +53,7 @@
 |-------|--------|-----------|------------|-------------|
 | $0.25/1M | $1.25/1M | - | $0.03/1M | $0.30/1M |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

@@ -3,14 +3,14 @@
 Preview release (May 6th, 2025) of Gemini 2.5 Pro
 
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gemini-2.5-pro-preview-05-06`
 - **Author**: [Google](../README.md)
 - **Context Window**: 1.0M tokens
 - **Max Output**: 65.5K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -45,11 +45,11 @@ Preview release (May 6th, 2025) of Gemini 2.5 Pro
 |---|---|
 | 1-65.5K | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

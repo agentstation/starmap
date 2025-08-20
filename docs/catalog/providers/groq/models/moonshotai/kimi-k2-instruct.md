@@ -1,6 +1,6 @@
 # kimi-k2-instruct
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `moonshotai/kimi-k2-instruct`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
@@ -11,7 +11,7 @@
 - **Context Window**: 131.1K tokens
 - **Max Output**: 16.4K tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -58,7 +58,7 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 ### Token Pricing
 
@@ -66,7 +66,7 @@
 |-------|--------|-----------|------------|-------------|
 | $1.00/1M | $3.00/1M | - | - | - |
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

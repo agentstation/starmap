@@ -1,12 +1,12 @@
 # llama-4-maverick-17b-128e-instruct
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `llama-4-maverick-17b-128e-instruct`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Cerebras](../README.md)
 - **Authors**: [Cerebras](../../../authors/cerebras/README.md)
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -47,11 +47,11 @@
 |---|---|
 | -2.0 to 2.0 | -2.0 to 2.0 |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

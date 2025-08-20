@@ -1,11 +1,11 @@
 # gpt-4o-mini-audio-preview
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `gpt-4o-mini-audio-preview`
 - **Author**: [OpenAI](../README.md)
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -52,11 +52,11 @@
 |---|
 | 0-20 |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC

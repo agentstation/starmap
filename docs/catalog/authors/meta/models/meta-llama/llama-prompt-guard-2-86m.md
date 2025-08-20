@@ -1,13 +1,13 @@
 # llama-prompt-guard-2-86m
 
-## Overview 📋
+## 📋 Overview
 
 - **ID**: `meta-llama/llama-prompt-guard-2-86m`
 - **Author**: [Meta](../README.md)
 - **Context Window**: 512 tokens
 - **Max Output**: 512 tokens
 
-## Capabilities 🎯
+## 🎯 Capabilities
 
 ### Input/Output Modalities
 
@@ -54,11 +54,11 @@
 |---|
 | ✅ |
 
-## Pricing 💰
+## 💰 Pricing
 
 Contact provider for pricing information.
 
-## Metadata 📋
+## 📋 Metadata
 
 **Created**: 0001-01-01 00:00:00 UTC
 **Last Updated**: 0001-01-01 00:00:00 UTC
