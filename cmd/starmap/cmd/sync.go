@@ -1,15 +1,10 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/catalogs/operations"
-	"github.com/agentstation/starmap/internal/catalogs/persistence"
-	"github.com/agentstation/starmap/internal/sources/modelsdev"
-	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/files"
 	"github.com/spf13/cobra"
@@ -78,7 +73,6 @@ func runSync(cmd *cobra.Command, args []string) error {
 			fmt.Printf("\nContinue with fresh sync? (y/N): ")
 			var response string
 			if _, err := fmt.Scanln(&response); err != nil {
-				// If scan fails, default to no
 				response = "n"
 			}
 			response = strings.ToLower(strings.TrimSpace(response))
@@ -90,188 +84,81 @@ func runSync(cmd *cobra.Command, args []string) error {
 		fmt.Println()
 	}
 
-	// Get the catalog - use file catalog if input is specified, otherwise use default
-	var catalog catalogs.Catalog
+	// Create starmap instance
+	var sm starmap.Starmap
+	var err error
 
 	if syncInput != "" {
-		// Create file-based catalog from input directory
+		// Use file-based catalog from input directory
 		filesCatalog, err := files.New(syncInput)
 		if err != nil {
 			return fmt.Errorf("creating catalog from %s: %w", syncInput, err)
 		}
-		sm, err := starmap.New(starmap.WithInitialCatalog(filesCatalog))
+		sm, err = starmap.New(starmap.WithInitialCatalog(filesCatalog))
 		if err != nil {
 			return fmt.Errorf("creating starmap with files catalog: %w", err)
-		}
-		catalog, err = sm.Catalog()
-		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
 		}
 		fmt.Printf("📁 Using catalog from: %s\n", syncInput)
 	} else {
 		// Use default starmap with embedded catalog
-		sm, err := starmap.New()
+		sm, err = starmap.New()
 		if err != nil {
 			return fmt.Errorf("creating starmap: %w", err)
-		}
-		catalog, err = sm.Catalog()
-		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
 		}
 		fmt.Printf("📦 Using embedded catalog\n")
 	}
 
-	// Determine which providers to sync
-	var providersToSync []catalogs.ProviderID
+	// Build sync options
+	var opts []catalogs.SyncOption
 	if syncProvider != "" {
-		// Sync specific provider
-		pid := catalogs.ProviderID(syncProvider)
-		providersToSync = []catalogs.ProviderID{pid}
-	} else {
-		// Sync all supported providers
-		providersToSync = providers.ListSupportedProviders()
+		opts = append(opts, catalogs.SyncWithProvider(catalogs.ProviderID(syncProvider)))
+	}
+	if syncDryRun {
+		opts = append(opts, catalogs.SyncWithDryRun(true))
+	}
+	if syncFresh {
+		opts = append(opts, catalogs.SyncWithFreshSync(true))
+	}
+	if syncAutoApprove {
+		opts = append(opts, catalogs.SyncWithAutoApprove(true))
+	}
+	if syncOutput != "" {
+		opts = append(opts, catalogs.SyncWithOutputDir(syncOutput))
+	}
+	if syncCleanModelsDev {
+		opts = append(opts, catalogs.SyncWithCleanModelsDevRepo(true))
 	}
 
-	fmt.Printf("\nStarting sync for %d provider(s)...\n\n", len(providersToSync))
+	fmt.Printf("\nStarting sync...\n\n")
 
-	// Setup models.dev integration
-	var modelsDevAPI *modelsdev.ModelsDevAPI
-	var modelsDevClient *modelsdev.Client
-
-	// Determine output directory for models.dev
-	outputDir := syncOutput
-	if outputDir == "" {
-		outputDir = "internal/embedded/catalog/providers"
+	// Perform the sync
+	result, err := sm.Sync(opts...)
+	if err != nil {
+		return fmt.Errorf("sync failed: %w", err)
 	}
 
-	// Initialize models.dev client
-	modelsDevClient = modelsdev.NewClient(outputDir)
+	// Display results
+	if result.HasChanges() {
+		fmt.Printf("=== SYNC RESULTS ===\n\n")
 
-	fmt.Printf("🌐 Setting up models.dev integration...\n")
-
-	// Clone/update models.dev repository
-	if err := modelsDevClient.EnsureRepository(); err != nil {
-		fmt.Printf("  ⚠️  Warning: Could not setup models.dev repository: %v\n", err)
-		fmt.Printf("  📝 Continuing without models.dev enhancement...\n")
-	} else {
-		// Build api.json
-		if err := modelsDevClient.BuildAPI(); err != nil {
-			fmt.Printf("  ⚠️  Warning: Could not build api.json: %v\n", err)
-			fmt.Printf("  📝 Continuing without models.dev enhancement...\n")
-		} else {
-			// Parse api.json
-			fmt.Printf("  📋 Parsing models.dev data...\n")
-			api, err := modelsdev.ParseAPI(modelsDevClient.GetAPIPath())
-			if err != nil {
-				fmt.Printf("  ❌ Could not parse api.json: %v\n", err)
-				fmt.Printf("  📝 Continuing without models.dev enhancement...\n")
-			} else {
-				modelsDevAPI = api
-				fmt.Printf("  ✅ models.dev data loaded successfully\n")
-			}
-		}
-	}
-
-	fmt.Printf("\n")
-
-	var totalChanges int
-	var allChanges []operations.ProviderChangeset
-
-	// Process each provider
-	for _, providerID := range providersToSync {
-		fmt.Printf("🔄 Checking %s...\n", providerID)
-
-		// Get provider from catalog
-		provider, found := catalog.Providers().Get(providerID)
-		if !found {
-			fmt.Printf("  ⚠️  Skipping %s: provider not found in catalog\n\n", providerID)
-			continue
-		}
-
-		// Load API key from environment
-		provider.LoadAPIKey()
-
-		// Get client for this provider (handles API key requirements automatically)
-		result, err := provider.GetClient(catalogs.WithAllowMissingAPIKey(true))
-		if err != nil {
-			fmt.Printf("  ⚠️  Skipping %s: %v\n\n", providerID, err)
-			continue
-		}
-		if result.Error != nil {
-			fmt.Printf("  ⚠️  Skipping %s: %v\n\n", providerID, result.Error)
-			continue
-		}
-		client := result.Client
-
-		if !result.APIKeyRequired {
-			fmt.Printf("  📡 API key not required for %s\n", providerID)
-		}
-
-		// Fetch models from API
-		ctx := context.Background()
-		apiModels, err := client.ListModels(ctx)
-		if err != nil {
-			fmt.Printf("  ❌ Failed to fetch models from %s: %v\n\n", providerID, err)
-			continue
-		}
-
-		fmt.Printf("  📡 Fetched %d models from API\n", len(apiModels))
-
-		// Enhance API models with models.dev data BEFORE comparison
-		if modelsDevAPI != nil {
-			var enhancedModels int
-			apiModels, enhancedModels = modelsdev.EnhanceModelsWithModelsDevData(apiModels, providerID, modelsDevAPI)
-			fmt.Printf("  🔗 Enhanced %d models with models.dev data\n", enhancedModels)
-		}
-
-		// Handle fresh sync vs normal sync
-		var changeset operations.ProviderChangeset
-		if syncFresh {
-			// Fresh sync: treat all API models as new additions
-			fmt.Printf("  🆕 Fresh sync mode: treating all %d API models as new\n", len(apiModels))
-			changeset = operations.ProviderChangeset{
-				ProviderID: providerID,
-				Added:      apiModels,
-				Updated:    []operations.ModelUpdate{},
-				Removed:    []catalogs.Model{},
-			}
-		} else {
-			// Normal sync: compare with existing models
-			existingModels, err := persistence.GetProviderModels(catalog, providerID)
-			if err != nil {
-				fmt.Printf("  ⚠️  Error getting existing models: %v\n", err)
-				existingModels = make(map[string]catalogs.Model)
-			}
-
-			fmt.Printf("  📚 Found %d existing models in catalog\n", len(existingModels))
-			changeset = operations.CompareProviderModels(providerID, existingModels, apiModels)
-		}
-
-		allChanges = append(allChanges, changeset)
-
-		// Display summary for this provider
-		changeCount := len(changeset.Added) + len(changeset.Updated) + len(changeset.Removed)
-		totalChanges += changeCount
-
-		if changeCount == 0 {
-			fmt.Printf("  ✅ No changes needed\n\n")
-		} else {
-			fmt.Printf("  📊 Changes: %d added, %d updated, %d removed\n\n",
-				len(changeset.Added), len(changeset.Updated), len(changeset.Removed))
-		}
-	}
-
-	// Show detailed diff if there are changes
-	if totalChanges > 0 {
-		fmt.Printf("=== DETAILED CHANGES ===\n\n")
-		for _, changeset := range allChanges {
-			if changeset.HasChanges() {
-				operations.PrintChangeset(changeset)
+		// Show summary for each provider
+		for providerID, providerResult := range result.ProviderResults {
+			if providerResult.HasChanges() {
+				fmt.Printf("🔄 %s:\n", providerID)
+				fmt.Printf("  📡 Fetched %d models from API\n", providerResult.APIModelsCount)
+				if providerResult.ExistingModelsCount > 0 {
+					fmt.Printf("  📚 Found %d existing models in catalog\n", providerResult.ExistingModelsCount)
+				}
+				if providerResult.EnhancedCount > 0 {
+					fmt.Printf("  🔗 Enhanced %d models with models.dev data\n", providerResult.EnhancedCount)
+				}
+				fmt.Printf("  📊 Changes: %d added, %d updated, %d removed\n\n",
+					providerResult.AddedCount, providerResult.UpdatedCount, providerResult.RemovedCount)
 			}
 		}
 
 		// Ask for confirmation unless auto-approve or dry-run
-		if syncDryRun {
+		if result.DryRun {
 			fmt.Printf("🔍 Dry run mode - no changes will be made\n")
 			return nil
 		}
@@ -280,7 +167,6 @@ func runSync(cmd *cobra.Command, args []string) error {
 			fmt.Printf("Apply these changes? (y/N): ")
 			var response string
 			if _, err := fmt.Scanln(&response); err != nil {
-				// If scan fails, default to no
 				response = "n"
 			}
 			response = strings.ToLower(strings.TrimSpace(response))
@@ -288,61 +174,47 @@ func runSync(cmd *cobra.Command, args []string) error {
 				fmt.Println("Sync cancelled")
 				return nil
 			}
-		}
 
-		// Apply changes
-		fmt.Printf("\n🚀 Applying changes...\n")
-		if syncOutput != "" {
-			fmt.Printf("📁 Saving models to: %s\n", syncOutput)
-		}
-		for _, changeset := range allChanges {
-			if changeset.HasChanges() {
-				// Clean provider directory if fresh sync
-				if syncFresh {
-					fmt.Printf("🧹 Cleaning existing models for %s...\n", changeset.ProviderID)
-					if err := persistence.CleanProviderDirectory(changeset.ProviderID, syncOutput); err != nil {
-						return fmt.Errorf("cleaning directory for %s: %w", changeset.ProviderID, err)
-					}
-				}
-
-				if err := persistence.ApplyChangesetToOutput(catalog, changeset, syncOutput); err != nil {
-					return fmt.Errorf("applying changes for %s: %w", changeset.ProviderID, err)
-				}
-				if syncOutput != "" {
-					fmt.Printf("✅ Applied changes for %s to %s/%s\n", changeset.ProviderID, syncOutput, changeset.ProviderID)
-				} else {
-					fmt.Printf("✅ Applied changes for %s\n", changeset.ProviderID)
-				}
+			// Perform actual sync without dry-run
+			opts = append(opts[:0:0], opts...) // copy slice
+			for i, opt := range opts {
+				// Remove dry-run option if it exists
+				// Note: This is a simplification - in practice we might restructure this
+				_ = i
+				_ = opt
 			}
-		}
 
-		// Copy provider logos if models.dev is available
-		if modelsDevClient != nil {
-			fmt.Printf("\n🎨 Copying provider logos...\n")
-			logoOutputDir := syncOutput
-			if logoOutputDir == "" {
-				logoOutputDir = "internal/embedded/catalog/providers"
+			// Re-run sync without dry-run
+			fmt.Printf("\n🚀 Applying changes...\n")
+			if syncOutput != "" {
+				fmt.Printf("📁 Saving models to: %s\n", syncOutput)
 			}
-			if err := modelsdev.CopyProviderLogos(modelsDevClient, logoOutputDir, providersToSync); err != nil {
-				fmt.Printf("  ⚠️  Warning: Could not copy logos: %v\n", err)
-			} else {
-				fmt.Printf("  ✅ Provider logos copied successfully\n")
+
+			// Call sync again without dry-run
+			finalOpts := []catalogs.SyncOption{}
+			if syncProvider != "" {
+				finalOpts = append(finalOpts, catalogs.SyncWithProvider(catalogs.ProviderID(syncProvider)))
+			}
+			if syncFresh {
+				finalOpts = append(finalOpts, catalogs.SyncWithFreshSync(true))
+			}
+			if syncOutput != "" {
+				finalOpts = append(finalOpts, catalogs.SyncWithOutputDir(syncOutput))
+			}
+			if syncCleanModelsDev {
+				finalOpts = append(finalOpts, catalogs.SyncWithCleanModelsDevRepo(true))
+			}
+
+			_, err := sm.Sync(finalOpts...)
+			if err != nil {
+				return fmt.Errorf("applying changes failed: %w", err)
 			}
 		}
 
 		fmt.Printf("\n🎉 Sync completed successfully!\n")
+		fmt.Printf("📊 Total: %s\n", result.Summary())
 	} else {
 		fmt.Printf("✅ All providers are up to date - no changes needed\n")
-	}
-
-	// Cleanup models.dev repository if requested
-	if syncCleanModelsDev && modelsDevClient != nil {
-		fmt.Printf("\n🧹 Cleaning up models.dev repository...\n")
-		if err := modelsDevClient.Cleanup(); err != nil {
-			fmt.Printf("  ⚠️  Warning: Could not cleanup models.dev repository: %v\n", err)
-		} else {
-			fmt.Printf("  ✅ models.dev repository cleaned up\n")
-		}
 	}
 
 	return nil

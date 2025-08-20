@@ -24,6 +24,9 @@ type Starmap interface {
 	// Update manually triggers a catalog update
 	Update() error
 
+	// Sync synchronizes the catalog with provider APIs
+	Sync(opts ...catalogs.SyncOption) (*catalogs.SyncResult, error)
+
 	// OnModelAdded registers a callback for when models are added
 	OnModelAdded(ModelAddedHook)
 

@@ -136,8 +136,8 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 
 	// Statistics
 	sb.WriteString("## Overview\n\n")
-	sb.WriteString(fmt.Sprintf("- **Providers**: %d\n", len(providers)))
 	sb.WriteString(fmt.Sprintf("- **Authors**: %d\n", len(authors)))
+	sb.WriteString(fmt.Sprintf("- **Providers**: %d\n", len(providers)))
 	sb.WriteString(fmt.Sprintf("- **Models**: %d\n", len(allModels)))
 	sb.WriteString(fmt.Sprintf("- **Last Updated**: %s\n\n", time.Now().UTC().Format("2006-01-02 15:04:05 UTC")))
 
