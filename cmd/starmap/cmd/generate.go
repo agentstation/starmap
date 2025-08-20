@@ -1629,129 +1629,196 @@ func generateControlsTables(model *catalogs.Model) string {
 	}
 
 	var sb strings.Builder
+	sb.WriteString("### Generation Controls\n\n")
 
-	// Part 1: Core controls
-	sb.WriteString("### Generation Controls (Part 1)\n\n")
-	sb.WriteString("| Temperature | Top-P | Top-K | Top-A | Min-P | Max Tokens |\n")
-	sb.WriteString("|-------------|-------|-------|-------|-------|------------|\n")
-	sb.WriteString("| ")
-
-	if model.Features.Temperature {
-		// Add range info if available from model.Generation
-		if model.Generation != nil && model.Generation.Temperature != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ",
-				model.Generation.Temperature.Min, model.Generation.Temperature.Max))
-		} else {
-			sb.WriteString("✅ (0-2.0)  | ")
+	// Helper function to format feature status
+	formatFeature := func(supported bool, hasRange bool, rangeStr string) string {
+		if !supported {
+			return "Not supported"
 		}
-	} else {
-		sb.WriteString("❌          | ")
-	}
-
-	if model.Features.TopP {
-		if model.Generation != nil && model.Generation.TopP != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f-%.1f) | ",
-				model.Generation.TopP.Min, model.Generation.TopP.Max))
-		} else {
-			sb.WriteString("✅ (0-1) | ")
+		if hasRange && rangeStr != "" {
+			return rangeStr
 		}
-	} else {
-		sb.WriteString("❌       | ")
+		return "Supported"
 	}
 
-	if model.Features.TopK {
-		if model.Generation != nil && model.Generation.TopK != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%d-%d) | ",
-				model.Generation.TopK.Min, model.Generation.TopK.Max))
-		} else {
-			sb.WriteString("✅        | ")
+	// Sampling & Decoding
+	hasCoreSampling := model.Features.Temperature || model.Features.TopP || model.Features.TopK || 
+		model.Features.TopA || model.Features.MinP || model.Features.TypicalP || model.Features.TFS
+	
+	if hasCoreSampling {
+		sb.WriteString("**Sampling & Decoding**\n")
+		
+		if model.Features.Temperature {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.Temperature != nil {
+				rangeStr = fmt.Sprintf("%.1f - %.1f", model.Generation.Temperature.Min, model.Generation.Temperature.Max)
+			} else {
+				rangeStr = "0.0 - 2.0"
+			}
+			sb.WriteString(fmt.Sprintf("- Temperature: %s\n", formatFeature(true, true, rangeStr)))
 		}
-	} else {
-		sb.WriteString("❌        | ")
-	}
-
-	if model.Features.TopA {
-		sb.WriteString("✅        | ")
-	} else {
-		sb.WriteString("❌        | ")
-	}
-
-	if model.Features.MinP {
-		sb.WriteString("✅        | ")
-	} else {
-		sb.WriteString("❌        | ")
-	}
-
-	if model.Features.MaxTokens {
-		if model.Limits != nil && model.Limits.OutputTokens > 0 {
-			sb.WriteString(fmt.Sprintf("✅ (1-%s) |\n\n", formatNumber(int(model.Limits.OutputTokens))))
-		} else {
-			sb.WriteString("✅            |\n\n")
+		
+		if model.Features.TopP {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.TopP != nil {
+				rangeStr = fmt.Sprintf("%.1f - %.1f", model.Generation.TopP.Min, model.Generation.TopP.Max)
+			} else {
+				rangeStr = "0.0 - 1.0"
+			}
+			sb.WriteString(fmt.Sprintf("- Top-P: %s\n", formatFeature(true, true, rangeStr)))
 		}
-	} else {
-		sb.WriteString("❌            |\n\n")
-	}
-
-	// Part 2: Penalties and advanced controls
-	sb.WriteString("### Generation Controls (Part 2)\n\n")
-	sb.WriteString("| Frequency Penalty | Presence Penalty | Repetition Penalty | Logit Bias | Seed | Stop Sequences | Logprobs |\n")
-	sb.WriteString("|-------------------|------------------|--------------------|------------|------|----------------|----------|\n")
-	sb.WriteString("| ")
-
-	if model.Features.FrequencyPenalty {
-		if model.Generation != nil && model.Generation.FrequencyPenalty != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)    | ",
-				model.Generation.FrequencyPenalty.Min, model.Generation.FrequencyPenalty.Max))
-		} else {
-			sb.WriteString("✅ (-2 to 2)      | ")
+		
+		if model.Features.TopK {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.TopK != nil {
+				rangeStr = fmt.Sprintf("%d - %d", model.Generation.TopK.Min, model.Generation.TopK.Max)
+			}
+			sb.WriteString(fmt.Sprintf("- Top-K: %s\n", formatFeature(true, rangeStr != "", rangeStr)))
 		}
-	} else {
-		sb.WriteString("❌                | ")
-	}
-
-	if model.Features.PresencePenalty {
-		if model.Generation != nil && model.Generation.PresencePenalty != nil {
-			sb.WriteString(fmt.Sprintf("✅ (%.1f to %.1f)     | ",
-				model.Generation.PresencePenalty.Min, model.Generation.PresencePenalty.Max))
-		} else {
-			sb.WriteString("✅ (-2 to 2)     | ")
+		
+		if model.Features.TopA {
+			sb.WriteString(fmt.Sprintf("- Top-A: %s\n", formatFeature(true, false, "")))
 		}
-	} else {
-		sb.WriteString("❌               | ")
-	}
-
-	if model.Features.RepetitionPenalty {
-		sb.WriteString("✅                 | ")
-	} else {
-		sb.WriteString("❌                 | ")
-	}
-
-	if model.Features.LogitBias {
-		sb.WriteString("✅         | ")
-	} else {
-		sb.WriteString("❌         | ")
-	}
-
-	if model.Features.Seed {
-		sb.WriteString("✅   | ")
-	} else {
-		sb.WriteString("❌   | ")
-	}
-
-	if model.Features.Stop {
-		sb.WriteString("✅             | ")
-	} else {
-		sb.WriteString("❌             | ")
-	}
-
-	if model.Features.Logprobs {
-		if model.Generation != nil && model.Generation.TopLogprobs != nil {
-			sb.WriteString(fmt.Sprintf("✅ (0-%d) |\n\n", *model.Generation.TopLogprobs))
-		} else {
-			sb.WriteString("✅ (0-20) |\n\n")
+		
+		if model.Features.MinP {
+			sb.WriteString(fmt.Sprintf("- Min-P: %s\n", formatFeature(true, false, "")))
 		}
-	} else {
-		sb.WriteString("❌        |\n\n")
+		
+		if model.Features.TypicalP {
+			sb.WriteString(fmt.Sprintf("- Typical-P: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.TFS {
+			sb.WriteString(fmt.Sprintf("- Tail Free Sampling: %s\n", formatFeature(true, false, "")))
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Length & Termination
+	hasLengthControls := model.Features.MaxTokens || model.Features.MaxOutputTokens || 
+		model.Features.Stop || model.Features.StopTokenIds
+	
+	if hasLengthControls {
+		sb.WriteString("**Length & Termination**\n")
+		
+		if model.Features.MaxTokens {
+			rangeStr := ""
+			if model.Limits != nil && model.Limits.OutputTokens > 0 {
+				rangeStr = fmt.Sprintf("1 - %s", formatNumber(int(model.Limits.OutputTokens)))
+			}
+			sb.WriteString(fmt.Sprintf("- Max Tokens: %s\n", formatFeature(true, rangeStr != "", rangeStr)))
+		}
+		
+		if model.Features.MaxOutputTokens {
+			sb.WriteString(fmt.Sprintf("- Max Output Tokens: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.Stop {
+			sb.WriteString(fmt.Sprintf("- Stop Sequences: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.StopTokenIds {
+			sb.WriteString(fmt.Sprintf("- Stop Token IDs: %s\n", formatFeature(true, false, "")))
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Repetition Control
+	hasRepetitionControls := model.Features.FrequencyPenalty || model.Features.PresencePenalty || 
+		model.Features.RepetitionPenalty || model.Features.NoRepeatNgramSize || model.Features.LengthPenalty
+	
+	if hasRepetitionControls {
+		sb.WriteString("**Repetition Control**\n")
+		
+		if model.Features.FrequencyPenalty {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.FrequencyPenalty != nil {
+				rangeStr = fmt.Sprintf("%.1f to %.1f", model.Generation.FrequencyPenalty.Min, model.Generation.FrequencyPenalty.Max)
+			} else {
+				rangeStr = "-2.0 to 2.0"
+			}
+			sb.WriteString(fmt.Sprintf("- Frequency Penalty: %s\n", formatFeature(true, true, rangeStr)))
+		}
+		
+		if model.Features.PresencePenalty {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.PresencePenalty != nil {
+				rangeStr = fmt.Sprintf("%.1f to %.1f", model.Generation.PresencePenalty.Min, model.Generation.PresencePenalty.Max)
+			} else {
+				rangeStr = "-2.0 to 2.0"
+			}
+			sb.WriteString(fmt.Sprintf("- Presence Penalty: %s\n", formatFeature(true, true, rangeStr)))
+		}
+		
+		if model.Features.RepetitionPenalty {
+			sb.WriteString(fmt.Sprintf("- Repetition Penalty: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.NoRepeatNgramSize {
+			sb.WriteString(fmt.Sprintf("- No Repeat N-gram Size: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.LengthPenalty {
+			sb.WriteString(fmt.Sprintf("- Length Penalty: %s\n", formatFeature(true, false, "")))
+		}
+		
+		sb.WriteString("\n")
+	}
+
+	// Advanced Controls (Token Biasing, Determinism, Observability)
+	hasAdvancedControls := model.Features.LogitBias || model.Features.BadWords || model.Features.AllowedTokens || 
+		model.Features.Seed || model.Features.Logprobs || model.Features.TopLogprobs || model.Features.Echo ||
+		model.Features.N || model.Features.BestOf
+	
+	if hasAdvancedControls {
+		sb.WriteString("**Advanced Controls**\n")
+		
+		if model.Features.LogitBias {
+			sb.WriteString(fmt.Sprintf("- Logit Bias: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.BadWords {
+			sb.WriteString(fmt.Sprintf("- Bad Words Filter: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.AllowedTokens {
+			sb.WriteString(fmt.Sprintf("- Allowed Tokens: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.Seed {
+			sb.WriteString(fmt.Sprintf("- Deterministic Seed: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.Logprobs {
+			rangeStr := ""
+			if model.Generation != nil && model.Generation.TopLogprobs != nil {
+				rangeStr = fmt.Sprintf("0 - %d", *model.Generation.TopLogprobs)
+			} else {
+				rangeStr = "0 - 20"
+			}
+			sb.WriteString(fmt.Sprintf("- Log Probabilities: %s\n", formatFeature(true, true, rangeStr)))
+		}
+		
+		if model.Features.TopLogprobs {
+			sb.WriteString(fmt.Sprintf("- Top Log Probabilities: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.Echo {
+			sb.WriteString(fmt.Sprintf("- Echo Prompt: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.N {
+			sb.WriteString(fmt.Sprintf("- Multiple Candidates: %s\n", formatFeature(true, false, "")))
+		}
+		
+		if model.Features.BestOf {
+			sb.WriteString(fmt.Sprintf("- Best Of Selection: %s\n", formatFeature(true, false, "")))
+		}
+		
+		sb.WriteString("\n")
 	}
 
 	return sb.String()

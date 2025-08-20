@@ -34,17 +34,16 @@ Obtain a distributed representation of a text.
 
 ## Technical Specifications ⚙️
 
-### Generation Controls (Part 1)
+### Generation Controls
 
-| Temperature | Top-P | Top-K | Top-A | Min-P | Max Tokens |
-|-------------|-------|-------|-------|-------|------------|
-| ✅ (0-2.0)  | ✅ (0-1) | ✅        | ❌        | ❌        | ✅ (1-1) |
+**Sampling & Decoding**
+- Temperature: 0.0 - 2.0
+- Top-P: 0.0 - 1.0
+- Top-K: Supported
 
-### Generation Controls (Part 2)
-
-| Frequency Penalty | Presence Penalty | Repetition Penalty | Logit Bias | Seed | Stop Sequences | Logprobs |
-|-------------------|------------------|--------------------|------------|------|----------------|----------|
-| ❌                | ❌               | ❌                 | ❌         | ❌   | ✅             | ❌        |
+**Length & Termination**
+- Max Tokens: 1 - 1
+- Stop Sequences: Supported
 
 ## Pricing 💰
 

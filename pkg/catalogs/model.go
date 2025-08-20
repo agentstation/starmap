@@ -205,20 +205,55 @@ type ModelFeatures struct {
 	IncludeReasoning bool `json:"include_reasoning" yaml:"include_reasoning"` // Supports including reasoning traces in response
 	Verbosity        bool `json:"verbosity" yaml:"verbosity"`                 // Supports verbosity control (GPT-5+)
 
-	// Generation control
-	Temperature       bool `json:"temperature" yaml:"temperature"`               // Supports temperature parameter
-	TopP              bool `json:"top_p" yaml:"top_p"`                           // Supports top_p parameter
-	TopK              bool `json:"top_k" yaml:"top_k"`                           // Supports top_k parameter
-	TopA              bool `json:"top_a" yaml:"top_a"`                           // Supports top_a parameter (top-a sampling)
-	MinP              bool `json:"min_p" yaml:"min_p"`                           // Supports min_p parameter (minimum probability threshold)
-	MaxTokens         bool `json:"max_tokens" yaml:"max_tokens"`                 // Supports max_tokens parameter
-	FrequencyPenalty  bool `json:"frequency_penalty" yaml:"frequency_penalty"`   // Supports frequency penalty
-	PresencePenalty   bool `json:"presence_penalty" yaml:"presence_penalty"`     // Supports presence penalty
-	RepetitionPenalty bool `json:"repetition_penalty" yaml:"repetition_penalty"` // Supports repetition penalty
-	LogitBias         bool `json:"logit_bias" yaml:"logit_bias"`                 // Supports token-level bias adjustment
-	Seed              bool `json:"seed" yaml:"seed"`                             // Supports deterministic seeding
-	Stop              bool `json:"stop" yaml:"stop"`                             // Supports stop sequences/words
-	Logprobs          bool `json:"logprobs" yaml:"logprobs"`                     // Supports returning log probabilities
+	// Generation control - Core sampling and decoding
+	Temperature bool `json:"temperature" yaml:"temperature"` // [Core] Supports temperature parameter
+	TopP        bool `json:"top_p" yaml:"top_p"`             // [Core] Supports top_p parameter (nucleus sampling)
+	TopK        bool `json:"top_k" yaml:"top_k"`             // [Advanced] Supports top_k parameter
+	TopA        bool `json:"top_a" yaml:"top_a"`             // [Advanced] Supports top_a parameter (top-a sampling)
+	MinP        bool `json:"min_p" yaml:"min_p"`             // [Advanced] Supports min_p parameter (minimum probability threshold)
+	TypicalP    bool `json:"typical_p" yaml:"typical_p"`     // [Advanced] Supports typical_p parameter (typical sampling)
+	TFS         bool `json:"tfs" yaml:"tfs"`                 // [Advanced] Supports tail free sampling
+
+	// Generation control - Length and termination
+	MaxTokens       bool `json:"max_tokens" yaml:"max_tokens"`               // [Core] Supports max_tokens parameter
+	MaxOutputTokens bool `json:"max_output_tokens" yaml:"max_output_tokens"` // [Core] Supports max_output_tokens parameter (some providers distinguish from max_tokens)
+	Stop            bool `json:"stop" yaml:"stop"`                           // [Core] Supports stop sequences/words
+	StopTokenIds    bool `json:"stop_token_ids" yaml:"stop_token_ids"`       // [Advanced] Supports stop token IDs (numeric)
+
+	// Generation control - Repetition control
+	FrequencyPenalty  bool `json:"frequency_penalty" yaml:"frequency_penalty"`       // [Core] Supports frequency penalty
+	PresencePenalty   bool `json:"presence_penalty" yaml:"presence_penalty"`         // [Core] Supports presence penalty
+	RepetitionPenalty bool `json:"repetition_penalty" yaml:"repetition_penalty"`     // [Advanced] Supports repetition penalty
+	NoRepeatNgramSize bool `json:"no_repeat_ngram_size" yaml:"no_repeat_ngram_size"` // [Niche] Supports n-gram repetition blocking
+	LengthPenalty     bool `json:"length_penalty" yaml:"length_penalty"`             // [Niche] Supports length penalty (seq2seq style)
+
+	// Generation control - Token biasing
+	LogitBias     bool `json:"logit_bias" yaml:"logit_bias"`         // [Core] Supports token-level bias adjustment
+	BadWords      bool `json:"bad_words" yaml:"bad_words"`           // [Advanced] Supports bad words/disallowed tokens
+	AllowedTokens bool `json:"allowed_tokens" yaml:"allowed_tokens"` // [Niche] Supports token whitelist
+
+	// Generation control - Determinism
+	Seed bool `json:"seed" yaml:"seed"` // [Advanced] Supports deterministic seeding
+
+	// Generation control - Observability
+	Logprobs    bool `json:"logprobs" yaml:"logprobs"`         // [Core] Supports returning log probabilities
+	TopLogprobs bool `json:"top_logprobs" yaml:"top_logprobs"` // [Core] Supports returning top N log probabilities
+	Echo        bool `json:"echo" yaml:"echo"`                 // [Advanced] Supports echoing prompt with completion
+
+	// Generation control - Multiplicity and reranking
+	N      bool `json:"n" yaml:"n"`             // [Advanced] Supports generating multiple candidates
+	BestOf bool `json:"best_of" yaml:"best_of"` // [Advanced] Supports server-side sampling with best selection
+
+	// Generation control - Alternative sampling strategies (niche)
+	Mirostat                      bool `json:"mirostat" yaml:"mirostat"`                                                 // [Niche] Supports Mirostat sampling
+	MirostatTau                   bool `json:"mirostat_tau" yaml:"mirostat_tau"`                                         // [Niche] Supports Mirostat tau parameter
+	MirostatEta                   bool `json:"mirostat_eta" yaml:"mirostat_eta"`                                         // [Niche] Supports Mirostat eta parameter
+	ContrastiveSearchPenaltyAlpha bool `json:"contrastive_search_penalty_alpha" yaml:"contrastive_search_penalty_alpha"` // [Niche] Supports contrastive decoding
+
+	// Generation control - Beam search (niche)
+	NumBeams         bool `json:"num_beams" yaml:"num_beams"`                 // [Niche] Supports beam search
+	EarlyStopping    bool `json:"early_stopping" yaml:"early_stopping"`       // [Niche] Supports early stopping in beam search
+	DiversityPenalty bool `json:"diversity_penalty" yaml:"diversity_penalty"` // [Niche] Supports diversity penalty in beam search
 
 	// Response delivery
 	FormatResponse    bool `json:"format_response" yaml:"format_response"`       // Supports alternative response formats (beyond text)
@@ -252,16 +287,41 @@ const (
 
 // ModelGeneration - core chat completions generation controls
 type ModelGeneration struct {
-	Temperature       *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
-	TopP              *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
-	TopK              *IntRange   `json:"top_k,omitempty" yaml:"top_k,omitempty"`
-	TopA              *FloatRange `json:"top_a,omitempty" yaml:"top_a,omitempty"`
-	MinP              *FloatRange `json:"min_p,omitempty" yaml:"min_p,omitempty"`
-	MaxTokens         *int        `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
+	// Core sampling and decoding
+	Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
+	TopP        *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
+	TopK        *IntRange   `json:"top_k,omitempty" yaml:"top_k,omitempty"`
+	TopA        *FloatRange `json:"top_a,omitempty" yaml:"top_a,omitempty"`
+	MinP        *FloatRange `json:"min_p,omitempty" yaml:"min_p,omitempty"`
+	TypicalP    *FloatRange `json:"typical_p,omitempty" yaml:"typical_p,omitempty"`
+	TFS         *FloatRange `json:"tfs,omitempty" yaml:"tfs,omitempty"`
+
+	// Length and termination
+	MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
+	MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty"`
+
+	// Repetition control
 	FrequencyPenalty  *FloatRange `json:"frequency_penalty,omitempty" yaml:"frequency_penalty,omitempty"`
 	PresencePenalty   *FloatRange `json:"presence_penalty,omitempty" yaml:"presence_penalty,omitempty"`
 	RepetitionPenalty *FloatRange `json:"repetition_penalty,omitempty" yaml:"repetition_penalty,omitempty"`
-	TopLogprobs       *int        `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty"` // Number of top log probabilities to return
+	NoRepeatNgramSize *IntRange   `json:"no_repeat_ngram_size,omitempty" yaml:"no_repeat_ngram_size,omitempty"`
+	LengthPenalty     *FloatRange `json:"length_penalty,omitempty" yaml:"length_penalty,omitempty"`
+
+	// Observability
+	TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty"` // Number of top log probabilities to return
+
+	// Multiplicity and reranking
+	N      *IntRange `json:"n,omitempty" yaml:"n,omitempty"`             // Number of candidates to generate
+	BestOf *IntRange `json:"best_of,omitempty" yaml:"best_of,omitempty"` // Server-side sampling with best selection
+
+	// Alternative sampling strategies (niche)
+	MirostatTau                   *FloatRange `json:"mirostat_tau,omitempty" yaml:"mirostat_tau,omitempty"`
+	MirostatEta                   *FloatRange `json:"mirostat_eta,omitempty" yaml:"mirostat_eta,omitempty"`
+	ContrastiveSearchPenaltyAlpha *FloatRange `json:"contrastive_search_penalty_alpha,omitempty" yaml:"contrastive_search_penalty_alpha,omitempty"`
+
+	// Beam search (niche)
+	NumBeams         *IntRange   `json:"num_beams,omitempty" yaml:"num_beams,omitempty"`
+	DiversityPenalty *FloatRange `json:"diversity_penalty,omitempty" yaml:"diversity_penalty,omitempty"`
 }
 
 // ToolChoice represents the strategy for selecting tools.
@@ -405,7 +465,7 @@ type TokenPricing struct {
 	// Advanced token types
 	Reasoning *TokenCost `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
 	Cache     *CacheCost `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
-	
+
 	// Alternative flat cache structure (for backward compatibility)
 	CacheRead  *TokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
 	CacheWrite *TokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
@@ -413,7 +473,7 @@ type TokenPricing struct {
 
 // TokenCost represents cost per token with flexible units.
 type TokenCost struct {
-	PerToken float64 `json:"per_token" yaml:"per_token"`   // Cost per individual token
+	PerToken float64 `json:"per_token" yaml:"per_token"`  // Cost per individual token
 	Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m"` // Cost per 1M tokens
 }
 

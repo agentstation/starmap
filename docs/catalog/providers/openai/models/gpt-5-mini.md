@@ -34,17 +34,19 @@
 
 ## Technical Specifications ⚙️
 
-### Generation Controls (Part 1)
+### Generation Controls
 
-| Temperature | Top-P | Top-K | Top-A | Min-P | Max Tokens |
-|-------------|-------|-------|-------|-------|------------|
-| ✅ (0-2.0)  | ✅ (0-1) | ❌        | ❌        | ❌        | ✅ (1-128.0K) |
+**Sampling & Decoding**
+- Temperature: 0.0 - 2.0
+- Top-P: 0.0 - 1.0
 
-### Generation Controls (Part 2)
+**Length & Termination**
+- Max Tokens: 1 - 128.0K
+- Stop Sequences: Supported
 
-| Frequency Penalty | Presence Penalty | Repetition Penalty | Logit Bias | Seed | Stop Sequences | Logprobs |
-|-------------------|------------------|--------------------|------------|------|----------------|----------|
-| ✅ (-2 to 2)      | ✅ (-2 to 2)     | ❌                 | ❌         | ❌   | ✅             | ❌        |
+**Repetition Control**
+- Frequency Penalty: -2.0 to 2.0
+- Presence Penalty: -2.0 to 2.0
 
 ## Pricing 💰
 
