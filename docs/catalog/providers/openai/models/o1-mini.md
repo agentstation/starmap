@@ -8,7 +8,7 @@
 - **Release Date**: 2024-09-12
 - **Knowledge Cutoff**: 2023-09-01
 - **Open Weights**: false
-- **Context Window**: 128.0K tokens
+- **Context Window**: 128K tokens
 - **Max Output**: 65.5K tokens
 
 ## Capabilities 🎯

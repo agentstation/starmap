@@ -7,7 +7,7 @@ Alias that points to the most recent production (non-experimental) release of Ge
 
 - **ID**: `gemini-1.5-flash-latest`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
+- **Context Window**: 1M tokens
 - **Max Output**: 8.2K tokens
 
 ## Capabilities 🎯

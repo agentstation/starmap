@@ -7,7 +7,7 @@ Stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for 
 
 - **ID**: `gemini-1.5-flash-002`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
+- **Context Window**: 1M tokens
 - **Max Output**: 8.2K tokens
 
 ## Capabilities 🎯

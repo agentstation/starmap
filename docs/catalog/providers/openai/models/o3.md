@@ -8,8 +8,8 @@
 - **Release Date**: 2025-04-16
 - **Knowledge Cutoff**: 2024-05-01
 - **Open Weights**: false
-- **Context Window**: 200.0K tokens
-- **Max Output**: 100.0K tokens
+- **Context Window**: 200K tokens
+- **Max Output**: 100K tokens
 
 ## Capabilities 🎯
 
@@ -44,7 +44,7 @@
 
 | Max Tokens | Stop Sequences |
 |---|---|
-| 1-100.0K | ✅ |
+| 1-100K | ✅ |
 
 ### Repetition Control
 

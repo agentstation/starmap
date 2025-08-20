@@ -7,7 +7,7 @@ Stable version of Gemini 1.5 Flash-8B, our smallest and most cost effective Flas
 
 - **ID**: `gemini-1.5-flash-8b-001`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
+- **Context Window**: 1M tokens
 - **Max Output**: 8.2K tokens
 
 ## Capabilities 🎯

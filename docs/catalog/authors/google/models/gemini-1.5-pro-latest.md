@@ -7,7 +7,7 @@ Alias that points to the most recent production (non-experimental) release of Ge
 
 - **ID**: `gemini-1.5-pro-latest`
 - **Author**: [Google](../README.md)
-- **Context Window**: 2.0M tokens
+- **Context Window**: 2M tokens
 - **Max Output**: 8.2K tokens
 
 ## Capabilities 🎯

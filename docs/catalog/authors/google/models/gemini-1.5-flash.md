@@ -7,7 +7,7 @@ Alias that points to the most recent stable version of Gemini 1.5 Flash, our fas
 
 - **ID**: `gemini-1.5-flash`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
+- **Context Window**: 1M tokens
 - **Max Output**: 8.2K tokens
 
 ## Capabilities 🎯

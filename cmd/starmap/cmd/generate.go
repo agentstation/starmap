@@ -2056,9 +2056,17 @@ func getCurrencySymbol(currency string) string {
 
 func formatNumber(n int) string {
 	if n >= 1000000 {
-		return fmt.Sprintf("%.1fM", float64(n)/1000000)
+		millions := float64(n) / 1000000
+		if millions == float64(int(millions)) {
+			return fmt.Sprintf("%.0fM", millions)
+		}
+		return fmt.Sprintf("%.1fM", millions)
 	} else if n >= 1000 {
-		return fmt.Sprintf("%.1fK", float64(n)/1000)
+		thousands := float64(n) / 1000
+		if thousands == float64(int(thousands)) {
+			return fmt.Sprintf("%.0fK", thousands)
+		}
+		return fmt.Sprintf("%.1fK", thousands)
 	}
 	return fmt.Sprintf("%d", n)
 }
