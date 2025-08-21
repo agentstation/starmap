@@ -50,7 +50,7 @@ func ValidateProviderAccess(catalog catalogs.Catalog) (*ProviderValidationReport
 		status := ProviderValidationStatus{
 			Provider:     provider,
 			HasAPIKey:    result.HasAPIKey,
-			IsRequired:   result.IsRequired,
+			IsRequired:   result.IsAPIKeyRequired,
 			IsConfigured: result.IsConfigured,
 			Error:        result.Error,
 		}

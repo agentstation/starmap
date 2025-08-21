@@ -150,9 +150,20 @@
   name: Google Vertex AI
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
+  env_vars:
+    - name: GOOGLE_VERTEX_PROJECT
+      required: false
+      description: "GCP project ID (optional - falls back to gcloud config)"
+    - name: GOOGLE_VERTEX_LOCATION
+      required: false
+      description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      required: false
+      description: "Path to service account JSON file (optional - uses Application Default Credentials)"
   catalog:
     docs_url: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
     api_url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
+    api_key_required: false
   status_page_url: https://status.cloud.google.com
   chat_completions:
     url: https://us-central1-aiplatform.googleapis.com/v1/projects

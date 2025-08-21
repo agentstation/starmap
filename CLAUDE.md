@@ -465,8 +465,42 @@ type Client interface {
 
 ### Authentication Patterns
 - **API Keys**: Configured via environment variables (e.g., `OPENAI_API_KEY`)
+- **Environment Variables**: Alternative authentication using multiple env vars (e.g., Google Vertex)
 - **Headers**: Provider-specific headers added by transport layer
 - **Validation**: Pattern matching in provider configuration
+
+### Provider Configuration Examples
+
+#### Traditional API Key Provider
+```yaml
+- id: openai
+  name: OpenAI
+  api_key:
+    name: OPENAI_API_KEY
+    pattern: "sk-.*"
+    header: "Authorization"
+    scheme: "Bearer"
+  catalog:
+    api_key_required: true
+```
+
+#### Environment Variables Provider
+```yaml
+- id: google-vertex
+  name: Google Vertex AI
+  env_vars:
+    - name: GOOGLE_VERTEX_PROJECT
+      required: false
+      description: "GCP project ID (optional - falls back to gcloud config)"
+    - name: GOOGLE_VERTEX_LOCATION
+      required: false
+      description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      required: false
+      description: "Path to service account JSON file (optional - uses Application Default Credentials)"
+  catalog:
+    api_key_required: false
+```
 
 ## Smart Merging and Change Detection
 
@@ -495,12 +529,66 @@ The diff system (`internal/catalogs/operations/diff.go`) categorizes:
 - **API Keys**: Environment variables with automatic binding
 
 ### Key Environment Variables
+
+#### API Keys (Traditional Authentication)
 ```bash
 OPENAI_API_KEY=...
 ANTHROPIC_API_KEY=...
 GOOGLE_API_KEY=...
 GROQ_API_KEY=...
 ```
+
+#### Environment Variables (Alternative Authentication)
+Some providers use environment variables instead of or in addition to API keys:
+
+```bash
+# Google Vertex AI (all optional - see Google Cloud Authentication below)
+GOOGLE_VERTEX_PROJECT=your-gcp-project-id
+GOOGLE_VERTEX_LOCATION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+```
+
+#### Google Cloud Authentication
+Google Vertex AI supports multiple authentication methods via Application Default Credentials (ADC):
+
+1. **Environment Variables** (explicit configuration):
+   ```bash
+   export GOOGLE_VERTEX_PROJECT=your-project-id
+   export GOOGLE_VERTEX_LOCATION=us-central1
+   export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+   ```
+
+2. **gcloud CLI** (recommended for development):
+   ```bash
+   # Set default project and region
+   gcloud config set project your-project-id
+   gcloud config set compute/region us-central1
+   
+   # Authenticate with your user account
+   gcloud auth application-default login
+   ```
+
+3. **Workload Identity** (for GKE deployments):
+   - No configuration needed - automatically detected
+   - Uses Kubernetes service account bound to Google Cloud service account
+
+4. **Compute Engine Default Service Account** (for GCE VMs):
+   - No configuration needed - automatically detected
+   - Uses the VM's attached service account
+
+**Priority Order**: Environment variables → gcloud config → ADC automatic detection
+
+**Future Enhancement**: Full integration with Google Cloud Go SDK (`golang.org/x/oauth2/google`) would provide:
+- Automatic OAuth2 token management with refresh
+- Workload Identity detection without gcloud CLI dependency  
+- Seamless integration with all Google Cloud authentication methods
+- No need for manual token handling
+
+#### Provider Configuration Types
+- **API Key Only**: Most providers (OpenAI, Anthropic, etc.)
+- **Environment Variables Only**: Google Vertex AI
+- **Optional API Key**: Some providers work with or without authentication
+- **Mixed**: Future providers may support both methods
 
 ## Development Patterns
 

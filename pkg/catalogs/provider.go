@@ -18,6 +18,9 @@ type Provider struct {
 	// API key configuration
 	APIKey *ProviderAPIKey `json:"api_key,omitempty" yaml:"api_key,omitempty"` // API key configuration
 
+	// Environment variables configuration
+	EnvVars []ProviderEnvVar `json:"env_vars,omitempty" yaml:"env_vars,omitempty"` // Required environment variables
+
 	// Models
 	Catalog *ProviderCatalog `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
 	Models  map[string]Model // Available models indexed by model ID
@@ -33,7 +36,8 @@ type Provider struct {
 	GovernancePolicy   *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"`     // Oversight and moderation practices
 
 	// Runtime fields (not serialized)
-	APIKeyValue string `json:"-" yaml:"-"` // Actual API key value loaded from environment
+	APIKeyValue string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
+	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
 // ProviderCatalog represents information about a provider's models.
@@ -50,6 +54,14 @@ type ProviderAPIKey struct {
 	Header     string               `json:"header" yaml:"header"`           // Header name to send the API key in
 	Scheme     ProviderAPIKeyScheme `json:"scheme" yaml:"scheme"`           // Authentication scheme (e.g., "Bearer", "Basic", or empty for direct value)
 	QueryParam string               `json:"query_param" yaml:"query_param"` // Query parameter name to send the API key in
+}
+
+// ProviderEnvVar represents an environment variable required by a provider.
+type ProviderEnvVar struct {
+	Name        string `json:"name" yaml:"name"`                                 // Environment variable name
+	Required    bool   `json:"required" yaml:"required"`                         // Whether this env var is required
+	Description string `json:"description,omitempty" yaml:"description,omitempty"` // Human-readable description
+	Pattern     string `json:"pattern,omitempty" yaml:"pattern,omitempty"`       // Optional validation pattern
 }
 
 // ProviderAPIKeyScheme represents different authentication schemes for API keys.
@@ -220,12 +232,14 @@ func (pvs ProviderValidationStatus) String() string {
 
 // ProviderValidationResult contains the result of validating a provider.
 type ProviderValidationResult struct {
-	Status       ProviderValidationStatus `json:"status"`
-	HasAPIKey    bool                     `json:"has_api_key"`
-	IsRequired   bool                     `json:"is_required"`
-	IsConfigured bool                     `json:"is_configured"`
-	IsSupported  bool                     `json:"is_supported"`
-	Error        error                    `json:"error,omitempty"`
+	Status          ProviderValidationStatus `json:"status"`
+	HasAPIKey       bool                     `json:"has_api_key"`
+	IsAPIKeyRequired bool                    `json:"is_api_key_required"`
+	HasRequiredEnvVars bool                  `json:"has_required_env_vars"`
+	MissingEnvVars  []string                 `json:"missing_env_vars,omitempty"`
+	IsConfigured    bool                     `json:"is_configured"`
+	IsSupported     bool                     `json:"is_supported"`
+	Error           error                    `json:"error,omitempty"`
 }
 
 // LoadAPIKey loads the API key value from environment into the provider.
@@ -236,9 +250,80 @@ func (p *Provider) LoadAPIKey() {
 	}
 }
 
+// LoadEnvVars loads environment variable values from the system into the provider.
+// This should be called when the provider is loaded from the catalog.
+func (p *Provider) LoadEnvVars() {
+	if len(p.EnvVars) == 0 {
+		return
+	}
+	
+	if p.EnvVarValues == nil {
+		p.EnvVarValues = make(map[string]string)
+	}
+	
+	for _, envVar := range p.EnvVars {
+		p.EnvVarValues[envVar.Name] = os.Getenv(envVar.Name)
+	}
+}
+
 // GetAPIKeyValue returns the loaded API key value.
 func (p *Provider) GetAPIKeyValue() string {
 	return p.APIKeyValue
+}
+
+// GetEnvVar returns the value of a specific environment variable.
+func (p *Provider) GetEnvVar(name string) string {
+	if p.EnvVarValues != nil {
+		if value, exists := p.EnvVarValues[name]; exists {
+			return value
+		}
+	}
+	// Fallback to direct environment lookup
+	return os.Getenv(name)
+}
+
+// HasRequiredEnvVars checks if all required environment variables are set.
+func (p *Provider) HasRequiredEnvVars() bool {
+	for _, envVar := range p.EnvVars {
+		if envVar.Required {
+			value := p.GetEnvVar(envVar.Name)
+			if value == "" {
+				return false
+			}
+			
+			// Validate against pattern if specified
+			if envVar.Pattern != "" && envVar.Pattern != ".*" {
+				matched, err := regexp.MatchString(envVar.Pattern, value)
+				if err != nil || !matched {
+					return false
+				}
+			}
+		}
+	}
+	return true
+}
+
+// GetMissingEnvVars returns a list of required environment variables that are not set.
+func (p *Provider) GetMissingEnvVars() []string {
+	var missing []string
+	for _, envVar := range p.EnvVars {
+		if envVar.Required {
+			value := p.GetEnvVar(envVar.Name)
+			if value == "" {
+				missing = append(missing, envVar.Name)
+				continue
+			}
+			
+			// Check pattern validation
+			if envVar.Pattern != "" && envVar.Pattern != ".*" {
+				matched, err := regexp.MatchString(envVar.Pattern, value)
+				if err != nil || !matched {
+					missing = append(missing, envVar.Name)
+				}
+			}
+		}
+	}
+	return missing
 }
 
 // HasAPIKey checks if the provider has an API key configured.
@@ -293,10 +378,20 @@ func (p *Provider) GetAPIKey() (string, error) {
 // The supportedProviders parameter is a set of provider IDs that have client implementations.
 func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderValidationResult {
 	result := ProviderValidationResult{
-		HasAPIKey:    p.HasAPIKey(),
-		IsRequired:   p.IsAPIKeyRequired(),
-		IsConfigured: p.HasAPIKey(), // Same as HasAPIKey for now
-		IsSupported:  supportedProviders[p.ID],
+		HasAPIKey:          p.HasAPIKey(),
+		IsAPIKeyRequired:   p.IsAPIKeyRequired(),
+		HasRequiredEnvVars: p.HasRequiredEnvVars(),
+		MissingEnvVars:     p.GetMissingEnvVars(),
+		IsSupported:        supportedProviders[p.ID],
+	}
+
+	// Provider is configured if it has all required auth (API key and/or env vars)
+	result.IsConfigured = true
+	if result.IsAPIKeyRequired && !result.HasAPIKey {
+		result.IsConfigured = false
+	}
+	if len(result.MissingEnvVars) > 0 {
+		result.IsConfigured = false
 	}
 
 	// Check if provider has client implementation
@@ -305,27 +400,33 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 		return result
 	}
 
-	// Categorize based on API key status
-	if result.HasAPIKey {
-		if result.IsRequired {
-			// Validate the API key format
+	// Determine status based on configuration
+	if result.IsConfigured {
+		// Validate API key format if present and required
+		if result.IsAPIKeyRequired && result.HasAPIKey {
 			_, err := p.GetAPIKey()
 			if err != nil {
 				result.Error = err
 				result.Status = ProviderValidationStatusMissing
-			} else {
-				result.Status = ProviderValidationStatusConfigured
+				return result
 			}
-		} else {
-			// Optional API key that is configured
-			result.Status = ProviderValidationStatusConfigured
 		}
+		result.Status = ProviderValidationStatusConfigured
 	} else {
-		if result.IsRequired {
-			result.Error = fmt.Errorf("required API key %s not configured", p.APIKey.Name)
+		// Check what's missing
+		var missingParts []string
+		if result.IsAPIKeyRequired && !result.HasAPIKey {
+			missingParts = append(missingParts, fmt.Sprintf("API key %s", p.APIKey.Name))
+		}
+		if len(result.MissingEnvVars) > 0 {
+			missingParts = append(missingParts, fmt.Sprintf("environment variables: %v", result.MissingEnvVars))
+		}
+		
+		if len(missingParts) > 0 {
+			result.Error = fmt.Errorf("missing required configuration: %s", fmt.Sprintf("%v", missingParts))
 			result.Status = ProviderValidationStatusMissing
 		} else {
-			// No API key needed or optional key not set
+			// No auth required at all
 			result.Status = ProviderValidationStatusOptional
 		}
 	}
@@ -384,6 +485,13 @@ func (p *Provider) GetClient(opts ...ClientOption) (*ClientResult, error) {
 	// Check if API key is required but missing
 	if result.APIKeyRequired && !result.APIKeyPresent && !options.AllowMissingAPIKey {
 		result.Error = fmt.Errorf("provider %s requires API key %s but it is not configured", p.ID, p.APIKey.Name)
+		return result, nil
+	}
+
+	// Check if required environment variables are missing
+	missingEnvVars := p.GetMissingEnvVars()
+	if len(missingEnvVars) > 0 && !options.AllowMissingAPIKey {
+		result.Error = fmt.Errorf("provider %s is missing required environment variables: %v", p.ID, missingEnvVars)
 		return result, nil
 	}
 

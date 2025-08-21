@@ -120,8 +120,9 @@ func (l *Loader) LoadProviders() error {
 	}
 
 	for _, provider := range providers {
-		// Load API key from environment for this provider
+		// Load API key and environment variables from environment for this provider
 		provider.LoadAPIKey()
+		provider.LoadEnvVars()
 
 		if err := l.catalog.providers.Add(&provider); err != nil {
 			return fmt.Errorf("adding provider %s: %w", provider.ID, err)

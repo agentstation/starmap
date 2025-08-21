@@ -62,8 +62,9 @@ func runFetch(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("provider %s not found in catalog", fetchProvider)
 	}
 
-	// Load API key from environment
+	// Load API key and environment variables from environment
 	provider.LoadAPIKey()
+	provider.LoadEnvVars()
 
 	// Get client for provider
 	result, err := provider.GetClient()

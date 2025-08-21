@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/sources/base"
+	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -27,7 +27,7 @@ type GroqResponse struct {
 // is missing the max_completion_tokens field, but it is actually returned by both the
 // models list endpoint and individual model endpoints as of 2025.
 type GroqModelData struct {
-	base.OpenAIModelData
+	baseclient.OpenAIModelData
 	Active              bool `json:"active"`
 	ContextWindow       int  `json:"context_window"`
 	MaxCompletionTokens int  `json:"max_completion_tokens"` // Not documented but present in API response
@@ -36,20 +36,20 @@ type GroqModelData struct {
 
 // Client implements the catalogs.Client interface for Groq.
 type Client struct {
-	*base.OpenAIClient
+	*baseclient.OpenAIClient
 }
 
 // NewClient creates a new Groq client (kept for backward compatibility).
 func NewClient(apiKey string, provider *catalogs.Provider) *Client {
 	provider.APIKeyValue = apiKey // Set the API key in the provider
 	return &Client{
-		OpenAIClient: base.NewOpenAIClient(provider, "https://api.groq.com/openai"),
+		OpenAIClient: baseclient.NewOpenAIClient(provider, "https://api.groq.com/openai"),
 	}
 }
 
 // Configure sets the provider for this client (used by registry pattern).
 func (c *Client) Configure(provider *catalogs.Provider) {
-	c.OpenAIClient = base.NewOpenAIClient(provider, "https://api.groq.com/openai")
+	c.OpenAIClient = baseclient.NewOpenAIClient(provider, "https://api.groq.com/openai")
 }
 
 // ListModels implements single-step fetching to get complete Groq model data.
@@ -153,7 +153,7 @@ func (c *Client) ConvertToGroqModel(m GroqModelData) catalogs.Model {
 }
 
 // ConvertToModel overrides the base implementation for backward compatibility.
-func (c *Client) ConvertToModel(m base.OpenAIModelData) catalogs.Model {
+func (c *Client) ConvertToModel(m baseclient.OpenAIModelData) catalogs.Model {
 	// This method is kept for compatibility but shouldn't be used with the new ListModels
 	model := c.OpenAIClient.ConvertToModel(m)
 	model.Name = c.formatModelName(m.ID)

@@ -1,0 +1,8 @@
+# claude-3-5-haiku@20241022 - Anthropic Claude model claude-3-5-haiku available through...
+id: claude-3-5-haiku@20241022
+name: claude 3 5 haiku
+description: >
+  Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
+# Timestamps
+created_at: 2025-08-21T00:13:02Z
+updated_at: 2025-08-21T00:13:02Z

@@ -94,12 +94,16 @@ func runProviders(cmd *cobra.Command, args []string) error {
 				fmt.Printf(" (ready)")
 			case catalogs.ProviderValidationStatusOptional:
 				if result.HasAPIKey {
-					fmt.Printf(" (optional key not set)")
+					fmt.Printf(" (optional key configured)")
 				} else {
-					fmt.Printf(" (no key needed)")
+					fmt.Printf(" (no auth needed)")
 				}
 			case catalogs.ProviderValidationStatusMissing:
-				fmt.Printf(" (missing API key)")
+				if result.Error != nil {
+					fmt.Printf(" (%s)", result.Error.Error())
+				} else {
+					fmt.Printf(" (missing configuration)")
+				}
 			case catalogs.ProviderValidationStatusUnsupported:
 				fmt.Printf(" (no client)")
 			}
@@ -120,6 +124,21 @@ func runProviders(cmd *cobra.Command, args []string) error {
 			fmt.Println()
 		}
 
+		if len(provider.EnvVars) > 0 {
+			fmt.Printf("   Environment Variables:\n")
+			for _, envVar := range provider.EnvVars {
+				status := "optional"
+				if envVar.Required {
+					status = "required"
+				}
+				fmt.Printf("     %s (%s)", envVar.Name, status)
+				if envVar.Description != "" {
+					fmt.Printf(" - %s", envVar.Description)
+				}
+				fmt.Println()
+			}
+		}
+
 		if provider.Catalog != nil && provider.Catalog.DocsURL != nil {
 			fmt.Printf("   Docs: %s\n", *provider.Catalog.DocsURL)
 		}
@@ -132,9 +151,9 @@ func runProviders(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println("Legend:")
-	fmt.Println("  ✅ = Ready to use (client available and API key configured)")
-	fmt.Println("  ⚪ = Available (client available, no API key needed or optional)")
-	fmt.Println("  ❌ = Missing API key (client available but required API key not set)")
+	fmt.Println("  ✅ = Ready to use (client available and all required configuration set)")
+	fmt.Println("  ⚪ = Available (client available, no required configuration or optional auth not set)")
+	fmt.Println("  ❌ = Missing configuration (client available but missing required API keys or environment variables)")
 	fmt.Println("  ⚠️  = No client implementation yet")
 
 	return nil

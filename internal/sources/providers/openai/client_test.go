@@ -9,7 +9,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/sources/base"
+	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/internal/sources/providers/testhelper"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -21,15 +21,15 @@ func TestMain(m *testing.M) {
 }
 
 // loadTestdataResponse loads an OpenAI API response from testdata
-func loadTestdataResponse(t *testing.T, filename string) base.OpenAIResponse {
+func loadTestdataResponse(t *testing.T, filename string) baseclient.OpenAIResponse {
 	t.Helper()
-	var response base.OpenAIResponse
+	var response baseclient.OpenAIResponse
 	testhelper.LoadJSON(t, filename, &response)
 	return response
 }
 
 // loadTestdataModel loads a single OpenAI model from testdata by finding it in the models list
-func loadTestdataModel(t *testing.T, modelID string) base.OpenAIModelData {
+func loadTestdataModel(t *testing.T, modelID string) baseclient.OpenAIModelData {
 	t.Helper()
 	response := loadTestdataResponse(t, "models_list.json")
 
@@ -40,7 +40,7 @@ func loadTestdataModel(t *testing.T, modelID string) base.OpenAIModelData {
 	}
 
 	t.Fatalf("Model %s not found in testdata", modelID)
-	return base.OpenAIModelData{}
+	return baseclient.OpenAIModelData{}
 }
 
 // TestOpenAIModelDataParsing tests that we can properly parse OpenAI API responses.
@@ -82,7 +82,7 @@ func TestOpenAIModelDataParsing(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Find the model by ID
-			var model base.OpenAIModelData
+			var model baseclient.OpenAIModelData
 			found := false
 			for _, m := range response.Data {
 				if m.ID == tt.expectedID {
@@ -145,7 +145,7 @@ func TestConvertToOpenAIModel(t *testing.T) {
 	}
 
 	// Test data based on actual OpenAI API response format
-	openaiModel := base.OpenAIModelData{
+	openaiModel := baseclient.OpenAIModelData{
 		ID:      "gpt-4o",
 		Object:  "model",
 		Created: 1715367049,

@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sources/providers/testhelper"
@@ -43,14 +42,6 @@ func loadTestdataModel(t *testing.T, modelID string) GroqModelData {
 	return GroqModelData{}
 }
 
-// loadTestdataModelDetail loads individual model detail response from testdata
-func loadTestdataModelDetail(t *testing.T, modelID string) GroqModelData {
-	t.Helper()
-	filename := fmt.Sprintf("model_detail_%s.json", strings.ReplaceAll(modelID, "/", "_"))
-	var model GroqModelData
-	testhelper.LoadJSON(t, filename, &model)
-	return model
-}
 
 // TestGroqModelDataParsing tests that we can properly parse Groq API responses with provider-specific fields.
 func TestGroqModelDataParsing(t *testing.T) {
@@ -134,72 +125,61 @@ func TestGroqModelDataParsing(t *testing.T) {
 	}
 }
 
-// TestGroqTwoStepDataConsistency tests that models list and individual model details are consistent.
-// This verifies that our two-step parsing process gets consistent data from both endpoints.
-func TestGroqTwoStepDataConsistency(t *testing.T) {
-	// Test models that we have both list and detail data for
+// TestGroqSingleStepCompleteness tests that the models list endpoint now provides complete data.
+// This verifies that we no longer need the two-step process since Groq API evolved.
+func TestGroqSingleStepCompleteness(t *testing.T) {
+	// Load the models list response
+	response := loadTestdataResponse(t, "models_list.json")
+
+	// Test key models to ensure they have complete data in the list response
 	testModels := []string{
 		"llama-3.1-8b-instant",
-		"meta-llama/llama-guard-4-12b",
+		"meta-llama/llama-guard-4-12b", 
 		"whisper-large-v3",
-		"compound-beta",
-		"qwen/qwen3-32b",
+	}
+
+	foundModels := make(map[string]GroqModelData)
+	for _, model := range response.Data {
+		foundModels[model.ID] = model
 	}
 
 	for _, modelID := range testModels {
 		t.Run(modelID, func(t *testing.T) {
-			// Load from models list
-			listModel := loadTestdataModel(t, modelID)
-
-			// Load from individual model detail
-			detailModel := loadTestdataModelDetail(t, modelID)
-
-			// Verify core fields are consistent
-			if listModel.ID != detailModel.ID {
-				t.Errorf("ID mismatch: list=%s, detail=%s", listModel.ID, detailModel.ID)
+			model, found := foundModels[modelID]
+			if !found {
+				// If model not found in current testdata, skip test
+				t.Skipf("Model %s not found in current testdata", modelID)
+				return
 			}
 
-			if listModel.Object != detailModel.Object {
-				t.Errorf("Object mismatch: list=%s, detail=%s", listModel.Object, detailModel.Object)
+			// Verify core fields are present
+			if model.ID == "" {
+				t.Error("ID should not be empty")
 			}
 
-			if listModel.Created != detailModel.Created {
-				t.Errorf("Created mismatch: list=%d, detail=%d", listModel.Created, detailModel.Created)
+			if model.Object != "model" {
+				t.Errorf("Expected Object 'model', got '%s'", model.Object)
 			}
 
-			if listModel.OwnedBy != detailModel.OwnedBy {
-				t.Errorf("OwnedBy mismatch: list=%s, detail=%s", listModel.OwnedBy, detailModel.OwnedBy)
+			if model.Created == 0 {
+				t.Error("Created should not be zero")
 			}
 
-			if listModel.Active != detailModel.Active {
-				t.Errorf("Active mismatch: list=%t, detail=%t", listModel.Active, detailModel.Active)
+			if model.OwnedBy == "" {
+				t.Error("OwnedBy should not be empty")
 			}
 
-			// Verify Groq-specific fields are present and consistent
-			if listModel.ContextWindow != detailModel.ContextWindow {
-				t.Errorf("ContextWindow mismatch: list=%d, detail=%d", listModel.ContextWindow, detailModel.ContextWindow)
-			}
-
-			if listModel.MaxCompletionTokens != detailModel.MaxCompletionTokens {
-				t.Errorf("MaxCompletionTokens mismatch: list=%d, detail=%d", listModel.MaxCompletionTokens, detailModel.MaxCompletionTokens)
-			}
-
-			// Verify that both endpoints provide the critical Groq-specific fields
-			if listModel.ContextWindow == 0 {
+			// Verify Groq-specific fields are present in list response
+			if model.ContextWindow == 0 {
 				t.Error("ContextWindow should be non-zero in list response")
 			}
 
-			if listModel.MaxCompletionTokens == 0 {
+			if model.MaxCompletionTokens == 0 {
 				t.Error("MaxCompletionTokens should be non-zero in list response")
 			}
 
-			if detailModel.ContextWindow == 0 {
-				t.Error("ContextWindow should be non-zero in detail response")
-			}
-
-			if detailModel.MaxCompletionTokens == 0 {
-				t.Error("MaxCompletionTokens should be non-zero in detail response")
-			}
+			t.Logf("✅ Model %s has complete data: context=%d, max_tokens=%d", 
+				model.ID, model.ContextWindow, model.MaxCompletionTokens)
 		})
 	}
 }
@@ -244,24 +224,18 @@ func TestGroqAPIEvolution(t *testing.T) {
 		}
 	})
 
-	// Verify individual model endpoints still work
-	t.Run("Individual endpoint consistency", func(t *testing.T) {
-		// Test a few key models to ensure individual endpoints provide consistent data
-		testModels := []string{"llama-3.1-8b-instant", "meta-llama/llama-guard-4-12b"}
-
-		for _, modelID := range testModels {
-			detailModel := loadTestdataModelDetail(t, modelID)
-
-			if detailModel.ID != modelID {
-				t.Errorf("Individual endpoint returned wrong model: expected %s, got %s", modelID, detailModel.ID)
+	// Since we no longer use the two-step process, we just verify the list endpoint provides complete data
+	t.Run("List endpoint provides complete data", func(t *testing.T) {
+		// Verify that all models in the list have the essential fields
+		for _, model := range response.Data {
+			if model.ID == "" {
+				t.Errorf("Model missing ID")
 			}
-
-			if detailModel.ContextWindow == 0 {
-				t.Errorf("Individual endpoint missing ContextWindow for %s", modelID)
+			if model.ContextWindow == 0 {
+				t.Errorf("Model %s missing ContextWindow in list response", model.ID)
 			}
-
-			if detailModel.MaxCompletionTokens == 0 {
-				t.Errorf("Individual endpoint missing MaxCompletionTokens for %s", modelID)
+			if model.MaxCompletionTokens == 0 {
+				t.Errorf("Model %s missing MaxCompletionTokens in list response", model.ID)
 			}
 		}
 	})

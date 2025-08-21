@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalogs/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Starmap manages a catalog with automatic updates and event hooks
@@ -25,7 +26,13 @@ type Starmap interface {
 	Update() error
 
 	// Sync synchronizes the catalog with provider APIs
-	Sync(opts ...catalogs.SyncOption) (*catalogs.SyncResult, error)
+	Sync(opts ...sources.SyncOption) (*catalogs.SyncResult, error)
+
+	// SetSyncOptions sets the sync options used by Update() operations
+	SetSyncOptions(options *sources.SyncOptions)
+
+	// GetSyncOptions returns a copy of the current sync options
+	GetSyncOptions() *sources.SyncOptions
 
 	// OnModelAdded registers a callback for when models are added
 	OnModelAdded(ModelAddedHook)
@@ -50,6 +57,9 @@ type starmap struct {
 
 	// HTTP client for remote server
 	httpClient *http.Client
+
+	// Sync options for Update() operations
+	syncOptions *sources.SyncOptions
 }
 
 // New creates a new Starmap instance with the given options
@@ -63,6 +73,11 @@ func New(opts ...Option) (Starmap, error) {
 
 	if err := sm.options(opts...); err != nil {
 		return nil, fmt.Errorf("applying options: %w", err)
+	}
+
+	// Apply sync options from config
+	if sm.config.syncOptions != nil {
+		sm.syncOptions = sm.config.syncOptions.Copy()
 	}
 
 	// Use provided catalog or create default
@@ -159,9 +174,49 @@ func (s *starmap) Update() error {
 			return err
 		}
 		s.setCatalog(newCatalog)
+	} else {
+		// Use pipeline-based update as default
+		return s.updateWithPipeline()
 	}
 
 	return nil
+}
+
+// updateWithPipeline performs a pipeline-based update for all providers
+func (s *starmap) updateWithPipeline() error {
+	// Get the sync options (thread-safe)
+	s.mu.RLock()
+	syncOptions := s.syncOptions
+	s.mu.RUnlock()
+
+	// Use stored sync options or default options for auto-updates
+	var opts []sources.SyncOption
+	if syncOptions != nil {
+		// Convert stored options back to option functions
+		// This is simpler than trying to pass the struct directly
+		opts = []sources.SyncOption{
+			sources.SyncWithAutoApprove(syncOptions.AutoApprove),
+			sources.SyncWithDryRun(syncOptions.DryRun),
+		}
+		if syncOptions.OutputDir != "" {
+			opts = append(opts, sources.SyncWithOutputDir(syncOptions.OutputDir))
+		}
+		if syncOptions.Timeout > 0 {
+			opts = append(opts, sources.SyncWithTimeout(syncOptions.Timeout))
+		}
+		// Add other options as needed
+	} else {
+		// Use default options for auto-updates
+		opts = []sources.SyncOption{
+			sources.SyncWithDryRun(false),
+			sources.SyncWithAutoApprove(true),
+		}
+	}
+
+	// Perform a sync operation with configured or default options
+	_, err := s.Sync(opts...)
+
+	return err
 }
 
 // updateFromServer fetches catalog updates from the remote server
@@ -190,6 +245,20 @@ func (s *starmap) updateFromServer() error {
 	// For now, this is a stub implementation
 
 	return nil
+}
+
+// SetSyncOptions sets the sync options used by Update() operations
+func (s *starmap) SetSyncOptions(options *sources.SyncOptions) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.syncOptions = options.Copy() // Store a copy to prevent external mutations
+}
+
+// GetSyncOptions returns a copy of the current sync options
+func (s *starmap) GetSyncOptions() *sources.SyncOptions {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.syncOptions.Copy()
 }
 
 // setCatalog updates the catalog and triggers appropriate event hooks

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 var (
@@ -33,6 +34,9 @@ type config struct {
 
 	// Initial catalog
 	initialCatalog *catalogs.Catalog
+
+	// Sync options for Update() operations
+	syncOptions *sources.SyncOptions
 }
 
 // Option is a function that configures a Starmap instance
@@ -98,6 +102,19 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {
 func WithInitialCatalog(catalog catalogs.Catalog) Option {
 	return func(c *config) error {
 		c.initialCatalog = &catalog
+		return nil
+	}
+}
+
+// WithSyncOptions configures the sync options used by Update() operations
+func WithSyncOptions(syncOptions *sources.SyncOptions) Option {
+	return func(c *config) error {
+		if syncOptions != nil {
+			if err := syncOptions.Validate(); err != nil {
+				return fmt.Errorf("invalid sync options: %w", err)
+			}
+			c.syncOptions = syncOptions.Copy()
+		}
 		return nil
 	}
 }

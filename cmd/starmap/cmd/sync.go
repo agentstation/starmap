@@ -7,6 +7,7 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/files"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
@@ -109,25 +110,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 	}
 
 	// Build sync options
-	var opts []catalogs.SyncOption
-	if syncProvider != "" {
-		opts = append(opts, catalogs.SyncWithProvider(catalogs.ProviderID(syncProvider)))
-	}
-	if syncDryRun {
-		opts = append(opts, catalogs.SyncWithDryRun(true))
-	}
-	if syncFresh {
-		opts = append(opts, catalogs.SyncWithFreshSync(true))
-	}
-	if syncAutoApprove {
-		opts = append(opts, catalogs.SyncWithAutoApprove(true))
-	}
-	if syncOutput != "" {
-		opts = append(opts, catalogs.SyncWithOutputDir(syncOutput))
-	}
-	if syncCleanModelsDev {
-		opts = append(opts, catalogs.SyncWithCleanModelsDevRepo(true))
-	}
+	opts := buildSyncOptions(syncProvider, syncOutput, syncDryRun, syncFresh, syncAutoApprove, syncCleanModelsDev)
 
 	fmt.Printf("\nStarting sync...\n\n")
 
@@ -175,15 +158,6 @@ func runSync(cmd *cobra.Command, args []string) error {
 				return nil
 			}
 
-			// Perform actual sync without dry-run
-			opts = append(opts[:0:0], opts...) // copy slice
-			for i, opt := range opts {
-				// Remove dry-run option if it exists
-				// Note: This is a simplification - in practice we might restructure this
-				_ = i
-				_ = opt
-			}
-
 			// Re-run sync without dry-run
 			fmt.Printf("\n🚀 Applying changes...\n")
 			if syncOutput != "" {
@@ -191,19 +165,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 			}
 
 			// Call sync again without dry-run
-			finalOpts := []catalogs.SyncOption{}
-			if syncProvider != "" {
-				finalOpts = append(finalOpts, catalogs.SyncWithProvider(catalogs.ProviderID(syncProvider)))
-			}
-			if syncFresh {
-				finalOpts = append(finalOpts, catalogs.SyncWithFreshSync(true))
-			}
-			if syncOutput != "" {
-				finalOpts = append(finalOpts, catalogs.SyncWithOutputDir(syncOutput))
-			}
-			if syncCleanModelsDev {
-				finalOpts = append(finalOpts, catalogs.SyncWithCleanModelsDevRepo(true))
-			}
+			finalOpts := buildSyncOptions(syncProvider, syncOutput, false, syncFresh, false, syncCleanModelsDev)
 
 			_, err := sm.Sync(finalOpts...)
 			if err != nil {
@@ -218,4 +180,30 @@ func runSync(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+// buildSyncOptions creates a slice of sync options based on the provided flags
+func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, cleanModelsDev bool) []sources.SyncOption {
+	var opts []sources.SyncOption
+
+	if provider != "" {
+		opts = append(opts, sources.SyncWithProvider(catalogs.ProviderID(provider)))
+	}
+	if dryRun {
+		opts = append(opts, sources.SyncWithDryRun(true))
+	}
+	if fresh {
+		opts = append(opts, sources.SyncWithFreshSync(true))
+	}
+	if autoApprove {
+		opts = append(opts, sources.SyncWithAutoApprove(true))
+	}
+	if output != "" {
+		opts = append(opts, sources.SyncWithOutputDir(output))
+	}
+	if cleanModelsDev {
+		opts = append(opts, sources.SyncWithCleanModelsDevRepo(true))
+	}
+
+	return opts
 }

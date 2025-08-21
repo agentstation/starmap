@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/sources/base"
+	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -16,20 +16,20 @@ func init() {
 
 // Client implements the catalogs.Client interface for Google AI Studio.
 type Client struct {
-	*base.GoogleClient
+	*baseclient.GoogleClient
 }
 
 // NewClient creates a new Google AI Studio client (kept for backward compatibility).
 func NewClient(apiKey string, provider *catalogs.Provider) *Client {
 	provider.APIKeyValue = apiKey // Set the API key in the provider
 	return &Client{
-		GoogleClient: base.NewGoogleClient(provider, "https://generativelanguage.googleapis.com/v1beta/models"),
+		GoogleClient: baseclient.NewGoogleClient(provider, "https://generativelanguage.googleapis.com/v1beta/models"),
 	}
 }
 
 // Configure sets the provider for this client (used by registry pattern).
 func (c *Client) Configure(provider *catalogs.Provider) {
-	c.GoogleClient = base.NewGoogleClient(provider, "https://generativelanguage.googleapis.com/v1beta/models")
+	c.GoogleClient = baseclient.NewGoogleClient(provider, "https://generativelanguage.googleapis.com/v1beta/models")
 }
 
 // ListModels uses the base Google implementation.
@@ -52,7 +52,7 @@ func (c *Client) ExtractModelID(name string) string {
 }
 
 // ConvertToModel overrides the base implementation for Google AI Studio specific logic.
-func (c *Client) ConvertToModel(m base.GoogleModelData) catalogs.Model {
+func (c *Client) ConvertToModel(m baseclient.GoogleModelData) catalogs.Model {
 	model := c.GoogleClient.ConvertToModel(m)
 
 	// Google AI Studio specific customizations can be added here

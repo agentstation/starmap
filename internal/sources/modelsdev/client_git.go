@@ -12,12 +12,15 @@ const (
 	DefaultBranch    = "dev"
 )
 
-// Client handles models.dev repository operations
-type Client struct {
+// GitClient handles models.dev repository operations
+type GitClient struct {
 	RepoPath string
 }
 
-// NewClient creates a new models.dev client
+// Client is an alias for backward compatibility
+type Client = GitClient
+
+// NewClient creates a new models.dev git client
 func NewClient(outputDir string) *Client {
 	repoPath := filepath.Join(outputDir, "models.dev")
 	return &Client{
@@ -25,8 +28,16 @@ func NewClient(outputDir string) *Client {
 	}
 }
 
+// NewGitClient creates a new models.dev git client
+func NewGitClient(outputDir string) *GitClient {
+	repoPath := filepath.Join(outputDir, "models.dev")
+	return &GitClient{
+		RepoPath: repoPath,
+	}
+}
+
 // EnsureRepository ensures the models.dev repository is available and up to date
-func (c *Client) EnsureRepository() error {
+func (c *GitClient) EnsureRepository() error {
 	var needsInstall bool
 
 	if c.repositoryExists() {
@@ -57,7 +68,7 @@ func (c *Client) EnsureRepository() error {
 }
 
 // BuildAPI runs the build process to generate api.json
-func (c *Client) BuildAPI() error {
+func (c *GitClient) BuildAPI() error {
 	if !c.repositoryExists() {
 		return fmt.Errorf("models.dev repository not found at %s", c.RepoPath)
 	}
@@ -86,7 +97,7 @@ func (c *Client) BuildAPI() error {
 }
 
 // installDependencies runs bun install in the repository root
-func (c *Client) installDependencies() error {
+func (c *GitClient) installDependencies() error {
 	cmd := exec.Command("bun", "install")
 	cmd.Dir = c.RepoPath
 
@@ -100,17 +111,17 @@ func (c *Client) installDependencies() error {
 }
 
 // GetAPIPath returns the path to the generated api.json file
-func (c *Client) GetAPIPath() string {
+func (c *GitClient) GetAPIPath() string {
 	return filepath.Join(c.RepoPath, "packages", "web", "dist", "_api.json")
 }
 
 // GetProvidersPath returns the path to the providers directory
-func (c *Client) GetProvidersPath() string {
+func (c *GitClient) GetProvidersPath() string {
 	return filepath.Join(c.RepoPath, "providers")
 }
 
 // Cleanup removes the models.dev repository
-func (c *Client) Cleanup() error {
+func (c *GitClient) Cleanup() error {
 	if !c.repositoryExists() {
 		return nil // Already cleaned up
 	}
@@ -118,14 +129,14 @@ func (c *Client) Cleanup() error {
 }
 
 // repositoryExists checks if the models.dev repository exists
-func (c *Client) repositoryExists() bool {
+func (c *GitClient) repositoryExists() bool {
 	gitDir := filepath.Join(c.RepoPath, ".git")
 	_, err := os.Stat(gitDir)
 	return err == nil
 }
 
 // cloneRepository clones the models.dev repository
-func (c *Client) cloneRepository() error {
+func (c *GitClient) cloneRepository() error {
 	// Create parent directory if it doesn't exist
 	parentDir := filepath.Dir(c.RepoPath)
 	if err := os.MkdirAll(parentDir, 0755); err != nil {
@@ -143,7 +154,7 @@ func (c *Client) cloneRepository() error {
 }
 
 // updateRepository updates the existing models.dev repository
-func (c *Client) updateRepository() error {
+func (c *GitClient) updateRepository() error {
 	// Reset any local changes
 	resetCmd := exec.Command("git", "reset", "--hard", "HEAD")
 	resetCmd.Dir = c.RepoPath
