@@ -10,8 +10,6 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 - **Release Date**: 2024-10-22
 - **Knowledge Cutoff**: 2024-07-31
 - **Open Weights**: false
-- **Context Window**: 200K tokens
-- **Max Output**: 8.2K tokens
 
 ## 🎯 Capabilities
 
@@ -44,9 +42,15 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 
 ### Sampling & Decoding
 
-| Temperature |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
+
+### Length & Termination
+
+| Max Tokens |
 |---|
-| 0.0-2.0 |
+| ✅ |
 
 ## 💰 Pricing
 
@@ -58,8 +62,8 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 15:45:49 UTC
-**Last Updated**: 2025-08-21 15:45:49 UTC
+**Created**: 2025-08-21 15:56:24 UTC
+**Last Updated**: 2025-08-21 15:56:24 UTC
 
 ## Navigation
 

@@ -10,6 +10,8 @@ Google Vertex AI model: gemini-2.5-pro
 - **Release Date**: 2025-03-20
 - **Knowledge Cutoff**: 2025-01-01
 - **Open Weights**: false
+- **Context Window**: 1.0M tokens
+- **Max Output**: 65.5K tokens
 
 ## 🎯 Capabilities
 
@@ -17,7 +19,7 @@ Google Vertex AI model: gemini-2.5-pro
 
 | Direction | Text | Image | Audio | Video | PDF |
 |-----------|------|-------|-------|-------|-----|
-| Input     | ✅   | ✅   | ✅   | ✅   | ❌   |
+| Input     | ✅   | ✅   | ❌   | ❌   | ❌   |
 | Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
@@ -40,12 +42,6 @@ Google Vertex AI model: gemini-2.5-pro
 
 ## Generation Controls
 
-### Sampling & Decoding
-
-| Temperature |
-|---|
-| 0.0-2.0 |
-
 ## 💰 Pricing
 
 ### Token Pricing
@@ -56,8 +52,8 @@ Google Vertex AI model: gemini-2.5-pro
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 15:45:49 UTC
-**Last Updated**: 2025-08-21 15:45:49 UTC
+**Created**: 2025-08-21 15:56:24 UTC
+**Last Updated**: 2025-08-21 15:56:24 UTC
 
 ## Navigation
 

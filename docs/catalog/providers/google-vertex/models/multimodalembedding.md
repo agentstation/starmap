@@ -14,8 +14,8 @@ Google Vertex AI model: multimodalembedding
 
 | Direction | Text | Image | Audio | Video | PDF |
 |-----------|------|-------|-------|-------|-----|
-| Input     | ❌   | ❌   | ❌   | ❌   | ❌   |
-| Output    | ❌   | ❌   | ❌   | ❌   | ❌   |
+| Input     | ✅   | ❌   | ❌   | ❌   | ❌   |
+| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
@@ -37,8 +37,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 15:45:49 UTC
-**Last Updated**: 2025-08-21 15:45:49 UTC
+**Created**: 2025-08-21 15:56:24 UTC
+**Last Updated**: 2025-08-21 15:56:24 UTC
 
 ## Navigation
 

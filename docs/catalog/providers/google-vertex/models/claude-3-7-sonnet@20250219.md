@@ -7,8 +7,6 @@
 - **Release Date**: 2025-02-19
 - **Knowledge Cutoff**: 2024-10-31
 - **Open Weights**: false
-- **Context Window**: 200K tokens
-- **Max Output**: 64K tokens
 
 ## 🎯 Capabilities
 
@@ -41,9 +39,15 @@
 
 ### Sampling & Decoding
 
-| Temperature |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
+
+### Length & Termination
+
+| Max Tokens |
 |---|
-| 0.0-2.0 |
+| ✅ |
 
 ## 💰 Pricing
 
@@ -55,8 +59,8 @@
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 15:45:49 UTC
-**Last Updated**: 2025-08-21 15:45:49 UTC
+**Created**: 2025-08-21 15:56:24 UTC
+**Last Updated**: 2025-08-21 15:56:24 UTC
 
 ## Navigation
 

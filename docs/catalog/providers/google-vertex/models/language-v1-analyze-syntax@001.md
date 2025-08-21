@@ -11,14 +11,14 @@
 
 | Direction | Text | Image | Audio | Video | PDF |
 |-----------|------|-------|-------|-------|-----|
-| Input     | ❌   | ❌   | ❌   | ❌   | ❌   |
-| Output    | ❌   | ❌   | ❌   | ❌   | ❌   |
+| Input     | ✅   | ✅   | ❌   | ❌   | ❌   |
+| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ❌               | ❌          | ❌         | ❌               |
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
@@ -30,9 +30,15 @@
 
 ### Sampling & Decoding
 
-| Temperature |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
+
+### Length & Termination
+
+| Max Tokens |
 |---|
-| 0.0-2.0 |
+| ✅ |
 
 ## 💰 Pricing
 
@@ -40,8 +46,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 15:45:49 UTC
-**Last Updated**: 2025-08-21 15:45:49 UTC
+**Created**: 2025-08-21 15:56:24 UTC
+**Last Updated**: 2025-08-21 15:56:24 UTC
 
 ## Navigation
 

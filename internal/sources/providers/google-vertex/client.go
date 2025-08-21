@@ -146,14 +146,24 @@ func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, er
 func (c *Client) fetchPublisherModels(ctx context.Context, accessToken string) ([]catalogs.Model, error) {
 	var allModels []catalogs.Model
 
-	// Fetch models from different publishers using the correct v1beta1 endpoint
-	publishers := []string{"google", "anthropic", "meta"}
+	// Fetch models from all major publishers in Vertex AI Model Garden
+	publishers := []string{
+		"google",      // Google's own models (Gemini, PaLM, etc.)
+		"anthropic",   // Claude models
+		"meta",        // Llama models
+		"mistralai",   // Mistral models
+		"ai21",        // AI21 Jamba models
+		"deepseek-ai", // DeepSeek models
+	}
 	
 	for _, publisher := range publishers {
 		url := fmt.Sprintf("https://%s-aiplatform.googleapis.com/v1beta1/publishers/%s/models", c.location, publisher)
 		publisherModels, err := c.fetchModelsFromURL(ctx, url, accessToken)
 		if err == nil {
+			fmt.Printf("  ✅ Fetched %d models from publisher %s\n", len(publisherModels), publisher)
 			allModels = append(allModels, publisherModels...)
+		} else {
+			fmt.Printf("  ⚠️  Could not fetch models from publisher %s: %v\n", publisher, err)
 		}
 	}
 
@@ -288,7 +298,16 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 
 	// Enhanced feature detection for specific model types
 	modelIDLower := strings.ToLower(modelID)
-	if strings.Contains(modelIDLower, "claude") {
+	publisherLower := strings.ToLower(publisherModel.Name)
+	
+	// Set metadata for open source category
+	if publisherModel.OpenSourceCategory != "" {
+		model.Metadata = &catalogs.ModelMetadata{
+			OpenWeights: publisherModel.OpenSourceCategory == "OPEN_SOURCE",
+		}
+	}
+	
+	if strings.Contains(modelIDLower, "claude") || strings.Contains(publisherLower, "anthropic") {
 		// Claude models support multimodal and advanced features
 		model.Features.Modalities.Input = append(model.Features.Modalities.Input, catalogs.ModelModalityImage)
 		model.Features.ToolCalls = true
@@ -301,12 +320,61 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 			ContextWindow: 200000,
 			OutputTokens:  4096,
 		}
+	} else if strings.Contains(modelIDLower, "llama") || strings.Contains(publisherLower, "meta") {
+		// Meta Llama models
+		model.Features.ToolCalls = true
+		model.Features.Tools = true
+		model.Features.Reasoning = true
 		
-		// Set metadata for open source category
-		if publisherModel.OpenSourceCategory != "" {
-			model.Metadata = &catalogs.ModelMetadata{
-				OpenWeights: publisherModel.OpenSourceCategory == "OPEN_SOURCE",
-			}
+		// Set typical Llama limits
+		model.Limits = &catalogs.ModelLimits{
+			ContextWindow: 128000, // Typical Llama context
+			OutputTokens:  4096,
+		}
+	} else if strings.Contains(modelIDLower, "mistral") || strings.Contains(publisherLower, "mistralai") {
+		// Mistral models
+		model.Features.ToolCalls = true
+		model.Features.Tools = true
+		
+		// Set typical Mistral limits
+		model.Limits = &catalogs.ModelLimits{
+			ContextWindow: 128000,
+			OutputTokens:  4096,
+		}
+	} else if strings.Contains(modelIDLower, "jamba") || strings.Contains(publisherLower, "ai21") {
+		// AI21 Jamba models
+		model.Features.ToolCalls = true
+		model.Features.Tools = true
+		
+		// Set typical Jamba limits
+		model.Limits = &catalogs.ModelLimits{
+			ContextWindow: 256000, // Jamba has long context
+			OutputTokens:  4096,
+		}
+	} else if strings.Contains(modelIDLower, "deepseek") || strings.Contains(publisherLower, "deepseek") {
+		// DeepSeek models
+		model.Features.ToolCalls = true
+		model.Features.Tools = true
+		model.Features.Reasoning = true
+		
+		// Set typical DeepSeek limits
+		model.Limits = &catalogs.ModelLimits{
+			ContextWindow: 64000,
+			OutputTokens:  4096,
+		}
+	} else if strings.Contains(modelIDLower, "gemini") || strings.Contains(publisherLower, "google") {
+		// Google models (Gemini, PaLM, etc.)
+		if !strings.Contains(modelIDLower, "embedding") {
+			model.Features.Modalities.Input = append(model.Features.Modalities.Input, catalogs.ModelModalityImage)
+			model.Features.ToolCalls = true
+			model.Features.Tools = true
+			model.Features.ToolChoice = true
+		}
+		
+		// Set typical Gemini limits
+		model.Limits = &catalogs.ModelLimits{
+			ContextWindow: 1048576, // Gemini has very long context
+			OutputTokens:  8192,
 		}
 	}
 
@@ -338,10 +406,18 @@ func (c *Client) generateModelName(modelID string) string {
 
 // getAccessToken gets a Google Cloud access token for API authentication
 func (c *Client) getAccessToken() (string, error) {
+	// Try gcloud first
 	cmd := exec.Command("gcloud", "auth", "print-access-token")
 	output, err := cmd.Output()
+	if err == nil {
+		return strings.TrimSpace(string(output)), nil
+	}
+	
+	// If gcloud fails, try application-default
+	cmd = exec.Command("gcloud", "auth", "application-default", "print-access-token")
+	output, err = cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("getting access token via gcloud: %w", err)
+		return "", fmt.Errorf("getting access token via gcloud (tried both auth methods): %w", err)
 	}
 	return strings.TrimSpace(string(output)), nil
 }
