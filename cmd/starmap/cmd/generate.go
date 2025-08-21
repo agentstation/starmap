@@ -169,7 +169,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 		// Get a brief description or use default
 		description := "AI model provider"
 		if provider.Name != "" {
-			description = fmt.Sprintf("%s AI models", provider.Name)
+			description = fmt.Sprintf("%s models", provider.Name)
 		}
 
 		sb.WriteString(fmt.Sprintf("| %s | %d | %s |\n", providerLink, modelCount, description))
@@ -189,7 +189,7 @@ func generateMainIndex(providers []*catalogs.Provider, authors []*catalogs.Autho
 		if author.Description != nil {
 			description = *author.Description
 		} else if author.Name != "" {
-			description = fmt.Sprintf("%s AI models", author.Name)
+			description = fmt.Sprintf("%s models", author.Name)
 		}
 
 		sb.WriteString(fmt.Sprintf("| %s | %d | %s |\n", authorLink, modelCount, description))
@@ -1633,16 +1633,16 @@ func generateControlsTables(model *catalogs.Model) string {
 	// Create horizontal tables for each category that has supported features
 
 	// Sampling & Decoding Controls
-	hasCoreSampling := model.Features.Temperature || model.Features.TopP || model.Features.TopK || 
+	hasCoreSampling := model.Features.Temperature || model.Features.TopP || model.Features.TopK ||
 		model.Features.TopA || model.Features.MinP
-	
+
 	if hasCoreSampling {
 		sb.WriteString("### Sampling & Decoding\n\n")
-		
+
 		// Build table headers dynamically based on what's supported
 		var headers []string
 		var values []string
-		
+
 		if model.Features.Temperature {
 			headers = append(headers, "Temperature")
 			rangeStr := ""
@@ -1653,7 +1653,7 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.TopP {
 			headers = append(headers, "Top-P")
 			rangeStr := ""
@@ -1664,7 +1664,7 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.TopK {
 			headers = append(headers, "Top-K")
 			rangeStr := ""
@@ -1675,17 +1675,17 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.TopA {
 			headers = append(headers, "Top-A")
 			values = append(values, "✅")
 		}
-		
+
 		if model.Features.MinP {
 			headers = append(headers, "Min-P")
 			values = append(values, "✅")
 		}
-		
+
 		// Build the table
 		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 		sb.WriteString("|" + strings.Repeat("---|", len(headers)) + "\n")
@@ -1694,13 +1694,13 @@ func generateControlsTables(model *catalogs.Model) string {
 
 	// Length & Termination Controls
 	hasLengthControls := model.Features.MaxTokens || model.Features.Stop
-	
+
 	if hasLengthControls {
 		sb.WriteString("### Length & Termination\n\n")
-		
+
 		var headers []string
 		var values []string
-		
+
 		if model.Features.MaxTokens {
 			headers = append(headers, "Max Tokens")
 			rangeStr := ""
@@ -1711,12 +1711,12 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.Stop {
 			headers = append(headers, "Stop Sequences")
 			values = append(values, "✅")
 		}
-		
+
 		// Build the table
 		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 		sb.WriteString("|" + strings.Repeat("---|", len(headers)) + "\n")
@@ -1724,15 +1724,15 @@ func generateControlsTables(model *catalogs.Model) string {
 	}
 
 	// Repetition Control
-	hasRepetitionControls := model.Features.FrequencyPenalty || model.Features.PresencePenalty || 
+	hasRepetitionControls := model.Features.FrequencyPenalty || model.Features.PresencePenalty ||
 		model.Features.RepetitionPenalty
-	
+
 	if hasRepetitionControls {
 		sb.WriteString("### Repetition Control\n\n")
-		
+
 		var headers []string
 		var values []string
-		
+
 		if model.Features.FrequencyPenalty {
 			headers = append(headers, "Frequency Penalty")
 			rangeStr := ""
@@ -1743,7 +1743,7 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.PresencePenalty {
 			headers = append(headers, "Presence Penalty")
 			rangeStr := ""
@@ -1754,12 +1754,12 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		if model.Features.RepetitionPenalty {
 			headers = append(headers, "Repetition Penalty")
 			values = append(values, "✅")
 		}
-		
+
 		// Build the table
 		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 		sb.WriteString("|" + strings.Repeat("---|", len(headers)) + "\n")
@@ -1768,23 +1768,23 @@ func generateControlsTables(model *catalogs.Model) string {
 
 	// Advanced Controls
 	hasAdvancedControls := model.Features.LogitBias || model.Features.Seed || model.Features.Logprobs
-	
+
 	if hasAdvancedControls {
 		sb.WriteString("### Advanced Controls\n\n")
-		
+
 		var headers []string
 		var values []string
-		
+
 		if model.Features.LogitBias {
 			headers = append(headers, "Logit Bias")
 			values = append(values, "✅")
 		}
-		
+
 		if model.Features.Seed {
 			headers = append(headers, "Deterministic Seed")
 			values = append(values, "✅")
 		}
-		
+
 		if model.Features.Logprobs {
 			headers = append(headers, "Log Probabilities")
 			rangeStr := ""
@@ -1795,7 +1795,7 @@ func generateControlsTables(model *catalogs.Model) string {
 			}
 			values = append(values, rangeStr)
 		}
-		
+
 		// Build the table
 		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 		sb.WriteString("|" + strings.Repeat("---|", len(headers)) + "\n")
