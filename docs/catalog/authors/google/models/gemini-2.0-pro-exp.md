@@ -7,8 +7,6 @@ Experimental release (March 25th, 2025) of Gemini 2.5 Pro
 
 - **ID**: `gemini-2.0-pro-exp`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
-- **Max Output**: 65.5K tokens
 
 ## 🎯 Capabilities
 
@@ -23,27 +21,27 @@ Experimental release (March 25th, 2025) of Gemini 2.5 Pro
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ✅               | ✅          | ❌         | ❌               |
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ✅                | ✅        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ❌            | ✅           |
 
 ## Generation Controls
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-65.5K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -51,8 +49,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

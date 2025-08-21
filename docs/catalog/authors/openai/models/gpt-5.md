@@ -7,8 +7,6 @@
 - **Release Date**: 2025-08-07
 - **Knowledge Cutoff**: 2024-09-30
 - **Open Weights**: false
-- **Context Window**: 400K tokens
-- **Max Output**: 128K tokens
 
 ## 🎯 Capabilities
 
@@ -16,20 +14,26 @@
 
 | Direction | Text | Image | Audio | Video | PDF |
 |-----------|------|-------|-------|-------|-----|
-| Input     | ✅   | ✅   | ✅   | ❌   | ❌   |
-| Output    | ✅   | ❌   | ✅   | ❌   | ❌   |
+| Input     | ✅   | ❌   | ❌   | ❌   | ❌   |
+| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ❌               | ❌          | ❌         | ❌               |
+| ✅           | ❌               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ❌                | ❌        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ✅            | ✅           |
+
+### Advanced Reasoning
+
+| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
+|-----------------|------------------|------------------|-------------------|-------------------|
+| ✅              | ❌               | ❌               | ❌                | ❌                |
 
 ## Generation Controls
 
@@ -41,15 +45,9 @@
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-128K | ✅ |
-
-### Repetition Control
-
-| Frequency Penalty | Presence Penalty |
-|---|---|
-| -2.0 to 2.0 | -2.0 to 2.0 |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -61,8 +59,8 @@
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:11 UTC
+**Last Updated**: 2025-08-21 14:08:11 UTC
 
 ## Navigation
 

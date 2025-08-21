@@ -12,19 +12,36 @@ Anthropic Claude model claude-3-haiku available through Vertex AI Model Garden
 
 ### Input/Output Modalities
 
-No modality information available.
+| Direction | Text | Image | Audio | Video | PDF |
+|-----------|------|-------|-------|-------|-----|
+| Input     | ❌   | ❌   | ❌   | ❌   | ❌   |
+| Output    | ❌   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
-No feature information available.
+| Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
+|--------------|------------------|-------------|------------|------------------|
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
-No delivery information available.
+| Streaming | Structured Output | JSON Mode | Function Call | Text Format |
+|-----------|-------------------|-----------|---------------|--------------|
+| ✅        | ❌                | ❌        | ❌            | ✅           |
+
+### Advanced Reasoning
+
+| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
+|-----------------|------------------|------------------|-------------------|-------------------|
+| ✅              | ❌               | ❌               | ❌                | ❌                |
 
 ## Generation Controls
 
-No control information available.
+### Sampling & Decoding
+
+| Temperature |
+|---|
+| 0.0-2.0 |
 
 ## 💰 Pricing
 
@@ -32,8 +49,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 00:13:02 UTC
-**Last Updated**: 2025-08-21 00:13:02 UTC
+**Created**: 2025-08-21 15:45:49 UTC
+**Last Updated**: 2025-08-21 15:45:49 UTC
 
 ## Navigation
 

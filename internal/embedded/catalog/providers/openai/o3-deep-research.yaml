@@ -1,0 +1,71 @@
+# o3-deep-research - Language model
+id: o3-deep-research
+name: o3-deep-research
+
+# Model metadata
+metadata:
+  release_date: 2024-06-26
+  knowledge_cutoff: 2024-05-01
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: false
+  top_p: false
+  top_k: false
+  top_a: false
+  min_p: false
+  max_tokens: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  logit_bias: false
+  seed: false
+  stop: false
+  logprobs: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: false
+
+# Model limits
+limits:
+  context_window: 200000
+  output_tokens: 100000
+
+# Model pricing
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 10.00
+    output:
+      per_1m: 40.00
+    cache_read:
+      per_1m: 2.50
+
+# Timestamps
+created_at: 2025-08-21T14:08:11Z
+updated_at: 2025-08-21T14:08:11Z

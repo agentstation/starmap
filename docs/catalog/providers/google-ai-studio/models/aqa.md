@@ -8,8 +8,6 @@ Model trained to return answers to questions that are grounded in provided sourc
 - **ID**: `aqa`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
-- **Context Window**: 7.2K tokens
-- **Max Output**: 1.0K tokens
 
 ## 🎯 Capabilities
 
@@ -36,15 +34,15 @@ Model trained to return answers to questions that are grounded in provided sourc
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-1.0K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -52,8 +50,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

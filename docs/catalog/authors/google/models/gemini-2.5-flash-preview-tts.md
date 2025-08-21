@@ -7,8 +7,6 @@ Gemini 2.5 Flash Preview TTS
 
 - **ID**: `gemini-2.5-flash-preview-tts`
 - **Author**: [Google](../README.md)
-- **Context Window**: 8.2K tokens
-- **Max Output**: 16.4K tokens
 
 ## 🎯 Capabilities
 
@@ -23,27 +21,27 @@ Gemini 2.5 Flash Preview TTS
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ✅               | ✅          | ❌         | ❌               |
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ✅                | ✅        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ❌            | ✅           |
 
 ## Generation Controls
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-16.4K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -51,8 +49,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

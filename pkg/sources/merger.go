@@ -132,9 +132,27 @@ func (fm *FieldMerger) mergeModel(modelID string, sourceModels map[Type]catalogs
 	}
 	provenance := make(map[string]Provenance)
 
-	// Basic model fields to merge
+	// Model fields to merge - includes all fields with defined authorities
 	modelFields := []string{
-		"name", "description",
+		// Basic identity fields
+		"name", "description", "authors",
+		
+		// Pricing fields (models.dev is authoritative)
+		"pricing.input", "pricing.output", "pricing.caching", "pricing.batch", "pricing.image",
+		
+		// Limits fields (models.dev is authoritative)
+		"limits.context_window", "limits.output_tokens",
+		
+		// Metadata fields (models.dev is authoritative)
+		"metadata.knowledge_cutoff", "metadata.release_date", "metadata.open_weights", 
+		"metadata.tags", "metadata.architecture",
+		
+		// Core features (models.dev and provider API both contribute)
+		"features.tool_calls", "features.tools", "features.tool_choice", "features.web_search",
+		"features.reasoning", "features.streaming", "features.temperature", "features.top_p", "features.max_tokens",
+		
+		// Generation parameters (Provider API is authoritative)
+		"generation",
 	}
 
 	// Merge each field according to authorities
@@ -152,6 +170,10 @@ func (fm *FieldMerger) mergeModel(modelID string, sourceModels map[Type]catalogs
 			}
 		}
 	}
+
+	// Enhanced merging for complex nested structures
+	// This handles cases where field-by-field merge might miss some data
+	merged = fm.mergeComplexStructures(merged, sourceModels, &provenance)
 
 	// Set timestamps
 	merged.UpdatedAt = utc.Now()
@@ -326,4 +348,143 @@ func (fm *FieldMerger) setFieldValue(v reflect.Value, fieldPath string, value in
 
 		current = field
 	}
+}
+
+// mergeComplexStructures handles merging of complex nested structures
+func (fm *FieldMerger) mergeComplexStructures(merged catalogs.Model, sourceModels map[Type]catalogs.Model, provenance *map[string]Provenance) catalogs.Model {
+	// Define priority order for complex structure merging
+	priorities := []Type{
+		LocalCatalog,
+		ModelsDevHTTP,
+		ModelsDevGit,
+		ProviderAPI,
+		DatabaseUI,
+	}
+
+	// Merge Limits structure (models.dev is authoritative)
+	for _, sourceType := range priorities {
+		if model, exists := sourceModels[sourceType]; exists && model.Limits != nil {
+			if merged.Limits == nil {
+				merged.Limits = &catalogs.ModelLimits{}
+			}
+			
+			// Merge specific limit fields if they're not already set or source has higher authority
+			if sourceType == ModelsDevHTTP || sourceType == ModelsDevGit {
+				if model.Limits.ContextWindow > 0 {
+					merged.Limits.ContextWindow = model.Limits.ContextWindow
+					if fm.trackProvenance {
+						(*provenance)["limits.context_window"] = Provenance{
+							Source:    sourceType,
+							Value:     model.Limits.ContextWindow,
+							UpdatedAt: time.Now(),
+						}
+					}
+				}
+				if model.Limits.OutputTokens > 0 {
+					merged.Limits.OutputTokens = model.Limits.OutputTokens
+					if fm.trackProvenance {
+						(*provenance)["limits.output_tokens"] = Provenance{
+							Source:    sourceType,
+							Value:     model.Limits.OutputTokens,
+							UpdatedAt: time.Now(),
+						}
+					}
+				}
+			}
+			break // Use first available source in priority order
+		}
+	}
+
+	// Merge Pricing structure (models.dev is authoritative)
+	for _, sourceType := range priorities {
+		if model, exists := sourceModels[sourceType]; exists && model.Pricing != nil {
+			if sourceType == ModelsDevHTTP || sourceType == ModelsDevGit {
+				merged.Pricing = model.Pricing
+				if fm.trackProvenance {
+					(*provenance)["pricing"] = Provenance{
+						Source:    sourceType,
+						Value:     model.Pricing,
+						UpdatedAt: time.Now(),
+					}
+				}
+				break
+			}
+		}
+	}
+
+	// Merge Metadata structure (models.dev is authoritative)
+	for _, sourceType := range priorities {
+		if model, exists := sourceModels[sourceType]; exists && model.Metadata != nil {
+			if sourceType == ModelsDevHTTP || sourceType == ModelsDevGit {
+				if merged.Metadata == nil {
+					merged.Metadata = &catalogs.ModelMetadata{}
+				}
+				
+				// Copy metadata fields from models.dev
+				if !model.Metadata.ReleaseDate.IsZero() {
+					merged.Metadata.ReleaseDate = model.Metadata.ReleaseDate
+				}
+				if model.Metadata.KnowledgeCutoff != nil && !model.Metadata.KnowledgeCutoff.IsZero() {
+					merged.Metadata.KnowledgeCutoff = model.Metadata.KnowledgeCutoff
+				}
+				// Copy open weights flag
+				merged.Metadata.OpenWeights = model.Metadata.OpenWeights
+				
+				if fm.trackProvenance {
+					(*provenance)["metadata"] = Provenance{
+						Source:    sourceType,
+						Value:     model.Metadata,
+						UpdatedAt: time.Now(),
+					}
+				}
+				break
+			}
+		}
+	}
+
+	// Merge Features structure (combination of sources)
+	for _, sourceType := range priorities {
+		if model, exists := sourceModels[sourceType]; exists && model.Features != nil {
+			if merged.Features == nil {
+				merged.Features = &catalogs.ModelFeatures{}
+			}
+			
+			// For features, we merge from all sources, with provider API getting priority for capabilities
+			if sourceType == ProviderAPI {
+				// Provider API is authoritative for current capabilities
+				merged.Features.Modalities = model.Features.Modalities
+				merged.Features.Streaming = model.Features.Streaming
+				// Copy core generation features
+				merged.Features.Temperature = model.Features.Temperature
+				merged.Features.TopP = model.Features.TopP
+				merged.Features.MaxTokens = model.Features.MaxTokens
+			} else if sourceType == ModelsDevHTTP || sourceType == ModelsDevGit {
+				// models.dev might have additional feature information that's not in API
+				if model.Features.ToolCalls && !merged.Features.ToolCalls {
+					merged.Features.ToolCalls = model.Features.ToolCalls
+				}
+				if model.Features.Tools && !merged.Features.Tools {
+					merged.Features.Tools = model.Features.Tools
+				}
+				if model.Features.ToolChoice && !merged.Features.ToolChoice {
+					merged.Features.ToolChoice = model.Features.ToolChoice
+				}
+				if model.Features.WebSearch && !merged.Features.WebSearch {
+					merged.Features.WebSearch = model.Features.WebSearch
+				}
+				if model.Features.Reasoning && !merged.Features.Reasoning {
+					merged.Features.Reasoning = model.Features.Reasoning
+				}
+				// Merge modalities if not already set
+				if len(merged.Features.Modalities.Input) == 0 && len(model.Features.Modalities.Input) > 0 {
+					merged.Features.Modalities.Input = model.Features.Modalities.Input
+				}
+				if len(merged.Features.Modalities.Output) == 0 && len(model.Features.Modalities.Output) > 0 {
+					merged.Features.Modalities.Output = model.Features.Modalities.Output
+				}
+			}
+		}
+	}
+
+	return merged
 }

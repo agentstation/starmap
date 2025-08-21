@@ -6,8 +6,8 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 
 - **Authors**: 78
 - **Providers**: 7
-- **Models**: 167
-- **Last Updated**: 2025-08-21 00:17:54 UTC
+- **Models**: 415
+- **Last Updated**: 2025-08-21 15:46:29 UTC
 
 ## Browse Catalog
 
@@ -23,13 +23,13 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 
 | Provider | Models | Description |
 |----------|--------|--------------|
-| <img src="./providers/anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./providers/anthropic/README.md) | 8 | Anthropic models |
+| <img src="./providers/anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./providers/anthropic/README.md) | 10 | Anthropic models |
 | <img src="./providers/cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](./providers/cerebras/README.md) | 9 | Cerebras models |
 | <img src="./providers/deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](./providers/deepseek/README.md) | 2 | DeepSeek models |
 | <img src="./providers/google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](./providers/google-ai-studio/README.md) | 50 | Google AI Studio models |
-| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 19 | Google Vertex AI models |
-| <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 23 | Groq models |
-| <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 63 | OpenAI models |
+| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 261 | Google Vertex AI models |
+| <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 26 | Groq models |
+| <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 71 | OpenAI models |
 
 ## Authors
 

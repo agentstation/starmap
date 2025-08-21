@@ -7,7 +7,7 @@ Complete list of AI model providers in the Starmap catalog.
 ### <img src="./anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./anthropic/README.md)
 
 **Headquarters**: San Francisco, CA, USA  
-**Models**: 8  
+**Models**: 10  
 **API Key Required**: Yes  
 **API Key Name**: $ANTHROPIC_API_KEY  
 
@@ -35,19 +35,19 @@ Complete list of AI model providers in the Starmap catalog.
 ### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./google-vertex/README.md)
 
 **Headquarters**: Mountain View, CA, USA  
-**Models**: 19  
+**Models**: 261  
 
 ### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./groq/README.md)
 
 **Headquarters**: Mountain View, CA, USA  
-**Models**: 23  
+**Models**: 26  
 **API Key Required**: Yes  
 **API Key Name**: $GROQ_API_KEY  
 
 ### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./openai/README.md)
 
 **Headquarters**: San Francisco, CA, USA  
-**Models**: 63  
+**Models**: 71  
 **API Key Required**: Yes  
 **API Key Name**: $OPENAI_API_KEY  
 

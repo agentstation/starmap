@@ -18,13 +18,13 @@
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ✅               | ✅          | ❌         | ❌               |
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ✅                | ✅        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ❌            | ✅           |
 
 ## Generation Controls
 
@@ -36,21 +36,9 @@
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| ✅ | ✅ |
-
-### Repetition Control
-
-| Frequency Penalty | Presence Penalty |
-|---|---|
-| -2.0 to 2.0 | -2.0 to 2.0 |
-
-### Advanced Controls
-
-| Log Probabilities |
+| Max Tokens |
 |---|
-| 0-20 |
+| ✅ |
 
 ## 💰 Pricing
 
@@ -58,8 +46,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:11 UTC
+**Last Updated**: 2025-08-21 14:08:11 UTC
 
 ## Navigation
 

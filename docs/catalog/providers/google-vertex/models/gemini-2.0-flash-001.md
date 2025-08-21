@@ -12,19 +12,24 @@ Google Gemini model gemini-2.0-flash-001 available through Vertex AI
 
 ### Input/Output Modalities
 
-No modality information available.
+| Direction | Text | Image | Audio | Video | PDF |
+|-----------|------|-------|-------|-------|-----|
+| Input     | ❌   | ❌   | ❌   | ❌   | ❌   |
+| Output    | ❌   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
-No feature information available.
+| Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
+|--------------|------------------|-------------|------------|------------------|
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
-No delivery information available.
+| Streaming | Structured Output | JSON Mode | Function Call | Text Format |
+|-----------|-------------------|-----------|---------------|--------------|
+| ❌        | ❌                | ❌        | ❌            | ✅           |
 
 ## Generation Controls
-
-No control information available.
 
 ## 💰 Pricing
 
@@ -32,8 +37,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 00:13:02 UTC
-**Last Updated**: 2025-08-21 00:13:02 UTC
+**Created**: 2025-08-21 15:45:49 UTC
+**Last Updated**: 2025-08-21 15:45:49 UTC
 
 ## Navigation
 

@@ -7,8 +7,6 @@
 - **Authors**: [OpenAI](../../../../authors/openai/README.md)
 - **Release Date**: 2025-08-05
 - **Open Weights**: true
-- **Context Window**: 131.1K tokens
-- **Max Output**: 32.8K tokens
 
 ## 🎯 Capabilities
 
@@ -23,13 +21,19 @@
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ❌               | ❌          | ❌         | ❌               |
+| ✅           | ❌               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ❌                | ❌        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ✅            | ✅           |
+
+### Advanced Reasoning
+
+| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
+|-----------------|------------------|------------------|-------------------|-------------------|
+| ✅              | ❌               | ❌               | ❌                | ❌                |
 
 ## Generation Controls
 
@@ -41,19 +45,7 @@
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-32.8K | ✅ |
-
-### Repetition Control
-
-| Frequency Penalty | Presence Penalty |
-|---|---|
-| -2.0 to 2.0 | -2.0 to 2.0 |
-
-### Advanced Controls
-
-| Deterministic Seed |
+| Max Tokens |
 |---|
 | ✅ |
 
@@ -67,8 +59,8 @@
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

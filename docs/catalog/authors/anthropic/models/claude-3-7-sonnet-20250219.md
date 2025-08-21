@@ -7,8 +7,6 @@
 - **Release Date**: 2025-02-19
 - **Knowledge Cutoff**: 2024-10-31
 - **Open Weights**: false
-- **Context Window**: 200K tokens
-- **Max Output**: 64K tokens
 
 ## 🎯 Capabilities
 
@@ -23,27 +21,33 @@
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ✅               | ✅          | ❌         | ❌               |
+| ✅           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ✅                | ✅        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ✅            | ✅           |
+
+### Advanced Reasoning
+
+| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
+|-----------------|------------------|------------------|-------------------|-------------------|
+| ✅              | ❌               | ❌               | ❌                | ❌                |
 
 ## Generation Controls
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-64K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -55,8 +59,8 @@
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

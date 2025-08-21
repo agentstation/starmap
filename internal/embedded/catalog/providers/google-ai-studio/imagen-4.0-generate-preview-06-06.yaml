@@ -1,4 +1,5 @@
 # imagen-4.0-generate-preview-06-06 - Vertex served Imagen 4.0 model
+
 id: imagen-4.0-generate-preview-06-06
 name: Imagen 4 (Preview)
 authors:
@@ -6,6 +7,7 @@ authors:
   name: Google
 description: >
   Vertex served Imagen 4.0 model
+
 # Model features
 features:
   modalities:
@@ -31,7 +33,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   max_tokens: true
@@ -40,7 +42,7 @@ features:
   repetition_penalty: false
   logit_bias: false
   seed: false
-  stop: true
+  stop: false
   logprobs: false
 
   # Response delivery
@@ -50,6 +52,7 @@ features:
 
 # Model limits
 limits:
-  context_window: 480
-  output_tokens: 8192
 
+# Timestamps
+created_at: 2025-08-21T14:08:10Z
+updated_at: 2025-08-21T14:08:10Z

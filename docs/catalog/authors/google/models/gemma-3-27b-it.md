@@ -4,8 +4,6 @@
 
 - **ID**: `gemma-3-27b-it`
 - **Author**: [Google](../README.md)
-- **Context Window**: 131.1K tokens
-- **Max Output**: 8.2K tokens
 
 ## 🎯 Capabilities
 
@@ -32,15 +30,15 @@
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-8.2K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -48,8 +46,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

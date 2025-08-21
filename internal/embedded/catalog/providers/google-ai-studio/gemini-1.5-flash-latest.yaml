@@ -6,6 +6,7 @@ authors:
   name: Google
 description: >
   Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks.
+
 # Model features
 features:
   modalities:
@@ -18,7 +19,7 @@ features:
   # Core capabilities
   tool_calls: false
   tools: true
-  tool_choice: true
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -32,7 +33,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   max_tokens: true
@@ -41,16 +42,17 @@ features:
   repetition_penalty: false
   logit_bias: false
   seed: false
-  stop: true
+  stop: false
   logprobs: false
 
   # Response delivery
-  format_response: true
-  structured_outputs: true
+  format_response: false
+  structured_outputs: false
   streaming: true
 
 # Model limits
 limits:
-  context_window: 1000000
-  output_tokens: 8192
 
+# Timestamps
+created_at: 2025-08-21T14:08:10Z
+updated_at: 2025-08-21T14:08:10Z

@@ -8,8 +8,6 @@
 - **Release Date**: 2023-03-01
 - **Knowledge Cutoff**: 2021-09-01
 - **Open Weights**: false
-- **Context Window**: 16.4K tokens
-- **Max Output**: 4.1K tokens
 
 ## 🎯 Capabilities
 
@@ -24,13 +22,13 @@
 
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |--------------|------------------|-------------|------------|------------------|
-| ❌           | ✅               | ✅          | ❌         | ❌               |
+| ❌           | ✅               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ✅                | ✅        | ❌            | ✅           |
+| ✅        | ❌                | ❌        | ❌            | ✅           |
 
 ## Generation Controls
 
@@ -42,21 +40,9 @@
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-4.1K | ✅ |
-
-### Repetition Control
-
-| Frequency Penalty | Presence Penalty |
-|---|---|
-| -2.0 to 2.0 | -2.0 to 2.0 |
-
-### Advanced Controls
-
-| Log Probabilities |
+| Max Tokens |
 |---|
-| 0-20 |
+| ✅ |
 
 ## 💰 Pricing
 
@@ -68,8 +54,8 @@
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:11 UTC
+**Last Updated**: 2025-08-21 14:08:11 UTC
 
 ## Navigation
 

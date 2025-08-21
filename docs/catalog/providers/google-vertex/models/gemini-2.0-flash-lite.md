@@ -4,33 +4,51 @@
 
 - **ID**: `gemini-2.0-flash-lite`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google Vertex AI](../README.md)
+- **Release Date**: 2024-12-11
+- **Knowledge Cutoff**: 2024-06-01
+- **Open Weights**: false
 
 ## 🎯 Capabilities
 
 ### Input/Output Modalities
 
-No modality information available.
+| Direction | Text | Image | Audio | Video | PDF |
+|-----------|------|-------|-------|-------|-----|
+| Input     | ✅   | ✅   | ✅   | ✅   | ❌   |
+| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
 
 ### Core Features
 
-No feature information available.
+| Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
+|--------------|------------------|-------------|------------|------------------|
+| ✅           | ❌               | ❌          | ❌         | ❌               |
 
 ### Response Delivery
 
-No delivery information available.
+| Streaming | Structured Output | JSON Mode | Function Call | Text Format |
+|-----------|-------------------|-----------|---------------|--------------|
+| ❌        | ❌                | ❌        | ✅            | ✅           |
 
 ## Generation Controls
 
-No control information available.
+### Sampling & Decoding
+
+| Temperature |
+|---|
+| 0.0-2.0 |
 
 ## 💰 Pricing
 
-Contact provider for pricing information.
+### Token Pricing
+
+| Input | Output | Reasoning | Cache Read | Cache Write |
+|-------|--------|-----------|------------|-------------|
+| $0.07/1M | $0.30/1M | - | - | - |
 
 ## 📋 Metadata
 
-**Created**: 2025-08-21 00:13:02 UTC
-**Last Updated**: 2025-08-21 00:13:02 UTC
+**Created**: 2025-08-21 15:45:49 UTC
+**Last Updated**: 2025-08-21 15:45:49 UTC
 
 ## Navigation
 

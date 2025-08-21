@@ -1,4 +1,5 @@
 # gemini-2.5-pro-preview-tts - Gemini 2.5 Pro Preview TTS
+
 id: gemini-2.5-pro-preview-tts
 name: Gemini 2.5 Pro Preview TTS
 authors:
@@ -6,6 +7,7 @@ authors:
   name: Google
 description: >
   Gemini 2.5 Pro Preview TTS
+
 # Model features
 features:
   modalities:
@@ -18,7 +20,7 @@ features:
   # Core capabilities
   tool_calls: false
   tools: true
-  tool_choice: true
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -32,7 +34,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   max_tokens: true
@@ -41,16 +43,17 @@ features:
   repetition_penalty: false
   logit_bias: false
   seed: false
-  stop: true
+  stop: false
   logprobs: false
 
   # Response delivery
-  format_response: true
-  structured_outputs: true
+  format_response: false
+  structured_outputs: false
   streaming: true
 
 # Model limits
 limits:
-  context_window: 8192
-  output_tokens: 16384
 
+# Timestamps
+created_at: 2025-08-21T14:08:10Z
+updated_at: 2025-08-21T14:08:10Z

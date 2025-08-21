@@ -20,7 +20,7 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
+  tool_calls: true
   tools: false
   tool_choice: false
   web_search: false
@@ -40,12 +40,12 @@ features:
   top_a: false
   min_p: false
   max_tokens: true
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   logit_bias: false
-  seed: true
-  stop: true
+  seed: false
+  stop: false
   logprobs: false
 
   # Response delivery
@@ -55,8 +55,6 @@ features:
 
 # Model limits
 limits:
-  context_window: 131072
-  output_tokens: 16384
 
 # Model pricing
 pricing:
@@ -67,3 +65,6 @@ pricing:
     output:
       per_1m: 3.00
 
+# Timestamps
+created_at: 2025-08-21T14:08:10Z
+updated_at: 2025-08-21T14:08:10Z

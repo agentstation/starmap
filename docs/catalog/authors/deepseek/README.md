@@ -10,8 +10,8 @@
 
 | Model | Context Window | Available Via | Features |
 |-------|----------------|---------------|----------|
-| [deepseek-chat](./models/deepseek-chat.md) | 65536 | deepseek | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [deepseek-reasoner](./models/deepseek-reasoner.md) | 65536 | deepseek | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
+| [deepseek-chat](./models/deepseek-chat.md) | N/A | deepseek | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [deepseek-reasoner](./models/deepseek-reasoner.md) | N/A | deepseek | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 
 ## Navigation
 

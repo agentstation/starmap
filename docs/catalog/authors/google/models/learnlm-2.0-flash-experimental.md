@@ -7,8 +7,6 @@ LearnLM 2.0 Flash Experimental
 
 - **ID**: `learnlm-2.0-flash-experimental`
 - **Author**: [Google](../README.md)
-- **Context Window**: 1.0M tokens
-- **Max Output**: 32.8K tokens
 
 ## 🎯 Capabilities
 
@@ -35,15 +33,15 @@ LearnLM 2.0 Flash Experimental
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-32.8K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -51,8 +49,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 

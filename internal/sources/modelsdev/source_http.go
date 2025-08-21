@@ -129,25 +129,47 @@ func (s *ModelsDevHTTPSource) FetchModels(ctx context.Context, providerID catalo
 		return nil, fmt.Errorf("models.dev API not available")
 	}
 
-	// Get models from models.dev for this provider
-	modelsDevProvider, exists := s.api.GetProvider(providerID)
-	if !exists {
-		// Not an error - provider might not be in models.dev yet
-		return nil, nil
-	}
-
-	var starmapModels []catalogs.Model
-	for _, modelsDevModel := range modelsDevProvider.Models {
-		// Convert models.dev model to starmap model
-		starmapModel, err := modelsDevModel.ToStarmapModel()
-		if err != nil {
-			// Log the error but continue with other models
-			continue
+	var allStarmapModels []catalogs.Model
+	
+	// Get provider aliases - some providers have multiple models.dev providers
+	providerAliases := s.getProviderAliases(providerID)
+	
+	for _, alias := range providerAliases {
+		// Get models from models.dev for this provider alias
+		modelsDevProvider, exists := s.api.GetProvider(alias)
+		if !exists {
+			continue // Try next alias
 		}
-		starmapModels = append(starmapModels, *starmapModel)
+
+		for _, modelsDevModel := range modelsDevProvider.Models {
+			// Convert models.dev model to starmap model
+			starmapModel, err := modelsDevModel.ToStarmapModel()
+			if err != nil {
+				// Log the error but continue with other models
+				continue
+			}
+			allStarmapModels = append(allStarmapModels, *starmapModel)
+		}
 	}
 
-	return starmapModels, nil
+	return allStarmapModels, nil
+}
+
+// getProviderAliases returns a list of provider IDs to check in models.dev
+// Some providers have models spread across multiple models.dev providers
+func (s *ModelsDevHTTPSource) getProviderAliases(providerID catalogs.ProviderID) []catalogs.ProviderID {
+	aliases := []catalogs.ProviderID{providerID} // Always include the original
+	
+	switch providerID {
+	case "google-vertex":
+		// Google Vertex has models under multiple models.dev providers
+		aliases = append(aliases, "google-vertex-anthropic")
+	case "openai":
+		// OpenAI might have models under other aliases in the future
+		// Add additional aliases as needed
+	}
+	
+	return aliases
 }
 
 // FetchProvider fetches provider information from models.dev

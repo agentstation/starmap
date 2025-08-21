@@ -34,21 +34,22 @@ features:
   top_a: false
   min_p: false
   max_tokens: true
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   logit_bias: false
-  seed: true
-  stop: true
+  seed: false
+  stop: false
   logprobs: false
 
   # Response delivery
   format_response: false
-  structured_outputs: true
+  structured_outputs: false
   streaming: true
 
 # Model limits
 limits:
-  context_window: 512
-  output_tokens: 512
 
+# Timestamps
+created_at: 2025-08-21T14:08:10Z
+updated_at: 2025-08-21T14:08:10Z

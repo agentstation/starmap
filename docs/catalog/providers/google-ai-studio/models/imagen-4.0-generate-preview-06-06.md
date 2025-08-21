@@ -8,8 +8,6 @@ Vertex served Imagen 4.0 model
 - **ID**: `imagen-4.0-generate-preview-06-06`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google AI Studio](../README.md)
 - **Authors**: [Google](../../../authors/google/README.md)
-- **Context Window**: 480 tokens
-- **Max Output**: 8.2K tokens
 
 ## 🎯 Capabilities
 
@@ -36,15 +34,15 @@ Vertex served Imagen 4.0 model
 
 ### Sampling & Decoding
 
-| Temperature | Top-P | Top-K |
-|---|---|---|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---|---|
+| 0.0-2.0 | 0.0-1.0 |
 
 ### Length & Termination
 
-| Max Tokens | Stop Sequences |
-|---|---|
-| 1-8.2K | ✅ |
+| Max Tokens |
+|---|
+| ✅ |
 
 ## 💰 Pricing
 
@@ -52,8 +50,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 0001-01-01 00:00:00 UTC
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-08-21 14:08:10 UTC
+**Last Updated**: 2025-08-21 14:08:10 UTC
 
 ## Navigation
 
