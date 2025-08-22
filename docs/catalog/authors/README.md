@@ -11,6 +11,13 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **GitHub**: [https://github.com/01-ai](https://github.com/01-ai)  
 **Models**: 0  
 
+### [AI21 Labs](./ai21/README.md)
+
+**Description**: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models  
+**Website**: [https://ai21.com](https://ai21.com)  
+**GitHub**: [https://github.com/AI21Labs](https://github.com/AI21Labs)  
+**Models**: 0  
+
 ### [Adept](./adept/README.md)
 
 **Website**: [https://adept.ai](https://adept.ai)  
@@ -210,7 +217,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **GitHub**: [https://github.com/huawei](https://github.com/huawei)  
 **Models**: 0  
 
-### [Hugging Face](./huggingface/README.md)
+### [Hugging Face](./huggingfaceh4/README.md)
 
 **Website**: [https://huggingface.co](https://huggingface.co)  
 **GitHub**: [https://github.com/huggingface](https://github.com/huggingface)  
@@ -342,6 +349,13 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 ### [Princeton University](./princeton/README.md)
 
 **Website**: [https://princeton.edu](https://princeton.edu)  
+**Models**: 0  
+
+### [Qwen Team](./qwen/README.md)
+
+**Description**: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family  
+**Website**: [https://qwen.ai](https://qwen.ai)  
+**GitHub**: [https://github.com/QwenLM](https://github.com/QwenLM)  
 **Models**: 0  
 
 ### [Runway ML](./runway/README.md)

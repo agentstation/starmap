@@ -91,11 +91,11 @@ var DefaultProviderFieldAuthorities = []FieldAuthority{
 	{FieldPath: "privacy_policy.*", Source: ModelsDevHTTP, Priority: 90},
 	{FieldPath: "retention_policy.*", Source: ModelsDevHTTP, Priority: 90},
 	{FieldPath: "governance_policy.*", Source: ModelsDevHTTP, Priority: 90},
-	{FieldPath: "requires_moderation", Source: ModelsDevHTTP, Priority: 85},
+	{FieldPath: "governance_policy.moderation_required", Source: ModelsDevHTTP, Priority: 85},
 	{FieldPath: "privacy_policy.*", Source: ModelsDevGit, Priority: 85},
 	{FieldPath: "retention_policy.*", Source: ModelsDevGit, Priority: 85},
 	{FieldPath: "governance_policy.*", Source: ModelsDevGit, Priority: 85},
-	{FieldPath: "requires_moderation", Source: ModelsDevGit, Priority: 80},
+	{FieldPath: "governance_policy.moderation_required", Source: ModelsDevGit, Priority: 80},
 
 	// Status page - prefer local catalog
 	{FieldPath: "status_page_url", Source: LocalCatalog, Priority: 85},

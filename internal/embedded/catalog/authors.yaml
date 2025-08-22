@@ -14,6 +14,14 @@
   website: https://adept.ai
   twitter: https://x.com/AdeptAILabs
 
+- id: ai21
+  name: AI21 Labs
+  description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
+  website: https://ai21.com
+  huggingface: https://huggingface.co/ai21labs
+  github: https://github.com/AI21Labs
+  twitter: https://x.com/AI21Labs
+
 - id: alibaba
   name: Alibaba Cloud
   description: Chinese technology company known for Qwen (Tongyi Qianwen) language model series
@@ -154,6 +162,10 @@
   website: https://deepseek.com
   huggingface: https://huggingface.co/deepseek-ai
   github: https://github.com/deepseek-ai
+  twitter: https://x.com/DeepSeekAI
+  catalog:
+    provider_id: deepseek
+    description: "DeepSeek's authoritative API catalog containing only their models"
 
 - id: duke
   name: Duke University
@@ -222,7 +234,7 @@
   huggingface: https://huggingface.co/huawei
   github: https://github.com/huawei
 
-- id: huggingface
+- id: huggingfaceh4
   name: Hugging Face
   website: https://huggingface.co
   huggingface: https://huggingface.co/huggingface
@@ -377,6 +389,13 @@
 - id: princeton
   name: Princeton University
   website: https://princeton.edu
+
+- id: qwen
+  name: Qwen Team
+  description: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family
+  website: https://qwen.ai
+  huggingface: https://huggingface.co/Qwen
+  github: https://github.com/QwenLM
 
 - id: runway
   name: Runway ML

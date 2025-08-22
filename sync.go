@@ -52,6 +52,7 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 	// Sources self-initialize - no manual setup needed
 
 	var allChanges []operations.ProviderChangeset
+	updatedProviders := make(map[catalogs.ProviderID]catalogs.Provider)
 
 	// Process each provider using the pipeline
 	for _, providerID := range providersToSync {
@@ -89,6 +90,11 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 		if err != nil {
 			// Log error but continue with next provider
 			continue
+		}
+
+		// Capture updated provider configuration (including discovered publishers)
+		if pipelineResult.Provider != nil && pipelineResult.Provider.ID != "" {
+			updatedProviders[providerID] = *pipelineResult.Provider
 		}
 
 		// Update provider result with pipeline statistics
@@ -196,6 +202,27 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 			// Only HTTP source available - will inform about logo limitation
 			if err := httpOps.CopyProviderLogos(providersToSync); err != nil {
 				// Log error but don't fail the sync
+			}
+		}
+
+		// Save updated providers configuration (including discovered publishers)
+		if len(updatedProviders) > 0 {
+			// For SaveUpdatedProviders, we need the base catalog directory, not the providers subdirectory
+			var baseOutputDir string
+			if options.OutputDir != "" {
+				baseOutputDir = options.OutputDir
+			} else {
+				baseOutputDir = "internal/embedded/catalog"
+			}
+			
+			// Convert map to the expected format for SaveUpdatedProviders
+			providersMap := make(map[catalogs.ProviderID]catalogs.Provider)
+			for id, provider := range updatedProviders {
+				providersMap[id] = provider
+			}
+			if err := persistence.SaveUpdatedProvidersWithOptions(providersMap, baseOutputDir, options.ForceFormat); err != nil {
+				// Log error but don't fail the sync
+				fmt.Printf("⚠️  Warning: Failed to save updated providers configuration: %v\n", err)
 			}
 		}
 

@@ -19,6 +19,7 @@ var (
 	syncInput          string
 	syncFresh          bool
 	syncCleanModelsDev bool
+	syncForceFormat    bool
 )
 
 // syncCmd represents the sync command
@@ -63,6 +64,7 @@ func init() {
 	syncCmd.Flags().StringVarP(&syncInput, "input", "i", "", "Input directory to load catalog from (default: use embedded catalog)")
 	syncCmd.Flags().BoolVar(&syncFresh, "fresh", false, "Perform fresh sync - delete all existing models and write all API models (destructive)")
 	syncCmd.Flags().BoolVar(&syncCleanModelsDev, "clean-models-dev", false, "Remove models.dev repository after sync (saves disk space)")
+	syncCmd.Flags().BoolVar(&syncForceFormat, "force-format", false, "Force reformat of providers.yaml even if no changes detected")
 }
 
 func runSync(cmd *cobra.Command, args []string) error {
@@ -110,7 +112,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 	}
 
 	// Build sync options
-	opts := buildSyncOptions(syncProvider, syncOutput, syncDryRun, syncFresh, syncAutoApprove, syncCleanModelsDev)
+	opts := buildSyncOptions(syncProvider, syncOutput, syncDryRun, syncFresh, syncAutoApprove, syncCleanModelsDev, syncForceFormat)
 
 	fmt.Printf("\nStarting sync...\n\n")
 
@@ -165,7 +167,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 			}
 
 			// Call sync again without dry-run
-			finalOpts := buildSyncOptions(syncProvider, syncOutput, false, syncFresh, false, syncCleanModelsDev)
+			finalOpts := buildSyncOptions(syncProvider, syncOutput, false, syncFresh, false, syncCleanModelsDev, syncForceFormat)
 
 			_, err := sm.Sync(finalOpts...)
 			if err != nil {
@@ -183,7 +185,7 @@ func runSync(cmd *cobra.Command, args []string) error {
 }
 
 // buildSyncOptions creates a slice of sync options based on the provided flags
-func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, cleanModelsDev bool) []sources.SyncOption {
+func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, cleanModelsDev, forceFormat bool) []sources.SyncOption {
 	var opts []sources.SyncOption
 
 	if provider != "" {
@@ -203,6 +205,9 @@ func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, clean
 	}
 	if cleanModelsDev {
 		opts = append(opts, sources.SyncWithCleanModelsDevRepo(true))
+	}
+	if forceFormat {
+		opts = append(opts, sources.SyncWithForceFormat(true))
 	}
 
 	return opts

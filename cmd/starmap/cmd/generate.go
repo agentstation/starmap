@@ -441,7 +441,7 @@ func generateProvidersOverview(providers []*catalogs.Provider, providersDir stri
 
 		// API info
 		if provider.APIKey != nil {
-			sb.WriteString(fmt.Sprintf("**API Key Required**: Yes  \n"))
+			sb.WriteString("**API Key Required**: Yes  \n")
 			sb.WriteString(fmt.Sprintf("**API Key Name**: $%s  \n", provider.APIKey.Name))
 		}
 
@@ -537,7 +537,7 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 
 	// API info
 	if provider.APIKey != nil {
-		sb.WriteString(fmt.Sprintf("**API Key Required**: Yes  \n"))
+		sb.WriteString("**API Key Required**: Yes  \n")
 		sb.WriteString(fmt.Sprintf("**API Key Name**: $%s  \n", provider.APIKey.Name))
 	}
 
@@ -630,12 +630,12 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	}
 
 	// Content Moderation section
-	if provider.GovernancePolicy != nil || provider.RequiresModeration != nil {
+	if provider.GovernancePolicy != nil {
 		sb.WriteString("## 🛡️ Content Moderation\n\n")
 
-		if provider.RequiresModeration != nil {
+		if provider.GovernancePolicy.ModerationRequired != nil {
 			requiresModeration := "No"
-			if *provider.RequiresModeration {
+			if *provider.GovernancePolicy.ModerationRequired {
 				requiresModeration = "Yes"
 			}
 			sb.WriteString(fmt.Sprintf("**Requires Moderation**: %s  \n", requiresModeration))
@@ -666,8 +666,8 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 	// Models table
 	sb.WriteString("## Models\n\n")
 	if len(models) > 0 {
-		sb.WriteString("| Model | Context Window | Input Price | Output Price | Features |\n")
-		sb.WriteString("|-------|----------------|-------------|--------------|----------|\n")
+		sb.WriteString("| Model | Author | Context Window | Input Price | Output Price | Features |\n")
+		sb.WriteString("|-------|--------|----------------|-------------|--------------|----------|\n")
 
 		for _, model := range models {
 			modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.ID, model.ID)
@@ -690,11 +690,17 @@ func generateProviderPage(provider *catalogs.Provider, catalog catalogs.Catalog,
 				}
 			}
 
+			// Author
+			authorName := "N/A"
+			if len(model.Authors) > 0 {
+				authorName = model.Authors[0].Name
+			}
+
 			// Features
 			features := getModelFeatureBadges(model)
 
-			sb.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %s |\n",
-				modelLink, contextWindow, inputPrice, outputPrice, features))
+			sb.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %s | %s |\n",
+				modelLink, authorName, contextWindow, inputPrice, outputPrice, features))
 		}
 	} else {
 		sb.WriteString("No models available for this provider.\n")

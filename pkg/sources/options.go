@@ -17,6 +17,7 @@ type SyncOptions struct {
 	Fresh              bool // Delete existing models and write all API models
 	AutoApprove        bool // Skip confirmation prompts
 	CleanModelsDevRepo bool // Remove models.dev repository after sync
+	ForceFormat        bool // Force reformat of providers.yaml even if no changes detected
 
 	// Output configuration
 	OutputDir string // Custom output directory for providers
@@ -80,6 +81,13 @@ func SyncWithOutputDir(dir string) SyncOption {
 func SyncWithCleanModelsDevRepo(enabled bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.CleanModelsDevRepo = enabled
+	}
+}
+
+// SyncWithForceFormat forces reformat of providers.yaml even if no changes detected
+func SyncWithForceFormat(enabled bool) SyncOption {
+	return func(opts *SyncOptions) {
+		opts.ForceFormat = enabled
 	}
 }
 
@@ -155,6 +163,7 @@ func NewSyncOptions(opts ...SyncOption) *SyncOptions {
 		Fresh:              false,
 		AutoApprove:        false,
 		CleanModelsDevRepo: false,
+		ForceFormat:        false,
 		Timeout:            30 * time.Second,
 
 		// Source control defaults
@@ -195,6 +204,7 @@ func (opts *SyncOptions) Copy() *SyncOptions {
 		Fresh:                opts.Fresh,
 		AutoApprove:          opts.AutoApprove,
 		CleanModelsDevRepo:   opts.CleanModelsDevRepo,
+		ForceFormat:          opts.ForceFormat,
 		OutputDir:            opts.OutputDir,
 		Timeout:              opts.Timeout,
 		DisableProviderAPI:   opts.DisableProviderAPI,

@@ -4,10 +4,10 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 
 ## Overview
 
-- **Authors**: 78
+- **Authors**: 80
 - **Providers**: 7
-- **Models**: 427
-- **Last Updated**: 2025-08-21 15:56:53 UTC
+- **Models**: 439
+- **Last Updated**: 2025-08-22 03:22:02 UTC
 
 ## Browse Catalog
 
@@ -27,7 +27,7 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | <img src="./providers/cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](./providers/cerebras/README.md) | 9 | Cerebras models |
 | <img src="./providers/deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](./providers/deepseek/README.md) | 2 | DeepSeek models |
 | <img src="./providers/google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](./providers/google-ai-studio/README.md) | 50 | Google AI Studio models |
-| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 273 | Google Vertex AI models |
+| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 285 | Google Vertex AI models |
 | <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 26 | Groq models |
 | <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 71 | OpenAI models |
 
@@ -36,6 +36,7 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | Author | Models | Description |
 |--------|--------|--------------|
 | [01.AI](./authors/01.ai/README.md) | 0 | AI company founded by Kai-Fu Lee, known for Yi series of open-source language models |
+| [AI21 Labs](./authors/ai21/README.md) | 0 | Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models |
 | [Adept](./authors/adept/README.md) | 0 | Adept models |
 | [Alibaba Cloud](./authors/alibaba/README.md) | 0 | Chinese technology company known for Qwen (Tongyi Qianwen) language model series |
 | [Alignment Research Center](./authors/alignment-research/README.md) | 0 | AI safety research organization focused on AI alignment and evaluation |
@@ -68,7 +69,7 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | [H2O.ai](./authors/h2o.ai/README.md) | 0 | Machine learning company known for h2oGPT open-source language model suite |
 | [Harvard University](./authors/harvard/README.md) | 0 | Harvard University models |
 | [Huawei](./authors/huawei/README.md) | 0 | Chinese technology company known for PanGu series of multimodal language models |
-| [Hugging Face](./authors/huggingface/README.md) | 0 | Hugging Face models |
+| [Hugging Face](./authors/huggingfaceh4/README.md) | 0 | Hugging Face models |
 | [IBM](./authors/ibm/README.md) | 0 | IBM models |
 | [Inflection AI](./authors/inflection/README.md) | 0 | Inflection AI models |
 | [LAION](./authors/laion/README.md) | 0 | LAION models |
@@ -90,6 +91,7 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | [Perplexity AI](./authors/perplexity/README.md) | 0 | Perplexity AI models |
 | [Phind](./authors/phind/README.md) | 0 | AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks |
 | [Princeton University](./authors/princeton/README.md) | 0 | Princeton University models |
+| [Qwen Team](./authors/qwen/README.md) | 0 | AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family |
 | [Runway ML](./authors/runway/README.md) | 0 | Runway ML models |
 | [Salesforce](./authors/salesforce/README.md) | 0 | Salesforce models |
 | [SenseTime](./authors/sensetime/README.md) | 0 | Chinese AI company specializing in computer vision and known for SenseNova multimodal models |

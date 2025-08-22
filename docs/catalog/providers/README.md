@@ -35,7 +35,7 @@ Complete list of AI model providers in the Starmap catalog.
 ### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./google-vertex/README.md)
 
 **Headquarters**: Mountain View, CA, USA  
-**Models**: 273  
+**Models**: 285  
 
 ### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./groq/README.md)
 

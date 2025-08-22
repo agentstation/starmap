@@ -32,9 +32,17 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 	c.OpenAIClient = baseclient.NewOpenAIClient(provider, "https://api.cerebras.ai")
 }
 
-// ListModels uses the base OpenAI implementation.
+// ListModels fetches models and extracts publishers from model IDs.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
-	return c.OpenAIClient.ListModels(ctx)
+	models, err := c.OpenAIClient.ListModels(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Extract authors from model IDs and update provider configuration
+	c.extractAndUpdateAuthors(models)
+
+	return models, nil
 }
 
 // GetModel uses the base OpenAI implementation.
@@ -156,4 +164,88 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	}
 
 	return features
+}
+
+// extractAndUpdateAuthors extracts authors from model IDs and updates provider configuration
+func (c *Client) extractAndUpdateAuthors(models []catalogs.Model) {
+	provider := c.OpenAIClient.GetProvider()
+	if provider == nil {
+		return
+	}
+
+	// Collect unique authors from model IDs
+	authorSet := make(map[string]bool)
+	for _, model := range models {
+		author := c.inferAuthorFromModelID(model.ID)
+		if author != "" {
+			authorSet[author] = true
+		}
+	}
+
+	// Convert to sorted slice
+	var discoveredAuthors []string
+	for author := range authorSet {
+		discoveredAuthors = append(discoveredAuthors, author)
+	}
+
+	// Merge with existing configured authors
+	provider.Authors = c.mergeAuthors(provider.Authors, discoveredAuthors)
+}
+
+// inferAuthorFromModelID infers the actual author from a model ID
+func (c *Client) inferAuthorFromModelID(modelID string) string {
+	modelLower := strings.ToLower(modelID)
+	
+	// Parse model ID to identify actual author
+	if strings.HasPrefix(modelLower, "llama") || strings.Contains(modelLower, "llama") {
+		return "meta"
+	}
+	if strings.HasPrefix(modelLower, "qwen") || strings.Contains(modelLower, "qwen") {
+		return "alibaba"
+	}
+	if strings.HasPrefix(modelLower, "gpt-oss") || strings.Contains(modelLower, "gpt-oss") {
+		return "openai"
+	}
+	if strings.HasPrefix(modelLower, "deepseek") || strings.Contains(modelLower, "deepseek") {
+		return "deepseek"
+	}
+	
+	// Default to cerebras for their own models
+	return "cerebras"
+}
+
+// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
+func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
+	authorSet := make(map[string]bool)
+	
+	// ALWAYS preserve existing authors (manual configuration)
+	for _, author := range existing {
+		if string(author) != "" {
+			authorSet[string(author)] = true
+		}
+	}
+	
+	// Add newly discovered authors (from API)
+	for _, author := range discovered {
+		if author != "" {
+			authorSet[author] = true
+		}
+	}
+	
+	// Convert back to slice and sort
+	var merged []catalogs.AuthorID
+	for author := range authorSet {
+		merged = append(merged, catalogs.AuthorID(author))
+	}
+	
+	// Sort for consistent output
+	for i := 0; i < len(merged); i++ {
+		for j := i + 1; j < len(merged); j++ {
+			if merged[i] > merged[j] {
+				merged[i], merged[j] = merged[j], merged[i]
+			}
+		}
+	}
+	
+	return merged
 }

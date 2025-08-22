@@ -99,9 +99,9 @@ type RestAPIModel struct {
 
 // RestAPIResponse represents the response from the Vertex AI REST API
 type RestAPIResponse struct {
-	Models           []RestAPIModel         `json:"models"`
-	PublisherModels  []PublisherModel      `json:"publisherModels"`
-	NextPageToken    string                `json:"nextPageToken"`
+	Models          []RestAPIModel   `json:"models"`
+	PublisherModels []PublisherModel `json:"publisherModels"`
+	NextPageToken   string           `json:"nextPageToken"`
 }
 
 // PublisherModel represents a publisher model from the Vertex AI REST API
@@ -146,24 +146,21 @@ func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, er
 func (c *Client) fetchPublisherModels(ctx context.Context, accessToken string) ([]catalogs.Model, error) {
 	var allModels []catalogs.Model
 
-	// Fetch models from all major publishers in Vertex AI Model Garden
-	publishers := []string{
-		"google",      // Google's own models (Gemini, PaLM, etc.)
-		"anthropic",   // Claude models
-		"meta",        // Llama models
-		"mistralai",   // Mistral models
-		"ai21",        // AI21 Jamba models
-		"deepseek-ai", // DeepSeek models
+	// Fetch models from authors configured in provider configuration
+	authors := c.provider.Authors
+	if len(authors) == 0 {
+		fmt.Printf("  ⚠️  No authors configured for google-vertex provider\n")
+		return allModels, nil
 	}
-	
-	for _, publisher := range publishers {
-		url := fmt.Sprintf("https://%s-aiplatform.googleapis.com/v1beta1/publishers/%s/models", c.location, publisher)
-		publisherModels, err := c.fetchModelsFromURL(ctx, url, accessToken)
+
+	for _, author := range authors {
+		url := fmt.Sprintf("https://%s-aiplatform.googleapis.com/v1beta1/publishers/%s/models", c.location, string(author))
+		authorModels, err := c.fetchModelsFromURL(ctx, url, accessToken)
 		if err == nil {
-			fmt.Printf("  ✅ Fetched %d models from publisher %s\n", len(publisherModels), publisher)
-			allModels = append(allModels, publisherModels...)
+			fmt.Printf("  ✅ Fetched %d models from author %s\n", len(authorModels), author)
+			allModels = append(allModels, authorModels...)
 		} else {
-			fmt.Printf("  ⚠️  Could not fetch models from publisher %s: %v\n", publisher, err)
+			fmt.Printf("  ⚠️  Could not fetch models from author %s: %v\n", author, err)
 		}
 	}
 
@@ -206,13 +203,13 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 	}
 
 	var models []catalogs.Model
-	
+
 	// Handle regular models
 	for _, restModel := range apiResp.Models {
 		model := c.convertRestModelToStarmap(restModel)
 		models = append(models, model)
 	}
-	
+
 	// Handle publisher models (Model Garden models)
 	for _, publisherModel := range apiResp.PublisherModels {
 		model := c.convertPublisherModelToStarmap(publisherModel)
@@ -271,15 +268,33 @@ func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Mode
 func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(publisherModel.Name)
-	
+
 	// Add version to model ID if available
 	if publisherModel.VersionID != "" {
 		modelID = fmt.Sprintf("%s@%s", modelID, publisherModel.VersionID)
 	}
 
+	// Extract publisher from model name and map to AuthorID
+	var authors []catalogs.Author
+	if strings.Contains(publisherModel.Name, "/publishers/") {
+		parts := strings.Split(publisherModel.Name, "/publishers/")
+		if len(parts) > 1 {
+			publisherParts := strings.Split(parts[1], "/")
+			if len(publisherParts) > 0 {
+				publisherName := publisherParts[0]
+				authorID := normalizePublisherToAuthorID(publisherName)
+				authors = append(authors, catalogs.Author{
+					ID:   authorID,
+					Name: string(authorID), // Use AuthorID as name for now
+				})
+			}
+		}
+	}
+
 	model := catalogs.Model{
 		ID:        modelID,
 		Name:      c.generateModelName(modelID),
+		Authors:   authors,
 		CreatedAt: utc.Now(),
 		UpdatedAt: utc.Now(),
 	}
@@ -299,14 +314,14 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 	// Enhanced feature detection for specific model types
 	modelIDLower := strings.ToLower(modelID)
 	publisherLower := strings.ToLower(publisherModel.Name)
-	
+
 	// Set metadata for open source category
 	if publisherModel.OpenSourceCategory != "" {
 		model.Metadata = &catalogs.ModelMetadata{
 			OpenWeights: publisherModel.OpenSourceCategory == "OPEN_SOURCE",
 		}
 	}
-	
+
 	if strings.Contains(modelIDLower, "claude") || strings.Contains(publisherLower, "anthropic") {
 		// Claude models support multimodal and advanced features
 		model.Features.Modalities.Input = append(model.Features.Modalities.Input, catalogs.ModelModalityImage)
@@ -325,7 +340,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 		model.Features.ToolCalls = true
 		model.Features.Tools = true
 		model.Features.Reasoning = true
-		
+
 		// Set typical Llama limits
 		model.Limits = &catalogs.ModelLimits{
 			ContextWindow: 128000, // Typical Llama context
@@ -335,7 +350,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 		// Mistral models
 		model.Features.ToolCalls = true
 		model.Features.Tools = true
-		
+
 		// Set typical Mistral limits
 		model.Limits = &catalogs.ModelLimits{
 			ContextWindow: 128000,
@@ -345,7 +360,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 		// AI21 Jamba models
 		model.Features.ToolCalls = true
 		model.Features.Tools = true
-		
+
 		// Set typical Jamba limits
 		model.Limits = &catalogs.ModelLimits{
 			ContextWindow: 256000, // Jamba has long context
@@ -356,7 +371,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 		model.Features.ToolCalls = true
 		model.Features.Tools = true
 		model.Features.Reasoning = true
-		
+
 		// Set typical DeepSeek limits
 		model.Limits = &catalogs.ModelLimits{
 			ContextWindow: 64000,
@@ -370,7 +385,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 			model.Features.Tools = true
 			model.Features.ToolChoice = true
 		}
-		
+
 		// Set typical Gemini limits
 		model.Limits = &catalogs.ModelLimits{
 			ContextWindow: 1048576, // Gemini has very long context
@@ -388,11 +403,11 @@ func (c *Client) generateModelName(modelID string) string {
 	if idx := strings.Index(modelID, "@"); idx != -1 {
 		baseID = modelID[:idx]
 	}
-	
+
 	// Convert to title case and clean up
 	name := strings.ReplaceAll(baseID, "-", " ")
 	name = strings.ReplaceAll(name, "_", " ")
-	
+
 	// Convert to title case
 	words := strings.Fields(strings.ToLower(name))
 	for i, word := range words {
@@ -400,7 +415,7 @@ func (c *Client) generateModelName(modelID string) string {
 			words[i] = strings.ToUpper(word[:1]) + word[1:]
 		}
 	}
-	
+
 	return strings.Join(words, " ")
 }
 
@@ -412,7 +427,7 @@ func (c *Client) getAccessToken() (string, error) {
 	if err == nil {
 		return strings.TrimSpace(string(output)), nil
 	}
-	
+
 	// If gcloud fails, try application-default
 	cmd = exec.Command("gcloud", "auth", "application-default", "print-access-token")
 	output, err = cmd.Output()
@@ -445,22 +460,22 @@ func (c *Client) mergeModels(existing, new []catalogs.Model) []catalogs.Model {
 func (c *Client) getAllModels(ctx context.Context, client *genai.Client, queryBase bool) ([]catalogs.Model, error) {
 	var allModels []catalogs.Model
 	pageToken := ""
-	
+
 	for {
 		config := &genai.ListModelsConfig{
 			QueryBase: genai.Ptr(queryBase),
 			PageSize:  100, // Get more models per request
 		}
-		
+
 		if pageToken != "" {
 			config.PageToken = pageToken
 		}
-		
+
 		response, err := client.Models.List(ctx, config)
 		if err != nil {
 			return nil, err
 		}
-		
+
 		// Process models in this page
 		for _, model := range response.Items {
 			// Try to get detailed model information
@@ -474,14 +489,14 @@ func (c *Client) getAllModels(ctx context.Context, client *genai.Client, queryBa
 				allModels = append(allModels, starmapModel)
 			}
 		}
-		
+
 		// Check if there are more pages
 		if response.NextPageToken == "" {
 			break
 		}
 		pageToken = response.NextPageToken
 	}
-	
+
 	return allModels, nil
 }
 
@@ -526,34 +541,17 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 	// Extract model ID from full name
 	modelID := c.ExtractModelID(genaiModel.Name)
 
-	// Debug: Compare GenAI vs REST API for specific model
-	if modelID == "gemini-1.5-flash-002" {
-		fmt.Printf("=== GENAI SDK vs REST API COMPARISON ===\n")
-		fmt.Printf("GenAI SDK Model Fields:\n")
-		fmt.Printf("  Name: %q\n", genaiModel.Name)
-		fmt.Printf("  DisplayName: %q\n", genaiModel.DisplayName)
-		fmt.Printf("  Description: %q\n", genaiModel.Description)
-		fmt.Printf("  Version: %q\n", genaiModel.Version)
-		fmt.Printf("  InputTokenLimit: %d\n", genaiModel.InputTokenLimit)
-		fmt.Printf("  OutputTokenLimit: %d\n", genaiModel.OutputTokenLimit)
-		fmt.Printf("  SupportedActions: %v\n", genaiModel.SupportedActions)
-		fmt.Printf("  Labels: %v\n", genaiModel.Labels)
-		fmt.Printf("============================================\n")
-	}
-
-
-
 	// Create basic starmap model with fallbacks for empty fields
 	displayName := genaiModel.DisplayName
 	if displayName == "" {
 		displayName = modelID // Fallback to ID if no display name
 	}
-	
+
 	description := genaiModel.Description
 	if description == "" {
 		description = fmt.Sprintf("Google Vertex AI model: %s", modelID)
 	}
-	
+
 	model := catalogs.Model{
 		ID:          modelID,
 		Name:        displayName,
@@ -601,12 +599,12 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 	// Set limits if available
 	if genaiModel.InputTokenLimit > 0 || genaiModel.OutputTokenLimit > 0 {
 		model.Limits = &catalogs.ModelLimits{}
-		
+
 		// Set context window to input limit if available
 		if genaiModel.InputTokenLimit > 0 {
 			model.Limits.ContextWindow = int64(genaiModel.InputTokenLimit)
 		}
-		
+
 		// Set output tokens limit if available
 		if genaiModel.OutputTokenLimit > 0 {
 			model.Limits.OutputTokens = int64(genaiModel.OutputTokenLimit)
@@ -680,4 +678,29 @@ func getGcloudConfig(property string) string {
 	}
 
 	return result
+}
+
+// normalizePublisherToAuthorID maps Google Vertex publisher names to AuthorID
+func normalizePublisherToAuthorID(publisher string) catalogs.AuthorID {
+	switch strings.ToLower(publisher) {
+	case "google":
+		return catalogs.AuthorIDGoogle
+	case "meta":
+		return catalogs.AuthorIDMeta
+	case "deepseek-ai":
+		return catalogs.AuthorIDDeepSeek
+	case "openai":
+		return catalogs.AuthorIDOpenAI
+	case "qwen":
+		return catalogs.AuthorIDQwen
+	case "ai21":
+		return catalogs.AuthorIDAI21
+	case "anthropic":
+		return catalogs.AuthorIDAnthropic
+	case "mistralai":
+		return catalogs.AuthorIDMistralAI
+	default:
+		// Return the original publisher as AuthorID if no mapping found
+		return catalogs.AuthorID(strings.ToLower(publisher))
+	}
 }

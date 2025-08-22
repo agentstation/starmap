@@ -97,10 +97,14 @@ func (fm *FieldMerger) MergeProvider(providerSources map[Type]*catalogs.Provider
 	var merged catalogs.Provider
 	provenance := make(map[string]Provenance)
 
-	// Basic provider fields to merge
+	// Provider fields to merge - include all important fields
 	providerFields := []string{
 		"name", "headquarters", "icon_url", "status_page_url",
-		"requires_moderation",
+		"authors", // Add authors field
+		// API configuration
+		"api_key", "env_vars", "catalog", "chat_completions",
+		// Policy fields
+		"privacy_policy", "retention_policy", "governance_policy",
 	}
 
 	// Merge each field

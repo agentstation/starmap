@@ -23,17 +23,17 @@ type Provider struct {
 
 	// Models
 	Catalog *ProviderCatalog `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
-	Models  map[string]Model // Available models indexed by model ID
+	Authors []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+	Models  map[string]Model `json:"-" yaml:"-"` // Available models indexed by model ID - not serialized to YAML
 
 	// Status & Health
 	StatusPageURL   *string                  `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"`   // Link to service status page
 	ChatCompletions *ProviderChatCompletions `json:"chat_completions,omitempty" yaml:"chat_completions,omitempty"` // Chat completions API configuration
 
-	// Moderation,Privacy, Retention, and Governance Policies
-	RequiresModeration *bool                     `json:"requires_moderation,omitempty" yaml:"requires_moderation,omitempty"` // Whether the provider requires moderation
-	PrivacyPolicy      *ProviderPrivacyPolicy    `json:"privacy_policy,omitempty" yaml:"privacy_policy,omitempty"`           // Data collection and usage practices
-	RetentionPolicy    *ProviderRetentionPolicy  `json:"retention_policy,omitempty" yaml:"retention_policy,omitempty"`       // Data retention and deletion practices
-	GovernancePolicy   *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"`     // Oversight and moderation practices
+	// Privacy, Retention, and Governance Policies
+	PrivacyPolicy    *ProviderPrivacyPolicy    `json:"privacy_policy,omitempty" yaml:"privacy_policy,omitempty"`       // Data collection and usage practices
+	RetentionPolicy  *ProviderRetentionPolicy  `json:"retention_policy,omitempty" yaml:"retention_policy,omitempty"`   // Data retention and deletion practices
+	GovernancePolicy *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"` // Oversight and moderation practices
 
 	// Runtime fields (not serialized)
 	APIKeyValue string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
@@ -156,15 +156,16 @@ type ProviderPrivacyPolicy struct {
 
 // ProviderRetentionPolicy represents how long data is kept and deletion practices.
 type ProviderRetentionPolicy struct {
-	Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty"` // nil = forever, 0 = immediate deletion
 	Type     ProviderRetentionType `json:"type" yaml:"type"`                             // Type of retention policy
+	Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty"` // nil = forever, 0 = immediate deletion
 	Details  *string               `json:"details,omitempty" yaml:"details,omitempty"`   // Human-readable description
 }
 
 // ProviderGovernancePolicy represents oversight and moderation practices.
 type ProviderGovernancePolicy struct {
-	Moderated *bool   `json:"moderated,omitempty" yaml:"moderated,omitempty"` // Whether provider content is moderated
-	Moderator *string `json:"moderator,omitempty" yaml:"moderator,omitempty"` // Who moderates the provider
+	ModerationRequired *bool   `json:"moderation_required,omitempty" yaml:"moderation_required,omitempty"` // Whether the provider requires moderation
+	Moderated          *bool   `json:"moderated,omitempty" yaml:"moderated,omitempty"`                     // Whether provider content is moderated
+	Moderator          *string `json:"moderator,omitempty" yaml:"moderator,omitempty"`                     // Who moderates the provider
 }
 
 // ProviderModerator represents a moderator for a provider.

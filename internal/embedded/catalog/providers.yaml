@@ -1,11 +1,14 @@
+# Anthropic
 - id: anthropic
   name: Anthropic
   headquarters: San Francisco, CA, USA
   icon_url: https://www.anthropic.com/favicon.ico
   api_key:
     name: ANTHROPIC_API_KEY
-    pattern: ".*"
-    header: "x-api-key"
+    pattern: .*
+    header: x-api-key
+    scheme: ""
+    query_param: ""
   catalog:
     docs_url: https://docs.anthropic.com/en/docs/about-claude/models/overview
     api_url: https://api.anthropic.com/v1/models
@@ -15,9 +18,8 @@
     url: https://api.anthropic.com/v1/chat/completions
     health_api_url: https://status.anthropic.com/api/v2/summary.json
     health_components:
-      - id: "k8w3r06qmzrp"
-        name: "api.anthropic.com"
-  requires_moderation: false
+    - id: k8w3r06qmzrp
+      name: api.anthropic.com
   privacy_policy:
     privacy_policy_url: https://www.anthropic.com/privacy
     terms_of_service_url: https://www.anthropic.com/terms
@@ -25,51 +27,57 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 720h # 30 days
-    details: "API inputs and outputs are automatically deleted within 30 days unless required for policy enforcement or legal compliance"
+    duration: 720h0m0s #30 days
+    details: API inputs and outputs are automatically deleted within 30 days unless required for policy enforcement or legal compliance
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: anthropic
 
+# Cerebras
 - id: cerebras
   name: Cerebras
   headquarters: Sunnyvale, CA, USA
   icon_url: https://cerebras.ai/favicon.ico
   api_key:
     name: CEREBRAS_API_KEY
-    pattern: ".*"
-    header: "Authorization"
-    scheme: "Bearer"
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
   catalog:
     docs_url: https://inference-docs.cerebras.ai/models/overview
     api_url: https://api.cerebras.ai/v1/models
     api_key_required: true
+  authors:
+  - alibaba
+  - meta
+  - openai
   status_page_url: https://status.cerebras.ai/
   chat_completions:
     url: https://api.cerebras.ai/v1/chat/completions
     health_api_url: https://status.cerebras.ai/api/v2/summary.json
     health_components:
-      - id: "7xvps6c9lqwc"
-        name: "Llama3.1-8B"
-      - id: "s2bwxqnnvxrm"
-        name: "Llama-3.3-70B"
-      - id: "j1zb29zpldhn"
-        name: "DeepSeek-R1-Distill-Llama-70B"
-      - id: "wnty4dn86r6z"
-        name: "Llama-4-Scout"
-      - id: "lg464gw325m6"
-        name: "Llama-4-Maverick"
-      - id: "fb0rz0v52prv"
-        name: "Qwen-3-32B"
-      - id: "bhqw2gr7r710"
-        name: "Qwen-3-235B-Instruct-2507"
-      - id: "6fy6xk2ttdk5"
-        name: "Qwen-3-235B-Thinking-2507"
-      - id: "8xslm6vgnmtb"
-        name: "Qwen-3-480B-Coder"
-      - id: "hgfykfsb36gn"
-        name: "GPT-OSS-120B"
-  requires_moderation: false
+    - id: 7xvps6c9lqwc
+      name: Llama3.1-8B
+    - id: s2bwxqnnvxrm
+      name: Llama-3.3-70B
+    - id: j1zb29zpldhn
+      name: DeepSeek-R1-Distill-Llama-70B
+    - id: wnty4dn86r6z
+      name: Llama-4-Scout
+    - id: lg464gw325m6
+      name: Llama-4-Maverick
+    - id: fb0rz0v52prv
+      name: Qwen-3-32B
+    - id: bhqw2gr7r710
+      name: Qwen-3-235B-Instruct-2507
+    - id: 6fy6xk2ttdk5
+      name: Qwen-3-235B-Thinking-2507
+    - id: 8xslm6vgnmtb
+      name: Qwen-3-480B-Coder
+    - id: hgfykfsb36gn
+      name: GPT-OSS-120B
   privacy_policy:
     privacy_policy_url: https://www.cerebras.ai/privacy-policy
     terms_of_service_url: https://www.cerebras.ai/terms-of-service
@@ -77,21 +85,24 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0h
-    details: "API inputs and outputs are not retained for training, inference and chatbot services. Data is processed for immediate response generation and then discarded."
+    duration: 0s
+    details: API inputs and outputs are not retained for training, inference and chatbot services. Data is processed for immediate response generation and then discarded.
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: cerebras
 
+# DeepSeek
 - id: deepseek
   name: DeepSeek
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
   api_key:
     name: DEEPSEEK_API_KEY
-    pattern: ".*"
-    header: "Authorization"
-    scheme: "Bearer"
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
   catalog:
     docs_url: https://api-docs.deepseek.com/quick_start/pricing
     api_url: https://api.deepseek.com/models
@@ -101,9 +112,8 @@
     url: https://api.deepseek.com/v1/chat/completions
     health_api_url: https://status.deepseek.com/api/v2/summary.json
     health_components:
-      - id: "j4n367d9mh3x"
-        name: "API 服务 (API Service)"
-  requires_moderation: false
+    - id: j4n367d9mh3x
+      name: API 服务 (API Service)
   privacy_policy:
     privacy_policy_url: https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html
     terms_of_service_url: https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html
@@ -111,20 +121,23 @@
     trains_on_data: true
   retention_policy:
     type: indefinite
-    duration: # nil = forever
-    details: "Personal data retained for as long as necessary to provide services and for as long as you have an account. Account data, input and payment data kept for account lifecycle duration."
+    details: Personal data retained for as long as necessary to provide services and for as long as you have an account. Account data, input and payment data kept for account lifecycle duration.
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: deepseek
 
+# Google AI Studio
 - id: google-ai-studio
   name: Google AI Studio
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
   api_key:
     name: GOOGLE_API_KEY
-    pattern: ".*"
-    header: "x-goog-api-key"
+    pattern: .*
+    header: x-goog-api-key
+    scheme: ""
+    query_param: ""
   catalog:
     docs_url: https://ai.google.dev/gemini-api/docs/models
     api_url: https://generativelanguage.googleapis.com/v1beta/models
@@ -132,7 +145,6 @@
   status_page_url: https://status.cloud.google.com
   chat_completions:
     url: https://generativelanguage.googleapis.com/v1beta/models
-  requires_moderation: false
   privacy_policy:
     privacy_policy_url: https://policies.google.com/privacy
     terms_of_service_url: https://policies.google.com/terms
@@ -140,34 +152,44 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 48h
-    details: "Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices"
+    duration: 48h0m0s #2 days
+    details: Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: google-ai-studio
 
+# Google Vertex AI
 - id: google-vertex
   name: Google Vertex AI
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
   env_vars:
-    - name: GOOGLE_VERTEX_PROJECT
-      required: false
-      description: "GCP project ID (optional - falls back to gcloud config)"
-    - name: GOOGLE_VERTEX_LOCATION
-      required: false
-      description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
-    - name: GOOGLE_APPLICATION_CREDENTIALS
-      required: false
-      description: "Path to service account JSON file (optional - uses Application Default Credentials)"
+  - name: GOOGLE_VERTEX_PROJECT
+    required: false
+    description: "GCP project ID (optional - falls back to gcloud config)"
+  - name: GOOGLE_VERTEX_LOCATION
+    required: false
+    description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    required: false
+    description: "Path to service account JSON file (optional - uses Application Default Credentials)"
   catalog:
     docs_url: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
     api_url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
     api_key_required: false
+  authors:
+  - ai21
+  - anthropic
+  - deepseek
+  - google
+  - meta
+  - mistral
+  - openai
+  - qwen
   status_page_url: https://status.cloud.google.com
   chat_completions:
     url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  requires_moderation: false
   privacy_policy:
     privacy_policy_url: https://cloud.google.com/privacy
     terms_of_service_url: https://cloud.google.com/terms
@@ -175,33 +197,46 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 48h
-    details: "Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices; enterprise customers may configure longer periods"
+    duration: 48h0m0s #2 days
+    details: Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices; enterprise customers may configure longer periods
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: google-vertex
 
+# Groq
 - id: groq
   name: Groq
   headquarters: Mountain View, CA, USA
   icon_url: https://groq.com/favicon.ico
   api_key:
     name: GROQ_API_KEY
-    pattern: ".*"
-    header: "Authorization"
-    scheme: "Bearer"
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
   catalog:
     docs_url: https://console.groq.com/docs/models
     api_url: https://api.groq.com/openai/v1/models
     api_key_required: true
+  authors:
+  - alibaba
+  - deepseek
+  - google
+  - groq
+  - huggingfaceh4
+  - meta
+  - moonshot
+  - openai
+  - playai
+  - sdaia
   status_page_url: https://status.groq.com
-  requires_moderation: false
   chat_completions:
     url: https://api.groq.com/openai/v1/chat/completions
     health_api_url: https://groqstatus.com/api/v2/summary.json
     health_components:
-      - id: "01K053E2FAKWKEYHXEV7WAHJBM"
-        name: "API"
+    - id: 01K053E2FAKWKEYHXEV7WAHJBM
+      name: API
   privacy_policy:
     privacy_policy_url: https://groq.com/privacy-policy/
     terms_of_service_url: https://groq.com/terms-of-use/
@@ -209,21 +244,24 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0h
-    details: "Input prompts and context are not retained; data is processed for immediate response generation and then discarded"
+    duration: 0s
+    details: Input prompts and context are not retained; data is processed for immediate response generation and then discarded
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: groq
 
+# OpenAI
 - id: openai
   name: OpenAI
   headquarters: San Francisco, CA, USA
   icon_url: https://cdn.openai.com/API/logo-openai.svg
   api_key:
     name: OPENAI_API_KEY
-    pattern: ".*"
-    header: "Authorization"
-    scheme: "Bearer"
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
   catalog:
     docs_url: https://platform.openai.com/docs/models
     api_url: https://api.openai.com/v1/models
@@ -233,9 +271,8 @@
     url: https://api.openai.com/v1/chat/completions
     health_api_url: https://status.openai.com/api/v2/summary.json
     health_components:
-      - id: "01JMXBRMFE6N2NNT7DG6XZQ6PW"
-        name: "Chat"
-  requires_moderation: false
+    - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW
+      name: Chat
   privacy_policy:
     privacy_policy_url: https://openai.com/privacy
     terms_of_service_url: https://openai.com/terms
@@ -243,8 +280,9 @@
     trains_on_data: false
   retention_policy:
     type: conditional
-    duration: 720h # 30 days
+    duration: 720h0m0s #30 days
     details: "Standard policy: API data retained for 30 days for abuse monitoring. However, due to The New York Times copyright lawsuit, OpenAI is under court order to preserve ChatGPT output data indefinitely. OpenAI is appealing these preservation orders, arguing they conflict with privacy commitments to users. Current legal proceedings may require indefinite data retention regardless of stated policy."
   governance_policy:
+    moderation_required: false
     moderated: true
     moderator: openai

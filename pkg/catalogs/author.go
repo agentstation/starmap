@@ -54,6 +54,7 @@ const (
 	AuthorIDCohere      AuthorID = "cohere"
 	AuthorIDCerebras    AuthorID = "cerebras"
 	AuthorIDAlibabaQwen AuthorID = "alibaba"
+	AuthorIDQwen        AuthorID = "qwen"
 	AuthorIDXAI         AuthorID = "xai"
 
 	// Research Institutions
@@ -111,6 +112,7 @@ const (
 	AuthorIDApple      AuthorID = "apple"
 	AuthorIDAmazon     AuthorID = "amazon"
 	AuthorIDAdept      AuthorID = "adept"
+	AuthorIDAI21       AuthorID = "ai21"
 	AuthorIDInflection AuthorID = "inflection"
 	AuthorIDCharacter  AuthorID = "character"
 	AuthorIDPerplexity AuthorID = "perplexity"

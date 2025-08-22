@@ -4,6 +4,7 @@
 **Website**: [https://deepseek.com](https://deepseek.com)  
 **GitHub**: [https://github.com/deepseek-ai](https://github.com/deepseek-ai)  
 **Hugging Face**: [https://huggingface.co/deepseek-ai](https://huggingface.co/deepseek-ai)  
+**Twitter**: [https://x.com/DeepSeekAI](https://x.com/DeepSeekAI)  
 **Total Models**: 2
 
 ## Models

@@ -109,15 +109,9 @@ func (s *ProviderAPISource) FetchProvider(ctx context.Context, providerID catalo
 		return nil, fmt.Errorf("provider ID mismatch: expected %s, got %s", providerID, s.provider.ID)
 	}
 
-	// Provider APIs typically don't return provider metadata,
-	// so we return the basic provider info we have
-	provider := &catalogs.Provider{
-		ID:   s.provider.ID,
-		Name: s.provider.Name,
-		// Most other fields come from local catalog or models.dev
-	}
-
-	return provider, nil
+	// Return the actual provider object which may have been updated by the client
+	// (e.g., publishers discovered during ListModels call)
+	return s.provider, nil
 }
 
 // GetFieldAuthorities returns the field authorities where Provider API is authoritative

@@ -77,6 +77,9 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		return nil, fmt.Errorf("groq: list decode failed: %w", err)
 	}
 
+	// Extract authors from API response and update provider configuration
+	c.extractAndUpdateAuthors(listResult.Data)
+
 	// Convert each model directly - no need for additional fetches
 	models := make([]catalogs.Model, 0, len(listResult.Data))
 	for _, groqModel := range listResult.Data {
@@ -209,4 +212,109 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	}
 
 	return features
+}
+
+// extractAndUpdateAuthors extracts authors from API response and updates provider configuration
+func (c *Client) extractAndUpdateAuthors(models []GroqModelData) {
+	provider := c.OpenAIClient.GetProvider()
+	if provider == nil {
+		return
+	}
+
+	// Collect unique authors from API response
+	authorSet := make(map[string]bool)
+	for _, model := range models {
+		if model.OwnedBy != "" {
+			// Normalize and split composite authors (e.g., "DeepSeek / Meta")
+			authors := c.normalizeAuthor(model.OwnedBy)
+			for _, author := range authors {
+				authorSet[author] = true
+			}
+		}
+	}
+
+	// Convert to sorted slice
+	var discoveredAuthors []string
+	for author := range authorSet {
+		discoveredAuthors = append(discoveredAuthors, author)
+	}
+
+	// Merge with existing configured authors
+	provider.Authors = c.mergeAuthors(provider.Authors, discoveredAuthors)
+}
+
+// normalizeAuthor normalizes author names and handles composite authors
+func (c *Client) normalizeAuthor(ownedBy string) []string {
+	// Handle composite authors like "DeepSeek / Meta"
+	if strings.Contains(ownedBy, "/") {
+		parts := strings.Split(ownedBy, "/")
+		var normalized []string
+		for _, part := range parts {
+			part = strings.TrimSpace(part)
+			if part != "" {
+				normalized = append(normalized, c.normalizeAuthorName(part))
+			}
+		}
+		return normalized
+	}
+
+	return []string{c.normalizeAuthorName(ownedBy)}
+}
+
+// normalizeAuthorName normalizes a single author name to lowercase kebab-case
+func (c *Client) normalizeAuthorName(name string) string {
+	// Convert to lowercase and replace spaces with hyphens
+	normalized := strings.ToLower(strings.TrimSpace(name))
+	normalized = strings.ReplaceAll(normalized, " ", "-")
+	normalized = strings.ReplaceAll(normalized, "_", "-")
+	
+	// Handle special cases
+	switch normalized {
+	case "alibaba-cloud":
+		return "alibaba"
+	case "moonshot-ai":
+		return "moonshot"
+	case "playai":
+		return "playai"
+	case "hugging-face":
+		return "huggingfaceh4"
+	}
+	
+	return normalized
+}
+
+// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
+func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
+	authorSet := make(map[string]bool)
+	
+	// ALWAYS preserve existing authors (manual configuration)
+	for _, author := range existing {
+		if string(author) != "" {
+			authorSet[string(author)] = true
+		}
+	}
+	
+	// Add newly discovered authors (from API)
+	for _, author := range discovered {
+		if author != "" {
+			authorSet[author] = true
+		}
+	}
+	
+	// Convert back to slice and sort
+	var merged []catalogs.AuthorID
+	for author := range authorSet {
+		merged = append(merged, catalogs.AuthorID(author))
+	}
+	
+	// Sort for consistent output
+	for i := 0; i < len(merged); i++ {
+		for j := i + 1; j < len(merged); j++ {
+			if merged[i] > merged[j] {
+				merged[i], merged[j] = merged[j], merged[i]
+			}
+		}
+	}
+	
+	return merged
 }
