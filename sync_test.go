@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/sources/registry"
-	"github.com/agentstation/starmap/internal/syncsrc"
+	"github.com/agentstation/starmap/internal/sync"
 	"github.com/agentstation/starmap/pkg/sources"
 
 	// Import sources to trigger registration
@@ -21,7 +21,7 @@ func TestSourceAutoRegistration(t *testing.T) {
 		sources.ProviderAPI,
 	}
 
-	registeredSources := registry.GetRegisteredSourceTypes()
+	registeredSources := registry.RegisteredSourceTypes()
 
 	for _, expected := range expectedSources {
 		found := false
@@ -57,7 +57,7 @@ func TestPipelineBuildBasicFunctionality(t *testing.T) {
 	}
 
 	// Test building a pipeline with just catalog
-	sourcePipeline, err := syncsrc.Build(catalog)
+	sourcePipeline, err := sync.Pipeline(catalog)
 	if err != nil {
 		t.Errorf("Failed to build pipeline: %v", err)
 	}
@@ -71,9 +71,9 @@ func TestPipelineBuildBasicFunctionality(t *testing.T) {
 
 	// This should still work because models.dev source is available by default
 	// The test logic was incorrect - when local catalog is disabled, models.dev can still run
-	pipeline2, err := syncsrc.Build(
+	pipeline2, err := sync.Pipeline(
 		catalog,
-		syncsrc.WithSyncOptions(disabledOptions),
+		sync.WithSyncOptions(disabledOptions),
 	)
 
 	// Should not error - models.dev source should be available

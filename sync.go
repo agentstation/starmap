@@ -10,7 +10,7 @@ import (
 	_ "github.com/agentstation/starmap/internal/sources" // Auto-register sources
 	sourceops "github.com/agentstation/starmap/internal/sources/operations"
 	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/internal/syncsrc"
+	"github.com/agentstation/starmap/internal/sync"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -21,12 +21,7 @@ const (
 
 // Sync synchronizes the catalog with provider APIs using the source pipeline system
 func (s *starmap) Sync(opts ...sources.SyncOption) (*catalogs.SyncResult, error) {
-	// Always use the new pipeline system now
-	return s.syncWithPipeline(opts...)
-}
 
-// syncWithPipeline is the internal implementation using the new pipeline system
-func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncResult, error) {
 	options := sources.NewSyncOptions(opts...)
 
 	// Get current catalog
@@ -69,9 +64,9 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 		provider.LoadEnvVars()
 
 		// Create pipeline for this provider using auto-registered sources
-		sourcePipeline, err := syncsrc.Build(catalog,
-			syncsrc.WithProvider(provider),
-			syncsrc.WithSyncOptions(options),
+		sourcePipeline, err := sync.Pipeline(catalog,
+			sync.WithProvider(provider),
+			sync.WithSyncOptions(options),
 		)
 		if err != nil {
 			// Log error but continue with next provider
@@ -192,7 +187,7 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 		// Only Git source can provide logos; HTTP source will show informational message
 		httpOps := sourceops.GetPostSyncOperations(sources.ModelsDevHTTP)
 		gitOps := sourceops.GetPostSyncOperations(sources.ModelsDevGit)
-		
+
 		if gitOps != nil {
 			// Git source available - can copy logos
 			if err := gitOps.CopyProviderLogos(providersToSync); err != nil {
@@ -214,7 +209,7 @@ func (s *starmap) syncWithPipeline(opts ...sources.SyncOption) (*catalogs.SyncRe
 			} else {
 				baseOutputDir = "internal/embedded/catalog"
 			}
-			
+
 			// Convert map to the expected format for SaveUpdatedProviders
 			providersMap := make(map[catalogs.ProviderID]catalogs.Provider)
 			for id, provider := range updatedProviders {

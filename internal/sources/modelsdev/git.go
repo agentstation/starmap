@@ -174,8 +174,8 @@ func (s *ModelsDevGitSource) FetchProvider(ctx context.Context, providerID catal
 	return starmapProvider, nil
 }
 
-// GetFieldAuthorities returns the field authorities where models.dev is authoritative
-func (s *ModelsDevGitSource) GetFieldAuthorities() []sources.FieldAuthority {
+// FieldAuthorities returns the field authorities where models.dev is authoritative
+func (s *ModelsDevGitSource) FieldAuthorities() []sources.FieldAuthority {
 	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.ModelsDevGit)
 }
 

@@ -52,8 +52,8 @@ type Source interface {
 	// FetchProvider fetches provider information from this source
 	FetchProvider(ctx context.Context, providerID catalogs.ProviderID) (*catalogs.Provider, error)
 
-	// GetFieldAuthorities returns the field authorities for this source
-	GetFieldAuthorities() []FieldAuthority
+	// FieldAuthorities returns the field authorities for this source
+	FieldAuthorities() []FieldAuthority
 }
 
 // SourceConfig provides runtime configuration for sources

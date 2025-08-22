@@ -103,8 +103,8 @@ func (s *Local) FetchProvider(ctx context.Context, providerID catalogs.ProviderI
 	return provider, nil
 }
 
-// GetFieldAuthorities returns the field authorities where local catalog is authoritative
-func (s *Local) GetFieldAuthorities() []sources.FieldAuthority {
+// FieldAuthorities returns the field authorities where local catalog is authoritative
+func (s *Local) FieldAuthorities() []sources.FieldAuthority {
 	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.LocalCatalog)
 }
 

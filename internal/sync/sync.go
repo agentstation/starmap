@@ -1,4 +1,4 @@
-package syncsrc
+package sync
 
 import (
 	"fmt"
@@ -8,24 +8,21 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Build creates a source pipeline with registered sources
-func Build(catalog catalogs.Catalog, opts ...Option) (*sources.Pipeline, error) {
-	cfg := DefaultConfig(catalog)
+// Pipeline creates a sync pipeline with registered sources
+func Pipeline(catalog catalogs.Catalog, opts ...Option) (*sources.Pipeline, error) {
+	cfg := defaultConfig(catalog)
 
 	// Apply options
 	for _, opt := range opts {
 		opt(cfg)
 	}
 
-	// Get all registered sources
-	registeredSources := registry.GetAllSources()
+	// filter out inactive sources
+	var active []sources.Source
+	for _, source := range registry.Sources() {
 
-	// Configure each source and collect available ones
-	var activeSources []sources.Source
-
-	for _, source := range registeredSources {
 		// Clone the source for this pipeline
-		sourceClone := source.Clone()
+		clone := source.Clone()
 
 		// Configure with runtime options
 		config := sources.SourceConfig{
@@ -34,22 +31,22 @@ func Build(catalog catalogs.Catalog, opts ...Option) (*sources.Pipeline, error) 
 			SyncOptions: cfg.SyncOptions,
 		}
 
-		if err := sourceClone.Configure(config); err != nil {
+		if err := clone.Configure(config); err != nil {
 			// Log error but continue with other sources
 			continue
 		}
 
-		if sourceClone.IsAvailable() {
-			activeSources = append(activeSources, sourceClone)
+		if clone.IsAvailable() {
+			active = append(active, clone)
 		}
 	}
 
-	if len(activeSources) == 0 {
+	if len(active) == 0 {
 		return nil, fmt.Errorf("no sources available for pipeline")
 	}
 
 	// Create pipeline with configured sources
-	pipeline := sources.NewPipeline(activeSources...)
+	pipeline := sources.NewPipeline(active...)
 
 	// Apply custom field authorities if provided
 	if cfg.SyncOptions != nil && len(cfg.SyncOptions.CustomFieldAuthorities) > 0 {

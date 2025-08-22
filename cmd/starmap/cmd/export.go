@@ -75,7 +75,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 		provider.LoadEnvVars()
 
 		// Get client for provider
-		result, err := provider.GetClient()
+		result, err := provider.Client()
 		if err != nil {
 			return fmt.Errorf("getting client for %s: %w", exportProvider, err)
 		}

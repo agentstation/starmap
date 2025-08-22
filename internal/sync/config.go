@@ -1,4 +1,4 @@
-package syncsrc
+package sync
 
 import (
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -21,8 +21,8 @@ type ModelsDevData struct {
 	Client interface{} // Will be *modelsdev.Client
 }
 
-// DefaultConfig creates a new config with sensible defaults
-func DefaultConfig(catalog catalogs.Catalog) *Config {
+// defaultConfig creates a new config with sensible defaults
+func defaultConfig(catalog catalogs.Catalog) *Config {
 	return &Config{
 		Catalog:     catalog,
 		SyncOptions: sources.DefaultSyncOptions(),

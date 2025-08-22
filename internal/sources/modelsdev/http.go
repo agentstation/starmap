@@ -73,7 +73,7 @@ func (s *ModelsDevHTTPSource) Configure(config sources.SourceConfig) error {
 	if err := client.EnsureAPI(); err != nil {
 		return err
 	}
-	
+
 	api, err := ParseAPI(client.GetAPIPath())
 	if err != nil {
 		return err
@@ -130,10 +130,10 @@ func (s *ModelsDevHTTPSource) FetchModels(ctx context.Context, providerID catalo
 	}
 
 	var allStarmapModels []catalogs.Model
-	
+
 	// Get provider aliases - some providers have multiple models.dev providers
 	providerAliases := s.getProviderAliases(providerID)
-	
+
 	for _, alias := range providerAliases {
 		// Get models from models.dev for this provider alias
 		modelsDevProvider, exists := s.api.GetProvider(alias)
@@ -159,7 +159,7 @@ func (s *ModelsDevHTTPSource) FetchModels(ctx context.Context, providerID catalo
 // Some providers have models spread across multiple models.dev providers
 func (s *ModelsDevHTTPSource) getProviderAliases(providerID catalogs.ProviderID) []catalogs.ProviderID {
 	aliases := []catalogs.ProviderID{providerID} // Always include the original
-	
+
 	switch providerID {
 	case "google-vertex":
 		// Google Vertex has models under multiple models.dev providers
@@ -168,7 +168,7 @@ func (s *ModelsDevHTTPSource) getProviderAliases(providerID catalogs.ProviderID)
 		// OpenAI might have models under other aliases in the future
 		// Add additional aliases as needed
 	}
-	
+
 	return aliases
 }
 
@@ -194,8 +194,8 @@ func (s *ModelsDevHTTPSource) FetchProvider(ctx context.Context, providerID cata
 	return starmapProvider, nil
 }
 
-// GetFieldAuthorities returns the field authorities where models.dev is authoritative
-func (s *ModelsDevHTTPSource) GetFieldAuthorities() []sources.FieldAuthority {
+// FieldAuthorities returns the field authorities where models.dev is authoritative
+func (s *ModelsDevHTTPSource) FieldAuthorities() []sources.FieldAuthority {
 	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.ModelsDevHTTP)
 }
 

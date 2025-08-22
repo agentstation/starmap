@@ -122,8 +122,8 @@ func MatchesPattern(fieldPath, pattern string) bool {
 	return matched
 }
 
-// GetAuthorityForField returns the highest priority authority for a given field path
-func GetAuthorityForField(fieldPath string, authorities []FieldAuthority) *FieldAuthority {
+// AuthorityByField returns the highest priority authority for a given field path
+func AuthorityByField(fieldPath string, authorities []FieldAuthority) *FieldAuthority {
 	var bestMatch *FieldAuthority
 	var bestPriority int
 	var bestMatchLength int

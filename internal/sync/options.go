@@ -1,4 +1,4 @@
-package syncsrc
+package sync
 
 import (
 	"github.com/agentstation/starmap/pkg/catalogs"

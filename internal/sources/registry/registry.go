@@ -41,8 +41,8 @@ func GetSource(sourceType sources.Type) (sources.Source, bool) {
 	return source, ok
 }
 
-// GetAllSources returns all registered sources
-func GetAllSources() []sources.Source {
+// Sources returns all registered sources
+func Sources() []sources.Source {
 	mu.RLock()
 	defer mu.RUnlock()
 
@@ -61,8 +61,8 @@ func HasSource(sourceType sources.Type) bool {
 	return exists
 }
 
-// GetRegisteredSourceTypes returns all source types that have registered sources
-func GetRegisteredSourceTypes() []sources.Type {
+// RegisteredSourceTypes returns all source types that have registered sources
+func RegisteredSourceTypes() []sources.Type {
 	mu.RLock()
 	defer mu.RUnlock()
 

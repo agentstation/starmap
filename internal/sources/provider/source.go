@@ -45,7 +45,7 @@ func (s *ProviderAPISource) Configure(config sources.SourceConfig) error {
 	}
 
 	// Get client for this provider
-	clientResult, err := config.Provider.GetClient(catalogs.WithAllowMissingAPIKey(true))
+	clientResult, err := config.Provider.Client(catalogs.WithAllowMissingAPIKey(true))
 	if err != nil || clientResult.Client == nil {
 		s.provider = nil
 		s.client = nil
@@ -114,8 +114,8 @@ func (s *ProviderAPISource) FetchProvider(ctx context.Context, providerID catalo
 	return s.provider, nil
 }
 
-// GetFieldAuthorities returns the field authorities where Provider API is authoritative
-func (s *ProviderAPISource) GetFieldAuthorities() []sources.FieldAuthority {
+// FieldAuthorities returns the field authorities where Provider API is authoritative
+func (s *ProviderAPISource) FieldAuthorities() []sources.FieldAuthority {
 	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.ProviderAPI)
 }
 

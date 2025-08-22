@@ -140,21 +140,21 @@ func (fm *FieldMerger) mergeModel(modelID string, sourceModels map[Type]catalogs
 	modelFields := []string{
 		// Basic identity fields
 		"name", "description", "authors",
-		
+
 		// Pricing fields (models.dev is authoritative)
 		"pricing.input", "pricing.output", "pricing.caching", "pricing.batch", "pricing.image",
-		
+
 		// Limits fields (models.dev is authoritative)
 		"limits.context_window", "limits.output_tokens",
-		
+
 		// Metadata fields (models.dev is authoritative)
-		"metadata.knowledge_cutoff", "metadata.release_date", "metadata.open_weights", 
+		"metadata.knowledge_cutoff", "metadata.release_date", "metadata.open_weights",
 		"metadata.tags", "metadata.architecture",
-		
+
 		// Core features (models.dev and provider API both contribute)
 		"features.tool_calls", "features.tools", "features.tool_choice", "features.web_search",
 		"features.reasoning", "features.streaming", "features.temperature", "features.top_p", "features.max_tokens",
-		
+
 		// Generation parameters (Provider API is authoritative)
 		"generation",
 	}
@@ -191,7 +191,7 @@ func (fm *FieldMerger) mergeModel(modelID string, sourceModels map[Type]catalogs
 // mergeModelField merges a single field from multiple sources
 func (fm *FieldMerger) mergeModelField(fieldPath string, sourceModels map[Type]catalogs.Model) (interface{}, Type) {
 	// Get the authority for this field
-	authority := GetAuthorityForField(fieldPath, fm.modelAuthorities)
+	authority := AuthorityByField(fieldPath, fm.modelAuthorities)
 
 	// If we have a specific authority, try that source first
 	if authority != nil {
@@ -225,7 +225,7 @@ func (fm *FieldMerger) mergeModelField(fieldPath string, sourceModels map[Type]c
 // mergeProviderField merges a single provider field from multiple sources
 func (fm *FieldMerger) mergeProviderField(fieldPath string, sourceProviders map[Type]*catalogs.Provider) (interface{}, Type) {
 	// Get the authority for this field
-	authority := GetAuthorityForField(fieldPath, fm.providerAuthorities)
+	authority := AuthorityByField(fieldPath, fm.providerAuthorities)
 
 	// If we have a specific authority, try that source first
 	if authority != nil {
@@ -371,7 +371,7 @@ func (fm *FieldMerger) mergeComplexStructures(merged catalogs.Model, sourceModel
 			if merged.Limits == nil {
 				merged.Limits = &catalogs.ModelLimits{}
 			}
-			
+
 			// Merge specific limit fields if they're not already set or source has higher authority
 			if sourceType == ModelsDevHTTP || sourceType == ModelsDevGit {
 				if model.Limits.ContextWindow > 0 {
@@ -423,7 +423,7 @@ func (fm *FieldMerger) mergeComplexStructures(merged catalogs.Model, sourceModel
 				if merged.Metadata == nil {
 					merged.Metadata = &catalogs.ModelMetadata{}
 				}
-				
+
 				// Copy metadata fields from models.dev
 				if !model.Metadata.ReleaseDate.IsZero() {
 					merged.Metadata.ReleaseDate = model.Metadata.ReleaseDate
@@ -433,7 +433,7 @@ func (fm *FieldMerger) mergeComplexStructures(merged catalogs.Model, sourceModel
 				}
 				// Copy open weights flag
 				merged.Metadata.OpenWeights = model.Metadata.OpenWeights
-				
+
 				if fm.trackProvenance {
 					(*provenance)["metadata"] = Provenance{
 						Source:    sourceType,
@@ -452,7 +452,7 @@ func (fm *FieldMerger) mergeComplexStructures(merged catalogs.Model, sourceModel
 			if merged.Features == nil {
 				merged.Features = &catalogs.ModelFeatures{}
 			}
-			
+
 			// For features, we merge from all sources, with provider API getting priority for capabilities
 			if sourceType == ProviderAPI {
 				// Provider API is authoritative for current capabilities

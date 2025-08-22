@@ -61,7 +61,7 @@ func runProviders(cmd *cobra.Command, args []string) error {
 	supportedMap := make(map[catalogs.ProviderID]bool)
 	for _, provider := range providers {
 		// Try to get client (with missing API key allowed to test if client exists)
-		result, _ := provider.GetClient(catalogs.WithAllowMissingAPIKey(true))
+		result, _ := provider.Client(catalogs.WithAllowMissingAPIKey(true))
 		if result != nil && result.Client != nil {
 			supportedMap[provider.ID] = true
 		}

@@ -24,7 +24,7 @@ type Provider struct {
 	// Models
 	Catalog *ProviderCatalog `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
 	Authors []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
-	Models  map[string]Model `json:"-" yaml:"-"` // Available models indexed by model ID - not serialized to YAML
+	Models  map[string]Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML
 
 	// Status & Health
 	StatusPageURL   *string                  `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"`   // Link to service status page
@@ -36,7 +36,7 @@ type Provider struct {
 	GovernancePolicy *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"` // Oversight and moderation practices
 
 	// Runtime fields (not serialized)
-	APIKeyValue string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
+	APIKeyValue  string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
 	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
@@ -58,10 +58,10 @@ type ProviderAPIKey struct {
 
 // ProviderEnvVar represents an environment variable required by a provider.
 type ProviderEnvVar struct {
-	Name        string `json:"name" yaml:"name"`                                 // Environment variable name
-	Required    bool   `json:"required" yaml:"required"`                         // Whether this env var is required
+	Name        string `json:"name" yaml:"name"`                                   // Environment variable name
+	Required    bool   `json:"required" yaml:"required"`                           // Whether this env var is required
 	Description string `json:"description,omitempty" yaml:"description,omitempty"` // Human-readable description
-	Pattern     string `json:"pattern,omitempty" yaml:"pattern,omitempty"`       // Optional validation pattern
+	Pattern     string `json:"pattern,omitempty" yaml:"pattern,omitempty"`         // Optional validation pattern
 }
 
 // ProviderAPIKeyScheme represents different authentication schemes for API keys.
@@ -233,14 +233,14 @@ func (pvs ProviderValidationStatus) String() string {
 
 // ProviderValidationResult contains the result of validating a provider.
 type ProviderValidationResult struct {
-	Status          ProviderValidationStatus `json:"status"`
-	HasAPIKey       bool                     `json:"has_api_key"`
-	IsAPIKeyRequired bool                    `json:"is_api_key_required"`
-	HasRequiredEnvVars bool                  `json:"has_required_env_vars"`
-	MissingEnvVars  []string                 `json:"missing_env_vars,omitempty"`
-	IsConfigured    bool                     `json:"is_configured"`
-	IsSupported     bool                     `json:"is_supported"`
-	Error           error                    `json:"error,omitempty"`
+	Status             ProviderValidationStatus `json:"status"`
+	HasAPIKey          bool                     `json:"has_api_key"`
+	IsAPIKeyRequired   bool                     `json:"is_api_key_required"`
+	HasRequiredEnvVars bool                     `json:"has_required_env_vars"`
+	MissingEnvVars     []string                 `json:"missing_env_vars,omitempty"`
+	IsConfigured       bool                     `json:"is_configured"`
+	IsSupported        bool                     `json:"is_supported"`
+	Error              error                    `json:"error,omitempty"`
 }
 
 // LoadAPIKey loads the API key value from environment into the provider.
@@ -257,11 +257,11 @@ func (p *Provider) LoadEnvVars() {
 	if len(p.EnvVars) == 0 {
 		return
 	}
-	
+
 	if p.EnvVarValues == nil {
 		p.EnvVarValues = make(map[string]string)
 	}
-	
+
 	for _, envVar := range p.EnvVars {
 		p.EnvVarValues[envVar.Name] = os.Getenv(envVar.Name)
 	}
@@ -291,7 +291,7 @@ func (p *Provider) HasRequiredEnvVars() bool {
 			if value == "" {
 				return false
 			}
-			
+
 			// Validate against pattern if specified
 			if envVar.Pattern != "" && envVar.Pattern != ".*" {
 				matched, err := regexp.MatchString(envVar.Pattern, value)
@@ -314,7 +314,7 @@ func (p *Provider) GetMissingEnvVars() []string {
 				missing = append(missing, envVar.Name)
 				continue
 			}
-			
+
 			// Check pattern validation
 			if envVar.Pattern != "" && envVar.Pattern != ".*" {
 				matched, err := regexp.MatchString(envVar.Pattern, value)
@@ -422,7 +422,7 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 		if len(result.MissingEnvVars) > 0 {
 			missingParts = append(missingParts, fmt.Sprintf("environment variables: %v", result.MissingEnvVars))
 		}
-		
+
 		if len(missingParts) > 0 {
 			result.Error = fmt.Errorf("missing required configuration: %s", fmt.Sprintf("%v", missingParts))
 			result.Status = ProviderValidationStatusMissing
@@ -470,8 +470,8 @@ func WithAllowMissingAPIKey(allow bool) ClientOption {
 	}
 }
 
-// GetClient retrieves a configured client for this provider.
-func (p *Provider) GetClient(opts ...ClientOption) (*ClientResult, error) {
+// Client retrieves a configured client for this provider.
+func (p *Provider) Client(opts ...ClientOption) (*ClientResult, error) {
 	// Apply options
 	options := &ClientOptions{}
 	for _, opt := range opts {
@@ -511,4 +511,3 @@ func (p *Provider) GetClient(opts ...ClientOption) (*ClientResult, error) {
 	result.Client = client
 	return result, nil
 }
-

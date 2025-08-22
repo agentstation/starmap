@@ -182,8 +182,8 @@ func (sp *Pipeline) Execute(ctx context.Context, providerID catalogs.ProviderID)
 	return result, nil
 }
 
-// GetSources returns a copy of the sources in the pipeline
-func (sp *Pipeline) GetSources() []Source {
+// Sources returns a copy of the sources in the pipeline
+func (sp *Pipeline) Sources() []Source {
 	sources := make([]Source, len(sp.sources))
 	copy(sources, sp.sources)
 	return sources
