@@ -29,7 +29,7 @@ Experimental release (March 25th, 2025) of Gemini 2.5 Pro
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

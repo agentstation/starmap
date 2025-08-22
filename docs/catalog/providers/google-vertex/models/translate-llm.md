@@ -29,7 +29,7 @@ Google Vertex AI model: translate-llm
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

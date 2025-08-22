@@ -29,7 +29,7 @@ Google Vertex AI model: f-vlm-jax
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

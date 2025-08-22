@@ -29,7 +29,7 @@ Google Vertex AI model: gemini-pro
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

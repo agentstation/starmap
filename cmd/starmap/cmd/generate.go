@@ -809,7 +809,7 @@ func generateModelPage(model *catalogs.Model, provider *catalogs.Provider, model
 	}
 
 	// Generation Controls section with horizontal tables
-	sb.WriteString("## Generation Controls\n\n")
+	sb.WriteString("## 🎛️ Generation Controls\n\n")
 
 	// Architecture table (if available)
 	architectureTable := generateArchitectureTable(model)
@@ -1296,7 +1296,7 @@ func generateAuthorModelPage(model *catalogs.Model, author *catalogs.Author, mod
 	}
 
 	// Generation Controls section with horizontal tables
-	sb.WriteString("## Generation Controls\n\n")
+	sb.WriteString("## 🎛️ Generation Controls\n\n")
 
 	// Architecture table (if available)
 	architectureTable := generateArchitectureTable(model)

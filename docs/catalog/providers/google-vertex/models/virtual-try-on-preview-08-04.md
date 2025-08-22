@@ -29,7 +29,7 @@ Google Vertex AI model: virtual-try-on-preview-08-04
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

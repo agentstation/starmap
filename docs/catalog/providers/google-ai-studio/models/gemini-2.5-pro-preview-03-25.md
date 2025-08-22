@@ -30,7 +30,7 @@ Gemini 2.5 Pro Preview 03-25
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

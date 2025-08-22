@@ -29,7 +29,7 @@ Google Vertex AI model: image-segmentation-001
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

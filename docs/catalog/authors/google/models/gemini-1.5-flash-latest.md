@@ -29,7 +29,7 @@ Alias that points to the most recent production (non-experimental) release of Ge
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

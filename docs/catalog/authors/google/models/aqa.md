@@ -29,7 +29,7 @@ Model trained to return answers to questions that are grounded in provided sourc
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

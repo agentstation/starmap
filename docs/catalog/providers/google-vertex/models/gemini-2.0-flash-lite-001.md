@@ -29,7 +29,7 @@ Google Gemini model gemini-2.0-flash-lite-001 available through Vertex AI
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

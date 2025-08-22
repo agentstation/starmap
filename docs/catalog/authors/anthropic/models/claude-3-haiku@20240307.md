@@ -35,7 +35,7 @@ Anthropic Claude model claude-3-haiku available through Vertex AI Model Garden
 |-----------------|------------------|------------------|-------------------|-------------------|
 | ✅              | ❌               | ❌               | ❌                | ❌                |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

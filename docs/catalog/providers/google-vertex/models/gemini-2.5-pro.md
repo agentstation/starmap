@@ -38,7 +38,7 @@ Google Vertex AI model: gemini-2.5-pro
 |-----------------|------------------|------------------|-------------------|-------------------|
 | ✅              | ❌               | ❌               | ❌                | ❌                |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

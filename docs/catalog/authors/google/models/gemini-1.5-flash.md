@@ -29,7 +29,7 @@ Alias that points to the most recent stable version of Gemini 1.5 Flash, our fas
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

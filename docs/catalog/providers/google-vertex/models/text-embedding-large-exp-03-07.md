@@ -29,7 +29,7 @@ Google Vertex AI model: text-embedding-large-exp-03-07
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

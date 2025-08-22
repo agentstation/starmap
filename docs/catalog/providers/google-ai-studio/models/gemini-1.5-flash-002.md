@@ -30,7 +30,7 @@ Stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for 
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

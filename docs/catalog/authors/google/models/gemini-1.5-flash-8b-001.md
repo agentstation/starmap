@@ -29,7 +29,7 @@ Stable version of Gemini 1.5 Flash-8B, our smallest and most cost effective Flas
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

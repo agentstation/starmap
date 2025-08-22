@@ -30,7 +30,7 @@ Stable version of Gemini 2.5 Flash, our mid-size multimodal model that supports 
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

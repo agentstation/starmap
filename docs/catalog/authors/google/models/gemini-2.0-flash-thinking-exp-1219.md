@@ -29,7 +29,7 @@ Preview release (April 17th, 2025) of Gemini 2.5 Flash
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

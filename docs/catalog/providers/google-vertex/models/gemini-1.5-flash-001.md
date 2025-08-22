@@ -22,7 +22,7 @@ No feature information available.
 
 No delivery information available.
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 No control information available.
 

@@ -29,7 +29,7 @@ Google Vertex AI model: imagen-product-recontext-preview-06-30
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

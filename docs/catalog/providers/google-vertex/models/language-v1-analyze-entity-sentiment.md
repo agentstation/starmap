@@ -29,7 +29,7 @@ Google Vertex AI model: language-v1-analyze-entity-sentiment
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

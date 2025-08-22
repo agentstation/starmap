@@ -29,7 +29,7 @@ Google Vertex AI model: imageclassification-proprietary-efficientnet
 |-----------|-------------------|-----------|---------------|--------------|
 | ❌        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ## 💰 Pricing
 

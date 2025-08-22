@@ -30,7 +30,7 @@ Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

@@ -29,7 +29,7 @@ Preview release (June 11th, 2025) of Gemini 2.5 Flash-Lite
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 

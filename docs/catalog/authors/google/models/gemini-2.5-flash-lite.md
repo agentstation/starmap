@@ -29,7 +29,7 @@ Stable verion of Gemini 2.5 Flash-Lite, released in July of 2025
 |-----------|-------------------|-----------|---------------|--------------|
 | ✅        | ❌                | ❌        | ❌            | ✅           |
 
-## Generation Controls
+## 🎛️ Generation Controls
 
 ### Sampling & Decoding
 
