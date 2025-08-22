@@ -36,7 +36,7 @@
 
 | Model | Author | Context Window | Input Price | Output Price | Features |
 |-------|--------|----------------|-------------|--------------|----------|
-| [gpt-oss-120b](./models/gpt-oss-120b.md) | Cerebras | N/A | $0.25/1M | $0.69/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [gpt-oss-120b](./models/gpt-oss-120b.md) | Cerebras | 131072 | $0.25/1M | $0.69/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 | [llama-3.3-70b](./models/llama-3.3-70b.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
@@ -44,7 +44,7 @@
 | [qwen-3-235b-a22b-instruct-2507](./models/qwen-3-235b-a22b-instruct-2507.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [qwen-3-235b-a22b-thinking-2507](./models/qwen-3-235b-a22b-thinking-2507.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [qwen-3-32b](./models/qwen-3-32b.md) | Cerebras | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [qwen-3-coder-480b](./models/qwen-3-coder-480b.md) | Cerebras | N/A | $2.00/1M | $2.00/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
+| [qwen-3-coder-480b](./models/qwen-3-coder-480b.md) | Cerebras | 131000 | $2.00/1M | $2.00/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 
 ## Navigation
 

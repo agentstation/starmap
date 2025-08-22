@@ -7,9 +7,12 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 
 - **ID**: `claude-3-5-haiku@20241022`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google Vertex AI](../README.md)
+- **Authors**: [anthropic](../../../authors/anthropic/README.md)
 - **Release Date**: 2024-10-22
 - **Knowledge Cutoff**: 2024-07-31
 - **Open Weights**: false
+- **Context Window**: 200K tokens
+- **Max Output**: 8.2K tokens
 
 ## 🎯 Capabilities
 
@@ -50,7 +53,7 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 
 | Max Tokens |
 |---|
-| ✅ |
+| 1-8.2K |
 
 ## 💰 Pricing
 
@@ -62,8 +65,8 @@ Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
 
 ## 📋 Metadata
 
-**Created**: 2025-08-22 03:17:14 UTC
-**Last Updated**: 2025-08-22 03:17:14 UTC
+**Created**: 2025-08-22 04:09:45 UTC
+**Last Updated**: 2025-08-22 04:09:45 UTC
 
 ## Navigation
 

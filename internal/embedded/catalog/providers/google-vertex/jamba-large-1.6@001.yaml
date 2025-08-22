@@ -1,6 +1,9 @@
 # jamba-large-1.6@001 - Jamba Large 1.6
 id: jamba-large-1.6@001
 name: Jamba Large 1.6
+authors:
+- id: ai21
+  name: AI21 Labs
 
 # Model features
 features:
@@ -48,5 +51,5 @@ features:
 limits:
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T03:41:16Z
+updated_at: 2025-08-22T03:41:16Z

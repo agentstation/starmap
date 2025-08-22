@@ -55,6 +55,8 @@ features:
 
 # Model limits
 limits:
+  context_window: 200000
+  output_tokens: 8192
 
 # Model pricing
 pricing:
@@ -70,5 +72,5 @@ pricing:
       per_1m: 1.00
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T04:09:45Z
+updated_at: 2025-08-22T04:09:45Z

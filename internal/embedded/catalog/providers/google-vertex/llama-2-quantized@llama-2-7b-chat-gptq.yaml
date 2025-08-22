@@ -1,6 +1,9 @@
 # llama-2-quantized@llama-2-7b-chat-gptq - Llama 2 Quantized
 id: llama-2-quantized@llama-2-7b-chat-gptq
 name: Llama 2 Quantized
+authors:
+- id: meta
+  name: meta
 
 # Model features
 features:
@@ -48,5 +51,5 @@ features:
 limits:
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T04:09:45Z
+updated_at: 2025-08-22T04:09:45Z

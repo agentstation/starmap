@@ -268,6 +268,7 @@ func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Mode
 func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(publisherModel.Name)
+	
 
 	// Add version to model ID if available
 	if publisherModel.VersionID != "" {
@@ -276,8 +277,10 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 
 	// Extract publisher from model name and map to AuthorID
 	var authors []catalogs.Author
-	if strings.Contains(publisherModel.Name, "/publishers/") {
-		parts := strings.Split(publisherModel.Name, "/publishers/")
+	
+	
+	if strings.Contains(publisherModel.Name, "publishers/") {
+		parts := strings.Split(publisherModel.Name, "publishers/")
 		if len(parts) > 1 {
 			publisherParts := strings.Split(parts[1], "/")
 			if len(publisherParts) > 0 {
@@ -552,10 +555,39 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 		description = fmt.Sprintf("Google Vertex AI model: %s", modelID)
 	}
 
+	// Extract publisher from model name and map to AuthorID (same logic as publisher models)
+	var authors []catalogs.Author
+	
+	
+	if strings.Contains(genaiModel.Name, "/publishers/") {
+		parts := strings.Split(genaiModel.Name, "/publishers/")
+		if len(parts) > 1 {
+			publisherParts := strings.Split(parts[1], "/")
+			if len(publisherParts) > 0 {
+				publisherName := publisherParts[0]
+				authorID := normalizePublisherToAuthorID(publisherName)
+				authors = append(authors, catalogs.Author{
+					ID:   authorID,
+					Name: string(authorID), // Use AuthorID as name for now
+				})
+			}
+		}
+	} else {
+		// Handle models by their ID patterns if no /publishers/ in name
+		// Jamba models are AI21 models
+		if strings.Contains(strings.ToLower(modelID), "jamba") {
+			authors = append(authors, catalogs.Author{
+				ID:   catalogs.AuthorIDAI21,
+				Name: string(catalogs.AuthorIDAI21),
+			})
+		}
+	}
+
 	model := catalogs.Model{
 		ID:          modelID,
 		Name:        displayName,
 		Description: description,
+		Authors:     authors,
 		CreatedAt:   utc.Now(), // GenAI models don't have creation timestamps
 		UpdatedAt:   utc.Now(),
 	}

@@ -1,6 +1,9 @@
 # llama-3.2-90b-vision-instruct-maas@001 - Llama 3.2 90b Vision Instruct Maas
 id: llama-3.2-90b-vision-instruct-maas@001
 name: Llama 3.2 90b Vision Instruct Maas
+authors:
+- id: meta
+  name: meta
 
 # Model features
 features:
@@ -48,5 +51,5 @@ features:
 limits:
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T04:09:45Z
+updated_at: 2025-08-22T04:09:45Z

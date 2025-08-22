@@ -4,6 +4,7 @@
 
 - **ID**: `jamba-1.5-mini@001`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google Vertex AI](../README.md)
+- **Authors**: [AI21 Labs](../../../authors/ai21/README.md)
 
 ## 🎯 Capabilities
 
@@ -46,8 +47,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-22 03:17:14 UTC
-**Last Updated**: 2025-08-22 03:17:14 UTC
+**Created**: 2025-08-22 03:41:16 UTC
+**Last Updated**: 2025-08-22 03:41:16 UTC
 
 ## Navigation
 

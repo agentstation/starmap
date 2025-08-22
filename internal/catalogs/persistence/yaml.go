@@ -27,7 +27,7 @@ func GenerateStructuredModelYAML(model catalogs.Model) string {
 			if author.Name != "" {
 				sb.WriteString(fmt.Sprintf("- id: %s\n  name: %s\n", author.ID, author.Name))
 			} else {
-				sb.WriteString(fmt.Sprintf("- %s\n", author.ID))
+				sb.WriteString(fmt.Sprintf("- id: %s\n", author.ID))
 			}
 		}
 	}

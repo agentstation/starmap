@@ -1,6 +1,9 @@
 # virtual-try-on-preview-08-04@default - Virtual Try On Preview 08 04
 id: virtual-try-on-preview-08-04@default
 name: Virtual Try On Preview 08 04
+authors:
+- id: google
+  name: google
 
 # Model features
 features:
@@ -49,5 +52,5 @@ features:
 limits:
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T04:09:45Z
+updated_at: 2025-08-22T04:09:45Z

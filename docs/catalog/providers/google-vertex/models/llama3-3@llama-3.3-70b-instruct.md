@@ -4,6 +4,7 @@
 
 - **ID**: `llama3-3@llama-3.3-70b-instruct`
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Google Vertex AI](../README.md)
+- **Authors**: [meta](../../../authors/meta/README.md)
 
 ## 🎯 Capabilities
 
@@ -52,8 +53,8 @@ Contact provider for pricing information.
 
 ## 📋 Metadata
 
-**Created**: 2025-08-22 03:17:14 UTC
-**Last Updated**: 2025-08-22 03:17:14 UTC
+**Created**: 2025-08-22 04:09:45 UTC
+**Last Updated**: 2025-08-22 04:09:45 UTC
 
 ## Navigation
 

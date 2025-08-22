@@ -36,8 +36,8 @@
 
 | Model | Author | Context Window | Input Price | Output Price | Features |
 |-------|--------|----------------|-------------|--------------|----------|
-| [deepseek-chat](./models/deepseek-chat.md) | DeepSeek | N/A | $0.27/1M | $1.10/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [deepseek-reasoner](./models/deepseek-reasoner.md) | DeepSeek | N/A | $0.55/1M | $2.19/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [deepseek-chat](./models/deepseek-chat.md) | DeepSeek | 65536 | $0.27/1M | $1.10/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [deepseek-reasoner](./models/deepseek-reasoner.md) | DeepSeek | 65536 | $0.55/1M | $2.19/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 
 ## Navigation
 

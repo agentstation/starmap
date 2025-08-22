@@ -1,6 +1,9 @@
 # gemma2@gemma-2-2b-it - Gemma2
 id: gemma2@gemma-2-2b-it
 name: Gemma2
+authors:
+- id: google
+  name: google
 
 # Model features
 features:
@@ -49,5 +52,5 @@ features:
 limits:
 
 # Timestamps
-created_at: 2025-08-22T03:17:14Z
-updated_at: 2025-08-22T03:17:14Z
+created_at: 2025-08-22T04:09:45Z
+updated_at: 2025-08-22T04:09:45Z

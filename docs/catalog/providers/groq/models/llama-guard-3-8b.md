@@ -6,8 +6,6 @@
 - **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
 - **Release Date**: 2024-07-23
 - **Open Weights**: true
-- **Context Window**: 8.2K tokens
-- **Max Output**: 8.2K tokens
 
 ## 🎯 Capabilities
 
@@ -48,8 +46,8 @@
 
 ## 📋 Metadata
 
-**Created**: 2025-08-22 03:17:02 UTC
-**Last Updated**: 2025-08-22 03:17:02 UTC
+**Created**: 2025-08-22 04:09:33 UTC
+**Last Updated**: 2025-08-22 04:09:33 UTC
 
 ## Navigation
 

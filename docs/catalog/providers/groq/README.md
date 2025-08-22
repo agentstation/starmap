@@ -39,27 +39,27 @@
 | [allam-2-7b](./models/allam-2-7b.md) | SDAIA | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [compound-beta](./models/compound-beta.md) | Groq | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [compound-beta-mini](./models/compound-beta-mini.md) | Groq | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | DeepSeek / Meta | N/A | $0.75/1M | $0.99/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | DeepSeek / Meta | 131072 | $0.75/1M | $0.99/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 | [distil-whisper-large-v3-en](./models/distil-whisper-large-v3-en.md) | Hugging Face | N/A | N/A | N/A | <span title="Audio Processing">🔊</span> <span title="Response Streaming">⚡</span> |
-| [gemma2-9b-it](./models/gemma2-9b-it.md) | Google | N/A | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | Meta | N/A | $0.05/1M | $0.08/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | Meta | N/A | $0.59/1M | $0.79/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama-guard-3-8b](./models/llama-guard-3-8b.md) | N/A | 8192 | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> |
-| [llama3-70b-8192](./models/llama3-70b-8192.md) | Meta | N/A | $0.59/1M | $0.79/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama3-8b-8192](./models/llama3-8b-8192.md) | Meta | N/A | $0.05/1M | $0.08/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-4-maverick-17b-128e-instruct](./models/meta-llama/llama-4-maverick-17b-128e-instruct.md) | Meta | N/A | $0.20/1M | $0.60/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-4-scout-17b-16e-instruct](./models/meta-llama/llama-4-scout-17b-16e-instruct.md) | Meta | N/A | $0.11/1M | $0.34/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-guard-4-12b](./models/meta-llama/llama-guard-4-12b.md) | Meta | N/A | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
+| [gemma2-9b-it](./models/gemma2-9b-it.md) | Google | 8192 | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | Meta | 131072 | $0.05/1M | $0.08/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | Meta | 131072 | $0.59/1M | $0.79/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [llama-guard-3-8b](./models/llama-guard-3-8b.md) | N/A | N/A | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> |
+| [llama3-70b-8192](./models/llama3-70b-8192.md) | Meta | 8192 | $0.59/1M | $0.79/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [llama3-8b-8192](./models/llama3-8b-8192.md) | Meta | 8192 | $0.05/1M | $0.08/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [meta-llama/llama-4-maverick-17b-128e-instruct](./models/meta-llama/llama-4-maverick-17b-128e-instruct.md) | Meta | 131072 | $0.20/1M | $0.60/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [meta-llama/llama-4-scout-17b-16e-instruct](./models/meta-llama/llama-4-scout-17b-16e-instruct.md) | Meta | 131072 | $0.11/1M | $0.34/1M | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+| [meta-llama/llama-guard-4-12b](./models/meta-llama/llama-guard-4-12b.md) | Meta | 131072 | $0.20/1M | $0.20/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [meta-llama/llama-prompt-guard-2-22m](./models/meta-llama/llama-prompt-guard-2-22m.md) | Meta | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [meta-llama/llama-prompt-guard-2-86m](./models/meta-llama/llama-prompt-guard-2-86m.md) | Meta | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [mistral-saba-24b](./models/mistral-saba-24b.md) | N/A | 32768 | $0.79/1M | $0.79/1M | <span title="Text Processing">📝</span> |
-| [moonshotai/kimi-k2-instruct](./models/moonshotai/kimi-k2-instruct.md) | Moonshot AI | N/A | $1.00/1M | $3.00/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [openai/gpt-oss-120b](./models/openai/gpt-oss-120b.md) | OpenAI | N/A | $0.15/1M | $0.75/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [openai/gpt-oss-20b](./models/openai/gpt-oss-20b.md) | OpenAI | N/A | $0.10/1M | $0.50/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [mistral-saba-24b](./models/mistral-saba-24b.md) | N/A | N/A | $0.79/1M | $0.79/1M | <span title="Text Processing">📝</span> |
+| [moonshotai/kimi-k2-instruct](./models/moonshotai/kimi-k2-instruct.md) | Moonshot AI | 131072 | $1.00/1M | $3.00/1M | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
+| [openai/gpt-oss-120b](./models/openai/gpt-oss-120b.md) | OpenAI | 131072 | $0.15/1M | $0.75/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [openai/gpt-oss-20b](./models/openai/gpt-oss-20b.md) | OpenAI | 131072 | $0.10/1M | $0.50/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 | [playai-tts](./models/playai-tts.md) | PlayAI | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
 | [playai-tts-arabic](./models/playai-tts-arabic.md) | PlayAI | N/A | N/A | N/A | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [qwen-qwq-32b](./models/qwen-qwq-32b.md) | N/A | 131072 | $0.29/1M | $0.39/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> |
-| [qwen/qwen3-32b](./models/qwen/qwen3-32b.md) | Alibaba Cloud | N/A | $0.29/1M | $0.59/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+| [qwen-qwq-32b](./models/qwen-qwq-32b.md) | N/A | N/A | $0.29/1M | $0.39/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> |
+| [qwen/qwen3-32b](./models/qwen/qwen3-32b.md) | Alibaba Cloud | 131072 | $0.29/1M | $0.59/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
 | [whisper-large-v3](./models/whisper-large-v3.md) | OpenAI | N/A | N/A | N/A | <span title="Audio Processing">🔊</span> <span title="Response Streaming">⚡</span> |
 | [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | OpenAI | N/A | N/A | N/A | <span title="Audio Processing">🔊</span> <span title="Response Streaming">⚡</span> |
 
