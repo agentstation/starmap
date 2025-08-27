@@ -6,15 +6,9 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDGroq, &Client{})
-}
 
 // GroqResponse represents the Groq API response structure.
 type GroqResponse struct {
@@ -40,8 +34,7 @@ type Client struct {
 }
 
 // NewClient creates a new Groq client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		OpenAIClient: baseclient.NewOpenAIClient(provider, "https://api.groq.com/openai"),
 	}
@@ -88,37 +81,6 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	}
 
 	return models, nil
-}
-
-// GetModel overrides the base implementation to parse Groq-specific fields from individual model endpoint.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Get the provider from the base client
-	provider := c.OpenAIClient.GetProvider()
-	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
-	}
-
-	// Build URL for individual model endpoint
-	url := "https://api.groq.com/openai/v1/models/" + modelID
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL() + "/" + modelID
-	}
-
-	// Make the request using the base client's transport
-	resp, err := c.OpenAIClient.GetTransport().Get(ctx, url, provider)
-	if err != nil {
-		return nil, fmt.Errorf("groq: request failed: %w", err)
-	}
-
-	// Decode response with Groq-specific structure
-	var result GroqModelData
-	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("groq: %w", err)
-	}
-
-	// Convert to starmap model
-	model := c.ConvertToGroqModel(result)
-	return &model, nil
 }
 
 // ConvertToGroqModel converts a Groq model response to a starmap Model with Groq-specific fields.
@@ -267,7 +229,7 @@ func (c *Client) normalizeAuthorName(name string) string {
 	normalized := strings.ToLower(strings.TrimSpace(name))
 	normalized = strings.ReplaceAll(normalized, " ", "-")
 	normalized = strings.ReplaceAll(normalized, "_", "-")
-	
+
 	// Handle special cases
 	switch normalized {
 	case "alibaba-cloud":
@@ -279,34 +241,34 @@ func (c *Client) normalizeAuthorName(name string) string {
 	case "hugging-face":
 		return "huggingfaceh4"
 	}
-	
+
 	return normalized
 }
 
 // mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
 func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
 	authorSet := make(map[string]bool)
-	
+
 	// ALWAYS preserve existing authors (manual configuration)
 	for _, author := range existing {
 		if string(author) != "" {
 			authorSet[string(author)] = true
 		}
 	}
-	
+
 	// Add newly discovered authors (from API)
 	for _, author := range discovered {
 		if author != "" {
 			authorSet[author] = true
 		}
 	}
-	
+
 	// Convert back to slice and sort
 	var merged []catalogs.AuthorID
 	for author := range authorSet {
 		merged = append(merged, catalogs.AuthorID(author))
 	}
-	
+
 	// Sort for consistent output
 	for i := 0; i < len(merged); i++ {
 		for j := i + 1; j < len(merged); j++ {
@@ -315,6 +277,6 @@ func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string)
 			}
 		}
 	}
-	
+
 	return merged
 }

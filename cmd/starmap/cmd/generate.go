@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var generateOutput string
+var generateFlagOutput string
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
@@ -38,7 +38,7 @@ The documentation is organized hierarchically and optimized for GitHub viewing.`
 func init() {
 	rootCmd.AddCommand(generateCmd)
 
-	generateCmd.Flags().StringVarP(&generateOutput, "output", "o", "./docs", "Output directory for generated documentation")
+	generateCmd.Flags().StringVarP(&generateFlagOutput, "output", "o", "./docs", "Output directory for generated documentation")
 }
 
 // formatDuration converts a time.Duration to a human-readable string
@@ -85,12 +85,12 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create output directory structure
-	if err := os.MkdirAll(generateOutput, 0755); err != nil {
+	if err := os.MkdirAll(generateFlagOutput, 0755); err != nil {
 		return fmt.Errorf("creating output directory: %w", err)
 	}
 
 	// Create catalog subdirectory
-	catalogDir := filepath.Join(generateOutput, "catalog")
+	catalogDir := filepath.Join(generateFlagOutput, "catalog")
 	if err := os.MkdirAll(catalogDir, 0755); err != nil {
 		return fmt.Errorf("creating catalog directory: %w", err)
 	}
@@ -117,7 +117,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("generating author docs: %w", err)
 	}
 
-	fmt.Printf("✅ Documentation generated successfully in %s\n", generateOutput)
+	fmt.Printf("✅ Documentation generated successfully in %s\n", generateFlagOutput)
 	return nil
 }
 

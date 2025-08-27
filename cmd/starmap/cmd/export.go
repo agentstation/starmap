@@ -14,10 +14,10 @@ import (
 )
 
 var (
-	exportFormat   string
-	exportProvider string
-	exportOutput   string
-	exportPretty   bool
+	exportFlagFormat   string
+	exportFlagProvider string
+	exportFlagOutput   string
+	exportFlagPretty   bool
 )
 
 // exportCmd represents the export command
@@ -43,18 +43,18 @@ a provider's API if specified.`,
 func init() {
 	rootCmd.AddCommand(exportCmd)
 
-	exportCmd.Flags().StringVarP(&exportFormat, "format", "f", "openai", "Export format: openai or openrouter")
-	exportCmd.Flags().StringVarP(&exportProvider, "provider", "p", "", "Provider to fetch models from (optional)")
-	exportCmd.Flags().StringVarP(&exportOutput, "output", "o", "", "Output file (default: stdout)")
-	exportCmd.Flags().BoolVar(&exportPretty, "pretty", true, "Pretty print JSON output")
+	exportCmd.Flags().StringVarP(&exportFlagFormat, "format", "f", "openai", "Export format: openai or openrouter")
+	exportCmd.Flags().StringVarP(&exportFlagProvider, "provider", "p", "", "Provider to fetch models from (optional)")
+	exportCmd.Flags().StringVarP(&exportFlagOutput, "output", "o", "", "Output file (default: stdout)")
+	exportCmd.Flags().BoolVar(&exportFlagPretty, "pretty", true, "Pretty print JSON output")
 }
 
 func runExport(cmd *cobra.Command, args []string) error {
 	var models []*catalogs.Model
 
-	if exportProvider != "" {
+	if exportFlagProvider != "" {
 		// Fetch models from specific provider
-		pid := catalogs.ProviderID(exportProvider)
+		pid := catalogs.ProviderID(exportFlagProvider)
 		sm, err := starmap.New()
 		if err != nil {
 			return fmt.Errorf("creating starmap: %w", err)
@@ -67,7 +67,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 		// Get provider from catalog
 		provider, found := catalog.Providers().Get(pid)
 		if !found {
-			return fmt.Errorf("provider %s not found in catalog", exportProvider)
+			return fmt.Errorf("provider %s not found in catalog", exportFlagProvider)
 		}
 
 		// Load API key and environment variables from environment
@@ -75,19 +75,15 @@ func runExport(cmd *cobra.Command, args []string) error {
 		provider.LoadEnvVars()
 
 		// Get client for provider
-		result, err := provider.Client()
+		client, err := provider.Client()
 		if err != nil {
-			return fmt.Errorf("getting client for %s: %w", exportProvider, err)
+			return fmt.Errorf("getting client for %s: %w", exportFlagProvider, err)
 		}
-		if result.Error != nil {
-			return fmt.Errorf("client error for %s: %w", exportProvider, result.Error)
-		}
-		client := result.Client
 
 		ctx := context.Background()
 		modelValues, err := client.ListModels(ctx)
 		if err != nil {
-			return fmt.Errorf("fetching models from %s: %w", exportProvider, err)
+			return fmt.Errorf("fetching models from %s: %w", exportFlagProvider, err)
 		}
 		// Convert values to pointers
 		models = make([]*catalogs.Model, len(modelValues))
@@ -116,7 +112,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 
 	// Convert models to requested format
 	var output interface{}
-	switch strings.ToLower(exportFormat) {
+	switch strings.ToLower(exportFlagFormat) {
 	case "openai":
 		openAIModels := make([]convert.OpenAIModel, 0, len(models))
 		for _, model := range models {
@@ -135,13 +131,13 @@ func runExport(cmd *cobra.Command, args []string) error {
 			Data: openRouterModels,
 		}
 	default:
-		return fmt.Errorf("unsupported format: %s (use 'openai' or 'openrouter')", exportFormat)
+		return fmt.Errorf("unsupported format: %s (use 'openai' or 'openrouter')", exportFlagFormat)
 	}
 
 	// Create encoder
 	var encoder *json.Encoder
-	if exportOutput != "" {
-		file, err := os.Create(exportOutput)
+	if exportFlagOutput != "" {
+		file, err := os.Create(exportFlagOutput)
 		if err != nil {
 			return fmt.Errorf("creating output file: %w", err)
 		}
@@ -156,7 +152,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 	}
 
 	// Configure encoder
-	if exportPretty {
+	if exportFlagPretty {
 		encoder.SetIndent("", "  ")
 	}
 
@@ -165,8 +161,8 @@ func runExport(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("encoding output: %w", err)
 	}
 
-	if exportOutput != "" {
-		fmt.Fprintf(os.Stderr, "Exported %d models to %s\n", len(models), exportOutput)
+	if exportFlagOutput != "" {
+		fmt.Fprintf(os.Stderr, "Exported %d models to %s\n", len(models), exportFlagOutput)
 	}
 
 	return nil

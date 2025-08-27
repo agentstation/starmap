@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var showAPIKeys bool
+var providersFlagKeys bool
 
 // providersCmd represents the providers command
 var providersCmd = &cobra.Command{
@@ -29,7 +29,7 @@ For each provider, it shows:
 func init() {
 	rootCmd.AddCommand(providersCmd)
 
-	providersCmd.Flags().BoolVar(&showAPIKeys, "show-keys", false, "Show if API keys are configured (keys are not displayed)")
+	providersCmd.Flags().BoolVar(&providersFlagKeys, "keys", false, "Show if API keys are configured (keys are not displayed)")
 }
 
 func runProviders(cmd *cobra.Command, args []string) error {
@@ -61,8 +61,8 @@ func runProviders(cmd *cobra.Command, args []string) error {
 	supportedMap := make(map[catalogs.ProviderID]bool)
 	for _, provider := range providers {
 		// Try to get client (with missing API key allowed to test if client exists)
-		result, _ := provider.Client(catalogs.WithAllowMissingAPIKey(true))
-		if result != nil && result.Client != nil {
+		client, _ := provider.Client(catalogs.WithAllowMissingAPIKey(true))
+		if client != nil {
 			supportedMap[provider.ID] = true
 		}
 	}
@@ -88,7 +88,7 @@ func runProviders(cmd *cobra.Command, args []string) error {
 		fmt.Printf("%s %s - %s", status, provider.ID, provider.Name)
 
 		// Show validation status if showing keys
-		if showAPIKeys {
+		if providersFlagKeys {
 			switch result.Status {
 			case catalogs.ProviderValidationStatusConfigured:
 				fmt.Printf(" (ready)")

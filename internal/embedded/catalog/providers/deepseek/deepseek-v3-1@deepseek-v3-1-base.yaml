@@ -1,0 +1,53 @@
+id: deepseek-v3-1@deepseek-v3-1-base
+name: Deepseek V3 1
+features:
+    modalities:
+        input: []
+        output: []
+    tool_calls: false
+    tools: true
+    tool_choice: false
+    web_search: false
+    attachments: false
+    reasoning: true
+    reasoning_effort: false
+    reasoning_tokens: false
+    include_reasoning: false
+    verbosity: false
+    temperature: true
+    top_p: false
+    top_k: false
+    top_a: false
+    min_p: false
+    typical_p: false
+    tfs: false
+    max_tokens: false
+    max_output_tokens: false
+    stop: false
+    stop_token_ids: false
+    frequency_penalty: false
+    presence_penalty: false
+    repetition_penalty: false
+    no_repeat_ngram_size: false
+    length_penalty: false
+    logit_bias: false
+    bad_words: false
+    allowed_tokens: false
+    seed: false
+    logprobs: false
+    top_logprobs: false
+    echo: false
+    "n": false
+    best_of: false
+    mirostat: false
+    mirostat_tau: false
+    mirostat_eta: false
+    contrastive_search_penalty_alpha: false
+    num_beams: false
+    early_stopping: false
+    diversity_penalty: false
+    format_response: false
+    structured_outputs: false
+    streaming: true
+created_at: "2025-08-21T21:37:20Z"
+updated_at: "2025-08-21T21:37:20Z"

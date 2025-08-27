@@ -3,7 +3,11 @@ package catalogs
 import (
 	"fmt"
 	"maps"
+	"sort"
+	"strings"
 	"sync"
+	
+	"github.com/goccy/go-yaml"
 )
 
 // Providers is a concurrent safe map of providers.
@@ -244,4 +248,108 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 		return nil
 	}
 	return errors
+}
+
+// FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure
+func (p *Providers) FormatYAML() string {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	
+	// Convert map to slice for consistent ordering
+	providers := make([]Provider, 0, len(p.providers))
+	
+	// Get all provider IDs and sort them for deterministic output
+	ids := make([]ProviderID, 0, len(p.providers))
+	for id := range p.providers {
+		ids = append(ids, id)
+	}
+	sort.Slice(ids, func(i, j int) bool {
+		return string(ids[i]) < string(ids[j])
+	})
+	
+	// Create ordered slice of providers
+	for _, id := range ids {
+		if provider := p.providers[id]; provider != nil {
+			// Create a copy to avoid modifying the original
+			providerCopy := *provider
+			providers = append(providers, providerCopy)
+		}
+	}
+	
+	return formatProvidersYAML(providers)
+}
+
+// formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing
+func formatProvidersYAML(providers []Provider) string {
+	// Create comment map for provider section headers and duration comments
+	commentMap := yaml.CommentMap{}
+
+	for i, provider := range providers {
+		// Add provider section header comment using HeadComment with space formatting
+		providerPath := fmt.Sprintf("$[%d]", i)
+		commentMap[providerPath] = []*yaml.Comment{
+			yaml.HeadComment(fmt.Sprintf(" %s", provider.Name)), // Space prefix for proper formatting
+		}
+
+		// Add duration comments
+		if provider.RetentionPolicy != nil && provider.RetentionPolicy.Duration != nil {
+			retentionPath := fmt.Sprintf("$[%d].retention_policy.duration", i)
+			duration := provider.RetentionPolicy.Duration.String()
+			var comment string
+			switch duration {
+			case "720h0m0s", "720h":
+				comment = "30 days"
+			case "48h0m0s", "48h":
+				comment = "2 days"
+			case "0s":
+				comment = "immediate"
+			default:
+				// Handle other common durations
+				if d := *provider.RetentionPolicy.Duration; d > 0 {
+					hours := int(d.Hours())
+					if hours >= 24 && hours%24 == 0 {
+						days := hours / 24
+						comment = fmt.Sprintf("%d days", days)
+					}
+				}
+			}
+			
+			if comment != "" {
+				commentMap[retentionPath] = []*yaml.Comment{
+					yaml.LineComment(comment),
+				}
+			}
+		}
+	}
+
+	// Let the library handle the formatting properly
+	yamlData, err := yaml.MarshalWithOptions(providers,
+		yaml.Indent(2),               // 2-space indentation
+		yaml.IndentSequence(false),   // Keep root array flush left (no indentation)
+		yaml.WithComment(commentMap), // Add comments
+	)
+	if err != nil {
+		// Fallback to basic YAML if enhanced formatting fails
+		basicYaml, _ := yaml.Marshal(providers)
+		return string(basicYaml)
+	}
+
+	// Post-process to add spacing between providers
+	return addBlankLinesBetweenProviders(string(yamlData))
+}
+
+// addBlankLinesBetweenProviders adds spacing between provider sections
+func addBlankLinesBetweenProviders(yamlContent string) string {
+	lines := strings.Split(yamlContent, "\n")
+	var result []string
+
+	for i, line := range lines {
+		// Add blank line before each provider comment (except the first one)
+		if strings.HasPrefix(line, "#") && i > 0 {
+			result = append(result, "")
+		}
+		result = append(result, line)
+	}
+
+	return strings.Join(result, "\n")
 }

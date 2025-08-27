@@ -7,15 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDAnthropic, &Client{})
-}
 
 // Response structures for Anthropic API
 type modelsResponse struct {
@@ -37,12 +31,21 @@ type Client struct {
 }
 
 // NewClient creates a new Anthropic client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,
 		transport: transport.NewForProvider(provider),
 	}
+}
+
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -98,23 +101,6 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	}
 
 	return models, nil
-}
-
-// GetModel retrieves a specific model by its ID.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Anthropic doesn't provide a single model endpoint, so we list all and filter
-	models, err := c.ListModels(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, model := range models {
-		if model.ID == modelID {
-			return &model, nil
-		}
-	}
-
-	return nil, fmt.Errorf("anthropic: model %s not found", modelID)
 }
 
 // convertToModel converts an Anthropic model response to a starmap Model.

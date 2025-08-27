@@ -47,6 +47,16 @@ func NewGoogleClient(provider *catalogs.Provider, baseURL string) *GoogleClient 
 	}
 }
 
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *GoogleClient) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *GoogleClient) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
+}
+
 // Configure sets the provider for this client.
 func (c *GoogleClient) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
@@ -91,24 +101,6 @@ func (c *GoogleClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	}
 
 	return models, nil
-}
-
-// GetModel retrieves a specific model by its ID.
-func (c *GoogleClient) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Google APIs don't typically provide a single model endpoint,
-	// so we list all models and filter for the requested one
-	models, err := c.ListModels(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, model := range models {
-		if model.ID == modelID {
-			return &model, nil
-		}
-	}
-
-	return nil, fmt.Errorf("google-compatible: model %s not found", modelID)
 }
 
 // ConvertToModel converts a Google model response to a starmap Model.

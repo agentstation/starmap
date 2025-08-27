@@ -36,7 +36,7 @@ type Provider struct {
 	GovernancePolicy *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"` // Oversight and moderation practices
 
 	// Runtime fields (not serialized)
-	APIKeyValue  string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
+	apiKeyValue  string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
 	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
@@ -247,7 +247,7 @@ type ProviderValidationResult struct {
 // This should be called when the provider is loaded from the catalog.
 func (p *Provider) LoadAPIKey() {
 	if p.APIKey != nil {
-		p.APIKeyValue = os.Getenv(p.APIKey.Name)
+		p.apiKeyValue = os.Getenv(p.APIKey.Name)
 	}
 }
 
@@ -267,88 +267,15 @@ func (p *Provider) LoadEnvVars() {
 	}
 }
 
-// GetAPIKeyValue returns the loaded API key value.
-func (p *Provider) GetAPIKeyValue() string {
-	return p.APIKeyValue
-}
-
-// GetEnvVar returns the value of a specific environment variable.
-func (p *Provider) GetEnvVar(name string) string {
-	if p.EnvVarValues != nil {
-		if value, exists := p.EnvVarValues[name]; exists {
-			return value
-		}
-	}
-	// Fallback to direct environment lookup
-	return os.Getenv(name)
-}
-
-// HasRequiredEnvVars checks if all required environment variables are set.
-func (p *Provider) HasRequiredEnvVars() bool {
-	for _, envVar := range p.EnvVars {
-		if envVar.Required {
-			value := p.GetEnvVar(envVar.Name)
-			if value == "" {
-				return false
-			}
-
-			// Validate against pattern if specified
-			if envVar.Pattern != "" && envVar.Pattern != ".*" {
-				matched, err := regexp.MatchString(envVar.Pattern, value)
-				if err != nil || !matched {
-					return false
-				}
-			}
-		}
-	}
-	return true
-}
-
-// GetMissingEnvVars returns a list of required environment variables that are not set.
-func (p *Provider) GetMissingEnvVars() []string {
-	var missing []string
-	for _, envVar := range p.EnvVars {
-		if envVar.Required {
-			value := p.GetEnvVar(envVar.Name)
-			if value == "" {
-				missing = append(missing, envVar.Name)
-				continue
-			}
-
-			// Check pattern validation
-			if envVar.Pattern != "" && envVar.Pattern != ".*" {
-				matched, err := regexp.MatchString(envVar.Pattern, value)
-				if err != nil || !matched {
-					missing = append(missing, envVar.Name)
-				}
-			}
-		}
-	}
-	return missing
-}
-
-// HasAPIKey checks if the provider has an API key configured.
-// This checks the loaded APIKeyValue for efficiency.
-func (p *Provider) HasAPIKey() bool {
-	if p.APIKey == nil {
-		return false
-	}
-	// Use loaded value if available, otherwise check environment
-	if p.APIKeyValue != "" {
-		return true
-	}
-	return os.Getenv(p.APIKey.Name) != ""
-}
-
-// GetAPIKey retrieves and validates the API key for this provider.
-// Uses the loaded APIKeyValue if available, otherwise falls back to environment.
-func (p *Provider) GetAPIKey() (string, error) {
+// APIKeyValue retrieves and validates the API key for this provider.
+// Uses the loaded apiKeyValue if available, otherwise falls back to environment.
+func (p *Provider) APIKeyValue() (string, error) {
 	if p.APIKey == nil {
 		return "", nil
 	}
 
 	// Use loaded value or get from environment
-	apiKey := p.APIKeyValue
+	apiKey := p.apiKeyValue
 	if apiKey == "" {
 		apiKey = os.Getenv(p.APIKey.Name)
 	}
@@ -373,6 +300,68 @@ func (p *Provider) GetAPIKey() (string, error) {
 	}
 
 	return apiKey, nil
+}
+
+// EnvVar returns the value of a specific environment variable.
+func (p *Provider) EnvVar(name string) string {
+	if p.EnvVarValues != nil {
+		if value, exists := p.EnvVarValues[name]; exists {
+			return value
+		}
+	}
+	// Fallback to direct environment lookup
+	return os.Getenv(name)
+}
+
+// HasRequiredEnvVars checks if all required environment variables are set.
+func (p *Provider) HasRequiredEnvVars() bool {
+	for _, envVar := range p.EnvVars {
+		if envVar.Required {
+			value := p.EnvVar(envVar.Name)
+			if value == "" {
+				return false
+			}
+
+			// Validate against pattern if specified
+			if envVar.Pattern != "" && envVar.Pattern != ".*" {
+				matched, err := regexp.MatchString(envVar.Pattern, value)
+				if err != nil || !matched {
+					return false
+				}
+			}
+		}
+	}
+	return true
+}
+
+// GetMissingEnvVars returns a list of required environment variables that are not set.
+func (p *Provider) GetMissingEnvVars() []string {
+	var missing []string
+	for _, envVar := range p.EnvVars {
+		if envVar.Required {
+			value := p.EnvVar(envVar.Name)
+			if value == "" {
+				missing = append(missing, envVar.Name)
+				continue
+			}
+
+			// Check pattern validation
+			if envVar.Pattern != "" && envVar.Pattern != ".*" {
+				matched, err := regexp.MatchString(envVar.Pattern, value)
+				if err != nil || !matched {
+					missing = append(missing, envVar.Name)
+				}
+			}
+		}
+	}
+	return missing
+}
+
+// HasAPIKey checks if the provider has a valid API key configured.
+// This checks both existence and validation (pattern matching).
+func (p *Provider) HasAPIKey() bool {
+	_, err := p.APIKeyValue()
+	return err == nil
 }
 
 // Validate performs validation checks on this provider and returns the result.
@@ -405,7 +394,7 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 	if result.IsConfigured {
 		// Validate API key format if present and required
 		if result.IsAPIKeyRequired && result.HasAPIKey {
-			_, err := p.GetAPIKey()
+			_, err := p.APIKeyValue()
 			if err != nil {
 				result.Error = err
 				result.Status = ProviderValidationStatusMissing
@@ -455,14 +444,6 @@ type ClientOptions struct {
 	AllowMissingAPIKey bool
 }
 
-// ClientResult contains the result of getting a provider client.
-type ClientResult struct {
-	Client         Client
-	APIKeyRequired bool
-	APIKeyPresent  bool
-	Error          error
-}
-
 // WithAllowMissingAPIKey allows retrieving a client even if the API key is missing.
 func WithAllowMissingAPIKey(allow bool) ClientOption {
 	return func(opts *ClientOptions) {
@@ -471,43 +452,47 @@ func WithAllowMissingAPIKey(allow bool) ClientOption {
 }
 
 // Client retrieves a configured client for this provider.
-func (p *Provider) Client(opts ...ClientOption) (*ClientResult, error) {
+func (p *Provider) Client(opts ...ClientOption) (Client, error) {
 	// Apply options
 	options := &ClientOptions{}
 	for _, opt := range opts {
 		opt(options)
 	}
 
-	result := &ClientResult{
-		APIKeyRequired: p.IsAPIKeyRequired(),
-		APIKeyPresent:  p.HasAPIKey(),
-	}
-
 	// Check if API key is required but missing
-	if result.APIKeyRequired && !result.APIKeyPresent && !options.AllowMissingAPIKey {
-		result.Error = fmt.Errorf("provider %s requires API key %s but it is not configured", p.ID, p.APIKey.Name)
-		return result, nil
+	if p.IsAPIKeyRequired() && !p.HasAPIKey() && !options.AllowMissingAPIKey {
+		return nil, fmt.Errorf("provider %s requires API key %s but it is not configured", p.ID, p.APIKey.Name)
 	}
 
 	// Check if required environment variables are missing
 	missingEnvVars := p.GetMissingEnvVars()
 	if len(missingEnvVars) > 0 && !options.AllowMissingAPIKey {
-		result.Error = fmt.Errorf("provider %s is missing required environment variables: %v", p.ID, missingEnvVars)
-		return result, nil
+		return nil, fmt.Errorf("provider %s is missing required environment variables: %v", p.ID, missingEnvVars)
 	}
 
 	// Use the injected client getter function
 	if clientGetter == nil {
-		result.Error = fmt.Errorf("client registry not initialized")
-		return result, nil
+		return nil, fmt.Errorf("client registry not initialized")
 	}
 
 	client, err := clientGetter(p)
 	if err != nil {
-		result.Error = err
-		return result, nil
+		return nil, err
 	}
 
-	result.Client = client
-	return result, nil
+	return client, nil
+}
+
+// Model retrieves a specific model from the provider.
+func (p *Provider) Model(modelID string) (*Model, error) {
+	if p == nil || p.Models == nil {
+		return nil, fmt.Errorf("provider or models not initialized")
+	}
+
+	model, exists := p.Models[modelID]
+	if !exists {
+		return nil, fmt.Errorf("model %s not found", modelID)
+	}
+
+	return &model, nil
 }

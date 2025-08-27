@@ -3,9 +3,9 @@ package modelsdev
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 
-	"github.com/agentstation/starmap/internal/sources/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -14,228 +14,156 @@ const (
 	defaultOutputDir = "internal/embedded/catalog/providers"
 )
 
-// Shared state for models.dev repository
+// Package-level state for expensive git operations
 var (
-	sharedMu     sync.Mutex
-	sharedAPI    *ModelsDevAPI
-	sharedClient *Client
-	sharedDir    string
+	gitOnce sync.Once
+	gitAPI  *ModelsDevAPI
+	gitErr  error
+	gitDir  string
 )
 
-func init() {
-	// Register a single instance
-	registry.Register(&ModelsDevGitSource{
-		priority: 100,
-		name:     "models.dev (git)",
-	})
+// No init() - sources are created explicitly
+
+// GitSource enhances models with models.dev data
+type GitSource struct{}
+
+// NewGitSource creates a new models.dev git source
+func NewGitSource() *GitSource {
+	return &GitSource{}
 }
 
-// ModelsDevGitSource wraps models.dev git client as a Source
-type ModelsDevGitSource struct {
-	api      *ModelsDevAPI
-	client   *Client
-	priority int
-	name     string
-	mu       sync.RWMutex
-}
-
-// Type returns the source type
-func (s *ModelsDevGitSource) Type() sources.Type {
+// Name returns the name of this source
+func (s *GitSource) Name() sources.SourceName {
 	return sources.ModelsDevGit
 }
 
-// Configure prepares the source with runtime configuration
-func (s *ModelsDevGitSource) Configure(config sources.SourceConfig) error {
-	if config.SyncOptions != nil && config.SyncOptions.DisableModelsDevGit {
-		return nil
-	}
-
-	outputDir := defaultOutputDir
-	if config.SyncOptions != nil && config.SyncOptions.OutputDir != "" {
-		outputDir = config.SyncOptions.OutputDir
-	}
-
-	// Use shared state to avoid multiple clones
-	sharedMu.Lock()
-	defer sharedMu.Unlock()
-
-	if sharedAPI != nil && sharedDir == outputDir {
-		// Reuse existing setup
-		s.mu.Lock()
-		s.api = sharedAPI
-		s.client = sharedClient
-		s.mu.Unlock()
-		return nil
-	}
-
-	// Initialize models.dev
-	client := NewClient(outputDir)
-	if err := client.EnsureRepository(); err != nil {
-		return err
-	}
-	if err := client.BuildAPI(); err != nil {
-		return err
-	}
-	api, err := ParseAPI(client.GetAPIPath())
-	if err != nil {
-		return err
-	}
-
-	// Update shared state
-	sharedAPI = api
-	sharedClient = client
-	sharedDir = outputDir
-
-	// Set instance state
-	s.mu.Lock()
-	s.api = api
-	s.client = client
-	s.mu.Unlock()
-
-	return nil
-}
-
-// Reset clears any configuration
-func (s *ModelsDevGitSource) Reset() {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	s.api = nil
-	s.client = nil
-}
-
-// Clone creates a copy of this source for concurrent use
-func (s *ModelsDevGitSource) Clone() sources.Source {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return &ModelsDevGitSource{
-		api:      s.api,
-		client:   s.client,
-		priority: s.priority,
-		name:     s.name,
-	}
-}
-
-// Name returns a human-readable name for this source
-func (s *ModelsDevGitSource) Name() string {
-	return s.name
-}
-
-// Priority returns the priority of this source
-func (s *ModelsDevGitSource) Priority() int {
-	return s.priority
-}
-
-// FetchModels fetches models from models.dev for a specific provider
-func (s *ModelsDevGitSource) FetchModels(ctx context.Context, providerID catalogs.ProviderID) ([]catalogs.Model, error) {
-	if s.api == nil {
-		return nil, fmt.Errorf("models.dev API not available")
-	}
-
-	// Get models from models.dev for this provider
-	modelsDevProvider, exists := s.api.GetProvider(providerID)
-	if !exists {
-		// Not an error - provider might not be in models.dev yet
-		return nil, nil
-	}
-
-	var starmapModels []catalogs.Model
-	for _, modelsDevModel := range modelsDevProvider.Models {
-		// Convert models.dev model to starmap model
-		starmapModel, err := modelsDevModel.ToStarmapModel()
-		if err != nil {
-			// Log the error but continue with other models
-			continue
+// ensureGitRepo initializes models.dev data once using sync.Once
+func ensureGitRepo(outputDir string) (*ModelsDevAPI, error) {
+	gitOnce.Do(func() {
+		if outputDir == "" {
+			outputDir = defaultOutputDir
 		}
-		starmapModels = append(starmapModels, *starmapModel)
-	}
+		gitDir = outputDir
 
-	return starmapModels, nil
+		client := NewClient(outputDir)
+		if err := client.EnsureRepository(); err != nil {
+			gitErr = err
+			return
+		}
+		if err := client.BuildAPI(); err != nil {
+			gitErr = err
+			return
+		}
+		gitAPI, gitErr = ParseAPI(client.GetAPIPath())
+	})
+
+	// If the directory changed, we need a new sync.Once but that's rare
+	// For now, just use what we have
+	return gitAPI, gitErr
 }
 
-// FetchProvider fetches provider information from models.dev
-func (s *ModelsDevGitSource) FetchProvider(ctx context.Context, providerID catalogs.ProviderID) (*catalogs.Provider, error) {
-	if s.api == nil {
-		return nil, fmt.Errorf("models.dev API not available")
-	}
-
-	// Get provider from models.dev
-	modelsDevProvider, exists := s.api.GetProvider(providerID)
-	if !exists {
-		// Not an error - provider might not be in models.dev yet
-		return nil, nil
-	}
-
-	// Convert models.dev provider to starmap provider
-	starmapProvider, err := s.convertModelsDevProvider(modelsDevProvider, providerID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to convert models.dev provider: %w", err)
-	}
-
-	return starmapProvider, nil
-}
-
-// FieldAuthorities returns the field authorities where models.dev is authoritative
-func (s *ModelsDevGitSource) FieldAuthorities() []sources.FieldAuthority {
-	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.ModelsDevGit)
-}
-
-// IsAvailable returns true if models.dev data is available
-func (s *ModelsDevGitSource) IsAvailable() bool {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return s.api != nil
-}
-
-// SetPriority updates the priority of this source
-func (s *ModelsDevGitSource) SetPriority(priority int) {
-	s.priority = priority
-}
-
-// CopyProviderLogos copies provider logos from models.dev repository
-func (s *ModelsDevGitSource) CopyProviderLogos(providerIDs []catalogs.ProviderID) error {
-	s.mu.RLock()
-	client := s.client
-	s.mu.RUnlock()
-
-	if client == nil {
-		return nil
-	}
-
-	sharedMu.Lock()
-	defer sharedMu.Unlock()
-	return CopyProviderLogos(client, sharedDir, providerIDs)
-}
-
-// Cleanup removes the models.dev repository
-func (s *ModelsDevGitSource) Cleanup() error {
-	sharedMu.Lock()
-	defer sharedMu.Unlock()
-
-	if sharedClient != nil {
-		err := sharedClient.Cleanup()
-		sharedClient = nil
-		sharedAPI = nil
-		sharedDir = ""
-		return err
-	}
+// Setup initializes the source with dependencies
+func (s *GitSource) Setup(providers *catalogs.Providers) error {
+	// GitSource doesn't need provider configs
 	return nil
 }
 
-// convertModelsDevProvider converts a models.dev provider to a starmap provider
-func (s *ModelsDevGitSource) convertModelsDevProvider(modelsDevProvider *ModelsDevProvider, providerID catalogs.ProviderID) (*catalogs.Provider, error) {
-	provider := &catalogs.Provider{
-		ID: providerID,
+// Fetch creates a catalog with models that have pricing/limits data from models.dev
+func (s *GitSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
+	// Apply options (not currently used by GitSource, but kept for consistency)
+	_ = sources.ApplyOptions(opts...)
+	
+	// Create a new catalog to build into
+	catalog, err := catalogs.New()
+	if err != nil {
+		return nil, fmt.Errorf("creating memory catalog: %w", err)
 	}
 
-	// Extract basic information from models.dev provider
-	// Note: This is a simplified conversion - actual implementation would depend
-	// on the models.dev provider structure
-	if modelsDevProvider.Name != "" {
-		provider.Name = modelsDevProvider.Name
+	// Set the default merge strategy for models.dev catalog (enhances with pricing/limits)
+	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
+
+	// Note: Source disabling should be handled at orchestration level
+
+	// We'll return only models with pricing/limits data
+	// The merge strategy will handle combining with existing models
+
+	// Note: Output directory is now handled by catalog Save() method
+	outputDir := defaultOutputDir
+
+	// Initialize models.dev data once
+	api, err := ensureGitRepo(outputDir)
+	if err != nil {
+		return nil, fmt.Errorf("initializing models.dev: %w", err)
 	}
 
-	// Add any policy information if available in models.dev
-	// This would need to be implemented based on the actual models.dev structure
+	// Add only models with pricing/limits data from models.dev
+	added := 0
+	for _, provider := range *api {
+		for _, mdModel := range provider.Models {
+			// Only include models that have pricing or limits data
+			if (mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil)) ||
+				mdModel.Limit.Context > 0 || mdModel.Limit.Output > 0 {
+				// Convert to starmap model with pricing/limits
+				model := s.convertToStarmapModel(mdModel)
+				if err := catalog.SetModel(model); err != nil {
+					return nil, fmt.Errorf("setting model %s: %w", model.ID, err)
+				}
+				added++
+			}
+		}
+	}
 
-	return provider, nil
+	log.Printf("  Found %d models with pricing/limits from models.dev Git", added)
+	return catalog, nil
+}
+
+// Cleanup releases any resources
+func (s *GitSource) Cleanup() error {
+	// GitSource doesn't hold persistent resources
+	return nil
+}
+
+// convertToStarmapModel converts a models.dev model to starmap model with pricing/limits
+func (s *GitSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Model {
+	model := catalogs.Model{
+		ID:   mdModel.ID,
+		Name: mdModel.Name,
+	}
+
+	// Add pricing if available
+	if mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil) {
+		model.Pricing = &catalogs.ModelPricing{
+			Currency: "USD", // models.dev uses USD
+			Tokens:   &catalogs.TokenPricing{},
+		}
+
+		// Map input cost (models.dev uses cost per 1M tokens)
+		if mdModel.Cost.Input != nil && *mdModel.Cost.Input > 0 {
+			model.Pricing.Tokens.Input = &catalogs.TokenCost{
+				Per1M: *mdModel.Cost.Input,
+			}
+		}
+
+		// Map output cost
+		if mdModel.Cost.Output != nil && *mdModel.Cost.Output > 0 {
+			model.Pricing.Tokens.Output = &catalogs.TokenCost{
+				Per1M: *mdModel.Cost.Output,
+			}
+		}
+	}
+
+	// Add limits if available
+	if mdModel.Limit.Context > 0 || mdModel.Limit.Output > 0 {
+		model.Limits = &catalogs.ModelLimits{}
+
+		if mdModel.Limit.Context > 0 {
+			model.Limits.ContextWindow = int64(mdModel.Limit.Context)
+		}
+
+		if mdModel.Limit.Output > 0 {
+			model.Limits.OutputTokens = int64(mdModel.Limit.Output)
+		}
+	}
+
+	return model
 }

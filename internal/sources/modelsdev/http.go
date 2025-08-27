@@ -3,9 +3,9 @@ package modelsdev
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 
-	"github.com/agentstation/starmap/internal/sources/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -14,238 +14,147 @@ const (
 	defaultHTTPOutputDir = "internal/embedded/catalog/providers"
 )
 
-// Shared state for models.dev HTTP API
+// Package-level state for expensive HTTP operations
 var (
-	sharedHTTPMu     sync.Mutex
-	sharedHTTPAPI    *ModelsDevAPI
-	sharedHTTPClient *HTTPClient
-	sharedHTTPDir    string
+	httpOnce sync.Once
+	httpAPI  *ModelsDevAPI
+	httpErr  error
+	httpDir  string
 )
 
-func init() {
-	// Register HTTP source instance
-	registry.Register(&ModelsDevHTTPSource{
-		priority: 110, // Higher priority than git for faster access
-		name:     "models.dev (http)",
-	})
+// HTTPSource enhances models with models.dev data via HTTP
+type HTTPSource struct{}
+
+// NewHTTPSource creates a new models.dev HTTP source
+func NewHTTPSource() *HTTPSource {
+	return &HTTPSource{}
 }
 
-// ModelsDevHTTPSource wraps models.dev HTTP client as a Source
-type ModelsDevHTTPSource struct {
-	api      *ModelsDevAPI
-	client   *HTTPClient
-	priority int
-	name     string
-	mu       sync.RWMutex
-}
-
-// Type returns the source type
-func (s *ModelsDevHTTPSource) Type() sources.Type {
+// Name returns the name of this source
+func (s *HTTPSource) Name() sources.SourceName {
 	return sources.ModelsDevHTTP
 }
 
-// Configure prepares the source with runtime configuration
-func (s *ModelsDevHTTPSource) Configure(config sources.SourceConfig) error {
-	if config.SyncOptions != nil && config.SyncOptions.DisableModelsDevHTTP {
-		return nil
+// ensureHTTPAPI initializes models.dev data once via HTTP
+func ensureHTTPAPI(outputDir string) (*ModelsDevAPI, error) {
+	httpOnce.Do(func() {
+		if outputDir == "" {
+			outputDir = defaultHTTPOutputDir
+		}
+		httpDir = outputDir
+
+		client := NewHTTPClient(outputDir)
+		if err := client.EnsureAPI(); err != nil {
+			httpErr = err
+			return
+		}
+		httpAPI, httpErr = ParseAPI(client.GetAPIPath())
+	})
+	return httpAPI, httpErr
+}
+
+// Setup initializes the source with dependencies
+func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
+	// HTTPSource doesn't need provider configs
+	return nil
+}
+
+// Fetch creates a catalog with models that have pricing/limits data from models.dev
+func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
+	// Apply options (not currently used by HTTPSource, but kept for consistency)
+	_ = sources.ApplyOptions(opts...)
+
+	// Create a new catalog to build into
+	catalog, err := catalogs.New()
+	if err != nil {
+		return nil, fmt.Errorf("creating memory catalog: %w", err)
 	}
 
+	// Set the default merge strategy for models.dev catalog (enhances with pricing/limits)
+	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
+
+	// Note: Source disabling should be handled at orchestration level
+
+	// We'll return only models with pricing/limits data
+	// The merge strategy will handle combining with existing models
+
+	// Note: Output directory is now handled by catalog Save() method
 	outputDir := defaultHTTPOutputDir
-	if config.SyncOptions != nil && config.SyncOptions.OutputDir != "" {
-		outputDir = config.SyncOptions.OutputDir
-	}
 
-	// Use shared state to avoid multiple downloads
-	sharedHTTPMu.Lock()
-	defer sharedHTTPMu.Unlock()
-
-	if sharedHTTPAPI != nil && sharedHTTPDir == outputDir {
-		// Reuse existing setup
-		s.mu.Lock()
-		s.api = sharedHTTPAPI
-		s.client = sharedHTTPClient
-		s.mu.Unlock()
-		return nil
-	}
-
-	// Initialize HTTP models.dev
-	client := NewHTTPClient(outputDir)
-	if err := client.EnsureAPI(); err != nil {
-		return err
-	}
-
-	api, err := ParseAPI(client.GetAPIPath())
+	// Initialize models.dev data once
+	api, err := ensureHTTPAPI(outputDir)
 	if err != nil {
-		return err
+		return nil, fmt.Errorf("initializing models.dev via HTTP: %w", err)
 	}
 
-	// Update shared state
-	sharedHTTPAPI = api
-	sharedHTTPClient = client
-	sharedHTTPDir = outputDir
-
-	// Set instance state
-	s.mu.Lock()
-	s.api = api
-	s.client = client
-	s.mu.Unlock()
-
-	return nil
-}
-
-// Reset clears any configuration
-func (s *ModelsDevHTTPSource) Reset() {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	s.api = nil
-	s.client = nil
-}
-
-// Clone creates a copy of this source for concurrent use
-func (s *ModelsDevHTTPSource) Clone() sources.Source {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return &ModelsDevHTTPSource{
-		api:      s.api,
-		client:   s.client,
-		priority: s.priority,
-		name:     s.name,
-	}
-}
-
-// Name returns a human-readable name for this source
-func (s *ModelsDevHTTPSource) Name() string {
-	return s.name
-}
-
-// Priority returns the priority of this source
-func (s *ModelsDevHTTPSource) Priority() int {
-	return s.priority
-}
-
-// FetchModels fetches models from models.dev for a specific provider
-func (s *ModelsDevHTTPSource) FetchModels(ctx context.Context, providerID catalogs.ProviderID) ([]catalogs.Model, error) {
-	if s.api == nil {
-		return nil, fmt.Errorf("models.dev API not available")
-	}
-
-	var allStarmapModels []catalogs.Model
-
-	// Get provider aliases - some providers have multiple models.dev providers
-	providerAliases := s.getProviderAliases(providerID)
-
-	for _, alias := range providerAliases {
-		// Get models from models.dev for this provider alias
-		modelsDevProvider, exists := s.api.GetProvider(alias)
-		if !exists {
-			continue // Try next alias
-		}
-
-		for _, modelsDevModel := range modelsDevProvider.Models {
-			// Convert models.dev model to starmap model
-			starmapModel, err := modelsDevModel.ToStarmapModel()
-			if err != nil {
-				// Log the error but continue with other models
-				continue
+	// Add only models with pricing/limits data from models.dev
+	added := 0
+	for _, provider := range *api {
+		for _, mdModel := range provider.Models {
+			// Only include models that have pricing or limits data
+			if (mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil)) ||
+				mdModel.Limit.Context > 0 || mdModel.Limit.Output > 0 {
+				// Convert to starmap model with pricing/limits
+				model := s.convertToStarmapModel(mdModel)
+				if err := catalog.SetModel(model); err != nil {
+					return nil, fmt.Errorf("setting model %s: %w", model.ID, err)
+				}
+				added++
 			}
-			allStarmapModels = append(allStarmapModels, *starmapModel)
 		}
 	}
 
-	return allStarmapModels, nil
+	log.Printf("  Found %d models with pricing/limits from models.dev HTTP", added)
+	return catalog, nil
 }
 
-// getProviderAliases returns a list of provider IDs to check in models.dev
-// Some providers have models spread across multiple models.dev providers
-func (s *ModelsDevHTTPSource) getProviderAliases(providerID catalogs.ProviderID) []catalogs.ProviderID {
-	aliases := []catalogs.ProviderID{providerID} // Always include the original
-
-	switch providerID {
-	case "google-vertex":
-		// Google Vertex has models under multiple models.dev providers
-		aliases = append(aliases, "google-vertex-anthropic")
-	case "openai":
-		// OpenAI might have models under other aliases in the future
-		// Add additional aliases as needed
-	}
-
-	return aliases
-}
-
-// FetchProvider fetches provider information from models.dev
-func (s *ModelsDevHTTPSource) FetchProvider(ctx context.Context, providerID catalogs.ProviderID) (*catalogs.Provider, error) {
-	if s.api == nil {
-		return nil, fmt.Errorf("models.dev API not available")
-	}
-
-	// Get provider from models.dev
-	modelsDevProvider, exists := s.api.GetProvider(providerID)
-	if !exists {
-		// Not an error - provider might not be in models.dev yet
-		return nil, nil
-	}
-
-	// Convert models.dev provider to starmap provider
-	starmapProvider, err := s.convertModelsDevProvider(modelsDevProvider, providerID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to convert models.dev provider: %w", err)
-	}
-
-	return starmapProvider, nil
-}
-
-// FieldAuthorities returns the field authorities where models.dev is authoritative
-func (s *ModelsDevHTTPSource) FieldAuthorities() []sources.FieldAuthority {
-	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.ModelsDevHTTP)
-}
-
-// IsAvailable returns true if models.dev data is available
-func (s *ModelsDevHTTPSource) IsAvailable() bool {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return s.api != nil
-}
-
-// SetPriority updates the priority of this source
-func (s *ModelsDevHTTPSource) SetPriority(priority int) {
-	s.priority = priority
-}
-
-// CopyProviderLogos copies provider logos (HTTP source cannot provide logos)
-// Provider logos are only available through the Git source which has access to the
-// models.dev repository files. To get logos, enable the Git source alongside HTTP.
-func (s *ModelsDevHTTPSource) CopyProviderLogos(providerIDs []catalogs.ProviderID) error {
-	if len(providerIDs) > 0 {
-		fmt.Printf("  ℹ️  Note: HTTP source cannot copy provider logos. Enable git source for logo support.\n")
-	}
+// Cleanup releases any resources
+func (s *HTTPSource) Cleanup() error {
+	// HTTPSource doesn't hold persistent resources
 	return nil
 }
 
-// Cleanup removes the models.dev cache
-func (s *ModelsDevHTTPSource) Cleanup() error {
-	sharedHTTPMu.Lock()
-	defer sharedHTTPMu.Unlock()
-
-	if sharedHTTPClient != nil {
-		err := sharedHTTPClient.Cleanup()
-		sharedHTTPClient = nil
-		sharedHTTPAPI = nil
-		sharedHTTPDir = ""
-		return err
-	}
-	return nil
-}
-
-// convertModelsDevProvider converts a models.dev provider to a starmap provider
-func (s *ModelsDevHTTPSource) convertModelsDevProvider(modelsDevProvider *ModelsDevProvider, providerID catalogs.ProviderID) (*catalogs.Provider, error) {
-	provider := &catalogs.Provider{
-		ID: providerID,
+// convertToStarmapModel converts a models.dev model to starmap model with pricing/limits
+func (s *HTTPSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Model {
+	model := catalogs.Model{
+		ID:   mdModel.ID,
+		Name: mdModel.Name,
 	}
 
-	// Extract basic information from models.dev provider
-	if modelsDevProvider.Name != "" {
-		provider.Name = modelsDevProvider.Name
+	// Add pricing if available
+	if mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil) {
+		model.Pricing = &catalogs.ModelPricing{
+			Currency: "USD", // models.dev uses USD
+			Tokens:   &catalogs.TokenPricing{},
+		}
+
+		// Map input cost (models.dev uses cost per 1M tokens)
+		if mdModel.Cost.Input != nil && *mdModel.Cost.Input > 0 {
+			model.Pricing.Tokens.Input = &catalogs.TokenCost{
+				Per1M: *mdModel.Cost.Input,
+			}
+		}
+
+		// Map output cost
+		if mdModel.Cost.Output != nil && *mdModel.Cost.Output > 0 {
+			model.Pricing.Tokens.Output = &catalogs.TokenCost{
+				Per1M: *mdModel.Cost.Output,
+			}
+		}
 	}
 
-	return provider, nil
+	// Add limits if available
+	if mdModel.Limit.Context > 0 || mdModel.Limit.Output > 0 {
+		model.Limits = &catalogs.ModelLimits{}
+
+		if mdModel.Limit.Context > 0 {
+			model.Limits.ContextWindow = int64(mdModel.Limit.Context)
+		}
+
+		if mdModel.Limit.Output > 0 {
+			model.Limits.OutputTokens = int64(mdModel.Limit.Output)
+		}
+	}
+
+	return model
 }

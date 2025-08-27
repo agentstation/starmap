@@ -39,7 +39,7 @@ func (c *HTTPClient) EnsureAPI() error {
 	}
 
 	apiPath := c.GetAPIPath()
-	
+
 	// Check if cached file exists and is recent
 	if c.isCacheValid(apiPath) {
 		fmt.Printf("  ✅ Using cached api.json\n")
@@ -48,7 +48,7 @@ func (c *HTTPClient) EnsureAPI() error {
 
 	// Download fresh api.json
 	fmt.Printf("  📥 Downloading api.json from %s...\n", c.APIURL)
-	
+
 	resp, err := c.Client.Get(c.APIURL)
 	if err != nil {
 		return fmt.Errorf("downloading api.json: %w", err)
@@ -103,7 +103,7 @@ func (c *HTTPClient) isCacheValid(apiPath string) bool {
 	if err != nil {
 		return false // File doesn't exist
 	}
-	
+
 	// Check if file is recent enough
 	return time.Since(info.ModTime()) < HTTPCacheTTL
 }

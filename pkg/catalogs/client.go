@@ -8,6 +8,9 @@ type Client interface {
 	// ListModels retrieves all available models from the provider.
 	ListModels(ctx context.Context) ([]Model, error)
 
-	// GetModel retrieves a specific model by its ID.
-	GetModel(ctx context.Context, modelID string) (*Model, error)
+	// isAPIKeyRequired returns true if the client requires an API key.
+	IsAPIKeyRequired() bool
+
+	// HasAPIKey returns true if the client has an API key.
+	HasAPIKey() bool
 }

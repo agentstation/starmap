@@ -87,7 +87,7 @@ func (p *ModelsDevProvider) ToStarmapProvider() (*catalogs.Provider, error) {
 	}
 
 	// Convert models
-	if p.Models != nil && len(p.Models) > 0 {
+	if len(p.Models) > 0 {
 		provider.Models = make(map[string]catalogs.Model)
 		for modelID, model := range p.Models {
 			starmapModel, err := model.ToStarmapModel()
@@ -158,7 +158,7 @@ func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error) {
 		}
 		// Handle cache costs (prefer specific cache_read/cache_write over legacy cache field)
 		if m.Cost.CacheRead != nil || m.Cost.CacheWrite != nil || m.Cost.Cache != nil {
-			cacheCost := &catalogs.CacheCost{}
+			cacheCost := &catalogs.TokenCacheCost{}
 
 			if m.Cost.CacheRead != nil {
 				cacheCost.Read = &catalogs.TokenCost{
@@ -266,7 +266,7 @@ func (api *ModelsDevAPI) GetProvider(providerID catalogs.ProviderID) (*ModelsDev
 }
 
 // GetModel returns a specific model from a provider
-func (p *ModelsDevProvider) GetModel(modelID string) (*ModelsDevModel, bool) {
+func (p *ModelsDevProvider) Model(modelID string) (*ModelsDevModel, bool) {
 	model, exists := p.Models[modelID]
 	return &model, exists
 }

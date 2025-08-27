@@ -1,69 +1,75 @@
-# o3-deep-research - Language model
 id: o3-deep-research
 name: o3-deep-research
-
-# Model metadata
 metadata:
-  release_date: 2024-06-26
-  knowledge_cutoff: 2024-05-01
-
-# Model features
+    release_date: "2024-06-26T00:00:00Z"
+    open_weights: false
+    knowledge_cutoff: "2024-05-01T00:00:00Z"
 features:
-  modalities:
-    input:
-    - text
-    - image
-    output:
-    - text
-
-  # Core capabilities
-  tool_calls: true
-  tools: false
-  tool_choice: false
-  web_search: false
-  attachments: false
-
-  # Reasoning & Verbosity
-  reasoning: true
-  reasoning_effort: false
-  reasoning_tokens: false
-  include_reasoning: false
-  verbosity: false
-
-  # Generation control support flags
-  temperature: false
-  top_p: false
-  top_k: false
-  top_a: false
-  min_p: false
-  max_tokens: false
-  frequency_penalty: false
-  presence_penalty: false
-  repetition_penalty: false
-  logit_bias: false
-  seed: false
-  stop: false
-  logprobs: false
-
-  # Response delivery
-  format_response: false
-  structured_outputs: false
-  streaming: false
-
-# Model limits
-limits:
-
-# Model pricing
+    modalities:
+        input:
+            - text
+            - image
+        output:
+            - text
+    tool_calls: true
+    tools: false
+    tool_choice: false
+    web_search: false
+    attachments: false
+    reasoning: true
+    reasoning_effort: false
+    reasoning_tokens: false
+    include_reasoning: false
+    verbosity: false
+    temperature: false
+    top_p: false
+    top_k: false
+    top_a: false
+    min_p: false
+    typical_p: false
+    tfs: false
+    max_tokens: false
+    max_output_tokens: false
+    stop: false
+    stop_token_ids: false
+    frequency_penalty: false
+    presence_penalty: false
+    repetition_penalty: false
+    no_repeat_ngram_size: false
+    length_penalty: false
+    logit_bias: false
+    bad_words: false
+    allowed_tokens: false
+    seed: false
+    logprobs: false
+    top_logprobs: false
+    echo: false
+    "n": false
+    best_of: false
+    mirostat: false
+    mirostat_tau: false
+    mirostat_eta: false
+    contrastive_search_penalty_alpha: false
+    num_beams: false
+    early_stopping: false
+    diversity_penalty: false
+    format_response: false
+    structured_outputs: false
+    streaming: false
 pricing:
-  currency: USD
-  tokens:
-    input:
-      per_1m: 10.00
-    output:
-      per_1m: 40.00
-    cache_read:
-      per_1m: 2.50
-
-# Timestamps
-created_at: 2025-08-22T04:09:34Z
-updated_at: 2025-08-22T04:09:34Z
+    tokens:
+        input:
+            per_token: 0
+            per_1m: 10
+        output:
+            per_token: 0
+            per_1m: 40
+        cache_read:
+            per_token: 0
+            per_1m: 2.5
+    currency: USD
+limits:
+    context_window: 200000
+    output_tokens: 100000
+created_at: "2025-08-22T04:09:34Z"
+updated_at: "2025-08-22T04:09:34Z"

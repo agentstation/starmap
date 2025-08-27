@@ -1,14 +1,12 @@
-# gpt-5-mini - GPT language model
+# gpt-5-mini - AI model
 id: gpt-5-mini
 name: gpt-5-mini
 authors:
 - id: openai
   name: OpenAI
-
-# Model metadata
-metadata:
-  release_date: 2025-08-07
-  knowledge_cutoff: 2024-05-30
+  models: {}
+  created_at: null
+  updated_at: null
 
 # Model features
 features:
@@ -17,57 +15,56 @@ features:
     - text
     output:
     - text
-
   # Core capabilities
-  tool_calls: true
+  tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
   attachments: false
-
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
-
   # Generation control support flags
   temperature: true
   top_p: true
   top_k: false
   top_a: false
   min_p: false
+  typical_p: false
+  tfs: false
   max_tokens: true
-  frequency_penalty: false
-  presence_penalty: false
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: true
+  presence_penalty: true
   repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
   logit_bias: false
+  bad_words: false
+  allowed_tokens: false
   seed: false
-  stop: false
   logprobs: false
-
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
   # Response delivery
   format_response: false
   structured_outputs: false
   streaming: true
 
-# Model limits
-limits:
-  context_window: 400000
-  output_tokens: 128000
-
-# Model pricing
-pricing:
-  currency: USD
-  tokens:
-    input:
-      per_1m: 0.25
-    output:
-      per_1m: 2.00
-    cache_read:
-      per_1m: 0.03
-
 # Timestamps
-created_at: 2025-08-22T04:09:34Z
-updated_at: 2025-08-22T04:09:34Z
+created_at: null
+updated_at: null

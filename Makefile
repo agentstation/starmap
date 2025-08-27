@@ -10,8 +10,20 @@ COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.buildTime=$(BUILD_TIME)"
 
+# Check for devbox and use it if available
+HAS_DEVBOX := $(shell command -v devbox 2> /dev/null)
+ifdef HAS_DEVBOX
+	RUN_PREFIX := devbox run
+else
+	RUN_PREFIX :=
+endif
+
 # Go variables
-GOCMD=go
+ifdef HAS_DEVBOX
+	GOCMD=$(RUN_PREFIX) go
+else
+	GOCMD=go
+endif
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
@@ -27,7 +39,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata demo
+.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata demo godoc
 
 # Default target
 all: clean fix lint test build
@@ -72,8 +84,8 @@ lint: ## Run linter and static analysis tools
 	@echo "$(YELLOW)Running go vet...$(NC)"
 	$(GOVET) ./...
 	@echo "$(YELLOW)Running golangci-lint...$(NC)"
-	@which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
-	golangci-lint run
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+	$(RUN_PREFIX) golangci-lint run
 	@echo "$(GREEN)Static analysis complete$(NC)"
 
 fmt: ## Format Go code
@@ -209,18 +221,33 @@ testdata-update: ## Update testdata for all providers (requires API keys)
 	$(GOCMD) run $(MAIN_PATH) testdata --update --verbose
 
 # Documentation
-generate: ## Generate markdown documentation for providers and models
-	@echo "$(BLUE)Generating documentation...$(NC)"
+generate: ## Generate all documentation (Go docs and catalog docs)
+	@echo "$(BLUE)Generating Go documentation...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	$(GOCMD) generate ./...
+	@echo "$(GREEN)Go documentation generation complete$(NC)"
+	@echo "$(BLUE)Generating catalog documentation...$(NC)"
 	$(GOCMD) run $(MAIN_PATH) generate
-	@echo "$(GREEN)Documentation generated in docs/$(NC)"
+	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
 
 docs: generate ## Alias for generate command
+
+godoc: ## Generate only Go documentation using go generate
+	@echo "$(BLUE)Generating Go documentation...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	$(GOCMD) generate ./...
+	@echo "$(GREEN)Go documentation generation complete$(NC)"
+
+catalog-docs: ## Generate only catalog documentation
+	@echo "$(BLUE)Generating catalog documentation...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) generate
+	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
 
 # Demo
 demo: ## Generate VHS demo video
 	@echo "$(BLUE)Generating demo video...$(NC)"
-	@which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/charmbracelet/vhs@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/agentstation/vhs@latest$(NC)" && exit 1)
 	@echo "$(YELLOW)Recording terminal demo...$(NC)"
-	vhs scripts/demo.tape
+	$(RUN_PREFIX) vhs scripts/demo.tape
 	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
 	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"

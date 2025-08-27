@@ -41,7 +41,10 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
 	// Apply authentication if provider has API key
 	if provider != nil {
-		apiKey := provider.GetAPIKeyValue()
+		apiKey, err := provider.APIKeyValue()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get API key: %w", err)
+		}
 		if apiKey != "" {
 			c.auth.Apply(req, apiKey)
 		}
@@ -66,7 +69,7 @@ func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provide
 	if err != nil {
 		return nil, fmt.Errorf("creating GET request: %w", err)
 	}
-	return c.Do(req, provider)
+	return c.DoWithContext(ctx, req, provider)
 }
 
 // getAuthenticatorForProvider returns the appropriate authenticator for a provider.

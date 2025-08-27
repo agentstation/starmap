@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/agentstation/starmap/internal/catalogs/operations"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -38,43 +37,16 @@ func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, providerID catal
 	return enhanced, successes
 }
 
-// EnhanceChangeset enhances a provider changeset with models.dev data
-func EnhanceChangeset(changeset operations.ProviderChangeset, api *ModelsDevAPI) operations.ProviderChangeset {
-	if api == nil {
-		return changeset
-	}
-
-	// Get models.dev provider data
-	modelsDevProvider, exists := api.GetProvider(changeset.ProviderID)
-	if !exists {
-		log.Printf("Provider %s not found in models.dev data", changeset.ProviderID)
-		return changeset
-	}
-
-	// Enhance added models
-	for i, model := range changeset.Added {
-		enhanced, _ := enhanceModelWithModelsDevData(model, modelsDevProvider)
-		changeset.Added[i] = enhanced
-	}
-
-	// Enhance updated models
-	for i, update := range changeset.Updated {
-		enhanced, _ := enhanceModelWithModelsDevData(update.NewModel, modelsDevProvider)
-		changeset.Updated[i].NewModel = enhanced
-	}
-
-	return changeset
-}
 
 // enhanceModelWithModelsDevData enhances a single model with models.dev data
 func enhanceModelWithModelsDevData(apiModel catalogs.Model, modelsDevProvider *ModelsDevProvider) (catalogs.Model, bool) {
 	// Look for the model in models.dev data
-	modelsDevModel, exists := modelsDevProvider.GetModel(apiModel.ID)
+	modelsDevModel, exists := modelsDevProvider.Model(apiModel.ID)
 	if !exists {
 		// Try alternate ID patterns (some providers use different naming)
 		alternateIDs := generateAlternateIDs(apiModel.ID)
 		for _, altID := range alternateIDs {
-			if altModel, altExists := modelsDevProvider.GetModel(altID); altExists {
+			if altModel, altExists := modelsDevProvider.Model(altID); altExists {
 				modelsDevModel = altModel
 				exists = true
 				break
@@ -104,7 +76,7 @@ func smartMergeThreeWay(api, modelsdev, existing catalogs.Model) catalogs.Model 
 	result := existing // Start with existing as base
 
 	// First, merge API data (for basic model info and availability)
-	result = operations.SmartMergeModels(result, api)
+	result = catalogs.MergeModels(result, api)
 
 	// Then, merge models.dev data with priority for limits and detailed specs
 	// This gives models.dev higher priority for things like context_window, output_tokens, pricing

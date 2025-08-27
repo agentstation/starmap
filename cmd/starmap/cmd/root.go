@@ -1,9 +1,12 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
@@ -11,8 +14,8 @@ import (
 )
 
 var (
-	cfgFile string
-	verbose bool
+	rootPersistentFlagConfigFile string
+	rootPersistentFlagVerbose    bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -29,7 +32,13 @@ when API keys are configured.`,
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
-	err := rootCmd.Execute()
+	// Set up context with signal handling for graceful shutdown
+	ctx, cancel := signal.NotifyContext(context.Background(), 
+		syscall.SIGINT, syscall.SIGTERM)
+	defer cancel()
+	
+	// Pass context to root command
+	err := rootCmd.ExecuteContext(ctx)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -39,8 +48,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().StringVar(&rootPersistentFlagConfigFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
+	rootCmd.PersistentFlags().BoolVarP(&rootPersistentFlagVerbose, "verbose", "v", false, "verbose output")
 
 	// Bind flags to viper
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
@@ -50,9 +59,9 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+	if rootPersistentFlagConfigFile != "" {
 		// Use config file from the flag
-		viper.SetConfigFile(cfgFile)
+		viper.SetConfigFile(rootPersistentFlagConfigFile)
 	} else {
 		// Find home directory
 		home, err := os.UserHomeDir()
@@ -77,7 +86,7 @@ func initConfig() {
 	bindAPIKeys()
 
 	// If a config file is found, read it in
-	if err := viper.ReadInConfig(); err == nil && verbose {
+	if err := viper.ReadInConfig(); err == nil && rootPersistentFlagVerbose {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }
@@ -101,7 +110,7 @@ func loadEnvFile(filename string) {
 	// Use godotenv to load the file into the environment
 	if err := godotenv.Load(filename); err == nil {
 		// File loaded successfully
-		if verbose {
+		if rootPersistentFlagVerbose {
 			fmt.Fprintf(os.Stderr, "Loaded %s\n", filename)
 		}
 	}

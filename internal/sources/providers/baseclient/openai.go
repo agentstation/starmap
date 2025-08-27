@@ -41,6 +41,16 @@ func NewOpenAIClient(provider *catalogs.Provider, baseURL string) *OpenAIClient 
 	}
 }
 
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *OpenAIClient) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *OpenAIClient) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
+}
+
 // Configure sets the provider for this client.
 func (c *OpenAIClient) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
@@ -99,38 +109,6 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	}
 
 	return models, nil
-}
-
-// GetModel retrieves a specific model by its ID.
-func (c *OpenAIClient) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	c.mu.RLock()
-	provider := c.provider
-	c.mu.RUnlock()
-
-	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
-	}
-
-	// Build URL
-	url := c.baseURL + "/v1/models/" + modelID
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL() + "/" + modelID
-	}
-
-	// Make the request
-	resp, err := c.transport.Get(ctx, url, provider)
-	if err != nil {
-		return nil, fmt.Errorf("openai-compatible: request failed: %w", err)
-	}
-
-	// Decode response
-	var result OpenAIModelData
-	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("openai-compatible: %w", err)
-	}
-
-	model := c.ConvertToModel(result)
-	return &model, nil
 }
 
 // ConvertToModel converts an OpenAI model response to a starmap Model.

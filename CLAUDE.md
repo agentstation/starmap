@@ -4,673 +4,372 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Starmap is a comprehensive AI model catalog system that provides centralized information about AI models, their capabilities, pricing, and providers. It serves as both a reference catalog and a synchronization tool for keeping model data up-to-date across different AI service providers.
+Starmap is a unified AI model catalog system providing accurate, up-to-date information about AI models, their capabilities, pricing, and availability across providers. It solves the problem of fragmented model information by combining data from multiple sources into a single, authoritative catalog.
 
-### Core Purpose
-- **Model Discovery**: Find and compare AI models across different providers
-- **Capability Assessment**: Understand model features, limits, and pricing
-- **Catalog Maintenance**: Keep model information synchronized with provider APIs
-- **Integration Planning**: Access structured data for building AI applications
+### Core Problems Solved
+- **Missing Pricing**: Provider APIs often lack pricing information
+- **Incomplete Metadata**: Basic specs without detailed capabilities
+- **Rapid Changes**: Models launch weekly, requiring constant updates
+- **Multiple Sources**: Need to combine provider APIs, community data, and manual fixes
 
 ## Architecture Overview
 
-### Starmap Interface Design
-The project now provides a clean interface-based API (`starmap.go`) that wraps the catalog system with additional features:
+### Two-Tier Architecture
 
-- **Starmap Interface**: Main entry point for accessing catalogs with event hooks and automatic updates
-- **Thread-Safe Operations**: All catalog access returns copies to prevent data races
-- **Event-Driven Architecture**: Hooks for model added/updated/removed events
-- **Automatic Updates**: Configurable background synchronization with provider APIs
-- **Options Pattern**: Flexible configuration using variadic options
-- **Future HTTP Server Support**: Designed to support remote starmap servers
+Starmap provides two levels of data management:
 
-### Catalog System Design
-The underlying catalog system (`pkg/catalogs/catalog.go`) uses a modular interface with multiple implementations:
+1. **Simple Catalog Operations** (`pkg/catalogs/`)
+   - Two-catalog merging with strategies (EnrichEmpty, ReplaceAll, AppendOnly)
+   - Multiple storage backends (memory, filesystem, embedded)
+   - Use for: testing, simple tools, local overrides
 
-- **Embedded Catalog** (`internal/catalogs/embedded/`): Production implementation using `go:embed` YAML files
-- **File Catalog** (`internal/catalogs/files/`): Development-friendly implementation reading from filesystem
-- **Memory Catalog** (`internal/catalogs/memory/`): In-memory implementation for testing
-- **Base Catalog** (`internal/catalogs/base/`): Shared implementation providing CRUD operations
+2. **Complex Reconciliation** (`pkg/reconcile/`)
+   - Multi-source reconciliation with field-level authority
+   - Provenance tracking and audit trails
+   - Use for: production sync, combining 3+ sources, different authorities per field
 
-### Core Domain Types
-- **Provider** (`pkg/catalogs/provider.go`): AI service providers with API configuration, headers, and policies
-- **Model** (`pkg/catalogs/model.go`): Comprehensive model specifications including features, pricing, limits, capabilities
-- **Author** (`pkg/catalogs/author.go`): Model creators and organizations
-- **Endpoint** (`pkg/catalogs/endpoint.go`): API endpoint configurations
+### Key Packages
 
-### Provider System
-Each provider implements the `Client` interface (`pkg/catalogs/client.go`) for fetching models:
-- **Transport Layer** (`internal/transport/`): HTTP client with provider-specific headers and authentication
-- **Provider Clients** (`internal/sources/providers/`): Specific implementations for Anthropic, OpenAI, Google, Groq, etc.
-- **Registry System** (`internal/sources/providers/register.go`): Automatic provider discovery and instantiation
+#### pkg/catalogs
+- **Purpose**: Catalog abstraction with pluggable storage
+- **Interface**: Unified API regardless of storage backend
+- **Backends**: Memory, Filesystem, Embedded (go:embed), Custom (any fs.FS)
+- **Collections**: Thread-safe Models, Providers, Authors, Endpoints
+- **Documentation**: pkg/catalogs/README.md
 
-## Starmap Usage Patterns
+#### pkg/reconcile
+- **Purpose**: Complex multi-source data reconciliation
+- **Features**: Field-level authorities, provenance tracking, conflict resolution
+- **Strategies**: AuthorityBased, Union, Custom
+- **Use Case**: Production sync combining provider APIs + models.dev + embedded data
+- **Documentation**: pkg/reconcile/README.md
 
-### Basic Go Package Usage
+#### pkg/sources
+- **Purpose**: Abstraction for data sources
+- **Interface**: Source with Name(), Setup(), Fetch(), Cleanup()
+- **Sources**: Provider APIs, models.dev (Git/HTTP), Local catalog
 
-```go
-// Create a starmap instance with default embedded catalog
-sm, err := starmap.New()
-if err != nil {
-    log.Fatal(err)
-}
+### Data Flow
 
-// Get catalog (always returns a copy for thread safety)
-catalog, err := sm.Catalog()
-if err != nil {
-    log.Fatal(err)
-}
-
-// Access models, providers, authors
-models := catalog.Models()
-providers := catalog.Providers()
-authors := catalog.Authors()
 ```
-
-### Event-Driven Architecture
-
-```go
-// Register event hooks for model changes
-sm.OnModelAdded(func(model catalogs.Model) {
-    log.Printf("New model added: %s", model.ID)
-})
-
-sm.OnModelUpdated(func(old, new catalogs.Model) {
-    log.Printf("Model updated: %s", new.ID)
-    if old.Pricing.Input != new.Pricing.Input {
-        log.Printf("Price changed: %f -> %f", old.Pricing.Input, new.Pricing.Input)
-    }
-})
-
-sm.OnModelRemoved(func(model catalogs.Model) {
-    log.Printf("Model removed: %s", model.ID)
-})
+Provider APIs ──┐
+                ├─→ Reconciliation Engine ─→ Unified Catalog ─→ Storage
+models.dev ─────┤   (field-level merge)                        (embed/fs)
+Embedded Data ──┘
 ```
-
-### Automatic Updates
-
-```go
-// Configure automatic updates with custom sync logic
-updateFunc := func(currentCatalog catalogs.Catalog) (catalogs.Catalog, error) {
-    // Custom sync logic - could use sync command logic
-    return currentCatalog, nil
-}
-
-sm, err := starmap.New(
-    starmap.WithAutoUpdateInterval(30 * time.Minute),
-    starmap.WithUpdateFunc(updateFunc),
-)
-if err != nil {
-    log.Fatal(err)
-}
-// Auto-updates start automatically!
-
-// Cleanup when shutting down
-defer sm.AutoUpdatesOff()
-```
-
-### Auto-Updates Configuration
-
-By default, starmap enables automatic updates. You can control this behavior:
-
-```go
-// Default: auto-updates enabled every hour
-sm, err := starmap.New()
-
-// Customize update interval
-sm, err := starmap.New(
-    starmap.WithAutoUpdateInterval(15 * time.Minute),
-)
-
-// Disable auto-updates entirely
-sm, err := starmap.New(
-    starmap.WithAutoUpdates(false),
-)
-
-// Control at runtime
-sm.AutoUpdatesOff() // Temporarily stop
-sm.AutoUpdatesOn()  // Resume updates
-```
-
-### Different Catalog Sources
-
-```go
-import "github.com/agentstation/starmap/pkg/catalogs/files"
-
-// Use file-based catalog for development
-filesCatalog, err := files.New("./internal/embedded/catalog")
-if err != nil {
-    log.Fatal(err)
-}
-
-sm, err := starmap.New(
-    starmap.WithInitialCatalog(filesCatalog),
-)
-
-import "github.com/agentstation/starmap/pkg/catalogs/memory"
-
-// Use memory catalog for testing
-memoryCatalog, err := memory.New()
-if err != nil {
-    log.Fatal(err)
-}
-
-sm, err := starmap.New(
-    starmap.WithInitialCatalog(memoryCatalog),
-)
-```
-
-### Future Remote Server Mode
-
-```go
-// Planned for future releases
-apiKey := "sk-your-api-key"
-sm, err := starmap.New(
-    starmap.WithRemoteServer("https://api.starmap.ai", &apiKey),
-    starmap.WithRemoteServerOnly(true), // If enabled, do not use any other sources for catalog updates including provider APIs
-    starmap.WithAutoUpdateInterval(5 * time.Minute),
-)
-```
-
-## Key Implementation Details
-
-### Thread Safety Guarantees
-- All `Catalog()` calls return deep copies of the catalog data
-- Multiple goroutines can safely access catalogs concurrently
-- Event hooks are called sequentially but don't block other operations
-- Internal state is protected by RWMutex for efficient concurrent reads
-
-### Catalog Factory Methods
-The project provides factory methods in the respective catalog packages for creating different catalog types:
-- `embedded.New()` - Production catalog with embedded YAML files (pkg/catalogs/embedded)
-- `files.New(path)` - Development catalog reading from filesystem (pkg/catalogs/files)
-- `memory.New()` - In-memory catalog for testing (pkg/catalogs/memory)
-
-### Options Pattern
-Configuration uses functional options in `options.go`:
-- `WithEmbeddedAutoLoad(bool)` - Control embedded catalog loading
-- `WithFilesAutoLoad(bool)` - Control files catalog loading  
-- `WithMemoryReadOnly(bool)` - Set memory catalog as read-only
-- `WithMemoryPreload([]byte)` - Preload memory catalog with data
-
-### Registry Pattern
-The provider system uses a registry pattern similar to database drivers:
-- Providers register themselves in `init()` functions
-- Registry maintains a map of `ProviderID -> Client`
-- Dependency injection breaks circular imports
-- Automatic discovery of available providers
-- Clean interface through `internal/sources/providers` package with exported functions
-
-#### Provider Registration Usage
-```go
-import "github.com/agentstation/starmap/internal/sources/providers"
-
-// Get a configured client for a provider
-client, err := providers.GetClient(provider)
-
-// Check if a provider has a registered client
-if providers.HasClient(providerID) {
-    // Provider is available
-}
-
-// List all supported provider IDs
-supportedProviders := providers.ListSupportedProviders()
-```
-
-#### Plugin-Style Explicit Initialization
-The providers package supports explicit initialization for advanced use cases:
-
-```go
-import "github.com/agentstation/starmap/internal/sources/providers"
-
-// Explicit initialization (optional - happens automatically on import)
-providers.Init()
-
-// Check if providers have been initialized
-if providers.IsInitialized() {
-    // Providers are ready
-}
-
-// Future extensibility for dynamic provider loading
-opts := providers.InitOptions{
-    // Future options for selective provider loading
-}
-providers.InitWithOptions(opts)
-```
-
-**Key Benefits:**
-- **Automatic Registration**: Providers register automatically on package import (backward compatible)
-- **Explicit Control**: Optional explicit initialization for advanced scenarios
-- **Future-Proof**: Foundation for dynamic provider loading and selective initialization
-- **Thread-Safe**: All initialization functions are safe for concurrent use
-
-This eliminates the need for blank imports (`_`) and makes the import purpose clear.
-
-## File Organization and Key Components
-
-### Core Interface Files
-- **`starmap.go`** - Main Starmap interface and implementation with event hooks and automatic updates
-- **`catalog.go`** - Factory methods for creating different catalog implementations (embedded, files, memory)
-- **`options.go`** - Functional options for configuring catalog instances
-
-### Catalog Implementation Structure
-- **`pkg/catalogs/catalog.go`** - Core Catalog interface definition
-- **`pkg/catalogs/models.go`** - Thread-safe Models collection with CRUD operations
-- **`pkg/catalogs/providers.go`** - Providers collection and management
-- **`pkg/catalogs/authors.go`** - Authors collection and management
-- **`internal/catalogs/catalogs.go`** - Catalog type constants (Embedded, Files, Memory)
-
-### Provider System
-- **`internal/sources/providers/registry/registry.go`** - Provider client registry with thread-safe registration
-- **`internal/sources/providers/register.go`** - Import file for all provider side-effect registration
-- **`internal/sources/providers/{provider}/`** - Individual provider implementations
-
-### CLI Integration
-- **`cmd/starmap/cmd/sync.go`** - Main sync command that uses the catalog system
-- **`cmd/starmap/cmd/list.go`** - List commands using the starmap interface
-- **Other cmd files** - Use factory methods to create catalog instances
-
-### Important Implementation Notes
-- The CLI commands currently use the factory methods (`embedded.New()`, etc.) directly
-- The new Starmap interface (`starmap.New()`) is designed for Go package integration
-- All catalog access should go through the Starmap interface for new code
-- The embedded catalog files are in `internal/embedded/catalog/` with go:embed constraints
 
 ## Build and Development Commands
 
-### Core Commands
+### Essential Commands
+
 ```bash
-# Build binary
-make build                  # Build to current directory
-make install               # Install to GOPATH/bin
+# Build and Install
+make build          # Build binary to current directory
+make install        # Install to $GOPATH/bin
 
-# Development workflow
-make fix                   # Format code and tidy modules
-make lint                  # Run static analysis (vet + golangci-lint)
-make test                  # Run all tests
-make test-coverage         # Generate coverage report
+# Development Cycle
+make fix           # Format code and tidy modules (gofmt + go mod tidy)
+make lint          # Run golangci-lint and go vet
+make test          # Run all tests
+make all           # Complete cycle: clean, fix, lint, test, build
 
-# Full development cycle
-make all                   # clean fix lint test build
+# Testing
+go test ./...                                      # Run all tests
+go test ./pkg/reconcile/...                       # Test specific package
+go test -run TestReconcile ./pkg/reconcile        # Run specific test
+go test ./internal/sources/providers/openai -update  # Update testdata
+
+# Coverage
+make test-coverage                                 # Generate coverage report
+go test -coverprofile=coverage.out ./...          # Manual coverage
+go tool cover -html=coverage.out                  # View in browser
 ```
 
-### Running Application
+### Sync Operations
+
 ```bash
-# Run locally
-make run                   # Run with no args
-make run-help             # Show help
+# Basic Sync
+starmap sync                          # Sync all providers
+starmap sync -p openai                # Sync specific provider
+starmap sync --dry-run                # Preview changes
+starmap sync --auto-approve           # Skip confirmation
 
-# Sync operations (all run with --dry-run by default)
-make sync                                    # Sync all providers
-make sync PROVIDER=openai                    # Sync specific provider
-make sync PROVIDER=groq OUTPUT=./models      # Sync to custom directory
+# Development Sync
+starmap sync --input ./internal/embedded/catalog  # Use filesystem
+starmap sync --output ./my-catalog               # Custom output
+starmap sync --fresh -p groq                     # Replace all models
 
-# List operations
-make list-models          # List all models
-make list-providers       # List all providers
-make list-authors         # List all authors
+# New Update Command
+starmap update                        # Update local catalog (~/.starmap/)
+starmap update -p anthropic -y        # Update specific provider, auto-approve
 ```
-
-### Testing and Data Management
-```bash
-# Testdata management
-make testdata                      # Show testdata help
-make testdata PROVIDER=groq        # List testdata for provider
-make testdata-update               # Update all testdata (requires API keys)
-make testdata-verify               # Verify testdata files
-
-# Run tests with specific updates
-go test ./internal/sources/providers/groq -update
-```
-
-## Sync Command - Primary Workflow
-
-The sync command (`cmd/starmap/cmd/sync.go`) is the core functionality for keeping catalogs current:
-
-### Basic Usage
-```bash
-# Sync all providers with confirmation
-starmap sync
-
-# Sync specific provider with auto-approval
-starmap sync -p anthropic --auto-approve
-
-# Preview changes without applying
-starmap sync --dry-run
-
-# Fresh sync (destructive - replaces all models)
-starmap sync -p groq --fresh
-```
-
-### Development Workflow
-```bash
-# Use file-based catalog (avoids binary rebuild)
-starmap sync --input ./internal/embedded/catalog -p groq
-
-# Custom output directory
-starmap sync --output ./my-catalog --auto-approve
-
-# Combined development pattern
-starmap sync --input ./dev-catalog --output ./updated-catalog
-```
-
-### Sync Process Flow
-1. **Load Catalog**: Embedded or file-based catalog
-2. **models.dev Integration**: Clone/update models.dev repository for enhanced data
-3. **Provider Processing**: Iterate through providers with API keys
-4. **API Data Fetching**: Use provider-specific clients to fetch current models
-5. **Data Enhancement**: Merge with models.dev data for accurate pricing/limits
-6. **Change Detection**: Compare API models with existing catalog using smart diff
-7. **User Confirmation**: Show detailed changeset (unless `--auto-approve`)
-8. **Apply Changes**: Write to embedded directory or custom output
-9. **Asset Management**: Copy provider logos from models.dev
-
-## Data Organization
-
-### Embedded Catalog Structure
-```
-internal/embedded/catalog/
-├── providers.yaml          # Provider definitions with API configuration
-├── authors.yaml           # Author/organization metadata
-├── endpoints.yaml         # API endpoint configurations (optional)
-├── providers/             # Provider-organized models (primary organization)
-│   ├── anthropic/         # Models available through Anthropic
-│   │   ├── claude-3-5-sonnet-20241022.yaml
-│   │   └── logo.svg
-│   ├── groq/              # Models available through Groq
-│   │   ├── whisper-large-v3.yaml
-│   │   ├── meta-llama/    # Nested directories for hierarchical IDs
-│   │   │   └── llama-guard-4-12b.yaml
-│   │   └── openai/        # Cross-provider hosting
-│   │       └── gpt-oss-120b.yaml
-│   └── openai/
-│       ├── gpt-4o.yaml
-│       └── o1.yaml
-└── authors/               # Author-organized models (cross-references)
-    ├── openai/
-    ├── anthropic/
-    └── google/
-```
-
-### Directory Naming Convention
-- **Simple IDs**: `gpt-4o` → `providers/openai/gpt-4o.yaml`
-- **Hierarchical IDs**: `meta-llama/llama-guard-4-12b` → `providers/groq/meta-llama/llama-guard-4-12b.yaml`
-- **Cross-provider**: `openai/gpt-oss-120b` → `providers/groq/openai/gpt-oss-120b.yaml`
-
-This structure preserves exact model IDs while avoiding filesystem conflicts.
-
-### Go Embed Limitations
-```go
-//go:embed catalog/*
-var FS embed.FS
-```
-
-**Critical Constraints:**
-- `go:embed` doesn't support `**` recursive patterns
-- Changes to embedded files require binary rebuild
-- Use `--input` flag for development to bypass embedding
-
-## Testing Patterns
-
-### Testdata System
-The project uses `testdata` directories following Go conventions:
-
-**Location**: `internal/sources/providers/<provider>/testdata/`
-**Purpose**: Store raw API responses for offline testing
 
 ### Testdata Management
-```bash
-# Update all provider testdata
-starmap testdata --update
 
-# Update specific provider
+```bash
+# Testdata Commands
+make testdata                         # Show help
+make testdata-update                  # Update all provider testdata
+make testdata-verify                  # Verify testdata validity
+
+# Provider-specific
 starmap testdata --provider groq --update
-
-# Verify testdata is current
-starmap testdata --verify
-```
-
-### Test Integration
-Provider tests use the `testhelper` package (`internal/sources/providers/testhelper/`):
-```go
-// Load raw API response
-response := loadTestdataResponse(t, "models_list.json")
-
-// Test parsing
-models, err := client.parseModelsResponse(response)
-```
-
-### Update Workflow
-```bash
-# Update testdata during test runs
 go test ./internal/sources/providers/groq -update
-
-# This saves fresh API responses to testdata/models_list.json
 ```
 
-## Provider Integration Patterns
+## High-Level Architecture
 
-### Adding New Providers
-1. **Provider Configuration**: Add to `internal/embedded/catalog/providers.yaml`
-2. **Client Implementation**: Create in `internal/sources/providers/<provider>/`
-3. **Registration**: Add to `internal/sources/providers/register.go`
-4. **Testdata**: Run `starmap testdata --provider <provider> --update`
+### Reconciliation System (pkg/reconcile)
 
-### Provider Client Interface
+The reconciliation system uses field-level authorities to merge data from multiple sources:
+
 ```go
-type Client interface {
-    ListModels(ctx context.Context) ([]catalogs.Model, error)
+// Example from sync.go
+authorities := map[string]reconcile.SourceAuthority{
+    "pricing": {
+        Primary: sources.ModelsDevGit,
+        Fallback: &sources.ProviderAPI,
+    },
+    "limits": {
+        Primary: sources.ModelsDevGit,
+        Fallback: &sources.ProviderAPI,
+    },
+    "model_list": {
+        Primary: sources.ProviderAPI,  // Provider decides what exists
+    },
+}
+
+// Using variadic options pattern (idiomatic Go)
+reconciler, err := reconcile.New(
+    reconcile.WithAuthorities(authorities),
+    reconcile.WithProvenance(true),
+)
+```
+
+### Catalog System (pkg/catalogs)
+
+Single implementation with configurable storage backends:
+
+```go
+// Memory backend (testing)
+catalog, _ := catalogs.New()  // No options = memory
+
+// Filesystem backend (development)
+catalog, _ := catalogs.New(
+    catalogs.WithPath("./catalog"),
+)
+
+// Embedded backend (production)
+catalog, _ := catalogs.New(
+    catalogs.WithEmbedded(),
+)
+
+// Custom backend (S3, GCS, etc.)
+catalog, _ := catalogs.New(
+    catalogs.WithFS(customFS),  // Any fs.FS implementation
+)
+```
+
+### Provider System (internal/sources/providers)
+
+Simplified architecture without complex registries:
+
+```go
+// Direct client creation via switch statement
+func getClient(provider *catalogs.Provider) (Client, error) {
+    switch provider.ID {
+    case "openai":
+        return openai.NewClient(provider)
+    case "anthropic":
+        return anthropic.NewClient(provider)
+    // ... other providers
+    }
 }
 ```
 
-### Authentication Patterns
-- **API Keys**: Configured via environment variables (e.g., `OPENAI_API_KEY`)
-- **Environment Variables**: Alternative authentication using multiple env vars (e.g., Google Vertex)
-- **Headers**: Provider-specific headers added by transport layer
-- **Validation**: Pattern matching in provider configuration
+Adding a new provider:
+1. Add to `internal/embedded/catalog/providers.yaml`
+2. Create client in `internal/sources/providers/<provider>/`
+3. Add case to switch in `providers.go`
+4. Update testdata: `starmap testdata --provider <provider> --update`
 
-### Provider Configuration Examples
+## Data Sources and Their Roles
 
-#### Traditional API Key Provider
-```yaml
-- id: openai
-  name: OpenAI
-  api_key:
-    name: OPENAI_API_KEY
-    pattern: "sk-.*"
-    header: "Authorization"
-    scheme: "Bearer"
-  catalog:
-    api_key_required: true
-```
+### Provider APIs
+- **Authority**: Model existence, availability, deprecation
+- **Provides**: Real-time model list, basic capabilities
+- **Missing**: Pricing (most providers), detailed metadata
 
-#### Environment Variables Provider
-```yaml
-- id: google-vertex
-  name: Google Vertex AI
-  env_vars:
-    - name: GOOGLE_VERTEX_PROJECT
-      required: false
-      description: "GCP project ID (optional - falls back to gcloud config)"
-    - name: GOOGLE_VERTEX_LOCATION
-      required: false
-      description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
-    - name: GOOGLE_APPLICATION_CREDENTIALS
-      required: false
-      description: "Path to service account JSON file (optional - uses Application Default Credentials)"
-  catalog:
-    api_key_required: false
-```
+### models.dev Repository
+- **Authority**: Pricing, accurate limits, provider logos
+- **Provides**: Community-verified pricing, SVG logos, enhanced metadata
+- **Source**: https://models.dev (cloned/updated during sync)
 
-## Smart Merging and Change Detection
+### Embedded Catalog
+- **Authority**: Baseline data, manual corrections
+- **Provides**: Starting point shipped with binary
+- **Location**: `internal/embedded/catalog/`
 
-### Three-Way Merge System
-The sync process uses intelligent merging (`internal/catalogs/operations/merge.go`):
-1. **API Data**: Latest from provider APIs (availability, basic specs)
-2. **models.dev Data**: Enhanced data (accurate pricing, limits, metadata)
-3. **Existing Data**: Current catalog (manual annotations, corrections)
+### Local Files
+- **Authority**: User customizations
+- **Provides**: Local overrides, custom models
+- **Usage**: `--input` flag for development
 
-### Priority System
-- **models.dev**: Higher priority for limits, pricing, metadata
-- **API Data**: Higher priority for availability, model lists
-- **Existing**: Preserves manual annotations and corrections
-
-### Change Detection
-The diff system (`internal/catalogs/operations/diff.go`) categorizes:
-- **Added**: New models from API
-- **Updated**: Field-level changes with detailed diff
-- **Removed**: Models missing from API (informational only)
-
-## Configuration and Environment
-
-### Configuration Files
-- **Primary**: `~/.starmap.yaml` or via `--config` flag
-- **Environment**: `.env` and `.env.local` files loaded automatically
-- **API Keys**: Environment variables with automatic binding
-
-### Key Environment Variables
-
-#### API Keys (Traditional Authentication)
-```bash
-OPENAI_API_KEY=...
-ANTHROPIC_API_KEY=...
-GOOGLE_API_KEY=...
-GROQ_API_KEY=...
-```
-
-#### Environment Variables (Alternative Authentication)
-Some providers use environment variables instead of or in addition to API keys:
-
-```bash
-# Google Vertex AI (all optional - see Google Cloud Authentication below)
-GOOGLE_VERTEX_PROJECT=your-gcp-project-id
-GOOGLE_VERTEX_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
-```
-
-#### Google Cloud Authentication
-Google Vertex AI supports multiple authentication methods via Application Default Credentials (ADC):
-
-1. **Environment Variables** (explicit configuration):
-   ```bash
-   export GOOGLE_VERTEX_PROJECT=your-project-id
-   export GOOGLE_VERTEX_LOCATION=us-central1
-   export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
-   ```
-
-2. **gcloud CLI** (recommended for development):
-   ```bash
-   # Set default project and region
-   gcloud config set project your-project-id
-   gcloud config set compute/region us-central1
-   
-   # Authenticate with your user account
-   gcloud auth application-default login
-   ```
-
-3. **Workload Identity** (for GKE deployments):
-   - No configuration needed - automatically detected
-   - Uses Kubernetes service account bound to Google Cloud service account
-
-4. **Compute Engine Default Service Account** (for GCE VMs):
-   - No configuration needed - automatically detected
-   - Uses the VM's attached service account
-
-**Priority Order**: Environment variables → gcloud config → ADC automatic detection
-
-**Future Enhancement**: Full integration with Google Cloud Go SDK (`golang.org/x/oauth2/google`) would provide:
-- Automatic OAuth2 token management with refresh
-- Workload Identity detection without gcloud CLI dependency  
-- Seamless integration with all Google Cloud authentication methods
-- No need for manual token handling
-
-#### Provider Configuration Types
-- **API Key Only**: Most providers (OpenAI, Anthropic, etc.)
-- **Environment Variables Only**: Google Vertex AI
-- **Optional API Key**: Some providers work with or without authentication
-- **Mixed**: Future providers may support both methods
-
-## Development Patterns
-
-### File vs Embedded Catalogs
-- **Embedded**: Production use, requires binary rebuild for changes
-- **File-based**: Development use with `--input` flag, immediate changes
-
-### Development Workflow
-```bash
-# Edit YAML files directly
-vim internal/embedded/catalog/providers/groq/whisper-large-v3.yaml
-
-# Test without rebuilding
-starmap sync --input ./internal/embedded/catalog -p groq --dry-run
-
-# Apply and review
-starmap sync --input ./internal/embedded/catalog -p groq
-```
-
-### Code Conventions
-- **Error Handling**: Use `errors.Join` for multiple errors
-- **Type Aliases**: Use `any` instead of `interface{}`
-- **Provider Isolation**: Keep provider models separate during sync operations
-- **YAML Structure**: Preserve exact model IDs in file paths
-
-## models.dev Integration
-
-Starmap integrates with the models.dev repository for enhanced model data:
-
-### Integration Process
-1. **Repository Cloning**: Automatic clone/update of models.dev
-2. **API Generation**: Build comprehensive `api.json` from TOML files
-3. **Data Enhancement**: Merge models.dev data with API responses
-4. **Asset Management**: Copy provider logos and metadata
-
-### Enhanced Data Sources
-- **Pricing Information**: More accurate than provider APIs
-- **Context Windows**: Verified limits and capabilities
-- **Metadata**: Release dates, knowledge cutoffs, open weights status
-- **Provider Assets**: Logos and branding materials
-
-## Important Limitations
+## Critical Implementation Notes
 
 ### Go Embed Constraints
-- **Pattern Limitation**: `go:embed` doesn't support `**` recursive patterns
-- **Build Requirement**: Changes to embedded files require binary rebuild
-- **Development Workaround**: Use `--input` flag for immediate feedback
+- Cannot use `**` patterns (no recursive glob)
+- Changes require binary rebuild
+- Workaround: Use `--input ./internal/embedded/catalog` for development
 
-### Provider Isolation Requirements
-- **Sync Boundaries**: Models compared only within provider boundaries
-- **Cross-Provider Hosting**: Supported but isolated during sync operations
-- **Example**: Groq's OpenAI models sync against Groq API, not OpenAI API
+### Thread Safety
+- All catalog operations return copies
+- Collections (Models, Providers, etc.) are thread-safe
+- Event hooks called sequentially
+- RWMutex protects internal state
 
-## CLI Command Reference
+### Provider Isolation
+- Models compared only within provider boundaries during sync
+- Cross-provider hosting supported (e.g., OpenAI models on Groq)
+- Each provider's models synced against that provider's API only
 
-### Primary Commands
+### Merge vs Reconcile Decision
+
+Use **pkg/catalogs** merge when:
+- Working with 1-2 sources
+- Simple last-write-wins is sufficient
+- Testing or development
+
+Use **pkg/reconcile** when:
+- Combining 3+ sources
+- Different sources authoritative for different fields
+- Need provenance tracking
+- Production systems
+
+## Environment Variables
+
+### Provider API Keys
 ```bash
-starmap sync [--provider <id>] [--auto-approve] [--dry-run] [--fresh]
-starmap list models|providers|authors
-starmap fetch --provider <id>
-starmap testdata [--update] [--provider <id>] [--verify]
-starmap export
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+GROQ_API_KEY=...
+DEEPSEEK_API_KEY=...
+CEREBRAS_API_KEY=...
 ```
 
-### Sync Flags
-- `--provider <id>`: Sync specific provider
-- `--auto-approve`: Skip confirmation prompts
-- `--dry-run`: Preview changes only
-- `--fresh`: Delete all models and write fresh (destructive)
-- `--input <dir>`: Use file-based catalog
-- `--output <dir>`: Custom output directory
+### Google Vertex AI (Alternative Auth)
+```bash
+# Option 1: Environment variables
+GOOGLE_VERTEX_PROJECT=my-project
+GOOGLE_VERTEX_LOCATION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
-## Dependencies
+# Option 2: gcloud CLI (recommended for dev)
+gcloud config set project my-project
+gcloud auth application-default login
+```
 
-### Core Libraries
-- **Cobra**: CLI framework and command structure
-- **Viper**: Configuration management with environment integration
-- **go-yaml**: YAML parsing and structured output generation
-- **godotenv**: Environment file loading
-- **agentstation/utc**: Custom UTC time handling for model timestamps
+## Code Patterns and Conventions
 
-### Development Tools
-- **golangci-lint**: Static analysis and linting
-- **go test**: Testing framework with testdata integration
-- **make**: Build automation and development workflows
+### Variadic Options Pattern
+```go
+// Preferred (idiomatic Go)
+obj, err := New(
+    WithOption1(value1),
+    WithOption2(value2),
+)
+
+// NOT method chaining
+obj := New().WithOption1(value1).WithOption2(value2)
+```
+
+### Error Handling
+```go
+// Multiple errors
+return errors.Join(err1, err2)
+
+// Wrapping with context
+return fmt.Errorf("reconciling catalogs: %w", err)
+```
+
+### Testing Patterns
+```go
+// Use testdata for API responses
+response := loadTestdataResponse(t, "models_list.json")
+
+// Update testdata with -update flag
+if *update {
+    saveTestdataResponse(t, response, "models_list.json")
+}
+```
+
+## Project Structure
+
+```
+starmap/
+├── pkg/                    # Public packages
+│   ├── catalogs/          # Catalog abstraction
+│   ├── reconcile/         # Multi-source reconciliation
+│   └── sources/           # Source interfaces
+├── internal/              # Private implementation
+│   ├── embedded/          # Embedded catalog data
+│   │   └── catalog/       # YAML files and logos
+│   └── sources/           
+│       ├── providers/     # Provider API clients
+│       └── modelsdev/     # models.dev integration
+├── cmd/starmap/           # CLI implementation
+└── docs/                  # Generated documentation
+```
+
+## Common Development Tasks
+
+### Adding Provider Support
+1. Edit `internal/embedded/catalog/providers.yaml`
+2. Create `internal/sources/providers/<provider>/client.go`
+3. Update switch in `internal/sources/providers/providers.go`
+4. Run `starmap testdata --provider <provider> --update`
+5. Add tests in `client_test.go`
+
+### Modifying Embedded Data
+```bash
+# Edit YAML directly
+vim internal/embedded/catalog/providers/openai/gpt-4o.yaml
+
+# Test without rebuild
+starmap sync --input ./internal/embedded/catalog --dry-run
+
+# Apply changes
+starmap sync --input ./internal/embedded/catalog --auto-approve
+```
+
+### Debugging Reconciliation
+```go
+// Enable provenance tracking
+reconciler, _ := reconcile.New(
+    reconcile.WithProvenance(true),
+)
+
+// Check provenance in result
+result, _ := reconciler.ReconcileCatalogs(ctx, sources)
+for _, prov := range result.Provenance {
+    log.Printf("Field %s from %s", prov.Field, prov.Source)
+}
+```
+
+## Key Files to Understand
+
+### Core Interfaces
+- `pkg/catalogs/catalog.go` - Catalog interface definition
+- `pkg/sources/source.go` - Source interface definition  
+- `pkg/reconcile/reconcile.go` - Reconciliation interface
+
+### Implementation Entry Points
+- `sync.go` - Main sync command using reconciliation
+- `starmap.go` - Starmap interface with event hooks
+- `internal/sources/providers/providers.go` - Provider source implementation
+
+### Configuration
+- `internal/embedded/catalog/providers.yaml` - Provider definitions
+- `internal/embedded/catalog/authors.yaml` - Author metadata
+- `internal/embedded/catalog/providers/*/` - Model YAML files

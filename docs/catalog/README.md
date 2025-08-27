@@ -7,7 +7,7 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 - **Authors**: 80
 - **Providers**: 7
 - **Models**: 439
-- **Last Updated**: 2025-08-22 04:18:01 UTC
+- **Last Updated**: 2025-08-27 16:58:50 UTC
 
 ## Browse Catalog
 
@@ -23,25 +23,25 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 
 | Provider | Models | Description |
 |----------|--------|--------------|
-| <img src="./providers/anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./providers/anthropic/README.md) | 10 | Anthropic models |
-| <img src="./providers/cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](./providers/cerebras/README.md) | 9 | Cerebras models |
-| <img src="./providers/deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](./providers/deepseek/README.md) | 2 | DeepSeek models |
-| <img src="./providers/google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](./providers/google-ai-studio/README.md) | 50 | Google AI Studio models |
-| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 285 | Google Vertex AI models |
-| <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 26 | Groq models |
-| <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 71 | OpenAI models |
+| <img src="./providers/anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](./providers/anthropic/README.md) | 0 | Anthropic models |
+| <img src="./providers/cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](./providers/cerebras/README.md) | 0 | Cerebras models |
+| <img src="./providers/deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](./providers/deepseek/README.md) | 0 | DeepSeek models |
+| <img src="./providers/google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](./providers/google-ai-studio/README.md) | 0 | Google AI Studio models |
+| <img src="./providers/google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](./providers/google-vertex/README.md) | 0 | Google Vertex AI models |
+| <img src="./providers/groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](./providers/groq/README.md) | 0 | Groq models |
+| <img src="./providers/openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](./providers/openai/README.md) | 0 | OpenAI models |
 
 ## Authors
 
 | Author | Models | Description |
 |--------|--------|--------------|
 | [01.AI](./authors/01.ai/README.md) | 0 | AI company founded by Kai-Fu Lee, known for Yi series of open-source language models |
-| [AI21 Labs](./authors/ai21/README.md) | 3 | Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models |
+| [AI21 Labs](./authors/ai21/README.md) | 0 | Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models |
 | [Adept](./authors/adept/README.md) | 0 | Adept models |
 | [Alibaba Cloud](./authors/alibaba/README.md) | 0 | Chinese technology company known for Qwen (Tongyi Qianwen) language model series |
 | [Alignment Research Center](./authors/alignment-research/README.md) | 0 | AI safety research organization focused on AI alignment and evaluation |
 | [Amazon](./authors/amazon/README.md) | 0 | Amazon models |
-| [Anthropic](./authors/anthropic/README.md) | 14 | AI safety company known for Claude models and Constitutional AI research |
+| [Anthropic](./authors/anthropic/README.md) | 0 | AI safety company known for Claude models and Constitutional AI research |
 | [Anysphere](./authors/anysphere/README.md) | 0 | Anysphere models |
 | [Apple](./authors/apple/README.md) | 0 | Apple models |
 | [Baichuan Intelligence](./authors/baichuan/README.md) | 0 | Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models |
@@ -57,14 +57,14 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | [Cohere](./authors/cohere/README.md) | 0 | Enterprise AI company specializing in natural language processing and Command models |
 | [Cornell University](./authors/cornell/README.md) | 0 | Cornell University models |
 | [Cursor](./authors/cursor/README.md) | 0 | Cursor models |
-| [DeepSeek](./authors/deepseek/README.md) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning-focused language models |
+| [DeepSeek](./authors/deepseek/README.md) | 0 | Chinese AI company known for DeepSeek-Coder and reasoning-focused language models |
 | [Duke University](./authors/duke/README.md) | 0 | Duke University models |
 | [ETH Zurich](./authors/eth-zurich/README.md) | 0 | ETH Zurich models |
 | [EleutherAI](./authors/eleutherai/README.md) | 0 | EleutherAI models |
 | [Eric Hartford](./authors/ehartford/README.md) | 0 | Creator of the widely-used Dolphin model series and other fine-tuned language models |
 | [FastChat Team](./authors/fastchat/README.md) | 0 | Team behind the FastChat framework for training and serving conversational AI models |
 | [Georgia Tech Research Institute](./authors/gatech/README.md) | 0 | Research institute known for creating the Galpaca model based on GALACTICA |
-| [Google](./authors/google/README.md) | 160 | Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations |
+| [Google](./authors/google/README.md) | 0 | Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations |
 | [Google DeepMind](./authors/deepmind/README.md) | 0 | AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research |
 | [H2O.ai](./authors/h2o.ai/README.md) | 0 | Machine learning company known for h2oGPT open-source language model suite |
 | [Harvard University](./authors/harvard/README.md) | 0 | Harvard University models |
@@ -75,7 +75,7 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | [LAION](./authors/laion/README.md) | 0 | LAION models |
 | [LMSYS Org](./authors/lmsys/README.md) | 0 | Research organization behind Vicuna, FastChat, and the Chatbot Arena platform |
 | [MIT](./authors/mit/README.md) | 0 | MIT models |
-| [Meta](./authors/meta/README.md) | 31 | Social media company known for LLaMA/Llama model series and open-source AI research |
+| [Meta](./authors/meta/README.md) | 0 | Social media company known for LLaMA/Llama model series and open-source AI research |
 | [Microsoft](./authors/microsoft/README.md) | 0 | Technology company with AI initiatives including Copilot and partnerships with OpenAI |
 | [Midjourney](./authors/midjourney/README.md) | 0 | Midjourney models |
 | [MiniMax](./authors/minimax/README.md) | 0 | Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attention reasoning model |
@@ -86,12 +86,12 @@ Browse models organized by the organizations that created them (Meta, Google, Op
 | [NVIDIA](./authors/nvidia/README.md) | 0 | NVIDIA models |
 | [Nous Research](./authors/nousresearch/README.md) | 0 | AI research organization known for OpenHermes and Nous-Hermes model series |
 | [Open-Orca](./authors/open-orca/README.md) | 0 | Open-source project creating Orca-style reasoning models and datasets |
-| [OpenAI](./authors/openai/README.md) | 72 | AI research company known for GPT models, ChatGPT, and DALL-E |
+| [OpenAI](./authors/openai/README.md) | 0 | AI research company known for GPT models, ChatGPT, and DALL-E |
 | [Peking University](./authors/peking/README.md) | 0 | Leading Chinese university with significant AI and machine learning research contributions |
 | [Perplexity AI](./authors/perplexity/README.md) | 0 | Perplexity AI models |
 | [Phind](./authors/phind/README.md) | 0 | AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks |
 | [Princeton University](./authors/princeton/README.md) | 0 | Princeton University models |
-| [Qwen Team](./authors/qwen/README.md) | 7 | AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family |
+| [Qwen Team](./authors/qwen/README.md) | 0 | AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family |
 | [Runway ML](./authors/runway/README.md) | 0 | Runway ML models |
 | [Salesforce](./authors/salesforce/README.md) | 0 | Salesforce models |
 | [SenseTime](./authors/sensetime/README.md) | 0 | Chinese AI company specializing in computer vision and known for SenseNova multimodal models |

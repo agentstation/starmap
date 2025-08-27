@@ -4,7 +4,7 @@
 **Status Page**: [https://status.deepseek.com](https://status.deepseek.com)  
 **API Key Required**: Yes  
 **API Key Name**: $DEEPSEEK_API_KEY  
-**Total Models**: 2
+**Total Models**: 0
 
 ## 🔗 API Endpoints
 
@@ -34,10 +34,7 @@
 
 ## Models
 
-| Model | Author | Context Window | Input Price | Output Price | Features |
-|-------|--------|----------------|-------------|--------------|----------|
-| [deepseek-chat](./models/deepseek-chat.md) | DeepSeek | 65536 | $0.27/1M | $1.10/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [deepseek-reasoner](./models/deepseek-reasoner.md) | DeepSeek | 65536 | $0.55/1M | $2.19/1M | <span title="Text Processing">📝</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+No models available for this provider.
 
 ## Navigation
 

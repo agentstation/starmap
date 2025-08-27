@@ -5,23 +5,26 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDGoogleAIStudio, &Client{})
-}
 
 // Client implements the catalogs.Client interface for Google AI Studio.
 type Client struct {
 	*baseclient.GoogleClient
 }
 
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.GoogleClient.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.GoogleClient.HasAPIKey()
+}
+
 // NewClient creates a new Google AI Studio client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		GoogleClient: baseclient.NewGoogleClient(provider, "https://generativelanguage.googleapis.com/v1beta/models"),
 	}
@@ -35,11 +38,6 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 // ListModels uses the base Google implementation.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return c.GoogleClient.ListModels(ctx)
-}
-
-// GetModel uses the base Google implementation.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	return c.GoogleClient.GetModel(ctx, modelID)
 }
 
 // ExtractModelID extracts the model ID from the full name for Google AI Studio.

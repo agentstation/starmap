@@ -37,17 +37,6 @@ func NewCatalog(api *ModelsDevAPI) (*Catalog, error) {
 	return catalog, nil
 }
 
-// Load implements starmap.Catalog
-func (c *Catalog) Load() error {
-	// Already loaded in NewCatalog
-	return nil
-}
-
-// Save implements starmap.Catalog
-func (c *Catalog) Save() error {
-	// models.dev catalog is read-only
-	return fmt.Errorf("models.dev catalog is read-only")
-}
 
 // Providers implements starmap.Catalog
 func (c *Catalog) Providers() *catalogs.Providers {
@@ -106,62 +95,43 @@ func (c *Catalog) Endpoint(id string) (*catalogs.Endpoint, error) {
 }
 
 // AddProvider implements starmap.Catalog
-func (c *Catalog) AddProvider(provider catalogs.Provider) error {
-	return c.providers.Add(&provider)
-}
-
-// AddAuthor implements starmap.Catalog
-func (c *Catalog) AddAuthor(author catalogs.Author) error {
-	return c.authors.Add(&author)
-}
-
-// AddModel implements starmap.Catalog
-func (c *Catalog) AddModel(model catalogs.Model) error {
-	return c.models.Add(&model)
-}
-
-// AddEndpoint implements starmap.Catalog
-func (c *Catalog) AddEndpoint(endpoint catalogs.Endpoint) error {
-	return c.endpoints.Add(&endpoint)
-}
-
-// UpdateProvider implements starmap.Catalog
-func (c *Catalog) UpdateProvider(provider catalogs.Provider) error {
+func (c *Catalog) SetProvider(provider catalogs.Provider) error {
 	return c.providers.Set(provider.ID, &provider)
 }
 
-// UpdateAuthor implements starmap.Catalog
-func (c *Catalog) UpdateAuthor(author catalogs.Author) error {
+// AddAuthor implements starmap.Catalog
+func (c *Catalog) SetAuthor(author catalogs.Author) error {
 	return c.authors.Set(author.ID, &author)
 }
 
-// UpdateModel implements starmap.Catalog
-func (c *Catalog) UpdateModel(model catalogs.Model) error {
+// AddModel implements starmap.Catalog
+func (c *Catalog) SetModel(model catalogs.Model) error {
 	return c.models.Set(model.ID, &model)
 }
 
-// UpdateEndpoint implements starmap.Catalog
-func (c *Catalog) UpdateEndpoint(endpoint catalogs.Endpoint) error {
+// AddEndpoint implements starmap.Catalog
+func (c *Catalog) SetEndpoint(endpoint catalogs.Endpoint) error {
 	return c.endpoints.Set(endpoint.ID, &endpoint)
 }
 
-// RemoveProvider implements starmap.Catalog
-func (c *Catalog) RemoveProvider(id catalogs.ProviderID) error {
+
+// DeleteProvider implements starmap.Catalog
+func (c *Catalog) DeleteProvider(id catalogs.ProviderID) error {
 	return c.providers.Delete(id)
 }
 
-// RemoveAuthor implements starmap.Catalog
-func (c *Catalog) RemoveAuthor(id catalogs.AuthorID) error {
+// DeleteAuthor implements starmap.Catalog
+func (c *Catalog) DeleteAuthor(id catalogs.AuthorID) error {
 	return c.authors.Delete(id)
 }
 
-// RemoveModel implements starmap.Catalog
-func (c *Catalog) RemoveModel(id string) error {
+// DeleteModel implements starmap.Catalog
+func (c *Catalog) DeleteModel(id string) error {
 	return c.models.Delete(id)
 }
 
-// RemoveEndpoint implements starmap.Catalog
-func (c *Catalog) RemoveEndpoint(id string) error {
+// DeleteEndpoint implements starmap.Catalog
+func (c *Catalog) DeleteEndpoint(id string) error {
 	return c.endpoints.Delete(id)
 }
 
@@ -175,7 +145,7 @@ func (c *Catalog) loadFromAPI() error {
 		}
 
 		// Add provider to catalog
-		if err := c.AddProvider(*provider); err != nil {
+		if err := c.SetProvider(*provider); err != nil {
 			return fmt.Errorf("adding provider %s: %w", providerID, err)
 		}
 
@@ -187,7 +157,7 @@ func (c *Catalog) loadFromAPI() error {
 			}
 
 			// Add model to catalog
-			if err := c.AddModel(*model); err != nil {
+			if err := c.SetModel(*model); err != nil {
 				return fmt.Errorf("adding model %s: %w", modelID, err)
 			}
 		}

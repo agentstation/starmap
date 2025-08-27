@@ -1,0 +1,105 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2025-08-25T22:07:10Z",
+      "resolved": "github:NixOS/nixpkgs/84c256e42600cb0fdf25763b48d28df2f25a0c8b?lastModified=1756159630&narHash=sha256-ohMvsjtSVdT%2FbruXf5ClBh8ZYXRmD4krmjKrXhEvwMg%3D"
+    },
+    "go@1.24.5": {
+      "last_modified": "2025-07-28T17:09:23Z",
+      "resolved": "github:NixOS/nixpkgs/648f70160c03151bc2121d179291337ad6bc564b#go",
+      "source": "devbox-search",
+      "version": "1.24.5",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kw1vd98s15vj700m3gx2x2xca2z477i3-go-1.24.5",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/kw1vd98s15vj700m3gx2x2xca2z477i3-go-1.24.5"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5bzlaj0c4mqw9p0zrcx5g9vz16vd45dl-go-1.24.5",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5bzlaj0c4mqw9p0zrcx5g9vz16vd45dl-go-1.24.5"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/b72n20ixzl5ja9vciwahkr30bhmsn5jc-go-1.24.5",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/b72n20ixzl5ja9vciwahkr30bhmsn5jc-go-1.24.5"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/y4awwzp30ka130wmjrpaqjmjdf9p010w-go-1.24.5",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/y4awwzp30ka130wmjrpaqjmjdf9p010w-go-1.24.5"
+        }
+      }
+    },
+    "gomarkdoc@1.1.0": {
+      "last_modified": "2025-07-28T17:09:23Z",
+      "resolved": "github:NixOS/nixpkgs/648f70160c03151bc2121d179291337ad6bc564b#gomarkdoc",
+      "source": "devbox-search",
+      "version": "1.1.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nx3gxbd6kg35wbgrdy8kcn71pzjl362n-gomarkdoc-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/nx3gxbd6kg35wbgrdy8kcn71pzjl362n-gomarkdoc-1.1.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/x5z087hv8s919176vsc0ja21b2x0plvb-gomarkdoc-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/x5z087hv8s919176vsc0ja21b2x0plvb-gomarkdoc-1.1.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/rvlsn0jhldrrwjl1skxlpxcjx37135lg-gomarkdoc-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/rvlsn0jhldrrwjl1skxlpxcjx37135lg-gomarkdoc-1.1.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k214df51nznpgf01gc88l1hma0jgl7nk-gomarkdoc-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k214df51nznpgf01gc88l1hma0jgl7nk-gomarkdoc-1.1.0"
+        }
+      }
+    }
+  }
+}

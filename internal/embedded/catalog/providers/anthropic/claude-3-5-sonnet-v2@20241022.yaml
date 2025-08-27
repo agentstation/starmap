@@ -1,0 +1,6 @@
+id: claude-3-5-sonnet-v2@20241022
+name: claude 3 5 sonnet v2
+description: |
+    Anthropic Claude model claude-3-5-sonnet-v2 available through Vertex AI Model Garden
+created_at: "2025-08-21T14:08:10Z"
+updated_at: "2025-08-21T14:08:10Z"

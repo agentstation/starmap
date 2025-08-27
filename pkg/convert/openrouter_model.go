@@ -244,7 +244,7 @@ func getOperationCost(pricing *catalogs.ModelPricing, costType string) *float64 
 	}
 }
 
-func getCacheCost(pricing *catalogs.ModelPricing) *catalogs.CacheCost {
+func getCacheCost(pricing *catalogs.ModelPricing) *catalogs.TokenCacheCost {
 	if pricing == nil || pricing.Tokens == nil {
 		return nil
 	}
@@ -297,7 +297,7 @@ func convertOperationCost(cost *float64) string {
 	return fmt.Sprintf("%.10f", *cost)
 }
 
-func convertCacheCost(cache *catalogs.CacheCost, operation string) string {
+func convertCacheCost(cache *catalogs.TokenCacheCost, operation string) string {
 	if cache == nil {
 		return "0"
 	}

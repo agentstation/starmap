@@ -3,283 +3,336 @@ package starmap
 import (
 	"context"
 	"fmt"
-	"os"
+	"log"
+	"strings"
 
-	"github.com/agentstation/starmap/internal/catalogs/operations"
-	"github.com/agentstation/starmap/internal/catalogs/persistence"
-	_ "github.com/agentstation/starmap/internal/sources" // Auto-register sources
-	sourceops "github.com/agentstation/starmap/internal/sources/operations"
-	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/internal/sync"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/reconcile"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-const (
-	defaultSyncOutputDir = "internal/embedded/catalog/providers"
-)
+// Sync synchronizes the catalog with provider APIs using staged source execution
+func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error) {
+	// Build new sync options
+	options := NewSyncOptions(opts...)
+	if ctx == nil {
+		ctx = context.Background()
+	}
 
-// Sync synchronizes the catalog with provider APIs using the source pipeline system
-func (s *starmap) Sync(opts ...sources.SyncOption) (*catalogs.SyncResult, error) {
-
-	options := sources.NewSyncOptions(opts...)
-
-	// Get current catalog
-	catalog, err := s.Catalog()
+	// Create the result in memory catalog
+	result, err := catalogs.New()
 	if err != nil {
-		return nil, fmt.Errorf("getting catalog: %w", err)
+		return nil, fmt.Errorf("creating result catalog: %w", err)
 	}
 
-	// Determine which providers to sync
-	var providersToSync []catalogs.ProviderID
+	// Create a context with a timeout if specified
+	if options.Timeout > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, options.Timeout)
+		defer cancel()
+	}
+
+	// Get sources to use
+	sourcesToUse := s.sourcesWithOptions(options)
+
+	// SETUP PHASE: Initialize sources with dependencies
+	// First, get the embedded catalog for provider configs
+	embeddedCat, err := catalogs.New(catalogs.WithEmbedded())
+	if err != nil {
+		return nil, fmt.Errorf("loading embedded catalog for setup: %w", err)
+	}
+
+	// Setup all sources with provider configs
+	for _, source := range sourcesToUse {
+		if err := source.Setup(embeddedCat.Providers()); err != nil {
+			return nil, fmt.Errorf("setup %s: %w", source.Name(), err)
+		}
+	}
+
+	// FETCH PHASE: Fetch catalogs from each source
+	// Convert sync options to source options
+	var sourceOpts []sources.SourceOption
 	if options.ProviderID != nil {
-		providersToSync = []catalogs.ProviderID{*options.ProviderID}
-	} else {
-		providersToSync = providers.ListSupportedProviders()
+		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*options.ProviderID))
+	}
+	// Extract source-specific flags from context
+	if options.Context != nil {
+		if fresh, ok := options.Context["fresh"].(bool); ok && fresh {
+			sourceOpts = append(sourceOpts, sources.WithFresh(true))
+		}
+		if safeMode, ok := options.Context["safeMode"].(bool); ok && safeMode {
+			sourceOpts = append(sourceOpts, sources.WithSafeMode(true))
+		}
+		// Pass through all context for source-specific needs
+		for k, v := range options.Context {
+			sourceOpts = append(sourceOpts, sources.WithSourceContext(k, v))
+		}
 	}
 
-	// Initialize result
-	result := catalogs.NewSyncResult()
-	result.DryRun = options.DryRun
-	result.Fresh = options.Fresh
-	result.OutputDir = options.OutputDir
+	// Collect catalogs from all sources
+	sourceCatalogs := make(map[reconcile.SourceName]catalogs.Catalog)
+	for _, source := range sourcesToUse {
+		log.Printf("Fetching: %s", source.Name())
 
-	// Sources self-initialize - no manual setup needed
-
-	var allChanges []operations.ProviderChangeset
-	updatedProviders := make(map[catalogs.ProviderID]catalogs.Provider)
-
-	// Process each provider using the pipeline
-	for _, providerID := range providersToSync {
-		providerResult := catalogs.NewSyncProviderResult(providerID)
-
-		// Get provider from catalog
-		provider, found := catalog.Providers().Get(providerID)
-		if !found {
-			continue
-		}
-
-		// Load API key and environment variables from environment
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-
-		// Create pipeline for this provider using auto-registered sources
-		sourcePipeline, err := sync.Pipeline(catalog,
-			sync.WithProvider(provider),
-			sync.WithSyncOptions(options),
-		)
+		// Fetch catalog from source
+		catalog, err := source.Fetch(ctx, sourceOpts...)
 		if err != nil {
-			// Log error but continue with next provider
+			if options.FailFast {
+				return nil, fmt.Errorf("source %s failed: %w", source.Name(), err)
+			}
+			log.Printf("  Warning: %v", err) // log and continue to next source, don't fail fast
 			continue
 		}
 
-		// Execute pipeline
-		ctx := context.Background()
-		if options.Timeout > 0 {
-			var cancel context.CancelFunc
-			ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-			defer cancel()
+		sourceCatalogs[reconcile.SourceName(source.Name())] = catalog
+	}
+
+	// RECONCILE PHASE: Use the new reconciler to merge catalogs
+	reconciler, err := reconcile.New(
+		reconcile.WithStrategy(reconcile.NewAuthorityBasedStrategy(reconcile.NewDefaultAuthorityProvider())),
+		reconcile.WithProvenance(true),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("creating reconciler: %w", err)
+	}
+
+	reconcileResult, err := reconciler.ReconcileCatalogs(ctx, sourceCatalogs)
+	if err != nil {
+		return nil, fmt.Errorf("reconciliation failed: %w", err)
+	}
+
+	result = reconcileResult.Catalog
+
+	// CLEANUP PHASE: Clean up any resources
+	for _, source := range sourcesToUse {
+		if err := source.Cleanup(); err != nil {
+			log.Printf("  Warning: cleanup failed for %s: %v", source.Name(), err)
 		}
+	}
 
-		pipelineResult, err := sourcePipeline.Execute(ctx, providerID)
-		if err != nil {
-			// Log error but continue with next provider
-			continue
-		}
+	// Get existing catalog for comparison
+	existing, err := s.Catalog()
+	if err != nil {
+		// If we can't get existing catalog, create an empty one for comparison
+		existing, _ = catalogs.New()
+	}
 
-		// Capture updated provider configuration (including discovered publishers)
-		if pipelineResult.Provider != nil && pipelineResult.Provider.ID != "" {
-			updatedProviders[providerID] = *pipelineResult.Provider
-		}
+	// Perform change detection using new differ
+	differ := reconcile.NewDiffer()
+	changeset := differ.DiffCatalogs(existing, result)
 
-		// Update provider result with pipeline statistics
-		providerResult.APIModelsCount = 0
-		providerResult.EnhancedCount = 0
+	// Create sync result from new changeset
+	syncResult := convertChangesetToSyncResult(changeset, options.DryRun, options.OutputPath)
 
-		// Calculate statistics from pipeline
-		for sourceType, stats := range pipelineResult.SourceStats {
-			switch sourceType {
-			case sources.ProviderAPI:
-				providerResult.APIModelsCount = stats.ModelsReturned
-			case sources.ModelsDevGit, sources.ModelsDevHTTP:
-				providerResult.EnhancedCount = stats.ModelsReturned
-			}
-		}
-
-		// Handle fresh sync vs normal sync
-		var changeset operations.ProviderChangeset
-		if options.Fresh {
-			// Fresh sync: treat all pipeline models as new additions
-			changeset = operations.ProviderChangeset{
-				ProviderID: providerID,
-				Added:      pipelineResult.Models,
-				Updated:    []operations.ModelUpdate{},
-				Removed:    []catalogs.Model{},
-			}
-		} else {
-			// Normal sync: compare pipeline result with existing models
-			existingModels, err := persistence.GetProviderModels(catalog, providerID)
-			if err != nil {
-				existingModels = make(map[string]catalogs.Model)
-			}
-
-			providerResult.ExistingModelsCount = len(existingModels)
-			changeset = operations.CompareProviderModels(providerID, existingModels, pipelineResult.Models)
-		}
-
-		allChanges = append(allChanges, changeset)
-
-		// Convert internal changeset to public result
-		providerResult.AddedCount = len(changeset.Added)
-		providerResult.UpdatedCount = len(changeset.Updated)
-		providerResult.RemovedCount = len(changeset.Removed)
-
-		// Convert models and updates to public types
-		providerResult.Added = changeset.Added
-		providerResult.Removed = changeset.Removed
-		for _, update := range changeset.Updated {
-			providerResult.Updated = append(providerResult.Updated, catalogs.ModelUpdate{
-				ModelID:       update.ModelID,
-				ExistingModel: update.ExistingModel,
-				NewModel:      update.NewModel,
-				Changes:       convertFieldChanges(update.Changes),
-			})
-		}
-
-		result.ProviderResults[providerID] = providerResult
-		if providerResult.HasChanges() {
-			result.ProvidersChanged++
-			result.TotalChanges += providerResult.AddedCount + providerResult.UpdatedCount + providerResult.RemovedCount
-		}
-
-		// Save provenance if requested
-		if err := s.saveProvenance(options, pipelineResult.Provenance, providerID); err != nil {
-			// Log error but don't fail the sync
-		}
+	// Log summary
+	if changeset.HasChanges() {
+		log.Printf("Changes detected: %d added, %d updated, %d removed",
+			len(changeset.Models.Added), len(changeset.Models.Updated), len(changeset.Models.Removed))
+	} else {
+		log.Printf("No changes detected")
 	}
 
 	// Apply changes if not dry run
-	if !options.DryRun && result.HasChanges() {
-		for _, changeset := range allChanges {
-			if changeset.HasChanges() {
-				// Clean provider directory if fresh sync
-				if options.Fresh {
-					outputDir := options.OutputDir
-					if outputDir == "" {
-						outputDir = defaultSyncOutputDir
-					}
-					if err := persistence.CleanProviderDirectory(changeset.ProviderID, outputDir); err != nil {
-						return nil, fmt.Errorf("cleaning directory for %s: %w", changeset.ProviderID, err)
-					}
-				}
-
-				outputDir := options.OutputDir
-				if outputDir == "" {
-					outputDir = defaultSyncOutputDir
-				}
-				if err := persistence.ApplyChangesetToOutput(catalog, changeset, outputDir); err != nil {
-					return nil, fmt.Errorf("applying changes for %s: %w", changeset.ProviderID, err)
-				}
-			}
-		}
-
-		// Handle post-sync operations (logo copying)
-		// Only Git source can provide logos; HTTP source will show informational message
-		httpOps := sourceops.GetPostSyncOperations(sources.ModelsDevHTTP)
-		gitOps := sourceops.GetPostSyncOperations(sources.ModelsDevGit)
-
-		if gitOps != nil {
-			// Git source available - can copy logos
-			if err := gitOps.CopyProviderLogos(providersToSync); err != nil {
-				// Log error but don't fail the sync
-			}
-		} else if httpOps != nil {
-			// Only HTTP source available - will inform about logo limitation
-			if err := httpOps.CopyProviderLogos(providersToSync); err != nil {
-				// Log error but don't fail the sync
-			}
-		}
-
-		// Save updated providers configuration (including discovered publishers)
-		if len(updatedProviders) > 0 {
-			// For SaveUpdatedProviders, we need the base catalog directory, not the providers subdirectory
-			var baseOutputDir string
-			if options.OutputDir != "" {
-				baseOutputDir = options.OutputDir
-			} else {
-				baseOutputDir = "internal/embedded/catalog"
-			}
-
-			// Convert map to the expected format for SaveUpdatedProviders
-			providersMap := make(map[catalogs.ProviderID]catalogs.Provider)
-			for id, provider := range updatedProviders {
-				providersMap[id] = provider
-			}
-			if err := persistence.SaveUpdatedProvidersWithOptions(providersMap, baseOutputDir, options.ForceFormat); err != nil {
-				// Log error but don't fail the sync
-				fmt.Printf("⚠️  Warning: Failed to save updated providers configuration: %v\n", err)
-			}
-		}
-
-		// Update internal catalog with changes and trigger hooks
+	if !options.DryRun && changeset.HasChanges() {
+		// Update internal catalog first
 		s.mu.Lock()
-		// Reload catalog to reflect file changes
-		if loadable, ok := s.catalog.(interface{ Load() error }); ok {
-			oldCatalog := s.catalog
-			loadable.Load()
-			// Trigger hooks for catalog changes
-			s.hooks.triggerCatalogUpdate(oldCatalog, s.catalog)
-		}
+		oldCatalog := s.catalog
+		s.catalog = result
 		s.mu.Unlock()
+
+		// Save to output path if specified
+		if options.OutputPath != "" {
+			// TODO: Implement SaveTo for catalogs that support custom paths
+			if saveable, ok := result.(catalogs.Persistable); ok {
+				if err := saveable.Save(); err != nil {
+					return nil, fmt.Errorf("saving to %s: %w", options.OutputPath, err)
+				}
+			}
+		} else {
+			// Save to default location
+			if saveable, ok := result.(catalogs.Persistable); ok {
+				if err := saveable.Save(); err != nil {
+					return nil, fmt.Errorf("saving catalog: %w", err)
+				}
+			}
+		}
+
+		log.Printf("Sync completed successfully - %d changes applied", changeset.Summary.TotalChanges)
+
+		// Trigger hooks for catalog changes
+		s.hooks.triggerCatalogUpdate(oldCatalog, result)
+	} else if options.DryRun {
+		log.Printf("Dry run completed - no changes applied")
 	}
 
-	// Cleanup models.dev repository/cache if requested
-	if options.CleanModelsDevRepo {
-		// Clean both HTTP cache and Git repo
-		if postSyncOps := sourceops.GetPostSyncOperations(sources.ModelsDevHTTP); postSyncOps != nil {
-			postSyncOps.Cleanup()
-		}
-		if postSyncOps := sourceops.GetPostSyncOperations(sources.ModelsDevGit); postSyncOps != nil {
-			postSyncOps.Cleanup()
-		}
-	}
-
-	return result, nil
+	return syncResult, nil
 }
 
-// saveProvenance saves provenance information to file if requested
-func (s *starmap) saveProvenance(options *sources.SyncOptions, provenance map[string]sources.Provenance, providerID catalogs.ProviderID) error {
-	if !options.TrackProvenance || options.ProvenanceFile == "" {
-		return nil
-	}
+// SyncResult represents the complete result of a sync operation
+type SyncResult struct {
+	// Overall statistics
+	TotalChanges     int                                         // Total number of changes across all providers
+	ProvidersChanged int                                         // Number of providers with changes
+	ProviderResults  map[catalogs.ProviderID]*SyncProviderResult // Results per provider
 
-	// Create a simple provenance report
-	// This is a basic implementation - could be enhanced with YAML/JSON formatting
-	file, err := os.Create(options.ProvenanceFile)
-	if err != nil {
-		return fmt.Errorf("creating provenance file: %w", err)
-	}
-	defer file.Close()
-
-	fmt.Fprintf(file, "# Provenance Report for %s\n", providerID)
-	fmt.Fprintf(file, "# Generated by Starmap\n\n")
-
-	for field, prov := range provenance {
-		fmt.Fprintf(file, "%s: %s (updated: %s)\n", field, prov.Source, prov.UpdatedAt.Format("2006-01-02 15:04:05"))
-	}
-
-	return nil
+	// Operation metadata
+	DryRun    bool   // Whether this was a dry run
+	Fresh     bool   // Whether this was a fresh sync
+	OutputDir string // Where files were written (empty means default)
 }
 
-// convertFieldChanges converts internal field changes to public types
-func convertFieldChanges(changes []operations.FieldChange) []catalogs.FieldChange {
-	result := make([]catalogs.FieldChange, len(changes))
-	for i, change := range changes {
-		result[i] = catalogs.FieldChange{
-			Field:    change.Field,
-			OldValue: change.OldValue,
-			NewValue: change.NewValue,
-		}
+// SyncProviderResult represents sync results for a single provider
+type SyncProviderResult struct {
+	ProviderID catalogs.ProviderID     // The provider that was synced
+	Added      []catalogs.Model        // New models not in catalog
+	Updated    []reconcile.ModelUpdate // Existing models with changes
+	Removed    []catalogs.Model        // Models in catalog but not in API (informational only)
+
+	// Summary counts
+	AddedCount   int // Number of models added
+	UpdatedCount int // Number of models updated
+	RemovedCount int // Number of models removed from API (not deleted from catalog)
+
+	// Metadata
+	APIModelsCount      int // Total models fetched from API
+	ExistingModelsCount int // Total models that existed in catalog
+	EnhancedCount       int // Number of models enhanced with models.dev data
+}
+
+// HasChanges returns true if the sync result contains any changes
+func (sr *SyncResult) HasChanges() bool {
+	return sr.TotalChanges > 0
+}
+
+// HasChanges returns true if the provider result contains any changes
+func (spr *SyncProviderResult) HasChanges() bool {
+	return spr.AddedCount > 0 || spr.UpdatedCount > 0 || spr.RemovedCount > 0
+}
+
+// Summary returns a human-readable summary of the sync result
+func (sr *SyncResult) Summary() string {
+	if !sr.HasChanges() {
+		return "No changes detected"
 	}
+
+	var parts []string
+	if sr.DryRun {
+		parts = append(parts, "(Dry run)")
+	}
+	if sr.Fresh {
+		parts = append(parts, "(Fresh sync)")
+	}
+
+	summary := fmt.Sprintf("%d total changes across %d providers", sr.TotalChanges, sr.ProvidersChanged)
+	if len(parts) > 0 {
+		summary += " " + strings.Join(parts, " ")
+	}
+
+	return summary
+}
+
+// Summary returns a human-readable summary of the provider result
+func (spr *SyncProviderResult) Summary() string {
+	if !spr.HasChanges() {
+		return fmt.Sprintf("%s: No changes", spr.ProviderID)
+	}
+
+	return fmt.Sprintf("%s: %d added, %d updated, %d removed",
+		spr.ProviderID, spr.AddedCount, spr.UpdatedCount, spr.RemovedCount)
+}
+
+// NewResult creates a new Result with initialized maps
+func NewSyncResult() *SyncResult {
+	return &SyncResult{
+		ProviderResults: make(map[catalogs.ProviderID]*SyncProviderResult),
+	}
+}
+
+// NewProviderResult creates a new ProviderResult
+func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
+	return &SyncProviderResult{
+		ProviderID: providerID,
+		Added:      []catalogs.Model{},
+		Updated:    []reconcile.ModelUpdate{},
+		Removed:    []catalogs.Model{},
+	}
+}
+
+// convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult
+func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, outputDir string) *SyncResult {
+	result := &SyncResult{
+		TotalChanges:    changeset.Summary.TotalChanges,
+		DryRun:          dryRun,
+		OutputDir:       outputDir,
+		ProviderResults: make(map[catalogs.ProviderID]*SyncProviderResult),
+	}
+
+	// Group models by provider for the provider results
+	providerAdded := make(map[catalogs.ProviderID][]catalogs.Model)
+	providerUpdated := make(map[catalogs.ProviderID][]reconcile.ModelUpdate)
+	providerRemoved := make(map[catalogs.ProviderID][]catalogs.Model)
+
+	for _, model := range changeset.Models.Added {
+		providerID := getModelProvider(model)
+		providerAdded[providerID] = append(providerAdded[providerID], model)
+	}
+
+	for _, update := range changeset.Models.Updated {
+		providerID := getModelProvider(update.New)
+		providerUpdated[providerID] = append(providerUpdated[providerID], update)
+	}
+
+	for _, model := range changeset.Models.Removed {
+		providerID := getModelProvider(model)
+		providerRemoved[providerID] = append(providerRemoved[providerID], model)
+	}
+
+	// Collect all providers that have changes
+	allProviders := make(map[catalogs.ProviderID]bool)
+	for providerID := range providerAdded {
+		allProviders[providerID] = true
+	}
+	for providerID := range providerUpdated {
+		allProviders[providerID] = true
+	}
+	for providerID := range providerRemoved {
+		allProviders[providerID] = true
+	}
+
+	// Create provider results
+	for providerID := range allProviders {
+		providerResult := &SyncProviderResult{
+			ProviderID:   providerID,
+			Added:        providerAdded[providerID],
+			Updated:      providerUpdated[providerID],
+			Removed:      providerRemoved[providerID],
+			AddedCount:   len(providerAdded[providerID]),
+			UpdatedCount: len(providerUpdated[providerID]),
+			RemovedCount: len(providerRemoved[providerID]),
+		}
+		result.ProviderResults[providerID] = providerResult
+		result.ProvidersChanged++
+	}
+
 	return result
 }
+
+// getModelProvider extracts the provider ID from a model using pattern matching
+func getModelProvider(model catalogs.Model) catalogs.ProviderID {
+	// Try to infer from model ID patterns
+	modelID := strings.ToLower(model.ID)
+	switch {
+	case strings.Contains(modelID, "gpt") || strings.Contains(modelID, "dall") || strings.Contains(modelID, "whisper"):
+		return "openai"
+	case strings.Contains(modelID, "claude"):
+		return "anthropic"
+	case strings.Contains(modelID, "gemini"):
+		return "google-ai-studio"
+	case strings.Contains(modelID, "llama") || strings.Contains(modelID, "mistral"):
+		return "groq"
+	default:
+		// If we can't determine, use a generic provider
+		return "unknown"
+	}
+}
+

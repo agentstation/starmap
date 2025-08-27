@@ -12,7 +12,6 @@ import (
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/embedded"
 	"github.com/spf13/cobra"
 )
 
@@ -65,7 +64,7 @@ func runTestdata(cmd *cobra.Command, args []string) error {
 	}
 
 	// Get catalog
-	catalog, err := embedded.New()
+	catalog, err := catalogs.New(catalogs.WithEmbedded())
 	if err != nil {
 		return fmt.Errorf("loading catalog: %w", err)
 	}

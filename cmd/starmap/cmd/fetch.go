@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var fetchProvider string
+var fetchFlagProvider string
 
 // fetchCmd represents the fetch command
 var fetchCmd = &cobra.Command{
@@ -31,19 +31,19 @@ Supported providers include: openai, anthropic, google-ai-studio, google-vertex,
 func init() {
 	rootCmd.AddCommand(fetchCmd)
 
-	fetchCmd.Flags().StringVarP(&fetchProvider, "provider", "p", "", "Provider to fetch models from (required)")
+	fetchCmd.Flags().StringVarP(&fetchFlagProvider, "provider", "p", "", "Provider to fetch models from (required)")
 	if err := fetchCmd.MarkFlagRequired("provider"); err != nil {
 		panic(fmt.Sprintf("Failed to mark provider flag as required: %v", err))
 	}
 }
 
 func runFetch(cmd *cobra.Command, args []string) error {
-	if fetchProvider == "" {
+	if fetchFlagProvider == "" {
 		return fmt.Errorf("provider flag is required")
 	}
 
 	// Convert string to ProviderID
-	pid := catalogs.ProviderID(fetchProvider)
+	pid := catalogs.ProviderID(fetchFlagProvider)
 
 	// Get catalog
 	sm, err := starmap.New()
@@ -59,7 +59,7 @@ func runFetch(cmd *cobra.Command, args []string) error {
 	// Get provider from catalog
 	provider, found := catalog.Providers().Get(pid)
 	if !found {
-		return fmt.Errorf("provider %s not found in catalog", fetchProvider)
+		return fmt.Errorf("provider %s not found in catalog", fetchFlagProvider)
 	}
 
 	// Load API key and environment variables from environment
@@ -67,24 +67,20 @@ func runFetch(cmd *cobra.Command, args []string) error {
 	provider.LoadEnvVars()
 
 	// Get client for provider
-	result, err := provider.Client()
+	client, err := provider.Client()
 	if err != nil {
-		return fmt.Errorf("getting client for %s: %w", fetchProvider, err)
+		return fmt.Errorf("getting client for %s: %w", fetchFlagProvider, err)
 	}
-	if result.Error != nil {
-		return fmt.Errorf("client error for %s: %w", fetchProvider, result.Error)
-	}
-	client := result.Client
 
 	// Fetch models from API
 	ctx := context.Background()
 	models, err := client.ListModels(ctx)
 	if err != nil {
-		return fmt.Errorf("fetching models from %s: %w", fetchProvider, err)
+		return fmt.Errorf("fetching models from %s: %w", fetchFlagProvider, err)
 	}
 
 	if len(models) == 0 {
-		fmt.Printf("No models returned from %s\n", fetchProvider)
+		fmt.Printf("No models returned from %s\n", fetchFlagProvider)
 		return nil
 	}
 
@@ -93,7 +89,7 @@ func runFetch(cmd *cobra.Command, args []string) error {
 		return models[i].ID < models[j].ID
 	})
 
-	fmt.Printf("Fetched %d models from %s:\n\n", len(models), fetchProvider)
+	fmt.Printf("Fetched %d models from %s:\n\n", len(models), fetchFlagProvider)
 	for _, model := range models {
 		fmt.Printf("• %s", model.ID)
 		if model.Name != "" && model.Name != model.ID {

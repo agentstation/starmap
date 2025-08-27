@@ -9,16 +9,10 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
 	"google.golang.org/genai"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDGoogleVertex, &Client{})
-}
 
 // Client implements the catalogs.Client interface for Google Vertex AI.
 type Client struct {
@@ -28,10 +22,18 @@ type Client struct {
 }
 
 // NewClient creates a new Google Vertex AI client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	client := &Client{provider: provider}
-	client.Configure(provider)
-	return client
+func NewClient(provider *catalogs.Provider) *Client {
+	return &Client{provider: provider}
+}
+
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -268,7 +270,6 @@ func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Mode
 func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(publisherModel.Name)
-	
 
 	// Add version to model ID if available
 	if publisherModel.VersionID != "" {
@@ -277,8 +278,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 
 	// Extract publisher from model name and map to AuthorID
 	var authors []catalogs.Author
-	
-	
+
 	if strings.Contains(publisherModel.Name, "publishers/") {
 		parts := strings.Split(publisherModel.Name, "publishers/")
 		if len(parts) > 1 {
@@ -510,23 +510,6 @@ func (c *Client) getDetailedModel(ctx context.Context, client *genai.Client, mod
 	return client.Models.Get(ctx, modelName, config)
 }
 
-// GetModel retrieves a specific model by its ID.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Try to find the model in our list
-	models, err := c.ListModels(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, model := range models {
-		if model.ID == modelID {
-			return &model, nil
-		}
-	}
-
-	return nil, fmt.Errorf("model %s not found", modelID)
-}
-
 // ExtractModelID extracts the model ID from the full name for Google Vertex AI.
 func (c *Client) ExtractModelID(name string) string {
 	// Extract model ID from the name (format: projects/PROJECT/locations/LOCATION/models/MODEL_ID)
@@ -557,8 +540,7 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 
 	// Extract publisher from model name and map to AuthorID (same logic as publisher models)
 	var authors []catalogs.Author
-	
-	
+
 	if strings.Contains(genaiModel.Name, "/publishers/") {
 		parts := strings.Split(genaiModel.Name, "/publishers/")
 		if len(parts) > 1 {
@@ -659,7 +641,7 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 // getProjectID gets the project ID from environment variable or gcloud config
 func getProjectID(provider *catalogs.Provider) string {
 	// Try environment variable first
-	if projectID := provider.GetEnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+	if projectID := provider.EnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
 		return projectID
 	}
 
@@ -675,7 +657,7 @@ func getProjectID(provider *catalogs.Provider) string {
 // getLocation gets the location from environment variable or gcloud config
 func getLocation(provider *catalogs.Provider) string {
 	// Try environment variable first
-	if location := provider.GetEnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
+	if location := provider.EnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
 		return location
 	}
 
