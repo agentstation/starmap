@@ -1,3 +1,9 @@
+---
+title: "compound-beta"
+description: ""
+weight: 10
+author: "Groq"
+---
 # compound-beta
 
 ## 📋 Overview

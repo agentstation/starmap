@@ -69,7 +69,7 @@ func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 }
 
 // triggerCatalogUpdate compares old and new catalogs and triggers appropriate hooks
-func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Catalog) {
+func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Reader) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 

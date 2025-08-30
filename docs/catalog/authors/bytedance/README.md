@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # ByteDance
 
 **Description**: Chinese technology company behind TikTok with AI research in recommendation systems  

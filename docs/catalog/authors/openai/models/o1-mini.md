@@ -1,3 +1,9 @@
+---
+title: "o1-mini"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # o1-mini
 
 ## 📋 Overview

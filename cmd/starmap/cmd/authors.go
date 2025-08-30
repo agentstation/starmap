@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -29,12 +30,12 @@ func init() {
 func runAuthors(cmd *cobra.Command, args []string) error {
 	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("creating starmap: %w", err)
+		return errors.WrapResource("create", "starmap", "", err)
 	}
 
 	catalog, err := sm.Catalog()
 	if err != nil {
-		return fmt.Errorf("getting catalog: %w", err)
+		return errors.WrapResource("get", "catalog", "", err)
 	}
 
 	// Get all authors from the catalog

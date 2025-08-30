@@ -1,3 +1,9 @@
+---
+title: "Lyria 002"
+description: ""
+weight: 10
+author: "google"
+---
 # Lyria 002
 
 ## 📋 Overview

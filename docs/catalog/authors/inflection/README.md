@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Inflection AI
 
 **Website**: [https://inflection.ai](https://inflection.ai)  

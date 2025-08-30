@@ -1,3 +1,9 @@
+---
+title: "Whisper Large"
+description: ""
+weight: 10
+author: "openai"
+---
 # Whisper Large
 
 ## 📋 Overview

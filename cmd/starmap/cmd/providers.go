@@ -6,6 +6,8 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
@@ -36,39 +38,41 @@ func runProviders(cmd *cobra.Command, args []string) error {
 	// Create starmap instance (now properly loads embedded catalog by default)
 	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("creating starmap: %w", err)
+		return errors.WrapResource("create", "starmap", "", err)
 	}
 
 	// Get catalog from starmap
 	catalog, err := sm.Catalog()
 	if err != nil {
-		return fmt.Errorf("getting catalog: %w", err)
+		return errors.WrapResource("get", "catalog", "", err)
 	}
 
 	// Get all providers from the catalog
-	providers := catalog.Providers().List()
-	if len(providers) == 0 {
+	providersList := catalog.Providers().List()
+	if len(providersList) == 0 {
 		fmt.Println("No providers found in catalog")
 		return nil
 	}
 
 	// Sort providers by ID
-	sort.Slice(providers, func(i, j int) bool {
-		return providers[i].ID < providers[j].ID
+	sort.Slice(providersList, func(i, j int) bool {
+		return providersList[i].ID < providersList[j].ID
 	})
 
+	// Create provider fetcher to check support
+	fetcher := sources.NewProviderFetcher()
+	
 	// Build supported providers map by checking each provider for client availability
 	supportedMap := make(map[catalogs.ProviderID]bool)
-	for _, provider := range providers {
-		// Try to get client (with missing API key allowed to test if client exists)
-		client, _ := provider.Client(catalogs.WithAllowMissingAPIKey(true))
-		if client != nil {
+	for _, provider := range providersList {
+		// Check if provider has a client implementation
+		if fetcher.HasClient(provider.ID) {
 			supportedMap[provider.ID] = true
 		}
 	}
 
-	fmt.Printf("Found %d providers in catalog:\n\n", len(providers))
-	for _, provider := range providers {
+	fmt.Printf("Found %d providers in catalog:\n\n", len(providersList))
+	for _, provider := range providersList {
 		// Use new Provider.Validate() method for comprehensive status
 		result := provider.Validate(supportedMap)
 

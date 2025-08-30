@@ -1,3 +1,9 @@
+---
+title: "Weathernext"
+description: ""
+weight: 10
+author: "google"
+---
 # Weathernext
 
 ## 📋 Overview

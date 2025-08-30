@@ -1,3 +1,10 @@
+---
+title: "text-unicorn"
+description: "Google Vertex AI model: text-unicorn
+"
+weight: 10
+author: ""
+---
 # text-unicorn
 
 Google Vertex AI model: text-unicorn

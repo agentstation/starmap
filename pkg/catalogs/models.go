@@ -1,9 +1,10 @@
 package catalogs
 
 import (
-	"fmt"
 	"maps"
 	"sync"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Models is a concurrent safe map of models.
@@ -36,7 +37,10 @@ func (m *Models) Get(id string) (*Model, bool) {
 // Set sets a model by id. Returns an error if model is nil.
 func (m *Models) Set(id string, model *Model) error {
 	if model == nil {
-		return fmt.Errorf("model cannot be nil")
+		return &errors.ValidationError{
+			Field:   "model",
+			Message: "cannot be nil",
+		}
 	}
 
 	m.mu.Lock()
@@ -48,14 +52,21 @@ func (m *Models) Set(id string, model *Model) error {
 // Add adds a model, returning an error if it already exists.
 func (m *Models) Add(model *Model) error {
 	if model == nil {
-		return fmt.Errorf("model cannot be nil")
+		return &errors.ValidationError{
+			Field:   "model",
+			Message: "cannot be nil",
+		}
 	}
 
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
 	if _, exists := m.models[model.ID]; exists {
-		return fmt.Errorf("model with ID %s already exists", model.ID)
+		return &errors.ValidationError{
+			Field:   "model.ID",
+			Value:   model.ID,
+			Message: "already exists",
+		}
 	}
 
 	m.models[model.ID] = model
@@ -68,7 +79,10 @@ func (m *Models) Delete(id string) error {
 	defer m.mu.Unlock()
 
 	if _, exists := m.models[id]; !exists {
-		return fmt.Errorf("model with ID %s not found", id)
+		return &errors.NotFoundError{
+			Resource: "model",
+			ID:       id,
+		}
 	}
 
 	delete(m.models, id)
@@ -148,7 +162,7 @@ func (m *Models) AddBatch(models []*Model) map[string]error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	errors := make(map[string]error)
+	errs := make(map[string]error)
 
 	// First pass: validate all models
 	for _, model := range models {
@@ -156,7 +170,11 @@ func (m *Models) AddBatch(models []*Model) map[string]error {
 			continue // Skip nil models
 		}
 		if _, exists := m.models[model.ID]; exists {
-			errors[model.ID] = fmt.Errorf("model with ID %s already exists", model.ID)
+			errs[model.ID] = &errors.ValidationError{
+				Field:   "model.ID",
+				Value:   model.ID,
+				Message: "already exists",
+			}
 		}
 	}
 
@@ -165,15 +183,15 @@ func (m *Models) AddBatch(models []*Model) map[string]error {
 		if model == nil {
 			continue
 		}
-		if _, hasError := errors[model.ID]; !hasError {
+		if _, hasError := errs[model.ID]; !hasError {
 			m.models[model.ID] = model
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }
 
 // SetBatch sets multiple models in a single operation.
@@ -187,7 +205,10 @@ func (m *Models) SetBatch(models map[string]*Model) error {
 	// Validate all models first
 	for id, model := range models {
 		if model == nil {
-			return fmt.Errorf("model for ID %s cannot be nil", id)
+			return &errors.ValidationError{
+				Field:   "models[" + id + "]",
+				Message: "cannot be nil",
+			}
 		}
 	}
 
@@ -211,17 +232,20 @@ func (m *Models) DeleteBatch(ids []string) map[string]error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	errors := make(map[string]error)
+	errs := make(map[string]error)
 	for _, id := range ids {
 		if _, exists := m.models[id]; !exists {
-			errors[id] = fmt.Errorf("model with ID %s not found", id)
+			errs[id] = &errors.NotFoundError{
+				Resource: "model",
+				ID:       id,
+			}
 		} else {
 			delete(m.models, id)
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }

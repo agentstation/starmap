@@ -1,46 +1,6 @@
-# Convert Package
+# convert
 
-> Utilities for converting AI model specifications between different formats
-
-## Overview
-
-The convert package provides functions to transform AI model data between various industry-standard formats, enabling interoperability with different AI platforms and services.
-
-## Supported Conversions
-
-### OpenAI Format
-Convert starmap models to OpenAI-compatible format for use with OpenAI API clients:
-
-```go
-openaiModel := convert.ToOpenAIModel(starmapModel)
-```
-
-### OpenRouter Format  
-Convert starmap models to OpenRouter format for routing and pricing calculations:
-
-```go
-openrouterModel := convert.ToOpenRouterModel(starmapModel)
-```
-
-## Usage Example
-
-```go
-import (
-    "github.com/agentstation/starmap/pkg/catalogs"
-    "github.com/agentstation/starmap/pkg/convert"
-)
-
-// Get a model from catalog
-catalog, _ := catalogs.New()
-model, _ := catalog.Model("gpt-4o")
-
-// Convert to OpenAI format
-openaiModel := convert.ToOpenAIModel(model)
-
-// Use with OpenAI client
-client := openai.NewClient(apiKey)
-// openaiModel now compatible with client expectations
-```
+Package convert provides utilities for converting AI model specifications between different formats including OpenAI and OpenRouter formats.
 
 <!-- gomarkdoc:embed:start -->
 
@@ -51,8 +11,6 @@ client := openai.NewClient(apiKey)
 ```go
 import "github.com/agentstation/starmap/pkg/convert"
 ```
-
-Package convert provides utilities for converting AI model specifications between different formats including OpenAI and OpenRouter formats.
 
 ## Index
 

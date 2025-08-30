@@ -1,3 +1,10 @@
+---
+title: "imageobjectdetection-proprietary-spinenet"
+description: "Google Vertex AI model: imageobjectdetection-proprietary-spinenet
+"
+weight: 10
+author: ""
+---
 # imageobjectdetection-proprietary-spinenet
 
 Google Vertex AI model: imageobjectdetection-proprietary-spinenet

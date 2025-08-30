@@ -1,3 +1,9 @@
+---
+title: "Llama 3.2 90b Vision Instruct Maas"
+description: ""
+weight: 10
+author: "meta"
+---
 # Llama 3.2 90b Vision Instruct Maas
 
 ## 📋 Overview

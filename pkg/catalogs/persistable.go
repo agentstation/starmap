@@ -5,6 +5,9 @@ type Persistable interface {
 	// Save saves the catalog to persistent storage
 	Save() error
 
+	// SaveTo saves the catalog to a specific path
+	SaveTo(path string) error
+
 	// Load loads the catalog from persistent storage
 	Load() error
 

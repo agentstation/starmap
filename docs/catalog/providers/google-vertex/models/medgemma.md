@@ -1,3 +1,10 @@
+---
+title: "medgemma"
+description: "Google Vertex AI model: medgemma
+"
+weight: 10
+author: ""
+---
 # medgemma
 
 Google Vertex AI model: medgemma

@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.0 Flash Experimental"
+description: "Gemini 2.0 Flash Experimental"
+weight: 10
+author: "Google"
+---
 # Gemini 2.0 Flash Experimental
 
 Gemini 2.0 Flash Experimental

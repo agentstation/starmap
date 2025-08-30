@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # LAION
 
 **Website**: [https://laion.ai](https://laion.ai)  

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # THUDM
 
 **Description**: Tsinghua University research group known for ChatGLM bilingual language models  

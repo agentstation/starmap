@@ -1,3 +1,9 @@
+---
+title: "Imageclassification Vit"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageclassification Vit
 
 ## 📋 Overview

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Duke University
 
 **Website**: [https://duke.edu](https://duke.edu)  

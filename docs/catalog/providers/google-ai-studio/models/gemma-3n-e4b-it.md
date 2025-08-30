@@ -1,3 +1,9 @@
+---
+title: "Gemma 3n E4B"
+description: ""
+weight: 10
+author: "Google"
+---
 # Gemma 3n E4B
 
 ## 📋 Overview

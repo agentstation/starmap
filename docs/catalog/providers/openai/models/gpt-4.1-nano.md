@@ -1,3 +1,9 @@
+---
+title: "gpt-4.1-nano"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4.1-nano
 
 ## 📋 Overview

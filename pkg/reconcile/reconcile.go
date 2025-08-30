@@ -1,11 +1,40 @@
+// Package reconcile provides catalog synchronization and reconciliation capabilities.
+// It handles merging data from multiple sources, detecting changes, and applying
+// updates while respecting data authorities and merge strategies.
+//
+// The reconciler coordinates fetching data from various sources, computing differences,
+// and merging changes into a target catalog. It supports dry-run operations,
+// changeset generation, and intelligent conflict resolution.
+//
+// Example usage:
+//
+//	// Create a reconciler
+//	r := NewReconciler(targetCatalog, sources)
+//	
+//	// Perform reconciliation
+//	changeset, err := r.Reconcile(ctx, options)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	
+//	// Review changes
+//	for _, change := range changeset.Changes {
+//	    fmt.Printf("Change: %s %s\n", change.Type, change.ModelID)
+//	}
+//	
+//	// Apply changes if not dry-run
+//	if !options.DryRun {
+//	    err = r.Apply(changeset)
+//	}
 package reconcile
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // SourceName represents the name/type of a data source
@@ -88,7 +117,7 @@ func (r *reconciler) ReconcileCatalogs(ctx context.Context, sources map[SourceNa
 	// Create merged catalog
 	mergedCatalog, err := catalogs.New()
 	if err != nil {
-		return nil, fmt.Errorf("creating merged catalog: %w", err)
+		return nil, errors.WrapResource("create", "merged catalog", "", err)
 	}
 
 	// Extract models from all sources
@@ -105,13 +134,16 @@ func (r *reconciler) ReconcileCatalogs(ctx context.Context, sources map[SourceNa
 	// Reconcile models
 	mergedModels, modelProvenance, err := r.ReconcileModels(modelSources)
 	if err != nil {
-		return nil, fmt.Errorf("reconciling models: %w", err)
+		return nil, &errors.SyncError{
+			Provider: "reconciler",
+			Err:      err,
+		}
 	}
 
 	// Add merged models to catalog
 	for _, model := range mergedModels {
 		if err := mergedCatalog.Models().Add(&model); err != nil {
-			resultBuilder.WithError(fmt.Errorf("setting model %s: %w", model.ID, err))
+			resultBuilder.WithError(errors.WrapResource("set", "model", model.ID, err))
 		}
 	}
 
@@ -129,13 +161,16 @@ func (r *reconciler) ReconcileCatalogs(ctx context.Context, sources map[SourceNa
 	// Reconcile providers
 	mergedProviders, providerProvenance, err := r.ReconcileProviders(providerSources)
 	if err != nil {
-		return nil, fmt.Errorf("reconciling providers: %w", err)
+		return nil, &errors.SyncError{
+			Provider: "reconciler",
+			Err:      err,
+		}
 	}
 
 	// Add merged providers to catalog
 	for _, provider := range mergedProviders {
 		if err := mergedCatalog.Providers().Add(&provider); err != nil {
-			resultBuilder.WithError(fmt.Errorf("setting provider %s: %w", provider.ID, err))
+			resultBuilder.WithError(errors.WrapResource("set", "provider", string(provider.ID), err))
 		}
 	}
 
@@ -195,6 +230,11 @@ func (r *reconciler) ReconcileCatalogs(ctx context.Context, sources map[SourceNa
 
 // ReconcileModels merges models from multiple sources
 func (r *reconciler) ReconcileModels(sources map[SourceName][]catalogs.Model) ([]catalogs.Model, ProvenanceMap, error) {
+	return r.ReconcileModelsWithContext(context.Background(), sources)
+}
+
+// ReconcileModelsWithContext merges models from multiple sources with context support
+func (r *reconciler) ReconcileModelsWithContext(ctx context.Context, sources map[SourceName][]catalogs.Model) ([]catalogs.Model, ProvenanceMap, error) {
 	// Use the merger to combine models
 	merger := NewStrategicMerger(r.authorities, r.strategy)
 	if r.tracking && r.provenance != nil {
@@ -209,11 +249,12 @@ func (r *reconciler) ReconcileModels(sources map[SourceName][]catalogs.Model) ([
 	
 	// Apply enhancers if configured
 	if r.enhancers != nil && len(r.enhancers.enhancers) > 0 {
-		ctx := context.Background()
 		enhanced, err := r.enhancers.EnhanceBatch(ctx, mergedModels)
 		if err != nil {
 			// Log but don't fail - enhancement is optional
-			fmt.Printf("Warning: enhancement failed: %v\n", err)
+			logging.Warn().
+				Err(err).
+				Msg("Enhancement failed but continuing")
 		} else {
 			mergedModels = enhanced
 		}
@@ -243,7 +284,7 @@ func getSourceNames(sources map[SourceName]catalogs.Catalog) []SourceName {
 }
 
 // catalogModelsToSlice converts catalog models to a slice
-func catalogModelsToSlice(catalog catalogs.Catalog) []catalogs.Model {
+func catalogModelsToSlice(catalog catalogs.Reader) []catalogs.Model {
 	models := catalog.Models().List()
 	result := make([]catalogs.Model, 0, len(models))
 	for _, m := range models {
@@ -259,7 +300,10 @@ func catalogModelsToSlice(catalog catalogs.Catalog) []catalogs.Model {
 func WithStrategy(strategy Strategy) Option {
 	return func(r *reconciler) error {
 		if strategy == nil {
-			return fmt.Errorf("strategy cannot be nil")
+			return &errors.ValidationError{
+				Field:   "strategy",
+				Message: "cannot be nil",
+			}
 		}
 		r.strategy = strategy
 		return nil
@@ -270,7 +314,10 @@ func WithStrategy(strategy Strategy) Option {
 func WithAuthorities(authorities AuthorityProvider) Option {
 	return func(r *reconciler) error {
 		if authorities == nil {
-			return fmt.Errorf("authorities cannot be nil")
+			return &errors.ValidationError{
+				Field:   "authorities",
+				Message: "cannot be nil",
+			}
 		}
 		r.authorities = authorities
 		// If using authority-based strategy, update it

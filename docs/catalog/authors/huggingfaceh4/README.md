@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Hugging Face
 
 **Website**: [https://huggingface.co](https://huggingface.co)  

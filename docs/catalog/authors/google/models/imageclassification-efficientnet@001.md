@@ -1,3 +1,9 @@
+---
+title: "Imageclassification Efficientnet"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageclassification Efficientnet
 
 ## 📋 Overview

@@ -1,3 +1,10 @@
+---
+title: "tfvision-yolov7"
+description: "Google Vertex AI model: tfvision-yolov7
+"
+weight: 10
+author: ""
+---
 # tfvision-yolov7
 
 Google Vertex AI model: tfvision-yolov7

@@ -1,3 +1,10 @@
+---
+title: "lyria-002"
+description: "Google Vertex AI model: lyria-002
+"
+weight: 10
+author: ""
+---
 # lyria-002
 
 Google Vertex AI model: lyria-002

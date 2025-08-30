@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Baichuan Intelligence
 
 **Description**: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models  

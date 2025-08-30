@@ -2,12 +2,12 @@ package baseclient
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"sync"
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // GoogleResponse represents the standard Google API response structure.
@@ -72,7 +72,10 @@ func (c *GoogleClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	c.mu.RUnlock()
 
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ValidationError{
+			Field:   "provider",
+			Message: "provider not configured",
+		}
 	}
 
 	// Build URL - use provider's URL if available, otherwise use base URL
@@ -84,13 +87,23 @@ func (c *GoogleClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	// Make the request
 	resp, err := c.transport.Get(ctx, url, provider)
 	if err != nil {
-		return nil, fmt.Errorf("google-compatible: request failed: %w", err)
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: 0,
+			Message:    "request failed",
+			Err:        err,
+		}
 	}
 
 	// Decode response
 	var result GoogleResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("google-compatible: %w", err)
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: resp.StatusCode,
+			Message:    "failed to decode response",
+			Err:        err,
+		}
 	}
 
 	// Convert to starmap models

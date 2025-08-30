@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # BigScience
 
 **Website**: [https://bigscience.huggingface.co](https://bigscience.huggingface.co)  

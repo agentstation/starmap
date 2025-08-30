@@ -1,3 +1,9 @@
+---
+title: "Mistral Large 2411"
+description: ""
+weight: 10
+author: ""
+---
 # Mistral Large 2411
 
 ## 📋 Overview

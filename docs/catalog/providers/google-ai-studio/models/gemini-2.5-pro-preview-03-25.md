@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Pro Preview 03-25"
+description: "Gemini 2.5 Pro Preview 03-25"
+weight: 10
+author: "Google"
+---
 # Gemini 2.5 Pro Preview 03-25
 
 Gemini 2.5 Pro Preview 03-25

@@ -1,3 +1,9 @@
+---
+title: "playai-tts"
+description: ""
+weight: 10
+author: "PlayAI"
+---
 # playai-tts
 
 ## 📋 Overview

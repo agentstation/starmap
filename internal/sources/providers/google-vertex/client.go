@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/utc"
 	"google.golang.org/genai"
 )
@@ -46,7 +47,10 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 // ListModels retrieves all available models from Google Vertex AI.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	if c.projectID == "" {
-		return nil, fmt.Errorf("project ID not configured - set GOOGLE_VERTEX_PROJECT or run 'gcloud config set project YOUR_PROJECT'")
+		return nil, &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "project ID not configured - set GOOGLE_VERTEX_PROJECT or run 'gcloud config set project YOUR_PROJECT'",
+		}
 	}
 
 	// Create GenAI client configured for Vertex AI
@@ -57,7 +61,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		// Use Application Default Credentials automatically
 	})
 	if err != nil {
-		return nil, fmt.Errorf("creating genai client: %w", err)
+		return nil, errors.WrapResource("create", "genai client", "", err)
 	}
 
 	var models []catalogs.Model
@@ -118,13 +122,21 @@ type PublisherModel struct {
 // This can retrieve models not available through the GenAI SDK, like Model Garden models
 func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, error) {
 	if c.projectID == "" || c.location == "" {
-		return nil, fmt.Errorf("project ID or location not configured")
+		return nil, &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "project ID or location not configured",
+		}
 	}
 
 	// Get access token for authentication
 	accessToken, err := c.getAccessToken()
 	if err != nil {
-		return nil, fmt.Errorf("getting access token: %w", err)
+		return nil, &errors.AuthenticationError{
+			Provider: "google-vertex",
+			Method:   "oauth",
+			Message:  "failed to get access token",
+			Err:      err,
+		}
 	}
 
 	var allModels []catalogs.Model
@@ -192,11 +204,20 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		// Drain and close body to allow connection reuse
+		io.Copy(io.Discard, resp.Body)
+		resp.Body.Close()
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("REST API request failed with status %d: %s", resp.StatusCode, string(body))
+		return nil, &errors.APIError{
+			Provider:   "google-vertex",
+			StatusCode: resp.StatusCode,
+			Endpoint:   url,
+			Message:    string(body),
+		}
 	}
 
 	var apiResp RestAPIResponse
@@ -435,7 +456,12 @@ func (c *Client) getAccessToken() (string, error) {
 	cmd = exec.Command("gcloud", "auth", "application-default", "print-access-token")
 	output, err = cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("getting access token via gcloud (tried both auth methods): %w", err)
+		return "", &errors.AuthenticationError{
+			Provider: "google-vertex",
+			Method:   "gcloud",
+			Message:  "failed to get access token via gcloud (tried both auth methods)",
+			Err:      err,
+		}
 	}
 	return strings.TrimSpace(string(output)), nil
 }

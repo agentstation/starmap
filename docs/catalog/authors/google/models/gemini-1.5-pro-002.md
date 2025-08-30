@@ -1,3 +1,10 @@
+---
+title: "gemini-1.5-pro-002"
+description: "Google Vertex AI model: gemini-1.5-pro-002
+"
+weight: 10
+author: ""
+---
 # Gemini 1.5 Pro 002
 
 Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens, released in September of 2024.

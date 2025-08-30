@@ -1,3 +1,9 @@
+---
+title: "Jamba Large 1.6"
+description: ""
+weight: 10
+author: "AI21 Labs"
+---
 # Jamba Large 1.6
 
 ## 📋 Overview

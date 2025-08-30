@@ -1,3 +1,9 @@
+---
+title: "whisper-large-v3-turbo"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # whisper-large-v3-turbo
 
 ## 📋 Overview

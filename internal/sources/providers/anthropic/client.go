@@ -2,13 +2,14 @@ package anthropic
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/utc"
 )
 
 // Response structures for Anthropic API
@@ -63,7 +64,10 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RUnlock()
 
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ConfigError{
+			Component: "anthropic",
+			Message:   "provider not configured",
+		}
 	}
 
 	// Build URL - use provider's URL if available, otherwise use default
@@ -75,7 +79,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	// Create request
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("creating request: %w", err)
+		return nil, errors.WrapResource("create", "request", url, err)
 	}
 
 	// Add Anthropic-specific headers
@@ -84,13 +88,18 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	// Use transport layer for HTTP request with authentication
 	resp, err := c.transport.Do(req, provider)
 	if err != nil {
-		return nil, fmt.Errorf("anthropic: request failed: %w", err)
+		return nil, &errors.APIError{
+			Provider: "anthropic",
+			Endpoint: url,
+			Message:  "request failed",
+			Err:      err,
+		}
 	}
 
 	// Decode response using transport utility
 	var result modelsResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("anthropic: %w", err)
+		return nil, errors.WrapParse("json", "anthropic response", err)
 	}
 
 	// Convert Anthropic models to starmap models
@@ -112,9 +121,8 @@ func (c *Client) convertToModel(m modelResponse) catalogs.Model {
 
 	// Set created time
 	if !m.CreatedAt.IsZero() {
-		// TODO: Import UTC time package
-		// model.CreatedAt = utc.Time{Time: m.CreatedAt}
-		// model.UpdatedAt = model.CreatedAt
+		model.CreatedAt = utc.Time{Time: m.CreatedAt}
+		model.UpdatedAt = model.CreatedAt
 	}
 
 	// Set Anthropic as the author

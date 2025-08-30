@@ -1,3 +1,9 @@
+---
+title: "Imageclassification Proprietary Maxvit"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageclassification Proprietary Maxvit
 
 ## 📋 Overview

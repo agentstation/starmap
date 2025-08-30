@@ -1,3 +1,9 @@
+---
+title: "Claude Opus 4"
+description: ""
+weight: 10
+author: "anthropic"
+---
 # Claude Opus 4
 
 ## 📋 Overview

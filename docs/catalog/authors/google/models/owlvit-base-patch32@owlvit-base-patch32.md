@@ -1,3 +1,9 @@
+---
+title: "Owlvit Base Patch32"
+description: ""
+weight: 10
+author: "google"
+---
 # Owlvit Base Patch32
 
 ## 📋 Overview

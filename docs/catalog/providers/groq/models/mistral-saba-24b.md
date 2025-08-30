@@ -1,3 +1,9 @@
+---
+title: "Mistral Saba 24B"
+description: ""
+weight: 10
+author: ""
+---
 # Mistral Saba 24B
 
 ## 📋 Overview

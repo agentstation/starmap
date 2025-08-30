@@ -1,3 +1,9 @@
+---
+title: "Tfvision Movinet Vcn"
+description: ""
+weight: 10
+author: "google"
+---
 # Tfvision Movinet Vcn
 
 ## 📋 Overview

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Adept
 
 **Website**: [https://adept.ai](https://adept.ai)  

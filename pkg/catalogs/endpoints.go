@@ -1,9 +1,10 @@
 package catalogs
 
 import (
-	"fmt"
 	"maps"
 	"sync"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Endpoints is a concurrent safe map of endpoints.
@@ -56,7 +57,10 @@ func (e *Endpoints) Get(id string) (*Endpoint, bool) {
 // Set sets an endpoint by id. Returns an error if endpoint is nil.
 func (e *Endpoints) Set(id string, endpoint *Endpoint) error {
 	if endpoint == nil {
-		return fmt.Errorf("endpoint cannot be nil")
+		return &errors.ValidationError{
+			Field:   "endpoint",
+			Message: "cannot be nil",
+		}
 	}
 
 	e.mu.Lock()
@@ -68,14 +72,21 @@ func (e *Endpoints) Set(id string, endpoint *Endpoint) error {
 // Add adds an endpoint, returning an error if it already exists.
 func (e *Endpoints) Add(endpoint *Endpoint) error {
 	if endpoint == nil {
-		return fmt.Errorf("endpoint cannot be nil")
+		return &errors.ValidationError{
+			Field:   "endpoint",
+			Message: "cannot be nil",
+		}
 	}
 
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
 	if _, exists := e.endpoints[endpoint.ID]; exists {
-		return fmt.Errorf("endpoint with ID %s already exists", endpoint.ID)
+		return &errors.ValidationError{
+			Field:   "endpoint.ID",
+			Value:   endpoint.ID,
+			Message: "already exists",
+		}
 	}
 
 	e.endpoints[endpoint.ID] = endpoint
@@ -88,7 +99,10 @@ func (e *Endpoints) Delete(id string) error {
 	defer e.mu.Unlock()
 
 	if _, exists := e.endpoints[id]; !exists {
-		return fmt.Errorf("endpoint with ID %s not found", id)
+		return &errors.NotFoundError{
+			Resource: "endpoint",
+			ID:       id,
+		}
 	}
 
 	delete(e.endpoints, id)
@@ -168,7 +182,7 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
-	errors := make(map[string]error)
+	errs := make(map[string]error)
 
 	// First pass: validate all endpoints
 	for _, endpoint := range endpoints {
@@ -176,7 +190,11 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error {
 			continue // Skip nil endpoints
 		}
 		if _, exists := e.endpoints[endpoint.ID]; exists {
-			errors[endpoint.ID] = fmt.Errorf("endpoint with ID %s already exists", endpoint.ID)
+			errs[endpoint.ID] = &errors.ValidationError{
+				Field:   "endpoint.ID",
+				Value:   endpoint.ID,
+				Message: "already exists",
+			}
 		}
 	}
 
@@ -185,15 +203,15 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error {
 		if endpoint == nil {
 			continue
 		}
-		if _, hasError := errors[endpoint.ID]; !hasError {
+		if _, hasError := errs[endpoint.ID]; !hasError {
 			e.endpoints[endpoint.ID] = endpoint
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }
 
 // SetBatch sets multiple endpoints in a single operation.
@@ -207,7 +225,10 @@ func (e *Endpoints) SetBatch(endpoints map[string]*Endpoint) error {
 	// Validate all endpoints first
 	for id, endpoint := range endpoints {
 		if endpoint == nil {
-			return fmt.Errorf("endpoint for ID %s cannot be nil", id)
+			return &errors.ValidationError{
+				Field:   "endpoints[" + id + "]",
+				Message: "cannot be nil",
+			}
 		}
 	}
 
@@ -231,17 +252,20 @@ func (e *Endpoints) DeleteBatch(ids []string) map[string]error {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
-	errors := make(map[string]error)
+	errs := make(map[string]error)
 	for _, id := range ids {
 		if _, exists := e.endpoints[id]; !exists {
-			errors[id] = fmt.Errorf("endpoint with ID %s not found", id)
+			errs[id] = &errors.NotFoundError{
+				Resource: "endpoint",
+				ID:       id,
+			}
 		} else {
 			delete(e.endpoints, id)
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }

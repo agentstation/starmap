@@ -1,3 +1,9 @@
+---
+title: "gpt-4.1-mini"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4.1-mini
 
 ## 📋 Overview

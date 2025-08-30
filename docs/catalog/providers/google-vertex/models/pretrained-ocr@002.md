@@ -1,3 +1,9 @@
+---
+title: "Pretrained Ocr"
+description: ""
+weight: 10
+author: "google"
+---
 # Pretrained Ocr
 
 ## 📋 Overview

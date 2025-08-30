@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # ETH Zurich
 
 **Website**: [https://ethz.ch](https://ethz.ch)  

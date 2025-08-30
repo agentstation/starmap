@@ -1,3 +1,10 @@
+---
+title: "imagen-4.0-generate-preview-06-06"
+description: "Google Vertex AI model: imagen-4.0-generate-preview-06-06
+"
+weight: 10
+author: ""
+---
 # Imagen 4 (Preview)
 
 Vertex served Imagen 4.0 model

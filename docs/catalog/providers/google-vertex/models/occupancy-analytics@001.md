@@ -1,3 +1,9 @@
+---
+title: "Occupancy Analytics"
+description: ""
+weight: 10
+author: "google"
+---
 # Occupancy Analytics
 
 ## 📋 Overview

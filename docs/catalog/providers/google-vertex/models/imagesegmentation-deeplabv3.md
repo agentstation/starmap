@@ -1,3 +1,10 @@
+---
+title: "imagesegmentation-deeplabv3"
+description: "Google Vertex AI model: imagesegmentation-deeplabv3
+"
+weight: 10
+author: ""
+---
 # imagesegmentation-deeplabv3
 
 Google Vertex AI model: imagesegmentation-deeplabv3

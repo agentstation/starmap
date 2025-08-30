@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Pro Preview 06-05"
+description: ""
+weight: 10
+author: ""
+---
 # Gemini 2.5 Pro Preview
 
 Preview release (June 5th, 2025) of Gemini 2.5 Pro

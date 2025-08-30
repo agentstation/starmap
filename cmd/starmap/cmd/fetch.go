@@ -8,6 +8,8 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +41,10 @@ func init() {
 
 func runFetch(cmd *cobra.Command, args []string) error {
 	if fetchFlagProvider == "" {
-		return fmt.Errorf("provider flag is required")
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "provider flag is required",
+		}
 	}
 
 	// Convert string to ProviderID
@@ -48,35 +53,34 @@ func runFetch(cmd *cobra.Command, args []string) error {
 	// Get catalog
 	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("creating starmap: %w", err)
+		return errors.WrapResource("create", "starmap", "", err)
 	}
 
 	catalog, err := sm.Catalog()
 	if err != nil {
-		return fmt.Errorf("getting catalog: %w", err)
+		return errors.WrapResource("get", "catalog", "", err)
 	}
 
 	// Get provider from catalog
 	provider, found := catalog.Providers().Get(pid)
 	if !found {
-		return fmt.Errorf("provider %s not found in catalog", fetchFlagProvider)
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       fetchFlagProvider,
+		}
 	}
 
-	// Load API key and environment variables from environment
-	provider.LoadAPIKey()
-	provider.LoadEnvVars()
-
-	// Get client for provider
-	client, err := provider.Client()
-	if err != nil {
-		return fmt.Errorf("getting client for %s: %w", fetchFlagProvider, err)
-	}
+	// Create provider fetcher using public API
+	fetcher := sources.NewProviderFetcher()
 
 	// Fetch models from API
 	ctx := context.Background()
-	models, err := client.ListModels(ctx)
+	models, err := fetcher.FetchModels(ctx, provider)
 	if err != nil {
-		return fmt.Errorf("fetching models from %s: %w", fetchFlagProvider, err)
+		return &errors.SyncError{
+			Provider: fetchFlagProvider,
+			Err:      err,
+		}
 	}
 
 	if len(models) == 0 {

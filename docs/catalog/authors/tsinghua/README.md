@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Tsinghua University
 
 **Description**: Prestigious Chinese university with AI research, affiliated with THUDM and ChatGLM development  

@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // Enhancer defines the interface for model enrichment
@@ -70,7 +72,11 @@ func (p *EnhancerPipeline) Enhance(ctx context.Context, model catalogs.Model) (c
 		result, err := enhancer.Enhance(ctx, enhanced)
 		if err != nil {
 			// Log error but continue with other enhancers
-			fmt.Printf("Warning: enhancer %s failed for model %s: %v\n", enhancer.Name(), model.ID, err)
+			logging.Warn().
+				Err(err).
+				Str("enhancer", enhancer.Name()).
+				Str("model_id", model.ID).
+				Msg("Enhancer failed for model")
 			continue
 		}
 		
@@ -112,7 +118,11 @@ func (p *EnhancerPipeline) EnhanceBatch(ctx context.Context, models []catalogs.M
 			for i, model := range toEnhance {
 				result, err := enhancer.Enhance(ctx, model)
 				if err != nil {
-					fmt.Printf("Warning: enhancer %s failed for model %s: %v\n", enhancer.Name(), model.ID, err)
+					logging.Warn().
+						Err(err).
+						Str("enhancer", enhancer.Name()).
+						Str("model_id", model.ID).
+						Msg("Enhancer failed for model in batch")
 					results[i] = model // Keep original on failure
 				} else {
 					results[i] = result
@@ -237,7 +247,7 @@ func (e *ModelsDevEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.
 	for i, model := range models {
 		result, err := e.Enhance(ctx, model)
 		if err != nil {
-			return nil, fmt.Errorf("enhancing model %s: %w", model.ID, err)
+			return nil, errors.WrapResource("enhance", "model", model.ID, err)
 		}
 		enhanced[i] = result
 	}
@@ -296,7 +306,7 @@ func (e *MetadataEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.M
 	for i, model := range models {
 		result, err := e.Enhance(ctx, model)
 		if err != nil {
-			return nil, fmt.Errorf("enhancing model %s: %w", model.ID, err)
+			return nil, errors.WrapResource("enhance", "model", model.ID, err)
 		}
 		enhanced[i] = result
 	}
@@ -348,7 +358,10 @@ func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (cata
 		if enhancer.CanEnhance(enhanced) {
 			result, err := enhancer.Enhance(ctx, enhanced)
 			if err != nil {
-				return enhanced, fmt.Errorf("%s: %w", enhancer.Name(), err)
+				return enhanced, &errors.SyncError{
+					Provider: enhancer.Name(),
+					Err:      err,
+				}
 			}
 			enhanced = result
 		}
@@ -364,7 +377,10 @@ func (e *ChainEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Mode
 	for _, enhancer := range e.enhancers {
 		result, err := enhancer.EnhanceBatch(ctx, enhanced)
 		if err != nil {
-			return enhanced, fmt.Errorf("%s: %w", enhancer.Name(), err)
+			return enhanced, &errors.SyncError{
+				Provider: enhancer.Name(),
+				Err:      err,
+			}
 		}
 		enhanced = result
 	}

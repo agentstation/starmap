@@ -1,3 +1,9 @@
+---
+title: "Model that performs Attributed Question Answering."
+description: "Model trained to return answers to questions that are grounded in provided sources, along with estimating answerable probability."
+weight: 10
+author: "Google"
+---
 # Model that performs Attributed Question Answering.
 
 Model trained to return answers to questions that are grounded in provided sources, along with estimating answerable probability.

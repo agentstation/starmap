@@ -1,3 +1,9 @@
+---
+title: "gpt-4o-search-preview"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4o-search-preview
 
 ## 📋 Overview

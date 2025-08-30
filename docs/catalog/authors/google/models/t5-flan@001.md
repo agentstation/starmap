@@ -1,3 +1,9 @@
+---
+title: "T5 Flan"
+description: ""
+weight: 10
+author: "google"
+---
 # T5 Flan
 
 ## 📋 Overview

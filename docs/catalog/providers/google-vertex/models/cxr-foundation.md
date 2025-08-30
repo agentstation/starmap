@@ -1,3 +1,10 @@
+---
+title: "cxr-foundation"
+description: "Google Vertex AI model: cxr-foundation
+"
+weight: 10
+author: ""
+---
 # cxr-foundation
 
 Google Vertex AI model: cxr-foundation

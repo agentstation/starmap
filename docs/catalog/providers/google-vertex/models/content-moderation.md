@@ -1,3 +1,10 @@
+---
+title: "content-moderation"
+description: "Google Vertex AI model: content-moderation
+"
+weight: 10
+author: ""
+---
 # content-moderation
 
 Google Vertex AI model: content-moderation

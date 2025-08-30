@@ -1,3 +1,9 @@
+---
+title: "Qwen2"
+description: ""
+weight: 10
+author: "qwen"
+---
 # Qwen2
 
 ## 📋 Overview

@@ -1,3 +1,9 @@
+---
+title: "Video Text Detection"
+description: ""
+weight: 10
+author: "google"
+---
 # Video Text Detection
 
 ## 📋 Overview

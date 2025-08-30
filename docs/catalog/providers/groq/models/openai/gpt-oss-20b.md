@@ -1,3 +1,7 @@
+---
+title: "Gpt Oss 20b"
+weight: 10
+---
 # gpt-oss-20b
 
 ## 📋 Overview

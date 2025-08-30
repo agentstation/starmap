@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Character.AI
 
 **Website**: [https://character.ai](https://character.ai)  

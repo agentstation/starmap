@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # <img src="./logo.svg" alt="Google AI Studio Logo" style="vertical-align: middle; height: 32px; width: auto; min-width: 32px"> Google AI Studio
 
 **Headquarters**: Mountain View, CA, USA  

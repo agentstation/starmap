@@ -1,3 +1,10 @@
+---
+title: "gemini-ultra"
+description: "Google Vertex AI model: gemini-ultra
+"
+weight: 10
+author: ""
+---
 # gemini-ultra
 
 Google Vertex AI model: gemini-ultra

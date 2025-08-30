@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Open-Orca
 
 **Description**: Open-source project creating Orca-style reasoning models and datasets  

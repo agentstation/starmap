@@ -1,3 +1,9 @@
+---
+title: "Path Foundation"
+description: ""
+weight: 10
+author: "google"
+---
 # Path Foundation
 
 ## 📋 Overview

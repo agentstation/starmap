@@ -2,22 +2,12 @@
   "data": [
     {
       "active": true,
-      "context_window": 512,
-      "created": 1748632165,
-      "id": "meta-llama/llama-prompt-guard-2-86m",
-      "max_completion_tokens": 512,
+      "context_window": 448,
+      "created": 1693721698,
+      "id": "whisper-large-v3",
+      "max_completion_tokens": 448,
       "object": "model",
-      "owned_by": "Meta",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 8192,
-      "created": 1740682783,
-      "id": "playai-tts-arabic",
-      "max_completion_tokens": 8192,
-      "object": "model",
-      "owned_by": "PlayAI",
+      "owned_by": "OpenAI",
       "public_apps": null
     },
     {
@@ -33,41 +23,11 @@
     {
       "active": true,
       "context_window": 131072,
-      "created": 1746743847,
-      "id": "meta-llama/llama-guard-4-12b",
-      "max_completion_tokens": 1024,
-      "object": "model",
-      "owned_by": "Meta",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 131072,
-      "created": 1693721698,
-      "id": "llama-3.1-8b-instant",
-      "max_completion_tokens": 131072,
-      "object": "model",
-      "owned_by": "Meta",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 448,
-      "created": 1728413088,
-      "id": "whisper-large-v3-turbo",
-      "max_completion_tokens": 448,
+      "created": 1754408224,
+      "id": "openai/gpt-oss-120b",
+      "max_completion_tokens": 65536,
       "object": "model",
       "owned_by": "OpenAI",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 131072,
-      "created": 1742953279,
-      "id": "compound-beta-mini",
-      "max_completion_tokens": 8192,
-      "object": "model",
-      "owned_by": "Groq",
       "public_apps": null
     },
     {
@@ -82,52 +42,32 @@
     },
     {
       "active": true,
-      "context_window": 131072,
-      "created": 1737924940,
-      "id": "deepseek-r1-distill-llama-70b",
-      "max_completion_tokens": 131072,
-      "object": "model",
-      "owned_by": "DeepSeek / Meta",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 131072,
-      "created": 1754407957,
-      "id": "openai/gpt-oss-20b",
-      "max_completion_tokens": 65536,
-      "object": "model",
-      "owned_by": "OpenAI",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 448,
-      "created": 1693721698,
-      "id": "whisper-large-v3",
-      "max_completion_tokens": 448,
-      "object": "model",
-      "owned_by": "OpenAI",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 131072,
-      "created": 1754408224,
-      "id": "openai/gpt-oss-120b",
-      "max_completion_tokens": 65536,
-      "object": "model",
-      "owned_by": "OpenAI",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 131072,
-      "created": 1743874824,
-      "id": "meta-llama/llama-4-scout-17b-16e-instruct",
-      "max_completion_tokens": 8192,
+      "context_window": 512,
+      "created": 1748632101,
+      "id": "meta-llama/llama-prompt-guard-2-22m",
+      "max_completion_tokens": 512,
       "object": "model",
       "owned_by": "Meta",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 8192,
+      "created": 1740682771,
+      "id": "playai-tts",
+      "max_completion_tokens": 8192,
+      "object": "model",
+      "owned_by": "PlayAI",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 8192,
+      "created": 1740682783,
+      "id": "playai-tts-arabic",
+      "max_completion_tokens": 8192,
+      "object": "model",
+      "owned_by": "PlayAI",
       "public_apps": null
     },
     {
@@ -144,7 +84,7 @@
       "active": true,
       "context_window": 8192,
       "created": 1693721698,
-      "id": "llama3-70b-8192",
+      "id": "llama3-8b-8192",
       "max_completion_tokens": 8192,
       "object": "model",
       "owned_by": "Meta",
@@ -152,22 +92,12 @@
     },
     {
       "active": true,
-      "context_window": 4096,
-      "created": 1737672203,
-      "id": "allam-2-7b",
-      "max_completion_tokens": 4096,
+      "context_window": 131072,
+      "created": 1737924940,
+      "id": "deepseek-r1-distill-llama-70b",
+      "max_completion_tokens": 131072,
       "object": "model",
-      "owned_by": "SDAIA",
-      "public_apps": null
-    },
-    {
-      "active": true,
-      "context_window": 8192,
-      "created": 1740682771,
-      "id": "playai-tts",
-      "max_completion_tokens": 8192,
-      "object": "model",
-      "owned_by": "PlayAI",
+      "owned_by": "DeepSeek / Meta",
       "public_apps": null
     },
     {
@@ -193,8 +123,8 @@
     {
       "active": true,
       "context_window": 131072,
-      "created": 1740880017,
-      "id": "compound-beta",
+      "created": 1742953279,
+      "id": "compound-beta-mini",
       "max_completion_tokens": 8192,
       "object": "model",
       "owned_by": "Groq",
@@ -202,10 +132,30 @@
     },
     {
       "active": true,
-      "context_window": 8192,
+      "context_window": 4096,
+      "created": 1737672203,
+      "id": "allam-2-7b",
+      "max_completion_tokens": 4096,
+      "object": "model",
+      "owned_by": "SDAIA",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 448,
+      "created": 1728413088,
+      "id": "whisper-large-v3-turbo",
+      "max_completion_tokens": 448,
+      "object": "model",
+      "owned_by": "OpenAI",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 131072,
       "created": 1693721698,
-      "id": "llama3-8b-8192",
-      "max_completion_tokens": 8192,
+      "id": "llama-3.1-8b-instant",
+      "max_completion_tokens": 131072,
       "object": "model",
       "owned_by": "Meta",
       "public_apps": null
@@ -222,9 +172,59 @@
     },
     {
       "active": true,
+      "context_window": 8192,
+      "created": 1693721698,
+      "id": "llama3-70b-8192",
+      "max_completion_tokens": 8192,
+      "object": "model",
+      "owned_by": "Meta",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 131072,
+      "created": 1743874824,
+      "id": "meta-llama/llama-4-scout-17b-16e-instruct",
+      "max_completion_tokens": 8192,
+      "object": "model",
+      "owned_by": "Meta",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 131072,
+      "created": 1754407957,
+      "id": "openai/gpt-oss-20b",
+      "max_completion_tokens": 65536,
+      "object": "model",
+      "owned_by": "OpenAI",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 131072,
+      "created": 1746743847,
+      "id": "meta-llama/llama-guard-4-12b",
+      "max_completion_tokens": 1024,
+      "object": "model",
+      "owned_by": "Meta",
+      "public_apps": null
+    },
+    {
+      "active": true,
+      "context_window": 131072,
+      "created": 1740880017,
+      "id": "compound-beta",
+      "max_completion_tokens": 8192,
+      "object": "model",
+      "owned_by": "Groq",
+      "public_apps": null
+    },
+    {
+      "active": true,
       "context_window": 512,
-      "created": 1748632101,
-      "id": "meta-llama/llama-prompt-guard-2-22m",
+      "created": 1748632165,
+      "id": "meta-llama/llama-prompt-guard-2-86m",
       "max_completion_tokens": 512,
       "object": "model",
       "owned_by": "Meta",

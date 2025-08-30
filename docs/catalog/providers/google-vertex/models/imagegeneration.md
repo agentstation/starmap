@@ -1,3 +1,10 @@
+---
+title: "imagegeneration"
+description: "Google Vertex AI model: imagegeneration
+"
+weight: 10
+author: ""
+---
 # imagegeneration
 
 Google Vertex AI model: imagegeneration

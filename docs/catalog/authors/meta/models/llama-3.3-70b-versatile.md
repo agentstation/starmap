@@ -1,3 +1,9 @@
+---
+title: "llama-3.3-70b-versatile"
+description: ""
+weight: 10
+author: "Meta"
+---
 # llama-3.3-70b-versatile
 
 ## 📋 Overview

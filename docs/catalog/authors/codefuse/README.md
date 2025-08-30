@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # CodeFuse-AI
 
 **Description**: Organization specializing in code-focused AI models and fine-tuning frameworks  

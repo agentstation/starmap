@@ -1,3 +1,9 @@
+---
+title: "Faster R Cnn"
+description: ""
+weight: 10
+author: "meta"
+---
 # Faster R Cnn
 
 ## 📋 Overview

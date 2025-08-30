@@ -1,3 +1,9 @@
+---
+title: "Bert Base Uncased"
+description: ""
+weight: 10
+author: "google"
+---
 # Bert Base Uncased
 
 ## 📋 Overview

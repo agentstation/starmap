@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync"
 	
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/goccy/go-yaml"
 )
 
@@ -60,7 +61,10 @@ func (p *Providers) Get(id ProviderID) (*Provider, bool) {
 // Set sets a provider by id. Returns an error if provider is nil.
 func (p *Providers) Set(id ProviderID, provider *Provider) error {
 	if provider == nil {
-		return fmt.Errorf("provider cannot be nil")
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "cannot be nil",
+		}
 	}
 
 	p.mu.Lock()
@@ -72,14 +76,21 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error {
 // Add adds a provider, returning an error if it already exists.
 func (p *Providers) Add(provider *Provider) error {
 	if provider == nil {
-		return fmt.Errorf("provider cannot be nil")
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "cannot be nil",
+		}
 	}
 
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	if _, exists := p.providers[provider.ID]; exists {
-		return fmt.Errorf("provider with ID %s already exists", provider.ID)
+		return &errors.ValidationError{
+			Field:   "provider.ID",
+			Value:   provider.ID,
+			Message: "already exists",
+		}
 	}
 
 	p.providers[provider.ID] = provider
@@ -92,7 +103,10 @@ func (p *Providers) Delete(id ProviderID) error {
 	defer p.mu.Unlock()
 
 	if _, exists := p.providers[id]; !exists {
-		return fmt.Errorf("provider with ID %s not found", id)
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(id),
+		}
 	}
 
 	delete(p.providers, id)
@@ -172,7 +186,7 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	errors := make(map[ProviderID]error)
+	errs := make(map[ProviderID]error)
 
 	// First pass: validate all providers
 	for _, provider := range providers {
@@ -180,7 +194,11 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 			continue // Skip nil providers
 		}
 		if _, exists := p.providers[provider.ID]; exists {
-			errors[provider.ID] = fmt.Errorf("provider with ID %s already exists", provider.ID)
+			errs[provider.ID] = &errors.ValidationError{
+				Field:   "provider.ID",
+				Value:   provider.ID,
+				Message: "already exists",
+			}
 		}
 	}
 
@@ -189,15 +207,15 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 		if provider == nil {
 			continue
 		}
-		if _, hasError := errors[provider.ID]; !hasError {
+		if _, hasError := errs[provider.ID]; !hasError {
 			p.providers[provider.ID] = provider
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }
 
 // SetBatch sets multiple providers in a single operation.
@@ -211,7 +229,10 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error {
 	// Validate all providers first
 	for id, provider := range providers {
 		if provider == nil {
-			return fmt.Errorf("provider for ID %s cannot be nil", id)
+			return &errors.ValidationError{
+				Field:   "providers[" + string(id) + "]",
+				Message: "cannot be nil",
+			}
 		}
 	}
 
@@ -235,19 +256,22 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	errors := make(map[ProviderID]error)
+	errs := make(map[ProviderID]error)
 	for _, id := range ids {
 		if _, exists := p.providers[id]; !exists {
-			errors[id] = fmt.Errorf("provider with ID %s not found", id)
+			errs[id] = &errors.NotFoundError{
+				Resource: "provider",
+				ID:       string(id),
+			}
 		} else {
 			delete(p.providers, id)
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }
 
 // FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure

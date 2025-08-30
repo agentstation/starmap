@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # <img src="./logo.svg" alt="DeepSeek Logo" style="vertical-align: middle; height: 32px; width: auto; min-width: 32px"> DeepSeek
 
 **Headquarters**: Beijing, China  

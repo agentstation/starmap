@@ -1,3 +1,9 @@
+---
+title: "Gemini Experimental 1206"
+description: "Experimental release (March 25th, 2025) of Gemini 2.5 Pro"
+weight: 10
+author: "Google"
+---
 # Gemini Experimental 1206
 
 Experimental release (March 25th, 2025) of Gemini 2.5 Pro

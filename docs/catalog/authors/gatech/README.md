@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Georgia Tech Research Institute
 
 **Description**: Research institute known for creating the Galpaca model based on GALACTICA  

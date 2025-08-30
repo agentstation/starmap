@@ -1,3 +1,9 @@
+---
+title: "gpt-4o-audio-preview"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4o-audio-preview
 
 ## 📋 Overview

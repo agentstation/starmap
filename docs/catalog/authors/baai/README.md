@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Beijing Academy of Artificial Intelligence
 
 **Description**: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework  

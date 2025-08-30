@@ -1,3 +1,10 @@
+---
+title: "resnet50"
+description: "Google Vertex AI model: resnet50
+"
+weight: 10
+author: ""
+---
 # resnet50
 
 Google Vertex AI model: resnet50

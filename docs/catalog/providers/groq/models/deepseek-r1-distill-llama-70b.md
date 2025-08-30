@@ -1,3 +1,9 @@
+---
+title: "deepseek-r1-distill-llama-70b"
+description: ""
+weight: 10
+author: "DeepSeek / Meta"
+---
 # deepseek-r1-distill-llama-70b
 
 ## 📋 Overview

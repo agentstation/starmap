@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # 01.AI
 
 **Description**: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models  

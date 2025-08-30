@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Shanghai AI Laboratory
 
 **Description**: Chinese AI research institute known for InternLM series and multimodal AI research  

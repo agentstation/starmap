@@ -1,3 +1,9 @@
+---
+title: "Clip Vit Base Patch32"
+description: ""
+weight: 10
+author: "openai"
+---
 # Clip Vit Base Patch32
 
 ## 📋 Overview

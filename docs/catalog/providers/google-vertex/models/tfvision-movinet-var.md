@@ -1,3 +1,10 @@
+---
+title: "tfvision-movinet-var"
+description: "Google Vertex AI model: tfvision-movinet-var
+"
+weight: 10
+author: ""
+---
 # tfvision-movinet-var
 
 Google Vertex AI model: tfvision-movinet-var

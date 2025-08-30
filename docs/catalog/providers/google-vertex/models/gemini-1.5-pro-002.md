@@ -1,3 +1,10 @@
+---
+title: "gemini-1.5-pro-002"
+description: "Google Vertex AI model: gemini-1.5-pro-002
+"
+weight: 10
+author: ""
+---
 # gemini-1.5-pro-002
 
 Google Vertex AI model: gemini-1.5-pro-002

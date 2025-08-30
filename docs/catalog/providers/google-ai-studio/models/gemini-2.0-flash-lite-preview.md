@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.0 Flash-Lite Preview"
+description: "Preview release (February 5th, 2025) of Gemini 2.0 Flash-Lite"
+weight: 10
+author: "Google"
+---
 # Gemini 2.0 Flash-Lite Preview
 
 Preview release (February 5th, 2025) of Gemini 2.0 Flash-Lite

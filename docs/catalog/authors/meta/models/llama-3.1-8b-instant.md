@@ -1,3 +1,9 @@
+---
+title: "llama-3.1-8b-instant"
+description: ""
+weight: 10
+author: "Meta"
+---
 # llama-3.1-8b-instant
 
 ## 📋 Overview

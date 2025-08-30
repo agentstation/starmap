@@ -1,3 +1,10 @@
+---
+title: "imagen-4.0-ultra-generate-preview-06-06"
+description: "Google Vertex AI model: imagen-4.0-ultra-generate-preview-06-06
+"
+weight: 10
+author: ""
+---
 # imagen-4.0-ultra-generate-preview-06-06
 
 Google Vertex AI model: imagen-4.0-ultra-generate-preview-06-06

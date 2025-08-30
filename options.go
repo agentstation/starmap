@@ -1,10 +1,11 @@
 package starmap
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -34,7 +35,7 @@ type options struct {
 func defaultOptions() *options {
 	return &options{
 		autoUpdatesEnabled: true,          // Default to auto-updates enabled
-		autoUpdateInterval: 1 * time.Hour, // Default to hourly updates
+		autoUpdateInterval: constants.DefaultUpdateInterval, // Default to hourly updates
 		autoUpdateFunc:     nil,           // Default to no auto-update function
 		initialCatalog:     nil,           // Default to no initial catalog
 		remoteServerURL:    nil,           // Default to no remote server
@@ -50,7 +51,7 @@ type Option func(*options) error
 func (s *starmap) apply(opts ...Option) error {
 	for _, opt := range opts {
 		if err := opt(s.options); err != nil {
-			return fmt.Errorf("applying option: %w", err)
+			return errors.WrapResource("apply", "option", "", err)
 		}
 	}
 	return nil

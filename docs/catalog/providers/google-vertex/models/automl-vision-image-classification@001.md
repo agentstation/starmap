@@ -1,3 +1,9 @@
+---
+title: "Automl Vision Image Classification"
+description: ""
+weight: 10
+author: "google"
+---
 # Automl Vision Image Classification
 
 ## 📋 Overview

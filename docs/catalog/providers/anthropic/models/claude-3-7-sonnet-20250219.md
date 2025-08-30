@@ -1,3 +1,9 @@
+---
+title: "Claude Sonnet 3.7"
+description: ""
+weight: 10
+author: "Anthropic"
+---
 # Claude Sonnet 3.7
 
 ## 📋 Overview

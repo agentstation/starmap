@@ -6,6 +6,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -95,18 +96,18 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 		// Use file-based catalog from input directory
 		filesCatalog, err := catalogs.New(catalogs.WithFiles(updateFlagInput))
 		if err != nil {
-			return fmt.Errorf("creating catalog from %s: %w", updateFlagInput, err)
+			return errors.WrapResource("create", "catalog", updateFlagInput, err)
 		}
 		sm, err = starmap.New(starmap.WithInitialCatalog(filesCatalog))
 		if err != nil {
-			return fmt.Errorf("creating starmap with files catalog: %w", err)
+			return errors.WrapResource("create", "starmap", "files catalog", err)
 		}
 		fmt.Printf("📁 Using catalog from: %s\n", updateFlagInput)
 	} else {
 		// Use default starmap with embedded catalog
 		sm, err = starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating starmap: %w", err)
+			return errors.WrapResource("create", "starmap", "", err)
 		}
 		fmt.Printf("📦 Using embedded catalog\n")
 	}
@@ -119,7 +120,11 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 	// Perform the update
 	result, err := sm.Sync(ctx, opts...)
 	if err != nil {
-		return fmt.Errorf("update failed: %w", err)
+		return &errors.ProcessError{
+			Operation: "update catalog",
+			Command:   "update",
+			Err:       err,
+		}
 	}
 
 	// Display results
@@ -171,7 +176,11 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 
 			_, err := sm.Sync(ctx, finalOpts...)
 			if err != nil {
-				return fmt.Errorf("applying changes failed: %w", err)
+				return &errors.ProcessError{
+					Operation: "apply changes",
+					Command:   "update",
+					Err:       err,
+				}
 			}
 		}
 

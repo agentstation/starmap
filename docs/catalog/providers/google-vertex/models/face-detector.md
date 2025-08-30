@@ -1,3 +1,10 @@
+---
+title: "face-detector"
+description: "Google Vertex AI model: face-detector
+"
+weight: 10
+author: ""
+---
 # face-detector
 
 Google Vertex AI model: face-detector

@@ -1,3 +1,10 @@
+---
+title: "owlvit-base-patch32"
+description: "Google Vertex AI model: owlvit-base-patch32
+"
+weight: 10
+author: ""
+---
 # owlvit-base-patch32
 
 Google Vertex AI model: owlvit-base-patch32

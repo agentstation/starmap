@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Stability AI
 
 **Website**: [https://stability.ai](https://stability.ai)  

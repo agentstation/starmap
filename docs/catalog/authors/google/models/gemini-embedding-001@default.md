@@ -1,3 +1,9 @@
+---
+title: "Gemini Embedding 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Gemini Embedding 001
 
 ## 📋 Overview

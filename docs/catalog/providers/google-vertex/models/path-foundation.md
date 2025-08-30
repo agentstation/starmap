@@ -1,3 +1,10 @@
+---
+title: "path-foundation"
+description: "Google Vertex AI model: path-foundation
+"
+weight: 10
+author: ""
+---
 # path-foundation
 
 Google Vertex AI model: path-foundation

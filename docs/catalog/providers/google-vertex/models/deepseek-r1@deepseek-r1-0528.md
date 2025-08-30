@@ -1,3 +1,9 @@
+---
+title: "Deepseek R1"
+description: ""
+weight: 10
+author: ""
+---
 # Deepseek R1
 
 ## 📋 Overview

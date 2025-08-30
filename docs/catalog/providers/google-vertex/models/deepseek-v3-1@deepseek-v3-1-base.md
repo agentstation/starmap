@@ -1,3 +1,9 @@
+---
+title: "Deepseek V3 1"
+description: ""
+weight: 10
+author: ""
+---
 # Deepseek V3 1
 
 ## 📋 Overview

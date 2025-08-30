@@ -1,3 +1,9 @@
+---
+title: "deepseek-reasoner"
+description: ""
+weight: 10
+author: "DeepSeek"
+---
 # deepseek-reasoner
 
 ## 📋 Overview

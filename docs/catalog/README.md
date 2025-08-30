@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Starmap Model Catalog
 
 Comprehensive documentation for AI models, providers, and authors in the Starmap catalog.
@@ -7,7 +11,7 @@ Comprehensive documentation for AI models, providers, and authors in the Starmap
 - **Authors**: 80
 - **Providers**: 7
 - **Models**: 439
-- **Last Updated**: 2025-08-27 16:58:50 UTC
+- **Last Updated**: 2025-08-28 04:02:44 UTC
 
 ## Browse Catalog
 

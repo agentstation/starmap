@@ -1,3 +1,10 @@
+---
+title: "bert-base-uncased"
+description: "Google Vertex AI model: bert-base-uncased
+"
+weight: 10
+author: ""
+---
 # bert-base-uncased
 
 Google Vertex AI model: bert-base-uncased

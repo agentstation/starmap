@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Flash Preview 05-20"
+description: "Preview release (April 17th, 2025) of Gemini 2.5 Flash"
+weight: 10
+author: "Google"
+---
 # Gemini 2.5 Flash Preview 05-20
 
 Preview release (April 17th, 2025) of Gemini 2.5 Flash

@@ -1,3 +1,9 @@
+---
+title: "Text Embedding Large Exp 03 07"
+description: ""
+weight: 10
+author: "google"
+---
 # Text Embedding Large Exp 03 07
 
 ## 📋 Overview

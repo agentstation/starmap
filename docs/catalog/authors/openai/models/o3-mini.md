@@ -1,3 +1,9 @@
+---
+title: "o3-mini"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # o3-mini
 
 ## 📋 Overview

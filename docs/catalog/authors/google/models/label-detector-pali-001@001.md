@@ -1,3 +1,9 @@
+---
+title: "Label Detector Pali 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Label Detector Pali 001
 
 ## 📋 Overview

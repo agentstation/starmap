@@ -1,3 +1,9 @@
+---
+title: "Pic2word"
+description: ""
+weight: 10
+author: "google"
+---
 # Pic2word
 
 ## 📋 Overview

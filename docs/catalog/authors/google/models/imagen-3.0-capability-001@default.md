@@ -1,3 +1,9 @@
+---
+title: "Imagen 3.0 Capability 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagen 3.0 Capability 001
 
 ## 📋 Overview

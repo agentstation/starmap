@@ -1,3 +1,10 @@
+---
+title: "pt-test"
+description: "Google Vertex AI model: pt-test
+"
+weight: 10
+author: ""
+---
 # pt-test
 
 Google Vertex AI model: pt-test

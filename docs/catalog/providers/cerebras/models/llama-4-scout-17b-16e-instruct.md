@@ -1,3 +1,9 @@
+---
+title: "llama-4-scout-17b-16e-instruct"
+description: ""
+weight: 10
+author: "Cerebras"
+---
 # llama-4-scout-17b-16e-instruct
 
 ## 📋 Overview

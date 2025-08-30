@@ -1,3 +1,9 @@
+---
+title: "Video Speech Transcription"
+description: ""
+weight: 10
+author: "google"
+---
 # Video Speech Transcription
 
 ## 📋 Overview

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Together AI
 
 **Website**: [https://together.ai](https://together.ai)  

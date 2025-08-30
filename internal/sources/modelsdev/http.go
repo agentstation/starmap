@@ -2,11 +2,11 @@ package modelsdev
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -67,7 +67,7 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (c
 	// Create a new catalog to build into
 	catalog, err := catalogs.New()
 	if err != nil {
-		return nil, fmt.Errorf("creating memory catalog: %w", err)
+		return nil, errors.WrapResource("create", "memory catalog", "", err)
 	}
 
 	// Set the default merge strategy for models.dev catalog (enhances with pricing/limits)
@@ -84,7 +84,7 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (c
 	// Initialize models.dev data once
 	api, err := ensureHTTPAPI(outputDir)
 	if err != nil {
-		return nil, fmt.Errorf("initializing models.dev via HTTP: %w", err)
+		return nil, errors.WrapResource("initialize", "models.dev HTTP", "", err)
 	}
 
 	// Add only models with pricing/limits data from models.dev
@@ -97,14 +97,16 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (c
 				// Convert to starmap model with pricing/limits
 				model := s.convertToStarmapModel(mdModel)
 				if err := catalog.SetModel(model); err != nil {
-					return nil, fmt.Errorf("setting model %s: %w", model.ID, err)
+					return nil, errors.WrapResource("set", "model", model.ID, err)
 				}
 				added++
 			}
 		}
 	}
 
-	log.Printf("  Found %d models with pricing/limits from models.dev HTTP", added)
+	logging.Info().
+		Int("model_count", added).
+		Msg("Found models with pricing/limits from models.dev HTTP")
 	return catalog, nil
 }
 

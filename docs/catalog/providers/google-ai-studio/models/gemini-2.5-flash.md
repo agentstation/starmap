@@ -1,3 +1,10 @@
+---
+title: "gemini-2.5-flash"
+description: "Google Vertex AI model: gemini-2.5-flash
+"
+weight: 10
+author: ""
+---
 # Gemini 2.5 Flash
 
 Stable version of Gemini 2.5 Flash, our mid-size multimodal model that supports up to 1 million tokens, released in June of 2025.

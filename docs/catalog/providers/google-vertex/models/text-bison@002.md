@@ -1,3 +1,9 @@
+---
+title: "Text Bison"
+description: ""
+weight: 10
+author: "google"
+---
 # Text Bison
 
 ## 📋 Overview

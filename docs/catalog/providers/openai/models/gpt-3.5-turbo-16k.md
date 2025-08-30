@@ -1,3 +1,9 @@
+---
+title: "gpt-3.5-turbo-16k"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-3.5-turbo-16k
 
 ## 📋 Overview

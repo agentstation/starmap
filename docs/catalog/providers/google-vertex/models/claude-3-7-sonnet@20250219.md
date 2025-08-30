@@ -1,3 +1,9 @@
+---
+title: "Claude 3 7 Sonnet"
+description: ""
+weight: 10
+author: "anthropic"
+---
 # Claude 3 7 Sonnet
 
 ## 📋 Overview

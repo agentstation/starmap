@@ -2,12 +2,12 @@ package reconcile
 
 import (
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/utc"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -374,14 +374,19 @@ func (sm *StrategicMerger) setFieldValue(v reflect.Value, fieldPath string, valu
 		}
 
 		if current.Kind() != reflect.Struct {
-			log.Printf("Warning: cannot set field %s - not a struct at part %s", fieldPath, part)
+			logging.Warn().
+				Str("field_path", fieldPath).
+				Str("part", part).
+				Msg("Cannot set field - not a struct")
 			return
 		}
 
 		fieldName := cases.Title(language.English).String(part)
 		field := current.FieldByName(fieldName)
 		if !field.IsValid() {
-			log.Printf("Warning: field %s not found in struct", fieldName)
+			logging.Warn().
+				Str("field_name", fieldName).
+				Msg("Field not found in struct")
 			return
 		}
 
@@ -392,10 +397,16 @@ func (sm *StrategicMerger) setFieldValue(v reflect.Value, fieldPath string, valu
 				if valueReflect.Type().ConvertibleTo(field.Type()) {
 					field.Set(valueReflect.Convert(field.Type()))
 				} else {
-					log.Printf("Warning: cannot convert value %v to type %s for field %s", value, field.Type(), fieldPath)
+					logging.Warn().
+						Interface("value", value).
+						Str("target_type", field.Type().String()).
+						Str("field_path", fieldPath).
+						Msg("Cannot convert value to target type")
 				}
 			} else {
-				log.Printf("Warning: field %s is not settable", fieldPath)
+				logging.Warn().
+					Str("field_path", fieldPath).
+					Msg("Field is not settable")
 			}
 			return
 		}

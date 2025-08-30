@@ -1,3 +1,9 @@
+---
+title: "Gemini 1.5 Flash Latest"
+description: "Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks."
+weight: 10
+author: "Google"
+---
 # Gemini 1.5 Flash Latest
 
 Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks.

@@ -1,3 +1,9 @@
+---
+title: "Imageclassification Proprietary Vit"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageclassification Proprietary Vit
 
 ## 📋 Overview

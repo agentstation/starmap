@@ -1,3 +1,9 @@
+---
+title: "Text Translation"
+description: ""
+weight: 10
+author: "google"
+---
 # Text Translation
 
 ## 📋 Overview

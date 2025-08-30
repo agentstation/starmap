@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # UC Berkeley
 
 **Website**: [https://berkeley.edu](https://berkeley.edu)  

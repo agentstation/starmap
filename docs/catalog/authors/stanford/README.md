@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Stanford University
 
 **Website**: [https://stanford.edu](https://stanford.edu)  

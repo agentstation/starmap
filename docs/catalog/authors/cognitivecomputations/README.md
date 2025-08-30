@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Cognitive Computations
 
 **Description**: Organization behind the popular Dolphin model series, led by Eric Hartford  

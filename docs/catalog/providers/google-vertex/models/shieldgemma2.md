@@ -1,3 +1,10 @@
+---
+title: "shieldgemma2"
+description: "Google Vertex AI model: shieldgemma2
+"
+weight: 10
+author: ""
+---
 # shieldgemma2
 
 Google Vertex AI model: shieldgemma2

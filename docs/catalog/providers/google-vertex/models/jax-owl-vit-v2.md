@@ -1,3 +1,10 @@
+---
+title: "jax-owl-vit-v2"
+description: "Google Vertex AI model: jax-owl-vit-v2
+"
+weight: 10
+author: ""
+---
 # jax-owl-vit-v2
 
 Google Vertex AI model: jax-owl-vit-v2

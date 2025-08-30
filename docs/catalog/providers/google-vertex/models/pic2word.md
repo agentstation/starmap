@@ -1,3 +1,10 @@
+---
+title: "pic2word"
+description: "Google Vertex AI model: pic2word
+"
+weight: 10
+author: ""
+---
 # pic2word
 
 Google Vertex AI model: pic2word

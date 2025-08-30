@@ -1,3 +1,9 @@
+---
+title: "Image Segmentation 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Image Segmentation 001
 
 ## 📋 Overview

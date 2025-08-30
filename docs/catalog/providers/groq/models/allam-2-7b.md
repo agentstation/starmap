@@ -1,3 +1,9 @@
+---
+title: "allam-2-7b"
+description: ""
+weight: 10
+author: "SDAIA"
+---
 # allam-2-7b
 
 ## 📋 Overview

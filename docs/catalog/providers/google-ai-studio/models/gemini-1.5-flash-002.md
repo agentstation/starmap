@@ -1,3 +1,10 @@
+---
+title: "gemini-1.5-flash-002"
+description: "Google Vertex AI model: gemini-1.5-flash-002
+"
+weight: 10
+author: ""
+---
 # Gemini 1.5 Flash 002
 
 Stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks, released in September of 2024.

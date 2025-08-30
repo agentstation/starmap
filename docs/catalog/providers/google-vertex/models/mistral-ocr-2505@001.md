@@ -1,3 +1,9 @@
+---
+title: "Mistral Ocr 2505"
+description: ""
+weight: 10
+author: ""
+---
 # Mistral Ocr 2505
 
 ## 📋 Overview

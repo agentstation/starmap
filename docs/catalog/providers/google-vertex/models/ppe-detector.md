@@ -1,3 +1,10 @@
+---
+title: "ppe-detector"
+description: "Google Vertex AI model: ppe-detector
+"
+weight: 10
+author: ""
+---
 # ppe-detector
 
 Google Vertex AI model: ppe-detector

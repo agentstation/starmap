@@ -1,3 +1,9 @@
+---
+title: "Claude Sonnet 4"
+description: ""
+weight: 10
+author: "Anthropic"
+---
 # Claude Sonnet 4
 
 ## 📋 Overview

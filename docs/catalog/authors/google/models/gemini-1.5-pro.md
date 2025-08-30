@@ -1,3 +1,9 @@
+---
+title: "Gemini 1.5 Pro"
+description: "Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens, released in May of 2024."
+weight: 10
+author: "Google"
+---
 # Gemini 1.5 Pro
 
 Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens, released in May of 2024.

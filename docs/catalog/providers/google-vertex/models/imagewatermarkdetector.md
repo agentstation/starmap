@@ -1,3 +1,10 @@
+---
+title: "imagewatermarkdetector"
+description: "Google Vertex AI model: imagewatermarkdetector
+"
+weight: 10
+author: ""
+---
 # imagewatermarkdetector
 
 Google Vertex AI model: imagewatermarkdetector

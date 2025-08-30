@@ -1,3 +1,9 @@
+---
+title: "Qwen3 Coder 480b A35b Instruct Maas"
+description: ""
+weight: 10
+author: "qwen"
+---
 # Qwen3 Coder 480b A35b Instruct Maas
 
 ## 📋 Overview

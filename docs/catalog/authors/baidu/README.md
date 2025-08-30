@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Baidu
 
 **Description**: Chinese technology company known for Ernie Bot and ERNIE series language models  

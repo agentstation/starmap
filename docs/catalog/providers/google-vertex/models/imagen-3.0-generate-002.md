@@ -1,3 +1,10 @@
+---
+title: "imagen-3.0-generate-002"
+description: "Google Vertex AI model: imagen-3.0-generate-002
+"
+weight: 10
+author: ""
+---
 # imagen-3.0-generate-002
 
 Google Vertex AI model: imagen-3.0-generate-002

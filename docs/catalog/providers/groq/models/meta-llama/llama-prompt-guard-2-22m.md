@@ -1,3 +1,7 @@
+---
+title: "Llama Prompt Guard 2 22m"
+weight: 10
+---
 # llama-prompt-guard-2-22m
 
 ## 📋 Overview

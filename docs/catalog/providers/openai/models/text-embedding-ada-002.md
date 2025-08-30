@@ -1,3 +1,9 @@
+---
+title: "text-embedding-ada-002"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # text-embedding-ada-002
 
 ## 📋 Overview

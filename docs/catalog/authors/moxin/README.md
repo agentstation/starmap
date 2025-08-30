@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Moxin
 
 **Description**: Creator of Moxin-7B, a fully open-source language model following Model Openness Framework  

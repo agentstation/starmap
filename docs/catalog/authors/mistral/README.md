@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Mistral AI
 
 **Description**: French AI company known for efficient open-source language models and Mixture of Experts architectures  

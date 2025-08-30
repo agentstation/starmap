@@ -1,3 +1,10 @@
+---
+title: "imagen-product-recontext-preview-06-30"
+description: "Google Vertex AI model: imagen-product-recontext-preview-06-30
+"
+weight: 10
+author: ""
+---
 # imagen-product-recontext-preview-06-30
 
 Google Vertex AI model: imagen-product-recontext-preview-06-30

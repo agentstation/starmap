@@ -1,3 +1,10 @@
+---
+title: "vehicle-detector"
+description: "Google Vertex AI model: vehicle-detector
+"
+weight: 10
+author: ""
+---
 # vehicle-detector
 
 Google Vertex AI model: vehicle-detector

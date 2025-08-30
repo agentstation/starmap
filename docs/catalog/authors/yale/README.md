@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Yale University
 
 **Website**: [https://yale.edu](https://yale.edu)  

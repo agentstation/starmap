@@ -1,3 +1,10 @@
+---
+title: "imagen-4.0-fast-generate-001"
+description: "Google Vertex AI model: imagen-4.0-fast-generate-001
+"
+weight: 10
+author: ""
+---
 # imagen-4.0-fast-generate-001
 
 Google Vertex AI model: imagen-4.0-fast-generate-001

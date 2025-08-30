@@ -3,10 +3,11 @@ package starmap
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/reconcile"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -22,7 +23,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	// Create the result in memory catalog
 	result, err := catalogs.New()
 	if err != nil {
-		return nil, fmt.Errorf("creating result catalog: %w", err)
+		return nil, errors.WrapResource("create", "catalog", "result", err)
 	}
 
 	// Create a context with a timeout if specified
@@ -39,13 +40,13 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	// First, get the embedded catalog for provider configs
 	embeddedCat, err := catalogs.New(catalogs.WithEmbedded())
 	if err != nil {
-		return nil, fmt.Errorf("loading embedded catalog for setup: %w", err)
+		return nil, errors.WrapResource("load", "catalog", "embedded", err)
 	}
 
 	// Setup all sources with provider configs
 	for _, source := range sourcesToUse {
 		if err := source.Setup(embeddedCat.Providers()); err != nil {
-			return nil, fmt.Errorf("setup %s: %w", source.Name(), err)
+			return nil, errors.WrapResource("setup", "source", string(source.Name()), err)
 		}
 	}
 
@@ -71,16 +72,20 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 
 	// Collect catalogs from all sources
 	sourceCatalogs := make(map[reconcile.SourceName]catalogs.Catalog)
+	logger := logging.FromContext(ctx)
 	for _, source := range sourcesToUse {
-		log.Printf("Fetching: %s", source.Name())
+		logger.Info().Str("source", string(source.Name())).Msg("Fetching")
 
 		// Fetch catalog from source
 		catalog, err := source.Fetch(ctx, sourceOpts...)
 		if err != nil {
 			if options.FailFast {
-				return nil, fmt.Errorf("source %s failed: %w", source.Name(), err)
+				return nil, &errors.SyncError{
+					Provider: string(source.Name()),
+					Err:      err,
+				}
 			}
-			log.Printf("  Warning: %v", err) // log and continue to next source, don't fail fast
+			logger.Warn().Err(err).Str("source", string(source.Name())).Msg("Source fetch failed, continuing")
 			continue
 		}
 
@@ -93,12 +98,15 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 		reconcile.WithProvenance(true),
 	)
 	if err != nil {
-		return nil, fmt.Errorf("creating reconciler: %w", err)
+		return nil, errors.WrapResource("create", "reconciler", "", err)
 	}
 
 	reconcileResult, err := reconciler.ReconcileCatalogs(ctx, sourceCatalogs)
 	if err != nil {
-		return nil, fmt.Errorf("reconciliation failed: %w", err)
+		return nil, &errors.SyncError{
+			Provider: "all",
+			Err:      err,
+		}
 	}
 
 	result = reconcileResult.Catalog
@@ -106,7 +114,10 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	// CLEANUP PHASE: Clean up any resources
 	for _, source := range sourcesToUse {
 		if err := source.Cleanup(); err != nil {
-			log.Printf("  Warning: cleanup failed for %s: %v", source.Name(), err)
+			logger.Warn().
+				Err(err).
+				Str("source", string(source.Name())).
+				Msg("Cleanup failed")
 		}
 	}
 
@@ -126,10 +137,13 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 
 	// Log summary
 	if changeset.HasChanges() {
-		log.Printf("Changes detected: %d added, %d updated, %d removed",
-			len(changeset.Models.Added), len(changeset.Models.Updated), len(changeset.Models.Removed))
+		logger.Info().
+			Int("added", len(changeset.Models.Added)).
+			Int("updated", len(changeset.Models.Updated)).
+			Int("removed", len(changeset.Models.Removed)).
+			Msg("Changes detected")
 	} else {
-		log.Printf("No changes detected")
+		logger.Info().Msg("No changes detected")
 	}
 
 	// Apply changes if not dry run
@@ -142,27 +156,28 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 
 		// Save to output path if specified
 		if options.OutputPath != "" {
-			// TODO: Implement SaveTo for catalogs that support custom paths
 			if saveable, ok := result.(catalogs.Persistable); ok {
-				if err := saveable.Save(); err != nil {
-					return nil, fmt.Errorf("saving to %s: %w", options.OutputPath, err)
+				if err := saveable.SaveTo(options.OutputPath); err != nil {
+					return nil, errors.WrapIO("write", options.OutputPath, err)
 				}
 			}
 		} else {
 			// Save to default location
 			if saveable, ok := result.(catalogs.Persistable); ok {
 				if err := saveable.Save(); err != nil {
-					return nil, fmt.Errorf("saving catalog: %w", err)
+					return nil, errors.WrapIO("write", "catalog", err)
 				}
 			}
 		}
 
-		log.Printf("Sync completed successfully - %d changes applied", changeset.Summary.TotalChanges)
+		logger.Info().
+			Int("changes_applied", changeset.Summary.TotalChanges).
+			Msg("Sync completed successfully")
 
 		// Trigger hooks for catalog changes
 		s.hooks.triggerCatalogUpdate(oldCatalog, result)
 	} else if options.DryRun {
-		log.Printf("Dry run completed - no changes applied")
+		logger.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")
 	}
 
 	return syncResult, nil

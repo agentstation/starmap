@@ -1,3 +1,9 @@
+---
+title: "Chat Bison"
+description: ""
+weight: 10
+author: "google"
+---
 # Chat Bison
 
 ## 📋 Overview

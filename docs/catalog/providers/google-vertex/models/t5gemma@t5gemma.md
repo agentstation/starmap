@@ -1,3 +1,9 @@
+---
+title: "T5gemma"
+description: ""
+weight: 10
+author: "google"
+---
 # T5gemma
 
 ## 📋 Overview

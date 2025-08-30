@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Pro Preview TTS"
+description: "Gemini 2.5 Pro Preview TTS"
+weight: 10
+author: "Google"
+---
 # Gemini 2.5 Pro Preview TTS
 
 Gemini 2.5 Pro Preview TTS

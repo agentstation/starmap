@@ -1,3 +1,9 @@
+---
+title: "o4-mini"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # o4-mini
 
 ## 📋 Overview

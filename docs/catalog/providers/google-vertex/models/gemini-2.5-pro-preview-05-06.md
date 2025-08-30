@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Pro Preview 05-06"
+description: ""
+weight: 10
+author: ""
+---
 # Gemini 2.5 Pro Preview 05-06
 
 ## 📋 Overview

@@ -1,3 +1,9 @@
+---
+title: "qwen-3-235b-a22b-thinking-2507"
+description: ""
+weight: 10
+author: "Cerebras"
+---
 # qwen-3-235b-a22b-thinking-2507
 
 ## 📋 Overview

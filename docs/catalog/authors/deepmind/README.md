@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Google DeepMind
 
 **Description**: AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research  

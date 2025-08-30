@@ -1,3 +1,10 @@
+---
+title: "gemini-2.5-flash-lite"
+description: "Google Vertex AI model: gemini-2.5-flash-lite
+"
+weight: 10
+author: ""
+---
 # Gemini 2.5 Flash-Lite
 
 Stable verion of Gemini 2.5 Flash-Lite, released in July of 2025

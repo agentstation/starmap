@@ -1,9 +1,8 @@
 package modelsdev
 
 import (
-	"fmt"
-
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Catalog implements starmap.Catalog interface for models.dev data
@@ -18,7 +17,10 @@ type Catalog struct {
 // NewCatalog creates a new models.dev catalog from parsed API data
 func NewCatalog(api *ModelsDevAPI) (*Catalog, error) {
 	if api == nil {
-		return nil, fmt.Errorf("api data is nil")
+		return nil, &errors.ValidationError{
+			Field:   "api",
+			Message: "cannot be nil",
+		}
 	}
 
 	catalog := &Catalog{
@@ -31,7 +33,7 @@ func NewCatalog(api *ModelsDevAPI) (*Catalog, error) {
 
 	// Convert models.dev data to starmap structures
 	if err := catalog.loadFromAPI(); err != nil {
-		return nil, fmt.Errorf("loading from API: %w", err)
+		return nil, errors.WrapResource("load", "API data", "", err)
 	}
 
 	return catalog, nil
@@ -62,7 +64,10 @@ func (c *Catalog) Endpoints() *catalogs.Endpoints {
 func (c *Catalog) Provider(id catalogs.ProviderID) (*catalogs.Provider, error) {
 	provider, exists := c.providers.Get(id)
 	if !exists {
-		return nil, fmt.Errorf("provider %s not found", id)
+		return nil, &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(id),
+		}
 	}
 	return provider, nil
 }
@@ -71,7 +76,10 @@ func (c *Catalog) Provider(id catalogs.ProviderID) (*catalogs.Provider, error) {
 func (c *Catalog) Author(id catalogs.AuthorID) (*catalogs.Author, error) {
 	author, exists := c.authors.Get(id)
 	if !exists {
-		return nil, fmt.Errorf("author %s not found", id)
+		return nil, &errors.NotFoundError{
+			Resource: "author",
+			ID:       string(id),
+		}
 	}
 	return author, nil
 }
@@ -80,7 +88,10 @@ func (c *Catalog) Author(id catalogs.AuthorID) (*catalogs.Author, error) {
 func (c *Catalog) Model(id string) (*catalogs.Model, error) {
 	model, exists := c.models.Get(id)
 	if !exists {
-		return nil, fmt.Errorf("model %s not found", id)
+		return nil, &errors.NotFoundError{
+			Resource: "model",
+			ID:       id,
+		}
 	}
 	return model, nil
 }
@@ -89,7 +100,10 @@ func (c *Catalog) Model(id string) (*catalogs.Model, error) {
 func (c *Catalog) Endpoint(id string) (*catalogs.Endpoint, error) {
 	endpoint, exists := c.endpoints.Get(id)
 	if !exists {
-		return nil, fmt.Errorf("endpoint %s not found", id)
+		return nil, &errors.NotFoundError{
+			Resource: "endpoint",
+			ID:       id,
+		}
 	}
 	return endpoint, nil
 }
@@ -141,24 +155,24 @@ func (c *Catalog) loadFromAPI() error {
 		// Convert provider
 		provider, err := modelsDevProvider.ToStarmapProvider()
 		if err != nil {
-			return fmt.Errorf("converting provider %s: %w", providerID, err)
+			return errors.WrapResource("convert", "provider", providerID, err)
 		}
 
 		// Add provider to catalog
 		if err := c.SetProvider(*provider); err != nil {
-			return fmt.Errorf("adding provider %s: %w", providerID, err)
+			return errors.WrapResource("add", "provider", providerID, err)
 		}
 
 		// Add models from this provider
 		for modelID, modelsDevModel := range modelsDevProvider.Models {
 			model, err := modelsDevModel.ToStarmapModel()
 			if err != nil {
-				return fmt.Errorf("converting model %s: %w", modelID, err)
+				return errors.WrapResource("convert", "model", modelID, err)
 			}
 
 			// Add model to catalog
 			if err := c.SetModel(*model); err != nil {
-				return fmt.Errorf("adding model %s: %w", modelID, err)
+				return errors.WrapResource("add", "model", modelID, err)
 			}
 		}
 	}

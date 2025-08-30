@@ -1,3 +1,10 @@
+---
+title: "virtual-try-on-preview-08-04"
+description: "Google Vertex AI model: virtual-try-on-preview-08-04
+"
+weight: 10
+author: ""
+---
 # virtual-try-on-preview-08-04
 
 Google Vertex AI model: virtual-try-on-preview-08-04

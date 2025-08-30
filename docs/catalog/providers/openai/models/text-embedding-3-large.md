@@ -1,3 +1,9 @@
+---
+title: "text-embedding-3-large"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # text-embedding-3-large
 
 ## 📋 Overview

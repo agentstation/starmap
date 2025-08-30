@@ -1,3 +1,10 @@
+---
+title: "language-v1-moderate-text"
+description: "Google Vertex AI model: language-v1-moderate-text
+"
+weight: 10
+author: ""
+---
 # language-v1-moderate-text
 
 Google Vertex AI model: language-v1-moderate-text

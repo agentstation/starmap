@@ -1,3 +1,9 @@
+---
+title: "gpt-5-nano"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-5-nano
 
 ## 📋 Overview

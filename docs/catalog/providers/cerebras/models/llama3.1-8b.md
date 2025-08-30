@@ -1,3 +1,9 @@
+---
+title: "llama3.1-8b"
+description: ""
+weight: 10
+author: "Cerebras"
+---
 # llama3.1-8b
 
 ## 📋 Overview

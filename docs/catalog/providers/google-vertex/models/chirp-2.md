@@ -1,3 +1,10 @@
+---
+title: "chirp-2"
+description: "Google Vertex AI model: chirp-2
+"
+weight: 10
+author: ""
+---
 # chirp-2
 
 Google Vertex AI model: chirp-2

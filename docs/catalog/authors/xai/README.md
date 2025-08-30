@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # xAI
 
 **Description**: Elon Musk's AI company focused on understanding the universe through AI, known for Grok models  

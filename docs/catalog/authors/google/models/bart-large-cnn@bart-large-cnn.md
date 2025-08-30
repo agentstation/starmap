@@ -1,3 +1,9 @@
+---
+title: "Bart Large Cnn"
+description: ""
+weight: 10
+author: "google"
+---
 # Bart Large Cnn
 
 ## 📋 Overview

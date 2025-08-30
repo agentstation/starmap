@@ -1,3 +1,9 @@
+---
+title: "Imagen 4.0 Fast Generate 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagen 4.0 Fast Generate 001
 
 ## 📋 Overview

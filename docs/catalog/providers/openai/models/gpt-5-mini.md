@@ -1,3 +1,9 @@
+---
+title: "gpt-5-mini"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-5-mini
 
 ## 📋 Overview

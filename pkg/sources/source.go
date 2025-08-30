@@ -1,3 +1,26 @@
+// Package sources defines interfaces and types for catalog data sources.
+// Sources are responsible for fetching and synchronizing model data from
+// various providers including local files, provider APIs, and external repositories.
+//
+// The package provides a unified interface for different data sources while
+// supporting merge strategies, authorities for data precedence, and flexible
+// configuration options.
+//
+// Example usage:
+//
+//	// Create a provider fetcher
+//	fetcher := NewProviderFetcher()
+//	
+//	// Fetch models from a provider
+//	models, err := fetcher.FetchModels(ctx, provider)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	// Check if a provider is supported
+//	if fetcher.HasClient(providerID) {
+//	    // Provider has a client implementation
+//	}
 package sources
 
 import (

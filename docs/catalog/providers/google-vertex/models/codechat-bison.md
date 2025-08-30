@@ -1,3 +1,10 @@
+---
+title: "codechat-bison"
+description: "Google Vertex AI model: codechat-bison
+"
+weight: 10
+author: ""
+---
 # codechat-bison
 
 Google Vertex AI model: codechat-bison

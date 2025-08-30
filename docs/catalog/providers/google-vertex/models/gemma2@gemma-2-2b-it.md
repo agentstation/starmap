@@ -1,3 +1,9 @@
+---
+title: "Gemma2"
+description: ""
+weight: 10
+author: "google"
+---
 # Gemma2
 
 ## 📋 Overview

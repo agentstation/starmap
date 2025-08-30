@@ -1,3 +1,10 @@
+---
+title: "mammut"
+description: "Google Vertex AI model: mammut
+"
+weight: 10
+author: ""
+---
 # mammut
 
 Google Vertex AI model: mammut

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Moonshot AI
 
 **Description**: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities  

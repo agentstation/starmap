@@ -1,3 +1,9 @@
+---
+title: "Claude Sonnet 3"
+description: ""
+weight: 10
+author: ""
+---
 # Claude Sonnet 3
 
 ## 📋 Overview

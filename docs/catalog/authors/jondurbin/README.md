@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # jondurbin
 
 **Description**: Model creator known for Bagel and Airoboros fine-tuned language models  

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # <img src="./logo.svg" alt="Anthropic Logo" style="vertical-align: middle; height: 32px; width: auto; min-width: 32px"> Anthropic
 
 **Headquarters**: San Francisco, CA, USA  

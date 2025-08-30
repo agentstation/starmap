@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Zhipu AI
 
 **Description**: Chinese AI company known for GLM-4 and ChatGLM series of bilingual language models  

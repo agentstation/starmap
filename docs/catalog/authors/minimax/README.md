@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # MiniMax
 
 **Description**: Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attention reasoning model  

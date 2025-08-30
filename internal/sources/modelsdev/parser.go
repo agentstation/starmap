@@ -2,13 +2,13 @@ package modelsdev
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/utc"
 )
 
@@ -68,12 +68,12 @@ type ModelsDevLimit struct {
 func ParseAPI(apiPath string) (*ModelsDevAPI, error) {
 	data, err := os.ReadFile(apiPath)
 	if err != nil {
-		return nil, fmt.Errorf("reading api.json: %w", err)
+		return nil, errors.WrapIO("read", apiPath, err)
 	}
 
 	var api ModelsDevAPI
 	if err := json.Unmarshal(data, &api); err != nil {
-		return nil, fmt.Errorf("parsing api.json: %w", err)
+		return nil, errors.WrapParse("json", "api.json", err)
 	}
 
 	return &api, nil
@@ -92,7 +92,7 @@ func (p *ModelsDevProvider) ToStarmapProvider() (*catalogs.Provider, error) {
 		for modelID, model := range p.Models {
 			starmapModel, err := model.ToStarmapModel()
 			if err != nil {
-				return nil, fmt.Errorf("converting model %s: %w", modelID, err)
+				return nil, errors.WrapResource("convert", "model", modelID, err)
 			}
 			provider.Models[modelID] = *starmapModel
 		}
@@ -158,7 +158,7 @@ func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error) {
 		}
 		// Handle cache costs (prefer specific cache_read/cache_write over legacy cache field)
 		if m.Cost.CacheRead != nil || m.Cost.CacheWrite != nil || m.Cost.Cache != nil {
-			cacheCost := &catalogs.TokenCacheCost{}
+			cacheCost := &catalogs.TokenCachePricing{}
 
 			if m.Cost.CacheRead != nil {
 				cacheCost.Read = &catalogs.TokenCost{
@@ -256,7 +256,7 @@ func parseDate(dateStr string) (*time.Time, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("unable to parse date: %s", dateStr)
+	return nil, errors.WrapParse("date", dateStr, errors.New("unsupported format"))
 }
 
 // GetProvider returns a specific provider from the API data

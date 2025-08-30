@@ -1,3 +1,10 @@
+---
+title: "imageobjectdetection-proprietary-yolo"
+description: "Google Vertex AI model: imageobjectdetection-proprietary-yolo
+"
+weight: 10
+author: ""
+---
 # imageobjectdetection-proprietary-yolo
 
 Google Vertex AI model: imageobjectdetection-proprietary-yolo

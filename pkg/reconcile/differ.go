@@ -21,7 +21,8 @@ type Differ interface {
 	DiffAuthors(existing, new []catalogs.Author) *AuthorChangeset
 
 	// DiffCatalogs compares two complete catalogs
-	DiffCatalogs(existing, new catalogs.Catalog) *Changeset
+	// Both catalogs only need to be readable
+	DiffCatalogs(existing, new catalogs.Reader) *Changeset
 }
 
 // differ is the default implementation of Differ
@@ -209,7 +210,8 @@ func (d *differ) DiffAuthors(existing, new []catalogs.Author) *AuthorChangeset {
 }
 
 // DiffCatalogs compares two complete catalogs
-func (d *differ) DiffCatalogs(existing, new catalogs.Catalog) *Changeset {
+// Both catalogs only need to be readable
+func (d *differ) DiffCatalogs(existing, new catalogs.Reader) *Changeset {
 	changeset := &Changeset{}
 
 	// Diff models

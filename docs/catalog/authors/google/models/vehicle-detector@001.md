@@ -1,3 +1,9 @@
+---
+title: "Vehicle Detector"
+description: ""
+weight: 10
+author: "google"
+---
 # Vehicle Detector
 
 ## 📋 Overview

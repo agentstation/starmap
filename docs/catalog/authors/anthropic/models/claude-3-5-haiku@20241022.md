@@ -1,3 +1,10 @@
+---
+title: "claude 3 5 haiku"
+description: "Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden
+"
+weight: 10
+author: "anthropic"
+---
 # claude 3 5 haiku
 
 Anthropic Claude model claude-3-5-haiku available through Vertex AI Model Garden

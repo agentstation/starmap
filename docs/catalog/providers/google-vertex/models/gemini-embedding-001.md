@@ -1,3 +1,10 @@
+---
+title: "gemini-embedding-001"
+description: "Google Vertex AI model: gemini-embedding-001
+"
+weight: 10
+author: ""
+---
 # gemini-embedding-001
 
 Google Vertex AI model: gemini-embedding-001

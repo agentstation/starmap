@@ -1,3 +1,10 @@
+---
+title: "code-gecko"
+description: "Google Vertex AI model: code-gecko
+"
+weight: 10
+author: ""
+---
 # code-gecko
 
 Google Vertex AI model: code-gecko

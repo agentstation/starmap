@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # SenseTime
 
 **Description**: Chinese AI company specializing in computer vision and known for SenseNova multimodal models  

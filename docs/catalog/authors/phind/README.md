@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Phind
 
 **Description**: AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks  

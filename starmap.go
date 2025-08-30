@@ -1,8 +1,60 @@
+// Package starmap provides the main entry point for the Starmap AI model catalog system.
+// It offers a high-level interface for managing AI model catalogs with automatic updates,
+// event hooks, and provider synchronization capabilities.
+//
+// Starmap wraps the underlying catalog system with additional features including:
+// - Automatic background synchronization with provider APIs
+// - Event hooks for model changes (added, updated, removed)
+// - Thread-safe catalog access with copy-on-read semantics
+// - Flexible configuration through functional options
+// - Support for multiple data sources and merge strategies
+//
+// Example usage:
+//
+//	// Create a starmap instance with default settings
+//	sm, err := starmap.New()
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	defer sm.AutoUpdatesOff()
+//	
+//	// Register event hooks
+//	sm.OnModelAdded(func(model catalogs.Model) {
+//	    log.Printf("New model: %s", model.ID)
+//	})
+//	
+//	// Get catalog (returns a copy for thread safety)
+//	catalog, err := sm.Catalog()
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	
+//	// Access models
+//	models := catalog.Models()
+//	for _, model := range models.List() {
+//	    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
+//	}
+//	
+//	// Manually trigger sync
+//	result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	
+//	// Configure with custom options
+//	sm, err = starmap.New(
+//	    WithAutoUpdateInterval(30 * time.Minute),
+//	    WithLocalPath("./custom-catalog"),
+//	    WithAutoUpdates(true),
+//	)
 package starmap
 
 import (
 	"context"
+	"encoding/json"
+	stderrors "errors"
 	"fmt"
+	"io"
 	"net/http"
 	"sync"
 	"time"
@@ -11,6 +63,9 @@ import (
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -72,7 +127,7 @@ func New(opts ...Option) (Starmap, error) {
 	}
 
 	if err := sm.apply(opts...); err != nil {
-		return nil, fmt.Errorf("applying options: %w", err)
+		return nil, errors.WrapResource("apply", "options", "", err)
 	}
 
 	// Configure sources based on options
@@ -85,21 +140,21 @@ func New(opts ...Option) (Starmap, error) {
 		// Create and load default embedded catalog
 		embeddedCat, err := catalogs.New(catalogs.WithEmbedded())
 		if err != nil {
-			return nil, fmt.Errorf("creating embedded catalog: %w", err)
+			return nil, errors.WrapResource("create", "embedded catalog", "", err)
 		}
 		sm.catalog = embeddedCat
 	}
 
 	if sm.options.remoteServerURL != nil {
 		sm.httpClient = &http.Client{
-			Timeout: 30 * time.Second,
+			Timeout: constants.DefaultHTTPTimeout,
 		}
 	}
 
 	// Start auto-updates if enabled
 	if sm.options.autoUpdatesEnabled {
 		if err := sm.AutoUpdatesOn(); err != nil {
-			return nil, fmt.Errorf("starting auto-updates: %w", err)
+			return nil, errors.WrapResource("start", "auto-updates", "", err)
 		}
 	}
 
@@ -117,7 +172,11 @@ func (s *starmap) Catalog() (catalogs.Catalog, error) {
 // AutoUpdatesOn begins automatic updates if configured
 func (s *starmap) AutoUpdatesOn() error {
 	if s.options.autoUpdateInterval <= 0 {
-		return fmt.Errorf("update interval must be positive")
+		return &errors.ValidationError{
+			Field:   "autoUpdateInterval",
+			Value:   s.options.autoUpdateInterval,
+			Message: "update interval must be positive",
+		}
 	}
 
 	s.updateTicker = time.NewTicker(s.options.autoUpdateInterval)
@@ -126,24 +185,30 @@ func (s *starmap) AutoUpdatesOn() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	s.updateCancel = cancel
 
-	go func() {
+	go func(parentCtx context.Context) {
 		for {
 			select {
 			case <-s.updateTicker.C:
 				// Create a timeout context for each update (5 minutes default)
-				updateCtx, updateCancel := context.WithTimeout(ctx, 5*time.Minute)
-				if err := s.Update(updateCtx); err != nil {
-					// Log error but continue
-					// TODO: Add proper logging
+				updateCtx, updateCancel := context.WithTimeout(parentCtx, constants.UpdateContextTimeout)
+				err := s.Update(updateCtx)
+				updateCancel() // Always cancel to release resources
+				
+				if err != nil {
+					// Check if context was canceled - if so, exit the loop
+					if stderrors.Is(err, context.Canceled) || stderrors.Is(err, context.DeadlineExceeded) {
+						return
+					}
+					// Log other errors but continue
+					logging.Error().Err(err).Msg("Auto-update failed")
 				}
-				updateCancel()
-			case <-ctx.Done():
+			case <-parentCtx.Done():
 				return
 			case <-s.stopCh:
 				return
 			}
 		}
-	}()
+	}(ctx)
 
 	return nil
 }
@@ -207,13 +272,20 @@ func (s *starmap) updateWithPipeline(ctx context.Context) error {
 // updateFromServer fetches catalog updates from the remote server
 func (s *starmap) updateFromServer(ctx context.Context) error {
 	if s.options.remoteServerURL == nil {
-		return fmt.Errorf("remote server URL is not set")
+		return &errors.ConfigError{
+			Component: "starmap",
+			Message:   "remote server URL is not set",
+		}
 	}
 
-	// TODO: Implement remote server catalog fetching
+	logger := logging.FromContext(ctx)
+	logger.Debug().
+		Str("url", *s.options.remoteServerURL).
+		Msg("Fetching catalog from remote server")
+	
 	req, err := http.NewRequestWithContext(ctx, "GET", *s.options.remoteServerURL+"/catalog", nil)
 	if err != nil {
-		return fmt.Errorf("creating request: %w", err)
+		return errors.WrapResource("create", "request", "", err)
 	}
 
 	if s.options.remoteServerAPIKey != nil {
@@ -222,12 +294,104 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 
 	resp, err := s.httpClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("making request: %w", err)
+		return &errors.APIError{
+			Provider: "starmap-server",
+			Endpoint: *s.options.remoteServerURL,
+			Message:  "failed to make request",
+			Err:      err,
+		}
 	}
-	defer resp.Body.Close()
+	defer func() {
+		// Drain and close body to allow connection reuse
+		io.Copy(io.Discard, resp.Body)
+		resp.Body.Close()
+	}()
 
-	// TODO: Parse response and update catalog
-	// For now, this is a stub implementation
+	// Check response status
+	if resp.StatusCode != http.StatusOK {
+		logger.Error().
+			Int("status_code", resp.StatusCode).
+			Str("url", *s.options.remoteServerURL).
+			Msg("Remote server returned error status")
+		return &errors.APIError{
+			Provider:   "starmap-server",
+			Endpoint:   *s.options.remoteServerURL,
+			StatusCode: resp.StatusCode,
+			Message:    fmt.Sprintf("server returned status %d", resp.StatusCode),
+		}
+	}
+
+	logger.Trace().Msg("Parsing catalog response")
+	
+	// Read response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return errors.WrapIO("read", "response body", err)
+	}
+
+	// Parse remote catalog response
+	type RemoteCatalogResponse struct {
+		Version   string          `json:"version"`
+		Catalog   json.RawMessage `json:"catalog"`
+		Checksum  string          `json:"checksum,omitempty"`
+		Timestamp time.Time       `json:"timestamp"`
+	}
+
+	var response RemoteCatalogResponse
+	if err := json.Unmarshal(body, &response); err != nil {
+		return errors.WrapParse("json", "remote catalog response", err)
+	}
+
+	// Create a new memory catalog and populate it
+	newCatalog := catalogs.NewMemory()
+	
+	// Parse catalog data structure
+	type CatalogData struct {
+		Providers []catalogs.Provider `json:"providers,omitempty"`
+		Authors   []catalogs.Author   `json:"authors,omitempty"`
+		Models    []catalogs.Model    `json:"models,omitempty"`
+		Endpoints []catalogs.Endpoint `json:"endpoints,omitempty"`
+	}
+
+	var catalogData CatalogData
+	if err := json.Unmarshal(response.Catalog, &catalogData); err != nil {
+		return errors.WrapParse("json", "catalog data", err)
+	}
+
+	// Populate the catalog
+	for _, provider := range catalogData.Providers {
+		if err := newCatalog.SetProvider(provider); err != nil {
+			logger.Warn().Err(err).Str("provider", string(provider.ID)).Msg("Failed to set provider")
+		}
+	}
+
+	for _, author := range catalogData.Authors {
+		if err := newCatalog.SetAuthor(author); err != nil {
+			logger.Warn().Err(err).Str("author", string(author.ID)).Msg("Failed to set author")
+		}
+	}
+
+	for _, model := range catalogData.Models {
+		if err := newCatalog.SetModel(model); err != nil {
+			logger.Warn().Err(err).Str("model", model.ID).Msg("Failed to set model")
+		}
+	}
+
+	for _, endpoint := range catalogData.Endpoints {
+		if err := newCatalog.SetEndpoint(endpoint); err != nil {
+			logger.Warn().Err(err).Str("endpoint", endpoint.ID).Msg("Failed to set endpoint")
+		}
+	}
+
+	// Update the catalog
+	s.setCatalog(newCatalog)
+
+	logger.Info().
+		Str("version", response.Version).
+		Time("timestamp", response.Timestamp).
+		Int("providers", len(catalogData.Providers)).
+		Int("models", len(catalogData.Models)).
+		Msg("Successfully updated catalog from remote server")
 
 	return nil
 }
@@ -256,7 +420,10 @@ func (s *starmap) Write() error {
 
 	// For catalogs that don't support direct saving, we'll use the persistence layer
 	// This could be extended later if needed
-	return fmt.Errorf("catalog type does not support direct saving")
+	return &errors.ConfigError{
+		Component: "catalog",
+		Message:   "catalog type does not support direct saving",
+	}
 }
 
 // defaultSources creates the default set of sources

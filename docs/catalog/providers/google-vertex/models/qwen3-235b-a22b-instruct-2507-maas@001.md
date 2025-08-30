@@ -1,3 +1,9 @@
+---
+title: "Qwen3 235b A22b Instruct 2507 Maas"
+description: ""
+weight: 10
+author: "qwen"
+---
 # Qwen3 235b A22b Instruct 2507 Maas
 
 ## 📋 Overview

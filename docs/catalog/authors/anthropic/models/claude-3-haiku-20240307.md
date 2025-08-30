@@ -1,3 +1,9 @@
+---
+title: "Claude Haiku 3"
+description: ""
+weight: 10
+author: "Anthropic"
+---
 # Claude Haiku 3
 
 ## 📋 Overview

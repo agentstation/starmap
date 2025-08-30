@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.0 Flash (Image Generation) Experimental"
+description: "Gemini 2.0 Flash (Image Generation) Experimental"
+weight: 10
+author: "Google"
+---
 # Gemini 2.0 Flash (Image Generation) Experimental
 
 Gemini 2.0 Flash (Image Generation) Experimental

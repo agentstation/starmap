@@ -1,3 +1,9 @@
+---
+title: "Embedding Gecko"
+description: "Obtain a distributed representation of a text."
+weight: 10
+author: "Google"
+---
 # Embedding Gecko
 
 Obtain a distributed representation of a text.

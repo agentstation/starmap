@@ -1,3 +1,10 @@
+---
+title: "bert-base"
+description: "Google Vertex AI model: bert-base
+"
+weight: 10
+author: ""
+---
 # bert-base
 
 Google Vertex AI model: bert-base

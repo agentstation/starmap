@@ -1,3 +1,10 @@
+---
+title: "derm-foundation"
+description: "Google Vertex AI model: derm-foundation
+"
+weight: 10
+author: ""
+---
 # derm-foundation
 
 Google Vertex AI model: derm-foundation

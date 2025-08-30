@@ -1,3 +1,9 @@
+---
+title: "Resnet50"
+description: ""
+weight: 10
+author: "google"
+---
 # Resnet50
 
 ## 📋 Overview

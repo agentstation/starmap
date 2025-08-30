@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Peking University
 
 **Description**: Leading Chinese university with significant AI and machine learning research contributions  

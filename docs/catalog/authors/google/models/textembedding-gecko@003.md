@@ -1,3 +1,9 @@
+---
+title: "Textembedding Gecko"
+description: ""
+weight: 10
+author: "google"
+---
 # Textembedding Gecko
 
 ## 📋 Overview

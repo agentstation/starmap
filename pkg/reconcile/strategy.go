@@ -3,6 +3,8 @@ package reconcile
 import (
 	"fmt"
 	"strings"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Strategy defines how reconciliation should be performed
@@ -57,7 +59,10 @@ func (s *baseStrategy) GetApplyStrategy() ApplyStrategy {
 // ValidateResult validates the reconciliation result
 func (s *baseStrategy) ValidateResult(result *Result) error {
 	if result == nil {
-		return fmt.Errorf("result is nil")
+		return &errors.ValidationError{
+			Field:   "result",
+			Message: "cannot be nil",
+		}
 	}
 	return nil
 }
@@ -339,7 +344,10 @@ func (s *StrategyChain) ResolveConflict(field string, values map[SourceName]inte
 func (s *StrategyChain) ValidateResult(result *Result) error {
 	for _, strategy := range s.strategies {
 		if err := strategy.ValidateResult(result); err != nil {
-			return fmt.Errorf("%s validation failed: %w", strategy.Name(), err)
+			return &errors.SyncError{
+				Provider: strategy.Name(),
+				Err:      err,
+			}
 		}
 	}
 	return nil

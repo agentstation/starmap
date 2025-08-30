@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # LMSYS Org
 
 **Description**: Research organization behind Vicuna, FastChat, and the Chatbot Arena platform  

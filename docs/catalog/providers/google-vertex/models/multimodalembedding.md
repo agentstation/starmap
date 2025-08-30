@@ -1,3 +1,10 @@
+---
+title: "multimodalembedding"
+description: "Google Vertex AI model: multimodalembedding
+"
+weight: 10
+author: ""
+---
 # multimodalembedding
 
 Google Vertex AI model: multimodalembedding

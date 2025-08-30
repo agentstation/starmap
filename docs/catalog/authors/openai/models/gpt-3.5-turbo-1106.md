@@ -1,3 +1,9 @@
+---
+title: "gpt-3.5-turbo-1106"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-3.5-turbo-1106
 
 ## 📋 Overview

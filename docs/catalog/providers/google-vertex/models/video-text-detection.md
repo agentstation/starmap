@@ -1,3 +1,10 @@
+---
+title: "video-text-detection"
+description: "Google Vertex AI model: video-text-detection
+"
+weight: 10
+author: ""
+---
 # video-text-detection
 
 Google Vertex AI model: video-text-detection

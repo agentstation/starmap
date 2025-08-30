@@ -1,3 +1,9 @@
+---
+title: "Gemma 3 12B"
+description: ""
+weight: 10
+author: "Google"
+---
 # Gemma 3 12B
 
 ## 📋 Overview

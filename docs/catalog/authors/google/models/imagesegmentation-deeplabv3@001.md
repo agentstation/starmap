@@ -1,3 +1,9 @@
+---
+title: "Imagesegmentation Deeplabv3"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagesegmentation Deeplabv3
 
 ## 📋 Overview

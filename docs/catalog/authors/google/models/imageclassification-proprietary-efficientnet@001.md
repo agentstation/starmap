@@ -1,3 +1,9 @@
+---
+title: "Imageclassification Proprietary Efficientnet"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageclassification Proprietary Efficientnet
 
 ## 📋 Overview

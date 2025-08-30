@@ -1,3 +1,9 @@
+---
+title: "Llama3 1"
+description: ""
+weight: 10
+author: "meta"
+---
 # Llama3 1
 
 ## 📋 Overview

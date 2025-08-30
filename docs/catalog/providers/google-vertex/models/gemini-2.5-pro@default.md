@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.5 Pro"
+description: ""
+weight: 10
+author: "google"
+---
 # Gemini 2.5 Pro
 
 ## 📋 Overview

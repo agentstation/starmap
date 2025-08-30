@@ -1,3 +1,9 @@
+---
+title: "gpt-4o-mini-audio-preview-2024-12-17"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4o-mini-audio-preview-2024-12-17
 
 ## 📋 Overview

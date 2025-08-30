@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # WizardLM Team
 
 **Description**: Research team known for WizardLM and WizardCoder models with enhanced reasoning capabilities  

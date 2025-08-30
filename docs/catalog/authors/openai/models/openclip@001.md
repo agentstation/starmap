@@ -1,3 +1,9 @@
+---
+title: "Openclip"
+description: ""
+weight: 10
+author: "openai"
+---
 # Openclip
 
 ## 📋 Overview

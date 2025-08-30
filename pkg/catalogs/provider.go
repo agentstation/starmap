@@ -5,6 +5,8 @@ import (
 	"os"
 	"regexp"
 	"time"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Provider represents a provider configuration.
@@ -283,7 +285,10 @@ func (p *Provider) APIKeyValue() (string, error) {
 	if apiKey == "" {
 		// Check if API key is required
 		if p.IsAPIKeyRequired() {
-			return "", fmt.Errorf("environment variable %s not set", p.APIKey.Name)
+			return "", &errors.ConfigError{
+				Component: string(p.ID),
+				Message:   fmt.Sprintf("environment variable %s not set", p.APIKey.Name),
+			}
 		}
 		return "", nil
 	}
@@ -292,10 +297,13 @@ func (p *Provider) APIKeyValue() (string, error) {
 	if p.APIKey.Pattern != "" && p.APIKey.Pattern != ".*" {
 		matched, err := regexp.MatchString(p.APIKey.Pattern, apiKey)
 		if err != nil {
-			return "", fmt.Errorf("invalid pattern %s: %w", p.APIKey.Pattern, err)
+			return "", errors.WrapParse("regex", p.APIKey.Pattern, err)
 		}
 		if !matched {
-			return "", fmt.Errorf("API key does not match required pattern for provider %s", p.ID)
+			return "", &errors.ValidationError{
+				Field:   "api_key",
+				Message: fmt.Sprintf("API key does not match required pattern for provider %s", p.ID),
+			}
 		}
 	}
 
@@ -334,8 +342,8 @@ func (p *Provider) HasRequiredEnvVars() bool {
 	return true
 }
 
-// GetMissingEnvVars returns a list of required environment variables that are not set.
-func (p *Provider) GetMissingEnvVars() []string {
+// MissingEnvVars returns a list of required environment variables that are not set.
+func (p *Provider) MissingEnvVars() []string {
 	var missing []string
 	for _, envVar := range p.EnvVars {
 		if envVar.Required {
@@ -371,7 +379,7 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 		HasAPIKey:          p.HasAPIKey(),
 		IsAPIKeyRequired:   p.IsAPIKeyRequired(),
 		HasRequiredEnvVars: p.HasRequiredEnvVars(),
-		MissingEnvVars:     p.GetMissingEnvVars(),
+		MissingEnvVars:     p.MissingEnvVars(),
 		IsSupported:        supportedProviders[p.ID],
 	}
 
@@ -413,7 +421,10 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 		}
 
 		if len(missingParts) > 0 {
-			result.Error = fmt.Errorf("missing required configuration: %s", fmt.Sprintf("%v", missingParts))
+			result.Error = &errors.ConfigError{
+				Component: string(p.ID),
+				Message:   fmt.Sprintf("missing required configuration: %v", missingParts),
+			}
 			result.Status = ProviderValidationStatusMissing
 		} else {
 			// No auth required at all
@@ -424,74 +435,21 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 	return result
 }
 
-// ClientGetterFunc is a function type for getting a client from the registry.
-type ClientGetterFunc func(*Provider) (Client, error)
-
-// clientGetter is the injected function for getting clients from the registry.
-var clientGetter ClientGetterFunc
-
-// SetClientGetter sets the function used to retrieve clients from the registry.
-// This is called by the registry package to inject the lookup function.
-func SetClientGetter(getter ClientGetterFunc) {
-	clientGetter = getter
-}
-
-// ClientOption is a function type for configuring client options.
-type ClientOption func(*ClientOptions)
-
-// ClientOptions configures how a client is retrieved for a provider.
-type ClientOptions struct {
-	AllowMissingAPIKey bool
-}
-
-// WithAllowMissingAPIKey allows retrieving a client even if the API key is missing.
-func WithAllowMissingAPIKey(allow bool) ClientOption {
-	return func(opts *ClientOptions) {
-		opts.AllowMissingAPIKey = allow
-	}
-}
-
-// Client retrieves a configured client for this provider.
-func (p *Provider) Client(opts ...ClientOption) (Client, error) {
-	// Apply options
-	options := &ClientOptions{}
-	for _, opt := range opts {
-		opt(options)
-	}
-
-	// Check if API key is required but missing
-	if p.IsAPIKeyRequired() && !p.HasAPIKey() && !options.AllowMissingAPIKey {
-		return nil, fmt.Errorf("provider %s requires API key %s but it is not configured", p.ID, p.APIKey.Name)
-	}
-
-	// Check if required environment variables are missing
-	missingEnvVars := p.GetMissingEnvVars()
-	if len(missingEnvVars) > 0 && !options.AllowMissingAPIKey {
-		return nil, fmt.Errorf("provider %s is missing required environment variables: %v", p.ID, missingEnvVars)
-	}
-
-	// Use the injected client getter function
-	if clientGetter == nil {
-		return nil, fmt.Errorf("client registry not initialized")
-	}
-
-	client, err := clientGetter(p)
-	if err != nil {
-		return nil, err
-	}
-
-	return client, nil
-}
-
 // Model retrieves a specific model from the provider.
 func (p *Provider) Model(modelID string) (*Model, error) {
 	if p == nil || p.Models == nil {
-		return nil, fmt.Errorf("provider or models not initialized")
+		return nil, &errors.ValidationError{
+			Field:   "provider",
+			Message: "provider or models not initialized",
+		}
 	}
 
 	model, exists := p.Models[modelID]
 	if !exists {
-		return nil, fmt.Errorf("model %s not found", modelID)
+		return nil, &errors.NotFoundError{
+			Resource: "model",
+			ID:       modelID,
+		}
 	}
 
 	return &model, nil

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Authors Overview
 
 Complete list of AI model authors and organizations in the Starmap catalog.
@@ -16,7 +20,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models  
 **Website**: [https://ai21.com](https://ai21.com)  
 **GitHub**: [https://github.com/AI21Labs](https://github.com/AI21Labs)  
-**Models**: 3  
+**Models**: 0  
 
 ### [Adept](./adept/README.md)
 
@@ -48,7 +52,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: AI safety company known for Claude models and Constitutional AI research  
 **Website**: [https://anthropic.com](https://anthropic.com)  
 **GitHub**: [https://github.com/anthropics](https://github.com/anthropics)  
-**Models**: 14  
+**Models**: 0  
 
 ### [Anysphere](./anysphere/README.md)
 
@@ -147,7 +151,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: Chinese AI company known for DeepSeek-Coder and reasoning-focused language models  
 **Website**: [https://deepseek.com](https://deepseek.com)  
 **GitHub**: [https://github.com/deepseek-ai](https://github.com/deepseek-ai)  
-**Models**: 2  
+**Models**: 0  
 
 ### [Duke University](./duke/README.md)
 
@@ -189,7 +193,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations  
 **Website**: [https://ai.google](https://ai.google)  
 **GitHub**: [https://github.com/google](https://github.com/google)  
-**Models**: 160  
+**Models**: 0  
 
 ### [Google DeepMind](./deepmind/README.md)
 
@@ -258,7 +262,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: Social media company known for LLaMA/Llama model series and open-source AI research  
 **Website**: [https://about.meta.com](https://about.meta.com)  
 **GitHub**: [https://github.com/meta-llama](https://github.com/meta-llama)  
-**Models**: 31  
+**Models**: 0  
 
 ### [Microsoft](./microsoft/README.md)
 
@@ -327,7 +331,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: AI research company known for GPT models, ChatGPT, and DALL-E  
 **Website**: [https://openai.com](https://openai.com)  
 **GitHub**: [https://github.com/openai](https://github.com/openai)  
-**Models**: 72  
+**Models**: 0  
 
 ### [Peking University](./peking/README.md)
 
@@ -356,7 +360,7 @@ Complete list of AI model authors and organizations in the Starmap catalog.
 **Description**: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family  
 **Website**: [https://qwen.ai](https://qwen.ai)  
 **GitHub**: [https://github.com/QwenLM](https://github.com/QwenLM)  
-**Models**: 7  
+**Models**: 0  
 
 ### [Runway ML](./runway/README.md)
 

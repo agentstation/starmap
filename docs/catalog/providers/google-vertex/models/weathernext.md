@@ -1,3 +1,10 @@
+---
+title: "weathernext"
+description: "Google Vertex AI model: weathernext
+"
+weight: 10
+author: ""
+---
 # weathernext
 
 Google Vertex AI model: weathernext

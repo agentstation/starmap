@@ -1,3 +1,10 @@
+---
+title: "imageobjectdetection-yolo"
+description: "Google Vertex AI model: imageobjectdetection-yolo
+"
+weight: 10
+author: ""
+---
 # imageobjectdetection-yolo
 
 Google Vertex AI model: imageobjectdetection-yolo

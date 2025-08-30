@@ -1,3 +1,10 @@
+---
+title: "code-bison"
+description: "Google Vertex AI model: code-bison
+"
+weight: 10
+author: ""
+---
 # code-bison
 
 Google Vertex AI model: code-bison

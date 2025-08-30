@@ -1,3 +1,9 @@
+---
+title: "compound-beta-mini"
+description: ""
+weight: 10
+author: "Groq"
+---
 # compound-beta-mini
 
 ## 📋 Overview

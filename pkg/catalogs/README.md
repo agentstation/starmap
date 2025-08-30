@@ -1,533 +1,6 @@
-# Catalogs Package
+# catalogs
 
-> A unified interface for managing AI model catalogs with multiple storage backends
-
-## Table of Contents
-- [Problem Statement](#problem-statement)
-- [Key Concepts](#key-concepts)
-- [Architecture](#architecture)
-- [Catalog Types](#catalog-types)
-- [Core Entities](#core-entities)
-- [Merge Strategies](#merge-strategies)
-- [Usage Examples](#usage-examples)
-- [API Reference](#api-reference)
-- [When to Use This vs Reconcile](#when-to-use-this-vs-reconcile)
-- [Performance Characteristics](#performance-characteristics)
-
-## Problem Statement
-
-Managing AI model metadata requires a flexible storage system that can:
-
-- **Work in different environments** - From in-memory testing to production deployments
-- **Support multiple backends** - Embedded files, filesystem, or custom storage
-- **Enable local customization** - Users need to override and extend catalog data
-- **Provide consistent interface** - Same API regardless of storage backend
-- **Handle merging** - Combine catalogs from different sources
-
-This package provides a unified `Catalog` interface with pluggable storage backends, supporting everything from ephemeral test catalogs to persistent production systems.
-
-**For complex multi-source reconciliation** with field-level authorities and provenance tracking, see the [reconcile package](../reconcile/README.md).
-
-## Key Concepts
-
-### 1. Catalog Interface
-The **Catalog** interface provides a consistent API for all catalog operations:
-```go
-type Catalog interface {
-    // Collections
-    Models() *Models
-    Providers() *Providers
-    Authors() *Authors
-    Endpoints() *Endpoints
-    
-    // CRUD operations
-    Model(id string) (Model, error)
-    SetModel(model Model) error
-    DeleteModel(id string) error
-    
-    // Bulk operations
-    ReplaceWith(source Catalog) error
-    MergeWith(source Catalog, opts ...MergeOption) error
-    Copy() (Catalog, error)
-}
-```
-
-### 2. Catalog Types
-Different implementations for different use cases:
-- **Memory** - In-memory storage for testing
-- **Embedded** - Compiled into binary via `go:embed`
-- **Files** - Filesystem-based for development
-- **Custom** - Any `fs.FS` implementation
-
-### 3. Core Entities
-The building blocks of the catalog:
-- **Model** - AI model with pricing, limits, features
-- **Provider** - Service provider (OpenAI, Anthropic, etc.)
-- **Author** - Model creator or organization
-- **Endpoint** - API endpoint configuration
-
-### 4. Collections
-Thread-safe collection types with rich query capabilities:
-- **Models** - Collection of AI models
-- **Providers** - Collection of service providers
-- **Authors** - Collection of model authors
-- **Endpoints** - Collection of API endpoints
-
-### 5. Merge Strategies
-How catalogs combine their data:
-- **MergeEnrichEmpty** - Fill empty fields, preserve existing
-- **MergeReplaceAll** - Complete replacement
-- **MergeAppendOnly** - Only add new items
-
-## Architecture
-
-The catalogs package uses a **single implementation** pattern with configurable storage backends:
-
-```mermaid
-flowchart TB
-    subgraph "Catalog Interface"
-        CI[Catalog Interface<br/>Unified API]
-    end
-    
-    subgraph "Single Implementation"
-        IMPL[catalog struct<br/>Core logic]
-    end
-    
-    subgraph "Storage Backends via Options"
-        MEM[Memory<br/>readFS = nil]
-        EMB[Embedded<br/>readFS = embed.FS]
-        FILE[Files<br/>readFS = os.DirFS]
-        CUSTOM[Custom<br/>readFS = any fs.FS]
-    end
-    
-    subgraph "Collections"
-        MODELS[Models<br/>Thread-safe]
-        PROVIDERS[Providers<br/>Thread-safe]
-        AUTHORS[Authors<br/>Thread-safe]
-        ENDPOINTS[Endpoints<br/>Thread-safe]
-    end
-    
-    CI --> IMPL
-    IMPL --> MEM
-    IMPL --> EMB
-    IMPL --> FILE
-    IMPL --> CUSTOM
-    IMPL --> MODELS
-    IMPL --> PROVIDERS
-    IMPL --> AUTHORS
-    IMPL --> ENDPOINTS
-    
-    style CI fill:#e3f2fd
-    style IMPL fill:#fff3e0
-    style MODELS fill:#f3e5f5
-    style PROVIDERS fill:#f3e5f5
-    style AUTHORS fill:#f3e5f5
-    style ENDPOINTS fill:#f3e5f5
-```
-
-### How It Works
-
-1. **Single Implementation**: One `catalog` struct handles all logic
-2. **Storage via Options**: Backend configured through options pattern
-3. **Consistent Interface**: Same API regardless of storage
-4. **Thread-Safe Collections**: Concurrent access handled internally
-
-## Catalog Types
-
-### Memory Catalog
-**Purpose**: Testing and ephemeral data
-```go
-catalog, err := catalogs.New()  // No options = memory catalog
-```
-- ✅ Fast operations
-- ✅ No filesystem dependencies
-- ❌ Data lost on restart
-- **Use for**: Unit tests, temporary processing
-
-### Embedded Catalog
-**Purpose**: Production deployments with built-in data
-```go
-catalog, err := catalogs.New(
-    catalogs.WithEmbedded(),
-)
-```
-- ✅ Data compiled into binary
-- ✅ No runtime dependencies
-- ✅ Consistent across deployments
-- ❌ Requires rebuild for updates
-- **Use for**: Production systems, containerized deployments
-
-### Files Catalog
-**Purpose**: Development with live reloading
-```go
-catalog, err := catalogs.New(
-    catalogs.WithPath("./catalog"),
-)
-```
-- ✅ Edit YAML files directly
-- ✅ Changes without rebuilding
-- ✅ Version control friendly
-- ❌ Requires filesystem access
-- **Use for**: Development, local customization
-
-### Custom Catalog
-**Purpose**: Integration with any storage system
-```go
-catalog, err := catalogs.New(
-    catalogs.WithFS(customFS),  // Any fs.FS implementation
-)
-```
-- ✅ Flexible storage backend
-- ✅ Cloud storage integration
-- **Use for**: S3, GCS, custom databases
-
-## Core Entities
-
-### Model
-Comprehensive AI model specification:
-```go
-type Model struct {
-    // Identity
-    ID          string
-    Name        string
-    Description string
-    
-    // Capabilities
-    Features    *ModelFeatures    // Chat, vision, audio, etc.
-    Tools       *ModelTools       // Function calling, web search
-    Delivery    *ModelDelivery    // Streaming, formats
-    
-    // Operational
-    Pricing     *ModelPricing     // Token costs
-    Limits      *ModelLimits      // Context window, rate limits
-    
-    // Metadata
-    Metadata    *ModelMetadata    // Release date, architecture
-}
-```
-
-### Provider
-Service provider configuration:
-```go
-type Provider struct {
-    // Identity
-    ID           ProviderID
-    Name         string
-    Headquarters string
-    
-    // Authentication
-    APIKey       *ProviderAPIKey   // API key configuration
-    EnvVars      []ProviderEnvVar  // Required environment variables
-    
-    // Catalog
-    Models       map[string]Model  // Available models
-    
-    // Policies
-    PrivacyPolicy    *ProviderPrivacyPolicy
-    RetentionPolicy  *ProviderRetentionPolicy
-}
-```
-
-### Author
-Model creator or organization:
-```go
-type Author struct {
-    ID          AuthorID
-    Name        string
-    Website     string
-    Description string
-}
-```
-
-## Merge Strategies
-
-The catalog package provides simple two-catalog merging. For complex multi-source reconciliation, use the [reconcile package](../reconcile/README.md).
-
-### MergeEnrichEmpty (Default)
-Smart field-level merging that preserves existing data:
-```go
-catalog.MergeWith(source)  // Default strategy
-```
-- Fills empty fields from source
-- Preserves existing non-empty values
-- Non-destructive updates
-
-### MergeReplaceAll
-Complete replacement (last-write-wins):
-```go
-catalog.MergeWith(source, 
-    catalogs.WithStrategy(catalogs.MergeReplaceAll),
-)
-```
-- Source completely replaces target
-- Simple and predictable
-- Use when source is authoritative
-
-### MergeAppendOnly
-Only add new items, skip existing:
-```go
-catalog.MergeWith(source,
-    catalogs.WithStrategy(catalogs.MergeAppendOnly),
-)
-```
-- Adds new models/providers
-- Never modifies existing items
-- Safe for incremental updates
-
-## Usage Examples
-
-### Basic CRUD Operations
-
-```go
-import "github.com/agentstation/starmap/pkg/catalogs"
-
-// Create a catalog
-catalog, err := catalogs.New(
-    catalogs.WithEmbedded(),  // Use embedded data
-)
-
-// Get a model
-model, err := catalog.Model("gpt-4")
-
-// Update a model
-model.Description = "Updated description"
-err = catalog.SetModel(model)
-
-// Delete a model
-err = catalog.DeleteModel("old-model")
-
-// List all models
-models := catalog.Models().List()
-for _, m := range models {
-    fmt.Printf("Model: %s - %s\n", m.ID, m.Name)
-}
-```
-
-### Working with Collections
-
-```go
-// Filter models by capability
-chatModels := catalog.Models().Filter(func(m *Model) bool {
-    return m.Features != nil && m.Features.Chat
-})
-
-// Find models by provider
-openaiModels := catalog.Models().Filter(func(m *Model) bool {
-    return strings.HasPrefix(m.ID, "gpt")
-})
-
-// Get model count
-count := catalog.Models().Count()
-
-// Check if model exists
-if catalog.Models().Has("claude-3") {
-    // Model exists
-}
-```
-
-### Merging Catalogs
-
-```go
-// Load two catalogs
-mainCatalog, _ := catalogs.New(catalogs.WithEmbedded())
-updateCatalog, _ := catalogs.New(catalogs.WithPath("./updates"))
-
-// Merge with different strategies
-// Smart merge - fill gaps
-err := mainCatalog.MergeWith(updateCatalog,
-    catalogs.WithStrategy(catalogs.MergeEnrichEmpty),
-)
-
-// Complete replacement
-err := mainCatalog.MergeWith(updateCatalog,
-    catalogs.WithStrategy(catalogs.MergeReplaceAll),
-)
-
-// Only add new items
-err := mainCatalog.MergeWith(updateCatalog,
-    catalogs.WithStrategy(catalogs.MergeAppendOnly),
-)
-```
-
-### Persistence Operations
-
-```go
-// Create a files-based catalog with persistence
-catalog, err := catalogs.New(
-    catalogs.WithPath("./my-catalog"),
-)
-
-// Check if catalog supports persistence
-if persistable, ok := catalog.(catalogs.Persistable); ok {
-    // Save changes
-    err := persistable.Save()
-    
-    // Load from disk
-    err := persistable.Load()
-    
-    // Write to specific location
-    err := persistable.Write("./backup/catalog")
-}
-```
-
-### Custom Storage Backend
-
-```go
-import "io/fs"
-
-// Implement custom fs.FS
-type S3FS struct {
-    bucket string
-}
-
-func (s *S3FS) Open(name string) (fs.File, error) {
-    // S3 implementation
-}
-
-// Use custom backend
-s3fs := &S3FS{bucket: "my-catalog"}
-catalog, err := catalogs.New(
-    catalogs.WithFS(s3fs),
-)
-```
-
-## API Reference
-
-### Core Types
-
-```go
-// Main catalog interface
-type Catalog interface {
-    // Collections
-    Models() *Models
-    Providers() *Providers
-    Authors() *Authors
-    Endpoints() *Endpoints
-    
-    // CRUD operations
-    Model(id string) (Model, error)
-    SetModel(model Model) error
-    DeleteModel(id string) error
-    
-    // Bulk operations
-    ReplaceWith(source Catalog) error
-    MergeWith(source Catalog, opts ...MergeOption) error
-    Copy() (Catalog, error)
-    
-    // Configuration
-    MergeStrategy() MergeStrategy
-    SetMergeStrategy(strategy MergeStrategy)
-}
-
-// Storage configuration
-type Option func(*catalogOptions)
-
-// Available options
-WithEmbedded()              // Use embedded catalog
-WithPath(path string)       // Use filesystem path
-WithFS(fsys fs.FS)         // Use custom fs.FS
-WithMergeStrategy(s)       // Set default merge strategy
-```
-
-### Collection Methods
-
-```go
-type Models struct {
-    List() []*Model
-    Get(id string) (*Model, error)
-    Add(model *Model) error
-    Update(model *Model) error
-    Delete(id string) error
-    Has(id string) bool
-    Count() int
-    Filter(fn func(*Model) bool) []*Model
-    Clear()
-}
-```
-
-## When to Use This vs Reconcile
-
-### Use `catalogs` Package When:
-✅ Working with single or two catalogs
-✅ Simple merge operations are sufficient
-✅ You control the data sources
-✅ No need for provenance tracking
-✅ Testing or development scenarios
-
-```go
-// Simple two-catalog merge
-catalog.MergeWith(updates, WithStrategy(MergeReplaceAll))
-```
-
-### Use `reconcile` Package When:
-✅ Multiple data sources (3+)
-✅ Different sources authoritative for different fields
-✅ Need provenance tracking
-✅ Complex merge logic required
-✅ Production systems with audit requirements
-
-```go
-// Complex multi-source reconciliation
-reconciler, _ := reconcile.New(
-    reconcile.WithAuthorities(authorities),
-    reconcile.WithProvenance(true),
-)
-result, _ := reconciler.ReconcileCatalogs(ctx, sources)
-```
-
-**See [reconcile package documentation](../reconcile/README.md)** for advanced reconciliation scenarios.
-
-## Performance Characteristics
-
-| Operation | Memory Catalog | Embedded Catalog | Files Catalog |
-|-----------|---------------|------------------|---------------|
-| Startup | ~1ms | ~10ms | ~50ms |
-| Get Model | O(1) | O(1) | O(1) |
-| List Models (1000) | ~1ms | ~1ms | ~1ms |
-| Add Model | O(1) | O(1) | O(1) + disk write |
-| Merge (1000 models) | ~10ms | ~10ms | ~10ms |
-| Save | N/A | ~100ms | ~100ms |
-| Memory Usage | ~10MB/1000 models | ~10MB + binary size | ~10MB |
-
-### Recommendations
-
-- **Testing**: Use memory catalog for speed
-- **Development**: Use files catalog for flexibility
-- **Production**: Use embedded catalog for consistency
-- **Large catalogs** (10K+ models): Consider pagination or streaming
-
-## Best Practices
-
-1. **Choose the Right Catalog Type**
-   - Memory for tests
-   - Embedded for production
-   - Files for development
-
-2. **Use Appropriate Merge Strategy**
-   - `MergeEnrichEmpty` for incremental updates
-   - `MergeReplaceAll` for authoritative sources
-   - `MergeAppendOnly` for safe additions
-
-3. **Handle Persistence Properly**
-   ```go
-   if p, ok := catalog.(Persistable); ok {
-       defer p.Save()  // Ensure changes are saved
-   }
-   ```
-
-4. **Thread Safety**
-   - Collections are thread-safe
-   - Multiple goroutines can read/write safely
-
-5. **For Complex Scenarios**
-   - Use [reconcile package](../reconcile/README.md) for multi-source reconciliation
-   - Implement custom `fs.FS` for special storage needs
-
-## Further Reading
-
-- [Reconcile Package](../reconcile/README.md) - Advanced multi-source reconciliation
-- [Go embed Package](https://pkg.go.dev/embed) - Embedding files in Go binaries
-- [io/fs Package](https://pkg.go.dev/io/fs) - File system abstraction
+Package catalogs provides a unified catalog abstraction with pluggable storage backends for managing AI model information.
 
 <!-- gomarkdoc:embed:start -->
 
@@ -539,15 +12,504 @@ result, _ := reconciler.ReconcileCatalogs(ctx, sources)
 import "github.com/agentstation/starmap/pkg/catalogs"
 ```
 
-Package catalogs provides a unified interface for managing AI model catalogs with multiple storage backends.
+Package catalogs provides the core catalog system for managing AI model metadata. It offers multiple implementations \(embedded, file\-based, memory\) and supports CRUD operations, merging strategies, and persistence.
+
+The catalog system is designed to be thread\-safe and extensible, with support for providers, models, authors, and endpoints. Each catalog implementation can be configured with different storage backends while maintaining a consistent interface.
+
+Example usage:
+
+```
+// Create an embedded catalog (production use)
+catalog, err := New(WithEmbedded())
+if err != nil {
+    log.Fatal(err)
+}
+
+// Access models
+models := catalog.Models()
+for _, model := range models.List() {
+    fmt.Printf("Model: %s\n", model.ID)
+}
+
+// Create a file-based catalog (development use)
+catalog, err := New(WithFiles("./catalog"))
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+<details><summary>Example</summary>
+<p>
+
+Example demonstrates basic catalog creation and usage
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	// Create a memory-based catalog
+	catalog, err := catalogs.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Add a provider
+	provider := catalogs.Provider{
+		ID:   "openai",
+		Name: "OpenAI",
+	}
+	if err := catalog.SetProvider(provider); err != nil {
+		log.Fatal(err)
+	}
+
+	// Add a model
+	model := catalogs.Model{
+		ID:          "gpt-4",
+		Name:        "GPT-4",
+		Description: "Advanced language model",
+	}
+	if err := catalog.SetModel(model); err != nil {
+		log.Fatal(err)
+	}
+
+	// List all models
+	models := catalog.Models().List()
+	fmt.Printf("Found %d models\n", len(models))
+}
+```
+
+#### Output
+
+```
+Found 1 models
+```
+
+</p>
+</details>
+
+<details><summary>Example (Catalog Copy)</summary>
+<p>
+
+Example\_catalogCopy demonstrates creating independent copies
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	// Create original catalog
+	original, _ := catalogs.New()
+	original.SetModel(catalogs.Model{
+		ID:   "model-1",
+		Name: "Original Model",
+	})
+
+	// Create a copy
+	copy, err := original.Copy()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Modify the copy
+	copy.SetModel(catalogs.Model{
+		ID:   "model-2",
+		Name: "Copy Model",
+	})
+
+	// Original is unchanged
+	fmt.Printf("Original has %d models\n", len(original.Models().List()))
+	fmt.Printf("Copy has %d models\n", len(copy.Models().List()))
+}
+```
+
+#### Output
+
+```
+Original has 1 models
+Copy has 2 models
+```
+
+</p>
+</details>
+
+<details><summary>Example (Concurrent Access)</summary>
+<p>
+
+Example\_concurrentAccess demonstrates thread\-safe concurrent usage
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+)
+
+func main() {
+	catalog, _ := catalogs.New()
+	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
+	defer cancel()
+
+	// Safe for concurrent reads and writes
+	done := make(chan bool, 2)
+
+	// Writer goroutine
+	go func() {
+		for i := 0; i < 100; i++ {
+			catalog.SetModel(catalogs.Model{
+				ID:   fmt.Sprintf("model-%d", i),
+				Name: fmt.Sprintf("Model %d", i),
+			})
+		}
+		done <- true
+	}()
+
+	// Reader goroutine
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				done <- true
+				return
+			default:
+				_ = catalog.Models().List()
+				time.Sleep(10 * time.Millisecond)
+			}
+		}
+	}()
+
+	// Wait for both
+	<-done
+	<-done
+
+	fmt.Printf("Created %d models concurrently\n", len(catalog.Models().List()))
+}
+```
+
+</p>
+</details>
+
+<details><summary>Example (Embedded Catalog)</summary>
+<p>
+
+Example\_embeddedCatalog demonstrates using the embedded catalog
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	// Create catalog with embedded data
+	catalog, err := catalogs.New(catalogs.WithEmbedded())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Access pre-loaded models
+	models := catalog.Models().List()
+	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
+
+	// Find a specific model
+	model, err := catalog.Model("gpt-4o")
+	if err == nil {
+		fmt.Printf("Found model: %s\n", model.Name)
+	}
+}
+```
+
+</p>
+</details>
+
+<details><summary>Example (File Based Catalog)</summary>
+<p>
+
+Example\_fileBasedCatalog demonstrates file\-based persistence
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"path/filepath"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	// Create a file-based catalog
+	catalogPath := filepath.Join(".", "my-catalog")
+	catalog, err := catalogs.New(
+		catalogs.WithFiles(catalogPath),
+		catalogs.WithWritePath(catalogPath),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Add and save data
+	model := catalogs.Model{
+		ID:   "custom-model",
+		Name: "My Custom Model",
+	}
+	if err := catalog.SetModel(model); err != nil {
+		log.Fatal(err)
+	}
+
+	// Save to disk (would normally use SaveTo method or similar)
+	// Since Write is not part of the interface, this example shows the concept
+	// In actual usage, you would use catalog.SaveTo(catalogPath)
+
+	fmt.Println("Catalog saved to disk")
+}
+```
+
+</p>
+</details>
+
+<details><summary>Example (Merge Catalogs)</summary>
+<p>
+
+Example\_mergeCatalogs demonstrates merging two catalogs
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	// Create base catalog
+	base, _ := catalogs.New()
+	base.SetModel(catalogs.Model{
+		ID:          "model-1",
+		Name:        "Model One",
+		Description: "Original description",
+	})
+
+	// Create updates catalog
+	updates, _ := catalogs.New()
+	updates.SetModel(catalogs.Model{
+		ID:          "model-1",
+		Name:        "Model One Enhanced",
+		Description: "Updated description",
+		Pricing: &catalogs.ModelPricing{
+			Tokens: &catalogs.TokenPricing{
+				Input: &catalogs.TokenCost{
+					Per1M: 2.0, // $2 per 1M tokens
+				},
+				Output: &catalogs.TokenCost{
+					Per1M: 4.0, // $4 per 1M tokens
+				},
+			},
+			Currency: "USD",
+		},
+	})
+
+	// Merge with EnrichEmpty strategy (default)
+	if err := base.MergeWith(updates); err != nil {
+		log.Fatal(err)
+	}
+
+	model, _ := base.Model("model-1")
+	fmt.Printf("Model name: %s\n", model.Name)
+}
+```
+
+#### Output
+
+```
+Model name: Model One Enhanced
+```
+
+</p>
+</details>
+
+<details><summary>Example (Merge Strategies)</summary>
+<p>
+
+Example\_mergeStrategies demonstrates different merge strategies
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	base, _ := catalogs.New()
+	base.SetModel(catalogs.Model{ID: "m1", Name: "Original"})
+
+	updates, _ := catalogs.New()
+	updates.SetModel(catalogs.Model{ID: "m1", Name: "Updated"})
+	updates.SetModel(catalogs.Model{ID: "m2", Name: "New"})
+
+	// Example 1: Append only (keeps existing, adds new)
+	cat1, _ := base.Copy()
+	cat1.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeAppendOnly))
+
+	m1, _ := cat1.Model("m1")
+	fmt.Printf("AppendOnly - m1: %s\n", m1.Name) // Original
+
+	// Example 2: Replace all
+	cat2, _ := base.Copy()
+	cat2.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeReplaceAll))
+
+	m1, _ = cat2.Model("m1")
+	fmt.Printf("ReplaceAll - m1: %s\n", m1.Name) // Updated
+
+	// Example 3: Enrich empty (smart merge)
+	cat3, _ := base.Copy()
+	cat3.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeEnrichEmpty))
+
+	m1, _ = cat3.Model("m1")
+	fmt.Printf("EnrichEmpty - m1: %s\n", m1.Name) // Updated
+}
+```
+
+</p>
+</details>
+
+<details><summary>Example (Model Filtering)</summary>
+<p>
+
+Example\_modelFiltering demonstrates filtering models
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	catalog, _ := catalogs.New(catalogs.WithEmbedded())
+
+	// Get all models for a specific provider
+	// In practice, models would be linked to providers via naming convention or metadata
+	var gptModels []*catalogs.Model
+	for _, model := range catalog.Models().List() {
+		if len(model.ID) > 3 && model.ID[:3] == "gpt" {
+			gptModels = append(gptModels, model)
+		}
+	}
+	fmt.Printf("Found %d GPT models\n", len(gptModels))
+
+	// Filter by features
+	var visionModels []*catalogs.Model
+	for _, model := range catalog.Models().List() {
+		if model.Features != nil {
+			for _, modality := range model.Features.Modalities.Input {
+				if modality == "image" {
+					visionModels = append(visionModels, model)
+					break
+				}
+			}
+		}
+	}
+	fmt.Printf("Found %d models with vision\n", len(visionModels))
+}
+```
+
+</p>
+</details>
+
+<details><summary>Example (Provider Capabilities)</summary>
+<p>
+
+Example\_providerCapabilities demonstrates working with provider features
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+func main() {
+	catalog, _ := catalogs.New()
+
+	// Add provider with capabilities
+	provider := catalogs.Provider{
+		ID:   "openai",
+		Name: "OpenAI",
+		Catalog: &catalogs.ProviderCatalog{
+			APIURL:         ptr("https://api.openai.com/v1/models"),
+			APIKeyRequired: ptrBool(true),
+		},
+	}
+	catalog.SetProvider(provider)
+
+	// Check capabilities
+	p, _ := catalog.Provider("openai")
+	if p.HasAPIKey() {
+		fmt.Println("Provider has API key configured")
+	}
+	if p.Catalog != nil && p.Catalog.APIKeyRequired != nil && *p.Catalog.APIKeyRequired {
+		fmt.Println("Provider requires API key")
+	}
+}
+
+// Helper functions for creating pointers
+func ptr(s string) *string {
+	return &s
+}
+
+func ptrBool(b bool) *bool {
+	return &b
+}
+```
+
+</p>
+</details>
 
 ## Index
 
+- [func AssertCatalogHasModel\(t testing.TB, catalog Catalog, modelID string\)](<#AssertCatalogHasModel>)
+- [func AssertCatalogHasProvider\(t testing.TB, catalog Catalog, providerID ProviderID\)](<#AssertCatalogHasProvider>)
+- [func AssertModelsEqual\(t testing.TB, expected, actual \*Model\)](<#AssertModelsEqual>)
+- [func AssertProvidersEqual\(t testing.TB, expected, actual \*Provider\)](<#AssertProvidersEqual>)
 - [func PrintProviderValidationReport\(report \*ProviderValidationReport\)](<#PrintProviderValidationReport>)
-- [func SetClientGetter\(getter ClientGetterFunc\)](<#SetClientGetter>)
+- [func TestAPIResponse\(models ...string\) map\[string\]interface\{\}](<#TestAPIResponse>)
+- [func TestTimeNow\(\) time.Time](<#TestTimeNow>)
 - [type ArchitectureType](<#ArchitectureType>)
   - [func \(at ArchitectureType\) String\(\) string](<#ArchitectureType.String>)
 - [type Author](<#Author>)
+  - [func TestAuthor\(t testing.TB\) \*Author](<#TestAuthor>)
 - [type AuthorCatalog](<#AuthorCatalog>)
 - [type AuthorID](<#AuthorID>)
   - [func \(id AuthorID\) String\(\) string](<#AuthorID.String>)
@@ -571,12 +533,16 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
   - [func WithAuthorsMap\(authors map\[AuthorID\]\*Author\) AuthorsOption](<#WithAuthorsMap>)
 - [type Catalog](<#Catalog>)
   - [func New\(opts ...Option\) \(Catalog, error\)](<#New>)
+  - [func NewEmbedded\(\) \(Catalog, error\)](<#NewEmbedded>)
+  - [func NewFiles\(path string\) \(Catalog, error\)](<#NewFiles>)
+  - [func NewFromFS\(fsys fs.FS, root string\) \(Catalog, error\)](<#NewFromFS>)
+  - [func NewMemory\(\) Catalog](<#NewMemory>)
+  - [func NewReadOnly\(source Catalog\) Catalog](<#NewReadOnly>)
+  - [func TestCatalog\(t testing.TB\) Catalog](<#TestCatalog>)
 - [type Client](<#Client>)
-- [type ClientGetterFunc](<#ClientGetterFunc>)
-- [type ClientOption](<#ClientOption>)
-  - [func WithAllowMissingAPIKey\(allow bool\) ClientOption](<#WithAllowMissingAPIKey>)
-- [type ClientOptions](<#ClientOptions>)
+- [type Copier](<#Copier>)
 - [type Endpoint](<#Endpoint>)
+  - [func TestEndpoint\(t testing.TB\) \*Endpoint](<#TestEndpoint>)
 - [type Endpoints](<#Endpoints>)
   - [func NewEndpoints\(opts ...EndpointsOption\) \*Endpoints](<#NewEndpoints>)
   - [func \(e \*Endpoints\) Add\(endpoint \*Endpoint\) error](<#Endpoints.Add>)
@@ -602,8 +568,12 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
 - [type MergeOptions](<#MergeOptions>)
   - [func ParseMergeOptions\(opts ...MergeOption\) \*MergeOptions](<#ParseMergeOptions>)
 - [type MergeStrategy](<#MergeStrategy>)
+- [type MergeableCatalog](<#MergeableCatalog>)
+- [type Merger](<#Merger>)
 - [type Model](<#Model>)
   - [func MergeModels\(existing, new Model\) Model](<#MergeModels>)
+  - [func TestModel\(t testing.TB\) \*Model](<#TestModel>)
+  - [func TestModelWithOptions\(t testing.TB, opts ...TestModelOption\) \*Model](<#TestModelWithOptions>)
   - [func \(m \*Model\) FormatYAML\(\) string](<#Model.FormatYAML>)
   - [func \(m \*Model\) FormatYAMLHeaderComment\(\) string](<#Model.FormatYAMLHeaderComment>)
 - [type ModelArchitecture](<#ModelArchitecture>)
@@ -647,6 +617,7 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
 - [type ModelsOption](<#ModelsOption>)
   - [func WithModelsCapacity\(capacity int\) ModelsOption](<#WithModelsCapacity>)
   - [func WithModelsMap\(models map\[string\]\*Model\) ModelsOption](<#WithModelsMap>)
+- [type MutableCatalog](<#MutableCatalog>)
 - [type OperationPricing](<#OperationPricing>)
 - [type Option](<#Option>)
   - [func WithEmbedded\(\) Option](<#WithEmbedded>)
@@ -658,15 +629,16 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
   - [func WithWritePath\(path string\) Option](<#WithWritePath>)
 - [type Persistable](<#Persistable>)
 - [type Provider](<#Provider>)
+  - [func TestProvider\(t testing.TB\) \*Provider](<#TestProvider>)
+  - [func TestProviderWithOptions\(t testing.TB, opts ...TestProviderOption\) \*Provider](<#TestProviderWithOptions>)
   - [func \(p \*Provider\) APIKeyValue\(\) \(string, error\)](<#Provider.APIKeyValue>)
-  - [func \(p \*Provider\) Client\(opts ...ClientOption\) \(Client, error\)](<#Provider.Client>)
   - [func \(p \*Provider\) EnvVar\(name string\) string](<#Provider.EnvVar>)
-  - [func \(p \*Provider\) GetMissingEnvVars\(\) \[\]string](<#Provider.GetMissingEnvVars>)
   - [func \(p \*Provider\) HasAPIKey\(\) bool](<#Provider.HasAPIKey>)
   - [func \(p \*Provider\) HasRequiredEnvVars\(\) bool](<#Provider.HasRequiredEnvVars>)
   - [func \(p \*Provider\) IsAPIKeyRequired\(\) bool](<#Provider.IsAPIKeyRequired>)
   - [func \(p \*Provider\) LoadAPIKey\(\)](<#Provider.LoadAPIKey>)
   - [func \(p \*Provider\) LoadEnvVars\(\)](<#Provider.LoadEnvVars>)
+  - [func \(p \*Provider\) MissingEnvVars\(\) \[\]string](<#Provider.MissingEnvVars>)
   - [func \(p \*Provider\) Model\(modelID string\) \(\*Model, error\)](<#Provider.Model>)
   - [func \(p \*Provider\) Validate\(supportedProviders map\[ProviderID\]bool\) ProviderValidationResult](<#Provider.Validate>)
 - [type ProviderAPIKey](<#ProviderAPIKey>)
@@ -713,6 +685,15 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
   - [func WithProvidersMap\(providers map\[ProviderID\]\*Provider\) ProvidersOption](<#WithProvidersMap>)
 - [type Quantization](<#Quantization>)
   - [func \(q Quantization\) String\(\) string](<#Quantization.String>)
+- [type ReadOnlyCatalog](<#ReadOnlyCatalog>)
+- [type Reader](<#Reader>)
+- [type TestModelOption](<#TestModelOption>)
+  - [func WithModelID\(id string\) TestModelOption](<#WithModelID>)
+  - [func WithModelName\(name string\) TestModelOption](<#WithModelName>)
+- [type TestProviderOption](<#TestProviderOption>)
+  - [func WithProviderAPIKey\(name, pattern string\) TestProviderOption](<#WithProviderAPIKey>)
+  - [func WithProviderEnvVars\(envVars \[\]ProviderEnvVar\) TestProviderOption](<#WithProviderEnvVars>)
+  - [func WithProviderID\(id ProviderID\) TestProviderOption](<#WithProviderID>)
 - [type TokenCacheCost](<#TokenCacheCost>)
 - [type TokenCost](<#TokenCost>)
   - [func \(t \*TokenCost\) MarshalYAML\(\) \(interface\{\}, error\)](<#TokenCost.MarshalYAML>)
@@ -722,7 +703,44 @@ Package catalogs provides a unified interface for managing AI model catalogs wit
   - [func \(t Tokenizer\) String\(\) string](<#Tokenizer.String>)
 - [type ToolChoice](<#ToolChoice>)
   - [func \(tc ToolChoice\) String\(\) string](<#ToolChoice.String>)
+- [type Writer](<#Writer>)
 
+
+<a name="AssertCatalogHasModel"></a>
+## func [AssertCatalogHasModel](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L192>)
+
+```go
+func AssertCatalogHasModel(t testing.TB, catalog Catalog, modelID string)
+```
+
+AssertCatalogHasModel asserts that a catalog contains a model with the given ID.
+
+<a name="AssertCatalogHasProvider"></a>
+## func [AssertCatalogHasProvider](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L202>)
+
+```go
+func AssertCatalogHasProvider(t testing.TB, catalog Catalog, providerID ProviderID)
+```
+
+AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.
+
+<a name="AssertModelsEqual"></a>
+## func [AssertModelsEqual](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L158>)
+
+```go
+func AssertModelsEqual(t testing.TB, expected, actual *Model)
+```
+
+AssertModelsEqual asserts that two models are equal, providing detailed diff on failure.
+
+<a name="AssertProvidersEqual"></a>
+## func [AssertProvidersEqual](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L175>)
+
+```go
+func AssertProvidersEqual(t testing.TB, expected, actual *Provider)
+```
+
+AssertProvidersEqual asserts that two providers are equal.
 
 <a name="PrintProviderValidationReport"></a>
 ## func [PrintProviderValidationReport](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider_validation.go#L112>)
@@ -733,14 +751,23 @@ func PrintProviderValidationReport(report *ProviderValidationReport)
 
 PrintProviderValidationReport prints a formatted report of provider validation status This is a convenience function that calls the Print method on the report
 
-<a name="SetClientGetter"></a>
-## func [SetClientGetter](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L435>)
+<a name="TestAPIResponse"></a>
+## func [TestAPIResponse](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L217>)
 
 ```go
-func SetClientGetter(getter ClientGetterFunc)
+func TestAPIResponse(models ...string) map[string]interface{}
 ```
 
-SetClientGetter sets the function used to retrieve clients from the registry. This is called by the registry package to inject the lookup function.
+TestAPIResponse creates a test API response for provider testing.
+
+<a name="TestTimeNow"></a>
+## func [TestTimeNow](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L212>)
+
+```go
+func TestTimeNow() time.Time
+```
+
+TestTimeNow returns a consistent time for testing.
 
 <a name="ArchitectureType"></a>
 ## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/model.go#L118>)
@@ -802,6 +829,15 @@ type Author struct {
     UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"` // Last updated date (YYYY-MM or YYYY-MM-DD format)
 }
 ```
+
+<a name="TestAuthor"></a>
+### func [TestAuthor](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L43>)
+
+```go
+func TestAuthor(t testing.TB) *Author
+```
+
+TestAuthor creates a test author with sensible defaults.
 
 <a name="AuthorCatalog"></a>
 ## type [AuthorCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/author.go#L30-L34>)
@@ -934,7 +970,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="Authors"></a>
-## type [Authors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L10-L13>)
+## type [Authors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L11-L14>)
 
 Authors is a concurrent safe map of authors.
 
@@ -945,7 +981,7 @@ type Authors struct {
 ```
 
 <a name="NewAuthors"></a>
-### func [NewAuthors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L36>)
+### func [NewAuthors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L37>)
 
 ```go
 func NewAuthors(opts ...AuthorsOption) *Authors
@@ -954,7 +990,7 @@ func NewAuthors(opts ...AuthorsOption) *Authors
 NewAuthors creates a new Authors map with optional configuration.
 
 <a name="Authors.Add"></a>
-### func \(\*Authors\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L69>)
+### func \(\*Authors\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L73>)
 
 ```go
 func (a *Authors) Add(author *Author) error
@@ -963,7 +999,7 @@ func (a *Authors) Add(author *Author) error
 Add adds an author, returning an error if it already exists.
 
 <a name="Authors.AddBatch"></a>
-### func \(\*Authors\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L163>)
+### func \(\*Authors\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L177>)
 
 ```go
 func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error
@@ -972,7 +1008,7 @@ func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error
 AddBatch adds multiple authors in a single operation. Only adds authors that don't already exist \- fails if an author ID already exists. Returns a map of author IDs to errors for any failed additions.
 
 <a name="Authors.Clear"></a>
-### func \(\*Authors\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L151>)
+### func \(\*Authors\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L165>)
 
 ```go
 func (a *Authors) Clear()
@@ -981,7 +1017,7 @@ func (a *Authors) Clear()
 Clear removes all authors.
 
 <a name="Authors.Delete"></a>
-### func \(\*Authors\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L86>)
+### func \(\*Authors\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L97>)
 
 ```go
 func (a *Authors) Delete(id AuthorID) error
@@ -990,7 +1026,7 @@ func (a *Authors) Delete(id AuthorID) error
 Delete removes an author by id. Returns an error if the author doesn't exist.
 
 <a name="Authors.DeleteBatch"></a>
-### func \(\*Authors\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L226>)
+### func \(\*Authors\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L247>)
 
 ```go
 func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error
@@ -999,7 +1035,7 @@ func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error
 DeleteBatch removes multiple authors by their IDs. Returns a map of errors for authors that couldn't be deleted \(not found\).
 
 <a name="Authors.Exists"></a>
-### func \(\*Authors\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L99>)
+### func \(\*Authors\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L113>)
 
 ```go
 func (a *Authors) Exists(id AuthorID) bool
@@ -1008,7 +1044,7 @@ func (a *Authors) Exists(id AuthorID) bool
 Exists checks if an author exists without returning it.
 
 <a name="Authors.ForEach"></a>
-### func \(\*Authors\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L139>)
+### func \(\*Authors\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L153>)
 
 ```go
 func (a *Authors) ForEach(fn func(id AuthorID, author *Author) bool)
@@ -1017,7 +1053,7 @@ func (a *Authors) ForEach(fn func(id AuthorID, author *Author) bool)
 ForEach applies a function to each author. The function should not modify the author. If the function returns false, iteration stops early.
 
 <a name="Authors.Get"></a>
-### func \(\*Authors\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L49>)
+### func \(\*Authors\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L50>)
 
 ```go
 func (a *Authors) Get(id AuthorID) (*Author, bool)
@@ -1026,7 +1062,7 @@ func (a *Authors) Get(id AuthorID) (*Author, bool)
 Get returns an author by id and whether it exists.
 
 <a name="Authors.Len"></a>
-### func \(\*Authors\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L107>)
+### func \(\*Authors\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L121>)
 
 ```go
 func (a *Authors) Len() int
@@ -1035,7 +1071,7 @@ func (a *Authors) Len() int
 Len returns the number of authors.
 
 <a name="Authors.List"></a>
-### func \(\*Authors\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L115>)
+### func \(\*Authors\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L129>)
 
 ```go
 func (a *Authors) List() []*Author
@@ -1044,7 +1080,7 @@ func (a *Authors) List() []*Author
 List returns a slice of all authors.
 
 <a name="Authors.Map"></a>
-### func \(\*Authors\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L128>)
+### func \(\*Authors\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L142>)
 
 ```go
 func (a *Authors) Map() map[AuthorID]*Author
@@ -1053,7 +1089,7 @@ func (a *Authors) Map() map[AuthorID]*Author
 Map returns a copy of all authors.
 
 <a name="Authors.Set"></a>
-### func \(\*Authors\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L57>)
+### func \(\*Authors\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L58>)
 
 ```go
 func (a *Authors) Set(id AuthorID, author *Author) error
@@ -1062,7 +1098,7 @@ func (a *Authors) Set(id AuthorID, author *Author) error
 Set sets an author by id. Returns an error if author is nil.
 
 <a name="Authors.SetBatch"></a>
-### func \(\*Authors\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L202>)
+### func \(\*Authors\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L220>)
 
 ```go
 func (a *Authors) SetBatch(authors map[AuthorID]*Author) error
@@ -1071,7 +1107,7 @@ func (a *Authors) SetBatch(authors map[AuthorID]*Author) error
 SetBatch sets multiple authors in a single operation. Overwrites existing authors or adds new ones \(upsert behavior\). Returns an error if any author is nil.
 
 <a name="AuthorsOption"></a>
-## type [AuthorsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L16>)
+## type [AuthorsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L17>)
 
 AuthorsOption defines a function that configures an Authors instance.
 
@@ -1080,7 +1116,7 @@ type AuthorsOption func(*Authors)
 ```
 
 <a name="WithAuthorsCapacity"></a>
-### func [WithAuthorsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L19>)
+### func [WithAuthorsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L20>)
 
 ```go
 func WithAuthorsCapacity(capacity int) AuthorsOption
@@ -1089,7 +1125,7 @@ func WithAuthorsCapacity(capacity int) AuthorsOption
 WithAuthorsCapacity sets the initial capacity of the authors map.
 
 <a name="WithAuthorsMap"></a>
-### func [WithAuthorsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L26>)
+### func [WithAuthorsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L27>)
 
 ```go
 func WithAuthorsMap(authors map[AuthorID]*Author) AuthorsOption
@@ -1098,63 +1134,112 @@ func WithAuthorsMap(authors map[AuthorID]*Author) AuthorsOption
 WithAuthorsMap initializes the map with existing authors.
 
 <a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L26-L67>)
+## type [Catalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L60-L65>)
 
-Catalog is a collection of models, providers, authors, and endpoints.
+Catalog is the complete interface combining all catalog capabilities. This interface is composed of smaller, focused interfaces following the Interface Segregation Principle.
 
 ```go
 type Catalog interface {
-    // Lists all providers, authors, models, and endpoints
-    Providers() *Providers
-    Authors() *Authors
-    Models() *Models
-    Endpoints() *Endpoints
-
-    // Gets a provider, author, model, or endpoint by id
-    Provider(id ProviderID) (Provider, error)
-    Author(id AuthorID) (Author, error)
-    Model(id string) (Model, error)
-    Endpoint(id string) (Endpoint, error)
-
-    // Sets a provider, author, model, or endpoint (upsert semantics)
-    SetProvider(provider Provider) error
-    SetAuthor(author Author) error
-    SetModel(model Model) error
-    SetEndpoint(endpoint Endpoint) error
-
-    // Deletes a provider, author, model, or endpoint by id
-    DeleteProvider(id ProviderID) error
-    DeleteAuthor(id AuthorID) error
-    DeleteModel(id string) error
-    DeleteEndpoint(id string) error
-
-    // Replace this catalog's contents with another catalog
-    ReplaceWith(source Catalog) error
-
-    // Merge another catalog into this one
-    // By default uses the source catalog's suggested merge strategy
-    // Can be overridden with WithStrategy option
-    MergeWith(source Catalog, opts ...MergeOption) error
-
-    // Return a copy of the catalog
-    Copy() (Catalog, error)
-
-    // MergeStrategy returns the default merge strategy for this catalog
-    MergeStrategy() MergeStrategy
-
-    // SetMergeStrategy sets the default merge strategy for this catalog
-    SetMergeStrategy(strategy MergeStrategy)
+    Reader
+    Writer
+    Merger
+    Copier
 }
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L87>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L85>)
 
 ```go
 func New(opts ...Option) (Catalog, error)
 ```
 
 New creates a new catalog with the given options No options = memory catalog WithEmbedded\(\) = embedded catalog with auto\-load WithFiles\(path\) = files catalog with auto\-load
+
+<a name="NewEmbedded"></a>
+### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/constructors.go#L13>)
+
+```go
+func NewEmbedded() (Catalog, error)
+```
+
+NewEmbedded creates a catalog backed by embedded files. This is the recommended catalog for production use as it includes all model data compiled into the binary.
+
+<a name="NewFiles"></a>
+### func [NewFiles](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/constructors.go#L27>)
+
+```go
+func NewFiles(path string) (Catalog, error)
+```
+
+NewFiles creates a catalog backed by files on disk. This is useful for development when you want to edit catalog files without recompiling the binary.
+
+Example:
+
+```
+catalog, err := NewFiles("./internal/embedded/catalog")
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+<a name="NewFromFS"></a>
+### func [NewFromFS](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/constructors.go#L57>)
+
+```go
+func NewFromFS(fsys fs.FS, root string) (Catalog, error)
+```
+
+NewFromFS creates a catalog from a custom filesystem implementation. This allows for advanced use cases like virtual filesystems or custom storage backends.
+
+Example:
+
+```
+var myFS embed.FS
+catalog, err := NewFromFS(myFS, "catalog")
+```
+
+<a name="NewMemory"></a>
+### func [NewMemory](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/constructors.go#L43>)
+
+```go
+func NewMemory() Catalog
+```
+
+NewMemory creates an in\-memory catalog. This is useful for testing or temporary catalogs that don't need persistence.
+
+Example:
+
+```
+catalog := NewMemory()
+catalog.SetModel(myModel)
+```
+
+<a name="NewReadOnly"></a>
+### func [NewReadOnly](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/constructors.go#L73>)
+
+```go
+func NewReadOnly(source Catalog) Catalog
+```
+
+NewReadOnly creates a read\-only wrapper around an existing catalog. Write operations will return errors.
+
+Example:
+
+```
+embedded, _ := NewEmbedded()
+readOnly := NewReadOnly(embedded)
+err := readOnly.SetModel(model) // Returns error
+```
+
+<a name="TestCatalog"></a>
+### func [TestCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L60>)
+
+```go
+func TestCatalog(t testing.TB) Catalog
+```
+
+TestCatalog creates a test catalog with sample data.
 
 <a name="Client"></a>
 ## type [Client](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/client.go#L7-L16>)
@@ -1174,41 +1259,15 @@ type Client interface {
 }
 ```
 
-<a name="ClientGetterFunc"></a>
-## type [ClientGetterFunc](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L428>)
+<a name="Copier"></a>
+## type [Copier](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L52-L55>)
 
-ClientGetterFunc is a function type for getting a client from the registry.
-
-```go
-type ClientGetterFunc func(*Provider) (Client, error)
-```
-
-<a name="ClientOption"></a>
-## type [ClientOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L440>)
-
-ClientOption is a function type for configuring client options.
+Copier provides catalog copying capabilities
 
 ```go
-type ClientOption func(*ClientOptions)
-```
-
-<a name="WithAllowMissingAPIKey"></a>
-### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L448>)
-
-```go
-func WithAllowMissingAPIKey(allow bool) ClientOption
-```
-
-WithAllowMissingAPIKey allows retrieving a client even if the API key is missing.
-
-<a name="ClientOptions"></a>
-## type [ClientOptions](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L443-L445>)
-
-ClientOptions configures how a client is retrieved for a provider.
-
-```go
-type ClientOptions struct {
-    AllowMissingAPIKey bool
+type Copier interface {
+    // Return a copy of the catalog
+    Copy() (Catalog, error)
 }
 ```
 
@@ -1225,8 +1284,17 @@ type Endpoint struct {
 }
 ```
 
+<a name="TestEndpoint"></a>
+### func [TestEndpoint](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L52>)
+
+```go
+func TestEndpoint(t testing.TB) *Endpoint
+```
+
+TestEndpoint creates a test endpoint with sensible defaults.
+
 <a name="Endpoints"></a>
-## type [Endpoints](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L10-L13>)
+## type [Endpoints](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L11-L14>)
 
 Endpoints is a concurrent safe map of endpoints.
 
@@ -1237,7 +1305,7 @@ type Endpoints struct {
 ```
 
 <a name="NewEndpoints"></a>
-### func [NewEndpoints](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L36>)
+### func [NewEndpoints](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L37>)
 
 ```go
 func NewEndpoints(opts ...EndpointsOption) *Endpoints
@@ -1246,7 +1314,7 @@ func NewEndpoints(opts ...EndpointsOption) *Endpoints
 NewEndpoints creates a new Endpoints map with optional configuration.
 
 <a name="Endpoints.Add"></a>
-### func \(\*Endpoints\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L69>)
+### func \(\*Endpoints\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L73>)
 
 ```go
 func (e *Endpoints) Add(endpoint *Endpoint) error
@@ -1255,7 +1323,7 @@ func (e *Endpoints) Add(endpoint *Endpoint) error
 Add adds an endpoint, returning an error if it already exists.
 
 <a name="Endpoints.AddBatch"></a>
-### func \(\*Endpoints\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L163>)
+### func \(\*Endpoints\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L177>)
 
 ```go
 func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error
@@ -1264,7 +1332,7 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error
 AddBatch adds multiple endpoints in a single operation. Only adds endpoints that don't already exist \- fails if an endpoint ID already exists. Returns a map of endpoint IDs to errors for any failed additions.
 
 <a name="Endpoints.Clear"></a>
-### func \(\*Endpoints\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L151>)
+### func \(\*Endpoints\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L165>)
 
 ```go
 func (e *Endpoints) Clear()
@@ -1273,7 +1341,7 @@ func (e *Endpoints) Clear()
 Clear removes all endpoints.
 
 <a name="Endpoints.Delete"></a>
-### func \(\*Endpoints\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L86>)
+### func \(\*Endpoints\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L97>)
 
 ```go
 func (e *Endpoints) Delete(id string) error
@@ -1282,7 +1350,7 @@ func (e *Endpoints) Delete(id string) error
 Delete removes an endpoint by id. Returns an error if the endpoint doesn't exist.
 
 <a name="Endpoints.DeleteBatch"></a>
-### func \(\*Endpoints\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L226>)
+### func \(\*Endpoints\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L247>)
 
 ```go
 func (e *Endpoints) DeleteBatch(ids []string) map[string]error
@@ -1291,7 +1359,7 @@ func (e *Endpoints) DeleteBatch(ids []string) map[string]error
 DeleteBatch removes multiple endpoints by their IDs. Returns a map of errors for endpoints that couldn't be deleted \(not found\).
 
 <a name="Endpoints.Exists"></a>
-### func \(\*Endpoints\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L99>)
+### func \(\*Endpoints\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L113>)
 
 ```go
 func (e *Endpoints) Exists(id string) bool
@@ -1300,7 +1368,7 @@ func (e *Endpoints) Exists(id string) bool
 Exists checks if an endpoint exists without returning it.
 
 <a name="Endpoints.ForEach"></a>
-### func \(\*Endpoints\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L139>)
+### func \(\*Endpoints\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L153>)
 
 ```go
 func (e *Endpoints) ForEach(fn func(id string, endpoint *Endpoint) bool)
@@ -1309,7 +1377,7 @@ func (e *Endpoints) ForEach(fn func(id string, endpoint *Endpoint) bool)
 ForEach applies a function to each endpoint. The function should not modify the endpoint. If the function returns false, iteration stops early.
 
 <a name="Endpoints.Get"></a>
-### func \(\*Endpoints\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L49>)
+### func \(\*Endpoints\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L50>)
 
 ```go
 func (e *Endpoints) Get(id string) (*Endpoint, bool)
@@ -1318,7 +1386,7 @@ func (e *Endpoints) Get(id string) (*Endpoint, bool)
 Get returns an endpoint by id and whether it exists.
 
 <a name="Endpoints.Len"></a>
-### func \(\*Endpoints\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L107>)
+### func \(\*Endpoints\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L121>)
 
 ```go
 func (e *Endpoints) Len() int
@@ -1327,7 +1395,7 @@ func (e *Endpoints) Len() int
 Len returns the number of endpoints.
 
 <a name="Endpoints.List"></a>
-### func \(\*Endpoints\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L115>)
+### func \(\*Endpoints\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L129>)
 
 ```go
 func (e *Endpoints) List() []*Endpoint
@@ -1336,7 +1404,7 @@ func (e *Endpoints) List() []*Endpoint
 List returns a slice of all endpoints.
 
 <a name="Endpoints.Map"></a>
-### func \(\*Endpoints\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L128>)
+### func \(\*Endpoints\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L142>)
 
 ```go
 func (e *Endpoints) Map() map[string]*Endpoint
@@ -1345,7 +1413,7 @@ func (e *Endpoints) Map() map[string]*Endpoint
 Map returns a copy of all endpoints.
 
 <a name="Endpoints.Set"></a>
-### func \(\*Endpoints\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L57>)
+### func \(\*Endpoints\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L58>)
 
 ```go
 func (e *Endpoints) Set(id string, endpoint *Endpoint) error
@@ -1354,7 +1422,7 @@ func (e *Endpoints) Set(id string, endpoint *Endpoint) error
 Set sets an endpoint by id. Returns an error if endpoint is nil.
 
 <a name="Endpoints.SetBatch"></a>
-### func \(\*Endpoints\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L202>)
+### func \(\*Endpoints\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L220>)
 
 ```go
 func (e *Endpoints) SetBatch(endpoints map[string]*Endpoint) error
@@ -1363,7 +1431,7 @@ func (e *Endpoints) SetBatch(endpoints map[string]*Endpoint) error
 SetBatch sets multiple endpoints in a single operation. Overwrites existing endpoints or adds new ones \(upsert behavior\). Returns an error if any endpoint is nil.
 
 <a name="EndpointsOption"></a>
-## type [EndpointsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L16>)
+## type [EndpointsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L17>)
 
 EndpointsOption defines a function that configures an Endpoints instance.
 
@@ -1372,7 +1440,7 @@ type EndpointsOption func(*Endpoints)
 ```
 
 <a name="WithEndpointsCapacity"></a>
-### func [WithEndpointsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L19>)
+### func [WithEndpointsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L20>)
 
 ```go
 func WithEndpointsCapacity(capacity int) EndpointsOption
@@ -1381,7 +1449,7 @@ func WithEndpointsCapacity(capacity int) EndpointsOption
 WithEndpointsCapacity sets the initial capacity of the endpoints map.
 
 <a name="WithEndpointsMap"></a>
-### func [WithEndpointsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L26>)
+### func [WithEndpointsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/endpoints.go#L27>)
 
 ```go
 func WithEndpointsMap(endpoints map[string]*Endpoint) EndpointsOption
@@ -1454,7 +1522,7 @@ func ParseMergeOptions(opts ...MergeOption) *MergeOptions
 ParseMergeOptions processes merge options and returns the configuration
 
 <a name="MergeStrategy"></a>
-## type [MergeStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L14>)
+## type [MergeStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L43>)
 
 MergeStrategy defines how catalogs should be merged
 
@@ -1473,6 +1541,41 @@ const (
     // MergeAppendOnly only adds new items, skips existing ones
     MergeAppendOnly
 )
+```
+
+<a name="MergeableCatalog"></a>
+## type [MergeableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L81-L83>)
+
+MergeableCatalog provides full catalog functionality
+
+```go
+type MergeableCatalog interface {
+    Catalog
+}
+```
+
+<a name="Merger"></a>
+## type [Merger](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L34-L49>)
+
+Merger provides catalog merging capabilities
+
+```go
+type Merger interface {
+    // Replace this catalog's contents with another catalog
+    // The source only needs to be readable
+    ReplaceWith(source Reader) error
+
+    // Merge another catalog into this one
+    // The source only needs to be readable
+    // Use WithStrategy option to specify merge strategy (defaults to MergeEnrichEmpty)
+    MergeWith(source Reader, opts ...MergeOption) error
+
+    // MergeStrategy returns the default merge strategy for this catalog
+    MergeStrategy() MergeStrategy
+
+    // SetMergeStrategy sets the default merge strategy for this catalog
+    SetMergeStrategy(strategy MergeStrategy)
+}
 ```
 
 <a name="Model"></a>
@@ -1533,6 +1636,24 @@ func MergeModels(existing, new Model) Model
 ```
 
 MergeModels performs a smart merge of two models, keeping existing values where the new model has empty/nil values
+
+<a name="TestModel"></a>
+### func [TestModel](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L33>)
+
+```go
+func TestModel(t testing.TB) *Model
+```
+
+TestModel creates a test model with sensible defaults.
+
+<a name="TestModelWithOptions"></a>
+### func [TestModelWithOptions](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L105>)
+
+```go
+func TestModelWithOptions(t testing.TB, opts ...TestModelOption) *Model
+```
+
+TestModelWithOptions creates a test model with custom options.
 
 <a name="Model.FormatYAML"></a>
 ### func \(\*Model\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/model_yaml.go#L11>)
@@ -2035,7 +2156,7 @@ type ModelWebSearch struct {
 ```
 
 <a name="Models"></a>
-## type [Models](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L10-L13>)
+## type [Models](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L11-L14>)
 
 Models is a concurrent safe map of models.
 
@@ -2046,7 +2167,7 @@ type Models struct {
 ```
 
 <a name="NewModels"></a>
-### func [NewModels](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L16>)
+### func [NewModels](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L17>)
 
 ```go
 func NewModels(opts ...ModelsOption) *Models
@@ -2055,7 +2176,7 @@ func NewModels(opts ...ModelsOption) *Models
 NewModels creates a new Models map with optional configuration.
 
 <a name="Models.Add"></a>
-### func \(\*Models\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L49>)
+### func \(\*Models\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L53>)
 
 ```go
 func (m *Models) Add(model *Model) error
@@ -2064,7 +2185,7 @@ func (m *Models) Add(model *Model) error
 Add adds a model, returning an error if it already exists.
 
 <a name="Models.AddBatch"></a>
-### func \(\*Models\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L143>)
+### func \(\*Models\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L157>)
 
 ```go
 func (m *Models) AddBatch(models []*Model) map[string]error
@@ -2073,7 +2194,7 @@ func (m *Models) AddBatch(models []*Model) map[string]error
 AddBatch adds multiple models in a single operation. Only adds models that don't already exist \- fails if a model ID already exists. Returns a map of model IDs to errors for any failed additions.
 
 <a name="Models.Clear"></a>
-### func \(\*Models\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L131>)
+### func \(\*Models\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L145>)
 
 ```go
 func (m *Models) Clear()
@@ -2082,7 +2203,7 @@ func (m *Models) Clear()
 Clear removes all models.
 
 <a name="Models.Delete"></a>
-### func \(\*Models\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L66>)
+### func \(\*Models\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L77>)
 
 ```go
 func (m *Models) Delete(id string) error
@@ -2091,7 +2212,7 @@ func (m *Models) Delete(id string) error
 Delete removes a model by id. Returns an error if the model doesn't exist.
 
 <a name="Models.DeleteBatch"></a>
-### func \(\*Models\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L206>)
+### func \(\*Models\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L227>)
 
 ```go
 func (m *Models) DeleteBatch(ids []string) map[string]error
@@ -2100,7 +2221,7 @@ func (m *Models) DeleteBatch(ids []string) map[string]error
 DeleteBatch removes multiple models by their IDs. Returns a map of errors for models that couldn't be deleted \(not found\).
 
 <a name="Models.Exists"></a>
-### func \(\*Models\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L79>)
+### func \(\*Models\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L93>)
 
 ```go
 func (m *Models) Exists(id string) bool
@@ -2109,7 +2230,7 @@ func (m *Models) Exists(id string) bool
 Exists checks if a model exists without returning it.
 
 <a name="Models.ForEach"></a>
-### func \(\*Models\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L119>)
+### func \(\*Models\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L133>)
 
 ```go
 func (m *Models) ForEach(fn func(id string, model *Model) bool)
@@ -2118,7 +2239,7 @@ func (m *Models) ForEach(fn func(id string, model *Model) bool)
 ForEach applies a function to each model. The function should not modify the model. If the function returns false, iteration stops early.
 
 <a name="Models.Get"></a>
-### func \(\*Models\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L29>)
+### func \(\*Models\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L30>)
 
 ```go
 func (m *Models) Get(id string) (*Model, bool)
@@ -2127,7 +2248,7 @@ func (m *Models) Get(id string) (*Model, bool)
 Get returns a model by id and whether it exists.
 
 <a name="Models.Len"></a>
-### func \(\*Models\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L87>)
+### func \(\*Models\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L101>)
 
 ```go
 func (m *Models) Len() int
@@ -2136,7 +2257,7 @@ func (m *Models) Len() int
 Len returns the number of models.
 
 <a name="Models.List"></a>
-### func \(\*Models\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L95>)
+### func \(\*Models\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L109>)
 
 ```go
 func (m *Models) List() []*Model
@@ -2145,7 +2266,7 @@ func (m *Models) List() []*Model
 List returns a slice of all models.
 
 <a name="Models.Map"></a>
-### func \(\*Models\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L108>)
+### func \(\*Models\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L122>)
 
 ```go
 func (m *Models) Map() map[string]*Model
@@ -2154,7 +2275,7 @@ func (m *Models) Map() map[string]*Model
 Map returns a copy of all models.
 
 <a name="Models.Set"></a>
-### func \(\*Models\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L37>)
+### func \(\*Models\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L38>)
 
 ```go
 func (m *Models) Set(id string, model *Model) error
@@ -2163,7 +2284,7 @@ func (m *Models) Set(id string, model *Model) error
 Set sets a model by id. Returns an error if model is nil.
 
 <a name="Models.SetBatch"></a>
-### func \(\*Models\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L182>)
+### func \(\*Models\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L200>)
 
 ```go
 func (m *Models) SetBatch(models map[string]*Model) error
@@ -2197,6 +2318,19 @@ func WithModelsMap(models map[string]*Model) ModelsOption
 ```
 
 WithModelsMap initializes the map with existing models.
+
+<a name="MutableCatalog"></a>
+## type [MutableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L74-L78>)
+
+MutableCatalog provides read\-write access without merge capabilities
+
+```go
+type MutableCatalog interface {
+    Reader
+    Writer
+    Copier
+}
+```
 
 <a name="OperationPricing"></a>
 ## type [OperationPricing](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/model.go#L460-L478>)
@@ -2298,7 +2432,7 @@ func WithWritePath(path string) Option
 WithWritePath sets a specific path for writing catalog files
 
 <a name="Persistable"></a>
-## type [Persistable](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/persistable.go#L4-L15>)
+## type [Persistable](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/persistable.go#L4-L18>)
 
 Persistable represents a catalog that can be saved to and loaded from persistent storage
 
@@ -2306,6 +2440,9 @@ Persistable represents a catalog that can be saved to and loaded from persistent
 type Persistable interface {
     // Save saves the catalog to persistent storage
     Save() error
+
+    // SaveTo saves the catalog to a specific path
+    SaveTo(path string) error
 
     // Load loads the catalog from persistent storage
     Load() error
@@ -2318,7 +2455,7 @@ type Persistable interface {
 ```
 
 <a name="Provider"></a>
-## type [Provider](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L11-L41>)
+## type [Provider](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L13-L43>)
 
 Provider represents a provider configuration.
 
@@ -2355,8 +2492,26 @@ type Provider struct {
 }
 ```
 
+<a name="TestProvider"></a>
+### func [TestProvider](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L10>)
+
+```go
+func TestProvider(t testing.TB) *Provider
+```
+
+TestProvider creates a test provider with sensible defaults. The t.Helper\(\) call ensures stack traces point to the test, not this function.
+
+<a name="TestProviderWithOptions"></a>
+### func [TestProviderWithOptions](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L146>)
+
+```go
+func TestProviderWithOptions(t testing.TB, opts ...TestProviderOption) *Provider
+```
+
+TestProviderWithOptions creates a test provider with custom options.
+
 <a name="Provider.APIKeyValue"></a>
-### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L272>)
+### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L274>)
 
 ```go
 func (p *Provider) APIKeyValue() (string, error)
@@ -2364,17 +2519,8 @@ func (p *Provider) APIKeyValue() (string, error)
 
 APIKeyValue retrieves and validates the API key for this provider. Uses the loaded apiKeyValue if available, otherwise falls back to environment.
 
-<a name="Provider.Client"></a>
-### func \(\*Provider\) [Client](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L455>)
-
-```go
-func (p *Provider) Client(opts ...ClientOption) (Client, error)
-```
-
-Client retrieves a configured client for this provider.
-
 <a name="Provider.EnvVar"></a>
-### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L306>)
+### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L314>)
 
 ```go
 func (p *Provider) EnvVar(name string) string
@@ -2382,17 +2528,8 @@ func (p *Provider) EnvVar(name string) string
 
 EnvVar returns the value of a specific environment variable.
 
-<a name="Provider.GetMissingEnvVars"></a>
-### func \(\*Provider\) [GetMissingEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L338>)
-
-```go
-func (p *Provider) GetMissingEnvVars() []string
-```
-
-GetMissingEnvVars returns a list of required environment variables that are not set.
-
 <a name="Provider.HasAPIKey"></a>
-### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L362>)
+### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L370>)
 
 ```go
 func (p *Provider) HasAPIKey() bool
@@ -2401,7 +2538,7 @@ func (p *Provider) HasAPIKey() bool
 HasAPIKey checks if the provider has a valid API key configured. This checks both existence and validation \(pattern matching\).
 
 <a name="Provider.HasRequiredEnvVars"></a>
-### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L317>)
+### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L325>)
 
 ```go
 func (p *Provider) HasRequiredEnvVars() bool
@@ -2410,7 +2547,7 @@ func (p *Provider) HasRequiredEnvVars() bool
 HasRequiredEnvVars checks if all required environment variables are set.
 
 <a name="Provider.IsAPIKeyRequired"></a>
-### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L209>)
+### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L211>)
 
 ```go
 func (p *Provider) IsAPIKeyRequired() bool
@@ -2419,7 +2556,7 @@ func (p *Provider) IsAPIKeyRequired() bool
 IsAPIKeyRequired checks if a provider requires an API key.
 
 <a name="Provider.LoadAPIKey"></a>
-### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L248>)
+### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L250>)
 
 ```go
 func (p *Provider) LoadAPIKey()
@@ -2428,7 +2565,7 @@ func (p *Provider) LoadAPIKey()
 LoadAPIKey loads the API key value from environment into the provider. This should be called when the provider is loaded from the catalog.
 
 <a name="Provider.LoadEnvVars"></a>
-### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L256>)
+### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L258>)
 
 ```go
 func (p *Provider) LoadEnvVars()
@@ -2436,8 +2573,17 @@ func (p *Provider) LoadEnvVars()
 
 LoadEnvVars loads environment variable values from the system into the provider. This should be called when the provider is loaded from the catalog.
 
+<a name="Provider.MissingEnvVars"></a>
+### func \(\*Provider\) [MissingEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L346>)
+
+```go
+func (p *Provider) MissingEnvVars() []string
+```
+
+MissingEnvVars returns a list of required environment variables that are not set.
+
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L487>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L439>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -2446,7 +2592,7 @@ func (p *Provider) Model(modelID string) (*Model, error)
 Model retrieves a specific model from the provider.
 
 <a name="Provider.Validate"></a>
-### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L369>)
+### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L377>)
 
 ```go
 func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderValidationResult
@@ -2455,7 +2601,7 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 Validate performs validation checks on this provider and returns the result. The supportedProviders parameter is a set of provider IDs that have client implementations.
 
 <a name="ProviderAPIKey"></a>
-## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L51-L57>)
+## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L53-L59>)
 
 ProviderAPIKey represents configuration for an API key to access a provider's catalog.
 
@@ -2470,7 +2616,7 @@ type ProviderAPIKey struct {
 ```
 
 <a name="ProviderAPIKeyScheme"></a>
-## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L68>)
+## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L70>)
 
 ProviderAPIKeyScheme represents different authentication schemes for API keys.
 
@@ -2489,7 +2635,7 @@ const (
 ```
 
 <a name="ProviderAPIKeyScheme.String"></a>
-### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L71>)
+### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L73>)
 
 ```go
 func (paks ProviderAPIKeyScheme) String() string
@@ -2498,7 +2644,7 @@ func (paks ProviderAPIKeyScheme) String() string
 String returns the string representation of a ProviderAPIKeyScheme.
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L44-L48>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L46-L50>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -2511,7 +2657,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderChatCompletions"></a>
-## type [ProviderChatCompletions](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L83-L87>)
+## type [ProviderChatCompletions](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L85-L89>)
 
 ProviderChatCompletions represents configuration for chat completions API.
 
@@ -2524,7 +2670,7 @@ type ProviderChatCompletions struct {
 ```
 
 <a name="ProviderEnvVar"></a>
-## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L60-L65>)
+## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L62-L67>)
 
 ProviderEnvVar represents an environment variable required by a provider.
 
@@ -2538,7 +2684,7 @@ type ProviderEnvVar struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L165-L169>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L167-L171>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -2551,7 +2697,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L90-L93>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L92-L95>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API.
 
@@ -2563,7 +2709,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L96>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L98>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -2605,7 +2751,7 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L99>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L101>)
 
 ```go
 func (pid ProviderID) String() string
@@ -2614,7 +2760,7 @@ func (pid ProviderID) String() string
 String returns the string representation of a ProviderID.
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L172>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L174>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -2655,7 +2801,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L175>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L177>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -2664,7 +2810,7 @@ func (pm ProviderModerator) String() string
 String returns the string representation of a ProviderModerator.
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L150-L155>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L152-L157>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -2678,7 +2824,7 @@ type ProviderPrivacyPolicy struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L158-L162>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L160-L164>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -2691,7 +2837,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L134>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L136>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -2711,7 +2857,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L137>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L139>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -2767,7 +2913,7 @@ func (r *ProviderValidationReport) Print()
 Print outputs a formatted report of provider validation status
 
 <a name="ProviderValidationResult"></a>
-## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L235-L244>)
+## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L237-L246>)
 
 ProviderValidationResult contains the result of validating a provider.
 
@@ -2785,7 +2931,7 @@ type ProviderValidationResult struct {
 ```
 
 <a name="ProviderValidationStatus"></a>
-## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L216>)
+## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L218>)
 
 ProviderValidationStatus represents the validation status of a provider.
 
@@ -2809,7 +2955,7 @@ const (
 ```
 
 <a name="ProviderValidationStatus.String"></a>
-### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L230>)
+### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L232>)
 
 ```go
 func (pvs ProviderValidationStatus) String() string
@@ -2818,7 +2964,7 @@ func (pvs ProviderValidationStatus) String() string
 String returns the string representation of ProviderValidationStatus.
 
 <a name="Providers"></a>
-## type [Providers](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L14-L17>)
+## type [Providers](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L15-L18>)
 
 Providers is a concurrent safe map of providers.
 
@@ -2829,7 +2975,7 @@ type Providers struct {
 ```
 
 <a name="NewProviders"></a>
-### func [NewProviders](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L40>)
+### func [NewProviders](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L41>)
 
 ```go
 func NewProviders(opts ...ProvidersOption) *Providers
@@ -2838,7 +2984,7 @@ func NewProviders(opts ...ProvidersOption) *Providers
 NewProviders creates a new Providers map with optional configuration.
 
 <a name="Providers.Add"></a>
-### func \(\*Providers\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L73>)
+### func \(\*Providers\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L77>)
 
 ```go
 func (p *Providers) Add(provider *Provider) error
@@ -2847,7 +2993,7 @@ func (p *Providers) Add(provider *Provider) error
 Add adds a provider, returning an error if it already exists.
 
 <a name="Providers.AddBatch"></a>
-### func \(\*Providers\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L167>)
+### func \(\*Providers\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L181>)
 
 ```go
 func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error
@@ -2856,7 +3002,7 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error
 AddBatch adds multiple providers in a single operation. Only adds providers that don't already exist \- fails if a provider ID already exists. Returns a map of provider IDs to errors for any failed additions.
 
 <a name="Providers.Clear"></a>
-### func \(\*Providers\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L155>)
+### func \(\*Providers\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L169>)
 
 ```go
 func (p *Providers) Clear()
@@ -2865,7 +3011,7 @@ func (p *Providers) Clear()
 Clear removes all providers.
 
 <a name="Providers.Delete"></a>
-### func \(\*Providers\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L90>)
+### func \(\*Providers\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L101>)
 
 ```go
 func (p *Providers) Delete(id ProviderID) error
@@ -2874,7 +3020,7 @@ func (p *Providers) Delete(id ProviderID) error
 Delete removes a provider by id. Returns an error if the provider doesn't exist.
 
 <a name="Providers.DeleteBatch"></a>
-### func \(\*Providers\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L230>)
+### func \(\*Providers\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L251>)
 
 ```go
 func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error
@@ -2883,7 +3029,7 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error
 DeleteBatch removes multiple providers by their IDs. Returns a map of errors for providers that couldn't be deleted \(not found\).
 
 <a name="Providers.Exists"></a>
-### func \(\*Providers\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L103>)
+### func \(\*Providers\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L117>)
 
 ```go
 func (p *Providers) Exists(id ProviderID) bool
@@ -2892,7 +3038,7 @@ func (p *Providers) Exists(id ProviderID) bool
 Exists checks if a provider exists without returning it.
 
 <a name="Providers.ForEach"></a>
-### func \(\*Providers\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L143>)
+### func \(\*Providers\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L157>)
 
 ```go
 func (p *Providers) ForEach(fn func(id ProviderID, provider *Provider) bool)
@@ -2901,7 +3047,7 @@ func (p *Providers) ForEach(fn func(id ProviderID, provider *Provider) bool)
 ForEach applies a function to each provider. The function should not modify the provider. If the function returns false, iteration stops early.
 
 <a name="Providers.FormatYAML"></a>
-### func \(\*Providers\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L254>)
+### func \(\*Providers\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L278>)
 
 ```go
 func (p *Providers) FormatYAML() string
@@ -2910,7 +3056,7 @@ func (p *Providers) FormatYAML() string
 FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure
 
 <a name="Providers.Get"></a>
-### func \(\*Providers\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L53>)
+### func \(\*Providers\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L54>)
 
 ```go
 func (p *Providers) Get(id ProviderID) (*Provider, bool)
@@ -2919,7 +3065,7 @@ func (p *Providers) Get(id ProviderID) (*Provider, bool)
 Get returns a provider by id and whether it exists.
 
 <a name="Providers.Len"></a>
-### func \(\*Providers\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L111>)
+### func \(\*Providers\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L125>)
 
 ```go
 func (p *Providers) Len() int
@@ -2928,7 +3074,7 @@ func (p *Providers) Len() int
 Len returns the number of providers.
 
 <a name="Providers.List"></a>
-### func \(\*Providers\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L119>)
+### func \(\*Providers\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L133>)
 
 ```go
 func (p *Providers) List() []*Provider
@@ -2937,7 +3083,7 @@ func (p *Providers) List() []*Provider
 List returns a slice of all providers.
 
 <a name="Providers.Map"></a>
-### func \(\*Providers\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L132>)
+### func \(\*Providers\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L146>)
 
 ```go
 func (p *Providers) Map() map[ProviderID]*Provider
@@ -2946,7 +3092,7 @@ func (p *Providers) Map() map[ProviderID]*Provider
 Map returns a copy of all providers.
 
 <a name="Providers.Set"></a>
-### func \(\*Providers\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L61>)
+### func \(\*Providers\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L62>)
 
 ```go
 func (p *Providers) Set(id ProviderID, provider *Provider) error
@@ -2955,7 +3101,7 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error
 Set sets a provider by id. Returns an error if provider is nil.
 
 <a name="Providers.SetBatch"></a>
-### func \(\*Providers\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L206>)
+### func \(\*Providers\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L224>)
 
 ```go
 func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error
@@ -2964,7 +3110,7 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error
 SetBatch sets multiple providers in a single operation. Overwrites existing providers or adds new ones \(upsert behavior\). Returns an error if any provider is nil.
 
 <a name="ProvidersOption"></a>
-## type [ProvidersOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L20>)
+## type [ProvidersOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L21>)
 
 ProvidersOption defines a function that configures a Providers instance.
 
@@ -2973,7 +3119,7 @@ type ProvidersOption func(*Providers)
 ```
 
 <a name="WithProvidersCapacity"></a>
-### func [WithProvidersCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L23>)
+### func [WithProvidersCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L24>)
 
 ```go
 func WithProvidersCapacity(capacity int) ProvidersOption
@@ -2982,7 +3128,7 @@ func WithProvidersCapacity(capacity int) ProvidersOption
 WithProvidersCapacity sets the initial capacity of the providers map.
 
 <a name="WithProvidersMap"></a>
-### func [WithProvidersMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L30>)
+### func [WithProvidersMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L31>)
 
 ```go
 func WithProvidersMap(providers map[ProviderID]*Provider) ProvidersOption
@@ -3023,6 +3169,102 @@ func (q Quantization) String() string
 ```
 
 String returns the string representation of a Quantization.
+
+<a name="ReadOnlyCatalog"></a>
+## type [ReadOnlyCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L68-L71>)
+
+ReadOnlyCatalog provides read\-only access to a catalog
+
+```go
+type ReadOnlyCatalog interface {
+    Reader
+    Copier
+}
+```
+
+<a name="Reader"></a>
+## type [Reader](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L4-L16>)
+
+Reader provides read\-only access to catalog data
+
+```go
+type Reader interface {
+    // Lists all providers, authors, models, and endpoints
+    Providers() *Providers
+    Authors() *Authors
+    Models() *Models
+    Endpoints() *Endpoints
+
+    // Gets a provider, author, model, or endpoint by id
+    Provider(id ProviderID) (Provider, error)
+    Author(id AuthorID) (Author, error)
+    Model(id string) (Model, error)
+    Endpoint(id string) (Endpoint, error)
+}
+```
+
+<a name="TestModelOption"></a>
+## type [TestModelOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L87>)
+
+TestModelWithOptions creates a test model with custom options.
+
+```go
+type TestModelOption func(*Model)
+```
+
+<a name="WithModelID"></a>
+### func [WithModelID](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L90>)
+
+```go
+func WithModelID(id string) TestModelOption
+```
+
+WithModelID sets a custom ID for the test model.
+
+<a name="WithModelName"></a>
+### func [WithModelName](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L97>)
+
+```go
+func WithModelName(name string) TestModelOption
+```
+
+WithModelName sets a custom name for the test model.
+
+<a name="TestProviderOption"></a>
+## type [TestProviderOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L117>)
+
+TestProviderWithOptions creates a test provider with custom options.
+
+```go
+type TestProviderOption func(*Provider)
+```
+
+<a name="WithProviderAPIKey"></a>
+### func [WithProviderAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L127>)
+
+```go
+func WithProviderAPIKey(name, pattern string) TestProviderOption
+```
+
+WithProviderAPIKey sets a custom API key configuration.
+
+<a name="WithProviderEnvVars"></a>
+### func [WithProviderEnvVars](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L139>)
+
+```go
+func WithProviderEnvVars(envVars []ProviderEnvVar) TestProviderOption
+```
+
+WithProviderEnvVars sets environment variables for the test provider.
+
+<a name="WithProviderID"></a>
+### func [WithProviderID](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/testing.go#L120>)
+
+```go
+func WithProviderID(id ProviderID) TestProviderOption
+```
+
+WithProviderID sets a custom ID for the test provider.
 
 <a name="TokenCacheCost"></a>
 ## type [TokenCacheCost](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/token_pricing.go#L51-L54>)
@@ -3156,6 +3398,27 @@ func (tc ToolChoice) String() string
 ```
 
 String returns the string representation of a ToolChoice.
+
+<a name="Writer"></a>
+## type [Writer](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L19-L31>)
+
+Writer provides write operations for catalog data
+
+```go
+type Writer interface {
+    // Sets a provider, author, model, or endpoint (upsert semantics)
+    SetProvider(provider Provider) error
+    SetAuthor(author Author) error
+    SetModel(model Model) error
+    SetEndpoint(endpoint Endpoint) error
+
+    // Deletes a provider, author, model, or endpoint by id
+    DeleteProvider(id ProviderID) error
+    DeleteAuthor(id AuthorID) error
+    DeleteModel(id string) error
+    DeleteEndpoint(id string) error
+}
+```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

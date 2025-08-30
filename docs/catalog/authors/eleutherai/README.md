@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # EleutherAI
 
 **Website**: [https://eleuther.ai](https://eleuther.ai)  

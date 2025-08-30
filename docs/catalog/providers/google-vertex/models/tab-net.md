@@ -1,3 +1,10 @@
+---
+title: "tab-net"
+description: "Google Vertex AI model: tab-net
+"
+weight: 10
+author: ""
+---
 # tab-net
 
 Google Vertex AI model: tab-net

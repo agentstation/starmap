@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Huawei
 
 **Description**: Chinese technology company known for PanGu series of multimodal language models  

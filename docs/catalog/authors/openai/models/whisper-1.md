@@ -1,3 +1,9 @@
+---
+title: "whisper-1"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # whisper-1
 
 ## 📋 Overview

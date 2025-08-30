@@ -7,6 +7,7 @@ import (
 	"testing"
 	"testing/fstest"
 
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -121,14 +122,14 @@ func TestCatalogWithPath(t *testing.T) {
 		filepath.Join(tmpDir, "providers.yaml"),
 		[]byte(`- id: test-provider
   name: Test Provider
-`), 0644))
+`), constants.FilePermissions))
 
-	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test"), 0755))
+	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test"), constants.DirPermissions))
 	require.NoError(t, os.WriteFile(
 		filepath.Join(tmpDir, "providers", "test", "model.yaml"),
 		[]byte(`id: test-model
 name: Test Model
-`), 0644))
+`), constants.FilePermissions))
 
 	// Create catalog from path
 	cat, err := New(WithPath(tmpDir))

@@ -1,3 +1,10 @@
+---
+title: "object-detector"
+description: "Google Vertex AI model: object-detector
+"
+weight: 10
+author: ""
+---
 # object-detector
 
 Google Vertex AI model: object-detector

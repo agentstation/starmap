@@ -1,3 +1,9 @@
+---
+title: "davinci-002"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # davinci-002
 
 ## 📋 Overview

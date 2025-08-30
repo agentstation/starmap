@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # University of Chicago
 
 **Website**: [https://uchicago.edu](https://uchicago.edu)  

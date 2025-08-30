@@ -7,8 +7,8 @@ type TokenPricing struct {
 	Output *TokenCost `json:"output,omitempty" yaml:"output,omitempty"` // Standard output tokens
 
 	// Advanced token types
-	Reasoning *TokenCost      `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
-	Cache     *TokenCacheCost `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
+	Reasoning *TokenCost         `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
+	Cache     *TokenCachePricing `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
 
 	// Alternative flat cache structure (for backward compatibility)
 	CacheRead  *TokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
@@ -47,8 +47,8 @@ func (t *TokenPricing) MarshalYAML() (interface{}, error) {
 	return result, nil
 }
 
-// TokenCacheCost represents cache-specific pricing.
-type TokenCacheCost struct {
+// TokenCachePricing represents cache-specific pricing.
+type TokenCachePricing struct {
 	Read  *TokenCost `json:"read,omitempty" yaml:"read,omitempty"`   // Cache read costs
 	Write *TokenCost `json:"write,omitempty" yaml:"write,omitempty"` // Cache write costs
 }

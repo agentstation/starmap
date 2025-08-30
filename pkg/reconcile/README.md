@@ -1,656 +1,6 @@
-# Reconcile Package
+# reconcile
 
-> A staged pipeline for intelligently merging AI model catalogs from multiple incomplete sources
-
-**Note**: For simple catalog operations and two-catalog merging, see the [catalogs package](../catalogs/README.md). This reconcile package is for complex multi-source scenarios.
-
-## Table of Contents
-- [Problem Statement](#problem-statement)
-- [Key Concepts](#key-concepts)
-- [Architecture: The Staged Pipeline](#architecture-the-staged-pipeline)
-- [Design Decisions & Trade-offs](#design-decisions--trade-offs)
-- [Usage Examples](#usage-examples)
-- [API Reference](#api-reference)
-
-## Problem Statement
-
-In the real world of AI model management, we face a fundamental challenge:
-
-**No single source has complete, accurate data for all models.**
-
-- **Provider APIs** are the source of truth for which models exist and their availability, but many don't publish pricing
-- **models.dev** provides community-verified pricing data and provider logos (SVGs) that providers don't offer
-- **Embedded catalog** gives us a starting point with manual fixes and corrections built into the binary
-- **Files catalog** enables local users to store and modify catalog data on disk
-- **External services** might have additional metadata or specialized information
-
-This package solves the problem of reconciling these complementary data sources into a single, authoritative catalog.
-
-## Key Concepts
-
-These concepts build on each other - understand them in order:
-
-### 1. Source
-A **Source** is any provider of catalog data. Each source serves a specific purpose:
-- `ProviderAPI` - The authoritative source for model existence and availability (but often lacks pricing)
-- `ModelsDevGit` - Community-maintained database with accurate pricing and provider logos
-- `EmbeddedCatalog` - Built-in starting point with manual corrections compiled into the binary  
-- `FilesCatalog` - Local disk storage for user modifications and overrides
-
-### 2. Field
-A **Field** is a specific data attribute of a model:
-- `pricing.input` - Cost per input token
-- `features.available` - Is the model currently available?
-- `limits.context_window` - Maximum context size
-
-### 3. Authority
-An **Authority** determines which source is trusted for a specific field:
-```go
-FieldAuthority{
-    FieldPath: "pricing.*",
-    Source:    ModelsDevGit,
-    Priority:  100,  // Higher number wins
-}
-```
-
-### 4. Merge vs Enhance
-
-This is a critical distinction:
-
-- **Merge**: Choose the best value from EXISTING data across sources
-  - Example: Choose pricing from models.dev over provider API
-  - Deterministic: Same inputs always produce same output
-  
-- **Enhance**: Add NEW data that doesn't exist in any source
-  - Example: Calculate cost per 1K tokens from per-million pricing
-  - May be non-deterministic: Could call external APIs
-
-### 5. Provenance
-**Provenance** is the audit trail showing where each piece of data came from:
-```
-models.gpt-4.pricing.input: 
-  source: ModelsDevGit
-  timestamp: 2024-01-15T10:30:00Z
-  value: 30.0
-```
-
-### 6. Strategy
-A **Strategy** is the algorithm for resolving conflicts between sources:
-
-- **`AuthorityBased`** - Uses field-level authorities to determine winners (recommended)
-  - Each field can have a different winning source
-  - Falls back to first non-empty value if no authority is defined
-  
-- **`SourcePriority`** - Fixed source precedence for ALL fields
-  - Example: Always prefer LocalCatalog > ModelsDevGit > ProviderAPI
-  - Simple but less flexible than field-level authorities
-  
-- **`Union`** - Takes first non-empty value in deterministic order
-  - Order: LocalCatalog → ModelsDevHTTP → ModelsDevGit → ProviderAPI → others alphabetically
-  - No conflict resolution, just combines data
-  - Useful for initial imports or when you trust all sources equally
-  
-- **`ThreeWay`** - Git-style merge with base version
-  - Detects what changed from a common base
-  - Can auto-merge non-conflicting changes
-
-## Understanding Data Sources
-
-Each source type serves a complementary role in building a complete catalog:
-
-### Provider APIs (Source of Truth)
-Provider APIs are authoritative for **model existence and availability**. They tell us:
-- Which models are currently offered
-- What features/capabilities are available
-- Current availability status
-
-However, they often **lack critical information**:
-- Many providers don't publish pricing via API
-- Documentation may be incomplete or outdated
-- No visual assets (logos, icons)
-
-### models.dev (Community Intelligence)
-The models.dev repository fills the gaps with **community-verified data**:
-- **Accurate pricing** - Crowd-sourced and verified by actual usage
-- **Real limits** - Context windows and rate limits tested by users
-- **Provider logos** - SVG assets for UI display
-- **Historical data** - Tracks changes over time
-
-### Embedded Catalog (Starting Point)
-The embedded catalog compiled into the binary provides:
-- **Baseline data** - A working catalog out of the box
-- **Manual corrections** - Fixes for known issues
-- **Stability** - Consistent data between releases
-
-### Files Catalog (User Control)
-The files catalog on disk enables:
-- **Local modifications** - Users can override any data
-- **Custom models** - Add private or experimental models
-- **Persistence** - Changes survive application updates
-- **Version control** - Track changes with Git
-
-## Architecture: The Staged Pipeline
-
-The reconciler implements a **staged pipeline** where each stage has a specific responsibility and stages execute in sequence:
-
-```mermaid
-flowchart TB
-    subgraph "Stage 0: Concurrent Source Fetching"
-        direction LR
-        API["Provider API<br/>✓ Model list<br/>✓ Availability<br/>✓ Features<br/>✗ Pricing - often missing"]
-        MDG["models.dev<br/>✓ Accurate pricing<br/>✓ Context limits<br/>✓ Provider logos - SVG"]
-        LC["Local/Embedded<br/>✓ Starting point<br/>✓ Manual fixes<br/>✓ User overrides"]
-    end
-    
-    subgraph "Pipeline Stages (Sequential)"
-        direction TB
-        
-        subgraph "Stage 1: Collection"
-            C["Group by Model ID<br/>gpt-4 from 3 sources → 1 group"]
-        end
-        
-        subgraph "Stage 2: Field-Level Merge"
-            M["Apply Authorities<br/>pricing → models.dev<br/>availability → API<br/>name → Local"]
-        end
-        
-        subgraph "Stage 3: Enhancement"
-            E["Add Computed Data<br/>• Calculate per-1K pricing<br/>• Add deprecation warnings<br/>• Fetch external metadata"]
-        end
-        
-        subgraph "Stage 4: Validation"
-            V["Change Detection<br/>• Diff with previous<br/>• Record provenance<br/>• Build changeset"]
-        end
-    end
-    
-    subgraph "Output"
-        OUT["Final Catalog<br/>+ Changeset<br/>+ Provenance Map"]
-    end
-    
-    API & MDG & LC -.->|Concurrent| C
-    C -->|Sequential| M
-    M --> E
-    E --> V
-    V --> OUT
-    
-    style API fill:#e8f5e9
-    style MDG fill:#fff3e0
-    style LC fill:#fce4ec
-```
-
-### Stage Details
-
-#### Stage 0: Concurrent Source Fetching (Parallelizable)
-**Purpose**: Gather raw data from all sources
-- Sources are independent - can fetch simultaneously
-- Each provides a complete catalog (though with missing fields)
-- No data transformation happens here
-
-#### Stage 1: Collection (Sequential)
-**Purpose**: Organize data for processing
-- Group all versions of each model by ID
-- Prepare for field-by-field comparison
-- Build index of what sources have what models
-
-#### Stage 2: Field-Level Merge (Sequential)
-**Purpose**: Combine existing data using authorities
-- For each field, consult authority configuration
-- Select value from winning source
-- Handle conflicts according to strategy
-- **This is choosing, not computing**
-
-#### Stage 3: Enhancement (Sequential)
-**Purpose**: Add computed or external data
-- Generate data not in any source
-- Apply business logic (e.g., mark deprecated models)
-- Call external APIs for additional metadata
-- **This is adding, not choosing**
-
-#### Stage 4: Validation & Tracking (Sequential)
-**Purpose**: Quality control and audit
-- Compare with previous catalog version
-- Generate changeset (added/updated/removed)
-- Record provenance for every field
-- Build comprehensive result
-
-### Example: GPT-4 Through the Pipeline
-
-Let's trace a single model through all stages:
-
-```mermaid
-flowchart LR
-    subgraph "Stage 0: Sources"
-        API0["Provider API: gpt-4<br/>available: true<br/>features.chat: true<br/>no pricing data"]
-        MDG0["models.dev: gpt-4<br/>pricing.input: 30.0<br/>limits.context: 8192<br/>logo: gpt4.svg"]
-        LC0["Local/Embedded: gpt-4<br/>name: GPT-4 Turbo<br/>description: Custom override"]
-    end
-    
-    subgraph "Stage 1: Collected"
-        C1["gpt-4 Group:<br/>- API version<br/>- models.dev version<br/>- Local version"]
-    end
-    
-    subgraph "Stage 2: Merged"
-        M2["gpt-4:<br/>name: GPT-4 Turbo ←Local<br/>available: true ←API<br/>pricing.input: 30.0 ←models.dev<br/>limits.context: 8192 ←models.dev"]
-    end
-    
-    subgraph "Stage 3: Enhanced"
-        E3["gpt-4:<br/>+ All merged fields<br/>+ pricing.per1K: 0.03<br/>+ deprecation: null<br/>+ metadata.checked: now"]
-    end
-    
-    subgraph "Stage 4: Validated"
-        V4["Changes: Updated<br/>Field changes: 3<br/>Provenance: Recorded"]
-    end
-    
-    API0 & MDG0 & LC0 --> C1
-    C1 --> M2
-    M2 --> E3
-    E3 --> V4
-```
-
-## Design Decisions & Trade-offs
-
-### Why Separate Merge and Enhance?
-
-**Merge** is about **selection**:
-- Choose the best existing value
-- Deterministic and reproducible
-- Based on static configuration (authorities)
-- Fast and reliable
-
-**Enhance** is about **computation**:
-- Generate new values
-- May call external services
-- Can fail or timeout
-- Optional (can be disabled)
-
-This separation allows you to:
-- Run merge without enhancement for speed
-- Retry enhancement without re-merging
-- Test merge logic independently
-- Add enhancers without touching merge code
-
-### Why Field-Level Authorities?
-
-Real-world observation shows different sources are authoritative for different data:
-
-| Field | Best Source | Why |
-|-------|------------|-----|
-| `pricing.*` | models.dev | Community-verified since providers often don't publish pricing |
-| `features.available` | Provider API | They're the source of truth for what models exist |
-| `limits.*` | models.dev | Thoroughly tested by community, more reliable than provider docs |
-| `name`, `description` | Local/Embedded | Preserves manual corrections and customizations |
-| `logo` | models.dev | Provides SVG logos that providers don't offer via API |
-
-Model-level authorities would force choosing ALL fields from one source, losing accuracy.
-
-### Why a Pipeline, Not Parallel Processing?
-
-We chose a **staged pipeline** over parallel processing for:
-
-1. **Predictability**: Same execution order every time
-2. **Debuggability**: Can inspect state after each stage
-3. **Dependencies**: Enhancement may need merged data
-4. **Provenance**: Sequential tracking is simpler
-
-Trade-off: Slower than parallel, but more maintainable.
-
-### Why Not Event-Driven?
-
-We considered an event-driven architecture but chose a pipeline because:
-
-1. **Simplicity**: Easier to understand and debug
-2. **Testing**: Straightforward to test each stage
-3. **Consistency**: All models processed the same way
-
-Trade-off: Less flexible for complex workflows.
-
-## Usage Examples
-
-### Basic Reconciliation
-
-```go
-// Create reconciler with default settings
-r, err := reconcile.New()
-if err != nil {
-    return fmt.Errorf("creating reconciler: %w", err)
-}
-
-// Prepare sources (can fetch concurrently!)
-var wg sync.WaitGroup
-var apiCatalog, devCatalog, localCatalog catalogs.Catalog
-
-wg.Add(3)
-go func() { 
-    // Fetch current model list and availability from provider
-    apiCatalog = fetchFromAPI() 
-    wg.Done() 
-}()
-go func() { 
-    // Get community-verified pricing and logos
-    devCatalog = fetchFromModelsDev() 
-    wg.Done() 
-}()
-go func() { 
-    // Load user overrides and manual corrections
-    localCatalog = loadLocalCatalog() 
-    wg.Done() 
-}()
-wg.Wait()
-
-// Run the pipeline
-sources := map[reconcile.SourceName]catalogs.Catalog{
-    reconcile.ProviderAPI:  apiCatalog,  // Source of truth for model existence
-    reconcile.ModelsDevGit: devCatalog,  // Accurate pricing and logos
-    reconcile.LocalCatalog: localCatalog, // User customizations
-}
-
-result, err := r.ReconcileCatalogs(context.Background(), sources)
-```
-
-### Custom Field Authorities
-
-```go
-// Define which source wins for each field
-authorities := []reconcile.FieldAuthority{
-    // Pricing from models.dev (providers often don't publish it)
-    {FieldPath: "pricing.*", Source: reconcile.ModelsDevGit, Priority: 200},
-    
-    // Context limits from models.dev (community-tested)
-    {FieldPath: "limits.*", Source: reconcile.ModelsDevGit, Priority: 150},
-    
-    // User customizations from local catalog
-    {FieldPath: "description", Source: reconcile.LocalCatalog, Priority: 100},
-    {FieldPath: "name", Source: reconcile.LocalCatalog, Priority: 100},
-    
-    // Model availability from provider API (source of truth)
-    {FieldPath: "features.available", Source: reconcile.ProviderAPI, Priority: 90},
-    
-    // Everything else from provider API
-    {FieldPath: "*", Source: reconcile.ProviderAPI, Priority: 50},
-}
-
-r, err := reconcile.New(
-    reconcile.WithAuthorities(reconcile.NewCustomAuthorities(authorities)),
-)
-if err != nil {
-    return fmt.Errorf("creating reconciler: %w", err)
-}
-```
-
-### Adding Enhancement
-
-```go
-// Enhancer adds data not in any source
-type PricingEnhancer struct{}
-
-func (e *PricingEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
-    // Add calculated field
-    if model.Pricing != nil && model.Pricing.Tokens != nil {
-        model.Pricing.Per1K = model.Pricing.Tokens.Input.Per1M / 1000
-    }
-    
-    // Add external data
-    if metadata := fetchExternalMetadata(model.ID); metadata != nil {
-        model.Metadata = metadata
-    }
-    
-    return model, nil
-}
-
-r, err := reconcile.New(reconcile.WithEnhancers(&PricingEnhancer{}))
-if err != nil {
-    return fmt.Errorf("creating reconciler: %w", err)
-}
-```
-
-### Three-Way Merge for Conflicts
-
-```go
-// When you have base version + two conflicting changes
-merger := reconcile.NewThreeWayMerger(authorities, strategy)
-
-base := loadPreviousVersion()
-ours := loadOurChanges()
-theirs := loadTheirChanges()
-
-merged, conflicts, err := merger.MergeModels(base, ours, theirs)
-
-// Resolve conflicts
-for _, conflict := range conflicts {
-    if conflict.CanMerge {
-        // Auto-resolved
-        fmt.Printf("Auto-merged: %s\n", conflict.Path)
-    } else {
-        // Manual resolution needed
-        fmt.Printf("Conflict: %s (ours=%v, theirs=%v)\n", 
-            conflict.Path, conflict.Ours, conflict.Theirs)
-    }
-}
-```
-
-## API Reference
-
-### Core Types
-
-```go
-// Main reconciler interface
-type Reconciler interface {
-    ReconcileCatalogs(ctx context.Context, sources map[SourceName]Catalog) (*Result, error)
-    WithStrategy(strategy Strategy) Reconciler
-    WithAuthorities(authorities AuthorityProvider) Reconciler
-    WithEnhancers(enhancers ...Enhancer) Reconciler
-}
-
-// Field authority configuration
-type FieldAuthority struct {
-    FieldPath string     // Pattern to match (supports wildcards)
-    Source    SourceName // Which source is authoritative
-    Priority  int        // Higher wins
-}
-
-// Enhancement interface
-type Enhancer interface {
-    Name() string
-    Priority() int
-    CanEnhance(model Model) bool
-    Enhance(ctx context.Context, model Model) (Model, error)
-}
-```
-
-### Result Structure
-
-```go
-type Result struct {
-    Success    bool
-    Catalog    Catalog         // Merged catalog
-    Changeset  *Changeset     // What changed
-    Provenance ProvenanceMap  // Where data came from
-    Statistics ResultStatistics
-}
-```
-
-## Performance Characteristics
-
-| Operation | Time (Apple M2) | Notes |
-|-----------|-----------------|-------|
-| Merge 100 models | ~10ms | Field-level authorities |
-| Enhance 100 models | ~78ms | With 5 enhancers |
-| Full pipeline | ~138ms | Complete reconciliation |
-| Three-way merge | ~1μs/model | Conflict detection |
-
-## When to Use Catalog.MergeWith vs Reconcile Package
-
-### Use `catalog.MergeWith()` (Simple Cases)
-
-For basic two-catalog merging scenarios, the built-in catalog methods are sufficient (see [catalogs package documentation](../catalogs/README.md)):
-
-```go
-import "github.com/agentstation/starmap/pkg/catalogs"
-
-// Last-write-wins - complete replacement
-catalog.MergeWith(source, catalogs.WithStrategy(catalogs.MergeReplaceAll))
-
-// Smart merging - fill empty fields only
-catalog.MergeWith(source, catalogs.WithStrategy(catalogs.MergeEnrichEmpty))  
-
-// Append only - just add new items
-catalog.MergeWith(source, catalogs.WithStrategy(catalogs.MergeAppendOnly))
-```
-
-✅ **Use catalog.MergeWith when:**
-- Merging two catalogs
-- Simple replacement or enrichment logic
-- No need for audit trails
-- No field-level authority requirements
-- Single source is newer/better than another
-
-### Use `pkg/reconcile` (Complex Cases)
-
-For multi-source reconciliation with advanced features:
-
-```go
-import "github.com/agentstation/starmap/pkg/reconcile"
-
-reconciler, err := reconcile.New(
-    reconcile.WithStrategy(reconcile.NewAuthorityBasedStrategy(authorities)),
-    reconcile.WithProvenance(true),
-)
-if err != nil {
-    return nil, fmt.Errorf("creating reconciler: %w", err)
-}
-
-result, err := reconciler.ReconcileCatalogs(ctx, sources)
-```
-
-✅ **Use pkg/reconcile when:**
-- Multiple incomplete data sources (3+)
-- Different sources are authoritative for different fields
-- Need for audit trails (provenance)
-- Need enhancement pipelines
-- Need three-way merge with conflict detection
-- Complex merge requirements beyond simple replacement
-
-❌ **Don't use pkg/reconcile when:**
-- Single authoritative source
-- Simple last-write-wins is sufficient (use `catalog.MergeWith`)
-- No need for provenance tracking
-
-## Future Enhancements
-
-### Near-term Improvements (v2.0)
-
-#### Parallel Processing Optimization
-Currently, stages 1-4 execute sequentially. We could parallelize:
-- **Stage 2 (Merge)**: Process models in parallel with goroutine pool
-- **Stage 3 (Enhancement)**: Run enhancers concurrently when independent
-- **Benefit**: 10x performance improvement for large catalogs (10,000+ models)
-
-#### Streaming Pipeline
-Replace batch processing with streaming for memory efficiency:
-```go
-type StreamingReconciler interface {
-    ReconcileStream(ctx context.Context, sources <-chan SourceData) (<-chan Model, error)
-}
-```
-- **Benefit**: Handle infinite catalogs without memory constraints
-
-#### Conflict Resolution UI
-Interactive conflict resolution for manual intervention:
-```go
-type ConflictResolver interface {
-    ResolveInteractive(conflict Conflict) (Resolution, error)
-}
-```
-- **Benefit**: Human-in-the-loop for complex conflicts
-
-### Mid-term Enhancements (v3.0)
-
-#### Machine Learning Integration
-Use ML to predict authorities based on historical accuracy:
-```go
-type MLAuthorityProvider interface {
-    LearnFromProvenance(history ProvenanceMap) error
-    PredictAuthority(field string) FieldAuthority
-}
-```
-- Train on provenance data to learn which sources are most accurate
-- Dynamically adjust authorities based on prediction confidence
-
-#### Distributed Reconciliation
-Support reconciliation across multiple nodes:
-```go
-type DistributedReconciler interface {
-    JoinCluster(nodes []string) error
-    DistributeWork(catalog Catalog) []WorkUnit
-    CollectResults() (*Result, error)
-}
-```
-- **Use case**: Enterprise-scale catalogs with millions of models
-- **Technology**: Implement with Raft consensus or etcd coordination
-
-#### Real-time Streaming Updates
-WebSocket/gRPC streaming for live catalog updates:
-```go
-type RealtimeReconciler interface {
-    Subscribe(ctx context.Context, filters []Filter) (<-chan Update, error)
-    PublishChange(change Change) error
-}
-```
-- Push updates to subscribers as reconciliation happens
-- Support filtering by provider, model type, or field paths
-
-### Long-term Vision (v4.0+)
-
-#### Semantic Reconciliation
-Understanding context and meaning, not just values:
-```go
-type SemanticMerger interface {
-    UnderstandContext(field string, value interface{}) Meaning
-    ReconcileMeanings(meanings []Meaning) interface{}
-}
-```
-- **Example**: Recognize "GPT-4 Turbo" and "gpt-4-turbo" as same model
-- **Example**: Understand "8K context" means 8192 tokens
-
-#### Time-Travel Reconciliation
-Full historical tracking with point-in-time recovery:
-```go
-type TemporalReconciler interface {
-    ReconcileAt(timestamp time.Time) (*Result, error)
-    GetHistory(modelID string, field string) []Change
-    Rollback(to time.Time) error
-}
-```
-- Query catalog state at any point in history
-- Understand how and why data changed over time
-- Rollback bad reconciliations
-
-#### Federated Catalog Network
-Decentralized catalog sharing between organizations:
-```go
-type FederatedReconciler interface {
-    ShareCatalog(peers []Peer, filters []Filter) error
-    TrustPeer(peer Peer, trustLevel float64) error
-    ReconcileFederated(catalogs map[Peer]Catalog) (*Result, error)
-}
-```
-- Organizations share catalog subsets
-- Web-of-trust for authority determination
-- Privacy-preserving reconciliation
-
-### Implementation Priorities
-
-1. **Performance** (v2.0): Parallel processing and streaming
-2. **Intelligence** (v3.0): ML-based authorities and semantic understanding  
-3. **Scale** (v3.0): Distributed reconciliation for enterprise
-4. **Innovation** (v4.0): Temporal and federated capabilities
-
-These enhancements maintain backward compatibility while extending the reconciler's capabilities for future use cases.
-
-## Further Reading
-
-- [Three-Way Merge Algorithm](https://en.wikipedia.org/wiki/Merge_(version_control)#Three-way_merge)
-- [Pipeline Architecture Pattern](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PipesAndFilters.html)
-- [Data Provenance](https://en.wikipedia.org/wiki/Data_lineage)
+Package reconcile provides complex multi-source data reconciliation with field-level authority and provenance tracking.
 
 <!-- gomarkdoc:embed:start -->
 
@@ -662,7 +12,32 @@ These enhancements maintain backward compatibility while extending the reconcile
 import "github.com/agentstation/starmap/pkg/reconcile"
 ```
 
-Package reconcile provides advanced multi\-source data reconciliation for AI model catalogs with field\-level authority and provenance tracking.
+Package reconcile provides catalog synchronization and reconciliation capabilities. It handles merging data from multiple sources, detecting changes, and applying updates while respecting data authorities and merge strategies.
+
+The reconciler coordinates fetching data from various sources, computing differences, and merging changes into a target catalog. It supports dry\-run operations, changeset generation, and intelligent conflict resolution.
+
+Example usage:
+
+```
+// Create a reconciler
+r := NewReconciler(targetCatalog, sources)
+
+// Perform reconciliation
+changeset, err := r.Reconcile(ctx, options)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Review changes
+for _, change := range changeset.Changes {
+    fmt.Printf("Change: %s %s\n", change.Type, change.ModelID)
+}
+
+// Apply changes if not dry-run
+if !options.DryRun {
+    err = r.Apply(changeset)
+}
+```
 
 ## Index
 
@@ -906,7 +281,7 @@ type AuthorUpdate struct {
 ```
 
 <a name="AuthorityBasedStrategy"></a>
-## type [AuthorityBasedStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L66-L69>)
+## type [AuthorityBasedStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L71-L74>)
 
 AuthorityBasedStrategy uses field authorities to resolve conflicts
 
@@ -917,7 +292,7 @@ type AuthorityBasedStrategy struct {
 ```
 
 <a name="AuthorityBasedStrategy.ResolveConflict"></a>
-### func \(\*AuthorityBasedStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L89>)
+### func \(\*AuthorityBasedStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L94>)
 
 ```go
 func (s *AuthorityBasedStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
@@ -959,7 +334,7 @@ func NewDefaultAuthorityProvider() AuthorityProvider
 NewDefaultAuthorityProvider is an alias for NewDefaultAuthorities
 
 <a name="ChainEnhancer"></a>
-## type [ChainEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L307-L310>)
+## type [ChainEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L317-L320>)
 
 ChainEnhancer allows chaining multiple enhancers with custom logic
 
@@ -970,7 +345,7 @@ type ChainEnhancer struct {
 ```
 
 <a name="NewChainEnhancer"></a>
-### func [NewChainEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L313>)
+### func [NewChainEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L323>)
 
 ```go
 func NewChainEnhancer(priority int, enhancers ...Enhancer) *ChainEnhancer
@@ -979,7 +354,7 @@ func NewChainEnhancer(priority int, enhancers ...Enhancer) *ChainEnhancer
 NewChainEnhancer creates a new chain enhancer
 
 <a name="ChainEnhancer.CanEnhance"></a>
-### func \(\*ChainEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L335>)
+### func \(\*ChainEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L345>)
 
 ```go
 func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool
@@ -988,7 +363,7 @@ func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool
 CanEnhance checks if any enhancer in the chain can enhance
 
 <a name="ChainEnhancer.Enhance"></a>
-### func \(\*ChainEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L345>)
+### func \(\*ChainEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L355>)
 
 ```go
 func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error)
@@ -997,7 +372,7 @@ func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (cata
 Enhance applies all enhancers in sequence
 
 <a name="ChainEnhancer.EnhanceBatch"></a>
-### func \(\*ChainEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L360>)
+### func \(\*ChainEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L373>)
 
 ```go
 func (e *ChainEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error)
@@ -1006,7 +381,7 @@ func (e *ChainEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Mode
 EnhanceBatch enhances multiple models
 
 <a name="ChainEnhancer.Name"></a>
-### func \(\*ChainEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L321>)
+### func \(\*ChainEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L331>)
 
 ```go
 func (e *ChainEnhancer) Name() string
@@ -1015,7 +390,7 @@ func (e *ChainEnhancer) Name() string
 Name returns the enhancer name
 
 <a name="ChainEnhancer.Priority"></a>
-### func \(\*ChainEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L330>)
+### func \(\*ChainEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L340>)
 
 ```go
 func (e *ChainEnhancer) Priority() int
@@ -1175,7 +550,7 @@ const (
 ```
 
 <a name="ConflictResolver"></a>
-## type [ConflictResolver](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L260>)
+## type [ConflictResolver](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L265>)
 
 ConflictResolver is a function that resolves conflicts
 
@@ -1250,7 +625,7 @@ func (ca *CustomAuthorities) GetAuthority(fieldPath string, resourceType Resourc
 GetAuthority returns the authority configuration for a specific field
 
 <a name="CustomStrategy"></a>
-## type [CustomStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L254-L257>)
+## type [CustomStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L259-L262>)
 
 CustomStrategy allows custom conflict resolution logic
 
@@ -1261,7 +636,7 @@ type CustomStrategy struct {
 ```
 
 <a name="CustomStrategy.ResolveConflict"></a>
-### func \(\*CustomStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L280>)
+### func \(\*CustomStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L285>)
 
 ```go
 func (s *CustomStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
@@ -1299,7 +674,7 @@ func (da *DefaultAuthorities) GetAuthority(fieldPath string, resourceType Resour
 GetAuthority returns the authority configuration for a specific field
 
 <a name="Differ"></a>
-## type [Differ](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L13-L25>)
+## type [Differ](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L13-L26>)
 
 Differ handles change detection between resources
 
@@ -1315,12 +690,13 @@ type Differ interface {
     DiffAuthors(existing, new []catalogs.Author) *AuthorChangeset
 
     // DiffCatalogs compares two complete catalogs
-    DiffCatalogs(existing, new catalogs.Catalog) *Changeset
+    // Both catalogs only need to be readable
+    DiffCatalogs(existing, new catalogs.Reader) *Changeset
 }
 ```
 
 <a name="NewDiffer"></a>
-### func [NewDiffer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L36>)
+### func [NewDiffer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L37>)
 
 ```go
 func NewDiffer(opts ...DifferOption) Differ
@@ -1329,7 +705,7 @@ func NewDiffer(opts ...DifferOption) Differ
 NewDiffer creates a new Differ with default settings
 
 <a name="DifferOption"></a>
-## type [DifferOption](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L51>)
+## type [DifferOption](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L52>)
 
 DifferOption is a functional option for configuring Differ
 
@@ -1338,7 +714,7 @@ type DifferOption func(*differ)
 ```
 
 <a name="WithDeepComparison"></a>
-### func [WithDeepComparison](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L63>)
+### func [WithDeepComparison](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L64>)
 
 ```go
 func WithDeepComparison(enabled bool) DifferOption
@@ -1347,7 +723,7 @@ func WithDeepComparison(enabled bool) DifferOption
 WithDeepComparison enables/disables deep structural comparison
 
 <a name="WithIgnoredFields"></a>
-### func [WithIgnoredFields](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L54>)
+### func [WithIgnoredFields](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L55>)
 
 ```go
 func WithIgnoredFields(fields ...string) DifferOption
@@ -1356,7 +732,7 @@ func WithIgnoredFields(fields ...string) DifferOption
 WithIgnoredFields sets fields to ignore during comparison
 
 <a name="WithProvenanceTracking"></a>
-### func [WithProvenanceTracking](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L70>)
+### func [WithProvenanceTracking](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/differ.go#L71>)
 
 ```go
 func WithProvenanceTracking(enabled bool) DifferOption
@@ -1365,7 +741,7 @@ func WithProvenanceTracking(enabled bool) DifferOption
 WithProvenanceTracking enables provenance tracking in diffs
 
 <a name="Enhancer"></a>
-## type [Enhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L13-L28>)
+## type [Enhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L15-L30>)
 
 Enhancer defines the interface for model enrichment
 
@@ -1389,7 +765,7 @@ type Enhancer interface {
 ```
 
 <a name="EnhancerPipeline"></a>
-## type [EnhancerPipeline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L31-L34>)
+## type [EnhancerPipeline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L33-L36>)
 
 EnhancerPipeline manages a chain of enhancers
 
@@ -1400,7 +776,7 @@ type EnhancerPipeline struct {
 ```
 
 <a name="NewEnhancerPipeline"></a>
-### func [NewEnhancerPipeline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L37>)
+### func [NewEnhancerPipeline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L39>)
 
 ```go
 func NewEnhancerPipeline(enhancers ...Enhancer) *EnhancerPipeline
@@ -1409,7 +785,7 @@ func NewEnhancerPipeline(enhancers ...Enhancer) *EnhancerPipeline
 NewEnhancerPipeline creates a new enhancer pipeline
 
 <a name="EnhancerPipeline.Enhance"></a>
-### func \(\*EnhancerPipeline\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L62>)
+### func \(\*EnhancerPipeline\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L64>)
 
 ```go
 func (p *EnhancerPipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error)
@@ -1418,7 +794,7 @@ func (p *EnhancerPipeline) Enhance(ctx context.Context, model catalogs.Model) (c
 Enhance applies all enhancers to a single model
 
 <a name="EnhancerPipeline.EnhanceBatch"></a>
-### func \(\*EnhancerPipeline\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L89>)
+### func \(\*EnhancerPipeline\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L95>)
 
 ```go
 func (p *EnhancerPipeline) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error)
@@ -1427,7 +803,7 @@ func (p *EnhancerPipeline) EnhanceBatch(ctx context.Context, models []catalogs.M
 EnhanceBatch applies all enhancers to multiple models
 
 <a name="EnhancerPipeline.WithProvenance"></a>
-### func \(\*EnhancerPipeline\) [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L56>)
+### func \(\*EnhancerPipeline\) [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L58>)
 
 ```go
 func (p *EnhancerPipeline) WithProvenance(tracker ProvenanceTracker) *EnhancerPipeline
@@ -1516,7 +892,7 @@ type Merger interface {
 ```
 
 <a name="MetadataEnhancer"></a>
-## type [MetadataEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L248-L250>)
+## type [MetadataEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L258-L260>)
 
 MetadataEnhancer adds metadata from various sources
 
@@ -1527,7 +903,7 @@ type MetadataEnhancer struct {
 ```
 
 <a name="NewMetadataEnhancer"></a>
-### func [NewMetadataEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L253>)
+### func [NewMetadataEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L263>)
 
 ```go
 func NewMetadataEnhancer(priority int) *MetadataEnhancer
@@ -1536,7 +912,7 @@ func NewMetadataEnhancer(priority int) *MetadataEnhancer
 NewMetadataEnhancer creates a new metadata enhancer
 
 <a name="MetadataEnhancer.CanEnhance"></a>
-### func \(\*MetadataEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L270>)
+### func \(\*MetadataEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L280>)
 
 ```go
 func (e *MetadataEnhancer) CanEnhance(model catalogs.Model) bool
@@ -1545,7 +921,7 @@ func (e *MetadataEnhancer) CanEnhance(model catalogs.Model) bool
 CanEnhance checks if this enhancer can enhance a model
 
 <a name="MetadataEnhancer.Enhance"></a>
-### func \(\*MetadataEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L276>)
+### func \(\*MetadataEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L286>)
 
 ```go
 func (e *MetadataEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error)
@@ -1554,7 +930,7 @@ func (e *MetadataEnhancer) Enhance(ctx context.Context, model catalogs.Model) (c
 Enhance enhances a single model
 
 <a name="MetadataEnhancer.EnhanceBatch"></a>
-### func \(\*MetadataEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L293>)
+### func \(\*MetadataEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L303>)
 
 ```go
 func (e *MetadataEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error)
@@ -1563,7 +939,7 @@ func (e *MetadataEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.M
 EnhanceBatch enhances multiple models
 
 <a name="MetadataEnhancer.Name"></a>
-### func \(\*MetadataEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L260>)
+### func \(\*MetadataEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L270>)
 
 ```go
 func (e *MetadataEnhancer) Name() string
@@ -1572,7 +948,7 @@ func (e *MetadataEnhancer) Name() string
 Name returns the enhancer name
 
 <a name="MetadataEnhancer.Priority"></a>
-### func \(\*MetadataEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L265>)
+### func \(\*MetadataEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L275>)
 
 ```go
 func (e *MetadataEnhancer) Priority() int
@@ -1626,7 +1002,7 @@ type ModelUpdate struct {
 ```
 
 <a name="ModelsDevEnhancer"></a>
-## type [ModelsDevEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L184-L187>)
+## type [ModelsDevEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L194-L197>)
 
 ModelsDevEnhancer enhances models with models.dev data
 
@@ -1637,7 +1013,7 @@ type ModelsDevEnhancer struct {
 ```
 
 <a name="NewModelsDevEnhancer"></a>
-### func [NewModelsDevEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L190>)
+### func [NewModelsDevEnhancer](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L200>)
 
 ```go
 func NewModelsDevEnhancer(priority int) *ModelsDevEnhancer
@@ -1646,7 +1022,7 @@ func NewModelsDevEnhancer(priority int) *ModelsDevEnhancer
 NewModelsDevEnhancer creates a new models.dev enhancer
 
 <a name="ModelsDevEnhancer.CanEnhance"></a>
-### func \(\*ModelsDevEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L208>)
+### func \(\*ModelsDevEnhancer\) [CanEnhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L218>)
 
 ```go
 func (e *ModelsDevEnhancer) CanEnhance(model catalogs.Model) bool
@@ -1655,7 +1031,7 @@ func (e *ModelsDevEnhancer) CanEnhance(model catalogs.Model) bool
 CanEnhance checks if this enhancer can enhance a model
 
 <a name="ModelsDevEnhancer.Enhance"></a>
-### func \(\*ModelsDevEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L215>)
+### func \(\*ModelsDevEnhancer\) [Enhance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L225>)
 
 ```go
 func (e *ModelsDevEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error)
@@ -1664,7 +1040,7 @@ func (e *ModelsDevEnhancer) Enhance(ctx context.Context, model catalogs.Model) (
 Enhance enhances a single model
 
 <a name="ModelsDevEnhancer.EnhanceBatch"></a>
-### func \(\*ModelsDevEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L235>)
+### func \(\*ModelsDevEnhancer\) [EnhanceBatch](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L245>)
 
 ```go
 func (e *ModelsDevEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error)
@@ -1673,7 +1049,7 @@ func (e *ModelsDevEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.
 EnhanceBatch enhances multiple models
 
 <a name="ModelsDevEnhancer.Name"></a>
-### func \(\*ModelsDevEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L198>)
+### func \(\*ModelsDevEnhancer\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L208>)
 
 ```go
 func (e *ModelsDevEnhancer) Name() string
@@ -1682,7 +1058,7 @@ func (e *ModelsDevEnhancer) Name() string
 Name returns the enhancer name
 
 <a name="ModelsDevEnhancer.Priority"></a>
-### func \(\*ModelsDevEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L203>)
+### func \(\*ModelsDevEnhancer\) [Priority](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/enhancer.go#L213>)
 
 ```go
 func (e *ModelsDevEnhancer) Priority() int
@@ -1691,7 +1067,7 @@ func (e *ModelsDevEnhancer) Priority() int
 Priority returns the priority
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L58>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L87>)
 
 Option configures a Reconciler
 
@@ -1700,7 +1076,7 @@ type Option func(*reconciler) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L270>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L314>)
 
 ```go
 func WithAuthorities(authorities AuthorityProvider) Option
@@ -1709,7 +1085,7 @@ func WithAuthorities(authorities AuthorityProvider) Option
 WithAuthorities sets the field authorities
 
 <a name="WithEnhancers"></a>
-### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L296>)
+### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L343>)
 
 ```go
 func WithEnhancers(enhancers ...Enhancer) Option
@@ -1718,7 +1094,7 @@ func WithEnhancers(enhancers ...Enhancer) Option
 WithEnhancers adds model enhancers to the pipeline
 
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L285>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L332>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -1727,7 +1103,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking
 
 <a name="WithStrategy"></a>
-### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L259>)
+### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L300>)
 
 ```go
 func WithStrategy(strategy Strategy) Option
@@ -1904,7 +1280,7 @@ type ProviderUpdate struct {
 ```
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L37-L46>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L66-L75>)
 
 Reconciler is the main interface for reconciling data from multiple sources
 
@@ -1922,7 +1298,7 @@ type Reconciler interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L61>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L90>)
 
 ```go
 func New(opts ...Option) (Reconciler, error)
@@ -1958,7 +1334,7 @@ type ResourceProvenance struct {
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L28>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L57>)
 
 ResourceType identifies the type of resource being merged
 
@@ -2248,7 +1624,7 @@ type ResultStatistics struct {
 ```
 
 <a name="SourceName"></a>
-## type [SourceName](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L12>)
+## type [SourceName](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L41>)
 
 SourceName represents the name/type of a data source
 
@@ -2268,7 +1644,7 @@ const (
 ```
 
 <a name="SourceName.String"></a>
-### func \(SourceName\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L15>)
+### func \(SourceName\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconcile.go#L44>)
 
 ```go
 func (sn SourceName) String() string
@@ -2277,7 +1653,7 @@ func (sn SourceName) String() string
 String returns the string representation of a source name
 
 <a name="SourcePriorityStrategy"></a>
-## type [SourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L214-L217>)
+## type [SourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L219-L222>)
 
 SourcePriorityStrategy uses a fixed source priority order
 
@@ -2288,7 +1664,7 @@ type SourcePriorityStrategy struct {
 ```
 
 <a name="SourcePriorityStrategy.ResolveConflict"></a>
-### func \(\*SourcePriorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L237>)
+### func \(\*SourcePriorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L242>)
 
 ```go
 func (s *SourcePriorityStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
@@ -2353,7 +1729,7 @@ func (sm *StrategicMerger) WithProvenance(tracker ProvenanceTracker)
 WithProvenance sets the provenance tracker
 
 <a name="Strategy"></a>
-## type [Strategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L9-L27>)
+## type [Strategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L11-L29>)
 
 Strategy defines how reconciliation should be performed
 
@@ -2380,7 +1756,7 @@ type Strategy interface {
 ```
 
 <a name="NewAuthorityBasedStrategy"></a>
-### func [NewAuthorityBasedStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L72>)
+### func [NewAuthorityBasedStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L77>)
 
 ```go
 func NewAuthorityBasedStrategy(authorities AuthorityProvider) Strategy
@@ -2389,7 +1765,7 @@ func NewAuthorityBasedStrategy(authorities AuthorityProvider) Strategy
 NewAuthorityBasedStrategy creates a new authority\-based strategy
 
 <a name="NewCustomStrategy"></a>
-### func [NewCustomStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L263>)
+### func [NewCustomStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L268>)
 
 ```go
 func NewCustomStrategy(name, description string, resolver ConflictResolver) Strategy
@@ -2398,7 +1774,7 @@ func NewCustomStrategy(name, description string, resolver ConflictResolver) Stra
 NewCustomStrategy creates a new custom strategy
 
 <a name="NewSourcePriorityStrategy"></a>
-### func [NewSourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L220>)
+### func [NewSourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L225>)
 
 ```go
 func NewSourcePriorityStrategy(priority []SourceName) Strategy
@@ -2407,7 +1783,7 @@ func NewSourcePriorityStrategy(priority []SourceName) Strategy
 NewSourcePriorityStrategy creates a new source priority strategy
 
 <a name="NewStrategyChain"></a>
-### func [NewStrategyChain](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L297>)
+### func [NewStrategyChain](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L302>)
 
 ```go
 func NewStrategyChain(strategies ...Strategy) Strategy
@@ -2416,7 +1792,7 @@ func NewStrategyChain(strategies ...Strategy) Strategy
 NewStrategyChain creates a new strategy chain
 
 <a name="NewUnionStrategy"></a>
-### func [NewUnionStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L140>)
+### func [NewUnionStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L145>)
 
 ```go
 func NewUnionStrategy() Strategy
@@ -2425,7 +1801,7 @@ func NewUnionStrategy() Strategy
 NewUnionStrategy creates a new union strategy
 
 <a name="StrategyChain"></a>
-## type [StrategyChain](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L292-L294>)
+## type [StrategyChain](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L297-L299>)
 
 StrategyChain combines multiple strategies with fallback
 
@@ -2436,7 +1812,7 @@ type StrategyChain struct {
 ```
 
 <a name="StrategyChain.Description"></a>
-### func \(\*StrategyChain\) [Description](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L313>)
+### func \(\*StrategyChain\) [Description](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L318>)
 
 ```go
 func (s *StrategyChain) Description() string
@@ -2445,7 +1821,7 @@ func (s *StrategyChain) Description() string
 Description returns a human\-readable description
 
 <a name="StrategyChain.GetApplyStrategy"></a>
-### func \(\*StrategyChain\) [GetApplyStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L349>)
+### func \(\*StrategyChain\) [GetApplyStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L357>)
 
 ```go
 func (s *StrategyChain) GetApplyStrategy() ApplyStrategy
@@ -2454,7 +1830,7 @@ func (s *StrategyChain) GetApplyStrategy() ApplyStrategy
 GetApplyStrategy returns the first strategy's apply strategy
 
 <a name="StrategyChain.Name"></a>
-### func \(\*StrategyChain\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L304>)
+### func \(\*StrategyChain\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L309>)
 
 ```go
 func (s *StrategyChain) Name() string
@@ -2463,7 +1839,7 @@ func (s *StrategyChain) Name() string
 Name returns the strategy name
 
 <a name="StrategyChain.ResolveConflict"></a>
-### func \(\*StrategyChain\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L328>)
+### func \(\*StrategyChain\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L333>)
 
 ```go
 func (s *StrategyChain) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
@@ -2472,7 +1848,7 @@ func (s *StrategyChain) ResolveConflict(field string, values map[SourceName]inte
 ResolveConflict tries each strategy in order
 
 <a name="StrategyChain.ShouldMerge"></a>
-### func \(\*StrategyChain\) [ShouldMerge](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L318>)
+### func \(\*StrategyChain\) [ShouldMerge](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L323>)
 
 ```go
 func (s *StrategyChain) ShouldMerge(resourceType ResourceType) bool
@@ -2481,7 +1857,7 @@ func (s *StrategyChain) ShouldMerge(resourceType ResourceType) bool
 ShouldMerge checks all strategies
 
 <a name="StrategyChain.ValidateResult"></a>
-### func \(\*StrategyChain\) [ValidateResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L339>)
+### func \(\*StrategyChain\) [ValidateResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L344>)
 
 ```go
 func (s *StrategyChain) ValidateResult(result *Result) error
@@ -2520,7 +1896,7 @@ func NewThreeWayMerger(authorities AuthorityProvider, strategy Strategy) ThreeWa
 NewThreeWayMerger creates a new three\-way merger
 
 <a name="UnionStrategy"></a>
-## type [UnionStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L135-L137>)
+## type [UnionStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L140-L142>)
 
 UnionStrategy combines all values without conflict resolution
 
@@ -2531,7 +1907,7 @@ type UnionStrategy struct {
 ```
 
 <a name="UnionStrategy.ResolveConflict"></a>
-### func \(\*UnionStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L156>)
+### func \(\*UnionStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L161>)
 
 ```go
 func (s *UnionStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)

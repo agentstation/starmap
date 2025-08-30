@@ -1,3 +1,9 @@
+---
+title: "Codex Mini"
+description: ""
+weight: 10
+author: ""
+---
 # Codex Mini
 
 ## 📋 Overview

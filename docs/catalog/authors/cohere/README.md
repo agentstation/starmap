@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Cohere
 
 **Description**: Enterprise AI company specializing in natural language processing and Command models  

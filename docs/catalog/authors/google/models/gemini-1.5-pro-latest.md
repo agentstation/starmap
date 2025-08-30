@@ -1,3 +1,9 @@
+---
+title: "Gemini 1.5 Pro Latest"
+description: "Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens."
+weight: 10
+author: "Google"
+---
 # Gemini 1.5 Pro Latest
 
 Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens.

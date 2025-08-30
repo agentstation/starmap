@@ -1,3 +1,10 @@
+---
+title: "imagen-3.0-capability-001"
+description: "Google Vertex AI model: imagen-3.0-capability-001
+"
+weight: 10
+author: ""
+---
 # imagen-3.0-capability-001
 
 Google Vertex AI model: imagen-3.0-capability-001

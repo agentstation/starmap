@@ -7,6 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 const (
@@ -27,15 +30,15 @@ func NewHTTPClient(outputDir string) *HTTPClient {
 	return &HTTPClient{
 		CacheDir: cacheDir,
 		APIURL:   ModelsDevAPIURL,
-		Client:   &http.Client{Timeout: 30 * time.Second},
+		Client:   &http.Client{Timeout: constants.DefaultHTTPTimeout},
 	}
 }
 
 // EnsureAPI ensures the api.json is available and up to date
 func (c *HTTPClient) EnsureAPI() error {
 	// Create cache directory if it doesn't exist
-	if err := os.MkdirAll(c.CacheDir, 0755); err != nil {
-		return fmt.Errorf("creating cache directory: %w", err)
+	if err := os.MkdirAll(c.CacheDir, constants.DirPermissions); err != nil {
+		return errors.WrapIO("create", "cache directory", err)
 	}
 
 	apiPath := c.GetAPIPath()
@@ -51,18 +54,28 @@ func (c *HTTPClient) EnsureAPI() error {
 
 	resp, err := c.Client.Get(c.APIURL)
 	if err != nil {
-		return fmt.Errorf("downloading api.json: %w", err)
+		return &errors.APIError{
+			Provider: "models.dev",
+			Endpoint: c.APIURL,
+			Message:  "failed to download api.json",
+			Err:      err,
+		}
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("HTTP error downloading api.json: %d %s", resp.StatusCode, resp.Status)
+		return &errors.APIError{
+			Provider:   "models.dev",
+			Endpoint:   c.APIURL,
+			StatusCode: resp.StatusCode,
+			Message:    resp.Status,
+		}
 	}
 
 	// Create temporary file
 	tempFile, err := os.CreateTemp(c.CacheDir, "api_*.json")
 	if err != nil {
-		return fmt.Errorf("creating temp file: %w", err)
+		return errors.WrapIO("create", "temp file", err)
 	}
 	defer tempFile.Close()
 	tempPath := tempFile.Name()
@@ -71,13 +84,13 @@ func (c *HTTPClient) EnsureAPI() error {
 	_, err = io.Copy(tempFile, resp.Body)
 	if err != nil {
 		os.Remove(tempPath)
-		return fmt.Errorf("writing api.json: %w", err)
+		return errors.WrapIO("write", "api.json", err)
 	}
 
 	// Atomically move temp file to final location
 	if err := os.Rename(tempPath, apiPath); err != nil {
 		os.Remove(tempPath)
-		return fmt.Errorf("moving api.json to final location: %w", err)
+		return errors.WrapIO("move", "api.json", err)
 	}
 
 	fmt.Printf("  ✅ Downloaded api.json successfully\n")

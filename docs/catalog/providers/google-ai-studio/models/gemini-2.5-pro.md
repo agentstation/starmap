@@ -1,3 +1,10 @@
+---
+title: "Gemini 2.5 Pro"
+description: "Google Vertex AI model: gemini-2.5-pro
+"
+weight: 10
+author: ""
+---
 # Gemini 2.5 Pro
 
 Stable release (June 17th, 2025) of Gemini 2.5 Pro

@@ -1,3 +1,9 @@
+---
+title: "Gemini 1.5 Flash"
+description: "Alias that points to the most recent stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks."
+weight: 10
+author: "Google"
+---
 # Gemini 1.5 Flash
 
 Alias that points to the most recent stable version of Gemini 1.5 Flash, our fast and versatile multimodal model for scaling across diverse tasks.

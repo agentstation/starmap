@@ -1,3 +1,9 @@
+---
+title: "Imageobjectdetection Proprietary Yolo"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageobjectdetection Proprietary Yolo
 
 ## 📋 Overview

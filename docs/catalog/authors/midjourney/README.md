@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Midjourney
 
 **Website**: [https://midjourney.com](https://midjourney.com)  

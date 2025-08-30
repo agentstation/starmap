@@ -1,3 +1,10 @@
+---
+title: "imagetext"
+description: "Google Vertex AI model: imagetext
+"
+weight: 10
+author: ""
+---
 # imagetext
 
 Google Vertex AI model: imagetext

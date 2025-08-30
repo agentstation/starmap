@@ -1,3 +1,10 @@
+---
+title: "gemini 2.0 flash 001"
+description: "Google Gemini model gemini-2.0-flash-001 available through Vertex AI
+"
+weight: 10
+author: ""
+---
 # Gemini 2.0 Flash 001
 
 Stable version of Gemini 2.0 Flash, our fast and versatile multimodal model for scaling across diverse tasks, released in January of 2025.

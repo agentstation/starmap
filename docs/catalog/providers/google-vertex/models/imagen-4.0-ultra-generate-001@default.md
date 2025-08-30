@@ -1,3 +1,9 @@
+---
+title: "Imagen 4.0 Ultra Generate 001"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagen 4.0 Ultra Generate 001
 
 ## 📋 Overview

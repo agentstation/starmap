@@ -1,3 +1,9 @@
+---
+title: "distil-whisper-large-v3-en"
+description: ""
+weight: 10
+author: "Hugging Face"
+---
 # distil-whisper-large-v3-en
 
 ## 📋 Overview

@@ -1,3 +1,9 @@
+---
+title: "Claude Opus 3"
+description: ""
+weight: 10
+author: ""
+---
 # Claude Opus 3
 
 ## 📋 Overview

@@ -1,3 +1,10 @@
+---
+title: "bart-large-cnn"
+description: "Google Vertex AI model: bart-large-cnn
+"
+weight: 10
+author: ""
+---
 # bart-large-cnn
 
 Google Vertex AI model: bart-large-cnn

@@ -1,3 +1,10 @@
+---
+title: "video-speech-transcription"
+description: "Google Vertex AI model: video-speech-transcription
+"
+weight: 10
+author: ""
+---
 # video-speech-transcription
 
 Google Vertex AI model: video-speech-transcription

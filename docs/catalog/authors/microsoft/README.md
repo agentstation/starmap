@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Microsoft
 
 **Description**: Technology company with AI initiatives including Copilot and partnerships with OpenAI  

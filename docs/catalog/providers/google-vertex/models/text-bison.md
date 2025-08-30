@@ -1,3 +1,10 @@
+---
+title: "text-bison"
+description: "Google Vertex AI model: text-bison
+"
+weight: 10
+author: ""
+---
 # text-bison
 
 Google Vertex AI model: text-bison

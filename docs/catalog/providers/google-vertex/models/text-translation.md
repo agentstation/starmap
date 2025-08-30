@@ -1,3 +1,10 @@
+---
+title: "text-translation"
+description: "Google Vertex AI model: text-translation
+"
+weight: 10
+author: ""
+---
 # text-translation
 
 Google Vertex AI model: text-translation

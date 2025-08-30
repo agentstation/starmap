@@ -1,3 +1,10 @@
+---
+title: "txgemma"
+description: "Google Vertex AI model: txgemma
+"
+weight: 10
+author: ""
+---
 # txgemma
 
 Google Vertex AI model: txgemma

@@ -10,6 +10,8 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/convert"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
@@ -57,33 +59,32 @@ func runExport(cmd *cobra.Command, args []string) error {
 		pid := catalogs.ProviderID(exportFlagProvider)
 		sm, err := starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating starmap: %w", err)
+			return errors.WrapResource("create", "starmap", "", err)
 		}
 
 		catalog, err := sm.Catalog()
 		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
+			return errors.WrapResource("get", "catalog", "", err)
 		}
 		// Get provider from catalog
 		provider, found := catalog.Providers().Get(pid)
 		if !found {
-			return fmt.Errorf("provider %s not found in catalog", exportFlagProvider)
+			return &errors.NotFoundError{
+				Resource: "provider",
+				ID:       exportFlagProvider,
+			}
 		}
 
-		// Load API key and environment variables from environment
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-
-		// Get client for provider
-		client, err := provider.Client()
-		if err != nil {
-			return fmt.Errorf("getting client for %s: %w", exportFlagProvider, err)
-		}
+		// Create provider fetcher using public API
+		fetcher := sources.NewProviderFetcher()
 
 		ctx := context.Background()
-		modelValues, err := client.ListModels(ctx)
+		modelValues, err := fetcher.FetchModels(ctx, provider)
 		if err != nil {
-			return fmt.Errorf("fetching models from %s: %w", exportFlagProvider, err)
+			return &errors.SyncError{
+				Provider: exportFlagProvider,
+				Err:      err,
+			}
 		}
 		// Convert values to pointers
 		models = make([]*catalogs.Model, len(modelValues))
@@ -94,12 +95,12 @@ func runExport(cmd *cobra.Command, args []string) error {
 		// Use embedded catalog
 		sm, err := starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating starmap: %w", err)
+			return errors.WrapResource("create", "starmap", "", err)
 		}
 
 		catalog, err := sm.Catalog()
 		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
+			return errors.WrapResource("get", "catalog", "", err)
 		}
 		// Get all models from the catalog
 		models = catalog.Models().List()
@@ -131,7 +132,11 @@ func runExport(cmd *cobra.Command, args []string) error {
 			Data: openRouterModels,
 		}
 	default:
-		return fmt.Errorf("unsupported format: %s (use 'openai' or 'openrouter')", exportFlagFormat)
+		return &errors.ValidationError{
+			Field:   "format",
+			Value:   exportFlagFormat,
+			Message: "unsupported format (use 'openai' or 'openrouter')",
+		}
 	}
 
 	// Create encoder
@@ -139,7 +144,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 	if exportFlagOutput != "" {
 		file, err := os.Create(exportFlagOutput)
 		if err != nil {
-			return fmt.Errorf("creating output file: %w", err)
+			return errors.WrapIO("create", exportFlagOutput, err)
 		}
 		defer func() {
 			if err := file.Close(); err != nil {
@@ -158,7 +163,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 
 	// Write output
 	if err := encoder.Encode(output); err != nil {
-		return fmt.Errorf("encoding output: %w", err)
+		return errors.WrapParse("json", "output", err)
 	}
 
 	if exportFlagOutput != "" {

@@ -1,53 +1,6 @@
-# Sources Package
+# sources
 
-> Abstractions for fetching AI model catalog data from external systems
-
-## Overview
-
-The sources package defines the interface for data sources that provide AI model catalog information. Sources can fetch data from provider APIs, community repositories like models.dev, or local catalog files.
-
-## Source Interface
-
-```go
-type Source interface {
-    // Name returns the name of this source
-    Name() SourceName
-    
-    // Setup initializes the source with dependencies
-    Setup(providers *catalogs.Providers) error
-    
-    // Fetch retrieves data from this source
-    Fetch(ctx context.Context, opts ...SourceOption) (catalogs.Catalog, error)
-    
-    // Cleanup releases any resources
-    Cleanup() error
-}
-```
-
-## Common Source Names
-
-- `ProviderAPI` - Real-time data from provider APIs
-- `ModelsDevGit` - models.dev repository via Git
-- `ModelsDevHTTP` - models.dev repository via HTTP
-- `LocalCatalog` - Local catalog files
-
-## Usage
-
-Sources are used by the reconciliation system to gather data from multiple locations:
-
-```go
-sources := []sources.Source{
-    local.New(),                 // Embedded baseline
-    providers.New(),              // Provider APIs  
-    modelsdev.NewGitSource(),    // Community data
-}
-
-// Sources handle their own concurrency internally
-for _, src := range sources {
-    catalog, err := src.Fetch(ctx)
-    // Process catalog...
-}
-```
+Package sources provides abstractions for fetching AI model catalog data from various external sources including provider APIs and community repositories.
 
 <!-- gomarkdoc:embed:start -->
 
@@ -59,10 +12,42 @@ for _, src := range sources {
 import "github.com/agentstation/starmap/pkg/sources"
 ```
 
-Package sources provides abstractions for fetching AI model catalog data from various external sources including provider APIs and community repositories.
+Package sources provides public APIs for working with AI model data sources.
+
+Package sources defines interfaces and types for catalog data sources. Sources are responsible for fetching and synchronizing model data from various providers including local files, provider APIs, and external repositories.
+
+The package provides a unified interface for different data sources while supporting merge strategies, authorities for data precedence, and flexible configuration options.
+
+Example usage:
+
+```
+// Create a provider fetcher
+fetcher := NewProviderFetcher()
+
+// Fetch models from a provider
+models, err := fetcher.FetchModels(ctx, provider)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Check if a provider is supported
+if fetcher.HasClient(providerID) {
+    // Provider has a client implementation
+}
+```
 
 ## Index
 
+- [type ProviderFetcher](<#ProviderFetcher>)
+  - [func NewProviderFetcher\(opts ...ProviderOption\) \*ProviderFetcher](<#NewProviderFetcher>)
+  - [func \(pf \*ProviderFetcher\) FetchModels\(ctx context.Context, provider \*catalogs.Provider, opts ...ProviderOption\) \(\[\]catalogs.Model, error\)](<#ProviderFetcher.FetchModels>)
+  - [func \(pf \*ProviderFetcher\) FetchRawResponse\(ctx context.Context, provider \*catalogs.Provider, endpoint string, opts ...ProviderOption\) \(\[\]byte, error\)](<#ProviderFetcher.FetchRawResponse>)
+  - [func \(pf \*ProviderFetcher\) HasClient\(id catalogs.ProviderID\) bool](<#ProviderFetcher.HasClient>)
+  - [func \(pf \*ProviderFetcher\) List\(\) \[\]catalogs.ProviderID](<#ProviderFetcher.List>)
+- [type ProviderOption](<#ProviderOption>)
+  - [func WithAllowMissingAPIKey\(\) ProviderOption](<#WithAllowMissingAPIKey>)
+  - [func WithTimeout\(d time.Duration\) ProviderOption](<#WithTimeout>)
+  - [func WithoutCredentialLoading\(\) ProviderOption](<#WithoutCredentialLoading>)
 - [type Source](<#Source>)
 - [type SourceName](<#SourceName>)
   - [func \(sn SourceName\) String\(\) string](<#SourceName.String>)
@@ -73,8 +58,116 @@ Package sources provides abstractions for fetching AI model catalog data from va
   - [func WithSourceContext\(key string, value any\) SourceOption](<#WithSourceContext>)
 
 
+<a name="ProviderFetcher"></a>
+## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L16-L22>)
+
+ProviderFetcher provides operations for fetching models from provider APIs. This is the public API for external packages to interact with provider data.
+
+```go
+type ProviderFetcher struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewProviderFetcher"></a>
+### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L45>)
+
+```go
+func NewProviderFetcher(opts ...ProviderOption) *ProviderFetcher
+```
+
+NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages.
+
+<a name="ProviderFetcher.FetchModels"></a>
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L96>)
+
+```go
+func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
+```
+
+FetchModels fetches available models from a single provider's API. It handles credential loading, client creation, and API communication.
+
+Example:
+
+```
+fetcher := NewProviderFetcher()
+models, err := fetcher.FetchModels(ctx, provider)
+```
+
+With options:
+
+```
+fetcher := NewProviderFetcher(WithTimeout(30 * time.Second))
+models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
+```
+
+<a name="ProviderFetcher.FetchRawResponse"></a>
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L190>)
+
+```go
+func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, error)
+```
+
+FetchRawResponse fetches the raw API response from a provider's endpoint. This is useful for testing, debugging, or saving raw responses as testdata.
+
+The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing.
+
+<a name="ProviderFetcher.HasClient"></a>
+### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L169>)
+
+```go
+func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
+```
+
+HasClient checks if a provider has a client implementation available. This can be used to determine which providers are supported.
+
+<a name="ProviderFetcher.List"></a>
+### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L178>)
+
+```go
+func (pf *ProviderFetcher) List() []catalogs.ProviderID
+```
+
+List returns all provider IDs that have client implementations. This is useful for discovering which providers can be used with FetchModels.
+
+<a name="ProviderOption"></a>
+## type [ProviderOption](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L32>)
+
+ProviderOption configures ProviderFetcher behavior
+
+```go
+type ProviderOption func(*providerOptions)
+```
+
+<a name="WithAllowMissingAPIKey"></a>
+### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L70>)
+
+```go
+func WithAllowMissingAPIKey() ProviderOption
+```
+
+WithAllowMissingAPIKey allows operations even when API key is not configured. Useful for checking provider support without credentials.
+
+<a name="WithTimeout"></a>
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L78>)
+
+```go
+func WithTimeout(d time.Duration) ProviderOption
+```
+
+WithTimeout sets a timeout for provider operations. The timeout applies to the context passed to FetchModels.
+
+<a name="WithoutCredentialLoading"></a>
+### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L62>)
+
+```go
+func WithoutCredentialLoading() ProviderOption
+```
+
+WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
+
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L26-L39>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L49-L62>)
 
 Source represents a data source for catalog information
 
@@ -96,7 +189,7 @@ type Source interface {
 ```
 
 <a name="SourceName"></a>
-## type [SourceName](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L10>)
+## type [SourceName](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L33>)
 
 SourceName represents the name/type of a data source
 
@@ -116,7 +209,7 @@ const (
 ```
 
 <a name="SourceName.String"></a>
-### func \(SourceName\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L13>)
+### func \(SourceName\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L36>)
 
 ```go
 func (sn SourceName) String() string

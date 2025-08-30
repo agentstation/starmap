@@ -1,3 +1,9 @@
+---
+title: "babbage-002"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # babbage-002
 
 ## 📋 Overview

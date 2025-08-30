@@ -2,9 +2,9 @@ package local
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -55,7 +55,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 		if path, ok := options.Context["inputPath"].(string); ok && path != "" {
 			catalog, err := catalogs.New(catalogs.WithFiles(path))
 			if err != nil {
-				return nil, fmt.Errorf("loading from override path %s: %w", path, err)
+				return nil, errors.WrapResource("load", "catalog", path, err)
 			}
 			catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
 			return catalog, nil
@@ -66,7 +66,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 	if s.catalogPath != "" {
 		catalog, err := catalogs.New(catalogs.WithFiles(s.catalogPath))
 		if err != nil {
-			return nil, fmt.Errorf("loading from %s: %w", s.catalogPath, err)
+			return nil, errors.WrapResource("load", "catalog", s.catalogPath, err)
 		}
 		catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
 		return catalog, nil
@@ -75,7 +75,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 	// Default to embedded catalog
 	catalog, err := catalogs.New(catalogs.WithEmbedded())
 	if err != nil {
-		return nil, fmt.Errorf("loading embedded catalog: %w", err)
+		return nil, errors.WrapResource("load", "embedded catalog", "", err)
 	}
 	catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
 	return catalog, nil

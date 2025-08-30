@@ -1,3 +1,10 @@
+---
+title: "gemini 1.5 pro 001"
+description: "Google Gemini model gemini-1.5-pro-001 available through Vertex AI
+"
+weight: 10
+author: ""
+---
 # gemini 1.5 pro 001
 
 Google Gemini model gemini-1.5-pro-001 available through Vertex AI

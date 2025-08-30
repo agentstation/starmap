@@ -1,3 +1,10 @@
+---
+title: "pretrained-form-parser"
+description: "Google Vertex AI model: pretrained-form-parser
+"
+weight: 10
+author: ""
+---
 # pretrained-form-parser
 
 Google Vertex AI model: pretrained-form-parser

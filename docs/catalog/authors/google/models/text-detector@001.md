@@ -1,3 +1,9 @@
+---
+title: "Text Detector"
+description: ""
+weight: 10
+author: "google"
+---
 # Text Detector
 
 ## 📋 Overview

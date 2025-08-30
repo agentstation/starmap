@@ -209,16 +209,16 @@ check-apis: ## Check API connectivity for all providers
 #   make testdata-update              # Update all provider testdata (requires API keys)
 testdata: ## Manage testdata (use PROVIDER=name to specify provider)
 	@echo "$(BLUE)Managing testdata...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata $(if $(PROVIDER),--provider $(PROVIDER),) --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata $(if $(PROVIDER),--provider $(PROVIDER),) --verbose
 
 testdata-verify: ## Verify all testdata files are valid
 	@echo "$(BLUE)Verifying testdata files...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata --verify --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata --verify --verbose
 
 testdata-update: ## Update testdata for all providers (requires API keys)
 	@echo "$(BLUE)Updating testdata for all providers...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata --update --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata --verbose
 
 # Documentation
 generate: ## Generate all documentation (Go docs and catalog docs)
@@ -238,9 +238,19 @@ godoc: ## Generate only Go documentation using go generate
 	$(GOCMD) generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
+docs-check: ## Check if documentation is up to date (for CI)
+	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \
+		echo "Checking $$pkg..."; \
+		cd $$pkg && gomarkdoc -c -e -o README.md . || exit 1; \
+		cd - > /dev/null; \
+	done
+	@echo "$(GREEN)All documentation is up to date$(NC)"
+
 catalog-docs: ## Generate only catalog documentation
 	@echo "$(BLUE)Generating catalog documentation...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate
+	$(GOCMD) run $(MAIN_PATH) generate docs
 	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
 
 # Demo
@@ -251,3 +261,36 @@ demo: ## Generate VHS demo video
 	$(RUN_PREFIX) vhs scripts/demo.tape
 	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
 	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"
+
+# Site generation targets
+site-generate: ## Generate static documentation site
+	@echo "$(BLUE)Generating documentation site...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) generate site
+	@echo "$(GREEN)Site generated in site/public$(NC)"
+
+site-serve: ## Run Hugo development server
+	@echo "$(BLUE)Starting Hugo development server...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) serve site
+
+site-build: ## Build production site with Hugo
+	@echo "$(BLUE)Building production site...$(NC)"
+	@$(RUN_PREFIX) which hugo > /dev/null || (echo "$(RED)Hugo not found. Run 'devbox shell' or install with: brew install hugo$(NC)" && exit 1)
+	$(RUN_PREFIX) hugo --source site --minify --gc
+	@echo "$(GREEN)Production build in site/public$(NC)"
+
+site-theme: ## Download Hugo theme
+	@echo "$(BLUE)Downloading Hugo Book theme...$(NC)"
+	@mkdir -p site
+	cd site && git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 2>/dev/null || true
+	cd site && git submodule update --init --recursive
+	@echo "$(GREEN)Theme installed$(NC)"
+
+site-preview: site-theme site-generate site-serve ## Full site preview workflow
+
+site-setup: ## Set up Hugo site structure
+	@echo "$(BLUE)Setting up Hugo site structure...$(NC)"
+	@mkdir -p site/{content,themes,static,layouts,assets}
+	@mkdir -p site/static/{css,js,img}
+	@mkdir -p site/layouts/{_default,partials,shortcodes}
+	@if [ ! -L site/content ]; then cd site && ln -sf ../docs content; fi
+	@echo "$(GREEN)Site structure created$(NC)"

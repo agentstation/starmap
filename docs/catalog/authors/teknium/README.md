@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # teknium
 
 **Description**: Individual researcher and creator of the OpenHermes model series  

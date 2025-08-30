@@ -1,3 +1,10 @@
+---
+title: "claude 3 sonnet"
+description: "Anthropic Claude model claude-3-sonnet available through Vertex AI Model Garden
+"
+weight: 10
+author: ""
+---
 # claude 3 sonnet
 
 Anthropic Claude model claude-3-sonnet available through Vertex AI Model Garden

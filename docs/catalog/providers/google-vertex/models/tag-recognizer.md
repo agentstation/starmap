@@ -1,3 +1,10 @@
+---
+title: "tag-recognizer"
+description: "Google Vertex AI model: tag-recognizer
+"
+weight: 10
+author: ""
+---
 # tag-recognizer
 
 Google Vertex AI model: tag-recognizer

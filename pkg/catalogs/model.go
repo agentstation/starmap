@@ -278,11 +278,12 @@ func (m ModelModality) String() string {
 
 // Supported model modalities.
 const (
-	ModelModalityText  ModelModality = "text"
-	ModelModalityAudio ModelModality = "audio"
-	ModelModalityImage ModelModality = "image"
-	ModelModalityVideo ModelModality = "video"
-	ModelModalityPDF   ModelModality = "pdf"
+	ModelModalityText      ModelModality = "text"
+	ModelModalityAudio     ModelModality = "audio"
+	ModelModalityImage     ModelModality = "image"
+	ModelModalityVideo     ModelModality = "video"
+	ModelModalityPDF       ModelModality = "pdf"
+	ModelModalityEmbedding ModelModality = "embedding" // Vector embeddings
 )
 
 // ModelGeneration - core chat completions generation controls

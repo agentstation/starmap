@@ -1,3 +1,9 @@
+---
+title: "gpt-4o-mini-transcribe"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4o-mini-transcribe
 
 ## 📋 Overview

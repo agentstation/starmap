@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/reconcile"
 	"github.com/agentstation/utc"
 )
@@ -133,7 +134,10 @@ func TestEnhancerPipelineWithErrors(t *testing.T) {
 		name:     "failing",
 		priority: 100,
 		enhance: func(model catalogs.Model) (catalogs.Model, error) {
-			return model, fmt.Errorf("enhancement failed")
+			return model, &errors.SyncError{
+				Provider: "failing",
+				Err:      errors.New("enhancement failed"),
+			}
 		},
 	}
 

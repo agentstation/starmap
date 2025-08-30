@@ -284,6 +284,54 @@ type Model struct {
 }
 ```
 
+## 📁 Project Structure
+
+Click on any package to view its documentation:
+
+```
+starmap/
+├── 📦 pkg/                         # Public API packages
+│   ├── 📚 [catalogs/](pkg/catalogs/)       # Unified catalog abstraction with storage backends
+│   ├── 🔢 [constants/](pkg/constants/)     # Centralized constants for the application  
+│   ├── 🔄 [convert/](pkg/convert/)         # Model format conversion utilities
+│   ├── ⚠️ [errors/](pkg/errors/)           # Custom error types and handling
+│   ├── 📝 [logging/](pkg/logging/)         # Structured logging with zerolog
+│   ├── 🔀 [reconcile/](pkg/reconcile/)     # Multi-source reconciliation engine
+│   └── 🌐 [sources/](pkg/sources/)         # Data source abstractions
+│
+├── 🔒 internal/                    # Internal implementation packages
+│   ├── 💾 [embedded/](internal/embedded/)  # Embedded catalog data
+│   ├── 🚀 [transport/](internal/transport/) # HTTP client utilities
+│   └── 📡 sources/                 # Source implementations
+│       ├── 🏠 [local/](internal/sources/local/)        # Local file source
+│       ├── 🌍 [modelsdev/](internal/sources/modelsdev/) # models.dev integration
+│       ├── 🏢 [providers/](internal/sources/providers/) # Provider API clients
+│       │   ├── [anthropic/](internal/sources/providers/anthropic/)
+│       │   ├── [cerebras/](internal/sources/providers/cerebras/)
+│       │   ├── [deepseek/](internal/sources/providers/deepseek/)
+│       │   ├── [google-ai-studio/](internal/sources/providers/google-ai-studio/)
+│       │   ├── [google-vertex/](internal/sources/providers/google-vertex/)
+│       │   ├── [groq/](internal/sources/providers/groq/)
+│       │   └── [openai/](internal/sources/providers/openai/)
+│       └── 📋 [registry/](internal/sources/registry/)   # Source registration
+│
+├── cmd/starmap/                    # CLI application
+├── docs/                           # Generated documentation
+└── scripts/                        # Build and utility scripts
+```
+
+## 📦 Package Quick Reference
+
+| Package | Purpose | Key Types | Documentation |
+|---------|---------|-----------|---------------|
+| **[pkg/catalogs](pkg/catalogs/)** | Catalog storage abstraction | `Catalog`, `Model`, `Provider` | [📚 README](pkg/catalogs/README.md) |
+| **[pkg/reconcile](pkg/reconcile/)** | Multi-source data merging | `Reconciler`, `Strategy`, `Authority` | [📚 README](pkg/reconcile/README.md) |
+| **[pkg/sources](pkg/sources/)** | Data source interfaces | `Source`, `ProviderFetcher` | [📚 README](pkg/sources/README.md) |
+| **[pkg/errors](pkg/errors/)** | Error handling | `NotFoundError`, `APIError` | [📚 README](pkg/errors/README.md) |
+| **[pkg/constants](pkg/constants/)** | Application constants | Timeouts, Limits, Permissions | [📚 README](pkg/constants/README.md) |
+| **[pkg/logging](pkg/logging/)** | Structured logging | `Logger`, `Config` | [📚 README](pkg/logging/README.md) |
+| **[pkg/convert](pkg/convert/)** | Format conversion | `OpenAIModel`, `OpenRouterModel` | [📚 README](pkg/convert/README.md) |
+
 ## Package Documentation
 
 Starmap is organized into focused packages, each with comprehensive documentation:
@@ -813,6 +861,9 @@ make test-integration
 
 We welcome contributions! Here's how to get involved:
 
+### Adding New Providers
+See our comprehensive [Provider Implementation Guide](docs/PROVIDER_IMPLEMENTATION_GUIDE.md) for step-by-step instructions.
+
 ### Adding a New Provider
 
 1. **Add Provider Configuration**
@@ -897,6 +948,51 @@ import "github.com/agentstation/starmap"
 
 Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
 
+Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with automatic updates, event hooks, and provider synchronization capabilities.
+
+Starmap wraps the underlying catalog system with additional features including: \- Automatic background synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe catalog access with copy\-on\-read semantics \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
+
+Example usage:
+
+```
+// Create a starmap instance with default settings
+sm, err := starmap.New()
+if err != nil {
+    log.Fatal(err)
+}
+defer sm.AutoUpdatesOff()
+
+// Register event hooks
+sm.OnModelAdded(func(model catalogs.Model) {
+    log.Printf("New model: %s", model.ID)
+})
+
+// Get catalog (returns a copy for thread safety)
+catalog, err := sm.Catalog()
+if err != nil {
+    log.Fatal(err)
+}
+
+// Access models
+models := catalog.Models()
+for _, model := range models.List() {
+    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
+}
+
+// Manually trigger sync
+result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
+if err != nil {
+    log.Fatal(err)
+}
+
+// Configure with custom options
+sm, err = starmap.New(
+    WithAutoUpdateInterval(30 * time.Minute),
+    WithLocalPath("./custom-catalog"),
+    WithAutoUpdates(true),
+)
+```
+
 ## Index
 
 - [type AutoUpdateFunc](<#AutoUpdateFunc>)
@@ -935,7 +1031,7 @@ Package starmap provides a unified AI model catalog system with automatic update
 
 
 <a name="AutoUpdateFunc"></a>
-## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L95>)
+## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L96>)
 
 AutoUpdateFunc is a function that updates the catalog
 
@@ -971,7 +1067,7 @@ type ModelUpdatedHook func(old, new catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L47>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L48>)
 
 Option is a function that configures a Starmap instance
 
@@ -980,7 +1076,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAutoUpdateFunc"></a>
-### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L98>)
+### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L99>)
 
 ```go
 func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
@@ -989,7 +1085,7 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
 WithAutoUpdateFunc configures a custom function for updating the catalog
 
 <a name="WithAutoUpdateInterval"></a>
-### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L87>)
+### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L88>)
 
 ```go
 func WithAutoUpdateInterval(interval time.Duration) Option
@@ -998,7 +1094,7 @@ func WithAutoUpdateInterval(interval time.Duration) Option
 WithAutoUpdateInterval configures how often to automatically update the catalog
 
 <a name="WithAutoUpdates"></a>
-### func [WithAutoUpdates](<https://github.com/agentstation/starmap/blob/master/options.go#L79>)
+### func [WithAutoUpdates](<https://github.com/agentstation/starmap/blob/master/options.go#L80>)
 
 ```go
 func WithAutoUpdates(enabled bool) Option
@@ -1007,7 +1103,7 @@ func WithAutoUpdates(enabled bool) Option
 WithAutoUpdates configures whether automatic updates are enabled
 
 <a name="WithInitialCatalog"></a>
-### func [WithInitialCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L106>)
+### func [WithInitialCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L107>)
 
 ```go
 func WithInitialCatalog(catalog catalogs.Catalog) Option
@@ -1016,7 +1112,7 @@ func WithInitialCatalog(catalog catalogs.Catalog) Option
 WithInitialCatalog configures the initial catalog to use
 
 <a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L114>)
+### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L115>)
 
 ```go
 func WithLocalPath(path string) Option
@@ -1025,7 +1121,7 @@ func WithLocalPath(path string) Option
 WithLocalPath configures the local source to use a specific catalog path
 
 <a name="WithRemoteServer"></a>
-### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L62>)
+### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L63>)
 
 ```go
 func WithRemoteServer(url string, apiKey *string) Option
@@ -1034,7 +1130,7 @@ func WithRemoteServer(url string, apiKey *string) Option
 WithRemoteServer configures the remote server for catalog updates. A url is required, an api key can be provided for authentication, otherwise use nil to skip Bearer token authentication.
 
 <a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L71>)
+### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L72>)
 
 ```go
 func WithRemoteServerOnly(enabled bool) Option
@@ -1043,7 +1139,7 @@ func WithRemoteServerOnly(enabled bool) Option
 WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs
 
 <a name="Starmap"></a>
-## type [Starmap](<https://github.com/agentstation/starmap/blob/master/starmap.go#L18-L45>)
+## type [Starmap](<https://github.com/agentstation/starmap/blob/master/starmap.go#L73-L100>)
 
 Starmap manages a catalog with automatic updates and event hooks
 
@@ -1079,7 +1175,7 @@ type Starmap interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/starmap.go#L65>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/starmap.go#L120>)
 
 ```go
 func New(opts ...Option) (Starmap, error)
@@ -1088,7 +1184,7 @@ func New(opts ...Option) (Starmap, error)
 New creates a new Starmap instance with the given options
 
 <a name="SyncOption"></a>
-## type [SyncOption](<https://github.com/agentstation/starmap/blob/master/options.go#L172>)
+## type [SyncOption](<https://github.com/agentstation/starmap/blob/master/options.go#L173>)
 
 SyncOption is a function that configures SyncOptions
 
@@ -1097,7 +1193,7 @@ type SyncOption func(*SyncOptions)
 ```
 
 <a name="WithAutoApprove"></a>
-### func [WithAutoApprove](<https://github.com/agentstation/starmap/blob/master/options.go#L182>)
+### func [WithAutoApprove](<https://github.com/agentstation/starmap/blob/master/options.go#L183>)
 
 ```go
 func WithAutoApprove(autoApprove bool) SyncOption
@@ -1106,7 +1202,7 @@ func WithAutoApprove(autoApprove bool) SyncOption
 WithAutoApprove configures auto approval
 
 <a name="WithContext"></a>
-### func [WithContext](<https://github.com/agentstation/starmap/blob/master/options.go#L224>)
+### func [WithContext](<https://github.com/agentstation/starmap/blob/master/options.go#L225>)
 
 ```go
 func WithContext(key string, value any) SyncOption
@@ -1115,7 +1211,7 @@ func WithContext(key string, value any) SyncOption
 WithContext adds context data for sources
 
 <a name="WithDryRun"></a>
-### func [WithDryRun](<https://github.com/agentstation/starmap/blob/master/options.go#L175>)
+### func [WithDryRun](<https://github.com/agentstation/starmap/blob/master/options.go#L176>)
 
 ```go
 func WithDryRun(dryRun bool) SyncOption
@@ -1124,7 +1220,7 @@ func WithDryRun(dryRun bool) SyncOption
 WithDryRun configures dry run mode
 
 <a name="WithFailFast"></a>
-### func [WithFailFast](<https://github.com/agentstation/starmap/blob/master/options.go#L189>)
+### func [WithFailFast](<https://github.com/agentstation/starmap/blob/master/options.go#L190>)
 
 ```go
 func WithFailFast(failFast bool) SyncOption
@@ -1133,7 +1229,7 @@ func WithFailFast(failFast bool) SyncOption
 WithFailFast configures fail\-fast behavior
 
 <a name="WithOutputPath"></a>
-### func [WithOutputPath](<https://github.com/agentstation/starmap/blob/master/options.go#L217>)
+### func [WithOutputPath](<https://github.com/agentstation/starmap/blob/master/options.go#L218>)
 
 ```go
 func WithOutputPath(path string) SyncOption
@@ -1142,7 +1238,7 @@ func WithOutputPath(path string) SyncOption
 WithOutputPath configures the output path for saving
 
 <a name="WithProvider"></a>
-### func [WithProvider](<https://github.com/agentstation/starmap/blob/master/options.go#L210>)
+### func [WithProvider](<https://github.com/agentstation/starmap/blob/master/options.go#L211>)
 
 ```go
 func WithProvider(providerID catalogs.ProviderID) SyncOption
@@ -1151,7 +1247,7 @@ func WithProvider(providerID catalogs.ProviderID) SyncOption
 WithProvider configures syncing for a specific provider only
 
 <a name="WithSources"></a>
-### func [WithSources](<https://github.com/agentstation/starmap/blob/master/options.go#L203>)
+### func [WithSources](<https://github.com/agentstation/starmap/blob/master/options.go#L204>)
 
 ```go
 func WithSources(sourceNames ...sources.SourceName) SyncOption
@@ -1160,7 +1256,7 @@ func WithSources(sourceNames ...sources.SourceName) SyncOption
 WithSources configures which sources to use
 
 <a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/options.go#L196>)
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/options.go#L197>)
 
 ```go
 func WithTimeout(timeout time.Duration) SyncOption
@@ -1169,7 +1265,7 @@ func WithTimeout(timeout time.Duration) SyncOption
 WithTimeout configures the sync timeout
 
 <a name="SyncOptions"></a>
-## type [SyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L126-L142>)
+## type [SyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L127-L143>)
 
 SyncOptions controls the overall sync orchestration in Starmap.Sync\(\)
 
@@ -1194,7 +1290,7 @@ type SyncOptions struct {
 ```
 
 <a name="NewSyncOptions"></a>
-### func [NewSyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L167>)
+### func [NewSyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L168>)
 
 ```go
 func NewSyncOptions(opts ...SyncOption) *SyncOptions
@@ -1203,7 +1299,7 @@ func NewSyncOptions(opts ...SyncOption) *SyncOptions
 NewSyncOptions returns sync options with default values
 
 <a name="SyncProviderResult"></a>
-## type [SyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L185-L200>)
+## type [SyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L200-L215>)
 
 SyncProviderResult represents sync results for a single provider
 
@@ -1227,7 +1323,7 @@ type SyncProviderResult struct {
 ```
 
 <a name="NewSyncProviderResult"></a>
-### func [NewSyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L252>)
+### func [NewSyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L267>)
 
 ```go
 func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult
@@ -1236,7 +1332,7 @@ func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult
 NewProviderResult creates a new ProviderResult
 
 <a name="SyncProviderResult.HasChanges"></a>
-### func \(\*SyncProviderResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync.go#L208>)
+### func \(\*SyncProviderResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync.go#L223>)
 
 ```go
 func (spr *SyncProviderResult) HasChanges() bool
@@ -1245,7 +1341,7 @@ func (spr *SyncProviderResult) HasChanges() bool
 HasChanges returns true if the provider result contains any changes
 
 <a name="SyncProviderResult.Summary"></a>
-### func \(\*SyncProviderResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync.go#L235>)
+### func \(\*SyncProviderResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync.go#L250>)
 
 ```go
 func (spr *SyncProviderResult) Summary() string
@@ -1254,7 +1350,7 @@ func (spr *SyncProviderResult) Summary() string
 Summary returns a human\-readable summary of the provider result
 
 <a name="SyncResult"></a>
-## type [SyncResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L172-L182>)
+## type [SyncResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L187-L197>)
 
 SyncResult represents the complete result of a sync operation
 
@@ -1273,7 +1369,7 @@ type SyncResult struct {
 ```
 
 <a name="NewSyncResult"></a>
-### func [NewSyncResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L245>)
+### func [NewSyncResult](<https://github.com/agentstation/starmap/blob/master/sync.go#L260>)
 
 ```go
 func NewSyncResult() *SyncResult
@@ -1282,7 +1378,7 @@ func NewSyncResult() *SyncResult
 NewResult creates a new Result with initialized maps
 
 <a name="SyncResult.HasChanges"></a>
-### func \(\*SyncResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync.go#L203>)
+### func \(\*SyncResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync.go#L218>)
 
 ```go
 func (sr *SyncResult) HasChanges() bool
@@ -1291,7 +1387,7 @@ func (sr *SyncResult) HasChanges() bool
 HasChanges returns true if the sync result contains any changes
 
 <a name="SyncResult.Summary"></a>
-### func \(\*SyncResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync.go#L213>)
+### func \(\*SyncResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync.go#L228>)
 
 ```go
 func (sr *SyncResult) Summary() string

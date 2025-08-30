@@ -1,3 +1,9 @@
+---
+title: "o1-pro"
+description: ""
+weight: 10
+author: ""
+---
 # o1-pro
 
 ## 📋 Overview

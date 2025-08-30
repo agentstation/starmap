@@ -1,3 +1,10 @@
+---
+title: "pretrained-ocr"
+description: "Google Vertex AI model: pretrained-ocr
+"
+weight: 10
+author: ""
+---
 # pretrained-ocr
 
 Google Vertex AI model: pretrained-ocr

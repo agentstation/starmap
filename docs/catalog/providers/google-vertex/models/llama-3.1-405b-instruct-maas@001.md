@@ -1,3 +1,9 @@
+---
+title: "Llama 3.1 405b Instruct Maas"
+description: ""
+weight: 10
+author: "meta"
+---
 # Llama 3.1 405b Instruct Maas
 
 ## 📋 Overview

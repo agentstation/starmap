@@ -1,3 +1,9 @@
+---
+title: "qwen-3-coder-480b"
+description: ""
+weight: 10
+author: "Cerebras"
+---
 # qwen-3-coder-480b
 
 ## 📋 Overview

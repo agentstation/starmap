@@ -1,3 +1,10 @@
+---
+title: "automl-vision-image-object-detection"
+description: "Google Vertex AI model: automl-vision-image-object-detection
+"
+weight: 10
+author: ""
+---
 # automl-vision-image-object-detection
 
 Google Vertex AI model: automl-vision-image-object-detection

@@ -1,3 +1,10 @@
+---
+title: "f-vlm-jax"
+description: "Google Vertex AI model: f-vlm-jax
+"
+weight: 10
+author: ""
+---
 # f-vlm-jax
 
 Google Vertex AI model: f-vlm-jax

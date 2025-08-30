@@ -1,3 +1,9 @@
+---
+title: "People Blur"
+description: ""
+weight: 10
+author: "google"
+---
 # People Blur
 
 ## 📋 Overview

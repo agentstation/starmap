@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Anysphere
 
 **Website**: [https://anysphere.co](https://anysphere.co)  

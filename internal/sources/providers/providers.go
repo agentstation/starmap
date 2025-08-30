@@ -3,21 +3,13 @@ package providers
 import (
 	"context"
 	"errors"
-	"fmt"
-	"log"
 	"sync"
 
+	"github.com/agentstation/starmap/internal/sources/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
-
-	// Import provider implementations for factory functions
-	"github.com/agentstation/starmap/internal/sources/providers/anthropic"
-	"github.com/agentstation/starmap/internal/sources/providers/cerebras"
-	"github.com/agentstation/starmap/internal/sources/providers/deepseek"
-	googleaistudio "github.com/agentstation/starmap/internal/sources/providers/google-ai-studio"
-	googlevertex "github.com/agentstation/starmap/internal/sources/providers/google-vertex"
-	"github.com/agentstation/starmap/internal/sources/providers/groq"
-	"github.com/agentstation/starmap/internal/sources/providers/openai"
 )
 
 // No init() - no singleton registration
@@ -55,11 +47,11 @@ func (s *Source) Setup(providers *catalogs.Providers) error {
 func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
 	// Apply options
 	options := sources.ApplyOptions(opts...)
-	
+
 	// Create a new catalog to build into
 	catalog, err := catalogs.New()
 	if err != nil {
-		return nil, fmt.Errorf("creating memory catalog: %w", err)
+		return nil, pkgerrors.WrapResource("create", "memory catalog", "", err)
 	}
 
 	// Set the default merge strategy for provider catalog (fresh API data)
@@ -78,7 +70,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 	if options.ProviderID != nil {
 		providerIDs = []catalogs.ProviderID{*options.ProviderID}
 	} else {
-		providerIDs = listSupportedProviders()
+		providerIDs = registry.List()
 	}
 
 	// Get provider configs from injected providers
@@ -93,7 +85,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 		return catalog, nil // No providers to sync
 	}
 
-	log.Printf("  Syncing %d providers concurrently...", len(providerConfigs))
+	logger := logging.FromContext(ctx)
+	logger.Info().
+		Int("provider_count", len(providerConfigs)).
+		Msg("Syncing providers concurrently")
 
 	// Sync all providers CONCURRENTLY
 	var wg sync.WaitGroup
@@ -111,20 +106,32 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			p.LoadEnvVars()
 
 			// Check if provider has required credentials
+			logger := logging.WithProvider(ctx, string(p.ID))
 			if p.IsAPIKeyRequired() && !p.HasAPIKey() {
-				log.Printf("    %s: skipping (no API key)", p.ID)
+				logging.Ctx(logger).Debug().
+					Str("provider_id", string(p.ID)).
+					Msg("Skipping provider - no API key")
 				return
 			}
-			if len(p.GetMissingEnvVars()) > 0 {
-				log.Printf("    %s: skipping (missing env vars: %v)", p.ID, p.GetMissingEnvVars())
+			if missingVars := p.MissingEnvVars(); len(missingVars) > 0 {
+				logging.Ctx(logger).Debug().
+					Str("provider_id", string(p.ID)).
+					Strs("missing_env_vars", missingVars).
+					Msg("Skipping provider - missing environment variables")
 				return
 			}
 
 			// Create NEW client instance with dedicated HTTP client
-			client, err := getClient(p)
+			client, err := registry.Get(p)
 			if err != nil {
-				log.Printf("    %s: skipping (%v)", p.ID, err)
-				result.err = fmt.Errorf("%s: %w", p.ID, err)
+				logging.Ctx(logger).Debug().
+					Err(err).
+					Str("provider_id", string(p.ID)).
+					Msg("Skipping provider - client creation failed")
+				result.err = &pkgerrors.SyncError{
+				Provider: string(p.ID),
+				Err:      err,
+			}
 				resultChan <- result
 				return
 			}
@@ -132,7 +139,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			// Fetch models from API
 			models, err := client.ListModels(ctx)
 			if err != nil {
-				result.err = fmt.Errorf("%s: %w", p.ID, err)
+				result.err = &pkgerrors.SyncError{
+				Provider: string(p.ID),
+				Err:      err,
+			}
 				resultChan <- result
 				return
 			}
@@ -140,7 +150,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			result.models = models
 			resultChan <- result
 
-			log.Printf("    %s: fetched %d models", p.ID, len(models))
+			logging.Ctx(logger).Info().
+				Str("provider_id", string(p.ID)).
+				Int("model_count", len(models)).
+				Msg("Fetched models")
 		}(provider)
 	}
 
@@ -160,7 +173,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			// Create copy to avoid modifying original
 			modelCopy := model
 			if err := catalog.SetModel(modelCopy); err != nil {
-				log.Printf("    Warning: failed to set model %s: %v", modelCopy.ID, err)
+				logger.Warn().
+					Err(err).
+					Str("model_id", modelCopy.ID).
+					Msg("Failed to set model")
 			}
 		}
 
@@ -179,66 +195,4 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 func (s *Source) Cleanup() error {
 	// ProvidersSource doesn't hold persistent resources
 	return nil
-}
-
-// getClient creates a NEW client instance for the given provider.
-// Each call returns a fresh client with its own HTTP client to avoid race conditions.
-// This is now an internal implementation detail.
-func getClient(provider *catalogs.Provider) (catalogs.Client, error) {
-	// Create NEW client instance with dedicated HTTP client
-	switch provider.ID {
-	case catalogs.ProviderIDOpenAI:
-		return openai.NewClient(provider), nil
-	case catalogs.ProviderIDAnthropic:
-		return anthropic.NewClient(provider), nil
-	case catalogs.ProviderIDGroq:
-		return groq.NewClient(provider), nil
-	case catalogs.ProviderIDCerebras:
-		return cerebras.NewClient(provider), nil
-	case catalogs.ProviderIDDeepSeek:
-		return deepseek.NewClient(provider), nil
-	case catalogs.ProviderIDGoogleAIStudio:
-		return googleaistudio.NewClient(provider), nil
-	case catalogs.ProviderIDGoogleVertex:
-		return googlevertex.NewClient(provider), nil // Uses env vars, not API key
-	default:
-		return nil, fmt.Errorf("unsupported provider: %s", provider.ID)
-	}
-}
-
-// listSupportedProviders returns all provider IDs that have client implementations.
-// This is now based on the switch statement in getClient, not a registry.
-func listSupportedProviders() []catalogs.ProviderID {
-	return []catalogs.ProviderID{
-		catalogs.ProviderIDOpenAI,
-		catalogs.ProviderIDAnthropic,
-		catalogs.ProviderIDGroq,
-		catalogs.ProviderIDCerebras,
-		catalogs.ProviderIDDeepSeek,
-		catalogs.ProviderIDGoogleAIStudio,
-		catalogs.ProviderIDGoogleVertex,
-	}
-}
-
-// Public API functions for backward compatibility and external use
-
-// GetClient creates a NEW client instance for the given provider.
-// Exposed for testing and advanced use cases.
-func GetClient(provider *catalogs.Provider) (catalogs.Client, error) {
-	return getClient(provider)
-}
-
-// HasClient checks if a provider ID has a client implementation.
-func HasClient(id catalogs.ProviderID) bool {
-	for _, supported := range listSupportedProviders() {
-		if supported == id {
-			return true
-		}
-	}
-	return false
-}
-
-// ListSupportedProviders returns all provider IDs that have client implementations.
-func ListSupportedProviders() []catalogs.ProviderID {
-	return listSupportedProviders()
 }

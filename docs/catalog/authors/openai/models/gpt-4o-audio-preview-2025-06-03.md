@@ -1,3 +1,9 @@
+---
+title: "gpt-4o-audio-preview-2025-06-03"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # gpt-4o-audio-preview-2025-06-03
 
 ## 📋 Overview

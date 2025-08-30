@@ -1,3 +1,9 @@
+---
+title: "Imageobjectdetection Yolo"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageobjectdetection Yolo
 
 ## 📋 Overview

@@ -1,3 +1,9 @@
+---
+title: "Imagen 4.0 Fast Generate Preview 06 06"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagen 4.0 Fast Generate Preview 06 06
 
 ## 📋 Overview

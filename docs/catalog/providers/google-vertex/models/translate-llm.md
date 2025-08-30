@@ -1,3 +1,10 @@
+---
+title: "translate-llm"
+description: "Google Vertex AI model: translate-llm
+"
+weight: 10
+author: ""
+---
 # translate-llm
 
 Google Vertex AI model: translate-llm

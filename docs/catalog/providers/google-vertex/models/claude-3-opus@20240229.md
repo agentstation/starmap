@@ -1,3 +1,10 @@
+---
+title: "claude 3 opus"
+description: "Anthropic Claude model claude-3-opus available through Vertex AI Model Garden
+"
+weight: 10
+author: ""
+---
 # claude 3 opus
 
 Anthropic Claude model claude-3-opus available through Vertex AI Model Garden

@@ -1,3 +1,9 @@
+---
+title: "Qwen3 Coder"
+description: ""
+weight: 10
+author: "qwen"
+---
 # Qwen3 Coder
 
 ## 📋 Overview

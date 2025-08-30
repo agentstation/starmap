@@ -1,3 +1,9 @@
+---
+title: "deepseek-chat"
+description: ""
+weight: 10
+author: "DeepSeek"
+---
 # deepseek-chat
 
 ## 📋 Overview

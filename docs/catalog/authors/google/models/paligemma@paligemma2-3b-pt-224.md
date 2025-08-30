@@ -1,3 +1,9 @@
+---
+title: "Paligemma"
+description: ""
+weight: 10
+author: "google"
+---
 # Paligemma
 
 ## 📋 Overview

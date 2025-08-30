@@ -1,3 +1,9 @@
+---
+title: "Embedding 001"
+description: "Obtain a distributed representation of a text."
+weight: 10
+author: "Google"
+---
 # Embedding 001
 
 Obtain a distributed representation of a text.

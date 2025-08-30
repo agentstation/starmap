@@ -226,6 +226,10 @@ func TestOpenAIClientListModels(t *testing.T) {
 	}))
 	defer server.Close()
 
+	// Set up test API key
+	os.Setenv("OPENAI_API_KEY", "test-api-key")
+	defer os.Unsetenv("OPENAI_API_KEY")
+
 	// Create an OpenAI client with mock provider
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,

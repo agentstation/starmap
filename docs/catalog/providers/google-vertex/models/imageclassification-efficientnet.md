@@ -1,3 +1,10 @@
+---
+title: "imageclassification-efficientnet"
+description: "Google Vertex AI model: imageclassification-efficientnet
+"
+weight: 10
+author: ""
+---
 # imageclassification-efficientnet
 
 Google Vertex AI model: imageclassification-efficientnet

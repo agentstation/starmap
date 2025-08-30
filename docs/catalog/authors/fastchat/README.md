@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # FastChat Team
 
 **Description**: Team behind the FastChat framework for training and serving conversational AI models  

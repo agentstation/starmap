@@ -1,3 +1,10 @@
+---
+title: "t5-flan"
+description: "Google Vertex AI model: t5-flan
+"
+weight: 10
+author: ""
+---
 # t5-flan
 
 Google Vertex AI model: t5-flan

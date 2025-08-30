@@ -1,3 +1,10 @@
+---
+title: "imageclassification-proprietary-vit"
+description: "Google Vertex AI model: imageclassification-proprietary-vit
+"
+weight: 10
+author: ""
+---
 # imageclassification-proprietary-vit
 
 Google Vertex AI model: imageclassification-proprietary-vit

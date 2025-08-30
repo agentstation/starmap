@@ -1,3 +1,9 @@
+---
+title: "Gemini Embedding Experimental 03-07"
+description: "Obtain a distributed representation of a text."
+weight: 10
+author: "Google"
+---
 # Gemini Embedding Experimental 03-07
 
 Obtain a distributed representation of a text.

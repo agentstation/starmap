@@ -1,3 +1,10 @@
+---
+title: "imageclassification-proprietary-maxvit"
+description: "Google Vertex AI model: imageclassification-proprietary-maxvit
+"
+weight: 10
+author: ""
+---
 # imageclassification-proprietary-maxvit
 
 Google Vertex AI model: imageclassification-proprietary-maxvit

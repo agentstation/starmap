@@ -1,3 +1,10 @@
+---
+title: "product-recognizer"
+description: "Google Vertex AI model: product-recognizer
+"
+weight: 10
+author: ""
+---
 # product-recognizer
 
 Google Vertex AI model: product-recognizer

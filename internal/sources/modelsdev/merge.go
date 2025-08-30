@@ -3,11 +3,13 @@ package modelsdev
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // EnhanceModelsWithModelsDevData enhances API models with models.dev data BEFORE comparison
@@ -19,7 +21,9 @@ func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, providerID catal
 	// Get models.dev provider data
 	modelsDevProvider, exists := api.GetProvider(providerID)
 	if !exists {
-		log.Printf("Provider %s not found in models.dev data", providerID)
+		logging.Debug().
+			Str("provider_id", string(providerID)).
+			Msg("Provider not found in models.dev data")
 		return apiModels, 0
 	}
 
@@ -61,7 +65,10 @@ func enhanceModelWithModelsDevData(apiModel catalogs.Model, modelsDevProvider *M
 	// Convert models.dev model to starmap model
 	modelsDevStarmap, err := modelsDevModel.ToStarmapModel()
 	if err != nil {
-		log.Printf("Error converting models.dev model %s: %v", apiModel.ID, err)
+		logging.Debug().
+			Err(err).
+			Str("model_id", apiModel.ID).
+			Msg("Error converting models.dev model")
 		return apiModel, false
 	}
 
@@ -197,7 +204,10 @@ func CopyProviderLogos(client *Client, outputDir string, providerIDs []catalogs.
 
 		// Copy if source exists
 		if err := copyFile(sourceLogo, destLogo); err != nil {
-			log.Printf("Warning: Could not copy logo for provider %s: %v", providerID, err)
+			logging.Warn().
+				Err(err).
+				Str("provider_id", string(providerID)).
+				Msg("Could not copy logo for provider")
 			// Don't fail the entire operation for missing logos
 		}
 	}
@@ -209,32 +219,35 @@ func CopyProviderLogos(client *Client, outputDir string, providerIDs []catalogs.
 func copyFile(src, dst string) error {
 	// Check if source file exists
 	if _, err := os.Stat(src); os.IsNotExist(err) {
-		return fmt.Errorf("source file does not exist: %s", src)
+		return &errors.NotFoundError{
+			Resource: "file",
+			ID:       src,
+		}
 	}
 
 	// Create destination directory if it doesn't exist
 	destDir := filepath.Dir(dst)
-	if err := os.MkdirAll(destDir, 0755); err != nil {
-		return fmt.Errorf("creating destination directory: %w", err)
+	if err := os.MkdirAll(destDir, constants.DirPermissions); err != nil {
+		return errors.WrapIO("create", "destination directory", err)
 	}
 
 	// Open source file
 	srcFile, err := os.Open(src)
 	if err != nil {
-		return fmt.Errorf("opening source file: %w", err)
+		return errors.WrapIO("open", src, err)
 	}
 	defer srcFile.Close()
 
 	// Create destination file
 	dstFile, err := os.Create(dst)
 	if err != nil {
-		return fmt.Errorf("creating destination file: %w", err)
+		return errors.WrapIO("create", dst, err)
 	}
 	defer dstFile.Close()
 
 	// Copy file contents
 	if _, err := io.Copy(dstFile, srcFile); err != nil {
-		return fmt.Errorf("copying file contents: %w", err)
+		return errors.WrapIO("copy", "file contents", err)
 	}
 
 	return nil

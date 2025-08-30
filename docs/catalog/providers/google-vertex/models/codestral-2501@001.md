@@ -1,3 +1,9 @@
+---
+title: "Codestral 2501"
+description: ""
+weight: 10
+author: ""
+---
 # Codestral 2501
 
 ## 📋 Overview

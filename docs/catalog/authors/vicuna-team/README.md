@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Vicuna Team
 
 **Description**: Team responsible for creating the popular Vicuna chatbot models  

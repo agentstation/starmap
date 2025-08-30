@@ -1,3 +1,10 @@
+---
+title: "paligemma"
+description: "Google Vertex AI model: paligemma
+"
+weight: 10
+author: ""
+---
 # paligemma
 
 Google Vertex AI model: paligemma

@@ -1,3 +1,10 @@
+---
+title: "gemini 2.0 flash lite 001"
+description: "Google Gemini model gemini-2.0-flash-lite-001 available through Vertex AI
+"
+weight: 10
+author: ""
+---
 # gemini 2.0 flash lite 001
 
 Google Gemini model gemini-2.0-flash-lite-001 available through Vertex AI

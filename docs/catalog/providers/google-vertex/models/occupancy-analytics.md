@@ -1,3 +1,10 @@
+---
+title: "occupancy-analytics"
+description: "Google Vertex AI model: occupancy-analytics
+"
+weight: 10
+author: ""
+---
 # occupancy-analytics
 
 Google Vertex AI model: occupancy-analytics

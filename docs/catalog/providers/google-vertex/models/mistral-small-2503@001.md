@@ -1,3 +1,9 @@
+---
+title: "Mistral Small 2503"
+description: ""
+weight: 10
+author: ""
+---
 # Mistral Small 2503
 
 ## 📋 Overview

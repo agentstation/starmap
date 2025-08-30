@@ -1,3 +1,9 @@
+---
+title: "Ppe Detector"
+description: ""
+weight: 10
+author: "google"
+---
 # Ppe Detector
 
 ## 📋 Overview

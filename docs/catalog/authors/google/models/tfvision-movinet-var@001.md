@@ -1,3 +1,9 @@
+---
+title: "Tfvision Movinet Var"
+description: ""
+weight: 10
+author: "google"
+---
 # Tfvision Movinet Var
 
 ## 📋 Overview

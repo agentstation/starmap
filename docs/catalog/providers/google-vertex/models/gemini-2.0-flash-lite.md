@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.0 Flash Lite"
+description: ""
+weight: 10
+author: ""
+---
 # Gemini 2.0 Flash Lite
 
 ## 📋 Overview

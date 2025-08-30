@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Alignment Research Center
 
 **Description**: AI safety research organization focused on AI alignment and evaluation  

@@ -8,14 +8,16 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/joho/godotenv"
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	rootPersistentFlagConfigFile string
-	rootPersistentFlagVerbose    bool
+	configFile string
+	verbose    bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -48,8 +50,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&rootPersistentFlagConfigFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&rootPersistentFlagVerbose, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 
 	// Bind flags to viper
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
@@ -59,9 +61,9 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if rootPersistentFlagConfigFile != "" {
+	if configFile != "" {
 		// Use config file from the flag
-		viper.SetConfigFile(rootPersistentFlagConfigFile)
+		viper.SetConfigFile(configFile)
 	} else {
 		// Find home directory
 		home, err := os.UserHomeDir()
@@ -86,9 +88,44 @@ func initConfig() {
 	bindAPIKeys()
 
 	// If a config file is found, read it in
-	if err := viper.ReadInConfig(); err == nil && rootPersistentFlagVerbose {
+	if err := viper.ReadInConfig(); err == nil && verbose {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+	
+	// Configure logging based on verbose flag and environment
+	configureLogging()
+}
+
+// configureLogging sets up the logging system based on configuration
+func configureLogging() {
+	// Determine log level
+	level := zerolog.InfoLevel
+	if verbose || viper.GetBool("verbose") {
+		level = zerolog.DebugLevel
+	}
+	if envLevel := os.Getenv("LOG_LEVEL"); envLevel != "" {
+		if parsed, err := zerolog.ParseLevel(envLevel); err == nil {
+			level = parsed
+		}
+	}
+	
+	// Configure the logger
+	config := &logging.Config{
+		Level:     level.String(),
+		Format:    os.Getenv("LOG_FORMAT"),
+		Output:    os.Getenv("LOG_OUTPUT"),
+		AddCaller: level <= zerolog.DebugLevel,
+	}
+	
+	// Use auto format detection if not specified
+	if config.Format == "" {
+		config.Format = "auto"
+	}
+	if config.Output == "" {
+		config.Output = "stderr"
+	}
+	
+	logging.Configure(config)
 }
 
 // loadEnvFiles loads environment variables from .env files
@@ -110,7 +147,7 @@ func loadEnvFile(filename string) {
 	// Use godotenv to load the file into the environment
 	if err := godotenv.Load(filename); err == nil {
 		// File loaded successfully
-		if rootPersistentFlagVerbose {
+		if verbose {
 			fmt.Fprintf(os.Stderr, "Loaded %s\n", filename)
 		}
 	}

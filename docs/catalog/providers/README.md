@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Provider Overview
 
 Complete list of AI model providers in the Starmap catalog.

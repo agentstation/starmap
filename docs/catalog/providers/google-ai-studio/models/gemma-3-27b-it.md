@@ -1,3 +1,9 @@
+---
+title: "Gemma 3 27B"
+description: ""
+weight: 10
+author: "Google"
+---
 # Gemma 3 27B
 
 ## 📋 Overview

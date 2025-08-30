@@ -1,3 +1,9 @@
+---
+title: "Imageobjectdetection Proprietary Spinenet"
+description: ""
+weight: 10
+author: "google"
+---
 # Imageobjectdetection Proprietary Spinenet
 
 ## 📋 Overview

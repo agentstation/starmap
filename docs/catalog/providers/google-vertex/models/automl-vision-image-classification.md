@@ -1,3 +1,10 @@
+---
+title: "automl-vision-image-classification"
+description: "Google Vertex AI model: automl-vision-image-classification
+"
+weight: 10
+author: ""
+---
 # automl-vision-image-classification
 
 Google Vertex AI model: automl-vision-image-classification

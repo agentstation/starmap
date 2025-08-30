@@ -1,3 +1,7 @@
+---
+title: "Qwen3 32b"
+weight: 10
+---
 # qwen3-32b
 
 ## 📋 Overview

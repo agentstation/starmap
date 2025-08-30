@@ -1,3 +1,9 @@
+---
+title: "Gemini 1.5 Flash-8B Latest"
+description: "Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Flash-8B, our smallest and most cost effective Flash model, released in October of 2024."
+weight: 10
+author: "Google"
+---
 # Gemini 1.5 Flash-8B Latest
 
 Alias that points to the most recent production (non-experimental) release of Gemini 1.5 Flash-8B, our smallest and most cost effective Flash model, released in October of 2024.

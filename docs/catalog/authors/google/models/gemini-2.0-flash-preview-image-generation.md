@@ -1,3 +1,9 @@
+---
+title: "Gemini 2.0 Flash Preview Image Generation"
+description: "Gemini 2.0 Flash Preview Image Generation"
+weight: 10
+author: "Google"
+---
 # Gemini 2.0 Flash Preview Image Generation
 
 Gemini 2.0 Flash Preview Image Generation

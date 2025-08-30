@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Stanford Alpaca
 
 **Description**: Stanford research project that created the influential Alpaca instruction-tuned models  

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Cursor
 
 **Website**: [https://cursor.sh](https://cursor.sh)  

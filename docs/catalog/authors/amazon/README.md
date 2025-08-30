@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Amazon
 
 **Website**: [https://amazon.com](https://amazon.com)  

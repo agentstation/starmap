@@ -1,3 +1,10 @@
+---
+title: "textembedding-gecko"
+description: "Google Vertex AI model: textembedding-gecko
+"
+weight: 10
+author: ""
+---
 # textembedding-gecko
 
 Google Vertex AI model: textembedding-gecko

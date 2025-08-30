@@ -1,3 +1,10 @@
+---
+title: "text-embedding-large-exp-03-07"
+description: "Google Vertex AI model: text-embedding-large-exp-03-07
+"
+weight: 10
+author: ""
+---
 # text-embedding-large-exp-03-07
 
 Google Vertex AI model: text-embedding-large-exp-03-07

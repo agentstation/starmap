@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Nous Research
 
 **Description**: AI research organization known for OpenHermes and Nous-Hermes model series  

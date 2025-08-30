@@ -1,3 +1,9 @@
+---
+title: "Claude Sonnet 3.5 (Old)"
+description: ""
+weight: 10
+author: "Anthropic"
+---
 # Claude Sonnet 3.5 (Old)
 
 ## 📋 Overview

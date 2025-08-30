@@ -1,3 +1,9 @@
+---
+title: "Jax Owl Vit V2"
+description: ""
+weight: 10
+author: "google"
+---
 # Jax Owl Vit V2
 
 ## 📋 Overview

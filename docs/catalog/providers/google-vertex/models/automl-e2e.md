@@ -1,3 +1,10 @@
+---
+title: "automl-e2e"
+description: "Google Vertex AI model: automl-e2e
+"
+weight: 10
+author: ""
+---
 # automl-e2e
 
 Google Vertex AI model: automl-e2e

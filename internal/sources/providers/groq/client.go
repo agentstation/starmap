@@ -2,12 +2,12 @@ package groq
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // GroqResponse represents the Groq API response structure.
@@ -51,7 +51,10 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	provider := c.OpenAIClient.GetProvider()
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ConfigError{
+			Component: "groq",
+			Message:   "provider not configured",
+		}
 	}
 
 	// Single API call to get the complete list of models with all fields
@@ -62,12 +65,17 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 
 	resp, err := c.OpenAIClient.GetTransport().Get(ctx, listURL, provider)
 	if err != nil {
-		return nil, fmt.Errorf("groq: list request failed: %w", err)
+		return nil, &errors.APIError{
+			Provider: "groq",
+			Endpoint: listURL,
+			Message:  "list request failed",
+			Err:      err,
+		}
 	}
 
 	var listResult GroqResponse
 	if err := transport.DecodeResponse(resp, &listResult); err != nil {
-		return nil, fmt.Errorf("groq: list decode failed: %w", err)
+		return nil, errors.WrapParse("json", "groq response", err)
 	}
 
 	// Extract authors from API response and update provider configuration

@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Eric Hartford
 
 **Description**: Creator of the widely-used Dolphin model series and other fine-tuned language models  

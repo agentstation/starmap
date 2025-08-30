@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # University of Washington
 
 **Website**: [https://washington.edu](https://washington.edu)  

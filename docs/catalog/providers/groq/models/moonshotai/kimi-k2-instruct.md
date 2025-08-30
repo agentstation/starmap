@@ -1,3 +1,7 @@
+---
+title: "Kimi K2 Instruct"
+weight: 10
+---
 # kimi-k2-instruct
 
 ## 📋 Overview

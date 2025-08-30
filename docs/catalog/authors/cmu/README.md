@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Carnegie Mellon University
 
 **Website**: [https://cmu.edu](https://cmu.edu)  

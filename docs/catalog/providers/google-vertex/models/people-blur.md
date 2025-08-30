@@ -1,3 +1,10 @@
+---
+title: "people-blur"
+description: "Google Vertex AI model: people-blur
+"
+weight: 10
+author: ""
+---
 # people-blur
 
 Google Vertex AI model: people-blur

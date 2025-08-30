@@ -5,6 +5,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 const (
@@ -70,7 +73,10 @@ func (c *GitClient) EnsureRepository() error {
 // BuildAPI runs the build process to generate api.json
 func (c *GitClient) BuildAPI() error {
 	if !c.repositoryExists() {
-		return fmt.Errorf("models.dev repository not found at %s", c.RepoPath)
+		return &errors.NotFoundError{
+			Resource: "repository",
+			ID:       c.RepoPath,
+		}
 	}
 
 	fmt.Printf("  🔨 Building api.json (this may take a moment)...\n")
@@ -82,14 +88,22 @@ func (c *GitClient) BuildAPI() error {
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("  ❌ Build failed\n")
-		return fmt.Errorf("building api.json: %w\nOutput: %s", err, output)
+		return &errors.ProcessError{
+			Operation: "build api.json",
+			Command:   "npm run build",
+			Output:    string(output),
+			Err:       err,
+		}
 	}
 
 	// Verify api.json was created
 	apiPath := filepath.Join(c.RepoPath, "packages", "web", "dist", "_api.json")
 	if _, err := os.Stat(apiPath); os.IsNotExist(err) {
 		fmt.Printf("  ❌ Build completed but api.json not found\n")
-		return fmt.Errorf("api.json not generated at expected path: %s", apiPath)
+		return &errors.NotFoundError{
+			Resource: "file",
+			ID:       apiPath,
+		}
 	}
 
 	fmt.Printf("  ✅ API build completed successfully\n")
@@ -104,7 +118,12 @@ func (c *GitClient) installDependencies() error {
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("  ❌ Dependency installation failed\n")
-		return fmt.Errorf("installing dependencies: %w\nOutput: %s", err, output)
+		return &errors.ProcessError{
+			Operation: "install dependencies",
+			Command:   "npm install",
+			Output:    string(output),
+			Err:       err,
+		}
 	}
 
 	return nil
@@ -139,15 +158,20 @@ func (c *GitClient) repositoryExists() bool {
 func (c *GitClient) cloneRepository() error {
 	// Create parent directory if it doesn't exist
 	parentDir := filepath.Dir(c.RepoPath)
-	if err := os.MkdirAll(parentDir, 0755); err != nil {
-		return fmt.Errorf("creating parent directory: %w", err)
+	if err := os.MkdirAll(parentDir, constants.DirPermissions); err != nil {
+		return errors.WrapIO("create", "parent directory", err)
 	}
 
 	cmd := exec.Command("git", "clone", "--branch", DefaultBranch, "--depth", "1", ModelsDevRepoURL, c.RepoPath)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("  ❌ Clone failed\n")
-		return fmt.Errorf("cloning models.dev repository: %w\nOutput: %s", err, output)
+		return &errors.ProcessError{
+			Operation: "clone repository",
+			Command:   "git clone",
+			Output:    string(output),
+			Err:       err,
+		}
 	}
 
 	return nil
@@ -160,7 +184,12 @@ func (c *GitClient) updateRepository() error {
 	resetCmd.Dir = c.RepoPath
 	if output, err := resetCmd.CombinedOutput(); err != nil {
 		fmt.Printf("  ❌ Reset failed\n")
-		return fmt.Errorf("resetting repository: %w\nOutput: %s", err, output)
+		return &errors.ProcessError{
+			Operation: "reset repository",
+			Command:   "git reset",
+			Output:    string(output),
+			Err:       err,
+		}
 	}
 
 	// Pull latest changes
@@ -168,7 +197,12 @@ func (c *GitClient) updateRepository() error {
 	pullCmd.Dir = c.RepoPath
 	if output, err := pullCmd.CombinedOutput(); err != nil {
 		fmt.Printf("  ❌ Pull failed\n")
-		return fmt.Errorf("pulling latest changes: %w\nOutput: %s", err, output)
+		return &errors.ProcessError{
+			Operation: "pull latest changes",
+			Command:   "git pull",
+			Output:    string(output),
+			Err:       err,
+		}
 	}
 
 	return nil

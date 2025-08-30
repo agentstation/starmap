@@ -1,3 +1,9 @@
+---
+title: "Text Embedding 004"
+description: "Obtain a distributed representation of a text."
+weight: 10
+author: "Google"
+---
 # Text Embedding 004
 
 Obtain a distributed representation of a text.

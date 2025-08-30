@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # MosaicML
 
 **Website**: [https://mosaicml.com](https://mosaicml.com)  

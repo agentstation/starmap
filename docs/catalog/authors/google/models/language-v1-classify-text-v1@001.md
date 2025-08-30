@@ -1,3 +1,9 @@
+---
+title: "Language V1 Classify Text V1"
+description: ""
+weight: 10
+author: "google"
+---
 # Language V1 Classify Text V1
 
 ## 📋 Overview

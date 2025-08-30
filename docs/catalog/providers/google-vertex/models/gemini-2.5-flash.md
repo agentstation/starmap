@@ -1,3 +1,10 @@
+---
+title: "gemini-2.5-flash"
+description: "Google Vertex AI model: gemini-2.5-flash
+"
+weight: 10
+author: ""
+---
 # gemini-2.5-flash
 
 Google Vertex AI model: gemini-2.5-flash

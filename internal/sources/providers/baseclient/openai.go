@@ -2,12 +2,14 @@ package baseclient
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/utc"
 )
 
 // OpenAIResponse represents the standard OpenAI API response structure.
@@ -80,25 +82,38 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	c.mu.RUnlock()
 
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ValidationError{
+			Field:   "provider",
+			Message: "provider not configured",
+		}
 	}
 
 	// Build URL - use provider's URL if available, otherwise use base URL
 	url := c.baseURL + "/v1/models"
 	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL()
+		url = rb.GetBaseURL() + "/v1/models"
 	}
 
 	// Make the request
 	resp, err := c.transport.Get(ctx, url, provider)
 	if err != nil {
-		return nil, fmt.Errorf("openai-compatible: request failed: %w", err)
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: 0,
+			Message:    "request failed",
+			Err:        err,
+		}
 	}
 
 	// Decode response
 	var result OpenAIResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("openai-compatible: %w", err)
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: resp.StatusCode,
+			Message:    "failed to decode response",
+			Err:        err,
+		}
 	}
 
 	// Convert to starmap models
@@ -121,9 +136,8 @@ func (c *OpenAIClient) ConvertToModel(m OpenAIModelData) catalogs.Model {
 
 	// Set created time
 	if m.Created > 0 {
-		// TODO: Import UTC time package when available
-		// model.CreatedAt = utc.Time{Time: time.Unix(m.Created, 0)}
-		// model.UpdatedAt = model.CreatedAt
+		model.CreatedAt = utc.Time{Time: time.Unix(m.Created, 0)}
+		model.UpdatedAt = model.CreatedAt
 	}
 
 	// Map owner to author
@@ -164,6 +178,7 @@ func (c *OpenAIClient) InferFeatures(modelID string) *catalogs.ModelFeatures {
 	case strings.Contains(modelLower, "gpt-4"), strings.Contains(modelLower, "gpt-3.5-turbo"):
 		features.Tools = true
 		features.ToolChoice = true
+		features.ToolCalls = true
 		features.Logprobs = true
 		features.StructuredOutputs = true
 		features.FormatResponse = true

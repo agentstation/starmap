@@ -1,3 +1,9 @@
+---
+title: "Automl Vision Image Object Detection"
+description: ""
+weight: 10
+author: "google"
+---
 # Automl Vision Image Object Detection
 
 ## 📋 Overview

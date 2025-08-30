@@ -1,3 +1,10 @@
+---
+title: "cloudnerf-pytorch-zipnerf"
+description: "Google Vertex AI model: cloudnerf-pytorch-zipnerf
+"
+weight: 10
+author: ""
+---
 # cloudnerf-pytorch-zipnerf
 
 Google Vertex AI model: cloudnerf-pytorch-zipnerf

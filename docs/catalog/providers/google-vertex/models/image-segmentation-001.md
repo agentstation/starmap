@@ -1,3 +1,10 @@
+---
+title: "image-segmentation-001"
+description: "Google Vertex AI model: image-segmentation-001
+"
+weight: 10
+author: ""
+---
 # image-segmentation-001
 
 Google Vertex AI model: image-segmentation-001

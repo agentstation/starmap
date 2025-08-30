@@ -1,3 +1,9 @@
+---
+title: "llama-4-maverick-17b-128e-instruct"
+description: ""
+weight: 10
+author: "Cerebras"
+---
 # llama-4-maverick-17b-128e-instruct
 
 ## 📋 Overview

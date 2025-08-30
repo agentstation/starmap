@@ -1,3 +1,9 @@
+---
+title: "Claude Sonnet 3.5 v2"
+description: ""
+weight: 10
+author: ""
+---
 # Claude Sonnet 3.5 v2
 
 ## 📋 Overview

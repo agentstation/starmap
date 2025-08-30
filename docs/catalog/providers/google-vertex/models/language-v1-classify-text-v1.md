@@ -1,3 +1,10 @@
+---
+title: "language-v1-classify-text-v1"
+description: "Google Vertex AI model: language-v1-classify-text-v1
+"
+weight: 10
+author: ""
+---
 # language-v1-classify-text-v1
 
 Google Vertex AI model: language-v1-classify-text-v1

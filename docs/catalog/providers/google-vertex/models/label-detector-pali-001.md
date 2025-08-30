@@ -1,3 +1,10 @@
+---
+title: "label-detector-pali-001"
+description: "Google Vertex AI model: label-detector-pali-001
+"
+weight: 10
+author: ""
+---
 # label-detector-pali-001
 
 Google Vertex AI model: label-detector-pali-001

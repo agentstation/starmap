@@ -1,3 +1,7 @@
+---
+title: "Llama Guard 4 12b"
+weight: 10
+---
 # llama-guard-4-12b
 
 ## 📋 Overview

@@ -1,3 +1,9 @@
+---
+title: "Face Detector"
+description: ""
+weight: 10
+author: "google"
+---
 # Face Detector
 
 ## 📋 Overview

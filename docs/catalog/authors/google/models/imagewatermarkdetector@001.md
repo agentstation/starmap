@@ -1,3 +1,9 @@
+---
+title: "Imagewatermarkdetector"
+description: ""
+weight: 10
+author: "google"
+---
 # Imagewatermarkdetector
 
 ## 📋 Overview

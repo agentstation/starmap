@@ -1,3 +1,10 @@
+---
+title: "keras-yolov8"
+description: "Google Vertex AI model: keras-yolov8
+"
+weight: 10
+author: ""
+---
 # keras-yolov8
 
 Google Vertex AI model: keras-yolov8

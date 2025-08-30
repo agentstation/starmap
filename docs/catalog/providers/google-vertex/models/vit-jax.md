@@ -1,3 +1,10 @@
+---
+title: "vit-jax"
+description: "Google Vertex AI model: vit-jax
+"
+weight: 10
+author: ""
+---
 # vit-jax
 
 Google Vertex AI model: vit-jax

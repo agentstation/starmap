@@ -1,3 +1,9 @@
+---
+title: "Object Detector"
+description: ""
+weight: 10
+author: "google"
+---
 # Object Detector
 
 ## 📋 Overview

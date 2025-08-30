@@ -1,3 +1,7 @@
+---
+title: "README"
+weight: 1
+---
 # Perplexity AI
 
 **Website**: [https://perplexity.ai](https://perplexity.ai)  

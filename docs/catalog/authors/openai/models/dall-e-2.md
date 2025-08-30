@@ -1,3 +1,9 @@
+---
+title: "dall-e-2"
+description: ""
+weight: 10
+author: "OpenAI"
+---
 # dall-e-2
 
 ## 📋 Overview
