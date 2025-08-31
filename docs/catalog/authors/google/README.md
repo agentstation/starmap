@@ -49,23 +49,12 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 | [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
 | [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 2 | N/A | Text |
-| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | google-ai-studio | 1.0M | Text, Functions |
 | [Gemini Pro](./models/gemini-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
 | [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
 | [Gemini Ultra](./models/gemini-ultra-at-default.md) | 2 | N/A | Text, Vision, Functions |
 | [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
-
-  
-### PaLM
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Chat Bison](./models/chat-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Code Bison](./models/code-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Codechat Bison](./models/codechat-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Text Bison](./models/text-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
 
   
 ### Gemma
@@ -97,10 +86,21 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 |---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | google-ai-studio | 2.0k | Text |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | google-ai-studio | 1.0k | Text |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Multimodalembedding](./models/multimodalembedding-at-001.md) | google-vertex | N/A | Text |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2 | 2.0k | Text |
 | [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | 2 | N/A | Text |
 | [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | 2 | N/A | Text |
+
+  
+### PaLM
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Chat Bison](./models/chat-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Code Bison](./models/code-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Codechat Bison](./models/codechat-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Text Bison](./models/text-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
 
   
 ### BERT

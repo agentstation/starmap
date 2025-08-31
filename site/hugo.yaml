@@ -13,6 +13,14 @@ theme: "hugo-book"
 # Disable kinds we don't need
 disableKinds: ["taxonomy", "term"]
 
+# Permalink configuration to handle README.md files at directory URLs
+# This makes URLs GitHub-compatible: /providers/deepseek/ instead of /providers/deepseek/readme/
+permalinks:
+  catalog: "/:sections/:filename/"
+  
+# Don't use ugly URLs (.html extensions)
+uglyURLs: false
+
 # Goldmark renderer settings
 markup:
   goldmark:
@@ -83,13 +91,13 @@ menu:
       weight: 20
   after:
     - name: "Catalog"
-      url: "/catalog/readme/"
+      url: "/catalog/"
       weight: 30
     - name: "Providers"
-      url: "/catalog/providers/readme/"
+      url: "/catalog/providers/"
       weight: 40
     - name: "Authors"
-      url: "/catalog/authors/readme/"
+      url: "/catalog/authors/"
       weight: 50
     - name: "Provider Guide"
       url: "/provider_implementation_guide/"

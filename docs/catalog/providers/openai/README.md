@@ -61,13 +61,6 @@ San Francisco, CA, USA
   
 ## Available Models
   
-### Llama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
 ### Other
   
 | Model | Context | Input | Output | Features |
@@ -126,45 +119,6 @@ San Francisco, CA, USA
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
-### Gemma
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
-| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Embeddings
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
-| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [text-embedding-3-large](./models/text-embedding-3-large.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [text-embedding-3-small](./models/text-embedding-3-small.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
-| [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Whisper
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
-### DALL-E
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
 ### GPT
   
 | Model | Context | Input | Output | Features |
@@ -215,6 +169,52 @@ San Francisco, CA, USA
 | [gpt-oss-120b](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
 | [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | $0.07 | $0.30 | 📝 ⚡ |
+
+  
+### DALL-E
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### Gemma
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
+| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
+
+  
+### Embeddings
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
+| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [text-embedding-3-large](./models/text-embedding-3-large.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [text-embedding-3-small](./models/text-embedding-3-small.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
+| [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
+
+  
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### Whisper
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration

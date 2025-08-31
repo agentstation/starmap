@@ -61,27 +61,6 @@ Mountain View, CA, USA
   
 ## Available Models
   
-### Other
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [allam-2-7b](./models/allam-2-7b.md) | 4.1k | N/A | N/A | 📝 ⚡ |
-| [compound-beta](./models/compound-beta.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-| [compound-beta-mini](./models/compound-beta-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-| [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-| [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
-| [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
-
-  
-### GPT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-| [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-
-  
 ### Gemma
   
 | Model | Context | Input | Output | Features |
@@ -89,46 +68,11 @@ Mountain View, CA, USA
 | [gemma2-9b-it](./models/gemma2-9b-it.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 
   
-### Mistral
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Saba 24B](./models/mistral-saba-24b.md) | 32.8k | $0.79 | $0.79 | 📝 🔧 |
-| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-
-  
-### Qwen
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | N/A | $0.29 | $0.39 | 📝 🔧 |
-| [qwen3-32b](./models/qwen-qwen3-32b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
-
-  
-### Whisper
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [distil-whisper-large-v3-en](./models/distil-whisper-large-v3-en.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
-| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [whisper-large-v3](./models/whisper-large-v3.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
-| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
-
-  
-### DeepSeek
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
-
-  
 ### Llama
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
@@ -144,10 +88,10 @@ Mountain View, CA, USA
 | [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-3.3-70b](./models/llama-3.3-70b.md) | 65.5k | $0.70 | $2.80 | 📝 ⚡ |
 | [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
-| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
-| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
+| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | 512 | N/A | N/A | 📝 ⚡ |
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | 512 | N/A | N/A | 📝 ⚡ |
@@ -156,11 +100,61 @@ Mountain View, CA, USA
 | [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
-### CodeLlama
+### Mistral
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Saba 24B](./models/mistral-saba-24b.md) | 32.8k | $0.79 | $0.79 | 📝 🔧 |
+| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+
+  
+### Whisper
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [distil-whisper-large-v3-en](./models/distil-whisper-large-v3-en.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
+| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [whisper-large-v3](./models/whisper-large-v3.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
+
+  
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+
+  
+### Qwen
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | N/A | $0.29 | $0.39 | 📝 🔧 |
+| [qwen3-32b](./models/qwen-qwen3-32b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+
+  
+### DeepSeek
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### Other
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [allam-2-7b](./models/allam-2-7b.md) | 4.1k | N/A | N/A | 📝 ⚡ |
+| [compound-beta](./models/compound-beta.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [compound-beta-mini](./models/compound-beta-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
+| [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration

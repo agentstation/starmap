@@ -119,7 +119,8 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 	})
 
 	for _, provider := range providers {
-		// Provider heading with logo and link - using Hugo-compatible paths
+		// Provider heading with logo and link - using GitHub-compatible directory paths
+		// Works on both GitHub (auto-finds README.md) and Hugo (with permalink config)
 		logoPath := fmt.Sprintf("./%s/logo.svg", provider.ID)
 		providerLink := fmt.Sprintf("../%s/", provider.ID)
 		

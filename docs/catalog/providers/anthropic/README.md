@@ -78,8 +78,8 @@ San Francisco, CA, USA
 | [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
 | [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
 | [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
 | [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |

@@ -61,16 +61,6 @@ Sunnyvale, CA, USA
   
 ## Available Models
   
-### Llama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [llama-3.3-70b](./models/llama-3.3-70b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
 ### Qwen
   
 | Model | Context | Input | Output | Features |
@@ -94,6 +84,16 @@ Sunnyvale, CA, USA
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
 | [gpt-oss-120b](./models/gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [llama-3.3-70b](./models/llama-3.3-70b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration
