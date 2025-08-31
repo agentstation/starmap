@@ -16,7 +16,7 @@ disableKinds: ["taxonomy", "term"]
 # Permalink configuration to handle README.md files at directory URLs
 # This makes URLs GitHub-compatible: /providers/deepseek/ instead of /providers/deepseek/readme/
 permalinks:
-  catalog: "/:sections/:filename/"
+  catalog: "/:sections/"
   
 # Don't use ugly URLs (.html extensions)
 uglyURLs: false
