@@ -61,6 +61,65 @@ San Francisco, CA, USA
   
 ## Available Models
   
+### Whisper
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [GPT-4](./models/gpt-4.md) | 8.2k | $60.00 | $120.00 | 📝 🔧 |
+| [GPT-4 Turbo](./models/gpt-4-turbo.md) | 128k | $10.00 | $30.00 | 📝 👁️ 🔧 |
+| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-3.5-turbo](./models/gpt-3.5-turbo.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-0125](./models/gpt-3.5-turbo-0125.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-1106](./models/gpt-3.5-turbo-1106.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-16k](./models/gpt-3.5-turbo-16k.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-instruct](./models/gpt-3.5-turbo-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-instruct-0914](./models/gpt-3.5-turbo-instruct-0914.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1](./models/gpt-4.1.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-2025-04-14](./models/gpt-4.1-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-mini](./models/gpt-4.1-mini.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-mini-2025-04-14](./models/gpt-4.1-mini-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-nano](./models/gpt-4.1-nano.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-nano-2025-04-14](./models/gpt-4.1-nano-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o](./models/gpt-4o.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-2024-05-13](./models/gpt-4o-2024-05-13.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-2024-08-06](./models/gpt-4o-2024-08-06.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-2024-11-20](./models/gpt-4o-2024-11-20.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-audio-preview](./models/gpt-4o-audio-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-audio-preview-2024-10-01](./models/gpt-4o-audio-preview-2024-10-01.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-audio-preview-2024-12-17](./models/gpt-4o-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-audio-preview-2025-06-03](./models/gpt-4o-audio-preview-2025-06-03.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini](./models/gpt-4o-mini.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-2024-07-18](./models/gpt-4o-mini-2024-07-18.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-audio-preview](./models/gpt-4o-mini-audio-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-audio-preview-2024-12-17](./models/gpt-4o-mini-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-search-preview](./models/gpt-4o-mini-search-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-search-preview-2025-03-11](./models/gpt-4o-mini-search-preview-2025-03-11.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-transcribe](./models/gpt-4o-mini-transcribe.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini-tts](./models/gpt-4o-mini-tts.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-search-preview](./models/gpt-4o-search-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-search-preview-2025-03-11](./models/gpt-4o-search-preview-2025-03-11.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-transcribe](./models/gpt-4o-transcribe.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-5](./models/gpt-5.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-2025-08-07](./models/gpt-5-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-chat-latest](./models/gpt-5-chat-latest.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-mini](./models/gpt-5-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-mini-2025-08-07](./models/gpt-5-mini-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-nano](./models/gpt-5-nano.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-nano-2025-08-07](./models/gpt-5-nano-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-image-1](./models/gpt-image-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
+| [gpt-oss-120b](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
+| [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | $0.07 | $0.30 | 📝 ⚡ |
+
+  
 ### Other
   
 | Model | Context | Input | Output | Features |
@@ -119,66 +178,6 @@ San Francisco, CA, USA
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
-### GPT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [GPT-4](./models/gpt-4.md) | 8.2k | $60.00 | $120.00 | 📝 🔧 |
-| [GPT-4 Turbo](./models/gpt-4-turbo.md) | 128k | $10.00 | $30.00 | 📝 👁️ 🔧 |
-| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-3.5-turbo](./models/gpt-3.5-turbo.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-3.5-turbo-0125](./models/gpt-3.5-turbo-0125.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-3.5-turbo-1106](./models/gpt-3.5-turbo-1106.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-3.5-turbo-16k](./models/gpt-3.5-turbo-16k.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-3.5-turbo-instruct](./models/gpt-3.5-turbo-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-3.5-turbo-instruct-0914](./models/gpt-3.5-turbo-instruct-0914.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1](./models/gpt-4.1.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1-2025-04-14](./models/gpt-4.1-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1-mini](./models/gpt-4.1-mini.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1-mini-2025-04-14](./models/gpt-4.1-mini-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1-nano](./models/gpt-4.1-nano.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4.1-nano-2025-04-14](./models/gpt-4.1-nano-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o](./models/gpt-4o.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-2024-05-13](./models/gpt-4o-2024-05-13.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-2024-08-06](./models/gpt-4o-2024-08-06.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-2024-11-20](./models/gpt-4o-2024-11-20.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-audio-preview](./models/gpt-4o-audio-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-audio-preview-2024-10-01](./models/gpt-4o-audio-preview-2024-10-01.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-audio-preview-2024-12-17](./models/gpt-4o-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-audio-preview-2025-06-03](./models/gpt-4o-audio-preview-2025-06-03.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini](./models/gpt-4o-mini.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-2024-07-18](./models/gpt-4o-mini-2024-07-18.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-audio-preview](./models/gpt-4o-mini-audio-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-audio-preview-2024-12-17](./models/gpt-4o-mini-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-search-preview](./models/gpt-4o-mini-search-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-search-preview-2025-03-11](./models/gpt-4o-mini-search-preview-2025-03-11.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-transcribe](./models/gpt-4o-mini-transcribe.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-mini-tts](./models/gpt-4o-mini-tts.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-search-preview](./models/gpt-4o-search-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-search-preview-2025-03-11](./models/gpt-4o-search-preview-2025-03-11.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-4o-transcribe](./models/gpt-4o-transcribe.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [gpt-5](./models/gpt-5.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-2025-08-07](./models/gpt-5-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-chat-latest](./models/gpt-5-chat-latest.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-mini](./models/gpt-5-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-mini-2025-08-07](./models/gpt-5-mini-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-nano](./models/gpt-5-nano.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-5-nano-2025-08-07](./models/gpt-5-nano-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-image-1](./models/gpt-image-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-oss-120b](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
-| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
-| [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | $0.07 | $0.30 | 📝 ⚡ |
-
-  
-### DALL-E
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
 ### Gemma
   
 | Model | Context | Input | Output | Features |
@@ -210,11 +209,12 @@ San Francisco, CA, USA
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
-### Whisper
+### DALL-E
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration

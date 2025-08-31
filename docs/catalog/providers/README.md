@@ -62,9 +62,9 @@ Creator of Claude, focusing on safe and beneficial AI with constitutional traini
 - **API Key**: Required (`ANTHROPIC_API_KEY`)
 - **Status**: [Check current status](https://status.anthropic.com)
 - **Featured Models**:
--   - Claude Opus 4
--   - Claude Sonnet 4
--   - Claude Haiku 3.5
+-   - claude 3 5 sonnet v2
+-   - Claude Sonnet 3.7
+-   - Claude Sonnet 3
 -   - [View all 20 models →](../anthropic/)
   
 ### <img src="./cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](../cerebras/)
@@ -76,9 +76,9 @@ Fastest inference speeds using revolutionary wafer-scale computing technology.
 - **API Key**: Required (`CEREBRAS_API_KEY`)
 - **Status**: [Check current status](https://status.cerebras.ai/)
 - **Featured Models**:
--   - Qwen QwQ 32B
--   - qwen-3-32b
--   - Qwen Image
+-   - Qwen3
+-   - gpt-oss-120b
+-   - llama-4-maverick-17b-128e-instruct
 -   - [View all 17 models →](../cerebras/)
   
 ### <img src="./deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](../deepseek/)
@@ -90,9 +90,9 @@ Chinese AI company specializing in efficient, high-performance language models.
 - **API Key**: Required (`DEEPSEEK_API_KEY`)
 - **Status**: [Check current status](https://status.deepseek.com)
 - **Featured Models**:
--   - Deepseek V3
--   - deepseek-chat
--   - DeepSeek-Coder-V2-Instruct
+-   - deepseek-reasoner
+-   - Deepseek V3 1
+-   - DeepSeek-V3
 -   - [View all 8 models →](../deepseek/)
   
 ### <img src="./google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](../google-ai-studio/)
@@ -104,9 +104,9 @@ Google's AI platform offering Gemini models with multimodal capabilities.
 - **API Key**: Required (`GOOGLE_API_KEY`)
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Gemini 1.5 Pro
--   - Gemini 1.5 Flash
--   - Gemini 2.0 Flash 001
+-   - Gemini 1.5 Flash 002
+-   - Gemini 2.5 Flash Preview 05-20
+-   - Gemini Embedding Experimental 03-07
 -   - [View all 71 models →](../google-ai-studio/)
   
 ### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](../google-vertex/)
@@ -117,9 +117,9 @@ Enterprise AI platform on Google Cloud with Gemini and PaLM models.
 - **Models**: 285 available
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Mistral Large 2411
--   - Nllb
--   - Product Recognizer
+-   - Imagen 4.0 Ultra Generate 001
+-   - language-v1-analyze-sentiment
+-   - paligemma
 -   - [View all 285 models →](../google-vertex/)
   
 ### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](../groq/)
@@ -131,9 +131,9 @@ Ultra-fast inference with custom LPU hardware, offering low-latency model servin
 - **API Key**: Required (`GROQ_API_KEY`)
 - **Status**: [Check current status](https://status.groq.com)
 - **Featured Models**:
--   - allam-2-7b
--   - Codellama 7b Hf
--   - Llama 3.2 90b Vision Instruct Maas
+-   - llama-3.1-8b-instant
+-   - Llama Guard
+-   - Llama3 3
 -   - [View all 48 models →](../groq/)
   
 ### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](../openai/)
@@ -145,9 +145,9 @@ Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.
 - **API Key**: Required (`OPENAI_API_KEY`)
 - **Status**: [Check current status](https://status.openai.com)
 - **Featured Models**:
--   - Label Detector Pali 001
--   - gpt-3.5-turbo-instruct
+-   - Lyria 002
 -   - gpt-oss-120b
+-   - davinci-002
 -   - [View all 114 models →](../openai/)
   
 ---

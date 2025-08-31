@@ -17,30 +17,23 @@ AI research company known for GPT models, ChatGPT, and DALL-E
   
 ## Models
   
-### Other
+### Whisper
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Clip Vit Base Patch32](./models/clip-vit-base-patch32-at-clip-vit-base-patch32.md) | google-vertex | N/A | Text |
-| [Openclip](./models/openclip-at-001.md) | 2 | N/A | Text |
-| [babbage-002](./models/babbage-002.md) | openai | N/A | Text |
-| [davinci-002](./models/davinci-002.md) | openai | N/A | Text |
-| [o1](./models/o1.md) | openai | N/A | Text |
-| [o1-2024-12-17](./models/o1-2024-12-17.md) | openai | N/A | Text |
-| [o1-mini](./models/o1-mini.md) | openai | N/A | Text |
-| [o1-mini-2024-09-12](./models/o1-mini-2024-09-12.md) | openai | N/A | Text |
-| [o3](./models/o3.md) | openai | N/A | Text |
-| [o3-2025-04-16](./models/o3-2025-04-16.md) | openai | N/A | Text |
-| [o3-mini](./models/o3-mini.md) | openai | N/A | Text |
-| [o3-mini-2025-01-31](./models/o3-mini-2025-01-31.md) | openai | N/A | Text |
-| [o4-mini](./models/o4-mini.md) | openai | N/A | Text |
-| [o4-mini-2025-04-16](./models/o4-mini-2025-04-16.md) | openai | N/A | Text |
-| [omni-moderation-2024-09-26](./models/omni-moderation-2024-09-26.md) | openai | N/A | Text |
-| [omni-moderation-latest](./models/omni-moderation-latest.md) | openai | N/A | Text |
-| [tts-1](./models/tts-1.md) | openai | N/A | Text |
-| [tts-1-1106](./models/tts-1-1106.md) | openai | N/A | Text |
-| [tts-1-hd](./models/tts-1-hd.md) | openai | N/A | Text |
-| [tts-1-hd-1106](./models/tts-1-hd-1106.md) | openai | N/A | Text |
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
+| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
+| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
+
+  
+### Embeddings
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
+| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
+| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
 
   
 ### GPT
@@ -92,23 +85,30 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 2 | 131.1k | Text |
 
   
-### Embeddings
+### Other
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
-| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
-| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
-
-  
-### Whisper
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
-| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
-| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
-| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
+| [Clip Vit Base Patch32](./models/clip-vit-base-patch32-at-clip-vit-base-patch32.md) | google-vertex | N/A | Text |
+| [Openclip](./models/openclip-at-001.md) | 2 | N/A | Text |
+| [babbage-002](./models/babbage-002.md) | openai | N/A | Text |
+| [davinci-002](./models/davinci-002.md) | openai | N/A | Text |
+| [o1](./models/o1.md) | openai | N/A | Text |
+| [o1-2024-12-17](./models/o1-2024-12-17.md) | openai | N/A | Text |
+| [o1-mini](./models/o1-mini.md) | openai | N/A | Text |
+| [o1-mini-2024-09-12](./models/o1-mini-2024-09-12.md) | openai | N/A | Text |
+| [o3](./models/o3.md) | openai | N/A | Text |
+| [o3-2025-04-16](./models/o3-2025-04-16.md) | openai | N/A | Text |
+| [o3-mini](./models/o3-mini.md) | openai | N/A | Text |
+| [o3-mini-2025-01-31](./models/o3-mini-2025-01-31.md) | openai | N/A | Text |
+| [o4-mini](./models/o4-mini.md) | openai | N/A | Text |
+| [o4-mini-2025-04-16](./models/o4-mini-2025-04-16.md) | openai | N/A | Text |
+| [omni-moderation-2024-09-26](./models/omni-moderation-2024-09-26.md) | openai | N/A | Text |
+| [omni-moderation-latest](./models/omni-moderation-latest.md) | openai | N/A | Text |
+| [tts-1](./models/tts-1.md) | openai | N/A | Text |
+| [tts-1-1106](./models/tts-1-1106.md) | openai | N/A | Text |
+| [tts-1-hd](./models/tts-1-hd.md) | openai | N/A | Text |
+| [tts-1-hd-1106](./models/tts-1-hd-1106.md) | openai | N/A | Text |
 
   
 ### DALL-E

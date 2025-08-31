@@ -230,110 +230,43 @@ Mountain View, CA, USA
 | [weathernext](./models/weathernext.md) | N/A | N/A | N/A | 📝 |
 
   
-### Llama
+### Gemini
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama2](./models/llama2-at-llama-2-7b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### Embeddings
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Multimodalembedding](./models/multimodalembedding-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [multimodalembedding](./models/multimodalembedding.md) | N/A | N/A | N/A | 📝 |
-| [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
-| [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Mistral
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-
-  
-### DeepSeek
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1-base.md) | N/A | N/A | N/A | 🔧 ⚡ |
-
-  
-### T5
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [t5-1.1](./models/t5-1.1.md) | N/A | N/A | N/A | 📝 |
-| [t5-flan](./models/t5-flan.md) | N/A | N/A | N/A | 📝 |
-
-  
-### CodeLlama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### Claude
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
-| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
-| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
-| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
-| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
-
-  
-### BERT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
-| [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
-
-  
-### RoBERTa
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### GPT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.0 Flash](./models/gemini-2.0-flash.md) | N/A | $0.10 | $0.40 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.0 Flash Lite](./models/gemini-2.0-flash-lite.md) | N/A | $0.07 | $0.30 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.0 Flash Lite 001](./models/gemini-2.0-flash-lite-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash](./models/gemini-2.5-flash-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Lite](./models/gemini-2.5-flash-lite-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | N/A | $0.10 | $0.40 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.5 Flash Preview 04-17](./models/gemini-2.5-flash-preview-04-17.md) | N/A | $0.15 | $0.60 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | N/A | $0.15 | $0.60 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🔧 |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini 2.5 Pro Preview 06-05](./models/gemini-2.5-pro-preview-06-05.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
+| [Gemini Pro](./models/gemini-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini Ultra](./models/gemini-ultra-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [gemini 1.5 flash 001](./models/gemini-1.5-flash-001.md) | N/A | N/A | N/A | — |
+| [gemini 1.5 pro 001](./models/gemini-1.5-pro-001.md) | N/A | N/A | N/A | — |
+| [gemini 2.0 flash 001](./models/gemini-2.0-flash-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini 2.0 flash lite 001](./models/gemini-2.0-flash-lite-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini 2.5 flash 001](./models/gemini-2.5-flash-001.md) | N/A | N/A | N/A | — |
+| [gemini 2.5 pro 001](./models/gemini-2.5-pro-001.md) | N/A | N/A | N/A | — |
+| [gemini-1.5-flash-002](./models/gemini-1.5-flash-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-2.5-flash](./models/gemini-2.5-flash.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-pro](./models/gemini-pro.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-pro-vision](./models/gemini-pro-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-ultra](./models/gemini-ultra.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-ultra-vision](./models/gemini-ultra-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 
   
 ### Gemma
@@ -362,6 +295,39 @@ Mountain View, CA, USA
 | [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
 
   
+### Mistral
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+
+  
+### Claude
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
+| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
+| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
+| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
+| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
+
+  
+### T5
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [t5-1.1](./models/t5-1.1.md) | N/A | N/A | N/A | 📝 |
+| [t5-flan](./models/t5-flan.md) | N/A | N/A | N/A | 📝 |
+
+  
 ### PaLM
   
 | Model | Context | Input | Output | Features |
@@ -376,6 +342,24 @@ Mountain View, CA, USA
 | [text-bison](./models/text-bison.md) | N/A | N/A | N/A | 📝 |
 
   
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama2](./models/llama2-at-llama-2-7b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
 ### Qwen
   
 | Model | Context | Input | Output | Features |
@@ -388,45 +372,14 @@ Mountain View, CA, USA
 | [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
-### Gemini
+### DeepSeek
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.0 Flash](./models/gemini-2.0-flash.md) | N/A | $0.10 | $0.40 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.0 Flash Lite](./models/gemini-2.0-flash-lite.md) | N/A | $0.07 | $0.30 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.0 Flash Lite 001](./models/gemini-2.0-flash-lite-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash](./models/gemini-2.5-flash-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Lite](./models/gemini-2.5-flash-lite-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | N/A | $0.10 | $0.40 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.5 Flash Preview 04-17](./models/gemini-2.5-flash-preview-04-17.md) | N/A | $0.15 | $0.60 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | N/A | $0.15 | $0.60 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🔧 |
-| [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini 2.5 Pro Preview 06-05](./models/gemini-2.5-pro-preview-06-05.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Gemini Pro](./models/gemini-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini Ultra](./models/gemini-ultra-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [gemini 1.5 flash 001](./models/gemini-1.5-flash-001.md) | N/A | N/A | N/A | — |
-| [gemini 1.5 pro 001](./models/gemini-1.5-pro-001.md) | N/A | N/A | N/A | — |
-| [gemini 2.0 flash 001](./models/gemini-2.0-flash-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini 2.0 flash lite 001](./models/gemini-2.0-flash-lite-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini 2.5 flash 001](./models/gemini-2.5-flash-001.md) | N/A | N/A | N/A | — |
-| [gemini 2.5 pro 001](./models/gemini-2.5-pro-001.md) | N/A | N/A | N/A | — |
-| [gemini-1.5-flash-002](./models/gemini-1.5-flash-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-2.5-flash](./models/gemini-2.5-flash.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
-| [gemini-pro](./models/gemini-pro.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-pro-vision](./models/gemini-pro-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-ultra](./models/gemini-ultra.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-ultra-vision](./models/gemini-ultra-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1-base.md) | N/A | N/A | N/A | 🔧 ⚡ |
 
   
 ### Whisper
@@ -436,6 +389,46 @@ Mountain View, CA, USA
 | [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
+### Embeddings
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Multimodalembedding](./models/multimodalembedding-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
+| [multimodalembedding](./models/multimodalembedding.md) | N/A | N/A | N/A | 📝 |
+| [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
+| [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
+
+  
+### RoBERTa
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### BERT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
+| [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
+
+  
 ### Jamba
   
 | Model | Context | Input | Output | Features |
@@ -443,6 +436,13 @@ Mountain View, CA, USA
 | [Jamba 1.5 Large](./models/jamba-1.5-large-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Jamba 1.5 Mini](./models/jamba-1.5-mini-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Jamba Large 1.6](./models/jamba-large-1.6-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### CodeLlama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ## Configuration

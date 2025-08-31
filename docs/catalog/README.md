@@ -23,12 +23,12 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Provider | Models | Latest Addition |
 |---------|---------|---------|
-| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | Automl Vision Image Classification |
-| 🤖 [OpenAI](providers/openai/) | 114 | Segment Anything |
-| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Gemini 2.0 Flash Lite 001 |
-| ⚡ [Groq](providers/groq/) | 48 | Llama3 3 |
-| 🧠 [Anthropic](providers/anthropic/) | 20 | Claude Sonnet 3.5 (Old) |
-| 🚀 [Cerebras](providers/cerebras/) | 17 | qwen-3-coder-480b |
+| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | Faster R Cnn |
+| 🤖 [OpenAI](providers/openai/) | 114 | babbage-002 |
+| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Gemini 2.5 Flash Preview 05-20 |
+| ⚡ [Groq](providers/groq/) | 48 | kimi-k2-instruct |
+| 🧠 [Anthropic](providers/anthropic/) | 20 | claude 3 5 haiku |
+| 🚀 [Cerebras](providers/cerebras/) | 17 | Qwen3 Coder |
 | 🔍 [DeepSeek](providers/deepseek/) | 8 | Deepseek R1 0528 Maas |
 
   
@@ -43,9 +43,9 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 | 👥 [Qwen Team](authors/qwen/) | 7 | AI research team within Alibaba Cloud responsible for dev... |
 | 👥 [AI21 Labs](authors/ai21/) | 3 | Israeli AI company known for Jamba hybrid SSM-Transformer... |
 | 🔬 [DeepSeek](authors/deepseek/) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning... |
-| 👥 [Tsinghua University](authors/tsinghua/) | 0 | Prestigious Chinese university with AI research, affiliat... |
-| 👥 [Princeton University](authors/princeton/) | 0 | AI research organization |
-| 🎨 [Stability AI](authors/stability/) | 0 | AI research organization |
+| 💼 [Cohere](authors/cohere/) | 0 | Enterprise AI company specializing in natural language pr... |
+| 👥 [Yale University](authors/yale/) | 0 | AI research organization |
+| 👥 [California Institute of Technology](authors/caltech/) | 0 | AI research organization |
 
   
 [View all 80 authors →](authors/)

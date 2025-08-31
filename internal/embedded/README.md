@@ -19,7 +19,7 @@ import "github.com/agentstation/starmap/internal/embedded"
 
 ## Variables
 
-<a name="FS"></a>FS embeds all catalog yaml files at build time, including model definitions under authors and providers.
+<a name="FS"></a>FS embeds all catalog yaml files and logos at build time, including model definitions under authors and providers.
 
 ```go
 var FS embed.FS

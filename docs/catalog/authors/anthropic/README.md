@@ -29,8 +29,8 @@ AI safety company known for Claude models and Constitutional AI research
 | [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022.md) | anthropic | N/A | Text, Vision, Functions |
 | [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | anthropic | N/A | Text, Vision, Functions |
 | [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | anthropic | N/A | Text, Functions |
 | [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 2 | 200k | Text, Vision, Functions |
+| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | anthropic | N/A | Text, Functions |
 | [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 2 | 200k | Text, Vision, Functions |
 | [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | 2 | N/A | Text, Vision, Functions |
 

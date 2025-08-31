@@ -69,8 +69,8 @@ San Francisco, CA, USA
 | [Claude Haiku 3](./models/claude-3-haiku-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Claude Opus 3](./models/claude-3-opus-20240229.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 |
-| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | [Claude Opus 4](./models/claude-opus-4-20250514.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | [Claude Opus 4.1](./models/claude-opus-4-1-20250805.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Claude Sonnet 3](./models/claude-3-sonnet-20240229.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
