@@ -81,9 +81,12 @@ jobs:
       - name: Install Dart Sass
         run: sudo snap install dart-sass
       
-      - name: Create content symlink
+      - name: Ensure content symlink exists
         run: |
           cd site
+          # Remove existing symlink or directory if it exists
+          rm -rf content
+          # Create fresh symlink
           ln -s ../docs content
       
       - name: Download Hugo theme
