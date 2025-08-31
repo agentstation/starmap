@@ -20,9 +20,9 @@ Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Juras
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Jamba 1.5 Large](./models/jamba-1.5-large-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Jamba 1.5 Mini](./models/jamba-1.5-mini-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Jamba Large 1.6](./models/jamba-large-1.6-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Jamba 1.5 Large](./models/jamba-1.5-large-at-001) | google-vertex | N/A | Text, Functions |
+| [Jamba 1.5 Mini](./models/jamba-1.5-mini-at-001) | google-vertex | N/A | Text, Functions |
+| [Jamba Large 1.6](./models/jamba-large-1.6-at-001) | google-vertex | N/A | Text, Functions |
 
   
 ## Provider Availability

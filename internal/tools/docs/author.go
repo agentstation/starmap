@@ -369,7 +369,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 
 			for _, model := range modelsCopy {
 				// Model link to local models subdirectory
-				modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.Name, formatModelID(model.ID))
+				modelLink := fmt.Sprintf("[%s](./models/%s)", model.Name, formatModelID(model.ID))
 
 				// Count providers that have this model
 				providerCount := 0
@@ -653,7 +653,7 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 				}
 				
 				// Link to provider-specific page
-				providerLink := fmt.Sprintf("[%s](../../../providers/%s/models/%s.md)",
+				providerLink := fmt.Sprintf("[%s](../../../providers/%s/models/%s)",
 					provider.Name, string(provider.ID), formatModelID(model.ID))
 				
 				providerRows = append(providerRows, []string{providerLink, contextStr, pricingStr, notes})

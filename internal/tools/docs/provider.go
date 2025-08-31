@@ -467,8 +467,8 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 				// Features
 				features := compactFeatures(*model)
 
-				// Generate model link to local models subdirectory
-				modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.Name, formatModelID(model.ID))
+				// Generate model link to local models subdirectory (without .md for Hugo)
+				modelLink := fmt.Sprintf("[%s](./models/%s)", model.Name, formatModelID(model.ID))
 
 				rows = append(rows, []string{
 					modelLink, contextStr, inputStr, outputStr, features,

@@ -65,35 +65,35 @@ Sunnyvale, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [gpt-oss-120b](./models/gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-oss-120b](./models/gpt-oss-120b) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ### Llama
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [llama-3.3-70b](./models/llama-3.3-70b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-3.3-70b](./models/llama-3.3-70b) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama3.1-8b](./models/llama3.1-8b) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ### Qwen
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Qwen Image](./models/qwen-image-at-qwen-image.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | 131.1k | $0.29 | $0.39 | 📝 🔧 |
-| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [qwen-3-235b-a22b-instruct-2507](./models/qwen-3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [qwen-3-235b-a22b-thinking-2507](./models/qwen-3-235b-a22b-thinking-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [qwen-3-32b](./models/qwen-3-32b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [qwen-3-coder-480b](./models/qwen-3-coder-480b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [qwen3-32b](./models/qwen-qwen3-32b.md) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
+| [Qwen Image](./models/qwen-image-at-qwen-image) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen QwQ 32B](./models/qwen-qwq-32b) | 131.1k | $0.29 | $0.39 | 📝 🔧 |
+| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-235b-a22b-instruct-2507](./models/qwen-3-235b-a22b-instruct-2507) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-235b-a22b-thinking-2507](./models/qwen-3-235b-a22b-thinking-2507) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-32b](./models/qwen-3-32b) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-coder-480b](./models/qwen-3-coder-480b) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen3-32b](./models/qwen-qwen3-32b) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
 
   
 ## Configuration
