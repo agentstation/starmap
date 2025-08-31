@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cursor.svg" alt="Cursor" width="32" height="32" style="vertical-align: middle;"> Cursor
   
   
+  
 ## Organization Information
   
 | Field | Value |

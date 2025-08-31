@@ -970,7 +970,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="Authors"></a>
-## type [Authors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L11-L14>)
+## type [Authors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L12-L15>)
 
 Authors is a concurrent safe map of authors.
 
@@ -981,7 +981,7 @@ type Authors struct {
 ```
 
 <a name="NewAuthors"></a>
-### func [NewAuthors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L37>)
+### func [NewAuthors](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L38>)
 
 ```go
 func NewAuthors(opts ...AuthorsOption) *Authors
@@ -990,7 +990,7 @@ func NewAuthors(opts ...AuthorsOption) *Authors
 NewAuthors creates a new Authors map with optional configuration.
 
 <a name="Authors.Add"></a>
-### func \(\*Authors\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L73>)
+### func \(\*Authors\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L74>)
 
 ```go
 func (a *Authors) Add(author *Author) error
@@ -999,7 +999,7 @@ func (a *Authors) Add(author *Author) error
 Add adds an author, returning an error if it already exists.
 
 <a name="Authors.AddBatch"></a>
-### func \(\*Authors\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L177>)
+### func \(\*Authors\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L182>)
 
 ```go
 func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error
@@ -1008,7 +1008,7 @@ func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error
 AddBatch adds multiple authors in a single operation. Only adds authors that don't already exist \- fails if an author ID already exists. Returns a map of author IDs to errors for any failed additions.
 
 <a name="Authors.Clear"></a>
-### func \(\*Authors\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L165>)
+### func \(\*Authors\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L170>)
 
 ```go
 func (a *Authors) Clear()
@@ -1017,7 +1017,7 @@ func (a *Authors) Clear()
 Clear removes all authors.
 
 <a name="Authors.Delete"></a>
-### func \(\*Authors\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L97>)
+### func \(\*Authors\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L98>)
 
 ```go
 func (a *Authors) Delete(id AuthorID) error
@@ -1026,7 +1026,7 @@ func (a *Authors) Delete(id AuthorID) error
 Delete removes an author by id. Returns an error if the author doesn't exist.
 
 <a name="Authors.DeleteBatch"></a>
-### func \(\*Authors\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L247>)
+### func \(\*Authors\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L252>)
 
 ```go
 func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error
@@ -1035,7 +1035,7 @@ func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error
 DeleteBatch removes multiple authors by their IDs. Returns a map of errors for authors that couldn't be deleted \(not found\).
 
 <a name="Authors.Exists"></a>
-### func \(\*Authors\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L113>)
+### func \(\*Authors\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L114>)
 
 ```go
 func (a *Authors) Exists(id AuthorID) bool
@@ -1044,7 +1044,7 @@ func (a *Authors) Exists(id AuthorID) bool
 Exists checks if an author exists without returning it.
 
 <a name="Authors.ForEach"></a>
-### func \(\*Authors\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L153>)
+### func \(\*Authors\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L158>)
 
 ```go
 func (a *Authors) ForEach(fn func(id AuthorID, author *Author) bool)
@@ -1053,7 +1053,7 @@ func (a *Authors) ForEach(fn func(id AuthorID, author *Author) bool)
 ForEach applies a function to each author. The function should not modify the author. If the function returns false, iteration stops early.
 
 <a name="Authors.Get"></a>
-### func \(\*Authors\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L50>)
+### func \(\*Authors\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L51>)
 
 ```go
 func (a *Authors) Get(id AuthorID) (*Author, bool)
@@ -1062,7 +1062,7 @@ func (a *Authors) Get(id AuthorID) (*Author, bool)
 Get returns an author by id and whether it exists.
 
 <a name="Authors.Len"></a>
-### func \(\*Authors\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L121>)
+### func \(\*Authors\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L122>)
 
 ```go
 func (a *Authors) Len() int
@@ -1071,7 +1071,7 @@ func (a *Authors) Len() int
 Len returns the number of authors.
 
 <a name="Authors.List"></a>
-### func \(\*Authors\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L129>)
+### func \(\*Authors\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L130>)
 
 ```go
 func (a *Authors) List() []*Author
@@ -1080,7 +1080,7 @@ func (a *Authors) List() []*Author
 List returns a slice of all authors.
 
 <a name="Authors.Map"></a>
-### func \(\*Authors\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L142>)
+### func \(\*Authors\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L147>)
 
 ```go
 func (a *Authors) Map() map[AuthorID]*Author
@@ -1089,7 +1089,7 @@ func (a *Authors) Map() map[AuthorID]*Author
 Map returns a copy of all authors.
 
 <a name="Authors.Set"></a>
-### func \(\*Authors\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L58>)
+### func \(\*Authors\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L59>)
 
 ```go
 func (a *Authors) Set(id AuthorID, author *Author) error
@@ -1098,7 +1098,7 @@ func (a *Authors) Set(id AuthorID, author *Author) error
 Set sets an author by id. Returns an error if author is nil.
 
 <a name="Authors.SetBatch"></a>
-### func \(\*Authors\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L220>)
+### func \(\*Authors\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L225>)
 
 ```go
 func (a *Authors) SetBatch(authors map[AuthorID]*Author) error
@@ -1107,7 +1107,7 @@ func (a *Authors) SetBatch(authors map[AuthorID]*Author) error
 SetBatch sets multiple authors in a single operation. Overwrites existing authors or adds new ones \(upsert behavior\). Returns an error if any author is nil.
 
 <a name="AuthorsOption"></a>
-## type [AuthorsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L17>)
+## type [AuthorsOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L18>)
 
 AuthorsOption defines a function that configures an Authors instance.
 
@@ -1116,7 +1116,7 @@ type AuthorsOption func(*Authors)
 ```
 
 <a name="WithAuthorsCapacity"></a>
-### func [WithAuthorsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L20>)
+### func [WithAuthorsCapacity](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L21>)
 
 ```go
 func WithAuthorsCapacity(capacity int) AuthorsOption
@@ -1125,7 +1125,7 @@ func WithAuthorsCapacity(capacity int) AuthorsOption
 WithAuthorsCapacity sets the initial capacity of the authors map.
 
 <a name="WithAuthorsMap"></a>
-### func [WithAuthorsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L27>)
+### func [WithAuthorsMap](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/authors.go#L28>)
 
 ```go
 func WithAuthorsMap(authors map[AuthorID]*Author) AuthorsOption
@@ -2157,7 +2157,7 @@ type ModelWebSearch struct {
 ```
 
 <a name="Models"></a>
-## type [Models](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L11-L14>)
+## type [Models](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L12-L15>)
 
 Models is a concurrent safe map of models.
 
@@ -2168,7 +2168,7 @@ type Models struct {
 ```
 
 <a name="NewModels"></a>
-### func [NewModels](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L17>)
+### func [NewModels](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L18>)
 
 ```go
 func NewModels(opts ...ModelsOption) *Models
@@ -2177,7 +2177,7 @@ func NewModels(opts ...ModelsOption) *Models
 NewModels creates a new Models map with optional configuration.
 
 <a name="Models.Add"></a>
-### func \(\*Models\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L53>)
+### func \(\*Models\) [Add](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L54>)
 
 ```go
 func (m *Models) Add(model *Model) error
@@ -2186,7 +2186,7 @@ func (m *Models) Add(model *Model) error
 Add adds a model, returning an error if it already exists.
 
 <a name="Models.AddBatch"></a>
-### func \(\*Models\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L157>)
+### func \(\*Models\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L162>)
 
 ```go
 func (m *Models) AddBatch(models []*Model) map[string]error
@@ -2195,7 +2195,7 @@ func (m *Models) AddBatch(models []*Model) map[string]error
 AddBatch adds multiple models in a single operation. Only adds models that don't already exist \- fails if a model ID already exists. Returns a map of model IDs to errors for any failed additions.
 
 <a name="Models.Clear"></a>
-### func \(\*Models\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L145>)
+### func \(\*Models\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L150>)
 
 ```go
 func (m *Models) Clear()
@@ -2204,7 +2204,7 @@ func (m *Models) Clear()
 Clear removes all models.
 
 <a name="Models.Delete"></a>
-### func \(\*Models\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L77>)
+### func \(\*Models\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L78>)
 
 ```go
 func (m *Models) Delete(id string) error
@@ -2213,7 +2213,7 @@ func (m *Models) Delete(id string) error
 Delete removes a model by id. Returns an error if the model doesn't exist.
 
 <a name="Models.DeleteBatch"></a>
-### func \(\*Models\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L227>)
+### func \(\*Models\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L232>)
 
 ```go
 func (m *Models) DeleteBatch(ids []string) map[string]error
@@ -2222,7 +2222,7 @@ func (m *Models) DeleteBatch(ids []string) map[string]error
 DeleteBatch removes multiple models by their IDs. Returns a map of errors for models that couldn't be deleted \(not found\).
 
 <a name="Models.Exists"></a>
-### func \(\*Models\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L93>)
+### func \(\*Models\) [Exists](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L94>)
 
 ```go
 func (m *Models) Exists(id string) bool
@@ -2231,7 +2231,7 @@ func (m *Models) Exists(id string) bool
 Exists checks if a model exists without returning it.
 
 <a name="Models.ForEach"></a>
-### func \(\*Models\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L133>)
+### func \(\*Models\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L138>)
 
 ```go
 func (m *Models) ForEach(fn func(id string, model *Model) bool)
@@ -2240,7 +2240,7 @@ func (m *Models) ForEach(fn func(id string, model *Model) bool)
 ForEach applies a function to each model. The function should not modify the model. If the function returns false, iteration stops early.
 
 <a name="Models.Get"></a>
-### func \(\*Models\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L30>)
+### func \(\*Models\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L31>)
 
 ```go
 func (m *Models) Get(id string) (*Model, bool)
@@ -2249,7 +2249,7 @@ func (m *Models) Get(id string) (*Model, bool)
 Get returns a model by id and whether it exists.
 
 <a name="Models.Len"></a>
-### func \(\*Models\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L101>)
+### func \(\*Models\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L102>)
 
 ```go
 func (m *Models) Len() int
@@ -2258,7 +2258,7 @@ func (m *Models) Len() int
 Len returns the number of models.
 
 <a name="Models.List"></a>
-### func \(\*Models\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L109>)
+### func \(\*Models\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L110>)
 
 ```go
 func (m *Models) List() []*Model
@@ -2267,7 +2267,7 @@ func (m *Models) List() []*Model
 List returns a slice of all models.
 
 <a name="Models.Map"></a>
-### func \(\*Models\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L122>)
+### func \(\*Models\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L127>)
 
 ```go
 func (m *Models) Map() map[string]*Model
@@ -2276,7 +2276,7 @@ func (m *Models) Map() map[string]*Model
 Map returns a copy of all models.
 
 <a name="Models.Set"></a>
-### func \(\*Models\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L38>)
+### func \(\*Models\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L39>)
 
 ```go
 func (m *Models) Set(id string, model *Model) error
@@ -2285,7 +2285,7 @@ func (m *Models) Set(id string, model *Model) error
 Set sets a model by id. Returns an error if model is nil.
 
 <a name="Models.SetBatch"></a>
-### func \(\*Models\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L200>)
+### func \(\*Models\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/models.go#L205>)
 
 ```go
 func (m *Models) SetBatch(models map[string]*Model) error
@@ -2994,7 +2994,7 @@ func (p *Providers) Add(provider *Provider) error
 Add adds a provider, returning an error if it already exists.
 
 <a name="Providers.AddBatch"></a>
-### func \(\*Providers\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L181>)
+### func \(\*Providers\) [AddBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L185>)
 
 ```go
 func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error
@@ -3003,7 +3003,7 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error
 AddBatch adds multiple providers in a single operation. Only adds providers that don't already exist \- fails if a provider ID already exists. Returns a map of provider IDs to errors for any failed additions.
 
 <a name="Providers.Clear"></a>
-### func \(\*Providers\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L169>)
+### func \(\*Providers\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L173>)
 
 ```go
 func (p *Providers) Clear()
@@ -3021,7 +3021,7 @@ func (p *Providers) Delete(id ProviderID) error
 Delete removes a provider by id. Returns an error if the provider doesn't exist.
 
 <a name="Providers.DeleteBatch"></a>
-### func \(\*Providers\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L251>)
+### func \(\*Providers\) [DeleteBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L255>)
 
 ```go
 func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error
@@ -3039,7 +3039,7 @@ func (p *Providers) Exists(id ProviderID) bool
 Exists checks if a provider exists without returning it.
 
 <a name="Providers.ForEach"></a>
-### func \(\*Providers\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L157>)
+### func \(\*Providers\) [ForEach](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L161>)
 
 ```go
 func (p *Providers) ForEach(fn func(id ProviderID, provider *Provider) bool)
@@ -3048,7 +3048,7 @@ func (p *Providers) ForEach(fn func(id ProviderID, provider *Provider) bool)
 ForEach applies a function to each provider. The function should not modify the provider. If the function returns false, iteration stops early.
 
 <a name="Providers.FormatYAML"></a>
-### func \(\*Providers\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L278>)
+### func \(\*Providers\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L282>)
 
 ```go
 func (p *Providers) FormatYAML() string
@@ -3084,7 +3084,7 @@ func (p *Providers) List() []*Provider
 List returns a slice of all providers.
 
 <a name="Providers.Map"></a>
-### func \(\*Providers\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L146>)
+### func \(\*Providers\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L150>)
 
 ```go
 func (p *Providers) Map() map[ProviderID]*Provider
@@ -3102,7 +3102,7 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error
 Set sets a provider by id. Returns an error if provider is nil.
 
 <a name="Providers.SetBatch"></a>
-### func \(\*Providers\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L224>)
+### func \(\*Providers\) [SetBatch](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/providers.go#L228>)
 
 ```go
 func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error

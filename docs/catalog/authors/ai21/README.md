@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/ai21.svg" alt="AI21 Labs" width="32" height="32" style="vertical-align: middle;"> AI21 Labs
   
   
+  
 Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
   
   

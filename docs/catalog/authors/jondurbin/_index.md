@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/jondurbin.svg" alt="jondurbin" width="32" height="32" style="vertical-align: middle;"> jondurbin
   
   
+  
 Model creator known for Bagel and Airoboros fine-tuned language models
   
   

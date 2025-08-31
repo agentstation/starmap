@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/microsoft.svg" alt="Microsoft" width="32" height="32" style="vertical-align: middle;"> Microsoft
   
   
+  
 Technology company with AI initiatives including Copilot and partnerships with OpenAI
   
   

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/bytedance.svg" alt="ByteDance" width="32" height="32" style="vertical-align: middle;"> ByteDance
   
   
+  
 Chinese technology company behind TikTok with AI research in recommendation systems
   
   

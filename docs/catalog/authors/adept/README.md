@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/adept.svg" alt="Adept" width="32" height="32" style="vertical-align: middle;"> Adept
   
   
+  
 ## Organization Information
   
 | Field | Value |

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/uchicago.svg" alt="University of Chicago" width="32" height="32" style="vertical-align: middle;"> University of Chicago
   
   
+  
 ## Organization Information
   
 | Field | Value |

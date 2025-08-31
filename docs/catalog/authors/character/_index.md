@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/character.svg" alt="Character.AI" width="32" height="32" style="vertical-align: middle;"> Character.AI
   
   
+  
 ## Organization Information
   
 | Field | Value |

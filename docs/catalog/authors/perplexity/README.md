@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/perplexity.svg" alt="Perplexity AI" width="32" height="32" style="vertical-align: middle;"> Perplexity AI
   
   
+  
 ## Organization Information
   
 | Field | Value |

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/vicuna-team.svg" alt="Vicuna Team" width="32" height="32" style="vertical-align: middle;"> Vicuna Team
   
   
+  
 Team responsible for creating the popular Vicuna chatbot models
   
   

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/baichuan.svg" alt="Baichuan Intelligence" width="32" height="32" style="vertical-align: middle;"> Baichuan Intelligence
   
   
+  
 Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
   
   

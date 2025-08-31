@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/open-orca.svg" alt="Open-Orca" width="32" height="32" style="vertical-align: middle;"> Open-Orca
   
   
+  
 Open-source project creating Orca-style reasoning models and datasets
   
   

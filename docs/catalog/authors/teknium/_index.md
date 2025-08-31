@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/teknium.svg" alt="teknium" width="32" height="32" style="vertical-align: middle;"> teknium
   
   
+  
 Individual researcher and creator of the OpenHermes model series
   
   

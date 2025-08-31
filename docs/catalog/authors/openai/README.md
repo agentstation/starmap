@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/openai.svg" alt="OpenAI" width="32" height="32" style="vertical-align: middle;"> OpenAI
   
   
+  
 AI research company known for GPT models, ChatGPT, and DALL-E
   
   
@@ -16,25 +17,6 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 
   
 ## Models
-  
-### Embeddings
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
-| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
-| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
-
-  
-### Whisper
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
-| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
-| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
-| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
-
   
 ### Other
   
@@ -117,6 +99,25 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [gpt-image-1](./models/gpt-image-1.md) | openai | N/A | Text |
 | [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 2 | 131.1k | Text |
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 2 | 131.1k | Text |
+
+  
+### Embeddings
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
+| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
+| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
+
+  
+### Whisper
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
+| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
+| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
 
   
 ## Provider Availability

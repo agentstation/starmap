@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/baai.svg" alt="Beijing Academy of Artificial Intelligence" width="32" height="32" style="vertical-align: middle;"> Beijing Academy of Artificial Intelligence
   
   
+  
 Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
   
   

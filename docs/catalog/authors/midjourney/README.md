@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/midjourney.svg" alt="Midjourney" width="32" height="32" style="vertical-align: middle;"> Midjourney
   
   
+  
 ## Organization Information
   
 | Field | Value |

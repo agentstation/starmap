@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/eth-zurich.svg" alt="ETH Zurich" width="32" height="32" style="vertical-align: middle;"> ETH Zurich
   
   
+  
 ## Organization Information
   
 | Field | Value |

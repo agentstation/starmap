@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stability.svg" alt="Stability AI" width="32" height="32" style="vertical-align: middle;"> Stability AI
   
   
+  
 ## Organization Information
   
 | Field | Value |

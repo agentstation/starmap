@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/h2o.ai.svg" alt="H2O.ai" width="32" height="32" style="vertical-align: middle;"> H2O.ai
   
   
+  
 Machine learning company known for h2oGPT open-source language model suite
   
   

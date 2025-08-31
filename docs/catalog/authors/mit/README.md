@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/mit.svg" alt="MIT" width="32" height="32" style="vertical-align: middle;"> MIT
   
   
+  
 ## Organization Information
   
 | Field | Value |

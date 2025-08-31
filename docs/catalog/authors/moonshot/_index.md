@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/moonshot.svg" alt="Moonshot AI" width="32" height="32" style="vertical-align: middle;"> Moonshot AI
   
   
+  
 Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
   
   

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/deepmind.svg" alt="Google DeepMind" width="32" height="32" style="vertical-align: middle;"> Google DeepMind
   
   
+  
 AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research
   
   

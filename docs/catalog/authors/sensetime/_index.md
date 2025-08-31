@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/sensetime.svg" alt="SenseTime" width="32" height="32" style="vertical-align: middle;"> SenseTime
   
   
+  
 Chinese AI company specializing in computer vision and known for SenseNova multimodal models
   
   

@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/shanghai-ai-lab.svg" alt="Shanghai AI Laboratory" width="32" height="32" style="vertical-align: middle;"> Shanghai AI Laboratory
   
   
+  
 Chinese AI research institute known for InternLM series and multimodal AI research
   
   

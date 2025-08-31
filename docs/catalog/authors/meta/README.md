@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/meta.svg" alt="Meta" width="32" height="32" style="vertical-align: middle;"> Meta
   
   
+  
 Social media company known for LLaMA/Llama model series and open-source AI research
   
   
@@ -17,30 +18,25 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### CodeLlama
+### BERT
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 2 | N/A | Text, Functions |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   
-### Other
+### RoBERTa
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | N/A | Text, Functions |
-| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | N/A | Text, Functions |
-| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
-| [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   
 ### Llama
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 2 | N/A | Text, Functions |
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | 2 | N/A | Text, Functions |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
@@ -64,12 +60,17 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
 
   
-### RoBERTa
+### Other
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | N/A | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | N/A | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
 
   
 ## Provider Availability

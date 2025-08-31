@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/anysphere.svg" alt="Anysphere" width="32" height="32" style="vertical-align: middle;"> Anysphere
   
   
+  
 ## Organization Information
   
 | Field | Value |

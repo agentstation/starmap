@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford.svg" alt="Stanford University" width="32" height="32" style="vertical-align: middle;"> Stanford University
   
   
+  
 ## Organization Information
   
 | Field | Value |

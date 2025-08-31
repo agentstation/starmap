@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/amazon.svg" alt="Amazon" width="32" height="32" style="vertical-align: middle;"> Amazon
   
   
+  
 ## Organization Information
   
 | Field | Value |

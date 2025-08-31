@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford-alpaca.svg" alt="Stanford Alpaca" width="32" height="32" style="vertical-align: middle;"> Stanford Alpaca
   
   
+  
 Stanford research project that created the influential Alpaca instruction-tuned models
   
   

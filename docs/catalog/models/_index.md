@@ -123,7 +123,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 17 more_ |  |  |  |
 
   
-### Llama (27 models)
+### Llama (26 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -137,7 +137,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | N/A | N/A |
 | [Llama3](../authors/meta/models/llama3-at-meta-llama-3-8b.md) | Multiple | N/A | N/A |
 | [Llama3 1](../authors/meta/models/llama3_1-at-llama-3.1-8b-instruct.md) | Multiple | N/A | N/A |
-| _...and 17 more_ |  |  |  |
+| _...and 16 more_ |  |  |  |
 
   
 ### Claude (20 models)
@@ -163,7 +163,7 @@ Complete listing of all 439 models in the Starmap catalog.
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
+| [Gemini Embedding 001](../authors/google/models/gemini-embedding-001-at-default.md) | Multiple | N/A | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
@@ -191,7 +191,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 2 more_ |  |  |  |
 
   
-### DeepSeek (8 models)
+### DeepSeek (9 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -202,6 +202,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | Deepseek V3 | Multiple | N/A | N/A |
 | Deepseek V3 1 | Multiple | N/A | N/A |
 | [deepseek-chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | N/A | N/A |
+| [deepseek-r1-distill-llama-70b](../authors/deepseek / meta/models/deepseek-r1-distill-llama-70b.md) | Multiple | 131.1k | N/A |
 | [deepseek-reasoner](../authors/deepseek/models/deepseek-reasoner.md) | Multiple | N/A | N/A |
 
   

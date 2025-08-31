@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cornell.svg" alt="Cornell University" width="32" height="32" style="vertical-align: middle;"> Cornell University
   
   
+  
 ## Organization Information
   
 | Field | Value |

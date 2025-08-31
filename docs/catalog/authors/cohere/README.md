@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cohere.svg" alt="Cohere" width="32" height="32" style="vertical-align: middle;"> Cohere
   
   
+  
 Enterprise AI company specializing in natural language processing and Command models
   
   

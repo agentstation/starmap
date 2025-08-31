@@ -1,6 +1,7 @@
 # <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/harvard.svg" alt="Harvard University" width="32" height="32" style="vertical-align: middle;"> Harvard University
   
   
+  
 ## Organization Information
   
 | Field | Value |
