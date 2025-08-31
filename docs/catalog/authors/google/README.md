@@ -18,82 +18,6 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
   
 ## Models
   
-### Gemma
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Codegemma](./models/codegemma-at-codegemma-7b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Gemma](./models/gemma-at-gemma-2b.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Gemma 3 12B](./models/gemma-3-12b-it.md) | google-ai-studio | 32.8k | Text |
-| [Gemma 3 1B](./models/gemma-3-1b-it.md) | google-ai-studio | 32.8k | Text |
-| [Gemma 3 27B](./models/gemma-3-27b-it.md) | google-ai-studio | 131.1k | Text |
-| [Gemma 3 4B](./models/gemma-3-4b-it.md) | google-ai-studio | 32.8k | Text |
-| [Gemma 3n E2B](./models/gemma-3n-e2b-it.md) | google-ai-studio | 8.2k | Text |
-| [Gemma 3n E4B](./models/gemma-3n-e4b-it.md) | google-ai-studio | 8.2k | Text |
-| [Gemma2](./models/gemma2-at-gemma-2-2b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Gemma3](./models/gemma3-at-gemma-3-1b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Gemma3n](./models/gemma3n-at-gemma-3n-e4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Medgemma](./models/medgemma-at-medgemma-4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Paligemma](./models/paligemma-at-paligemma2-3b-pt-224.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Shieldgemma2](./models/shieldgemma2-at-shieldgemma-2-4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
-| [T5gemma](./models/t5gemma-at-t5gemma.md) | 2 | N/A | Text, Vision, Functions |
-| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | 2 | N/A | Text, Vision, Functions |
-| [gemma2-9b-it](./models/gemma2-9b-it.md) | groq | 8.2k | Text, Functions |
-
-  
-### Embeddings
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Embedding 001](./models/embedding-001.md) | google-ai-studio | 2.0k | Text |
-| [Embedding Gecko](./models/embedding-gecko-001.md) | google-ai-studio | 1.0k | Text |
-| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
-| [Multimodalembedding](./models/multimodalembedding-at-001.md) | google-vertex | N/A | Text |
-| [Text Embedding 004](./models/text-embedding-004.md) | 2 | 2.0k | Text |
-| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | 2 | N/A | Text |
-| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | 2 | N/A | Text |
-
-  
-### Gemini
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Gemini 1.5 Flash](./models/gemini-1.5-flash.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 1.5 Flash Latest](./models/gemini-1.5-flash-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 1.5 Flash-8B](./models/gemini-1.5-flash-8b.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 1.5 Flash-8B 001](./models/gemini-1.5-flash-8b-001.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 1.5 Flash-8B Latest](./models/gemini-1.5-flash-8b-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 1.5 Pro](./models/gemini-1.5-pro.md) | google-ai-studio | 2.0M | Text, Vision, Functions |
-| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 1.5 Pro Latest](./models/gemini-1.5-pro-latest.md) | google-ai-studio | 2.0M | Text, Vision, Functions |
-| [Gemini 2.0 Flash (Image Generation) Experimental](./models/gemini-2.0-flash-exp-image-generation.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 2.0 Flash Experimental](./models/gemini-2.0-flash-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.0 Flash Lite 001](./models/gemini-2.0-flash-lite-001-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 2.0 Flash Preview Image Generation](./models/gemini-2.0-flash-preview-image-generation.md) | google-ai-studio | 32.8k | Text, Vision, Functions |
-| [Gemini 2.0 Flash-Lite Preview](./models/gemini-2.0-flash-lite-preview.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.0 Flash-Lite Preview 02-05](./models/gemini-2.0-flash-lite-preview-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.0 Pro Experimental](./models/gemini-2.0-pro-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.0 Pro Experimental 02-05](./models/gemini-2.0-pro-exp-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.5 Flash](./models/gemini-2.5-flash-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 2.5 Flash Lite](./models/gemini-2.5-flash-lite-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-1219.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-01-21.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.5 Flash Preview TTS](./models/gemini-2.5-flash-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
-| [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
-| [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 2 | N/A | Text |
-| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | google-ai-studio | 8.2k | Text, Functions |
-| [Gemini Experimental 1206](./models/gemini-exp-1206.md) | google-ai-studio | 1.0M | Text, Functions |
-| [Gemini Pro](./models/gemini-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini Ultra](./models/gemini-ultra-at-default.md) | 2 | N/A | Text, Vision, Functions |
-| [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
-
-  
 ### Other
   
 | Model | Providers | Context | Capabilities |
@@ -196,6 +120,82 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 | [Code Bison](./models/code-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
 | [Codechat Bison](./models/codechat-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
 | [Text Bison](./models/text-bison-at-002.md) | google-vertex | N/A | Text, Vision, Functions |
+
+  
+### Gemma
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codegemma](./models/codegemma-at-codegemma-7b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Gemma](./models/gemma-at-gemma-2b.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Gemma 3 12B](./models/gemma-3-12b-it.md) | google-ai-studio | 32.8k | Text |
+| [Gemma 3 1B](./models/gemma-3-1b-it.md) | google-ai-studio | 32.8k | Text |
+| [Gemma 3 27B](./models/gemma-3-27b-it.md) | google-ai-studio | 131.1k | Text |
+| [Gemma 3 4B](./models/gemma-3-4b-it.md) | google-ai-studio | 32.8k | Text |
+| [Gemma 3n E2B](./models/gemma-3n-e2b-it.md) | google-ai-studio | 8.2k | Text |
+| [Gemma 3n E4B](./models/gemma-3n-e4b-it.md) | google-ai-studio | 8.2k | Text |
+| [Gemma2](./models/gemma2-at-gemma-2-2b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Gemma3](./models/gemma3-at-gemma-3-1b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Gemma3n](./models/gemma3n-at-gemma-3n-e4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Medgemma](./models/medgemma-at-medgemma-4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Paligemma](./models/paligemma-at-paligemma2-3b-pt-224.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Shieldgemma2](./models/shieldgemma2-at-shieldgemma-2-4b-it.md) | google-vertex | N/A | Text, Vision, Functions |
+| [T5gemma](./models/t5gemma-at-t5gemma.md) | 2 | N/A | Text, Vision, Functions |
+| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | 2 | N/A | Text, Vision, Functions |
+| [gemma2-9b-it](./models/gemma2-9b-it.md) | groq | 8.2k | Text, Functions |
+
+  
+### Embeddings
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Embedding 001](./models/embedding-001.md) | google-ai-studio | 2.0k | Text |
+| [Embedding Gecko](./models/embedding-gecko-001.md) | google-ai-studio | 1.0k | Text |
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 2 | N/A | Text |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
+| [Multimodalembedding](./models/multimodalembedding-at-001.md) | google-vertex | N/A | Text |
+| [Text Embedding 004](./models/text-embedding-004.md) | 2 | 2.0k | Text |
+| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | 2 | N/A | Text |
+| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | 2 | N/A | Text |
+
+  
+### Gemini
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Gemini 1.5 Flash](./models/gemini-1.5-flash.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 1.5 Flash Latest](./models/gemini-1.5-flash-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B](./models/gemini-1.5-flash-8b.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B 001](./models/gemini-1.5-flash-8b-001.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B Latest](./models/gemini-1.5-flash-8b-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro](./models/gemini-1.5-pro.md) | google-ai-studio | 2.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 1.5 Pro Latest](./models/gemini-1.5-pro-latest.md) | google-ai-studio | 2.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash (Image Generation) Experimental](./models/gemini-2.0-flash-exp-image-generation.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 2.0 Flash Experimental](./models/gemini-2.0-flash-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash Lite 001](./models/gemini-2.0-flash-lite-001-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 2.0 Flash Preview Image Generation](./models/gemini-2.0-flash-preview-image-generation.md) | google-ai-studio | 32.8k | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite Preview](./models/gemini-2.0-flash-lite-preview.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite Preview 02-05](./models/gemini-2.0-flash-lite-preview-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Pro Experimental](./models/gemini-2.0-pro-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Pro Experimental 02-05](./models/gemini-2.0-pro-exp-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash](./models/gemini-2.5-flash-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 2.5 Flash Lite](./models/gemini-2.5-flash-lite-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-1219.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-01-21.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview TTS](./models/gemini-2.5-flash-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | google-ai-studio | 8.2k | Text, Functions |
+| [Gemini Experimental 1206](./models/gemini-exp-1206.md) | google-ai-studio | 1.0M | Text, Functions |
+| [Gemini Pro](./models/gemini-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini Ultra](./models/gemini-ultra-at-default.md) | 2 | N/A | Text, Vision, Functions |
+| [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
 
   
 ## Provider Availability

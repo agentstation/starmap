@@ -229,8 +229,8 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 
 	// Header with logo if available
 	logoPath := fmt.Sprintf("https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/%s.svg", provider.ID)
-	headerText := fmt.Sprintf("<img src=\"%s\" alt=\"%s\" width=\"32\" height=\"32\" style=\"vertical-align: middle;\"> %s",
-		logoPath, provider.Name, provider.Name)
+	headerText := fmt.Sprintf("<img src=\"%s\" alt=\"\" width=\"32\" height=\"32\" style=\"vertical-align: middle;\"> %s",
+		logoPath, provider.Name)
 	builder.H1(headerText).LF()
 
 	// Provider description

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/anthropic.svg" alt="Anthropic" width="32" height="32" style="vertical-align: middle;"> Anthropic
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/anthropic.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Anthropic
   
 Creator of Claude, focusing on safe and beneficial AI with constitutional training.
   

@@ -164,11 +164,11 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
 | [Gemini Embedding 001](../authors/google/models/gemini-embedding-001-at-default.md) | Multiple | N/A | N/A |
+| [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | N/A | N/A |
-| gemini-embedding-001 | Multiple | N/A | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
 | [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
 | _...and 4 more_ |  |  |  |

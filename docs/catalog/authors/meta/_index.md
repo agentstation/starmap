@@ -65,11 +65,17 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
 
   
-### BERT
+### RoBERTa
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
 | [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
 | [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   

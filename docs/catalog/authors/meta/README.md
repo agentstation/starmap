@@ -18,17 +18,11 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### BERT
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
-
-  
 ### RoBERTa
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
 | [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   

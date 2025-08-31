@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-ai-studio.svg" alt="Google AI Studio" width="32" height="32" style="vertical-align: middle;"> Google AI Studio
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-ai-studio.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Google AI Studio
   
 Google's AI platform offering Gemini models with multimodal capabilities.
   

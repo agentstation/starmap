@@ -72,7 +72,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 188 more_ |  |  |  |
 
   
-### Gemini (56 models)
+### Gemini (55 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -86,7 +86,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002-at-default.md) | Multiple | N/A | N/A |
 | [Gemini 1.5 Pro Latest](../authors/google/models/gemini-1.5-pro-latest.md) | Multiple | 2.0M | N/A |
 | Gemini 2.0 Flash | Multiple | N/A | $0.10/$0.40 |
-| _...and 46 more_ |  |  |  |
+| _...and 45 more_ |  |  |  |
 
   
 ### GPT (46 models)
@@ -157,21 +157,21 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 10 more_ |  |  |  |
 
   
-### Embeddings (14 models)
+### Embeddings (15 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
 | [Gemini Embedding 001](../authors/google/models/gemini-embedding-001-at-default.md) | Multiple | N/A | N/A |
-| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
+| [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | N/A | N/A |
+| gemini-embedding-001 | Multiple | N/A | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
-| [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
-| _...and 4 more_ |  |  |  |
+| _...and 5 more_ |  |  |  |
 
   
 ### Qwen (12 models)
@@ -219,12 +219,13 @@ Complete listing of all 439 models in the Starmap catalog.
 | text-bison | Multiple | N/A | N/A |
 
   
-### BERT (5 models)
+### BERT (6 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Bert Base](../authors/google/models/bert-base-at-001.md) | Multiple | N/A | N/A |
 | [Bert Base Uncased](../authors/google/models/bert-base-uncased-at-bert-base-uncased.md) | Multiple | N/A | N/A |
+| [Roberta Large](../authors/meta/models/roberta-large-at-roberta-large.md) | Multiple | N/A | N/A |
 | [Xlm Roberta Large](../authors/meta/models/xlm-roberta-large-at-xlm-roberta-large.md) | Multiple | N/A | N/A |
 | bert-base | Multiple | N/A | N/A |
 | bert-base-uncased | Multiple | N/A | N/A |

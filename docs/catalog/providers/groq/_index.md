@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/groq.svg" alt="Groq" width="32" height="32" style="vertical-align: middle;"> Groq
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/groq.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Groq
   
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   

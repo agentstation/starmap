@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-vertex.svg" alt="Google Vertex AI" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-vertex.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
@@ -64,7 +64,6 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
 | [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
@@ -84,13 +83,6 @@ Mountain View, CA, USA
 | [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
 | [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
-
-  
-### CodeLlama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### DeepSeek
@@ -203,6 +195,7 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
@@ -422,6 +415,13 @@ Mountain View, CA, USA
 | [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### RoBERTa
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### T5

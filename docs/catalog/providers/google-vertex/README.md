@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-vertex.svg" alt="Google Vertex AI" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-vertex.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
@@ -98,10 +98,10 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Multimodalembedding](./models/multimodalembedding-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
 | [multimodalembedding](./models/multimodalembedding.md) | N/A | N/A | N/A | 📝 |
 | [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
 | [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
@@ -134,7 +134,6 @@ Mountain View, CA, USA
 | [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🔧 |
 | [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
 | [Gemini 2.5 Pro Preview 06-05](./models/gemini-2.5-pro-preview-06-05.md) | N/A | $1.25 | $10.00 | 📝 👁️ 🎵 🎬 🔧 |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Gemini Pro](./models/gemini-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Ultra](./models/gemini-ultra-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
@@ -149,6 +148,7 @@ Mountain View, CA, USA
 | [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-2.5-flash](./models/gemini-2.5-flash.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
+| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
 | [gemini-pro](./models/gemini-pro.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-pro-vision](./models/gemini-pro-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-ultra](./models/gemini-ultra.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |

@@ -45,157 +45,7 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[Cursor](cursor/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[jondurbin](jondurbin/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Anysphere](anysphere/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Moxin](moxin/)
-** | 0 | — | General AI |
-| 💼
- 
-**
-[Cohere](cohere/)
-** | 0 | — | Enterprise AI |
-| 👥
- 
-**
-[Salesforce](salesforce/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Mistral AI](mistral/)
-** | 0 | — | Efficient Models |
-| 👥
- 
-**
-[teknium](teknium/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Tencent](tencent/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[MiniMax](minimax/)
-** | 0 | — | General AI |
-| 🎨
- 
-**
-[Stability AI](stability/)
-** | 0 | — | Image Generation |
-| 🌟
- 
-**
-[xAI](xai/)
-** | 0 | — | Truth-Seeking AI |
-| 👥
- 
-**
-[Cornell University](cornell/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[THUDM](thudm/)
-** | 0 | — | General AI |
-| 👥
- 
-**
 [LAION](laion/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Perplexity AI](perplexity/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Yale University](yale/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Peking University](peking/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Beijing Academy of Artificial Intelligence](baai/)
-** | 0 | — | General AI |
-| 🤗
- 
-**
-[Hugging Face](huggingfaceh4/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Princeton University](princeton/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Baichuan Intelligence](baichuan/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Character.AI](character/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[LMSYS Org](lmsys/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[NVIDIA](nvidia/)
-** | 0 | — | GPU-Optimized AI |
-| 👥
- 
-**
-[Tsinghua University](tsinghua/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[UC Berkeley](uc-berkeley/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[University of Washington](uw/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Apple](apple/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[H2O.ai](h2o.ai/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[01.AI](01.ai/)
 ** | 0 | — | General AI |
 | 👥
  
@@ -205,42 +55,42 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[Shanghai AI Laboratory](shanghai-ai-lab/)
+[Cursor](cursor/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Stanford Alpaca](stanford-alpaca/)
+[Georgia Tech Research Institute](gatech/)
+** | 0 | — | General AI |
+| 🤗
+ 
+**
+[Hugging Face](huggingfaceh4/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Zhipu AI](zhipu-ai/)
+[Nous Research](nousresearch/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Adept](adept/)
+[Runway ML](runway/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Vicuna Team](vicuna-team/)
+[Beijing Academy of Artificial Intelligence](baai/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[CodeFuse-AI](codefuse/)
+[Carnegie Mellon University](cmu/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[MIT](mit/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Moonshot AI](moonshot/)
+[Cognitive Computations](cognitivecomputations/)
 ** | 0 | — | General AI |
 | 👥
  
@@ -255,22 +105,17 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[Stanford University](stanford/)
+[University of Chicago](uchicago/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Carnegie Mellon University](cmu/)
+[Alibaba Cloud](alibaba/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[WizardLM Team](wizardlm/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Google DeepMind](deepmind/)
+[BigScience](bigscience/)
 ** | 0 | — | General AI |
 | 🌐
  
@@ -285,87 +130,7 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[Huawei](huawei/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Nous Research](nousresearch/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[California Institute of Technology](caltech/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Georgia Tech Research Institute](gatech/)
-** | 0 | — | General AI |
-| 🪟
- 
-**
-[Microsoft](microsoft/)
-** | 0 | — | Productivity AI |
-| 👥
- 
-**
 [Together AI](together/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[IBM](ibm/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Baidu](baidu/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Eric Hartford](ehartford/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Harvard University](harvard/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Duke University](duke/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Midjourney](midjourney/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Phind](phind/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Alibaba Cloud](alibaba/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[BigScience](bigscience/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[Cognitive Computations](cognitivecomputations/)
-** | 0 | — | General AI |
-| 👥
- 
-**
-[FastChat Team](fastchat/)
 ** | 0 | — | General AI |
 | 👥
  
@@ -375,7 +140,27 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[Inflection AI](inflection/)
+[UC Berkeley](uc-berkeley/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[01.AI](01.ai/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[CodeFuse-AI](codefuse/)
+** | 0 | — | General AI |
+| 💼
+ 
+**
+[Cohere](cohere/)
+** | 0 | — | Enterprise AI |
+| 👥
+ 
+**
+[jondurbin](jondurbin/)
 ** | 0 | — | General AI |
 | 👥
  
@@ -385,7 +170,107 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
-[University of Chicago](uchicago/)
+[Peking University](peking/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Cornell University](cornell/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Mistral AI](mistral/)
+** | 0 | — | Efficient Models |
+| 👥
+ 
+**
+[THUDM](thudm/)
+** | 0 | — | General AI |
+| 🌟
+ 
+**
+[xAI](xai/)
+** | 0 | — | Truth-Seeking AI |
+| 👥
+ 
+**
+[Harvard University](harvard/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[teknium](teknium/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Google DeepMind](deepmind/)
+** | 0 | — | General AI |
+| 🎨
+ 
+**
+[Stability AI](stability/)
+** | 0 | — | Image Generation |
+| 👥
+ 
+**
+[Stanford Alpaca](stanford-alpaca/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Tsinghua University](tsinghua/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Vicuna Team](vicuna-team/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Apple](apple/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Eric Hartford](ehartford/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Baichuan Intelligence](baichuan/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Baidu](baidu/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Huawei](huawei/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Midjourney](midjourney/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Princeton University](princeton/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Stanford University](stanford/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Tencent](tencent/)
 ** | 0 | — | General AI |
 | 👥
  
@@ -400,12 +285,127 @@ Organizations and researchers that develop and train AI models.
 | 👥
  
 **
+[FastChat Team](fastchat/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[MiniMax](minimax/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Moxin](moxin/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[NVIDIA](nvidia/)
+** | 0 | — | GPU-Optimized AI |
+| 👥
+ 
+**
+[Adept](adept/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Character.AI](character/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Inflection AI](inflection/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Perplexity AI](perplexity/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Phind](phind/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Moonshot AI](moonshot/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Zhipu AI](zhipu-ai/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Anysphere](anysphere/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[California Institute of Technology](caltech/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[IBM](ibm/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[University of Washington](uw/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Yale University](yale/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[H2O.ai](h2o.ai/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[LMSYS Org](lmsys/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[MIT](mit/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Salesforce](salesforce/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Shanghai AI Laboratory](shanghai-ai-lab/)
+** | 0 | — | General AI |
+| 👥
+ 
+**
+[Duke University](duke/)
+** | 0 | — | General AI |
+| 🪟
+ 
+**
+[Microsoft](microsoft/)
+** | 0 | — | Productivity AI |
+| 👥
+ 
+**
 [University of Oxford](oxford/)
 ** | 0 | — | General AI |
 | 👥
  
 **
-[Runway ML](runway/)
+[WizardLM Team](wizardlm/)
 ** | 0 | — | General AI |
 
   
@@ -432,6 +432,15 @@ Social media company known for LLaMA/Llama model series and open-source AI re...
  | 
 [Website](https://about.meta.com)
 - **
+[Amazon](amazon/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://amazon.com)
+- **
 [Apple](apple/)
 **
  - 
@@ -449,15 +458,6 @@ Social media company known for LLaMA/Llama model series and open-source AI re...
 Technology company with AI initiatives including Copilot and partnerships wit...
  | 
 [Website](https://microsoft.com)
-- **
-[Amazon](amazon/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://amazon.com)
   
 ### 🚀 AI Startups
   
@@ -546,23 +546,14 @@ Elon Musk's AI company focused on understanding the universe through AI, know...
  | 
 [Website](https://laion.ai)
 - **
-[MIT](mit/)
+[BigScience](bigscience/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://mit.edu)
-- **
-[Stanford University](stanford/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://stanford.edu)
+[Website](https://bigscience.huggingface.co)
 - **
 [EleutherAI](eleutherai/)
 **
@@ -573,14 +564,23 @@ Elon Musk's AI company focused on understanding the universe through AI, know...
  | 
 [Website](https://eleuther.ai)
 - **
-[BigScience](bigscience/)
+[Stanford University](stanford/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://bigscience.huggingface.co)
+[Website](https://stanford.edu)
+- **
+[MIT](mit/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://mit.edu)
   
 ### 🌍 Open Source
   
@@ -594,6 +594,15 @@ AI research team within Alibaba Cloud responsible for developing the Qwen (To...
  | 
 [Website](https://qwen.ai)
 - **
+[ByteDance](bytedance/)
+**
+ - 
+0 models
+ - 
+Chinese technology company behind TikTok with AI research in recommendation s...
+ | 
+[Website](https://bytedance.com)
+- **
 [Cursor](cursor/)
 **
  - 
@@ -603,125 +612,14 @@ AI research team within Alibaba Cloud responsible for developing the Qwen (To...
  | 
 [Website](https://cursor.sh)
 - **
-[jondurbin](jondurbin/)
+[Georgia Tech Research Institute](gatech/)
 **
  - 
 0 models
  - 
-Model creator known for Bagel and Airoboros fine-tuned language models
-- **
-[Anysphere](anysphere/)
-**
- - 
-0 models
- - 
-
+Research institute known for creating the Galpaca model based on GALACTICA
  | 
-[Website](https://anysphere.co)
-- **
-[Moxin](moxin/)
-**
- - 
-0 models
- - 
-Creator of Moxin-7B, a fully open-source language model following Model Openn...
-- **
-[Salesforce](salesforce/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://salesforce.com)
-- **
-[teknium](teknium/)
-**
- - 
-0 models
- - 
-Individual researcher and creator of the OpenHermes model series
-- **
-[Tencent](tencent/)
-**
- - 
-0 models
- - 
-Chinese technology conglomerate with various AI initiatives and gaming/social...
- | 
-[Website](https://tencent.com)
-- **
-[MiniMax](minimax/)
-**
- - 
-0 models
- - 
-Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attenti...
- | 
-[Website](https://minimax.chat)
-- **
-[Stability AI](stability/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://stability.ai)
-- **
-[Cornell University](cornell/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://cornell.edu)
-- **
-[THUDM](thudm/)
-**
- - 
-0 models
- - 
-Tsinghua University research group known for ChatGLM bilingual language models
- | 
-[Website](https://thudm.github.io)
-- **
-[Perplexity AI](perplexity/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://perplexity.ai)
-- **
-[Yale University](yale/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://yale.edu)
-- **
-[Peking University](peking/)
-**
- - 
-0 models
- - 
-Leading Chinese university with significant AI and machine learning research ...
- | 
-[Website](https://pku.edu.cn)
-- **
-[Beijing Academy of Artificial Intelligence](baai/)
-**
- - 
-0 models
- - 
-Chinese AI research institute known for Wu Dao multimodal model and FlagAI fr...
- | 
-[Website](https://baai.ac.cn)
+[Website](https://gtri.gatech.edu)
 - **
 [Hugging Face](huggingfaceh4/)
 **
@@ -732,154 +630,48 @@ Chinese AI research institute known for Wu Dao multimodal model and FlagAI fr...
  | 
 [Website](https://huggingface.co)
 - **
-[Princeton University](princeton/)
+[Nous Research](nousresearch/)
+**
+ - 
+0 models
+ - 
+AI research organization known for OpenHermes and Nous-Hermes model series
+ | 
+[Website](https://nousresearch.com)
+- **
+[Runway ML](runway/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://princeton.edu)
+[Website](https://runwayml.com)
 - **
-[Baichuan Intelligence](baichuan/)
+[Beijing Academy of Artificial Intelligence](baai/)
 **
  - 
 0 models
  - 
-Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source m...
+Chinese AI research institute known for Wu Dao multimodal model and FlagAI fr...
  | 
-[Website](https://baichuan-ai.com)
+[Website](https://baai.ac.cn)
 - **
-[Character.AI](character/)
+[Carnegie Mellon University](cmu/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://character.ai)
+[Website](https://cmu.edu)
 - **
-[LMSYS Org](lmsys/)
+[Cognitive Computations](cognitivecomputations/)
 **
  - 
 0 models
  - 
-Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
- | 
-[Website](https://lmsys.org)
-- **
-[NVIDIA](nvidia/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://nvidia.com)
-- **
-[Tsinghua University](tsinghua/)
-**
- - 
-0 models
- - 
-Prestigious Chinese university with AI research, affiliated with THUDM and Ch...
- | 
-[Website](https://tsinghua.edu.cn)
-- **
-[UC Berkeley](uc-berkeley/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://berkeley.edu)
-- **
-[University of Washington](uw/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://washington.edu)
-- **
-[H2O.ai](h2o.ai/)
-**
- - 
-0 models
- - 
-Machine learning company known for h2oGPT open-source language model suite
- | 
-[Website](https://h2o.ai)
-- **
-[01.AI](01.ai/)
-**
- - 
-0 models
- - 
-AI company founded by Kai-Fu Lee, known for Yi series of open-source language...
- | 
-[Website](https://01.ai)
-- **
-[ByteDance](bytedance/)
-**
- - 
-0 models
- - 
-Chinese technology company behind TikTok with AI research in recommendation s...
- | 
-[Website](https://bytedance.com)
-- **
-[Shanghai AI Laboratory](shanghai-ai-lab/)
-**
- - 
-0 models
- - 
-Chinese AI research institute known for InternLM series and multimodal AI res...
- | 
-[Website](https://shlab.org.cn)
-- **
-[Stanford Alpaca](stanford-alpaca/)
-**
- - 
-0 models
- - 
-Stanford research project that created the influential Alpaca instruction-tun...
- | 
-[Website](https://crfm.stanford.edu/2023/03/13/alpaca.html)
-- **
-[Zhipu AI](zhipu-ai/)
-**
- - 
-0 models
- - 
-Chinese AI company known for GLM-4 and ChatGLM series of bilingual language m...
- | 
-[Website](https://zhipuai.cn)
-- **
-[Vicuna Team](vicuna-team/)
-**
- - 
-0 models
- - 
-Team responsible for creating the popular Vicuna chatbot models
-- **
-[CodeFuse-AI](codefuse/)
-**
- - 
-0 models
- - 
-Organization specializing in code-focused AI models and fine-tuning frameworks
-- **
-[Moonshot AI](moonshot/)
-**
- - 
-0 models
- - 
-Chinese AI company founded in 2023, known for Kimi chatbot with long-context ...
- | 
-[Website](https://kimi.moonshot.cn)
+Organization behind the popular Dolphin model series, led by Eric Hartford
 - **
 [MosaicML](mosaicml/)
 **
@@ -899,145 +691,14 @@ Chinese AI company specializing in computer vision and known for SenseNova mu...
  | 
 [Website](https://sensetime.com)
 - **
-[Carnegie Mellon University](cmu/)
+[University of Chicago](uchicago/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://cmu.edu)
-- **
-[WizardLM Team](wizardlm/)
-**
- - 
-0 models
- - 
-Research team known for WizardLM and WizardCoder models with enhanced reasoni...
-- **
-[Google DeepMind](deepmind/)
-**
- - 
-0 models
- - 
-AI research lab formed in 2023 from merging Google Brain and DeepMind, known ...
- | 
-[Website](https://deepmind.google)
-- **
-[ETH Zurich](eth-zurich/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://ethz.ch)
-- **
-[Huawei](huawei/)
-**
- - 
-0 models
- - 
-Chinese technology company known for PanGu series of multimodal language models
- | 
-[Website](https://huawei.com)
-- **
-[Nous Research](nousresearch/)
-**
- - 
-0 models
- - 
-AI research organization known for OpenHermes and Nous-Hermes model series
- | 
-[Website](https://nousresearch.com)
-- **
-[California Institute of Technology](caltech/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://caltech.edu)
-- **
-[Georgia Tech Research Institute](gatech/)
-**
- - 
-0 models
- - 
-Research institute known for creating the Galpaca model based on GALACTICA
- | 
-[Website](https://gtri.gatech.edu)
-- **
-[Together AI](together/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://together.ai)
-- **
-[IBM](ibm/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://ibm.com)
-- **
-[Baidu](baidu/)
-**
- - 
-0 models
- - 
-Chinese technology company known for Ernie Bot and ERNIE series language models
- | 
-[Website](https://yiyan.baidu.com)
-- **
-[Eric Hartford](ehartford/)
-**
- - 
-0 models
- - 
-Creator of the widely-used Dolphin model series and other fine-tuned language...
-- **
-[Harvard University](harvard/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://harvard.edu)
-- **
-[Duke University](duke/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://duke.edu)
-- **
-[Midjourney](midjourney/)
-**
- - 
-0 models
- - 
-
- | 
-[Website](https://midjourney.com)
-- **
-[Phind](phind/)
-**
- - 
-0 models
- - 
-AI-powered search engine company known for fine-tuning CodeLlama models for c...
- | 
-[Website](https://phind.com)
+[Website](https://uchicago.edu)
 - **
 [Alibaba Cloud](alibaba/)
 **
@@ -1048,30 +709,55 @@ Chinese technology company known for Qwen (Tongyi Qianwen) language model series
  | 
 [Website](https://alibabacloud.com)
 - **
-[Cognitive Computations](cognitivecomputations/)
-**
- - 
-0 models
- - 
-Organization behind the popular Dolphin model series, led by Eric Hartford
-- **
-[FastChat Team](fastchat/)
-**
- - 
-0 models
- - 
-Team behind the FastChat framework for training and serving conversational AI...
- | 
-[Website](https://chat.lmsys.org)
-- **
-[Inflection AI](inflection/)
+[ETH Zurich](eth-zurich/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://inflection.ai)
+[Website](https://ethz.ch)
+- **
+[Together AI](together/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://together.ai)
+- **
+[UC Berkeley](uc-berkeley/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://berkeley.edu)
+- **
+[01.AI](01.ai/)
+**
+ - 
+0 models
+ - 
+AI company founded by Kai-Fu Lee, known for Yi series of open-source language...
+ | 
+[Website](https://01.ai)
+- **
+[CodeFuse-AI](codefuse/)
+**
+ - 
+0 models
+ - 
+Organization specializing in code-focused AI models and fine-tuning frameworks
+- **
+[jondurbin](jondurbin/)
+**
+ - 
+0 models
+ - 
+Model creator known for Bagel and Airoboros fine-tuned language models
 - **
 [Open-Orca](open-orca/)
 **
@@ -1080,14 +766,152 @@ Team behind the FastChat framework for training and serving conversational AI...
  - 
 Open-source project creating Orca-style reasoning models and datasets
 - **
-[University of Chicago](uchicago/)
+[Peking University](peking/)
+**
+ - 
+0 models
+ - 
+Leading Chinese university with significant AI and machine learning research ...
+ | 
+[Website](https://pku.edu.cn)
+- **
+[Cornell University](cornell/)
 **
  - 
 0 models
  - 
 
  | 
-[Website](https://uchicago.edu)
+[Website](https://cornell.edu)
+- **
+[THUDM](thudm/)
+**
+ - 
+0 models
+ - 
+Tsinghua University research group known for ChatGLM bilingual language models
+ | 
+[Website](https://thudm.github.io)
+- **
+[Harvard University](harvard/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://harvard.edu)
+- **
+[teknium](teknium/)
+**
+ - 
+0 models
+ - 
+Individual researcher and creator of the OpenHermes model series
+- **
+[Google DeepMind](deepmind/)
+**
+ - 
+0 models
+ - 
+AI research lab formed in 2023 from merging Google Brain and DeepMind, known ...
+ | 
+[Website](https://deepmind.google)
+- **
+[Stability AI](stability/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://stability.ai)
+- **
+[Stanford Alpaca](stanford-alpaca/)
+**
+ - 
+0 models
+ - 
+Stanford research project that created the influential Alpaca instruction-tun...
+ | 
+[Website](https://crfm.stanford.edu/2023/03/13/alpaca.html)
+- **
+[Tsinghua University](tsinghua/)
+**
+ - 
+0 models
+ - 
+Prestigious Chinese university with AI research, affiliated with THUDM and Ch...
+ | 
+[Website](https://tsinghua.edu.cn)
+- **
+[Vicuna Team](vicuna-team/)
+**
+ - 
+0 models
+ - 
+Team responsible for creating the popular Vicuna chatbot models
+- **
+[Eric Hartford](ehartford/)
+**
+ - 
+0 models
+ - 
+Creator of the widely-used Dolphin model series and other fine-tuned language...
+- **
+[Baichuan Intelligence](baichuan/)
+**
+ - 
+0 models
+ - 
+Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source m...
+ | 
+[Website](https://baichuan-ai.com)
+- **
+[Baidu](baidu/)
+**
+ - 
+0 models
+ - 
+Chinese technology company known for Ernie Bot and ERNIE series language models
+ | 
+[Website](https://yiyan.baidu.com)
+- **
+[Huawei](huawei/)
+**
+ - 
+0 models
+ - 
+Chinese technology company known for PanGu series of multimodal language models
+ | 
+[Website](https://huawei.com)
+- **
+[Midjourney](midjourney/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://midjourney.com)
+- **
+[Princeton University](princeton/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://princeton.edu)
+- **
+[Tencent](tencent/)
+**
+ - 
+0 models
+ - 
+Chinese technology conglomerate with various AI initiatives and gaming/social...
+ | 
+[Website](https://tencent.com)
 - **
 [Alignment Research Center](alignment-research/)
 **
@@ -1107,6 +931,184 @@ AI safety research organization focused on AI alignment and evaluation
  | 
 [Website](https://cam.ac.uk)
 - **
+[FastChat Team](fastchat/)
+**
+ - 
+0 models
+ - 
+Team behind the FastChat framework for training and serving conversational AI...
+ | 
+[Website](https://chat.lmsys.org)
+- **
+[MiniMax](minimax/)
+**
+ - 
+0 models
+ - 
+Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attenti...
+ | 
+[Website](https://minimax.chat)
+- **
+[Moxin](moxin/)
+**
+ - 
+0 models
+ - 
+Creator of Moxin-7B, a fully open-source language model following Model Openn...
+- **
+[NVIDIA](nvidia/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://nvidia.com)
+- **
+[Character.AI](character/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://character.ai)
+- **
+[Inflection AI](inflection/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://inflection.ai)
+- **
+[Perplexity AI](perplexity/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://perplexity.ai)
+- **
+[Phind](phind/)
+**
+ - 
+0 models
+ - 
+AI-powered search engine company known for fine-tuning CodeLlama models for c...
+ | 
+[Website](https://phind.com)
+- **
+[Moonshot AI](moonshot/)
+**
+ - 
+0 models
+ - 
+Chinese AI company founded in 2023, known for Kimi chatbot with long-context ...
+ | 
+[Website](https://kimi.moonshot.cn)
+- **
+[Zhipu AI](zhipu-ai/)
+**
+ - 
+0 models
+ - 
+Chinese AI company known for GLM-4 and ChatGLM series of bilingual language m...
+ | 
+[Website](https://zhipuai.cn)
+- **
+[Anysphere](anysphere/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://anysphere.co)
+- **
+[California Institute of Technology](caltech/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://caltech.edu)
+- **
+[IBM](ibm/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://ibm.com)
+- **
+[University of Washington](uw/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://washington.edu)
+- **
+[Yale University](yale/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://yale.edu)
+- **
+[H2O.ai](h2o.ai/)
+**
+ - 
+0 models
+ - 
+Machine learning company known for h2oGPT open-source language model suite
+ | 
+[Website](https://h2o.ai)
+- **
+[LMSYS Org](lmsys/)
+**
+ - 
+0 models
+ - 
+Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
+ | 
+[Website](https://lmsys.org)
+- **
+[Salesforce](salesforce/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://salesforce.com)
+- **
+[Shanghai AI Laboratory](shanghai-ai-lab/)
+**
+ - 
+0 models
+ - 
+Chinese AI research institute known for InternLM series and multimodal AI res...
+ | 
+[Website](https://shlab.org.cn)
+- **
+[Duke University](duke/)
+**
+ - 
+0 models
+ - 
+
+ | 
+[Website](https://duke.edu)
+- **
 [University of Oxford](oxford/)
 **
  - 
@@ -1116,14 +1118,12 @@ AI safety research organization focused on AI alignment and evaluation
  | 
 [Website](https://ox.ac.uk)
 - **
-[Runway ML](runway/)
+[WizardLM Team](wizardlm/)
 **
  - 
 0 models
  - 
-
- | 
-[Website](https://runwayml.com)
+Research team known for WizardLM and WizardCoder models with enhanced reasoni...
   
 ---
 *_[← Back to Catalog](../) | Generated by [Starmap](https://github.com/agentstation/starmap)_*
