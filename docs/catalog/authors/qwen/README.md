@@ -22,19 +22,19 @@ AI research team within Alibaba Cloud responsible for developing the Qwen (Tongy
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Qwen Image](./models/qwen-image-at-qwen-image) | 2 | N/A | Text |
-| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct) | 2 | N/A | Text |
-| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507) | 2 | N/A | Text |
-| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001) | 2 | N/A | Text |
-| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct) | 2 | N/A | Text |
-| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001) | 2 | N/A | Text |
+| [Qwen Image](./models/qwen-image-at-qwen-image.md) | 2 | N/A | Text |
+| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct.md) | 2 | N/A | Text |
+| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507.md) | 2 | N/A | Text |
+| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | 2 | N/A | Text |
+| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | 2 | N/A | Text |
+| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | 2 | N/A | Text |
 
   
 ### Other
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Qwq](./models/qwq-at-qwq-32b) | 2 | N/A | Text |
+| [Qwq](./models/qwq-at-qwq-32b.md) | 2 | N/A | Text |
 
   
 ## Provider Availability

@@ -20,8 +20,8 @@ Chinese AI company known for DeepSeek-Coder and reasoning-focused language model
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [deepseek-chat](./models/deepseek-chat) | deepseek | N/A | Text |
-| [deepseek-reasoner](./models/deepseek-reasoner) | deepseek | N/A | Text |
+| [deepseek-chat](./models/deepseek-chat.md) | deepseek | N/A | Text |
+| [deepseek-reasoner](./models/deepseek-reasoner.md) | deepseek | N/A | Text |
 
   
 ## Provider Availability

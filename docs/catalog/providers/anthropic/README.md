@@ -65,26 +65,26 @@ San Francisco, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Haiku 3](./models/claude-3-haiku-20240307) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 3](./models/claude-3-opus-20240229) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 |
-| [Claude Opus 4](./models/claude-opus-4-at-20250514) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4](./models/claude-opus-4-20250514) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4.1](./models/claude-opus-4-1-20250805) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 3](./models/claude-3-sonnet-20240229) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
-| [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
-| [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 4](./models/claude-sonnet-4-20250514) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
-| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022) | N/A | N/A | N/A | — |
-| [claude 3 haiku](./models/claude-3-haiku-at-20240307) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [claude 3 opus](./models/claude-3-opus-at-20240229) | N/A | N/A | N/A | — |
-| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229) | N/A | N/A | N/A | — |
+| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Haiku 3](./models/claude-3-haiku-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 3](./models/claude-3-opus-20240229.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 |
+| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4](./models/claude-opus-4-20250514.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4.1](./models/claude-opus-4-1-20250805.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3](./models/claude-3-sonnet-20240229.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
+| [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
+| [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
+| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
+| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
+| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
 
   
 ## Configuration

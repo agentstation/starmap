@@ -148,7 +148,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 			modelLink := model.Name
 			if len(model.Authors) > 0 {
 				// Link to first author's version
-				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s)",
+				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s.md)",
 					model.Name, string(model.Authors[0].ID), formatModelID(string(model.ID)))
 			}
 

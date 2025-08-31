@@ -18,65 +18,53 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### BERT
+### Llama
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large) | google-vertex | N/A | Text, Functions |
-
-  
-### CodeLlama
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf) | 2 | N/A | Text, Functions |
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 2 | N/A | Text, Functions |
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | 2 | N/A | Text, Functions |
+| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
+| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
+| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
+| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
+| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | 2 | N/A | Text, Functions |
+| [Llama2](./models/llama2-at-llama-2-7b.md) | 2 | N/A | Text, Functions |
+| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | 2 | N/A | Text, Functions |
+| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | 2 | N/A | Text, Functions |
+| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | 2 | N/A | Text, Functions |
+| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | 2 | N/A | Text, Functions |
+| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | 2 | N/A | Text, Functions |
+| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | groq | 131.1k | Text, Functions |
+| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | groq | 131.1k | Text, Functions |
+| [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | groq | 131.1k | Text, Functions |
+| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | groq | 131.1k | Text, Functions |
+| [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | groq | 131.1k | Text |
+| [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | groq | 512 | Text |
+| [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
+| [llama3-70b-8192](./models/llama3-70b-8192.md) | groq | 8.2k | Text, Functions |
+| [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
 
   
 ### Other
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Faster R Cnn](./models/faster-r-cnn-at-001) | google-vertex | N/A | Text, Functions |
-| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation) | google-vertex | N/A | Text, Functions |
-| [Mask R Cnn](./models/mask-r-cnn-at-001) | google-vertex | N/A | Text, Functions |
-| [Nllb](./models/nllb-at-nllb-200-distilled-600m) | google-vertex | N/A | Text, Functions |
-| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m) | 2 | N/A | Text, Functions |
-| [Retinanet](./models/retinanet-at-001) | google-vertex | N/A | Text, Functions |
-| [Segment Anything](./models/segment-anything-at-sam-vit-large) | 2 | N/A | Text, Functions |
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | N/A | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | N/A | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
 
   
-### Llama
+### BERT
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq) | 2 | N/A | Text, Functions |
-| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001) | 2 | N/A | Text, Functions |
-| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001) | 2 | N/A | Text, Functions |
-| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001) | 2 | N/A | Text, Functions |
-| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001) | 2 | N/A | Text, Functions |
-| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b) | 2 | N/A | Text, Functions |
-| [Llama2](./models/llama2-at-llama-2-7b) | 2 | N/A | Text, Functions |
-| [Llama3](./models/llama3-at-meta-llama-3-8b) | 2 | N/A | Text, Functions |
-| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct) | 2 | N/A | Text, Functions |
-| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision) | 2 | N/A | Text, Functions |
-| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct) | 2 | N/A | Text, Functions |
-| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct) | 2 | N/A | Text, Functions |
-| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant) | groq | 131.1k | Text, Functions |
-| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile) | groq | 131.1k | Text, Functions |
-| [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct) | groq | 131.1k | Text, Functions |
-| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct) | groq | 131.1k | Text, Functions |
-| [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b) | groq | 131.1k | Text |
-| [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m) | groq | 512 | Text |
-| [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m) | groq | 512 | Text |
-| [llama3-70b-8192](./models/llama3-70b-8192) | groq | 8.2k | Text, Functions |
-| [llama3-8b-8192](./models/llama3-8b-8192) | groq | 8.2k | Text, Functions |
-
-  
-### RoBERTa
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large) | google-vertex | N/A | Text, Functions |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   
 ## Provider Availability
@@ -84,8 +72,8 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 Models from this author are available through the following providers:
   
   
-- **[groq](../../providers/groq/)** - 22 models
 - **[google-vertex](../../providers/google-vertex/)** - 22 models
+- **[groq](../../providers/groq/)** - 22 models
 - **[openai](../../providers/openai/)** - 2 models
   
 ## Research & Development
