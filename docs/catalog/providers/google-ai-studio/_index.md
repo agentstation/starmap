@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-ai-studio.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Google AI Studio
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/google-ai-studio/logo.svg" alt="Google AI Studio logo" width="32" height="32" style="vertical-align: middle;"> Google AI Studio
   
 Google's AI platform offering Gemini models with multimodal capabilities.
   
@@ -65,8 +65,8 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | 1.0k | N/A | N/A | 📝 ⚡ |
-| [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
-| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 
   
@@ -115,8 +115,8 @@ Mountain View, CA, USA
 | [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | 1.0M | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Pro](./models/gemini-pro-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |

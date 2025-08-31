@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cerebras.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Cerebras
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/cerebras/logo.svg" alt="Cerebras logo" width="32" height="32" style="vertical-align: middle;"> Cerebras
   
 Fastest inference speeds using revolutionary wafer-scale computing technology.
   

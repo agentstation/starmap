@@ -72,7 +72,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 188 more_ |  |  |  |
 
   
-### Gemini (55 models)
+### Gemini (56 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -86,7 +86,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002-at-default.md) | Multiple | N/A | N/A |
 | [Gemini 1.5 Pro Latest](../authors/google/models/gemini-1.5-pro-latest.md) | Multiple | 2.0M | N/A |
 | Gemini 2.0 Flash | Multiple | N/A | $0.10/$0.40 |
-| _...and 45 more_ |  |  |  |
+| _...and 46 more_ |  |  |  |
 
   
 ### GPT (46 models)
@@ -106,6 +106,23 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 36 more_ |  |  |  |
 
   
+### Llama (28 models)
+  
+| Model | Provider | Context | Pricing |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | N/A | N/A |
+| [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | N/A | N/A |
+| [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
+| [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | N/A | N/A |
+| [Llama 3.3 70b Instruct Maas](../authors/meta/models/llama-3.3-70b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
+| [Llama 4 Maverick 17b 128e Instruct Maas](../authors/meta/models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | Multiple | N/A | N/A |
+| [Llama Guard](../authors/meta/models/llama-guard-at-llama-guard-4-12b.md) | Multiple | N/A | N/A |
+| Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
+| [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | N/A | N/A |
+| [Llama3](../authors/meta/models/llama3-at-meta-llama-3-8b.md) | Multiple | N/A | N/A |
+| _...and 18 more_ |  |  |  |
+
+  
 ### Gemma (27 models)
   
 | Model | Provider | Context | Pricing |
@@ -120,23 +137,6 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Gemma 3n E4B](../authors/google/models/gemma-3n-e4b-it.md) | Multiple | 8.2k | N/A |
 | [Gemma2](../authors/google/models/gemma2-at-gemma-2-2b-it.md) | Multiple | N/A | N/A |
 | [Gemma3](../authors/google/models/gemma3-at-gemma-3-1b-it.md) | Multiple | N/A | N/A |
-| _...and 17 more_ |  |  |  |
-
-  
-### Llama (27 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | N/A | N/A |
-| [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
-| [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | N/A | N/A |
-| [Llama 3.3 70b Instruct Maas](../authors/meta/models/llama-3.3-70b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
-| [Llama 4 Maverick 17b 128e Instruct Maas](../authors/meta/models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | Multiple | N/A | N/A |
-| [Llama Guard](../authors/meta/models/llama-guard-at-llama-guard-4-12b.md) | Multiple | N/A | N/A |
-| Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
-| [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | N/A | N/A |
-| [Llama3](../authors/meta/models/llama3-at-meta-llama-3-8b.md) | Multiple | N/A | N/A |
-| [Llama3 1](../authors/meta/models/llama3_1-at-llama-3.1-8b-instruct.md) | Multiple | N/A | N/A |
 | _...and 17 more_ |  |  |  |
 
   
@@ -157,21 +157,21 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 10 more_ |  |  |  |
 
   
-### Embeddings (15 models)
+### Embeddings (14 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Gemini Embedding 001](../authors/google/models/gemini-embedding-001-at-default.md) | Multiple | N/A | N/A |
 | [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
+| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | N/A | N/A |
-| gemini-embedding-001 | Multiple | N/A | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
-| _...and 5 more_ |  |  |  |
+| [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
+| _...and 4 more_ |  |  |  |
 
   
 ### Qwen (12 models)
@@ -219,13 +219,12 @@ Complete listing of all 439 models in the Starmap catalog.
 | text-bison | Multiple | N/A | N/A |
 
   
-### BERT (6 models)
+### BERT (5 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Bert Base](../authors/google/models/bert-base-at-001.md) | Multiple | N/A | N/A |
 | [Bert Base Uncased](../authors/google/models/bert-base-uncased-at-bert-base-uncased.md) | Multiple | N/A | N/A |
-| [Roberta Large](../authors/meta/models/roberta-large-at-roberta-large.md) | Multiple | N/A | N/A |
 | [Xlm Roberta Large](../authors/meta/models/xlm-roberta-large-at-xlm-roberta-large.md) | Multiple | N/A | N/A |
 | bert-base | Multiple | N/A | N/A |
 | bert-base-uncased | Multiple | N/A | N/A |

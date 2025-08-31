@@ -18,14 +18,6 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
   
 ## Models
   
-### BERT
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Bert Base](./models/bert-base-at-001.md) | google-vertex | N/A | Text, Vision, Functions |
-| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | google-vertex | N/A | Text, Vision, Functions |
-
-  
 ### PaLM
   
 | Model | Providers | Context | Capabilities |
@@ -65,6 +57,8 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 |---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | google-ai-studio | 2.0k | Text |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | google-ai-studio | 1.0k | Text |
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 2 | N/A | Text |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Multimodalembedding](./models/multimodalembedding-at-001.md) | google-vertex | N/A | Text |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2 | 2.0k | Text |
@@ -103,8 +97,6 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 | [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
 | [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 2 | N/A | Text |
-| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | google-ai-studio | 1.0M | Text, Functions |
 | [Gemini Pro](./models/gemini-pro-at-default.md) | 2 | N/A | Text, Vision, Functions |
 | [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | 2 | N/A | Text, Vision, Functions |
@@ -196,6 +188,14 @@ Technology company known for the Gemini line of multimodal AI models, cloud AI s
 | [Virtual Try On Preview 08 04](./models/virtual-try-on-preview-08-04-at-default.md) | google-vertex | N/A | Text, Vision, Functions |
 | [Vit Jax](./models/vit-jax-at-001.md) | google-vertex | N/A | Text, Vision, Functions |
 | [Weathernext](./models/weathernext-at-weathernext-001.md) | google-vertex | N/A | Text, Vision, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Bert Base](./models/bert-base-at-001.md) | google-vertex | N/A | Text, Vision, Functions |
+| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | google-vertex | N/A | Text, Vision, Functions |
 
   
 ## Provider Availability

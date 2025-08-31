@@ -18,19 +18,10 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### RoBERTa
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
-
-  
 ### Llama
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 2 | N/A | Text, Functions |
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | 2 | N/A | Text, Functions |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | 2 | N/A | Text, Functions |
@@ -52,6 +43,21 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
 | [llama3-70b-8192](./models/llama3-70b-8192.md) | groq | 8.2k | Text, Functions |
 | [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
+
+  
+### CodeLlama
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 2 | N/A | Text, Functions |
 
   
 ### Other

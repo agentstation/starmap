@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google-vertex.svg" alt="" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/google-vertex/logo.svg" alt="Google Vertex AI logo" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
@@ -64,6 +64,8 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
 | [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
 
@@ -102,6 +104,7 @@ Mountain View, CA, USA
 | [Multimodalembedding](./models/multimodalembedding-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
 | [multimodalembedding](./models/multimodalembedding.md) | N/A | N/A | N/A | 📝 |
 | [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
 | [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
@@ -148,7 +151,6 @@ Mountain View, CA, USA
 | [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-2.5-flash](./models/gemini-2.5-flash.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
-| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | N/A | N/A | 📝 |
 | [gemini-pro](./models/gemini-pro.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-pro-vision](./models/gemini-pro-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 | [gemini-ultra](./models/gemini-ultra.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
@@ -414,14 +416,6 @@ Mountain View, CA, USA
 | [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
-### RoBERTa
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### T5
