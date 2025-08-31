@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/meta.svg" alt="Meta" width="32" height="32" style="vertical-align: middle;"> Meta
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/meta.svg" alt="Meta logo" width="48" height="48" style="vertical-align: middle;"> Meta
   
   
   

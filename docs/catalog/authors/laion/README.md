@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/laion.svg" alt="LAION" width="32" height="32" style="vertical-align: middle;"> LAION
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/laion.svg" alt="LAION logo" width="48" height="48" style="vertical-align: middle;"> LAION
   
   
   

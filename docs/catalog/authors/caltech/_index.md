@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/caltech.svg" alt="California Institute of Technology" width="32" height="32" style="vertical-align: middle;"> California Institute of Technology
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/caltech.svg" alt="California Institute of Technology logo" width="48" height="48" style="vertical-align: middle;"> California Institute of Technology
   
   
   

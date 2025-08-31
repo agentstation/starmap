@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cambridge.svg" alt="University of Cambridge" width="32" height="32" style="vertical-align: middle;"> University of Cambridge
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cambridge.svg" alt="University of Cambridge logo" width="48" height="48" style="vertical-align: middle;"> University of Cambridge
   
   
   

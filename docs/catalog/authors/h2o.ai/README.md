@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/h2o.ai.svg" alt="H2O.ai" width="32" height="32" style="vertical-align: middle;"> H2O.ai
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/h2o.ai.svg" alt="H2O.ai logo" width="48" height="48" style="vertical-align: middle;"> H2O.ai
   
   
   

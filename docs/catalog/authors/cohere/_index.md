@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cohere.svg" alt="Cohere" width="32" height="32" style="vertical-align: middle;"> Cohere
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cohere.svg" alt="Cohere logo" width="48" height="48" style="vertical-align: middle;"> Cohere
   
   
   

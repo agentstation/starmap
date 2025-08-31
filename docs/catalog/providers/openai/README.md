@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/openai/logo.svg" alt="OpenAI logo" width="32" height="32" style="vertical-align: middle;"> OpenAI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/openai/logo.svg" alt="OpenAI logo" width="48" height="48" style="vertical-align: middle;"> OpenAI
   
 Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.
   

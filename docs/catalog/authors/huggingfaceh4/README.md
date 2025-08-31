@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/huggingfaceh4.svg" alt="Hugging Face" width="32" height="32" style="vertical-align: middle;"> Hugging Face
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/huggingfaceh4.svg" alt="Hugging Face logo" width="48" height="48" style="vertical-align: middle;"> Hugging Face
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/oxford.svg" alt="University of Oxford" width="32" height="32" style="vertical-align: middle;"> University of Oxford
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/oxford.svg" alt="University of Oxford logo" width="48" height="48" style="vertical-align: middle;"> University of Oxford
   
   
   

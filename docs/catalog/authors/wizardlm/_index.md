@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/wizardlm.svg" alt="WizardLM Team" width="32" height="32" style="vertical-align: middle;"> WizardLM Team
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/wizardlm.svg" alt="WizardLM Team logo" width="48" height="48" style="vertical-align: middle;"> WizardLM Team
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/huawei.svg" alt="Huawei" width="32" height="32" style="vertical-align: middle;"> Huawei
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/huawei.svg" alt="Huawei logo" width="48" height="48" style="vertical-align: middle;"> Huawei
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/xai.svg" alt="xAI" width="32" height="32" style="vertical-align: middle;"> xAI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/xai.svg" alt="xAI logo" width="48" height="48" style="vertical-align: middle;"> xAI
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/eth-zurich.svg" alt="ETH Zurich" width="32" height="32" style="vertical-align: middle;"> ETH Zurich
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/eth-zurich.svg" alt="ETH Zurich logo" width="48" height="48" style="vertical-align: middle;"> ETH Zurich
   
   
   

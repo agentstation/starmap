@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cursor.svg" alt="Cursor" width="32" height="32" style="vertical-align: middle;"> Cursor
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cursor.svg" alt="Cursor logo" width="48" height="48" style="vertical-align: middle;"> Cursor
   
   
   

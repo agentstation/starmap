@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/groq/logo.svg" alt="Groq logo" width="32" height="32" style="vertical-align: middle;"> Groq
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/groq/logo.svg" alt="Groq logo" width="48" height="48" style="vertical-align: middle;"> Groq
   
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   
@@ -68,6 +68,13 @@ Mountain View, CA, USA
 | [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
+### DeepSeek
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
+
+  
 ### GPT
   
 | Model | Context | Input | Output | Features |
@@ -99,14 +106,13 @@ Mountain View, CA, USA
 | [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-3.3-70b](./models/llama-3.3-70b.md) | 65.5k | $0.70 | $2.80 | 📝 ⚡ |
 | [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
-| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | 512 | N/A | N/A | 📝 ⚡ |
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | 512 | N/A | N/A | 📝 ⚡ |

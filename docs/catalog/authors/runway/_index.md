@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/runway.svg" alt="Runway ML" width="32" height="32" style="vertical-align: middle;"> Runway ML
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/runway.svg" alt="Runway ML logo" width="48" height="48" style="vertical-align: middle;"> Runway ML
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/together.svg" alt="Together AI" width="32" height="32" style="vertical-align: middle;"> Together AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/together.svg" alt="Together AI logo" width="48" height="48" style="vertical-align: middle;"> Together AI
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/openai.svg" alt="OpenAI" width="32" height="32" style="vertical-align: middle;"> OpenAI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/openai.svg" alt="OpenAI logo" width="48" height="48" style="vertical-align: middle;"> OpenAI
   
   
   
@@ -17,6 +17,14 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 
   
 ## Models
+  
+### DALL-E
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [dall-e-2](./models/dall-e-2.md) | openai | N/A | Text |
+| [dall-e-3](./models/dall-e-3.md) | openai | N/A | Text |
+
   
 ### GPT
   
@@ -110,14 +118,6 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [tts-1-1106](./models/tts-1-1106.md) | openai | N/A | Text |
 | [tts-1-hd](./models/tts-1-hd.md) | openai | N/A | Text |
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | openai | N/A | Text |
-
-  
-### DALL-E
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | openai | N/A | Text |
-| [dall-e-3](./models/dall-e-3.md) | openai | N/A | Text |
 
   
 ## Provider Availability

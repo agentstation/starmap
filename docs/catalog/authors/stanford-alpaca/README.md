@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford-alpaca.svg" alt="Stanford Alpaca" width="32" height="32" style="vertical-align: middle;"> Stanford Alpaca
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford-alpaca.svg" alt="Stanford Alpaca logo" width="48" height="48" style="vertical-align: middle;"> Stanford Alpaca
   
   
   

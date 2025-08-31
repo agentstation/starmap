@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/duke.svg" alt="Duke University" width="32" height="32" style="vertical-align: middle;"> Duke University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/duke.svg" alt="Duke University logo" width="48" height="48" style="vertical-align: middle;"> Duke University
   
   
   

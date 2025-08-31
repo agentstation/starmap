@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/moonshot.svg" alt="Moonshot AI" width="32" height="32" style="vertical-align: middle;"> Moonshot AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/moonshot.svg" alt="Moonshot AI logo" width="48" height="48" style="vertical-align: middle;"> Moonshot AI
   
   
   

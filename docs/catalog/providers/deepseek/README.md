@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/deepseek/logo.svg" alt="DeepSeek logo" width="32" height="32" style="vertical-align: middle;"> DeepSeek
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/deepseek/logo.svg" alt="DeepSeek logo" width="48" height="48" style="vertical-align: middle;"> DeepSeek
   
 Chinese AI company specializing in efficient, high-performance language models.
   

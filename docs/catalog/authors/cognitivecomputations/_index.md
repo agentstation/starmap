@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cognitivecomputations.svg" alt="Cognitive Computations" width="32" height="32" style="vertical-align: middle;"> Cognitive Computations
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cognitivecomputations.svg" alt="Cognitive Computations logo" width="48" height="48" style="vertical-align: middle;"> Cognitive Computations
   
   
   

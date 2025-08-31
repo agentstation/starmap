@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/salesforce.svg" alt="Salesforce" width="32" height="32" style="vertical-align: middle;"> Salesforce
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/salesforce.svg" alt="Salesforce logo" width="48" height="48" style="vertical-align: middle;"> Salesforce
   
   
   

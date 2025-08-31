@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/gatech.svg" alt="Georgia Tech Research Institute" width="32" height="32" style="vertical-align: middle;"> Georgia Tech Research Institute
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/gatech.svg" alt="Georgia Tech Research Institute logo" width="48" height="48" style="vertical-align: middle;"> Georgia Tech Research Institute
   
   
   

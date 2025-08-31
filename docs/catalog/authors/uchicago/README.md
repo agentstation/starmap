@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/uchicago.svg" alt="University of Chicago" width="32" height="32" style="vertical-align: middle;"> University of Chicago
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/uchicago.svg" alt="University of Chicago logo" width="48" height="48" style="vertical-align: middle;"> University of Chicago
   
   
   

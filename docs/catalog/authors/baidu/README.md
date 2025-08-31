@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/baidu.svg" alt="Baidu" width="32" height="32" style="vertical-align: middle;"> Baidu
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/baidu.svg" alt="Baidu logo" width="48" height="48" style="vertical-align: middle;"> Baidu
   
   
   

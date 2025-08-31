@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/qwen.svg" alt="Qwen Team" width="32" height="32" style="vertical-align: middle;"> Qwen Team
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/qwen.svg" alt="Qwen Team logo" width="48" height="48" style="vertical-align: middle;"> Qwen Team
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/zhipu-ai.svg" alt="Zhipu AI" width="32" height="32" style="vertical-align: middle;"> Zhipu AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/zhipu-ai.svg" alt="Zhipu AI logo" width="48" height="48" style="vertical-align: middle;"> Zhipu AI
   
   
   

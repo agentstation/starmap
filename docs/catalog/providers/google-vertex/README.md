@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/google-vertex/logo.svg" alt="Google Vertex AI logo" width="32" height="32" style="vertical-align: middle;"> Google Vertex AI
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/google-vertex/logo.svg" alt="Google Vertex AI logo" width="48" height="48" style="vertical-align: middle;"> Google Vertex AI
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
@@ -64,8 +64,6 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
 | [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
 
@@ -416,6 +414,14 @@ Mountain View, CA, USA
 | [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### RoBERTa
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### T5

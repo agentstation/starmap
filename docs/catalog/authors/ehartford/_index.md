@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/ehartford.svg" alt="Eric Hartford" width="32" height="32" style="vertical-align: middle;"> Eric Hartford
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/ehartford.svg" alt="Eric Hartford logo" width="48" height="48" style="vertical-align: middle;"> Eric Hartford
   
   
   

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/mosaicml.svg" alt="MosaicML" width="32" height="32" style="vertical-align: middle;"> MosaicML
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/mosaicml.svg" alt="MosaicML logo" width="48" height="48" style="vertical-align: middle;"> MosaicML
   
   
   

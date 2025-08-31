@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/ibm.svg" alt="IBM" width="32" height="32" style="vertical-align: middle;"> IBM
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/ibm.svg" alt="IBM logo" width="48" height="48" style="vertical-align: middle;"> IBM
   
   
   

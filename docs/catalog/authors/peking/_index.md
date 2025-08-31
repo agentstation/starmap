@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/peking.svg" alt="Peking University" width="32" height="32" style="vertical-align: middle;"> Peking University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/peking.svg" alt="Peking University logo" width="48" height="48" style="vertical-align: middle;"> Peking University
   
   
   

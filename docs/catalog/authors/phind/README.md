@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/phind.svg" alt="Phind" width="32" height="32" style="vertical-align: middle;"> Phind
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/phind.svg" alt="Phind logo" width="48" height="48" style="vertical-align: middle;"> Phind
   
   
   

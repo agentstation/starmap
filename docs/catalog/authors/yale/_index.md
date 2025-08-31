@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/yale.svg" alt="Yale University" width="32" height="32" style="vertical-align: middle;"> Yale University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/yale.svg" alt="Yale University logo" width="48" height="48" style="vertical-align: middle;"> Yale University
   
   
   

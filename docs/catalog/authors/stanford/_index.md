@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford.svg" alt="Stanford University" width="32" height="32" style="vertical-align: middle;"> Stanford University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/stanford.svg" alt="Stanford University logo" width="48" height="48" style="vertical-align: middle;"> Stanford University
   
   
   

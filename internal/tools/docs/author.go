@@ -276,7 +276,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	// Build title with logo using builder
 	logoPath := "https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/" + string(author.ID) + ".svg"
 	titleBuilder := NewMarkdownBuilderBuffer()
-	titleBuilder.PlainTextf("# <img src=\"%s\" alt=\"%s\" width=\"32\" height=\"32\" style=\"vertical-align: middle;\"> %s", logoPath, author.Name, author.Name)
+	titleBuilder.PlainTextf("# <img src=\"%s\" alt=\"%s logo\" width=\"48\" height=\"48\" style=\"vertical-align: middle;\"> %s", logoPath, author.Name, author.Name)
 	titleBuilder.Build()
 	builder.RawHTML(titleBuilder.String()).LF().LF()
 

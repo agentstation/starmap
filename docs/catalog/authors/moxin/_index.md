@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/moxin.svg" alt="Moxin" width="32" height="32" style="vertical-align: middle;"> Moxin
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/moxin.svg" alt="Moxin logo" width="48" height="48" style="vertical-align: middle;"> Moxin
   
   
   

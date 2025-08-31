@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/open-orca.svg" alt="Open-Orca" width="32" height="32" style="vertical-align: middle;"> Open-Orca
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/open-orca.svg" alt="Open-Orca logo" width="48" height="48" style="vertical-align: middle;"> Open-Orca
   
   
   

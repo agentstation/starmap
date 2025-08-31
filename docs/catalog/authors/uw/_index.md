@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/uw.svg" alt="University of Washington" width="32" height="32" style="vertical-align: middle;"> University of Washington
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/uw.svg" alt="University of Washington logo" width="48" height="48" style="vertical-align: middle;"> University of Washington
   
   
   

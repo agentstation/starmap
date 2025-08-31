@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cmu.svg" alt="Carnegie Mellon University" width="32" height="32" style="vertical-align: middle;"> Carnegie Mellon University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cmu.svg" alt="Carnegie Mellon University logo" width="48" height="48" style="vertical-align: middle;"> Carnegie Mellon University
   
   
   

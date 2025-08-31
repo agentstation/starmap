@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/amazon.svg" alt="Amazon" width="32" height="32" style="vertical-align: middle;"> Amazon
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/amazon.svg" alt="Amazon logo" width="48" height="48" style="vertical-align: middle;"> Amazon
   
   
   

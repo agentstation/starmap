@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/minimax.svg" alt="MiniMax" width="32" height="32" style="vertical-align: middle;"> MiniMax
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/minimax.svg" alt="MiniMax logo" width="48" height="48" style="vertical-align: middle;"> MiniMax
   
   
   

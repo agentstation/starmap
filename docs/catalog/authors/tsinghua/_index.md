@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/tsinghua.svg" alt="Tsinghua University" width="32" height="32" style="vertical-align: middle;"> Tsinghua University
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/tsinghua.svg" alt="Tsinghua University logo" width="48" height="48" style="vertical-align: middle;"> Tsinghua University
   
   
   

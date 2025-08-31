@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/groq/logo.svg" alt="Groq logo" width="32" height="32" style="vertical-align: middle;"> Groq
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/groq/logo.svg" alt="Groq logo" width="48" height="48" style="vertical-align: middle;"> Groq
   
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   
@@ -61,6 +61,13 @@ Mountain View, CA, USA
   
 ## Available Models
   
+### DeepSeek
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
+
+  
 ### GPT
   
 | Model | Context | Input | Output | Features |
@@ -93,7 +100,6 @@ Mountain View, CA, USA
 | [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |
 | [llama-3.3-70b](./models/llama-3.3-70b.md) | 65.5k | $0.70 | $2.80 | 📝 ⚡ |
 | [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | N/A | N/A | 📝 🔧 ⚡ |

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/tencent.svg" alt="Tencent" width="32" height="32" style="vertical-align: middle;"> Tencent
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/tencent.svg" alt="Tencent logo" width="48" height="48" style="vertical-align: middle;"> Tencent
   
   
   
