@@ -4,18 +4,18 @@
 |---------|---------|---------|---------|
 | **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro** | 2.0M | 8k | Text, Image |
-| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini 2.0 Flash (Image Generation) Experimental** | 1.0M | 8k | Text, Image |
 | **Gemini 2.0 Pro Experimental 02-05** | 1.0M | 65k | Text, Image |
-| **Gemini 2.5 Pro Preview 03-25** | 1.0M | 65k | Text, Image |
-| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini Experimental 1206** | 1.0M | 65k | Text |
+| **LearnLM 2.0 Flash Experimental** | 1.0M | 32k | Text |
 | **Gemini 2.0 Flash Experimental** | 1.0M | 8k | Text, Image |
 | **Gemini 2.0 Flash-Lite Preview** | 1.0M | 8k | Text, Image |
-| **Gemini 2.0 Flash (Image Generation) Experimental** | 1.0M | 8k | Text, Image |
-| **LearnLM 2.0 Flash Experimental** | 1.0M | 32k | Text |
-| **Gemini Experimental 1206** | 1.0M | 65k | Text |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
 | **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
 | **Gemini 2.0 Pro Experimental** | 1.0M | 65k | Text, Image |
 | **Gemini 2.0 Flash-Lite Preview 02-05** | 1.0M | 8k | Text, Image |
+| **Gemini 2.5 Pro Preview 03-25** | 1.0M | 65k | Text, Image |
 | **Gemini 1.5 Flash-8B** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
@@ -72,7 +72,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 188 more_ |  |  |  |
 
   
-### Gemini (56 models)
+### Gemini (58 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -86,7 +86,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002-at-default.md) | Multiple | N/A | N/A |
 | [Gemini 1.5 Pro Latest](../authors/google/models/gemini-1.5-pro-latest.md) | Multiple | 2.0M | N/A |
 | Gemini 2.0 Flash | Multiple | N/A | $0.10/$0.40 |
-| _...and 46 more_ |  |  |  |
+| _...and 48 more_ |  |  |  |
 
   
 ### GPT (46 models)
@@ -123,11 +123,10 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 17 more_ |  |  |  |
 
   
-### Llama (27 models)
+### Llama (26 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | N/A | N/A |
 | [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | N/A | N/A |
 | [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
 | [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | N/A | N/A |
@@ -137,7 +136,8 @@ Complete listing of all 439 models in the Starmap catalog.
 | Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
 | [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | N/A | N/A |
 | [Llama3](../authors/meta/models/llama3-at-meta-llama-3-8b.md) | Multiple | N/A | N/A |
-| _...and 17 more_ |  |  |  |
+| [Llama3 1](../authors/meta/models/llama3_1-at-llama-3.1-8b-instruct.md) | Multiple | N/A | N/A |
+| _...and 16 more_ |  |  |  |
 
   
 ### Claude (20 models)
@@ -157,21 +157,21 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 10 more_ |  |  |  |
 
   
-### Embeddings (14 models)
+### Embeddings (12 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | N/A | N/A |
-| gemini-embedding-001 | Multiple | N/A | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
 | [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
-| _...and 4 more_ |  |  |  |
+| [text-embedding-3-small](../authors/openai/models/text-embedding-3-small.md) | Multiple | N/A | N/A |
+| [text-embedding-ada-002](../authors/openai/models/text-embedding-ada-002.md) | Multiple | N/A | N/A |
+| _...and 2 more_ |  |  |  |
 
   
 ### Qwen (12 models)
@@ -220,6 +220,17 @@ Complete listing of all 439 models in the Starmap catalog.
 | text-bison | Multiple | N/A | N/A |
 
   
+### BERT (5 models)
+  
+| Model | Provider | Context | Pricing |
+|---------|---------|---------|---------|
+| [Bert Base](../authors/google/models/bert-base-at-001.md) | Multiple | N/A | N/A |
+| [Bert Base Uncased](../authors/google/models/bert-base-uncased-at-bert-base-uncased.md) | Multiple | N/A | N/A |
+| [Xlm Roberta Large](../authors/meta/models/xlm-roberta-large-at-xlm-roberta-large.md) | Multiple | N/A | N/A |
+| bert-base | Multiple | N/A | N/A |
+| bert-base-uncased | Multiple | N/A | N/A |
+
+  
 ### Whisper (5 models)
   
 | Model | Provider | Context | Pricing |
@@ -229,17 +240,6 @@ Complete listing of all 439 models in the Starmap catalog.
 | [whisper-1](../authors/openai/models/whisper-1.md) | Multiple | N/A | N/A |
 | [whisper-large-v3](../authors/openai/models/whisper-large-v3.md) | Multiple | 448 | N/A |
 | [whisper-large-v3-turbo](../authors/openai/models/whisper-large-v3-turbo.md) | Multiple | 448 | N/A |
-
-  
-### BERT (5 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| [Bert Base](../authors/google/models/bert-base-at-001.md) | Multiple | N/A | N/A |
-| [Bert Base Uncased](../authors/google/models/bert-base-uncased-at-bert-base-uncased.md) | Multiple | N/A | N/A |
-| [Roberta Large](../authors/meta/models/roberta-large-at-roberta-large.md) | Multiple | N/A | N/A |
-| bert-base | Multiple | N/A | N/A |
-| bert-base-uncased | Multiple | N/A | N/A |
 
   
 ### Mistral (4 models)
@@ -261,20 +261,20 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Jamba Large 1.6](../authors/ai21/models/jamba-large-1.6-at-001.md) | Multiple | N/A | N/A |
 
   
-### DALL-E (2 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| [dall-e-2](../authors/openai/models/dall-e-2.md) | Multiple | N/A | N/A |
-| [dall-e-3](../authors/openai/models/dall-e-3.md) | Multiple | N/A | N/A |
-
-  
 ### T5 (2 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | t5-1.1 | Multiple | N/A | N/A |
 | t5-flan | Multiple | N/A | N/A |
+
+  
+### DALL-E (2 models)
+  
+| Model | Provider | Context | Pricing |
+|---------|---------|---------|---------|
+| [dall-e-2](../authors/openai/models/dall-e-2.md) | Multiple | N/A | N/A |
+| [dall-e-3](../authors/openai/models/dall-e-3.md) | Multiple | N/A | N/A |
 
   
 ## 💰 Pricing Comparison
