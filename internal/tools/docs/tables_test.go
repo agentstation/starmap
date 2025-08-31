@@ -1,6 +1,7 @@
 package docs
 
 import (
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -673,7 +674,7 @@ func TestTableFunctionsHandleNilFeatures(t *testing.T) {
 	}
 
 	type tableFunc struct {
-		fn func(*os.File, *catalogs.Model)
+		fn func(io.Writer, *catalogs.Model)
 		name string
 		canBeEmpty bool  // Some tables are conditional
 	}

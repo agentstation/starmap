@@ -2,25 +2,22 @@ package docs
 
 import (
 	"fmt"
-	"os"
+	"io"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	md "github.com/nao1215/markdown"
 )
 
 // writeModalityTable generates a horizontal table showing modality support for input/output
-func writeModalityTable(f *os.File, model *catalogs.Model) {
+func writeModalityTable(w io.Writer, model *catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	if model.Features == nil {
-		fmt.Fprintln(f, "No modality information available.")
-		fmt.Fprintln(f)
+		builder.PlainText("No modality information available.").LF().Build()
 		return
 	}
 
-	fmt.Fprintln(f, "| Direction | Text | Image | Audio | Video | PDF |")
-	fmt.Fprintln(f, "|-----------|------|-------|-------|-------|-----|")
-
-	// Input row
-	fmt.Fprint(f, "| **Input** |")
 	allModalities := []catalogs.ModelModality{
 		catalogs.ModelModalityText,
 		catalogs.ModelModalityImage,
@@ -29,6 +26,8 @@ func writeModalityTable(f *os.File, model *catalogs.Model) {
 		catalogs.ModelModalityPDF,
 	}
 
+	// Build input row
+	inputRow := []string{"**Input**"}
 	for _, modality := range allModalities {
 		hasModality := false
 		for _, inputModality := range model.Features.Modalities.Input {
@@ -38,15 +37,14 @@ func writeModalityTable(f *os.File, model *catalogs.Model) {
 			}
 		}
 		if hasModality {
-			fmt.Fprint(f, " ✅ |")
+			inputRow = append(inputRow, "✅")
 		} else {
-			fmt.Fprint(f, " ❌ |")
+			inputRow = append(inputRow, "❌")
 		}
 	}
-	fmt.Fprintln(f)
 
-	// Output row
-	fmt.Fprint(f, "| **Output** |")
+	// Build output row
+	outputRow := []string{"**Output**"}
 	for _, modality := range allModalities {
 		hasModality := false
 		for _, outputModality := range model.Features.Modalities.Output {
@@ -56,111 +54,120 @@ func writeModalityTable(f *os.File, model *catalogs.Model) {
 			}
 		}
 		if hasModality {
-			fmt.Fprint(f, " ✅ |")
+			outputRow = append(outputRow, "✅")
 		} else {
-			fmt.Fprint(f, " ❌ |")
+			outputRow = append(outputRow, "❌")
 		}
 	}
-	fmt.Fprintln(f)
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Direction", "Text", "Image", "Audio", "Video", "PDF"},
+		Rows:   [][]string{inputRow, outputRow},
+	}).LF().Build()
 }
 
 // writeCoreFeatureTable generates a horizontal table for core features
-func writeCoreFeatureTable(f *os.File, model *catalogs.Model) {
+func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	if model.Features == nil {
-		fmt.Fprintln(f, "No feature information available.")
-		fmt.Fprintln(f)
+		builder.PlainText("No feature information available.").LF().Build()
 		return
 	}
 
-	fmt.Fprintln(f, "| Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |")
-	fmt.Fprintln(f, "|--------------|------------------|-------------|------------|------------------|")
-	fmt.Fprint(f, "| ")
-
+	row := []string{}
+	
 	// Tool Calling
 	if model.Features.ToolCalls {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Tool Definitions
 	if model.Features.Tools {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Tool Choice
 	if model.Features.ToolChoice {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Web Search
 	if model.Features.WebSearch {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// File Attachments
 	if model.Features.Attachments {
-		fmt.Fprintln(f, "✅ |")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprintln(f, "❌ |")
+		row = append(row, "❌")
 	}
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Tool Calling", "Tool Definitions", "Tool Choice", "Web Search", "File Attachments"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // writeResponseDeliveryTable generates a horizontal table for response delivery options
-func writeResponseDeliveryTable(f *os.File, model *catalogs.Model) {
+func writeResponseDeliveryTable(w io.Writer, model *catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	if model.Features == nil {
-		fmt.Fprintln(f, "No delivery information available.")
-		fmt.Fprintln(f)
+		builder.PlainText("No delivery information available.").LF().Build()
 		return
 	}
 
-	fmt.Fprintln(f, "| Streaming | Structured Output | JSON Mode | Function Call | Text Format |")
-	fmt.Fprintln(f, "|-----------|-------------------|-----------|---------------|-------------|")
-	fmt.Fprint(f, "| ")
-
+	row := []string{}
+	
 	// Streaming
 	if model.Features.Streaming {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Structured Output
 	if model.Features.StructuredOutputs {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// JSON Mode (check for format response)
 	if model.Features.FormatResponse {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Function Call (same as tool calls)
 	if model.Features.ToolCalls {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	// Text Format (always supported if model exists)
-	fmt.Fprintln(f, "✅ |")
-	fmt.Fprintln(f)
+	row = append(row, "✅")
+
+	builder.Table(md.TableSet{
+		Header: []string{"Streaming", "Structured Output", "JSON Mode", "Function Call", "Text Format"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // writeAdvancedReasoningTable generates a horizontal table for reasoning capabilities
-func writeAdvancedReasoningTable(f *os.File, model *catalogs.Model) {
+func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 	if model.Features == nil {
 		return
 	}
@@ -173,61 +180,65 @@ func writeAdvancedReasoningTable(f *os.File, model *catalogs.Model) {
 		return
 	}
 
-	fmt.Fprintln(f, "### Advanced Reasoning")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |")
-	fmt.Fprintln(f, "|-----------------|------------------|------------------|-------------------|-------------------|")
-	fmt.Fprint(f, "| ")
+	builder := NewMarkdownBuilder(w)
+	builder.H3("Advanced Reasoning").LF()
 
+	row := []string{}
+	
 	if model.Features.Reasoning {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	if model.Features.ReasoningEffort {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	if model.Features.ReasoningTokens {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	if model.Features.IncludeReasoning {
-		fmt.Fprint(f, "✅ | ")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprint(f, "❌ | ")
+		row = append(row, "❌")
 	}
 
 	if model.Features.Verbosity {
-		fmt.Fprintln(f, "✅ |")
+		row = append(row, "✅")
 	} else {
-		fmt.Fprintln(f, "❌ |")
+		row = append(row, "❌")
 	}
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Basic Reasoning", "Reasoning Effort", "Reasoning Tokens", "Include Reasoning", "Verbosity Control"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // writeControlsTables generates multiple horizontal tables for generation controls
-func writeControlsTables(f *os.File, model *catalogs.Model) {
+func writeControlsTables(w io.Writer, model *catalogs.Model) {
 	if model.Features == nil {
-		fmt.Fprintln(f, "No control information available.")
-		fmt.Fprintln(f)
+		builder := NewMarkdownBuilder(w)
+		builder.PlainText("No control information available.").LF().Build()
 		return
 	}
+
+	builder := NewMarkdownBuilder(w)
 
 	// Sampling & Decoding Controls
 	hasCoreSampling := model.Features.Temperature || model.Features.TopP || model.Features.TopK ||
 		model.Features.TopA || model.Features.MinP
 
 	if hasCoreSampling {
-		fmt.Fprintln(f, "### Sampling & Decoding")
-		fmt.Fprintln(f)
+		builder.H3("Sampling & Decoding").LF()
 
-		// Build table headers dynamically based on what's supported
+		// Build table headers and values dynamically based on what's supported
 		var headers []string
 		var values []string
 
@@ -274,19 +285,17 @@ func writeControlsTables(f *os.File, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		// Build the table
-		fmt.Fprintln(f, "| " + strings.Join(headers, " | ") + " |")
-		fmt.Fprintln(f, "|" + strings.Repeat("---|", len(headers)))
-		fmt.Fprintln(f, "| " + strings.Join(values, " | ") + " |")
-		fmt.Fprintln(f)
+		builder.Table(md.TableSet{
+			Header: headers,
+			Rows:   [][]string{values},
+		}).LF()
 	}
 
 	// Length & Termination Controls
 	hasLengthControls := model.Features.MaxTokens || model.Features.Stop
 
 	if hasLengthControls {
-		fmt.Fprintln(f, "### Length & Termination")
-		fmt.Fprintln(f)
+		builder.H3("Length & Termination").LF()
 
 		var headers []string
 		var values []string
@@ -307,11 +316,10 @@ func writeControlsTables(f *os.File, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		// Build the table
-		fmt.Fprintln(f, "| " + strings.Join(headers, " | ") + " |")
-		fmt.Fprintln(f, "|" + strings.Repeat("---|", len(headers)))
-		fmt.Fprintln(f, "| " + strings.Join(values, " | ") + " |")
-		fmt.Fprintln(f)
+		builder.Table(md.TableSet{
+			Header: headers,
+			Rows:   [][]string{values},
+		}).LF()
 	}
 
 	// Repetition Control
@@ -319,8 +327,7 @@ func writeControlsTables(f *os.File, model *catalogs.Model) {
 		model.Features.RepetitionPenalty
 
 	if hasRepetitionControls {
-		fmt.Fprintln(f, "### Repetition Control")
-		fmt.Fprintln(f)
+		builder.H3("Repetition Control").LF()
 
 		var headers []string
 		var values []string
@@ -352,19 +359,17 @@ func writeControlsTables(f *os.File, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		// Build the table
-		fmt.Fprintln(f, "| " + strings.Join(headers, " | ") + " |")
-		fmt.Fprintln(f, "|" + strings.Repeat("---|", len(headers)))
-		fmt.Fprintln(f, "| " + strings.Join(values, " | ") + " |")
-		fmt.Fprintln(f)
+		builder.Table(md.TableSet{
+			Header: headers,
+			Rows:   [][]string{values},
+		}).LF()
 	}
 
 	// Advanced Controls
 	hasAdvancedControls := model.Features.LogitBias || model.Features.Seed || model.Features.Logprobs
 
 	if hasAdvancedControls {
-		fmt.Fprintln(f, "### Advanced Controls")
-		fmt.Fprintln(f)
+		builder.H3("Advanced Controls").LF()
 
 		var headers []string
 		var values []string
@@ -390,74 +395,78 @@ func writeControlsTables(f *os.File, model *catalogs.Model) {
 			values = append(values, rangeStr)
 		}
 
-		// Build the table
-		fmt.Fprintln(f, "| " + strings.Join(headers, " | ") + " |")
-		fmt.Fprintln(f, "|" + strings.Repeat("---|", len(headers)))
-		fmt.Fprintln(f, "| " + strings.Join(values, " | ") + " |")
-		fmt.Fprintln(f)
+		builder.Table(md.TableSet{
+			Header: headers,
+			Rows:   [][]string{values},
+		}).LF()
 	}
+
+	builder.Build()
 }
 
 // writeArchitectureTable generates a horizontal table for architecture details
-func writeArchitectureTable(f *os.File, model *catalogs.Model) {
+func writeArchitectureTable(w io.Writer, model *catalogs.Model) {
 	if model.Metadata == nil || model.Metadata.Architecture == nil {
 		return
 	}
 
+	builder := NewMarkdownBuilder(w)
 	arch := model.Metadata.Architecture
-	fmt.Fprintln(f, "### Architecture Details")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Parameter Count | Architecture Type | Tokenizer | Quantization | Fine-Tuned | Base Model |")
-	fmt.Fprintln(f, "|-----------------|-------------------|-----------|--------------|------------|------------|")
-	fmt.Fprint(f, "| ")
+	
+	builder.H3("Architecture Details").LF()
 
+	row := []string{}
+	
 	if arch.ParameterCount != "" {
-		fmt.Fprintf(f, "%s | ", arch.ParameterCount)
+		row = append(row, arch.ParameterCount)
 	} else {
-		fmt.Fprint(f, "Unknown | ")
+		row = append(row, "Unknown")
 	}
 
 	if arch.Type != "" {
-		fmt.Fprintf(f, "%s | ", string(arch.Type))
+		row = append(row, string(arch.Type))
 	} else {
-		fmt.Fprint(f, "Unknown | ")
+		row = append(row, "Unknown")
 	}
 
 	if arch.Tokenizer != "" {
-		fmt.Fprintf(f, "%s | ", string(arch.Tokenizer))
+		row = append(row, string(arch.Tokenizer))
 	} else {
-		fmt.Fprint(f, "Unknown | ")
+		row = append(row, "Unknown")
 	}
 
 	if arch.Quantization != "" {
-		fmt.Fprintf(f, "%s | ", string(arch.Quantization))
+		row = append(row, string(arch.Quantization))
 	} else {
-		fmt.Fprint(f, "None | ")
+		row = append(row, "None")
 	}
 
 	if arch.FineTuned {
-		fmt.Fprint(f, "Yes | ")
+		row = append(row, "Yes")
 	} else {
-		fmt.Fprint(f, "No | ")
+		row = append(row, "No")
 	}
 
 	if arch.BaseModel != nil && *arch.BaseModel != "" {
-		fmt.Fprintf(f, "%s |", *arch.BaseModel)
+		row = append(row, *arch.BaseModel)
 	} else {
-		fmt.Fprint(f, "- |")
+		row = append(row, "-")
 	}
-	fmt.Fprintln(f)
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Parameter Count", "Architecture Type", "Tokenizer", "Quantization", "Fine-Tuned", "Base Model"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // writeTagsTable generates a horizontal table for model tags
-func writeTagsTable(f *os.File, model *catalogs.Model) {
+func writeTagsTable(w io.Writer, model *catalogs.Model) {
 	if model.Metadata == nil || len(model.Metadata.Tags) == 0 {
 		return
 	}
 
-	fmt.Fprintln(f, "### Model Tags")
-	fmt.Fprintln(f)
+	builder := NewMarkdownBuilder(w)
+	builder.H3("Model Tags").LF()
 
 	// Common tags to check for
 	commonTags := []catalogs.ModelTag{
@@ -470,13 +479,10 @@ func writeTagsTable(f *os.File, model *catalogs.Model) {
 		catalogs.ModelTagFunctionCalling,
 	}
 
-	// Create header
-	fmt.Fprintln(f, "| Coding | Writing | Reasoning | Math | Chat | Multimodal | Function Calling |")
-	fmt.Fprintln(f, "|--------|---------|-----------|------|------|------------|------------------|")
-	fmt.Fprint(f, "| ")
-
+	row := []string{}
+	
 	// Check each common tag
-	for i, tag := range commonTags {
+	for _, tag := range commonTags {
 		hasTag := false
 		for _, modelTag := range model.Metadata.Tags {
 			if modelTag == tag {
@@ -485,17 +491,16 @@ func writeTagsTable(f *os.File, model *catalogs.Model) {
 			}
 		}
 		if hasTag {
-			fmt.Fprint(f, "✅")
+			row = append(row, "✅")
 		} else {
-			fmt.Fprint(f, "❌")
-		}
-		if i < len(commonTags)-1 {
-			fmt.Fprint(f, " | ")
-		} else {
-			fmt.Fprintln(f, " |")
+			row = append(row, "❌")
 		}
 	}
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Coding", "Writing", "Reasoning", "Math", "Chat", "Multimodal", "Function Calling"},
+		Rows:   [][]string{row},
+	}).LF()
 
 	// Add any additional tags not in the common list
 	var additionalTags []string
@@ -513,69 +518,71 @@ func writeTagsTable(f *os.File, model *catalogs.Model) {
 	}
 
 	if len(additionalTags) > 0 {
-		fmt.Fprintf(f, "\n**Additional Tags**: %s\n", strings.Join(additionalTags, ", "))
+		builder.LF().Bold("Additional Tags").PlainText(": " + strings.Join(additionalTags, ", ")).LF()
 	}
-	fmt.Fprintln(f)
+	
+	builder.Build()
 }
 
 // writeTokenPricingTable generates a horizontal table for token pricing
-func writeTokenPricingTable(f *os.File, model *catalogs.Model) {
+func writeTokenPricingTable(w io.Writer, model *catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
-		fmt.Fprintln(f, "Contact provider for pricing information.")
-		fmt.Fprintln(f)
+		builder.PlainText("Contact provider for pricing information.").LF().Build()
 		return
 	}
 
-	fmt.Fprintln(f, "### Token Pricing")
-	fmt.Fprintln(f)
+	builder.H3("Token Pricing").LF()
 
 	tokens := model.Pricing.Tokens
 	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
 
-	fmt.Fprintln(f, "| Input | Output | Reasoning | Cache Read | Cache Write |")
-	fmt.Fprintln(f, "|-------|--------|-----------|------------|-------------|")
-	fmt.Fprint(f, "| ")
-
+	row := []string{}
+	
 	if tokens.Input != nil && tokens.Input.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M | ", currencySymbol, tokens.Input.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Input.Per1M))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if tokens.Output != nil && tokens.Output.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M | ", currencySymbol, tokens.Output.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Output.Per1M))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if tokens.Reasoning != nil && tokens.Reasoning.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M | ", currencySymbol, tokens.Reasoning.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Reasoning.Per1M))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	// Check both flat structure and nested cache structure
 	if tokens.CacheRead != nil && tokens.CacheRead.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M | ", currencySymbol, tokens.CacheRead.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.CacheRead.Per1M))
 	} else if tokens.Cache != nil && tokens.Cache.Read != nil && tokens.Cache.Read.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M | ", currencySymbol, tokens.Cache.Read.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Cache.Read.Per1M))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if tokens.CacheWrite != nil && tokens.CacheWrite.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M |", currencySymbol, tokens.CacheWrite.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.CacheWrite.Per1M))
 	} else if tokens.Cache != nil && tokens.Cache.Write != nil && tokens.Cache.Write.Per1M > 0 {
-		fmt.Fprintf(f, "%s%.2f/1M |", currencySymbol, tokens.Cache.Write.Per1M)
+		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Cache.Write.Per1M))
 	} else {
-		fmt.Fprint(f, "- |")
+		row = append(row, "-")
 	}
-	fmt.Fprintln(f)
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Input", "Output", "Reasoning", "Cache Read", "Cache Write"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // writeOperationPricingTable generates a horizontal table for operation pricing
-func writeOperationPricingTable(f *os.File, model *catalogs.Model) {
+func writeOperationPricingTable(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Operations == nil {
 		return
 	}
@@ -588,52 +595,53 @@ func writeOperationPricingTable(f *os.File, model *catalogs.Model) {
 		return
 	}
 
-	fmt.Fprintln(f, "### Operation Pricing")
-	fmt.Fprintln(f)
+	builder := NewMarkdownBuilder(w)
+	builder.H3("Operation Pricing").LF()
 
 	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
 
-	fmt.Fprintln(f, "| Image Input | Audio Input | Video Input | Image Gen | Audio Gen | Web Search |")
-	fmt.Fprintln(f, "|-------------|-------------|-------------|-----------|-----------|------------|")
-	fmt.Fprint(f, "| ")
-
+	row := []string{}
+	
 	if ops.ImageInput != nil {
-		fmt.Fprintf(f, "%s%.3f/img | ", currencySymbol, *ops.ImageInput)
+		row = append(row, fmt.Sprintf("%s%.3f/img", currencySymbol, *ops.ImageInput))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if ops.AudioInput != nil {
-		fmt.Fprintf(f, "%s%.3f/min | ", currencySymbol, *ops.AudioInput)
+		row = append(row, fmt.Sprintf("%s%.3f/min", currencySymbol, *ops.AudioInput))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if ops.VideoInput != nil {
-		fmt.Fprintf(f, "%s%.3f/min | ", currencySymbol, *ops.VideoInput)
+		row = append(row, fmt.Sprintf("%s%.3f/min", currencySymbol, *ops.VideoInput))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if ops.ImageGen != nil {
-		fmt.Fprintf(f, "%s%.3f/img | ", currencySymbol, *ops.ImageGen)
+		row = append(row, fmt.Sprintf("%s%.3f/img", currencySymbol, *ops.ImageGen))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if ops.AudioGen != nil {
-		fmt.Fprintf(f, "%s%.3f/min | ", currencySymbol, *ops.AudioGen)
+		row = append(row, fmt.Sprintf("%s%.3f/min", currencySymbol, *ops.AudioGen))
 	} else {
-		fmt.Fprint(f, "- | ")
+		row = append(row, "-")
 	}
 
 	if ops.WebSearch != nil {
-		fmt.Fprintf(f, "%s%.3f/query |", currencySymbol, *ops.WebSearch)
+		row = append(row, fmt.Sprintf("%s%.3f/query", currencySymbol, *ops.WebSearch))
 	} else {
-		fmt.Fprint(f, "- |")
+		row = append(row, "-")
 	}
-	fmt.Fprintln(f)
-	fmt.Fprintln(f)
+
+	builder.Table(md.TableSet{
+		Header: []string{"Image Input", "Audio Input", "Video Input", "Image Gen", "Audio Gen", "Web Search"},
+		Rows:   [][]string{row},
+	}).LF().Build()
 }
 
 // getCurrencySymbol returns the currency symbol for a given currency code

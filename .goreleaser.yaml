@@ -1,0 +1,188 @@
+# GoReleaser configuration for Starmap
+# Documentation: https://goreleaser.com
+
+project_name: starmap
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - id: starmap
+    binary: starmap
+    main: ./cmd/starmap
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    # Skip windows/arm64 as it's not well supported
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
+
+archives:
+  - id: starmap
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE*
+      - CHANGELOG.md
+      - docs/PROVIDER_IMPLEMENTATION_GUIDE.md
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  algorithm: sha256
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - '^style:'
+      - '^refactor:'
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+  groups:
+    - title: '✨ Features'
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: '🐛 Bug Fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: '⚡ Performance'
+      regexp: '^.*?perf(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: '🔨 Build'
+      regexp: '^.*?build(\([[:word:]]+\))??!?:.+$'
+      order: 3
+    - title: '🚀 CI/CD'
+      regexp: '^.*?ci(\([[:word:]]+\))??!?:.+$'
+      order: 4
+    - title: '📝 Documentation'
+      regexp: '^.*?docs(\([[:word:]]+\))??!?:.+$'
+      order: 5
+    - title: 'Others'
+      order: 999
+
+release:
+  github:
+    owner: agentstation
+    name: starmap
+  
+  header: |
+    ## Starmap {{ .Version }} ({{ .Date }})
+    
+    Welcome to Starmap v{{ .Version }}! This release includes improvements to the AI model catalog system.
+    
+    ### Installation
+    
+    **Homebrew (macOS/Linux):**
+    ```bash
+    brew tap agentstation/tap
+    brew install starmap
+    ```
+    
+    **Go Install:**
+    ```bash
+    go install github.com/agentstation/starmap/cmd/starmap@v{{ .Version }}
+    ```
+    
+    **Docker:**
+    ```bash
+    docker pull ghcr.io/agentstation/starmap:{{ .Version }}
+    ```
+    
+    ### Documentation
+    
+    📚 **[View Documentation](https://starmap.agentstation.ai/)**
+    
+  footer: |
+    ---
+    
+    **Full Changelog**: https://github.com/agentstation/starmap/compare/{{ .PreviousTag }}...{{ .Tag }}
+    
+    Thanks to all contributors! 🎉
+
+  # Automatically close milestones
+  name_template: "v{{ .Version }}"
+  
+  # Attach built binaries
+  draft: false
+  prerelease: auto
+  
+  # Discussion category for releases
+  discussion_category_name: releases
+
+# Announce releases
+announce:
+  skip: false
+
+# Docker images
+dockers:
+  - image_templates:
+      - "ghcr.io/agentstation/starmap:{{ .Version }}"
+      - "ghcr.io/agentstation/starmap:latest"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
+      - "--label=org.opencontainers.image.description=AI Model Catalog System"
+      - "--platform=linux/amd64"
+
+# Homebrew tap
+brews:
+  - repository:
+      owner: agentstation
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    commit_author:
+      name: starmap-bot
+      email: bot@agentstation.ai
+    homepage: "https://github.com/agentstation/starmap"
+    description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
+    license: "MIT"
+    folder: Formula
+    test: |
+      system "#{bin}/starmap", "version"
+
+# Sign release artifacts
+signs:
+  - cmd: gpg
+    args:
+      - "--output"
+      - "${signature}"
+      - "--detach-sig"
+      - "${artifact}"
+    artifacts: checksum

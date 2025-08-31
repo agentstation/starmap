@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	md "github.com/nao1215/markdown"
 )
 
 // generateCatalogIndex generates the main catalog index page
@@ -19,14 +20,14 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 	}
 	defer f.Close()
 
+	builder := NewMarkdownBuilder(f)
+	
 	// Generate header
-	fmt.Fprintln(f, "# 🌟 Starmap AI Model Catalog")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.")
-	fmt.Fprintln(f)
+	builder.H1("🌟 Starmap AI Model Catalog").LF()
+	builder.PlainText("A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.").LF().LF()
 
 	// Add last updated
-	fmt.Fprintf(f, "_Last Updated: %s_\n\n", time.Now().Format("January 2, 2006"))
+	builder.Italic(fmt.Sprintf("_Last Updated: %s_", time.Now().Format("January 2, 2006"))).LF().LF()
 
 	// Count statistics
 	providers := catalog.Providers().List()
@@ -46,26 +47,29 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 	}
 
 	// Statistics section
-	fmt.Fprintln(f, "## 📊 Catalog Statistics")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Metric | Value |")
-	fmt.Fprintln(f, "|--------|-------|")
-	fmt.Fprintf(f, "| **Total Models** | %s |\n", formatNumber(len(models)))
-	fmt.Fprintf(f, "| **Providers** | %d |\n", len(providers))
-	fmt.Fprintf(f, "| **Model Authors** | %d |\n", len(authors))
-	fmt.Fprintf(f, "| **Models with Pricing** | %d (%.1f%%) |\n",
-		modelsWithPricing, float64(modelsWithPricing)/float64(len(models))*100)
-	if len(models) > 0 {
-		fmt.Fprintf(f, "| **Average Context** | %s tokens |\n",
-			formatNumber(int(totalContextWindow/int64(len(models)))))
+	builder.H2("📊 Catalog Statistics").LF()
+	
+	statsRows := [][]string{
+		{"**Total Models**", formatNumber(len(models))},
+		{"**Providers**", fmt.Sprintf("%d", len(providers))},
+		{"**Model Authors**", fmt.Sprintf("%d", len(authors))},
+		{"**Models with Pricing**", fmt.Sprintf("%d (%.1f%%)", modelsWithPricing, float64(modelsWithPricing)/float64(len(models))*100)},
 	}
-	fmt.Fprintln(f)
+	if len(models) > 0 {
+		statsRows = append(statsRows, []string{
+			"**Average Context**",
+			fmt.Sprintf("%s tokens", formatNumber(int(totalContextWindow/int64(len(models))))),
+		})
+	}
+	
+	builder.Table(md.TableSet{
+		Header: []string{"Metric", "Value"},
+		Rows:   statsRows,
+	}).LF()
 
 	// Quick Navigation
-	fmt.Fprintln(f, "## 🚀 Quick Navigation")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "### Browse by Provider")
-	fmt.Fprintln(f)
+	builder.H2("🚀 Quick Navigation").LF()
+	builder.H3("Browse by Provider").LF()
 
 	// Sort providers by model count
 	type providerInfo struct {
@@ -83,9 +87,7 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 		return providerInfos[i].modelCount > providerInfos[j].modelCount
 	})
 
-	fmt.Fprintln(f, "| Provider | Models | Latest Addition |")
-	fmt.Fprintln(f, "|----------|--------|-----------------|")
-
+	providerRows := [][]string{}
 	for _, pi := range providerInfos {
 		provider := pi.provider
 		latestModel := "N/A"
@@ -99,15 +101,20 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 		}
 
 		badge := getProviderBadge(provider.Name)
-		fmt.Fprintf(f, "| %s [%s](providers/%s/) | %d | %s |\n",
-			badge, provider.Name, string(provider.ID), pi.modelCount, latestModel)
+		providerRows = append(providerRows, []string{
+			fmt.Sprintf("%s [%s](providers/%s/)", badge, provider.Name, string(provider.ID)),
+			fmt.Sprintf("%d", pi.modelCount),
+			latestModel,
+		})
 	}
-
-	fmt.Fprintln(f)
+	
+	builder.Table(md.TableSet{
+		Header: []string{"Provider", "Models", "Latest Addition"},
+		Rows:   providerRows,
+	}).LF()
 
 	// Browse by Author
-	fmt.Fprintln(f, "### Browse by Model Author")
-	fmt.Fprintln(f)
+	builder.H3("Browse by Model Author").LF()
 
 	// Sort authors by model count
 	type authorInfo struct {
@@ -134,10 +141,9 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 		return authorInfos[i].modelCount > authorInfos[j].modelCount
 	})
 
-	fmt.Fprintln(f, "| Author | Models | Description |")
-	fmt.Fprintln(f, "|--------|--------|-------------|")
-
-	for _, ai := range authorInfos[:min(10, len(authorInfos))] {
+	authorRows := [][]string{}
+	displayCount := min(10, len(authorInfos))
+	for _, ai := range authorInfos[:displayCount] {
 		author := ai.author
 		desc := "AI research organization"
 		if author.Description != nil && *author.Description != "" {
@@ -148,29 +154,34 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 		}
 
 		badge := getAuthorBadge(author.Name)
-		fmt.Fprintf(f, "| %s [%s](authors/%s/) | %d | %s |\n",
-			badge, author.Name, string(author.ID), ai.modelCount, desc)
+		authorRows = append(authorRows, []string{
+			fmt.Sprintf("%s [%s](authors/%s/)", badge, author.Name, string(author.ID)),
+			fmt.Sprintf("%d", ai.modelCount),
+			desc,
+		})
 	}
+	
+	builder.Table(md.TableSet{
+		Header: []string{"Author", "Models", "Description"},
+		Rows:   authorRows,
+	})
 
 	if len(authorInfos) > 10 {
-		fmt.Fprintf(f, "\n[View all %d authors →](authors/)\n", len(authorInfos))
+		builder.LF().PlainTextf("[View all %d authors →](authors/)", len(authorInfos))
 	}
-
-	fmt.Fprintln(f)
+	
+	builder.LF().LF()
 
 	// Featured Models section
-	fmt.Fprintln(f, "## ⭐ Featured Models")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "### Latest & Greatest")
-	fmt.Fprintln(f)
+	builder.H2("⭐ Featured Models").LF()
+	builder.H3("Latest & Greatest").LF()
 
 	// Show a selection of notable models
 	featuredModels := selectFeaturedModels(models)
-
-	fmt.Fprintln(f, "| Model | Provider | Context | Pricing |")
-	fmt.Fprintln(f, "|-------|----------|---------|---------|")
-
-	for _, model := range featuredModels[:min(10, len(featuredModels))] {
+	
+	featuredRows := [][]string{}
+	featuredCount := min(10, len(featuredModels))
+	for _, model := range featuredModels[:featuredCount] {
 		contextStr := "N/A"
 		if model.Limits != nil && model.Limits.ContextWindow > 0 {
 			contextStr = formatContext(model.Limits.ContextWindow)
@@ -194,21 +205,29 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 			}
 		}
 
-		fmt.Fprintf(f, "| **[%s](models/%s.md)** | %s | %s | %s |\n",
-			model.Name, formatModelID(model.ID), providerName, contextStr, pricingStr)
+		featuredRows = append(featuredRows, []string{
+			fmt.Sprintf("**[%s](models/%s.md)**", model.Name, formatModelID(model.ID)),
+			providerName,
+			contextStr,
+			pricingStr,
+		})
 	}
 
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: []string{"Model", "Provider", "Context", "Pricing"},
+		Rows:   featuredRows,
+	}).LF()
 
 	// Browse Options
-	fmt.Fprintln(f, "## 📚 Browse Options")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "- 🏢 **[By Provider](providers/)** - Browse models grouped by their hosting provider")
-	fmt.Fprintln(f, "- 👥 **[By Author](authors/)** - Browse models grouped by their creating organization")
-	fmt.Fprintln(f, "- 📋 **[All Models](models/)** - Complete alphabetical listing of all models")
-	fmt.Fprintln(f)
+	builder.H2("📚 Browse Options").LF()
+	builder.BulletList(
+		"🏢 **[By Provider](providers/)** - Browse models grouped by their hosting provider",
+		"👥 **[By Author](authors/)** - Browse models grouped by their creating organization",
+		"📋 **[All Models](models/)** - Complete alphabetical listing of all models",
+	).LF()
 
 	// Footer (catalog root doesn't have back links)
+	builder.Build()
 	g.writeFooter(f)
 
 	return nil

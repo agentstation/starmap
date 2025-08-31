@@ -2,21 +2,21 @@ package docs
 
 import (
 	"fmt"
-	"os"
+	"io"
 	"sort"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	md "github.com/nao1215/markdown"
 )
 
 // Comparison table functions for comparing multiple models or providers
 // These are useful for index pages and comparison views
 
 // writeModelsOverviewTable generates a comprehensive models overview table
-func writeModelsOverviewTable(f *os.File, models []*catalogs.Model, providers []*catalogs.Provider) {
-	fmt.Fprintln(f, "| Model | Provider | Context | Input | Output | Features |")
-	fmt.Fprintln(f, "|-------|----------|---------|-------|--------|----------|")
-
+func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers []*catalogs.Provider) {
+	builder := NewMarkdownBuilder(w)
+	
 	// Create provider map for lookup
 	providerMap := make(map[string]*catalogs.Provider)
 	for _, p := range providers {
@@ -32,7 +32,11 @@ func writeModelsOverviewTable(f *os.File, models []*catalogs.Model, providers []
 		return models[i].Name < models[j].Name
 	})
 
-	for _, model := range models[:min(20, len(models))] {
+	// Build table rows
+	rows := [][]string{}
+	displayCount := min(20, len(models))
+	
+	for _, model := range models[:displayCount] {
 		// Provider
 		providerName := "—"
 		if provider, ok := providerMap[model.ID]; ok {
@@ -60,20 +64,35 @@ func writeModelsOverviewTable(f *os.File, models []*catalogs.Model, providers []
 		// Features - use compactFeatures for consistency
 		featuresStr := compactFeatures(*model)
 
-		fmt.Fprintf(f, "| **%s** | %s | %s | %s | %s | %s |\n",
-			model.Name, providerName, contextStr, inputPrice, outputPrice, featuresStr)
+		rows = append(rows, []string{
+			"**" + model.Name + "**",
+			providerName,
+			contextStr,
+			inputPrice,
+			outputPrice,
+			featuresStr,
+		})
 	}
 
 	if len(models) > 20 {
-		fmt.Fprintf(f, "| _...and %d more_ | | | | | |\n", len(models)-20)
+		rows = append(rows, []string{
+			fmt.Sprintf("_...and %d more_", len(models)-20),
+			"", "", "", "", "",
+		})
 	}
+
+	builder.Table(md.TableSet{
+		Header: []string{"Model", "Provider", "Context", "Input", "Output", "Features"},
+		Rows:   rows,
+	}).Build()
 }
 
 // writeProviderComparisonTable generates a provider comparison table
-func writeProviderComparisonTable(f *os.File, providers []*catalogs.Provider) {
-	fmt.Fprintln(f, "| Provider | Models | Free Tier | API Key Required | Status Page |")
-	fmt.Fprintln(f, "|----------|--------|-----------|------------------|-------------|")
-
+func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
+	builder := NewMarkdownBuilder(w)
+	
+	rows := [][]string{}
+	
 	for _, provider := range providers {
 		modelCount := 0
 		if provider.Models != nil {
@@ -108,19 +127,32 @@ func writeProviderComparisonTable(f *os.File, providers []*catalogs.Provider) {
 
 		statusPage := "—"
 		if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
-			statusPage = fmt.Sprintf("[Status](%s)", *provider.StatusPageURL)
+			// Build status page link
+			statusBuilder := NewMarkdownBuilderBuffer()
+			statusBuilder.Link("Status", *provider.StatusPageURL)
+			statusBuilder.Build()
+			statusPage = statusBuilder.String()
 		}
 
-		fmt.Fprintf(f, "| **%s** | %d | %s | %s | %s |\n",
-			provider.Name, modelCount, freeTier, apiKeyRequired, statusPage)
+		rows = append(rows, []string{
+			"**" + provider.Name + "**",
+			fmt.Sprintf("%d", modelCount),
+			freeTier,
+			apiKeyRequired,
+			statusPage,
+		})
 	}
+
+	builder.Table(md.TableSet{
+		Header: []string{"Provider", "Models", "Free Tier", "API Key Required", "Status Page"},
+		Rows:   rows,
+	}).Build()
 }
 
 // writePricingComparisonTable generates a pricing comparison table for multiple models
-func writePricingComparisonTable(f *os.File, models []*catalogs.Model) {
-	fmt.Fprintln(f, "| Model | Input (per 1M) | Output (per 1M) | Cache Read | Cache Write |")
-	fmt.Fprintln(f, "|-------|----------------|-----------------|------------|-------------|")
-
+func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	// Sort by input price
 	sort.Slice(models, func(i, j int) bool {
 		iPrice := float64(0)
@@ -134,7 +166,10 @@ func writePricingComparisonTable(f *os.File, models []*catalogs.Model) {
 		return iPrice < jPrice
 	})
 
-	for _, model := range models[:min(15, len(models))] {
+	rows := [][]string{}
+	displayCount := min(15, len(models))
+	
+	for _, model := range models[:displayCount] {
 		if model.Pricing == nil || model.Pricing.Tokens == nil {
 			continue
 		}
@@ -158,16 +193,25 @@ func writePricingComparisonTable(f *os.File, models []*catalogs.Model) {
 			cacheWrite = formatPrice(tokens.CacheWrite.Per1M)
 		}
 
-		fmt.Fprintf(f, "| **%s** | %s | %s | %s | %s |\n",
-			model.Name, inputPrice, outputPrice, cacheRead, cacheWrite)
+		rows = append(rows, []string{
+			"**" + model.Name + "**",
+			inputPrice,
+			outputPrice,
+			cacheRead,
+			cacheWrite,
+		})
 	}
+
+	builder.Table(md.TableSet{
+		Header: []string{"Model", "Input (per 1M)", "Output (per 1M)", "Cache Read", "Cache Write"},
+		Rows:   rows,
+	}).Build()
 }
 
 // writeContextLimitsTable generates a context limits comparison table
-func writeContextLimitsTable(f *os.File, models []*catalogs.Model) {
-	fmt.Fprintln(f, "| Model | Context Window | Max Output | Modalities |")
-	fmt.Fprintln(f, "|-------|---------------|------------|------------|")
-
+func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
+	builder := NewMarkdownBuilder(w)
+	
 	// Sort by context window size
 	sort.Slice(models, func(i, j int) bool {
 		iContext := int64(0)
@@ -181,7 +225,10 @@ func writeContextLimitsTable(f *os.File, models []*catalogs.Model) {
 		return iContext > jContext
 	})
 
-	for _, model := range models[:min(15, len(models))] {
+	rows := [][]string{}
+	displayCount := min(15, len(models))
+	
+	for _, model := range models[:displayCount] {
 		if model.Limits == nil {
 			continue
 		}
@@ -213,21 +260,28 @@ func writeContextLimitsTable(f *os.File, models []*catalogs.Model) {
 			modalityStr = strings.Join(modalities, ", ")
 		}
 
-		fmt.Fprintf(f, "| **%s** | %s | %s | %s |\n",
-			model.Name, contextWindow, maxOutput, modalityStr)
+		rows = append(rows, []string{
+			"**" + model.Name + "**",
+			contextWindow,
+			maxOutput,
+			modalityStr,
+		})
 	}
+
+	builder.Table(md.TableSet{
+		Header: []string{"Model", "Context Window", "Max Output", "Modalities"},
+		Rows:   rows,
+	}).Build()
 }
 
 // writeFeatureComparisonTable generates a detailed feature comparison table
-func writeFeatureComparisonTable(f *os.File, models []*catalogs.Model) {
+func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 	if len(models) == 0 {
 		return
 	}
 
-	fmt.Fprintln(f, "### Feature Comparison")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Model | Modalities | Tools | Reasoning | Advanced Controls |")
-	fmt.Fprintln(f, "|-------|------------|-------|-----------|-------------------|")
+	builder := NewMarkdownBuilder(w)
+	builder.H3("Feature Comparison").LF()
 
 	// Sort models by name for consistency
 	sort.Slice(models, func(i, j int) bool {
@@ -240,6 +294,8 @@ func writeFeatureComparisonTable(f *os.File, models []*catalogs.Model) {
 		displayModels = models[:15]
 	}
 
+	rows := [][]string{}
+	
 	for _, model := range displayModels {
 		// Modalities (compact)
 		modalities := compactFeatures(*model)
@@ -259,7 +315,11 @@ func writeFeatureComparisonTable(f *os.File, models []*catalogs.Model) {
 		}
 		toolsStr := "—"
 		if len(tools) > 0 {
-			toolsStr = strings.Join(tools, ", ")
+			// Join tools list
+			toolsBuilder := NewMarkdownBuilderBuffer()
+			toolsBuilder.JoinList(tools, ", ")
+			toolsBuilder.Build()
+			toolsStr = toolsBuilder.String()
 		}
 		
 		// Reasoning section
@@ -277,7 +337,11 @@ func writeFeatureComparisonTable(f *os.File, models []*catalogs.Model) {
 		}
 		reasoningStr := "—"
 		if len(reasoning) > 0 {
-			reasoningStr = strings.Join(reasoning, ", ")
+			// Join reasoning list
+			reasoningBuilder := NewMarkdownBuilderBuffer()
+			reasoningBuilder.JoinList(reasoning, ", ")
+			reasoningBuilder.Build()
+			reasoningStr = reasoningBuilder.String()
 		}
 		
 		// Advanced controls
@@ -298,18 +362,33 @@ func writeFeatureComparisonTable(f *os.File, models []*catalogs.Model) {
 		}
 		advancedStr := "—"
 		if len(advanced) > 0 {
-			advancedStr = strings.Join(advanced, ", ")
+			// Join advanced list
+			advancedBuilder := NewMarkdownBuilderBuffer()
+			advancedBuilder.JoinList(advanced, ", ")
+			advancedBuilder.Build()
+			advancedStr = advancedBuilder.String()
 		}
 		
-		fmt.Fprintf(f, "| %s | %s | %s | %s | %s |\n",
-			model.Name, modalities, toolsStr, reasoningStr, advancedStr)
+		rows = append(rows, []string{
+			model.Name,
+			modalities,
+			toolsStr,
+			reasoningStr,
+			advancedStr,
+		})
 	}
 	
 	if len(models) > 15 {
-		fmt.Fprintf(f, "| _...and %d more_ | | | | |\n", len(models)-15)
+		rows = append(rows, []string{
+			fmt.Sprintf("_...and %d more_", len(models)-15),
+			"", "", "", "",
+		})
 	}
 	
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: []string{"Model", "Modalities", "Tools", "Reasoning", "Advanced Controls"},
+		Rows:   rows,
+	}).LF().Build()
 }
 
 // Helper function to format bytes into human-readable format
@@ -322,12 +401,28 @@ func formatBytes(bytes int64) string {
 
 	switch {
 	case bytes >= GB:
-		return fmt.Sprintf("%.1f GB", float64(bytes)/float64(GB))
+		// Format as GB
+		builder := NewMarkdownBuilderBuffer()
+		builder.PlainTextf("%.1f GB", float64(bytes)/float64(GB))
+		builder.Build()
+		return builder.String()
 	case bytes >= MB:
-		return fmt.Sprintf("%.1f MB", float64(bytes)/float64(MB))
+		// Format as MB
+		builder := NewMarkdownBuilderBuffer()
+		builder.PlainTextf("%.1f MB", float64(bytes)/float64(MB))
+		builder.Build()
+		return builder.String()
 	case bytes >= KB:
-		return fmt.Sprintf("%.1f KB", float64(bytes)/float64(KB))
+		// Format as KB
+		builder := NewMarkdownBuilderBuffer()
+		builder.PlainTextf("%.1f KB", float64(bytes)/float64(KB))
+		builder.Build()
+		return builder.String()
 	default:
-		return fmt.Sprintf("%d B", bytes)
+		// Format as bytes
+		builder := NewMarkdownBuilderBuffer()
+		builder.PlainTextf("%d B", bytes)
+		builder.Build()
+		return builder.String()
 	}
 }

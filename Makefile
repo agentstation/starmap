@@ -39,7 +39,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata demo godoc
+.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release release-snapshot release-tag release-local testdata demo godoc
 
 # Default target
 all: clean fix lint test build
@@ -141,8 +141,30 @@ fix: ## Fix code formatting, imports, and dependencies
 	$(GOMOD) tidy
 	@echo "$(GREEN)Code fixes complete$(NC)"
 
-release: clean fix lint test build ## Prepare for release
-	@echo "$(GREEN)Release build complete$(NC)"
+release: clean fix lint test ## Prepare for release
+	@echo "$(GREEN)Ready for release. Run 'make release-tag VERSION=x.y.z' to create and push a release tag$(NC)"
+
+release-snapshot: ## Create a snapshot release with goreleaser (no tag required)
+	@echo "$(BLUE)Creating snapshot release with goreleaser...$(NC)"
+	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
+	goreleaser release --snapshot --clean
+	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
+
+release-tag: ## Create and push a release tag (use: make release-tag VERSION=0.1.0)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "$(RED)VERSION is required. Usage: make release-tag VERSION=0.1.0$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Creating release tag v$(VERSION)...$(NC)"
+	git tag -a v$(VERSION) -m "Release v$(VERSION)"
+	git push origin v$(VERSION)
+	@echo "$(GREEN)Tag v$(VERSION) created and pushed. GitHub Actions will handle the release.$(NC)"
+
+release-local: ## Build release locally with goreleaser (requires tag)
+	@echo "$(BLUE)Building release locally with goreleaser...$(NC)"
+	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
+	goreleaser release --skip=publish --clean
+	@echo "$(GREEN)Local release created in ./dist/$(NC)"
 
 # Cross-compilation targets
 build-linux: ## Build for Linux

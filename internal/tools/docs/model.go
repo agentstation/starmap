@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"sort"
 
+	md "github.com/nao1215/markdown"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 )
@@ -37,13 +39,15 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 	}
 	defer f.Close()
 
-	fmt.Fprintln(f, "# 🤖 All Models")
-	fmt.Fprintln(f)
-	fmt.Fprintf(f, "Complete listing of all %d models in the Starmap catalog.\n\n", len(models))
+	builder := NewMarkdownBuilder(f)
+	
+	builder.H1("🤖 All Models").
+		LF().
+		PlainTextf("Complete listing of all %d models in the Starmap catalog.", len(models)).
+		LF().LF()
 
 	// Quick stats
-	fmt.Fprintln(f, "## Quick Stats")
-	fmt.Fprintln(f)
+	builder.H2("Quick Stats").LF()
 
 	// Count by capability
 	textCount, visionCount, audioCount, functionCount := 0, 0, 0, 0
@@ -64,13 +68,17 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 		}
 	}
 
-	fmt.Fprintln(f, "| Capability | Count | Percentage |")
-	fmt.Fprintln(f, "|------------|-------|------------|")
-	fmt.Fprintf(f, "| 📝 Text Generation | %d | %.1f%% |\n", textCount, float64(textCount)/float64(len(models))*100)
-	fmt.Fprintf(f, "| 👁️ Vision | %d | %.1f%% |\n", visionCount, float64(visionCount)/float64(len(models))*100)
-	fmt.Fprintf(f, "| 🎵 Audio | %d | %.1f%% |\n", audioCount, float64(audioCount)/float64(len(models))*100)
-	fmt.Fprintf(f, "| 🔧 Function Calling | %d | %.1f%% |\n", functionCount, float64(functionCount)/float64(len(models))*100)
-	fmt.Fprintln(f)
+	tableRows := [][]string{
+		{"📝 Text Generation", fmt.Sprintf("%d", textCount), fmt.Sprintf("%.1f%%", float64(textCount)/float64(len(models))*100)},
+		{"👁️ Vision", fmt.Sprintf("%d", visionCount), fmt.Sprintf("%.1f%%", float64(visionCount)/float64(len(models))*100)},
+		{"🎵 Audio", fmt.Sprintf("%d", audioCount), fmt.Sprintf("%.1f%%", float64(audioCount)/float64(len(models))*100)},
+		{"🔧 Function Calling", fmt.Sprintf("%d", functionCount), fmt.Sprintf("%.1f%%", float64(functionCount)/float64(len(models))*100)},
+	}
+
+	builder.Table(md.TableSet{
+		Header: []string{"Capability", "Count", "Percentage"},
+		Rows:   tableRows,
+	}).LF()
 
 	// Model families
 	families := make(map[string][]*catalogs.Model)
@@ -93,28 +101,26 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 	})
 
 	// Model families section
-	fmt.Fprintln(f, "## Model Families")
-	fmt.Fprintln(f)
+	builder.H2("Model Families").LF()
 
 	for _, family := range familyList {
 		if len(family.models) < 2 {
 			continue // Skip families with only one model
 		}
 
-		fmt.Fprintf(f, "### %s (%d models)\n\n", family.name, len(family.models))
-
-		fmt.Fprintln(f, "| Model | Provider | Context | Pricing |")
-		fmt.Fprintln(f, "|-------|----------|---------|---------|")
+		builder.H3(fmt.Sprintf("%s (%d models)", family.name, len(family.models))).LF()
 
 		// Sort models within family
 		sort.Slice(family.models, func(i, j int) bool {
 			return family.models[i].Name < family.models[j].Name
 		})
 
+		var familyTableRows [][]string
 		displayCount := 0
 		for _, model := range family.models {
 			if displayCount >= 10 {
-				fmt.Fprintf(f, "| _...and %d more_ | | | |\n", len(family.models)-10)
+				familyTableRows = append(familyTableRows, []string{
+					fmt.Sprintf("_...and %d more_", len(family.models)-10), "", "", ""})
 				break
 			}
 
@@ -145,38 +151,47 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 				}
 			}
 
-			fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
-				modelLink, providerStr, contextStr, pricingStr)
+			familyTableRows = append(familyTableRows, []string{
+				modelLink, providerStr, contextStr, pricingStr})
 
 			displayCount++
 		}
 
-		fmt.Fprintln(f)
+		builder.Table(md.TableSet{
+			Header: []string{"Model", "Provider", "Context", "Pricing"},
+			Rows:   familyTableRows,
+		}).LF()
 	}
 
 	// Add Pricing Comparison section
-	fmt.Fprintln(f, "## 💰 Pricing Comparison")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "Top models by pricing (sorted by input cost):")
-	fmt.Fprintln(f)
+	builder.H2("💰 Pricing Comparison").
+		LF().
+		PlainText("Top models by pricing (sorted by input cost):").
+		LF()
+	
 	writePricingComparisonTable(f, models)
-	fmt.Fprintln(f)
+	builder.LF()
 
 	// Add Context Limits Comparison section
-	fmt.Fprintln(f, "## 📏 Context Window Comparison")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "Top models by context window size:")
-	fmt.Fprintln(f)
+	builder.H2("📏 Context Window Comparison").
+		LF().
+		PlainText("Top models by context window size:").
+		LF()
+	
 	writeContextLimitsTable(f, models)
-	fmt.Fprintln(f)
+	builder.LF()
 
 	// Add Feature Comparison section
-	fmt.Fprintln(f, "## 🎯 Feature Comparison")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "Detailed feature breakdown across models:")
-	fmt.Fprintln(f)
+	builder.H2("🎯 Feature Comparison").
+		LF().
+		PlainText("Detailed feature breakdown across models:").
+		LF()
+	
 	writeFeatureComparisonTable(f, models)
-	fmt.Fprintln(f)
+	builder.LF()
+
+	// Write content to file
+	builder.Build()
 
 	// Footer
 	g.writeFooter(f, Breadcrumb{Label: "Back to Catalog", Path: "../"})

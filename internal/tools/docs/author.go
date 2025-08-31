@@ -6,9 +6,11 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
+	md "github.com/nao1215/markdown"
 )
 
 // generateAuthorDocs generates documentation for all authors
@@ -61,10 +63,9 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 	}
 	defer f.Close()
 
-	fmt.Fprintln(f, "# 👥 Model Authors")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "Organizations and researchers that develop and train AI models.")
-	fmt.Fprintln(f)
+	builder := NewMarkdownBuilder(f)
+	builder.H1("👥 Model Authors").LF()
+	builder.PlainText("Organizations and researchers that develop and train AI models.").LF().LF()
 
 	// Calculate model counts for each author
 	type authorInfo struct {
@@ -110,10 +111,10 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 	})
 
 	// Author comparison table
-	fmt.Fprintln(f, "## Author Overview")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Author | Models | Hosted By | Focus Area |")
-	fmt.Fprintln(f, "|--------|--------|-----------|------------|")
+	builder.H2("Author Overview").LF()
+
+	headers := []string{"Author", "Models", "Hosted By", "Focus Area"}
+	var rows [][]string
 
 	for _, info := range authorInfos {
 		author := info.author
@@ -127,7 +128,11 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 		providersStr := "—"
 		if len(providerList) > 0 {
 			if len(providerList) > 3 {
-				providersStr = fmt.Sprintf("%d providers", len(providerList))
+				// Build provider count string
+				providerBuilder := NewMarkdownBuilderBuffer()
+				providerBuilder.CountText(len(providerList), "provider", "providers")
+				providerBuilder.Build()
+				providersStr = providerBuilder.String()
 			} else {
 				providersStr = ""
 				for i, p := range providerList {
@@ -142,15 +147,26 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 		focusArea := getFocusArea(author)
 		badge := getAuthorBadge(author.Name)
 
-		fmt.Fprintf(f, "| %s **[%s](%s/)** | %d | %s | %s |\n",
-			badge, author.Name, string(author.ID), info.modelCount, providersStr, focusArea)
+		// Build author name with badge and link
+		authorCell := NewMarkdownBuilderBuffer()
+		authorCell.PlainText(badge).PlainText(" ").BoldLink(author.Name, string(author.ID)+"/")
+		authorCell.Build()
+		
+		rows = append(rows, []string{
+			authorCell.String(),
+			fmt.Sprintf("%d", info.modelCount),
+			providersStr,
+			focusArea,
+		})
 	}
 
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: headers,
+		Rows:   rows,
+	}).LF()
 
 	// Categories section
-	fmt.Fprintln(f, "## By Category")
-	fmt.Fprintln(f)
+	builder.H2("By Category").LF()
 
 	categories := map[string][]*authorInfo{
 		"🏢 Major Tech Companies":  {},
@@ -175,34 +191,48 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 		"🌍 Open Source",
 	} {
 		if authors := categories[category]; len(authors) > 0 {
-			fmt.Fprintf(f, "### %s\n\n", category)
+			builder.H3(category).LF()
 
+			var items []string
 			for _, info := range authors {
 				author := info.author
 				desc := ""
 				if author.Description != nil && *author.Description != "" {
 					desc = *author.Description
 					if len(desc) > 80 {
-						desc = desc[:77] + "..."
+						// Truncate description
+				descBuilder := NewMarkdownBuilderBuffer()
+				descBuilder.TruncateText(desc, 80)
+				descBuilder.Build()
+				desc = descBuilder.String()
 					}
 				}
 
-				website := ""
+				// Build list item using builder
+				itemBuilder := NewMarkdownBuilderBuffer()
+				itemBuilder.BoldLink(author.Name, string(author.ID)+"/").
+					PlainText(" - ").
+					CountText(info.modelCount, "model", "models").
+					PlainText(" - ").
+					PlainText(desc)
+				
 				if author.Website != nil && *author.Website != "" {
-					website = fmt.Sprintf(" | [Website](%s)", *author.Website)
+					itemBuilder.PlainText(" | ").Link("Website", *author.Website)
 				}
-
-				fmt.Fprintf(f, "- **[%s](%s/)** - %d models - %s%s\n",
-					author.Name, string(author.ID), info.modelCount, desc, website)
+				
+				itemBuilder.Build()
+				item := itemBuilder.String()
+				items = append(items, item)
 			}
-			fmt.Fprintln(f)
+			builder.BulletList(items...).LF()
 		}
 	}
 
 	// Footer
-	g.writeFooter(f, Breadcrumb{Label: "Back to Catalog", Path: "../"})
+	builder.HorizontalRule()
+	builder.Italic(g.buildFooter(Breadcrumb{Label: "Back to Catalog", Path: "../"}))
 
-	return nil
+	return builder.Build()
 }
 
 // generateAuthorReadme generates documentation for a single author
@@ -214,26 +244,36 @@ func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, ca
 	}
 	defer f.Close()
 
+	builder := NewMarkdownBuilder(f)
+
 	// Header with logo if available
-	logoPath := fmt.Sprintf("https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/%s.svg", author.ID)
-	fmt.Fprintf(f, "# <img src=\"%s\" alt=\"%s\" width=\"32\" height=\"32\" style=\"vertical-align: middle;\"> %s\n\n",
-		logoPath, author.Name, author.Name)
+	// Build title with logo using builder
+	logoPath := "https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/" + string(author.ID) + ".svg"
+	titleBuilder := NewMarkdownBuilderBuffer()
+	titleBuilder.PlainTextf("# <img src=\"%s\" alt=\"%s\" width=\"32\" height=\"32\" style=\"vertical-align: middle;\"> %s", logoPath, author.Name, author.Name)
+	titleBuilder.Build()
+	builder.RawHTML(titleBuilder.String()).LF().LF()
 
 	// Author description
 	if author.Description != nil && *author.Description != "" {
-		fmt.Fprintf(f, "%s\n\n", *author.Description)
+		builder.PlainText(*author.Description).LF().LF()
 	}
 
 	// Author Information
-	fmt.Fprintln(f, "## Organization Information")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Field | Value |")
-	fmt.Fprintln(f, "|-------|-------|")
-	fmt.Fprintf(f, "| **Author ID** | `%s` |\n", author.ID)
-	fmt.Fprintf(f, "| **Type** | %s |\n", categorizeAuthor(author))
+	builder.H2("Organization Information").LF()
+
+	infoHeaders := []string{"Field", "Value"}
+	infoRows := [][]string{
+		{"**Author ID**", "`" + string(author.ID) + "`"},
+		{"**Type**", categorizeAuthor(author)},
+	}
 
 	if author.Website != nil && *author.Website != "" {
-		fmt.Fprintf(f, "| **Website** | [%s](%s) |\n", *author.Website, *author.Website)
+		// Build website link using builder
+		websiteBuilder := NewMarkdownBuilderBuffer()
+		websiteBuilder.Link(*author.Website, *author.Website)
+		websiteBuilder.Build()
+		infoRows = append(infoRows, []string{"**Website**", websiteBuilder.String()})
 	}
 
 	// Find all models by this author
@@ -259,30 +299,40 @@ func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, ca
 		}
 	}
 
-	fmt.Fprintf(f, "| **Total Models** | %d |\n", len(authorModels))
+	// Build count strings using builder
+	modelCountBuilder := NewMarkdownBuilderBuffer()
+	modelCountBuilder.PlainTextf("%d", len(authorModels))
+	modelCountBuilder.Build()
+	infoRows = append(infoRows, []string{"**Total Models**", modelCountBuilder.String()})
+	
 	if len(providerMap) > 0 {
-		fmt.Fprintf(f, "| **Available On** | %d providers |\n", len(providerMap))
+		providerCountBuilder := NewMarkdownBuilderBuffer()
+		providerCountBuilder.CountText(len(providerMap), "provider", "providers")
+		providerCountBuilder.Build()
+		infoRows = append(infoRows, []string{"**Available On**", providerCountBuilder.String()})
 	}
 
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: infoHeaders,
+		Rows:   infoRows,
+	}).LF()
 
 	// Models section
-	fmt.Fprintln(f, "## Models")
-	fmt.Fprintln(f)
+	builder.H2("Models").LF()
 
 	if len(authorModels) == 0 {
-		fmt.Fprintln(f, "*No models found from this author.*")
+		builder.Italic("No models found from this author.").LF()
 	} else {
 		// Group models by family
 		modelFamilies := groupAuthorModels(authorModels)
 
 		for family, models := range modelFamilies {
 			if len(modelFamilies) > 1 && family != "" {
-				fmt.Fprintf(f, "### %s\n\n", family)
+				builder.H3(family).LF()
 			}
 
-			fmt.Fprintln(f, "| Model | Providers | Context | Capabilities |")
-			fmt.Fprintln(f, "|-------|-----------|---------|--------------|")
+			modelHeaders := []string{"Model", "Providers", "Context", "Capabilities"}
+			var modelRows [][]string
 
 			// Sort models
 			sort.Slice(models, func(i, j int) bool {
@@ -347,19 +397,19 @@ func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, ca
 					}
 				}
 
-				fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
-					modelLink, providerStr, contextStr, capsStr)
+				modelRows = append(modelRows, []string{modelLink, providerStr, contextStr, capsStr})
 			}
 
-			fmt.Fprintln(f)
+			builder.Table(md.TableSet{
+				Header: modelHeaders,
+				Rows:   modelRows,
+			}).LF()
 		}
 
 		// Provider availability
 		if len(providerMap) > 0 {
-			fmt.Fprintln(f, "## Provider Availability")
-			fmt.Fprintln(f)
-			fmt.Fprintln(f, "Models from this author are available through the following providers:")
-			fmt.Fprintln(f)
+			builder.H2("Provider Availability").LF()
+			builder.PlainText("Models from this author are available through the following providers:").LF().LF()
 
 			// Sort providers by model count
 			type providerCount struct {
@@ -374,39 +424,49 @@ func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, ca
 				return providers[i].count > providers[j].count
 			})
 
+			var providerItems []string
 			for _, p := range providers {
 				plural := "model"
 				if p.count > 1 {
 					plural = "models"
 				}
-				fmt.Fprintf(f, "- **[%s](../../providers/%s/)** - %d %s\n",
-					p.name, p.name, p.count, plural)
+				item := fmt.Sprintf("**[%s](../../providers/%s/)** - %d %s", p.name, p.name, p.count, plural)
+				providerItems = append(providerItems, item)
 			}
-			fmt.Fprintln(f)
+			builder.BulletList(providerItems...).LF()
 		}
 	}
 
 	// Research & Development section (if applicable)
 	if shouldShowResearch(author) {
-		fmt.Fprintln(f, "## Research & Development")
-		fmt.Fprintln(f)
-		fmt.Fprintln(f, getResearchInfo(author))
-		fmt.Fprintln(f)
+		builder.H2("Research & Development").LF()
+		builder.PlainText(getResearchInfo(author)).LF()
 	}
 
 	// Add cross-reference navigation
 	crossRefs := g.buildAuthorCrossReferences(string(author.ID))
 	if len(crossRefs) > 0 {
-		g.writeNavigationSection(f, "See Also", crossRefs)
-		fmt.Fprintln(f)
+		builder.H3("See Also").LF()
+		var items []string
+		for _, link := range crossRefs {
+			if link.Description != "" {
+				item := fmt.Sprintf("[%s](%s) - %s", link.Label, link.Path, link.Description)
+				items = append(items, item)
+			} else {
+				item := fmt.Sprintf("[%s](%s)", link.Label, link.Path)
+				items = append(items, item)
+			}
+		}
+		builder.BulletList(items...).LF()
 	}
 
 	// Footer
-	g.writeFooter(f,
+	builder.HorizontalRule()
+	builder.Italic(g.buildFooter(
 		Breadcrumb{Label: "Back to Authors", Path: "../"},
-		Breadcrumb{Label: "Back to Catalog", Path: "../../"})
+		Breadcrumb{Label: "Back to Catalog", Path: "../../"}))
 
-	return nil
+	return builder.Build()
 }
 
 // generateAuthorModelPages generates individual model pages for an author
@@ -452,80 +512,84 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 	}
 	defer f.Close()
 	
-	// Header with breadcrumb navigation
-	fmt.Fprintln(f, "---")
-	fmt.Fprintf(f, "title: \"%s\"\n", model.Name)
-	fmt.Fprintf(f, "author: \"%s\"\n", author.Name)
-	fmt.Fprintln(f, "type: model")
-	fmt.Fprintln(f, "---")
-	fmt.Fprintln(f)
+	builder := NewMarkdownBuilder(f)
+	
+	// Header with metadata
+	builder.RawHTML("---").LF()
+	builder.PlainTextf("title: \"%s\"", model.Name).LF()
+	builder.PlainTextf("author: \"%s\"", author.Name).LF()
+	builder.PlainText("type: model").LF()
+	builder.RawHTML("---").LF().LF()
 	
 	// Breadcrumb navigation
 	breadcrumbs := g.authorModelBreadcrumb(author.Name, model.Name, model.ID)
-	g.writeBreadcrumbs(f, breadcrumbs...)
+	breadcrumbStr := g.buildBreadcrumbs(breadcrumbs...)
+	if breadcrumbStr != "" {
+		builder.PlainText(breadcrumbStr).LF().LF()
+	}
 	
 	// Model header
-	fmt.Fprintf(f, "# %s\n\n", model.Name)
+	builder.H1(model.Name).LF()
 	
 	// Description
 	if model.Description != "" {
-		fmt.Fprintf(f, "%s\n\n", model.Description)
+		builder.PlainText(model.Description).LF().LF()
 	}
 	
 	// Author attribution
-	fmt.Fprintf(f, "**Developed by**: [%s](../)\n\n", author.Name)
+	builder.Bold("Developed by").PlainText(": ").Link(author.Name, "../").LF().LF()
 	
 	// Technical Specifications
-	fmt.Fprintln(f, "## 📋 Technical Specifications")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "| Specification | Value |")
-	fmt.Fprintln(f, "|--------------|-------|")
-	fmt.Fprintf(f, "| **Model ID** | `%s` |\n", model.ID)
+	builder.H2("📋 Technical Specifications").LF()
+	
+	specHeaders := []string{"Specification", "Value"}
+	specRows := [][]string{
+		{"**Model ID**", fmt.Sprintf("`%s`", model.ID)},
+	}
 	
 	// Context and limits
 	if model.Limits != nil {
 		if model.Limits.ContextWindow > 0 {
-			fmt.Fprintf(f, "| **Context Window** | %s tokens |\n", formatNumber(int(model.Limits.ContextWindow)))
+			specRows = append(specRows, []string{"**Context Window**", fmt.Sprintf("%s tokens", formatNumber(int(model.Limits.ContextWindow)))})
 		}
 		if model.Limits.OutputTokens > 0 {
-			fmt.Fprintf(f, "| **Max Output** | %s tokens |\n", formatNumber(int(model.Limits.OutputTokens)))
+			specRows = append(specRows, []string{"**Max Output**", fmt.Sprintf("%s tokens", formatNumber(int(model.Limits.OutputTokens)))})
 		}
 	}
 	
 	// Architecture
 	if model.Metadata != nil {
 		if model.Metadata.Architecture != nil && model.Metadata.Architecture.ParameterCount != "" {
-			fmt.Fprintf(f, "| **Parameters** | %s |\n", model.Metadata.Architecture.ParameterCount)
+			specRows = append(specRows, []string{"**Parameters**", model.Metadata.Architecture.ParameterCount})
 		}
 		if !model.Metadata.ReleaseDate.IsZero() {
-			fmt.Fprintf(f, "| **Release Date** | %s |\n", model.Metadata.ReleaseDate.Format("2006-01-02"))
+			specRows = append(specRows, []string{"**Release Date**", model.Metadata.ReleaseDate.Format("2006-01-02")})
 		}
-		fmt.Fprintf(f, "| **Open Weights** | %t |\n", model.Metadata.OpenWeights)
+		specRows = append(specRows, []string{"**Open Weights**", fmt.Sprintf("%t", model.Metadata.OpenWeights)})
 	}
 	
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: specHeaders,
+		Rows:   specRows,
+	}).LF()
 	
 	// Capabilities
-	fmt.Fprintln(f, "## 🎯 Capabilities")
-	fmt.Fprintln(f)
+	builder.H2("🎯 Capabilities").LF()
 	
 	// Feature badges
 	if model.Features != nil {
 		badges := featureBadges(model)
 		if badges != "" {
-			fmt.Fprintln(f, badges)
-			fmt.Fprintln(f)
+			builder.PlainText(badges).LF().LF()
 		}
 	}
 	
 	// Provider Availability - showing variations
-	fmt.Fprintln(f, "## 🌐 Provider Availability")
-	fmt.Fprintln(f)
-	fmt.Fprintln(f, "This model is available through the following providers with potential variations:")
-	fmt.Fprintln(f)
+	builder.H2("🌐 Provider Availability").LF()
+	builder.PlainText("This model is available through the following providers with potential variations:").LF().LF()
 	
-	fmt.Fprintln(f, "| Provider | Context | Pricing (Input/Output) | Notes |")
-	fmt.Fprintln(f, "|----------|---------|------------------------|-------|")
+	providerHeaders := []string{"Provider", "Context", "Pricing (Input/Output)", "Notes"}
+	var providerRows [][]string
 	
 	providers := catalog.Providers().List()
 	providerCount := 0
@@ -564,17 +628,19 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 				providerLink := fmt.Sprintf("[%s](../../../providers/%s/models/%s.md)",
 					provider.Name, string(provider.ID), formatModelID(model.ID))
 				
-				fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
-					providerLink, contextStr, pricingStr, notes)
+				providerRows = append(providerRows, []string{providerLink, contextStr, pricingStr, notes})
 			}
 		}
 	}
 	
 	if providerCount == 0 {
-		fmt.Fprintln(f, "| *No providers found* | | | |")
+		providerRows = append(providerRows, []string{"*No providers found*", "", "", ""})
 	}
 	
-	fmt.Fprintln(f)
+	builder.Table(md.TableSet{
+		Header: providerHeaders,
+		Rows:   providerRows,
+	}).LF()
 	
 	// Build navigation links
 	navLinks := []NavigationLink{}
@@ -597,7 +663,18 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 	})
 	
 	// Write navigation section
-	g.writeNavigationSection(f, "🔗 Related Resources", navLinks)
+	builder.H3("🔗 Related Resources").LF()
+	var navItems []string
+	for _, link := range navLinks {
+		if link.Description != "" {
+			item := fmt.Sprintf("[%s](%s) - %s", link.Label, link.Path, link.Description)
+			navItems = append(navItems, item)
+		} else {
+			item := fmt.Sprintf("[%s](%s)", link.Label, link.Path)
+			navItems = append(navItems, item)
+		}
+	}
+	builder.BulletList(navItems...).LF()
 	
 	// Other models by same author
 	var otherModels []string
@@ -613,28 +690,57 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 	}
 	
 	if len(otherModels) > 0 {
-		fmt.Fprintln(f)
-		fmt.Fprintln(f, "### Other Models by This Author")
-		fmt.Fprintln(f)
-		for _, name := range otherModels {
-			if len(otherModels) > 5 {
-				// Just list first 5
-				if len(otherModels) > 5 {
-					fmt.Fprintln(f, "- ", name)
-				}
-			} else {
-				fmt.Fprintln(f, "- ", name)
-			}
-		}
+		builder.LF().H3("Other Models by This Author").LF()
+		
+		displayModels := otherModels
 		if len(otherModels) > 5 {
-			fmt.Fprintf(f, "- _...and %d more_\n", len(otherModels)-5)
+			displayModels = otherModels[:5]
+		}
+		
+		builder.BulletList(displayModels...)
+		
+		if len(otherModels) > 5 {
+			builder.PlainTextf("- _...and %d more_", len(otherModels)-5).LF()
 		}
 	}
 	
-	fmt.Fprintln(f)
+	builder.LF()
 	
 	// Footer with timestamp
-	g.writeTimestampedFooter(f)
+	builder.HorizontalRule()
+	builder.Italic(fmt.Sprintf("Last Updated: %s | %s",
+		time.Now().UTC().Format("2006-01-02 15:04:05 UTC"),
+		"Generated by [Starmap](https://github.com/agentstation/starmap)"))
 	
-	return nil
+	return builder.Build()
+}
+
+// Helper functions for builder-based operations
+
+// writeFooterToBuilder writes a footer using the markdown builder
+func (g *Generator) writeFooterToBuilder(builder *MarkdownBuilder, breadcrumbs ...Breadcrumb) {
+	var buf strings.Builder
+	g.writeFooter(&buf, breadcrumbs...)
+	builder.PlainText(buf.String())
+}
+
+// writeNavigationSectionToBuilder writes a navigation section using the markdown builder
+func (g *Generator) writeNavigationSectionToBuilder(builder *MarkdownBuilder, title string, links []NavigationLink) {
+	var buf strings.Builder
+	g.writeNavigationSection(&buf, title, links)
+	builder.PlainText(buf.String())
+}
+
+// writeTimestampedFooterToBuilder writes a timestamped footer using the markdown builder
+func (g *Generator) writeTimestampedFooterToBuilder(builder *MarkdownBuilder) {
+	var buf strings.Builder
+	g.writeTimestampedFooter(&buf)
+	builder.PlainText(buf.String())
+}
+
+// writeBreadcrumbsToBuilder writes breadcrumbs using the markdown builder
+func (g *Generator) writeBreadcrumbsToBuilder(builder *MarkdownBuilder, breadcrumbs ...Breadcrumb) {
+	var buf strings.Builder
+	g.writeBreadcrumbs(&buf, breadcrumbs...)
+	builder.PlainText(buf.String())
 }
