@@ -1,78 +1,95 @@
----
-title: "Claude Opus 4"
-description: ""
-weight: 10
-author: "Anthropic"
----
 # Claude Opus 4
+  
+[Catalog](../../../..) / [Providers](../../..) / [Anthropic](../..) / **Claude Opus 4**
+
 
 ## 📋 Overview
-
+  
 - **ID**: `claude-opus-4-20250514`
-- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Anthropic](../README.md)
-- **Authors**: [Anthropic](../../../authors/anthropic/README.md)
-- **Release Date**: 2025-05-22
-- **Knowledge Cutoff**: 2025-03-31
-- **Open Weights**: false
-- **Context Window**: 200K tokens
-- **Max Output**: 32K tokens
-
+- **Provider**: [Anthropic](../)
+- **Authors**: [Anthropic](../../../authors/anthropic/)
+  
+## 🔬 Technical Specifications
+  
+**Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red) ![Top-K](https://img.shields.io/badge/top__k-supported-orange)
+  
+  
 ## 🎯 Capabilities
-
+  
+### Feature Overview
+  
+![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Can analyze and understand images](https://img.shields.io/badge/vision-✓-purple) ![Supported input modalities](https://img.shields.io/badge/input-text,image-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Accepts tool definitions in requests](https://img.shields.io/badge/tools-✓-yellow) ![Supports tool choice strategies (auto/none/required)](https://img.shields.io/badge/tool__choice-✓-yellow) ![Supports basic reasoning](https://img.shields.io/badge/reasoning-✓-lime) ![Can include reasoning traces in response](https://img.shields.io/badge/include__reasoning-✓-lime) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Top-k sampling](https://img.shields.io/badge/top__k-advanced-orange) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Stop sequences](https://img.shields.io/badge/stop-core-blue) ![Alternative response formats](https://img.shields.io/badge/format__response-✓-cyan) ![JSON schema validation](https://img.shields.io/badge/structured__outputs-✓-cyan) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
+  
+  
 ### Input/Output Modalities
-
+  
 | Direction | Text | Image | Audio | Video | PDF |
-|-----------|------|-------|-------|-------|-----|
-| Input     | ✅   | ✅   | ❌   | ❌   | ❌   |
-| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
+|---------|---------|---------|---------|---------|---------|
+| **Input** | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Output** | ✅ | ❌ | ❌ | ❌ | ❌ |
 
+  
 ### Core Features
-
+  
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
-|--------------|------------------|-------------|------------|------------------|
-| ✅           | ✅               | ❌          | ❌         | ❌               |
+|---------|---------|---------|---------|---------|
+| ❌ | ✅ | ✅ | ❌ | ❌ |
 
+  
 ### Response Delivery
-
+  
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
-|-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ❌                | ❌        | ✅            | ✅           |
+|---------|---------|---------|---------|---------|
+| ✅ | ✅ | ✅ | ❌ | ✅ |
 
+  
 ### Advanced Reasoning
-
+  
 | Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
-|-----------------|------------------|------------------|-------------------|-------------------|
-| ✅              | ❌               | ❌               | ❌                | ❌                |
+|---------|---------|---------|---------|---------|
+| ✅ | ❌ | ❌ | ✅ | ❌ |
 
+  
 ## 🎛️ Generation Controls
-
+  
 ### Sampling & Decoding
+  
+| Temperature | Top-P | Top-K |
+|---------|---------|---------|
+| 0.0-2.0 | 0.0-1.0 | ✅ |
 
-| Temperature | Top-P |
-|---|---|
-| 0.0-2.0 | 0.0-1.0 |
-
+  
 ### Length & Termination
+  
+| Max Tokens | Stop Sequences |
+|---------|---------|
+| ✅ | ✅ |
 
-| Max Tokens |
-|---|
-| 1-32K |
-
+  
 ## 💰 Pricing
-
-### Token Pricing
-
-| Input | Output | Reasoning | Cache Read | Cache Write |
-|-------|--------|-----------|------------|-------------|
-| $15.00/1M | $75.00/1M | - | $1.50/1M | $18.75/1M |
-
+  
+*Pricing shown for Anthropic*
+  
+  
+Contact provider for pricing information.
+  
 ## 📋 Metadata
+  
+**Created**: 0001-01-01 00:00:00 UTC
+  
+**Last Updated**: 0001-01-01 00:00:00 UTC
+  
+  
+---
+  
+  
+### Navigation
 
-**Created**: 2025-08-22 04:09:45 UTC
-**Last Updated**: 2025-08-22 04:09:45 UTC
+- [More models by Anthropic](../)
+- [More models by Anthropic](../../../../authors/anthropic/)
+- [All Providers](../../../../providers)
+- [Back to Catalog](../../../..)
 
-## Navigation
 
-- [← Back to Anthropic](../README.md)
-- [← Back to Providers](../../README.md)
-- [← Back to Main Index](../../../README.md)
+---
+_Last Updated: 2025-08-31 19:53:05 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_

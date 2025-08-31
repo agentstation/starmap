@@ -1,46 +1,132 @@
----
-title: "README"
-weight: 1
----
-# <img src="./logo.svg" alt="Cerebras Logo" style="vertical-align: middle; height: 32px; width: auto; min-width: 32px"> Cerebras
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/cerebras.svg" alt="Cerebras" width="32" height="32" style="vertical-align: middle;"> Cerebras
+  
+Fastest inference speeds using revolutionary wafer-scale computing technology.
+  
+  
+## Provider Information
+  
+| Field | Value |
+|---------|---------|
+| **Provider ID** | `cerebras` |
+| **Total Models** | 17 |
+| **Authentication** | API Key Required |
+| **Environment Variable** | `CEREBRAS_API_KEY` |
+| **Status Page** | [https://status.cerebras.ai/](https://status.cerebras.ai/) |
 
-**Headquarters**: Sunnyvale, CA, USA  
-**Status Page**: [https://status.cerebras.ai/](https://status.cerebras.ai/)  
-**API Key Required**: Yes  
-**API Key Name**: $CEREBRAS_API_KEY  
-**Total Models**: 0
-
+  
 ## 🔗 API Endpoints
-
+  
 **Documentation**: [https://inference-docs.cerebras.ai/models/overview](https://inference-docs.cerebras.ai/models/overview)  
+  
 **Models API**: [https://api.cerebras.ai/v1/models](https://api.cerebras.ai/v1/models)  
+  
 **Chat Completions**: [https://api.cerebras.ai/v1/chat/completions](https://api.cerebras.ai/v1/chat/completions)  
+  
 **Health API**: [https://status.cerebras.ai/api/v2/summary.json](https://status.cerebras.ai/api/v2/summary.json)  
-
+  
+  
 ## 🔒 Privacy & Data Handling
-
+  
 **Privacy Policy**: [https://www.cerebras.ai/privacy-policy](https://www.cerebras.ai/privacy-policy)  
+  
 **Terms of Service**: [https://www.cerebras.ai/terms-of-service](https://www.cerebras.ai/terms-of-service)  
+  
 **Retains User Data**: No  
+  
 **Trains on User Data**: No  
-
+  
+  
 ## ⏱️ Data Retention Policy
-
+  
 **Policy Type**: No Retention  
+  
 **Retention Duration**: Immediate deletion  
+  
 **Details**: API inputs and outputs are not retained for training, inference and chatbot services. Data is processed for immediate response generation and then discarded.  
-
+  
+  
 ## 🛡️ Content Moderation
-
+  
 **Requires Moderation**: No  
+  
 **Content Moderated**: Yes  
+  
 **Moderated by**: Cerebras  
+  
+  
+## 🏢 Headquarters
+  
+Sunnyvale, CA, USA
+  
+  
+## Available Models
+  
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [gpt-oss-120b](./models/gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
 
-## Models
+  
+### Qwen
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Qwen Image](./models/qwen-image-at-qwen-image.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | 131.1k | $0.29 | $0.39 | 📝 🔧 |
+| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-235b-a22b-instruct-2507](./models/qwen-3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-235b-a22b-thinking-2507](./models/qwen-3-235b-a22b-thinking-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-32b](./models/qwen-3-32b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-coder-480b](./models/qwen-3-coder-480b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen3-32b](./models/qwen-qwen3-32b.md) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
 
-No models available for this provider.
+  
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [llama-3.3-70b](./models/llama-3.3-70b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
 
-## Navigation
+  
+## Configuration
+  
+### Authentication
+  
+This provider requires an API key. Set it as an environment variable:
+  
+  
+```bash
+export CEREBRAS_API_KEY="your-api-key-here"
+```
+  
+### Using with Starmap
+  
+```bash
+# List all models from this provider
+starmap list models --provider cerebras
 
-- [← Back to Providers](../README.md)
-- [← Back to Main Index](../../README.md)
+# Fetch latest models from provider API
+starmap fetch --provider cerebras
+
+# Sync provider data
+starmap sync --provider cerebras
+```
+  
+### See Also
+
+- [All Providers](../)
+- [Browse by Author](../../authors/)
+- [Model Comparison](../../models/)
+
+
+  
+---
+_[← Back to Providers](../) | [← Back to Catalog](../../) | Generated by [Starmap](https://github.com/agentstation/starmap)_

@@ -70,91 +70,58 @@ func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Prov
 func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provider) error {
 	builder := NewMarkdownBuilder(w)
 
+	// Add Hugo front matter
+	builder.HugoFrontMatter("Provider Overview", 1)
+
 	builder.H1("🏢 AI Model Providers").
 		LF().
 		PlainText("Organizations that host and serve AI models through APIs.").
 		LF().LF()
 
-	// Provider comparison table using the comparison function
+	// Provider comparison table
 	builder.H2("Provider Comparison").LF()
-
+	
 	// Sort providers by model count for better presentation
 	sort.Slice(providers, func(i, j int) bool {
 		return len(providers[i].Models) > len(providers[j].Models)
 	})
-
+	
 	g.writeProviderComparisonTableToBuilder(builder, providers)
 	builder.LF()
 
-	// Add top models overview across all providers
-	builder.H2("🌟 Top Models Across Providers").
-		LF().
-		PlainText("Overview of popular models available across different providers:").
-		LF().LF()
-
-	// Collect all models from all providers
-	var allModels []*catalogs.Model
-	for _, provider := range providers {
-		for _, model := range provider.Models {
-			modelCopy := model
-			allModels = append(allModels, &modelCopy)
-		}
-	}
-
-	// Show top 20 models
-	if len(allModels) > 0 {
-		g.writeModelsOverviewTableToBuilder(builder, allModels, providers)
-	}
-	builder.LF()
-
-	// Provider details section
 	builder.H2("Provider Details").LF()
 
+	// Sort providers alphabetically for the detailed list
+	sort.Slice(providers, func(i, j int) bool {
+		return providers[i].ID < providers[j].ID
+	})
+
+	// Generate provider list with Hugo-compatible links
 	for _, provider := range providers {
-		builder.H3(fmt.Sprintf("%s %s", getProviderBadge(provider.Name), provider.Name)).LF()
-
-		// Provider description (if we had it)
-		desc := getProviderDescription(provider)
-		if desc != "" {
-			builder.PlainText(desc).LF().LF()
+		// Provider heading with logo and link
+		// Use ../ prefix for Hugo compatibility (goes up from /providers/readme/ to /providers/)
+		logoPath := fmt.Sprintf("./%s/logo.svg", provider.ID)
+		providerLink := fmt.Sprintf("../%s/", provider.ID)
+		
+		builder.H3(fmt.Sprintf(`<img src="%s" alt="" width="16" height="16" style="vertical-align: middle"> [%s](%s)`,
+			logoPath, provider.Name, providerLink)).LF()
+		
+		// Provider details
+		if provider.Headquarters != nil {
+			builder.PlainText(fmt.Sprintf("**Headquarters**: %s  ", *provider.Headquarters))
 		}
-
-		// Quick stats
-		builder.BulletList(
-			fmt.Sprintf("**Models**: %d available", len(provider.Models)),
-		)
-
+		builder.PlainText(fmt.Sprintf("**Models**: %d  ", len(provider.Models)))
+		
 		if provider.APIKey != nil {
-			builder.BulletList(
-				fmt.Sprintf("**API Key**: Required (`%s`)", provider.APIKey.Name),
-			)
+			builder.PlainText("**API Key Required**: Yes  ")
+			builder.PlainText(fmt.Sprintf("**API Key Name**: %s  ", provider.APIKey.Name))
+		} else if provider.APIKey == nil {
+			// For providers like Google Vertex that might not have simple API key auth
+			// Don't show API key fields
 		}
-		if provider.StatusPageURL != nil {
-			builder.BulletList(
-				fmt.Sprintf("**Status**: [Check current status](%s)", *provider.StatusPageURL),
-			)
-		}
-
-		// Top models preview
-		if len(provider.Models) > 0 {
-			builder.BulletList("**Featured Models**:")
-			count := 0
-			for _, model := range provider.Models {
-				if count >= 3 {
-					break
-				}
-				builder.BulletList(fmt.Sprintf("  - %s", model.Name))
-				count++
-			}
-			if len(provider.Models) > 3 {
-				builder.BulletList(fmt.Sprintf("  - [View all %d models →](%s/)", len(provider.Models), string(provider.ID)))
-			}
-		}
+		
 		builder.LF()
 	}
-
-	// Footer
-	g.writeFooterToBuilder(builder, Breadcrumb{Label: "Back to Catalog", Path: "../"})
 
 	return builder.Build()
 }
