@@ -18,6 +18,15 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Generate documentation
+        run: |
+          go run ./cmd/starmap/main.go generate docs --output ./docs --verbose
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
