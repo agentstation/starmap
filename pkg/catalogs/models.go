@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"maps"
+	"sort"
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -108,13 +109,17 @@ func (m *Models) Len() int {
 // List returns a slice of all models.
 func (m *Models) List() []*Model {
 	m.mu.RLock()
-	models := make([]*Model, len(m.models))
-	i := 0
+	models := make([]*Model, 0, len(m.models))
 	for _, model := range m.models {
-		models[i] = model
-		i++
+		models = append(models, model)
 	}
 	m.mu.RUnlock()
+	
+	// Sort by ID for deterministic ordering
+	sort.Slice(models, func(i, j int) bool {
+		return models[i].ID < models[j].ID
+	})
+	
 	return models
 }
 

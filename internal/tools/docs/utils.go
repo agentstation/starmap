@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -406,4 +407,42 @@ func getResearchInfo(author *catalogs.Author) string {
 		return info
 	}
 	return ""
+}
+
+// SortedModels converts a map of models to a sorted slice for deterministic iteration
+func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
+	if models == nil || len(models) == 0 {
+		return nil
+	}
+	
+	// Convert map to slice
+	result := make([]*catalogs.Model, 0, len(models))
+	for _, model := range models {
+		m := model // Copy to avoid reference issues
+		result = append(result, &m)
+	}
+	
+	// Sort by ID for deterministic ordering
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].ID < result[j].ID
+	})
+	
+	return result
+}
+
+// GetLatestModel returns the "latest" model from a provider in a deterministic way
+// It picks the model with the lexicographically last ID (often newest versions have higher IDs)
+func GetLatestModel(provider *catalogs.Provider) string {
+	if provider == nil || len(provider.Models) == 0 {
+		return "N/A"
+	}
+	
+	// Get sorted models
+	models := SortedModels(provider.Models)
+	if len(models) == 0 {
+		return "N/A"
+	}
+	
+	// Return the last model name (lexicographically highest ID)
+	return models[len(models)-1].Name
 }

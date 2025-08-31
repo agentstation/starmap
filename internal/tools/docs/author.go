@@ -360,12 +360,14 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 			modelHeaders := []string{"Model", "Providers", "Context", "Capabilities"}
 			var modelRows [][]string
 
-			// Sort models
-			sort.Slice(models, func(i, j int) bool {
-				return models[i].Name < models[j].Name
+			// Sort models (make a copy to avoid modifying the original)
+			modelsCopy := make([]*catalogs.Model, len(models))
+			copy(modelsCopy, models)
+			sort.Slice(modelsCopy, func(i, j int) bool {
+				return modelsCopy[i].Name < modelsCopy[j].Name
 			})
 
-			for _, model := range models {
+			for _, model := range modelsCopy {
 				// Model link to local models subdirectory
 				modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.Name, formatModelID(model.ID))
 

@@ -21,22 +21,28 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 	providerMap := make(map[string]*catalogs.Provider)
 	for _, p := range providers {
 		if p.Models != nil {
-			for modelID := range p.Models {
-				providerMap[modelID] = p
+			// Use sorted models for deterministic iteration
+			sortedModels := SortedModels(p.Models)
+			for _, model := range sortedModels {
+				providerMap[model.ID] = p
 			}
 		}
 	}
 
+	// Make a copy to avoid modifying the original
+	modelsCopy := make([]*catalogs.Model, len(models))
+	copy(modelsCopy, models)
+	
 	// Sort models by name
-	sort.Slice(models, func(i, j int) bool {
-		return models[i].Name < models[j].Name
+	sort.Slice(modelsCopy, func(i, j int) bool {
+		return modelsCopy[i].Name < modelsCopy[j].Name
 	})
 
 	// Build table rows
 	rows := [][]string{}
-	displayCount := min(20, len(models))
+	displayCount := min(20, len(modelsCopy))
 	
-	for _, model := range models[:displayCount] {
+	for _, model := range modelsCopy[:displayCount] {
 		// Provider
 		providerName := "—"
 		if provider, ok := providerMap[model.ID]; ok {
@@ -74,9 +80,9 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 		})
 	}
 
-	if len(models) > 20 {
+	if len(modelsCopy) > 20 {
 		rows = append(rows, []string{
-			fmt.Sprintf("_...and %d more_", len(models)-20),
+			fmt.Sprintf("_...and %d more_", len(modelsCopy)-20),
 			"", "", "", "", "",
 		})
 	}
@@ -101,7 +107,9 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 
 		freeTier := "❌"
 		hasFreeModels := false
-		for _, model := range provider.Models {
+		// Use sorted models for deterministic iteration
+		sortedModels := SortedModels(provider.Models)
+		for _, model := range sortedModels {
 			if model.Pricing != nil && model.Pricing.Tokens != nil {
 				if (model.Pricing.Tokens.Input != nil && model.Pricing.Tokens.Input.Per1M == 0) ||
 					(model.Pricing.Tokens.Output != nil && model.Pricing.Tokens.Output.Per1M == 0) {
@@ -153,23 +161,27 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 	builder := NewMarkdownBuilder(w)
 	
+	// Make a copy to avoid modifying the original
+	modelsCopy := make([]*catalogs.Model, len(models))
+	copy(modelsCopy, models)
+	
 	// Sort by input price
-	sort.Slice(models, func(i, j int) bool {
+	sort.Slice(modelsCopy, func(i, j int) bool {
 		iPrice := float64(0)
 		jPrice := float64(0)
-		if models[i].Pricing != nil && models[i].Pricing.Tokens != nil && models[i].Pricing.Tokens.Input != nil {
-			iPrice = models[i].Pricing.Tokens.Input.Per1M
+		if modelsCopy[i].Pricing != nil && modelsCopy[i].Pricing.Tokens != nil && modelsCopy[i].Pricing.Tokens.Input != nil {
+			iPrice = modelsCopy[i].Pricing.Tokens.Input.Per1M
 		}
-		if models[j].Pricing != nil && models[j].Pricing.Tokens != nil && models[j].Pricing.Tokens.Input != nil {
-			jPrice = models[j].Pricing.Tokens.Input.Per1M
+		if modelsCopy[j].Pricing != nil && modelsCopy[j].Pricing.Tokens != nil && modelsCopy[j].Pricing.Tokens.Input != nil {
+			jPrice = modelsCopy[j].Pricing.Tokens.Input.Per1M
 		}
 		return iPrice < jPrice
 	})
 
 	rows := [][]string{}
-	displayCount := min(15, len(models))
+	displayCount := min(15, len(modelsCopy))
 	
-	for _, model := range models[:displayCount] {
+	for _, model := range modelsCopy[:displayCount] {
 		if model.Pricing == nil || model.Pricing.Tokens == nil {
 			continue
 		}
@@ -212,23 +224,27 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 	builder := NewMarkdownBuilder(w)
 	
+	// Make a copy to avoid modifying the original
+	modelsCopy := make([]*catalogs.Model, len(models))
+	copy(modelsCopy, models)
+	
 	// Sort by context window size
-	sort.Slice(models, func(i, j int) bool {
+	sort.Slice(modelsCopy, func(i, j int) bool {
 		iContext := int64(0)
 		jContext := int64(0)
-		if models[i].Limits != nil {
-			iContext = models[i].Limits.ContextWindow
+		if modelsCopy[i].Limits != nil {
+			iContext = modelsCopy[i].Limits.ContextWindow
 		}
-		if models[j].Limits != nil {
-			jContext = models[j].Limits.ContextWindow
+		if modelsCopy[j].Limits != nil {
+			jContext = modelsCopy[j].Limits.ContextWindow
 		}
 		return iContext > jContext
 	})
 
 	rows := [][]string{}
-	displayCount := min(15, len(models))
+	displayCount := min(15, len(modelsCopy))
 	
-	for _, model := range models[:displayCount] {
+	for _, model := range modelsCopy[:displayCount] {
 		if model.Limits == nil {
 			continue
 		}
@@ -283,15 +299,19 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 	builder := NewMarkdownBuilder(w)
 	builder.H3("Feature Comparison").LF()
 
+	// Make a copy to avoid modifying the original
+	modelsCopy := make([]*catalogs.Model, len(models))
+	copy(modelsCopy, models)
+	
 	// Sort models by name for consistency
-	sort.Slice(models, func(i, j int) bool {
-		return models[i].Name < models[j].Name
+	sort.Slice(modelsCopy, func(i, j int) bool {
+		return modelsCopy[i].Name < modelsCopy[j].Name
 	})
 
 	// Limit to 15 models for readability
-	displayModels := models
-	if len(models) > 15 {
-		displayModels = models[:15]
+	displayModels := modelsCopy
+	if len(modelsCopy) > 15 {
+		displayModels = modelsCopy[:15]
 	}
 
 	rows := [][]string{}

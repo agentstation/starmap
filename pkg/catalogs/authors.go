@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"maps"
+	"sort"
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -128,13 +129,17 @@ func (a *Authors) Len() int {
 // List returns a slice of all authors.
 func (a *Authors) List() []*Author {
 	a.mu.RLock()
-	authors := make([]*Author, len(a.authors))
-	i := 0
+	authors := make([]*Author, 0, len(a.authors))
 	for _, author := range a.authors {
-		authors[i] = author
-		i++
+		authors = append(authors, author)
 	}
 	a.mu.RUnlock()
+	
+	// Sort by ID for deterministic ordering
+	sort.Slice(authors, func(i, j int) bool {
+		return authors[i].ID < authors[j].ID
+	})
+	
 	return authors
 }
 

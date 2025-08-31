@@ -103,15 +103,8 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	providerRows := [][]string{}
 	for _, pi := range providerInfos {
 		provider := pi.provider
-		latestModel := "N/A"
-
-		// Find latest model (simplified for now - just take the first one we find)
-		if len(provider.Models) > 0 {
-			for _, model := range provider.Models {
-				latestModel = model.Name
-				break // Just take the first one
-			}
-		}
+		// Use deterministic helper to get latest model
+		latestModel := GetLatestModel(provider)
 
 		badge := getProviderBadge(provider.Name)
 		providerRows = append(providerRows, []string{
@@ -210,7 +203,9 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 		// Find provider name
 		providerName := "Unknown"
 		for _, p := range providers {
-			for _, pm := range p.Models {
+			// Use sorted models for deterministic iteration
+			sortedModels := SortedModels(p.Models)
+			for _, pm := range sortedModels {
 				if pm.ID == model.ID {
 					providerName = p.Name
 					break
@@ -256,17 +251,21 @@ func selectFeaturedModels(models []*catalogs.Model) []*catalogs.Model {
 		}
 	}
 
-	sort.Slice(featured, func(i, j int) bool {
+	// Make a copy before sorting to avoid modifying the original
+	featuredCopy := make([]*catalogs.Model, len(featured))
+	copy(featuredCopy, featured)
+	
+	sort.Slice(featuredCopy, func(i, j int) bool {
 		// Prioritize popular model families
-		iPriority := getModelPriority(featured[i].Name)
-		jPriority := getModelPriority(featured[j].Name)
+		iPriority := getModelPriority(featuredCopy[i].Name)
+		jPriority := getModelPriority(featuredCopy[j].Name)
 		if iPriority != jPriority {
 			return iPriority < jPriority
 		}
-		return featured[i].Name < featured[j].Name
+		return featuredCopy[i].Name < featuredCopy[j].Name
 	})
 
-	return featured
+	return featuredCopy
 }
 
 // getModelPriority returns a priority score for featuring models

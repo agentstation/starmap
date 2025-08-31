@@ -105,9 +105,10 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 	// Collect all models from all providers
 	var allModels []*catalogs.Model
 	for _, provider := range providers {
-		for _, model := range provider.Models {
-			modelCopy := model
-			allModels = append(allModels, &modelCopy)
+		// Use sorted models for deterministic iteration
+		sortedModels := SortedModels(provider.Models)
+		for _, model := range sortedModels {
+			allModels = append(allModels, model)
 		}
 	}
 
@@ -129,10 +130,14 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 		// Provider heading with logo and link - using GitHub-compatible directory paths
 		// Works on both GitHub (auto-finds README.md) and Hugo (with permalink config)
 		logoPath := fmt.Sprintf("./%s/logo.svg", provider.ID)
-		providerLink := fmt.Sprintf("../%s/", provider.ID)
+		// Use just the provider ID without ./ prefix
+		providerLink := fmt.Sprintf("%s/", provider.ID)
 		
-		builder.H3(fmt.Sprintf(`<img src="%s" alt="" width="16" height="16" style="vertical-align: middle"> [%s](%s)`,
-			logoPath, provider.Name, providerLink)).LF()
+		// Use markdown builder to create the heading with embedded image and link
+		// This ensures proper ordering and avoids buffering issues
+		heading := fmt.Sprintf(`<img src="%s" alt="" width="16" height="16" style="vertical-align: middle"> [%s](%s)`,
+			logoPath, provider.Name, providerLink)
+		builder.H3(heading).LF()
 
 		// Provider description (if we had it)
 		desc := getProviderDescription(provider)
@@ -159,8 +164,10 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 		// Top models preview
 		if len(provider.Models) > 0 {
 			builder.BulletList("**Featured Models**:")
+			// Use sorted models for deterministic iteration
+			sortedModels := SortedModels(provider.Models)
 			count := 0
-			for _, model := range provider.Models {
+			for _, model := range sortedModels {
 				if count >= 3 {
 					break
 				}
@@ -400,17 +407,21 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 	if len(provider.Models) == 0 {
 		builder.Italic("No models currently available from this provider.").LF()
 	} else {
-		// Convert map to slice
-		var modelList []*catalogs.Model
-		for _, model := range provider.Models {
-			m := model // Copy to avoid reference issues
-			modelList = append(modelList, &m)
-		}
+		// Use sorted models for deterministic iteration
+		modelList := SortedModels(provider.Models)
 
 		// Group models by category/family
 		modelGroups := groupModelsByFamily(modelList)
 
-		for family, models := range modelGroups {
+		// Sort families for deterministic ordering
+		var families []string
+		for family := range modelGroups {
+			families = append(families, family)
+		}
+		sort.Strings(families)
+
+		for _, family := range families {
+			models := modelGroups[family]
 			if family != "" {
 				builder.H3(family).LF()
 			}
@@ -419,12 +430,14 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			headers := []string{"Model", "Context", "Input", "Output", "Features"}
 			var rows [][]string
 
-			// Sort models within family
-			sort.Slice(models, func(i, j int) bool {
-				return models[i].Name < models[j].Name
+			// Sort models within family (make a copy to avoid modifying the original)
+			modelsCopy := make([]*catalogs.Model, len(models))
+			copy(modelsCopy, models)
+			sort.Slice(modelsCopy, func(i, j int) bool {
+				return modelsCopy[i].Name < modelsCopy[j].Name
 			})
 
-			for _, model := range models {
+			for _, model := range modelsCopy {
 				// Context window
 				contextStr := "N/A"
 				if model.Limits != nil && model.Limits.ContextWindow > 0 {
@@ -565,15 +578,16 @@ func (g *Generator) generateProviderModelPages(dir string, provider *catalogs.Pr
 	}
 
 	// Generate a page for each model
-	for modelID, model := range provider.Models {
+	// Use sorted models for deterministic iteration
+	sortedModels := SortedModels(provider.Models)
+	for _, model := range sortedModels {
 		// Use getModelFilePath to preserve subdirectory structure
-		modelFile, err := getModelFilePath(dir, modelID)
+		modelFile, err := getModelFilePath(dir, model.ID)
 		if err != nil {
-			return fmt.Errorf("getting file path for model %s: %w", modelID, err)
+			return fmt.Errorf("getting file path for model %s: %w", model.ID, err)
 		}
-		modelCopy := model // Create a copy to avoid pointer issues
-		if err := g.generateProviderModelPage(modelFile, &modelCopy, provider, authorMap); err != nil {
-			return fmt.Errorf("generating model %s: %w", modelID, err)
+		if err := g.generateProviderModelPage(modelFile, model, provider, authorMap); err != nil {
+			return fmt.Errorf("generating model %s: %w", model.ID, err)
 		}
 	}
 

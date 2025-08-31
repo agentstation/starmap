@@ -35,6 +35,11 @@ func NewMarkdownBuilderBuffer() *MarkdownBuilder {
 	}
 }
 
+// Writer returns the underlying writer
+func (m *MarkdownBuilder) Writer() io.Writer {
+	return m.writer
+}
+
 // String returns the buffered content
 func (m *MarkdownBuilder) String() string {
 	if m.useBuffer && m.buffer != nil {
@@ -187,8 +192,9 @@ func (m *MarkdownBuilder) Image(alt, url string) *MarkdownBuilder {
 // ImageWithStyle adds an image with inline CSS styling for Hugo
 func (m *MarkdownBuilder) ImageWithStyle(alt, url string, width, height int) *MarkdownBuilder {
 	// Hugo supports HTML in markdown, so we can use img tags
-	fmt.Fprintf(m.writer, `<img src="%s" alt="%s" width="%d" height="%d" style="vertical-align: middle;">`, 
+	html := fmt.Sprintf(`<img src="%s" alt="%s" width="%d" height="%d" style="vertical-align: middle;">`, 
 		url, alt, width, height)
+	m.md.PlainText(html)
 	return m
 }
 
@@ -246,7 +252,8 @@ func (m *MarkdownBuilder) Blockquote(text string) *MarkdownBuilder {
 // Alert adds a GitHub-style alert
 func (m *MarkdownBuilder) Alert(alertType string, text string) *MarkdownBuilder {
 	// GitHub-style alerts using blockquotes
-	fmt.Fprintf(m.writer, "> [!%s]\n> %s\n\n", strings.ToUpper(alertType), text)
+	alert := fmt.Sprintf("> [!%s]\n> %s", strings.ToUpper(alertType), text)
+	m.md.PlainText(alert).LF().LF()
 	return m
 }
 
@@ -423,12 +430,13 @@ func (m *MarkdownBuilder) CheckboxList(items []struct {
 
 // Details adds a collapsible details section (HTML in markdown)
 func (m *MarkdownBuilder) Details(summary, content string) *MarkdownBuilder {
-	fmt.Fprintf(m.writer, "<details>\n<summary>%s</summary>\n\n%s\n\n</details>\n\n", summary, content)
+	html := fmt.Sprintf("<details>\n<summary>%s</summary>\n\n%s\n\n</details>", summary, content)
+	m.md.PlainText(html).LF().LF()
 	return m
 }
 
 // RawHTML adds raw HTML (useful for Hugo shortcodes or custom elements)
 func (m *MarkdownBuilder) RawHTML(html string) *MarkdownBuilder {
-	fmt.Fprintln(m.writer, html)
+	m.md.PlainText(html).LF()
 	return m
 }

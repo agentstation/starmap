@@ -41,9 +41,9 @@ Overview of popular models available across different providers:
 | **Claude Haiku 3** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
 | **Claude Haiku 3.5** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 3** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 |
-| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 4** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
+| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 4 1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 4 1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 4.1** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
@@ -53,7 +53,7 @@ Overview of popular models available across different providers:
   
 ## Provider Details
   
-### <img src="./anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](../anthropic/)
+### <img src="./anthropic/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Anthropic](anthropic/)
   
 Creator of Claude, focusing on safe and beneficial AI with constitutional training.
   
@@ -62,12 +62,12 @@ Creator of Claude, focusing on safe and beneficial AI with constitutional traini
 - **API Key**: Required (`ANTHROPIC_API_KEY`)
 - **Status**: [Check current status](https://status.anthropic.com)
 - **Featured Models**:
+-   - Claude Haiku 3.5
+-   - claude 3 5 haiku
 -   - Claude Sonnet 3.5 (Old)
--   - Claude Sonnet 3.5 (New)
--   - Claude Sonnet 3.7
--   - [View all 20 models →](../anthropic/)
+-   - [View all 20 models →](anthropic/)
   
-### <img src="./cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](../cerebras/)
+### <img src="./cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](cerebras/)
   
 Fastest inference speeds using revolutionary wafer-scale computing technology.
   
@@ -76,12 +76,12 @@ Fastest inference speeds using revolutionary wafer-scale computing technology.
 - **API Key**: Required (`CEREBRAS_API_KEY`)
 - **Status**: [Check current status](https://status.cerebras.ai/)
 - **Featured Models**:
--   - qwen3-32b
--   - qwen-3-32b
--   - Qwen2
--   - [View all 17 models →](../cerebras/)
+-   - gpt-oss-120b
+-   - llama-3.3-70b
+-   - llama-4-maverick-17b-128e-instruct
+-   - [View all 17 models →](cerebras/)
   
-### <img src="./deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](../deepseek/)
+### <img src="./deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](deepseek/)
   
 Chinese AI company specializing in efficient, high-performance language models.
   
@@ -90,12 +90,12 @@ Chinese AI company specializing in efficient, high-performance language models.
 - **API Key**: Required (`DEEPSEEK_API_KEY`)
 - **Status**: [Check current status](https://status.deepseek.com)
 - **Featured Models**:
--   - Deepseek V3
 -   - deepseek-chat
 -   - DeepSeek-Coder-V2-Instruct
--   - [View all 8 models →](../deepseek/)
+-   - Deepseek R1 0528 Maas
+-   - [View all 8 models →](deepseek/)
   
-### <img src="./google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](../google-ai-studio/)
+### <img src="./google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](google-ai-studio/)
   
 Google's AI platform offering Gemini models with multimodal capabilities.
   
@@ -104,12 +104,12 @@ Google's AI platform offering Gemini models with multimodal capabilities.
 - **API Key**: Required (`GOOGLE_API_KEY`)
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Gemini 2.0 Flash Experimental
--   - Gemini 2.0 Flash-Lite
--   - Gemini 2.5 Flash
--   - [View all 71 models →](../google-ai-studio/)
+-   - Model that performs Attributed Question Answering.
+-   - Embedding 001
+-   - Embedding Gecko
+-   - [View all 71 models →](google-ai-studio/)
   
-### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](../google-vertex/)
+### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](google-vertex/)
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
@@ -117,12 +117,12 @@ Enterprise AI platform on Google Cloud with Gemini and PaLM models.
 - **Models**: 285 available
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Bert Base
--   - Claude 3 7 Sonnet
--   - Imagen 3.0 Generate 002
--   - [View all 285 models →](../google-vertex/)
+-   - automl-e2e
+-   - Automl E2e
+-   - automl-vision-image-classification
+-   - [View all 285 models →](google-vertex/)
   
-### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](../groq/)
+### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](groq/)
   
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   
@@ -131,12 +131,12 @@ Ultra-fast inference with custom LPU hardware, offering low-latency model servin
 - **API Key**: Required (`GROQ_API_KEY`)
 - **Status**: [Check current status](https://status.groq.com)
 - **Featured Models**:
--   - Llama 4 Maverick 17b 128e Instruct Maas
--   - Llama Guard 3 8B
--   - kimi-k2-instruct
--   - [View all 48 models →](../groq/)
+-   - allam-2-7b
+-   - Codellama 7b Hf
+-   - compound-beta
+-   - [View all 48 models →](groq/)
   
-### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](../openai/)
+### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](openai/)
   
 Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.
   
@@ -145,10 +145,10 @@ Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.
 - **API Key**: Required (`OPENAI_API_KEY`)
 - **Status**: [Check current status](https://status.openai.com)
 - **Featured Models**:
+-   - babbage-002
 -   - Codex Mini
--   - gpt-4.1-nano
--   - gpt-4o-search-preview
--   - [View all 114 models →](../openai/)
+-   - dall-e-2
+-   - [View all 114 models →](openai/)
   
 ---
 _[← Back to Catalog](../) | Generated by [Starmap](https://github.com/agentstation/starmap)_

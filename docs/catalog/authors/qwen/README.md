@@ -17,6 +17,13 @@ AI research team within Alibaba Cloud responsible for developing the Qwen (Tongy
   
 ## Models
   
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Qwq](./models/qwq-at-qwq-32b.md) | 2 | N/A | Text |
+
+  
 ### Qwen
   
 | Model | Providers | Context | Capabilities |
@@ -27,13 +34,6 @@ AI research team within Alibaba Cloud responsible for developing the Qwen (Tongy
 | [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | 2 | N/A | Text |
 | [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | 2 | N/A | Text |
 | [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | 2 | N/A | Text |
-
-  
-### Other
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Qwq](./models/qwq-at-qwq-32b.md) | 2 | N/A | Text |
 
   
 ## Provider Availability

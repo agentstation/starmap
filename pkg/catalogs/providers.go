@@ -132,13 +132,17 @@ func (p *Providers) Len() int {
 // List returns a slice of all providers.
 func (p *Providers) List() []*Provider {
 	p.mu.RLock()
-	providers := make([]*Provider, len(p.providers))
-	i := 0
+	providers := make([]*Provider, 0, len(p.providers))
 	for _, provider := range p.providers {
-		providers[i] = provider
-		i++
+		providers = append(providers, provider)
 	}
 	p.mu.RUnlock()
+	
+	// Sort by ID for deterministic ordering
+	sort.Slice(providers, func(i, j int) bool {
+		return providers[i].ID < providers[j].ID
+	})
+	
 	return providers
 }
 

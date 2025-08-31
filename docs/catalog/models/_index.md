@@ -4,19 +4,19 @@
 |---------|---------|---------|---------|
 | **Gemini 1.5 Pro** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
-| **Gemini 2.0 Flash (Image Generation) Experimental** | 1.0M | 8k | Text, Image |
-| **Gemini 2.0 Pro Experimental 02-05** | 1.0M | 65k | Text, Image |
 | **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
-| **Gemini 2.5 Pro Preview 03-25** | 1.0M | 65k | Text, Image |
-| **LearnLM 2.0 Flash Experimental** | 1.0M | 32k | Text |
-| **Gemini 2.0 Flash-Lite Preview 02-05** | 1.0M | 8k | Text, Image |
-| **Gemini 2.0 Flash-Lite Preview** | 1.0M | 8k | Text, Image |
-| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
-| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
-| **Gemini 2.0 Flash Experimental** | 1.0M | 8k | Text, Image |
-| **Gemini 2.0 Pro Experimental** | 1.0M | 65k | Text, Image |
 | **Gemini Experimental 1206** | 1.0M | 65k | Text |
-| **Gemini 1.5 Flash-8B Latest** | 1.0M | 8k | Text, Image |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini 2.0 Flash-Lite Preview 02-05** | 1.0M | 8k | Text, Image |
+| **Gemini 2.0 Flash Experimental** | 1.0M | 8k | Text, Image |
+| **Gemini 2.0 Flash (Image Generation) Experimental** | 1.0M | 8k | Text, Image |
+| **Gemini 2.0 Flash-Lite Preview** | 1.0M | 8k | Text, Image |
+| **LearnLM 2.0 Flash Experimental** | 1.0M | 32k | Text |
+| **Gemini 2.0 Pro Experimental** | 1.0M | 65k | Text, Image |
+| **Gemini 2.5 Pro Preview 03-25** | 1.0M | 65k | Text, Image |
+| **Gemini 2.0 Pro Experimental 02-05** | 1.0M | 65k | Text, Image |
+| **Gemini 1.5 Flash** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
 | Model | Modalities | Tools | Reasoning | Advanced Controls |
@@ -127,7 +127,6 @@ Complete listing of all 439 models in the Starmap catalog.
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | N/A | N/A |
 | [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | N/A | N/A |
 | [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | N/A | N/A |
 | [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | N/A | N/A |
@@ -137,6 +136,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
 | [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | N/A | N/A |
 | [Llama3](../authors/meta/models/llama3-at-meta-llama-3-8b.md) | Multiple | N/A | N/A |
+| [Llama3 1](../authors/meta/models/llama3_1-at-llama-3.1-8b-instruct.md) | Multiple | N/A | N/A |
 | _...and 17 more_ |  |  |  |
 
   
@@ -164,11 +164,11 @@ Complete listing of all 439 models in the Starmap catalog.
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
 | [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
-| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | N/A | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | N/A | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | N/A | N/A |
+| gemini-embedding-001 | Multiple | N/A | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
 | [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
 | _...and 4 more_ |  |  |  |
@@ -191,7 +191,7 @@ Complete listing of all 439 models in the Starmap catalog.
 | _...and 2 more_ |  |  |  |
 
   
-### DeepSeek (9 models)
+### DeepSeek (8 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -202,7 +202,6 @@ Complete listing of all 439 models in the Starmap catalog.
 | Deepseek V3 | Multiple | N/A | N/A |
 | Deepseek V3 1 | Multiple | N/A | N/A |
 | [deepseek-chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | N/A | N/A |
-| [deepseek-r1-distill-llama-70b](../authors/deepseek / meta/models/deepseek-r1-distill-llama-70b.md) | Multiple | 131.1k | N/A |
 | [deepseek-reasoner](../authors/deepseek/models/deepseek-reasoner.md) | Multiple | N/A | N/A |
 
   

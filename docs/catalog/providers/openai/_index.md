@@ -61,62 +61,12 @@ San Francisco, CA, USA
   
 ## Available Models
   
-### Other
+### DALL-E
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Codex Mini](./models/codex-mini-latest.md) | 200k | $1.50 | $6.00 | 📝 🔧 |
-| [Image Segmentation 001](./models/image-segmentation-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Imagetext](./models/imagetext-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Imagewatermarkdetector](./models/imagewatermarkdetector-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Label Detector Pali 001](./models/label-detector-pali-001-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Lyria 002](./models/lyria-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Openclip](./models/openclip-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Pt Test](./models/pt-test-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Qwq](./models/qwq-at-qwq-32b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Resnet50](./models/resnet50-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Text Detector](./models/text-detector-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Text Translation](./models/text-translation-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Text Unicorn](./models/text-unicorn-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Translate Llm](./models/translate-llm-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [babbage-002](./models/babbage-002.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [davinci-002](./models/davinci-002.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [image-segmentation-001](./models/image-segmentation-001.md) | N/A | N/A | N/A | 📝 |
-| [imagetext](./models/imagetext.md) | N/A | N/A | N/A | 📝 |
-| [imagewatermarkdetector](./models/imagewatermarkdetector.md) | N/A | N/A | N/A | 📝 |
-| [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
-| [label-detector-pali-001](./models/label-detector-pali-001.md) | N/A | N/A | N/A | 📝 |
-| [lyria-002](./models/lyria-002.md) | N/A | N/A | N/A | 📝 |
-| [o1](./models/o1.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o1-2024-12-17](./models/o1-2024-12-17.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o1-mini](./models/o1-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o1-mini-2024-09-12](./models/o1-mini-2024-09-12.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o1-preview](./models/o1-preview.md) | 128k | $16.50 | $66.00 | 📝 |
-| [o1-pro](./models/o1-pro.md) | 200k | $150.00 | $600.00 | 📝 👁️ 🔧 |
-| [o3](./models/o3.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o3-2025-04-16](./models/o3-2025-04-16.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o3-deep-research](./models/o3-deep-research.md) | 200k | $10.00 | $40.00 | 📝 👁️ 🔧 |
-| [o3-mini](./models/o3-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o3-mini-2025-01-31](./models/o3-mini-2025-01-31.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o3-pro](./models/o3-pro.md) | 200k | $20.00 | $80.00 | 📝 👁️ 🔧 |
-| [o4-mini](./models/o4-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o4-mini-2025-04-16](./models/o4-mini-2025-04-16.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [o4-mini-deep-research](./models/o4-mini-deep-research.md) | 200k | $2.00 | $8.00 | 📝 👁️ 🔧 |
-| [omni-moderation-2024-09-26](./models/omni-moderation-2024-09-26.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [omni-moderation-latest](./models/omni-moderation-latest.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
-| [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
-| [pt-test](./models/pt-test.md) | N/A | N/A | N/A | 📝 |
-| [resnet50](./models/resnet50.md) | N/A | N/A | N/A | 📝 |
-| [text-detector](./models/text-detector.md) | N/A | N/A | N/A | 📝 |
-| [text-translation](./models/text-translation.md) | N/A | N/A | N/A | 📝 |
-| [text-unicorn](./models/text-unicorn.md) | N/A | N/A | N/A | 📝 |
-| [translate-llm](./models/translate-llm.md) | N/A | N/A | N/A | 📝 |
-| [tts-1](./models/tts-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [tts-1-1106](./models/tts-1-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [tts-1-hd](./models/tts-1-hd.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [tts-1-hd-1106](./models/tts-1-hd-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ### Embeddings
@@ -202,19 +152,69 @@ San Francisco, CA, USA
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
+### Other
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Codex Mini](./models/codex-mini-latest.md) | 200k | $1.50 | $6.00 | 📝 🔧 |
+| [Image Segmentation 001](./models/image-segmentation-001-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Imagetext](./models/imagetext-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Imagewatermarkdetector](./models/imagewatermarkdetector-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Label Detector Pali 001](./models/label-detector-pali-001-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Lyria 002](./models/lyria-002-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Openclip](./models/openclip-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Pt Test](./models/pt-test-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Qwq](./models/qwq-at-qwq-32b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Resnet50](./models/resnet50-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Text Detector](./models/text-detector-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Text Translation](./models/text-translation-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Text Unicorn](./models/text-unicorn-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Translate Llm](./models/translate-llm-at-default.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [babbage-002](./models/babbage-002.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [davinci-002](./models/davinci-002.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [image-segmentation-001](./models/image-segmentation-001.md) | N/A | N/A | N/A | 📝 |
+| [imagetext](./models/imagetext.md) | N/A | N/A | N/A | 📝 |
+| [imagewatermarkdetector](./models/imagewatermarkdetector.md) | N/A | N/A | N/A | 📝 |
+| [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
+| [label-detector-pali-001](./models/label-detector-pali-001.md) | N/A | N/A | N/A | 📝 |
+| [lyria-002](./models/lyria-002.md) | N/A | N/A | N/A | 📝 |
+| [o1](./models/o1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o1-2024-12-17](./models/o1-2024-12-17.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o1-mini](./models/o1-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o1-mini-2024-09-12](./models/o1-mini-2024-09-12.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o1-preview](./models/o1-preview.md) | 128k | $16.50 | $66.00 | 📝 |
+| [o1-pro](./models/o1-pro.md) | 200k | $150.00 | $600.00 | 📝 👁️ 🔧 |
+| [o3](./models/o3.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o3-2025-04-16](./models/o3-2025-04-16.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o3-deep-research](./models/o3-deep-research.md) | 200k | $10.00 | $40.00 | 📝 👁️ 🔧 |
+| [o3-mini](./models/o3-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o3-mini-2025-01-31](./models/o3-mini-2025-01-31.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o3-pro](./models/o3-pro.md) | 200k | $20.00 | $80.00 | 📝 👁️ 🔧 |
+| [o4-mini](./models/o4-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o4-mini-2025-04-16](./models/o4-mini-2025-04-16.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [o4-mini-deep-research](./models/o4-mini-deep-research.md) | 200k | $2.00 | $8.00 | 📝 👁️ 🔧 |
+| [omni-moderation-2024-09-26](./models/omni-moderation-2024-09-26.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [omni-moderation-latest](./models/omni-moderation-latest.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
+| [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
+| [pt-test](./models/pt-test.md) | N/A | N/A | N/A | 📝 |
+| [resnet50](./models/resnet50.md) | N/A | N/A | N/A | 📝 |
+| [text-detector](./models/text-detector.md) | N/A | N/A | N/A | 📝 |
+| [text-translation](./models/text-translation.md) | N/A | N/A | N/A | 📝 |
+| [text-unicorn](./models/text-unicorn.md) | N/A | N/A | N/A | 📝 |
+| [translate-llm](./models/translate-llm.md) | N/A | N/A | N/A | 📝 |
+| [tts-1](./models/tts-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [tts-1-1106](./models/tts-1-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [tts-1-hd](./models/tts-1-hd.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [tts-1-hd-1106](./models/tts-1-hd-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
 ### Whisper
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
 | [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
-### DALL-E
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration

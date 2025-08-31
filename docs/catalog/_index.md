@@ -23,13 +23,13 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Provider | Models | Latest Addition |
 |---------|---------|---------|
-| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | path-foundation |
-| 🤖 [OpenAI](providers/openai/) | 114 | image-segmentation-001 |
-| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Gemini 1.5 Flash 002 |
-| ⚡ [Groq](providers/groq/) | 48 | Codellama 7b Hf |
-| 🧠 [Anthropic](providers/anthropic/) | 20 | claude 3 opus |
-| 🚀 [Cerebras](providers/cerebras/) | 17 | llama-3.3-70b |
-| 🔍 [DeepSeek](providers/deepseek/) | 8 | Deepseek V3 1 |
+| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | Xlm Roberta Large |
+| 🤖 [OpenAI](providers/openai/) | 114 | whisper-1 |
+| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Text Embedding 004 |
+| ⚡ [Groq](providers/groq/) | 48 | Whisper Large |
+| 🧠 [Anthropic](providers/anthropic/) | 20 | Claude Sonnet 4 |
+| 🚀 [Cerebras](providers/cerebras/) | 17 | Qwen3 |
+| 🔍 [DeepSeek](providers/deepseek/) | 8 | Deepseek V3 |
 
   
 ### Browse by Model Author
@@ -43,9 +43,9 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 | 👥 [Qwen Team](authors/qwen/) | 7 | AI research team within Alibaba Cloud responsible for dev... |
 | 👥 [AI21 Labs](authors/ai21/) | 3 | Israeli AI company known for Jamba hybrid SSM-Transformer... |
 | 🔬 [DeepSeek](authors/deepseek/) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning... |
-| 👥 [Tencent](authors/tencent/) | 0 | Chinese technology conglomerate with various AI initiativ... |
-| 👥 [Nous Research](authors/nousresearch/) | 0 | AI research organization known for OpenHermes and Nous-He... |
-| 👥 [THUDM](authors/thudm/) | 0 | Tsinghua University research group known for ChatGLM bili... |
+| 👥 [LAION](authors/laion/) | 0 | AI research organization |
+| 👥 [MiniMax](authors/minimax/) | 0 | Shanghai-based AI company known for ABAB series and MiniM... |
+| 👥 [Beijing Academy of Artificial Intelligence](authors/baai/) | 0 | Chinese AI research institute known for Wu Dao multimodal... |
 
   
 [View all 80 authors →](authors/)
@@ -59,13 +59,13 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 |---------|---------|---------|---------|
 | **[GPT-4](models/gpt-4.md)** | OpenAI | 8.2k | $60.00/$120.00 |
 | **[GPT-4 Turbo](models/gpt-4-turbo.md)** | OpenAI | 128k | $10.00/$30.00 |
-| **[Claude 3 7 Sonnet](models/claude-3-7-sonnet-at-20250219.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude 3 7 Sonnet](models/claude-3-7-sonnet-at-20250219.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
 | **[Claude Opus 3](models/claude-3-opus-20240229.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
+| **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 | **[Claude Sonnet 3](models/claude-3-sonnet-20240229.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 3.5 v2](models/claude-3-5-sonnet-at-20241022.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 4](models/claude-sonnet-4-at-20250514.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 3.5 v2](models/claude-3-5-sonnet-at-20241022.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 4](models/claude-sonnet-4-at-20250514.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
 | **[Gemini 2.0 Flash](models/gemini-2.0-flash.md)** | Google Vertex AI | N/A | $0.10/$0.40 |
 
   

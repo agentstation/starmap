@@ -17,6 +17,25 @@ AI research company known for GPT models, ChatGPT, and DALL-E
   
 ## Models
   
+### Embeddings
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
+| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
+| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
+
+  
+### Whisper
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
+| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
+| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
+
+  
 ### Other
   
 | Model | Providers | Context | Capabilities |
@@ -41,6 +60,14 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [tts-1-1106](./models/tts-1-1106.md) | openai | N/A | Text |
 | [tts-1-hd](./models/tts-1-hd.md) | openai | N/A | Text |
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | openai | N/A | Text |
+
+  
+### DALL-E
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [dall-e-2](./models/dall-e-2.md) | openai | N/A | Text |
+| [dall-e-3](./models/dall-e-3.md) | openai | N/A | Text |
 
   
 ### GPT
@@ -90,33 +117,6 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [gpt-image-1](./models/gpt-image-1.md) | openai | N/A | Text |
 | [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 2 | 131.1k | Text |
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 2 | 131.1k | Text |
-
-  
-### Whisper
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | 2 | N/A | Text |
-| [whisper-1](./models/whisper-1.md) | 2 | N/A | Text |
-| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
-| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
-
-  
-### DALL-E
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | openai | N/A | Text |
-| [dall-e-3](./models/dall-e-3.md) | openai | N/A | Text |
-
-  
-### Embeddings
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [text-embedding-3-large](./models/text-embedding-3-large.md) | openai | N/A | Text |
-| [text-embedding-3-small](./models/text-embedding-3-small.md) | openai | N/A | Text |
-| [text-embedding-ada-002](./models/text-embedding-ada-002.md) | openai | N/A | Text |
 
   
 ## Provider Availability

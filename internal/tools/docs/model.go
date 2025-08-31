@@ -15,11 +15,10 @@ import (
 // generateModelDocs generates documentation for all models
 func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error {
 	models := catalog.Models().List()
-	providers := catalog.Providers().List()
 
 	// Only generate the model comparison index
 	// Individual model pages are now generated under providers and authors
-	if err := g.generateModelIndex(dir, models, providers); err != nil {
+	if err := g.generateModelIndex(dir, models); err != nil {
 		return fmt.Errorf("generating model index: %w", err)
 	}
 
@@ -27,12 +26,12 @@ func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error
 }
 
 // generateModelIndex generates the main model listing page
-func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model, providers []*catalogs.Provider) error {
+func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
 		return fmt.Errorf("creating model directory: %w", err)
 	}
-	
+
 	// Write to both README.md (for GitHub) and _index.md (for Hugo)
 	for _, filename := range []string{"README.md", "_index.md"} {
 		indexFile := filepath.Join(dir, filename)
@@ -40,21 +39,21 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model, pro
 		if err != nil {
 			return fmt.Errorf("creating model index %s: %w", filename, err)
 		}
-		if err := g.writeModelIndexContent(f, models, providers); err != nil {
+		if err := g.writeModelIndexContent(f, models); err != nil {
 			f.Close()
 			return err
 		}
 		f.Close()
 	}
-	
+
 	return nil
 }
 
 // writeModelIndexContent writes the model index content to the given writer
-func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model, providers []*catalogs.Provider) error {
+func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model) error {
 
 	builder := NewMarkdownBuilder(f)
-	
+
 	builder.H1("🤖 All Models").
 		LF().
 		PlainTextf("Complete listing of all %d models in the Starmap catalog.", len(models)).
@@ -111,7 +110,12 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 		familyList = append(familyList, familyInfo{name, models})
 	}
 	sort.Slice(familyList, func(i, j int) bool {
-		return len(familyList[i].models) > len(familyList[j].models)
+		// Sort by size first (descending)
+		if len(familyList[i].models) != len(familyList[j].models) {
+			return len(familyList[i].models) > len(familyList[j].models)
+		}
+		// If sizes are equal, sort by name (ascending) for stability
+		return familyList[i].name < familyList[j].name
 	})
 
 	// Model families section
@@ -124,14 +128,16 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 
 		builder.H3(fmt.Sprintf("%s (%d models)", family.name, len(family.models))).LF()
 
-		// Sort models within family
-		sort.Slice(family.models, func(i, j int) bool {
-			return family.models[i].Name < family.models[j].Name
+		// Sort models within family (make a copy to avoid modifying the original)
+		familyModels := make([]*catalogs.Model, len(family.models))
+		copy(familyModels, family.models)
+		sort.Slice(familyModels, func(i, j int) bool {
+			return familyModels[i].Name < familyModels[j].Name
 		})
 
 		var familyTableRows [][]string
 		displayCount := 0
-		for _, model := range family.models {
+		for _, model := range familyModels {
 			if displayCount >= 10 {
 				familyTableRows = append(familyTableRows, []string{
 					fmt.Sprintf("_...and %d more_", len(family.models)-10), "", "", ""})
@@ -142,7 +148,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 			modelLink := model.Name
 			if len(model.Authors) > 0 {
 				// Link to first author's version
-				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s.md)", 
+				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s.md)",
 					model.Name, string(model.Authors[0].ID), formatModelID(string(model.ID)))
 			}
 
@@ -182,7 +188,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 		LF().
 		PlainText("Top models by pricing (sorted by input cost):").
 		LF()
-	
+
 	writePricingComparisonTable(f, models)
 	builder.LF()
 
@@ -191,7 +197,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 		LF().
 		PlainText("Top models by context window size:").
 		LF()
-	
+
 	writeContextLimitsTable(f, models)
 	builder.LF()
 
@@ -200,7 +206,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model,
 		LF().
 		PlainText("Detailed feature breakdown across models:").
 		LF()
-	
+
 	writeFeatureComparisonTable(f, models)
 	builder.LF()
 

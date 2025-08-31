@@ -17,13 +17,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### BERT
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
-
-  
 ### Llama
   
 | Model | Providers | Context | Capabilities |
@@ -52,13 +45,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
 
   
-### RoBERTa
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
-
-  
 ### Other
   
 | Model | Providers | Context | Capabilities |
@@ -70,6 +56,20 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
 | [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
 | [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | N/A | Text, Functions |
+
+  
+### RoBERTa
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | N/A | Text, Functions |
 
   
 ## Provider Availability
