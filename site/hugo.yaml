@@ -82,9 +82,18 @@ menu:
       url: "/api/"
       weight: 20
   after:
-    - name: "Provider Guide"
-      url: "/docs/PROVIDER_IMPLEMENTATION_GUIDE/"
+    - name: "Catalog"
+      url: "/catalog/readme/"
       weight: 30
+    - name: "Providers"
+      url: "/catalog/providers/readme/"
+      weight: 40
+    - name: "Authors"
+      url: "/catalog/authors/readme/"
+      weight: 50
+    - name: "Provider Guide"
+      url: "/provider_implementation_guide/"
+      weight: 60
 
 # Security settings
 security:
