@@ -89,11 +89,12 @@ jobs:
           # Create fresh symlink
           ln -s ../docs content
       
-      - name: Download Hugo theme
+      - name: Initialize Hugo theme submodule
         run: |
-          cd site
-          git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book || true
           git submodule update --init --recursive
+          # Fix theme structure - create symlink for partials
+          cd site/themes/hugo-book/layouts
+          ln -s _partials partials || true
       
       - name: Build with Hugo
         env:
