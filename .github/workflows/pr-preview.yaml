@@ -37,9 +37,13 @@ jobs:
           ln -s _partials partials || true
 
       - name: Build with Hugo
+        env:
+          HUGO_BASEURL: "https://starmap-pr-${{ github.event.pull_request.number }}.surge.sh/"
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache_pr
         run: |
           cd site
-          hugo --minify --baseURL "https://starmap-pr-${{ github.event.pull_request.number }}.surge.sh/"
+          rm -rf public resources
+          hugo --gc --minify --baseURL "https://starmap-pr-${{ github.event.pull_request.number }}.surge.sh/"
 
       - name: Deploy to Surge.sh
         run: |
