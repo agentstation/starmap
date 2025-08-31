@@ -56,14 +56,21 @@ func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Prov
 		return fmt.Errorf("creating provider directory: %w", err)
 	}
 
-	indexFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(indexFile)
-	if err != nil {
-		return fmt.Errorf("creating provider index: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		indexFile := filepath.Join(dir, filename)
+		f, err := os.Create(indexFile)
+		if err != nil {
+			return fmt.Errorf("creating provider index %s: %w", filename, err)
+		}
+		if err := g.writeProviderIndex(f, providers); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
 
-	return g.writeProviderIndex(f, providers)
+	return nil
 }
 
 // writeProviderIndex writes the provider index content using markdown builder
@@ -192,14 +199,21 @@ func (g *Generator) writeModelsOverviewTableToBuilder(builder *MarkdownBuilder, 
 
 // generateProviderReadme generates documentation for a single provider
 func (g *Generator) generateProviderReadme(dir string, provider *catalogs.Provider, catalog catalogs.Reader) error {
-	readmeFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(readmeFile)
-	if err != nil {
-		return fmt.Errorf("creating README: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		readmeFile := filepath.Join(dir, filename)
+		f, err := os.Create(readmeFile)
+		if err != nil {
+			return fmt.Errorf("creating %s: %w", filename, err)
+		}
+		if err := g.writeProviderReadme(f, provider, catalog); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
 
-	return g.writeProviderReadme(f, provider, catalog)
+	return nil
 }
 
 // writeProviderReadme writes the provider readme content using markdown builder

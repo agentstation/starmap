@@ -15,10 +15,11 @@ import (
 // generateModelDocs generates documentation for all models
 func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error {
 	models := catalog.Models().List()
+	providers := catalog.Providers().List()
 
 	// Only generate the model comparison index
 	// Individual model pages are now generated under providers and authors
-	if err := g.generateModelIndex(dir, models); err != nil {
+	if err := g.generateModelIndex(dir, models, providers); err != nil {
 		return fmt.Errorf("generating model index: %w", err)
 	}
 
@@ -26,18 +27,31 @@ func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error
 }
 
 // generateModelIndex generates the main model listing page
-func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) error {
+func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model, providers []*catalogs.Provider) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
 		return fmt.Errorf("creating model directory: %w", err)
 	}
 	
-	indexFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(indexFile)
-	if err != nil {
-		return fmt.Errorf("creating model index: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		indexFile := filepath.Join(dir, filename)
+		f, err := os.Create(indexFile)
+		if err != nil {
+			return fmt.Errorf("creating model index %s: %w", filename, err)
+		}
+		if err := g.writeModelIndexContent(f, models, providers); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
+	
+	return nil
+}
+
+// writeModelIndexContent writes the model index content to the given writer
+func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model, providers []*catalogs.Provider) error {
 
 	builder := NewMarkdownBuilder(f)
 	

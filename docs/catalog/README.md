@@ -23,13 +23,13 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Provider | Models | Latest Addition |
 |---------|---------|---------|
-| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | Faster R Cnn |
-| 🤖 [OpenAI](providers/openai/) | 114 | babbage-002 |
-| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Gemini 2.5 Flash Preview 05-20 |
-| ⚡ [Groq](providers/groq/) | 48 | kimi-k2-instruct |
+| 🏢 [Google Vertex AI](providers/google-vertex/) | 285 | Text Embedding Large Exp 03 07 |
+| 🤖 [OpenAI](providers/openai/) | 114 | gpt-5-mini-2025-08-07 |
+| 🔮 [Google AI Studio](providers/google-ai-studio/) | 71 | Model that performs Attributed Question Answering. |
+| ⚡ [Groq](providers/groq/) | 48 | Llama3 1 |
 | 🧠 [Anthropic](providers/anthropic/) | 20 | claude 3 5 haiku |
-| 🚀 [Cerebras](providers/cerebras/) | 17 | Qwen3 Coder |
-| 🔍 [DeepSeek](providers/deepseek/) | 8 | Deepseek R1 0528 Maas |
+| 🚀 [Cerebras](providers/cerebras/) | 17 | llama-4-scout-17b-16e-instruct |
+| 🔍 [DeepSeek](providers/deepseek/) | 8 | DeepSeek-Coder-V2-Instruct |
 
   
 ### Browse by Model Author
@@ -43,9 +43,9 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 | 👥 [Qwen Team](authors/qwen/) | 7 | AI research team within Alibaba Cloud responsible for dev... |
 | 👥 [AI21 Labs](authors/ai21/) | 3 | Israeli AI company known for Jamba hybrid SSM-Transformer... |
 | 🔬 [DeepSeek](authors/deepseek/) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning... |
-| 💼 [Cohere](authors/cohere/) | 0 | Enterprise AI company specializing in natural language pr... |
-| 👥 [Yale University](authors/yale/) | 0 | AI research organization |
-| 👥 [California Institute of Technology](authors/caltech/) | 0 | AI research organization |
+| 👥 [Shanghai AI Laboratory](authors/shanghai-ai-lab/) | 0 | Chinese AI research institute known for InternLM series a... |
+| 👥 [Peking University](authors/peking/) | 0 | Leading Chinese university with significant AI and machin... |
+| 👥 [ByteDance](authors/bytedance/) | 0 | Chinese technology company behind TikTok with AI research... |
 
   
 [View all 80 authors →](authors/)
@@ -59,13 +59,13 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 |---------|---------|---------|---------|
 | **[GPT-4](models/gpt-4.md)** | OpenAI | 8.2k | $60.00/$120.00 |
 | **[GPT-4 Turbo](models/gpt-4-turbo.md)** | OpenAI | 128k | $10.00/$30.00 |
-| **[Claude 3 7 Sonnet](models/claude-3-7-sonnet-at-20250219.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude 3 7 Sonnet](models/claude-3-7-sonnet-at-20250219.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
 | **[Claude Opus 3](models/claude-3-opus-20240229.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
+| **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 | **[Claude Sonnet 3](models/claude-3-sonnet-20240229.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 3.5 v2](models/claude-3-5-sonnet-at-20241022.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 4](models/claude-sonnet-4-at-20250514.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 3.5 v2](models/claude-3-5-sonnet-at-20241022.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 4](models/claude-sonnet-4-at-20250514.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
 | **[Gemini 2.0 Flash](models/gemini-2.0-flash.md)** | Google Vertex AI | N/A | $0.10/$0.40 |
 
   

@@ -58,6 +58,162 @@ Mountain View, CA, USA
   
 ## Available Models
   
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama2](./models/llama2-at-llama-2-7b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### Qwen
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Qwen Image](./models/qwen-image-at-qwen-image.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### DeepSeek
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1-base.md) | N/A | N/A | N/A | 🔧 ⚡ |
+
+  
+### Jamba
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Jamba 1.5 Large](./models/jamba-1.5-large-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Jamba 1.5 Mini](./models/jamba-1.5-mini-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Jamba Large 1.6](./models/jamba-large-1.6-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### T5
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [t5-1.1](./models/t5-1.1.md) | N/A | N/A | N/A | 📝 |
+| [t5-flan](./models/t5-flan.md) | N/A | N/A | N/A | 📝 |
+
+  
+### BERT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
+| [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
+
+  
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### Claude
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
+| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
+| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
+| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
+| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
+
+  
+### Gemma
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Codegemma](./models/codegemma-at-codegemma-7b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemma](./models/gemma-at-gemma-2b.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemma2](./models/gemma2-at-gemma-2-2b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemma3](./models/gemma3-at-gemma-3-1b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemma3n](./models/gemma3n-at-gemma-3n-e4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Medgemma](./models/medgemma-at-medgemma-4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Paligemma](./models/paligemma-at-paligemma2-3b-pt-224.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Shieldgemma2](./models/shieldgemma2-at-shieldgemma-2-4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [codegemma](./models/codegemma.md) | N/A | N/A | N/A | 📝 |
+| [gemma](./models/gemma.md) | N/A | N/A | N/A | 📝 |
+| [gemma2](./models/gemma2.md) | N/A | N/A | N/A | 📝 |
+| [gemma3](./models/gemma3.md) | N/A | N/A | N/A | 📝 |
+| [gemma3n](./models/gemma3n.md) | N/A | N/A | N/A | 📝 |
+| [medgemma](./models/medgemma.md) | N/A | N/A | N/A | 📝 |
+| [paligemma](./models/paligemma.md) | N/A | N/A | N/A | 📝 |
+| [shieldgemma2](./models/shieldgemma2.md) | N/A | N/A | N/A | 📝 |
+| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
+| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
+
+  
+### PaLM
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Chat Bison](./models/chat-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Code Bison](./models/code-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Codechat Bison](./models/codechat-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Text Bison](./models/text-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [chat-bison](./models/chat-bison.md) | N/A | N/A | N/A | 📝 |
+| [code-bison](./models/code-bison.md) | N/A | N/A | N/A | 📝 |
+| [codechat-bison](./models/codechat-bison.md) | N/A | N/A | N/A | 📝 |
+| [text-bison](./models/text-bison.md) | N/A | N/A | N/A | 📝 |
+
+  
+### RoBERTa
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+
+  
+### Whisper
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | N/A | N/A | N/A | 📝 ⚡ |
+
+  
+### Mistral
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
+
+  
 ### Other
   
 | Model | Context | Input | Output | Features |
@@ -269,126 +425,6 @@ Mountain View, CA, USA
 | [gemini-ultra-vision](./models/gemini-ultra-vision.md) | N/A | N/A | N/A | 📝 👁️ 🔧 |
 
   
-### Gemma
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Codegemma](./models/codegemma-at-codegemma-7b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemma](./models/gemma-at-gemma-2b.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemma2](./models/gemma2-at-gemma-2-2b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemma3](./models/gemma3-at-gemma-3-1b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemma3n](./models/gemma3n-at-gemma-3n-e4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Medgemma](./models/medgemma-at-medgemma-4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Paligemma](./models/paligemma-at-paligemma2-3b-pt-224.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Shieldgemma2](./models/shieldgemma2-at-shieldgemma-2-4b-it.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [codegemma](./models/codegemma.md) | N/A | N/A | N/A | 📝 |
-| [gemma](./models/gemma.md) | N/A | N/A | N/A | 📝 |
-| [gemma2](./models/gemma2.md) | N/A | N/A | N/A | 📝 |
-| [gemma3](./models/gemma3.md) | N/A | N/A | N/A | 📝 |
-| [gemma3n](./models/gemma3n.md) | N/A | N/A | N/A | 📝 |
-| [medgemma](./models/medgemma.md) | N/A | N/A | N/A | 📝 |
-| [paligemma](./models/paligemma.md) | N/A | N/A | N/A | 📝 |
-| [shieldgemma2](./models/shieldgemma2.md) | N/A | N/A | N/A | 📝 |
-| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
-| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Mistral
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-
-  
-### Claude
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| [Claude Sonnet 3.5 v2](./models/claude-3-5-sonnet-at-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
-| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
-| [claude 3 5 sonnet v2](./models/claude-3-5-sonnet-v2-at-20241022.md) | N/A | N/A | N/A | — |
-| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [claude 3 opus](./models/claude-3-opus-at-20240229.md) | N/A | N/A | N/A | — |
-| [claude 3 sonnet](./models/claude-3-sonnet-at-20240229.md) | N/A | N/A | N/A | — |
-
-  
-### T5
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [t5-1.1](./models/t5-1.1.md) | N/A | N/A | N/A | 📝 |
-| [t5-flan](./models/t5-flan.md) | N/A | N/A | N/A | 📝 |
-
-  
-### PaLM
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Chat Bison](./models/chat-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Code Bison](./models/code-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Codechat Bison](./models/codechat-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Text Bison](./models/text-bison-at-002.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [chat-bison](./models/chat-bison.md) | N/A | N/A | N/A | 📝 |
-| [code-bison](./models/code-bison.md) | N/A | N/A | N/A | 📝 |
-| [codechat-bison](./models/codechat-bison.md) | N/A | N/A | N/A | 📝 |
-| [text-bison](./models/text-bison.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Llama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama2](./models/llama2-at-llama-2-7b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### Qwen
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Qwen Image](./models/qwen-image-at-qwen-image.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen2](./models/qwen2-at-qwen2.5-0.5b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3](./models/qwen3-at-qwen3-235b-a22b-instruct-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 235b A22b Instruct 2507 Maas](./models/qwen3-235b-a22b-instruct-2507-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 Coder](./models/qwen3-coder-at-qwen3-coder-480b-a35b-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Qwen3 Coder 480b A35b Instruct Maas](./models/qwen3-coder-480b-a35b-instruct-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
-### DeepSeek
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1-base.md) | N/A | N/A | N/A | 🔧 ⚡ |
-
-  
-### Whisper
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
 ### Embeddings
   
 | Model | Context | Input | Output | Features |
@@ -401,48 +437,6 @@ Mountain View, CA, USA
 | [multimodalembedding](./models/multimodalembedding.md) | N/A | N/A | N/A | 📝 |
 | [text-embedding-large-exp-03-07](./models/text-embedding-large-exp-03-07.md) | N/A | N/A | N/A | 📝 |
 | [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
-
-  
-### RoBERTa
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### GPT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Gpt Oss](./models/gpt-oss-at-gpt-oss-120b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [Gpt Oss 120b Maas](./models/gpt-oss-120b-maas-at-001.md) | N/A | N/A | N/A | 📝 ⚡ |
-
-  
-### BERT
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Bert Base](./models/bert-base-at-001.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
-| [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
-
-  
-### Jamba
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Jamba 1.5 Large](./models/jamba-1.5-large-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Jamba 1.5 Mini](./models/jamba-1.5-mini-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-| [Jamba Large 1.6](./models/jamba-large-1.6-at-001.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### CodeLlama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ## Configuration

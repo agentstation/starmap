@@ -17,19 +17,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
-### Other
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | N/A | Text, Functions |
-| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | N/A | Text, Functions |
-| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
-| [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
-| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
-
-  
 ### Llama
   
 | Model | Providers | Context | Capabilities |
@@ -58,7 +45,20 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama3-8b-8192](./models/llama3-8b-8192.md) | groq | 8.2k | Text, Functions |
 
   
-### BERT
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | N/A | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | N/A | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | 2 | N/A | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | N/A | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | 2 | N/A | Text, Functions |
+
+  
+### RoBERTa
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|

@@ -13,12 +13,25 @@ import (
 
 // generateCatalogIndex generates the main catalog index page
 func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) error {
-	indexFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(indexFile)
-	if err != nil {
-		return fmt.Errorf("creating index file: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		indexFile := filepath.Join(dir, filename)
+		f, err := os.Create(indexFile)
+		if err != nil {
+			return fmt.Errorf("creating index file %s: %w", filename, err)
+		}
+		if err := g.writeCatalogContent(f, catalog); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
+
+	return nil
+}
+
+// writeCatalogContent writes the catalog content to the given writer
+func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) error {
 
 	builder := NewMarkdownBuilder(f)
 	

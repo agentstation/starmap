@@ -61,11 +61,22 @@ San Francisco, CA, USA
   
 ## Available Models
   
-### Whisper
+### Gemma
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
+| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
+
+  
+### DALL-E
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ### GPT
@@ -115,8 +126,8 @@ San Francisco, CA, USA
 | [gpt-5-nano](./models/gpt-5-nano.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [gpt-5-nano-2025-08-07](./models/gpt-5-nano-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [gpt-image-1](./models/gpt-image-1.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
 | [gpt-oss-120b](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
+| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | $0.07 | $0.30 | 📝 ⚡ |
 
   
@@ -178,14 +189,11 @@ San Francisco, CA, USA
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
-### Gemma
+### Llama
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [T5gemma](./models/t5gemma-at-t5gemma.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | N/A | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [t5gemma](./models/t5gemma.md) | N/A | N/A | N/A | 📝 |
-| [txgemma](./models/txgemma.md) | N/A | N/A | N/A | 📝 |
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### Embeddings
@@ -202,19 +210,11 @@ San Francisco, CA, USA
 | [textembedding-gecko](./models/textembedding-gecko.md) | N/A | N/A | N/A | 📝 |
 
   
-### Llama
+### Whisper
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
-
-  
-### DALL-E
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [dall-e-2](./models/dall-e-2.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [dall-e-3](./models/dall-e-3.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [whisper-1](./models/whisper-1.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
 ## Configuration

@@ -56,12 +56,25 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 		return fmt.Errorf("creating author directory: %w", err)
 	}
 	
-	indexFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(indexFile)
-	if err != nil {
-		return fmt.Errorf("creating author index: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		indexFile := filepath.Join(dir, filename)
+		f, err := os.Create(indexFile)
+		if err != nil {
+			return fmt.Errorf("creating author index %s: %w", filename, err)
+		}
+		if err := g.writeAuthorIndexContent(f, authors, models, catalog); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
+
+	return nil
+}
+
+// writeAuthorIndexContent writes the author index content to the given writer
+func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Author, models []*catalogs.Model, catalog catalogs.Reader) error {
 
 	builder := NewMarkdownBuilder(f)
 	builder.H1("👥 Model Authors").LF()
@@ -237,12 +250,25 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 
 // generateAuthorReadme generates documentation for a single author
 func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, catalog catalogs.Reader) error {
-	readmeFile := filepath.Join(dir, "README.md")
-	f, err := os.Create(readmeFile)
-	if err != nil {
-		return fmt.Errorf("creating README: %w", err)
+	// Write to both README.md (for GitHub) and _index.md (for Hugo)
+	for _, filename := range []string{"README.md", "_index.md"} {
+		readmeFile := filepath.Join(dir, filename)
+		f, err := os.Create(readmeFile)
+		if err != nil {
+			return fmt.Errorf("creating %s: %w", filename, err)
+		}
+		if err := g.writeAuthorReadmeContent(f, author, catalog); err != nil {
+			f.Close()
+			return err
+		}
+		f.Close()
 	}
-	defer f.Close()
+	
+	return nil
+}
+
+// writeAuthorReadmeContent writes the author readme content to the given writer
+func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author, catalog catalogs.Reader) error {
 
 	builder := NewMarkdownBuilder(f)
 
