@@ -13,10 +13,8 @@ theme: "hugo-book"
 # Disable kinds we don't need
 disableKinds: ["taxonomy", "term"]
 
-# Permalink configuration to handle README.md files at directory URLs
-# This makes URLs GitHub-compatible: /providers/deepseek/ instead of /providers/deepseek/readme/
-permalinks:
-  catalog: "/:sections[1:]/:contentbasename/"
+# Permalink configuration removed - using Hugo's default URL structure
+# which preserves the full directory path
   
 # Don't use ugly URLs (.html extensions)
 uglyURLs: false
@@ -26,6 +24,10 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+    extensions:
+      linkify: true
+    parser:
+      autoHeadingIDType: github
   highlight:
     anchorLineNos: false
     codeFences: true

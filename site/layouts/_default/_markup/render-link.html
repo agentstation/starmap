@@ -1,0 +1,8 @@
+{{- $link := .Destination -}}
+{{- $isRemote := (findRE "^https?://" $link) -}}
+{{- if not $isRemote -}}
+  {{- /* Strip .md extension from internal links */ -}}
+  {{- $link = replaceRE "\\.md$" "" $link -}}
+  {{- $link = replaceRE "\\.md#" "#" $link -}}
+{{- end -}}
+<a href="{{ $link | safeURL }}"{{ with .Title}} title="{{ . }}"{{ end }}{{ if $isRemote }} target="_blank" rel="noopener"{{ end }}>{{ .Text | safeHTML }}</a>
