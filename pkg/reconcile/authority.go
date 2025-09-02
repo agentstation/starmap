@@ -195,29 +195,32 @@ func defaultModelFieldAuthorities() []FieldAuthority {
 // defaultProviderFieldAuthorities returns the default field authorities for providers
 func defaultProviderFieldAuthorities() []FieldAuthority {
 	return []FieldAuthority{
-		// API configuration - local catalog for stability
-		{FieldPath: "api_key.*", Source: LocalCatalog, Priority: 100},
-		{FieldPath: "catalog.*", Source: LocalCatalog, Priority: 95},
-		{FieldPath: "chat_completions.url", Source: LocalCatalog, Priority: 95},
-		{FieldPath: "chat_completions.health_api_url", Source: LocalCatalog, Priority: 90},
+		// API configuration - local catalog for stability (using Go field names)
+		{FieldPath: "APIKey.*", Source: LocalCatalog, Priority: 100},
+		{FieldPath: "Catalog.*", Source: LocalCatalog, Priority: 95},
+		{FieldPath: "ChatCompletions.URL", Source: LocalCatalog, Priority: 95},
+		{FieldPath: "ChatCompletions.HealthAPIURL", Source: LocalCatalog, Priority: 90},
 
-		// Core info - prefer manual edits
-		{FieldPath: "name", Source: LocalCatalog, Priority: 90},
-		{FieldPath: "headquarters", Source: LocalCatalog, Priority: 85},
-		{FieldPath: "icon_url", Source: LocalCatalog, Priority: 85},
+		// Core info - prefer manual edits (using Go field names)
+		{FieldPath: "Name", Source: LocalCatalog, Priority: 90},
+		{FieldPath: "Headquarters", Source: LocalCatalog, Priority: 85},
+		{FieldPath: "IconURL", Source: LocalCatalog, Priority: 85},
 
-		// Policies - models.dev or manual (HTTP preferred)
-		{FieldPath: "privacy_policy.*", Source: ModelsDevHTTP, Priority: 90},
-		{FieldPath: "retention_policy.*", Source: ModelsDevHTTP, Priority: 90},
-		{FieldPath: "governance_policy.*", Source: ModelsDevHTTP, Priority: 90},
-		{FieldPath: "governance_policy.moderation_required", Source: ModelsDevHTTP, Priority: 85},
-		{FieldPath: "privacy_policy.*", Source: ModelsDevGit, Priority: 85},
-		{FieldPath: "retention_policy.*", Source: ModelsDevGit, Priority: 85},
-		{FieldPath: "governance_policy.*", Source: ModelsDevGit, Priority: 85},
-		{FieldPath: "governance_policy.moderation_required", Source: ModelsDevGit, Priority: 80},
+		// Policies - models.dev or manual (HTTP preferred, using Go field names)
+		{FieldPath: "PrivacyPolicy.*", Source: ModelsDevHTTP, Priority: 90},
+		{FieldPath: "RetentionPolicy.*", Source: ModelsDevHTTP, Priority: 90},
+		{FieldPath: "GovernancePolicy.*", Source: ModelsDevHTTP, Priority: 90},
+		{FieldPath: "GovernancePolicy.ModerationRequired", Source: ModelsDevHTTP, Priority: 85},
+		{FieldPath: "PrivacyPolicy.*", Source: ModelsDevGit, Priority: 85},
+		{FieldPath: "RetentionPolicy.*", Source: ModelsDevGit, Priority: 85},
+		{FieldPath: "GovernancePolicy.*", Source: ModelsDevGit, Priority: 85},
+		{FieldPath: "GovernancePolicy.ModerationRequired", Source: ModelsDevGit, Priority: 80},
 
-		// Status page - prefer local catalog
-		{FieldPath: "status_page_url", Source: LocalCatalog, Priority: 85},
+		// Status page - prefer local catalog (using Go field name)
+		{FieldPath: "StatusPageURL", Source: LocalCatalog, Priority: 85},
+		
+		// Aliases - prefer local catalog (using Go field name)
+		{FieldPath: "Aliases", Source: LocalCatalog, Priority: 85},
 	}
 }
 

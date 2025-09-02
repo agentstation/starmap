@@ -21,11 +21,8 @@ import (
 	"github.com/agentstation/starmap/internal/sources/providers/openai"
 )
 
-// ClientFactory is a function that creates a new client for a provider
-type ClientFactory func(*catalogs.Provider) catalogs.Client
-
-// registry maps provider IDs to their client factory functions
-var registry = map[catalogs.ProviderID]ClientFactory{
+// registry maps provider IDs to their client creation functions
+var registry = map[catalogs.ProviderID]func(*catalogs.Provider) catalogs.Client{
 	catalogs.ProviderIDOpenAI:        func(p *catalogs.Provider) catalogs.Client { return openai.NewClient(p) },
 	catalogs.ProviderIDAnthropic:     func(p *catalogs.Provider) catalogs.Client { return anthropic.NewClient(p) },
 	catalogs.ProviderIDGroq:          func(p *catalogs.Provider) catalogs.Client { return groq.NewClient(p) },
@@ -38,7 +35,7 @@ var registry = map[catalogs.ProviderID]ClientFactory{
 // Get creates a NEW client instance for the given provider.
 // Each call returns a fresh client with its own HTTP client to avoid race conditions.
 func Get(provider *catalogs.Provider) (catalogs.Client, error) {
-	factory, ok := registry[provider.ID]
+	newClient, ok := registry[provider.ID]
 	if !ok {
 		return nil, &errors.ValidationError{
 		Field:   "provider",
@@ -46,7 +43,7 @@ func Get(provider *catalogs.Provider) (catalogs.Client, error) {
 		Message: fmt.Sprintf("unsupported provider: %s", provider.ID),
 	}
 	}
-	return factory(provider), nil
+	return newClient(provider), nil
 }
 
 // Has checks if a provider ID has a client implementation.

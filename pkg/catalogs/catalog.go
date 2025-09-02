@@ -36,6 +36,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/goccy/go-yaml"
 )
 
@@ -374,10 +375,11 @@ func (c *catalog) Load() error {
 			// Add model to the general models collection
 			c.SetModel(model)
 			
-			// Also associate the model with its provider
-			// Extract provider ID from path: providers/[provider-id]/[model].yaml
+			// Associate the model with its provider or author based on path
 			pathParts := strings.Split(path, "/")
-			if len(pathParts) >= 3 && pathParts[0] == "providers" {
+			
+			// Handle providers/[provider-id]/models/[model].yaml or providers/[provider-id]/models/[org]/[model].yaml
+			if len(pathParts) >= 4 && pathParts[0] == "providers" && pathParts[2] == "models" {
 				providerID := ProviderID(pathParts[1])
 				
 				// Get the provider and add this model to its Models map
@@ -390,6 +392,23 @@ func (c *catalog) Load() error {
 					provider.Models[model.ID] = model
 					// Update the provider in the catalog
 					c.SetProvider(provider)
+				}
+			}
+			
+			// Handle authors/[author-id]/models/[model].yaml or authors/[author-id]/models/[org]/[model].yaml
+			if len(pathParts) >= 4 && pathParts[0] == "authors" && pathParts[2] == "models" {
+				authorID := AuthorID(pathParts[1])
+				
+				// Get the author and add this model to its Models map
+				if author, err := c.Author(authorID); err == nil {
+					// Initialize Models map if nil
+					if author.Models == nil {
+						author.Models = make(map[string]Model)
+					}
+					// Add the model to the author's Models map
+					author.Models[model.ID] = model
+					// Update the author in the catalog
+					c.SetAuthor(author)
 				}
 			}
 		}
@@ -505,21 +524,57 @@ func (c *catalog) saveTo(basePath string) error {
 		}
 	}
 
-	// Save model files to providers/<provider>/<model>.yaml
-	for _, model := range c.models.List() {
-		// Determine path based on model ID structure
-		modelPath := filepath.Join("providers", model.ID+".yaml")
-		if strings.Contains(model.ID, "/") {
-			// Hierarchical ID like "meta-llama/llama-3"
-			modelPath = filepath.Join("providers", model.ID+".yaml")
+	// Save model files to providers/<provider>/models/<model>.yaml or providers/<provider>/models/<org>/<model>.yaml
+	for _, provider := range c.providers.List() {
+		if provider.Models != nil && len(provider.Models) > 0 {
+			// Debug: log provider with models
+			logging.Debug().
+				Str("provider", string(provider.ID)).
+				Int("model_count", len(provider.Models)).
+				Msg("Saving provider models")
+			
+			for _, model := range provider.Models {
+				var modelPath string
+				if strings.Contains(model.ID, "/") {
+					// Hierarchical ID like "meta-llama/llama-3" -> providers/groq/models/meta-llama/llama-3.yaml
+					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
+				} else {
+					// Simple ID like "gpt-4" -> providers/openai/models/gpt-4.yaml
+					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
+				}
+				
+				data, err := yaml.Marshal(model)
+				if err != nil {
+					return errors.WrapParse("yaml", "model "+model.ID, err)
+				}
+				if err := writeFile(modelPath, data); err != nil {
+					return errors.WrapIO("write", "model "+model.ID, err)
+				}
+			}
 		}
-
-		data, err := yaml.Marshal(model)
-		if err != nil {
-			return errors.WrapParse("yaml", "model "+model.ID, err)
-		}
-		if err := writeFile(modelPath, data); err != nil {
-			return errors.WrapIO("write", "model "+model.ID, err)
+	}
+	
+	// Save author models under authors/<author>/models/<model>.yaml
+	for _, author := range c.authors.List() {
+		if author.Models != nil {
+			for _, model := range author.Models {
+				var modelPath string
+				if strings.Contains(model.ID, "/") {
+					// Hierarchical ID -> authors/meta/models/meta-llama/llama-3.yaml
+					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
+				} else {
+					// Simple ID -> authors/openai/models/gpt-4.yaml
+					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
+				}
+				
+				data, err := yaml.Marshal(model)
+				if err != nil {
+					return errors.WrapParse("yaml", "model "+model.ID, err)
+				}
+				if err := writeFile(modelPath, data); err != nil {
+					return errors.WrapIO("write", "model "+model.ID, err)
+				}
+			}
 		}
 	}
 

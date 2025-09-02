@@ -2,6 +2,8 @@ package baseclient
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -89,14 +91,20 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	}
 
 	// Build URL - use provider's URL if available, otherwise use base URL
-	url := c.baseURL + "/v1/models"
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL() + "/v1/models"
+	rb := transport.NewRequestBuilder(provider)
+	url := rb.GetModelsURL(c.baseURL + "/v1/models")
+
+	// Debug logging
+	if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+		fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Fetching models from %s for provider %s\n", url, provider.ID)
 	}
 
 	// Make the request
 	resp, err := c.transport.Get(ctx, url, provider)
 	if err != nil {
+		if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+			fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Request failed: %v\n", err)
+		}
 		return nil, &errors.APIError{
 			Provider:   provider.ID.String(),
 			StatusCode: 0,
@@ -105,9 +113,16 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 		}
 	}
 
+	if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+		fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Response status: %d\n", resp.StatusCode)
+	}
+
 	// Decode response
 	var result OpenAIResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
+		if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+			fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Failed to decode response: %v\n", err)
+		}
 		return nil, &errors.APIError{
 			Provider:   provider.ID.String(),
 			StatusCode: resp.StatusCode,

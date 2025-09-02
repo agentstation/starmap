@@ -23,7 +23,9 @@ var (
 )
 
 // HTTPSource enhances models with models.dev data via HTTP
-type HTTPSource struct{}
+type HTTPSource struct{
+	providers *catalogs.Providers
+}
 
 // NewHTTPSource creates a new models.dev HTTP source
 func NewHTTPSource() *HTTPSource {
@@ -55,7 +57,7 @@ func ensureHTTPAPI(outputDir string) (*ModelsDevAPI, error) {
 
 // Setup initializes the source with dependencies
 func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
-	// HTTPSource doesn't need provider configs
+	s.providers = providers
 	return nil
 }
 

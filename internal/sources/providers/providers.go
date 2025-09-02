@@ -85,6 +85,16 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 		return catalog, nil // No providers to sync
 	}
 
+	// Add provider configurations to the catalog first
+	for _, provider := range providerConfigs {
+		if err := catalog.SetProvider(*provider); err != nil {
+			logging.FromContext(ctx).Warn().
+				Err(err).
+				Str("provider_id", string(provider.ID)).
+				Msg("Failed to add provider to catalog")
+		}
+	}
+
 	logger := logging.FromContext(ctx)
 	logger.Info().
 		Int("provider_count", len(providerConfigs)).
@@ -168,7 +178,22 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			continue
 		}
 
-		// Add models to catalog with proper provider context
+		// Get the provider from catalog
+		provider, err := catalog.Provider(result.providerID)
+		if err != nil {
+			logger.Warn().
+				Err(err).
+				Str("provider_id", string(result.providerID)).
+				Msg("Failed to get provider from catalog")
+			continue
+		}
+
+		// Initialize Models map if nil
+		if provider.Models == nil {
+			provider.Models = make(map[string]catalogs.Model)
+		}
+
+		// Add models to catalog and associate with provider
 		for _, model := range result.models {
 			// Create copy to avoid modifying original
 			modelCopy := model
@@ -177,7 +202,19 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 					Err(err).
 					Str("model_id", modelCopy.ID).
 					Msg("Failed to set model")
+				continue
 			}
+
+			// Associate model with provider
+			provider.Models[modelCopy.ID] = modelCopy
+		}
+
+		// Update the provider in the catalog with its models
+		if err := catalog.SetProvider(provider); err != nil {
+			logger.Warn().
+				Err(err).
+				Str("provider_id", string(result.providerID)).
+				Msg("Failed to update provider with models")
 		}
 
 		// Note: Saving is now handled by the catalog's Save() method

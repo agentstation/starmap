@@ -12,37 +12,12 @@ AI safety company known for Claude models and Constitutional AI research
 | **Author ID** | `anthropic` |
 | **Type** | 🚀 AI Startups |
 | **Website** | [https://anthropic.com](https://anthropic.com) |
-| **Total Models** | 14 |
-| **Available On** | 2 providers |
+| **Total Models** | 0 |
 
   
 ## Models
   
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | 2 | 200k | Text, Vision, Functions |
-| [Claude Haiku 3](./models/claude-3-haiku-20240307.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 2 | 200k | Text, Vision, Functions |
-| [Claude Opus 4](./models/claude-opus-4-20250514.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 2 | 200k | Text, Vision, Functions |
-| [Claude Opus 4.1](./models/claude-opus-4-1-20250805.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | anthropic | N/A | Text, Vision, Functions |
-| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | anthropic | N/A | Text, Functions |
-| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 2 | 200k | Text, Vision, Functions |
-| [claude 3 5 haiku](./models/claude-3-5-haiku-at-20241022.md) | 2 | 200k | Text, Vision, Functions |
-| [claude 3 haiku](./models/claude-3-haiku-at-20240307.md) | 2 | N/A | Text, Vision, Functions |
-
-  
-## Provider Availability
-  
-Models from this author are available through the following providers:
-  
-  
-- **[anthropic](../../providers/anthropic/)** - 14 models
-- **[google-vertex](../../providers/google-vertex/)** - 6 models
+*No models found from this author.*
   
 ## Research & Development
   

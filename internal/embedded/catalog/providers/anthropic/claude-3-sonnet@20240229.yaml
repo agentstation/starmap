@@ -1,6 +1,0 @@
-id: claude-3-sonnet@20240229
-name: claude 3 sonnet
-description: |
-    Anthropic Claude model claude-3-sonnet available through Vertex AI Model Garden
-created_at: "2025-08-21T14:08:10Z"
-updated_at: "2025-08-21T14:08:10Z"

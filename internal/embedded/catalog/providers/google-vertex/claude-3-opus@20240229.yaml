@@ -1,9 +1,0 @@
-# claude-3-opus@20240229 - Anthropic Claude model claude-3-opus available through Ve...
-id: claude-3-opus@20240229
-name: claude 3 opus
-description: >
-  Anthropic Claude model claude-3-opus available through Vertex AI Model Garden
-
-# Timestamps
-created_at: 2025-08-21T14:08:10Z
-updated_at: 2025-08-21T14:08:10Z

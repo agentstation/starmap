@@ -9,8 +9,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/utc"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 // Merger performs the actual merging of resources
@@ -211,14 +209,14 @@ func (sm *StrategicMerger) mergeProvider(providerID catalogs.ProviderID, sourceP
 	var merged catalogs.Provider
 	provenance := make(map[string]FieldProvenance)
 
-	// Provider fields to merge
+	// Provider fields to merge - using Go struct field names
 	providerFields := []string{
-		"name", "headquarters", "icon_url", "status_page_url",
-		"authors",
+		"Name", "Headquarters", "IconURL", "StatusPageURL",
+		"Authors", "Models", "Aliases",
 		// API configuration
-		"api_key", "env_vars", "catalog", "chat_completions",
+		"APIKey", "EnvVars", "Catalog", "ChatCompletions",
 		// Policy fields
-		"privacy_policy", "retention_policy", "governance_policy",
+		"PrivacyPolicy", "RetentionPolicy", "GovernancePolicy",
 	}
 
 	// Merge each field
@@ -333,7 +331,8 @@ func (sm *StrategicMerger) getFieldValue(v reflect.Value, fieldPath string) inte
 			return nil
 		}
 
-		field := current.FieldByName(cases.Title(language.English).String(part))
+		// Use the field name directly (already properly capitalized)
+		field := current.FieldByName(part)
 		if !field.IsValid() {
 			return nil
 		}
@@ -381,11 +380,11 @@ func (sm *StrategicMerger) setFieldValue(v reflect.Value, fieldPath string, valu
 			return
 		}
 
-		fieldName := cases.Title(language.English).String(part)
-		field := current.FieldByName(fieldName)
+		// Use the field name directly (already properly capitalized)
+		field := current.FieldByName(part)
 		if !field.IsValid() {
 			logging.Warn().
-				Str("field_name", fieldName).
+				Str("field_name", part).
 				Msg("Field not found in struct")
 			return
 		}

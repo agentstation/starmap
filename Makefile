@@ -207,6 +207,23 @@ version: ## Show version information
 	@echo "Commit:  $(COMMIT)"
 	@echo "Built:   $(BUILD_TIME)"
 
+# Catalog update targets
+update-catalog: ## Update embedded catalog with latest API data (requires API keys)
+	@echo "$(BLUE)Updating embedded catalog...$(NC)"
+	@echo "$(YELLOW)This will fetch latest models from all configured provider APIs$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --fresh -y
+	@echo "$(GREEN)Embedded catalog updated successfully!$(NC)"
+
+update-catalog-provider: ## Update specific provider in embedded catalog (use PROVIDER=name)
+	@if [ -z "$(PROVIDER)" ]; then \
+		echo "$(RED)Error: PROVIDER not specified$(NC)"; \
+		echo "$(YELLOW)Usage: make update-catalog-provider PROVIDER=openai$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --fresh -y
+	@echo "$(GREEN)Provider $(PROVIDER) updated successfully!$(NC)"
+
 # Validation targets
 validate: ## Validate provider configurations
 	@echo "$(BLUE)Validating provider configurations...$(NC)"

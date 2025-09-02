@@ -25,7 +25,9 @@ var (
 // No init() - sources are created explicitly
 
 // GitSource enhances models with models.dev data
-type GitSource struct{}
+type GitSource struct {
+	providers *catalogs.Providers
+}
 
 // NewGitSource creates a new models.dev git source
 func NewGitSource() *GitSource {
@@ -64,7 +66,7 @@ func ensureGitRepo(outputDir string) (*ModelsDevAPI, error) {
 
 // Setup initializes the source with dependencies
 func (s *GitSource) Setup(providers *catalogs.Providers) error {
-	// GitSource doesn't need provider configs
+	s.providers = providers
 	return nil
 }
 
@@ -72,7 +74,7 @@ func (s *GitSource) Setup(providers *catalogs.Providers) error {
 func (s *GitSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
 	// Apply options (not currently used by GitSource, but kept for consistency)
 	_ = sources.ApplyOptions(opts...)
-	
+
 	// Create a new catalog to build into
 	catalog, err := catalogs.New()
 	if err != nil {

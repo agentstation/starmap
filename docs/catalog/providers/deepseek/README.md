@@ -8,7 +8,7 @@ Chinese AI company specializing in efficient, high-performance language models.
 | Field | Value |
 |---------|---------|
 | **Provider ID** | `deepseek` |
-| **Total Models** | 8 |
+| **Total Models** | 2 |
 | **Authentication** | API Key Required |
 | **Environment Variable** | `DEEPSEEK_API_KEY` |
 | **Status Page** | [https://status.deepseek.com](https://status.deepseek.com) |
@@ -61,18 +61,12 @@ Beijing, China
   
 ## Available Models
   
-### DeepSeek
+### Other
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [DeepSeek-Coder-V2-Instruct](./models/deepseek-coder-v2-instruct.md) | 163.8k | N/A | N/A | 📝 🔧 ⚡ |
-| [DeepSeek-V3](./models/deepseek-v3.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
-| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1-base.md) | N/A | N/A | N/A | 🔧 ⚡ |
-| [deepseek-chat](./models/deepseek-chat.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [deepseek-reasoner](./models/deepseek-reasoner.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [](./models/deepseek-chat.md) | N/A | $0.57 | $1.68 | 📝 ⚡ |
+| [](./models/deepseek-reasoner.md) | N/A | $0.57 | $1.68 | 📝 ⚡ |
 
   
 ## Configuration

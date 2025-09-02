@@ -73,6 +73,15 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	// Collect catalogs from all sources
 	sourceCatalogs := make(map[reconcile.SourceName]catalogs.Catalog)
 	logger := logging.FromContext(ctx)
+	
+	// Track model counts from Provider APIs for accurate reporting
+	providerAPICounts := make(map[catalogs.ProviderID]int)
+	
+	// IMPORTANT: Include the embedded catalog as "Local Catalog" source to preserve all provider fields
+	// This ensures fields like APIKey, StatusPageURL, PrivacyPolicy, etc. are not lost
+	// The authorities are configured to use LocalCatalog as the source for provider configuration fields
+	sourceCatalogs[reconcile.LocalCatalog] = embeddedCat
+	
 	for _, source := range sourcesToUse {
 		logger.Info().Str("source", string(source.Name())).Msg("Fetching")
 
@@ -85,11 +94,35 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 					Err:      err,
 				}
 			}
-			logger.Warn().Err(err).Str("source", string(source.Name())).Msg("Source fetch failed, continuing")
-			continue
+			logger.Warn().Err(err).Str("source", string(source.Name())).Msg("Source fetch had errors")
+			// Don't skip if we still got a catalog (partial success)
+			if catalog == nil {
+				logger.Warn().Str("source", string(source.Name())).Msg("No catalog returned, skipping source")
+				continue
+			}
 		}
 
 		sourceCatalogs[reconcile.SourceName(source.Name())] = catalog
+		
+		// Track model counts from Provider APIs
+		if source.Name() == sources.ProviderAPI {
+			// Count models per provider from the API fetch
+			// We need to use the provider.Models map to properly track association
+			for _, provider := range catalog.Providers().List() {
+				if provider.Models != nil {
+					providerAPICounts[provider.ID] = len(provider.Models)
+				}
+			}
+		}
+		
+		// Debug: log provider count from this source
+		providerCount := len(catalog.Providers().List())
+		modelCount := len(catalog.Models().List())
+		logger.Debug().
+			Str("source", string(source.Name())).
+			Int("providers", providerCount).
+			Int("models", modelCount).
+			Msg("Added source catalog to reconciliation")
 	}
 
 	// RECONCILE PHASE: Use the new reconciler to merge catalogs
@@ -101,7 +134,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 		return nil, errors.WrapResource("create", "reconciler", "", err)
 	}
 
-	reconcileResult, err := reconciler.ReconcileCatalogs(ctx, sourceCatalogs)
+	reconcileResult, err := reconciler.ReconcileCatalogs(ctx, reconcile.SourceName(sources.ProviderAPI), sourceCatalogs)
 	if err != nil {
 		return nil, &errors.SyncError{
 			Provider: "all",
@@ -110,6 +143,17 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	}
 
 	result = reconcileResult.Catalog
+	
+	// Build model-to-provider mapping from the reconciled catalog
+	// This ensures we properly track which provider owns each model
+	modelProviderMap := make(map[string]catalogs.ProviderID)
+	for _, provider := range result.Providers().List() {
+		if provider.Models != nil {
+			for modelID := range provider.Models {
+				modelProviderMap[modelID] = provider.ID
+			}
+		}
+	}
 
 	// CLEANUP PHASE: Clean up any resources
 	for _, source := range sourcesToUse {
@@ -133,7 +177,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 	changeset := differ.DiffCatalogs(existing, result)
 
 	// Create sync result from new changeset
-	syncResult := convertChangesetToSyncResult(changeset, options.DryRun, options.OutputPath)
+	syncResult := convertChangesetToSyncResult(changeset, options.DryRun, options.OutputPath, providerAPICounts, modelProviderMap)
 
 	// Log summary
 	if changeset.HasChanges() {
@@ -156,6 +200,19 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 
 		// Save to output path if specified
 		if options.OutputPath != "" {
+			// Debug: check what providers have models
+			providers := result.Providers().List()
+			for _, p := range providers {
+				modelCount := 0
+				if p.Models != nil {
+					modelCount = len(p.Models)
+				}
+				logger.Info().
+					Str("provider", string(p.ID)).
+					Int("models", modelCount).
+					Msg("Provider model count before save")
+			}
+			
 			if saveable, ok := result.(catalogs.Persistable); ok {
 				if err := saveable.SaveTo(options.OutputPath); err != nil {
 					return nil, errors.WrapIO("write", options.OutputPath, err)
@@ -274,7 +331,7 @@ func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
 }
 
 // convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult
-func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, outputDir string) *SyncResult {
+func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *SyncResult {
 	result := &SyncResult{
 		TotalChanges:    changeset.Summary.TotalChanges,
 		DryRun:          dryRun,
@@ -288,17 +345,17 @@ func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, o
 	providerRemoved := make(map[catalogs.ProviderID][]catalogs.Model)
 
 	for _, model := range changeset.Models.Added {
-		providerID := getModelProvider(model)
+		providerID := getModelProvider(model, modelProviderMap)
 		providerAdded[providerID] = append(providerAdded[providerID], model)
 	}
 
 	for _, update := range changeset.Models.Updated {
-		providerID := getModelProvider(update.New)
+		providerID := getModelProvider(update.New, modelProviderMap)
 		providerUpdated[providerID] = append(providerUpdated[providerID], update)
 	}
 
 	for _, model := range changeset.Models.Removed {
-		providerID := getModelProvider(model)
+		providerID := getModelProvider(model, modelProviderMap)
 		providerRemoved[providerID] = append(providerRemoved[providerID], model)
 	}
 
@@ -317,13 +374,14 @@ func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, o
 	// Create provider results
 	for providerID := range allProviders {
 		providerResult := &SyncProviderResult{
-			ProviderID:   providerID,
-			Added:        providerAdded[providerID],
-			Updated:      providerUpdated[providerID],
-			Removed:      providerRemoved[providerID],
-			AddedCount:   len(providerAdded[providerID]),
-			UpdatedCount: len(providerUpdated[providerID]),
-			RemovedCount: len(providerRemoved[providerID]),
+			ProviderID:     providerID,
+			Added:          providerAdded[providerID],
+			Updated:        providerUpdated[providerID],
+			Removed:        providerRemoved[providerID],
+			AddedCount:     len(providerAdded[providerID]),
+			UpdatedCount:   len(providerUpdated[providerID]),
+			RemovedCount:   len(providerRemoved[providerID]),
+			APIModelsCount: providerAPICounts[providerID], // Now properly set from actual API fetch
 		}
 		result.ProviderResults[providerID] = providerResult
 		result.ProvidersChanged++
@@ -332,21 +390,30 @@ func convertChangesetToSyncResult(changeset *reconcile.Changeset, dryRun bool, o
 	return result
 }
 
-// getModelProvider extracts the provider ID from a model using pattern matching
-func getModelProvider(model catalogs.Model) catalogs.ProviderID {
-	// Try to infer from model ID patterns
+// getModelProvider extracts the provider ID from a model using the provider map
+func getModelProvider(model catalogs.Model, modelProviderMap map[string]catalogs.ProviderID) catalogs.ProviderID {
+	// Use the model-to-provider map if available
+	if providerID, ok := modelProviderMap[model.ID]; ok {
+		return providerID
+	}
+	
+	// Fallback: Try to infer from model ID patterns (for models not in the map)
+	// This should rarely happen in practice
 	modelID := strings.ToLower(model.ID)
 	switch {
-	case strings.Contains(modelID, "gpt") || strings.Contains(modelID, "dall") || strings.Contains(modelID, "whisper"):
+	case strings.Contains(modelID, "gpt") || strings.Contains(modelID, "dall") || strings.Contains(modelID, "whisper") || strings.Contains(modelID, "o1") || strings.Contains(modelID, "o3"):
 		return "openai"
 	case strings.Contains(modelID, "claude"):
 		return "anthropic"
-	case strings.Contains(modelID, "gemini"):
+	case strings.Contains(modelID, "gemini") || strings.Contains(modelID, "gemma"):
 		return "google-ai-studio"
 	case strings.Contains(modelID, "llama") || strings.Contains(modelID, "mistral"):
 		return "groq"
+	case strings.Contains(modelID, "deepseek"):
+		return "deepseek"
 	default:
-		// If we can't determine, use a generic provider
+		// If we really can't determine, return unknown
+		// This should be very rare with the provider map
 		return "unknown"
 	}
 }

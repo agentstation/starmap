@@ -71,7 +71,7 @@ func TestReconcilerBasic(t *testing.T) {
 		"source2": catalog2,
 	}
 
-	result, err := r.ReconcileCatalogs(ctx, sources)
+	result, err := r.ReconcileCatalogs(ctx, "source1", sources)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -442,7 +442,7 @@ func BenchmarkReconciliation(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, err := r.ReconcileCatalogs(ctx, sources)
+		_, err := r.ReconcileCatalogs(ctx, "source1", sources)
 		if err != nil {
 			b.Fatalf("ReconcileCatalogs failed: %v", err)
 		}

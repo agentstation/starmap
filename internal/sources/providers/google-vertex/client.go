@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"cloud.google.com/go/auth/credentials"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/utc"
@@ -40,16 +41,24 @@ func (c *Client) HasAPIKey() bool {
 // Configure sets the provider for this client (used by registry pattern).
 func (c *Client) Configure(provider *catalogs.Provider) {
 	c.provider = provider
-	c.projectID = getProjectID(provider)
-	c.location = getLocation(provider)
+	// Don't detect project/location here - we need context which we don't have yet
+	// Will detect in ListModels where we have context
 }
 
 // ListModels retrieves all available models from Google Vertex AI.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+	// Detect project/location here where we have context
+	if c.projectID == "" {
+		c.projectID = getProjectID(ctx, c.provider)
+	}
+	if c.location == "" {
+		c.location = getLocation(c.provider)
+	}
+
 	if c.projectID == "" {
 		return nil, &errors.ConfigError{
 			Component: "google-vertex",
-			Message:   "project ID not configured - set GOOGLE_VERTEX_PROJECT or run 'gcloud config set project YOUR_PROJECT'",
+			Message:   "project ID not configured - set GOOGLE_CLOUD_PROJECT env var or run 'gcloud auth application-default set-quota-project YOUR_PROJECT'",
 		}
 	}
 
@@ -664,27 +673,51 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 	return model
 }
 
-// getProjectID gets the project ID from environment variable or gcloud config
-func getProjectID(provider *catalogs.Provider) string {
-	// Try environment variable first
-	if projectID := provider.EnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+// getProjectID gets the project ID from environment variables or Application Default Credentials
+func getProjectID(ctx context.Context, provider *catalogs.Provider) string {
+	// 1. Check environment variables first (explicit configuration wins)
+	if projectID := provider.EnvVar("GOOGLE_CLOUD_PROJECT"); projectID != "" {
 		return projectID
 	}
+	if projectID := provider.EnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+		return projectID // Backward compatibility
+	}
 
-	// Try gcloud config
+	// 2. Use Google's auth package to detect from ADC
+	creds, err := credentials.DetectDefault(&credentials.DetectOptions{
+		Scopes: []string{"https://www.googleapis.com/auth/cloud-platform"},
+	})
+	if err == nil {
+		// Try to get quota project ID first (what gcloud auth application-default login sets)
+		if projectID, err := creds.QuotaProjectID(ctx); err == nil && projectID != "" {
+			return projectID
+		}
+
+		// Fall back to regular project ID
+		if projectID, err := creds.ProjectID(ctx); err == nil && projectID != "" {
+			return projectID
+		}
+	}
+
+	// 3. Last resort: try gcloud config (for users who only set project)
 	if projectID := getGcloudConfig("project"); projectID != "" {
 		return projectID
 	}
 
-	// Return empty string - will cause error with helpful message
 	return ""
 }
 
-// getLocation gets the location from environment variable or gcloud config
+// getLocation gets the location from environment variables or gcloud config
 func getLocation(provider *catalogs.Provider) string {
-	// Try environment variable first
-	if location := provider.EnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
+	// Check environment variables (genai also checks these)
+	if location := provider.EnvVar("GOOGLE_CLOUD_LOCATION"); location != "" {
 		return location
+	}
+	if location := provider.EnvVar("GOOGLE_CLOUD_REGION"); location != "" {
+		return location // genai checks both
+	}
+	if location := provider.EnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
+		return location // Keep for backward compatibility
 	}
 
 	// Try gcloud config for region or zone

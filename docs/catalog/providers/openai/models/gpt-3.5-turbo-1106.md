@@ -1,28 +1,23 @@
-# gpt-3.5-turbo-1106
+# 
   
-[Catalog](../../../..) / [Providers](../../..) / [OpenAI](../..) / **gpt-3.5-turbo-1106**
+[Catalog](../../../..) / [Providers](../../..) / [OpenAI](../..) / ****
 
 
 ## 📋 Overview
   
 - **ID**: `gpt-3.5-turbo-1106`
 - **Provider**: [OpenAI](../)
-- **Authors**: [OpenAI](../../../authors/openai/)
   
 ## 🔬 Technical Specifications
   
 **Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red)
-
-**Repetition Controls:** ![Frequency](https://img.shields.io/badge/frequency__penalty-supported-purple) ![Presence](https://img.shields.io/badge/presence__penalty-supported-purple)
-
-**Observability:** ![Logprobs](https://img.shields.io/badge/logprobs-supported-teal)
   
   
 ## 🎯 Capabilities
   
 ### Feature Overview
   
-![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Supported input modalities](https://img.shields.io/badge/input-text-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Accepts tool definitions in requests](https://img.shields.io/badge/tools-✓-yellow) ![Supports tool choice strategies (auto/none/required)](https://img.shields.io/badge/tool__choice-✓-yellow) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Stop sequences](https://img.shields.io/badge/stop-core-blue) ![Frequency penalty](https://img.shields.io/badge/frequency__penalty-core-purple) ![Presence penalty](https://img.shields.io/badge/presence__penalty-core-purple) ![Log probabilities](https://img.shields.io/badge/logprobs-core-teal) ![Alternative response formats](https://img.shields.io/badge/format__response-✓-cyan) ![JSON schema validation](https://img.shields.io/badge/structured__outputs-✓-cyan) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
+![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Supported input modalities](https://img.shields.io/badge/input-text-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
   
   
 ### Input/Output Modalities
@@ -37,14 +32,14 @@
   
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |---------|---------|---------|---------|---------|
-| ❌ | ✅ | ✅ | ❌ | ❌ |
+| ❌ | ❌ | ❌ | ❌ | ❌ |
 
   
 ### Response Delivery
   
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |---------|---------|---------|---------|---------|
-| ✅ | ✅ | ✅ | ❌ | ✅ |
+| ✅ | ❌ | ❌ | ❌ | ✅ |
 
   
 ## 🎛️ Generation Controls
@@ -58,23 +53,9 @@
   
 ### Length & Termination
   
-| Max Tokens | Stop Sequences |
-|---------|---------|
-| ✅ | ✅ |
-
-  
-### Repetition Control
-  
-| Frequency Penalty | Presence Penalty |
-|---------|---------|
-| -2.0 to 2.0 | -2.0 to 2.0 |
-
-  
-### Advanced Controls
-  
-| Log Probabilities |
+| Max Tokens |
 |---------|
-| 0-20 |
+| ✅ |
 
   
 ## 💰 Pricing
@@ -82,13 +63,49 @@
 *Pricing shown for OpenAI*
   
   
-Contact provider for pricing information.
+### Token Pricing
+  
+| Input | Output | Reasoning | Cache Read | Cache Write |
+|---------|---------|---------|---------|---------|
+| $1.00/1M | $2.00/1M | - | - | - |
+
+  
+### 💰 Cost Calculator
+  
+Calculate costs for common usage patterns:
+  
+  
+| Use Case | Input | Output | Total Cost |
+|---------|---------|---------|---------|
+| Quick chat (1K in, 500 out) | 1k tokens | 500 tokens | $0.002000 |
+| Document summary (10K in, 1K out) | 10k tokens | 1k tokens | $0.0120 |
+| RAG query (50K in, 2K out) | 50k tokens | 2k tokens | $0.0540 |
+| Code generation (5K in, 10K out) | 5k tokens | 10k tokens | $0.0250 |
+
+  
+**Pricing Formula:**
+  
+```
+Cost = (Input Tokens / 1M × $1.00) + (Output Tokens / 1M × $2.00)
+```
+  
+### 📊 Example Costs
+  
+Real-world usage examples and their costs:
+  
+  
+| Usage Tier | Daily Volume | Monthly Tokens | Monthly Cost |
+|---------|---------|---------|---------|
+| Personal (10 chats/day) | 10 chats | 675k | $0.9000 |
+| Small Team (100 chats/day) | 100 chats | 9.0M | $12.00 |
+| Enterprise (1000 chats/day) | 1000 chats | 135.0M | $180.00 |
+
   
 ## 📋 Metadata
   
-**Created**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-09-02 17:43:30 UTC
   
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Last Updated**: 2025-09-02 17:43:30 UTC
   
   
 ---
@@ -97,10 +114,9 @@ Contact provider for pricing information.
 ### Navigation
 
 - [More models by OpenAI](../)
-- [More models by OpenAI](../../../../authors/openai/)
 - [All Providers](../../../../providers)
 - [Back to Catalog](../../../..)
 
 
 ---
-_Last Updated: 2025-08-31 23:14:25 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_
+_Last Updated: 2025-09-02 17:45:43 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_

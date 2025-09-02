@@ -85,7 +85,7 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0s
+    duration: 0s #immediate
     details: API inputs and outputs are not retained for training, inference and chatbot services. Data is processed for immediate response generation and then discarded.
   governance_policy:
     moderation_required: false
@@ -95,6 +95,8 @@
 # DeepSeek
 - id: deepseek
   name: DeepSeek
+  aliases:
+  - deepseek-ai
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
   api_key:
@@ -181,10 +183,10 @@
   authors:
   - ai21
   - anthropic
-  - deepseek
+  - deepseek-ai
   - google
   - meta
-  - mistral
+  - mistralai
   - openai
   - qwen
   status_page_url: https://status.cloud.google.com
@@ -244,7 +246,7 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0s
+    duration: 0s #immediate
     details: Input prompts and context are not retained; data is processed for immediate response generation and then discarded
   governance_policy:
     moderation_required: false

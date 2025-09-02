@@ -12,24 +12,12 @@ Chinese AI company known for DeepSeek-Coder and reasoning-focused language model
 | **Author ID** | `deepseek` |
 | **Type** | 🚀 AI Startups |
 | **Website** | [https://deepseek.com](https://deepseek.com) |
-| **Total Models** | 2 |
-| **Available On** | 1 provider |
+| **Total Models** | 0 |
 
   
 ## Models
   
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [deepseek-chat](./models/deepseek-chat.md) | deepseek | N/A | Text |
-| [deepseek-reasoner](./models/deepseek-reasoner.md) | deepseek | N/A | Text |
-
-  
-## Provider Availability
-  
-Models from this author are available through the following providers:
-  
-  
-- **[deepseek](../../providers/deepseek/)** - 2 models
+*No models found from this author.*
   
 ## Research & Development
   

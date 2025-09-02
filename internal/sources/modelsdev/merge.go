@@ -13,16 +13,31 @@ import (
 )
 
 // EnhanceModelsWithModelsDevData enhances API models with models.dev data BEFORE comparison
-func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, providerID catalogs.ProviderID, api *ModelsDevAPI) ([]catalogs.Model, int) {
-	if api == nil {
+func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, provider *catalogs.Provider, api *ModelsDevAPI) ([]catalogs.Model, int) {
+	if api == nil || provider == nil {
 		return apiModels, 0
 	}
 
-	// Get models.dev provider data
-	modelsDevProvider, exists := api.GetProvider(providerID)
+	// Try to find models.dev provider data using primary ID first
+	modelsDevProvider, exists := api.GetProvider(provider.ID)
+	
+	// If not found, try aliases
+	if !exists && len(provider.Aliases) > 0 {
+		for _, alias := range provider.Aliases {
+			modelsDevProvider, exists = api.GetProvider(alias)
+			if exists {
+				logging.Debug().
+					Str("provider_id", string(provider.ID)).
+					Str("alias", string(alias)).
+					Msg("Found models.dev data using alias")
+				break
+			}
+		}
+	}
+	
 	if !exists {
 		logging.Debug().
-			Str("provider_id", string(providerID)).
+			Str("provider_id", string(provider.ID)).
 			Msg("Provider not found in models.dev data")
 		return apiModels, 0
 	}

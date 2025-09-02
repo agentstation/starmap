@@ -188,7 +188,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		reconcile.ModelsDevHTTP: modelsDevCat,
 	}
 
-	result, err := r.ReconcileCatalogs(ctx, sources)
+	result, err := r.ReconcileCatalogs(ctx, reconcile.ProviderAPI, sources)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -324,7 +324,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 				t.Fatalf("Failed to create reconciler: %v", err)
 			}
 			
-			result, err := r.ReconcileCatalogs(ctx, sources)
+			result, err := r.ReconcileCatalogs(ctx, reconcile.ProviderAPI, sources)
 			if err != nil {
 				t.Fatalf("ReconcileCatalogs failed: %v", err)
 			}
@@ -419,7 +419,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 		reconcile.LocalCatalog: newCatalog,
 	}
 	
-	result, err := r.ReconcileCatalogs(ctx, sources)
+	result, err := r.ReconcileCatalogs(ctx, reconcile.ProviderAPI, sources)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -548,7 +548,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		reconcile.ModelsDevHTTP: catalog3,
 	}
 
-	result, err := r.ReconcileCatalogs(ctx, sources)
+	result, err := r.ReconcileCatalogs(ctx, reconcile.ProviderAPI, sources)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}

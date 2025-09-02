@@ -12,10 +12,11 @@ import (
 // Provider represents a provider configuration.
 type Provider struct {
 	// Core identification and integration
-	ID           ProviderID `json:"id" yaml:"id"`                                         // Unique provider identifier
-	Name         string     `json:"name" yaml:"name"`                                     // Display name (must not be empty)
-	Headquarters *string    `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
-	IconURL      *string    `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
+	ID           ProviderID   `json:"id" yaml:"id"`                                         // Unique provider identifier
+	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
+	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
+	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
+	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
 
 	// API key configuration
 	APIKey *ProviderAPIKey `json:"api_key,omitempty" yaml:"api_key,omitempty"` // API key configuration

@@ -12,13 +12,13 @@ Organizations that host and serve AI models through APIs.
   
 | Provider | Models | Free Tier | API Key Required | Status Page |
 |---------|---------|---------|---------|---------|
-| **Google Vertex AI** | 285 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
-| **OpenAI** | 114 | ❌ | ✅ | [Status](https://status.openai.com) |
-| **Google AI Studio** | 71 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
-| **Groq** | 48 | ❌ | ✅ | [Status](https://status.groq.com) |
-| **Anthropic** | 20 | ❌ | ✅ | [Status](https://status.anthropic.com) |
-| **Cerebras** | 17 | ❌ | ✅ | [Status](https://status.cerebras.ai/) |
-| **DeepSeek** | 8 | ❌ | ✅ | [Status](https://status.deepseek.com) |
+| **Google Vertex AI** | 271 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
+| **OpenAI** | 65 | ❌ | ✅ | [Status](https://status.openai.com) |
+| **Google AI Studio** | 50 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
+| **Groq** | 20 | ❌ | ✅ | [Status](https://status.groq.com) |
+| **Cerebras** | 9 | ❌ | ✅ | [Status](https://status.cerebras.ai/) |
+| **Anthropic** | 8 | ❌ | ✅ | [Status](https://status.anthropic.com) |
+| **DeepSeek** | 2 | ❌ | ✅ | [Status](https://status.deepseek.com) |
 
   
 ## 🌟 Top Models Across Providers
@@ -28,27 +28,27 @@ Overview of popular models available across different providers:
   
 | Model | Provider | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|---------|
-| **Automl E2e** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Automl Vision Image Classification** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Automl Vision Image Object Detection** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Bart Large Cnn** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Bert Base** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Bert Base Uncased** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Chat Bison** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Chirp 2** | Google Vertex AI | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Claude 3 7 Sonnet** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude 3 7 Sonnet** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Haiku 3** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Claude Haiku 3.5** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 3** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 |
-| **Claude Opus 4** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4 1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4 1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Opus 4.1** | Anthropic | — | — | — | 📝 👁️ 🔧 ⚡ |
-| **Claude Sonnet 3** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 |
-| _...and 543 more_ |  |  |  |  |  |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | $0.8000 | $4.00 | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | $3.00 | $15.00 | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | — | — | 📝 👁️ ⚡ |
+| **** | Google Vertex AI | — | $15.00 | $75.00 | 📝 👁️ ⚡ |
+| _...and 405 more_ |  |  |  |  |  |
 
   
 ## Provider Details
@@ -58,97 +58,95 @@ Overview of popular models available across different providers:
 Creator of Claude, focusing on safe and beneficial AI with constitutional training.
   
   
-- **Models**: 20 available
+- **Models**: 8 available
 - **API Key**: Required (`ANTHROPIC_API_KEY`)
 - **Status**: [Check current status](https://status.anthropic.com)
 - **Featured Models**:
--   - Claude Haiku 3.5
--   - claude 3 5 haiku
--   - Claude Sonnet 3.5 (Old)
--   - [View all 20 models →](anthropic/)
+-   - 
+-   - 
+-   - 
+-   - [View all 8 models →](anthropic/)
   
 ### <img src="./cerebras/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Cerebras](cerebras/)
   
 Fastest inference speeds using revolutionary wafer-scale computing technology.
   
   
-- **Models**: 17 available
+- **Models**: 9 available
 - **API Key**: Required (`CEREBRAS_API_KEY`)
 - **Status**: [Check current status](https://status.cerebras.ai/)
 - **Featured Models**:
--   - gpt-oss-120b
--   - llama-3.3-70b
--   - llama-4-maverick-17b-128e-instruct
--   - [View all 17 models →](cerebras/)
+-   - 
+-   - 
+-   - 
+-   - [View all 9 models →](cerebras/)
   
 ### <img src="./deepseek/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [DeepSeek](deepseek/)
   
 Chinese AI company specializing in efficient, high-performance language models.
   
   
-- **Models**: 8 available
+- **Models**: 2 available
 - **API Key**: Required (`DEEPSEEK_API_KEY`)
 - **Status**: [Check current status](https://status.deepseek.com)
 - **Featured Models**:
--   - deepseek-chat
--   - DeepSeek-Coder-V2-Instruct
--   - Deepseek R1 0528 Maas
--   - [View all 8 models →](deepseek/)
+-   - 
+-   - 
   
 ### <img src="./google-ai-studio/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google AI Studio](google-ai-studio/)
   
 Google's AI platform offering Gemini models with multimodal capabilities.
   
   
-- **Models**: 71 available
+- **Models**: 50 available
 - **API Key**: Required (`GOOGLE_API_KEY`)
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Model that performs Attributed Question Answering.
--   - Embedding 001
--   - Embedding Gecko
--   - [View all 71 models →](google-ai-studio/)
+-   - 
+-   - 
+-   - 
+-   - [View all 50 models →](google-ai-studio/)
   
 ### <img src="./google-vertex/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Google Vertex AI](google-vertex/)
   
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
   
-- **Models**: 285 available
+- **Models**: 271 available
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - automl-e2e
--   - Automl E2e
--   - automl-vision-image-classification
--   - [View all 285 models →](google-vertex/)
+-   - 
+-   - 
+-   - 
+-   - [View all 271 models →](google-vertex/)
   
 ### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](groq/)
   
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   
   
-- **Models**: 48 available
+- **Models**: 20 available
 - **API Key**: Required (`GROQ_API_KEY`)
 - **Status**: [Check current status](https://status.groq.com)
 - **Featured Models**:
--   - allam-2-7b
--   - Codellama 7b Hf
--   - compound-beta
--   - [View all 48 models →](groq/)
+-   - 
+-   - 
+-   - 
+-   - [View all 20 models →](groq/)
   
 ### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](openai/)
   
 Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.
   
   
-- **Models**: 114 available
+- **Models**: 65 available
 - **API Key**: Required (`OPENAI_API_KEY`)
 - **Status**: [Check current status](https://status.openai.com)
 - **Featured Models**:
--   - babbage-002
--   - Codex Mini
--   - dall-e-2
--   - [View all 114 models →](openai/)
+-   - 
+-   - 
+-   - 
+-   - [View all 65 models →](openai/)
   
 ---
 _[← Back to Catalog](../) | Generated by [Starmap](https://github.com/agentstation/starmap)_

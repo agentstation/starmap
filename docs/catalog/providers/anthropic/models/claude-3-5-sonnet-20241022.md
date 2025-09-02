@@ -1,24 +1,23 @@
-# Claude Sonnet 3.5 (New)
+# 
   
-[Catalog](../../../..) / [Providers](../../..) / [Anthropic](../..) / **Claude Sonnet 3.5 (New)**
+[Catalog](../../../..) / [Providers](../../..) / [Anthropic](../..) / ****
 
 
 ## 📋 Overview
   
 - **ID**: `claude-3-5-sonnet-20241022`
 - **Provider**: [Anthropic](../)
-- **Authors**: [Anthropic](../../../authors/anthropic/)
   
 ## 🔬 Technical Specifications
   
-**Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red) ![Top-K](https://img.shields.io/badge/top__k-supported-orange)
+**Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red)
   
   
 ## 🎯 Capabilities
   
 ### Feature Overview
   
-![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Can analyze and understand images](https://img.shields.io/badge/vision-✓-purple) ![Supported input modalities](https://img.shields.io/badge/input-text,image-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Accepts tool definitions in requests](https://img.shields.io/badge/tools-✓-yellow) ![Supports tool choice strategies (auto/none/required)](https://img.shields.io/badge/tool__choice-✓-yellow) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Top-k sampling](https://img.shields.io/badge/top__k-advanced-orange) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Stop sequences](https://img.shields.io/badge/stop-core-blue) ![Alternative response formats](https://img.shields.io/badge/format__response-✓-cyan) ![JSON schema validation](https://img.shields.io/badge/structured__outputs-✓-cyan) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
+![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Can analyze and understand images](https://img.shields.io/badge/vision-✓-purple) ![Supported input modalities](https://img.shields.io/badge/input-text,image-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
   
   
 ### Input/Output Modalities
@@ -33,30 +32,30 @@
   
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
 |---------|---------|---------|---------|---------|
-| ❌ | ✅ | ✅ | ❌ | ❌ |
+| ❌ | ❌ | ❌ | ❌ | ❌ |
 
   
 ### Response Delivery
   
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
 |---------|---------|---------|---------|---------|
-| ✅ | ✅ | ✅ | ❌ | ✅ |
+| ✅ | ❌ | ❌ | ❌ | ✅ |
 
   
 ## 🎛️ Generation Controls
   
 ### Sampling & Decoding
   
-| Temperature | Top-P | Top-K |
-|---------|---------|---------|
-| 0.0-2.0 | 0.0-1.0 | ✅ |
+| Temperature | Top-P |
+|---------|---------|
+| 0.0-2.0 | 0.0-1.0 |
 
   
 ### Length & Termination
   
-| Max Tokens | Stop Sequences |
-|---------|---------|
-| ✅ | ✅ |
+| Max Tokens |
+|---------|
+| ✅ |
 
   
 ## 💰 Pricing
@@ -64,13 +63,49 @@
 *Pricing shown for Anthropic*
   
   
-Contact provider for pricing information.
+### Token Pricing
+  
+| Input | Output | Reasoning | Cache Read | Cache Write |
+|---------|---------|---------|---------|---------|
+| $3.00/1M | $15.00/1M | - | - | - |
+
+  
+### 💰 Cost Calculator
+  
+Calculate costs for common usage patterns:
+  
+  
+| Use Case | Input | Output | Total Cost |
+|---------|---------|---------|---------|
+| Quick chat (1K in, 500 out) | 1k tokens | 500 tokens | $0.0105 |
+| Document summary (10K in, 1K out) | 10k tokens | 1k tokens | $0.0450 |
+| RAG query (50K in, 2K out) | 50k tokens | 2k tokens | $0.1800 |
+| Code generation (5K in, 10K out) | 5k tokens | 10k tokens | $0.1650 |
+
+  
+**Pricing Formula:**
+  
+```
+Cost = (Input Tokens / 1M × $3.00) + (Output Tokens / 1M × $15.00)
+```
+  
+### 📊 Example Costs
+  
+Real-world usage examples and their costs:
+  
+  
+| Usage Tier | Daily Volume | Monthly Tokens | Monthly Cost |
+|---------|---------|---------|---------|
+| Personal (10 chats/day) | 10 chats | 675k | $4.73 |
+| Small Team (100 chats/day) | 100 chats | 9.0M | $63.00 |
+| Enterprise (1000 chats/day) | 1000 chats | 135.0M | $945.00 |
+
   
 ## 📋 Metadata
   
-**Created**: 0001-01-01 00:00:00 UTC
+**Created**: 2025-09-02 17:43:30 UTC
   
-**Last Updated**: 0001-01-01 00:00:00 UTC
+**Last Updated**: 2025-09-02 17:43:30 UTC
   
   
 ---
@@ -79,10 +114,9 @@ Contact provider for pricing information.
 ### Navigation
 
 - [More models by Anthropic](../)
-- [More models by Anthropic](../../../../authors/anthropic/)
 - [All Providers](../../../../providers)
 - [Back to Catalog](../../../..)
 
 
 ---
-_Last Updated: 2025-08-31 23:14:25 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_
+_Last Updated: 2025-09-02 17:45:43 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_
