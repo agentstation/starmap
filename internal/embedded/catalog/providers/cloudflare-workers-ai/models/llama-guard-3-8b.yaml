@@ -1,0 +1,11 @@
+id: llama-guard-3-8b
+name: "@cf/meta/llama-guard-3-8b"
+pricing:
+  tokens:
+    input:
+      per_1m: 0.48
+    output:
+      per_1m: 0.03
+  currency: USD
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

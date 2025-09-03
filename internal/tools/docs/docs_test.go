@@ -126,7 +126,7 @@ func TestGenerateCompactFeatures(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := compactFeatures(tt.model)
-			
+
 			// Parse result
 			var resultArray []string
 			if result != "" && result != "—" {
@@ -192,9 +192,9 @@ func TestGenerateModalityBadges(t *testing.T) {
 
 func TestGenerateToolBadges(t *testing.T) {
 	features := &catalogs.ModelFeatures{
-		Tools:      true,
-		ToolCalls:  true,
-		WebSearch:  true,
+		Tools:     true,
+		ToolCalls: true,
+		WebSearch: true,
 	}
 
 	badges := toolBadges(features)
@@ -216,11 +216,11 @@ func createTestCatalog() catalogs.Reader {
 		Name: "Test Provider",
 		Models: map[string]catalogs.Model{
 			"test-model": {
-				ID:          "test-model",
-				Name:        "Test Model",
-				Features:    createTestFeatures(),
-				Limits:      &catalogs.ModelLimits{ContextWindow: 128000, OutputTokens: 4096},
-				Pricing:     createTestPricing(),
+				ID:       "test-model",
+				Name:     "Test Model",
+				Features: createTestFeatures(),
+				Limits:   &catalogs.ModelLimits{ContextWindow: 128000, OutputTokens: 4096},
+				Pricing:  createTestPricing(),
 			},
 		},
 	}
@@ -253,7 +253,19 @@ func createTestCatalog() catalogs.Reader {
 			},
 		},
 	}
-	catalog.SetModel(model)
+	// Update provider with complex model
+	provider.Models["complex-model"] = model
+	catalog.SetProvider(provider)
+
+	// Also create OpenAI provider for this model
+	openaiProvider := catalogs.Provider{
+		ID:   catalogs.ProviderID("openai"),
+		Name: "OpenAI",
+		Models: map[string]catalogs.Model{
+			model.ID: model,
+		},
+	}
+	catalog.SetProvider(openaiProvider)
 
 	return catalog
 }
@@ -275,9 +287,9 @@ func createTestFeatures() *catalogs.ModelFeatures {
 func createTestPricing() *catalogs.ModelPricing {
 	return &catalogs.ModelPricing{
 		Currency: "USD",
-		Tokens: &catalogs.TokenPricing{
-			Input:  &catalogs.TokenCost{Per1M: 10.0},
-			Output: &catalogs.TokenCost{Per1M: 30.0},
+		Tokens: &catalogs.ModelTokenPricing{
+			Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+			Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 		},
 	}
 }
@@ -345,16 +357,23 @@ func TestGenerateWithConfigurations(t *testing.T) {
 			name: "generate with models only",
 			catalog: func() catalogs.Reader {
 				c, _ := catalogs.New()
-				c.SetModel(catalogs.Model{
-					ID:   "model-1",
-					Name: "Model 1",
-					Features: &catalogs.ModelFeatures{
-						Modalities: catalogs.ModelModalities{
-							Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-							Output: []catalogs.ModelModality{catalogs.ModelModalityText},
+				provider := catalogs.Provider{
+					ID:   catalogs.ProviderID("test-provider"),
+					Name: "Test Provider",
+					Models: map[string]catalogs.Model{
+						"model-1": {
+							ID:   "model-1",
+							Name: "Model 1",
+							Features: &catalogs.ModelFeatures{
+								Modalities: catalogs.ModelModalities{
+									Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
+									Output: []catalogs.ModelModality{catalogs.ModelModalityText},
+								},
+							},
 						},
 					},
-				})
+				}
+				c.SetProvider(provider)
 				return c
 			},
 			options: []Option{},
@@ -369,11 +388,11 @@ func TestGenerateWithConfigurations(t *testing.T) {
 			tempDir := t.TempDir()
 			opts := append(tt.options, WithOutputDir(tempDir))
 			g := New(opts...)
-			
+
 			ctx := context.Background()
 			err := g.Generate(ctx, tt.catalog())
 			assert.NoError(t, err)
-			
+
 			tt.verifyFunc(t, tempDir)
 		})
 	}
@@ -460,7 +479,7 @@ func TestComprehensiveBadgeGeneration(t *testing.T) {
 		{
 			name: "delivery badges",
 			features: &catalogs.ModelFeatures{
-				Streaming:       true,
+				Streaming: true,
 			},
 			verify: func(t *testing.T, badges []string) {
 				badgeStr := strings.Join(badges, " ")
@@ -476,19 +495,19 @@ func TestComprehensiveBadgeGeneration(t *testing.T) {
 			if tt.features.Modalities.Input != nil || tt.features.Modalities.Output != nil {
 				assert.NotEmpty(t, badges)
 			}
-			
+
 			// Test tool badges
 			toolBadgeList := toolBadges(tt.features)
-			
+
 			// Test generation badges
 			genBadges := generationBadges(tt.features)
-			
+
 			// Test reasoning badges
 			reasonBadges := reasoningBadges(tt.features)
-			
+
 			// Test delivery badges (streaming etc)
 			deliveryBadges := deliveryBadges(tt.features)
-			
+
 			// Combine all badges for verification
 			allBadges := append(append(append(append(badges, toolBadgeList...), genBadges...), reasonBadges...), deliveryBadges...)
 			tt.verify(t, allBadges)
@@ -511,9 +530,9 @@ func TestPricingEdgeCases(t *testing.T) {
 		{
 			name: "zero cost",
 			pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 0},
-					Output: &catalogs.TokenCost{Per1M: 0},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 0},
+					Output: &catalogs.ModelTokenCost{Per1M: 0},
 				},
 				Currency: "USD",
 			},
@@ -522,20 +541,20 @@ func TestPricingEdgeCases(t *testing.T) {
 		{
 			name: "very small cost",
 			pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 0.0001},
-					Output: &catalogs.TokenCost{Per1M: 0.0002},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 0.0001},
+					Output: &catalogs.ModelTokenCost{Per1M: 0.0002},
 				},
 				Currency: "USD",
 			},
 			expected: "$0.000100",
 		},
 		{
-			name: "mixed currencies", 
+			name: "mixed currencies",
 			pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 10},
-					Output: &catalogs.TokenCost{Per1M: 20},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 10},
+					Output: &catalogs.ModelTokenCost{Per1M: 20},
 				},
 				Currency: "USD", // Change to USD since formatTokenPrice doesn't handle EUR
 			},
@@ -544,12 +563,12 @@ func TestPricingEdgeCases(t *testing.T) {
 		{
 			name: "with cache pricing",
 			pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 10},
-					Output: &catalogs.TokenCost{Per1M: 20},
-					Cache: &catalogs.TokenCachePricing{
-						Read:  &catalogs.TokenCost{Per1M: 1},
-						Write: &catalogs.TokenCost{Per1M: 2},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 10},
+					Output: &catalogs.ModelTokenCost{Per1M: 20},
+					Cache: &catalogs.ModelTokenCachePricing{
+						Read:  &catalogs.ModelTokenCost{Per1M: 1},
+						Write: &catalogs.ModelTokenCost{Per1M: 2},
 					},
 				},
 				Currency: "USD",

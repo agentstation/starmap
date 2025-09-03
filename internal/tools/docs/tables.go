@@ -11,10 +11,10 @@ import (
 
 // writeModalityTable generates a horizontal table showing modality support for input/output
 func writeModalityTable(w io.Writer, model *catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	if model.Features == nil {
-		builder.PlainText("No modality information available.").LF().Build()
+		markdown.PlainText("No modality information available.").LF().Build()
 		return
 	}
 
@@ -60,7 +60,7 @@ func writeModalityTable(w io.Writer, model *catalogs.Model) {
 		}
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Direction", "Text", "Image", "Audio", "Video", "PDF"},
 		Rows:   [][]string{inputRow, outputRow},
 	}).LF().Build()
@@ -68,15 +68,15 @@ func writeModalityTable(w io.Writer, model *catalogs.Model) {
 
 // writeCoreFeatureTable generates a horizontal table for core features
 func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	if model.Features == nil {
-		builder.PlainText("No feature information available.").LF().Build()
+		markdown.PlainText("No feature information available.").LF().Build()
 		return
 	}
 
 	row := []string{}
-	
+
 	// Tool Calling
 	if model.Features.ToolCalls {
 		row = append(row, "✅")
@@ -112,7 +112,7 @@ func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
 		row = append(row, "❌")
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Tool Calling", "Tool Definitions", "Tool Choice", "Web Search", "File Attachments"},
 		Rows:   [][]string{row},
 	}).LF().Build()
@@ -120,15 +120,15 @@ func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
 
 // writeResponseDeliveryTable generates a horizontal table for response delivery options
 func writeResponseDeliveryTable(w io.Writer, model *catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	if model.Features == nil {
-		builder.PlainText("No delivery information available.").LF().Build()
+		markdown.PlainText("No delivery information available.").LF().Build()
 		return
 	}
 
 	row := []string{}
-	
+
 	// Streaming
 	if model.Features.Streaming {
 		row = append(row, "✅")
@@ -160,7 +160,7 @@ func writeResponseDeliveryTable(w io.Writer, model *catalogs.Model) {
 	// Text Format (always supported if model exists)
 	row = append(row, "✅")
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Streaming", "Structured Output", "JSON Mode", "Function Call", "Text Format"},
 		Rows:   [][]string{row},
 	}).LF().Build()
@@ -180,11 +180,11 @@ func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
-	builder.H3("Advanced Reasoning").LF()
+	markdown := NewMarkdown(w)
+	markdown.H3("Advanced Reasoning").LF()
 
 	row := []string{}
-	
+
 	if model.Features.Reasoning {
 		row = append(row, "✅")
 	} else {
@@ -215,7 +215,7 @@ func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 		row = append(row, "❌")
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Basic Reasoning", "Reasoning Effort", "Reasoning Tokens", "Include Reasoning", "Verbosity Control"},
 		Rows:   [][]string{row},
 	}).LF().Build()
@@ -224,19 +224,19 @@ func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 // writeControlsTables generates multiple horizontal tables for generation controls
 func writeControlsTables(w io.Writer, model *catalogs.Model) {
 	if model.Features == nil {
-		builder := NewMarkdownBuilder(w)
-		builder.PlainText("No control information available.").LF().Build()
+		markdown := NewMarkdown(w)
+		markdown.PlainText("No control information available.").LF().Build()
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
+	markdown := NewMarkdown(w)
 
 	// Sampling & Decoding Controls
 	hasCoreSampling := model.Features.Temperature || model.Features.TopP || model.Features.TopK ||
 		model.Features.TopA || model.Features.MinP
 
 	if hasCoreSampling {
-		builder.H3("Sampling & Decoding").LF()
+		markdown.H3("Sampling & Decoding").LF()
 
 		// Build table headers and values dynamically based on what's supported
 		var headers []string
@@ -285,7 +285,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		builder.Table(md.TableSet{
+		markdown.Table(md.TableSet{
 			Header: headers,
 			Rows:   [][]string{values},
 		}).LF()
@@ -295,7 +295,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 	hasLengthControls := model.Features.MaxTokens || model.Features.Stop
 
 	if hasLengthControls {
-		builder.H3("Length & Termination").LF()
+		markdown.H3("Length & Termination").LF()
 
 		var headers []string
 		var values []string
@@ -316,7 +316,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		builder.Table(md.TableSet{
+		markdown.Table(md.TableSet{
 			Header: headers,
 			Rows:   [][]string{values},
 		}).LF()
@@ -327,7 +327,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 		model.Features.RepetitionPenalty
 
 	if hasRepetitionControls {
-		builder.H3("Repetition Control").LF()
+		markdown.H3("Repetition Control").LF()
 
 		var headers []string
 		var values []string
@@ -359,7 +359,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			values = append(values, "✅")
 		}
 
-		builder.Table(md.TableSet{
+		markdown.Table(md.TableSet{
 			Header: headers,
 			Rows:   [][]string{values},
 		}).LF()
@@ -369,7 +369,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 	hasAdvancedControls := model.Features.LogitBias || model.Features.Seed || model.Features.Logprobs
 
 	if hasAdvancedControls {
-		builder.H3("Advanced Controls").LF()
+		markdown.H3("Advanced Controls").LF()
 
 		var headers []string
 		var values []string
@@ -395,13 +395,13 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			values = append(values, rangeStr)
 		}
 
-		builder.Table(md.TableSet{
+		markdown.Table(md.TableSet{
 			Header: headers,
 			Rows:   [][]string{values},
 		}).LF()
 	}
 
-	builder.Build()
+	markdown.Build()
 }
 
 // writeArchitectureTable generates a horizontal table for architecture details
@@ -410,13 +410,13 @@ func writeArchitectureTable(w io.Writer, model *catalogs.Model) {
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
+	markdown := NewMarkdown(w)
 	arch := model.Metadata.Architecture
-	
-	builder.H3("Architecture Details").LF()
+
+	markdown.H3("Architecture Details").LF()
 
 	row := []string{}
-	
+
 	if arch.ParameterCount != "" {
 		row = append(row, arch.ParameterCount)
 	} else {
@@ -453,7 +453,7 @@ func writeArchitectureTable(w io.Writer, model *catalogs.Model) {
 		row = append(row, "-")
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Parameter Count", "Architecture Type", "Tokenizer", "Quantization", "Fine-Tuned", "Base Model"},
 		Rows:   [][]string{row},
 	}).LF().Build()
@@ -465,8 +465,8 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
-	builder.H3("Model Tags").LF()
+	markdown := NewMarkdown(w)
+	markdown.H3("Model Tags").LF()
 
 	// Common tags to check for
 	commonTags := []catalogs.ModelTag{
@@ -480,7 +480,7 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 	}
 
 	row := []string{}
-	
+
 	// Check each common tag
 	for _, tag := range commonTags {
 		hasTag := false
@@ -497,7 +497,7 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 		}
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Coding", "Writing", "Reasoning", "Math", "Chat", "Multimodal", "Function Calling"},
 		Rows:   [][]string{row},
 	}).LF()
@@ -518,28 +518,28 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 	}
 
 	if len(additionalTags) > 0 {
-		builder.LF().Bold("Additional Tags").PlainText(": " + strings.Join(additionalTags, ", ")).LF()
+		markdown.LF().Bold("Additional Tags").PlainText(": " + strings.Join(additionalTags, ", ")).LF()
 	}
-	
-	builder.Build()
+
+	markdown.Build()
 }
 
 // writeTokenPricingTable generates a horizontal table for token pricing
 func writeTokenPricingTable(w io.Writer, model *catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
-		builder.PlainText("Contact provider for pricing information.").LF().Build()
+		markdown.PlainText("Contact provider for pricing information.").LF().Build()
 		return
 	}
 
-	builder.H3("Token Pricing").LF()
+	markdown.H3("Token Pricing").LF()
 
 	tokens := model.Pricing.Tokens
-	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
+	currencySymbol := model.Pricing.Currency.Symbol()
 
 	row := []string{}
-	
+
 	if tokens.Input != nil && tokens.Input.Per1M > 0 {
 		row = append(row, fmt.Sprintf("%s%.2f/1M", currencySymbol, tokens.Input.Per1M))
 	} else {
@@ -575,7 +575,7 @@ func writeTokenPricingTable(w io.Writer, model *catalogs.Model) {
 		row = append(row, "-")
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Input", "Output", "Reasoning", "Cache Read", "Cache Write"},
 		Rows:   [][]string{row},
 	}).LF().Build()
@@ -595,13 +595,13 @@ func writeOperationPricingTable(w io.Writer, model *catalogs.Model) {
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
-	builder.H3("Operation Pricing").LF()
+	markdown := NewMarkdown(w)
+	markdown.H3("Operation Pricing").LF()
 
-	currencySymbol := getCurrencySymbol(model.Pricing.Currency)
+	currencySymbol := model.Pricing.Currency.Symbol()
 
 	row := []string{}
-	
+
 	if ops.ImageInput != nil {
 		row = append(row, fmt.Sprintf("%s%.3f/img", currencySymbol, *ops.ImageInput))
 	} else {
@@ -638,24 +638,8 @@ func writeOperationPricingTable(w io.Writer, model *catalogs.Model) {
 		row = append(row, "-")
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Image Input", "Audio Input", "Video Input", "Image Gen", "Audio Gen", "Web Search"},
 		Rows:   [][]string{row},
 	}).LF().Build()
-}
-
-// getCurrencySymbol returns the currency symbol for a given currency code
-func getCurrencySymbol(currency string) string {
-	switch currency {
-	case "USD", "":
-		return "$"
-	case "EUR":
-		return "€"
-	case "GBP":
-		return "£"
-	case "JPY":
-		return "¥"
-	default:
-		return "$" // Default to USD
-	}
 }

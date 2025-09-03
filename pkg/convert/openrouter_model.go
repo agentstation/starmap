@@ -210,7 +210,7 @@ func getTokenizer(m *catalogs.Model) catalogs.Tokenizer {
 	return catalogs.TokenizerUnknown
 }
 
-func getTokenCost(pricing *catalogs.ModelPricing, costType string) *catalogs.TokenCost {
+func getTokenCost(pricing *catalogs.ModelPricing, costType string) *catalogs.ModelTokenCost {
 	if pricing == nil || pricing.Tokens == nil {
 		return nil
 	}
@@ -244,7 +244,7 @@ func getOperationCost(pricing *catalogs.ModelPricing, costType string) *float64 
 	}
 }
 
-func getCacheCost(pricing *catalogs.ModelPricing) *catalogs.TokenCachePricing {
+func getCacheCost(pricing *catalogs.ModelPricing) *catalogs.ModelTokenCachePricing {
 	if pricing == nil || pricing.Tokens == nil {
 		return nil
 	}
@@ -283,7 +283,7 @@ func convertTokenizer(tokenizer catalogs.Tokenizer) string {
 	}
 }
 
-func convertTokenCost(cost *catalogs.TokenCost) string {
+func convertTokenCost(cost *catalogs.ModelTokenCost) string {
 	if cost == nil {
 		return "0"
 	}
@@ -297,7 +297,7 @@ func convertOperationCost(cost *float64) string {
 	return fmt.Sprintf("%.10f", *cost)
 }
 
-func convertCacheCost(cache *catalogs.TokenCachePricing, operation string) string {
+func convertCacheCost(cache *catalogs.ModelTokenCachePricing, operation string) string {
 	if cache == nil {
 		return "0"
 	}

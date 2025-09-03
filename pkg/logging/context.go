@@ -31,11 +31,11 @@ func FromContext(ctx context.Context) *zerolog.Logger {
 	if ctx == nil {
 		return Default()
 	}
-	
+
 	if logger, ok := ctx.Value(loggerKey).(*zerolog.Logger); ok && logger != nil {
 		return logger
 	}
-	
+
 	return Default()
 }
 
@@ -48,7 +48,7 @@ func Ctx(ctx context.Context) *zerolog.Logger {
 // WithRequestID adds a request ID to the context for tracing
 func WithRequestID(ctx context.Context, requestID string) context.Context {
 	ctx = context.WithValue(ctx, requestIDKey, requestID)
-	
+
 	// Also update the logger with the request ID
 	logger := FromContext(ctx)
 	newLogger := logger.With().Str("request_id", requestID).Logger()
@@ -64,20 +64,20 @@ func RequestID(ctx context.Context) string {
 }
 
 // WithFields adds structured fields to the logger in the context
-func WithFields(ctx context.Context, fields map[string]interface{}) context.Context {
+func WithFields(ctx context.Context, fields map[string]any) context.Context {
 	logger := FromContext(ctx)
 	logCtx := logger.With()
-	
+
 	for key, value := range fields {
 		logCtx = addFieldToContext(logCtx, key, value)
 	}
-	
+
 	newLogger := logCtx.Logger()
 	return WithLogger(ctx, &newLogger)
 }
 
 // WithField adds a single field to the logger in the context
-func WithField(ctx context.Context, key string, value interface{}) context.Context {
+func WithField(ctx context.Context, key string, value any) context.Context {
 	logger := FromContext(ctx)
 	logCtx := logger.With()
 	logCtx = addFieldToContext(logCtx, key, value)
@@ -86,7 +86,7 @@ func WithField(ctx context.Context, key string, value interface{}) context.Conte
 }
 
 // addFieldToContext adds a field to the logger context based on its type
-func addFieldToContext(ctx zerolog.Context, key string, value interface{}) zerolog.Context {
+func addFieldToContext(ctx zerolog.Context, key string, value any) zerolog.Context {
 	switch v := value.(type) {
 	case string:
 		return ctx.Str(key, v)

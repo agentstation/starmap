@@ -9,8 +9,8 @@ import (
 
 // catalogOptions is a struct that contains the options for the catalog
 type catalogOptions struct {
-	readFS        fs.FS         // For reading catalog files
-	writePath     string        // For writing catalog files (optional)
+	readFS        fs.FS  // For reading catalog files
+	writePath     string // For writing catalog files (optional)
 	mergeStrategy MergeStrategy
 }
 

@@ -1,0 +1,14 @@
+id: auto
+name: Auto
+pricing:
+  tokens:
+    input:
+      per_1m: 0.85
+    output:
+      per_1m: 1.55
+  currency: USD
+limits:
+  context_window: 32000
+  output_tokens: 32000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

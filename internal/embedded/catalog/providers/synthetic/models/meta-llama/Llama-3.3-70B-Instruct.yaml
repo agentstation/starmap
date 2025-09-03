@@ -1,0 +1,14 @@
+id: meta-llama/Llama-3.3-70B-Instruct
+name: Llama-3.3-70B-Instruct
+pricing:
+  tokens:
+    input:
+      per_1m: 0.9
+    output:
+      per_1m: 0.9
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 32768
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

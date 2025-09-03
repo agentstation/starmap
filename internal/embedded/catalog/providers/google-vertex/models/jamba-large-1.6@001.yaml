@@ -1,13 +1,22 @@
 id: jamba-large-1.6@001
-name: ""
+name: Jamba Large 1.6
+authors:
+- id: ai21
+  name: ai21
+  models: {}
+  created_at: null
+  updated_at: null
+metadata:
+  release_date: null
+  open_weights: false
 features:
   modalities:
     input:
     - text
     output:
     - text
-  tool_calls: false
-  tools: false
+  tool_calls: true
+  tools: true
   tool_choice: false
   web_search: false
   attachments: false
@@ -52,7 +61,7 @@ features:
   structured_outputs: false
   streaming: true
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 256000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

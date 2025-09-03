@@ -14,19 +14,6 @@ type Models struct {
 	models map[string]*Model
 }
 
-// NewModels creates a new Models map with optional configuration.
-func NewModels(opts ...ModelsOption) *Models {
-	m := &Models{
-		models: make(map[string]*Model),
-	}
-
-	for _, opt := range opts {
-		opt(m)
-	}
-
-	return m
-}
-
 // Get returns a model by id and whether it exists.
 func (m *Models) Get(id string) (*Model, bool) {
 	m.mu.RLock()
@@ -114,12 +101,12 @@ func (m *Models) List() []*Model {
 		models = append(models, model)
 	}
 	m.mu.RUnlock()
-	
+
 	// Sort by ID for deterministic ordering
 	sort.Slice(models, func(i, j int) bool {
 		return models[i].ID < models[j].ID
 	})
-	
+
 	return models
 }
 

@@ -8,7 +8,7 @@ Ultra-fast inference with custom LPU hardware, offering low-latency model servin
 | Field | Value |
 |---------|---------|
 | **Provider ID** | `groq` |
-| **Total Models** | 20 |
+| **Total Models** | 25 |
 | **Authentication** | API Key Required |
 | **Environment Variable** | `GROQ_API_KEY` |
 | **Status Page** | [https://status.groq.com](https://status.groq.com) |
@@ -61,30 +61,71 @@ Mountain View, CA, USA
   
 ## Available Models
   
+### GPT
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [GPT OSS 120B](./models/openai-gpt-oss-120b.md) | 131.1k | $0.15 | $0.75 | 📝 ⚡ |
+| [GPT OSS 20B](./models/openai-gpt-oss-20b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
+
+  
+### Gemma
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Gemma 2 9B](./models/gemma2-9b-it.md) | 8.2k | $0.20 | $0.20 | 📝 🔧 ⚡ |
+
+  
+### Llama
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [DeepSeek R1 Distill Llama 70B](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | $0.75 | $0.99 | 📝 🔧 ⚡ |
+| [Llama 3 70B](./models/llama3-70b-8192.md) | 8.2k | $0.59 | $0.79 | — |
+| [Llama 3 8B](./models/llama3-8b-8192.md) | 8.2k | $0.05 | $0.08 | — |
+| [Llama 3.1 8B Instant](./models/llama-3.1-8b-instant.md) | 131.1k | $0.05 | $0.08 | 📝 🔧 ⚡ |
+| [Llama 3.3 70B Versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | $0.59 | $0.79 | 📝 🔧 ⚡ |
+| [Llama 4 Maverick 17B](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | $0.20 | $0.60 | 📝 🔧 ⚡ |
+| [Llama 4 Scout 17B](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | $0.11 | $0.34 | 📝 🔧 ⚡ |
+| [Llama Guard 3 8B](./models/llama-guard-3-8b.md) | 8.2k | $0.20 | $0.20 | — |
+| [Llama Guard 4 12B](./models/meta-llama-llama-guard-4-12b.md) | 131.1k | $0.20 | $0.20 | 📝 ⚡ |
+| [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | 512 | N/A | N/A | 📝 ⚡ |
+| [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | 512 | N/A | N/A | 📝 ⚡ |
+
+  
+### Mistral
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Mistral Saba 24B](./models/mistral-saba-24b.md) | 32.8k | $0.79 | $0.79 | — |
+
+  
 ### Other
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [](./models/allam-2-7b.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/compound-beta.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/compound-beta-mini.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/deepseek-r1-distill-llama-70b.md) | N/A | $0.75 | $0.99 | 📝 ⚡ |
-| [](./models/gemma2-9b-it.md) | N/A | $0.20 | $0.20 | 📝 ⚡ |
-| [](./models/llama-3.1-8b-instant.md) | N/A | $0.05 | $0.08 | 📝 ⚡ |
-| [](./models/llama-3.3-70b-versatile.md) | N/A | $0.59 | $0.79 | 📝 ⚡ |
-| [](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | N/A | $0.20 | $0.60 | 📝 ⚡ |
-| [](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | N/A | $0.11 | $0.34 | 📝 ⚡ |
-| [](./models/meta-llama-llama-guard-4-12b.md) | N/A | $0.20 | $0.20 | 📝 ⚡ |
-| [](./models/meta-llama-llama-prompt-guard-2-22m.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/meta-llama-llama-prompt-guard-2-86m.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/moonshotai-kimi-k2-instruct.md) | N/A | $1.00 | $3.00 | 📝 ⚡ |
-| [](./models/openai-gpt-oss-120b.md) | N/A | $0.10 | $0.10 | 📝 ⚡ |
-| [](./models/openai-gpt-oss-20b.md) | N/A | $0.05 | $0.20 | 📝 ⚡ |
-| [](./models/playai-tts.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/playai-tts-arabic.md) | N/A | N/A | N/A | 📝 ⚡ |
-| [](./models/qwen-qwen3-32b.md) | N/A | $0.29 | $0.59 | 📝 ⚡ |
-| [](./models/whisper-large-v3.md) | N/A | N/A | N/A | 📝 🎵 ⚡ |
-| [](./models/whisper-large-v3-turbo.md) | N/A | $0.00 | $0.00 | 📝 🎵 ⚡ |
+| [Kimi K2 Instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
+| [allam-2-7b](./models/allam-2-7b.md) | 4.1k | N/A | N/A | 📝 ⚡ |
+| [compound-beta](./models/compound-beta.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [compound-beta-mini](./models/compound-beta-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
+| [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
+
+  
+### Qwen
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | 131.1k | $0.29 | $0.39 | — |
+| [Qwen3 32B](./models/qwen-qwen3-32b.md) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
+
+  
+### Whisper
+  
+| Model | Context | Input | Output | Features |
+|---------|---------|---------|---------|---------|
+| [@cf/openai/whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | 448 | $0.00 | $0.00 | 📝 🎵 ⚡ |
+| [whisper-large-v3](./models/whisper-large-v3.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
 
   
 ## Configuration

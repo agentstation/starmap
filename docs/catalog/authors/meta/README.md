@@ -12,12 +12,72 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | **Author ID** | `meta` |
 | **Type** | 🏢 Major Tech Companies |
 | **Website** | [https://about.meta.com](https://about.meta.com) |
-| **Total Models** | 0 |
+| **Total Models** | 29 |
+| **Available On** | 2 providers |
 
   
 ## Models
   
-*No models found from this author.*
+### Llama
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | google-vertex | 128k | Text, Functions |
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.1 8B Instant](./models/llama-3.1-8b-instant.md) | groq | 131.1k | Text, Functions |
+| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.3 70B Versatile](./models/llama-3.3-70b-versatile.md) | groq | 131.1k | Text, Functions |
+| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 4 Maverick 17B](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | groq | 131.1k | Text, Functions |
+| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 4 Scout 17B](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | groq | 131.1k | Text, Functions |
+| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | google-vertex | 128k | Text, Functions |
+| [Llama Guard 4 12B](./models/meta-llama-llama-guard-4-12b.md) | groq | 131.1k | Text |
+| [Llama2](./models/llama2-at-llama-2-7b.md) | google-vertex | 128k | Text, Functions |
+| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | google-vertex | 128k | Text, Functions |
+| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | google-vertex | 128k | Text, Functions |
+| [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | groq | 512 | Text |
+| [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
+
+  
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | 128k | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | 128k | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | google-vertex | 128k | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+### RoBERTa
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+## Provider Availability
+  
+Models from this author are available through the following providers:
+  
+  
+- **[google-vertex](../../providers/google-vertex/)** - 22 models
+- **[groq](../../providers/groq/)** - 7 models
   
 ## Research & Development
   

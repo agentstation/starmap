@@ -1,0 +1,14 @@
+id: Qwen/Qwen3-30B-A3B-Instruct-2507
+name: Qwen3 30B A3B Instruct 2507
+pricing:
+  tokens:
+    input:
+      per_1m: 0.05
+    output:
+      per_1m: 0.2
+  currency: USD
+limits:
+  context_window: 262144
+  output_tokens: 262144
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

@@ -2,31 +2,31 @@ package catalogs
 
 // Reader provides read-only access to catalog data
 type Reader interface {
-	// Lists all providers, authors, models, and endpoints
+	// Lists all providers, authors, and endpoints
 	Providers() *Providers
 	Authors() *Authors
-	Models() *Models
 	Endpoints() *Endpoints
 
-	// Gets a provider, author, model, or endpoint by id
+	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)
 	Author(id AuthorID) (Author, error)
-	Model(id string) (Model, error)
 	Endpoint(id string) (Endpoint, error)
+
+	// Helper methods for accessing models through providers/authors
+	GetAllModels() []Model
+	FindModel(id string) (Model, error)
 }
 
 // Writer provides write operations for catalog data
 type Writer interface {
-	// Sets a provider, author, model, or endpoint (upsert semantics)
+	// Sets a provider, author, or endpoint (upsert semantics)
 	SetProvider(provider Provider) error
 	SetAuthor(author Author) error
-	SetModel(model Model) error
 	SetEndpoint(endpoint Endpoint) error
 
-	// Deletes a provider, author, model, or endpoint by id
+	// Deletes a provider, author, or endpoint by id
 	DeleteProvider(id ProviderID) error
 	DeleteAuthor(id AuthorID) error
-	DeleteModel(id string) error
 	DeleteEndpoint(id string) error
 }
 

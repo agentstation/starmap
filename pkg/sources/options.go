@@ -2,8 +2,8 @@ package sources
 
 import "github.com/agentstation/starmap/pkg/catalogs"
 
-// sourceOptions is the internal configuration for sources
-type sourceOptions struct {
+// options is the internal configuration for sources
+type options struct {
 	// Provider filtering (needed by provider source)
 	ProviderID *catalogs.ProviderID
 
@@ -11,58 +11,64 @@ type sourceOptions struct {
 	Fresh    bool // Fresh sync (delete existing before adding)
 	SafeMode bool // Don't delete models, only add/update
 
-	// Source-specific data passed as context
-	Context map[string]any // For source-specific options
+	// Typed source-specific options
+	CleanupRepo bool // For models.dev git source - remove repo after fetch
+	Reformat    bool // For file-based sources - reformat output files
 }
 
-// defaultSourceOptions returns source options with default values
-func defaultSourceOptions() *sourceOptions {
-	return &sourceOptions{
-		ProviderID: nil,
-		Fresh:      false,
-		SafeMode:   false,
-		Context:    make(map[string]any),
+// defaultOptions returns source options with default values
+func defaultOptions() *options {
+	return &options{
+		ProviderID:  nil,
+		Fresh:       false,
+		SafeMode:    false,
+		CleanupRepo: false,
+		Reformat:    false,
 	}
 }
 
-// SourceOption is a function that configures sourceOptions
-type SourceOption func(*sourceOptions)
+// Option is a function that configures options
+type Option func(*options)
 
 // WithProviderFilter configures filtering for a specific provider
-func WithProviderFilter(providerID catalogs.ProviderID) SourceOption {
-	return func(opts *sourceOptions) {
+func WithProviderFilter(providerID catalogs.ProviderID) Option {
+	return func(opts *options) {
 		opts.ProviderID = &providerID
 	}
 }
 
 // WithFresh configures fresh sync mode for sources
-func WithFresh(fresh bool) SourceOption {
-	return func(opts *sourceOptions) {
+func WithFresh(fresh bool) Option {
+	return func(opts *options) {
 		opts.Fresh = fresh
 	}
 }
 
 // WithSafeMode configures safe mode for sources
-func WithSafeMode(safeMode bool) SourceOption {
-	return func(opts *sourceOptions) {
+func WithSafeMode(safeMode bool) Option {
+	return func(opts *options) {
 		opts.SafeMode = safeMode
 	}
 }
 
-// WithSourceContext adds source-specific context data
-func WithSourceContext(key string, value any) SourceOption {
-	return func(opts *sourceOptions) {
-		if opts.Context == nil {
-			opts.Context = make(map[string]any)
-		}
-		opts.Context[key] = value
+// WithCleanupRepo configures whether to clean up temporary repositories after fetch
+func WithCleanupRepo(cleanup bool) Option {
+	return func(opts *options) {
+		opts.CleanupRepo = cleanup
+	}
+}
+
+// WithReformat configures whether to reformat output files
+func WithReformat(reformat bool) Option {
+	return func(opts *options) {
+		opts.Reformat = reformat
 	}
 }
 
 // ApplyOptions applies a set of options to create configured sourceOptions
 // This is a helper for sources to use internally
-func ApplyOptions(opts ...SourceOption) *sourceOptions {
-	options := defaultSourceOptions()
+func ApplyOptions(opts ...Option) *options {
+	options := defaultOptions()
 	for _, opt := range opts {
 		opt(options)
 	}

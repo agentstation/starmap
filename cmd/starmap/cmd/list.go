@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -38,10 +39,16 @@ func runList(cmd *cobra.Command, args []string) error {
 	}
 
 	// Get all models from the catalog
-	models := catalog.Models().List()
-	if len(models) == 0 {
+	allModels := catalog.GetAllModels()
+	if len(allModels) == 0 {
 		fmt.Println("No models found in catalog")
 		return nil
+	}
+
+	// Convert to pointer slice for compatibility
+	models := make([]*catalogs.Model, len(allModels))
+	for i := range allModels {
+		models[i] = &allModels[i]
 	}
 
 	// Sort models by ID

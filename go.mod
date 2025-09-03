@@ -3,8 +3,10 @@ module github.com/agentstation/starmap
 go 1.24.6
 
 require (
+	cloud.google.com/go/auth v0.16.3
 	github.com/agentstation/utc v0.0.0-20250811234424-7f4e474c689c
 	github.com/goccy/go-yaml v1.18.0
+	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/nao1215/markdown v0.8.1
 	github.com/rs/zerolog v1.34.0
@@ -17,7 +19,6 @@ require (
 
 require (
 	cloud.google.com/go v0.120.0 // indirect
-	cloud.google.com/go/auth v0.16.3 // indirect
 	cloud.google.com/go/compute/metadata v0.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect
@@ -26,7 +27,6 @@ require (
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.15.0 // indirect

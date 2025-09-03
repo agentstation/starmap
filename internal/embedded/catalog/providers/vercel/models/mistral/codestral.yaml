@@ -1,0 +1,14 @@
+id: mistral/codestral
+name: Codestral
+pricing:
+  tokens:
+    input:
+      per_1m: 0.3
+    output:
+      per_1m: 0.9
+  currency: USD
+limits:
+  context_window: 256000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

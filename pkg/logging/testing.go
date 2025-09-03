@@ -17,23 +17,23 @@ type TestLogger struct {
 // NewTestLogger creates a new test logger that captures output
 func NewTestLogger(t testing.TB) *TestLogger {
 	t.Helper()
-	
+
 	buf := &bytes.Buffer{}
 	// Set global level to trace to capture everything
 	oldLevel := zerolog.GlobalLevel()
 	zerolog.SetGlobalLevel(zerolog.TraceLevel)
-	
+
 	logger := zerolog.New(buf).
 		Level(zerolog.TraceLevel). // Capture all levels in tests
 		With().
 		Timestamp().
 		Logger()
-	
+
 	// Restore level on cleanup
 	t.Cleanup(func() {
 		zerolog.SetGlobalLevel(oldLevel)
 	})
-	
+
 	return &TestLogger{
 		Logger: &logger,
 		Buffer: buf,
@@ -125,13 +125,13 @@ func NewNopLogger() *zerolog.Logger {
 // DisableLoggingForTest disables logging for the duration of a test
 func DisableLoggingForTest(t testing.TB) {
 	t.Helper()
-	
+
 	// Save current logger
 	original := Default()
-	
+
 	// Set to nop logger
 	SetDefault(zerolog.Nop())
-	
+
 	// Restore on cleanup
 	t.Cleanup(func() {
 		SetDefault(*original)
@@ -141,20 +141,20 @@ func DisableLoggingForTest(t testing.TB) {
 // CaptureLoggingForTest captures logging output for the duration of a test
 func CaptureLoggingForTest(t testing.TB) *TestLogger {
 	t.Helper()
-	
+
 	// Save current logger
 	original := Default()
-	
+
 	// Create test logger
 	testLogger := NewTestLogger(t)
-	
+
 	// Set as default
 	SetDefault(*testLogger.Logger)
-	
+
 	// Restore on cleanup
 	t.Cleanup(func() {
 		SetDefault(*original)
 	})
-	
+
 	return testLogger
 }

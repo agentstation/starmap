@@ -1,0 +1,10 @@
+id: google/gemma-3-27b-it
+name: Gemma 3 27B IT
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 96000
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

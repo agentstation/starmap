@@ -100,7 +100,7 @@ func TestFormatNumber(t *testing.T) {
 		{0, "0"},
 		{100, "100"},
 		{1000, "1k"},
-		{1500, "1k"},  // formatNumber truncates to int for k values
+		{1500, "1k"}, // formatNumber truncates to int for k values
 		{10000, "10k"},
 		{100000, "100k"},
 		{1000000, "1.0M"},
@@ -110,7 +110,7 @@ func TestFormatNumber(t *testing.T) {
 		{1000000000, "1.0B"},
 		{999, "999"},
 		{1001, "1k"},
-		{999999, "999k"},  // 999999/1000 = 999
+		{999999, "999k"}, // 999999/1000 = 999
 		{1000001, "1.0M"},
 	}
 
@@ -135,8 +135,8 @@ func TestFormatContextVariations(t *testing.T) {
 		{4096, "4.1k"},
 		{8192, "8.2k"},
 		{16384, "16.4k"},
-		{32768, "32.8k"},  // 32768/1000 = 32.8
-		{65536, "65.5k"},  // 65536/1000 = 65.5
+		{32768, "32.8k"}, // 32768/1000 = 32.8
+		{65536, "65.5k"}, // 65536/1000 = 65.5
 		{128000, "128k"},
 		{131072, "131.1k"},
 		{1000000, "1.0M"},
@@ -171,7 +171,6 @@ func TestMin(t *testing.T) {
 		assert.Equal(t, tt.expected, result)
 	}
 }
-
 
 func TestFormatModelID(t *testing.T) {
 	tests := []struct {
@@ -324,39 +323,39 @@ func TestGetModelFilePath(t *testing.T) {
 	tempDir := t.TempDir()
 
 	tests := []struct {
-		name       string
-		modelID    string
-		expectedPath string
+		name            string
+		modelID         string
+		expectedPath    string
 		shouldCreateDir bool
 	}{
 		{
-			name:       "simple model ID",
-			modelID:    "gpt-4",
-			expectedPath: "gpt-4.md",
+			name:            "simple model ID",
+			modelID:         "gpt-4",
+			expectedPath:    "gpt-4.md",
 			shouldCreateDir: false,
 		},
 		{
-			name:       "model with subdirectory",
-			modelID:    "openai/gpt-oss-120b",
-			expectedPath: "openai/gpt-oss-120b.md",
+			name:            "model with subdirectory",
+			modelID:         "openai/gpt-oss-120b",
+			expectedPath:    "openai/gpt-oss-120b.md",
 			shouldCreateDir: true,
 		},
 		{
-			name:       "model with multiple subdirectories",
-			modelID:    "meta/llama/llama-3-70b",
-			expectedPath: "meta/llama/llama-3-70b.md",
+			name:            "model with multiple subdirectories",
+			modelID:         "meta/llama/llama-3-70b",
+			expectedPath:    "meta/llama/llama-3-70b.md",
 			shouldCreateDir: true,
 		},
 		{
-			name:       "model with special characters",
-			modelID:    "model:variant",
-			expectedPath: "model-variant.md",
+			name:            "model with special characters",
+			modelID:         "model:variant",
+			expectedPath:    "model-variant.md",
 			shouldCreateDir: false,
 		},
 		{
-			name:       "model with @ character",
-			modelID:    "model@version",
-			expectedPath: "model-at-version.md",
+			name:            "model with @ character",
+			modelID:         "model@version",
+			expectedPath:    "model-at-version.md",
 			shouldCreateDir: false,
 		},
 	}
@@ -365,10 +364,10 @@ func TestGetModelFilePath(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := getModelFilePath(tempDir, tt.modelID)
 			assert.NoError(t, err)
-			
+
 			expected := filepath.Join(tempDir, tt.expectedPath)
 			assert.Equal(t, expected, result)
-			
+
 			if tt.shouldCreateDir {
 				// Check that directory was created
 				dir := filepath.Dir(result)

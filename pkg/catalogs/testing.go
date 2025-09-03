@@ -59,27 +59,25 @@ func TestEndpoint(t testing.TB) *Endpoint {
 // TestCatalog creates a test catalog with sample data.
 func TestCatalog(t testing.TB) Catalog {
 	t.Helper()
-	
+
 	catalog := NewMemory()
-	
-	// Add test provider
+
+	// Add test provider with a model
 	provider := TestProvider(t)
+	model := TestModel(t)
+	provider.Models = map[string]Model{
+		model.ID: *model,
+	}
 	if err := catalog.SetProvider(*provider); err != nil {
 		t.Fatalf("failed to add test provider: %v", err)
 	}
-	
+
 	// Add test author
 	author := TestAuthor(t)
 	if err := catalog.SetAuthor(*author); err != nil {
 		t.Fatalf("failed to add test author: %v", err)
 	}
-	
-	// Add test model
-	model := TestModel(t)
-	if err := catalog.SetModel(*model); err != nil {
-		t.Fatalf("failed to add test model: %v", err)
-	}
-	
+
 	return catalog
 }
 
@@ -100,16 +98,15 @@ func WithModelName(name string) TestModelOption {
 	}
 }
 
-
 // TestModelWithOptions creates a test model with custom options.
 func TestModelWithOptions(t testing.TB, opts ...TestModelOption) *Model {
 	t.Helper()
-	
+
 	model := TestModel(t)
 	for _, opt := range opts {
 		opt(model)
 	}
-	
+
 	return model
 }
 
@@ -145,27 +142,27 @@ func WithProviderEnvVars(envVars []ProviderEnvVar) TestProviderOption {
 // TestProviderWithOptions creates a test provider with custom options.
 func TestProviderWithOptions(t testing.TB, opts ...TestProviderOption) *Provider {
 	t.Helper()
-	
+
 	provider := TestProvider(t)
 	for _, opt := range opts {
 		opt(provider)
 	}
-	
+
 	return provider
 }
 
 // AssertModelsEqual asserts that two models are equal, providing detailed diff on failure.
 func AssertModelsEqual(t testing.TB, expected, actual *Model) {
 	t.Helper()
-	
+
 	if expected.ID != actual.ID {
 		t.Errorf("Model ID mismatch: expected %q, got %q", expected.ID, actual.ID)
 	}
-	
+
 	if expected.Name != actual.Name {
 		t.Errorf("Model Name mismatch: expected %q, got %q", expected.Name, actual.Name)
 	}
-	
+
 	if expected.Description != actual.Description {
 		t.Errorf("Model Description mismatch: expected %q, got %q", expected.Description, actual.Description)
 	}
@@ -174,15 +171,15 @@ func AssertModelsEqual(t testing.TB, expected, actual *Model) {
 // AssertProvidersEqual asserts that two providers are equal.
 func AssertProvidersEqual(t testing.TB, expected, actual *Provider) {
 	t.Helper()
-	
+
 	if expected.ID != actual.ID {
 		t.Errorf("Provider ID mismatch: expected %q, got %q", expected.ID, actual.ID)
 	}
-	
+
 	if expected.Name != actual.Name {
 		t.Errorf("Provider Name mismatch: expected %q, got %q", expected.Name, actual.Name)
 	}
-	
+
 	if expected.APIKey.Name != actual.APIKey.Name {
 		t.Errorf("Provider APIKey Name mismatch: expected %q, got %q", expected.APIKey.Name, actual.APIKey.Name)
 	}
@@ -191,8 +188,8 @@ func AssertProvidersEqual(t testing.TB, expected, actual *Provider) {
 // AssertCatalogHasModel asserts that a catalog contains a model with the given ID.
 func AssertCatalogHasModel(t testing.TB, catalog Catalog, modelID string) {
 	t.Helper()
-	
-	_, err := catalog.Model(modelID)
+
+	_, err := catalog.FindModel(modelID)
 	if err != nil {
 		t.Errorf("Expected catalog to have model %q, but got error: %v", modelID, err)
 	}
@@ -201,7 +198,7 @@ func AssertCatalogHasModel(t testing.TB, catalog Catalog, modelID string) {
 // AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.
 func AssertCatalogHasProvider(t testing.TB, catalog Catalog, providerID ProviderID) {
 	t.Helper()
-	
+
 	_, err := catalog.Provider(providerID)
 	if err != nil {
 		t.Errorf("Expected catalog to have provider %q, but got error: %v", providerID, err)
@@ -214,18 +211,18 @@ func TestTimeNow() time.Time {
 }
 
 // TestAPIResponse creates a test API response for provider testing.
-func TestAPIResponse(models ...string) map[string]interface{} {
-	modelList := make([]map[string]interface{}, len(models))
+func TestAPIResponse(models ...string) map[string]any {
+	modelList := make([]map[string]any, len(models))
 	for i, modelID := range models {
-		modelList[i] = map[string]interface{}{
-			"id":      modelID,
-			"object":  "model",
-			"created": TestTimeNow().Unix(),
+		modelList[i] = map[string]any{
+			"id":       modelID,
+			"object":   "model",
+			"created":  TestTimeNow().Unix(),
 			"owned_by": "test-owner",
 		}
 	}
-	
-	return map[string]interface{}{
+
+	return map[string]any{
 		"object": "list",
 		"data":   modelList,
 	}

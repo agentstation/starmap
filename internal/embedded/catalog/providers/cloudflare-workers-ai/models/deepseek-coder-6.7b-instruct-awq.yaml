@@ -1,0 +1,10 @@
+id: deepseek-coder-6.7b-instruct-awq
+name: "@hf/thebloke/deepseek-coder-6.7b-instruct-awq"
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 4096
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

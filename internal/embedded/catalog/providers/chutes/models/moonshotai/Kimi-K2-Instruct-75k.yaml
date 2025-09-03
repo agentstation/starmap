@@ -1,0 +1,14 @@
+id: moonshotai/Kimi-K2-Instruct-75k
+name: Kimi K2 Instruct
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+    output:
+      per_1m: 0.59
+  currency: USD
+limits:
+  context_window: 75000
+  output_tokens: 75000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

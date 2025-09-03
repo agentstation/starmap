@@ -31,18 +31,18 @@ func TestDefaultLogger(t *testing.T) {
 func TestContextLogger(t *testing.T) {
 	// Create test logger
 	testLogger := logging.NewTestLogger(t)
-	
+
 	// Create context with logger
 	ctx := logging.WithLogger(context.Background(), testLogger.Logger)
-	
+
 	// Add fields to context
 	ctx = logging.WithProvider(ctx, "test-provider")
 	ctx = logging.WithModel(ctx, "test-model")
-	
+
 	// Get logger from context and log
 	logger := logging.FromContext(ctx)
 	logger.Info().Msg("test message")
-	
+
 	// Verify output contains expected fields
 	testLogger.AssertContains(t, "test-provider")
 	testLogger.AssertContains(t, "test-model")
@@ -81,17 +81,17 @@ func TestConfiguration(t *testing.T) {
 			},
 		},
 	}
-	
+
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
 			buf := &bytes.Buffer{}
 			logger := logging.NewLoggerFromConfig(tc.config)
 			logger = logger.Output(buf)
-			
+
 			logger.Debug().Msg("debug")
 			logger.Info().Msg("info")
 			logger.Error().Msg("error")
-			
+
 			tc.check(t, buf.String())
 		})
 	}
@@ -100,19 +100,19 @@ func TestConfiguration(t *testing.T) {
 func TestTestLogger(t *testing.T) {
 	// Test the test logger utility
 	tl := logging.NewTestLogger(t)
-	
+
 	tl.Logger.Info().Msg("message 1")
 	tl.Logger.Error().Err(nil).Msg("message 2")
-	
+
 	// Test various assertions
 	tl.AssertContains(t, "message 1")
 	tl.AssertContains(t, "message 2")
 	tl.AssertCount(t, 2)
-	
+
 	if !tl.ContainsAll("message 1", "message 2") {
 		t.Error("Should contain both messages")
 	}
-	
+
 	// Clear and verify
 	tl.Clear()
 	if tl.Count() != 0 {

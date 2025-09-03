@@ -11,14 +11,14 @@ import (
 )
 
 var (
-	updateFlagProvider       string
-	updateFlagAutoApprove    bool
-	updateFlagDryRun         bool
-	updateFlagOutput         string
-	updateFlagInput          string
-	updateFlagFresh          bool
-	updateFlagCleanModelsDev bool
-	updateFlagForceFormat    bool
+	updateFlagProvider    string
+	updateFlagAutoApprove bool
+	updateFlagDryRun      bool
+	updateFlagOutput      string
+	updateFlagInput       string
+	updateFlagForce       bool
+	updateFlagCleanup     bool
+	updateFlagReformat    bool
 )
 
 // updateCmd represents the update command
@@ -46,42 +46,49 @@ The command will:
   starmap update -p anthropic --auto-approve
   starmap update --dry-run
   starmap update -y  # update all providers with auto-approve
-  starmap update --output /path/to/custom/providers  # update to custom directory
-  starmap update --input ./internal/embedded/catalog  # use files from directory instead of embedded
-  starmap update --fresh -p groq  # fresh update - overwrite all models for groq provider
-  starmap update --clean-models-dev  # cleanup models.dev repository after update`,
+  starmap update --output /path/to/custom/providers  # save to custom directory
+  starmap update --input ./internal/embedded/catalog  # load from directory instead of embedded
+  starmap update --force -p groq  # force fresh update - delete and refetch all groq models
+  starmap update --cleanup  # remove temporary models.dev repository after update`,
 	RunE: runUpdate,
 }
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
 
-	updateCmd.Flags().StringVarP(&updateFlagProvider, "provider", "p", "", "Provider to update models from (updates all if not specified)")
-	updateCmd.Flags().BoolVarP(&updateFlagAutoApprove, "auto-approve", "y", false, "Skip confirmation prompts")
-	updateCmd.Flags().BoolVar(&updateFlagDryRun, "dry-run", false, "Show what would change without making modifications")
-	updateCmd.Flags().StringVarP(&updateFlagOutput, "output", "o", "", "Output directory for providers (default: internal/embedded/catalog/providers)")
-	updateCmd.Flags().StringVarP(&updateFlagInput, "input", "i", "", "Input directory to load catalog from (default: use embedded catalog)")
-	updateCmd.Flags().BoolVar(&updateFlagFresh, "fresh", false, "Perform fresh update - delete all existing models and write all API models (destructive)")
-	updateCmd.Flags().BoolVar(&updateFlagCleanModelsDev, "clean-models-dev", false, "Remove models.dev repository after update (saves disk space)")
-	updateCmd.Flags().BoolVar(&updateFlagForceFormat, "force-format", false, "Force reformat of providers.yaml even if no changes detected")
+	// Core functionality
+	updateCmd.Flags().StringVarP(&updateFlagProvider, "provider", "p", "", "Update models from specific provider (default: all providers)")
+
+	// Input/Output options
+	updateCmd.Flags().StringVarP(&updateFlagInput, "input", "i", "", "Load catalog from directory instead of embedded version")
+	updateCmd.Flags().StringVarP(&updateFlagOutput, "output", "o", "", "Save updated catalog to directory (default: internal/embedded/catalog/providers)")
+
+	// Behavior modifiers
+	updateCmd.Flags().BoolVarP(&updateFlagDryRun, "dry-run", "n", false, "Preview changes without applying them")
+	updateCmd.Flags().BoolVarP(&updateFlagAutoApprove, "auto-approve", "y", false, "Apply changes without confirmation prompts")
+
+	// Special operations (potentially destructive)
+	updateCmd.Flags().BoolVarP(&updateFlagForce, "force", "f", false, "Delete existing models and fetch fresh from APIs (destructive)")
+	updateCmd.Flags().BoolVarP(&updateFlagCleanup, "cleanup", "c", false, "Remove temporary models.dev repository after update")
+	updateCmd.Flags().BoolVar(&updateFlagReformat, "reformat", false, "Reformat providers.yaml file even without changes")
 }
 
 func runUpdate(cmd *cobra.Command, args []string) error {
 	// Get command context (includes signal handling if set up)
 	ctx := cmd.Context()
-	
-	// Show warning for fresh update
-	if updateFlagFresh {
-		fmt.Printf("⚠️  WARNING: Fresh update mode will DELETE all existing model files and replace them with the latest API models.\n")
+
+	// Show warning for force update
+	if updateFlagForce {
+		fmt.Printf("⚠️  WARNING: Force mode will DELETE all existing model files and replace them with fresh API models.\n")
 		if !updateFlagAutoApprove {
-			fmt.Printf("\nContinue with fresh update? (y/N): ")
+			fmt.Printf("\nContinue with force update? (y/N): ")
 			var response string
 			if _, err := fmt.Scanln(&response); err != nil {
 				response = "n"
 			}
 			response = strings.ToLower(strings.TrimSpace(response))
 			if response != "y" && response != "yes" {
-				fmt.Println("Fresh update cancelled")
+				fmt.Println("Force update cancelled")
 				return nil
 			}
 		}
@@ -117,7 +124,7 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 	if outputPath == "" {
 		outputPath = "./internal/embedded/catalog"
 	}
-	opts := buildSyncOptions(updateFlagProvider, outputPath, updateFlagDryRun, updateFlagFresh, updateFlagAutoApprove, updateFlagCleanModelsDev, updateFlagForceFormat)
+	opts := buildSyncOptions(updateFlagProvider, outputPath, updateFlagDryRun, updateFlagForce, updateFlagAutoApprove, updateFlagCleanup, updateFlagReformat)
 
 	fmt.Printf("\nStarting update...\n\n")
 
@@ -139,7 +146,7 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 		for providerID, providerResult := range result.ProviderResults {
 			if providerResult.HasChanges() {
 				fmt.Printf("🔄 %s:\n", providerID)
-				
+
 				// Show API fetch status
 				if providerResult.APIModelsCount > 0 {
 					fmt.Printf("  📡 Provider API: %d models found\n", providerResult.APIModelsCount)
@@ -151,12 +158,12 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 						fmt.Printf("  ⏭️  Provider API: No models fetched\n")
 					}
 				}
-				
+
 				// Show enrichment if models were updated but not added
 				if providerResult.UpdatedCount > 0 && providerResult.AddedCount == 0 {
 					fmt.Printf("  🔗 Enriched: %d models with pricing/limits from models.dev\n", providerResult.UpdatedCount)
 				}
-				
+
 				// Show changes summary
 				if providerResult.AddedCount > 0 || providerResult.RemovedCount > 0 {
 					fmt.Printf("  📊 Changes: %d added, %d updated, %d removed\n",
@@ -191,7 +198,7 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 			fmt.Printf("📁 Saving models to: %s\n", outputPath)
 
 			// Call sync again without dry-run
-			finalOpts := buildSyncOptions(updateFlagProvider, outputPath, false, updateFlagFresh, false, updateFlagCleanModelsDev, updateFlagForceFormat)
+			finalOpts := buildSyncOptions(updateFlagProvider, outputPath, false, updateFlagForce, false, updateFlagCleanup, updateFlagReformat)
 
 			_, err := sm.Sync(ctx, finalOpts...)
 			if err != nil {
@@ -213,7 +220,7 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 }
 
 // buildSyncOptions creates a slice of sync options based on the provided flags
-func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, cleanModelsDev, forceFormat bool) []starmap.SyncOption {
+func buildSyncOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool) []starmap.SyncOption {
 	var opts []starmap.SyncOption
 
 	if provider != "" {
@@ -228,15 +235,15 @@ func buildSyncOptions(provider, output string, dryRun, fresh, autoApprove, clean
 	if output != "" {
 		opts = append(opts, starmap.WithOutputPath(output))
 	}
-	// Pass source-specific options via context
-	if fresh {
-		opts = append(opts, starmap.WithContext("fresh", true))
+	// Use typed options for source-specific behavior
+	if force {
+		opts = append(opts, starmap.WithFresh(true))
 	}
-	if cleanModelsDev {
-		opts = append(opts, starmap.WithContext("cleanModelsDevRepo", true))
+	if cleanup {
+		opts = append(opts, starmap.WithCleanModelsDevRepo(true))
 	}
-	if forceFormat {
-		opts = append(opts, starmap.WithContext("forceFormat", true))
+	if reformat {
+		opts = append(opts, starmap.WithReformat(true))
 	}
 
 	return opts

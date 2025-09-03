@@ -23,13 +23,13 @@ import (
 
 // registry maps provider IDs to their client creation functions
 var registry = map[catalogs.ProviderID]func(*catalogs.Provider) catalogs.Client{
-	catalogs.ProviderIDOpenAI:        func(p *catalogs.Provider) catalogs.Client { return openai.NewClient(p) },
-	catalogs.ProviderIDAnthropic:     func(p *catalogs.Provider) catalogs.Client { return anthropic.NewClient(p) },
-	catalogs.ProviderIDGroq:          func(p *catalogs.Provider) catalogs.Client { return groq.NewClient(p) },
-	catalogs.ProviderIDCerebras:      func(p *catalogs.Provider) catalogs.Client { return cerebras.NewClient(p) },
-	catalogs.ProviderIDDeepSeek:      func(p *catalogs.Provider) catalogs.Client { return deepseek.NewClient(p) },
+	catalogs.ProviderIDOpenAI:         func(p *catalogs.Provider) catalogs.Client { return openai.NewClient(p) },
+	catalogs.ProviderIDAnthropic:      func(p *catalogs.Provider) catalogs.Client { return anthropic.NewClient(p) },
+	catalogs.ProviderIDGroq:           func(p *catalogs.Provider) catalogs.Client { return groq.NewClient(p) },
+	catalogs.ProviderIDCerebras:       func(p *catalogs.Provider) catalogs.Client { return cerebras.NewClient(p) },
+	catalogs.ProviderIDDeepSeek:       func(p *catalogs.Provider) catalogs.Client { return deepseek.NewClient(p) },
 	catalogs.ProviderIDGoogleAIStudio: func(p *catalogs.Provider) catalogs.Client { return googleaistudio.NewClient(p) },
-	catalogs.ProviderIDGoogleVertex:  func(p *catalogs.Provider) catalogs.Client { return googlevertex.NewClient(p) },
+	catalogs.ProviderIDGoogleVertex:   func(p *catalogs.Provider) catalogs.Client { return googlevertex.NewClient(p) },
 }
 
 // Get creates a NEW client instance for the given provider.
@@ -38,10 +38,10 @@ func Get(provider *catalogs.Provider) (catalogs.Client, error) {
 	newClient, ok := registry[provider.ID]
 	if !ok {
 		return nil, &errors.ValidationError{
-		Field:   "provider",
-		Value:   provider.ID,
-		Message: fmt.Sprintf("unsupported provider: %s", provider.ID),
-	}
+			Field:   "provider",
+			Value:   provider.ID,
+			Message: fmt.Sprintf("unsupported provider: %s", provider.ID),
+		}
 	}
 	return newClient(provider), nil
 }
@@ -66,7 +66,7 @@ func List() []catalogs.ProviderID {
 func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) ([]byte, error) {
 	// Create transport client configured for this provider
 	transportClient := transport.NewForProvider(provider)
-	
+
 	// Make the raw request
 	resp, err := transportClient.Get(ctx, endpoint, provider)
 	if err != nil {
@@ -82,12 +82,12 @@ func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string)
 		io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 	}()
-	
+
 	// Read raw response body
 	rawData, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.WrapIO("read", "response body", err)
 	}
-	
+
 	return rawData, nil
 }

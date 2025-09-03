@@ -1,5 +1,11 @@
 id: meta-llama/llama-prompt-guard-2-86m
-name: ""
+name: llama-prompt-guard-2-86m
+authors:
+- id: meta
+  name: Meta
+  models: {}
+  created_at: null
+  updated_at: null
 features:
   modalities:
     input:
@@ -25,17 +31,17 @@ features:
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
-  frequency_penalty: false
-  presence_penalty: false
+  frequency_penalty: true
+  presence_penalty: true
   repetition_penalty: false
   no_repeat_ngram_size: false
   length_penalty: false
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -49,10 +55,10 @@ features:
   early_stopping: false
   diversity_penalty: false
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 512
+  output_tokens: 512
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

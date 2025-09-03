@@ -1,0 +1,7 @@
+id: llama-3.1-70b-instruct
+name: "@cf/meta/llama-3.1-70b-instruct"
+limits:
+  context_window: 24000
+  output_tokens: 24000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

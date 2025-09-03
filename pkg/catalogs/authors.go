@@ -134,12 +134,12 @@ func (a *Authors) List() []*Author {
 		authors = append(authors, author)
 	}
 	a.mu.RUnlock()
-	
+
 	// Sort by ID for deterministic ordering
 	sort.Slice(authors, func(i, j int) bool {
 		return authors[i].ID < authors[j].ID
 	})
-	
+
 	return authors
 }
 

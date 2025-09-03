@@ -17,7 +17,7 @@ func main() {
 	if format == "" {
 		format = "console" // Default to pretty console output
 	}
-	
+
 	logging.Configure(&logging.Config{
 		Level:      "debug",
 		Format:     format,
@@ -37,7 +37,7 @@ func main() {
 	ctx := context.Background()
 	ctx = logging.WithRequestID(ctx, "demo-001")
 	ctx = logging.WithOperation(ctx, "catalog_sync")
-	
+
 	// Create starmap instance
 	sm, err := starmap.New(
 		starmap.WithAutoUpdates(false), // Disable auto-updates for demo
@@ -59,18 +59,18 @@ func main() {
 
 	// Log catalog statistics with structured fields
 	providers := catalog.Providers()
-	models := catalog.Models()
-	
+	allModels := catalog.GetAllModels()
+
 	logging.Info().
 		Int("provider_count", len(providers.List())).
-		Int("model_count", len(models.List())).
+		Int("model_count", len(allModels)).
 		Dur("duration", time.Millisecond*250).
 		Msg("Catalog loaded successfully")
 
 	// Demonstrate provider-specific logging
 	for _, provider := range providers.List() {
 		providerLogger := logging.WithProvider(ctx, string(provider.ID))
-		
+
 		// Check provider configuration
 		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
 			logging.Ctx(providerLogger).Warn().

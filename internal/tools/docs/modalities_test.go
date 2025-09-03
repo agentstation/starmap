@@ -254,7 +254,7 @@ func TestGetModalityCount(t *testing.T) {
 						catalogs.ModelModalityImage,
 					},
 					Output: []catalogs.ModelModality{
-						catalogs.ModelModalityText, // duplicate
+						catalogs.ModelModalityText,  // duplicate
 						catalogs.ModelModalityImage, // duplicate
 						catalogs.ModelModalityEmbedding,
 					},

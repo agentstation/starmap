@@ -106,22 +106,22 @@ func (g *Generator) Generate(ctx context.Context, catalog catalogs.Reader) error
 func (g *Generator) copyLogos(catalog catalogs.Reader) error {
 	// Create logo copier with embedded FS
 	logoCopier := NewLogoCopier(embedded.FS, "catalog", g.outputDir)
-	
+
 	// Copy provider logos
 	providers := catalog.Providers().List()
 	if err := logoCopier.CopyProviderLogos(providers); err != nil {
 		return fmt.Errorf("copying provider logos: %w", err)
 	}
-	
+
 	// Copy author logos
 	authors := catalog.Authors().List()
 	if err := logoCopier.CopyAuthorLogos(authors); err != nil {
 		return fmt.Errorf("copying author logos: %w", err)
 	}
-	
+
 	if g.verbose {
 		fmt.Printf("📦 Copied logos for %d providers and %d authors\n", len(providers), len(authors))
 	}
-	
+
 	return nil
 }

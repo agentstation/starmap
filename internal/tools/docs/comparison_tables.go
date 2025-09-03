@@ -15,8 +15,8 @@ import (
 
 // writeModelsOverviewTable generates a comprehensive models overview table
 func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers []*catalogs.Provider) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	// Create provider map for lookup
 	providerMap := make(map[string]*catalogs.Provider)
 	for _, p := range providers {
@@ -32,7 +32,7 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 	// Make a copy to avoid modifying the original
 	modelsCopy := make([]*catalogs.Model, len(models))
 	copy(modelsCopy, models)
-	
+
 	// Sort models by name
 	sort.Slice(modelsCopy, func(i, j int) bool {
 		return modelsCopy[i].Name < modelsCopy[j].Name
@@ -41,7 +41,7 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 	// Build table rows
 	rows := [][]string{}
 	displayCount := min(20, len(modelsCopy))
-	
+
 	for _, model := range modelsCopy[:displayCount] {
 		// Provider
 		providerName := "—"
@@ -87,7 +87,7 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 		})
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Provider", "Context", "Input", "Output", "Features"},
 		Rows:   rows,
 	}).Build()
@@ -95,10 +95,10 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 
 // writeProviderComparisonTable generates a provider comparison table
 func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	rows := [][]string{}
-	
+
 	for _, provider := range providers {
 		modelCount := 0
 		if provider.Models != nil {
@@ -136,10 +136,10 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 		statusPage := "—"
 		if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
 			// Build status page link
-			statusBuilder := NewMarkdownBuilderBuffer()
-			statusBuilder.Link("Status", *provider.StatusPageURL)
-			statusBuilder.Build()
-			statusPage = statusBuilder.String()
+			statusMarkdown := NewMarkdownBuffer()
+			statusMarkdown.Link("Status", *provider.StatusPageURL)
+			statusMarkdown.Build()
+			statusPage = statusMarkdown.String()
 		}
 
 		rows = append(rows, []string{
@@ -151,7 +151,7 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 		})
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Provider", "Models", "Free Tier", "API Key Required", "Status Page"},
 		Rows:   rows,
 	}).Build()
@@ -159,12 +159,12 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 
 // writePricingComparisonTable generates a pricing comparison table for multiple models
 func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	// Make a copy to avoid modifying the original
 	modelsCopy := make([]*catalogs.Model, len(models))
 	copy(modelsCopy, models)
-	
+
 	// Sort by input price
 	sort.Slice(modelsCopy, func(i, j int) bool {
 		iPrice := float64(0)
@@ -180,7 +180,7 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 
 	rows := [][]string{}
 	displayCount := min(15, len(modelsCopy))
-	
+
 	for _, model := range modelsCopy[:displayCount] {
 		if model.Pricing == nil || model.Pricing.Tokens == nil {
 			continue
@@ -214,7 +214,7 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 		})
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Input (per 1M)", "Output (per 1M)", "Cache Read", "Cache Write"},
 		Rows:   rows,
 	}).Build()
@@ -222,12 +222,12 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 
 // writeContextLimitsTable generates a context limits comparison table
 func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
-	builder := NewMarkdownBuilder(w)
-	
+	markdown := NewMarkdown(w)
+
 	// Make a copy to avoid modifying the original
 	modelsCopy := make([]*catalogs.Model, len(models))
 	copy(modelsCopy, models)
-	
+
 	// Sort by context window size
 	sort.Slice(modelsCopy, func(i, j int) bool {
 		iContext := int64(0)
@@ -243,7 +243,7 @@ func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 
 	rows := [][]string{}
 	displayCount := min(15, len(modelsCopy))
-	
+
 	for _, model := range modelsCopy[:displayCount] {
 		if model.Limits == nil {
 			continue
@@ -284,7 +284,7 @@ func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 		})
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Context Window", "Max Output", "Modalities"},
 		Rows:   rows,
 	}).Build()
@@ -296,13 +296,13 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		return
 	}
 
-	builder := NewMarkdownBuilder(w)
-	builder.H3("Feature Comparison").LF()
+	markdown := NewMarkdown(w)
+	markdown.H3("Feature Comparison").LF()
 
 	// Make a copy to avoid modifying the original
 	modelsCopy := make([]*catalogs.Model, len(models))
 	copy(modelsCopy, models)
-	
+
 	// Sort models by name for consistency
 	sort.Slice(modelsCopy, func(i, j int) bool {
 		return modelsCopy[i].Name < modelsCopy[j].Name
@@ -315,11 +315,11 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 	}
 
 	rows := [][]string{}
-	
+
 	for _, model := range displayModels {
 		// Modalities (compact)
 		modalities := compactFeatures(*model)
-		
+
 		// Tools section
 		tools := []string{}
 		if model.Features != nil {
@@ -336,12 +336,12 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		toolsStr := "—"
 		if len(tools) > 0 {
 			// Join tools list
-			toolsBuilder := NewMarkdownBuilderBuffer()
-			toolsBuilder.JoinList(tools, ", ")
-			toolsBuilder.Build()
-			toolsStr = toolsBuilder.String()
+			toolsMarkdown := NewMarkdownBuffer()
+			toolsMarkdown.JoinList(tools, ", ")
+			toolsMarkdown.Build()
+			toolsStr = toolsMarkdown.String()
 		}
-		
+
 		// Reasoning section
 		reasoning := []string{}
 		if model.Features != nil {
@@ -358,12 +358,12 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		reasoningStr := "—"
 		if len(reasoning) > 0 {
 			// Join reasoning list
-			reasoningBuilder := NewMarkdownBuilderBuffer()
-			reasoningBuilder.JoinList(reasoning, ", ")
-			reasoningBuilder.Build()
-			reasoningStr = reasoningBuilder.String()
+			reasoningMarkdown := NewMarkdownBuffer()
+			reasoningMarkdown.JoinList(reasoning, ", ")
+			reasoningMarkdown.Build()
+			reasoningStr = reasoningMarkdown.String()
 		}
-		
+
 		// Advanced controls
 		advanced := []string{}
 		if model.Features != nil {
@@ -383,12 +383,12 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		advancedStr := "—"
 		if len(advanced) > 0 {
 			// Join advanced list
-			advancedBuilder := NewMarkdownBuilderBuffer()
-			advancedBuilder.JoinList(advanced, ", ")
-			advancedBuilder.Build()
-			advancedStr = advancedBuilder.String()
+			advancedMarkdown := NewMarkdownBuffer()
+			advancedMarkdown.JoinList(advanced, ", ")
+			advancedMarkdown.Build()
+			advancedStr = advancedMarkdown.String()
 		}
-		
+
 		rows = append(rows, []string{
 			model.Name,
 			modalities,
@@ -397,15 +397,15 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 			advancedStr,
 		})
 	}
-	
+
 	if len(models) > 15 {
 		rows = append(rows, []string{
 			fmt.Sprintf("_...and %d more_", len(models)-15),
 			"", "", "", "",
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Modalities", "Tools", "Reasoning", "Advanced Controls"},
 		Rows:   rows,
 	}).LF().Build()
@@ -422,27 +422,27 @@ func formatBytes(bytes int64) string {
 	switch {
 	case bytes >= GB:
 		// Format as GB
-		builder := NewMarkdownBuilderBuffer()
-		builder.PlainTextf("%.1f GB", float64(bytes)/float64(GB))
-		builder.Build()
-		return builder.String()
+		markdown := NewMarkdownBuffer()
+		markdown.PlainTextf("%.1f GB", float64(bytes)/float64(GB))
+		markdown.Build()
+		return markdown.String()
 	case bytes >= MB:
 		// Format as MB
-		builder := NewMarkdownBuilderBuffer()
-		builder.PlainTextf("%.1f MB", float64(bytes)/float64(MB))
-		builder.Build()
-		return builder.String()
+		markdown := NewMarkdownBuffer()
+		markdown.PlainTextf("%.1f MB", float64(bytes)/float64(MB))
+		markdown.Build()
+		return markdown.String()
 	case bytes >= KB:
 		// Format as KB
-		builder := NewMarkdownBuilderBuffer()
-		builder.PlainTextf("%.1f KB", float64(bytes)/float64(KB))
-		builder.Build()
-		return builder.String()
+		markdown := NewMarkdownBuffer()
+		markdown.PlainTextf("%.1f KB", float64(bytes)/float64(KB))
+		markdown.Build()
+		return markdown.String()
 	default:
 		// Format as bytes
-		builder := NewMarkdownBuilderBuffer()
-		builder.PlainTextf("%d B", bytes)
-		builder.Build()
-		return builder.String()
+		markdown := NewMarkdownBuffer()
+		markdown.PlainTextf("%d B", bytes)
+		markdown.Build()
+		return markdown.String()
 	}
 }

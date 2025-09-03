@@ -49,7 +49,7 @@ func (rb *RequestBuilder) AddProviderHeaders(req *http.Request) {
 }
 
 // DecodeResponse decodes a JSON response into the target structure.
-func DecodeResponse(resp *http.Response, target interface{}) error {
+func DecodeResponse(resp *http.Response, target any) error {
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			// Log warning but don't override the main error

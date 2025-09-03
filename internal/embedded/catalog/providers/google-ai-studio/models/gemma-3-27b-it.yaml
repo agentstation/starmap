@@ -1,5 +1,11 @@
 id: gemma-3-27b-it
-name: ""
+name: Gemma 3 27B
+authors:
+- id: google
+  name: Google
+  models: {}
+  created_at: null
+  updated_at: null
 features:
   modalities:
     input:
@@ -18,14 +24,14 @@ features:
   verbosity: false
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -51,8 +57,21 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+  top_k:
+    min: 1
+    max: 100
+    default: 64
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 131072
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

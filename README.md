@@ -1011,11 +1011,13 @@ sm, err = starmap.New(
   - [func New\(opts ...Option\) \(Starmap, error\)](<#New>)
 - [type SyncOption](<#SyncOption>)
   - [func WithAutoApprove\(autoApprove bool\) SyncOption](<#WithAutoApprove>)
-  - [func WithContext\(key string, value any\) SyncOption](<#WithContext>)
+  - [func WithCleanModelsDevRepo\(cleanup bool\) SyncOption](<#WithCleanModelsDevRepo>)
   - [func WithDryRun\(dryRun bool\) SyncOption](<#WithDryRun>)
   - [func WithFailFast\(failFast bool\) SyncOption](<#WithFailFast>)
+  - [func WithFresh\(fresh bool\) SyncOption](<#WithFresh>)
   - [func WithOutputPath\(path string\) SyncOption](<#WithOutputPath>)
   - [func WithProvider\(providerID catalogs.ProviderID\) SyncOption](<#WithProvider>)
+  - [func WithReformat\(reformat bool\) SyncOption](<#WithReformat>)
   - [func WithSources\(sourceNames ...sources.SourceName\) SyncOption](<#WithSources>)
   - [func WithTimeout\(timeout time.Duration\) SyncOption](<#WithTimeout>)
 - [type SyncOptions](<#SyncOptions>)
@@ -1201,14 +1203,14 @@ func WithAutoApprove(autoApprove bool) SyncOption
 
 WithAutoApprove configures auto approval
 
-<a name="WithContext"></a>
-### func [WithContext](<https://github.com/agentstation/starmap/blob/master/options.go#L225>)
+<a name="WithCleanModelsDevRepo"></a>
+### func [WithCleanModelsDevRepo](<https://github.com/agentstation/starmap/blob/master/options.go#L240>)
 
 ```go
-func WithContext(key string, value any) SyncOption
+func WithCleanModelsDevRepo(cleanup bool) SyncOption
 ```
 
-WithContext adds context data for sources
+WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update
 
 <a name="WithDryRun"></a>
 ### func [WithDryRun](<https://github.com/agentstation/starmap/blob/master/options.go#L176>)
@@ -1228,6 +1230,15 @@ func WithFailFast(failFast bool) SyncOption
 
 WithFailFast configures fail\-fast behavior
 
+<a name="WithFresh"></a>
+### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/options.go#L233>)
+
+```go
+func WithFresh(fresh bool) SyncOption
+```
+
+WithFresh configures whether to delete existing models and fetch fresh from APIs
+
 <a name="WithOutputPath"></a>
 ### func [WithOutputPath](<https://github.com/agentstation/starmap/blob/master/options.go#L218>)
 
@@ -1245,6 +1256,15 @@ func WithProvider(providerID catalogs.ProviderID) SyncOption
 ```
 
 WithProvider configures syncing for a specific provider only
+
+<a name="WithReformat"></a>
+### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/options.go#L247>)
+
+```go
+func WithReformat(reformat bool) SyncOption
+```
+
+WithReformat configures whether to reformat providers.yaml file even without changes
 
 <a name="WithSources"></a>
 ### func [WithSources](<https://github.com/agentstation/starmap/blob/master/options.go#L204>)

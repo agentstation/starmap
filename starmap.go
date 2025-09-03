@@ -17,30 +17,30 @@
 //	    log.Fatal(err)
 //	}
 //	defer sm.AutoUpdatesOff()
-//	
+//
 //	// Register event hooks
 //	sm.OnModelAdded(func(model catalogs.Model) {
 //	    log.Printf("New model: %s", model.ID)
 //	})
-//	
+//
 //	// Get catalog (returns a copy for thread safety)
 //	catalog, err := sm.Catalog()
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//	
+//
 //	// Access models
 //	models := catalog.Models()
 //	for _, model := range models.List() {
 //	    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
 //	}
-//	
+//
 //	// Manually trigger sync
 //	result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//	
+//
 //	// Configure with custom options
 //	sm, err = starmap.New(
 //	    WithAutoUpdateInterval(30 * time.Minute),
@@ -56,6 +56,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"sync"
 	"time"
 
@@ -180,7 +181,7 @@ func (s *starmap) AutoUpdatesOn() error {
 	}
 
 	s.updateTicker = time.NewTicker(s.options.autoUpdateInterval)
-	
+
 	// Create a cancellable context for the update goroutine
 	ctx, cancel := context.WithCancel(context.Background())
 	s.updateCancel = cancel
@@ -193,7 +194,7 @@ func (s *starmap) AutoUpdatesOn() error {
 				updateCtx, updateCancel := context.WithTimeout(parentCtx, constants.UpdateContextTimeout)
 				err := s.Update(updateCtx)
 				updateCancel() // Always cancel to release resources
-				
+
 				if err != nil {
 					// Check if context was canceled - if so, exit the loop
 					if stderrors.Is(err, context.Canceled) || stderrors.Is(err, context.DeadlineExceeded) {
@@ -282,7 +283,7 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	logger.Debug().
 		Str("url", *s.options.remoteServerURL).
 		Msg("Fetching catalog from remote server")
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", *s.options.remoteServerURL+"/catalog", nil)
 	if err != nil {
 		return errors.WrapResource("create", "request", "", err)
@@ -322,7 +323,7 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	}
 
 	logger.Trace().Msg("Parsing catalog response")
-	
+
 	// Read response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -344,7 +345,7 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 
 	// Create a new memory catalog and populate it
 	newCatalog := catalogs.NewMemory()
-	
+
 	// Parse catalog data structure
 	type CatalogData struct {
 		Providers []catalogs.Provider `json:"providers,omitempty"`
@@ -371,11 +372,8 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 		}
 	}
 
-	for _, model := range catalogData.Models {
-		if err := newCatalog.SetModel(model); err != nil {
-			logger.Warn().Err(err).Str("model", model.ID).Msg("Failed to set model")
-		}
-	}
+	// Models are now associated with providers and authors, not set directly
+	// They should already be included in the provider/author data structures
 
 	for _, endpoint := range catalogData.Endpoints {
 		if err := newCatalog.SetEndpoint(endpoint); err != nil {
@@ -442,7 +440,7 @@ func (s *starmap) configureSources() {
 	if s.options.localPath != "" {
 		for i, src := range s.sources {
 			// Check if this is the local source by name
-			if src.Name() == sources.LocalCatalog {
+			if src.Type() == sources.LocalCatalog {
 				s.sources[i] = local.New(local.WithCatalogPath(s.options.localPath))
 				break
 			}
@@ -450,17 +448,14 @@ func (s *starmap) configureSources() {
 	}
 }
 
-// sourcesWithOptions returns the sources to use based on configuration
-func (s *starmap) sourcesWithOptions(options *SyncOptions) []sources.Source {
+// Sources returns the sources to use based on configuration
+func (s *starmap) filterSources(options *SyncOptions) []sources.Source {
 	// If specific sources are requested, filter to those
 	if len(options.Sources) > 0 {
 		var filtered []sources.Source
 		for _, src := range s.sources {
-			for _, requestedName := range options.Sources {
-				if src.Name() == requestedName {
-					filtered = append(filtered, src)
-					break
-				}
+			if slices.Contains(options.Sources, src.Type()) {
+				filtered = append(filtered, src)
 			}
 		}
 		return filtered

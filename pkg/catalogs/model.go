@@ -37,7 +37,7 @@ type Model struct {
 	Tools *ModelTools `json:"tools,omitempty" yaml:"tools,omitempty"`
 
 	// Delivery - technical response delivery capabilities (formats, protocols, streaming)
-	Delivery *ModelDelivery `json:"delivery,omitempty" yaml:"delivery,omitempty"`
+	Delivery *ModelDelivery `json:"response,omitempty" yaml:"response,omitempty"`
 
 	// Operational characteristics
 	Pricing *ModelPricing `json:"pricing,omitempty" yaml:"pricing,omitempty"` // Optional pricing information
@@ -56,134 +56,6 @@ type ModelMetadata struct {
 	Tags            []ModelTag         `json:"tags,omitempty" yaml:"tags,omitempty"`                         // Use case tags for categorizing the model
 	Architecture    *ModelArchitecture `json:"architecture,omitempty" yaml:"architecture,omitempty"`         // Technical architecture details
 }
-
-// ModelTag represents a use case or category tag for models.
-type ModelTag string
-
-// String returns the string representation of a ModelTag.
-func (tag ModelTag) String() string {
-	return string(tag)
-}
-
-// Model tags for categorizing models by use case and capabilities.
-const (
-	// Core Use Cases
-	ModelTagCoding    ModelTag = "coding"    // Programming and code generation
-	ModelTagWriting   ModelTag = "writing"   // Creative and technical writing
-	ModelTagReasoning ModelTag = "reasoning" // Logical reasoning and problem solving
-	ModelTagMath      ModelTag = "math"      // Mathematical problem solving
-	ModelTagChat      ModelTag = "chat"      // Conversational AI
-	ModelTagInstruct  ModelTag = "instruct"  // Instruction following
-	ModelTagResearch  ModelTag = "research"  // Research and analysis
-	ModelTagCreative  ModelTag = "creative"  // Creative content generation
-	ModelTagRoleplay  ModelTag = "roleplay"  // Character roleplay and simulation
-
-	// Technical Capabilities
-	ModelTagFunctionCalling ModelTag = "function_calling"   // Tool/function calling
-	ModelTagEmbedding       ModelTag = "embedding"          // Text embeddings
-	ModelTagSummarization   ModelTag = "summarization"      // Text summarization
-	ModelTagTranslation     ModelTag = "translation"        // Language translation
-	ModelTagQA              ModelTag = "question_answering" // Question answering
-
-	// Modality-Specific
-	ModelTagVision       ModelTag = "vision"         // Computer vision
-	ModelTagMultimodal   ModelTag = "multimodal"     // Multiple input modalities
-	ModelTagAudio        ModelTag = "audio"          // Audio processing
-	ModelTagTextToImage  ModelTag = "text_to_image"  // Text-to-image generation
-	ModelTagTextToSpeech ModelTag = "text_to_speech" // Text-to-speech synthesis
-	ModelTagSpeechToText ModelTag = "speech_to_text" // Speech recognition
-	ModelTagImageToText  ModelTag = "image_to_text"  // Image captioning/OCR
-
-	// Domain-Specific
-	ModelTagMedical   ModelTag = "medical"   // Medical and healthcare
-	ModelTagLegal     ModelTag = "legal"     // Legal document processing
-	ModelTagFinance   ModelTag = "finance"   // Financial analysis
-	ModelTagScience   ModelTag = "science"   // Scientific applications
-	ModelTagEducation ModelTag = "education" // Educational content
-)
-
-// ModelArchitecture represents the technical architecture details of a model.
-type ModelArchitecture struct {
-	ParameterCount string           `json:"parameter_count,omitempty" yaml:"parameter_count,omitempty"` // Model size (e.g., "7B", "70B", "405B")
-	Type           ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                       // Type of architecture
-	Tokenizer      Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`             // Tokenizer type used by the model
-	Precision      *string          `json:"precision,omitempty" yaml:"precision,omitempty"`             // Legacy precision format (use Quantization for filtering)
-	Quantization   Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"`       // Quantization level used by the model
-	Quantized      bool             `json:"quantized" yaml:"quantized"`                                 // Whether the model has been quantized
-	FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned"`                               // Whether this is a fine-tuned variant
-	BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"`           // Base model ID if fine-tuned
-}
-
-// ArchitectureType represents the type of model architecture.
-type ArchitectureType string
-
-// String returns the string representation of an ArchitectureType.
-func (at ArchitectureType) String() string {
-	return string(at)
-}
-
-// Architecture types.
-const (
-	ArchitectureTypeTransformer ArchitectureType = "transformer" // Transformer-based models (GPT, BERT, LLaMA, etc.)
-	ArchitectureTypeMoE         ArchitectureType = "moe"         // Mixture of Experts (Mixtral, GLaM, Switch Transformer)
-	ArchitectureTypeCNN         ArchitectureType = "cnn"         // Convolutional Neural Networks
-	ArchitectureTypeRNN         ArchitectureType = "rnn"         // Recurrent Neural Networks
-	ArchitectureTypeLSTM        ArchitectureType = "lstm"        // Long Short-Term Memory networks
-	ArchitectureTypeGRU         ArchitectureType = "gru"         // Gated Recurrent Unit networks
-	ArchitectureTypeVAE         ArchitectureType = "vae"         // Variational Autoencoders
-	ArchitectureTypeGAN         ArchitectureType = "gan"         // Generative Adversarial Networks
-	ArchitectureTypeDiffusion   ArchitectureType = "diffusion"   // Diffusion models (Stable Diffusion, DALL-E, etc.)
-)
-
-// Tokenizer represents the tokenizer type used by a model.
-type Tokenizer string
-
-// String returns the string representation of a Tokenizer.
-func (t Tokenizer) String() string {
-	return string(t)
-}
-
-// Tokenizer types.
-const (
-	TokenizerClaude   Tokenizer = "claude"   // Claude tokenizer
-	TokenizerCohere   Tokenizer = "cohere"   // Cohere tokenizer
-	TokenizerDeepSeek Tokenizer = "deepseek" // DeepSeek tokenizer
-	TokenizerGPT      Tokenizer = "gpt"      // GPT tokenizer (OpenAI)
-	TokenizerGemini   Tokenizer = "gemini"   // Gemini tokenizer (Google)
-	TokenizerGrok     Tokenizer = "grok"     // Grok tokenizer (xAI)
-	TokenizerLlama2   Tokenizer = "llama2"   // LLaMA 2 tokenizer
-	TokenizerLlama3   Tokenizer = "llama3"   // LLaMA 3 tokenizer
-	TokenizerLlama4   Tokenizer = "llama4"   // LLaMA 4 tokenizer
-	TokenizerMistral  Tokenizer = "mistral"  // Mistral tokenizer
-	TokenizerNova     Tokenizer = "nova"     // Nova tokenizer (Amazon)
-	TokenizerQwen     Tokenizer = "qwen"     // Qwen tokenizer
-	TokenizerQwen3    Tokenizer = "qwen3"    // Qwen 3 tokenizer
-	TokenizerRouter   Tokenizer = "router"   // Router-based tokenizer
-	TokenizerYi       Tokenizer = "yi"       // Yi tokenizer
-	TokenizerUnknown  Tokenizer = "unknown"  // Unknown tokenizer type
-)
-
-// Quantization represents the quantization level used by a model.
-// Quantization reduces model size and computational requirements while aiming to preserve performance.
-type Quantization string
-
-// String returns the string representation of a Quantization.
-func (q Quantization) String() string {
-	return string(q)
-}
-
-// Quantization levels.
-const (
-	QuantizationINT4    Quantization = "int4"    // Integer (4 bit)
-	QuantizationINT8    Quantization = "int8"    // Integer (8 bit)
-	QuantizationFP4     Quantization = "fp4"     // Floating point (4 bit)
-	QuantizationFP6     Quantization = "fp6"     // Floating point (6 bit)
-	QuantizationFP8     Quantization = "fp8"     // Floating point (8 bit)
-	QuantizationFP16    Quantization = "fp16"    // Floating point (16 bit)
-	QuantizationBF16    Quantization = "bf16"    // Brain floating point (16 bit)
-	QuantizationFP32    Quantization = "fp32"    // Floating point (32 bit)
-	QuantizationUnknown Quantization = "unknown" // Unknown quantization
-)
 
 // ModelFeatures represents a set of feature flags that describe what a model can do.
 type ModelFeatures struct {
@@ -286,45 +158,6 @@ const (
 	ModelModalityEmbedding ModelModality = "embedding" // Vector embeddings
 )
 
-// ModelGeneration - core chat completions generation controls
-type ModelGeneration struct {
-	// Core sampling and decoding
-	Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
-	TopP        *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
-	TopK        *IntRange   `json:"top_k,omitempty" yaml:"top_k,omitempty"`
-	TopA        *FloatRange `json:"top_a,omitempty" yaml:"top_a,omitempty"`
-	MinP        *FloatRange `json:"min_p,omitempty" yaml:"min_p,omitempty"`
-	TypicalP    *FloatRange `json:"typical_p,omitempty" yaml:"typical_p,omitempty"`
-	TFS         *FloatRange `json:"tfs,omitempty" yaml:"tfs,omitempty"`
-
-	// Length and termination
-	MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
-	MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty"`
-
-	// Repetition control
-	FrequencyPenalty  *FloatRange `json:"frequency_penalty,omitempty" yaml:"frequency_penalty,omitempty"`
-	PresencePenalty   *FloatRange `json:"presence_penalty,omitempty" yaml:"presence_penalty,omitempty"`
-	RepetitionPenalty *FloatRange `json:"repetition_penalty,omitempty" yaml:"repetition_penalty,omitempty"`
-	NoRepeatNgramSize *IntRange   `json:"no_repeat_ngram_size,omitempty" yaml:"no_repeat_ngram_size,omitempty"`
-	LengthPenalty     *FloatRange `json:"length_penalty,omitempty" yaml:"length_penalty,omitempty"`
-
-	// Observability
-	TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty"` // Number of top log probabilities to return
-
-	// Multiplicity and reranking
-	N      *IntRange `json:"n,omitempty" yaml:"n,omitempty"`             // Number of candidates to generate
-	BestOf *IntRange `json:"best_of,omitempty" yaml:"best_of,omitempty"` // Server-side sampling with best selection
-
-	// Alternative sampling strategies (niche)
-	MirostatTau                   *FloatRange `json:"mirostat_tau,omitempty" yaml:"mirostat_tau,omitempty"`
-	MirostatEta                   *FloatRange `json:"mirostat_eta,omitempty" yaml:"mirostat_eta,omitempty"`
-	ContrastiveSearchPenaltyAlpha *FloatRange `json:"contrastive_search_penalty_alpha,omitempty" yaml:"contrastive_search_penalty_alpha,omitempty"`
-
-	// Beam search (niche)
-	NumBeams         *IntRange   `json:"num_beams,omitempty" yaml:"num_beams,omitempty"`
-	DiversityPenalty *FloatRange `json:"diversity_penalty,omitempty" yaml:"diversity_penalty,omitempty"`
-}
-
 // ToolChoice represents the strategy for selecting tools.
 // Used in API requests as the "tool_choice" parameter value.
 type ToolChoice string
@@ -365,117 +198,11 @@ const (
 	ModelControlLevelMaximum ModelControlLevel = "maximum"
 )
 
-// ModelDelivery represents technical response delivery capabilities.
-type ModelDelivery struct {
-	// Response delivery mechanisms
-	Protocols []ModelResponseProtocol `json:"protocols,omitempty" yaml:"protocols,omitempty"` // Supported delivery protocols (HTTP, gRPC, etc.)
-	Streaming []ModelStreaming        `json:"streaming,omitempty" yaml:"streaming,omitempty"` // Supported streaming modes (sse, websocket, chunked)
-	Formats   []ModelResponseFormat   `json:"formats,omitempty" yaml:"formats,omitempty"`     // Available response formats (if format_response feature enabled)
-}
-
-// FloatRange represents a range of float values.
-type FloatRange struct {
-	Min     float64 `json:"min" yaml:"min"`         // Minimum value
-	Max     float64 `json:"max" yaml:"max"`         // Maximum value
-	Default float64 `json:"default" yaml:"default"` // Default value
-}
-
-// IntRange represents a range of integer values.
-type IntRange struct {
-	Min     int `json:"min" yaml:"min"`         // Minimum value
-	Max     int `json:"max" yaml:"max"`         // Maximum value
-	Default int `json:"default" yaml:"default"` // Default value
-}
-
-// ModelResponseFormat represents a supported response format.
-type ModelResponseFormat string
-
-// String returns the string representation of a ModelResponseFormat.
-func (mrf ModelResponseFormat) String() string {
-	return string(mrf)
-}
-
-// Model response formats.
-const (
-	// Basic formats
-	ModelResponseFormatText ModelResponseFormat = "text" // Plain text responses (default)
-
-	// JSON formats
-	ModelResponseFormatJSON       ModelResponseFormat = "json"        // JSON encouraged via prompting
-	ModelResponseFormatJSONMode   ModelResponseFormat = "json_mode"   // Forced valid JSON (OpenAI style)
-	ModelResponseFormatJSONObject ModelResponseFormat = "json_object" // Same as json_mode (OpenAI API name)
-
-	// Structured formats
-	ModelResponseFormatJSONSchema       ModelResponseFormat = "json_schema"       // Schema-validated JSON (OpenAI structured output)
-	ModelResponseFormatStructuredOutput ModelResponseFormat = "structured_output" // General structured output support
-
-	// Function calling (alternative to JSON schema)
-	ModelResponseFormatFunctionCall ModelResponseFormat = "function_call" // Tool/function calling for structured data
-)
-
-// ModelResponseProtocol represents a supported delivery protocol.
-type ModelResponseProtocol string
-
-// Model delivery protocols.
-const (
-	ModelResponseProtocolHTTP      ModelResponseProtocol = "http"      // HTTP/HTTPS REST API
-	ModelResponseProtocolGRPC      ModelResponseProtocol = "grpc"      // gRPC protocol
-	ModelResponseProtocolWebSocket ModelResponseProtocol = "websocket" // WebSocket protocol
-)
-
-// ModelStreaming represents how responses can be delivered.
-type ModelStreaming string
-
-// String returns the string representation of a ModelStreaming.
-func (ms ModelStreaming) String() string {
-	return string(ms)
-}
-
-// Model streaming modes.
-const (
-	ModelStreamingSSE       ModelStreaming = "sse"       // Server-Sent Events streaming
-	ModelStreamingWebSocket ModelStreaming = "websocket" // WebSocket streaming
-	ModelStreamingChunked   ModelStreaming = "chunked"   // HTTP chunked transfer encoding
-)
-
 // ModelAttachments represents the attachment capabilities of a model.
 type ModelAttachments struct {
 	MimeTypes   []string `json:"mime_types,omitempty" yaml:"mime_types,omitempty"`       // Supported MIME types
 	MaxFileSize *int64   `json:"max_file_size,omitempty" yaml:"max_file_size,omitempty"` // Maximum file size in bytes
 	MaxFiles    *int     `json:"max_files,omitempty" yaml:"max_files,omitempty"`         // Maximum number of files per request
-}
-
-// ModelPricing represents the pricing structure for a model.
-type ModelPricing struct {
-	// Token-based costs
-	Tokens *TokenPricing `json:"tokens,omitempty" yaml:"tokens,omitempty"`
-
-	// Fixed costs per operation
-	Operations *OperationPricing `json:"operations,omitempty" yaml:"operations,omitempty"`
-
-	// Metadata
-	Currency string `json:"currency" yaml:"currency"` // "USD", "EUR", etc.
-}
-
-// OperationPricing represents fixed costs for operations.
-type OperationPricing struct {
-	// Core operations
-	Request *float64 `json:"request,omitempty" yaml:"request,omitempty"` // Cost per API request
-
-	// Media operations
-	ImageInput *float64 `json:"image_input,omitempty" yaml:"image_input,omitempty"` // Cost per image processed
-	AudioInput *float64 `json:"audio_input,omitempty" yaml:"audio_input,omitempty"` // Cost per audio input
-	VideoInput *float64 `json:"video_input,omitempty" yaml:"video_input,omitempty"` // Cost per video input
-
-	// Generation operations
-	ImageGen *float64 `json:"image_gen,omitempty" yaml:"image_gen,omitempty"` // Cost per image generated
-	AudioGen *float64 `json:"audio_gen,omitempty" yaml:"audio_gen,omitempty"` // Cost per audio generated
-	VideoGen *float64 `json:"video_gen,omitempty" yaml:"video_gen,omitempty"` // Cost per video generated
-
-	// Service operations
-	WebSearch    *float64 `json:"web_search,omitempty" yaml:"web_search,omitempty"`       // Cost per web search
-	FunctionCall *float64 `json:"function_call,omitempty" yaml:"function_call,omitempty"` // Cost per function call
-	ToolUse      *float64 `json:"tool_use,omitempty" yaml:"tool_use,omitempty"`           // Cost per tool usage
 }
 
 // ModelLimits represents the limits for a model.

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"sync"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
@@ -288,9 +289,12 @@ func TestClientModelConversion(t *testing.T) {
 // TestClientConcurrency tests concurrent access to the client
 func TestClientConcurrency(t *testing.T) {
 	// Create a test server that returns valid responses
+	var mu sync.Mutex
 	callCount := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
 		callCount++
+		mu.Unlock()
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"object": "list", "data": [{"id": "test-model", "object": "model", "created": 1234567890, "owned_by": "openai"}]}`))
 	}))

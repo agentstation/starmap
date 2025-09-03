@@ -18,7 +18,7 @@ func TestConfigFunctions(t *testing.T) {
 		logging.SetDefault(originalLogger)
 		zerolog.SetGlobalLevel(originalLevel)
 	}()
-	
+
 	t.Run("DefaultConfig returns sensible defaults", func(t *testing.T) {
 		cfg := logging.DefaultConfig()
 		assert.NotNil(t, cfg)
@@ -34,17 +34,17 @@ func TestConfigFunctions(t *testing.T) {
 		assert.NoError(t, err)
 		defer os.Remove(tmpfile.Name())
 		defer tmpfile.Close()
-		
+
 		cfg := &logging.Config{
 			Level:     "debug",
 			Format:    "json",
 			Output:    tmpfile.Name(),
 			AddCaller: true,
 		}
-		
+
 		logger := logging.NewLoggerFromConfig(cfg)
 		logger.Info().Msg("test message")
-		
+
 		// Read the output from the file
 		content, err := os.ReadFile(tmpfile.Name())
 		assert.NoError(t, err)
@@ -59,24 +59,24 @@ func TestConfigFunctions(t *testing.T) {
 		assert.NoError(t, err)
 		defer os.Remove(tmpfile.Name())
 		defer tmpfile.Close()
-		
+
 		cfg := &logging.Config{
 			Level:     "warn",
 			Format:    "json",
 			Output:    tmpfile.Name(),
 			AddCaller: false,
 		}
-		
+
 		logging.Configure(cfg)
-		
+
 		// These should not appear (below warn level)
 		logging.Debug().Msg("debug message")
 		logging.Info().Msg("info message")
-		
+
 		// These should appear
 		logging.Warn().Msg("warn message")
 		logging.Error().Msg("error message")
-		
+
 		// Read the output from the file
 		content, err := os.ReadFile(tmpfile.Name())
 		assert.NoError(t, err)
@@ -93,10 +93,10 @@ func TestConfigFunctions(t *testing.T) {
 		os.Setenv("LOG_FORMAT", "console")
 		defer os.Unsetenv("LOG_LEVEL")
 		defer os.Unsetenv("LOG_FORMAT")
-		
+
 		// This should read from env and configure the logger
 		logging.ConfigureFromEnv()
-		
+
 		// The global logger should now be at debug level
 		// We can't easily test this without capturing output
 		// but we can ensure it doesn't panic
@@ -108,17 +108,17 @@ func TestConfigFunctions(t *testing.T) {
 		assert.NoError(t, err)
 		defer os.Remove(tmpfile.Name())
 		defer tmpfile.Close()
-		
+
 		cfg := &logging.Config{
 			Level:     "info",
 			Format:    "console",
 			Output:    tmpfile.Name(),
 			AddCaller: false,
 		}
-		
+
 		logger := logging.NewLoggerFromConfig(cfg)
 		logger.Info().Str("key", "value").Msg("console test")
-		
+
 		// Read the output from the file
 		content, err := os.ReadFile(tmpfile.Name())
 		assert.NoError(t, err)
@@ -130,8 +130,8 @@ func TestConfigFunctions(t *testing.T) {
 
 	t.Run("different log levels", func(t *testing.T) {
 		testCases := []struct {
-			level    string
-			logFunc  func() *zerolog.Event
+			level     string
+			logFunc   func() *zerolog.Event
 			shouldLog bool
 		}{
 			{"debug", logging.Debug, true},
@@ -142,7 +142,7 @@ func TestConfigFunctions(t *testing.T) {
 			{"error", logging.Error, true},
 			{"error", logging.Warn, false}, // warn below error
 		}
-		
+
 		for _, tc := range testCases {
 			t.Run(tc.level, func(t *testing.T) {
 				// Create a temp file for output
@@ -150,21 +150,21 @@ func TestConfigFunctions(t *testing.T) {
 				assert.NoError(t, err)
 				defer os.Remove(tmpfile.Name())
 				defer tmpfile.Close()
-				
+
 				cfg := &logging.Config{
-					Level:     tc.level,
-					Format:    "json",
-					Output:    tmpfile.Name(),
+					Level:  tc.level,
+					Format: "json",
+					Output: tmpfile.Name(),
 				}
-				
+
 				logging.Configure(cfg)
 				tc.logFunc().Msg("test")
-				
+
 				// Read the output from the file
 				content, err := os.ReadFile(tmpfile.Name())
 				assert.NoError(t, err)
 				output := string(content)
-				
+
 				if tc.shouldLog {
 					assert.Contains(t, output, "test")
 				} else {
@@ -179,7 +179,7 @@ func TestLoggerFunctions(t *testing.T) {
 	// Save and restore the global level
 	originalLevel := zerolog.GlobalLevel()
 	defer zerolog.SetGlobalLevel(originalLevel)
-	
+
 	t.Run("Default returns global logger", func(t *testing.T) {
 		logger := logging.Default()
 		assert.NotNil(t, logger)
@@ -189,7 +189,7 @@ func TestLoggerFunctions(t *testing.T) {
 		var buf bytes.Buffer
 		newLogger := zerolog.New(&buf).Level(zerolog.InfoLevel)
 		logging.SetDefault(newLogger)
-		
+
 		// Now the global functions should use this logger
 		logging.Info().Msg("test with new default")
 		assert.Contains(t, buf.String(), "test with new default")
@@ -199,7 +199,7 @@ func TestLoggerFunctions(t *testing.T) {
 		var buf bytes.Buffer
 		logger := logging.New(&buf)
 		logger.Info().Msg("json test")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "json test")
 		assert.Contains(t, output, `"level":"info"`)
@@ -215,7 +215,7 @@ func TestLoggerFunctions(t *testing.T) {
 		var buf bytes.Buffer
 		logger := logging.NewJSON(&buf)
 		logger.Info().Msg("json test")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "json test")
 		assert.Contains(t, output, `"level":"info"`)
@@ -223,7 +223,7 @@ func TestLoggerFunctions(t *testing.T) {
 
 	t.Run("Level creates logger with specific level", func(t *testing.T) {
 		logger := logging.Level(zerolog.WarnLevel)
-		
+
 		// Can't easily test without capturing output
 		// Just ensure it doesn't panic
 		logger.Debug().Msg("should not appear")
@@ -235,13 +235,13 @@ func TestLoggerFunctions(t *testing.T) {
 		// Set both the logger and global level to ensure debug shows
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 		logging.SetDefault(zerolog.New(&buf).Level(zerolog.DebugLevel))
-		
+
 		// Test each level
 		logging.Debug().Msg("debug")
 		logging.Info().Msg("info")
 		logging.Warn().Msg("warn")
 		logging.Error().Msg("error")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "debug")
 		assert.Contains(t, output, "info")
@@ -252,7 +252,7 @@ func TestLoggerFunctions(t *testing.T) {
 	t.Run("WithLevel creates event with dynamic level", func(t *testing.T) {
 		var buf bytes.Buffer
 		logging.SetDefault(zerolog.New(&buf).Level(zerolog.InfoLevel))
-		
+
 		logging.WithLevel(zerolog.InfoLevel).Msg("dynamic level")
 		assert.Contains(t, buf.String(), "dynamic level")
 	})
@@ -260,10 +260,10 @@ func TestLoggerFunctions(t *testing.T) {
 	t.Run("Err adds error to event", func(t *testing.T) {
 		var buf bytes.Buffer
 		logging.SetDefault(zerolog.New(&buf).Level(zerolog.ErrorLevel))
-		
+
 		err := assert.AnError
 		logging.Err(err).Msg("error test")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "error test")
 		assert.Contains(t, output, err.Error())
@@ -273,15 +273,15 @@ func TestLoggerFunctions(t *testing.T) {
 		var buf bytes.Buffer
 		baseLogger := zerolog.New(&buf).Level(zerolog.InfoLevel)
 		logging.SetDefault(baseLogger)
-		
+
 		// Create a context with fields
 		ctx := logging.With().
 			Str("component", "test").
 			Int("version", 1).
 			Logger()
-		
+
 		ctx.Info().Msg("with context")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "with context")
 		assert.Contains(t, output, `"component":"test"`)

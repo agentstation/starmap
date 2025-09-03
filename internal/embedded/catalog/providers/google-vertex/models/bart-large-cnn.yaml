@@ -1,5 +1,9 @@
 id: bart-large-cnn
-name: ""
+name: "@cf/facebook/bart-large-cnn"
+description: "Google Vertex AI model: bart-large-cnn"
+metadata:
+  release_date: "2025-09-02T21:59:16Z"
+  open_weights: false
 features:
   modalities:
     input:
@@ -54,5 +58,5 @@ features:
 pricing:
   tokens: {}
   currency: USD
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

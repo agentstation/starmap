@@ -8,7 +8,7 @@ Creator of Claude, focusing on safe and beneficial AI with constitutional traini
 | Field | Value |
 |---------|---------|
 | **Provider ID** | `anthropic` |
-| **Total Models** | 8 |
+| **Total Models** | 10 |
 | **Authentication** | API Key Required |
 | **Environment Variable** | `ANTHROPIC_API_KEY` |
 | **Status Page** | [https://status.anthropic.com](https://status.anthropic.com) |
@@ -61,18 +61,20 @@ San Francisco, CA, USA
   
 ## Available Models
   
-### Other
+### Claude
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [](./models/claude-3-5-haiku-20241022.md) | N/A | $0.80 | $4.00 | 📝 👁️ ⚡ |
-| [](./models/claude-3-5-sonnet-20240620.md) | N/A | $3.00 | $15.00 | 📝 👁️ ⚡ |
-| [](./models/claude-3-5-sonnet-20241022.md) | N/A | $3.00 | $15.00 | 📝 👁️ ⚡ |
-| [](./models/claude-3-7-sonnet-20250219.md) | N/A | $3.00 | $15.00 | 📝 👁️ ⚡ |
-| [](./models/claude-3-haiku-20240307.md) | N/A | $0.25 | $1.25 | 📝 👁️ ⚡ |
-| [](./models/claude-opus-4-1-20250805.md) | N/A | $15.00 | $75.00 | 📝 👁️ ⚡ |
-| [](./models/claude-opus-4-20250514.md) | N/A | $15.00 | $75.00 | 📝 👁️ ⚡ |
-| [](./models/claude-sonnet-4-20250514.md) | N/A | $3.00 | $15.00 | 📝 ⚡ |
+| [Claude Haiku 3](./models/claude-3-haiku-20240307.md) | 200k | $0.25 | $1.25 | 📝 👁️ 🔧 ⚡ |
+| [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022.md) | 200k | $0.80 | $4.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 3](./models/claude-3-opus-20240229.md) | 200k | $15.00 | $75.00 | — |
+| [Claude Opus 4](./models/claude-opus-4-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Opus 4.1](./models/claude-opus-4-1-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3](./models/claude-3-sonnet-20240229.md) | 200k | $3.00 | $15.00 | — |
+| [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | 200k | $3.00 | $15.00 | 📝 🔧 ⚡ |
 
   
 ## Configuration

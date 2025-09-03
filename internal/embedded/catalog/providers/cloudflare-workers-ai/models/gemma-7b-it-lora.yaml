@@ -1,0 +1,10 @@
+id: gemma-7b-it-lora
+name: "@cf/google/gemma-7b-it-lora"
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 3500
+  output_tokens: 3500
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

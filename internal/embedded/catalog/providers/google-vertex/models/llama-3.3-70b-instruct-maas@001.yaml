@@ -1,17 +1,26 @@
 id: llama-3.3-70b-instruct-maas@001
-name: ""
+name: Llama 3.3 70b Instruct Maas
+authors:
+- id: meta
+  name: meta
+  models: {}
+  created_at: null
+  updated_at: null
+metadata:
+  release_date: null
+  open_weights: false
 features:
   modalities:
     input:
     - text
     output:
     - text
-  tool_calls: false
-  tools: false
+  tool_calls: true
+  tools: true
   tool_choice: false
   web_search: false
   attachments: false
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -52,7 +61,7 @@ features:
   structured_outputs: false
   streaming: true
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 128000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

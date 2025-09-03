@@ -1,5 +1,9 @@
 id: gemini-embedding-001
-name: ""
+name: gemini-embedding-001
+description: "Google Vertex AI model: gemini-embedding-001"
+metadata:
+  release_date: "2025-09-02T21:59:19Z"
+  open_weights: false
 features:
   modalities:
     input:
@@ -54,5 +58,5 @@ features:
 limits:
   context_window: 0
   output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

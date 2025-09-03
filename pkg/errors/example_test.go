@@ -57,7 +57,7 @@ func Example_authenticationError() {
 	}
 
 	// Auth error is already typed
-	fmt.Printf("Auth failed for %s: %s\n", 
+	fmt.Printf("Auth failed for %s: %s\n",
 		err.Provider, err.Message)
 
 	// Output: Auth failed for anthropic: API key not configured
@@ -76,7 +76,7 @@ func Example_rateLimitError() {
 	if err.StatusCode == 429 {
 		fmt.Printf("Rate limited: %s\n", err.Message)
 	}
-	
+
 	// Output: Rate limited: Rate limit exceeded. Try again in 30 seconds.
 }
 
@@ -156,17 +156,17 @@ func Example_errorRecovery() {
 	maxRetries := 3
 	for i := 0; i < maxRetries; i++ {
 		err := attemptRequest()
-		
+
 		if apiErr, ok := err.(*errors.APIError); ok && apiErr.StatusCode == 429 {
 			fmt.Printf("Attempt %d: Rate limited, retrying...\n", i+1)
 			time.Sleep(time.Second) // Simple backoff
 			continue
 		}
-		
+
 		if err != nil {
 			log.Fatal(err)
 		}
-		
+
 		break
 	}
 }

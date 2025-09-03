@@ -1,5 +1,12 @@
 id: embedding-gecko-001
-name: ""
+name: Embedding Gecko
+authors:
+- id: google
+  name: Google
+  models: {}
+  created_at: null
+  updated_at: null
+description: Obtain a distributed representation of a text.
 features:
   modalities:
     input:
@@ -18,14 +25,14 @@ features:
   verbosity: false
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -52,7 +59,7 @@ features:
   structured_outputs: false
   streaming: true
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 1024
+  output_tokens: 1
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

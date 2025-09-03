@@ -39,7 +39,8 @@ func NewFiles(path string) (Catalog, error) {
 // Example:
 //
 //	catalog := NewMemory()
-//	catalog.SetModel(myModel)
+//	provider := Provider{ID: "openai", Models: map[string]Model{}}
+//	catalog.SetProvider(provider)
 func NewMemory() Catalog {
 	// Memory catalog cannot fail
 	catalog, _ := New() // No options = memory catalog
@@ -69,7 +70,7 @@ func NewFromFS(fsys fs.FS, root string) (Catalog, error) {
 //
 //	embedded, _ := NewEmbedded()
 //	readOnly := NewReadOnly(embedded)
-//	err := readOnly.SetModel(model) // Returns error
+//	err := readOnly.SetProvider(provider) // Returns error
 func NewReadOnly(source Catalog) Catalog {
 	return &readOnlyCatalog{source: source}
 }
@@ -93,10 +94,6 @@ func (r *readOnlyCatalog) Authors() *Authors {
 	return r.source.Authors()
 }
 
-func (r *readOnlyCatalog) Models() *Models {
-	return r.source.Models()
-}
-
 func (r *readOnlyCatalog) Endpoints() *Endpoints {
 	return r.source.Endpoints()
 }
@@ -109,12 +106,16 @@ func (r *readOnlyCatalog) Author(id AuthorID) (Author, error) {
 	return r.source.Author(id)
 }
 
-func (r *readOnlyCatalog) Model(id string) (Model, error) {
-	return r.source.Model(id)
-}
-
 func (r *readOnlyCatalog) Endpoint(id string) (Endpoint, error) {
 	return r.source.Endpoint(id)
+}
+
+func (r *readOnlyCatalog) GetAllModels() []Model {
+	return r.source.GetAllModels()
+}
+
+func (r *readOnlyCatalog) FindModel(id string) (Model, error) {
+	return r.source.FindModel(id)
 }
 
 func (r *readOnlyCatalog) SetProvider(provider Provider) error {
@@ -122,10 +123,6 @@ func (r *readOnlyCatalog) SetProvider(provider Provider) error {
 }
 
 func (r *readOnlyCatalog) SetAuthor(author Author) error {
-	return errors.ErrReadOnly
-}
-
-func (r *readOnlyCatalog) SetModel(model Model) error {
 	return errors.ErrReadOnly
 }
 
@@ -138,10 +135,6 @@ func (r *readOnlyCatalog) DeleteProvider(id ProviderID) error {
 }
 
 func (r *readOnlyCatalog) DeleteAuthor(id AuthorID) error {
-	return errors.ErrReadOnly
-}
-
-func (r *readOnlyCatalog) DeleteModel(id string) error {
 	return errors.ErrReadOnly
 }
 

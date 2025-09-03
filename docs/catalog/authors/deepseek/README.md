@@ -12,12 +12,30 @@ Chinese AI company known for DeepSeek-Coder and reasoning-focused language model
 | **Author ID** | `deepseek` |
 | **Type** | 🚀 AI Startups |
 | **Website** | [https://deepseek.com](https://deepseek.com) |
-| **Total Models** | 0 |
+| **Total Models** | 7 |
+| **Available On** | 2 providers |
 
   
 ## Models
   
-*No models found from this author.*
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [DeepSeek Chat](./models/deepseek-chat.md) | deepseek | 128k | Text |
+| [DeepSeek Reasoner](./models/deepseek-reasoner.md) | deepseek | 128k | Text |
+| [Deepseek R1](./models/deepseek-r1-at-deepseek-r1-0528.md) | google-vertex | 64k | Text, Functions |
+| [Deepseek R1 0528 Maas](./models/deepseek-r1-0528-maas-at-001.md) | google-vertex | 64k | Text, Functions |
+| [Deepseek V3](./models/deepseek-v3-at-deepseek-v3-0324.md) | google-vertex | 64k | Text, Functions |
+| [Deepseek V3 1](./models/deepseek-v3-1-at-deepseek-v3-1.md) | google-vertex | 64k | Text, Functions |
+| [Deepseek V3.1 Maas](./models/deepseek-v3.1-maas-at-001.md) | google-vertex | 64k | Text, Functions |
+
+  
+## Provider Availability
+  
+Models from this author are available through the following providers:
+  
+  
+- **[google-vertex](../../providers/google-vertex/)** - 5 models
+- **[deepseek](../../providers/deepseek/)** - 2 models
   
 ## Research & Development
   

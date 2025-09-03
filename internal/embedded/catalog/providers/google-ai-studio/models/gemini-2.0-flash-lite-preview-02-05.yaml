@@ -1,5 +1,12 @@
 id: gemini-2.0-flash-lite-preview-02-05
-name: ""
+name: Gemini 2.0 Flash-Lite Preview 02-05
+authors:
+- id: google
+  name: Google
+  models: {}
+  created_at: null
+  updated_at: null
+description: Preview release (February 5th, 2025) of Gemini 2.0 Flash-Lite
 features:
   modalities:
     input:
@@ -8,8 +15,8 @@ features:
     output:
     - text
   tool_calls: false
-  tools: false
-  tool_choice: false
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
   reasoning: false
@@ -19,14 +26,14 @@ features:
   verbosity: false
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -49,11 +56,24 @@ features:
   num_beams: false
   early_stopping: false
   diversity_penalty: false
-  format_response: false
-  structured_outputs: false
+  format_response: true
+  structured_outputs: true
   streaming: true
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+  top_k:
+    min: 1
+    max: 100
+    default: 40
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 1048576
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

@@ -33,19 +33,23 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 // writeCatalogContent writes the catalog content to the given writer
 func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) error {
 
-	builder := NewMarkdownBuilder(f)
-	
+	markdown := NewMarkdown(f)
+
 	// Generate header
-	builder.H1("🌟 Starmap AI Model Catalog").LF()
-	builder.PlainText("A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.").LF().LF()
+	markdown.H1("🌟 Starmap AI Model Catalog").LF()
+	markdown.PlainText("A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.").LF().LF()
 
 	// Add last updated
-	builder.Italic(fmt.Sprintf("_Last Updated: %s_", time.Now().Format("January 2, 2006"))).LF().LF()
+	markdown.Italic(fmt.Sprintf("_Last Updated: %s_", time.Now().Format("January 2, 2006"))).LF().LF()
 
 	// Count statistics
 	providers := catalog.Providers().List()
 	authors := catalog.Authors().List()
-	models := catalog.Models().List()
+	allModelsSlice := catalog.GetAllModels()
+	models := make([]*catalogs.Model, len(allModelsSlice))
+	for i := range allModelsSlice {
+		models[i] = &allModelsSlice[i]
+	}
 
 	// Calculate aggregate stats
 	totalContextWindow := int64(0)
@@ -60,8 +64,8 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	}
 
 	// Statistics section
-	builder.H2("📊 Catalog Statistics").LF()
-	
+	markdown.H2("📊 Catalog Statistics").LF()
+
 	statsRows := [][]string{
 		{"**Total Models**", formatNumber(len(models))},
 		{"**Providers**", fmt.Sprintf("%d", len(providers))},
@@ -74,15 +78,15 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 			fmt.Sprintf("%s tokens", formatNumber(int(totalContextWindow/int64(len(models))))),
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Metric", "Value"},
 		Rows:   statsRows,
 	}).LF()
 
 	// Quick Navigation
-	builder.H2("🚀 Quick Navigation").LF()
-	builder.H3("Browse by Provider").LF()
+	markdown.H2("🚀 Quick Navigation").LF()
+	markdown.H3("Browse by Provider").LF()
 
 	// Sort providers by model count
 	type providerInfo struct {
@@ -113,19 +117,19 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 			latestModel,
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Provider", "Models", "Latest Addition"},
 		Rows:   providerRows,
 	}).LF()
 
 	// Browse by Author
-	builder.H3("Browse by Model Author").LF()
+	markdown.H3("Browse by Model Author").LF()
 
 	// Sort authors by model count
 	type authorInfo struct {
-		author      *catalogs.Author
-		modelCount  int
+		author     *catalogs.Author
+		modelCount int
 	}
 	var authorInfos []authorInfo
 	for _, author := range authors {
@@ -166,25 +170,25 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 			desc,
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Author", "Models", "Description"},
 		Rows:   authorRows,
 	})
 
 	if len(authorInfos) > 10 {
-		builder.LF().PlainTextf("[View all %d authors →](authors/)", len(authorInfos))
+		markdown.LF().PlainTextf("[View all %d authors →](authors/)", len(authorInfos))
 	}
-	
-	builder.LF().LF()
+
+	markdown.LF().LF()
 
 	// Featured Models section
-	builder.H2("⭐ Featured Models").LF()
-	builder.H3("Latest & Greatest").LF()
+	markdown.H2("⭐ Featured Models").LF()
+	markdown.H3("Latest & Greatest").LF()
 
 	// Show a selection of notable models
 	featuredModels := selectFeaturedModels(models)
-	
+
 	featuredRows := [][]string{}
 	featuredCount := min(10, len(featuredModels))
 	for _, model := range featuredModels[:featuredCount] {
@@ -221,21 +225,21 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 		})
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Provider", "Context", "Pricing"},
 		Rows:   featuredRows,
 	}).LF()
 
 	// Browse Options
-	builder.H2("📚 Browse Options").LF()
-	builder.BulletList(
+	markdown.H2("📚 Browse Options").LF()
+	markdown.BulletList(
 		"🏢 **[By Provider](providers/)** - Browse models grouped by their hosting provider",
 		"👥 **[By Author](authors/)** - Browse models grouped by their creating organization",
 		"📋 **[All Models](models/)** - Complete alphabetical listing of all models",
 	).LF()
 
 	// Footer (catalog root doesn't have back links)
-	builder.Build()
+	markdown.Build()
 	g.writeFooter(f)
 
 	return nil
@@ -254,7 +258,7 @@ func selectFeaturedModels(models []*catalogs.Model) []*catalogs.Model {
 	// Make a copy before sorting to avoid modifying the original
 	featuredCopy := make([]*catalogs.Model, len(featured))
 	copy(featuredCopy, featured)
-	
+
 	sort.Slice(featuredCopy, func(i, j int) bool {
 		// Prioritize popular model families
 		iPriority := getModelPriority(featuredCopy[i].Name)

@@ -13,16 +13,23 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Add a test model
-		testModel := Model{
-			ID:   "test-model-1",
-			Name: "Test Model",
+		// Create a provider with a model
+		provider := Provider{
+			ID:   "test-provider",
+			Name: "Test Provider",
+			Models: map[string]Model{
+				"test-model-1": {
+					ID:   "test-model-1",
+					Name: "Test Model",
+				},
+			},
 		}
-		if err := cat.SetModel(testModel); err != nil {
-			t.Fatalf("Failed to set model: %v", err)
+		if err := cat.SetProvider(provider); err != nil {
+			t.Fatalf("Failed to set provider: %v", err)
 		}
 
 		// Verify it was added
-		models := cat.Models().List()
+		models := cat.GetAllModels()
 		if len(models) != 1 {
 			t.Errorf("Expected 1 model, got %d", len(models))
 		}
@@ -39,7 +46,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.Models().List()
+		models := cat.GetAllModels()
 		if len(models) == 0 {
 			t.Error("Embedded catalog should have models")
 		}
@@ -59,7 +66,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.Models().List()
+		models := cat.GetAllModels()
 		if len(models) == 0 {
 			t.Error("Files catalog should have models")
 		}
@@ -84,8 +91,8 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Compare model counts
-		embModels := embCat.Models().List()
-		fileModels := filesCat.Models().List()
+		embModels := embCat.GetAllModels()
+		fileModels := filesCat.GetAllModels()
 
 		if len(embModels) != len(fileModels) {
 			t.Errorf("Model count mismatch: embedded=%d, files=%d", len(embModels), len(fileModels))

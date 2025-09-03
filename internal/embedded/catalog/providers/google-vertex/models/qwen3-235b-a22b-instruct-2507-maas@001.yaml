@@ -1,5 +1,14 @@
 id: qwen3-235b-a22b-instruct-2507-maas@001
-name: ""
+name: Qwen3 235b A22b Instruct 2507 Maas
+authors:
+- id: qwen
+  name: qwen
+  models: {}
+  created_at: null
+  updated_at: null
+metadata:
+  release_date: null
+  open_weights: false
 features:
   modalities:
     input:
@@ -51,5 +60,5 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

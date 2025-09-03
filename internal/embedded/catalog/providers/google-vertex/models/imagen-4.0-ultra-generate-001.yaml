@@ -1,5 +1,9 @@
 id: imagen-4.0-ultra-generate-001
-name: ""
+name: imagen-4.0-ultra-generate-001
+description: "Google Vertex AI model: imagen-4.0-ultra-generate-001"
+metadata:
+  release_date: "2025-09-02T21:59:18Z"
+  open_weights: false
 features:
   modalities:
     input:
@@ -51,5 +55,5 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

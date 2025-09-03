@@ -18,6 +18,7 @@ import (
 // Source fetches models from all provider APIs concurrently
 type Source struct {
 	providers *catalogs.Providers // Provider configs injected during Setup
+	catalog   catalogs.Catalog    // Fetched catalog
 }
 
 // New creates a new provider API source
@@ -25,8 +26,8 @@ func New() *Source {
 	return &Source{}
 }
 
-// Name returns the name of this source
-func (s *Source) Name() sources.SourceName {
+// Type returns the type of this source
+func (s *Source) Type() sources.Type {
 	return sources.ProviderAPI
 }
 
@@ -44,14 +45,14 @@ func (s *Source) Setup(providers *catalogs.Providers) error {
 }
 
 // Fetch creates a new catalog with models fetched from all provider APIs concurrently
-func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
+func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	// Apply options
 	options := sources.ApplyOptions(opts...)
 
 	// Create a new catalog to build into
 	catalog, err := catalogs.New()
 	if err != nil {
-		return nil, pkgerrors.WrapResource("create", "memory catalog", "", err)
+		return pkgerrors.WrapResource("create", "memory catalog", "", err)
 	}
 
 	// Set the default merge strategy for provider catalog (fresh API data)
@@ -62,7 +63,8 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 	// Check if we have provider configs
 	if s.providers == nil {
 		// Can't fetch without provider configs
-		return catalog, nil
+		s.catalog = catalog
+		return nil
 	}
 
 	// Determine which providers to sync
@@ -82,7 +84,8 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 	}
 
 	if len(providerConfigs) == 0 {
-		return catalog, nil // No providers to sync
+		s.catalog = catalog
+		return nil // No providers to sync
 	}
 
 	// Add provider configurations to the catalog first
@@ -139,9 +142,9 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 					Str("provider_id", string(p.ID)).
 					Msg("Skipping provider - client creation failed")
 				result.err = &pkgerrors.SyncError{
-				Provider: string(p.ID),
-				Err:      err,
-			}
+					Provider: string(p.ID),
+					Err:      err,
+				}
 				resultChan <- result
 				return
 			}
@@ -150,9 +153,9 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			models, err := client.ListModels(ctx)
 			if err != nil {
 				result.err = &pkgerrors.SyncError{
-				Provider: string(p.ID),
-				Err:      err,
-			}
+					Provider: string(p.ID),
+					Err:      err,
+				}
 				resultChan <- result
 				return
 			}
@@ -193,18 +196,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 			provider.Models = make(map[string]catalogs.Model)
 		}
 
-		// Add models to catalog and associate with provider
+		// Associate models with provider
 		for _, model := range result.models {
 			// Create copy to avoid modifying original
 			modelCopy := model
-			if err := catalog.SetModel(modelCopy); err != nil {
-				logger.Warn().
-					Err(err).
-					Str("model_id", modelCopy.ID).
-					Msg("Failed to set model")
-				continue
-			}
-
 			// Associate model with provider
 			provider.Models[modelCopy.ID] = modelCopy
 		}
@@ -221,11 +216,19 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catal
 		// Sources should only create catalogs, not persist them
 	}
 
+	// Store the catalog in the struct
+	s.catalog = catalog
+
 	if len(errs) > 0 {
-		return catalog, errors.Join(errs...)
+		return errors.Join(errs...)
 	}
 
-	return catalog, nil
+	return nil
+}
+
+// Catalog returns the catalog of this source
+func (s *Source) Catalog() catalogs.Catalog {
+	return s.catalog
 }
 
 // Cleanup releases any resources

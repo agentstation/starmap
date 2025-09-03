@@ -1,0 +1,14 @@
+id: qwen-2.5-vl
+name: Qwen 2.5 VL 72B
+pricing:
+  tokens:
+    input:
+      per_1m: 0.7
+    output:
+      per_1m: 2.8
+  currency: USD
+limits:
+  context_window: 32768
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

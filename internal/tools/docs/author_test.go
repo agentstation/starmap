@@ -45,7 +45,12 @@ func TestGenerateAuthorIndex(t *testing.T) {
 	g := New()
 
 	authors := catalog.Authors().List()
-	models := catalog.Models().List()
+	allModels := catalog.GetAllModels()
+	// Convert to pointer slice
+	models := make([]*catalogs.Model, len(allModels))
+	for i := range allModels {
+		models[i] = &allModels[i]
+	}
 
 	err := g.generateAuthorIndex(tempDir, authors, models, catalog)
 	require.NoError(t, err)
@@ -139,7 +144,12 @@ func TestGenerateAuthorModelPages(t *testing.T) {
 	assert.DirExists(t, modelsDir)
 
 	// Check that model files were created
-	models := catalog.Models().List()
+	allModels := catalog.GetAllModels()
+	// Convert to pointer slice
+	models := make([]*catalogs.Model, len(allModels))
+	for i := range allModels {
+		models[i] = &allModels[i]
+	}
 	for _, model := range models {
 		for _, ma := range model.Authors {
 			if ma.ID == author.ID {
@@ -162,11 +172,11 @@ func TestGenerateAuthorModelPage(t *testing.T) {
 	author, found := catalog.Authors().Get(catalogs.AuthorIDOpenAI)
 	require.True(t, found)
 
-	model, found := catalog.Models().Get("gpt-4")
-	require.True(t, found)
+	model, err := catalog.FindModel("gpt-4")
+	require.NoError(t, err)
 
 	// Generate the model page
-	err := g.generateAuthorModelPage(tempDir, author, model, catalog)
+	err = g.generateAuthorModelPage(tempDir, author, &model, catalog)
 	require.NoError(t, err)
 
 	// Check that the file was created
@@ -512,12 +522,12 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 		},
 	}
 
-	catalog.SetModel(gpt4)
-	catalog.SetModel(claude)
-	catalog.SetModel(gemini)
-
 	// Associate models with provider
-	provider.Models[gpt4.ID] = gpt4
+	provider.Models = map[string]catalogs.Model{
+		gpt4.ID:   gpt4,
+		claude.ID: claude,
+		gemini.ID: gemini,
+	}
 	catalog.SetProvider(provider)
 
 	return catalog
@@ -533,14 +543,14 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 		checkFunc func(t *testing.T, outputDir string)
 	}{
 		{
-			name: "empty author list",
+			name:    "empty author list",
 			authors: []catalogs.Author{},
-			models: []catalogs.Model{},
+			models:  []catalogs.Model{},
 			checkFunc: func(t *testing.T, outputDir string) {
 				// Index should still be created
 				indexPath := filepath.Join(outputDir, "README.md")
 				assert.FileExists(t, indexPath)
-				
+
 				content, err := os.ReadFile(indexPath)
 				require.NoError(t, err)
 				assert.Contains(t, string(content), "Model Authors")
@@ -557,11 +567,11 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 				// Check directories created
 				assert.DirExists(t, filepath.Join(outputDir, "openai"))
 				assert.DirExists(t, filepath.Join(outputDir, "anthropic"))
-				
+
 				// Check READMEs exist
 				assert.FileExists(t, filepath.Join(outputDir, "openai", "README.md"))
 				assert.FileExists(t, filepath.Join(outputDir, "anthropic", "README.md"))
-				
+
 				// Check index
 				indexPath := filepath.Join(outputDir, "README.md")
 				content, err := os.ReadFile(indexPath)
@@ -574,8 +584,8 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 			name: "authors with description",
 			authors: []catalogs.Author{
 				{
-					ID:   "researcher",
-					Name: "Research Team",
+					ID:          "researcher",
+					Name:        "Research Team",
 					Description: stringPtr("Leading AI research organization focused on open models"),
 				},
 			},
@@ -583,7 +593,7 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 			checkFunc: func(t *testing.T, outputDir string) {
 				readmePath := filepath.Join(outputDir, "researcher", "README.md")
 				assert.FileExists(t, readmePath)
-				
+
 				content, err := os.ReadFile(readmePath)
 				require.NoError(t, err)
 				contentStr := string(content)
@@ -629,7 +639,7 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 				contentStr := string(content)
 				assert.Contains(t, contentStr, "GPT-4")
 				assert.Contains(t, contentStr, "Collaborative Model")
-				
+
 				// Check Meta has 2 models (llama-3 and collaborative)
 				metaReadme := filepath.Join(outputDir, "meta", "README.md")
 				content, err = os.ReadFile(metaReadme)
@@ -640,16 +650,16 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 			},
 		},
 		{
-			name: "large number of authors",
+			name:    "large number of authors",
 			authors: generateManyAuthors(25),
-			models: []catalogs.Model{},
+			models:  []catalogs.Model{},
 			checkFunc: func(t *testing.T, outputDir string) {
 				// Check all directories created
 				for i := 0; i < 25; i++ {
 					authorDir := filepath.Join(outputDir, stringID("author", i))
 					assert.DirExists(t, authorDir)
 				}
-				
+
 				// Check index contains all authors
 				indexPath := filepath.Join(outputDir, "README.md")
 				content, err := os.ReadFile(indexPath)
@@ -677,11 +687,21 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			// Add models
-			for _, model := range tt.models {
-				err := catalog.SetModel(model)
-				require.NoError(t, err)
+			// Create a test provider to hold all models
+			provider := catalogs.Provider{
+				ID:     catalogs.ProviderID("test-provider"),
+				Name:   "Test Provider",
+				Models: make(map[string]catalogs.Model),
 			}
+
+			// Add all models to the provider
+			for _, model := range tt.models {
+				provider.Models[model.ID] = model
+			}
+
+			// Set the provider with all models
+			err = catalog.SetProvider(provider)
+			require.NoError(t, err)
 
 			// Create generator
 			gen := &Generator{
@@ -704,7 +724,7 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 func TestGenerateAuthorDocsErrors(t *testing.T) {
 	t.Run("directory creation failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
-		
+
 		// Create a file where directory should be
 		authorsDir := filepath.Join(tmpDir, "authors")
 		err := os.WriteFile(authorsDir, []byte("file"), 0644)
@@ -756,9 +776,9 @@ func TestGenerateAuthorDocsErrors(t *testing.T) {
 // TestGenerateAuthorModelPageComplex tests generateAuthorModelPage with complex scenarios
 func TestGenerateAuthorModelPageComplex(t *testing.T) {
 	tests := []struct {
-		name    string
-		author  *catalogs.Author
-		model   *catalogs.Model
+		name     string
+		author   *catalogs.Author
+		model    *catalogs.Model
 		contains []string
 	}{
 		{
@@ -784,8 +804,8 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 		{
 			name: "research model with metadata",
 			author: &catalogs.Author{
-				ID:   "research-lab",
-				Name: "Research Lab",
+				ID:      "research-lab",
+				Name:    "Research Lab",
 				Website: stringPtr("https://research-lab.org"),
 			},
 			model: &catalogs.Model{
@@ -811,8 +831,8 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 		{
 			name: "model with organization",
 			author: &catalogs.Author{
-				ID:   "sub-team",
-				Name: "AI Sub Team",
+				ID:          "sub-team",
+				Name:        "AI Sub Team",
 				Description: stringPtr("AI research division of a larger organization"),
 			},
 			model: &catalogs.Model{
@@ -877,7 +897,13 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 			require.NoError(t, err)
 
 			// Add model
-			err = catalog.SetModel(*tt.model)
+			// Add model to provider
+			provider, _ := catalog.Provider(catalogs.ProviderID("openai"))
+			if provider.Models == nil {
+				provider.Models = make(map[string]catalogs.Model)
+			}
+			provider.Models[tt.model.ID] = *tt.model
+			err = catalog.SetProvider(provider)
 			require.NoError(t, err)
 
 			// Create generator
@@ -893,7 +919,7 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 			// Check file exists and contains expected content
 			modelPath := filepath.Join(modelsDir, tt.model.ID+".md")
 			assert.FileExists(t, modelPath)
-			
+
 			content, err := os.ReadFile(modelPath)
 			require.NoError(t, err)
 			contentStr := string(content)
@@ -908,9 +934,9 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 // TestGenerateAuthorReadmeEdgeCases tests edge cases for generateAuthorReadme
 func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 	tests := []struct {
-		name    string
-		author  *catalogs.Author
-		models  []catalogs.Model
+		name     string
+		author   *catalogs.Author
+		models   []catalogs.Model
 		contains []string
 	}{
 		{
@@ -965,8 +991,8 @@ func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 			contains: []string{
 				"Prolific Author",
 				"Total Models",
-				"Model 0",  // Actual output uses "Model" not "Authored Model"
-				"Model C",  // 49th model will be Model C based on hex pattern
+				"Model 0", // Actual output uses "Model" not "Authored Model"
+				"Model C", // 49th model will be Model C based on hex pattern
 			},
 		},
 	}
@@ -986,11 +1012,21 @@ func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 			err = catalog.SetAuthor(*tt.author)
 			require.NoError(t, err)
 
-			// Add models
-			for _, model := range tt.models {
-				err := catalog.SetModel(model)
-				require.NoError(t, err)
+			// Create a test provider to hold all models
+			provider := catalogs.Provider{
+				ID:     catalogs.ProviderID("test-provider"),
+				Name:   "Test Provider",
+				Models: make(map[string]catalogs.Model),
 			}
+
+			// Add all models to the provider
+			for _, model := range tt.models {
+				provider.Models[model.ID] = model
+			}
+
+			// Set the provider with all models
+			err = catalog.SetProvider(provider)
+			require.NoError(t, err)
 
 			// Create generator
 			gen := &Generator{

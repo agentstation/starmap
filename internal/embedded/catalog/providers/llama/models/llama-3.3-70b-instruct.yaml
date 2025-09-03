@@ -1,0 +1,10 @@
+id: llama-3.3-70b-instruct
+name: Llama-3.3-70B-Instruct
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

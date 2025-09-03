@@ -1,0 +1,10 @@
+id: Qwen/Qwen3-Coder-30B-A3B-Instruct
+name: Qwen3 Coder 30B A3B Instruct
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 262144
+  output_tokens: 262144
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

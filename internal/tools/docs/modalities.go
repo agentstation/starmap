@@ -9,21 +9,21 @@ func hasModality(features *catalogs.ModelFeatures, modality catalogs.ModelModali
 	if features == nil {
 		return false
 	}
-	
+
 	// Check input modalities
 	for _, m := range features.Modalities.Input {
 		if m == modality {
 			return true
 		}
 	}
-	
+
 	// Check output modalities
 	for _, m := range features.Modalities.Output {
 		if m == modality {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -32,13 +32,13 @@ func hasInputModality(features *catalogs.ModelFeatures, modality catalogs.ModelM
 	if features == nil {
 		return false
 	}
-	
+
 	for _, m := range features.Modalities.Input {
 		if m == modality {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -47,13 +47,13 @@ func hasOutputModality(features *catalogs.ModelFeatures, modality catalogs.Model
 	if features == nil {
 		return false
 	}
-	
+
 	for _, m := range features.Modalities.Output {
 		if m == modality {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -92,17 +92,17 @@ func getModalityCount(features *catalogs.ModelFeatures) int {
 	if features == nil {
 		return 0
 	}
-	
+
 	modalityMap := make(map[catalogs.ModelModality]bool)
-	
+
 	for _, m := range features.Modalities.Input {
 		modalityMap[m] = true
 	}
-	
+
 	for _, m := range features.Modalities.Output {
 		modalityMap[m] = true
 	}
-	
+
 	return len(modalityMap)
 }
 

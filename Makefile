@@ -211,7 +211,7 @@ version: ## Show version information
 update-catalog: ## Update embedded catalog with latest API data (requires API keys)
 	@echo "$(BLUE)Updating embedded catalog...$(NC)"
 	@echo "$(YELLOW)This will fetch latest models from all configured provider APIs$(NC)"
-	$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --fresh -y
+	$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --force -y
 	@echo "$(GREEN)Embedded catalog updated successfully!$(NC)"
 
 update-catalog-provider: ## Update specific provider in embedded catalog (use PROVIDER=name)
@@ -221,7 +221,7 @@ update-catalog-provider: ## Update specific provider in embedded catalog (use PR
 		exit 1; \
 	fi
 	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --fresh -y
+	$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --force -y
 	@echo "$(GREEN)Provider $(PROVIDER) updated successfully!$(NC)"
 
 # Validation targets

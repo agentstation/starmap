@@ -1,0 +1,10 @@
+id: cohere/cohere-command-r-plus-08-2024
+name: Cohere Command R+ 08-2024
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

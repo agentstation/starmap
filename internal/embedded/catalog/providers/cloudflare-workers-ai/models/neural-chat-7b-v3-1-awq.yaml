@@ -1,0 +1,10 @@
+id: neural-chat-7b-v3-1-awq
+name: "@hf/thebloke/neural-chat-7b-v3-1-awq"
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 4096
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

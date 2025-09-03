@@ -11,21 +11,38 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+// Default implementation functions that will be wired by init()
+var (
+	defaultGetClient     func(*catalogs.Provider) (catalogs.Client, error)
+	defaultHasClient     func(catalogs.ProviderID) bool
+	defaultListProviders func() []catalogs.ProviderID
+	defaultFetchRaw      func(context.Context, *catalogs.Provider, string) ([]byte, error)
+)
+
+func init() {
+	// Wire up the internal implementation to the public API
+	// This bridges the internal packages to the public interface
+	defaultGetClient = registry.Get
+	defaultHasClient = registry.Has
+	defaultListProviders = registry.List
+	defaultFetchRaw = registry.FetchRaw
+}
+
 // ProviderFetcher provides operations for fetching models from provider APIs.
 // This is the public API for external packages to interact with provider data.
 type ProviderFetcher struct {
 	// Private implementation functions that will be wired to internal packages
-	getClientFunc    func(*catalogs.Provider) (catalogs.Client, error)
-	hasClientFunc    func(catalogs.ProviderID) bool
+	getClientFunc     func(*catalogs.Provider) (catalogs.Client, error)
+	hasClientFunc     func(catalogs.ProviderID) bool
 	listProvidersFunc func() []catalogs.ProviderID
-	fetchRawFunc     func(context.Context, *catalogs.Provider, string) ([]byte, error)
+	fetchRawFunc      func(context.Context, *catalogs.Provider, string) ([]byte, error)
 }
 
 // providerOptions holds configuration for ProviderFetcher operations
 type providerOptions struct {
-	loadCredentials bool           // Auto-load credentials from environment
-	allowMissingKey bool           // Allow operations without API key
-	timeout         time.Duration  // Context timeout for operations
+	loadCredentials bool          // Auto-load credentials from environment
+	allowMissingKey bool          // Allow operations without API key
+	timeout         time.Duration // Context timeout for operations
 }
 
 // ProviderOption configures ProviderFetcher behavior
@@ -47,7 +64,7 @@ func NewProviderFetcher(opts ...ProviderOption) *ProviderFetcher {
 	for _, opt := range opts {
 		opt(options)
 	}
-	
+
 	return &ProviderFetcher{
 		// These will be wired up by the implementation bridge
 		getClientFunc:     defaultGetClient,
@@ -100,26 +117,26 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 			Message: "cannot be nil",
 		}
 	}
-	
+
 	// Apply options
 	options := defaultProviderOptions()
 	for _, opt := range opts {
 		opt(options)
 	}
-	
+
 	// Apply timeout if specified
 	if options.timeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, options.timeout)
 		defer cancel()
 	}
-	
+
 	// Load credentials if requested
 	if options.loadCredentials {
 		provider.LoadAPIKey()
 		provider.LoadEnvVars()
 	}
-	
+
 	// Check credentials unless explicitly allowed to be missing
 	if !options.allowMissingKey {
 		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
@@ -129,7 +146,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 				Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
 			}
 		}
-		
+
 		missingEnvVars := provider.MissingEnvVars()
 		if len(missingEnvVars) > 0 {
 			return nil, &errors.ConfigError{
@@ -138,20 +155,20 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 			}
 		}
 	}
-	
+
 	// Get client from implementation
 	if pf.getClientFunc == nil {
 		return nil, &errors.ConfigError{
 			Component: "provider_fetcher",
 			Message:   "provider implementation not initialized",
 		}
-		}
-	
+	}
+
 	client, err := pf.getClientFunc(provider)
 	if err != nil {
 		return nil, errors.WrapResource("get", "client", string(provider.ID), err)
 	}
-	
+
 	// Fetch models from API
 	models, err := client.ListModels(ctx)
 	if err != nil {
@@ -160,7 +177,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 			Err:      err,
 		}
 	}
-	
+
 	return models, nil
 }
 
@@ -194,26 +211,26 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 			Message: "cannot be nil",
 		}
 	}
-	
+
 	// Apply options
 	options := defaultProviderOptions()
 	for _, opt := range opts {
 		opt(options)
 	}
-	
+
 	// Apply timeout if specified
 	if options.timeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, options.timeout)
 		defer cancel()
 	}
-	
+
 	// Load credentials if requested
 	if options.loadCredentials {
 		provider.LoadAPIKey()
 		provider.LoadEnvVars()
 	}
-	
+
 	// Check credentials unless explicitly allowed to be missing
 	if !options.allowMissingKey {
 		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
@@ -223,7 +240,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 				Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
 			}
 		}
-		
+
 		missingEnvVars := provider.MissingEnvVars()
 		if len(missingEnvVars) > 0 {
 			return nil, &errors.ConfigError{
@@ -232,7 +249,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 			}
 		}
 	}
-	
+
 	// Call internal implementation
 	if pf.fetchRawFunc == nil {
 		return nil, &errors.ConfigError{
@@ -240,23 +257,6 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 			Message:   "raw fetch implementation not initialized",
 		}
 	}
-	
+
 	return pf.fetchRawFunc(ctx, provider, endpoint)
-}
-
-// Default implementation functions that will be wired by init()
-var (
-	defaultGetClient    func(*catalogs.Provider) (catalogs.Client, error)
-	defaultHasClient    func(catalogs.ProviderID) bool
-	defaultListProviders func() []catalogs.ProviderID
-	defaultFetchRaw     func(context.Context, *catalogs.Provider, string) ([]byte, error)
-)
-
-func init() {
-	// Wire up the internal implementation to the public API
-	// This bridges the internal packages to the public interface
-	defaultGetClient = registry.Get
-	defaultHasClient = registry.Has
-	defaultListProviders = registry.List
-	defaultFetchRaw = registry.FetchRaw
 }

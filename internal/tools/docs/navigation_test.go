@@ -472,24 +472,24 @@ func TestAuthorModelBreadcrumb(t *testing.T) {
 	g := &Generator{}
 
 	tests := []struct {
-		name       string
-		authorName string
-		modelName  string
-		modelID    string
+		name        string
+		authorName  string
+		modelName   string
+		modelID     string
 		expectedLen int
 	}{
 		{
-			name:       "simple model ID",
-			authorName: "OpenAI",
-			modelName:  "GPT-4",
-			modelID:    "gpt-4",
+			name:        "simple model ID",
+			authorName:  "OpenAI",
+			modelName:   "GPT-4",
+			modelID:     "gpt-4",
 			expectedLen: 4,
 		},
 		{
-			name:       "model ID with subdirectory",
-			authorName: "Meta",
-			modelName:  "Llama 3",
-			modelID:    "meta/llama-3",
+			name:        "model ID with subdirectory",
+			authorName:  "Meta",
+			modelName:   "Llama 3",
+			modelID:     "meta/llama-3",
 			expectedLen: 4,
 		},
 	}

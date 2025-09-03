@@ -253,7 +253,7 @@ func TestOpenAIResponseMatchesExpectedFormat(t *testing.T) {
 	}
 
 	// Parse as generic map to verify structure
-	var genericResponse map[string]interface{}
+	var genericResponse map[string]any
 	err = json.Unmarshal(jsonData, &genericResponse)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal as generic map: %v", err)
@@ -264,14 +264,14 @@ func TestOpenAIResponseMatchesExpectedFormat(t *testing.T) {
 		t.Error("Response should have 'object': 'list'")
 	}
 
-	data, ok := genericResponse["data"].([]interface{})
+	data, ok := genericResponse["data"].([]any)
 	if !ok {
 		t.Fatal("Response should have 'data' array")
 	}
 
 	// Verify each model in data has only the expected fields
 	for i, item := range data {
-		model, ok := item.(map[string]interface{})
+		model, ok := item.(map[string]any)
 		if !ok {
 			t.Fatalf("Data item %d is not a map", i)
 		}

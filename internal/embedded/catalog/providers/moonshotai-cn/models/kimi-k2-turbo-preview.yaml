@@ -1,0 +1,14 @@
+id: kimi-k2-turbo-preview
+name: Kimi K2 Turbo
+pricing:
+  tokens:
+    input:
+      per_1m: 2.4
+    output:
+      per_1m: 10.0
+  currency: USD
+limits:
+  context_window: 131072
+  output_tokens: 16384
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

@@ -19,27 +19,24 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// Add a provider
+	// Add a provider with a model
 	provider := catalogs.Provider{
 		ID:   "openai",
 		Name: "OpenAI",
+		Models: map[string]catalogs.Model{
+			"gpt-4": {
+				ID:          "gpt-4",
+				Name:        "GPT-4",
+				Description: "Advanced language model",
+			},
+		},
 	}
 	if err := catalog.SetProvider(provider); err != nil {
 		log.Fatal(err)
 	}
 
-	// Add a model
-	model := catalogs.Model{
-		ID:          "gpt-4",
-		Name:        "GPT-4",
-		Description: "Advanced language model",
-	}
-	if err := catalog.SetModel(model); err != nil {
-		log.Fatal(err)
-	}
-
 	// List all models
-	models := catalog.Models().List()
+	models := catalog.GetAllModels()
 	fmt.Printf("Found %d models\n", len(models))
 	// Output: Found 1 models
 }
@@ -53,11 +50,11 @@ func Example_embeddedCatalog() {
 	}
 
 	// Access pre-loaded models
-	models := catalog.Models().List()
+	models := catalog.GetAllModels()
 	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
-	
+
 	// Find a specific model
-	model, err := catalog.Model("gpt-4o")
+	model, err := catalog.FindModel("gpt-4o")
 	if err == nil {
 		fmt.Printf("Found model: %s\n", model.Name)
 	}
@@ -76,11 +73,17 @@ func Example_fileBasedCatalog() {
 	}
 
 	// Add and save data
-	model := catalogs.Model{
-		ID:   "custom-model",
-		Name: "My Custom Model",
+	provider := catalogs.Provider{
+		ID:   "custom",
+		Name: "Custom Provider",
+		Models: map[string]catalogs.Model{
+			"custom-model": {
+				ID:   "custom-model",
+				Name: "My Custom Model",
+			},
+		},
 	}
-	if err := catalog.SetModel(model); err != nil {
+	if err := catalog.SetProvider(provider); err != nil {
 		log.Fatal(err)
 	}
 
@@ -95,37 +98,51 @@ func Example_fileBasedCatalog() {
 func Example_mergeCatalogs() {
 	// Create base catalog
 	base, _ := catalogs.New()
-	base.SetModel(catalogs.Model{
-		ID:          "model-1",
-		Name:        "Model One",
-		Description: "Original description",
-	})
+	baseProvider := catalogs.Provider{
+		ID:   "test",
+		Name: "Test Provider",
+		Models: map[string]catalogs.Model{
+			"model-1": {
+				ID:          "model-1",
+				Name:        "Model One",
+				Description: "Original description",
+			},
+		},
+	}
+	base.SetProvider(baseProvider)
 
 	// Create updates catalog
 	updates, _ := catalogs.New()
-	updates.SetModel(catalogs.Model{
-		ID:          "model-1",
-		Name:        "Model One Enhanced",
-		Description: "Updated description",
-		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
-					Per1M: 2.0, // $2 per 1M tokens
-				},
-				Output: &catalogs.TokenCost{
-					Per1M: 4.0, // $4 per 1M tokens  
+	updateProvider := catalogs.Provider{
+		ID:   "test",
+		Name: "Test Provider",
+		Models: map[string]catalogs.Model{
+			"model-1": {
+				ID:          "model-1",
+				Name:        "Model One Enhanced",
+				Description: "Updated description",
+				Pricing: &catalogs.ModelPricing{
+					Tokens: &catalogs.ModelTokenPricing{
+						Input: &catalogs.ModelTokenCost{
+							Per1M: 2.0, // $2 per 1M tokens
+						},
+						Output: &catalogs.ModelTokenCost{
+							Per1M: 4.0, // $4 per 1M tokens
+						},
+					},
+					Currency: "USD",
 				},
 			},
-			Currency: "USD",
 		},
-	})
+	}
+	updates.SetProvider(updateProvider)
 
 	// Merge with EnrichEmpty strategy (default)
 	if err := base.MergeWith(updates); err != nil {
 		log.Fatal(err)
 	}
 
-	model, _ := base.Model("model-1")
+	model, _ := base.FindModel("model-1")
 	fmt.Printf("Model name: %s\n", model.Name)
 	// Output: Model name: Model One Enhanced
 }
@@ -133,31 +150,45 @@ func Example_mergeCatalogs() {
 // Example_mergeStrategies demonstrates different merge strategies
 func Example_mergeStrategies() {
 	base, _ := catalogs.New()
-	base.SetModel(catalogs.Model{ID: "m1", Name: "Original"})
+	baseProvider := catalogs.Provider{
+		ID:   "test",
+		Name: "Test",
+		Models: map[string]catalogs.Model{
+			"m1": {ID: "m1", Name: "Original"},
+		},
+	}
+	base.SetProvider(baseProvider)
 
 	updates, _ := catalogs.New()
-	updates.SetModel(catalogs.Model{ID: "m1", Name: "Updated"})
-	updates.SetModel(catalogs.Model{ID: "m2", Name: "New"})
+	updateProvider := catalogs.Provider{
+		ID:   "test",
+		Name: "Test",
+		Models: map[string]catalogs.Model{
+			"m1": {ID: "m1", Name: "Updated"},
+			"m2": {ID: "m2", Name: "New"},
+		},
+	}
+	updates.SetProvider(updateProvider)
 
 	// Example 1: Append only (keeps existing, adds new)
 	cat1, _ := base.Copy()
 	cat1.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeAppendOnly))
-	
-	m1, _ := cat1.Model("m1")
+
+	m1, _ := cat1.FindModel("m1")
 	fmt.Printf("AppendOnly - m1: %s\n", m1.Name) // Original
 
 	// Example 2: Replace all
 	cat2, _ := base.Copy()
 	cat2.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeReplaceAll))
-	
-	m1, _ = cat2.Model("m1")
+
+	m1, _ = cat2.FindModel("m1")
 	fmt.Printf("ReplaceAll - m1: %s\n", m1.Name) // Updated
 
 	// Example 3: Enrich empty (smart merge)
 	cat3, _ := base.Copy()
 	cat3.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeEnrichEmpty))
-	
-	m1, _ = cat3.Model("m1")
+
+	m1, _ = cat3.FindModel("m1")
 	fmt.Printf("EnrichEmpty - m1: %s\n", m1.Name) // Updated
 }
 
@@ -172,12 +203,18 @@ func Example_concurrentAccess() {
 
 	// Writer goroutine
 	go func() {
+		provider := catalogs.Provider{
+			ID:     "test-provider",
+			Name:   "Test Provider",
+			Models: make(map[string]catalogs.Model),
+		}
 		for i := 0; i < 100; i++ {
-			catalog.SetModel(catalogs.Model{
+			provider.Models[fmt.Sprintf("model-%d", i)] = catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
-			})
+			}
 		}
+		catalog.SetProvider(provider)
 		done <- true
 	}()
 
@@ -189,7 +226,7 @@ func Example_concurrentAccess() {
 				done <- true
 				return
 			default:
-				_ = catalog.Models().List()
+				_ = catalog.GetAllModels()
 				time.Sleep(10 * time.Millisecond)
 			}
 		}
@@ -199,7 +236,7 @@ func Example_concurrentAccess() {
 	<-done
 	<-done
 
-	fmt.Printf("Created %d models concurrently\n", len(catalog.Models().List()))
+	fmt.Printf("Created %d models concurrently\n", len(catalog.GetAllModels()))
 }
 
 // Example_providerCapabilities demonstrates working with provider features
@@ -233,8 +270,8 @@ func Example_modelFiltering() {
 
 	// Get all models for a specific provider
 	// In practice, models would be linked to providers via naming convention or metadata
-	var gptModels []*catalogs.Model
-	for _, model := range catalog.Models().List() {
+	var gptModels []catalogs.Model
+	for _, model := range catalog.GetAllModels() {
 		if len(model.ID) > 3 && model.ID[:3] == "gpt" {
 			gptModels = append(gptModels, model)
 		}
@@ -242,8 +279,8 @@ func Example_modelFiltering() {
 	fmt.Printf("Found %d GPT models\n", len(gptModels))
 
 	// Filter by features
-	var visionModels []*catalogs.Model
-	for _, model := range catalog.Models().List() {
+	var visionModels []catalogs.Model
+	for _, model := range catalog.GetAllModels() {
 		if model.Features != nil {
 			for _, modality := range model.Features.Modalities.Input {
 				if modality == "image" {
@@ -260,10 +297,17 @@ func Example_modelFiltering() {
 func Example_catalogCopy() {
 	// Create original catalog
 	original, _ := catalogs.New()
-	original.SetModel(catalogs.Model{
-		ID:   "model-1",
-		Name: "Original Model",
-	})
+	provider := catalogs.Provider{
+		ID:   "test",
+		Name: "Test Provider",
+		Models: map[string]catalogs.Model{
+			"model-1": {
+				ID:   "model-1",
+				Name: "Original Model",
+			},
+		},
+	}
+	original.SetProvider(provider)
 
 	// Create a copy
 	copy, err := original.Copy()
@@ -271,15 +315,20 @@ func Example_catalogCopy() {
 		log.Fatal(err)
 	}
 
-	// Modify the copy
-	copy.SetModel(catalogs.Model{
+	// Modify the copy by updating the provider
+	copiedProvider, _ := copy.Provider("test")
+	if copiedProvider.Models == nil {
+		copiedProvider.Models = make(map[string]catalogs.Model)
+	}
+	copiedProvider.Models["model-2"] = catalogs.Model{
 		ID:   "model-2",
 		Name: "Copy Model",
-	})
+	}
+	copy.SetProvider(copiedProvider)
 
 	// Original is unchanged
-	fmt.Printf("Original has %d models\n", len(original.Models().List()))
-	fmt.Printf("Copy has %d models\n", len(copy.Models().List()))
+	fmt.Printf("Original has %d models\n", len(original.GetAllModels()))
+	fmt.Printf("Copy has %d models\n", len(copy.GetAllModels()))
 	// Output:
 	// Original has 1 models
 	// Copy has 2 models

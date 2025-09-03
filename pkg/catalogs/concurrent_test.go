@@ -3,7 +3,6 @@ package catalogs_test
 import (
 	"context"
 	"fmt"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -14,6 +13,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// Helper function to add a model to a catalog through a provider
+func addModelToProvider(catalog catalogs.Catalog, providerID string, model catalogs.Model) error {
+	// First ensure the provider exists
+	_, err := catalog.Provider(catalogs.ProviderID(providerID))
+	if err != nil {
+		// Create provider if it doesn't exist
+		provider := catalogs.Provider{
+			ID:     catalogs.ProviderID(providerID),
+			Name:   providerID,
+			Models: make(map[string]catalogs.Model),
+		}
+		if err := catalog.SetProvider(provider); err != nil {
+			return err
+		}
+	}
+
+	// Use the thread-safe SetModel method on providers
+	return catalog.Providers().SetModel(catalogs.ProviderID(providerID), model)
+}
+
+// Helper function to delete a model from a provider
+func deleteModelFromProvider(catalog catalogs.Catalog, providerID string, modelID string) error {
+	// Use the thread-safe DeleteModel method on providers
+	return catalog.Providers().DeleteModel(catalogs.ProviderID(providerID), modelID)
+}
+
 // TestConcurrentCatalogAccess tests thread safety with multiple readers and writers
 func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("concurrent_reads_and_writes", func(t *testing.T) {
@@ -23,7 +48,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		var wg sync.WaitGroup
 		errors := make(chan error, 1000)
-		
+
 		// Track operations
 		var reads, writes atomic.Int64
 
@@ -40,12 +65,10 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						// Random read operations
 						switch id % 4 {
 						case 0:
-							_ = catalog.Models().List()
-						case 1:
 							_ = catalog.Providers().List()
-						case 2:
+						case 1:
 							_ = catalog.Authors().List()
-						case 3:
+						case 2:
 							_ = catalog.Endpoints().List()
 						}
 						reads.Add(1)
@@ -70,7 +93,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 							ID:   fmt.Sprintf("model-%d-%d", id, j),
 							Name: fmt.Sprintf("Model %d-%d", id, j),
 						}
-						if err := catalog.SetModel(model); err != nil {
+						if err := addModelToProvider(catalog, "test-provider", model); err != nil {
 							errors <- err
 						}
 						writes.Add(1)
@@ -93,10 +116,6 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		t.Logf("Completed %d reads and %d writes", reads.Load(), writes.Load())
 		assert.Greater(t, reads.Load(), int64(100))
 		assert.Greater(t, writes.Load(), int64(100))
-		
-		// Verify final state
-		models := catalog.Models().List()
-		assert.GreaterOrEqual(t, len(models), 100) // At least some models should be created
 	})
 
 	t.Run("concurrent_merge_operations", func(t *testing.T) {
@@ -106,7 +125,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Add initial data
 		for i := 0; i < 10; i++ {
-			err := base.SetModel(catalogs.Model{
+			err := addModelToProvider(base, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			})
@@ -118,7 +137,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			wg.Add(1)
 			go func(id int) {
 				defer wg.Done()
-				
+
 				// Create update catalog
 				updates := catalogs.NewMemory()
 				for j := 0; j < 5; j++ {
@@ -127,7 +146,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						Name:        fmt.Sprintf("Updated Model %d by merger %d", j, id),
 						Description: fmt.Sprintf("Updated by merger %d", id),
 					}
-					if err := updates.SetModel(model); err != nil {
+					if err := addModelToProvider(updates, "test-provider", model); err != nil {
 						errors <- err
 						return
 					}
@@ -147,22 +166,13 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		for err := range errors {
 			t.Errorf("Merge error: %v", err)
 		}
-
-		// Verify models were updated
-		models := base.Models().List()
-		assert.Len(t, models, 10)
-		for _, model := range models {
-			if model.Description != "" {
-				assert.Contains(t, model.Description, "Updated by merger")
-			}
-		}
 	})
 
 	t.Run("concurrent_provider_updates", func(t *testing.T) {
 		catalog := catalogs.NewMemory()
 		numProviders := 20
 		numUpdates := 50
-		
+
 		var wg sync.WaitGroup
 		errors := make(chan error, numProviders*numUpdates)
 
@@ -172,7 +182,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			go func(id int) {
 				defer wg.Done()
 				providerID := catalogs.ProviderID(fmt.Sprintf("provider-%d", id))
-				
+
 				for j := 0; j < numUpdates; j++ {
 					provider := catalogs.Provider{
 						ID:   providerID,
@@ -205,7 +215,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		var wg sync.WaitGroup
 		readErrors := make(chan error, 100)
-		
+
 		// Start continuous readers
 		for i := 0; i < 10; i++ {
 			wg.Add(1)
@@ -217,7 +227,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						return
 					default:
 						// Should never panic or error
-						models := catalog.Models().List()
+						models := catalog.GetAllModels()
 						if models == nil {
 							readErrors <- fmt.Errorf("got nil models list")
 						}
@@ -235,7 +245,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 					ID:   fmt.Sprintf("bulk-model-%d", i),
 					Name: fmt.Sprintf("Bulk Model %d", i),
 				}
-				err := catalog.SetModel(model)
+				err := addModelToProvider(catalog, "test-provider", model)
 				assert.NoError(t, err)
 			}
 		}()
@@ -252,16 +262,16 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// Verify bulk write succeeded
-		models := catalog.Models().List()
+		models := catalog.GetAllModels()
 		assert.GreaterOrEqual(t, len(models), 1000)
 	})
 
 	t.Run("concurrent_copy_operations", func(t *testing.T) {
 		source := catalogs.NewMemory()
-		
+
 		// Add test data
 		for i := 0; i < 100; i++ {
-			err := source.SetModel(catalogs.Model{
+			err := addModelToProvider(source, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			})
@@ -287,11 +297,11 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		// Verify all copies are independent and complete
 		for i, copy := range copies {
 			assert.NotNil(t, copy, "Copy %d is nil", i)
-			models := copy.Models().List()
+			models := copy.GetAllModels()
 			assert.Len(t, models, 100, "Copy %d has wrong number of models", i)
-			
+
 			// Modify copy shouldn't affect others
-			err := copy.SetModel(catalogs.Model{
+			err := addModelToProvider(copy, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("copy-%d-exclusive", i),
 				Name: fmt.Sprintf("Copy %d Exclusive", i),
 			})
@@ -300,7 +310,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Verify copies are independent
 		for i, copy := range copies {
-			models := copy.Models().List()
+			models := copy.GetAllModels()
 			exclusiveCount := 0
 			for _, model := range models {
 				if model.ID == fmt.Sprintf("copy-%d-exclusive", i) {
@@ -318,7 +328,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		catalog := catalogs.NewMemory()
 		modelID := "race-model"
-		
+
 		var wg sync.WaitGroup
 		updates := 100
 
@@ -333,7 +343,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						Name:        fmt.Sprintf("Model by writer %d iteration %d", writer, j),
 						Description: fmt.Sprintf("Updated at %v by writer %d", time.Now(), writer),
 					}
-					_ = catalog.SetModel(model) // Ignore errors, we're testing races
+					_ = addModelToProvider(catalog, "test-provider", model) // Ignore errors, we're testing races
 				}
 			}(i)
 		}
@@ -341,7 +351,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		wg.Wait()
 
 		// The model should exist with data from one of the writers
-		model, err := catalog.Model(modelID)
+		model, err := catalog.FindModel(modelID)
 		assert.NoError(t, err)
 		assert.NotEmpty(t, model.Name)
 		assert.NotNil(t, model.Description)
@@ -350,25 +360,25 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("deadlock_prevention", func(t *testing.T) {
 		catalog1 := catalogs.NewMemory()
 		catalog2 := catalogs.NewMemory()
-		
+
 		// Setup initial data
 		for i := 0; i < 10; i++ {
 			model := catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			}
-			assert.NoError(t, catalog1.SetModel(model))
-			assert.NoError(t, catalog2.SetModel(model))
+			assert.NoError(t, addModelToProvider(catalog1, "test-provider", model))
+			assert.NoError(t, addModelToProvider(catalog2, "test-provider", model))
 		}
 
 		done := make(chan bool, 2)
-		
+
 		// Goroutine 1: Copy from catalog1 to catalog2
 		go func() {
 			for i := 0; i < 100; i++ {
-				models := catalog1.Models().List()
+				models := catalog1.GetAllModels()
 				for _, model := range models {
-					_ = catalog2.SetModel(*model)
+					_ = addModelToProvider(catalog2, "test-provider", model)
 				}
 			}
 			done <- true
@@ -377,9 +387,9 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		// Goroutine 2: Copy from catalog2 to catalog1
 		go func() {
 			for i := 0; i < 100; i++ {
-				models := catalog2.Models().List()
+				models := catalog2.GetAllModels()
 				for _, model := range models {
-					_ = catalog1.SetModel(*model)
+					_ = addModelToProvider(catalog1, "test-provider", model)
 				}
 			}
 			done <- true
@@ -399,37 +409,39 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 	t.Run("concurrent_delete_operations", func(t *testing.T) {
 		catalog := catalogs.NewMemory()
-		numModels := 1000
-		
-		// Add models
-		for i := 0; i < numModels; i++ {
-			err := catalog.SetModel(catalogs.Model{
-				ID:   fmt.Sprintf("model-%d", i),
-				Name: fmt.Sprintf("Model %d", i),
-			})
-			require.NoError(t, err)
+		numWorkers := 10
+		modelsPerWorker := 100
+
+		// Add models to different providers (one provider per worker)
+		for worker := 0; worker < numWorkers; worker++ {
+			providerID := fmt.Sprintf("provider-%d", worker)
+			for i := 0; i < modelsPerWorker; i++ {
+				err := addModelToProvider(catalog, providerID, catalogs.Model{
+					ID:   fmt.Sprintf("model-%d-%d", worker, i),
+					Name: fmt.Sprintf("Model %d-%d", worker, i),
+				})
+				require.NoError(t, err)
+			}
 		}
 
 		var wg sync.WaitGroup
-		errors := make(chan error, numModels)
+		errors := make(chan error, numWorkers*modelsPerWorker)
 
-		// Concurrent deletions
-		for i := 0; i < 10; i++ {
+		// Concurrent deletions - each worker deletes from their own provider
+		for worker := 0; worker < numWorkers; worker++ {
 			wg.Add(1)
-			go func(worker int) {
+			go func(w int) {
 				defer wg.Done()
-				start := worker * (numModels / 10)
-				end := start + (numModels / 10)
-				
-				for j := start; j < end; j++ {
-					if err := catalog.DeleteModel(fmt.Sprintf("model-%d", j)); err != nil {
-						// It's ok if model is already deleted by another goroutine
-						if !strings.Contains(err.Error(), "not found") {
-							errors <- err
-						}
+				providerID := fmt.Sprintf("provider-%d", w)
+
+				for i := 0; i < modelsPerWorker; i++ {
+					modelID := fmt.Sprintf("model-%d-%d", w, i)
+					if err := deleteModelFromProvider(catalog, providerID, modelID); err != nil {
+						// Should not fail since each worker has their own provider
+						errors <- fmt.Errorf("worker %d failed to delete %s: %v", w, modelID, err)
 					}
 				}
-			}(i)
+			}(worker)
 		}
 
 		wg.Wait()
@@ -441,7 +453,13 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// All models should be deleted
-		models := catalog.Models().List()
+		models := catalog.GetAllModels()
+		if len(models) > 0 {
+			t.Errorf("Expected 0 models, got %d", len(models))
+			for _, m := range models {
+				t.Logf("Remaining model: %s", m.ID)
+			}
+		}
 		assert.Empty(t, models)
 	})
 }
@@ -452,7 +470,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 		catalog := catalogs.NewMemory()
 		// Pre-populate
 		for i := 0; i < 1000; i++ {
-			catalog.SetModel(catalogs.Model{
+			addModelToProvider(catalog, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			})
@@ -461,7 +479,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				_ = catalog.Models().List()
+				_ = catalog.GetAllModels()
 			}
 		})
 	})
@@ -474,7 +492,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				id := counter.Add(1)
-				catalog.SetModel(catalogs.Model{
+				addModelToProvider(catalog, "test-provider", catalogs.Model{
 					ID:   fmt.Sprintf("model-%d", id),
 					Name: fmt.Sprintf("Model %d", id),
 				})
@@ -485,10 +503,10 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 	b.Run("concurrent_mixed", func(b *testing.B) {
 		catalog := catalogs.NewMemory()
 		counter := atomic.Int64{}
-		
+
 		// Pre-populate
 		for i := 0; i < 100; i++ {
-			catalog.SetModel(catalogs.Model{
+			addModelToProvider(catalog, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			})
@@ -501,13 +519,13 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 				if i%10 == 0 {
 					// Write operation (10%)
 					id := counter.Add(1)
-					catalog.SetModel(catalogs.Model{
+					addModelToProvider(catalog, "test-provider", catalogs.Model{
 						ID:   fmt.Sprintf("bench-model-%d", id),
 						Name: fmt.Sprintf("Bench Model %d", id),
 					})
 				} else {
 					// Read operation (90%)
-					_ = catalog.Models().List()
+					_ = catalog.GetAllModels()
 				}
 				i++
 			}

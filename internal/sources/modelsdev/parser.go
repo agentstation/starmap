@@ -144,35 +144,35 @@ func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error) {
 		}
 
 		// Initialize token pricing
-		tokenPricing := &catalogs.TokenPricing{}
+		tokenPricing := &catalogs.ModelTokenPricing{}
 
 		if m.Cost.Input != nil {
-			tokenPricing.Input = &catalogs.TokenCost{
+			tokenPricing.Input = &catalogs.ModelTokenCost{
 				Per1M: *m.Cost.Input,
 			}
 		}
 		if m.Cost.Output != nil {
-			tokenPricing.Output = &catalogs.TokenCost{
+			tokenPricing.Output = &catalogs.ModelTokenCost{
 				Per1M: *m.Cost.Output,
 			}
 		}
 		// Handle cache costs (prefer specific cache_read/cache_write over legacy cache field)
 		if m.Cost.CacheRead != nil || m.Cost.CacheWrite != nil || m.Cost.Cache != nil {
-			cacheCost := &catalogs.TokenCachePricing{}
+			cacheCost := &catalogs.ModelTokenCachePricing{}
 
 			if m.Cost.CacheRead != nil {
-				cacheCost.Read = &catalogs.TokenCost{
+				cacheCost.Read = &catalogs.ModelTokenCost{
 					Per1M: *m.Cost.CacheRead,
 				}
 			}
 			if m.Cost.CacheWrite != nil {
-				cacheCost.Write = &catalogs.TokenCost{
+				cacheCost.Write = &catalogs.ModelTokenCost{
 					Per1M: *m.Cost.CacheWrite,
 				}
 			}
 			// Legacy fallback: if no specific cache_read/cache_write, use cache for write
 			if m.Cost.Cache != nil && cacheCost.Read == nil && cacheCost.Write == nil {
-				cacheCost.Write = &catalogs.TokenCost{
+				cacheCost.Write = &catalogs.ModelTokenCost{
 					Per1M: *m.Cost.Cache,
 				}
 			}

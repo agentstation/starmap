@@ -53,7 +53,7 @@ const (
 )
 
 // Note: The Catalog interface is defined in interfaces.go following
-// the Interface Segregation Principle. It combines Reader, Writer, 
+// the Interface Segregation Principle. It combines Reader, Writer,
 // Merger, and Copier interfaces for complete catalog functionality.
 
 // Compile-time interface checks to ensure proper implementation
@@ -75,7 +75,6 @@ type catalog struct {
 	options   *catalogOptions
 	providers *Providers
 	authors   *Authors
-	models    *Models
 	endpoints *Endpoints
 }
 
@@ -93,7 +92,6 @@ func New(opts ...Option) (Catalog, error) {
 	c := &catalog{
 		providers: NewProviders(),
 		authors:   NewAuthors(),
-		models:    NewModels(),
 		endpoints: NewEndpoints(),
 		options:   options,
 	}
@@ -116,11 +114,6 @@ func (c *catalog) Providers() *Providers {
 // Authors returns the authors collection
 func (c *catalog) Authors() *Authors {
 	return c.authors
-}
-
-// Models returns the models collection
-func (c *catalog) Models() *Models {
-	return c.models
 }
 
 // Endpoints returns the endpoints collection
@@ -152,18 +145,6 @@ func (c *catalog) Author(id AuthorID) (Author, error) {
 	return *author, nil
 }
 
-// Model returns a model by ID
-func (c *catalog) Model(id string) (Model, error) {
-	model, ok := c.models.Get(id)
-	if !ok {
-		return Model{}, &errors.NotFoundError{
-			Resource: "model",
-			ID:       id,
-		}
-	}
-	return *model, nil
-}
-
 // Endpoint returns an endpoint by ID
 func (c *catalog) Endpoint(id string) (Endpoint, error) {
 	endpoint, ok := c.endpoints.Get(id)
@@ -176,19 +157,89 @@ func (c *catalog) Endpoint(id string) (Endpoint, error) {
 	return *endpoint, nil
 }
 
+// GetAllModels returns all models from all providers and authors
+func (c *catalog) GetAllModels() []Model {
+	models := make([]Model, 0)
+
+	// Collect models from providers
+	for _, provider := range c.providers.List() {
+		if provider.Models != nil {
+			for _, model := range provider.Models {
+				models = append(models, model)
+			}
+		}
+	}
+
+	// Collect models from authors (avoiding duplicates)
+	modelIDs := make(map[string]bool)
+	for _, model := range models {
+		modelIDs[model.ID] = true
+	}
+
+	for _, author := range c.authors.List() {
+		if author.Models != nil {
+			for _, model := range author.Models {
+				if !modelIDs[model.ID] {
+					models = append(models, model)
+					modelIDs[model.ID] = true
+				}
+			}
+		}
+	}
+
+	return models
+}
+
+// FindModel searches for a model by ID across all providers and authors
+func (c *catalog) FindModel(id string) (Model, error) {
+	// Search in providers first
+	for _, provider := range c.providers.List() {
+		if provider.Models != nil {
+			if model, exists := provider.Models[id]; exists {
+				return model, nil
+			}
+		}
+	}
+
+	// Search in authors
+	for _, author := range c.authors.List() {
+		if author.Models != nil {
+			if model, exists := author.Models[id]; exists {
+				return model, nil
+			}
+		}
+	}
+
+	return Model{}, &errors.NotFoundError{
+		Resource: "model",
+		ID:       id,
+	}
+}
+
 // SetProvider sets a provider (upsert)
 func (c *catalog) SetProvider(provider Provider) error {
+	// Deep copy the Models map to prevent shared references
+	if provider.Models != nil {
+		modelsCopy := make(map[string]Model, len(provider.Models))
+		for k, v := range provider.Models {
+			modelsCopy[k] = v
+		}
+		provider.Models = modelsCopy
+	}
 	return c.providers.Set(provider.ID, &provider)
 }
 
 // SetAuthor sets an author (upsert)
 func (c *catalog) SetAuthor(author Author) error {
+	// Deep copy the Models map to prevent shared references
+	if author.Models != nil {
+		modelsCopy := make(map[string]Model, len(author.Models))
+		for k, v := range author.Models {
+			modelsCopy[k] = v
+		}
+		author.Models = modelsCopy
+	}
 	return c.authors.Set(author.ID, &author)
-}
-
-// SetModel sets a model (upsert)
-func (c *catalog) SetModel(model Model) error {
-	return c.models.Set(model.ID, &model)
 }
 
 // SetEndpoint sets an endpoint (upsert)
@@ -206,11 +257,6 @@ func (c *catalog) DeleteAuthor(id AuthorID) error {
 	return c.authors.Delete(id)
 }
 
-// DeleteModel deletes a model
-func (c *catalog) DeleteModel(id string) error {
-	return c.models.Delete(id)
-}
-
 // DeleteEndpoint deletes an endpoint
 func (c *catalog) DeleteEndpoint(id string) error {
 	return c.endpoints.Delete(id)
@@ -221,25 +267,34 @@ func (c *catalog) ReplaceWith(source Reader) error {
 	// Clear existing data
 	c.providers.Clear()
 	c.authors.Clear()
-	c.models.Clear()
 	c.endpoints.Clear()
 
 	// Copy all data from source
 	for _, provider := range source.Providers().List() {
-		if err := c.SetProvider(*provider); err != nil {
+		// Deep copy the provider including its Models map
+		providerCopy := *provider
+		if provider.Models != nil {
+			providerCopy.Models = make(map[string]Model, len(provider.Models))
+			for k, v := range provider.Models {
+				providerCopy.Models[k] = v
+			}
+		}
+		if err := c.SetProvider(providerCopy); err != nil {
 			return errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}
 
 	for _, author := range source.Authors().List() {
-		if err := c.SetAuthor(*author); err != nil {
-			return errors.WrapResource("set", "author", string(author.ID), err)
+		// Deep copy the author including its Models map
+		authorCopy := *author
+		if author.Models != nil {
+			authorCopy.Models = make(map[string]Model, len(author.Models))
+			for k, v := range author.Models {
+				authorCopy.Models[k] = v
+			}
 		}
-	}
-
-	for _, model := range source.Models().List() {
-		if err := c.SetModel(*model); err != nil {
-			return errors.WrapResource("set", "model", model.ID, err)
+		if err := c.SetAuthor(authorCopy); err != nil {
+			return errors.WrapResource("set", "author", string(author.ID), err)
 		}
 	}
 
@@ -266,28 +321,99 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 		return c.ReplaceWith(source)
 
 	case MergeEnrichEmpty:
-		// Smart merge - only enrich existing models
-		for _, model := range source.Models().List() {
-			if existing, err := c.Model(model.ID); err == nil {
-				// Model exists, merge it
-				merged := MergeModels(existing, *model)
-				if err := c.SetModel(merged); err != nil {
-					return errors.WrapResource("set", "merged model", model.ID, err)
+		// Smart merge - merge providers and their models
+		for _, sourceProvider := range source.Providers().List() {
+			if existingProvider, err := c.Provider(sourceProvider.ID); err == nil {
+				// Provider exists, merge models
+				if sourceProvider.Models != nil {
+					// Create a new map to avoid concurrent modification
+					mergedModels := make(map[string]Model)
+
+					// Copy existing models first
+					if existingProvider.Models != nil {
+						for k, v := range existingProvider.Models {
+							mergedModels[k] = v
+						}
+					}
+
+					// Merge source models
+					for modelID, sourceModel := range sourceProvider.Models {
+						if existingModel, exists := mergedModels[modelID]; exists {
+							// Merge the models
+							mergedModels[modelID] = MergeModels(existingModel, sourceModel)
+						} else if sourceModel.Pricing != nil || sourceModel.Limits != nil {
+							// Add new model with substantial data
+							mergedModels[modelID] = sourceModel
+						}
+					}
+
+					// Update provider with new models map
+					existingProvider.Models = mergedModels
 				}
-			} else if model.Pricing != nil || model.Limits != nil {
-				// New model with substantial data
-				if err := c.SetModel(*model); err != nil {
-					return errors.WrapResource("set", "new model", model.ID, err)
+				// Update the provider
+				if err := c.SetProvider(existingProvider); err != nil {
+					return errors.WrapResource("set", "merged provider", string(existingProvider.ID), err)
+				}
+			} else {
+				// New provider
+				if err := c.SetProvider(*sourceProvider); err != nil {
+					return errors.WrapResource("set", "new provider", string(sourceProvider.ID), err)
+				}
+			}
+		}
+
+		// Merge authors similarly
+		for _, sourceAuthor := range source.Authors().List() {
+			if existingAuthor, err := c.Author(sourceAuthor.ID); err == nil {
+				// Author exists, merge models
+				if sourceAuthor.Models != nil {
+					// Create a new map to avoid concurrent modification
+					mergedModels := make(map[string]Model)
+
+					// Copy existing models first
+					if existingAuthor.Models != nil {
+						for k, v := range existingAuthor.Models {
+							mergedModels[k] = v
+						}
+					}
+
+					// Merge source models
+					for modelID, sourceModel := range sourceAuthor.Models {
+						if existingModel, exists := mergedModels[modelID]; exists {
+							mergedModels[modelID] = MergeModels(existingModel, sourceModel)
+						} else {
+							mergedModels[modelID] = sourceModel
+						}
+					}
+
+					// Update author with new models map
+					existingAuthor.Models = mergedModels
+				}
+				// Update the author
+				if err := c.SetAuthor(existingAuthor); err != nil {
+					return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)
+				}
+			} else {
+				// New author
+				if err := c.SetAuthor(*sourceAuthor); err != nil {
+					return errors.WrapResource("set", "new author", string(sourceAuthor.ID), err)
 				}
 			}
 		}
 
 	case MergeAppendOnly:
-		// Only add new items
-		for _, model := range source.Models().List() {
-			if _, err := c.Model(model.ID); err != nil {
-				if err := c.SetModel(*model); err != nil {
-					return errors.WrapResource("append", "model", model.ID, err)
+		// Only add new providers/authors
+		for _, provider := range source.Providers().List() {
+			if _, err := c.Provider(provider.ID); err != nil {
+				if err := c.SetProvider(*provider); err != nil {
+					return errors.WrapResource("append", "provider", string(provider.ID), err)
+				}
+			}
+		}
+		for _, author := range source.Authors().List() {
+			if _, err := c.Author(author.ID); err != nil {
+				if err := c.SetAuthor(*author); err != nil {
+					return errors.WrapResource("append", "author", string(author.ID), err)
 				}
 			}
 		}
@@ -302,7 +428,6 @@ func (c *catalog) Copy() (Catalog, error) {
 	newCat := &catalog{
 		providers: NewProviders(),
 		authors:   NewAuthors(),
-		models:    NewModels(),
 		endpoints: NewEndpoints(),
 		options:   c.options,
 	}
@@ -310,7 +435,6 @@ func (c *catalog) Copy() (Catalog, error) {
 	// Copy all data
 	return newCat, newCat.ReplaceWith(c)
 }
-
 
 // MergeStrategy returns the default merge strategy
 func (c *catalog) MergeStrategy() MergeStrategy {
@@ -372,16 +496,13 @@ func (c *catalog) Load() error {
 
 		var model Model
 		if err := yaml.Unmarshal(data, &model); err == nil {
-			// Add model to the general models collection
-			c.SetModel(model)
-			
 			// Associate the model with its provider or author based on path
 			pathParts := strings.Split(path, "/")
-			
+
 			// Handle providers/[provider-id]/models/[model].yaml or providers/[provider-id]/models/[org]/[model].yaml
 			if len(pathParts) >= 4 && pathParts[0] == "providers" && pathParts[2] == "models" {
 				providerID := ProviderID(pathParts[1])
-				
+
 				// Get the provider and add this model to its Models map
 				if provider, err := c.Provider(providerID); err == nil {
 					// Initialize Models map if nil
@@ -394,11 +515,11 @@ func (c *catalog) Load() error {
 					c.SetProvider(provider)
 				}
 			}
-			
+
 			// Handle authors/[author-id]/models/[model].yaml or authors/[author-id]/models/[org]/[model].yaml
 			if len(pathParts) >= 4 && pathParts[0] == "authors" && pathParts[2] == "models" {
 				authorID := AuthorID(pathParts[1])
-				
+
 				// Get the author and add this model to its Models map
 				if author, err := c.Author(authorID); err == nil {
 					// Initialize Models map if nil
@@ -526,13 +647,13 @@ func (c *catalog) saveTo(basePath string) error {
 
 	// Save model files to providers/<provider>/models/<model>.yaml or providers/<provider>/models/<org>/<model>.yaml
 	for _, provider := range c.providers.List() {
-		if provider.Models != nil && len(provider.Models) > 0 {
+		if len(provider.Models) > 0 {
 			// Debug: log provider with models
 			logging.Debug().
 				Str("provider", string(provider.ID)).
 				Int("model_count", len(provider.Models)).
 				Msg("Saving provider models")
-			
+
 			for _, model := range provider.Models {
 				var modelPath string
 				if strings.Contains(model.ID, "/") {
@@ -542,7 +663,7 @@ func (c *catalog) saveTo(basePath string) error {
 					// Simple ID like "gpt-4" -> providers/openai/models/gpt-4.yaml
 					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
 				}
-				
+
 				data, err := yaml.Marshal(model)
 				if err != nil {
 					return errors.WrapParse("yaml", "model "+model.ID, err)
@@ -553,7 +674,7 @@ func (c *catalog) saveTo(basePath string) error {
 			}
 		}
 	}
-	
+
 	// Save author models under authors/<author>/models/<model>.yaml
 	for _, author := range c.authors.List() {
 		if author.Models != nil {
@@ -566,7 +687,7 @@ func (c *catalog) saveTo(basePath string) error {
 					// Simple ID -> authors/openai/models/gpt-4.yaml
 					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
 				}
-				
+
 				data, err := yaml.Marshal(model)
 				if err != nil {
 					return errors.WrapParse("yaml", "model "+model.ID, err)
@@ -580,4 +701,3 @@ func (c *catalog) saveTo(basePath string) error {
 
 	return nil
 }
-

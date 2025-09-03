@@ -1,0 +1,10 @@
+id: mistral-ai/codestral-2501
+name: Codestral 25.01
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 32000
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

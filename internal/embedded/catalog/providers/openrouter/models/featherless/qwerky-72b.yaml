@@ -1,0 +1,10 @@
+id: featherless/qwerky-72b
+name: Qwerky 72B
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 32768
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

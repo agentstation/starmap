@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
-	
+
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/goccy/go-yaml"
 )
@@ -137,12 +137,12 @@ func (p *Providers) List() []*Provider {
 		providers = append(providers, provider)
 	}
 	p.mu.RUnlock()
-	
+
 	// Sort by ID for deterministic ordering
 	sort.Slice(providers, func(i, j int) bool {
 		return providers[i].ID < providers[j].ID
 	})
-	
+
 	return providers
 }
 
@@ -177,6 +177,84 @@ func (p *Providers) Clear() {
 	for k := range p.providers {
 		delete(p.providers, k)
 	}
+}
+
+// SetModel adds or updates a model in a provider
+func (p *Providers) SetModel(providerID ProviderID, model Model) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	provider, exists := p.providers[providerID]
+	if !exists {
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(providerID),
+		}
+	}
+
+	// Ensure model has a name - use ID as fallback
+	if model.Name == "" {
+		model.Name = model.ID
+	}
+
+	// Create a copy of the provider to avoid modifying the original
+	providerCopy := *provider
+	if providerCopy.Models == nil {
+		providerCopy.Models = make(map[string]Model)
+	} else {
+		// Copy the models map
+		newModels := make(map[string]Model, len(providerCopy.Models))
+		for k, v := range providerCopy.Models {
+			newModels[k] = v
+		}
+		providerCopy.Models = newModels
+	}
+
+	providerCopy.Models[model.ID] = model
+	p.providers[providerID] = &providerCopy
+
+	return nil
+}
+
+// DeleteModel removes a model from a provider
+func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	provider, exists := p.providers[providerID]
+	if !exists {
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(providerID),
+		}
+	}
+
+	if provider.Models == nil || len(provider.Models) == 0 {
+		return &errors.NotFoundError{
+			Resource: "model",
+			ID:       modelID,
+		}
+	}
+
+	if _, exists := provider.Models[modelID]; !exists {
+		return &errors.NotFoundError{
+			Resource: "model",
+			ID:       modelID,
+		}
+	}
+
+	// Create a copy of the provider to avoid modifying the original
+	providerCopy := *provider
+	newModels := make(map[string]Model, len(providerCopy.Models)-1)
+	for k, v := range providerCopy.Models {
+		if k != modelID {
+			newModels[k] = v
+		}
+	}
+	providerCopy.Models = newModels
+	p.providers[providerID] = &providerCopy
+
+	return nil
 }
 
 // AddBatch adds multiple providers in a single operation.
@@ -282,10 +360,10 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 func (p *Providers) FormatYAML() string {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
-	
+
 	// Convert map to slice for consistent ordering
 	providers := make([]Provider, 0, len(p.providers))
-	
+
 	// Get all provider IDs and sort them for deterministic output
 	ids := make([]ProviderID, 0, len(p.providers))
 	for id := range p.providers {
@@ -294,7 +372,7 @@ func (p *Providers) FormatYAML() string {
 	sort.Slice(ids, func(i, j int) bool {
 		return string(ids[i]) < string(ids[j])
 	})
-	
+
 	// Create ordered slice of providers
 	for _, id := range ids {
 		if provider := p.providers[id]; provider != nil {
@@ -303,7 +381,7 @@ func (p *Providers) FormatYAML() string {
 			providers = append(providers, providerCopy)
 		}
 	}
-	
+
 	return formatProvidersYAML(providers)
 }
 
@@ -341,7 +419,7 @@ func formatProvidersYAML(providers []Provider) string {
 					}
 				}
 			}
-			
+
 			if comment != "" {
 				commentMap[retentionPath] = []*yaml.Comment{
 					yaml.LineComment(comment),

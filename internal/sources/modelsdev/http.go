@@ -23,8 +23,9 @@ var (
 )
 
 // HTTPSource enhances models with models.dev data via HTTP
-type HTTPSource struct{
+type HTTPSource struct {
 	providers *catalogs.Providers
+	catalog   catalogs.Catalog
 }
 
 // NewHTTPSource creates a new models.dev HTTP source
@@ -32,8 +33,8 @@ func NewHTTPSource() *HTTPSource {
 	return &HTTPSource{}
 }
 
-// Name returns the name of this source
-func (s *HTTPSource) Name() sources.SourceName {
+// Type returns the type of this source
+func (s *HTTPSource) Type() sources.Type {
 	return sources.ModelsDevHTTP
 }
 
@@ -62,18 +63,19 @@ func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
 }
 
 // Fetch creates a catalog with models that have pricing/limits data from models.dev
-func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
+func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error {
 	// Apply options (not currently used by HTTPSource, but kept for consistency)
 	_ = sources.ApplyOptions(opts...)
 
 	// Create a new catalog to build into
-	catalog, err := catalogs.New()
+	var err error
+	s.catalog, err = catalogs.New()
 	if err != nil {
-		return nil, errors.WrapResource("create", "memory catalog", "", err)
+		return errors.WrapResource("create", "memory catalog", "", err)
 	}
 
 	// Set the default merge strategy for models.dev catalog (enhances with pricing/limits)
-	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
+	s.catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
 
 	// Note: Source disabling should be handled at orchestration level
 
@@ -86,22 +88,46 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (c
 	// Initialize models.dev data once
 	api, err := ensureHTTPAPI(outputDir)
 	if err != nil {
-		return nil, errors.WrapResource("initialize", "models.dev HTTP", "", err)
+		return errors.WrapResource("initialize", "models.dev HTTP", "", err)
 	}
 
-	// Add only models with pricing/limits data from models.dev
+	// Add providers with their models that have pricing/limits data from models.dev
 	added := 0
-	for _, provider := range *api {
-		for _, mdModel := range provider.Models {
+	for _, mdProvider := range *api {
+		// Convert provider ID from models.dev format
+		providerID := catalogs.ProviderID(mdProvider.ID)
+
+		// Get or create provider in catalog
+		provider, err := s.catalog.Provider(providerID)
+		if err != nil {
+			// Provider doesn't exist, create a minimal one
+			provider = catalogs.Provider{
+				ID:   providerID,
+				Name: mdProvider.ID, // Use ID as name for now
+			}
+		}
+
+		// Initialize models map if needed
+		if provider.Models == nil {
+			provider.Models = make(map[string]catalogs.Model)
+		}
+
+		// Add models with pricing/limits data
+		for _, mdModel := range mdProvider.Models {
 			// Only include models that have pricing or limits data
 			if (mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil)) ||
 				mdModel.Limit.Context > 0 || mdModel.Limit.Output > 0 {
 				// Convert to starmap model with pricing/limits
 				model := s.convertToStarmapModel(mdModel)
-				if err := catalog.SetModel(model); err != nil {
-					return nil, errors.WrapResource("set", "model", model.ID, err)
-				}
+				provider.Models[model.ID] = model
 				added++
+			}
+		}
+
+		// Update provider in catalog if we added any models
+		if len(provider.Models) > 0 {
+			if err := s.catalog.SetProvider(provider); err != nil {
+				return errors.WrapResource("set", "provider", string(provider.ID), err)
 			}
 		}
 	}
@@ -109,7 +135,12 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (c
 	logging.Info().
 		Int("model_count", added).
 		Msg("Found models with pricing/limits from models.dev HTTP")
-	return catalog, nil
+	return nil
+}
+
+// Catalog returns the catalog of this source
+func (s *HTTPSource) Catalog() catalogs.Catalog {
+	return s.catalog
 }
 
 // Cleanup releases any resources
@@ -129,19 +160,19 @@ func (s *HTTPSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Mode
 	if mdModel.Cost != nil && (mdModel.Cost.Input != nil || mdModel.Cost.Output != nil) {
 		model.Pricing = &catalogs.ModelPricing{
 			Currency: "USD", // models.dev uses USD
-			Tokens:   &catalogs.TokenPricing{},
+			Tokens:   &catalogs.ModelTokenPricing{},
 		}
 
 		// Map input cost (models.dev uses cost per 1M tokens)
 		if mdModel.Cost.Input != nil && *mdModel.Cost.Input > 0 {
-			model.Pricing.Tokens.Input = &catalogs.TokenCost{
+			model.Pricing.Tokens.Input = &catalogs.ModelTokenCost{
 				Per1M: *mdModel.Cost.Input,
 			}
 		}
 
 		// Map output cost
 		if mdModel.Cost.Output != nil && *mdModel.Cost.Output > 0 {
-			model.Pricing.Tokens.Output = &catalogs.TokenCost{
+			model.Pricing.Tokens.Output = &catalogs.ModelTokenCost{
 				Per1M: *mdModel.Cost.Output,
 			}
 		}

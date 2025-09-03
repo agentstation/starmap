@@ -35,7 +35,7 @@ func init() {
 
 func runGenerateDocs(cmd *cobra.Command, args []string) error {
 	fmt.Printf("📝 Generating documentation in %s...\n", outputDir)
-	
+
 	// Initialize the catalog with embedded data
 	catalog, err := catalogs.New(catalogs.WithEmbedded())
 	if err != nil {

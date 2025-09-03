@@ -14,7 +14,7 @@ func TestValidateAllProviders(t *testing.T) {
 
 	// Add test providers
 	trueVal := true
-	
+
 	providers := []Provider{
 		{
 			ID:   "configured-provider",
@@ -133,7 +133,7 @@ func TestProviderValidationReport_Print(t *testing.T) {
 	// This just tests that Print doesn't panic
 	// Output testing would require capturing stdout
 	report.Print()
-	
+
 	// Also test the convenience function
 	PrintProviderValidationReport(report)
 }

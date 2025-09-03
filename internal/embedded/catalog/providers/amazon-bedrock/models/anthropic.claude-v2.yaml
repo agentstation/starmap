@@ -1,0 +1,14 @@
+id: anthropic.claude-v2
+name: Claude 2
+pricing:
+  tokens:
+    input:
+      per_1m: 8.0
+    output:
+      per_1m: 24.0
+  currency: USD
+limits:
+  context_window: 100000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

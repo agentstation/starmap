@@ -1,0 +1,14 @@
+id: flux-1-schnell
+name: "@cf/black-forest-labs/flux-1-schnell"
+pricing:
+  tokens:
+    input:
+      per_1m: 5.3e-05
+    output:
+      per_1m: 0.00011
+  currency: USD
+limits:
+  context_window: 2048
+  output_tokens: 0
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

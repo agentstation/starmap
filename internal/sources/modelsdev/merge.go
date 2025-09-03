@@ -20,7 +20,7 @@ func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, provider *catalo
 
 	// Try to find models.dev provider data using primary ID first
 	modelsDevProvider, exists := api.GetProvider(provider.ID)
-	
+
 	// If not found, try aliases
 	if !exists && len(provider.Aliases) > 0 {
 		for _, alias := range provider.Aliases {
@@ -34,7 +34,7 @@ func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, provider *catalo
 			}
 		}
 	}
-	
+
 	if !exists {
 		logging.Debug().
 			Str("provider_id", string(provider.ID)).
@@ -55,7 +55,6 @@ func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, provider *catalo
 
 	return enhanced, successes
 }
-
 
 // enhanceModelWithModelsDevData enhances a single model with models.dev data
 func enhanceModelWithModelsDevData(apiModel catalogs.Model, modelsDevProvider *ModelsDevProvider) (catalogs.Model, bool) {

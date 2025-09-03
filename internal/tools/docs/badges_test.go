@@ -116,18 +116,18 @@ func TestFeatureBadges(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := featureBadges(tt.model)
-			
+
 			if tt.notEmpty {
 				assert.NotEmpty(t, result)
 			} else {
 				assert.Empty(t, result)
 			}
-			
+
 			// Check that expected strings are present
 			for _, expected := range tt.contains {
 				assert.Contains(t, result, expected, "Should contain badge for %s", expected)
 			}
-			
+
 			// Verify it generates valid markdown badges (shields.io format)
 			if result != "" {
 				assert.Contains(t, result, "![")
@@ -205,12 +205,12 @@ func TestTechnicalSpecBadges(t *testing.T) {
 			name: "comprehensive model",
 			model: &catalogs.Model{
 				Features: &catalogs.ModelFeatures{
-					Temperature:       true,
-					TopP:              true,
-					FrequencyPenalty:  true,
-					PresencePenalty:   true,
-					Logprobs:          true,
-					Seed:              true,
+					Temperature:      true,
+					TopP:             true,
+					FrequencyPenalty: true,
+					PresencePenalty:  true,
+					Logprobs:         true,
+					Seed:             true,
 				},
 			},
 			sections: []string{
@@ -226,23 +226,23 @@ func TestTechnicalSpecBadges(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := technicalSpecBadges(tt.model)
-			
+
 			if tt.notEmpty {
 				assert.NotEmpty(t, result)
 			} else {
 				assert.Empty(t, result)
 			}
-			
+
 			// Check that expected sections are present
 			for _, section := range tt.sections {
 				assert.Contains(t, result, section, "Should contain section %s", section)
 			}
-			
+
 			// Verify it generates valid markdown badges
 			if result != "" {
 				assert.Contains(t, result, "![")
 				assert.Contains(t, result, "](https://img.shields.io/badge/")
-				
+
 				// Check for proper shields.io URL encoding
 				if strings.Contains(result, "top_p") {
 					assert.Contains(t, result, "top__p", "Underscores should be doubled for shields.io")
@@ -299,11 +299,11 @@ func TestCreateBadge(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result := createBadge(tt.label, tt.value, tt.color, tt.tooltip)
 			assert.Equal(t, tt.expected, result)
-			
+
 			// Verify it's pure markdown (no HTML)
 			assert.NotContains(t, result, "<span")
 			assert.NotContains(t, result, "</span>")
-			
+
 			// Verify proper markdown badge format
 			assert.True(t, strings.HasPrefix(result, "!["))
 			assert.Contains(t, result, "](https://img.shields.io/badge/")
@@ -313,22 +313,22 @@ func TestCreateBadge(t *testing.T) {
 
 func TestModalityHelpers(t *testing.T) {
 	tests := []struct {
-		name     string
-		features *catalogs.ModelFeatures
-		hasText  bool
+		name      string
+		features  *catalogs.ModelFeatures
+		hasText   bool
 		hasVision bool
-		hasAudio bool
-		hasVideo bool
-		hasPDF   bool
+		hasAudio  bool
+		hasVideo  bool
+		hasPDF    bool
 	}{
 		{
-			name:     "nil features",
-			features: nil,
-			hasText:  false,
+			name:      "nil features",
+			features:  nil,
+			hasText:   false,
 			hasVision: false,
-			hasAudio: false,
-			hasVideo: false,
-			hasPDF:   false,
+			hasAudio:  false,
+			hasVideo:  false,
+			hasPDF:    false,
 		},
 		{
 			name: "text only",
@@ -338,11 +338,11 @@ func TestModalityHelpers(t *testing.T) {
 					Output: []catalogs.ModelModality{catalogs.ModelModalityText},
 				},
 			},
-			hasText:  true,
+			hasText:   true,
 			hasVision: false,
-			hasAudio: false,
-			hasVideo: false,
-			hasPDF:   false,
+			hasAudio:  false,
+			hasVideo:  false,
+			hasPDF:    false,
 		},
 		{
 			name: "multimodal input",
@@ -358,11 +358,11 @@ func TestModalityHelpers(t *testing.T) {
 					Output: []catalogs.ModelModality{catalogs.ModelModalityText},
 				},
 			},
-			hasText:  true,
+			hasText:   true,
 			hasVision: true,
-			hasAudio: true,
-			hasVideo: true,
-			hasPDF:   true,
+			hasAudio:  true,
+			hasVideo:  true,
+			hasPDF:    true,
 		},
 		{
 			name: "multimodal output",
@@ -375,11 +375,11 @@ func TestModalityHelpers(t *testing.T) {
 					},
 				},
 			},
-			hasText:  true,
+			hasText:   true,
 			hasVision: true,
-			hasAudio: false,
-			hasVideo: false,
-			hasPDF:   false,
+			hasAudio:  false,
+			hasVideo:  false,
+			hasPDF:    false,
 		},
 	}
 
@@ -561,13 +561,13 @@ func TestDeliveryBadges(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			badges := deliveryBadges(tt.features)
 			result := strings.Join(badges, " ")
-			
+
 			if tt.notEmpty {
 				assert.NotEmpty(t, result)
 			} else {
 				assert.Empty(t, result)
 			}
-			
+
 			for _, expected := range tt.contains {
 				assert.Contains(t, result, expected)
 			}

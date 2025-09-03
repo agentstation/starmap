@@ -14,7 +14,11 @@ import (
 
 // generateModelDocs generates documentation for all models
 func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error {
-	models := catalog.Models().List()
+	allModelsSlice := catalog.GetAllModels()
+	models := make([]*catalogs.Model, len(allModelsSlice))
+	for i := range allModelsSlice {
+		models[i] = &allModelsSlice[i]
+	}
 
 	// Only generate the model comparison index
 	// Individual model pages are now generated under providers and authors
@@ -52,15 +56,15 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 // writeModelIndexContent writes the model index content to the given writer
 func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model) error {
 
-	builder := NewMarkdownBuilder(f)
+	markdown := NewMarkdown(f)
 
-	builder.H1("🤖 All Models").
+	markdown.H1("🤖 All Models").
 		LF().
 		PlainTextf("Complete listing of all %d models in the Starmap catalog.", len(models)).
 		LF().LF()
 
 	// Quick stats
-	builder.H2("Quick Stats").LF()
+	markdown.H2("Quick Stats").LF()
 
 	// Count by capability
 	textCount, visionCount, audioCount, functionCount := 0, 0, 0, 0
@@ -88,7 +92,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 		{"🔧 Function Calling", fmt.Sprintf("%d", functionCount), fmt.Sprintf("%.1f%%", float64(functionCount)/float64(len(models))*100)},
 	}
 
-	builder.Table(md.TableSet{
+	markdown.Table(md.TableSet{
 		Header: []string{"Capability", "Count", "Percentage"},
 		Rows:   tableRows,
 	}).LF()
@@ -96,7 +100,11 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 	// Model families
 	families := make(map[string][]*catalogs.Model)
 	for _, model := range models {
-		family := detectModelFamily(model.Name)
+		modelName := model.Name
+		if modelName == "" {
+			modelName = model.ID
+		}
+		family := detectModelFamily(modelName)
 		families[family] = append(families[family], model)
 	}
 
@@ -119,14 +127,14 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 	})
 
 	// Model families section
-	builder.H2("Model Families").LF()
+	markdown.H2("Model Families").LF()
 
 	for _, family := range familyList {
 		if len(family.models) < 2 {
 			continue // Skip families with only one model
 		}
 
-		builder.H3(fmt.Sprintf("%s (%d models)", family.name, len(family.models))).LF()
+		markdown.H3(fmt.Sprintf("%s (%d models)", family.name, len(family.models))).LF()
 
 		// Sort models within family (make a copy to avoid modifying the original)
 		familyModels := make([]*catalogs.Model, len(family.models))
@@ -145,11 +153,15 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 			}
 
 			// Model link - point to author version if available, otherwise first provider
-			modelLink := model.Name
+			modelName := model.Name
+			if modelName == "" {
+				modelName = model.ID
+			}
+			modelLink := modelName
 			if len(model.Authors) > 0 {
 				// Link to first author's version
 				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s.md)",
-					model.Name, string(model.Authors[0].ID), formatModelID(string(model.ID)))
+					modelName, string(model.Authors[0].ID), formatModelID(string(model.ID)))
 			}
 
 			// Provider (would need to look this up from catalog)
@@ -177,41 +189,41 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 			displayCount++
 		}
 
-		builder.Table(md.TableSet{
+		markdown.Table(md.TableSet{
 			Header: []string{"Model", "Provider", "Context", "Pricing"},
 			Rows:   familyTableRows,
 		}).LF()
 	}
 
 	// Add Pricing Comparison section
-	builder.H2("💰 Pricing Comparison").
+	markdown.H2("💰 Pricing Comparison").
 		LF().
 		PlainText("Top models by pricing (sorted by input cost):").
 		LF()
 
 	writePricingComparisonTable(f, models)
-	builder.LF()
+	markdown.LF()
 
 	// Add Context Limits Comparison section
-	builder.H2("📏 Context Window Comparison").
+	markdown.H2("📏 Context Window Comparison").
 		LF().
 		PlainText("Top models by context window size:").
 		LF()
 
 	writeContextLimitsTable(f, models)
-	builder.LF()
+	markdown.LF()
 
 	// Add Feature Comparison section
-	builder.H2("🎯 Feature Comparison").
+	markdown.H2("🎯 Feature Comparison").
 		LF().
 		PlainText("Detailed feature breakdown across models:").
 		LF()
 
 	writeFeatureComparisonTable(f, models)
-	builder.LF()
+	markdown.LF()
 
 	// Write content to file
-	builder.Build()
+	markdown.Build()
 
 	// Footer
 	g.writeFooter(f, Breadcrumb{Label: "Back to Catalog", Path: "../"})

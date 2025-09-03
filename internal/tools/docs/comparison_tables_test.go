@@ -28,9 +28,9 @@ func TestWriteModelsOverviewTable(t *testing.T) {
 						OutputTokens:  4096,
 					},
 					Pricing: &catalogs.ModelPricing{
-						Tokens: &catalogs.TokenPricing{
-							Input:  &catalogs.TokenCost{Per1M: 10.0},
-							Output: &catalogs.TokenCost{Per1M: 30.0},
+						Tokens: &catalogs.ModelTokenPricing{
+							Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+							Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 						},
 					},
 					Features: &catalogs.ModelFeatures{
@@ -59,8 +59,8 @@ func TestWriteModelsOverviewTable(t *testing.T) {
 				"$10.00",
 				"$30.00",
 				"👁️", // Vision icon
-				"🔧", // Tools icon
-				"⚡", // Streaming icon
+				"🔧",  // Tools icon
+				"⚡",  // Streaming icon
 			},
 		},
 		{
@@ -135,9 +135,9 @@ func TestWriteProviderComparisonTable(t *testing.T) {
 						"free-model": {
 							ID: "free-model",
 							Pricing: &catalogs.ModelPricing{
-								Tokens: &catalogs.TokenPricing{
-									Input:  &catalogs.TokenCost{Per1M: 0.0},
-									Output: &catalogs.TokenCost{Per1M: 0.0},
+								Tokens: &catalogs.ModelTokenPricing{
+									Input:  &catalogs.ModelTokenCost{Per1M: 0.0},
+									Output: &catalogs.ModelTokenCost{Per1M: 0.0},
 								},
 							},
 						},
@@ -161,9 +161,9 @@ func TestWriteProviderComparisonTable(t *testing.T) {
 						"paid-model": {
 							ID: "paid-model",
 							Pricing: &catalogs.ModelPricing{
-								Tokens: &catalogs.TokenPricing{
-									Input:  &catalogs.TokenCost{Per1M: 10.0},
-									Output: &catalogs.TokenCost{Per1M: 30.0},
+								Tokens: &catalogs.ModelTokenPricing{
+									Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+									Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 								},
 							},
 						},
@@ -226,27 +226,27 @@ func TestWritePricingComparisonTable(t *testing.T) {
 				{
 					Name: "Expensive Model",
 					Pricing: &catalogs.ModelPricing{
-						Tokens: &catalogs.TokenPricing{
-							Input:  &catalogs.TokenCost{Per1M: 100.0},
-							Output: &catalogs.TokenCost{Per1M: 300.0},
+						Tokens: &catalogs.ModelTokenPricing{
+							Input:  &catalogs.ModelTokenCost{Per1M: 100.0},
+							Output: &catalogs.ModelTokenCost{Per1M: 300.0},
 						},
 					},
 				},
 				{
 					Name: "Cheap Model",
 					Pricing: &catalogs.ModelPricing{
-						Tokens: &catalogs.TokenPricing{
-							Input:  &catalogs.TokenCost{Per1M: 1.0},
-							Output: &catalogs.TokenCost{Per1M: 3.0},
+						Tokens: &catalogs.ModelTokenPricing{
+							Input:  &catalogs.ModelTokenCost{Per1M: 1.0},
+							Output: &catalogs.ModelTokenCost{Per1M: 3.0},
 						},
 					},
 				},
 				{
 					Name: "Medium Model",
 					Pricing: &catalogs.ModelPricing{
-						Tokens: &catalogs.TokenPricing{
-							Input:  &catalogs.TokenCost{Per1M: 10.0},
-							Output: &catalogs.TokenCost{Per1M: 30.0},
+						Tokens: &catalogs.ModelTokenPricing{
+							Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+							Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 						},
 					},
 				},
@@ -265,11 +265,11 @@ func TestWritePricingComparisonTable(t *testing.T) {
 				{
 					Name: "Cache Model",
 					Pricing: &catalogs.ModelPricing{
-						Tokens: &catalogs.TokenPricing{
-							Input:      &catalogs.TokenCost{Per1M: 10.0},
-							Output:     &catalogs.TokenCost{Per1M: 30.0},
-							CacheRead:  &catalogs.TokenCost{Per1M: 1.0},
-							CacheWrite: &catalogs.TokenCost{Per1M: 15.0},
+						Tokens: &catalogs.ModelTokenPricing{
+							Input:      &catalogs.ModelTokenCost{Per1M: 10.0},
+							Output:     &catalogs.ModelTokenCost{Per1M: 30.0},
+							CacheRead:  &catalogs.ModelTokenCost{Per1M: 1.0},
+							CacheWrite: &catalogs.ModelTokenCost{Per1M: 15.0},
 						},
 					},
 				},
@@ -286,9 +286,9 @@ func TestWritePricingComparisonTable(t *testing.T) {
 					models[i] = &catalogs.Model{
 						Name: "Model",
 						Pricing: &catalogs.ModelPricing{
-							Tokens: &catalogs.TokenPricing{
-								Input:  &catalogs.TokenCost{Per1M: float64(i)},
-								Output: &catalogs.TokenCost{Per1M: float64(i * 3)},
+							Tokens: &catalogs.ModelTokenPricing{
+								Input:  &catalogs.ModelTokenCost{Per1M: float64(i)},
+								Output: &catalogs.ModelTokenCost{Per1M: float64(i * 3)},
 							},
 						},
 					}
@@ -328,7 +328,7 @@ func TestWritePricingComparisonTable(t *testing.T) {
 					modelRows++
 				}
 			}
-			
+
 			// Should not exceed 15 models
 			if len(tt.models) > 15 {
 				assert.LessOrEqual(t, modelRows, 15)

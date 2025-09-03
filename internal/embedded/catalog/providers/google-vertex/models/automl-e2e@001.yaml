@@ -1,5 +1,11 @@
 id: automl-e2e@001
-name: ""
+name: Automl E2e
+authors:
+- id: google
+  name: google
+  models: {}
+  created_at: null
+  updated_at: null
 features:
   modalities:
     input:
@@ -7,9 +13,9 @@ features:
     - image
     output:
     - text
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
   reasoning: false
@@ -53,7 +59,7 @@ features:
   structured_outputs: false
   streaming: true
 limits:
-  context_window: 0
-  output_tokens: 0
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+  context_window: 1048576
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

@@ -94,13 +94,13 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"pattern: .*",
 		"header: x-api-key",
 		"duration: 720h0m0s #30 days", // Inline comment for duration
-		
+
 		"# Cerebras",
 		"- id: cerebras",
 		"name: Cerebras",
 		"authors:",
 		"- alibaba",
-		"- meta", 
+		"- meta",
 		"- openai",
 		"duration: 0s", // Zero duration
 	}

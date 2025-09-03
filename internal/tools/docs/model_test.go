@@ -53,11 +53,11 @@ func TestGenerateModelIndex(t *testing.T) {
 				ContextWindow: 8192,
 			},
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input: &catalogs.TokenCost{
+				Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{
 						Per1M: 30.0,
 					},
-					Output: &catalogs.TokenCost{
+					Output: &catalogs.ModelTokenCost{
 						Per1M: 60.0,
 					},
 				},
@@ -80,11 +80,11 @@ func TestGenerateModelIndex(t *testing.T) {
 				ContextWindow: 200000,
 			},
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input: &catalogs.TokenCost{
+				Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{
 						Per1M: 15.0,
 					},
-					Output: &catalogs.TokenCost{
+					Output: &catalogs.ModelTokenCost{
 						Per1M: 75.0,
 					},
 				},
@@ -294,12 +294,7 @@ func createTestCatalogForModels() catalogs.Reader {
 	catalog.SetAuthor(openai)
 	catalog.SetAuthor(anthropic)
 
-	// Add providers
-	provider := catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-	}
-	catalog.SetProvider(provider)
+	// We'll add the provider later with its models
 
 	// Add models with various features
 	gpt4 := catalogs.Model{
@@ -319,11 +314,11 @@ func createTestCatalogForModels() catalogs.Reader {
 			ContextWindow: 8192,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
+			Tokens: &catalogs.ModelTokenPricing{
+				Input: &catalogs.ModelTokenCost{
 					Per1M: 30.0,
 				},
-				Output: &catalogs.TokenCost{
+				Output: &catalogs.ModelTokenCost{
 					Per1M: 60.0,
 				},
 			},
@@ -362,9 +357,17 @@ func createTestCatalogForModels() catalogs.Reader {
 		},
 	}
 
-	catalog.SetModel(gpt4)
-	catalog.SetModel(claude)
-	catalog.SetModel(whisper)
+	// Add provider with models
+	provider := catalogs.Provider{
+		ID:   catalogs.ProviderIDOpenAI,
+		Name: "OpenAI",
+		Models: map[string]catalogs.Model{
+			gpt4.ID:    gpt4,
+			claude.ID:  claude,
+			whisper.ID: whisper,
+		},
+	}
+	catalog.SetProvider(provider)
 
 	return catalog
 }

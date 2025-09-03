@@ -1,0 +1,14 @@
+id: amazon.nova-premier-v1:0
+name: Nova Premier
+pricing:
+  tokens:
+    input:
+      per_1m: 2.5
+    output:
+      per_1m: 12.5
+  currency: USD
+limits:
+  context_window: 1000000
+  output_tokens: 16384
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

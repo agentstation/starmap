@@ -1,0 +1,10 @@
+id: sqlcoder-7b-2
+name: "@cf/defog/sqlcoder-7b-2"
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 10000
+  output_tokens: 10000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

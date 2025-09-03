@@ -18,9 +18,9 @@ func floatPtr(f float64) *float64 {
 
 func TestWriteModalityTable(t *testing.T) {
 	tests := []struct {
-		name     string
-		model    *catalogs.Model
-		expected []string
+		name        string
+		model       *catalogs.Model
+		expected    []string
 		notExpected []string
 	}{
 		{
@@ -198,9 +198,9 @@ func TestWriteResponseDeliveryTable(t *testing.T) {
 
 func TestWriteAdvancedReasoningTable(t *testing.T) {
 	tests := []struct {
-		name        string
-		model       *catalogs.Model
-		expected    []string
+		name          string
+		model         *catalogs.Model
+		expected      []string
 		shouldBeEmpty bool
 	}{
 		{
@@ -224,7 +224,7 @@ func TestWriteAdvancedReasoningTable(t *testing.T) {
 			model: &catalogs.Model{
 				Features: &catalogs.ModelFeatures{},
 			},
-			shouldBeEmpty: true,  // Table is not generated when no reasoning features
+			shouldBeEmpty: true, // Table is not generated when no reasoning features
 		},
 	}
 
@@ -263,12 +263,12 @@ func TestWriteControlsTables(t *testing.T) {
 			name: "model with sampling controls",
 			model: &catalogs.Model{
 				Features: &catalogs.ModelFeatures{
-					Temperature:      true,
-					TopP:            true,
-					TopK:            true,
+					Temperature:       true,
+					TopP:              true,
+					TopK:              true,
 					RepetitionPenalty: true,
-					MaxTokens:       true,
-					Seed:            true,
+					MaxTokens:         true,
+					Seed:              true,
 				},
 			},
 			expected: []string{
@@ -331,11 +331,11 @@ func TestWriteTokenPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input: &catalogs.TokenCost{
+					Tokens: &catalogs.ModelTokenPricing{
+						Input: &catalogs.ModelTokenCost{
 							Per1M: 10.0,
 						},
-						Output: &catalogs.TokenCost{
+						Output: &catalogs.ModelTokenCost{
 							Per1M: 30.0,
 						},
 					},
@@ -352,17 +352,17 @@ func TestWriteTokenPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input: &catalogs.TokenCost{
+					Tokens: &catalogs.ModelTokenPricing{
+						Input: &catalogs.ModelTokenCost{
 							Per1M: 10.0,
 						},
-						Output: &catalogs.TokenCost{
+						Output: &catalogs.ModelTokenCost{
 							Per1M: 30.0,
 						},
-						CacheRead: &catalogs.TokenCost{
+						CacheRead: &catalogs.ModelTokenCost{
 							Per1M: 1.0,
 						},
-						CacheWrite: &catalogs.TokenCost{
+						CacheWrite: &catalogs.ModelTokenCost{
 							Per1M: 15.0,
 						},
 					},
@@ -378,11 +378,11 @@ func TestWriteTokenPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input: &catalogs.TokenCost{
+					Tokens: &catalogs.ModelTokenPricing{
+						Input: &catalogs.ModelTokenCost{
 							Per1M: 0.0,
 						},
-						Output: &catalogs.TokenCost{
+						Output: &catalogs.ModelTokenCost{
 							Per1M: 0.0,
 						},
 					},
@@ -479,9 +479,9 @@ func TestWriteArchitectureTable(t *testing.T) {
 
 func TestWriteModelTagsTable(t *testing.T) {
 	tests := []struct {
-		name     string
-		model    *catalogs.Model
-		expected []string
+		name          string
+		model         *catalogs.Model
+		expected      []string
 		shouldBeEmpty bool
 	}{
 		{
@@ -509,7 +509,7 @@ func TestWriteModelTagsTable(t *testing.T) {
 					Tags: []catalogs.ModelTag{},
 				},
 			},
-			expected: []string{}, // Table is not generated when no tags
+			expected:      []string{}, // Table is not generated when no tags
 			shouldBeEmpty: true,
 		},
 	}
@@ -550,7 +550,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Operations: &catalogs.OperationPricing{
+					Operations: &catalogs.ModelOperationPricing{
 						Request:   floatPtr(0.001),
 						ImageGen:  floatPtr(0.02),
 						WebSearch: floatPtr(0.005),
@@ -567,7 +567,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			name: "model without operations",
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
-					Currency: "USD",
+					Currency:   "USD",
 					Operations: nil,
 				},
 			},
@@ -578,7 +578,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Operations: &catalogs.OperationPricing{
+					Operations: &catalogs.ModelOperationPricing{
 						ImageInput: floatPtr(0.001),
 						AudioInput: floatPtr(0.002),
 						VideoInput: floatPtr(0.003),
@@ -603,9 +603,9 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "EUR",
-					Operations: &catalogs.OperationPricing{
-						ImageGen:  floatPtr(0.018),
-						AudioGen:  floatPtr(0.012),
+					Operations: &catalogs.ModelOperationPricing{
+						ImageGen: floatPtr(0.018),
+						AudioGen: floatPtr(0.012),
 					},
 				},
 			},
@@ -620,7 +620,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			model: &catalogs.Model{
 				Pricing: &catalogs.ModelPricing{
 					Currency: "GBP",
-					Operations: &catalogs.OperationPricing{
+					Operations: &catalogs.ModelOperationPricing{
 						VideoInput: floatPtr(0.0025),
 						WebSearch:  floatPtr(0.004),
 					},
@@ -628,7 +628,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 			},
 			expected: []string{
 				"### Operation Pricing",
-				"£0.003/min",  // Note: rounded to 3 decimal places
+				"£0.003/min", // Note: rounded to 3 decimal places
 				"£0.004/query",
 			},
 		},
@@ -650,7 +650,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 
 			if len(tt.expected) == 0 {
 				// Check that nothing was written or that "No operation pricing" message appears
-				assert.True(t, contentStr == "" || strings.Contains(contentStr, "No operation pricing"), 
+				assert.True(t, contentStr == "" || strings.Contains(contentStr, "No operation pricing"),
 					"Expected empty output or 'No operation pricing' message")
 			} else {
 				for _, expected := range tt.expected {
@@ -674,19 +674,19 @@ func TestTableFunctionsHandleNilFeatures(t *testing.T) {
 	}
 
 	type tableFunc struct {
-		fn func(io.Writer, *catalogs.Model)
-		name string
-		canBeEmpty bool  // Some tables are conditional
+		fn         func(io.Writer, *catalogs.Model)
+		name       string
+		canBeEmpty bool // Some tables are conditional
 	}
 
 	tableFuncs := []tableFunc{
 		{writeModalityTable, "writeModalityTable", false},
 		{writeCoreFeatureTable, "writeCoreFeatureTable", false},
 		{writeResponseDeliveryTable, "writeResponseDeliveryTable", false},
-		{writeAdvancedReasoningTable, "writeAdvancedReasoningTable", true},  // Conditional on reasoning features
+		{writeAdvancedReasoningTable, "writeAdvancedReasoningTable", true}, // Conditional on reasoning features
 		{writeControlsTables, "writeControlsTables", false},
-		{writeArchitectureTable, "writeArchitectureTable", true},  // Conditional on metadata
-		{writeTagsTable, "writeTagsTable", true},  // Conditional on tags
+		{writeArchitectureTable, "writeArchitectureTable", true}, // Conditional on metadata
+		{writeTagsTable, "writeTagsTable", true},                 // Conditional on tags
 	}
 
 	for _, tf := range tableFuncs {
@@ -705,7 +705,7 @@ func TestTableFunctionsHandleNilFeatures(t *testing.T) {
 			tmpFile.Seek(0, 0)
 			content, err := os.ReadFile(tmpFile.Name())
 			require.NoError(t, err)
-			
+
 			if tf.canBeEmpty {
 				// These tables are conditional and may be empty
 				// Just ensure they didn't panic
@@ -821,7 +821,7 @@ func TestGetCurrencySymbol(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := getCurrencySymbol(tt.currency)
+			result := catalogs.ModelPricingCurrency(tt.currency).Symbol()
 			assert.Equal(t, tt.expected, result)
 		})
 	}

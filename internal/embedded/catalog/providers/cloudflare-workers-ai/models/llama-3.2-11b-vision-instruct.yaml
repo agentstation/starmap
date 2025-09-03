@@ -1,0 +1,14 @@
+id: llama-3.2-11b-vision-instruct
+name: "@cf/meta/llama-3.2-11b-vision-instruct"
+pricing:
+  tokens:
+    input:
+      per_1m: 0.049
+    output:
+      per_1m: 0.68
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 128000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

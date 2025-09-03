@@ -31,7 +31,7 @@ type Config struct {
 	AddCaller bool
 
 	// Fields are default fields to include in all logs
-	Fields map[string]interface{}
+	Fields map[string]any
 }
 
 // DefaultConfig returns a configuration with sensible defaults
@@ -43,7 +43,7 @@ func DefaultConfig() *Config {
 		TimeFormat: "kitchen",
 		NoColor:    os.Getenv("NO_COLOR") != "",
 		AddCaller:  false,
-		Fields:     make(map[string]interface{}),
+		Fields:     make(map[string]any),
 	}
 }
 
@@ -212,8 +212,8 @@ func parseTimeFormat(format string) string {
 }
 
 // parseFields parses comma-separated key=value pairs
-func parseFields(fields string) map[string]interface{} {
-	result := make(map[string]interface{})
+func parseFields(fields string) map[string]any {
+	result := make(map[string]any)
 	if fields == "" {
 		return result
 	}
@@ -230,7 +230,7 @@ func parseFields(fields string) map[string]interface{} {
 }
 
 // addField adds a field to the context based on its type
-func addField(ctx zerolog.Context, key string, value interface{}) zerolog.Context {
+func addField(ctx zerolog.Context, key string, value any) zerolog.Context {
 	switch v := value.(type) {
 	case string:
 		return ctx.Str(key, v)

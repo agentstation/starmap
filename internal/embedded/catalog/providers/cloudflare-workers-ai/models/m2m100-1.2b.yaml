@@ -1,0 +1,11 @@
+id: m2m100-1.2b
+name: "@cf/meta/m2m100-1.2b"
+pricing:
+  tokens:
+    input:
+      per_1m: 0.34
+    output:
+      per_1m: 0.34
+  currency: USD
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

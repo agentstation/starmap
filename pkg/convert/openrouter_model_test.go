@@ -46,18 +46,18 @@ func TestOpenRouterModelSchemaCompliance(t *testing.T) {
 			OutputTokens:  16384,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Currency: "USD",
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
+			Currency: catalogs.ModelPricingCurrencyUSD,
+			Tokens: &catalogs.ModelTokenPricing{
+				Input: &catalogs.ModelTokenCost{
 					PerToken: 0.0000007,
 					Per1M:    0.7,
 				},
-				Output: &catalogs.TokenCost{
+				Output: &catalogs.ModelTokenCost{
 					PerToken: 0.0000007,
 					Per1M:    0.7,
 				},
 			},
-			Operations: &catalogs.OperationPricing{
+			Operations: &catalogs.ModelOperationPricing{
 				Request: ptrFloat64(0),
 			},
 		},

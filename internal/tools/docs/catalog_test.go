@@ -96,6 +96,13 @@ func TestGenerateCatalogIndexWithManyAuthors(t *testing.T) {
 	tempDir := t.TempDir()
 	catalog, _ := catalogs.New()
 
+	// Create a provider to hold all models
+	provider := catalogs.Provider{
+		ID:     catalogs.ProviderID("test-provider"),
+		Name:   "Test Provider",
+		Models: make(map[string]catalogs.Model),
+	}
+
 	// Add more than 10 authors
 	for i := 0; i < 15; i++ {
 		author := catalogs.Author{
@@ -112,8 +119,11 @@ func TestGenerateCatalogIndexWithManyAuthors(t *testing.T) {
 				{ID: author.ID, Name: author.Name},
 			},
 		}
-		catalog.SetModel(model)
+		provider.Models[model.ID] = model
 	}
+
+	// Set the provider with all its models
+	catalog.SetProvider(provider)
 
 	g := New()
 	err := g.generateCatalogIndex(tempDir, catalog)
@@ -136,8 +146,8 @@ func TestSelectFeaturedModels(t *testing.T) {
 			ID:   "gpt-4",
 			Name: "GPT-4",
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input: &catalogs.TokenCost{Per1M: 30.0},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{Per1M: 30.0},
 				},
 			},
 		},
@@ -145,8 +155,8 @@ func TestSelectFeaturedModels(t *testing.T) {
 			ID:   "claude-3-opus",
 			Name: "Claude 3 Opus",
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input: &catalogs.TokenCost{Per1M: 15.0},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{Per1M: 15.0},
 				},
 			},
 		},
@@ -158,8 +168,8 @@ func TestSelectFeaturedModels(t *testing.T) {
 			ID:   "gemini-pro",
 			Name: "Gemini Pro",
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input: &catalogs.TokenCost{Per1M: 0.5},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{Per1M: 0.5},
 				},
 			},
 		},
@@ -360,9 +370,9 @@ func createTestCatalogComplete() catalogs.Reader {
 			ContextWindow: 8192,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 30.0},
-				Output: &catalogs.TokenCost{Per1M: 60.0},
+			Tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 30.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 60.0},
 			},
 		},
 	}
@@ -383,9 +393,9 @@ func createTestCatalogComplete() catalogs.Reader {
 			ContextWindow: 200000,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 15.0},
-				Output: &catalogs.TokenCost{Per1M: 75.0},
+			Tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 15.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 75.0},
 			},
 		},
 	}
@@ -404,10 +414,6 @@ func createTestCatalogComplete() catalogs.Reader {
 			},
 		},
 	}
-
-	catalog.SetModel(gpt4)
-	catalog.SetModel(claude)
-	catalog.SetModel(whisper)
 
 	// Associate models with providers
 	openaiProvider.Models["gpt-4"] = gpt4

@@ -1,0 +1,14 @@
+id: cerebras/qwen3-coder
+name: Qwen 3 Coder 480B
+pricing:
+  tokens:
+    input:
+      per_1m: 2.0
+    output:
+      per_1m: 2.0
+  currency: USD
+limits:
+  context_window: 131000
+  output_tokens: 32000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

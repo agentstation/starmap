@@ -24,7 +24,7 @@ func TestWithVerbose(t *testing.T) {
 	opt := WithVerbose(true)
 	opt(gen)
 	assert.True(t, gen.verbose)
-	
+
 	opt = WithVerbose(false)
 	opt(gen)
 	assert.False(t, gen.verbose)
@@ -36,7 +36,7 @@ func TestNew(t *testing.T) {
 	assert.NotNil(t, gen)
 	assert.Equal(t, "./docs", gen.outputDir)
 	assert.False(t, gen.verbose)
-	
+
 	// Test with custom options
 	gen = New(
 		WithOutputDir("/custom/path"),
@@ -51,7 +51,7 @@ func TestGenerateWithEmptyCatalog(t *testing.T) {
 	tmpDir := t.TempDir()
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	gen := New(WithOutputDir(tmpDir))
 	err = gen.Generate(context.Background(), catalog)
 	assert.NoError(t, err)
@@ -61,15 +61,7 @@ func TestGenerateWithSimpleCatalog(t *testing.T) {
 	tmpDir := t.TempDir()
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
-	// Add a provider
-	provider := catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-	}
-	err = catalog.SetProvider(provider)
-	require.NoError(t, err)
-	
+
 	// Add an author
 	author := catalogs.Author{
 		ID:   "openai",
@@ -77,7 +69,7 @@ func TestGenerateWithSimpleCatalog(t *testing.T) {
 	}
 	err = catalog.SetAuthor(author)
 	require.NoError(t, err)
-	
+
 	// Add a model
 	model := catalogs.Model{
 		ID:   "gpt-4",
@@ -86,9 +78,18 @@ func TestGenerateWithSimpleCatalog(t *testing.T) {
 			{ID: "openai", Name: "OpenAI"},
 		},
 	}
-	err = catalog.SetModel(model)
+
+	// Add a provider with the model
+	provider := catalogs.Provider{
+		ID:   catalogs.ProviderIDOpenAI,
+		Name: "OpenAI",
+		Models: map[string]catalogs.Model{
+			model.ID: model,
+		},
+	}
+	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
-	
+
 	gen := New(
 		WithOutputDir(tmpDir),
 		WithVerbose(false),
@@ -101,7 +102,7 @@ func TestGenerateWithVerbose(t *testing.T) {
 	tmpDir := t.TempDir()
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add test data
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDGroq,
@@ -109,7 +110,7 @@ func TestGenerateWithVerbose(t *testing.T) {
 	}
 	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
-	
+
 	gen := New(
 		WithOutputDir(tmpDir),
 		WithVerbose(true), // Enable verbose mode
@@ -149,18 +150,18 @@ func TestGenerateComprehensive(t *testing.T) {
 				if err != nil {
 					return nil, err
 				}
-				
+
 				providers := []catalogs.Provider{
 					{ID: catalogs.ProviderIDOpenAI, Name: "OpenAI"},
 					{ID: catalogs.ProviderIDGroq, Name: "Groq"},
 				}
-				
+
 				for _, p := range providers {
 					if err := catalog.SetProvider(p); err != nil {
 						return nil, err
 					}
 				}
-				
+
 				return catalog, nil
 			},
 			verbose: true, // Test verbose mode
@@ -178,18 +179,18 @@ func TestGenerateComprehensive(t *testing.T) {
 				if err != nil {
 					return nil, err
 				}
-				
+
 				authors := []catalogs.Author{
 					{ID: "openai", Name: "OpenAI"},
 					{ID: "anthropic", Name: "Anthropic"},
 				}
-				
+
 				for _, a := range authors {
 					if err := catalog.SetAuthor(a); err != nil {
 						return nil, err
 					}
 				}
-				
+
 				return catalog, nil
 			},
 			verbose: false,
@@ -207,16 +208,7 @@ func TestGenerateComprehensive(t *testing.T) {
 				if err != nil {
 					return nil, err
 				}
-				
-				// Add provider
-				provider := catalogs.Provider{
-					ID:   catalogs.ProviderIDOpenAI,
-					Name: "OpenAI",
-				}
-				if err := catalog.SetProvider(provider); err != nil {
-					return nil, err
-				}
-				
+
 				// Add author
 				author := catalogs.Author{
 					ID:   "openai",
@@ -225,7 +217,7 @@ func TestGenerateComprehensive(t *testing.T) {
 				if err := catalog.SetAuthor(author); err != nil {
 					return nil, err
 				}
-				
+
 				// Add models
 				models := []catalogs.Model{
 					{
@@ -239,13 +231,20 @@ func TestGenerateComprehensive(t *testing.T) {
 						Authors: []catalogs.Author{author},
 					},
 				}
-				
-				for _, m := range models {
-					if err := catalog.SetModel(m); err != nil {
-						return nil, err
-					}
+
+				// Add provider with models
+				provider := catalogs.Provider{
+					ID:     catalogs.ProviderIDOpenAI,
+					Name:   "OpenAI",
+					Models: make(map[string]catalogs.Model),
 				}
-				
+				for _, m := range models {
+					provider.Models[m.ID] = m
+				}
+				if err := catalog.SetProvider(provider); err != nil {
+					return nil, err
+				}
+
 				return catalog, nil
 			},
 			verbose: true,
@@ -260,21 +259,21 @@ func TestGenerateComprehensive(t *testing.T) {
 			},
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpDir := t.TempDir()
-			
+
 			catalog, err := tt.setupFunc()
 			require.NoError(t, err)
-			
+
 			gen := New(
 				WithOutputDir(tmpDir),
 				WithVerbose(tt.verbose),
 			)
-			
+
 			err = gen.Generate(context.Background(), catalog)
-			
+
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -290,17 +289,17 @@ func TestGenerateComprehensive(t *testing.T) {
 // TestGenerateDirectoryCreationError tests error handling when directory creation fails
 func TestGenerateDirectoryCreationError(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	// Create a file where a directory should be
 	blockerFile := filepath.Join(tmpDir, "catalog")
 	err := os.WriteFile(blockerFile, []byte("blocking file"), 0644)
 	require.NoError(t, err)
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	err = gen.Generate(context.Background(), catalog)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "creating directory")
@@ -309,28 +308,28 @@ func TestGenerateDirectoryCreationError(t *testing.T) {
 // TestGenerateCatalogIndexError tests error handling in catalog index generation
 func TestGenerateCatalogIndexError(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	// Create catalog directory as read-only after initial creation
 	catalogDir := filepath.Join(tmpDir, "catalog")
 	err := os.MkdirAll(catalogDir, 0755)
 	require.NoError(t, err)
-	
+
 	// Create subdirectories
 	for _, dir := range []string{"providers", "authors", "models"} {
 		err := os.MkdirAll(filepath.Join(catalogDir, dir), 0755)
 		require.NoError(t, err)
 	}
-	
+
 	// Make catalog directory read-only to cause write error
 	err = os.Chmod(catalogDir, 0555)
 	require.NoError(t, err)
 	defer os.Chmod(catalogDir, 0755) // Restore permissions for cleanup
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	err = gen.Generate(context.Background(), catalog)
 	assert.Error(t, err)
 }
@@ -338,10 +337,10 @@ func TestGenerateCatalogIndexError(t *testing.T) {
 // TestGenerateWithLogoCopyFailure tests that logo copy failures don't fail generation
 func TestGenerateWithLogoCopyFailure(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add provider without logo
 	provider := catalogs.Provider{
 		ID:   "custom-provider",
@@ -349,7 +348,7 @@ func TestGenerateWithLogoCopyFailure(t *testing.T) {
 	}
 	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
-	
+
 	// Add author without logo
 	author := catalogs.Author{
 		ID:   "custom-author",
@@ -357,16 +356,16 @@ func TestGenerateWithLogoCopyFailure(t *testing.T) {
 	}
 	err = catalog.SetAuthor(author)
 	require.NoError(t, err)
-	
+
 	gen := New(
 		WithOutputDir(tmpDir),
 		WithVerbose(true), // Enable verbose to see warning
 	)
-	
+
 	// Should succeed even though logos don't exist
 	err = gen.Generate(context.Background(), catalog)
 	require.NoError(t, err)
-	
+
 	// Verify documentation was still generated
 	assert.DirExists(t, filepath.Join(tmpDir, "catalog", "providers", "custom-provider"))
 	assert.DirExists(t, filepath.Join(tmpDir, "catalog", "authors", "custom-author"))
@@ -375,31 +374,40 @@ func TestGenerateWithLogoCopyFailure(t *testing.T) {
 // TestGenerateModelDocsError tests error handling in model docs generation
 func TestGenerateModelDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add a model with invalid characters in ID that might cause file creation issues
 	model := catalogs.Model{
 		ID:   "model/with/slashes",
 		Name: "Invalid Model",
 	}
-	err = catalog.SetModel(model)
+
+	// Add provider with the model
+	provider := catalogs.Provider{
+		ID:   catalogs.ProviderID("test-provider"),
+		Name: "Test Provider",
+		Models: map[string]catalogs.Model{
+			model.ID: model,
+		},
+	}
+	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
-	
+
 	// Create models directory as read-only
 	modelsDir := filepath.Join(tmpDir, "catalog", "models")
 	err = os.MkdirAll(modelsDir, 0755)
 	require.NoError(t, err)
-	
+
 	// Create other required directories
 	for _, dir := range []string{"providers", "authors"} {
 		err := os.MkdirAll(filepath.Join(tmpDir, "catalog", dir), 0755)
 		require.NoError(t, err)
 	}
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	// This should handle the error gracefully
 	err = gen.Generate(context.Background(), catalog)
 	// The function may or may not error depending on OS handling of slashes
@@ -410,10 +418,10 @@ func TestGenerateModelDocsError(t *testing.T) {
 // TestGenerateProviderDocsError tests error handling in provider docs generation
 func TestGenerateProviderDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add provider
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
@@ -421,17 +429,17 @@ func TestGenerateProviderDocsError(t *testing.T) {
 	}
 	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
-	
+
 	// Create required directories
 	catalogDir := filepath.Join(tmpDir, "catalog")
 	err = os.MkdirAll(catalogDir, 0755)
 	require.NoError(t, err)
-	
+
 	for _, dir := range []string{"authors", "models"} {
 		err := os.MkdirAll(filepath.Join(catalogDir, dir), 0755)
 		require.NoError(t, err)
 	}
-	
+
 	// Create providers directory but make it read-only
 	providersDir := filepath.Join(catalogDir, "providers")
 	err = os.MkdirAll(providersDir, 0755)
@@ -439,21 +447,21 @@ func TestGenerateProviderDocsError(t *testing.T) {
 	err = os.Chmod(providersDir, 0555)
 	require.NoError(t, err)
 	defer os.Chmod(providersDir, 0755)
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	err = gen.Generate(context.Background(), catalog)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "generating provider docs")
 }
 
-// TestGenerateAuthorDocsError tests error handling in author docs generation  
+// TestGenerateAuthorDocsError tests error handling in author docs generation
 func TestGenerateAuthorDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add author
 	author := catalogs.Author{
 		ID:   "openai",
@@ -461,17 +469,17 @@ func TestGenerateAuthorDocsError(t *testing.T) {
 	}
 	err = catalog.SetAuthor(author)
 	require.NoError(t, err)
-	
+
 	// Create required directories
 	catalogDir := filepath.Join(tmpDir, "catalog")
 	err = os.MkdirAll(catalogDir, 0755)
 	require.NoError(t, err)
-	
+
 	for _, dir := range []string{"providers", "models"} {
 		err := os.MkdirAll(filepath.Join(catalogDir, dir), 0755)
 		require.NoError(t, err)
 	}
-	
+
 	// Create authors directory but make it read-only
 	authorsDir := filepath.Join(catalogDir, "authors")
 	err = os.MkdirAll(authorsDir, 0755)
@@ -479,9 +487,9 @@ func TestGenerateAuthorDocsError(t *testing.T) {
 	err = os.Chmod(authorsDir, 0555)
 	require.NoError(t, err)
 	defer os.Chmod(authorsDir, 0755)
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	err = gen.Generate(context.Background(), catalog)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "generating author docs")
@@ -490,43 +498,43 @@ func TestGenerateAuthorDocsError(t *testing.T) {
 // TestCopyLogosComprehensive tests the copyLogos function
 func TestCopyLogosComprehensive(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add providers and authors
 	providers := []catalogs.Provider{
 		{ID: catalogs.ProviderIDOpenAI, Name: "OpenAI"},
 		{ID: catalogs.ProviderIDGroq, Name: "Groq"},
 		{ID: "custom", Name: "Custom"}, // No logo exists
 	}
-	
+
 	for _, p := range providers {
 		err := catalog.SetProvider(p)
 		require.NoError(t, err)
 	}
-	
+
 	authors := []catalogs.Author{
 		{ID: "openai", Name: "OpenAI"},
 		{ID: "meta", Name: "Meta"},
 		{ID: "custom", Name: "Custom"}, // No logo exists
 	}
-	
+
 	for _, a := range authors {
 		err := catalog.SetAuthor(a)
 		require.NoError(t, err)
 	}
-	
+
 	gen := New(
 		WithOutputDir(tmpDir),
 		WithVerbose(true),
 	)
-	
+
 	// Create necessary directories
 	logosDir := filepath.Join(tmpDir, "logos")
 	err = os.MkdirAll(logosDir, 0755)
 	require.NoError(t, err)
-	
+
 	// Call copyLogos - should handle missing logos gracefully
 	err = gen.copyLogos(catalog)
 	// Should not error even with missing logos
@@ -536,10 +544,10 @@ func TestCopyLogosComprehensive(t *testing.T) {
 // TestGenerateWithContextCancellation tests context cancellation handling
 func TestGenerateWithContextCancellation(t *testing.T) {
 	tmpDir := t.TempDir()
-	
+
 	catalog, err := catalogs.New()
 	require.NoError(t, err)
-	
+
 	// Add lots of data to make generation take time
 	for i := 0; i < 10; i++ {
 		provider := catalogs.Provider{
@@ -548,7 +556,7 @@ func TestGenerateWithContextCancellation(t *testing.T) {
 		}
 		err := catalog.SetProvider(provider)
 		require.NoError(t, err)
-		
+
 		author := catalogs.Author{
 			ID:   catalogs.AuthorID(fmt.Sprintf("author-%d", i)),
 			Name: fmt.Sprintf("Author %d", i),
@@ -556,13 +564,13 @@ func TestGenerateWithContextCancellation(t *testing.T) {
 		err = catalog.SetAuthor(author)
 		require.NoError(t, err)
 	}
-	
+
 	gen := New(WithOutputDir(tmpDir))
-	
+
 	// Create a context that's already cancelled
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	
+
 	// Should complete even with cancelled context (current implementation doesn't check context)
 	err = gen.Generate(ctx, catalog)
 	// Current implementation doesn't check context, so it will succeed

@@ -1,0 +1,14 @@
+id: accounts/fireworks/models/deepseek-r1-0528
+name: Deepseek R1 05/28
+pricing:
+  tokens:
+    input:
+      per_1m: 3.0
+    output:
+      per_1m: 8.0
+  currency: USD
+limits:
+  context_window: 160000
+  output_tokens: 16384
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

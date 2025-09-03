@@ -75,29 +75,29 @@ func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Prov
 
 // writeProviderIndex writes the provider index content using markdown builder
 func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provider) error {
-	builder := NewMarkdownBuilder(w)
+	markdown := NewMarkdown(w)
 
 	// Add Hugo front matter
-	builder.HugoFrontMatter("Provider Overview", 1)
+	markdown.HugoFrontMatter("Provider Overview", 1)
 
-	builder.H1("🏢 AI Model Providers").
+	markdown.H1("🏢 AI Model Providers").
 		LF().
 		PlainText("Organizations that host and serve AI models through APIs.").
 		LF().LF()
 
 	// Provider comparison table
-	builder.H2("Provider Comparison").LF()
-	
+	markdown.H2("Provider Comparison").LF()
+
 	// Sort providers by model count for better presentation
 	sort.Slice(providers, func(i, j int) bool {
 		return len(providers[i].Models) > len(providers[j].Models)
 	})
-	
-	g.writeProviderComparisonTableToBuilder(builder, providers)
-	builder.LF()
+
+	g.writeProviderComparisonTableToMarkdown(markdown, providers)
+	markdown.LF()
 
 	// Add top models overview across all providers
-	builder.H2("🌟 Top Models Across Providers").
+	markdown.H2("🌟 Top Models Across Providers").
 		LF().
 		PlainText("Overview of popular models available across different providers:").
 		LF().LF()
@@ -114,12 +114,12 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 
 	// Show top 20 models
 	if len(allModels) > 0 {
-		g.writeModelsOverviewTableToBuilder(builder, allModels, providers)
+		g.writeModelsOverviewTableToMarkdown(markdown, allModels, providers)
 	}
-	builder.LF()
+	markdown.LF()
 
 	// Provider details section
-	builder.H2("Provider Details").LF()
+	markdown.H2("Provider Details").LF()
 
 	// Sort providers alphabetically for the detailed list
 	sort.Slice(providers, func(i, j int) bool {
@@ -132,38 +132,38 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 		logoPath := fmt.Sprintf("./%s/logo.svg", provider.ID)
 		// Use just the provider ID without ./ prefix
 		providerLink := fmt.Sprintf("%s/", provider.ID)
-		
+
 		// Use markdown builder to create the heading with embedded image and link
 		// This ensures proper ordering and avoids buffering issues
 		heading := fmt.Sprintf(`<img src="%s" alt="" width="16" height="16" style="vertical-align: middle"> [%s](%s)`,
 			logoPath, provider.Name, providerLink)
-		builder.H3(heading).LF()
+		markdown.H3(heading).LF()
 
 		// Provider description (if we had it)
 		desc := getProviderDescription(provider)
 		if desc != "" {
-			builder.PlainText(desc).LF().LF()
+			markdown.PlainText(desc).LF().LF()
 		}
 
 		// Quick stats using bullet lists
-		builder.BulletList(
+		markdown.BulletList(
 			fmt.Sprintf("**Models**: %d available", len(provider.Models)),
 		)
 
 		if provider.APIKey != nil {
-			builder.BulletList(
+			markdown.BulletList(
 				fmt.Sprintf("**API Key**: Required (`%s`)", provider.APIKey.Name),
 			)
 		}
 		if provider.StatusPageURL != nil {
-			builder.BulletList(
+			markdown.BulletList(
 				fmt.Sprintf("**Status**: [Check current status](%s)", *provider.StatusPageURL),
 			)
 		}
 
 		// Top models preview
 		if len(provider.Models) > 0 {
-			builder.BulletList("**Featured Models**:")
+			markdown.BulletList("**Featured Models**:")
 			// Use sorted models for deterministic iteration
 			sortedModels := SortedModels(provider.Models)
 			count := 0
@@ -171,37 +171,41 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 				if count >= 3 {
 					break
 				}
-				builder.BulletList(fmt.Sprintf("  - %s", model.Name))
+				modelName := model.Name
+				if modelName == "" {
+					modelName = model.ID
+				}
+				markdown.BulletList(fmt.Sprintf("  - %s", modelName))
 				count++
 			}
 			if len(provider.Models) > 3 {
 				// Use Hugo-compatible link to provider page
-				builder.BulletList(fmt.Sprintf("  - [View all %d models →](%s)", len(provider.Models), providerLink))
+				markdown.BulletList(fmt.Sprintf("  - [View all %d models →](%s)", len(provider.Models), providerLink))
 			}
 		}
-		builder.LF()
+		markdown.LF()
 	}
 
 	// Footer
-	g.writeFooterToBuilder(builder, Breadcrumb{Label: "Back to Catalog", Path: "../"})
+	g.writeFooterToMarkdown(markdown, Breadcrumb{Label: "Back to Catalog", Path: "../"})
 
-	return builder.Build()
+	return markdown.Build()
 }
 
-// writeProviderComparisonTableToBuilder adds provider comparison table to markdown builder
-func (g *Generator) writeProviderComparisonTableToBuilder(builder *MarkdownBuilder, providers []*catalogs.Provider) {
+// writeProviderComparisonTableToMarkdown adds provider comparison table to markdown builder
+func (g *Generator) writeProviderComparisonTableToMarkdown(markdown *Markdown, providers []*catalogs.Provider) {
 	// Create a temporary writer to capture the table output
 	var buf strings.Builder
 	writeProviderComparisonTable(&buf, providers)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
-// writeModelsOverviewTableToBuilder adds models overview table to markdown builder
-func (g *Generator) writeModelsOverviewTableToBuilder(builder *MarkdownBuilder, allModels []*catalogs.Model, providers []*catalogs.Provider) {
+// writeModelsOverviewTableToMarkdown adds models overview table to markdown builder
+func (g *Generator) writeModelsOverviewTableToMarkdown(markdown *Markdown, allModels []*catalogs.Model, providers []*catalogs.Provider) {
 	// Create a temporary writer to capture the table output
 	var buf strings.Builder
 	writeModelsOverviewTable(&buf, allModels, providers)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
 // generateProviderReadme generates documentation for a single provider
@@ -225,22 +229,22 @@ func (g *Generator) generateProviderReadme(dir string, provider *catalogs.Provid
 
 // writeProviderReadme writes the provider readme content using markdown builder
 func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider, catalog catalogs.Reader) error {
-	builder := NewMarkdownBuilder(w)
+	markdown := NewMarkdown(w)
 
 	// Header with logo if available
 	logoPath := fmt.Sprintf("https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/catalog/providers/%s/logo.svg", provider.ID)
 	headerText := fmt.Sprintf("<img src=\"%s\" alt=\"%s logo\" width=\"48\" height=\"48\" style=\"vertical-align: middle;\"> %s",
 		logoPath, provider.Name, provider.Name)
-	builder.H1(headerText).LF()
+	markdown.H1(headerText).LF()
 
 	// Provider description
 	desc := getProviderDescription(provider)
 	if desc != "" {
-		builder.PlainText(desc).LF().LF()
+		markdown.PlainText(desc).LF().LF()
 	}
 
 	// Provider Information section
-	builder.H2("Provider Information").LF()
+	markdown.H2("Provider Information").LF()
 
 	// Build provider info table
 	headers := []string{"Field", "Value"}
@@ -266,7 +270,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		rows = append(rows, []string{"**Total Endpoints**", fmt.Sprintf("%d available", len(endpoints))})
 	}
 
-	builder.Table(md.TableSet{Header: headers, Rows: rows}).LF()
+	markdown.Table(md.TableSet{Header: headers, Rows: rows}).LF()
 
 	// API Endpoints section
 	if provider.Catalog != nil || provider.ChatCompletions != nil {
@@ -279,39 +283,39 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		}
 
 		if hasEndpoints {
-			builder.H2("🔗 API Endpoints").LF()
+			markdown.H2("🔗 API Endpoints").LF()
 
 			if provider.Catalog != nil {
 				if provider.Catalog.DocsURL != nil {
-					builder.PlainText(fmt.Sprintf("**Documentation**: [%s](%s)  ", *provider.Catalog.DocsURL, *provider.Catalog.DocsURL)).LF()
+					markdown.PlainText(fmt.Sprintf("**Documentation**: [%s](%s)  ", *provider.Catalog.DocsURL, *provider.Catalog.DocsURL)).LF()
 				}
 				if provider.Catalog.APIURL != nil {
-					builder.PlainText(fmt.Sprintf("**Models API**: [%s](%s)  ", *provider.Catalog.APIURL, *provider.Catalog.APIURL)).LF()
+					markdown.PlainText(fmt.Sprintf("**Models API**: [%s](%s)  ", *provider.Catalog.APIURL, *provider.Catalog.APIURL)).LF()
 				}
 			}
 
 			if provider.ChatCompletions != nil {
 				if provider.ChatCompletions.URL != nil {
-					builder.PlainText(fmt.Sprintf("**Chat Completions**: [%s](%s)  ", *provider.ChatCompletions.URL, *provider.ChatCompletions.URL)).LF()
+					markdown.PlainText(fmt.Sprintf("**Chat Completions**: [%s](%s)  ", *provider.ChatCompletions.URL, *provider.ChatCompletions.URL)).LF()
 				}
 				if provider.ChatCompletions.HealthAPIURL != nil {
-					builder.PlainText(fmt.Sprintf("**Health API**: [%s](%s)  ", *provider.ChatCompletions.HealthAPIURL, *provider.ChatCompletions.HealthAPIURL)).LF()
+					markdown.PlainText(fmt.Sprintf("**Health API**: [%s](%s)  ", *provider.ChatCompletions.HealthAPIURL, *provider.ChatCompletions.HealthAPIURL)).LF()
 				}
 			}
 
-			builder.LF()
+			markdown.LF()
 		}
 	}
 
 	// Privacy & Data Handling section
 	if provider.PrivacyPolicy != nil {
-		builder.H2("🔒 Privacy & Data Handling").LF()
+		markdown.H2("🔒 Privacy & Data Handling").LF()
 
 		if provider.PrivacyPolicy.PrivacyPolicyURL != nil {
-			builder.PlainText(fmt.Sprintf("**Privacy Policy**: [%s](%s)  ", *provider.PrivacyPolicy.PrivacyPolicyURL, *provider.PrivacyPolicy.PrivacyPolicyURL)).LF()
+			markdown.PlainText(fmt.Sprintf("**Privacy Policy**: [%s](%s)  ", *provider.PrivacyPolicy.PrivacyPolicyURL, *provider.PrivacyPolicy.PrivacyPolicyURL)).LF()
 		}
 		if provider.PrivacyPolicy.TermsOfServiceURL != nil {
-			builder.PlainText(fmt.Sprintf("**Terms of Service**: [%s](%s)  ", *provider.PrivacyPolicy.TermsOfServiceURL, *provider.PrivacyPolicy.TermsOfServiceURL)).LF()
+			markdown.PlainText(fmt.Sprintf("**Terms of Service**: [%s](%s)  ", *provider.PrivacyPolicy.TermsOfServiceURL, *provider.PrivacyPolicy.TermsOfServiceURL)).LF()
 		}
 
 		if provider.PrivacyPolicy.RetainsData != nil {
@@ -319,7 +323,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			if *provider.PrivacyPolicy.RetainsData {
 				retainsData = "Yes"
 			}
-			builder.PlainText(fmt.Sprintf("**Retains User Data**: %s  ", retainsData)).LF()
+			markdown.PlainText(fmt.Sprintf("**Retains User Data**: %s  ", retainsData)).LF()
 		}
 
 		if provider.PrivacyPolicy.TrainsOnData != nil {
@@ -327,15 +331,15 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			if *provider.PrivacyPolicy.TrainsOnData {
 				trainsOnData = "Yes"
 			}
-			builder.PlainText(fmt.Sprintf("**Trains on User Data**: %s  ", trainsOnData)).LF()
+			markdown.PlainText(fmt.Sprintf("**Trains on User Data**: %s  ", trainsOnData)).LF()
 		}
 
-		builder.LF()
+		markdown.LF()
 	}
 
 	// Data Retention Policy section
 	if provider.RetentionPolicy != nil {
-		builder.H2("⏱️ Data Retention Policy").LF()
+		markdown.H2("⏱️ Data Retention Policy").LF()
 
 		// Policy type with capitalization
 		policyType := string(provider.RetentionPolicy.Type)
@@ -349,30 +353,30 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		case "conditional":
 			policyType = "Conditional"
 		}
-		builder.PlainText(fmt.Sprintf("**Policy Type**: %s  ", policyType)).LF()
+		markdown.PlainText(fmt.Sprintf("**Policy Type**: %s  ", policyType)).LF()
 
 		// Duration
 		duration := formatDuration(provider.RetentionPolicy.Duration)
-		builder.PlainText(fmt.Sprintf("**Retention Duration**: %s  ", duration)).LF()
+		markdown.PlainText(fmt.Sprintf("**Retention Duration**: %s  ", duration)).LF()
 
 		// Details if available
 		if provider.RetentionPolicy.Details != nil && *provider.RetentionPolicy.Details != "" {
-			builder.PlainText(fmt.Sprintf("**Details**: %s  ", *provider.RetentionPolicy.Details)).LF()
+			markdown.PlainText(fmt.Sprintf("**Details**: %s  ", *provider.RetentionPolicy.Details)).LF()
 		}
 
-		builder.LF()
+		markdown.LF()
 	}
 
 	// Content Moderation section
 	if provider.GovernancePolicy != nil {
-		builder.H2("🛡️ Content Moderation").LF()
+		markdown.H2("🛡️ Content Moderation").LF()
 
 		if provider.GovernancePolicy.ModerationRequired != nil {
 			requiresModeration := "No"
 			if *provider.GovernancePolicy.ModerationRequired {
 				requiresModeration = "Yes"
 			}
-			builder.PlainText(fmt.Sprintf("**Requires Moderation**: %s  ", requiresModeration)).LF()
+			markdown.PlainText(fmt.Sprintf("**Requires Moderation**: %s  ", requiresModeration)).LF()
 		}
 
 		if provider.GovernancePolicy.Moderated != nil {
@@ -380,7 +384,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			if *provider.GovernancePolicy.Moderated {
 				moderated = "Yes"
 			}
-			builder.PlainText(fmt.Sprintf("**Content Moderated**: %s  ", moderated)).LF()
+			markdown.PlainText(fmt.Sprintf("**Content Moderated**: %s  ", moderated)).LF()
 		}
 
 		if provider.GovernancePolicy.Moderator != nil && *provider.GovernancePolicy.Moderator != "" {
@@ -389,23 +393,23 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			if len(moderator) > 0 {
 				moderator = strings.Title(moderator)
 			}
-			builder.PlainText(fmt.Sprintf("**Moderated by**: %s  ", moderator)).LF()
+			markdown.PlainText(fmt.Sprintf("**Moderated by**: %s  ", moderator)).LF()
 		}
 
-		builder.LF()
+		markdown.LF()
 	}
 
 	// Headquarters info
 	if provider.Headquarters != nil {
-		builder.H2("🏢 Headquarters").LF().
+		markdown.H2("🏢 Headquarters").LF().
 			PlainText(*provider.Headquarters).LF().LF()
 	}
 
 	// Available Models section
-	builder.H2("Available Models").LF()
+	markdown.H2("Available Models").LF()
 
 	if len(provider.Models) == 0 {
-		builder.Italic("No models currently available from this provider.").LF()
+		markdown.Italic("No models currently available from this provider.").LF()
 	} else {
 		// Use sorted models for deterministic iteration
 		modelList := SortedModels(provider.Models)
@@ -423,7 +427,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		for _, family := range families {
 			models := modelGroups[family]
 			if family != "" {
-				builder.H3(family).LF()
+				markdown.H3(family).LF()
 			}
 
 			// Build model table
@@ -468,29 +472,33 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 				features := compactFeatures(*model)
 
 				// Generate model link to local models subdirectory
-				modelLink := fmt.Sprintf("[%s](./models/%s.md)", model.Name, formatModelID(model.ID))
+				modelName := model.Name
+				if modelName == "" {
+					modelName = model.ID
+				}
+				modelLink := fmt.Sprintf("[%s](./models/%s.md)", modelName, formatModelID(model.ID))
 
 				rows = append(rows, []string{
 					modelLink, contextStr, inputStr, outputStr, features,
 				})
 			}
 
-			builder.Table(md.TableSet{Header: headers, Rows: rows}).LF()
+			markdown.Table(md.TableSet{Header: headers, Rows: rows}).LF()
 		}
 	}
 
 	// Configuration section
-	builder.H2("Configuration").LF()
+	markdown.H2("Configuration").LF()
 
 	if provider.APIKey != nil {
-		builder.H3("Authentication").LF().
+		markdown.H3("Authentication").LF().
 			PlainText("This provider requires an API key. Set it as an environment variable:").
 			LF().LF().
 			CodeBlock("bash", fmt.Sprintf("export %s=\"your-api-key-here\"", provider.APIKey.Name)).
 			LF()
 	}
 
-	builder.H3("Using with Starmap").LF().
+	markdown.H3("Using with Starmap").LF().
 		CodeBlock("bash", fmt.Sprintf(`# List all models from this provider
 starmap list models --provider %s
 
@@ -504,16 +512,16 @@ starmap sync --provider %s`, provider.ID, provider.ID, provider.ID)).
 	// Add cross-reference navigation
 	crossRefs := g.buildProviderCrossReferences(string(provider.ID))
 	if len(crossRefs) > 0 {
-		g.writeNavigationSectionToBuilder(builder, "See Also", crossRefs)
-		builder.LF()
+		g.writeNavigationSectionToMarkdown(markdown, "See Also", crossRefs)
+		markdown.LF()
 	}
 
 	// Footer
-	g.writeFooterToBuilder(builder,
+	g.writeFooterToMarkdown(markdown,
 		Breadcrumb{Label: "Back to Providers", Path: "../"},
 		Breadcrumb{Label: "Back to Catalog", Path: "../../"})
 
-	return builder.Build()
+	return markdown.Build()
 }
 
 // groupModelsByFamily groups models by their family/category
@@ -521,7 +529,11 @@ func groupModelsByFamily(models []*catalogs.Model) map[string][]*catalogs.Model 
 	groups := make(map[string][]*catalogs.Model)
 
 	for _, model := range models {
-		family := detectModelFamily(model.Name)
+		modelName := model.Name
+		if modelName == "" {
+			modelName = model.ID
+		}
+		family := detectModelFamily(modelName)
 		groups[family] = append(groups[family], model)
 	}
 
@@ -607,23 +619,27 @@ func (g *Generator) generateProviderModelPage(filepath string, model *catalogs.M
 
 // writeProviderModelPage writes the provider model page content using markdown builder
 func (g *Generator) writeProviderModelPage(w io.Writer, model *catalogs.Model, provider *catalogs.Provider, authorMap map[catalogs.AuthorID]*catalogs.Author) error {
-	builder := NewMarkdownBuilder(w)
+	markdown := NewMarkdown(w)
 
-	// Header with model name
-	builder.H1(model.Name).LF()
+	// Header with model name - use ID as fallback if name is empty
+	modelName := model.Name
+	if modelName == "" {
+		modelName = model.ID
+	}
+	markdown.H1(modelName).LF()
 
 	// Breadcrumb navigation
 	// Calculate depth based on model ID (for subdirectories)
-	breadcrumbs := g.providerModelBreadcrumb(provider.Name, model.Name, model.ID)
-	g.writeBreadcrumbsToBuilder(builder, breadcrumbs...)
+	breadcrumbs := g.providerModelBreadcrumb(provider.Name, modelName, model.ID)
+	g.writeBreadcrumbsToMarkdown(markdown, breadcrumbs...)
 
 	// Description
 	if model.Description != "" {
-		builder.PlainText(model.Description).LF().LF()
+		markdown.PlainText(model.Description).LF().LF()
 	}
 
 	// 📋 Overview Section
-	builder.H2("📋 Overview").LF()
+	markdown.H2("📋 Overview").LF()
 
 	overviewItems := []string{
 		fmt.Sprintf("**ID**: `%s`", model.ID),
@@ -670,139 +686,139 @@ func (g *Generator) writeProviderModelPage(w io.Writer, model *catalogs.Model, p
 	}
 
 	for _, item := range overviewItems {
-		builder.BulletList(item)
+		markdown.BulletList(item)
 	}
-	builder.LF()
+	markdown.LF()
 
 	// 🔬 Technical Specifications Section with shields.io badges
 	if model.Features != nil {
 		badges := technicalSpecBadges(model)
 		if badges != "" {
-			builder.H2("🔬 Technical Specifications").LF().
+			markdown.H2("🔬 Technical Specifications").LF().
 				PlainText(badges).LF().LF()
 		}
 	}
 
 	// 🎯 Capabilities Section
-	builder.H2("🎯 Capabilities").LF()
+	markdown.H2("🎯 Capabilities").LF()
 
 	// Feature Overview with comprehensive badges
 	if model.Features != nil {
 		badges := featureBadges(model)
 		if badges != "" {
-			builder.H3("Feature Overview").LF().
+			markdown.H3("Feature Overview").LF().
 				PlainText(badges).LF().LF()
 		}
 	}
 
 	// Input/Output Modalities Table
-	builder.H3("Input/Output Modalities").LF()
-	g.writeModalityTableToBuilder(builder, model)
+	markdown.H3("Input/Output Modalities").LF()
+	g.writeModalityTableToMarkdown(markdown, model)
 
 	// Core Features Table
-	builder.H3("Core Features").LF()
-	g.writeCoreFeatureTableToBuilder(builder, model)
+	markdown.H3("Core Features").LF()
+	g.writeCoreFeatureTableToMarkdown(markdown, model)
 
 	// Response Delivery Table
-	builder.H3("Response Delivery").LF()
-	g.writeResponseDeliveryTableToBuilder(builder, model)
+	markdown.H3("Response Delivery").LF()
+	g.writeResponseDeliveryTableToMarkdown(markdown, model)
 
 	// Advanced Reasoning Table (only if applicable)
-	g.writeAdvancedReasoningTableToBuilder(builder, model)
+	g.writeAdvancedReasoningTableToMarkdown(markdown, model)
 
 	// 🎛️ Generation Controls section
-	builder.H2("🎛️ Generation Controls").LF()
+	markdown.H2("🎛️ Generation Controls").LF()
 
 	// Architecture table (if available)
-	g.writeArchitectureTableToBuilder(builder, model)
+	g.writeArchitectureTableToMarkdown(markdown, model)
 
 	// Model Tags table (if available)
-	g.writeTagsTableToBuilder(builder, model)
+	g.writeTagsTableToMarkdown(markdown, model)
 
 	// Generation Controls tables
-	g.writeControlsTablesToBuilder(builder, model)
+	g.writeControlsTablesToMarkdown(markdown, model)
 
 	// 💰 Pricing section (Provider-specific pricing)
-	builder.H2("💰 Pricing").LF().
+	markdown.H2("💰 Pricing").LF().
 		Italic(fmt.Sprintf("Pricing shown for %s", provider.Name)).LF().LF()
 
 	// Token Pricing Table
-	g.writeTokenPricingTableToBuilder(builder, model)
+	g.writeTokenPricingTableToMarkdown(markdown, model)
 
 	// Operation Pricing Table (if applicable)
-	g.writeOperationPricingTableToBuilder(builder, model)
+	g.writeOperationPricingTableToMarkdown(markdown, model)
 
 	// Cost Calculator and Example Costs
-	g.writeCostCalculatorToBuilder(builder, model)
-	g.writeExampleCostsToBuilder(builder, model)
+	g.writeCostCalculatorToMarkdown(markdown, model)
+	g.writeExampleCostsToMarkdown(markdown, model)
 
 	// Advanced Features section
 	hasAdvancedFeatures := false
-	advancedBuilder := NewMarkdownBuilderBuffer()
-	advancedBuilder.H2("🚀 Advanced Features").LF()
+	markdownBuffer := NewMarkdownBuffer()
+	markdownBuffer.H2("🚀 Advanced Features").LF()
 
 	// Tool configuration
 	if model.Tools != nil && len(model.Tools.ToolChoices) > 0 {
-		advancedBuilder.H3("Tool Configuration").LF()
+		markdownBuffer.H3("Tool Configuration").LF()
 		var choices []string
 		for _, choice := range model.Tools.ToolChoices {
 			choices = append(choices, string(choice))
 		}
-		advancedBuilder.PlainText(fmt.Sprintf("**Supported Tool Choices**: %s", strings.Join(choices, ", "))).LF().LF()
+		markdownBuffer.PlainText(fmt.Sprintf("**Supported Tool Choices**: %s", strings.Join(choices, ", "))).LF().LF()
 		hasAdvancedFeatures = true
 	}
 
 	// Attachments support
 	if model.Attachments != nil {
-		advancedBuilder.H3("File Attachments").LF()
+		markdownBuffer.H3("File Attachments").LF()
 		if len(model.Attachments.MimeTypes) > 0 {
-			advancedBuilder.PlainText(fmt.Sprintf("**Supported Types**: %s", strings.Join(model.Attachments.MimeTypes, ", "))).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Supported Types**: %s", strings.Join(model.Attachments.MimeTypes, ", "))).LF()
 		}
 		if model.Attachments.MaxFileSize != nil {
-			advancedBuilder.PlainText(fmt.Sprintf("**Max File Size**: %s bytes", formatNumber(int(*model.Attachments.MaxFileSize)))).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Max File Size**: %s bytes", formatNumber(int(*model.Attachments.MaxFileSize)))).LF()
 		}
 		if model.Attachments.MaxFiles != nil {
-			advancedBuilder.PlainText(fmt.Sprintf("**Max Files**: %d per request", *model.Attachments.MaxFiles)).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Max Files**: %d per request", *model.Attachments.MaxFiles)).LF()
 		}
-		advancedBuilder.LF()
+		markdownBuffer.LF()
 		hasAdvancedFeatures = true
 	}
 
 	// Delivery options
 	if model.Delivery != nil && (len(model.Delivery.Formats) > 0 || len(model.Delivery.Streaming) > 0 || len(model.Delivery.Protocols) > 0) {
-		advancedBuilder.H3("Response Delivery Options").LF()
+		markdownBuffer.H3("Response Delivery Options").LF()
 		if len(model.Delivery.Formats) > 0 {
 			var formats []string
 			for _, format := range model.Delivery.Formats {
 				formats = append(formats, string(format))
 			}
-			advancedBuilder.PlainText(fmt.Sprintf("**Response Formats**: %s", strings.Join(formats, ", "))).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Response Formats**: %s", strings.Join(formats, ", "))).LF()
 		}
 		if len(model.Delivery.Streaming) > 0 {
 			var streaming []string
 			for _, stream := range model.Delivery.Streaming {
 				streaming = append(streaming, string(stream))
 			}
-			advancedBuilder.PlainText(fmt.Sprintf("**Streaming Modes**: %s", strings.Join(streaming, ", "))).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Streaming Modes**: %s", strings.Join(streaming, ", "))).LF()
 		}
 		if len(model.Delivery.Protocols) > 0 {
 			var protocols []string
 			for _, protocol := range model.Delivery.Protocols {
 				protocols = append(protocols, string(protocol))
 			}
-			advancedBuilder.PlainText(fmt.Sprintf("**Protocols**: %s", strings.Join(protocols, ", "))).LF()
+			markdownBuffer.PlainText(fmt.Sprintf("**Protocols**: %s", strings.Join(protocols, ", "))).LF()
 		}
-		advancedBuilder.LF()
+		markdownBuffer.LF()
 		hasAdvancedFeatures = true
 	}
 
 	if hasAdvancedFeatures {
-		advancedBuilder.Build()
-		builder.PlainText(advancedBuilder.String())
+		markdownBuffer.Build()
+		markdown.PlainText(markdownBuffer.String())
 	}
 
 	// Metadata section
-	builder.H2("📋 Metadata").LF().
+	markdown.H2("📋 Metadata").LF().
 		PlainText(fmt.Sprintf("**Created**: %s", model.CreatedAt.Format("2006-01-02 15:04:05 UTC"))).LF().
 		PlainText(fmt.Sprintf("**Last Updated**: %s", model.UpdatedAt.Format("2006-01-02 15:04:05 UTC"))).LF().LF().
 		PlainText("---").LF().LF()
@@ -841,98 +857,97 @@ func (g *Generator) writeProviderModelPage(w io.Writer, model *catalogs.Model, p
 	navLinks = append(navLinks, crossRefs...)
 
 	// Write navigation section
-	g.writeNavigationSectionToBuilder(builder, "Navigation", navLinks)
+	g.writeNavigationSectionToMarkdown(markdown, "Navigation", navLinks)
 
 	// Use timestamped footer helper
-	g.writeTimestampedFooterToBuilder(builder)
+	g.writeTimestampedFooterToMarkdown(markdown)
 
-	return builder.Build()
+	return markdown.Build()
 }
 
 // Helper methods to write tables and other content to builder
 // These methods would need to be implemented to capture the table output
 // and add it to the builder. For now, they'll use temporary string builders.
 
-func (g *Generator) writeModalityTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeModalityTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeModalityTable(&buf, model)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
-func (g *Generator) writeCoreFeatureTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeCoreFeatureTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeCoreFeatureTable(&buf, model)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
-func (g *Generator) writeResponseDeliveryTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeResponseDeliveryTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeResponseDeliveryTable(&buf, model)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
-func (g *Generator) writeAdvancedReasoningTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeAdvancedReasoningTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeAdvancedReasoningTable(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeArchitectureTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeArchitectureTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeArchitectureTable(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeTagsTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeTagsTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeTagsTable(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeControlsTablesToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeControlsTablesToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeControlsTables(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeTokenPricingTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeTokenPricingTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeTokenPricingTable(&buf, model)
-	builder.PlainText(buf.String())
+	markdown.PlainText(buf.String())
 }
 
-func (g *Generator) writeOperationPricingTableToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeOperationPricingTableToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeOperationPricingTable(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeCostCalculatorToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeCostCalculatorToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeCostCalculator(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
 
-func (g *Generator) writeExampleCostsToBuilder(builder *MarkdownBuilder, model *catalogs.Model) {
+func (g *Generator) writeExampleCostsToMarkdown(markdown *Markdown, model *catalogs.Model) {
 	var buf strings.Builder
 	writeExampleCosts(&buf, model)
 	if buf.Len() > 0 {
-		builder.PlainText(buf.String())
+		markdown.PlainText(buf.String())
 	}
 }
-
 
 // getProviderDescription returns a description for the provider
 func getProviderDescription(provider *catalogs.Provider) string {

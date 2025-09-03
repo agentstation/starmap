@@ -1,5 +1,9 @@
 id: gemini-pro
-name: ""
+name: gemini-pro
+description: "Google Vertex AI model: gemini-pro"
+metadata:
+  release_date: "2025-09-02T21:59:17Z"
+  open_weights: false
 features:
   modalities:
     input:
@@ -7,9 +11,9 @@ features:
     - image
     output:
     - text
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
   reasoning: false
@@ -52,5 +56,5 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
-created_at: "2025-09-02T17:43:30Z"
-updated_at: "2025-09-02T17:43:30Z"
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

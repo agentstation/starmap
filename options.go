@@ -1,6 +1,9 @@
 package starmap
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -34,13 +37,13 @@ type options struct {
 
 func defaultOptions() *options {
 	return &options{
-		autoUpdatesEnabled: true,          // Default to auto-updates enabled
+		autoUpdatesEnabled: true,                            // Default to auto-updates enabled
 		autoUpdateInterval: constants.DefaultUpdateInterval, // Default to hourly updates
-		autoUpdateFunc:     nil,           // Default to no auto-update function
-		initialCatalog:     nil,           // Default to no initial catalog
-		remoteServerURL:    nil,           // Default to no remote server
-		remoteServerAPIKey: nil,           // Default to no remote server API key
-		remoteServerOnly:   false,         // Default to not only use remote server
+		autoUpdateFunc:     nil,                             // Default to no auto-update function
+		initialCatalog:     nil,                             // Default to no initial catalog
+		remoteServerURL:    nil,                             // Default to no remote server
+		remoteServerAPIKey: nil,                             // Default to no remote server API key
+		remoteServerOnly:   false,                           // Default to not only use remote server
 	}
 }
 
@@ -132,14 +135,16 @@ type SyncOptions struct {
 	Timeout     time.Duration // Timeout for the entire sync operation
 
 	// Source selection
-	Sources    []sources.SourceName // Which sources to use (empty means all)
+	Sources    []sources.Type       // Which sources to use (empty means all)
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
 	// Output control (used AFTER merging)
 	OutputPath string // Where to save final catalog (empty means default location)
 
-	// Context for passing to sources
-	Context map[string]any // For passing data to sources
+	// Source behavior control
+	Fresh              bool // Delete existing models and fetch fresh from APIs (destructive)
+	CleanModelsDevRepo bool // Remove temporary models.dev repository after update
+	Reformat           bool // Reformat providers.yaml file even without changes
 }
 
 // Apply applies the given options to the sync options
@@ -153,14 +158,16 @@ func (s *SyncOptions) apply(opts ...SyncOption) *SyncOptions {
 // defaultSyncOptions returns sync options with default values
 func defaultSyncOptions() *SyncOptions {
 	return &SyncOptions{
-		DryRun:      false,
-		AutoApprove: false,
-		FailFast:    false,
-		Timeout:     0,
-		Sources:     nil,
-		ProviderID:  nil,
-		OutputPath:  "",
-		Context:     make(map[string]any),
+		DryRun:             false,
+		AutoApprove:        false,
+		FailFast:           false,
+		Timeout:            0,
+		Sources:            nil,
+		ProviderID:         nil,
+		OutputPath:         "",
+		Fresh:              false,
+		CleanModelsDevRepo: false,
+		Reformat:           false,
 	}
 }
 
@@ -171,6 +178,67 @@ func NewSyncOptions(opts ...SyncOption) *SyncOptions {
 
 // SyncOption is a function that configures SyncOptions
 type SyncOption func(*SyncOptions)
+
+// Validate checks if the sync options are valid
+func (opts *SyncOptions) Validate(providers *catalogs.Providers) error {
+	// Validate timeout
+	if opts.Timeout < 0 {
+		return &errors.ValidationError{
+			Field:   "Timeout",
+			Value:   opts.Timeout,
+			Message: "timeout must be non-negative",
+		}
+	}
+
+	// Validate provider ID if specified
+	if opts.ProviderID != nil {
+		_, found := providers.Get(*opts.ProviderID)
+		if !found {
+			return &errors.ValidationError{
+				Field:   "ProviderID",
+				Value:   *opts.ProviderID,
+				Message: fmt.Sprintf("provider '%s' not found", *opts.ProviderID),
+			}
+		}
+	}
+
+	// Validate output path if specified
+	if opts.OutputPath != "" {
+		// Check if parent directory exists
+		dir := filepath.Dir(opts.OutputPath)
+		if dir != "." && dir != "/" {
+			if _, err := os.Stat(dir); os.IsNotExist(err) {
+				return &errors.ValidationError{
+					Field:   "OutputPath",
+					Value:   opts.OutputPath,
+					Message: fmt.Sprintf("output directory '%s' does not exist", dir),
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceOptions converts sync options to properly typed source options
+func (opts *SyncOptions) SourceOptions() []sources.Option {
+	var sourceOpts []sources.Option
+
+	if opts.ProviderID != nil {
+		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*opts.ProviderID))
+	}
+	if opts.Fresh {
+		sourceOpts = append(sourceOpts, sources.WithFresh(true))
+	}
+	if opts.CleanModelsDevRepo {
+		sourceOpts = append(sourceOpts, sources.WithCleanupRepo(true))
+	}
+	if opts.Reformat {
+		sourceOpts = append(sourceOpts, sources.WithReformat(true))
+	}
+
+	return sourceOpts
+}
 
 // WithDryRun configures dry run mode
 func WithDryRun(dryRun bool) SyncOption {
@@ -201,9 +269,9 @@ func WithTimeout(timeout time.Duration) SyncOption {
 }
 
 // WithSources configures which sources to use
-func WithSources(sourceNames ...sources.SourceName) SyncOption {
+func WithSources(types ...sources.Type) SyncOption {
 	return func(opts *SyncOptions) {
-		opts.Sources = sourceNames
+		opts.Sources = types
 	}
 }
 
@@ -221,12 +289,23 @@ func WithOutputPath(path string) SyncOption {
 	}
 }
 
-// WithContext adds context data for sources
-func WithContext(key string, value any) SyncOption {
+// WithFresh configures whether to delete existing models and fetch fresh from APIs
+func WithFresh(fresh bool) SyncOption {
 	return func(opts *SyncOptions) {
-		if opts.Context == nil {
-			opts.Context = make(map[string]any)
-		}
-		opts.Context[key] = value
+		opts.Fresh = fresh
+	}
+}
+
+// WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update
+func WithCleanModelsDevRepo(cleanup bool) SyncOption {
+	return func(opts *SyncOptions) {
+		opts.CleanModelsDevRepo = cleanup
+	}
+}
+
+// WithReformat configures whether to reformat providers.yaml file even without changes
+func WithReformat(reformat bool) SyncOption {
+	return func(opts *SyncOptions) {
+		opts.Reformat = reformat
 	}
 }

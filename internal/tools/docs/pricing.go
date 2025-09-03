@@ -10,11 +10,11 @@ import (
 )
 
 // formatTokenPricing formats token-based pricing
-func formatTokenPricing(tokens *catalogs.TokenPricing) string {
+func formatTokenPricing(tokens *catalogs.ModelTokenPricing) string {
 	if tokens == nil {
 		return ""
 	}
-	
+
 	var parts []string
 
 	parts = append(parts, "**Token Pricing:**")
@@ -82,7 +82,7 @@ func formatTokenPricing(tokens *catalogs.TokenPricing) string {
 }
 
 // formatTokenPrice formats a single token price entry
-func formatTokenPrice(price *catalogs.TokenCost, label string) string {
+func formatTokenPrice(price *catalogs.ModelTokenCost, label string) string {
 	var priceStrs []string
 
 	if price.Per1M > 0 {
@@ -103,11 +103,11 @@ func formatTokenPrice(price *catalogs.TokenCost, label string) string {
 }
 
 // formatOperationPricing formats operation-based pricing
-func formatOperationPricing(operations *catalogs.OperationPricing) string {
+func formatOperationPricing(operations *catalogs.ModelOperationPricing) string {
 	if operations == nil {
 		return ""
 	}
-	
+
 	var parts []string
 
 	parts = append(parts, "**Operation Pricing:**")
@@ -177,16 +177,16 @@ func writeCostCalculator(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
 	}
-	
+
 	tokens := model.Pricing.Tokens
 	if tokens.Input == nil || tokens.Output == nil {
 		return
 	}
-	
-	builder := NewMarkdownBuilder(w)
-	builder.H3("💰 Cost Calculator").LF()
-	builder.PlainText("Calculate costs for common usage patterns:").LF().LF()
-	
+
+	markdown := NewMarkdown(w)
+	markdown.H3("💰 Cost Calculator").LF()
+	markdown.PlainText("Calculate costs for common usage patterns:").LF().LF()
+
 	// Define common workloads
 	workloads := []struct {
 		name         string
@@ -198,13 +198,13 @@ func writeCostCalculator(w io.Writer, model *catalogs.Model) {
 		{"RAG query (50K in, 2K out)", 50000, 2000},
 		{"Code generation (5K in, 10K out)", 5000, 10000},
 	}
-	
+
 	rows := [][]string{}
 	for _, w := range workloads {
 		inputCost := (float64(w.inputTokens) / 1000000) * tokens.Input.Per1M
 		outputCost := (float64(w.outputTokens) / 1000000) * tokens.Output.Per1M
 		totalCost := inputCost + outputCost
-		
+
 		rows = append(rows, []string{
 			w.name,
 			fmt.Sprintf("%s tokens", formatNumber(w.inputTokens)),
@@ -212,29 +212,29 @@ func writeCostCalculator(w io.Writer, model *catalogs.Model) {
 			formatPrice(totalCost),
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Use Case", "Input", "Output", "Total Cost"},
 		Rows:   rows,
 	}).LF()
-	
+
 	// Add pricing formula
-	builder.Bold("Pricing Formula:").LF()
-	
+	markdown.Bold("Pricing Formula:").LF()
+
 	var formulaLines []string
 	formulaLines = append(formulaLines, fmt.Sprintf("Cost = (Input Tokens / 1M × $%.2f) + (Output Tokens / 1M × $%.2f)",
 		tokens.Input.Per1M, tokens.Output.Per1M))
-	
+
 	if tokens.CacheRead != nil && tokens.CacheRead.Per1M > 0 {
 		formulaLines = append(formulaLines, fmt.Sprintf("Cached Input Cost = Input Tokens / 1M × $%.2f", tokens.CacheRead.Per1M))
 	}
-	
+
 	if tokens.Reasoning != nil && tokens.Reasoning.Per1M > 0 {
 		formulaLines = append(formulaLines, fmt.Sprintf("Reasoning Cost = Reasoning Tokens / 1M × $%.2f", tokens.Reasoning.Per1M))
 	}
-	
-	builder.CodeBlock("", strings.Join(formulaLines, "\n")).LF()
-	builder.Build()
+
+	markdown.CodeBlock("", strings.Join(formulaLines, "\n")).LF()
+	markdown.Build()
 }
 
 // writeExampleCosts writes example costs for common scenarios
@@ -242,28 +242,28 @@ func writeExampleCosts(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
 	}
-	
+
 	tokens := model.Pricing.Tokens
 	if tokens.Input == nil || tokens.Output == nil {
 		return
 	}
-	
-	builder := NewMarkdownBuilder(w)
-	builder.H3("📊 Example Costs").LF()
-	builder.PlainText("Real-world usage examples and their costs:").LF().LF()
-	
+
+	markdown := NewMarkdown(w)
+	markdown.H3("📊 Example Costs").LF()
+	markdown.PlainText("Real-world usage examples and their costs:").LF().LF()
+
 	// Calculate costs for different volumes
 	volumes := []struct {
-		name        string
-		dailyChats  int
-		avgInput    int
-		avgOutput   int
+		name       string
+		dailyChats int
+		avgInput   int
+		avgOutput  int
 	}{
 		{"Personal (10 chats/day)", 10, 1500, 750},
 		{"Small Team (100 chats/day)", 100, 2000, 1000},
 		{"Enterprise (1000 chats/day)", 1000, 3000, 1500},
 	}
-	
+
 	rows := [][]string{}
 	for _, v := range volumes {
 		dailyInputTokens := v.dailyChats * v.avgInput
@@ -271,11 +271,11 @@ func writeExampleCosts(w io.Writer, model *catalogs.Model) {
 		monthlyInputTokens := dailyInputTokens * 30
 		monthlyOutputTokens := dailyOutputTokens * 30
 		totalMonthlyTokens := monthlyInputTokens + monthlyOutputTokens
-		
+
 		monthlyInputCost := (float64(monthlyInputTokens) / 1000000) * tokens.Input.Per1M
 		monthlyOutputCost := (float64(monthlyOutputTokens) / 1000000) * tokens.Output.Per1M
 		monthlyTotalCost := monthlyInputCost + monthlyOutputCost
-		
+
 		rows = append(rows, []string{
 			v.name,
 			fmt.Sprintf("%d chats", v.dailyChats),
@@ -283,11 +283,11 @@ func writeExampleCosts(w io.Writer, model *catalogs.Model) {
 			formatPrice(monthlyTotalCost),
 		})
 	}
-	
-	builder.Table(md.TableSet{
+
+	markdown.Table(md.TableSet{
 		Header: []string{"Usage Tier", "Daily Volume", "Monthly Tokens", "Monthly Cost"},
 		Rows:   rows,
 	}).LF()
-	
-	builder.Build()
+
+	markdown.Build()
 }

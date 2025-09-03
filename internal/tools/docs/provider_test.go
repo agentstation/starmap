@@ -152,8 +152,8 @@ func TestGenerateProviderModelPage(t *testing.T) {
 	provider, found := catalog.Providers().Get(catalogs.ProviderIDOpenAI)
 	require.True(t, found)
 
-	model, found := catalog.Models().Get("gpt-4")
-	require.True(t, found)
+	model, err := catalog.FindModel("gpt-4")
+	require.NoError(t, err)
 
 	// Get author map
 	authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
@@ -163,7 +163,7 @@ func TestGenerateProviderModelPage(t *testing.T) {
 
 	// Generate the model page
 	modelPath := filepath.Join(tempDir, "gpt-4.md")
-	err := g.generateProviderModelPage(modelPath, model, provider, authorMap)
+	err = g.generateProviderModelPage(modelPath, &model, provider, authorMap)
 	require.NoError(t, err)
 
 	// Check that the file was created
@@ -289,26 +289,11 @@ func TestGroupModelsByFamily(t *testing.T) {
 	assert.Len(t, result["Llama"], 1)
 }
 
-// TestCompactFeatures is already defined in utils_test.go
-
 // Helper functions
-
-func intPtr(i int) *int {
-	return &i
-}
-
-func int64Ptr(i int64) *int64 {
-	return &i
-}
-
-func boolPtr(b bool) *bool {
-	return &b
-}
-
-func durationPtr(d time.Duration) *time.Duration {
-	return &d
-}
-
+func intPtr(i int) *int                          { return &i }
+func int64Ptr(i int64) *int64                    { return &i }
+func boolPtr(b bool) *bool                       { return &b }
+func durationPtr(d time.Duration) *time.Duration { return &d }
 
 // Helper function to create test catalog with providers
 func createTestCatalogWithProviders() catalogs.Reader {
@@ -328,11 +313,9 @@ func createTestCatalogWithProviders() catalogs.Reader {
 
 	// Add models
 	gpt4 := catalogs.Model{
-		ID:   "gpt-4",
-		Name: "GPT-4",
-		Authors: []catalogs.Author{
-			{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"},
-		},
+		ID:      "gpt-4",
+		Name:    "GPT-4",
+		Authors: []catalogs.Author{{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"}},
 		Features: &catalogs.ModelFeatures{
 			Modalities: catalogs.ModelModalities{
 				Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
@@ -346,13 +329,9 @@ func createTestCatalogWithProviders() catalogs.Reader {
 			OutputTokens:  4096,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
-					Per1M: 30.0,
-				},
-				Output: &catalogs.TokenCost{
-					Per1M: 60.0,
-				},
+			Tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 30.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 60.0},
 			},
 		},
 	}
@@ -376,19 +355,12 @@ func createTestCatalogWithProviders() catalogs.Reader {
 			OutputTokens:  4096,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
-					Per1M: 15.0,
-				},
-				Output: &catalogs.TokenCost{
-					Per1M: 75.0,
-				},
+			Tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 15.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 75.0},
 			},
 		},
 	}
-
-	catalog.SetModel(gpt4)
-	catalog.SetModel(claude)
 
 	// Add providers with models
 	openaiProvider := catalogs.Provider{
@@ -397,7 +369,6 @@ func createTestCatalogWithProviders() catalogs.Reader {
 		Models: map[string]catalogs.Model{
 			"gpt-4": gpt4,
 		},
-		// APIKey field removed or changed in catalogs package
 	}
 
 	anthropicProvider := catalogs.Provider{
@@ -406,7 +377,6 @@ func createTestCatalogWithProviders() catalogs.Reader {
 		Models: map[string]catalogs.Model{
 			"claude-3-opus": claude,
 		},
-		// APIKey field removed or changed in catalogs package
 	}
 
 	catalog.SetProvider(openaiProvider)
@@ -448,9 +418,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 					Header: "Authorization",
 					Scheme: "Bearer",
 				},
-				EnvVars: []catalogs.ProviderEnvVar{
-					{Name: "OPENAI_API_KEY"},
-				},
+				EnvVars: []catalogs.ProviderEnvVar{{Name: "OPENAI_API_KEY"}},
 			},
 			verify: func(t *testing.T, content string) {
 				assert.Contains(t, content, "## Configuration")
@@ -655,23 +623,18 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tempDir := t.TempDir()
 			catalog, _ := catalogs.New()
-			
-			// Add the provider to catalog
+
+			// Add the provider to catalog (it already has models in its Models map)
 			catalog.SetProvider(*tt.provider)
-			
-			// Add any models to catalog
-			for _, model := range tt.provider.Models {
-				catalog.SetModel(model)
-			}
-			
+
 			g := New()
 			err := g.generateProviderReadme(tempDir, tt.provider, catalog)
 			require.NoError(t, err)
-			
+
 			// Read and verify content
 			content, err := os.ReadFile(filepath.Join(tempDir, "README.md"))
 			require.NoError(t, err)
-			
+
 			tt.verify(t, string(content))
 		})
 	}
@@ -680,7 +643,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 func TestGenerateProviderIndexWithVariousProviders(t *testing.T) {
 	tempDir := t.TempDir()
 	catalog, _ := catalogs.New()
-	
+
 	// Add various types of providers
 	providers := []*catalogs.Provider{
 		{
@@ -710,30 +673,28 @@ func TestGenerateProviderIndexWithVariousProviders(t *testing.T) {
 			Models: map[string]catalogs.Model{},
 		},
 	}
-	
+
 	for _, p := range providers {
+		// Provider already has models in its Models map
 		catalog.SetProvider(*p)
-		for _, m := range p.Models {
-			catalog.SetModel(m)
-		}
 	}
-	
+
 	g := New()
 	err := g.generateProviderIndex(tempDir, providers)
 	require.NoError(t, err)
-	
+
 	content, err := os.ReadFile(filepath.Join(tempDir, "README.md"))
 	require.NoError(t, err)
 	contentStr := string(content)
-	
+
 	// Verify all providers are listed
 	assert.Contains(t, contentStr, "OpenAI")
 	assert.Contains(t, contentStr, "Groq")
 	assert.Contains(t, contentStr, "Cerebras")
-	
+
 	// Verify status page links
 	assert.Contains(t, contentStr, "[Status](https://status.openai.com)")
-	
+
 	// Verify provider names appear in table
 	assert.Contains(t, contentStr, "OpenAI")
 	assert.Contains(t, contentStr, "Groq")
@@ -744,7 +705,7 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 	tempDir := t.TempDir()
 	catalog, _ := catalogs.New()
 	g := New()
-	
+
 	// Create a complex model with all features
 	complexModel := catalogs.Model{
 		ID:   "complex-model",
@@ -773,18 +734,18 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 			OutputTokens:  8192,
 		},
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input: &catalogs.TokenCost{
+			Tokens: &catalogs.ModelTokenPricing{
+				Input: &catalogs.ModelTokenCost{
 					Per1M: 15.0,
 				},
-				Output: &catalogs.TokenCost{
+				Output: &catalogs.ModelTokenCost{
 					Per1M: 60.0,
 				},
-				Cache: &catalogs.TokenCachePricing{
-					Write: &catalogs.TokenCost{
+				Cache: &catalogs.ModelTokenCachePricing{
+					Write: &catalogs.ModelTokenCost{
 						Per1M: 3.75,
 					},
-					Read: &catalogs.TokenCost{
+					Read: &catalogs.ModelTokenCost{
 						Per1M: 1.5,
 					},
 				},
@@ -797,35 +758,33 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 			Tags:        []catalogs.ModelTag{"multimodal", "enterprise", "research"},
 		},
 	}
-	
+
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
 		Models: map[string]catalogs.Model{
-			"complex-model": complexModel,
+			complexModel.ID: complexModel,
 		},
 	}
-	
-	// Add to catalog
-	catalog.SetModel(complexModel)
+
 	catalog.SetProvider(provider)
 	catalog.SetAuthor(catalogs.Author{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"})
 	catalog.SetAuthor(catalogs.Author{ID: catalogs.AuthorIDAnthropic, Name: "Anthropic"})
-	
+
 	// Create author map
 	authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 	for _, author := range catalog.Authors().List() {
 		authorMap[author.ID] = author
 	}
-	
+
 	modelPath := filepath.Join(tempDir, "complex-model.md")
 	err := g.generateProviderModelPage(modelPath, &complexModel, &provider, authorMap)
 	require.NoError(t, err)
-	
+
 	content, err := os.ReadFile(modelPath)
 	require.NoError(t, err)
 	contentStr := string(content)
-	
+
 	// Verify all features are documented
 	assert.Contains(t, contentStr, "Complex Model")
 	assert.Contains(t, contentStr, "OpenAI") // Authors are linked separately
@@ -836,18 +795,18 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 	assert.Contains(t, contentStr, "web")
 	assert.Contains(t, contentStr, "attachments")
 	assert.Contains(t, contentStr, "reasoning")
-	
+
 	// Verify pricing details
 	assert.Contains(t, contentStr, "$15.00")
 	assert.Contains(t, contentStr, "$60.00")
 	assert.Contains(t, contentStr, "Cache")
 	assert.Contains(t, contentStr, "$3.75")
 	assert.Contains(t, contentStr, "$1.50")
-	
+
 	// Verify limits - formatted as 200k, 8k
 	assert.Contains(t, contentStr, "200k")
 	assert.Contains(t, contentStr, "8k")
-	
+
 	// Verify metadata - check for tag
 	assert.Contains(t, contentStr, "Multimodal")
 }
@@ -856,19 +815,19 @@ func TestGenerateProviderDocsWithEmptyCatalog(t *testing.T) {
 	tempDir := t.TempDir()
 	catalog, _ := catalogs.New()
 	g := New(WithOutputDir(tempDir))
-	
+
 	// Try to generate with empty catalog
 	err := g.generateProviderDocs(filepath.Join(tempDir, "catalog", "providers"), catalog)
 	require.NoError(t, err)
-	
+
 	// Should create directory structure even with no providers
 	assert.DirExists(t, filepath.Join(tempDir, "catalog", "providers"))
 	assert.FileExists(t, filepath.Join(tempDir, "catalog", "providers", "README.md"))
-	
+
 	// Read index content
 	content, err := os.ReadFile(filepath.Join(tempDir, "catalog", "providers", "README.md"))
 	require.NoError(t, err)
-	
+
 	// Should have basic structure
 	assert.Contains(t, string(content), "# 🏢 AI Model Providers")
 }
@@ -878,20 +837,20 @@ func TestGenerateProviderModelPagesWithNoModels(t *testing.T) {
 	modelsDir := filepath.Join(tempDir, "models")
 	catalog, _ := catalogs.New()
 	g := New()
-	
+
 	// Provider with no models
 	provider := catalogs.Provider{
 		ID:     catalogs.ProviderIDGroq,
 		Name:   "Groq",
 		Models: map[string]catalogs.Model{},
 	}
-	
+
 	catalog.SetProvider(provider)
-	
+
 	// Should not error even with no models
 	err := g.generateProviderModelPages(modelsDir, &provider, catalog)
 	require.NoError(t, err)
-	
+
 	// Models directory might not be created if no models
 	// Just check that no error occurred
 }
@@ -899,8 +858,8 @@ func TestGenerateProviderModelPagesWithNoModels(t *testing.T) {
 // TestGenerateProviderReadmeEdgeCases tests edge cases for generateProviderReadme
 func TestGenerateProviderReadmeEdgeCases(t *testing.T) {
 	tests := []struct {
-		name    string
-		provider *catalogs.Provider  
+		name     string
+		provider *catalogs.Provider
 		contains []string
 	}{
 		{
@@ -993,9 +952,9 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 		checkFunc func(t *testing.T, outputDir string)
 	}{
 		{
-			name: "empty provider list",
+			name:      "empty provider list",
 			providers: []catalogs.Provider{},
-			models: []catalogs.Model{},
+			models:    []catalogs.Model{},
 			checkFunc: func(t *testing.T, outputDir string) {
 				// Index should still be created
 				indexPath := filepath.Join(outputDir, "README.md")
@@ -1061,15 +1020,19 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 			catalog, err := catalogs.New()
 			require.NoError(t, err)
 
-			// Add providers
-			for _, provider := range tt.providers {
+			// Add providers with models
+			for i, provider := range tt.providers {
+				// Add models to the provider
+				if provider.Models == nil {
+					provider.Models = make(map[string]catalogs.Model)
+				}
+				// Distribute models among providers
+				for j, model := range tt.models {
+					if j%len(tt.providers) == i {
+						provider.Models[model.ID] = model
+					}
+				}
 				err := catalog.SetProvider(provider)
-				require.NoError(t, err)
-			}
-
-			// Add models
-			for _, model := range tt.models {
-				err := catalog.SetModel(model)
 				require.NoError(t, err)
 			}
 
@@ -1145,9 +1108,9 @@ func TestGenerateVerboseMode(t *testing.T) {
 // TestGenerateProviderModelPageComplex tests generateProviderModelPage with complex scenarios
 func TestGenerateProviderModelPageComplex(t *testing.T) {
 	tests := []struct {
-		name    string
+		name     string
 		provider *catalogs.Provider
-		model   *catalogs.Model
+		model    *catalogs.Model
 		contains []string
 	}{
 		{
@@ -1157,8 +1120,8 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 				Name: "Test Provider",
 			},
 			model: &catalogs.Model{
-				ID:   "model-1",
-				Name: "Model 1",
+				ID:          "model-1",
+				Name:        "Model 1",
 				Description: "A test model with all features",
 				Features: &catalogs.ModelFeatures{
 					Tools:     true,
@@ -1197,9 +1160,9 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 				ID:   "priced-model",
 				Name: "Priced Model",
 				Pricing: &catalogs.ModelPricing{
-					Tokens: &catalogs.TokenPricing{
-						Input:  &catalogs.TokenCost{Per1M: 1.0},
-						Output: &catalogs.TokenCost{Per1M: 2.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:  &catalogs.ModelTokenCost{Per1M: 1.0},
+						Output: &catalogs.ModelTokenCost{Per1M: 2.0},
 					},
 				},
 			},
@@ -1377,8 +1340,12 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			// Add model
-			err = catalog.SetModel(*tt.model)
+			// Add model to provider
+			if tt.provider.Models == nil {
+				tt.provider.Models = make(map[string]catalogs.Model)
+			}
+			tt.provider.Models[tt.model.ID] = *tt.model
+			err = catalog.SetProvider(*tt.provider)
 			require.NoError(t, err)
 
 			// Create generator
@@ -1398,7 +1365,7 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 
 			// Check file exists and contains expected content
 			assert.FileExists(t, modelPath)
-			
+
 			content, err := os.ReadFile(modelPath)
 			require.NoError(t, err)
 			contentStr := string(content)
@@ -1413,9 +1380,9 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 // TestGenerateProviderModelPageEdgeCases tests edge cases for provider model pages
 func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 	tests := []struct {
-		name    string
+		name     string
 		provider *catalogs.Provider
-		model   *catalogs.Model
+		model    *catalogs.Model
 		contains []string
 	}{
 		{
@@ -1470,8 +1437,12 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 			err = catalog.SetProvider(*tt.provider)
 			require.NoError(t, err)
 
-			// Add model
-			err = catalog.SetModel(*tt.model)
+			// Add model to provider
+			if tt.provider.Models == nil {
+				tt.provider.Models = make(map[string]catalogs.Model)
+			}
+			tt.provider.Models[tt.model.ID] = *tt.model
+			err = catalog.SetProvider(*tt.provider)
 			require.NoError(t, err)
 
 			// Create generator
@@ -1491,7 +1462,7 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 
 			// Check file exists and contains expected content
 			assert.FileExists(t, modelPath)
-			
+
 			content, err := os.ReadFile(modelPath)
 			require.NoError(t, err)
 			contentStr := string(content)
@@ -1507,50 +1478,50 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 func TestGenerateProviderDocsErrorHandling(t *testing.T) {
 	t.Run("directory creation failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
-		
+
 		// Make directory read-only to prevent subdirectory creation
 		err := os.Chmod(tmpDir, 0555)
 		require.NoError(t, err)
 		defer os.Chmod(tmpDir, 0755)
-		
+
 		catalog, _ := catalogs.New()
 		provider := &catalogs.Provider{
 			ID:   "test",
 			Name: "Test Provider",
 		}
 		catalog.SetProvider(*provider)
-		
+
 		gen := &Generator{
 			outputDir: tmpDir,
 		}
-		
+
 		err = gen.generateProviderDocs(tmpDir, catalog)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "permission denied")
 	})
-	
+
 	t.Run("readme write failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
 		providerDir := filepath.Join(tmpDir, "providers", "test")
 		err := os.MkdirAll(providerDir, 0755)
 		require.NoError(t, err)
-		
+
 		// Create README.md as directory to cause write failure
 		readmeFile := filepath.Join(providerDir, "README.md")
 		err = os.Mkdir(readmeFile, 0755)
 		require.NoError(t, err)
-		
+
 		catalog, _ := catalogs.New()
 		provider := &catalogs.Provider{
 			ID:   "test",
 			Name: "Test Provider",
 		}
 		catalog.SetProvider(*provider)
-		
+
 		gen := &Generator{
 			outputDir: tmpDir,
 		}
-		
+
 		err = gen.generateProviderReadme(providerDir, provider, catalog)
 		assert.Error(t, err)
 	})
@@ -1560,11 +1531,11 @@ func TestGenerateProviderModelPageErrors(t *testing.T) {
 	t.Run("write failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
 		modelsDir := filepath.Join(tmpDir, "models")
-		
+
 		// Create a file where the model file would be written
 		err := os.MkdirAll(modelsDir, 0755)
 		require.NoError(t, err)
-		
+
 		// Make directory read-only
 		err = os.Chmod(modelsDir, 0555)
 		require.NoError(t, err)
@@ -1573,18 +1544,20 @@ func TestGenerateProviderModelPageErrors(t *testing.T) {
 		catalog, err := catalogs.New()
 		require.NoError(t, err)
 
-		provider := &catalogs.Provider{
-			ID:   "test",
-			Name: "Test",
-		}
 		model := &catalogs.Model{
 			ID:   "test-model",
 			Name: "Test Model",
 		}
 
+		provider := &catalogs.Provider{
+			ID:   "test",
+			Name: "Test",
+			Models: map[string]catalogs.Model{
+				model.ID: *model,
+			},
+		}
+
 		err = catalog.SetProvider(*provider)
-		require.NoError(t, err)
-		err = catalog.SetModel(*model)
 		require.NoError(t, err)
 
 		gen := &Generator{

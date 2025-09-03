@@ -1,0 +1,10 @@
+id: openai/o1
+name: OpenAI o1
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 200000
+  output_tokens: 100000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

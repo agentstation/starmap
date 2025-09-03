@@ -1,0 +1,10 @@
+id: qwen/qwen2.5-vl-32b-instruct:free
+name: Qwen2.5 VL 32B Instruct (free)
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 8192
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

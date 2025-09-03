@@ -1,0 +1,10 @@
+id: mistral-7b-instruct-v0.2
+name: "@hf/mistral/mistral-7b-instruct-v0.2"
+pricing:
+  tokens: {}
+  currency: USD
+limits:
+  context_window: 3072
+  output_tokens: 3072
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

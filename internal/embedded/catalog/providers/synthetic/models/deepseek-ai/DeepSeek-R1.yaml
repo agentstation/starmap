@@ -1,0 +1,14 @@
+id: deepseek-ai/DeepSeek-R1
+name: DeepSeek R1
+pricing:
+  tokens:
+    input:
+      per_1m: 0.55
+    output:
+      per_1m: 2.19
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 128000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

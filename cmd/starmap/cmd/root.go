@@ -35,10 +35,10 @@ when API keys are configured.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
 	// Set up context with signal handling for graceful shutdown
-	ctx, cancel := signal.NotifyContext(context.Background(), 
+	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
-	
+
 	// Pass context to root command
 	err := rootCmd.ExecuteContext(ctx)
 	if err != nil {
@@ -91,7 +91,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil && verbose {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
-	
+
 	// Configure logging based on verbose flag and environment
 	configureLogging()
 }
@@ -108,7 +108,7 @@ func configureLogging() {
 			level = parsed
 		}
 	}
-	
+
 	// Configure the logger
 	config := &logging.Config{
 		Level:     level.String(),
@@ -116,7 +116,7 @@ func configureLogging() {
 		Output:    os.Getenv("LOG_OUTPUT"),
 		AddCaller: level <= zerolog.DebugLevel,
 	}
-	
+
 	// Use auto format detection if not specified
 	if config.Format == "" {
 		config.Format = "auto"
@@ -124,7 +124,7 @@ func configureLogging() {
 	if config.Output == "" {
 		config.Output = "stderr"
 	}
-	
+
 	logging.Configure(config)
 }
 

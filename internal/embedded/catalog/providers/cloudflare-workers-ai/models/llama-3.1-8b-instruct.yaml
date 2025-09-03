@@ -1,0 +1,14 @@
+id: llama-3.1-8b-instruct
+name: "@cf/meta/llama-3.1-8b-instruct"
+pricing:
+  tokens:
+    input:
+      per_1m: 0.28
+    output:
+      per_1m: 0.83
+  currency: USD
+limits:
+  context_window: 7968
+  output_tokens: 7968
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

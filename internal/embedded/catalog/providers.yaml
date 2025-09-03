@@ -1,3 +1,11 @@
+# alibaba
+- id: alibaba
+  name: alibaba
+
+# amazon-bedrock
+- id: amazon-bedrock
+  name: amazon-bedrock
+
 # Anthropic
 - id: anthropic
   name: Anthropic
@@ -33,6 +41,10 @@
     moderation_required: false
     moderated: true
     moderator: anthropic
+
+# azure
+- id: azure
+  name: azure
 
 # Cerebras
 - id: cerebras
@@ -92,6 +104,18 @@
     moderated: true
     moderator: cerebras
 
+# chutes
+- id: chutes
+  name: chutes
+
+# cloudflare-workers-ai
+- id: cloudflare-workers-ai
+  name: cloudflare-workers-ai
+
+# deepinfra
+- id: deepinfra
+  name: deepinfra
+
 # DeepSeek
 - id: deepseek
   name: DeepSeek
@@ -128,6 +152,26 @@
     moderation_required: false
     moderated: true
     moderator: deepseek
+
+# fastrouter
+- id: fastrouter
+  name: fastrouter
+
+# fireworks-ai
+- id: fireworks-ai
+  name: fireworks-ai
+
+# github-copilot
+- id: github-copilot
+  name: github-copilot
+
+# github-models
+- id: github-models
+  name: github-models
+
+# google
+- id: google
+  name: google
 
 # Google AI Studio
 - id: google-ai-studio
@@ -206,6 +250,10 @@
     moderated: true
     moderator: google-vertex
 
+# google-vertex-anthropic
+- id: google-vertex-anthropic
+  name: google-vertex-anthropic
+
 # Groq
 - id: groq
   name: Groq
@@ -253,6 +301,46 @@
     moderated: true
     moderator: groq
 
+# huggingface
+- id: huggingface
+  name: huggingface
+
+# inception
+- id: inception
+  name: inception
+
+# inference
+- id: inference
+  name: inference
+
+# llama
+- id: llama
+  name: llama
+
+# lmstudio
+- id: lmstudio
+  name: lmstudio
+
+# mistral
+- id: mistral
+  name: mistral
+
+# modelscope
+- id: modelscope
+  name: modelscope
+
+# moonshotai
+- id: moonshotai
+  name: moonshotai
+
+# moonshotai-cn
+- id: moonshotai-cn
+  name: moonshotai-cn
+
+# morph
+- id: morph
+  name: morph
+
 # OpenAI
 - id: openai
   name: OpenAI
@@ -288,3 +376,59 @@
     moderation_required: false
     moderated: true
     moderator: openai
+
+# opencode
+- id: opencode
+  name: opencode
+
+# openrouter
+- id: openrouter
+  name: openrouter
+
+# requesty
+- id: requesty
+  name: requesty
+
+# submodel
+- id: submodel
+  name: submodel
+
+# synthetic
+- id: synthetic
+  name: synthetic
+
+# togetherai
+- id: togetherai
+  name: togetherai
+
+# upstage
+- id: upstage
+  name: upstage
+
+# v0
+- id: v0
+  name: v0
+
+# venice
+- id: venice
+  name: venice
+
+# vercel
+- id: vercel
+  name: vercel
+
+# wandb
+- id: wandb
+  name: wandb
+
+# xai
+- id: xai
+  name: xai
+
+# zai
+- id: zai
+  name: zai
+
+# zhipuai
+- id: zhipuai
+  name: zhipuai

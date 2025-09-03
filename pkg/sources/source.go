@@ -10,7 +10,7 @@
 //
 //	// Create a provider fetcher
 //	fetcher := NewProviderFetcher()
-//	
+//
 //	// Fetch models from a provider
 //	models, err := fetcher.FetchModels(ctx, provider)
 //	if err != nil {
@@ -29,34 +29,46 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// SourceName represents the name/type of a data source
-type SourceName string
+// Type represents the type/name of a data source
+type Type string
 
 // String returns the string representation of a source name
-func (sn SourceName) String() string {
+func (sn Type) String() string {
 	return string(sn)
 }
 
 // Common source names
 const (
-	ProviderAPI   SourceName = "Provider APIs"
-	ModelsDevGit  SourceName = "models.dev (git)"
-	ModelsDevHTTP SourceName = "models.dev (http)"
-	LocalCatalog  SourceName = "Local Catalog"
+	ProviderAPI   Type = "Provider APIs"
+	ModelsDevGit  Type = "models.dev (git)"
+	ModelsDevHTTP Type = "models.dev (http)"
+	LocalCatalog  Type = "Local Catalog"
 )
 
 // Source represents a data source for catalog information
 type Source interface {
-	// Name returns the name of this source
-	Name() SourceName
+	// Type returns the type of this source
+	Type() Type
 
 	// Setup initializes the source with dependencies (called once before Fetch)
 	Setup(providers *catalogs.Providers) error
 
 	// Fetch retrieves data from this source
 	// Sources handle their own concurrency internally
-	Fetch(ctx context.Context, opts ...SourceOption) (catalogs.Catalog, error)
+	Fetch(ctx context.Context, opts ...Option) error
+
+	// Catalog returns the catalog of this source
+	Catalog() catalogs.Catalog
 
 	// Cleanup releases any resources (called after all Fetch operations)
 	Cleanup() error
 }
+
+// ResourceType identifies the type of resource being merged
+type ResourceType string
+
+const (
+	ResourceTypeModel    ResourceType = "model"
+	ResourceTypeProvider ResourceType = "provider"
+	ResourceTypeAuthor   ResourceType = "author"
+)

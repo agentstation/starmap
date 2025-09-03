@@ -245,7 +245,7 @@ func TestParseError(t *testing.T) {
 		err := pkgerrors.NewParseError("xml", "document.xml", "unexpected end", baseErr)
 		assert.Contains(t, err.Error(), "xml")
 		assert.Equal(t, baseErr, err.Unwrap())
-		
+
 		wrapped := pkgerrors.WrapParse("csv", "data.csv", baseErr)
 		parseErr, ok := wrapped.(*pkgerrors.ParseError)
 		require.True(t, ok)
@@ -446,7 +446,7 @@ func TestErrorChaining(t *testing.T) {
 		// Check unwrapping chain
 		assert.Equal(t, apiErr, syncErr.Unwrap())
 		assert.Equal(t, ioErr, apiErr.Unwrap())
-		
+
 		// errors.Is should work through the chain
 		var targetIOErr *pkgerrors.IOError
 		assert.True(t, errors.As(syncErr, &targetIOErr))

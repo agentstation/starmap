@@ -31,7 +31,7 @@ var serveSiteCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(serveCmd)
 	serveCmd.AddCommand(serveSiteCmd)
-	
+
 	serveSiteCmd.Flags().IntVar(&servePort, "port", 1313, "Port for development server")
 }
 

@@ -1,0 +1,14 @@
+id: google/gemma-3
+name: Google Gemma 3
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+    output:
+      per_1m: 0.3
+  currency: USD
+limits:
+  context_window: 125000
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

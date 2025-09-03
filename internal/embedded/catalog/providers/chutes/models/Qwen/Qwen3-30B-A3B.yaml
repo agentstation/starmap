@@ -1,0 +1,14 @@
+id: Qwen/Qwen3-30B-A3B
+name: Qwen3 30B A3B
+pricing:
+  tokens:
+    input:
+      per_1m: 0.02
+    output:
+      per_1m: 0.08
+  currency: USD
+limits:
+  context_window: 40960
+  output_tokens: 40960
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

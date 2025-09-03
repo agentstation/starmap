@@ -11,6 +11,7 @@ import (
 // Source loads a catalog from either a file path or embedded catalog
 type Source struct {
 	catalogPath string
+	catalog     catalogs.Catalog
 }
 
 // New creates a new local source
@@ -32,8 +33,8 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
-// Name returns the name of this source
-func (s *Source) Name() sources.SourceName {
+// Type returns the type of this source
+func (s *Source) Type() sources.Type {
 	// For local source, we always return the constant name
 	// The path details can be logged separately if needed
 	return sources.LocalCatalog
@@ -46,39 +47,31 @@ func (s *Source) Setup(providers *catalogs.Providers) error {
 }
 
 // Fetch returns catalog data from configured source
-func (s *Source) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error) {
-	// Apply options
-	options := sources.ApplyOptions(opts...)
-
-	// Check for runtime override in context
-	if options.Context != nil {
-		if path, ok := options.Context["inputPath"].(string); ok && path != "" {
-			catalog, err := catalogs.New(catalogs.WithFiles(path))
-			if err != nil {
-				return nil, errors.WrapResource("load", "catalog", path, err)
-			}
-			catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-			return catalog, nil
-		}
-	}
-
+func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	// Use configured path if set
 	if s.catalogPath != "" {
-		catalog, err := catalogs.New(catalogs.WithFiles(s.catalogPath))
+		var err error
+		s.catalog, err = catalogs.New(catalogs.WithFiles(s.catalogPath))
 		if err != nil {
-			return nil, errors.WrapResource("load", "catalog", s.catalogPath, err)
+			return errors.WrapResource("load", "catalog", s.catalogPath, err)
 		}
-		catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-		return catalog, nil
+		s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
+		return nil
 	}
 
 	// Default to embedded catalog
-	catalog, err := catalogs.New(catalogs.WithEmbedded())
+	var err error
+	s.catalog, err = catalogs.New(catalogs.WithEmbedded())
 	if err != nil {
-		return nil, errors.WrapResource("load", "embedded catalog", "", err)
+		return errors.WrapResource("load", "embedded catalog", "", err)
 	}
-	catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-	return catalog, nil
+	s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
+	return nil
+}
+
+// Catalog returns the catalog of this source
+func (s *Source) Catalog() catalogs.Catalog {
+	return s.catalog
 }
 
 // Cleanup releases any resources

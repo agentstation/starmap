@@ -29,6 +29,13 @@ func testFS() fs.FS {
     name: ANTHROPIC_API_KEY
     pattern: "sk-ant-.*"
     header: "x-api-key"
+- id: groq
+  name: Groq
+  api_key:
+    name: GROQ_API_KEY
+    pattern: "gsk_.*"
+    header: "Authorization"
+    scheme: "Bearer"
 `),
 		},
 		"authors.yaml": &fstest.MapFile{
@@ -40,19 +47,19 @@ func testFS() fs.FS {
   url: https://anthropic.com
 `),
 		},
-		"providers/openai/gpt-4.yaml": &fstest.MapFile{
+		"providers/openai/models/gpt-4.yaml": &fstest.MapFile{
 			Data: []byte(`id: gpt-4
 name: GPT-4
 description: "Most capable GPT-4 model"
 `),
 		},
-		"providers/anthropic/claude-3-opus.yaml": &fstest.MapFile{
+		"providers/anthropic/models/claude-3-opus.yaml": &fstest.MapFile{
 			Data: []byte(`id: claude-3-opus
 name: Claude 3 Opus
 description: "Most capable Claude model"
 `),
 		},
-		"providers/groq/meta-llama/llama-3.yaml": &fstest.MapFile{
+		"providers/groq/models/meta-llama/llama-3.yaml": &fstest.MapFile{
 			Data: []byte(`id: meta-llama/llama-3
 name: Llama 3
 description: "Open source LLM"
@@ -74,7 +81,7 @@ func TestCatalogWithFS(t *testing.T) {
 		{
 			name:          "valid test filesystem",
 			fs:            testFS(),
-			wantProviders: 2,
+			wantProviders: 3,
 			wantAuthors:   2,
 			wantModels:    3,
 		},
@@ -107,7 +114,7 @@ func TestCatalogWithFS(t *testing.T) {
 			// Check loaded data
 			assert.Equal(t, tt.wantProviders, cat.Providers().Len())
 			assert.Equal(t, tt.wantAuthors, cat.Authors().Len())
-			assert.Equal(t, tt.wantModels, cat.Models().Len())
+			assert.Equal(t, tt.wantModels, len(cat.GetAllModels()))
 		})
 	}
 }
@@ -124,9 +131,9 @@ func TestCatalogWithPath(t *testing.T) {
   name: Test Provider
 `), constants.FilePermissions))
 
-	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test"), constants.DirPermissions))
+	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test-provider", "models"), constants.DirPermissions))
 	require.NoError(t, os.WriteFile(
-		filepath.Join(tmpDir, "providers", "test", "model.yaml"),
+		filepath.Join(tmpDir, "providers", "test-provider", "models", "test-model.yaml"),
 		[]byte(`id: test-model
 name: Test Model
 `), constants.FilePermissions))
@@ -138,13 +145,13 @@ name: Test Model
 
 	// Verify data loaded
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, cat.Models().Len())
+	assert.Equal(t, 1, len(cat.GetAllModels()))
 
 	provider, err := cat.Provider("test-provider")
 	assert.NoError(t, err)
 	assert.Equal(t, "Test Provider", provider.Name)
 
-	model, err := cat.Model("test-model")
+	model, err := cat.FindModel("test-model")
 	assert.NoError(t, err)
 	assert.Equal(t, "Test Model", model.Name)
 }
@@ -171,7 +178,7 @@ func TestCatalogWrite(t *testing.T) {
 
 	assert.Equal(t, cat.Providers().Len(), cat2.Providers().Len())
 	assert.Equal(t, cat.Authors().Len(), cat2.Authors().Len())
-	assert.Equal(t, cat.Models().Len(), cat2.Models().Len())
+	assert.Equal(t, len(cat.GetAllModels()), len(cat2.GetAllModels()))
 }
 
 // TestCatalogLoadMalformed tests handling of malformed YAML
@@ -193,12 +200,17 @@ func TestCatalogLoadMalformed(t *testing.T) {
 // TestCatalogNestedModels tests loading models from nested directories
 func TestCatalogNestedModels(t *testing.T) {
 	nestedFS := fstest.MapFS{
-		"providers/groq/meta-llama/llama-3.1/70b.yaml": &fstest.MapFile{
+		"providers.yaml": &fstest.MapFile{
+			Data: []byte(`- id: groq
+  name: Groq
+`),
+		},
+		"providers/groq/models/meta-llama/llama-3.1/70b.yaml": &fstest.MapFile{
 			Data: []byte(`id: meta-llama/llama-3.1/70b
 name: Llama 3.1 70B
 `),
 		},
-		"providers/groq/openai/gpt-3.5.yaml": &fstest.MapFile{
+		"providers/groq/models/openai/gpt-3.5.yaml": &fstest.MapFile{
 			Data: []byte(`id: openai/gpt-3.5
 name: GPT-3.5 on Groq
 `),
@@ -207,14 +219,14 @@ name: GPT-3.5 on Groq
 
 	cat, err := New(WithFS(nestedFS))
 	require.NoError(t, err)
-	assert.Equal(t, 2, cat.Models().Len())
+	assert.Equal(t, 2, len(cat.GetAllModels()))
 
 	// Verify hierarchical IDs are preserved
-	model1, err := cat.Model("meta-llama/llama-3.1/70b")
+	model1, err := cat.FindModel("meta-llama/llama-3.1/70b")
 	assert.NoError(t, err)
 	assert.Equal(t, "Llama 3.1 70B", model1.Name)
 
-	model2, err := cat.Model("openai/gpt-3.5")
+	model2, err := cat.FindModel("openai/gpt-3.5")
 	assert.NoError(t, err)
 	assert.Equal(t, "GPT-3.5 on Groq", model2.Name)
 }
@@ -230,7 +242,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	// Reader 1
 	go func() {
 		for i := 0; i < 100; i++ {
-			_ = cat.Models().Len()
+			_ = len(cat.GetAllModels())
 			_ = cat.Providers().Len()
 		}
 		done <- true
@@ -239,7 +251,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	// Reader 2
 	go func() {
 		for i := 0; i < 100; i++ {
-			_, _ = cat.Model("gpt-4")
+			_, _ = cat.FindModel("gpt-4")
 			_, _ = cat.Provider("openai")
 		}
 		done <- true
@@ -247,13 +259,23 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 
 	// Writer
 	go func() {
+		// Get or create a test provider to hold models
+		provider, err := cat.Provider("test-provider")
+		if err != nil {
+			provider = Provider{
+				ID:     "test-provider",
+				Name:   "Test Provider",
+				Models: make(map[string]Model),
+			}
+		}
 		for i := 0; i < 100; i++ {
 			model := Model{
 				ID:   "test-" + string(rune(i)),
 				Name: "Test Model",
 			}
-			_ = cat.SetModel(model)
+			provider.Models[model.ID] = model
 		}
+		_ = cat.SetProvider(provider)
 		done <- true
 	}()
 
@@ -270,27 +292,26 @@ func TestMemoryCatalog(t *testing.T) {
 	assert.NotNil(t, cat)
 
 	// Should start empty
-	assert.Equal(t, 0, cat.Models().Len())
+	assert.Equal(t, 0, len(cat.GetAllModels()))
 	assert.Equal(t, 0, cat.Providers().Len())
 
 	// Add data programmatically
 	provider := Provider{
 		ID:   "test",
 		Name: "Test Provider",
+		Models: map[string]Model{
+			"test-model": {
+				ID:   "test-model",
+				Name: "Test Model",
+			},
+		},
 	}
 	err = cat.SetProvider(provider)
 	assert.NoError(t, err)
 
-	model := Model{
-		ID:   "test-model",
-		Name: "Test Model",
-	}
-	err = cat.SetModel(model)
-	assert.NoError(t, err)
-
 	// Verify data
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, cat.Models().Len())
+	assert.Equal(t, 1, len(cat.GetAllModels()))
 
 	// Memory catalog should not support Save
 	if persistable, ok := cat.(Persistable); ok {
@@ -309,19 +330,24 @@ func TestCatalogCopy(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify copy has same data
-	assert.Equal(t, original.Models().Len(), copied.Models().Len())
+	assert.Equal(t, len(original.GetAllModels()), len(copied.GetAllModels()))
 	assert.Equal(t, original.Providers().Len(), copied.Providers().Len())
 
-	// Modify original
-	newModel := Model{
+	// Modify original by adding a model to an existing provider
+	provider, err := original.Provider("openai")
+	assert.NoError(t, err)
+	if provider.Models == nil {
+		provider.Models = make(map[string]Model)
+	}
+	provider.Models["new-model"] = Model{
 		ID:   "new-model",
 		Name: "New Model",
 	}
-	err = original.SetModel(newModel)
+	err = original.SetProvider(provider)
 	assert.NoError(t, err)
 
 	// Copy should not be affected
-	assert.Equal(t, original.Models().Len()-1, copied.Models().Len())
+	assert.Equal(t, len(original.GetAllModels())-1, len(copied.GetAllModels()))
 }
 
 // BenchmarkCatalogLoad benchmarks loading catalogs
@@ -340,7 +366,7 @@ func BenchmarkCatalogWalk(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = cat.Models().Len()
+		_ = len(cat.GetAllModels())
 	}
 }
 

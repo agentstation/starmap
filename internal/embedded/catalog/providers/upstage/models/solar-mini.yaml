@@ -1,0 +1,14 @@
+id: solar-mini
+name: solar-mini
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+    output:
+      per_1m: 0.15
+  currency: USD
+limits:
+  context_window: 32768
+  output_tokens: 4096
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

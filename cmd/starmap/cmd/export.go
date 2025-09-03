@@ -103,7 +103,11 @@ func runExport(cmd *cobra.Command, args []string) error {
 			return errors.WrapResource("get", "catalog", "", err)
 		}
 		// Get all models from the catalog
-		models = catalog.Models().List()
+		allModels := catalog.GetAllModels()
+		models = make([]*catalogs.Model, len(allModels))
+		for i := range allModels {
+			models[i] = &allModels[i]
+		}
 	}
 
 	if len(models) == 0 {
@@ -112,7 +116,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 	}
 
 	// Convert models to requested format
-	var output interface{}
+	var output any
 	switch strings.ToLower(exportFlagFormat) {
 	case "openai":
 		openAIModels := make([]convert.OpenAIModel, 0, len(models))

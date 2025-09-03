@@ -48,9 +48,9 @@ func init() {
 func createDefaultLogger() zerolog.Logger {
 	// Auto-detect if we're in a terminal for pretty output
 	isTerminal := isatty()
-	
+
 	var writer io.Writer = os.Stderr
-	
+
 	if isTerminal && os.Getenv("LOG_FORMAT") != "json" {
 		// Use console writer for human-readable output in terminals
 		writer = zerolog.ConsoleWriter{
@@ -59,23 +59,23 @@ func createDefaultLogger() zerolog.Logger {
 			NoColor:    os.Getenv("NO_COLOR") != "",
 		}
 	}
-	
+
 	// Set global log level
 	level := getLogLevel()
 	zerolog.SetGlobalLevel(level)
-	
+
 	// Create logger with context
 	logger := zerolog.New(writer).
 		Level(level).
 		With().
 		Timestamp().
 		Logger()
-	
+
 	// Add caller information in debug mode
 	if level <= zerolog.DebugLevel {
 		logger = logger.With().Caller().Logger()
 	}
-	
+
 	return logger
 }
 
@@ -106,7 +106,7 @@ func NewConsole() zerolog.Logger {
 		TimeFormat: time.Kitchen,
 		NoColor:    os.Getenv("NO_COLOR") != "",
 	}
-	
+
 	return New(writer)
 }
 
@@ -187,7 +187,7 @@ func getLogLevel() zerolog.Level {
 		}
 		return zerolog.InfoLevel
 	}
-	
+
 	level, err := zerolog.ParseLevel(levelStr)
 	if err != nil {
 		return zerolog.InfoLevel

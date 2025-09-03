@@ -1,0 +1,14 @@
+id: gpt-4
+name: GPT-4
+pricing:
+  tokens:
+    input:
+      per_1m: 60.0
+    output:
+      per_1m: 120.0
+  currency: USD
+limits:
+  context_window: 8192
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

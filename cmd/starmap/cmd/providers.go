@@ -61,7 +61,7 @@ func runProviders(cmd *cobra.Command, args []string) error {
 
 	// Create provider fetcher to check support
 	fetcher := sources.NewProviderFetcher()
-	
+
 	// Build supported providers map by checking each provider for client availability
 	supportedMap := make(map[catalogs.ProviderID]bool)
 	for _, provider := range providersList {

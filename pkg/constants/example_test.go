@@ -94,7 +94,7 @@ func Example_retryLogic() {
 			break
 		}
 		lastErr = err
-		
+
 		if i < constants.MaxRetries-1 {
 			// Calculate backoff
 			backoff := constants.RetryBackoff * time.Duration(1<<i)
@@ -116,13 +116,13 @@ func Example_bufferSizes() {
 	// Channel with standard buffer size
 	ch := make(chan string, constants.ChannelBufferSize)
 	close(ch) // Clean up
-	
+
 	// Write buffer for file operations
 	buffer := make([]byte, 0, constants.WriteBufferSize)
-	
+
 	fmt.Printf("Channel buffer: %d\n", constants.ChannelBufferSize)
 	fmt.Printf("Write buffer: %d bytes\n", cap(buffer))
-	
+
 	// Output:
 	// Channel buffer: 100
 	// Write buffer: 4096 bytes

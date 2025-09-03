@@ -70,7 +70,7 @@ func (lc *LogoCopier) copyProviderLogo(providerID catalogs.ProviderID, targetDir
 	if err := lc.copyLogo(sourcePath, targetDir, string(providerID)+".svg"); err == nil {
 		return nil // Successfully copied
 	}
-	
+
 	// Try different logo formats in the logos/providers directory as fallback
 	formats := []string{".svg", ".png", ".jpg", ".jpeg", ".webp"}
 	for _, format := range formats {
@@ -79,7 +79,7 @@ func (lc *LogoCopier) copyProviderLogo(providerID catalogs.ProviderID, targetDir
 			return nil // Successfully copied
 		}
 	}
-	
+
 	return fmt.Errorf("no logo found for provider %s", providerID)
 }
 
@@ -90,7 +90,7 @@ func (lc *LogoCopier) copyAuthorLogo(authorID catalogs.AuthorID, targetDir strin
 	if err := lc.copyLogo(sourcePath, targetDir, string(authorID)+".svg"); err == nil {
 		return nil // Successfully copied
 	}
-	
+
 	// Try different logo formats in the logos/authors directory as fallback
 	formats := []string{".svg", ".png", ".jpg", ".jpeg", ".webp"}
 	for _, format := range formats {
@@ -99,7 +99,7 @@ func (lc *LogoCopier) copyAuthorLogo(authorID catalogs.AuthorID, targetDir strin
 			return nil // Successfully copied
 		}
 	}
-	
+
 	return fmt.Errorf("no logo found for author %s", authorID)
 }
 
@@ -221,20 +221,20 @@ func authorLogoHTML(author *catalogs.Author) string {
 // optimizeSVG performs basic SVG optimization
 func optimizeSVG(svgContent []byte) []byte {
 	svg := string(svgContent)
-	
+
 	// Remove unnecessary whitespace
 	svg = strings.ReplaceAll(svg, "\n", " ")
 	svg = strings.ReplaceAll(svg, "\r", "")
 	svg = strings.ReplaceAll(svg, "\t", " ")
-	
+
 	// Collapse multiple spaces
 	for strings.Contains(svg, "  ") {
 		svg = strings.ReplaceAll(svg, "  ", " ")
 	}
-	
+
 	// Remove spaces around tags
 	svg = strings.ReplaceAll(svg, "> <", "><")
-	
+
 	return []byte(svg)
 }
 
@@ -245,13 +245,13 @@ func createFallbackLogo(name string, outputPath string) error {
 	if name != "" && len(name) > 0 {
 		initial = strings.ToUpper(name[:1])
 	}
-	
+
 	svg := fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="4" fill="#e0e0e0"/>
   <text x="50%%" y="50%%" font-family="Arial, sans-serif" font-size="18" font-weight="bold" 
         text-anchor="middle" dominant-baseline="central" fill="#333">%s</text>
 </svg>`, initial)
-	
+
 	return os.WriteFile(outputPath, []byte(svg), constants.FilePermissions)
 }
 
@@ -262,7 +262,7 @@ func ensureLogosExist(providers []*catalogs.Provider, authors []*catalogs.Author
 	if err := os.MkdirAll(providerLogoDir, constants.DirPermissions); err != nil {
 		return fmt.Errorf("creating provider logo directory: %w", err)
 	}
-	
+
 	for _, provider := range providers {
 		logoPath := filepath.Join(providerLogoDir, string(provider.ID)+".svg")
 		if _, err := os.Stat(logoPath); os.IsNotExist(err) {
@@ -271,13 +271,13 @@ func ensureLogosExist(providers []*catalogs.Provider, authors []*catalogs.Author
 			}
 		}
 	}
-	
+
 	// Check author logos
 	authorLogoDir := filepath.Join(targetDir, "assets", "logos", "authors")
 	if err := os.MkdirAll(authorLogoDir, constants.DirPermissions); err != nil {
 		return fmt.Errorf("creating author logo directory: %w", err)
 	}
-	
+
 	for _, author := range authors {
 		logoPath := filepath.Join(authorLogoDir, string(author.ID)+".svg")
 		if _, err := os.Stat(logoPath); os.IsNotExist(err) {
@@ -286,6 +286,6 @@ func ensureLogosExist(providers []*catalogs.Provider, authors []*catalogs.Author
 			}
 		}
 	}
-	
+
 	return nil
 }

@@ -24,9 +24,9 @@ func TestWriteCostCalculator(t *testing.T) {
 				Name: "Test Model",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input:  &catalogs.TokenCost{Per1M: 10.0},
-						Output: &catalogs.TokenCost{Per1M: 30.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+						Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 					},
 				},
 			},
@@ -53,10 +53,10 @@ func TestWriteCostCalculator(t *testing.T) {
 				Name: "Test Cache Model",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input:     &catalogs.TokenCost{Per1M: 10.0},
-						Output:    &catalogs.TokenCost{Per1M: 30.0},
-						CacheRead: &catalogs.TokenCost{Per1M: 1.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:     &catalogs.ModelTokenCost{Per1M: 10.0},
+						Output:    &catalogs.ModelTokenCost{Per1M: 30.0},
+						CacheRead: &catalogs.ModelTokenCost{Per1M: 1.0},
 					},
 				},
 			},
@@ -72,10 +72,10 @@ func TestWriteCostCalculator(t *testing.T) {
 				Name: "Test Reasoning Model",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input:     &catalogs.TokenCost{Per1M: 10.0},
-						Output:    &catalogs.TokenCost{Per1M: 30.0},
-						Reasoning: &catalogs.TokenCost{Per1M: 50.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:     &catalogs.ModelTokenCost{Per1M: 10.0},
+						Output:    &catalogs.ModelTokenCost{Per1M: 30.0},
+						Reasoning: &catalogs.ModelTokenCost{Per1M: 50.0},
 					},
 				},
 			},
@@ -101,8 +101,8 @@ func TestWriteCostCalculator(t *testing.T) {
 				Name: "Test Incomplete",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input: &catalogs.TokenCost{Per1M: 10.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input: &catalogs.ModelTokenCost{Per1M: 10.0},
 						// Missing Output
 					},
 				},
@@ -155,9 +155,9 @@ func TestWriteExampleCosts(t *testing.T) {
 				Name: "Test Model",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input:  &catalogs.TokenCost{Per1M: 10.0},
-						Output: &catalogs.TokenCost{Per1M: 30.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+						Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 					},
 				},
 			},
@@ -177,9 +177,9 @@ func TestWriteExampleCosts(t *testing.T) {
 				Name: "Test Free",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD",
-					Tokens: &catalogs.TokenPricing{
-						Input:  &catalogs.TokenCost{Per1M: 0.0},
-						Output: &catalogs.TokenCost{Per1M: 0.0},
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:  &catalogs.ModelTokenCost{Per1M: 0.0},
+						Output: &catalogs.ModelTokenCost{Per1M: 0.0},
 					},
 				},
 			},
@@ -218,41 +218,41 @@ func TestWriteExampleCosts(t *testing.T) {
 func TestFormatTokenPricing(t *testing.T) {
 	tests := []struct {
 		name     string
-		tokens   *catalogs.TokenPricing
+		tokens   *catalogs.ModelTokenPricing
 		expected string
 	}{
 		{
 			name: "standard pricing",
-			tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 10.0},
-				Output: &catalogs.TokenCost{Per1M: 30.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 			},
 			expected: "**Token Pricing:**\n- Input: $10.0000/1M tokens\n- Output: $30.0000/1M tokens",
 		},
 		{
 			name: "with cache pricing",
-			tokens: &catalogs.TokenPricing{
-				Input:      &catalogs.TokenCost{Per1M: 10.0},
-				Output:     &catalogs.TokenCost{Per1M: 30.0},
-				CacheRead:  &catalogs.TokenCost{Per1M: 1.0},
-				CacheWrite: &catalogs.TokenCost{Per1M: 15.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:      &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output:     &catalogs.ModelTokenCost{Per1M: 30.0},
+				CacheRead:  &catalogs.ModelTokenCost{Per1M: 1.0},
+				CacheWrite: &catalogs.ModelTokenCost{Per1M: 15.0},
 			},
 			expected: "Cache Read",
 		},
 		{
 			name: "with reasoning pricing",
-			tokens: &catalogs.TokenPricing{
-				Input:     &catalogs.TokenCost{Per1M: 10.0},
-				Output:    &catalogs.TokenCost{Per1M: 30.0},
-				Reasoning: &catalogs.TokenCost{Per1M: 50.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:     &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output:    &catalogs.ModelTokenCost{Per1M: 30.0},
+				Reasoning: &catalogs.ModelTokenCost{Per1M: 50.0},
 			},
 			expected: "Reasoning",
 		},
 		{
 			name: "free model",
-			tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 0.0},
-				Output: &catalogs.TokenCost{Per1M: 0.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 0.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 0.0},
 			},
 			expected: "Free",
 		},
@@ -280,12 +280,12 @@ func TestFormatOperationPricing(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		operations *catalogs.OperationPricing
+		operations *catalogs.ModelOperationPricing
 		expected   []string
 	}{
 		{
 			name: "with multiple operations",
-			operations: &catalogs.OperationPricing{
+			operations: &catalogs.ModelOperationPricing{
 				Request:    floatPtr(0.001),
 				ImageInput: floatPtr(0.01),
 				AudioInput: floatPtr(0.005),
@@ -303,7 +303,7 @@ func TestFormatOperationPricing(t *testing.T) {
 		},
 		{
 			name: "with single operation",
-			operations: &catalogs.OperationPricing{
+			operations: &catalogs.ModelOperationPricing{
 				ImageGen: floatPtr(0.02),
 			},
 			expected: []string{
@@ -318,7 +318,7 @@ func TestFormatOperationPricing(t *testing.T) {
 		},
 		{
 			name:       "empty operations",
-			operations: &catalogs.OperationPricing{},
+			operations: &catalogs.ModelOperationPricing{},
 			expected:   []string{},
 		},
 	}
@@ -363,9 +363,9 @@ func TestCostCalculation(t *testing.T) {
 	// Test the actual cost calculation logic used in writeCostCalculator
 	model := &catalogs.Model{
 		Pricing: &catalogs.ModelPricing{
-			Tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 10.0},
-				Output: &catalogs.TokenCost{Per1M: 30.0},
+			Tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 30.0},
 			},
 		},
 	}
@@ -413,37 +413,37 @@ func TestFormatPriceVariations(t *testing.T) {
 func TestFormatTokenPrice(t *testing.T) {
 	tests := []struct {
 		name     string
-		price    *catalogs.TokenCost
+		price    *catalogs.ModelTokenCost
 		label    string
 		expected string
 	}{
 		{
 			name:     "price per million",
-			price:    &catalogs.TokenCost{Per1M: 10.0},
+			price:    &catalogs.ModelTokenCost{Per1M: 10.0},
 			label:    "Input",
 			expected: "- Input: $10.0000/1M tokens",
 		},
 		{
 			name:     "price per token",
-			price:    &catalogs.TokenCost{PerToken: 0.00001},
+			price:    &catalogs.ModelTokenCost{PerToken: 0.00001},
 			label:    "Output",
 			expected: "- Output: $0.00001000/token",
 		},
 		{
 			name:     "both price formats",
-			price:    &catalogs.TokenCost{Per1M: 10.0, PerToken: 0.00001},
+			price:    &catalogs.ModelTokenCost{Per1M: 10.0, PerToken: 0.00001},
 			label:    "Reasoning",
 			expected: "- Reasoning: $10.0000/1M tokens | $0.00001000/token",
 		},
 		{
 			name:     "free pricing",
-			price:    &catalogs.TokenCost{Per1M: 0.0},
+			price:    &catalogs.ModelTokenCost{Per1M: 0.0},
 			label:    "Input",
 			expected: "- Input: Free",
 		},
 		{
 			name:     "zero with per token",
-			price:    &catalogs.TokenCost{Per1M: 0.0, PerToken: 0.0},
+			price:    &catalogs.ModelTokenCost{Per1M: 0.0, PerToken: 0.0},
 			label:    "Output",
 			expected: "- Output: Free",
 		},
@@ -460,17 +460,17 @@ func TestFormatTokenPrice(t *testing.T) {
 func TestFormatTokenPricingWithCacheNested(t *testing.T) {
 	tests := []struct {
 		name     string
-		tokens   *catalogs.TokenPricing
+		tokens   *catalogs.ModelTokenPricing
 		expected []string
 	}{
 		{
 			name: "nested cache structure",
-			tokens: &catalogs.TokenPricing{
-				Input:  &catalogs.TokenCost{Per1M: 10.0},
-				Output: &catalogs.TokenCost{Per1M: 30.0},
-				Cache: &catalogs.TokenCachePricing{
-					Read:  &catalogs.TokenCost{Per1M: 1.0},
-					Write: &catalogs.TokenCost{Per1M: 15.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output: &catalogs.ModelTokenCost{Per1M: 30.0},
+				Cache: &catalogs.ModelTokenCachePricing{
+					Read:  &catalogs.ModelTokenCost{Per1M: 1.0},
+					Write: &catalogs.ModelTokenCost{Per1M: 15.0},
 				},
 			},
 			expected: []string{
@@ -480,14 +480,14 @@ func TestFormatTokenPricingWithCacheNested(t *testing.T) {
 		},
 		{
 			name: "both cache formats",
-			tokens: &catalogs.TokenPricing{
-				Input:      &catalogs.TokenCost{Per1M: 10.0},
-				Output:     &catalogs.TokenCost{Per1M: 30.0},
-				CacheRead:  &catalogs.TokenCost{Per1M: 1.0},
-				CacheWrite: &catalogs.TokenCost{Per1M: 15.0},
-				Cache: &catalogs.TokenCachePricing{
-					Read:  &catalogs.TokenCost{Per1M: 2.0},
-					Write: &catalogs.TokenCost{Per1M: 20.0},
+			tokens: &catalogs.ModelTokenPricing{
+				Input:      &catalogs.ModelTokenCost{Per1M: 10.0},
+				Output:     &catalogs.ModelTokenCost{Per1M: 30.0},
+				CacheRead:  &catalogs.ModelTokenCost{Per1M: 1.0},
+				CacheWrite: &catalogs.ModelTokenCost{Per1M: 15.0},
+				Cache: &catalogs.ModelTokenCachePricing{
+					Read:  &catalogs.ModelTokenCost{Per1M: 2.0},
+					Write: &catalogs.ModelTokenCost{Per1M: 20.0},
 				},
 			},
 			expected: []string{
@@ -512,12 +512,12 @@ func TestFormatOperationPricingAllFields(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		operations *catalogs.OperationPricing
+		operations *catalogs.ModelOperationPricing
 		expected   []string
 	}{
 		{
 			name: "with video and audio generation",
-			operations: &catalogs.OperationPricing{
+			operations: &catalogs.ModelOperationPricing{
 				VideoInput:   floatPtr(0.01),
 				AudioGen:     floatPtr(0.02),
 				VideoGen:     floatPtr(0.05),
@@ -534,7 +534,7 @@ func TestFormatOperationPricingAllFields(t *testing.T) {
 		},
 		{
 			name: "zero value operations ignored",
-			operations: &catalogs.OperationPricing{
+			operations: &catalogs.ModelOperationPricing{
 				Request:    floatPtr(0.0),
 				ImageInput: floatPtr(0.01),
 				AudioInput: floatPtr(0.0),
@@ -563,9 +563,9 @@ func TestWriteCostCalculatorEdgeCases(t *testing.T) {
 	t.Run("model with very high prices", func(t *testing.T) {
 		model := &catalogs.Model{
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 10000.0},
-					Output: &catalogs.TokenCost{Per1M: 30000.0},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 10000.0},
+					Output: &catalogs.ModelTokenCost{Per1M: 30000.0},
 				},
 			},
 		}
@@ -590,9 +590,9 @@ func TestWriteCostCalculatorEdgeCases(t *testing.T) {
 	t.Run("model with very low prices", func(t *testing.T) {
 		model := &catalogs.Model{
 			Pricing: &catalogs.ModelPricing{
-				Tokens: &catalogs.TokenPricing{
-					Input:  &catalogs.TokenCost{Per1M: 0.0001},
-					Output: &catalogs.TokenCost{Per1M: 0.0003},
+				Tokens: &catalogs.ModelTokenPricing{
+					Input:  &catalogs.ModelTokenCost{Per1M: 0.0001},
+					Output: &catalogs.ModelTokenCost{Per1M: 0.0003},
 				},
 			},
 		}
@@ -662,8 +662,8 @@ func TestFormatPricePerMillionEdgeCases(t *testing.T) {
 
 func TestFormatTokenPricingOnlyInput(t *testing.T) {
 	// Test when only input pricing is provided
-	tokens := &catalogs.TokenPricing{
-		Input: &catalogs.TokenCost{Per1M: 10.0},
+	tokens := &catalogs.ModelTokenPricing{
+		Input: &catalogs.ModelTokenCost{Per1M: 10.0},
 		// Output is nil
 	}
 
@@ -674,9 +674,9 @@ func TestFormatTokenPricingOnlyInput(t *testing.T) {
 
 func TestFormatTokenPricingEmptyPrices(t *testing.T) {
 	// Test when token costs have zero values
-	tokens := &catalogs.TokenPricing{
-		Input:  &catalogs.TokenCost{Per1M: 0.0, PerToken: 0.0},
-		Output: &catalogs.TokenCost{Per1M: 0.0, PerToken: 0.0},
+	tokens := &catalogs.ModelTokenPricing{
+		Input:  &catalogs.ModelTokenCost{Per1M: 0.0, PerToken: 0.0},
+		Output: &catalogs.ModelTokenCost{Per1M: 0.0, PerToken: 0.0},
 	}
 
 	result := formatTokenPricing(tokens)

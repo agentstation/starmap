@@ -1,0 +1,14 @@
+id: mistralai/devstral-small-2505
+name: Devstral Small
+pricing:
+  tokens:
+    input:
+      per_1m: 0.06
+    output:
+      per_1m: 0.12
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 128000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

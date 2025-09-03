@@ -1,0 +1,14 @@
+id: llama3-8b-8192
+name: Llama 3 8B
+pricing:
+  tokens:
+    input:
+      per_1m: 0.05
+    output:
+      per_1m: 0.08
+  currency: USD
+limits:
+  context_window: 8192
+  output_tokens: 8192
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

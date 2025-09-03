@@ -1,0 +1,14 @@
+id: o1-preview
+name: o1-preview
+pricing:
+  tokens:
+    input:
+      per_1m: 16.5
+    output:
+      per_1m: 66.0
+  currency: USD
+limits:
+  context_window: 128000
+  output_tokens: 32768
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

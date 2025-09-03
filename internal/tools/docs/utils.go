@@ -90,7 +90,7 @@ func formatModelID(id string) string {
 func getModelFilePath(baseDir string, modelID string) (string, error) {
 	// Split model ID by "/" to get path components
 	parts := strings.Split(modelID, "/")
-	
+
 	if len(parts) > 1 {
 		// Model ID contains subdirectories (e.g., "openai/gpt-oss-120b")
 		// Create subdirectories for nested paths
@@ -98,14 +98,14 @@ func getModelFilePath(baseDir string, modelID string) (string, error) {
 		if err := os.MkdirAll(subdir, constants.DirPermissions); err != nil {
 			return "", fmt.Errorf("creating subdirectory %s: %w", subdir, err)
 		}
-		
+
 		// Format only the filename part (last component)
 		filename := formatFilename(parts[len(parts)-1]) + ".md"
 		return filepath.Join(subdir, filename), nil
 	}
-	
+
 	// No subdirectory, use flat structure with formatted ID
-	return filepath.Join(baseDir, formatFilename(modelID) + ".md"), nil
+	return filepath.Join(baseDir, formatFilename(modelID)+".md"), nil
 }
 
 // formatFilename formats a filename to be filesystem-safe
@@ -149,7 +149,7 @@ func getProviderBadge(name string) string {
 		"Cohere":           "💼",
 		"AI21":             "🔬",
 	}
-	
+
 	if badge, ok := badges[name]; ok {
 		return badge
 	}
@@ -159,29 +159,28 @@ func getProviderBadge(name string) string {
 // getAuthorBadge returns an emoji badge for an author
 func getAuthorBadge(name string) string {
 	badges := map[string]string{
-		"OpenAI":          "🤖",
-		"Anthropic":       "🧠",
-		"Google":          "🔍",
-		"Meta":            "📘",
-		"Microsoft":       "🪟",
-		"DeepSeek":        "🔬",
-		"Mistral":         "🌊",
-		"Stability AI":    "🎨",
-		"EleutherAI":      "🌐",
-		"Cohere":          "💼",
-		"AI21":            "🔬",
-		"xAI":             "🌟",
-		"Qwen":            "🐉",
-		"Alibaba":         "☁️",
-		"Hugging Face":    "🤗",
+		"OpenAI":       "🤖",
+		"Anthropic":    "🧠",
+		"Google":       "🔍",
+		"Meta":         "📘",
+		"Microsoft":    "🪟",
+		"DeepSeek":     "🔬",
+		"Mistral":      "🌊",
+		"Stability AI": "🎨",
+		"EleutherAI":   "🌐",
+		"Cohere":       "💼",
+		"AI21":         "🔬",
+		"xAI":          "🌟",
+		"Qwen":         "🐉",
+		"Alibaba":      "☁️",
+		"Hugging Face": "🤗",
 	}
-	
+
 	if badge, ok := badges[name]; ok {
 		return badge
 	}
 	return "👥"
 }
-
 
 // min returns the minimum of two integers
 func min(a, b int) int {
@@ -203,53 +202,53 @@ func formatFloat(f float64) string {
 // detectModelFamily detects the family of a model from its name
 func detectModelFamily(name string) string {
 	name = strings.ToLower(name)
-	
+
 	families := map[string][]string{
-		"GPT": {"gpt-4", "gpt4", "gpt-3.5", "gpt35", "gpt-5", "gpt5", "gpt"},  // Group all GPT models
-		"Claude": {"claude"},
-		"Gemini": {"gemini"},
-		"Gemma": {"gemma"},
-		"Llama": {"llama"},
-		"Mistral": {"mistral"},
-		"Mixtral": {"mixtral"},
-		"DeepSeek": {"deepseek"},
-		"Qwen": {"qwen"},
-		"Yi": {"yi-"},
-		"Command": {"command"},
-		"Jamba": {"jamba"},
-		"DBRX": {"dbrx"},
-		"Arctic": {"arctic"},
-		"Phi": {"phi-"},
-		"Orca": {"orca"},
-		"Falcon": {"falcon"},
-		"Vicuna": {"vicuna"},
-		"WizardLM": {"wizard"},
-		"Alpaca": {"alpaca"},
-		"CodeLlama": {"codellama", "code-llama"},
-		"Starcoder": {"starcoder"},
-		"PaLM": {"palm", "bison"},
-		"T5": {"t5-", "flan-t5"},
-		"BERT": {"bert"},
-		"RoBERTa": {"roberta"},
-		"GPT-J": {"gpt-j"},
-		"GPT-NeoX": {"gpt-neox"},
-		"OPT": {"opt-"},
-		"BLOOM": {"bloom"},
-		"GLM": {"glm-", "chatglm"},
-		"Baichuan": {"baichuan"},
-		"Ernie": {"ernie"},
-		"Aquila": {"aquila"},
-		"InternLM": {"internlm"},
-		"Zephyr": {"zephyr"},
-		"Solar": {"solar"},
-		"Embeddings": {"embedding", "text-embedding", "voyage"},
-		"Whisper": {"whisper"},
-		"DALL-E": {"dall-e"},
+		"GPT":              {"gpt-4", "gpt4", "gpt-3.5", "gpt35", "gpt-5", "gpt5", "gpt"}, // Group all GPT models
+		"Claude":           {"claude"},
+		"Gemini":           {"gemini"},
+		"Gemma":            {"gemma"},
+		"Llama":            {"llama"},
+		"Mistral":          {"mistral"},
+		"Mixtral":          {"mixtral"},
+		"DeepSeek":         {"deepseek"},
+		"Qwen":             {"qwen"},
+		"Yi":               {"yi-"},
+		"Command":          {"command"},
+		"Jamba":            {"jamba"},
+		"DBRX":             {"dbrx"},
+		"Arctic":           {"arctic"},
+		"Phi":              {"phi-"},
+		"Orca":             {"orca"},
+		"Falcon":           {"falcon"},
+		"Vicuna":           {"vicuna"},
+		"WizardLM":         {"wizard"},
+		"Alpaca":           {"alpaca"},
+		"CodeLlama":        {"codellama", "code-llama"},
+		"Starcoder":        {"starcoder"},
+		"PaLM":             {"palm", "bison"},
+		"T5":               {"t5-", "flan-t5"},
+		"BERT":             {"bert"},
+		"RoBERTa":          {"roberta"},
+		"GPT-J":            {"gpt-j"},
+		"GPT-NeoX":         {"gpt-neox"},
+		"OPT":              {"opt-"},
+		"BLOOM":            {"bloom"},
+		"GLM":              {"glm-", "chatglm"},
+		"Baichuan":         {"baichuan"},
+		"Ernie":            {"ernie"},
+		"Aquila":           {"aquila"},
+		"InternLM":         {"internlm"},
+		"Zephyr":           {"zephyr"},
+		"Solar":            {"solar"},
+		"Embeddings":       {"embedding", "text-embedding", "voyage"},
+		"Whisper":          {"whisper"},
+		"DALL-E":           {"dall-e"},
 		"Stable Diffusion": {"stable-diffusion", "sdxl"},
-		"Midjourney": {"midjourney"},
-		"Other": {},
+		"Midjourney":       {"midjourney"},
+		"Other":            {},
 	}
-	
+
 	for family, patterns := range families {
 		for _, pattern := range patterns {
 			if strings.Contains(name, pattern) {
@@ -257,26 +256,26 @@ func detectModelFamily(name string) string {
 			}
 		}
 	}
-	
+
 	return "Other"
 }
 
 // groupAuthorModels groups an author's models by family
 func groupAuthorModels(models []*catalogs.Model) map[string][]*catalogs.Model {
 	groups := make(map[string][]*catalogs.Model)
-	
+
 	for _, model := range models {
 		family := detectModelFamily(model.Name)
 		groups[family] = append(groups[family], model)
 	}
-	
+
 	// If only one group, return with empty key
 	if len(groups) == 1 {
 		for _, models := range groups {
 			return map[string][]*catalogs.Model{"": models}
 		}
 	}
-	
+
 	return groups
 }
 
@@ -291,7 +290,7 @@ func categorizeAuthor(author *catalogs.Author) string {
 	}
 
 	startups := map[catalogs.AuthorID]bool{
-		"openai":        true,  // OpenAI is considered a startup
+		"openai":        true, // OpenAI is considered a startup
 		"anthropic":     true,
 		"mistral":       true,
 		"cohere":        true,
@@ -305,13 +304,13 @@ func categorizeAuthor(author *catalogs.Author) string {
 	}
 
 	research := map[catalogs.AuthorID]bool{
-		"eleutherai":    true,
-		"bigscience":    true,
-		"laion":         true,
-		"stanford":      true,
-		"berkeley":      true,
-		"mit":           true,
-		"hugging-face":  true,
+		"eleutherai":   true,
+		"bigscience":   true,
+		"laion":        true,
+		"stanford":     true,
+		"berkeley":     true,
+		"mit":          true,
+		"hugging-face": true,
 	}
 
 	if techCompanies[author.ID] {
@@ -325,35 +324,35 @@ func categorizeAuthor(author *catalogs.Author) string {
 	}
 
 	// Default based on name patterns
-	if author.Website != nil && (*author.Website == "https://opensource.org" || 
+	if author.Website != nil && (*author.Website == "https://opensource.org" ||
 		*author.Website == "https://github.com") {
 		return "🌍 Open Source"
 	}
 
-	return "🌍 Open Source"  // Changed default to Open Source
+	return "🌍 Open Source" // Changed default to Open Source
 }
 
 // getFocusArea returns the focus area for an author
 func getFocusArea(author *catalogs.Author) string {
 	focusAreas := map[catalogs.AuthorID]string{
-		"openai":        "AGI Research",
-		"anthropic":     "AI Safety",
-		"google":        "Multimodal AI",
-		"meta":          "Open Models",
-		"mistral":       "Efficient Models",
-		"deepseek":      "Code & Reasoning",
-		"stability":     "Image Generation",  // Added for test compatibility
-		"stability-ai":  "Generative Media",
-		"cohere":        "Enterprise AI",
-		"ai21":          "Language Understanding",
-		"xai":           "Truth-Seeking AI",
-		"qwen":          "Multilingual AI",
-		"microsoft":     "Productivity AI",
-		"nvidia":        "GPU-Optimized AI",
-		"cerebras":      "Hardware Acceleration",
-		"databricks":    "Data & ML Platform",
+		"openai":       "AGI Research",
+		"anthropic":    "AI Safety",
+		"google":       "Multimodal AI",
+		"meta":         "Open Models",
+		"mistral":      "Efficient Models",
+		"deepseek":     "Code & Reasoning",
+		"stability":    "Image Generation", // Added for test compatibility
+		"stability-ai": "Generative Media",
+		"cohere":       "Enterprise AI",
+		"ai21":         "Language Understanding",
+		"xai":          "Truth-Seeking AI",
+		"qwen":         "Multilingual AI",
+		"microsoft":    "Productivity AI",
+		"nvidia":       "GPU-Optimized AI",
+		"cerebras":     "Hardware Acceleration",
+		"databricks":   "Data & ML Platform",
 	}
-	
+
 	if area, ok := focusAreas[author.ID]; ok {
 		return area
 	}
@@ -414,19 +413,19 @@ func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
 	if models == nil || len(models) == 0 {
 		return nil
 	}
-	
+
 	// Convert map to slice
 	result := make([]*catalogs.Model, 0, len(models))
 	for _, model := range models {
 		m := model // Copy to avoid reference issues
 		result = append(result, &m)
 	}
-	
+
 	// Sort by ID for deterministic ordering
 	sort.Slice(result, func(i, j int) bool {
 		return result[i].ID < result[j].ID
 	})
-	
+
 	return result
 }
 
@@ -436,13 +435,13 @@ func GetLatestModel(provider *catalogs.Provider) string {
 	if provider == nil || len(provider.Models) == 0 {
 		return "N/A"
 	}
-	
+
 	// Get sorted models
 	models := SortedModels(provider.Models)
 	if len(models) == 0 {
 		return "N/A"
 	}
-	
+
 	// Return the last model name (lexicographically highest ID)
 	return models[len(models)-1].Name
 }

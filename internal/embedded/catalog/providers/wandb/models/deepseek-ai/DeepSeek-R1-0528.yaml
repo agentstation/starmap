@@ -1,0 +1,14 @@
+id: deepseek-ai/DeepSeek-R1-0528
+name: DeepSeek-R1-0528
+pricing:
+  tokens:
+    input:
+      per_1m: 1.35
+    output:
+      per_1m: 5.4
+  currency: USD
+limits:
+  context_window: 161000
+  output_tokens: 163840
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"

@@ -10,7 +10,6 @@ type Catalog struct {
 	api       *ModelsDevAPI
 	providers *catalogs.Providers
 	authors   *catalogs.Authors
-	models    *catalogs.Models
 	endpoints *catalogs.Endpoints
 }
 
@@ -27,7 +26,6 @@ func NewCatalog(api *ModelsDevAPI) (*Catalog, error) {
 		api:       api,
 		providers: catalogs.NewProviders(),
 		authors:   catalogs.NewAuthors(),
-		models:    catalogs.NewModels(),
 		endpoints: catalogs.NewEndpoints(),
 	}
 
@@ -39,7 +37,6 @@ func NewCatalog(api *ModelsDevAPI) (*Catalog, error) {
 	return catalog, nil
 }
 
-
 // Providers implements starmap.Catalog
 func (c *Catalog) Providers() *catalogs.Providers {
 	return c.providers
@@ -48,11 +45,6 @@ func (c *Catalog) Providers() *catalogs.Providers {
 // Authors implements starmap.Catalog
 func (c *Catalog) Authors() *catalogs.Authors {
 	return c.authors
-}
-
-// Models implements starmap.Catalog
-func (c *Catalog) Models() *catalogs.Models {
-	return c.models
 }
 
 // Endpoints implements starmap.Catalog
@@ -84,18 +76,6 @@ func (c *Catalog) Author(id catalogs.AuthorID) (*catalogs.Author, error) {
 	return author, nil
 }
 
-// Model implements starmap.Catalog
-func (c *Catalog) Model(id string) (*catalogs.Model, error) {
-	model, exists := c.models.Get(id)
-	if !exists {
-		return nil, &errors.NotFoundError{
-			Resource: "model",
-			ID:       id,
-		}
-	}
-	return model, nil
-}
-
 // Endpoint implements starmap.Catalog
 func (c *Catalog) Endpoint(id string) (*catalogs.Endpoint, error) {
 	endpoint, exists := c.endpoints.Get(id)
@@ -118,16 +98,10 @@ func (c *Catalog) SetAuthor(author catalogs.Author) error {
 	return c.authors.Set(author.ID, &author)
 }
 
-// AddModel implements starmap.Catalog
-func (c *Catalog) SetModel(model catalogs.Model) error {
-	return c.models.Set(model.ID, &model)
-}
-
 // AddEndpoint implements starmap.Catalog
 func (c *Catalog) SetEndpoint(endpoint catalogs.Endpoint) error {
 	return c.endpoints.Set(endpoint.ID, &endpoint)
 }
-
 
 // DeleteProvider implements starmap.Catalog
 func (c *Catalog) DeleteProvider(id catalogs.ProviderID) error {
@@ -137,11 +111,6 @@ func (c *Catalog) DeleteProvider(id catalogs.ProviderID) error {
 // DeleteAuthor implements starmap.Catalog
 func (c *Catalog) DeleteAuthor(id catalogs.AuthorID) error {
 	return c.authors.Delete(id)
-}
-
-// DeleteModel implements starmap.Catalog
-func (c *Catalog) DeleteModel(id string) error {
-	return c.models.Delete(id)
 }
 
 // DeleteEndpoint implements starmap.Catalog
@@ -171,7 +140,7 @@ func (c *Catalog) loadFromAPI() error {
 			}
 
 			// Add model to catalog
-			if err := c.SetModel(*model); err != nil {
+			if err := c.Providers().SetModel(catalogs.ProviderID(providerID), *model); err != nil {
 				return errors.WrapResource("add", "model", modelID, err)
 			}
 		}

@@ -1,0 +1,14 @@
+id: morph/morph-v3-fast
+name: Morph v3 Fast
+pricing:
+  tokens:
+    input:
+      per_1m: 0.8
+    output:
+      per_1m: 1.2
+  currency: USD
+limits:
+  context_window: 16000
+  output_tokens: 16000
+created_at: "2025-09-02T22:27:11Z"
+updated_at: "2025-09-02T22:27:11Z"
