@@ -2,21 +2,21 @@
 |---------|---------|---------|---------|---------|
 | Model | Context Window | Max Output | Modalities |
 |---------|---------|---------|---------|
-| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
 | **gemini-1.5-pro-002** | 2.0M | 8k | Text, Image |
+| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
-| **Label Detector Pali 001** | 1.0M | 8k | Text, Image |
-| **Textembedding Gecko** | 1.0M | 8k | Text |
-| **Product Recognizer** | 1.0M | 8k | Text, Image |
-| **Language V1 Analyze Sentiment** | 1.0M | 8k | Text, Image |
-| **Gemini Pro Vision** | 1.0M | 8k | Text, Image |
-| **T5 1.1** | 1.0M | 8k | Text, Image |
+| **Gemini 2.0 Flash 001** | 1.0M | 8k | Text, Image |
 | **Imagen 4.0 Ultra Generate 001** | 1.0M | 8k | Text, Image |
-| **Chat Bison** | 1.0M | 8k | Text, Image |
+| **Multimodalembedding** | 1.0M | 8k | Text |
 | **Gemini Ultra** | 1.0M | 8k | Text, Image |
-| **Text Bison** | 1.0M | 8k | Text, Image |
-| **Vehicle Detector** | 1.0M | 8k | Text, Image |
-| **Imagegeneration** | 1.0M | 8k | Text, Image |
+| **Derm Foundation** | 1.0M | 8k | Text, Image |
+| **Keras Yolov8** | 1.0M | 8k | Text, Image |
+| **Gemini 1.5 Flash 002** | 1.0M | 8k | Text, Image |
+| **Imagen 4.0 Fast Generate Preview 06 06** | 1.0M | 8k | Text, Image |
+| **Ppe Detector** | 1.0M | 8k | Text, Image |
+| **Translate Llm** | 1.0M | 8k | Text, Image |
+| **Code Gecko** | 1.0M | 8k | Text, Image |
+| **Codegemma** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
 | Model | Modalities | Tools | Reasoning | Advanced Controls |
@@ -77,8 +77,8 @@ Complete listing of all 449 models in the Starmap catalog.
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Gemini 1.5 Flash](../authors/google/models/gemini-1.5-flash.md) | Multiple | 1.0M | $0.07/$0.30 |
-| [Gemini 1.5 Flash 002](../authors/google/models/gemini-1.5-flash-002-at-default.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash 002](../authors/google/models/gemini-1.5-flash-002.md) | Multiple | 1.0M | N/A |
+| [Gemini 1.5 Flash 002](../authors/google/models/gemini-1.5-flash-002-at-default.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash Latest](../authors/google/models/gemini-1.5-flash-latest.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash-8B](../authors/google/models/gemini-1.5-flash-8b.md) | Multiple | 1.0M | $0.04/$0.15 |
 | [Gemini 1.5 Flash-8B 001](../authors/google/models/gemini-1.5-flash-8b-001.md) | Multiple | 1.0M | N/A |

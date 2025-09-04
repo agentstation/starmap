@@ -64,6 +64,7 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Bert Base](./models/bert-base-at-001.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
 | [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
 
@@ -419,7 +420,6 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 
   

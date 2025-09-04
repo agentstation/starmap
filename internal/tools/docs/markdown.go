@@ -73,6 +73,17 @@ func (m *Markdown) HugoFrontMatter(title string, weight int, opts ...FrontMatter
 	if fm.Draft {
 		fmt.Fprintln(m.writer, "draft: true")
 	}
+	if fm.Menu != nil {
+		fmt.Fprintln(m.writer, "menu:")
+		if fm.Menu.Before != nil {
+			fmt.Fprintln(m.writer, "  before:")
+			fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.Before.Weight)
+		}
+		if fm.Menu.After != nil {
+			fmt.Fprintln(m.writer, "  after:")
+			fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.After.Weight)
+		}
+	}
 	fmt.Fprintln(m.writer, "---")
 	fmt.Fprintln(m.writer)
 
@@ -86,10 +97,36 @@ type FrontMatter struct {
 	Weight      int
 	Author      string
 	Draft       bool
+	Menu        *MenuConfig
+}
+
+// MenuConfig represents menu configuration in Hugo front matter
+type MenuConfig struct {
+	Before *MenuEntry
+	After  *MenuEntry
+}
+
+// MenuEntry represents a single menu entry
+type MenuEntry struct {
+	Weight int
 }
 
 // FrontMatterOption is a functional option for front matter
 type FrontMatterOption func(*FrontMatter)
+
+// WithMenu adds menu configuration to the front matter
+func WithMenu(menuType string, weight int) FrontMatterOption {
+	return func(fm *FrontMatter) {
+		if fm.Menu == nil {
+			fm.Menu = &MenuConfig{}
+		}
+		if menuType == "before" {
+			fm.Menu.Before = &MenuEntry{Weight: weight}
+		} else if menuType == "after" {
+			fm.Menu.After = &MenuEntry{Weight: weight}
+		}
+	}
+}
 
 // WithDescription adds a description to the front matter
 func WithDescription(desc string) FrontMatterOption {

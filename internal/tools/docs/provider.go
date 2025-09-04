@@ -77,8 +77,12 @@ func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Prov
 func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provider) error {
 	markdown := NewMarkdown(w)
 
-	// Add Hugo front matter
-	markdown.HugoFrontMatter("Provider Overview", 1)
+	// Add Hugo front matter with menu entry for _index.md
+	if f, ok := w.(*os.File); ok && strings.HasSuffix(f.Name(), "_index.md") {
+		markdown.HugoFrontMatter("Providers", 40, WithMenu("after", 40))
+	} else {
+		markdown.HugoFrontMatter("Providers", 40)
+	}
 
 	markdown.H1("🏢 AI Model Providers").
 		LF().

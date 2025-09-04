@@ -65,7 +65,6 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | 1.0k | N/A | N/A | 📝 ⚡ |
-| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 
   
@@ -108,6 +107,7 @@ Mountain View, CA, USA
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | 1.0M | N/A | N/A | 📝 🔧 ⚡ |
 
   

@@ -2,21 +2,21 @@
 |---------|---------|---------|---------|---------|
 | Model | Context Window | Max Output | Modalities |
 |---------|---------|---------|---------|
-| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
 | **gemini-1.5-pro-002** | 2.0M | 8k | Text, Image |
+| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
-| **Label Detector Pali 001** | 1.0M | 8k | Text, Image |
-| **Textembedding Gecko** | 1.0M | 8k | Text |
-| **Product Recognizer** | 1.0M | 8k | Text, Image |
-| **Language V1 Analyze Sentiment** | 1.0M | 8k | Text, Image |
-| **Gemini Pro Vision** | 1.0M | 8k | Text, Image |
-| **T5 1.1** | 1.0M | 8k | Text, Image |
+| **Gemini 2.0 Flash 001** | 1.0M | 8k | Text, Image |
 | **Imagen 4.0 Ultra Generate 001** | 1.0M | 8k | Text, Image |
-| **Chat Bison** | 1.0M | 8k | Text, Image |
+| **Multimodalembedding** | 1.0M | 8k | Text |
 | **Gemini Ultra** | 1.0M | 8k | Text, Image |
-| **Text Bison** | 1.0M | 8k | Text, Image |
-| **Vehicle Detector** | 1.0M | 8k | Text, Image |
-| **Imagegeneration** | 1.0M | 8k | Text, Image |
+| **Derm Foundation** | 1.0M | 8k | Text, Image |
+| **Keras Yolov8** | 1.0M | 8k | Text, Image |
+| **Gemini 1.5 Flash 002** | 1.0M | 8k | Text, Image |
+| **Imagen 4.0 Fast Generate Preview 06 06** | 1.0M | 8k | Text, Image |
+| **Ppe Detector** | 1.0M | 8k | Text, Image |
+| **Translate Llm** | 1.0M | 8k | Text, Image |
+| **Code Gecko** | 1.0M | 8k | Text, Image |
+| **Codegemma** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
 | Model | Modalities | Tools | Reasoning | Advanced Controls |
@@ -72,7 +72,7 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 192 more_ |  |  |  |
 
   
-### Gemini (67 models)
+### Gemini (69 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -86,7 +86,7 @@ Complete listing of all 449 models in the Starmap catalog.
 | [Gemini 1.5 Pro](../authors/google/models/gemini-1.5-pro.md) | Multiple | 1.0M | $1.25/$5.00 |
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002.md) | Multiple | 2.0M | N/A |
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002-at-default.md) | Multiple | 1.0M | N/A |
-| _...and 57 more_ |  |  |  |
+| _...and 59 more_ |  |  |  |
 
   
 ### GPT (48 models)
@@ -123,10 +123,11 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 17 more_ |  |  |  |
 
   
-### Llama (26 models)
+### Llama (27 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
+| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | 128k | N/A |
 | [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | 128k | N/A |
 | Llama 3 70B | Multiple | 8.2k | $0.59/$0.79 |
 | Llama 3 8B | Multiple | 8.2k | $0.05/$0.08 |
@@ -136,8 +137,7 @@ Complete listing of all 449 models in the Starmap catalog.
 | [Llama 4 Maverick 17b 128e Instruct Maas](../authors/meta/models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | Multiple | 128k | N/A |
 | [Llama Guard](../authors/meta/models/llama-guard-at-llama-guard-4-12b.md) | Multiple | 128k | N/A |
 | Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
-| [Llama2](../authors/meta/models/llama2-at-llama-2-7b.md) | Multiple | 128k | N/A |
-| _...and 16 more_ |  |  |  |
+| _...and 17 more_ |  |  |  |
 
   
 ### Claude (16 models)
@@ -157,21 +157,21 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 6 more_ |  |  |  |
 
   
-### Embeddings (15 models)
+### Embeddings (13 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Gemini Embedding 001](../authors/google/models/gemini-embedding-001-at-default.md) | Multiple | 1.0M | N/A |
-| [Gemini Embedding Experimental](../authors/google/models/gemini-embedding-exp.md) | Multiple | 8.2k | N/A |
+| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | 1.0M | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | 1.0M | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | 1.0M | N/A |
-| [gemini-embedding-001](../authors/google/models/gemini-embedding-001.md) | Multiple | 2.0k | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
-| _...and 5 more_ |  |  |  |
+| [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
+| [text-embedding-3-small](../authors/openai/models/text-embedding-3-small.md) | Multiple | N/A | N/A |
+| _...and 3 more_ |  |  |  |
 
   
 ### Qwen (12 models)

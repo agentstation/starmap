@@ -69,6 +69,16 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | groq | 131.1k | Text |
 
   
+### Whisper
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | google-vertex | N/A | Text |
+| [whisper-1](./models/whisper-1.md) | openai | N/A | Text |
+| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
+
+  
 ### Other
   
 | Model | Providers | Context | Capabilities |
@@ -93,16 +103,6 @@ AI research company known for GPT models, ChatGPT, and DALL-E
 | [tts-1-1106](./models/tts-1-1106.md) | openai | N/A | Text |
 | [tts-1-hd](./models/tts-1-hd.md) | openai | N/A | Text |
 | [tts-1-hd-1106](./models/tts-1-hd-1106.md) | openai | N/A | Text |
-
-  
-### Whisper
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Whisper Large](./models/whisper-large-at-whisper-large-v3-turbo.md) | google-vertex | N/A | Text |
-| [whisper-1](./models/whisper-1.md) | openai | N/A | Text |
-| [whisper-large-v3](./models/whisper-large-v3.md) | groq | 448 | Text, Audio |
-| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | groq | 448 | Text, Audio |
 
   
 ### Embeddings

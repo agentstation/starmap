@@ -89,22 +89,6 @@ menu:
     - name: "GitHub"
       url: "https://github.com/agentstation/starmap"
       weight: 10
-    - name: "API Docs"
-      url: "api/"
-      weight: 20
-  after:
-    - name: "Catalog"
-      url: "catalog/"
-      weight: 30
-    - name: "Providers"
-      url: "catalog/providers/"
-      weight: 40
-    - name: "Authors"
-      url: "catalog/authors/"
-      weight: 50
-    - name: "Provider Guide"
-      url: "provider_implementation_guide/"
-      weight: 60
 
 # Security settings
 security:

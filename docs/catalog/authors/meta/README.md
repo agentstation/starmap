@@ -22,7 +22,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 | Model | Providers | Context | Capabilities |
 |---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | google-vertex | 128k | Text, Functions |
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | google-vertex | 128k | Text, Functions |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
@@ -44,14 +43,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
 
   
-### BERT
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
-
-  
 ### Other
   
 | Model | Providers | Context | Capabilities |
@@ -63,6 +54,21 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | google-vertex | 128k | Text, Functions |
 | [Retinanet](./models/retinanet-at-001.md) | google-vertex | 128k | Text, Functions |
 | [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+### CodeLlama
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | google-vertex | 128k | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
 
   
 ## Provider Availability

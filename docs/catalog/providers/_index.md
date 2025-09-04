@@ -1,6 +1,9 @@
 ---
-title: "Provider Overview"
-weight: 1
+title: "Providers"
+weight: 40
+menu:
+  after:
+    weight: 40
 ---
 
 # 🏢 AI Model Providers

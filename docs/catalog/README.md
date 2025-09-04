@@ -64,8 +64,8 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 | **[Claude Haiku 3](models/claude-3-haiku-20240307.md)** | Anthropic | 200k | $0.25/$1.25 |
 | **[Claude Haiku 3.5](models/claude-3-5-haiku-20241022.md)** | Anthropic | 200k | $0.80/$4.00 |
 | **[Claude Opus 3](models/claude-3-opus-20240229.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 | **[Claude Opus 4](models/claude-opus-4-20250514.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 | **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 
   

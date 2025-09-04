@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -34,6 +35,11 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) error {
 
 	markdown := NewMarkdown(f)
+
+	// Add Hugo front matter with menu entry for _index.md
+	if strings.HasSuffix(f.Name(), "_index.md") {
+		markdown.HugoFrontMatter("Catalog", 30, WithMenu("after", 30))
+	}
 
 	// Generate header
 	markdown.H1("🌟 Starmap AI Model Catalog").LF()

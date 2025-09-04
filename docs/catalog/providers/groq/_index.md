@@ -61,13 +61,6 @@ Mountain View, CA, USA
   
 ## Available Models
   
-### DeepSeek
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | $0.75 | $0.99 | 📝 🔧 ⚡ |
-
-  
 ### GPT
   
 | Model | Context | Input | Output | Features |
@@ -90,6 +83,7 @@ Mountain View, CA, USA
 | [Llama 3 70B](./models/llama3-70b-8192.md) | 8.2k | $0.59 | $0.79 | — |
 | [Llama 3 8B](./models/llama3-8b-8192.md) | 8.2k | $0.05 | $0.08 | — |
 | [Llama Guard 3 8B](./models/llama-guard-3-8b.md) | 8.2k | $0.20 | $0.20 | — |
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | $0.75 | $0.99 | 📝 🔧 ⚡ |
 | [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131.1k | $0.05 | $0.08 | 📝 🔧 ⚡ |
 | [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | $0.59 | $0.79 | 📝 🔧 ⚡ |
 | [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | $0.20 | $0.60 | 📝 🔧 ⚡ |

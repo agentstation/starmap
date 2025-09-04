@@ -18,6 +18,33 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
   
 ## Models
   
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | 128k | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | 128k | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | google-vertex | 128k | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+### RoBERTa
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
+
+  
 ### Llama
   
 | Model | Providers | Context | Capabilities |
@@ -42,33 +69,6 @@ Social media company known for LLaMA/Llama model series and open-source AI resea
 | [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | groq | 131.1k | Text |
 | [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | groq | 512 | Text |
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
-
-  
-### RoBERTa
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
-
-  
-### Other
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | 128k | Text, Functions |
-| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | 128k | Text, Functions |
-| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | google-vertex | 128k | Text, Functions |
-| [Retinanet](./models/retinanet-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | google-vertex | 128k | Text, Functions |
-
-  
-### BERT
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
 
   
 ## Provider Availability
