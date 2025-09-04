@@ -74,7 +74,7 @@ sboms:
       - "${artifact}.sbom.json"
 
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  version_template: "{{ incpatch .Version }}-next"
 
 changelog:
   sort: asc
@@ -184,7 +184,7 @@ dockers:
       - "--label=org.opencontainers.image.version={{.Version}}"
       - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
       - "--label=org.opencontainers.image.description=AI Model Catalog System"
-      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--label=org.opencontainers.image.licenses=AGPL-3.0"
       - "--platform=linux/amd64"
   - id: starmap-arm64
     ids:
@@ -205,7 +205,7 @@ dockers:
       - "--label=org.opencontainers.image.version={{.Version}}"
       - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
       - "--label=org.opencontainers.image.description=AI Model Catalog System"
-      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--label=org.opencontainers.image.licenses=AGPL-3.0"
       - "--platform=linux/arm64"
 
 # Docker manifest for multi-arch support
@@ -219,45 +219,6 @@ docker_manifests:
       - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
       - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
 
-# Homebrew tap
-brews:
-  - repository:
-      owner: agentstation
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    commit_author:
-      name: starmap-bot
-      email: bot@agentstation.ai
-    homepage: "https://github.com/agentstation/starmap"
-    description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
-    license: "MIT"
-    folder: Formula
-    test: |
-      system "#{bin}/starmap", "version"
-    
-    # Shell completions
-    completions:
-      bash: completions/starmap.bash
-      zsh: completions/starmap.zsh
-      fish: completions/starmap.fish
-    
-    # Custom caveats  
-    caveats: |
-      Starmap has been installed! 🗺️
-      
-      Quick start:
-        starmap list models              # List all AI models
-        starmap fetch models --provider openai  # Fetch live model data
-        starmap update                   # Update entire catalog
-        starmap --help                   # Show all commands
-      
-      Shell completions have been installed to:
-        Bash: #{HOMEBREW_PREFIX}/etc/bash_completion.d
-        Zsh:  #{HOMEBREW_PREFIX}/share/zsh/site-functions
-        Fish: #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
-      
-      Documentation: https://starmap.agentstation.ai/
-
 # Homebrew Cask
 homebrew_casks:
   - repository:
@@ -269,18 +230,8 @@ homebrew_casks:
       email: bot@agentstation.ai
     homepage: "https://github.com/agentstation/starmap"
     description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
-    license: "MIT"
+    license: "AGPL-3.0"
     directory: Casks
-    
-    # Conflicts with formula version
-    conflicts_with:
-      formula: ["starmap"]
-    
-    # Shell completions
-    completions:
-      bash: completions/starmap.bash
-      zsh: completions/starmap.zsh
-      fish: completions/starmap.fish
     
     # Custom caveats for cask
     caveats: |
