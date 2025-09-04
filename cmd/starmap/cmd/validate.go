@@ -4,7 +4,9 @@ import (
 	"fmt"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/validation"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
@@ -30,20 +32,28 @@ func init() {
 func runValidate(cmd *cobra.Command, args []string) error {
 	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("creating starmap: %w", err)
+		return errors.WrapResource("create", "starmap", "", err)
 	}
 
 	catalog, err := sm.Catalog()
 	if err != nil {
-		return fmt.Errorf("getting catalog: %w", err)
+		return errors.WrapResource("get", "catalog", "", err)
 	}
 
-	report, err := validation.ValidateProviderAccess(catalog)
+	// Get list of supported providers using the public API
+	fetcher := sources.NewProviderFetcher()
+	supportedProviders := fetcher.List()
+
+	report, err := catalogs.ValidateAllProviders(catalog, supportedProviders)
 	if err != nil {
-		return fmt.Errorf("validating provider access: %w", err)
+		return &errors.ProcessError{
+			Operation: "validate provider access",
+			Command:   "validate",
+			Err:       err,
+		}
 	}
 
-	validation.PrintProviderReport(report)
+	report.Print()
 
 	// Return error if there are missing required keys
 	if len(report.Missing) > 0 {

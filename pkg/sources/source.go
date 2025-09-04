@@ -1,3 +1,26 @@
+// Package sources defines interfaces and types for catalog data sources.
+// Sources are responsible for fetching and synchronizing model data from
+// various providers including local files, provider APIs, and external repositories.
+//
+// The package provides a unified interface for different data sources while
+// supporting merge strategies, authorities for data precedence, and flexible
+// configuration options.
+//
+// Example usage:
+//
+//	// Create a provider fetcher
+//	fetcher := NewProviderFetcher()
+//
+//	// Fetch models from a provider
+//	models, err := fetcher.FetchModels(ctx, provider)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	// Check if a provider is supported
+//	if fetcher.HasClient(providerID) {
+//	    // Provider has a client implementation
+//	}
 package sources
 
 import (
@@ -6,59 +29,46 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Type represents different types of data sources
+// Type represents the type/name of a data source
 type Type string
 
-const (
-	ProviderAPI   Type = "provider_api"
-	ModelsDevGit  Type = "models_dev_git"
-	ModelsDevHTTP Type = "models_dev_http"
-	LocalCatalog  Type = "local_catalog"
-	DatabaseUI    Type = "database_ui"
-)
-
-// String returns the string representation
-func (st Type) String() string {
-	return string(st)
+// String returns the string representation of a source name
+func (sn Type) String() string {
+	return string(sn)
 }
+
+// Common source names
+const (
+	ProviderAPI   Type = "Provider APIs"
+	ModelsDevGit  Type = "models.dev (git)"
+	ModelsDevHTTP Type = "models.dev (http)"
+	LocalCatalog  Type = "Local Catalog"
+)
 
 // Source represents a data source for catalog information
 type Source interface {
 	// Type returns the type of this source
 	Type() Type
 
-	// Name returns a human-readable name for this source
-	Name() string
+	// Setup initializes the source with dependencies (called once before Fetch)
+	Setup(providers *catalogs.Providers) error
 
-	// Priority returns the default priority for this source (higher = more important)
-	Priority() int
+	// Fetch retrieves data from this source
+	// Sources handle their own concurrency internally
+	Fetch(ctx context.Context, opts ...Option) error
 
-	// Configure prepares the source with runtime configuration
-	// Returns nil if configuration successful, error otherwise
-	Configure(config SourceConfig) error
+	// Catalog returns the catalog of this source
+	Catalog() catalogs.Catalog
 
-	// Reset clears any configuration
-	Reset()
-
-	// IsAvailable returns true if properly configured and ready
-	IsAvailable() bool
-
-	// Clone creates a copy of this source for concurrent use
-	Clone() Source
-
-	// FetchModels fetches models from this source for a given provider
-	FetchModels(ctx context.Context, providerID catalogs.ProviderID) ([]catalogs.Model, error)
-
-	// FetchProvider fetches provider information from this source
-	FetchProvider(ctx context.Context, providerID catalogs.ProviderID) (*catalogs.Provider, error)
-
-	// FieldAuthorities returns the field authorities for this source
-	FieldAuthorities() []FieldAuthority
+	// Cleanup releases any resources (called after all Fetch operations)
+	Cleanup() error
 }
 
-// SourceConfig provides runtime configuration for sources
-type SourceConfig struct {
-	Catalog     catalogs.Catalog
-	Provider    *catalogs.Provider // For provider-specific sources
-	SyncOptions *SyncOptions       // Contains all sync configuration
-}
+// ResourceType identifies the type of resource being merged
+type ResourceType string
+
+const (
+	ResourceTypeModel    ResourceType = "model"
+	ResourceTypeProvider ResourceType = "provider"
+	ResourceTypeAuthor   ResourceType = "author"
+)

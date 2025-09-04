@@ -2,118 +2,80 @@ package local
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/agentstation/starmap/internal/catalogs/persistence"
-	"github.com/agentstation/starmap/internal/sources/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func init() {
-	// Register a single instance
-	registry.Register(&Local{
-		priority: 80,
-		name:     "Local Catalog",
-	})
+// Source loads a catalog from either a file path or embedded catalog
+type Source struct {
+	catalogPath string
+	catalog     catalogs.Catalog
 }
 
-// Local wraps the existing catalog as a Source
-type Local struct {
-	catalog  catalogs.Catalog
-	priority int
-	name     string
+// New creates a new local source
+func New(opts ...Option) *Source {
+	s := &Source{}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
 }
 
-// Type returns the source type
-func (s *Local) Type() sources.Type {
+// Option configures a local source
+type Option func(*Source)
+
+// WithCatalogPath sets the catalog path
+func WithCatalogPath(path string) Option {
+	return func(s *Source) {
+		s.catalogPath = path
+	}
+}
+
+// Type returns the type of this source
+func (s *Source) Type() sources.Type {
+	// For local source, we always return the constant name
+	// The path details can be logged separately if needed
 	return sources.LocalCatalog
 }
 
-// Configure prepares the source with runtime configuration
-func (s *Local) Configure(config sources.SourceConfig) error {
-	if config.SyncOptions != nil && config.SyncOptions.DisableLocalCatalog {
-		s.catalog = nil
-		return nil
-	}
-	s.catalog = config.Catalog
+// Setup initializes the source with dependencies
+func (s *Source) Setup(providers *catalogs.Providers) error {
+	// LocalSource doesn't need any dependencies
 	return nil
 }
 
-// Reset clears any configuration
-func (s *Local) Reset() {
-	s.catalog = nil
-}
-
-// Clone creates a copy of this source for concurrent use
-func (s *Local) Clone() sources.Source {
-	return &Local{
-		catalog:  s.catalog,
-		priority: s.priority,
-		name:     s.name,
-	}
-}
-
-// Name returns a human-readable name for this source
-func (s *Local) Name() string {
-	return s.name
-}
-
-// Priority returns the priority of this source
-func (s *Local) Priority() int {
-	return s.priority
-}
-
-// FetchModels fetches models from the local catalog
-func (s *Local) FetchModels(ctx context.Context, providerID catalogs.ProviderID) ([]catalogs.Model, error) {
-	if s.catalog == nil {
-		return nil, fmt.Errorf("local catalog not available")
+// Fetch returns catalog data from configured source
+func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
+	// Use configured path if set
+	if s.catalogPath != "" {
+		var err error
+		s.catalog, err = catalogs.New(catalogs.WithFiles(s.catalogPath))
+		if err != nil {
+			return errors.WrapResource("load", "catalog", s.catalogPath, err)
+		}
+		s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
+		return nil
 	}
 
-	// Get existing models from the catalog for this provider
-	existingModels, err := persistence.GetProviderModels(s.catalog, providerID)
+	// Default to embedded catalog
+	var err error
+	s.catalog, err = catalogs.New(catalogs.WithEmbedded())
 	if err != nil {
-		// Not necessarily an error - provider might not exist in catalog yet
-		return nil, nil
+		return errors.WrapResource("load", "embedded catalog", "", err)
 	}
-
-	// Convert map to slice
-	var models []catalogs.Model
-	for _, model := range existingModels {
-		models = append(models, model)
-	}
-
-	return models, nil
+	s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
+	return nil
 }
 
-// FetchProvider fetches provider information from the local catalog
-func (s *Local) FetchProvider(ctx context.Context, providerID catalogs.ProviderID) (*catalogs.Provider, error) {
-	if s.catalog == nil {
-		return nil, fmt.Errorf("local catalog not available")
-	}
-
-	// Get provider from catalog
-	provider, found := s.catalog.Providers().Get(providerID)
-	if !found {
-		// Not an error - provider might not exist yet
-		return nil, nil
-	}
-
-	// Return the provider pointer directly
-	return provider, nil
+// Catalog returns the catalog of this source
+func (s *Source) Catalog() catalogs.Catalog {
+	return s.catalog
 }
 
-// FieldAuthorities returns the field authorities where local catalog is authoritative
-func (s *Local) FieldAuthorities() []sources.FieldAuthority {
-	return sources.FilterAuthoritiesBySource(sources.DefaultModelFieldAuthorities, sources.LocalCatalog)
-}
-
-// IsAvailable returns true if the local catalog is available
-func (s *Local) IsAvailable() bool {
-	return s.catalog != nil
-}
-
-// SetPriority updates the priority of this source
-func (s *Local) SetPriority(priority int) {
-	s.priority = priority
+// Cleanup releases any resources
+func (s *Source) Cleanup() error {
+	// LocalSource doesn't hold any resources
+	return nil
 }

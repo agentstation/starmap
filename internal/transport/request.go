@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // RequestBuilder helps build HTTP requests with provider-specific configurations.
@@ -48,7 +49,7 @@ func (rb *RequestBuilder) AddProviderHeaders(req *http.Request) {
 }
 
 // DecodeResponse decodes a JSON response into the target structure.
-func DecodeResponse(resp *http.Response, target interface{}) error {
+func DecodeResponse(resp *http.Response, target any) error {
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			// Log warning but don't override the main error
@@ -58,15 +59,19 @@ func DecodeResponse(resp *http.Response, target interface{}) error {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("reading response body: %w", err)
+		return errors.WrapIO("read", "response body", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("HTTP %d: %s", resp.StatusCode, string(body))
+		return &errors.APIError{
+			Provider:   "unknown", // Provider not available in this context
+			StatusCode: resp.StatusCode,
+			Message:    string(body),
+		}
 	}
 
 	if err := json.Unmarshal(body, target); err != nil {
-		return fmt.Errorf("decoding JSON response: %w", err)
+		return errors.WrapParse("json", "response", err)
 	}
 
 	return nil

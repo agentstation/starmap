@@ -1,0 +1,27 @@
+# mistral-saba-24b - Mistral Saba 24B
+id: mistral-saba-24b
+name: Mistral Saba 24B
+
+# Model metadata
+metadata:
+  release_date: 2025-02-06
+  open_weights: false
+  knowledge_cutoff: 2024-08-01
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.79
+    output:
+      per_1m: 0.79
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 32768
+  output_tokens: 32768
+
+# Timestamps
+created_at: 2025-09-04T14:31:06Z
+updated_at: 2025-09-04T14:31:06Z

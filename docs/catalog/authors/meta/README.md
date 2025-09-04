@@ -1,50 +1,91 @@
-# Meta
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/meta.svg" alt="Meta logo" width="48" height="48" style="vertical-align: middle;"> Meta
+  
+  
+  
+Social media company known for LLaMA/Llama model series and open-source AI research
+  
+  
+## Organization Information
+  
+| Field | Value |
+|---------|---------|
+| **Author ID** | `meta` |
+| **Type** | 🏢 Major Tech Companies |
+| **Website** | [https://about.meta.com](https://about.meta.com) |
+| **Total Models** | 29 |
+| **Available On** | 2 providers |
 
-**Description**: Social media company known for LLaMA/Llama model series and open-source AI research  
-**Website**: [https://about.meta.com](https://about.meta.com)  
-**GitHub**: [https://github.com/meta-llama](https://github.com/meta-llama)  
-**Hugging Face**: [https://huggingface.co/meta-llama](https://huggingface.co/meta-llama)  
-**Twitter**: [https://x.com/Meta](https://x.com/Meta)  
-**Total Models**: 31
-
+  
 ## Models
+  
+### Llama
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | google-vertex | 128k | Text, Functions |
+| [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 3.3 70b Instruct Maas](./models/llama-3.3-70b-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama 4 Maverick 17b 128e Instruct Maas](./models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Llama Guard](./models/llama-guard-at-llama-guard-4-12b.md) | google-vertex | 128k | Text, Functions |
+| [Llama2](./models/llama2-at-llama-2-7b.md) | google-vertex | 128k | Text, Functions |
+| [Llama3](./models/llama3-at-meta-llama-3-8b.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 1](./models/llama3_1-at-llama-3.1-8b-instruct.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 2](./models/llama3-2-at-llama-3.2-90b-vision.md) | google-vertex | 128k | Text, Functions |
+| [Llama3 3](./models/llama3-3-at-llama-3.3-70b-instruct.md) | google-vertex | 128k | Text, Functions |
+| [Llama4](./models/llama4-at-llama-4-maverick-17b-128e-instruct.md) | google-vertex | 128k | Text, Functions |
+| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | groq | 131.1k | Text, Functions |
+| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | groq | 131.1k | Text, Functions |
+| [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | groq | 131.1k | Text, Functions |
+| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | groq | 131.1k | Text, Functions |
+| [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | groq | 131.1k | Text |
+| [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | groq | 512 | Text |
+| [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | groq | 512 | Text |
 
-| Model | Context Window | Available Via | Features |
-|-------|----------------|---------------|----------|
-| [codellama-7b-hf@codellama-7b-hf](./models/codellama-7b-hf@codellama-7b-hf.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [faster-r-cnn@001](./models/faster-r-cnn@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [imagebind@imagebind-feature-embedding-generation](./models/imagebind@imagebind-feature-embedding-generation.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-2-quantized@llama-2-7b-chat-gptq](./models/llama-2-quantized@llama-2-7b-chat-gptq.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.1-405b-instruct-maas@001](./models/llama-3.1-405b-instruct-maas@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131072 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.2-90b-vision-instruct-maas@001](./models/llama-3.2-90b-vision-instruct-maas@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.3-70b-instruct-maas@001](./models/llama-3.3-70b-instruct-maas@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131072 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama-4-maverick-17b-128e-instruct-maas@001](./models/llama-4-maverick-17b-128e-instruct-maas@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama-guard@llama-guard-4-12b](./models/llama-guard@llama-guard-4-12b.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama2@llama-2-7b](./models/llama2@llama-2-7b.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama3-2@llama-3.2-90b-vision](./models/llama3-2@llama-3.2-90b-vision.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama3-3@llama-3.3-70b-instruct](./models/llama3-3@llama-3.3-70b-instruct.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama3-70b-8192](./models/llama3-70b-8192.md) | 8192 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama3-8b-8192](./models/llama3-8b-8192.md) | 8192 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [llama3@meta-llama-3-8b](./models/llama3@meta-llama-3-8b.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama3_1@llama-3.1-8b-instruct](./models/llama3_1@llama-3.1-8b-instruct.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [llama4@llama-4-maverick-17b-128e-instruct](./models/llama4@llama-4-maverick-17b-128e-instruct.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [mask-r-cnn@001](./models/mask-r-cnn@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-4-maverick-17b-128e-instruct](./models/meta-llama/llama-4-maverick-17b-128e-instruct.md) | 131072 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-4-scout-17b-16e-instruct](./models/meta-llama/llama-4-scout-17b-16e-instruct.md) | 131072 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-guard-4-12b](./models/meta-llama/llama-guard-4-12b.md) | 131072 | groq | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-prompt-guard-2-22m](./models/meta-llama/llama-prompt-guard-2-22m.md) | N/A | groq | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [meta-llama/llama-prompt-guard-2-86m](./models/meta-llama/llama-prompt-guard-2-86m.md) | N/A | groq | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [nllb@nllb-200-distilled-600m](./models/nllb@nllb-200-distilled-600m.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [prompt-guard@llama-prompt-guard-2-22m](./models/prompt-guard@llama-prompt-guard-2-22m.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [retinanet@001](./models/retinanet@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [roberta-large@roberta-large](./models/roberta-large@roberta-large.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [segment-anything@sam-vit-large](./models/segment-anything@sam-vit-large.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [xlm-roberta-large@xlm-roberta-large](./models/xlm-roberta-large@xlm-roberta-large.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | google-vertex | 128k | Text, Functions |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | google-vertex | 128k | Text, Functions |
 
-## Navigation
+  
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Faster R Cnn](./models/faster-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Imagebind](./models/imagebind-at-imagebind-feature-embedding-generation.md) | google-vertex | 128k | Text, Functions |
+| [Mask R Cnn](./models/mask-r-cnn-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Nllb](./models/nllb-at-nllb-200-distilled-600m.md) | google-vertex | 128k | Text, Functions |
+| [Prompt Guard](./models/prompt-guard-at-llama-prompt-guard-2-22m.md) | google-vertex | 128k | Text, Functions |
+| [Retinanet](./models/retinanet-at-001.md) | google-vertex | 128k | Text, Functions |
+| [Segment Anything](./models/segment-anything-at-sam-vit-large.md) | google-vertex | 128k | Text, Functions |
 
-- [← Back to Authors](../README.md)
-- [📋 Browse by Provider](../../providers/README.md)
-- [← Back to Main Catalog](../../README.md)
+  
+## Provider Availability
+  
+Models from this author are available through the following providers:
+  
+  
+- **[google-vertex](../../providers/google-vertex/)** - 22 models
+- **[groq](../../providers/groq/)** - 7 models
+  
+## Research & Development
+  
+Key research areas include:
+- **Open Science** - Commitment to releasing models and research publicly
+- **Efficient Training** - Techniques for training large models with less compute
+- **Multilingual Models** - Building models that work across many languages
+- **Self-Supervised Learning** - Advancing techniques for learning from unlabeled data
+  
+### See Also
+  
+- [All Authors](../)
+- [Browse by Provider](../../providers/)
+- [Model Comparison](../../models/)
+  
+---
+*_[← Back to Authors](../) | [← Back to Catalog](../../) | Generated by [Starmap](https://github.com/agentstation/starmap)_*

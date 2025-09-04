@@ -3,7 +3,12 @@ package catalogs
 import (
 	"fmt"
 	"maps"
+	"sort"
+	"strings"
 	"sync"
+
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/goccy/go-yaml"
 )
 
 // Providers is a concurrent safe map of providers.
@@ -56,7 +61,10 @@ func (p *Providers) Get(id ProviderID) (*Provider, bool) {
 // Set sets a provider by id. Returns an error if provider is nil.
 func (p *Providers) Set(id ProviderID, provider *Provider) error {
 	if provider == nil {
-		return fmt.Errorf("provider cannot be nil")
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "cannot be nil",
+		}
 	}
 
 	p.mu.Lock()
@@ -68,14 +76,21 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error {
 // Add adds a provider, returning an error if it already exists.
 func (p *Providers) Add(provider *Provider) error {
 	if provider == nil {
-		return fmt.Errorf("provider cannot be nil")
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "cannot be nil",
+		}
 	}
 
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	if _, exists := p.providers[provider.ID]; exists {
-		return fmt.Errorf("provider with ID %s already exists", provider.ID)
+		return &errors.ValidationError{
+			Field:   "provider.ID",
+			Value:   provider.ID,
+			Message: "already exists",
+		}
 	}
 
 	p.providers[provider.ID] = provider
@@ -88,7 +103,10 @@ func (p *Providers) Delete(id ProviderID) error {
 	defer p.mu.Unlock()
 
 	if _, exists := p.providers[id]; !exists {
-		return fmt.Errorf("provider with ID %s not found", id)
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(id),
+		}
 	}
 
 	delete(p.providers, id)
@@ -114,13 +132,17 @@ func (p *Providers) Len() int {
 // List returns a slice of all providers.
 func (p *Providers) List() []*Provider {
 	p.mu.RLock()
-	providers := make([]*Provider, len(p.providers))
-	i := 0
+	providers := make([]*Provider, 0, len(p.providers))
 	for _, provider := range p.providers {
-		providers[i] = provider
-		i++
+		providers = append(providers, provider)
 	}
 	p.mu.RUnlock()
+
+	// Sort by ID for deterministic ordering
+	sort.Slice(providers, func(i, j int) bool {
+		return providers[i].ID < providers[j].ID
+	})
+
 	return providers
 }
 
@@ -157,6 +179,84 @@ func (p *Providers) Clear() {
 	}
 }
 
+// SetModel adds or updates a model in a provider
+func (p *Providers) SetModel(providerID ProviderID, model Model) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	provider, exists := p.providers[providerID]
+	if !exists {
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(providerID),
+		}
+	}
+
+	// Ensure model has a name - use ID as fallback
+	if model.Name == "" {
+		model.Name = model.ID
+	}
+
+	// Create a copy of the provider to avoid modifying the original
+	providerCopy := *provider
+	if providerCopy.Models == nil {
+		providerCopy.Models = make(map[string]Model)
+	} else {
+		// Copy the models map
+		newModels := make(map[string]Model, len(providerCopy.Models))
+		for k, v := range providerCopy.Models {
+			newModels[k] = v
+		}
+		providerCopy.Models = newModels
+	}
+
+	providerCopy.Models[model.ID] = model
+	p.providers[providerID] = &providerCopy
+
+	return nil
+}
+
+// DeleteModel removes a model from a provider
+func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	provider, exists := p.providers[providerID]
+	if !exists {
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       string(providerID),
+		}
+	}
+
+	if provider.Models == nil || len(provider.Models) == 0 {
+		return &errors.NotFoundError{
+			Resource: "model",
+			ID:       modelID,
+		}
+	}
+
+	if _, exists := provider.Models[modelID]; !exists {
+		return &errors.NotFoundError{
+			Resource: "model",
+			ID:       modelID,
+		}
+	}
+
+	// Create a copy of the provider to avoid modifying the original
+	providerCopy := *provider
+	newModels := make(map[string]Model, len(providerCopy.Models)-1)
+	for k, v := range providerCopy.Models {
+		if k != modelID {
+			newModels[k] = v
+		}
+	}
+	providerCopy.Models = newModels
+	p.providers[providerID] = &providerCopy
+
+	return nil
+}
+
 // AddBatch adds multiple providers in a single operation.
 // Only adds providers that don't already exist - fails if a provider ID already exists.
 // Returns a map of provider IDs to errors for any failed additions.
@@ -168,7 +268,7 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	errors := make(map[ProviderID]error)
+	errs := make(map[ProviderID]error)
 
 	// First pass: validate all providers
 	for _, provider := range providers {
@@ -176,7 +276,11 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 			continue // Skip nil providers
 		}
 		if _, exists := p.providers[provider.ID]; exists {
-			errors[provider.ID] = fmt.Errorf("provider with ID %s already exists", provider.ID)
+			errs[provider.ID] = &errors.ValidationError{
+				Field:   "provider.ID",
+				Value:   provider.ID,
+				Message: "already exists",
+			}
 		}
 	}
 
@@ -185,15 +289,15 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 		if provider == nil {
 			continue
 		}
-		if _, hasError := errors[provider.ID]; !hasError {
+		if _, hasError := errs[provider.ID]; !hasError {
 			p.providers[provider.ID] = provider
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
 }
 
 // SetBatch sets multiple providers in a single operation.
@@ -207,7 +311,10 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error {
 	// Validate all providers first
 	for id, provider := range providers {
 		if provider == nil {
-			return fmt.Errorf("provider for ID %s cannot be nil", id)
+			return &errors.ValidationError{
+				Field:   "providers[" + string(id) + "]",
+				Message: "cannot be nil",
+			}
 		}
 	}
 
@@ -231,17 +338,124 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	errors := make(map[ProviderID]error)
+	errs := make(map[ProviderID]error)
 	for _, id := range ids {
 		if _, exists := p.providers[id]; !exists {
-			errors[id] = fmt.Errorf("provider with ID %s not found", id)
+			errs[id] = &errors.NotFoundError{
+				Resource: "provider",
+				ID:       string(id),
+			}
 		} else {
 			delete(p.providers, id)
 		}
 	}
 
-	if len(errors) == 0 {
+	if len(errs) == 0 {
 		return nil
 	}
-	return errors
+	return errs
+}
+
+// FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure
+func (p *Providers) FormatYAML() string {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	// Convert map to slice for consistent ordering
+	providers := make([]Provider, 0, len(p.providers))
+
+	// Get all provider IDs and sort them for deterministic output
+	ids := make([]ProviderID, 0, len(p.providers))
+	for id := range p.providers {
+		ids = append(ids, id)
+	}
+	sort.Slice(ids, func(i, j int) bool {
+		return string(ids[i]) < string(ids[j])
+	})
+
+	// Create ordered slice of providers
+	for _, id := range ids {
+		if provider := p.providers[id]; provider != nil {
+			// Create a copy to avoid modifying the original
+			providerCopy := *provider
+			providers = append(providers, providerCopy)
+		}
+	}
+
+	return formatProvidersYAML(providers)
+}
+
+// formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing
+func formatProvidersYAML(providers []Provider) string {
+	// Create comment map for provider section headers and duration comments
+	commentMap := yaml.CommentMap{}
+
+	for i, provider := range providers {
+		// Add provider section header comment using HeadComment with space formatting
+		providerPath := fmt.Sprintf("$[%d]", i)
+		commentMap[providerPath] = []*yaml.Comment{
+			yaml.HeadComment(fmt.Sprintf(" %s", provider.Name)), // Space prefix for proper formatting
+		}
+
+		// Add duration comments
+		if provider.RetentionPolicy != nil && provider.RetentionPolicy.Duration != nil {
+			retentionPath := fmt.Sprintf("$[%d].retention_policy.duration", i)
+			duration := provider.RetentionPolicy.Duration.String()
+			var comment string
+			switch duration {
+			case "720h0m0s", "720h":
+				comment = "30 days"
+			case "48h0m0s", "48h":
+				comment = "2 days"
+			case "0s":
+				comment = "immediate"
+			default:
+				// Handle other common durations
+				if d := *provider.RetentionPolicy.Duration; d > 0 {
+					hours := int(d.Hours())
+					if hours >= 24 && hours%24 == 0 {
+						days := hours / 24
+						comment = fmt.Sprintf("%d days", days)
+					}
+				}
+			}
+
+			if comment != "" {
+				commentMap[retentionPath] = []*yaml.Comment{
+					yaml.LineComment(comment),
+				}
+			}
+		}
+	}
+
+	// Let the library handle the formatting properly
+	yamlData, err := yaml.MarshalWithOptions(providers,
+		yaml.Indent(2),               // 2-space indentation
+		yaml.IndentSequence(false),   // Keep root array flush left (no indentation)
+		yaml.WithComment(commentMap), // Add comments
+	)
+	if err != nil {
+		// Fallback to basic YAML if enhanced formatting fails
+		basicYaml, _ := yaml.Marshal(providers)
+		return string(basicYaml)
+	}
+
+	// Post-process to add spacing between providers
+	return addBlankLinesBetweenProviders(string(yamlData))
+}
+
+// addBlankLinesBetweenProviders adds spacing between provider sections
+func addBlankLinesBetweenProviders(yamlContent string) string {
+	lines := strings.Split(yamlContent, "\n")
+	var result []string
+
+	for i, line := range lines {
+		// Add blank line before each provider comment (except the first one)
+		if strings.HasPrefix(line, "#") && i > 0 {
+			result = append(result, "")
+		}
+		result = append(result, line)
+	}
+
+	return strings.Join(result, "\n")
 }

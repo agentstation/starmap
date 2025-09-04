@@ -3,7 +3,6 @@ package groq
 import (
 	"context"
 	"flag"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -41,7 +40,6 @@ func loadTestdataModel(t *testing.T, modelID string) GroqModelData {
 	t.Fatalf("Model %s not found in testdata", modelID)
 	return GroqModelData{}
 }
-
 
 // TestGroqModelDataParsing tests that we can properly parse Groq API responses with provider-specific fields.
 func TestGroqModelDataParsing(t *testing.T) {
@@ -134,7 +132,7 @@ func TestGroqSingleStepCompleteness(t *testing.T) {
 	// Test key models to ensure they have complete data in the list response
 	testModels := []string{
 		"llama-3.1-8b-instant",
-		"meta-llama/llama-guard-4-12b", 
+		"meta-llama/llama-guard-4-12b",
 		"whisper-large-v3",
 	}
 
@@ -178,7 +176,7 @@ func TestGroqSingleStepCompleteness(t *testing.T) {
 				t.Error("MaxCompletionTokens should be non-zero in list response")
 			}
 
-			t.Logf("✅ Model %s has complete data: context=%d, max_tokens=%d", 
+			t.Logf("✅ Model %s has complete data: context=%d, max_tokens=%d",
 				model.ID, model.ContextWindow, model.MaxCompletionTokens)
 		})
 	}
@@ -341,93 +339,6 @@ func TestConvertToGroqModel(t *testing.T) {
 	}
 }
 
-// TestGroqClientGetModel tests the GetModel functionality with a mock server.
-func TestGroqClientGetModel(t *testing.T) {
-	// Create a mock HTTP server
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Verify the request
-		if r.Method != "GET" {
-			t.Errorf("Expected GET request, got %s", r.Method)
-		}
-
-		expectedPath := "/openai/v1/models/llama-3.1-8b-instant"
-		if r.URL.Path != expectedPath && r.URL.Path != "/llama-3.1-8b-instant" {
-			t.Errorf("Expected path '%s' or '/llama-3.1-8b-instant', got '%s'", expectedPath, r.URL.Path)
-		}
-
-		// Check for authorization header
-		auth := r.Header.Get("Authorization")
-		if auth == "" {
-			t.Error("Expected Authorization header")
-		}
-
-		// Return a mock single model response based on testdata
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		// Load from raw API response and extract the specific model
-		response := loadTestdataResponse(t, "models_list.json")
-		for _, model := range response.Data {
-			if model.ID == "llama-3.1-8b-instant" {
-				w.Write([]byte(fmt.Sprintf(`{
-					"id": "%s",
-					"object": "%s",
-					"created": %d,
-					"owned_by": "%s",
-					"active": %t,
-					"context_window": %d,
-					"max_completion_tokens": %d,
-					"public_apps": null
-				}`, model.ID, model.Object, model.Created, model.OwnedBy, model.Active, model.ContextWindow, model.MaxCompletionTokens)))
-				return
-			}
-		}
-		w.WriteHeader(http.StatusNotFound)
-	}))
-	defer server.Close()
-
-	// Create a Groq client with mock provider
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDGroq,
-		Name: "Groq",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "GROQ_API_KEY",
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			APIURL: &server.URL,
-		},
-		APIKeyValue: "test-api-key",
-	}
-
-	client := &Client{}
-	client.Configure(provider)
-
-	// Test GetModel
-	ctx := context.Background()
-	model, err := client.GetModel(ctx, "llama-3.1-8b-instant")
-	if err != nil {
-		t.Fatalf("GetModel failed: %v", err)
-	}
-
-	// Verify we got the expected model data
-	if model.ID != "llama-3.1-8b-instant" {
-		t.Errorf("Expected model ID 'llama-3.1-8b-instant', got '%s'", model.ID)
-	}
-
-	if model.Limits == nil {
-		t.Fatal("Expected model to have Limits")
-	}
-
-	if model.Limits.ContextWindow != 131072 {
-		t.Errorf("Expected ContextWindow 131072, got %d", model.Limits.ContextWindow)
-	}
-
-	if model.Limits.OutputTokens != 131072 {
-		t.Errorf("Expected OutputTokens 131072, got %d", model.Limits.OutputTokens)
-	}
-}
-
 // TestGroqClientListModels tests the single-step ListModels functionality.
 func TestGroqClientListModels(t *testing.T) {
 	requestCount := 0
@@ -476,7 +387,6 @@ func TestGroqClientListModels(t *testing.T) {
 		Catalog: &catalogs.ProviderCatalog{
 			APIURL: &server.URL,
 		},
-		APIKeyValue: "test-api-key",
 	}
 
 	client := &Client{}
@@ -575,7 +485,6 @@ func TestGroqPerformanceImprovement(t *testing.T) {
 		Catalog: &catalogs.ProviderCatalog{
 			APIURL: &server.URL,
 		},
-		APIKeyValue: "test-api-key",
 	}
 
 	client := &Client{}

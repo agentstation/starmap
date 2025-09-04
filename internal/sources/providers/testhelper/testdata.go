@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/agentstation/starmap/pkg/constants"
 )
 
 // UpdateTestdata is the global flag for updating testdata files
@@ -36,13 +38,13 @@ func SaveTestdata(t *testing.T, filename string, data []byte) {
 
 	// Ensure testdata directory exists
 	testdataDir := "testdata"
-	if err := os.MkdirAll(testdataDir, 0755); err != nil {
+	if err := os.MkdirAll(testdataDir, constants.DirPermissions); err != nil {
 		t.Fatalf("Failed to create testdata directory: %v", err)
 	}
 
 	testdataPath := filepath.Join(testdataDir, filename)
 
-	if err := os.WriteFile(testdataPath, data, 0644); err != nil {
+	if err := os.WriteFile(testdataPath, data, constants.FilePermissions); err != nil {
 		t.Fatalf("Failed to save testdata file %s: %v", testdataPath, err)
 	}
 

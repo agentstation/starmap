@@ -69,47 +69,47 @@ func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 }
 
 // triggerCatalogUpdate compares old and new catalogs and triggers appropriate hooks
-func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Catalog) {
+func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Reader) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
 	// Get old and new models for comparison
-	oldModels := oldCatalog.Models()
-	newModels := newCatalog.Models()
+	oldModels := oldCatalog.GetAllModels()
+	newModels := newCatalog.GetAllModels()
 
 	// Create maps for efficient lookup
 	oldModelMap := make(map[string]catalogs.Model)
-	for _, model := range oldModels.List() {
-		oldModelMap[model.ID] = *model
+	for _, model := range oldModels {
+		oldModelMap[model.ID] = model
 	}
 
 	newModelMap := make(map[string]catalogs.Model)
-	for _, model := range newModels.List() {
-		newModelMap[model.ID] = *model
+	for _, model := range newModels {
+		newModelMap[model.ID] = model
 	}
 
 	// Detect changes and trigger hooks
-	for _, newModel := range newModels.List() {
+	for _, newModel := range newModels {
 		if oldModel, exists := oldModelMap[newModel.ID]; exists {
 			// Check if model was updated
-			if !reflect.DeepEqual(oldModel, *newModel) {
+			if !reflect.DeepEqual(oldModel, newModel) {
 				for _, hook := range h.modelUpdated {
-					hook(oldModel, *newModel)
+					hook(oldModel, newModel)
 				}
 			}
 		} else {
 			// Model was added
 			for _, hook := range h.modelAdded {
-				hook(*newModel)
+				hook(newModel)
 			}
 		}
 	}
 
 	// Check for removed models
-	for _, oldModel := range oldModels.List() {
+	for _, oldModel := range oldModels {
 		if _, exists := newModelMap[oldModel.ID]; !exists {
 			for _, hook := range h.modelRemoved {
-				hook(*oldModel)
+				hook(oldModel)
 			}
 		}
 	}

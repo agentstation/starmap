@@ -1,179 +1,250 @@
-# Google
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/google.svg" alt="Google logo" width="48" height="48" style="vertical-align: middle;"> Google
+  
+  
+  
+Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations
+  
+  
+## Organization Information
+  
+| Field | Value |
+|---------|---------|
+| **Author ID** | `google` |
+| **Type** | 🏢 Major Tech Companies |
+| **Website** | [https://ai.google](https://ai.google) |
+| **Total Models** | 169 |
+| **Available On** | 3 providers |
 
-**Description**: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations  
-**Website**: [https://ai.google](https://ai.google)  
-**GitHub**: [https://github.com/google](https://github.com/google)  
-**Hugging Face**: [https://huggingface.co/google](https://huggingface.co/google)  
-**Twitter**: [https://x.com/Google](https://x.com/Google)  
-**Total Models**: 160
-
+  
 ## Models
+  
+### Gemini
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Gemini 1.5 Flash](./models/gemini-1.5-flash.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash 002](./models/gemini-1.5-flash-002-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash Latest](./models/gemini-1.5-flash-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B](./models/gemini-1.5-flash-8b.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B 001](./models/gemini-1.5-flash-8b-001.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Flash-8B Latest](./models/gemini-1.5-flash-8b-latest.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro](./models/gemini-1.5-pro.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002.md) | 2 | 2.0M | Text, Vision, Functions |
+| [Gemini 1.5 Pro Latest](./models/gemini-1.5-pro-latest.md) | google-ai-studio | 2.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash](./models/gemini-2.0-flash.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash (Image Generation) Experimental](./models/gemini-2.0-flash-exp-image-generation.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash Experimental](./models/gemini-2.0-flash-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash Lite 001](./models/gemini-2.0-flash-lite-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash Preview Image Generation](./models/gemini-2.0-flash-preview-image-generation.md) | google-ai-studio | 32.8k | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite](./models/gemini-2.0-flash-lite.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite 001](./models/gemini-2.0-flash-lite-001.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite Preview](./models/gemini-2.0-flash-lite-preview.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Flash-Lite Preview 02-05](./models/gemini-2.0-flash-lite-preview-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Pro Experimental](./models/gemini-2.0-pro-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.0 Pro Experimental 02-05](./models/gemini-2.0-pro-exp-02-05.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash](./models/gemini-2.5-flash.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash](./models/gemini-2.5-flash-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Image Preview](./models/gemini-2.5-flash-image-preview-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Lite](./models/gemini-2.5-flash-lite-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-01-21.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-1219.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash Preview TTS](./models/gemini-2.5-flash-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
+| [Gemini 2.5 Flash-Lite](./models/gemini-2.5-flash-lite.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Flash-Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | 2 | 65.5k | Text, Vision, Functions |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview](./models/gemini-2.5-pro-preview-06-05.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | google-ai-studio | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | 2 | 1.0M | Text, Vision, Functions |
+| [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | google-ai-studio | 8.2k | Text, Vision, Functions |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | google-ai-studio | 8.2k | Text, Functions |
+| [Gemini Experimental 1206](./models/gemini-exp-1206.md) | google-ai-studio | 1.0M | Text, Functions |
+| [Gemini Pro](./models/gemini-pro-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini Ultra](./models/gemini-ultra-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemini Ultra Vision](./models/gemini-ultra-vision-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [gemini-1.5-flash-002](./models/gemini-1.5-flash-002.md) | 2 | 1.0M | Text, Vision, Functions |
+| [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | 2 | 2.0M | Text, Vision, Functions |
+| [gemini-2.0-flash-001](./models/gemini-2.0-flash-001.md) | 2 | 1.0M | Text, Vision, Functions |
+| [gemini-2.0-flash-lite-001](./models/gemini-2.0-flash-lite-001.md) | 2 | 1.0M | Text, Vision, Functions |
+| [gemini-2.5-flash-image-preview](./models/gemini-2.5-flash-image-preview.md) | 2 | 32.8k | Text, Vision, Functions |
+| [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | 2 | 1.0M | Text, Vision, Functions |
+| [gemini-embedding-001](./models/gemini-embedding-001.md) | 2 | 2.0k | Text |
 
-| Model | Context Window | Available Via | Features |
-|-------|----------------|---------------|----------|
-| [aqa](./models/aqa.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [automl-e2e@001](./models/automl-e2e@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [automl-vision-image-classification@001](./models/automl-vision-image-classification@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [automl-vision-image-object-detection@001](./models/automl-vision-image-object-detection@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [bart-large-cnn@bart-large-cnn](./models/bart-large-cnn@bart-large-cnn.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [bert-base-uncased@bert-base-uncased](./models/bert-base-uncased@bert-base-uncased.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [bert-base@001](./models/bert-base@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [chat-bison@002](./models/chat-bison@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [chirp-2@001](./models/chirp-2@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [cloudnerf-pytorch-zipnerf@001](./models/cloudnerf-pytorch-zipnerf@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [code-bison@002](./models/code-bison@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [code-gecko@002](./models/code-gecko@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [codechat-bison@002](./models/codechat-bison@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [codegemma@codegemma-7b-it](./models/codegemma@codegemma-7b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [content-moderation@001](./models/content-moderation@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [cxr-foundation@cxr-foundation](./models/cxr-foundation@cxr-foundation.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [derm-foundation@derm-foundation](./models/derm-foundation@derm-foundation.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [dito@001](./models/dito@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [embedding-001](./models/embedding-001.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [embedding-gecko-001](./models/embedding-gecko-001.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [f-vlm-jax@001](./models/f-vlm-jax@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [face-detector@001](./models/face-detector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash](./models/gemini-1.5-flash.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-002](./models/gemini-1.5-flash-002.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-002@default](./models/gemini-1.5-flash-002@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-8b](./models/gemini-1.5-flash-8b.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-8b-001](./models/gemini-1.5-flash-8b-001.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-8b-latest](./models/gemini-1.5-flash-8b-latest.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-flash-latest](./models/gemini-1.5-flash-latest.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-pro](./models/gemini-1.5-pro.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-pro-002](./models/gemini-1.5-pro-002.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-pro-002@default](./models/gemini-1.5-pro-002@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-1.5-pro-latest](./models/gemini-1.5-pro-latest.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash](./models/gemini-2.0-flash.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-001](./models/gemini-2.0-flash-001.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-001@default](./models/gemini-2.0-flash-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-exp](./models/gemini-2.0-flash-exp.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-exp-image-generation](./models/gemini-2.0-flash-exp-image-generation.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-lite](./models/gemini-2.0-flash-lite.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-lite-001](./models/gemini-2.0-flash-lite-001.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-lite-001@default](./models/gemini-2.0-flash-lite-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-lite-preview](./models/gemini-2.0-flash-lite-preview.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-lite-preview-02-05](./models/gemini-2.0-flash-lite-preview-02-05.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-preview-image-generation](./models/gemini-2.0-flash-preview-image-generation.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-thinking-exp](./models/gemini-2.0-flash-thinking-exp.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-thinking-exp-01-21](./models/gemini-2.0-flash-thinking-exp-01-21.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-flash-thinking-exp-1219](./models/gemini-2.0-flash-thinking-exp-1219.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-pro-exp](./models/gemini-2.0-pro-exp.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.0-pro-exp-02-05](./models/gemini-2.0-pro-exp-02-05.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash](./models/gemini-2.5-flash.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash-lite](./models/gemini-2.5-flash-lite.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash-lite-preview-06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash-lite@default](./models/gemini-2.5-flash-lite@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash-preview-05-20](./models/gemini-2.5-flash-preview-05-20.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash-preview-tts](./models/gemini-2.5-flash-preview-tts.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-flash@default](./models/gemini-2.5-flash@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro](./models/gemini-2.5-pro.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro-preview-03-25](./models/gemini-2.5-pro-preview-03-25.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro-preview-05-06](./models/gemini-2.5-pro-preview-05-06.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro-preview-06-05](./models/gemini-2.5-pro-preview-06-05.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro-preview-tts](./models/gemini-2.5-pro-preview-tts.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-2.5-pro@default](./models/gemini-2.5-pro@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-embedding-001](./models/gemini-embedding-001.md) | N/A | google-ai-studio, google-vertex | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-embedding-001@default](./models/gemini-embedding-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemini-embedding-exp](./models/gemini-embedding-exp.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-embedding-exp-03-07](./models/gemini-embedding-exp-03-07.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-exp-1206](./models/gemini-exp-1206.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-pro-vision@default](./models/gemini-pro-vision@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-pro@default](./models/gemini-pro@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-ultra-vision@default](./models/gemini-ultra-vision@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemini-ultra@default](./models/gemini-ultra@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3-12b-it](./models/gemma-3-12b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3-1b-it](./models/gemma-3-1b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3-27b-it](./models/gemma-3-27b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3-4b-it](./models/gemma-3-4b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3n-e2b-it](./models/gemma-3n-e2b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma-3n-e4b-it](./models/gemma-3n-e4b-it.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [gemma2-9b-it](./models/gemma2-9b-it.md) | 8192 | groq | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemma2@gemma-2-2b-it](./models/gemma2@gemma-2-2b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemma3@gemma-3-1b-it](./models/gemma3@gemma-3-1b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemma3n@gemma-3n-e4b-it](./models/gemma3n@gemma-3n-e4b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [gemma@gemma-2b](./models/gemma@gemma-2b.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [hear@hear](./models/hear@hear.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [image-segmentation-001@default](./models/image-segmentation-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageclassification-efficientnet@001](./models/imageclassification-efficientnet@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageclassification-proprietary-efficientnet@001](./models/imageclassification-proprietary-efficientnet@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageclassification-proprietary-maxvit@001](./models/imageclassification-proprietary-maxvit@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageclassification-proprietary-vit@001](./models/imageclassification-proprietary-vit@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageclassification-vit@001](./models/imageclassification-vit@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagegeneration@006](./models/imagegeneration@006.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-3.0-capability-001@default](./models/imagen-3.0-capability-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-3.0-capability-002@default](./models/imagen-3.0-capability-002@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-3.0-generate-002](./models/imagen-3.0-generate-002.md) | N/A | google-vertex, google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [imagen-3.0-generate-002@default](./models/imagen-3.0-generate-002@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-fast-generate-001@default](./models/imagen-4.0-fast-generate-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-fast-generate-preview-06-06@default](./models/imagen-4.0-fast-generate-preview-06-06@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-generate-001@default](./models/imagen-4.0-generate-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-generate-preview-06-06](./models/imagen-4.0-generate-preview-06-06.md) | N/A | google-vertex, google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-generate-preview-06-06@default](./models/imagen-4.0-generate-preview-06-06@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-ultra-generate-001@default](./models/imagen-4.0-ultra-generate-001@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-4.0-ultra-generate-preview-06-06@default](./models/imagen-4.0-ultra-generate-preview-06-06@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagen-product-recontext-preview-06-30@default](./models/imagen-product-recontext-preview-06-30@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageobjectdetection-proprietary-spinenet@001](./models/imageobjectdetection-proprietary-spinenet@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageobjectdetection-proprietary-yolo@001](./models/imageobjectdetection-proprietary-yolo@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imageobjectdetection-yolo@001](./models/imageobjectdetection-yolo@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagesegmentation-deeplabv3@001](./models/imagesegmentation-deeplabv3@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagetext@001](./models/imagetext@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [imagewatermarkdetector@001](./models/imagewatermarkdetector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [jax-owl-vit-v2@001](./models/jax-owl-vit-v2@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [keras-yolov8@001](./models/keras-yolov8@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [label-detector-pali-001@001](./models/label-detector-pali-001@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [language-v1-analyze-entity-sentiment@001](./models/language-v1-analyze-entity-sentiment@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [language-v1-analyze-sentiment@001](./models/language-v1-analyze-sentiment@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [language-v1-analyze-syntax@001](./models/language-v1-analyze-syntax@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [language-v1-classify-text-v1@001](./models/language-v1-classify-text-v1@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [language-v1-moderate-text@001](./models/language-v1-moderate-text@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [learnlm-2.0-flash-experimental](./models/learnlm-2.0-flash-experimental.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [lyria-002@default](./models/lyria-002@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [mammut@mammut-vqa](./models/mammut@mammut-vqa.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [medgemma@medgemma-4b-it](./models/medgemma@medgemma-4b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [medsiglip@medsiglip-448](./models/medsiglip@medsiglip-448.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [multimodalembedding@001](./models/multimodalembedding@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [object-detector@001](./models/object-detector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [occupancy-analytics@001](./models/occupancy-analytics@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [owlvit-base-patch32@owlvit-base-patch32](./models/owlvit-base-patch32@owlvit-base-patch32.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [paligemma@paligemma2-3b-pt-224](./models/paligemma@paligemma2-3b-pt-224.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [path-foundation@path-foundation](./models/path-foundation@path-foundation.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [people-blur@001](./models/people-blur@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [pic2word@pic2word](./models/pic2word@pic2word.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [ppe-detector@001](./models/ppe-detector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [pretrained-form-parser@001](./models/pretrained-form-parser@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [pretrained-ocr@002](./models/pretrained-ocr@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [product-recognizer@001](./models/product-recognizer@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [pt-test@001](./models/pt-test@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [resnet50@001](./models/resnet50@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [shieldgemma2@shieldgemma-2-4b-it](./models/shieldgemma2@shieldgemma-2-4b-it.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [t5-1.1@001](./models/t5-1.1@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [t5-flan@001](./models/t5-flan@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [t5gemma@t5gemma](./models/t5gemma@t5gemma.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [tab-net@001](./models/tab-net@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [tag-recognizer@001](./models/tag-recognizer@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [text-bison@002](./models/text-bison@002.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [text-detector@001](./models/text-detector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [text-embedding-004](./models/text-embedding-004.md) | N/A | google-ai-studio | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [text-embedding-large-exp-03-07@default](./models/text-embedding-large-exp-03-07@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [text-translation@001](./models/text-translation@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [text-unicorn@001](./models/text-unicorn@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [textembedding-gecko@003](./models/textembedding-gecko@003.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Response Streaming">⚡</span> |
-| [tfvision-movinet-var@001](./models/tfvision-movinet-var@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [tfvision-movinet-vcn@001](./models/tfvision-movinet-vcn@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [tfvision-yolov7@001](./models/tfvision-yolov7@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [timesfm@timesfm-v2](./models/timesfm@timesfm-v2.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [translate-llm@default](./models/translate-llm@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [txgemma@txgemma-27b-predict](./models/txgemma@txgemma-27b-predict.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [vehicle-detector@001](./models/vehicle-detector@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [video-speech-transcription@001](./models/video-speech-transcription@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [video-text-detection@001](./models/video-text-detection@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [virtual-try-on-preview-08-04@default](./models/virtual-try-on-preview-08-04@default.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [vit-jax@001](./models/vit-jax@001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [weathernext@weathernext-001](./models/weathernext@weathernext-001.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
+  
+### Gemma
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Codegemma](./models/codegemma-at-codegemma-7b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemma](./models/gemma-at-gemma-2b.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemma 3 12B](./models/gemma-3-12b-it.md) | google-ai-studio | 80k | Text |
+| [Gemma 3 1B](./models/gemma-3-1b-it.md) | google-ai-studio | 32.8k | Text |
+| [Gemma 3 27B](./models/gemma-3-27b-it.md) | google-ai-studio | 131.1k | Text |
+| [Gemma 3 4B](./models/gemma-3-4b-it.md) | google-ai-studio | 32.8k | Text |
+| [Gemma 3n E2B](./models/gemma-3n-e2b-it.md) | google-ai-studio | 8.2k | Text |
+| [Gemma 3n E4B](./models/gemma-3n-e4b-it.md) | google-ai-studio | 8.2k | Text |
+| [Gemma2](./models/gemma2-at-gemma-2-2b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemma3](./models/gemma3-at-gemma-3-1b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Gemma3n](./models/gemma3n-at-gemma-3n-e4b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Medgemma](./models/medgemma-at-medgemma-4b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Paligemma](./models/paligemma-at-paligemma2-3b-pt-224.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Shieldgemma2](./models/shieldgemma2-at-shieldgemma-2-4b-it.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [T5gemma](./models/t5gemma-at-t5gemma.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Txgemma](./models/txgemma-at-txgemma-27b-predict.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [gemma2-9b-it](./models/gemma2-9b-it.md) | groq | 8.2k | Text, Functions |
 
-## Navigation
+  
+### Embeddings
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Embedding 001](./models/embedding-001.md) | google-ai-studio | 2.0k | Text |
+| [Embedding Gecko](./models/embedding-gecko-001.md) | google-ai-studio | 1.0k | Text |
+| [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2 | 2.0k | Text, Functions |
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | google-vertex | 1.0M | Text |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | google-ai-studio | 8.2k | Text, Functions |
+| [Multimodalembedding](./models/multimodalembedding-at-001.md) | google-vertex | 1.0M | Text |
+| [Text Embedding 004](./models/text-embedding-004.md) | google-ai-studio | 2.0k | Text |
+| [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | google-vertex | 1.0M | Text |
+| [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | google-vertex | 1.0M | Text |
 
-- [← Back to Authors](../README.md)
-- [📋 Browse by Provider](../../providers/README.md)
-- [← Back to Main Catalog](../../README.md)
+  
+### Other
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Automl E2e](./models/automl-e2e-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Automl Vision Image Classification](./models/automl-vision-image-classification-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Automl Vision Image Object Detection](./models/automl-vision-image-object-detection-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Bart Large Cnn](./models/bart-large-cnn-at-bart-large-cnn.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Chirp 2](./models/chirp-2-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Cloudnerf Pytorch Zipnerf](./models/cloudnerf-pytorch-zipnerf-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Code Gecko](./models/code-gecko-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Content Moderation](./models/content-moderation-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Cxr Foundation](./models/cxr-foundation-at-cxr-foundation.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Derm Foundation](./models/derm-foundation-at-derm-foundation.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Dito](./models/dito-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [F Vlm Jax](./models/f-vlm-jax-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Face Detector](./models/face-detector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Hear](./models/hear-at-hear.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Image Segmentation 001](./models/image-segmentation-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageclassification Efficientnet](./models/imageclassification-efficientnet-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageclassification Proprietary Efficientnet](./models/imageclassification-proprietary-efficientnet-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageclassification Proprietary Maxvit](./models/imageclassification-proprietary-maxvit-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageclassification Proprietary Vit](./models/imageclassification-proprietary-vit-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageclassification Vit](./models/imageclassification-vit-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagegeneration](./models/imagegeneration-at-006.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 3.0](./models/imagen-3.0-generate-002.md) | 2 | 480 | Text |
+| [Imagen 3.0 Capability 001](./models/imagen-3.0-capability-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 3.0 Capability 002](./models/imagen-3.0-capability-002-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 3.0 Generate 002](./models/imagen-3.0-generate-002-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Fast Generate 001](./models/imagen-4.0-fast-generate-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Fast Generate Preview 06 06](./models/imagen-4.0-fast-generate-preview-06-06-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Generate 001](./models/imagen-4.0-generate-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Generate Preview 06 06](./models/imagen-4.0-generate-preview-06-06-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Ultra Generate 001](./models/imagen-4.0-ultra-generate-001-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen 4.0 Ultra Generate Preview 06 06](./models/imagen-4.0-ultra-generate-preview-06-06-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagen Product Recontext Preview 06 30](./models/imagen-product-recontext-preview-06-30-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageobjectdetection Proprietary Spinenet](./models/imageobjectdetection-proprietary-spinenet-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageobjectdetection Proprietary Yolo](./models/imageobjectdetection-proprietary-yolo-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imageobjectdetection Yolo](./models/imageobjectdetection-yolo-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagesegmentation Deeplabv3](./models/imagesegmentation-deeplabv3-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagetext](./models/imagetext-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Imagewatermarkdetector](./models/imagewatermarkdetector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Jax Owl Vit V2](./models/jax-owl-vit-v2-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Keras Yolov8](./models/keras-yolov8-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Label Detector Pali 001](./models/label-detector-pali-001-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Language V1 Analyze Entity Sentiment](./models/language-v1-analyze-entity-sentiment-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Language V1 Analyze Sentiment](./models/language-v1-analyze-sentiment-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Language V1 Analyze Syntax](./models/language-v1-analyze-syntax-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Language V1 Classify Text V1](./models/language-v1-classify-text-v1-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Language V1 Moderate Text](./models/language-v1-moderate-text-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [LearnLM 2.0 Flash Experimental](./models/learnlm-2.0-flash-experimental.md) | google-ai-studio | 1.0M | Text |
+| [Lyria 002](./models/lyria-002-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Mammut](./models/mammut-at-mammut-vqa.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Medsiglip](./models/medsiglip-at-medsiglip-448.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Model that performs Attributed Question Answering.](./models/aqa.md) | google-ai-studio | 7.2k | Text |
+| [Nano Banana](./models/gemini-2.5-flash-image-preview.md) | 2 | 32.8k | Text, Vision, Functions |
+| [Object Detector](./models/object-detector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Occupancy Analytics](./models/occupancy-analytics-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Owlvit Base Patch32](./models/owlvit-base-patch32-at-owlvit-base-patch32.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Path Foundation](./models/path-foundation-at-path-foundation.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [People Blur](./models/people-blur-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Pic2word](./models/pic2word-at-pic2word.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Ppe Detector](./models/ppe-detector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Pretrained Form Parser](./models/pretrained-form-parser-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Pretrained Ocr](./models/pretrained-ocr-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Product Recognizer](./models/product-recognizer-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Pt Test](./models/pt-test-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Resnet50](./models/resnet50-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [T5 1.1](./models/t5-1.1-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [T5 Flan](./models/t5-flan-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Tab Net](./models/tab-net-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Tag Recognizer](./models/tag-recognizer-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Text Detector](./models/text-detector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Text Translation](./models/text-translation-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Text Unicorn](./models/text-unicorn-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Tfvision Movinet Var](./models/tfvision-movinet-var-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Tfvision Movinet Vcn](./models/tfvision-movinet-vcn-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Tfvision Yolov7](./models/tfvision-yolov7-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Timesfm](./models/timesfm-at-timesfm-v2.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Translate Llm](./models/translate-llm-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Vehicle Detector](./models/vehicle-detector-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Video Speech Transcription](./models/video-speech-transcription-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Video Text Detection](./models/video-text-detection-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Virtual Try On Preview 08 04](./models/virtual-try-on-preview-08-04-at-default.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Vit Jax](./models/vit-jax-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Weathernext](./models/weathernext-at-weathernext-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [imagen-3.0-generate-002](./models/imagen-3.0-generate-002.md) | 2 | 480 | Text |
+
+  
+### PaLM
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Chat Bison](./models/chat-bison-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Code Bison](./models/code-bison-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Codechat Bison](./models/codechat-bison-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Text Bison](./models/text-bison-at-002.md) | google-vertex | 1.0M | Text, Vision, Functions |
+
+  
+### BERT
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Bert Base](./models/bert-base-at-001.md) | google-vertex | 1.0M | Text, Vision, Functions |
+| [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | google-vertex | 1.0M | Text, Vision, Functions |
+
+  
+## Provider Availability
+  
+Models from this author are available through the following providers:
+  
+  
+- **[google-vertex](../../providers/google-vertex/)** - 134 models
+- **[google-ai-studio](../../providers/google-ai-studio/)** - 58 models
+- **[groq](../../providers/groq/)** - 1 model
+  
+## Research & Development
+  
+Key research areas include:
+- **Transformer Architecture** - Invented the transformer that powers modern LLMs
+- **Multimodal Models** - Leading work on vision-language models like Gemini
+- **Efficient Architectures** - Research on making models faster and smaller
+- **Responsible AI** - Work on fairness, interpretability, and safety
+  
+### See Also
+  
+- [All Authors](../)
+- [Browse by Provider](../../providers/)
+- [Model Comparison](../../models/)
+  
+---
+*_[← Back to Authors](../) | [← Back to Catalog](../../) | Generated by [Starmap](https://github.com/agentstation/starmap)_*

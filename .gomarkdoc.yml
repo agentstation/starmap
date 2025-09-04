@@ -1,0 +1,29 @@
+# GoMarkdoc Configuration
+# This file configures default settings for gomarkdoc documentation generation
+# Note: Use camelCase for option names (not kebab-case like CLI flags)
+
+# Output format for documentation
+format: github
+
+# Use embed mode by default to insert documentation into existing files
+embed: true
+
+# Repository configuration for generating source links
+repository:
+  url: https://github.com/agentstation/starmap
+  defaultBranch: master
+
+# Exclude certain directories from documentation
+excludeDirs:
+  - ./testdata
+  - ./vendor
+  - ./node_modules
+  - ./.git
+  - ./scripts
+  - ./internal/embedded/catalog/providers/models.dev
+
+# Do not include unexported symbols by default
+includeUnexported: false
+
+# Build tags to apply when parsing Go files
+tags: []

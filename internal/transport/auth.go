@@ -11,7 +11,6 @@ type Authenticator interface {
 	Apply(req *http.Request, apiKey string)
 }
 
-
 // NoAuth implements no authentication.
 type NoAuth struct{}
 
@@ -93,4 +92,3 @@ func (a *ProviderAuth) Apply(req *http.Request, apiKey string) {
 
 	req.Header.Set(header, value)
 }
-

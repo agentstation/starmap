@@ -2,284 +2,197 @@ package starmap
 
 import (
 	"context"
-	"fmt"
-	"os"
 
-	"github.com/agentstation/starmap/internal/catalogs/operations"
-	"github.com/agentstation/starmap/internal/catalogs/persistence"
-	_ "github.com/agentstation/starmap/internal/sources" // Auto-register sources
-	sourceops "github.com/agentstation/starmap/internal/sources/operations"
-	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/internal/sync"
+	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/pkg/differ"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
-const (
-	defaultSyncOutputDir = "internal/embedded/catalog/providers"
-)
-
-// Sync synchronizes the catalog with provider APIs using the source pipeline system
-func (s *starmap) Sync(opts ...sources.SyncOption) (*catalogs.SyncResult, error) {
-
-	options := sources.NewSyncOptions(opts...)
-
-	// Get current catalog
-	catalog, err := s.Catalog()
-	if err != nil {
-		return nil, fmt.Errorf("getting catalog: %w", err)
+// Sync synchronizes the catalog with provider APIs using staged source execution
+func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error) {
+	// Step 0: Set context
+	if ctx == nil {
+		ctx = context.Background()
 	}
 
-	// Determine which providers to sync
-	var providersToSync []catalogs.ProviderID
-	if options.ProviderID != nil {
-		providersToSync = []catalogs.ProviderID{*options.ProviderID}
+	// Step 1: Parse options
+	options := NewSyncOptions(opts...)
+
+	// Step 2: Setup context with timeout
+	var cancel context.CancelFunc
+	if options.Timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, options.Timeout)
 	} else {
-		providersToSync = providers.ListSupportedProviders()
+		cancel = func() {} // No-op cancel if no timeout
+	}
+	defer cancel()
+
+	// Step 3: Load embedded catalog for validation and base provider info
+	embedded, err := catalogs.NewEmbedded()
+	if err != nil {
+		return nil, errors.WrapResource("load", "catalog", "embedded", err)
 	}
 
-	// Initialize result
-	result := catalogs.NewSyncResult()
-	result.DryRun = options.DryRun
-	result.Fresh = options.Fresh
-	result.OutputDir = options.OutputDir
-
-	// Sources self-initialize - no manual setup needed
-
-	var allChanges []operations.ProviderChangeset
-	updatedProviders := make(map[catalogs.ProviderID]catalogs.Provider)
-
-	// Process each provider using the pipeline
-	for _, providerID := range providersToSync {
-		providerResult := catalogs.NewSyncProviderResult(providerID)
-
-		// Get provider from catalog
-		provider, found := catalog.Providers().Get(providerID)
-		if !found {
-			continue
-		}
-
-		// Load API key and environment variables from environment
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-
-		// Create pipeline for this provider using auto-registered sources
-		sourcePipeline, err := sync.Pipeline(catalog,
-			sync.WithProvider(provider),
-			sync.WithSyncOptions(options),
-		)
-		if err != nil {
-			// Log error but continue with next provider
-			continue
-		}
-
-		// Execute pipeline
-		ctx := context.Background()
-		if options.Timeout > 0 {
-			var cancel context.CancelFunc
-			ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-			defer cancel()
-		}
-
-		pipelineResult, err := sourcePipeline.Execute(ctx, providerID)
-		if err != nil {
-			// Log error but continue with next provider
-			continue
-		}
-
-		// Capture updated provider configuration (including discovered publishers)
-		if pipelineResult.Provider != nil && pipelineResult.Provider.ID != "" {
-			updatedProviders[providerID] = *pipelineResult.Provider
-		}
-
-		// Update provider result with pipeline statistics
-		providerResult.APIModelsCount = 0
-		providerResult.EnhancedCount = 0
-
-		// Calculate statistics from pipeline
-		for sourceType, stats := range pipelineResult.SourceStats {
-			switch sourceType {
-			case sources.ProviderAPI:
-				providerResult.APIModelsCount = stats.ModelsReturned
-			case sources.ModelsDevGit, sources.ModelsDevHTTP:
-				providerResult.EnhancedCount = stats.ModelsReturned
-			}
-		}
-
-		// Handle fresh sync vs normal sync
-		var changeset operations.ProviderChangeset
-		if options.Fresh {
-			// Fresh sync: treat all pipeline models as new additions
-			changeset = operations.ProviderChangeset{
-				ProviderID: providerID,
-				Added:      pipelineResult.Models,
-				Updated:    []operations.ModelUpdate{},
-				Removed:    []catalogs.Model{},
-			}
-		} else {
-			// Normal sync: compare pipeline result with existing models
-			existingModels, err := persistence.GetProviderModels(catalog, providerID)
-			if err != nil {
-				existingModels = make(map[string]catalogs.Model)
-			}
-
-			providerResult.ExistingModelsCount = len(existingModels)
-			changeset = operations.CompareProviderModels(providerID, existingModels, pipelineResult.Models)
-		}
-
-		allChanges = append(allChanges, changeset)
-
-		// Convert internal changeset to public result
-		providerResult.AddedCount = len(changeset.Added)
-		providerResult.UpdatedCount = len(changeset.Updated)
-		providerResult.RemovedCount = len(changeset.Removed)
-
-		// Convert models and updates to public types
-		providerResult.Added = changeset.Added
-		providerResult.Removed = changeset.Removed
-		for _, update := range changeset.Updated {
-			providerResult.Updated = append(providerResult.Updated, catalogs.ModelUpdate{
-				ModelID:       update.ModelID,
-				ExistingModel: update.ExistingModel,
-				NewModel:      update.NewModel,
-				Changes:       convertFieldChanges(update.Changes),
-			})
-		}
-
-		result.ProviderResults[providerID] = providerResult
-		if providerResult.HasChanges() {
-			result.ProvidersChanged++
-			result.TotalChanges += providerResult.AddedCount + providerResult.UpdatedCount + providerResult.RemovedCount
-		}
-
-		// Save provenance if requested
-		if err := s.saveProvenance(options, pipelineResult.Provenance, providerID); err != nil {
-			// Log error but don't fail the sync
-		}
+	// Step 4: Validate options upfront with embedded catalog
+	if err = options.Validate(embedded.Providers()); err != nil {
+		return nil, err
 	}
 
-	// Apply changes if not dry run
-	if !options.DryRun && result.HasChanges() {
-		for _, changeset := range allChanges {
-			if changeset.HasChanges() {
-				// Clean provider directory if fresh sync
-				if options.Fresh {
-					outputDir := options.OutputDir
-					if outputDir == "" {
-						outputDir = defaultSyncOutputDir
-					}
-					if err := persistence.CleanProviderDirectory(changeset.ProviderID, outputDir); err != nil {
-						return nil, fmt.Errorf("cleaning directory for %s: %w", changeset.ProviderID, err)
-					}
-				}
+	// Step 5: filter sources by options
+	srcs := s.filterSources(options)
 
-				outputDir := options.OutputDir
-				if outputDir == "" {
-					outputDir = defaultSyncOutputDir
-				}
-				if err := persistence.ApplyChangesetToOutput(catalog, changeset, outputDir); err != nil {
-					return nil, fmt.Errorf("applying changes for %s: %w", changeset.ProviderID, err)
-				}
-			}
+	// Step 6: Setup sources with provider configurations
+	if err = setup(srcs, embedded.Providers()); err != nil {
+		return nil, err
+	}
+	defer func() {
+		if cleanupErr := cleanup(srcs); cleanupErr != nil {
+			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
 		}
+	}()
 
-		// Handle post-sync operations (logo copying)
-		// Only Git source can provide logos; HTTP source will show informational message
-		httpOps := sourceops.GetPostSyncOperations(sources.ModelsDevHTTP)
-		gitOps := sourceops.GetPostSyncOperations(sources.ModelsDevGit)
-
-		if gitOps != nil {
-			// Git source available - can copy logos
-			if err := gitOps.CopyProviderLogos(providersToSync); err != nil {
-				// Log error but don't fail the sync
-			}
-		} else if httpOps != nil {
-			// Only HTTP source available - will inform about logo limitation
-			if err := httpOps.CopyProviderLogos(providersToSync); err != nil {
-				// Log error but don't fail the sync
-			}
-		}
-
-		// Save updated providers configuration (including discovered publishers)
-		if len(updatedProviders) > 0 {
-			// For SaveUpdatedProviders, we need the base catalog directory, not the providers subdirectory
-			var baseOutputDir string
-			if options.OutputDir != "" {
-				baseOutputDir = options.OutputDir
-			} else {
-				baseOutputDir = "internal/embedded/catalog"
-			}
-
-			// Convert map to the expected format for SaveUpdatedProviders
-			providersMap := make(map[catalogs.ProviderID]catalogs.Provider)
-			for id, provider := range updatedProviders {
-				providersMap[id] = provider
-			}
-			if err := persistence.SaveUpdatedProvidersWithOptions(providersMap, baseOutputDir, options.ForceFormat); err != nil {
-				// Log error but don't fail the sync
-				fmt.Printf("⚠️  Warning: Failed to save updated providers configuration: %v\n", err)
-			}
-		}
-
-		// Update internal catalog with changes and trigger hooks
-		s.mu.Lock()
-		// Reload catalog to reflect file changes
-		if loadable, ok := s.catalog.(interface{ Load() error }); ok {
-			oldCatalog := s.catalog
-			loadable.Load()
-			// Trigger hooks for catalog changes
-			s.hooks.triggerCatalogUpdate(oldCatalog, s.catalog)
-		}
-		s.mu.Unlock()
+	// Step 7: Fetch catalogs from all sources
+	if err = fetch(ctx, srcs, options.SourceOptions()); err != nil {
+		return nil, err
 	}
 
-	// Cleanup models.dev repository/cache if requested
-	if options.CleanModelsDevRepo {
-		// Clean both HTTP cache and Git repo
-		if postSyncOps := sourceops.GetPostSyncOperations(sources.ModelsDevHTTP); postSyncOps != nil {
-			postSyncOps.Cleanup()
-		}
-		if postSyncOps := sourceops.GetPostSyncOperations(sources.ModelsDevGit); postSyncOps != nil {
-			postSyncOps.Cleanup()
-		}
+	// Step 8: Get existing catalog for baseline comparison
+	existing, err := s.Catalog()
+	if err != nil {
+		// If we can't get existing catalog, use empty one
+		existing, _ = catalogs.New()
+		logging.Debug().Msg("No existing catalog found, using empty baseline")
 	}
 
-	return result, nil
+	// Step 9: Reconcile catalogs from all sources with baseline
+	result, err := update(ctx, existing, srcs)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 10: Log change summary if changes detected
+	if result.Changeset != nil && result.Changeset.HasChanges() {
+		logging.Info().
+			Int("added", len(result.Changeset.Models.Added)).
+			Int("updated", len(result.Changeset.Models.Updated)).
+			Int("removed", len(result.Changeset.Models.Removed)).
+			Msg("Changes detected")
+	} else {
+		logging.Info().Msg("No changes detected")
+	}
+
+	// Step 11: Create sync result directly from reconciler's changeset
+	syncResult := convertChangesetToSyncResult(
+		result.Changeset,
+		options.DryRun,
+		options.OutputPath,
+		result.ProviderAPICounts,
+		result.ModelProviderMap,
+	)
+
+	// Step 12: Apply changes if not dry run
+	shouldSave := result.Changeset != nil && result.Changeset.HasChanges()
+	
+	// Force save if reformat or fresh flag is set (even without changes)
+	if options.Reformat || options.Fresh {
+		shouldSave = true
+		if result.Changeset == nil || !result.Changeset.HasChanges() {
+			logging.Info().
+				Bool("reformat", options.Reformat).
+				Bool("force", options.Fresh).
+				Msg("Forcing save due to reformat/force flag")
+		}
+	}
+	
+	if !options.DryRun && shouldSave {
+		// Create empty changeset if nil but we're forcing save
+		changeset := result.Changeset
+		if changeset == nil {
+			changeset = &differ.Changeset{}
+		}
+		if err := s.save(result.Catalog, options, changeset); err != nil {
+			return nil, err
+		}
+	} else if options.DryRun {
+		logging.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")
+	}
+
+	return syncResult, nil
 }
 
-// saveProvenance saves provenance information to file if requested
-func (s *starmap) saveProvenance(options *sources.SyncOptions, provenance map[string]sources.Provenance, providerID catalogs.ProviderID) error {
-	if !options.TrackProvenance || options.ProvenanceFile == "" {
-		return nil
+// ============================================================================
+// Helper Methods for Sync
+// ============================================================================
+
+// save applies the catalog changes if not in dry-run mode
+func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset *differ.Changeset) error {
+	// Update internal catalog first
+	s.mu.Lock()
+	oldCatalog := s.catalog
+	s.catalog = result
+	s.mu.Unlock()
+
+	// Save to output path if specified
+	if options.OutputPath != "" {
+		// Debug: check what providers have models
+		providers := result.Providers().List()
+		for _, p := range providers {
+			modelCount := 0
+			if p.Models != nil {
+				modelCount = len(p.Models)
+			}
+			logging.Info().
+				Str("provider", string(p.ID)).
+				Int("models", modelCount).
+				Msg("Provider model count before save")
+		}
+
+		if saveable, ok := result.(catalogs.Persistable); ok {
+			if err := saveable.SaveTo(options.OutputPath); err != nil {
+				return errors.WrapIO("write", options.OutputPath, err)
+			}
+
+			// Copy models.dev logos after successful save
+			// Extract provider IDs from the saved catalog
+			providerIDs := make([]catalogs.ProviderID, 0)
+			for _, p := range providers {
+				if p.ID != "" {
+					providerIDs = append(providerIDs, p.ID)
+				}
+			}
+
+			// Copy logos if we have providers and an output path
+			if len(providerIDs) > 0 {
+				logging.Debug().
+					Int("provider_count", len(providerIDs)).
+					Str("output_path", options.OutputPath).
+					Msg("Copying provider logos from models.dev")
+
+				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerIDs); logoErr != nil {
+					logging.Warn().
+						Err(logoErr).
+						Msg("Could not copy provider logos")
+					// Non-fatal error - continue without logos
+				}
+			}
+		}
+	} else {
+		// Save to default location
+		if saveable, ok := result.(catalogs.Persistable); ok {
+			if err := saveable.Save(); err != nil {
+				return errors.WrapIO("write", "catalog", err)
+			}
+		}
 	}
 
-	// Create a simple provenance report
-	// This is a basic implementation - could be enhanced with YAML/JSON formatting
-	file, err := os.Create(options.ProvenanceFile)
-	if err != nil {
-		return fmt.Errorf("creating provenance file: %w", err)
-	}
-	defer file.Close()
+	logging.Info().
+		Int("changes_applied", changeset.Summary.TotalChanges).
+		Msg("Sync completed successfully")
 
-	fmt.Fprintf(file, "# Provenance Report for %s\n", providerID)
-	fmt.Fprintf(file, "# Generated by Starmap\n\n")
-
-	for field, prov := range provenance {
-		fmt.Fprintf(file, "%s: %s (updated: %s)\n", field, prov.Source, prov.UpdatedAt.Format("2006-01-02 15:04:05"))
-	}
+	// Trigger hooks for catalog changes
+	s.hooks.triggerCatalogUpdate(oldCatalog, result)
 
 	return nil
-}
-
-// convertFieldChanges converts internal field changes to public types
-func convertFieldChanges(changes []operations.FieldChange) []catalogs.FieldChange {
-	result := make([]catalogs.FieldChange, len(changes))
-	for i, change := range changes {
-		result[i] = catalogs.FieldChange{
-			Field:    change.Field,
-			OldValue: change.OldValue,
-			NewValue: change.NewValue,
-		}
-	}
-	return result
 }

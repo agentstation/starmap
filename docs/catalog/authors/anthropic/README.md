@@ -1,33 +1,62 @@
-# Anthropic
+# <img src="https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/anthropic.svg" alt="Anthropic logo" width="48" height="48" style="vertical-align: middle;"> Anthropic
+  
+  
+  
+AI safety company known for Claude models and Constitutional AI research
+  
+  
+## Organization Information
+  
+| Field | Value |
+|---------|---------|
+| **Author ID** | `anthropic` |
+| **Type** | 🚀 AI Startups |
+| **Website** | [https://anthropic.com](https://anthropic.com) |
+| **Total Models** | 14 |
+| **Available On** | 2 providers |
 
-**Description**: AI safety company known for Claude models and Constitutional AI research  
-**Website**: [https://anthropic.com](https://anthropic.com)  
-**GitHub**: [https://github.com/anthropics](https://github.com/anthropics)  
-**Hugging Face**: [https://huggingface.co/anthropic](https://huggingface.co/anthropic)  
-**Twitter**: [https://x.com/AnthropicAI](https://x.com/AnthropicAI)  
-**Total Models**: 14
-
+  
 ## Models
+  
+| Model | Providers | Context | Capabilities |
+|---------|---------|---------|---------|
+| [Claude 3 5 Haiku](./models/claude-3-5-haiku-at-20241022.md) | google-vertex | 200k | Text, Vision, Functions |
+| [Claude 3 7 Sonnet](./models/claude-3-7-sonnet-at-20250219.md) | google-vertex | 200k | Text, Vision, Functions |
+| [Claude 3 Haiku](./models/claude-3-haiku-at-20240307.md) | google-vertex | 200k | Text, Vision, Functions |
+| [Claude Haiku 3](./models/claude-3-haiku-20240307.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Haiku 3.5](./models/claude-3-5-haiku-20241022.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Opus 4](./models/claude-opus-4-20250514.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | google-vertex | 200k | Text, Vision, Functions |
+| [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | google-vertex | 200k | Text, Vision, Functions |
+| [Claude Opus 4.1](./models/claude-opus-4-1-20250805.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Sonnet 3.5 (New)](./models/claude-3-5-sonnet-20241022.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Sonnet 3.5 (Old)](./models/claude-3-5-sonnet-20240620.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Sonnet 3.7](./models/claude-3-7-sonnet-20250219.md) | anthropic | 200k | Text, Vision, Functions |
+| [Claude Sonnet 4](./models/claude-sonnet-4-20250514.md) | anthropic | 200k | Text, Functions |
+| [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | google-vertex | 200k | Text, Vision, Functions |
 
-| Model | Context Window | Available Via | Features |
-|-------|----------------|---------------|----------|
-| [claude-3-5-haiku-20241022](./models/claude-3-5-haiku-20241022.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-5-haiku@20241022](./models/claude-3-5-haiku@20241022.md) | 200000 | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-5-sonnet-20240620](./models/claude-3-5-sonnet-20240620.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-5-sonnet-20241022](./models/claude-3-5-sonnet-20241022.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-7-sonnet-20250219](./models/claude-3-7-sonnet-20250219.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-7-sonnet@20250219](./models/claude-3-7-sonnet@20250219.md) | 200000 | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-haiku-20240307](./models/claude-3-haiku-20240307.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Response Streaming">⚡</span> |
-| [claude-3-haiku@20240307](./models/claude-3-haiku@20240307.md) | N/A | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-opus-4-1-20250805](./models/claude-opus-4-1-20250805.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-opus-4-1@20250805](./models/claude-opus-4-1@20250805.md) | 200000 | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-opus-4-20250514](./models/claude-opus-4-20250514.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-opus-4@20250514](./models/claude-opus-4@20250514.md) | 200000 | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-sonnet-4-20250514](./models/claude-sonnet-4-20250514.md) | 200000 | anthropic | <span title="Text Processing">📝</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-| [claude-sonnet-4@20250514](./models/claude-sonnet-4@20250514.md) | 200000 | google-vertex | <span title="Text Processing">📝</span> <span title="Vision/Image Input">👁️</span> <span title="Tool Calling">🔧</span> <span title="Advanced Reasoning">🧠</span> <span title="Response Streaming">⚡</span> |
-
-## Navigation
-
-- [← Back to Authors](../README.md)
-- [📋 Browse by Provider](../../providers/README.md)
-- [← Back to Main Catalog](../../README.md)
+  
+## Provider Availability
+  
+Models from this author are available through the following providers:
+  
+  
+- **[anthropic](../../providers/anthropic/)** - 8 models
+- **[google-vertex](../../providers/google-vertex/)** - 6 models
+  
+## Research & Development
+  
+Key research areas include:
+- **Constitutional AI (CAI)** - Training AI systems to be helpful, harmless, and honest
+- **Mechanistic Interpretability** - Understanding how neural networks process information
+- **AI Safety** - Research on alignment and reducing risks from advanced AI systems
+- **Context Windows** - Pushing boundaries with 100k+ token context lengths
+  
+### See Also
+  
+- [All Authors](../)
+- [Browse by Provider](../../providers/)
+- [Model Comparison](../../models/)
+  
+---
+*_[← Back to Authors](../) | [← Back to Catalog](../../) | Generated by [Starmap](https://github.com/agentstation/starmap)_*

@@ -1,0 +1,17 @@
+{
+  "packages": ["go@1.24.5", "gomarkdoc@1.1.0", "hugo@0.148.2", "nodejs@24.5.0", "golangci-lint@2.3.1"],
+  "shell": {
+    "init_hook": [
+      "PS1=\"$(echo -e \"\\033[1;34m%~\\033[0m \\n\\033[0;32m%n@devbox\\033[0m ➜ \")\"",
+      "echo '📦 Starmap development environment loaded'",
+      "echo 'Tools available: go, hugo, gomarkdoc, golangci-lint, node'"
+    ],
+    "scripts": {
+      "site": "cd site && hugo serve",
+      "lint": "golangci-lint run",
+      "docs": "make generate",
+      "test": "go test ./...",
+      "build": "make build"
+    }
+  }
+}

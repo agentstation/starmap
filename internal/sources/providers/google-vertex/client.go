@@ -9,16 +9,12 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
+	"cloud.google.com/go/auth/credentials"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/utc"
 	"google.golang.org/genai"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDGoogleVertex, &Client{})
-}
 
 // Client implements the catalogs.Client interface for Google Vertex AI.
 type Client struct {
@@ -28,23 +24,42 @@ type Client struct {
 }
 
 // NewClient creates a new Google Vertex AI client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	client := &Client{provider: provider}
-	client.Configure(provider)
-	return client
+func NewClient(provider *catalogs.Provider) *Client {
+	return &Client{provider: provider}
+}
+
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
 func (c *Client) Configure(provider *catalogs.Provider) {
 	c.provider = provider
-	c.projectID = getProjectID(provider)
-	c.location = getLocation(provider)
+	// Don't detect project/location here - we need context which we don't have yet
+	// Will detect in ListModels where we have context
 }
 
 // ListModels retrieves all available models from Google Vertex AI.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+	// Detect project/location here where we have context
 	if c.projectID == "" {
-		return nil, fmt.Errorf("project ID not configured - set GOOGLE_VERTEX_PROJECT or run 'gcloud config set project YOUR_PROJECT'")
+		c.projectID = getProjectID(ctx, c.provider)
+	}
+	if c.location == "" {
+		c.location = getLocation(c.provider)
+	}
+
+	if c.projectID == "" {
+		return nil, &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "project ID not configured - set GOOGLE_CLOUD_PROJECT env var or run 'gcloud auth application-default set-quota-project YOUR_PROJECT'",
+		}
 	}
 
 	// Create GenAI client configured for Vertex AI
@@ -55,7 +70,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		// Use Application Default Credentials automatically
 	})
 	if err != nil {
-		return nil, fmt.Errorf("creating genai client: %w", err)
+		return nil, errors.WrapResource("create", "genai client", "", err)
 	}
 
 	var models []catalogs.Model
@@ -116,13 +131,21 @@ type PublisherModel struct {
 // This can retrieve models not available through the GenAI SDK, like Model Garden models
 func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, error) {
 	if c.projectID == "" || c.location == "" {
-		return nil, fmt.Errorf("project ID or location not configured")
+		return nil, &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "project ID or location not configured",
+		}
 	}
 
 	// Get access token for authentication
 	accessToken, err := c.getAccessToken()
 	if err != nil {
-		return nil, fmt.Errorf("getting access token: %w", err)
+		return nil, &errors.AuthenticationError{
+			Provider: "google-vertex",
+			Method:   "oauth",
+			Message:  "failed to get access token",
+			Err:      err,
+		}
 	}
 
 	var allModels []catalogs.Model
@@ -190,11 +213,20 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		// Drain and close body to allow connection reuse
+		io.Copy(io.Discard, resp.Body)
+		resp.Body.Close()
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("REST API request failed with status %d: %s", resp.StatusCode, string(body))
+		return nil, &errors.APIError{
+			Provider:   "google-vertex",
+			StatusCode: resp.StatusCode,
+			Endpoint:   url,
+			Message:    string(body),
+		}
 	}
 
 	var apiResp RestAPIResponse
@@ -268,7 +300,6 @@ func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Mode
 func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(publisherModel.Name)
-	
 
 	// Add version to model ID if available
 	if publisherModel.VersionID != "" {
@@ -277,8 +308,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 
 	// Extract publisher from model name and map to AuthorID
 	var authors []catalogs.Author
-	
-	
+
 	if strings.Contains(publisherModel.Name, "publishers/") {
 		parts := strings.Split(publisherModel.Name, "publishers/")
 		if len(parts) > 1 {
@@ -435,7 +465,12 @@ func (c *Client) getAccessToken() (string, error) {
 	cmd = exec.Command("gcloud", "auth", "application-default", "print-access-token")
 	output, err = cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("getting access token via gcloud (tried both auth methods): %w", err)
+		return "", &errors.AuthenticationError{
+			Provider: "google-vertex",
+			Method:   "gcloud",
+			Message:  "failed to get access token via gcloud (tried both auth methods)",
+			Err:      err,
+		}
 	}
 	return strings.TrimSpace(string(output)), nil
 }
@@ -510,23 +545,6 @@ func (c *Client) getDetailedModel(ctx context.Context, client *genai.Client, mod
 	return client.Models.Get(ctx, modelName, config)
 }
 
-// GetModel retrieves a specific model by its ID.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Try to find the model in our list
-	models, err := c.ListModels(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, model := range models {
-		if model.ID == modelID {
-			return &model, nil
-		}
-	}
-
-	return nil, fmt.Errorf("model %s not found", modelID)
-}
-
 // ExtractModelID extracts the model ID from the full name for Google Vertex AI.
 func (c *Client) ExtractModelID(name string) string {
 	// Extract model ID from the name (format: projects/PROJECT/locations/LOCATION/models/MODEL_ID)
@@ -557,8 +575,7 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 
 	// Extract publisher from model name and map to AuthorID (same logic as publisher models)
 	var authors []catalogs.Author
-	
-	
+
 	if strings.Contains(genaiModel.Name, "/publishers/") {
 		parts := strings.Split(genaiModel.Name, "/publishers/")
 		if len(parts) > 1 {
@@ -656,27 +673,51 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 	return model
 }
 
-// getProjectID gets the project ID from environment variable or gcloud config
-func getProjectID(provider *catalogs.Provider) string {
-	// Try environment variable first
-	if projectID := provider.GetEnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+// getProjectID gets the project ID from environment variables or Application Default Credentials
+func getProjectID(ctx context.Context, provider *catalogs.Provider) string {
+	// 1. Check environment variables first (explicit configuration wins)
+	if projectID := provider.EnvVar("GOOGLE_CLOUD_PROJECT"); projectID != "" {
 		return projectID
 	}
+	if projectID := provider.EnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+		return projectID // Backward compatibility
+	}
 
-	// Try gcloud config
+	// 2. Use Google's auth package to detect from ADC
+	creds, err := credentials.DetectDefault(&credentials.DetectOptions{
+		Scopes: []string{"https://www.googleapis.com/auth/cloud-platform"},
+	})
+	if err == nil {
+		// Try to get quota project ID first (what gcloud auth application-default login sets)
+		if projectID, err := creds.QuotaProjectID(ctx); err == nil && projectID != "" {
+			return projectID
+		}
+
+		// Fall back to regular project ID
+		if projectID, err := creds.ProjectID(ctx); err == nil && projectID != "" {
+			return projectID
+		}
+	}
+
+	// 3. Last resort: try gcloud config (for users who only set project)
 	if projectID := getGcloudConfig("project"); projectID != "" {
 		return projectID
 	}
 
-	// Return empty string - will cause error with helpful message
 	return ""
 }
 
-// getLocation gets the location from environment variable or gcloud config
+// getLocation gets the location from environment variables or gcloud config
 func getLocation(provider *catalogs.Provider) string {
-	// Try environment variable first
-	if location := provider.GetEnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
+	// Check environment variables (genai also checks these)
+	if location := provider.EnvVar("GOOGLE_CLOUD_LOCATION"); location != "" {
 		return location
+	}
+	if location := provider.EnvVar("GOOGLE_CLOUD_REGION"); location != "" {
+		return location // genai checks both
+	}
+	if location := provider.EnvVar("GOOGLE_VERTEX_LOCATION"); location != "" {
+		return location // Keep for backward compatibility
 	}
 
 	// Try gcloud config for region or zone

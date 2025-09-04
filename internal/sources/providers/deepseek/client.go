@@ -5,14 +5,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDDeepSeek, &Client{})
-}
 
 // Client implements the catalogs.Client interface for DeepSeek.
 type Client struct {
@@ -20,8 +14,7 @@ type Client struct {
 }
 
 // NewClient creates a new DeepSeek client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		OpenAIClient: baseclient.NewOpenAIClient(provider, "https://api.deepseek.com"),
 	}
@@ -35,11 +28,6 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 // ListModels uses the base OpenAI implementation.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return c.OpenAIClient.ListModels(ctx)
-}
-
-// GetModel uses the base OpenAI implementation.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	return c.OpenAIClient.GetModel(ctx, modelID)
 }
 
 // ConvertToModel overrides the base implementation for DeepSeek-specific logic.

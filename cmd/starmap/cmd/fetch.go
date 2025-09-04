@@ -3,88 +3,118 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 	"sort"
-	"strings"
+	"sync"
+	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
-var fetchProvider string
+// newFetchCommand creates the fetch command with subcommands
+func newFetchCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "fetch [resource]",
+		GroupID: "core",
+		Short:   "Retrieve resources from provider APIs",
+		Long: `Fetch retrieves live data from provider APIs.
 
-// fetchCmd represents the fetch command
-var fetchCmd = &cobra.Command{
-	Use:   "fetch",
-	Short: "Fetch live models from a provider API",
-	Long: `Fetch retrieves the current list of available models directly from a
-provider's API. This requires the appropriate API key to be configured
-either through environment variables or the configuration file.
+This requires the appropriate API key to be configured either through
+environment variables or the configuration file.
 
 Supported providers include: openai, anthropic, google-ai-studio, google-vertex, groq`,
-	Example: `  starmap fetch --provider openai
-  starmap fetch -p anthropic
-  starmap fetch --provider groq`,
-	RunE: runFetch,
-}
-
-func init() {
-	rootCmd.AddCommand(fetchCmd)
-
-	fetchCmd.Flags().StringVarP(&fetchProvider, "provider", "p", "", "Provider to fetch models from (required)")
-	if err := fetchCmd.MarkFlagRequired("provider"); err != nil {
-		panic(fmt.Sprintf("Failed to mark provider flag as required: %v", err))
-	}
-}
-
-func runFetch(cmd *cobra.Command, args []string) error {
-	if fetchProvider == "" {
-		return fmt.Errorf("provider flag is required")
+		Example: `  starmap fetch models --provider openai
+  starmap fetch models --all`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// Default to models if no subcommand
+			if len(args) == 0 {
+				return cmd.Help()
+			}
+			return fmt.Errorf("unknown resource: %s", args[0])
+		},
 	}
 
-	// Convert string to ProviderID
-	pid := catalogs.ProviderID(fetchProvider)
+	// Add subcommands for each fetchable resource
+	cmd.AddCommand(newFetchModelsCommand())
 
-	// Get catalog
+	return cmd
+}
+
+// newFetchModelsCommand creates the fetch models subcommand
+func newFetchModelsCommand() *cobra.Command {
+	var fetchFlags *common.FetchFlags
+
+	cmd := &cobra.Command{
+		Use:   "models",
+		Short: "Fetch models from provider APIs",
+		Example: `  starmap fetch models --provider openai
+  starmap fetch models --all
+  starmap fetch models -p anthropic --timeout 60`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
+
+			if fetchFlags.All {
+				return fetchAllProviders(ctx, fetchFlags.Timeout)
+			}
+
+			if fetchFlags.Provider == "" {
+				return fmt.Errorf("--provider or --all required")
+			}
+
+			return fetchProviderModels(ctx, fetchFlags.Provider, fetchFlags.Timeout)
+		},
+	}
+
+	// Add fetch-specific flags
+	fetchFlags = common.AddFetchFlags(cmd)
+
+	return cmd
+}
+
+// fetchProviderModels fetches models from a specific provider
+func fetchProviderModels(ctx context.Context, providerID string, timeout int) error {
+	// Create context with timeout
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+	defer cancel()
+
 	sm, err := starmap.New()
 	if err != nil {
-		return fmt.Errorf("creating starmap: %w", err)
+		return errors.WrapResource("create", "starmap", "", err)
 	}
 
 	catalog, err := sm.Catalog()
 	if err != nil {
-		return fmt.Errorf("getting catalog: %w", err)
+		return errors.WrapResource("get", "catalog", "", err)
 	}
 
-	// Get provider from catalog
-	provider, found := catalog.Providers().Get(pid)
+	provider, found := catalog.Providers().Get(catalogs.ProviderID(providerID))
 	if !found {
-		return fmt.Errorf("provider %s not found in catalog", fetchProvider)
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       providerID,
+		}
 	}
 
-	// Load API key and environment variables from environment
-	provider.LoadAPIKey()
-	provider.LoadEnvVars()
-
-	// Get client for provider
-	result, err := provider.Client()
+	// Use provider fetcher
+	fetcher := sources.NewProviderFetcher()
+	models, err := fetcher.FetchModels(ctx, provider)
 	if err != nil {
-		return fmt.Errorf("getting client for %s: %w", fetchProvider, err)
-	}
-	if result.Error != nil {
-		return fmt.Errorf("client error for %s: %w", fetchProvider, result.Error)
-	}
-	client := result.Client
-
-	// Fetch models from API
-	ctx := context.Background()
-	models, err := client.ListModels(ctx)
-	if err != nil {
-		return fmt.Errorf("fetching models from %s: %w", fetchProvider, err)
+		return &errors.SyncError{
+			Provider: providerID,
+			Err:      err,
+		}
 	}
 
 	if len(models) == 0 {
-		fmt.Printf("No models returned from %s\n", fetchProvider)
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "No models returned from %s\n", providerID)
+		}
 		return nil
 	}
 
@@ -93,37 +123,135 @@ func runFetch(cmd *cobra.Command, args []string) error {
 		return models[i].ID < models[j].ID
 	})
 
-	fmt.Printf("Fetched %d models from %s:\n\n", len(models), fetchProvider)
-	for _, model := range models {
-		fmt.Printf("• %s", model.ID)
-		if model.Name != "" && model.Name != model.ID {
-			fmt.Printf(" - %s", model.Name)
-		}
-		fmt.Println()
-
-		if model.Limits != nil {
-			if model.Limits.ContextWindow > 0 {
-				fmt.Printf("  Context: %d tokens", model.Limits.ContextWindow)
-				if model.Limits.OutputTokens > 0 {
-					fmt.Printf(", Output: %d tokens", model.Limits.OutputTokens)
-				}
-				fmt.Println()
-			}
-		}
-
-		if len(model.Authors) > 0 {
-			authors := make([]string, 0, len(model.Authors))
-			for _, a := range model.Authors {
-				if a.Name != "" {
-					authors = append(authors, a.Name)
-				} else {
-					authors = append(authors, string(a.ID))
-				}
-			}
-			fmt.Printf("  Owner: %s\n", strings.Join(authors, ", "))
-		}
-		fmt.Println()
+	if !globalFlags.Quiet {
+		fmt.Fprintf(os.Stderr, "Fetched %d models from %s\n", len(models), providerID)
 	}
 
-	return nil
+	// Format output
+	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+
+	// Transform to output format
+	var outputData any
+	switch globalFlags.Output {
+	case "table", "wide", "":
+		outputData = modelsToTableData(models, false)
+	default:
+		outputData = models
+	}
+
+	return formatter.Format(os.Stdout, outputData)
+}
+
+// fetchAllProviders fetches models from all configured providers concurrently
+func fetchAllProviders(ctx context.Context, timeout int) error {
+	sm, err := starmap.New()
+	if err != nil {
+		return errors.WrapResource("create", "starmap", "", err)
+	}
+
+	catalog, err := sm.Catalog()
+	if err != nil {
+		return errors.WrapResource("get", "catalog", "", err)
+	}
+
+	providers := catalog.Providers().List()
+	fetcher := sources.NewProviderFetcher()
+
+	// Filter to only providers with clients
+	var validProviders []*catalogs.Provider
+	for _, provider := range providers {
+		if fetcher.HasClient(provider.ID) {
+			validProviders = append(validProviders, provider)
+		}
+	}
+
+	if len(validProviders) == 0 {
+		return fmt.Errorf("no providers with API clients available")
+	}
+
+	type result struct {
+		provider string
+		models   []catalogs.Model
+		err      error
+	}
+
+	results := make(chan result, len(validProviders))
+
+	// Concurrent fetching with worker pool
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, 5) // Max 5 concurrent
+
+	for _, provider := range validProviders {
+		wg.Add(1)
+		go func(p *catalogs.Provider) {
+			defer wg.Done()
+
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
+
+			// Create timeout context for each provider
+			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+			defer cancel()
+
+			models, err := fetcher.FetchModels(fetchCtx, p)
+			results <- result{
+				provider: string(p.ID),
+				models:   models,
+				err:      err,
+			}
+		}(provider)
+	}
+
+	// Wait and close
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	// Collect results
+	var allModels []catalogs.Model
+	var successCount, errorCount int
+
+	for r := range results {
+		if r.err != nil {
+			errorCount++
+			if !globalFlags.Quiet {
+				fmt.Fprintf(os.Stderr, "Warning: %s: %v\n", r.provider, r.err)
+			}
+			continue
+		}
+		successCount++
+		allModels = append(allModels, r.models...)
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "✓ %s: %d models\n", r.provider, len(r.models))
+		}
+	}
+
+	if !globalFlags.Quiet {
+		fmt.Fprintf(os.Stderr, "\nFetched %d total models from %d providers (%d errors)\n",
+			len(allModels), successCount, errorCount)
+	}
+
+	// Sort all models by ID
+	sort.Slice(allModels, func(i, j int) bool {
+		return allModels[i].ID < allModels[j].ID
+	})
+
+	// Format output
+	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+
+	// Transform to output format
+	var outputData any
+	switch globalFlags.Output {
+	case "table", "wide", "":
+		outputData = modelsToTableData(allModels, false)
+	default:
+		outputData = allModels
+	}
+
+	return formatter.Format(os.Stdout, outputData)
+}
+
+func init() {
+	rootCmd.AddCommand(newFetchCommand())
 }

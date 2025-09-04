@@ -3,7 +3,6 @@ package openai
 import (
 	"context"
 	"flag"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -191,81 +190,6 @@ func TestConvertToOpenAIModel(t *testing.T) {
 	}
 }
 
-// TestOpenAIClientGetModel tests the GetModel functionality with a mock server.
-func TestOpenAIClientGetModel(t *testing.T) {
-	// Create a mock HTTP server
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Verify the request
-		if r.Method != "GET" {
-			t.Errorf("Expected GET request, got %s", r.Method)
-		}
-
-		expectedPath := "/v1/models/gpt-4o"
-		if r.URL.Path != expectedPath && r.URL.Path != "/gpt-4o" {
-			t.Errorf("Expected path '%s' or '/gpt-4o', got '%s'", expectedPath, r.URL.Path)
-		}
-
-		// Check for authorization header
-		auth := r.Header.Get("Authorization")
-		if auth == "" {
-			t.Error("Expected Authorization header")
-		}
-
-		// Return a mock single model response based on testdata
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		// Load from raw API response and extract the specific model
-		response := loadTestdataResponse(t, "models_list.json")
-		for _, model := range response.Data {
-			if model.ID == "gpt-4o" {
-				fmt.Fprintf(w, `{
-					"id": "%s",
-					"object": "%s",
-					"created": %d,
-					"owned_by": "%s"
-				}`, model.ID, model.Object, model.Created, model.OwnedBy)
-				return
-			}
-		}
-		w.WriteHeader(http.StatusNotFound)
-	}))
-	defer server.Close()
-
-	// Create an OpenAI client with mock provider
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "OPENAI_API_KEY",
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			APIURL: &server.URL,
-		},
-		APIKeyValue: "test-api-key",
-	}
-
-	client := &Client{}
-	client.Configure(provider)
-
-	// Test GetModel
-	ctx := context.Background()
-	model, err := client.GetModel(ctx, "gpt-4o")
-	if err != nil {
-		t.Fatalf("GetModel failed: %v", err)
-	}
-
-	// Verify we got the expected model data
-	if model.ID != "gpt-4o" {
-		t.Errorf("Expected model ID 'gpt-4o', got '%s'", model.ID)
-	}
-
-	if model.Name != "gpt-4o" {
-		t.Errorf("Expected model Name 'gpt-4o', got '%s'", model.Name)
-	}
-}
-
 // TestOpenAIClientListModels tests the ListModels functionality.
 func TestOpenAIClientListModels(t *testing.T) {
 	requestCount := 0
@@ -302,6 +226,10 @@ func TestOpenAIClientListModels(t *testing.T) {
 	}))
 	defer server.Close()
 
+	// Set up test API key
+	os.Setenv("OPENAI_API_KEY", "test-api-key")
+	defer os.Unsetenv("OPENAI_API_KEY")
+
 	// Create an OpenAI client with mock provider
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
@@ -314,7 +242,6 @@ func TestOpenAIClientListModels(t *testing.T) {
 		Catalog: &catalogs.ProviderCatalog{
 			APIURL: &server.URL,
 		},
-		APIKeyValue: "test-api-key",
 	}
 
 	client := &Client{}

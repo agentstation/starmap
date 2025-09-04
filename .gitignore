@@ -125,3 +125,10 @@ config.local.*
 
 # models.dev repository (cloned during sync)
 models.dev/
+
+# Hugo generated directories
+/public/
+/resources/
+/site/public/
+/site/resources/
+*.lock

@@ -1,0 +1,144 @@
+# Hugo Configuration for Starmap Documentation
+baseURL: "https://starmap.agentstation.ai/"
+title: "Starmap - AI Model Catalog"
+languageCode: "en-us"
+defaultContentLanguage: "en"
+
+# Enable Git info for last modified dates
+enableGitInfo: true
+
+# Theme - using Book theme for documentation
+theme: "hugo-book"
+
+# Disable kinds we don't need
+disableKinds: ["taxonomy", "term"]
+
+# Permalink configuration removed - using Hugo's default URL structure
+# which preserves the full directory path
+  
+# Don't use ugly URLs (.html extensions)
+uglyURLs: false
+
+# Goldmark renderer settings
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      linkify: true
+    parser:
+      autoHeadingIDType: github
+  highlight:
+    anchorLineNos: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    lineNumbersInTable: false
+    noClasses: false
+    style: monokai
+    tabWidth: 2
+
+# Book theme parameters
+params:
+  # Site description
+  BookDescription: "A unified AI model catalog system providing accurate, up-to-date information about AI models across providers"
+  
+  # Set to true to enable search
+  BookSearch: true
+  
+  # Set to true to enable copy button for code blocks
+  BookCopyButtons: true
+  
+  # Theme for light/dark mode
+  BookTheme: "auto"
+  
+  # Multi-level menu in sidebar
+  BookSection: "docs"
+  
+  # Repo configuration
+  BookRepo: "https://github.com/agentstation/starmap"
+  BookEditPath: "edit/master/docs"
+  
+  # Logo and branding
+  BookLogo: "/logo.svg"
+  BookLogoLink: "/"
+  
+  # Table of contents configuration
+  BookToC: true
+  BookToCLevel: 2
+  
+  # Comments
+  BookComments: false
+  
+  # Git repository location
+  BookGitRepo: "https://github.com/agentstation/starmap"
+  BookShowLastModified: true
+  
+  # Home page config
+  BookMenuBundle: "/menu"
+  BookDateFormat: "Jan 2, 2006"
+  
+  # Custom CSS/JS
+  BookCustomCSS: ["css/custom.css"]
+  BookCustomJS: ["js/custom.js"]
+
+# Menu configuration
+menu:
+  before:
+    - name: "GitHub"
+      url: "https://github.com/agentstation/starmap"
+      weight: 10
+    - name: "API Docs"
+      url: "/api/"
+      weight: 20
+  after:
+    - name: "Catalog"
+      url: "/catalog/"
+      weight: 30
+    - name: "Providers"
+      url: "/catalog/providers/"
+      weight: 40
+    - name: "Authors"
+      url: "/catalog/authors/"
+      weight: 50
+    - name: "Provider Guide"
+      url: "/provider_implementation_guide/"
+      weight: 60
+
+# Security settings
+security:
+  enableInlineShortcodes: false
+  exec:
+    allow:
+      - ^go$
+      - ^git$
+  funcs:
+    getenv:
+      - ^HUGO_
+  http:
+    methods:
+      - GET
+      - POST
+
+# Output formats
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+# Sitemap configuration
+sitemap:
+  changefreq: "weekly"
+  priority: 0.5
+  filename: "sitemap.xml"
+
+# Development server
+server:
+  headers:
+    - for: "/**"
+      values:
+        X-Frame-Options: "DENY"
+        X-Content-Type-Options: "nosniff"
+        Referrer-Policy: "strict-origin-when-cross-origin"
+        X-XSS-Protection: "1; mode=block"

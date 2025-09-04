@@ -5,14 +5,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDCerebras, &Client{})
-}
 
 // Client implements the catalogs.Client interface for Cerebras.
 type Client struct {
@@ -20,11 +14,20 @@ type Client struct {
 }
 
 // NewClient creates a new Cerebras client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		OpenAIClient: baseclient.NewOpenAIClient(provider, "https://api.cerebras.ai"),
 	}
+}
+
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.OpenAIClient.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.OpenAIClient.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -43,11 +46,6 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.extractAndUpdateAuthors(models)
 
 	return models, nil
-}
-
-// GetModel uses the base OpenAI implementation.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	return c.OpenAIClient.GetModel(ctx, modelID)
 }
 
 // ConvertToModel overrides the base implementation for Cerebras-specific logic.
@@ -195,7 +193,7 @@ func (c *Client) extractAndUpdateAuthors(models []catalogs.Model) {
 // inferAuthorFromModelID infers the actual author from a model ID
 func (c *Client) inferAuthorFromModelID(modelID string) string {
 	modelLower := strings.ToLower(modelID)
-	
+
 	// Parse model ID to identify actual author
 	if strings.HasPrefix(modelLower, "llama") || strings.Contains(modelLower, "llama") {
 		return "meta"
@@ -209,7 +207,7 @@ func (c *Client) inferAuthorFromModelID(modelID string) string {
 	if strings.HasPrefix(modelLower, "deepseek") || strings.Contains(modelLower, "deepseek") {
 		return "deepseek"
 	}
-	
+
 	// Default to cerebras for their own models
 	return "cerebras"
 }
@@ -217,27 +215,27 @@ func (c *Client) inferAuthorFromModelID(modelID string) string {
 // mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
 func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
 	authorSet := make(map[string]bool)
-	
+
 	// ALWAYS preserve existing authors (manual configuration)
 	for _, author := range existing {
 		if string(author) != "" {
 			authorSet[string(author)] = true
 		}
 	}
-	
+
 	// Add newly discovered authors (from API)
 	for _, author := range discovered {
 		if author != "" {
 			authorSet[author] = true
 		}
 	}
-	
+
 	// Convert back to slice and sort
 	var merged []catalogs.AuthorID
 	for author := range authorSet {
 		merged = append(merged, catalogs.AuthorID(author))
 	}
-	
+
 	// Sort for consistent output
 	for i := 0; i < len(merged); i++ {
 		for j := i + 1; j < len(merged); j++ {
@@ -246,6 +244,6 @@ func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string)
 			}
 		}
 	}
-	
+
 	return merged
 }

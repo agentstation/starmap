@@ -3,11 +3,15 @@ package baseclient
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/utc"
 )
 
 // OpenAIResponse represents the standard OpenAI API response structure.
@@ -41,6 +45,16 @@ func NewOpenAIClient(provider *catalogs.Provider, baseURL string) *OpenAIClient 
 	}
 }
 
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *OpenAIClient) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *OpenAIClient) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
+}
+
 // Configure sets the provider for this client.
 func (c *OpenAIClient) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
@@ -70,25 +84,51 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	c.mu.RUnlock()
 
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ValidationError{
+			Field:   "provider",
+			Message: "provider not configured",
+		}
 	}
 
 	// Build URL - use provider's URL if available, otherwise use base URL
-	url := c.baseURL + "/v1/models"
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL()
+	rb := transport.NewRequestBuilder(provider)
+	url := rb.GetModelsURL(c.baseURL + "/v1/models")
+
+	// Debug logging
+	if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+		fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Fetching models from %s for provider %s\n", url, provider.ID)
 	}
 
 	// Make the request
 	resp, err := c.transport.Get(ctx, url, provider)
 	if err != nil {
-		return nil, fmt.Errorf("openai-compatible: request failed: %w", err)
+		if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+			fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Request failed: %v\n", err)
+		}
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: 0,
+			Message:    "request failed",
+			Err:        err,
+		}
+	}
+
+	if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+		fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Response status: %d\n", resp.StatusCode)
 	}
 
 	// Decode response
 	var result OpenAIResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("openai-compatible: %w", err)
+		if debug := os.Getenv("STARMAP_DEBUG"); debug != "" {
+			fmt.Fprintf(os.Stderr, "[DEBUG] OpenAI Client: Failed to decode response: %v\n", err)
+		}
+		return nil, &errors.APIError{
+			Provider:   provider.ID.String(),
+			StatusCode: resp.StatusCode,
+			Message:    "failed to decode response",
+			Err:        err,
+		}
 	}
 
 	// Convert to starmap models
@@ -101,38 +141,6 @@ func (c *OpenAIClient) ListModels(ctx context.Context) ([]catalogs.Model, error)
 	return models, nil
 }
 
-// GetModel retrieves a specific model by its ID.
-func (c *OpenAIClient) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	c.mu.RLock()
-	provider := c.provider
-	c.mu.RUnlock()
-
-	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
-	}
-
-	// Build URL
-	url := c.baseURL + "/v1/models/" + modelID
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL() + "/" + modelID
-	}
-
-	// Make the request
-	resp, err := c.transport.Get(ctx, url, provider)
-	if err != nil {
-		return nil, fmt.Errorf("openai-compatible: request failed: %w", err)
-	}
-
-	// Decode response
-	var result OpenAIModelData
-	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("openai-compatible: %w", err)
-	}
-
-	model := c.ConvertToModel(result)
-	return &model, nil
-}
-
 // ConvertToModel converts an OpenAI model response to a starmap Model.
 // This method can be overridden by specific providers for customization.
 func (c *OpenAIClient) ConvertToModel(m OpenAIModelData) catalogs.Model {
@@ -143,9 +151,8 @@ func (c *OpenAIClient) ConvertToModel(m OpenAIModelData) catalogs.Model {
 
 	// Set created time
 	if m.Created > 0 {
-		// TODO: Import UTC time package when available
-		// model.CreatedAt = utc.Time{Time: time.Unix(m.Created, 0)}
-		// model.UpdatedAt = model.CreatedAt
+		model.CreatedAt = utc.Time{Time: time.Unix(m.Created, 0)}
+		model.UpdatedAt = model.CreatedAt
 	}
 
 	// Map owner to author
@@ -186,6 +193,7 @@ func (c *OpenAIClient) InferFeatures(modelID string) *catalogs.ModelFeatures {
 	case strings.Contains(modelLower, "gpt-4"), strings.Contains(modelLower, "gpt-3.5-turbo"):
 		features.Tools = true
 		features.ToolChoice = true
+		features.ToolCalls = true
 		features.Logprobs = true
 		features.StructuredOutputs = true
 		features.FormatResponse = true

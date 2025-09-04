@@ -10,14 +10,16 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/convert"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/spf13/cobra"
 )
 
 var (
-	exportFormat   string
-	exportProvider string
-	exportOutput   string
-	exportPretty   bool
+	exportFlagFormat   string
+	exportFlagProvider string
+	exportFlagOutput   string
+	exportFlagPretty   bool
 )
 
 // exportCmd represents the export command
@@ -43,51 +45,46 @@ a provider's API if specified.`,
 func init() {
 	rootCmd.AddCommand(exportCmd)
 
-	exportCmd.Flags().StringVarP(&exportFormat, "format", "f", "openai", "Export format: openai or openrouter")
-	exportCmd.Flags().StringVarP(&exportProvider, "provider", "p", "", "Provider to fetch models from (optional)")
-	exportCmd.Flags().StringVarP(&exportOutput, "output", "o", "", "Output file (default: stdout)")
-	exportCmd.Flags().BoolVar(&exportPretty, "pretty", true, "Pretty print JSON output")
+	exportCmd.Flags().StringVarP(&exportFlagFormat, "format", "f", "openai", "Export format: openai or openrouter")
+	exportCmd.Flags().StringVarP(&exportFlagProvider, "provider", "p", "", "Provider to fetch models from (optional)")
+	exportCmd.Flags().StringVarP(&exportFlagOutput, "output", "o", "", "Output file (default: stdout)")
+	exportCmd.Flags().BoolVar(&exportFlagPretty, "pretty", true, "Pretty print JSON output")
 }
 
 func runExport(cmd *cobra.Command, args []string) error {
 	var models []*catalogs.Model
 
-	if exportProvider != "" {
+	if exportFlagProvider != "" {
 		// Fetch models from specific provider
-		pid := catalogs.ProviderID(exportProvider)
+		pid := catalogs.ProviderID(exportFlagProvider)
 		sm, err := starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating starmap: %w", err)
+			return errors.WrapResource("create", "starmap", "", err)
 		}
 
 		catalog, err := sm.Catalog()
 		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
+			return errors.WrapResource("get", "catalog", "", err)
 		}
 		// Get provider from catalog
 		provider, found := catalog.Providers().Get(pid)
 		if !found {
-			return fmt.Errorf("provider %s not found in catalog", exportProvider)
+			return &errors.NotFoundError{
+				Resource: "provider",
+				ID:       exportFlagProvider,
+			}
 		}
 
-		// Load API key and environment variables from environment
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-
-		// Get client for provider
-		result, err := provider.Client()
-		if err != nil {
-			return fmt.Errorf("getting client for %s: %w", exportProvider, err)
-		}
-		if result.Error != nil {
-			return fmt.Errorf("client error for %s: %w", exportProvider, result.Error)
-		}
-		client := result.Client
+		// Create provider fetcher using public API
+		fetcher := sources.NewProviderFetcher()
 
 		ctx := context.Background()
-		modelValues, err := client.ListModels(ctx)
+		modelValues, err := fetcher.FetchModels(ctx, provider)
 		if err != nil {
-			return fmt.Errorf("fetching models from %s: %w", exportProvider, err)
+			return &errors.SyncError{
+				Provider: exportFlagProvider,
+				Err:      err,
+			}
 		}
 		// Convert values to pointers
 		models = make([]*catalogs.Model, len(modelValues))
@@ -98,15 +95,19 @@ func runExport(cmd *cobra.Command, args []string) error {
 		// Use embedded catalog
 		sm, err := starmap.New()
 		if err != nil {
-			return fmt.Errorf("creating starmap: %w", err)
+			return errors.WrapResource("create", "starmap", "", err)
 		}
 
 		catalog, err := sm.Catalog()
 		if err != nil {
-			return fmt.Errorf("getting catalog: %w", err)
+			return errors.WrapResource("get", "catalog", "", err)
 		}
 		// Get all models from the catalog
-		models = catalog.Models().List()
+		allModels := catalog.GetAllModels()
+		models = make([]*catalogs.Model, len(allModels))
+		for i := range allModels {
+			models[i] = &allModels[i]
+		}
 	}
 
 	if len(models) == 0 {
@@ -115,8 +116,8 @@ func runExport(cmd *cobra.Command, args []string) error {
 	}
 
 	// Convert models to requested format
-	var output interface{}
-	switch strings.ToLower(exportFormat) {
+	var output any
+	switch strings.ToLower(exportFlagFormat) {
 	case "openai":
 		openAIModels := make([]convert.OpenAIModel, 0, len(models))
 		for _, model := range models {
@@ -135,15 +136,19 @@ func runExport(cmd *cobra.Command, args []string) error {
 			Data: openRouterModels,
 		}
 	default:
-		return fmt.Errorf("unsupported format: %s (use 'openai' or 'openrouter')", exportFormat)
+		return &errors.ValidationError{
+			Field:   "format",
+			Value:   exportFlagFormat,
+			Message: "unsupported format (use 'openai' or 'openrouter')",
+		}
 	}
 
 	// Create encoder
 	var encoder *json.Encoder
-	if exportOutput != "" {
-		file, err := os.Create(exportOutput)
+	if exportFlagOutput != "" {
+		file, err := os.Create(exportFlagOutput)
 		if err != nil {
-			return fmt.Errorf("creating output file: %w", err)
+			return errors.WrapIO("create", exportFlagOutput, err)
 		}
 		defer func() {
 			if err := file.Close(); err != nil {
@@ -156,17 +161,17 @@ func runExport(cmd *cobra.Command, args []string) error {
 	}
 
 	// Configure encoder
-	if exportPretty {
+	if exportFlagPretty {
 		encoder.SetIndent("", "  ")
 	}
 
 	// Write output
 	if err := encoder.Encode(output); err != nil {
-		return fmt.Errorf("encoding output: %w", err)
+		return errors.WrapParse("json", "output", err)
 	}
 
-	if exportOutput != "" {
-		fmt.Fprintf(os.Stderr, "Exported %d models to %s\n", len(models), exportOutput)
+	if exportFlagOutput != "" {
+		fmt.Fprintf(os.Stderr, "Exported %d models to %s\n", len(models), exportFlagOutput)
 	}
 
 	return nil

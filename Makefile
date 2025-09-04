@@ -10,8 +10,20 @@ COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.buildTime=$(BUILD_TIME)"
 
+# Check for devbox and use it if available
+HAS_DEVBOX := $(shell command -v devbox 2> /dev/null)
+ifdef HAS_DEVBOX
+	RUN_PREFIX := devbox run
+else
+	RUN_PREFIX :=
+endif
+
 # Go variables
-GOCMD=go
+ifdef HAS_DEVBOX
+	GOCMD=$(RUN_PREFIX) go
+else
+	GOCMD=go
+endif
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
@@ -27,7 +39,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release testdata demo
+.PHONY: help build install clean test lint fmt vet deps tidy run update fix release release-snapshot release-tag release-local testdata demo godoc
 
 # Default target
 all: clean fix lint test build
@@ -72,8 +84,8 @@ lint: ## Run linter and static analysis tools
 	@echo "$(YELLOW)Running go vet...$(NC)"
 	$(GOVET) ./...
 	@echo "$(YELLOW)Running golangci-lint...$(NC)"
-	@which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
-	golangci-lint run
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+	$(RUN_PREFIX) golangci-lint run
 	@echo "$(GREEN)Static analysis complete$(NC)"
 
 fmt: ## Format Go code
@@ -100,14 +112,14 @@ run-help: ## Show application help
 	@echo "$(BLUE)Showing $(BINARY_NAME) help...$(NC)"
 	$(GOCMD) run $(MAIN_PATH) --help
 
-# Sync examples:
-#   make sync                                    # Sync all providers (dry-run)
-#   make sync PROVIDER=openai                    # Sync specific provider (dry-run)
-#   make sync OUTPUT=./custom-dir                # Sync to custom directory (dry-run)
-#   make sync PROVIDER=groq OUTPUT=./models      # Sync specific provider to custom dir (dry-run)
-sync: ## Run sync command with dry-run (use PROVIDER=name OUTPUT=dir for options)
-	@echo "$(BLUE)Running sync command (dry-run)...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) sync --dry-run $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(OUTPUT),--output $(OUTPUT),)
+# Update examples:
+#   make update                                   # Update all providers (dry-run)
+#   make update PROVIDER=openai                  # Update specific provider (dry-run)
+#   make update OUTPUT=./custom-dir              # Update to custom directory (dry-run)
+#   make update PROVIDER=groq OUTPUT=./models    # Update specific provider to custom dir (dry-run)
+update: ## Run update command with dry-run (use PROVIDER=name OUTPUT=dir for options)
+	@echo "$(BLUE)Running update command (dry-run)...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --dry-run $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(OUTPUT),--output $(OUTPUT),)
 
 list-models: ## List all models in catalog
 	@echo "$(BLUE)Listing all models...$(NC)"
@@ -115,11 +127,11 @@ list-models: ## List all models in catalog
 
 list-providers: ## List all providers
 	@echo "$(BLUE)Listing all providers...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) providers
+	$(GOCMD) run $(MAIN_PATH) list providers
 
 list-authors: ## List all authors
 	@echo "$(BLUE)Listing all authors...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) authors
+	$(GOCMD) run $(MAIN_PATH) list authors
 
 fix: ## Fix code formatting, imports, and dependencies
 	@echo "$(BLUE)Fixing code...$(NC)"
@@ -129,8 +141,30 @@ fix: ## Fix code formatting, imports, and dependencies
 	$(GOMOD) tidy
 	@echo "$(GREEN)Code fixes complete$(NC)"
 
-release: clean fix lint test build ## Prepare for release
-	@echo "$(GREEN)Release build complete$(NC)"
+release: clean fix lint test ## Prepare for release
+	@echo "$(GREEN)Ready for release. Run 'make release-tag VERSION=x.y.z' to create and push a release tag$(NC)"
+
+release-snapshot: ## Create a snapshot release with goreleaser (no tag required)
+	@echo "$(BLUE)Creating snapshot release with goreleaser...$(NC)"
+	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
+	goreleaser release --snapshot --clean
+	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
+
+release-tag: ## Create and push a release tag (use: make release-tag VERSION=0.1.0)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "$(RED)VERSION is required. Usage: make release-tag VERSION=0.1.0$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Creating release tag v$(VERSION)...$(NC)"
+	git tag -a v$(VERSION) -m "Release v$(VERSION)"
+	git push origin v$(VERSION)
+	@echo "$(GREEN)Tag v$(VERSION) created and pushed. GitHub Actions will handle the release.$(NC)"
+
+release-local: ## Build release locally with goreleaser (requires tag)
+	@echo "$(BLUE)Building release locally with goreleaser...$(NC)"
+	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
+	goreleaser release --skip=publish --clean
+	@echo "$(GREEN)Local release created in ./dist/$(NC)"
 
 # Cross-compilation targets
 build-linux: ## Build for Linux
@@ -173,6 +207,23 @@ version: ## Show version information
 	@echo "Commit:  $(COMMIT)"
 	@echo "Built:   $(BUILD_TIME)"
 
+# Catalog update targets
+update-catalog: ## Update embedded catalog with latest API data (requires API keys)
+	@echo "$(BLUE)Updating embedded catalog...$(NC)"
+	@echo "$(YELLOW)This will fetch latest models from all configured provider APIs$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --force -y
+	@echo "$(GREEN)Embedded catalog updated successfully!$(NC)"
+
+update-catalog-provider: ## Update specific provider in embedded catalog (use PROVIDER=name)
+	@if [ -z "$(PROVIDER)" ]; then \
+		echo "$(RED)Error: PROVIDER not specified$(NC)"; \
+		echo "$(YELLOW)Usage: make update-catalog-provider PROVIDER=openai$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --force -y
+	@echo "$(GREEN)Provider $(PROVIDER) updated successfully!$(NC)"
+
 # Validation targets
 validate: ## Validate provider configurations
 	@echo "$(BLUE)Validating provider configurations...$(NC)"
@@ -181,13 +232,13 @@ validate: ## Validate provider configurations
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"
 	@echo "$(YELLOW)Testing OpenAI...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
 	@echo "$(YELLOW)Testing Anthropic...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
 	@echo "$(YELLOW)Testing Groq...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
 	@echo "$(YELLOW)Testing Google AI Studio...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
 
 # Testdata management targets
 # Examples:
@@ -197,30 +248,88 @@ check-apis: ## Check API connectivity for all providers
 #   make testdata-update              # Update all provider testdata (requires API keys)
 testdata: ## Manage testdata (use PROVIDER=name to specify provider)
 	@echo "$(BLUE)Managing testdata...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata $(if $(PROVIDER),--provider $(PROVIDER),) --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata $(if $(PROVIDER),--provider $(PROVIDER),) --verbose
 
 testdata-verify: ## Verify all testdata files are valid
 	@echo "$(BLUE)Verifying testdata files...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata --verify --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata --verify --verbose
 
 testdata-update: ## Update testdata for all providers (requires API keys)
 	@echo "$(BLUE)Updating testdata for all providers...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
-	$(GOCMD) run $(MAIN_PATH) testdata --update --verbose
+	$(GOCMD) run $(MAIN_PATH) generate testdata --verbose
 
 # Documentation
-generate: ## Generate markdown documentation for providers and models
-	@echo "$(BLUE)Generating documentation...$(NC)"
+generate: ## Generate all documentation (Go docs and catalog docs)
+	@echo "$(BLUE)Generating Go documentation...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	$(GOCMD) generate ./...
+	@echo "$(GREEN)Go documentation generation complete$(NC)"
+	@echo "$(BLUE)Generating catalog documentation...$(NC)"
 	$(GOCMD) run $(MAIN_PATH) generate
-	@echo "$(GREEN)Documentation generated in docs/$(NC)"
+	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
 
 docs: generate ## Alias for generate command
+
+godoc: ## Generate only Go documentation using go generate
+	@echo "$(BLUE)Generating Go documentation...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	$(GOCMD) generate ./...
+	@echo "$(GREEN)Go documentation generation complete$(NC)"
+
+docs-check: ## Check if documentation is up to date (for CI)
+	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \
+		echo "Checking $$pkg..."; \
+		cd $$pkg && gomarkdoc -c -e -o README.md . || exit 1; \
+		cd - > /dev/null; \
+	done
+	@echo "$(GREEN)All documentation is up to date$(NC)"
+
+catalog-docs: ## Generate only catalog documentation
+	@echo "$(BLUE)Generating catalog documentation...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) generate docs
+	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
 
 # Demo
 demo: ## Generate VHS demo video
 	@echo "$(BLUE)Generating demo video...$(NC)"
-	@which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/charmbracelet/vhs@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/agentstation/vhs@latest$(NC)" && exit 1)
 	@echo "$(YELLOW)Recording terminal demo...$(NC)"
-	vhs scripts/demo.tape
+	$(RUN_PREFIX) vhs scripts/demo.tape
 	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
 	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"
+
+# Site generation targets
+site-generate: ## Generate static documentation site
+	@echo "$(BLUE)Generating documentation site...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) generate site
+	@echo "$(GREEN)Site generated in site/public$(NC)"
+
+site-serve: ## Run Hugo development server
+	@echo "$(BLUE)Starting Hugo development server...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) serve site
+
+site-build: ## Build production site with Hugo
+	@echo "$(BLUE)Building production site...$(NC)"
+	@$(RUN_PREFIX) which hugo > /dev/null || (echo "$(RED)Hugo not found. Run 'devbox shell' or install with: brew install hugo$(NC)" && exit 1)
+	$(RUN_PREFIX) hugo --source site --minify --gc
+	@echo "$(GREEN)Production build in site/public$(NC)"
+
+site-theme: ## Download Hugo theme
+	@echo "$(BLUE)Downloading Hugo Book theme...$(NC)"
+	@mkdir -p site
+	cd site && git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 2>/dev/null || true
+	cd site && git submodule update --init --recursive
+	@echo "$(GREEN)Theme installed$(NC)"
+
+site-preview: site-theme site-generate site-serve ## Full site preview workflow
+
+site-setup: ## Set up Hugo site structure
+	@echo "$(BLUE)Setting up Hugo site structure...$(NC)"
+	@mkdir -p site/{content,themes,static,layouts,assets}
+	@mkdir -p site/static/{css,js,img}
+	@mkdir -p site/layouts/{_default,partials,shortcodes}
+	@if [ ! -L site/content ]; then cd site && ln -sf ../docs content; fi
+	@echo "$(GREEN)Site structure created$(NC)"

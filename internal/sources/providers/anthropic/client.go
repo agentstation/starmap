@@ -2,20 +2,15 @@ package anthropic
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
-	"github.com/agentstation/starmap/internal/sources/providers/registry"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/utc"
 )
-
-func init() {
-	// Register this provider client in the registry
-	registry.RegisterClient(catalogs.ProviderIDAnthropic, &Client{})
-}
 
 // Response structures for Anthropic API
 type modelsResponse struct {
@@ -37,12 +32,21 @@ type Client struct {
 }
 
 // NewClient creates a new Anthropic client (kept for backward compatibility).
-func NewClient(apiKey string, provider *catalogs.Provider) *Client {
-	provider.APIKeyValue = apiKey // Set the API key in the provider
+func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,
 		transport: transport.NewForProvider(provider),
 	}
+}
+
+// IsAPIKeyRequired returns true if the client requires an API key.
+func (c *Client) IsAPIKeyRequired() bool {
+	return c.provider.IsAPIKeyRequired()
+}
+
+// HasAPIKey returns true if the client has an API key.
+func (c *Client) HasAPIKey() bool {
+	return c.provider.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -60,7 +64,10 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RUnlock()
 
 	if provider == nil {
-		return nil, fmt.Errorf("provider not configured")
+		return nil, &errors.ConfigError{
+			Component: "anthropic",
+			Message:   "provider not configured",
+		}
 	}
 
 	// Build URL - use provider's URL if available, otherwise use default
@@ -72,7 +79,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	// Create request
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("creating request: %w", err)
+		return nil, errors.WrapResource("create", "request", url, err)
 	}
 
 	// Add Anthropic-specific headers
@@ -81,13 +88,18 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	// Use transport layer for HTTP request with authentication
 	resp, err := c.transport.Do(req, provider)
 	if err != nil {
-		return nil, fmt.Errorf("anthropic: request failed: %w", err)
+		return nil, &errors.APIError{
+			Provider: "anthropic",
+			Endpoint: url,
+			Message:  "request failed",
+			Err:      err,
+		}
 	}
 
 	// Decode response using transport utility
 	var result modelsResponse
 	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, fmt.Errorf("anthropic: %w", err)
+		return nil, errors.WrapParse("json", "anthropic response", err)
 	}
 
 	// Convert Anthropic models to starmap models
@@ -100,23 +112,6 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return models, nil
 }
 
-// GetModel retrieves a specific model by its ID.
-func (c *Client) GetModel(ctx context.Context, modelID string) (*catalogs.Model, error) {
-	// Anthropic doesn't provide a single model endpoint, so we list all and filter
-	models, err := c.ListModels(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, model := range models {
-		if model.ID == modelID {
-			return &model, nil
-		}
-	}
-
-	return nil, fmt.Errorf("anthropic: model %s not found", modelID)
-}
-
 // convertToModel converts an Anthropic model response to a starmap Model.
 func (c *Client) convertToModel(m modelResponse) catalogs.Model {
 	model := catalogs.Model{
@@ -126,9 +121,8 @@ func (c *Client) convertToModel(m modelResponse) catalogs.Model {
 
 	// Set created time
 	if !m.CreatedAt.IsZero() {
-		// TODO: Import UTC time package
-		// model.CreatedAt = utc.Time{Time: m.CreatedAt}
-		// model.UpdatedAt = model.CreatedAt
+		model.CreatedAt = utc.Time{Time: m.CreatedAt}
+		model.UpdatedAt = model.CreatedAt
 	}
 
 	// Set Anthropic as the author

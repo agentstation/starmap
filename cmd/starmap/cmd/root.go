@@ -1,18 +1,25 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
+	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/joho/godotenv"
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	cfgFile string
-	verbose bool
+	configFile  string
+	globalFlags *common.GlobalFlags
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -25,11 +32,18 @@ information about AI models, their capabilities, and providers.
 It includes an embedded catalog of models that can be accessed offline,
 as well as the ability to fetch live model information from provider APIs
 when API keys are configured.`,
+	PersistentPreRunE: setupCommand,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
-	err := rootCmd.Execute()
+	// Set up context with signal handling for graceful shutdown
+	ctx, cancel := signal.NotifyContext(context.Background(),
+		syscall.SIGINT, syscall.SIGTERM)
+	defer cancel()
+
+	// Pass context to root command
+	err := rootCmd.ExecuteContext(ctx)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -38,21 +52,35 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
+	// Add command groups for better organization
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "core",
+		Title: "Core Commands:",
+	})
+	
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "management",
+		Title: "Management Commands:",
+	})
+
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
+	globalFlags = common.AddGlobalFlags(rootCmd)
 
 	// Bind flags to viper
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
 		panic(fmt.Sprintf("Failed to bind verbose flag: %v", err))
 	}
+	if err := viper.BindPFlag("quiet", rootCmd.PersistentFlags().Lookup("quiet")); err != nil {
+		panic(fmt.Sprintf("Failed to bind quiet flag: %v", err))
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+	if configFile != "" {
 		// Use config file from the flag
-		viper.SetConfigFile(cfgFile)
+		viper.SetConfigFile(configFile)
 	} else {
 		// Find home directory
 		home, err := os.UserHomeDir()
@@ -77,9 +105,57 @@ func initConfig() {
 	bindAPIKeys()
 
 	// If a config file is found, read it in
-	if err := viper.ReadInConfig(); err == nil && verbose {
+	if err := viper.ReadInConfig(); err == nil && globalFlags != nil && globalFlags.Verbose {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+
+	// Configure logging based on verbose flag and environment
+	configureLogging()
+}
+
+// setupCommand is called before any command runs
+func setupCommand(cmd *cobra.Command, args []string) error {
+	// Setup output format based on terminal detection
+	if globalFlags.Output == "" {
+		globalFlags.Output = string(output.DetectFormat(""))
+	}
+	
+	return nil
+}
+
+// configureLogging sets up the logging system based on configuration
+func configureLogging() {
+	// Determine log level
+	level := zerolog.InfoLevel
+	if globalFlags != nil && globalFlags.Verbose || viper.GetBool("verbose") {
+		level = zerolog.DebugLevel
+	}
+	if globalFlags != nil && globalFlags.Quiet || viper.GetBool("quiet") {
+		level = zerolog.WarnLevel
+	}
+	if envLevel := os.Getenv("LOG_LEVEL"); envLevel != "" {
+		if parsed, err := zerolog.ParseLevel(envLevel); err == nil {
+			level = parsed
+		}
+	}
+
+	// Configure the logger
+	config := &logging.Config{
+		Level:     level.String(),
+		Format:    os.Getenv("LOG_FORMAT"),
+		Output:    os.Getenv("LOG_OUTPUT"),
+		AddCaller: level <= zerolog.DebugLevel,
+	}
+
+	// Use auto format detection if not specified
+	if config.Format == "" {
+		config.Format = "auto"
+	}
+	if config.Output == "" {
+		config.Output = "stderr"
+	}
+
+	logging.Configure(config)
 }
 
 // loadEnvFiles loads environment variables from .env files
@@ -101,7 +177,7 @@ func loadEnvFile(filename string) {
 	// Use godotenv to load the file into the environment
 	if err := godotenv.Load(filename); err == nil {
 		// File loaded successfully
-		if verbose {
+		if globalFlags != nil && globalFlags.Verbose {
 			fmt.Fprintf(os.Stderr, "Loaded %s\n", filename)
 		}
 	}

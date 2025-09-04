@@ -1,72 +1,138 @@
 # gpt-5-chat-latest
+  
+[Catalog](../../../..) / [Providers](../../..) / [OpenAI](../..) / **gpt-5-chat-latest**
+
 
 ## 📋 Overview
-
+  
 - **ID**: `gpt-5-chat-latest`
-- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [OpenAI](../README.md)
-- **Authors**: [OpenAI](../../../authors/openai/README.md)
+- **Provider**: [OpenAI](../)
+- **Authors**: [OpenAI](../../../authors/openai/)
 - **Release Date**: 2025-08-07
 - **Knowledge Cutoff**: 2024-09-30
 - **Open Weights**: false
-- **Context Window**: 400K tokens
-- **Max Output**: 128K tokens
+- **Context Window**: 400k tokens
+- **Max Output**: 128k tokens
+  
+## 🔬 Technical Specifications
+  
+**Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red)
 
+**Repetition Controls:** ![Frequency](https://img.shields.io/badge/frequency__penalty-supported-purple) ![Presence](https://img.shields.io/badge/presence__penalty-supported-purple)
+  
+  
 ## 🎯 Capabilities
-
+  
+### Feature Overview
+  
+![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Supported input modalities](https://img.shields.io/badge/input-text-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Stop sequences](https://img.shields.io/badge/stop-core-blue) ![Frequency penalty](https://img.shields.io/badge/frequency__penalty-core-purple) ![Presence penalty](https://img.shields.io/badge/presence__penalty-core-purple) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
+  
+  
 ### Input/Output Modalities
-
+  
 | Direction | Text | Image | Audio | Video | PDF |
-|-----------|------|-------|-------|-------|-----|
-| Input     | ✅   | ❌   | ❌   | ❌   | ❌   |
-| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
+|---------|---------|---------|---------|---------|---------|
+| **Input** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Output** | ✅ | ❌ | ❌ | ❌ | ❌ |
 
+  
 ### Core Features
-
+  
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
-|--------------|------------------|-------------|------------|------------------|
-| ❌           | ❌               | ❌          | ❌         | ❌               |
+|---------|---------|---------|---------|---------|
+| ❌ | ❌ | ❌ | ❌ | ❌ |
 
+  
 ### Response Delivery
-
+  
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
-|-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ❌                | ❌        | ❌            | ✅           |
+|---------|---------|---------|---------|---------|
+| ✅ | ❌ | ❌ | ❌ | ✅ |
 
-### Advanced Reasoning
-
-| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
-|-----------------|------------------|------------------|-------------------|-------------------|
-| ✅              | ❌               | ❌               | ❌                | ❌                |
-
+  
 ## 🎛️ Generation Controls
-
+  
 ### Sampling & Decoding
-
+  
 | Temperature | Top-P |
-|---|---|
+|---------|---------|
 | 0.0-2.0 | 0.0-1.0 |
 
+  
 ### Length & Termination
+  
+| Max Tokens | Stop Sequences |
+|---------|---------|
+| 1-128k | ✅ |
 
-| Max Tokens |
-|---|
-| 1-128K |
+  
+### Repetition Control
+  
+| Frequency Penalty | Presence Penalty |
+|---------|---------|
+| -2.0 to 2.0 | -2.0 to 2.0 |
 
+  
 ## 💰 Pricing
-
+  
+*Pricing shown for OpenAI*
+  
+  
 ### Token Pricing
-
+  
 | Input | Output | Reasoning | Cache Read | Cache Write |
-|-------|--------|-----------|------------|-------------|
+|---------|---------|---------|---------|---------|
 | $1.25/1M | $10.00/1M | - | - | - |
 
+  
+### 💰 Cost Calculator
+  
+Calculate costs for common usage patterns:
+  
+  
+| Use Case | Input | Output | Total Cost |
+|---------|---------|---------|---------|
+| Quick chat (1K in, 500 out) | 1k tokens | 500 tokens | $0.006250 |
+| Document summary (10K in, 1K out) | 10k tokens | 1k tokens | $0.0225 |
+| RAG query (50K in, 2K out) | 50k tokens | 2k tokens | $0.0825 |
+| Code generation (5K in, 10K out) | 5k tokens | 10k tokens | $0.1062 |
+
+  
+**Pricing Formula:**
+  
+```
+Cost = (Input Tokens / 1M × $1.25) + (Output Tokens / 1M × $10.00)
+```
+  
+### 📊 Example Costs
+  
+Real-world usage examples and their costs:
+  
+  
+| Usage Tier | Daily Volume | Monthly Tokens | Monthly Cost |
+|---------|---------|---------|---------|
+| Personal (10 chats/day) | 10 chats | 675k | $2.81 |
+| Small Team (100 chats/day) | 100 chats | 9.0M | $37.50 |
+| Enterprise (1000 chats/day) | 1000 chats | 135.0M | $562.50 |
+
+  
 ## 📋 Metadata
+  
+**Created**: 2025-09-04 14:31:06 UTC
+  
+**Last Updated**: 2025-09-04 14:31:06 UTC
+  
+  
+---
+  
+  
+### Navigation
 
-**Created**: 2025-08-22 04:09:34 UTC
-**Last Updated**: 2025-08-22 04:09:34 UTC
+- [More models by OpenAI](../)
+- [More models by OpenAI](../../../../authors/openai/)
+- [All Providers](../../../../providers)
+- [Back to Catalog](../../../..)
 
-## Navigation
 
-- [← Back to OpenAI](../README.md)
-- [← Back to Providers](../../README.md)
-- [← Back to Main Index](../../../README.md)
+---
+_Last Updated: 2025-09-04 14:31:22 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_

@@ -2,15 +2,15 @@ package transport
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // DefaultHTTPTimeout is the default timeout for HTTP requests.
-const DefaultHTTPTimeout = 30 * time.Second
+var DefaultHTTPTimeout = constants.DefaultHTTPTimeout
 
 // Client provides HTTP client functionality with authentication.
 type Client struct {
@@ -41,7 +41,15 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
 	// Apply authentication if provider has API key
 	if provider != nil {
-		apiKey := provider.GetAPIKeyValue()
+		apiKey, err := provider.APIKeyValue()
+		if err != nil {
+			return nil, &errors.AuthenticationError{
+				Provider: string(provider.ID),
+				Method:   "api_key",
+				Message:  "failed to retrieve API key",
+				Err:      err,
+			}
+		}
 		if apiKey != "" {
 			c.auth.Apply(req, apiKey)
 		}
@@ -64,9 +72,9 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("creating GET request: %w", err)
+		return nil, errors.WrapResource("create", "request", "GET "+url, err)
 	}
-	return c.Do(req, provider)
+	return c.DoWithContext(ctx, req, provider)
 }
 
 // getAuthenticatorForProvider returns the appropriate authenticator for a provider.

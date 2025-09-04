@@ -1,71 +1,146 @@
 # gpt-oss-20b
+  
+[Catalog](../../../../..) / [Providers](../../../..) / [Groq](../../..) / **gpt-oss-20b**
+
 
 ## 📋 Overview
-
+  
 - **ID**: `openai/gpt-oss-20b`
-- **Provider**: <img src="../logo.svg" alt="" width="20" height="20" style="vertical-align: middle"> [Groq](../README.md)
-- **Authors**: [OpenAI](../../../../authors/openai/README.md)
+- **Provider**: [Groq](../)
+- **Authors**: [OpenAI](../../../authors/openai/)
 - **Release Date**: 2025-08-05
 - **Open Weights**: true
-- **Context Window**: 131.1K tokens
-- **Max Output**: 32.8K tokens
+- **Context Window**: 131k tokens
+- **Max Output**: 32k tokens
+  
+## 🔬 Technical Specifications
+  
+**Sampling Controls:** ![Temperature](https://img.shields.io/badge/temperature-supported-red) ![Top-P](https://img.shields.io/badge/top__p-supported-red)
 
+**Repetition Controls:** ![Frequency](https://img.shields.io/badge/frequency__penalty-supported-purple) ![Presence](https://img.shields.io/badge/presence__penalty-supported-purple)
+
+**Advanced Features:** ![Seed](https://img.shields.io/badge/seed-deterministic-green)
+  
+  
 ## 🎯 Capabilities
-
+  
+### Feature Overview
+  
+![Supports text generation and processing](https://img.shields.io/badge/text-✓-blue) ![Supported input modalities](https://img.shields.io/badge/input-text-teal) ![Supported output modalities](https://img.shields.io/badge/output-text-cyan) ![Temperature sampling control](https://img.shields.io/badge/temperature-core-red) ![Nucleus sampling (top-p)](https://img.shields.io/badge/top__p-core-red) ![Maximum token limit](https://img.shields.io/badge/max__tokens-core-blue) ![Stop sequences](https://img.shields.io/badge/stop-core-blue) ![Frequency penalty](https://img.shields.io/badge/frequency__penalty-core-purple) ![Presence penalty](https://img.shields.io/badge/presence__penalty-core-purple) ![Deterministic seeding](https://img.shields.io/badge/seed-advanced-green) ![Response streaming](https://img.shields.io/badge/streaming-✓-cyan)
+  
+  
 ### Input/Output Modalities
-
+  
 | Direction | Text | Image | Audio | Video | PDF |
-|-----------|------|-------|-------|-------|-----|
-| Input     | ✅   | ❌   | ❌   | ❌   | ❌   |
-| Output    | ✅   | ❌   | ❌   | ❌   | ❌   |
+|---------|---------|---------|---------|---------|---------|
+| **Input** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Output** | ✅ | ❌ | ❌ | ❌ | ❌ |
 
+  
 ### Core Features
-
+  
 | Tool Calling | Tool Definitions | Tool Choice | Web Search | File Attachments |
-|--------------|------------------|-------------|------------|------------------|
-| ✅           | ❌               | ❌          | ❌         | ❌               |
+|---------|---------|---------|---------|---------|
+| ❌ | ❌ | ❌ | ❌ | ❌ |
 
+  
 ### Response Delivery
-
+  
 | Streaming | Structured Output | JSON Mode | Function Call | Text Format |
-|-----------|-------------------|-----------|---------------|--------------|
-| ✅        | ❌                | ❌        | ✅            | ✅           |
+|---------|---------|---------|---------|---------|
+| ✅ | ❌ | ❌ | ❌ | ✅ |
 
-### Advanced Reasoning
-
-| Basic Reasoning | Reasoning Effort | Reasoning Tokens | Include Reasoning | Verbosity Control |
-|-----------------|------------------|------------------|-------------------|-------------------|
-| ✅              | ❌               | ❌               | ❌                | ❌                |
-
+  
 ## 🎛️ Generation Controls
-
+  
 ### Sampling & Decoding
-
+  
 | Temperature | Top-P |
-|---|---|
+|---------|---------|
 | 0.0-2.0 | 0.0-1.0 |
 
+  
 ### Length & Termination
+  
+| Max Tokens | Stop Sequences |
+|---------|---------|
+| 1-32k | ✅ |
 
-| Max Tokens |
-|---|
-| 1-32.8K |
+  
+### Repetition Control
+  
+| Frequency Penalty | Presence Penalty |
+|---------|---------|
+| -2.0 to 2.0 | -2.0 to 2.0 |
 
+  
+### Advanced Controls
+  
+| Deterministic Seed |
+|---------|
+| ✅ |
+
+  
 ## 💰 Pricing
-
+  
+*Pricing shown for Groq*
+  
+  
 ### Token Pricing
-
+  
 | Input | Output | Reasoning | Cache Read | Cache Write |
-|-------|--------|-----------|------------|-------------|
+|---------|---------|---------|---------|---------|
 | $0.10/1M | $0.50/1M | - | - | - |
 
+  
+### 💰 Cost Calculator
+  
+Calculate costs for common usage patterns:
+  
+  
+| Use Case | Input | Output | Total Cost |
+|---------|---------|---------|---------|
+| Quick chat (1K in, 500 out) | 1k tokens | 500 tokens | $0.000350 |
+| Document summary (10K in, 1K out) | 10k tokens | 1k tokens | $0.001500 |
+| RAG query (50K in, 2K out) | 50k tokens | 2k tokens | $0.006000 |
+| Code generation (5K in, 10K out) | 5k tokens | 10k tokens | $0.005500 |
+
+  
+**Pricing Formula:**
+  
+```
+Cost = (Input Tokens / 1M × $0.10) + (Output Tokens / 1M × $0.50)
+```
+  
+### 📊 Example Costs
+  
+Real-world usage examples and their costs:
+  
+  
+| Usage Tier | Daily Volume | Monthly Tokens | Monthly Cost |
+|---------|---------|---------|---------|
+| Personal (10 chats/day) | 10 chats | 675k | $0.1575 |
+| Small Team (100 chats/day) | 100 chats | 9.0M | $2.10 |
+| Enterprise (1000 chats/day) | 1000 chats | 135.0M | $31.50 |
+
+  
 ## 📋 Metadata
+  
+**Created**: 2025-09-04 14:31:06 UTC
+  
+**Last Updated**: 2025-09-04 14:31:06 UTC
+  
+  
+---
+  
+  
+### Navigation
 
-**Created**: 2025-08-22 04:09:33 UTC
-**Last Updated**: 2025-08-22 04:09:33 UTC
+- [More models by Groq](../)
+- [More models by OpenAI](../../../../../authors/openai/)
+- [All Providers](../../../../../providers)
+- [Back to Catalog](../../../../..)
 
-## Navigation
 
-- [← Back to Groq](../../README.md)
-- [← Back to Providers](../../../README.md)
-- [← Back to Main Index](../../../../README.md)
+---
+_Last Updated: 2025-09-04 14:31:22 UTC | Generated by [Starmap](https://github.com/agentstation/starmap)_
