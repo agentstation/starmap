@@ -357,4 +357,33 @@ deploy-check: ## Check if site is ready for deployment
 	@echo "  1. Enable GitHub Pages: Settings → Pages → Source: GitHub Actions"
 	@echo "  2. Push to master branch to trigger deployment"
 	@echo "  3. Optional: Configure custom domain in Settings → Pages"
+
+pr-preview-cleanup: ## Manually cleanup a specific PR preview (requires PR number)
+	@if [ -z "$(PR)" ]; then \
+		echo "$(RED)Error: Please specify PR number with PR=123$(NC)"; \
+		echo "$(YELLOW)Usage: make pr-preview-cleanup PR=123$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Cleaning up preview for PR #$(PR)...$(NC)"
+	@npm install -g surge > /dev/null 2>&1 || true
+	@surge teardown starmap-pr-$(PR).surge.sh || echo "$(YELLOW)Preview may not exist or already cleaned$(NC)"
+	@echo "$(GREEN)✓ Cleaned up starmap-pr-$(PR).surge.sh$(NC)"
+
+pr-preview-cleanup-all: ## Cleanup all PR previews (use with caution)
+	@echo "$(YELLOW)This will attempt to cleanup all known PR previews$(NC)"
+	@echo "$(YELLOW)Fetching closed PRs...$(NC)"
+	@for pr in $$(gh pr list --state closed --limit 100 --json number --jq '.[].number' 2>/dev/null || echo ""); do \
+		echo "$(BLUE)Cleaning up PR #$$pr preview...$(NC)"; \
+		surge teardown starmap-pr-$$pr.surge.sh 2>/dev/null || true; \
+	done
+	@echo "$(GREEN)✓ Cleanup complete$(NC)"
+
+pr-preview-list: ## List all recent PR preview URLs
+	@echo "$(BLUE)Recent PR Preview URLs:$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Active PRs:$(NC)"
+	@gh pr list --state open --json number,title --jq '.[] | "  PR #\(.number): https://starmap-pr-\(.number).surge.sh - \(.title)"' 2>/dev/null || echo "  No open PRs found"
+	@echo ""
+	@echo "$(YELLOW)Recently Closed PRs (may still have previews):$(NC)"
+	@gh pr list --state closed --limit 10 --json number,title,closedAt --jq '.[] | "  PR #\(.number): https://starmap-pr-\(.number).surge.sh - \(.title) (closed \(.closedAt[:10]))"' 2>/dev/null || echo "  No recently closed PRs found"
 	@echo "$(GREEN)Site structure created$(NC)"
