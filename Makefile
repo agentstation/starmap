@@ -141,14 +141,72 @@ fix: ## Fix code formatting, imports, and dependencies
 	$(GOMOD) tidy
 	@echo "$(GREEN)Code fixes complete$(NC)"
 
-release: clean fix lint test ## Prepare for release
-	@echo "$(GREEN)Ready for release. Run 'make release-tag VERSION=x.y.z' to create and push a release tag$(NC)"
+release: clean fix lint test ## Prepare for release (use: make release VERSION=x.y.z)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "$(GREEN)Ready for release. Run 'make release VERSION=x.y.z' to create and push a release tag$(NC)"; \
+	else \
+		$(MAKE) release-full VERSION=$(VERSION); \
+	fi
+
+release-full: ## Complete release workflow: prepare, tag, and trigger GitHub Actions
+	@if [ -z "$(VERSION)" ]; then \
+		echo "$(RED)VERSION is required. Usage: make release VERSION=0.1.0$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Starting full release workflow for v$(VERSION)...$(NC)"
+	@echo "$(YELLOW)Step 1/5: Checking working directory...$(NC)"
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		echo "$(RED)Error: Working directory is not clean. Please commit or stash changes.$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(YELLOW)Step 2/5: Running pre-release checks...$(NC)"
+	@$(MAKE) clean fix lint test > /dev/null
+	@echo "$(YELLOW)Step 3/5: Testing CLI features...$(NC)"
+	@echo "  Testing version command..."
+	@$(GOCMD) run $(MAIN_PATH) version > /dev/null
+	@echo "  Testing completion generation..."
+	@$(GOCMD) run $(MAIN_PATH) completion bash > /dev/null
+	@echo "  Testing man page generation..."
+	@$(GOCMD) run $(MAIN_PATH) man > /dev/null
+	@echo "$(YELLOW)Step 4/5: Creating and pushing tag...$(NC)"
+	git tag -a v$(VERSION) -m "Release v$(VERSION)"
+	git push origin v$(VERSION)
+	@echo "$(YELLOW)Step 5/5: Release triggered!$(NC)"
+	@echo "$(GREEN)✅ Release v$(VERSION) tagged and pushed!$(NC)"
+	@echo "$(GREEN)🚀 GitHub Actions will now build and publish the release$(NC)"
+	@echo "$(BLUE)Monitor progress at: https://github.com/agentstation/starmap/actions$(NC)"
+
+release-v0.0.1: ## Quick release for v0.0.1 (first release)
+	@$(MAKE) release-full VERSION=0.0.1
+
+release-check: ## Check if ready for release (CI-friendly)
+	@echo "$(BLUE)Checking release readiness...$(NC)"
+	@echo "$(YELLOW)Checking working directory...$(NC)"
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		echo "$(RED)❌ Working directory is not clean$(NC)"; \
+		exit 1; \
+	else \
+		echo "$(GREEN)✅ Working directory is clean$(NC)"; \
+	fi
+	@echo "$(YELLOW)Running tests...$(NC)"
+	@$(GOTEST) ./... > /dev/null && echo "$(GREEN)✅ All tests pass$(NC)" || (echo "$(RED)❌ Tests failed$(NC)" && exit 1)
+	@echo "$(YELLOW)Running linter...$(NC)"
+	@$(GOVET) ./... > /dev/null && echo "$(GREEN)✅ No vet issues$(NC)" || (echo "$(RED)❌ Vet issues found$(NC)" && exit 1)
+	@echo "$(YELLOW)Testing CLI features...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) version > /dev/null && echo "$(GREEN)✅ Version command works$(NC)" || (echo "$(RED)❌ Version command failed$(NC)" && exit 1)
+	@$(GOCMD) run $(MAIN_PATH) completion bash > /dev/null && echo "$(GREEN)✅ Completion generation works$(NC)" || (echo "$(RED)❌ Completion generation failed$(NC)" && exit 1)
+	@$(GOCMD) run $(MAIN_PATH) man > /dev/null && echo "$(GREEN)✅ Man page generation works$(NC)" || (echo "$(RED)❌ Man page generation failed$(NC)" && exit 1)
+	@echo "$(YELLOW)Checking GoReleaser config...$(NC)"
+	@which goreleaser > /dev/null || (echo "$(RED)❌ goreleaser not found$(NC)" && exit 1)
+	@goreleaser check > /dev/null && echo "$(GREEN)✅ GoReleaser config is valid$(NC)" || (echo "$(RED)❌ GoReleaser config invalid$(NC)" && exit 1)
+	@echo "$(GREEN)🎉 Ready for release!$(NC)"
 
 release-snapshot: ## Create a snapshot release with goreleaser (no tag required)
 	@echo "$(BLUE)Creating snapshot release with goreleaser...$(NC)"
 	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
 	goreleaser release --snapshot --clean
 	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
+	@echo "$(YELLOW)Test the binaries in ./dist/ before creating a real release$(NC)"
 
 release-tag: ## Create and push a release tag (use: make release-tag VERSION=0.1.0)
 	@if [ -z "$(VERSION)" ]; then \
