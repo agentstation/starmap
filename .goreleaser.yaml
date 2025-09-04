@@ -225,17 +225,48 @@ homebrew_casks:
       owner: agentstation
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    commit_author:
-      name: starmap-bot
-      email: bot@agentstation.ai
-    homepage: "https://github.com/agentstation/starmap"
-    description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
-    license: "AGPL-3.0"
+    
+    # Cask name
+    name: starmap
+    
+    # Directory inside the repository (default is Casks)
     directory: Casks
     
-    # Custom caveats for cask
+    # Git commit information
+    commit_author:
+      name: "GitHub Actions"
+      email: "actions@github.com"
+    commit_msg_template: "Update starmap to {{ .Tag }}"
+    
+    # Homepage
+    homepage: "https://github.com/agentstation/starmap"
+    
+    # Description
+    description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
+    
+    # License
+    license: "AGPL-3.0"
+    
+    # Binary name (extracted from archive)
+    binary: starmap
+    
+    # Post-install hook for unsigned binaries (macOS)
+    hooks:
+      post:
+        install: |
+          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/starmap"], sudo: false
+          end
+    
+    # Shell completions (files included in the archive)
+    completions:
+      bash: completions/starmap.bash
+      zsh: completions/starmap.zsh
+      fish: completions/starmap.fish
+    
+    # Custom caveats
     caveats: |
-      Starmap has been installed! 🗺️
+      Starmap has been installed! ⭐🗺️
       
       Quick start:
         starmap list models              # List all AI models
