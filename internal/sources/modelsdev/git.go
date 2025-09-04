@@ -169,14 +169,14 @@ func (s *GitSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Model
 	// Add metadata if available
 	if mdModel.ReleaseDate != "" || (mdModel.Knowledge != nil && *mdModel.Knowledge != "") {
 		model.Metadata = &catalogs.ModelMetadata{}
-		
+
 		// Parse release date
 		if mdModel.ReleaseDate != "" {
 			if releaseDate, err := parseDate(mdModel.ReleaseDate); err == nil {
 				model.Metadata.ReleaseDate = utc.Time{Time: *releaseDate}
 			}
 		}
-		
+
 		// Parse knowledge cutoff
 		if mdModel.Knowledge != nil && *mdModel.Knowledge != "" {
 			if knowledgeDate, err := parseDate(*mdModel.Knowledge); err == nil {
@@ -184,7 +184,7 @@ func (s *GitSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Model
 				model.Metadata.KnowledgeCutoff = &knowledgeCutoff
 			}
 		}
-		
+
 		// Set open weights flag
 		model.Metadata.OpenWeights = mdModel.OpenWeights
 	}

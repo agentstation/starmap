@@ -101,8 +101,7 @@ After the workflow completes:
    go install github.com/agentstation/starmap/cmd/starmap@latest
    
    # Homebrew (if configured)
-   brew tap agentstation/tap
-   brew install starmap
+   brew install agentstation/tap/starmap
    ```
 4. **Check documentation**: Visit https://starmap.agentstation.ai/
 

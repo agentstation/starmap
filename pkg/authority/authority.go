@@ -9,10 +9,12 @@ import (
 // Authority determines which source is authoritative for each field
 type Authority interface {
 	// Find returns the authority configuration for a specific field
-	Find(fieldPath string, resourceType sources.ResourceType) *Field
+	Find(resourceType sources.ResourceType, fieldPath string) *Field
 
 	// List returns all authorities for a resource type
-	List(resourceType sources.ResourceType) []Field
+	ModelFields() []Field
+	ProviderFields() []Field
+	AuthorFields() []Field
 }
 
 // Field defines source priority for a specific field
@@ -24,54 +26,44 @@ type Field struct {
 
 // authorities provides standard field authorities
 type authorities struct {
-	modelAuthorities    []Field
-	providerAuthorities []Field
-	authorAuthorities   []Field
+	modelFields    []Field
+	providerFields []Field
+	authorFields   []Field
 }
 
 // New creates a new DefaultAuthorities with standard configurations
 func New() Authority {
 	return &authorities{
-		modelAuthorities:    defaultModelAuthorities(),
-		providerAuthorities: defaultProviderAuthorities(),
-		authorAuthorities:   defaultAuthorAuthorities(),
+		modelFields:    defaultModelAuthorities(),
+		providerFields: defaultProviderAuthorities(),
+		authorFields:   defaultAuthorAuthorities(),
 	}
 }
 
 // Find returns the authority configuration for a specific field
-func (da *authorities) Find(fieldPath string, resourceType sources.ResourceType) *Field {
+func (a *authorities) Find(resourceType sources.ResourceType, fieldPath string) *Field {
 	var authorities []Field
 
 	switch resourceType {
 	case sources.ResourceTypeModel:
-		authorities = da.modelAuthorities
+		authorities = a.modelFields
 	case sources.ResourceTypeProvider:
-		authorities = da.providerAuthorities
+		authorities = a.providerFields
 	case sources.ResourceTypeAuthor:
-		authorities = da.authorAuthorities
+		authorities = a.authorFields
 	default:
 		return nil
 	}
 
-	return ByField(fieldPath, authorities)
+	return findByFieldPath(authorities, fieldPath)
 }
 
-// List returns all authorities for a resource type
-func (da *authorities) List(resourceType sources.ResourceType) []Field {
-	switch resourceType {
-	case sources.ResourceTypeModel:
-		return da.modelAuthorities
-	case sources.ResourceTypeProvider:
-		return da.providerAuthorities
-	case sources.ResourceTypeAuthor:
-		return da.authorAuthorities
-	default:
-		return nil
-	}
-}
+func (a *authorities) ModelFields() []Field    { return a.modelFields }
+func (a *authorities) ProviderFields() []Field { return a.providerFields }
+func (a *authorities) AuthorFields() []Field   { return a.authorFields }
 
 // ByField returns the highest priority authority for a given field path
-func ByField(fieldPath string, authorities []Field) *Field {
+func findByFieldPath(authorities []Field, fieldPath string) *Field {
 	var bestMatch *Field
 	var bestPriority int
 	var bestMatchLength int
@@ -113,8 +105,8 @@ func MatchesPattern(fieldPath, pattern string) bool {
 	return matched
 }
 
-// FilterAuthoritiesBySource returns only the authorities for a specific source
-func FilterAuthoritiesBySource(authorities []Field, sourceType sources.Type) []Field {
+// filterBySource returns only the authorities for a specific source
+func filterBySource(authorities []Field, sourceType sources.Type) []Field {
 	var filtered []Field
 	for _, auth := range authorities {
 		if auth.Source == sourceType {

@@ -60,34 +60,34 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 			Verbosity:        true,
 
 			// Generation control support flags subsection - should have blank line before
-			Temperature:      true,
-			TopP:             true,
-			TopK:             true,
-			TopA:             true,
-			MinP:             true,
-			TypicalP:         true,
-			TFS:              true,
-			MaxTokens:        true,
-			MaxOutputTokens:  true,
-			Stop:             true,
-			StopTokenIds:     true,
-			FrequencyPenalty: true,
-			PresencePenalty:  true,
-			RepetitionPenalty: true,
-			NoRepeatNgramSize: true,
-			LengthPenalty:    true,
-			LogitBias:        true,
-			BadWords:         true,
-			AllowedTokens:    true,
-			Seed:             true,
-			Logprobs:         true,
-			TopLogprobs:      true,
-			Echo:             true,
-			N:                true,
-			BestOf:           true,
-			Mirostat:         true,
-			MirostatTau:      true,
-			MirostatEta:      true,
+			Temperature:                   true,
+			TopP:                          true,
+			TopK:                          true,
+			TopA:                          true,
+			MinP:                          true,
+			TypicalP:                      true,
+			TFS:                           true,
+			MaxTokens:                     true,
+			MaxOutputTokens:               true,
+			Stop:                          true,
+			StopTokenIds:                  true,
+			FrequencyPenalty:              true,
+			PresencePenalty:               true,
+			RepetitionPenalty:             true,
+			NoRepeatNgramSize:             true,
+			LengthPenalty:                 true,
+			LogitBias:                     true,
+			BadWords:                      true,
+			AllowedTokens:                 true,
+			Seed:                          true,
+			Logprobs:                      true,
+			TopLogprobs:                   true,
+			Echo:                          true,
+			N:                             true,
+			BestOf:                        true,
+			Mirostat:                      true,
+			MirostatTau:                   true,
+			MirostatEta:                   true,
 			ContrastiveSearchPenaltyAlpha: true,
 			NumBeams:                      true,
 			EarlyStopping:                 true,
@@ -107,7 +107,7 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 			MaxTokens:   intPtr(4096),
 		},
 
-		// Reasoning section - should have blank line before (if present)  
+		// Reasoning section - should have blank line before (if present)
 		Reasoning: &ModelControlLevels{
 			Levels:  []ModelControlLevel{ModelControlLevelLow, ModelControlLevelMedium, ModelControlLevelHigh},
 			Default: &[]ModelControlLevel{ModelControlLevelMedium}[0],
@@ -203,7 +203,7 @@ func testMajorSectionSpacing(t *testing.T, yaml string) {
 	lines := strings.Split(yaml, "\n")
 	majorSectionHeaders := []string{
 		"# Model metadata",
-		"# Model features", 
+		"# Model features",
 		"# Model limits",
 		"# Model pricing",
 		"# Timestamps",
@@ -239,7 +239,7 @@ func testSubsectionSpacing(t *testing.T, yaml string) {
 	lines := strings.Split(yaml, "\n")
 	subsectionHeaders := []string{
 		"# Core capabilities",
-		"# Reasoning & Verbosity", 
+		"# Reasoning & Verbosity",
 		"# Generation control support flags",
 		"# Response delivery",
 	}
@@ -345,16 +345,16 @@ func testCommentFormatting(t *testing.T, yaml string) {
 func TestModel_FormatYAML_RoundTripConsistency(t *testing.T) {
 	// Test that a model can be formatted, saved, and loaded with consistent structure
 	original := createTestModel()
-	
+
 	// Format to YAML
 	yamlContent := original.FormatYAML()
-	
+
 	// The formatted YAML should maintain proper spacing when formatted again
 	// (This tests the idempotent nature of the formatting)
 	lines := strings.Split(yamlContent, "\n")
 	nonEmptyLines := make([]string, 0)
 	blankLineIndices := make([]int, 0)
-	
+
 	for i, line := range lines {
 		if strings.TrimSpace(line) == "" {
 			blankLineIndices = append(blankLineIndices, i)
@@ -396,7 +396,7 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 	}
 
 	yaml := model.FormatYAML()
-	
+
 	// Should still have proper structure even with minimal data
 	expectedElements := []string{
 		"# minimal-model - Minimal Model",
@@ -425,16 +425,16 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 // Helper functions for test data creation
 func createTestModel() Model {
 	testTime := time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)
-	
+
 	return Model{
 		ID:          "test-model",
 		Name:        "Test Model",
 		Description: "A test model for YAML formatting verification",
-		
+
 		Metadata: &ModelMetadata{
 			ReleaseDate: utc.Time{Time: time.Date(2024, 6, 1, 0, 0, 0, 0, time.UTC)},
 		},
-		
+
 		Features: &ModelFeatures{
 			Modalities: ModelModalities{
 				Input:  []ModelModality{ModelModalityText},
@@ -446,12 +446,12 @@ func createTestModel() Model {
 			FormatResponse: true,
 			Streaming:      true,
 		},
-		
+
 		Limits: &ModelLimits{
 			ContextWindow: 8192,
 			OutputTokens:  2048,
 		},
-		
+
 		Pricing: &ModelPricing{
 			Currency: ModelPricingCurrencyUSD,
 			Tokens: &ModelTokenPricing{
@@ -459,7 +459,7 @@ func createTestModel() Model {
 				Output: &ModelTokenCost{Per1M: 2.00},
 			},
 		},
-		
+
 		CreatedAt: utc.Time{Time: testTime},
 		UpdatedAt: utc.Time{Time: testTime},
 	}

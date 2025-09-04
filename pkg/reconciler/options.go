@@ -64,7 +64,7 @@ func WithAuthorities(authorities authority.Authority) Option {
 			}
 		}
 		r.authorities = authorities
-		if r.strategy != nil || r.strategy.Type() != StrategyTypeAuthority {
+		if r.strategy != nil || r.strategy.Type() != StrategyTypeFieldAuthority {
 			r.strategy = NewAuthorityStrategy(authorities)
 		}
 		return nil

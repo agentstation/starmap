@@ -20,6 +20,12 @@ import (
 var (
 	configFile  string
 	globalFlags *common.GlobalFlags
+
+	// Version information set by main
+	Version = "dev"
+	Commit  = "unknown"
+	Date    = "unknown"
+	BuiltBy = "unknown"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -36,7 +42,13 @@ when API keys are configured.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
-func Execute() {
+func Execute(version, commit, date, builtBy string) {
+	// Set version information
+	Version = version
+	Commit = commit
+	Date = date
+	BuiltBy = builtBy
+
 	// Set up context with signal handling for graceful shutdown
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM)
@@ -57,7 +69,7 @@ func init() {
 		ID:    "core",
 		Title: "Core Commands:",
 	})
-	
+
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    "management",
 		Title: "Management Commands:",
@@ -119,7 +131,7 @@ func setupCommand(cmd *cobra.Command, args []string) error {
 	if globalFlags.Output == "" {
 		globalFlags.Output = string(output.DetectFormat(""))
 	}
-	
+
 	return nil
 }
 

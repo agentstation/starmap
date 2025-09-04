@@ -54,7 +54,10 @@ Starmap uses a two-tier architecture:
 ## Installation
 
 ```bash
-# Install from source
+# Homebrew (macOS/Linux)
+brew install agentstation/tap/starmap
+
+# Or install from source
 go install github.com/agentstation/starmap@latest
 
 # Or download pre-built binaries

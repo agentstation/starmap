@@ -85,7 +85,10 @@ Starmap provides:
 ### CLI Tool
 
 ```bash
-# Install latest version
+# Homebrew (macOS/Linux)
+brew install agentstation/tap/starmap
+
+# Or install from source
 go install github.com/agentstation/starmap/cmd/starmap@latest
 
 # Verify installation

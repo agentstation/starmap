@@ -249,7 +249,7 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.Type
 
 	if len(values) > 0 {
 		// Let the strategy decide - it will use authorities if it's AuthorityStrategy
-		// or source priority if it's SourcePriorityStrategy
+		// or source priority order if it's SourceOrderStrategy
 		value, source, _ := merger.strategy.ResolveConflict(fieldPath, values)
 		return value, source
 	}
@@ -271,7 +271,7 @@ func (merger *merger) providerField(fieldPath string, sourceProviders map[source
 
 	if len(values) > 0 {
 		// Let the strategy decide - it will use authorities if it's AuthorityStrategy
-		// or source priority if it's SourcePriorityStrategy
+		// or source priority order if it's SourceOrderStrategy
 		value, source, _ := merger.strategy.ResolveConflict(fieldPath, values)
 		return value, source
 	}

@@ -1,19 +1,33 @@
-# GoReleaser configuration for Starmap
-# Documentation: https://goreleaser.com
-
-project_name: starmap
+version: 2
 
 before:
   hooks:
     - go mod tidy
     - go generate ./...
+    - rm -rf completions
+    - mkdir completions
+    - rm -rf manpages
+    - mkdir manpages
+    - sh -c 'go run ./cmd/starmap completion bash > ./completions/starmap.bash'
+    - sh -c 'go run ./cmd/starmap completion zsh > ./completions/starmap.zsh'
+    - sh -c 'go run ./cmd/starmap completion fish > ./completions/starmap.fish'
+    - sh -c 'go run ./cmd/starmap man | gzip -c > ./manpages/starmap.1.gz'
 
 builds:
   - id: starmap
     binary: starmap
-    main: ./cmd/starmap
     env:
       - CGO_ENABLED=0
+    main: ./cmd/starmap
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.ShortCommit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
     goos:
       - linux
       - darwin
@@ -25,34 +39,39 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-    ldflags:
-      - -s -w
-      - -X main.version={{.Version}}
-      - -X main.commit={{.Commit}}
-      - -X main.date={{.Date}}
-      - -X main.builtBy=goreleaser
 
 archives:
   - id: starmap
+    ids:
+      - starmap
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
     name_template: >-
       {{ .ProjectName }}_
       {{- .Version }}_
-      {{- title .Os }}_
+      {{- .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
-    format_overrides:
-      - goos: windows
-        format: zip
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
     files:
       - README.md
       - LICENSE*
       - CHANGELOG.md
       - docs/PROVIDER_IMPLEMENTATION_GUIDE.md
+      - completions/*
+      - manpages/*
 
 checksum:
-  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  name_template: 'checksums.txt'
   algorithm: sha256
+
+sboms:
+  - artifacts: archive
+    documents:
+      - "${artifact}.sbom.json"
 
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
@@ -106,8 +125,7 @@ release:
     
     **Homebrew (macOS/Linux):**
     ```bash
-    brew tap agentstation/tap
-    brew install starmap
+    brew install agentstation/tap/starmap
     ```
     
     **Go Install:**
@@ -145,21 +163,61 @@ release:
 announce:
   skip: false
 
-# Docker images
+# Docker configuration - optimized with caching
 dockers:
-  - image_templates:
-      - "ghcr.io/agentstation/starmap:{{ .Version }}"
-      - "ghcr.io/agentstation/starmap:latest"
+  - id: starmap-amd64
+    ids:
+      - starmap
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
     dockerfile: Dockerfile
+    use: buildx
     build_flag_templates:
       - "--pull"
+      - "--cache-from=type=gha"
+      - "--cache-to=type=gha,mode=max"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
       - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
       - "--label=org.opencontainers.image.description=AI Model Catalog System"
+      - "--label=org.opencontainers.image.licenses=MIT"
       - "--platform=linux/amd64"
+  - id: starmap-arm64
+    ids:
+      - starmap
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--cache-from=type=gha"
+      - "--cache-to=type=gha,mode=max"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
+      - "--label=org.opencontainers.image.description=AI Model Catalog System"
+      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--platform=linux/arm64"
+
+# Docker manifest for multi-arch support
+docker_manifests:
+  - name_template: "ghcr.io/agentstation/starmap:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/agentstation/starmap:latest"
+    image_templates:
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
 
 # Homebrew tap
 brews:
@@ -176,6 +234,70 @@ brews:
     folder: Formula
     test: |
       system "#{bin}/starmap", "version"
+    
+    # Shell completions
+    completions:
+      bash: completions/starmap.bash
+      zsh: completions/starmap.zsh
+      fish: completions/starmap.fish
+    
+    # Custom caveats  
+    caveats: |
+      Starmap has been installed! 🗺️
+      
+      Quick start:
+        starmap list models              # List all AI models
+        starmap fetch models --provider openai  # Fetch live model data
+        starmap update                   # Update entire catalog
+        starmap --help                   # Show all commands
+      
+      Shell completions have been installed to:
+        Bash: #{HOMEBREW_PREFIX}/etc/bash_completion.d
+        Zsh:  #{HOMEBREW_PREFIX}/share/zsh/site-functions
+        Fish: #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
+      
+      Documentation: https://starmap.agentstation.ai/
+
+# Homebrew Cask
+homebrew_casks:
+  - repository:
+      owner: agentstation
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    commit_author:
+      name: starmap-bot
+      email: bot@agentstation.ai
+    homepage: "https://github.com/agentstation/starmap"
+    description: "AI Model Catalog System - Discover, compare, and sync AI models across providers"
+    license: "MIT"
+    directory: Casks
+    
+    # Conflicts with formula version
+    conflicts_with:
+      formula: ["starmap"]
+    
+    # Shell completions
+    completions:
+      bash: completions/starmap.bash
+      zsh: completions/starmap.zsh
+      fish: completions/starmap.fish
+    
+    # Custom caveats for cask
+    caveats: |
+      Starmap has been installed! 🗺️
+      
+      Quick start:
+        starmap list models              # List all AI models
+        starmap fetch models --provider openai  # Fetch live model data
+        starmap update                   # Update entire catalog
+        starmap --help                   # Show all commands
+      
+      Shell completions have been installed to:
+        Bash: #{HOMEBREW_PREFIX}/etc/bash_completion.d
+        Zsh:  #{HOMEBREW_PREFIX}/share/zsh/site-functions
+        Fish: #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
+      
+      Documentation: https://starmap.agentstation.ai/
 
 # Sign release artifacts
 signs:
@@ -186,3 +308,13 @@ signs:
       - "--detach-sig"
       - "${artifact}"
     artifacts: checksum
+    
+# Binary signing (requires signing key setup)
+binary_signs:
+  - cmd: gpg
+    args:
+      - "--output"
+      - "${signature}"
+      - "--detach-sig"
+      - "${artifact}"
+    artifacts: binary

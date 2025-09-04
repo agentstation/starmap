@@ -94,10 +94,10 @@ func postProcessModelYAML(yamlContent string) string {
 
 	// Subsection headers within features that need spacing
 	subsectionHeaders := map[string]bool{
-		"# Core capabilities":              true,
-		"# Reasoning & Verbosity":          true,
+		"# Core capabilities":                true,
+		"# Reasoning & Verbosity":            true,
 		"# Generation control support flags": true,
-		"# Response delivery":              true,
+		"# Response delivery":                true,
 	}
 
 	// Track if we're inside an authors section
@@ -105,7 +105,7 @@ func postProcessModelYAML(yamlContent string) string {
 
 	for i, line := range lines {
 		trimmedLine := strings.TrimSpace(line)
-		
+
 		// Check if we're entering or leaving authors section
 		if strings.HasPrefix(trimmedLine, "authors:") {
 			inAuthorsSection = true
@@ -116,19 +116,19 @@ func postProcessModelYAML(yamlContent string) string {
 				inAuthorsSection = false
 			}
 		}
-		
+
 		// Skip unwanted lines in authors section
 		if inAuthorsSection {
 			// Skip empty maps and null timestamps in the authors section
 			if strings.Contains(trimmedLine, "models: {}") ||
-			   strings.Contains(trimmedLine, "created_at: null") ||
-			   strings.Contains(trimmedLine, "updated_at: null") ||
-			   strings.Contains(trimmedLine, "created_at: 0001-01-01T00:00:00Z") ||
-			   strings.Contains(trimmedLine, "updated_at: 0001-01-01T00:00:00Z") {
+				strings.Contains(trimmedLine, "created_at: null") ||
+				strings.Contains(trimmedLine, "updated_at: null") ||
+				strings.Contains(trimmedLine, "created_at: 0001-01-01T00:00:00Z") ||
+				strings.Contains(trimmedLine, "updated_at: 0001-01-01T00:00:00Z") {
 				continue // Skip this line
 			}
 		}
-		
+
 		// Check if this line is a major section header
 		if majorSections[trimmedLine] && i > 0 {
 			// Add blank line before major sections if the previous line isn't already blank

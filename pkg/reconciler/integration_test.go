@@ -329,8 +329,8 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 			wantPrice: 20.0,                     // ModelsDevGit has higher priority for pricing
 		},
 		{
-			name: "Source Priority",
-			strategy: reconciler.NewSourcePriorityStrategy([]sources.Type{
+			name: "Source Priority Order",
+			strategy: reconciler.NewSourceOrderStrategy([]sources.Type{
 				sources.ModelsDevGit,
 				sources.ProviderAPI,
 			}),

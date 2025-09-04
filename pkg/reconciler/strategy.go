@@ -31,8 +31,8 @@ func (s StrategyType) Name() string {
 }
 
 const (
-	StrategyTypeAuthority      StrategyType = "authority"
-	StrategyTypeSourcePriority StrategyType = "source-priority"
+	StrategyTypeFieldAuthority StrategyType = "field-authority"
+	StrategyTypeSourceOrder    StrategyType = "source-order"
 )
 
 // Strategy defines how reconciliation should be performed
@@ -105,7 +105,7 @@ type AuthorityStrategy struct {
 func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 	return &AuthorityStrategy{
 		baseStrategy: baseStrategy{
-			typ:           StrategyTypeAuthority,
+			typ:           StrategyTypeFieldAuthority,
 			description:   "Resolves conflicts using field authority priorities",
 			applyStrategy: differ.ApplyAdditive,
 			mergeResources: map[sources.ResourceType]bool{
@@ -121,11 +121,11 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 // ResolveConflict uses authorities to resolve conflicts
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
 	// Get all authorities for this resource type
-	allAuthorities := s.authorities.List(sources.ResourceTypeModel)
+	authorities := s.authorities.ModelFields()
 
 	// Find all authorities that match this field, sorted by priority
 	var matchingAuthorities []authority.Field
-	for _, auth := range allAuthorities {
+	for _, auth := range authorities {
 		if authority.MatchesPattern(field, auth.Path) {
 			matchingAuthorities = append(matchingAuthorities, auth)
 		}
@@ -140,12 +140,18 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Typ
 		}
 	}
 
+	// Filter authorities to only those with available sources
+	var availableAuthorities []authority.Field
+	for _, auth := range matchingAuthorities {
+		if _, exists := values[auth.Source]; exists {
+			availableAuthorities = append(availableAuthorities, auth)
+		}
+	}
+
 	// Try authorities in priority order
-	for _, authority := range matchingAuthorities {
-		if value, exists := values[authority.Source]; exists {
-			if value != nil && value != "" {
-				return value, authority.Source, fmt.Sprintf("selected by authority (priority: %d)", authority.Priority)
-			}
+	for _, authority := range availableAuthorities {
+		if value := values[authority.Source]; value != nil && value != "" {
+			return value, authority.Source, fmt.Sprintf("selected by authority (priority: %d)", authority.Priority)
 		}
 	}
 
@@ -164,18 +170,20 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Typ
 	return nil, "", "no value available"
 }
 
-// SourcePriorityStrategy uses a fixed source priority order
-type SourcePriorityStrategy struct {
+// SourceOrderStrategy resolves conflicts using a fixed source precedence order.
+// Sources earlier in the priority slice have higher precedence than sources later in the slice.
+type SourceOrderStrategy struct {
 	baseStrategy
-	sourcePriority []sources.Type
+	sourcePriorityOrder []sources.Type // First element = highest priority
 }
 
-// NewSourcePriorityStrategy creates a new source priority strategy
-func NewSourcePriorityStrategy(priority []sources.Type) Strategy {
-	return &SourcePriorityStrategy{
+// NewSourceOrderStrategy creates a new source priority order strategy.
+// The priorityOrder slice determines precedence: earlier elements have higher priority.
+func NewSourceOrderStrategy(priorityOrder []sources.Type) Strategy {
+	return &SourceOrderStrategy{
 		baseStrategy: baseStrategy{
-			typ:           StrategyTypeSourcePriority,
-			description:   fmt.Sprintf("Resolves conflicts using source priority: %v", priority),
+			typ:           StrategyTypeSourceOrder,
+			description:   fmt.Sprintf("Resolves conflicts using source priority order: %v", priorityOrder),
 			applyStrategy: differ.ApplyAdditive,
 			mergeResources: map[sources.ResourceType]bool{
 				sources.ResourceTypeModel:    true,
@@ -183,22 +191,31 @@ func NewSourcePriorityStrategy(priority []sources.Type) Strategy {
 				sources.ResourceTypeAuthor:   true,
 			},
 		},
-		sourcePriority: priority,
+		sourcePriorityOrder: priorityOrder,
 	}
 }
 
-// ResolveConflict uses source priority to resolve conflicts
-func (s *SourcePriorityStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
+// ResolveConflict uses source priority order to resolve conflicts
+func (s *SourceOrderStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
 	// Check sources in priority order
-	for _, source := range s.sourcePriority {
+	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {
-			return value, source, fmt.Sprintf("selected by source priority (%s)", source)
+			if value != nil && value != "" {
+				return value, source, fmt.Sprintf("selected by source priority order (%s)", source)
+			}
 		}
 	}
 
-	// No priority source found, use first available
+	// No priority source found, use first available non-empty value
 	for source, value := range values {
-		return value, source, "no priority source available, using first"
+		if value != nil && value != "" {
+			return value, source, "no priority source available, using first non-empty"
+		}
+	}
+
+	// Return any value as last resort
+	for source, value := range values {
+		return value, source, "using first available value"
 	}
 
 	return nil, "", "no value available"

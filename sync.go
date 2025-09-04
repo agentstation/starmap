@@ -94,7 +94,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 
 	// Step 12: Apply changes if not dry run
 	shouldSave := result.Changeset != nil && result.Changeset.HasChanges()
-	
+
 	// Force save if reformat or fresh flag is set (even without changes)
 	if options.Reformat || options.Fresh {
 		shouldSave = true
@@ -105,7 +105,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 				Msg("Forcing save due to reformat/force flag")
 		}
 	}
-	
+
 	if !options.DryRun && shouldSave {
 		// Create empty changeset if nil but we're forcing save
 		changeset := result.Changeset

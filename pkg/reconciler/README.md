@@ -166,8 +166,8 @@ if !options.DryRun {
 - [type ResultStatistics](<#ResultStatistics>)
 - [type SourceName](<#SourceName>)
   - [func \(sn SourceName\) String\(\) string](<#SourceName.String>)
-- [type SourcePriorityStrategy](<#SourcePriorityStrategy>)
-  - [func \(s \*SourcePriorityStrategy\) ResolveConflict\(field string, values map\[SourceName\]interface\{\}\) \(interface\{\}, SourceName, string\)](<#SourcePriorityStrategy.ResolveConflict>)
+- [type SourcePriorityOrderStrategy](<#SourcePriorityOrderStrategy>)
+  - [func \(s \*SourcePriorityOrderStrategy\) ResolveConflict\(field string, values map\[SourceName\]interface\{\}\) \(interface\{\}, SourceName, string\)](<#SourcePriorityOrderStrategy.ResolveConflict>)
 - [type StrategicMerger](<#StrategicMerger>)
   - [func NewStrategicMerger\(authorities AuthorityProvider, strategy Strategy\) \*StrategicMerger](<#NewStrategicMerger>)
   - [func \(sm \*StrategicMerger\) MergeField\(fieldPath string, values map\[SourceName\]interface\{\}\) \(interface\{\}, SourceName\)](<#StrategicMerger.MergeField>)
@@ -177,7 +177,7 @@ if !options.DryRun {
 - [type Strategy](<#Strategy>)
   - [func NewAuthorityBasedStrategy\(authorities AuthorityProvider\) Strategy](<#NewAuthorityBasedStrategy>)
   - [func NewCustomStrategy\(name, description string, resolver ConflictResolver\) Strategy](<#NewCustomStrategy>)
-  - [func NewSourcePriorityStrategy\(priority \[\]SourceName\) Strategy](<#NewSourcePriorityStrategy>)
+  - [func NewSourcePriorityOrderStrategy\(priorityOrder \[\]SourceName\) Strategy](<#NewSourcePriorityOrderStrategy>)
   - [func NewStrategyChain\(strategies ...Strategy\) Strategy](<#NewStrategyChain>)
   - [func NewUnionStrategy\(\) Strategy](<#NewUnionStrategy>)
 - [type StrategyChain](<#StrategyChain>)
@@ -1652,25 +1652,26 @@ func (sn SourceName) String() string
 
 String returns the string representation of a source name
 
-<a name="SourcePriorityStrategy"></a>
-## type [SourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L219-L222>)
+<a name="SourcePriorityOrderStrategy"></a>
+## type [SourcePriorityOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L219-L222>)
 
-SourcePriorityStrategy uses a fixed source priority order
+SourcePriorityOrderStrategy resolves conflicts using a fixed source precedence order.
+Sources earlier in the priority slice have higher precedence than sources later in the slice.
 
 ```go
-type SourcePriorityStrategy struct {
+type SourcePriorityOrderStrategy struct {
     // contains filtered or unexported fields
 }
 ```
 
-<a name="SourcePriorityStrategy.ResolveConflict"></a>
-### func \(\*SourcePriorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L242>)
+<a name="SourcePriorityOrderStrategy.ResolveConflict"></a>
+### func \(\*SourcePriorityOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L242>)
 
 ```go
-func (s *SourcePriorityStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
+func (s *SourcePriorityOrderStrategy) ResolveConflict(field string, values map[SourceName]interface{}) (interface{}, SourceName, string)
 ```
 
-ResolveConflict uses source priority to resolve conflicts
+ResolveConflict uses source priority order to resolve conflicts
 
 <a name="StrategicMerger"></a>
 ## type [StrategicMerger](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/merger.go#L32-L36>)
@@ -1773,14 +1774,15 @@ func NewCustomStrategy(name, description string, resolver ConflictResolver) Stra
 
 NewCustomStrategy creates a new custom strategy
 
-<a name="NewSourcePriorityStrategy"></a>
-### func [NewSourcePriorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L225>)
+<a name="NewSourcePriorityOrderStrategy"></a>
+### func [NewSourcePriorityOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L225>)
 
 ```go
-func NewSourcePriorityStrategy(priority []SourceName) Strategy
+func NewSourcePriorityOrderStrategy(priorityOrder []SourceName) Strategy
 ```
 
-NewSourcePriorityStrategy creates a new source priority strategy
+NewSourcePriorityOrderStrategy creates a new source priority order strategy.
+The priorityOrder slice determines precedence: earlier elements have higher priority.
 
 <a name="NewStrategyChain"></a>
 ### func [NewStrategyChain](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L302>)

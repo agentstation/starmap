@@ -82,12 +82,12 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Author, models []*catalogs.Model, catalog catalogs.Reader) error {
 
 	markdown := NewMarkdown(f)
-	
+
 	// Add Hugo front matter with menu entry for _index.md
 	if strings.HasSuffix(f.Name(), "_index.md") {
 		markdown.HugoFrontMatter("Authors", 50, WithMenu("after", 50))
 	}
-	
+
 	markdown.H1("👥 Model Authors").LF()
 	markdown.PlainText("Organizations and researchers that develop and train AI models.").LF().LF()
 
