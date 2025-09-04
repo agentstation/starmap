@@ -70,25 +70,51 @@ cd site && hugo --minify --gc
 
 ## Deployment
 
-The site is automatically deployed to GitHub Pages via GitHub Actions when:
-- Changes are pushed to the master branch
+The site is automatically deployed to GitHub Pages via GitHub Actions.
+
+### GitHub Pages Setup
+
+**Initial Setup (One-time)**:
+1. Go to repository **Settings** → **Pages**
+2. Set **Source** to **GitHub Actions**
+3. Push to master branch to trigger deployment
+4. Site will be available at: https://agentstation.github.io/starmap/
+
+### Custom Domain (Optional)
+
+To use `starmap.agentstation.ai`:
+1. Configure DNS with A records or CNAME
+2. Enable custom domain in GitHub Pages settings
+3. Update `hugo.yaml` baseURL to your domain
+
+### Automatic Deployment
+
+The site deploys automatically when:
+- Changes are pushed to the `master` branch
 - Version tags are created (v1.0.0, v2.0.0, etc.)
+- Manual trigger from Actions tab
 
-### Manual Deployment
+### PR Preview Deployments
 
-1. Push changes to master branch
-2. GitHub Actions workflow runs automatically
-3. Site deploys to: https://[username].github.io/starmap/
+Pull requests get automatic preview deployments to Surge.sh:
+- Preview URL: `https://starmap-pr-{number}.surge.sh`
+- Link posted as comment on PR
+- Updates automatically with new commits
 
-### Tagged Release Deployment
+### Local Testing
 
-1. Create a version tag: `git tag -a v1.0.0 -m "Release v1.0.0"`
-2. Push the tag: `git push origin v1.0.0`
-3. GitHub Actions deploys the versioned documentation
+```bash
+# Test with GitHub Pages URL
+make site-test-pages
 
-### Preview Deployments
+# Test with custom domain
+make site-test-custom
 
-Pull requests automatically generate preview builds that can be downloaded as artifacts from the GitHub Actions run.
+# Check deployment readiness
+make deploy-check
+```
+
+For detailed deployment instructions, see [docs/DEPLOYMENT.md](../docs/DEPLOYMENT.md)
 
 ## Configuration
 

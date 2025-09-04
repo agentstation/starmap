@@ -332,4 +332,29 @@ site-setup: ## Set up Hugo site structure
 	@mkdir -p site/static/{css,js,img}
 	@mkdir -p site/layouts/{_default,partials,shortcodes}
 	@if [ ! -L site/content ]; then cd site && ln -sf ../docs content; fi
+
+site-test-pages: ## Test site with GitHub Pages URL locally
+	@echo "$(BLUE)Testing site with GitHub Pages URL...$(NC)"
+	@cd site && $(RUN_PREFIX) hugo serve --baseURL "https://agentstation.github.io/starmap/" --buildDrafts
+	@echo "$(GREEN)Preview available at http://localhost:1313$(NC)"
+
+site-test-custom: ## Test site with custom domain locally
+	@echo "$(BLUE)Testing site with custom domain...$(NC)"
+	@cd site && $(RUN_PREFIX) hugo serve --baseURL "https://starmap.agentstation.ai/" --buildDrafts
+	@echo "$(GREEN)Preview available at http://localhost:1313$(NC)"
+
+deploy-check: ## Check if site is ready for deployment
+	@echo "$(BLUE)Checking deployment readiness...$(NC)"
+	@test -L site/content || (echo "$(RED)Error: content symlink missing$(NC)" && exit 1)
+	@test -d site/themes/hugo-book || (echo "$(RED)Error: theme missing. Run 'make site-theme'$(NC)" && exit 1)
+	@test -f site/hugo.yaml || (echo "$(RED)Error: hugo.yaml missing$(NC)" && exit 1)
+	@echo "$(GREEN)✓ Content symlink exists$(NC)"
+	@echo "$(GREEN)✓ Theme installed$(NC)"
+	@echo "$(GREEN)✓ Hugo config present$(NC)"
+	@echo "$(GREEN)Site is ready for deployment!$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Next steps:$(NC)"
+	@echo "  1. Enable GitHub Pages: Settings → Pages → Source: GitHub Actions"
+	@echo "  2. Push to master branch to trigger deployment"
+	@echo "  3. Optional: Configure custom domain in Settings → Pages"
 	@echo "$(GREEN)Site structure created$(NC)"

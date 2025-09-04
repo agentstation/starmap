@@ -1,5 +1,6 @@
 # Hugo Configuration for Starmap Documentation
-baseURL: "https://starmap.agentstation.ai/"
+# For custom domain, change to: https://starmap.agentstation.ai/
+baseURL: "https://agentstation.github.io/starmap/"
 title: "Starmap - AI Model Catalog"
 languageCode: "en-us"
 defaultContentLanguage: "en"

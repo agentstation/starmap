@@ -17,6 +17,7 @@ Welcome to Starmap, a unified AI model catalog system providing accurate, up-to-
 ### 🚀 Getting Started
 - [**Provider Implementation Guide**](provider_implementation_guide/) - Add new provider support
 - [**Release Process**](release_process/) - How to create and publish releases
+- [**Deployment Guide**](deployment/) - Deploy documentation to GitHub Pages
 
 ## What is Starmap?
 
