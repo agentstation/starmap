@@ -39,7 +39,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run sync fix release release-snapshot release-tag release-local testdata demo godoc
+.PHONY: help build install clean test lint fmt vet deps tidy run update fix release release-snapshot release-tag release-local testdata demo godoc
 
 # Default target
 all: clean fix lint test build
@@ -112,14 +112,14 @@ run-help: ## Show application help
 	@echo "$(BLUE)Showing $(BINARY_NAME) help...$(NC)"
 	$(GOCMD) run $(MAIN_PATH) --help
 
-# Sync examples:
-#   make sync                                    # Sync all providers (dry-run)
-#   make sync PROVIDER=openai                    # Sync specific provider (dry-run)
-#   make sync OUTPUT=./custom-dir                # Sync to custom directory (dry-run)
-#   make sync PROVIDER=groq OUTPUT=./models      # Sync specific provider to custom dir (dry-run)
-sync: ## Run sync command with dry-run (use PROVIDER=name OUTPUT=dir for options)
-	@echo "$(BLUE)Running sync command (dry-run)...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) sync --dry-run $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(OUTPUT),--output $(OUTPUT),)
+# Update examples:
+#   make update                                   # Update all providers (dry-run)
+#   make update PROVIDER=openai                  # Update specific provider (dry-run)
+#   make update OUTPUT=./custom-dir              # Update to custom directory (dry-run)
+#   make update PROVIDER=groq OUTPUT=./models    # Update specific provider to custom dir (dry-run)
+update: ## Run update command with dry-run (use PROVIDER=name OUTPUT=dir for options)
+	@echo "$(BLUE)Running update command (dry-run)...$(NC)"
+	$(GOCMD) run $(MAIN_PATH) update --dry-run $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(OUTPUT),--output $(OUTPUT),)
 
 list-models: ## List all models in catalog
 	@echo "$(BLUE)Listing all models...$(NC)"
@@ -127,11 +127,11 @@ list-models: ## List all models in catalog
 
 list-providers: ## List all providers
 	@echo "$(BLUE)Listing all providers...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) providers
+	$(GOCMD) run $(MAIN_PATH) list providers
 
 list-authors: ## List all authors
 	@echo "$(BLUE)Listing all authors...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) authors
+	$(GOCMD) run $(MAIN_PATH) list authors
 
 fix: ## Fix code formatting, imports, and dependencies
 	@echo "$(BLUE)Fixing code...$(NC)"
@@ -232,13 +232,13 @@ validate: ## Validate provider configurations
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"
 	@echo "$(YELLOW)Testing OpenAI...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
 	@echo "$(YELLOW)Testing Anthropic...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
 	@echo "$(YELLOW)Testing Groq...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
 	@echo "$(YELLOW)Testing Google AI Studio...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch --provider google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models --provider google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
 
 # Testdata management targets
 # Examples:

@@ -3,18 +3,18 @@
 A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.
   
   
-*_Last Updated: September 2, 2025_*
+*_Last Updated: September 3, 2025_*
   
   
 ## 📊 Catalog Statistics
   
 | Metric | Value |
 |---------|---------|
-| **Total Models** | 954 |
-| **Providers** | 43 |
+| **Total Models** | 180 |
+| **Providers** | 7 |
 | **Model Authors** | 80 |
-| **Models with Pricing** | 576 (60.4%) |
-| **Average Context** | 289k tokens |
+| **Models with Pricing** | 80 (44.4%) |
+| **Average Context** | 306k tokens |
 
   
 ## 🚀 Quick Navigation
@@ -23,65 +23,29 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Provider | Models | Latest Addition |
 |---------|---------|---------|
-| 🏢 [Google Vertex AI](providers/google-vertex/) | 278 | Xlm Roberta Large |
 | 🤖 [OpenAI](providers/openai/) | 73 | whisper-1 |
-| 🏢 [cloudflare-workers-ai](providers/cloudflare-workers-ai/) | 66 | @hf/thebloke/zephyr-7b-beta-awq |
-| 🏢 [openrouter](providers/openrouter/) | 58 | GLM 4.5V |
-| 🏢 [vercel](providers/vercel/) | 58 | Grok 4 |
-| 🏢 [github-models](providers/github-models/) | 55 | Grok 3 Mini |
 | 🔮 [Google AI Studio](providers/google-ai-studio/) | 50 | Text Embedding 004 |
-| 🏢 [azure](providers/azure/) | 25 | o4-mini |
-| ⚡ [Groq](providers/groq/) | 25 | @cf/openai/whisper-large-v3-turbo |
-| 🏢 [synthetic](providers/synthetic/) | 20 | GLM 4.5 |
-| 🏢 [mistral](providers/mistral/) | 19 | Pixtral Large |
-| 🏢 [chutes](providers/chutes/) | 19 | GLM 4.5 FP8 |
-| 🏢 [xai](providers/xai/) | 17 | Grok Vision Beta |
-| 🏢 [github-copilot](providers/github-copilot/) | 15 | o4-mini (Preview) |
-| 🏢 [fastrouter](providers/fastrouter/) | 14 | Grok 4 |
-| 🏢 [venice](providers/venice/) | 13 | Venice Uncensored 1.1 |
-| 🏢 [requesty](providers/requesty/) | 13 | o4 Mini |
-| 🏢 [google](providers/google/) | 12 | Gemini 2.5 Pro Preview 06-05 |
-| 🏢 [wandb](providers/wandb/) | 10 | Kimi-K2-Instruct |
+| ⚡ [Groq](providers/groq/) | 27 | whisper-large-v3-turbo |
 | 🧠 [Anthropic](providers/anthropic/) | 10 | Claude Sonnet 4 |
-| 🏢 [inference](providers/inference/) | 9 | Qwen 3 Embedding 4B |
-| 🚀 [Cerebras](providers/cerebras/) | 9 | Qwen 3 Coder 480B |
-| 🏢 [submodel](providers/submodel/) | 9 | GLM 4.5 FP8 |
-| 🏢 [modelscope](providers/modelscope/) | 8 | Kimi-K2-Instruct |
-| 🏢 [llama](providers/llama/) | 7 | Llama-4-Scout-17B-16E-Instruct-FP8 |
-| 🏢 [huggingface](providers/huggingface/) | 7 | GLM-4.5-Air |
-| 🏢 [fireworks-ai](providers/fireworks-ai/) | 6 | Qwen3 235B-A22B |
-| 🏢 [togetherai](providers/togetherai/) | 6 | GPT OSS 120B |
-| 🏢 [google-vertex-anthropic](providers/google-vertex-anthropic/) | 6 | Claude Sonnet 4 |
-| 🏢 [zhipuai](providers/zhipuai/) | 4 | GLM 4.5V |
-| 🏢 [zai](providers/zai/) | 4 | GLM 4.5V |
-| 🏢 [amazon-bedrock](providers/amazon-bedrock/) | 4 | Command |
-| 🏢 [deepinfra](providers/deepinfra/) | 4 | GLM-4.5 |
-| 🏢 [v0](providers/v0/) | 3 | v0-1.5-md |
-| 🏢 [morph](providers/morph/) | 3 | Morph v3 Large |
-| 🏢 [lmstudio](providers/lmstudio/) | 3 | Qwen3 Coder 30B |
-| 🏢 [upstage](providers/upstage/) | 2 | solar-pro2 |
-| 🏢 [inception](providers/inception/) | 2 | Mercury Coder |
-| 🔍 [DeepSeek](providers/deepseek/) | 2 | DeepSeek Reasoner |
-| 🏢 [moonshotai-cn](providers/moonshotai-cn/) | 2 | Kimi K2 Turbo |
-| 🏢 [moonshotai](providers/moonshotai/) | 2 | Kimi K2 Turbo |
-| 🏢 [opencode](providers/opencode/) | 1 | Grok Code Fast 1 |
-| 🏢 [alibaba](providers/alibaba/) | 1 | Qwen3 Coder Plus |
+| 🚀 [Cerebras](providers/cerebras/) | 9 | qwen-3-coder-480b |
+| 🏢 [Google Vertex AI](providers/google-vertex/) | 9 | Gemini 2.5 Pro Preview 06-05 |
+| 🔍 [DeepSeek](providers/deepseek/) | 2 | deepseek-reasoner |
 
   
 ### Browse by Model Author
   
 | Author | Models | Description |
 |---------|---------|---------|
-| 🔍 [Google](authors/google/) | 161 | Technology company known for the Gemini line of multimoda... |
-| 🤖 [OpenAI](authors/openai/) | 74 | AI research company known for GPT models, ChatGPT, and DA... |
-| 📘 [Meta](authors/meta/) | 29 | Social media company known for LLaMA/Llama model series a... |
-| 🧠 [Anthropic](authors/anthropic/) | 14 | AI safety company known for Claude models and Constitutio... |
-| 🔬 [DeepSeek](authors/deepseek/) | 7 | Chinese AI company known for DeepSeek-Coder and reasoning... |
-| 👥 [Qwen Team](authors/qwen/) | 7 | AI research team within Alibaba Cloud responsible for dev... |
-| 👥 [Mistral AI](authors/mistral/) | 5 | French AI company known for efficient open-source languag... |
-| 👥 [AI21 Labs](authors/ai21/) | 1 | Israeli AI company known for Jamba hybrid SSM-Transformer... |
+| 🤖 [OpenAI](authors/openai/) | 69 | AI research company known for GPT models, ChatGPT, and DA... |
+| 🔍 [Google](authors/google/) | 51 | Technology company known for the Gemini line of multimoda... |
+| 🧠 [Anthropic](authors/anthropic/) | 8 | AI safety company known for Claude models and Constitutio... |
+| 📘 [Meta](authors/meta/) | 7 | Social media company known for LLaMA/Llama model series a... |
+| 🔬 [DeepSeek](authors/deepseek/) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning... |
 | 👥 [LAION](authors/laion/) | 0 | AI research organization |
-| 👥 [Alignment Research Center](authors/alignment-research/) | 0 | AI safety research organization focused on AI alignment a... |
+| 👥 [Midjourney](authors/midjourney/) | 0 | AI research organization |
+| 👥 [Anysphere](authors/anysphere/) | 0 | AI research organization |
+| 👥 [Apple](authors/apple/) | 0 | AI research organization |
+| 👥 [Beijing Academy of Artificial Intelligence](authors/baai/) | 0 | Chinese AI research institute known for Wu Dao multimodal... |
 
   
 [View all 80 authors →](authors/)
@@ -94,15 +58,15 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | **[GPT-4](models/gpt-4.md)** | OpenAI | 8.2k | $30.00/$60.00 |
-| **[GPT-4](models/gpt-4.md)** | OpenAI | 8.2k | $60.00/$120.00 |
-| **[GPT-4 32K](models/gpt-4-32k.md)** | azure | 32.8k | $60.00/$120.00 |
-| **[GPT-4 Turbo](models/openai-gpt-4-turbo.md)** | vercel | 128k | $10.00/$30.00 |
 | **[GPT-4 Turbo](models/gpt-4-turbo.md)** | OpenAI | 128k | $10.00/$30.00 |
-| **[GPT-4 Turbo](models/gpt-4-turbo.md)** | OpenAI | 128k | $10.00/$30.00 |
-| **[GPT-4 Turbo Vision](models/gpt-4-turbo-vision.md)** | azure | 128k | $10.00/$30.00 |
-| **[GPT-4.1](models/openai-gpt-4.1.md)** | vercel | 1.0M | $2.00/$8.00 |
-| **[GPT-4.1](models/openai-gpt-4.1.md)** | vercel | 1.0M | $2.00/$8.00 |
-| **[GPT-4.1](models/gpt-4.1.md)** | OpenAI | 1.0M | $2.00/$8.00 |
+| **[Claude Haiku 3](models/claude-3-haiku-20240307.md)** | Anthropic | 200k | $0.25/$1.25 |
+| **[Claude Haiku 3.5](models/claude-3-5-haiku-20241022.md)** | Anthropic | 200k | $0.80/$4.00 |
+| **[Claude Opus 3](models/claude-3-opus-20240229.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Opus 4](models/claude-opus-4-20250514.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Opus 4.1](models/claude-opus-4-1-20250805.md)** | Anthropic | 200k | $15.00/$75.00 |
+| **[Claude Sonnet 3](models/claude-3-sonnet-20240229.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 3.5 (New)](models/claude-3-5-sonnet-20241022.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude Sonnet 3.5 (Old)](models/claude-3-5-sonnet-20240620.md)** | Anthropic | 200k | $3.00/$15.00 |
 
   
 ## 📚 Browse Options

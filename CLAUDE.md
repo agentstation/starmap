@@ -7,8 +7,8 @@ Starmap is a unified AI model catalog system that combines data from provider AP
 ```bash
 # Development
 make all                              # Clean, format, lint, test, build
-starmap update                        # Update local catalog (~/.starmap/)
-starmap sync -p openai                # Sync specific provider
+starmap update                        # Update local catalog
+starmap update --provider openai      # Update specific provider
 
 # Testing
 go test ./pkg/reconcile/...           # Test specific package
@@ -56,14 +56,15 @@ vim internal/sources/providers/providers.go  # Add case
 starmap testdata --provider <provider> --update
 ```
 
-### Sync vs Update
-- `starmap sync`: Full reconciliation from all sources
-- `starmap update`: Quick update of local catalog
+### Key Commands
+- `starmap list models`: View models in local catalog
+- `starmap fetch models --provider openai`: Get models from API
+- `starmap update`: Sync catalog from all sources
 
 ### Modify Embedded Data
 ```bash
 # Edit without rebuild
-starmap sync --input ./internal/embedded/catalog --dry-run
+starmap update --input ./internal/embedded/catalog --dry-run
 ```
 
 ## Code Patterns
@@ -115,8 +116,11 @@ GOOGLE_VERTEX_LOCATION=us-central1
 
 ## Key Files
 
-- `sync.go` - Main sync command
+- `sync.go` - Core sync/update logic
 - `starmap.go` - Core interface
+- `cmd/starmap/cmd/update.go` - Update command implementation
+- `cmd/starmap/cmd/fetch.go` - Fetch command implementation
+- `cmd/starmap/cmd/list.go` - List command implementation
 - `internal/sources/providers/providers.go` - Provider registry
 - `internal/embedded/catalog/providers.yaml` - Provider definitions
 

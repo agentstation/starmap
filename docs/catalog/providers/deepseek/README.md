@@ -65,8 +65,8 @@ Beijing, China
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [DeepSeek Chat](./models/deepseek-chat.md) | 128k | $0.57 | $1.68 | 📝 ⚡ |
-| [DeepSeek Reasoner](./models/deepseek-reasoner.md) | 128k | $0.57 | $1.68 | 📝 ⚡ |
+| [deepseek-chat](./models/deepseek-chat.md) | 128k | $0.57 | $1.68 | 📝 ⚡ |
+| [deepseek-reasoner](./models/deepseek-reasoner.md) | 128k | $0.57 | $1.68 | 📝 ⚡ |
 
   
 ## Configuration

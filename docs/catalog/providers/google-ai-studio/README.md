@@ -65,8 +65,6 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | 1.0k | N/A | N/A | 📝 ⚡ |
-| [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
-| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 
   
@@ -84,30 +82,32 @@ Mountain View, CA, USA
 | [Gemini 1.5 Pro 002](./models/gemini-1.5-pro-002.md) | 2.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 1.5 Pro Latest](./models/gemini-1.5-pro-latest.md) | 2.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash](./models/gemini-2.0-flash.md) | 1.0M | $0.10 | $0.40 | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.0 Flash](./models/gemini-2.0-flash-001.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash (Image Generation) Experimental](./models/gemini-2.0-flash-exp-image-generation.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.0 Flash 001](./models/gemini-2.0-flash-001.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash Experimental](./models/gemini-2.0-flash-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.0 Flash Lite](./models/gemini-2.0-flash-lite.md) | 1.0M | $0.07 | $0.30 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash Preview Image Generation](./models/gemini-2.0-flash-preview-image-generation.md) | 32.8k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.0 Flash-Lite](./models/gemini-2.0-flash-lite.md) | 1.0M | $0.07 | $0.30 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash-Lite 001](./models/gemini-2.0-flash-lite-001.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash-Lite Preview](./models/gemini-2.0-flash-lite-preview.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Flash-Lite Preview 02-05](./models/gemini-2.0-flash-lite-preview-02-05.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Pro Experimental](./models/gemini-2.0-pro-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Pro Experimental 02-05](./models/gemini-2.0-pro-exp-02-05.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash](./models/gemini-2.5-flash.md) | 1.0M | $0.30 | $2.50 | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | 65.5k | $0.10 | $0.40 | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | 1.0M | $0.15 | $0.60 | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-1219.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-01-21.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | 1.0M | $0.15 | $0.60 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview TTS](./models/gemini-2.5-flash-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash-Lite](./models/gemini-2.5-flash-lite.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | 1.0M | $1.25 | $10.00 | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash-Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | 65.5k | $0.10 | $0.40 | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Pro](./models/gemini-2.5-pro.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Pro Preview](./models/gemini-2.5-pro-preview-06-05.md) | 1.0M | $1.25 | $10.00 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview 03-25](./models/gemini-2.5-pro-preview-03-25.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | 1.0M | $1.25 | $10.00 | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Pro Preview 06-05](./models/gemini-2.5-pro-preview-06-05.md) | 1.0M | $1.25 | $10.00 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | 1.0M | N/A | N/A | 📝 🔧 ⚡ |
 
   
@@ -115,7 +115,7 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [@cf/google/gemma-3-12b-it](./models/gemma-3-12b-it.md) | 80k | $0.35 | $0.56 | 📝 ⚡ |
+| [Gemma 3 12B](./models/gemma-3-12b-it.md) | 80k | $0.35 | $0.56 | 📝 ⚡ |
 | [Gemma 3 1B](./models/gemma-3-1b-it.md) | 32.8k | N/A | N/A | 📝 ⚡ |
 | [Gemma 3 27B](./models/gemma-3-27b-it.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [Gemma 3 4B](./models/gemma-3-4b-it.md) | 32.8k | N/A | N/A | 📝 ⚡ |

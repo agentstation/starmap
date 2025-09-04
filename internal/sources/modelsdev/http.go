@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/utc"
 )
 
 const (
@@ -149,11 +150,34 @@ func (s *HTTPSource) Cleanup() error {
 	return nil
 }
 
-// convertToStarmapModel converts a models.dev model to starmap model with pricing/limits
+// convertToStarmapModel converts a models.dev model to starmap model with pricing/limits/metadata
 func (s *HTTPSource) convertToStarmapModel(mdModel ModelsDevModel) catalogs.Model {
 	model := catalogs.Model{
 		ID:   mdModel.ID,
 		Name: mdModel.Name,
+	}
+
+	// Add metadata if available
+	if mdModel.ReleaseDate != "" || (mdModel.Knowledge != nil && *mdModel.Knowledge != "") {
+		model.Metadata = &catalogs.ModelMetadata{}
+		
+		// Parse release date
+		if mdModel.ReleaseDate != "" {
+			if releaseDate, err := parseDate(mdModel.ReleaseDate); err == nil {
+				model.Metadata.ReleaseDate = utc.Time{Time: *releaseDate}
+			}
+		}
+		
+		// Parse knowledge cutoff
+		if mdModel.Knowledge != nil && *mdModel.Knowledge != "" {
+			if knowledgeDate, err := parseDate(*mdModel.Knowledge); err == nil {
+				knowledgeCutoff := utc.Time{Time: *knowledgeDate}
+				model.Metadata.KnowledgeCutoff = &knowledgeCutoff
+			}
+		}
+		
+		// Set open weights flag
+		model.Metadata.OpenWeights = mdModel.OpenWeights
 	}
 
 	// Add pricing if available

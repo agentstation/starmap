@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"github.com/agentstation/starmap/pkg/authority"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/enhancer"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -11,6 +12,7 @@ type options struct {
 	authorities authority.Authority
 	enhancers   []enhancer.Enhancer
 	tracking    bool
+	baseline    catalogs.Catalog // Existing catalog for comparison
 }
 
 func defaultOptions() *options {
@@ -81,6 +83,14 @@ func WithProvenance(enabled bool) Option {
 func WithEnhancers(enhancers ...enhancer.Enhancer) Option {
 	return func(r *options) error {
 		r.enhancers = enhancers
+		return nil
+	}
+}
+
+// WithBaseline sets an existing catalog to compare against for change detection
+func WithBaseline(catalog catalogs.Catalog) Option {
+	return func(r *options) error {
+		r.baseline = catalog
 		return nil
 	}
 }

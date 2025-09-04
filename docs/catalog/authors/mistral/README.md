@@ -12,35 +12,12 @@ French AI company known for efficient open-source language models and Mixture of
 | **Author ID** | `mistral` |
 | **Type** | 🚀 AI Startups |
 | **Website** | [https://mistral.ai](https://mistral.ai) |
-| **Total Models** | 5 |
-| **Available On** | 1 provider |
+| **Total Models** | 0 |
 
   
 ## Models
   
-### Mistral
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Mistral Large 2411](./models/mistral-large-2411-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Mistral Ocr 2505](./models/mistral-ocr-2505-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Mistral Small 2503](./models/mistral-small-2503-at-001.md) | google-vertex | 128k | Text, Functions |
-
-  
-### Other
-  
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Codestral 2501](./models/codestral-2501-at-001.md) | google-vertex | 128k | Text, Functions |
-| [Codestral 2501 Self Deploy](./models/codestral-2501-self-deploy-at-001.md) | google-vertex | 128k | Text, Functions |
-
-  
-## Provider Availability
-  
-Models from this author are available through the following providers:
-  
-  
-- **[google-vertex](../../providers/google-vertex/)** - 5 models
+*No models found from this author.*
   
 ## Research & Development
   

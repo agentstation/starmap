@@ -1,355 +1,189 @@
 | Model | Input (per 1M) | Output (per 1M) | Cache Read | Cache Write |
 |---------|---------|---------|---------|---------|
-| **GLM-4.5-Flash** | — | — | — | — |
-| **GLM-4.5-Flash** | — | — | — | — |
-| **Llama-4-Maverick-17B-128E-Instruct-FP8** | — | — | — | — |
-| **Llama-4-Scout-17B-16E-Instruct-FP8** | — | — | — | — |
-| **Llama-3.3-70B-Instruct** | — | — | — | — |
-| **Llama 3.2 11B Vision Instruct** | — | — | — | — |
-| **Gemma 3 12B IT** | — | — | — | — |
-| **Qwerky 72B** | — | — | — | — |
-| **Dolphin3.0 R1 Mistral 24B** | — | — | — | — |
-| **DeepSeek V3 0324** | — | — | — | — |
-| **DeepSeek R1 Distill Llama 70B** | — | — | — | — |
-| **Reka Flash 3** | — | — | — | — |
-| **Qwen2.5 VL 72B Instruct** | — | — | — | — |
 | Model | Context Window | Max Output | Modalities |
 |---------|---------|---------|---------|
-| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
-| **Tfvision Movinet Var** | 1.0M | 8k | Text, Image |
-| **Hear** | 1.0M | 8k | Text, Image |
-| **Bert Base Uncased** | 1.0M | 8k | Text, Image |
-| **F Vlm Jax** | 1.0M | 8k | Text, Image |
-| **Gemma2** | 1.0M | 8k | Text, Image |
-| **Gemini 2.0 Flash 001** | 1.0M | 8k | Text, Image |
-| **Imageclassification Proprietary Efficientnet** | 1.0M | 8k | Text, Image |
-| **Multimodalembedding** | 1.0M | 8k | Text |
-| **Code Bison** | 1.0M | 8k | Text, Image |
-| **Gemini Pro** | 1.0M | 8k | Text, Image |
-| **Language V1 Analyze Entity Sentiment** | 1.0M | 8k | Text, Image |
-| **Derm Foundation** | 1.0M | 8k | Text, Image |
-| **Label Detector Pali 001** | 1.0M | 8k | Text, Image |
+| **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
+| **Gemini 2.5 Flash Preview 04-17** | 1.0M | 65k | — |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | Text, Image |
+| **Gemini 2.0 Pro Experimental** | 1.0M | 65k | Text, Image |
+| **Gemini 2.5 Pro Preview 05-06** | 1.0M | 65k | — |
+| **Gemini 2.0 Flash** | 1.0M | 8k | — |
+| **Gemini 2.5 Pro Preview 06-05** | 1.0M | 65k | — |
+| **Gemini 2.5 Flash** | 1.0M | 65k | — |
+| **Gemini 2.5 Pro** | 1.0M | 65k | — |
+| **Gemini 2.0 Flash Lite** | 1.0M | 8k | — |
+| **Gemini 2.5 Flash Preview 05-20** | 1.0M | 65k | — |
+| **Gemini 2.0 Flash Experimental** | 1.0M | 8k | Text, Image |
+| **Gemini 2.5 Pro** | 1.0M | 65k | Text, Image |
+| **Gemini 2.0 Flash-Lite 001** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
 | Model | Modalities | Tools | Reasoning | Advanced Controls |
 |---------|---------|---------|---------|---------|
-| @cf/black-forest-labs/flux-1-schnell | — | — | — | — |
-| @cf/bytedance/stable-diffusion-xl-lightning | — | — | — | — |
-| @cf/deepseek-ai/deepseek-math-7b-instruct | — | — | — | — |
-| @cf/deepseek-ai/deepseek-r1-distill-qwen-32b | — | — | — | — |
-| @cf/defog/sqlcoder-7b-2 | — | — | — | — |
-| @cf/facebook/bart-large-cnn | 📝 | — | — | — |
-| @cf/facebook/bart-large-cnn | — | — | — | — |
-| @cf/fblgit/una-cybertron-7b-v2-bf16 | — | — | — | — |
-| @cf/google/gemma-2b-it-lora | — | — | — | — |
-| @cf/google/gemma-3-12b-it | 📝 ⚡ | — | — | 🌡️ Sampling |
-| @cf/google/gemma-3-12b-it | — | — | — | — |
-| @cf/google/gemma-7b-it-lora | — | — | — | — |
-| @cf/llava-hf/llava-1.5-7b-hf | — | — | — | — |
-| @cf/lykon/dreamshaper-8-lcm | — | — | — | — |
-| @cf/meta-llama/llama-2-7b-chat-hf-lora | — | — | — | — |
-| _...and 939 more_ |  |  |  |  |
+| Claude Haiku 3 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Claude Haiku 3.5 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Claude Opus 3 | — | — | — | — |
+| Claude Opus 4 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | 🧠 Basic | 🌡️ Sampling |
+| Claude Opus 4.1 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | 🧠 Basic | 🌡️ Sampling |
+| Claude Sonnet 3 | — | — | — | — |
+| Claude Sonnet 3.5 (New) | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Claude Sonnet 3.5 (Old) | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Claude Sonnet 3.7 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Claude Sonnet 4 | 📝 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
+| Codex Mini | — | — | — | — |
+| Embedding 001 | 📝 ⚡ | — | — | 🌡️ Sampling |
+| Embedding Gecko | 📝 ⚡ | — | — | 🌡️ Sampling |
+| GPT-4 | — | — | — | — |
+| GPT-4 Turbo | — | — | — | — |
+| _...and 165 more_ |  |  |  |  |
 
   # 🤖 All Models
   
-Complete listing of all 954 models in the Starmap catalog.
+Complete listing of all 180 models in the Starmap catalog.
   
   
 ## Quick Stats
   
 | Capability | Count | Percentage |
 |---------|---------|---------|
-| 📝 Text Generation | 425 | 44.5% |
-| 👁️ Vision | 165 | 17.3% |
-| 🎵 Audio | 2 | 0.2% |
-| 🔧 Function Calling | 240 | 25.2% |
+| 📝 Text Generation | 156 | 86.7% |
+| 👁️ Vision | 41 | 22.8% |
+| 🎵 Audio | 2 | 1.1% |
+| 🔧 Function Calling | 83 | 46.1% |
 
   
 ## Model Families
   
-### Other (344 models)
+### GPT (46 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| @cf/black-forest-labs/flux-1-schnell | Multiple | 2.0k | $0.00/$0.00 |
-| @cf/defog/sqlcoder-7b-2 | Multiple | 10k | N/A |
-| @cf/facebook/bart-large-cnn | Multiple | N/A | N/A |
-| @cf/facebook/bart-large-cnn | Multiple | N/A | N/A |
-| @cf/llava-hf/llava-1.5-7b-hf | Multiple | N/A | N/A |
-| @cf/lykon/dreamshaper-8-lcm | Multiple | N/A | N/A |
-| @cf/meta/m2m100-1.2b | Multiple | N/A | $0.34/$0.34 |
-| @cf/microsoft/resnet-50 | Multiple | N/A | N/A |
-| @cf/myshell-ai/melotts | Multiple | N/A | N/A |
-| @cf/openchat/openchat-3.5-0106 | Multiple | 8.2k | N/A |
-| _...and 334 more_ |  |  |  |
+| GPT-4 | Multiple | 8.2k | $30.00/$60.00 |
+| GPT-4 Turbo | Multiple | 128k | $10.00/$30.00 |
+| [gpt-3.5-turbo](../authors/openai/models/gpt-3.5-turbo.md) | Multiple | 16.4k | $0.50/$1.50 |
+| [gpt-3.5-turbo-0125](../authors/openai/models/gpt-3.5-turbo-0125.md) | Multiple | 16.4k | $0.50/$1.50 |
+| [gpt-3.5-turbo-1106](../authors/openai/models/gpt-3.5-turbo-1106.md) | Multiple | 16.4k | $1.00/$2.00 |
+| [gpt-3.5-turbo-16k](../authors/openai/models/gpt-3.5-turbo-16k.md) | Multiple | N/A | N/A |
+| [gpt-3.5-turbo-instruct](../authors/openai/models/gpt-3.5-turbo-instruct.md) | Multiple | 4.1k | $1.50/$2.00 |
+| [gpt-3.5-turbo-instruct-0914](../authors/openai/models/gpt-3.5-turbo-instruct-0914.md) | Multiple | N/A | N/A |
+| [gpt-4.1](../authors/openai/models/gpt-4.1.md) | Multiple | 1.0M | $2.00/$8.00 |
+| [gpt-4.1-2025-04-14](../authors/openai/models/gpt-4.1-2025-04-14.md) | Multiple | N/A | N/A |
+| _...and 36 more_ |  |  |  |
 
   
-### GPT (116 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/openai/gpt-oss-120b | Multiple | 128k | $0.35/$0.75 |
-| @cf/openai/gpt-oss-20b | Multiple | 128k | $0.20/$0.30 |
-| GPT OSS 120B | Multiple | 131.1k | $0.15/$0.60 |
-| [GPT OSS 120B](../authors/openai/models/openai-gpt-oss-120b.md) | Multiple | 131.1k | $0.15/$0.75 |
-| GPT OSS 120B | Multiple | 131.1k | $0.10/$0.50 |
-| GPT OSS 120B | Multiple | 131.1k | $0.15/$0.60 |
-| GPT OSS 120B | Multiple | 131.1k | $0.15/$0.60 |
-| GPT OSS 120B | Multiple | 131.1k | $0.15/$0.60 |
-| GPT OSS 120B | Multiple | 131.1k | $0.10/$0.50 |
-| GPT OSS 120B | Multiple | 131.1k | $0.10/$0.41 |
-| _...and 106 more_ |  |  |  |
-
-  
-### Gemini (97 models)
+### Gemini (45 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Gemini 1.5 Flash](../authors/google/models/gemini-1.5-flash.md) | Multiple | 1.0M | $0.07/$0.30 |
-| Gemini 1.5 Flash | Multiple | 1.0M | $0.07/$0.30 |
 | [Gemini 1.5 Flash 002](../authors/google/models/gemini-1.5-flash-002.md) | Multiple | 1.0M | N/A |
-| [Gemini 1.5 Flash 002](../authors/google/models/gemini-1.5-flash-002-at-default.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash Latest](../authors/google/models/gemini-1.5-flash-latest.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash-8B](../authors/google/models/gemini-1.5-flash-8b.md) | Multiple | 1.0M | $0.04/$0.15 |
-| Gemini 1.5 Flash-8B | Multiple | 1.0M | $0.04/$0.15 |
 | [Gemini 1.5 Flash-8B 001](../authors/google/models/gemini-1.5-flash-8b-001.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash-8B Latest](../authors/google/models/gemini-1.5-flash-8b-latest.md) | Multiple | 1.0M | N/A |
-| Gemini 1.5 Pro | Multiple | 1.0M | $1.25/$5.00 |
-| _...and 87 more_ |  |  |  |
+| [Gemini 1.5 Pro](../authors/google/models/gemini-1.5-pro.md) | Multiple | 1.0M | $1.25/$5.00 |
+| [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002.md) | Multiple | 2.0M | N/A |
+| [Gemini 1.5 Pro Latest](../authors/google/models/gemini-1.5-pro-latest.md) | Multiple | 2.0M | N/A |
+| [Gemini 2.0 Flash](../authors/google/models/gemini-2.0-flash.md) | Multiple | 1.0M | $0.10/$0.40 |
+| _...and 35 more_ |  |  |  |
 
   
-### Llama (91 models)
+### Other (36 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| @cf/meta-llama/llama-2-7b-chat-hf-lora | Multiple | 8.2k | N/A |
-| @cf/meta/llama-2-7b-chat-fp16 | Multiple | 4.1k | $0.56/$6.67 |
-| @cf/meta/llama-2-7b-chat-int8 | Multiple | 8.2k | N/A |
-| @cf/meta/llama-3-8b-instruct | Multiple | 8.0k | $0.28/$0.83 |
-| @cf/meta/llama-3-8b-instruct-awq | Multiple | 8.2k | $0.12/$0.27 |
-| @cf/meta/llama-3.1-70b-instruct | Multiple | 24k | N/A |
-| @cf/meta/llama-3.1-8b-instruct | Multiple | 8.0k | $0.28/$0.83 |
-| @cf/meta/llama-3.1-8b-instruct-awq | Multiple | 8.2k | $0.12/$0.27 |
-| @cf/meta/llama-3.1-8b-instruct-fast | Multiple | 128k | N/A |
-| @cf/meta/llama-3.1-8b-instruct-fp8 | Multiple | 32k | $0.15/$0.29 |
-| _...and 81 more_ |  |  |  |
+| Codex Mini | Multiple | 200k | $1.50/$6.00 |
+| [Imagen 3.0](../authors/google/models/imagen-3.0-generate-002.md) | Multiple | 480 | N/A |
+| [LearnLM 2.0 Flash Experimental](../authors/google/models/learnlm-2.0-flash-experimental.md) | Multiple | 1.0M | N/A |
+| [Model that performs Attributed Question Answering.](../authors/google/models/aqa.md) | Multiple | 7.2k | N/A |
+| [Nano Banana](../authors/google/models/gemini-2.5-flash-image-preview.md) | Multiple | 32.8k | N/A |
+| [allam-2-7b](../authors/sdaia/models/allam-2-7b.md) | Multiple | 4.1k | N/A |
+| [babbage-002](../authors/openai/models/babbage-002.md) | Multiple | N/A | N/A |
+| [compound](../authors/groq/models/groq-compound.md) | Multiple | 131.1k | N/A |
+| [compound-beta](../authors/groq/models/compound-beta.md) | Multiple | 131.1k | N/A |
+| [compound-beta-mini](../authors/groq/models/compound-beta-mini.md) | Multiple | 131.1k | N/A |
+| _...and 26 more_ |  |  |  |
 
   
-### Qwen (64 models)
+### Llama (15 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| @cf/deepseek-ai/deepseek-r1-distill-qwen-32b | Multiple | 80k | $0.50/$4.88 |
-| @cf/qwen/qwen1.5-0.5b-chat | Multiple | 32k | N/A |
-| @cf/qwen/qwen1.5-1.8b-chat | Multiple | 32k | N/A |
-| @cf/qwen/qwen1.5-14b-chat-awq | Multiple | 7.5k | N/A |
-| @cf/qwen/qwen1.5-7b-chat-awq | Multiple | 20k | N/A |
-| @cf/qwen/qwen2.5-coder-32b-instruct | Multiple | 32.8k | $0.66/$1.00 |
-| @cf/qwen/qwq-32b | Multiple | 24k | $0.66/$1.00 |
-| @cf/unum/uform-gen2-qwen-500m | Multiple | N/A | N/A |
-| DeepSeek R1 Distill Qwen 14B | Multiple | 64k | N/A |
-| Qwen 2.5 7B Vision Instruct | Multiple | 125k | $0.20/$0.20 |
-| _...and 54 more_ |  |  |  |
+| Llama 3 70B | Multiple | 8.2k | $0.59/$0.79 |
+| Llama 3 8B | Multiple | 8.2k | $0.05/$0.08 |
+| Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
+| [deepseek-r1-distill-llama-70b](../authors/deepseek / meta/models/deepseek-r1-distill-llama-70b.md) | Multiple | 131.1k | $0.75/$0.99 |
+| [llama-3.1-8b-instant](../authors/meta/models/llama-3.1-8b-instant.md) | Multiple | 131.1k | $0.05/$0.08 |
+| [llama-3.3-70b](../authors/cerebras/models/llama-3.3-70b.md) | Multiple | 65.5k | $0.70/$2.80 |
+| [llama-3.3-70b-versatile](../authors/meta/models/llama-3.3-70b-versatile.md) | Multiple | 131.1k | $0.59/$0.79 |
+| [llama-4-maverick-17b-128e-instruct](../authors/meta/models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | Multiple | 131.1k | $0.20/$0.60 |
+| [llama-4-maverick-17b-128e-instruct](../authors/cerebras/models/llama-4-maverick-17b-128e-instruct.md) | Multiple | N/A | N/A |
+| [llama-4-scout-17b-16e-instruct](../authors/meta/models/meta-llama-llama-4-scout-17b-16e-instruct.md) | Multiple | 131.1k | $0.11/$0.34 |
+| _...and 5 more_ |  |  |  |
 
   
-### Claude (49 models)
+### Claude (10 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| Claude 2 | Multiple | 100k | $8.00/$24.00 |
-| [Claude 3 Haiku](../authors/anthropic/models/claude-3-haiku-at-20240307.md) | Multiple | 200k | N/A |
-| Claude Haiku 3 | Multiple | 200k | $0.25/$1.25 |
 | [Claude Haiku 3](../authors/anthropic/models/claude-3-haiku-20240307.md) | Multiple | 200k | $0.25/$1.25 |
-| Claude Haiku 3.5 | Multiple | 200k | $0.80/$4.00 |
 | [Claude Haiku 3.5](../authors/anthropic/models/claude-3-5-haiku-20241022.md) | Multiple | 200k | $0.80/$4.00 |
-| Claude Haiku 3.5 | Multiple | 200k | $0.80/$4.00 |
-| [Claude Haiku 3.5](../authors/anthropic/models/claude-3-5-haiku-at-20241022.md) | Multiple | 200k | $0.80/$4.00 |
-| Claude Haiku 3.5 | Multiple | 200k | $0.80/$4.00 |
-| Claude Instant | Multiple | 100k | $0.80/$2.40 |
-| _...and 39 more_ |  |  |  |
+| Claude Opus 3 | Multiple | 200k | $15.00/$75.00 |
+| [Claude Opus 4](../authors/anthropic/models/claude-opus-4-20250514.md) | Multiple | 200k | $15.00/$75.00 |
+| [Claude Opus 4.1](../authors/anthropic/models/claude-opus-4-1-20250805.md) | Multiple | 200k | $15.00/$75.00 |
+| Claude Sonnet 3 | Multiple | 200k | $3.00/$15.00 |
+| [Claude Sonnet 3.5 (New)](../authors/anthropic/models/claude-3-5-sonnet-20241022.md) | Multiple | 200k | $3.00/$15.00 |
+| [Claude Sonnet 3.5 (Old)](../authors/anthropic/models/claude-3-5-sonnet-20240620.md) | Multiple | 200k | $3.00/$15.00 |
+| [Claude Sonnet 3.7](../authors/anthropic/models/claude-3-7-sonnet-20250219.md) | Multiple | 200k | $3.00/$15.00 |
+| [Claude Sonnet 4](../authors/anthropic/models/claude-sonnet-4-20250514.md) | Multiple | 200k | $3.00/$15.00 |
 
   
-### DeepSeek (41 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/deepseek-ai/deepseek-math-7b-instruct | Multiple | 4.1k | N/A |
-| @hf/thebloke/deepseek-coder-6.7b-base-awq | Multiple | 4.1k | N/A |
-| @hf/thebloke/deepseek-coder-6.7b-instruct-awq | Multiple | 4.1k | N/A |
-| [DeepSeek Chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | 128k | $0.57/$1.68 |
-| DeepSeek Coder V2 Lite | Multiple | 131.1k | $0.50/$2.00 |
-| DeepSeek R1 | Multiple | 163.8k | $3.00/$7.00 |
-| DeepSeek R1 | Multiple | 128k | $0.55/$2.19 |
-| DeepSeek R1 (0528) | Multiple | 128k | $3.00/$8.00 |
-| DeepSeek R1 (0528) | Multiple | 75k | $0.18/$0.72 |
-| DeepSeek R1 0528 | Multiple | 75k | $0.50/$2.15 |
-| _...and 31 more_ |  |  |  |
-
-  
-### Gemma (35 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/google/gemma-2b-it-lora | Multiple | 8.2k | N/A |
-| @cf/google/gemma-3-12b-it | Multiple | 80k | $0.35/$0.56 |
-| [@cf/google/gemma-3-12b-it](../authors/google/models/gemma-3-12b-it.md) | Multiple | 80k | $0.35/$0.56 |
-| @cf/google/gemma-7b-it-lora | Multiple | 3.5k | N/A |
-| @hf/google/gemma-7b-it | Multiple | 8.2k | N/A |
-| [Codegemma](../authors/google/models/codegemma-at-codegemma-7b-it.md) | Multiple | 1.0M | N/A |
-| [Gemma](../authors/google/models/gemma-at-gemma-2b.md) | Multiple | 1.0M | N/A |
-| [Gemma 2 9B](../authors/google/models/gemma2-9b-it.md) | Multiple | 8.2k | $0.20/$0.20 |
-| Gemma 3 12B IT | Multiple | 96k | N/A |
-| [Gemma 3 1B](../authors/google/models/gemma-3-1b-it.md) | Multiple | 32.8k | N/A |
-| _...and 25 more_ |  |  |  |
-
-  
-### Mistral (32 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/mistral/mistral-7b-instruct-v0.1 | Multiple | 2.8k | $0.11/$0.19 |
-| @cf/mistral/mistral-7b-instruct-v0.2-lora | Multiple | 15k | N/A |
-| @cf/mistralai/mistral-small-3.1-24b-instruct | Multiple | 128k | $0.35/$0.56 |
-| @hf/mistral/mistral-7b-instruct-v0.2 | Multiple | 3.1k | N/A |
-| @hf/nousresearch/hermes-2-pro-mistral-7b | Multiple | 24k | N/A |
-| @hf/thebloke/mistral-7b-instruct-v0.1-awq | Multiple | 4.1k | N/A |
-| @hf/thebloke/openhermes-2.5-mistral-7b-awq | Multiple | 4.1k | N/A |
-| Dolphin3.0 Mistral 24B | Multiple | 32.8k | N/A |
-| Dolphin3.0 R1 Mistral 24B | Multiple | 32.8k | N/A |
-| Mistral 7B | Multiple | 8k | $0.25/$0.25 |
-| _...and 22 more_ |  |  |  |
-
-  
-### Phi (16 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/microsoft/phi-2 | Multiple | 2.0k | N/A |
-| Phi-3-medium instruct (128k) | Multiple | 128k | N/A |
-| Phi-3-medium instruct (4k) | Multiple | 4.1k | N/A |
-| Phi-3-mini instruct (128k) | Multiple | 128k | N/A |
-| Phi-3-mini instruct (4k) | Multiple | 4.1k | N/A |
-| Phi-3-small instruct (128k) | Multiple | 128k | N/A |
-| Phi-3-small instruct (8k) | Multiple | 8.2k | N/A |
-| Phi-3.5-MoE instruct (128k) | Multiple | 128k | N/A |
-| Phi-3.5-mini instruct (128k) | Multiple | 128k | N/A |
-| Phi-3.5-vision instruct (128k) | Multiple | 128k | N/A |
-| _...and 6 more_ |  |  |  |
-
-  
-### Embeddings (12 models)
+### Embeddings (7 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | 1.0M | N/A |
+| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
-| [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | 1.0M | N/A |
-| [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | 1.0M | N/A |
-| multimodalembedding | Multiple | N/A | N/A |
 | [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
 | [text-embedding-3-small](../authors/openai/models/text-embedding-3-small.md) | Multiple | N/A | N/A |
 | [text-embedding-ada-002](../authors/openai/models/text-embedding-ada-002.md) | Multiple | N/A | N/A |
-| _...and 2 more_ |  |  |  |
 
   
-### GLM (10 models)
+### Gemma (7 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| GLM-4.5 | Multiple | 131.1k | $0.60/$2.20 |
-| GLM-4.5 | Multiple | 131.1k | $0.60/$2.20 |
-| GLM-4.5 | Multiple | 131.1k | N/A |
-| GLM-4.5 | Multiple | 131.1k | $0.60/$2.20 |
-| GLM-4.5 | Multiple | 131.1k | $0.60/$2.20 |
-| GLM-4.5-Air | Multiple | 128k | $0.20/$1.10 |
-| GLM-4.5-Air | Multiple | 131.1k | $0.20/$1.10 |
-| GLM-4.5-Air | Multiple | 131.1k | $0.20/$1.10 |
-| GLM-4.5-Flash | Multiple | 131.1k | N/A |
-| GLM-4.5-Flash | Multiple | 131.1k | N/A |
+| [Gemma 3 12B](../authors/google/models/gemma-3-12b-it.md) | Multiple | 80k | $0.35/$0.56 |
+| [Gemma 3 1B](../authors/google/models/gemma-3-1b-it.md) | Multiple | 32.8k | N/A |
+| [Gemma 3 27B](../authors/google/models/gemma-3-27b-it.md) | Multiple | 131.1k | N/A |
+| [Gemma 3 4B](../authors/google/models/gemma-3-4b-it.md) | Multiple | 32.8k | N/A |
+| [Gemma 3n E2B](../authors/google/models/gemma-3n-e2b-it.md) | Multiple | 8.2k | N/A |
+| [Gemma 3n E4B](../authors/google/models/gemma-3n-e4b-it.md) | Multiple | 8.2k | N/A |
+| [gemma2-9b-it](../authors/google/models/gemma2-9b-it.md) | Multiple | 8.2k | $0.20/$0.20 |
 
   
-### PaLM (8 models)
+### Qwen (6 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| [Chat Bison](../authors/google/models/chat-bison-at-002.md) | Multiple | 1.0M | N/A |
-| [Code Bison](../authors/google/models/code-bison-at-002.md) | Multiple | 1.0M | N/A |
-| [Codechat Bison](../authors/google/models/codechat-bison-at-002.md) | Multiple | 1.0M | N/A |
-| [Text Bison](../authors/google/models/text-bison-at-002.md) | Multiple | 1.0M | N/A |
-| chat-bison | Multiple | N/A | N/A |
-| code-bison | Multiple | N/A | N/A |
-| codechat-bison | Multiple | N/A | N/A |
-| text-bison | Multiple | N/A | N/A |
+| Qwen QwQ 32B | Multiple | 131.1k | $0.29/$0.39 |
+| [qwen-3-235b-a22b-instruct-2507](../authors/cerebras/models/qwen-3-235b-a22b-instruct-2507.md) | Multiple | 131k | $0.60/$1.20 |
+| [qwen-3-235b-a22b-thinking-2507](../authors/cerebras/models/qwen-3-235b-a22b-thinking-2507.md) | Multiple | N/A | N/A |
+| [qwen-3-32b](../authors/cerebras/models/qwen-3-32b.md) | Multiple | N/A | N/A |
+| [qwen-3-coder-480b](../authors/cerebras/models/qwen-3-coder-480b.md) | Multiple | 131k | $2.00/$2.00 |
+| [qwen3-32b](../authors/alibaba cloud/models/qwen-qwen3-32b.md) | Multiple | 131.1k | $0.29/$0.59 |
 
   
-### BERT (7 models)
+### Whisper (3 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| @cf/fblgit/una-cybertron-7b-v2-bf16 | Multiple | 15k | N/A |
-| [Bert Base](../authors/google/models/bert-base-at-001.md) | Multiple | 1.0M | N/A |
-| [Bert Base Uncased](../authors/google/models/bert-base-uncased-at-bert-base-uncased.md) | Multiple | 1.0M | N/A |
-| [Roberta Large](../authors/meta/models/roberta-large-at-roberta-large.md) | Multiple | 128k | N/A |
-| [Xlm Roberta Large](../authors/meta/models/xlm-roberta-large-at-xlm-roberta-large.md) | Multiple | 128k | N/A |
-| bert-base | Multiple | N/A | N/A |
-| bert-base-uncased | Multiple | N/A | N/A |
-
-  
-### Command (7 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| Cohere Command A | Multiple | 128k | N/A |
-| Cohere Command R | Multiple | 128k | N/A |
-| Cohere Command R 08-2024 | Multiple | 128k | N/A |
-| Cohere Command R+ | Multiple | 128k | N/A |
-| Cohere Command R+ 08-2024 | Multiple | 128k | N/A |
-| Command | Multiple | 4.1k | $1.50/$2.00 |
-| Command Light | Multiple | 4.1k | $0.30/$0.60 |
-
-  
-### Whisper (7 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/openai/whisper | Multiple | N/A | $0.00/$0.00 |
-| @cf/openai/whisper-large-v3-turbo | Multiple | N/A | $0.00/$0.00 |
-| [@cf/openai/whisper-large-v3-turbo](../authors/openai/models/whisper-large-v3-turbo.md) | Multiple | 448 | $0.00/$0.00 |
-| @cf/openai/whisper-tiny-en | Multiple | N/A | N/A |
-| [Whisper Large](../authors/openai/models/whisper-large-at-whisper-large-v3-turbo.md) | Multiple | N/A | N/A |
 | [whisper-1](../authors/openai/models/whisper-1.md) | Multiple | N/A | N/A |
 | [whisper-large-v3](../authors/openai/models/whisper-large-v3.md) | Multiple | 448 | N/A |
-
-  
-### Stable Diffusion (4 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| @cf/bytedance/stable-diffusion-xl-lightning | Multiple | N/A | N/A |
-| @cf/runwayml/stable-diffusion-v1-5-img2img | Multiple | N/A | N/A |
-| @cf/runwayml/stable-diffusion-v1-5-inpainting | Multiple | N/A | N/A |
-| @cf/stabilityai/stable-diffusion-xl-base-1.0 | Multiple | N/A | N/A |
-
-  
-### Jamba (3 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| AI21 Jamba 1.5 Large | Multiple | 256k | N/A |
-| AI21 Jamba 1.5 Mini | Multiple | 256k | N/A |
-| [Jamba Large 1.6](../authors/ai21/models/jamba-large-1.6-at-001.md) | Multiple | 256k | N/A |
-
-  
-### Mixtral (3 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| Mixtral 8x22B | Multiple | 64k | $2.00/$6.00 |
-| Mixtral 8x22B | Multiple | 64k | $2.00/$6.00 |
-| Mixtral 8x7B | Multiple | 32k | $0.70/$0.70 |
+| [whisper-large-v3-turbo](../authors/openai/models/whisper-large-v3-turbo.md) | Multiple | 448 | $0.00/$0.00 |
 
   
 ### DALL-E (2 models)
@@ -360,20 +194,12 @@ Complete listing of all 954 models in the Starmap catalog.
 | [dall-e-3](../authors/openai/models/dall-e-3.md) | Multiple | N/A | N/A |
 
   
-### Solar (2 models)
+### DeepSeek (2 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
-| solar-mini | Multiple | 32.8k | $0.15/$0.15 |
-| solar-pro2 | Multiple | 65.5k | $0.25/$0.25 |
-
-  
-### T5 (2 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| t5-1.1 | Multiple | N/A | N/A |
-| t5-flan | Multiple | N/A | N/A |
+| [deepseek-chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | 128k | $0.57/$1.68 |
+| [deepseek-reasoner](../authors/deepseek/models/deepseek-reasoner.md) | Multiple | 128k | $0.57/$1.68 |
 
   
 ## 💰 Pricing Comparison

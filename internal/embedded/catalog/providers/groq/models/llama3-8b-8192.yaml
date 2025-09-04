@@ -1,5 +1,14 @@
+# llama3-8b-8192 - Llama 3 8B
 id: llama3-8b-8192
 name: Llama 3 8B
+
+# Model metadata
+metadata:
+  release_date: 2024-04-18
+  open_weights: true
+  knowledge_cutoff: 2023-03-01
+
+# Model pricing
 pricing:
   tokens:
     input:
@@ -7,8 +16,12 @@ pricing:
     output:
       per_1m: 0.08
   currency: USD
+
+# Model limits
 limits:
   context_window: 8192
   output_tokens: 8192
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

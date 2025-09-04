@@ -1,5 +1,14 @@
+# qwen-qwq-32b - Qwen QwQ 32B
 id: qwen-qwq-32b
 name: Qwen QwQ 32B
+
+# Model metadata
+metadata:
+  release_date: 2024-11-27
+  open_weights: true
+  knowledge_cutoff: 2024-09-01
+
+# Model pricing
 pricing:
   tokens:
     input:
@@ -7,8 +16,12 @@ pricing:
     output:
       per_1m: 0.39
   currency: USD
+
+# Model limits
 limits:
   context_window: 131072
   output_tokens: 16384
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

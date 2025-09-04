@@ -65,16 +65,16 @@ Sunnyvale, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [GPT OSS 120B](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
+| [gpt-oss-120b](./models/gpt-oss-120b.md) | 131.1k | $0.25 | $0.69 | 📝 ⚡ |
 
   
 ### Llama
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [@cf/meta/llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | 131k | $0.27 | $0.85 | 📝 ⚡ |
-| [Llama 3.3 70B](./models/llama-3.3-70b.md) | 65.5k | $0.70 | $2.80 | 📝 ⚡ |
+| [llama-3.3-70b](./models/llama-3.3-70b.md) | 65.5k | $0.70 | $2.80 | 📝 ⚡ |
 | [llama-4-maverick-17b-128e-instruct](./models/llama-4-maverick-17b-128e-instruct.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/llama-4-scout-17b-16e-instruct.md) | 131k | $0.27 | $0.85 | 📝 ⚡ |
 | [llama3.1-8b](./models/llama3.1-8b.md) | N/A | N/A | N/A | 📝 ⚡ |
 
   
@@ -82,10 +82,10 @@ Sunnyvale, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Qwen 3 235B Instruct](./models/qwen-3-235b-a22b-instruct-2507.md) | 131k | $0.60 | $1.20 | 📝 ⚡ |
-| [Qwen 3 Coder 480B](./models/qwen-3-coder-480b.md) | 131k | $2.00 | $2.00 | 📝 ⚡ |
+| [qwen-3-235b-a22b-instruct-2507](./models/qwen-3-235b-a22b-instruct-2507.md) | 131k | $0.60 | $1.20 | 📝 ⚡ |
 | [qwen-3-235b-a22b-thinking-2507](./models/qwen-3-235b-a22b-thinking-2507.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [qwen-3-32b](./models/qwen-3-32b.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [qwen-3-coder-480b](./models/qwen-3-coder-480b.md) | 131k | $2.00 | $2.00 | 📝 ⚡ |
 
   
 ## Configuration

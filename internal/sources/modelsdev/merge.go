@@ -1,7 +1,6 @@
 package modelsdev
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -12,211 +11,23 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// EnhanceModelsWithModelsDevData enhances API models with models.dev data BEFORE comparison
-func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, provider *catalogs.Provider, api *ModelsDevAPI) ([]catalogs.Model, int) {
-	if api == nil || provider == nil {
-		return apiModels, 0
-	}
-
-	// Try to find models.dev provider data using primary ID first
-	modelsDevProvider, exists := api.GetProvider(provider.ID)
-
-	// If not found, try aliases
-	if !exists && len(provider.Aliases) > 0 {
-		for _, alias := range provider.Aliases {
-			modelsDevProvider, exists = api.GetProvider(alias)
-			if exists {
-				logging.Debug().
-					Str("provider_id", string(provider.ID)).
-					Str("alias", string(alias)).
-					Msg("Found models.dev data using alias")
-				break
-			}
-		}
-	}
-
-	if !exists {
-		logging.Debug().
-			Str("provider_id", string(provider.ID)).
-			Msg("Provider not found in models.dev data")
-		return apiModels, 0
-	}
-
-	// Enhance all API models with models.dev data
-	enhanced := make([]catalogs.Model, len(apiModels))
-	successes := 0
-	for i, model := range apiModels {
-		var ok bool
-		enhanced[i], ok = enhanceModelWithModelsDevData(model, modelsDevProvider)
-		if ok {
-			successes++
-		}
-	}
-
-	return enhanced, successes
-}
-
-// enhanceModelWithModelsDevData enhances a single model with models.dev data
-func enhanceModelWithModelsDevData(apiModel catalogs.Model, modelsDevProvider *ModelsDevProvider) (catalogs.Model, bool) {
-	// Look for the model in models.dev data
-	modelsDevModel, exists := modelsDevProvider.Model(apiModel.ID)
-	if !exists {
-		// Try alternate ID patterns (some providers use different naming)
-		alternateIDs := generateAlternateIDs(apiModel.ID)
-		for _, altID := range alternateIDs {
-			if altModel, altExists := modelsDevProvider.Model(altID); altExists {
-				modelsDevModel = altModel
-				exists = true
-				break
-			}
-		}
-	}
-
-	if !exists {
-		return apiModel, false
-	}
-
-	// Convert models.dev model to starmap model
-	modelsDevStarmap, err := modelsDevModel.ToStarmapModel()
-	if err != nil {
-		logging.Debug().
-			Err(err).
-			Str("model_id", apiModel.ID).
-			Msg("Error converting models.dev model")
-		return apiModel, false
-	}
-
-	// Use smart three-way merge with models.dev priority for limits
-	enhanced := smartMergeThreeWay(apiModel, *modelsDevStarmap, catalogs.Model{})
-
-	return enhanced, true
-}
-
-// smartMergeThreeWay performs a three-way merge with smart priority
-func smartMergeThreeWay(api, modelsdev, existing catalogs.Model) catalogs.Model {
-	result := existing // Start with existing as base
-
-	// First, merge API data (for basic model info and availability)
-	result = catalogs.MergeModels(result, api)
-
-	// Then, merge models.dev data with priority for limits and detailed specs
-	// This gives models.dev higher priority for things like context_window, output_tokens, pricing
-	if modelsdev.Limits != nil {
-		if result.Limits == nil {
-			result.Limits = &catalogs.ModelLimits{}
-		}
-		// models.dev has more accurate limit data
-		if modelsdev.Limits.ContextWindow > 0 {
-			result.Limits.ContextWindow = modelsdev.Limits.ContextWindow
-		}
-		if modelsdev.Limits.OutputTokens > 0 {
-			result.Limits.OutputTokens = modelsdev.Limits.OutputTokens
-		}
-	}
-
-	// Merge other models.dev data that should have priority
-	if modelsdev.Pricing != nil {
-		result.Pricing = modelsdev.Pricing
-	}
-
-	// Merge metadata from models.dev (release date, knowledge cutoff, open weights)
-	if modelsdev.Metadata != nil {
-		if result.Metadata == nil {
-			result.Metadata = &catalogs.ModelMetadata{}
-		}
-		// Copy metadata fields from models.dev
-		if !modelsdev.Metadata.ReleaseDate.IsZero() {
-			result.Metadata.ReleaseDate = modelsdev.Metadata.ReleaseDate
-		}
-		if modelsdev.Metadata.KnowledgeCutoff != nil && !modelsdev.Metadata.KnowledgeCutoff.IsZero() {
-			result.Metadata.KnowledgeCutoff = modelsdev.Metadata.KnowledgeCutoff
-		}
-		// Copy open weights flag (models.dev data is typically more accurate)
-		result.Metadata.OpenWeights = modelsdev.Metadata.OpenWeights
-	}
-
-	return result
-}
-
-// generateAlternateIDs generates possible alternate IDs for model lookup
-func generateAlternateIDs(modelID string) []string {
-	var alternates []string
-
-	// Common transformations between providers
-	// Example: "gpt-4" might be "openai/gpt-4" in models.dev
-
-	// Remove provider prefix if it exists
-	if idx := findLastSlash(modelID); idx != -1 {
-		withoutPrefix := modelID[idx+1:]
-		alternates = append(alternates, withoutPrefix)
-	}
-
-	// Add common provider prefixes
-	commonPrefixes := []string{"openai", "anthropic", "google", "meta", "mistral"}
-	for _, prefix := range commonPrefixes {
-		alternates = append(alternates, fmt.Sprintf("%s/%s", prefix, modelID))
-	}
-
-	// Try with dashes replaced by underscores and vice versa
-	dashToUnderscore := replaceDashUnderscore(modelID, "_")
-	underscoreToDash := replaceDashUnderscore(modelID, "-")
-	if dashToUnderscore != modelID {
-		alternates = append(alternates, dashToUnderscore)
-	}
-	if underscoreToDash != modelID {
-		alternates = append(alternates, underscoreToDash)
-	}
-
-	return alternates
-}
-
-// findLastSlash finds the last occurrence of '/' in a string
-func findLastSlash(s string) int {
-	for i := len(s) - 1; i >= 0; i-- {
-		if s[i] == '/' {
-			return i
-		}
-	}
-	return -1
-}
-
-// replaceDashUnderscore replaces dashes with underscores or vice versa
-func replaceDashUnderscore(s, replacement string) string {
-	if replacement == "_" {
-		result := ""
-		for _, char := range s {
-			if char == '-' {
-				result += "_"
-			} else {
-				result += string(char)
-			}
-		}
-		return result
-	} else {
-		result := ""
-		for _, char := range s {
-			if char == '_' {
-				result += "-"
-			} else {
-				result += string(char)
-			}
-		}
-		return result
-	}
-}
-
 // CopyProviderLogos copies provider logos from models.dev to output directory
-func CopyProviderLogos(client *Client, outputDir string, providerIDs []catalogs.ProviderID) error {
-	providersPath := client.GetProvidersPath()
+func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) error {
+	// The models.dev repo is always cloned to this location by git.Fetch()
+	modelsDevRepo := filepath.Join("internal/embedded/catalog/providers", "models.dev")
+	providersPath := filepath.Join(modelsDevRepo, "providers")
 
 	for _, providerID := range providerIDs {
-		// Source logo path in models.dev
-		sourceLogo := fmt.Sprintf("%s/%s/logo.svg", providersPath, providerID)
+		sourceLogo := filepath.Join(providersPath, string(providerID), "logo.svg")
+		// Logos should go in providers/<provider_id>/logo.svg
+		destLogo := filepath.Join(outputDir, "providers", string(providerID), "logo.svg")
 
-		// Destination logo path in output
-		destLogo := fmt.Sprintf("%s/%s/logo.svg", outputDir, providerID)
+		// Check if source logo exists before copying
+		if _, err := os.Stat(sourceLogo); os.IsNotExist(err) {
+			// Skip if logo doesn't exist in models.dev
+			continue
+		}
 
-		// Copy if source exists
 		if err := copyFile(sourceLogo, destLogo); err != nil {
 			logging.Warn().
 				Err(err).

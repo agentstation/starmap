@@ -8,7 +8,7 @@ Ultra-fast inference with custom LPU hardware, offering low-latency model servin
 | Field | Value |
 |---------|---------|
 | **Provider ID** | `groq` |
-| **Total Models** | 25 |
+| **Total Models** | 27 |
 | **Authentication** | API Key Required |
 | **Environment Variable** | `GROQ_API_KEY` |
 | **Status Page** | [https://status.groq.com](https://status.groq.com) |
@@ -65,30 +65,30 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [GPT OSS 120B](./models/openai-gpt-oss-120b.md) | 131.1k | $0.15 | $0.75 | 📝 ⚡ |
-| [GPT OSS 20B](./models/openai-gpt-oss-20b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
+| [gpt-oss-120b](./models/openai-gpt-oss-120b.md) | 131.1k | $0.15 | $0.75 | 📝 ⚡ |
+| [gpt-oss-20b](./models/openai-gpt-oss-20b.md) | 131.1k | $0.10 | $0.50 | 📝 ⚡ |
 
   
 ### Gemma
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Gemma 2 9B](./models/gemma2-9b-it.md) | 8.2k | $0.20 | $0.20 | 📝 🔧 ⚡ |
+| [gemma2-9b-it](./models/gemma2-9b-it.md) | 8.2k | $0.20 | $0.20 | 📝 🔧 ⚡ |
 
   
 ### Llama
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [DeepSeek R1 Distill Llama 70B](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | $0.75 | $0.99 | 📝 🔧 ⚡ |
 | [Llama 3 70B](./models/llama3-70b-8192.md) | 8.2k | $0.59 | $0.79 | — |
 | [Llama 3 8B](./models/llama3-8b-8192.md) | 8.2k | $0.05 | $0.08 | — |
-| [Llama 3.1 8B Instant](./models/llama-3.1-8b-instant.md) | 131.1k | $0.05 | $0.08 | 📝 🔧 ⚡ |
-| [Llama 3.3 70B Versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | $0.59 | $0.79 | 📝 🔧 ⚡ |
-| [Llama 4 Maverick 17B](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | $0.20 | $0.60 | 📝 🔧 ⚡ |
-| [Llama 4 Scout 17B](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | $0.11 | $0.34 | 📝 🔧 ⚡ |
 | [Llama Guard 3 8B](./models/llama-guard-3-8b.md) | 8.2k | $0.20 | $0.20 | — |
-| [Llama Guard 4 12B](./models/meta-llama-llama-guard-4-12b.md) | 131.1k | $0.20 | $0.20 | 📝 ⚡ |
+| [deepseek-r1-distill-llama-70b](./models/deepseek-r1-distill-llama-70b.md) | 131.1k | $0.75 | $0.99 | 📝 🔧 ⚡ |
+| [llama-3.1-8b-instant](./models/llama-3.1-8b-instant.md) | 131.1k | $0.05 | $0.08 | 📝 🔧 ⚡ |
+| [llama-3.3-70b-versatile](./models/llama-3.3-70b-versatile.md) | 131.1k | $0.59 | $0.79 | 📝 🔧 ⚡ |
+| [llama-4-maverick-17b-128e-instruct](./models/meta-llama-llama-4-maverick-17b-128e-instruct.md) | 131.1k | $0.20 | $0.60 | 📝 🔧 ⚡ |
+| [llama-4-scout-17b-16e-instruct](./models/meta-llama-llama-4-scout-17b-16e-instruct.md) | 131.1k | $0.11 | $0.34 | 📝 🔧 ⚡ |
+| [llama-guard-4-12b](./models/meta-llama-llama-guard-4-12b.md) | 131.1k | $0.20 | $0.20 | 📝 ⚡ |
 | [llama-prompt-guard-2-22m](./models/meta-llama-llama-prompt-guard-2-22m.md) | 512 | N/A | N/A | 📝 ⚡ |
 | [llama-prompt-guard-2-86m](./models/meta-llama-llama-prompt-guard-2-86m.md) | 512 | N/A | N/A | 📝 ⚡ |
 
@@ -104,10 +104,12 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Kimi K2 Instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
 | [allam-2-7b](./models/allam-2-7b.md) | 4.1k | N/A | N/A | 📝 ⚡ |
+| [compound](./models/groq-compound.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [compound-beta](./models/compound-beta.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [compound-beta-mini](./models/compound-beta-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [compound-mini](./models/groq-compound-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
+| [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
 | [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
 | [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
 
@@ -117,15 +119,15 @@ Mountain View, CA, USA
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
 | [Qwen QwQ 32B](./models/qwen-qwq-32b.md) | 131.1k | $0.29 | $0.39 | — |
-| [Qwen3 32B](./models/qwen-qwen3-32b.md) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
+| [qwen3-32b](./models/qwen-qwen3-32b.md) | 131.1k | $0.29 | $0.59 | 📝 ⚡ |
 
   
 ### Whisper
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [@cf/openai/whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | 448 | $0.00 | $0.00 | 📝 🎵 ⚡ |
 | [whisper-large-v3](./models/whisper-large-v3.md) | 448 | N/A | N/A | 📝 🎵 ⚡ |
+| [whisper-large-v3-turbo](./models/whisper-large-v3-turbo.md) | 448 | $0.00 | $0.00 | 📝 🎵 ⚡ |
 
   
 ## Configuration

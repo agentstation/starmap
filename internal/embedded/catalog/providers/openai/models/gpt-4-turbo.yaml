@@ -1,14 +1,27 @@
+# gpt-4-turbo - GPT-4 Turbo
 id: gpt-4-turbo
 name: GPT-4 Turbo
+
+# Model metadata
+metadata:
+  release_date: 2023-11-06
+  open_weights: false
+  knowledge_cutoff: 2023-12-01
+
+# Model pricing
 pricing:
   tokens:
     input:
-      per_1m: 10.0
+      per_1m: 10.00
     output:
       per_1m: 30.0
   currency: USD
+
+# Model limits
 limits:
   context_window: 128000
   output_tokens: 4096
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

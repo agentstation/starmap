@@ -1,9 +1,0 @@
-id: resnet-50
-name: "@cf/microsoft/resnet-50"
-pricing:
-  tokens:
-    input:
-      per_1m: 2.5e-06
-  currency: USD
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"

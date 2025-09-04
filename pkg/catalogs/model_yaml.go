@@ -73,8 +73,9 @@ func (m *Model) FormatYAML() string {
 		yamlData, _ = yaml.Marshal(m)
 	}
 
-	// Post-process to add blank lines between major sections
-	return postProcessModelYAML(string(yamlData))
+	// Post-process to add blank lines between major sections and clean up empty fields
+	processed := postProcessModelYAML(string(yamlData))
+	return processed
 }
 
 // postProcessModelYAML adds proper spacing and formatting to model YAML output
@@ -82,26 +83,67 @@ func postProcessModelYAML(yamlContent string) string {
 	lines := strings.Split(yamlContent, "\n")
 	var result []string
 
-	sectionHeaders := []string{
-		"# Model metadata",
-		"# Model features",
-		"# Model limits",
-		"# Model pricing",
-		"# Timestamps",
+	// Track if we should add spacing before certain section headers
+	majorSections := map[string]bool{
+		"# Model metadata": true,
+		"# Model features": true,
+		"# Model limits":   true,
+		"# Model pricing":  true,
+		"# Timestamps":     true,
 	}
 
+	// Subsection headers within features that need spacing
+	subsectionHeaders := map[string]bool{
+		"# Core capabilities":              true,
+		"# Reasoning & Verbosity":          true,
+		"# Generation control support flags": true,
+		"# Response delivery":              true,
+	}
+
+	// Track if we're inside an authors section
+	inAuthorsSection := false
+
 	for i, line := range lines {
-		// Add blank line before section headers (except the first one)
-		shouldAddBlankLine := false
-		for _, header := range sectionHeaders {
-			if line == header && i > 0 {
-				shouldAddBlankLine = true
-				break
+		trimmedLine := strings.TrimSpace(line)
+		
+		// Check if we're entering or leaving authors section
+		if strings.HasPrefix(trimmedLine, "authors:") {
+			inAuthorsSection = true
+		} else if inAuthorsSection {
+			// Check if we've left the authors section
+			// We leave when we encounter a non-indented line that's not empty and not a comment
+			if len(trimmedLine) > 0 && !strings.HasPrefix(line, " ") && !strings.HasPrefix(line, "-") && !strings.HasPrefix(trimmedLine, "#") {
+				inAuthorsSection = false
+			}
+		}
+		
+		// Skip unwanted lines in authors section
+		if inAuthorsSection {
+			// Skip empty maps and null timestamps in the authors section
+			if strings.Contains(trimmedLine, "models: {}") ||
+			   strings.Contains(trimmedLine, "created_at: null") ||
+			   strings.Contains(trimmedLine, "updated_at: null") ||
+			   strings.Contains(trimmedLine, "created_at: 0001-01-01T00:00:00Z") ||
+			   strings.Contains(trimmedLine, "updated_at: 0001-01-01T00:00:00Z") {
+				continue // Skip this line
+			}
+		}
+		
+		// Check if this line is a major section header
+		if majorSections[trimmedLine] && i > 0 {
+			// Add blank line before major sections if the previous line isn't already blank
+			if len(result) > 0 && result[len(result)-1] != "" {
+				result = append(result, "")
 			}
 		}
 
-		if shouldAddBlankLine {
-			result = append(result, "")
+		// Check if this line is a subsection header (with leading spaces)
+		// These appear as "  # Core capabilities" in the YAML
+		if strings.HasPrefix(trimmedLine, "#") && subsectionHeaders[trimmedLine] && i > 0 {
+			// Add blank line before subsections if the previous line isn't already blank
+			if len(result) > 0 && result[len(result)-1] != "" && !strings.Contains(result[len(result)-1], "features:") {
+				result = append(result, "")
+			}
 		}
 
 		// Process the line for date/timestamp formatting

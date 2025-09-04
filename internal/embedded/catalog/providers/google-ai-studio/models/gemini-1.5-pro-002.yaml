@@ -1,12 +1,12 @@
+# gemini-1.5-pro-002 - Stable version of Gemini 1.5 Pro, our mid-size multimodal mo...
 id: gemini-1.5-pro-002
 name: Gemini 1.5 Pro 002
 authors:
 - id: google
   name: Google
-  models: {}
-  created_at: null
-  updated_at: null
 description: Stable version of Gemini 1.5 Pro, our mid-size multimodal model that supports up to 2 million tokens, released in September of 2024.
+
+# Model features
 features:
   modalities:
     input:
@@ -14,16 +14,22 @@ features:
     - image
     output:
     - text
+
+  # Core capabilities
   tool_calls: false
   tools: true
   tool_choice: true
   web_search: false
   attachments: false
+
+  # Reasoning & Verbosity
   reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
+
+  # Generation control support flags
   temperature: true
   top_p: true
   top_k: true
@@ -56,6 +62,8 @@ features:
   num_beams: false
   early_stopping: false
   diversity_penalty: false
+
+  # Response delivery
   format_response: true
   structured_outputs: true
   streaming: true
@@ -72,8 +80,12 @@ generation:
     min: 1
     max: 100
     default: 40
+
+# Model limits
 limits:
   context_window: 2000000
   output_tokens: 8192
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

@@ -3,6 +3,7 @@ package starmap
 import (
 	"context"
 
+	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -57,23 +58,60 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 		return nil, err
 	}
 
-	// Step 8: Reconcile catalogs from all sources
-	result, err := update(ctx, srcs)
+	// Step 8: Get existing catalog for baseline comparison
+	existing, err := s.Catalog()
+	if err != nil {
+		// If we can't get existing catalog, use empty one
+		existing, _ = catalogs.New()
+		logging.Debug().Msg("No existing catalog found, using empty baseline")
+	}
+
+	// Step 9: Reconcile catalogs from all sources with baseline
+	result, err := update(ctx, existing, srcs)
 	if err != nil {
 		return nil, err
 	}
 
-	// Step 9: Detect changes
-	changeset, err := s.diff(result.Catalog)
-	if err != nil {
-		return nil, err
+	// Step 10: Log change summary if changes detected
+	if result.Changeset != nil && result.Changeset.HasChanges() {
+		logging.Info().
+			Int("added", len(result.Changeset.Models.Added)).
+			Int("updated", len(result.Changeset.Models.Updated)).
+			Int("removed", len(result.Changeset.Models.Removed)).
+			Msg("Changes detected")
+	} else {
+		logging.Info().Msg("No changes detected")
 	}
 
-	// Step 10: Create sync result
-	syncResult := convertChangesetToSyncResult(changeset, options.DryRun, options.OutputPath, result.ProviderAPICounts, result.ModelProviderMap)
+	// Step 11: Create sync result directly from reconciler's changeset
+	syncResult := convertChangesetToSyncResult(
+		result.Changeset,
+		options.DryRun,
+		options.OutputPath,
+		result.ProviderAPICounts,
+		result.ModelProviderMap,
+	)
 
-	// Step 11: Apply changes if not dry run
-	if !options.DryRun && changeset.HasChanges() {
+	// Step 12: Apply changes if not dry run
+	shouldSave := result.Changeset != nil && result.Changeset.HasChanges()
+	
+	// Force save if reformat or fresh flag is set (even without changes)
+	if options.Reformat || options.Fresh {
+		shouldSave = true
+		if result.Changeset == nil || !result.Changeset.HasChanges() {
+			logging.Info().
+				Bool("reformat", options.Reformat).
+				Bool("force", options.Fresh).
+				Msg("Forcing save due to reformat/force flag")
+		}
+	}
+	
+	if !options.DryRun && shouldSave {
+		// Create empty changeset if nil but we're forcing save
+		changeset := result.Changeset
+		if changeset == nil {
+			changeset = &differ.Changeset{}
+		}
 		if err := s.save(result.Catalog, options, changeset); err != nil {
 			return nil, err
 		}
@@ -87,33 +125,6 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 // ============================================================================
 // Helper Methods for Sync
 // ============================================================================
-
-// diff compares the result catalog with the existing catalog
-func (s *starmap) diff(result catalogs.Catalog) (*differ.Changeset, error) {
-	// Get existing catalog for comparison
-	existing, err := s.Catalog()
-	if err != nil {
-		// If we can't get existing catalog, create an empty one for comparison
-		existing, _ = catalogs.New()
-	}
-
-	// Perform change detection using differ
-	differ := differ.New()
-	changeset := differ.Catalogs(existing, result)
-
-	// Log summary
-	if changeset.HasChanges() {
-		logging.Info().
-			Int("added", len(changeset.Models.Added)).
-			Int("updated", len(changeset.Models.Updated)).
-			Int("removed", len(changeset.Models.Removed)).
-			Msg("Changes detected")
-	} else {
-		logging.Info().Msg("No changes detected")
-	}
-
-	return changeset, nil
-}
 
 // save applies the catalog changes if not in dry-run mode
 func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset *differ.Changeset) error {
@@ -141,6 +152,30 @@ func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset 
 		if saveable, ok := result.(catalogs.Persistable); ok {
 			if err := saveable.SaveTo(options.OutputPath); err != nil {
 				return errors.WrapIO("write", options.OutputPath, err)
+			}
+
+			// Copy models.dev logos after successful save
+			// Extract provider IDs from the saved catalog
+			providerIDs := make([]catalogs.ProviderID, 0)
+			for _, p := range providers {
+				if p.ID != "" {
+					providerIDs = append(providerIDs, p.ID)
+				}
+			}
+
+			// Copy logos if we have providers and an output path
+			if len(providerIDs) > 0 {
+				logging.Debug().
+					Int("provider_count", len(providerIDs)).
+					Str("output_path", options.OutputPath).
+					Msg("Copying provider logos from models.dev")
+
+				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerIDs); logoErr != nil {
+					logging.Warn().
+						Err(logoErr).
+						Msg("Could not copy provider logos")
+					// Non-fatal error - continue without logos
+				}
 			}
 		}
 	} else {

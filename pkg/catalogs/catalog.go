@@ -664,10 +664,8 @@ func (c *catalog) saveTo(basePath string) error {
 					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
 				}
 
-				data, err := yaml.Marshal(model)
-				if err != nil {
-					return errors.WrapParse("yaml", "model "+model.ID, err)
-				}
+				// Use FormatYAML for nicely formatted output with comments
+				data := []byte(model.FormatYAML())
 				if err := writeFile(modelPath, data); err != nil {
 					return errors.WrapIO("write", "model "+model.ID, err)
 				}
@@ -688,10 +686,8 @@ func (c *catalog) saveTo(basePath string) error {
 					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
 				}
 
-				data, err := yaml.Marshal(model)
-				if err != nil {
-					return errors.WrapParse("yaml", "model "+model.ID, err)
-				}
+				// Use FormatYAML for nicely formatted output with comments
+				data := []byte(model.FormatYAML())
 				if err := writeFile(modelPath, data); err != nil {
 					return errors.WrapIO("write", "model "+model.ID, err)
 				}

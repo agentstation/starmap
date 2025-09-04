@@ -1,5 +1,14 @@
+# claude-3-opus-20240229 - Claude Opus 3
 id: claude-3-opus-20240229
 name: Claude Opus 3
+
+# Model metadata
+metadata:
+  release_date: 2024-02-29
+  open_weights: false
+  knowledge_cutoff: 2023-08-31
+
+# Model pricing
 pricing:
   tokens:
     input:
@@ -7,8 +16,12 @@ pricing:
     output:
       per_1m: 75.0
   currency: USD
+
+# Model limits
 limits:
   context_window: 200000
   output_tokens: 4096
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

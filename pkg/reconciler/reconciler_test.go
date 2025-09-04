@@ -32,12 +32,6 @@ func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 }
 
 // Helper function to create test provider
-func createTestProvider(id, name string) catalogs.Provider {
-	return catalogs.Provider{
-		ID:   catalogs.ProviderID(id),
-		Name: name,
-	}
-}
 
 // Helper function to add models to a catalog through a provider
 func addTestModels(cat catalogs.Catalog, providerID string, models []catalogs.Model) error {
@@ -333,13 +327,13 @@ func TestResultBuilder(t *testing.T) {
 		Authors:   &differ.AuthorChangeset{},
 	}
 
-	result := reconciler.NewResultBuilder().
-		WithCatalog(catalog).
-		WithChangeset(changeset).
-		WithSources(sources.ProviderAPI, sources.ModelsDevGit).
-		WithStrategy(reconciler.NewAuthorityStrategy(authority.New())).
-		WithDryRun(true).
-		Build()
+	result := reconciler.NewResult()
+	result.Catalog = catalog
+	result.Changeset = changeset
+	result.Metadata.Sources = []sources.Type{sources.ProviderAPI, sources.ModelsDevGit}
+	result.Metadata.Strategy = reconciler.NewAuthorityStrategy(authority.New())
+	result.Metadata.DryRun = true
+	result.Finalize()
 
 	// Verify result
 	if result == nil {

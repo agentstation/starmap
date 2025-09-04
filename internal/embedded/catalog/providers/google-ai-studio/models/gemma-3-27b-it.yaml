@@ -1,27 +1,33 @@
+# gemma-3-27b-it - Gemma 3 27B
 id: gemma-3-27b-it
 name: Gemma 3 27B
 authors:
 - id: google
   name: Google
-  models: {}
-  created_at: null
-  updated_at: null
+
+# Model features
 features:
   modalities:
     input:
     - text
     output:
     - text
+
+  # Core capabilities
   tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
   attachments: false
+
+  # Reasoning & Verbosity
   reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
+
+  # Generation control support flags
   temperature: true
   top_p: true
   top_k: true
@@ -54,6 +60,8 @@ features:
   num_beams: false
   early_stopping: false
   diversity_penalty: false
+
+  # Response delivery
   format_response: false
   structured_outputs: false
   streaming: true
@@ -70,8 +78,12 @@ generation:
     min: 1
     max: 100
     default: 64
+
+# Model limits
 limits:
   context_window: 131072
   output_tokens: 8192
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

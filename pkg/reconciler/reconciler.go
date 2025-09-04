@@ -1,36 +1,14 @@
 // package reconciler provides catalog synchronization and reconciliation capabilities.
 // It handles merging data from multiple sources, detecting changes, and applying
 // updates while respecting data authorities and merge strategies.
-//
-// The reconciler coordinates fetching data from various sources, computing differences,
-// and merging changes into a target catalog. It supports dry-run operations,
-// changeset generation, and intelligent conflict resolution.
-//
-// Example usage:
-//
-//	// Create a reconciler
-//	r := NewReconciler(targetCatalog, sources)
-//
-//	// Perform reconciliation
-//	changeset, err := r.Reconcile(ctx, options)
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//
-//	// Review changes
-//	for _, change := range changeset.Changes {
-//	    fmt.Printf("Change: %s %s\n", change.Type, change.ModelID)
-//	}
-//
-//	// Apply changes if not dry-run
-//	if !options.DryRun {
-//	    err = r.Apply(changeset)
-//	}
 package reconciler
 
 import (
 	"context"
+	"maps"
 	"time"
+
+	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -56,6 +34,7 @@ type reconciler struct {
 	provenance  provenance.Tracker
 	tracking    bool
 	enhancers   *enhancer.Pipeline
+	baseline    catalogs.Catalog // Baseline catalog for comparison
 }
 
 // New creates a new Reconciler with options
@@ -70,34 +49,78 @@ func New(opts ...Option) (Reconciler, error) {
 		provenance:  provenance.NewTracker(options.tracking),
 		tracking:    options.tracking,
 		enhancers:   enhancer.NewPipeline(options.enhancers...),
+		baseline:    options.baseline,
 	}
 	return r, nil
 }
 
-// Sources reconciles multiple catalogs from different sources
-func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error) {
+// reconcileContext holds shared state for reconciliation
+type reconcileContext struct {
+	collector *collector
+	filter    *filter
+	merger    Merger
+	logger    *zerolog.Logger
+	startTime time.Time
+	baseline  catalogs.Catalog // Baseline for comparison
+}
 
-	// Start timer & get logger
-	startTime := time.Now()
+// modelResult holds reconciled models and provenance
+type modelResult struct {
+	models     []catalogs.Model
+	provenance provenance.Map
+	apiCount   int // Count from primary source
+}
+
+// Sources performs reconciliation with clean step-by-step flow
+func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error) {
+	// Step 1: Initialize context and validate
+	rctx, err := r.initialize(ctx, primary, srcs)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 2: Collect and merge providers
+	providers, provenanceMap, err := r.reconcileProviders(rctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 3: Filter providers by primary source
+	providers = rctx.filter.filterProviders(providers)
+	rctx.logger.Info().
+		Int("provider_count", len(providers)).
+		Msg("Filtered providers by primary source")
+
+	// Step 4: Reconcile models for each provider
+	modelResults, err := r.reconcileAllModels(ctx, rctx, providers)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 5: Build catalog with providers and models
+	catalog, err := r.catalog(providers, modelResults)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 6: Compute changeset if we have a base catalog
+	changeset := r.changeset(rctx, catalog)
+
+	// Step 7: Build and return result
+	return r.result(rctx, catalog, changeset, provenanceMap, modelResults), nil
+}
+
+// initialize sets up reconciliation context
+func (r *reconciler) initialize(ctx context.Context, primary sources.Type, srcs []sources.Source) (*reconcileContext, error) {
 	logger := logging.FromContext(ctx)
 
-	// Create result builder
-	sourceNames := make([]sources.Type, 0, len(srcs))
-	for _, src := range srcs {
-		sourceNames = append(sourceNames, src.Type())
-	}
-	resultBuilder := NewResultBuilder().WithSources(sourceNames...).WithStrategy(r.strategy)
+	// Create collector
+	collector := newCollector(srcs, primary)
 
-	// Cache primary catalog early if specified
+	// Validate and get primary catalog if specified
 	var primaryCatalog catalogs.Catalog
 	if primary != "" {
-		for _, src := range srcs {
-			if src.Type() == primary {
-				primaryCatalog = src.Catalog()
-				break
-			}
-		}
-		// Validate primary source was found
+		primaryCatalog = collector.primaryCatalog()
 		if primaryCatalog == nil {
 			return nil, &errors.ValidationError{
 				Field:   "primary",
@@ -107,379 +130,240 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []s
 		}
 		logger.Debug().
 			Str("primary_source", string(primary)).
-			Msg("Cached primary catalog for reconciliation")
+			Msg("Using primary catalog for filtering")
 	}
 
-	// Create merged catalog
-	mergedCatalog, err := catalogs.New()
+	// Create context
+	return &reconcileContext{
+		collector: collector,
+		filter:    newFilter(primary, primaryCatalog),
+		merger:    r.createMerger(),
+		logger:    logger,
+		startTime: time.Now(),
+		baseline:  r.baseline,
+	}, nil
+}
+
+// reconcileProviders merges providers from all sources
+func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]catalogs.Provider, provenance.Map, error) {
+	// Collect providers from all sources
+	providerSources := rctx.collector.collectProviders()
+
+	// Merge providers using configured strategy
+	return rctx.merger.Providers(providerSources)
+}
+
+// reconcileAllModels processes models for all providers
+func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
+	results := make(map[catalogs.ProviderID]modelResult)
+
+	for _, provider := range providers {
+		rctx.logger.Debug().
+			Str("provider", string(provider.ID)).
+			Msg("Reconciling models for provider")
+
+		result, err := r.reconcileProviderModels(ctx, rctx, provider)
+		if err != nil {
+			// Log error but continue with other providers
+			rctx.logger.Error().
+				Err(err).
+				Str("provider", string(provider.ID)).
+				Msg("Failed to reconcile provider models")
+			continue
+		}
+
+		results[provider.ID] = result
+	}
+
+	return results, nil
+}
+
+// reconcileProviderModels merges models for a single provider
+func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider catalogs.Provider) (modelResult, error) {
+	// Collect models for this provider from all sources
+	primaryCatalog := rctx.filter.primaryCatalog
+	if primaryCatalog == nil {
+		primaryCatalog = rctx.collector.primaryCatalog()
+	}
+
+	modelSources := rctx.collector.collectModelsForProvider(
+		provider,
+		primaryCatalog,
+	)
+
+	if len(modelSources) == 0 {
+		return modelResult{}, nil
+	}
+
+	// Track API count from primary source
+	apiCount := 0
+	if rctx.collector.primary != "" {
+		if models, exists := modelSources[rctx.collector.primary]; exists {
+			apiCount = len(models)
+		}
+	}
+
+	// Merge models using configured strategy
+	models, prov, err := rctx.merger.Models(modelSources)
+	if err != nil {
+		return modelResult{}, err
+	}
+
+	// Apply enhancements if configured
+	if r.enhancers != nil {
+		enhanced, err := r.enhancers.Batch(ctx, models)
+		if err != nil {
+			rctx.logger.Warn().
+				Err(err).
+				Str("provider", string(provider.ID)).
+				Msg("Enhancement failed but continuing")
+		} else {
+			models = enhanced
+		}
+	}
+
+	return modelResult{
+		models:     models,
+		provenance: prov,
+		apiCount:   apiCount,
+	}, nil
+}
+
+// catalog creates the final catalog with providers and models
+func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
+	catalog, err := catalogs.New()
 	if err != nil {
 		return nil, errors.WrapResource("create", "merged catalog", "", err)
 	}
 
-	// Initialize tracking maps
-	providerAPICounts := make(map[catalogs.ProviderID]int)
-	modelProviderMap := make(map[string]catalogs.ProviderID)
+	// Add providers with their reconciled models
+	for i := range providers {
+		provider := &providers[i]
 
-	// First, extract and reconcile providers
-	providerSources := make(map[sources.Type][]catalogs.Provider)
-	for _, src := range srcs {
-		catalog := src.Catalog()
-		if catalog == nil {
-			continue
-		}
-		providers := catalog.Providers().List()
-		providerList := make([]catalogs.Provider, 0, len(providers))
-		for _, p := range providers {
-			providerList = append(providerList, *p)
-		}
-		providerSources[src.Type()] = providerList
-	}
-
-	// Reconcile providers first
-	mergedProviders, providerProvenance, err := r.mergeProviders(providerSources)
-	if err != nil {
-		return nil, &errors.SyncError{
-			Provider: "reconciler",
-			Err:      err,
-		}
-	}
-
-	// Filter providers by primary source if specified
-	if primary != "" && primaryCatalog != nil {
-		originalCount := len(mergedProviders)
-		filteredProviders := make([]catalogs.Provider, 0)
-
-		for _, provider := range mergedProviders {
-			// Check if provider exists in primary source
-			primaryProvider := r.getPrimaryProvider(primaryCatalog, provider.ID, provider.Aliases)
-			if primaryProvider != nil {
-				filteredProviders = append(filteredProviders, provider)
+		// Add models if we have results for this provider
+		if result, ok := modelResults[provider.ID]; ok && len(result.models) > 0 {
+			provider.Models = make(map[string]catalogs.Model)
+			for _, model := range result.models {
+				provider.Models[model.ID] = model
 			}
 		}
 
-		logger.Info().
-			Int("original_count", originalCount).
-			Int("filtered_count", len(filteredProviders)).
-			Str("primary_source", string(primary)).
-			Msg("Filtered providers by primary source")
-
-		mergedProviders = filteredProviders
-	}
-
-	// Now reconcile models per provider to maintain provider-specific attributes
-	allModelProvenance := make(provenance.Map)
-	for i, provider := range mergedProviders {
-		// Collect models for this provider from all sources, grouped by source type
-		// We need this grouping for the merger to apply authority/priority rules
-		providerModels := make(map[sources.Type][]catalogs.Model)
-
-		logger.Debug().
-			Str("provider", string(provider.ID)).
-			Int("source_count", len(srcs)).
-			Msg("Processing provider for model collection")
-
-		for _, src := range srcs {
-			// Get catalog from this source
-			catalog := src.Catalog()
-			if catalog == nil {
-				continue
-			}
-			sourceName := src.Type()
-
-			// Get provider from this source
-			sourceProvider, exists := catalog.Providers().Get(provider.ID)
-
-			// Debug logging
-			if exists || sourceProvider != nil {
-				modelCount := 0
-				if sourceProvider.Models != nil {
-					modelCount = len(sourceProvider.Models)
-				}
-				logger.Debug().
-					Str("source", string(sourceName)).
-					Str("provider", string(provider.ID)).
-					Int("models_in_provider", modelCount).
-					Bool("exists", exists).
-					Msg("Checking provider models from source")
-			} else {
-				logger.Debug().
-					Str("source", string(sourceName)).
-					Str("provider", string(provider.ID)).
-					Bool("exists", exists).
-					Msg("Provider not found in source")
-			}
-
-			if !exists {
-				// Check if any alias matches
-				for _, alias := range provider.Aliases {
-					if aliasProvider, aliasExists := catalog.Providers().Get(alias); aliasExists {
-						sourceProvider = aliasProvider
-						break
-					}
-				}
-			}
-
-			// Collect models associated with this provider (or its aliases)
-			var modelsForProvider []catalogs.Model
-
-			// If we found the provider, use its models
-			if sourceProvider != nil && sourceProvider.Models != nil {
-				for _, model := range sourceProvider.Models {
-					modelsForProvider = append(modelsForProvider, model)
-				}
-			}
-
-			// For non-primary sources (enrichment sources), only add models that the primary source serves
-			// This ensures enrichment sources don't add models that don't exist in the provider API
-			if primary != "" && sourceName != primary {
-				// Get all models from this source for potential enrichment
-				allModels := catalog.GetAllModels()
-				logger.Debug().
-					Str("source", string(sourceName)).
-					Str("provider", string(provider.ID)).
-					Int("potential_models", len(allModels)).
-					Msg("Filtering non-primary source models by primary authority")
-
-				// But only add models that this provider actually serves according to the primary source
-				for _, model := range allModels {
-					// Check if we already have this model from the provider
-					shouldInclude := false
-					for _, existingModel := range modelsForProvider {
-						if existingModel.ID == model.ID {
-							shouldInclude = true
-							break
-						}
-					}
-					// If provider doesn't have this model yet, check if the primary source has it
-					if !shouldInclude && primary != "" && primaryCatalog != nil {
-						// Use cached primary catalog and helper function
-						primaryProvider := r.getPrimaryProvider(primaryCatalog, provider.ID, provider.Aliases)
-						if r.primaryHasModel(primaryProvider, model.ID) {
-							modelsForProvider = append(modelsForProvider, model)
-							shouldInclude = true
-						}
-					}
-				}
-			}
-
-			if len(modelsForProvider) > 0 {
-				providerModels[sourceName] = modelsForProvider
-
-				// Track API counts for primary source immediately
-				if sourceName == primary && providerAPICounts[provider.ID] == 0 {
-					providerAPICounts[provider.ID] = len(modelsForProvider)
-					logger.Debug().
-						Str("provider", string(provider.ID)).
-						Int("api_model_count", len(modelsForProvider)).
-						Msg("Tracked primary source model count")
-				}
-			}
-		}
-
-		// Reconcile models for this provider
-		if len(providerModels) > 0 {
-			reconciledModels, modelProvenance, err := r.mergeModels(providerModels)
-			if err != nil {
-				resultBuilder.WithError(&errors.SyncError{
-					Provider: string(provider.ID),
-					Err:      err,
-				})
-				continue
-			}
-
-			// Add reconciled models to the provider
-			if mergedProviders[i].Models == nil {
-				mergedProviders[i].Models = make(map[string]catalogs.Model)
-			}
-			for _, model := range reconciledModels {
-				mergedProviders[i].Models[model.ID] = model
-				// Track which provider owns this model
-				modelProviderMap[model.ID] = provider.ID
-			}
-
-			// Merge model provenance
-			for k, v := range modelProvenance {
-				allModelProvenance[k] = v
-			}
+		// Set provider in catalog
+		if err := catalog.Providers().Set(provider.ID, provider); err != nil {
+			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}
 
-	// Add merged providers with their models to catalog
-	for _, provider := range mergedProviders {
-		// Use Set instead of Add to ensure upsert semantics
-		if err := mergedCatalog.Providers().Set(provider.ID, &provider); err != nil {
-			resultBuilder.WithError(errors.WrapResource("set", "provider", string(provider.ID), err))
+	return catalog, nil
+}
+
+// changeset calculates differences between baseline and new catalog
+func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog) *differ.Changeset {
+	// Use provided baseline if available, otherwise fall back to first source
+	var baseCatalog catalogs.Catalog
+	if rctx.baseline != nil {
+		baseCatalog = rctx.baseline
+		rctx.logger.Debug().Msg("Using provided baseline catalog for comparison")
+	} else {
+		// Fall back to first source catalog for backward compatibility
+		baseCatalog = rctx.collector.baseCatalog()
+		if baseCatalog == nil {
+			return nil
 		}
+		rctx.logger.Debug().Msg("No baseline provided, using first source catalog")
 	}
 
-	// Combine provenance
-	allProvenance := make(provenance.Map)
-	for k, v := range allModelProvenance {
-		allProvenance[k] = v
-	}
-	for k, v := range providerProvenance {
-		allProvenance[k] = v
-	}
-
-	// Count total models processed
-	totalModels := 0
-	for _, provider := range mergedProviders {
+	// Collect all models from merged catalog
+	var allMergedModels []catalogs.Model
+	for _, provider := range catalog.Providers().List() {
 		if provider.Models != nil {
-			totalModels += len(provider.Models)
-		}
-	}
-
-	// Build statistics
-	stats := ResultStatistics{
-		ModelsProcessed:    totalModels,
-		ProvidersProcessed: len(mergedProviders),
-		TotalTimeMs:        time.Since(startTime).Milliseconds(),
-	}
-
-	// Create a changeset if we have a base catalog to compare against
-	var changeset *differ.Changeset
-	if len(srcs) > 0 {
-		// Use the first source as the base for comparison
-		// In practice, you might want to be more sophisticated about this
-		var baseCatalog catalogs.Catalog
-		for _, src := range srcs {
-			if src.Catalog() != nil {
-				baseCatalog = src.Catalog()
-				break
+			for _, model := range provider.Models {
+				allMergedModels = append(allMergedModels, model)
 			}
 		}
-
-		// Collect all merged models for diff
-		var allMergedModels []catalogs.Model
-		for _, provider := range mergedProviders {
-			if provider.Models != nil {
-				for _, model := range provider.Models {
-					allMergedModels = append(allMergedModels, model)
-				}
-			}
-		}
-
-		// Create differ to detect changes
-		diff := differ.New()
-		modelChangeset := diff.Models(
-			catalogModelsToSlice(baseCatalog),
-			allMergedModels,
-		)
-
-		// Build proper changeset structure
-		changeset = &differ.Changeset{
-			Models: modelChangeset,
-			Summary: differ.ChangesetSummary{
-				ModelsAdded:   len(modelChangeset.Added),
-				ModelsUpdated: len(modelChangeset.Updated),
-				ModelsRemoved: len(modelChangeset.Removed),
-			},
-		}
 	}
 
-	// Build and return result
-	result := resultBuilder.
-		WithCatalog(mergedCatalog).
-		WithProvenance(allProvenance).
-		WithStatistics(stats).
-		WithChangeset(changeset).
-		Build()
+	// Create differ and compute changes
+	d := differ.New()
+	modelChangeset := d.Models(
+		baseCatalog.GetAllModels(),
+		allMergedModels,
+	)
 
-	// Add the tracking maps
-	result.ProviderAPICounts = providerAPICounts
-	result.ModelProviderMap = modelProviderMap
+	// Build changeset structure
+	changeset := &differ.Changeset{
+		Models: modelChangeset,
+		Summary: differ.ChangesetSummary{
+			ModelsAdded:   len(modelChangeset.Added),
+			ModelsUpdated: len(modelChangeset.Updated),
+			ModelsRemoved: len(modelChangeset.Removed),
+			TotalChanges:  len(modelChangeset.Added) + len(modelChangeset.Updated) + len(modelChangeset.Removed),
+		},
+	}
 
-	return result, nil
+	return changeset
 }
 
-// getPrimaryProvider looks up a provider in the primary catalog by ID or aliases
-func (r *reconciler) getPrimaryProvider(
-	primaryCatalog catalogs.Catalog,
-	providerID catalogs.ProviderID,
-	aliases []catalogs.ProviderID,
-) *catalogs.Provider {
-	if primaryCatalog == nil {
-		return nil
+// result creates the final result
+func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, changeset *differ.Changeset, providerProv provenance.Map, modelResults map[catalogs.ProviderID]modelResult) *Result {
+	result := NewResult()
+
+	// Set core data
+	result.Catalog = catalog
+	result.Changeset = changeset
+
+	// Combine all provenance data
+	maps.Copy(result.Provenance, providerProv)
+	for _, mr := range modelResults {
+		maps.Copy(result.Provenance, mr.provenance)
 	}
 
-	// Check main ID
-	if provider, exists := primaryCatalog.Providers().Get(providerID); exists {
-		return provider
-	}
+	// Build tracking maps
+	for providerID, mr := range modelResults {
+		// Track API counts
+		if mr.apiCount > 0 {
+			result.ProviderAPICounts[providerID] = mr.apiCount
+		}
 
-	// Check aliases
-	for _, alias := range aliases {
-		if provider, exists := primaryCatalog.Providers().Get(alias); exists {
-			return provider
+		// Track model to provider mapping
+		for _, model := range mr.models {
+			result.ModelProviderMap[model.ID] = providerID
 		}
 	}
 
-	return nil
+	// Set metadata
+	result.Metadata.Sources = rctx.collector.sourceTypes()
+	result.Metadata.Strategy = r.strategy
+
+	// Calculate statistics
+	result.Metadata.Stats = r.calcStats(catalog, modelResults)
+
+	// Finalize result
+	result.Finalize()
+
+	return result
 }
 
-// primaryHasModel checks if the primary provider serves a specific model
-func (r *reconciler) primaryHasModel(
-	primaryProvider *catalogs.Provider,
-	modelID string,
-) bool {
-	if primaryProvider == nil || primaryProvider.Models == nil {
-		return false
-	}
-	_, exists := primaryProvider.Models[modelID]
-	return exists
-}
-
-// mergeModels merges models from multiple sources
-func (r *reconciler) mergeModels(sources map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error) {
-	return r.mergeModelsWithContext(context.Background(), sources)
-}
-
-// mergeModelsWithContext merges models from multiple sources with context support
-func (r *reconciler) mergeModelsWithContext(ctx context.Context, sources map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error) {
-	// Use the merger to combine models
-	var merger Merger
+// createMerger creates a merger based on configuration
+func (r *reconciler) createMerger() Merger {
 	if r.tracking && r.provenance != nil {
-		merger = newMergerWithProvenance(r.authorities, r.strategy, r.provenance)
-	} else {
-		merger = newMerger(r.authorities, r.strategy)
+		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance)
 	}
-
-	// Merge models from sources
-	mergedModels, provenance, err := merger.Models(sources)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// Apply enhancers if configured
-	if r.enhancers != nil {
-		enhanced, err := r.enhancers.Batch(ctx, mergedModels)
-		if err != nil {
-			// Log but don't fail - enhancement is optional
-			logging.Warn().
-				Err(err).
-				Msg("Enhancement failed but continuing")
-		} else {
-			mergedModels = enhanced
-		}
-	}
-
-	return mergedModels, provenance, nil
+	return newMerger(r.authorities, r.strategy)
 }
 
-// mergeProviders merges providers from multiple sources
-func (r *reconciler) mergeProviders(srcs map[sources.Type][]catalogs.Provider) ([]catalogs.Provider, provenance.Map, error) {
-	// Use the merger to combine providers
-	var merger Merger
-	if r.tracking && r.provenance != nil {
-		merger = newMergerWithProvenance(r.authorities, r.strategy, r.provenance)
-	} else {
-		merger = newMerger(r.authorities, r.strategy)
+// calcStats computes statistics from the catalog
+func (r *reconciler) calcStats(catalog catalogs.Catalog, modelResults map[catalogs.ProviderID]modelResult) ResultStatistics {
+	var stats ResultStatistics
+
+	// Count providers
+	providers := catalog.Providers().List()
+	stats.ProvidersProcessed = len(providers)
+
+	// Count models
+	for _, result := range modelResults {
+		stats.ModelsProcessed += len(result.models)
 	}
 
-	return merger.Providers(srcs)
-}
-
-// catalogModelsToSlice converts catalog models to a slice
-func catalogModelsToSlice(catalog catalogs.Reader) []catalogs.Model {
-	return catalog.GetAllModels()
+	return stats
 }

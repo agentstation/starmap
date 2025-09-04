@@ -166,11 +166,11 @@ func main() {
 export OPENAI_API_KEY=sk-...
 export ANTHROPIC_API_KEY=sk-ant-...
 
-# Sync all providers
-starmap sync
+# Update catalog from all providers
+starmap update
 
-# Sync specific provider with auto-approve
-starmap sync --provider openai --auto-approve
+# Update specific provider with auto-approve
+starmap update --provider openai --auto-approve
 ```
 
 ## Architecture
@@ -462,13 +462,13 @@ result, _ := reconciler.ReconcileCatalogs(ctx, sources)
 ```bash
 # Discovery
 starmap list models              # List all models
-starmap list providers           # List all providers  
+starmap list providers          # List all providers  
 starmap list authors            # List all authors
 
-# Synchronization
-starmap sync                    # Sync all providers
-starmap sync -p openai          # Sync specific provider
-starmap sync --dry-run          # Preview changes
+# Update catalog
+starmap update                  # Update all providers
+starmap update -p openai        # Update specific provider
+starmap update --dry-run        # Preview changes
 
 # Development
 starmap testdata --update       # Update test data
@@ -480,20 +480,20 @@ starmap export                  # Export catalog
 starmap export --format yaml    # Export as YAML
 ```
 
-### Advanced Sync Workflows
+### Advanced Update Workflows
 
 ```bash
 # Development: Use file-based catalog
-starmap sync --input ./catalog --provider groq --dry-run
+starmap update --input ./catalog --provider groq --dry-run
 
-# Production: Fresh sync with auto-approval
-starmap sync --fresh --auto-approve
+# Production: Fresh update with auto-approval
+starmap update --fresh --auto-approve
 
 # Custom directories
-starmap sync --input ./dev --output ./prod
+starmap update --input ./dev --output ./prod
 
 # Specific sources only
-starmap sync --sources "Provider APIs,models.dev (git)"
+starmap update --sources "Provider APIs,models.dev (git)"
 ```
 
 ### Environment Setup

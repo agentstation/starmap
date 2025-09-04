@@ -1,27 +1,39 @@
+# o3 - AI model
 id: o3
 name: o3
 authors:
 - id: openai
   name: OpenAI
-  models: {}
-  created_at: null
-  updated_at: null
+
+# Model metadata
+metadata:
+  release_date: 2025-04-16
+  open_weights: false
+  knowledge_cutoff: 2024-05-01
+
+# Model features
 features:
   modalities:
     input:
     - text
     output:
     - text
+
+  # Core capabilities
   tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
   attachments: false
+
+  # Reasoning & Verbosity
   reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
+
+  # Generation control support flags
   temperature: true
   top_p: true
   top_k: false
@@ -54,9 +66,13 @@ features:
   num_beams: false
   early_stopping: false
   diversity_penalty: false
+
+  # Response delivery
   format_response: false
   structured_outputs: false
   streaming: true
+
+# Model pricing
 pricing:
   tokens:
     input:
@@ -64,8 +80,12 @@ pricing:
     output:
       per_1m: 8.0
   currency: USD
+
+# Model limits
 limits:
   context_window: 200000
   output_tokens: 100000
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

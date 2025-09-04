@@ -1,86 +1,67 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-var (
-	updateFlagProvider    string
-	updateFlagAutoApprove bool
-	updateFlagDryRun      bool
-	updateFlagOutput      string
-	updateFlagInput       string
-	updateFlagForce       bool
-	updateFlagCleanup     bool
-	updateFlagReformat    bool
-)
+// newUpdateCommand creates the update command
+func newUpdateCommand() *cobra.Command {
+	var updateFlags *common.UpdateFlags
 
-// updateCmd represents the update command
-var updateCmd = &cobra.Command{
-	Use:   "update",
-	Short: "Update your local starmap catalog of authors, models, and providers.",
-	Long: `Update loads the starmap embedded catalog and fetches the latest catalog data 
-using your local provider API Keys (and auth sessions). This will include any special 
-access you have to models, including beta or preview models. 
+	cmd := &cobra.Command{
+		Use:     "update",
+		GroupID: "core",
+		Short:   "Synchronize catalog with all sources",
+		Long: `Update synchronizes your local starmap catalog by fetching the latest data
+from all configured sources:
 
-As a final step, starmap will pull from additional sources to enrich the data further 
-and save the catalog to ~/.starmap/ by default. 
-
-This will overwrite and append to an existing saved catalog.
+1. Provider APIs - Live model information from OpenAI, Anthropic, etc.
+2. models.dev - Pricing, limits, and metadata enrichment
+3. Embedded catalog - Baseline catalog data
 
 The command will:
-1. Load the embedded catalog
-2. Check for configured provider API keys
-3. Fetch model data from providers
-4. Update the embedded catalog with the latest model data
-5. Fetch data from additional sources
-6. Enrich the catalog with the latest data
-7. Save the catalog to ~/.starmap/ by default`,
-	Example: `  starmap update --provider openai
-  starmap update -p anthropic --auto-approve
-  starmap update --dry-run
-  starmap update -y  # update all providers with auto-approve
-  starmap update --output /path/to/custom/providers  # save to custom directory
-  starmap update --input ./internal/embedded/catalog  # load from directory instead of embedded
-  starmap update --force -p groq  # force fresh update - delete and refetch all groq models
-  starmap update --cleanup  # remove temporary models.dev repository after update`,
-	RunE: runUpdate,
+• Load the current catalog (embedded or from --input)
+• Fetch live data from provider APIs (if keys configured)
+• Enrich with models.dev data (pricing, limits, logos)
+• Reconcile all sources using field-level authority
+• Save the updated catalog to disk
+
+By default, saves to ./internal/embedded/catalog for development.`,
+		Example: `  starmap update                            # Update entire catalog
+  starmap update --provider openai          # Update specific provider
+  starmap update --dry-run                  # Preview changes
+  starmap update -y                          # Auto-approve changes
+  starmap update --force                    # Force fresh update`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
+			return performUpdate(ctx, updateFlags)
+		},
+	}
+
+	// Add update-specific flags
+	updateFlags = common.AddUpdateFlags(cmd)
+
+	return cmd
 }
 
-func init() {
-	rootCmd.AddCommand(updateCmd)
-
-	// Core functionality
-	updateCmd.Flags().StringVarP(&updateFlagProvider, "provider", "p", "", "Update models from specific provider (default: all providers)")
-
-	// Input/Output options
-	updateCmd.Flags().StringVarP(&updateFlagInput, "input", "i", "", "Load catalog from directory instead of embedded version")
-	updateCmd.Flags().StringVarP(&updateFlagOutput, "output", "o", "", "Save updated catalog to directory (default: internal/embedded/catalog/providers)")
-
-	// Behavior modifiers
-	updateCmd.Flags().BoolVarP(&updateFlagDryRun, "dry-run", "n", false, "Preview changes without applying them")
-	updateCmd.Flags().BoolVarP(&updateFlagAutoApprove, "auto-approve", "y", false, "Apply changes without confirmation prompts")
-
-	// Special operations (potentially destructive)
-	updateCmd.Flags().BoolVarP(&updateFlagForce, "force", "f", false, "Delete existing models and fetch fresh from APIs (destructive)")
-	updateCmd.Flags().BoolVarP(&updateFlagCleanup, "cleanup", "c", false, "Remove temporary models.dev repository after update")
-	updateCmd.Flags().BoolVar(&updateFlagReformat, "reformat", false, "Reformat providers.yaml file even without changes")
-}
-
-func runUpdate(cmd *cobra.Command, args []string) error {
-	// Get command context (includes signal handling if set up)
-	ctx := cmd.Context()
-
+// performUpdate executes the catalog update
+func performUpdate(ctx context.Context, flags *common.UpdateFlags) error {
 	// Show warning for force update
-	if updateFlagForce {
-		fmt.Printf("⚠️  WARNING: Force mode will DELETE all existing model files and replace them with fresh API models.\n")
-		if !updateFlagAutoApprove {
+	if flags.Force {
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "⚠️  WARNING: Force mode will DELETE all existing model files and replace them with fresh API models.\n")
+		}
+		if !flags.AutoApprove {
 			fmt.Printf("\nContinue with force update? (y/N): ")
 			var response string
 			if _, err := fmt.Scanln(&response); err != nil {
@@ -99,34 +80,40 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 	var sm starmap.Starmap
 	var err error
 
-	if updateFlagInput != "" {
+	if flags.Input != "" {
 		// Use file-based catalog from input directory
-		filesCatalog, err := catalogs.New(catalogs.WithFiles(updateFlagInput))
+		filesCatalog, err := catalogs.New(catalogs.WithFiles(flags.Input))
 		if err != nil {
-			return errors.WrapResource("create", "catalog", updateFlagInput, err)
+			return errors.WrapResource("create", "catalog", flags.Input, err)
 		}
 		sm, err = starmap.New(starmap.WithInitialCatalog(filesCatalog))
 		if err != nil {
 			return errors.WrapResource("create", "starmap", "files catalog", err)
 		}
-		fmt.Printf("📁 Using catalog from: %s\n", updateFlagInput)
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "📁 Using catalog from: %s\n", flags.Input)
+		}
 	} else {
 		// Use default starmap with embedded catalog
 		sm, err = starmap.New()
 		if err != nil {
 			return errors.WrapResource("create", "starmap", "", err)
 		}
-		fmt.Printf("📦 Using embedded catalog\n")
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "📦 Using embedded catalog\n")
+		}
 	}
 
 	// Build sync options - use default output path if not specified
-	outputPath := updateFlagOutput
+	outputPath := flags.Output
 	if outputPath == "" {
 		outputPath = "./internal/embedded/catalog"
 	}
-	opts := buildSyncOptions(updateFlagProvider, outputPath, updateFlagDryRun, updateFlagForce, updateFlagAutoApprove, updateFlagCleanup, updateFlagReformat)
+	opts := buildSyncOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat)
 
-	fmt.Printf("\nStarting update...\n\n")
+	if !globalFlags.Quiet {
+		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
+	}
 
 	// Perform the update
 	result, err := sm.Sync(ctx, opts...)
@@ -138,50 +125,62 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Display results
+	// Display results based on output format
+	if globalFlags.Output == "json" || globalFlags.Output == "yaml" {
+		formatter := output.NewFormatter(output.Format(globalFlags.Output))
+		return formatter.Format(os.Stdout, result)
+	}
+
+	// Human-readable output
 	if result.HasChanges() {
-		fmt.Printf("=== UPDATE RESULTS ===\n\n")
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "=== UPDATE RESULTS ===\n\n")
+		}
 
-		// Show summary for each provider
-		for providerID, providerResult := range result.ProviderResults {
-			if providerResult.HasChanges() {
-				fmt.Printf("🔄 %s:\n", providerID)
+		if !globalFlags.Quiet {
+			// Show summary for each provider
+			for providerID, providerResult := range result.ProviderResults {
+				if providerResult.HasChanges() {
+					fmt.Fprintf(os.Stderr, "🔄 %s:\n", providerID)
 
-				// Show API fetch status
-				if providerResult.APIModelsCount > 0 {
-					fmt.Printf("  📡 Provider API: %d models found\n", providerResult.APIModelsCount)
-				} else {
-					// When no models from API but we have updates, it's from enrichment
-					if providerResult.UpdatedCount > 0 {
-						fmt.Printf("  ⏭️  Provider API: Skipped (using cached models)\n")
+					// Show API fetch status
+					if providerResult.APIModelsCount > 0 {
+						fmt.Fprintf(os.Stderr, "  📡 Provider API: %d models found\n", providerResult.APIModelsCount)
 					} else {
-						fmt.Printf("  ⏭️  Provider API: No models fetched\n")
+						// When no models from API but we have updates, it's from enrichment
+						if providerResult.UpdatedCount > 0 {
+							fmt.Fprintf(os.Stderr, "  ⏭️  Provider API: Skipped (using cached models)\n")
+						} else {
+							fmt.Fprintf(os.Stderr, "  ⏭️  Provider API: No models fetched\n")
+						}
 					}
-				}
 
-				// Show enrichment if models were updated but not added
-				if providerResult.UpdatedCount > 0 && providerResult.AddedCount == 0 {
-					fmt.Printf("  🔗 Enriched: %d models with pricing/limits from models.dev\n", providerResult.UpdatedCount)
-				}
+					// Show enrichment if models were updated but not added
+					if providerResult.UpdatedCount > 0 && providerResult.AddedCount == 0 {
+						fmt.Fprintf(os.Stderr, "  🔗 Enriched: %d models with pricing/limits from models.dev\n", providerResult.UpdatedCount)
+					}
 
-				// Show changes summary
-				if providerResult.AddedCount > 0 || providerResult.RemovedCount > 0 {
-					fmt.Printf("  📊 Changes: %d added, %d updated, %d removed\n",
-						providerResult.AddedCount, providerResult.UpdatedCount, providerResult.RemovedCount)
-				} else if providerResult.UpdatedCount > 0 {
-					fmt.Printf("  📊 Changes: %d models enriched\n", providerResult.UpdatedCount)
+					// Show changes summary
+					if providerResult.AddedCount > 0 || providerResult.RemovedCount > 0 {
+						fmt.Fprintf(os.Stderr, "  📊 Changes: %d added, %d updated, %d removed\n",
+							providerResult.AddedCount, providerResult.UpdatedCount, providerResult.RemovedCount)
+					} else if providerResult.UpdatedCount > 0 {
+						fmt.Fprintf(os.Stderr, "  📊 Changes: %d models enriched\n", providerResult.UpdatedCount)
+					}
+					fmt.Fprintf(os.Stderr, "\n")
 				}
-				fmt.Printf("\n")
 			}
 		}
 
 		// Ask for confirmation unless auto-approve or dry-run
 		if result.DryRun {
-			fmt.Printf("🔍 Dry run mode - no changes will be made\n")
+			if !globalFlags.Quiet {
+				fmt.Fprintf(os.Stderr, "🔍 Dry run mode - no changes will be made\n")
+			}
 			return nil
 		}
 
-		if !updateFlagAutoApprove {
+		if !flags.AutoApprove {
 			fmt.Printf("Apply these changes? (y/N): ")
 			var response string
 			if _, err := fmt.Scanln(&response); err != nil {
@@ -194,11 +193,13 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 			}
 
 			// Re-run sync without dry-run
-			fmt.Printf("\n🚀 Applying changes...\n")
-			fmt.Printf("📁 Saving models to: %s\n", outputPath)
+			if !globalFlags.Quiet {
+				fmt.Fprintf(os.Stderr, "\n🚀 Applying changes...\n")
+				fmt.Fprintf(os.Stderr, "📁 Saving models to: %s\n", outputPath)
+			}
 
 			// Call sync again without dry-run
-			finalOpts := buildSyncOptions(updateFlagProvider, outputPath, false, updateFlagForce, false, updateFlagCleanup, updateFlagReformat)
+			finalOpts := buildSyncOptions(flags.Provider, outputPath, false, flags.Force, false, flags.Cleanup, flags.Reformat)
 
 			_, err := sm.Sync(ctx, finalOpts...)
 			if err != nil {
@@ -210,10 +211,14 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 			}
 		}
 
-		fmt.Printf("\n🎉 Update completed successfully!\n")
-		fmt.Printf("📊 Total: %s\n", result.Summary())
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
+			fmt.Fprintf(os.Stderr, "📊 Total: %s\n", result.Summary())
+		}
 	} else {
-		fmt.Printf("✅ All providers are up to date - no changes needed\n")
+		if !globalFlags.Quiet {
+			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")
+		}
 	}
 
 	return nil
@@ -247,4 +252,8 @@ func buildSyncOptions(provider, output string, dryRun, force, autoApprove, clean
 	}
 
 	return opts
+}
+
+func init() {
+	rootCmd.AddCommand(newUpdateCommand())
 }

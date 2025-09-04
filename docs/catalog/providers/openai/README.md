@@ -82,26 +82,21 @@ San Francisco, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [GPT-3.5 Turbo 0125](./models/gpt-3.5-turbo-0125.md) | 16.4k | $0.50 | $1.50 | 📝 🔧 ⚡ |
-| [GPT-3.5 Turbo 1106](./models/gpt-3.5-turbo-1106.md) | 16.4k | $1.00 | $2.00 | 📝 🔧 ⚡ |
-| [GPT-3.5 Turbo Instruct](./models/gpt-3.5-turbo-instruct.md) | 4.1k | $1.50 | $2.00 | 📝 🔧 ⚡ |
-| [GPT-3.5-turbo](./models/gpt-3.5-turbo.md) | 16.4k | $0.50 | $1.50 | 📝 🔧 ⚡ |
 | [GPT-4](./models/gpt-4.md) | 8.2k | $30.00 | $60.00 | — |
 | [GPT-4 Turbo](./models/gpt-4-turbo.md) | 128k | $10.00 | $30.00 | — |
-| [GPT-4.1](./models/gpt-4.1.md) | 1.0M | $2.00 | $8.00 | 📝 🔧 ⚡ |
-| [GPT-4.1 mini](./models/gpt-4.1-mini.md) | 1.0M | $0.40 | $1.60 | 📝 🔧 ⚡ |
-| [GPT-4.1 nano](./models/gpt-4.1-nano.md) | 1.0M | $0.10 | $0.40 | 📝 🔧 ⚡ |
-| [GPT-4o](./models/gpt-4o.md) | 128k | $2.50 | $10.00 | 📝 🔧 ⚡ |
-| [GPT-4o mini](./models/gpt-4o-mini.md) | 128k | $0.15 | $0.60 | 📝 🔧 ⚡ |
-| [GPT-5](./models/gpt-5.md) | 400k | $1.25 | $10.00 | 📝 ⚡ |
-| [GPT-5 Chat (latest)](./models/gpt-5-chat-latest.md) | 400k | $1.25 | $10.00 | 📝 ⚡ |
-| [GPT-5 Mini](./models/gpt-5-mini.md) | 400k | $0.25 | $2.00 | 📝 ⚡ |
-| [GPT-5 Nano](./models/gpt-5-nano.md) | 400k | $0.05 | $0.40 | 📝 ⚡ |
+| [gpt-3.5-turbo](./models/gpt-3.5-turbo.md) | 16.4k | $0.50 | $1.50 | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-0125](./models/gpt-3.5-turbo-0125.md) | 16.4k | $0.50 | $1.50 | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-1106](./models/gpt-3.5-turbo-1106.md) | 16.4k | $1.00 | $2.00 | 📝 🔧 ⚡ |
 | [gpt-3.5-turbo-16k](./models/gpt-3.5-turbo-16k.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-3.5-turbo-instruct](./models/gpt-3.5-turbo-instruct.md) | 4.1k | $1.50 | $2.00 | 📝 🔧 ⚡ |
 | [gpt-3.5-turbo-instruct-0914](./models/gpt-3.5-turbo-instruct-0914.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1](./models/gpt-4.1.md) | 1.0M | $2.00 | $8.00 | 📝 🔧 ⚡ |
 | [gpt-4.1-2025-04-14](./models/gpt-4.1-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-mini](./models/gpt-4.1-mini.md) | 1.0M | $0.40 | $1.60 | 📝 🔧 ⚡ |
 | [gpt-4.1-mini-2025-04-14](./models/gpt-4.1-mini-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4.1-nano](./models/gpt-4.1-nano.md) | 1.0M | $0.10 | $0.40 | 📝 🔧 ⚡ |
 | [gpt-4.1-nano-2025-04-14](./models/gpt-4.1-nano-2025-04-14.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o](./models/gpt-4o.md) | 128k | $2.50 | $10.00 | 📝 🔧 ⚡ |
 | [gpt-4o-2024-05-13](./models/gpt-4o-2024-05-13.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-2024-08-06](./models/gpt-4o-2024-08-06.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-2024-11-20](./models/gpt-4o-2024-11-20.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
@@ -109,6 +104,7 @@ San Francisco, CA, USA
 | [gpt-4o-audio-preview-2024-10-01](./models/gpt-4o-audio-preview-2024-10-01.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-audio-preview-2024-12-17](./models/gpt-4o-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-audio-preview-2025-06-03](./models/gpt-4o-audio-preview-2025-06-03.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-4o-mini](./models/gpt-4o-mini.md) | 128k | $0.15 | $0.60 | 📝 🔧 ⚡ |
 | [gpt-4o-mini-2024-07-18](./models/gpt-4o-mini-2024-07-18.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-mini-audio-preview](./models/gpt-4o-mini-audio-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-mini-audio-preview-2024-12-17](./models/gpt-4o-mini-audio-preview-2024-12-17.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
@@ -119,8 +115,12 @@ San Francisco, CA, USA
 | [gpt-4o-search-preview](./models/gpt-4o-search-preview.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-search-preview-2025-03-11](./models/gpt-4o-search-preview-2025-03-11.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
 | [gpt-4o-transcribe](./models/gpt-4o-transcribe.md) | N/A | N/A | N/A | 📝 🔧 ⚡ |
+| [gpt-5](./models/gpt-5.md) | 400k | $1.25 | $10.00 | 📝 ⚡ |
 | [gpt-5-2025-08-07](./models/gpt-5-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-chat-latest](./models/gpt-5-chat-latest.md) | 400k | $1.25 | $10.00 | 📝 ⚡ |
+| [gpt-5-mini](./models/gpt-5-mini.md) | 400k | $0.25 | $2.00 | 📝 ⚡ |
 | [gpt-5-mini-2025-08-07](./models/gpt-5-mini-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
+| [gpt-5-nano](./models/gpt-5-nano.md) | 400k | $0.05 | $0.40 | 📝 ⚡ |
 | [gpt-5-nano-2025-08-07](./models/gpt-5-nano-2025-08-07.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [gpt-audio](./models/gpt-audio.md) | N/A | N/A | N/A | 📝 ⚡ |
 | [gpt-audio-2025-08-28](./models/gpt-audio-2025-08-28.md) | N/A | N/A | N/A | 📝 ⚡ |

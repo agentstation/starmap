@@ -1,7 +1,0 @@
-id: gemini-2.5-pro
-name: Gemini 2.5 Pro
-limits:
-  context_window: 1048576
-  output_tokens: 65536
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"

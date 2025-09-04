@@ -12,23 +12,12 @@ Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Juras
 | **Author ID** | `ai21` |
 | **Type** | 🚀 AI Startups |
 | **Website** | [https://ai21.com](https://ai21.com) |
-| **Total Models** | 1 |
-| **Available On** | 1 provider |
+| **Total Models** | 0 |
 
   
 ## Models
   
-| Model | Providers | Context | Capabilities |
-|---------|---------|---------|---------|
-| [Jamba Large 1.6](./models/jamba-large-1.6-at-001.md) | google-vertex | 256k | Text, Functions |
-
-  
-## Provider Availability
-  
-Models from this author are available through the following providers:
-  
-  
-- **[google-vertex](../../providers/google-vertex/)** - 1 model
+*No models found from this author.*
   
 ### See Also
   

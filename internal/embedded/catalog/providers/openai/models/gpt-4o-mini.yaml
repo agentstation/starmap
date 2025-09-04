@@ -1,27 +1,39 @@
+# gpt-4o-mini - AI model
 id: gpt-4o-mini
-name: GPT-4o mini
+name: gpt-4o-mini
 authors:
 - id: openai
   name: OpenAI
-  models: {}
-  created_at: null
-  updated_at: null
+
+# Model metadata
+metadata:
+  release_date: 2024-07-18
+  open_weights: false
+  knowledge_cutoff: 2023-09-01
+
+# Model features
 features:
   modalities:
     input:
     - text
     output:
     - text
+
+  # Core capabilities
   tool_calls: true
   tools: true
   tool_choice: true
   web_search: false
   attachments: false
+
+  # Reasoning & Verbosity
   reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
+
+  # Generation control support flags
   temperature: true
   top_p: true
   top_k: false
@@ -54,9 +66,13 @@ features:
   num_beams: false
   early_stopping: false
   diversity_penalty: false
+
+  # Response delivery
   format_response: true
   structured_outputs: true
   streaming: true
+
+# Model pricing
 pricing:
   tokens:
     input:
@@ -64,8 +80,12 @@ pricing:
     output:
       per_1m: 0.6
   currency: USD
+
+# Model limits
 limits:
   context_window: 128000
   output_tokens: 16384
-created_at: "2025-09-02T22:27:11Z"
-updated_at: "2025-09-02T22:27:11Z"
+
+# Timestamps
+created_at: 2025-09-04T04:38:24Z
+updated_at: 2025-09-04T04:38:24Z

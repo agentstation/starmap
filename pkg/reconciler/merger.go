@@ -136,13 +136,6 @@ func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]ca
 	return mergedProviders, allProvenance, nil
 }
 
-// field merges a single field using authorities (internal method)
-func (merger *merger) field(fieldPath string, values map[sources.Type]any) (any, sources.Type) {
-	// Use the strategy to determine the value
-	value, source, _ := merger.strategy.ResolveConflict(fieldPath, values)
-	return value, source
-}
-
 // model merges a single model from multiple sources
 func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalogs.Model) (catalogs.Model, map[string]provenance.Field) {
 	merged := catalogs.Model{
