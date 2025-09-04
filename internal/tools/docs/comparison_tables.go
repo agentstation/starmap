@@ -135,11 +135,8 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 
 		statusPage := "—"
 		if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
-			// Build status page link
-			statusMarkdown := NewMarkdownBuffer()
-			statusMarkdown.Link("Status", *provider.StatusPageURL)
-			statusMarkdown.Build()
-			statusPage = statusMarkdown.String()
+			// Build status page link directly
+			statusPage = fmt.Sprintf("[Status](%s)", *provider.StatusPageURL)
 		}
 
 		rows = append(rows, []string{
@@ -335,11 +332,8 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		}
 		toolsStr := "—"
 		if len(tools) > 0 {
-			// Join tools list
-			toolsMarkdown := NewMarkdownBuffer()
-			toolsMarkdown.JoinList(tools, ", ")
-			toolsMarkdown.Build()
-			toolsStr = toolsMarkdown.String()
+			// Join tools list directly
+			toolsStr = buildJoinedList(tools, ", ")
 		}
 
 		// Reasoning section
@@ -357,11 +351,8 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		}
 		reasoningStr := "—"
 		if len(reasoning) > 0 {
-			// Join reasoning list
-			reasoningMarkdown := NewMarkdownBuffer()
-			reasoningMarkdown.JoinList(reasoning, ", ")
-			reasoningMarkdown.Build()
-			reasoningStr = reasoningMarkdown.String()
+			// Join reasoning list directly
+			reasoningStr = buildJoinedList(reasoning, ", ")
 		}
 
 		// Advanced controls
@@ -382,11 +373,8 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 		}
 		advancedStr := "—"
 		if len(advanced) > 0 {
-			// Join advanced list
-			advancedMarkdown := NewMarkdownBuffer()
-			advancedMarkdown.JoinList(advanced, ", ")
-			advancedMarkdown.Build()
-			advancedStr = advancedMarkdown.String()
+			// Join advanced list directly
+			advancedStr = buildJoinedList(advanced, ", ")
 		}
 
 		rows = append(rows, []string{
@@ -422,27 +410,15 @@ func formatBytes(bytes int64) string {
 	switch {
 	case bytes >= GB:
 		// Format as GB
-		markdown := NewMarkdownBuffer()
-		markdown.PlainTextf("%.1f GB", float64(bytes)/float64(GB))
-		markdown.Build()
-		return markdown.String()
+		return fmt.Sprintf("%.1f GB", float64(bytes)/float64(GB))
 	case bytes >= MB:
 		// Format as MB
-		markdown := NewMarkdownBuffer()
-		markdown.PlainTextf("%.1f MB", float64(bytes)/float64(MB))
-		markdown.Build()
-		return markdown.String()
+		return fmt.Sprintf("%.1f MB", float64(bytes)/float64(MB))
 	case bytes >= KB:
 		// Format as KB
-		markdown := NewMarkdownBuffer()
-		markdown.PlainTextf("%.1f KB", float64(bytes)/float64(KB))
-		markdown.Build()
-		return markdown.String()
+		return fmt.Sprintf("%.1f KB", float64(bytes)/float64(KB))
 	default:
 		// Format as bytes
-		markdown := NewMarkdownBuffer()
-		markdown.PlainTextf("%d B", bytes)
-		markdown.Build()
-		return markdown.String()
+		return fmt.Sprintf("%d B", bytes)
 	}
 }

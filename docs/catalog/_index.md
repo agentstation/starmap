@@ -3,18 +3,18 @@
 A comprehensive catalog of AI models from various providers, with detailed specifications, pricing, and capabilities.
   
   
-*_Last Updated: September 3, 2025_*
+*_Last Updated: September 4, 2025_*
   
   
 ## 📊 Catalog Statistics
   
 | Metric | Value |
 |---------|---------|
-| **Total Models** | 180 |
+| **Total Models** | 449 |
 | **Providers** | 7 |
 | **Model Authors** | 80 |
-| **Models with Pricing** | 80 (44.4%) |
-| **Average Context** | 306k tokens |
+| **Models with Pricing** | 86 (19.2%) |
+| **Average Context** | 404k tokens |
 
   
 ## 🚀 Quick Navigation
@@ -23,12 +23,12 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Provider | Models | Latest Addition |
 |---------|---------|---------|
+| 🏢 [Google Vertex AI](providers/google-vertex/) | 278 | Xlm Roberta Large |
 | 🤖 [OpenAI](providers/openai/) | 73 | whisper-1 |
 | 🔮 [Google AI Studio](providers/google-ai-studio/) | 50 | Text Embedding 004 |
 | ⚡ [Groq](providers/groq/) | 27 | whisper-large-v3-turbo |
 | 🧠 [Anthropic](providers/anthropic/) | 10 | Claude Sonnet 4 |
 | 🚀 [Cerebras](providers/cerebras/) | 9 | qwen-3-coder-480b |
-| 🏢 [Google Vertex AI](providers/google-vertex/) | 9 | Gemini 2.5 Pro Preview 06-05 |
 | 🔍 [DeepSeek](providers/deepseek/) | 2 | deepseek-reasoner |
 
   
@@ -36,16 +36,16 @@ A comprehensive catalog of AI models from various providers, with detailed speci
   
 | Author | Models | Description |
 |---------|---------|---------|
-| 🤖 [OpenAI](authors/openai/) | 69 | AI research company known for GPT models, ChatGPT, and DA... |
-| 🔍 [Google](authors/google/) | 51 | Technology company known for the Gemini line of multimoda... |
-| 🧠 [Anthropic](authors/anthropic/) | 8 | AI safety company known for Claude models and Constitutio... |
-| 📘 [Meta](authors/meta/) | 7 | Social media company known for LLaMA/Llama model series a... |
-| 🔬 [DeepSeek](authors/deepseek/) | 2 | Chinese AI company known for DeepSeek-Coder and reasoning... |
+| 🔍 [Google](authors/google/) | 169 | Technology company known for the Gemini line of multimoda... |
+| 🤖 [OpenAI](authors/openai/) | 74 | AI research company known for GPT models, ChatGPT, and DA... |
+| 📘 [Meta](authors/meta/) | 29 | Social media company known for LLaMA/Llama model series a... |
+| 🧠 [Anthropic](authors/anthropic/) | 14 | AI safety company known for Claude models and Constitutio... |
+| 🔬 [DeepSeek](authors/deepseek/) | 7 | Chinese AI company known for DeepSeek-Coder and reasoning... |
+| 👥 [Qwen Team](authors/qwen/) | 7 | AI research team within Alibaba Cloud responsible for dev... |
+| 👥 [Mistral AI](authors/mistral/) | 5 | French AI company known for efficient open-source languag... |
+| 👥 [AI21 Labs](authors/ai21/) | 1 | Israeli AI company known for Jamba hybrid SSM-Transformer... |
 | 👥 [LAION](authors/laion/) | 0 | AI research organization |
-| 👥 [Midjourney](authors/midjourney/) | 0 | AI research organization |
-| 👥 [Anysphere](authors/anysphere/) | 0 | AI research organization |
-| 👥 [Apple](authors/apple/) | 0 | AI research organization |
-| 👥 [Beijing Academy of Artificial Intelligence](authors/baai/) | 0 | Chinese AI research institute known for Wu Dao multimodal... |
+| 👥 [Alignment Research Center](authors/alignment-research/) | 0 | AI safety research organization focused on AI alignment a... |
 
   
 [View all 80 authors →](authors/)
@@ -59,14 +59,14 @@ A comprehensive catalog of AI models from various providers, with detailed speci
 |---------|---------|---------|---------|
 | **[GPT-4](models/gpt-4.md)** | OpenAI | 8.2k | $30.00/$60.00 |
 | **[GPT-4 Turbo](models/gpt-4-turbo.md)** | OpenAI | 128k | $10.00/$30.00 |
+| **[Claude 3 5 Haiku](models/claude-3-5-haiku-at-20241022.md)** | Google Vertex AI | 200k | $0.80/$4.00 |
+| **[Claude 3 7 Sonnet](models/claude-3-7-sonnet-at-20250219.md)** | Google Vertex AI | 200k | $3.00/$15.00 |
 | **[Claude Haiku 3](models/claude-3-haiku-20240307.md)** | Anthropic | 200k | $0.25/$1.25 |
 | **[Claude Haiku 3.5](models/claude-3-5-haiku-20241022.md)** | Anthropic | 200k | $0.80/$4.00 |
 | **[Claude Opus 3](models/claude-3-opus-20240229.md)** | Anthropic | 200k | $15.00/$75.00 |
 | **[Claude Opus 4](models/claude-opus-4-20250514.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Opus 4.1](models/claude-opus-4-1-20250805.md)** | Anthropic | 200k | $15.00/$75.00 |
-| **[Claude Sonnet 3](models/claude-3-sonnet-20240229.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 3.5 (New)](models/claude-3-5-sonnet-20241022.md)** | Anthropic | 200k | $3.00/$15.00 |
-| **[Claude Sonnet 3.5 (Old)](models/claude-3-5-sonnet-20240620.md)** | Anthropic | 200k | $3.00/$15.00 |
+| **[Claude Opus 4](models/claude-opus-4-at-20250514.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
+| **[Claude Opus 4 1](models/claude-opus-4-1-at-20250805.md)** | Google Vertex AI | 200k | $15.00/$75.00 |
 
   
 ## 📚 Browse Options

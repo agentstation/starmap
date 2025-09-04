@@ -165,13 +165,11 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 		focusArea := getFocusArea(author)
 		badge := getAuthorBadge(author.Name)
 
-		// Build author name with badge and link
-		authorCell := NewMarkdownBuffer()
-		authorCell.PlainText(badge).PlainText(" ").BoldLink(author.Name, string(author.ID)+"/")
-		authorCell.Build()
+		// Build author name with badge and link - directly as string
+		authorCell := fmt.Sprintf("%s %s", badge, buildBoldLink(author.Name, string(author.ID)+"/"))
 
 		rows = append(rows, []string{
-			authorCell.String(),
+			authorCell,
 			fmt.Sprintf("%d", info.modelCount),
 			providersStr,
 			focusArea,
@@ -219,27 +217,19 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 					desc = *author.Description
 					if len(desc) > 80 {
 						// Truncate description
-						descMarkdown := NewMarkdownBuffer()
-						descMarkdown.TruncateText(desc, 80)
-						descMarkdown.Build()
-						desc = descMarkdown.String()
+						desc = buildTruncatedText(desc, 80)
 					}
 				}
 
-				// Build list item using builder
-				itemMarkdown := NewMarkdownBuffer()
-				itemMarkdown.BoldLink(author.Name, string(author.ID)+"/").
-					PlainText(" - ").
-					CountText(info.modelCount, "model", "models").
-					PlainText(" - ").
-					PlainText(desc)
+				// Build list item directly
+				item := fmt.Sprintf("%s - %s - %s",
+					buildBoldLink(author.Name, string(author.ID)+"/"),
+					buildCountText(info.modelCount, "model", "models"),
+					desc)
 
 				if author.Website != nil && *author.Website != "" {
-					itemMarkdown.PlainText(" | ").Link("Website", *author.Website)
+					item += fmt.Sprintf(" | [Website](%s)", *author.Website)
 				}
-
-				itemMarkdown.Build()
-				item := itemMarkdown.String()
 				items = append(items, item)
 			}
 			markdown.BulletList(items...).LF()
@@ -285,12 +275,11 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	}
 
 	// Header with logo if available
-	// Build title with logo using builder
+	// Build title with logo directly
 	logoPath := "https://raw.githubusercontent.com/agentstation/starmap/master/internal/embedded/logos/" + string(author.ID) + ".svg"
-	titleMarkdown := NewMarkdownBuffer()
-	titleMarkdown.PlainTextf("# <img src=\"%s\" alt=\"%s logo\" width=\"48\" height=\"48\" style=\"vertical-align: middle;\"> %s", logoPath, author.Name, author.Name)
-	titleMarkdown.Build()
-	markdown.RawHTML(titleMarkdown.String()).LF().LF()
+	titleHTML := fmt.Sprintf("# <img src=\"%s\" alt=\"%s logo\" width=\"48\" height=\"48\" style=\"vertical-align: middle;\"> %s",
+		logoPath, author.Name, author.Name)
+	markdown.RawHTML(titleHTML).LF().LF()
 
 	// Author description
 	if author.Description != nil && *author.Description != "" {
@@ -307,11 +296,9 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	}
 
 	if author.Website != nil && *author.Website != "" {
-		// Build website link using builder
-		websiteMarkdown := NewMarkdownBuffer()
-		websiteMarkdown.Link(*author.Website, *author.Website)
-		websiteMarkdown.Build()
-		infoRows = append(infoRows, []string{"**Website**", websiteMarkdown.String()})
+		// Build website link directly
+		websiteLink := fmt.Sprintf("[%s](%s)", *author.Website, *author.Website)
+		infoRows = append(infoRows, []string{"**Website**", websiteLink})
 	}
 
 	// Find all models by this author

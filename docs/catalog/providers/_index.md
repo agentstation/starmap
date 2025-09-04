@@ -12,12 +12,12 @@ Organizations that host and serve AI models through APIs.
   
 | Provider | Models | Free Tier | API Key Required | Status Page |
 |---------|---------|---------|---------|---------|
+| **Google Vertex AI** | 278 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
 | **OpenAI** | 73 | ❌ | ✅ | [Status](https://status.openai.com) |
 | **Google AI Studio** | 50 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
 | **Groq** | 27 | ❌ | ✅ | [Status](https://status.groq.com) |
 | **Anthropic** | 10 | ❌ | ✅ | [Status](https://status.anthropic.com) |
 | **Cerebras** | 9 | ❌ | ✅ | [Status](https://status.cerebras.ai/) |
-| **Google Vertex AI** | 9 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
 | **DeepSeek** | 2 | ❌ | ✅ | [Status](https://status.deepseek.com) |
 
   
@@ -28,27 +28,27 @@ Overview of popular models available across different providers:
   
 | Model | Provider | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|---------|
+| **Automl E2e** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Automl Vision Image Classification** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Automl Vision Image Object Detection** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Bart Large Cnn** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Bert Base** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Bert Base Uncased** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Chat Bison** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Chirp 2** | Google Vertex AI | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
+| **Claude 3 5 Haiku** | Google Vertex AI | 200k | $0.8000 | $4.00 | 📝 👁️ 🔧 ⚡ |
+| **Claude 3 7 Sonnet** | Google Vertex AI | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
+| **Claude 3 Haiku** | Google Vertex AI | 200k | — | — | 📝 👁️ 🔧 ⚡ |
 | **Claude Haiku 3** | Anthropic | 200k | $0.2500 | $1.25 | 📝 👁️ 🔧 ⚡ |
 | **Claude Haiku 3.5** | Anthropic | 200k | $0.8000 | $4.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 3** | Anthropic | 200k | $15.00 | $75.00 | — |
 | **Claude Opus 4** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| **Claude Opus 4** | Google Vertex AI | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
+| **Claude Opus 4 1** | Google Vertex AI | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Opus 4.1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Sonnet 3** | Anthropic | 200k | $3.00 | $15.00 | — |
 | **Claude Sonnet 3.5 (New)** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Sonnet 3.5 (Old)** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Sonnet 3.7** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| **Claude Sonnet 4** | Anthropic | 200k | $3.00 | $15.00 | 📝 🔧 ⚡ |
-| **Codex Mini** | OpenAI | 200k | $1.50 | $6.00 | — |
-| **Embedding 001** | Google AI Studio | 2.0k | — | — | 📝 ⚡ |
-| **Embedding Gecko** | Google AI Studio | 1.0k | — | — | 📝 ⚡ |
-| **GPT-4** | OpenAI | 8.2k | $30.00 | $60.00 | — |
-| **GPT-4 Turbo** | OpenAI | 128k | $10.00 | $30.00 | — |
-| **Gemini 1.5 Flash** | Google AI Studio | 1.0M | $0.0750 | $0.3000 | 📝 👁️ 🔧 ⚡ |
-| **Gemini 1.5 Flash 002** | Google AI Studio | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
-| **Gemini 1.5 Flash Latest** | Google AI Studio | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
-| **Gemini 1.5 Flash-8B** | Google AI Studio | 1.0M | $0.0375 | $0.1500 | 📝 👁️ 🔧 ⚡ |
-| **Gemini 1.5 Flash-8B 001** | Google AI Studio | 1.0M | — | — | 📝 👁️ 🔧 ⚡ |
-| _...and 160 more_ |  |  |  |  |  |
+| _...and 429 more_ |  |  |  |  |  |
 
   
 ## Provider Details
@@ -112,13 +112,13 @@ Google's AI platform offering Gemini models with multimodal capabilities.
 Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
   
-- **Models**: 9 available
+- **Models**: 278 available
 - **Status**: [Check current status](https://status.cloud.google.com)
 - **Featured Models**:
--   - Gemini 2.0 Flash
--   - Gemini 2.0 Flash Lite
--   - Gemini 2.5 Flash
--   - [View all 9 models →](google-vertex/)
+-   - automl-e2e
+-   - Automl E2e
+-   - automl-vision-image-classification
+-   - [View all 278 models →](google-vertex/)
   
 ### <img src="./groq/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [Groq](groq/)
   
