@@ -79,9 +79,9 @@ params:
   BookMenuBundle: "menu"
   BookDateFormat: "Jan 2, 2006"
   
-  # Custom CSS/JS
-  BookCustomCSS: ["css/custom.css"]
-  BookCustomJS: ["js/custom.js"]
+  # Custom CSS/JS (if needed in future)
+  # BookCustomCSS: ["css/custom.css"]
+  # BookCustomJS: ["js/custom.js"]
 
 # Menu configuration
 menu:
