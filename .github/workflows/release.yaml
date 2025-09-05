@@ -48,21 +48,11 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      # Install gomarkdoc for go generate in GoReleaser's before hooks
       - name: Install gomarkdoc
         run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 
-      - name: Import GPG key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
-        run: |
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-          # Configure GPG for non-interactive use
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          gpgconf --reload gpg-agent
-          # Set up git config for signing
-          git config --global user.signingkey ${{ vars.ORG_GPG_KEY_ID }}
-
+      # Set up Docker for GoReleaser's Docker builds
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -78,6 +68,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Install Syft for GoReleaser's SBOM generation
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0.20.4
+
+      # Import GPG key for GoReleaser's artifact signing
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          # Configure GPG for non-interactive use
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          gpgconf --reload gpg-agent
+          # Set up git config for signing
+          git config --global user.signingkey ${{ vars.ORG_GPG_KEY_ID }}
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
