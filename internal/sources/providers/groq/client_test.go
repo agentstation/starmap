@@ -343,7 +343,7 @@ func TestConvertToGroqModel(t *testing.T) {
 func TestGroqClientListModels(t *testing.T) {
 	// Set a test API key to ensure the test works without environment variables
 	t.Setenv("GROQ_API_KEY", "test-api-key")
-	
+
 	requestCount := 0
 	// Create a mock HTTP server that only handles the models list endpoint
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

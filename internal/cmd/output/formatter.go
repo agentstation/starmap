@@ -138,6 +138,8 @@ func (f *TableFormatter) formatTable(w io.Writer, data TableData) error {
 }
 
 // TableData represents data formatted for table output.
+// Deprecated: This type name stutters with package name.
+// TODO: Refactor to use table.Data from internal/cmd/table package.
 type TableData struct {
 	Headers []string
 	Rows    [][]string

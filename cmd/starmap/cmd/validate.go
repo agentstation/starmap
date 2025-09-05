@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/cmd/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -31,21 +31,16 @@ func init() {
 }
 
 func runValidate(_ *cobra.Command, _ []string) error {
-	sm, err := starmap.New()
+	cat, err := catalog.Load()
 	if err != nil {
-		return errors.WrapResource("create", "starmap", "", err)
-	}
-
-	catalog, err := sm.Catalog()
-	if err != nil {
-		return errors.WrapResource("get", "catalog", "", err)
+		return err
 	}
 
 	// Get list of supported providers using the public API
 	fetcher := sources.NewProviderFetcher()
 	supportedProviders := fetcher.List()
 
-	report, err := catalogs.ValidateAllProviders(catalog, supportedProviders)
+	report, err := catalogs.ValidateAllProviders(cat, supportedProviders)
 	if err != nil {
 		return &errors.ProcessError{
 			Operation: "validate provider access",

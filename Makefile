@@ -44,7 +44,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test test-race test-integration test-all test-coverage lint fmt fmt-all vet deps tidy run update fix install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage lint fmt fmt-all vet deps tidy run update fix install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
 
 # Default target
 all: clean fmt-all lint test-all build
@@ -73,11 +73,35 @@ build: ## Build the binary to current directory
 	$(GOBUILD) $(LDFLAGS) -o $(BINARY_NAME) $(MAIN_PATH)
 	@echo "$(GREEN)Built $(BINARY_NAME) in current directory$(NC)"
 
-install: ## Install the binary to GOPATH/bin
+install: ## Install the binary to GOPATH/bin and shell completions
 	@echo "$(BLUE)Installing $(BINARY_NAME)...$(NC)"
 	$(GOCMD) install $(LDFLAGS) ./cmd/starmap
 	@echo "$(GREEN)Installed $(BINARY_NAME) to $(shell go env GOPATH)/bin$(NC)"
 	@echo "$(YELLOW)Make sure $(shell go env GOPATH)/bin is in your PATH$(NC)"
+	@echo ""
+	@echo "$(BLUE)Installing shell completions...$(NC)"
+	@if command -v starmap >/dev/null 2>&1; then \
+		starmap install completion && echo "$(GREEN)✅ Completions installed for all shells$(NC)" || echo "$(YELLOW)⚠️  Some completions may have failed$(NC)"; \
+	else \
+		echo "$(YELLOW)starmap not found in PATH. You may need to restart your shell first.$(NC)"; \
+		echo "$(YELLOW)Then run: starmap install completion$(NC)"; \
+	fi
+
+uninstall: ## Uninstall the binary from GOPATH/bin
+	@echo "$(BLUE)Uninstalling $(BINARY_NAME)...$(NC)"
+	@GOPATH_BIN=$$(go env GOPATH)/bin; \
+	if [ -f "$$GOPATH_BIN/$(BINARY_NAME)" ]; then \
+		rm -f "$$GOPATH_BIN/$(BINARY_NAME)"; \
+		echo "$(GREEN)✅ Removed $(BINARY_NAME) from $$GOPATH_BIN$(NC)"; \
+	else \
+		echo "$(YELLOW)$(BINARY_NAME) not found in $$GOPATH_BIN$(NC)"; \
+	fi
+	@echo "$(BLUE)Also removing shell completions if installed...$(NC)"
+	@if command -v starmap >/dev/null 2>&1; then \
+		starmap uninstall completion 2>/dev/null || echo "$(YELLOW)⚠️  Some completions may not have been removed$(NC)"; \
+	else \
+		echo "$(YELLOW)Note: starmap not found. Use 'starmap uninstall completion' to remove completions$(NC)"; \
+	fi
 
 ##@ Development
 
