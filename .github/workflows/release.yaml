@@ -48,6 +48,9 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Install gomarkdoc
+        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
