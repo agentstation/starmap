@@ -69,9 +69,9 @@ type ResourceType string
 
 const (
 	// ResourceTypeModel represents a model resource.
-	ResourceTypeModel    ResourceType = "model"
+	ResourceTypeModel ResourceType = "model"
 	// ResourceTypeProvider represents a provider resource.
 	ResourceTypeProvider ResourceType = "provider"
 	// ResourceTypeAuthor represents an author resource.
-	ResourceTypeAuthor   ResourceType = "author"
+	ResourceTypeAuthor ResourceType = "author"
 )

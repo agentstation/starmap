@@ -18,28 +18,28 @@ type API map[string]Provider
 
 // Provider represents a provider in models.dev.
 type Provider struct {
-	ID     string                    `json:"id"`
-	Env    []string                  `json:"env"`
-	NPM    string                    `json:"npm"`
-	API    *string                   `json:"api,omitempty"`
-	Name   string                    `json:"name"`
-	Doc    string                    `json:"doc"`
+	ID     string           `json:"id"`
+	Env    []string         `json:"env"`
+	NPM    string           `json:"npm"`
+	API    *string          `json:"api,omitempty"`
+	Name   string           `json:"name"`
+	Doc    string           `json:"doc"`
 	Models map[string]Model `json:"models"`
 }
 
 // Model represents a model in models.dev.
 type Model struct {
-	ID          string              `json:"id"`
-	Name        string              `json:"name"`
-	Attachment  bool                `json:"attachment"`
-	Reasoning   bool                `json:"reasoning"`
-	Temperature bool                `json:"temperature"`
-	ToolCall    bool                `json:"tool_call"`
-	Knowledge   *string             `json:"knowledge,omitempty"`
-	ReleaseDate string              `json:"release_date"`
-	LastUpdated string              `json:"last_updated"`
+	ID          string     `json:"id"`
+	Name        string     `json:"name"`
+	Attachment  bool       `json:"attachment"`
+	Reasoning   bool       `json:"reasoning"`
+	Temperature bool       `json:"temperature"`
+	ToolCall    bool       `json:"tool_call"`
+	Knowledge   *string    `json:"knowledge,omitempty"`
+	ReleaseDate string     `json:"release_date"`
+	LastUpdated string     `json:"last_updated"`
 	Modalities  Modalities `json:"modalities"`
-	OpenWeights bool                `json:"open_weights"`
+	OpenWeights bool       `json:"open_weights"`
 	Cost        *Cost      `json:"cost,omitempty"`
 	Limit       Limit      `json:"limit"`
 }

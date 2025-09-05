@@ -308,9 +308,9 @@ func (c *catalog) ReplaceWith(source Reader) error {
 	return nil
 }
 
+// MergeWith merges another catalog into this one.
 //
 //nolint:gocyclo // Complex merge logic with many fields
-// MergeWith merges another catalog into this one.
 func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 	// Parse merge options (defaults to MergeEnrichEmpty if not specified)
 	mergeOpts := &MergeOptions{Strategy: MergeEnrichEmpty}

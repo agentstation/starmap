@@ -17,7 +17,7 @@ const (
 	// ModelsDevAPIURL is the URL for the models.dev API.
 	ModelsDevAPIURL = "https://models.dev/api.json"
 	// HTTPCacheTTL is the cache time-to-live for HTTP responses.
-	HTTPCacheTTL    = 1 * time.Hour
+	HTTPCacheTTL = 1 * time.Hour
 )
 
 // HTTPClient handles HTTP downloading of models.dev api.json.

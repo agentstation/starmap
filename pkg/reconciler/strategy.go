@@ -35,7 +35,7 @@ const (
 	// StrategyTypeFieldAuthority uses field-specific authority scores to resolve conflicts.
 	StrategyTypeFieldAuthority StrategyType = "field-authority"
 	// StrategyTypeSourceOrder uses source ordering to resolve conflicts.
-	StrategyTypeSourceOrder    StrategyType = "source-order"
+	StrategyTypeSourceOrder StrategyType = "source-order"
 )
 
 // Strategy defines how reconciliation should be performed.

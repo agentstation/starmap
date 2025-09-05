@@ -182,7 +182,6 @@ func getAuthorBadge(name string) string {
 	return "👥"
 }
 
-
 // formatFloat formats a float value cleanly.
 //
 //nolint:unused // used in tests

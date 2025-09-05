@@ -25,9 +25,9 @@ var (
 	// Version information set by main.
 	Version = "dev"
 	// Commit is the git commit hash.
-	Commit  = "unknown"
+	Commit = "unknown"
 	// Date is the build date.
-	Date    = "unknown"
+	Date = "unknown"
 	// BuiltBy is the build system identifier.
 	BuiltBy = "unknown"
 )

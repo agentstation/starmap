@@ -19,11 +19,11 @@ const (
 	// FormatTable represents table output format.
 	FormatTable Format = "table"
 	// FormatJSON represents JSON output format.
-	FormatJSON  Format = "json"
+	FormatJSON Format = "json"
 	// FormatYAML represents YAML output format.
-	FormatYAML  Format = "yaml"
+	FormatYAML Format = "yaml"
 	// FormatWide represents wide table output format.
-	FormatWide  Format = "wide"
+	FormatWide Format = "wide"
 )
 
 // Formatter interface for all output types.

@@ -230,9 +230,9 @@ func (g *Generator) generateProviderReadme(dir string, provider *catalogs.Provid
 	return nil
 }
 
+// writeProviderReadme writes the provider readme content using markdown builder.
 //
 //nolint:gocyclo // Complex documentation generation with many cases
-// writeProviderReadme writes the provider readme content using markdown builder.
 func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider, catalog catalogs.Reader) error {
 	markdown := NewMarkdown(w)
 

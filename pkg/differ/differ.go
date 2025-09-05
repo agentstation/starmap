@@ -627,7 +627,6 @@ func sortAuthorChangeset(changeset *AuthorChangeset) {
 	})
 }
 
-
 // Helper functions
 
 // formatTokens formats token counts for display.

@@ -15,7 +15,7 @@ const (
 	// ModelsDevRepoURL is the URL for the models.dev git repository.
 	ModelsDevRepoURL = "https://github.com/sst/models.dev.git"
 	// DefaultBranch is the default branch to use for models.dev.
-	DefaultBranch    = "dev"
+	DefaultBranch = "dev"
 )
 
 // GitClient handles models.dev repository operations.

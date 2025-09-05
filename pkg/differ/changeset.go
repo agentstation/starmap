@@ -14,7 +14,7 @@ type ChangeType string
 
 const (
 	// ChangeTypeAdd indicates an item was added.
-	ChangeTypeAdd    ChangeType = "add"
+	ChangeTypeAdd ChangeType = "add"
 	// ChangeTypeUpdate indicates an item was updated.
 	ChangeTypeUpdate ChangeType = "update"
 	// ChangeTypeRemove indicates an item was removed.
@@ -113,7 +113,7 @@ func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, auth
 	authorsAdded := len(authors.Added)
 	authorsUpdated := len(authors.Updated)
 	authorsRemoved := len(authors.Removed)
-	
+
 	return ChangesetSummary{
 		ModelsAdded:      modelsAdded,
 		ModelsUpdated:    modelsUpdated,
@@ -124,9 +124,9 @@ func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, auth
 		AuthorsAdded:     authorsAdded,
 		AuthorsUpdated:   authorsUpdated,
 		AuthorsRemoved:   authorsRemoved,
-		TotalChanges:     modelsAdded + modelsUpdated + modelsRemoved + 
-		                  providersAdded + providersUpdated + providersRemoved + 
-		                  authorsAdded + authorsUpdated + authorsRemoved,
+		TotalChanges: modelsAdded + modelsUpdated + modelsRemoved +
+			providersAdded + providersUpdated + providersRemoved +
+			authorsAdded + authorsUpdated + authorsRemoved,
 	}
 }
 
