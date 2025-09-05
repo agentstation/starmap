@@ -168,7 +168,6 @@ dockers_v2:
   - id: starmap
     ids:
       - starmap
-    goos: linux
     dockerfile: Dockerfile
     images:
       - "ghcr.io/agentstation/starmap:{{ .Version }}"
@@ -178,15 +177,15 @@ dockers_v2:
       - linux/amd64
       - linux/arm64
     build_args:
-      - "BUILDKIT_INLINE_CACHE=1"
+      BUILDKIT_INLINE_CACHE: "1"
     labels:
-      - "org.opencontainers.image.created={{.Date}}"
-      - "org.opencontainers.image.title={{.ProjectName}}"
-      - "org.opencontainers.image.revision={{.FullCommit}}"
-      - "org.opencontainers.image.version={{.Version}}"
-      - "org.opencontainers.image.source=https://github.com/agentstation/starmap"
-      - "org.opencontainers.image.description=AI Model Catalog System"
-      - "org.opencontainers.image.licenses=AGPL-3.0"
+      org.opencontainers.image.created: "{{.Date}}"
+      org.opencontainers.image.title: "{{.ProjectName}}"
+      org.opencontainers.image.revision: "{{.FullCommit}}"
+      org.opencontainers.image.version: "{{.Version}}"
+      org.opencontainers.image.source: "https://github.com/agentstation/starmap"
+      org.opencontainers.image.description: "AI Model Catalog System"
+      org.opencontainers.image.licenses: "AGPL-3.0"
 
 # Homebrew Cask
 homebrew_casks:
