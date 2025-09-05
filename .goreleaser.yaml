@@ -170,9 +170,11 @@ dockers_v2:
       - starmap
     dockerfile: Dockerfile
     images:
-      - "ghcr.io/agentstation/starmap:{{ .Version }}"
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}"
-      - "ghcr.io/agentstation/starmap:latest"
+      - "ghcr.io/agentstation/starmap"
+    tags:
+      - "{{ .Version }}"  # e.g., 0.0.2
+      - "{{ .Tag }}"      # e.g., v0.0.2
+      - "latest"
     platforms:
       - linux/amd64
       - linux/arm64
