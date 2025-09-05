@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - master
-    # Also trigger on version tags
-    tags:
-      - 'v*'
   
   # Runs on pull requests
   pull_request:
