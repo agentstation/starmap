@@ -38,6 +38,14 @@ if fetcher.HasClient(providerID) {
 
 ## Index
 
+- [type Option](<#Option>)
+  - [func WithCleanupRepo\(cleanup bool\) Option](<#WithCleanupRepo>)
+  - [func WithFresh\(fresh bool\) Option](<#WithFresh>)
+  - [func WithProviderFilter\(providerID catalogs.ProviderID\) Option](<#WithProviderFilter>)
+  - [func WithReformat\(reformat bool\) Option](<#WithReformat>)
+  - [func WithSafeMode\(safeMode bool\) Option](<#WithSafeMode>)
+- [type Options](<#Options>)
+  - [func ApplyOptions\(opts ...Option\) \*Options](<#ApplyOptions>)
 - [type ProviderFetcher](<#ProviderFetcher>)
   - [func NewProviderFetcher\(opts ...ProviderOption\) \*ProviderFetcher](<#NewProviderFetcher>)
   - [func \(pf \*ProviderFetcher\) FetchModels\(ctx context.Context, provider \*catalogs.Provider, opts ...ProviderOption\) \(\[\]catalogs.Model, error\)](<#ProviderFetcher.FetchModels>)
@@ -48,18 +56,97 @@ if fetcher.HasClient(providerID) {
   - [func WithAllowMissingAPIKey\(\) ProviderOption](<#WithAllowMissingAPIKey>)
   - [func WithTimeout\(d time.Duration\) ProviderOption](<#WithTimeout>)
   - [func WithoutCredentialLoading\(\) ProviderOption](<#WithoutCredentialLoading>)
+- [type ResourceType](<#ResourceType>)
 - [type Source](<#Source>)
-- [type SourceName](<#SourceName>)
-  - [func \(sn SourceName\) String\(\) string](<#SourceName.String>)
-- [type SourceOption](<#SourceOption>)
-  - [func WithFresh\(fresh bool\) SourceOption](<#WithFresh>)
-  - [func WithProviderFilter\(providerID catalogs.ProviderID\) SourceOption](<#WithProviderFilter>)
-  - [func WithSafeMode\(safeMode bool\) SourceOption](<#WithSafeMode>)
-  - [func WithSourceContext\(key string, value any\) SourceOption](<#WithSourceContext>)
+- [type Type](<#Type>)
+  - [func \(sn Type\) String\(\) string](<#Type.String>)
 
+
+<a name="Option"></a>
+## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L31>)
+
+Option is a function that configures options.
+
+```go
+type Option func(*Options)
+```
+
+<a name="WithCleanupRepo"></a>
+### func [WithCleanupRepo](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L55>)
+
+```go
+func WithCleanupRepo(cleanup bool) Option
+```
+
+WithCleanupRepo configures whether to clean up temporary repositories after fetch.
+
+<a name="WithFresh"></a>
+### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L41>)
+
+```go
+func WithFresh(fresh bool) Option
+```
+
+WithFresh configures fresh sync mode for sources.
+
+<a name="WithProviderFilter"></a>
+### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L34>)
+
+```go
+func WithProviderFilter(providerID catalogs.ProviderID) Option
+```
+
+WithProviderFilter configures filtering for a specific provider.
+
+<a name="WithReformat"></a>
+### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L62>)
+
+```go
+func WithReformat(reformat bool) Option
+```
+
+WithReformat configures whether to reformat output files.
+
+<a name="WithSafeMode"></a>
+### func [WithSafeMode](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L48>)
+
+```go
+func WithSafeMode(safeMode bool) Option
+```
+
+WithSafeMode configures safe mode for sources.
+
+<a name="Options"></a>
+## type [Options](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L6-L17>)
+
+Options is the configuration for sources.
+
+```go
+type Options struct {
+    // Provider filtering (needed by provider source)
+    ProviderID *catalogs.ProviderID
+
+    // Behavior flags (needed by various sources)
+    Fresh    bool // Fresh sync (delete existing before adding)
+    SafeMode bool // Don't delete models, only add/update
+
+    // Typed source-specific options
+    CleanupRepo bool // For models.dev git source - remove repo after fetch
+    Reformat    bool // For file-based sources - reformat output files
+}
+```
+
+<a name="ApplyOptions"></a>
+### func [ApplyOptions](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L70>)
+
+```go
+func ApplyOptions(opts ...Option) *Options
+```
+
+ApplyOptions applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
 <a name="ProviderFetcher"></a>
-## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L16-L22>)
+## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L33-L39>)
 
 ProviderFetcher provides operations for fetching models from provider APIs. This is the public API for external packages to interact with provider data.
 
@@ -70,7 +157,7 @@ type ProviderFetcher struct {
 ```
 
 <a name="NewProviderFetcher"></a>
-### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L45>)
+### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L62>)
 
 ```go
 func NewProviderFetcher(opts ...ProviderOption) *ProviderFetcher
@@ -79,7 +166,7 @@ func NewProviderFetcher(opts ...ProviderOption) *ProviderFetcher
 NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L96>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L113>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
@@ -102,7 +189,7 @@ models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L190>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L207>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, error)
@@ -113,7 +200,7 @@ FetchRawResponse fetches the raw API response from a provider's endpoint. This i
 The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing.
 
 <a name="ProviderFetcher.HasClient"></a>
-### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L169>)
+### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L186>)
 
 ```go
 func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
@@ -122,7 +209,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
 HasClient checks if a provider has a client implementation available. This can be used to determine which providers are supported.
 
 <a name="ProviderFetcher.List"></a>
-### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L178>)
+### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L195>)
 
 ```go
 func (pf *ProviderFetcher) List() []catalogs.ProviderID
@@ -131,16 +218,16 @@ func (pf *ProviderFetcher) List() []catalogs.ProviderID
 List returns all provider IDs that have client implementations. This is useful for discovering which providers can be used with FetchModels.
 
 <a name="ProviderOption"></a>
-## type [ProviderOption](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L32>)
+## type [ProviderOption](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L49>)
 
-ProviderOption configures ProviderFetcher behavior
+ProviderOption configures ProviderFetcher behavior.
 
 ```go
 type ProviderOption func(*providerOptions)
 ```
 
 <a name="WithAllowMissingAPIKey"></a>
-### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L70>)
+### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L87>)
 
 ```go
 func WithAllowMissingAPIKey() ProviderOption
@@ -149,7 +236,7 @@ func WithAllowMissingAPIKey() ProviderOption
 WithAllowMissingAPIKey allows operations even when API key is not configured. Useful for checking provider support without credentials.
 
 <a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L78>)
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L95>)
 
 ```go
 func WithTimeout(d time.Duration) ProviderOption
@@ -158,7 +245,7 @@ func WithTimeout(d time.Duration) ProviderOption
 WithTimeout sets a timeout for provider operations. The timeout applies to the context passed to FetchModels.
 
 <a name="WithoutCredentialLoading"></a>
-### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L62>)
+### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L79>)
 
 ```go
 func WithoutCredentialLoading() ProviderOption
@@ -166,101 +253,81 @@ func WithoutCredentialLoading() ProviderOption
 
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
-<a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L49-L62>)
+<a name="ResourceType"></a>
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L68>)
 
-Source represents a data source for catalog information
+ResourceType identifies the type of resource being merged.
+
+```go
+type ResourceType string
+```
+
+<a name="ResourceTypeModel"></a>
+
+```go
+const (
+    // ResourceTypeModel represents a model resource.
+    ResourceTypeModel ResourceType = "model"
+    // ResourceTypeProvider represents a provider resource.
+    ResourceTypeProvider ResourceType = "provider"
+    // ResourceTypeAuthor represents an author resource.
+    ResourceTypeAuthor ResourceType = "author"
+)
+```
+
+<a name="Source"></a>
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L49-L65>)
+
+Source represents a data source for catalog information.
 
 ```go
 type Source interface {
-    // Name returns the name of this source
-    Name() SourceName
+    // Type returns the type of this source
+    Type() Type
 
     // Setup initializes the source with dependencies (called once before Fetch)
     Setup(providers *catalogs.Providers) error
 
     // Fetch retrieves data from this source
     // Sources handle their own concurrency internally
-    Fetch(ctx context.Context, opts ...SourceOption) (catalogs.Catalog, error)
+    Fetch(ctx context.Context, opts ...Option) error
+
+    // Catalog returns the catalog of this source
+    Catalog() catalogs.Catalog
 
     // Cleanup releases any resources (called after all Fetch operations)
     Cleanup() error
 }
 ```
 
-<a name="SourceName"></a>
-## type [SourceName](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L33>)
+<a name="Type"></a>
+## type [Type](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L33>)
 
-SourceName represents the name/type of a data source
+Type represents the type/name of a data source.
 
 ```go
-type SourceName string
+type Type string
 ```
 
-<a name="ProviderAPI"></a>Common source names
+<a name="ProviderAPI"></a>Common source names.
 
 ```go
 const (
-    ProviderAPI   SourceName = "Provider APIs"
-    ModelsDevGit  SourceName = "models.dev (git)"
-    ModelsDevHTTP SourceName = "models.dev (http)"
-    LocalCatalog  SourceName = "Local Catalog"
+    ProviderAPI   Type = "Provider APIs"
+    ModelsDevGit  Type = "models.dev (git)"
+    ModelsDevHTTP Type = "models.dev (http)"
+    LocalCatalog  Type = "Local Catalog"
 )
 ```
 
-<a name="SourceName.String"></a>
-### func \(SourceName\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L36>)
+<a name="Type.String"></a>
+### func \(Type\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L36>)
 
 ```go
-func (sn SourceName) String() string
+func (sn Type) String() string
 ```
 
-String returns the string representation of a source name
-
-<a name="SourceOption"></a>
-## type [SourceOption](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L29>)
-
-SourceOption is a function that configures sourceOptions
-
-```go
-type SourceOption func(*sourceOptions)
-```
-
-<a name="WithFresh"></a>
-### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L39>)
-
-```go
-func WithFresh(fresh bool) SourceOption
-```
-
-WithFresh configures fresh sync mode for sources
-
-<a name="WithProviderFilter"></a>
-### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L32>)
-
-```go
-func WithProviderFilter(providerID catalogs.ProviderID) SourceOption
-```
-
-WithProviderFilter configures filtering for a specific provider
-
-<a name="WithSafeMode"></a>
-### func [WithSafeMode](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L46>)
-
-```go
-func WithSafeMode(safeMode bool) SourceOption
-```
-
-WithSafeMode configures safe mode for sources
-
-<a name="WithSourceContext"></a>
-### func [WithSourceContext](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L53>)
-
-```go
-func WithSourceContext(key string, value any) SourceOption
-```
-
-WithSourceContext adds source\-specific context data
+String returns the string representation of a source name.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

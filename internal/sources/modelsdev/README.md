@@ -15,63 +15,61 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
 ## Index
 
 - [Constants](<#constants>)
-- [func CopyProviderLogos\(client \*Client, outputDir string, providerIDs \[\]catalogs.ProviderID\) error](<#CopyProviderLogos>)
-- [func EnhanceModelsWithModelsDevData\(apiModels \[\]catalogs.Model, providerID catalogs.ProviderID, api \*ModelsDevAPI\) \(\[\]catalogs.Model, int\)](<#EnhanceModelsWithModelsDevData>)
+- [func ConvertToStarmapModel\(mdModel Model\) catalogs.Model](<#ConvertToStarmapModel>)
+- [func CopyProviderLogos\(outputDir string, providerIDs \[\]catalogs.ProviderID\) error](<#CopyProviderLogos>)
+- [type API](<#API>)
+  - [func ParseAPI\(apiPath string\) \(\*API, error\)](<#ParseAPI>)
+  - [func \(api \*API\) GetProvider\(providerID catalogs.ProviderID\) \(\*Provider, bool\)](<#API.GetProvider>)
 - [type Catalog](<#Catalog>)
-  - [func NewCatalog\(api \*ModelsDevAPI\) \(\*Catalog, error\)](<#NewCatalog>)
+  - [func NewCatalog\(api \*API\) \(\*Catalog, error\)](<#NewCatalog>)
   - [func \(c \*Catalog\) Author\(id catalogs.AuthorID\) \(\*catalogs.Author, error\)](<#Catalog.Author>)
   - [func \(c \*Catalog\) Authors\(\) \*catalogs.Authors](<#Catalog.Authors>)
   - [func \(c \*Catalog\) DeleteAuthor\(id catalogs.AuthorID\) error](<#Catalog.DeleteAuthor>)
   - [func \(c \*Catalog\) DeleteEndpoint\(id string\) error](<#Catalog.DeleteEndpoint>)
-  - [func \(c \*Catalog\) DeleteModel\(id string\) error](<#Catalog.DeleteModel>)
   - [func \(c \*Catalog\) DeleteProvider\(id catalogs.ProviderID\) error](<#Catalog.DeleteProvider>)
   - [func \(c \*Catalog\) Endpoint\(id string\) \(\*catalogs.Endpoint, error\)](<#Catalog.Endpoint>)
   - [func \(c \*Catalog\) Endpoints\(\) \*catalogs.Endpoints](<#Catalog.Endpoints>)
-  - [func \(c \*Catalog\) Model\(id string\) \(\*catalogs.Model, error\)](<#Catalog.Model>)
-  - [func \(c \*Catalog\) Models\(\) \*catalogs.Models](<#Catalog.Models>)
   - [func \(c \*Catalog\) Provider\(id catalogs.ProviderID\) \(\*catalogs.Provider, error\)](<#Catalog.Provider>)
   - [func \(c \*Catalog\) Providers\(\) \*catalogs.Providers](<#Catalog.Providers>)
   - [func \(c \*Catalog\) SetAuthor\(author catalogs.Author\) error](<#Catalog.SetAuthor>)
   - [func \(c \*Catalog\) SetEndpoint\(endpoint catalogs.Endpoint\) error](<#Catalog.SetEndpoint>)
-  - [func \(c \*Catalog\) SetModel\(model catalogs.Model\) error](<#Catalog.SetModel>)
   - [func \(c \*Catalog\) SetProvider\(provider catalogs.Provider\) error](<#Catalog.SetProvider>)
 - [type Client](<#Client>)
   - [func NewClient\(outputDir string\) \*Client](<#NewClient>)
+- [type Cost](<#Cost>)
 - [type GitClient](<#GitClient>)
   - [func NewGitClient\(outputDir string\) \*GitClient](<#NewGitClient>)
-  - [func \(c \*GitClient\) BuildAPI\(\) error](<#GitClient.BuildAPI>)
+  - [func \(c \*GitClient\) BuildAPI\(ctx context.Context\) error](<#GitClient.BuildAPI>)
   - [func \(c \*GitClient\) Cleanup\(\) error](<#GitClient.Cleanup>)
-  - [func \(c \*GitClient\) EnsureRepository\(\) error](<#GitClient.EnsureRepository>)
+  - [func \(c \*GitClient\) EnsureRepository\(ctx context.Context\) error](<#GitClient.EnsureRepository>)
   - [func \(c \*GitClient\) GetAPIPath\(\) string](<#GitClient.GetAPIPath>)
   - [func \(c \*GitClient\) GetProvidersPath\(\) string](<#GitClient.GetProvidersPath>)
 - [type GitSource](<#GitSource>)
   - [func NewGitSource\(\) \*GitSource](<#NewGitSource>)
+  - [func \(s \*GitSource\) Catalog\(\) catalogs.Catalog](<#GitSource.Catalog>)
   - [func \(s \*GitSource\) Cleanup\(\) error](<#GitSource.Cleanup>)
-  - [func \(s \*GitSource\) Fetch\(ctx context.Context, opts ...sources.SourceOption\) \(catalogs.Catalog, error\)](<#GitSource.Fetch>)
-  - [func \(s \*GitSource\) Name\(\) sources.SourceName](<#GitSource.Name>)
+  - [func \(s \*GitSource\) Fetch\(ctx context.Context, opts ...sources.Option\) error](<#GitSource.Fetch>)
   - [func \(s \*GitSource\) Setup\(providers \*catalogs.Providers\) error](<#GitSource.Setup>)
+  - [func \(s \*GitSource\) Type\(\) sources.Type](<#GitSource.Type>)
 - [type HTTPClient](<#HTTPClient>)
   - [func NewHTTPClient\(outputDir string\) \*HTTPClient](<#NewHTTPClient>)
   - [func \(c \*HTTPClient\) Cleanup\(\) error](<#HTTPClient.Cleanup>)
-  - [func \(c \*HTTPClient\) EnsureAPI\(\) error](<#HTTPClient.EnsureAPI>)
+  - [func \(c \*HTTPClient\) EnsureAPI\(ctx context.Context\) error](<#HTTPClient.EnsureAPI>)
   - [func \(c \*HTTPClient\) GetAPIPath\(\) string](<#HTTPClient.GetAPIPath>)
 - [type HTTPSource](<#HTTPSource>)
   - [func NewHTTPSource\(\) \*HTTPSource](<#NewHTTPSource>)
+  - [func \(s \*HTTPSource\) Catalog\(\) catalogs.Catalog](<#HTTPSource.Catalog>)
   - [func \(s \*HTTPSource\) Cleanup\(\) error](<#HTTPSource.Cleanup>)
-  - [func \(s \*HTTPSource\) Fetch\(ctx context.Context, opts ...sources.SourceOption\) \(catalogs.Catalog, error\)](<#HTTPSource.Fetch>)
-  - [func \(s \*HTTPSource\) Name\(\) sources.SourceName](<#HTTPSource.Name>)
+  - [func \(s \*HTTPSource\) Fetch\(ctx context.Context, opts ...sources.Option\) error](<#HTTPSource.Fetch>)
   - [func \(s \*HTTPSource\) Setup\(providers \*catalogs.Providers\) error](<#HTTPSource.Setup>)
-- [type ModelsDevAPI](<#ModelsDevAPI>)
-  - [func ParseAPI\(apiPath string\) \(\*ModelsDevAPI, error\)](<#ParseAPI>)
-  - [func \(api \*ModelsDevAPI\) GetProvider\(providerID catalogs.ProviderID\) \(\*ModelsDevProvider, bool\)](<#ModelsDevAPI.GetProvider>)
-- [type ModelsDevCost](<#ModelsDevCost>)
-- [type ModelsDevLimit](<#ModelsDevLimit>)
-- [type ModelsDevModalities](<#ModelsDevModalities>)
-- [type ModelsDevModel](<#ModelsDevModel>)
-  - [func \(m \*ModelsDevModel\) ToStarmapModel\(\) \(\*catalogs.Model, error\)](<#ModelsDevModel.ToStarmapModel>)
-- [type ModelsDevProvider](<#ModelsDevProvider>)
-  - [func \(p \*ModelsDevProvider\) Model\(modelID string\) \(\*ModelsDevModel, bool\)](<#ModelsDevProvider.Model>)
-  - [func \(p \*ModelsDevProvider\) ToStarmapProvider\(\) \(\*catalogs.Provider, error\)](<#ModelsDevProvider.ToStarmapProvider>)
+  - [func \(s \*HTTPSource\) Type\(\) sources.Type](<#HTTPSource.Type>)
+- [type Limit](<#Limit>)
+- [type Modalities](<#Modalities>)
+- [type Model](<#Model>)
+  - [func \(m \*Model\) ToStarmapModel\(\) \(\*catalogs.Model, error\)](<#Model.ToStarmapModel>)
+- [type Provider](<#Provider>)
+  - [func \(p \*Provider\) Model\(modelID string\) \(\*Model, bool\)](<#Provider.Model>)
+  - [func \(p \*Provider\) ToStarmapProvider\(\) \(\*catalogs.Provider, error\)](<#Provider.ToStarmapProvider>)
 
 
 ## Constants
@@ -80,8 +78,10 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
 
 ```go
 const (
+    // ModelsDevRepoURL is the URL for the models.dev git repository.
     ModelsDevRepoURL = "https://github.com/sst/models.dev.git"
-    DefaultBranch    = "dev"
+    // DefaultBranch is the default branch to use for models.dev.
+    DefaultBranch = "dev"
 )
 ```
 
@@ -89,33 +89,62 @@ const (
 
 ```go
 const (
+    // ModelsDevAPIURL is the URL for the models.dev API.
     ModelsDevAPIURL = "https://models.dev/api.json"
-    HTTPCacheTTL    = 1 * time.Hour
+    // HTTPCacheTTL is the cache time-to-live for HTTP responses.
+    HTTPCacheTTL = 1 * time.Hour
 )
 ```
 
+<a name="ConvertToStarmapModel"></a>
+## func [ConvertToStarmapModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/convert.go#L10>)
+
+```go
+func ConvertToStarmapModel(mdModel Model) catalogs.Model
+```
+
+ConvertToStarmapModel converts a models.dev model to a starmap model. This is shared between GitSource and HTTPSource to avoid duplication.
+
 <a name="CopyProviderLogos"></a>
-## func [CopyProviderLogos](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L195>)
+## func [CopyProviderLogos](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L15>)
 
 ```go
-func CopyProviderLogos(client *Client, outputDir string, providerIDs []catalogs.ProviderID) error
+func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) error
 ```
 
-CopyProviderLogos copies provider logos from models.dev to output directory
+CopyProviderLogos copies provider logos from models.dev to output directory.
 
-<a name="EnhanceModelsWithModelsDevData"></a>
-## func [EnhanceModelsWithModelsDevData](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L16>)
+<a name="API"></a>
+## type [API](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L17>)
+
+API represents the structure of models.dev api.json.
 
 ```go
-func EnhanceModelsWithModelsDevData(apiModels []catalogs.Model, providerID catalogs.ProviderID, api *ModelsDevAPI) ([]catalogs.Model, int)
+type API map[string]Provider
 ```
 
-EnhanceModelsWithModelsDevData enhances API models with models.dev data BEFORE comparison
+<a name="ParseAPI"></a>
+### func [ParseAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L69>)
+
+```go
+func ParseAPI(apiPath string) (*API, error)
+```
+
+ParseAPI parses the api.json file and returns an API.
+
+<a name="API.GetProvider"></a>
+### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L264>)
+
+```go
+func (api *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
+```
+
+GetProvider returns a specific provider from the API data.
 
 <a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L9-L15>)
+## type [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L9-L14>)
 
-Catalog implements starmap.Catalog interface for models.dev data
+Catalog implements starmap.Catalog interface for models.dev data.
 
 ```go
 type Catalog struct {
@@ -124,180 +153,159 @@ type Catalog struct {
 ```
 
 <a name="NewCatalog"></a>
-### func [NewCatalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L18>)
+### func [NewCatalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L17>)
 
 ```go
-func NewCatalog(api *ModelsDevAPI) (*Catalog, error)
+func NewCatalog(api *API) (*Catalog, error)
 ```
 
-NewCatalog creates a new models.dev catalog from parsed API data
+NewCatalog creates a new models.dev catalog from parsed API data.
 
 <a name="Catalog.Author"></a>
-### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L76>)
+### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L68>)
 
 ```go
 func (c *Catalog) Author(id catalogs.AuthorID) (*catalogs.Author, error)
 ```
 
-Author implements starmap.Catalog
+Author implements starmap.Catalog.
 
 <a name="Catalog.Authors"></a>
-### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L49>)
+### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L46>)
 
 ```go
 func (c *Catalog) Authors() *catalogs.Authors
 ```
 
-Authors implements starmap.Catalog
+Authors implements starmap.Catalog.
 
 <a name="Catalog.DeleteAuthor"></a>
-### func \(\*Catalog\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L138>)
+### func \(\*Catalog\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L112>)
 
 ```go
 func (c *Catalog) DeleteAuthor(id catalogs.AuthorID) error
 ```
 
-DeleteAuthor implements starmap.Catalog
+DeleteAuthor implements starmap.Catalog.
 
 <a name="Catalog.DeleteEndpoint"></a>
-### func \(\*Catalog\) [DeleteEndpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L148>)
+### func \(\*Catalog\) [DeleteEndpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L117>)
 
 ```go
 func (c *Catalog) DeleteEndpoint(id string) error
 ```
 
-DeleteEndpoint implements starmap.Catalog
-
-<a name="Catalog.DeleteModel"></a>
-### func \(\*Catalog\) [DeleteModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L143>)
-
-```go
-func (c *Catalog) DeleteModel(id string) error
-```
-
-DeleteModel implements starmap.Catalog
+DeleteEndpoint implements starmap.Catalog.
 
 <a name="Catalog.DeleteProvider"></a>
-### func \(\*Catalog\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L133>)
+### func \(\*Catalog\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L107>)
 
 ```go
 func (c *Catalog) DeleteProvider(id catalogs.ProviderID) error
 ```
 
-DeleteProvider implements starmap.Catalog
+DeleteProvider implements starmap.Catalog.
 
 <a name="Catalog.Endpoint"></a>
-### func \(\*Catalog\) [Endpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L100>)
+### func \(\*Catalog\) [Endpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L80>)
 
 ```go
 func (c *Catalog) Endpoint(id string) (*catalogs.Endpoint, error)
 ```
 
-Endpoint implements starmap.Catalog
+Endpoint implements starmap.Catalog.
 
 <a name="Catalog.Endpoints"></a>
-### func \(\*Catalog\) [Endpoints](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L59>)
+### func \(\*Catalog\) [Endpoints](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L51>)
 
 ```go
 func (c *Catalog) Endpoints() *catalogs.Endpoints
 ```
 
-Endpoints implements starmap.Catalog
-
-<a name="Catalog.Model"></a>
-### func \(\*Catalog\) [Model](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L88>)
-
-```go
-func (c *Catalog) Model(id string) (*catalogs.Model, error)
-```
-
-Model implements starmap.Catalog
-
-<a name="Catalog.Models"></a>
-### func \(\*Catalog\) [Models](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L54>)
-
-```go
-func (c *Catalog) Models() *catalogs.Models
-```
-
-Models implements starmap.Catalog
+Endpoints implements starmap.Catalog.
 
 <a name="Catalog.Provider"></a>
-### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L64>)
+### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L56>)
 
 ```go
 func (c *Catalog) Provider(id catalogs.ProviderID) (*catalogs.Provider, error)
 ```
 
-Provider implements starmap.Catalog
+Provider implements starmap.Catalog.
 
 <a name="Catalog.Providers"></a>
-### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L44>)
+### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L41>)
 
 ```go
 func (c *Catalog) Providers() *catalogs.Providers
 ```
 
-Providers implements starmap.Catalog
+Providers implements starmap.Catalog.
 
 <a name="Catalog.SetAuthor"></a>
-### func \(\*Catalog\) [SetAuthor](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L117>)
+### func \(\*Catalog\) [SetAuthor](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L97>)
 
 ```go
 func (c *Catalog) SetAuthor(author catalogs.Author) error
 ```
 
-AddAuthor implements starmap.Catalog
+SetAuthor implements starmap.Catalog.
 
 <a name="Catalog.SetEndpoint"></a>
-### func \(\*Catalog\) [SetEndpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L127>)
+### func \(\*Catalog\) [SetEndpoint](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L102>)
 
 ```go
 func (c *Catalog) SetEndpoint(endpoint catalogs.Endpoint) error
 ```
 
-AddEndpoint implements starmap.Catalog
-
-<a name="Catalog.SetModel"></a>
-### func \(\*Catalog\) [SetModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L122>)
-
-```go
-func (c *Catalog) SetModel(model catalogs.Model) error
-```
-
-AddModel implements starmap.Catalog
+SetEndpoint implements starmap.Catalog.
 
 <a name="Catalog.SetProvider"></a>
-### func \(\*Catalog\) [SetProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L112>)
+### func \(\*Catalog\) [SetProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/catalog.go#L92>)
 
 ```go
 func (c *Catalog) SetProvider(provider catalogs.Provider) error
 ```
 
-AddProvider implements starmap.Catalog
+SetProvider implements starmap.Catalog.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L24>)
+## type [Client](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L27>)
 
-Client is an alias for backward compatibility
+Client is an alias for backward compatibility.
 
 ```go
 type Client = GitClient
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L27>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L30>)
 
 ```go
 func NewClient(outputDir string) *Client
 ```
 
-NewClient creates a new models.dev git client
+NewClient creates a new models.dev git client.
+
+<a name="Cost"></a>
+## type [Cost](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L54-L60>)
+
+Cost represents pricing information.
+
+```go
+type Cost struct {
+    Input      *float64 `json:"input,omitempty"`
+    Output     *float64 `json:"output,omitempty"`
+    Cache      *float64 `json:"cache,omitempty"`       // Legacy cache field
+    CacheRead  *float64 `json:"cache_read,omitempty"`  // Cache read costs
+    CacheWrite *float64 `json:"cache_write,omitempty"` // Cache write costs
+}
+```
 
 <a name="GitClient"></a>
-## type [GitClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L19-L21>)
+## type [GitClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L22-L24>)
 
-GitClient handles models.dev repository operations
+GitClient handles models.dev repository operations.
 
 ```go
 type GitClient struct {
@@ -306,117 +314,128 @@ type GitClient struct {
 ```
 
 <a name="NewGitClient"></a>
-### func [NewGitClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L35>)
+### func [NewGitClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L38>)
 
 ```go
 func NewGitClient(outputDir string) *GitClient
 ```
 
-NewGitClient creates a new models.dev git client
+NewGitClient creates a new models.dev git client.
 
 <a name="GitClient.BuildAPI"></a>
-### func \(\*GitClient\) [BuildAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L74>)
+### func \(\*GitClient\) [BuildAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L77>)
 
 ```go
-func (c *GitClient) BuildAPI() error
+func (c *GitClient) BuildAPI(ctx context.Context) error
 ```
 
-BuildAPI runs the build process to generate api.json
+BuildAPI runs the build process to generate api.json.
 
 <a name="GitClient.Cleanup"></a>
-### func \(\*GitClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L143>)
+### func \(\*GitClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L146>)
 
 ```go
 func (c *GitClient) Cleanup() error
 ```
 
-Cleanup removes the models.dev repository
+Cleanup removes the models.dev repository.
 
 <a name="GitClient.EnsureRepository"></a>
-### func \(\*GitClient\) [EnsureRepository](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L43>)
+### func \(\*GitClient\) [EnsureRepository](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L46>)
 
 ```go
-func (c *GitClient) EnsureRepository() error
+func (c *GitClient) EnsureRepository(ctx context.Context) error
 ```
 
-EnsureRepository ensures the models.dev repository is available and up to date
+EnsureRepository ensures the models.dev repository is available and up to date.
 
 <a name="GitClient.GetAPIPath"></a>
-### func \(\*GitClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L133>)
+### func \(\*GitClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L136>)
 
 ```go
 func (c *GitClient) GetAPIPath() string
 ```
 
-GetAPIPath returns the path to the generated api.json file
+GetAPIPath returns the path to the generated api.json file.
 
 <a name="GitClient.GetProvidersPath"></a>
-### func \(\*GitClient\) [GetProvidersPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L138>)
+### func \(\*GitClient\) [GetProvidersPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git_client.go#L141>)
 
 ```go
 func (c *GitClient) GetProvidersPath() string
 ```
 
-GetProvidersPath returns the path to the providers directory
+GetProvidersPath returns the path to the providers directory.
 
 <a name="GitSource"></a>
-## type [GitSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L28>)
+## type [GitSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L27-L30>)
 
-GitSource enhances models with models.dev data
+GitSource enhances models with models.dev data.
 
 ```go
-type GitSource struct{}
+type GitSource struct {
+    // contains filtered or unexported fields
+}
 ```
 
 <a name="NewGitSource"></a>
-### func [NewGitSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L31>)
+### func [NewGitSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L33>)
 
 ```go
 func NewGitSource() *GitSource
 ```
 
-NewGitSource creates a new models.dev git source
+NewGitSource creates a new models.dev git source.
+
+<a name="GitSource.Catalog"></a>
+### func \(\*GitSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L103>)
+
+```go
+func (s *GitSource) Catalog() catalogs.Catalog
+```
+
+Catalog returns the catalog of this source.
 
 <a name="GitSource.Cleanup"></a>
-### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L123>)
+### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L108>)
 
 ```go
 func (s *GitSource) Cleanup() error
 ```
 
-Cleanup releases any resources
+Cleanup releases any resources.
 
 <a name="GitSource.Fetch"></a>
-### func \(\*GitSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L72>)
+### func \(\*GitSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L73>)
 
 ```go
-func (s *GitSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error)
+func (s *GitSource) Fetch(ctx context.Context, opts ...sources.Option) error
 ```
 
-Fetch creates a catalog with models that have pricing/limits data from models.dev
-
-<a name="GitSource.Name"></a>
-### func \(\*GitSource\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L36>)
-
-```go
-func (s *GitSource) Name() sources.SourceName
-```
-
-Name returns the name of this source
+Fetch creates a catalog with models that have pricing/limits data from models.dev.
 
 <a name="GitSource.Setup"></a>
-### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L66>)
+### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L67>)
 
 ```go
 func (s *GitSource) Setup(providers *catalogs.Providers) error
 ```
 
-Setup initializes the source with dependencies
+Setup initializes the source with dependencies.
+
+<a name="GitSource.Type"></a>
+### func \(\*GitSource\) [Type](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L38>)
+
+```go
+func (s *GitSource) Type() sources.Type
+```
+
+Type returns the type of this source.
 
 <a name="HTTPClient"></a>
-## type [HTTPClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L21-L25>)
+## type [HTTPClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L24-L28>)
 
-HTTPClient handles HTTP downloading of models.dev api.json
+HTTPClient handles HTTP downloading of models.dev api.json.
 
 ```go
 type HTTPClient struct {
@@ -427,227 +446,196 @@ type HTTPClient struct {
 ```
 
 <a name="NewHTTPClient"></a>
-### func [NewHTTPClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L28>)
+### func [NewHTTPClient](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L31>)
 
 ```go
 func NewHTTPClient(outputDir string) *HTTPClient
 ```
 
-NewHTTPClient creates a new models.dev HTTP client
+NewHTTPClient creates a new models.dev HTTP client.
 
 <a name="HTTPClient.Cleanup"></a>
-### func \(\*HTTPClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L106>)
+### func \(\*HTTPClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L113>)
 
 ```go
 func (c *HTTPClient) Cleanup() error
 ```
 
-Cleanup removes the cache directory
+Cleanup removes the cache directory.
 
 <a name="HTTPClient.EnsureAPI"></a>
-### func \(\*HTTPClient\) [EnsureAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L38>)
+### func \(\*HTTPClient\) [EnsureAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L41>)
 
 ```go
-func (c *HTTPClient) EnsureAPI() error
+func (c *HTTPClient) EnsureAPI(ctx context.Context) error
 ```
 
-EnsureAPI ensures the api.json is available and up to date
+EnsureAPI ensures the api.json is available and up to date.
 
 <a name="HTTPClient.GetAPIPath"></a>
-### func \(\*HTTPClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L101>)
+### func \(\*HTTPClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http_client.go#L108>)
 
 ```go
 func (c *HTTPClient) GetAPIPath() string
 ```
 
-GetAPIPath returns the path to the cached api.json file
+GetAPIPath returns the path to the cached api.json file.
 
 <a name="HTTPSource"></a>
-## type [HTTPSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L26>)
+## type [HTTPSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L25-L28>)
 
-HTTPSource enhances models with models.dev data via HTTP
+HTTPSource enhances models with models.dev data via HTTP.
 
 ```go
-type HTTPSource struct{}
+type HTTPSource struct {
+    // contains filtered or unexported fields
+}
 ```
 
 <a name="NewHTTPSource"></a>
-### func [NewHTTPSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L29>)
+### func [NewHTTPSource](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L31>)
 
 ```go
 func NewHTTPSource() *HTTPSource
 ```
 
-NewHTTPSource creates a new models.dev HTTP source
+NewHTTPSource creates a new models.dev HTTP source.
+
+<a name="HTTPSource.Catalog"></a>
+### func \(\*HTTPSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L94>)
+
+```go
+func (s *HTTPSource) Catalog() catalogs.Catalog
+```
+
+Catalog returns the catalog of this source.
 
 <a name="HTTPSource.Cleanup"></a>
-### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L114>)
+### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L99>)
 
 ```go
 func (s *HTTPSource) Cleanup() error
 ```
 
-Cleanup releases any resources
+Cleanup releases any resources.
 
 <a name="HTTPSource.Fetch"></a>
-### func \(\*HTTPSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L63>)
+### func \(\*HTTPSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L64>)
 
 ```go
-func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.SourceOption) (catalogs.Catalog, error)
+func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error
 ```
 
-Fetch creates a catalog with models that have pricing/limits data from models.dev
-
-<a name="HTTPSource.Name"></a>
-### func \(\*HTTPSource\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L34>)
-
-```go
-func (s *HTTPSource) Name() sources.SourceName
-```
-
-Name returns the name of this source
+Fetch creates a catalog with models that have pricing/limits data from models.dev.
 
 <a name="HTTPSource.Setup"></a>
-### func \(\*HTTPSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L57>)
+### func \(\*HTTPSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L58>)
 
 ```go
 func (s *HTTPSource) Setup(providers *catalogs.Providers) error
 ```
 
-Setup initializes the source with dependencies
+Setup initializes the source with dependencies.
 
-<a name="ModelsDevAPI"></a>
-## type [ModelsDevAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L16>)
-
-ModelsDevAPI represents the structure of models.dev api.json
+<a name="HTTPSource.Type"></a>
+### func \(\*HTTPSource\) [Type](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L36>)
 
 ```go
-type ModelsDevAPI map[string]ModelsDevProvider
+func (s *HTTPSource) Type() sources.Type
 ```
 
-<a name="ParseAPI"></a>
-### func [ParseAPI](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L68>)
+Type returns the type of this source.
+
+<a name="Limit"></a>
+## type [Limit](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L63-L66>)
+
+Limit represents model limits.
 
 ```go
-func ParseAPI(apiPath string) (*ModelsDevAPI, error)
-```
-
-ParseAPI parses the api.json file and returns a ModelsDevAPI
-
-<a name="ModelsDevAPI.GetProvider"></a>
-### func \(\*ModelsDevAPI\) [GetProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L263>)
-
-```go
-func (api *ModelsDevAPI) GetProvider(providerID catalogs.ProviderID) (*ModelsDevProvider, bool)
-```
-
-GetProvider returns a specific provider from the API data
-
-<a name="ModelsDevCost"></a>
-## type [ModelsDevCost](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L53-L59>)
-
-ModelsDevCost represents pricing information
-
-```go
-type ModelsDevCost struct {
-    Input      *float64 `json:"input,omitempty"`
-    Output     *float64 `json:"output,omitempty"`
-    Cache      *float64 `json:"cache,omitempty"`       // Legacy cache field
-    CacheRead  *float64 `json:"cache_read,omitempty"`  // Cache read costs
-    CacheWrite *float64 `json:"cache_write,omitempty"` // Cache write costs
-}
-```
-
-<a name="ModelsDevLimit"></a>
-## type [ModelsDevLimit](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L62-L65>)
-
-ModelsDevLimit represents model limits
-
-```go
-type ModelsDevLimit struct {
+type Limit struct {
     Context int `json:"context"`
     Output  int `json:"output"`
 }
 ```
 
-<a name="ModelsDevModalities"></a>
-## type [ModelsDevModalities](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L47-L50>)
+<a name="Modalities"></a>
+## type [Modalities](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L48-L51>)
 
-ModelsDevModalities represents input/output modalities
+Modalities represents input/output modalities.
 
 ```go
-type ModelsDevModalities struct {
+type Modalities struct {
     Input  []string `json:"input"`
     Output []string `json:"output"`
 }
 ```
 
-<a name="ModelsDevModel"></a>
-## type [ModelsDevModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L30-L44>)
+<a name="Model"></a>
+## type [Model](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L31-L45>)
 
-ModelsDevModel represents a model in models.dev
+Model represents a model in models.dev.
 
 ```go
-type ModelsDevModel struct {
-    ID          string              `json:"id"`
-    Name        string              `json:"name"`
-    Attachment  bool                `json:"attachment"`
-    Reasoning   bool                `json:"reasoning"`
-    Temperature bool                `json:"temperature"`
-    ToolCall    bool                `json:"tool_call"`
-    Knowledge   *string             `json:"knowledge,omitempty"`
-    ReleaseDate string              `json:"release_date"`
-    LastUpdated string              `json:"last_updated"`
-    Modalities  ModelsDevModalities `json:"modalities"`
-    OpenWeights bool                `json:"open_weights"`
-    Cost        *ModelsDevCost      `json:"cost,omitempty"`
-    Limit       ModelsDevLimit      `json:"limit"`
+type Model struct {
+    ID          string     `json:"id"`
+    Name        string     `json:"name"`
+    Attachment  bool       `json:"attachment"`
+    Reasoning   bool       `json:"reasoning"`
+    Temperature bool       `json:"temperature"`
+    ToolCall    bool       `json:"tool_call"`
+    Knowledge   *string    `json:"knowledge,omitempty"`
+    ReleaseDate string     `json:"release_date"`
+    LastUpdated string     `json:"last_updated"`
+    Modalities  Modalities `json:"modalities"`
+    OpenWeights bool       `json:"open_weights"`
+    Cost        *Cost      `json:"cost,omitempty"`
+    Limit       Limit      `json:"limit"`
 }
 ```
 
-<a name="ModelsDevModel.ToStarmapModel"></a>
-### func \(\*ModelsDevModel\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L105>)
+<a name="Model.ToStarmapModel"></a>
+### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L106>)
 
 ```go
-func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error)
+func (m *Model) ToStarmapModel() (*catalogs.Model, error)
 ```
 
-ToStarmapModel converts a ModelsDevModel to a starmap.Model
+ToStarmapModel converts a Model to a starmap.Model.
 
-<a name="ModelsDevProvider"></a>
-## type [ModelsDevProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L19-L27>)
+<a name="Provider"></a>
+## type [Provider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L20-L28>)
 
-ModelsDevProvider represents a provider in models.dev
+Provider represents a provider in models.dev.
 
 ```go
-type ModelsDevProvider struct {
-    ID     string                    `json:"id"`
-    Env    []string                  `json:"env"`
-    NPM    string                    `json:"npm"`
-    API    *string                   `json:"api,omitempty"`
-    Name   string                    `json:"name"`
-    Doc    string                    `json:"doc"`
-    Models map[string]ModelsDevModel `json:"models"`
+type Provider struct {
+    ID     string           `json:"id"`
+    Env    []string         `json:"env"`
+    NPM    string           `json:"npm"`
+    API    *string          `json:"api,omitempty"`
+    Name   string           `json:"name"`
+    Doc    string           `json:"doc"`
+    Models map[string]Model `json:"models"`
 }
 ```
 
-<a name="ModelsDevProvider.Model"></a>
-### func \(\*ModelsDevProvider\) [Model](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L269>)
+<a name="Provider.Model"></a>
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L270>)
 
 ```go
-func (p *ModelsDevProvider) Model(modelID string) (*ModelsDevModel, bool)
+func (p *Provider) Model(modelID string) (*Model, bool)
 ```
 
-GetModel returns a specific model from a provider
+Model returns a specific model from a provider.
 
-<a name="ModelsDevProvider.ToStarmapProvider"></a>
-### func \(\*ModelsDevProvider\) [ToStarmapProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L83>)
+<a name="Provider.ToStarmapProvider"></a>
+### func \(\*Provider\) [ToStarmapProvider](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L84>)
 
 ```go
-func (p *ModelsDevProvider) ToStarmapProvider() (*catalogs.Provider, error)
+func (p *Provider) ToStarmapProvider() (*catalogs.Provider, error)
 ```
 
-ToStarmapProvider converts a ModelsDevProvider to a starmap.Provider
+ToStarmapProvider converts a Provider to a starmap.Provider.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

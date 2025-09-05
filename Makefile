@@ -97,6 +97,37 @@ uninstall: ## Uninstall the binary from GOPATH/bin
 		echo "$(YELLOW)$(BINARY_NAME) not found in $$GOPATH_BIN$(NC)"; \
 	fi
 	@echo "$(BLUE)Also removing shell completions if installed...$(NC)"
+	@$(MAKE) uninstall-completions
+
+uninstall-completions: ## Remove all starmap shell completions
+	@echo "$(BLUE)Removing starmap shell completions...$(NC)"
+	@# Homebrew completions
+	@if [ -f "/opt/homebrew/etc/bash_completion.d/starmap" ]; then \
+		rm -f "/opt/homebrew/etc/bash_completion.d/starmap"; \
+		echo "$(GREEN)✅ Removed Homebrew bash completion$(NC)"; \
+	fi
+	@if [ -f "/opt/homebrew/share/zsh/site-functions/_starmap" ]; then \
+		rm -f "/opt/homebrew/share/zsh/site-functions/_starmap"; \
+		echo "$(GREEN)✅ Removed Homebrew zsh completion$(NC)"; \
+	fi
+	@if [ -f "/opt/homebrew/share/fish/vendor_completions.d/starmap.fish" ]; then \
+		rm -f "/opt/homebrew/share/fish/vendor_completions.d/starmap.fish"; \
+		echo "$(GREEN)✅ Removed Homebrew fish completion$(NC)"; \
+	fi
+	@# Linux standard locations
+	@if [ -f "/usr/local/etc/bash_completion.d/starmap" ]; then \
+		rm -f "/usr/local/etc/bash_completion.d/starmap"; \
+		echo "$(GREEN)✅ Removed Linux bash completion$(NC)"; \
+	fi
+	@if [ -f "/usr/local/share/zsh/site-functions/_starmap" ]; then \
+		rm -f "/usr/local/share/zsh/site-functions/_starmap"; \
+		echo "$(GREEN)✅ Removed Linux zsh completion$(NC)"; \
+	fi
+	@if [ -f "/usr/local/share/fish/vendor_completions.d/starmap.fish" ]; then \
+		rm -f "/usr/local/share/fish/vendor_completions.d/starmap.fish"; \
+		echo "$(GREEN)✅ Removed Linux fish completion$(NC)"; \
+	fi
+	@echo "$(GREEN)Shell completions cleanup complete$(NC)"
 	@if command -v starmap >/dev/null 2>&1; then \
 		starmap uninstall completion 2>/dev/null || echo "$(YELLOW)⚠️  Some completions may not have been removed$(NC)"; \
 	else \

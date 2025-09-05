@@ -15,7 +15,7 @@ import "github.com/agentstation/starmap/internal/transport"
 ## Index
 
 - [Variables](<#variables>)
-- [func DecodeResponse\(resp \*http.Response, target interface\{\}\) error](<#DecodeResponse>)
+- [func DecodeResponse\(resp \*http.Response, target any\) error](<#DecodeResponse>)
 - [type Authenticator](<#Authenticator>)
 - [type BearerAuth](<#BearerAuth>)
   - [func \(a \*BearerAuth\) Apply\(req \*http.Request, apiKey string\)](<#BearerAuth.Apply>)
@@ -23,12 +23,12 @@ import "github.com/agentstation/starmap/internal/transport"
   - [func New\(auth Authenticator\) \*Client](<#New>)
   - [func NewForProvider\(provider \*catalogs.Provider\) \*Client](<#NewForProvider>)
   - [func \(c \*Client\) Do\(req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Do>)
-  - [func \(c \*Client\) DoWithContext\(ctx context.Context, req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.DoWithContext>)
+  - [func \(c \*Client\) DoWithContext\(\_ context.Context, req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.DoWithContext>)
   - [func \(c \*Client\) Get\(ctx context.Context, url string, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Get>)
 - [type HeaderAuth](<#HeaderAuth>)
   - [func \(a \*HeaderAuth\) Apply\(req \*http.Request, apiKey string\)](<#HeaderAuth.Apply>)
 - [type NoAuth](<#NoAuth>)
-  - [func \(a \*NoAuth\) Apply\(req \*http.Request, apiKey string\)](<#NoAuth.Apply>)
+  - [func \(a \*NoAuth\) Apply\(\_ \*http.Request, \_ string\)](<#NoAuth.Apply>)
 - [type ProviderAuth](<#ProviderAuth>)
   - [func \(a \*ProviderAuth\) Apply\(req \*http.Request, apiKey string\)](<#ProviderAuth.Apply>)
 - [type QueryAuth](<#QueryAuth>)
@@ -52,7 +52,7 @@ var DefaultHTTPTimeout = constants.DefaultHTTPTimeout
 ## func [DecodeResponse](<https://github.com/agentstation/starmap/blob/master/internal/transport/request.go#L52>)
 
 ```go
-func DecodeResponse(resp *http.Response, target interface{}) error
+func DecodeResponse(resp *http.Response, target any) error
 ```
 
 DecodeResponse decodes a JSON response into the target structure.
@@ -69,7 +69,7 @@ type Authenticator interface {
 ```
 
 <a name="BearerAuth"></a>
-## type [BearerAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L22>)
+## type [BearerAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L23>)
 
 BearerAuth implements Bearer token authentication.
 
@@ -78,13 +78,13 @@ type BearerAuth struct{}
 ```
 
 <a name="BearerAuth.Apply"></a>
-### func \(\*BearerAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L24>)
+### func \(\*BearerAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L26>)
 
 ```go
 func (a *BearerAuth) Apply(req *http.Request, apiKey string)
 ```
 
-
+Apply implements the Authenticator interface for BearerAuth.
 
 <a name="Client"></a>
 ## type [Client](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L16-L19>)
@@ -128,7 +128,7 @@ Do performs an HTTP request with authentication applied.
 ### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L41>)
 
 ```go
-func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
+func (c *Client) DoWithContext(_ context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
 ```
 
 DoWithContext performs an HTTP request with authentication applied and context support.
@@ -143,7 +143,7 @@ func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provide
 Get performs a GET request.
 
 <a name="HeaderAuth"></a>
-## type [HeaderAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L29-L31>)
+## type [HeaderAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L31-L33>)
 
 HeaderAuth implements custom header authentication.
 
@@ -154,13 +154,13 @@ type HeaderAuth struct {
 ```
 
 <a name="HeaderAuth.Apply"></a>
-### func \(\*HeaderAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L33>)
+### func \(\*HeaderAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L36>)
 
 ```go
 func (a *HeaderAuth) Apply(req *http.Request, apiKey string)
 ```
 
-
+Apply implements the Authenticator interface for HeaderAuth.
 
 <a name="NoAuth"></a>
 ## type [NoAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L15>)
@@ -172,16 +172,16 @@ type NoAuth struct{}
 ```
 
 <a name="NoAuth.Apply"></a>
-### func \(\*NoAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L17>)
+### func \(\*NoAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L18>)
 
 ```go
-func (a *NoAuth) Apply(req *http.Request, apiKey string)
+func (a *NoAuth) Apply(_ *http.Request, _ string)
 ```
 
-
+Apply implements the Authenticator interface for NoAuth.
 
 <a name="ProviderAuth"></a>
-## type [ProviderAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L54-L56>)
+## type [ProviderAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L58-L60>)
 
 ProviderAuth implements provider\-specific authentication using catalog configuration.
 
@@ -192,16 +192,16 @@ type ProviderAuth struct {
 ```
 
 <a name="ProviderAuth.Apply"></a>
-### func \(\*ProviderAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L58>)
+### func \(\*ProviderAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L63>)
 
 ```go
 func (a *ProviderAuth) Apply(req *http.Request, apiKey string)
 ```
 
-
+Apply implements the Authenticator interface for ProviderAuth.
 
 <a name="QueryAuth"></a>
-## type [QueryAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L38-L40>)
+## type [QueryAuth](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L41-L43>)
 
 QueryAuth implements API key as query parameter authentication.
 
@@ -212,13 +212,13 @@ type QueryAuth struct {
 ```
 
 <a name="QueryAuth.Apply"></a>
-### func \(\*QueryAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L42>)
+### func \(\*QueryAuth\) [Apply](<https://github.com/agentstation/starmap/blob/master/internal/transport/auth.go#L46>)
 
 ```go
 func (a *QueryAuth) Apply(req *http.Request, apiKey string)
 ```
 
-
+Apply implements the Authenticator interface for QueryAuth.
 
 <a name="RequestBuilder"></a>
 ## type [RequestBuilder](<https://github.com/agentstation/starmap/blob/master/internal/transport/request.go#L14-L16>)

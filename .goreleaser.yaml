@@ -181,12 +181,12 @@ dockers_v2:
     build_args:
       BUILDKIT_INLINE_CACHE: "1"
     labels:
+      org.opencontainers.image.name: "{{.ProjectName}}"
+      org.opencontainers.image.description: "AI Model Catalog System"
       org.opencontainers.image.created: "{{.Date}}"
-      org.opencontainers.image.title: "{{.ProjectName}}"
       org.opencontainers.image.revision: "{{.FullCommit}}"
       org.opencontainers.image.version: "{{.Version}}"
-      org.opencontainers.image.source: "https://github.com/agentstation/starmap"
-      org.opencontainers.image.description: "AI Model Catalog System"
+      org.opencontainers.image.source: "{{.GitURL}}"
       org.opencontainers.image.licenses: "AGPL-3.0"
 
 # Homebrew Cask
@@ -267,18 +267,22 @@ signs:
       - "${artifact}"
     artifacts: checksum
     
-# Binary signing (requires signing key setup)
-binary_signs:
-  - cmd: gpg
-    args:
-      - "--batch"
-      - "--yes"
-      - "--pinentry-mode"
-      - "loopback"
-      - "--passphrase"
-      - "{{ .Env.GPG_PASSPHRASE }}"
-      - "--output"
-      - "${signature}"
-      - "--detach-sig"
-      - "${artifact}"
-    artifacts: binary
+# Binary signing disabled - checksums.txt signing provides sufficient verification
+# Individual binary signatures add confusion without significant security benefit
+# since binaries are already distributed in archives with signed checksums.
+# Uncomment below to sign individual binaries if needed:
+# binary_signs:
+#   - signature: "${artifact}.sig"
+#     cmd: gpg
+#     args:
+#       - "--batch"
+#       - "--yes"
+#       - "--pinentry-mode"
+#       - "loopback"
+#       - "--passphrase"
+#       - "{{ .Env.GPG_PASSPHRASE }}"
+#       - "--output"
+#       - "${signature}"
+#       - "--detach-sig"
+#       - "${artifact}"
+#     artifacts: binary

@@ -39,6 +39,8 @@ starmap.darwin
 starmap.linux
 starmap.windows
 dist/
+completions/
+manpages/
 build/
 bin/
 
