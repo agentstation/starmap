@@ -6,14 +6,14 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// ValidationResult represents the result of validating a catalog or changeset
+// ValidationResult represents the result of validating a catalog or changeset.
 type ValidationResult struct {
 	Valid    bool
 	Errors   []ValidationError
 	Warnings []ValidationWarning
 }
 
-// ValidationError represents a validation error
+// ValidationError represents a validation error.
 type ValidationError struct {
 	ResourceType sources.ResourceType
 	ResourceID   string
@@ -21,7 +21,7 @@ type ValidationError struct {
 	Message      string
 }
 
-// ValidationWarning represents a validation warning
+// ValidationWarning represents a validation warning.
 type ValidationWarning struct {
 	ResourceType sources.ResourceType
 	ResourceID   string
@@ -29,17 +29,17 @@ type ValidationWarning struct {
 	Message      string
 }
 
-// IsValid returns true if validation passed
+// IsValid returns true if validation passed.
 func (v *ValidationResult) IsValid() bool {
 	return v.Valid && len(v.Errors) == 0
 }
 
-// HasWarnings returns true if there are warnings
+// HasWarnings returns true if there are warnings.
 func (v *ValidationResult) HasWarnings() bool {
 	return len(v.Warnings) > 0
 }
 
-// String returns a string representation of the validation result
+// String returns a string representation of the validation result.
 func (v *ValidationResult) String() string {
 	if v.IsValid() {
 		if v.HasWarnings() {

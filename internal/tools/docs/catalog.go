@@ -1,3 +1,4 @@
+//nolint:gosec // Internal documentation generation tool with controlled file operations
 package docs
 
 import (
@@ -8,11 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	md "github.com/nao1215/markdown"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// generateCatalogIndex generates the main catalog index page
+// generateCatalogIndex generates the main catalog index page.
 func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) error {
 	// Write to both README.md (for GitHub) and _index.md (for Hugo)
 	for _, filename := range []string{"README.md", "_index.md"} {
@@ -22,16 +24,16 @@ func (g *Generator) generateCatalogIndex(dir string, catalog catalogs.Reader) er
 			return fmt.Errorf("creating index file %s: %w", filename, err)
 		}
 		if err := g.writeCatalogContent(f, catalog); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeCatalogContent writes the catalog content to the given writer
+// writeCatalogContent writes the catalog content to the given writer.
 func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) error {
 
 	markdown := NewMarkdown(f)
@@ -99,7 +101,7 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 		provider   *catalogs.Provider
 		modelCount int
 	}
-	var providerInfos []providerInfo
+	providerInfos := make([]providerInfo, 0, len(providers))
 	for _, provider := range providers {
 		providerInfos = append(providerInfos, providerInfo{
 			provider:   provider,
@@ -137,7 +139,7 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 		author     *catalogs.Author
 		modelCount int
 	}
-	var authorInfos []authorInfo
+	authorInfos := make([]authorInfo, 0, len(authors))
 	for _, author := range authors {
 		count := 0
 		for _, model := range models {
@@ -198,12 +200,12 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	featuredRows := [][]string{}
 	featuredCount := min(10, len(featuredModels))
 	for _, model := range featuredModels[:featuredCount] {
-		contextStr := "N/A"
+		contextStr := NA
 		if model.Limits != nil && model.Limits.ContextWindow > 0 {
 			contextStr = formatContext(model.Limits.ContextWindow)
 		}
 
-		pricingStr := "N/A"
+		pricingStr := NA
 		if model.Pricing != nil && model.Pricing.Tokens != nil && model.Pricing.Tokens.Input != nil {
 			pricingStr = fmt.Sprintf("$%.2f/$%.2f",
 				model.Pricing.Tokens.Input.Per1M,
@@ -245,13 +247,13 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	).LF()
 
 	// Footer (catalog root doesn't have back links)
-	markdown.Build()
+	_ = markdown.Build()
 	g.writeFooter(f)
 
 	return nil
 }
 
-// selectFeaturedModels selects notable models to feature
+// selectFeaturedModels selects notable models to feature.
 func selectFeaturedModels(models []*catalogs.Model) []*catalogs.Model {
 	// For now, just return models with pricing info, sorted by name
 	var featured []*catalogs.Model
@@ -278,7 +280,7 @@ func selectFeaturedModels(models []*catalogs.Model) []*catalogs.Model {
 	return featuredCopy
 }
 
-// getModelPriority returns a priority score for featuring models
+// getModelPriority returns a priority score for featuring models.
 func getModelPriority(name string) int {
 	priorities := map[string]int{
 		"GPT-4":    1,

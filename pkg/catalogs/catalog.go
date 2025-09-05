@@ -34,21 +34,22 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/goccy/go-yaml"
+
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/goccy/go-yaml"
 )
 
-// MergeStrategy defines how catalogs should be merged
+// MergeStrategy defines how catalogs should be merged.
 type MergeStrategy int
 
 const (
-	// MergeEnrichEmpty intelligently merges, preserving existing non-empty values
+	// MergeEnrichEmpty intelligently merges, preserving existing non-empty values.
 	MergeEnrichEmpty MergeStrategy = iota
-	// MergeReplaceAll completely replaces the target catalog with the source
+	// MergeReplaceAll completely replaces the target catalog with the source.
 	MergeReplaceAll
-	// MergeAppendOnly only adds new items, skips existing ones
+	// MergeAppendOnly only adds new items, skips existing ones.
 	MergeAppendOnly
 )
 
@@ -56,7 +57,7 @@ const (
 // the Interface Segregation Principle. It combines Reader, Writer,
 // Merger, and Copier interfaces for complete catalog functionality.
 
-// Compile-time interface checks to ensure proper implementation
+// Compile-time interface checks to ensure proper implementation.
 var (
 	_ Catalog = (*catalog)(nil)
 	_ Reader  = (*catalog)(nil)
@@ -70,7 +71,7 @@ var (
 // - Memory catalog (readFS == nil)
 // - Embedded catalog (readFS is embed.FS)
 // - Files catalog (readFS is os.DirFS)
-// - Custom catalog (readFS is any fs.FS implementation)
+// - Custom catalog (readFS is any fs.FS implementation).
 type catalog struct {
 	options   *catalogOptions
 	providers *Providers
@@ -81,7 +82,7 @@ type catalog struct {
 // New creates a new catalog with the given options
 // No options = memory catalog
 // WithEmbedded() = embedded catalog with auto-load
-// WithFiles(path) = files catalog with auto-load
+// WithFiles(path) = files catalog with auto-load.
 func New(opts ...Option) (Catalog, error) {
 	options := defaultCatalogOptions()
 
@@ -106,22 +107,22 @@ func New(opts ...Option) (Catalog, error) {
 	return c, nil
 }
 
-// Providers returns the providers collection
+// Providers returns the providers collection.
 func (c *catalog) Providers() *Providers {
 	return c.providers
 }
 
-// Authors returns the authors collection
+// Authors returns the authors collection.
 func (c *catalog) Authors() *Authors {
 	return c.authors
 }
 
-// Endpoints returns the endpoints collection
+// Endpoints returns the endpoints collection.
 func (c *catalog) Endpoints() *Endpoints {
 	return c.endpoints
 }
 
-// Provider returns a provider by ID
+// Provider returns a provider by ID.
 func (c *catalog) Provider(id ProviderID) (Provider, error) {
 	provider, ok := c.providers.Get(id)
 	if !ok {
@@ -133,7 +134,7 @@ func (c *catalog) Provider(id ProviderID) (Provider, error) {
 	return *provider, nil
 }
 
-// Author returns an author by ID
+// Author returns an author by ID.
 func (c *catalog) Author(id AuthorID) (Author, error) {
 	author, ok := c.authors.Get(id)
 	if !ok {
@@ -145,7 +146,7 @@ func (c *catalog) Author(id AuthorID) (Author, error) {
 	return *author, nil
 }
 
-// Endpoint returns an endpoint by ID
+// Endpoint returns an endpoint by ID.
 func (c *catalog) Endpoint(id string) (Endpoint, error) {
 	endpoint, ok := c.endpoints.Get(id)
 	if !ok {
@@ -157,7 +158,7 @@ func (c *catalog) Endpoint(id string) (Endpoint, error) {
 	return *endpoint, nil
 }
 
-// GetAllModels returns all models from all providers and authors
+// GetAllModels returns all models from all providers and authors.
 func (c *catalog) GetAllModels() []Model {
 	models := make([]Model, 0)
 
@@ -190,7 +191,7 @@ func (c *catalog) GetAllModels() []Model {
 	return models
 }
 
-// FindModel searches for a model by ID across all providers and authors
+// FindModel searches for a model by ID across all providers and authors.
 func (c *catalog) FindModel(id string) (Model, error) {
 	// Search in providers first
 	for _, provider := range c.providers.List() {
@@ -216,7 +217,7 @@ func (c *catalog) FindModel(id string) (Model, error) {
 	}
 }
 
-// SetProvider sets a provider (upsert)
+// SetProvider sets a provider (upsert).
 func (c *catalog) SetProvider(provider Provider) error {
 	// Deep copy the Models map to prevent shared references
 	if provider.Models != nil {
@@ -229,7 +230,7 @@ func (c *catalog) SetProvider(provider Provider) error {
 	return c.providers.Set(provider.ID, &provider)
 }
 
-// SetAuthor sets an author (upsert)
+// SetAuthor sets an author (upsert).
 func (c *catalog) SetAuthor(author Author) error {
 	// Deep copy the Models map to prevent shared references
 	if author.Models != nil {
@@ -242,27 +243,27 @@ func (c *catalog) SetAuthor(author Author) error {
 	return c.authors.Set(author.ID, &author)
 }
 
-// SetEndpoint sets an endpoint (upsert)
+// SetEndpoint sets an endpoint (upsert).
 func (c *catalog) SetEndpoint(endpoint Endpoint) error {
 	return c.endpoints.Set(endpoint.ID, &endpoint)
 }
 
-// DeleteProvider deletes a provider
+// DeleteProvider deletes a provider.
 func (c *catalog) DeleteProvider(id ProviderID) error {
 	return c.providers.Delete(id)
 }
 
-// DeleteAuthor deletes an author
+// DeleteAuthor deletes an author.
 func (c *catalog) DeleteAuthor(id AuthorID) error {
 	return c.authors.Delete(id)
 }
 
-// DeleteEndpoint deletes an endpoint
+// DeleteEndpoint deletes an endpoint.
 func (c *catalog) DeleteEndpoint(id string) error {
 	return c.endpoints.Delete(id)
 }
 
-// ReplaceWith replaces this catalog's contents with another
+// ReplaceWith replaces this catalog's contents with another.
 func (c *catalog) ReplaceWith(source Reader) error {
 	// Clear existing data
 	c.providers.Clear()
@@ -307,7 +308,9 @@ func (c *catalog) ReplaceWith(source Reader) error {
 	return nil
 }
 
-// MergeWith merges another catalog into this one
+//
+//nolint:gocyclo // Complex merge logic with many fields
+// MergeWith merges another catalog into this one.
 func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 	// Parse merge options (defaults to MergeEnrichEmpty if not specified)
 	mergeOpts := &MergeOptions{Strategy: MergeEnrichEmpty}
@@ -422,7 +425,7 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 	return nil
 }
 
-// Copy creates a deep copy of the catalog
+// Copy creates a deep copy of the catalog.
 func (c *catalog) Copy() (Catalog, error) {
 	// Create a new catalog with the same configuration
 	newCat := &catalog{
@@ -436,17 +439,17 @@ func (c *catalog) Copy() (Catalog, error) {
 	return newCat, newCat.ReplaceWith(c)
 }
 
-// MergeStrategy returns the default merge strategy
+// MergeStrategy returns the default merge strategy.
 func (c *catalog) MergeStrategy() MergeStrategy {
 	return c.options.mergeStrategy
 }
 
-// SetMergeStrategy sets the default merge strategy
+// SetMergeStrategy sets the default merge strategy.
 func (c *catalog) SetMergeStrategy(strategy MergeStrategy) {
 	c.options.mergeStrategy = strategy
 }
 
-// Load loads the catalog from the configured filesystem
+// Load loads the catalog from the configured filesystem.
 func (c *catalog) Load() error {
 	if c.options.readFS == nil {
 		// Memory catalog - nothing to load
@@ -460,7 +463,7 @@ func (c *catalog) Load() error {
 			return errors.WrapParse("yaml", "providers.yaml", err)
 		}
 		for _, p := range providers {
-			c.SetProvider(p)
+			_ = c.SetProvider(p)
 		}
 	}
 
@@ -471,7 +474,7 @@ func (c *catalog) Load() error {
 			return errors.WrapParse("yaml", "authors.yaml", err)
 		}
 		for _, a := range authors {
-			c.SetAuthor(a)
+			_ = c.SetAuthor(a)
 		}
 	}
 
@@ -512,7 +515,7 @@ func (c *catalog) Load() error {
 					// Add the model to the provider's Models map
 					provider.Models[model.ID] = model
 					// Update the provider in the catalog
-					c.SetProvider(provider)
+					_ = c.SetProvider(provider)
 				}
 			}
 
@@ -529,7 +532,7 @@ func (c *catalog) Load() error {
 					// Add the model to the author's Models map
 					author.Models[model.ID] = model
 					// Update the author in the catalog
-					c.SetAuthor(author)
+					_ = c.SetAuthor(author)
 				}
 			}
 		}
@@ -545,7 +548,7 @@ func (c *catalog) Load() error {
 	return nil
 }
 
-// Save saves the catalog to the configured filesystem
+// Save saves the catalog to the configured filesystem.
 func (c *catalog) Save() error {
 	if c.options.writePath == "" {
 		return &errors.ConfigError{
@@ -557,7 +560,7 @@ func (c *catalog) Save() error {
 	return c.saveTo(c.options.writePath)
 }
 
-// SaveTo saves the catalog to a specific path
+// SaveTo saves the catalog to a specific path.
 func (c *catalog) SaveTo(path string) error {
 	if path == "" {
 		return &errors.ValidationError{
@@ -570,7 +573,7 @@ func (c *catalog) SaveTo(path string) error {
 
 // Write saves the catalog to disk
 // If a path is provided, saves to that location
-// Otherwise uses configured write path
+// Otherwise uses configured write path.
 func (c *catalog) Write(paths ...string) error {
 	if len(paths) > 1 {
 		return &errors.ValidationError{
@@ -595,7 +598,7 @@ func (c *catalog) Write(paths ...string) error {
 	return c.Save()
 }
 
-// saveTo saves the catalog to the specified path
+// saveTo saves the catalog to the specified path.
 func (c *catalog) saveTo(basePath string) error {
 	// Helper function to write a file
 	writeFile := func(path string, data []byte) error {
@@ -610,15 +613,6 @@ func (c *catalog) saveTo(basePath string) error {
 	// Save providers.yaml
 	providers := c.providers.List()
 	if len(providers) > 0 {
-		// Clear runtime fields
-		cleaned := make([]*Provider, 0, len(providers))
-		for _, p := range providers {
-			pCopy := *p
-			pCopy.Models = nil
-			pCopy.EnvVarValues = nil
-			cleaned = append(cleaned, &pCopy)
-		}
-
 		// Use FormatYAML if available
 		yamlData := c.providers.FormatYAML()
 		if err := writeFile("providers.yaml", []byte(yamlData)); err != nil {

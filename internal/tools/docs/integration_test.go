@@ -7,12 +7,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestFullCatalogGeneration tests the complete documentation generation pipeline
+// TestFullCatalogGeneration tests the complete documentation generation pipeline.
 func TestFullCatalogGeneration(t *testing.T) {
 	t.Run("complete catalog generation", func(t *testing.T) {
 		tmpDir := t.TempDir()
@@ -158,7 +159,7 @@ func TestFullCatalogGeneration(t *testing.T) {
 	})
 }
 
-// verifyDirectoryStructure checks that all expected directories and files exist
+// verifyDirectoryStructure checks that all expected directories and files exist.
 func verifyDirectoryStructure(t *testing.T, dir string) {
 	catalogDir := filepath.Join(dir, "catalog")
 
@@ -185,7 +186,7 @@ func verifyDirectoryStructure(t *testing.T, dir string) {
 	assert.FileExists(t, filepath.Join(provider1Dir, "models", "model2.md"))
 }
 
-// verifyCrossReferences checks that cross-references between docs are valid
+// verifyCrossReferences checks that cross-references between docs are valid.
 func verifyCrossReferences(t *testing.T, dir string) {
 	catalogDir := filepath.Join(dir, "catalog")
 
@@ -204,7 +205,7 @@ func verifyCrossReferences(t *testing.T, dir string) {
 	assert.Contains(t, content, "[← Back to Catalog](../../)")
 }
 
-// verifyLinks checks that all markdown links point to existing files
+// verifyLinks checks that all markdown links point to existing files.
 func verifyLinks(t *testing.T, dir string) {
 	catalogDir := filepath.Join(dir, "catalog")
 
@@ -223,7 +224,7 @@ func verifyLinks(t *testing.T, dir string) {
 	require.NoError(t, err)
 }
 
-// verifyFileLinks checks links in a specific markdown file
+// verifyFileLinks checks links in a specific markdown file.
 func verifyFileLinks(t *testing.T, baseDir, filePath string) {
 	content, err := os.ReadFile(filePath)
 	require.NoError(t, err)
@@ -287,7 +288,7 @@ func dirExists(path string) bool {
 	return info.IsDir()
 }
 
-// TestEndToEndWithRealData tests with more realistic data
+// TestEndToEndWithRealData tests with more realistic data.
 func TestEndToEndWithRealData(t *testing.T) {
 	tmpDir := t.TempDir()
 

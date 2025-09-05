@@ -1,3 +1,4 @@
+// Package filter provides model filtering functionality for starmap commands.
 package filter
 
 import (
@@ -6,7 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// ModelFilter applies filters to model lists
+// ModelFilter applies filters to model lists.
 type ModelFilter struct {
 	Provider   string
 	Author     string
@@ -16,7 +17,7 @@ type ModelFilter struct {
 	Search     string // General search term
 }
 
-// Apply filters a slice of models
+// Apply filters a slice of models.
 func (f *ModelFilter) Apply(models []catalogs.Model) []catalogs.Model {
 	if f == nil || f.isEmpty() {
 		return models
@@ -76,7 +77,7 @@ func (f *ModelFilter) matches(model catalogs.Model) bool {
 	return true
 }
 
-func (f *ModelFilter) matchesProvider(model catalogs.Model) bool {
+func (f *ModelFilter) matchesProvider(_ catalogs.Model) bool {
 	// Check if model has a provider association
 	// This might need adjustment based on how providers are stored
 	return true // Placeholder - needs implementation based on model structure
@@ -160,14 +161,14 @@ func (f *ModelFilter) matchesSearch(model catalogs.Model) bool {
 	return false
 }
 
-// ProviderFilter applies filters to provider lists
+// ProviderFilter applies filters to provider lists.
 type ProviderFilter struct {
 	HasClient  bool
 	Configured bool
 	Search     string
 }
 
-// Apply filters a slice of providers
+// Apply filters a slice of providers.
 func (f *ProviderFilter) Apply(providers []catalogs.Provider) []catalogs.Provider {
 	if f == nil || f.isEmpty() {
 		return providers
@@ -220,12 +221,12 @@ func (f *ProviderFilter) matchesSearch(provider catalogs.Provider) bool {
 	return false
 }
 
-// AuthorFilter applies filters to author lists
+// AuthorFilter applies filters to author lists.
 type AuthorFilter struct {
 	Search string
 }
 
-// Apply filters a slice of authors
+// Apply filters a slice of authors.
 func (f *AuthorFilter) Apply(authors []catalogs.Author) []catalogs.Author {
 	if f == nil || f.isEmpty() {
 		return authors

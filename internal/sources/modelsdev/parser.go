@@ -7,27 +7,28 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/utc"
 )
 
-// ModelsDevAPI represents the structure of models.dev api.json
-type ModelsDevAPI map[string]ModelsDevProvider
+// API represents the structure of models.dev api.json.
+type API map[string]Provider
 
-// ModelsDevProvider represents a provider in models.dev
-type ModelsDevProvider struct {
+// Provider represents a provider in models.dev.
+type Provider struct {
 	ID     string                    `json:"id"`
 	Env    []string                  `json:"env"`
 	NPM    string                    `json:"npm"`
 	API    *string                   `json:"api,omitempty"`
 	Name   string                    `json:"name"`
 	Doc    string                    `json:"doc"`
-	Models map[string]ModelsDevModel `json:"models"`
+	Models map[string]Model `json:"models"`
 }
 
-// ModelsDevModel represents a model in models.dev
-type ModelsDevModel struct {
+// Model represents a model in models.dev.
+type Model struct {
 	ID          string              `json:"id"`
 	Name        string              `json:"name"`
 	Attachment  bool                `json:"attachment"`
@@ -37,20 +38,20 @@ type ModelsDevModel struct {
 	Knowledge   *string             `json:"knowledge,omitempty"`
 	ReleaseDate string              `json:"release_date"`
 	LastUpdated string              `json:"last_updated"`
-	Modalities  ModelsDevModalities `json:"modalities"`
+	Modalities  Modalities `json:"modalities"`
 	OpenWeights bool                `json:"open_weights"`
-	Cost        *ModelsDevCost      `json:"cost,omitempty"`
-	Limit       ModelsDevLimit      `json:"limit"`
+	Cost        *Cost      `json:"cost,omitempty"`
+	Limit       Limit      `json:"limit"`
 }
 
-// ModelsDevModalities represents input/output modalities
-type ModelsDevModalities struct {
+// Modalities represents input/output modalities.
+type Modalities struct {
 	Input  []string `json:"input"`
 	Output []string `json:"output"`
 }
 
-// ModelsDevCost represents pricing information
-type ModelsDevCost struct {
+// Cost represents pricing information.
+type Cost struct {
 	Input      *float64 `json:"input,omitempty"`
 	Output     *float64 `json:"output,omitempty"`
 	Cache      *float64 `json:"cache,omitempty"`       // Legacy cache field
@@ -58,20 +59,20 @@ type ModelsDevCost struct {
 	CacheWrite *float64 `json:"cache_write,omitempty"` // Cache write costs
 }
 
-// ModelsDevLimit represents model limits
-type ModelsDevLimit struct {
+// Limit represents model limits.
+type Limit struct {
 	Context int `json:"context"`
 	Output  int `json:"output"`
 }
 
-// ParseAPI parses the api.json file and returns a ModelsDevAPI
-func ParseAPI(apiPath string) (*ModelsDevAPI, error) {
-	data, err := os.ReadFile(apiPath)
+// ParseAPI parses the api.json file and returns an API.
+func ParseAPI(apiPath string) (*API, error) {
+	data, err := os.ReadFile(apiPath) //nolint:gosec // Input paths are controlled by internal tooling
 	if err != nil {
 		return nil, errors.WrapIO("read", apiPath, err)
 	}
 
-	var api ModelsDevAPI
+	var api API
 	if err := json.Unmarshal(data, &api); err != nil {
 		return nil, errors.WrapParse("json", "api.json", err)
 	}
@@ -79,8 +80,8 @@ func ParseAPI(apiPath string) (*ModelsDevAPI, error) {
 	return &api, nil
 }
 
-// ToStarmapProvider converts a ModelsDevProvider to a starmap.Provider
-func (p *ModelsDevProvider) ToStarmapProvider() (*catalogs.Provider, error) {
+// ToStarmapProvider converts a Provider to a starmap.Provider.
+func (p *Provider) ToStarmapProvider() (*catalogs.Provider, error) {
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderID(p.ID),
 		Name: p.Name,
@@ -101,8 +102,8 @@ func (p *ModelsDevProvider) ToStarmapProvider() (*catalogs.Provider, error) {
 	return provider, nil
 }
 
-// ToStarmapModel converts a ModelsDevModel to a starmap.Model
-func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error) {
+// ToStarmapModel converts a Model to a starmap.Model.
+func (m *Model) ToStarmapModel() (*catalogs.Model, error) {
 	model := &catalogs.Model{
 		ID:   m.ID,
 		Name: m.Name,
@@ -213,7 +214,7 @@ func (m *ModelsDevModel) ToStarmapModel() (*catalogs.Model, error) {
 	return model, nil
 }
 
-// convertModalities converts string modalities to starmap.ModelModality
+// convertModalities converts string modalities to starmap.ModelModality.
 func convertModalities(modalities []string) []catalogs.ModelModality {
 	var result []catalogs.ModelModality
 	for _, modality := range modalities {
@@ -231,7 +232,7 @@ func convertModalities(modalities []string) []catalogs.ModelModality {
 	return result
 }
 
-// parseDate parses various date formats used in models.dev
+// parseDate parses various date formats used in models.dev.
 func parseDate(dateStr string) (*time.Time, error) {
 	// Try different date formats
 	formats := []string{
@@ -259,14 +260,14 @@ func parseDate(dateStr string) (*time.Time, error) {
 	return nil, errors.WrapParse("date", dateStr, errors.New("unsupported format"))
 }
 
-// GetProvider returns a specific provider from the API data
-func (api *ModelsDevAPI) GetProvider(providerID catalogs.ProviderID) (*ModelsDevProvider, bool) {
+// GetProvider returns a specific provider from the API data.
+func (api *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool) {
 	provider, exists := (*api)[string(providerID)]
 	return &provider, exists
 }
 
-// GetModel returns a specific model from a provider
-func (p *ModelsDevProvider) Model(modelID string) (*ModelsDevModel, bool) {
+// Model returns a specific model from a provider.
+func (p *Provider) Model(modelID string) (*Model, bool) {
 	model, exists := p.Models[modelID]
 	return &model, exists
 }

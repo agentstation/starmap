@@ -5,11 +5,12 @@ import (
 	"io"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	md "github.com/nao1215/markdown"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Markdown wraps the markdown package to provide Hugo-specific functionality
+// Markdown wraps the markdown package to provide Hugo-specific functionality.
 type Markdown struct {
 	md        *md.Markdown
 	writer    io.Writer
@@ -17,7 +18,7 @@ type Markdown struct {
 	useBuffer bool
 }
 
-// NewMarkdown creates a new markdown builder
+// NewMarkdown creates a new markdown builder.
 func NewMarkdown(w io.Writer) *Markdown {
 	return &Markdown{
 		md:     md.NewMarkdown(w),
@@ -25,7 +26,7 @@ func NewMarkdown(w io.Writer) *Markdown {
 	}
 }
 
-// NewMarkdownBuffer creates a new markdown builder with internal buffer
+// NewMarkdownBuffer creates a new markdown builder with internal buffer.
 func NewMarkdownBuffer() *Markdown {
 	buffer := &strings.Builder{}
 	return &Markdown{
@@ -36,12 +37,12 @@ func NewMarkdownBuffer() *Markdown {
 	}
 }
 
-// Writer returns the underlying writer
+// Writer returns the underlying writer.
 func (m *Markdown) Writer() io.Writer {
 	return m.writer
 }
 
-// String returns the buffered content
+// String returns the buffered content.
 func (m *Markdown) String() string {
 	if m.useBuffer && m.buffer != nil {
 		return m.buffer.String()
@@ -49,7 +50,7 @@ func (m *Markdown) String() string {
 	return ""
 }
 
-// HugoFrontMatter adds Hugo front matter to the document
+// HugoFrontMatter adds Hugo front matter to the document.
 func (m *Markdown) HugoFrontMatter(title string, weight int, opts ...FrontMatterOption) *Markdown {
 	fm := &FrontMatter{
 		Title:  title,
@@ -61,36 +62,36 @@ func (m *Markdown) HugoFrontMatter(title string, weight int, opts ...FrontMatter
 	}
 
 	// Write front matter directly to writer
-	fmt.Fprintln(m.writer, "---")
-	fmt.Fprintf(m.writer, "title: \"%s\"\n", fm.Title)
+	_, _ = fmt.Fprintln(m.writer, "---")
+	_, _ = fmt.Fprintf(m.writer, "title: \"%s\"\n", fm.Title)
 	if fm.Description != "" {
-		fmt.Fprintf(m.writer, "description: \"%s\"\n", fm.Description)
+		_, _ = fmt.Fprintf(m.writer, "description: \"%s\"\n", fm.Description)
 	}
-	fmt.Fprintf(m.writer, "weight: %d\n", fm.Weight)
+	_, _ = fmt.Fprintf(m.writer, "weight: %d\n", fm.Weight)
 	if fm.Author != "" {
-		fmt.Fprintf(m.writer, "author: \"%s\"\n", fm.Author)
+		_, _ = fmt.Fprintf(m.writer, "author: \"%s\"\n", fm.Author)
 	}
 	if fm.Draft {
-		fmt.Fprintln(m.writer, "draft: true")
+		_, _ = fmt.Fprintln(m.writer, "draft: true")
 	}
 	if fm.Menu != nil {
-		fmt.Fprintln(m.writer, "menu:")
+		_, _ = fmt.Fprintln(m.writer, "menu:")
 		if fm.Menu.Before != nil {
-			fmt.Fprintln(m.writer, "  before:")
-			fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.Before.Weight)
+			_, _ = fmt.Fprintln(m.writer, "  before:")
+			_, _ = fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.Before.Weight)
 		}
 		if fm.Menu.After != nil {
-			fmt.Fprintln(m.writer, "  after:")
-			fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.After.Weight)
+			_, _ = fmt.Fprintln(m.writer, "  after:")
+			_, _ = fmt.Fprintf(m.writer, "    weight: %d\n", fm.Menu.After.Weight)
 		}
 	}
-	fmt.Fprintln(m.writer, "---")
-	fmt.Fprintln(m.writer)
+	_, _ = fmt.Fprintln(m.writer, "---")
+	_, _ = fmt.Fprintln(m.writer)
 
 	return m
 }
 
-// FrontMatter represents Hugo front matter
+// FrontMatter represents Hugo front matter.
 type FrontMatter struct {
 	Title       string
 	Description string
@@ -100,134 +101,135 @@ type FrontMatter struct {
 	Menu        *MenuConfig
 }
 
-// MenuConfig represents menu configuration in Hugo front matter
+// MenuConfig represents menu configuration in Hugo front matter.
 type MenuConfig struct {
 	Before *MenuEntry
 	After  *MenuEntry
 }
 
-// MenuEntry represents a single menu entry
+// MenuEntry represents a single menu entry.
 type MenuEntry struct {
 	Weight int
 }
 
-// FrontMatterOption is a functional option for front matter
+// FrontMatterOption is a functional option for front matter.
 type FrontMatterOption func(*FrontMatter)
 
-// WithMenu adds menu configuration to the front matter
+// WithMenu adds menu configuration to the front matter.
 func WithMenu(menuType string, weight int) FrontMatterOption {
 	return func(fm *FrontMatter) {
 		if fm.Menu == nil {
 			fm.Menu = &MenuConfig{}
 		}
-		if menuType == "before" {
+		switch menuType {
+		case "before":
 			fm.Menu.Before = &MenuEntry{Weight: weight}
-		} else if menuType == "after" {
+		case "after":
 			fm.Menu.After = &MenuEntry{Weight: weight}
 		}
 	}
 }
 
-// WithDescription adds a description to the front matter
+// WithDescription adds a description to the front matter.
 func WithDescription(desc string) FrontMatterOption {
 	return func(fm *FrontMatter) {
 		fm.Description = desc
 	}
 }
 
-// WithAuthor adds an author to the front matter
+// WithAuthor adds an author to the front matter.
 func WithAuthor(author string) FrontMatterOption {
 	return func(fm *FrontMatter) {
 		fm.Author = author
 	}
 }
 
-// WithDraft marks the document as draft
+// WithDraft marks the document as draft.
 func WithDraft() FrontMatterOption {
 	return func(fm *FrontMatter) {
 		fm.Draft = true
 	}
 }
 
-// H1 creates a level 1 header
+// H1 creates a level 1 header.
 func (m *Markdown) H1(text string) *Markdown {
 	m.md.H1(text)
 	return m
 }
 
-// H2 creates a level 2 header
+// H2 creates a level 2 header.
 func (m *Markdown) H2(text string) *Markdown {
 	m.md.H2(text)
 	return m
 }
 
-// H3 creates a level 3 header
+// H3 creates a level 3 header.
 func (m *Markdown) H3(text string) *Markdown {
 	m.md.H3(text)
 	return m
 }
 
-// H4 creates a level 4 header
+// H4 creates a level 4 header.
 func (m *Markdown) H4(text string) *Markdown {
 	m.md.H4(text)
 	return m
 }
 
-// PlainText adds plain text
+// PlainText adds plain text.
 func (m *Markdown) PlainText(text string) *Markdown {
 	m.md.PlainText(text)
 	return m
 }
 
-// PlainTextf adds formatted plain text
+// PlainTextf adds formatted plain text.
 func (m *Markdown) PlainTextf(format string, args ...any) *Markdown {
 	m.md.PlainTextf(format, args...)
 	return m
 }
 
-// LF adds a line feed
+// LF adds a line feed.
 func (m *Markdown) LF() *Markdown {
 	m.md.LF()
 	return m
 }
 
-// Bold adds bold text
+// Bold adds bold text.
 func (m *Markdown) Bold(text string) *Markdown {
 	m.md.PlainText(md.Bold(text))
 	return m
 }
 
-// Italic adds italic text
+// Italic adds italic text.
 func (m *Markdown) Italic(text string) *Markdown {
 	m.md.PlainText(md.Italic(text))
 	return m
 }
 
-// Code adds inline code
+// Code adds inline code.
 func (m *Markdown) Code(code string) *Markdown {
 	m.md.PlainText(md.Code(code))
 	return m
 }
 
-// CodeBlock adds a code block with syntax highlighting
+// CodeBlock adds a code block with syntax highlighting.
 func (m *Markdown) CodeBlock(syntax, code string) *Markdown {
 	m.md.CodeBlocks(md.SyntaxHighlight(syntax), code)
 	return m
 }
 
-// Link adds a markdown link
+// Link adds a markdown link.
 func (m *Markdown) Link(text, url string) *Markdown {
 	m.md.PlainText(md.Link(text, url))
 	return m
 }
 
-// Image adds an image with optional styling
+// Image adds an image with optional styling.
 func (m *Markdown) Image(alt, url string) *Markdown {
 	m.md.PlainText(md.Image(alt, url))
 	return m
 }
 
-// ImageWithStyle adds an image with inline CSS styling for Hugo
+// ImageWithStyle adds an image with inline CSS styling for Hugo.
 func (m *Markdown) ImageWithStyle(alt, url string, width, height int) *Markdown {
 	// Hugo supports HTML in markdown, so we can use img tags
 	html := fmt.Sprintf(`<img src="%s" alt="%s" width="%d" height="%d" style="vertical-align: middle;">`,
@@ -236,25 +238,25 @@ func (m *Markdown) ImageWithStyle(alt, url string, width, height int) *Markdown 
 	return m
 }
 
-// BulletList adds a bullet list
+// BulletList adds a bullet list.
 func (m *Markdown) BulletList(items ...string) *Markdown {
 	m.md.BulletList(items...)
 	return m
 }
 
-// OrderedList adds an ordered list
+// OrderedList adds an ordered list.
 func (m *Markdown) OrderedList(items ...string) *Markdown {
 	m.md.OrderedList(items...)
 	return m
 }
 
-// Table adds a markdown table
+// Table adds a markdown table.
 func (m *Markdown) Table(table md.TableSet) *Markdown {
 	m.md.Table(table)
 	return m
 }
 
-// FeatureTable creates a table with checkmarks/crosses for features
+// FeatureTable creates a table with checkmarks/crosses for features.
 func (m *Markdown) FeatureTable(headers []string, rows [][]bool) *Markdown {
 	tableRows := make([][]string, len(rows))
 	for i, row := range rows {
@@ -275,19 +277,19 @@ func (m *Markdown) FeatureTable(headers []string, rows [][]bool) *Markdown {
 	return m
 }
 
-// HorizontalRule adds a horizontal rule
+// HorizontalRule adds a horizontal rule.
 func (m *Markdown) HorizontalRule() *Markdown {
 	m.md.HorizontalRule()
 	return m
 }
 
-// Blockquote adds a blockquote
+// Blockquote adds a blockquote.
 func (m *Markdown) Blockquote(text string) *Markdown {
 	m.md.Blockquote(text)
 	return m
 }
 
-// Alert adds a GitHub-style alert
+// Alert adds a GitHub-style alert.
 func (m *Markdown) Alert(alertType string, text string) *Markdown {
 	// GitHub-style alerts using blockquotes
 	alert := fmt.Sprintf("> [!%s]\n> %s", strings.ToUpper(alertType), text)
@@ -295,7 +297,7 @@ func (m *Markdown) Alert(alertType string, text string) *Markdown {
 	return m
 }
 
-// NavigationFooter adds a standard navigation footer for Hugo docs
+// NavigationFooter adds a standard navigation footer for Hugo docs.
 func (m *Markdown) NavigationFooter(prevText, prevURL, nextText, nextURL, upText, upURL string) *Markdown {
 	m.HorizontalRule()
 	m.Italic("_")
@@ -320,12 +322,12 @@ func (m *Markdown) NavigationFooter(prevText, prevURL, nextText, nextURL, upText
 	return m
 }
 
-// Build finalizes the markdown document
+// Build finalizes the markdown document.
 func (m *Markdown) Build() error {
 	return m.md.Build()
 }
 
-// Badge adds a badge with custom text and color
+// Badge adds a badge with custom text and color.
 func (m *Markdown) Badge(label, message, color string) *Markdown {
 	url := fmt.Sprintf("https://img.shields.io/badge/%s-%s-%s",
 		strings.ReplaceAll(label, " ", "%20"),
@@ -335,7 +337,7 @@ func (m *Markdown) Badge(label, message, color string) *Markdown {
 	return m
 }
 
-// BoldLink creates a bold link: **[text](url)**
+// BoldLink creates a bold link: **[text](url)**.
 func (m *Markdown) BoldLink(text, url string) *Markdown {
 	m.PlainText("**")
 	m.Link(text, url)
@@ -343,7 +345,7 @@ func (m *Markdown) BoldLink(text, url string) *Markdown {
 	return m
 }
 
-// CodeInline adds inline code
+// CodeInline adds inline code.
 func (m *Markdown) CodeInline(text string) *Markdown {
 	m.PlainText("`")
 	m.PlainText(text)
@@ -351,7 +353,7 @@ func (m *Markdown) CodeInline(text string) *Markdown {
 	return m
 }
 
-// CountText adds formatted count text (e.g., "5 models")
+// CountText adds formatted count text (e.g., "5 models").
 func (m *Markdown) CountText(count int, singular, plural string) *Markdown {
 	if count == 1 {
 		m.PlainTextf("%d %s", count, singular)
@@ -361,7 +363,7 @@ func (m *Markdown) CountText(count int, singular, plural string) *Markdown {
 	return m
 }
 
-// TruncateText adds text that may be truncated with ellipsis
+// TruncateText adds text that may be truncated with ellipsis.
 func (m *Markdown) TruncateText(text string, maxLen int) *Markdown {
 	if len(text) > maxLen && maxLen > 3 {
 		m.PlainText(text[:maxLen-3] + "...")
@@ -371,12 +373,12 @@ func (m *Markdown) TruncateText(text string, maxLen int) *Markdown {
 	return m
 }
 
-// FormatModelID formats a model ID with code style
+// FormatModelID formats a model ID with code style.
 func (m *Markdown) FormatModelID(id string) *Markdown {
 	return m.CodeInline(id)
 }
 
-// FormatCurrency formats a currency value with symbol
+// FormatCurrency formats a currency value with symbol.
 func (m *Markdown) FormatCurrency(value float64, currency string) *Markdown {
 	symbol := catalogs.ModelPricingCurrency(currency).Symbol()
 	if value == 0 {
@@ -389,7 +391,7 @@ func (m *Markdown) FormatCurrency(value float64, currency string) *Markdown {
 	return m
 }
 
-// BooleanCheck adds a checkmark or X based on boolean value
+// BooleanCheck adds a checkmark or X based on boolean value.
 func (m *Markdown) BooleanCheck(value bool) *Markdown {
 	if value {
 		m.PlainText("✅")
@@ -399,7 +401,7 @@ func (m *Markdown) BooleanCheck(value bool) *Markdown {
 	return m
 }
 
-// JoinList joins items with a separator
+// JoinList joins items with a separator.
 func (m *Markdown) JoinList(items []string, separator string) *Markdown {
 	for i, item := range items {
 		if i > 0 {
@@ -410,7 +412,7 @@ func (m *Markdown) JoinList(items []string, separator string) *Markdown {
 	return m
 }
 
-// ConditionalSection adds content only if condition is true
+// ConditionalSection adds content only if condition is true.
 func (m *Markdown) ConditionalSection(condition bool, f func(*Markdown)) *Markdown {
 	if condition {
 		f(m)
@@ -418,7 +420,7 @@ func (m *Markdown) ConditionalSection(condition bool, f func(*Markdown)) *Markdo
 	return m
 }
 
-// ComparisonTable creates a comparison table with provider logos
+// ComparisonTable creates a comparison table with provider logos.
 func (m *Markdown) ComparisonTable(headers []string, rows [][]any) *Markdown {
 	stringRows := make([][]string, len(rows))
 	for i, row := range rows {
@@ -450,7 +452,7 @@ func (m *Markdown) ComparisonTable(headers []string, rows [][]any) *Markdown {
 	return m
 }
 
-// CheckboxList adds a checkbox list
+// CheckboxList adds a checkbox list.
 func (m *Markdown) CheckboxList(items []struct {
 	Text    string
 	Checked bool
@@ -466,14 +468,14 @@ func (m *Markdown) CheckboxList(items []struct {
 	return m
 }
 
-// Details adds a collapsible details section (HTML in markdown)
+// Details adds a collapsible details section (HTML in markdown).
 func (m *Markdown) Details(summary, content string) *Markdown {
 	html := fmt.Sprintf("<details>\n<summary>%s</summary>\n\n%s\n\n</details>", summary, content)
 	m.md.PlainText(html).LF().LF()
 	return m
 }
 
-// RawHTML adds raw HTML (useful for Hugo shortcodes or custom elements)
+// RawHTML adds raw HTML (useful for Hugo shortcodes or custom elements).
 func (m *Markdown) RawHTML(html string) *Markdown {
 	m.md.PlainText(html).LF()
 	return m

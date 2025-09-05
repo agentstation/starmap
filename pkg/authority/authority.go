@@ -1,3 +1,4 @@
+// Package authority manages source authority for catalog data reconciliation.
 package authority
 
 import (
@@ -6,7 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Authority determines which source is authoritative for each field
+// Authority determines which source is authoritative for each field.
 type Authority interface {
 	// Find returns the authority configuration for a specific field
 	Find(resourceType sources.ResourceType, fieldPath string) *Field
@@ -17,21 +18,21 @@ type Authority interface {
 	AuthorFields() []Field
 }
 
-// Field defines source priority for a specific field
+// Field defines source priority for a specific field.
 type Field struct {
 	Path     string       `json:"path" yaml:"path"`         // e.g., "pricing.input", "metadata.knowledge_cutoff"
 	Source   sources.Type `json:"source" yaml:"source"`     // Which source is authoritative
 	Priority int          `json:"priority" yaml:"priority"` // Priority (higher = more authoritative)
 }
 
-// authorities provides standard field authorities
+// authorities provides standard field authorities.
 type authorities struct {
 	modelFields    []Field
 	providerFields []Field
 	authorFields   []Field
 }
 
-// New creates a new DefaultAuthorities with standard configurations
+// New creates a new DefaultAuthorities with standard configurations.
 func New() Authority {
 	return &authorities{
 		modelFields:    defaultModelAuthorities(),
@@ -40,7 +41,7 @@ func New() Authority {
 	}
 }
 
-// Find returns the authority configuration for a specific field
+// Find returns the authority configuration for a specific field.
 func (a *authorities) Find(resourceType sources.ResourceType, fieldPath string) *Field {
 	var authorities []Field
 
@@ -62,7 +63,7 @@ func (a *authorities) ModelFields() []Field    { return a.modelFields }
 func (a *authorities) ProviderFields() []Field { return a.providerFields }
 func (a *authorities) AuthorFields() []Field   { return a.authorFields }
 
-// ByField returns the highest priority authority for a given field path
+// ByField returns the highest priority authority for a given field path.
 func findByFieldPath(authorities []Field, fieldPath string) *Field {
 	var bestMatch *Field
 	var bestPriority int
@@ -84,7 +85,7 @@ func findByFieldPath(authorities []Field, fieldPath string) *Field {
 	return bestMatch
 }
 
-// MatchesPattern checks if a field path matches a pattern (supports * wildcards)
+// MatchesPattern checks if a field path matches a pattern (supports * wildcards).
 func MatchesPattern(fieldPath, pattern string) bool {
 	// Handle exact matches
 	if fieldPath == pattern {
@@ -105,18 +106,7 @@ func MatchesPattern(fieldPath, pattern string) bool {
 	return matched
 }
 
-// filterBySource returns only the authorities for a specific source
-func filterBySource(authorities []Field, sourceType sources.Type) []Field {
-	var filtered []Field
-	for _, auth := range authorities {
-		if auth.Source == sourceType {
-			filtered = append(filtered, auth)
-		}
-	}
-	return filtered
-}
-
-// defaultModelAuthorities returns the default field authorities for models
+// defaultModelAuthorities returns the default field authorities for models.
 func defaultModelAuthorities() []Field {
 	return []Field{
 		// Pricing - models.dev is most reliable (HTTP preferred for speed)
@@ -164,7 +154,7 @@ func defaultModelAuthorities() []Field {
 	}
 }
 
-// defaultProviderAuthorities returns the default field authorities for providers
+// defaultProviderAuthorities returns the default field authorities for providers.
 func defaultProviderAuthorities() []Field {
 	return []Field{
 		// API configuration - local catalog for stability (using Go field names)
@@ -196,7 +186,7 @@ func defaultProviderAuthorities() []Field {
 	}
 }
 
-// defaultAuthorAuthorities returns the default field authorities for authors
+// defaultAuthorAuthorities returns the default field authorities for authors.
 func defaultAuthorAuthorities() []Field {
 	return []Field{
 		// Core author info - prefer local catalog for stability

@@ -1,3 +1,4 @@
+//nolint:gosec // Internal documentation generation tool with controlled file operations
 package docs
 
 import (
@@ -12,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// generateModelDocs generates documentation for all models
+// generateModelDocs generates documentation for all models.
 func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error {
 	allModelsSlice := catalog.GetAllModels()
 	models := make([]*catalogs.Model, len(allModelsSlice))
@@ -29,7 +30,7 @@ func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error
 	return nil
 }
 
-// generateModelIndex generates the main model listing page
+// generateModelIndex generates the main model listing page.
 func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
@@ -44,16 +45,16 @@ func (g *Generator) generateModelIndex(dir string, models []*catalogs.Model) err
 			return fmt.Errorf("creating model index %s: %w", filename, err)
 		}
 		if err := g.writeModelIndexContent(f, models); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeModelIndexContent writes the model index content to the given writer
+// writeModelIndexContent writes the model index content to the given writer.
 func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model) error {
 
 	markdown := NewMarkdown(f)
@@ -113,7 +114,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 		name   string
 		models []*catalogs.Model
 	}
-	var familyList []familyInfo
+	familyList := make([]familyInfo, 0, len(families))
 	for name, models := range families {
 		familyList = append(familyList, familyInfo{name, models})
 	}
@@ -161,7 +162,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 			if len(model.Authors) > 0 {
 				// Link to first author's version
 				modelLink = fmt.Sprintf("[%s](../authors/%s/models/%s.md)",
-					modelName, string(model.Authors[0].ID), formatModelID(string(model.ID)))
+					modelName, string(model.Authors[0].ID), formatModelID(model.ID))
 			}
 
 			// Provider (would need to look this up from catalog)
@@ -223,7 +224,7 @@ func (g *Generator) writeModelIndexContent(f *os.File, models []*catalogs.Model)
 	markdown.LF()
 
 	// Write content to file
-	markdown.Build()
+	_ = markdown.Build()
 
 	// Footer
 	g.writeFooter(f, Breadcrumb{Label: "Back to Catalog", Path: "../"})

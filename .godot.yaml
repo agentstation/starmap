@@ -1,0 +1,19 @@
+# godot configuration
+# Which comments to check:
+#   declarations - for top level declaration comments (default);
+#   toplevel     - for top level comments;
+#   noinline     - for all except inline comments;
+#   all          - for all comments.
+scope: declarations
+
+# List of regexps for excluding particular comment lines from check.
+# exclude:
+  # Exclude experiments directory
+  # - "llama3/experiments/.*"
+  # - "experiments/.*"
+
+# Check periods at the end of sentences.
+period: true
+
+# Check that first letter of each sentence is capital.
+capital: false

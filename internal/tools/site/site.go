@@ -11,22 +11,23 @@ import (
 	"runtime"
 	"strings"
 
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 const (
-	// Default configuration values
+	// Default configuration values.
 	defaultSiteDir    = "./site"
 	defaultContentDir = "./docs"
 	defaultBaseURL    = "https://starmap.agentstation.ai/"
 	defaultTheme      = "hugo-book"
 
-	// Hugo command and arguments
+	// Hugo command and arguments.
 	hugoCmd             = "hugo"
 	hugoVersionArg      = "version"
 	hugoServerArg       = "server"
@@ -39,7 +40,7 @@ const (
 	hugoMinifyFlag      = "--minify"
 	hugoBaseURLFlag     = "--baseURL"
 
-	// File patterns and identifiers
+	// File patterns and identifiers.
 	markdownExt       = ".md"
 	frontMatterPrefix = "---"
 	modelsPathSegment = "/models/"
@@ -47,19 +48,19 @@ const (
 	hugoConfigFile    = "hugo.yaml"
 	publicDirName     = "public"
 
-	// Weight constants
+	// Weight constants.
 	defaultWeight = 10
 	readmeWeight  = 1
 
-	// String transformations
+	// String transformations.
 	dashChar  = "-"
 	spaceChar = " "
 
-	// Hugo dependency info
+	// Hugo dependency info.
 	hugoDependencyName = "hugo"
 	hugoInstallHelpMsg = "Hugo not found. Install with: brew install hugo or use devbox shell"
 
-	// Platform-specific installation commands
+	// Platform-specific installation commands.
 	brewInstallCmd = "brew"
 	brewInstallArg = "install"
 	aptInstallCmd  = "apt"
@@ -67,13 +68,13 @@ const (
 	snapInstallCmd = "snap"
 	snapInstallArg = "install"
 
-	// User input prompts
+	// User input prompts.
 	installPrompt    = "Would you like to install Hugo now? (y/N): "
 	confirmYes       = "y"
 	confirmYesUpper  = "Y"
 	osDetectionError = "Unable to detect operating system for automatic installation"
 
-	// Front matter templates
+	// Front matter templates.
 	basicFrontMatterTmpl = `---
 title: "%s"
 weight: %d
@@ -87,7 +88,7 @@ author: "%s"
 ---`
 )
 
-// Site represents a Hugo-based documentation website
+// Site represents a Hugo-based documentation website.
 type Site struct {
 	rootDir    string
 	contentDir string
@@ -95,7 +96,7 @@ type Site struct {
 	baseURL    string
 }
 
-// Config holds website configuration
+// Config holds website configuration.
 type Config struct {
 	RootDir    string // Root directory for the site (default: ./site)
 	ContentDir string // Content directory (default: ./docs)
@@ -103,7 +104,7 @@ type Config struct {
 	Theme      string // Hugo theme to use (default: hugo-book)
 }
 
-// New creates a new Site instance
+// New creates a new Site instance.
 func New(config *Config) (*Site, error) {
 	if config == nil {
 		config = &Config{}
@@ -133,7 +134,7 @@ func New(config *Config) (*Site, error) {
 	return site, nil
 }
 
-// Generate builds the static site from the current catalog
+// Generate builds the static site from the current catalog.
 func (s *Site) Generate(ctx context.Context, catalog catalogs.Reader) error {
 	logging.Info().
 		Str("root_dir", s.rootDir).
@@ -141,7 +142,7 @@ func (s *Site) Generate(ctx context.Context, catalog catalogs.Reader) error {
 		Msg("Generating static site")
 
 	// Ensure Hugo is available
-	if err := s.checkHugo(); err != nil {
+	if err := s.checkHugo(ctx); err != nil {
 		return fmt.Errorf("hugo not available: %w", err)
 	}
 
@@ -164,13 +165,13 @@ func (s *Site) Generate(ctx context.Context, catalog catalogs.Reader) error {
 	return nil
 }
 
-// Serve starts the Hugo development server
+// Serve starts the Hugo development server.
 func (s *Site) Serve(ctx context.Context, port int) error {
 	logging.Info().
 		Int("port", port).
 		Msg("Starting Hugo development server")
 
-	cmd := exec.CommandContext(ctx, hugoCmd, hugoServerArg,
+	cmd := exec.CommandContext(ctx, hugoCmd, hugoServerArg, //nolint:gosec // Hugo command with controlled args
 		hugoSourceFlag, s.rootDir,
 		hugoPortFlag, fmt.Sprintf("%d", port),
 		hugoBuildDraftsFlag,
@@ -183,15 +184,15 @@ func (s *Site) Serve(ctx context.Context, port int) error {
 	return cmd.Run()
 }
 
-// checkHugo verifies Hugo is installed and available, offers to install if missing
-func (s *Site) checkHugo() error {
-	cmd := exec.Command(hugoCmd, hugoVersionArg)
+// checkHugo verifies Hugo is installed and available, offers to install if missing.
+func (s *Site) checkHugo(ctx context.Context) error {
+	cmd := exec.CommandContext(ctx, hugoCmd, hugoVersionArg)
 	output, err := cmd.Output()
 	if err != nil {
 		// Hugo not found, offer to install
 		logging.Warn().Msg("Hugo not found on system")
 
-		if err := s.offerHugoInstallation(); err != nil {
+		if err := s.offerHugoInstallation(ctx); err != nil {
 			return &errors.DependencyError{
 				Dependency: hugoDependencyName,
 				Message:    hugoInstallHelpMsg,
@@ -199,7 +200,7 @@ func (s *Site) checkHugo() error {
 		}
 
 		// Verify installation succeeded
-		cmd = exec.Command(hugoCmd, hugoVersionArg)
+		cmd = exec.CommandContext(ctx, hugoCmd, hugoVersionArg)
 		output, err = cmd.Output()
 		if err != nil {
 			return &errors.DependencyError{
@@ -216,9 +217,9 @@ func (s *Site) checkHugo() error {
 	return nil
 }
 
-// build runs Hugo to build the static site
+// build runs Hugo to build the static site.
 func (s *Site) build(ctx context.Context) error {
-	cmd := exec.CommandContext(ctx, hugoCmd,
+	cmd := exec.CommandContext(ctx, hugoCmd, //nolint:gosec // Hugo command with controlled args
 		hugoSourceFlag, s.rootDir,
 		hugoGCFlag,
 		hugoMinifyFlag,
@@ -241,7 +242,7 @@ func (s *Site) build(ctx context.Context) error {
 	return nil
 }
 
-// addFrontMatter adds Hugo front matter to markdown files
+// addFrontMatter adds Hugo front matter to markdown files.
 func (s *Site) addFrontMatter(catalog catalogs.Reader) error {
 	// Walk through content directory
 	err := filepath.Walk(s.contentDir, func(path string, info os.FileInfo, err error) error {
@@ -260,7 +261,7 @@ func (s *Site) addFrontMatter(catalog catalogs.Reader) error {
 		}
 
 		// Check if file already has front matter
-		content, err := os.ReadFile(path)
+		content, err := os.ReadFile(path) //nolint:gosec // Generated documentation files
 		if err != nil {
 			return fmt.Errorf("reading %s: %w", path, err)
 		}
@@ -289,7 +290,7 @@ func (s *Site) addFrontMatter(catalog catalogs.Reader) error {
 	return err
 }
 
-// generateFrontMatter creates appropriate front matter for a file
+// generateFrontMatter creates appropriate front matter for a file.
 func (s *Site) generateFrontMatter(path string, catalog catalogs.Reader) string {
 	// Extract title from path
 	title := filepath.Base(path)
@@ -324,8 +325,8 @@ func (s *Site) generateFrontMatter(path string, catalog catalogs.Reader) string 
 	return frontMatter
 }
 
-// offerHugoInstallation prompts user to install Hugo and attempts installation
-func (s *Site) offerHugoInstallation() error {
+// offerHugoInstallation prompts user to install Hugo and attempts installation.
+func (s *Site) offerHugoInstallation(ctx context.Context) error {
 	fmt.Print(installPrompt)
 
 	reader := bufio.NewReader(os.Stdin)
@@ -340,32 +341,32 @@ func (s *Site) offerHugoInstallation() error {
 	}
 
 	logging.Info().Msg("Attempting to install Hugo...")
-	return s.installHugo()
+	return s.installHugo(ctx)
 }
 
-// installHugo attempts to install Hugo based on the detected platform
-func (s *Site) installHugo() error {
+// installHugo attempts to install Hugo based on the detected platform.
+func (s *Site) installHugo(ctx context.Context) error {
 	switch runtime.GOOS {
 	case "darwin":
-		return s.installHugoMacOS()
+		return s.installHugoMacOS(ctx)
 	case "linux":
-		return s.installHugoLinux()
+		return s.installHugoLinux(ctx)
 	case "windows":
-		return s.installHugoWindows()
+		return s.installHugoWindows(ctx)
 	default:
-		return fmt.Errorf(osDetectionError)
+		return fmt.Errorf("%s", osDetectionError)
 	}
 }
 
-// installHugoMacOS installs Hugo on macOS using brew
-func (s *Site) installHugoMacOS() error {
+// installHugoMacOS installs Hugo on macOS using brew.
+func (s *Site) installHugoMacOS(ctx context.Context) error {
 	// Check if brew is available
 	if !s.isCommandAvailable(brewInstallCmd) {
 		return fmt.Errorf("brew not found. Please install Homebrew first: https://brew.sh")
 	}
 
 	logging.Info().Msg("Installing Hugo using Homebrew...")
-	cmd := exec.Command(brewInstallCmd, brewInstallArg, hugoDependencyName)
+	cmd := exec.CommandContext(ctx, brewInstallCmd, brewInstallArg, hugoDependencyName)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -377,12 +378,12 @@ func (s *Site) installHugoMacOS() error {
 	return nil
 }
 
-// installHugoLinux attempts to install Hugo on Linux using available package managers
-func (s *Site) installHugoLinux() error {
+// installHugoLinux attempts to install Hugo on Linux using available package managers.
+func (s *Site) installHugoLinux(ctx context.Context) error {
 	// Try snap first (more likely to have recent version)
 	if s.isCommandAvailable(snapInstallCmd) {
 		logging.Info().Msg("Installing Hugo using snap...")
-		cmd := exec.Command("sudo", snapInstallCmd, snapInstallArg, hugoDependencyName, "--channel=extended")
+		cmd := exec.CommandContext(ctx, "sudo", snapInstallCmd, snapInstallArg, hugoDependencyName, "--channel=extended")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
@@ -398,7 +399,7 @@ func (s *Site) installHugoLinux() error {
 		logging.Info().Msg("Installing Hugo using apt...")
 
 		// Update package list first
-		updateCmd := exec.Command("sudo", aptInstallCmd, "update")
+		updateCmd := exec.CommandContext(ctx, "sudo", aptInstallCmd, "update")
 		updateCmd.Stdout = os.Stdout
 		updateCmd.Stderr = os.Stderr
 		if err := updateCmd.Run(); err != nil {
@@ -406,7 +407,7 @@ func (s *Site) installHugoLinux() error {
 		}
 
 		// Install Hugo
-		cmd := exec.Command("sudo", aptInstallCmd, aptInstallArg, "-y", hugoDependencyName)
+		cmd := exec.CommandContext(ctx, "sudo", aptInstallCmd, aptInstallArg, "-y", hugoDependencyName)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
@@ -421,8 +422,8 @@ func (s *Site) installHugoLinux() error {
 	return fmt.Errorf("no supported package manager found (tried snap, apt)")
 }
 
-// installHugoWindows provides guidance for Windows installation
-func (s *Site) installHugoWindows() error {
+// installHugoWindows provides guidance for Windows installation.
+func (s *Site) installHugoWindows(_ context.Context) error {
 	// Windows installation is more complex, provide guidance
 	logging.Info().Msg("Automatic installation not supported on Windows")
 	logging.Info().Msg("Please install Hugo manually:")
@@ -433,7 +434,7 @@ func (s *Site) installHugoWindows() error {
 	return fmt.Errorf("manual installation required on Windows")
 }
 
-// isCommandAvailable checks if a command is available in PATH
+// isCommandAvailable checks if a command is available in PATH.
 func (s *Site) isCommandAvailable(command string) bool {
 	_, err := exec.LookPath(command)
 	return err == nil

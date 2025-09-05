@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// setup initializes all sources with provider configurations concurrently
+// setup initializes all sources with provider configurations concurrently.
 func setup(srcs []sources.Source, providers *catalogs.Providers) error {
 	var wg sync.WaitGroup
 	var errs []error
@@ -42,7 +42,7 @@ func setup(srcs []sources.Source, providers *catalogs.Providers) error {
 	return nil
 }
 
-// fetch fetches catalogs from all configured sources
+// fetch fetches catalogs from all configured sources.
 func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) error {
 
 	// setup logger
@@ -103,7 +103,7 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 	return nil
 }
 
-// cleanup cleans up all sources concurrently, logging and collecting any errors
+// cleanup cleans up all sources concurrently, logging and collecting any errors.
 func cleanup(srcs []sources.Source) error {
 	var wg sync.WaitGroup
 	var errs []error

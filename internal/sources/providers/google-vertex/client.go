@@ -1,3 +1,4 @@
+// Package googlevertex provides a client for interacting with the Google Vertex AI API.
 package googlevertex
 
 import (
@@ -10,10 +11,11 @@ import (
 	"strings"
 
 	"cloud.google.com/go/auth/credentials"
-	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/utc"
 	"google.golang.org/genai"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Client implements the catalogs.Client interface for Google Vertex AI.
@@ -52,7 +54,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		c.projectID = getProjectID(ctx, c.provider)
 	}
 	if c.location == "" {
-		c.location = getLocation(c.provider)
+		c.location = getLocation(ctx, c.provider)
 	}
 
 	if c.projectID == "" {
@@ -104,7 +106,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return models, nil
 }
 
-// RestAPIModel represents a model from the Vertex AI REST API
+// RestAPIModel represents a model from the Vertex AI REST API.
 type RestAPIModel struct {
 	Name        string `json:"name"`
 	DisplayName string `json:"displayName"`
@@ -112,14 +114,14 @@ type RestAPIModel struct {
 	// Add other fields as needed
 }
 
-// RestAPIResponse represents the response from the Vertex AI REST API
+// RestAPIResponse represents the response from the Vertex AI REST API.
 type RestAPIResponse struct {
 	Models          []RestAPIModel   `json:"models"`
 	PublisherModels []PublisherModel `json:"publisherModels"`
 	NextPageToken   string           `json:"nextPageToken"`
 }
 
-// PublisherModel represents a publisher model from the Vertex AI REST API
+// PublisherModel represents a publisher model from the Vertex AI REST API.
 type PublisherModel struct {
 	Name               string `json:"name"`
 	VersionID          string `json:"versionId"`
@@ -128,7 +130,7 @@ type PublisherModel struct {
 }
 
 // getModelsFromRESTAPI fetches models using the Vertex AI REST API
-// This can retrieve models not available through the GenAI SDK, like Model Garden models
+// This can retrieve models not available through the GenAI SDK, like Model Garden models.
 func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, error) {
 	if c.projectID == "" || c.location == "" {
 		return nil, &errors.ConfigError{
@@ -138,7 +140,7 @@ func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, er
 	}
 
 	// Get access token for authentication
-	accessToken, err := c.getAccessToken()
+	accessToken, err := c.getAccessToken(ctx)
 	if err != nil {
 		return nil, &errors.AuthenticationError{
 			Provider: "google-vertex",
@@ -165,7 +167,7 @@ func (c *Client) getModelsFromRESTAPI(ctx context.Context) ([]catalogs.Model, er
 	return allModels, nil
 }
 
-// fetchPublisherModels fetches models from publishers (like Anthropic) via REST API
+// fetchPublisherModels fetches models from publishers (like Anthropic) via REST API.
 func (c *Client) fetchPublisherModels(ctx context.Context, accessToken string) ([]catalogs.Model, error) {
 	var allModels []catalogs.Model
 
@@ -190,7 +192,7 @@ func (c *Client) fetchPublisherModels(ctx context.Context, accessToken string) (
 	return allModels, nil
 }
 
-// fetchRegularModels fetches regular models via REST API
+// fetchRegularModels fetches regular models via REST API.
 func (c *Client) fetchRegularModels(ctx context.Context, accessToken string) ([]catalogs.Model, error) {
 	url := fmt.Sprintf("https://%s-aiplatform.googleapis.com/v1/projects/%s/locations/%s/models",
 		c.location, c.projectID, c.location)
@@ -198,7 +200,7 @@ func (c *Client) fetchRegularModels(ctx context.Context, accessToken string) ([]
 	return c.fetchModelsFromURL(ctx, url, accessToken)
 }
 
-// fetchModelsFromURL fetches models from a specific REST API URL
+// fetchModelsFromURL fetches models from a specific REST API URL.
 func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string) ([]catalogs.Model, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -215,8 +217,8 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 	}
 	defer func() {
 		// Drain and close body to allow connection reuse
-		io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 
 	if resp.StatusCode != http.StatusOK {
@@ -234,7 +236,7 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 		return nil, err
 	}
 
-	var models []catalogs.Model
+	models := make([]catalogs.Model, 0, len(apiResp.Models)+len(apiResp.PublisherModels))
 
 	// Handle regular models
 	for _, restModel := range apiResp.Models {
@@ -251,7 +253,7 @@ func (c *Client) fetchModelsFromURL(ctx context.Context, url, accessToken string
 	return models, nil
 }
 
-// convertRestModelToStarmap converts a REST API model to a starmap model
+// convertRestModelToStarmap converts a REST API model to a starmap model.
 func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(restModel.Name)
@@ -296,7 +298,7 @@ func (c *Client) convertRestModelToStarmap(restModel RestAPIModel) catalogs.Mode
 	return model
 }
 
-// convertPublisherModelToStarmap converts a publisher model to a starmap model
+// convertPublisherModelToStarmap converts a publisher model to a starmap model.
 func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) catalogs.Model {
 	// Extract model ID from the full name (e.g., "publishers/anthropic/models/claude-opus-4-1")
 	modelID := c.ExtractModelID(publisherModel.Name)
@@ -429,7 +431,7 @@ func (c *Client) convertPublisherModelToStarmap(publisherModel PublisherModel) c
 	return model
 }
 
-// generateModelName creates a human-readable model name from model ID
+// generateModelName creates a human-readable model name from model ID.
 func (c *Client) generateModelName(modelID string) string {
 	// Remove version suffix for name generation
 	baseID := modelID
@@ -452,17 +454,17 @@ func (c *Client) generateModelName(modelID string) string {
 	return strings.Join(words, " ")
 }
 
-// getAccessToken gets a Google Cloud access token for API authentication
-func (c *Client) getAccessToken() (string, error) {
+// getAccessToken gets a Google Cloud access token for API authentication.
+func (c *Client) getAccessToken(ctx context.Context) (string, error) {
 	// Try gcloud first
-	cmd := exec.Command("gcloud", "auth", "print-access-token")
+	cmd := exec.CommandContext(ctx, "gcloud", "auth", "print-access-token")
 	output, err := cmd.Output()
 	if err == nil {
 		return strings.TrimSpace(string(output)), nil
 	}
 
 	// If gcloud fails, try application-default
-	cmd = exec.Command("gcloud", "auth", "application-default", "print-access-token")
+	cmd = exec.CommandContext(ctx, "gcloud", "auth", "application-default", "print-access-token")
 	output, err = cmd.Output()
 	if err != nil {
 		return "", &errors.AuthenticationError{
@@ -475,8 +477,8 @@ func (c *Client) getAccessToken() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-// mergeModels merges two slices of models, avoiding duplicates by ID
-func (c *Client) mergeModels(existing, new []catalogs.Model) []catalogs.Model {
+// mergeModels merges two slices of models, avoiding duplicates by ID.
+func (c *Client) mergeModels(existing, additional []catalogs.Model) []catalogs.Model {
 	existingIDs := make(map[string]bool)
 	for _, model := range existing {
 		existingIDs[model.ID] = true
@@ -485,7 +487,7 @@ func (c *Client) mergeModels(existing, new []catalogs.Model) []catalogs.Model {
 	var merged []catalogs.Model
 	merged = append(merged, existing...)
 
-	for _, model := range new {
+	for _, model := range additional {
 		if !existingIDs[model.ID] {
 			merged = append(merged, model)
 		}
@@ -494,7 +496,7 @@ func (c *Client) mergeModels(existing, new []catalogs.Model) []catalogs.Model {
 	return merged
 }
 
-// getAllModels fetches all models with pagination support
+// getAllModels fetches all models with pagination support.
 func (c *Client) getAllModels(ctx context.Context, client *genai.Client, queryBase bool) ([]catalogs.Model, error) {
 	var allModels []catalogs.Model
 	pageToken := ""
@@ -538,7 +540,7 @@ func (c *Client) getAllModels(ctx context.Context, client *genai.Client, queryBa
 	return allModels, nil
 }
 
-// getDetailedModel fetches detailed information for a specific model
+// getDetailedModel fetches detailed information for a specific model.
 func (c *Client) getDetailedModel(ctx context.Context, client *genai.Client, modelName string) (*genai.Model, error) {
 	// Use the Models.Get() method to fetch detailed model information
 	config := &genai.GetModelConfig{}
@@ -673,7 +675,7 @@ func (c *Client) convertGenAIModelToStarmap(genaiModel *genai.Model) catalogs.Mo
 	return model
 }
 
-// getProjectID gets the project ID from environment variables or Application Default Credentials
+// getProjectID gets the project ID from environment variables or Application Default Credentials.
 func getProjectID(ctx context.Context, provider *catalogs.Provider) string {
 	// 1. Check environment variables first (explicit configuration wins)
 	if projectID := provider.EnvVar("GOOGLE_CLOUD_PROJECT"); projectID != "" {
@@ -700,15 +702,15 @@ func getProjectID(ctx context.Context, provider *catalogs.Provider) string {
 	}
 
 	// 3. Last resort: try gcloud config (for users who only set project)
-	if projectID := getGcloudConfig("project"); projectID != "" {
+	if projectID := getGcloudConfig(ctx, "project"); projectID != "" {
 		return projectID
 	}
 
 	return ""
 }
 
-// getLocation gets the location from environment variables or gcloud config
-func getLocation(provider *catalogs.Provider) string {
+// getLocation gets the location from environment variables or gcloud config.
+func getLocation(ctx context.Context, provider *catalogs.Provider) string {
 	// Check environment variables (genai also checks these)
 	if location := provider.EnvVar("GOOGLE_CLOUD_LOCATION"); location != "" {
 		return location
@@ -721,11 +723,11 @@ func getLocation(provider *catalogs.Provider) string {
 	}
 
 	// Try gcloud config for region or zone
-	if region := getGcloudConfig("compute/region"); region != "" {
+	if region := getGcloudConfig(ctx, "compute/region"); region != "" {
 		return region
 	}
 
-	if zone := getGcloudConfig("compute/zone"); zone != "" {
+	if zone := getGcloudConfig(ctx, "compute/zone"); zone != "" {
 		// Extract region from zone (e.g., us-central1-a -> us-central1)
 		if idx := strings.LastIndex(zone, "-"); idx > 0 {
 			return zone[:idx]
@@ -736,9 +738,9 @@ func getLocation(provider *catalogs.Provider) string {
 	return "us-central1"
 }
 
-// getGcloudConfig gets a configuration value from gcloud
-func getGcloudConfig(property string) string {
-	cmd := exec.Command("gcloud", "config", "get-value", property)
+// getGcloudConfig gets a configuration value from gcloud.
+func getGcloudConfig(ctx context.Context, property string) string {
+	cmd := exec.CommandContext(ctx, "gcloud", "config", "get-value", property)
 	output, err := cmd.Output()
 	if err != nil {
 		return ""
@@ -753,7 +755,7 @@ func getGcloudConfig(property string) string {
 	return result
 }
 
-// normalizePublisherToAuthorID maps Google Vertex publisher names to AuthorID
+// normalizePublisherToAuthorID maps Google Vertex publisher names to AuthorID.
 func normalizePublisherToAuthorID(publisher string) catalogs.AuthorID {
 	switch strings.ToLower(publisher) {
 	case "google":

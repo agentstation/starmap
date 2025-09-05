@@ -7,9 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestGenerateModelDocs(t *testing.T) {
@@ -278,7 +279,7 @@ func TestGenerateModelIndexLargeFamilies(t *testing.T) {
 
 // TestFormatContext is already defined in docs_test.go
 
-// Helper function to create test catalog with models
+// Helper function to create test catalog with models.
 func createTestCatalogForModels() catalogs.Reader {
 	catalog, _ := catalogs.New()
 

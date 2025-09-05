@@ -1,3 +1,4 @@
+// Package differ provides functionality for comparing catalogs and detecting changes.
 package differ
 
 import (
@@ -8,16 +9,19 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// ChangeType represents the type of change
+// ChangeType represents the type of change.
 type ChangeType string
 
 const (
+	// ChangeTypeAdd indicates an item was added.
 	ChangeTypeAdd    ChangeType = "add"
+	// ChangeTypeUpdate indicates an item was updated.
 	ChangeTypeUpdate ChangeType = "update"
+	// ChangeTypeRemove indicates an item was removed.
 	ChangeTypeRemove ChangeType = "remove"
 )
 
-// FieldChange represents a change to a specific field
+// FieldChange represents a change to a specific field.
 type FieldChange struct {
 	Path     string       // Field path (e.g., "pricing.input")
 	OldValue string       // Previous value (string representation)
@@ -26,7 +30,7 @@ type FieldChange struct {
 	Source   sources.Type // Source that caused the change (for provenance)
 }
 
-// ModelUpdate represents an update to an existing model
+// ModelUpdate represents an update to an existing model.
 type ModelUpdate struct {
 	ID       string         // ID of the model being updated
 	Existing catalogs.Model // Current model
@@ -34,7 +38,7 @@ type ModelUpdate struct {
 	Changes  []FieldChange  // Detailed list of field changes
 }
 
-// ProviderUpdate represents an update to an existing provider
+// ProviderUpdate represents an update to an existing provider.
 type ProviderUpdate struct {
 	ID       catalogs.ProviderID // ID of the provider being updated
 	Existing catalogs.Provider   // Current provider
@@ -42,7 +46,7 @@ type ProviderUpdate struct {
 	Changes  []FieldChange       // Detailed list of field changes
 }
 
-// AuthorUpdate represents an update to an existing author
+// AuthorUpdate represents an update to an existing author.
 type AuthorUpdate struct {
 	ID       catalogs.AuthorID // ID of the author being updated
 	Existing catalogs.Author   // Current author
@@ -50,28 +54,28 @@ type AuthorUpdate struct {
 	Changes  []FieldChange     // Detailed list of field changes
 }
 
-// ModelChangeset represents changes to models
+// ModelChangeset represents changes to models.
 type ModelChangeset struct {
 	Added   []catalogs.Model // New models
 	Updated []ModelUpdate    // Updated models
 	Removed []catalogs.Model // Removed models
 }
 
-// ProviderChangeset represents changes to providers
+// ProviderChangeset represents changes to providers.
 type ProviderChangeset struct {
 	Added   []catalogs.Provider // New providers
 	Updated []ProviderUpdate    // Updated providers
 	Removed []catalogs.Provider // Removed providers
 }
 
-// AuthorChangeset represents changes to authors
+// AuthorChangeset represents changes to authors.
 type AuthorChangeset struct {
 	Added   []catalogs.Author // New authors
 	Updated []AuthorUpdate    // Updated authors
 	Removed []catalogs.Author // Removed authors
 }
 
-// Changeset represents all changes between two catalogs
+// Changeset represents all changes between two catalogs.
 type Changeset struct {
 	Models    *ModelChangeset    // Model changes
 	Providers *ProviderChangeset // Provider changes
@@ -79,7 +83,7 @@ type Changeset struct {
 	Summary   ChangesetSummary   // Summary statistics
 }
 
-// ChangesetSummary provides summary statistics for a changeset
+// ChangesetSummary provides summary statistics for a changeset.
 type ChangesetSummary struct {
 	ModelsAdded      int
 	ModelsUpdated    int
@@ -93,32 +97,60 @@ type ChangesetSummary struct {
 	TotalChanges     int
 }
 
-// HasChanges returns true if the changeset contains any changes
+// HasChanges returns true if the changeset contains any changes.
 func (c *Changeset) HasChanges() bool {
 	return c.Summary.TotalChanges > 0
 }
 
-// IsEmpty returns true if the changeset contains no changes
+// calculateSummary computes the summary for a changeset.
+func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, authors *AuthorChangeset) ChangesetSummary {
+	modelsAdded := len(models.Added)
+	modelsUpdated := len(models.Updated)
+	modelsRemoved := len(models.Removed)
+	providersAdded := len(providers.Added)
+	providersUpdated := len(providers.Updated)
+	providersRemoved := len(providers.Removed)
+	authorsAdded := len(authors.Added)
+	authorsUpdated := len(authors.Updated)
+	authorsRemoved := len(authors.Removed)
+	
+	return ChangesetSummary{
+		ModelsAdded:      modelsAdded,
+		ModelsUpdated:    modelsUpdated,
+		ModelsRemoved:    modelsRemoved,
+		ProvidersAdded:   providersAdded,
+		ProvidersUpdated: providersUpdated,
+		ProvidersRemoved: providersRemoved,
+		AuthorsAdded:     authorsAdded,
+		AuthorsUpdated:   authorsUpdated,
+		AuthorsRemoved:   authorsRemoved,
+		TotalChanges:     modelsAdded + modelsUpdated + modelsRemoved + 
+		                  providersAdded + providersUpdated + providersRemoved + 
+		                  authorsAdded + authorsUpdated + authorsRemoved,
+	}
+}
+
+// IsEmpty returns true if the changeset contains no changes.
 func (c *Changeset) IsEmpty() bool {
 	return c.Summary.TotalChanges == 0
 }
 
-// HasChanges returns true if the model changeset contains any changes
+// HasChanges returns true if the model changeset contains any changes.
 func (m *ModelChangeset) HasChanges() bool {
 	return len(m.Added) > 0 || len(m.Updated) > 0 || len(m.Removed) > 0
 }
 
-// HasChanges returns true if the provider changeset contains any changes
+// HasChanges returns true if the provider changeset contains any changes.
 func (p *ProviderChangeset) HasChanges() bool {
 	return len(p.Added) > 0 || len(p.Updated) > 0 || len(p.Removed) > 0
 }
 
-// HasChanges returns true if the author changeset contains any changes
+// HasChanges returns true if the author changeset contains any changes.
 func (a *AuthorChangeset) HasChanges() bool {
 	return len(a.Added) > 0 || len(a.Updated) > 0 || len(a.Removed) > 0
 }
 
-// String returns a human-readable summary of the changeset
+// String returns a human-readable summary of the changeset.
 func (c *Changeset) String() string {
 	if c.IsEmpty() {
 		return "No changes detected"
@@ -174,7 +206,7 @@ func (c *Changeset) String() string {
 	return fmt.Sprintf("Changeset: %s (Total: %d changes)", strings.Join(parts, "; "), c.Summary.TotalChanges)
 }
 
-// Print outputs a detailed, human-readable view of the changeset
+// Print outputs a detailed, human-readable view of the changeset.
 func (c *Changeset) Print() {
 	fmt.Println(c.String())
 	fmt.Println(strings.Repeat("─", 80))
@@ -195,7 +227,7 @@ func (c *Changeset) Print() {
 	}
 }
 
-// Print outputs model changes in a human-readable format
+// Print outputs model changes in a human-readable format.
 func (m *ModelChangeset) Print() {
 	if len(m.Added) > 0 {
 		fmt.Printf("\n➕ Added Models (%d):\n", len(m.Added))
@@ -233,7 +265,9 @@ func (m *ModelChangeset) Print() {
 	}
 }
 
-// Print outputs provider changes in a human-readable format
+// Print outputs provider changes in a human-readable format.
+//
+//nolint:dupl // Similar to AuthorChangeset.Print but for different types
 func (p *ProviderChangeset) Print() {
 	if len(p.Added) > 0 {
 		fmt.Printf("\n➕ Added Providers (%d):\n", len(p.Added))
@@ -268,7 +302,9 @@ func (p *ProviderChangeset) Print() {
 	}
 }
 
-// Print outputs author changes in a human-readable format
+// Print outputs author changes in a human-readable format.
+//
+//nolint:dupl // Similar to ProviderChangeset.Print but for different types
 func (a *AuthorChangeset) Print() {
 	if len(a.Added) > 0 {
 		fmt.Printf("\n➕ Added Authors (%d):\n", len(a.Added))
@@ -303,24 +339,24 @@ func (a *AuthorChangeset) Print() {
 	}
 }
 
-// ApplyStrategy represents how to apply changes
+// ApplyStrategy represents how to apply changes.
 type ApplyStrategy string
 
 const (
-	// ApplyAll applies all changes including removals
+	// ApplyAll applies all changes including removals.
 	ApplyAll ApplyStrategy = "all"
 
-	// ApplyAdditive only applies additions and updates, never removes
+	// ApplyAdditive only applies additions and updates, never removes.
 	ApplyAdditive ApplyStrategy = "additive"
 
-	// ApplyUpdatesOnly only applies updates to existing items
+	// ApplyUpdatesOnly only applies updates to existing items.
 	ApplyUpdatesOnly ApplyStrategy = "updates-only"
 
-	// ApplyAdditionsOnly only applies new additions
+	// ApplyAdditionsOnly only applies new additions.
 	ApplyAdditionsOnly ApplyStrategy = "additions-only"
 )
 
-// Filter filters the changeset based on the apply strategy
+// Filter filters the changeset based on the apply strategy.
 func (c *Changeset) Filter(strategy ApplyStrategy) *Changeset {
 	filtered := &Changeset{
 		Models:    &ModelChangeset{},
@@ -356,20 +392,7 @@ func (c *Changeset) Filter(strategy ApplyStrategy) *Changeset {
 	}
 
 	// Recalculate summary
-	filtered.Summary = ChangesetSummary{
-		ModelsAdded:      len(filtered.Models.Added),
-		ModelsUpdated:    len(filtered.Models.Updated),
-		ModelsRemoved:    len(filtered.Models.Removed),
-		ProvidersAdded:   len(filtered.Providers.Added),
-		ProvidersUpdated: len(filtered.Providers.Updated),
-		ProvidersRemoved: len(filtered.Providers.Removed),
-		AuthorsAdded:     len(filtered.Authors.Added),
-		AuthorsUpdated:   len(filtered.Authors.Updated),
-		AuthorsRemoved:   len(filtered.Authors.Removed),
-		TotalChanges: len(filtered.Models.Added) + len(filtered.Models.Updated) + len(filtered.Models.Removed) +
-			len(filtered.Providers.Added) + len(filtered.Providers.Updated) + len(filtered.Providers.Removed) +
-			len(filtered.Authors.Added) + len(filtered.Authors.Updated) + len(filtered.Authors.Removed),
-	}
+	filtered.Summary = calculateSummary(filtered.Models, filtered.Providers, filtered.Authors)
 
 	return filtered
 }

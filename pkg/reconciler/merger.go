@@ -6,15 +6,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/utc"
 )
 
-// Merger performs the actual merging of resources
+// Merger performs the actual merging of resources.
 type Merger interface {
 	// Models merges models from multiple sources
 	Models(sources map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error)
@@ -24,7 +25,7 @@ type Merger interface {
 }
 
 // merger implements strategic three-way merge
-// It's an internal implementation of the Merger interface
+// It's an internal implementation of the Merger interface.
 type merger struct {
 	authorities authority.Authority
 	strategy    Strategy
@@ -32,7 +33,7 @@ type merger struct {
 }
 
 // newMerger creates a new strategic merger
-// Returns the Merger interface to hide implementation details
+// Returns the Merger interface to hide implementation details.
 func newMerger(authorities authority.Authority, strategy Strategy) Merger {
 	return &merger{
 		authorities: authorities,
@@ -40,7 +41,7 @@ func newMerger(authorities authority.Authority, strategy Strategy) Merger {
 	}
 }
 
-// newMergerWithProvenance creates a new strategic merger with provenance tracking
+// newMergerWithProvenance creates a new strategic merger with provenance tracking.
 func newMergerWithProvenance(authorities authority.Authority, strategy Strategy, tracker provenance.Tracker) Merger {
 	return &merger{
 		authorities: authorities,
@@ -49,7 +50,7 @@ func newMergerWithProvenance(authorities authority.Authority, strategy Strategy,
 	}
 }
 
-// Models merges models from multiple sources
+// Models merges models from multiple sources.
 func (merger *merger) Models(srcs map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error) {
 	// Create a map of models by ID across all sources
 	modelsByID := make(map[string]map[sources.Type]catalogs.Model)
@@ -64,7 +65,7 @@ func (merger *merger) Models(srcs map[sources.Type][]catalogs.Model) ([]catalogs
 		}
 	}
 
-	var mergedModels []catalogs.Model
+	mergedModels := make([]catalogs.Model, 0, len(modelsByID))
 	allProvenance := make(provenance.Map)
 
 	// Merge each model
@@ -88,7 +89,7 @@ func (merger *merger) Models(srcs map[sources.Type][]catalogs.Model) ([]catalogs
 	return mergedModels, allProvenance, nil
 }
 
-// Providers merges providers from multiple sources
+// Providers merges providers from multiple sources.
 func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]catalogs.Provider, provenance.Map, error) {
 	// Create a map of providers by ID across all sources
 	providersByID := make(map[catalogs.ProviderID]map[sources.Type]catalogs.Provider)
@@ -136,7 +137,7 @@ func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]ca
 	return mergedProviders, allProvenance, nil
 }
 
-// model merges a single model from multiple sources
+// model merges a single model from multiple sources.
 func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalogs.Model) (catalogs.Model, map[string]provenance.Field) {
 	merged := catalogs.Model{
 		ID: modelID,
@@ -194,7 +195,7 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 	return merged, history
 }
 
-// provider merges a single provider from multiple sources
+// provider merges a single provider from multiple sources.
 func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders map[sources.Type]*catalogs.Provider) (*catalogs.Provider, map[string]provenance.Field) {
 	if len(sourceProviders) == 0 {
 		return nil, nil
@@ -237,7 +238,7 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 	return &merged, history
 }
 
-// modelField merges a single field from multiple model sources
+// modelField merges a single field from multiple model sources.
 func (merger *merger) modelField(fieldPath string, sourceModels map[sources.Type]catalogs.Model) (any, sources.Type) {
 	// Collect all values from sources
 	values := make(map[sources.Type]any)
@@ -257,7 +258,7 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.Type
 	return nil, ""
 }
 
-// providerField merges a single provider field from multiple sources
+// providerField merges a single provider field from multiple sources.
 func (merger *merger) providerField(fieldPath string, sourceProviders map[sources.Type]*catalogs.Provider) (any, sources.Type) {
 	// Collect all values from sources
 	values := make(map[sources.Type]any)
@@ -279,17 +280,17 @@ func (merger *merger) providerField(fieldPath string, sourceProviders map[source
 	return nil, ""
 }
 
-// getModelFieldValue extracts a field value from a model using reflection
+// getModelFieldValue extracts a field value from a model using reflection.
 func (merger *merger) modelFieldValue(model catalogs.Model, fieldPath string) any {
 	return merger.fieldValue(reflect.ValueOf(model), fieldPath)
 }
 
-// providerFieldValue extracts a field value from a provider using reflection
+// providerFieldValue extracts a field value from a provider using reflection.
 func (merger *merger) providerFieldValue(provider catalogs.Provider, fieldPath string) any {
 	return merger.fieldValue(reflect.ValueOf(provider), fieldPath)
 }
 
-// fieldValue extracts a field value using reflection and dot notation
+// fieldValue extracts a field value using reflection and dot notation.
 func (merger *merger) fieldValue(v reflect.Value, fieldPath string) any {
 	parts := strings.Split(fieldPath, ".")
 
@@ -322,17 +323,17 @@ func (merger *merger) fieldValue(v reflect.Value, fieldPath string) any {
 	return current.Interface()
 }
 
-// setModelFieldValue sets a field value on a model using reflection
+// setModelFieldValue sets a field value on a model using reflection.
 func (merger *merger) setModelFieldValue(model *catalogs.Model, fieldPath string, value any) {
 	merger.setFieldValue(reflect.ValueOf(model).Elem(), fieldPath, value)
 }
 
-// setProviderFieldValue sets a field value on a provider using reflection
+// setProviderFieldValue sets a field value on a provider using reflection.
 func (merger *merger) setProviderFieldValue(provider *catalogs.Provider, fieldPath string, value any) {
 	merger.setFieldValue(reflect.ValueOf(provider).Elem(), fieldPath, value)
 }
 
-// setFieldValue sets a field value using reflection and dot notation
+// setFieldValue sets a field value using reflection and dot notation.
 func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any) {
 	parts := strings.Split(fieldPath, ".")
 
@@ -389,7 +390,9 @@ func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any
 	}
 }
 
-// complexModelStructures handles merging of complex nested structures
+// complexModelStructures handles merging of complex nested structures.
+//
+//nolint:gocyclo // Complex field-by-field merge logic
 func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels map[sources.Type]catalogs.Model, history *map[string]provenance.Field) catalogs.Model {
 	// Define priority order for complex structure merging
 	priorities := []sources.Type{

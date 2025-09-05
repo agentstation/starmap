@@ -1,0 +1,51 @@
+# golangci-lint configuration v2
+version: "2"
+
+run:
+  timeout: 5m
+  tests: false
+
+issues:
+  # Maximum issues to report
+  max-issues-per-linter: 50
+  max-same-issues: 10
+
+linters:
+  exclusions:
+    # Which file paths to exclude: they will be analyzed, but issues from them won't be reported
+    paths:
+      - "vendor/"
+      - "scripts/"
+      - "experiments/"
+  
+  enable:
+    # Default linters
+    - govet        # Reports suspicious constructs
+    - errcheck     # Checks for unchecked errors
+    - staticcheck  # Advanced static analysis
+    - ineffassign  # Detects ineffectual assignments
+    - unused       # Checks for unused code
+    
+    # Code quality
+    - misspell     # Finds misspelled words
+    - gosec        # Security checker
+    - goconst      # Finds repeated strings that could be constants
+    - gocyclo      # Cyclomatic complexity checker
+    - dupl         # Code duplication checker
+    - revive       # Fast, configurable linter
+    
+    # Best practices
+    - bodyclose    # Checks HTTP response body is closed
+    - noctx        # Finds sending HTTP request without context
+    - unconvert    # Removes unnecessary type conversions
+    - godot        # Checks comment punctuation
+    
+    # Performance
+    - prealloc     # Suggests slice pre-allocation
+
+  disable:
+    - depguard     # Too restrictive for general use
+    - gochecknoglobals # We use some globals
+    - gochecknoinits   # Init functions are sometimes needed
+    - mnd          # Magic numbers are sometimes clear in context
+    - wsl          # Too opinionated about whitespace

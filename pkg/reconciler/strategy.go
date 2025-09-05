@@ -10,14 +10,15 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+// StrategyType represents the type of reconciliation strategy.
 type StrategyType string
 
-// String returns the string representation of a strategy type
+// String returns the string representation of a strategy type.
 func (s StrategyType) String() string {
 	return string(s)
 }
 
-// Name returns the name of the strategy type
+// Name returns the name of the strategy type.
 func (s StrategyType) Name() string {
 	str := s.String()
 	// Replace hyphens with spaces and title case each word
@@ -31,11 +32,13 @@ func (s StrategyType) Name() string {
 }
 
 const (
+	// StrategyTypeFieldAuthority uses field-specific authority scores to resolve conflicts.
 	StrategyTypeFieldAuthority StrategyType = "field-authority"
+	// StrategyTypeSourceOrder uses source ordering to resolve conflicts.
 	StrategyTypeSourceOrder    StrategyType = "source-order"
 )
 
-// Strategy defines how reconciliation should be performed
+// Strategy defines how reconciliation should be performed.
 type Strategy interface {
 	// Type returns the strategy type
 	Type() StrategyType
@@ -56,7 +59,7 @@ type Strategy interface {
 	ApplyStrategy() differ.ApplyStrategy
 }
 
-// baseStrategy provides common strategy functionality
+// baseStrategy provides common strategy functionality.
 type baseStrategy struct {
 	typ            StrategyType
 	description    string
@@ -64,27 +67,27 @@ type baseStrategy struct {
 	mergeResources map[sources.ResourceType]bool
 }
 
-// Type returns the strategy type
+// Type returns the strategy type.
 func (s *baseStrategy) Type() StrategyType {
 	return s.typ
 }
 
-// Description returns a human-readable description
+// Description returns a human-readable description.
 func (s *baseStrategy) Description() string {
 	return s.description
 }
 
-// ShouldMerge determines if resources should be merged
+// ShouldMerge determines if resources should be merged.
 func (s *baseStrategy) ShouldMerge(resourceType sources.ResourceType) bool {
 	return s.mergeResources[resourceType]
 }
 
-// ApplyStrategy returns how changes should be applied
+// ApplyStrategy returns how changes should be applied.
 func (s *baseStrategy) ApplyStrategy() differ.ApplyStrategy {
 	return s.applyStrategy
 }
 
-// ValidateResult validates the reconciliation result
+// ValidateResult validates the reconciliation result.
 func (s *baseStrategy) ValidateResult(result *Result) error {
 	if result == nil {
 		return &errors.ValidationError{
@@ -95,13 +98,13 @@ func (s *baseStrategy) ValidateResult(result *Result) error {
 	return nil
 }
 
-// AuthorityStrategy uses field authorities to resolve conflicts
+// AuthorityStrategy uses field authorities to resolve conflicts.
 type AuthorityStrategy struct {
 	baseStrategy
 	authorities authority.Authority
 }
 
-// NewAuthorityStrategy creates a new authority-based strategy
+// NewAuthorityStrategy creates a new authority-based strategy.
 func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 	return &AuthorityStrategy{
 		baseStrategy: baseStrategy{
@@ -118,7 +121,7 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 	}
 }
 
-// ResolveConflict uses authorities to resolve conflicts
+// ResolveConflict uses authorities to resolve conflicts.
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
 	// Get all authorities for this resource type
 	authorities := s.authorities.ModelFields()
@@ -195,8 +198,8 @@ func NewSourceOrderStrategy(priorityOrder []sources.Type) Strategy {
 	}
 }
 
-// ResolveConflict uses source priority order to resolve conflicts
-func (s *SourceOrderStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
+// ResolveConflict uses source priority order to resolve conflicts.
+func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.Type]any) (any, sources.Type, string) {
 	// Check sources in priority order
 	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {

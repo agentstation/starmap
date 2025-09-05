@@ -1,4 +1,4 @@
-// package reconciler provides catalog synchronization and reconciliation capabilities.
+// Package reconciler provides catalog synchronization and reconciliation capabilities.
 // It handles merging data from multiple sources, detecting changes, and applying
 // updates while respecting data authorities and merge strategies.
 package reconciler
@@ -20,14 +20,14 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Reconciler is the main interface for reconciling data from multiple sources
+// Reconciler is the main interface for reconciling data from multiple sources.
 type Reconciler interface {
 	// Sources reconciles multiple catalogs from different sources
 	// The primary source determines which models exist; other sources provide enrichment only
 	Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error)
 }
 
-// reconciler is the default implementation of Reconciler
+// reconciler is the default implementation of Reconciler.
 type reconciler struct {
 	strategy    Strategy
 	authorities authority.Authority
@@ -37,10 +37,10 @@ type reconciler struct {
 	baseline    catalogs.Catalog // Baseline catalog for comparison
 }
 
-// New creates a new Reconciler with options
+// New creates a new Reconciler with options.
 func New(opts ...Option) (Reconciler, error) {
 	// Create options with defaults
-	options := NewOptions(opts...)
+	options := newOptions(opts...)
 
 	// Create reconciler from options
 	r := &reconciler{
@@ -54,7 +54,7 @@ func New(opts ...Option) (Reconciler, error) {
 	return r, nil
 }
 
-// reconcileContext holds shared state for reconciliation
+// reconcileContext holds shared state for reconciliation.
 type reconcileContext struct {
 	collector *collector
 	filter    *filter
@@ -64,14 +64,14 @@ type reconcileContext struct {
 	baseline  catalogs.Catalog // Baseline for comparison
 }
 
-// modelResult holds reconciled models and provenance
+// modelResult holds reconciled models and provenance.
 type modelResult struct {
 	models     []catalogs.Model
 	provenance provenance.Map
 	apiCount   int // Count from primary source
 }
 
-// Sources performs reconciliation with clean step-by-step flow
+// Sources performs reconciliation with clean step-by-step flow.
 func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error) {
 	// Step 1: Initialize context and validate
 	rctx, err := r.initialize(ctx, primary, srcs)
@@ -110,7 +110,7 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []s
 	return r.result(rctx, catalog, changeset, provenanceMap, modelResults), nil
 }
 
-// initialize sets up reconciliation context
+// initialize sets up reconciliation context.
 func (r *reconciler) initialize(ctx context.Context, primary sources.Type, srcs []sources.Source) (*reconcileContext, error) {
 	logger := logging.FromContext(ctx)
 
@@ -144,7 +144,7 @@ func (r *reconciler) initialize(ctx context.Context, primary sources.Type, srcs 
 	}, nil
 }
 
-// reconcileProviders merges providers from all sources
+// reconcileProviders merges providers from all sources.
 func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]catalogs.Provider, provenance.Map, error) {
 	// Collect providers from all sources
 	providerSources := rctx.collector.collectProviders()
@@ -153,7 +153,7 @@ func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]catalogs.Prov
 	return rctx.merger.Providers(providerSources)
 }
 
-// reconcileAllModels processes models for all providers
+// reconcileAllModels processes models for all providers.
 func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
 	results := make(map[catalogs.ProviderID]modelResult)
 
@@ -178,7 +178,7 @@ func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileCont
 	return results, nil
 }
 
-// reconcileProviderModels merges models for a single provider
+// reconcileProviderModels merges models for a single provider.
 func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider catalogs.Provider) (modelResult, error) {
 	// Collect models for this provider from all sources
 	primaryCatalog := rctx.filter.primaryCatalog
@@ -229,7 +229,7 @@ func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 	}, nil
 }
 
-// catalog creates the final catalog with providers and models
+// catalog creates the final catalog with providers and models.
 func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
 	catalog, err := catalogs.New()
 	if err != nil {
@@ -257,7 +257,7 @@ func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[cat
 	return catalog, nil
 }
 
-// changeset calculates differences between baseline and new catalog
+// changeset calculates differences between baseline and new catalog.
 func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog) *differ.Changeset {
 	// Use provided baseline if available, otherwise fall back to first source
 	var baseCatalog catalogs.Catalog
@@ -304,7 +304,7 @@ func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog)
 	return changeset
 }
 
-// result creates the final result
+// result creates the final result.
 func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, changeset *differ.Changeset, providerProv provenance.Map, modelResults map[catalogs.ProviderID]modelResult) *Result {
 	result := NewResult()
 
@@ -344,7 +344,7 @@ func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, ch
 	return result
 }
 
-// createMerger creates a merger based on configuration
+// createMerger creates a merger based on configuration.
 func (r *reconciler) createMerger() Merger {
 	if r.tracking && r.provenance != nil {
 		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance)
@@ -352,7 +352,7 @@ func (r *reconciler) createMerger() Merger {
 	return newMerger(r.authorities, r.strategy)
 }
 
-// calcStats computes statistics from the catalog
+// calcStats computes statistics from the catalog.
 func (r *reconciler) calcStats(catalog catalogs.Catalog, modelResults map[catalogs.ProviderID]modelResult) ResultStatistics {
 	var stats ResultStatistics
 

@@ -8,14 +8,15 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
-// TestClientErrors tests error handling in the OpenAI client
+// TestClientErrors tests error handling in the OpenAI client.
 func TestClientErrors(t *testing.T) {
 	t.Run("missing provider configuration", func(t *testing.T) {
 		// Skip this test - NewClient doesn't validate nil provider
@@ -200,7 +201,7 @@ func TestClientErrors(t *testing.T) {
 	})
 }
 
-// TestClientModelConversion tests model conversion with edge cases
+// TestClientModelConversion tests model conversion with edge cases.
 func TestClientModelConversion(t *testing.T) {
 	// No server needed for model conversion tests
 	provider := &catalogs.Provider{
@@ -286,7 +287,7 @@ func TestClientModelConversion(t *testing.T) {
 	})
 }
 
-// TestClientConcurrency tests concurrent access to the client
+// TestClientConcurrency tests concurrent access to the client.
 func TestClientConcurrency(t *testing.T) {
 	// Create a test server that returns valid responses
 	var mu sync.Mutex

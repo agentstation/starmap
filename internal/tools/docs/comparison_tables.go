@@ -6,14 +6,15 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	md "github.com/nao1215/markdown"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // Comparison table functions for comparing multiple models or providers
 // These are useful for index pages and comparison views
 
-// writeModelsOverviewTable generates a comprehensive models overview table
+// writeModelsOverviewTable generates a comprehensive models overview table.
 func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers []*catalogs.Provider) {
 	markdown := NewMarkdown(w)
 
@@ -44,20 +45,20 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 
 	for _, model := range modelsCopy[:displayCount] {
 		// Provider
-		providerName := "—"
+		providerName := EmDash
 		if provider, ok := providerMap[model.ID]; ok {
 			providerName = provider.Name
 		}
 
 		// Context
-		contextStr := "—"
+		contextStr := EmDash
 		if model.Limits != nil && model.Limits.ContextWindow > 0 {
 			contextStr = formatContext(model.Limits.ContextWindow)
 		}
 
 		// Pricing
-		inputPrice := "—"
-		outputPrice := "—"
+		inputPrice := EmDash
+		outputPrice := EmDash
 		if model.Pricing != nil && model.Pricing.Tokens != nil {
 			if model.Pricing.Tokens.Input != nil {
 				inputPrice = formatPrice(model.Pricing.Tokens.Input.Per1M)
@@ -90,10 +91,11 @@ func writeModelsOverviewTable(w io.Writer, models []*catalogs.Model, providers [
 	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Provider", "Context", "Input", "Output", "Features"},
 		Rows:   rows,
-	}).Build()
+	})
+	_ = markdown.Build()
 }
 
-// writeProviderComparisonTable generates a provider comparison table
+// writeProviderComparisonTable generates a provider comparison table.
 func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 	markdown := NewMarkdown(w)
 
@@ -105,7 +107,7 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 			modelCount = len(provider.Models)
 		}
 
-		freeTier := "❌"
+		freeTier := CrossMark
 		hasFreeModels := false
 		// Use sorted models for deterministic iteration
 		sortedModels := SortedModels(provider.Models)
@@ -119,21 +121,16 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 			}
 		}
 		if hasFreeModels {
-			freeTier = "✅"
+			freeTier = CheckMark
 		}
 
-		apiKeyRequired := "✅"
-		if provider.APIKey != nil {
-			// Has API key configuration
-			apiKeyRequired = "✅"
-		} else if len(provider.EnvVars) > 0 {
-			// Uses environment variables
-			apiKeyRequired = "✅"
-		} else {
-			apiKeyRequired = "❌"
+		apiKeyRequired := CrossMark
+		if provider.APIKey != nil || len(provider.EnvVars) > 0 {
+			// Has API key configuration or uses environment variables
+			apiKeyRequired = CheckMark
 		}
 
-		statusPage := "—"
+		statusPage := EmDash
 		if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
 			// Build status page link directly
 			statusPage = fmt.Sprintf("[Status](%s)", *provider.StatusPageURL)
@@ -151,10 +148,11 @@ func writeProviderComparisonTable(w io.Writer, providers []*catalogs.Provider) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Provider", "Models", "Free Tier", "API Key Required", "Status Page"},
 		Rows:   rows,
-	}).Build()
+	})
+	_ = markdown.Build()
 }
 
-// writePricingComparisonTable generates a pricing comparison table for multiple models
+// writePricingComparisonTable generates a pricing comparison table for multiple models.
 func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 	markdown := NewMarkdown(w)
 
@@ -183,10 +181,10 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 			continue
 		}
 
-		inputPrice := "—"
-		outputPrice := "—"
-		cacheRead := "—"
-		cacheWrite := "—"
+		inputPrice := EmDash
+		outputPrice := EmDash
+		cacheRead := EmDash
+		cacheWrite := EmDash
 
 		tokens := model.Pricing.Tokens
 		if tokens.Input != nil {
@@ -214,10 +212,11 @@ func writePricingComparisonTable(w io.Writer, models []*catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Input (per 1M)", "Output (per 1M)", "Cache Read", "Cache Write"},
 		Rows:   rows,
-	}).Build()
+	})
+	_ = markdown.Build()
 }
 
-// writeContextLimitsTable generates a context limits comparison table
+// writeContextLimitsTable generates a context limits comparison table.
 func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 	markdown := NewMarkdown(w)
 
@@ -247,7 +246,7 @@ func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 		}
 
 		contextWindow := formatContext(model.Limits.ContextWindow)
-		maxOutput := "—"
+		maxOutput := EmDash
 		if model.Limits.OutputTokens > 0 {
 			maxOutput = formatNumber(int(model.Limits.OutputTokens))
 		}
@@ -268,7 +267,7 @@ func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 				modalities = append(modalities, "Video")
 			}
 		}
-		modalityStr := "—"
+		modalityStr := EmDash
 		if len(modalities) > 0 {
 			modalityStr = strings.Join(modalities, ", ")
 		}
@@ -284,10 +283,11 @@ func writeContextLimitsTable(w io.Writer, models []*catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Context Window", "Max Output", "Modalities"},
 		Rows:   rows,
-	}).Build()
+	})
+	_ = markdown.Build()
 }
 
-// writeFeatureComparisonTable generates a detailed feature comparison table
+// writeFeatureComparisonTable generates a detailed feature comparison table.
 func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 	if len(models) == 0 {
 		return
@@ -330,7 +330,7 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 				tools = append(tools, "📎 Files")
 			}
 		}
-		toolsStr := "—"
+		toolsStr := EmDash
 		if len(tools) > 0 {
 			// Join tools list directly
 			toolsStr = buildJoinedList(tools, ", ")
@@ -349,7 +349,7 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 				reasoning = append(reasoning, "🎯 Tokens")
 			}
 		}
-		reasoningStr := "—"
+		reasoningStr := EmDash
 		if len(reasoning) > 0 {
 			// Join reasoning list directly
 			reasoningStr = buildJoinedList(reasoning, ", ")
@@ -371,7 +371,7 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 				advanced = append(advanced, "🔁 Penalties")
 			}
 		}
-		advancedStr := "—"
+		advancedStr := EmDash
 		if len(advanced) > 0 {
 			// Join advanced list directly
 			advancedStr = buildJoinedList(advanced, ", ")
@@ -396,10 +396,13 @@ func writeFeatureComparisonTable(w io.Writer, models []*catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Model", "Modalities", "Tools", "Reasoning", "Advanced Controls"},
 		Rows:   rows,
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// Helper function to format bytes into human-readable format
+// Helper function to format bytes into human-readable format.
+//
+//nolint:unused // Used in tests
 func formatBytes(bytes int64) string {
 	const (
 		KB = 1024

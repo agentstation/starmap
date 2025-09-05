@@ -7,7 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// featureBadges generates HTML badges for ALL model features (50+ technical specifications)
+// featureBadges generates HTML badges for ALL model features (50+ technical specifications).
 func featureBadges(model *catalogs.Model) string {
 	if model.Features == nil {
 		return ""
@@ -33,7 +33,7 @@ func featureBadges(model *catalogs.Model) string {
 	return strings.Join(badges, " ")
 }
 
-// modalityBadges generates badges for input/output modalities
+// modalityBadges generates badges for input/output modalities.
 func modalityBadges(features *catalogs.ModelFeatures) []string {
 	var badges []string
 
@@ -67,7 +67,7 @@ func modalityBadges(features *catalogs.ModelFeatures) []string {
 	return badges
 }
 
-// toolBadges generates badges for tool and function capabilities
+// toolBadges generates badges for tool and function capabilities.
 func toolBadges(features *catalogs.ModelFeatures) []string {
 	var badges []string
 
@@ -90,7 +90,7 @@ func toolBadges(features *catalogs.ModelFeatures) []string {
 	return badges
 }
 
-// reasoningBadges generates badges for reasoning capabilities
+// reasoningBadges generates badges for reasoning capabilities.
 func reasoningBadges(features *catalogs.ModelFeatures) []string {
 	var badges []string
 
@@ -113,7 +113,9 @@ func reasoningBadges(features *catalogs.ModelFeatures) []string {
 	return badges
 }
 
-// generationBadges generates badges for ALL generation control parameters
+// generationBadges generates badges for ALL generation control parameters.
+//
+//nolint:gocyclo // Many feature flags to check
 func generationBadges(features *catalogs.ModelFeatures) []string {
 	var badges []string
 
@@ -150,7 +152,7 @@ func generationBadges(features *catalogs.ModelFeatures) []string {
 	if features.Stop {
 		badges = append(badges, createBadge("stop", "core", "blue", "Stop sequences"))
 	}
-	if features.StopTokenIds {
+	if features.StopTokenIDs {
 		badges = append(badges, createBadge("stop_token_ids", "advanced", "cyan", "Numeric stop token IDs"))
 	}
 
@@ -234,7 +236,7 @@ func generationBadges(features *catalogs.ModelFeatures) []string {
 	return badges
 }
 
-// deliveryBadges generates badges for response delivery options
+// deliveryBadges generates badges for response delivery options.
 func deliveryBadges(features *catalogs.ModelFeatures) []string {
 	var badges []string
 
@@ -251,7 +253,7 @@ func deliveryBadges(features *catalogs.ModelFeatures) []string {
 	return badges
 }
 
-// createBadge creates an HTML badge with tooltip
+// createBadge creates an HTML badge with tooltip.
 func createBadge(label, value, color, tooltip string) string {
 	// Create shield.io style markdown badge
 	// Encode special characters for URL safety
@@ -268,7 +270,7 @@ func createBadge(label, value, color, tooltip string) string {
 		tooltip, encodedLabel, encodedValue, color)
 }
 
-// modalitySliceToStrings converts ModelModality slice to string slice
+// modalitySliceToStrings converts ModelModality slice to string slice.
 func modalitySliceToStrings(modalities []catalogs.ModelModality) []string {
 	result := make([]string, len(modalities))
 	for i, m := range modalities {
@@ -277,7 +279,7 @@ func modalitySliceToStrings(modalities []catalogs.ModelModality) []string {
 	return result
 }
 
-// technicalSpecBadges generates detailed technical specification badges
+// technicalSpecBadges generates detailed technical specification badges.
 func technicalSpecBadges(model *catalogs.Model) string {
 	if model.Features == nil {
 		return ""
@@ -301,7 +303,7 @@ func technicalSpecBadges(model *catalogs.Model) string {
 	return strings.Join(nonEmpty, "\n\n")
 }
 
-// samplingBadgeSection creates a section for sampling control badges
+// samplingBadgeSection creates a section for sampling control badges.
 func samplingBadgeSection(features *catalogs.ModelFeatures) string {
 	var badges []string
 
@@ -334,7 +336,7 @@ func samplingBadgeSection(features *catalogs.ModelFeatures) string {
 	return "**Sampling Controls:** " + strings.Join(badges, " ")
 }
 
-// repetitionBadgeSection creates a section for repetition control badges
+// repetitionBadgeSection creates a section for repetition control badges.
 func repetitionBadgeSection(features *catalogs.ModelFeatures) string {
 	var badges []string
 
@@ -358,7 +360,7 @@ func repetitionBadgeSection(features *catalogs.ModelFeatures) string {
 	return "**Repetition Controls:** " + strings.Join(badges, " ")
 }
 
-// observabilityBadgeSection creates a section for observability badges
+// observabilityBadgeSection creates a section for observability badges.
 func observabilityBadgeSection(features *catalogs.ModelFeatures) string {
 	var badges []string
 
@@ -379,7 +381,7 @@ func observabilityBadgeSection(features *catalogs.ModelFeatures) string {
 	return "**Observability:** " + strings.Join(badges, " ")
 }
 
-// advancedBadgeSection creates a section for advanced/niche feature badges
+// advancedBadgeSection creates a section for advanced/niche feature badges.
 func advancedBadgeSection(features *catalogs.ModelFeatures) string {
 	var badges []string
 

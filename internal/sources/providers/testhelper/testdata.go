@@ -1,3 +1,4 @@
+// Package testhelper provides utilities for managing testdata files in provider tests.
 package testhelper
 
 import (
@@ -10,17 +11,17 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// UpdateTestdata is the global flag for updating testdata files
+// UpdateTestdata is the global flag for updating testdata files.
 var UpdateTestdata = flag.Bool("update", false, "update testdata files")
 
-// LoadTestdata loads a testdata file from the caller's testdata directory
+// LoadTestdata loads a testdata file from the caller's testdata directory.
 func LoadTestdata(t *testing.T, filename string) []byte {
 	t.Helper()
 
 	// Get the testdata path relative to the test file
 	testdataPath := filepath.Join("testdata", filename)
 
-	data, err := os.ReadFile(testdataPath)
+	data, err := os.ReadFile(testdataPath) //nolint:gosec // Test file paths are controlled
 	if err != nil {
 		t.Fatalf("Failed to load testdata file %s: %v", testdataPath, err)
 	}
@@ -28,7 +29,7 @@ func LoadTestdata(t *testing.T, filename string) []byte {
 	return data
 }
 
-// SaveTestdata saves data to a testdata file if the -update flag is set
+// SaveTestdata saves data to a testdata file if the -update flag is set.
 func SaveTestdata(t *testing.T, filename string, data []byte) {
 	t.Helper()
 
@@ -51,7 +52,7 @@ func SaveTestdata(t *testing.T, filename string, data []byte) {
 	t.Logf("Updated testdata file: %s", testdataPath)
 }
 
-// SaveJSON saves JSON data to a testdata file with proper formatting
+// SaveJSON saves JSON data to a testdata file with proper formatting.
 func SaveJSON(t *testing.T, filename string, v any) {
 	t.Helper()
 
@@ -63,7 +64,7 @@ func SaveJSON(t *testing.T, filename string, v any) {
 	SaveTestdata(t, filename, data)
 }
 
-// LoadJSON loads and unmarshals JSON from a testdata file
+// LoadJSON loads and unmarshals JSON from a testdata file.
 func LoadJSON(t *testing.T, filename string, v any) {
 	t.Helper()
 
@@ -75,7 +76,7 @@ func LoadJSON(t *testing.T, filename string, v any) {
 }
 
 // CompareWithTestdata compares actual data with expected testdata file
-// If -update flag is set, it updates the testdata file with actual data
+// If -update flag is set, it updates the testdata file with actual data.
 func CompareWithTestdata(t *testing.T, filename string, actual []byte) {
 	t.Helper()
 
@@ -92,7 +93,7 @@ func CompareWithTestdata(t *testing.T, filename string, actual []byte) {
 	}
 }
 
-// CompareJSONWithTestdata compares actual JSON data with expected testdata file
+// CompareJSONWithTestdata compares actual JSON data with expected testdata file.
 func CompareJSONWithTestdata(t *testing.T, filename string, actual any) {
 	t.Helper()
 
@@ -114,7 +115,7 @@ func CompareJSONWithTestdata(t *testing.T, filename string, actual any) {
 	}
 }
 
-// TestdataExists checks if a testdata file exists
+// TestdataExists checks if a testdata file exists.
 func TestdataExists(filename string) bool {
 	testdataPath := filepath.Join("testdata", filename)
 	_, err := os.Stat(testdataPath)

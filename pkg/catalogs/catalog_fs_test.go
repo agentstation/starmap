@@ -7,12 +7,13 @@ import (
 	"testing"
 	"testing/fstest"
 
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// testFS creates a test filesystem with sample catalog data
+// testFS creates a test filesystem with sample catalog data.
 func testFS() fs.FS {
 	return fstest.MapFS{
 		"providers.yaml": &fstest.MapFile{
@@ -68,7 +69,7 @@ description: "Open source LLM"
 	}
 }
 
-// TestCatalogWithFS tests creating a catalog with a custom fs.FS
+// TestCatalogWithFS tests creating a catalog with a custom fs.FS.
 func TestCatalogWithFS(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -119,7 +120,7 @@ func TestCatalogWithFS(t *testing.T) {
 	}
 }
 
-// TestCatalogWithPath tests creating a catalog from a directory path
+// TestCatalogWithPath tests creating a catalog from a directory path.
 func TestCatalogWithPath(t *testing.T) {
 	// Create a temporary directory with test data
 	tmpDir := t.TempDir()
@@ -156,7 +157,7 @@ name: Test Model
 	assert.Equal(t, "Test Model", model.Name)
 }
 
-// TestCatalogWrite tests writing a catalog to disk
+// TestCatalogWrite tests writing a catalog to disk.
 func TestCatalogWrite(t *testing.T) {
 	// Create a catalog with test data
 	cat, err := New(WithFS(testFS()))
@@ -181,7 +182,7 @@ func TestCatalogWrite(t *testing.T) {
 	assert.Equal(t, len(cat.GetAllModels()), len(cat2.GetAllModels()))
 }
 
-// TestCatalogLoadMalformed tests handling of malformed YAML
+// TestCatalogLoadMalformed tests handling of malformed YAML.
 func TestCatalogLoadMalformed(t *testing.T) {
 	malformedFS := fstest.MapFS{
 		"providers.yaml": &fstest.MapFile{
@@ -197,7 +198,7 @@ func TestCatalogLoadMalformed(t *testing.T) {
 	assert.Nil(t, cat)
 }
 
-// TestCatalogNestedModels tests loading models from nested directories
+// TestCatalogNestedModels tests loading models from nested directories.
 func TestCatalogNestedModels(t *testing.T) {
 	nestedFS := fstest.MapFS{
 		"providers.yaml": &fstest.MapFile{
@@ -231,7 +232,7 @@ name: GPT-3.5 on Groq
 	assert.Equal(t, "GPT-3.5 on Groq", model2.Name)
 }
 
-// TestCatalogConcurrentAccess tests thread-safe access to catalog
+// TestCatalogConcurrentAccess tests thread-safe access to catalog.
 func TestCatalogConcurrentAccess(t *testing.T) {
 	cat, err := New(WithFS(testFS()))
 	require.NoError(t, err)
@@ -285,7 +286,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	}
 }
 
-// TestMemoryCatalog tests a pure memory catalog without filesystem
+// TestMemoryCatalog tests a pure memory catalog without filesystem.
 func TestMemoryCatalog(t *testing.T) {
 	cat, err := New() // No options = memory catalog
 	require.NoError(t, err)
@@ -320,7 +321,7 @@ func TestMemoryCatalog(t *testing.T) {
 	}
 }
 
-// TestCatalogCopy tests deep copying of catalogs
+// TestCatalogCopy tests deep copying of catalogs.
 func TestCatalogCopy(t *testing.T) {
 	original, err := New(WithFS(testFS()))
 	require.NoError(t, err)
@@ -350,7 +351,7 @@ func TestCatalogCopy(t *testing.T) {
 	assert.Equal(t, len(original.GetAllModels())-1, len(copied.GetAllModels()))
 }
 
-// BenchmarkCatalogLoad benchmarks loading catalogs
+// BenchmarkCatalogLoad benchmarks loading catalogs.
 func BenchmarkCatalogLoad(b *testing.B) {
 	testData := testFS()
 	b.ResetTimer()
@@ -360,7 +361,7 @@ func BenchmarkCatalogLoad(b *testing.B) {
 	}
 }
 
-// BenchmarkCatalogWalk benchmarks walking catalog files
+// BenchmarkCatalogWalk benchmarks walking catalog files.
 func BenchmarkCatalogWalk(b *testing.B) {
 	cat, _ := New(WithFS(testFS()))
 	b.ResetTimer()
@@ -370,7 +371,7 @@ func BenchmarkCatalogWalk(b *testing.B) {
 	}
 }
 
-// BenchmarkCatalogCopy benchmarks copying catalogs
+// BenchmarkCatalogCopy benchmarks copying catalogs.
 func BenchmarkCatalogCopy(b *testing.B) {
 	cat, _ := New(WithFS(testFS()))
 	b.ResetTimer()

@@ -2,20 +2,20 @@ package catalogs
 
 import "reflect"
 
-// MergeModels performs a smart merge of two models, keeping existing values where the new model has empty/nil values
-func MergeModels(existing, new Model) Model {
+// MergeModels performs a smart merge of two models, keeping existing values where the updated model has empty/nil values.
+func MergeModels(existing, updated Model) Model {
 	result := existing // Start with existing model
 
-	// Use reflection to merge non-zero fields from new model
+	// Use reflection to merge non-zero fields from updated model
 	existingVal := reflect.ValueOf(&result).Elem()
-	newVal := reflect.ValueOf(new)
+	newVal := reflect.ValueOf(updated)
 
 	mergeFields(existingVal, newVal)
 
 	return result
 }
 
-// mergeFields recursively merges fields from source to dest, only overwriting if source has non-zero values
+// mergeFields recursively merges fields from source to dest, only overwriting if source has non-zero values.
 func mergeFields(dest, src reflect.Value) {
 	if !dest.CanSet() || !src.IsValid() {
 		return

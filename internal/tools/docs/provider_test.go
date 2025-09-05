@@ -6,10 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestGenerateProviderDocs(t *testing.T) {
@@ -289,13 +290,13 @@ func TestGroupModelsByFamily(t *testing.T) {
 	assert.Len(t, result["Llama"], 1)
 }
 
-// Helper functions
+// Helper functions.
 func intPtr(i int) *int                          { return &i }
 func int64Ptr(i int64) *int64                    { return &i }
 func boolPtr(b bool) *bool                       { return &b }
 func durationPtr(d time.Duration) *time.Duration { return &d }
 
-// Helper function to create test catalog with providers
+// Helper function to create test catalog with providers.
 func createTestCatalogWithProviders() catalogs.Reader {
 	catalog, _ := catalogs.New()
 
@@ -855,7 +856,7 @@ func TestGenerateProviderModelPagesWithNoModels(t *testing.T) {
 	// Just check that no error occurred
 }
 
-// TestGenerateProviderReadmeEdgeCases tests edge cases for generateProviderReadme
+// TestGenerateProviderReadmeEdgeCases tests edge cases for generateProviderReadme.
 func TestGenerateProviderReadmeEdgeCases(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -943,7 +944,7 @@ func TestGenerateProviderReadmeEdgeCases(t *testing.T) {
 	}
 }
 
-// TestGenerateProviderDocsComprehensive tests the generateProviderDocs function comprehensively
+// TestGenerateProviderDocsComprehensive tests the generateProviderDocs function comprehensively.
 func TestGenerateProviderDocsComprehensive(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -1053,7 +1054,7 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 	}
 }
 
-// TestGenerateWithErrors tests error handling
+// TestGenerateWithErrors tests error handling.
 func TestGenerateWithErrors(t *testing.T) {
 	t.Run("index write failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
@@ -1079,7 +1080,7 @@ func TestGenerateWithErrors(t *testing.T) {
 	})
 }
 
-// TestGenerateVerboseMode tests verbose mode logging
+// TestGenerateVerboseMode tests verbose mode logging.
 func TestGenerateVerboseMode(t *testing.T) {
 	tmpDir := t.TempDir()
 	catalog, err := catalogs.New()
@@ -1105,7 +1106,7 @@ func TestGenerateVerboseMode(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// TestGenerateProviderModelPageComplex tests generateProviderModelPage with complex scenarios
+// TestGenerateProviderModelPageComplex tests generateProviderModelPage with complex scenarios.
 func TestGenerateProviderModelPageComplex(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -1377,7 +1378,7 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 	}
 }
 
-// TestGenerateProviderModelPageEdgeCases tests edge cases for provider model pages
+// TestGenerateProviderModelPageEdgeCases tests edge cases for provider model pages.
 func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -1474,7 +1475,7 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 	}
 }
 
-// TestGenerateProviderModelPageErrors tests error handling for provider model pages
+// TestGenerateProviderModelPageErrors tests error handling for provider model pages.
 func TestGenerateProviderDocsErrorHandling(t *testing.T) {
 	t.Run("directory creation failure", func(t *testing.T) {
 		tmpDir := t.TempDir()

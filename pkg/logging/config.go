@@ -6,11 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/rs/zerolog"
+
+	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// Config holds logger configuration options
+// Config holds logger configuration options.
 type Config struct {
 	// Level is the minimum log level to output
 	Level string
@@ -34,7 +35,7 @@ type Config struct {
 	Fields map[string]any
 }
 
-// DefaultConfig returns a configuration with sensible defaults
+// DefaultConfig returns a configuration with sensible defaults.
 func DefaultConfig() *Config {
 	return &Config{
 		Level:      "info",
@@ -47,7 +48,7 @@ func DefaultConfig() *Config {
 	}
 }
 
-// NewLoggerFromConfig creates a new logger from configuration
+// NewLoggerFromConfig creates a new logger from configuration.
 func NewLoggerFromConfig(cfg *Config) zerolog.Logger {
 	if cfg == nil {
 		cfg = DefaultConfig()
@@ -84,13 +85,13 @@ func NewLoggerFromConfig(cfg *Config) zerolog.Logger {
 	return logger
 }
 
-// Configure updates the default logger with the given configuration
+// Configure updates the default logger with the given configuration.
 func Configure(cfg *Config) {
 	logger := NewLoggerFromConfig(cfg)
 	SetDefault(logger)
 }
 
-// ConfigureFromEnv configures the logger from environment variables
+// ConfigureFromEnv configures the logger from environment variables.
 func ConfigureFromEnv() {
 	cfg := &Config{
 		Level:      getEnvOrDefault("LOG_LEVEL", "info"),
@@ -104,7 +105,7 @@ func ConfigureFromEnv() {
 	Configure(cfg)
 }
 
-// getWriter creates the appropriate writer based on configuration
+// getWriter creates the appropriate writer based on configuration.
 func getWriter(cfg *Config) io.Writer {
 	// Determine output destination
 	var output io.Writer
@@ -155,7 +156,7 @@ func getWriter(cfg *Config) io.Writer {
 	}
 }
 
-// parseLevel parses a log level string
+// parseLevel parses a log level string.
 func parseLevel(level string) zerolog.Level {
 	switch strings.ToLower(level) {
 	case "trace":
@@ -183,7 +184,7 @@ func parseLevel(level string) zerolog.Level {
 	}
 }
 
-// parseTimeFormat parses time format configuration
+// parseTimeFormat parses time format configuration.
 func parseTimeFormat(format string) string {
 	switch strings.ToLower(format) {
 	case "kitchen":
@@ -211,7 +212,7 @@ func parseTimeFormat(format string) string {
 	}
 }
 
-// parseFields parses comma-separated key=value pairs
+// parseFields parses comma-separated key=value pairs.
 func parseFields(fields string) map[string]any {
 	result := make(map[string]any)
 	if fields == "" {
@@ -229,7 +230,7 @@ func parseFields(fields string) map[string]any {
 	return result
 }
 
-// addField adds a field to the context based on its type
+// addField adds a field to the context based on its type.
 func addField(ctx zerolog.Context, key string, value any) zerolog.Context {
 	switch v := value.(type) {
 	case string:
@@ -251,7 +252,7 @@ func addField(ctx zerolog.Context, key string, value any) zerolog.Context {
 	}
 }
 
-// getEnvOrDefault returns an environment variable value or default
+// getEnvOrDefault returns an environment variable value or default.
 func getEnvOrDefault(key, defaultValue string) string {
 	if value := os.Getenv(key); value != "" {
 		return value

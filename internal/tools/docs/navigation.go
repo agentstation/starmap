@@ -8,27 +8,27 @@ import (
 	"time"
 )
 
-// Breadcrumb represents a single breadcrumb navigation item
+// Breadcrumb represents a single breadcrumb navigation item.
 type Breadcrumb struct {
 	Label string
 	Path  string
 }
 
-// NavigationLink represents a navigation link with optional description
+// NavigationLink represents a navigation link with optional description.
 type NavigationLink struct {
 	Label       string
 	Path        string
 	Description string
 }
 
-// NavigationContext provides context for generating navigation elements
+// NavigationContext provides context for generating navigation elements.
 type NavigationContext struct {
 	Depth       int    // How many levels deep from root
 	CurrentPath string // Current page path
 	PageType    string // Type of page: "provider", "author", "model", "catalog"
 }
 
-// buildBreadcrumbs creates a breadcrumb navigation string
+// buildBreadcrumbs creates a breadcrumb navigation string.
 func (g *Generator) buildBreadcrumbs(items ...Breadcrumb) string {
 	if len(items) == 0 {
 		return ""
@@ -49,15 +49,15 @@ func (g *Generator) buildBreadcrumbs(items ...Breadcrumb) string {
 	return strings.Join(parts, " / ")
 }
 
-// writeBreadcrumbs writes breadcrumb navigation to a writer
+// writeBreadcrumbs writes breadcrumb navigation to a writer.
 func (g *Generator) writeBreadcrumbs(w io.Writer, items ...Breadcrumb) {
 	breadcrumbs := g.buildBreadcrumbs(items...)
 	if breadcrumbs != "" {
-		fmt.Fprintf(w, "%s\n\n", breadcrumbs)
+		_, _ = fmt.Fprintf(w, "%s\n\n", breadcrumbs)
 	}
 }
 
-// buildFooter creates a standard footer with back links
+// buildFooter creates a standard footer with back links.
 func (g *Generator) buildFooter(backLinks ...Breadcrumb) string {
 	parts := []string{}
 	for _, link := range backLinks {
@@ -74,12 +74,12 @@ func (g *Generator) buildFooter(backLinks ...Breadcrumb) string {
 	return footer
 }
 
-// writeFooter writes a standard footer to a writer
+// writeFooter writes a standard footer to a writer.
 func (g *Generator) writeFooter(w io.Writer, backLinks ...Breadcrumb) {
-	fmt.Fprintf(w, "---\n%s\n", g.buildFooter(backLinks...))
+	_, _ = fmt.Fprintf(w, "---\n%s\n", g.buildFooter(backLinks...))
 }
 
-// writeTimestampedFooter writes a footer with timestamp
+// writeTimestampedFooter writes a footer with timestamp.
 func (g *Generator) writeTimestampedFooter(w io.Writer, backLinks ...Breadcrumb) {
 	footerContent := g.buildFooter(backLinks...)
 	// Remove outer underscores from the footer content for timestamp version
@@ -91,10 +91,10 @@ func (g *Generator) writeTimestampedFooter(w io.Writer, backLinks ...Breadcrumb)
 		time.Now().UTC().Format("2006-01-02 15:04:05 UTC"),
 		footerContent)
 
-	fmt.Fprintf(w, "---\n_%s_\n", timestampedContent)
+	_, _ = fmt.Fprintf(w, "---\n_%s_\n", timestampedContent)
 }
 
-// buildNavigationSection creates a navigation section with links
+// buildNavigationSection creates a navigation section with links.
 func (g *Generator) buildNavigationSection(title string, links []NavigationLink) string {
 	if len(links) == 0 {
 		return ""
@@ -117,17 +117,19 @@ func (g *Generator) buildNavigationSection(title string, links []NavigationLink)
 	return result.String()
 }
 
-// writeNavigationSection writes a navigation section to a writer
+// writeNavigationSection writes a navigation section to a writer.
 func (g *Generator) writeNavigationSection(w io.Writer, title string, links []NavigationLink) {
 	section := g.buildNavigationSection(title, links)
 	if section != "" {
-		fmt.Fprintf(w, "%s\n", section)
+		_, _ = fmt.Fprintf(w, "%s\n", section)
 	}
 }
 
 // Path calculation helpers
 
-// getRelativePath calculates the relative path from one location to another
+// getRelativePath calculates the relative path from one location to another.
+//
+//nolint:unused // used in tests
 func getRelativePath(from, to string) string {
 	rel, err := filepath.Rel(from, to)
 	if err != nil {
@@ -137,7 +139,7 @@ func getRelativePath(from, to string) string {
 	return strings.ReplaceAll(rel, string(filepath.Separator), "/")
 }
 
-// getCatalogPath returns the path to the catalog root from a given depth
+// getCatalogPath returns the path to the catalog root from a given depth.
 func getCatalogPath(depth int) string {
 	if depth <= 0 {
 		return "."
@@ -149,7 +151,7 @@ func getCatalogPath(depth int) string {
 	return strings.Join(parts, "/")
 }
 
-// getProvidersPath returns the path to the providers directory from a given depth
+// getProvidersPath returns the path to the providers directory from a given depth.
 func getProvidersPath(depth int) string {
 	catalogPath := getCatalogPath(depth)
 	if catalogPath == "." {
@@ -158,7 +160,7 @@ func getProvidersPath(depth int) string {
 	return catalogPath + "/providers"
 }
 
-// getAuthorsPath returns the path to the authors directory from a given depth
+// getAuthorsPath returns the path to the authors directory from a given depth.
 func getAuthorsPath(depth int) string {
 	catalogPath := getCatalogPath(depth)
 	if catalogPath == "." {
@@ -167,7 +169,7 @@ func getAuthorsPath(depth int) string {
 	return catalogPath + "/authors"
 }
 
-// getModelsPath returns the path to the models directory from a given depth
+// getModelsPath returns the path to the models directory from a given depth.
 func getModelsPath(depth int) string {
 	catalogPath := getCatalogPath(depth)
 	if catalogPath == "." {
@@ -178,7 +180,9 @@ func getModelsPath(depth int) string {
 
 // Standard breadcrumb generators
 
-// providerBreadcrumb creates breadcrumbs for a provider page
+// providerBreadcrumb creates breadcrumbs for a provider page.
+//
+//nolint:unused // used in tests
 func (g *Generator) providerBreadcrumb(providerName string) []Breadcrumb {
 	return []Breadcrumb{
 		{Label: "Catalog", Path: "../../"},
@@ -187,7 +191,7 @@ func (g *Generator) providerBreadcrumb(providerName string) []Breadcrumb {
 	}
 }
 
-// providerModelBreadcrumb creates breadcrumbs for a model under a provider
+// providerModelBreadcrumb creates breadcrumbs for a model under a provider.
 func (g *Generator) providerModelBreadcrumb(providerName, modelName string, modelID string) []Breadcrumb {
 	// Calculate depth based on model ID (for subdirectories)
 	// Base depth: catalog/providers/provider/models/model.md = 4 levels from catalog
@@ -210,7 +214,9 @@ func (g *Generator) providerModelBreadcrumb(providerName, modelName string, mode
 	}
 }
 
-// authorBreadcrumb creates breadcrumbs for an author page
+// authorBreadcrumb creates breadcrumbs for an author page.
+//
+//nolint:unused // used in tests
 func (g *Generator) authorBreadcrumb(authorName string) []Breadcrumb {
 	return []Breadcrumb{
 		{Label: "Catalog", Path: "../../"},
@@ -219,7 +225,7 @@ func (g *Generator) authorBreadcrumb(authorName string) []Breadcrumb {
 	}
 }
 
-// authorModelBreadcrumb creates breadcrumbs for a model under an author
+// authorModelBreadcrumb creates breadcrumbs for a model under an author.
 func (g *Generator) authorModelBreadcrumb(authorName, modelName string, modelID string) []Breadcrumb {
 	// Calculate depth based on model ID (for subdirectories)
 	// Base depth: catalog/authors/author/models/model.md = 4 levels from catalog
@@ -244,19 +250,25 @@ func (g *Generator) authorModelBreadcrumb(authorName, modelName string, modelID 
 
 // Standard footer generators
 
-// catalogFooter creates a footer for the main catalog page
+// catalogFooter creates a footer for the main catalog page.
+//
+//nolint:unused // used in tests
 func (g *Generator) catalogFooter() string {
 	return g.buildFooter()
 }
 
-// providerIndexFooter creates a footer for the providers index
+// providerIndexFooter creates a footer for the providers index.
+//
+//nolint:unused // used in tests
 func (g *Generator) providerIndexFooter() string {
 	return g.buildFooter(
 		Breadcrumb{Label: "Back to Catalog", Path: "../"},
 	)
 }
 
-// providerFooter creates a footer for a provider page
+// providerFooter creates a footer for a provider page.
+//
+//nolint:unused // used in tests
 func (g *Generator) providerFooter() string {
 	return g.buildFooter(
 		Breadcrumb{Label: "Back to Providers", Path: "../"},
@@ -264,14 +276,18 @@ func (g *Generator) providerFooter() string {
 	)
 }
 
-// authorIndexFooter creates a footer for the authors index
+// authorIndexFooter creates a footer for the authors index.
+//
+//nolint:unused // used in tests
 func (g *Generator) authorIndexFooter() string {
 	return g.buildFooter(
 		Breadcrumb{Label: "Back to Catalog", Path: "../"},
 	)
 }
 
-// authorFooter creates a footer for an author page
+// authorFooter creates a footer for an author page.
+//
+//nolint:unused // used in tests
 func (g *Generator) authorFooter() string {
 	return g.buildFooter(
 		Breadcrumb{Label: "Back to Authors", Path: "../"},
@@ -279,7 +295,9 @@ func (g *Generator) authorFooter() string {
 	)
 }
 
-// modelIndexFooter creates a footer for the models index
+// modelIndexFooter creates a footer for the models index.
+//
+//nolint:unused // used in tests
 func (g *Generator) modelIndexFooter() string {
 	return g.buildFooter(
 		Breadcrumb{Label: "Back to Catalog", Path: "../"},
@@ -288,8 +306,8 @@ func (g *Generator) modelIndexFooter() string {
 
 // Cross-reference helpers
 
-// buildProviderCrossReferences builds cross-reference links for a provider page
-func (g *Generator) buildProviderCrossReferences(providerID string) []NavigationLink {
+// buildProviderCrossReferences builds cross-reference links for a provider page.
+func (g *Generator) buildProviderCrossReferences(_ string) []NavigationLink {
 	return []NavigationLink{
 		{Label: "All Providers", Path: "../"},
 		{Label: "Browse by Author", Path: "../../authors/"},
@@ -297,8 +315,8 @@ func (g *Generator) buildProviderCrossReferences(providerID string) []Navigation
 	}
 }
 
-// buildAuthorCrossReferences builds cross-reference links for an author page
-func (g *Generator) buildAuthorCrossReferences(authorID string) []NavigationLink {
+// buildAuthorCrossReferences builds cross-reference links for an author page.
+func (g *Generator) buildAuthorCrossReferences(_ string) []NavigationLink {
 	return []NavigationLink{
 		{Label: "All Authors", Path: "../"},
 		{Label: "Browse by Provider", Path: "../../providers/"},
@@ -306,8 +324,8 @@ func (g *Generator) buildAuthorCrossReferences(authorID string) []NavigationLink
 	}
 }
 
-// buildModelCrossReferences builds cross-reference links for a model page
-func (g *Generator) buildModelCrossReferences(context string, depth int) []NavigationLink {
+// buildModelCrossReferences builds cross-reference links for a model page.
+func (g *Generator) buildModelCrossReferences(_ string, depth int) []NavigationLink {
 	links := []NavigationLink{}
 
 	// Add links to all providers and all authors

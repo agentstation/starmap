@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/utc"
 )
 
-// TestEnhancer is a test implementation of the Enhancer interface
+// TestEnhancer is a test implementation of the Enhancer interface.
 type TestEnhancer struct {
 	name       string
 	priority   int

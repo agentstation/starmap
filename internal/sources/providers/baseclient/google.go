@@ -1,3 +1,4 @@
+// Package baseclient provides base client implementations for various providers.
 package baseclient
 
 import (

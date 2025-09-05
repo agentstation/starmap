@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// Example demonstrates basic catalog creation and usage
+// Example demonstrates basic catalog creation and usage.
 func Example() {
 	// Create a memory-based catalog
 	catalog, err := catalogs.New()
@@ -41,7 +41,7 @@ func Example() {
 	// Output: Found 1 models
 }
 
-// Example_embeddedCatalog demonstrates using the embedded catalog
+// Example_embeddedCatalog demonstrates using the embedded catalog.
 func Example_embeddedCatalog() {
 	// Create catalog with embedded data
 	catalog, err := catalogs.New(catalogs.WithEmbedded())
@@ -60,7 +60,7 @@ func Example_embeddedCatalog() {
 	}
 }
 
-// Example_fileBasedCatalog demonstrates file-based persistence
+// Example_fileBasedCatalog demonstrates file-based persistence.
 func Example_fileBasedCatalog() {
 	// Create a file-based catalog
 	catalogPath := filepath.Join(".", "my-catalog")
@@ -94,7 +94,7 @@ func Example_fileBasedCatalog() {
 	fmt.Println("Catalog saved to disk")
 }
 
-// Example_mergeCatalogs demonstrates merging two catalogs
+// Example_mergeCatalogs demonstrates merging two catalogs.
 func Example_mergeCatalogs() {
 	// Create base catalog
 	base, _ := catalogs.New()
@@ -109,7 +109,7 @@ func Example_mergeCatalogs() {
 			},
 		},
 	}
-	base.SetProvider(baseProvider)
+	_ = base.SetProvider(baseProvider)
 
 	// Create updates catalog
 	updates, _ := catalogs.New()
@@ -135,7 +135,7 @@ func Example_mergeCatalogs() {
 			},
 		},
 	}
-	updates.SetProvider(updateProvider)
+	_ = updates.SetProvider(updateProvider)
 
 	// Merge with EnrichEmpty strategy (default)
 	if err := base.MergeWith(updates); err != nil {
@@ -147,7 +147,7 @@ func Example_mergeCatalogs() {
 	// Output: Model name: Model One Enhanced
 }
 
-// Example_mergeStrategies demonstrates different merge strategies
+// Example_mergeStrategies demonstrates different merge strategies.
 func Example_mergeStrategies() {
 	base, _ := catalogs.New()
 	baseProvider := catalogs.Provider{
@@ -157,7 +157,7 @@ func Example_mergeStrategies() {
 			"m1": {ID: "m1", Name: "Original"},
 		},
 	}
-	base.SetProvider(baseProvider)
+	_ = base.SetProvider(baseProvider)
 
 	updates, _ := catalogs.New()
 	updateProvider := catalogs.Provider{
@@ -168,7 +168,7 @@ func Example_mergeStrategies() {
 			"m2": {ID: "m2", Name: "New"},
 		},
 	}
-	updates.SetProvider(updateProvider)
+	_ = updates.SetProvider(updateProvider)
 
 	// Example 1: Append only (keeps existing, adds new)
 	cat1, _ := base.Copy()
@@ -192,7 +192,7 @@ func Example_mergeStrategies() {
 	fmt.Printf("EnrichEmpty - m1: %s\n", m1.Name) // Updated
 }
 
-// Example_concurrentAccess demonstrates thread-safe concurrent usage
+// Example_concurrentAccess demonstrates thread-safe concurrent usage.
 func Example_concurrentAccess() {
 	catalog, _ := catalogs.New()
 	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
@@ -214,7 +214,7 @@ func Example_concurrentAccess() {
 				Name: fmt.Sprintf("Model %d", i),
 			}
 		}
-		catalog.SetProvider(provider)
+		_ = catalog.SetProvider(provider)
 		done <- true
 	}()
 
@@ -239,7 +239,7 @@ func Example_concurrentAccess() {
 	fmt.Printf("Created %d models concurrently\n", len(catalog.GetAllModels()))
 }
 
-// Example_providerCapabilities demonstrates working with provider features
+// Example_providerCapabilities demonstrates working with provider features.
 func Example_providerCapabilities() {
 	catalog, _ := catalogs.New()
 
@@ -252,7 +252,7 @@ func Example_providerCapabilities() {
 			APIKeyRequired: ptrBool(true),
 		},
 	}
-	catalog.SetProvider(provider)
+	_ = catalog.SetProvider(provider)
 
 	// Check capabilities
 	p, _ := catalog.Provider("openai")
@@ -264,7 +264,7 @@ func Example_providerCapabilities() {
 	}
 }
 
-// Example_modelFiltering demonstrates filtering models
+// Example_modelFiltering demonstrates filtering models.
 func Example_modelFiltering() {
 	catalog, _ := catalogs.New(catalogs.WithEmbedded())
 
@@ -293,7 +293,7 @@ func Example_modelFiltering() {
 	fmt.Printf("Found %d models with vision\n", len(visionModels))
 }
 
-// Example_catalogCopy demonstrates creating independent copies
+// Example_catalogCopy demonstrates creating independent copies.
 func Example_catalogCopy() {
 	// Create original catalog
 	original, _ := catalogs.New()
@@ -307,7 +307,7 @@ func Example_catalogCopy() {
 			},
 		},
 	}
-	original.SetProvider(provider)
+	_ = original.SetProvider(provider)
 
 	// Create a copy
 	copy, err := original.Copy()
@@ -324,7 +324,7 @@ func Example_catalogCopy() {
 		ID:   "model-2",
 		Name: "Copy Model",
 	}
-	copy.SetProvider(copiedProvider)
+	_ = copy.SetProvider(copiedProvider)
 
 	// Original is unchanged
 	fmt.Printf("Original has %d models\n", len(original.GetAllModels()))
@@ -334,13 +334,9 @@ func Example_catalogCopy() {
 	// Copy has 2 models
 }
 
-// Helper functions for creating pointers
+// Helper functions for creating pointers.
 func ptr(s string) *string {
 	return &s
-}
-
-func ptrFloat(f float64) *float64 {
-	return &f
 }
 
 func ptrBool(b bool) *bool {

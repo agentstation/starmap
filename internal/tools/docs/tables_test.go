@@ -6,12 +6,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Helper function to create float pointers
+// Helper function to create float pointers.
 func floatPtr(f float64) *float64 {
 	return &f
 }
@@ -664,7 +665,7 @@ func TestWriteOperationPricingTable(t *testing.T) {
 	}
 }
 
-// Helper test to ensure all table functions handle nil features gracefully
+// Helper test to ensure all table functions handle nil features gracefully.
 func TestTableFunctionsHandleNilFeatures(t *testing.T) {
 	model := &catalogs.Model{
 		ID:       "test-model",
@@ -717,7 +718,7 @@ func TestTableFunctionsHandleNilFeatures(t *testing.T) {
 	}
 }
 
-// Test helper function for checking support
+// Test helper function for checking support.
 func TestCheckFeatureSupport(t *testing.T) {
 	features := &catalogs.ModelFeatures{
 		Tools:     true,

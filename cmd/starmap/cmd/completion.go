@@ -1,3 +1,4 @@
+// Package cmd provides CLI commands for the starmap tool.
 package cmd
 
 import (
@@ -8,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// completionCmd represents the completion command
+// completionCmd represents the completion command.
 var completionCmd = &cobra.Command{
 	Use:   "completion [bash|zsh|fish]",
 	Short: "Generate completion script",
@@ -69,7 +70,7 @@ To uninstall completions:
 	},
 }
 
-// uninstallCompletion provides instructions and attempts to remove completion files
+// uninstallCompletion provides instructions and attempts to remove completion files.
 func uninstallCompletion(shell string) error {
 	fmt.Printf("Uninstalling %s completions for starmap...\n\n", shell)
 

@@ -12,22 +12,22 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestMain handles flag parsing for the -update flag
+// TestMain handles flag parsing for the -update flag.
 func TestMain(m *testing.M) {
 	flag.Parse()
 	os.Exit(m.Run())
 }
 
-// loadTestdataResponse loads a Groq API response from testdata
-func loadTestdataResponse(t *testing.T, filename string) GroqResponse {
+// loadTestdataResponse loads a Groq API response from testdata.
+func loadTestdataResponse(t *testing.T, filename string) Response {
 	t.Helper()
-	var response GroqResponse
+	var response Response
 	testhelper.LoadJSON(t, filename, &response)
 	return response
 }
 
-// loadTestdataModel loads a single Groq model from testdata by finding it in the models list
-func loadTestdataModel(t *testing.T, modelID string) GroqModelData {
+// loadTestdataModel loads a single Groq model from testdata by finding it in the models list.
+func loadTestdataModel(t *testing.T, modelID string) ModelData {
 	t.Helper()
 	response := loadTestdataResponse(t, "models_list.json")
 
@@ -38,11 +38,11 @@ func loadTestdataModel(t *testing.T, modelID string) GroqModelData {
 	}
 
 	t.Fatalf("Model %s not found in testdata", modelID)
-	return GroqModelData{}
+	return ModelData{}
 }
 
-// TestGroqModelDataParsing tests that we can properly parse Groq API responses with provider-specific fields.
-func TestGroqModelDataParsing(t *testing.T) {
+// TestModelDataParsing tests that we can properly parse Groq API responses with provider-specific fields.
+func TestModelDataParsing(t *testing.T) {
 	// Test parsing the models list response
 	response := loadTestdataResponse(t, "models_list.json")
 
@@ -86,7 +86,7 @@ func TestGroqModelDataParsing(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Find the model by ID
-			var model GroqModelData
+			var model ModelData
 			found := false
 			for _, m := range response.Data {
 				if m.ID == tt.expectedID {
@@ -136,7 +136,7 @@ func TestGroqSingleStepCompleteness(t *testing.T) {
 		"whisper-large-v3",
 	}
 
-	foundModels := make(map[string]GroqModelData)
+	foundModels := make(map[string]ModelData)
 	for _, model := range response.Data {
 		foundModels[model.ID] = model
 	}
@@ -273,7 +273,7 @@ func TestGroqSingleModelParsing(t *testing.T) {
 	}
 }
 
-// TestConvertToGroqModel tests the conversion from GroqModelData to catalogs.Model.
+// TestConvertToGroqModel tests the conversion from ModelData to catalogs.Model.
 func TestConvertToGroqModel(t *testing.T) {
 	// Create a mock Groq client
 	client := &Client{
@@ -281,7 +281,7 @@ func TestConvertToGroqModel(t *testing.T) {
 	}
 
 	// Test data
-	groqModel := GroqModelData{
+	groqModel := ModelData{
 		OpenAIModelData: struct {
 			ID      string `json:"id"`
 			Object  string `json:"object"`

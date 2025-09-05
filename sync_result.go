@@ -8,7 +8,7 @@ import (
 	"github.com/agentstation/starmap/pkg/differ"
 )
 
-// SyncResult represents the complete result of a sync operation
+// SyncResult represents the complete result of a sync operation.
 type SyncResult struct {
 	// Overall statistics
 	TotalChanges     int                                         // Total number of changes across all providers
@@ -21,7 +21,7 @@ type SyncResult struct {
 	OutputDir string // Where files were written (empty means default)
 }
 
-// SyncProviderResult represents sync results for a single provider
+// SyncProviderResult represents sync results for a single provider.
 type SyncProviderResult struct {
 	ProviderID catalogs.ProviderID  // The provider that was synced
 	Added      []catalogs.Model     // New models not in catalog
@@ -39,17 +39,17 @@ type SyncProviderResult struct {
 	EnhancedCount       int // Number of models enhanced with models.dev data
 }
 
-// HasChanges returns true if the sync result contains any changes
+// HasChanges returns true if the sync result contains any changes.
 func (sr *SyncResult) HasChanges() bool {
 	return sr.TotalChanges > 0
 }
 
-// HasChanges returns true if the provider result contains any changes
+// HasChanges returns true if the provider result contains any changes.
 func (spr *SyncProviderResult) HasChanges() bool {
 	return spr.AddedCount > 0 || spr.UpdatedCount > 0 || spr.RemovedCount > 0
 }
 
-// Summary returns a human-readable summary of the sync result
+// Summary returns a human-readable summary of the sync result.
 func (sr *SyncResult) Summary() string {
 	if !sr.HasChanges() {
 		return "No changes detected"
@@ -71,7 +71,7 @@ func (sr *SyncResult) Summary() string {
 	return summary
 }
 
-// Summary returns a human-readable summary of the provider result
+// Summary returns a human-readable summary of the provider result.
 func (spr *SyncProviderResult) Summary() string {
 	if !spr.HasChanges() {
 		return fmt.Sprintf("%s: No changes", spr.ProviderID)
@@ -81,14 +81,14 @@ func (spr *SyncProviderResult) Summary() string {
 		spr.ProviderID, spr.AddedCount, spr.UpdatedCount, spr.RemovedCount)
 }
 
-// NewResult creates a new Result with initialized maps
+// NewSyncResult creates a new Result with initialized maps.
 func NewSyncResult() *SyncResult {
 	return &SyncResult{
 		ProviderResults: make(map[catalogs.ProviderID]*SyncProviderResult),
 	}
 }
 
-// NewProviderResult creates a new ProviderResult
+// NewSyncProviderResult creates a new SyncProviderResult.
 func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
 	return &SyncProviderResult{
 		ProviderID: providerID,
@@ -98,7 +98,7 @@ func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
 	}
 }
 
-// convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult
+// convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult.
 func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *SyncResult {
 	result := &SyncResult{
 		TotalChanges:    changeset.Summary.TotalChanges,
@@ -158,7 +158,7 @@ func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outp
 	return result
 }
 
-// getModelProvider extracts the provider ID from a model using the provider map
+// getModelProvider extracts the provider ID from a model using the provider map.
 func getModelProvider(model catalogs.Model, modelProviderMap map[string]catalogs.ProviderID) catalogs.ProviderID {
 	// Use the model-to-provider map if available
 	if providerID, ok := modelProviderMap[model.ID]; ok {

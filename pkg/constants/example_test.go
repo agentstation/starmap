@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// Example demonstrates using constants for common operations
+// Example demonstrates using constants for common operations.
 func Example() {
 	// Create directory with standard permissions
 	dir := filepath.Join(".", "data")
@@ -33,7 +33,7 @@ func Example() {
 	// Created file with 644 permissions
 }
 
-// Example_timeouts demonstrates timeout constants
+// Example_timeouts demonstrates timeout constants.
 func Example_timeouts() {
 	// HTTP client with default timeout
 	client := &http.Client{
@@ -61,7 +61,7 @@ func Example_timeouts() {
 	// Operation completed
 }
 
-// Example_gitHubConstants shows GitHub-specific constants
+// Example_gitHubConstants shows GitHub-specific constants.
 func Example_gitHubConstants() {
 	// GitHub URLs
 	fmt.Printf("Models.dev URL: %s\n", constants.ModelsDevURL)
@@ -78,7 +78,7 @@ func Example_gitHubConstants() {
 	// Max providers: 100
 }
 
-// Example_retryLogic demonstrates using retry constants
+// Example_retryLogic demonstrates using retry constants.
 func Example_retryLogic() {
 	// Exponential backoff with constants
 	operation := func() error {
@@ -111,7 +111,7 @@ func Example_retryLogic() {
 	}
 }
 
-// Example_bufferSizes shows using buffer size constants
+// Example_bufferSizes shows using buffer size constants.
 func Example_bufferSizes() {
 	// Channel with standard buffer size
 	ch := make(chan string, constants.ChannelBufferSize)
@@ -128,7 +128,7 @@ func Example_bufferSizes() {
 	// Write buffer: 4096 bytes
 }
 
-// Example_concurrencyLimits demonstrates concurrency constants
+// Example_concurrencyLimits demonstrates concurrency constants.
 func Example_concurrencyLimits() {
 	// Worker pool with limited concurrency
 	jobs := make(chan int, 100)
@@ -154,7 +154,7 @@ func Example_concurrencyLimits() {
 	// Output: Processing with 10 workers
 }
 
-// Example_rateLimiting shows rate limiting with constants
+// Example_rateLimiting shows rate limiting with constants.
 func Example_rateLimiting() {
 	// Create rate limiter
 	limiter := time.NewTicker(time.Second / time.Duration(constants.DefaultRateLimit))
@@ -178,7 +178,7 @@ func Example_rateLimiting() {
 	}
 }
 
-// Example_updateInterval demonstrates update interval usage
+// Example_updateInterval demonstrates update interval usage.
 func Example_updateInterval() {
 	// Auto-update ticker
 	ticker := time.NewTicker(constants.DefaultUpdateInterval)
@@ -200,7 +200,7 @@ func Example_updateInterval() {
 	}
 }
 
-// Example_contextTimeouts shows different context timeout scenarios
+// Example_contextTimeouts shows different context timeout scenarios.
 func Example_contextTimeouts() {
 	// Short operation
 	_, shortCancel := context.WithTimeout(

@@ -24,8 +24,11 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Run tests
-        run: make test
+      - name: Run comprehensive tests
+        run: |
+          make test
+          make test-race
+          make lint
 
   release:
     needs: test
@@ -57,9 +60,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Syft
-        uses: anchore/sbom-action/download-syft@v0.20.4
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6

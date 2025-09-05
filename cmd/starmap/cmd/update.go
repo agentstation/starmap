@@ -6,17 +6,18 @@ import (
 	"os"
 	"strings"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/spf13/cobra"
 )
 
-// newUpdateCommand creates the update command
+// newUpdateCommand creates the update command.
 func newUpdateCommand() *cobra.Command {
-	var updateFlags *common.UpdateFlags
+	var updateFlags *cmdutil.UpdateFlags
 
 	cmd := &cobra.Command{
 		Use:     "update",
@@ -42,20 +43,22 @@ By default, saves to ./internal/embedded/catalog for development.`,
   starmap update --dry-run                  # Preview changes
   starmap update -y                          # Auto-approve changes
   starmap update --force                    # Force fresh update`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
 			return performUpdate(ctx, updateFlags)
 		},
 	}
 
 	// Add update-specific flags
-	updateFlags = common.AddUpdateFlags(cmd)
+	updateFlags = cmdutil.AddUpdateFlags(cmd)
 
 	return cmd
 }
 
-// performUpdate executes the catalog update
-func performUpdate(ctx context.Context, flags *common.UpdateFlags) error {
+// performUpdate executes the catalog update.
+//
+//nolint:gocyclo // Complex update logic with multiple options
+func performUpdate(ctx context.Context, flags *cmdutil.UpdateFlags) error {
 	// Show warning for force update
 	if flags.Force {
 		if !globalFlags.Quiet {
@@ -224,7 +227,7 @@ func performUpdate(ctx context.Context, flags *common.UpdateFlags) error {
 	return nil
 }
 
-// buildSyncOptions creates a slice of sync options based on the provided flags
+// buildSyncOptions creates a slice of sync options based on the provided flags.
 func buildSyncOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool) []starmap.SyncOption {
 	var opts []starmap.SyncOption
 

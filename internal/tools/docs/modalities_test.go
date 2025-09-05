@@ -3,8 +3,9 @@ package docs
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestHasModality(t *testing.T) {

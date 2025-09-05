@@ -6,15 +6,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/utc"
 )
 
-// Helper function to add models to a catalog through a provider
+// Helper function to add models to a catalog through a provider.
 func addModelsToProvider(cat catalogs.Catalog, providerID string, models []catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
@@ -34,7 +35,7 @@ func addModelsToProvider(cat catalogs.Catalog, providerID string, models []catal
 	return cat.SetProvider(provider)
 }
 
-// TestIntegrationFullReconciliationFlow tests the complete reconciliation workflow
+// TestIntegrationFullReconciliationFlow tests the complete reconciliation workflow.
 func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	ctx := context.Background()
 
@@ -242,7 +243,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Check provenance was tracked
-	if result.Provenance == nil || len(result.Provenance) == 0 {
+	if len(result.Provenance) == 0 {
 		t.Error("Expected provenance to be tracked")
 	}
 
@@ -261,7 +262,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 }
 
-// TestIntegrationWithDifferentStrategies tests reconciliation with various strategies
+// TestIntegrationWithDifferentStrategies tests reconciliation with various strategies.
 func TestIntegrationWithDifferentStrategies(t *testing.T) {
 	ctx := context.Background()
 
@@ -386,7 +387,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 	}
 }
 
-// TestIntegrationChangeDetection tests change detection between catalog versions
+// TestIntegrationChangeDetection tests change detection between catalog versions.
 func TestIntegrationChangeDetection(t *testing.T) {
 	ctx := context.Background()
 
@@ -507,7 +508,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 }
 
-// TestIntegrationProvenanceTracking tests detailed provenance tracking
+// TestIntegrationProvenanceTracking tests detailed provenance tracking.
 func TestIntegrationProvenanceTracking(t *testing.T) {
 	ctx := context.Background()
 

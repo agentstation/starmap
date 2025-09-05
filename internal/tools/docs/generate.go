@@ -11,30 +11,30 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// Generator handles documentation generation
+// Generator handles documentation generation.
 type Generator struct {
 	outputDir string
 	verbose   bool
 }
 
-// Option is a functional option for configuring the Generator
+// Option is a functional option for configuring the Generator.
 type Option func(*Generator)
 
-// WithOutputDir sets the output directory for generated documentation
+// WithOutputDir sets the output directory for generated documentation.
 func WithOutputDir(dir string) Option {
 	return func(g *Generator) {
 		g.outputDir = dir
 	}
 }
 
-// WithVerbose enables verbose output
+// WithVerbose enables verbose output.
 func WithVerbose(verbose bool) Option {
 	return func(g *Generator) {
 		g.verbose = verbose
 	}
 }
 
-// New creates a new documentation generator
+// New creates a new documentation generator.
 func New(opts ...Option) *Generator {
 	g := &Generator{
 		outputDir: "./docs",
@@ -48,8 +48,8 @@ func New(opts ...Option) *Generator {
 	return g
 }
 
-// Generate generates all documentation for the catalog
-func (g *Generator) Generate(ctx context.Context, catalog catalogs.Reader) error {
+// Generate generates all documentation for the catalog.
+func (g *Generator) Generate(_ context.Context, catalog catalogs.Reader) error {
 	if g.verbose {
 		fmt.Printf("📝 Generating documentation in %s...\n", g.outputDir)
 	}
@@ -102,7 +102,7 @@ func (g *Generator) Generate(ctx context.Context, catalog catalogs.Reader) error
 	return nil
 }
 
-// copyLogos copies logos from embedded resources to the documentation directory
+// copyLogos copies logos from embedded resources to the documentation directory.
 func (g *Generator) copyLogos(catalog catalogs.Reader) error {
 	// Create logo copier with embedded FS
 	logoCopier := NewLogoCopier(embedded.FS, "catalog", g.outputDir)

@@ -15,36 +15,36 @@ import (
 // No init() - no singleton registration
 // Sources are created explicitly
 
-// Source fetches models from all provider APIs concurrently
+// Source fetches models from all provider APIs concurrently.
 type Source struct {
 	providers *catalogs.Providers // Provider configs injected during Setup
 	catalog   catalogs.Catalog    // Fetched catalog
 }
 
-// New creates a new provider API source
+// New creates a new provider API source.
 func New() *Source {
 	return &Source{}
 }
 
-// Type returns the type of this source
+// Type returns the type of this source.
 func (s *Source) Type() sources.Type {
 	return sources.ProviderAPI
 }
 
-// providerModels holds models fetched from a specific provider
+// providerModels holds models fetched from a specific provider.
 type providerModels struct {
 	providerID catalogs.ProviderID
 	models     []catalogs.Model
 	err        error
 }
 
-// Setup initializes the source with provider configurations
+// Setup initializes the source with provider configurations.
 func (s *Source) Setup(providers *catalogs.Providers) error {
 	s.providers = providers
 	return nil
 }
 
-// Fetch creates a new catalog with models fetched from all provider APIs concurrently
+// Fetch creates a new catalog with models fetched from all provider APIs concurrently.
 func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	// Apply options
 	options := sources.ApplyOptions(opts...)
@@ -226,12 +226,12 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	return nil
 }
 
-// Catalog returns the catalog of this source
+// Catalog returns the catalog of this source.
 func (s *Source) Catalog() catalogs.Catalog {
 	return s.catalog
 }
 
-// Cleanup releases any resources
+// Cleanup releases any resources.
 func (s *Source) Cleanup() error {
 	// ProvidersSource doesn't hold persistent resources
 	return nil

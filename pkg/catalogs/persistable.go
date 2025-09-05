@@ -1,6 +1,6 @@
 package catalogs
 
-// Persistable represents a catalog that can be saved to and loaded from persistent storage
+// Persistable represents a catalog that can be saved to and loaded from persistent storage.
 type Persistable interface {
 	// Save saves the catalog to persistent storage
 	Save() error

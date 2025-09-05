@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// formatNumber formats a number with thousands separators
+// formatNumber formats a number with thousands separators.
 func formatNumber(n int) string {
 	if n < 1000 {
 		return fmt.Sprintf("%d", n)
@@ -26,7 +26,7 @@ func formatNumber(n int) string {
 	return fmt.Sprintf("%.1fB", float64(n)/1000000000)
 }
 
-// formatContext formats context window size
+// formatContext formats context window size.
 func formatContext(tokens int64) string {
 	if tokens < 1000 {
 		return fmt.Sprintf("%d", tokens)
@@ -43,7 +43,7 @@ func formatContext(tokens int64) string {
 	return fmt.Sprintf("%.1fM", float64(tokens)/1000000)
 }
 
-// formatDuration converts a time.Duration to a human-readable string
+// formatDuration converts a time.Duration to a human-readable string.
 func formatDuration(d *time.Duration) string {
 	if d == nil {
 		return "Not specified"
@@ -73,10 +73,10 @@ func formatDuration(d *time.Duration) string {
 
 // formatModelID converts a model ID to a filename-safe string
 // NOTE: This flattens paths by replacing "/" with "-"
-// Use getModelFilePath() to preserve subdirectory structure
+// Use getModelFilePath() to preserve subdirectory structure.
 func formatModelID(id string) string {
 	// Replace characters that are problematic in filenames
-	safe := string(id)
+	safe := id
 	safe = strings.ReplaceAll(safe, "/", "-")
 	safe = strings.ReplaceAll(safe, ":", "-")
 	safe = strings.ReplaceAll(safe, " ", "-")
@@ -86,7 +86,7 @@ func formatModelID(id string) string {
 }
 
 // getModelFilePath returns the file path for a model, preserving subdirectory structure
-// For example: "openai/gpt-oss-120b" → "models/openai/gpt-oss-120b.md"
+// For example: "openai/gpt-oss-120b" → "models/openai/gpt-oss-120b.md".
 func getModelFilePath(baseDir string, modelID string) (string, error) {
 	// Split model ID by "/" to get path components
 	parts := strings.Split(modelID, "/")
@@ -109,7 +109,7 @@ func getModelFilePath(baseDir string, modelID string) (string, error) {
 }
 
 // formatFilename formats a filename to be filesystem-safe
-// This is used for the actual filename part only, not the full path
+// This is used for the actual filename part only, not the full path.
 func formatFilename(name string) string {
 	// Replace characters that are problematic in filenames
 	safe := name
@@ -120,7 +120,7 @@ func formatFilename(name string) string {
 	return safe
 }
 
-// formatPrice formats a price value
+// formatPrice formats a price value.
 func formatPrice(price float64) string {
 	if price == 0 {
 		return "Free"
@@ -134,7 +134,7 @@ func formatPrice(price float64) string {
 	return fmt.Sprintf("$%.2f", price)
 }
 
-// getProviderBadge returns an emoji badge for a provider
+// getProviderBadge returns an emoji badge for a provider.
 func getProviderBadge(name string) string {
 	badges := map[string]string{
 		"OpenAI":           "🤖",
@@ -156,7 +156,7 @@ func getProviderBadge(name string) string {
 	return "🏢"
 }
 
-// getAuthorBadge returns an emoji badge for an author
+// getAuthorBadge returns an emoji badge for an author.
 func getAuthorBadge(name string) string {
 	badges := map[string]string{
 		"OpenAI":       "🤖",
@@ -182,15 +182,10 @@ func getAuthorBadge(name string) string {
 	return "👥"
 }
 
-// min returns the minimum of two integers
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
 
-// formatFloat formats a float value cleanly
+// formatFloat formats a float value cleanly.
+//
+//nolint:unused // used in tests
 func formatFloat(f float64) string {
 	if f == float64(int(f)) {
 		return fmt.Sprintf("%.0f", f)
@@ -199,7 +194,7 @@ func formatFloat(f float64) string {
 	return fmt.Sprintf("%.2f", f)
 }
 
-// detectModelFamily detects the family of a model from its name
+// detectModelFamily detects the family of a model from its name.
 func detectModelFamily(name string) string {
 	name = strings.ToLower(name)
 
@@ -260,7 +255,7 @@ func detectModelFamily(name string) string {
 	return "Other"
 }
 
-// groupAuthorModels groups an author's models by family
+// groupAuthorModels groups an author's models by family.
 func groupAuthorModels(models []*catalogs.Model) map[string][]*catalogs.Model {
 	groups := make(map[string][]*catalogs.Model)
 
@@ -279,7 +274,7 @@ func groupAuthorModels(models []*catalogs.Model) map[string][]*catalogs.Model {
 	return groups
 }
 
-// categorizeAuthor returns the category for an author
+// categorizeAuthor returns the category for an author.
 func categorizeAuthor(author *catalogs.Author) string {
 	techCompanies := map[catalogs.AuthorID]bool{
 		"google":    true,
@@ -332,7 +327,7 @@ func categorizeAuthor(author *catalogs.Author) string {
 	return "🌍 Open Source" // Changed default to Open Source
 }
 
-// getFocusArea returns the focus area for an author
+// getFocusArea returns the focus area for an author.
 func getFocusArea(author *catalogs.Author) string {
 	focusAreas := map[catalogs.AuthorID]string{
 		"openai":       "AGI Research",
@@ -359,7 +354,7 @@ func getFocusArea(author *catalogs.Author) string {
 	return "General AI"
 }
 
-// shouldShowResearch returns true if research info should be shown
+// shouldShowResearch returns true if research info should be shown.
 func shouldShowResearch(author *catalogs.Author) bool {
 	researchAuthors := map[catalogs.AuthorID]bool{
 		"openai":       true,
@@ -374,7 +369,7 @@ func shouldShowResearch(author *catalogs.Author) bool {
 	return researchAuthors[author.ID]
 }
 
-// getResearchInfo returns research information for notable authors
+// getResearchInfo returns research information for notable authors.
 func getResearchInfo(author *catalogs.Author) string {
 	research := map[catalogs.AuthorID]string{
 		"openai": `Key research areas include:
@@ -408,9 +403,9 @@ func getResearchInfo(author *catalogs.Author) string {
 	return ""
 }
 
-// SortedModels converts a map of models to a sorted slice for deterministic iteration
+// SortedModels converts a map of models to a sorted slice for deterministic iteration.
 func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
-	if models == nil || len(models) == 0 {
+	if len(models) == 0 {
 		return nil
 	}
 
@@ -430,16 +425,16 @@ func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
 }
 
 // GetLatestModel returns the "latest" model from a provider in a deterministic way
-// It picks the model with the lexicographically last ID (often newest versions have higher IDs)
+// It picks the model with the lexicographically last ID (often newest versions have higher IDs).
 func GetLatestModel(provider *catalogs.Provider) string {
 	if provider == nil || len(provider.Models) == 0 {
-		return "N/A"
+		return NA
 	}
 
 	// Get sorted models
 	models := SortedModels(provider.Models)
 	if len(models) == 0 {
-		return "N/A"
+		return NA
 	}
 
 	// Return the last model name (lexicographically highest ID)

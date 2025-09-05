@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap/internal/tools/site"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/spf13/cobra"
 )
 
 var (
@@ -17,7 +18,7 @@ var (
 	prodBuild   bool
 )
 
-// SiteCmd represents the generate site command
+// SiteCmd represents the generate site command.
 var SiteCmd = &cobra.Command{
 	Use:   "site",
 	Short: "Generate static documentation website",
@@ -34,7 +35,7 @@ func init() {
 	SiteCmd.Flags().BoolVar(&prodBuild, "prod", false, "Build for production (minified, optimized)")
 }
 
-func runGenerateSite(cmd *cobra.Command, args []string) error {
+func runGenerateSite(_ *cobra.Command, _ []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), constants.CommandTimeout)
 	defer cancel()
 

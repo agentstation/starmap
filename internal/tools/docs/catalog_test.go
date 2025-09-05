@@ -7,9 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestGenerateCatalogIndex(t *testing.T) {
@@ -123,7 +124,7 @@ func TestGenerateCatalogIndexWithManyAuthors(t *testing.T) {
 	}
 
 	// Set the provider with all its models
-	catalog.SetProvider(provider)
+	_ = catalog.SetProvider(provider)
 
 	g := New()
 	err := g.generateCatalogIndex(tempDir, catalog)
@@ -318,7 +319,7 @@ func TestGetAuthorBadge(t *testing.T) {
 
 // TestMin is already defined in utils_test.go
 
-// Helper function to create a complete test catalog
+// Helper function to create a complete test catalog.
 func createTestCatalogComplete() catalogs.Reader {
 	catalog, _ := catalogs.New()
 

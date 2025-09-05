@@ -9,7 +9,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Example demonstrates basic error creation and checking
+// Example demonstrates basic error creation and checking.
 func Example() {
 	// Create a not found error
 	err := &errors.NotFoundError{
@@ -25,7 +25,7 @@ func Example() {
 	// Output: Resource not found
 }
 
-// Example_aPIError demonstrates API error handling
+// Example_aPIError demonstrates API error handling.
 func Example_aPIError() {
 	// Simulate an API error
 	err := &errors.APIError{
@@ -48,7 +48,7 @@ func Example_aPIError() {
 	// Output: Rate limited - retry later
 }
 
-// Example_authenticationError shows authentication error handling
+// Example_authenticationError shows authentication error handling.
 func Example_authenticationError() {
 	// Create authentication error
 	err := &errors.AuthenticationError{
@@ -63,7 +63,7 @@ func Example_authenticationError() {
 	// Output: Auth failed for anthropic: API key not configured
 }
 
-// Example_rateLimitError demonstrates rate limit handling with retry
+// Example_rateLimitError demonstrates rate limit handling with retry.
 func Example_rateLimitError() {
 	// Create API error for rate limiting
 	err := &errors.APIError{
@@ -80,7 +80,7 @@ func Example_rateLimitError() {
 	// Output: Rate limited: Rate limit exceeded. Try again in 30 seconds.
 }
 
-// Example_errorWrapping demonstrates error wrapping patterns
+// Example_errorWrapping demonstrates error wrapping patterns.
 func Example_errorWrapping() {
 	// Original error
 	originalErr := fmt.Errorf("connection refused")
@@ -103,7 +103,7 @@ func Example_errorWrapping() {
 	// Output: API error occurred
 }
 
-// Example_validationError shows input validation errors
+// Example_validationError shows input validation errors.
 func Example_validationError() {
 	// Validate input
 	apiKey := ""
@@ -119,7 +119,7 @@ func Example_validationError() {
 	// Output: validation failed for field api_key: API key cannot be empty
 }
 
-// Example_processError demonstrates subprocess error handling
+// Example_processError demonstrates subprocess error handling.
 func Example_processError() {
 	// Create process error
 	err := &errors.ProcessError{
@@ -140,7 +140,7 @@ func Example_processError() {
 	// Git configuration error
 }
 
-// Example_errorRecovery demonstrates error recovery strategies
+// Example_errorRecovery demonstrates error recovery strategies.
 func Example_errorRecovery() {
 	// Retry strategy for rate limits
 	var attemptRequest func() error
@@ -171,7 +171,7 @@ func Example_errorRecovery() {
 	}
 }
 
-// Example_errorChaining shows chained error handling
+// Example_errorChaining shows chained error handling.
 func Example_errorChaining() {
 	// Create a chain of errors
 	baseErr := &errors.NotFoundError{
@@ -196,7 +196,7 @@ func Example_errorChaining() {
 	// Output: File not found in parse chain
 }
 
-// Example_hTTPStatusMapping maps HTTP codes to error types
+// Example_hTTPStatusMapping maps HTTP codes to error types.
 func Example_hTTPStatusMapping() {
 	// Map HTTP status to appropriate error
 	mapHTTPError := func(status int, provider string) error {

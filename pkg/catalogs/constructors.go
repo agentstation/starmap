@@ -75,13 +75,13 @@ func NewReadOnly(source Catalog) Catalog {
 	return &readOnlyCatalog{source: source}
 }
 
-// Compile-time interface checks for readOnlyCatalog
+// Compile-time interface checks for readOnlyCatalog.
 var (
 	_ Catalog         = (*readOnlyCatalog)(nil)
 	_ ReadOnlyCatalog = (*readOnlyCatalog)(nil)
 )
 
-// readOnlyCatalog wraps a catalog to make it read-only
+// readOnlyCatalog wraps a catalog to make it read-only.
 type readOnlyCatalog struct {
 	source Catalog
 }
@@ -118,35 +118,35 @@ func (r *readOnlyCatalog) FindModel(id string) (Model, error) {
 	return r.source.FindModel(id)
 }
 
-func (r *readOnlyCatalog) SetProvider(provider Provider) error {
+func (r *readOnlyCatalog) SetProvider(_ Provider) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) SetAuthor(author Author) error {
+func (r *readOnlyCatalog) SetAuthor(_ Author) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) SetEndpoint(endpoint Endpoint) error {
+func (r *readOnlyCatalog) SetEndpoint(_ Endpoint) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) DeleteProvider(id ProviderID) error {
+func (r *readOnlyCatalog) DeleteProvider(_ ProviderID) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) DeleteAuthor(id AuthorID) error {
+func (r *readOnlyCatalog) DeleteAuthor(_ AuthorID) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) DeleteEndpoint(id string) error {
+func (r *readOnlyCatalog) DeleteEndpoint(_ string) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) ReplaceWith(source Reader) error {
+func (r *readOnlyCatalog) ReplaceWith(_ Reader) error {
 	return errors.ErrReadOnly
 }
 
-func (r *readOnlyCatalog) MergeWith(source Reader, opts ...MergeOption) error {
+func (r *readOnlyCatalog) MergeWith(_ Reader, _ ...MergeOption) error {
 	return errors.ErrReadOnly
 }
 
@@ -163,6 +163,6 @@ func (r *readOnlyCatalog) MergeStrategy() MergeStrategy {
 	return r.source.MergeStrategy()
 }
 
-func (r *readOnlyCatalog) SetMergeStrategy(strategy MergeStrategy) {
+func (r *readOnlyCatalog) SetMergeStrategy(_ MergeStrategy) {
 	// Silently ignore - read-only
 }

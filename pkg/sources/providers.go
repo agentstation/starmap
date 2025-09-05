@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Default implementation functions that will be wired by init()
+// Default implementation functions that will be wired by init().
 var (
 	defaultGetClient     func(*catalogs.Provider) (catalogs.Client, error)
 	defaultHasClient     func(catalogs.ProviderID) bool
@@ -38,17 +38,17 @@ type ProviderFetcher struct {
 	fetchRawFunc      func(context.Context, *catalogs.Provider, string) ([]byte, error)
 }
 
-// providerOptions holds configuration for ProviderFetcher operations
+// providerOptions holds configuration for ProviderFetcher operations.
 type providerOptions struct {
 	loadCredentials bool          // Auto-load credentials from environment
 	allowMissingKey bool          // Allow operations without API key
 	timeout         time.Duration // Context timeout for operations
 }
 
-// ProviderOption configures ProviderFetcher behavior
+// ProviderOption configures ProviderFetcher behavior.
 type ProviderOption func(*providerOptions)
 
-// defaultProviderOptions returns options with sensible defaults
+// defaultProviderOptions returns options with sensible defaults.
 func defaultProviderOptions() *providerOptions {
 	return &providerOptions{
 		loadCredentials: true,  // Default: auto-load credentials

@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestOpenRouterModelSchemaCompliance tests that our OpenRouter structs match the expected schema
+// TestOpenRouterModelSchemaCompliance tests that our OpenRouter structs match the expected schema.
 func TestOpenRouterModelSchemaCompliance(t *testing.T) {
 	// Create a test model with all fields populated
 	model := &catalogs.Model{
@@ -176,7 +177,7 @@ func TestOpenRouterModelSchemaCompliance(t *testing.T) {
 	t.Logf("Generated OpenRouter JSON:\n%s", string(jsonData))
 }
 
-// TestOpenRouterModelsResponse tests the full response structure
+// TestOpenRouterModelsResponse tests the full response structure.
 func TestOpenRouterModelsResponse(t *testing.T) {
 	models := []*catalogs.Model{
 		{
@@ -260,7 +261,7 @@ func TestOpenRouterModelsResponse(t *testing.T) {
 	t.Logf("Generated OpenRouter Response JSON:\n%s", string(jsonData))
 }
 
-// Helper functions
+// Helper functions.
 func equalStringSlices(a, b []string) bool {
 	if len(a) != len(b) {
 		return false
@@ -286,7 +287,7 @@ func ptrFloat64(f float64) *float64 {
 	return &f
 }
 
-// mustParseUTC is a helper that parses a date string and panics on error (for tests only)
+// mustParseUTC is a helper that parses a date string and panics on error (for tests only).
 func mustParseUTC(s string) utc.Time {
 	t, err := utc.Parse("2006-01-02", s)
 	if err != nil {

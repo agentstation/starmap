@@ -6,16 +6,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/utc"
 )
 
-// Helper function to create test models
+// Helper function to create test models.
 func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 	return catalogs.Model{
 		ID:   id,
@@ -33,7 +34,7 @@ func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 
 // Helper function to create test provider
 
-// Helper function to add models to a catalog through a provider
+// Helper function to add models to a catalog through a provider.
 func addTestModels(cat catalogs.Catalog, providerID string, models []catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
@@ -328,17 +329,16 @@ func TestResultBuilder(t *testing.T) {
 	}
 
 	result := reconciler.NewResult()
+	if result == nil {
+		t.Fatal("Expected non-nil result")
+	}
+
 	result.Catalog = catalog
 	result.Changeset = changeset
 	result.Metadata.Sources = []sources.Type{sources.ProviderAPI, sources.ModelsDevGit}
 	result.Metadata.Strategy = reconciler.NewAuthorityStrategy(authority.New())
 	result.Metadata.DryRun = true
 	result.Finalize()
-
-	// Verify result
-	if result == nil {
-		t.Fatal("Expected non-nil result")
-	}
 
 	if !result.IsSuccess() {
 		t.Error("Expected result to be successful")
@@ -353,7 +353,7 @@ func TestResultBuilder(t *testing.T) {
 	}
 }
 
-// Benchmark tests
+// Benchmark tests.
 func BenchmarkReconciliation(b *testing.B) {
 	ctx := context.Background()
 

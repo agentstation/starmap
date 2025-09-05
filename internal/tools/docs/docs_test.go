@@ -6,9 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestGenerator(t *testing.T) {
@@ -173,7 +174,7 @@ func TestFormatPrice(t *testing.T) {
 	}
 }
 
-// Test badge generation
+// Test badge generation.
 func TestGenerateModalityBadges(t *testing.T) {
 	features := &catalogs.ModelFeatures{
 		Modalities: catalogs.ModelModalities{
@@ -206,7 +207,7 @@ func TestGenerateToolBadges(t *testing.T) {
 	assert.Contains(t, badgesStr, "web__search")
 }
 
-// Helper function to create test catalog
+// Helper function to create test catalog.
 func createTestCatalog() catalogs.Reader {
 	catalog, _ := catalogs.New()
 
@@ -294,7 +295,7 @@ func createTestPricing() *catalogs.ModelPricing {
 	}
 }
 
-// Helper to parse UTC dates for testing
+// Helper to parse UTC dates for testing.
 func mustParseUTC(s string) utc.Time {
 	// Try parsing as YYYY-MM format
 	t, err := utc.Parse("2006-01", s)
@@ -308,7 +309,7 @@ func mustParseUTC(s string) utc.Time {
 	return t
 }
 
-// Test Generate function with different configurations
+// Test Generate function with different configurations.
 func TestGenerateWithConfigurations(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -398,7 +399,7 @@ func TestGenerateWithConfigurations(t *testing.T) {
 	}
 }
 
-// Test comprehensive badge generation
+// Test comprehensive badge generation.
 func TestComprehensiveBadgeGeneration(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -515,7 +516,7 @@ func TestComprehensiveBadgeGeneration(t *testing.T) {
 	}
 }
 
-// Test pricing edge cases
+// Test pricing edge cases.
 func TestPricingEdgeCases(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -600,7 +601,7 @@ func TestPricingEdgeCases(t *testing.T) {
 	}
 }
 
-// Test context formatting edge cases
+// Test context formatting edge cases.
 func TestContextFormattingEdgeCases(t *testing.T) {
 	tests := []struct {
 		context  int64

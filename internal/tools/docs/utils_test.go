@@ -7,8 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestFormatDuration(t *testing.T) {
@@ -285,11 +286,6 @@ func TestCompactFeatures(t *testing.T) {
 			assert.Equal(t, tt.expected, result)
 		})
 	}
-}
-
-// Helper function to create duration pointers
-func durationPtrUtil(d time.Duration) *time.Duration {
-	return &d
 }
 
 // Tests for getProviderBadge and getAuthorBadge are already in catalog_test.go

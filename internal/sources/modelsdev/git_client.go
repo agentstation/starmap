@@ -1,6 +1,7 @@
 package modelsdev
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -11,19 +12,21 @@ import (
 )
 
 const (
+	// ModelsDevRepoURL is the URL for the models.dev git repository.
 	ModelsDevRepoURL = "https://github.com/sst/models.dev.git"
+	// DefaultBranch is the default branch to use for models.dev.
 	DefaultBranch    = "dev"
 )
 
-// GitClient handles models.dev repository operations
+// GitClient handles models.dev repository operations.
 type GitClient struct {
 	RepoPath string
 }
 
-// Client is an alias for backward compatibility
+// Client is an alias for backward compatibility.
 type Client = GitClient
 
-// NewClient creates a new models.dev git client
+// NewClient creates a new models.dev git client.
 func NewClient(outputDir string) *Client {
 	repoPath := filepath.Join(outputDir, "models.dev")
 	return &Client{
@@ -31,7 +34,7 @@ func NewClient(outputDir string) *Client {
 	}
 }
 
-// NewGitClient creates a new models.dev git client
+// NewGitClient creates a new models.dev git client.
 func NewGitClient(outputDir string) *GitClient {
 	repoPath := filepath.Join(outputDir, "models.dev")
 	return &GitClient{
@@ -39,20 +42,20 @@ func NewGitClient(outputDir string) *GitClient {
 	}
 }
 
-// EnsureRepository ensures the models.dev repository is available and up to date
-func (c *GitClient) EnsureRepository() error {
+// EnsureRepository ensures the models.dev repository is available and up to date.
+func (c *GitClient) EnsureRepository(ctx context.Context) error {
 	var needsInstall bool
 
 	if c.repositoryExists() {
 		fmt.Printf("  🔄 Updating models.dev repository...\n")
-		if err := c.updateRepository(); err != nil {
+		if err := c.updateRepository(ctx); err != nil {
 			return err
 		}
 		fmt.Printf("  ✅ Repository updated successfully\n")
 		needsInstall = true // Always install after pull to ensure deps are current
 	} else {
 		fmt.Printf("  📥 Cloning models.dev repository...\n")
-		if err := c.cloneRepository(); err != nil {
+		if err := c.cloneRepository(ctx); err != nil {
 			return err
 		}
 		fmt.Printf("  ✅ Repository cloned successfully\n")
@@ -61,7 +64,7 @@ func (c *GitClient) EnsureRepository() error {
 
 	if needsInstall {
 		fmt.Printf("  📦 Installing dependencies...\n")
-		if err := c.installDependencies(); err != nil {
+		if err := c.installDependencies(ctx); err != nil {
 			return err
 		}
 		fmt.Printf("  ✅ Dependencies installed successfully\n")
@@ -70,8 +73,8 @@ func (c *GitClient) EnsureRepository() error {
 	return nil
 }
 
-// BuildAPI runs the build process to generate api.json
-func (c *GitClient) BuildAPI() error {
+// BuildAPI runs the build process to generate api.json.
+func (c *GitClient) BuildAPI(ctx context.Context) error {
 	if !c.repositoryExists() {
 		return &errors.NotFoundError{
 			Resource: "repository",
@@ -82,7 +85,7 @@ func (c *GitClient) BuildAPI() error {
 	fmt.Printf("  🔨 Building api.json (this may take a moment)...\n")
 
 	// Change to repo directory and run build
-	cmd := exec.Command("bun", "run", "script/build.ts")
+	cmd := exec.CommandContext(ctx, "bun", "run", "script/build.ts")
 	cmd.Dir = filepath.Join(c.RepoPath, "packages", "web")
 
 	output, err := cmd.CombinedOutput()
@@ -110,9 +113,9 @@ func (c *GitClient) BuildAPI() error {
 	return nil
 }
 
-// installDependencies runs bun install in the repository root
-func (c *GitClient) installDependencies() error {
-	cmd := exec.Command("bun", "install")
+// installDependencies runs bun install in the repository root.
+func (c *GitClient) installDependencies(ctx context.Context) error {
+	cmd := exec.CommandContext(ctx, "bun", "install")
 	cmd.Dir = c.RepoPath
 
 	output, err := cmd.CombinedOutput()
@@ -129,17 +132,17 @@ func (c *GitClient) installDependencies() error {
 	return nil
 }
 
-// GetAPIPath returns the path to the generated api.json file
+// GetAPIPath returns the path to the generated api.json file.
 func (c *GitClient) GetAPIPath() string {
 	return filepath.Join(c.RepoPath, "packages", "web", "dist", "_api.json")
 }
 
-// GetProvidersPath returns the path to the providers directory
+// GetProvidersPath returns the path to the providers directory.
 func (c *GitClient) GetProvidersPath() string {
 	return filepath.Join(c.RepoPath, "providers")
 }
 
-// Cleanup removes the models.dev repository
+// Cleanup removes the models.dev repository.
 func (c *GitClient) Cleanup() error {
 	if !c.repositoryExists() {
 		return nil // Already cleaned up
@@ -147,22 +150,22 @@ func (c *GitClient) Cleanup() error {
 	return os.RemoveAll(c.RepoPath)
 }
 
-// repositoryExists checks if the models.dev repository exists
+// repositoryExists checks if the models.dev repository exists.
 func (c *GitClient) repositoryExists() bool {
 	gitDir := filepath.Join(c.RepoPath, ".git")
 	_, err := os.Stat(gitDir)
 	return err == nil
 }
 
-// cloneRepository clones the models.dev repository
-func (c *GitClient) cloneRepository() error {
+// cloneRepository clones the models.dev repository.
+func (c *GitClient) cloneRepository(ctx context.Context) error {
 	// Create parent directory if it doesn't exist
 	parentDir := filepath.Dir(c.RepoPath)
 	if err := os.MkdirAll(parentDir, constants.DirPermissions); err != nil {
 		return errors.WrapIO("create", "parent directory", err)
 	}
 
-	cmd := exec.Command("git", "clone", "--branch", DefaultBranch, "--depth", "1", ModelsDevRepoURL, c.RepoPath)
+	cmd := exec.CommandContext(ctx, "git", "clone", "--branch", DefaultBranch, "--depth", "1", ModelsDevRepoURL, c.RepoPath) //nolint:gosec // All parameters are controlled
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("  ❌ Clone failed\n")
@@ -177,10 +180,10 @@ func (c *GitClient) cloneRepository() error {
 	return nil
 }
 
-// updateRepository updates the existing models.dev repository
-func (c *GitClient) updateRepository() error {
+// updateRepository updates the existing models.dev repository.
+func (c *GitClient) updateRepository(ctx context.Context) error {
 	// Reset any local changes
-	resetCmd := exec.Command("git", "reset", "--hard", "HEAD")
+	resetCmd := exec.CommandContext(ctx, "git", "reset", "--hard", "HEAD")
 	resetCmd.Dir = c.RepoPath
 	if output, err := resetCmd.CombinedOutput(); err != nil {
 		fmt.Printf("  ❌ Reset failed\n")
@@ -193,7 +196,7 @@ func (c *GitClient) updateRepository() error {
 	}
 
 	// Pull latest changes
-	pullCmd := exec.Command("git", "pull", "origin", DefaultBranch)
+	pullCmd := exec.CommandContext(ctx, "git", "pull", "origin", DefaultBranch)
 	pullCmd.Dir = c.RepoPath
 	if output, err := pullCmd.CombinedOutput(); err != nil {
 		fmt.Printf("  ❌ Pull failed\n")

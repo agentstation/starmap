@@ -120,7 +120,7 @@ func TestAnthropicAPIFormatChanges(t *testing.T) {
 	t.Logf("✅ Found expected Claude models: Opus 4.1=%v, Sonnet 3.7=%v", foundOpus4, foundSonnet3_7)
 }
 
-// Helper function to load testdata response
+// Helper function to load testdata response.
 func loadTestdataResponse(t *testing.T, filename string) modelsResponse {
 	testdataPath := filepath.Join("testdata", filename)
 	data, err := os.ReadFile(testdataPath)

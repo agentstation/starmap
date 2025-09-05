@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Result represents the outcome of a reconciliation operation
+// Result represents the outcome of a reconciliation operation.
 type Result struct {
 	// Core data
 	Catalog        catalogs.Catalog
@@ -32,7 +32,7 @@ type Result struct {
 	Warnings []string
 }
 
-// ResultMetadata contains metadata about the reconciliation process
+// ResultMetadata contains metadata about the reconciliation process.
 type ResultMetadata struct {
 	// StartTime when reconciliation started
 	StartTime time.Time
@@ -56,7 +56,7 @@ type ResultMetadata struct {
 	Stats ResultStatistics
 }
 
-// ResultStatistics contains statistics about the reconciliation
+// ResultStatistics contains statistics about the reconciliation.
 type ResultStatistics struct {
 	ModelsProcessed    int
 	ProvidersProcessed int
@@ -65,22 +65,22 @@ type ResultStatistics struct {
 	TotalTimeMs        int64
 }
 
-// IsSuccess returns true if the reconciliation was successful
+// IsSuccess returns true if the reconciliation was successful.
 func (r *Result) IsSuccess() bool {
 	return len(r.Errors) == 0
 }
 
-// HasChanges returns true if any changes were detected
+// HasChanges returns true if any changes were detected.
 func (r *Result) HasChanges() bool {
 	return r.Changeset != nil && r.Changeset.HasChanges()
 }
 
-// WasApplied returns true if changes were applied
+// WasApplied returns true if changes were applied.
 func (r *Result) WasApplied() bool {
 	return r.AppliedChanges != nil && r.AppliedChanges.HasChanges()
 }
 
-// Summary returns a human-readable summary of the result
+// Summary returns a human-readable summary of the result.
 func (r *Result) Summary() string {
 	if !r.IsSuccess() {
 		return fmt.Sprintf("Reconciliation failed with %d errors", len(r.Errors))
@@ -104,7 +104,7 @@ func (r *Result) Summary() string {
 	return "Reconciliation completed. No changes detected."
 }
 
-// NewResult creates a new result with defaults
+// NewResult creates a new result with defaults.
 func NewResult() *Result {
 	return &Result{
 		ProviderAPICounts: make(map[catalogs.ProviderID]int),
@@ -119,7 +119,7 @@ func NewResult() *Result {
 	}
 }
 
-// Finalize calculates duration and marks completion
+// Finalize calculates duration and marks completion.
 func (r *Result) Finalize() {
 	r.Metadata.EndTime = time.Now()
 	r.Metadata.Duration = r.Metadata.EndTime.Sub(r.Metadata.StartTime)

@@ -1,3 +1,4 @@
+// Package enhancer provides functionality to enrich model data with metadata from external sources.
 package enhancer
 
 import (
@@ -13,7 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Enhancer defines the interface for model enrichment
+// Enhancer defines the interface for model enrichment.
 type Enhancer interface {
 	// Name returns the enhancer name
 	Name() string
@@ -31,13 +32,13 @@ type Enhancer interface {
 	Priority() int
 }
 
-// Pipeline manages a chain of enhancers
+// Pipeline manages a chain of enhancers.
 type Pipeline struct {
 	enhancers []Enhancer
 	tracker   provenance.Tracker
 }
 
-// NewPipeline creates a new enhancer pipeline
+// NewPipeline creates a new enhancer pipeline.
 func NewPipeline(enhancers ...Enhancer) *Pipeline {
 	// Sort enhancers by priority (highest first)
 	sortedEnhancers := make([]Enhancer, len(enhancers))
@@ -56,13 +57,13 @@ func NewPipeline(enhancers ...Enhancer) *Pipeline {
 	}
 }
 
-// WithProvenance enables provenance tracking for enhancements
+// WithProvenance enables provenance tracking for enhancements.
 func (p *Pipeline) WithProvenance(tracker provenance.Tracker) *Pipeline {
 	p.tracker = tracker
 	return p
 }
 
-// Enhance applies all enhancers to a single model
+// Enhance applies all enhancers to a single model.
 func (p *Pipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
 	enhanced := model
 
@@ -93,7 +94,7 @@ func (p *Pipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.
 	return enhanced, nil
 }
 
-// Batch applies all enhancers to multiple models
+// Batch applies all enhancers to multiple models.
 func (p *Pipeline) Batch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
 	enhanced := make([]catalogs.Model, len(models))
 
@@ -145,7 +146,7 @@ func (p *Pipeline) Batch(ctx context.Context, models []catalogs.Model) ([]catalo
 	return enhanced, nil
 }
 
-// track tracks provenance for model enhancements
+// track tracks provenance for model enhancements.
 func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 	// Track which fields were enhanced
 	// This is a simplified version - could be made more sophisticated
@@ -192,13 +193,13 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 	}
 }
 
-// ModelsDevEnhancer enhances models with models.dev data
+// ModelsDevEnhancer enhances models with models.dev data.
 type ModelsDevEnhancer struct {
 	priority int
 	data     map[string]any // Simplified for example
 }
 
-// NewModelsDevEnhancer creates a new models.dev enhancer
+// NewModelsDevEnhancer creates a new models.dev enhancer.
 func NewModelsDevEnhancer(priority int) *ModelsDevEnhancer {
 	return &ModelsDevEnhancer{
 		priority: priority,
@@ -206,25 +207,25 @@ func NewModelsDevEnhancer(priority int) *ModelsDevEnhancer {
 	}
 }
 
-// Name returns the enhancer name
+// Name returns the enhancer name.
 func (e *ModelsDevEnhancer) Name() string {
 	return "models.dev"
 }
 
-// Priority returns the priority
+// Priority returns the priority.
 func (e *ModelsDevEnhancer) Priority() int {
 	return e.priority
 }
 
-// CanEnhance checks if this enhancer can enhance a model
+// CanEnhance checks if this enhancer can enhance a model.
 func (e *ModelsDevEnhancer) CanEnhance(model catalogs.Model) bool {
 	// Check if we have data for this model
 	_, exists := e.data[model.ID]
 	return exists
 }
 
-// Enhance enhances a single model
-func (e *ModelsDevEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
+// Enhance enhances a single model.
+func (e *ModelsDevEnhancer) Enhance(_ context.Context, model catalogs.Model) (catalogs.Model, error) {
 	// This would integrate with the actual models.dev data
 	// For now, it's a placeholder implementation
 	enhanced := model
@@ -243,7 +244,7 @@ func (e *ModelsDevEnhancer) Enhance(ctx context.Context, model catalogs.Model) (
 	return enhanced, nil
 }
 
-// EnhanceBatch enhances multiple models
+// EnhanceBatch enhances multiple models.
 func (e *ModelsDevEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
 	enhanced := make([]catalogs.Model, len(models))
 	for i, model := range models {
@@ -256,36 +257,36 @@ func (e *ModelsDevEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.
 	return enhanced, nil
 }
 
-// MetadataEnhancer adds metadata from various sources
+// MetadataEnhancer adds metadata from various sources.
 type MetadataEnhancer struct {
 	priority int
 }
 
-// NewMetadataEnhancer creates a new metadata enhancer
+// NewMetadataEnhancer creates a new metadata enhancer.
 func NewMetadataEnhancer(priority int) *MetadataEnhancer {
 	return &MetadataEnhancer{
 		priority: priority,
 	}
 }
 
-// Name returns the enhancer name
+// Name returns the enhancer name.
 func (e *MetadataEnhancer) Name() string {
 	return "metadata"
 }
 
-// Priority returns the priority
+// Priority returns the priority.
 func (e *MetadataEnhancer) Priority() int {
 	return e.priority
 }
 
-// CanEnhance checks if this enhancer can enhance a model
+// CanEnhance checks if this enhancer can enhance a model.
 func (e *MetadataEnhancer) CanEnhance(model catalogs.Model) bool {
 	// Can enhance if metadata is missing or incomplete
 	return model.Metadata == nil || model.Metadata.ReleaseDate.IsZero()
 }
 
-// Enhance enhances a single model
-func (e *MetadataEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
+// Enhance enhances a single model.
+func (e *MetadataEnhancer) Enhance(_ context.Context, model catalogs.Model) (catalogs.Model, error) {
 	enhanced := model
 
 	if enhanced.Metadata == nil {
@@ -293,15 +294,12 @@ func (e *MetadataEnhancer) Enhance(ctx context.Context, model catalogs.Model) (c
 	}
 
 	// Add metadata based on model patterns
-	// This is a simplified example
-	if enhanced.Metadata.ReleaseDate.IsZero() {
-		// Could look up release dates from a database
-	}
+	// Release dates could be looked up from a database if needed
 
 	return enhanced, nil
 }
 
-// EnhanceBatch enhances multiple models
+// EnhanceBatch enhances multiple models.
 func (e *MetadataEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
 	// Could fetch metadata for all models in one query
 	enhanced := make([]catalogs.Model, len(models))
@@ -315,13 +313,13 @@ func (e *MetadataEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.M
 	return enhanced, nil
 }
 
-// ChainEnhancer allows chaining multiple enhancers with custom logic
+// ChainEnhancer allows chaining multiple enhancers with custom logic.
 type ChainEnhancer struct {
 	enhancers []Enhancer
 	priority  int
 }
 
-// NewChainEnhancer creates a new chain enhancer
+// NewChainEnhancer creates a new chain enhancer.
 func NewChainEnhancer(priority int, enhancers ...Enhancer) *ChainEnhancer {
 	return &ChainEnhancer{
 		enhancers: enhancers,
@@ -329,7 +327,7 @@ func NewChainEnhancer(priority int, enhancers ...Enhancer) *ChainEnhancer {
 	}
 }
 
-// Name returns the enhancer name
+// Name returns the enhancer name.
 func (e *ChainEnhancer) Name() string {
 	names := []string{}
 	for _, enhancer := range e.enhancers {
@@ -338,12 +336,12 @@ func (e *ChainEnhancer) Name() string {
 	return fmt.Sprintf("chain(%s)", strings.Join(names, ","))
 }
 
-// Priority returns the priority
+// Priority returns the priority.
 func (e *ChainEnhancer) Priority() int {
 	return e.priority
 }
 
-// CanEnhance checks if any enhancer in the chain can enhance
+// CanEnhance checks if any enhancer in the chain can enhance.
 func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool {
 	for _, enhancer := range e.enhancers {
 		if enhancer.CanEnhance(model) {
@@ -353,7 +351,7 @@ func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool {
 	return false
 }
 
-// Enhance applies all enhancers in sequence
+// Enhance applies all enhancers in sequence.
 func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
 	enhanced := model
 	for _, enhancer := range e.enhancers {
@@ -371,7 +369,7 @@ func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (cata
 	return enhanced, nil
 }
 
-// Batch enhances multiple models
+// Batch enhances multiple models.
 func (e *ChainEnhancer) Batch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
 	enhanced := make([]catalogs.Model, len(models))
 	copy(enhanced, models)
@@ -390,7 +388,7 @@ func (e *ChainEnhancer) Batch(ctx context.Context, models []catalogs.Model) ([]c
 	return enhanced, nil
 }
 
-// Helper function to get current UTC time
+// Helper function to get current UTC time.
 func utcNow() time.Time {
 	return time.Now().UTC()
 }

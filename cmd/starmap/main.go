@@ -1,10 +1,11 @@
+// Package main provides the entry point for the starmap CLI tool.
 package main
 
 import (
 	"github.com/agentstation/starmap/cmd/starmap/cmd"
 )
 
-// Version information populated by goreleaser
+// Version information populated by goreleaser.
 var (
 	version = "dev"
 	commit  = "unknown"

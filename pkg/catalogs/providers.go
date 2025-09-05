@@ -7,8 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Providers is a concurrent safe map of providers.
@@ -179,7 +180,7 @@ func (p *Providers) Clear() {
 	}
 }
 
-// SetModel adds or updates a model in a provider
+// SetModel adds or updates a model in a provider.
 func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -216,7 +217,7 @@ func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 	return nil
 }
 
-// DeleteModel removes a model from a provider
+// DeleteModel removes a model from a provider.
 func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -229,7 +230,7 @@ func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 		}
 	}
 
-	if provider.Models == nil || len(provider.Models) == 0 {
+	if len(provider.Models) == 0 {
 		return &errors.NotFoundError{
 			Resource: "model",
 			ID:       modelID,
@@ -356,7 +357,7 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 	return errs
 }
 
-// FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure
+// FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure.
 func (p *Providers) FormatYAML() string {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
@@ -385,7 +386,7 @@ func (p *Providers) FormatYAML() string {
 	return formatProvidersYAML(providers)
 }
 
-// formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing
+// formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing.
 func formatProvidersYAML(providers []Provider) string {
 	// Create comment map for provider section headers and duration comments
 	commentMap := yaml.CommentMap{}
@@ -444,10 +445,10 @@ func formatProvidersYAML(providers []Provider) string {
 	return addBlankLinesBetweenProviders(string(yamlData))
 }
 
-// addBlankLinesBetweenProviders adds spacing between provider sections
+// addBlankLinesBetweenProviders adds spacing between provider sections.
 func addBlankLinesBetweenProviders(yamlContent string) string {
 	lines := strings.Split(yamlContent, "\n")
-	var result []string
+	result := make([]string, 0, len(lines)+len(lines)/10) // Add extra space for blank lines
 
 	for i, line := range lines {
 		// Add blank line before each provider comment (except the first one)

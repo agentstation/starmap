@@ -5,9 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestWriteModelsOverviewTable(t *testing.T) {
@@ -100,8 +101,8 @@ func TestWriteModelsOverviewTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile, err := os.CreateTemp("", "test_models_overview_*.md")
 			require.NoError(t, err)
-			defer os.Remove(tmpFile.Name())
-			defer tmpFile.Close()
+			defer func() { _ = os.Remove(tmpFile.Name()) }()
+			defer func() { _ = tmpFile.Close() }()
 
 			writeModelsOverviewTable(tmpFile, tt.models, tt.providers)
 
@@ -197,8 +198,8 @@ func TestWriteProviderComparisonTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile, err := os.CreateTemp("", "test_provider_comp_*.md")
 			require.NoError(t, err)
-			defer os.Remove(tmpFile.Name())
-			defer tmpFile.Close()
+			defer func() { _ = os.Remove(tmpFile.Name()) }()
+			defer func() { _ = tmpFile.Close() }()
 
 			writeProviderComparisonTable(tmpFile, tt.providers)
 
@@ -306,8 +307,8 @@ func TestWritePricingComparisonTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile, err := os.CreateTemp("", "test_pricing_comp_*.md")
 			require.NoError(t, err)
-			defer os.Remove(tmpFile.Name())
-			defer tmpFile.Close()
+			defer func() { _ = os.Remove(tmpFile.Name()) }()
+			defer func() { _ = tmpFile.Close() }()
 
 			writePricingComparisonTable(tmpFile, tt.models)
 
@@ -421,8 +422,8 @@ func TestWriteContextLimitsTable(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile, err := os.CreateTemp("", "test_context_limits_*.md")
 			require.NoError(t, err)
-			defer os.Remove(tmpFile.Name())
-			defer tmpFile.Close()
+			defer func() { _ = os.Remove(tmpFile.Name()) }()
+			defer func() { _ = tmpFile.Close() }()
 
 			writeContextLimitsTable(tmpFile, tt.models)
 

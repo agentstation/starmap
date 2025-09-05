@@ -70,7 +70,7 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 			MaxTokens:                     true,
 			MaxOutputTokens:               true,
 			Stop:                          true,
-			StopTokenIds:                  true,
+			StopTokenIDs:                  true,
 			FrequencyPenalty:              true,
 			PresencePenalty:               true,
 			RepetitionPenalty:             true,
@@ -422,7 +422,7 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 	}
 }
 
-// Helper functions for test data creation
+// Helper functions for test data creation.
 func createTestModel() Model {
 	testTime := time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)
 
@@ -465,7 +465,7 @@ func createTestModel() Model {
 	}
 }
 
-// Helper functions for pointer creation
+// Helper functions for pointer creation.
 func intPtr(i int) *int {
 	return &i
 }

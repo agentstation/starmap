@@ -3,14 +3,15 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/spf13/cobra"
 )
 
-// validateCmd represents the validate command
+// validateCmd represents the validate command.
 var validateCmd = &cobra.Command{
 	Use:   "validate",
 	Short: "Validate provider API key configuration",
@@ -29,7 +30,7 @@ func init() {
 	rootCmd.AddCommand(validateCmd)
 }
 
-func runValidate(cmd *cobra.Command, args []string) error {
+func runValidate(_ *cobra.Command, _ []string) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)

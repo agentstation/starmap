@@ -32,10 +32,10 @@ import (
 )
 
 var (
-	// defaultLogger is the global logger instance
+	// defaultLogger is the global logger instance.
 	defaultLogger zerolog.Logger
 
-	// Nop logger for discarding output
+	// Nop logger for discarding output.
 	Nop = zerolog.Nop()
 )
 
@@ -44,7 +44,7 @@ func init() {
 	defaultLogger = createDefaultLogger()
 }
 
-// createDefaultLogger creates a logger with default settings
+// createDefaultLogger creates a logger with default settings.
 func createDefaultLogger() zerolog.Logger {
 	// Auto-detect if we're in a terminal for pretty output
 	isTerminal := isatty()
@@ -79,18 +79,18 @@ func createDefaultLogger() zerolog.Logger {
 	return logger
 }
 
-// Default returns the default global logger
+// Default returns the default global logger.
 func Default() *zerolog.Logger {
 	return &defaultLogger
 }
 
-// SetDefault sets the default global logger
+// SetDefault sets the default global logger.
 func SetDefault(logger zerolog.Logger) {
 	defaultLogger = logger
 	log.Logger = logger // Also update zerolog's global logger
 }
 
-// New creates a new logger with the given writer
+// New creates a new logger with the given writer.
 func New(w io.Writer) zerolog.Logger {
 	return zerolog.New(w).
 		Level(zerolog.GlobalLevel()).
@@ -99,7 +99,7 @@ func New(w io.Writer) zerolog.Logger {
 		Logger()
 }
 
-// NewConsole creates a new console logger for human-readable output
+// NewConsole creates a new console logger for human-readable output.
 func NewConsole() zerolog.Logger {
 	writer := zerolog.ConsoleWriter{
 		Out:        os.Stderr,
@@ -110,7 +110,7 @@ func NewConsole() zerolog.Logger {
 	return New(writer)
 }
 
-// NewJSON creates a new JSON logger for structured output
+// NewJSON creates a new JSON logger for structured output.
 func NewJSON(w io.Writer) zerolog.Logger {
 	if w == nil {
 		w = os.Stderr
@@ -118,57 +118,57 @@ func NewJSON(w io.Writer) zerolog.Logger {
 	return New(w)
 }
 
-// With creates a child logger with additional context fields
+// With creates a child logger with additional context fields.
 func With() zerolog.Context {
 	return defaultLogger.With()
 }
 
-// Level creates a child logger with the specified log level
+// Level creates a child logger with the specified log level.
 func Level(level zerolog.Level) zerolog.Logger {
 	return defaultLogger.Level(level)
 }
 
-// Debug starts a new debug level log event
+// Debug starts a new debug level log event.
 func Debug() *zerolog.Event {
 	return defaultLogger.Debug()
 }
 
-// Info starts a new info level log event
+// Info starts a new info level log event.
 func Info() *zerolog.Event {
 	return defaultLogger.Info()
 }
 
-// Warn starts a new warning level log event
+// Warn starts a new warning level log event.
 func Warn() *zerolog.Event {
 	return defaultLogger.Warn()
 }
 
-// Error starts a new error level log event
+// Error starts a new error level log event.
 func Error() *zerolog.Event {
 	return defaultLogger.Error()
 }
 
-// Fatal starts a new fatal level log event (will exit after logging)
+// Fatal starts a new fatal level log event (will exit after logging).
 func Fatal() *zerolog.Event {
 	return defaultLogger.Fatal()
 }
 
-// Panic starts a new panic level log event (will panic after logging)
+// Panic starts a new panic level log event (will panic after logging).
 func Panic() *zerolog.Event {
 	return defaultLogger.Panic()
 }
 
-// WithLevel starts a new log event with the given level
+// WithLevel starts a new log event with the given level.
 func WithLevel(level zerolog.Level) *zerolog.Event {
 	return defaultLogger.WithLevel(level)
 }
 
-// Err creates a new error log event with the given error
+// Err creates a new error log event with the given error.
 func Err(err error) *zerolog.Event {
 	return defaultLogger.Err(err)
 }
 
-// isatty checks if stderr is a terminal
+// isatty checks if stderr is a terminal.
 func isatty() bool {
 	// Check if stderr is a terminal
 	if fileInfo, _ := os.Stderr.Stat(); (fileInfo.Mode() & os.ModeCharDevice) != 0 {
@@ -177,7 +177,7 @@ func isatty() bool {
 	return false
 }
 
-// getLogLevel returns the log level from environment or defaults
+// getLogLevel returns the log level from environment or defaults.
 func getLogLevel() zerolog.Level {
 	levelStr := os.Getenv("LOG_LEVEL")
 	if levelStr == "" {

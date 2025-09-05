@@ -7,9 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestGenerateAuthorDocs(t *testing.T) {
@@ -441,7 +442,7 @@ func TestGetResearchInfo(t *testing.T) {
 	}
 }
 
-// Helper function to create test catalog with authors
+// Helper function to create test catalog with authors.
 func createTestCatalogWithAuthors() catalogs.Reader {
 	catalog, _ := catalogs.New()
 
@@ -458,9 +459,9 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 		ID:   catalogs.AuthorIDGoogle,
 		Name: "Google",
 	}
-	catalog.SetAuthor(openai)
-	catalog.SetAuthor(anthropic)
-	catalog.SetAuthor(google)
+	_ = catalog.SetAuthor(openai)
+	_ = catalog.SetAuthor(anthropic)
+	_ = catalog.SetAuthor(google)
 
 	// Add providers
 	provider := catalogs.Provider{
@@ -468,7 +469,7 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 		Name:   "OpenAI",
 		Models: make(map[string]catalogs.Model),
 	}
-	catalog.SetProvider(provider)
+	_ = catalog.SetProvider(provider)
 
 	// Add models with authors
 	gpt4 := catalogs.Model{
@@ -528,12 +529,12 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 		claude.ID: claude,
 		gemini.ID: gemini,
 	}
-	catalog.SetProvider(provider)
+	_ = catalog.SetProvider(provider)
 
 	return catalog
 }
 
-// TestGenerateAuthorDocsComprehensive tests the generateAuthorDocs function
+// TestGenerateAuthorDocsComprehensive tests the generateAuthorDocs function.
 func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -720,7 +721,7 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 	}
 }
 
-// TestGenerateAuthorDocsErrors tests error handling in generateAuthorDocs
+// TestGenerateAuthorDocsErrors tests error handling in generateAuthorDocs.
 func TestGenerateAuthorDocsErrors(t *testing.T) {
 	t.Run("directory creation failure", func(t *testing.T) {
 		tmpDir := t.TempDir()
@@ -758,7 +759,7 @@ func TestGenerateAuthorDocsErrors(t *testing.T) {
 		// Make directory read-only
 		err = os.Chmod(authorsDir, 0555)
 		require.NoError(t, err)
-		defer os.Chmod(authorsDir, 0755)
+		defer func() { _ = os.Chmod(authorsDir, 0755) }()
 
 		catalog, err := catalogs.New()
 		require.NoError(t, err)
@@ -773,7 +774,7 @@ func TestGenerateAuthorDocsErrors(t *testing.T) {
 	})
 }
 
-// TestGenerateAuthorModelPageComplex tests generateAuthorModelPage with complex scenarios
+// TestGenerateAuthorModelPageComplex tests generateAuthorModelPage with complex scenarios.
 func TestGenerateAuthorModelPageComplex(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -931,7 +932,7 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 	}
 }
 
-// TestGenerateAuthorReadmeEdgeCases tests edge cases for generateAuthorReadme
+// TestGenerateAuthorReadmeEdgeCases tests edge cases for generateAuthorReadme.
 func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -1054,7 +1055,7 @@ func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 	}
 }
 
-// Helper functions for author tests
+// Helper functions for author tests.
 func stringPtr(s string) *string {
 	return &s
 }

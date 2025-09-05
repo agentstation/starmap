@@ -81,7 +81,7 @@ func TestCatalog(t testing.TB) Catalog {
 	return catalog
 }
 
-// TestModelWithOptions creates a test model with custom options.
+// TestModelOption is a functional option for configuring a test model.
 type TestModelOption func(*Model)
 
 // WithModelID sets a custom ID for the test model.
@@ -110,7 +110,7 @@ func TestModelWithOptions(t testing.TB, opts ...TestModelOption) *Model {
 	return model
 }
 
-// TestProviderWithOptions creates a test provider with custom options.
+// TestProviderOption is a functional option for configuring a test provider.
 type TestProviderOption func(*Provider)
 
 // WithProviderID sets a custom ID for the test provider.

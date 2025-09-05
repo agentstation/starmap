@@ -13,13 +13,13 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestMain handles flag parsing for the -update flag
+// TestMain handles flag parsing for the -update flag.
 func TestMain(m *testing.M) {
 	flag.Parse()
 	os.Exit(m.Run())
 }
 
-// loadTestdataResponse loads an OpenAI API response from testdata
+// loadTestdataResponse loads an OpenAI API response from testdata.
 func loadTestdataResponse(t *testing.T, filename string) baseclient.OpenAIResponse {
 	t.Helper()
 	var response baseclient.OpenAIResponse
@@ -27,7 +27,7 @@ func loadTestdataResponse(t *testing.T, filename string) baseclient.OpenAIRespon
 	return response
 }
 
-// loadTestdataModel loads a single OpenAI model from testdata by finding it in the models list
+// loadTestdataModel loads a single OpenAI model from testdata by finding it in the models list.
 func loadTestdataModel(t *testing.T, modelID string) baseclient.OpenAIModelData {
 	t.Helper()
 	response := loadTestdataResponse(t, "models_list.json")

@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// CopyProviderLogos copies provider logos from models.dev to output directory
+// CopyProviderLogos copies provider logos from models.dev to output directory.
 func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) error {
 	// The models.dev repo is always cloned to this location by git.Fetch()
 	modelsDevRepo := filepath.Join("internal/embedded/catalog/providers", "models.dev")
@@ -40,7 +40,7 @@ func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) erro
 	return nil
 }
 
-// copyFile copies a file from source to destination
+// copyFile copies a file from source to destination.
 func copyFile(src, dst string) error {
 	// Check if source file exists
 	if _, err := os.Stat(src); os.IsNotExist(err) {
@@ -57,18 +57,18 @@ func copyFile(src, dst string) error {
 	}
 
 	// Open source file
-	srcFile, err := os.Open(src)
+	srcFile, err := os.Open(src) //nolint:gosec // Input paths are controlled by internal tooling
 	if err != nil {
 		return errors.WrapIO("open", src, err)
 	}
-	defer srcFile.Close()
+	defer func() { _ = srcFile.Close() }()
 
 	// Create destination file
-	dstFile, err := os.Create(dst)
+	dstFile, err := os.Create(dst) //nolint:gosec // Output paths are controlled by internal tooling
 	if err != nil {
 		return errors.WrapIO("create", dst, err)
 	}
-	defer dstFile.Close()
+	defer func() { _ = dstFile.Close() }()
 
 	// Copy file contents
 	if _, err := io.Copy(dstFile, srcFile); err != nil {

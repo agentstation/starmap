@@ -4,8 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 func TestContextFunctions(t *testing.T) {

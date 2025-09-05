@@ -1,3 +1,4 @@
+// Package anthropic provides a client for the Anthropic API.
 package anthropic
 
 import (
@@ -6,13 +7,14 @@ import (
 	"sync"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/utc"
 )
 
-// Response structures for Anthropic API
+// Response structures for Anthropic API.
 type modelsResponse struct {
 	Data []modelResponse `json:"data"`
 }
@@ -95,6 +97,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 			Err:      err,
 		}
 	}
+	defer func() { _ = resp.Body.Close() }()
 
 	// Decode response using transport utility
 	var result modelsResponse

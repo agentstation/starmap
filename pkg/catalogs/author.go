@@ -43,7 +43,7 @@ func (id AuthorID) String() string {
 
 // Author ID constants for compile-time safety and consistency.
 const (
-	// Major AI Companies
+	// Major AI Companies.
 	AuthorIDOpenAI      AuthorID = "openai"
 	AuthorIDAnthropic   AuthorID = "anthropic"
 	AuthorIDGoogle      AuthorID = "google"
@@ -57,7 +57,7 @@ const (
 	AuthorIDQwen        AuthorID = "qwen"
 	AuthorIDXAI         AuthorID = "xai"
 
-	// Research Institutions
+	// Research Institutions.
 	AuthorIDStanford    AuthorID = "stanford"
 	AuthorIDMIT         AuthorID = "mit"
 	AuthorIDCMU         AuthorID = "cmu"
@@ -74,7 +74,7 @@ const (
 	AuthorIDDuke        AuthorID = "duke"
 	AuthorIDCaltech     AuthorID = "caltech"
 
-	// Open Source Communities & Platforms
+	// Open Source Communities & Platforms.
 	AuthorIDHuggingFace AuthorID = "huggingface"
 	AuthorIDEleutherAI  AuthorID = "eleutherai"
 	AuthorIDTogether    AuthorID = "together"
@@ -88,7 +88,7 @@ const (
 	AuthorIDH2OAI       AuthorID = "h2o.ai"
 	AuthorIDMoxin       AuthorID = "moxin"
 
-	// Chinese Organizations
+	// Chinese Organizations.
 	AuthorIDBaidu      AuthorID = "baidu"
 	AuthorIDTencent    AuthorID = "tencent"
 	AuthorIDByteDance  AuthorID = "bytedance"
@@ -105,7 +105,7 @@ const (
 	AuthorIDTsinghua   AuthorID = "tsinghua"
 	AuthorIDPeking     AuthorID = "peking"
 
-	// Other Notable Organizations
+	// Other Notable Organizations.
 	AuthorIDNVIDIA     AuthorID = "nvidia"
 	AuthorIDSalesforce AuthorID = "salesforce"
 	AuthorIDIBM        AuthorID = "ibm"
@@ -119,7 +119,7 @@ const (
 	AuthorIDAnysphere  AuthorID = "anysphere"
 	AuthorIDCursor     AuthorID = "cursor"
 
-	// Notable Fine-Tuned Model Creators & Publishers
+	// Notable Fine-Tuned Model Creators & Publishers.
 	AuthorIDCognitiveComputations AuthorID = "cognitivecomputations"
 	AuthorIDEricHartford          AuthorID = "ehartford"
 	AuthorIDNousResearch          AuthorID = "nousresearch"

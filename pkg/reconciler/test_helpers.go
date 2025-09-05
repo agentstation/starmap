@@ -8,13 +8,13 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// mockSource is a test implementation of sources.Source
+// mockSource is a test implementation of sources.Source.
 type mockSource struct {
 	sourceType sources.Type
 	catalog    catalogs.Catalog
 }
 
-// NewMockSource creates a new mock source for testing
+// NewMockSource creates a new mock source for testing.
 func NewMockSource(sourceType sources.Type, catalog catalogs.Catalog) sources.Source {
 	return &mockSource{
 		sourceType: sourceType,
@@ -22,33 +22,33 @@ func NewMockSource(sourceType sources.Type, catalog catalogs.Catalog) sources.So
 	}
 }
 
-// Type returns the type of this source
+// Type returns the type of this source.
 func (m *mockSource) Type() sources.Type {
 	return m.sourceType
 }
 
-// Setup initializes the source with dependencies
-func (m *mockSource) Setup(providers *catalogs.Providers) error {
+// Setup initializes the source with dependencies.
+func (m *mockSource) Setup(_ *catalogs.Providers) error {
 	return nil
 }
 
-// Fetch retrieves data from this source
-func (m *mockSource) Fetch(ctx context.Context, opts ...sources.Option) error {
+// Fetch retrieves data from this source.
+func (m *mockSource) Fetch(_ context.Context, _ ...sources.Option) error {
 	// Mock source already has its catalog, no fetching needed
 	return nil
 }
 
-// Catalog returns the catalog of this source
+// Catalog returns the catalog of this source.
 func (m *mockSource) Catalog() catalogs.Catalog {
 	return m.catalog
 }
 
-// Cleanup releases any resources
+// Cleanup releases any resources.
 func (m *mockSource) Cleanup() error {
 	return nil
 }
 
-// ConvertCatalogsMapToSources converts the old map format to sources slice for testing
+// ConvertCatalogsMapToSources converts the old map format to sources slice for testing.
 func ConvertCatalogsMapToSources(srcs map[sources.Type]catalogs.Catalog) []sources.Source {
 	// Get all source types and sort them for deterministic ordering
 	types := make([]sources.Type, 0, len(srcs))

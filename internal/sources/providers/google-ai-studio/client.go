@@ -1,3 +1,4 @@
+// Package googleaistudio provides a client for interacting with the Google AI Studio API.
 package googleaistudio
 
 import (

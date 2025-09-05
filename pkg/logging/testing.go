@@ -8,13 +8,13 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// TestLogger creates a test logger that captures output
+// TestLogger creates a test logger that captures output.
 type TestLogger struct {
 	*zerolog.Logger
 	Buffer *bytes.Buffer
 }
 
-// NewTestLogger creates a new test logger that captures output
+// NewTestLogger creates a new test logger that captures output.
 func NewTestLogger(t testing.TB) *TestLogger {
 	t.Helper()
 
@@ -40,12 +40,12 @@ func NewTestLogger(t testing.TB) *TestLogger {
 	}
 }
 
-// Output returns the captured log output as a string
+// Output returns the captured log output as a string.
 func (tl *TestLogger) Output() string {
 	return tl.Buffer.String()
 }
 
-// Lines returns the captured log output as individual lines
+// Lines returns the captured log output as individual lines.
 func (tl *TestLogger) Lines() []string {
 	output := strings.TrimSpace(tl.Output())
 	if output == "" {
@@ -54,12 +54,12 @@ func (tl *TestLogger) Lines() []string {
 	return strings.Split(output, "\n")
 }
 
-// Contains checks if the log output contains the given string
+// Contains checks if the log output contains the given string.
 func (tl *TestLogger) Contains(substr string) bool {
 	return strings.Contains(tl.Output(), substr)
 }
 
-// ContainsAll checks if the log output contains all given strings
+// ContainsAll checks if the log output contains all given strings.
 func (tl *TestLogger) ContainsAll(substrs ...string) bool {
 	output := tl.Output()
 	for _, substr := range substrs {
@@ -70,7 +70,7 @@ func (tl *TestLogger) ContainsAll(substrs ...string) bool {
 	return true
 }
 
-// ContainsAny checks if the log output contains any of the given strings
+// ContainsAny checks if the log output contains any of the given strings.
 func (tl *TestLogger) ContainsAny(substrs ...string) bool {
 	output := tl.Output()
 	for _, substr := range substrs {
@@ -81,17 +81,17 @@ func (tl *TestLogger) ContainsAny(substrs ...string) bool {
 	return false
 }
 
-// Count returns the number of log entries
+// Count returns the number of log entries.
 func (tl *TestLogger) Count() int {
 	return len(tl.Lines())
 }
 
-// Clear clears the captured log output
+// Clear clears the captured log output.
 func (tl *TestLogger) Clear() {
 	tl.Buffer.Reset()
 }
 
-// AssertContains asserts that the log contains the given string
+// AssertContains asserts that the log contains the given string.
 func (tl *TestLogger) AssertContains(t testing.TB, substr string) {
 	t.Helper()
 	if !tl.Contains(substr) {
@@ -99,7 +99,7 @@ func (tl *TestLogger) AssertContains(t testing.TB, substr string) {
 	}
 }
 
-// AssertNotContains asserts that the log does not contain the given string
+// AssertNotContains asserts that the log does not contain the given string.
 func (tl *TestLogger) AssertNotContains(t testing.TB, substr string) {
 	t.Helper()
 	if tl.Contains(substr) {
@@ -107,7 +107,7 @@ func (tl *TestLogger) AssertNotContains(t testing.TB, substr string) {
 	}
 }
 
-// AssertCount asserts that the log has the expected number of entries
+// AssertCount asserts that the log has the expected number of entries.
 func (tl *TestLogger) AssertCount(t testing.TB, expected int) {
 	t.Helper()
 	actual := tl.Count()
@@ -116,13 +116,13 @@ func (tl *TestLogger) AssertCount(t testing.TB, expected int) {
 	}
 }
 
-// NewNopLogger creates a logger that discards all output (useful for tests)
+// NewNopLogger creates a logger that discards all output (useful for tests).
 func NewNopLogger() *zerolog.Logger {
 	logger := zerolog.Nop()
 	return &logger
 }
 
-// DisableLoggingForTest disables logging for the duration of a test
+// DisableLoggingForTest disables logging for the duration of a test.
 func DisableLoggingForTest(t testing.TB) {
 	t.Helper()
 
@@ -138,7 +138,7 @@ func DisableLoggingForTest(t testing.TB) {
 	})
 }
 
-// CaptureLoggingForTest captures logging output for the duration of a test
+// CaptureLoggingForTest captures logging output for the duration of a test.
 func CaptureLoggingForTest(t testing.TB) *TestLogger {
 	t.Helper()
 

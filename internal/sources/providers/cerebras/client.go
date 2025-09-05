@@ -1,3 +1,4 @@
+// Package cerebras provides a client for the Cerebras API.
 package cerebras
 
 import (
@@ -155,18 +156,15 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 		features.ReasoningTokens = true
 	}
 
-	// Set coding capabilities for coder models
-	if strings.Contains(modelID, "coder") {
-		// Coder models typically have enhanced code generation capabilities
-		// This will be further enhanced by models.dev data
-	}
+	// Note: Coder models have enhanced code generation capabilities
+	// that will be further enhanced by models.dev data
 
 	return features
 }
 
-// extractAndUpdateAuthors extracts authors from model IDs and updates provider configuration
+// extractAndUpdateAuthors extracts authors from model IDs and updates provider configuration.
 func (c *Client) extractAndUpdateAuthors(models []catalogs.Model) {
-	provider := c.OpenAIClient.GetProvider()
+	provider := c.GetProvider()
 	if provider == nil {
 		return
 	}
@@ -181,7 +179,7 @@ func (c *Client) extractAndUpdateAuthors(models []catalogs.Model) {
 	}
 
 	// Convert to sorted slice
-	var discoveredAuthors []string
+	discoveredAuthors := make([]string, 0, len(authorSet))
 	for author := range authorSet {
 		discoveredAuthors = append(discoveredAuthors, author)
 	}
@@ -190,7 +188,7 @@ func (c *Client) extractAndUpdateAuthors(models []catalogs.Model) {
 	provider.Authors = c.mergeAuthors(provider.Authors, discoveredAuthors)
 }
 
-// inferAuthorFromModelID infers the actual author from a model ID
+// inferAuthorFromModelID infers the actual author from a model ID.
 func (c *Client) inferAuthorFromModelID(modelID string) string {
 	modelLower := strings.ToLower(modelID)
 
@@ -212,7 +210,7 @@ func (c *Client) inferAuthorFromModelID(modelID string) string {
 	return "cerebras"
 }
 
-// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
+// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config).
 func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
 	authorSet := make(map[string]bool)
 
@@ -231,7 +229,7 @@ func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string)
 	}
 
 	// Convert back to slice and sort
-	var merged []catalogs.AuthorID
+	merged := make([]catalogs.AuthorID, 0, len(authorSet))
 	for author := range authorSet {
 		merged = append(merged, catalogs.AuthorID(author))
 	}

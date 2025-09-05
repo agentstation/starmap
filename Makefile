@@ -1,6 +1,11 @@
 # Starmap Makefile
 # AI Model Catalog CLI
 
+MAKEFLAGS += --no-print-directory
+
+# Default target when running just 'make'
+.DEFAULT_GOAL := help
+
 # Variables
 BINARY_NAME=starmap
 MAIN_PATH=./cmd/starmap/main.go
@@ -8,7 +13,7 @@ BUILD_DIR=./bin
 VERSION?=$(shell git describe --tags --abbrev=0 2>/dev/null || echo "dev")
 COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.buildTime=$(BUILD_TIME)"
+LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(BUILD_TIME) -X main.builtBy=makefile"
 
 # Check for devbox and use it if available
 HAS_DEVBOX := $(shell command -v devbox 2> /dev/null)
@@ -39,16 +44,29 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install clean test lint fmt vet deps tidy run update fix release release-snapshot release-tag release-local testdata demo godoc
+.PHONY: help build install clean test test-race test-integration test-all test-coverage lint fmt fmt-all vet deps tidy run update fix install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
 
 # Default target
-all: clean fix lint test build
+all: clean fmt-all lint test-all build
 
-help: ## Display this help message
-	@echo "$(BLUE)Starmap - AI Model Catalog CLI$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Available targets:$(NC)"
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  $(GREEN)%-15s$(NC) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+##@ General
+
+# The help target prints out all targets with their descriptions organized
+# beneath their categories. The categories are represented by '##@' and the
+# target descriptions by '##'. The awk command is responsible for reading the
+# entire set of makefiles included in this invocation, looking for lines of the
+# file as xyz: ## something, and then pretty-format the target and help. Then,
+# if there's a line with ##@ something, that gets pretty-printed as a category.
+# More info on the usage of ANSI control characters for terminal formatting:
+# https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters
+
+help: ## Display the list of targets and their descriptions
+	@awk 'BEGIN {FS = ":.*##"; printf "\n\033[1mUsage:\033[0m\n  make \033[36m<target>\033[0m\n"} \
+		/^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } \
+		/^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } \
+		/^###/ { printf "  \033[90m%s\033[0m\n", substr($$0, 4) }' $(MAKEFILE_LIST)
+
+##@ Build & Install
 
 build: ## Build the binary to current directory
 	@echo "$(BLUE)Building $(BINARY_NAME)...$(NC)"
@@ -61,12 +79,16 @@ install: ## Install the binary to GOPATH/bin
 	@echo "$(GREEN)Installed $(BINARY_NAME) to $(shell go env GOPATH)/bin$(NC)"
 	@echo "$(YELLOW)Make sure $(shell go env GOPATH)/bin is in your PATH$(NC)"
 
+##@ Development
+
 clean: ## Clean build artifacts
 	@echo "$(BLUE)Cleaning...$(NC)"
 	$(GOCLEAN)
 	@rm -f $(BINARY_NAME)
 	@rm -rf $(BUILD_DIR)
 	@echo "$(GREEN)Cleaned build artifacts$(NC)"
+
+##@ Testing & Coverage
 
 test: ## Run tests
 	@echo "$(BLUE)Running tests...$(NC)"
@@ -78,6 +100,17 @@ test-coverage: ## Run tests with coverage
 	$(GOTEST) -v -coverprofile=coverage.out ./...
 	$(GOCMD) tool cover -html=coverage.out -o coverage.html
 	@echo "$(GREEN)Coverage report generated: coverage.html$(NC)"
+
+test-race: ## Run tests with race detector
+	@echo "$(BLUE)Running tests with race detector...$(NC)"
+	$(GOTEST) -race -v ./...
+
+test-integration: ## Run integration tests
+	@echo "$(BLUE)Running integration tests...$(NC)"
+	$(GOTEST) -tags=integration -v ./...
+
+test-all: test test-race test-integration ## Run all tests
+	@echo "$(GREEN)All tests completed!$(NC)"
 
 lint: ## Run linter and static analysis tools
 	@echo "$(BLUE)Running static analysis...$(NC)"
@@ -92,9 +125,35 @@ fmt: ## Format Go code
 	@echo "$(BLUE)Formatting code...$(NC)"
 	$(GOFMT) ./...
 
+fmt-all: ## Comprehensive formatting with all tools
+	@echo "$(BLUE)Running comprehensive formatting...$(NC)"
+	@echo "$(YELLOW)  → Running gofmt...$(NC)"
+	@$(GOFMT) ./...
+	@echo "$(YELLOW)  → Running goimports...$(NC)"
+	@$(RUN_PREFIX) goimports -w -local "github.com/agentstation/starmap" . 2>/dev/null || echo "    goimports not installed, skipping..."
+	@echo "$(YELLOW)  → Running godot...$(NC)"
+	@$(RUN_PREFIX) godot -w . 2>/dev/null || echo "    godot not installed, skipping..."
+	@echo "$(YELLOW)  → Running golangci-lint with auto-fix...$(NC)"
+	@$(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || echo "    golangci-lint not installed, skipping..."
+	@echo "$(YELLOW)  → Running go mod tidy...$(NC)"
+	@$(GOMOD) tidy
+	@echo "$(GREEN)Formatting complete!$(NC)"
+
 vet: ## Run go vet
 	@echo "$(BLUE)Running go vet...$(NC)"
 	$(GOVET) ./...
+
+##@ Tooling
+
+install-tools: ## Install development tools
+	@echo "$(BLUE)Installing development tools...$(NC)"
+	@$(RUN_PREFIX) go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	@$(RUN_PREFIX) go install golang.org/x/tools/cmd/goimports@latest
+	@$(RUN_PREFIX) go install golang.org/x/vuln/cmd/govulncheck@latest
+	@$(RUN_PREFIX) go install honnef.co/go/tools/cmd/staticcheck@latest
+	@$(RUN_PREFIX) go install github.com/tetafro/godot/cmd/godot@latest
+	@$(RUN_PREFIX) go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+	@echo "$(GREEN)Tools installed successfully$(NC)"
 
 deps: ## Download dependencies
 	@echo "$(BLUE)Downloading dependencies...$(NC)"
@@ -140,6 +199,24 @@ fix: ## Fix code formatting, imports, and dependencies
 	@echo "$(YELLOW)Tidying modules...$(NC)"
 	$(GOMOD) tidy
 	@echo "$(GREEN)Code fixes complete$(NC)"
+
+##@ Release & CI Alignment
+
+goreleaser-check: ## Validate GoReleaser config (CI-friendly)
+	@echo "$(BLUE)Validating GoReleaser configuration...$(NC)"
+	@$(RUN_PREFIX) which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
+	@$(RUN_PREFIX) goreleaser check
+	@echo "$(GREEN)✅ GoReleaser config is valid$(NC)"
+
+release-snapshot-devbox: ## Create snapshot release using devbox tools
+	@echo "$(BLUE)Creating snapshot release with devbox...$(NC)"
+	@$(RUN_PREFIX) goreleaser release --snapshot --clean
+	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
+
+ci-test: ## Run CI-equivalent tests locally
+	@echo "$(BLUE)Running CI-equivalent test suite...$(NC)"
+	@$(MAKE) clean fmt-all lint test-race
+	@echo "$(GREEN)✅ All CI tests passed$(NC)"
 
 release: clean fix lint test ## Prepare for release (use: make release VERSION=x.y.z)
 	@if [ -z "$(VERSION)" ]; then \

@@ -4,15 +4,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/utc"
+	"github.com/google/go-cmp/cmp"
+
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/utc"
-	"github.com/google/go-cmp/cmp"
 )
 
-// Test helper functions
+// Test helper functions.
 func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 	return catalogs.Model{
 		ID:          id,
@@ -52,7 +53,7 @@ func createTestProvider(id catalogs.ProviderID, name string) catalogs.Provider {
 	}
 }
 
-// TestMergerInterface tests that the interface is properly implemented
+// TestMergerInterface tests that the interface is properly implemented.
 func TestMergerInterface(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -71,7 +72,7 @@ func TestMergerInterface(t *testing.T) {
 	}
 }
 
-// TestMergeModelsBasic tests basic model merging
+// TestMergeModelsBasic tests basic model merging.
 func TestMergeModelsBasic(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -203,7 +204,7 @@ func TestMergeModelsBasic(t *testing.T) {
 	}
 }
 
-// TestMergeModelsWithProvenance tests provenance tracking
+// TestMergeModelsWithProvenance tests provenance tracking.
 func TestMergeModelsWithProvenance(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -243,7 +244,7 @@ func TestMergeModelsWithProvenance(t *testing.T) {
 	}
 }
 
-// TestMergeProviders tests provider merging
+// TestMergeProviders tests provider merging.
 func TestMergeProviders(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -338,7 +339,7 @@ func TestMergeProviders(t *testing.T) {
 	}
 }
 
-// TestMergeComplexStructures tests merging of complex nested structures
+// TestMergeComplexStructures tests merging of complex nested structures.
 func TestMergeComplexStructures(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -414,7 +415,7 @@ func TestMergeComplexStructures(t *testing.T) {
 	}
 }
 
-// TestFieldPriorities tests that field priorities are respected
+// TestFieldPriorities tests that field priorities are respected.
 func TestFieldPriorities(t *testing.T) {
 	// Set up authorities with default priorities
 	// The default authorities already have pricing from models.dev
@@ -472,7 +473,7 @@ func TestFieldPriorities(t *testing.T) {
 	}
 }
 
-// TestNilHandling tests handling of nil values
+// TestNilHandling tests handling of nil values.
 func TestNilHandling(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -516,7 +517,7 @@ func TestNilHandling(t *testing.T) {
 	}
 }
 
-// TestEmptySources tests merging with empty source maps
+// TestEmptySources tests merging with empty source maps.
 func TestEmptySources(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -547,7 +548,7 @@ func TestEmptySources(t *testing.T) {
 	}
 }
 
-// TestConcurrentMerging tests thread safety of merger
+// TestConcurrentMerging tests thread safety of merger.
 func TestConcurrentMerging(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -577,7 +578,7 @@ func TestConcurrentMerging(t *testing.T) {
 	}
 }
 
-// BenchmarkMergeModels benchmarks model merging performance
+// BenchmarkMergeModels benchmarks model merging performance.
 func BenchmarkMergeModels(b *testing.B) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -604,7 +605,7 @@ func BenchmarkMergeModels(b *testing.B) {
 	}
 }
 
-// TestMergeFieldReflection tests the reflection-based field merging
+// TestMergeFieldReflection tests the reflection-based field merging.
 func TestMergeFieldReflection(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -645,7 +646,7 @@ func TestMergeFieldReflection(t *testing.T) {
 	}
 }
 
-// TestEdgeCases tests various edge cases
+// TestEdgeCases tests various edge cases.
 func TestEdgeCases(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
@@ -691,12 +692,12 @@ func TestEdgeCases(t *testing.T) {
 	})
 }
 
-// stringPtr is a helper to create a string pointer
+// stringPtr is a helper to create a string pointer.
 func stringPtr(s string) *string {
 	return &s
 }
 
-// TestComparisonHelpers tests the comparison helper functions
+// TestComparisonHelpers tests the comparison helper functions.
 func TestComparisonHelpers(t *testing.T) {
 	model1 := createTestModel("test", "Model 1", 1000)
 	model2 := createTestModel("test", "Model 1", 1000)

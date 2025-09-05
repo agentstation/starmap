@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// ProviderValidationEntry represents the validation status of a single provider
+// ProviderValidationEntry represents the validation status of a single provider.
 type ProviderValidationEntry struct {
 	Provider     *Provider
 	HasAPIKey    bool
@@ -13,7 +13,7 @@ type ProviderValidationEntry struct {
 	Error        error
 }
 
-// ProviderValidationReport contains the results of validating provider access
+// ProviderValidationReport contains the results of validating provider access.
 type ProviderValidationReport struct {
 	Configured  []ProviderValidationEntry // Providers with configured API keys
 	Missing     []ProviderValidationEntry // Providers missing required API keys
@@ -68,7 +68,7 @@ func ValidateAllProviders(catalog Catalog, supportedProviders []ProviderID) (*Pr
 	return report, nil
 }
 
-// Print outputs a formatted report of provider validation status
+// Print outputs a formatted report of provider validation status.
 func (r *ProviderValidationReport) Print() {
 	if len(r.Configured) > 0 {
 		fmt.Println("\n✅ Configured Providers (ready to use):")
@@ -108,7 +108,7 @@ func (r *ProviderValidationReport) Print() {
 }
 
 // PrintProviderValidationReport prints a formatted report of provider validation status
-// This is a convenience function that calls the Print method on the report
+// This is a convenience function that calls the Print method on the report.
 func PrintProviderValidationReport(report *ProviderValidationReport) {
 	report.Print()
 }

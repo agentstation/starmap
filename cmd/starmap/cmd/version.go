@@ -7,12 +7,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// versionCmd represents the version command
+// versionCmd represents the version command.
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Show version information",
 	Long:  `Show version information for starmap CLI.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		fmt.Printf("starmap version %s\n", Version)
 		fmt.Printf("commit: %s\n", Commit)
 		fmt.Printf("built: %s\n", Date)

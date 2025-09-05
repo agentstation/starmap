@@ -8,13 +8,13 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Source loads a catalog from either a file path or embedded catalog
+// Source loads a catalog from either a file path or embedded catalog.
 type Source struct {
 	catalogPath string
 	catalog     catalogs.Catalog
 }
 
-// New creates a new local source
+// New creates a new local source.
 func New(opts ...Option) *Source {
 	s := &Source{}
 	for _, opt := range opts {
@@ -23,31 +23,31 @@ func New(opts ...Option) *Source {
 	return s
 }
 
-// Option configures a local source
+// Option configures a local source.
 type Option func(*Source)
 
-// WithCatalogPath sets the catalog path
+// WithCatalogPath sets the catalog path.
 func WithCatalogPath(path string) Option {
 	return func(s *Source) {
 		s.catalogPath = path
 	}
 }
 
-// Type returns the type of this source
+// Type returns the type of this source.
 func (s *Source) Type() sources.Type {
 	// For local source, we always return the constant name
 	// The path details can be logged separately if needed
 	return sources.LocalCatalog
 }
 
-// Setup initializes the source with dependencies
-func (s *Source) Setup(providers *catalogs.Providers) error {
+// Setup initializes the source with dependencies.
+func (s *Source) Setup(_ *catalogs.Providers) error {
 	// LocalSource doesn't need any dependencies
 	return nil
 }
 
-// Fetch returns catalog data from configured source
-func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
+// Fetch returns catalog data from configured source.
+func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error {
 	// Use configured path if set
 	if s.catalogPath != "" {
 		var err error
@@ -69,12 +69,12 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	return nil
 }
 
-// Catalog returns the catalog of this source
+// Catalog returns the catalog of this source.
 func (s *Source) Catalog() catalogs.Catalog {
 	return s.catalog
 }
 
-// Cleanup releases any resources
+// Cleanup releases any resources.
 func (s *Source) Cleanup() error {
 	// LocalSource doesn't hold any resources
 	return nil

@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// update reconciles the catalog with an optional baseline for comparison
+// update reconciles the catalog with an optional baseline for comparison.
 func update(ctx context.Context, baseline catalogs.Catalog, srcs []sources.Source) (*reconciler.Result, error) {
 	// create reconciler options
 	opts := []reconciler.Option{

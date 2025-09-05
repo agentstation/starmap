@@ -4,8 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestFeatureBadges(t *testing.T) {
@@ -575,7 +576,7 @@ func TestDeliveryBadges(t *testing.T) {
 	}
 }
 
-// TestGenerationBadgesSimple tests generationBadges to improve coverage
+// TestGenerationBadgesSimple tests generationBadges to improve coverage.
 func TestGenerationBadgesSimple(t *testing.T) {
 	// Test with empty features
 	features1 := &catalogs.ModelFeatures{}
@@ -608,7 +609,7 @@ func TestGenerationBadgesSimple(t *testing.T) {
 		MaxTokens:       true,
 		MaxOutputTokens: true,
 		Stop:            true,
-		StopTokenIds:    true,
+		StopTokenIDs:    true,
 	}
 	badges4 := generationBadges(features4)
 	assert.Greater(t, len(badges4), 2)
@@ -640,7 +641,7 @@ func TestGenerationBadgesSimple(t *testing.T) {
 	assert.Greater(t, len(badges6), 5)
 }
 
-// TestReasoningBadgesSimple tests reasoningBadges to improve coverage
+// TestReasoningBadgesSimple tests reasoningBadges to improve coverage.
 func TestReasoningBadgesSimple(t *testing.T) {
 	// Test with no reasoning features
 	features1 := &catalogs.ModelFeatures{}

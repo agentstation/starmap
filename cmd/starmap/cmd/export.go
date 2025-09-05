@@ -7,12 +7,13 @@ import (
 	"os"
 	"strings"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/convert"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/spf13/cobra"
 )
 
 var (
@@ -22,7 +23,7 @@ var (
 	exportFlagPretty   bool
 )
 
-// exportCmd represents the export command
+// exportCmd represents the export command.
 var exportCmd = &cobra.Command{
 	Use:   "export",
 	Short: "Export models in OpenAI or OpenRouter format",
@@ -51,7 +52,7 @@ func init() {
 	exportCmd.Flags().BoolVar(&exportFlagPretty, "pretty", true, "Pretty print JSON output")
 }
 
-func runExport(cmd *cobra.Command, args []string) error {
+func runExport(_ *cobra.Command, _ []string) error {
 	var models []*catalogs.Model
 
 	if exportFlagProvider != "" {
@@ -146,7 +147,7 @@ func runExport(cmd *cobra.Command, args []string) error {
 	// Create encoder
 	var encoder *json.Encoder
 	if exportFlagOutput != "" {
-		file, err := os.Create(exportFlagOutput)
+		file, err := os.Create(exportFlagOutput) //nolint:gosec // User-specified output file
 		if err != nil {
 			return errors.WrapIO("create", exportFlagOutput, err)
 		}

@@ -1,10 +1,11 @@
-package common
+// Package cmdutil provides shared flags and configuration utilities for starmap commands.
+package cmdutil
 
 import (
 	"github.com/spf13/cobra"
 )
 
-// GlobalFlags holds common flags across all commands
+// GlobalFlags holds common flags across all commands.
 type GlobalFlags struct {
 	Output  string
 	Quiet   bool
@@ -12,7 +13,7 @@ type GlobalFlags struct {
 	NoColor bool
 }
 
-// AddGlobalFlags adds common flags to the root command
+// AddGlobalFlags adds common flags to the root command.
 func AddGlobalFlags(cmd *cobra.Command) *GlobalFlags {
 	flags := &GlobalFlags{}
 
@@ -28,7 +29,7 @@ func AddGlobalFlags(cmd *cobra.Command) *GlobalFlags {
 	return flags
 }
 
-// ResourceFlags holds flags for resource-specific operations
+// ResourceFlags holds flags for resource-specific operations.
 type ResourceFlags struct {
 	Provider string
 	Author   string
@@ -38,7 +39,7 @@ type ResourceFlags struct {
 	All      bool
 }
 
-// AddResourceFlags adds resource-specific flags to a command
+// AddResourceFlags adds resource-specific flags to a command.
 func AddResourceFlags(cmd *cobra.Command) *ResourceFlags {
 	flags := &ResourceFlags{}
 
@@ -58,7 +59,7 @@ func AddResourceFlags(cmd *cobra.Command) *ResourceFlags {
 	return flags
 }
 
-// UpdateFlags holds flags for update command
+// UpdateFlags holds flags for update command.
 type UpdateFlags struct {
 	Provider    string
 	Source      string
@@ -71,7 +72,7 @@ type UpdateFlags struct {
 	Reformat    bool
 }
 
-// AddUpdateFlags adds update-specific flags to the update command
+// AddUpdateFlags adds update-specific flags to the update command.
 func AddUpdateFlags(cmd *cobra.Command) *UpdateFlags {
 	flags := &UpdateFlags{}
 
@@ -97,14 +98,14 @@ func AddUpdateFlags(cmd *cobra.Command) *UpdateFlags {
 	return flags
 }
 
-// FetchFlags holds flags for fetch command
+// FetchFlags holds flags for fetch command.
 type FetchFlags struct {
 	Provider string
 	All      bool
 	Timeout  int
 }
 
-// AddFetchFlags adds fetch-specific flags
+// AddFetchFlags adds fetch-specific flags.
 func AddFetchFlags(cmd *cobra.Command) *FetchFlags {
 	flags := &FetchFlags{}
 
@@ -118,7 +119,7 @@ func AddFetchFlags(cmd *cobra.Command) *FetchFlags {
 	return flags
 }
 
-// ExportFlags holds flags for export command
+// ExportFlags holds flags for export command.
 type ExportFlags struct {
 	Format   string
 	Provider string
@@ -126,7 +127,7 @@ type ExportFlags struct {
 	Pretty   bool
 }
 
-// AddExportFlags adds export-specific flags
+// AddExportFlags adds export-specific flags.
 func AddExportFlags(cmd *cobra.Command) *ExportFlags {
 	flags := &ExportFlags{}
 

@@ -6,19 +6,17 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// contextKey is a custom type for context keys to avoid collisions
+// contextKey is a custom type for context keys to avoid collisions.
 type contextKey int
 
 const (
-	// loggerKey is the context key for the logger
+	// loggerKey is the context key for the logger.
 	loggerKey contextKey = iota
-	// requestIDKey is the context key for request ID
+	// requestIDKey is the context key for request ID.
 	requestIDKey
-	// fieldsKey is the context key for additional fields
-	fieldsKey
 )
 
-// WithLogger adds a logger to the context
+// WithLogger adds a logger to the context.
 func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context {
 	if logger == nil {
 		logger = Default()
@@ -26,7 +24,7 @@ func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context {
 	return context.WithValue(ctx, loggerKey, logger)
 }
 
-// FromContext extracts the logger from context, or returns the default logger
+// FromContext extracts the logger from context, or returns the default logger.
 func FromContext(ctx context.Context) *zerolog.Logger {
 	if ctx == nil {
 		return Default()
@@ -40,12 +38,12 @@ func FromContext(ctx context.Context) *zerolog.Logger {
 }
 
 // Ctx returns a logger from the context or the default logger
-// This is a shorter alias for FromContext
+// This is a shorter alias for FromContext.
 func Ctx(ctx context.Context) *zerolog.Logger {
 	return FromContext(ctx)
 }
 
-// WithRequestID adds a request ID to the context for tracing
+// WithRequestID adds a request ID to the context for tracing.
 func WithRequestID(ctx context.Context, requestID string) context.Context {
 	ctx = context.WithValue(ctx, requestIDKey, requestID)
 
@@ -55,7 +53,7 @@ func WithRequestID(ctx context.Context, requestID string) context.Context {
 	return WithLogger(ctx, &newLogger)
 }
 
-// RequestID extracts the request ID from context
+// RequestID extracts the request ID from context.
 func RequestID(ctx context.Context) string {
 	if id, ok := ctx.Value(requestIDKey).(string); ok {
 		return id
@@ -63,7 +61,7 @@ func RequestID(ctx context.Context) string {
 	return ""
 }
 
-// WithFields adds structured fields to the logger in the context
+// WithFields adds structured fields to the logger in the context.
 func WithFields(ctx context.Context, fields map[string]any) context.Context {
 	logger := FromContext(ctx)
 	logCtx := logger.With()
@@ -76,7 +74,7 @@ func WithFields(ctx context.Context, fields map[string]any) context.Context {
 	return WithLogger(ctx, &newLogger)
 }
 
-// WithField adds a single field to the logger in the context
+// WithField adds a single field to the logger in the context.
 func WithField(ctx context.Context, key string, value any) context.Context {
 	logger := FromContext(ctx)
 	logCtx := logger.With()
@@ -85,7 +83,7 @@ func WithField(ctx context.Context, key string, value any) context.Context {
 	return WithLogger(ctx, &newLogger)
 }
 
-// addFieldToContext adds a field to the logger context based on its type
+// addFieldToContext adds a field to the logger context based on its type.
 func addFieldToContext(ctx zerolog.Context, key string, value any) zerolog.Context {
 	switch v := value.(type) {
 	case string:
@@ -114,27 +112,27 @@ func addFieldToContext(ctx zerolog.Context, key string, value any) zerolog.Conte
 	}
 }
 
-// WithProvider adds provider context to the logger
+// WithProvider adds provider context to the logger.
 func WithProvider(ctx context.Context, providerID string) context.Context {
 	return WithField(ctx, "provider_id", providerID)
 }
 
-// WithModel adds model context to the logger
+// WithModel adds model context to the logger.
 func WithModel(ctx context.Context, modelID string) context.Context {
 	return WithField(ctx, "model_id", modelID)
 }
 
-// WithSource adds source context to the logger
+// WithSource adds source context to the logger.
 func WithSource(ctx context.Context, source string) context.Context {
 	return WithField(ctx, "source", source)
 }
 
-// WithOperation adds operation context to the logger
+// WithOperation adds operation context to the logger.
 func WithOperation(ctx context.Context, operation string) context.Context {
 	return WithField(ctx, "operation", operation)
 }
 
-// WithError adds an error to the context logger
+// WithError adds an error to the context logger.
 func WithError(ctx context.Context, err error) context.Context {
 	if err == nil {
 		return ctx

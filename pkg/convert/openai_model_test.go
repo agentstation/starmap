@@ -7,7 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestOpenAIModelSchemaCompliance tests that our OpenAI structs match the expected schema
+// TestOpenAIModelSchemaCompliance tests that our OpenAI structs match the expected schema.
 func TestOpenAIModelSchemaCompliance(t *testing.T) {
 	// Create a test model with all fields populated
 	model := &catalogs.Model{
@@ -57,7 +57,7 @@ func TestOpenAIModelSchemaCompliance(t *testing.T) {
 	t.Logf("Generated OpenAI JSON:\n%s", string(jsonData))
 }
 
-// TestOpenAIModelMultipleAuthors tests handling of multiple authors
+// TestOpenAIModelMultipleAuthors tests handling of multiple authors.
 func TestOpenAIModelMultipleAuthors(t *testing.T) {
 	model := &catalogs.Model{
 		ID:        "llama-3-70b",
@@ -77,7 +77,7 @@ func TestOpenAIModelMultipleAuthors(t *testing.T) {
 	}
 }
 
-// TestOpenAIModelNoAuthors tests handling when no authors are specified
+// TestOpenAIModelNoAuthors tests handling when no authors are specified.
 func TestOpenAIModelNoAuthors(t *testing.T) {
 	model := &catalogs.Model{
 		ID:        "custom-model",
@@ -94,7 +94,7 @@ func TestOpenAIModelNoAuthors(t *testing.T) {
 	}
 }
 
-// TestOpenAIModelAuthorWithoutID tests handling when author has no ID
+// TestOpenAIModelAuthorWithoutID tests handling when author has no ID.
 func TestOpenAIModelAuthorWithoutID(t *testing.T) {
 	model := &catalogs.Model{
 		ID:        "custom-model",
@@ -113,7 +113,7 @@ func TestOpenAIModelAuthorWithoutID(t *testing.T) {
 	}
 }
 
-// TestOpenAIModelsResponse tests the full response structure
+// TestOpenAIModelsResponse tests the full response structure.
 func TestOpenAIModelsResponse(t *testing.T) {
 	models := []*catalogs.Model{
 		{
@@ -205,7 +205,7 @@ func TestOpenAIModelsResponse(t *testing.T) {
 	t.Logf("Generated OpenAI Response JSON:\n%s", string(jsonData))
 }
 
-// TestOpenAIResponseMatchesExpectedFormat tests that our response matches the example format
+// TestOpenAIResponseMatchesExpectedFormat tests that our response matches the example format.
 func TestOpenAIResponseMatchesExpectedFormat(t *testing.T) {
 	// Create models similar to the example
 	models := []*catalogs.Model{

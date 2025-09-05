@@ -7,6 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+// Options configures a reconciler.
 type options struct {
 	strategy    Strategy
 	authorities authority.Authority
@@ -25,22 +26,22 @@ func defaultOptions() *options {
 	}
 }
 
-// Option is a function that configures a Reconciler
+// Option is a function that configures a Reconciler.
 type Option func(*options) error
 
 func (options *options) apply(opts ...Option) *options {
 	for _, opt := range opts {
-		opt(options)
+		_ = opt(options)
 	}
 	return options
 }
 
-// NewOptions returns reconciler options with default values
-func NewOptions(opts ...Option) *options {
+// newOptions returns reconciler options with default values.
+func newOptions(opts ...Option) *options {
 	return defaultOptions().apply(opts...)
 }
 
-// WithStrategy sets the merge strategy
+// WithStrategy sets the merge strategy.
 func WithStrategy(strategy Strategy) Option {
 	return func(r *options) error {
 		if strategy == nil {
@@ -54,7 +55,7 @@ func WithStrategy(strategy Strategy) Option {
 	}
 }
 
-// WithAuthorities sets the field authorities
+// WithAuthorities sets the field authorities.
 func WithAuthorities(authorities authority.Authority) Option {
 	return func(r *options) error {
 		if authorities == nil {
@@ -71,7 +72,7 @@ func WithAuthorities(authorities authority.Authority) Option {
 	}
 }
 
-// WithProvenance enables field-level tracking
+// WithProvenance enables field-level tracking.
 func WithProvenance(enabled bool) Option {
 	return func(r *options) error {
 		r.tracking = enabled
@@ -79,7 +80,7 @@ func WithProvenance(enabled bool) Option {
 	}
 }
 
-// WithEnhancers adds model enhancers to the pipeline
+// WithEnhancers adds model enhancers to the pipeline.
 func WithEnhancers(enhancers ...enhancer.Enhancer) Option {
 	return func(r *options) error {
 		r.enhancers = enhancers
@@ -87,7 +88,7 @@ func WithEnhancers(enhancers ...enhancer.Enhancer) Option {
 	}
 }
 
-// WithBaseline sets an existing catalog to compare against for change detection
+// WithBaseline sets an existing catalog to compare against for change detection.
 func WithBaseline(catalog catalogs.Catalog) Option {
 	return func(r *options) error {
 		r.baseline = catalog

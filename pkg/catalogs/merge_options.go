@@ -1,26 +1,21 @@
 package catalogs
 
-// MergeOption configures how catalogs are merged
+// MergeOption configures how catalogs are merged.
 type MergeOption func(*MergeOptions)
 
-// MergeOptions holds merge configuration
+// MergeOptions holds merge configuration.
 type MergeOptions struct {
 	Strategy MergeStrategy // nil means use source catalog's suggestion
 }
 
-// defaultMergeOptions is the default merge options
-var defaultMergeOptions = &MergeOptions{
-	Strategy: MergeEnrichEmpty,
-}
-
-// WithStrategy overrides the merge strategy
+// WithStrategy overrides the merge strategy.
 func WithStrategy(s MergeStrategy) MergeOption {
 	return func(c *MergeOptions) {
 		c.Strategy = s
 	}
 }
 
-// ParseMergeOptions processes merge options and returns the configuration
+// ParseMergeOptions processes merge options and returns the configuration.
 func ParseMergeOptions(opts ...MergeOption) *MergeOptions {
 	cfg := &MergeOptions{}
 	for _, opt := range opts {

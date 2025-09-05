@@ -1,6 +1,6 @@
 package catalogs
 
-// ModelGeneration - core chat completions generation controls
+// ModelGeneration - core chat completions generation controls.
 type ModelGeneration struct {
 	// Core sampling and decoding
 	Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`

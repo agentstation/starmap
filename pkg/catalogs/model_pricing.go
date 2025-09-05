@@ -1,17 +1,25 @@
 package catalogs
 
 const (
-	// Top 10 most traded currencies by volume in global forex markets
+	// ModelPricingCurrencyUSD is the US Dollar currency constant.
 	ModelPricingCurrencyUSD ModelPricingCurrency = "USD" // US Dollar
+	// ModelPricingCurrencyEUR is the Euro currency constant.
 	ModelPricingCurrencyEUR ModelPricingCurrency = "EUR" // Euro
+	// ModelPricingCurrencyJPY is the Japanese Yen currency constant.
 	ModelPricingCurrencyJPY ModelPricingCurrency = "JPY" // Japanese Yen
+	// ModelPricingCurrencyGBP is the British Pound Sterling currency constant.
 	ModelPricingCurrencyGBP ModelPricingCurrency = "GBP" // British Pound Sterling
+	// ModelPricingCurrencyAUD is the Australian Dollar currency constant.
 	ModelPricingCurrencyAUD ModelPricingCurrency = "AUD" // Australian Dollar
+	// ModelPricingCurrencyCAD is the Canadian Dollar currency constant.
 	ModelPricingCurrencyCAD ModelPricingCurrency = "CAD" // Canadian Dollar
+	// ModelPricingCurrencyCNY is the Chinese Yuan currency constant.
 	ModelPricingCurrencyCNY ModelPricingCurrency = "CNY" // Chinese Yuan
+	// ModelPricingCurrencyNZD is the New Zealand Dollar currency constant.
 	ModelPricingCurrencyNZD ModelPricingCurrency = "NZD" // New Zealand Dollar
 )
 
+// ModelPricingCurrency represents a currency code for model pricing.
 type ModelPricingCurrency string
 
 // String returns the string representation of a ModelPricingCurrency.
@@ -39,7 +47,12 @@ func (m ModelPricingCurrency) Symbol() string {
 	case ModelPricingCurrencyNZD:
 		return "$"
 	default:
-		return string(m) // Fallback to currency code
+		// Default to USD symbol for unknown or empty currencies
+		if m == "" || m == ModelPricingCurrency("") {
+			return "$"
+		}
+		// For any unrecognized currency, default to USD
+		return "$"
 	}
 }
 
@@ -70,7 +83,7 @@ type ModelTokenPricing struct {
 	CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
 }
 
-// MarshalYAML implements custom YAML marshaling for TokenPricing to use flat cache structure
+// MarshalYAML implements custom YAML marshaling for TokenPricing to use flat cache structure.
 func (t *ModelTokenPricing) MarshalYAML() (any, error) {
 	result := make(map[string]any)
 
@@ -114,7 +127,7 @@ type ModelTokenCost struct {
 	Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m"` // Cost per 1M tokens
 }
 
-// MarshalYAML implements custom YAML marshaling for TokenCost to format decimals consistently
+// MarshalYAML implements custom YAML marshaling for TokenCost to format decimals consistently.
 func (t *ModelTokenCost) MarshalYAML() (any, error) {
 	result := make(map[string]float64)
 

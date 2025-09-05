@@ -1,16 +1,19 @@
+// Package generate provides commands for generating documentation and site content.
 package generate
 
 import (
+	"context"
 	"fmt"
+
+	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/tools/docs"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/spf13/cobra"
 )
 
 var outputDir string
 
-// DocsCmd represents the generate docs command
+// DocsCmd represents the generate docs command.
 var DocsCmd = &cobra.Command{
 	Use:   "docs",
 	Short: "Generate markdown documentation for providers and models",
@@ -33,7 +36,7 @@ func init() {
 	DocsCmd.Flags().StringVarP(&outputDir, "output", "o", "./docs", "Output directory for generated documentation")
 }
 
-func runGenerateDocs(cmd *cobra.Command, args []string) error {
+func runGenerateDocs(_ *cobra.Command, _ []string) error {
 	fmt.Printf("📝 Generating documentation in %s...\n", outputDir)
 
 	// Initialize the catalog with embedded data
@@ -49,7 +52,7 @@ func runGenerateDocs(cmd *cobra.Command, args []string) error {
 	)
 
 	// Generate all documentation
-	if err := generator.Generate(cmd.Context(), catalog); err != nil {
+	if err := generator.Generate(context.Background(), catalog); err != nil {
 		return fmt.Errorf("generating documentation: %w", err)
 	}
 

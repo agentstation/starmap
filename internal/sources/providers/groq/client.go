@@ -1,3 +1,4 @@
+// Package groq provides a client for the Groq API.
 package groq
 
 import (
@@ -10,17 +11,17 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// GroqResponse represents the Groq API response structure.
-type GroqResponse struct {
-	Object string          `json:"object"`
-	Data   []GroqModelData `json:"data"`
+// Response represents the Groq API response structure.
+type Response struct {
+	Object string      `json:"object"`
+	Data   []ModelData `json:"data"`
 }
 
-// GroqModelData extends OpenAI model data with Groq-specific fields.
+// ModelData extends OpenAI model data with Groq-specific fields.
 // Note: Groq's API documentation at https://console.groq.com/docs/api-reference#models-retrieve
 // is missing the max_completion_tokens field, but it is actually returned by both the
 // models list endpoint and individual model endpoints as of 2025.
-type GroqModelData struct {
+type ModelData struct {
 	baseclient.OpenAIModelData
 	Active              bool `json:"active"`
 	ContextWindow       int  `json:"context_window"`
@@ -49,7 +50,7 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 // As of 2025, the Groq API now includes all necessary fields (context_window, max_completion_tokens)
 // in the models list response, eliminating the need for individual model fetches.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
-	provider := c.OpenAIClient.GetProvider()
+	provider := c.GetProvider()
 	if provider == nil {
 		return nil, &errors.ConfigError{
 			Component: "groq",
@@ -73,7 +74,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		}
 	}
 
-	var listResult GroqResponse
+	var listResult Response
 	if err := transport.DecodeResponse(resp, &listResult); err != nil {
 		return nil, errors.WrapParse("json", "groq response", err)
 	}
@@ -92,7 +93,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 }
 
 // ConvertToGroqModel converts a Groq model response to a starmap Model with Groq-specific fields.
-func (c *Client) ConvertToGroqModel(m GroqModelData) catalogs.Model {
+func (c *Client) ConvertToGroqModel(m ModelData) catalogs.Model {
 	// Start with base conversion
 	model := c.OpenAIClient.ConvertToModel(m.OpenAIModelData)
 
@@ -146,7 +147,7 @@ func (c *Client) formatModelName(modelID string) string {
 // inferFeatures infers Groq-specific model features based on the model ID.
 func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	// Start with base features
-	features := c.OpenAIClient.InferFeatures(modelID)
+	features := c.InferFeatures(modelID)
 
 	// Add Groq-specific capabilities
 	features.Seed = true // Groq supports seed parameter
@@ -184,9 +185,9 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	return features
 }
 
-// extractAndUpdateAuthors extracts authors from API response and updates provider configuration
-func (c *Client) extractAndUpdateAuthors(models []GroqModelData) {
-	provider := c.OpenAIClient.GetProvider()
+// extractAndUpdateAuthors extracts authors from API response and updates provider configuration.
+func (c *Client) extractAndUpdateAuthors(models []ModelData) {
+	provider := c.GetProvider()
 	if provider == nil {
 		return
 	}
@@ -204,7 +205,7 @@ func (c *Client) extractAndUpdateAuthors(models []GroqModelData) {
 	}
 
 	// Convert to sorted slice
-	var discoveredAuthors []string
+	discoveredAuthors := make([]string, 0, len(authorSet))
 	for author := range authorSet {
 		discoveredAuthors = append(discoveredAuthors, author)
 	}
@@ -213,7 +214,7 @@ func (c *Client) extractAndUpdateAuthors(models []GroqModelData) {
 	provider.Authors = c.mergeAuthors(provider.Authors, discoveredAuthors)
 }
 
-// normalizeAuthor normalizes author names and handles composite authors
+// normalizeAuthor normalizes author names and handles composite authors.
 func (c *Client) normalizeAuthor(ownedBy string) []string {
 	// Handle composite authors like "DeepSeek / Meta"
 	if strings.Contains(ownedBy, "/") {
@@ -231,7 +232,7 @@ func (c *Client) normalizeAuthor(ownedBy string) []string {
 	return []string{c.normalizeAuthorName(ownedBy)}
 }
 
-// normalizeAuthorName normalizes a single author name to lowercase kebab-case
+// normalizeAuthorName normalizes a single author name to lowercase kebab-case.
 func (c *Client) normalizeAuthorName(name string) string {
 	// Convert to lowercase and replace spaces with hyphens
 	normalized := strings.ToLower(strings.TrimSpace(name))
@@ -253,7 +254,7 @@ func (c *Client) normalizeAuthorName(name string) string {
 	return normalized
 }
 
-// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config)
+// mergeAuthors merges existing and discovered authors (additive-only, preserves manual config).
 func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string) []catalogs.AuthorID {
 	authorSet := make(map[string]bool)
 
@@ -272,7 +273,7 @@ func (c *Client) mergeAuthors(existing []catalogs.AuthorID, discovered []string)
 	}
 
 	// Convert back to slice and sort
-	var merged []catalogs.AuthorID
+	merged := make([]catalogs.AuthorID, 0, len(authorSet))
 	for author := range authorSet {
 		merged = append(merged, catalogs.AuthorID(author))
 	}

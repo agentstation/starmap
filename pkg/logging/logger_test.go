@@ -6,8 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/rs/zerolog"
+
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 func TestDefaultLogger(t *testing.T) {

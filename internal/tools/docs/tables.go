@@ -5,16 +5,18 @@ import (
 	"io"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	md "github.com/nao1215/markdown"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// writeModalityTable generates a horizontal table showing modality support for input/output
+// writeModalityTable generates a horizontal table showing modality support for input/output.
 func writeModalityTable(w io.Writer, model *catalogs.Model) {
 	markdown := NewMarkdown(w)
 
 	if model.Features == nil {
-		markdown.PlainText("No modality information available.").LF().Build()
+		markdown.PlainText("No modality information available.").LF()
+		_ = markdown.Build()
 		return
 	}
 
@@ -37,9 +39,9 @@ func writeModalityTable(w io.Writer, model *catalogs.Model) {
 			}
 		}
 		if hasModality {
-			inputRow = append(inputRow, "✅")
+			inputRow = append(inputRow, CheckMark)
 		} else {
-			inputRow = append(inputRow, "❌")
+			inputRow = append(inputRow, CrossMark)
 		}
 	}
 
@@ -54,24 +56,26 @@ func writeModalityTable(w io.Writer, model *catalogs.Model) {
 			}
 		}
 		if hasModality {
-			outputRow = append(outputRow, "✅")
+			outputRow = append(outputRow, CheckMark)
 		} else {
-			outputRow = append(outputRow, "❌")
+			outputRow = append(outputRow, CrossMark)
 		}
 	}
 
 	markdown.Table(md.TableSet{
 		Header: []string{"Direction", "Text", "Image", "Audio", "Video", "PDF"},
 		Rows:   [][]string{inputRow, outputRow},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeCoreFeatureTable generates a horizontal table for core features
+// writeCoreFeatureTable generates a horizontal table for core features.
 func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
 	markdown := NewMarkdown(w)
 
 	if model.Features == nil {
-		markdown.PlainText("No feature information available.").LF().Build()
+		markdown.PlainText("No feature information available.").LF()
+		_ = markdown.Build()
 		return
 	}
 
@@ -79,51 +83,53 @@ func writeCoreFeatureTable(w io.Writer, model *catalogs.Model) {
 
 	// Tool Calling
 	if model.Features.ToolCalls {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Tool Definitions
 	if model.Features.Tools {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Tool Choice
 	if model.Features.ToolChoice {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Web Search
 	if model.Features.WebSearch {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// File Attachments
 	if model.Features.Attachments {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	markdown.Table(md.TableSet{
 		Header: []string{"Tool Calling", "Tool Definitions", "Tool Choice", "Web Search", "File Attachments"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeResponseDeliveryTable generates a horizontal table for response delivery options
+// writeResponseDeliveryTable generates a horizontal table for response delivery options.
 func writeResponseDeliveryTable(w io.Writer, model *catalogs.Model) {
 	markdown := NewMarkdown(w)
 
 	if model.Features == nil {
-		markdown.PlainText("No delivery information available.").LF().Build()
+		markdown.PlainText("No delivery information available.").LF()
+		_ = markdown.Build()
 		return
 	}
 
@@ -131,42 +137,43 @@ func writeResponseDeliveryTable(w io.Writer, model *catalogs.Model) {
 
 	// Streaming
 	if model.Features.Streaming {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Structured Output
 	if model.Features.StructuredOutputs {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// JSON Mode (check for format response)
 	if model.Features.FormatResponse {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Function Call (same as tool calls)
 	if model.Features.ToolCalls {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	// Text Format (always supported if model exists)
-	row = append(row, "✅")
+	row = append(row, CheckMark)
 
 	markdown.Table(md.TableSet{
 		Header: []string{"Streaming", "Structured Output", "JSON Mode", "Function Call", "Text Format"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeAdvancedReasoningTable generates a horizontal table for reasoning capabilities
+// writeAdvancedReasoningTable generates a horizontal table for reasoning capabilities.
 func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 	if model.Features == nil {
 		return
@@ -186,46 +193,50 @@ func writeAdvancedReasoningTable(w io.Writer, model *catalogs.Model) {
 	row := []string{}
 
 	if model.Features.Reasoning {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	if model.Features.ReasoningEffort {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	if model.Features.ReasoningTokens {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	if model.Features.IncludeReasoning {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	if model.Features.Verbosity {
-		row = append(row, "✅")
+		row = append(row, CheckMark)
 	} else {
-		row = append(row, "❌")
+		row = append(row, CrossMark)
 	}
 
 	markdown.Table(md.TableSet{
 		Header: []string{"Basic Reasoning", "Reasoning Effort", "Reasoning Tokens", "Include Reasoning", "Verbosity Control"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeControlsTables generates multiple horizontal tables for generation controls
+// writeControlsTables generates multiple horizontal tables for generation controls.
+//
+//nolint:gocyclo // Many feature flags to check
 func writeControlsTables(w io.Writer, model *catalogs.Model) {
 	if model.Features == nil {
 		markdown := NewMarkdown(w)
-		markdown.PlainText("No control information available.").LF().Build()
+		markdown.PlainText("No control information available.").LF()
+		_ = markdown.Build()
 		return
 	}
 
@@ -270,19 +281,19 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			if model.Generation != nil && model.Generation.TopK != nil {
 				rangeStr = fmt.Sprintf("%d-%d", model.Generation.TopK.Min, model.Generation.TopK.Max)
 			} else {
-				rangeStr = "✅"
+				rangeStr = CheckMark
 			}
 			values = append(values, rangeStr)
 		}
 
 		if model.Features.TopA {
 			headers = append(headers, "Top-A")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		if model.Features.MinP {
 			headers = append(headers, "Min-P")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		markdown.Table(md.TableSet{
@@ -306,14 +317,14 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 			if model.Limits != nil && model.Limits.OutputTokens > 0 {
 				rangeStr = fmt.Sprintf("1-%s", formatNumber(int(model.Limits.OutputTokens)))
 			} else {
-				rangeStr = "✅"
+				rangeStr = CheckMark
 			}
 			values = append(values, rangeStr)
 		}
 
 		if model.Features.Stop {
 			headers = append(headers, "Stop Sequences")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		markdown.Table(md.TableSet{
@@ -356,7 +367,7 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 
 		if model.Features.RepetitionPenalty {
 			headers = append(headers, "Repetition Penalty")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		markdown.Table(md.TableSet{
@@ -376,12 +387,12 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 
 		if model.Features.LogitBias {
 			headers = append(headers, "Logit Bias")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		if model.Features.Seed {
 			headers = append(headers, "Deterministic Seed")
-			values = append(values, "✅")
+			values = append(values, CheckMark)
 		}
 
 		if model.Features.Logprobs {
@@ -401,10 +412,10 @@ func writeControlsTables(w io.Writer, model *catalogs.Model) {
 		}).LF()
 	}
 
-	markdown.Build()
+	_ = markdown.Build()
 }
 
-// writeArchitectureTable generates a horizontal table for architecture details
+// writeArchitectureTable generates a horizontal table for architecture details.
 func writeArchitectureTable(w io.Writer, model *catalogs.Model) {
 	if model.Metadata == nil || model.Metadata.Architecture == nil {
 		return
@@ -456,10 +467,11 @@ func writeArchitectureTable(w io.Writer, model *catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Parameter Count", "Architecture Type", "Tokenizer", "Quantization", "Fine-Tuned", "Base Model"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeTagsTable generates a horizontal table for model tags
+// writeTagsTable generates a horizontal table for model tags.
 func writeTagsTable(w io.Writer, model *catalogs.Model) {
 	if model.Metadata == nil || len(model.Metadata.Tags) == 0 {
 		return
@@ -491,9 +503,9 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 			}
 		}
 		if hasTag {
-			row = append(row, "✅")
+			row = append(row, CheckMark)
 		} else {
-			row = append(row, "❌")
+			row = append(row, CrossMark)
 		}
 	}
 
@@ -521,15 +533,16 @@ func writeTagsTable(w io.Writer, model *catalogs.Model) {
 		markdown.LF().Bold("Additional Tags").PlainText(": " + strings.Join(additionalTags, ", ")).LF()
 	}
 
-	markdown.Build()
+	_ = markdown.Build()
 }
 
-// writeTokenPricingTable generates a horizontal table for token pricing
+// writeTokenPricingTable generates a horizontal table for token pricing.
 func writeTokenPricingTable(w io.Writer, model *catalogs.Model) {
 	markdown := NewMarkdown(w)
 
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
-		markdown.PlainText("Contact provider for pricing information.").LF().Build()
+		markdown.PlainText("Contact provider for pricing information.").LF()
+		_ = markdown.Build()
 		return
 	}
 
@@ -578,10 +591,11 @@ func writeTokenPricingTable(w io.Writer, model *catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Input", "Output", "Reasoning", "Cache Read", "Cache Write"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }
 
-// writeOperationPricingTable generates a horizontal table for operation pricing
+// writeOperationPricingTable generates a horizontal table for operation pricing.
 func writeOperationPricingTable(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Operations == nil {
 		return
@@ -641,5 +655,6 @@ func writeOperationPricingTable(w io.Writer, model *catalogs.Model) {
 	markdown.Table(md.TableSet{
 		Header: []string{"Image Input", "Audio Input", "Video Input", "Image Gen", "Audio Gen", "Web Search"},
 		Rows:   [][]string{row},
-	}).LF().Build()
+	}).LF()
+	_ = markdown.Build()
 }

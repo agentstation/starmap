@@ -8,14 +8,14 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// collector encapsulates data collection logic
+// collector encapsulates data collection logic.
 type collector struct {
 	sources []sources.Source
 	primary sources.Type
 	logger  *zerolog.Logger
 }
 
-// newCollector creates a new data collector
+// newCollector creates a new data collector.
 func newCollector(srcs []sources.Source, primary sources.Type) *collector {
 	return &collector{
 		sources: srcs,
@@ -24,7 +24,7 @@ func newCollector(srcs []sources.Source, primary sources.Type) *collector {
 	}
 }
 
-// collectProviders gathers providers from all sources
+// collectProviders gathers providers from all sources.
 func (c *collector) collectProviders() map[sources.Type][]catalogs.Provider {
 	result := make(map[sources.Type][]catalogs.Provider)
 
@@ -47,7 +47,7 @@ func (c *collector) collectProviders() map[sources.Type][]catalogs.Provider {
 	return result
 }
 
-// collectModelsForProvider gathers models for a specific provider
+// collectModelsForProvider gathers models for a specific provider.
 func (c *collector) collectModelsForProvider(
 	provider catalogs.Provider,
 	primaryCatalog catalogs.Catalog,
@@ -64,7 +64,7 @@ func (c *collector) collectModelsForProvider(
 	return result
 }
 
-// providerModels extracts models for a provider from a source
+// providerModels extracts models for a provider from a source.
 func (c *collector) providerModels(src sources.Source, provider catalogs.Provider, primaryCatalog catalogs.Catalog) []catalogs.Model {
 	catalog := src.Catalog()
 	if catalog == nil {
@@ -104,7 +104,7 @@ func (c *collector) providerModels(src sources.Source, provider catalogs.Provide
 	return models
 }
 
-// findProvider looks up provider by ID or aliases
+// findProvider looks up provider by ID or aliases.
 func (c *collector) findProvider(catalog catalogs.Catalog, id catalogs.ProviderID, aliases []catalogs.ProviderID) *catalogs.Provider {
 	if provider, exists := catalog.Providers().Get(id); exists {
 		return provider
@@ -119,12 +119,12 @@ func (c *collector) findProvider(catalog catalogs.Catalog, id catalogs.ProviderI
 	return nil
 }
 
-// isPrimaryFiltering returns true if primary source filtering is enabled
+// isPrimaryFiltering returns true if primary source filtering is enabled.
 func (c *collector) isPrimaryFiltering() bool {
 	return c.primary != ""
 }
 
-// enrichWithPrimaryModels adds models that primary source serves
+// enrichWithPrimaryModels adds models that primary source serves.
 func (c *collector) enrichWithPrimaryModels(
 	sourceCatalog catalogs.Catalog,
 	provider catalogs.Provider,
@@ -172,7 +172,7 @@ func (c *collector) enrichWithPrimaryModels(
 	return existingModels
 }
 
-// sourceTypes extracts source types from sources
+// sourceTypes extracts source types from sources.
 func (c *collector) sourceTypes() []sources.Type {
 	types := make([]sources.Type, 0, len(c.sources))
 	for _, src := range c.sources {
@@ -181,7 +181,7 @@ func (c *collector) sourceTypes() []sources.Type {
 	return types
 }
 
-// primaryCatalog finds and returns the primary catalog
+// primaryCatalog finds and returns the primary catalog.
 func (c *collector) primaryCatalog() catalogs.Catalog {
 	if c.primary == "" {
 		return nil
@@ -196,7 +196,7 @@ func (c *collector) primaryCatalog() catalogs.Catalog {
 	return nil
 }
 
-// baseCatalog returns the first available catalog for comparison
+// baseCatalog returns the first available catalog for comparison.
 func (c *collector) baseCatalog() catalogs.Catalog {
 	for _, src := range c.sources {
 		if catalog := src.Catalog(); catalog != nil {

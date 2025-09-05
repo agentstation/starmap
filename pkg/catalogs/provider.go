@@ -181,14 +181,14 @@ func (pm ProviderModerator) String() string {
 
 // ProviderModerators.
 const (
-	// AI Platform Aggregators/Moderators
+	// AI Platform Aggregators/Moderators.
 	ProviderModeratorAnyscale    ProviderModerator = "anyscale"
 	ProviderModeratorHuggingFace ProviderModerator = "huggingface"
 	ProviderModeratorOpenRouter  ProviderModerator = "openrouter"
 	ProviderModeratorReplicate   ProviderModerator = "replicate"
 	ProviderModeratorTogetherAI  ProviderModerator = "together"
 
-	// Specialized AI Safety/Moderation Companies
+	// Specialized AI Safety/Moderation Companies.
 	ProviderModeratorCheckstep  ProviderModerator = "checkstep"
 	ProviderModeratorConectys   ProviderModerator = "conectys"
 	ProviderModeratorCove       ProviderModerator = "cove"
@@ -196,7 +196,7 @@ const (
 	ProviderModeratorVirtuousAI ProviderModerator = "virtuousai"
 	ProviderModeratorWebPurify  ProviderModerator = "webpurify"
 
-	// Self-Moderated (Major AI Companies)
+	// Self-Moderated (Major AI Companies).
 	ProviderModeratorAnthropic      ProviderModerator = "anthropic"
 	ProviderModeratorGoogleAIStudio ProviderModerator = "google-ai-studio"
 	ProviderModeratorGoogleVertex   ProviderModerator = "google-vertex"
@@ -204,7 +204,7 @@ const (
 	ProviderModeratorMicrosoft      ProviderModerator = "microsoft"
 	ProviderModeratorOpenAI         ProviderModerator = "openai"
 
-	// Unknown/Unspecified
+	// Unknown/Unspecified.
 	ProviderModeratorUnknown ProviderModerator = "unknown"
 )
 
@@ -219,13 +219,13 @@ func (p *Provider) IsAPIKeyRequired() bool {
 type ProviderValidationStatus string
 
 const (
-	// Provider is properly configured and ready to use
+	// ProviderValidationStatusConfigured indicates the provider is properly configured and ready to use.
 	ProviderValidationStatusConfigured ProviderValidationStatus = "configured"
-	// Provider is missing required API key configuration
+	// ProviderValidationStatusMissing indicates the provider is missing required API key configuration.
 	ProviderValidationStatusMissing ProviderValidationStatus = "missing"
-	// Provider has optional API key that is not configured (still usable)
+	// ProviderValidationStatusOptional indicates the provider has optional API key that is not configured (still usable).
 	ProviderValidationStatusOptional ProviderValidationStatus = "optional"
-	// Provider doesn't have client implementation yet
+	// ProviderValidationStatusUnsupported indicates the provider doesn't have client implementation yet.
 	ProviderValidationStatusUnsupported ProviderValidationStatus = "unsupported"
 )
 

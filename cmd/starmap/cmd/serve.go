@@ -4,21 +4,22 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap/internal/tools/site"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/spf13/cobra"
 )
 
 var servePort int
 
-// serveCmd represents the serve command
+// serveCmd represents the serve command.
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Serve documentation or other resources",
 	Long:  `Serve starts a local development server for various resources.`,
 }
 
-// serveSiteCmd represents the serve site command
+// serveSiteCmd represents the serve site command.
 var serveSiteCmd = &cobra.Command{
 	Use:   "site",
 	Short: "Run local Hugo development server",
@@ -35,7 +36,7 @@ func init() {
 	serveSiteCmd.Flags().IntVar(&servePort, "port", 1313, "Port for development server")
 }
 
-func runServeSite(cmd *cobra.Command, args []string) error {
+func runServeSite(_ *cobra.Command, _ []string) error {
 	ctx := context.Background()
 
 	logging.Info().

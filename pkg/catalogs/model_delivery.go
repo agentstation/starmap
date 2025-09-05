@@ -18,19 +18,19 @@ func (mrf ModelResponseFormat) String() string {
 
 // Model response formats.
 const (
-	// Basic formats
+	// Basic formats.
 	ModelResponseFormatText ModelResponseFormat = "text" // Plain text responses (default)
 
-	// JSON formats
+	// JSON formats.
 	ModelResponseFormatJSON       ModelResponseFormat = "json"        // JSON encouraged via prompting
 	ModelResponseFormatJSONMode   ModelResponseFormat = "json_mode"   // Forced valid JSON (OpenAI style)
 	ModelResponseFormatJSONObject ModelResponseFormat = "json_object" // Same as json_mode (OpenAI API name)
 
-	// Structured formats
+	// Structured formats.
 	ModelResponseFormatJSONSchema       ModelResponseFormat = "json_schema"       // Schema-validated JSON (OpenAI structured output)
 	ModelResponseFormatStructuredOutput ModelResponseFormat = "structured_output" // General structured output support
 
-	// Function calling (alternative to JSON schema)
+	// Function calling (alternative to JSON schema).
 	ModelResponseFormatFunctionCall ModelResponseFormat = "function_call" // Tool/function calling for structured data
 )
 

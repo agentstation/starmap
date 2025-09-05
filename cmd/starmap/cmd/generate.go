@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/agentstation/starmap/cmd/starmap/cmd/generate"
 	"github.com/spf13/cobra"
+
+	"github.com/agentstation/starmap/cmd/starmap/cmd/generate"
 )
 
-// generateCmd represents the parent generate command
+// generateCmd represents the parent generate command.
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate various artifacts (docs, site, testdata)",

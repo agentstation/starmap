@@ -90,7 +90,7 @@ type ModelFeatures struct {
 	MaxTokens       bool `json:"max_tokens" yaml:"max_tokens"`               // [Core] Supports max_tokens parameter
 	MaxOutputTokens bool `json:"max_output_tokens" yaml:"max_output_tokens"` // [Core] Supports max_output_tokens parameter (some providers distinguish from max_tokens)
 	Stop            bool `json:"stop" yaml:"stop"`                           // [Core] Supports stop sequences/words
-	StopTokenIds    bool `json:"stop_token_ids" yaml:"stop_token_ids"`       // [Advanced] Supports stop token IDs (numeric)
+	StopTokenIDs    bool `json:"stop_token_ids" yaml:"stop_token_ids"`       // [Advanced] Supports stop token IDs (numeric)
 
 	// Generation control - Repetition control
 	FrequencyPenalty  bool `json:"frequency_penalty" yaml:"frequency_penalty"`       // [Core] Supports frequency penalty
@@ -172,7 +172,7 @@ const (
 	ToolChoiceAuto     ToolChoice = "auto"     // Model autonomously decides whether to call tools based on context
 	ToolChoiceNone     ToolChoice = "none"     // Model will never call tools, even if tool definitions are provided
 	ToolChoiceRequired ToolChoice = "required" // Model must call at least one tool before responding
-	// Note: Specific tool names can also be used as values to force calling a particular tool
+	// Note: Specific tool names can also be used as values to force calling a particular tool.
 )
 
 // ModelControlLevels represents a set of effort/intensity levels for model controls.

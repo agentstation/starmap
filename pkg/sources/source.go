@@ -29,15 +29,15 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Type represents the type/name of a data source
+// Type represents the type/name of a data source.
 type Type string
 
-// String returns the string representation of a source name
+// String returns the string representation of a source name.
 func (sn Type) String() string {
 	return string(sn)
 }
 
-// Common source names
+// Common source names.
 const (
 	ProviderAPI   Type = "Provider APIs"
 	ModelsDevGit  Type = "models.dev (git)"
@@ -45,7 +45,7 @@ const (
 	LocalCatalog  Type = "Local Catalog"
 )
 
-// Source represents a data source for catalog information
+// Source represents a data source for catalog information.
 type Source interface {
 	// Type returns the type of this source
 	Type() Type
@@ -64,11 +64,14 @@ type Source interface {
 	Cleanup() error
 }
 
-// ResourceType identifies the type of resource being merged
+// ResourceType identifies the type of resource being merged.
 type ResourceType string
 
 const (
+	// ResourceTypeModel represents a model resource.
 	ResourceTypeModel    ResourceType = "model"
+	// ResourceTypeProvider represents a provider resource.
 	ResourceTypeProvider ResourceType = "provider"
+	// ResourceTypeAuthor represents an author resource.
 	ResourceTypeAuthor   ResourceType = "author"
 )

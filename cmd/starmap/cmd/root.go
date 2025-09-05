@@ -8,27 +8,31 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/agentstation/starmap/internal/cmd/common"
-	"github.com/agentstation/starmap/internal/cmd/output"
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/agentstation/starmap/internal/cmd/cmdutil"
+	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 var (
 	configFile  string
-	globalFlags *common.GlobalFlags
+	globalFlags *cmdutil.GlobalFlags
 
-	// Version information set by main
+	// Version information set by main.
 	Version = "dev"
+	// Commit is the git commit hash.
 	Commit  = "unknown"
+	// Date is the build date.
 	Date    = "unknown"
+	// BuiltBy is the build system identifier.
 	BuiltBy = "unknown"
 )
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
 	Use:   "starmap",
 	Short: "AI Model Catalog CLI",
@@ -77,7 +81,7 @@ func init() {
 
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	globalFlags = common.AddGlobalFlags(rootCmd)
+	globalFlags = cmdutil.AddGlobalFlags(rootCmd)
 
 	// Bind flags to viper
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
@@ -125,8 +129,8 @@ func initConfig() {
 	configureLogging()
 }
 
-// setupCommand is called before any command runs
-func setupCommand(cmd *cobra.Command, args []string) error {
+// setupCommand is called before any command runs.
+func setupCommand(_ *cobra.Command, _ []string) error {
 	// Setup output format based on terminal detection
 	if globalFlags.Output == "" {
 		globalFlags.Output = string(output.DetectFormat(""))
@@ -135,7 +139,7 @@ func setupCommand(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// configureLogging sets up the logging system based on configuration
+// configureLogging sets up the logging system based on configuration.
 func configureLogging() {
 	// Determine log level
 	level := zerolog.InfoLevel
@@ -170,7 +174,7 @@ func configureLogging() {
 	logging.Configure(config)
 }
 
-// loadEnvFiles loads environment variables from .env files
+// loadEnvFiles loads environment variables from .env files.
 func loadEnvFiles() {
 	// Try to load .env files in order of precedence
 	// .env.local overrides .env
@@ -184,7 +188,7 @@ func loadEnvFiles() {
 	}
 }
 
-// loadEnvFile loads a single .env file using godotenv
+// loadEnvFile loads a single .env file using godotenv.
 func loadEnvFile(filename string) {
 	// Use godotenv to load the file into the environment
 	if err := godotenv.Load(filename); err == nil {
@@ -195,7 +199,7 @@ func loadEnvFile(filename string) {
 	}
 }
 
-// bindAPIKeys explicitly binds common API key environment variables to Viper
+// bindAPIKeys explicitly binds common API key environment variables to Viper.
 func bindAPIKeys() {
 	// Common API keys that might be in .env files
 	apiKeys := []string{

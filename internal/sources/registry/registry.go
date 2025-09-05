@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 
-	// Import provider implementations for registry
+	// Import provider implementations for registry.
 	"github.com/agentstation/starmap/internal/sources/providers/anthropic"
 	"github.com/agentstation/starmap/internal/sources/providers/cerebras"
 	"github.com/agentstation/starmap/internal/sources/providers/deepseek"
@@ -21,7 +21,7 @@ import (
 	"github.com/agentstation/starmap/internal/sources/providers/openai"
 )
 
-// registry maps provider IDs to their client creation functions
+// registry maps provider IDs to their client creation functions.
 var registry = map[catalogs.ProviderID]func(*catalogs.Provider) catalogs.Client{
 	catalogs.ProviderIDOpenAI:         func(p *catalogs.Provider) catalogs.Client { return openai.NewClient(p) },
 	catalogs.ProviderIDAnthropic:      func(p *catalogs.Provider) catalogs.Client { return anthropic.NewClient(p) },
@@ -79,8 +79,8 @@ func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string)
 	}
 	defer func() {
 		// Drain any remaining body to allow connection reuse
-		io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 
 	// Read raw response body

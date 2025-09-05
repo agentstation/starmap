@@ -70,7 +70,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Starmap manages a catalog with automatic updates and event hooks
+// Starmap manages a catalog with automatic updates and event hooks.
 type Starmap interface {
 	// Catalog returns a copy of the current catalog
 	Catalog() (catalogs.Catalog, error)
@@ -100,7 +100,7 @@ type Starmap interface {
 	Write() error
 }
 
-// starmap is the internal implementation of the Starmap interface
+// starmap is the internal implementation of the Starmap interface.
 type starmap struct {
 	mu           sync.RWMutex
 	catalog      catalogs.Catalog
@@ -117,7 +117,7 @@ type starmap struct {
 	httpClient *http.Client
 }
 
-// New creates a new Starmap instance with the given options
+// New creates a new Starmap instance with the given options.
 func New(opts ...Option) (Starmap, error) {
 
 	sm := &starmap{
@@ -162,7 +162,7 @@ func New(opts ...Option) (Starmap, error) {
 	return sm, nil
 }
 
-// Catalog returns a copy of the current catalog
+// Catalog returns a copy of the current catalog.
 func (s *starmap) Catalog() (catalogs.Catalog, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -170,7 +170,7 @@ func (s *starmap) Catalog() (catalogs.Catalog, error) {
 	return s.catalog.Copy()
 }
 
-// AutoUpdatesOn begins automatic updates if configured
+// AutoUpdatesOn begins automatic updates if configured.
 func (s *starmap) AutoUpdatesOn() error {
 	if s.options.autoUpdateInterval <= 0 {
 		return &errors.ValidationError{
@@ -214,7 +214,7 @@ func (s *starmap) AutoUpdatesOn() error {
 	return nil
 }
 
-// AutoUpdatesOff stops automatic updates
+// AutoUpdatesOff stops automatic updates.
 func (s *starmap) AutoUpdatesOff() error {
 	if s.updateTicker != nil {
 		s.updateTicker.Stop()
@@ -232,7 +232,7 @@ func (s *starmap) AutoUpdatesOff() error {
 	return nil
 }
 
-// Update manually triggers a catalog update
+// Update manually triggers a catalog update.
 func (s *starmap) Update(ctx context.Context) error {
 	if s.options.remoteServerURL != nil {
 		return s.updateFromServer(ctx)
@@ -256,7 +256,7 @@ func (s *starmap) Update(ctx context.Context) error {
 	return nil
 }
 
-// updateWithPipeline performs a pipeline-based update for all providers
+// updateWithPipeline performs a pipeline-based update for all providers.
 func (s *starmap) updateWithPipeline(ctx context.Context) error {
 	// Use default options for auto-updates
 	opts := []SyncOption{
@@ -270,7 +270,7 @@ func (s *starmap) updateWithPipeline(ctx context.Context) error {
 	return err
 }
 
-// updateFromServer fetches catalog updates from the remote server
+// updateFromServer fetches catalog updates from the remote server.
 func (s *starmap) updateFromServer(ctx context.Context) error {
 	if s.options.remoteServerURL == nil {
 		return &errors.ConfigError{
@@ -304,8 +304,8 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	}
 	defer func() {
 		// Drain and close body to allow connection reuse
-		io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}()
 
 	// Check response status
@@ -394,7 +394,7 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	return nil
 }
 
-// setCatalog updates the catalog and triggers appropriate event hooks
+// setCatalog updates the catalog and triggers appropriate event hooks.
 func (s *starmap) setCatalog(newCatalog catalogs.Catalog) {
 	s.mu.Lock()
 	oldCatalog := s.catalog
@@ -405,7 +405,7 @@ func (s *starmap) setCatalog(newCatalog catalogs.Catalog) {
 	s.hooks.triggerCatalogUpdate(oldCatalog, newCatalog)
 }
 
-// Write saves the current catalog to disk using the catalog's native save functionality
+// Write saves the current catalog to disk using the catalog's native save functionality.
 func (s *starmap) Write() error {
 	s.mu.RLock()
 	catalog := s.catalog
@@ -424,7 +424,7 @@ func (s *starmap) Write() error {
 	}
 }
 
-// defaultSources creates the default set of sources
+// defaultSources creates the default set of sources.
 func defaultSources() []sources.Source {
 	return []sources.Source{
 		local.New(),
@@ -434,7 +434,7 @@ func defaultSources() []sources.Source {
 	}
 }
 
-// configureSources configures sources based on options
+// configureSources configures sources based on options.
 func (s *starmap) configureSources() {
 	// If localPath is configured, update the local source
 	if s.options.localPath != "" {
@@ -448,7 +448,7 @@ func (s *starmap) configureSources() {
 	}
 }
 
-// Sources returns the sources to use based on configuration
+// Sources returns the sources to use based on configuration.
 func (s *starmap) filterSources(options *SyncOptions) []sources.Source {
 	// If specific sources are requested, filter to those
 	if len(options.Sources) > 0 {

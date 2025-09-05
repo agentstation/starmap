@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// Sync synchronizes the catalog with provider APIs using staged source execution
+// Sync synchronizes the catalog with provider APIs using staged source execution.
 func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error) {
 	// Step 0: Set context
 	if ctx == nil {
@@ -126,7 +126,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, er
 // Helper Methods for Sync
 // ============================================================================
 
-// save applies the catalog changes if not in dry-run mode
+// save applies the catalog changes if not in dry-run mode.
 func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset *differ.Changeset) error {
 	// Update internal catalog first
 	s.mu.Lock()

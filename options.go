@@ -16,7 +16,7 @@ import (
 // Starmap Options
 // ============================================================================
 
-// options holds the configuration for a Starmap instance
+// options holds the configuration for a Starmap instance.
 type options struct {
 	// Remote server configuration
 	remoteServerURL    *string
@@ -47,10 +47,10 @@ func defaultOptions() *options {
 	}
 }
 
-// Option is a function that configures a Starmap instance
+// Option is a function that configures a Starmap instance.
 type Option func(*options) error
 
-// apply applies the given options to the options
+// apply applies the given options to the options.
 func (s *starmap) apply(opts ...Option) error {
 	for _, opt := range opts {
 		if err := opt(s.options); err != nil {
@@ -71,7 +71,7 @@ func WithRemoteServer(url string, apiKey *string) Option {
 	}
 }
 
-// WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs
+// WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
 func WithRemoteServerOnly(enabled bool) Option {
 	return func(o *options) error {
 		o.remoteServerOnly = enabled
@@ -79,7 +79,7 @@ func WithRemoteServerOnly(enabled bool) Option {
 	}
 }
 
-// WithAutoUpdates configures whether automatic updates are enabled
+// WithAutoUpdates configures whether automatic updates are enabled.
 func WithAutoUpdates(enabled bool) Option {
 	return func(o *options) error {
 		o.autoUpdatesEnabled = enabled
@@ -87,7 +87,7 @@ func WithAutoUpdates(enabled bool) Option {
 	}
 }
 
-// WithAutoUpdateInterval configures how often to automatically update the catalog
+// WithAutoUpdateInterval configures how often to automatically update the catalog.
 func WithAutoUpdateInterval(interval time.Duration) Option {
 	return func(o *options) error {
 		o.autoUpdateInterval = interval
@@ -95,10 +95,10 @@ func WithAutoUpdateInterval(interval time.Duration) Option {
 	}
 }
 
-// AutoUpdateFunc is a function that updates the catalog
+// AutoUpdateFunc is a function that updates the catalog.
 type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
 
-// WithAutoUpdateFunc configures a custom function for updating the catalog
+// WithAutoUpdateFunc configures a custom function for updating the catalog.
 func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {
 	return func(o *options) error {
 		o.autoUpdateFunc = fn
@@ -106,7 +106,7 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {
 	}
 }
 
-// WithInitialCatalog configures the initial catalog to use
+// WithInitialCatalog configures the initial catalog to use.
 func WithInitialCatalog(catalog catalogs.Catalog) Option {
 	return func(o *options) error {
 		o.initialCatalog = &catalog
@@ -114,7 +114,7 @@ func WithInitialCatalog(catalog catalogs.Catalog) Option {
 	}
 }
 
-// WithLocalPath configures the local source to use a specific catalog path
+// WithLocalPath configures the local source to use a specific catalog path.
 func WithLocalPath(path string) Option {
 	return func(o *options) error {
 		o.localPath = path
@@ -126,7 +126,7 @@ func WithLocalPath(path string) Option {
 // Sync Options
 // ============================================================================
 
-// SyncOptions controls the overall sync orchestration in Starmap.Sync()
+// SyncOptions controls the overall sync orchestration in Starmap.Sync().
 type SyncOptions struct {
 	// Orchestration control
 	DryRun      bool          // Show changes without applying them
@@ -147,7 +147,7 @@ type SyncOptions struct {
 	Reformat           bool // Reformat providers.yaml file even without changes
 }
 
-// Apply applies the given options to the sync options
+// Apply applies the given options to the sync options.
 func (s *SyncOptions) apply(opts ...SyncOption) *SyncOptions {
 	for _, opt := range opts {
 		opt(s)
@@ -155,7 +155,7 @@ func (s *SyncOptions) apply(opts ...SyncOption) *SyncOptions {
 	return s
 }
 
-// defaultSyncOptions returns sync options with default values
+// defaultSyncOptions returns sync options with default values.
 func defaultSyncOptions() *SyncOptions {
 	return &SyncOptions{
 		DryRun:             false,
@@ -171,46 +171,46 @@ func defaultSyncOptions() *SyncOptions {
 	}
 }
 
-// NewSyncOptions returns sync options with default values
+// NewSyncOptions returns sync options with default values.
 func NewSyncOptions(opts ...SyncOption) *SyncOptions {
 	return defaultSyncOptions().apply(opts...)
 }
 
-// SyncOption is a function that configures SyncOptions
+// SyncOption is a function that configures SyncOptions.
 type SyncOption func(*SyncOptions)
 
-// Validate checks if the sync options are valid
-func (opts *SyncOptions) Validate(providers *catalogs.Providers) error {
+// Validate checks if the sync options are valid.
+func (s *SyncOptions) Validate(providers *catalogs.Providers) error {
 	// Validate timeout
-	if opts.Timeout < 0 {
+	if s.Timeout < 0 {
 		return &errors.ValidationError{
 			Field:   "Timeout",
-			Value:   opts.Timeout,
+			Value:   s.Timeout,
 			Message: "timeout must be non-negative",
 		}
 	}
 
 	// Validate provider ID if specified
-	if opts.ProviderID != nil {
-		_, found := providers.Get(*opts.ProviderID)
+	if s.ProviderID != nil {
+		_, found := providers.Get(*s.ProviderID)
 		if !found {
 			return &errors.ValidationError{
 				Field:   "ProviderID",
-				Value:   *opts.ProviderID,
-				Message: fmt.Sprintf("provider '%s' not found", *opts.ProviderID),
+				Value:   *s.ProviderID,
+				Message: fmt.Sprintf("provider '%s' not found", *s.ProviderID),
 			}
 		}
 	}
 
 	// Validate output path if specified
-	if opts.OutputPath != "" {
+	if s.OutputPath != "" {
 		// Check if parent directory exists
-		dir := filepath.Dir(opts.OutputPath)
+		dir := filepath.Dir(s.OutputPath)
 		if dir != "." && dir != "/" {
 			if _, err := os.Stat(dir); os.IsNotExist(err) {
 				return &errors.ValidationError{
 					Field:   "OutputPath",
-					Value:   opts.OutputPath,
+					Value:   s.OutputPath,
 					Message: fmt.Sprintf("output directory '%s' does not exist", dir),
 				}
 			}
@@ -220,90 +220,90 @@ func (opts *SyncOptions) Validate(providers *catalogs.Providers) error {
 	return nil
 }
 
-// SourceOptions converts sync options to properly typed source options
-func (opts *SyncOptions) SourceOptions() []sources.Option {
+// SourceOptions converts sync options to properly typed source options.
+func (s *SyncOptions) SourceOptions() []sources.Option {
 	var sourceOpts []sources.Option
 
-	if opts.ProviderID != nil {
-		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*opts.ProviderID))
+	if s.ProviderID != nil {
+		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*s.ProviderID))
 	}
-	if opts.Fresh {
+	if s.Fresh {
 		sourceOpts = append(sourceOpts, sources.WithFresh(true))
 	}
-	if opts.CleanModelsDevRepo {
+	if s.CleanModelsDevRepo {
 		sourceOpts = append(sourceOpts, sources.WithCleanupRepo(true))
 	}
-	if opts.Reformat {
+	if s.Reformat {
 		sourceOpts = append(sourceOpts, sources.WithReformat(true))
 	}
 
 	return sourceOpts
 }
 
-// WithDryRun configures dry run mode
+// WithDryRun configures dry run mode.
 func WithDryRun(dryRun bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.DryRun = dryRun
 	}
 }
 
-// WithAutoApprove configures auto approval
+// WithAutoApprove configures auto approval.
 func WithAutoApprove(autoApprove bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.AutoApprove = autoApprove
 	}
 }
 
-// WithFailFast configures fail-fast behavior
+// WithFailFast configures fail-fast behavior.
 func WithFailFast(failFast bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.FailFast = failFast
 	}
 }
 
-// WithTimeout configures the sync timeout
+// WithTimeout configures the sync timeout.
 func WithTimeout(timeout time.Duration) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.Timeout = timeout
 	}
 }
 
-// WithSources configures which sources to use
+// WithSources configures which sources to use.
 func WithSources(types ...sources.Type) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.Sources = types
 	}
 }
 
-// WithProvider configures syncing for a specific provider only
+// WithProvider configures syncing for a specific provider only.
 func WithProvider(providerID catalogs.ProviderID) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.ProviderID = &providerID
 	}
 }
 
-// WithOutputPath configures the output path for saving
+// WithOutputPath configures the output path for saving.
 func WithOutputPath(path string) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.OutputPath = path
 	}
 }
 
-// WithFresh configures whether to delete existing models and fetch fresh from APIs
+// WithFresh configures whether to delete existing models and fetch fresh from APIs.
 func WithFresh(fresh bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.Fresh = fresh
 	}
 }
 
-// WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update
+// WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update.
 func WithCleanModelsDevRepo(cleanup bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.CleanModelsDevRepo = cleanup
 	}
 }
 
-// WithReformat configures whether to reformat providers.yaml file even without changes
+// WithReformat configures whether to reformat providers.yaml file even without changes.
 func WithReformat(reformat bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.Reformat = reformat

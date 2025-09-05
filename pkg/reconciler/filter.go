@@ -5,13 +5,13 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// filter handles primary source filtering logic
+// filter handles primary source filtering logic.
 type filter struct {
 	primary        sources.Type
 	primaryCatalog catalogs.Catalog
 }
 
-// newFilter creates a new filter
+// newFilter creates a new filter.
 func newFilter(primary sources.Type, catalog catalogs.Catalog) *filter {
 	return &filter{
 		primary:        primary,
@@ -19,12 +19,12 @@ func newFilter(primary sources.Type, catalog catalogs.Catalog) *filter {
 	}
 }
 
-// isEnabled returns true if filtering is enabled
+// isEnabled returns true if filtering is enabled.
 func (f *filter) isEnabled() bool {
 	return f.primary != "" && f.primaryCatalog != nil
 }
 
-// filterProviders filters providers by primary source
+// filterProviders filters providers by primary source.
 func (f *filter) filterProviders(providers []catalogs.Provider) []catalogs.Provider {
 	if !f.isEnabled() {
 		return providers
@@ -40,7 +40,7 @@ func (f *filter) filterProviders(providers []catalogs.Provider) []catalogs.Provi
 	return filtered
 }
 
-// providerExistsInPrimary checks if provider exists in primary catalog
+// providerExistsInPrimary checks if provider exists in primary catalog.
 func (f *filter) providerExistsInPrimary(provider catalogs.Provider) bool {
 	if !f.isEnabled() {
 		return true

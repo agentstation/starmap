@@ -1,3 +1,4 @@
+// Package openai provides a client for the OpenAI API.
 package openai
 
 import (
@@ -46,7 +47,7 @@ func (c *Client) ConvertToModel(m baseclient.OpenAIModelData) catalogs.Model {
 // inferFeatures infers OpenAI-specific model features based on the model ID.
 func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 	// Start with base features
-	features := c.OpenAIClient.InferFeatures(modelID)
+	features := c.InferFeatures(modelID)
 
 	// Add OpenAI-specific feature detection
 	modelLower := strings.ToLower(modelID)

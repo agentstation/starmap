@@ -1,6 +1,7 @@
 package modelsdev
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,18 +14,20 @@ import (
 )
 
 const (
+	// ModelsDevAPIURL is the URL for the models.dev API.
 	ModelsDevAPIURL = "https://models.dev/api.json"
+	// HTTPCacheTTL is the cache time-to-live for HTTP responses.
 	HTTPCacheTTL    = 1 * time.Hour
 )
 
-// HTTPClient handles HTTP downloading of models.dev api.json
+// HTTPClient handles HTTP downloading of models.dev api.json.
 type HTTPClient struct {
 	CacheDir string
 	APIURL   string
 	Client   *http.Client
 }
 
-// NewHTTPClient creates a new models.dev HTTP client
+// NewHTTPClient creates a new models.dev HTTP client.
 func NewHTTPClient(outputDir string) *HTTPClient {
 	cacheDir := filepath.Join(outputDir, "models.dev-cache")
 	return &HTTPClient{
@@ -34,8 +37,8 @@ func NewHTTPClient(outputDir string) *HTTPClient {
 	}
 }
 
-// EnsureAPI ensures the api.json is available and up to date
-func (c *HTTPClient) EnsureAPI() error {
+// EnsureAPI ensures the api.json is available and up to date.
+func (c *HTTPClient) EnsureAPI(ctx context.Context) error {
 	// Create cache directory if it doesn't exist
 	if err := os.MkdirAll(c.CacheDir, constants.DirPermissions); err != nil {
 		return errors.WrapIO("create", "cache directory", err)
@@ -52,7 +55,11 @@ func (c *HTTPClient) EnsureAPI() error {
 	// Download fresh api.json
 	fmt.Printf("  📥 Downloading api.json from %s...\n", c.APIURL)
 
-	resp, err := c.Client.Get(c.APIURL)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.APIURL, nil)
+	if err != nil {
+		return errors.WrapResource("create", "request", c.APIURL, err)
+	}
+	resp, err := c.Client.Do(req)
 	if err != nil {
 		return &errors.APIError{
 			Provider: "models.dev",
@@ -61,7 +68,7 @@ func (c *HTTPClient) EnsureAPI() error {
 			Err:      err,
 		}
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return &errors.APIError{
@@ -77,19 +84,19 @@ func (c *HTTPClient) EnsureAPI() error {
 	if err != nil {
 		return errors.WrapIO("create", "temp file", err)
 	}
-	defer tempFile.Close()
+	defer func() { _ = tempFile.Close() }()
 	tempPath := tempFile.Name()
 
 	// Copy response to temp file
 	_, err = io.Copy(tempFile, resp.Body)
 	if err != nil {
-		os.Remove(tempPath)
+		_ = os.Remove(tempPath)
 		return errors.WrapIO("write", "api.json", err)
 	}
 
 	// Atomically move temp file to final location
 	if err := os.Rename(tempPath, apiPath); err != nil {
-		os.Remove(tempPath)
+		_ = os.Remove(tempPath)
 		return errors.WrapIO("move", "api.json", err)
 	}
 
@@ -97,12 +104,12 @@ func (c *HTTPClient) EnsureAPI() error {
 	return nil
 }
 
-// GetAPIPath returns the path to the cached api.json file
+// GetAPIPath returns the path to the cached api.json file.
 func (c *HTTPClient) GetAPIPath() string {
 	return filepath.Join(c.CacheDir, "api.json")
 }
 
-// Cleanup removes the cache directory
+// Cleanup removes the cache directory.
 func (c *HTTPClient) Cleanup() error {
 	if _, err := os.Stat(c.CacheDir); os.IsNotExist(err) {
 		return nil // Already cleaned up
@@ -110,7 +117,7 @@ func (c *HTTPClient) Cleanup() error {
 	return os.RemoveAll(c.CacheDir)
 }
 
-// isCacheValid checks if the cached api.json is recent enough
+// isCacheValid checks if the cached api.json is recent enough.
 func (c *HTTPClient) isCacheValid(apiPath string) bool {
 	info, err := os.Stat(apiPath)
 	if err != nil {

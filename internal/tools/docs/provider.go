@@ -1,3 +1,4 @@
+//nolint:gosec // Internal documentation generation tool with controlled file operations
 package docs
 
 import (
@@ -14,7 +15,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// generateProviderDocs generates documentation for all providers
+// generateProviderDocs generates documentation for all providers.
 func (g *Generator) generateProviderDocs(dir string, catalog catalogs.Reader) error {
 	providers := catalog.Providers().List()
 
@@ -49,7 +50,7 @@ func (g *Generator) generateProviderDocs(dir string, catalog catalogs.Reader) er
 	return nil
 }
 
-// generateProviderIndex generates the main provider listing page
+// generateProviderIndex generates the main provider listing page.
 func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Provider) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
@@ -64,16 +65,16 @@ func (g *Generator) generateProviderIndex(dir string, providers []*catalogs.Prov
 			return fmt.Errorf("creating provider index %s: %w", filename, err)
 		}
 		if err := g.writeProviderIndex(f, providers); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeProviderIndex writes the provider index content using markdown builder
+// writeProviderIndex writes the provider index content using markdown builder.
 func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provider) error {
 	markdown := NewMarkdown(w)
 
@@ -111,9 +112,7 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 	for _, provider := range providers {
 		// Use sorted models for deterministic iteration
 		sortedModels := SortedModels(provider.Models)
-		for _, model := range sortedModels {
-			allModels = append(allModels, model)
-		}
+		allModels = append(allModels, sortedModels...)
 	}
 
 	// Show top 20 models
@@ -196,7 +195,7 @@ func (g *Generator) writeProviderIndex(w io.Writer, providers []*catalogs.Provid
 	return markdown.Build()
 }
 
-// writeProviderComparisonTableToMarkdown adds provider comparison table to markdown builder
+// writeProviderComparisonTableToMarkdown adds provider comparison table to markdown builder.
 func (g *Generator) writeProviderComparisonTableToMarkdown(markdown *Markdown, providers []*catalogs.Provider) {
 	// Create a temporary writer to capture the table output
 	var buf strings.Builder
@@ -204,7 +203,7 @@ func (g *Generator) writeProviderComparisonTableToMarkdown(markdown *Markdown, p
 	markdown.PlainText(buf.String())
 }
 
-// writeModelsOverviewTableToMarkdown adds models overview table to markdown builder
+// writeModelsOverviewTableToMarkdown adds models overview table to markdown builder.
 func (g *Generator) writeModelsOverviewTableToMarkdown(markdown *Markdown, allModels []*catalogs.Model, providers []*catalogs.Provider) {
 	// Create a temporary writer to capture the table output
 	var buf strings.Builder
@@ -212,7 +211,7 @@ func (g *Generator) writeModelsOverviewTableToMarkdown(markdown *Markdown, allMo
 	markdown.PlainText(buf.String())
 }
 
-// generateProviderReadme generates documentation for a single provider
+// generateProviderReadme generates documentation for a single provider.
 func (g *Generator) generateProviderReadme(dir string, provider *catalogs.Provider, catalog catalogs.Reader) error {
 	// Write to both README.md (for GitHub) and _index.md (for Hugo)
 	for _, filename := range []string{"README.md", "_index.md"} {
@@ -222,16 +221,18 @@ func (g *Generator) generateProviderReadme(dir string, provider *catalogs.Provid
 			return fmt.Errorf("creating %s: %w", filename, err)
 		}
 		if err := g.writeProviderReadme(f, provider, catalog); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeProviderReadme writes the provider readme content using markdown builder
+//
+//nolint:gocyclo // Complex documentation generation with many cases
+// writeProviderReadme writes the provider readme content using markdown builder.
 func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider, catalog catalogs.Reader) error {
 	markdown := NewMarkdown(w)
 
@@ -325,7 +326,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		if provider.PrivacyPolicy.RetainsData != nil {
 			retainsData := "No"
 			if *provider.PrivacyPolicy.RetainsData {
-				retainsData = "Yes"
+				retainsData = Yes
 			}
 			markdown.PlainText(fmt.Sprintf("**Retains User Data**: %s  ", retainsData)).LF()
 		}
@@ -333,7 +334,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		if provider.PrivacyPolicy.TrainsOnData != nil {
 			trainsOnData := "No"
 			if *provider.PrivacyPolicy.TrainsOnData {
-				trainsOnData = "Yes"
+				trainsOnData = Yes
 			}
 			markdown.PlainText(fmt.Sprintf("**Trains on User Data**: %s  ", trainsOnData)).LF()
 		}
@@ -378,7 +379,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		if provider.GovernancePolicy.ModerationRequired != nil {
 			requiresModeration := "No"
 			if *provider.GovernancePolicy.ModerationRequired {
-				requiresModeration = "Yes"
+				requiresModeration = Yes
 			}
 			markdown.PlainText(fmt.Sprintf("**Requires Moderation**: %s  ", requiresModeration)).LF()
 		}
@@ -386,17 +387,24 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 		if provider.GovernancePolicy.Moderated != nil {
 			moderated := "No"
 			if *provider.GovernancePolicy.Moderated {
-				moderated = "Yes"
+				moderated = Yes
 			}
 			markdown.PlainText(fmt.Sprintf("**Content Moderated**: %s  ", moderated)).LF()
 		}
 
 		if provider.GovernancePolicy.Moderator != nil && *provider.GovernancePolicy.Moderator != "" {
-			// Capitalize the moderator name
+			// Title case the moderator name
 			moderator := *provider.GovernancePolicy.Moderator
-			if len(moderator) > 0 {
-				moderator = strings.Title(moderator)
+			words := strings.Fields(moderator)
+			for i, word := range words {
+				if len(word) > 0 {
+					// Capitalize first letter of each word, except for small words that aren't the first
+					if i == 0 || len(word) > 2 || (word != "a" && word != "an" && word != "the" && word != "of" && word != "in" && word != "on" && word != "at" && word != "to" && word != "for") {
+						words[i] = strings.ToUpper(word[:1]) + word[1:]
+					}
+				}
 			}
+			moderator = strings.Join(words, " ")
 			markdown.PlainText(fmt.Sprintf("**Moderated by**: %s  ", moderator)).LF()
 		}
 
@@ -447,18 +455,18 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 
 			for _, model := range modelsCopy {
 				// Context window
-				contextStr := "N/A"
+				contextStr := NA
 				if model.Limits != nil && model.Limits.ContextWindow > 0 {
 					contextStr = formatContext(model.Limits.ContextWindow)
 				}
 
 				// Pricing
-				inputStr := "N/A"
-				outputStr := "N/A"
+				inputStr := NA
+				outputStr := NA
 				if model.Pricing != nil && model.Pricing.Tokens != nil {
 					if model.Pricing.Tokens.Input != nil {
 						if model.Pricing.Tokens.Input.Per1M == 0 {
-							inputStr = "Free"
+							inputStr = Free
 						} else {
 							inputStr = fmt.Sprintf("$%.2f", model.Pricing.Tokens.Input.Per1M)
 						}
@@ -528,7 +536,7 @@ starmap sync --provider %s`, provider.ID, provider.ID, provider.ID)).
 	return markdown.Build()
 }
 
-// groupModelsByFamily groups models by their family/category
+// groupModelsByFamily groups models by their family/category.
 func groupModelsByFamily(models []*catalogs.Model) map[string][]*catalogs.Model {
 	groups := make(map[string][]*catalogs.Model)
 
@@ -544,7 +552,7 @@ func groupModelsByFamily(models []*catalogs.Model) map[string][]*catalogs.Model 
 	return groups
 }
 
-// generateCompactFeatures generates a compact feature list for table display
+// generateCompactFeatures generates a compact feature list for table display.
 func compactFeatures(model catalogs.Model) string {
 	var features []string
 
@@ -570,12 +578,12 @@ func compactFeatures(model catalogs.Model) string {
 	}
 
 	if len(features) == 0 {
-		return "—"
+		return EmDash
 	}
 	return strings.Join(features, " ")
 }
 
-// generateProviderModelPages generates model documentation pages for a provider
+// generateProviderModelPages generates model documentation pages for a provider.
 func (g *Generator) generateProviderModelPages(dir string, provider *catalogs.Provider, catalog catalogs.Reader) error {
 	// Skip if provider has no models
 	if len(provider.Models) == 0 {
@@ -610,18 +618,20 @@ func (g *Generator) generateProviderModelPages(dir string, provider *catalogs.Pr
 	return nil
 }
 
-// generateProviderModelPage generates a single model page with provider context
+// generateProviderModelPage generates a single model page with provider context.
 func (g *Generator) generateProviderModelPage(filepath string, model *catalogs.Model, provider *catalogs.Provider, authorMap map[catalogs.AuthorID]*catalogs.Author) error {
 	f, err := os.Create(filepath)
 	if err != nil {
 		return fmt.Errorf("creating model file: %w", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	return g.writeProviderModelPage(f, model, provider, authorMap)
 }
 
-// writeProviderModelPage writes the provider model page content using markdown builder
+// writeProviderModelPage writes the provider model page content using markdown builder.
+//
+//nolint:gocyclo // Complex documentation generation with many cases
 func (g *Generator) writeProviderModelPage(w io.Writer, model *catalogs.Model, provider *catalogs.Provider, authorMap map[catalogs.AuthorID]*catalogs.Author) error {
 	markdown := NewMarkdown(w)
 
@@ -817,7 +827,7 @@ func (g *Generator) writeProviderModelPage(w io.Writer, model *catalogs.Model, p
 	}
 
 	if hasAdvancedFeatures {
-		markdownBuffer.Build()
+		_ = markdownBuffer.Build()
 		markdown.PlainText(markdownBuffer.String())
 	}
 
@@ -953,7 +963,7 @@ func (g *Generator) writeExampleCostsToMarkdown(markdown *Markdown, model *catal
 	}
 }
 
-// getProviderDescription returns a description for the provider
+// getProviderDescription returns a description for the provider.
 func getProviderDescription(provider *catalogs.Provider) string {
 	descriptions := map[catalogs.ProviderID]string{
 		"openai":           "Industry-leading AI models including GPT-4 and DALL-E, pioneering AGI research.",

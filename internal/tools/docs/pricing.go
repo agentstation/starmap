@@ -5,11 +5,14 @@ import (
 	"io"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	md "github.com/nao1215/markdown"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// formatTokenPricing formats token-based pricing
+// formatTokenPricing formats token-based pricing.
+//
+//nolint:unused // used in tests
 func formatTokenPricing(tokens *catalogs.ModelTokenPricing) string {
 	if tokens == nil {
 		return ""
@@ -81,7 +84,9 @@ func formatTokenPricing(tokens *catalogs.ModelTokenPricing) string {
 	return strings.Join(parts, "\n")
 }
 
-// formatTokenPrice formats a single token price entry
+// formatTokenPrice formats a single token price entry.
+//
+//nolint:unused // used in tests
 func formatTokenPrice(price *catalogs.ModelTokenCost, label string) string {
 	var priceStrs []string
 
@@ -102,7 +107,9 @@ func formatTokenPrice(price *catalogs.ModelTokenCost, label string) string {
 	return fmt.Sprintf("- %s: %s", label, strings.Join(priceStrs, " | "))
 }
 
-// formatOperationPricing formats operation-based pricing
+// formatOperationPricing formats operation-based pricing.
+//
+//nolint:unused // used in tests
 func formatOperationPricing(operations *catalogs.ModelOperationPricing) string {
 	if operations == nil {
 		return ""
@@ -158,10 +165,12 @@ func formatOperationPricing(operations *catalogs.ModelOperationPricing) string {
 	return strings.Join(parts, "\n")
 }
 
-// formatPricePerMillion formats price per million tokens with appropriate precision
+// formatPricePerMillion formats price per million tokens with appropriate precision.
+//
+//nolint:unused // used in tests
 func formatPricePerMillion(price float64) string {
 	if price == 0 {
-		return "Free"
+		return Free
 	}
 	if price < 0.01 {
 		return fmt.Sprintf("$%.6f", price)
@@ -172,7 +181,7 @@ func formatPricePerMillion(price float64) string {
 	return fmt.Sprintf("$%.2f", price)
 }
 
-// writeCostCalculator writes a cost calculator section
+// writeCostCalculator writes a cost calculator section.
 func writeCostCalculator(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
@@ -234,10 +243,10 @@ func writeCostCalculator(w io.Writer, model *catalogs.Model) {
 	}
 
 	markdown.CodeBlock("", strings.Join(formulaLines, "\n")).LF()
-	markdown.Build()
+	_ = markdown.Build()
 }
 
-// writeExampleCosts writes example costs for common scenarios
+// writeExampleCosts writes example costs for common scenarios.
 func writeExampleCosts(w io.Writer, model *catalogs.Model) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
@@ -289,5 +298,5 @@ func writeExampleCosts(w io.Writer, model *catalogs.Model) {
 		Rows:   rows,
 	}).LF()
 
-	markdown.Build()
+	_ = markdown.Build()
 }

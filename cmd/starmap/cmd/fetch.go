@@ -8,16 +8,23 @@ import (
 	"sync"
 	"time"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/spf13/cobra"
 )
 
-// newFetchCommand creates the fetch command with subcommands
+const (
+	// Output formats.
+	tableFormat = "table"
+	wideFormat  = "wide"
+)
+
+// newFetchCommand creates the fetch command with subcommands.
 func newFetchCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "fetch [resource]",
@@ -46,9 +53,9 @@ Supported providers include: openai, anthropic, google-ai-studio, google-vertex,
 	return cmd
 }
 
-// newFetchModelsCommand creates the fetch models subcommand
+// newFetchModelsCommand creates the fetch models subcommand.
 func newFetchModelsCommand() *cobra.Command {
-	var fetchFlags *common.FetchFlags
+	var fetchFlags *cmdutil.FetchFlags
 
 	cmd := &cobra.Command{
 		Use:   "models",
@@ -56,7 +63,7 @@ func newFetchModelsCommand() *cobra.Command {
 		Example: `  starmap fetch models --provider openai
   starmap fetch models --all
   starmap fetch models -p anthropic --timeout 60`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
 
 			if fetchFlags.All {
@@ -72,12 +79,12 @@ func newFetchModelsCommand() *cobra.Command {
 	}
 
 	// Add fetch-specific flags
-	fetchFlags = common.AddFetchFlags(cmd)
+	fetchFlags = cmdutil.AddFetchFlags(cmd)
 
 	return cmd
 }
 
-// fetchProviderModels fetches models from a specific provider
+// fetchProviderModels fetches models from a specific provider.
 func fetchProviderModels(ctx context.Context, providerID string, timeout int) error {
 	// Create context with timeout
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
@@ -133,7 +140,7 @@ func fetchProviderModels(ctx context.Context, providerID string, timeout int) er
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case "table", "wide", "":
+	case tableFormat, wideFormat, "":
 		outputData = modelsToTableData(models, false)
 	default:
 		outputData = models
@@ -142,7 +149,7 @@ func fetchProviderModels(ctx context.Context, providerID string, timeout int) er
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// fetchAllProviders fetches models from all configured providers concurrently
+// fetchAllProviders fetches models from all configured providers concurrently.
 func fetchAllProviders(ctx context.Context, timeout int) error {
 	sm, err := starmap.New()
 	if err != nil {
@@ -243,7 +250,7 @@ func fetchAllProviders(ctx context.Context, timeout int) error {
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case "table", "wide", "":
+	case tableFormat, wideFormat, "":
 		outputData = modelsToTableData(allModels, false)
 	default:
 		outputData = allModels

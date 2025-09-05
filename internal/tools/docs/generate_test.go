@@ -7,9 +7,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestWithOutputDir(t *testing.T) {
@@ -119,7 +120,7 @@ func TestGenerateWithVerbose(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-// TestGenerateComprehensive tests the Generate function with various scenarios
+// TestGenerateComprehensive tests the Generate function with various scenarios.
 func TestGenerateComprehensive(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -286,7 +287,7 @@ func TestGenerateComprehensive(t *testing.T) {
 	}
 }
 
-// TestGenerateDirectoryCreationError tests error handling when directory creation fails
+// TestGenerateDirectoryCreationError tests error handling when directory creation fails.
 func TestGenerateDirectoryCreationError(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -305,7 +306,7 @@ func TestGenerateDirectoryCreationError(t *testing.T) {
 	assert.Contains(t, err.Error(), "creating directory")
 }
 
-// TestGenerateCatalogIndexError tests error handling in catalog index generation
+// TestGenerateCatalogIndexError tests error handling in catalog index generation.
 func TestGenerateCatalogIndexError(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -334,7 +335,7 @@ func TestGenerateCatalogIndexError(t *testing.T) {
 	assert.Error(t, err)
 }
 
-// TestGenerateWithLogoCopyFailure tests that logo copy failures don't fail generation
+// TestGenerateWithLogoCopyFailure tests that logo copy failures don't fail generation.
 func TestGenerateWithLogoCopyFailure(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -371,7 +372,7 @@ func TestGenerateWithLogoCopyFailure(t *testing.T) {
 	assert.DirExists(t, filepath.Join(tmpDir, "catalog", "authors", "custom-author"))
 }
 
-// TestGenerateModelDocsError tests error handling in model docs generation
+// TestGenerateModelDocsError tests error handling in model docs generation.
 func TestGenerateModelDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -415,7 +416,7 @@ func TestGenerateModelDocsError(t *testing.T) {
 	_ = err
 }
 
-// TestGenerateProviderDocsError tests error handling in provider docs generation
+// TestGenerateProviderDocsError tests error handling in provider docs generation.
 func TestGenerateProviderDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -455,7 +456,7 @@ func TestGenerateProviderDocsError(t *testing.T) {
 	assert.Contains(t, err.Error(), "generating provider docs")
 }
 
-// TestGenerateAuthorDocsError tests error handling in author docs generation
+// TestGenerateAuthorDocsError tests error handling in author docs generation.
 func TestGenerateAuthorDocsError(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -495,7 +496,7 @@ func TestGenerateAuthorDocsError(t *testing.T) {
 	assert.Contains(t, err.Error(), "generating author docs")
 }
 
-// TestCopyLogosComprehensive tests the copyLogos function
+// TestCopyLogosComprehensive tests the copyLogos function.
 func TestCopyLogosComprehensive(t *testing.T) {
 	tmpDir := t.TempDir()
 
@@ -541,7 +542,7 @@ func TestCopyLogosComprehensive(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-// TestGenerateWithContextCancellation tests context cancellation handling
+// TestGenerateWithContextCancellation tests context cancellation handling.
 func TestGenerateWithContextCancellation(t *testing.T) {
 	tmpDir := t.TempDir()
 

@@ -14,13 +14,15 @@ type Authenticator interface {
 // NoAuth implements no authentication.
 type NoAuth struct{}
 
-func (a *NoAuth) Apply(req *http.Request, apiKey string) {
+// Apply implements the Authenticator interface for NoAuth.
+func (a *NoAuth) Apply(_ *http.Request, _ string) {
 	// No authentication applied
 }
 
 // BearerAuth implements Bearer token authentication.
 type BearerAuth struct{}
 
+// Apply implements the Authenticator interface for BearerAuth.
 func (a *BearerAuth) Apply(req *http.Request, apiKey string) {
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 }
@@ -30,6 +32,7 @@ type HeaderAuth struct {
 	Header string
 }
 
+// Apply implements the Authenticator interface for HeaderAuth.
 func (a *HeaderAuth) Apply(req *http.Request, apiKey string) {
 	req.Header.Set(a.Header, apiKey)
 }
@@ -39,6 +42,7 @@ type QueryAuth struct {
 	Param string
 }
 
+// Apply implements the Authenticator interface for QueryAuth.
 func (a *QueryAuth) Apply(req *http.Request, apiKey string) {
 	if req.URL == nil {
 		return
@@ -55,6 +59,7 @@ type ProviderAuth struct {
 	Provider *catalogs.Provider
 }
 
+// Apply implements the Authenticator interface for ProviderAuth.
 func (a *ProviderAuth) Apply(req *http.Request, apiKey string) {
 	if a.Provider == nil || a.Provider.APIKey == nil {
 		return

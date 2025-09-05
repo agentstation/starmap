@@ -1,3 +1,4 @@
+// Package provenance provides field-level tracking of data sources and modifications.
 package provenance
 
 import (
@@ -9,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Provenance tracks the origin and history of a field value
+// Provenance tracks the origin and history of a field value.
 type Provenance struct {
 	Source        sources.Type // Source that provided the value
 	Field         string       // Field path
@@ -21,10 +22,10 @@ type Provenance struct {
 	PreviousValue any          // Previous value if updated
 }
 
-// Map tracks provenance for multiple resources
+// Map tracks provenance for multiple resources.
 type Map map[string][]Provenance // key is "resourceType:resourceID:fieldPath"
 
-// Tracker manages provenance tracking during reconciliation
+// Tracker manages provenance tracking during reconciliation.
 type Tracker interface {
 	// Track records provenance for a field
 	Track(resourceType sources.ResourceType, resourceID string, field string, history Provenance)
@@ -42,13 +43,13 @@ type Tracker interface {
 	Clear()
 }
 
-// tracker is the default implementation
+// tracker is the default implementation.
 type tracker struct {
 	provenance Map
 	enabled    bool
 }
 
-// NewTracker creates a new provenance tracker
+// NewTracker creates a new provenance tracker.
 func NewTracker(enabled bool) Tracker {
 	return &tracker{
 		provenance: make(Map),
@@ -56,7 +57,7 @@ func NewTracker(enabled bool) Tracker {
 	}
 }
 
-// Track records provenance for a field
+// Track records provenance for a field.
 func (p *tracker) Track(resourceType sources.ResourceType, resourceID string, field string, history Provenance) {
 	if !p.enabled {
 		return
@@ -72,7 +73,7 @@ func (p *tracker) Track(resourceType sources.ResourceType, resourceID string, fi
 	p.provenance[key] = append(p.provenance[key], history)
 }
 
-// Find retrieves provenance for a specific field
+// Find retrieves provenance for a specific field.
 func (p *tracker) FindByField(resourceType sources.ResourceType, resourceID string, field string) []Provenance {
 	if !p.enabled {
 		return nil
@@ -82,7 +83,7 @@ func (p *tracker) FindByField(resourceType sources.ResourceType, resourceID stri
 	return p.provenance[key]
 }
 
-// GetResourceProvenance retrieves all provenance for a resource
+// GetResourceProvenance retrieves all provenance for a resource.
 func (p *tracker) FindByResource(resourceType sources.ResourceType, resourceID string) map[string][]Provenance {
 	if !p.enabled {
 		return nil
@@ -100,7 +101,7 @@ func (p *tracker) FindByResource(resourceType sources.ResourceType, resourceID s
 	return result
 }
 
-// Map returns the complete provenance map
+// Map returns the complete provenance map.
 func (p *tracker) Map() Map {
 	if !p.enabled {
 		return nil
@@ -114,36 +115,36 @@ func (p *tracker) Map() Map {
 	return result
 }
 
-// Clear removes all provenance data
+// Clear removes all provenance data.
 func (p *tracker) Clear() {
 	p.provenance = make(Map)
 }
 
-// makeKey creates a unique key for provenance tracking
+// makeKey creates a unique key for provenance tracking.
 func (p *tracker) makeKey(resourceType sources.ResourceType, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }
 
-// ProvenanceReport generates a human-readable provenance report
-type ProvenanceReport struct {
+// Report generates a human-readable provenance report.
+type Report struct {
 	Resources map[string]ResourceProvenance // key is "resourceType:resourceID"
 }
 
-// ResourceProvenance contains provenance for a single resource
+// ResourceProvenance contains provenance for a single resource.
 type ResourceProvenance struct {
 	Type   sources.ResourceType
 	ID     string
 	Fields map[string]Field
 }
 
-// FieldProvenance contains provenance history for a single field
+// Field contains provenance history for a single field.
 type Field struct {
 	Current   Provenance     // Current value and its source
 	History   []Provenance   // Historical values
 	Conflicts []ConflictInfo // Any conflicts that were resolved
 }
 
-// ConflictInfo describes a conflict that was resolved
+// ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
 	Sources        []sources.Type // Sources that had conflicting values
 	Values         []any          // The conflicting values
@@ -151,9 +152,9 @@ type ConflictInfo struct {
 	SelectedSource sources.Type   // Which source was selected
 }
 
-// GenerateReport creates a provenance report from a Map
-func GenerateReport(provenance Map) *ProvenanceReport {
-	report := &ProvenanceReport{
+// GenerateReport creates a provenance report from a Map.
+func GenerateReport(provenance Map) *Report {
+	report := &Report{
 		Resources: make(map[string]ResourceProvenance),
 	}
 
@@ -204,7 +205,7 @@ func GenerateReport(provenance Map) *ProvenanceReport {
 	return report
 }
 
-// detectConflicts identifies conflicts in provenance history
+// detectConflicts identifies conflicts in provenance history.
 func detectConflicts(infos []Provenance) []ConflictInfo {
 	conflicts := []ConflictInfo{}
 
@@ -247,15 +248,15 @@ func detectConflicts(infos []Provenance) []ConflictInfo {
 	return conflicts
 }
 
-// String generates a string representation of the provenance report
-func (r *ProvenanceReport) String() string {
+// String generates a string representation of the provenance report.
+func (r *Report) String() string {
 	var sb strings.Builder
 
 	sb.WriteString("Provenance Report\n")
 	sb.WriteString("=================\n\n")
 
 	// Sort resources for consistent output
-	var resourceKeys []string
+	resourceKeys := make([]string, 0, len(r.Resources))
 	for key := range r.Resources {
 		resourceKeys = append(resourceKeys, key)
 	}
@@ -307,10 +308,10 @@ func (r *ProvenanceReport) String() string {
 	return sb.String()
 }
 
-// ProvenanceAuditor validates provenance tracking
-type ProvenanceAuditor interface {
+// Auditor validates provenance tracking.
+type Auditor interface {
 	// Audit checks provenance for completeness and consistency
-	Audit(provenance Map) *ProvenanceAuditResult
+	Audit(provenance Map) *AuditResult
 
 	// ValidateAuthority ensures authority scores are valid
 	ValidateAuthority(provenance Map) []string
@@ -319,8 +320,8 @@ type ProvenanceAuditor interface {
 	CheckCoverage(provenance Map, requiredFields []string) []string
 }
 
-// ProvenanceAuditResult contains audit findings
-type ProvenanceAuditResult struct {
+// AuditResult contains audit findings.
+type AuditResult struct {
 	Valid       bool
 	Issues      []string
 	Warnings    []string

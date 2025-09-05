@@ -1,3 +1,4 @@
+//nolint:gosec // Internal documentation generation tool with controlled file operations
 package docs
 
 import (
@@ -13,14 +14,14 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// LogoCopier handles copying logos from embedded resources
+// LogoCopier handles copying logos from embedded resources.
 type LogoCopier struct {
 	embedFS   embed.FS
 	sourceDir string
 	targetDir string
 }
 
-// NewLogoCopier creates a new logo copier
+// NewLogoCopier creates a new logo copier.
 func NewLogoCopier(embedFS embed.FS, sourceDir, targetDir string) *LogoCopier {
 	return &LogoCopier{
 		embedFS:   embedFS,
@@ -29,7 +30,7 @@ func NewLogoCopier(embedFS embed.FS, sourceDir, targetDir string) *LogoCopier {
 	}
 }
 
-// CopyProviderLogos copies all provider logos to the documentation directory
+// CopyProviderLogos copies all provider logos to the documentation directory.
 func (lc *LogoCopier) CopyProviderLogos(providers []*catalogs.Provider) error {
 	logoDir := filepath.Join(lc.targetDir, "assets", "logos", "providers")
 	if err := os.MkdirAll(logoDir, constants.DirPermissions); err != nil {
@@ -46,7 +47,7 @@ func (lc *LogoCopier) CopyProviderLogos(providers []*catalogs.Provider) error {
 	return nil
 }
 
-// CopyAuthorLogos copies all author logos to the documentation directory
+// CopyAuthorLogos copies all author logos to the documentation directory.
 func (lc *LogoCopier) CopyAuthorLogos(authors []*catalogs.Author) error {
 	logoDir := filepath.Join(lc.targetDir, "assets", "logos", "authors")
 	if err := os.MkdirAll(logoDir, constants.DirPermissions); err != nil {
@@ -63,7 +64,7 @@ func (lc *LogoCopier) CopyAuthorLogos(authors []*catalogs.Author) error {
 	return nil
 }
 
-// copyProviderLogo copies a single provider logo from embedded FS
+// copyProviderLogo copies a single provider logo from embedded FS.
 func (lc *LogoCopier) copyProviderLogo(providerID catalogs.ProviderID, targetDir string) error {
 	// Check for logo.svg in the provider's directory
 	sourcePath := filepath.Join(lc.sourceDir, "providers", string(providerID), "logo.svg")
@@ -83,7 +84,7 @@ func (lc *LogoCopier) copyProviderLogo(providerID catalogs.ProviderID, targetDir
 	return fmt.Errorf("no logo found for provider %s", providerID)
 }
 
-// copyAuthorLogo copies a single author logo from embedded FS
+// copyAuthorLogo copies a single author logo from embedded FS.
 func (lc *LogoCopier) copyAuthorLogo(authorID catalogs.AuthorID, targetDir string) error {
 	// Check for logo.svg in the author's directory
 	sourcePath := filepath.Join(lc.sourceDir, "authors", string(authorID), "logo.svg")
@@ -103,14 +104,14 @@ func (lc *LogoCopier) copyAuthorLogo(authorID catalogs.AuthorID, targetDir strin
 	return fmt.Errorf("no logo found for author %s", authorID)
 }
 
-// copyLogo copies a single logo file
+// copyLogo copies a single logo file.
 func (lc *LogoCopier) copyLogo(sourcePath, targetDir, filename string) error {
 	// Open source file from embedded FS
 	sourceFile, err := lc.embedFS.Open(sourcePath)
 	if err != nil {
 		return err
 	}
-	defer sourceFile.Close()
+	defer func() { _ = sourceFile.Close() }()
 
 	// Create target file
 	targetPath := filepath.Join(targetDir, filename)
@@ -118,7 +119,7 @@ func (lc *LogoCopier) copyLogo(sourcePath, targetDir, filename string) error {
 	if err != nil {
 		return fmt.Errorf("creating target file: %w", err)
 	}
-	defer targetFile.Close()
+	defer func() { _ = targetFile.Close() }()
 
 	// Copy file contents
 	if _, err := io.Copy(targetFile, sourceFile); err != nil {
@@ -128,7 +129,7 @@ func (lc *LogoCopier) copyLogo(sourcePath, targetDir, filename string) error {
 	return nil
 }
 
-// CopyAllLogos copies all logos from embedded resources
+// CopyAllLogos copies all logos from embedded resources.
 func (lc *LogoCopier) CopyAllLogos() error {
 	logoSourceDir := filepath.Join(lc.sourceDir, "logos")
 	logoTargetDir := filepath.Join(lc.targetDir, "assets", "logos")
@@ -162,13 +163,13 @@ func (lc *LogoCopier) CopyAllLogos() error {
 		if err != nil {
 			return fmt.Errorf("opening source file: %w", err)
 		}
-		defer sourceFile.Close()
+		defer func() { _ = sourceFile.Close() }()
 
 		targetFile, err := os.Create(targetPath)
 		if err != nil {
 			return fmt.Errorf("creating target file: %w", err)
 		}
-		defer targetFile.Close()
+		defer func() { _ = targetFile.Close() }()
 
 		if _, err := io.Copy(targetFile, sourceFile); err != nil {
 			return fmt.Errorf("copying file: %w", err)
@@ -184,41 +185,55 @@ func (lc *LogoCopier) CopyAllLogos() error {
 	return nil
 }
 
-// getLogoPath returns the local path for a provider/author logo
+// getLogoPath returns the local path for a provider/author logo.
+//
+//nolint:unused // Used in tests
 func getLogoPath(id string, logoType string) string {
 	// Return a relative path to the locally copied logo
 	return fmt.Sprintf("../../assets/logos/%s/%s.svg", logoType, id)
 }
 
-// getProviderLogoPath returns the local path for a provider logo
+// getProviderLogoPath returns the local path for a provider logo.
+//
+//nolint:unused // Used in tests
 func getProviderLogoPath(providerID catalogs.ProviderID) string {
 	return getLogoPath(string(providerID), "providers")
 }
 
-// getAuthorLogoPath returns the local path for an author logo
+// getAuthorLogoPath returns the local path for an author logo.
+//
+//nolint:unused // Used in tests
 func getAuthorLogoPath(authorID catalogs.AuthorID) string {
 	return getLogoPath(string(authorID), "authors")
 }
 
-// generateLogoHTML generates HTML for embedding a logo
+// generateLogoHTML generates HTML for embedding a logo.
+//
+//nolint:unused // Used in tests
 func logoHTML(logoPath, alt string, width, height int) string {
 	return fmt.Sprintf(`<img src="%s" alt="%s" width="%d" height="%d" style="vertical-align: middle;">`,
 		logoPath, alt, width, height)
 }
 
-// generateProviderLogoHTML generates HTML for a provider logo
+// generateProviderLogoHTML generates HTML for a provider logo.
+//
+//nolint:unused // Used in tests
 func providerLogoHTML(provider *catalogs.Provider) string {
 	logoPath := getProviderLogoPath(provider.ID)
 	return logoHTML(logoPath, provider.Name, 32, 32)
 }
 
-// generateAuthorLogoHTML generates HTML for an author logo
+// generateAuthorLogoHTML generates HTML for an author logo.
+//
+//nolint:unused // Used in tests
 func authorLogoHTML(author *catalogs.Author) string {
 	logoPath := getAuthorLogoPath(author.ID)
 	return logoHTML(logoPath, author.Name, 32, 32)
 }
 
-// optimizeSVG performs basic SVG optimization
+// optimizeSVG performs basic SVG optimization.
+//
+//nolint:unused // Used in tests
 func optimizeSVG(svgContent []byte) []byte {
 	svg := string(svgContent)
 
@@ -238,7 +253,9 @@ func optimizeSVG(svgContent []byte) []byte {
 	return []byte(svg)
 }
 
-// generateFallbackLogo generates a fallback logo when the actual logo is missing
+// generateFallbackLogo generates a fallback logo when the actual logo is missing.
+//
+//nolint:unused // Used in tests
 func createFallbackLogo(name string, outputPath string) error {
 	// Generate a simple SVG with the first letter of the name
 	initial := "?"
@@ -255,7 +272,9 @@ func createFallbackLogo(name string, outputPath string) error {
 	return os.WriteFile(outputPath, []byte(svg), constants.FilePermissions)
 }
 
-// ensureLogosExist ensures all required logos exist, creating fallbacks if needed
+// ensureLogosExist ensures all required logos exist, creating fallbacks if needed.
+//
+//nolint:unused // Used in tests
 func ensureLogosExist(providers []*catalogs.Provider, authors []*catalogs.Author, targetDir string) error {
 	// Check provider logos
 	providerLogoDir := filepath.Join(targetDir, "assets", "logos", "providers")

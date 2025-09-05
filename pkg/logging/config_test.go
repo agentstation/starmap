@@ -5,9 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 func TestConfigFunctions(t *testing.T) {

@@ -7,13 +7,13 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
-// manCmd represents the man command
+// manCmd represents the man command.
 var manCmd = &cobra.Command{
 	Use:    "man",
 	Short:  "Generate man page",
 	Long:   `Generate man page for starmap CLI tool.`,
 	Hidden: true, // Hide from help output since it's mainly for internal use
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		header := &doc.GenManHeader{
 			Title:   "STARMAP",
 			Section: "1",

@@ -8,12 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Helper function to add a model to a catalog through a provider
+// Helper function to add a model to a catalog through a provider.
 func addModelToProvider(catalog catalogs.Catalog, providerID string, model catalogs.Model) error {
 	// First ensure the provider exists
 	_, err := catalog.Provider(catalogs.ProviderID(providerID))
@@ -33,13 +34,13 @@ func addModelToProvider(catalog catalogs.Catalog, providerID string, model catal
 	return catalog.Providers().SetModel(catalogs.ProviderID(providerID), model)
 }
 
-// Helper function to delete a model from a provider
+// Helper function to delete a model from a provider.
 func deleteModelFromProvider(catalog catalogs.Catalog, providerID string, modelID string) error {
 	// Use the thread-safe DeleteModel method on providers
 	return catalog.Providers().DeleteModel(catalogs.ProviderID(providerID), modelID)
 }
 
-// TestConcurrentCatalogAccess tests thread safety with multiple readers and writers
+// TestConcurrentCatalogAccess tests thread safety with multiple readers and writers.
 func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("concurrent_reads_and_writes", func(t *testing.T) {
 		catalog := catalogs.NewMemory()
@@ -464,7 +465,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 }
 
-// BenchmarkConcurrentAccess benchmarks concurrent operations
+// BenchmarkConcurrentAccess benchmarks concurrent operations.
 func BenchmarkConcurrentAccess(b *testing.B) {
 	b.Run("concurrent_reads", func(b *testing.B) {
 		catalog := catalogs.NewMemory()

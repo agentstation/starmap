@@ -38,7 +38,7 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 }
 
 // DoWithContext performs an HTTP request with authentication applied and context support.
-func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
+func (c *Client) DoWithContext(_ context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
 	// Apply authentication if provider has API key
 	if provider != nil {
 		apiKey, err := provider.APIKeyValue()

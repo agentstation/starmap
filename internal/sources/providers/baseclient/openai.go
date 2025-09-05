@@ -8,10 +8,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/utc"
 )
 
 // OpenAIResponse represents the standard OpenAI API response structure.

@@ -141,7 +141,7 @@ func TestProvidersFormatYAML(t *testing.T) {
 	}
 }
 
-// Helper functions for creating pointers
+// Helper functions for creating pointers.
 func stringPtr(s string) *string {
 	return &s
 }

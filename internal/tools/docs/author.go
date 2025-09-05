@@ -1,3 +1,4 @@
+//nolint:gosec // Internal documentation generation tool with controlled file operations
 package docs
 
 import (
@@ -8,12 +9,13 @@ import (
 	"strings"
 	"time"
 
+	md "github.com/nao1215/markdown"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
-	md "github.com/nao1215/markdown"
 )
 
-// generateAuthorDocs generates documentation for all authors
+// generateAuthorDocs generates documentation for all authors.
 func (g *Generator) generateAuthorDocs(dir string, catalog catalogs.Reader) error {
 	authors := catalog.Authors().List()
 	allModels := catalog.GetAllModels()
@@ -54,7 +56,7 @@ func (g *Generator) generateAuthorDocs(dir string, catalog catalogs.Reader) erro
 	return nil
 }
 
-// generateAuthorIndex generates the main author listing page
+// generateAuthorIndex generates the main author listing page.
 func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, models []*catalogs.Model, catalog catalogs.Reader) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
@@ -69,16 +71,16 @@ func (g *Generator) generateAuthorIndex(dir string, authors []*catalogs.Author, 
 			return fmt.Errorf("creating author index %s: %w", filename, err)
 		}
 		if err := g.writeAuthorIndexContent(f, authors, models, catalog); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeAuthorIndexContent writes the author index content to the given writer
+// writeAuthorIndexContent writes the author index content to the given writer.
 func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Author, models []*catalogs.Model, catalog catalogs.Reader) error {
 
 	markdown := NewMarkdown(f)
@@ -126,7 +128,7 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 	}
 
 	// Convert to slice and sort by model count
-	var authorInfos []*authorInfo
+	authorInfos := make([]*authorInfo, 0, len(authorInfoMap))
 	for _, info := range authorInfoMap {
 		authorInfos = append(authorInfos, info)
 	}
@@ -138,7 +140,7 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 	markdown.H2("Author Overview").LF()
 
 	headers := []string{"Author", "Models", "Hosted By", "Focus Area"}
-	var rows [][]string
+	rows := make([][]string, 0, len(authorInfos))
 
 	for _, info := range authorInfos {
 		author := info.author
@@ -149,13 +151,13 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 			providerList = append(providerList, p)
 		}
 		sort.Strings(providerList)
-		providersStr := "—"
+		providersStr := EmDash
 		if len(providerList) > 0 {
 			if len(providerList) > 3 {
 				// Build provider count string
 				providerMarkdown := NewMarkdownBuffer()
 				providerMarkdown.CountText(len(providerList), "provider", "providers")
-				providerMarkdown.Build()
+				_ = providerMarkdown.Build()
 				providersStr = providerMarkdown.String()
 			} else {
 				providersStr = ""
@@ -249,7 +251,7 @@ func (g *Generator) writeAuthorIndexContent(f *os.File, authors []*catalogs.Auth
 	return markdown.Build()
 }
 
-// generateAuthorReadme generates documentation for a single author
+// generateAuthorReadme generates documentation for a single author.
 func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, catalog catalogs.Reader) error {
 	// Write to both README.md (for GitHub) and _index.md (for Hugo)
 	for _, filename := range []string{"README.md", "_index.md"} {
@@ -259,16 +261,18 @@ func (g *Generator) generateAuthorReadme(dir string, author *catalogs.Author, ca
 			return fmt.Errorf("creating %s: %w", filename, err)
 		}
 		if err := g.writeAuthorReadmeContent(f, author, catalog); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
-		f.Close()
+		_ = f.Close()
 	}
 
 	return nil
 }
 
-// writeAuthorReadmeContent writes the author readme content to the given writer
+// writeAuthorReadmeContent writes the author readme content to the given writer.
+//
+//nolint:gocyclo // Complex documentation generation with many cases
 func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author, catalog catalogs.Reader) error {
 
 	markdown := NewMarkdown(f)
@@ -332,13 +336,13 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	// Build count strings using builder
 	modelCountMarkdown := NewMarkdownBuffer()
 	modelCountMarkdown.PlainTextf("%d", len(authorModels))
-	modelCountMarkdown.Build()
+	_ = modelCountMarkdown.Build()
 	infoRows = append(infoRows, []string{"**Total Models**", modelCountMarkdown.String()})
 
 	if len(providerMap) > 0 {
 		providerCountMarkdown := NewMarkdownBuffer()
 		providerCountMarkdown.CountText(len(providerMap), "provider", "providers")
-		providerCountMarkdown.Build()
+		_ = providerCountMarkdown.Build()
 		infoRows = append(infoRows, []string{"**Available On**", providerCountMarkdown.String()})
 	}
 
@@ -398,7 +402,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 				}
 
 				// Context
-				contextStr := "N/A"
+				contextStr := NA
 				if model.Limits != nil && model.Limits.ContextWindow > 0 {
 					contextStr = formatContext(model.Limits.ContextWindow)
 				}
@@ -422,7 +426,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 						caps = append(caps, "Functions")
 					}
 				}
-				capsStr := "—"
+				capsStr := EmDash
 				if len(caps) > 0 {
 					capsStr = ""
 					for i, c := range caps {
@@ -505,7 +509,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	return markdown.Build()
 }
 
-// generateAuthorModelPages generates individual model pages for an author
+// generateAuthorModelPages generates individual model pages for an author.
 func (g *Generator) generateAuthorModelPages(dir string, author *catalogs.Author, catalog catalogs.Reader) error {
 	// Ensure the directory exists
 	if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
@@ -541,7 +545,9 @@ func (g *Generator) generateAuthorModelPages(dir string, author *catalogs.Author
 	return nil
 }
 
-// generateAuthorModelPage generates a single model page in author context
+// generateAuthorModelPage generates a single model page in author context.
+//
+//nolint:gocyclo // Complex documentation generation with many cases
 func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author, model *catalogs.Model, catalog catalogs.Reader) error {
 	// Use getModelFilePath to preserve subdirectory structure
 	modelFile, err := getModelFilePath(dir, model.ID)
@@ -552,7 +558,7 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 	if err != nil {
 		return fmt.Errorf("creating model file: %w", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	markdown := NewMarkdown(f)
 
@@ -645,7 +651,7 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 				providerCount++
 
 				// Context (may vary by provider)
-				contextStr := "—"
+				contextStr := EmDash
 				if providerModel.Limits != nil && providerModel.Limits.ContextWindow > 0 {
 					contextStr = formatContext(providerModel.Limits.ContextWindow)
 				} else if model.Limits != nil && model.Limits.ContextWindow > 0 {
@@ -653,7 +659,7 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 				}
 
 				// Pricing (provider-specific)
-				pricingStr := "—"
+				pricingStr := EmDash
 				if providerModel.Pricing != nil && providerModel.Pricing.Tokens != nil {
 					if providerModel.Pricing.Tokens.Input != nil && providerModel.Pricing.Tokens.Output != nil {
 						pricingStr = fmt.Sprintf("$%.2f / $%.2f",
@@ -764,28 +770,28 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 
 // Helper functions for builder-based operations
 
-// writeFooterToMarkdown writes a footer using the markdown builder
+// writeFooterToMarkdown writes a footer using the markdown builder.
 func (g *Generator) writeFooterToMarkdown(markdown *Markdown, breadcrumbs ...Breadcrumb) {
 	var buf strings.Builder
 	g.writeFooter(&buf, breadcrumbs...)
 	markdown.PlainText(buf.String())
 }
 
-// writeNavigationSectionToMarkdown writes a navigation section using the markdown builder
+// writeNavigationSectionToMarkdown writes a navigation section using the markdown builder.
 func (g *Generator) writeNavigationSectionToMarkdown(markdown *Markdown, title string, links []NavigationLink) {
 	var buf strings.Builder
 	g.writeNavigationSection(&buf, title, links)
 	markdown.PlainText(buf.String())
 }
 
-// writeTimestampedFooterToMarkdown writes a timestamped footer using the markdown builder
+// writeTimestampedFooterToMarkdown writes a timestamped footer using the markdown builder.
 func (g *Generator) writeTimestampedFooterToMarkdown(markdown *Markdown) {
 	var buf strings.Builder
 	g.writeTimestampedFooter(&buf)
 	markdown.PlainText(buf.String())
 }
 
-// writeBreadcrumbsToMarkdown writes breadcrumbs using the markdown builder
+// writeBreadcrumbsToMarkdown writes breadcrumbs using the markdown builder.
 func (g *Generator) writeBreadcrumbsToMarkdown(markdown *Markdown, breadcrumbs ...Breadcrumb) {
 	var buf strings.Builder
 	g.writeBreadcrumbs(&buf, breadcrumbs...)

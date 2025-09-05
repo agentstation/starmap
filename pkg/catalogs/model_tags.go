@@ -10,7 +10,7 @@ func (tag ModelTag) String() string {
 
 // Model tags for categorizing models by use case and capabilities.
 const (
-	// Core Use Cases
+	// Core Use Cases.
 	ModelTagCoding    ModelTag = "coding"    // Programming and code generation
 	ModelTagWriting   ModelTag = "writing"   // Creative and technical writing
 	ModelTagReasoning ModelTag = "reasoning" // Logical reasoning and problem solving
@@ -21,14 +21,14 @@ const (
 	ModelTagCreative  ModelTag = "creative"  // Creative content generation
 	ModelTagRoleplay  ModelTag = "roleplay"  // Character roleplay and simulation
 
-	// Technical Capabilities
+	// Technical Capabilities.
 	ModelTagFunctionCalling ModelTag = "function_calling"   // Tool/function calling
 	ModelTagEmbedding       ModelTag = "embedding"          // Text embeddings
 	ModelTagSummarization   ModelTag = "summarization"      // Text summarization
 	ModelTagTranslation     ModelTag = "translation"        // Language translation
 	ModelTagQA              ModelTag = "question_answering" // Question answering
 
-	// Modality-Specific
+	// Modality-Specific.
 	ModelTagVision       ModelTag = "vision"         // Computer vision
 	ModelTagMultimodal   ModelTag = "multimodal"     // Multiple input modalities
 	ModelTagAudio        ModelTag = "audio"          // Audio processing
@@ -37,7 +37,7 @@ const (
 	ModelTagSpeechToText ModelTag = "speech_to_text" // Speech recognition
 	ModelTagImageToText  ModelTag = "image_to_text"  // Image captioning/OCR
 
-	// Domain-Specific
+	// Domain-Specific.
 	ModelTagMedical   ModelTag = "medical"   // Medical and healthcare
 	ModelTagLegal     ModelTag = "legal"     // Legal document processing
 	ModelTagFinance   ModelTag = "finance"   // Financial analysis

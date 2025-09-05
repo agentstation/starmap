@@ -7,16 +7,17 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/spf13/cobra"
+
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/common"
+	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/spf13/cobra"
 )
 
-// newListCommand creates the list command with subcommands
+// newListCommand creates the list command with subcommands.
 func newListCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list [resource]",
@@ -49,10 +50,10 @@ Available resources:
 	return cmd
 }
 
-// newListModelsCommand creates the list models subcommand
+// newListModelsCommand creates the list models subcommand.
 func newListModelsCommand() *cobra.Command {
 	var (
-		resourceFlags *common.ResourceFlags
+		resourceFlags *cmdutil.ResourceFlags
 		showDetails   bool
 		capability    string
 		minContext    int64
@@ -82,7 +83,7 @@ func newListModelsCommand() *cobra.Command {
 	}
 
 	// Add resource-specific flags
-	resourceFlags = common.AddResourceFlags(cmd)
+	resourceFlags = cmdutil.AddResourceFlags(cmd)
 	cmd.Flags().BoolVar(&showDetails, "details", false,
 		"Show detailed information for each model")
 	cmd.Flags().StringVar(&capability, "capability", "",
@@ -95,10 +96,10 @@ func newListModelsCommand() *cobra.Command {
 	return cmd
 }
 
-// newListProvidersCommand creates the list providers subcommand
+// newListProvidersCommand creates the list providers subcommand.
 func newListProvidersCommand() *cobra.Command {
 	var (
-		resourceFlags *common.ResourceFlags
+		resourceFlags *cmdutil.ResourceFlags
 		showKeys      bool
 	)
 
@@ -124,16 +125,16 @@ func newListProvidersCommand() *cobra.Command {
 	}
 
 	// Add resource-specific flags
-	resourceFlags = common.AddResourceFlags(cmd)
+	resourceFlags = cmdutil.AddResourceFlags(cmd)
 	cmd.Flags().BoolVar(&showKeys, "keys", false,
 		"Show if API keys are configured (keys are not displayed)")
 
 	return cmd
 }
 
-// newListAuthorsCommand creates the list authors subcommand
+// newListAuthorsCommand creates the list authors subcommand.
 func newListAuthorsCommand() *cobra.Command {
-	var resourceFlags *common.ResourceFlags
+	var resourceFlags *cmdutil.ResourceFlags
 
 	cmd := &cobra.Command{
 		Use:     "authors [author-id]",
@@ -157,13 +158,13 @@ func newListAuthorsCommand() *cobra.Command {
 	}
 
 	// Add resource-specific flags
-	resourceFlags = common.AddResourceFlags(cmd)
+	resourceFlags = cmdutil.AddResourceFlags(cmd)
 
 	return cmd
 }
 
-// listModels lists all models with optional filters
-func listModels(ctx context.Context, flags *common.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool) error {
+// listModels lists all models with optional filters.
+func listModels(_ context.Context, flags *cmdutil.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool) error {
 	// Get starmap instance
 	sm, err := starmap.New()
 	if err != nil {
@@ -206,7 +207,7 @@ func listModels(ctx context.Context, flags *common.ResourceFlags, capability str
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case "table", "wide", "":
+	case tableFormat, wideFormat, "":
 		outputData = modelsToTableData(filtered, showDetails)
 	default:
 		outputData = filtered
@@ -219,8 +220,8 @@ func listModels(ctx context.Context, flags *common.ResourceFlags, capability str
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showModelDetails shows detailed information about a specific model
-func showModelDetails(ctx context.Context, modelID string) error {
+// showModelDetails shows detailed information about a specific model.
+func showModelDetails(_ context.Context, modelID string) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)
@@ -238,7 +239,7 @@ func showModelDetails(ctx context.Context, modelID string) error {
 			formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 			// For table output, show detailed view
-			if globalFlags.Output == "table" || globalFlags.Output == "" {
+			if globalFlags.Output == tableFormat || globalFlags.Output == "" {
 				printModelDetails(model, *provider)
 				return nil
 			}
@@ -254,8 +255,8 @@ func showModelDetails(ctx context.Context, modelID string) error {
 	}
 }
 
-// listProviders lists all providers with optional filters
-func listProviders(ctx context.Context, flags *common.ResourceFlags, showKeys bool) error {
+// listProviders lists all providers with optional filters.
+func listProviders(_ context.Context, flags *cmdutil.ResourceFlags, showKeys bool) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)
@@ -296,7 +297,7 @@ func listProviders(ctx context.Context, flags *common.ResourceFlags, showKeys bo
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case "table", "wide", "":
+	case tableFormat, wideFormat, "":
 		outputData = providersToTableData(filtered, showKeys)
 	default:
 		outputData = filtered
@@ -309,8 +310,8 @@ func listProviders(ctx context.Context, flags *common.ResourceFlags, showKeys bo
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showProviderDetails shows detailed information about a specific provider
-func showProviderDetails(ctx context.Context, providerID string, showKeys bool) error {
+// showProviderDetails shows detailed information about a specific provider.
+func showProviderDetails(_ context.Context, providerID string, showKeys bool) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)
@@ -341,8 +342,8 @@ func showProviderDetails(ctx context.Context, providerID string, showKeys bool) 
 	return formatter.Format(os.Stdout, provider)
 }
 
-// listAuthors lists all authors with optional filters
-func listAuthors(ctx context.Context, flags *common.ResourceFlags) error {
+// listAuthors lists all authors with optional filters.
+func listAuthors(_ context.Context, flags *cmdutil.ResourceFlags) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)
@@ -383,7 +384,7 @@ func listAuthors(ctx context.Context, flags *common.ResourceFlags) error {
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case "table", "wide", "":
+	case tableFormat, wideFormat, "":
 		outputData = authorsToTableData(filtered)
 	default:
 		outputData = filtered
@@ -396,8 +397,8 @@ func listAuthors(ctx context.Context, flags *common.ResourceFlags) error {
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showAuthorDetails shows detailed information about a specific author
-func showAuthorDetails(ctx context.Context, authorID string) error {
+// showAuthorDetails shows detailed information about a specific author.
+func showAuthorDetails(_ context.Context, authorID string) error {
 	sm, err := starmap.New()
 	if err != nil {
 		return errors.WrapResource("create", "starmap", "", err)
@@ -436,7 +437,7 @@ func modelsToTableData(models []catalogs.Model, showDetails bool) output.TableDa
 		headers = append(headers, "PRICE (IN)", "PRICE (OUT)")
 	}
 
-	var rows [][]string
+	rows := make([][]string, 0, len(models))
 	for _, model := range models {
 		row := []string{
 			model.ID,
@@ -464,7 +465,7 @@ func modelsToTableData(models []catalogs.Model, showDetails bool) output.TableDa
 func providersToTableData(providers []catalogs.Provider, showKeys bool) output.TableData {
 	headers := []string{"ID", "NAME", "LOCATION", "STATUS"}
 
-	var rows [][]string
+	rows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
 		status := "✓"
 		if showKeys && provider.APIKey != nil {
@@ -499,7 +500,7 @@ func providersToTableData(providers []catalogs.Provider, showKeys bool) output.T
 func authorsToTableData(authors []catalogs.Author) output.TableData {
 	headers := []string{"ID", "NAME", "MODELS", "WEBSITE"}
 
-	var rows [][]string
+	rows := make([][]string, 0, len(authors))
 	for _, author := range authors {
 		website := ""
 		if author.Website != nil {

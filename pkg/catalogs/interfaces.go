@@ -1,6 +1,6 @@
 package catalogs
 
-// Reader provides read-only access to catalog data
+// Reader provides read-only access to catalog data.
 type Reader interface {
 	// Lists all providers, authors, and endpoints
 	Providers() *Providers
@@ -17,7 +17,7 @@ type Reader interface {
 	FindModel(id string) (Model, error)
 }
 
-// Writer provides write operations for catalog data
+// Writer provides write operations for catalog data.
 type Writer interface {
 	// Sets a provider, author, or endpoint (upsert semantics)
 	SetProvider(provider Provider) error
@@ -30,7 +30,7 @@ type Writer interface {
 	DeleteEndpoint(id string) error
 }
 
-// Merger provides catalog merging capabilities
+// Merger provides catalog merging capabilities.
 type Merger interface {
 	// Replace this catalog's contents with another catalog
 	// The source only needs to be readable
@@ -48,7 +48,7 @@ type Merger interface {
 	SetMergeStrategy(strategy MergeStrategy)
 }
 
-// Copier provides catalog copying capabilities
+// Copier provides catalog copying capabilities.
 type Copier interface {
 	// Return a copy of the catalog
 	Copy() (Catalog, error)
@@ -64,20 +64,20 @@ type Catalog interface {
 	Copier
 }
 
-// ReadOnlyCatalog provides read-only access to a catalog
+// ReadOnlyCatalog provides read-only access to a catalog.
 type ReadOnlyCatalog interface {
 	Reader
 	Copier
 }
 
-// MutableCatalog provides read-write access without merge capabilities
+// MutableCatalog provides read-write access without merge capabilities.
 type MutableCatalog interface {
 	Reader
 	Writer
 	Copier
 }
 
-// MergeableCatalog provides full catalog functionality
+// MergeableCatalog provides full catalog functionality.
 type MergeableCatalog interface {
 	Catalog
 }

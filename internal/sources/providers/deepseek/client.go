@@ -1,3 +1,4 @@
+// Package deepseek provides a client for interacting with the DeepSeek API.
 package deepseek
 
 import (
@@ -109,11 +110,8 @@ func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
 		features.ReasoningTokens = true
 	}
 
-	// Set coding capabilities for coder models
-	if strings.Contains(modelID, "coder") {
-		// Coder models typically have enhanced code generation capabilities
-		// This will be further enhanced by models.dev data
-	}
+	// Coder models typically have enhanced code generation capabilities
+	// This will be further enhanced by models.dev data
 
 	return features
 }
