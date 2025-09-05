@@ -163,61 +163,30 @@ release:
 announce:
   skip: false
 
-# Docker configuration - optimized with caching
-dockers:
-  - id: starmap-amd64
+# Docker configuration - using new v2 format
+dockers_v2:
+  - id: starmap
     ids:
       - starmap
     goos: linux
-    goarch: amd64
-    image_templates:
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
     dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - "--pull"
-      - "--cache-from=type=gha"
-      - "--cache-to=type=gha,mode=max"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
-      - "--label=org.opencontainers.image.description=AI Model Catalog System"
-      - "--label=org.opencontainers.image.licenses=AGPL-3.0"
-      - "--platform=linux/amd64"
-  - id: starmap-arm64
-    ids:
-      - starmap
-    goos: linux
-    goarch: arm64
-    image_templates:
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - "--pull"
-      - "--cache-from=type=gha"
-      - "--cache-to=type=gha,mode=max"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.source=https://github.com/agentstation/starmap"
-      - "--label=org.opencontainers.image.description=AI Model Catalog System"
-      - "--label=org.opencontainers.image.licenses=AGPL-3.0"
-      - "--platform=linux/arm64"
-
-# Docker manifest for multi-arch support
-docker_manifests:
-  - name_template: "ghcr.io/agentstation/starmap:{{ .Tag }}"
-    image_templates:
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
-  - name_template: "ghcr.io/agentstation/starmap:latest"
-    image_templates:
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-amd64"
-      - "ghcr.io/agentstation/starmap:{{ .Tag }}-arm64"
+    images:
+      - "ghcr.io/agentstation/starmap:{{ .Version }}"
+      - "ghcr.io/agentstation/starmap:{{ .Tag }}"
+      - "ghcr.io/agentstation/starmap:latest"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    build_args:
+      - "BUILDKIT_INLINE_CACHE=1"
+    labels:
+      - "org.opencontainers.image.created={{.Date}}"
+      - "org.opencontainers.image.title={{.ProjectName}}"
+      - "org.opencontainers.image.revision={{.FullCommit}}"
+      - "org.opencontainers.image.version={{.Version}}"
+      - "org.opencontainers.image.source=https://github.com/agentstation/starmap"
+      - "org.opencontainers.image.description=AI Model Catalog System"
+      - "org.opencontainers.image.licenses=AGPL-3.0"
 
 # Homebrew Cask
 homebrew_casks:
