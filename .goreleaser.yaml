@@ -60,7 +60,6 @@ archives:
       - README.md
       - LICENSE*
       - CHANGELOG.md
-      - docs/PROVIDER_IMPLEMENTATION_GUIDE.md
       - completions/*
       - manpages/*
 
