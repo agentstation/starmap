@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -38,20 +38,20 @@ var ModelsCmd = &cobra.Command{
 		}
 
 		// List view with filters
-		resourceFlags := getResourceFlags(cmd)
+		resourceFlags := globals.AddResourceFlags(cmd)
 		showDetails, _ := cmd.Flags().GetBool("details")
 		capability, _ := cmd.Flags().GetString("capability")
 		minContext, _ := cmd.Flags().GetInt64("min-context")
 		maxPrice, _ := cmd.Flags().GetFloat64("max-price")
 		exportFormat, _ := cmd.Flags().GetString("export")
 
-		return listModels(resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
+		return listModels(cmd, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
 	},
 }
 
 func init() {
 	// Add resource-specific flags
-	cmdutil.AddResourceFlags(ModelsCmd)
+	globals.AddResourceFlags(ModelsCmd)
 	ModelsCmd.Flags().Bool("details", false,
 		"Show detailed information for each model")
 	ModelsCmd.Flags().String("capability", "",
@@ -65,7 +65,7 @@ func init() {
 }
 
 // listModels lists all models with optional filters.
-func listModels(flags *cmdutil.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog
 	cat, err := catalog.Load()
 	if err != nil {
@@ -101,8 +101,11 @@ func listModels(flags *cmdutil.ResourceFlags, capability string, minContext int6
 		return exportModels(filtered, exportFormat)
 	}
 
-	// Format output
-	globalFlags := getGlobalFlags()
+	// Get global flags and format output
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 	formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 	// Transform to output format
@@ -137,7 +140,10 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 	providers := cat.Providers().List()
 	for _, provider := range providers {
 		if model, exists := provider.Models[modelID]; exists {
-			globalFlags := getGlobalFlags()
+			globalFlags, err := globals.Parse(cmd)
+			if err != nil {
+				return err
+			}
 			formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 			// For table output, show detailed view

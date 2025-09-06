@@ -48,7 +48,7 @@ Enterprise AI platform on Google Cloud with Gemini and PaLM models.
   
 **Content Moderated**: Yes  
   
-**Moderated by**: Google-Vertex  
+**Moderated by**: Google-vertex  
   
   
 ## 🏢 Headquarters
@@ -64,7 +64,7 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Bert Base](./models/bert-base-at-001.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Bert Base Uncased](./models/bert-base-uncased-at-bert-base-uncased.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Roberta Large](./models/roberta-large-at-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
+| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [bert-base](./models/bert-base.md) | N/A | N/A | N/A | 📝 |
 | [bert-base-uncased](./models/bert-base-uncased.md) | N/A | N/A | N/A | 📝 |
 
@@ -79,13 +79,6 @@ Mountain View, CA, USA
 | [Claude Opus 4](./models/claude-opus-4-at-20250514.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | [Claude Opus 4 1](./models/claude-opus-4-1-at-20250805.md) | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | [Claude Sonnet 4](./models/claude-sonnet-4-at-20250514.md) | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-
-  
-### CodeLlama
-  
-| Model | Context | Input | Output | Features |
-|---------|---------|---------|---------|---------|
-| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### DeepSeek
@@ -103,6 +96,7 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
+| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 1.0M | N/A | N/A | 📝 ⚡ |
 | [Multimodalembedding](./models/multimodalembedding-at-001.md) | 1.0M | N/A | N/A | 📝 ⚡ |
 | [Text Embedding Large Exp 03 07](./models/text-embedding-large-exp-03-07-at-default.md) | 1.0M | N/A | N/A | 📝 ⚡ |
 | [Textembedding Gecko](./models/textembedding-gecko-at-003.md) | 1.0M | N/A | N/A | 📝 ⚡ |
@@ -138,7 +132,6 @@ Mountain View, CA, USA
 | [Gemini 2.5 Pro](./models/gemini-2.5-pro-at-default.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | 1.0M | $1.25 | $10.00 | — |
 | [Gemini 2.5 Pro Preview 06-05](./models/gemini-2.5-pro-preview-06-05.md) | 1.0M | $1.25 | $10.00 | — |
-| [Gemini Embedding 001](./models/gemini-embedding-001-at-default.md) | 1.0M | N/A | N/A | 📝 ⚡ |
 | [Gemini Pro](./models/gemini-pro-at-default.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Pro Vision](./models/gemini-pro-vision-at-default.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Ultra](./models/gemini-ultra-at-default.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
@@ -195,6 +188,7 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
+| [Codellama 7b Hf](./models/codellama-7b-hf-at-codellama-7b-hf.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 2 Quantized](./models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.1 405b Instruct Maas](./models/llama-3.1-405b-instruct-maas-at-001.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 | [Llama 3.2 90b Vision Instruct Maas](./models/llama-3.2-90b-vision-instruct-maas-at-001.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
@@ -420,7 +414,7 @@ Mountain View, CA, USA
   
 | Model | Context | Input | Output | Features |
 |---------|---------|---------|---------|---------|
-| [Xlm Roberta Large](./models/xlm-roberta-large-at-xlm-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
+| [Roberta Large](./models/roberta-large-at-roberta-large.md) | 128k | N/A | N/A | 📝 🔧 ⚡ |
 
   
 ### T5

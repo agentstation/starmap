@@ -9,9 +9,9 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -36,21 +36,21 @@ var ProvidersCmd = &cobra.Command{
 		}
 
 		// List view with filters
-		resourceFlags := getResourceFlags(cmd)
+		resourceFlags := globals.ParseResources(cmd)
 		showKeys, _ := cmd.Flags().GetBool("keys")
-		return listProviders(resourceFlags, showKeys)
+		return listProviders(cmd, resourceFlags, showKeys)
 	},
 }
 
 func init() {
 	// Add resource-specific flags
-	cmdutil.AddResourceFlags(ProvidersCmd)
+	globals.AddResourceFlags(ProvidersCmd)
 	ProvidersCmd.Flags().Bool("keys", false,
 		"Show if API keys are configured (keys are not displayed)")
 }
 
 // listProviders lists all providers with optional filters.
-func listProviders(flags *cmdutil.ResourceFlags, showKeys bool) error {
+func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bool) error {
 	cat, err := catalog.Load()
 	if err != nil {
 		return err
@@ -80,8 +80,11 @@ func listProviders(flags *cmdutil.ResourceFlags, showKeys bool) error {
 		filtered = filtered[:flags.Limit]
 	}
 
-	// Format output
-	globalFlags := getGlobalFlags()
+	// Get global flags and format output
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 	formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 	// Transform to output format
@@ -121,7 +124,10 @@ func showProviderDetails(cmd *cobra.Command, providerID string, showKeys bool) e
 		return err
 	}
 
-	globalFlags := getGlobalFlags()
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 	formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 	// For table output, show detailed view

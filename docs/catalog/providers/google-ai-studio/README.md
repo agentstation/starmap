@@ -49,7 +49,7 @@ Google's AI platform offering Gemini models with multimodal capabilities.
   
 **Content Moderated**: Yes  
   
-**Moderated by**: Google-Ai-Studio  
+**Moderated by**: Google-ai-studio  
   
   
 ## 🏢 Headquarters
@@ -65,6 +65,8 @@ Mountain View, CA, USA
 |---------|---------|---------|---------|---------|
 | [Embedding 001](./models/embedding-001.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 | [Embedding Gecko](./models/embedding-gecko-001.md) | 1.0k | N/A | N/A | 📝 ⚡ |
+| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
+| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Text Embedding 004](./models/text-embedding-004.md) | 2.0k | N/A | N/A | 📝 ⚡ |
 
   
@@ -93,10 +95,10 @@ Mountain View, CA, USA
 | [Gemini 2.0 Pro Experimental](./models/gemini-2.0-pro-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.0 Pro Experimental 02-05](./models/gemini-2.0-pro-exp-02-05.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash](./models/gemini-2.5-flash.md) | 1.0M | $0.30 | $2.50 | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | 1.0M | $0.15 | $0.60 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-1219.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp-01-21.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
-| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.5-flash-preview-05-20.md) | 1.0M | $0.15 | $0.60 | 📝 👁️ 🔧 ⚡ |
+| [Gemini 2.5 Flash Preview 05-20](./models/gemini-2.0-flash-thinking-exp.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash Preview TTS](./models/gemini-2.5-flash-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash-Lite](./models/gemini-2.5-flash-lite.md) | 1.0M | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Flash-Lite Preview 06-17](./models/gemini-2.5-flash-lite-preview-06-17.md) | 65.5k | $0.10 | $0.40 | 📝 👁️ 🔧 ⚡ |
@@ -106,8 +108,6 @@ Mountain View, CA, USA
 | [Gemini 2.5 Pro Preview 05-06](./models/gemini-2.5-pro-preview-05-06.md) | 1.0M | $1.25 | $10.00 | 📝 👁️ 🔧 ⚡ |
 | [Gemini 2.5 Pro Preview TTS](./models/gemini-2.5-pro-preview-tts.md) | 8.2k | N/A | N/A | 📝 👁️ 🔧 ⚡ |
 | [Gemini Embedding 001](./models/gemini-embedding-001.md) | 2.0k | N/A | N/A | 📝 🔧 ⚡ |
-| [Gemini Embedding Experimental](./models/gemini-embedding-exp.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
-| [Gemini Embedding Experimental 03-07](./models/gemini-embedding-exp-03-07.md) | 8.2k | N/A | N/A | 📝 🔧 ⚡ |
 | [Gemini Experimental 1206](./models/gemini-exp-1206.md) | 1.0M | N/A | N/A | 📝 🔧 ⚡ |
 
   

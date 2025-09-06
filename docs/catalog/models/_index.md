@@ -2,21 +2,21 @@
 |---------|---------|---------|---------|---------|
 | Model | Context Window | Max Output | Modalities |
 |---------|---------|---------|---------|
+| **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
 | **gemini-1.5-pro-002** | 2.0M | 8k | Text, Image |
 | **Gemini 1.5 Pro 002** | 2.0M | 8k | Text, Image |
-| **Gemini 1.5 Pro Latest** | 2.0M | 8k | Text, Image |
-| **Gemini 2.0 Flash 001** | 1.0M | 8k | Text, Image |
-| **Imagen 4.0 Ultra Generate 001** | 1.0M | 8k | Text, Image |
-| **Multimodalembedding** | 1.0M | 8k | Text |
-| **Gemini Ultra** | 1.0M | 8k | Text, Image |
-| **Derm Foundation** | 1.0M | 8k | Text, Image |
-| **Keras Yolov8** | 1.0M | 8k | Text, Image |
-| **Gemini 1.5 Flash 002** | 1.0M | 8k | Text, Image |
-| **Imagen 4.0 Fast Generate Preview 06 06** | 1.0M | 8k | Text, Image |
-| **Ppe Detector** | 1.0M | 8k | Text, Image |
-| **Translate Llm** | 1.0M | 8k | Text, Image |
-| **Code Gecko** | 1.0M | 8k | Text, Image |
-| **Codegemma** | 1.0M | 8k | Text, Image |
+| **Shieldgemma2** | 1.0M | 8k | Text, Image |
+| **gemini-2.5-flash-lite** | 1.0M | 65k | Text, Image |
+| **Timesfm** | 1.0M | 8k | Text, Image |
+| **Pt Test** | 1.0M | 8k | Text, Image |
+| **Imageclassification Proprietary Vit** | 1.0M | 8k | Text, Image |
+| **Tfvision Movinet Vcn** | 1.0M | 8k | Text, Image |
+| **Tag Recognizer** | 1.0M | 8k | Text, Image |
+| **Language V1 Analyze Syntax** | 1.0M | 8k | Text, Image |
+| **Gemma** | 1.0M | 8k | Text, Image |
+| **Tfvision Movinet Var** | 1.0M | 8k | Text, Image |
+| **gemini-2.5-pro** | 1.0M | 65k | Text, Image |
+| **Cxr Foundation** | 1.0M | 8k | Text, Image |
 ### Feature Comparison
   
 | Model | Modalities | Tools | Reasoning | Advanced Controls |
@@ -36,26 +36,26 @@
 | Claude Haiku 3.5 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | — | 🌡️ Sampling |
 | Claude Opus 3 | — | — | — | — |
 | Claude Opus 4 | 📝 👁️ 🔧 ⚡ | 🔧 Tools | 🧠 Basic | 🌡️ Sampling |
-| _...and 434 more_ |  |  |  |  |
+| _...and 435 more_ |  |  |  |  |
 
   # 🤖 All Models
   
-Complete listing of all 449 models in the Starmap catalog.
+Complete listing of all 450 models in the Starmap catalog.
   
   
 ## Quick Stats
   
 | Capability | Count | Percentage |
 |---------|---------|---------|
-| 📝 Text Generation | 427 | 95.1% |
+| 📝 Text Generation | 428 | 95.1% |
 | 👁️ Vision | 165 | 36.7% |
 | 🎵 Audio | 2 | 0.4% |
-| 🔧 Function Calling | 240 | 53.5% |
+| 🔧 Function Calling | 240 | 53.3% |
 
   
 ## Model Families
   
-### Other (202 models)
+### Other (203 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -69,10 +69,10 @@ Complete listing of all 449 models in the Starmap catalog.
 | [Code Gecko](../authors/google/models/code-gecko-at-002.md) | Multiple | 1.0M | N/A |
 | [Codestral 2501](../authors/mistral/models/codestral-2501-at-001.md) | Multiple | 128k | N/A |
 | [Codestral 2501 Self Deploy](../authors/mistral/models/codestral-2501-self-deploy-at-001.md) | Multiple | 128k | N/A |
-| _...and 192 more_ |  |  |  |
+| _...and 193 more_ |  |  |  |
 
   
-### Gemini (69 models)
+### Gemini (68 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
@@ -84,9 +84,9 @@ Complete listing of all 449 models in the Starmap catalog.
 | [Gemini 1.5 Flash-8B 001](../authors/google/models/gemini-1.5-flash-8b-001.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Flash-8B Latest](../authors/google/models/gemini-1.5-flash-8b-latest.md) | Multiple | 1.0M | N/A |
 | [Gemini 1.5 Pro](../authors/google/models/gemini-1.5-pro.md) | Multiple | 1.0M | $1.25/$5.00 |
-| [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002.md) | Multiple | 2.0M | N/A |
 | [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002-at-default.md) | Multiple | 1.0M | N/A |
-| _...and 59 more_ |  |  |  |
+| [Gemini 1.5 Pro 002](../authors/google/models/gemini-1.5-pro-002.md) | Multiple | 2.0M | N/A |
+| _...and 58 more_ |  |  |  |
 
   
 ### GPT (48 models)
@@ -106,6 +106,23 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 38 more_ |  |  |  |
 
   
+### Llama (28 models)
+  
+| Model | Provider | Context | Pricing |
+|---------|---------|---------|---------|
+| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | 128k | N/A |
+| [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | 128k | N/A |
+| Llama 3 70B | Multiple | 8.2k | $0.59/$0.79 |
+| Llama 3 8B | Multiple | 8.2k | $0.05/$0.08 |
+| [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | 128k | N/A |
+| [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | 128k | N/A |
+| [Llama 3.3 70b Instruct Maas](../authors/meta/models/llama-3.3-70b-instruct-maas-at-001.md) | Multiple | 128k | N/A |
+| [Llama 4 Maverick 17b 128e Instruct Maas](../authors/meta/models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | Multiple | 128k | N/A |
+| [Llama Guard](../authors/meta/models/llama-guard-at-llama-guard-4-12b.md) | Multiple | 128k | N/A |
+| Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
+| _...and 18 more_ |  |  |  |
+
+  
 ### Gemma (27 models)
   
 | Model | Provider | Context | Pricing |
@@ -123,23 +140,6 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 17 more_ |  |  |  |
 
   
-### Llama (27 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| [Codellama 7b Hf](../authors/meta/models/codellama-7b-hf-at-codellama-7b-hf.md) | Multiple | 128k | N/A |
-| [Llama 2 Quantized](../authors/meta/models/llama-2-quantized-at-llama-2-7b-chat-gptq.md) | Multiple | 128k | N/A |
-| Llama 3 70B | Multiple | 8.2k | $0.59/$0.79 |
-| Llama 3 8B | Multiple | 8.2k | $0.05/$0.08 |
-| [Llama 3.1 405b Instruct Maas](../authors/meta/models/llama-3.1-405b-instruct-maas-at-001.md) | Multiple | 128k | N/A |
-| [Llama 3.2 90b Vision Instruct Maas](../authors/meta/models/llama-3.2-90b-vision-instruct-maas-at-001.md) | Multiple | 128k | N/A |
-| [Llama 3.3 70b Instruct Maas](../authors/meta/models/llama-3.3-70b-instruct-maas-at-001.md) | Multiple | 128k | N/A |
-| [Llama 4 Maverick 17b 128e Instruct Maas](../authors/meta/models/llama-4-maverick-17b-128e-instruct-maas-at-001.md) | Multiple | 128k | N/A |
-| [Llama Guard](../authors/meta/models/llama-guard-at-llama-guard-4-12b.md) | Multiple | 128k | N/A |
-| Llama Guard 3 8B | Multiple | 8.2k | $0.20/$0.20 |
-| _...and 17 more_ |  |  |  |
-
-  
 ### Claude (16 models)
   
 | Model | Provider | Context | Pricing |
@@ -150,28 +150,28 @@ Complete listing of all 449 models in the Starmap catalog.
 | [Claude Haiku 3](../authors/anthropic/models/claude-3-haiku-20240307.md) | Multiple | 200k | $0.25/$1.25 |
 | [Claude Haiku 3.5](../authors/anthropic/models/claude-3-5-haiku-20241022.md) | Multiple | 200k | $0.80/$4.00 |
 | Claude Opus 3 | Multiple | 200k | $15.00/$75.00 |
-| [Claude Opus 4](../authors/anthropic/models/claude-opus-4-at-20250514.md) | Multiple | 200k | $15.00/$75.00 |
 | [Claude Opus 4](../authors/anthropic/models/claude-opus-4-20250514.md) | Multiple | 200k | $15.00/$75.00 |
+| [Claude Opus 4](../authors/anthropic/models/claude-opus-4-at-20250514.md) | Multiple | 200k | $15.00/$75.00 |
 | [Claude Opus 4 1](../authors/anthropic/models/claude-opus-4-1-at-20250805.md) | Multiple | 200k | $15.00/$75.00 |
 | [Claude Opus 4.1](../authors/anthropic/models/claude-opus-4-1-20250805.md) | Multiple | 200k | $15.00/$75.00 |
 | _...and 6 more_ |  |  |  |
 
   
-### Embeddings (13 models)
+### Embeddings (14 models)
   
 | Model | Provider | Context | Pricing |
 |---------|---------|---------|---------|
 | [Embedding 001](../authors/google/models/embedding-001.md) | Multiple | 2.0k | N/A |
 | [Embedding Gecko](../authors/google/models/embedding-gecko-001.md) | Multiple | 1.0k | N/A |
-| [Gemini Embedding Experimental 03-07](../authors/google/models/gemini-embedding-exp-03-07.md) | Multiple | 8.2k | N/A |
+| [Gemini Embedding 001](../authors/google/models/gemini-embedding-001.md) | Multiple | 2.0k | N/A |
 | [Multimodalembedding](../authors/google/models/multimodalembedding-at-001.md) | Multiple | 1.0M | N/A |
 | [Text Embedding 004](../authors/google/models/text-embedding-004.md) | Multiple | 2.0k | N/A |
 | [Text Embedding Large Exp 03 07](../authors/google/models/text-embedding-large-exp-03-07-at-default.md) | Multiple | 1.0M | N/A |
 | [Textembedding Gecko](../authors/google/models/textembedding-gecko-at-003.md) | Multiple | 1.0M | N/A |
+| [gemini-embedding-001](../authors/google/models/gemini-embedding-001.md) | Multiple | 2.0k | N/A |
 | multimodalembedding | Multiple | N/A | N/A |
 | [text-embedding-3-large](../authors/openai/models/text-embedding-3-large.md) | Multiple | N/A | N/A |
-| [text-embedding-3-small](../authors/openai/models/text-embedding-3-small.md) | Multiple | N/A | N/A |
-| _...and 3 more_ |  |  |  |
+| _...and 4 more_ |  |  |  |
 
   
 ### Qwen (12 models)
@@ -191,20 +191,6 @@ Complete listing of all 449 models in the Starmap catalog.
 | _...and 2 more_ |  |  |  |
 
   
-### DeepSeek (8 models)
-  
-| Model | Provider | Context | Pricing |
-|---------|---------|---------|---------|
-| [Deepseek R1](../authors/deepseek/models/deepseek-r1-at-deepseek-r1-0528.md) | Multiple | 64k | N/A |
-| [Deepseek R1 0528 Maas](../authors/deepseek/models/deepseek-r1-0528-maas-at-001.md) | Multiple | 64k | N/A |
-| [Deepseek V3](../authors/deepseek/models/deepseek-v3-at-deepseek-v3-0324.md) | Multiple | 64k | N/A |
-| [Deepseek V3 1](../authors/deepseek/models/deepseek-v3-1-at-deepseek-v3-1.md) | Multiple | 64k | N/A |
-| [Deepseek V3.1 Maas](../authors/deepseek/models/deepseek-v3.1-maas-at-001.md) | Multiple | 64k | N/A |
-| [deepseek-chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | 128k | $0.57/$1.68 |
-| [deepseek-r1-distill-llama-70b](../authors/deepseek / meta/models/deepseek-r1-distill-llama-70b.md) | Multiple | 131.1k | $0.75/$0.99 |
-| [deepseek-reasoner](../authors/deepseek/models/deepseek-reasoner.md) | Multiple | 128k | $0.57/$1.68 |
-
-  
 ### PaLM (8 models)
   
 | Model | Provider | Context | Pricing |
@@ -217,6 +203,19 @@ Complete listing of all 449 models in the Starmap catalog.
 | code-bison | Multiple | N/A | N/A |
 | codechat-bison | Multiple | N/A | N/A |
 | text-bison | Multiple | N/A | N/A |
+
+  
+### DeepSeek (7 models)
+  
+| Model | Provider | Context | Pricing |
+|---------|---------|---------|---------|
+| [Deepseek R1](../authors/deepseek/models/deepseek-r1-at-deepseek-r1-0528.md) | Multiple | 64k | N/A |
+| [Deepseek R1 0528 Maas](../authors/deepseek/models/deepseek-r1-0528-maas-at-001.md) | Multiple | 64k | N/A |
+| [Deepseek V3](../authors/deepseek/models/deepseek-v3-at-deepseek-v3-0324.md) | Multiple | 64k | N/A |
+| [Deepseek V3 1](../authors/deepseek/models/deepseek-v3-1-at-deepseek-v3-1.md) | Multiple | 64k | N/A |
+| [Deepseek V3.1 Maas](../authors/deepseek/models/deepseek-v3.1-maas-at-001.md) | Multiple | 64k | N/A |
+| [deepseek-chat](../authors/deepseek/models/deepseek-chat.md) | Multiple | 128k | $0.57/$1.68 |
+| [deepseek-reasoner](../authors/deepseek/models/deepseek-reasoner.md) | Multiple | 128k | $0.57/$1.68 |
 
   
 ### BERT (6 models)

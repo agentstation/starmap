@@ -9,9 +9,9 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -34,18 +34,18 @@ var AuthorsCmd = &cobra.Command{
 		}
 
 		// List view with filters
-		resourceFlags := getResourceFlags(cmd)
-		return listAuthors(resourceFlags)
+		resourceFlags := globals.AddResourceFlags(cmd)
+		return listAuthors(cmd, resourceFlags)
 	},
 }
 
 func init() {
 	// Add resource-specific flags
-	cmdutil.AddResourceFlags(AuthorsCmd)
+	globals.AddResourceFlags(AuthorsCmd)
 }
 
 // listAuthors lists all authors with optional filters.
-func listAuthors(flags *cmdutil.ResourceFlags) error {
+func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	cat, err := catalog.Load()
 	if err != nil {
 		return err
@@ -75,8 +75,11 @@ func listAuthors(flags *cmdutil.ResourceFlags) error {
 		filtered = filtered[:flags.Limit]
 	}
 
-	// Format output
-	globalFlags := getGlobalFlags()
+	// Get global flags and format output
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 	formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 	// Transform to output format
@@ -117,7 +120,10 @@ func showAuthorDetails(cmd *cobra.Command, authorID string) error {
 		}
 	}
 
-	globalFlags := getGlobalFlags()
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 	formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 	// For table output, show detailed view

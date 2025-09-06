@@ -49,7 +49,7 @@ Google's AI platform offering Gemini models with multimodal capabilities.
   
 **Content Moderated**: Yes  
   
-**Moderated by**: Google-Ai-Studio  
+**Moderated by**: Google-ai-studio  
   
   
 ## 🏢 Headquarters

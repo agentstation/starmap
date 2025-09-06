@@ -21,72 +21,52 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func init() {
-	// Add fetch-specific flags
-	ModelsCmd.Flags().StringVarP(nil, "provider", "p", "",
-		"Provider to fetch from")
-	ModelsCmd.Flags().BoolVar(nil, "all", false,
-		"Fetch from all configured providers")
-	ModelsCmd.Flags().IntVar(nil, "timeout", 30,
-		"Timeout in seconds for API calls")
-}
 
-// ModelsCmd represents the fetch models subcommand.
-var ModelsCmd = &cobra.Command{
-	Use:   "models",
-	Short: "Fetch models from provider APIs",
-	Example: `  starmap fetch models --provider openai
+// NewModelsCmd creates the fetch models subcommand.
+func NewModelsCmd(globalFlags *globals.Flags) *cobra.Command {
+	var (
+		providerFlag string
+		allFlag      bool
+		timeoutFlag  int
+	)
+
+	cmd := &cobra.Command{
+		Use:   "models",
+		Short: "Fetch models from provider APIs",
+		Example: `  starmap fetch models --provider openai
   starmap fetch models --all
   starmap fetch models -p anthropic --timeout 60`,
-	RunE: func(cmd *cobra.Command, _ []string) error {
-		ctx := cmd.Context()
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			ctx := cmd.Context()
 
-		// Extract flags
-		flags := getFetchFlags(cmd)
+			if allFlag {
+				return fetchAllProviders(ctx, timeoutFlag, globalFlags)
+			}
 
-		if flags.All {
-			return fetchAllProviders(ctx, flags.Timeout)
-		}
+			if providerFlag == "" {
+				return fmt.Errorf("--provider or --all required")
+			}
 
-		if flags.Provider == "" {
-			return fmt.Errorf("--provider or --all required")
-		}
-
-		return fetchProviderModels(cmd, flags.Provider, flags.Timeout)
-	},
-}
-
-// Flags holds flags for fetch command.
-type Flags struct {
-	Provider string
-	All      bool
-	Timeout  int
-}
-
-// getFetchFlags extracts fetch flags from a command.
-func getFetchFlags(cmd *cobra.Command) *Flags {
-	provider, _ := cmd.Flags().GetString("provider")
-	all, _ := cmd.Flags().GetBool("all")
-	timeout, _ := cmd.Flags().GetInt("timeout")
-
-	return &Flags{
-		Provider: provider,
-		All:      all,
-		Timeout:  timeout,
+			return fetchProviderModels(cmd, providerFlag, timeoutFlag, globalFlags)
+		},
 	}
+
+	// Add flags
+	cmd.Flags().StringVarP(&providerFlag, "provider", "p", "",
+		"Provider to fetch from")
+	cmd.Flags().BoolVar(&allFlag, "all", false,
+		"Fetch from all configured providers")
+	cmd.Flags().IntVar(&timeoutFlag, "timeout", 30,
+		"Timeout in seconds for API calls")
+
+	return cmd
 }
 
-// getGlobalFlags returns the global flags.
-func getGlobalFlags() *globals.Flags {
-	// Return defaults for now - this will be passed from the calling commands
-	return &globals.Flags{
-		Output: "",
-		Quiet:  false,
-	}
-}
+
+
 
 // fetchProviderModels fetches models from a specific provider.
-func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int) error {
+func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, globalFlags *globals.Flags) error {
 	// Get context from command
 	ctx := cmd.Context()
 	// Create context with timeout
@@ -118,7 +98,6 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int) err
 	}
 
 	if len(models) == 0 {
-		globalFlags := getGlobalFlags()
 		if !globalFlags.Quiet {
 			fmt.Fprintf(os.Stderr, "No models returned from %s\n", providerID)
 		}
@@ -130,7 +109,6 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int) err
 		return models[i].ID < models[j].ID
 	})
 
-	globalFlags := getGlobalFlags()
 	if !globalFlags.Quiet {
 		fmt.Fprintf(os.Stderr, "Fetched %d models from %s\n", len(models), providerID)
 	}
@@ -156,7 +134,7 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int) err
 }
 
 // fetchAllProviders fetches models from all configured providers concurrently.
-func fetchAllProviders(ctx context.Context, timeout int) error {
+func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Flags) error {
 	cat, err := catalog.Load()
 	if err != nil {
 		return err
@@ -214,7 +192,6 @@ func fetchAllProviders(ctx context.Context, timeout int) error {
 	var allModels []catalogs.Model
 	var successCount, errorCount int
 
-	globalFlags := getGlobalFlags()
 	for r := range results {
 		if r.err != nil {
 			errorCount++

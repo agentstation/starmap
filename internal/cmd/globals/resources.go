@@ -1,9 +1,6 @@
-// Package cmdutil provides shared flags and configuration utilities for starmap commands.
-package cmdutil
+package globals
 
-import (
-	"github.com/spf13/cobra"
-)
+import "github.com/spf13/cobra"
 
 // ResourceFlags holds flags for resource-specific operations.
 type ResourceFlags struct {
@@ -13,6 +10,21 @@ type ResourceFlags struct {
 	Search   string
 	Filter   []string
 	All      bool
+}
+
+// ParseResources extracts resource flags from a command.
+func ParseResources(cmd *cobra.Command) *ResourceFlags {
+	provider, _ := cmd.Flags().GetString("provider")
+	author, _ := cmd.Flags().GetString("author")
+	search, _ := cmd.Flags().GetString("search")
+	limit, _ := cmd.Flags().GetInt("limit")
+
+	return &ResourceFlags{
+		Provider: provider,
+		Author:   author,
+		Search:   search,
+		Limit:    limit,
+	}
 }
 
 // AddResourceFlags adds resource-specific flags to a command.

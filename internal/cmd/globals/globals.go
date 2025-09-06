@@ -1,3 +1,4 @@
+// Package globals provides shared flag structures and utilities for CLI commands.
 package globals
 
 import "github.com/spf13/cobra"
@@ -24,4 +25,27 @@ func AddFlags(cmd *cobra.Command) *Flags {
 		"Disable colored output")
 
 	return flags
+}
+
+// Parse extracts global flags from the command hierarchy.
+// This is useful for subcommands that need to access global flags when
+// they weren't passed the flags struct directly.
+func Parse(cmd *cobra.Command) (*Flags, error) {
+	// Walk up the command hierarchy to find persistent flags
+	root := cmd
+	for root.Parent() != nil {
+		root = root.Parent()
+	}
+
+	output, _ := root.PersistentFlags().GetString("output")
+	quiet, _ := root.PersistentFlags().GetBool("quiet")
+	verbose, _ := root.PersistentFlags().GetBool("verbose")
+	noColor, _ := root.PersistentFlags().GetBool("no-color")
+
+	return &Flags{
+		Output:  output,
+		Quiet:   quiet,
+		Verbose: verbose,
+		NoColor: noColor,
+	}, nil
 }

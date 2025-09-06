@@ -8,7 +8,7 @@ Ultra-fast inference with custom LPU hardware, offering low-latency model servin
 | Field | Value |
 |---------|---------|
 | **Provider ID** | `groq` |
-| **Total Models** | 27 |
+| **Total Models** | 28 |
 | **Authentication** | API Key Required |
 | **Environment Variable** | `GROQ_API_KEY` |
 | **Status Page** | [https://status.groq.com](https://status.groq.com) |
@@ -116,6 +116,7 @@ Mountain View, CA, USA
 | [compound-beta-mini](./models/compound-beta-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [compound-mini](./models/groq-compound-mini.md) | 131.1k | N/A | N/A | 📝 ⚡ |
 | [kimi-k2-instruct](./models/moonshotai-kimi-k2-instruct.md) | 131.1k | $1.00 | $3.00 | 📝 ⚡ |
+| [kimi-k2-instruct-0905](./models/moonshotai-kimi-k2-instruct-0905.md) | 262.1k | $1.00 | $3.00 | 📝 ⚡ |
 | [playai-tts](./models/playai-tts.md) | 8.2k | N/A | N/A | 📝 ⚡ |
 | [playai-tts-arabic](./models/playai-tts-arabic.md) | 8.2k | N/A | N/A | 📝 ⚡ |
 

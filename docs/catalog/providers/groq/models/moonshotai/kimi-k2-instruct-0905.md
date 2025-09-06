@@ -1,15 +1,18 @@
-# compound-mini
+# kimi-k2-instruct-0905
   
-[Catalog](../../../../..) / [Providers](../../../..) / [Groq](../../..) / **compound-mini**
+[Catalog](../../../../..) / [Providers](../../../..) / [Groq](../../..) / **kimi-k2-instruct-0905**
 
 
 ## 📋 Overview
   
-- **ID**: `groq/compound-mini`
+- **ID**: `moonshotai/kimi-k2-instruct-0905`
 - **Provider**: [Groq](../)
 - **Authors**: 
-- **Context Window**: 131k tokens
-- **Max Output**: 8k tokens
+- **Release Date**: 2025-09-05
+- **Knowledge Cutoff**: 2024-10-01
+- **Open Weights**: true
+- **Context Window**: 262k tokens
+- **Max Output**: 16k tokens
   
 ## 🔬 Technical Specifications
   
@@ -62,7 +65,7 @@
   
 | Max Tokens | Stop Sequences |
 |---------|---------|
-| 1-8k | ✅ |
+| 1-16k | ✅ |
 
   
 ### Repetition Control
@@ -84,7 +87,43 @@
 *Pricing shown for Groq*
   
   
-Contact provider for pricing information.
+### Token Pricing
+  
+| Input | Output | Reasoning | Cache Read | Cache Write |
+|---------|---------|---------|---------|---------|
+| $1.00/1M | $3.00/1M | - | - | - |
+
+  
+### 💰 Cost Calculator
+  
+Calculate costs for common usage patterns:
+  
+  
+| Use Case | Input | Output | Total Cost |
+|---------|---------|---------|---------|
+| Quick chat (1K in, 500 out) | 1k tokens | 500 tokens | $0.002500 |
+| Document summary (10K in, 1K out) | 10k tokens | 1k tokens | $0.0130 |
+| RAG query (50K in, 2K out) | 50k tokens | 2k tokens | $0.0560 |
+| Code generation (5K in, 10K out) | 5k tokens | 10k tokens | $0.0350 |
+
+  
+**Pricing Formula:**
+  
+```
+Cost = (Input Tokens / 1M × $1.00) + (Output Tokens / 1M × $3.00)
+```
+  
+### 📊 Example Costs
+  
+Real-world usage examples and their costs:
+  
+  
+| Usage Tier | Daily Volume | Monthly Tokens | Monthly Cost |
+|---------|---------|---------|---------|
+| Personal (10 chats/day) | 10 chats | 675k | $1.12 |
+| Small Team (100 chats/day) | 100 chats | 9.0M | $15.00 |
+| Enterprise (1000 chats/day) | 1000 chats | 135.0M | $225.00 |
+
   
 ## 📋 Metadata
   

@@ -35,5 +35,5 @@ func init() {
 	rootCmd.AddCommand(fetchCmd)
 
 	// Add subcommands
-	fetchCmd.AddCommand(fetch.ModelsCmd)
+	fetchCmd.AddCommand(fetch.NewModelsCmd(globalFlags))
 }

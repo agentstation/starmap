@@ -18,7 +18,7 @@ Organizations that host and serve AI models through APIs.
 | **Google Vertex AI** | 278 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
 | **OpenAI** | 73 | ❌ | ✅ | [Status](https://status.openai.com) |
 | **Google AI Studio** | 50 | ❌ | ✅ | [Status](https://status.cloud.google.com) |
-| **Groq** | 27 | ❌ | ✅ | [Status](https://status.groq.com) |
+| **Groq** | 28 | ❌ | ✅ | [Status](https://status.groq.com) |
 | **Anthropic** | 10 | ❌ | ✅ | [Status](https://status.anthropic.com) |
 | **Cerebras** | 9 | ❌ | ✅ | [Status](https://status.cerebras.ai/) |
 | **DeepSeek** | 2 | ❌ | ✅ | [Status](https://status.deepseek.com) |
@@ -51,7 +51,7 @@ Overview of popular models available across different providers:
 | **Claude Opus 4.1** | Anthropic | 200k | $15.00 | $75.00 | 📝 👁️ 🔧 ⚡ |
 | **Claude Sonnet 3** | Anthropic | 200k | $3.00 | $15.00 | — |
 | **Claude Sonnet 3.5 (New)** | Anthropic | 200k | $3.00 | $15.00 | 📝 👁️ 🔧 ⚡ |
-| _...and 429 more_ |  |  |  |  |  |
+| _...and 430 more_ |  |  |  |  |  |
 
   
 ## Provider Details
@@ -128,14 +128,14 @@ Enterprise AI platform on Google Cloud with Gemini and PaLM models.
 Ultra-fast inference with custom LPU hardware, offering low-latency model serving.
   
   
-- **Models**: 27 available
+- **Models**: 28 available
 - **API Key**: Required (`GROQ_API_KEY`)
 - **Status**: [Check current status](https://status.groq.com)
 - **Featured Models**:
 -   - allam-2-7b
 -   - compound-beta
 -   - compound-beta-mini
--   - [View all 27 models →](groq/)
+-   - [View all 28 models →](groq/)
   
 ### <img src="./openai/logo.svg" alt="" width="16" height="16" style="vertical-align: middle"> [OpenAI](openai/)
   
