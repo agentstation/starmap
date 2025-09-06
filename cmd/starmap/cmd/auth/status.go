@@ -3,14 +3,18 @@ package auth
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+const googleVertexProviderID = "google-vertex"
 
 // StatusCmd shows authentication status for all providers.
 var StatusCmd = &cobra.Command{
@@ -67,50 +71,81 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	printProviderStatus(&provider, status)
 
 	// Check Google Cloud if it's the vertex provider
-	if providerID == "google-vertex" {
+	if providerID == googleVertexProviderID {
 		printGoogleCloudStatus(checker)
 	}
 	return nil
 }
 
 func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool) error {
+	fmt.Println()
 	fmt.Println("Provider Authentication Status:")
 	fmt.Println()
 
 	var configured, missing, optional, unsupported int
 	verbose, _ := cmd.Flags().GetBool("verbose")
 
-	// Group providers by status
+	// Group providers by status and collect data
 	providers := cat.Providers().List()
+	
+	// Prepare table data
+	tableRows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
 		status := checker.CheckProvider(provider, supportedMap)
 
+		// Skip unsupported unless verbose
+		if status.State == auth.StateUnsupported && !verbose {
+			unsupported++
+			continue
+		}
+
+		// Create table row
+		statusIcon, statusText := getStatusDisplay(status.State)
+		keyVariable := getKeyVariable(provider, status)
+		source := getCredentialSource(provider)
+		
+		row := []string{
+			provider.Name,
+			statusIcon + " " + statusText,
+			keyVariable,
+			source,
+		}
+		tableRows = append(tableRows, row)
+
+		// Count by status
 		switch status.State {
 		case auth.StateConfigured:
-			printProviderStatus(provider, status)
 			configured++
 		case auth.StateMissing:
-			printProviderStatus(provider, status)
 			missing++
 		case auth.StateOptional:
-			printProviderStatus(provider, status)
 			optional++
 		case auth.StateUnsupported:
-			if verbose {
-				printProviderStatus(provider, status)
-			}
 			unsupported++
 		}
 	}
 
-	// Special section for Google Cloud authentication
+	// Create and display table
+	tableData := output.TableData{
+		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
+		Rows:    tableRows,
+	}
+	
+	formatter := &output.TableFormatter{}
+	if err := formatter.Format(os.Stdout, tableData); err != nil {
+		return err
+	}
+
+	// Special section for Google Cloud authentication - only if relevant
 	gcloudStatus := checker.CheckGCloud()
 	if gcloudStatus != nil && (gcloudStatus.HasVertexProvider || gcloudStatus.Authenticated) {
 		printGoogleCloudStatus(checker)
 	}
 
 	// Print summary
-	printAuthSummary(cmd, configured, missing, optional, unsupported)
+	if err := printAuthSummary(cmd, configured, missing, optional, unsupported); err != nil {
+		return err
+	}
 
 	if configured == 0 && missing > 0 {
 		return &errors.ConfigError{
@@ -123,7 +158,8 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 }
 
 func printGoogleCloudStatus(checker *auth.Checker) {
-	fmt.Println("\nGoogle Cloud Authentication:")
+	fmt.Println()
+	fmt.Println("Google Cloud Authentication:")
 	gcloudStatus := checker.CheckGCloud()
 	if gcloudStatus.Authenticated {
 		fmt.Println("✅ Application Default Credentials configured")
@@ -139,26 +175,98 @@ func printGoogleCloudStatus(checker *auth.Checker) {
 	}
 }
 
-func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsupported int) {
-	fmt.Println("\nSummary:")
+func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsupported int) error {
+	fmt.Println()
+	
+	// Create summary table
+	var summaryRows [][]string
 	if configured > 0 {
-		fmt.Printf("  ✅ %d provider(s) configured\n", configured)
+		summaryRows = append(summaryRows, []string{"✅ Configured", fmt.Sprintf("%d", configured)})
 	}
 	if missing > 0 {
-		fmt.Printf("  ❌ %d provider(s) missing required credentials\n", missing)
+		summaryRows = append(summaryRows, []string{"❌ Missing", fmt.Sprintf("%d", missing)})
 	}
 	if optional > 0 {
-		fmt.Printf("  ⚪ %d provider(s) with optional configuration\n", optional)
+		summaryRows = append(summaryRows, []string{"⚪ Optional", fmt.Sprintf("%d", optional)})
 	}
 	if unsupported > 0 && cmd.Flags().Changed("verbose") {
-		fmt.Printf("  ⚫ %d provider(s) without implementation\n", unsupported)
+		summaryRows = append(summaryRows, []string{"⚫ Unsupported", fmt.Sprintf("%d", unsupported)})
+	}
+
+	if len(summaryRows) > 0 {
+		summaryData := output.TableData{
+			Headers: []string{"Status", "Count"},
+			Rows:    summaryRows,
+		}
+		
+		formatter := &output.TableFormatter{}
+		if err := formatter.Format(os.Stdout, summaryData); err != nil {
+			return err
+		}
+		fmt.Println()
 	}
 
 	if configured == 0 && missing > 0 {
-		fmt.Println("\n⚠️  No providers configured. Set API keys to enable provider access.")
+		fmt.Println("⚠️  No providers configured. Set API keys to enable provider access.")
 	} else if configured > 0 {
-		fmt.Println("\n✨ Run 'starmap auth verify' to test that credentials work.")
+		fmt.Println("✨ Run 'starmap auth verify' to test credentials work")
 	}
+	
+	// Final newline before cursor
+	fmt.Println()
+	return nil
+}
+
+
+// getStatusDisplay returns icon and text for a status state.
+func getStatusDisplay(state auth.State) (string, string) {
+	switch state {
+	case auth.StateConfigured:
+		return "✅", "Configured"
+	case auth.StateMissing:
+		return "❌", "Missing"
+	case auth.StateOptional:
+		return "⚪", "Optional"
+	case auth.StateUnsupported:
+		return "⚫", "Unsupported"
+	default:
+		return "❓", "Unknown"
+	}
+}
+
+// getKeyVariable returns the key variable name or special message.
+func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
+	if provider.ID == googleVertexProviderID {
+		return "(gcloud auth required)"
+	}
+	
+	if provider.APIKey != nil {
+		return provider.APIKey.Name
+	}
+	
+	if status.State == auth.StateUnsupported {
+		return "(no implementation)"
+	}
+	
+	return "(no key required)"
+}
+
+// getCredentialSource determines where credentials are sourced from.
+func getCredentialSource(provider *catalogs.Provider) string {
+	if provider.ID == googleVertexProviderID {
+		return "gcloud"
+	}
+	
+	if provider.APIKey != nil {
+		// Check if environment variable is set
+		envValue := os.Getenv(provider.APIKey.Name)
+		if envValue != "" {
+			return "env"
+		}
+		return "-"
+	}
+	
+	return "-"
 }
 
 func printProviderStatus(provider *catalogs.Provider, status *auth.Status) {

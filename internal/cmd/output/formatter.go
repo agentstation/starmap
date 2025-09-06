@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/mattn/go-isatty"
+	"github.com/olekukonko/tablewriter"
 	"gopkg.in/yaml.v3"
 )
 
@@ -96,45 +97,32 @@ func (f *TableFormatter) Format(w io.Writer, data any) error {
 }
 
 func (f *TableFormatter) formatTable(w io.Writer, data TableData) error {
-	// For now, use simple text formatting
-	// TODO: Add proper table formatting with tablewriter
-
-	// Print headers
+	// Use tablewriter for proper table formatting
+	table := tablewriter.NewTable(w)
+	
+	// Set headers if present
 	if len(data.Headers) > 0 {
-		for i, header := range data.Headers {
-			if i > 0 {
-				_, _ = fmt.Fprint(w, "  ")
-			}
-			_, _ = fmt.Fprintf(w, "%-20s", header)
+		// Convert headers to []any for the new API
+		headers := make([]any, len(data.Headers))
+		for i, h := range data.Headers {
+			headers[i] = h
 		}
-		_, _ = fmt.Fprintln(w)
-
-		// Print separator
-		for i := range data.Headers {
-			if i > 0 {
-				_, _ = fmt.Fprint(w, "  ")
-			}
-			_, _ = fmt.Fprintf(w, "%-20s", strings.Repeat("-", 18))
-		}
-		_, _ = fmt.Fprintln(w)
+		table.Header(headers...)
 	}
-
-	// Print rows
+	
+	// Add rows 
 	for _, row := range data.Rows {
+		// Convert row to []any for the new API
+		rowData := make([]any, len(row))
 		for i, cell := range row {
-			if i > 0 {
-				_, _ = fmt.Fprint(w, "  ")
-			}
-			// Truncate long cells
-			if len(cell) > 18 {
-				cell = cell[:15] + "..."
-			}
-			_, _ = fmt.Fprintf(w, "%-20s", cell)
+			rowData[i] = cell
 		}
-		_, _ = fmt.Fprintln(w)
+		if err := table.Append(rowData...); err != nil {
+			return err
+		}
 	}
-
-	return nil
+	
+	return table.Render()
 }
 
 // TableData represents data formatted for table output.

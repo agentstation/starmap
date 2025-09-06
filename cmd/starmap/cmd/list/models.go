@@ -38,7 +38,7 @@ var ModelsCmd = &cobra.Command{
 		}
 
 		// List view with filters
-		resourceFlags := globals.AddResourceFlags(cmd)
+		resourceFlags := globals.ParseResources(cmd)
 		showDetails, _ := cmd.Flags().GetBool("details")
 		capability, _ := cmd.Flags().GetString("capability")
 		minContext, _ := cmd.Flags().GetInt64("min-context")

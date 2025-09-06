@@ -34,7 +34,7 @@ var AuthorsCmd = &cobra.Command{
 		}
 
 		// List view with filters
-		resourceFlags := globals.AddResourceFlags(cmd)
+		resourceFlags := globals.ParseResources(cmd)
 		return listAuthors(cmd, resourceFlags)
 	},
 }
