@@ -46,14 +46,14 @@ func runAuthVerify(cmd *cobra.Command, args []string) error {
 	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
-		return verifyProvider(cmd, cat, providerID, timeout, verbose)
+		return verifyProvider(cat, providerID, timeout, verbose)
 	}
 
 	// Verify all configured providers
-	return verifyAllProviders(cmd, cat, timeout, verbose)
+	return verifyAllProviders(cat, timeout, verbose)
 }
 
-func verifyAllProviders(_ *cobra.Command, cat catalogs.Catalog, timeout time.Duration, verbose bool) error {
+func verifyAllProviders(cat catalogs.Catalog, timeout time.Duration, verbose bool) error {
 	fetcher := sources.NewProviderFetcher()
 	supportedProviders := fetcher.List()
 
@@ -123,7 +123,7 @@ func verifyAllProviders(_ *cobra.Command, cat catalogs.Catalog, timeout time.Dur
 	return nil
 }
 
-func verifyProvider(_ *cobra.Command, cat catalogs.Catalog, providerID string, timeout time.Duration, verbose bool) error {
+func verifyProvider(cat catalogs.Catalog, providerID string, timeout time.Duration, verbose bool) error {
 	fetcher := sources.NewProviderFetcher()
 	
 	// Convert string to ProviderID type
