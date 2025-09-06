@@ -1,65 +1,36 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sources"
+	validatecmd "github.com/agentstation/starmap/cmd/starmap/cmd/validate"
 )
 
 // validateCmd represents the validate command.
 var validateCmd = &cobra.Command{
-	Use:   "validate",
-	Short: "Validate provider API key configuration",
-	Long: `Validate checks which providers have properly configured API keys
-and shows which providers are ready to use.
+	Use:   "validate [resource]",
+	Short: "Validate catalog configuration and structure",
+	Long: `Validate the structure and completeness of catalog configuration files.
 
-This command helps you understand:
-  - Which providers are configured and ready to use
-  - Which providers are missing required API keys
-  - Which providers have optional API key configuration
-  - Which providers don't have client implementations yet`,
-	RunE: runValidate,
+Without arguments, validates the entire embedded catalog.
+Use subcommands to validate specific resources:
+  - providers: Validate providers.yaml structure
+  - authors: Validate authors.yaml structure
+  - models: Validate model definitions
+
+Examples:
+  starmap validate              # Validate entire catalog
+  starmap validate providers    # Validate only providers
+  starmap validate authors      # Validate only authors
+  starmap validate models       # Validate model definitions`,
+	RunE: validatecmd.RunCatalog, // Default: validate everything
 }
 
 func init() {
 	rootCmd.AddCommand(validateCmd)
-}
 
-func runValidate(_ *cobra.Command, _ []string) error {
-	cat, err := catalog.Load()
-	if err != nil {
-		return err
-	}
-
-	// Get list of supported providers using the public API
-	fetcher := sources.NewProviderFetcher()
-	supportedProviders := fetcher.List()
-
-	report, err := catalogs.ValidateAllProviders(cat, supportedProviders)
-	if err != nil {
-		return &errors.ProcessError{
-			Operation: "validate provider access",
-			Command:   "validate",
-			Err:       err,
-		}
-	}
-
-	report.Print()
-
-	// Return error if there are missing required keys
-	if len(report.Missing) > 0 {
-		fmt.Println("\n⚠️  Some providers are missing required API keys")
-		return nil // Don't return error, just inform
-	}
-
-	if len(report.Configured) > 0 {
-		fmt.Printf("\n✨ %d provider(s) ready to use!\n", len(report.Configured))
-	}
-
-	return nil
+	// Add subcommands
+	validateCmd.AddCommand(validatecmd.ProvidersCmd)
+	validateCmd.AddCommand(validatecmd.AuthorsCmd)
+	validateCmd.AddCommand(validatecmd.ModelsCmd)
 }

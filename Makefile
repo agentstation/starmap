@@ -414,10 +414,68 @@ update-catalog-provider: ## Update specific provider in embedded catalog (use PR
 	$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --force -y
 	@echo "$(GREEN)Provider $(PROVIDER) updated successfully!$(NC)"
 
+# Enhanced embed command with automatic authentication
+embed: ## Update embedded catalog with automatic Google Cloud auth
+	@echo "$(BLUE)Checking Google Cloud authentication...$(NC)"
+	@if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
+		echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
+	else \
+		echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
+		$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
+	fi
+	@echo "$(BLUE)Validating catalog structure...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) validate || exit 1
+	@echo "$(BLUE)Checking provider authentication...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) auth status
+	@echo "$(BLUE)Updating embedded catalog...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --force -y
+	@echo "$(GREEN)✅ Embedded catalog updated successfully!$(NC)"
+
+embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
+	@if [ -z "$(PROVIDER)" ]; then \
+		echo "$(RED)Error: PROVIDER not specified$(NC)"; \
+		echo "$(YELLOW)Usage: make embed-provider PROVIDER=google-vertex$(NC)"; \
+		exit 1; \
+	fi
+	@if [ "$(PROVIDER)" = "google-vertex" ] || [ "$(PROVIDER)" = "google-ai-studio" ]; then \
+		echo "$(BLUE)Checking Google Cloud authentication...$(NC)"; \
+		if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
+			echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
+		else \
+			echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
+			$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
+		fi; \
+	fi
+	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --force -y
+	@echo "$(GREEN)✅ Provider $(PROVIDER) updated successfully!$(NC)"
+
 # Validation targets
-validate: ## Validate provider configurations
-	@echo "$(BLUE)Validating provider configurations...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) validate
+validate: ## Validate entire embedded catalog structure
+	@echo "$(BLUE)Validating catalog structure...$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) validate
+
+validate-providers: ## Validate providers.yaml only
+	@$(GOCMD) run $(MAIN_PATH) validate providers
+
+validate-authors: ## Validate authors.yaml only
+	@$(GOCMD) run $(MAIN_PATH) validate authors
+
+validate-models: ## Validate model definitions
+	@$(GOCMD) run $(MAIN_PATH) validate models
+
+# Authentication targets
+auth: ## Check authentication status for all providers
+	@$(GOCMD) run $(MAIN_PATH) auth
+
+auth-status: ## Show authentication status (same as auth)
+	@$(GOCMD) run $(MAIN_PATH) auth status
+
+auth-verify: ## Verify credentials work with test API calls
+	@$(GOCMD) run $(MAIN_PATH) auth verify
+
+auth-gcloud: ## Authenticate with Google Cloud
+	@$(GOCMD) run $(MAIN_PATH) auth gcloud
 
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"
