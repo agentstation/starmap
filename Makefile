@@ -170,7 +170,11 @@ test-all: test test-race test-integration ## Run all tests
 lint: ## Run golangci-lint only
 	@echo "$(BLUE)Running golangci-lint...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+ifdef HAS_DEVBOX
 	$(RUN_PREFIX) lint
+else
+	golangci-lint run
+endif
 	@echo "$(GREEN)Linting complete$(NC)"
 
 fmt: ## Format Go code with gofmt only
@@ -181,19 +185,31 @@ fmt: ## Format Go code with gofmt only
 check: ## Run all checks: vet + lint + test (no fixes)
 	@echo "$(BLUE)Running checks: go vet & golangci-lint & tests...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+ifdef HAS_DEVBOX
 	$(RUN_PREFIX) check
+else
+	go vet ./... && golangci-lint run && go test ./...
+endif
 	@echo "$(GREEN)All checks passed$(NC)"
 
 fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
 	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || echo "$(YELLOW)Warning: golangci-lint not found, skipping lint fixes$(NC)"
+ifdef HAS_DEVBOX
 	$(RUN_PREFIX) fix
+else
+	gofmt -w . && (goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && (golangci-lint run --fix 2>/dev/null || true) && go mod tidy
+endif
 	@echo "$(GREEN)Auto-fix complete$(NC)"
 
 vet: ## Run go vet only
 	@echo "$(BLUE)Running go vet...$(NC)"
+ifdef HAS_DEVBOX
 	$(RUN_PREFIX) vet
+else
+	go vet ./...
+endif
 	@echo "$(GREEN)Vet complete$(NC)"
 
 ##@ Tooling
