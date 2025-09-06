@@ -85,7 +85,7 @@ type Starmap interface {
 	Update(ctx context.Context) error
 
 	// Sync synchronizes the catalog with provider APIs
-	Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error)
+	Sync(ctx context.Context, opts ...SyncOption) (*Result, error)
 
 	// OnModelAdded registers a callback for when models are added
 	OnModelAdded(ModelAddedHook)

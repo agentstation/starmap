@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"cloud.google.com/go/auth/credentials"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -32,9 +33,9 @@ type Status struct {
 
 // GCloudStatus represents Google Cloud authentication status.
 type GCloudStatus struct {
-	Authenticated    bool
-	Project          string
-	Location         string
+	Authenticated     bool
+	Project           string
+	Location          string
 	HasVertexProvider bool
 }
 

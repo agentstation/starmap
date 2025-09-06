@@ -53,7 +53,7 @@ func runAuthVerify(cmd *cobra.Command, args []string) error {
 func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
-	
+
 	fetcher := sources.NewProviderFetcher()
 	supportedProviders := fetcher.List()
 
@@ -83,7 +83,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
-		
+
 		// Try to fetch models as a test
 		_, err = fetcher.FetchModels(ctx, &provider)
 		if err != nil {
@@ -126,17 +126,17 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
-	
+
 	fetcher := sources.NewProviderFetcher()
-	
+
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)
-	
+
 	// Check if provider is supported
 	if !fetcher.HasClient(pid) {
 		return fmt.Errorf("provider %s not found or not supported", providerID)
 	}
-	
+
 	// Get provider from catalog
 	provider, err := cat.Provider(pid)
 	if err != nil {

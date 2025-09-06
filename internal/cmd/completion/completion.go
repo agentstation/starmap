@@ -94,7 +94,7 @@ func Install(cmd *cobra.Command, shell string) error {
 		if err = cmd.GenFishCompletion(file, true); err != nil {
 			return fmt.Errorf("failed to generate fish completion: %w", err)
 		}
-		
+
 	default:
 		return fmt.Errorf("unsupported shell: %s", shell)
 	}

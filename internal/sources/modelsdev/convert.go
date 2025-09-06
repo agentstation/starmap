@@ -1,8 +1,9 @@
 package modelsdev
 
 import (
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // ConvertToStarmapModel converts a models.dev model to a starmap model.

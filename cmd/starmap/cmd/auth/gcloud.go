@@ -38,7 +38,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
-	
+
 	check, _ := cmd.Flags().GetBool("check")
 	force, _ := cmd.Flags().GetBool("force")
 	project, _ := cmd.Flags().GetString("project")
@@ -68,7 +68,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 		if projectID != "" {
 			fmt.Printf("   Current project: %s\n", projectID)
 		}
-		
+
 		// If project specified, update it
 		if project != "" && project != projectID {
 			return setGCloudProject(project)
@@ -130,7 +130,7 @@ func checkGCloudAuthentication(ctx context.Context) (bool, string, error) {
 
 	// Try to get project ID
 	var projectID string
-	
+
 	// First try quota project (set by gcloud auth application-default)
 	if pid, err := creds.QuotaProjectID(ctx); err == nil && pid != "" {
 		projectID = pid
@@ -151,7 +151,7 @@ func setGCloudProject(project string) error {
 	fmt.Printf("Setting default project to: %s\n", project)
 
 	ctx := context.Background()
-	
+
 	// Set using gcloud config
 	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project)
 	if output, err := cmd.CombinedOutput(); err != nil {

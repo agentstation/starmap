@@ -15,9 +15,14 @@
     ],
     "scripts": {
       "site": "cd site && hugo serve",
+      "vet": "go vet ./...",
       "lint": "golangci-lint run",
+      "lint-fix": "golangci-lint run --fix",
+      "check": "go vet ./... && golangci-lint run && go test ./...",
+      "fix": "gofmt -w . && goimports -w -local github.com/agentstation/starmap . && golangci-lint run --fix && go mod tidy",
       "docs": "make generate",
       "test": "go test ./...",
+      "test-race": "go test -race ./...",
       "build": "make build"
     }
   }

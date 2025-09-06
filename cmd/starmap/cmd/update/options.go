@@ -6,8 +6,8 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// BuildSyncOptions creates a slice of sync options based on the provided flags.
-func BuildSyncOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool) []starmap.SyncOption {
+// BuildUpdateOptions creates a slice of update options based on the provided flags.
+func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool) []starmap.SyncOption {
 	var opts []starmap.SyncOption
 
 	if provider != "" {

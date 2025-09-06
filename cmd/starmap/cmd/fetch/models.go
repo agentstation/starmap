@@ -21,6 +21,16 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+func init() {
+	// Add fetch-specific flags
+	ModelsCmd.Flags().StringVarP(nil, "provider", "p", "",
+		"Provider to fetch from")
+	ModelsCmd.Flags().BoolVar(nil, "all", false,
+		"Fetch from all configured providers")
+	ModelsCmd.Flags().IntVar(nil, "timeout", 30,
+		"Timeout in seconds for API calls")
+}
+
 // ModelsCmd represents the fetch models subcommand.
 var ModelsCmd = &cobra.Command{
 	Use:   "models",
@@ -32,32 +42,34 @@ var ModelsCmd = &cobra.Command{
 		ctx := cmd.Context()
 
 		// Extract flags
-		fetchFlags := getFetchFlags(cmd)
+		flags := getFetchFlags(cmd)
 
-		if fetchFlags.All {
-			return fetchAllProviders(ctx, fetchFlags.Timeout)
+		if flags.All {
+			return fetchAllProviders(ctx, flags.Timeout)
 		}
 
-		if fetchFlags.Provider == "" {
+		if flags.Provider == "" {
 			return fmt.Errorf("--provider or --all required")
 		}
 
-		return fetchProviderModels(cmd, fetchFlags.Provider, fetchFlags.Timeout)
+		return fetchProviderModels(cmd, flags.Provider, flags.Timeout)
 	},
 }
 
-func init() {
-	// Add fetch-specific flags
-	cmdutil.AddFetchFlags(ModelsCmd)
+// Flags holds flags for fetch command.
+type Flags struct {
+	Provider string
+	All      bool
+	Timeout  int
 }
 
 // getFetchFlags extracts fetch flags from a command.
-func getFetchFlags(cmd *cobra.Command) *cmdutil.FetchFlags {
+func getFetchFlags(cmd *cobra.Command) *Flags {
 	provider, _ := cmd.Flags().GetString("provider")
 	all, _ := cmd.Flags().GetBool("all")
 	timeout, _ := cmd.Flags().GetInt("timeout")
 
-	return &cmdutil.FetchFlags{
+	return &Flags{
 		Provider: provider,
 		All:      all,
 		Timeout:  timeout,

@@ -28,7 +28,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
-	
+
 	verbose, _ := cmd.Flags().GetBool("verbose")
 
 	var hasErrors bool

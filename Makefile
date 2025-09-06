@@ -44,10 +44,10 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage lint fmt fmt-all vet deps tidy run update fix install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
 
-# Default target
-all: clean fmt-all lint test-all build
+# Default target  
+all: clean fix check build
 
 ##@ General
 
@@ -167,36 +167,34 @@ test-integration: ## Run integration tests
 test-all: test test-race test-integration ## Run all tests
 	@echo "$(GREEN)All tests completed!$(NC)"
 
-lint: ## Run linter and static analysis tools
-	@echo "$(BLUE)Running static analysis...$(NC)"
-	@echo "$(YELLOW)Running go vet...$(NC)"
-	$(GOVET) ./...
-	@echo "$(YELLOW)Running golangci-lint...$(NC)"
+lint: ## Run golangci-lint only
+	@echo "$(BLUE)Running golangci-lint...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
-	$(RUN_PREFIX) golangci-lint run
-	@echo "$(GREEN)Static analysis complete$(NC)"
+	$(RUN_PREFIX) lint
+	@echo "$(GREEN)Linting complete$(NC)"
 
-fmt: ## Format Go code
-	@echo "$(BLUE)Formatting code...$(NC)"
+fmt: ## Format Go code with gofmt only
+	@echo "$(BLUE)Formatting with gofmt...$(NC)"
 	$(GOFMT) ./...
+	@echo "$(GREEN)Formatting complete$(NC)"
 
-fmt-all: ## Comprehensive formatting with all tools
-	@echo "$(BLUE)Running comprehensive formatting...$(NC)"
-	@echo "$(YELLOW)  → Running gofmt...$(NC)"
-	@$(GOFMT) ./...
-	@echo "$(YELLOW)  → Running goimports...$(NC)"
-	@$(RUN_PREFIX) goimports -w -local "github.com/agentstation/starmap" . 2>/dev/null || echo "    goimports not installed, skipping..."
-	@echo "$(YELLOW)  → Running godot...$(NC)"
-	@$(RUN_PREFIX) godot -w . 2>/dev/null || echo "    godot not installed, skipping..."
-	@echo "$(YELLOW)  → Running golangci-lint with auto-fix...$(NC)"
-	@$(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || echo "    golangci-lint not installed, skipping..."
-	@echo "$(YELLOW)  → Running go mod tidy...$(NC)"
-	@$(GOMOD) tidy
-	@echo "$(GREEN)Formatting complete!$(NC)"
+check: ## Run all checks: vet + lint + test (no fixes)
+	@echo "$(BLUE)Running checks: go vet & golangci-lint & tests...$(NC)"
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+	$(RUN_PREFIX) check
+	@echo "$(GREEN)All checks passed$(NC)"
 
-vet: ## Run go vet
+fix: ## Auto-fix everything: format, imports, lint issues, dependencies
+	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
+	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || echo "$(YELLOW)Warning: golangci-lint not found, skipping lint fixes$(NC)"
+	$(RUN_PREFIX) fix
+	@echo "$(GREEN)Auto-fix complete$(NC)"
+
+vet: ## Run go vet only
 	@echo "$(BLUE)Running go vet...$(NC)"
-	$(GOVET) ./...
+	$(RUN_PREFIX) vet
+	@echo "$(GREEN)Vet complete$(NC)"
 
 ##@ Tooling
 
@@ -247,13 +245,6 @@ list-authors: ## List all authors
 	@echo "$(BLUE)Listing all authors...$(NC)"
 	$(GOCMD) run $(MAIN_PATH) list authors
 
-fix: ## Fix code formatting, imports, and dependencies
-	@echo "$(BLUE)Fixing code...$(NC)"
-	@echo "$(YELLOW)Formatting code...$(NC)"
-	$(GOFMT) ./...
-	@echo "$(YELLOW)Tidying modules...$(NC)"
-	$(GOMOD) tidy
-	@echo "$(GREEN)Code fixes complete$(NC)"
 
 ##@ Release & CI Alignment
 
@@ -270,10 +261,10 @@ release-snapshot-devbox: ## Create snapshot release using devbox tools
 
 ci-test: ## Run CI-equivalent tests locally
 	@echo "$(BLUE)Running CI-equivalent test suite...$(NC)"
-	@$(MAKE) clean fmt-all lint test-race
+	@$(MAKE) clean fix check test-race
 	@echo "$(GREEN)✅ All CI tests passed$(NC)"
 
-release: clean fix lint test ## Prepare for release (use: make release VERSION=x.y.z)
+release: clean fix check ## Prepare for release (use: make release VERSION=x.y.z)
 	@if [ -z "$(VERSION)" ]; then \
 		echo "$(GREEN)Ready for release. Run 'make release VERSION=x.y.z' to create and push a release tag$(NC)"; \
 	else \
@@ -292,7 +283,7 @@ release-full: ## Complete release workflow: prepare, tag, and trigger GitHub Act
 		exit 1; \
 	fi
 	@echo "$(YELLOW)Step 2/5: Running pre-release checks...$(NC)"
-	@$(MAKE) clean fix lint test > /dev/null
+	@$(MAKE) clean fix check > /dev/null
 	@echo "$(YELLOW)Step 3/5: Testing CLI features...$(NC)"
 	@echo "  Testing version command..."
 	@$(GOCMD) run $(MAIN_PATH) version > /dev/null

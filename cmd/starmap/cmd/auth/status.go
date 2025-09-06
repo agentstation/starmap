@@ -62,10 +62,10 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	if err != nil {
 		return fmt.Errorf("provider %s not found", providerName)
 	}
-	
+
 	status := checker.CheckProvider(&provider, supportedMap)
 	printProviderStatus(&provider, status)
-	
+
 	// Check Google Cloud if it's the vertex provider
 	if providerID == "google-vertex" {
 		printGoogleCloudStatus(checker)
@@ -84,7 +84,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	providers := cat.Providers().List()
 	for _, provider := range providers {
 		status := checker.CheckProvider(provider, supportedMap)
-		
+
 		switch status.State {
 		case auth.StateConfigured:
 			printProviderStatus(provider, status)
@@ -111,14 +111,14 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 
 	// Print summary
 	printAuthSummary(cmd, configured, missing, optional, unsupported)
-	
+
 	if configured == 0 && missing > 0 {
 		return &errors.ConfigError{
 			Component: "auth",
 			Message:   "no providers configured",
 		}
 	}
-	
+
 	return nil
 }
 

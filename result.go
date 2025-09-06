@@ -8,12 +8,12 @@ import (
 	"github.com/agentstation/starmap/pkg/differ"
 )
 
-// SyncResult represents the complete result of a sync operation.
-type SyncResult struct {
+// Result represents the complete result of a sync operation.
+type Result struct {
 	// Overall statistics
-	TotalChanges     int                                         // Total number of changes across all providers
-	ProvidersChanged int                                         // Number of providers with changes
-	ProviderResults  map[catalogs.ProviderID]*SyncProviderResult // Results per provider
+	TotalChanges     int                                     // Total number of changes across all providers
+	ProvidersChanged int                                     // Number of providers with changes
+	ProviderResults  map[catalogs.ProviderID]*ProviderResult // Results per provider
 
 	// Operation metadata
 	DryRun    bool   // Whether this was a dry run
@@ -21,8 +21,8 @@ type SyncResult struct {
 	OutputDir string // Where files were written (empty means default)
 }
 
-// SyncProviderResult represents sync results for a single provider.
-type SyncProviderResult struct {
+// ProviderResult represents sync results for a single provider.
+type ProviderResult struct {
 	ProviderID catalogs.ProviderID  // The provider that was synced
 	Added      []catalogs.Model     // New models not in catalog
 	Updated    []differ.ModelUpdate // Existing models with changes
@@ -40,17 +40,17 @@ type SyncProviderResult struct {
 }
 
 // HasChanges returns true if the sync result contains any changes.
-func (sr *SyncResult) HasChanges() bool {
+func (sr *Result) HasChanges() bool {
 	return sr.TotalChanges > 0
 }
 
 // HasChanges returns true if the provider result contains any changes.
-func (spr *SyncProviderResult) HasChanges() bool {
+func (spr *ProviderResult) HasChanges() bool {
 	return spr.AddedCount > 0 || spr.UpdatedCount > 0 || spr.RemovedCount > 0
 }
 
 // Summary returns a human-readable summary of the sync result.
-func (sr *SyncResult) Summary() string {
+func (sr *Result) Summary() string {
 	if !sr.HasChanges() {
 		return "No changes detected"
 	}
@@ -72,7 +72,7 @@ func (sr *SyncResult) Summary() string {
 }
 
 // Summary returns a human-readable summary of the provider result.
-func (spr *SyncProviderResult) Summary() string {
+func (spr *ProviderResult) Summary() string {
 	if !spr.HasChanges() {
 		return fmt.Sprintf("%s: No changes", spr.ProviderID)
 	}
@@ -82,15 +82,15 @@ func (spr *SyncProviderResult) Summary() string {
 }
 
 // NewSyncResult creates a new Result with initialized maps.
-func NewSyncResult() *SyncResult {
-	return &SyncResult{
-		ProviderResults: make(map[catalogs.ProviderID]*SyncProviderResult),
+func NewSyncResult() *Result {
+	return &Result{
+		ProviderResults: make(map[catalogs.ProviderID]*ProviderResult),
 	}
 }
 
 // NewSyncProviderResult creates a new SyncProviderResult.
-func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
-	return &SyncProviderResult{
+func NewSyncProviderResult(providerID catalogs.ProviderID) *ProviderResult {
+	return &ProviderResult{
 		ProviderID: providerID,
 		Added:      []catalogs.Model{},
 		Updated:    []differ.ModelUpdate{},
@@ -99,12 +99,12 @@ func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult {
 }
 
 // convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult.
-func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *SyncResult {
-	result := &SyncResult{
+func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *Result {
+	result := &Result{
 		TotalChanges:    changeset.Summary.TotalChanges,
 		DryRun:          dryRun,
 		OutputDir:       outputDir,
-		ProviderResults: make(map[catalogs.ProviderID]*SyncProviderResult),
+		ProviderResults: make(map[catalogs.ProviderID]*ProviderResult),
 	}
 
 	// Group models by provider for the provider results
@@ -141,7 +141,7 @@ func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outp
 
 	// Create provider results
 	for providerID := range allProviders {
-		providerResult := &SyncProviderResult{
+		providerResult := &ProviderResult{
 			ProviderID:     providerID,
 			Added:          providerAdded[providerID],
 			Updated:        providerUpdated[providerID],

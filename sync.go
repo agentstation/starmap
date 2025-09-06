@@ -11,7 +11,7 @@ import (
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error) {
+func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*Result, error) {
 	// Step 0: Set context
 	if ctx == nil {
 		ctx = context.Background()
