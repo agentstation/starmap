@@ -5,30 +5,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GlobalFlags holds common flags across all commands.
-type GlobalFlags struct {
-	Output  string
-	Quiet   bool
-	Verbose bool
-	NoColor bool
-}
-
-// AddGlobalFlags adds common flags to the root command.
-func AddGlobalFlags(cmd *cobra.Command) *GlobalFlags {
-	flags := &GlobalFlags{}
-
-	cmd.PersistentFlags().StringVarP(&flags.Output, "output", "o", "",
-		"Output format: table, json, yaml, wide")
-	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
-		"Minimal output")
-	cmd.PersistentFlags().BoolVarP(&flags.Verbose, "verbose", "v", false,
-		"Verbose output")
-	cmd.PersistentFlags().BoolVar(&flags.NoColor, "no-color", false,
-		"Disable colored output")
-
-	return flags
-}
-
 // ResourceFlags holds flags for resource-specific operations.
 type ResourceFlags struct {
 	Provider string

@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -53,7 +53,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 }
 
 // NewCommand creates the update command.
-func NewCommand(globalFlags *cmdutil.GlobalFlags) *cobra.Command {
+func NewCommand(globalFlags *globals.Flags) *cobra.Command {
 	var updateFlags *Flags
 
 	cmd := &cobra.Command{
@@ -93,7 +93,7 @@ By default, saves to ./internal/embedded/catalog for development.`,
 }
 
 // ExecuteUpdate orchestrates the complete update process.
-func ExecuteUpdate(ctx context.Context, flags *Flags, globalFlags *cmdutil.GlobalFlags) error {
+func ExecuteUpdate(ctx context.Context, flags *Flags, globalFlags *globals.Flags) error {
 	// Validate force update if needed
 	if flags.Force {
 		proceed, err := ValidateForceUpdate(globalFlags.Quiet, flags.AutoApprove)
@@ -116,7 +116,7 @@ func ExecuteUpdate(ctx context.Context, flags *Flags, globalFlags *cmdutil.Globa
 }
 
 // update executes the update operation and handles the results.
-func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *cmdutil.GlobalFlags) error {
+func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *globals.Flags) error {
 	// Build update options - use default output path if not specified
 	outputPath := flags.Output
 	if outputPath == "" {
@@ -149,7 +149,7 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 }
 
 // handleResults processes the update results and handles user interaction.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Result, flags *Flags, outputPath string, globalFlags *cmdutil.GlobalFlags) error {
+func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Result, flags *Flags, outputPath string, globalFlags *globals.Flags) error {
 	if !result.HasChanges() {
 		if !globalFlags.Quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")

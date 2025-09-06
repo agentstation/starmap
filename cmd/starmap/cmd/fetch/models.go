@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -77,9 +77,9 @@ func getFetchFlags(cmd *cobra.Command) *Flags {
 }
 
 // getGlobalFlags returns the global flags.
-func getGlobalFlags() *cmdutil.GlobalFlags {
+func getGlobalFlags() *globals.Flags {
 	// Return defaults for now - this will be passed from the calling commands
-	return &cmdutil.GlobalFlags{
+	return &globals.Flags{
 		Output: "",
 		Quiet:  false,
 	}

@@ -4,15 +4,15 @@ package output
 import (
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
 	"github.com/agentstation/starmap/internal/cmd/constants"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // FormatModels handles the common pattern of formatting models for output.
 // This encapsulates the switch logic for different output formats.
-func FormatModels(models []catalogs.Model, showDetails bool, globalFlags *cmdutil.GlobalFlags) error {
+func FormatModels(models []catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
@@ -28,7 +28,7 @@ func FormatModels(models []catalogs.Model, showDetails bool, globalFlags *cmduti
 }
 
 // FormatProviders handles the common pattern of formatting providers for output.
-func FormatProviders(providers []catalogs.Provider, showKeys bool, globalFlags *cmdutil.GlobalFlags) error {
+func FormatProviders(providers []catalogs.Provider, showKeys bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
@@ -44,7 +44,7 @@ func FormatProviders(providers []catalogs.Provider, showKeys bool, globalFlags *
 }
 
 // FormatAuthors handles the common pattern of formatting authors for output.
-func FormatAuthors(authors []catalogs.Author, globalFlags *cmdutil.GlobalFlags) error {
+func FormatAuthors(authors []catalogs.Author, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
@@ -61,7 +61,7 @@ func FormatAuthors(authors []catalogs.Author, globalFlags *cmdutil.GlobalFlags) 
 
 // FormatAny handles the common pattern of formatting any data type for output.
 // This is useful for commands with custom data structures.
-func FormatAny(data any, globalFlags *cmdutil.GlobalFlags) error {
+func FormatAny(data any, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 	return formatter.Format(os.Stdout, data)
 }

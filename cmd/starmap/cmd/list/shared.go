@@ -5,13 +5,14 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/cmdutil"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 )
 
 // getGlobalFlags returns the global flags using the same approach as other commands.
 // We'll pass these as parameters instead of accessing a global variable.
-func getGlobalFlags() *cmdutil.GlobalFlags {
+func getGlobalFlags() *globals.Flags {
 	// Return defaults for now - this will be passed from the calling commands
-	return &cmdutil.GlobalFlags{
+	return &globals.Flags{
 		Output: "",
 		Quiet:  false,
 	}

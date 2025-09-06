@@ -13,14 +13,14 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/agentstation/starmap/internal/cmd/cmdutil"
+	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
 var (
 	configFile  string
-	globalFlags *cmdutil.GlobalFlags
+	globalFlags *globals.Flags
 
 	// Version information set by main.
 	Version = "dev"
@@ -81,7 +81,7 @@ func init() {
 
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	globalFlags = cmdutil.AddGlobalFlags(rootCmd)
+	globalFlags = globals.AddFlags(rootCmd)
 
 	// Bind flags to viper
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
