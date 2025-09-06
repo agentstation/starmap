@@ -34,9 +34,6 @@ func init() {
 }
 
 func runAuthVerify(cmd *cobra.Command, args []string) error {
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	timeout, _ := cmd.Flags().GetDuration("timeout")
-
 	// Load catalog
 	cat, err := catalogs.NewEmbedded()
 	if err != nil {
@@ -46,14 +43,17 @@ func runAuthVerify(cmd *cobra.Command, args []string) error {
 	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
-		return verifyProvider(cat, providerID, timeout, verbose)
+		return verifyProvider(cmd, cat, providerID)
 	}
 
 	// Verify all configured providers
-	return verifyAllProviders(cat, timeout, verbose)
+	return verifyAllProviders(cmd, cat)
 }
 
-func verifyAllProviders(cat catalogs.Catalog, timeout time.Duration, verbose bool) error {
+func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
+	verbose, _ := cmd.Flags().GetBool("verbose")
+	timeout, _ := cmd.Flags().GetDuration("timeout")
+	
 	fetcher := sources.NewProviderFetcher()
 	supportedProviders := fetcher.List()
 
@@ -123,7 +123,10 @@ func verifyAllProviders(cat catalogs.Catalog, timeout time.Duration, verbose boo
 	return nil
 }
 
-func verifyProvider(cat catalogs.Catalog, providerID string, timeout time.Duration, verbose bool) error {
+func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string) error {
+	verbose, _ := cmd.Flags().GetBool("verbose")
+	timeout, _ := cmd.Flags().GetDuration("timeout")
+	
 	fetcher := sources.NewProviderFetcher()
 	
 	// Convert string to ProviderID type
