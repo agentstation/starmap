@@ -169,7 +169,16 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 	formatter := output.NewFormatter(output.FormatTable)
 
-	// Basic Information Table
+	fmt.Printf("Model: %s\n\n", model.ID)
+	
+	printBasicInfo(model, provider, formatter)
+	printLimitsInfo(model, formatter)
+	printPricingInfo(model, formatter)
+	printFeaturesInfo(model, formatter)
+	printArchitectureInfo(model, formatter)
+}
+
+func printBasicInfo(model catalogs.Model, provider catalogs.Provider, formatter output.Formatter) {
 	basicRows := [][]string{
 		{"Model ID", model.ID},
 		{"Name", model.Name},
@@ -200,132 +209,146 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 		Rows:    basicRows,
 	}
 
-	fmt.Printf("Model: %s\n\n", model.ID)
 	fmt.Println("Basic Information:")
 	_ = formatter.Format(os.Stdout, basicTable)
 	fmt.Println()
+}
 
-	// Limits Table
-	if model.Limits != nil {
-		var limitRows [][]string
-		if model.Limits.ContextWindow > 0 {
-			limitRows = append(limitRows, []string{"Context Window", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.ContextWindow))})
-		}
-		if model.Limits.OutputTokens > 0 {
-			limitRows = append(limitRows, []string{"Max Output", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.OutputTokens))})
-		}
-
-		if len(limitRows) > 0 {
-			limitsTable := output.TableData{
-				Headers: []string{"Limit", "Value"},
-				Rows:    limitRows,
-			}
-			fmt.Println("Limits:")
-			_ = formatter.Format(os.Stdout, limitsTable)
-			fmt.Println()
-		}
+func printLimitsInfo(model catalogs.Model, formatter output.Formatter) {
+	if model.Limits == nil {
+		return
 	}
 
-	// Pricing Table
-	if model.Pricing != nil && model.Pricing.Tokens != nil {
-		var pricingRows [][]string
-		if model.Pricing.Tokens.Input != nil && model.Pricing.Tokens.Input.Per1M > 0 {
-			pricingRows = append(pricingRows, []string{"Input", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Input.Per1M)})
-		}
-		if model.Pricing.Tokens.Output != nil && model.Pricing.Tokens.Output.Per1M > 0 {
-			pricingRows = append(pricingRows, []string{"Output", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Output.Per1M)})
-		}
-
-		if len(pricingRows) > 0 {
-			pricingTable := output.TableData{
-				Headers: []string{"Type", "Price"},
-				Rows:    pricingRows,
-			}
-			fmt.Println("Pricing:")
-			_ = formatter.Format(os.Stdout, pricingTable)
-			fmt.Println()
-		}
+	var limitRows [][]string
+	if model.Limits.ContextWindow > 0 {
+		limitRows = append(limitRows, []string{"Context Window", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.ContextWindow))})
+	}
+	if model.Limits.OutputTokens > 0 {
+		limitRows = append(limitRows, []string{"Max Output", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.OutputTokens))})
 	}
 
-	// Features Table
-	if model.Features != nil {
-		var featureRows [][]string
-
-		// Check for vision capability in modalities
-		hasVision := false
-		for _, modality := range model.Features.Modalities.Input {
-			if modality == "image" {
-				hasVision = true
-				break
-			}
+	if len(limitRows) > 0 {
+		limitsTable := output.TableData{
+			Headers: []string{"Limit", "Value"},
+			Rows:    limitRows,
 		}
-		if hasVision {
+		fmt.Println("Limits:")
+		_ = formatter.Format(os.Stdout, limitsTable)
+		fmt.Println()
+	}
+}
+
+func printPricingInfo(model catalogs.Model, formatter output.Formatter) {
+	if model.Pricing == nil || model.Pricing.Tokens == nil {
+		return
+	}
+
+	var pricingRows [][]string
+	if model.Pricing.Tokens.Input != nil && model.Pricing.Tokens.Input.Per1M > 0 {
+		pricingRows = append(pricingRows, []string{"Input", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Input.Per1M)})
+	}
+	if model.Pricing.Tokens.Output != nil && model.Pricing.Tokens.Output.Per1M > 0 {
+		pricingRows = append(pricingRows, []string{"Output", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Output.Per1M)})
+	}
+
+	if len(pricingRows) > 0 {
+		pricingTable := output.TableData{
+			Headers: []string{"Type", "Price"},
+			Rows:    pricingRows,
+		}
+		fmt.Println("Pricing:")
+		_ = formatter.Format(os.Stdout, pricingTable)
+		fmt.Println()
+	}
+}
+
+func printFeaturesInfo(model catalogs.Model, formatter output.Formatter) {
+	if model.Features == nil {
+		return
+	}
+
+	var featureRows [][]string
+
+	// Check modality features
+	featureRows = addModalityFeatures(featureRows, model.Features)
+	
+	// Other features
+	if model.Features.ToolCalls {
+		featureRows = append(featureRows, []string{"Function Calling", "✅ Supported"})
+	}
+	if model.Features.WebSearch {
+		featureRows = append(featureRows, []string{"Web Search", "✅ Supported"})
+	}
+	if model.Features.Reasoning {
+		featureRows = append(featureRows, []string{"Reasoning", "✅ Supported"})
+	}
+
+	if len(featureRows) > 0 {
+		featuresTable := output.TableData{
+			Headers: []string{"Feature", "Status"},
+			Rows:    featureRows,
+		}
+		fmt.Println("Features:")
+		_ = formatter.Format(os.Stdout, featuresTable)
+		fmt.Println()
+	}
+}
+
+func addModalityFeatures(featureRows [][]string, features *catalogs.ModelFeatures) [][]string {
+	// Check for vision capability
+	for _, modality := range features.Modalities.Input {
+		if modality == "image" {
 			featureRows = append(featureRows, []string{"Vision", "✅ Supported"})
-		}
-
-		// Check for audio capabilities
-		hasAudioInput := false
-		hasAudioOutput := false
-		for _, modality := range model.Features.Modalities.Input {
-			if modality == "audio" {
-				hasAudioInput = true
-				break
-			}
-		}
-		for _, modality := range model.Features.Modalities.Output {
-			if modality == "audio" {
-				hasAudioOutput = true
-				break
-			}
-		}
-		if hasAudioInput {
-			featureRows = append(featureRows, []string{"Audio Input", "✅ Supported"})
-		}
-		if hasAudioOutput {
-			featureRows = append(featureRows, []string{"Audio Output", "✅ Supported"})
-		}
-
-		// Other features
-		if model.Features.ToolCalls {
-			featureRows = append(featureRows, []string{"Function Calling", "✅ Supported"})
-		}
-		if model.Features.WebSearch {
-			featureRows = append(featureRows, []string{"Web Search", "✅ Supported"})
-		}
-		if model.Features.Reasoning {
-			featureRows = append(featureRows, []string{"Reasoning", "✅ Supported"})
-		}
-
-		if len(featureRows) > 0 {
-			featuresTable := output.TableData{
-				Headers: []string{"Feature", "Status"},
-				Rows:    featureRows,
-			}
-			fmt.Println("Features:")
-			_ = formatter.Format(os.Stdout, featuresTable)
-			fmt.Println()
+			break
 		}
 	}
 
-	// Architecture Table
-	if model.Metadata != nil && model.Metadata.Architecture != nil {
-		var archRows [][]string
-		if model.Metadata.Architecture.ParameterCount != "" {
-			archRows = append(archRows, []string{"Size", model.Metadata.Architecture.ParameterCount})
+	// Check for audio capabilities
+	hasAudioInput := false
+	hasAudioOutput := false
+	for _, modality := range features.Modalities.Input {
+		if modality == "audio" {
+			hasAudioInput = true
+			break
 		}
-		if model.Metadata.Architecture.Tokenizer != "" {
-			archRows = append(archRows, []string{"Tokenizer", model.Metadata.Architecture.Tokenizer.String()})
+	}
+	for _, modality := range features.Modalities.Output {
+		if modality == "audio" {
+			hasAudioOutput = true
+			break
 		}
+	}
+	if hasAudioInput {
+		featureRows = append(featureRows, []string{"Audio Input", "✅ Supported"})
+	}
+	if hasAudioOutput {
+		featureRows = append(featureRows, []string{"Audio Output", "✅ Supported"})
+	}
 
-		if len(archRows) > 0 {
-			archTable := output.TableData{
-				Headers: []string{"Property", "Value"},
-				Rows:    archRows,
-			}
-			fmt.Println("Architecture:")
-			_ = formatter.Format(os.Stdout, archTable)
-			fmt.Println()
+	return featureRows
+}
+
+func printArchitectureInfo(model catalogs.Model, formatter output.Formatter) {
+	if model.Metadata == nil || model.Metadata.Architecture == nil {
+		return
+	}
+
+	var archRows [][]string
+	if model.Metadata.Architecture.ParameterCount != "" {
+		archRows = append(archRows, []string{"Size", model.Metadata.Architecture.ParameterCount})
+	}
+	if model.Metadata.Architecture.Tokenizer != "" {
+		archRows = append(archRows, []string{"Tokenizer", model.Metadata.Architecture.Tokenizer.String()})
+	}
+
+	if len(archRows) > 0 {
+		archTable := output.TableData{
+			Headers: []string{"Property", "Value"},
+			Rows:    archRows,
 		}
+		fmt.Println("Architecture:")
+		_ = formatter.Format(os.Stdout, archTable)
+		fmt.Println()
 	}
 }
 

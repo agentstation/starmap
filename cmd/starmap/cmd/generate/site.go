@@ -86,8 +86,7 @@ func runGenerateSite(cmd *cobra.Command, _ []string) error {
 	if prodBuild {
 		// Production build - just hints since completion is obvious
 		return notifier.Hints(hintContext)
-	} else {
-		// Development build - show next step since it's actionable
-		return notifier.Info("Run 'starmap serve site' to preview", hintContext)
 	}
+	// Development build - show next step since it's actionable
+	return notifier.Info("Run 'starmap serve site' to preview", hintContext)
 }

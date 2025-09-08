@@ -241,7 +241,7 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 	}
 	
 	// Determine success and create context
-	succeeded := !(configured == 0 && missing > 0)
+	succeeded := configured > 0 || missing == 0
 	ctx := notify.Contexts.AuthStatus(succeeded, configured)
 	
 	if configured == 0 && missing > 0 {

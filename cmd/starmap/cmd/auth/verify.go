@@ -78,7 +78,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 	fmt.Println("Verifying provider credentials...")
 	fmt.Println()
 
-	var results []VerificationResult
+	results := make([]VerificationResult, 0, len(supportedProviders))
 	var verified, failed, skipped int
 
 	for _, providerID := range supportedProviders {
@@ -172,9 +172,8 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 	if verified > 0 {
 		// Just show hints, the verification table already shows success
 		return notifier.Hints(ctx)
-	} else {
-		return notifier.Warning("No providers to verify. Configure API keys first.", ctx)
 	}
+	return notifier.Warning("No providers to verify. Configure API keys first.", ctx)
 }
 
 // displayVerificationTable shows verification results in a table format.
@@ -191,7 +190,7 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 		headers = append(headers, "Error")
 	}
 	
-	var rows [][]string
+	rows := make([][]string, 0, len(results))
 	for _, result := range results {
 		row := []string{
 			result.Provider,

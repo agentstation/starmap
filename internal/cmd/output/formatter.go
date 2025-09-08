@@ -11,6 +11,8 @@ import (
 
 	"github.com/mattn/go-isatty"
 	"github.com/olekukonko/tablewriter"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gopkg.in/yaml.v3"
 )
 
@@ -206,7 +208,8 @@ func (f *TableFormatter) structSliceToTableData(v reflect.Value) *TableData {
 			if idx := strings.Index(jsonTag, ","); idx > 0 {
 				jsonTag = jsonTag[:idx]
 			}
-			headers = append(headers, strings.Title(strings.ReplaceAll(jsonTag, "_", " ")))
+			caser := cases.Title(language.English)
+			headers = append(headers, caser.String(strings.ReplaceAll(jsonTag, "_", " ")))
 		} else {
 			headers = append(headers, field.Name)
 		}
@@ -248,7 +251,8 @@ func (f *TableFormatter) singleStructToTableData(v reflect.Value) *TableData {
 			if idx := strings.Index(jsonTag, ","); idx > 0 {
 				jsonTag = jsonTag[:idx]
 			}
-			propertyName = strings.Title(strings.ReplaceAll(jsonTag, "_", " "))
+			caser := cases.Title(language.English)
+			propertyName = caser.String(strings.ReplaceAll(jsonTag, "_", " "))
 		} else {
 			propertyName = field.Name
 		}

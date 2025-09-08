@@ -226,7 +226,7 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 		headers = append(headers, "Details")
 	}
 	
-	var rows [][]string
+	rows := make([][]string, 0, len(results))
 	for _, result := range results {
 		row := []string{
 			result.Component,
