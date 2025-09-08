@@ -4,12 +4,15 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -74,7 +77,7 @@ The command will:
 • Reconcile all sources using field-level authority
 • Save the updated catalog to disk
 
-By default, saves to ./internal/embedded/catalog for development.`,
+By default, saves to ~/.starmap for the local user catalog.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update --provider openai          # Update specific provider
   starmap update --dry-run                  # Preview changes
@@ -120,7 +123,7 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 	// Build update options - use default output path if not specified
 	outputPath := flags.Output
 	if outputPath == "" {
-		outputPath = "./internal/embedded/catalog"
+		outputPath = expandPath(constants.DefaultCatalogPath)
 	}
 	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat)
 
@@ -250,4 +253,27 @@ func finalizeChanges(isQuiet bool, result *starmap.Result) error {
 		fmt.Fprintf(os.Stderr, "📊 Total: %s\n", result.Summary())
 	}
 	return nil
+}
+
+// expandPath expands a path that may contain ~ to the user's home directory.
+func expandPath(path string) string {
+	if !strings.HasPrefix(path, "~") {
+		return path
+	}
+
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		// Fall back to the original path if we can't get home dir
+		return path
+	}
+
+	if path == "~" {
+		return homeDir
+	}
+
+	if strings.HasPrefix(path, "~/") {
+		return filepath.Join(homeDir, path[2:])
+	}
+
+	return path
 }

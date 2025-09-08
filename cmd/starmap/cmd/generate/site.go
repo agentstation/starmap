@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/tools/site"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -35,7 +36,7 @@ func init() {
 	SiteCmd.Flags().BoolVar(&prodBuild, "prod", false, "Build for production (minified, optimized)")
 }
 
-func runGenerateSite(_ *cobra.Command, _ []string) error {
+func runGenerateSite(cmd *cobra.Command, _ []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), constants.CommandTimeout)
 	defer cancel()
 
@@ -74,11 +75,19 @@ func runGenerateSite(_ *cobra.Command, _ []string) error {
 		Str("output", outputMsg).
 		Msg("Site generated successfully")
 
-	if prodBuild {
-		fmt.Println("🚀 Production build complete! Ready for deployment.")
-	} else {
-		fmt.Println("✅ Development build complete. Run 'starmap serve site' to preview.")
+	// Create notifier and show contextual hints
+	notifier, err := notify.NewFromCommand(cmd)
+	if err != nil {
+		return err
 	}
-
-	return nil
+	
+	hintContext := notify.Contexts.Command("generate", "site", true, "")
+	
+	if prodBuild {
+		// Production build - just hints since completion is obvious
+		return notifier.Hints(hintContext)
+	} else {
+		// Development build - show next step since it's actionable
+		return notifier.Info("Run 'starmap serve site' to preview", hintContext)
+	}
 }

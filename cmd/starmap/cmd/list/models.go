@@ -165,11 +165,16 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 	}
 }
 
-// printModelDetails prints detailed model information in a human-readable format.
+// printModelDetails prints detailed model information using table format.
 func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
-	fmt.Printf("Model: %s\n", model.ID)
-	fmt.Printf("Name: %s\n", model.Name)
-	fmt.Printf("Provider: %s (%s)\n", provider.Name, provider.ID)
+	formatter := output.NewFormatter(output.FormatTable)
+
+	// Basic Information Table
+	basicRows := [][]string{
+		{"Model ID", model.ID},
+		{"Name", model.Name},
+		{"Provider", fmt.Sprintf("%s (%s)", provider.Name, provider.ID)},
+	}
 
 	// Show authors
 	if len(model.Authors) > 0 {
@@ -177,50 +182,88 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 		for i, author := range model.Authors {
 			authorNames[i] = author.Name
 		}
-		fmt.Printf("Authors: %s\n", strings.Join(authorNames, ", "))
+		basicRows = append(basicRows, []string{"Authors", strings.Join(authorNames, ", ")})
 	} else {
-		fmt.Printf("Authors: Unknown\n")
+		basicRows = append(basicRows, []string{"Authors", "Unknown"})
 	}
 
 	if model.Description != "" {
-		fmt.Printf("Description: %s\n", model.Description)
+		description := model.Description
+		if len(description) > 80 {
+			description = description[:77] + "..."
+		}
+		basicRows = append(basicRows, []string{"Description", description})
 	}
 
-	// Context and limits
+	basicTable := output.TableData{
+		Headers: []string{"Property", "Value"},
+		Rows:    basicRows,
+	}
+
+	fmt.Printf("Model: %s\n\n", model.ID)
+	fmt.Println("Basic Information:")
+	formatter.Format(os.Stdout, basicTable)
+	fmt.Println()
+
+	// Limits Table
 	if model.Limits != nil {
-		fmt.Printf("\nLimits:\n")
+		var limitRows [][]string
 		if model.Limits.ContextWindow > 0 {
-			fmt.Printf("  Context Window: %s tokens\n", table.FormatNumber(model.Limits.ContextWindow))
+			limitRows = append(limitRows, []string{"Context Window", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.ContextWindow))})
 		}
 		if model.Limits.OutputTokens > 0 {
-			fmt.Printf("  Max Output: %s tokens\n", table.FormatNumber(model.Limits.OutputTokens))
+			limitRows = append(limitRows, []string{"Max Output", fmt.Sprintf("%s tokens", table.FormatNumber(model.Limits.OutputTokens))})
+		}
+
+		if len(limitRows) > 0 {
+			limitsTable := output.TableData{
+				Headers: []string{"Limit", "Value"},
+				Rows:    limitRows,
+			}
+			fmt.Println("Limits:")
+			formatter.Format(os.Stdout, limitsTable)
+			fmt.Println()
 		}
 	}
 
-	// Pricing
+	// Pricing Table
 	if model.Pricing != nil && model.Pricing.Tokens != nil {
-		fmt.Printf("\nPricing:\n")
+		var pricingRows [][]string
 		if model.Pricing.Tokens.Input != nil && model.Pricing.Tokens.Input.Per1M > 0 {
-			fmt.Printf("  Input: $%.6f per 1M tokens\n", model.Pricing.Tokens.Input.Per1M)
+			pricingRows = append(pricingRows, []string{"Input", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Input.Per1M)})
 		}
 		if model.Pricing.Tokens.Output != nil && model.Pricing.Tokens.Output.Per1M > 0 {
-			fmt.Printf("  Output: $%.6f per 1M tokens\n", model.Pricing.Tokens.Output.Per1M)
+			pricingRows = append(pricingRows, []string{"Output", fmt.Sprintf("$%.6f per 1M tokens", model.Pricing.Tokens.Output.Per1M)})
+		}
+
+		if len(pricingRows) > 0 {
+			pricingTable := output.TableData{
+				Headers: []string{"Type", "Price"},
+				Rows:    pricingRows,
+			}
+			fmt.Println("Pricing:")
+			formatter.Format(os.Stdout, pricingTable)
+			fmt.Println()
 		}
 	}
 
-	// Features
+	// Features Table
 	if model.Features != nil {
-		fmt.Printf("\nFeatures:\n")
+		var featureRows [][]string
 
 		// Check for vision capability in modalities
+		hasVision := false
 		for _, modality := range model.Features.Modalities.Input {
 			if modality == "image" {
-				fmt.Printf("  - Vision\n")
+				hasVision = true
 				break
 			}
 		}
+		if hasVision {
+			featureRows = append(featureRows, []string{"Vision", "✅ Supported"})
+		}
 
-		// Check for audio capability in modalities
+		// Check for audio capabilities
 		hasAudioInput := false
 		hasAudioOutput := false
 		for _, modality := range model.Features.Modalities.Input {
@@ -236,40 +279,54 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 			}
 		}
 		if hasAudioInput {
-			fmt.Printf("  - Audio Input\n")
+			featureRows = append(featureRows, []string{"Audio Input", "✅ Supported"})
 		}
 		if hasAudioOutput {
-			fmt.Printf("  - Audio Output\n")
+			featureRows = append(featureRows, []string{"Audio Output", "✅ Supported"})
 		}
 
-		// Tool calling
+		// Other features
 		if model.Features.ToolCalls {
-			fmt.Printf("  - Function Calling\n")
+			featureRows = append(featureRows, []string{"Function Calling", "✅ Supported"})
 		}
-
-		// Web search
 		if model.Features.WebSearch {
-			fmt.Printf("  - Web Search\n")
+			featureRows = append(featureRows, []string{"Web Search", "✅ Supported"})
+		}
+		if model.Features.Reasoning {
+			featureRows = append(featureRows, []string{"Reasoning", "✅ Supported"})
 		}
 
-		// Reasoning
-		if model.Features.Reasoning {
-			fmt.Printf("  - Reasoning\n")
+		if len(featureRows) > 0 {
+			featuresTable := output.TableData{
+				Headers: []string{"Feature", "Status"},
+				Rows:    featureRows,
+			}
+			fmt.Println("Features:")
+			formatter.Format(os.Stdout, featuresTable)
+			fmt.Println()
 		}
 	}
 
-	// Architecture
+	// Architecture Table
 	if model.Metadata != nil && model.Metadata.Architecture != nil {
-		fmt.Printf("\nArchitecture:\n")
+		var archRows [][]string
 		if model.Metadata.Architecture.ParameterCount != "" {
-			fmt.Printf("  Size: %s\n", model.Metadata.Architecture.ParameterCount)
+			archRows = append(archRows, []string{"Size", model.Metadata.Architecture.ParameterCount})
 		}
 		if model.Metadata.Architecture.Tokenizer != "" {
-			fmt.Printf("  Tokenizer: %s\n", model.Metadata.Architecture.Tokenizer)
+			archRows = append(archRows, []string{"Tokenizer", model.Metadata.Architecture.Tokenizer.String()})
+		}
+
+		if len(archRows) > 0 {
+			archTable := output.TableData{
+				Headers: []string{"Property", "Value"},
+				Rows:    archRows,
+			}
+			fmt.Println("Architecture:")
+			formatter.Format(os.Stdout, archTable)
+			fmt.Println()
 		}
 	}
-
-	fmt.Println()
 }
 
 // exportModels exports models in the specified format (openai or openrouter).

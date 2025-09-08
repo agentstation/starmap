@@ -231,12 +231,23 @@ func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 
 // catalog creates the final catalog with providers and models.
 func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
-	catalog, err := catalogs.New()
-	if err != nil {
-		return nil, errors.WrapResource("create", "merged catalog", "", err)
+	var catalog catalogs.Catalog
+	var err error
+
+	// Start with baseline catalog if available to preserve existing providers
+	if r.baseline != nil {
+		catalog, err = r.baseline.Copy()
+		if err != nil {
+			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
+		}
+	} else {
+		catalog, err = catalogs.New()
+		if err != nil {
+			return nil, errors.WrapResource("create", "merged catalog", "", err)
+		}
 	}
 
-	// Add providers with their reconciled models
+	// Add/update providers with their reconciled models
 	for i := range providers {
 		provider := &providers[i]
 
@@ -248,7 +259,7 @@ func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[cat
 			}
 		}
 
-		// Set provider in catalog
+		// Set provider in catalog (this will overwrite existing provider)
 		if err := catalog.Providers().Set(provider.ID, provider); err != nil {
 			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}

@@ -142,56 +142,95 @@ func showProviderDetails(cmd *cobra.Command, providerID string, showKeys bool) e
 
 // Removed providersToTableData - now using shared table.ProvidersToTableData
 
-// printProviderDetails prints detailed provider information in a human-readable format.
+// printProviderDetails prints detailed provider information using table format.
 func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
-	fmt.Printf("Provider: %s\n", provider.ID)
-	fmt.Printf("Name: %s\n", provider.Name)
+	formatter := output.NewFormatter(output.FormatTable)
+
+	// Basic Information Table
+	basicRows := [][]string{
+		{"Provider ID", string(provider.ID)},
+		{"Name", provider.Name},
+	}
 
 	if provider.Headquarters != nil {
-		fmt.Printf("Location: %s\n", *provider.Headquarters)
-	}
-
-	if provider.APIKey != nil {
-		fmt.Printf("\nAPI Configuration:\n")
-		fmt.Printf("  Key Variable: %s", provider.APIKey.Name)
-		if provider.IsAPIKeyRequired() {
-			fmt.Printf(" (required)")
-		} else {
-			fmt.Printf(" (optional)")
-		}
-		fmt.Println()
-
-		if showKeys {
-			if os.Getenv(provider.APIKey.Name) != "" {
-				fmt.Printf("  Status: ✓ Configured\n")
-			} else {
-				fmt.Printf("  Status: ✗ Not configured\n")
-			}
-		}
-	}
-
-	if len(provider.EnvVars) > 0 {
-		fmt.Printf("\nEnvironment Variables:\n")
-		for _, envVar := range provider.EnvVars {
-			status := "optional"
-			if envVar.Required {
-				status = "required"
-			}
-			fmt.Printf("  %s (%s)", envVar.Name, status)
-			if envVar.Description != "" {
-				fmt.Printf(" - %s", envVar.Description)
-			}
-			fmt.Println()
-		}
+		basicRows = append(basicRows, []string{"Location", *provider.Headquarters})
 	}
 
 	if provider.Catalog != nil && provider.Catalog.DocsURL != nil {
-		fmt.Printf("\nDocumentation: %s\n", *provider.Catalog.DocsURL)
+		basicRows = append(basicRows, []string{"Documentation", *provider.Catalog.DocsURL})
 	}
 
 	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil {
-		fmt.Printf("API Endpoint: %s\n", *provider.ChatCompletions.URL)
+		basicRows = append(basicRows, []string{"API Endpoint", *provider.ChatCompletions.URL})
 	}
 
-	fmt.Printf("\nModels: %d\n", len(provider.Models))
+	basicRows = append(basicRows, []string{"Models", fmt.Sprintf("%d", len(provider.Models))})
+
+	basicTable := output.TableData{
+		Headers: []string{"Property", "Value"},
+		Rows:    basicRows,
+	}
+
+	fmt.Printf("Provider: %s\n\n", provider.ID)
+	fmt.Println("Basic Information:")
+	formatter.Format(os.Stdout, basicTable)
+	fmt.Println()
+
+	// API Configuration Table
+	if provider.APIKey != nil {
+		var configRows [][]string
+		
+		requirement := "Optional"
+		if provider.IsAPIKeyRequired() {
+			requirement = "Required"
+		}
+		
+		configRows = append(configRows, []string{"Key Variable", provider.APIKey.Name})
+		configRows = append(configRows, []string{"Requirement", requirement})
+		
+		if showKeys {
+			status := "✗ Not configured"
+			if os.Getenv(provider.APIKey.Name) != "" {
+				status = "✅ Configured"
+			}
+			configRows = append(configRows, []string{"Status", status})
+		}
+
+		configTable := output.TableData{
+			Headers: []string{"Setting", "Value"},
+			Rows:    configRows,
+		}
+
+		fmt.Println("API Configuration:")
+		formatter.Format(os.Stdout, configTable)
+		fmt.Println()
+	}
+
+	// Environment Variables Table
+	if len(provider.EnvVars) > 0 {
+		var envRows [][]string
+		
+		for _, envVar := range provider.EnvVars {
+			requirement := "Optional"
+			if envVar.Required {
+				requirement = "Required"
+			}
+			
+			description := envVar.Description
+			if description == "" {
+				description = "-"
+			}
+			
+			envRows = append(envRows, []string{envVar.Name, requirement, description})
+		}
+
+		envTable := output.TableData{
+			Headers: []string{"Variable", "Requirement", "Description"},
+			Rows:    envRows,
+		}
+
+		fmt.Println("Environment Variables:")
+		formatter.Format(os.Stdout, envTable)
+		fmt.Println()
+	}
 }

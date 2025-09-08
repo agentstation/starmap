@@ -8,9 +8,21 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/internal/cmd/notify"
+	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// VerificationResult represents the result of verifying a provider's credentials.
+type VerificationResult struct {
+	Provider     string
+	Status       string
+	ResponseTime string
+	ModelsFound  string
+	Error        string
+}
 
 // VerifyCmd verifies credentials by making test API calls.
 var VerifyCmd = &cobra.Command{
@@ -54,12 +66,19 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
+	// Get global flags for output format
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
+
 	fetcher := sources.NewProviderFetcher()
 	supportedProviders := fetcher.List()
 
 	fmt.Println("Verifying provider credentials...")
 	fmt.Println()
 
+	var results []VerificationResult
 	var verified, failed, skipped int
 
 	for _, providerID := range supportedProviders {
@@ -69,11 +88,17 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 			continue
 		}
 
+		result := VerificationResult{
+			Provider: string(providerID),
+		}
+
 		// Check if API key is configured
 		if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-			if verbose {
-				fmt.Printf("⚪ %s: No credentials configured\n", providerID)
-			}
+			result.Status = "⚪ Skipped"
+			result.ResponseTime = "-"
+			result.ModelsFound = "-"
+			result.Error = "No credentials configured"
+			results = append(results, result)
 			skipped++
 			continue
 		}
@@ -83,49 +108,155 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
+		
+		start := time.Now()
+		models, err := fetcher.FetchModels(ctx, &provider)
+		duration := time.Since(start)
 
-		// Try to fetch models as a test
-		_, err = fetcher.FetchModels(ctx, &provider)
 		if err != nil {
 			fmt.Printf("❌ Failed\n")
-			if verbose {
-				fmt.Printf("   Error: %v\n", err)
-			}
+			result.Status = "❌ Failed"
+			result.ResponseTime = duration.Truncate(time.Millisecond).String()
+			result.ModelsFound = "-"
+			result.Error = err.Error()
 			failed++
 		} else {
 			fmt.Printf("✅ Success\n")
+			result.Status = "✅ Success"
+			result.ResponseTime = duration.Truncate(time.Millisecond).String()
+			result.ModelsFound = fmt.Sprintf("%d", len(models))
 			verified++
 		}
+
+		results = append(results, result)
 	}
 
-	// Summary
-	fmt.Println("\nVerification Results:")
-	if verified > 0 {
-		fmt.Printf("  ✅ %d provider(s) verified\n", verified)
-	}
-	if failed > 0 {
-		fmt.Printf("  ❌ %d provider(s) failed\n", failed)
-	}
-	if skipped > 0 {
-		fmt.Printf("  ⚪ %d provider(s) skipped (no credentials)\n", skipped)
+	fmt.Println()
+
+	// Display results in table format
+	outputFormat := output.DetectFormat(globalFlags.Output)
+	if outputFormat == output.FormatTable {
+		displayVerificationTable(results, verbose)
+	} else {
+		// For non-table formats, output the raw results
+		formatter := output.NewFormatter(outputFormat)
+		return formatter.Format(os.Stdout, results)
 	}
 
+	// Summary table
+	displaySummaryTable(verified, failed, skipped)
+
+	// Create notifier and show contextual hints
+	notifier, err := notify.NewFromCommand(cmd)
+	if err != nil {
+		return err
+	}
+	
+	// Create context for hints
+	succeeded := failed == 0
+	var errorType string
 	if failed > 0 {
+		errorType = "auth_failed"
+	}
+	ctx := notify.Contexts.AuthVerify(succeeded, errorType)
+	
+	// Send appropriate notification
+	if failed > 0 {
+		message := fmt.Sprintf("%d provider(s) failed verification", failed)
+		if err := notifier.Error(message, ctx); err != nil {
+			return err
+		}
 		return fmt.Errorf("%d provider(s) failed verification", failed)
 	}
 
 	if verified > 0 {
-		fmt.Println("\n✨ Credentials verified successfully!")
+		// Just show hints, the verification table already shows success
+		return notifier.Hints(ctx)
 	} else {
-		fmt.Println("\n⚠️  No providers to verify. Configure API keys first.")
+		return notifier.Warning("No providers to verify. Configure API keys first.", ctx)
+	}
+}
+
+// displayVerificationTable shows verification results in a table format.
+func displayVerificationTable(results []VerificationResult, verbose bool) {
+	if len(results) == 0 {
+		return
 	}
 
-	return nil
+	formatter := output.NewFormatter(output.FormatTable)
+	
+	// Prepare table data
+	headers := []string{"Provider", "Status", "Response Time", "Models"}
+	if verbose {
+		headers = append(headers, "Error")
+	}
+	
+	var rows [][]string
+	for _, result := range results {
+		row := []string{
+			result.Provider,
+			result.Status,
+			result.ResponseTime,
+			result.ModelsFound,
+		}
+		if verbose {
+			errorMsg := result.Error
+			if errorMsg == "" {
+				errorMsg = "-"
+			}
+			row = append(row, errorMsg)
+		}
+		rows = append(rows, row)
+	}
+
+	tableData := output.TableData{
+		Headers: headers,
+		Rows:    rows,
+	}
+
+	fmt.Println("Provider Verification Results:")
+	formatter.Format(os.Stdout, tableData)
+	fmt.Println()
+}
+
+// displaySummaryTable shows a summary of verification results.
+func displaySummaryTable(verified, failed, skipped int) {
+	formatter := output.NewFormatter(output.FormatTable)
+	
+	headers := []string{"Status", "Count"}
+	rows := [][]string{}
+	
+	if verified > 0 {
+		rows = append(rows, []string{"✅ Verified", fmt.Sprintf("%d", verified)})
+	}
+	if failed > 0 {
+		rows = append(rows, []string{"❌ Failed", fmt.Sprintf("%d", failed)})
+	}
+	if skipped > 0 {
+		rows = append(rows, []string{"⚪ Skipped", fmt.Sprintf("%d", skipped)})
+	}
+
+	if len(rows) > 0 {
+		tableData := output.TableData{
+			Headers: headers,
+			Rows:    rows,
+		}
+
+		fmt.Println("Summary:")
+		formatter.Format(os.Stdout, tableData)
+		fmt.Println()
+	}
 }
 
 func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
+
+	// Get global flags for output format
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
 
 	fetcher := sources.NewProviderFetcher()
 
@@ -153,18 +284,44 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 	defer cancel()
 
 	// Try to fetch models as a test
+	start := time.Now()
 	models, err := fetcher.FetchModels(ctx, &provider)
+	duration := time.Since(start)
+
+	result := VerificationResult{
+		Provider: providerID,
+		ResponseTime: duration.Truncate(time.Millisecond).String(),
+	}
+
 	if err != nil {
 		fmt.Printf("❌ Verification failed\n")
-		if verbose {
-			fmt.Printf("Error: %v\n", err)
+		result.Status = "❌ Failed"
+		result.ModelsFound = "-"
+		result.Error = err.Error()
+
+		// Display single result in table format
+		outputFormat := output.DetectFormat(globalFlags.Output)
+		if outputFormat == output.FormatTable {
+			displayVerificationTable([]VerificationResult{result}, verbose)
+		} else {
+			formatter := output.NewFormatter(outputFormat)
+			formatter.Format(os.Stdout, []VerificationResult{result})
 		}
+		
 		return fmt.Errorf("failed to verify %s: %w", providerID, err)
 	}
 
 	fmt.Printf("✅ Verification successful\n")
-	if verbose {
-		fmt.Printf("   Found %d models\n", len(models))
+	result.Status = "✅ Success"
+	result.ModelsFound = fmt.Sprintf("%d", len(models))
+
+	// Display single result in table format
+	outputFormat := output.DetectFormat(globalFlags.Output)
+	if outputFormat == output.FormatTable {
+		displayVerificationTable([]VerificationResult{result}, verbose)
+	} else {
+		formatter := output.NewFormatter(outputFormat)
+		return formatter.Format(os.Stdout, []VerificationResult{result})
 	}
 
 	return nil

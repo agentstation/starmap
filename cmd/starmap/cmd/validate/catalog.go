@@ -2,11 +2,23 @@ package validate
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/internal/cmd/notify"
+	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
+
+// ValidationResult represents the result of validating a catalog component.
+type ValidationResult struct {
+	Component string
+	Status    string
+	Issues    string
+	Details   string
+}
 
 // CatalogCmd validates the entire embedded catalog.
 var CatalogCmd = &cobra.Command{
@@ -31,50 +43,136 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	verbose, _ := cmd.Flags().GetBool("verbose")
 
+	// Get global flags for output format
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
+
+	var results []ValidationResult
 	var hasErrors bool
 
+	fmt.Println("Validating catalog components...")
+	fmt.Println()
+
 	// Validate providers.yaml
-	fmt.Println("Validating providers.yaml...")
+	fmt.Print("Validating providers.yaml... ")
 	if err := validateProvidersStructure(verbose); err != nil {
-		fmt.Printf("  ❌ Providers validation failed: %v\n", err)
+		fmt.Println("❌ Failed")
+		results = append(results, ValidationResult{
+			Component: "Providers",
+			Status:    "❌ Failed",
+			Issues:    "1",
+			Details:   err.Error(),
+		})
 		hasErrors = true
 	} else {
-		fmt.Println("  ✅ Providers structure valid")
+		fmt.Println("✅ Success")
+		results = append(results, ValidationResult{
+			Component: "Providers",
+			Status:    "✅ Success",
+			Issues:    "0",
+			Details:   "Structure valid",
+		})
 	}
 
 	// Validate authors.yaml
-	fmt.Println("\nValidating authors.yaml...")
+	fmt.Print("Validating authors.yaml... ")
 	if err := validateAuthorsStructure(verbose); err != nil {
-		fmt.Printf("  ❌ Authors validation failed: %v\n", err)
+		fmt.Println("❌ Failed")
+		results = append(results, ValidationResult{
+			Component: "Authors",
+			Status:    "❌ Failed",
+			Issues:    "1",
+			Details:   err.Error(),
+		})
 		hasErrors = true
 	} else {
-		fmt.Println("  ✅ Authors structure valid")
+		fmt.Println("✅ Success")
+		results = append(results, ValidationResult{
+			Component: "Authors",
+			Status:    "✅ Success",
+			Issues:    "0",
+			Details:   "Structure valid",
+		})
 	}
 
 	// Validate model consistency
-	fmt.Println("\nValidating model definitions...")
+	fmt.Print("Validating model definitions... ")
 	if err := validateModelConsistency(verbose); err != nil {
-		fmt.Printf("  ❌ Model validation failed: %v\n", err)
+		fmt.Println("❌ Failed")
+		results = append(results, ValidationResult{
+			Component: "Models",
+			Status:    "❌ Failed",
+			Issues:    "1+",
+			Details:   err.Error(),
+		})
 		hasErrors = true
 	} else {
-		fmt.Println("  ✅ Model definitions valid")
+		fmt.Println("✅ Success")
+		results = append(results, ValidationResult{
+			Component: "Models",
+			Status:    "✅ Success",
+			Issues:    "0",
+			Details:   "Definitions valid",
+		})
 	}
 
 	// Check cross-references
-	fmt.Println("\nValidating cross-references...")
+	fmt.Print("Validating cross-references... ")
 	if err := validateCrossReferences(verbose); err != nil {
-		fmt.Printf("  ❌ Cross-reference validation failed: %v\n", err)
+		fmt.Println("❌ Failed")
+		results = append(results, ValidationResult{
+			Component: "Cross-references",
+			Status:    "❌ Failed",
+			Issues:    "1+",
+			Details:   err.Error(),
+		})
 		hasErrors = true
 	} else {
-		fmt.Println("  ✅ Cross-references valid")
+		fmt.Println("✅ Success")
+		results = append(results, ValidationResult{
+			Component: "Cross-references",
+			Status:    "✅ Success",
+			Issues:    "0",
+			Details:   "References valid",
+		})
 	}
 
+	fmt.Println()
+
+	// Display results in table format
+	outputFormat := output.DetectFormat(globalFlags.Output)
+	if outputFormat == output.FormatTable {
+		displayValidationTable(results, verbose)
+	} else {
+		formatter := output.NewFormatter(outputFormat)
+		return formatter.Format(os.Stdout, results)
+	}
+
+	// Create notifier and show contextual hints
+	notifier, err := notify.NewFromCommand(cmd)
+	if err != nil {
+		return err
+	}
+	
+	// Create context for hints
+	succeeded := !hasErrors
+	var errorType string
 	if hasErrors {
+		errorType = "validation_failed"
+	}
+	ctx := notify.Contexts.Validation("catalog", succeeded, errorType)
+	
+	if hasErrors {
+		if err := notifier.Error("Catalog validation failed", ctx); err != nil {
+			return err
+		}
 		return fmt.Errorf("catalog validation failed")
 	}
 
-	fmt.Println("\n✨ Catalog validation successful!")
-	return nil
+	// Success is obvious from the validation table showing all green checkmarks
+	return notifier.Hints(ctx)
 }
 
 func validateCrossReferences(verbose bool) error {
@@ -113,4 +211,44 @@ func validateCrossReferences(verbose bool) error {
 	}
 
 	return nil
+}
+
+// displayValidationTable shows validation results in a table format.
+func displayValidationTable(results []ValidationResult, verbose bool) {
+	if len(results) == 0 {
+		return
+	}
+
+	formatter := output.NewFormatter(output.FormatTable)
+	
+	headers := []string{"Component", "Status", "Issues"}
+	if verbose {
+		headers = append(headers, "Details")
+	}
+	
+	var rows [][]string
+	for _, result := range results {
+		row := []string{
+			result.Component,
+			result.Status,
+			result.Issues,
+		}
+		if verbose {
+			details := result.Details
+			if len(details) > 80 {
+				details = details[:77] + "..."
+			}
+			row = append(row, details)
+		}
+		rows = append(rows, row)
+	}
+
+	tableData := output.TableData{
+		Headers: headers,
+		Rows:    rows,
+	}
+
+	fmt.Println("Catalog Validation Results:")
+	formatter.Format(os.Stdout, tableData)
+	fmt.Println()
 }

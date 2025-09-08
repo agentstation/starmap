@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -78,9 +80,13 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 }
 
 func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool) error {
-	fmt.Println()
-	fmt.Println("Provider Authentication Status:")
-	fmt.Println()
+	// Get global flags for output format
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
+	
+	outputFormat := output.DetectFormat(globalFlags.Output)
 
 	var configured, missing, optional, unsupported int
 	verbose, _ := cmd.Flags().GetBool("verbose")
@@ -125,13 +131,28 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 		}
 	}
 
+	// For structured output (JSON/YAML), return data only
+	if outputFormat != output.FormatTable {
+		tableData := output.TableData{
+			Headers: []string{"Provider", "Status", "Key Variable", "Source"},
+			Rows:    tableRows,
+		}
+		
+		formatter := output.NewFormatter(outputFormat)
+		return formatter.Format(os.Stdout, tableData)
+	}
+
+	// For table output, show full UI with headers
+	fmt.Println()
+	fmt.Println("Provider Authentication Status:")
+
 	// Create and display table
 	tableData := output.TableData{
 		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 		Rows:    tableRows,
 	}
 	
-	formatter := &output.TableFormatter{}
+	formatter := output.NewFormatter(outputFormat)
 	if err := formatter.Format(os.Stdout, tableData); err != nil {
 		return err
 	}
@@ -199,21 +220,37 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 			Rows:    summaryRows,
 		}
 		
-		formatter := &output.TableFormatter{}
+		// Get global flags for output format
+		globalFlags, err := globals.Parse(cmd)
+		if err != nil {
+			return err
+		}
+		
+		outputFormat := output.DetectFormat(globalFlags.Output)
+		formatter := output.NewFormatter(outputFormat)
 		if err := formatter.Format(os.Stdout, summaryData); err != nil {
 			return err
 		}
 		fmt.Println()
 	}
 
-	if configured == 0 && missing > 0 {
-		fmt.Println("⚠️  No providers configured. Set API keys to enable provider access.")
-	} else if configured > 0 {
-		fmt.Println("✨ Run 'starmap auth verify' to test credentials work")
+	// Create notifier and show contextual hints
+	notifier, err := notify.NewFromCommand(cmd)
+	if err != nil {
+		return err
 	}
 	
-	// Final newline before cursor
-	fmt.Println()
+	// Determine success and create context
+	succeeded := !(configured == 0 && missing > 0)
+	ctx := notify.Contexts.AuthStatus(succeeded, configured)
+	
+	if configured == 0 && missing > 0 {
+		return notifier.Warning("No providers configured. Set API keys to enable provider access.", ctx)
+	} else if configured > 0 {
+		// Just show hints, no redundant success message
+		return notifier.Hints(ctx)
+	}
+
 	return nil
 }
 
