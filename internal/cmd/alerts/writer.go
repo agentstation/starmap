@@ -96,7 +96,7 @@ func (fw *FormatWriter) writeYAML(alert *Alert) error {
 	data := fw.toAlertData(alert)
 	encoder := yaml.NewEncoder(fw.writer)
 	encoder.SetIndent(2)
-	defer encoder.Close()
+	defer func() { _ = encoder.Close() }()
 	return encoder.Encode(data)
 }
 
@@ -110,12 +110,12 @@ func (fw *FormatWriter) writeTable(alert *Alert) error {
 	}
 	
 	// Just print the message with proper spacing
-	fmt.Fprintln(fw.writer, message)
+	_, _ = fmt.Fprintln(fw.writer, message)
 	
 	// Add details if present with indentation
 	if fw.config.ShowDetails && len(alert.Details) > 0 {
 		for _, detail := range alert.Details {
-			fmt.Fprintf(fw.writer, "   %s\n", detail)
+			_, _ = fmt.Fprintf(fw.writer, "   %s\n", detail)
 		}
 	}
 	
@@ -132,29 +132,18 @@ func (fw *FormatWriter) writePlain(alert *Alert) error {
 		message = fmt.Sprintf("%s%s%s", color, message, reset)
 	}
 	
-	fmt.Fprintln(fw.writer, message)
+	_, _ = fmt.Fprintln(fw.writer, message)
 	
 	// Add details if configured
 	if fw.config.ShowDetails && len(alert.Details) > 0 {
 		for _, detail := range alert.Details {
-			fmt.Fprintf(fw.writer, "   %s\n", detail)
+			_, _ = fmt.Fprintf(fw.writer, "   %s\n", detail)
 		}
 	}
 	
 	return nil
 }
 
-// repeatString repeats a string n times.
-func repeatString(s string, count int) string {
-	if count <= 0 {
-		return ""
-	}
-	result := ""
-	for i := 0; i < count; i++ {
-		result += s
-	}
-	return result
-}
 
 // isTerminal checks if the writer is a terminal (for color support).
 func isTerminal(w io.Writer) bool {

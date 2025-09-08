@@ -202,7 +202,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 
 	fmt.Printf("Model: %s\n\n", model.ID)
 	fmt.Println("Basic Information:")
-	formatter.Format(os.Stdout, basicTable)
+	_ = formatter.Format(os.Stdout, basicTable)
 	fmt.Println()
 
 	// Limits Table
@@ -221,7 +221,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 				Rows:    limitRows,
 			}
 			fmt.Println("Limits:")
-			formatter.Format(os.Stdout, limitsTable)
+			_ = formatter.Format(os.Stdout, limitsTable)
 			fmt.Println()
 		}
 	}
@@ -242,7 +242,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 				Rows:    pricingRows,
 			}
 			fmt.Println("Pricing:")
-			formatter.Format(os.Stdout, pricingTable)
+			_ = formatter.Format(os.Stdout, pricingTable)
 			fmt.Println()
 		}
 	}
@@ -302,7 +302,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 				Rows:    featureRows,
 			}
 			fmt.Println("Features:")
-			formatter.Format(os.Stdout, featuresTable)
+			_ = formatter.Format(os.Stdout, featuresTable)
 			fmt.Println()
 		}
 	}
@@ -323,7 +323,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 				Rows:    archRows,
 			}
 			fmt.Println("Architecture:")
-			formatter.Format(os.Stdout, archTable)
+			_ = formatter.Format(os.Stdout, archTable)
 			fmt.Println()
 		}
 	}

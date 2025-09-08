@@ -204,7 +204,7 @@ func isCI() bool {
 	return false
 }
 
-// Global notifier instance for convenience functions
+// Global notifier instance for convenience functions.
 var defaultNotifier *Notifier
 
 // SetDefault sets the default global notifier.

@@ -274,5 +274,5 @@ func (CommonContexts) Command(command, subcommand string, succeeded bool, errorT
 	return ctx
 }
 
-// Global contexts instance for convenience
+// Contexts is the global contexts instance for convenience.
 var Contexts CommonContexts

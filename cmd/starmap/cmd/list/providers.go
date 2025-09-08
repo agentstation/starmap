@@ -173,7 +173,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 
 	fmt.Printf("Provider: %s\n\n", provider.ID)
 	fmt.Println("Basic Information:")
-	formatter.Format(os.Stdout, basicTable)
+	_ = formatter.Format(os.Stdout, basicTable)
 	fmt.Println()
 
 	// API Configuration Table
@@ -202,7 +202,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 		}
 
 		fmt.Println("API Configuration:")
-		formatter.Format(os.Stdout, configTable)
+		_ = formatter.Format(os.Stdout, configTable)
 		fmt.Println()
 	}
 
@@ -230,7 +230,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 		}
 
 		fmt.Println("Environment Variables:")
-		formatter.Format(os.Stdout, envTable)
+		_ = formatter.Format(os.Stdout, envTable)
 		fmt.Println()
 	}
 }

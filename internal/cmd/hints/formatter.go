@@ -117,7 +117,7 @@ func (f *Formatter) formatYAML(hints []*Hint) error {
 	
 	encoder := yaml.NewEncoder(f.writer)
 	encoder.SetIndent(f.config.IndentSize)
-	defer encoder.Close()
+	defer func() { _ = encoder.Close() }()
 	return encoder.Encode(output)
 }
 
@@ -127,16 +127,16 @@ func (f *Formatter) formatTable(hints []*Hint) error {
 		return nil
 	}
 	
-	fmt.Fprintln(f.writer) // One newline before
+	_, _ = fmt.Fprintln(f.writer) // One newline before
 	
 	for _, hint := range hints {
 		lines := f.formatHintContent(hint)
 		for _, line := range lines {
-			fmt.Fprintln(f.writer, line)
+			_, _ = fmt.Fprintln(f.writer, line)
 		}
 	}
 	
-	fmt.Fprintln(f.writer) // One newline after
+	_, _ = fmt.Fprintln(f.writer) // One newline after
 	
 	return nil
 }
@@ -146,16 +146,16 @@ func (f *Formatter) formatPlain(hints []*Hint) error {
 		return nil
 	}
 	
-	fmt.Fprintln(f.writer) // One newline before
+	_, _ = fmt.Fprintln(f.writer) // One newline before
 	
 	for _, hint := range hints {
 		lines := f.formatHintContent(hint)
 		for _, line := range lines {
-			fmt.Fprintln(f.writer, line)
+			_, _ = fmt.Fprintln(f.writer, line)
 		}
 	}
 	
-	fmt.Fprintln(f.writer) // One newline after
+	_, _ = fmt.Fprintln(f.writer) // One newline after
 	
 	return nil
 }

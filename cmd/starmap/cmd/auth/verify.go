@@ -215,7 +215,7 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 	}
 
 	fmt.Println("Provider Verification Results:")
-	formatter.Format(os.Stdout, tableData)
+	_ = formatter.Format(os.Stdout, tableData)
 	fmt.Println()
 }
 
@@ -243,7 +243,7 @@ func displaySummaryTable(verified, failed, skipped int) {
 		}
 
 		fmt.Println("Summary:")
-		formatter.Format(os.Stdout, tableData)
+		_ = formatter.Format(os.Stdout, tableData)
 		fmt.Println()
 	}
 }
@@ -305,7 +305,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 			displayVerificationTable([]VerificationResult{result}, verbose)
 		} else {
 			formatter := output.NewFormatter(outputFormat)
-			formatter.Format(os.Stdout, []VerificationResult{result})
+			_ = formatter.Format(os.Stdout, []VerificationResult{result})
 		}
 		
 		return fmt.Errorf("failed to verify %s: %w", providerID, err)

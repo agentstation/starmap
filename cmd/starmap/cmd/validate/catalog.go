@@ -249,6 +249,6 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 	}
 
 	fmt.Println("Catalog Validation Results:")
-	formatter.Format(os.Stdout, tableData)
+	_ = formatter.Format(os.Stdout, tableData)
 	fmt.Println()
 }

@@ -6,10 +6,14 @@ import (
 	"strings"
 )
 
+const (
+	authCommand = "auth"
+)
+
 // RegisterStarmapProviders registers all standard Starmap hint providers.
 func RegisterStarmapProviders(registry *Registry) {
 	// Auth-related hints
-	registry.RegisterFunc("auth", authHintProvider)
+	registry.RegisterFunc(authCommand, authHintProvider)
 	
 	// Configuration hints
 	registry.RegisterFunc("config", configHintProvider)
@@ -30,7 +34,7 @@ func authHintProvider(ctx Context) []*Hint {
 	
 	// No providers configured
 	if len(ctx.UserState.AuthProviders) == 0 {
-		if ctx.Command == "auth" && ctx.Subcommand == "status" {
+		if ctx.Command == authCommand && ctx.Subcommand == "status" {
 			hints = append(hints, NewCommand(
 				"Set up API keys to access AI models",
 				"export OPENAI_API_KEY=your-key-here",
@@ -39,7 +43,7 @@ func authHintProvider(ctx Context) []*Hint {
 	}
 	
 	// Auth status success - suggest verification
-	if ctx.Command == "auth" && ctx.Subcommand == "status" && ctx.Succeeded {
+	if ctx.Command == authCommand && ctx.Subcommand == "status" && ctx.Succeeded {
 		if len(ctx.UserState.AuthProviders) > 0 {
 			hints = append(hints, NewCommand(
 				"Test that your credentials work",
@@ -49,7 +53,7 @@ func authHintProvider(ctx Context) []*Hint {
 	}
 	
 	// Auth verification failures
-	if ctx.Command == "auth" && ctx.Subcommand == "verify" && !ctx.Succeeded {
+	if ctx.Command == authCommand && ctx.Subcommand == "verify" && !ctx.Succeeded {
 		hints = append(hints, New(
 			"Check that your API keys are valid and not expired",
 		).WithTags("troubleshooting", "auth"))
@@ -64,7 +68,7 @@ func authHintProvider(ctx Context) []*Hint {
 }
 
 // configHintProvider provides configuration-related hints.
-func configHintProvider(ctx Context) []*Hint {
+func configHintProvider(_ Context) []*Hint {
 	var hints []*Hint
 	
 	// Only show config hints on first run or when there are actual config issues
