@@ -125,8 +125,9 @@ docker-compose.override.yml
 config.local.*
 *.local
 
-# models.dev repository (cloned during sync)
+# models.dev sources (created during sync)
 models.dev/
+models.dev-git/
 
 # Hugo generated directories
 /public/

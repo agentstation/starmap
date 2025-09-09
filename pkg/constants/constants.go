@@ -182,10 +182,10 @@ const (
 	DefaultSourcesPath = "~/.starmap/sources"
 
 	// DefaultModelsDevGitPath is the default path for models.dev git repository.
-	DefaultModelsDevGitPath = "~/.starmap/sources/models.dev"
+	DefaultModelsDevGitPath = "~/.starmap/sources/models.dev-git"
 
 	// DefaultModelsDevCachePath is the default path for models.dev HTTP cache.
-	DefaultModelsDevCachePath = "~/.starmap/sources/models.dev-cache"
+	DefaultModelsDevCachePath = "~/.starmap/sources/models.dev"
 )
 
 // Format constants.

@@ -14,7 +14,7 @@ import (
 // CopyProviderLogos copies provider logos from models.dev to output directory.
 func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) error {
 	// The models.dev repo is always cloned to this location by git.Fetch()
-	modelsDevRepo := filepath.Join("internal/embedded/catalog/providers", "models.dev")
+	modelsDevRepo := filepath.Join("internal/embedded/catalog/providers", "models.dev-git")
 	providersPath := filepath.Join(modelsDevRepo, "providers")
 
 	for _, providerID := range providerIDs {

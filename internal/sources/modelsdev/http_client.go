@@ -32,7 +32,7 @@ func NewHTTPClient(outputDir string) *HTTPClient {
 	if outputDir == "" {
 		outputDir = expandPath(constants.DefaultSourcesPath)
 	}
-	cacheDir := filepath.Join(outputDir, "models.dev-cache")
+	cacheDir := filepath.Join(outputDir, "models.dev")
 	return &HTTPClient{
 		CacheDir: cacheDir,
 		APIURL:   ModelsDevAPIURL,

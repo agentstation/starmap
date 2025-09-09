@@ -40,6 +40,8 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Update from specific source (provider-api, models.dev)")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
 		"Preview changes without applying them")
+	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
+		"Preview changes without applying them (alias for --dry-run)")
 	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
 		"Force fresh update (delete and recreate)")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
@@ -83,7 +85,7 @@ The command will:
 By default, saves to ~/.starmap for the local user catalog.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update --provider openai          # Update specific provider
-  starmap update --dry-run                  # Preview changes
+  starmap update --dry                      # Preview changes
   starmap update -y                          # Auto-approve changes
   starmap update --force                    # Force fresh update`,
 		RunE: func(cmd *cobra.Command, _ []string) error {

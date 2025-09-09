@@ -31,7 +31,7 @@ func NewClient(outputDir string) *Client {
 	if outputDir == "" {
 		outputDir = expandPath(constants.DefaultSourcesPath)
 	}
-	repoPath := filepath.Join(outputDir, "models.dev")
+	repoPath := filepath.Join(outputDir, "models.dev-git")
 	return &Client{
 		RepoPath: repoPath,
 	}
@@ -42,7 +42,7 @@ func NewGitClient(outputDir string) *GitClient {
 	if outputDir == "" {
 		outputDir = expandPath(constants.DefaultSourcesPath)
 	}
-	repoPath := filepath.Join(outputDir, "models.dev")
+	repoPath := filepath.Join(outputDir, "models.dev-git")
 	return &GitClient{
 		RepoPath: repoPath,
 	}
