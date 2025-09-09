@@ -2,8 +2,8 @@
 id: llama3.1-8b
 name: llama3.1-8b
 authors:
-- id: cerebras
-  name: Cerebras
+- id: meta
+  name: Meta
 
 # Model features
 features:
@@ -67,5 +67,5 @@ features:
   streaming: true
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z

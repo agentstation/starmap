@@ -2,8 +2,8 @@
 id: llama-3.3-70b
 name: llama-3.3-70b
 authors:
-- id: cerebras
-  name: Cerebras
+- id: meta
+  name: Meta
 
 # Model metadata
 metadata:
@@ -87,5 +87,5 @@ limits:
   output_tokens: 8192
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z

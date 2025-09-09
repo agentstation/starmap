@@ -30,23 +30,26 @@ type merger struct {
 	authorities authority.Authority
 	strategy    Strategy
 	tracker     provenance.Tracker
+	baseline    catalogs.Catalog // Baseline catalog for timestamp preservation
 }
 
 // newMerger creates a new strategic merger
 // Returns the Merger interface to hide implementation details.
-func newMerger(authorities authority.Authority, strategy Strategy) Merger {
+func newMerger(authorities authority.Authority, strategy Strategy, baseline catalogs.Catalog) Merger {
 	return &merger{
 		authorities: authorities,
 		strategy:    strategy,
+		baseline:    baseline,
 	}
 }
 
 // newMergerWithProvenance creates a new strategic merger with provenance tracking.
-func newMergerWithProvenance(authorities authority.Authority, strategy Strategy, tracker provenance.Tracker) Merger {
+func newMergerWithProvenance(authorities authority.Authority, strategy Strategy, tracker provenance.Tracker, baseline catalogs.Catalog) Merger {
 	return &merger{
 		authorities: authorities,
 		strategy:    strategy,
 		tracker:     tracker,
+		baseline:    baseline,
 	}
 }
 
@@ -139,8 +142,27 @@ func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]ca
 
 // model merges a single model from multiple sources.
 func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalogs.Model) (catalogs.Model, map[string]provenance.Field) {
-	merged := catalogs.Model{
-		ID: modelID,
+	// Start with existing model from baseline if available to preserve timestamps
+	var merged catalogs.Model
+	if merger.baseline != nil {
+		// Try to find existing model in baseline for timestamp preservation
+		for _, provider := range merger.baseline.Providers().List() {
+			for _, existingModel := range provider.Models {
+				if existingModel.ID == modelID {
+					merged = existingModel
+					break
+				}
+			}
+			if merged.ID != "" {
+				break
+			}
+		}
+	}
+	// Ensure ID is set even if not found in baseline
+	if merged.ID == "" {
+		merged = catalogs.Model{
+			ID: modelID,
+		}
 	}
 	history := make(map[string]provenance.Field)
 
@@ -186,10 +208,52 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 	// Enhanced merging for complex nested structures
 	merged = merger.complexModelStructures(merged, sourceModels, &history)
 
-	// Set timestamps
-	merged.UpdatedAt = utc.Now()
+	// Handle timestamps with change detection
+	// Store baseline model for comparison (before it gets overwritten)
+	var baselineModel *catalogs.Model
+	if merger.baseline != nil {
+		for _, provider := range merger.baseline.Providers().List() {
+			for _, existingModel := range provider.Models {
+				if existingModel.ID == modelID {
+					// Create a copy for comparison
+					baselineModel = &existingModel
+					break
+				}
+			}
+			if baselineModel != nil {
+				break
+			}
+		}
+	}
+
+	// Preserve CreatedAt from existing model, or set to now if new
+	originalCreatedAt := merged.CreatedAt
+	originalUpdatedAt := merged.UpdatedAt
 	if merged.CreatedAt.IsZero() {
 		merged.CreatedAt = utc.Now()
+	}
+
+	// Check if content has actually changed by comparing with baseline
+	hasContentChanged := true // Default to true if no baseline
+	if baselineModel != nil {
+		// Compare models excluding timestamps
+		baselineCopy := *baselineModel
+		mergedCopy := merged
+		// Clear timestamps for comparison
+		baselineCopy.CreatedAt = utc.Time{}
+		baselineCopy.UpdatedAt = utc.Time{}
+		mergedCopy.CreatedAt = utc.Time{}
+		mergedCopy.UpdatedAt = utc.Time{}
+		// Compare using reflect.DeepEqual
+		hasContentChanged = !reflect.DeepEqual(baselineCopy, mergedCopy)
+	}
+
+	// Only update UpdatedAt if content changed or this is a new model
+	if hasContentChanged || originalCreatedAt.IsZero() {
+		merged.UpdatedAt = utc.Now()
+	} else {
+		// Preserve original UpdatedAt if no changes
+		merged.UpdatedAt = originalUpdatedAt
 	}
 
 	return merged, history

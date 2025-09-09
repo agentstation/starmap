@@ -62,7 +62,11 @@ func (c *Client) ConvertToModel(m baseclient.OpenAIModelData) catalogs.Model {
 		// Map common owners to known authors
 		switch strings.ToLower(m.OwnedBy) {
 		case "cerebras":
-			authorID = catalogs.AuthorIDCerebras
+			// Cerebras doesn't create models, just hosts them - infer from model ID
+			model.Authors = c.inferAuthorsFromModelID(m.ID)
+			// Override features and return early
+			model.Features = c.inferFeatures(m.ID)
+			return model
 		case "meta", "meta-llama":
 			authorID = catalogs.AuthorIDMeta
 		case "openai":
@@ -77,7 +81,7 @@ func (c *Client) ConvertToModel(m baseclient.OpenAIModelData) catalogs.Model {
 		}
 	} else {
 		// Default to inferring author from model ID
-		model.Authors = c.inferAuthors(m.ID)
+		model.Authors = c.inferAuthorsFromModelID(m.ID)
 	}
 
 	// Override features with Cerebras-specific inference
@@ -114,8 +118,8 @@ func (c *Client) inferDisplayName(modelID string) string {
 	}
 }
 
-// inferAuthors infers model authors based on the model ID.
-func (c *Client) inferAuthors(modelID string) []catalogs.Author {
+// inferAuthorsFromModelID infers model authors based on the model ID.
+func (c *Client) inferAuthorsFromModelID(modelID string) []catalogs.Author {
 	switch {
 	case strings.Contains(modelID, "llama"):
 		return []catalogs.Author{{ID: catalogs.AuthorIDMeta, Name: "Meta"}}
@@ -126,8 +130,8 @@ func (c *Client) inferAuthors(modelID string) []catalogs.Author {
 	case strings.Contains(modelID, "gpt"):
 		return []catalogs.Author{{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"}}
 	default:
-		// Default to Cerebras as the author
-		return []catalogs.Author{{ID: catalogs.AuthorIDCerebras, Name: "Cerebras"}}
+		// Unable to determine author from model ID - return empty
+		return []catalogs.Author{}
 	}
 }
 

@@ -195,6 +195,9 @@ func defaultAuthorAuthorities() []Field {
 		{Path: "URL", Source: sources.LocalCatalog, Priority: 85},
 		{Path: "Description", Source: sources.LocalCatalog, Priority: 85},
 
+		// Aliases - prefer local catalog (using Go field name)
+		{Path: "Aliases", Source: sources.LocalCatalog, Priority: 85},
+
 		// Fallback to models.dev
 		{Path: "Name", Source: sources.ModelsDevHTTP, Priority: 80},
 		{Path: "URL", Source: sources.ModelsDevHTTP, Priority: 75},

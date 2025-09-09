@@ -2,6 +2,7 @@ package modelsdev
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -60,50 +62,54 @@ func (c *HTTPClient) EnsureAPI(ctx context.Context) error {
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.APIURL, nil)
 	if err != nil {
-		return errors.WrapResource("create", "request", c.APIURL, err)
+		return c.useCacheFallback(apiPath)
 	}
 	resp, err := c.Client.Do(req)
 	if err != nil {
-		return &errors.APIError{
-			Provider: "models.dev",
-			Endpoint: c.APIURL,
-			Message:  "failed to download api.json",
-			Err:      err,
-		}
+		fmt.Printf("  ⚠️  HTTP request failed: %v\n", err)
+		return c.useCacheFallback(apiPath)
 	}
 	defer func() { _ = resp.Body.Close() }()
 
+	// Only accept HTTP 200 OK
 	if resp.StatusCode != http.StatusOK {
-		return &errors.APIError{
-			Provider:   "models.dev",
-			Endpoint:   c.APIURL,
-			StatusCode: resp.StatusCode,
-			Message:    resp.Status,
-		}
+		fmt.Printf("  ⚠️  HTTP %d: %s\n", resp.StatusCode, resp.Status)
+		return c.useCacheFallback(apiPath)
 	}
 
-	// Create temporary file
-	tempFile, err := os.CreateTemp(c.CacheDir, "api_*.json")
+	// Read response body
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return errors.WrapIO("create", "temp file", err)
+		fmt.Printf("  ⚠️  Failed to read response: %v\n", err)
+		return c.useCacheFallback(apiPath)
 	}
-	defer func() { _ = tempFile.Close() }()
-	tempPath := tempFile.Name()
 
-	// Copy response to temp file
-	_, err = io.Copy(tempFile, resp.Body)
-	if err != nil {
-		_ = os.Remove(tempPath)
+	// Validate minimum size (round number, ~1/3 of typical ~267KB)
+	const minValidSize = 100000
+	if len(data) < minValidSize {
+		fmt.Printf("  ⚠️  Response too small (%d bytes, expected > %d)\n", len(data), minValidSize)
+		return c.useCacheFallback(apiPath)
+	}
+
+	// Validate JSON structure
+	var testParse map[string]interface{}
+	if err := json.Unmarshal(data, &testParse); err != nil {
+		fmt.Printf("  ⚠️  Invalid JSON response: %v\n", err)
+		return c.useCacheFallback(apiPath)
+	}
+
+	// Check for expected structure (should have provider keys)
+	if len(testParse) < 5 {
+		fmt.Printf("  ⚠️  JSON missing expected providers (found %d)\n", len(testParse))
+		return c.useCacheFallback(apiPath)
+	}
+
+	// Write validated data to file
+	if err := os.WriteFile(apiPath, data, constants.FilePermissions); err != nil {
 		return errors.WrapIO("write", "api.json", err)
 	}
 
-	// Atomically move temp file to final location
-	if err := os.Rename(tempPath, apiPath); err != nil {
-		_ = os.Remove(tempPath)
-		return errors.WrapIO("move", "api.json", err)
-	}
-
-	fmt.Printf("  ✅ Downloaded api.json successfully\n")
+	fmt.Printf("  ✅ Downloaded api.json successfully (%d KB)\n", len(data)/1024)
 	return nil
 }
 
@@ -129,4 +135,35 @@ func (c *HTTPClient) isCacheValid(apiPath string) bool {
 
 	// Check if file is recent enough
 	return time.Since(info.ModTime()) < HTTPCacheTTL
+}
+
+// useCacheFallback tries cached data first, then embedded as final fallback.
+func (c *HTTPClient) useCacheFallback(apiPath string) error {
+	// Try existing cache file (even if stale)
+	if _, err := os.Stat(apiPath); err == nil {
+		fmt.Printf("  📄 Using cached api.json (network unavailable)\n")
+		return nil
+	}
+
+	// Fall back to embedded data as last resort
+	return c.useEmbeddedFallback(apiPath)
+}
+
+// useEmbeddedFallback copies embedded api.json to cache when all else fails.
+func (c *HTTPClient) useEmbeddedFallback(apiPath string) error {
+	fmt.Printf("  📦 Using embedded api.json fallback...\n")
+
+	// Read embedded api.json
+	embeddedData, err := embedded.FS.ReadFile("sources/models.dev/api.json")
+	if err != nil {
+		return errors.WrapResource("read", "embedded api.json", "", err)
+	}
+
+	// Write to cache location
+	if err := os.WriteFile(apiPath, embeddedData, constants.FilePermissions); err != nil {
+		return errors.WrapIO("write", "api.json fallback", err)
+	}
+
+	fmt.Printf("  ✅ Using embedded api.json (all other sources failed)\n")
+	return nil
 }

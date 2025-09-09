@@ -418,9 +418,11 @@ embed: ## Update embedded catalog with automatic Google Cloud auth
 	@$(GOCMD) run $(MAIN_PATH) validate || exit 1
 	@echo "$(BLUE)Checking provider authentication...$(NC)"
 	@$(GOCMD) run $(MAIN_PATH) auth status
+	@echo "$(BLUE)Updating embedded sources...$(NC)"
+	@curl -s https://models.dev/api.json -o internal/embedded/sources/models.dev/api.json || echo "$(YELLOW)Warning: Could not update models.dev api.json$(NC)"
 	@echo "$(BLUE)Updating embedded catalog...$(NC)"
 	@$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --force -y
-	@echo "$(GREEN)✅ Embedded catalog updated successfully!$(NC)"
+	@echo "$(GREEN)✅ Embedded catalog and sources updated successfully!$(NC)"
 
 embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
 	@if [ -z "$(PROVIDER)" ]; then \

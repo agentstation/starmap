@@ -358,9 +358,9 @@ func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, ch
 // createMerger creates a merger based on configuration.
 func (r *reconciler) createMerger() Merger {
 	if r.tracking && r.provenance != nil {
-		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance)
+		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
 	}
-	return newMerger(r.authorities, r.strategy)
+	return newMerger(r.authorities, r.strategy, r.baseline)
 }
 
 // calcStats computes statistics from the catalog.

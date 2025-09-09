@@ -5,6 +5,12 @@ authors:
 - id: google
   name: Google
 
+# Model metadata
+metadata:
+  release_date: 2024-12-01
+  open_weights: false
+  knowledge_cutoff: 2024-12-01
+
 # Model features
 features:
   modalities:
@@ -79,11 +85,16 @@ generation:
     max: 100
     default: 64
 
+# Model pricing
+pricing:
+  tokens: {}
+  currency: USD
+
 # Model limits
 limits:
   context_window: 131072
   output_tokens: 8192
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z

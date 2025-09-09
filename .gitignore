@@ -126,7 +126,6 @@ config.local.*
 *.local
 
 # models.dev sources (created during sync)
-models.dev/
 models.dev-git/
 
 # Hugo generated directories

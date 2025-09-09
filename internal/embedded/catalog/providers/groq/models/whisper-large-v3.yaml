@@ -5,6 +5,12 @@ authors:
 - id: openai
   name: OpenAI
 
+# Model metadata
+metadata:
+  release_date: 2023-09-01
+  open_weights: true
+  knowledge_cutoff: 2023-09-01
+
 # Model features
 features:
   modalities:
@@ -66,11 +72,16 @@ features:
   structured_outputs: false
   streaming: true
 
+# Model pricing
+pricing:
+  tokens: {}
+  currency: USD
+
 # Model limits
 limits:
-  context_window: 448
-  output_tokens: 448
+  context_window: 0
+  output_tokens: 4096
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z

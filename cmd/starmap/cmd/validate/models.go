@@ -39,15 +39,6 @@ func validateModelConsistency(verbose bool) error {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}
 
-	models := cat.GetAllModels()
-	if len(models) == 0 {
-		// No models is okay, they come from providers
-		if verbose {
-			fmt.Println("  No embedded models to validate")
-		}
-		return nil
-	}
-
 	providers := cat.Providers().List()
 	providerMap := make(map[string]bool)
 	for _, p := range providers {
@@ -58,54 +49,103 @@ func validateModelConsistency(verbose bool) error {
 	authorMap := make(map[string]bool)
 	for _, a := range authors {
 		authorMap[string(a.ID)] = true
+		// Add aliases to the map
+		for _, alias := range a.Aliases {
+			authorMap[string(alias)] = true
+		}
 	}
 
 	var validationErrors []string
-	seenIDs := make(map[string]bool)
+	totalModels := 0
 
-	for _, model := range models {
-		// Check required fields
-		if model.ID == "" {
-			validationErrors = append(validationErrors,
-				"model missing required field 'id'")
+	// Validate models per provider (proper scoping)
+	for _, provider := range providers {
+		if provider.Models == nil {
 			continue
 		}
 
-		// Check for duplicate IDs
-		if seenIDs[model.ID] {
-			validationErrors = append(validationErrors,
-				fmt.Sprintf("duplicate model ID: %s", model.ID))
-		}
-		seenIDs[model.ID] = true
-
-		if model.Name == "" {
-			validationErrors = append(validationErrors,
-				fmt.Sprintf("model %s missing required field 'name'", model.ID))
-		}
-
-		// Models come from providers, so we don't validate provider reference
-		// Check author references if specified
-		for _, author := range model.Authors {
-			if !authorMap[string(author.ID)] {
+		seenIDs := make(map[string]bool)
+		
+		for _, model := range provider.Models {
+			totalModels++
+			
+			// Check required fields
+			if model.ID == "" {
 				validationErrors = append(validationErrors,
-					fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID))
+					fmt.Sprintf("model in provider '%s' missing required field 'id'", provider.ID))
+				continue
+			}
+
+			// Check for duplicate IDs within this provider
+			if seenIDs[model.ID] {
+				validationErrors = append(validationErrors,
+					fmt.Sprintf("duplicate model ID '%s' in provider '%s'", model.ID, provider.ID))
+			}
+			seenIDs[model.ID] = true
+
+			if model.Name == "" {
+				validationErrors = append(validationErrors,
+					fmt.Sprintf("model %s missing required field 'name'", model.ID))
+			}
+
+			// Check author references if specified
+			for _, author := range model.Authors {
+				if !authorMap[string(author.ID)] {
+					validationErrors = append(validationErrors,
+						fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID))
+				}
+			}
+
+			// Validate limits if present
+			if model.Limits != nil {
+				if model.Limits.ContextWindow < 0 {
+					validationErrors = append(validationErrors,
+						fmt.Sprintf("model %s has invalid context_window: %d", model.ID, model.Limits.ContextWindow))
+				}
+				if model.Limits.OutputTokens < 0 {
+					validationErrors = append(validationErrors,
+						fmt.Sprintf("model %s has invalid output_tokens: %d", model.ID, model.Limits.OutputTokens))
+				}
+			}
+
+			if verbose {
+				fmt.Printf("  ✓ Validated model: %s\n", model.Name)
 			}
 		}
+	}
 
-		// Validate limits if present
-		if model.Limits != nil {
-			if model.Limits.ContextWindow < 0 {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model %s has invalid context_window: %d", model.ID, model.Limits.ContextWindow))
-			}
-			if model.Limits.OutputTokens < 0 {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model %s has invalid output_tokens: %d", model.ID, model.Limits.OutputTokens))
-			}
+	// Also validate models from authors
+	for _, author := range cat.Authors().List() {
+		if author.Models == nil {
+			continue
 		}
+		
+		for _, model := range author.Models {
+			totalModels++
+			
+			// Check required fields
+			if model.ID == "" {
+				validationErrors = append(validationErrors,
+					fmt.Sprintf("model in author '%s' missing required field 'id'", author.ID))
+				continue
+			}
 
-		if verbose {
-			fmt.Printf("  ✓ Validated model: %s\n", model.Name)
+			if model.Name == "" {
+				validationErrors = append(validationErrors,
+					fmt.Sprintf("model %s missing required field 'name'", model.ID))
+			}
+
+			// Check author references if specified
+			for _, modelAuthor := range model.Authors {
+				if !authorMap[string(modelAuthor.ID)] {
+					validationErrors = append(validationErrors,
+						fmt.Sprintf("model %s references unknown author: %s", model.ID, modelAuthor.ID))
+				}
+			}
+
+			if verbose {
+				fmt.Printf("  ✓ Validated model: %s (from author %s)\n", model.Name, author.ID)
+			}
 		}
 	}
 
@@ -116,8 +156,8 @@ func validateModelConsistency(verbose bool) error {
 		return fmt.Errorf("found %d validation errors", len(validationErrors))
 	}
 
-	if len(models) > 0 {
-		fmt.Printf("✅ Validated %d models successfully\n", len(models))
+	if totalModels > 0 {
+		fmt.Printf("✅ Validated %d models successfully\n", totalModels)
 	}
 	return nil
 }

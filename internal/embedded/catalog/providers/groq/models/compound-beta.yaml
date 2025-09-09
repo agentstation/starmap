@@ -4,6 +4,10 @@ name: compound-beta
 authors:
 - id: groq
   name: Groq
+- id: openai
+  name: OpenAI
+- id: meta
+  name: Meta
 
 # Model features
 features:
@@ -72,5 +76,5 @@ limits:
   output_tokens: 8192
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z

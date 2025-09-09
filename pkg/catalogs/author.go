@@ -6,9 +6,10 @@ import (
 
 // Author represents a known model author or organization.
 type Author struct {
-	ID          AuthorID `json:"id" yaml:"id"`                                       // Unique identifier for the author
-	Name        string   `json:"name" yaml:"name"`                                   // Display name of the author
-	Description *string  `json:"description,omitempty" yaml:"description,omitempty"` // Description of what the author is known for
+	ID          AuthorID   `json:"id" yaml:"id"`                                       // Unique identifier for the author
+	Name        string     `json:"name" yaml:"name"`                                   // Display name of the author
+	Aliases     []AuthorID `json:"aliases,omitempty" yaml:"aliases,omitempty"`         // Alternative IDs this author is known by (e.g., in provider catalogs)
+	Description *string    `json:"description,omitempty" yaml:"description,omitempty"` // Description of what the author is known for
 
 	// Website, social links, and other relevant URLs
 	Website     *string `json:"website,omitempty" yaml:"website,omitempty"`         // Official website URL
@@ -52,7 +53,8 @@ const (
 	AuthorIDMicrosoft   AuthorID = "microsoft"
 	AuthorIDMistralAI   AuthorID = "mistral"
 	AuthorIDCohere      AuthorID = "cohere"
-	AuthorIDCerebras    AuthorID = "cerebras"
+	// AuthorIDCerebras removed - Cerebras is an inference provider, not a model creator.
+	AuthorIDGroq        AuthorID = "groq"
 	AuthorIDAlibabaQwen AuthorID = "alibaba"
 	AuthorIDQwen        AuthorID = "qwen"
 	AuthorIDXAI         AuthorID = "xai"
@@ -97,7 +99,7 @@ const (
 	AuthorID01AI       AuthorID = "01.ai"
 	AuthorIDBaichuan   AuthorID = "baichuan"
 	AuthorIDMiniMax    AuthorID = "minimax"
-	AuthorIDMoonshot   AuthorID = "moonshot"
+	AuthorIDMoonshot   AuthorID = "moonshotai"
 	AuthorIDShanghaiAI AuthorID = "shanghai-ai-lab"
 	AuthorIDZhipuAI    AuthorID = "zhipu-ai"
 	AuthorIDSenseTime  AuthorID = "sensetime"

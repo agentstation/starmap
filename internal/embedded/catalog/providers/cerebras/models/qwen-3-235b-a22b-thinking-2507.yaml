@@ -2,8 +2,8 @@
 id: qwen-3-235b-a22b-thinking-2507
 name: qwen-3-235b-a22b-thinking-2507
 authors:
-- id: cerebras
-  name: Cerebras
+- id: alibaba
+  name: Alibaba Cloud
 
 # Model features
 features:
@@ -67,5 +67,5 @@ features:
   streaming: true
 
 # Timestamps
-created_at: 2025-09-06T01:53:00Z
-updated_at: 2025-09-06T01:53:00Z
+created_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-09T19:41:20Z
