@@ -59,14 +59,14 @@ func TestMergerInterface(t *testing.T) {
 	strategy := NewAuthorityStrategy(authorities)
 
 	// Ensure newStrategicMerger returns Merger interface
-	var merger Merger = newMerger(authorities, strategy)
+	var merger Merger = newMerger(authorities, strategy, nil)
 	if merger == nil {
 		t.Fatal("Expected merger to be non-nil")
 	}
 
 	// Test with provenance
 	tracker := provenance.NewTracker(true)
-	mergerWithProv := newMergerWithProvenance(authorities, strategy, tracker)
+	mergerWithProv := newMergerWithProvenance(authorities, strategy, tracker, nil)
 	if mergerWithProv == nil {
 		t.Fatal("Expected merger with provenance to be non-nil")
 	}
@@ -149,7 +149,7 @@ func TestMergeModelsBasic(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			authorities := authority.New()
 			strategy := NewAuthorityStrategy(authorities)
-			merger := newMerger(authorities, strategy)
+			merger := newMerger(authorities, strategy, nil)
 
 			result, _, err := merger.Models(tt.sources)
 			if err != nil {
@@ -210,7 +210,7 @@ func TestMergeModelsWithProvenance(t *testing.T) {
 	strategy := NewAuthorityStrategy(authorities)
 	tracker := provenance.NewTracker(true)
 
-	merger := newMergerWithProvenance(authorities, strategy, tracker)
+	merger := newMergerWithProvenance(authorities, strategy, tracker, nil)
 
 	sources := map[sources.Type][]catalogs.Model{
 		sources.ProviderAPI: {
@@ -298,7 +298,7 @@ func TestMergeProviders(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			authorities := authority.New()
 			strategy := NewAuthorityStrategy(authorities)
-			merger := newMerger(authorities, strategy)
+			merger := newMerger(authorities, strategy, nil)
 
 			result, _, err := merger.Providers(tt.sources)
 			if err != nil {
@@ -343,7 +343,7 @@ func TestMergeProviders(t *testing.T) {
 func TestMergeComplexStructures(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	// Create models with complex structures
 	sources := map[sources.Type][]catalogs.Model{
@@ -423,7 +423,7 @@ func TestFieldPriorities(t *testing.T) {
 	authorities := authority.New()
 
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	sources := map[sources.Type][]catalogs.Model{
 		sources.ProviderAPI: {
@@ -477,7 +477,7 @@ func TestFieldPriorities(t *testing.T) {
 func TestNilHandling(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	// Test with nil maps in sources
 	sources := map[sources.Type][]catalogs.Model{
@@ -521,7 +521,7 @@ func TestNilHandling(t *testing.T) {
 func TestEmptySources(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	// Test with completely empty sources
 	result, prov, err := merger.Models(map[sources.Type][]catalogs.Model{})
@@ -552,7 +552,7 @@ func TestEmptySources(t *testing.T) {
 func TestConcurrentMerging(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	// Run multiple merges concurrently
 	done := make(chan bool, 10)
@@ -582,7 +582,7 @@ func TestConcurrentMerging(t *testing.T) {
 func BenchmarkMergeModels(b *testing.B) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	// Create test data
 	testSources := map[sources.Type][]catalogs.Model{
@@ -650,7 +650,7 @@ func TestMergeFieldReflection(t *testing.T) {
 func TestEdgeCases(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	merger := newMerger(authorities, strategy)
+	merger := newMerger(authorities, strategy, nil)
 
 	t.Run("duplicate models in same source", func(t *testing.T) {
 		sources := map[sources.Type][]catalogs.Model{
