@@ -623,18 +623,9 @@ func (c *catalog) saveTo(basePath string) error {
 	// Save authors.yaml
 	authors := c.authors.List()
 	if len(authors) > 0 {
-		cleaned := make([]*Author, 0, len(authors))
-		for _, a := range authors {
-			aCopy := *a
-			aCopy.Models = nil
-			cleaned = append(cleaned, &aCopy)
-		}
-
-		data, err := yaml.Marshal(cleaned)
-		if err != nil {
-			return errors.WrapParse("yaml", "authors", err)
-		}
-		if err := writeFile("authors.yaml", data); err != nil {
+		// Use FormatYAML for nicely formatted output with comments and sections
+		yamlData := c.authors.FormatYAML()
+		if err := writeFile("authors.yaml", []byte(yamlData)); err != nil {
 			return errors.WrapIO("write", "authors.yaml", err)
 		}
 	}
