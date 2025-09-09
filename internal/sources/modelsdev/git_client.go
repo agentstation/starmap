@@ -28,6 +28,9 @@ type Client = GitClient
 
 // NewClient creates a new models.dev git client.
 func NewClient(outputDir string) *Client {
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
 	repoPath := filepath.Join(outputDir, "models.dev")
 	return &Client{
 		RepoPath: repoPath,
@@ -36,6 +39,9 @@ func NewClient(outputDir string) *Client {
 
 // NewGitClient creates a new models.dev git client.
 func NewGitClient(outputDir string) *GitClient {
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
 	repoPath := filepath.Join(outputDir, "models.dev")
 	return &GitClient{
 		RepoPath: repoPath,

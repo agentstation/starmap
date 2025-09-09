@@ -5,14 +5,12 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-const (
-	defaultOutputDir = "internal/embedded/catalog/providers"
-)
 
 // Package-level state for expensive git operations.
 var (
@@ -25,13 +23,33 @@ var (
 
 // GitSource enhances models with models.dev data.
 type GitSource struct {
-	providers *catalogs.Providers
-	catalog   catalogs.Catalog
+	providers  *catalogs.Providers
+	catalog    catalogs.Catalog
+	sourcesDir string
 }
 
 // NewGitSource creates a new models.dev git source.
-func NewGitSource() *GitSource {
-	return &GitSource{}
+func NewGitSource(opts ...GitSourceOption) *GitSource {
+	s := &GitSource{}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
+}
+
+// GitSourceOption configures a GitSource.
+type GitSourceOption func(*GitSource)
+
+// WithSourcesDir configures the sources directory for the git source.
+func WithSourcesDir(dir string) GitSourceOption {
+	return func(s *GitSource) {
+		s.sourcesDir = dir
+	}
+}
+
+// WithGitSourcesDir is an alias for WithSourcesDir for backward compatibility.
+func WithGitSourcesDir(dir string) GitSourceOption {
+	return WithSourcesDir(dir)
 }
 
 // Type returns the type of this source.
@@ -43,7 +61,7 @@ func (s *GitSource) Type() sources.Type {
 func ensureGitRepo(ctx context.Context, outputDir string) (*API, error) {
 	gitOnce.Do(func() {
 		if outputDir == "" {
-			outputDir = defaultOutputDir
+			outputDir = expandPath(constants.DefaultSourcesPath)
 		}
 
 		client := NewClient(outputDir)
@@ -78,8 +96,11 @@ func (s *GitSource) Fetch(ctx context.Context, opts ...sources.Option) error {
 		return errors.WrapResource("create", "memory catalog", "", err)
 	}
 
-	// Note: Output directory is now handled by catalog Save() method
-	outputDir := defaultOutputDir
+	// Use configured sources directory or default
+	outputDir := s.sourcesDir
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
 
 	// Initialize models.dev data once
 	api, err := ensureGitRepo(ctx, outputDir)

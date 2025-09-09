@@ -29,6 +29,9 @@ type HTTPClient struct {
 
 // NewHTTPClient creates a new models.dev HTTP client.
 func NewHTTPClient(outputDir string) *HTTPClient {
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
 	cacheDir := filepath.Join(outputDir, "models.dev-cache")
 	return &HTTPClient{
 		CacheDir: cacheDir,

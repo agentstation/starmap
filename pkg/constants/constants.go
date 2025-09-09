@@ -177,6 +177,15 @@ const (
 
 	// DefaultLogsPath is the default path for log files.
 	DefaultLogsPath = "~/.starmap/logs"
+
+	// DefaultSourcesPath is the default path for external source data.
+	DefaultSourcesPath = "~/.starmap/sources"
+
+	// DefaultModelsDevGitPath is the default path for models.dev git repository.
+	DefaultModelsDevGitPath = "~/.starmap/sources/models.dev"
+
+	// DefaultModelsDevCachePath is the default path for models.dev HTTP cache.
+	DefaultModelsDevCachePath = "~/.starmap/sources/models.dev-cache"
 )
 
 // Format constants.

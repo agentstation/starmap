@@ -142,9 +142,10 @@ type SyncOptions struct {
 	OutputPath string // Where to save final catalog (empty means default location)
 
 	// Source behavior control
-	Fresh              bool // Delete existing models and fetch fresh from APIs (destructive)
-	CleanModelsDevRepo bool // Remove temporary models.dev repository after update
-	Reformat           bool // Reformat providers.yaml file even without changes
+	Fresh              bool   // Delete existing models and fetch fresh from APIs (destructive)
+	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
+	Reformat           bool   // Reformat providers.yaml file even without changes
+	SourcesDir         string // Directory for external source data (models.dev cache/git)
 }
 
 // Apply applies the given options to the sync options.
@@ -307,5 +308,12 @@ func WithCleanModelsDevRepo(cleanup bool) SyncOption {
 func WithReformat(reformat bool) SyncOption {
 	return func(opts *SyncOptions) {
 		opts.Reformat = reformat
+	}
+}
+
+// WithSourcesDir configures the directory for external source data (models.dev cache/git).
+func WithSourcesDir(dir string) SyncOption {
+	return func(opts *SyncOptions) {
+		opts.SourcesDir = dir
 	}
 }

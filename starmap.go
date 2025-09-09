@@ -434,6 +434,29 @@ func defaultSources() []sources.Source {
 	}
 }
 
+// createSourcesWithConfig creates sources configured with sync options.
+func createSourcesWithConfig(options *SyncOptions) []sources.Source {
+	sources := []sources.Source{
+		local.New(),
+		providers.New(),
+	}
+	
+	// Configure models.dev sources if SourcesDir is specified
+	if options.SourcesDir != "" {
+		sources = append(sources, 
+			modelsdev.NewGitSource(modelsdev.WithSourcesDir(options.SourcesDir)),
+			modelsdev.NewHTTPSource(modelsdev.WithHTTPSourcesDir(options.SourcesDir)),
+		)
+	} else {
+		sources = append(sources,
+			modelsdev.NewGitSource(),
+			modelsdev.NewHTTPSource(),
+		)
+	}
+	
+	return sources
+}
+
 // configureSources configures sources based on options.
 func (s *starmap) configureSources() {
 	// If localPath is configured, update the local source
@@ -450,10 +473,13 @@ func (s *starmap) configureSources() {
 
 // Sources returns the sources to use based on configuration.
 func (s *starmap) filterSources(options *SyncOptions) []sources.Source {
+	// Create sources with configuration (especially SourcesDir)
+	configuredSources := createSourcesWithConfig(options)
+	
 	// If specific sources are requested, filter to those
 	if len(options.Sources) > 0 {
 		var filtered []sources.Source
-		for _, src := range s.sources {
+		for _, src := range configuredSources {
 			if slices.Contains(options.Sources, src.Type()) {
 				filtered = append(filtered, src)
 			}
@@ -461,6 +487,6 @@ func (s *starmap) filterSources(options *SyncOptions) []sources.Source {
 		return filtered
 	}
 
-	// Otherwise return all sources
-	return s.sources
+	// Otherwise return all configured sources
+	return configuredSources
 }

@@ -7,7 +7,7 @@ import (
 )
 
 // BuildUpdateOptions creates a slice of update options based on the provided flags.
-func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool) []starmap.SyncOption {
+func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool, sourcesDir string) []starmap.SyncOption {
 	var opts []starmap.SyncOption
 
 	if provider != "" {
@@ -31,6 +31,9 @@ func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cle
 	}
 	if reformat {
 		opts = append(opts, starmap.WithReformat(true))
+	}
+	if sourcesDir != "" {
+		opts = append(opts, starmap.WithSourcesDir(sourcesDir))
 	}
 
 	return opts

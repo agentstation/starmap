@@ -5,14 +5,12 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-const (
-	defaultHTTPOutputDir = "internal/embedded/catalog/providers"
-)
 
 // Package-level state for expensive HTTP operations.
 var (
@@ -23,13 +21,28 @@ var (
 
 // HTTPSource enhances models with models.dev data via HTTP.
 type HTTPSource struct {
-	providers *catalogs.Providers
-	catalog   catalogs.Catalog
+	providers  *catalogs.Providers
+	catalog    catalogs.Catalog
+	sourcesDir string
 }
 
 // NewHTTPSource creates a new models.dev HTTP source.
-func NewHTTPSource() *HTTPSource {
-	return &HTTPSource{}
+func NewHTTPSource(opts ...HTTPSourceOption) *HTTPSource {
+	s := &HTTPSource{}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
+}
+
+// HTTPSourceOption configures an HTTPSource.
+type HTTPSourceOption func(*HTTPSource)
+
+// WithHTTPSourcesDir configures the sources directory for the HTTP source.
+func WithHTTPSourcesDir(dir string) HTTPSourceOption {
+	return func(s *HTTPSource) {
+		s.sourcesDir = dir
+	}
 }
 
 // Type returns the type of this source.
@@ -41,7 +54,7 @@ func (s *HTTPSource) Type() sources.Type {
 func ensureHTTPAPI(ctx context.Context, outputDir string) (*API, error) {
 	httpOnce.Do(func() {
 		if outputDir == "" {
-			outputDir = defaultHTTPOutputDir
+			outputDir = expandPath(constants.DefaultSourcesPath)
 		}
 
 		client := NewHTTPClient(outputDir)
@@ -69,8 +82,11 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error {
 		return errors.WrapResource("create", "memory catalog", "", err)
 	}
 
-	// Note: Output directory is now handled by catalog Save() method
-	outputDir := defaultHTTPOutputDir
+	// Use configured sources directory or default
+	outputDir := s.sourcesDir
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
 
 	// Initialize models.dev data once
 	api, err := ensureHTTPAPI(ctx, outputDir)

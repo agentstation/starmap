@@ -27,6 +27,7 @@ type Flags struct {
 	Input       string
 	Cleanup     bool
 	Reformat    bool
+	SourcesDir  string
 }
 
 // addUpdateFlags adds update-specific flags to the update command.
@@ -51,6 +52,8 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Remove temporary models.dev repository after update")
 	cmd.Flags().BoolVar(&flags.Reformat, "reformat", false,
 		"Reformat catalog files even without changes")
+	cmd.Flags().StringVar(&flags.SourcesDir, "sources-dir", "",
+		"Directory for external source data (default: ~/.starmap/sources)")
 
 	return flags
 }
@@ -125,7 +128,13 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 	if outputPath == "" {
 		outputPath = expandPath(constants.DefaultCatalogPath)
 	}
-	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat)
+	// Support environment variable fallback for sources directory
+	sourcesDir := flags.SourcesDir
+	if sourcesDir == "" {
+		sourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
+	}
+	
+	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
 
 	if !globalFlags.Quiet {
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
@@ -148,11 +157,11 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 	}
 
 	// Handle results
-	return handleResults(ctx, sm, result, flags, outputPath, globalFlags)
+	return handleResults(ctx, sm, result, flags, outputPath, sourcesDir, globalFlags)
 }
 
 // handleResults processes the update results and handles user interaction.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Result, flags *Flags, outputPath string, globalFlags *globals.Flags) error {
+func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Result, flags *Flags, outputPath string, sourcesDir string, globalFlags *globals.Flags) error {
 	if !result.HasChanges() {
 		if !globalFlags.Quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")
@@ -194,7 +203,7 @@ func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Resu
 	}
 
 	// Call update again without dry-run
-	finalOpts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, false, flags.Cleanup, flags.Reformat)
+	finalOpts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, false, flags.Cleanup, flags.Reformat, sourcesDir)
 
 	_, err = sm.Sync(ctx, finalOpts...)
 	if err != nil {
