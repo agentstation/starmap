@@ -1,29 +1,7 @@
-- id: 01.ai
-  name: 01.AI
-  description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models
-  website: https://01.ai
-  huggingface: https://huggingface.co/01-ai
-  github: https://github.com/01-ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: adept
-  name: Adept
-  website: https://adept.ai
-  twitter: https://x.com/AdeptAILabs
-  models: {}
-  created_at: null
-  updated_at: null
-- id: ai21
-  name: AI21 Labs
-  description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
-  website: https://ai21.com
-  huggingface: https://huggingface.co/ai21labs
-  github: https://github.com/AI21Labs
-  twitter: https://x.com/AI21Labs
-  models: {}
-  created_at: null
-  updated_at: null
+# Known model authors and organizations with their metadata and social links
+# This file contains the complete author information that can be loaded at runtime
+
+#  Major AI Companies
 - id: alibaba
   name: Alibaba Cloud
   description: Chinese technology company known for Qwen (Tongyi Qianwen) language model series
@@ -31,25 +9,7 @@
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
   twitter: https://x.com/alibabacloud
-  models: {}
-  created_at: null
-  updated_at: null
-- id: alignment-research
-  name: Alignment Research Center
-  description: AI safety research organization focused on AI alignment and evaluation
-  website: https://alignment.org
-  github: https://github.com/ARC-AGI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: amazon
-  name: Amazon
-  website: https://amazon.com
-  github: https://github.com/amazon-science
-  twitter: https://x.com/amazon
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: anthropic
   name: Anthropic
   description: AI safety company known for Claude models and Constitutional AI research
@@ -60,43 +20,7 @@
   catalog:
     provider_id: anthropic
     description: Anthropic's authoritative API catalog containing only Claude models
-  models: {}
-  created_at: null
-  updated_at: null
-- id: anysphere
-  name: Anysphere
-  website: https://anysphere.co
-  github: https://github.com/getcursor
-  twitter: https://x.com/anysphere
-  models: {}
-  created_at: null
-  updated_at: null
-- id: apple
-  name: Apple
-  website: https://apple.com
-  github: https://github.com/apple
-  twitter: https://x.com/Apple
-  models: {}
-  created_at: null
-  updated_at: null
-- id: baai
-  name: Beijing Academy of Artificial Intelligence
-  description: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
-  website: https://baai.ac.cn
-  huggingface: https://huggingface.co/BAAI
-  github: https://github.com/FlagAI-Open
-  models: {}
-  created_at: null
-  updated_at: null
-- id: baichuan
-  name: Baichuan Intelligence
-  description: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
-  website: https://baichuan-ai.com
-  huggingface: https://huggingface.co/baichuan-inc
-  github: https://github.com/baichuan-inc
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: baidu
   name: Baidu
   description: Chinese technology company known for Ernie Bot and ERNIE series language models
@@ -104,101 +28,7 @@
   huggingface: https://huggingface.co/baidu
   github: https://github.com/baidu
   twitter: https://x.com/Baidu_Inc
-  models: {}
-  created_at: null
-  updated_at: null
-- id: bigscience
-  name: BigScience
-  website: https://bigscience.huggingface.co
-  huggingface: https://huggingface.co/bigscience
-  github: https://github.com/bigscience-workshop
-  models: {}
-  created_at: null
-  updated_at: null
-- id: bytedance
-  name: ByteDance
-  description: Chinese technology company behind TikTok with AI research in recommendation systems
-  website: https://bytedance.com
-  github: https://github.com/bytedance
-  models: {}
-  created_at: null
-  updated_at: null
-- id: caltech
-  name: California Institute of Technology
-  website: https://caltech.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cambridge
-  name: University of Cambridge
-  website: https://cam.ac.uk
-  models: {}
-  created_at: null
-  updated_at: null
-- id: character
-  name: Character.AI
-  website: https://character.ai
-  twitter: https://x.com/CharacterAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cmu
-  name: Carnegie Mellon University
-  website: https://cmu.edu
-  github: https://github.com/cmu-lti
-  models: {}
-  created_at: null
-  updated_at: null
-- id: codefuse
-  name: CodeFuse-AI
-  description: Organization specializing in code-focused AI models and fine-tuning frameworks
-  huggingface: https://huggingface.co/codefuse-ai
-  github: https://github.com/codefuse-ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cognitivecomputations
-  name: Cognitive Computations
-  description: Organization behind the popular Dolphin model series, led by Eric Hartford
-  huggingface: https://huggingface.co/cognitivecomputations
-  github: https://github.com/cognitivecomputations
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cohere
-  name: Cohere
-  description: Enterprise AI company specializing in natural language processing and Command models
-  website: https://cohere.com
-  huggingface: https://huggingface.co/CohereForAI
-  github: https://github.com/cohere-ai
-  twitter: https://x.com/CohereAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cornell
-  name: Cornell University
-  website: https://cornell.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: cursor
-  name: Cursor
-  website: https://cursor.sh
-  github: https://github.com/getcursor
-  twitter: https://x.com/cursor_ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: deepmind
-  name: Google DeepMind
-  description: AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research
-  website: https://deepmind.google
-  huggingface: https://huggingface.co/google
-  github: https://github.com/google-deepmind
-  twitter: https://x.com/GoogleDeepMind
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: deepseek
   name: DeepSeek
   description: Chinese AI company known for DeepSeek-Coder and reasoning-focused language models
@@ -209,56 +39,7 @@
   catalog:
     provider_id: deepseek
     description: DeepSeek's authoritative API catalog containing only their models
-  models: {}
-  created_at: null
-  updated_at: null
-- id: duke
-  name: Duke University
-  website: https://duke.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: ehartford
-  name: Eric Hartford
-  description: Creator of the widely-used Dolphin model series and other fine-tuned language models
-  huggingface: https://huggingface.co/ehartford
-  github: https://github.com/ehartford
-  twitter: https://x.com/erhartford
-  models: {}
-  created_at: null
-  updated_at: null
-- id: eleutherai
-  name: EleutherAI
-  website: https://eleuther.ai
-  huggingface: https://huggingface.co/EleutherAI
-  github: https://github.com/EleutherAI
-  twitter: https://x.com/EleutherAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: eth-zurich
-  name: ETH Zurich
-  website: https://ethz.ch
-  models: {}
-  created_at: null
-  updated_at: null
-- id: fastchat
-  name: FastChat Team
-  description: Team behind the FastChat framework for training and serving conversational AI models
-  website: https://chat.lmsys.org
-  huggingface: https://huggingface.co/lmsys
-  github: https://github.com/lm-sys/FastChat
-  models: {}
-  created_at: null
-  updated_at: null
-- id: gatech
-  name: Georgia Tech Research Institute
-  description: Research institute known for creating the Galpaca model based on GALACTICA
-  website: https://gtri.gatech.edu
-  huggingface: https://huggingface.co/GeorgiaTechResearchInstitute
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: google
   name: Google
   description: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations
@@ -269,98 +50,11 @@
   catalog:
     provider_id: google-vertex
     patterns:
-    - gemini-*
-    - text-bison*
-    - chat-bison*
+      - gemini-*
+      - text-bison*
+      - chat-bison*
     description: Google's authoritative Vertex AI catalog for production Gemini and Bison models
-  models: {}
-  created_at: null
-  updated_at: null
-- id: groq
-  name: Groq
-  description: AI inference company that developed the Compound system for orchestrating multiple models with external tools
-  website: https://groq.com
-  twitter: https://x.com/GroqInc
-  models: {}
-  created_at: null
-  updated_at: null
-- id: h2o.ai
-  name: H2O.ai
-  description: Machine learning company known for h2oGPT open-source language model suite
-  website: https://h2o.ai
-  huggingface: https://huggingface.co/h2oai
-  github: https://github.com/h2oai
-  twitter: https://x.com/h2oai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: harvard
-  name: Harvard University
-  website: https://harvard.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: huawei
-  name: Huawei
-  description: Chinese technology company known for PanGu series of multimodal language models
-  website: https://huawei.com
-  huggingface: https://huggingface.co/huawei
-  github: https://github.com/huawei
-  models: {}
-  created_at: null
-  updated_at: null
-- id: huggingfaceh4
-  name: Hugging Face
-  website: https://huggingface.co
-  huggingface: https://huggingface.co/huggingface
-  github: https://github.com/huggingface
-  twitter: https://x.com/huggingface
-  models: {}
-  created_at: null
-  updated_at: null
-- id: ibm
-  name: IBM
-  website: https://ibm.com
-  huggingface: https://huggingface.co/ibm
-  github: https://github.com/IBM
-  twitter: https://x.com/IBM
-  models: {}
-  created_at: null
-  updated_at: null
-- id: inflection
-  name: Inflection AI
-  website: https://inflection.ai
-  twitter: https://x.com/InflectionAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: jondurbin
-  name: jondurbin
-  description: Model creator known for Bagel and Airoboros fine-tuned language models
-  huggingface: https://huggingface.co/jondurbin
-  github: https://github.com/jondurbin
-  twitter: https://x.com/jon_durbin
-  models: {}
-  created_at: null
-  updated_at: null
-- id: laion
-  name: LAION
-  website: https://laion.ai
-  huggingface: https://huggingface.co/laion
-  github: https://github.com/LAION-AI
-  twitter: https://x.com/laion_ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: lmsys
-  name: LMSYS Org
-  description: Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
-  website: https://lmsys.org
-  huggingface: https://huggingface.co/lmsys
-  github: https://github.com/lm-sys
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: meta
   name: Meta
   description: Social media company known for LLaMA/Llama model series and open-source AI research
@@ -368,9 +62,7 @@
   huggingface: https://huggingface.co/meta-llama
   github: https://github.com/meta-llama
   twitter: https://x.com/Meta
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: microsoft
   name: Microsoft
   description: Technology company with AI initiatives including Copilot and partnerships with OpenAI
@@ -378,94 +70,7 @@
   huggingface: https://huggingface.co/microsoft
   github: https://github.com/microsoft
   twitter: https://x.com/Microsoft
-  models: {}
-  created_at: null
-  updated_at: null
-- id: midjourney
-  name: Midjourney
-  website: https://midjourney.com
-  twitter: https://x.com/midjourney
-  models: {}
-  created_at: null
-  updated_at: null
-- id: minimax
-  name: MiniMax
-  description: Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attention reasoning model
-  website: https://minimax.chat
-  huggingface: https://huggingface.co/MiniMaxAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: mistral
-  name: Mistral AI
-  description: French AI company known for efficient open-source language models and Mixture of Experts architectures
-  website: https://mistral.ai
-  huggingface: https://huggingface.co/mistralai
-  github: https://github.com/mistralai
-  twitter: https://x.com/MistralAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: mit
-  name: MIT
-  website: https://mit.edu
-  github: https://github.com/mit-nlp
-  models: {}
-  created_at: null
-  updated_at: null
-- id: moonshotai
-  name: Moonshot AI
-  aliases:
-  - moonshot
-  description: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
-  website: https://kimi.moonshot.cn
-  huggingface: https://huggingface.co/moonshot-ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: mosaicml
-  name: MosaicML
-  website: https://mosaicml.com
-  huggingface: https://huggingface.co/mosaicml
-  github: https://github.com/mosaicml
-  models: {}
-  created_at: null
-  updated_at: null
-- id: moxin
-  name: Moxin
-  description: Creator of Moxin-7B, a fully open-source language model following Model Openness Framework
-  huggingface: https://huggingface.co/moxin-ai
-  github: https://github.com/moxin-ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: nousresearch
-  name: Nous Research
-  description: AI research organization known for OpenHermes and Nous-Hermes model series
-  website: https://nousresearch.com
-  huggingface: https://huggingface.co/NousResearch
-  github: https://github.com/NousResearch
-  twitter: https://x.com/NousResearch
-  models: {}
-  created_at: null
-  updated_at: null
-- id: nvidia
-  name: NVIDIA
-  website: https://nvidia.com
-  huggingface: https://huggingface.co/nvidia
-  github: https://github.com/NVIDIA
-  twitter: https://x.com/nvidia
-  models: {}
-  created_at: null
-  updated_at: null
-- id: open-orca
-  name: Open-Orca
-  description: Open-source project creating Orca-style reasoning models and datasets
-  huggingface: https://huggingface.co/Open-Orca
-  github: https://github.com/OpenOrca/OpenOrca
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: openai
   name: OpenAI
   description: AI research company known for GPT models, ChatGPT, and DALL-E
@@ -476,203 +81,209 @@
   catalog:
     provider_id: openai
     description: OpenAI's authoritative API catalog containing only their models
-  models: {}
-  created_at: null
-  updated_at: null
-- id: oxford
-  name: University of Oxford
-  website: https://ox.ac.uk
-  models: {}
-  created_at: null
-  updated_at: null
+
+
+#  Open Source & Academia
+- id: alignment-research
+  name: Alignment Research Center
+  description: AI safety research organization focused on AI alignment and evaluation
+  website: https://alignment.org
+  github: https://github.com/ARC-AGI
+
+- id: bigscience
+  name: BigScience
+  website: https://bigscience.huggingface.co
+  huggingface: https://huggingface.co/bigscience
+  github: https://github.com/bigscience-workshop
+
+- id: eleutherai
+  name: EleutherAI
+  website: https://eleuther.ai
+  huggingface: https://huggingface.co/EleutherAI
+  github: https://github.com/EleutherAI
+  twitter: https://x.com/EleutherAI
+
+- id: mit
+  name: MIT
+  website: https://mit.edu
+  github: https://github.com/mit-nlp
+
+- id: nvidia
+  name: NVIDIA
+  website: https://nvidia.com
+  huggingface: https://huggingface.co/nvidia
+  github: https://github.com/NVIDIA
+  twitter: https://x.com/nvidia
+
+- id: stanford
+  name: Stanford University
+  website: https://stanford.edu
+  github: https://github.com/stanford-futuredata
+
+- id: together
+  name: Together AI
+  website: https://together.ai
+  huggingface: https://huggingface.co/togethercomputer
+  github: https://github.com/togethercomputer
+
+
+#  Research Institutions
+- id: adept
+  name: Adept
+  website: https://adept.ai
+  twitter: https://x.com/AdeptAILabs
+
+- id: baai
+  name: Beijing Academy of Artificial Intelligence
+  description: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
+  website: https://baai.ac.cn
+  huggingface: https://huggingface.co/BAAI
+  github: https://github.com/FlagAI-Open
+
+- id: cohere
+  name: Cohere
+  description: Enterprise AI company specializing in natural language processing and Command models
+  website: https://cohere.com
+  huggingface: https://huggingface.co/CohereForAI
+  github: https://github.com/cohere-ai
+  twitter: https://x.com/CohereAI
+
+- id: mistral
+  name: Mistral AI
+  description: French AI company known for efficient open-source language models and Mixture of Experts architectures
+  website: https://mistral.ai
+  huggingface: https://huggingface.co/mistralai
+  github: https://github.com/mistralai
+  twitter: https://x.com/MistralAI
+
+- id: nousresearch
+  name: Nous Research
+  description: AI research organization known for OpenHermes and Nous-Hermes model series
+  website: https://nousresearch.com
+  huggingface: https://huggingface.co/NousResearch
+  github: https://github.com/NousResearch
+  twitter: https://x.com/NousResearch
+
 - id: peking
   name: Peking University
   description: Leading Chinese university with significant AI and machine learning research contributions
   website: https://pku.edu.cn
-  models: {}
-  created_at: null
-  updated_at: null
-- id: perplexity
-  name: Perplexity AI
-  website: https://perplexity.ai
-  twitter: https://x.com/perplexity_ai
-  models: {}
-  created_at: null
-  updated_at: null
-- id: phind
-  name: Phind
-  description: AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks
-  website: https://phind.com
-  huggingface: https://huggingface.co/Phind
-  models: {}
-  created_at: null
-  updated_at: null
-- id: playai
-  name: PlayAI
-  description: AI voice synthesis company known for text-to-speech models
-  website: https://play.ai
-  twitter: https://x.com/PlayAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: princeton
-  name: Princeton University
-  website: https://princeton.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: qwen
-  name: Qwen Team
-  description: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family
-  website: https://qwen.ai
-  huggingface: https://huggingface.co/Qwen
-  github: https://github.com/QwenLM
-  models: {}
-  created_at: null
-  updated_at: null
-- id: runway
-  name: Runway ML
-  website: https://runwayml.com
-  github: https://github.com/runwayml
-  twitter: https://x.com/runwayml
-  models: {}
-  created_at: null
-  updated_at: null
-- id: salesforce
-  name: Salesforce
-  website: https://salesforce.com
-  huggingface: https://huggingface.co/Salesforce
-  github: https://github.com/salesforce
-  twitter: https://x.com/salesforce
-  models: {}
-  created_at: null
-  updated_at: null
-- id: sdaia
-  name: SDAIA
-  description: Saudi Data and Artificial Intelligence Authority, known for Allam Arabic language models
-  website: https://sdaia.gov.sa
-  models: {}
-  created_at: null
-  updated_at: null
-- id: sensetime
-  name: SenseTime
-  description: Chinese AI company specializing in computer vision and known for SenseNova multimodal models
-  website: https://sensetime.com
-  huggingface: https://huggingface.co/sensetime
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: shanghai-ai-lab
   name: Shanghai AI Laboratory
   description: Chinese AI research institute known for InternLM series and multimodal AI research
   website: https://shlab.org.cn
   huggingface: https://huggingface.co/internlm
   github: https://github.com/InternLM
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: stability
   name: Stability AI
   website: https://stability.ai
   huggingface: https://huggingface.co/stabilityai
   github: https://github.com/Stability-AI
   twitter: https://x.com/StabilityAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: stanford
-  name: Stanford University
-  website: https://stanford.edu
-  github: https://github.com/stanford-futuredata
-  models: {}
-  created_at: null
-  updated_at: null
-- id: stanford-alpaca
-  name: Stanford Alpaca
-  description: Stanford research project that created the influential Alpaca instruction-tuned models
-  website: https://crfm.stanford.edu/2023/03/13/alpaca.html
-  huggingface: https://huggingface.co/tatsu-lab
-  github: https://github.com/tatsu-lab/stanford_alpaca
-  models: {}
-  created_at: null
-  updated_at: null
-- id: teknium
-  name: teknium
-  description: Individual researcher and creator of the OpenHermes model series
-  huggingface: https://huggingface.co/teknium
-  github: https://github.com/teknium1
-  twitter: https://x.com/Teknium1
-  models: {}
-  created_at: null
-  updated_at: null
-- id: tencent
-  name: Tencent
-  description: Chinese technology conglomerate with various AI initiatives and gaming/social platforms
-  website: https://tencent.com
-  github: https://github.com/Tencent
-  models: {}
-  created_at: null
-  updated_at: null
-- id: thudm
-  name: THUDM
-  description: Tsinghua University research group known for ChatGLM bilingual language models
-  website: https://thudm.github.io
-  huggingface: https://huggingface.co/THUDM
-  github: https://github.com/THUDM
-  models: {}
-  created_at: null
-  updated_at: null
-- id: together
-  name: Together AI
-  website: https://together.ai
-  huggingface: https://huggingface.co/togethercomputer
-  github: https://github.com/togethercomputer
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: tsinghua
   name: Tsinghua University
   description: Prestigious Chinese university with AI research, affiliated with THUDM and ChatGLM development
   website: https://tsinghua.edu.cn
   github: https://github.com/thudm
-  models: {}
-  created_at: null
-  updated_at: null
-- id: uc-berkeley
-  name: UC Berkeley
-  website: https://berkeley.edu
-  github: https://github.com/ucbrise
-  models: {}
-  created_at: null
-  updated_at: null
-- id: uchicago
-  name: University of Chicago
-  website: https://uchicago.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: uw
-  name: University of Washington
-  website: https://washington.edu
-  models: {}
-  created_at: null
-  updated_at: null
-- id: vicuna-team
-  name: Vicuna Team
-  description: Team responsible for creating the popular Vicuna chatbot models
-  huggingface: https://huggingface.co/lmsys
-  github: https://github.com/lm-sys/FastChat
-  models: {}
-  created_at: null
-  updated_at: null
-- id: wizardlm
-  name: WizardLM Team
-  description: Research team known for WizardLM and WizardCoder models with enhanced reasoning capabilities
-  huggingface: https://huggingface.co/WizardLM
-  github: https://github.com/nlpxucan/WizardLM
-  models: {}
-  created_at: null
-  updated_at: null
+
+
+#  Cloud Providers
+- id: amazon
+  name: Amazon
+  website: https://amazon.com
+  github: https://github.com/amazon-science
+  twitter: https://x.com/amazon
+
+- id: groq
+  name: Groq
+  description: AI inference company that developed the Compound system for orchestrating multiple models with external tools
+  website: https://groq.com
+  twitter: https://x.com/GroqInc
+
+- id: ibm
+  name: IBM
+  website: https://ibm.com
+  huggingface: https://huggingface.co/ibm
+  github: https://github.com/IBM
+  twitter: https://x.com/IBM
+
+
+#  Specialized Providers
+- id: 01.ai
+  name: 01.AI
+  description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models
+  website: https://01.ai
+  huggingface: https://huggingface.co/01-ai
+  github: https://github.com/01-ai
+
+- id: ai21
+  name: AI21 Labs
+  description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
+  website: https://ai21.com
+  huggingface: https://huggingface.co/ai21labs
+  github: https://github.com/AI21Labs
+  twitter: https://x.com/AI21Labs
+
+- id: baichuan
+  name: Baichuan Intelligence
+  description: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
+  website: https://baichuan-ai.com
+  huggingface: https://huggingface.co/baichuan-inc
+  github: https://github.com/baichuan-inc
+
+- id: caltech
+  name: California Institute of Technology
+  website: https://caltech.edu
+
+- id: gatech
+  name: Georgia Tech Research Institute
+  description: Research institute known for creating the Galpaca model based on GALACTICA
+  website: https://gtri.gatech.edu
+  huggingface: https://huggingface.co/GeorgiaTechResearchInstitute
+
+- id: h2o.ai
+  name: H2O.ai
+  description: Machine learning company known for h2oGPT open-source language model suite
+  website: https://h2o.ai
+  huggingface: https://huggingface.co/h2oai
+  github: https://github.com/h2oai
+  twitter: https://x.com/h2oai
+
+- id: laion
+  name: LAION
+  website: https://laion.ai
+  huggingface: https://huggingface.co/laion
+  github: https://github.com/LAION-AI
+  twitter: https://x.com/laion_ai
+
+- id: moonshotai
+  name: Moonshot AI
+  aliases:
+    - moonshot
+  description: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
+  website: https://kimi.moonshot.cn
+  huggingface: https://huggingface.co/moonshot-ai
+
+- id: mosaicml
+  name: MosaicML
+  website: https://mosaicml.com
+  huggingface: https://huggingface.co/mosaicml
+  github: https://github.com/mosaicml
+
+- id: playai
+  name: PlayAI
+  description: AI voice synthesis company known for text-to-speech models
+  website: https://play.ai
+  twitter: https://x.com/PlayAI
+
+- id: sdaia
+  name: SDAIA
+  description: Saudi Data and Artificial Intelligence Authority, known for Allam Arabic language models
+  website: https://sdaia.gov.sa
+
 - id: xai
   name: xAI
   description: Elon Musk's AI company focused on understanding the universe through AI, known for Grok models
@@ -680,21 +291,257 @@
   huggingface: https://huggingface.co/xai-org
   github: https://github.com/xai-org
   twitter: https://x.com/xAI
-  models: {}
-  created_at: null
-  updated_at: null
-- id: yale
-  name: Yale University
-  website: https://yale.edu
-  models: {}
-  created_at: null
-  updated_at: null
+
 - id: zhipu-ai
   name: Zhipu AI
   description: Chinese AI company known for GLM-4 and ChatGLM series of bilingual language models
   website: https://zhipuai.cn
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM
-  models: {}
-  created_at: null
-  updated_at: null
+
+
+#  Other Organizations
+- id: anysphere
+  name: Anysphere
+  website: https://anysphere.co
+  github: https://github.com/getcursor
+  twitter: https://x.com/anysphere
+
+- id: apple
+  name: Apple
+  website: https://apple.com
+  github: https://github.com/apple
+  twitter: https://x.com/Apple
+
+- id: bytedance
+  name: ByteDance
+  description: Chinese technology company behind TikTok with AI research in recommendation systems
+  website: https://bytedance.com
+  github: https://github.com/bytedance
+
+- id: cambridge
+  name: University of Cambridge
+  website: https://cam.ac.uk
+
+- id: character
+  name: Character.AI
+  website: https://character.ai
+  twitter: https://x.com/CharacterAI
+
+- id: cmu
+  name: Carnegie Mellon University
+  website: https://cmu.edu
+  github: https://github.com/cmu-lti
+
+- id: codefuse
+  name: CodeFuse-AI
+  description: Organization specializing in code-focused AI models and fine-tuning frameworks
+  huggingface: https://huggingface.co/codefuse-ai
+  github: https://github.com/codefuse-ai
+
+- id: cognitivecomputations
+  name: Cognitive Computations
+  description: Organization behind the popular Dolphin model series, led by Eric Hartford
+  huggingface: https://huggingface.co/cognitivecomputations
+  github: https://github.com/cognitivecomputations
+
+- id: cornell
+  name: Cornell University
+  website: https://cornell.edu
+
+- id: cursor
+  name: Cursor
+  website: https://cursor.sh
+  github: https://github.com/getcursor
+  twitter: https://x.com/cursor_ai
+
+- id: deepmind
+  name: Google DeepMind
+  description: AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research
+  website: https://deepmind.google
+  huggingface: https://huggingface.co/google
+  github: https://github.com/google-deepmind
+  twitter: https://x.com/GoogleDeepMind
+
+- id: duke
+  name: Duke University
+  website: https://duke.edu
+
+- id: ehartford
+  name: Eric Hartford
+  description: Creator of the widely-used Dolphin model series and other fine-tuned language models
+  huggingface: https://huggingface.co/ehartford
+  github: https://github.com/ehartford
+  twitter: https://x.com/erhartford
+
+- id: eth-zurich
+  name: ETH Zurich
+  website: https://ethz.ch
+
+- id: fastchat
+  name: FastChat Team
+  description: Team behind the FastChat framework for training and serving conversational AI models
+  website: https://chat.lmsys.org
+  huggingface: https://huggingface.co/lmsys
+  github: https://github.com/lm-sys/FastChat
+
+- id: harvard
+  name: Harvard University
+  website: https://harvard.edu
+
+- id: huawei
+  name: Huawei
+  description: Chinese technology company known for PanGu series of multimodal language models
+  website: https://huawei.com
+  huggingface: https://huggingface.co/huawei
+  github: https://github.com/huawei
+
+- id: huggingfaceh4
+  name: Hugging Face
+  website: https://huggingface.co
+  huggingface: https://huggingface.co/huggingface
+  github: https://github.com/huggingface
+  twitter: https://x.com/huggingface
+
+- id: inflection
+  name: Inflection AI
+  website: https://inflection.ai
+  twitter: https://x.com/InflectionAI
+
+- id: jondurbin
+  name: jondurbin
+  description: Model creator known for Bagel and Airoboros fine-tuned language models
+  huggingface: https://huggingface.co/jondurbin
+  github: https://github.com/jondurbin
+  twitter: https://x.com/jon_durbin
+
+- id: lmsys
+  name: LMSYS Org
+  description: Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
+  website: https://lmsys.org
+  huggingface: https://huggingface.co/lmsys
+  github: https://github.com/lm-sys
+
+- id: midjourney
+  name: Midjourney
+  website: https://midjourney.com
+  twitter: https://x.com/midjourney
+
+- id: minimax
+  name: MiniMax
+  description: Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attention reasoning model
+  website: https://minimax.chat
+  huggingface: https://huggingface.co/MiniMaxAI
+
+- id: moxin
+  name: Moxin
+  description: Creator of Moxin-7B, a fully open-source language model following Model Openness Framework
+  huggingface: https://huggingface.co/moxin-ai
+  github: https://github.com/moxin-ai
+
+- id: open-orca
+  name: Open-Orca
+  description: Open-source project creating Orca-style reasoning models and datasets
+  huggingface: https://huggingface.co/Open-Orca
+  github: https://github.com/OpenOrca/OpenOrca
+
+- id: oxford
+  name: University of Oxford
+  website: https://ox.ac.uk
+
+- id: perplexity
+  name: Perplexity AI
+  website: https://perplexity.ai
+  twitter: https://x.com/perplexity_ai
+
+- id: phind
+  name: Phind
+  description: AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks
+  website: https://phind.com
+  huggingface: https://huggingface.co/Phind
+
+- id: princeton
+  name: Princeton University
+  website: https://princeton.edu
+
+- id: qwen
+  name: Qwen Team
+  description: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family
+  website: https://qwen.ai
+  huggingface: https://huggingface.co/Qwen
+  github: https://github.com/QwenLM
+
+- id: runway
+  name: Runway ML
+  website: https://runwayml.com
+  github: https://github.com/runwayml
+  twitter: https://x.com/runwayml
+
+- id: salesforce
+  name: Salesforce
+  website: https://salesforce.com
+  huggingface: https://huggingface.co/Salesforce
+  github: https://github.com/salesforce
+  twitter: https://x.com/salesforce
+
+- id: sensetime
+  name: SenseTime
+  description: Chinese AI company specializing in computer vision and known for SenseNova multimodal models
+  website: https://sensetime.com
+  huggingface: https://huggingface.co/sensetime
+
+- id: stanford-alpaca
+  name: Stanford Alpaca
+  description: Stanford research project that created the influential Alpaca instruction-tuned models
+  website: https://crfm.stanford.edu/2023/03/13/alpaca.html
+  huggingface: https://huggingface.co/tatsu-lab
+  github: https://github.com/tatsu-lab/stanford_alpaca
+
+- id: teknium
+  name: teknium
+  description: Individual researcher and creator of the OpenHermes model series
+  huggingface: https://huggingface.co/teknium
+  github: https://github.com/teknium1
+  twitter: https://x.com/Teknium1
+
+- id: tencent
+  name: Tencent
+  description: Chinese technology conglomerate with various AI initiatives and gaming/social platforms
+  website: https://tencent.com
+  github: https://github.com/Tencent
+
+- id: thudm
+  name: THUDM
+  description: Tsinghua University research group known for ChatGLM bilingual language models
+  website: https://thudm.github.io
+  huggingface: https://huggingface.co/THUDM
+  github: https://github.com/THUDM
+
+- id: uc-berkeley
+  name: UC Berkeley
+  website: https://berkeley.edu
+  github: https://github.com/ucbrise
+
+- id: uchicago
+  name: University of Chicago
+  website: https://uchicago.edu
+
+- id: uw
+  name: University of Washington
+  website: https://washington.edu
+
+- id: vicuna-team
+  name: Vicuna Team
+  description: Team responsible for creating the popular Vicuna chatbot models
+  huggingface: https://huggingface.co/lmsys
+  github: https://github.com/lm-sys/FastChat
+
+- id: wizardlm
+  name: WizardLM Team
+  description: Research team known for WizardLM and WizardCoder models with enhanced reasoning capabilities
+  huggingface: https://huggingface.co/WizardLM
+  github: https://github.com/nlpxucan/WizardLM
+
+- id: yale
+  name: Yale University
+  website: https://yale.edu
