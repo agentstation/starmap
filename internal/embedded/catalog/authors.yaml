@@ -1,7 +1,26 @@
 # Known model authors and organizations with their metadata and social links
 # This file contains the complete author information that can be loaded at runtime
 
-#  Major AI Companies
+- id: 01.ai
+  name: 01.AI
+  description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models
+  website: https://01.ai
+  huggingface: https://huggingface.co/01-ai
+  github: https://github.com/01-ai
+
+- id: adept
+  name: Adept
+  website: https://adept.ai
+  twitter: https://x.com/AdeptAILabs
+
+- id: ai21
+  name: AI21 Labs
+  description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
+  website: https://ai21.com
+  huggingface: https://huggingface.co/ai21labs
+  github: https://github.com/AI21Labs
+  twitter: https://x.com/AI21Labs
+
 - id: alibaba
   name: Alibaba Cloud
   description: Chinese technology company known for Qwen (Tongyi Qianwen) language model series
@@ -9,6 +28,18 @@
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
   twitter: https://x.com/alibabacloud
+
+- id: alignment-research
+  name: Alignment Research Center
+  description: AI safety research organization focused on AI alignment and evaluation
+  website: https://alignment.org
+  github: https://github.com/ARC-AGI
+
+- id: amazon
+  name: Amazon
+  website: https://amazon.com
+  github: https://github.com/amazon-science
+  twitter: https://x.com/amazon
 
 - id: anthropic
   name: Anthropic
@@ -21,286 +52,6 @@
     provider_id: anthropic
     description: Anthropic's authoritative API catalog containing only Claude models
 
-- id: baidu
-  name: Baidu
-  description: Chinese technology company known for Ernie Bot and ERNIE series language models
-  website: https://yiyan.baidu.com
-  huggingface: https://huggingface.co/baidu
-  github: https://github.com/baidu
-  twitter: https://x.com/Baidu_Inc
-
-- id: deepseek
-  name: DeepSeek
-  description: Chinese AI company known for DeepSeek-Coder and reasoning-focused language models
-  website: https://deepseek.com
-  huggingface: https://huggingface.co/deepseek-ai
-  github: https://github.com/deepseek-ai
-  twitter: https://x.com/DeepSeekAI
-  catalog:
-    provider_id: deepseek
-    description: DeepSeek's authoritative API catalog containing only their models
-
-- id: google
-  name: Google
-  description: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations
-  website: https://ai.google
-  huggingface: https://huggingface.co/google
-  github: https://github.com/google
-  twitter: https://x.com/Google
-  catalog:
-    provider_id: google-vertex
-    patterns:
-      - gemini-*
-      - text-bison*
-      - chat-bison*
-    description: Google's authoritative Vertex AI catalog for production Gemini and Bison models
-
-- id: meta
-  name: Meta
-  description: Social media company known for LLaMA/Llama model series and open-source AI research
-  website: https://about.meta.com
-  huggingface: https://huggingface.co/meta-llama
-  github: https://github.com/meta-llama
-  twitter: https://x.com/Meta
-
-- id: microsoft
-  name: Microsoft
-  description: Technology company with AI initiatives including Copilot and partnerships with OpenAI
-  website: https://microsoft.com
-  huggingface: https://huggingface.co/microsoft
-  github: https://github.com/microsoft
-  twitter: https://x.com/Microsoft
-
-- id: openai
-  name: OpenAI
-  description: AI research company known for GPT models, ChatGPT, and DALL-E
-  website: https://openai.com
-  huggingface: https://huggingface.co/openai
-  github: https://github.com/openai
-  twitter: https://x.com/OpenAI
-  catalog:
-    provider_id: openai
-    description: OpenAI's authoritative API catalog containing only their models
-
-
-#  Open Source & Academia
-- id: alignment-research
-  name: Alignment Research Center
-  description: AI safety research organization focused on AI alignment and evaluation
-  website: https://alignment.org
-  github: https://github.com/ARC-AGI
-
-- id: bigscience
-  name: BigScience
-  website: https://bigscience.huggingface.co
-  huggingface: https://huggingface.co/bigscience
-  github: https://github.com/bigscience-workshop
-
-- id: eleutherai
-  name: EleutherAI
-  website: https://eleuther.ai
-  huggingface: https://huggingface.co/EleutherAI
-  github: https://github.com/EleutherAI
-  twitter: https://x.com/EleutherAI
-
-- id: mit
-  name: MIT
-  website: https://mit.edu
-  github: https://github.com/mit-nlp
-
-- id: nvidia
-  name: NVIDIA
-  website: https://nvidia.com
-  huggingface: https://huggingface.co/nvidia
-  github: https://github.com/NVIDIA
-  twitter: https://x.com/nvidia
-
-- id: stanford
-  name: Stanford University
-  website: https://stanford.edu
-  github: https://github.com/stanford-futuredata
-
-- id: together
-  name: Together AI
-  website: https://together.ai
-  huggingface: https://huggingface.co/togethercomputer
-  github: https://github.com/togethercomputer
-
-
-#  Research Institutions
-- id: adept
-  name: Adept
-  website: https://adept.ai
-  twitter: https://x.com/AdeptAILabs
-
-- id: baai
-  name: Beijing Academy of Artificial Intelligence
-  description: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
-  website: https://baai.ac.cn
-  huggingface: https://huggingface.co/BAAI
-  github: https://github.com/FlagAI-Open
-
-- id: cohere
-  name: Cohere
-  description: Enterprise AI company specializing in natural language processing and Command models
-  website: https://cohere.com
-  huggingface: https://huggingface.co/CohereForAI
-  github: https://github.com/cohere-ai
-  twitter: https://x.com/CohereAI
-
-- id: mistral
-  name: Mistral AI
-  description: French AI company known for efficient open-source language models and Mixture of Experts architectures
-  website: https://mistral.ai
-  huggingface: https://huggingface.co/mistralai
-  github: https://github.com/mistralai
-  twitter: https://x.com/MistralAI
-
-- id: nousresearch
-  name: Nous Research
-  description: AI research organization known for OpenHermes and Nous-Hermes model series
-  website: https://nousresearch.com
-  huggingface: https://huggingface.co/NousResearch
-  github: https://github.com/NousResearch
-  twitter: https://x.com/NousResearch
-
-- id: peking
-  name: Peking University
-  description: Leading Chinese university with significant AI and machine learning research contributions
-  website: https://pku.edu.cn
-
-- id: shanghai-ai-lab
-  name: Shanghai AI Laboratory
-  description: Chinese AI research institute known for InternLM series and multimodal AI research
-  website: https://shlab.org.cn
-  huggingface: https://huggingface.co/internlm
-  github: https://github.com/InternLM
-
-- id: stability
-  name: Stability AI
-  website: https://stability.ai
-  huggingface: https://huggingface.co/stabilityai
-  github: https://github.com/Stability-AI
-  twitter: https://x.com/StabilityAI
-
-- id: tsinghua
-  name: Tsinghua University
-  description: Prestigious Chinese university with AI research, affiliated with THUDM and ChatGLM development
-  website: https://tsinghua.edu.cn
-  github: https://github.com/thudm
-
-
-#  Cloud Providers
-- id: amazon
-  name: Amazon
-  website: https://amazon.com
-  github: https://github.com/amazon-science
-  twitter: https://x.com/amazon
-
-- id: groq
-  name: Groq
-  description: AI inference company that developed the Compound system for orchestrating multiple models with external tools
-  website: https://groq.com
-  twitter: https://x.com/GroqInc
-
-- id: ibm
-  name: IBM
-  website: https://ibm.com
-  huggingface: https://huggingface.co/ibm
-  github: https://github.com/IBM
-  twitter: https://x.com/IBM
-
-
-#  Specialized Providers
-- id: 01.ai
-  name: 01.AI
-  description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models
-  website: https://01.ai
-  huggingface: https://huggingface.co/01-ai
-  github: https://github.com/01-ai
-
-- id: ai21
-  name: AI21 Labs
-  description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
-  website: https://ai21.com
-  huggingface: https://huggingface.co/ai21labs
-  github: https://github.com/AI21Labs
-  twitter: https://x.com/AI21Labs
-
-- id: baichuan
-  name: Baichuan Intelligence
-  description: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
-  website: https://baichuan-ai.com
-  huggingface: https://huggingface.co/baichuan-inc
-  github: https://github.com/baichuan-inc
-
-- id: caltech
-  name: California Institute of Technology
-  website: https://caltech.edu
-
-- id: gatech
-  name: Georgia Tech Research Institute
-  description: Research institute known for creating the Galpaca model based on GALACTICA
-  website: https://gtri.gatech.edu
-  huggingface: https://huggingface.co/GeorgiaTechResearchInstitute
-
-- id: h2o.ai
-  name: H2O.ai
-  description: Machine learning company known for h2oGPT open-source language model suite
-  website: https://h2o.ai
-  huggingface: https://huggingface.co/h2oai
-  github: https://github.com/h2oai
-  twitter: https://x.com/h2oai
-
-- id: laion
-  name: LAION
-  website: https://laion.ai
-  huggingface: https://huggingface.co/laion
-  github: https://github.com/LAION-AI
-  twitter: https://x.com/laion_ai
-
-- id: moonshotai
-  name: Moonshot AI
-  aliases:
-    - moonshot
-  description: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
-  website: https://kimi.moonshot.cn
-  huggingface: https://huggingface.co/moonshot-ai
-
-- id: mosaicml
-  name: MosaicML
-  website: https://mosaicml.com
-  huggingface: https://huggingface.co/mosaicml
-  github: https://github.com/mosaicml
-
-- id: playai
-  name: PlayAI
-  description: AI voice synthesis company known for text-to-speech models
-  website: https://play.ai
-  twitter: https://x.com/PlayAI
-
-- id: sdaia
-  name: SDAIA
-  description: Saudi Data and Artificial Intelligence Authority, known for Allam Arabic language models
-  website: https://sdaia.gov.sa
-
-- id: xai
-  name: xAI
-  description: Elon Musk's AI company focused on understanding the universe through AI, known for Grok models
-  website: https://x.ai
-  huggingface: https://huggingface.co/xai-org
-  github: https://github.com/xai-org
-  twitter: https://x.com/xAI
-
-- id: zhipu-ai
-  name: Zhipu AI
-  description: Chinese AI company known for GLM-4 and ChatGLM series of bilingual language models
-  website: https://zhipuai.cn
-  huggingface: https://huggingface.co/THUDM
-  github: https://github.com/THUDM
-
-
-#  Other Organizations
 - id: anysphere
   name: Anysphere
   website: https://anysphere.co
@@ -313,11 +64,43 @@
   github: https://github.com/apple
   twitter: https://x.com/Apple
 
+- id: baai
+  name: Beijing Academy of Artificial Intelligence
+  description: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
+  website: https://baai.ac.cn
+  huggingface: https://huggingface.co/BAAI
+  github: https://github.com/FlagAI-Open
+
+- id: baichuan
+  name: Baichuan Intelligence
+  description: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
+  website: https://baichuan-ai.com
+  huggingface: https://huggingface.co/baichuan-inc
+  github: https://github.com/baichuan-inc
+
+- id: baidu
+  name: Baidu
+  description: Chinese technology company known for Ernie Bot and ERNIE series language models
+  website: https://yiyan.baidu.com
+  huggingface: https://huggingface.co/baidu
+  github: https://github.com/baidu
+  twitter: https://x.com/Baidu_Inc
+
+- id: bigscience
+  name: BigScience
+  website: https://bigscience.huggingface.co
+  huggingface: https://huggingface.co/bigscience
+  github: https://github.com/bigscience-workshop
+
 - id: bytedance
   name: ByteDance
   description: Chinese technology company behind TikTok with AI research in recommendation systems
   website: https://bytedance.com
   github: https://github.com/bytedance
+
+- id: caltech
+  name: California Institute of Technology
+  website: https://caltech.edu
 
 - id: cambridge
   name: University of Cambridge
@@ -345,6 +128,14 @@
   huggingface: https://huggingface.co/cognitivecomputations
   github: https://github.com/cognitivecomputations
 
+- id: cohere
+  name: Cohere
+  description: Enterprise AI company specializing in natural language processing and Command models
+  website: https://cohere.com
+  huggingface: https://huggingface.co/CohereForAI
+  github: https://github.com/cohere-ai
+  twitter: https://x.com/CohereAI
+
 - id: cornell
   name: Cornell University
   website: https://cornell.edu
@@ -363,6 +154,17 @@
   github: https://github.com/google-deepmind
   twitter: https://x.com/GoogleDeepMind
 
+- id: deepseek
+  name: DeepSeek
+  description: Chinese AI company known for DeepSeek-Coder and reasoning-focused language models
+  website: https://deepseek.com
+  huggingface: https://huggingface.co/deepseek-ai
+  github: https://github.com/deepseek-ai
+  twitter: https://x.com/DeepSeekAI
+  catalog:
+    provider_id: deepseek
+    description: DeepSeek's authoritative API catalog containing only their models
+
 - id: duke
   name: Duke University
   website: https://duke.edu
@@ -374,6 +176,13 @@
   github: https://github.com/ehartford
   twitter: https://x.com/erhartford
 
+- id: eleutherai
+  name: EleutherAI
+  website: https://eleuther.ai
+  huggingface: https://huggingface.co/EleutherAI
+  github: https://github.com/EleutherAI
+  twitter: https://x.com/EleutherAI
+
 - id: eth-zurich
   name: ETH Zurich
   website: https://ethz.ch
@@ -384,6 +193,41 @@
   website: https://chat.lmsys.org
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys/FastChat
+
+- id: gatech
+  name: Georgia Tech Research Institute
+  description: Research institute known for creating the Galpaca model based on GALACTICA
+  website: https://gtri.gatech.edu
+  huggingface: https://huggingface.co/GeorgiaTechResearchInstitute
+
+- id: google
+  name: Google
+  description: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations
+  website: https://ai.google
+  huggingface: https://huggingface.co/google
+  github: https://github.com/google
+  twitter: https://x.com/Google
+  catalog:
+    provider_id: google-vertex
+    patterns:
+      - gemini-*
+      - text-bison*
+      - chat-bison*
+    description: Google's authoritative Vertex AI catalog for production Gemini and Bison models
+
+- id: groq
+  name: Groq
+  description: AI inference company that developed the Compound system for orchestrating multiple models with external tools
+  website: https://groq.com
+  twitter: https://x.com/GroqInc
+
+- id: h2o.ai
+  name: H2O.ai
+  description: Machine learning company known for h2oGPT open-source language model suite
+  website: https://h2o.ai
+  huggingface: https://huggingface.co/h2oai
+  github: https://github.com/h2oai
+  twitter: https://x.com/h2oai
 
 - id: harvard
   name: Harvard University
@@ -403,6 +247,13 @@
   github: https://github.com/huggingface
   twitter: https://x.com/huggingface
 
+- id: ibm
+  name: IBM
+  website: https://ibm.com
+  huggingface: https://huggingface.co/ibm
+  github: https://github.com/IBM
+  twitter: https://x.com/IBM
+
 - id: inflection
   name: Inflection AI
   website: https://inflection.ai
@@ -415,12 +266,35 @@
   github: https://github.com/jondurbin
   twitter: https://x.com/jon_durbin
 
+- id: laion
+  name: LAION
+  website: https://laion.ai
+  huggingface: https://huggingface.co/laion
+  github: https://github.com/LAION-AI
+  twitter: https://x.com/laion_ai
+
 - id: lmsys
   name: LMSYS Org
   description: Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
   website: https://lmsys.org
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys
+
+- id: meta
+  name: Meta
+  description: Social media company known for LLaMA/Llama model series and open-source AI research
+  website: https://about.meta.com
+  huggingface: https://huggingface.co/meta-llama
+  github: https://github.com/meta-llama
+  twitter: https://x.com/Meta
+
+- id: microsoft
+  name: Microsoft
+  description: Technology company with AI initiatives including Copilot and partnerships with OpenAI
+  website: https://microsoft.com
+  huggingface: https://huggingface.co/microsoft
+  github: https://github.com/microsoft
+  twitter: https://x.com/Microsoft
 
 - id: midjourney
   name: Midjourney
@@ -433,11 +307,53 @@
   website: https://minimax.chat
   huggingface: https://huggingface.co/MiniMaxAI
 
+- id: mistral
+  name: Mistral AI
+  description: French AI company known for efficient open-source language models and Mixture of Experts architectures
+  website: https://mistral.ai
+  huggingface: https://huggingface.co/mistralai
+  github: https://github.com/mistralai
+  twitter: https://x.com/MistralAI
+
+- id: mit
+  name: MIT
+  website: https://mit.edu
+  github: https://github.com/mit-nlp
+
+- id: moonshotai
+  name: Moonshot AI
+  aliases:
+    - moonshot
+  description: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
+  website: https://kimi.moonshot.cn
+  huggingface: https://huggingface.co/moonshot-ai
+
+- id: mosaicml
+  name: MosaicML
+  website: https://mosaicml.com
+  huggingface: https://huggingface.co/mosaicml
+  github: https://github.com/mosaicml
+
 - id: moxin
   name: Moxin
   description: Creator of Moxin-7B, a fully open-source language model following Model Openness Framework
   huggingface: https://huggingface.co/moxin-ai
   github: https://github.com/moxin-ai
+
+- id: nousresearch
+  name: Nous Research
+  description: AI research organization known for OpenHermes and Nous-Hermes model series
+  website: https://nousresearch.com
+  huggingface: https://huggingface.co/NousResearch
+  github: https://github.com/NousResearch
+  twitter: https://x.com/NousResearch
+
+- id: nvidia
+  name: NVIDIA
+  website: https://nvidia.com
+  huggingface: https://huggingface.co/nvidia
+  github: https://github.com/NVIDIA
+  twitter: https://x.com/nvidia
 
 - id: open-orca
   name: Open-Orca
@@ -445,9 +361,25 @@
   huggingface: https://huggingface.co/Open-Orca
   github: https://github.com/OpenOrca/OpenOrca
 
+- id: openai
+  name: OpenAI
+  description: AI research company known for GPT models, ChatGPT, and DALL-E
+  website: https://openai.com
+  huggingface: https://huggingface.co/openai
+  github: https://github.com/openai
+  twitter: https://x.com/OpenAI
+  catalog:
+    provider_id: openai
+    description: OpenAI's authoritative API catalog containing only their models
+
 - id: oxford
   name: University of Oxford
   website: https://ox.ac.uk
+
+- id: peking
+  name: Peking University
+  description: Leading Chinese university with significant AI and machine learning research contributions
+  website: https://pku.edu.cn
 
 - id: perplexity
   name: Perplexity AI
@@ -459,6 +391,12 @@
   description: AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks
   website: https://phind.com
   huggingface: https://huggingface.co/Phind
+
+- id: playai
+  name: PlayAI
+  description: AI voice synthesis company known for text-to-speech models
+  website: https://play.ai
+  twitter: https://x.com/PlayAI
 
 - id: princeton
   name: Princeton University
@@ -484,11 +422,35 @@
   github: https://github.com/salesforce
   twitter: https://x.com/salesforce
 
+- id: sdaia
+  name: SDAIA
+  description: Saudi Data and Artificial Intelligence Authority, known for Allam Arabic language models
+  website: https://sdaia.gov.sa
+
 - id: sensetime
   name: SenseTime
   description: Chinese AI company specializing in computer vision and known for SenseNova multimodal models
   website: https://sensetime.com
   huggingface: https://huggingface.co/sensetime
+
+- id: shanghai-ai-lab
+  name: Shanghai AI Laboratory
+  description: Chinese AI research institute known for InternLM series and multimodal AI research
+  website: https://shlab.org.cn
+  huggingface: https://huggingface.co/internlm
+  github: https://github.com/InternLM
+
+- id: stability
+  name: Stability AI
+  website: https://stability.ai
+  huggingface: https://huggingface.co/stabilityai
+  github: https://github.com/Stability-AI
+  twitter: https://x.com/StabilityAI
+
+- id: stanford
+  name: Stanford University
+  website: https://stanford.edu
+  github: https://github.com/stanford-futuredata
 
 - id: stanford-alpaca
   name: Stanford Alpaca
@@ -517,6 +479,18 @@
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM
 
+- id: together
+  name: Together AI
+  website: https://together.ai
+  huggingface: https://huggingface.co/togethercomputer
+  github: https://github.com/togethercomputer
+
+- id: tsinghua
+  name: Tsinghua University
+  description: Prestigious Chinese university with AI research, affiliated with THUDM and ChatGLM development
+  website: https://tsinghua.edu.cn
+  github: https://github.com/thudm
+
 - id: uc-berkeley
   name: UC Berkeley
   website: https://berkeley.edu
@@ -542,6 +516,21 @@
   huggingface: https://huggingface.co/WizardLM
   github: https://github.com/nlpxucan/WizardLM
 
+- id: xai
+  name: xAI
+  description: Elon Musk's AI company focused on understanding the universe through AI, known for Grok models
+  website: https://x.ai
+  huggingface: https://huggingface.co/xai-org
+  github: https://github.com/xai-org
+  twitter: https://x.com/xAI
+
 - id: yale
   name: Yale University
   website: https://yale.edu
+
+- id: zhipu-ai
+  name: Zhipu AI
+  description: Chinese AI company known for GLM-4 and ChatGLM series of bilingual language models
+  website: https://zhipuai.cn
+  huggingface: https://huggingface.co/THUDM
+  github: https://github.com/THUDM

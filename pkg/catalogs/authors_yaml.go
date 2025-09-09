@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// FormatYAML returns the authors as formatted YAML with header comments, sections, and proper structure.
+// FormatYAML returns the authors as formatted YAML sorted alphabetically by ID.
 func (a *Authors) FormatYAML() string {
 	if a == nil {
 		return ""
@@ -18,6 +18,11 @@ func (a *Authors) FormatYAML() string {
 	if len(authors) == 0 {
 		return ""
 	}
+
+	// Sort authors alphabetically by ID
+	sort.Slice(authors, func(i, j int) bool {
+		return authors[i].ID < authors[j].ID
+	})
 
 	// Create YAML document with header comment
 	doc := &yaml.Node{
@@ -33,16 +38,11 @@ func (a *Authors) FormatYAML() string {
 
 	sequenceNode := doc.Content[0]
 
-	// Group authors by category for organized sections
-	grouped := groupAuthorsByCategory(authors)
-
-	// Add authors in organized sections
-	addAuthorSection(sequenceNode, "Major AI Companies", grouped["major"])
-	addAuthorSection(sequenceNode, "Open Source & Academia", grouped["academic"])
-	addAuthorSection(sequenceNode, "Research Institutions", grouped["research"])
-	addAuthorSection(sequenceNode, "Cloud Providers", grouped["cloud"])
-	addAuthorSection(sequenceNode, "Specialized Providers", grouped["specialized"])
-	addAuthorSection(sequenceNode, "Other Organizations", grouped["other"])
+	// Add all authors in alphabetical order
+	for _, author := range authors {
+		authorNode := authorToYAMLNode(author)
+		sequenceNode.Content = append(sequenceNode.Content, authorNode)
+	}
 
 	// Convert to string
 	var sb strings.Builder
@@ -54,137 +54,19 @@ func (a *Authors) FormatYAML() string {
 	}
 	_ = encoder.Close() // Ignoring close error for string builder
 
-	return sb.String()
+	// Post-process the YAML to add blank lines between entries
+	yamlContent := sb.String()
+	return a.addProperSpacing(yamlContent)
 }
 
 // buildHeaderComment creates the header comment for the authors.yaml file.
 func buildHeaderComment() string {
 	return `Known model authors and organizations with their metadata and social links
-This file contains the complete author information that can be loaded at runtime`
+This file contains the complete author information that can be loaded at runtime
+
+`
 }
 
-// groupAuthorsByCategory organizes authors into logical sections.
-func groupAuthorsByCategory(authors []*Author) map[string][]*Author {
-	groups := map[string][]*Author{
-		"major":       {},
-		"academic":    {},
-		"research":    {},
-		"cloud":       {},
-		"specialized": {},
-		"other":       {},
-	}
-
-	// Define major AI companies
-	majorCompanies := map[AuthorID]bool{
-		AuthorIDOpenAI:    true,
-		AuthorIDAnthropic: true,
-		AuthorIDGoogle:    true,
-		AuthorIDMeta:      true,
-		AuthorIDMicrosoft: true,
-		AuthorIDBaidu:     true,
-		AuthorIDAlibabaQwen: true,
-		"deepseek":       true,
-		"cerebras":       true,
-	}
-
-	// Define academic/research institutions
-	academicInstitutions := map[AuthorID]bool{
-		"stanford":           true,
-		"mit":                true,
-		"berkeley":           true,
-		"carnegie-mellon":    true,
-		"nvidia":             true,
-		"allen-institute":    true,
-		"bigscience":         true,
-		"eleutherai":         true,
-		"together":           true,
-		"hugginface":         true,
-		"alignment-research": true,
-	}
-
-	// Define research institutions
-	researchInstitutions := map[AuthorID]bool{
-		"baai":           true,
-		"tsinghua":       true,
-		"peking":         true,
-		"institute":      true,
-		"lab":            true,
-		"research":       true,
-		"university":     true,
-		"academic":       true,
-		"mistral":        true,
-		"stability":      true,
-		"adept":          true,
-		"cohere":         true,
-	}
-
-	// Define cloud providers
-	cloudProviders := map[AuthorID]bool{
-		"amazon":  true,
-		"aws":     true,
-		"azure":   true,
-		"ibm":     true,
-		"oracle":  true,
-		"groq":    true,
-		"fireworks": true,
-	}
-
-	// Categorize each author
-	for _, author := range authors {
-		authorID := strings.ToLower(string(author.ID))
-		
-		if majorCompanies[author.ID] {
-			groups["major"] = append(groups["major"], author)
-		} else if academicInstitutions[author.ID] {
-			groups["academic"] = append(groups["academic"], author)
-		} else if researchInstitutions[author.ID] || containsKeyword(authorID, []string{"institute", "lab", "research", "university", "academic"}) {
-			groups["research"] = append(groups["research"], author)
-		} else if cloudProviders[author.ID] || containsKeyword(authorID, []string{"cloud", "aws", "azure"}) {
-			groups["cloud"] = append(groups["cloud"], author)
-		} else if containsKeyword(authorID, []string{"ai", "ml", "tech"}) {
-			groups["specialized"] = append(groups["specialized"], author)
-		} else {
-			groups["other"] = append(groups["other"], author)
-		}
-	}
-
-	// Sort each group alphabetically
-	for _, group := range groups {
-		sort.Slice(group, func(i, j int) bool {
-			return group[i].ID < group[j].ID
-		})
-	}
-
-	return groups
-}
-
-// containsKeyword checks if any keyword is contained in the text.
-func containsKeyword(text string, keywords []string) bool {
-	for _, keyword := range keywords {
-		if strings.Contains(text, keyword) {
-			return true
-		}
-	}
-	return false
-}
-
-// addAuthorSection adds a section of authors with a comment header.
-func addAuthorSection(sequenceNode *yaml.Node, sectionName string, authors []*Author) {
-	if len(authors) == 0 {
-		return
-	}
-
-	for i, author := range authors {
-		authorNode := authorToYAMLNode(author)
-		
-		// Add section comment to the first author in each section
-		if i == 0 {
-			authorNode.HeadComment = fmt.Sprintf(" %s", sectionName)
-		}
-		
-		sequenceNode.Content = append(sequenceNode.Content, authorNode)
-	}
-}
 
 // authorToYAMLNode converts an Author to a YAML node with proper field ordering.
 func authorToYAMLNode(author *Author) *yaml.Node {
@@ -322,4 +204,34 @@ func (a *Authors) fallbackYAML(authors []*Author) string {
 	// Add header comment manually
 	header := "# Known model authors and organizations with their metadata and social links\n# This file contains the complete author information that can be loaded at runtime\n\n"
 	return header + string(data)
+}
+
+// addProperSpacing post-processes YAML content to add blank lines between author entries.
+func (a *Authors) addProperSpacing(yamlContent string) string {
+	lines := strings.Split(yamlContent, "\n")
+	var result []string
+	
+	inEntry := false
+	for i, line := range lines {
+		result = append(result, line)
+		
+		// Track if we're in an author entry
+		if strings.HasPrefix(line, "- id:") {
+			inEntry = true
+		} else if strings.HasPrefix(line, "#") || (strings.HasPrefix(line, "- id:") && inEntry) {
+			inEntry = false
+		}
+		
+		// Add blank line after author entries (before next entry or section header)
+		if inEntry && i < len(lines)-1 {
+			nextLine := lines[i+1]
+			// If next line is start of new entry or section header, add blank line
+			if strings.HasPrefix(nextLine, "- id:") || strings.HasPrefix(nextLine, "#") {
+				result = append(result, "")
+				inEntry = false
+			}
+		}
+	}
+	
+	return strings.Join(result, "\n")
 }
