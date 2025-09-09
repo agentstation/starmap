@@ -33,8 +33,46 @@ jobs:
           make test-race
           make lint
 
+  check-homebrew-eligibility:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      eligible: ${{ steps.check.outputs.eligible }}
+      stars: ${{ steps.check.outputs.stars }}
+      forks: ${{ steps.check.outputs.forks }}
+    steps:
+      - name: Check notability requirements
+        id: check
+        run: |
+          # Get repository stats via GitHub API
+          REPO_JSON=$(curl -s https://api.github.com/repos/${{ github.repository }})
+          STARS=$(echo "$REPO_JSON" | jq '.stargazers_count')
+          FORKS=$(echo "$REPO_JSON" | jq '.forks_count')
+          WATCHERS=$(echo "$REPO_JSON" | jq '.watchers_count')
+          
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+          echo "forks=$FORKS" >> $GITHUB_OUTPUT
+          
+          echo "📊 Current Stats:"
+          echo "  Stars: $STARS"
+          echo "  Forks: $FORKS"  
+          echo "  Watchers: $WATCHERS"
+          
+          # Check if we meet requirements (75+ stars OR 30+ forks/watchers)
+          if [[ $STARS -ge 75 ]] || [[ $FORKS -ge 30 ]] || [[ $WATCHERS -ge 30 ]]; then
+            echo "✅ Eligible for homebrew-cask!"
+            echo "eligible=true" >> $GITHUB_OUTPUT
+          else
+            NEEDED=$((75 - STARS))
+            echo "📈 Need $NEEDED more stars to qualify for homebrew-cask"
+            echo "📦 Release will still proceed to agentstation/tap/starmap"
+            echo "eligible=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "✅ Eligibility check completed"
+
   release:
-    needs: test
+    needs: [test, check-homebrew-eligibility]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -96,6 +134,71 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+
+      - name: Create first-time submission issue
+        if: needs.check-homebrew-eligibility.outputs.eligible == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Check if starmap already exists in homebrew-cask
+            try {
+              const response = await fetch('https://formulae.brew.sh/api/cask/starmap.json');
+              if (response.ok) {
+                console.log('✅ Starmap already in homebrew-cask!');
+                return;
+              }
+            } catch (e) {
+              // Not in homebrew-cask yet, continue
+            }
+            
+            // Check for existing open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'homebrew-cask-ready',
+              state: 'open'
+            });
+            
+            if (issues.data.length === 0) {
+              const tag = context.ref.replace('refs/tags/', '');
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🎉 Submit ${tag} to homebrew-cask`,
+                body: `## Starmap is eligible for homebrew-cask! 🚀
+                
+                ### Current Stats
+                - ⭐ **Stars**: ${{ needs.check-homebrew-eligibility.outputs.stars }}
+                - 🍴 **Forks**: ${{ needs.check-homebrew-eligibility.outputs.forks }}
+                
+                ### Version to Submit
+                **${tag}** - The release that just completed
+                
+                ### Manual First Submission Required
+                
+                Since this is our first submission to homebrew-cask, it must be done manually:
+                
+                1. ✅ GoReleaser has generated the cask in our tap
+                2. 📋 Copy from: https://github.com/agentstation/homebrew-tap/blob/main/Casks/starmap.rb  
+                3. 🔧 Test locally with \`brew audit --cask starmap\`
+                4. 📝 Submit PR to homebrew-cask manually (one-time)
+                
+                ### After First Acceptance
+                Future updates can be automated with the \`bump-homebrew-cask.yaml\` workflow.
+                
+                ### References
+                - [Release](https://github.com/agentstation/starmap/releases/tag/${tag})
+                - [Submission Guide](.github/HOMEBREW_SUBMISSION.md)
+                - [Homebrew-Cask Contributing](https://github.com/Homebrew/homebrew-cask/blob/master/CONTRIBUTING.md)
+                `,
+                labels: ['homebrew-cask-ready', 'enhancement']
+              });
+              
+              console.log('✅ Created homebrew-cask submission issue');
+            } else {
+              console.log('📝 Issue already exists, skipping creation');
+            }
 
       - name: Upload release artifacts
         if: failure()

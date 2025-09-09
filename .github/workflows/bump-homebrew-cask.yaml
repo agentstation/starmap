@@ -1,0 +1,98 @@
+name: Bump Homebrew Cask
+
+# This workflow automatically updates the starmap cask in homebrew-cask
+# IMPORTANT: Only enable this AFTER the first manual submission is accepted
+# Until then, this will fail because starmap doesn't exist in homebrew-cask yet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to bump to (e.g., 0.0.12)'
+        required: true
+
+jobs:
+  check-if-in-homebrew:
+    runs-on: macos-latest
+    outputs:
+      exists: ${{ steps.check.outputs.exists }}
+    steps:
+      - name: Check if starmap is in homebrew-cask
+        id: check
+        run: |
+          # Check if starmap cask exists in official homebrew-cask
+          if brew info --cask starmap 2>/dev/null | grep -q "From: https://github.com/Homebrew/homebrew-cask"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ Starmap found in official homebrew-cask"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "❌ Starmap not yet in homebrew-cask"
+            echo "👉 This workflow only works after first manual submission"
+          fi
+  
+  bump-cask:
+    needs: check-if-in-homebrew
+    if: needs.check-if-in-homebrew.outputs.exists == 'true'
+    runs-on: macos-latest
+    steps:
+      - name: Set up Homebrew
+        run: |
+          # Update Homebrew and ensure homebrew-cask tap
+          brew update-reset
+          brew tap homebrew/cask
+      
+      - name: Configure git
+        run: |
+          # Configure git for the automated commit
+          git config --global user.name "starmap-bot"
+          git config --global user.email "noreply@agentstation.ai"
+      
+      - name: Bump cask PR
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_PAT }}
+        run: |
+          # Get version from release or manual input
+          VERSION="${{ github.event.inputs.version || github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"  # Remove 'v' prefix if present
+          
+          echo "🔄 Bumping starmap cask to version $VERSION"
+          
+          # This command will:
+          # 1. Fork homebrew-cask if needed (using PAT)
+          # 2. Update the cask file with new version and SHA256
+          # 3. Create a PR to homebrew-cask
+          # 4. Handle the submission automatically
+          brew bump-cask-pr starmap \
+            --version="$VERSION" \
+            --message="Update starmap to $VERSION" \
+            --no-browse
+            
+          echo "✅ Successfully created bump PR for starmap $VERSION"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Failed to bump cask"
+          echo "This might happen if:"
+          echo "  - HOMEBREW_PAT secret is not set or invalid"
+          echo "  - Version already exists in homebrew-cask"
+          echo "  - Network or API issues"
+          echo ""
+          echo "Check the logs above for specific errors"
+
+  skip-if-not-in-homebrew:
+    needs: check-if-in-homebrew
+    if: needs.check-if-in-homebrew.outputs.exists == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip automated bump
+        run: |
+          echo "⏭️  Skipping automated bump - starmap not yet in homebrew-cask"
+          echo ""
+          echo "📝 To enable this workflow:"
+          echo "1. Complete first manual submission to homebrew-cask"
+          echo "2. Wait for acceptance" 
+          echo "3. Add HOMEBREW_PAT secret to repository"
+          echo "4. Future releases will automatically bump the cask"
