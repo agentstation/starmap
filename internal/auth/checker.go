@@ -136,8 +136,8 @@ func (c *Checker) checkGoogleVertex() *Status {
 	}
 }
 
-// CheckGCloud checks Google Cloud authentication status.
-func (c *Checker) CheckGCloud(catalog catalogs.Catalog) *GCloudStatus {
+// GCloud checks Google Cloud authentication status.
+func (c *Checker) GCloud(catalog catalogs.Catalog) *GCloudStatus {
 	ctx := context.Background()
 	status := &GCloudStatus{}
 

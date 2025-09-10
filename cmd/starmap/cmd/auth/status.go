@@ -158,7 +158,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	}
 
 	// Special section for Google Cloud authentication - only if relevant
-	gcloudStatus := checker.CheckGCloud(cat)
+	gcloudStatus := checker.GCloud(cat)
 	if gcloudStatus != nil && (gcloudStatus.HasVertexProvider || gcloudStatus.Authenticated) {
 		printGoogleCloudStatus(checker, cat)
 	}
@@ -181,7 +181,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	fmt.Println()
 	fmt.Println("Google Cloud Authentication:")
-	gcloudStatus := checker.CheckGCloud(cat)
+	gcloudStatus := checker.GCloud(cat)
 	if gcloudStatus.Authenticated {
 		fmt.Println("✅ Application Default Credentials configured")
 		if gcloudStatus.Project != "" {
