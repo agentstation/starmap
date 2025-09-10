@@ -155,7 +155,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Create context for hints
 	succeeded := !hasErrors
 	var errorType string
@@ -163,7 +163,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 		errorType = "validation_failed"
 	}
 	ctx := notify.Contexts.Validation("catalog", succeeded, errorType)
-	
+
 	if hasErrors {
 		if err := notifier.Error("Catalog validation failed", ctx); err != nil {
 			return err
@@ -220,12 +220,12 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 	}
 
 	formatter := output.NewFormatter(output.FormatTable)
-	
+
 	headers := []string{"Component", "Status", "Issues"}
 	if verbose {
 		headers = append(headers, "Details")
 	}
-	
+
 	rows := make([][]string, 0, len(results))
 	for _, result := range results {
 		row := []string{

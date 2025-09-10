@@ -21,7 +21,6 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-
 // NewModelsCmd creates the fetch models subcommand.
 func NewModelsCmd(globalFlags *globals.Flags) *cobra.Command {
 	var (
@@ -61,9 +60,6 @@ func NewModelsCmd(globalFlags *globals.Flags) *cobra.Command {
 
 	return cmd
 }
-
-
-
 
 // fetchProviderModels fetches models from a specific provider.
 func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, globalFlags *globals.Flags) error {

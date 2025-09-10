@@ -9,11 +9,11 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/goccy/go-yaml"
 	"github.com/mattn/go-isatty"
 	"github.com/olekukonko/tablewriter"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
-	"gopkg.in/yaml.v3"
 )
 
 // Format types for output.
@@ -76,9 +76,15 @@ type YAMLFormatter struct{}
 
 // Format outputs data in YAML format.
 func (f *YAMLFormatter) Format(w io.Writer, data any) error {
-	encoder := yaml.NewEncoder(w)
-	encoder.SetIndent(2)
-	return encoder.Encode(data)
+	yamlData, err := yaml.MarshalWithOptions(data,
+		yaml.Indent(2),
+		yaml.IndentSequence(false),
+	)
+	if err != nil {
+		return err
+	}
+	_, err = w.Write(yamlData)
+	return err
 }
 
 // TableFormatter outputs table format.

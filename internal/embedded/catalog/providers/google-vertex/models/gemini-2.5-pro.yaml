@@ -1,6 +1,9 @@
 # gemini-2.5-pro - Google Vertex AI model: gemini-2.5-pro
 id: gemini-2.5-pro
 name: gemini-2.5-pro
+authors:
+- id: google
+  name: Google
 description: |-
   Google Vertex AI model: gemini-2.5-pro
 
@@ -71,6 +74,19 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+  top_k:
+    min: 1
+    max: 100
+    default: 64
 
 # Model pricing
 pricing:
@@ -88,4 +104,4 @@ limits:
 
 # Timestamps
 created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+updated_at: 2025-09-10T00:49:59Z

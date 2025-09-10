@@ -10,22 +10,22 @@ import (
 
 func TestEmbeddedFilesystemAccess(t *testing.T) {
 	fsys := inspectutil.GetEmbeddedFS()
-	
+
 	// Test that we can access the embedded filesystem
 	if fsys == nil {
 		t.Fatal("GetEmbeddedFS() returned nil")
 	}
-	
+
 	// Test root directory listing
 	entries, err := fs.ReadDir(fsys, ".")
 	if err != nil {
 		t.Fatalf("Failed to read root directory: %v", err)
 	}
-	
+
 	// Should have at least catalog and sources
 	foundCatalog := false
 	foundSources := false
-	
+
 	for _, entry := range entries {
 		switch entry.Name() {
 		case "catalog":
@@ -40,7 +40,7 @@ func TestEmbeddedFilesystemAccess(t *testing.T) {
 			}
 		}
 	}
-	
+
 	if !foundCatalog {
 		t.Error("catalog directory not found in embedded filesystem")
 	}
@@ -51,16 +51,16 @@ func TestEmbeddedFilesystemAccess(t *testing.T) {
 
 func TestEmbeddedCatalogAccess(t *testing.T) {
 	fsys := inspectutil.GetEmbeddedFS()
-	
+
 	// Test catalog directory
 	entries, err := fs.ReadDir(fsys, "catalog")
 	if err != nil {
 		t.Fatalf("Failed to read catalog directory: %v", err)
 	}
-	
+
 	foundProviders := false
 	foundAuthors := false
-	
+
 	for _, entry := range entries {
 		switch entry.Name() {
 		case "providers":
@@ -69,7 +69,7 @@ func TestEmbeddedCatalogAccess(t *testing.T) {
 			foundAuthors = true
 		}
 	}
-	
+
 	if !foundProviders {
 		t.Error("providers directory not found in catalog")
 	}
@@ -80,23 +80,23 @@ func TestEmbeddedCatalogAccess(t *testing.T) {
 
 func TestEmbeddedModelsDevAccess(t *testing.T) {
 	fsys := inspectutil.GetEmbeddedFS()
-	
+
 	// Test that models.dev api.json exists and is readable
 	data, err := fs.ReadFile(fsys, "sources/models.dev/api.json")
 	if err != nil {
 		t.Fatalf("Failed to read sources/models.dev/api.json: %v", err)
 	}
-	
+
 	if len(data) == 0 {
 		t.Error("sources/models.dev/api.json is empty")
 	}
-	
+
 	// Should be JSON content
 	content := string(data)
 	if !strings.HasPrefix(content, "{") {
 		t.Error("sources/models.dev/api.json doesn't appear to be JSON")
 	}
-	
+
 	// Should be reasonably sized (> 100KB as per our validation)
 	if len(data) < 100000 {
 		t.Errorf("sources/models.dev/api.json is too small (%d bytes), expected > 100KB", len(data))
@@ -116,13 +116,13 @@ func TestPathNormalizationIntegration(t *testing.T) {
 		{"/sources/models.dev/", true},
 		{"nonexistent", false},
 	}
-	
+
 	fsys := inspectutil.GetEmbeddedFS()
-	
+
 	for _, test := range tests {
 		normalizedPath := inspectutil.NormalizePath(test.path)
 		_, err := fs.Stat(fsys, normalizedPath)
-		
+
 		if test.shouldExist && err != nil {
 			t.Errorf("Path %q (normalized to %q) should exist but got error: %v", test.path, normalizedPath, err)
 		}

@@ -80,9 +80,9 @@ func runGenerateSite(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	hintContext := notify.Contexts.Command("generate", "site", true, "")
-	
+
 	if prodBuild {
 		// Production build - just hints since completion is obvious
 		return notifier.Hints(hintContext)

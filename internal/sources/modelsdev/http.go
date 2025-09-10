@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-
 // Package-level state for expensive HTTP operations.
 var (
 	httpOnce sync.Once

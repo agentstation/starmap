@@ -21,7 +21,7 @@ func TestNormalizePath(t *testing.T) {
 		{"catalog/../providers", "providers"},
 		{"./catalog", "catalog"},
 	}
-	
+
 	for _, test := range tests {
 		result := NormalizePath(test.input)
 		if result != test.expected {
@@ -44,7 +44,7 @@ func TestFormatBytes(t *testing.T) {
 		{1073741824, "1.0 GB"},
 		{266911, "260.7 KB"}, // Size of our api.json
 	}
-	
+
 	for _, test := range tests {
 		result := FormatBytes(test.input)
 		if result != test.expected {
@@ -57,7 +57,7 @@ func TestFormatTime(t *testing.T) {
 	testTime := time.Date(2024, 12, 25, 15, 30, 45, 0, time.UTC)
 	result := FormatTime(testTime)
 	expected := "Dec 25 15:30"
-	
+
 	if result != expected {
 		t.Errorf("FormatTime(%v) = %q, want %q", testTime, result, expected)
 	}
@@ -75,7 +75,7 @@ func TestIsHidden(t *testing.T) {
 		{"..", true},
 		{".", true},
 	}
-	
+
 	for _, test := range tests {
 		result := IsHidden(test.input)
 		if result != test.expected {
@@ -92,7 +92,7 @@ func TestFormatMode(t *testing.T) {
 		{fs.ModeDir, "dr--r--r--"},
 		{0, "-r--r--r--"},
 	}
-	
+
 	for _, test := range tests {
 		result := FormatMode(test.mode)
 		if result != test.expected {

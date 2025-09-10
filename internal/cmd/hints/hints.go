@@ -68,21 +68,21 @@ func (h *Hint) HasTag(tag string) bool {
 // String returns a string representation of the hint.
 func (h *Hint) String() string {
 	var parts []string
-	
+
 	// Start with the message
 	message := fmt.Sprintf("💡 %s", h.Message)
 	parts = append(parts, message)
-	
+
 	// Add command if present
 	if h.Command != "" {
 		parts = append(parts, fmt.Sprintf("   Run: %s", h.Command))
 	}
-	
+
 	// Add URL if present
 	if h.URL != "" {
 		parts = append(parts, fmt.Sprintf("   See: %s", h.URL))
 	}
-	
+
 	return strings.Join(parts, "\n")
 }
 
@@ -109,12 +109,12 @@ type UserState struct {
 
 // Environment represents the runtime environment.
 type Environment struct {
-	IsTerminal    bool   // Whether running in a terminal
-	IsCI          bool   // Whether running in CI/CD
-	Shell         string // Shell type (bash, zsh, etc.)
-	OS            string // Operating system
-	WorkingDir    string // Current working directory
-	IsGitRepo     bool   // Whether in a git repository
+	IsTerminal bool   // Whether running in a terminal
+	IsCI       bool   // Whether running in CI/CD
+	Shell      string // Shell type (bash, zsh, etc.)
+	OS         string // Operating system
+	WorkingDir string // Current working directory
+	IsGitRepo  bool   // Whether in a git repository
 }
 
 // Provider generates contextual hints based on the current context.
@@ -186,30 +186,30 @@ func (r *Registry) GetHints(ctx Context) []*Hint {
 	if !r.config.Enabled {
 		return nil
 	}
-	
+
 	var allHints []*Hint
-	
+
 	// Collect hints from all providers
 	for _, provider := range r.providers {
 		hints := provider.GetHints(ctx)
 		allHints = append(allHints, hints...)
 	}
-	
+
 	// Filter hints based on configuration
 	filteredHints := r.filterHints(allHints)
-	
+
 	// Limit number of hints
 	if r.config.MaxHints > 0 && len(filteredHints) > r.config.MaxHints {
 		filteredHints = filteredHints[:r.config.MaxHints]
 	}
-	
+
 	return filteredHints
 }
 
 // filterHints applies tag-based filtering to hints.
 func (r *Registry) filterHints(hints []*Hint) []*Hint {
 	var filtered []*Hint
-	
+
 	for _, hint := range hints {
 		// Skip if hint has excluded tags
 		excluded := false
@@ -222,13 +222,13 @@ func (r *Registry) filterHints(hints []*Hint) []*Hint {
 		if excluded {
 			continue
 		}
-		
+
 		// Include if no filter tags specified, or if hint has any filter tag
 		if len(r.config.FilterTags) == 0 {
 			filtered = append(filtered, hint)
 			continue
 		}
-		
+
 		for _, filterTag := range r.config.FilterTags {
 			if hint.HasTag(filterTag) {
 				filtered = append(filtered, hint)
@@ -236,7 +236,7 @@ func (r *Registry) filterHints(hints []*Hint) []*Hint {
 			}
 		}
 	}
-	
+
 	return filtered
 }
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/cmd/output"
-	"gopkg.in/yaml.v3"
+	"github.com/goccy/go-yaml"
 )
 
 // Formatter formats hints for different output types.
@@ -89,14 +89,14 @@ func (f *Formatter) formatJSON(hints []*Hint) error {
 	for i, hint := range hints {
 		data[i] = f.toHintData(hint)
 	}
-	
+
 	// Wrap in hints object for clarity
 	output := struct {
 		Hints []hintData `json:"hints"`
 	}{
 		Hints: data,
 	}
-	
+
 	encoder := json.NewEncoder(f.writer)
 	encoder.SetIndent("", strings.Repeat(" ", f.config.IndentSize))
 	return encoder.Encode(output)
@@ -107,18 +107,23 @@ func (f *Formatter) formatYAML(hints []*Hint) error {
 	for i, hint := range hints {
 		data[i] = f.toHintData(hint)
 	}
-	
+
 	// Wrap in hints object for clarity
 	output := struct {
 		Hints []hintData `yaml:"hints"`
 	}{
 		Hints: data,
 	}
-	
-	encoder := yaml.NewEncoder(f.writer)
-	encoder.SetIndent(f.config.IndentSize)
-	defer func() { _ = encoder.Close() }()
-	return encoder.Encode(output)
+
+	yamlData, err := yaml.MarshalWithOptions(output,
+		yaml.Indent(f.config.IndentSize),
+		yaml.IndentSequence(false),
+	)
+	if err != nil {
+		return err
+	}
+	_, err = f.writer.Write(yamlData)
+	return err
 }
 
 func (f *Formatter) formatTable(hints []*Hint) error {
@@ -126,18 +131,18 @@ func (f *Formatter) formatTable(hints []*Hint) error {
 	if len(hints) == 0 {
 		return nil
 	}
-	
+
 	_, _ = fmt.Fprintln(f.writer) // One newline before
-	
+
 	for _, hint := range hints {
 		lines := f.formatHintContent(hint)
 		for _, line := range lines {
 			_, _ = fmt.Fprintln(f.writer, line)
 		}
 	}
-	
+
 	_, _ = fmt.Fprintln(f.writer) // One newline after
-	
+
 	return nil
 }
 
@@ -145,44 +150,44 @@ func (f *Formatter) formatPlain(hints []*Hint) error {
 	if len(hints) == 0 {
 		return nil
 	}
-	
+
 	_, _ = fmt.Fprintln(f.writer) // One newline before
-	
+
 	for _, hint := range hints {
 		lines := f.formatHintContent(hint)
 		for _, line := range lines {
 			_, _ = fmt.Fprintln(f.writer, line)
 		}
 	}
-	
+
 	_, _ = fmt.Fprintln(f.writer) // One newline after
-	
+
 	return nil
 }
 
 // formatHintContent formats the content of a single hint into lines.
 func (f *Formatter) formatHintContent(hint *Hint) []string {
 	var lines []string
-	
+
 	// Main message
 	icon := "💡"
 	if !f.config.ShowIcons {
 		icon = "Tip:"
 	}
-	
+
 	message := fmt.Sprintf("%s %s", icon, hint.Message)
 	lines = append(lines, message)
-	
+
 	// Command if present
 	if hint.Command != "" {
 		lines = append(lines, fmt.Sprintf("   Run: %s", hint.Command))
 	}
-	
+
 	// URL if present
 	if hint.URL != "" {
 		lines = append(lines, fmt.Sprintf("   See: %s", hint.URL))
 	}
-	
+
 	return lines
 }
 

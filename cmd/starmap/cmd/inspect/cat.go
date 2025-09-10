@@ -33,19 +33,19 @@ Examples:
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
 		fsys := inspectutil.GetEmbeddedFS()
-		
+
 		for i, arg := range args {
 			targetPath := inspectutil.NormalizePath(arg)
-			
+
 			if i > 0 {
 				fmt.Println() // Blank line between files
 			}
-			
+
 			if err := catFile(fsys, targetPath); err != nil {
 				return err
 			}
 		}
-		
+
 		return nil
 	},
 }
@@ -61,45 +61,45 @@ func catFile(fsys fs.FS, filePath string) error {
 	if err != nil {
 		return fmt.Errorf("cannot access '%s': %v", filePath, err)
 	}
-	
+
 	if info.IsDir() {
 		return fmt.Errorf("'%s' is a directory", filePath)
 	}
-	
+
 	// Read file contents
 	content, err := fs.ReadFile(fsys, filePath)
 	if err != nil {
 		return fmt.Errorf("cannot read '%s': %v", filePath, err)
 	}
-	
+
 	// Show filename header if requested or multiple files
 	if catShowFilename {
 		fmt.Printf("==> %s <==\n", filePath)
 	}
-	
+
 	// Display contents
 	if catNumber {
 		printWithLineNumbers(string(content))
 	} else {
 		fmt.Print(string(content))
-		
+
 		// Ensure output ends with newline if file doesn't
 		if len(content) > 0 && content[len(content)-1] != '\n' {
 			fmt.Println()
 		}
 	}
-	
+
 	return nil
 }
 
 func printWithLineNumbers(content string) {
 	lines := strings.Split(content, "\n")
-	
+
 	// Don't number the final empty line if content ends with newline
 	if len(lines) > 0 && lines[len(lines)-1] == "" {
 		lines = lines[:len(lines)-1]
 	}
-	
+
 	for i, line := range lines {
 		fmt.Printf("%6d  %s\n", i+1, line)
 	}

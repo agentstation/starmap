@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	
+
 	"github.com/agentstation/starmap/cmd/starmap/cmd/inspect"
 )
 
@@ -28,10 +28,10 @@ Examples:
 
 func init() {
 	rootCmd.AddCommand(inspectCmd)
-	
+
 	// Add subcommands
 	inspectCmd.AddCommand(inspect.LsCmd)
-	inspectCmd.AddCommand(inspect.CatCmd) 
+	inspectCmd.AddCommand(inspect.CatCmd)
 	inspectCmd.AddCommand(inspect.TreeCmd)
 	inspectCmd.AddCommand(inspect.StatCmd)
 }

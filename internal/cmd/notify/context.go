@@ -31,13 +31,13 @@ func NewContextBuilder() *ContextBuilder {
 func (cb *ContextBuilder) FromCommand(cmd *cobra.Command, args []string) *ContextBuilder {
 	cb.context.Command = cmd.Name()
 	cb.context.Args = args
-	
+
 	// Extract subcommand if present
 	if cmd.Parent() != nil && cmd.Parent().Name() != "starmap" {
 		cb.context.Subcommand = cmd.Name()
 		cb.context.Command = cmd.Parent().Name()
 	}
-	
+
 	// Extract flags
 	cb.context.Flags = make(map[string]string)
 	cmd.Flags().VisitAll(func(flag *pflag.Flag) {
@@ -45,7 +45,7 @@ func (cb *ContextBuilder) FromCommand(cmd *cobra.Command, args []string) *Contex
 			cb.context.Flags[flag.Name] = flag.Value.String()
 		}
 	})
-	
+
 	return cb
 }
 
@@ -80,20 +80,20 @@ func detectEnvironment() hints.Environment {
 		IsTerminal: isTerminal(os.Stdout),
 		IsCI:       isCI(),
 	}
-	
+
 	// Detect shell
 	if shell := os.Getenv("SHELL"); shell != "" {
 		env.Shell = filepath.Base(shell)
 	}
-	
+
 	// Working directory
 	if wd, err := os.Getwd(); err == nil {
 		env.WorkingDir = wd
-		
+
 		// Check if in git repository
 		env.IsGitRepo = isGitRepository(wd)
 	}
-	
+
 	return env
 }
 
@@ -104,35 +104,35 @@ func detectUserState() hints.UserState {
 		HasConfig:     hasConfigFile(),
 		IsFirstRun:    isFirstRun(),
 	}
-	
+
 	// Detect preferred output format from environment or config
 	if format := os.Getenv("STARMAP_OUTPUT_FORMAT"); format != "" {
 		state.ConfiguredOutput = format
 	}
-	
+
 	return state
 }
 
 // detectConfiguredProviders detects which authentication providers are configured.
 func detectConfiguredProviders() []string {
 	var providers []string
-	
+
 	// Check common API key environment variables
 	apiKeys := map[string]string{
-		"OPENAI_API_KEY":     "openai",
-		"ANTHROPIC_API_KEY":  "anthropic",
-		"GOOGLE_API_KEY":     "google-ai-studio",
-		"GROQ_API_KEY":       "groq",
-		"DEEPSEEK_API_KEY":   "deepseek",
-		"CEREBRAS_API_KEY":   "cerebras",
+		"OPENAI_API_KEY":    "openai",
+		"ANTHROPIC_API_KEY": "anthropic",
+		"GOOGLE_API_KEY":    "google-ai-studio",
+		"GROQ_API_KEY":      "groq",
+		"DEEPSEEK_API_KEY":  "deepseek",
+		"CEREBRAS_API_KEY":  "cerebras",
 	}
-	
+
 	for envVar, provider := range apiKeys {
 		if os.Getenv(envVar) != "" {
 			providers = append(providers, provider)
 		}
 	}
-	
+
 	return providers
 }
 
@@ -143,20 +143,20 @@ func hasConfigFile() bool {
 		".starmap.yaml",
 		".starmap.yml",
 	}
-	
+
 	if home, err := os.UserHomeDir(); err == nil {
 		configPaths = append(configPaths,
 			filepath.Join(home, ".starmap.yaml"),
 			filepath.Join(home, ".starmap.yml"),
 		)
 	}
-	
+
 	for _, path := range configPaths {
 		if _, err := os.Stat(path); err == nil {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -168,14 +168,14 @@ func isFirstRun() bool {
 		".starmap.yaml",
 		".starmap.yml",
 	}
-	
+
 	// Check current directory
 	for _, indicator := range indicators {
 		if _, err := os.Stat(indicator); err == nil {
 			return false
 		}
 	}
-	
+
 	// Check home directory
 	if home, err := os.UserHomeDir(); err == nil {
 		for _, indicator := range indicators {
@@ -185,7 +185,7 @@ func isFirstRun() bool {
 			}
 		}
 	}
-	
+
 	// If no indicators found, likely first run
 	return true
 }
@@ -199,7 +199,7 @@ func isGitRepository(dir string) bool {
 		if _, err := os.Stat(gitPath); err == nil {
 			return true
 		}
-		
+
 		parent := filepath.Dir(current)
 		if parent == current {
 			// Reached filesystem root
@@ -207,7 +207,7 @@ func isGitRepository(dir string) bool {
 		}
 		current = parent
 	}
-	
+
 	return false
 }
 
@@ -220,7 +220,7 @@ func (CommonContexts) AuthStatus(succeeded bool, providersConfigured int) hints.
 	ctx.Command = "auth"
 	ctx.Subcommand = "status"
 	ctx.Succeeded = succeeded
-	
+
 	// Update provider count
 	if providersConfigured == 0 {
 		ctx.UserState.AuthProviders = nil
@@ -228,7 +228,7 @@ func (CommonContexts) AuthStatus(succeeded bool, providersConfigured int) hints.
 		// Populate with actual detected providers
 		ctx.UserState.AuthProviders = detectConfiguredProviders()
 	}
-	
+
 	return ctx
 }
 
@@ -238,11 +238,11 @@ func (CommonContexts) AuthVerify(succeeded bool, errorType string) hints.Context
 	ctx.Command = "auth"
 	ctx.Subcommand = "verify"
 	ctx.Succeeded = succeeded
-	
+
 	if !succeeded && errorType != "" {
 		ctx.ErrorType = errorType
 	}
-	
+
 	return ctx
 }
 
@@ -252,11 +252,11 @@ func (CommonContexts) Validation(subcommand string, succeeded bool, errorType st
 	ctx.Command = "validate"
 	ctx.Subcommand = subcommand
 	ctx.Succeeded = succeeded
-	
+
 	if !succeeded && errorType != "" {
 		ctx.ErrorType = errorType
 	}
-	
+
 	return ctx
 }
 
@@ -266,11 +266,11 @@ func (CommonContexts) Command(command, subcommand string, succeeded bool, errorT
 	ctx.Command = command
 	ctx.Subcommand = subcommand
 	ctx.Succeeded = succeeded
-	
+
 	if !succeeded && errorType != "" {
 		ctx.ErrorType = errorType
 	}
-	
+
 	return ctx
 }
 

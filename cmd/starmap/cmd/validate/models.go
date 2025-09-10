@@ -65,10 +65,10 @@ func validateModelConsistency(verbose bool) error {
 		}
 
 		seenIDs := make(map[string]bool)
-		
+
 		for _, model := range provider.Models {
 			totalModels++
-			
+
 			// Check required fields
 			if model.ID == "" {
 				validationErrors = append(validationErrors,
@@ -119,10 +119,10 @@ func validateModelConsistency(verbose bool) error {
 		if author.Models == nil {
 			continue
 		}
-		
+
 		for _, model := range author.Models {
 			totalModels++
-			
+
 			// Check required fields
 			if model.ID == "" {
 				validationErrors = append(validationErrors,

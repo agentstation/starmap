@@ -121,13 +121,14 @@ func (c *collector) findProvider(catalog catalogs.Catalog, id catalogs.ProviderI
 
 // resolveAuthor normalizes author IDs to their canonical form using aliases.
 // Returns the canonical author ID if found via primary ID or alias, otherwise returns the original ID.
+//
 //nolint:unused // Will be used for author normalization in future model processing
 func (c *collector) resolveAuthor(catalog catalogs.Catalog, authorID catalogs.AuthorID) catalogs.AuthorID {
 	// Check if it's a primary ID
 	if _, exists := catalog.Authors().Get(authorID); exists {
 		return authorID
 	}
-	
+
 	// Check all authors for matching aliases
 	for _, author := range catalog.Authors().List() {
 		for _, alias := range author.Aliases {
@@ -136,7 +137,7 @@ func (c *collector) resolveAuthor(catalog catalogs.Catalog, authorID catalogs.Au
 			}
 		}
 	}
-	
+
 	return authorID // Return as-is if not found
 }
 

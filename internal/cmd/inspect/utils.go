@@ -7,7 +7,7 @@ import (
 	"path"
 	"strings"
 	"time"
-	
+
 	"github.com/agentstation/starmap/internal/embedded"
 )
 
@@ -21,18 +21,18 @@ func NormalizePath(p string) string {
 	if p == "" {
 		return "."
 	}
-	
+
 	// Remove leading slash - embedded paths are relative
 	p = strings.TrimPrefix(p, "/")
-	
+
 	// Convert to forward slashes (embedded uses path, not filepath)
 	p = path.Clean(p)
-	
+
 	// Empty or just "." means root
 	if p == "" || p == "." {
 		return "."
 	}
-	
+
 	return p
 }
 
@@ -42,13 +42,13 @@ func FormatBytes(bytes int64) string {
 	if bytes < unit {
 		return fmt.Sprintf("%d B", bytes)
 	}
-	
+
 	div, exp := int64(unit), 0
 	for n := bytes / unit; n >= unit; n /= unit {
 		div *= unit
 		exp++
 	}
-	
+
 	return fmt.Sprintf("%.1f %cB",
 		float64(bytes)/float64(div), "KMGTPE"[exp])
 }
@@ -79,7 +79,7 @@ func GetFileInfoFromEntry(entry fs.DirEntry, fullPath string, _ fs.FS) (*FileInf
 			Path:  fullPath,
 		}, nil
 	}
-	
+
 	return &FileInfo{
 		Name:    entry.Name(),
 		Size:    info.Size(),
@@ -96,7 +96,7 @@ func GetFileInfoFromPath(fsys fs.FS, fullPath string) (*FileInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &FileInfo{
 		Name:    path.Base(fullPath),
 		Size:    info.Size(),
@@ -110,7 +110,7 @@ func GetFileInfoFromPath(fsys fs.FS, fullPath string) (*FileInfo, error) {
 // FormatMode formats file mode similar to ls -l.
 func FormatMode(mode fs.FileMode) string {
 	var buf [10]byte
-	
+
 	// File type
 	switch {
 	case mode.IsDir():
@@ -120,22 +120,22 @@ func FormatMode(mode fs.FileMode) string {
 	default:
 		buf[0] = '?'
 	}
-	
+
 	// Owner permissions
 	buf[1] = 'r' // Embedded files are always readable
 	buf[2] = '-' // Not writable
 	buf[3] = '-' // Not executable
-	
+
 	// Group permissions
 	buf[4] = 'r' // Readable
 	buf[5] = '-' // Not writable
 	buf[6] = '-' // Not executable
-	
+
 	// Other permissions
 	buf[7] = 'r' // Readable
 	buf[8] = '-' // Not writable
 	buf[9] = '-' // Not executable
-	
+
 	return string(buf[:])
 }
 

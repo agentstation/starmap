@@ -179,15 +179,15 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 	// API Configuration Table
 	if provider.APIKey != nil {
 		var configRows [][]string
-		
+
 		requirement := "Optional"
 		if provider.IsAPIKeyRequired() {
 			requirement = "Required"
 		}
-		
+
 		configRows = append(configRows, []string{"Key Variable", provider.APIKey.Name})
 		configRows = append(configRows, []string{"Requirement", requirement})
-		
+
 		if showKeys {
 			status := "✗ Not configured"
 			if os.Getenv(provider.APIKey.Name) != "" {
@@ -209,18 +209,18 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 	// Environment Variables Table
 	if len(provider.EnvVars) > 0 {
 		var envRows [][]string
-		
+
 		for _, envVar := range provider.EnvVars {
 			requirement := "Optional"
 			if envVar.Required {
 				requirement = "Required"
 			}
-			
+
 			description := envVar.Description
 			if description == "" {
 				description = "-"
 			}
-			
+
 			envRows = append(envRows, []string{envVar.Name, requirement, description})
 		}
 

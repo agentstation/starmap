@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap/internal/cmd/output"
-	"gopkg.in/yaml.v3"
+	"github.com/goccy/go-yaml"
 )
 
 // FormatWriter writes alerts in different output formats.
@@ -60,11 +60,11 @@ func (fw *FormatWriter) WriteAlert(alert *Alert) error {
 
 // alertData represents alert data for structured output.
 type alertData struct {
-	Level     string    `json:"level" yaml:"level"`
-	Message   string    `json:"message" yaml:"message"`
-	Details   []string  `json:"details,omitempty" yaml:"details,omitempty"`
-	Error     string    `json:"error,omitempty" yaml:"error,omitempty"`
-	Timestamp string    `json:"timestamp,omitempty" yaml:"timestamp,omitempty"`
+	Level     string   `json:"level" yaml:"level"`
+	Message   string   `json:"message" yaml:"message"`
+	Details   []string `json:"details,omitempty" yaml:"details,omitempty"`
+	Error     string   `json:"error,omitempty" yaml:"error,omitempty"`
+	Timestamp string   `json:"timestamp,omitempty" yaml:"timestamp,omitempty"`
 }
 
 func (fw *FormatWriter) toAlertData(alert *Alert) alertData {
@@ -73,15 +73,15 @@ func (fw *FormatWriter) toAlertData(alert *Alert) alertData {
 		Message: alert.Message,
 		Details: alert.Details,
 	}
-	
+
 	if alert.Err != nil {
 		data.Error = alert.Err.Error()
 	}
-	
+
 	if fw.config.ShowTimestamp {
 		data.Timestamp = alert.Timestamp.Format("2006-01-02T15:04:05Z07:00")
 	}
-	
+
 	return data
 }
 
@@ -94,56 +94,60 @@ func (fw *FormatWriter) writeJSON(alert *Alert) error {
 
 func (fw *FormatWriter) writeYAML(alert *Alert) error {
 	data := fw.toAlertData(alert)
-	encoder := yaml.NewEncoder(fw.writer)
-	encoder.SetIndent(2)
-	defer func() { _ = encoder.Close() }()
-	return encoder.Encode(data)
+	yamlData, err := yaml.MarshalWithOptions(data,
+		yaml.Indent(2),
+		yaml.IndentSequence(false),
+	)
+	if err != nil {
+		return err
+	}
+	_, err = fw.writer.Write(yamlData)
+	return err
 }
 
 func (fw *FormatWriter) writeTable(alert *Alert) error {
 	// Simple, clean output like industry standard CLIs
 	icon := alert.Level.Icon()
 	message := fmt.Sprintf("%s %s", icon, alert.Message)
-	
+
 	if alert.Err != nil {
 		message += fmt.Sprintf(": %v", alert.Err)
 	}
-	
+
 	// Just print the message with proper spacing
 	_, _ = fmt.Fprintln(fw.writer, message)
-	
+
 	// Add details if present with indentation
 	if fw.config.ShowDetails && len(alert.Details) > 0 {
 		for _, detail := range alert.Details {
 			_, _ = fmt.Fprintf(fw.writer, "   %s\n", detail)
 		}
 	}
-	
+
 	return nil
 }
 
 func (fw *FormatWriter) writePlain(alert *Alert) error {
 	// Plain text output with optional color
 	message := alert.String()
-	
+
 	if fw.config.UseColor {
 		color := alert.Level.Color()
 		reset := ResetColor()
 		message = fmt.Sprintf("%s%s%s", color, message, reset)
 	}
-	
+
 	_, _ = fmt.Fprintln(fw.writer, message)
-	
+
 	// Add details if configured
 	if fw.config.ShowDetails && len(alert.Details) > 0 {
 		for _, detail := range alert.Details {
 			_, _ = fmt.Fprintf(fw.writer, "   %s\n", detail)
 		}
 	}
-	
+
 	return nil
 }
-
 
 // isTerminal checks if the writer is a terminal (for color support).
 func isTerminal(w io.Writer) bool {

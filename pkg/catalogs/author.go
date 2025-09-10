@@ -11,6 +11,10 @@ type Author struct {
 	Aliases     []AuthorID `json:"aliases,omitempty" yaml:"aliases,omitempty"`         // Alternative IDs this author is known by (e.g., in provider catalogs)
 	Description *string    `json:"description,omitempty" yaml:"description,omitempty"` // Description of what the author is known for
 
+	// Company/organization info
+	Headquarters *string `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
+	IconURL      *string `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Author icon/logo URL
+
 	// Website, social links, and other relevant URLs
 	Website     *string `json:"website,omitempty" yaml:"website,omitempty"`         // Official website URL
 	HuggingFace *string `json:"huggingface,omitempty" yaml:"huggingface,omitempty"` // Hugging Face profile/organization URL
@@ -45,14 +49,14 @@ func (id AuthorID) String() string {
 // Author ID constants for compile-time safety and consistency.
 const (
 	// Major AI Companies.
-	AuthorIDOpenAI      AuthorID = "openai"
-	AuthorIDAnthropic   AuthorID = "anthropic"
-	AuthorIDGoogle      AuthorID = "google"
-	AuthorIDDeepMind    AuthorID = "deepmind"
-	AuthorIDMeta        AuthorID = "meta"
-	AuthorIDMicrosoft   AuthorID = "microsoft"
-	AuthorIDMistralAI   AuthorID = "mistral"
-	AuthorIDCohere      AuthorID = "cohere"
+	AuthorIDOpenAI    AuthorID = "openai"
+	AuthorIDAnthropic AuthorID = "anthropic"
+	AuthorIDGoogle    AuthorID = "google"
+	AuthorIDDeepMind  AuthorID = "deepmind"
+	AuthorIDMeta      AuthorID = "meta"
+	AuthorIDMicrosoft AuthorID = "microsoft"
+	AuthorIDMistralAI AuthorID = "mistral"
+	AuthorIDCohere    AuthorID = "cohere"
 	// AuthorIDCerebras removed - Cerebras is an inference provider, not a model creator.
 	AuthorIDGroq        AuthorID = "groq"
 	AuthorIDAlibabaQwen AuthorID = "alibaba"

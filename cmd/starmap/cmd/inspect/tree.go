@@ -38,7 +38,7 @@ Examples:
 		if len(args) > 0 {
 			targetPath = inspectutil.NormalizePath(args[0])
 		}
-		
+
 		fsys := inspectutil.GetEmbeddedFS()
 		return showTree(fsys, targetPath)
 	},
@@ -67,16 +67,16 @@ func showTree(fsys fs.FS, rootPath string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Print tree
 	if rootPath == "." {
 		fmt.Println(".")
 	} else {
 		fmt.Println(rootPath)
 	}
-	
+
 	printTree(root.Children, "", true)
-	
+
 	// Print summary
 	dirCount, fileCount := countNodes(root)
 	if dirCount > 0 || fileCount > 0 {
@@ -86,7 +86,7 @@ func showTree(fsys fs.FS, rootPath string) error {
 		}
 		fmt.Println()
 	}
-	
+
 	return nil
 }
 
@@ -95,12 +95,12 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 	if treeMaxDepth > 0 && depth >= treeMaxDepth {
 		return nil, nil
 	}
-	
+
 	info, err := fs.Stat(fsys, currentPath)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	node := &TreeNode{
 		Name:  path.Base(currentPath),
 		Path:  currentPath,
@@ -108,21 +108,21 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 		Size:  info.Size(),
 		Depth: depth,
 	}
-	
+
 	if currentPath == "." {
 		node.Name = "."
 	}
-	
+
 	if !info.IsDir() {
 		return node, nil
 	}
-	
+
 	// Read directory entries
 	entries, err := fs.ReadDir(fsys, currentPath)
 	if err != nil {
 		return node, nil // Return node but no children
 	}
-	
+
 	// Sort entries: directories first, then alphabetical
 	sort.Slice(entries, func(i, j int) bool {
 		if entries[i].IsDir() && !entries[j].IsDir() {
@@ -133,19 +133,19 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 		}
 		return entries[i].Name() < entries[j].Name()
 	})
-	
+
 	// Build children
 	for _, entry := range entries {
 		// Skip hidden files unless -a flag is set
 		if !treeAll && inspectutil.IsHidden(entry.Name()) {
 			continue
 		}
-		
+
 		childPath := path.Join(currentPath, entry.Name())
 		if currentPath == "." {
 			childPath = entry.Name()
 		}
-		
+
 		child, err := buildTree(fsys, childPath, depth+1)
 		if err != nil {
 			continue // Skip files we can't process
@@ -154,17 +154,17 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 			node.Children = append(node.Children, child)
 		}
 	}
-	
+
 	return node, nil
 }
 
 func printTree(nodes []*TreeNode, prefix string, _ bool) {
 	for i, node := range nodes {
 		isLast := i == len(nodes)-1
-		
+
 		// Print current node
 		var connector, nextPrefix string
-		
+
 		if treeNoIndent {
 			connector = ""
 			nextPrefix = prefix
@@ -175,20 +175,20 @@ func printTree(nodes []*TreeNode, prefix string, _ bool) {
 			connector = "├── "
 			nextPrefix = prefix + "│   "
 		}
-		
+
 		// Format name with optional size and directory indicator
 		name := node.Name
 		if node.IsDir {
 			name += "/"
 		}
-		
+
 		if treeSizes && !node.IsDir {
 			sizeStr := inspectutil.FormatBytes(node.Size)
 			name += fmt.Sprintf(" [%s]", sizeStr)
 		}
-		
+
 		fmt.Printf("%s%s%s\n", prefix, connector, name)
-		
+
 		// Print children recursively
 		if len(node.Children) > 0 {
 			printTree(node.Children, nextPrefix, false)
@@ -202,12 +202,12 @@ func countNodes(node *TreeNode) (dirs, files int) {
 	} else {
 		files = 1
 	}
-	
+
 	for _, child := range node.Children {
 		childDirs, childFiles := countNodes(child)
 		dirs += childDirs
 		files += childFiles
 	}
-	
+
 	return dirs, files
 }

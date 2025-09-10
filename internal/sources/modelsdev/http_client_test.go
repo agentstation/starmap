@@ -61,7 +61,7 @@ func mockAPIJSON() string {
 // largeMockAPIJSON returns a large JSON string (>100KB)
 func largeMockAPIJSON() string {
 	api := mockAPI()
-	
+
 	// Add many models to reach >100KB
 	for i := 0; i < 1000; i++ {
 		modelID := fmt.Sprintf("model-%d", i)
@@ -79,7 +79,7 @@ func largeMockAPIJSON() string {
 			}
 		}
 	}
-	
+
 	data, _ := json.Marshal(api)
 	return string(data)
 }
@@ -95,7 +95,7 @@ func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 
 	// Create temp directory
 	tempDir := t.TempDir()
-	
+
 	// Create client with mock server URL
 	client := &HTTPClient{
 		CacheDir: filepath.Join(tempDir, "models.dev"),
@@ -138,7 +138,7 @@ func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 
 func TestHTTPClient_EnsureAPI_CachedFile(t *testing.T) {
 	tempDir := t.TempDir()
-	
+
 	client := &HTTPClient{
 		CacheDir: filepath.Join(tempDir, "models.dev"),
 		APIURL:   "https://models.dev/api.json",
@@ -186,7 +186,7 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithCache(t *testing.T) {
 	defer server.Close()
 
 	tempDir := t.TempDir()
-	
+
 	client := &HTTPClient{
 		CacheDir: filepath.Join(tempDir, "models.dev"),
 		APIURL:   server.URL,
@@ -234,7 +234,7 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback(t *testing.T) {
 	defer server.Close()
 
 	tempDir := t.TempDir()
-	
+
 	client := &HTTPClient{
 		CacheDir: filepath.Join(tempDir, "models.dev"),
 		APIURL:   server.URL,
@@ -304,7 +304,7 @@ func TestHTTPClient_EnsureAPI_InvalidResponses(t *testing.T) {
 			defer server.Close()
 
 			tempDir := t.TempDir()
-			
+
 			client := &HTTPClient{
 				CacheDir: filepath.Join(tempDir, "models.dev"),
 				APIURL:   server.URL,
@@ -329,7 +329,7 @@ func TestHTTPClient_EnsureAPI_InvalidResponses(t *testing.T) {
 
 func TestHTTPClient_isCacheValid(t *testing.T) {
 	tempDir := t.TempDir()
-	
+
 	client := &HTTPClient{
 		CacheDir: filepath.Join(tempDir, "models.dev"),
 	}

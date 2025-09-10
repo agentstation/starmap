@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-
 // Package-level state for expensive git operations.
 var (
 	gitOnce sync.Once

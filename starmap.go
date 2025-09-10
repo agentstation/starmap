@@ -440,10 +440,10 @@ func createSourcesWithConfig(options *SyncOptions) []sources.Source {
 		local.New(),
 		providers.New(),
 	}
-	
+
 	// Configure models.dev sources if SourcesDir is specified
 	if options.SourcesDir != "" {
-		sources = append(sources, 
+		sources = append(sources,
 			modelsdev.NewGitSource(modelsdev.WithSourcesDir(options.SourcesDir)),
 			modelsdev.NewHTTPSource(modelsdev.WithHTTPSourcesDir(options.SourcesDir)),
 		)
@@ -453,7 +453,7 @@ func createSourcesWithConfig(options *SyncOptions) []sources.Source {
 			modelsdev.NewHTTPSource(),
 		)
 	}
-	
+
 	return sources
 }
 
@@ -475,7 +475,7 @@ func (s *starmap) configureSources() {
 func (s *starmap) filterSources(options *SyncOptions) []sources.Source {
 	// Create sources with configuration (especially SourcesDir)
 	configuredSources := createSourcesWithConfig(options)
-	
+
 	// If specific sources are requested, filter to those
 	if len(options.Sources) > 0 {
 		var filtered []sources.Source

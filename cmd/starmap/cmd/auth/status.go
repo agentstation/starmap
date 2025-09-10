@@ -85,7 +85,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	if err != nil {
 		return err
 	}
-	
+
 	outputFormat := output.DetectFormat(globalFlags.Output)
 
 	var configured, missing, optional, unsupported int
@@ -93,7 +93,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 
 	// Group providers by status and collect data
 	providers := cat.Providers().List()
-	
+
 	// Prepare table data
 	tableRows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
@@ -109,7 +109,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 		statusIcon, statusText := getStatusDisplay(status.State)
 		keyVariable := getKeyVariable(provider, status)
 		source := getCredentialSource(provider)
-		
+
 		row := []string{
 			provider.Name,
 			statusIcon + " " + statusText,
@@ -137,7 +137,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 			Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 			Rows:    tableRows,
 		}
-		
+
 		formatter := output.NewFormatter(outputFormat)
 		return formatter.Format(os.Stdout, tableData)
 	}
@@ -151,7 +151,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 		Rows:    tableRows,
 	}
-	
+
 	formatter := output.NewFormatter(outputFormat)
 	if err := formatter.Format(os.Stdout, tableData); err != nil {
 		return err
@@ -198,7 +198,7 @@ func printGoogleCloudStatus(checker *auth.Checker) {
 
 func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsupported int) error {
 	fmt.Println()
-	
+
 	// Create summary table
 	var summaryRows [][]string
 	if configured > 0 {
@@ -219,13 +219,13 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 			Headers: []string{"Status", "Count"},
 			Rows:    summaryRows,
 		}
-		
+
 		// Get global flags for output format
 		globalFlags, err := globals.Parse(cmd)
 		if err != nil {
 			return err
 		}
-		
+
 		outputFormat := output.DetectFormat(globalFlags.Output)
 		formatter := output.NewFormatter(outputFormat)
 		if err := formatter.Format(os.Stdout, summaryData); err != nil {
@@ -239,11 +239,11 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 	if err != nil {
 		return err
 	}
-	
+
 	// Determine success and create context
 	succeeded := configured > 0 || missing == 0
 	ctx := notify.Contexts.AuthStatus(succeeded, configured)
-	
+
 	if configured == 0 && missing > 0 {
 		return notifier.Warning("No providers configured. Set API keys to enable provider access.", ctx)
 	} else if configured > 0 {
@@ -253,7 +253,6 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 
 	return nil
 }
-
 
 // getStatusDisplay returns icon and text for a status state.
 func getStatusDisplay(state auth.State) (string, string) {
@@ -276,15 +275,15 @@ func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
 	if provider.ID == googleVertexProviderID {
 		return "(gcloud auth required)"
 	}
-	
+
 	if provider.APIKey != nil {
 		return provider.APIKey.Name
 	}
-	
+
 	if status.State == auth.StateUnsupported {
 		return "(no implementation)"
 	}
-	
+
 	return "(no key required)"
 }
 
@@ -293,7 +292,7 @@ func getCredentialSource(provider *catalogs.Provider) string {
 	if provider.ID == googleVertexProviderID {
 		return "gcloud"
 	}
-	
+
 	if provider.APIKey != nil {
 		// Check if environment variable is set
 		envValue := os.Getenv(provider.APIKey.Name)
@@ -302,7 +301,7 @@ func getCredentialSource(provider *catalogs.Provider) string {
 		}
 		return "-"
 	}
-	
+
 	return "-"
 }
 

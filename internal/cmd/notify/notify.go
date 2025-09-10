@@ -24,10 +24,10 @@ type Notifier struct {
 
 // Config controls notification behavior.
 type Config struct {
-	OutputFormat string // "table", "json", "yaml"
-	ShowHints    bool   // Whether to show hints
-	ShowAlerts   bool   // Whether to show alerts
-	MaxHints     int    // Maximum number of hints to show
+	OutputFormat string    // "table", "json", "yaml"
+	ShowHints    bool      // Whether to show hints
+	ShowAlerts   bool      // Whether to show alerts
+	MaxHints     int       // Maximum number of hints to show
 	AlertWriter  io.Writer // Where to write alerts (default: stderr)
 	HintWriter   io.Writer // Where to write hints (default: stdout)
 	UseColor     bool      // Whether to use colored output
@@ -51,14 +51,14 @@ func New(config Config) *Notifier {
 	// Set up alert writer
 	format := detectOutputFormat(config.OutputFormat)
 	alertWriter := alerts.NewFormatWriter(config.AlertWriter, format)
-	
+
 	// Set up hint registry with starmap providers
 	hintRegistry := hints.NewRegistry().WithConfig(hints.RegistryConfig{
 		MaxHints: config.MaxHints,
 		Enabled:  config.ShowHints,
 	})
 	hints.RegisterStarmapProviders(hintRegistry)
-	
+
 	return &Notifier{
 		alertWriter:  alertWriter,
 		hintRegistry: hintRegistry,
@@ -69,18 +69,18 @@ func New(config Config) *Notifier {
 // NewFromCommand creates a Notifier configured from a Cobra command.
 func NewFromCommand(cmd *cobra.Command) (*Notifier, error) {
 	config := DefaultConfig()
-	
+
 	// Get global flags
 	globalFlags, err := globals.Parse(cmd)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse global flags: %w", err)
 	}
-	
+
 	// Configure from flags
 	config.OutputFormat = globalFlags.Output
 	config.ShowHints = !globalFlags.Quiet && !isCI()
 	config.UseColor = !globalFlags.NoColor && isTerminal(os.Stdout)
-	
+
 	return New(config), nil
 }
 
@@ -89,7 +89,7 @@ func (n *Notifier) Alert(alert *alerts.Alert) error {
 	if !n.config.ShowAlerts {
 		return nil
 	}
-	
+
 	return n.alertWriter.WriteAlert(alert)
 }
 
@@ -119,7 +119,7 @@ func (n *Notifier) AlertWithHints(alert *alerts.Alert, ctx hints.Context) error 
 	if err := n.Alert(alert); err != nil {
 		return fmt.Errorf("failed to write alert: %w", err)
 	}
-	
+
 	// Display contextual hints
 	if n.config.ShowHints {
 		hintList := n.hintRegistry.GetHints(ctx)
@@ -128,7 +128,7 @@ func (n *Notifier) AlertWithHints(alert *alerts.Alert, ctx hints.Context) error 
 			return hints.Display(n.config.HintWriter, format, hintList)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -137,12 +137,12 @@ func (n *Notifier) Hints(ctx hints.Context) error {
 	if !n.config.ShowHints {
 		return nil
 	}
-	
+
 	hintList := n.hintRegistry.GetHints(ctx)
 	if len(hintList) == 0 {
 		return nil
 	}
-	
+
 	format := detectOutputFormat(n.config.OutputFormat)
 	return hints.Display(n.config.HintWriter, format, hintList)
 }
@@ -194,13 +194,13 @@ func isCI() bool {
 		"TRAVIS",
 		"CIRCLECI",
 	}
-	
+
 	for _, envVar := range ciEnvVars {
 		if os.Getenv(envVar) != "" {
 			return true
 		}
 	}
-	
+
 	return false
 }
 

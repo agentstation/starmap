@@ -61,11 +61,11 @@ func (a *Alert) WithDetails(details ...string) *Alert {
 func (a *Alert) String() string {
 	icon := a.Level.Icon()
 	message := fmt.Sprintf("%s %s", icon, a.Message)
-	
+
 	if a.Err != nil {
 		message += fmt.Sprintf(": %v", a.Err)
 	}
-	
+
 	return message
 }
 

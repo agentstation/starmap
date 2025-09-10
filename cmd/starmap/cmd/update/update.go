@@ -135,7 +135,7 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 	if sourcesDir == "" {
 		sourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
 	}
-	
+
 	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
 
 	if !globalFlags.Quiet {

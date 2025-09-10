@@ -108,7 +108,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
-		
+
 		start := time.Now()
 		models, err := fetcher.FetchModels(ctx, &provider)
 		duration := time.Since(start)
@@ -151,7 +151,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Create context for hints
 	succeeded := failed == 0
 	var errorType string
@@ -159,7 +159,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 		errorType = "auth_failed"
 	}
 	ctx := notify.Contexts.AuthVerify(succeeded, errorType)
-	
+
 	// Send appropriate notification
 	if failed > 0 {
 		message := fmt.Sprintf("%d provider(s) failed verification", failed)
@@ -183,13 +183,13 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 	}
 
 	formatter := output.NewFormatter(output.FormatTable)
-	
+
 	// Prepare table data
 	headers := []string{"Provider", "Status", "Response Time", "Models"}
 	if verbose {
 		headers = append(headers, "Error")
 	}
-	
+
 	rows := make([][]string, 0, len(results))
 	for _, result := range results {
 		row := []string{
@@ -221,10 +221,10 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 // displaySummaryTable shows a summary of verification results.
 func displaySummaryTable(verified, failed, skipped int) {
 	formatter := output.NewFormatter(output.FormatTable)
-	
+
 	headers := []string{"Status", "Count"}
 	rows := [][]string{}
-	
+
 	if verified > 0 {
 		rows = append(rows, []string{"✅ Verified", fmt.Sprintf("%d", verified)})
 	}
@@ -288,7 +288,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 	duration := time.Since(start)
 
 	result := VerificationResult{
-		Provider: providerID,
+		Provider:     providerID,
 		ResponseTime: duration.Truncate(time.Millisecond).String(),
 	}
 
@@ -306,7 +306,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 			formatter := output.NewFormatter(outputFormat)
 			_ = formatter.Format(os.Stdout, []VerificationResult{result})
 		}
-		
+
 		return fmt.Errorf("failed to verify %s: %w", providerID, err)
 	}
 

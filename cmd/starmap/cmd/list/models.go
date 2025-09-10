@@ -170,7 +170,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 	formatter := output.NewFormatter(output.FormatTable)
 
 	fmt.Printf("Model: %s\n\n", model.ID)
-	
+
 	printBasicInfo(model, provider, formatter)
 	printLimitsInfo(model, formatter)
 	printPricingInfo(model, formatter)
@@ -271,7 +271,7 @@ func printFeaturesInfo(model catalogs.Model, formatter output.Formatter) {
 
 	// Check modality features
 	featureRows = addModalityFeatures(featureRows, model.Features)
-	
+
 	// Other features
 	if model.Features.ToolCalls {
 		featureRows = append(featureRows, []string{"Function Calling", "✅ Supported"})
