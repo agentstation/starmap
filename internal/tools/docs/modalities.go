@@ -27,39 +27,6 @@ func hasModality(features *catalogs.ModelFeatures, modality catalogs.ModelModali
 	return false
 }
 
-// hasInputModality checks if a model supports a specific input modality.
-//
-//nolint:unused // used in tests
-func hasInputModality(features *catalogs.ModelFeatures, modality catalogs.ModelModality) bool {
-	if features == nil {
-		return false
-	}
-
-	for _, m := range features.Modalities.Input {
-		if m == modality {
-			return true
-		}
-	}
-
-	return false
-}
-
-// hasOutputModality checks if a model supports a specific output modality.
-//
-//nolint:unused // used in tests
-func hasOutputModality(features *catalogs.ModelFeatures, modality catalogs.ModelModality) bool {
-	if features == nil {
-		return false
-	}
-
-	for _, m := range features.Modalities.Output {
-		if m == modality {
-			return true
-		}
-	}
-
-	return false
-}
 
 // hasText checks if model supports text modality.
 func hasText(features *catalogs.ModelFeatures) bool {
@@ -86,40 +53,6 @@ func hasPDF(features *catalogs.ModelFeatures) bool {
 	return hasModality(features, catalogs.ModelModalityPDF)
 }
 
-// hasEmbedding checks if model outputs embeddings.
-//
-//nolint:unused // used in tests
-func hasEmbedding(features *catalogs.ModelFeatures) bool {
-	return hasOutputModality(features, catalogs.ModelModalityEmbedding)
-}
-
-// getModalityCount returns the count of unique modalities supported.
-//
-//nolint:unused // used in tests
-func getModalityCount(features *catalogs.ModelFeatures) int {
-	if features == nil {
-		return 0
-	}
-
-	modalityMap := make(map[catalogs.ModelModality]bool)
-
-	for _, m := range features.Modalities.Input {
-		modalityMap[m] = true
-	}
-
-	for _, m := range features.Modalities.Output {
-		modalityMap[m] = true
-	}
-
-	return len(modalityMap)
-}
-
-// isMultimodal checks if model supports more than one modality.
-//
-//nolint:unused // used in tests
-func isMultimodal(features *catalogs.ModelFeatures) bool {
-	return getModalityCount(features) > 1
-}
 
 // hasToolSupport checks if model has any tool-related capabilities.
 func hasToolSupport(features *catalogs.ModelFeatures) bool {

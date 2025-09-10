@@ -72,11 +72,3 @@ func WithMergeStrategy(strategy MergeStrategy) Option {
 	}
 }
 
-// WithPreload loads data into a memory catalog.
-func WithPreload(_ []byte) Option {
-	return func(_ *catalogOptions) {
-		// Parse and load the data
-		// This would typically parse YAML/JSON and populate the catalog
-		// For now, this is a placeholder
-	}
-}
