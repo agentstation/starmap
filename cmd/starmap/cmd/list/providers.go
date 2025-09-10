@@ -92,8 +92,8 @@ func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bo
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
 		tableData := table.ProvidersToTableData(filtered, showKeys)
-		// Convert to output.TableData for formatter compatibility
-		outputData = output.TableData{
+		// Convert to output.Data for formatter compatibility
+		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}
@@ -166,7 +166,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 
 	basicRows = append(basicRows, []string{"Models", fmt.Sprintf("%d", len(provider.Models))})
 
-	basicTable := output.TableData{
+	basicTable := output.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
@@ -196,7 +196,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 			configRows = append(configRows, []string{"Status", status})
 		}
 
-		configTable := output.TableData{
+		configTable := output.Data{
 			Headers: []string{"Setting", "Value"},
 			Rows:    configRows,
 		}
@@ -224,7 +224,7 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 			envRows = append(envRows, []string{envVar.Name, requirement, description})
 		}
 
-		envTable := output.TableData{
+		envTable := output.Data{
 			Headers: []string{"Variable", "Requirement", "Description"},
 			Rows:    envRows,
 		}

@@ -113,8 +113,8 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
 		tableData := table.ModelsToTableData(filtered, showDetails)
-		// Convert to output.TableData for formatter compatibility
-		outputData = output.TableData{
+		// Convert to output.Data for formatter compatibility
+		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}
@@ -204,7 +204,7 @@ func printBasicInfo(model catalogs.Model, provider catalogs.Provider, formatter 
 		basicRows = append(basicRows, []string{"Description", description})
 	}
 
-	basicTable := output.TableData{
+	basicTable := output.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
@@ -228,7 +228,7 @@ func printLimitsInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(limitRows) > 0 {
-		limitsTable := output.TableData{
+		limitsTable := output.Data{
 			Headers: []string{"Limit", "Value"},
 			Rows:    limitRows,
 		}
@@ -252,7 +252,7 @@ func printPricingInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(pricingRows) > 0 {
-		pricingTable := output.TableData{
+		pricingTable := output.Data{
 			Headers: []string{"Type", "Price"},
 			Rows:    pricingRows,
 		}
@@ -284,7 +284,7 @@ func printFeaturesInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(featureRows) > 0 {
-		featuresTable := output.TableData{
+		featuresTable := output.Data{
 			Headers: []string{"Feature", "Status"},
 			Rows:    featureRows,
 		}
@@ -342,7 +342,7 @@ func printArchitectureInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(archRows) > 0 {
-		archTable := output.TableData{
+		archTable := output.Data{
 			Headers: []string{"Property", "Value"},
 			Rows:    archRows,
 		}

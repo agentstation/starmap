@@ -51,7 +51,7 @@ func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error {
 	// Use configured path if set
 	if s.catalogPath != "" {
 		var err error
-		s.catalog, err = catalogs.New(catalogs.WithFiles(s.catalogPath))
+		s.catalog, err = catalogs.New(catalogs.WithPath(s.catalogPath))
 		if err != nil {
 			return errors.WrapResource("load", "catalog", s.catalogPath, err)
 		}

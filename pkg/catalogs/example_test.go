@@ -65,7 +65,7 @@ func Example_fileBasedCatalog() {
 	// Create a file-based catalog
 	catalogPath := filepath.Join(".", "my-catalog")
 	catalog, err := catalogs.New(
-		catalogs.WithFiles(catalogPath),
+		catalogs.WithPath(catalogPath),
 		catalogs.WithWritePath(catalogPath),
 	)
 	if err != nil {

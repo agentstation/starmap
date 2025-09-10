@@ -117,8 +117,8 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 	switch globalFlags.Output {
 	case "table", "wide", "":
 		tableData := table.ModelsToTableData(models, false)
-		// Convert to output.TableData for formatter compatibility
-		outputData = output.TableData{
+		// Convert to output.Data for formatter compatibility
+		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}
@@ -221,8 +221,8 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 	switch globalFlags.Output {
 	case "table", "wide", "":
 		tableData := table.ModelsToTableData(allModels, false)
-		// Convert to output.TableData for formatter compatibility
-		outputData = output.TableData{
+		// Convert to output.Data for formatter compatibility
+		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}

@@ -96,7 +96,7 @@ type TableFormatter struct {
 func (f *TableFormatter) Format(w io.Writer, data any) error {
 	// Type switch to handle different data types
 	switch v := data.(type) {
-	case TableData:
+	case Data:
 		return f.formatTable(w, v)
 	default:
 		// Try to convert structs/slices to table format using reflection
@@ -110,7 +110,7 @@ func (f *TableFormatter) Format(w io.Writer, data any) error {
 	}
 }
 
-func (f *TableFormatter) formatTable(w io.Writer, data TableData) error {
+func (f *TableFormatter) formatTable(w io.Writer, data Data) error {
 	// Use tablewriter for proper table formatting
 	table := tablewriter.NewTable(w)
 
@@ -139,10 +139,8 @@ func (f *TableFormatter) formatTable(w io.Writer, data TableData) error {
 	return table.Render()
 }
 
-// TableData represents data formatted for table output.
-// Deprecated: This type name stutters with package name.
-// TODO: Refactor to use table.Data from internal/cmd/table package.
-type TableData struct {
+// Data represents data formatted for table output.
+type Data struct {
 	Headers []string
 	Rows    [][]string
 }
@@ -174,8 +172,8 @@ func ParseFormat(s string) (Format, error) {
 	}
 }
 
-// convertToTableData attempts to convert struct slices to TableData using reflection.
-func (f *TableFormatter) convertToTableData(data any) *TableData {
+// convertToTableData attempts to convert struct slices to Data using reflection.
+func (f *TableFormatter) convertToTableData(data any) *Data {
 	v := reflect.ValueOf(data)
 
 	// Handle slices
@@ -195,8 +193,8 @@ func (f *TableFormatter) convertToTableData(data any) *TableData {
 	return nil
 }
 
-// structSliceToTableData converts a slice of structs to TableData.
-func (f *TableFormatter) structSliceToTableData(v reflect.Value) *TableData {
+// structSliceToTableData converts a slice of structs to Data.
+func (f *TableFormatter) structSliceToTableData(v reflect.Value) *Data {
 	if v.Len() == 0 {
 		return nil
 	}
@@ -233,14 +231,14 @@ func (f *TableFormatter) structSliceToTableData(v reflect.Value) *TableData {
 		rows = append(rows, row)
 	}
 
-	return &TableData{
+	return &Data{
 		Headers: headers,
 		Rows:    rows,
 	}
 }
 
 // singleStructToTableData converts a single struct to a key-value table.
-func (f *TableFormatter) singleStructToTableData(v reflect.Value) *TableData {
+func (f *TableFormatter) singleStructToTableData(v reflect.Value) *Data {
 	elemType := v.Type()
 
 	headers := []string{"Property", "Value"}
@@ -269,7 +267,7 @@ func (f *TableFormatter) singleStructToTableData(v reflect.Value) *TableData {
 		})
 	}
 
-	return &TableData{
+	return &Data{
 		Headers: headers,
 		Rows:    rows,
 	}

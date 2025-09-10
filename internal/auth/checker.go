@@ -137,13 +137,13 @@ func (c *Checker) checkGoogleVertex() *Status {
 }
 
 // CheckGCloud checks Google Cloud authentication status.
-func (c *Checker) CheckGCloud() *GCloudStatus {
+func (c *Checker) CheckGCloud(catalog catalogs.Catalog) *GCloudStatus {
 	ctx := context.Background()
 	status := &GCloudStatus{}
 
-	// Check if we have Google Vertex provider
-	// This would be set by the caller if needed
-	status.HasVertexProvider = true // TODO: Check from catalog
+	// Check if we have Google Vertex provider in the catalog
+	_, err := catalog.Provider("google-vertex")
+	status.HasVertexProvider = err == nil
 
 	// Check for Application Default Credentials
 	creds, err := credentials.DetectDefault(&credentials.DetectOptions{

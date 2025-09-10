@@ -87,8 +87,8 @@ func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
 		tableData := table.AuthorsToTableData(filtered)
-		// Convert to output.TableData for formatter compatibility
-		outputData = output.TableData{
+		// Convert to output.Data for formatter compatibility
+		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}

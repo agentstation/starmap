@@ -17,7 +17,7 @@ func LoadCatalog(inputPath string, isQuiet bool) (starmap.Starmap, error) {
 
 	if inputPath != "" {
 		// Use file-based catalog from input directory
-		filesCatalog, err := catalogs.New(catalogs.WithFiles(inputPath))
+		filesCatalog, err := catalogs.New(catalogs.WithPath(inputPath))
 		if err != nil {
 			return nil, errors.WrapResource("create", "catalog", inputPath, err)
 		}

@@ -208,7 +208,7 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 		rows = append(rows, row)
 	}
 
-	tableData := output.TableData{
+	tableData := output.Data{
 		Headers: headers,
 		Rows:    rows,
 	}
@@ -236,7 +236,7 @@ func displaySummaryTable(verified, failed, skipped int) {
 	}
 
 	if len(rows) > 0 {
-		tableData := output.TableData{
+		tableData := output.Data{
 			Headers: headers,
 			Rows:    rows,
 		}

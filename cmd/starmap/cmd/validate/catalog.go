@@ -243,7 +243,7 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 		rows = append(rows, row)
 	}
 
-	tableData := output.TableData{
+	tableData := output.Data{
 		Headers: headers,
 		Rows:    rows,
 	}

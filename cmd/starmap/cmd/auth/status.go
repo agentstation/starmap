@@ -74,7 +74,7 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 
 	// Check Google Cloud if it's the vertex provider
 	if providerID == googleVertexProviderID {
-		printGoogleCloudStatus(checker)
+		printGoogleCloudStatus(checker, cat)
 	}
 	return nil
 }
@@ -133,7 +133,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 
 	// For structured output (JSON/YAML), return data only
 	if outputFormat != output.FormatTable {
-		tableData := output.TableData{
+		tableData := output.Data{
 			Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 			Rows:    tableRows,
 		}
@@ -147,7 +147,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	fmt.Println("Provider Authentication Status:")
 
 	// Create and display table
-	tableData := output.TableData{
+	tableData := output.Data{
 		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 		Rows:    tableRows,
 	}
@@ -158,9 +158,9 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	}
 
 	// Special section for Google Cloud authentication - only if relevant
-	gcloudStatus := checker.CheckGCloud()
+	gcloudStatus := checker.CheckGCloud(cat)
 	if gcloudStatus != nil && (gcloudStatus.HasVertexProvider || gcloudStatus.Authenticated) {
-		printGoogleCloudStatus(checker)
+		printGoogleCloudStatus(checker, cat)
 	}
 
 	// Print summary
@@ -178,10 +178,10 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	return nil
 }
 
-func printGoogleCloudStatus(checker *auth.Checker) {
+func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	fmt.Println()
 	fmt.Println("Google Cloud Authentication:")
-	gcloudStatus := checker.CheckGCloud()
+	gcloudStatus := checker.CheckGCloud(cat)
 	if gcloudStatus.Authenticated {
 		fmt.Println("✅ Application Default Credentials configured")
 		if gcloudStatus.Project != "" {
@@ -215,7 +215,7 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 	}
 
 	if len(summaryRows) > 0 {
-		summaryData := output.TableData{
+		summaryData := output.Data{
 			Headers: []string{"Status", "Count"},
 			Rows:    summaryRows,
 		}

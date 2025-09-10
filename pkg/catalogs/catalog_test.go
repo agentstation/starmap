@@ -60,7 +60,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("FilesCatalog", func(t *testing.T) {
 		// Create files catalog
-		cat, err := New(WithFiles("../../internal/embedded/catalog"))
+		cat, err := New(WithPath("../../internal/embedded/catalog"))
 		if err != nil {
 			t.Fatalf("Failed to create files catalog: %v", err)
 		}
@@ -85,7 +85,7 @@ func TestCatalogModes(t *testing.T) {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
 
-		filesCat, err := New(WithFiles("../../internal/embedded/catalog"))
+		filesCat, err := New(WithPath("../../internal/embedded/catalog"))
 		if err != nil {
 			t.Fatalf("Failed to create files catalog: %v", err)
 		}

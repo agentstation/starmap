@@ -57,11 +57,6 @@ func WithEmbedded() Option {
 	}
 }
 
-// WithFiles configures the catalog to use filesystem files
-// Deprecated: Use WithPath instead.
-func WithFiles(path string) Option {
-	return WithPath(path)
-}
 
 // WithWritePath sets a specific path for writing catalog files.
 func WithWritePath(path string) Option {

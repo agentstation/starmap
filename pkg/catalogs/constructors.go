@@ -29,7 +29,7 @@ func NewFiles(path string) (Catalog, error) {
 	if _, err := os.Stat(path); err != nil {
 		return nil, errors.WrapIO("stat", path, err)
 	}
-	return New(WithFiles(path))
+	return New(WithPath(path))
 }
 
 // NewMemory creates an in-memory catalog.
