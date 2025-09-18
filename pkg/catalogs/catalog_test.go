@@ -17,7 +17,7 @@ func TestCatalogModes(t *testing.T) {
 		provider := Provider{
 			ID:   "test-provider",
 			Name: "Test Provider",
-			Models: map[string]Model{
+			Models: map[string]*Model{
 				"test-model-1": {
 					ID:   "test-model-1",
 					Name: "Test Model",
@@ -29,7 +29,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Verify it was added
-		models := cat.GetAllModels()
+		models := cat.Models().List()
 		if len(models) != 1 {
 			t.Errorf("Expected 1 model, got %d", len(models))
 		}
@@ -46,7 +46,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.GetAllModels()
+		models := cat.Models().List()
 		if len(models) == 0 {
 			t.Error("Embedded catalog should have models")
 		}
@@ -66,7 +66,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.GetAllModels()
+		models := cat.Models().List()
 		if len(models) == 0 {
 			t.Error("Files catalog should have models")
 		}
@@ -91,8 +91,8 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Compare model counts
-		embModels := embCat.GetAllModels()
-		fileModels := filesCat.GetAllModels()
+		embModels := embCat.Models().List()
+		fileModels := filesCat.Models().List()
 
 		if len(embModels) != len(fileModels) {
 			t.Errorf("Model count mismatch: embedded=%d, files=%d", len(embModels), len(fileModels))

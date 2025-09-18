@@ -45,7 +45,7 @@ func ValidateAllProviders(catalog Catalog, supportedProviders []ProviderID) (*Pr
 
 		// Convert to ProviderValidationEntry format
 		entry := ProviderValidationEntry{
-			Provider:     provider,
+			Provider:     &provider,
 			HasAPIKey:    result.HasAPIKey,
 			IsRequired:   result.IsAPIKeyRequired,
 			IsConfigured: result.IsConfigured,

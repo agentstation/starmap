@@ -1,17 +1,12 @@
 package modelsdev
 
 import (
-	"context"
-
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // processFetch handles the common logic for fetching models from models.dev API.
-func processFetch(_ context.Context, catalog catalogs.Catalog, api *API, opts ...sources.Option) (int, error) {
-	// Apply options (not currently used, but kept for consistency)
-	_ = sources.ApplyOptions(opts...)
+func processFetch(catalog catalogs.Catalog, api *API) (int, error) {
 
 	// Set the default merge strategy for models.dev catalog (enhances with pricing/limits)
 	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
@@ -34,7 +29,7 @@ func processFetch(_ context.Context, catalog catalogs.Catalog, api *API, opts ..
 
 		// Initialize models map if needed
 		if provider.Models == nil {
-			provider.Models = make(map[string]catalogs.Model)
+			provider.Models = make(map[string]*catalogs.Model)
 		}
 
 		// Add models with pricing/limits data

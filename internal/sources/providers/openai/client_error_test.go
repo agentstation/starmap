@@ -11,7 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -47,7 +46,11 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
-				APIURL: &server.URL,
+				Endpoint: catalogs.ProviderEndpoint{
+					Type:         catalogs.EndpointTypeOpenAI,
+					URL:          server.URL,
+					AuthRequired: true,
+				},
 			},
 		}
 
@@ -82,7 +85,11 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
-				APIURL: &server.URL,
+				Endpoint: catalogs.ProviderEndpoint{
+					Type:         catalogs.EndpointTypeOpenAI,
+					URL:          server.URL,
+					AuthRequired: true,
+				},
 			},
 		}
 
@@ -116,7 +123,11 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
-				APIURL: &server.URL,
+				Endpoint: catalogs.ProviderEndpoint{
+					Type:         catalogs.EndpointTypeOpenAI,
+					URL:          server.URL,
+					AuthRequired: true,
+				},
 			},
 		}
 
@@ -151,7 +162,11 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
-				APIURL: &server.URL,
+				Endpoint: catalogs.ProviderEndpoint{
+					Type:         catalogs.EndpointTypeOpenAI,
+					URL:          server.URL,
+					AuthRequired: true,
+				},
 			},
 		}
 
@@ -185,7 +200,11 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
-				APIURL: &server.URL,
+				Endpoint: catalogs.ProviderEndpoint{
+					Type:         catalogs.EndpointTypeOpenAI,
+					URL:          server.URL,
+					AuthRequired: true,
+				},
 			},
 		}
 
@@ -212,6 +231,27 @@ func TestClientModelConversion(t *testing.T) {
 			Header: "Authorization",
 			Scheme: "Bearer",
 		},
+		Catalog: &catalogs.ProviderCatalog{
+			Endpoint: catalogs.ProviderEndpoint{
+				Type:         catalogs.EndpointTypeOpenAI,
+				URL:          "https://api.openai.com/v1/models",
+				AuthRequired: true,
+				FeatureRules: []catalogs.FeatureRule{
+					{
+						Field:    "id",
+						Contains: []string{"vision", "gpt-4"},
+						Feature:  "tools",
+						Value:    true,
+					},
+					{
+						Field:    "id",
+						Contains: []string{"vision", "gpt-4"},
+						Feature:  "tool_choice",
+						Value:    true,
+					},
+				},
+			},
+		},
 	}
 	os.Setenv("OPENAI_API_KEY", "test")
 	defer os.Unsetenv("OPENAI_API_KEY")
@@ -219,7 +259,7 @@ func TestClientModelConversion(t *testing.T) {
 	client := NewClient(provider)
 
 	t.Run("minimal model data", func(t *testing.T) {
-		minimalModel := baseclient.OpenAIModelData{
+		minimalModel := Model{
 			ID:      "test-model",
 			Created: 1234567890,
 			Object:  "model",
@@ -234,7 +274,7 @@ func TestClientModelConversion(t *testing.T) {
 	})
 
 	t.Run("model with null permission", func(t *testing.T) {
-		modelData := baseclient.OpenAIModelData{
+		modelData := Model{
 			ID:      "gpt-4",
 			Created: 1234567890,
 			Object:  "model",
@@ -247,7 +287,7 @@ func TestClientModelConversion(t *testing.T) {
 	})
 
 	t.Run("deprecated model detection", func(t *testing.T) {
-		deprecatedModel := baseclient.OpenAIModelData{
+		deprecatedModel := Model{
 			ID:      "text-davinci-003",
 			Created: 1234567890,
 			Object:  "model",
@@ -260,8 +300,8 @@ func TestClientModelConversion(t *testing.T) {
 	})
 
 	t.Run("model feature inference", func(t *testing.T) {
-		// Test vision model
-		visionModel := baseclient.OpenAIModelData{
+		// Test vision model - should have tools enabled via feature rules
+		visionModel := Model{
 			ID:      "gpt-4-vision-preview",
 			Created: 1234567890,
 			Object:  "model",
@@ -270,10 +310,14 @@ func TestClientModelConversion(t *testing.T) {
 
 		model := client.ConvertToModel(visionModel)
 		assert.NotNil(t, model.Features)
-		assert.Contains(t, model.Features.Modalities.Input, catalogs.ModelModalityImage)
+		// Vision model should have tools enabled via feature rules (contains "vision" and "gpt-4")
+		assert.True(t, model.Features.Tools)
+		assert.True(t, model.Features.ToolChoice)
+		// Default modalities should be text
+		assert.Contains(t, model.Features.Modalities.Input, catalogs.ModelModalityText)
 
 		// Test function calling model
-		functionModel := baseclient.OpenAIModelData{
+		functionModel := Model{
 			ID:      "gpt-4-turbo",
 			Created: 1234567890,
 			Object:  "model",
@@ -282,7 +326,8 @@ func TestClientModelConversion(t *testing.T) {
 
 		model = client.ConvertToModel(functionModel)
 		assert.NotNil(t, model.Features)
-		assert.True(t, model.Features.ToolCalls)
+		// Should have tools enabled via feature rules (contains "gpt-4")
+		assert.True(t, model.Features.Tools)
 		assert.True(t, model.Features.ToolChoice)
 	})
 }
@@ -315,7 +360,11 @@ func TestClientConcurrency(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
-			APIURL: &server.URL,
+			Endpoint: catalogs.ProviderEndpoint{
+				Type:         catalogs.EndpointTypeOpenAI,
+				URL:          server.URL,
+				AuthRequired: true,
+			},
 		},
 	}
 

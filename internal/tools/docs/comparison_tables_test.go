@@ -48,7 +48,7 @@ func TestWriteModelsOverviewTable(t *testing.T) {
 				{
 					ID:   "provider1",
 					Name: "Provider One",
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"model1": {ID: "model1"},
 					},
 				},
@@ -132,7 +132,7 @@ func TestWriteProviderComparisonTable(t *testing.T) {
 				{
 					ID:   "provider1",
 					Name: "Provider One",
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"free-model": {
 							ID: "free-model",
 							Pricing: &catalogs.ModelPricing{
@@ -158,7 +158,7 @@ func TestWriteProviderComparisonTable(t *testing.T) {
 				{
 					ID:   "provider2",
 					Name: "Provider Two",
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"paid-model": {
 							ID: "paid-model",
 							Pricing: &catalogs.ModelPricing{

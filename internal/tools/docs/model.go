@@ -15,7 +15,7 @@ import (
 
 // generateModelDocs generates documentation for all models.
 func (g *Generator) generateModelDocs(dir string, catalog catalogs.Reader) error {
-	allModelsSlice := catalog.GetAllModels()
+	allModelsSlice := catalog.Models().List()
 	models := make([]*catalogs.Model, len(allModelsSlice))
 	for i := range allModelsSlice {
 		models[i] = &allModelsSlice[i]

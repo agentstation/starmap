@@ -73,7 +73,7 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 	}
 
 	// Get all models
-	allModels := cat.GetAllModels()
+	allModels := cat.Models().List()
 
 	// Apply filters
 	modelFilter := &filter.ModelFilter{
@@ -98,7 +98,12 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 
 	// Handle export format if specified
 	if exportFormat != "" {
-		return exportModels(filtered, exportFormat)
+		// Convert to pointer slice for export compatibility
+		modelPointers := make([]*catalogs.Model, len(filtered))
+		for i := range filtered {
+			modelPointers[i] = &filtered[i]
+		}
+		return exportModels(modelPointers, exportFormat)
 	}
 
 	// Get global flags and format output
@@ -112,7 +117,12 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		tableData := table.ModelsToTableData(filtered, showDetails)
+		// Convert to pointer slice for table compatibility
+		modelPointers := make([]*catalogs.Model, len(filtered))
+		for i := range filtered {
+			modelPointers[i] = &filtered[i]
+		}
+		tableData := table.ModelsToTableData(modelPointers, showDetails)
 		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,
@@ -148,7 +158,7 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 
 			// For table output, show detailed view
 			if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
-				printModelDetails(model, *provider)
+				printModelDetails(model, provider)
 				return nil
 			}
 
@@ -166,7 +176,7 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 }
 
 // printModelDetails prints detailed model information using table format.
-func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
+func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
 	formatter := output.NewFormatter(output.FormatTable)
 
 	fmt.Printf("Model: %s\n\n", model.ID)
@@ -178,7 +188,7 @@ func printModelDetails(model catalogs.Model, provider catalogs.Provider) {
 	printArchitectureInfo(model, formatter)
 }
 
-func printBasicInfo(model catalogs.Model, provider catalogs.Provider, formatter output.Formatter) {
+func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter output.Formatter) {
 	basicRows := [][]string{
 		{"Model ID", model.ID},
 		{"Name", model.Name},
@@ -214,7 +224,7 @@ func printBasicInfo(model catalogs.Model, provider catalogs.Provider, formatter 
 	fmt.Println()
 }
 
-func printLimitsInfo(model catalogs.Model, formatter output.Formatter) {
+func printLimitsInfo(model *catalogs.Model, formatter output.Formatter) {
 	if model.Limits == nil {
 		return
 	}
@@ -238,7 +248,7 @@ func printLimitsInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 }
 
-func printPricingInfo(model catalogs.Model, formatter output.Formatter) {
+func printPricingInfo(model *catalogs.Model, formatter output.Formatter) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
 	}
@@ -262,7 +272,7 @@ func printPricingInfo(model catalogs.Model, formatter output.Formatter) {
 	}
 }
 
-func printFeaturesInfo(model catalogs.Model, formatter output.Formatter) {
+func printFeaturesInfo(model *catalogs.Model, formatter output.Formatter) {
 	if model.Features == nil {
 		return
 	}
@@ -328,7 +338,7 @@ func addModalityFeatures(featureRows [][]string, features *catalogs.ModelFeature
 	return featureRows
 }
 
-func printArchitectureInfo(model catalogs.Model, formatter output.Formatter) {
+func printArchitectureInfo(model *catalogs.Model, formatter output.Formatter) {
 	if model.Metadata == nil || model.Metadata.Architecture == nil {
 		return
 	}
@@ -353,12 +363,10 @@ func printArchitectureInfo(model catalogs.Model, formatter output.Formatter) {
 }
 
 // exportModels exports models in the specified format (openai or openrouter).
-func exportModels(models []catalogs.Model, format string) error {
+func exportModels(models []*catalogs.Model, format string) error {
 	// Convert models to pointers for compatibility with convert package
 	modelPtrs := make([]*catalogs.Model, len(models))
-	for i := range models {
-		modelPtrs[i] = &models[i]
-	}
+	copy(modelPtrs, models)
 
 	// Convert models to specified format
 	var output any

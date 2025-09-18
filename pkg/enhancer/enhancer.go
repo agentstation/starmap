@@ -20,13 +20,13 @@ type Enhancer interface {
 	Name() string
 
 	// Enhance enhances a single model with additional data
-	Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error)
+	Enhance(ctx context.Context, model *catalogs.Model) (*catalogs.Model, error)
 
 	// EnhanceBatch enhances multiple models efficiently
-	EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error)
+	EnhanceBatch(ctx context.Context, models []*catalogs.Model) ([]*catalogs.Model, error)
 
 	// CanEnhance checks if this enhancer can enhance a specific model
-	CanEnhance(model catalogs.Model) bool
+	CanEnhance(model *catalogs.Model) bool
 
 	// Priority returns the priority of this enhancer (higher = applied first)
 	Priority() int
@@ -64,7 +64,7 @@ func (p *Pipeline) WithProvenance(tracker provenance.Tracker) *Pipeline {
 }
 
 // Enhance applies all enhancers to a single model.
-func (p *Pipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
+func (p *Pipeline) Enhance(ctx context.Context, model *catalogs.Model) (*catalogs.Model, error) {
 	enhanced := model
 
 	for _, enhancer := range p.enhancers {
@@ -85,7 +85,7 @@ func (p *Pipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.
 
 		// Track provenance if enabled
 		if p.tracker != nil {
-			p.track(enhanced, result, enhancer)
+			p.track(*enhanced, *result, enhancer)
 		}
 
 		enhanced = result
@@ -95,12 +95,12 @@ func (p *Pipeline) Enhance(ctx context.Context, model catalogs.Model) (catalogs.
 }
 
 // Batch applies all enhancers to multiple models.
-func (p *Pipeline) Batch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
-	enhanced := make([]catalogs.Model, len(models))
+func (p *Pipeline) Batch(ctx context.Context, models []*catalogs.Model) ([]*catalogs.Model, error) {
+	enhanced := make([]*catalogs.Model, len(models))
 
 	for _, enhancer := range p.enhancers {
 		// Filter models that can be enhanced
-		toEnhance := []catalogs.Model{}
+		toEnhance := []*catalogs.Model{}
 		indices := []int{}
 
 		for i, model := range models {
@@ -136,7 +136,7 @@ func (p *Pipeline) Batch(ctx context.Context, models []catalogs.Model) ([]catalo
 		// Update enhanced models
 		for i, idx := range indices {
 			if p.tracker != nil {
-				p.track(models[idx], results[i], enhancer)
+				p.track(*models[idx], *results[i], enhancer)
 			}
 			models[idx] = results[i]
 		}
@@ -156,7 +156,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"pricing",
 			provenance.Provenance{
-				Source:    sources.Type(enhancer.Name()),
+				Source:    sources.ID(enhancer.Name()),
 				Field:     "pricing",
 				Value:     enhanced.Pricing,
 				Timestamp: utcNow(),
@@ -170,7 +170,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"limits",
 			provenance.Provenance{
-				Source:    sources.Type(enhancer.Name()),
+				Source:    sources.ID(enhancer.Name()),
 				Field:     "limits",
 				Value:     enhanced.Limits,
 				Timestamp: utcNow(),
@@ -184,7 +184,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"metadata",
 			provenance.Provenance{
-				Source:    sources.Type(enhancer.Name()),
+				Source:    sources.ID(enhancer.Name()),
 				Field:     "metadata",
 				Value:     enhanced.Metadata,
 				Timestamp: utcNow(),
@@ -342,7 +342,7 @@ func (e *ChainEnhancer) Priority() int {
 }
 
 // CanEnhance checks if any enhancer in the chain can enhance.
-func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool {
+func (e *ChainEnhancer) CanEnhance(model *catalogs.Model) bool {
 	for _, enhancer := range e.enhancers {
 		if enhancer.CanEnhance(model) {
 			return true
@@ -352,7 +352,7 @@ func (e *ChainEnhancer) CanEnhance(model catalogs.Model) bool {
 }
 
 // Enhance applies all enhancers in sequence.
-func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
+func (e *ChainEnhancer) Enhance(ctx context.Context, model *catalogs.Model) (*catalogs.Model, error) {
 	enhanced := model
 	for _, enhancer := range e.enhancers {
 		if enhancer.CanEnhance(enhanced) {
@@ -370,8 +370,8 @@ func (e *ChainEnhancer) Enhance(ctx context.Context, model catalogs.Model) (cata
 }
 
 // Batch enhances multiple models.
-func (e *ChainEnhancer) Batch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
-	enhanced := make([]catalogs.Model, len(models))
+func (e *ChainEnhancer) Batch(ctx context.Context, models []*catalogs.Model) ([]*catalogs.Model, error) {
+	enhanced := make([]*catalogs.Model, len(models))
 	copy(enhanced, models)
 
 	for _, enhancer := range e.enhancers {

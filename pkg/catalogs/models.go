@@ -14,6 +14,11 @@ type Models struct {
 	models map[string]*Model
 }
 
+// NewModels creates a new Models instance.
+func NewModels() *Models {
+	return &Models{models: make(map[string]*Model)}
+}
+
 // Get returns a model by id and whether it exists.
 func (m *Models) Get(id string) (*Model, bool) {
 	m.mu.RLock()
@@ -93,12 +98,15 @@ func (m *Models) Len() int {
 	return length
 }
 
-// List returns a slice of all models.
-func (m *Models) List() []*Model {
+// List returns a slice of all models as values (copies).
+func (m *Models) List() []Model {
 	m.mu.RLock()
-	models := make([]*Model, 0, len(m.models))
+	models := make([]Model, 0, len(m.models))
 	for _, model := range m.models {
-		models = append(models, model)
+		// Return copies to prevent external modification
+		if model != nil {
+			models = append(models, *model)
+		}
 	}
 	m.mu.RUnlock()
 

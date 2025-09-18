@@ -2,38 +2,38 @@
 package update
 
 import (
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sync"
 )
 
 // BuildUpdateOptions creates a slice of update options based on the provided flags.
-func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool, sourcesDir string) []starmap.SyncOption {
-	var opts []starmap.SyncOption
+func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool, sourcesDir string) []sync.Option {
+	var opts []sync.Option
 
 	if provider != "" {
-		opts = append(opts, starmap.WithProvider(catalogs.ProviderID(provider)))
+		opts = append(opts, sync.WithProvider(catalogs.ProviderID(provider)))
 	}
 	if dryRun {
-		opts = append(opts, starmap.WithDryRun(true))
+		opts = append(opts, sync.WithDryRun(true))
 	}
 	if autoApprove {
-		opts = append(opts, starmap.WithAutoApprove(true))
+		opts = append(opts, sync.WithAutoApprove(true))
 	}
 	if output != "" {
-		opts = append(opts, starmap.WithOutputPath(output))
+		opts = append(opts, sync.WithOutputPath(output))
 	}
 	// Use typed options for source-specific behavior
 	if force {
-		opts = append(opts, starmap.WithFresh(true))
+		opts = append(opts, sync.WithFresh(true))
 	}
 	if cleanup {
-		opts = append(opts, starmap.WithCleanModelsDevRepo(true))
+		opts = append(opts, sync.WithCleanModelsDevRepo(true))
 	}
 	if reformat {
-		opts = append(opts, starmap.WithReformat(true))
+		opts = append(opts, sync.WithReformat(true))
 	}
 	if sourcesDir != "" {
-		opts = append(opts, starmap.WithSourcesDir(sourcesDir))
+		opts = append(opts, sync.WithSourcesDir(sourcesDir))
 	}
 
 	return opts

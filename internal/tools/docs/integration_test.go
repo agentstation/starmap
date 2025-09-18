@@ -79,9 +79,9 @@ func TestFullCatalogGeneration(t *testing.T) {
 		// Add providers and models to catalog
 		for _, p := range providers {
 			// Add models to provider
-			p.provider.Models = make(map[string]catalogs.Model)
+			p.provider.Models = make(map[string]*catalogs.Model)
 			for _, m := range p.models {
-				p.provider.Models[m.ID] = m
+				p.provider.Models[m.ID] = &m
 			}
 
 			err := catalog.SetProvider(p.provider)
@@ -344,8 +344,8 @@ func TestEndToEndWithRealData(t *testing.T) {
 	}
 
 	// Add model to provider
-	openai.Models = map[string]catalogs.Model{
-		gpt4.ID: gpt4,
+	openai.Models = map[string]*catalogs.Model{
+		gpt4.ID: &gpt4,
 	}
 	err = catalog.SetProvider(openai)
 	require.NoError(t, err)

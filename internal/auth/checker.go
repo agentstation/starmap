@@ -76,7 +76,7 @@ func (c *Checker) CheckProvider(provider *catalogs.Provider, supportedMap map[st
 	envValue := os.Getenv(provider.APIKey.Name)
 	if envValue == "" {
 		// Check if it's required
-		if provider.Catalog != nil && provider.Catalog.APIKeyRequired != nil && *provider.Catalog.APIKeyRequired {
+		if provider.Catalog != nil && provider.Catalog.Endpoint.AuthRequired {
 			return &Status{
 				State:   StateMissing,
 				Details: fmt.Sprintf("Set %s environment variable", provider.APIKey.Name),

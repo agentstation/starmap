@@ -7,12 +7,12 @@ import (
 
 // filter handles primary source filtering logic.
 type filter struct {
-	primary        sources.Type
+	primary        sources.ID
 	primaryCatalog catalogs.Catalog
 }
 
 // newFilter creates a new filter.
-func newFilter(primary sources.Type, catalog catalogs.Catalog) *filter {
+func newFilter(primary sources.ID, catalog catalogs.Catalog) *filter {
 	return &filter{
 		primary:        primary,
 		primaryCatalog: catalog,
@@ -32,7 +32,7 @@ func (f *filter) filterProviders(providers []catalogs.Provider) []catalogs.Provi
 
 	var filtered []catalogs.Provider
 	for _, provider := range providers {
-		if f.providerExistsInPrimary(provider) {
+		if f.providerExistsInPrimary(&provider) {
 			filtered = append(filtered, provider)
 		}
 	}
@@ -41,7 +41,7 @@ func (f *filter) filterProviders(providers []catalogs.Provider) []catalogs.Provi
 }
 
 // providerExistsInPrimary checks if provider exists in primary catalog.
-func (f *filter) providerExistsInPrimary(provider catalogs.Provider) bool {
+func (f *filter) providerExistsInPrimary(provider *catalogs.Provider) bool {
 	if !f.isEnabled() {
 		return true
 	}

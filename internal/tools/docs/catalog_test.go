@@ -101,7 +101,7 @@ func TestGenerateCatalogIndexWithManyAuthors(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:     catalogs.ProviderID("test-provider"),
 		Name:   "Test Provider",
-		Models: make(map[string]catalogs.Model),
+		Models: make(map[string]*catalogs.Model),
 	}
 
 	// Add more than 10 authors
@@ -120,7 +120,7 @@ func TestGenerateCatalogIndexWithManyAuthors(t *testing.T) {
 				{ID: author.ID, Name: author.Name},
 			},
 		}
-		provider.Models[model.ID] = model
+		provider.Models[model.ID] = &model
 	}
 
 	// Set the provider with all its models
@@ -345,13 +345,13 @@ func createTestCatalogComplete() catalogs.Reader {
 	openaiProvider := catalogs.Provider{
 		ID:     catalogs.ProviderIDOpenAI,
 		Name:   "OpenAI",
-		Models: make(map[string]catalogs.Model),
+		Models: make(map[string]*catalogs.Model),
 	}
 
 	anthropicProvider := catalogs.Provider{
 		ID:     catalogs.ProviderIDAnthropic,
 		Name:   "Anthropic",
-		Models: make(map[string]catalogs.Model),
+		Models: make(map[string]*catalogs.Model),
 	}
 
 	// Add models
@@ -417,9 +417,9 @@ func createTestCatalogComplete() catalogs.Reader {
 	}
 
 	// Associate models with providers
-	openaiProvider.Models["gpt-4"] = gpt4
-	openaiProvider.Models["whisper-1"] = whisper
-	anthropicProvider.Models["claude-3-opus"] = claude
+	openaiProvider.Models["gpt-4"] = &gpt4
+	openaiProvider.Models["whisper-1"] = &whisper
+	anthropicProvider.Models["claude-3-opus"] = &claude
 
 	catalog.SetProvider(openaiProvider)
 	catalog.SetProvider(anthropicProvider)

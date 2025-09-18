@@ -53,7 +53,7 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	// Count statistics
 	providers := catalog.Providers().List()
 	authors := catalog.Authors().List()
-	allModelsSlice := catalog.GetAllModels()
+	allModelsSlice := catalog.Models().List()
 	models := make([]*catalogs.Model, len(allModelsSlice))
 	for i := range allModelsSlice {
 		models[i] = &allModelsSlice[i]
@@ -104,7 +104,7 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 	providerInfos := make([]providerInfo, 0, len(providers))
 	for _, provider := range providers {
 		providerInfos = append(providerInfos, providerInfo{
-			provider:   provider,
+			provider:   &provider,
 			modelCount: len(provider.Models),
 		})
 	}
@@ -151,7 +151,7 @@ func (g *Generator) writeCatalogContent(f *os.File, catalog catalogs.Reader) err
 			}
 		}
 		authorInfos = append(authorInfos, authorInfo{
-			author:     author,
+			author:     &author,
 			modelCount: count,
 		})
 	}

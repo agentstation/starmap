@@ -362,10 +362,10 @@ func createTestCatalogForModels() catalogs.Reader {
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
-			gpt4.ID:    gpt4,
-			claude.ID:  claude,
-			whisper.ID: whisper,
+		Models: map[string]*catalogs.Model{
+			gpt4.ID:    &gpt4,
+			claude.ID:  &claude,
+			whisper.ID: &whisper,
 		},
 	}
 	catalog.SetProvider(provider)

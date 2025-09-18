@@ -27,7 +27,6 @@ func hasModality(features *catalogs.ModelFeatures, modality catalogs.ModelModali
 	return false
 }
 
-
 // hasText checks if model supports text modality.
 func hasText(features *catalogs.ModelFeatures) bool {
 	return hasModality(features, catalogs.ModelModalityText)
@@ -52,7 +51,6 @@ func hasVideo(features *catalogs.ModelFeatures) bool {
 func hasPDF(features *catalogs.ModelFeatures) bool {
 	return hasModality(features, catalogs.ModelModalityPDF)
 }
-
 
 // hasToolSupport checks if model has any tool-related capabilities.
 func hasToolSupport(features *catalogs.ModelFeatures) bool {

@@ -26,7 +26,7 @@ func (f *ModelFilter) Apply(models []catalogs.Model) []catalogs.Model {
 	var filtered []catalogs.Model
 
 	for _, model := range models {
-		if f.matches(model) {
+		if f.matches(&model) {
 			filtered = append(filtered, model)
 		}
 	}
@@ -43,7 +43,7 @@ func (f *ModelFilter) isEmpty() bool {
 		f.Search == ""
 }
 
-func (f *ModelFilter) matches(model catalogs.Model) bool {
+func (f *ModelFilter) matches(model *catalogs.Model) bool {
 	// Provider filter
 	if f.Provider != "" && !f.matchesProvider(model) {
 		return false
@@ -77,13 +77,13 @@ func (f *ModelFilter) matches(model catalogs.Model) bool {
 	return true
 }
 
-func (f *ModelFilter) matchesProvider(_ catalogs.Model) bool {
+func (f *ModelFilter) matchesProvider(_ *catalogs.Model) bool {
 	// Check if model has a provider association
 	// This might need adjustment based on how providers are stored
 	return true // Placeholder - needs implementation based on model structure
 }
 
-func (f *ModelFilter) matchesAuthor(model catalogs.Model) bool {
+func (f *ModelFilter) matchesAuthor(model *catalogs.Model) bool {
 	for _, author := range model.Authors {
 		if strings.EqualFold(string(author.ID), f.Author) ||
 			strings.EqualFold(author.Name, f.Author) {
@@ -93,7 +93,7 @@ func (f *ModelFilter) matchesAuthor(model catalogs.Model) bool {
 	return false
 }
 
-func (f *ModelFilter) matchesCapability(model catalogs.Model) bool {
+func (f *ModelFilter) matchesCapability(model *catalogs.Model) bool {
 	if model.Features == nil {
 		return false
 	}
@@ -119,21 +119,21 @@ func (f *ModelFilter) matchesCapability(model catalogs.Model) bool {
 	return false
 }
 
-func (f *ModelFilter) matchesContext(model catalogs.Model) bool {
+func (f *ModelFilter) matchesContext(model *catalogs.Model) bool {
 	if model.Limits == nil {
 		return false
 	}
 	return model.Limits.ContextWindow >= f.MinContext
 }
 
-func (f *ModelFilter) matchesPrice(model catalogs.Model) bool {
+func (f *ModelFilter) matchesPrice(model *catalogs.Model) bool {
 	if model.Pricing == nil || model.Pricing.Tokens == nil || model.Pricing.Tokens.Input == nil {
 		return true // No price info means we include it
 	}
 	return model.Pricing.Tokens.Input.Per1M <= f.MaxPrice
 }
 
-func (f *ModelFilter) matchesSearch(model catalogs.Model) bool {
+func (f *ModelFilter) matchesSearch(model *catalogs.Model) bool {
 	search := strings.ToLower(f.Search)
 
 	// Search in ID
@@ -177,7 +177,7 @@ func (f *ProviderFilter) Apply(providers []catalogs.Provider) []catalogs.Provide
 	var filtered []catalogs.Provider
 
 	for _, provider := range providers {
-		if f.matches(provider) {
+		if f.matches(&provider) {
 			filtered = append(filtered, provider)
 		}
 	}
@@ -189,7 +189,7 @@ func (f *ProviderFilter) isEmpty() bool {
 	return !f.HasClient && !f.Configured && f.Search == ""
 }
 
-func (f *ProviderFilter) matches(provider catalogs.Provider) bool {
+func (f *ProviderFilter) matches(provider *catalogs.Provider) bool {
 	// Search filter
 	if f.Search != "" && !f.matchesSearch(provider) {
 		return false
@@ -200,7 +200,7 @@ func (f *ProviderFilter) matches(provider catalogs.Provider) bool {
 	return true
 }
 
-func (f *ProviderFilter) matchesSearch(provider catalogs.Provider) bool {
+func (f *ProviderFilter) matchesSearch(provider *catalogs.Provider) bool {
 	search := strings.ToLower(f.Search)
 
 	// Search in ID
@@ -235,7 +235,7 @@ func (f *AuthorFilter) Apply(authors []catalogs.Author) []catalogs.Author {
 	var filtered []catalogs.Author
 
 	for _, author := range authors {
-		if f.matches(author) {
+		if f.matches(&author) {
 			filtered = append(filtered, author)
 		}
 	}
@@ -247,7 +247,7 @@ func (f *AuthorFilter) isEmpty() bool {
 	return f.Search == ""
 }
 
-func (f *AuthorFilter) matches(author catalogs.Author) bool {
+func (f *AuthorFilter) matches(author *catalogs.Author) bool {
 	if f.Search == "" {
 		return true
 	}

@@ -24,7 +24,9 @@ func TestValidateAllProviders(t *testing.T) {
 				Pattern: ".*",
 			},
 			Catalog: &ProviderCatalog{
-				APIKeyRequired: &trueVal,
+				Endpoint: ProviderEndpoint{
+					AuthRequired: trueVal,
+				},
 			},
 		},
 		{
@@ -35,7 +37,9 @@ func TestValidateAllProviders(t *testing.T) {
 				Pattern: ".*",
 			},
 			Catalog: &ProviderCatalog{
-				APIKeyRequired: &trueVal,
+				Endpoint: ProviderEndpoint{
+					AuthRequired: trueVal,
+				},
 			},
 		},
 		{

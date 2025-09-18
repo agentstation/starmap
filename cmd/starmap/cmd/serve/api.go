@@ -171,7 +171,7 @@ func createAPIHandler(corsEnabled bool, corsOrigins []string, authEnabled bool, 
 	if metricsEnabled {
 		mux.HandleFunc("/metrics", func(w http.ResponseWriter, _ *http.Request) {
 			w.Header().Set("Content-Type", "text/plain")
-			modelsCount := len((*apiHandlers.catalog).GetAllModels())
+			modelsCount := len(apiHandlers.catalog.Models().List())
 			if _, err := fmt.Fprintf(w, "# Starmap API Metrics\n# starmap_api_requests_total 0\n# starmap_catalog_models_total %d\n", modelsCount); err != nil {
 				logging.Error().Err(err).Msg("Failed to write metrics response")
 			}

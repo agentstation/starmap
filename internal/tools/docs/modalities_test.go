@@ -62,7 +62,6 @@ func TestHasModality(t *testing.T) {
 	}
 }
 
-
 func TestModalitySpecificHelpers(t *testing.T) {
 	multimodal := &catalogs.ModelFeatures{
 		Modalities: catalogs.ModelModalities{
@@ -118,7 +117,6 @@ func TestModalitySpecificHelpers(t *testing.T) {
 	})
 
 }
-
 
 func TestHasToolSupportModalities(t *testing.T) {
 	tests := []struct {

@@ -13,8 +13,8 @@ import (
 type Provider struct {
 	// Core identification and integration
 	ID           ProviderID   `json:"id" yaml:"id"`                                         // Unique provider identifier
-	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
 	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
+	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
 	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
 
@@ -25,9 +25,8 @@ type Provider struct {
 	EnvVars []ProviderEnvVar `json:"env_vars,omitempty" yaml:"env_vars,omitempty"` // Required environment variables
 
 	// Models
-	Catalog *ProviderCatalog `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
-	Authors []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
-	Models  map[string]Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML
+	Catalog *ProviderCatalog  `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
+	Models  map[string]*Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML
 
 	// Status & Health
 	StatusPageURL   *string                  `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"`   // Link to service status page
@@ -43,11 +42,56 @@ type Provider struct {
 	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
+// EndpointType specifies the API style for model listing.
+type EndpointType string
+
+const (
+	// EndpointTypeOpenAI represents OpenAI-compatible API.
+	EndpointTypeOpenAI EndpointType = "openai"
+	// EndpointTypeAnthropic represents Anthropic API format.
+	EndpointTypeAnthropic EndpointType = "anthropic"
+	// EndpointTypeGoogle represents Google AI Studio.
+	EndpointTypeGoogle EndpointType = "google"
+	// EndpointTypeGoogleCloud represents Google Vertex AI.
+	EndpointTypeGoogleCloud EndpointType = "google-cloud"
+)
+
+// FieldMapping defines how to map API response fields to model fields.
+// Type conversion is automatic based on the destination field type.
+type FieldMapping struct {
+	From string `yaml:"from" json:"from"` // Source field path in API response (e.g., "max_model_len")
+	To   string `yaml:"to" json:"to"`     // Target field path in Model (e.g., "limits.context_window")
+}
+
+// FeatureRule defines conditions for inferring model features.
+type FeatureRule struct {
+	Field    string   `yaml:"field" json:"field"`       // Field to check (e.g., "id", "owned_by")
+	Contains []string `yaml:"contains" json:"contains"` // If field contains any of these strings
+	Feature  string   `yaml:"feature" json:"feature"`   // Feature to enable (e.g., "tools", "reasoning")
+	Value    bool     `yaml:"value" json:"value"`       // Value to set for the feature
+}
+
+// AuthorMapping defines how to extract and normalize authors.
+type AuthorMapping struct {
+	Field      string              `yaml:"field" json:"field"`           // Field to extract from (e.g., "owned_by")
+	Normalized map[string]AuthorID `yaml:"normalized" json:"normalized"` // Normalization map (e.g., "Meta" -> "meta")
+}
+
+// ProviderEndpoint configures how to access the provider's model catalog.
+type ProviderEndpoint struct {
+	Type          EndpointType   `yaml:"type" json:"type"`                                         // Required: API style
+	URL           string         `yaml:"url" json:"url"`                                           // Required: API endpoint
+	AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                       // Required: Whether auth needed
+	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"` // Field mappings
+	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`   // Feature inference rules
+	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"` // Author extraction
+}
+
 // ProviderCatalog represents information about a provider's models.
 type ProviderCatalog struct {
-	DocsURL        *string `json:"docs_url,omitempty" yaml:"docs_url,omitempty"`                 // Models API documentation URL
-	APIURL         *string `json:"api_url,omitempty" yaml:"api_url,omitempty"`                   // Models API endpoint URL
-	APIKeyRequired *bool   `json:"api_key_required,omitempty" yaml:"api_key_required,omitempty"` // Whether the provider requires an API key to access the catalog
+	Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
+	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
+	Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
 }
 
 // ProviderAPIKey represents configuration for an API key to access a provider's catalog.
@@ -210,9 +254,7 @@ const (
 
 // IsAPIKeyRequired checks if a provider requires an API key.
 func (p *Provider) IsAPIKeyRequired() bool {
-	return p.Catalog != nil &&
-		p.Catalog.APIKeyRequired != nil &&
-		*p.Catalog.APIKeyRequired
+	return p.Catalog != nil && p.Catalog.Endpoint.AuthRequired
 }
 
 // ProviderValidationStatus represents the validation status of a provider.
@@ -344,7 +386,7 @@ func (p *Provider) HasRequiredEnvVars() bool {
 }
 
 // MissingEnvVars returns a list of required environment variables that are not set.
-func (p *Provider) MissingEnvVars() []string {
+func (p *Provider) MissingRequiredEnvVars() []string {
 	var missing []string
 	for _, envVar := range p.EnvVars {
 		if envVar.Required {
@@ -453,5 +495,5 @@ func (p *Provider) Model(modelID string) (*Model, error) {
 		}
 	}
 
-	return &model, nil
+	return model, nil
 }

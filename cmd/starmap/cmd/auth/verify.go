@@ -72,7 +72,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 		return err
 	}
 
-	fetcher := sources.NewProviderFetcher()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 
 	fmt.Println("Verifying provider credentials...")
@@ -257,7 +257,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 		return err
 	}
 
-	fetcher := sources.NewProviderFetcher()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
 
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)

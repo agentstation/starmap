@@ -14,8 +14,8 @@ import (
 )
 
 // Test helper functions.
-func createTestModel(id, name string, contextWindow int64) catalogs.Model {
-	return catalogs.Model{
+func createTestModel(id, name string, contextWindow int64) *catalogs.Model {
+	return &catalogs.Model{
 		ID:          id,
 		Name:        name,
 		Description: "Test model " + name,
@@ -25,8 +25,8 @@ func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 	}
 }
 
-func createTestModelWithPricing(id, name string, inputCost, outputCost float64) catalogs.Model {
-	return catalogs.Model{
+func createTestModelWithPricing(id, name string, inputCost, outputCost float64) *catalogs.Model {
+	return &catalogs.Model{
 		ID:   id,
 		Name: name,
 		Pricing: &catalogs.ModelPricing{
@@ -43,11 +43,11 @@ func createTestModelWithPricing(id, name string, inputCost, outputCost float64) 
 	}
 }
 
-func createTestProvider(id catalogs.ProviderID, name string) catalogs.Provider {
-	return catalogs.Provider{
+func createTestProvider(id catalogs.ProviderID, name string) *catalogs.Provider {
+	return &catalogs.Provider{
 		ID:   id,
 		Name: name,
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"model-1": createTestModel("model-1", "Test Model", 1000),
 		},
 	}
@@ -76,36 +76,36 @@ func TestMergerInterface(t *testing.T) {
 func TestMergeModelsBasic(t *testing.T) {
 	tests := []struct {
 		name     string
-		sources  map[sources.Type][]catalogs.Model
-		expected []catalogs.Model
+		sources  map[sources.ID][]*catalogs.Model
+		expected []*catalogs.Model
 	}{
 		{
 			name:     "empty sources",
-			sources:  map[sources.Type][]catalogs.Model{},
-			expected: []catalogs.Model{},
+			sources:  map[sources.ID][]*catalogs.Model{},
+			expected: []*catalogs.Model{},
 		},
 		{
 			name: "single source single model",
-			sources: map[sources.Type][]catalogs.Model{
-				sources.ProviderAPI: {
+			sources: map[sources.ID][]*catalogs.Model{
+				sources.ProvidersID: {
 					createTestModel("model-1", "API Model", 1000),
 				},
 			},
-			expected: []catalogs.Model{
+			expected: []*catalogs.Model{
 				createTestModel("model-1", "API Model", 1000),
 			},
 		},
 		{
 			name: "multiple sources same model",
-			sources: map[sources.Type][]catalogs.Model{
-				sources.ProviderAPI: {
+			sources: map[sources.ID][]*catalogs.Model{
+				sources.ProvidersID: {
 					createTestModel("model-1", "API Model", 1000),
 				},
-				sources.ModelsDevHTTP: {
+				sources.ModelsDevHTTPID: {
 					createTestModelWithPricing("model-1", "ModelsDev Model", 0.5, 1.0),
 				},
 			},
-			expected: []catalogs.Model{
+			expected: []*catalogs.Model{
 				{
 					ID:   "model-1",
 					Name: "API Model", // Provider API name takes precedence
@@ -128,16 +128,16 @@ func TestMergeModelsBasic(t *testing.T) {
 		},
 		{
 			name: "multiple models from different sources",
-			sources: map[sources.Type][]catalogs.Model{
-				sources.ProviderAPI: {
+			sources: map[sources.ID][]*catalogs.Model{
+				sources.ProvidersID: {
 					createTestModel("model-1", "API Model 1", 1000),
 					createTestModel("model-2", "API Model 2", 2000),
 				},
-				sources.ModelsDevHTTP: {
+				sources.ModelsDevHTTPID: {
 					createTestModel("model-3", "ModelsDev Model", 3000),
 				},
 			},
-			expected: []catalogs.Model{
+			expected: []*catalogs.Model{
 				createTestModel("model-1", "API Model 1", 1000),
 				createTestModel("model-2", "API Model 2", 2000),
 				createTestModel("model-3", "ModelsDev Model", 3000),
@@ -163,7 +163,7 @@ func TestMergeModelsBasic(t *testing.T) {
 			}
 
 			// Create maps for easier comparison
-			resultMap := make(map[string]catalogs.Model)
+			resultMap := make(map[string]*catalogs.Model)
 			for _, m := range result {
 				resultMap[m.ID] = m
 			}
@@ -212,11 +212,11 @@ func TestMergeModelsWithProvenance(t *testing.T) {
 
 	merger := newMergerWithProvenance(authorities, strategy, tracker, nil)
 
-	sources := map[sources.Type][]catalogs.Model{
-		sources.ProviderAPI: {
+	sources := map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID: {
 			createTestModel("model-1", "API Model", 1000),
 		},
-		sources.ModelsDevHTTP: {
+		sources.ModelsDevHTTPID: {
 			createTestModelWithPricing("model-1", "ModelsDev Model", 0.5, 1.0),
 		},
 	}
@@ -248,32 +248,32 @@ func TestMergeModelsWithProvenance(t *testing.T) {
 func TestMergeProviders(t *testing.T) {
 	tests := []struct {
 		name     string
-		sources  map[sources.Type][]catalogs.Provider
-		expected []catalogs.Provider
+		sources  map[sources.ID][]*catalogs.Provider
+		expected []*catalogs.Provider
 	}{
 		{
 			name:     "empty sources",
-			sources:  map[sources.Type][]catalogs.Provider{},
-			expected: []catalogs.Provider{},
+			sources:  map[sources.ID][]*catalogs.Provider{},
+			expected: []*catalogs.Provider{},
 		},
 		{
 			name: "single source single provider",
-			sources: map[sources.Type][]catalogs.Provider{
-				sources.ProviderAPI: {
+			sources: map[sources.ID][]*catalogs.Provider{
+				sources.ProvidersID: {
 					createTestProvider("openai", "OpenAI"),
 				},
 			},
-			expected: []catalogs.Provider{
+			expected: []*catalogs.Provider{
 				createTestProvider("openai", "OpenAI"),
 			},
 		},
 		{
 			name: "multiple sources same provider",
-			sources: map[sources.Type][]catalogs.Provider{
-				sources.ProviderAPI: {
+			sources: map[sources.ID][]*catalogs.Provider{
+				sources.ProvidersID: {
 					createTestProvider("openai", "OpenAI API"),
 				},
-				sources.LocalCatalog: {
+				sources.LocalCatalogID: {
 					{
 						ID:           "openai",
 						Name:         "OpenAI Embedded",
@@ -281,12 +281,12 @@ func TestMergeProviders(t *testing.T) {
 					},
 				},
 			},
-			expected: []catalogs.Provider{
+			expected: []*catalogs.Provider{
 				{
 					ID:           "openai",
 					Name:         "OpenAI API", // ProviderAPI has higher authority for Name field
 					Headquarters: stringPtr("San Francisco, USA"),
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"model-1": createTestModel("model-1", "Test Model", 1000),
 					},
 				},
@@ -311,7 +311,7 @@ func TestMergeProviders(t *testing.T) {
 			}
 
 			// Create maps for easier comparison
-			resultMap := make(map[catalogs.ProviderID]catalogs.Provider)
+			resultMap := make(map[catalogs.ProviderID]*catalogs.Provider)
 			for _, p := range result {
 				resultMap[p.ID] = p
 			}
@@ -346,8 +346,8 @@ func TestMergeComplexStructures(t *testing.T) {
 	merger := newMerger(authorities, strategy, nil)
 
 	// Create models with complex structures
-	sources := map[sources.Type][]catalogs.Model{
-		sources.ProviderAPI: {
+	sources := map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID: {
 			{
 				ID:   "model-1",
 				Name: "Test Model",
@@ -360,7 +360,7 @@ func TestMergeComplexStructures(t *testing.T) {
 				},
 			},
 		},
-		sources.ModelsDevHTTP: {
+		sources.ModelsDevHTTPID: {
 			{
 				ID: "model-1",
 				Metadata: &catalogs.ModelMetadata{
@@ -425,8 +425,8 @@ func TestFieldPriorities(t *testing.T) {
 	strategy := NewAuthorityStrategy(authorities)
 	merger := newMerger(authorities, strategy, nil)
 
-	sources := map[sources.Type][]catalogs.Model{
-		sources.ProviderAPI: {
+	sources := map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID: {
 			{
 				ID:   "model-1",
 				Name: "Provider API Name",
@@ -435,7 +435,7 @@ func TestFieldPriorities(t *testing.T) {
 				},
 			},
 		},
-		sources.ModelsDevHTTP: {
+		sources.ModelsDevHTTPID: {
 			{
 				ID:   "model-1",
 				Name: "ModelsDev Name", // This should be ignored
@@ -480,8 +480,8 @@ func TestNilHandling(t *testing.T) {
 	merger := newMerger(authorities, strategy, nil)
 
 	// Test with nil maps in sources
-	sources := map[sources.Type][]catalogs.Model{
-		sources.ProviderAPI: {
+	sources := map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID: {
 			{
 				ID:       "model-1",
 				Name:     "Test Model",
@@ -490,7 +490,7 @@ func TestNilHandling(t *testing.T) {
 				Features: nil, // nil features
 			},
 		},
-		sources.ModelsDevHTTP: {
+		sources.ModelsDevHTTPID: {
 			{
 				ID: "model-1",
 				Limits: &catalogs.ModelLimits{
@@ -524,7 +524,7 @@ func TestEmptySources(t *testing.T) {
 	merger := newMerger(authorities, strategy, nil)
 
 	// Test with completely empty sources
-	result, prov, err := merger.Models(map[sources.Type][]catalogs.Model{})
+	result, prov, err := merger.Models(map[sources.ID][]*catalogs.Model{})
 	if err != nil {
 		t.Fatalf("MergeModels failed: %v", err)
 	}
@@ -558,8 +558,8 @@ func TestConcurrentMerging(t *testing.T) {
 	done := make(chan bool, 10)
 	for i := 0; i < 10; i++ {
 		go func(id int) {
-			sources := map[sources.Type][]catalogs.Model{
-				sources.ProviderAPI: {
+			sources := map[sources.ID][]*catalogs.Model{
+				sources.ProvidersID: {
 					createTestModel(string(rune('0'+id)), "Model", 1000),
 				},
 			}
@@ -585,15 +585,15 @@ func BenchmarkMergeModels(b *testing.B) {
 	merger := newMerger(authorities, strategy, nil)
 
 	// Create test data
-	testSources := map[sources.Type][]catalogs.Model{
-		sources.ProviderAPI:   make([]catalogs.Model, 100),
-		sources.ModelsDevHTTP: make([]catalogs.Model, 100),
+	testSources := map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID:     make([]*catalogs.Model, 100),
+		sources.ModelsDevHTTPID: make([]*catalogs.Model, 100),
 	}
 
 	for i := 0; i < 100; i++ {
 		id := string(rune('a'+i%26)) + string(rune('0'+i/26))
-		testSources[sources.ProviderAPI][i] = createTestModel(id, "API Model", int64(i*1000))
-		testSources[sources.ModelsDevHTTP][i] = createTestModelWithPricing(id, "ModelsDev Model", float64(i)*0.1, float64(i)*0.2)
+		testSources[sources.ProvidersID][i] = createTestModel(id, "API Model", int64(i*1000))
+		testSources[sources.ModelsDevHTTPID][i] = createTestModelWithPricing(id, "ModelsDev Model", float64(i)*0.1, float64(i)*0.2)
 	}
 
 	b.ResetTimer()
@@ -626,14 +626,14 @@ func TestMergeFieldReflection(t *testing.T) {
 	}
 
 	// Test simple field access
-	name := sm.modelFieldValue(model, "Name")
+	name := sm.modelFieldValue(&model, "Name")
 	if name != "Test Model" {
 		t.Errorf("Expected name 'Test Model', got %v", name)
 	}
 
 	// Test nested field access - this won't work with current implementation
 	// as it expects capitalized field names in the path
-	contextWindow := sm.modelFieldValue(model, "Limits")
+	contextWindow := sm.modelFieldValue(&model, "Limits")
 	if contextWindow == nil {
 		t.Error("Expected Limits to be non-nil")
 	}
@@ -653,8 +653,8 @@ func TestEdgeCases(t *testing.T) {
 	merger := newMerger(authorities, strategy, nil)
 
 	t.Run("duplicate models in same source", func(t *testing.T) {
-		sources := map[sources.Type][]catalogs.Model{
-			sources.ProviderAPI: {
+		sources := map[sources.ID][]*catalogs.Model{
+			sources.ProvidersID: {
 				createTestModel("model-1", "First", 1000),
 				createTestModel("model-1", "Second", 2000), // Duplicate ID
 			},
@@ -673,8 +673,8 @@ func TestEdgeCases(t *testing.T) {
 
 	t.Run("very long field paths", func(t *testing.T) {
 		// Test that deep nesting doesn't cause issues
-		sources := map[sources.Type][]catalogs.Model{
-			sources.ProviderAPI: {
+		sources := map[sources.ID][]*catalogs.Model{
+			sources.ProvidersID: {
 				{
 					ID: "model-1",
 					Metadata: &catalogs.ModelMetadata{

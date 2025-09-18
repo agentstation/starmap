@@ -46,14 +46,20 @@ func TestGenerateAuthorIndex(t *testing.T) {
 	g := New()
 
 	authors := catalog.Authors().List()
-	allModels := catalog.GetAllModels()
+	allModels := catalog.Models().List()
 	// Convert to pointer slice
 	models := make([]*catalogs.Model, len(allModels))
 	for i := range allModels {
 		models[i] = &allModels[i]
 	}
 
-	err := g.generateAuthorIndex(tempDir, authors, models, catalog)
+	// Convert authors to pointer slice
+	authorPointers := make([]*catalogs.Author, len(authors))
+	for i := range authors {
+		authorPointers[i] = &authors[i]
+	}
+
+	err := g.generateAuthorIndex(tempDir, authorPointers, models, catalog)
 	require.NoError(t, err)
 
 	// Read the generated index
@@ -145,7 +151,7 @@ func TestGenerateAuthorModelPages(t *testing.T) {
 	assert.DirExists(t, modelsDir)
 
 	// Check that model files were created
-	allModels := catalog.GetAllModels()
+	allModels := catalog.Models().List()
 	// Convert to pointer slice
 	models := make([]*catalogs.Model, len(allModels))
 	for i := range allModels {
@@ -467,7 +473,7 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 	provider := catalogs.Provider{
 		ID:     catalogs.ProviderIDOpenAI,
 		Name:   "OpenAI",
-		Models: make(map[string]catalogs.Model),
+		Models: make(map[string]*catalogs.Model),
 	}
 	_ = catalog.SetProvider(provider)
 
@@ -524,10 +530,10 @@ func createTestCatalogWithAuthors() catalogs.Reader {
 	}
 
 	// Associate models with provider
-	provider.Models = map[string]catalogs.Model{
-		gpt4.ID:   gpt4,
-		claude.ID: claude,
-		gemini.ID: gemini,
+	provider.Models = map[string]*catalogs.Model{
+		gpt4.ID:   &gpt4,
+		claude.ID: &claude,
+		gemini.ID: &gemini,
 	}
 	_ = catalog.SetProvider(provider)
 
@@ -692,12 +698,12 @@ func TestGenerateAuthorDocsComprehensive(t *testing.T) {
 			provider := catalogs.Provider{
 				ID:     catalogs.ProviderID("test-provider"),
 				Name:   "Test Provider",
-				Models: make(map[string]catalogs.Model),
+				Models: make(map[string]*catalogs.Model),
 			}
 
 			// Add all models to the provider
 			for _, model := range tt.models {
-				provider.Models[model.ID] = model
+				provider.Models[model.ID] = &model
 			}
 
 			// Set the provider with all models
@@ -901,9 +907,9 @@ func TestGenerateAuthorModelPageComplex(t *testing.T) {
 			// Add model to provider
 			provider, _ := catalog.Provider(catalogs.ProviderID("openai"))
 			if provider.Models == nil {
-				provider.Models = make(map[string]catalogs.Model)
+				provider.Models = make(map[string]*catalogs.Model)
 			}
-			provider.Models[tt.model.ID] = *tt.model
+			provider.Models[tt.model.ID] = tt.model
 			err = catalog.SetProvider(provider)
 			require.NoError(t, err)
 
@@ -1017,12 +1023,12 @@ func TestGenerateAuthorReadmeEdgeCases(t *testing.T) {
 			provider := catalogs.Provider{
 				ID:     catalogs.ProviderID("test-provider"),
 				Name:   "Test Provider",
-				Models: make(map[string]catalogs.Model),
+				Models: make(map[string]*catalogs.Model),
 			}
 
 			// Add all models to the provider
 			for _, model := range tt.models {
-				provider.Models[model.ID] = model
+				provider.Models[model.ID] = &model
 			}
 
 			// Set the provider with all models

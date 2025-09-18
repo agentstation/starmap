@@ -1,14 +1,10 @@
 package starmap
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -28,22 +24,26 @@ type options struct {
 	autoUpdateInterval time.Duration
 	autoUpdateFunc     AutoUpdateFunc
 
-	// Initial catalog
-	initialCatalog *catalogs.Catalog
+	// local catalog path
+	localPath string
 
-	// Local source configuration
-	localPath string // Path for local source catalog
+	// embedded catalog
+	embeddedCatalogEnabled bool
+
+	sources []sources.ID // Configured sources for syncing
 }
 
-func defaultOptions() *options {
+func defaults() *options {
 	return &options{
-		autoUpdatesEnabled: true,                            // Default to auto-updates enabled
-		autoUpdateInterval: constants.DefaultUpdateInterval, // Default to hourly updates
-		autoUpdateFunc:     nil,                             // Default to no auto-update function
-		initialCatalog:     nil,                             // Default to no initial catalog
-		remoteServerURL:    nil,                             // Default to no remote server
-		remoteServerAPIKey: nil,                             // Default to no remote server API key
-		remoteServerOnly:   false,                           // Default to not only use remote server
+		autoUpdatesEnabled:     true,                            // Default to auto-updates enabled
+		autoUpdateInterval:     constants.DefaultUpdateInterval, // Default to hourly updates
+		autoUpdateFunc:         nil,                             // Default to no auto-update function
+		localPath:              "",                              // Default to no local path
+		embeddedCatalogEnabled: false,                           // Default to no embedded catalog
+		sources:                []sources.ID{},                  // Default to no sources
+		remoteServerURL:        nil,                             // Default to no remote server
+		remoteServerAPIKey:     nil,                             // Default to no remote server API key
+		remoteServerOnly:       false,                           // Default to not only use remote server
 	}
 }
 
@@ -51,13 +51,11 @@ func defaultOptions() *options {
 type Option func(*options) error
 
 // apply applies the given options to the options.
-func (s *starmap) apply(opts ...Option) error {
+func (o *options) apply(opts ...Option) *options {
 	for _, opt := range opts {
-		if err := opt(s.options); err != nil {
-			return errors.WrapResource("apply", "option", "", err)
-		}
+		opt(o)
 	}
-	return nil
+	return o
 }
 
 // WithRemoteServer configures the remote server for catalog updates.
@@ -72,17 +70,17 @@ func WithRemoteServer(url string, apiKey *string) Option {
 }
 
 // WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
-func WithRemoteServerOnly(enabled bool) Option {
+func WithRemoteServerOnly() Option {
 	return func(o *options) error {
-		o.remoteServerOnly = enabled
+		o.remoteServerOnly = true
 		return nil
 	}
 }
 
-// WithAutoUpdates configures whether automatic updates are enabled.
-func WithAutoUpdates(enabled bool) Option {
+// WithAutoUpdatesDisabled configures whether automatic updates are disabled.
+func WithAutoUpdatesDisabled() Option {
 	return func(o *options) error {
-		o.autoUpdatesEnabled = enabled
+		o.autoUpdatesEnabled = false
 		return nil
 	}
 }
@@ -106,13 +104,13 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {
 	}
 }
 
-// WithInitialCatalog configures the initial catalog to use.
-func WithInitialCatalog(catalog catalogs.Catalog) Option {
-	return func(o *options) error {
-		o.initialCatalog = &catalog
-		return nil
-	}
-}
+// // WithInitialCatalog configures the initial catalog to use.
+// func WithInitialCatalog(catalog catalogs.Catalog) Option {
+// 	return func(o *options) error {
+// 		o.initialCatalog = &catalog
+// 		return nil
+// 	}
+// }
 
 // WithLocalPath configures the local source to use a specific catalog path.
 func WithLocalPath(path string) Option {
@@ -122,198 +120,11 @@ func WithLocalPath(path string) Option {
 	}
 }
 
-// ============================================================================
-// Sync Options
-// ============================================================================
-
-// SyncOptions controls the overall sync orchestration in Starmap.Sync().
-type SyncOptions struct {
-	// Orchestration control
-	DryRun      bool          // Show changes without applying them
-	AutoApprove bool          // Skip confirmation prompts
-	FailFast    bool          // Stop on first source error instead of continuing
-	Timeout     time.Duration // Timeout for the entire sync operation
-
-	// Source selection
-	Sources    []sources.Type       // Which sources to use (empty means all)
-	ProviderID *catalogs.ProviderID // Filter for specific provider
-
-	// Output control (used AFTER merging)
-	OutputPath string // Where to save final catalog (empty means default location)
-
-	// Source behavior control
-	Fresh              bool   // Delete existing models and fetch fresh from APIs (destructive)
-	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
-	Reformat           bool   // Reformat providers.yaml file even without changes
-	SourcesDir         string // Directory for external source data (models.dev cache/git)
-}
-
-// Apply applies the given options to the sync options.
-func (s *SyncOptions) apply(opts ...SyncOption) *SyncOptions {
-	for _, opt := range opts {
-		opt(s)
-	}
-	return s
-}
-
-// defaultSyncOptions returns sync options with default values.
-func defaultSyncOptions() *SyncOptions {
-	return &SyncOptions{
-		DryRun:             false,
-		AutoApprove:        false,
-		FailFast:           false,
-		Timeout:            0,
-		Sources:            nil,
-		ProviderID:         nil,
-		OutputPath:         "",
-		Fresh:              false,
-		CleanModelsDevRepo: false,
-		Reformat:           false,
-	}
-}
-
-// NewSyncOptions returns sync options with default values.
-func NewSyncOptions(opts ...SyncOption) *SyncOptions {
-	return defaultSyncOptions().apply(opts...)
-}
-
-// SyncOption is a function that configures SyncOptions.
-type SyncOption func(*SyncOptions)
-
-// Validate checks if the sync options are valid.
-func (s *SyncOptions) Validate(providers *catalogs.Providers) error {
-	// Validate timeout
-	if s.Timeout < 0 {
-		return &errors.ValidationError{
-			Field:   "Timeout",
-			Value:   s.Timeout,
-			Message: "timeout must be non-negative",
-		}
-	}
-
-	// Validate provider ID if specified
-	if s.ProviderID != nil {
-		_, found := providers.Get(*s.ProviderID)
-		if !found {
-			return &errors.ValidationError{
-				Field:   "ProviderID",
-				Value:   *s.ProviderID,
-				Message: fmt.Sprintf("provider '%s' not found", *s.ProviderID),
-			}
-		}
-	}
-
-	// Validate output path if specified
-	if s.OutputPath != "" {
-		// Check if parent directory exists
-		dir := filepath.Dir(s.OutputPath)
-		if dir != "." && dir != "/" {
-			if _, err := os.Stat(dir); os.IsNotExist(err) {
-				return &errors.ValidationError{
-					Field:   "OutputPath",
-					Value:   s.OutputPath,
-					Message: fmt.Sprintf("output directory '%s' does not exist", dir),
-				}
-			}
-		}
-	}
-
-	return nil
-}
-
-// SourceOptions converts sync options to properly typed source options.
-func (s *SyncOptions) SourceOptions() []sources.Option {
-	var sourceOpts []sources.Option
-
-	if s.ProviderID != nil {
-		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*s.ProviderID))
-	}
-	if s.Fresh {
-		sourceOpts = append(sourceOpts, sources.WithFresh(true))
-	}
-	if s.CleanModelsDevRepo {
-		sourceOpts = append(sourceOpts, sources.WithCleanupRepo(true))
-	}
-	if s.Reformat {
-		sourceOpts = append(sourceOpts, sources.WithReformat(true))
-	}
-
-	return sourceOpts
-}
-
-// WithDryRun configures dry run mode.
-func WithDryRun(dryRun bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.DryRun = dryRun
-	}
-}
-
-// WithAutoApprove configures auto approval.
-func WithAutoApprove(autoApprove bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.AutoApprove = autoApprove
-	}
-}
-
-// WithFailFast configures fail-fast behavior.
-func WithFailFast(failFast bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.FailFast = failFast
-	}
-}
-
-// WithTimeout configures the sync timeout.
-func WithTimeout(timeout time.Duration) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.Timeout = timeout
-	}
-}
-
-// WithSources configures which sources to use.
-func WithSources(types ...sources.Type) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.Sources = types
-	}
-}
-
-// WithProvider configures syncing for a specific provider only.
-func WithProvider(providerID catalogs.ProviderID) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.ProviderID = &providerID
-	}
-}
-
-// WithOutputPath configures the output path for saving.
-func WithOutputPath(path string) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.OutputPath = path
-	}
-}
-
-// WithFresh configures whether to delete existing models and fetch fresh from APIs.
-func WithFresh(fresh bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.Fresh = fresh
-	}
-}
-
-// WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update.
-func WithCleanModelsDevRepo(cleanup bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.CleanModelsDevRepo = cleanup
-	}
-}
-
-// WithReformat configures whether to reformat providers.yaml file even without changes.
-func WithReformat(reformat bool) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.Reformat = reformat
-	}
-}
-
-// WithSourcesDir configures the directory for external source data (models.dev cache/git).
-func WithSourcesDir(dir string) SyncOption {
-	return func(opts *SyncOptions) {
-		opts.SourcesDir = dir
+// WithEmbeddedCatalog configures whether to use an embedded catalog.
+// It defaults to false, but takes precedence over WithLocalPath if set.
+func WithEmbeddedCatalog() Option {
+	return func(o *options) error {
+		o.embeddedCatalogEnabled = true
+		return nil
 	}
 }

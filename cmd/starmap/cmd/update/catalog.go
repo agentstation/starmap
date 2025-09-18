@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -15,13 +14,10 @@ func LoadCatalog(inputPath string, isQuiet bool) (starmap.Starmap, error) {
 	var sm starmap.Starmap
 	var err error
 
+	// If input path is provided, use it
 	if inputPath != "" {
 		// Use file-based catalog from input directory
-		filesCatalog, err := catalogs.New(catalogs.WithPath(inputPath))
-		if err != nil {
-			return nil, errors.WrapResource("create", "catalog", inputPath, err)
-		}
-		sm, err = starmap.New(starmap.WithInitialCatalog(filesCatalog))
+		sm, err = starmap.New(starmap.WithLocalPath(inputPath))
 		if err != nil {
 			return nil, errors.WrapResource("create", "starmap", "files catalog", err)
 		}
@@ -30,7 +26,7 @@ func LoadCatalog(inputPath string, isQuiet bool) (starmap.Starmap, error) {
 		}
 	} else {
 		// Use default starmap with embedded catalog
-		sm, err = starmap.New()
+		sm, err = starmap.New(starmap.WithEmbeddedCatalog())
 		if err != nil {
 			return nil, errors.WrapResource("create", "starmap", "", err)
 		}

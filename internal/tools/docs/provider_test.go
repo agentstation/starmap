@@ -48,7 +48,12 @@ func TestGenerateProviderIndex(t *testing.T) {
 	g := New()
 
 	providers := catalog.Providers().List()
-	err := g.generateProviderIndex(tempDir, providers)
+	// Convert to pointer slice
+	providerPointers := make([]*catalogs.Provider, len(providers))
+	for i := range providers {
+		providerPointers[i] = &providers[i]
+	}
+	err := g.generateProviderIndex(tempDir, providerPointers)
 	require.NoError(t, err)
 
 	// Read the generated index
@@ -159,7 +164,7 @@ func TestGenerateProviderModelPage(t *testing.T) {
 	// Get author map
 	authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 	for _, author := range catalog.Authors().List() {
-		authorMap[author.ID] = author
+		authorMap[author.ID] = &author
 	}
 
 	// Generate the model page
@@ -367,16 +372,16 @@ func createTestCatalogWithProviders() catalogs.Reader {
 	openaiProvider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
-			"gpt-4": gpt4,
+		Models: map[string]*catalogs.Model{
+			"gpt-4": &gpt4,
 		},
 	}
 
 	anthropicProvider := catalogs.Provider{
 		ID:   catalogs.ProviderIDAnthropic,
 		Name: "Anthropic",
-		Models: map[string]catalogs.Model{
-			"claude-3-opus": claude,
+		Models: map[string]*catalogs.Model{
+			"claude-3-opus": &claude,
 		},
 	}
 
@@ -397,7 +402,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     catalogs.ProviderIDGroq,
 				Name:   "Groq",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 			},
 			verify: func(t *testing.T, content string) {
 				assert.Contains(t, content, "# <img src=")
@@ -411,7 +416,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:   catalogs.ProviderIDOpenAI,
 				Name: "OpenAI",
-				Models: map[string]catalogs.Model{
+				Models: map[string]*catalogs.Model{
 					"gpt-4": {ID: "gpt-4", Name: "GPT-4"},
 				},
 				APIKey: &catalogs.ProviderAPIKey{
@@ -433,7 +438,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     catalogs.ProviderIDAnthropic,
 				Name:   "Anthropic",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				StatusPageURL: func() *string {
 					s := "https://status.anthropic.com"
 					return &s
@@ -449,10 +454,12 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "endpoint-provider",
 				Name:   "Endpoint Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				Catalog: &catalogs.ProviderCatalog{
-					DocsURL: stringPtr("https://docs.example.com/api"),
-					APIURL:  stringPtr("https://api.example.com/v1/models"),
+					Docs: stringPtr("https://docs.example.com/api"),
+					Endpoint: catalogs.ProviderEndpoint{
+						URL: "https://api.example.com/v1/models",
+					},
 				},
 			},
 			verify: func(t *testing.T, content string) {
@@ -468,7 +475,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "chat-provider",
 				Name:   "Chat Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				ChatCompletions: &catalogs.ProviderChatCompletions{
 					URL: stringPtr("https://api.example.com/v1/chat/completions"),
 				},
@@ -484,7 +491,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     catalogs.ProviderIDCerebras,
 				Name:   "Cerebras",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				ChatCompletions: &catalogs.ProviderChatCompletions{
 					URL: func() *string {
 						s := "https://api.cerebras.ai/v1/chat/completions"
@@ -503,7 +510,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "privacy-provider",
 				Name:   "Privacy Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				PrivacyPolicy: &catalogs.ProviderPrivacyPolicy{
 					PrivacyPolicyURL:  stringPtr("https://privacy.example.com"),
 					TermsOfServiceURL: stringPtr("https://terms.example.com"),
@@ -528,7 +535,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "retention-provider",
 				Name:   "Retention Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				RetentionPolicy: &catalogs.ProviderRetentionPolicy{
 					Type:     catalogs.ProviderRetentionTypeFixed,
 					Duration: durationPtr(30 * 24 * time.Hour),
@@ -547,7 +554,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "governance-provider",
 				Name:   "Governance Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				GovernancePolicy: &catalogs.ProviderGovernancePolicy{
 					ModerationRequired: boolPtr(true),
 					Moderated:          boolPtr(true),
@@ -566,7 +573,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "health-provider",
 				Name:   "Health Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 				ChatCompletions: &catalogs.ProviderChatCompletions{
 					URL:          stringPtr("https://api.example.com/v1/chat"),
 					HealthAPIURL: stringPtr("https://status.example.com/api"),
@@ -587,7 +594,7 @@ func TestGenerateProviderReadmeEdgeCasesOriginal(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:   catalogs.ProviderIDGoogleVertex,
 				Name: "Google Vertex",
-				Models: map[string]catalogs.Model{
+				Models: map[string]*catalogs.Model{
 					"gemini-pro": {ID: "gemini-pro", Name: "Gemini Pro"},
 				},
 				APIKey: &catalogs.ProviderAPIKey{
@@ -657,21 +664,21 @@ func TestGenerateProviderIndexWithVariousProviders(t *testing.T) {
 				s := "https://status.openai.com"
 				return &s
 			}(),
-			Models: map[string]catalogs.Model{
+			Models: map[string]*catalogs.Model{
 				"gpt-4": {ID: "gpt-4", Name: "GPT-4"},
 			},
 		},
 		{
 			ID:   catalogs.ProviderIDGroq,
 			Name: "Groq",
-			Models: map[string]catalogs.Model{
+			Models: map[string]*catalogs.Model{
 				"llama-3-70b": {ID: "llama-3-70b", Name: "Llama 3 70B"},
 			},
 		},
 		{
 			ID:     catalogs.ProviderIDCerebras,
 			Name:   "Cerebras",
-			Models: map[string]catalogs.Model{},
+			Models: map[string]*catalogs.Model{},
 		},
 	}
 
@@ -763,8 +770,8 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
-			complexModel.ID: complexModel,
+		Models: map[string]*catalogs.Model{
+			complexModel.ID: &complexModel,
 		},
 	}
 
@@ -775,7 +782,7 @@ func TestGenerateProviderModelPageWithComplexModel(t *testing.T) {
 	// Create author map
 	authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 	for _, author := range catalog.Authors().List() {
-		authorMap[author.ID] = author
+		authorMap[author.ID] = &author
 	}
 
 	modelPath := filepath.Join(tempDir, "complex-model.md")
@@ -843,7 +850,7 @@ func TestGenerateProviderModelPagesWithNoModels(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:     catalogs.ProviderIDGroq,
 		Name:   "Groq",
-		Models: map[string]catalogs.Model{},
+		Models: map[string]*catalogs.Model{},
 	}
 
 	catalog.SetProvider(provider)
@@ -896,7 +903,7 @@ func TestGenerateProviderReadmeEdgeCases(t *testing.T) {
 			provider: &catalogs.Provider{
 				ID:     "empty-provider",
 				Name:   "Empty Provider",
-				Models: map[string]catalogs.Model{},
+				Models: map[string]*catalogs.Model{},
 			},
 			contains: []string{
 				"Empty Provider",
@@ -968,12 +975,12 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 				{
 					ID:     "provider1",
 					Name:   "Provider 1",
-					Models: map[string]catalogs.Model{},
+					Models: map[string]*catalogs.Model{},
 				},
 				{
 					ID:     "provider2",
 					Name:   "Provider 2",
-					Models: map[string]catalogs.Model{},
+					Models: map[string]*catalogs.Model{},
 				},
 			},
 			models: []catalogs.Model{},
@@ -989,7 +996,7 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 				{
 					ID:   "test-provider",
 					Name: "Test Provider",
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"model-1": {
 							ID:   "model-1",
 							Name: "Model 1",
@@ -1025,12 +1032,12 @@ func TestGenerateProviderDocsComprehensive(t *testing.T) {
 			for i, provider := range tt.providers {
 				// Add models to the provider
 				if provider.Models == nil {
-					provider.Models = make(map[string]catalogs.Model)
+					provider.Models = make(map[string]*catalogs.Model)
 				}
 				// Distribute models among providers
 				for j, model := range tt.models {
 					if j%len(tt.providers) == i {
-						provider.Models[model.ID] = model
+						provider.Models[model.ID] = &model
 					}
 				}
 				err := catalog.SetProvider(provider)
@@ -1090,7 +1097,7 @@ func TestGenerateVerboseMode(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:     "test",
 		Name:   "Test Provider",
-		Models: map[string]catalogs.Model{},
+		Models: map[string]*catalogs.Model{},
 	}
 	err = catalog.SetProvider(provider)
 	require.NoError(t, err)
@@ -1343,9 +1350,9 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 
 			// Add model to provider
 			if tt.provider.Models == nil {
-				tt.provider.Models = make(map[string]catalogs.Model)
+				tt.provider.Models = make(map[string]*catalogs.Model)
 			}
-			tt.provider.Models[tt.model.ID] = *tt.model
+			tt.provider.Models[tt.model.ID] = tt.model
 			err = catalog.SetProvider(*tt.provider)
 			require.NoError(t, err)
 
@@ -1359,7 +1366,7 @@ func TestGenerateProviderModelPageComplex(t *testing.T) {
 			modelPath := filepath.Join(modelsDir, tt.model.ID+".md")
 			authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 			for _, author := range catalog.Authors().List() {
-				authorMap[author.ID] = author
+				authorMap[author.ID] = &author
 			}
 			err = gen.generateProviderModelPage(modelPath, tt.model, tt.provider, authorMap)
 			require.NoError(t, err)
@@ -1440,9 +1447,9 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 
 			// Add model to provider
 			if tt.provider.Models == nil {
-				tt.provider.Models = make(map[string]catalogs.Model)
+				tt.provider.Models = make(map[string]*catalogs.Model)
 			}
-			tt.provider.Models[tt.model.ID] = *tt.model
+			tt.provider.Models[tt.model.ID] = tt.model
 			err = catalog.SetProvider(*tt.provider)
 			require.NoError(t, err)
 
@@ -1456,7 +1463,7 @@ func TestGenerateProviderModelPageEdgeCases(t *testing.T) {
 			modelPath := filepath.Join(modelsDir, tt.model.ID+".md")
 			authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 			for _, author := range catalog.Authors().List() {
-				authorMap[author.ID] = author
+				authorMap[author.ID] = &author
 			}
 			err = gen.generateProviderModelPage(modelPath, tt.model, tt.provider, authorMap)
 			require.NoError(t, err)
@@ -1553,8 +1560,8 @@ func TestGenerateProviderModelPageErrors(t *testing.T) {
 		provider := &catalogs.Provider{
 			ID:   "test",
 			Name: "Test",
-			Models: map[string]catalogs.Model{
-				model.ID: *model,
+			Models: map[string]*catalogs.Model{
+				model.ID: model,
 			},
 		}
 
@@ -1569,7 +1576,7 @@ func TestGenerateProviderModelPageErrors(t *testing.T) {
 		modelFile := filepath.Join(modelsDir, model.ID+".md")
 		authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 		for _, author := range catalog.Authors().List() {
-			authorMap[author.ID] = author
+			authorMap[author.ID] = &author
 		}
 		err = gen.generateProviderModelPage(modelFile, model, provider, authorMap)
 		assert.Error(t, err)

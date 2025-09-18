@@ -23,11 +23,11 @@ const (
 
 // FieldChange represents a change to a specific field.
 type FieldChange struct {
-	Path     string       // Field path (e.g., "pricing.input")
-	OldValue string       // Previous value (string representation)
-	NewValue string       // New value (string representation)
-	Type     ChangeType   // Type of change
-	Source   sources.Type // Source that caused the change (for provenance)
+	Path     string     // Field path (e.g., "pricing.input")
+	OldValue string     // Previous value (string representation)
+	NewValue string     // New value (string representation)
+	Type     ChangeType // Type of change
+	Source   sources.ID // Source that caused the change (for provenance)
 }
 
 // ModelUpdate represents an update to an existing model.

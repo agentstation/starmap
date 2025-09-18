@@ -215,7 +215,7 @@ func createTestCatalog() catalogs.Reader {
 	provider := catalogs.Provider{
 		ID:   "test-provider",
 		Name: "Test Provider",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"test-model": {
 				ID:       "test-model",
 				Name:     "Test Model",
@@ -255,15 +255,15 @@ func createTestCatalog() catalogs.Reader {
 		},
 	}
 	// Update provider with complex model
-	provider.Models["complex-model"] = model
+	provider.Models["complex-model"] = &model
 	catalog.SetProvider(provider)
 
 	// Also create OpenAI provider for this model
 	openaiProvider := catalogs.Provider{
 		ID:   catalogs.ProviderID("openai"),
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
-			model.ID: model,
+		Models: map[string]*catalogs.Model{
+			model.ID: &model,
 		},
 	}
 	catalog.SetProvider(openaiProvider)
@@ -361,7 +361,7 @@ func TestGenerateWithConfigurations(t *testing.T) {
 				provider := catalogs.Provider{
 					ID:   catalogs.ProviderID("test-provider"),
 					Name: "Test Provider",
-					Models: map[string]catalogs.Model{
+					Models: map[string]*catalogs.Model{
 						"model-1": {
 							ID:   "model-1",
 							Name: "Model 1",

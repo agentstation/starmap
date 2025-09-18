@@ -37,7 +37,7 @@ type Client struct {
 func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,
-		transport: transport.NewForProvider(provider),
+		transport: transport.New(provider),
 	}
 }
 
@@ -56,7 +56,7 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.provider = provider
-	c.transport = transport.NewForProvider(provider)
+	c.transport = transport.New(provider)
 }
 
 // ListModels retrieves all available models from Anthropic.
@@ -109,14 +109,14 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	models := make([]catalogs.Model, 0, len(result.Data))
 	for _, m := range result.Data {
 		model := c.convertToModel(m)
-		models = append(models, model)
+		models = append(models, *model)
 	}
 
 	return models, nil
 }
 
 // convertToModel converts an Anthropic model response to a starmap Model.
-func (c *Client) convertToModel(m modelResponse) catalogs.Model {
+func (c *Client) convertToModel(m modelResponse) *catalogs.Model {
 	model := catalogs.Model{
 		ID:   m.ID,
 		Name: m.DisplayName,
@@ -140,7 +140,7 @@ func (c *Client) convertToModel(m modelResponse) catalogs.Model {
 	// Don't set limits - let models.dev provide accurate data
 	// Anthropic API doesn't return token limits, so we rely on models.dev
 
-	return model
+	return &model
 }
 
 // inferFeatures infers model features based on the model ID.

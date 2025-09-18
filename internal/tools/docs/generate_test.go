@@ -84,8 +84,8 @@ func TestGenerateWithSimpleCatalog(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
-			model.ID: model,
+		Models: map[string]*catalogs.Model{
+			model.ID: &model,
 		},
 	}
 	err = catalog.SetProvider(provider)
@@ -237,10 +237,10 @@ func TestGenerateComprehensive(t *testing.T) {
 				provider := catalogs.Provider{
 					ID:     catalogs.ProviderIDOpenAI,
 					Name:   "OpenAI",
-					Models: make(map[string]catalogs.Model),
+					Models: make(map[string]*catalogs.Model),
 				}
 				for _, m := range models {
-					provider.Models[m.ID] = m
+					provider.Models[m.ID] = &m
 				}
 				if err := catalog.SetProvider(provider); err != nil {
 					return nil, err
@@ -389,8 +389,8 @@ func TestGenerateModelDocsError(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:   catalogs.ProviderID("test-provider"),
 		Name: "Test Provider",
-		Models: map[string]catalogs.Model{
-			model.ID: model,
+		Models: map[string]*catalogs.Model{
+			model.ID: &model,
 		},
 	}
 	err = catalog.SetProvider(provider)

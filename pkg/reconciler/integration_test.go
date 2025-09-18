@@ -16,18 +16,18 @@ import (
 )
 
 // Helper function to add models to a catalog through a provider.
-func addModelsToProvider(cat catalogs.Catalog, providerID string, models []catalogs.Model) error {
+func addModelsToProvider(cat catalogs.Catalog, providerID string, models []*catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
 		// Create provider if it doesn't exist
 		provider = catalogs.Provider{
 			ID:     catalogs.ProviderID(providerID),
 			Name:   providerID,
-			Models: make(map[string]catalogs.Model),
+			Models: make(map[string]*catalogs.Model),
 		}
 	}
 	if provider.Models == nil {
-		provider.Models = make(map[string]catalogs.Model)
+		provider.Models = make(map[string]*catalogs.Model)
 	}
 	for _, model := range models {
 		provider.Models[model.ID] = model
@@ -46,7 +46,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Add models to embedded catalog
-	embeddedModels := []catalogs.Model{
+	embeddedModels := []*catalogs.Model{
 		{
 			ID:     "gpt-4",
 			Name:   "GPT-4 (Embedded)",
@@ -79,7 +79,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Fatalf("Failed to create API catalog: %v", err)
 	}
 
-	apiModels := []catalogs.Model{
+	apiModels := []*catalogs.Model{
 		{
 			ID:   "gpt-4",
 			Name: "GPT-4 Turbo",
@@ -118,7 +118,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Fatalf("Failed to create models.dev catalog: %v", err)
 	}
 
-	modelsDevModels := []catalogs.Model{
+	modelsDevModels := []*catalogs.Model{
 		{
 			ID:   "gpt-4",
 			Name: "GPT-4",
@@ -196,14 +196,14 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Reconcile catalogs from multiple sources
-	srcMap := map[sources.Type]catalogs.Catalog{
-		sources.LocalCatalog:  embeddedCat,
-		sources.ProviderAPI:   apiCat,
-		sources.ModelsDevHTTP: modelsDevCat,
+	srcMap := map[sources.ID]catalogs.Catalog{
+		sources.LocalCatalogID:  embeddedCat,
+		sources.ProvidersID:     apiCat,
+		sources.ModelsDevHTTPID: modelsDevCat,
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
-	result, err := reconcile.Sources(ctx, sources.ProviderAPI, srcs)
+	result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -214,7 +214,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Check merged models
-	models := result.Catalog.GetAllModels()
+	models := result.Catalog.Models().List()
 	if len(models) != 3 {
 		t.Errorf("Expected 3 models after reconciliation, got %d", len(models))
 	}
@@ -277,7 +277,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		t.Fatalf("Failed to add provider to catalog1: %v", err)
 	}
 	// Now add models to the provider
-	if err := addModelsToProvider(catalog1, "test-provider", []catalogs.Model{{
+	if err := addModelsToProvider(catalog1, "test-provider", []*catalogs.Model{{
 		ID:   "model-1",
 		Name: "Model 1 from Catalog 1",
 		Pricing: &catalogs.ModelPricing{
@@ -294,7 +294,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 	}
 
 	catalog2, _ := catalogs.New()
-	if err := addModelsToProvider(catalog2, "test-provider", []catalogs.Model{{
+	if err := addModelsToProvider(catalog2, "test-provider", []*catalogs.Model{{
 		ID:   "model-1",
 		Name: "Model 1 from Catalog 2",
 		Pricing: &catalogs.ModelPricing{
@@ -310,9 +310,9 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog2: %v", err)
 	}
 
-	srcMap := map[sources.Type]catalogs.Catalog{
-		sources.ProviderAPI:  catalog1,
-		sources.ModelsDevGit: catalog2,
+	srcMap := map[sources.ID]catalogs.Catalog{
+		sources.ProvidersID:    catalog1,
+		sources.ModelsDevGitID: catalog2,
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
@@ -331,9 +331,9 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		},
 		{
 			name: "Source Priority Order",
-			strategy: reconciler.NewSourceOrderStrategy([]sources.Type{
-				sources.ModelsDevGit,
-				sources.ProviderAPI,
+			strategy: reconciler.NewSourceOrderStrategy([]sources.ID{
+				sources.ModelsDevGitID,
+				sources.ProvidersID,
 			}),
 			wantName:  "Model 1 from Catalog 2", // ModelsDevGit has higher priority in the strategy
 			wantPrice: 20.0,                     // Price from ModelsDevGit which has higher priority
@@ -347,13 +347,13 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 				t.Fatalf("Failed to create reconciler: %v", err)
 			}
 
-			result, err := reconcile.Sources(ctx, sources.ProviderAPI, srcs)
+			result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
 			if err != nil {
 				t.Fatalf("ReconcileCatalogs failed: %v", err)
 			}
 
 			// Debug: Check what's in the result catalog
-			allModels := result.Catalog.GetAllModels()
+			allModels := result.Catalog.Models().List()
 			t.Logf("Total models in result catalog: %d", len(allModels))
 			for _, m := range allModels {
 				t.Logf("  Model: ID=%s, Name=%s", m.ID, m.Name)
@@ -393,7 +393,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 
 	// Create initial catalog state
 	oldCatalog, _ := catalogs.New()
-	oldModels := []catalogs.Model{
+	oldModels := []*catalogs.Model{
 		{
 			ID:   "model-1",
 			Name: "Model 1",
@@ -422,7 +422,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 
 	// Create new catalog state with changes
 	newCatalog, _ := catalogs.New()
-	newModels := []catalogs.Model{
+	newModels := []*catalogs.Model{
 		{
 			ID:   "model-1",
 			Name: "Model 1 Updated",
@@ -456,13 +456,13 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 
 	// First reconcile to get the new state
-	srcMap := map[sources.Type]catalogs.Catalog{
-		sources.LocalCatalog: newCatalog,
+	srcMap := map[sources.ID]catalogs.Catalog{
+		sources.LocalCatalogID: newCatalog,
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
 	// Use LocalCatalog as primary since that's what we have
-	result, err := reconcile.Sources(ctx, sources.LocalCatalog, srcs)
+	result, err := reconcile.Sources(ctx, sources.LocalCatalogID, srcs)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -514,7 +514,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 
 	// Create catalogs with conflicting data
 	catalog1, _ := catalogs.New()
-	if err := addModelsToProvider(catalog1, "test-provider", []catalogs.Model{{
+	if err := addModelsToProvider(catalog1, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 1",
 		Pricing: &catalogs.ModelPricing{
@@ -533,7 +533,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 	}
 
 	catalog2, _ := catalogs.New()
-	if err := addModelsToProvider(catalog2, "test-provider", []catalogs.Model{{
+	if err := addModelsToProvider(catalog2, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 2",
 		Pricing: &catalogs.ModelPricing{
@@ -552,7 +552,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 	}
 
 	catalog3, _ := catalogs.New()
-	if err := addModelsToProvider(catalog3, "test-provider", []catalogs.Model{{
+	if err := addModelsToProvider(catalog3, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 3",
 		Pricing: &catalogs.ModelPricing{
@@ -579,14 +579,14 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		t.Fatalf("Failed to create reconciler: %v", err)
 	}
 
-	srcMap := map[sources.Type]catalogs.Catalog{
-		sources.LocalCatalog:  catalog1,
-		sources.ProviderAPI:   catalog2,
-		sources.ModelsDevHTTP: catalog3,
+	srcMap := map[sources.ID]catalogs.Catalog{
+		sources.LocalCatalogID:  catalog1,
+		sources.ProvidersID:     catalog2,
+		sources.ModelsDevHTTPID: catalog3,
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
-	result, err := reconcile.Sources(ctx, sources.ProviderAPI, srcs)
+	result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
@@ -608,7 +608,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 			}
 			// The winning source should be ModelsDevGit (since we don't have ModelsDevHTTP in test)
 			// ModelsDevGit has priority 100 for pricing.input
-			if strings.Contains(field, "input") && infos[0].Source != sources.ModelsDevGit {
+			if strings.Contains(field, "input") && infos[0].Source != sources.ModelsDevGitID {
 				t.Errorf("Expected pricing.input from ModelsDevGit, got %s for field %s", infos[0].Source, field)
 			}
 		}

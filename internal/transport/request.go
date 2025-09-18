@@ -22,8 +22,8 @@ func NewRequestBuilder(provider *catalogs.Provider) *RequestBuilder {
 
 // GetBaseURL returns the base URL for API requests.
 func (rb *RequestBuilder) GetBaseURL() string {
-	if rb.provider != nil && rb.provider.Catalog != nil && rb.provider.Catalog.APIURL != nil {
-		return *rb.provider.Catalog.APIURL
+	if rb.provider != nil && rb.provider.Catalog != nil && rb.provider.Catalog.Endpoint.URL != "" {
+		return rb.provider.Catalog.Endpoint.URL
 	}
 	return ""
 }

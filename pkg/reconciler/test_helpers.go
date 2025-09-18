@@ -10,12 +10,12 @@ import (
 
 // mockSource is a test implementation of sources.Source.
 type mockSource struct {
-	sourceType sources.Type
+	sourceType sources.ID
 	catalog    catalogs.Catalog
 }
 
 // NewMockSource creates a new mock source for testing.
-func NewMockSource(sourceType sources.Type, catalog catalogs.Catalog) sources.Source {
+func NewMockSource(sourceType sources.ID, catalog catalogs.Catalog) sources.Source {
 	return &mockSource{
 		sourceType: sourceType,
 		catalog:    catalog,
@@ -23,7 +23,7 @@ func NewMockSource(sourceType sources.Type, catalog catalogs.Catalog) sources.So
 }
 
 // Type returns the type of this source.
-func (m *mockSource) Type() sources.Type {
+func (m *mockSource) ID() sources.ID {
 	return m.sourceType
 }
 
@@ -49,9 +49,9 @@ func (m *mockSource) Cleanup() error {
 }
 
 // ConvertCatalogsMapToSources converts the old map format to sources slice for testing.
-func ConvertCatalogsMapToSources(srcs map[sources.Type]catalogs.Catalog) []sources.Source {
+func ConvertCatalogsMapToSources(srcs map[sources.ID]catalogs.Catalog) []sources.Source {
 	// Get all source types and sort them for deterministic ordering
-	types := make([]sources.Type, 0, len(srcs))
+	types := make([]sources.ID, 0, len(srcs))
 	for sourceType := range srcs {
 		types = append(types, sourceType)
 	}

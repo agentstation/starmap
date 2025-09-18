@@ -6,36 +6,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/agentstation/starmap/internal/sources/registry"
+	"github.com/agentstation/starmap/internal/sources/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Default implementation functions that will be wired by init().
-var (
-	defaultGetClient     func(*catalogs.Provider) (catalogs.Client, error)
-	defaultHasClient     func(catalogs.ProviderID) bool
-	defaultListProviders func() []catalogs.ProviderID
-	defaultFetchRaw      func(context.Context, *catalogs.Provider, string) ([]byte, error)
-)
-
-func init() {
-	// Wire up the internal implementation to the public API
-	// This bridges the internal packages to the public interface
-	defaultGetClient = registry.Get
-	defaultHasClient = registry.Has
-	defaultListProviders = registry.List
-	defaultFetchRaw = registry.FetchRaw
-}
-
 // ProviderFetcher provides operations for fetching models from provider APIs.
 // This is the public API for external packages to interact with provider data.
 type ProviderFetcher struct {
-	// Private implementation functions that will be wired to internal packages
-	getClientFunc     func(*catalogs.Provider) (catalogs.Client, error)
-	hasClientFunc     func(catalogs.ProviderID) bool
-	listProvidersFunc func() []catalogs.ProviderID
-	fetchRawFunc      func(context.Context, *catalogs.Provider, string) ([]byte, error)
+	providers *catalogs.Providers
+	options   *providerOptions
 }
 
 // providerOptions holds configuration for ProviderFetcher operations.
@@ -45,11 +25,18 @@ type providerOptions struct {
 	timeout         time.Duration // Context timeout for operations
 }
 
+func (po *providerOptions) apply(opts ...ProviderOption) *providerOptions {
+	for _, opt := range opts {
+		opt(po)
+	}
+	return po
+}
+
 // ProviderOption configures ProviderFetcher behavior.
 type ProviderOption func(*providerOptions)
 
-// defaultProviderOptions returns options with sensible defaults.
-func defaultProviderOptions() *providerOptions {
+// providerDefaults returns options with sensible defaults.
+func providerDefaults() *providerOptions {
 	return &providerOptions{
 		loadCredentials: true,  // Default: auto-load credentials
 		allowMissingKey: false, // Default: require API key
@@ -59,19 +46,29 @@ func defaultProviderOptions() *providerOptions {
 
 // NewProviderFetcher creates a new provider fetcher for interacting with provider APIs.
 // It provides a clean public interface for external packages.
-func NewProviderFetcher(opts ...ProviderOption) *ProviderFetcher {
-	options := defaultProviderOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+// The providers parameter should contain the catalog providers to create clients for.
+func NewProviderFetcher(providers *catalogs.Providers, opts ...ProviderOption) *ProviderFetcher {
+	options := providerDefaults().apply(opts...)
 
 	return &ProviderFetcher{
-		// These will be wired up by the implementation bridge
-		getClientFunc:     defaultGetClient,
-		hasClientFunc:     defaultHasClient,
-		listProvidersFunc: defaultListProviders,
-		fetchRawFunc:      defaultFetchRaw,
+		providers: providers,
+		options:   options,
 	}
+}
+
+// Providers returns the providers that can be used by the provider fetcher.
+func (pf *ProviderFetcher) Providers() *catalogs.Providers {
+	result := catalogs.NewProviders()
+	for _, provider := range pf.providers.List() {
+		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
+			continue
+		}
+		if !provider.HasRequiredEnvVars() {
+			continue
+		}
+		result.Add(&provider)
+	}
+	return result
 }
 
 // WithoutCredentialLoading disables automatic credential loading from environment.
@@ -119,7 +116,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	}
 
 	// Apply options
-	options := defaultProviderOptions()
+	options := providerDefaults()
 	for _, opt := range opts {
 		opt(options)
 	}
@@ -156,15 +153,8 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 		}
 	}
 
-	// Get client from implementation
-	if pf.getClientFunc == nil {
-		return nil, &errors.ConfigError{
-			Component: "provider_fetcher",
-			Message:   "provider implementation not initialized",
-		}
-	}
-
-	client, err := pf.getClientFunc(provider)
+	// Get client from providers
+	client, err := clients.NewProvider(provider)
 	if err != nil {
 		return nil, errors.WrapResource("get", "client", string(provider.ID), err)
 	}
@@ -181,24 +171,6 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	return models, nil
 }
 
-// HasClient checks if a provider has a client implementation available.
-// This can be used to determine which providers are supported.
-func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
-	if pf.hasClientFunc == nil {
-		return false
-	}
-	return pf.hasClientFunc(id)
-}
-
-// List returns all provider IDs that have client implementations.
-// This is useful for discovering which providers can be used with FetchModels.
-func (pf *ProviderFetcher) List() []catalogs.ProviderID {
-	if pf.listProvidersFunc == nil {
-		return []catalogs.ProviderID{}
-	}
-	return pf.listProvidersFunc()
-}
-
 // FetchRawResponse fetches the raw API response from a provider's endpoint.
 // This is useful for testing, debugging, or saving raw responses as testdata.
 //
@@ -213,7 +185,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	}
 
 	// Apply options
-	options := defaultProviderOptions()
+	options := providerDefaults()
 	for _, opt := range opts {
 		opt(options)
 	}
@@ -250,13 +222,6 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 		}
 	}
 
-	// Call internal implementation
-	if pf.fetchRawFunc == nil {
-		return nil, &errors.ConfigError{
-			Component: "provider_fetcher",
-			Message:   "raw fetch implementation not initialized",
-		}
-	}
-
-	return pf.fetchRawFunc(ctx, provider, endpoint)
+	// Call providers' FetchRaw function
+	return clients.FetchRaw(ctx, provider, endpoint)
 }

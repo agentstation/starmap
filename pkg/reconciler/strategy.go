@@ -50,7 +50,7 @@ type Strategy interface {
 	ShouldMerge(resourceType sources.ResourceType) bool
 
 	// ResolveConflict determines how to resolve conflicts
-	ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string)
+	ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
 
 	// ValidateResult validates the reconciliation result
 	ValidateResult(result *Result) error
@@ -122,7 +122,7 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 }
 
 // ResolveConflict uses authorities to resolve conflicts.
-func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string) {
+func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string) {
 	// Get all authorities for this resource type
 	authorities := s.authorities.ModelFields()
 
@@ -177,12 +177,12 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Typ
 // Sources earlier in the priority slice have higher precedence than sources later in the slice.
 type SourceOrderStrategy struct {
 	baseStrategy
-	sourcePriorityOrder []sources.Type // First element = highest priority
+	sourcePriorityOrder []sources.ID // First element = highest priority
 }
 
 // NewSourceOrderStrategy creates a new source priority order strategy.
 // The priorityOrder slice determines precedence: earlier elements have higher priority.
-func NewSourceOrderStrategy(priorityOrder []sources.Type) Strategy {
+func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy {
 	return &SourceOrderStrategy{
 		baseStrategy: baseStrategy{
 			typ:           StrategyTypeSourceOrder,
@@ -199,7 +199,7 @@ func NewSourceOrderStrategy(priorityOrder []sources.Type) Strategy {
 }
 
 // ResolveConflict uses source priority order to resolve conflicts.
-func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.Type]any) (any, sources.Type, string) {
+func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string) {
 	// Check sources in priority order
 	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {

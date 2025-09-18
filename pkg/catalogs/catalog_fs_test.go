@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/save"
 )
 
 // testFS creates a test filesystem with sample catalog data.
@@ -115,7 +116,7 @@ func TestCatalogWithFS(t *testing.T) {
 			// Check loaded data
 			assert.Equal(t, tt.wantProviders, cat.Providers().Len())
 			assert.Equal(t, tt.wantAuthors, cat.Authors().Len())
-			assert.Equal(t, tt.wantModels, len(cat.GetAllModels()))
+			assert.Equal(t, tt.wantModels, len(cat.Models().List()))
 		})
 	}
 }
@@ -146,7 +147,7 @@ name: Test Model
 
 	// Verify data loaded
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, len(cat.GetAllModels()))
+	assert.Equal(t, 1, len(cat.Models().List()))
 
 	provider, err := cat.Provider("test-provider")
 	assert.NoError(t, err)
@@ -165,7 +166,7 @@ func TestCatalogWrite(t *testing.T) {
 
 	// Write to temporary directory
 	tmpDir := t.TempDir()
-	err = cat.(*catalog).Write(tmpDir)
+	err = cat.Save(save.WithPath(tmpDir))
 	require.NoError(t, err)
 
 	// Verify files were written
@@ -179,7 +180,7 @@ func TestCatalogWrite(t *testing.T) {
 
 	assert.Equal(t, cat.Providers().Len(), cat2.Providers().Len())
 	assert.Equal(t, cat.Authors().Len(), cat2.Authors().Len())
-	assert.Equal(t, len(cat.GetAllModels()), len(cat2.GetAllModels()))
+	assert.Equal(t, len(cat.Models().List()), len(cat2.Models().List()))
 }
 
 // TestCatalogLoadMalformed tests handling of malformed YAML.
@@ -220,7 +221,7 @@ name: GPT-3.5 on Groq
 
 	cat, err := New(WithFS(nestedFS))
 	require.NoError(t, err)
-	assert.Equal(t, 2, len(cat.GetAllModels()))
+	assert.Equal(t, 2, len(cat.Models().List()))
 
 	// Verify hierarchical IDs are preserved
 	model1, err := cat.FindModel("meta-llama/llama-3.1/70b")
@@ -243,7 +244,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	// Reader 1
 	go func() {
 		for i := 0; i < 100; i++ {
-			_ = len(cat.GetAllModels())
+			_ = len(cat.Models().List())
 			_ = cat.Providers().Len()
 		}
 		done <- true
@@ -266,11 +267,11 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 			provider = Provider{
 				ID:     "test-provider",
 				Name:   "Test Provider",
-				Models: make(map[string]Model),
+				Models: make(map[string]*Model),
 			}
 		}
 		for i := 0; i < 100; i++ {
-			model := Model{
+			model := &Model{
 				ID:   "test-" + string(rune(i)),
 				Name: "Test Model",
 			}
@@ -293,14 +294,14 @@ func TestMemoryCatalog(t *testing.T) {
 	assert.NotNil(t, cat)
 
 	// Should start empty
-	assert.Equal(t, 0, len(cat.GetAllModels()))
+	assert.Equal(t, 0, len(cat.Models().List()))
 	assert.Equal(t, 0, cat.Providers().Len())
 
 	// Add data programmatically
 	provider := Provider{
 		ID:   "test",
 		Name: "Test Provider",
-		Models: map[string]Model{
+		Models: map[string]*Model{
 			"test-model": {
 				ID:   "test-model",
 				Name: "Test Model",
@@ -312,13 +313,7 @@ func TestMemoryCatalog(t *testing.T) {
 
 	// Verify data
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, len(cat.GetAllModels()))
-
-	// Memory catalog should not support Save
-	if persistable, ok := cat.(Persistable); ok {
-		err = persistable.Save()
-		assert.Error(t, err, "memory catalog should not support Save")
-	}
+	assert.Equal(t, 1, len(cat.Models().List()))
 }
 
 // TestCatalogCopy tests deep copying of catalogs.
@@ -331,16 +326,16 @@ func TestCatalogCopy(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify copy has same data
-	assert.Equal(t, len(original.GetAllModels()), len(copied.GetAllModels()))
+	assert.Equal(t, len(original.Models().List()), len(copied.Models().List()))
 	assert.Equal(t, original.Providers().Len(), copied.Providers().Len())
 
 	// Modify original by adding a model to an existing provider
 	provider, err := original.Provider("openai")
 	assert.NoError(t, err)
 	if provider.Models == nil {
-		provider.Models = make(map[string]Model)
+		provider.Models = make(map[string]*Model)
 	}
-	provider.Models["new-model"] = Model{
+	provider.Models["new-model"] = &Model{
 		ID:   "new-model",
 		Name: "New Model",
 	}
@@ -348,7 +343,7 @@ func TestCatalogCopy(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Copy should not be affected
-	assert.Equal(t, len(original.GetAllModels())-1, len(copied.GetAllModels()))
+	assert.Equal(t, len(original.Models().List())-1, len(copied.Models().List()))
 }
 
 // BenchmarkCatalogLoad benchmarks loading catalogs.
@@ -367,7 +362,7 @@ func BenchmarkCatalogWalk(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = len(cat.GetAllModels())
+		_ = len(cat.Models().List())
 	}
 }
 

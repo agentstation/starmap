@@ -19,8 +19,14 @@ import (
 func (g *Generator) generateProviderDocs(dir string, catalog catalogs.Reader) error {
 	providers := catalog.Providers().List()
 
+	// Convert to pointer slice for compatibility
+	providerPointers := make([]*catalogs.Provider, len(providers))
+	for i := range providers {
+		providerPointers[i] = &providers[i]
+	}
+
 	// First generate the provider index
-	if err := g.generateProviderIndex(dir, providers); err != nil {
+	if err := g.generateProviderIndex(dir, providerPointers); err != nil {
 		return fmt.Errorf("generating provider index: %w", err)
 	}
 
@@ -37,12 +43,12 @@ func (g *Generator) generateProviderDocs(dir string, catalog catalogs.Reader) er
 			return fmt.Errorf("creating provider models directory: %w", err)
 		}
 
-		if err := g.generateProviderReadme(providerDir, provider, catalog); err != nil {
+		if err := g.generateProviderReadme(providerDir, &provider, catalog); err != nil {
 			return fmt.Errorf("generating provider %s README: %w", provider.ID, err)
 		}
 
 		// Generate model pages for this provider
-		if err := g.generateProviderModelPages(modelsDir, provider, catalog); err != nil {
+		if err := g.generateProviderModelPages(modelsDir, &provider, catalog); err != nil {
 			return fmt.Errorf("generating provider %s model pages: %w", provider.ID, err)
 		}
 	}
@@ -280,7 +286,7 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 	// API Endpoints section
 	if provider.Catalog != nil || provider.ChatCompletions != nil {
 		hasEndpoints := false
-		if provider.Catalog != nil && (provider.Catalog.DocsURL != nil || provider.Catalog.APIURL != nil) {
+		if provider.Catalog != nil && (provider.Catalog.Docs != nil || provider.Catalog.Endpoint.URL != "") {
 			hasEndpoints = true
 		}
 		if provider.ChatCompletions != nil && (provider.ChatCompletions.URL != nil || provider.ChatCompletions.HealthAPIURL != nil) {
@@ -291,11 +297,11 @@ func (g *Generator) writeProviderReadme(w io.Writer, provider *catalogs.Provider
 			markdown.H2("🔗 API Endpoints").LF()
 
 			if provider.Catalog != nil {
-				if provider.Catalog.DocsURL != nil {
-					markdown.PlainText(fmt.Sprintf("**Documentation**: [%s](%s)  ", *provider.Catalog.DocsURL, *provider.Catalog.DocsURL)).LF()
+				if provider.Catalog.Docs != nil {
+					markdown.PlainText(fmt.Sprintf("**Documentation**: [%s](%s)  ", *provider.Catalog.Docs, *provider.Catalog.Docs)).LF()
 				}
-				if provider.Catalog.APIURL != nil {
-					markdown.PlainText(fmt.Sprintf("**Models API**: [%s](%s)  ", *provider.Catalog.APIURL, *provider.Catalog.APIURL)).LF()
+				if provider.Catalog.Endpoint.URL != "" {
+					markdown.PlainText(fmt.Sprintf("**Models API**: [%s](%s)  ", provider.Catalog.Endpoint.URL, provider.Catalog.Endpoint.URL)).LF()
 				}
 			}
 
@@ -598,7 +604,7 @@ func (g *Generator) generateProviderModelPages(dir string, provider *catalogs.Pr
 	// Get author map for cross-references
 	authorMap := make(map[catalogs.AuthorID]*catalogs.Author)
 	for _, author := range catalog.Authors().List() {
-		authorMap[author.ID] = author
+		authorMap[author.ID] = &author
 	}
 
 	// Generate a page for each model

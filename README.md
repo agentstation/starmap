@@ -1176,8 +1176,11 @@ type Starmap interface {
     // OnModelRemoved registers a callback for when models are removed
     OnModelRemoved(ModelRemovedHook)
 
-    // Write saves the current catalog to disk
-    Write() error
+    // Save persists the current catalog to disk
+    Save() error
+
+    // WriteTo writes the catalog to the given writer in JSON format
+    WriteTo(w io.Writer) (int64, error)
 }
 ```
 

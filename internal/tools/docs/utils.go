@@ -403,7 +403,7 @@ func getResearchInfo(author *catalogs.Author) string {
 }
 
 // SortedModels converts a map of models to a sorted slice for deterministic iteration.
-func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
+func SortedModels(models map[string]*catalogs.Model) []*catalogs.Model {
 	if len(models) == 0 {
 		return nil
 	}
@@ -412,7 +412,7 @@ func SortedModels(models map[string]catalogs.Model) []*catalogs.Model {
 	result := make([]*catalogs.Model, 0, len(models))
 	for _, model := range models {
 		m := model // Copy to avoid reference issues
-		result = append(result, &m)
+		result = append(result, m)
 	}
 
 	// Sort by ID for deterministic ordering

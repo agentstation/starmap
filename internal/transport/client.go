@@ -19,17 +19,12 @@ type Client struct {
 }
 
 // New creates a new transport client with the specified authenticator.
-func New(auth Authenticator) *Client {
+func New(provider *catalogs.Provider) *Client {
+	auth := getAuthenticatorForProvider(provider)
 	return &Client{
 		http: &http.Client{Timeout: DefaultHTTPTimeout},
 		auth: auth,
 	}
-}
-
-// NewForProvider creates a transport client configured for a specific provider.
-func NewForProvider(provider *catalogs.Provider) *Client {
-	auth := getAuthenticatorForProvider(provider)
-	return New(auth)
 }
 
 // Do performs an HTTP request with authentication applied.

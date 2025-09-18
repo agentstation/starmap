@@ -21,6 +21,13 @@ go test ./internal/sources/providers/openai -update  # Update testdata
 1. **Simple Merging** (`pkg/catalogs/`) - 1-2 sources, last-write-wins
 2. **Complex Reconciliation** (`pkg/reconcile/`) - 3+ sources, field-level authority
 
+### Thread Safety
+Starmap is designed for concurrent access:
+- **Value semantics**: Collections return values, not pointers
+- **Deep copying**: All data access returns independent copies  
+- **Thread-safe operations**: Concurrent reads/writes supported
+- See `THREAD_SAFETY.md` for detailed information
+
 ### Data Sources & Authority
 - **Provider APIs**: Model existence, availability
 - **models.dev**: Pricing, limits, logos
@@ -133,6 +140,22 @@ make fix            # Format and tidy
 make lint           # Run linters
 make test           # Run tests
 make all            # Complete cycle: clean, fix, lint, test, build
+```
+
+## Thread Safety Testing
+
+```bash
+# Test concurrent operations
+go test ./pkg/catalogs -run TestConcurrentCatalogAccess -v
+
+# Run with race detector  
+go test ./pkg/catalogs -race -v
+
+# Benchmark concurrent performance
+go test ./pkg/catalogs -bench=BenchmarkConcurrentAccess -v
+
+# Test all packages with race detection
+go test ./... -race -short
 ```
 
 ## Documentation & Embedded Catalog

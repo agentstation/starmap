@@ -12,14 +12,14 @@ import (
 
 // Provenance tracks the origin and history of a field value.
 type Provenance struct {
-	Source        sources.Type // Source that provided the value
-	Field         string       // Field path
-	Value         any          // The actual value
-	Timestamp     time.Time    // When the value was set
-	Authority     float64      // Authority score (0.0 to 1.0)
-	Confidence    float64      // Confidence in the value (0.0 to 1.0)
-	Reason        string       // Reason for selecting this value
-	PreviousValue any          // Previous value if updated
+	Source        sources.ID // Source that provided the value
+	Field         string     // Field path
+	Value         any        // The actual value
+	Timestamp     time.Time  // When the value was set
+	Authority     float64    // Authority score (0.0 to 1.0)
+	Confidence    float64    // Confidence in the value (0.0 to 1.0)
+	Reason        string     // Reason for selecting this value
+	PreviousValue any        // Previous value if updated
 }
 
 // Map tracks provenance for multiple resources.
@@ -146,10 +146,10 @@ type Field struct {
 
 // ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
-	Sources        []sources.Type // Sources that had conflicting values
-	Values         []any          // The conflicting values
-	Resolution     string         // How the conflict was resolved
-	SelectedSource sources.Type   // Which source was selected
+	Sources        []sources.ID // Sources that had conflicting values
+	Values         []any        // The conflicting values
+	Resolution     string       // How the conflict was resolved
+	SelectedSource sources.ID   // Which source was selected
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -220,7 +220,7 @@ func detectConflicts(infos []Provenance) []ConflictInfo {
 	for _, group := range byTime {
 		if len(group) > 1 {
 			conflict := ConflictInfo{
-				Sources: []sources.Type{},
+				Sources: []sources.ID{},
 				Values:  []any{},
 			}
 

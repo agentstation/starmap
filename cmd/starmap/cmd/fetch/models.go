@@ -84,7 +84,7 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 	}
 
 	// Use provider fetcher
-	fetcher := sources.NewProviderFetcher()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
 	models, err := fetcher.FetchModels(ctx, prov)
 	if err != nil {
 		return &errors.SyncError{
@@ -116,7 +116,12 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 	var outputData any
 	switch globalFlags.Output {
 	case "table", "wide", "":
-		tableData := table.ModelsToTableData(models, false)
+		// Convert to pointer slice for table compatibility
+		modelPointers := make([]*catalogs.Model, len(models))
+		for i := range models {
+			modelPointers[i] = &models[i]
+		}
+		tableData := table.ModelsToTableData(modelPointers, false)
 		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,
@@ -137,17 +142,22 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 	}
 
 	providers := cat.Providers().List()
-	fetcher := sources.NewProviderFetcher()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
 
 	// Filter to only providers with clients
-	validProviders := provider.FilterWithClients(providers, fetcher.HasClient)
+	// Convert to pointer slice for compatibility
+	providerPointers := make([]*catalogs.Provider, len(providers))
+	for i := range providers {
+		providerPointers[i] = &providers[i]
+	}
+	validProviders := provider.FilterWithClients(providerPointers, fetcher.HasClient)
 	if len(validProviders) == 0 {
 		return fmt.Errorf("no providers with API clients available")
 	}
 
 	type result struct {
 		provider string
-		models   []catalogs.Model
+		models   []*catalogs.Model
 		err      error
 	}
 
@@ -170,9 +180,14 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 			defer cancel()
 
 			models, err := fetcher.FetchModels(fetchCtx, p)
+			// Convert to pointer slice for result struct compatibility
+			modelPointers := make([]*catalogs.Model, len(models))
+			for i := range models {
+				modelPointers[i] = &models[i]
+			}
 			results <- result{
 				provider: string(p.ID),
-				models:   models,
+				models:   modelPointers,
 				err:      err,
 			}
 		}(provider)
@@ -185,7 +200,7 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 	}()
 
 	// Collect results
-	var allModels []catalogs.Model
+	var allModels []*catalogs.Model
 	var successCount, errorCount int
 
 	for r := range results {

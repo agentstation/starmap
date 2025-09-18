@@ -8,7 +8,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/sources/providers/baseclient"
 	"github.com/agentstation/starmap/internal/sources/providers/testhelper"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -20,15 +19,15 @@ func TestMain(m *testing.M) {
 }
 
 // loadTestdataResponse loads an OpenAI API response from testdata.
-func loadTestdataResponse(t *testing.T, filename string) baseclient.OpenAIResponse {
+func loadTestdataResponse(t *testing.T, filename string) Response {
 	t.Helper()
-	var response baseclient.OpenAIResponse
+	var response Response
 	testhelper.LoadJSON(t, filename, &response)
 	return response
 }
 
 // loadTestdataModel loads a single OpenAI model from testdata by finding it in the models list.
-func loadTestdataModel(t *testing.T, modelID string) baseclient.OpenAIModelData {
+func loadTestdataModel(t *testing.T, modelID string) Model {
 	t.Helper()
 	response := loadTestdataResponse(t, "models_list.json")
 
@@ -39,7 +38,7 @@ func loadTestdataModel(t *testing.T, modelID string) baseclient.OpenAIModelData 
 	}
 
 	t.Fatalf("Model %s not found in testdata", modelID)
-	return baseclient.OpenAIModelData{}
+	return Model{}
 }
 
 // TestOpenAIModelDataParsing tests that we can properly parse OpenAI API responses.
@@ -81,7 +80,7 @@ func TestOpenAIModelDataParsing(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Find the model by ID
-			var model baseclient.OpenAIModelData
+			var model Model
 			found := false
 			for _, m := range response.Data {
 				if m.ID == tt.expectedID {
@@ -138,13 +137,38 @@ func TestOpenAISingleModelParsing(t *testing.T) {
 
 // TestConvertToOpenAIModel tests the conversion from OpenAIModelData to catalogs.Model.
 func TestConvertToOpenAIModel(t *testing.T) {
-	// Create a mock OpenAI client
-	client := &Client{
-		OpenAIClient: nil, // We'll test the conversion method directly
+	// Create a test provider with feature rules
+	provider := &catalogs.Provider{
+		ID:   catalogs.ProviderIDOpenAI,
+		Name: "OpenAI",
+		Catalog: &catalogs.ProviderCatalog{
+			Endpoint: catalogs.ProviderEndpoint{
+				Type:         catalogs.EndpointTypeOpenAI,
+				URL:          "https://api.openai.com/v1/models",
+				AuthRequired: true,
+				FeatureRules: []catalogs.FeatureRule{
+					{
+						Field:    "id",
+						Contains: []string{"gpt-4"},
+						Feature:  "tools",
+						Value:    true,
+					},
+					{
+						Field:    "id",
+						Contains: []string{"gpt-4"},
+						Feature:  "tool_choice",
+						Value:    true,
+					},
+				},
+			},
+		},
 	}
 
+	// Create an OpenAI client
+	client := NewClient(provider)
+
 	// Test data based on actual OpenAI API response format
-	openaiModel := baseclient.OpenAIModelData{
+	openaiModel := Model{
 		ID:      "gpt-4o",
 		Object:  "model",
 		Created: 1715367049,
@@ -240,12 +264,23 @@ func TestOpenAIClientListModels(t *testing.T) {
 			Scheme: catalogs.ProviderAPIKeySchemeBearer,
 		},
 		Catalog: &catalogs.ProviderCatalog{
-			APIURL: &server.URL,
+			Endpoint: catalogs.ProviderEndpoint{
+				Type:         catalogs.EndpointTypeOpenAI,
+				URL:          server.URL,
+				AuthRequired: true,
+				FeatureRules: []catalogs.FeatureRule{
+					{
+						Field:    "id",
+						Contains: []string{"gpt-4"},
+						Feature:  "tools",
+						Value:    true,
+					},
+				},
+			},
 		},
 	}
 
-	client := &Client{}
-	client.Configure(provider)
+	client := NewClient(provider)
 
 	// Test ListModels
 	ctx := context.Background()

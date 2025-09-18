@@ -185,7 +185,7 @@ func validateCrossReferences(verbose bool) error {
 	var errors []string
 
 	// Check that all model authors exist
-	models := cat.GetAllModels()
+	models := cat.Models().List()
 	authors := cat.Authors().List()
 	authorMap := make(map[string]bool)
 	for _, author := range authors {

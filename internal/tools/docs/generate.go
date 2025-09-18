@@ -109,13 +109,23 @@ func (g *Generator) copyLogos(catalog catalogs.Reader) error {
 
 	// Copy provider logos
 	providers := catalog.Providers().List()
-	if err := logoCopier.CopyProviderLogos(providers); err != nil {
+	// Convert to pointer slice for compatibility
+	providerPointers := make([]*catalogs.Provider, len(providers))
+	for i := range providers {
+		providerPointers[i] = &providers[i]
+	}
+	if err := logoCopier.CopyProviderLogos(providerPointers); err != nil {
 		return fmt.Errorf("copying provider logos: %w", err)
 	}
 
 	// Copy author logos
 	authors := catalog.Authors().List()
-	if err := logoCopier.CopyAuthorLogos(authors); err != nil {
+	// Convert to pointer slice for compatibility
+	authorPointers := make([]*catalogs.Author, len(authors))
+	for i := range authors {
+		authorPointers[i] = &authors[i]
+	}
+	if err := logoCopier.CopyAuthorLogos(authorPointers); err != nil {
 		return fmt.Errorf("copying author logos: %w", err)
 	}
 

@@ -10,9 +10,11 @@
     scheme: ""
     query_param: ""
   catalog:
-    docs_url: https://docs.anthropic.com/en/docs/about-claude/models/overview
-    api_url: https://api.anthropic.com/v1/models
-    api_key_required: true
+    docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
+    endpoint:
+      type: anthropic
+      url: https://api.anthropic.com/v1/models
+      auth_required: true
   status_page_url: https://status.anthropic.com
   chat_completions:
     url: https://api.anthropic.com/v1/chat/completions
@@ -46,13 +48,31 @@
     scheme: Bearer
     query_param: ""
   catalog:
-    docs_url: https://inference-docs.cerebras.ai/models/overview
-    api_url: https://api.cerebras.ai/v1/models
-    api_key_required: true
-  authors:
-  - alibaba
-  - meta
-  - openai
+    docs: https://inference-docs.cerebras.ai/models/overview
+    endpoint:
+      type: openai
+      url: https://api.cerebras.ai/v1/models
+      auth_required: true
+      feature_rules:
+      - field: id
+        contains: ["llama"]
+        feature: tools
+        value: true
+      - field: id
+        contains: ["r1"]
+        feature: reasoning
+        value: true
+      author_mapping:
+        field: owned_by
+        normalized:
+          "Meta": "meta"
+          "DeepSeek": "deepseek"
+          "OpenAI": "openai"
+          "Alibaba": "alibaba"
+    authors:
+    - alibaba
+    - meta
+    - openai
   status_page_url: https://status.cerebras.ai/
   chat_completions:
     url: https://api.cerebras.ai/v1/chat/completions
@@ -106,9 +126,11 @@
     scheme: Bearer
     query_param: ""
   catalog:
-    docs_url: https://api-docs.deepseek.com/quick_start/pricing
-    api_url: https://api.deepseek.com/models
-    api_key_required: true
+    docs: https://api-docs.deepseek.com/quick_start/pricing
+    endpoint:
+      type: openai
+      url: https://api.deepseek.com/models
+      auth_required: true
   status_page_url: https://status.deepseek.com
   chat_completions:
     url: https://api.deepseek.com/v1/chat/completions
@@ -141,9 +163,11 @@
     scheme: ""
     query_param: ""
   catalog:
-    docs_url: https://ai.google.dev/gemini-api/docs/models
-    api_url: https://generativelanguage.googleapis.com/v1beta/models
-    api_key_required: true
+    docs: https://ai.google.dev/gemini-api/docs/models
+    endpoint:
+      type: google
+      url: https://generativelanguage.googleapis.com/v1beta/models
+      auth_required: true
   status_page_url: https://status.cloud.google.com
   chat_completions:
     url: https://generativelanguage.googleapis.com/v1beta/models
@@ -177,18 +201,20 @@
     required: false
     description: "Path to service account JSON file (optional - uses Application Default Credentials)"
   catalog:
-    docs_url: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
-    api_url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
-    api_key_required: false
-  authors:
-  - ai21
-  - anthropic
-  - deepseek-ai
-  - google
-  - meta
-  - mistralai
-  - openai
-  - qwen
+    docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
+    endpoint:
+      type: google-cloud
+      url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
+      auth_required: false
+    authors:
+    - ai21
+    - anthropic
+    - deepseek-ai
+    - google
+    - meta
+    - mistralai
+    - openai
+    - qwen
   status_page_url: https://status.cloud.google.com
   chat_completions:
     url: https://us-central1-aiplatform.googleapis.com/v1/projects
@@ -218,20 +244,27 @@
     scheme: Bearer
     query_param: ""
   catalog:
-    docs_url: https://console.groq.com/docs/models
-    api_url: https://api.groq.com/openai/v1/models
-    api_key_required: true
-  authors:
-  - alibaba
-  - deepseek
-  - google
-  - groq
-  - huggingfaceh4
-  - meta
-  - moonshotai
-  - openai
-  - playai
-  - sdaia
+    docs: https://console.groq.com/docs/models
+    endpoint:
+      type: openai
+      url: https://api.groq.com/openai/v1/models
+      auth_required: true
+      field_mappings:
+      - from: "context_window"
+        to: "limits.context_window"
+      - from: "max_completion_tokens"
+        to: "limits.output_tokens"
+    authors:
+    - alibaba
+    - deepseek
+    - google
+    - groq
+    - huggingfaceh4
+    - meta
+    - moonshotai
+    - openai
+    - playai
+    - sdaia
   status_page_url: https://status.groq.com
   chat_completions:
     url: https://api.groq.com/openai/v1/chat/completions
@@ -265,9 +298,11 @@
     scheme: Bearer
     query_param: ""
   catalog:
-    docs_url: https://platform.openai.com/docs/models
-    api_url: https://api.openai.com/v1/models
-    api_key_required: true
+    docs: https://platform.openai.com/docs/models
+    endpoint:
+      type: openai
+      url: https://api.openai.com/v1/models
+      auth_required: true
   status_page_url: https://status.openai.com
   chat_completions:
     url: https://api.openai.com/v1/chat/completions

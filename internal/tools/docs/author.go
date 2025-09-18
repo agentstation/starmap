@@ -18,15 +18,21 @@ import (
 // generateAuthorDocs generates documentation for all authors.
 func (g *Generator) generateAuthorDocs(dir string, catalog catalogs.Reader) error {
 	authors := catalog.Authors().List()
-	allModels := catalog.GetAllModels()
+	allModels := catalog.Models().List()
 	// Convert to pointer slice for compatibility
 	models := make([]*catalogs.Model, len(allModels))
 	for i := range allModels {
 		models[i] = &allModels[i]
 	}
 
+	// Convert authors to pointer slice for compatibility
+	authorPointers := make([]*catalogs.Author, len(authors))
+	for i := range authors {
+		authorPointers[i] = &authors[i]
+	}
+
 	// First generate the author index
-	if err := g.generateAuthorIndex(dir, authors, models, catalog); err != nil {
+	if err := g.generateAuthorIndex(dir, authorPointers, models, catalog); err != nil {
 		return fmt.Errorf("generating author index: %w", err)
 	}
 
@@ -43,12 +49,12 @@ func (g *Generator) generateAuthorDocs(dir string, catalog catalogs.Reader) erro
 			return fmt.Errorf("creating author models directory: %w", err)
 		}
 
-		if err := g.generateAuthorReadme(authorDir, author, catalog); err != nil {
+		if err := g.generateAuthorReadme(authorDir, &author, catalog); err != nil {
 			return fmt.Errorf("generating author %s README: %w", author.ID, err)
 		}
 
 		// Generate model pages for this author
-		if err := g.generateAuthorModelPages(modelsDir, author, catalog); err != nil {
+		if err := g.generateAuthorModelPages(modelsDir, &author, catalog); err != nil {
 			return fmt.Errorf("generating author %s model pages: %w", author.ID, err)
 		}
 	}
@@ -278,7 +284,7 @@ func (g *Generator) writeAuthorReadmeContent(f *os.File, author *catalogs.Author
 	markdown := NewMarkdown(f)
 
 	// Get all models from catalog
-	allModelsSlice := catalog.GetAllModels()
+	allModelsSlice := catalog.Models().List()
 	allModels := make([]*catalogs.Model, len(allModelsSlice))
 	for i := range allModelsSlice {
 		allModels[i] = &allModelsSlice[i]
@@ -517,7 +523,7 @@ func (g *Generator) generateAuthorModelPages(dir string, author *catalogs.Author
 	}
 
 	// Get all models from catalog
-	allModelsSlice := catalog.GetAllModels()
+	allModelsSlice := catalog.Models().List()
 	allModels := make([]*catalogs.Model, len(allModelsSlice))
 	for i := range allModelsSlice {
 		allModels[i] = &allModelsSlice[i]
@@ -730,7 +736,7 @@ func (g *Generator) generateAuthorModelPage(dir string, author *catalogs.Author,
 
 	// Other models by same author
 	var otherModels []string
-	allModelsList := catalog.GetAllModels()
+	allModelsList := catalog.Models().List()
 	for _, m := range allModelsList {
 		if m.ID != model.ID {
 			for _, ma := range m.Authors {

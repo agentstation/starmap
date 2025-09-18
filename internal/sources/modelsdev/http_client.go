@@ -92,7 +92,7 @@ func (c *HTTPClient) EnsureAPI(ctx context.Context) error {
 	}
 
 	// Validate JSON structure
-	var testParse map[string]interface{}
+	var testParse map[string]any
 	if err := json.Unmarshal(data, &testParse); err != nil {
 		fmt.Printf("  ⚠️  Invalid JSON response: %v\n", err)
 		return c.useCacheFallback(apiPath)
