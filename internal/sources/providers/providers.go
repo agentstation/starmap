@@ -57,7 +57,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	if options.ProviderID != nil {
 		providerIDs = []catalogs.ProviderID{*options.ProviderID}
 	} else {
-		providerIDs = s.registry.List()
+		// Get all provider IDs from the providers collection
+		for _, p := range s.providers.List() {
+			providerIDs = append(providerIDs, p.ID)
+		}
 	}
 
 	// Get provider configs from injected providers
@@ -88,7 +91,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 		Int("provider_count", len(providerConfigs)).
 		Msg("Syncing providers concurrently")
 
-	// Sync all providers CONCURRENTLY
+	// Sync all providers concurrently
 	var wg sync.WaitGroup
 	resultChan := make(chan providerModels, len(providerConfigs))
 
@@ -111,7 +114,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 					Msg("Skipping provider - no API key")
 				return
 			}
-			if missingVars := p.MissingEnvVars(); len(missingVars) > 0 {
+			if missingVars := p.MissingRequiredEnvVars(); len(missingVars) > 0 {
 				logging.Ctx(logger).Debug().
 					Str("provider_id", string(p.ID)).
 					Strs("missing_env_vars", missingVars).

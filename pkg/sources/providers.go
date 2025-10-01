@@ -66,9 +66,33 @@ func (pf *ProviderFetcher) Providers() *catalogs.Providers {
 		if !provider.HasRequiredEnvVars() {
 			continue
 		}
-		result.Add(&provider)
+		_ = result.Add(&provider) // Ignore error - provider is valid
 	}
 	return result
+}
+
+// List returns all provider IDs that have client implementations.
+func (pf *ProviderFetcher) List() []catalogs.ProviderID {
+	var providerIDs []catalogs.ProviderID
+	for _, provider := range pf.providers.List() {
+		if pf.HasClient(provider.ID) {
+			providerIDs = append(providerIDs, provider.ID)
+		}
+	}
+	return providerIDs
+}
+
+// HasClient checks if a provider ID has a client implementation.
+func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
+	// Check if we have a provider configuration
+	provider, found := pf.providers.Get(id)
+	if !found {
+		return false
+	}
+
+	// Try to create a client for this provider
+	_, err := clients.NewProvider(provider)
+	return err == nil
 }
 
 // WithoutCredentialLoading disables automatic credential loading from environment.
@@ -144,7 +168,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 			}
 		}
 
-		missingEnvVars := provider.MissingEnvVars()
+		missingEnvVars := provider.MissingRequiredEnvVars()
 		if len(missingEnvVars) > 0 {
 			return nil, &errors.ConfigError{
 				Component: string(provider.ID),
@@ -213,7 +237,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 			}
 		}
 
-		missingEnvVars := provider.MissingEnvVars()
+		missingEnvVars := provider.MissingRequiredEnvVars()
 		if len(missingEnvVars) > 0 {
 			return nil, &errors.ConfigError{
 				Component: string(provider.ID),

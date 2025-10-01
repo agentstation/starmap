@@ -20,10 +20,9 @@ type Client struct {
 
 // New creates a new transport client with the specified authenticator.
 func New(provider *catalogs.Provider) *Client {
-	auth := getAuthenticatorForProvider(provider)
 	return &Client{
 		http: &http.Client{Timeout: DefaultHTTPTimeout},
-		auth: auth,
+		auth: newAuthenticator(provider),
 	}
 }
 
@@ -72,8 +71,8 @@ func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provide
 	return c.DoWithContext(ctx, req, provider)
 }
 
-// getAuthenticatorForProvider returns the appropriate authenticator for a provider.
-func getAuthenticatorForProvider(provider *catalogs.Provider) Authenticator {
+// newAuthenticator returns the appropriate authenticator for a provider.
+func newAuthenticator(provider *catalogs.Provider) Authenticator {
 	if provider == nil {
 		return &NoAuth{}
 	}

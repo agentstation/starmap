@@ -1,4 +1,4 @@
-package starmap
+package sync
 
 import (
 	"fmt"
@@ -81,25 +81,8 @@ func (spr *ProviderResult) Summary() string {
 		spr.ProviderID, spr.AddedCount, spr.UpdatedCount, spr.RemovedCount)
 }
 
-// NewSyncResult creates a new Result with initialized maps.
-func NewSyncResult() *Result {
-	return &Result{
-		ProviderResults: make(map[catalogs.ProviderID]*ProviderResult),
-	}
-}
-
-// NewSyncProviderResult creates a new SyncProviderResult.
-func NewSyncProviderResult(providerID catalogs.ProviderID) *ProviderResult {
-	return &ProviderResult{
-		ProviderID: providerID,
-		Added:      []catalogs.Model{},
-		Updated:    []differ.ModelUpdate{},
-		Removed:    []catalogs.Model{},
-	}
-}
-
-// convertChangesetToSyncResult converts a reconcile.Changeset to a SyncResult.
-func convertChangesetToSyncResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *Result {
+// ChangesetToResult converts a reconcile.Changeset to a SyncResult.
+func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *Result {
 	result := &Result{
 		TotalChanges:    changeset.Summary.TotalChanges,
 		DryRun:          dryRun,

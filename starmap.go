@@ -105,7 +105,7 @@ type starmap struct {
 	catalog catalogs.Catalog // working up to date catalog
 	local   catalogs.Catalog // local catalog
 
-	// Auto Update State
+	// auto update state
 	autoUpdatesEnabled bool
 	autoUpdateInterval time.Duration
 	autoUpdateFunc     AutoUpdateFunc

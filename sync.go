@@ -16,7 +16,7 @@ import (
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*Result, error) {
+func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 
 	// Step 0: Check and set context if nil
 	if ctx == nil {
@@ -87,7 +87,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*Result, error
 	}
 
 	// Step 11: Create sync result directly from reconciler's changeset
-	syncResult := convertChangesetToSyncResult(
+	syncResult := sync.ChangesetToResult(
 		result.Changeset,
 		options.DryRun,
 		options.OutputPath,

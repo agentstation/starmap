@@ -22,7 +22,7 @@ import (
 // Updater handles catalog synchronization operations.
 type Updater interface {
 	// Sync synchronizes the catalog with provider APIs
-	Sync(ctx context.Context, opts ...sync.Option) (*Result, error)
+	Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
 
 	// Update manually triggers a catalog update
 	Update(ctx context.Context) error

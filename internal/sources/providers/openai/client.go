@@ -39,9 +39,12 @@ type Model struct {
 
 // Client implements the catalogs.Client interface with dynamic configuration.
 type Client struct {
+	// Transport client
 	transport *transport.Client
-	provider  *catalogs.Provider
-	mu        sync.RWMutex
+
+	// Provider with mutex protection
+	provider *catalogs.Provider
+	mu       sync.RWMutex
 }
 
 // NewClient creates a new dynamic OpenAI-compatible client.

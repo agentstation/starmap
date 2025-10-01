@@ -422,7 +422,7 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 		HasAPIKey:          p.HasAPIKey(),
 		IsAPIKeyRequired:   p.IsAPIKeyRequired(),
 		HasRequiredEnvVars: p.HasRequiredEnvVars(),
-		MissingEnvVars:     p.MissingEnvVars(),
+		MissingEnvVars:     p.MissingRequiredEnvVars(),
 		IsSupported:        supportedProviders[p.ID],
 	}
 
