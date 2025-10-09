@@ -1,4 +1,3 @@
-// Package list provides commands for listing starmap resources.
 package list
 
 import (
@@ -8,9 +7,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/catalog"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
@@ -21,56 +20,62 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// ModelsCmd represents the list models subcommand.
-var ModelsCmd = &cobra.Command{
-	Use:     "models [model-id]",
-	Short:   "List models from catalog",
-	Aliases: []string{"model"},
-	Args:    cobra.MaximumNArgs(1),
-	Example: `  starmap list models                          # List all models
+// NewModelsCommand creates the list models subcommand using app context.
+func NewModelsCommand(app AppContext) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "models [model-id]",
+		Short:   "List models from catalog",
+		Aliases: []string{"model"},
+		Args:    cobra.MaximumNArgs(1),
+		Example: `  starmap list models                          # List all models
   starmap list models claude-3-5-sonnet        # Show specific model details
   starmap list models --provider openai        # List OpenAI models only
   starmap list models --search claude          # Search for models by name`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		// Single model detail view
-		if len(args) == 1 {
-			return showModelDetails(cmd, args[0])
-		}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// Get logger from app
+			logger := app.Logger()
 
-		// List view with filters
-		resourceFlags := globals.ParseResources(cmd)
-		showDetails, _ := cmd.Flags().GetBool("details")
-		capability, _ := cmd.Flags().GetString("capability")
-		minContext, _ := cmd.Flags().GetInt64("min-context")
-		maxPrice, _ := cmd.Flags().GetFloat64("max-price")
-		exportFormat, _ := cmd.Flags().GetString("export")
+			// Single model detail view
+			if len(args) == 1 {
+				return showModelDetailsWithApp(cmd, app, logger, args[0])
+			}
 
-		return listModels(cmd, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
-	},
-}
+			// List view with filters
+			resourceFlags := globals.ParseResources(cmd)
+			showDetails, _ := cmd.Flags().GetBool("details")
+			capability, _ := cmd.Flags().GetString("capability")
+			minContext, _ := cmd.Flags().GetInt64("min-context")
+			maxPrice, _ := cmd.Flags().GetFloat64("max-price")
+			exportFormat, _ := cmd.Flags().GetString("export")
 
-func init() {
+			return listModelsWithApp(cmd, app, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
+		},
+	}
+
 	// Add resource-specific flags
-	globals.AddResourceFlags(ModelsCmd)
-	ModelsCmd.Flags().Bool("details", false,
+	globals.AddResourceFlags(cmd)
+	cmd.Flags().Bool("details", false,
 		"Show detailed information for each model")
-	ModelsCmd.Flags().String("capability", "",
+	cmd.Flags().String("capability", "",
 		"Filter by capability (e.g., tool_calls, reasoning, vision)")
-	ModelsCmd.Flags().Int64("min-context", 0,
+	cmd.Flags().Int64("min-context", 0,
 		"Minimum context window size")
-	ModelsCmd.Flags().Float64("max-price", 0,
+	cmd.Flags().Float64("max-price", 0,
 		"Maximum price per 1M input tokens")
-	ModelsCmd.Flags().String("export", "",
+	cmd.Flags().String("export", "",
 		"Export models in specified format (openai, openrouter)")
+
+	return cmd
 }
 
-// listModels lists all models with optional filters.
-func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
-	// Get catalog
-	cat, err := catalog.Load()
+// listModelsWithApp lists all models with optional filters using app context.
+func listModelsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+	// Get catalog from app
+	catInterface, err := app.Catalog()
 	if err != nil {
 		return err
 	}
+	cat := catInterface.(catalogs.Catalog)
 
 	// Get all models
 	allModels := cat.Models().List()
@@ -98,7 +103,6 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 
 	// Handle export format if specified
 	if exportFormat != "" {
-		// Convert to pointer slice for export compatibility
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
 			modelPointers[i] = &filtered[i]
@@ -117,13 +121,11 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		// Convert to pointer slice for table compatibility
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
 			modelPointers[i] = &filtered[i]
 		}
 		tableData := table.ModelsToTableData(modelPointers, showDetails)
-		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -133,18 +135,20 @@ func listModels(cmd *cobra.Command, flags *globals.ResourceFlags, capability str
 	}
 
 	if !globalFlags.Quiet {
-		fmt.Fprintf(os.Stderr, "Found %d models\n", len(filtered))
+		logger.Info().Msgf("Found %d models", len(filtered))
 	}
 
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showModelDetails shows detailed information about a specific model.
-func showModelDetails(cmd *cobra.Command, modelID string) error {
-	cat, err := catalog.Load()
+// showModelDetailsWithApp shows detailed information about a specific model using app context.
+func showModelDetailsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, modelID string) error {
+	// Get catalog from app
+	catInterface, err := app.Catalog()
 	if err != nil {
 		return err
 	}
+	cat := catInterface.(catalogs.Catalog)
 
 	// Find specific model across all providers
 	providers := cat.Providers().List()
@@ -175,6 +179,46 @@ func showModelDetails(cmd *cobra.Command, modelID string) error {
 	}
 }
 
+// exportModels exports models in the specified format (openai or openrouter).
+func exportModels(models []*catalogs.Model, format string) error {
+	var output any
+	switch strings.ToLower(format) {
+	case "openai":
+		openAIModels := make([]convert.OpenAIModel, 0, len(models))
+		for _, model := range models {
+			openAIModels = append(openAIModels, convert.ToOpenAIModel(model))
+		}
+		output = convert.OpenAIModelsResponse{
+			Object: "list",
+			Data:   openAIModels,
+		}
+	case "openrouter":
+		openRouterModels := make([]convert.OpenRouterModel, 0, len(models))
+		for _, model := range models {
+			openRouterModels = append(openRouterModels, convert.ToOpenRouterModel(model))
+		}
+		output = convert.OpenRouterModelsResponse{
+			Data: openRouterModels,
+		}
+	default:
+		return &errors.ValidationError{
+			Field:   "export",
+			Value:   format,
+			Message: "unsupported format (use 'openai' or 'openrouter')",
+		}
+	}
+
+	// Pretty print JSON output
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+
+	if err := encoder.Encode(output); err != nil {
+		return errors.WrapParse("json", "output", err)
+	}
+
+	return nil
+}
+
 // printModelDetails prints detailed model information using table format.
 func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
 	formatter := output.NewFormatter(output.FormatTable)
@@ -195,7 +239,6 @@ func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter
 		{"Provider", fmt.Sprintf("%s (%s)", provider.Name, provider.ID)},
 	}
 
-	// Show authors
 	if len(model.Authors) > 0 {
 		authorNames := make([]string, len(model.Authors))
 		for i, author := range model.Authors {
@@ -360,49 +403,4 @@ func printArchitectureInfo(model *catalogs.Model, formatter output.Formatter) {
 		_ = formatter.Format(os.Stdout, archTable)
 		fmt.Println()
 	}
-}
-
-// exportModels exports models in the specified format (openai or openrouter).
-func exportModels(models []*catalogs.Model, format string) error {
-	// Convert models to pointers for compatibility with convert package
-	modelPtrs := make([]*catalogs.Model, len(models))
-	copy(modelPtrs, models)
-
-	// Convert models to specified format
-	var output any
-	switch strings.ToLower(format) {
-	case "openai":
-		openAIModels := make([]convert.OpenAIModel, 0, len(modelPtrs))
-		for _, model := range modelPtrs {
-			openAIModels = append(openAIModels, convert.ToOpenAIModel(model))
-		}
-		output = convert.OpenAIModelsResponse{
-			Object: "list",
-			Data:   openAIModels,
-		}
-	case "openrouter":
-		openRouterModels := make([]convert.OpenRouterModel, 0, len(modelPtrs))
-		for _, model := range modelPtrs {
-			openRouterModels = append(openRouterModels, convert.ToOpenRouterModel(model))
-		}
-		output = convert.OpenRouterModelsResponse{
-			Data: openRouterModels,
-		}
-	default:
-		return &errors.ValidationError{
-			Field:   "export",
-			Value:   format,
-			Message: "unsupported format (use 'openai' or 'openrouter')",
-		}
-	}
-
-	// Pretty print JSON output
-	encoder := json.NewEncoder(os.Stdout)
-	encoder.SetIndent("", "  ")
-
-	if err := encoder.Encode(output); err != nil {
-		return errors.WrapParse("json", "output", err)
-	}
-
-	return nil
 }

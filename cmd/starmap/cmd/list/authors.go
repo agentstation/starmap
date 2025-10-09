@@ -1,16 +1,15 @@
-// Package list provides commands for listing starmap resources.
 package list
 
 import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/catalog"
 	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -18,47 +17,61 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// AuthorsCmd represents the list authors subcommand.
-var AuthorsCmd = &cobra.Command{
-	Use:     "authors [author-id]",
-	Short:   "List authors from catalog",
-	Aliases: []string{"author"},
-	Args:    cobra.MaximumNArgs(1),
-	Example: `  starmap list authors                     # List all authors
-  starmap list authors openai              # Show specific author details
-  starmap list authors --search meta       # Search for authors by name`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		// Single author detail view
-		if len(args) == 1 {
-			return showAuthorDetails(cmd, args[0])
-		}
+// NewAuthorsCommand creates the list authors subcommand using app context.
+func NewAuthorsCommand(app AppContext) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "authors [author-id]",
+		Short:   "List authors from catalog",
+		Aliases: []string{"author"},
+		Args:    cobra.MaximumNArgs(1),
+		Example: `  starmap list authors                  # List all authors
+  starmap list authors openai           # Show specific author details
+  starmap list authors --search meta    # Search authors by name`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			logger := app.Logger()
 
-		// List view with filters
-		resourceFlags := globals.ParseResources(cmd)
-		return listAuthors(cmd, resourceFlags)
-	},
-}
+			// Single author detail view
+			if len(args) == 1 {
+				return showAuthorDetailsWithApp(cmd, app, logger, args[0])
+			}
 
-func init() {
+			// List view
+			resourceFlags := globals.ParseResources(cmd)
+			return listAuthorsWithApp(cmd, app, logger, resourceFlags)
+		},
+	}
+
 	// Add resource-specific flags
-	globals.AddResourceFlags(AuthorsCmd)
+	globals.AddResourceFlags(cmd)
+
+	return cmd
 }
 
-// listAuthors lists all authors with optional filters.
-func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
-	cat, err := catalog.Load()
+// listAuthorsWithApp lists all authors using app context.
+func listAuthorsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+	// Get catalog from app
+	catInterface, err := app.Catalog()
 	if err != nil {
 		return err
 	}
+	cat := catInterface.(catalogs.Catalog)
 
 	// Get all authors
-	authors := cat.Authors().List()
+	allAuthors := cat.Authors().List()
 
-	// Apply filters
-	authorFilter := &filter.AuthorFilter{
-		Search: flags.Search,
+	// Apply search filter if specified
+	var filtered []catalogs.Author
+	if flags.Search != "" {
+		searchLower := strings.ToLower(flags.Search)
+		for _, a := range allAuthors {
+			if strings.Contains(strings.ToLower(string(a.ID)), searchLower) ||
+				strings.Contains(strings.ToLower(a.Name), searchLower) {
+				filtered = append(filtered, a)
+			}
+		}
+	} else {
+		filtered = allAuthors
 	}
-	filtered := authorFilter.Apply(authors)
 
 	// Sort authors
 	sort.Slice(filtered, func(i, j int) bool {
@@ -81,13 +94,11 @@ func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		// Convert to pointer slice for table compatibility
 		authorPointers := make([]*catalogs.Author, len(filtered))
 		for i := range filtered {
 			authorPointers[i] = &filtered[i]
 		}
 		tableData := table.AuthorsToTableData(authorPointers)
-		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -97,22 +108,24 @@ func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	}
 
 	if !globalFlags.Quiet {
-		fmt.Fprintf(os.Stderr, "Found %d authors\n", len(filtered))
+		logger.Info().Msgf("Found %d authors", len(filtered))
 	}
 
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showAuthorDetails shows detailed information about a specific author.
-func showAuthorDetails(cmd *cobra.Command, authorID string) error {
-	cat, err := catalog.Load()
+// showAuthorDetailsWithApp shows detailed information about a specific author.
+func showAuthorDetailsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, authorID string) error {
+	// Get catalog from app
+	catInterface, err := app.Catalog()
 	if err != nil {
 		return err
 	}
+	cat := catInterface.(catalogs.Catalog)
 
-	author, found := cat.Authors().Get(catalogs.AuthorID(authorID))
-	if !found {
-		// Suppress usage display for not found errors
+	// Find specific author
+	author, exists := cat.Authors().Get(catalogs.AuthorID(authorID))
+	if !exists {
 		cmd.SilenceUsage = true
 		return &errors.NotFoundError{
 			Resource: "author",
@@ -136,45 +149,31 @@ func showAuthorDetails(cmd *cobra.Command, authorID string) error {
 	return formatter.Format(os.Stdout, author)
 }
 
-// Removed authorsToTableData - now using shared table.AuthorsToTableData
-
-// printAuthorDetails prints detailed author information in a human-readable format.
+// printAuthorDetails prints detailed author information.
 func printAuthorDetails(author *catalogs.Author) {
-	fmt.Printf("Author: %s\n", author.ID)
-	fmt.Printf("Name: %s\n", author.Name)
+	formatter := output.NewFormatter(output.FormatTable)
+
+	fmt.Printf("Author: %s\n\n", author.ID)
+
+	// Basic info
+	basicRows := [][]string{
+		{"Author ID", string(author.ID)},
+		{"Name", author.Name},
+	}
 
 	if author.Description != nil && *author.Description != "" {
-		fmt.Printf("Description: %s\n", *author.Description)
+		basicRows = append(basicRows, []string{"Description", *author.Description})
 	}
-
-	fmt.Printf("Models: %d\n", len(author.Models))
-
 	if author.Website != nil && *author.Website != "" {
-		fmt.Printf("\nLinks:\n")
-		fmt.Printf("  Website: %s\n", *author.Website)
-	}
-	if author.GitHub != nil && *author.GitHub != "" {
-		fmt.Printf("  GitHub: %s\n", *author.GitHub)
-	}
-	if author.HuggingFace != nil && *author.HuggingFace != "" {
-		fmt.Printf("  HuggingFace: %s\n", *author.HuggingFace)
-	}
-	if author.Twitter != nil && *author.Twitter != "" {
-		fmt.Printf("  Twitter: %s\n", *author.Twitter)
+		basicRows = append(basicRows, []string{"Website", *author.Website})
 	}
 
-	if len(author.Models) > 0 && len(author.Models) <= 20 {
-		fmt.Printf("\nModels:\n")
-		// Sort model IDs for consistent output
-		modelIDs := make([]string, 0, len(author.Models))
-		for id := range author.Models {
-			modelIDs = append(modelIDs, id)
-		}
-		sort.Strings(modelIDs)
-
-		for _, id := range modelIDs {
-			model := author.Models[id]
-			fmt.Printf("  • %s - %s\n", model.ID, model.Name)
-		}
+	basicTable := output.Data{
+		Headers: []string{"Property", "Value"},
+		Rows:    basicRows,
 	}
+
+	fmt.Println("Basic Information:")
+	_ = formatter.Format(os.Stdout, basicTable)
+	fmt.Println()
 }
