@@ -9,16 +9,12 @@ import (
 // generateCmd represents the parent generate command.
 var generateCmd = &cobra.Command{
 	Use:   "generate",
-	Short: "Generate various artifacts (docs, site, completion)",
+	Short: "Generate various artifacts (completion)",
 	Long: `Generate creates various artifacts for the starmap project.
 
 Available subcommands:
-  completion - Generate shell completion scripts (bash, zsh, fish)
-  docs       - Generate markdown documentation for providers and models
-  site       - Generate static documentation website using Hugo`,
-	Example: `  starmap generate completion bash
-  starmap generate docs
-  starmap generate site --prod`,
+  completion - Generate shell completion scripts (bash, zsh, fish)`,
+	Example: `  starmap generate completion bash`,
 }
 
 func init() {

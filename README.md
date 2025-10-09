@@ -474,13 +474,8 @@ starmap update -p openai        # Update specific provider
 starmap update --dry-run        # Preview changes
 
 # Development
-starmap testdata --update       # Update test data
 starmap validate                # Validate configurations
-starmap generate                # Generate documentation
-
-# Export
-starmap export                  # Export catalog
-starmap export --format yaml    # Export as YAML
+starmap generate completion bash # Generate shell completion
 ```
 
 ### Advanced Update Workflows
@@ -693,11 +688,8 @@ The catalog contains 500+ models from major providers:
 ### Generate Documentation
 
 ```bash
-# Regenerate documentation from catalog
+# Generate Go package documentation
 make generate
-
-# Or use CLI directly
-starmap generate --output ./docs
 ```
 
 ## HTTP Server (Coming Soon)
@@ -821,6 +813,9 @@ make test-coverage
 
 # Update provider testdata
 make testdata-update
+
+# Generate Go documentation
+make generate
 
 # Full build cycle
 make all  # clean, fix, lint, test, build

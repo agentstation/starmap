@@ -483,34 +483,29 @@ check-apis: ## Check API connectivity for all providers
 
 # Testdata management targets
 # Examples:
-#   make testdata                     # Show help and list all testdata
-#   make testdata PROVIDER=groq       # List testdata for specific provider
-#   make testdata-verify              # Verify all testdata files are valid
-#   make testdata-update              # Update all provider testdata (requires API keys)
-testdata: ## Manage testdata (use PROVIDER=name to specify provider)
-	@echo "$(BLUE)Managing testdata...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate testdata $(if $(PROVIDER),--provider $(PROVIDER),) --verbose
-
-testdata-verify: ## Verify all testdata files are valid
-	@echo "$(BLUE)Verifying testdata files...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate testdata --verify --verbose
-
-testdata-update: ## Update testdata for all providers (requires API keys)
-	@echo "$(BLUE)Updating testdata for all providers...$(NC)"
+#   make testdata              # Update all provider testdata (requires API keys)
+#   make testdata PROVIDER=groq  # Update specific provider testdata
+testdata: ## Update testdata for all providers (use PROVIDER=name for specific provider)
+	@echo "$(BLUE)Updating testdata for $(if $(PROVIDER),$(PROVIDER),all providers)...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate testdata --verbose
+	@if [ -n "$(PROVIDER)" ]; then \
+		$(GOTEST) ./internal/sources/providers/$(PROVIDER) -update -v; \
+	else \
+		for dir in internal/sources/providers/*/; do \
+			provider=$$(basename $$dir); \
+			if [ -f "$$dir/client_test.go" ]; then \
+				echo "$(BLUE)Updating $$provider testdata...$(NC)"; \
+				$(GOTEST) ./internal/sources/providers/$$provider -update || true; \
+			fi; \
+		done; \
+	fi
 
 # Documentation
-generate: ## Generate all documentation (Go docs and catalog docs)
+generate: ## Generate all documentation (Go docs only)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
 	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
 	$(GOCMD) generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
-	@echo "$(BLUE)Generating catalog documentation...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate
-	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
-
-docs: generate ## Alias for generate command
 
 godoc: ## Generate only Go documentation using go generate
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
@@ -528,11 +523,6 @@ docs-check: ## Check if documentation is up to date (for CI)
 	done
 	@echo "$(GREEN)All documentation is up to date$(NC)"
 
-catalog-docs: ## Generate only catalog documentation
-	@echo "$(BLUE)Generating catalog documentation...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate docs
-	@echo "$(GREEN)Catalog documentation generated in docs/$(NC)"
-
 # Demo
 demo: ## Generate VHS demo video
 	@echo "$(BLUE)Generating demo video...$(NC)"
@@ -541,90 +531,3 @@ demo: ## Generate VHS demo video
 	$(RUN_PREFIX) vhs scripts/demo.tape
 	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
 	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"
-
-# Site generation targets
-site-generate: ## Generate static documentation site
-	@echo "$(BLUE)Generating documentation site...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) generate site
-	@echo "$(GREEN)Site generated in site/public$(NC)"
-
-site-serve: ## Run Hugo development server
-	@echo "$(BLUE)Starting Hugo development server...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) serve site
-
-site-build: ## Build production site with Hugo
-	@echo "$(BLUE)Building production site...$(NC)"
-	@$(RUN_PREFIX) which hugo > /dev/null || (echo "$(RED)Hugo not found. Run 'devbox shell' or install with: brew install hugo$(NC)" && exit 1)
-	$(RUN_PREFIX) hugo --source site --minify --gc
-	@echo "$(GREEN)Production build in site/public$(NC)"
-
-site-theme: ## Download Hugo theme
-	@echo "$(BLUE)Downloading Hugo Book theme...$(NC)"
-	@mkdir -p site
-	cd site && git submodule add https://github.com/alex-shpak/hugo-book themes/hugo-book 2>/dev/null || true
-	cd site && git submodule update --init --recursive
-	@echo "$(GREEN)Theme installed$(NC)"
-
-site-preview: site-theme site-generate site-serve ## Full site preview workflow
-
-site-setup: ## Set up Hugo site structure
-	@echo "$(BLUE)Setting up Hugo site structure...$(NC)"
-	@mkdir -p site/{content,themes,static,layouts,assets}
-	@mkdir -p site/static/{css,js,img}
-	@mkdir -p site/layouts/{_default,partials,shortcodes}
-	@if [ ! -L site/content ]; then cd site && ln -sf ../docs content; fi
-
-site-test-pages: ## Test site with GitHub Pages URL locally
-	@echo "$(BLUE)Testing site with GitHub Pages URL...$(NC)"
-	@cd site && $(RUN_PREFIX) hugo serve --baseURL "https://agentstation.github.io/starmap/" --buildDrafts
-	@echo "$(GREEN)Preview available at http://localhost:1313$(NC)"
-
-site-test-custom: ## Test site with custom domain locally
-	@echo "$(BLUE)Testing site with custom domain...$(NC)"
-	@cd site && $(RUN_PREFIX) hugo serve --baseURL "https://starmap.agentstation.ai/" --buildDrafts
-	@echo "$(GREEN)Preview available at http://localhost:1313$(NC)"
-
-deploy-check: ## Check if site is ready for deployment
-	@echo "$(BLUE)Checking deployment readiness...$(NC)"
-	@test -L site/content || (echo "$(RED)Error: content symlink missing$(NC)" && exit 1)
-	@test -d site/themes/hugo-book || (echo "$(RED)Error: theme missing. Run 'make site-theme'$(NC)" && exit 1)
-	@test -f site/hugo.yaml || (echo "$(RED)Error: hugo.yaml missing$(NC)" && exit 1)
-	@echo "$(GREEN)✓ Content symlink exists$(NC)"
-	@echo "$(GREEN)✓ Theme installed$(NC)"
-	@echo "$(GREEN)✓ Hugo config present$(NC)"
-	@echo "$(GREEN)Site is ready for deployment!$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Next steps:$(NC)"
-	@echo "  1. Enable GitHub Pages: Settings → Pages → Source: GitHub Actions"
-	@echo "  2. Push to master branch to trigger deployment"
-	@echo "  3. Optional: Configure custom domain in Settings → Pages"
-
-pr-preview-cleanup: ## Manually cleanup a specific PR preview (requires PR number)
-	@if [ -z "$(PR)" ]; then \
-		echo "$(RED)Error: Please specify PR number with PR=123$(NC)"; \
-		echo "$(YELLOW)Usage: make pr-preview-cleanup PR=123$(NC)"; \
-		exit 1; \
-	fi
-	@echo "$(BLUE)Cleaning up preview for PR #$(PR)...$(NC)"
-	@npm install -g surge > /dev/null 2>&1 || true
-	@surge teardown starmap-pr-$(PR).surge.sh || echo "$(YELLOW)Preview may not exist or already cleaned$(NC)"
-	@echo "$(GREEN)✓ Cleaned up starmap-pr-$(PR).surge.sh$(NC)"
-
-pr-preview-cleanup-all: ## Cleanup all PR previews (use with caution)
-	@echo "$(YELLOW)This will attempt to cleanup all known PR previews$(NC)"
-	@echo "$(YELLOW)Fetching closed PRs...$(NC)"
-	@for pr in $$(gh pr list --state closed --limit 100 --json number --jq '.[].number' 2>/dev/null || echo ""); do \
-		echo "$(BLUE)Cleaning up PR #$$pr preview...$(NC)"; \
-		surge teardown starmap-pr-$$pr.surge.sh 2>/dev/null || true; \
-	done
-	@echo "$(GREEN)✓ Cleanup complete$(NC)"
-
-pr-preview-list: ## List all recent PR preview URLs
-	@echo "$(BLUE)Recent PR Preview URLs:$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Active PRs:$(NC)"
-	@gh pr list --state open --json number,title --jq '.[] | "  PR #\(.number): https://starmap-pr-\(.number).surge.sh - \(.title)"' 2>/dev/null || echo "  No open PRs found"
-	@echo ""
-	@echo "$(YELLOW)Recently Closed PRs (may still have previews):$(NC)"
-	@gh pr list --state closed --limit 10 --json number,title,closedAt --jq '.[] | "  PR #\(.number): https://starmap-pr-\(.number).surge.sh - \(.title) (closed \(.closedAt[:10]))"' 2>/dev/null || echo "  No recently closed PRs found"
-	@echo "$(GREEN)Site structure created$(NC)"

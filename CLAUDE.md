@@ -10,7 +10,7 @@ Starmap is a unified AI model catalog system that combines data from provider AP
 make all                                                    # Clean, format, lint, test, build
 starmap update                                              # Update local catalog
 starmap update --provider openai                            # Update specific provider
-go test ./internal/sources/providers/openai -update         # Update testdata
+make testdata PROVIDER=openai                               # Update testdata
 ```
 
 ## Tech Stack
@@ -78,7 +78,7 @@ Field-level authority in `pkg/authority` determines which source wins.
 ## Package Map
 
 **Core packages**: catalogs, reconciler, authority, sources, errors, logging, constants, convert
-**Internal**: embedded, sources/{providers,modelsdev,local,clients}, transport, tools/docs
+**Internal**: embedded, sources/{providers,modelsdev,local,clients}, transport
 
 ## Common Tasks
 
@@ -139,15 +139,14 @@ go test ./... -race -short                 # All packages with race detector
 ```bash
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
-make testdata-update                        # Update all testdata
-make testdata-verify                        # Verify testdata validity
+make testdata                               # Update all testdata
+make testdata PROVIDER=openai               # Update specific provider testdata
 ```
 
 ### Documentation
 ```bash
-make generate       # Generate all docs (Go + catalog)
+make generate       # Generate Go docs
 make godoc          # Go docs only
-make catalog-docs   # Catalog docs only
 make docs-check     # Verify docs current (CI)
 ```
 
