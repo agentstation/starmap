@@ -30,6 +30,12 @@
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
   twitter: https://x.com/alibabacloud
+  catalog:
+    attribution:
+      patterns:
+      - qwen-*
+      - "*-qwen-*"
+      # Global patterns - matches Qwen models across ALL providers
 
 # Alignment Research Center
 - id: alignment-research
@@ -56,8 +62,10 @@
   github: https://github.com/anthropics
   twitter: https://x.com/AnthropicAI
   catalog:
-    provider_id: anthropic
     description: Anthropic's authoritative API catalog containing only Claude models
+    attribution:
+      provider_id: anthropic
+      # No patterns - all models from anthropic provider are Anthropic's
 
 # Anysphere
 - id: anysphere
@@ -190,8 +198,10 @@
   github: https://github.com/deepseek-ai
   twitter: https://x.com/DeepSeekAI
   catalog:
-    provider_id: deepseek
     description: DeepSeek's authoritative API catalog containing only their models
+    attribution:
+      provider_id: deepseek
+      # No patterns - all models from deepseek provider are DeepSeek's
 
 # Duke University
 - id: duke
@@ -243,12 +253,14 @@
   github: https://github.com/google
   twitter: https://x.com/Google
   catalog:
-    provider_id: google-vertex
-    patterns:
-    - gemini-*
-    - text-bison*
-    - chat-bison*
     description: Google's authoritative Vertex AI catalog for production Gemini and Bison models
+    attribution:
+      provider_id: google-vertex
+      patterns:
+      - gemini-*
+      - "*bison*"
+      - palm*
+      # Only models matching these patterns from google-vertex are Google's
 
 # Groq
 - id: groq
@@ -333,6 +345,14 @@
   huggingface: https://huggingface.co/meta-llama
   github: https://github.com/meta-llama
   twitter: https://x.com/Meta
+  catalog:
+    attribution:
+      patterns:
+      - llama-*
+      - "*-llama-*"
+      - "*@llama-*"
+      - codellama*
+      # Global patterns - matches Llama models across ALL providers
 
 # Microsoft
 - id: microsoft
@@ -427,8 +447,10 @@
   github: https://github.com/openai
   twitter: https://x.com/OpenAI
   catalog:
-    provider_id: openai
     description: OpenAI's authoritative API catalog containing only their models
+    attribution:
+      provider_id: openai
+      # No patterns - all models from openai provider are OpenAI's
 
 # University of Oxford
 - id: oxford

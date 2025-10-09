@@ -23,7 +23,7 @@ func Example() {
 	provider := catalogs.Provider{
 		ID:   "openai",
 		Name: "OpenAI",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"gpt-4": {
 				ID:          "gpt-4",
 				Name:        "GPT-4",
@@ -36,7 +36,7 @@ func Example() {
 	}
 
 	// List all models
-	models := catalog.GetAllModels()
+	models := catalog.Models().List()
 	fmt.Printf("Found %d models\n", len(models))
 	// Output: Found 1 models
 }
@@ -50,7 +50,7 @@ func Example_embeddedCatalog() {
 	}
 
 	// Access pre-loaded models
-	models := catalog.GetAllModels()
+	models := catalog.Models().List()
 	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
 
 	// Find a specific model
@@ -76,7 +76,7 @@ func Example_fileBasedCatalog() {
 	provider := catalogs.Provider{
 		ID:   "custom",
 		Name: "Custom Provider",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"custom-model": {
 				ID:   "custom-model",
 				Name: "My Custom Model",
@@ -101,7 +101,7 @@ func Example_mergeCatalogs() {
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"model-1": {
 				ID:          "model-1",
 				Name:        "Model One",
@@ -116,7 +116,7 @@ func Example_mergeCatalogs() {
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"model-1": {
 				ID:          "model-1",
 				Name:        "Model One Enhanced",
@@ -153,7 +153,7 @@ func Example_mergeStrategies() {
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"m1": {ID: "m1", Name: "Original"},
 		},
 	}
@@ -163,7 +163,7 @@ func Example_mergeStrategies() {
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"m1": {ID: "m1", Name: "Updated"},
 			"m2": {ID: "m2", Name: "New"},
 		},
@@ -206,10 +206,10 @@ func Example_concurrentAccess() {
 		provider := catalogs.Provider{
 			ID:     "test-provider",
 			Name:   "Test Provider",
-			Models: make(map[string]catalogs.Model),
+			Models: make(map[string]*catalogs.Model),
 		}
 		for i := 0; i < 100; i++ {
-			provider.Models[fmt.Sprintf("model-%d", i)] = catalogs.Model{
+			provider.Models[fmt.Sprintf("model-%d", i)] = &catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
 			}
@@ -226,7 +226,7 @@ func Example_concurrentAccess() {
 				done <- true
 				return
 			default:
-				_ = catalog.GetAllModels()
+				_ = catalog.Models().List()
 				time.Sleep(10 * time.Millisecond)
 			}
 		}
@@ -236,7 +236,7 @@ func Example_concurrentAccess() {
 	<-done
 	<-done
 
-	fmt.Printf("Created %d models concurrently\n", len(catalog.GetAllModels()))
+	fmt.Printf("Created %d models concurrently\n", len(catalog.Models().List()))
 }
 
 // Example_providerCapabilities demonstrates working with provider features.
@@ -248,8 +248,10 @@ func Example_providerCapabilities() {
 		ID:   "openai",
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
-			APIURL:         ptr("https://api.openai.com/v1/models"),
-			APIKeyRequired: ptrBool(true),
+			Endpoint: catalogs.ProviderEndpoint{
+				URL:          "https://api.openai.com/v1/models",
+				AuthRequired: true,
+			},
 		},
 	}
 	_ = catalog.SetProvider(provider)
@@ -259,7 +261,7 @@ func Example_providerCapabilities() {
 	if p.HasAPIKey() {
 		fmt.Println("Provider has API key configured")
 	}
-	if p.Catalog != nil && p.Catalog.APIKeyRequired != nil && *p.Catalog.APIKeyRequired {
+	if p.Catalog != nil && p.Catalog.Endpoint.AuthRequired {
 		fmt.Println("Provider requires API key")
 	}
 }
@@ -271,7 +273,7 @@ func Example_modelFiltering() {
 	// Get all models for a specific provider
 	// In practice, models would be linked to providers via naming convention or metadata
 	var gptModels []catalogs.Model
-	for _, model := range catalog.GetAllModels() {
+	for _, model := range catalog.Models().List() {
 		if len(model.ID) > 3 && model.ID[:3] == "gpt" {
 			gptModels = append(gptModels, model)
 		}
@@ -280,7 +282,7 @@ func Example_modelFiltering() {
 
 	// Filter by features
 	var visionModels []catalogs.Model
-	for _, model := range catalog.GetAllModels() {
+	for _, model := range catalog.Models().List() {
 		if model.Features != nil {
 			for _, modality := range model.Features.Modalities.Input {
 				if modality == "image" {
@@ -300,7 +302,7 @@ func Example_catalogCopy() {
 	provider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
-		Models: map[string]catalogs.Model{
+		Models: map[string]*catalogs.Model{
 			"model-1": {
 				ID:   "model-1",
 				Name: "Original Model",
@@ -318,17 +320,17 @@ func Example_catalogCopy() {
 	// Modify the copy by updating the provider
 	copiedProvider, _ := copy.Provider("test")
 	if copiedProvider.Models == nil {
-		copiedProvider.Models = make(map[string]catalogs.Model)
+		copiedProvider.Models = make(map[string]*catalogs.Model)
 	}
-	copiedProvider.Models["model-2"] = catalogs.Model{
+	copiedProvider.Models["model-2"] = &catalogs.Model{
 		ID:   "model-2",
 		Name: "Copy Model",
 	}
 	_ = copy.SetProvider(copiedProvider)
 
 	// Original is unchanged
-	fmt.Printf("Original has %d models\n", len(original.GetAllModels()))
-	fmt.Printf("Copy has %d models\n", len(copy.GetAllModels()))
+	fmt.Printf("Original has %d models\n", len(original.Models().List()))
+	fmt.Printf("Copy has %d models\n", len(copy.Models().List()))
 	// Output:
 	// Original has 1 models
 	// Copy has 2 models

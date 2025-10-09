@@ -31,14 +31,11 @@ package catalogs
 import (
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // MergeStrategy defines how catalogs should be merged.
@@ -59,11 +56,12 @@ const (
 
 // Compile-time interface checks to ensure proper implementation.
 var (
-	_ Catalog = (*catalog)(nil)
-	_ Reader  = (*catalog)(nil)
-	_ Writer  = (*catalog)(nil)
-	_ Merger  = (*catalog)(nil)
-	_ Copier  = (*catalog)(nil)
+	_ Catalog     = (*catalog)(nil)
+	_ Reader      = (*catalog)(nil)
+	_ Writer      = (*catalog)(nil)
+	_ Merger      = (*catalog)(nil)
+	_ Copier      = (*catalog)(nil)
+	_ Persistence = (*catalog)(nil)
 )
 
 // catalog is the single concrete implementation of the Catalog interface
@@ -84,47 +82,108 @@ type catalog struct {
 // WithEmbedded() = embedded catalog with auto-load
 // WithFiles(path) = files catalog with auto-load.
 func New(opts ...Option) (Catalog, error) {
-	options := defaultCatalogOptions()
-
-	for _, opt := range opts {
-		opt(options)
-	}
-
-	c := &catalog{
+	cat := &catalog{
 		providers: NewProviders(),
 		authors:   NewAuthors(),
 		endpoints: NewEndpoints(),
-		options:   options,
+		options:   catalogDefaults().apply(opts...),
 	}
 
 	// Auto-load if configured and has filesystem
-	if c.options.readFS != nil {
-		if err := c.Load(); err != nil {
+	if cat.options.readFS != nil {
+		if err := cat.Load(); err != nil {
 			return nil, errors.WrapResource("load", "catalog", "", err)
 		}
 	}
 
-	return c, nil
+	return cat, nil
+}
+
+// NewEmbedded creates a catalog backed by embedded files.
+// This is the recommended catalog for production use as it includes
+// all model data compiled into the binary.
+func NewEmbedded() (Catalog, error) {
+	return New(WithEmbedded())
+}
+
+// NewFromFilePath creates a catalog backed by files on disk.
+// This is useful for development when you want to edit catalog files
+// without recompiling the binary.
+//
+// Example:
+//
+//	catalog, err := NewFromFilePath("./internal/embedded/catalog")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+func NewFromFilePath(path string) (Catalog, error) {
+	// Verify path exists
+	if _, err := os.Stat(path); err != nil {
+		return nil, errors.WrapIO("stat", path, err)
+	}
+	return New(WithPath(path))
+}
+
+// NewLocal creates a new local catalog.
+func NewLocal(path string) (Catalog, error) {
+	if path != "" {
+		return NewFromFilePath(path)
+	}
+	return NewEmbedded()
+}
+
+// Empty creates an in-memory empty catalog.
+// This is useful for testing or temporary catalogs that don't
+// need persistence.
+//
+// Example:
+//
+//	catalog := Empty()
+//	provider := Provider{ID: "openai", Models: map[string]Model{}}
+//	catalog.SetProvider(provider)
+func Empty() Catalog {
+	// Empty catalog cannot fail
+	if catalog, err := New(); err != nil {
+		panic(err) // panic for visibility sincewe should never error
+	} else {
+		return catalog
+	}
+}
+
+// NewFromFS creates a catalog from a custom filesystem implementation.
+// This allows for advanced use cases like virtual filesystems or
+// custom storage backends.
+//
+// Example:
+//
+//	var myFS embed.FS
+//	catalog, err := NewFromFS(myFS, "catalog")
+func NewFromFS(fsys fs.FS, root string) (Catalog, error) {
+	subFS, err := fs.Sub(fsys, root)
+	if err != nil {
+		return nil, errors.WrapResource("create", "sub filesystem", root, err)
+	}
+	return New(WithFS(subFS))
 }
 
 // Providers returns the providers collection.
-func (c *catalog) Providers() *Providers {
-	return c.providers
+func (cat *catalog) Providers() *Providers {
+	return cat.providers
 }
 
 // Authors returns the authors collection.
-func (c *catalog) Authors() *Authors {
-	return c.authors
+func (cat *catalog) Authors() *Authors {
+	return cat.authors
 }
 
 // Endpoints returns the endpoints collection.
-func (c *catalog) Endpoints() *Endpoints {
-	return c.endpoints
+func (cat *catalog) Endpoints() *Endpoints {
+	return cat.endpoints
 }
 
 // Provider returns a provider by ID.
-func (c *catalog) Provider(id ProviderID) (Provider, error) {
-	provider, ok := c.providers.Get(id)
+func (cat *catalog) Provider(id ProviderID) (Provider, error) {
+	provider, ok := cat.providers.Get(id)
 	if !ok {
 		return Provider{}, &errors.NotFoundError{
 			Resource: "provider",
@@ -135,8 +194,8 @@ func (c *catalog) Provider(id ProviderID) (Provider, error) {
 }
 
 // Author returns an author by ID.
-func (c *catalog) Author(id AuthorID) (Author, error) {
-	author, ok := c.authors.Get(id)
+func (cat *catalog) Author(id AuthorID) (Author, error) {
+	author, ok := cat.authors.Get(id)
 	if !ok {
 		return Author{}, &errors.NotFoundError{
 			Resource: "author",
@@ -147,8 +206,8 @@ func (c *catalog) Author(id AuthorID) (Author, error) {
 }
 
 // Endpoint returns an endpoint by ID.
-func (c *catalog) Endpoint(id string) (Endpoint, error) {
-	endpoint, ok := c.endpoints.Get(id)
+func (cat *catalog) Endpoint(id string) (Endpoint, error) {
+	endpoint, ok := cat.endpoints.Get(id)
 	if !ok {
 		return Endpoint{}, &errors.NotFoundError{
 			Resource: "endpoint",
@@ -158,30 +217,29 @@ func (c *catalog) Endpoint(id string) (Endpoint, error) {
 	return *endpoint, nil
 }
 
-// GetAllModels returns all models from all providers and authors.
-func (c *catalog) GetAllModels() []Model {
-	models := make([]Model, 0)
+// Models returns all models from all providers and authors.
+func (cat *catalog) Models() *Models {
+	models := NewModels()
 
 	// Collect models from providers
-	for _, provider := range c.providers.List() {
+	for _, provider := range cat.providers.List() {
 		if provider.Models != nil {
 			for _, model := range provider.Models {
-				models = append(models, model)
+				_ = models.Set(model.ID, model) // Ignore error - models from providers are already validated
 			}
 		}
 	}
 
 	// Collect models from authors (avoiding duplicates)
 	modelIDs := make(map[string]bool)
-	for _, model := range models {
+	for _, model := range models.List() {
 		modelIDs[model.ID] = true
 	}
-
-	for _, author := range c.authors.List() {
+	for _, author := range cat.authors.List() {
 		if author.Models != nil {
 			for _, model := range author.Models {
 				if !modelIDs[model.ID] {
-					models = append(models, model)
+					_ = models.Set(model.ID, model) // Ignore error - models from authors are already validated
 					modelIDs[model.ID] = true
 				}
 			}
@@ -191,26 +249,16 @@ func (c *catalog) GetAllModels() []Model {
 	return models
 }
 
-// FindModel searches for a model by ID across all providers and authors.
-func (c *catalog) FindModel(id string) (Model, error) {
-	// Search in providers first
-	for _, provider := range c.providers.List() {
-		if provider.Models != nil {
-			if model, exists := provider.Models[id]; exists {
-				return model, nil
-			}
+// FindModel searches for a model by ID.
+func (cat *catalog) FindModel(id string) (Model, error) {
+	// Check each model in the catalog for the given Model ID.
+	for _, model := range cat.Models().List() {
+		if model.ID == id {
+			return model, nil // Return the model if found.
 		}
 	}
 
-	// Search in authors
-	for _, author := range c.authors.List() {
-		if author.Models != nil {
-			if model, exists := author.Models[id]; exists {
-				return model, nil
-			}
-		}
-	}
-
+	// If the model is not found, return a not found error.
 	return Model{}, &errors.NotFoundError{
 		Resource: "model",
 		ID:       id,
@@ -218,89 +266,65 @@ func (c *catalog) FindModel(id string) (Model, error) {
 }
 
 // SetProvider sets a provider (upsert).
-func (c *catalog) SetProvider(provider Provider) error {
-	// Deep copy the Models map to prevent shared references
-	if provider.Models != nil {
-		modelsCopy := make(map[string]Model, len(provider.Models))
-		for k, v := range provider.Models {
-			modelsCopy[k] = v
-		}
-		provider.Models = modelsCopy
-	}
-	return c.providers.Set(provider.ID, &provider)
+func (cat *catalog) SetProvider(provider Provider) error {
+	// Deep copy to prevent shared references
+	providerCopy := DeepCopyProvider(provider)
+	return cat.providers.Set(providerCopy.ID, &providerCopy)
 }
 
 // SetAuthor sets an author (upsert).
-func (c *catalog) SetAuthor(author Author) error {
-	// Deep copy the Models map to prevent shared references
-	if author.Models != nil {
-		modelsCopy := make(map[string]Model, len(author.Models))
-		for k, v := range author.Models {
-			modelsCopy[k] = v
-		}
-		author.Models = modelsCopy
-	}
-	return c.authors.Set(author.ID, &author)
+func (cat *catalog) SetAuthor(author Author) error {
+	// Deep copy to prevent shared references
+	authorCopy := DeepCopyAuthor(author)
+	return cat.authors.Set(authorCopy.ID, &authorCopy)
 }
 
 // SetEndpoint sets an endpoint (upsert).
-func (c *catalog) SetEndpoint(endpoint Endpoint) error {
-	return c.endpoints.Set(endpoint.ID, &endpoint)
+func (cat *catalog) SetEndpoint(endpoint Endpoint) error {
+	return cat.endpoints.Set(endpoint.ID, &endpoint)
 }
 
 // DeleteProvider deletes a provider.
-func (c *catalog) DeleteProvider(id ProviderID) error {
-	return c.providers.Delete(id)
+func (cat *catalog) DeleteProvider(id ProviderID) error {
+	return cat.providers.Delete(id)
 }
 
 // DeleteAuthor deletes an author.
-func (c *catalog) DeleteAuthor(id AuthorID) error {
-	return c.authors.Delete(id)
+func (cat *catalog) DeleteAuthor(id AuthorID) error {
+	return cat.authors.Delete(id)
 }
 
 // DeleteEndpoint deletes an endpoint.
-func (c *catalog) DeleteEndpoint(id string) error {
-	return c.endpoints.Delete(id)
+func (cat *catalog) DeleteEndpoint(id string) error {
+	return cat.endpoints.Delete(id)
 }
 
 // ReplaceWith replaces this catalog's contents with another.
-func (c *catalog) ReplaceWith(source Reader) error {
+func (cat *catalog) ReplaceWith(source Reader) error {
 	// Clear existing data
-	c.providers.Clear()
-	c.authors.Clear()
-	c.endpoints.Clear()
+	cat.providers.Clear()
+	cat.authors.Clear()
+	cat.endpoints.Clear()
 
 	// Copy all data from source
 	for _, provider := range source.Providers().List() {
 		// Deep copy the provider including its Models map
-		providerCopy := *provider
-		if provider.Models != nil {
-			providerCopy.Models = make(map[string]Model, len(provider.Models))
-			for k, v := range provider.Models {
-				providerCopy.Models[k] = v
-			}
-		}
-		if err := c.SetProvider(providerCopy); err != nil {
+		providerCopy := DeepCopyProvider(provider)
+		if err := cat.SetProvider(providerCopy); err != nil {
 			return errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}
 
 	for _, author := range source.Authors().List() {
 		// Deep copy the author including its Models map
-		authorCopy := *author
-		if author.Models != nil {
-			authorCopy.Models = make(map[string]Model, len(author.Models))
-			for k, v := range author.Models {
-				authorCopy.Models[k] = v
-			}
-		}
-		if err := c.SetAuthor(authorCopy); err != nil {
+		authorCopy := DeepCopyAuthor(author)
+		if err := cat.SetAuthor(authorCopy); err != nil {
 			return errors.WrapResource("set", "author", string(author.ID), err)
 		}
 	}
 
 	for _, endpoint := range source.Endpoints().List() {
-		if err := c.SetEndpoint(*endpoint); err != nil {
+		if err := cat.SetEndpoint(endpoint); err != nil {
 			return errors.WrapResource("set", "endpoint", endpoint.ID, err)
 		}
 	}
@@ -311,7 +335,7 @@ func (c *catalog) ReplaceWith(source Reader) error {
 // MergeWith merges another catalog into this one.
 //
 //nolint:gocyclo // Complex merge logic with many fields
-func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
+func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 	// Parse merge options (defaults to MergeEnrichEmpty if not specified)
 	mergeOpts := &MergeOptions{Strategy: MergeEnrichEmpty}
 	for _, opt := range opts {
@@ -321,12 +345,12 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 
 	switch strategy {
 	case MergeReplaceAll:
-		return c.ReplaceWith(source)
+		return cat.ReplaceWith(source)
 
 	case MergeEnrichEmpty:
 		// Smart merge - merge providers and their models
 		for _, sourceProvider := range source.Providers().List() {
-			if existingProvider, err := c.Provider(sourceProvider.ID); err == nil {
+			if existingProvider, err := cat.Provider(sourceProvider.ID); err == nil {
 				// Provider exists, merge models
 				if sourceProvider.Models != nil {
 					// Create a new map to avoid concurrent modification
@@ -335,7 +359,7 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 					// Copy existing models first
 					if existingProvider.Models != nil {
 						for k, v := range existingProvider.Models {
-							mergedModels[k] = v
+							mergedModels[k] = *v
 						}
 					}
 
@@ -343,23 +367,27 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 					for modelID, sourceModel := range sourceProvider.Models {
 						if existingModel, exists := mergedModels[modelID]; exists {
 							// Merge the models
-							mergedModels[modelID] = MergeModels(existingModel, sourceModel)
+							mergedModels[modelID] = MergeModels(existingModel, *sourceModel)
 						} else if sourceModel.Pricing != nil || sourceModel.Limits != nil {
 							// Add new model with substantial data
-							mergedModels[modelID] = sourceModel
+							mergedModels[modelID] = *sourceModel
 						}
 					}
 
+					mergedModelsCopy := make(map[string]*Model, len(mergedModels))
+					for k, v := range mergedModels {
+						mergedModelsCopy[k] = &v
+					}
 					// Update provider with new models map
-					existingProvider.Models = mergedModels
+					existingProvider.Models = mergedModelsCopy
 				}
 				// Update the provider
-				if err := c.SetProvider(existingProvider); err != nil {
+				if err := cat.SetProvider(existingProvider); err != nil {
 					return errors.WrapResource("set", "merged provider", string(existingProvider.ID), err)
 				}
 			} else {
 				// New provider
-				if err := c.SetProvider(*sourceProvider); err != nil {
+				if err := cat.SetProvider(sourceProvider); err != nil {
 					return errors.WrapResource("set", "new provider", string(sourceProvider.ID), err)
 				}
 			}
@@ -367,11 +395,11 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 
 		// Merge authors similarly
 		for _, sourceAuthor := range source.Authors().List() {
-			if existingAuthor, err := c.Author(sourceAuthor.ID); err == nil {
+			if existingAuthor, err := cat.Author(sourceAuthor.ID); err == nil {
 				// Author exists, merge models
 				if sourceAuthor.Models != nil {
 					// Create a new map to avoid concurrent modification
-					mergedModels := make(map[string]Model)
+					mergedModels := make(map[string]*Model)
 
 					// Copy existing models first
 					if existingAuthor.Models != nil {
@@ -383,7 +411,8 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 					// Merge source models
 					for modelID, sourceModel := range sourceAuthor.Models {
 						if existingModel, exists := mergedModels[modelID]; exists {
-							mergedModels[modelID] = MergeModels(existingModel, sourceModel)
+							mergedModel := MergeModels(*existingModel, *sourceModel)
+							mergedModels[modelID] = &mergedModel
 						} else {
 							mergedModels[modelID] = sourceModel
 						}
@@ -393,12 +422,12 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 					existingAuthor.Models = mergedModels
 				}
 				// Update the author
-				if err := c.SetAuthor(existingAuthor); err != nil {
+				if err := cat.SetAuthor(existingAuthor); err != nil {
 					return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)
 				}
 			} else {
 				// New author
-				if err := c.SetAuthor(*sourceAuthor); err != nil {
+				if err := cat.SetAuthor(sourceAuthor); err != nil {
 					return errors.WrapResource("set", "new author", string(sourceAuthor.ID), err)
 				}
 			}
@@ -407,15 +436,15 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 	case MergeAppendOnly:
 		// Only add new providers/authors
 		for _, provider := range source.Providers().List() {
-			if _, err := c.Provider(provider.ID); err != nil {
-				if err := c.SetProvider(*provider); err != nil {
+			if _, err := cat.Provider(provider.ID); err != nil {
+				if err := cat.SetProvider(provider); err != nil {
 					return errors.WrapResource("append", "provider", string(provider.ID), err)
 				}
 			}
 		}
 		for _, author := range source.Authors().List() {
-			if _, err := c.Author(author.ID); err != nil {
-				if err := c.SetAuthor(*author); err != nil {
+			if _, err := cat.Author(author.ID); err != nil {
+				if err := cat.SetAuthor(author); err != nil {
 					return errors.WrapResource("append", "author", string(author.ID), err)
 				}
 			}
@@ -426,60 +455,60 @@ func (c *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 }
 
 // Copy creates a deep copy of the catalog.
-func (c *catalog) Copy() (Catalog, error) {
+func (cat *catalog) Copy() (Catalog, error) {
 	// Create a new catalog with the same configuration
-	newCat := &catalog{
+	NewCat := &catalog{
 		providers: NewProviders(),
 		authors:   NewAuthors(),
 		endpoints: NewEndpoints(),
-		options:   c.options,
+		options:   cat.options,
 	}
 
 	// Copy all data
-	return newCat, newCat.ReplaceWith(c)
+	return NewCat, NewCat.ReplaceWith(cat)
 }
 
 // MergeStrategy returns the default merge strategy.
-func (c *catalog) MergeStrategy() MergeStrategy {
-	return c.options.mergeStrategy
+func (cat *catalog) MergeStrategy() MergeStrategy {
+	return cat.options.mergeStrategy
 }
 
 // SetMergeStrategy sets the default merge strategy.
-func (c *catalog) SetMergeStrategy(strategy MergeStrategy) {
-	c.options.mergeStrategy = strategy
+func (cat *catalog) SetMergeStrategy(strategy MergeStrategy) {
+	cat.options.mergeStrategy = strategy
 }
 
 // Load loads the catalog from the configured filesystem.
-func (c *catalog) Load() error {
-	if c.options.readFS == nil {
+func (cat *catalog) Load() error {
+	if cat.options.readFS == nil {
 		// Memory catalog - nothing to load
 		return nil
 	}
 
 	// Load providers.yaml
-	if data, err := fs.ReadFile(c.options.readFS, "providers.yaml"); err == nil {
+	if data, err := fs.ReadFile(cat.options.readFS, "providers.yaml"); err == nil {
 		var providers []Provider
 		if err := yaml.Unmarshal(data, &providers); err != nil {
 			return errors.WrapParse("yaml", "providers.yaml", err)
 		}
 		for _, p := range providers {
-			_ = c.SetProvider(p)
+			_ = cat.SetProvider(p)
 		}
 	}
 
 	// Load authors.yaml
-	if data, err := fs.ReadFile(c.options.readFS, "authors.yaml"); err == nil {
+	if data, err := fs.ReadFile(cat.options.readFS, "authors.yaml"); err == nil {
 		var authors []Author
 		if err := yaml.Unmarshal(data, &authors); err != nil {
 			return errors.WrapParse("yaml", "authors.yaml", err)
 		}
 		for _, a := range authors {
-			_ = c.SetAuthor(a)
+			_ = cat.SetAuthor(a)
 		}
 	}
 
 	// Load model files from providers/
-	err := fs.WalkDir(c.options.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(cat.options.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			// If providers directory doesn't exist, that's okay
 			if os.IsNotExist(err) {
@@ -492,7 +521,7 @@ func (c *catalog) Load() error {
 		}
 
 		// Read the file
-		data, err := fs.ReadFile(c.options.readFS, path)
+		data, err := fs.ReadFile(cat.options.readFS, path)
 		if err != nil {
 			return nil // Skip files we can't read
 		}
@@ -507,15 +536,15 @@ func (c *catalog) Load() error {
 				providerID := ProviderID(pathParts[1])
 
 				// Get the provider and add this model to its Models map
-				if provider, err := c.Provider(providerID); err == nil {
+				if provider, err := cat.Provider(providerID); err == nil {
 					// Initialize Models map if nil
 					if provider.Models == nil {
-						provider.Models = make(map[string]Model)
+						provider.Models = make(map[string]*Model)
 					}
 					// Add the model to the provider's Models map
-					provider.Models[model.ID] = model
+					provider.Models[model.ID] = &model
 					// Update the provider in the catalog
-					_ = c.SetProvider(provider)
+					_ = cat.SetProvider(provider)
 				}
 			}
 
@@ -524,15 +553,15 @@ func (c *catalog) Load() error {
 				authorID := AuthorID(pathParts[1])
 
 				// Get the author and add this model to its Models map
-				if author, err := c.Author(authorID); err == nil {
+				if author, err := cat.Author(authorID); err == nil {
 					// Initialize Models map if nil
 					if author.Models == nil {
-						author.Models = make(map[string]Model)
+						author.Models = make(map[string]*Model)
 					}
 					// Add the model to the author's Models map
-					author.Models[model.ID] = model
+					author.Models[model.ID] = &model
 					// Update the author in the catalog
-					_ = c.SetAuthor(author)
+					_ = cat.SetAuthor(author)
 				}
 			}
 		}
@@ -542,141 +571,6 @@ func (c *catalog) Load() error {
 		// Check if it's just that providers directory doesn't exist
 		if !os.IsNotExist(err) {
 			return errors.WrapIO("walk", "providers directory", err)
-		}
-	}
-
-	return nil
-}
-
-// Save saves the catalog to the configured filesystem.
-func (c *catalog) Save() error {
-	if c.options.writePath == "" {
-		return &errors.ConfigError{
-			Component: "catalog",
-			Message:   "no write path configured for saving",
-		}
-	}
-
-	return c.saveTo(c.options.writePath)
-}
-
-// SaveTo saves the catalog to a specific path.
-func (c *catalog) SaveTo(path string) error {
-	if path == "" {
-		return &errors.ValidationError{
-			Field:   "path",
-			Message: "cannot be empty",
-		}
-	}
-	return c.saveTo(path)
-}
-
-// Write saves the catalog to disk
-// If a path is provided, saves to that location
-// Otherwise uses configured write path.
-func (c *catalog) Write(paths ...string) error {
-	if len(paths) > 1 {
-		return &errors.ValidationError{
-			Field:   "paths",
-			Message: "Write accepts at most one path argument",
-		}
-	}
-
-	if len(paths) == 1 && paths[0] != "" {
-		// Save to specific path
-		return c.saveTo(paths[0])
-	}
-
-	if c.options.writePath == "" {
-		return &errors.ConfigError{
-			Component: "catalog",
-			Message:   "memory catalog requires explicit path for Write",
-		}
-	}
-
-	// Use configured write path
-	return c.Save()
-}
-
-// saveTo saves the catalog to the specified path.
-func (c *catalog) saveTo(basePath string) error {
-	// Helper function to write a file
-	writeFile := func(path string, data []byte) error {
-		fullPath := filepath.Join(basePath, path)
-		dir := filepath.Dir(fullPath)
-		if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
-			return errors.WrapIO("create", dir, err)
-		}
-		return os.WriteFile(fullPath, data, constants.FilePermissions)
-	}
-
-	// Save providers.yaml
-	providers := c.providers.List()
-	if len(providers) > 0 {
-		// Use FormatYAML if available
-		yamlData := c.providers.FormatYAML()
-		if err := writeFile("providers.yaml", []byte(yamlData)); err != nil {
-			return errors.WrapIO("write", "providers.yaml", err)
-		}
-	}
-
-	// Save authors.yaml
-	authors := c.authors.List()
-	if len(authors) > 0 {
-		// Use FormatYAML for nicely formatted output with comments and sections
-		yamlData := c.authors.FormatYAML()
-		if err := writeFile("authors.yaml", []byte(yamlData)); err != nil {
-			return errors.WrapIO("write", "authors.yaml", err)
-		}
-	}
-
-	// Save model files to providers/<provider>/models/<model>.yaml or providers/<provider>/models/<org>/<model>.yaml
-	for _, provider := range c.providers.List() {
-		if len(provider.Models) > 0 {
-			// Debug: log provider with models
-			logging.Debug().
-				Str("provider", string(provider.ID)).
-				Int("model_count", len(provider.Models)).
-				Msg("Saving provider models")
-
-			for _, model := range provider.Models {
-				var modelPath string
-				if strings.Contains(model.ID, "/") {
-					// Hierarchical ID like "meta-llama/llama-3" -> providers/groq/models/meta-llama/llama-3.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
-				} else {
-					// Simple ID like "gpt-4" -> providers/openai/models/gpt-4.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
-				}
-
-				// Use FormatYAML for nicely formatted output with comments
-				data := []byte(model.FormatYAML())
-				if err := writeFile(modelPath, data); err != nil {
-					return errors.WrapIO("write", "model "+model.ID, err)
-				}
-			}
-		}
-	}
-
-	// Save author models under authors/<author>/models/<model>.yaml
-	for _, author := range c.authors.List() {
-		if author.Models != nil {
-			for _, model := range author.Models {
-				var modelPath string
-				if strings.Contains(model.ID, "/") {
-					// Hierarchical ID -> authors/meta/models/meta-llama/llama-3.yaml
-					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
-				} else {
-					// Simple ID -> authors/openai/models/gpt-4.yaml
-					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
-				}
-
-				// Use FormatYAML for nicely formatted output with comments
-				data := []byte(model.FormatYAML())
-				if err := writeFile(modelPath, data); err != nil {
-					return errors.WrapIO("write", "model "+model.ID, err)
-				}
-			}
 		}
 	}
 

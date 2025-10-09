@@ -24,7 +24,7 @@ import (
 type Reconciler interface {
 	// Sources reconciles multiple catalogs from different sources
 	// The primary source determines which models exist; other sources provide enrichment only
-	Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error)
+	Sources(ctx context.Context, primary sources.ID, srcs []sources.Source) (*Result, error)
 }
 
 // reconciler is the default implementation of Reconciler.
@@ -66,13 +66,13 @@ type reconcileContext struct {
 
 // modelResult holds reconciled models and provenance.
 type modelResult struct {
-	models     []catalogs.Model
+	models     []*catalogs.Model
 	provenance provenance.Map
 	apiCount   int // Count from primary source
 }
 
 // Sources performs reconciliation with clean step-by-step flow.
-func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error) {
+func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Source) (*Result, error) {
 	// Step 1: Initialize context and validate
 	rctx, err := r.initialize(ctx, primary, srcs)
 	if err != nil {
@@ -86,7 +86,19 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []s
 	}
 
 	// Step 3: Filter providers by primary source
-	providers = rctx.filter.filterProviders(providers)
+	// Convert to values for filtering
+	providerValues := make([]catalogs.Provider, len(providers))
+	for i, p := range providers {
+		if p != nil {
+			providerValues[i] = *p
+		}
+	}
+	filteredValues := rctx.filter.filterProviders(providerValues)
+	// Convert back to pointers
+	providers = make([]*catalogs.Provider, len(filteredValues))
+	for i, p := range filteredValues {
+		providers[i] = &p
+	}
 	rctx.logger.Info().
 		Int("provider_count", len(providers)).
 		Msg("Filtered providers by primary source")
@@ -111,7 +123,7 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.Type, srcs []s
 }
 
 // initialize sets up reconciliation context.
-func (r *reconciler) initialize(ctx context.Context, primary sources.Type, srcs []sources.Source) (*reconcileContext, error) {
+func (r *reconciler) initialize(ctx context.Context, primary sources.ID, srcs []sources.Source) (*reconcileContext, error) {
 	logger := logging.FromContext(ctx)
 
 	// Create collector
@@ -145,7 +157,7 @@ func (r *reconciler) initialize(ctx context.Context, primary sources.Type, srcs 
 }
 
 // reconcileProviders merges providers from all sources.
-func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]catalogs.Provider, provenance.Map, error) {
+func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, provenance.Map, error) {
 	// Collect providers from all sources
 	providerSources := rctx.collector.collectProviders()
 
@@ -154,7 +166,7 @@ func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]catalogs.Prov
 }
 
 // reconcileAllModels processes models for all providers.
-func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
+func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []*catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
 	results := make(map[catalogs.ProviderID]modelResult)
 
 	for _, provider := range providers {
@@ -179,7 +191,7 @@ func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileCont
 }
 
 // reconcileProviderModels merges models for a single provider.
-func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider catalogs.Provider) (modelResult, error) {
+func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider *catalogs.Provider) (modelResult, error) {
 	// Collect models for this provider from all sources
 	primaryCatalog := rctx.filter.primaryCatalog
 	if primaryCatalog == nil {
@@ -230,7 +242,7 @@ func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 }
 
 // catalog creates the final catalog with providers and models.
-func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
+func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
 	var catalog catalogs.Catalog
 	var err error
 
@@ -249,11 +261,11 @@ func (r *reconciler) catalog(providers []catalogs.Provider, modelResults map[cat
 
 	// Add/update providers with their reconciled models
 	for i := range providers {
-		provider := &providers[i]
+		provider := providers[i]
 
 		// Add models if we have results for this provider
 		if result, ok := modelResults[provider.ID]; ok && len(result.models) > 0 {
-			provider.Models = make(map[string]catalogs.Model)
+			provider.Models = make(map[string]*catalogs.Model)
 			for _, model := range result.models {
 				provider.Models[model.ID] = model
 			}
@@ -285,7 +297,7 @@ func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog)
 	}
 
 	// Collect all models from merged catalog
-	var allMergedModels []catalogs.Model
+	var allMergedModels []*catalogs.Model
 	for _, provider := range catalog.Providers().List() {
 		if provider.Models != nil {
 			for _, model := range provider.Models {
@@ -296,8 +308,16 @@ func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog)
 
 	// Create differ and compute changes
 	d := differ.New()
+
+	// Convert base models to pointers for diff
+	baseModelValues := baseCatalog.Models().List()
+	baseModels := make([]*catalogs.Model, len(baseModelValues))
+	for i, m := range baseModelValues {
+		baseModels[i] = &m
+	}
+
 	modelChangeset := d.Models(
-		baseCatalog.GetAllModels(),
+		baseModels,
 		allMergedModels,
 	)
 

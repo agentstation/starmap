@@ -22,7 +22,12 @@ func Get(catalog catalogs.Catalog, providerID string) (*catalogs.Provider, error
 // List returns all providers from the catalog.
 // Convenience function for consistent provider listing.
 func List(catalog catalogs.Catalog) []*catalogs.Provider {
-	return catalog.Providers().List()
+	providers := catalog.Providers().List()
+	result := make([]*catalogs.Provider, len(providers))
+	for i, provider := range providers {
+		result[i] = &provider
+	}
+	return result
 }
 
 // GetWithValidation retrieves a provider and validates it has a client implementation.

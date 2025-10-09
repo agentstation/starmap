@@ -125,14 +125,15 @@ func (e *Endpoints) Len() int {
 	return length
 }
 
-// List returns a slice of all endpoints.
-func (e *Endpoints) List() []*Endpoint {
+// List returns a slice of all endpoints as values (copies).
+func (e *Endpoints) List() []Endpoint {
 	e.mu.RLock()
-	endpoints := make([]*Endpoint, len(e.endpoints))
-	i := 0
+	endpoints := make([]Endpoint, 0, len(e.endpoints))
 	for _, endpoint := range e.endpoints {
-		endpoints[i] = endpoint
-		i++
+		// Return copies to prevent external modification
+		if endpoint != nil {
+			endpoints = append(endpoints, *endpoint)
+		}
 	}
 	e.mu.RUnlock()
 	return endpoints

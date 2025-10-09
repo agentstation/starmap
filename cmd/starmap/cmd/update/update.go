@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sync"
 )
 
 // Flags holds flags for update command.
@@ -163,7 +164,7 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 }
 
 // handleResults processes the update results and handles user interaction.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Result, flags *Flags, outputPath string, sourcesDir string, globalFlags *globals.Flags) error {
+func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, globalFlags *globals.Flags) error {
 	if !result.HasChanges() {
 		if !globalFlags.Quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")
@@ -220,7 +221,7 @@ func handleResults(ctx context.Context, sm starmap.Starmap, result *starmap.Resu
 }
 
 // displayResultsSummary shows a detailed summary of the update results.
-func displayResultsSummary(result *starmap.Result) {
+func displayResultsSummary(result *sync.Result) {
 	fmt.Fprintf(os.Stderr, "=== UPDATE RESULTS ===\n\n")
 
 	// Show summary for each provider
@@ -258,7 +259,7 @@ func displayResultsSummary(result *starmap.Result) {
 }
 
 // finalizeChanges displays the completion message.
-func finalizeChanges(isQuiet bool, result *starmap.Result) error {
+func finalizeChanges(isQuiet bool, result *sync.Result) error {
 	if !isQuiet {
 		fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
 		fmt.Fprintf(os.Stderr, "📊 Total: %s\n", result.Summary())

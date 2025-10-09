@@ -1,11 +1,14 @@
 package catalogs
 
+import "github.com/agentstation/starmap/pkg/save"
+
 // Reader provides read-only access to catalog data.
 type Reader interface {
 	// Lists all providers, authors, and endpoints
 	Providers() *Providers
 	Authors() *Authors
 	Endpoints() *Endpoints
+	Models() *Models
 
 	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)
@@ -13,7 +16,6 @@ type Reader interface {
 	Endpoint(id string) (Endpoint, error)
 
 	// Helper methods for accessing models through providers/authors
-	GetAllModels() []Model
 	FindModel(id string) (Model, error)
 }
 
@@ -62,6 +64,7 @@ type Catalog interface {
 	Writer
 	Merger
 	Copier
+	Persistence
 }
 
 // ReadOnlyCatalog provides read-only access to a catalog.
@@ -80,4 +83,10 @@ type MutableCatalog interface {
 // MergeableCatalog provides full catalog functionality.
 type MergeableCatalog interface {
 	Catalog
+}
+
+// Persistence provides catalog persistence capabilities.
+type Persistence interface {
+	// Save saves the catalog to persistent storage
+	Save(opts ...save.Option) error
 }

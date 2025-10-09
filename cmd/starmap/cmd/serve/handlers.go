@@ -16,7 +16,7 @@ import (
 
 // APIHandlers holds the catalog and provides HTTP handlers for REST endpoints.
 type APIHandlers struct {
-	catalog *catalogs.Catalog
+	catalog catalogs.Catalog
 }
 
 // NewAPIHandlers creates a new API handlers instance with the starmap catalog.
@@ -27,7 +27,7 @@ func NewAPIHandlers() (*APIHandlers, error) {
 	}
 
 	return &APIHandlers{
-		catalog: &cat,
+		catalog: cat,
 	}, nil
 }
 
@@ -140,13 +140,13 @@ func (h *APIHandlers) handleGetModels(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get all models
-	allModels := (*h.catalog).GetAllModels()
+	allModels := h.catalog.Models().List()
 
 	// Apply provider filter if specified
-	var filteredModels []catalogs.Model
+	var filteredModels []*catalogs.Model
 	if providerFilter != "" {
 		// Get models from specific provider
-		providers := (*h.catalog).Providers().List()
+		providers := h.catalog.Providers().List()
 		for _, prov := range providers {
 			if string(prov.ID) == providerFilter {
 				for _, model := range prov.Models {
@@ -156,7 +156,11 @@ func (h *APIHandlers) handleGetModels(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		filteredModels = allModels
+		// Convert to pointer slice for compatibility
+		filteredModels = make([]*catalogs.Model, len(allModels))
+		for i := range allModels {
+			filteredModels[i] = &allModels[i]
+		}
 	}
 
 	// Apply pagination
@@ -165,7 +169,7 @@ func (h *APIHandlers) handleGetModels(w http.ResponseWriter, r *http.Request) {
 	end := offset + limit
 
 	if start >= total {
-		filteredModels = []catalogs.Model{}
+		filteredModels = []*catalogs.Model{}
 	} else {
 		if end > total {
 			end = total
@@ -190,7 +194,7 @@ func (h *APIHandlers) handleGetModels(w http.ResponseWriter, r *http.Request) {
 // handleGetModelByID returns a specific model by ID.
 func (h *APIHandlers) handleGetModelByID(w http.ResponseWriter, _ *http.Request, modelID string) {
 	// Use the catalog's FindModel method
-	model, err := (*h.catalog).FindModel(modelID)
+	model, err := h.catalog.FindModel(modelID)
 	if err != nil {
 		if _, ok := err.(*errors.NotFoundError); ok {
 			h.notFound(w, fmt.Sprintf("Model '%s' not found", modelID))
@@ -226,7 +230,7 @@ func (h *APIHandlers) handleSearchModels(w http.ResponseWriter, r *http.Request)
 	}
 
 	// Get all models and filter based on search criteria
-	allModels := (*h.catalog).GetAllModels()
+	allModels := h.catalog.Models().List()
 	results := make([]catalogs.Model, 0, len(allModels))
 
 	for _, model := range allModels {
@@ -243,7 +247,7 @@ func (h *APIHandlers) handleSearchModels(w http.ResponseWriter, r *http.Request)
 		if len(searchReq.Providers) > 0 {
 			// Check if model belongs to any of the requested providers
 			found := false
-			providers := (*h.catalog).Providers().List()
+			providers := h.catalog.Providers().List()
 			for _, prov := range providers {
 				for _, reqProv := range searchReq.Providers {
 					if string(prov.ID) == reqProv {
@@ -312,7 +316,7 @@ func (h *APIHandlers) handleSearchModels(w http.ResponseWriter, r *http.Request)
 
 // handleGetProviders returns a list of all providers.
 func (h *APIHandlers) handleGetProviders(w http.ResponseWriter, _ *http.Request) {
-	providers := (*h.catalog).Providers().List()
+	providers := h.catalog.Providers().List()
 
 	// Create simplified provider list
 	providerList := make([]map[string]any, 0, len(providers))
@@ -327,8 +331,8 @@ func (h *APIHandlers) handleGetProviders(w http.ResponseWriter, _ *http.Request)
 			providerInfo["headquarters"] = *prov.Headquarters
 		}
 
-		if prov.Catalog != nil && prov.Catalog.DocsURL != nil {
-			providerInfo["docs_url"] = *prov.Catalog.DocsURL
+		if prov.Catalog != nil && prov.Catalog.Docs != nil {
+			providerInfo["docs_url"] = *prov.Catalog.Docs
 		}
 
 		providerList = append(providerList, providerInfo)
@@ -342,7 +346,7 @@ func (h *APIHandlers) handleGetProviders(w http.ResponseWriter, _ *http.Request)
 
 // handleGetProviderByID returns a specific provider by ID.
 func (h *APIHandlers) handleGetProviderByID(w http.ResponseWriter, _ *http.Request, providerID string) {
-	prov, err := provider.Get(*h.catalog, providerID)
+	prov, err := provider.Get(h.catalog, providerID)
 	if err != nil {
 		if _, ok := err.(*errors.NotFoundError); ok {
 			h.notFound(w, fmt.Sprintf("Provider '%s' not found", providerID))
@@ -357,7 +361,7 @@ func (h *APIHandlers) handleGetProviderByID(w http.ResponseWriter, _ *http.Reque
 
 // handleGetProviderModels returns models for a specific provider.
 func (h *APIHandlers) handleGetProviderModels(w http.ResponseWriter, _ *http.Request, providerID string) {
-	prov, err := provider.Get(*h.catalog, providerID)
+	prov, err := provider.Get(h.catalog, providerID)
 	if err != nil {
 		if _, ok := err.(*errors.NotFoundError); ok {
 			h.notFound(w, fmt.Sprintf("Provider '%s' not found", providerID))
@@ -368,7 +372,7 @@ func (h *APIHandlers) handleGetProviderModels(w http.ResponseWriter, _ *http.Req
 	}
 
 	// Convert map to slice
-	models := make([]catalogs.Model, 0, len(prov.Models))
+	models := make([]*catalogs.Model, 0, len(prov.Models))
 	for _, model := range prov.Models {
 		models = append(models, model)
 	}

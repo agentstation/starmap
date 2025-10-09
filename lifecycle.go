@@ -5,42 +5,10 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
-
-// setup initializes all sources with provider configurations concurrently.
-func setup(srcs []sources.Source, providers *catalogs.Providers) error {
-	var wg sync.WaitGroup
-	var errs []error
-	var errMutex sync.Mutex
-
-	// setup all sources concurrently
-	for _, src := range srcs {
-		wg.Add(1)
-		go func(src sources.Source) {
-			defer wg.Done()
-
-			if err := src.Setup(providers); err != nil {
-				wrappedErr := pkgerrors.WrapResource("setup", "source", string(src.Type()), err)
-				errMutex.Lock()
-				errs = append(errs, wrappedErr)
-				errMutex.Unlock()
-			}
-		}(src)
-	}
-
-	// Wait for all goroutines to complete
-	wg.Wait()
-
-	// Return all errors joined together, or nil if no errors
-	if len(errs) > 0 {
-		return errors.Join(errs...)
-	}
-	return nil
-}
 
 // fetch fetches catalogs from all configured sources.
 func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) error {
@@ -58,17 +26,17 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 		go func(src sources.Source) {
 			defer wg.Done()
 
-			logger.Info().Str("source", string(src.Type())).Msg("Fetching")
+			logger.Info().Str("source", string(src.ID())).Msg("Fetching")
 
 			// Fetch catalog from source
 			if err := src.Fetch(ctx, opts...); err != nil {
-				logger.Warn().Err(err).Str("source", string(src.Type())).Msg("Source fetch had errors")
+				logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source fetch had errors")
 
 				// Don't skip if we still got a catalog (partial success)
 				if src.Catalog() == nil {
-					logger.Warn().Str("source", string(src.Type())).Msg("No catalog returned, skipping source")
+					logger.Warn().Str("source", string(src.ID())).Msg("No catalog returned, skipping source")
 					// Collect the error even for failed fetches
-					wrappedErr := pkgerrors.WrapResource("fetch", "source", string(src.Type()), err)
+					wrappedErr := pkgerrors.WrapResource("fetch", "source", string(src.ID()), err)
 					errMutex.Lock()
 					errs = append(errs, wrappedErr)
 					errMutex.Unlock()
@@ -76,7 +44,7 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 				}
 
 				// Even if we got a partial catalog, still record the error
-				wrappedErr := pkgerrors.WrapResource("fetch", "source", string(src.Type()), err)
+				wrappedErr := pkgerrors.WrapResource("fetch", "source", string(src.ID()), err)
 				errMutex.Lock()
 				errs = append(errs, wrappedErr)
 				errMutex.Unlock()
@@ -85,9 +53,9 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 			// Debug: log provider count from this source
 			if src.Catalog() != nil {
 				logger.Debug().
-					Str("source", string(src.Type())).
+					Str("source", string(src.ID())).
 					Int("providers", len(src.Catalog().Providers().List())).
-					Int("models", len(src.Catalog().GetAllModels())).
+					Int("models", len(src.Catalog().Models().List())).
 					Msg("Added source catalog to reconciliation")
 			}
 		}(src)
@@ -118,10 +86,10 @@ func cleanup(srcs []sources.Source) error {
 			if err := src.Cleanup(); err != nil {
 				logging.Warn().
 					Err(err).
-					Str("source", string(src.Type())).
+					Str("source", string(src.ID())).
 					Msg("Cleanup failed")
 
-				wrappedErr := pkgerrors.WrapResource("cleanup", "source", string(src.Type()), err)
+				wrappedErr := pkgerrors.WrapResource("cleanup", "source", string(src.ID()), err)
 				errMutex.Lock()
 				errs = append(errs, wrappedErr)
 				errMutex.Unlock()

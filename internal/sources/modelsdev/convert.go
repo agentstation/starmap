@@ -8,8 +8,8 @@ import (
 
 // ConvertToStarmapModel converts a models.dev model to a starmap model.
 // This is shared between GitSource and HTTPSource to avoid duplication.
-func ConvertToStarmapModel(mdModel Model) catalogs.Model {
-	model := catalogs.Model{
+func ConvertToStarmapModel(mdModel Model) *catalogs.Model {
+	model := &catalogs.Model{
 		ID:   mdModel.ID,
 		Name: mdModel.Name,
 	}

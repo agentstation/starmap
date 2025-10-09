@@ -16,35 +16,35 @@ import (
 )
 
 // mockAPI creates a valid models.dev-like JSON response
-func mockAPI() map[string]interface{} {
-	return map[string]interface{}{
-		"openai": map[string]interface{}{
+func mockAPI() map[string]any {
+	return map[string]any{
+		"openai": map[string]any{
 			"id":   "openai",
 			"name": "OpenAI",
-			"models": map[string]interface{}{
-				"gpt-4": map[string]interface{}{
+			"models": map[string]any{
+				"gpt-4": map[string]any{
 					"id":   "gpt-4",
 					"name": "GPT-4",
-					"cost": map[string]interface{}{
+					"cost": map[string]any{
 						"input":  0.03,
 						"output": 0.06,
 					},
 				},
 			},
 		},
-		"anthropic": map[string]interface{}{
+		"anthropic": map[string]any{
 			"id":   "anthropic",
 			"name": "Anthropic",
 		},
-		"google": map[string]interface{}{
+		"google": map[string]any{
 			"id":   "google",
 			"name": "Google",
 		},
-		"deepseek": map[string]interface{}{
+		"deepseek": map[string]any{
 			"id":   "deepseek",
 			"name": "DeepSeek",
 		},
-		"cerebras": map[string]interface{}{
+		"cerebras": map[string]any{
 			"id":   "cerebras",
 			"name": "Cerebras",
 		},
@@ -65,12 +65,12 @@ func largeMockAPIJSON() string {
 	// Add many models to reach >100KB
 	for i := 0; i < 1000; i++ {
 		modelID := fmt.Sprintf("model-%d", i)
-		if openai, ok := api["openai"].(map[string]interface{}); ok {
-			if models, ok := openai["models"].(map[string]interface{}); ok {
-				models[modelID] = map[string]interface{}{
+		if openai, ok := api["openai"].(map[string]any); ok {
+			if models, ok := openai["models"].(map[string]any); ok {
+				models[modelID] = map[string]any{
 					"id":   modelID,
 					"name": fmt.Sprintf("Model %d", i),
-					"cost": map[string]interface{}{
+					"cost": map[string]any{
 						"input":  0.001,
 						"output": 0.002,
 					},
@@ -126,7 +126,7 @@ func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 		t.Errorf("Expected file size > 100KB, got %d bytes", len(data))
 	}
 
-	var parsed map[string]interface{}
+	var parsed map[string]any
 	if err := json.Unmarshal(data, &parsed); err != nil {
 		t.Fatalf("Downloaded data is not valid JSON: %v", err)
 	}
@@ -260,7 +260,7 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback(t *testing.T) {
 		t.Fatalf("Failed to read cache file: %v", err)
 	}
 
-	var parsed map[string]interface{}
+	var parsed map[string]any
 	if err := json.Unmarshal(data, &parsed); err != nil {
 		t.Fatalf("Cache data is not valid JSON: %v", err)
 	}

@@ -58,12 +58,7 @@ func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	authorFilter := &filter.AuthorFilter{
 		Search: flags.Search,
 	}
-	// Convert to value slice for filter
-	authorValues := make([]catalogs.Author, len(authors))
-	for i, a := range authors {
-		authorValues[i] = *a
-	}
-	filtered := authorFilter.Apply(authorValues)
+	filtered := authorFilter.Apply(authors)
 
 	// Sort authors
 	sort.Slice(filtered, func(i, j int) bool {
@@ -86,7 +81,12 @@ func listAuthors(cmd *cobra.Command, flags *globals.ResourceFlags) error {
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		tableData := table.AuthorsToTableData(filtered)
+		// Convert to pointer slice for table compatibility
+		authorPointers := make([]*catalogs.Author, len(filtered))
+		for i := range filtered {
+			authorPointers[i] = &filtered[i]
+		}
+		tableData := table.AuthorsToTableData(authorPointers)
 		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,

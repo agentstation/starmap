@@ -12,7 +12,7 @@ import (
 
 // FormatModels handles the common pattern of formatting models for output.
 // This encapsulates the switch logic for different output formats.
-func FormatModels(models []catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
+func FormatModels(models []*catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
@@ -28,7 +28,7 @@ func FormatModels(models []catalogs.Model, showDetails bool, globalFlags *global
 }
 
 // FormatProviders handles the common pattern of formatting providers for output.
-func FormatProviders(providers []catalogs.Provider, showKeys bool, globalFlags *globals.Flags) error {
+func FormatProviders(providers []*catalogs.Provider, showKeys bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
@@ -44,7 +44,7 @@ func FormatProviders(providers []catalogs.Provider, showKeys bool, globalFlags *
 }
 
 // FormatAuthors handles the common pattern of formatting authors for output.
-func FormatAuthors(authors []catalogs.Author, globalFlags *globals.Flags) error {
+func FormatAuthors(authors []*catalogs.Author, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format

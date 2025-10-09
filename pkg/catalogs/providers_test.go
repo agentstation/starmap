@@ -21,9 +21,11 @@ func TestProvidersFormatYAML(t *testing.T) {
 				Scheme:  "",
 			},
 			Catalog: &ProviderCatalog{
-				DocsURL:        stringPtr("https://docs.anthropic.com/en/docs/about-claude/models/overview"),
-				APIURL:         stringPtr("https://api.anthropic.com/v1/models"),
-				APIKeyRequired: boolPtr(true),
+				Docs: stringPtr("https://docs.anthropic.com/en/docs/about-claude/models/overview"),
+				Endpoint: ProviderEndpoint{
+					URL:          "https://api.anthropic.com/v1/models",
+					AuthRequired: true,
+				},
 			},
 			StatusPageURL: stringPtr("https://status.anthropic.com"),
 			ChatCompletions: &ProviderChatCompletions{
@@ -58,11 +60,13 @@ func TestProvidersFormatYAML(t *testing.T) {
 				Scheme:  "Bearer",
 			},
 			Catalog: &ProviderCatalog{
-				DocsURL:        stringPtr("https://inference-docs.cerebras.ai/models/overview"),
-				APIURL:         stringPtr("https://api.cerebras.ai/v1/models"),
-				APIKeyRequired: boolPtr(true),
+				Docs: stringPtr("https://inference-docs.cerebras.ai/models/overview"),
+				Endpoint: ProviderEndpoint{
+					URL:          "https://api.cerebras.ai/v1/models",
+					AuthRequired: true,
+				},
+				Authors: []AuthorID{"alibaba", "meta", "openai"},
 			},
-			Authors: []AuthorID{"alibaba", "meta", "openai"},
 			RetentionPolicy: &ProviderRetentionPolicy{
 				Type:     ProviderRetentionTypeNone,
 				Duration: durationPtr(0), // immediate

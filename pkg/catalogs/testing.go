@@ -23,8 +23,13 @@ func TestProvider(t testing.TB) *Provider {
 			Scheme:  "Bearer",
 		},
 		Catalog: &ProviderCatalog{
-			APIKeyRequired: &apiKeyRequired,
-			APIURL:         &apiURL,
+			Endpoint: ProviderEndpoint{
+				AuthRequired: apiKeyRequired,
+				URL:          apiURL,
+			},
+			Authors: []AuthorID{
+				"test-author",
+			},
 		},
 	}
 }
@@ -60,13 +65,13 @@ func TestEndpoint(t testing.TB) *Endpoint {
 func TestCatalog(t testing.TB) Catalog {
 	t.Helper()
 
-	catalog := NewMemory()
+	catalog := Empty()
 
 	// Add test provider with a model
 	provider := TestProvider(t)
 	model := TestModel(t)
-	provider.Models = map[string]Model{
-		model.ID: *model,
+	provider.Models = map[string]*Model{
+		model.ID: model,
 	}
 	if err := catalog.SetProvider(*provider); err != nil {
 		t.Fatalf("failed to add test provider: %v", err)

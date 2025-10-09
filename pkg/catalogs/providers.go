@@ -130,12 +130,13 @@ func (p *Providers) Len() int {
 	return length
 }
 
-// List returns a slice of all providers.
-func (p *Providers) List() []*Provider {
+// List returns a slice of all providers as values (copies).
+func (p *Providers) List() []Provider {
 	p.mu.RLock()
-	providers := make([]*Provider, 0, len(p.providers))
+	providers := make([]Provider, 0, len(p.providers))
 	for _, provider := range p.providers {
-		providers = append(providers, provider)
+		// Return deep copies to prevent external modification
+		providers = append(providers, DeepCopyProvider(*provider))
 	}
 	p.mu.RUnlock()
 
@@ -201,17 +202,13 @@ func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 	// Create a copy of the provider to avoid modifying the original
 	providerCopy := *provider
 	if providerCopy.Models == nil {
-		providerCopy.Models = make(map[string]Model)
+		providerCopy.Models = make(map[string]*Model)
 	} else {
-		// Copy the models map
-		newModels := make(map[string]Model, len(providerCopy.Models))
-		for k, v := range providerCopy.Models {
-			newModels[k] = v
-		}
-		providerCopy.Models = newModels
+		// Shallow copy the models map (we'll replace one entry)
+		providerCopy.Models = ShallowCopyProviderModels(providerCopy.Models)
 	}
 
-	providerCopy.Models[model.ID] = model
+	providerCopy.Models[model.ID] = &model
 	p.providers[providerID] = &providerCopy
 
 	return nil
@@ -246,7 +243,7 @@ func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 
 	// Create a copy of the provider to avoid modifying the original
 	providerCopy := *provider
-	newModels := make(map[string]Model, len(providerCopy.Models)-1)
+	newModels := make(map[string]*Model, len(providerCopy.Models)-1)
 	for k, v := range providerCopy.Models {
 		if k != modelID {
 			newModels[k] = v

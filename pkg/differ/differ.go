@@ -12,7 +12,7 @@ import (
 // Differ handles change detection between resources.
 type Differ interface {
 	// Models compares two sets of models and returns changes
-	Models(existing, updated []catalogs.Model) *ModelChangeset
+	Models(existing, updated []*catalogs.Model) *ModelChangeset
 
 	// Providers compares two sets of providers and returns changes
 	Providers(existing, updated []catalogs.Provider) *ProviderChangeset
@@ -49,7 +49,7 @@ func New(opts ...Option) Differ {
 }
 
 // Models compares two sets of models and returns changes.
-func (diff *differ) Models(existing, updated []catalogs.Model) *ModelChangeset {
+func (diff *differ) Models(existing, updated []*catalogs.Model) *ModelChangeset {
 	changeset := &ModelChangeset{
 		Added:   []catalogs.Model{},
 		Updated: []ModelUpdate{},
@@ -57,12 +57,12 @@ func (diff *differ) Models(existing, updated []catalogs.Model) *ModelChangeset {
 	}
 
 	// Create maps for efficient lookup
-	existingMap := make(map[string]catalogs.Model)
+	existingMap := make(map[string]*catalogs.Model)
 	for _, model := range existing {
 		existingMap[model.ID] = model
 	}
 
-	newMap := make(map[string]catalogs.Model)
+	newMap := make(map[string]*catalogs.Model)
 	for _, model := range updated {
 		newMap[model.ID] = model
 	}
@@ -71,19 +71,19 @@ func (diff *differ) Models(existing, updated []catalogs.Model) *ModelChangeset {
 	for _, newModel := range updated {
 		if existingModel, exists := existingMap[newModel.ID]; exists {
 			// Check if model has been updated
-			if update := diff.model(existingModel, newModel); update != nil {
+			if update := diff.model(*existingModel, *newModel); update != nil {
 				changeset.Updated = append(changeset.Updated, *update)
 			}
 		} else {
 			// New model
-			changeset.Added = append(changeset.Added, newModel)
+			changeset.Added = append(changeset.Added, *newModel)
 		}
 	}
 
 	// Find removed models
 	for _, existingModel := range existing {
 		if _, exists := newMap[existingModel.ID]; !exists {
-			changeset.Removed = append(changeset.Removed, existingModel)
+			changeset.Removed = append(changeset.Removed, *existingModel)
 		}
 	}
 
@@ -193,30 +193,29 @@ func (diff *differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
 	changeset := &Changeset{}
 
 	// Diff models (from providers and authors)
-	existingModels := existing.GetAllModels()
-	newModels := updated.GetAllModels()
+	existingModelValues := existing.Models().List()
+	newModelValues := updated.Models().List()
+
+	// Convert to pointers for diff
+	existingModels := make([]*catalogs.Model, len(existingModelValues))
+	for i, m := range existingModelValues {
+		existingModels[i] = &m
+	}
+	newModels := make([]*catalogs.Model, len(newModelValues))
+	for i, m := range newModelValues {
+		newModels[i] = &m
+	}
+
 	changeset.Models = diff.Models(existingModels, newModels)
 
 	// Diff providers
-	existingProviders := []catalogs.Provider{}
-	for _, p := range existing.Providers().List() {
-		existingProviders = append(existingProviders, *p)
-	}
-	newProviders := []catalogs.Provider{}
-	for _, p := range updated.Providers().List() {
-		newProviders = append(newProviders, *p)
-	}
+	existingProviders := existing.Providers().List()
+	newProviders := updated.Providers().List()
 	changeset.Providers = diff.Providers(existingProviders, newProviders)
 
 	// Diff authors
-	existingAuthors := []catalogs.Author{}
-	for _, a := range existing.Authors().List() {
-		existingAuthors = append(existingAuthors, *a)
-	}
-	newAuthors := []catalogs.Author{}
-	for _, a := range updated.Authors().List() {
-		newAuthors = append(newAuthors, *a)
-	}
+	existingAuthors := existing.Authors().List()
+	newAuthors := updated.Authors().List()
 	changeset.Authors = diff.Authors(existingAuthors, newAuthors)
 
 	// Calculate summary

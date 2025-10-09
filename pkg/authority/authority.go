@@ -20,9 +20,9 @@ type Authority interface {
 
 // Field defines source priority for a specific field.
 type Field struct {
-	Path     string       `json:"path" yaml:"path"`         // e.g., "pricing.input", "metadata.knowledge_cutoff"
-	Source   sources.Type `json:"source" yaml:"source"`     // Which source is authoritative
-	Priority int          `json:"priority" yaml:"priority"` // Priority (higher = more authoritative)
+	Path     string     `json:"path" yaml:"path"`         // e.g., "pricing.input", "metadata.knowledge_cutoff"
+	Source   sources.ID `json:"source" yaml:"source"`     // Which source is authoritative
+	Priority int        `json:"priority" yaml:"priority"` // Priority (higher = more authoritative)
 }
 
 // authorities provides standard field authorities.
@@ -111,46 +111,46 @@ func defaultModelAuthorities() []Field {
 	return []Field{
 		// Pricing - models.dev is most reliable (HTTP preferred for speed)
 		// Using capitalized field names to match Go struct fields
-		{Path: "Pricing", Source: sources.ModelsDevHTTP, Priority: 110},
-		{Path: "Pricing", Source: sources.ModelsDevGit, Priority: 100},
+		{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 110},
+		{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 100},
 
 		// Availability - Provider API is truth
-		{Path: "Features", Source: sources.ProviderAPI, Priority: 95},
-		{Path: "Features", Source: sources.ModelsDevHTTP, Priority: 90},
-		{Path: "Features", Source: sources.ModelsDevGit, Priority: 85},
+		{Path: "Features", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Features", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Features", Source: sources.ModelsDevGitID, Priority: 85},
 
 		// Limits - models.dev has better data (HTTP preferred)
-		{Path: "Limits", Source: sources.ModelsDevHTTP, Priority: 100},
-		{Path: "Limits", Source: sources.ModelsDevGit, Priority: 90},
-		{Path: "Limits", Source: sources.ProviderAPI, Priority: 85},
+		{Path: "Limits", Source: sources.ModelsDevHTTPID, Priority: 100},
+		{Path: "Limits", Source: sources.ModelsDevGitID, Priority: 90},
+		{Path: "Limits", Source: sources.ProvidersID, Priority: 85},
 
 		// Metadata - models.dev is authoritative (HTTP preferred)
-		{Path: "Metadata", Source: sources.ModelsDevHTTP, Priority: 110},
-		{Path: "Metadata", Source: sources.ModelsDevGit, Priority: 100},
-		{Path: "Metadata", Source: sources.ProviderAPI, Priority: 80},
+		{Path: "Metadata", Source: sources.ModelsDevHTTPID, Priority: 110},
+		{Path: "Metadata", Source: sources.ModelsDevGitID, Priority: 100},
+		{Path: "Metadata", Source: sources.ProvidersID, Priority: 80},
 
 		// Generation parameters - Provider API for current settings
-		{Path: "Generation", Source: sources.ProviderAPI, Priority: 85},
-		{Path: "Generation", Source: sources.ModelsDevHTTP, Priority: 80},
-		{Path: "Generation", Source: sources.ModelsDevGit, Priority: 75},
+		{Path: "Generation", Source: sources.ProvidersID, Priority: 85},
+		{Path: "Generation", Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: "Generation", Source: sources.ModelsDevGitID, Priority: 75},
 
 		// Descriptions - prefer manual edits, then models.dev
-		{Path: "Description", Source: sources.LocalCatalog, Priority: 90},
-		{Path: "Description", Source: sources.ModelsDevHTTP, Priority: 85},
-		{Path: "Description", Source: sources.ModelsDevGit, Priority: 80},
-		{Path: "Description", Source: sources.ProviderAPI, Priority: 70},
+		{Path: "Description", Source: sources.LocalCatalogID, Priority: 90},
+		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 80},
+		{Path: "Description", Source: sources.ProvidersID, Priority: 70},
 
 		// Core identity - Provider API is authoritative for names
-		{Path: "Name", Source: sources.ProviderAPI, Priority: 90},
-		{Path: "Name", Source: sources.ModelsDevHTTP, Priority: 85},
-		{Path: "Name", Source: sources.ModelsDevGit, Priority: 80},
-		{Path: "Name", Source: sources.LocalCatalog, Priority: 75},
+		{Path: "Name", Source: sources.ProvidersID, Priority: 90},
+		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 80},
+		{Path: "Name", Source: sources.LocalCatalogID, Priority: 75},
 
 		// Authors field
-		{Path: "Authors", Source: sources.LocalCatalog, Priority: 85},
-		{Path: "Authors", Source: sources.ModelsDevHTTP, Priority: 80},
-		{Path: "Authors", Source: sources.ModelsDevGit, Priority: 75},
-		{Path: "Authors", Source: sources.ProviderAPI, Priority: 70},
+		{Path: "Authors", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Authors", Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: "Authors", Source: sources.ModelsDevGitID, Priority: 75},
+		{Path: "Authors", Source: sources.ProvidersID, Priority: 70},
 	}
 }
 
@@ -158,31 +158,31 @@ func defaultModelAuthorities() []Field {
 func defaultProviderAuthorities() []Field {
 	return []Field{
 		// API configuration - local catalog for stability (using Go field names)
-		{Path: "APIKey.*", Source: sources.LocalCatalog, Priority: 100},
-		{Path: "Catalog.*", Source: sources.LocalCatalog, Priority: 95},
-		{Path: "ChatCompletions.URL", Source: sources.LocalCatalog, Priority: 95},
-		{Path: "ChatCompletions.HealthAPIURL", Source: sources.LocalCatalog, Priority: 90},
+		{Path: "APIKey.*", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "Catalog.*", Source: sources.LocalCatalogID, Priority: 95},
+		{Path: "ChatCompletions.URL", Source: sources.LocalCatalogID, Priority: 95},
+		{Path: "ChatCompletions.HealthAPIURL", Source: sources.LocalCatalogID, Priority: 90},
 
 		// Core info - prefer manual edits (using Go field names)
-		{Path: "Name", Source: sources.LocalCatalog, Priority: 90},
-		{Path: "Headquarters", Source: sources.LocalCatalog, Priority: 85},
-		{Path: "IconURL", Source: sources.LocalCatalog, Priority: 85},
+		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
+		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Policies - models.dev or manual (HTTP preferred, using Go field names)
-		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevHTTP, Priority: 90},
-		{Path: "RetentionPolicy.*", Source: sources.ModelsDevHTTP, Priority: 90},
-		{Path: "GovernancePolicy.*", Source: sources.ModelsDevHTTP, Priority: 90},
-		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevHTTP, Priority: 85},
-		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevGit, Priority: 85},
-		{Path: "RetentionPolicy.*", Source: sources.ModelsDevGit, Priority: 85},
-		{Path: "GovernancePolicy.*", Source: sources.ModelsDevGit, Priority: 85},
-		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevGit, Priority: 80},
+		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "RetentionPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "GovernancePolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "RetentionPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "GovernancePolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevGitID, Priority: 80},
 
 		// Status page - prefer local catalog (using Go field name)
-		{Path: "StatusPageURL", Source: sources.LocalCatalog, Priority: 85},
+		{Path: "StatusPageURL", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalog, Priority: 85},
+		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
 	}
 }
 
@@ -191,19 +191,19 @@ func defaultAuthorAuthorities() []Field {
 	return []Field{
 		// Core author info - prefer local catalog for stability
 		// Using capitalized field names to match Go struct fields
-		{Path: "Name", Source: sources.LocalCatalog, Priority: 90},
-		{Path: "URL", Source: sources.LocalCatalog, Priority: 85},
-		{Path: "Description", Source: sources.LocalCatalog, Priority: 85},
+		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
+		{Path: "URL", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Description", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalog, Priority: 85},
+		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Fallback to models.dev
-		{Path: "Name", Source: sources.ModelsDevHTTP, Priority: 80},
-		{Path: "URL", Source: sources.ModelsDevHTTP, Priority: 75},
-		{Path: "Description", Source: sources.ModelsDevHTTP, Priority: 75},
-		{Path: "Name", Source: sources.ModelsDevGit, Priority: 70},
-		{Path: "URL", Source: sources.ModelsDevGit, Priority: 65},
-		{Path: "Description", Source: sources.ModelsDevGit, Priority: 65},
+		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: "URL", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 70},
+		{Path: "URL", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 65},
 	}
 }

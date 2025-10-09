@@ -44,7 +44,7 @@ type ResultMetadata struct {
 	Duration time.Duration
 
 	// Sources that were reconciled
-	Sources []sources.Type
+	Sources []sources.ID
 
 	// Strategy used for reconciliation
 	Strategy Strategy
@@ -114,7 +114,7 @@ func NewResult() *Result {
 		Warnings:          []string{},
 		Metadata: ResultMetadata{
 			StartTime: time.Now(),
-			Sources:   []sources.Type{},
+			Sources:   []sources.ID{},
 		},
 	}
 }

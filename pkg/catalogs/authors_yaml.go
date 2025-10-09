@@ -22,7 +22,7 @@ func (a *Authors) FormatYAML() string {
 	return formatAuthorsYAML(authors)
 }
 
-func formatAuthorsYAML(authors []*Author) string {
+func formatAuthorsYAML(authors []Author) string {
 	// Sort authors alphabetically by ID
 	sort.Slice(authors, func(i, j int) bool {
 		return authors[i].ID < authors[j].ID

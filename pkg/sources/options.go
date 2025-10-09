@@ -16,8 +16,8 @@ type Options struct {
 	Reformat    bool // For file-based sources - reformat output files
 }
 
-// defaultOptions returns source options with default values.
-func defaultOptions() *Options {
+// Defaults returns source options with default values.
+func Defaults() *Options {
 	return &Options{
 		ProviderID:  nil,
 		Fresh:       false,
@@ -29,6 +29,15 @@ func defaultOptions() *Options {
 
 // Option is a function that configures options.
 type Option func(*Options)
+
+// Apply applies a set of options to create configured sourceOptions
+// This is a helper for sources to use internally.
+func (o *Options) Apply(opts ...Option) *Options {
+	for _, opt := range opts {
+		opt(o)
+	}
+	return o
+}
 
 // WithProviderFilter configures filtering for a specific provider.
 func WithProviderFilter(providerID catalogs.ProviderID) Option {
@@ -63,14 +72,4 @@ func WithReformat(reformat bool) Option {
 	return func(opts *Options) {
 		opts.Reformat = reformat
 	}
-}
-
-// ApplyOptions applies a set of options to create configured sourceOptions
-// This is a helper for sources to use internally.
-func ApplyOptions(opts ...Option) *Options {
-	options := defaultOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
-	return options
 }

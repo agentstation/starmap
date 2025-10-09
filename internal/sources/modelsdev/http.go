@@ -44,9 +44,9 @@ func WithHTTPSourcesDir(dir string) HTTPSourceOption {
 	}
 }
 
-// Type returns the type of this source.
-func (s *HTTPSource) Type() sources.Type {
-	return sources.ModelsDevHTTP
+// ID returns the ID of this source.
+func (s *HTTPSource) ID() sources.ID {
+	return sources.ModelsDevHTTPID
 }
 
 // ensureHTTPAPI initializes models.dev data once via HTTP.
@@ -94,7 +94,7 @@ func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error {
 	}
 
 	// Process the API data using shared logic
-	added, err := processFetch(ctx, s.catalog, api, opts...)
+	added, err := processFetch(s.catalog, api)
 	if err != nil {
 		return err
 	}

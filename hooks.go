@@ -7,6 +7,21 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+// Compile-time interface check to ensure proper implementation.
+var _ Hooks = (*hooks)(nil)
+
+// Hooks provides event callback registration for catalog changes.
+type Hooks interface {
+	// OnModelAdded registers a callback for when models are added
+	OnModelAdded(ModelAddedHook)
+
+	// OnModelUpdated registers a callback for when models are updated
+	OnModelUpdated(ModelUpdatedHook)
+
+	// OnModelRemoved registers a callback for when models are removed
+	OnModelRemoved(ModelRemovedHook)
+}
+
 // Hook function types for model events.
 type (
 	// ModelAddedHook is called when a model is added to the catalog.
@@ -19,20 +34,14 @@ type (
 	ModelRemovedHook func(model catalogs.Model)
 )
 
-// OnModelAdded is a hook that registers a callback for when models are added.
-func (s *starmap) OnModelAdded(fn ModelAddedHook) {
-	s.hooks.onModelAdded(fn)
-}
+// OnModelAdded registers a callback for when models are added.
+func (s *starmap) OnModelAdded(fn ModelAddedHook) { s.hooks.OnModelAdded(fn) }
 
-// OnModelUpdated is a hook that registers a callback for when models are updated.
-func (s *starmap) OnModelUpdated(fn ModelUpdatedHook) {
-	s.hooks.onModelUpdated(fn)
-}
+// OnModelUpdated registers a callback for when models are updated.
+func (s *starmap) OnModelUpdated(fn ModelUpdatedHook) { s.hooks.OnModelUpdated(fn) }
 
-// OnModelRemoved is a hook that registers a callback for when models are removed.
-func (s *starmap) OnModelRemoved(fn ModelRemovedHook) {
-	s.hooks.onModelRemoved(fn)
-}
+// OnModelRemoved registers a callback for when models are removed.
+func (s *starmap) OnModelRemoved(fn ModelRemovedHook) { s.hooks.OnModelRemoved(fn) }
 
 // hooks manages event callbacks for catalog changes.
 type hooks struct {
@@ -43,39 +52,46 @@ type hooks struct {
 }
 
 // newHooks creates a new hooks instance.
-func newHooks() *hooks {
-	return &hooks{}
-}
+func newHooks() *hooks { return &hooks{} }
+
+// OnModelAdded is a hook that registers a callback for when models are added.
+func (h *hooks) OnModelAdded(fn ModelAddedHook) { h.onModelAdded(fn) }
+
+// OnModelUpdated is a hook that registers a callback for when models are updated.
+func (h *hooks) OnModelUpdated(fn ModelUpdatedHook) { h.onModelUpdated(fn) }
+
+// OnModelRemoved is a hook that registers a callback for when models are removed.
+func (h *hooks) OnModelRemoved(fn ModelRemovedHook) { h.onModelRemoved(fn) }
 
 // onModelAdded registers a callback for when models are added.
 func (h *hooks) onModelAdded(fn ModelAddedHook) {
 	h.mu.Lock()
-	defer h.mu.Unlock()
 	h.modelAdded = append(h.modelAdded, fn)
+	h.mu.Unlock()
 }
 
 // onModelUpdated registers a callback for when models are updated.
 func (h *hooks) onModelUpdated(fn ModelUpdatedHook) {
 	h.mu.Lock()
-	defer h.mu.Unlock()
 	h.modelUpdated = append(h.modelUpdated, fn)
+	h.mu.Unlock()
 }
 
 // onModelRemoved registers a callback for when models are removed.
 func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 	h.mu.Lock()
-	defer h.mu.Unlock()
 	h.modelRemoved = append(h.modelRemoved, fn)
+	h.mu.Unlock()
 }
 
-// triggerCatalogUpdate compares old and new catalogs and triggers appropriate hooks.
-func (h *hooks) triggerCatalogUpdate(oldCatalog, newCatalog catalogs.Reader) {
+// triggerUpdate compares old and new catalogs and triggers appropriate hooks.
+func (h *hooks) triggerUpdate(old, new catalogs.Reader) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
 	// Get old and new models for comparison
-	oldModels := oldCatalog.GetAllModels()
-	newModels := newCatalog.GetAllModels()
+	oldModels := old.Models().List()
+	newModels := new.Models().List()
 
 	// Create maps for efficient lookup
 	oldModelMap := make(map[string]catalogs.Model)

@@ -15,26 +15,26 @@ import (
 type TestEnhancer struct {
 	name       string
 	priority   int
-	enhance    func(catalogs.Model) (catalogs.Model, error)
-	canEnhance func(catalogs.Model) bool
+	enhance    func(*catalogs.Model) (*catalogs.Model, error)
+	canEnhance func(*catalogs.Model) bool
 }
 
 func (e *TestEnhancer) Name() string  { return e.name }
 func (e *TestEnhancer) Priority() int { return e.priority }
-func (e *TestEnhancer) CanEnhance(model catalogs.Model) bool {
+func (e *TestEnhancer) CanEnhance(model *catalogs.Model) bool {
 	if e.canEnhance != nil {
 		return e.canEnhance(model)
 	}
 	return true
 }
-func (e *TestEnhancer) Enhance(ctx context.Context, model catalogs.Model) (catalogs.Model, error) {
+func (e *TestEnhancer) Enhance(ctx context.Context, model *catalogs.Model) (*catalogs.Model, error) {
 	if e.enhance != nil {
 		return e.enhance(model)
 	}
 	return model, nil
 }
-func (e *TestEnhancer) EnhanceBatch(ctx context.Context, models []catalogs.Model) ([]catalogs.Model, error) {
-	result := make([]catalogs.Model, len(models))
+func (e *TestEnhancer) EnhanceBatch(ctx context.Context, models []*catalogs.Model) ([]*catalogs.Model, error) {
+	result := make([]*catalogs.Model, len(models))
 	for i, model := range models {
 		enhanced, err := e.Enhance(ctx, model)
 		if err != nil {
@@ -52,7 +52,7 @@ func TestEnhancerPipeline(t *testing.T) {
 	pricingEnhancer := &TestEnhancer{
 		name:     "pricing",
 		priority: 100,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			if model.Pricing == nil {
 				model.Pricing = &catalogs.ModelPricing{
 					Tokens: &catalogs.ModelTokenPricing{
@@ -72,7 +72,7 @@ func TestEnhancerPipeline(t *testing.T) {
 	limitsEnhancer := &TestEnhancer{
 		name:     "limits",
 		priority: 90,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			if model.Limits == nil {
 				model.Limits = &catalogs.ModelLimits{
 					ContextWindow: 128000,
@@ -86,7 +86,7 @@ func TestEnhancerPipeline(t *testing.T) {
 	metadataEnhancer := &TestEnhancer{
 		name:     "metadata",
 		priority: 80,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			if model.Metadata == nil {
 				model.Metadata = &catalogs.ModelMetadata{
 					ReleaseDate: utc.Now(),
@@ -104,7 +104,7 @@ func TestEnhancerPipeline(t *testing.T) {
 	)
 
 	// Test single model enhancement
-	model := catalogs.Model{
+	model := &catalogs.Model{
 		ID:   "test-model",
 		Name: "Test Model",
 	}
@@ -133,7 +133,7 @@ func TestEnhancerPipelineWithErrors(t *testing.T) {
 	failingEnhancer := &TestEnhancer{
 		name:     "failing",
 		priority: 100,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			return model, &errors.SyncError{
 				Provider: "failing",
 				Err:      errors.New("enhancement failed"),
@@ -145,7 +145,7 @@ func TestEnhancerPipelineWithErrors(t *testing.T) {
 	successEnhancer := &TestEnhancer{
 		name:     "success",
 		priority: 90,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			model.Description = "Enhanced"
 			return model, nil
 		},
@@ -153,7 +153,7 @@ func TestEnhancerPipelineWithErrors(t *testing.T) {
 
 	pipeline := NewPipeline(failingEnhancer, successEnhancer)
 
-	model := catalogs.Model{
+	model := &catalogs.Model{
 		ID:   "test-model",
 		Name: "Test Model",
 	}
@@ -176,7 +176,7 @@ func TestEnhancerBatch(t *testing.T) {
 	enhancer := &TestEnhancer{
 		name:     "batch",
 		priority: 100,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			model.Description = "Batch Enhanced"
 			return model, nil
 		},
@@ -184,7 +184,7 @@ func TestEnhancerBatch(t *testing.T) {
 
 	pipeline := NewPipeline(enhancer)
 
-	models := []catalogs.Model{
+	models := []*catalogs.Model{
 		{ID: "model1", Name: "Model 1"},
 		{ID: "model2", Name: "Model 2"},
 		{ID: "model3", Name: "Model 3"},
@@ -213,18 +213,18 @@ func TestEnhancerCanEnhance(t *testing.T) {
 	selectiveEnhancer := &TestEnhancer{
 		name:     "selective",
 		priority: 100,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			model.Description = "Selectively Enhanced"
 			return model, nil
 		},
-		canEnhance: func(model catalogs.Model) bool {
+		canEnhance: func(model *catalogs.Model) bool {
 			return model.ID == "enhance-me"
 		},
 	}
 
 	pipeline := NewPipeline(selectiveEnhancer)
 
-	models := []catalogs.Model{
+	models := []*catalogs.Model{
 		{ID: "enhance-me", Name: "Should be enhanced"},
 		{ID: "skip-me", Name: "Should not be enhanced"},
 	}
@@ -250,7 +250,7 @@ func TestChainEnhancer(t *testing.T) {
 	enhancer1 := &TestEnhancer{
 		name:     "first",
 		priority: 100,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			model.Description = "First"
 			return model, nil
 		},
@@ -259,7 +259,7 @@ func TestChainEnhancer(t *testing.T) {
 	enhancer2 := &TestEnhancer{
 		name:     "second",
 		priority: 90,
-		enhance: func(model catalogs.Model) (catalogs.Model, error) {
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 			model.Description += " -> Second"
 			return model, nil
 		},
@@ -268,7 +268,7 @@ func TestChainEnhancer(t *testing.T) {
 	// Create chain
 	chain := NewChainEnhancer(100, enhancer1, enhancer2)
 
-	model := catalogs.Model{
+	model := &catalogs.Model{
 		ID:   "test",
 		Name: "Test",
 	}
@@ -292,7 +292,7 @@ func BenchmarkEnhancerPipeline(b *testing.B) {
 		enhancer := &TestEnhancer{
 			name:     fmt.Sprintf("enhancer-%d", i),
 			priority: 100 - i*10,
-			enhance: func(model catalogs.Model) (catalogs.Model, error) {
+			enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
 				// Simulate some work
 				if model.Metadata == nil {
 					model.Metadata = &catalogs.ModelMetadata{}
@@ -306,9 +306,9 @@ func BenchmarkEnhancerPipeline(b *testing.B) {
 	pipeline := NewPipeline(enhancers...)
 
 	// Create test models
-	models := make([]catalogs.Model, 100)
+	models := make([]*catalogs.Model, 100)
 	for i := 0; i < 100; i++ {
-		models[i] = catalogs.Model{
+		models[i] = &catalogs.Model{
 			ID:   fmt.Sprintf("model-%d", i),
 			Name: fmt.Sprintf("Model %d", i),
 		}

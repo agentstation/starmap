@@ -43,7 +43,7 @@ func runAuthStatus(cmd *cobra.Command, args []string) error {
 	}
 
 	// Get list of supported providers
-	fetcher := sources.NewProviderFetcher()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 
 	// Create a map for quick lookup
@@ -97,7 +97,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	// Prepare table data
 	tableRows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
-		status := checker.CheckProvider(provider, supportedMap)
+		status := checker.CheckProvider(&provider, supportedMap)
 
 		// Skip unsupported unless verbose
 		if status.State == auth.StateUnsupported && !verbose {
@@ -107,8 +107,8 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 
 		// Create table row
 		statusIcon, statusText := getStatusDisplay(status.State)
-		keyVariable := getKeyVariable(provider, status)
-		source := getCredentialSource(provider)
+		keyVariable := getKeyVariable(&provider, status)
+		source := getCredentialSource(&provider)
 
 		row := []string{
 			provider.Name,

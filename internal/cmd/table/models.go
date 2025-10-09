@@ -17,7 +17,7 @@ type Data struct {
 }
 
 // ModelsToTableData converts models to table format.
-func ModelsToTableData(models []catalogs.Model, showDetails bool) Data {
+func ModelsToTableData(models []*catalogs.Model, showDetails bool) Data {
 	headers := []string{"ID", "Name", "Context", "Output", "Input Price", "Output Price"}
 	if showDetails {
 		headers = append(headers, "Features", "Authors", "Description")
@@ -130,7 +130,7 @@ func FormatNumber(n int64) string {
 }
 
 // BuildFeaturesString creates a comma-separated list of model features.
-func BuildFeaturesString(model catalogs.Model) string {
+func BuildFeaturesString(model *catalogs.Model) string {
 	var features []string
 
 	if model.Features != nil {
@@ -186,7 +186,7 @@ func BuildAuthorsString(authors []catalogs.Author) string {
 }
 
 // ProvidersToTableData converts providers to table format.
-func ProvidersToTableData(providers []catalogs.Provider, showKeys bool) Data {
+func ProvidersToTableData(providers []*catalogs.Provider, showKeys bool) Data {
 	headers := []string{"ID", "NAME", "LOCATION", "STATUS"}
 
 	rows := make([][]string, 0, len(providers))
@@ -222,7 +222,7 @@ func ProvidersToTableData(providers []catalogs.Provider, showKeys bool) Data {
 }
 
 // AuthorsToTableData converts authors to table format.
-func AuthorsToTableData(authors []catalogs.Author) Data {
+func AuthorsToTableData(authors []*catalogs.Author) Data {
 	headers := []string{"ID", "NAME", "MODELS", "WEBSITE"}
 
 	rows := make([][]string, 0, len(authors))

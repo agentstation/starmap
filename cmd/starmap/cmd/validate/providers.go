@@ -62,7 +62,7 @@ func validateProvidersStructure(verbose bool) error {
 
 		// Validate API key configuration if present
 		if provider.APIKey != nil {
-			if err := validateAPIKeyConfig(provider); err != nil {
+			if err := validateAPIKeyConfig(&provider); err != nil {
 				validationErrors = append(validationErrors,
 					fmt.Sprintf("provider %s API key config: %v", provider.ID, err))
 			}
@@ -70,14 +70,14 @@ func validateProvidersStructure(verbose bool) error {
 
 		// Validate catalog section
 		if provider.Catalog != nil {
-			if err := validateCatalogConfig(provider); err != nil {
+			if err := validateCatalogConfig(&provider); err != nil {
 				validationErrors = append(validationErrors,
 					fmt.Sprintf("provider %s catalog config: %v", provider.ID, err))
 			}
 		}
 
 		// Validate URLs
-		if err := validateProviderURLs(provider); err != nil {
+		if err := validateProviderURLs(&provider); err != nil {
 			validationErrors = append(validationErrors,
 				fmt.Sprintf("provider %s URLs: %v", provider.ID, err))
 		}
@@ -119,16 +119,16 @@ func validateCatalogConfig(provider *catalogs.Provider) error {
 	catalog := provider.Catalog
 
 	// Check API key requirement consistency
-	if catalog.APIKeyRequired != nil && *catalog.APIKeyRequired && provider.APIKey == nil {
+	if catalog.Endpoint.AuthRequired && provider.APIKey == nil {
 		return fmt.Errorf("api_key_required is true but no api_key configuration")
 	}
 
 	// Validate URLs are present if specified
-	if catalog.APIURL != nil && *catalog.APIURL != "" && !isValidURL(*catalog.APIURL) {
+	if catalog.Endpoint.URL != "" && !isValidURL(catalog.Endpoint.URL) {
 		return fmt.Errorf("invalid api_url format")
 	}
 
-	if catalog.DocsURL != nil && *catalog.DocsURL != "" && !isValidURL(*catalog.DocsURL) {
+	if catalog.Docs != nil && *catalog.Docs != "" && !isValidURL(*catalog.Docs) {
 		return fmt.Errorf("invalid docs_url format")
 	}
 

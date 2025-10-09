@@ -38,24 +38,3 @@ func LoadWithOptions(opts ...starmap.Option) (starmap.Starmap, catalogs.Catalog,
 
 	return sm, catalog, nil
 }
-
-// LoadFromFiles creates a starmap instance from a file-based catalog.
-// Useful for commands that work with external catalog directories.
-func LoadFromFiles(inputPath string) (starmap.Starmap, catalogs.Catalog, error) {
-	filesCatalog, err := catalogs.New(catalogs.WithPath(inputPath))
-	if err != nil {
-		return nil, nil, errors.WrapResource("create", "catalog", inputPath, err)
-	}
-
-	sm, err := starmap.New(starmap.WithInitialCatalog(filesCatalog))
-	if err != nil {
-		return nil, nil, errors.WrapResource("create", "starmap", "files catalog", err)
-	}
-
-	catalog, err := sm.Catalog()
-	if err != nil {
-		return nil, nil, errors.WrapResource("get", "catalog", "", err)
-	}
-
-	return sm, catalog, nil
-}

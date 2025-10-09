@@ -33,17 +33,11 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
-// Type returns the type of this source.
-func (s *Source) Type() sources.Type {
+// ID returns the ID of this source.
+func (s *Source) ID() sources.ID {
 	// For local source, we always return the constant name
 	// The path details can be logged separately if needed
-	return sources.LocalCatalog
-}
-
-// Setup initializes the source with dependencies.
-func (s *Source) Setup(_ *catalogs.Providers) error {
-	// LocalSource doesn't need any dependencies
-	return nil
+	return sources.LocalCatalogID
 }
 
 // Fetch returns catalog data from configured source.

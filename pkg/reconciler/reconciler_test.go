@@ -17,8 +17,8 @@ import (
 )
 
 // Helper function to create test models.
-func createTestModel(id, name string, contextWindow int64) catalogs.Model {
-	return catalogs.Model{
+func createTestModel(id, name string, contextWindow int64) *catalogs.Model {
+	return &catalogs.Model{
 		ID:   id,
 		Name: name,
 		Limits: &catalogs.ModelLimits{
@@ -35,18 +35,18 @@ func createTestModel(id, name string, contextWindow int64) catalogs.Model {
 // Helper function to create test provider
 
 // Helper function to add models to a catalog through a provider.
-func addTestModels(cat catalogs.Catalog, providerID string, models []catalogs.Model) error {
+func addTestModels(cat catalogs.Catalog, providerID string, models []*catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
 		// Create provider if it doesn't exist
 		provider = catalogs.Provider{
 			ID:     catalogs.ProviderID(providerID),
 			Name:   providerID,
-			Models: make(map[string]catalogs.Model),
+			Models: make(map[string]*catalogs.Model),
 		}
 	}
 	if provider.Models == nil {
-		provider.Models = make(map[string]catalogs.Model)
+		provider.Models = make(map[string]*catalogs.Model)
 	}
 	for _, model := range models {
 		provider.Models[model.ID] = model
@@ -59,7 +59,7 @@ func TestReconcilerBasic(t *testing.T) {
 
 	// Create test catalogs
 	catalog1, _ := catalogs.New()
-	if err := addTestModels(catalog1, "test-provider", []catalogs.Model{
+	if err := addTestModels(catalog1, "test-provider", []*catalogs.Model{
 		createTestModel("gpt-4", "GPT-4", 8192),
 		createTestModel("gpt-3.5", "GPT-3.5", 4096),
 	}); err != nil {
@@ -67,7 +67,7 @@ func TestReconcilerBasic(t *testing.T) {
 	}
 
 	catalog2, _ := catalogs.New()
-	if err := addTestModels(catalog2, "test-provider", []catalogs.Model{
+	if err := addTestModels(catalog2, "test-provider", []*catalogs.Model{
 		createTestModel("gpt-4", "GPT-4 Updated", 32768), // Updated context
 		createTestModel("claude-3", "Claude 3", 100000),  // New model
 	}); err != nil {
@@ -81,7 +81,7 @@ func TestReconcilerBasic(t *testing.T) {
 	}
 
 	// Reconcile catalogs
-	srcMap := map[sources.Type]catalogs.Catalog{
+	srcMap := map[sources.ID]catalogs.Catalog{
 		"source1": catalog1,
 		"source2": catalog2,
 	}
@@ -102,7 +102,7 @@ func TestReconcilerBasic(t *testing.T) {
 	}
 
 	// Check models were merged
-	models := result.Catalog.GetAllModels()
+	models := result.Catalog.Models().List()
 	if len(models) != 3 {
 		t.Errorf("Expected 3 models, got %d", len(models))
 	}
@@ -128,7 +128,7 @@ func TestReconcilerBasic(t *testing.T) {
 func TestDifferChangeDetection(t *testing.T) {
 	// Create old catalog
 	oldCatalog, _ := catalogs.New()
-	if err := addTestModels(oldCatalog, "test-provider", []catalogs.Model{
+	if err := addTestModels(oldCatalog, "test-provider", []*catalogs.Model{
 		createTestModel("model-1", "Model 1", 1000),
 		createTestModel("model-2", "Model 2", 2000),
 	}); err != nil {
@@ -137,7 +137,7 @@ func TestDifferChangeDetection(t *testing.T) {
 
 	// Create new catalog with changes
 	newCatalog, _ := catalogs.New()
-	if err := addTestModels(newCatalog, "test-provider", []catalogs.Model{
+	if err := addTestModels(newCatalog, "test-provider", []*catalogs.Model{
 		createTestModel("model-1", "Model 1 Updated", 1500), // Updated
 		createTestModel("model-3", "Model 3", 3000),         // Added
 	}); err != nil {
@@ -181,16 +181,16 @@ func TestAuthorityBasedStrategy(t *testing.T) {
 	strategy := reconciler.NewAuthorityStrategy(authorities)
 
 	// Test conflict resolution
-	values := map[sources.Type]any{
-		sources.ProviderAPI:  "value1",
-		sources.ModelsDevGit: "value2",
-		sources.LocalCatalog: "value3",
+	values := map[sources.ID]any{
+		sources.ProvidersID:    "value1",
+		sources.ModelsDevGitID: "value2",
+		sources.LocalCatalogID: "value3",
 	}
 
 	value, source, reason := strategy.ResolveConflict("Pricing", values)
 
 	// Should prefer ModelsDevGit or ModelsDevHTTP for pricing
-	if source != sources.ModelsDevGit && source != sources.ModelsDevHTTP {
+	if source != sources.ModelsDevGitID && source != sources.ModelsDevHTTPID {
 		t.Errorf("Expected ModelsDevGit or ModelsDevHTTP source for Pricing, got %s", source)
 	}
 
@@ -213,7 +213,7 @@ func TestProvenanceTracking(t *testing.T) {
 		"gpt-4",
 		"pricing.input",
 		provenance.Provenance{
-			Source:    sources.ModelsDevHTTP,
+			Source:    sources.ModelsDevHTTPID,
 			Field:     "pricing.input",
 			Value:     0.01,
 			Timestamp: time.Now(),
@@ -227,7 +227,7 @@ func TestProvenanceTracking(t *testing.T) {
 		t.Error("Expected provenance to be tracked")
 	}
 
-	if provenance[0].Source != sources.ModelsDevHTTP {
+	if provenance[0].Source != sources.ModelsDevHTTPID {
 		t.Errorf("Expected source to be ModelsDevHTTP, got %s", provenance[0].Source)
 	}
 }
@@ -237,17 +237,17 @@ func TestChangesetFiltering(t *testing.T) {
 	changeset := &differ.Changeset{
 		Models: &differ.ModelChangeset{
 			Added: []catalogs.Model{
-				createTestModel("new-1", "New Model 1", 1000),
+				*createTestModel("new-1", "New Model 1", 1000),
 			},
 			Updated: []differ.ModelUpdate{
 				{
 					ID:       "updated-1",
-					Existing: createTestModel("updated-1", "Old", 500),
-					New:      createTestModel("updated-1", "New", 1000),
+					Existing: *createTestModel("updated-1", "Old", 500),
+					New:      *createTestModel("updated-1", "New", 1000),
 				},
 			},
 			Removed: []catalogs.Model{
-				createTestModel("removed-1", "Removed Model", 2000),
+				*createTestModel("removed-1", "Removed Model", 2000),
 			},
 		},
 		Providers: &differ.ProviderChangeset{},
@@ -335,7 +335,7 @@ func TestResultBuilder(t *testing.T) {
 
 	result.Catalog = catalog
 	result.Changeset = changeset
-	result.Metadata.Sources = []sources.Type{sources.ProviderAPI, sources.ModelsDevGit}
+	result.Metadata.Sources = []sources.ID{sources.ProvidersID, sources.ModelsDevGitID}
 	result.Metadata.Strategy = reconciler.NewAuthorityStrategy(authority.New())
 	result.Metadata.DryRun = true
 	result.Finalize()
@@ -362,7 +362,7 @@ func BenchmarkReconciliation(b *testing.B) {
 	catalog2, _ := catalogs.New()
 
 	// Add many models to catalog1
-	models1 := make([]catalogs.Model, 0, 1000)
+	models1 := make([]*catalogs.Model, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		models1 = append(models1, createTestModel(
 			fmt.Sprintf("model-%d", i),
@@ -375,7 +375,7 @@ func BenchmarkReconciliation(b *testing.B) {
 	}
 
 	// Add half the models to catalog2 with updates, plus new models
-	models2 := make([]catalogs.Model, 0, 1000)
+	models2 := make([]*catalogs.Model, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		if i%2 == 0 {
 			// Half the models in second catalog with updates
@@ -403,7 +403,7 @@ func BenchmarkReconciliation(b *testing.B) {
 	if err != nil {
 		b.Fatalf("Failed to create reconciler: %v", err)
 	}
-	srcMap := map[sources.Type]catalogs.Catalog{
+	srcMap := map[sources.ID]catalogs.Catalog{
 		"source1": catalog1,
 		"source2": catalog2,
 	}
@@ -424,8 +424,8 @@ func BenchmarkDiffing(b *testing.B) {
 	newCatalog, _ := catalogs.New()
 
 	// Add many models
-	oldModels := make([]catalogs.Model, 0, 1000)
-	newModels := make([]catalogs.Model, 0, 1000)
+	oldModels := make([]*catalogs.Model, 0, 1000)
+	newModels := make([]*catalogs.Model, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		model := createTestModel(
 			fmt.Sprintf("model-%d", i),

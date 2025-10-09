@@ -63,12 +63,7 @@ func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bo
 	providerFilter := &filter.ProviderFilter{
 		Search: flags.Search,
 	}
-	// Convert to value slice for filter
-	providerValues := make([]catalogs.Provider, len(providers))
-	for i, p := range providers {
-		providerValues[i] = *p
-	}
-	filtered := providerFilter.Apply(providerValues)
+	filtered := providerFilter.Apply(providers)
 
 	// Sort providers
 	sort.Slice(filtered, func(i, j int) bool {
@@ -91,7 +86,12 @@ func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bo
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		tableData := table.ProvidersToTableData(filtered, showKeys)
+		// Convert to pointer slice for table compatibility
+		providerPointers := make([]*catalogs.Provider, len(filtered))
+		for i := range filtered {
+			providerPointers[i] = &filtered[i]
+		}
+		tableData := table.ProvidersToTableData(providerPointers, showKeys)
 		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{
 			Headers: tableData.Headers,
@@ -156,8 +156,8 @@ func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
 		basicRows = append(basicRows, []string{"Location", *provider.Headquarters})
 	}
 
-	if provider.Catalog != nil && provider.Catalog.DocsURL != nil {
-		basicRows = append(basicRows, []string{"Documentation", *provider.Catalog.DocsURL})
+	if provider.Catalog != nil && provider.Catalog.Docs != nil {
+		basicRows = append(basicRows, []string{"Documentation", *provider.Catalog.Docs})
 	}
 
 	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil {

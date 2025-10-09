@@ -18,10 +18,10 @@ import (
 // Merger performs the actual merging of resources.
 type Merger interface {
 	// Models merges models from multiple sources
-	Models(sources map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error)
+	Models(sources map[sources.ID][]*catalogs.Model) ([]*catalogs.Model, provenance.Map, error)
 
 	// Providers merges providers from multiple sources
-	Providers(sources map[sources.Type][]catalogs.Provider) ([]catalogs.Provider, provenance.Map, error)
+	Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error)
 }
 
 // merger implements strategic three-way merge
@@ -54,21 +54,21 @@ func newMergerWithProvenance(authorities authority.Authority, strategy Strategy,
 }
 
 // Models merges models from multiple sources.
-func (merger *merger) Models(srcs map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error) {
+func (merger *merger) Models(srcs map[sources.ID][]*catalogs.Model) ([]*catalogs.Model, provenance.Map, error) {
 	// Create a map of models by ID across all sources
-	modelsByID := make(map[string]map[sources.Type]catalogs.Model)
+	modelsByID := make(map[string]map[sources.ID]*catalogs.Model)
 
 	// Collect all models
 	for sourceType, models := range srcs {
 		for _, model := range models {
 			if modelsByID[model.ID] == nil {
-				modelsByID[model.ID] = make(map[sources.Type]catalogs.Model)
+				modelsByID[model.ID] = make(map[sources.ID]*catalogs.Model)
 			}
 			modelsByID[model.ID][sourceType] = model
 		}
 	}
 
-	mergedModels := make([]catalogs.Model, 0, len(modelsByID))
+	mergedModels := make([]*catalogs.Model, 0, len(modelsByID))
 	allProvenance := make(provenance.Map)
 
 	// Merge each model
@@ -93,35 +93,35 @@ func (merger *merger) Models(srcs map[sources.Type][]catalogs.Model) ([]catalogs
 }
 
 // Providers merges providers from multiple sources.
-func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]catalogs.Provider, provenance.Map, error) {
+func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error) {
 	// Create a map of providers by ID across all sources
-	providersByID := make(map[catalogs.ProviderID]map[sources.Type]catalogs.Provider)
+	providersByID := make(map[catalogs.ProviderID]map[sources.ID]*catalogs.Provider)
 
 	// Collect all providers
 	for sourceType, providers := range srcs {
 		for _, provider := range providers {
 			if providersByID[provider.ID] == nil {
-				providersByID[provider.ID] = make(map[sources.Type]catalogs.Provider)
+				providersByID[provider.ID] = make(map[sources.ID]*catalogs.Provider)
 			}
 			providersByID[provider.ID][sourceType] = provider
 		}
 	}
 
-	var mergedProviders []catalogs.Provider
+	var mergedProviders []*catalogs.Provider
 	allProvenance := make(provenance.Map)
 
 	// Merge each provider
 	for providerID, sourceProviders := range providersByID {
 		// Convert to pointer map for compatibility
-		sourcePtrs := make(map[sources.Type]*catalogs.Provider)
+		sourcePtrs := make(map[sources.ID]*catalogs.Provider)
 		for source, provider := range sourceProviders {
 			p := provider // Create a copy
-			sourcePtrs[source] = &p
+			sourcePtrs[source] = p
 		}
 
 		merged, history := merger.provider(providerID, sourcePtrs)
 		if merged != nil {
-			mergedProviders = append(mergedProviders, *merged)
+			mergedProviders = append(mergedProviders, merged)
 
 			// Add provenance with provider prefix
 			if merger.tracker != nil {
@@ -141,9 +141,9 @@ func (merger *merger) Providers(srcs map[sources.Type][]catalogs.Provider) ([]ca
 }
 
 // model merges a single model from multiple sources.
-func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalogs.Model) (catalogs.Model, map[string]provenance.Field) {
+func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalogs.Model) (*catalogs.Model, map[string]provenance.Field) {
 	// Start with existing model from baseline if available to preserve timestamps
-	var merged catalogs.Model
+	var merged *catalogs.Model
 	if merger.baseline != nil {
 		// Try to find existing model in baseline for timestamp preservation
 		for _, provider := range merger.baseline.Providers().List() {
@@ -153,14 +153,14 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 					break
 				}
 			}
-			if merged.ID != "" {
+			if merged != nil && merged.ID != "" {
 				break
 			}
 		}
 	}
 	// Ensure ID is set even if not found in baseline
-	if merged.ID == "" {
-		merged = catalogs.Model{
+	if merged == nil || merged.ID == "" {
+		merged = &catalogs.Model{
 			ID: modelID,
 		}
 	}
@@ -192,7 +192,7 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 	for _, fieldPath := range modelFields {
 		value, sourceType := merger.modelField(fieldPath, sourceModels)
 		if value != nil {
-			merger.setModelFieldValue(&merged, fieldPath, value)
+			merger.setModelFieldValue(merged, fieldPath, value)
 
 			history[fieldPath] = provenance.Field{
 				Current: provenance.Provenance{
@@ -216,7 +216,7 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 			for _, existingModel := range provider.Models {
 				if existingModel.ID == modelID {
 					// Create a copy for comparison
-					baselineModel = &existingModel
+					baselineModel = existingModel
 					break
 				}
 			}
@@ -260,7 +260,7 @@ func (merger *merger) model(modelID string, sourceModels map[sources.Type]catalo
 }
 
 // provider merges a single provider from multiple sources.
-func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders map[sources.Type]*catalogs.Provider) (*catalogs.Provider, map[string]provenance.Field) {
+func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders map[sources.ID]*catalogs.Provider) (*catalogs.Provider, map[string]provenance.Field) {
 	if len(sourceProviders) == 0 {
 		return nil, nil
 	}
@@ -303,9 +303,9 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 }
 
 // modelField merges a single field from multiple model sources.
-func (merger *merger) modelField(fieldPath string, sourceModels map[sources.Type]catalogs.Model) (any, sources.Type) {
+func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*catalogs.Model) (any, sources.ID) {
 	// Collect all values from sources
-	values := make(map[sources.Type]any)
+	values := make(map[sources.ID]any)
 	for source, model := range sourceModels {
 		if value := merger.modelFieldValue(model, fieldPath); value != nil {
 			values[source] = value
@@ -323,9 +323,9 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.Type
 }
 
 // providerField merges a single provider field from multiple sources.
-func (merger *merger) providerField(fieldPath string, sourceProviders map[sources.Type]*catalogs.Provider) (any, sources.Type) {
+func (merger *merger) providerField(fieldPath string, sourceProviders map[sources.ID]*catalogs.Provider) (any, sources.ID) {
 	// Collect all values from sources
-	values := make(map[sources.Type]any)
+	values := make(map[sources.ID]any)
 	for source, provider := range sourceProviders {
 		if provider != nil {
 			if value := merger.providerFieldValue(*provider, fieldPath); value != nil {
@@ -345,7 +345,7 @@ func (merger *merger) providerField(fieldPath string, sourceProviders map[source
 }
 
 // getModelFieldValue extracts a field value from a model using reflection.
-func (merger *merger) modelFieldValue(model catalogs.Model, fieldPath string) any {
+func (merger *merger) modelFieldValue(model *catalogs.Model, fieldPath string) any {
 	return merger.fieldValue(reflect.ValueOf(model), fieldPath)
 }
 
@@ -457,13 +457,13 @@ func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any
 // complexModelStructures handles merging of complex nested structures.
 //
 //nolint:gocyclo // Complex field-by-field merge logic
-func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels map[sources.Type]catalogs.Model, history *map[string]provenance.Field) catalogs.Model {
+func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModels map[sources.ID]*catalogs.Model, history *map[string]provenance.Field) *catalogs.Model {
 	// Define priority order for complex structure merging
-	priorities := []sources.Type{
-		sources.LocalCatalog,
-		sources.ModelsDevHTTP,
-		sources.ModelsDevGit,
-		sources.ProviderAPI,
+	priorities := []sources.ID{
+		sources.LocalCatalogID,
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+		sources.ProvidersID,
 	}
 
 	// Merge Limits structure (models.dev is authoritative)
@@ -475,7 +475,7 @@ func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels
 
 			// Merge specific limit fields if they're not already set or source has higher authority
 			switch sourceType {
-			case sources.ModelsDevHTTP, sources.ModelsDevGit:
+			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				if model.Limits.ContextWindow > 0 {
 					merged.Limits.ContextWindow = model.Limits.ContextWindow
 					if history != nil {
@@ -511,7 +511,7 @@ func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels
 	for _, sourceType := range priorities {
 		if model, exists := sourceModels[sourceType]; exists && model.Pricing != nil {
 			switch sourceType {
-			case sources.ModelsDevHTTP, sources.ModelsDevGit:
+			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				merged.Pricing = model.Pricing
 				if history != nil {
 					(*history)["pricing"] = provenance.Field{
@@ -531,7 +531,7 @@ func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels
 	for _, sourceType := range priorities {
 		if model, exists := sourceModels[sourceType]; exists && model.Metadata != nil {
 			switch sourceType {
-			case sources.ModelsDevHTTP, sources.ModelsDevGit:
+			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				if merged.Metadata == nil {
 					merged.Metadata = &catalogs.ModelMetadata{}
 				}
@@ -568,7 +568,7 @@ func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels
 
 			// For features, we merge from all sources, with provider API getting priority for capabilities
 			switch sourceType {
-			case sources.ProviderAPI:
+			case sources.ProvidersID:
 				// Provider API is authoritative for current capabilities
 				merged.Features.Modalities = model.Features.Modalities
 				merged.Features.Streaming = model.Features.Streaming
@@ -576,7 +576,7 @@ func (merger *merger) complexModelStructures(merged catalogs.Model, sourceModels
 				merged.Features.Temperature = model.Features.Temperature
 				merged.Features.TopP = model.Features.TopP
 				merged.Features.MaxTokens = model.Features.MaxTokens
-			case sources.ModelsDevHTTP, sources.ModelsDevGit:
+			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				// models.dev might have additional feature information that's not in API
 				if model.Features.ToolCalls && !merged.Features.ToolCalls {
 					merged.Features.ToolCalls = model.Features.ToolCalls

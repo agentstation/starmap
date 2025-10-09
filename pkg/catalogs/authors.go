@@ -126,12 +126,13 @@ func (a *Authors) Len() int {
 	return length
 }
 
-// List returns a slice of all authors.
-func (a *Authors) List() []*Author {
+// List returns a slice of all authors as values (copies).
+func (a *Authors) List() []Author {
 	a.mu.RLock()
-	authors := make([]*Author, 0, len(a.authors))
+	authors := make([]Author, 0, len(a.authors))
 	for _, author := range a.authors {
-		authors = append(authors, author)
+		// Return deep copies to prevent external modification
+		authors = append(authors, DeepCopyAuthor(*author))
 	}
 	a.mu.RUnlock()
 

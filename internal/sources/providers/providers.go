@@ -5,15 +5,12 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/agentstation/starmap/internal/sources/registry"
+	"github.com/agentstation/starmap/internal/sources/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
-
-// No init() - no singleton registration
-// Sources are created explicitly
 
 // Source fetches models from all provider APIs concurrently.
 type Source struct {
@@ -22,32 +19,22 @@ type Source struct {
 }
 
 // New creates a new provider API source.
-func New() *Source {
-	return &Source{}
-}
+func New() *Source { return &Source{} }
 
-// Type returns the type of this source.
-func (s *Source) Type() sources.Type {
-	return sources.ProviderAPI
-}
+// ID returns the ID of this source.
+func (s *Source) ID() sources.ID { return sources.ProvidersID }
 
 // providerModels holds models fetched from a specific provider.
 type providerModels struct {
 	providerID catalogs.ProviderID
-	models     []catalogs.Model
+	models     []*catalogs.Model
 	err        error
-}
-
-// Setup initializes the source with provider configurations.
-func (s *Source) Setup(providers *catalogs.Providers) error {
-	s.providers = providers
-	return nil
 }
 
 // Fetch creates a new catalog with models fetched from all provider APIs concurrently.
 func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	// Apply options
-	options := sources.ApplyOptions(opts...)
+	options := sources.Defaults().Apply(opts...)
 
 	// Create a new catalog to build into
 	catalog, err := catalogs.New()
@@ -57,8 +44,6 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 
 	// Set the default merge strategy for provider catalog (fresh API data)
 	catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-
-	// Note: Source disabling should be handled at orchestration level
 
 	// Check if we have provider configs
 	if s.providers == nil {
@@ -72,7 +57,10 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	if options.ProviderID != nil {
 		providerIDs = []catalogs.ProviderID{*options.ProviderID}
 	} else {
-		providerIDs = registry.List()
+		// Get all provider IDs from the providers collection
+		for _, p := range s.providers.List() {
+			providerIDs = append(providerIDs, p.ID)
+		}
 	}
 
 	// Get provider configs from injected providers
@@ -103,7 +91,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 		Int("provider_count", len(providerConfigs)).
 		Msg("Syncing providers concurrently")
 
-	// Sync all providers CONCURRENTLY
+	// Sync all providers concurrently
 	var wg sync.WaitGroup
 	resultChan := make(chan providerModels, len(providerConfigs))
 
@@ -126,7 +114,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 					Msg("Skipping provider - no API key")
 				return
 			}
-			if missingVars := p.MissingEnvVars(); len(missingVars) > 0 {
+			if missingVars := p.MissingRequiredEnvVars(); len(missingVars) > 0 {
 				logging.Ctx(logger).Debug().
 					Str("provider_id", string(p.ID)).
 					Strs("missing_env_vars", missingVars).
@@ -135,7 +123,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 			}
 
 			// Create NEW client instance with dedicated HTTP client
-			client, err := registry.Get(p)
+			client, err := clients.NewProvider(p)
 			if err != nil {
 				logging.Ctx(logger).Debug().
 					Err(err).
@@ -160,7 +148,12 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 				return
 			}
 
-			result.models = models
+			// Convert values to pointers for backward compatibility
+			modelPointers := make([]*catalogs.Model, len(models))
+			for i, model := range models {
+				modelPointers[i] = &model
+			}
+			result.models = modelPointers
 			resultChan <- result
 
 			logging.Ctx(logger).Info().
@@ -193,7 +186,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 
 		// Initialize Models map if nil
 		if provider.Models == nil {
-			provider.Models = make(map[string]catalogs.Model)
+			provider.Models = make(map[string]*catalogs.Model)
 		}
 
 		// Associate models with provider

@@ -89,13 +89,13 @@ func (p *Provider) ToStarmapProvider() (*catalogs.Provider, error) {
 
 	// Convert models
 	if len(p.Models) > 0 {
-		provider.Models = make(map[string]catalogs.Model)
+		provider.Models = make(map[string]*catalogs.Model)
 		for modelID, model := range p.Models {
 			starmapModel, err := model.ToStarmapModel()
 			if err != nil {
 				return nil, errors.WrapResource("convert", "model", modelID, err)
 			}
-			provider.Models[modelID] = *starmapModel
+			provider.Models[modelID] = starmapModel
 		}
 	}
 

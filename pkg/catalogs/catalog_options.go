@@ -14,8 +14,16 @@ type catalogOptions struct {
 	mergeStrategy MergeStrategy
 }
 
-// defaultOptions returns the default options for the catalog.
-func defaultCatalogOptions() *catalogOptions {
+// apply applies the given options to the catalog options.
+func (c *catalogOptions) apply(opts ...Option) *catalogOptions {
+	for _, opt := range opts {
+		opt(c)
+	}
+	return c
+}
+
+// catalogDefaults returns the default options for a catalog.
+func catalogDefaults() *catalogOptions {
 	return &catalogOptions{
 		readFS:        nil,
 		writePath:     "",
@@ -57,7 +65,6 @@ func WithEmbedded() Option {
 	}
 }
 
-
 // WithWritePath sets a specific path for writing catalog files.
 func WithWritePath(path string) Option {
 	return func(c *catalogOptions) {
@@ -71,4 +78,3 @@ func WithMergeStrategy(strategy MergeStrategy) Option {
 		c.mergeStrategy = strategy
 	}
 }
-

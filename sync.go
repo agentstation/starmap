@@ -4,21 +4,27 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
+	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/reconciler"
+	"github.com/agentstation/starmap/pkg/save"
+	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/pkg/sync"
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*Result, error) {
-	// Step 0: Set context
+func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
+
+	// Step 0: Check and set context if nil
 	if ctx == nil {
 		ctx = context.Background()
 	}
 
-	// Step 1: Parse options
-	options := NewSyncOptions(opts...)
+	// Step 1: Parse options with defaults
+	options := sync.Defaults().Apply(opts...)
 
 	// Step 2: Setup context with timeout
 	var cancel context.CancelFunc
@@ -43,10 +49,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*Result, error)
 	// Step 5: filter sources by options
 	srcs := s.filterSources(options)
 
-	// Step 6: Setup sources with provider configurations
-	if err = setup(srcs, embedded.Providers()); err != nil {
-		return nil, err
-	}
+	// Step 6: Cleanup sources
 	defer func() {
 		if cleanupErr := cleanup(srcs); cleanupErr != nil {
 			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
@@ -84,7 +87,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*Result, error)
 	}
 
 	// Step 11: Create sync result directly from reconciler's changeset
-	syncResult := convertChangesetToSyncResult(
+	syncResult := sync.ChangesetToResult(
 		result.Changeset,
 		options.DryRun,
 		options.OutputPath,
@@ -122,12 +125,44 @@ func (s *starmap) Sync(ctx context.Context, opts ...SyncOption) (*Result, error)
 	return syncResult, nil
 }
 
+// update reconciles the catalog with an optional baseline for comparison.
+func update(ctx context.Context, baseline catalogs.Catalog, srcs []sources.Source) (*reconciler.Result, error) {
+
+	// create reconciler options
+	opts := []reconciler.Option{
+		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
+	}
+
+	// Add baseline if provided
+	if baseline != nil {
+		opts = append(opts, reconciler.WithBaseline(baseline))
+	}
+
+	// create a new reconciler
+	reconcile, err := reconciler.New(opts...)
+	if err != nil {
+		return nil, errors.WrapResource("create", "reconciler", "", err)
+	}
+
+	// reconcile the sources catalogs into a single result
+	result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
+	if err != nil {
+		return nil, &errors.SyncError{
+			Provider: "all",
+			Err:      err,
+		}
+	}
+
+	return result, nil
+}
+
 // ============================================================================
 // Helper Methods for Sync
 // ============================================================================
 
 // save applies the catalog changes if not in dry-run mode.
-func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset *differ.Changeset) error {
+func (s *starmap) save(result catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
+
 	// Update internal catalog first
 	s.mu.Lock()
 	oldCatalog := s.catalog
@@ -149,8 +184,8 @@ func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset 
 				Msg("Provider model count before save")
 		}
 
-		if saveable, ok := result.(catalogs.Persistable); ok {
-			if err := saveable.SaveTo(options.OutputPath); err != nil {
+		if saveable, ok := result.(catalogs.Persistence); ok {
+			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
 				return errors.WrapIO("write", options.OutputPath, err)
 			}
 
@@ -180,8 +215,8 @@ func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset 
 		}
 	} else {
 		// Save to default location
-		if saveable, ok := result.(catalogs.Persistable); ok {
-			if err := saveable.Save(); err != nil {
+		if saveable, ok := result.(catalogs.Persistence); ok {
+			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
 				return errors.WrapIO("write", "catalog", err)
 			}
 		}
@@ -192,7 +227,7 @@ func (s *starmap) save(result catalogs.Catalog, options *SyncOptions, changeset 
 		Msg("Sync completed successfully")
 
 	// Trigger hooks for catalog changes
-	s.hooks.triggerCatalogUpdate(oldCatalog, result)
+	s.hooks.triggerUpdate(oldCatalog, result)
 
 	return nil
 }

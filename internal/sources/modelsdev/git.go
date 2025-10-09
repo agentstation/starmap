@@ -51,9 +51,9 @@ func WithGitSourcesDir(dir string) GitSourceOption {
 	return WithSourcesDir(dir)
 }
 
-// Type returns the type of this source.
-func (s *GitSource) Type() sources.Type {
-	return sources.ModelsDevGit
+// ID returns the ID of this source.
+func (s *GitSource) ID() sources.ID {
+	return sources.ModelsDevGitID
 }
 
 // ensureGitRepo initializes models.dev data once using sync.Once.
@@ -108,7 +108,7 @@ func (s *GitSource) Fetch(ctx context.Context, opts ...sources.Option) error {
 	}
 
 	// Process the API data using shared logic
-	added, err := processFetch(ctx, s.catalog, api, opts...)
+	added, err := processFetch(s.catalog, api)
 	if err != nil {
 		return err
 	}
