@@ -26,6 +26,4 @@ func init() {
 
 	// Add subcommands
 	generateCmd.AddCommand(generate.CompletionCmd)
-	generateCmd.AddCommand(generate.DocsCmd)
-	generateCmd.AddCommand(generate.SiteCmd)
 }
