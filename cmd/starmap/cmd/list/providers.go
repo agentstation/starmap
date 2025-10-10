@@ -48,9 +48,9 @@ func NewProvidersCommand(app AppContext) *cobra.Command {
 }
 
 // listProvidersWithApp lists all providers using app context.
-func listProvidersWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listProvidersWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
-	catInterface, err := app.Catalog()
+	catInterface, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -115,9 +115,9 @@ func listProvidersWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Lo
 }
 
 // showProviderDetailsWithApp shows detailed information about a specific provider.
-func showProviderDetailsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, providerID string) error {
+func showProviderDetailsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, providerID string) error {
 	// Get catalog from app
-	catInterface, err := app.Catalog()
+	catInterface, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}

@@ -48,9 +48,9 @@ func NewAuthorsCommand(app AppContext) *cobra.Command {
 }
 
 // listAuthorsWithApp lists all authors using app context.
-func listAuthorsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listAuthorsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
-	catInterface, err := app.Catalog()
+	catInterface, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -115,9 +115,9 @@ func listAuthorsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logg
 }
 
 // showAuthorDetailsWithApp shows detailed information about a specific author.
-func showAuthorDetailsWithApp(cmd *cobra.Command, app AppContext, logger *zerolog.Logger, authorID string) error {
+func showAuthorDetailsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, authorID string) error {
 	// Get catalog from app
-	catInterface, err := app.Catalog()
+	catInterface, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
