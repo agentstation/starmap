@@ -70,20 +70,8 @@ func (a *App) CreateInspectCommand() *cobra.Command {
 }
 
 // CreateAuthCommand creates the auth command with app dependencies.
-// TODO: Migrate auth command to use app.Context pattern
 func (a *App) CreateAuthCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "auth",
-		Short: "Manage authentication for AI providers",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return cmd.Help()
-		},
-	}
-	// Add existing subcommands
-	cmd.AddCommand(auth.StatusCmd)
-	cmd.AddCommand(auth.VerifyCmd)
-	cmd.AddCommand(auth.GCloudCmd)
-	return cmd
+	return auth.NewCommand(a)
 }
 
 // CreateGenerateCommand creates the generate command with app dependencies.

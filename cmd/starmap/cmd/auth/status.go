@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/auth"
-	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -18,11 +18,12 @@ import (
 
 const googleVertexProviderID = "google-vertex"
 
-// StatusCmd shows authentication status for all providers.
-var StatusCmd = &cobra.Command{
-	Use:   "status [provider]",
-	Short: "Show authentication status for all providers",
-	Long: `Display which providers have credentials configured.
+// NewStatusCommand creates the auth status subcommand using app context.
+func NewStatusCommand(appCtx appcontext.Interface) *cobra.Command {
+	return &cobra.Command{
+		Use:   "status [provider]",
+		Short: "Show authentication status for all providers",
+		Long: `Display which providers have credentials configured.
 
 This shows:
   - Which providers have API keys set
@@ -33,11 +34,14 @@ This shows:
 The command checks environment variables and credential files
 but does not make actual API calls to verify credentials work.
 Use 'starmap auth verify' to test credentials.`,
-	RunE: runAuthStatus,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runAuthStatus(cmd, args, appCtx)
+		},
+	}
 }
 
-func runAuthStatus(cmd *cobra.Command, args []string) error {
-	cat, err := catalogs.NewEmbedded()
+func runAuthStatus(cmd *cobra.Command, args []string, appCtx appcontext.Interface) error {
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -59,7 +63,7 @@ func runAuthStatus(cmd *cobra.Command, args []string) error {
 		return showSingleProviderStatus(args[0], cat, checker, supportedMap)
 	}
 
-	return showAllProvidersStatus(cmd, cat, checker, supportedMap)
+	return showAllProvidersStatus(appCtx, cat, checker, supportedMap, cmd)
 }
 
 func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool) error {
@@ -79,17 +83,13 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	return nil
 }
 
-func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool) error {
-	// Get global flags for output format
-	globalFlags, err := globals.Parse(cmd)
-	if err != nil {
-		return err
-	}
-
-	outputFormat := output.DetectFormat(globalFlags.Output)
+func showAllProvidersStatus(appCtx appcontext.Interface, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool, cmd *cobra.Command) error {
+	// Get output format from app context
+	outputFormat := output.DetectFormat(appCtx.OutputFormat())
 
 	var configured, missing, optional, unsupported int
-	verbose, _ := cmd.Flags().GetBool("verbose")
+	logger := appCtx.Logger()
+	verbose := logger.GetLevel() <= 0 // Info level or below
 
 	// Group providers by status and collect data
 	providers := cat.Providers().List()
@@ -164,7 +164,7 @@ func showAllProvidersStatus(cmd *cobra.Command, cat catalogs.Catalog, checker *a
 	}
 
 	// Print summary
-	if err := printAuthSummary(cmd, configured, missing, optional, unsupported); err != nil {
+	if err := printAuthSummary(cmd, appCtx, verbose, configured, missing, optional, unsupported); err != nil {
 		return err
 	}
 
@@ -196,7 +196,7 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	}
 }
 
-func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsupported int) error {
+func printAuthSummary(cmd *cobra.Command, appCtx appcontext.Interface, verbose bool, configured, missing, optional, unsupported int) error {
 	fmt.Println()
 
 	// Create summary table
@@ -210,7 +210,7 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 	if optional > 0 {
 		summaryRows = append(summaryRows, []string{"⚪ Optional", fmt.Sprintf("%d", optional)})
 	}
-	if unsupported > 0 && cmd.Flags().Changed("verbose") {
+	if unsupported > 0 && verbose {
 		summaryRows = append(summaryRows, []string{"⚫ Unsupported", fmt.Sprintf("%d", unsupported)})
 	}
 
@@ -220,13 +220,8 @@ func printAuthSummary(cmd *cobra.Command, configured, missing, optional, unsuppo
 			Rows:    summaryRows,
 		}
 
-		// Get global flags for output format
-		globalFlags, err := globals.Parse(cmd)
-		if err != nil {
-			return err
-		}
-
-		outputFormat := output.DetectFormat(globalFlags.Output)
+		// Get output format from app context
+		outputFormat := output.DetectFormat(appCtx.OutputFormat())
 		formatter := output.NewFormatter(outputFormat)
 		if err := formatter.Format(os.Stdout, summaryData); err != nil {
 			return err

@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -24,11 +24,12 @@ type VerificationResult struct {
 	Error        string
 }
 
-// VerifyCmd verifies credentials by making test API calls.
-var VerifyCmd = &cobra.Command{
-	Use:   "verify [provider]",
-	Short: "Verify credentials work by making test API calls",
-	Long: `Test that configured API keys actually work.
+// NewVerifyCommand creates the auth verify subcommand using app context.
+func NewVerifyCommand(appCtx appcontext.Interface) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "verify [provider]",
+		Short: "Verify credentials work by making test API calls",
+		Long: `Test that configured API keys actually work.
 
 Unlike 'status' which only checks if keys are set, this command
 makes actual API calls to verify the credentials are valid.
@@ -37,17 +38,20 @@ Examples:
   starmap auth verify           # Verify all configured providers
   starmap auth verify openai    # Verify only OpenAI
   starmap auth verify --verbose # Show detailed verification output`,
-	RunE: runAuthVerify,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runAuthVerify(cmd, args, appCtx)
+		},
+	}
+
+	cmd.Flags().BoolP("verbose", "v", false, "Show detailed verification output")
+	cmd.Flags().Duration("timeout", 10*time.Second, "Timeout for API calls")
+
+	return cmd
 }
 
-func init() {
-	VerifyCmd.Flags().BoolP("verbose", "v", false, "Show detailed verification output")
-	VerifyCmd.Flags().Duration("timeout", 10*time.Second, "Timeout for API calls")
-}
-
-func runAuthVerify(cmd *cobra.Command, args []string) error {
-	// Load catalog
-	cat, err := catalogs.NewEmbedded()
+func runAuthVerify(cmd *cobra.Command, args []string, appCtx appcontext.Interface) error {
+	// Load catalog from app context
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -55,22 +59,19 @@ func runAuthVerify(cmd *cobra.Command, args []string) error {
 	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
-		return verifyProvider(cmd, cat, providerID)
+		return verifyProvider(cmd, cat, providerID, appCtx)
 	}
 
 	// Verify all configured providers
-	return verifyAllProviders(cmd, cat)
+	return verifyAllProviders(cmd, cat, appCtx)
 }
 
-func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
+func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx appcontext.Interface) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
-	// Get global flags for output format
-	globalFlags, err := globals.Parse(cmd)
-	if err != nil {
-		return err
-	}
+	// Get output format from app context
+	outputFormat := appCtx.OutputFormat()
 
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
@@ -133,13 +134,13 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog) error {
 
 	fmt.Println()
 
-	// Display results in table format
-	outputFormat := output.DetectFormat(globalFlags.Output)
-	if outputFormat == output.FormatTable {
+	// Display results in configured format
+	detectedFormat := output.DetectFormat(outputFormat)
+	if detectedFormat == output.FormatTable {
 		displayVerificationTable(results, verbose)
 	} else {
 		// For non-table formats, output the raw results
-		formatter := output.NewFormatter(outputFormat)
+		formatter := output.NewFormatter(detectedFormat)
 		return formatter.Format(os.Stdout, results)
 	}
 
@@ -247,15 +248,9 @@ func displaySummaryTable(verified, failed, skipped int) {
 	}
 }
 
-func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string) error {
+func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, appCtx appcontext.Interface) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
-
-	// Get global flags for output format
-	globalFlags, err := globals.Parse(cmd)
-	if err != nil {
-		return err
-	}
 
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 
@@ -298,8 +293,8 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 		result.ModelsFound = "-"
 		result.Error = err.Error()
 
-		// Display single result in table format
-		outputFormat := output.DetectFormat(globalFlags.Output)
+		// Display single result in configured format
+		outputFormat := output.DetectFormat(appCtx.OutputFormat())
 		if outputFormat == output.FormatTable {
 			displayVerificationTable([]VerificationResult{result}, verbose)
 		} else {
@@ -314,8 +309,8 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string)
 	result.Status = "✅ Success"
 	result.ModelsFound = fmt.Sprintf("%d", len(models))
 
-	// Display single result in table format
-	outputFormat := output.DetectFormat(globalFlags.Output)
+	// Display single result in configured format
+	outputFormat := output.DetectFormat(appCtx.OutputFormat())
 	if outputFormat == output.FormatTable {
 		displayVerificationTable([]VerificationResult{result}, verbose)
 	} else {
