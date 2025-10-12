@@ -15,6 +15,7 @@ type Mock struct {
 	StarmapFunc             func() (starmap.Starmap, error)
 	StarmapWithOptionsFunc  func(...starmap.Option) (starmap.Starmap, error)
 	LoggerFunc              func() *zerolog.Logger
+	OutputFormatFunc        func() string
 	VersionFunc             func() string
 	CommitFunc              func() string
 	DateFunc                func() string
@@ -52,6 +53,14 @@ func (m *Mock) Logger() *zerolog.Logger {
 	}
 	logger := zerolog.Nop()
 	return &logger
+}
+
+// OutputFormat returns output format using the mock function or "table".
+func (m *Mock) OutputFormat() string {
+	if m.OutputFormatFunc != nil {
+		return m.OutputFormatFunc()
+	}
+	return "table"
 }
 
 // Version returns version using the mock function or "dev".

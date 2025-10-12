@@ -34,6 +34,10 @@ type Interface interface {
 	// Commands should use this for all logging operations.
 	Logger() *zerolog.Logger
 
+	// OutputFormat returns the configured output format (json, yaml, table, etc).
+	// Commands that support different output formats should use this.
+	OutputFormat() string
+
 	// Version returns the application version string.
 	Version() string
 

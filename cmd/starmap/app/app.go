@@ -97,6 +97,11 @@ func (a *App) Logger() *zerolog.Logger {
 	return a.logger
 }
 
+// OutputFormat returns the configured output format.
+func (a *App) OutputFormat() string {
+	return a.config.Output
+}
+
 // Starmap returns the starmap instance, creating it lazily if needed.
 // This is thread-safe and ensures only one instance is created.
 func (a *App) Starmap() (starmap.Starmap, error) {

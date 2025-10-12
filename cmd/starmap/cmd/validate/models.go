@@ -3,38 +3,40 @@ package validate
 import (
 	"fmt"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/appcontext"
 )
 
-// ModelsCmd validates model definitions.
-var ModelsCmd = &cobra.Command{
-	Use:   "models",
-	Short: "Validate model definitions",
-	Long: `Validate model definitions in the catalog.
+// NewModelsCommand creates the validate models subcommand using app context.
+func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
+	return &cobra.Command{
+		Use:   "models",
+		Short: "Validate model definitions",
+		Long: `Validate model definitions in the catalog.
 
 This checks:
   - Required fields (id, name, provider)
   - Provider references exist
   - Author references exist (if specified)
   - Data consistency and formats`,
-	RunE: runValidateModels,
-}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// This command doesn't take positional arguments yet
+			if len(args) > 0 {
+				return fmt.Errorf("unexpected argument: %s", args[0])
+			}
 
-func runValidateModels(cmd *cobra.Command, args []string) error {
-	// This command doesn't take positional arguments yet
-	if len(args) > 0 {
-		return fmt.Errorf("unexpected argument: %s", args[0])
+			logger := appCtx.Logger()
+			verbose := logger.GetLevel() <= zerolog.InfoLevel
+			return validateModelConsistency(appCtx, verbose)
+		},
 	}
-
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	return validateModelConsistency(verbose)
 }
 
-func validateModelConsistency(verbose bool) error {
-	// Load catalog
-	cat, err := catalogs.New(catalogs.WithEmbedded())
+func validateModelConsistency(appCtx appcontext.Interface, verbose bool) error {
+	// Load catalog from app context
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

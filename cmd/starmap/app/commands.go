@@ -47,22 +47,8 @@ func (a *App) createGlobalFlags() *globals.Flags {
 }
 
 // CreateValidateCommand creates the validate command with app dependencies.
-// TODO: Migrate validate command to use app.Context pattern
 func (a *App) CreateValidateCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "validate",
-		GroupID: "management",
-		Short:   "Validate catalog configuration and structure",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return cmd.Help()
-		},
-	}
-	// Add existing subcommands
-	cmd.AddCommand(validate.ModelsCmd)
-	cmd.AddCommand(validate.ProvidersCmd)
-	cmd.AddCommand(validate.AuthorsCmd)
-	cmd.AddCommand(validate.CatalogCmd)
-	return cmd
+	return validate.NewCommand(a)
 }
 
 // CreateInspectCommand creates the inspect command with app dependencies.

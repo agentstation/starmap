@@ -3,38 +3,40 @@ package validate
 import (
 	"fmt"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/appcontext"
 )
 
-// AuthorsCmd validates authors.yaml structure.
-var AuthorsCmd = &cobra.Command{
-	Use:   "authors",
-	Short: "Validate authors.yaml structure",
-	Long: `Validate that authors.yaml has all required fields and follows the schema.
+// NewAuthorsCommand creates the validate authors subcommand using app context.
+func NewAuthorsCommand(appCtx appcontext.Interface) *cobra.Command {
+	return &cobra.Command{
+		Use:   "authors",
+		Short: "Validate authors.yaml structure",
+		Long: `Validate that authors.yaml has all required fields and follows the schema.
 
 This checks:
   - Required fields (id, name)
   - URL formats for social links
   - Duplicate IDs
   - Data consistency`,
-	RunE: runValidateAuthors,
-}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// This command doesn't take positional arguments yet
+			if len(args) > 0 {
+				return fmt.Errorf("unexpected argument: %s", args[0])
+			}
 
-func runValidateAuthors(cmd *cobra.Command, args []string) error {
-	// This command doesn't take positional arguments yet
-	if len(args) > 0 {
-		return fmt.Errorf("unexpected argument: %s", args[0])
+			logger := appCtx.Logger()
+			verbose := logger.GetLevel() <= zerolog.InfoLevel
+			return validateAuthorsStructure(appCtx, verbose)
+		},
 	}
-
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	return validateAuthorsStructure(verbose)
 }
 
-func validateAuthorsStructure(verbose bool) error {
-	// Load authors from embedded catalog
-	cat, err := catalogs.New(catalogs.WithEmbedded())
+func validateAuthorsStructure(appCtx appcontext.Interface, verbose bool) error {
+	// Load catalog from app context
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}
