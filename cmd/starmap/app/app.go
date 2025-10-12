@@ -138,9 +138,13 @@ func (a *App) StarmapWithOptions(opts ...starmap.Option) (starmap.Starmap, error
 	return sm, nil
 }
 
-// Catalog returns the current catalog from the starmap instance.
+// Catalog returns a deep copy of the current catalog from the starmap instance.
 // This is a convenience method that handles the starmap initialization
 // and catalog retrieval in one call.
+//
+// IMPORTANT: Per CLAUDE.md thread safety rules, this method ALWAYS returns
+// a deep copy to prevent data races. Callers can safely mutate the returned
+// catalog without affecting the underlying starmap instance.
 func (a *App) Catalog() (catalogs.Catalog, error) {
 	sm, err := a.Starmap()
 	if err != nil {
@@ -152,7 +156,14 @@ func (a *App) Catalog() (catalogs.Catalog, error) {
 		return nil, errors.WrapResource("get", "catalog", "", err)
 	}
 
-	return catalog, nil
+	// CRITICAL: Always return deep copy per CLAUDE.md thread safety rules
+	// This prevents callers from mutating the shared catalog instance
+	copy, err := catalog.Copy()
+	if err != nil {
+		return nil, errors.WrapResource("copy", "catalog", "", err)
+	}
+
+	return copy, nil
 }
 
 // Shutdown performs graceful shutdown of the application.

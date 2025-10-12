@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
@@ -21,7 +22,7 @@ import (
 )
 
 // NewModelsCommand creates the list models subcommand using app context.
-func NewModelsCommand(appCtx AppContext) *cobra.Command {
+func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "models [model-id]",
 		Short:   "List models from catalog",
@@ -69,13 +70,12 @@ func NewModelsCommand(appCtx AppContext) *cobra.Command {
 }
 
 // listModelsWithApp lists all models with optional filters using app context.
-func listModelsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+func listModelsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Get all models
 	allModels := cat.Models().List()
@@ -142,13 +142,12 @@ func listModelsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Lo
 }
 
 // showModelDetailsWithApp shows detailed information about a specific model using app context.
-func showModelDetailsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, modelID string) error {
+func showModelDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, modelID string) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Find specific model across all providers
 	providers := cat.Providers().List()

@@ -3,24 +3,13 @@ package list
 import (
 	"fmt"
 
-	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/appcontext"
 )
 
-// AppContext defines the minimal interface that list commands need from the app.
-// This matches AppContext but avoids import cycles.
-type AppContext interface {
-	Catalog() (catalogs.Catalog, error)
-	Starmap() (starmap.Starmap, error)
-	StarmapWithOptions(...starmap.Option) (starmap.Starmap, error)
-	Logger() *zerolog.Logger
-}
-
 // NewCommand creates the list command with app dependencies.
-func NewCommand(appCtx AppContext) *cobra.Command {
+func NewCommand(appCtx appcontext.Interface) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list [resource]",
 		GroupID: "core",

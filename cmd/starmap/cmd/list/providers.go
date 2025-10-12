@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -18,7 +19,7 @@ import (
 )
 
 // NewProvidersCommand creates the list providers subcommand using app context.
-func NewProvidersCommand(app AppContext) *cobra.Command {
+func NewProvidersCommand(app appcontext.Interface) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "providers [provider-id]",
 		Short:   "List providers from catalog",
@@ -48,13 +49,12 @@ func NewProvidersCommand(app AppContext) *cobra.Command {
 }
 
 // listProvidersWithApp lists all providers using app context.
-func listProvidersWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listProvidersWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Get all providers
 	allProviders := cat.Providers().List()
@@ -115,13 +115,12 @@ func listProvidersWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog
 }
 
 // showProviderDetailsWithApp shows detailed information about a specific provider.
-func showProviderDetailsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, providerID string) error {
+func showProviderDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, providerID string) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Find specific provider
 	provider, exists := cat.Providers().Get(catalogs.ProviderID(providerID))

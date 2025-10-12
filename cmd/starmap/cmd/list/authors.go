@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -18,7 +19,7 @@ import (
 )
 
 // NewAuthorsCommand creates the list authors subcommand using app context.
-func NewAuthorsCommand(app AppContext) *cobra.Command {
+func NewAuthorsCommand(app appcontext.Interface) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "authors [author-id]",
 		Short:   "List authors from catalog",
@@ -48,13 +49,12 @@ func NewAuthorsCommand(app AppContext) *cobra.Command {
 }
 
 // listAuthorsWithApp lists all authors using app context.
-func listAuthorsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listAuthorsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Get all authors
 	allAuthors := cat.Authors().List()
@@ -115,13 +115,12 @@ func listAuthorsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.L
 }
 
 // showAuthorDetailsWithApp shows detailed information about a specific author.
-func showAuthorDetailsWithApp(cmd *cobra.Command, appCtx AppContext, logger *zerolog.Logger, authorID string) error {
+func showAuthorDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, authorID string) error {
 	// Get catalog from app
-	catInterface, err := appCtx.Catalog()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
-	cat := catInterface.(catalogs.Catalog)
 
 	// Find specific author
 	author, exists := cat.Authors().Get(catalogs.AuthorID(authorID))
