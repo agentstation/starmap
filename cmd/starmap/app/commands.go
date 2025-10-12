@@ -22,11 +22,8 @@ func (a *App) CreateListCommand() *cobra.Command {
 }
 
 // CreateUpdateCommand creates the update command with app dependencies.
-// TODO: Migrate update command to use app.Context pattern
 func (a *App) CreateUpdateCommand() *cobra.Command {
-	// Create globalFlags from app config for compatibility with existing commands
-	globalFlags := a.createGlobalFlags()
-	return update.NewCommand(globalFlags)
+	return update.NewCommand(a)
 }
 
 // CreateServeCommand creates the serve command with app dependencies.
