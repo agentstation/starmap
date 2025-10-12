@@ -11,6 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/catalog"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -21,7 +22,50 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+// NewModelsCommand creates the fetch models subcommand using app context.
+func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
+	var (
+		providerFlag string
+		allFlag      bool
+		timeoutFlag  int
+	)
+
+	cmd := &cobra.Command{
+		Use:   "models",
+		Short: "Fetch models from provider APIs",
+		Example: `  starmap fetch models --provider openai
+  starmap fetch models --all
+  starmap fetch models -p anthropic --timeout 60`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			ctx := cmd.Context()
+			logger := appCtx.Logger()
+			quiet := logger.GetLevel() > 0 // Use logger level to determine quiet mode
+
+			if allFlag {
+				return fetchAllProvidersWithApp(ctx, appCtx, timeoutFlag, quiet)
+			}
+
+			if providerFlag == "" {
+				return fmt.Errorf("--provider or --all required")
+			}
+
+			return fetchProviderModelsWithApp(cmd, appCtx, providerFlag, timeoutFlag, quiet)
+		},
+	}
+
+	// Add flags
+	cmd.Flags().StringVarP(&providerFlag, "provider", "p", "",
+		"Provider to fetch from")
+	cmd.Flags().BoolVar(&allFlag, "all", false,
+		"Fetch from all configured providers")
+	cmd.Flags().IntVar(&timeoutFlag, "timeout", 30,
+		"Timeout in seconds for API calls")
+
+	return cmd
+}
+
 // NewModelsCmd creates the fetch models subcommand.
+// Deprecated: Use NewModelsCommand which accepts appcontext.Interface.
 func NewModelsCmd(globalFlags *globals.Flags) *cobra.Command {
 	var (
 		providerFlag string
