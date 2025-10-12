@@ -33,12 +33,12 @@ func NewProvidersCommand(app appcontext.Interface) *cobra.Command {
 
 			// Single provider detail view
 			if len(args) == 1 {
-				return showProviderDetailsWithApp(cmd, app, logger, args[0])
+				return showProviderDetails(cmd, app, logger, args[0])
 			}
 
 			// List view
 			resourceFlags := globals.ParseResources(cmd)
-			return listProvidersWithApp(cmd, app, logger, resourceFlags)
+			return listProviders(cmd, app, logger, resourceFlags)
 		},
 	}
 
@@ -48,8 +48,8 @@ func NewProvidersCommand(app appcontext.Interface) *cobra.Command {
 	return cmd
 }
 
-// listProvidersWithApp lists all providers using app context.
-func listProvidersWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+// listProviders lists all providers using app context.
+func listProviders(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -114,8 +114,8 @@ func listProvidersWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logge
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showProviderDetailsWithApp shows detailed information about a specific provider.
-func showProviderDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, providerID string) error {
+// showProviderDetails shows detailed information about a specific provider.
+func showProviderDetails(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, providerID string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {

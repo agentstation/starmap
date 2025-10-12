@@ -33,12 +33,12 @@ func NewAuthorsCommand(app appcontext.Interface) *cobra.Command {
 
 			// Single author detail view
 			if len(args) == 1 {
-				return showAuthorDetailsWithApp(cmd, app, logger, args[0])
+				return showAuthorDetails(cmd, app, logger, args[0])
 			}
 
 			// List view
 			resourceFlags := globals.ParseResources(cmd)
-			return listAuthorsWithApp(cmd, app, logger, resourceFlags)
+			return listAuthors(cmd, app, logger, resourceFlags)
 		},
 	}
 
@@ -48,8 +48,8 @@ func NewAuthorsCommand(app appcontext.Interface) *cobra.Command {
 	return cmd
 }
 
-// listAuthorsWithApp lists all authors using app context.
-func listAuthorsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+// listAuthors lists all authors using app context.
+func listAuthors(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -114,8 +114,8 @@ func listAuthorsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger 
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showAuthorDetailsWithApp shows detailed information about a specific author.
-func showAuthorDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, authorID string) error {
+// showAuthorDetails shows detailed information about a specific author.
+func showAuthorDetails(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, authorID string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {

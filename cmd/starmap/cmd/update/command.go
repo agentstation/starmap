@@ -37,7 +37,7 @@ By default, saves to ~/.starmap for the local user catalog.`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
 			logger := appCtx.Logger()
-			return ExecuteUpdateWithApp(ctx, appCtx, flags, logger)
+			return ExecuteUpdate(ctx, appCtx, flags, logger)
 		},
 	}
 

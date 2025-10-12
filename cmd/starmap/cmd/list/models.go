@@ -38,7 +38,7 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 
 			// Single model detail view
 			if len(args) == 1 {
-				return showModelDetailsWithApp(cmd, appCtx, logger, args[0])
+				return showModelDetails(cmd, appCtx, logger, args[0])
 			}
 
 			// List view with filters
@@ -49,7 +49,7 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 			maxPrice, _ := cmd.Flags().GetFloat64("max-price")
 			exportFormat, _ := cmd.Flags().GetString("export")
 
-			return listModelsWithApp(cmd, appCtx, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
+			return listModels(cmd, appCtx, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
 		},
 	}
 
@@ -69,8 +69,8 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 	return cmd
 }
 
-// listModelsWithApp lists all models with optional filters using app context.
-func listModelsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+// listModels lists all models with optional filters using app context.
+func listModels(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -141,8 +141,8 @@ func listModelsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// showModelDetailsWithApp shows detailed information about a specific model using app context.
-func showModelDetailsWithApp(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, modelID string) error {
+// showModelDetails shows detailed information about a specific model using app context.
+func showModelDetails(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, modelID string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
