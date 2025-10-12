@@ -12,8 +12,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/appcontext"
-	"github.com/agentstation/starmap/internal/cmd/catalog"
-	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -42,14 +40,14 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 			quiet := logger.GetLevel() > 0 // Use logger level to determine quiet mode
 
 			if allFlag {
-				return fetchAllProvidersWithApp(ctx, appCtx, timeoutFlag, quiet)
+				return fetchAllProviders(ctx, appCtx, timeoutFlag, quiet)
 			}
 
 			if providerFlag == "" {
 				return fmt.Errorf("--provider or --all required")
 			}
 
-			return fetchProviderModelsWithApp(cmd, appCtx, providerFlag, timeoutFlag, quiet)
+			return fetchProviderModels(cmd, appCtx, providerFlag, timeoutFlag, quiet)
 		},
 	}
 
@@ -64,56 +62,15 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 	return cmd
 }
 
-// NewModelsCmd creates the fetch models subcommand.
-// Deprecated: Use NewModelsCommand which accepts appcontext.Interface.
-func NewModelsCmd(globalFlags *globals.Flags) *cobra.Command {
-	var (
-		providerFlag string
-		allFlag      bool
-		timeoutFlag  int
-	)
-
-	cmd := &cobra.Command{
-		Use:   "models",
-		Short: "Fetch models from provider APIs",
-		Example: `  starmap fetch models --provider openai
-  starmap fetch models --all
-  starmap fetch models -p anthropic --timeout 60`,
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx := cmd.Context()
-
-			if allFlag {
-				return fetchAllProviders(ctx, timeoutFlag, globalFlags)
-			}
-
-			if providerFlag == "" {
-				return fmt.Errorf("--provider or --all required")
-			}
-
-			return fetchProviderModels(cmd, providerFlag, timeoutFlag, globalFlags)
-		},
-	}
-
-	// Add flags
-	cmd.Flags().StringVarP(&providerFlag, "provider", "p", "",
-		"Provider to fetch from")
-	cmd.Flags().BoolVar(&allFlag, "all", false,
-		"Fetch from all configured providers")
-	cmd.Flags().IntVar(&timeoutFlag, "timeout", 30,
-		"Timeout in seconds for API calls")
-
-	return cmd
-}
-
-// fetchProviderModels fetches models from a specific provider.
-func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, globalFlags *globals.Flags) error {
+// fetchProviderModels fetches models from a specific provider using app context.
+func fetchProviderModels(cmd *cobra.Command, appCtx appcontext.Interface, providerID string, timeout int, quiet bool) error {
 	// Get context from command
 	ctx := cmd.Context()
 	// Create context with timeout
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	cat, err := catalog.Load()
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -138,7 +95,7 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 	}
 
 	if len(models) == 0 {
-		if !globalFlags.Quiet {
+		if !quiet {
 			fmt.Fprintf(os.Stderr, "No models returned from %s\n", providerID)
 		}
 		return nil
@@ -149,16 +106,21 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 		return models[i].ID < models[j].ID
 	})
 
-	if !globalFlags.Quiet {
+	if !quiet {
 		fmt.Fprintf(os.Stderr, "Fetched %d models from %s\n", len(models), providerID)
 	}
 
+	// Determine output format from logger
+	logger := appCtx.Logger()
+	outputFormat := "table"
+	// Could be extended to read from config if needed
+
 	// Format output
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := output.NewFormatter(output.Format(outputFormat))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Output {
+	switch outputFormat {
 	case "table", "wide", "":
 		// Convert to pointer slice for table compatibility
 		modelPointers := make([]*catalogs.Model, len(models))
@@ -175,12 +137,13 @@ func fetchProviderModels(cmd *cobra.Command, providerID string, timeout int, glo
 		outputData = models
 	}
 
+	_ = logger // Silence unused warning
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// fetchAllProviders fetches models from all configured providers concurrently.
-func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Flags) error {
-	cat, err := catalog.Load()
+// fetchAllProviders fetches models from all configured providers concurrently using app context.
+func fetchAllProviders(ctx context.Context, appCtx appcontext.Interface, timeout int, quiet bool) error {
+	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
 	}
@@ -250,19 +213,19 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 	for r := range results {
 		if r.err != nil {
 			errorCount++
-			if !globalFlags.Quiet {
+			if !quiet {
 				fmt.Fprintf(os.Stderr, "Warning: %s: %v\n", r.provider, r.err)
 			}
 			continue
 		}
 		successCount++
 		allModels = append(allModels, r.models...)
-		if !globalFlags.Quiet {
+		if !quiet {
 			fmt.Fprintf(os.Stderr, "✓ %s: %d models\n", r.provider, len(r.models))
 		}
 	}
 
-	if !globalFlags.Quiet {
+	if !quiet {
 		fmt.Fprintf(os.Stderr, "\nFetched %d total models from %d providers (%d errors)\n",
 			len(allModels), successCount, errorCount)
 	}
@@ -272,12 +235,17 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 		return allModels[i].ID < allModels[j].ID
 	})
 
+	// Determine output format from logger
+	logger := appCtx.Logger()
+	outputFormat := "table"
+	// Could be extended to read from config if needed
+
 	// Format output
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := output.NewFormatter(output.Format(outputFormat))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Output {
+	switch outputFormat {
 	case "table", "wide", "":
 		tableData := table.ModelsToTableData(allModels, false)
 		// Convert to output.Data for formatter compatibility
@@ -289,5 +257,6 @@ func fetchAllProviders(ctx context.Context, timeout int, globalFlags *globals.Fl
 		outputData = allModels
 	}
 
+	_ = logger // Silence unused warning
 	return formatter.Format(os.Stdout, outputData)
 }

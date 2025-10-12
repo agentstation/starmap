@@ -32,23 +32,8 @@ func (a *App) CreateServeCommand() *cobra.Command {
 }
 
 // CreateFetchCommand creates the fetch command with app dependencies.
-// TODO: Migrate fetch command to use app.Context pattern
 func (a *App) CreateFetchCommand() *cobra.Command {
-	globalFlags := a.createGlobalFlags()
-	cmd := &cobra.Command{
-		Use:     "fetch [resource]",
-		GroupID: "core",
-		Short:   "Retrieve resources from provider APIs",
-		Long: `Fetch retrieves live data from provider APIs.
-
-This requires the appropriate API key to be configured either through
-environment variables or the configuration file.
-
-Supported providers include: openai, anthropic, google-ai-studio, google-vertex, groq`,
-	}
-	// Add subcommands
-	cmd.AddCommand(fetch.NewModelsCmd(globalFlags))
-	return cmd
+	return fetch.NewCommand(a)
 }
 
 // createGlobalFlags creates a globals.Flags from app config for backward compatibility
