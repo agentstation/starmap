@@ -163,12 +163,12 @@ func (a *App) Catalog() (catalogs.Catalog, error) {
 
 	// CRITICAL: Always return deep copy per CLAUDE.md thread safety rules
 	// This prevents callers from mutating the shared catalog instance
-	copy, err := catalog.Copy()
+	catalogCopy, err := catalog.Copy()
 	if err != nil {
 		return nil, errors.WrapResource("copy", "catalog", "", err)
 	}
 
-	return copy, nil
+	return catalogCopy, nil
 }
 
 // Shutdown performs graceful shutdown of the application.

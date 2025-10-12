@@ -22,8 +22,6 @@ This document describes the Starmap application architecture, including both the
 │       └── <command>/             # Command implementations
 ├── internal/
 │   ├── cmd/                       # CLI utilities
-│   │   ├── globals/               # Global flags
-│   │   ├── catalog/               # Catalog loading helper
 │   │   ├── output/                # Output formatting
 │   │   ├── table/                 # Table rendering
 │   │   ├── filter/                # Filtering logic
@@ -350,15 +348,20 @@ See [MIGRATION.md](./MIGRATION.md) for detailed migration plan.
 - [x] Implement Execute() method
 - [x] Document architecture
 
-### Phase 2: Command Migration 🚧 TODO
-- [ ] Migrate 13 commands to app pattern
-- [ ] Update tests
-- [ ] Remove old patterns
+### Phase 2: Command Migration ✅ COMPLETE
+- [x] Migrate all commands to app pattern (using appcontext.Interface)
+- [x] Update command implementations to use app.Catalog(), app.Logger(), app.Config()
+- [x] Remove deprecated command constructors
+- [x] All commands now use dependency injection
 
-### Phase 3: Cleanup 📅 PLANNED
-- [ ] Remove deprecated code
-- [ ] Update documentation
-- [ ] Performance testing
+### Phase 3: Cleanup 🚧 IN PROGRESS
+- [x] Remove internal/cmd/catalog/loader.go (deprecated catalog loading)
+- [x] Remove internal/cmd/globals usage from app/commands.go
+- [x] Remove deprecated function variants (WithApp suffix, old constructors)
+- [x] Clean up unused imports
+- [x] Update documentation (ARCHITECTURE.md, MIGRATION.md)
+- [ ] Performance testing with race detector
+- [ ] Final validation (lint, build, smoke tests)
 
 ## Key Principles
 
@@ -379,5 +382,5 @@ See [MIGRATION.md](./MIGRATION.md) for detailed migration plan.
 
 ---
 
-**Last Updated:** 2025-10-09
-**Status:** Phase 1 Complete, Architecture Documented
+**Last Updated:** 2025-10-12
+**Status:** Phase 2 Complete, Phase 3 In Progress (Cleanup)

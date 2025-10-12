@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap/cmd/starmap/cmd/uninstall"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/update"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/validate"
-	"github.com/agentstation/starmap/internal/cmd/globals"
 )
 
 // CreateListCommand creates the list command with app dependencies.
@@ -34,16 +33,6 @@ func (a *App) CreateServeCommand() *cobra.Command {
 // CreateFetchCommand creates the fetch command with app dependencies.
 func (a *App) CreateFetchCommand() *cobra.Command {
 	return fetch.NewCommand(a)
-}
-
-// createGlobalFlags creates a globals.Flags from app config for backward compatibility
-func (a *App) createGlobalFlags() *globals.Flags {
-	return &globals.Flags{
-		Verbose: a.config.Verbose,
-		Quiet:   a.config.Quiet,
-		NoColor: a.config.NoColor,
-		Output:  a.config.Output,
-	}
 }
 
 // CreateValidateCommand creates the validate command with app dependencies.

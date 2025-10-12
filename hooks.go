@@ -85,13 +85,13 @@ func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 }
 
 // triggerUpdate compares old and new catalogs and triggers appropriate hooks.
-func (h *hooks) triggerUpdate(old, new catalogs.Reader) {
+func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
 	// Get old and new models for comparison
 	oldModels := old.Models().List()
-	newModels := new.Models().List()
+	newModels := updated.Models().List()
 
 	// Create maps for efficient lookup
 	oldModelMap := make(map[string]catalogs.Model)

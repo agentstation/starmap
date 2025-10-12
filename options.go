@@ -53,7 +53,8 @@ type Option func(*options) error
 // apply applies the given options to the options.
 func (o *options) apply(opts ...Option) *options {
 	for _, opt := range opts {
-		opt(o)
+		// Ignore errors during apply - they're handled during validation
+		_ = opt(o)
 	}
 	return o
 }

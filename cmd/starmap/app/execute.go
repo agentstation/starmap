@@ -23,8 +23,9 @@ func (a *App) Execute(ctx context.Context, args []string) error {
 // createRootCommand creates the root cobra command with all subcommands.
 func (a *App) createRootCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "starmap",
-		Short: "AI Model Catalog CLI",
+		Use:     "starmap",
+		Short:   "AI Model Catalog CLI",
+		Version: a.version,
 		Long: `Starmap is a comprehensive AI model catalog system that provides
 information about AI models, their capabilities, and providers.
 
@@ -53,6 +54,9 @@ when API keys are configured.`,
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output")
 	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")
 	rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "output format: table, json, yaml, wide")
+
+	// Customize version output to match version subcommand
+	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
 
 	// Register all commands
 	a.registerCommands(rootCmd)
@@ -103,8 +107,8 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 // This is meant to be used in main.go for top-level error handling.
 func ExitOnError(err error) {
 	if err != nil {
-		// Print to stderr
-		os.Stderr.WriteString(err.Error() + "\n")
+		// Print to stderr (ignore write error since we're exiting anyway)
+		_, _ = os.Stderr.WriteString(err.Error() + "\n")
 		os.Exit(1)
 	}
 }

@@ -16,9 +16,7 @@ cmd/starmap/
     <command>/               # 10 command packages
       *.go                   # Implementation files
 internal/cmd/
-  globals/                   # Global flag handling
-  catalog/loader.go          # Catalog loading helper
-  <various>/                 # 12 utility packages
+  <various>/                 # Utility packages (output, table, filter, etc.)
 ```
 
 ### Target State (After)
@@ -76,9 +74,9 @@ func (a *App) Execute(ctx, args) error
 func (a *App) Shutdown(ctx) error
 ```
 
-### Phase 2: Command Migration (TODO)
+### Phase 2: Command Migration (✅ COMPLETED)
 
-Each command needs to be migrated to accept `AppContext` interface:
+All commands have been migrated to use the `appcontext.Interface` pattern:
 
 ```go
 // Before (current pattern)
@@ -104,23 +102,28 @@ func NewCommand(app AppContext) *cobra.Command {
 }
 ```
 
-**Migration Priority:**
-1. ✅ List command (proof-of-concept)
-2. Update command (most complex, high value)
-3. Serve command (needs app for long-running server)
-4. Fetch, validate, inspect commands
-5. Remaining utility commands
+**Migration Completed:**
+All 13 commands have been migrated to use `appcontext.Interface`:
+- ✅ List command (models, providers, authors)
+- ✅ Update command
+- ✅ Serve command (API server)
+- ✅ Fetch command
+- ✅ Validate command
+- ✅ Inspect command (ls, cat, tree, stat)
+- ✅ Auth command (status, verify, gcloud)
+- ✅ Generate command (docs, completion)
+- ✅ Install command (completion)
+- ✅ Uninstall command (completion)
+- ✅ Version command
+- ✅ Man command
 
-**Per-Command Steps:**
-1. Create `AppContext` interface in command package
-2. Add `NewCommand(app AppContext) *cobra.Command` factory
-3. Replace `catalog.Load()` with `app.Catalog()`
-4. Replace direct `starmap.New()` with `app.Starmap()`
-5. Use `app.Logger()` for logging
-6. Use `app.Config()` for configuration
-7. Update tests to use mock AppContext
-8. Remove old command registration from `cmd/root.go`
-9. Add new registration in `app/commands.go`
+**Key Changes:**
+1. All commands use `NewCommand(appCtx appcontext.Interface)` factory pattern
+2. Replaced `catalog.Load()` with `appCtx.Catalog()`
+3. Replaced direct `starmap.New()` with `appCtx.Starmap()`
+4. Use `appCtx.Logger()` for logging
+5. Use `appCtx.Config()` for configuration
+6. Command registration centralized in `app/execute.go`
 
 ### Phase 3: Main.go Update (✅ COMPLETED)
 
@@ -148,42 +151,48 @@ func main() {
 }
 ```
 
-### Phase 4: Cleanup (TODO)
+### Phase 4: Cleanup (🚧 IN PROGRESS)
 
-**Remove deprecated code:**
-- [ ] `cmd/starmap/cmd/root.go` (logic moved to app)
-- [ ] `internal/cmd/catalog/loader.go` (replaced by app.Catalog())
-- [ ] `internal/cmd/globals/` (replaced by app.Config())
-- [ ] Old command registration in cmd/*.go files
+**Removed deprecated code:**
+- [x] `internal/cmd/catalog/loader.go` - Removed (replaced by appCtx.Catalog())
+- [x] `internal/cmd/globals` usage from app/commands.go - Removed
+- [x] Deprecated command constructors (NewCommandDeprecated, etc.) - Removed
+- [x] Deprecated function variants with "WithApp" suffix - Renamed to clean names
+- [x] Empty serve.go file - Cleaned up
+- [x] Unused imports - Removed
+- [ ] `cmd/starmap/cmd/root.go` - TODO: Review if needed (logic moved to app)
+- [ ] `internal/cmd/globals/` package - TODO: Evaluate if still needed elsewhere
 
-**Consolidate:**
-- [ ] Move all config loading to `app/config.go`
-- [ ] Move all logging setup to `app/logger.go`
-- [ ] Centralize starmap instance management in app
+**Consolidated:**
+- [x] All config loading in `app/config.go`
+- [x] All logging setup in `app/logger.go`
+- [x] Centralized starmap instance management in app
+- [x] Command registration in `app/execute.go`
 
 ## Command-Specific Migration Notes
 
-### List Command
-**Current:** Uses `catalog.Load()` in each subcommand
-**New:** Accept `AppContext`, use `app.Catalog()`
-**Files:** `cmd/list/models.go`, `providers.go`, `authors.go`
+All commands have been successfully migrated to use the `appcontext.Interface` pattern.
 
-### Update Command
-**Current:** Creates custom starmap instances with options
-**New:** Use `app.StarmapWithOptions()` for custom configs
-**Files:** `cmd/update/update.go`, `catalog.go`, `options.go`
-**Special:** Needs dry-run support, provider filtering
+### List Command ✅
+**Migrated:** Uses `appCtx.Catalog()` and `appCtx.Logger()`
+**Files:** `cmd/list/list.go`, `models.go`, `providers.go`, `authors.go`
 
-### Serve Command
-**Current:** Creates catalog in handler initialization
-**New:** App manages catalog lifecycle, pass to handlers
-**Files:** `cmd/serve/api.go`, `handlers.go`
-**Special:** Long-running, needs graceful shutdown via app
+### Update Command ✅
+**Migrated:** Uses `appCtx.StarmapWithOptions()` for custom configs
+**Files:** `cmd/update/update.go`
+**Special:** Supports dry-run, provider filtering via options
 
-### Fetch Command
-**Current:** Direct API calls with manual config
-**New:** Use app.Config() for API keys, app.Logger() for output
-**Files:** `cmd/fetch/models.go`
+### Serve Command ✅
+**Migrated:** Uses `appCtx.Catalog()` and `appCtx.Logger()`
+**Files:** `cmd/serve/serve.go`, `api.go`, `handlers.go`
+**Special:** Long-running server with graceful shutdown
+
+### Fetch Command ✅
+**Migrated:** Uses `appCtx.Config()` for API keys, `appCtx.Logger()` for output
+**Files:** `cmd/fetch/fetch.go`, `models.go`
+
+### Other Commands ✅
+All remaining commands (validate, inspect, auth, generate, install, uninstall, version, man) have been migrated to use `appcontext.Interface`.
 
 ## Testing Strategy
 
@@ -264,60 +273,72 @@ func TestListModels(t *testing.T) {
 - [x] Wire all existing commands through app
 - [ ] Add migration tests
 
-### Commands (1/13 migrated)
-- [x] list (models, providers, authors) - ✅ Fully migrated to AppContext pattern
-- [ ] update
-- [ ] serve (api)
-- [ ] fetch
-- [ ] validate
-- [ ] inspect
-- [ ] auth (status, verify, gcloud)
-- [ ] generate
-- [ ] install
-- [ ] uninstall
-- [ ] version
-- [ ] man
+### Commands (13/13 migrated) ✅
+- [x] list (models, providers, authors)
+- [x] update
+- [x] serve (api)
+- [x] fetch
+- [x] validate
+- [x] inspect
+- [x] auth (status, verify, gcloud)
+- [x] generate
+- [x] install
+- [x] uninstall
+- [x] version
+- [x] man
 
-### Cleanup
-- [ ] Remove cmd/root.go
-- [ ] Remove internal/cmd/catalog/loader.go
-- [ ] Remove internal/cmd/globals (or refactor)
-- [ ] Update documentation
-- [ ] Update CLAUDE.md with new patterns
+### Cleanup 🚧
+- [x] Remove internal/cmd/catalog/loader.go
+- [x] Remove internal/cmd/globals usage from app/commands.go
+- [x] Remove deprecated command constructors and function variants
+- [x] Update ARCHITECTURE.md
+- [x] Update MIGRATION.md
+- [ ] Review cmd/root.go for remaining cleanup
+- [ ] Evaluate internal/cmd/globals package usage elsewhere
+- [ ] Performance testing with race detector
+- [ ] Final validation (lint, build, smoke tests)
 
 ## Timeline
 
 - **Week 1:** Phase 1 (Foundation) - ✅ COMPLETED
 - **Week 1:** Phase 3 (Main.go Update) - ✅ COMPLETED
-- **Week 2-3:** Phase 2 (Command Migration) - IN PROGRESS
-- **Week 4:** Phase 4 (Cleanup) - TODO
-- **Week 5:** Testing, Documentation, Review - TODO
+- **Week 2:** Phase 2 (Command Migration) - ✅ COMPLETED
+- **Week 2:** Phase 4 (Cleanup) - 🚧 IN PROGRESS
+- **Week 3:** Testing, Documentation, Review - 📅 PLANNED
 
 ## Success Criteria
 
 ✅ All commands migrated to app pattern
-✅ All tests passing
 ✅ No duplicate config/DI code
-✅ Improved testability demonstrated
+✅ Improved testability via dependency injection
 ✅ Documentation updated
-✅ Performance maintained or improved
+⏳ All tests passing (Phase 4)
+⏳ Performance maintained or improved (Phase 4)
 
 ---
 
-**Last Updated:** 2025-10-09
-**Status:** Phase 1 ✅ Complete | Phase 3 ✅ Complete | Phase 2 🔄 In Progress
+**Last Updated:** 2025-10-12
+**Status:** Phase 1 ✅ | Phase 2 ✅ | Phase 3 ✅ | Phase 4 🚧 In Progress
 
 ## Current State Summary
 
-**✅ What's Working:**
+**✅ What's Complete:**
 - Full app infrastructure in place (`cmd/starmap/app/`)
-- All commands wired through app (backward compatible)
+- All 13 commands migrated to `appcontext.Interface` pattern
 - `main.go` updated to use `app.Execute()`
-- Build successful, basic commands tested
-- No breaking changes to existing functionality
+- Deprecated code removed (catalog/loader.go, old constructors, etc.)
+- Function naming cleaned up (removed "WithApp" suffixes)
+- Documentation updated (ARCHITECTURE.md, MIGRATION.md)
+- Build successful
 
-**🔄 Next Steps:**
-- Migrate individual commands to use `AppContext` pattern
-- Add comprehensive tests for app package
-- Gradually remove old patterns (e.g., `internal/cmd/catalog/loader.go`)
-- Update documentation for new patterns
+**🚧 In Progress (Phase 4 Cleanup):**
+- Performance testing with race detector
+- Final validation (lint, build, smoke tests)
+- Review remaining deprecated patterns (cmd/root.go, internal/cmd/globals)
+
+**🎉 Achievements:**
+- Single starmap instance managed by app (no more duplicate catalog loading)
+- Proper dependency injection throughout
+- Thread-safe singleton pattern
+- Clean, idiomatic Go architecture
+- No breaking changes to existing functionality
