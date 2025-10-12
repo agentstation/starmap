@@ -27,9 +27,8 @@ func (a *App) CreateUpdateCommand() *cobra.Command {
 }
 
 // CreateServeCommand creates the serve command with app dependencies.
-// TODO: Migrate serve command to use app.Context pattern
 func (a *App) CreateServeCommand() *cobra.Command {
-	return serve.NewCommand()
+	return serve.NewCommand(a)
 }
 
 // CreateFetchCommand creates the fetch command with app dependencies.

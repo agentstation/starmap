@@ -1,13 +1,13 @@
-// Package serve provides HTTP server commands.
 package serve
 
 import (
 	"github.com/spf13/cobra"
+
+	"github.com/agentstation/starmap/internal/appcontext"
 )
 
-// NewCommandDeprecated creates the serve command without app context.
-// Deprecated: Use NewCommand which accepts appcontext.Interface.
-func NewCommandDeprecated() *cobra.Command {
+// NewCommand creates the serve command using app context.
+func NewCommand(appCtx appcontext.Interface) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "serve",
 		Short: "Start HTTP servers for various resources",
@@ -27,8 +27,8 @@ Environment Variables:
   starmap serve api --port 8080`,
 	}
 
-	// Add subcommands
-	cmd.AddCommand(NewAPICommandDeprecated())
+	// Add subcommands with app context
+	cmd.AddCommand(NewAPICommand(appCtx))
 
 	return cmd
 }
