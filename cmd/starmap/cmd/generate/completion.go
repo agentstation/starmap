@@ -6,11 +6,13 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// CompletionCmd represents the generate completion subcommand.
-var CompletionCmd = &cobra.Command{
+// NewCompletionCommand creates the generate completion subcommand using app context.
+func NewCompletionCommand(appCtx appcontext.Interface) *cobra.Command {
+	cmd := &cobra.Command{
 	Use:   "completion [bash|zsh|fish]",
 	Short: "Generate shell completion scripts",
 	Long: `Generate shell completion scripts for starmap.
@@ -100,9 +102,10 @@ Advanced usage:
 		}
 		return nil
 	},
-}
+	}
 
-func init() {
-	CompletionCmd.Flags().Bool("install", false, "Install completions to system location")
-	CompletionCmd.Flags().Bool("uninstall", false, "Remove completions from system location")
+	cmd.Flags().Bool("install", false, "Install completions to system location")
+	cmd.Flags().Bool("uninstall", false, "Remove completions from system location")
+
+	return cmd
 }

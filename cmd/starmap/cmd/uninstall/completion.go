@@ -6,11 +6,13 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// CompletionCmd represents the uninstall completion command.
-var CompletionCmd = &cobra.Command{
+// NewCompletionCommand creates the uninstall completion subcommand using app context.
+func NewCompletionCommand(appCtx appcontext.Interface) *cobra.Command {
+	cmd := &cobra.Command{
 	Use:   "completion",
 	Short: "Uninstall shell completions",
 	Long: `Remove shell completions for starmap.
@@ -83,11 +85,12 @@ Examples:
 		fmt.Printf("💡 Start a new shell session to ensure completions are fully removed.\n")
 		return nil
 	},
-}
+	}
 
-func init() {
 	// Shell-specific flags
-	CompletionCmd.Flags().Bool("bash", false, "Remove bash completions only")
-	CompletionCmd.Flags().Bool("zsh", false, "Remove zsh completions only")
-	CompletionCmd.Flags().Bool("fish", false, "Remove fish completions only")
+	cmd.Flags().Bool("bash", false, "Remove bash completions only")
+	cmd.Flags().Bool("zsh", false, "Remove zsh completions only")
+	cmd.Flags().Bool("fish", false, "Remove fish completions only")
+
+	return cmd
 }

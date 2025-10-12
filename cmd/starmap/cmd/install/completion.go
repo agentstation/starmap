@@ -6,11 +6,13 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/appcontext"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// CompletionCmd represents the install completion command.
-var CompletionCmd = &cobra.Command{
+// NewCompletionCommand creates the install completion subcommand using app context.
+func NewCompletionCommand(appCtx appcontext.Interface) *cobra.Command {
+	cmd := &cobra.Command{
 	Use:   "completion",
 	Short: "Install shell completions",
 	Long: `Install shell completions for starmap.
@@ -83,11 +85,12 @@ Examples:
 		fmt.Printf("💡 Start a new shell session or reload your shell config to enable completions.\n")
 		return nil
 	},
-}
+	}
 
-func init() {
 	// Shell-specific flags
-	CompletionCmd.Flags().Bool("bash", false, "Install bash completions only")
-	CompletionCmd.Flags().Bool("zsh", false, "Install zsh completions only")
-	CompletionCmd.Flags().Bool("fish", false, "Install fish completions only")
+	cmd.Flags().Bool("bash", false, "Install bash completions only")
+	cmd.Flags().Bool("zsh", false, "Install zsh completions only")
+	cmd.Flags().Bool("fish", false, "Install fish completions only")
+
+	return cmd
 }

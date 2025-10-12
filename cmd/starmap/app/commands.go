@@ -75,48 +75,18 @@ func (a *App) CreateAuthCommand() *cobra.Command {
 }
 
 // CreateGenerateCommand creates the generate command with app dependencies.
-// TODO: Migrate generate command to use app.Context pattern
 func (a *App) CreateGenerateCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "generate",
-		Short: "Generate various artifacts (completion)",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return cmd.Help()
-		},
-	}
-	// Add existing subcommands
-	cmd.AddCommand(generate.CompletionCmd)
-	return cmd
+	return generate.NewCommand(a)
 }
 
 // CreateInstallCommand creates the install command with app dependencies.
-// TODO: Migrate install command to use app.Context pattern
 func (a *App) CreateInstallCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "install",
-		Short: "Install starmap components",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return cmd.Help()
-		},
-	}
-	// Add existing subcommands
-	cmd.AddCommand(install.CompletionCmd)
-	return cmd
+	return install.NewCommand(a)
 }
 
 // CreateUninstallCommand creates the uninstall command with app dependencies.
-// TODO: Migrate uninstall command to use app.Context pattern
 func (a *App) CreateUninstallCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "uninstall",
-		Short: "Uninstall starmap components",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return cmd.Help()
-		},
-	}
-	// Add existing subcommands
-	cmd.AddCommand(uninstall.CompletionCmd)
-	return cmd
+	return uninstall.NewCommand(a)
 }
 
 // CreateVersionCommand creates the version command.
