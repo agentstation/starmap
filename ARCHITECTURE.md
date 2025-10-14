@@ -304,10 +304,6 @@ sequenceDiagram
     Note over G2: Fast path<br/>(no allocation)
     G2->>Lock: RUnlock()
     G2-->>G2: Return existing instance
-
-    style Lock fill:#fff3e0
-
-    style SM fill:#e3f2fd
 ```
 
 **Why This Pattern?**
@@ -713,16 +709,6 @@ sequenceDiagram
     Note over Rec: Merge all reconciled fields
 
     Rec-->>Sync: Result with changeset<br/>& provenance tracking
-
-    style Auth fill:#fff9c4
-
-    style Rec fill:#e1bee7
-
-    style P fill:#e8f5e9
-
-    style M fill:#e3f2fd
-
-    style L fill:#fff3e0
 ```
 
 **Reconciliation Steps:**
