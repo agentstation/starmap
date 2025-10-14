@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/cmd/catalog"
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -19,9 +19,9 @@ type APIHandlers struct {
 	catalog catalogs.Catalog
 }
 
-// NewAPIHandlers creates a new API handlers instance with the starmap catalog.
-func NewAPIHandlers() (*APIHandlers, error) {
-	cat, err := catalog.Load()
+// NewAPIHandlers creates a new API handlers instance using app context.
+func NewAPIHandlers(app application.Application) (*APIHandlers, error) {
+	cat, err := app.Catalog()
 	if err != nil {
 		return nil, fmt.Errorf("loading catalog: %w", err)
 	}

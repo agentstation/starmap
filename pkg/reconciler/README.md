@@ -16,10 +16,10 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 
 ## Index
 
-- [func ConvertCatalogsMapToSources\(srcs map\[sources.Type\]catalogs.Catalog\) \[\]sources.Source](<#ConvertCatalogsMapToSources>)
-- [func NewMockSource\(sourceType sources.Type, catalog catalogs.Catalog\) sources.Source](<#NewMockSource>)
+- [func ConvertCatalogsMapToSources\(srcs map\[sources.ID\]catalogs.Catalog\) \[\]sources.Source](<#ConvertCatalogsMapToSources>)
+- [func NewMockSource\(sourceType sources.ID, catalog catalogs.Catalog\) sources.Source](<#NewMockSource>)
 - [type AuthorityStrategy](<#AuthorityStrategy>)
-  - [func \(s \*AuthorityStrategy\) ResolveConflict\(field string, values map\[sources.Type\]any\) \(any, sources.Type, string\)](<#AuthorityStrategy.ResolveConflict>)
+  - [func \(s \*AuthorityStrategy\) ResolveConflict\(field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveConflict>)
 - [type Merger](<#Merger>)
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Authority\) Option](<#WithAuthorities>)
@@ -39,10 +39,10 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [type ResultMetadata](<#ResultMetadata>)
 - [type ResultStatistics](<#ResultStatistics>)
 - [type SourceOrderStrategy](<#SourceOrderStrategy>)
-  - [func \(s \*SourceOrderStrategy\) ResolveConflict\(\_ string, values map\[sources.Type\]any\) \(any, sources.Type, string\)](<#SourceOrderStrategy.ResolveConflict>)
+  - [func \(s \*SourceOrderStrategy\) ResolveConflict\(\_ string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#SourceOrderStrategy.ResolveConflict>)
 - [type Strategy](<#Strategy>)
   - [func NewAuthorityStrategy\(authorities authority.Authority\) Strategy](<#NewAuthorityStrategy>)
-  - [func NewSourceOrderStrategy\(priorityOrder \[\]sources.Type\) Strategy](<#NewSourceOrderStrategy>)
+  - [func NewSourceOrderStrategy\(priorityOrder \[\]sources.ID\) Strategy](<#NewSourceOrderStrategy>)
 - [type StrategyType](<#StrategyType>)
   - [func \(s StrategyType\) Name\(\) string](<#StrategyType.Name>)
   - [func \(s StrategyType\) String\(\) string](<#StrategyType.String>)
@@ -58,7 +58,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 ## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L52>)
 
 ```go
-func ConvertCatalogsMapToSources(srcs map[sources.Type]catalogs.Catalog) []sources.Source
+func ConvertCatalogsMapToSources(srcs map[sources.ID]catalogs.Catalog) []sources.Source
 ```
 
 ConvertCatalogsMapToSources converts the old map format to sources slice for testing.
@@ -67,7 +67,7 @@ ConvertCatalogsMapToSources converts the old map format to sources slice for tes
 ## func [NewMockSource](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L18>)
 
 ```go
-func NewMockSource(sourceType sources.Type, catalog catalogs.Catalog) sources.Source
+func NewMockSource(sourceType sources.ID, catalog catalogs.Catalog) sources.Source
 ```
 
 NewMockSource creates a new mock source for testing.
@@ -87,7 +87,7 @@ type AuthorityStrategy struct {
 ### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L125>)
 
 ```go
-func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string)
+func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
 ```
 
 ResolveConflict uses authorities to resolve conflicts.
@@ -100,10 +100,10 @@ Merger performs the actual merging of resources.
 ```go
 type Merger interface {
     // Models merges models from multiple sources
-    Models(sources map[sources.Type][]catalogs.Model) ([]catalogs.Model, provenance.Map, error)
+    Models(sources map[sources.ID][]*catalogs.Model) ([]*catalogs.Model, provenance.Map, error)
 
     // Providers merges providers from multiple sources
-    Providers(sources map[sources.Type][]catalogs.Provider) ([]catalogs.Provider, provenance.Map, error)
+    Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error)
 }
 ```
 
@@ -170,7 +170,7 @@ Reconciler is the main interface for reconciling data from multiple sources.
 type Reconciler interface {
     // Sources reconciles multiple catalogs from different sources
     // The primary source determines which models exist; other sources provide enrichment only
-    Sources(ctx context.Context, primary sources.Type, srcs []sources.Source) (*Result, error)
+    Sources(ctx context.Context, primary sources.ID, srcs []sources.Source) (*Result, error)
 }
 ```
 
@@ -282,7 +282,7 @@ type ResultMetadata struct {
     Duration time.Duration
 
     // Sources that were reconciled
-    Sources []sources.Type
+    Sources []sources.ID
 
     // Strategy used for reconciliation
     Strategy Strategy
@@ -325,7 +325,7 @@ type SourceOrderStrategy struct {
 ### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L202>)
 
 ```go
-func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.Type]any) (any, sources.Type, string)
+func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string)
 ```
 
 ResolveConflict uses source priority order to resolve conflicts.
@@ -347,7 +347,7 @@ type Strategy interface {
     ShouldMerge(resourceType sources.ResourceType) bool
 
     // ResolveConflict determines how to resolve conflicts
-    ResolveConflict(field string, values map[sources.Type]any) (any, sources.Type, string)
+    ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
 
     // ValidateResult validates the reconciliation result
     ValidateResult(result *Result) error
@@ -370,7 +370,7 @@ NewAuthorityStrategy creates a new authority\-based strategy.
 ### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L185>)
 
 ```go
-func NewSourceOrderStrategy(priorityOrder []sources.Type) Strategy
+func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy
 ```
 
 NewSourceOrderStrategy creates a new source priority order strategy. The priorityOrder slice determines precedence: earlier elements have higher priority.

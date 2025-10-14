@@ -4,38 +4,41 @@ package validate
 import (
 	"fmt"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// ProvidersCmd validates providers.yaml structure.
-var ProvidersCmd = &cobra.Command{
-	Use:   "providers",
-	Short: "Validate providers.yaml structure",
-	Long: `Validate that providers.yaml has all required fields and follows the schema.
+// NewProvidersCommand creates the validate providers subcommand using app context.
+func NewProvidersCommand(app application.Application) *cobra.Command {
+	return &cobra.Command{
+		Use:   "providers",
+		Short: "Validate providers.yaml structure",
+		Long: `Validate that providers.yaml has all required fields and follows the schema.
 
 This checks:
   - Required fields (id, name)
   - API key configuration consistency
   - Catalog configuration validity
   - URL formats and patterns`,
-	RunE: runValidateProviders,
-}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// This command doesn't take positional arguments yet
+			if len(args) > 0 {
+				return fmt.Errorf("unexpected argument: %s", args[0])
+			}
 
-func runValidateProviders(cmd *cobra.Command, args []string) error {
-	// This command doesn't take positional arguments yet
-	if len(args) > 0 {
-		return fmt.Errorf("unexpected argument: %s", args[0])
+			logger := app.Logger()
+			verbose := logger.GetLevel() <= zerolog.InfoLevel
+			return validateProvidersStructure(app, verbose)
+		},
 	}
-
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	return validateProvidersStructure(verbose)
 }
 
-func validateProvidersStructure(verbose bool) error {
-	// Load providers from embedded catalog
-	cat, err := catalogs.New(catalogs.WithEmbedded())
+func validateProvidersStructure(app application.Application, verbose bool) error {
+	// Load catalog from app context
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

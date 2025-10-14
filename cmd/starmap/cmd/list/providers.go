@@ -1,69 +1,77 @@
-// Package list provides commands for listing starmap resources.
 package list
 
 import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/catalog"
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
-	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// ProvidersCmd represents the list providers subcommand.
-var ProvidersCmd = &cobra.Command{
-	Use:     "providers [provider-id]",
-	Short:   "List providers from catalog",
-	Aliases: []string{"provider"},
-	Args:    cobra.MaximumNArgs(1),
-	Example: `  starmap list providers                   # List all providers
-  starmap list providers anthropic         # Show specific provider details
-  starmap list providers --keys            # Show API key configuration status`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		// Single provider detail view
-		if len(args) == 1 {
-			showKeys, _ := cmd.Flags().GetBool("keys")
-			return showProviderDetails(cmd, args[0], showKeys)
-		}
+// NewProvidersCommand creates the list providers subcommand using app context.
+func NewProvidersCommand(app application.Application) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "providers [provider-id]",
+		Short:   "List providers from catalog",
+		Aliases: []string{"provider"},
+		Args:    cobra.MaximumNArgs(1),
+		Example: `  starmap list providers                    # List all providers
+  starmap list providers openai             # Show specific provider details
+  starmap list providers --search anthropic # Search providers by name`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			logger := app.Logger()
 
-		// List view with filters
-		resourceFlags := globals.ParseResources(cmd)
-		showKeys, _ := cmd.Flags().GetBool("keys")
-		return listProviders(cmd, resourceFlags, showKeys)
-	},
-}
+			// Single provider detail view
+			if len(args) == 1 {
+				return showProviderDetails(cmd, app, logger, args[0])
+			}
 
-func init() {
+			// List view
+			resourceFlags := globals.ParseResources(cmd)
+			return listProviders(cmd, app, logger, resourceFlags)
+		},
+	}
+
 	// Add resource-specific flags
-	globals.AddResourceFlags(ProvidersCmd)
-	ProvidersCmd.Flags().Bool("keys", false,
-		"Show if API keys are configured (keys are not displayed)")
+	globals.AddResourceFlags(cmd)
+
+	return cmd
 }
 
-// listProviders lists all providers with optional filters.
-func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bool) error {
-	cat, err := catalog.Load()
+// listProviders lists all providers using app context.
+func listProviders(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+	// Get catalog from app
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
 
 	// Get all providers
-	providers := cat.Providers().List()
+	allProviders := cat.Providers().List()
 
-	// Apply filters
-	providerFilter := &filter.ProviderFilter{
-		Search: flags.Search,
+	// Apply search filter if specified
+	var filtered []catalogs.Provider
+	if flags.Search != "" {
+		searchLower := strings.ToLower(flags.Search)
+		for _, p := range allProviders {
+			if strings.Contains(strings.ToLower(string(p.ID)), searchLower) ||
+				strings.Contains(strings.ToLower(p.Name), searchLower) {
+				filtered = append(filtered, p)
+			}
+		}
+	} else {
+		filtered = allProviders
 	}
-	filtered := providerFilter.Apply(providers)
 
 	// Sort providers
 	sort.Slice(filtered, func(i, j int) bool {
@@ -86,13 +94,11 @@ func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bo
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		// Convert to pointer slice for table compatibility
 		providerPointers := make([]*catalogs.Provider, len(filtered))
 		for i := range filtered {
 			providerPointers[i] = &filtered[i]
 		}
-		tableData := table.ProvidersToTableData(providerPointers, showKeys)
-		// Convert to output.Data for formatter compatibility
+		tableData := table.ProvidersToTableData(providerPointers, false)
 		outputData = output.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -102,26 +108,28 @@ func listProviders(cmd *cobra.Command, flags *globals.ResourceFlags, showKeys bo
 	}
 
 	if !globalFlags.Quiet {
-		fmt.Fprintf(os.Stderr, "Found %d providers\n", len(filtered))
+		logger.Info().Msgf("Found %d providers", len(filtered))
 	}
 
 	return formatter.Format(os.Stdout, outputData)
 }
 
 // showProviderDetails shows detailed information about a specific provider.
-func showProviderDetails(cmd *cobra.Command, providerID string, showKeys bool) error {
-	cat, err := catalog.Load()
+func showProviderDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, providerID string) error {
+	// Get catalog from app
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
 
-	prov, err := provider.Get(cat, providerID)
-	if err != nil {
-		// Suppress usage display for not found errors
-		if errors.IsNotFound(err) {
-			cmd.SilenceUsage = true
+	// Find specific provider
+	provider, exists := cat.Providers().Get(catalogs.ProviderID(providerID))
+	if !exists {
+		cmd.SilenceUsage = true
+		return &errors.NotFoundError{
+			Resource: "provider",
+			ID:       providerID,
 		}
-		return err
 	}
 
 	globalFlags, err := globals.Parse(cmd)
@@ -132,105 +140,43 @@ func showProviderDetails(cmd *cobra.Command, providerID string, showKeys bool) e
 
 	// For table output, show detailed view
 	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
-		printProviderDetails(prov, showKeys)
+		printProviderDetails(provider)
 		return nil
 	}
 
 	// For structured output, return the provider
-	return formatter.Format(os.Stdout, prov)
+	return formatter.Format(os.Stdout, provider)
 }
 
-// Removed providersToTableData - now using shared table.ProvidersToTableData
-
-// printProviderDetails prints detailed provider information using table format.
-func printProviderDetails(provider *catalogs.Provider, showKeys bool) {
+// printProviderDetails prints detailed provider information.
+func printProviderDetails(provider *catalogs.Provider) {
 	formatter := output.NewFormatter(output.FormatTable)
 
-	// Basic Information Table
+	fmt.Printf("Provider: %s\n\n", provider.ID)
+
+	// Basic info
 	basicRows := [][]string{
 		{"Provider ID", string(provider.ID)},
 		{"Name", provider.Name},
 	}
 
-	if provider.Headquarters != nil {
-		basicRows = append(basicRows, []string{"Location", *provider.Headquarters})
+	if provider.Headquarters != nil && *provider.Headquarters != "" {
+		basicRows = append(basicRows, []string{"Headquarters", *provider.Headquarters})
 	}
 
-	if provider.Catalog != nil && provider.Catalog.Docs != nil {
-		basicRows = append(basicRows, []string{"Documentation", *provider.Catalog.Docs})
+	if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
+		basicRows = append(basicRows, []string{"Status Page", *provider.StatusPageURL})
 	}
-
-	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil {
-		basicRows = append(basicRows, []string{"API Endpoint", *provider.ChatCompletions.URL})
-	}
-
-	basicRows = append(basicRows, []string{"Models", fmt.Sprintf("%d", len(provider.Models))})
 
 	basicTable := output.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
 
-	fmt.Printf("Provider: %s\n\n", provider.ID)
 	fmt.Println("Basic Information:")
 	_ = formatter.Format(os.Stdout, basicTable)
 	fmt.Println()
 
-	// API Configuration Table
-	if provider.APIKey != nil {
-		var configRows [][]string
-
-		requirement := "Optional"
-		if provider.IsAPIKeyRequired() {
-			requirement = "Required"
-		}
-
-		configRows = append(configRows, []string{"Key Variable", provider.APIKey.Name})
-		configRows = append(configRows, []string{"Requirement", requirement})
-
-		if showKeys {
-			status := "✗ Not configured"
-			if os.Getenv(provider.APIKey.Name) != "" {
-				status = "✅ Configured"
-			}
-			configRows = append(configRows, []string{"Status", status})
-		}
-
-		configTable := output.Data{
-			Headers: []string{"Setting", "Value"},
-			Rows:    configRows,
-		}
-
-		fmt.Println("API Configuration:")
-		_ = formatter.Format(os.Stdout, configTable)
-		fmt.Println()
-	}
-
-	// Environment Variables Table
-	if len(provider.EnvVars) > 0 {
-		var envRows [][]string
-
-		for _, envVar := range provider.EnvVars {
-			requirement := "Optional"
-			if envVar.Required {
-				requirement = "Required"
-			}
-
-			description := envVar.Description
-			if description == "" {
-				description = "-"
-			}
-
-			envRows = append(envRows, []string{envVar.Name, requirement, description})
-		}
-
-		envTable := output.Data{
-			Headers: []string{"Variable", "Requirement", "Description"},
-			Rows:    envRows,
-		}
-
-		fmt.Println("Environment Variables:")
-		_ = formatter.Format(os.Stdout, envTable)
-		fmt.Println()
-	}
+	// Model count
+	fmt.Printf("Models: %d\n", len(provider.Models))
 }

@@ -7,10 +7,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -61,51 +62,14 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	return flags
 }
 
-// NewCommand creates the update command.
-func NewCommand(globalFlags *globals.Flags) *cobra.Command {
-	var updateFlags *Flags
+// ExecuteUpdate orchestrates the complete update process using app context.
+func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flags, logger *zerolog.Logger) error {
+	// Determine quiet mode from logger level
+	quiet := logger.GetLevel() > zerolog.InfoLevel
 
-	cmd := &cobra.Command{
-		Use:     "update",
-		GroupID: "core",
-		Short:   "Synchronize catalog with all sources",
-		Long: `Update synchronizes your local starmap catalog by fetching the latest data
-from all configured sources:
-
-1. Provider APIs - Live model information from OpenAI, Anthropic, etc.
-2. models.dev - Pricing, limits, and metadata enrichment
-3. Embedded catalog - Baseline catalog data
-
-The command will:
-• Load the current catalog (embedded or from --input)
-• Fetch live data from provider APIs (if keys configured)
-• Enrich with models.dev data (pricing, limits, logos)
-• Reconcile all sources using field-level authority
-• Save the updated catalog to disk
-
-By default, saves to ~/.starmap for the local user catalog.`,
-		Example: `  starmap update                            # Update entire catalog
-  starmap update --provider openai          # Update specific provider
-  starmap update --dry                      # Preview changes
-  starmap update -y                          # Auto-approve changes
-  starmap update --force                    # Force fresh update`,
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			ctx := cmd.Context()
-			return ExecuteUpdate(ctx, updateFlags, globalFlags)
-		},
-	}
-
-	// Add update-specific flags
-	updateFlags = addUpdateFlags(cmd)
-
-	return cmd
-}
-
-// ExecuteUpdate orchestrates the complete update process.
-func ExecuteUpdate(ctx context.Context, flags *Flags, globalFlags *globals.Flags) error {
 	// Validate force update if needed
 	if flags.Force {
-		proceed, err := ValidateForceUpdate(globalFlags.Quiet, flags.AutoApprove)
+		proceed, err := ValidateForceUpdate(quiet, flags.AutoApprove)
 		if err != nil {
 			return err
 		}
@@ -114,18 +78,18 @@ func ExecuteUpdate(ctx context.Context, flags *Flags, globalFlags *globals.Flags
 		}
 	}
 
-	// Load the appropriate catalog
-	sm, err := LoadCatalog(flags.Input, globalFlags.Quiet)
+	// Load the appropriate catalog using app context
+	sm, err := LoadCatalog(app, flags.Input, quiet)
 	if err != nil {
 		return err
 	}
 
 	// Execute the update operation
-	return update(ctx, sm, flags, globalFlags)
+	return updateCatalog(ctx, sm, flags, logger, quiet)
 }
 
-// update executes the update operation and handles the results.
-func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *globals.Flags) error {
+// updateCatalog executes the update operation using app context.
+func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger *zerolog.Logger, quiet bool) error {
 	// Build update options - use default output path if not specified
 	outputPath := flags.Output
 	if outputPath == "" {
@@ -139,7 +103,7 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 
 	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
 
-	if !globalFlags.Quiet {
+	if !quiet {
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
 	}
 
@@ -153,33 +117,34 @@ func update(ctx context.Context, sm starmap.Starmap, flags *Flags, globalFlags *
 		}
 	}
 
-	// Display results based on output format
-	if globalFlags.Output == "json" || globalFlags.Output == "yaml" {
-		formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	// Display results based on output format (checking if JSON logging is enabled)
+	if logger.GetLevel() == zerolog.TraceLevel {
+		// Assume structured output for trace level
+		formatter := output.NewFormatter(output.FormatJSON)
 		return formatter.Format(os.Stdout, result)
 	}
 
 	// Handle results
-	return handleResults(ctx, sm, result, flags, outputPath, sourcesDir, globalFlags)
+	return handleResults(ctx, sm, result, flags, outputPath, sourcesDir, quiet)
 }
 
-// handleResults processes the update results and handles user interaction.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, globalFlags *globals.Flags) error {
+// handleResults processes the update results using app context.
+func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
 	if !result.HasChanges() {
-		if !globalFlags.Quiet {
+		if !quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")
 		}
 		return nil
 	}
 
 	// Show results summary
-	if !globalFlags.Quiet {
+	if !quiet {
 		displayResultsSummary(result)
 	}
 
 	// Handle dry run
 	if result.DryRun {
-		if !globalFlags.Quiet {
+		if !quiet {
 			fmt.Fprintf(os.Stderr, "🔍 Dry run mode - no changes will be made\n")
 		}
 		return nil
@@ -187,7 +152,7 @@ func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result,
 
 	// Handle auto-approve vs manual confirmation
 	if flags.AutoApprove {
-		return finalizeChanges(globalFlags.Quiet, result)
+		return finalizeChanges(quiet, result)
 	}
 
 	// Ask for confirmation
@@ -200,15 +165,15 @@ func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result,
 	}
 
 	// Re-run update without dry-run
-	if !globalFlags.Quiet {
+	if !quiet {
 		fmt.Fprintf(os.Stderr, "\n🚀 Applying changes...\n")
-		fmt.Fprintf(os.Stderr, "📁 Saving models to: %s\n", outputPath)
 	}
 
-	// Call update again without dry-run
-	finalOpts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, false, flags.Cleanup, flags.Reformat, sourcesDir)
+	// Rebuild options without dry-run
+	opts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
 
-	_, err = sm.Sync(ctx, finalOpts...)
+	// Apply changes
+	finalResult, err := sm.Sync(ctx, opts...)
 	if err != nil {
 		return &errors.ProcessError{
 			Operation: "apply changes",
@@ -217,7 +182,7 @@ func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result,
 		}
 	}
 
-	return finalizeChanges(globalFlags.Quiet, result)
+	return finalizeChanges(quiet, finalResult)
 }
 
 // displayResultsSummary shows a detailed summary of the update results.

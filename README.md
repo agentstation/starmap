@@ -944,8 +944,6 @@ Built with ❤️ by the Starmap Community
 import "github.com/agentstation/starmap"
 ```
 
-Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
-
 Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with automatic updates, event hooks, and provider synchronization capabilities.
 
 Starmap wraps the underlying catalog system with additional features including: \- Automatic background synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe catalog access with copy\-on\-read semantics \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
@@ -991,49 +989,33 @@ sm, err = starmap.New(
 )
 ```
 
+Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
+
 ## Index
 
 - [type AutoUpdateFunc](<#AutoUpdateFunc>)
+- [type AutoUpdater](<#AutoUpdater>)
+- [type Catalog](<#Catalog>)
+- [type Client](<#Client>)
+  - [func New\(opts ...Option\) \(Client, error\)](<#New>)
+- [type Hooks](<#Hooks>)
 - [type ModelAddedHook](<#ModelAddedHook>)
 - [type ModelRemovedHook](<#ModelRemovedHook>)
 - [type ModelUpdatedHook](<#ModelUpdatedHook>)
 - [type Option](<#Option>)
   - [func WithAutoUpdateFunc\(fn AutoUpdateFunc\) Option](<#WithAutoUpdateFunc>)
   - [func WithAutoUpdateInterval\(interval time.Duration\) Option](<#WithAutoUpdateInterval>)
-  - [func WithAutoUpdates\(enabled bool\) Option](<#WithAutoUpdates>)
-  - [func WithInitialCatalog\(catalog catalogs.Catalog\) Option](<#WithInitialCatalog>)
+  - [func WithAutoUpdatesDisabled\(\) Option](<#WithAutoUpdatesDisabled>)
+  - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
   - [func WithLocalPath\(path string\) Option](<#WithLocalPath>)
   - [func WithRemoteServer\(url string, apiKey \*string\) Option](<#WithRemoteServer>)
-  - [func WithRemoteServerOnly\(enabled bool\) Option](<#WithRemoteServerOnly>)
-- [type Starmap](<#Starmap>)
-  - [func New\(opts ...Option\) \(Starmap, error\)](<#New>)
-- [type SyncOption](<#SyncOption>)
-  - [func WithAutoApprove\(autoApprove bool\) SyncOption](<#WithAutoApprove>)
-  - [func WithCleanModelsDevRepo\(cleanup bool\) SyncOption](<#WithCleanModelsDevRepo>)
-  - [func WithDryRun\(dryRun bool\) SyncOption](<#WithDryRun>)
-  - [func WithFailFast\(failFast bool\) SyncOption](<#WithFailFast>)
-  - [func WithFresh\(fresh bool\) SyncOption](<#WithFresh>)
-  - [func WithOutputPath\(path string\) SyncOption](<#WithOutputPath>)
-  - [func WithProvider\(providerID catalogs.ProviderID\) SyncOption](<#WithProvider>)
-  - [func WithReformat\(reformat bool\) SyncOption](<#WithReformat>)
-  - [func WithSources\(types ...sources.Type\) SyncOption](<#WithSources>)
-  - [func WithTimeout\(timeout time.Duration\) SyncOption](<#WithTimeout>)
-- [type SyncOptions](<#SyncOptions>)
-  - [func NewSyncOptions\(opts ...SyncOption\) \*SyncOptions](<#NewSyncOptions>)
-  - [func \(s \*SyncOptions\) SourceOptions\(\) \[\]sources.Option](<#SyncOptions.SourceOptions>)
-  - [func \(s \*SyncOptions\) Validate\(providers \*catalogs.Providers\) error](<#SyncOptions.Validate>)
-- [type SyncProviderResult](<#SyncProviderResult>)
-  - [func NewSyncProviderResult\(providerID catalogs.ProviderID\) \*SyncProviderResult](<#NewSyncProviderResult>)
-  - [func \(spr \*SyncProviderResult\) HasChanges\(\) bool](<#SyncProviderResult.HasChanges>)
-  - [func \(spr \*SyncProviderResult\) Summary\(\) string](<#SyncProviderResult.Summary>)
-- [type SyncResult](<#SyncResult>)
-  - [func NewSyncResult\(\) \*SyncResult](<#NewSyncResult>)
-  - [func \(sr \*SyncResult\) HasChanges\(\) bool](<#SyncResult.HasChanges>)
-  - [func \(sr \*SyncResult\) Summary\(\) string](<#SyncResult.Summary>)
+  - [func WithRemoteServerOnly\(\) Option](<#WithRemoteServerOnly>)
+- [type Persistence](<#Persistence>)
+- [type Updater](<#Updater>)
 
 
 <a name="AutoUpdateFunc"></a>
-## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L99>)
+## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L98>)
 
 AutoUpdateFunc is a function that updates the catalog.
 
@@ -1041,8 +1023,86 @@ AutoUpdateFunc is a function that updates the catalog.
 type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
 ```
 
+<a name="AutoUpdater"></a>
+## type [AutoUpdater](<https://github.com/agentstation/starmap/blob/master/autoupdate.go#L17-L23>)
+
+AutoUpdater provides controls for automatic catalog updates.
+
+```go
+type AutoUpdater interface {
+    // AutoUpdatesOn begins automatic updates if configured
+    AutoUpdatesOn() error
+
+    // AutoUpdatesOff stops automatic updates
+    AutoUpdatesOff() error
+}
+```
+
+<a name="Catalog"></a>
+## type [Catalog](<https://github.com/agentstation/starmap/blob/master/client.go#L66-L68>)
+
+Catalog provides copy\-on\-read access to the catalog.
+
+```go
+type Catalog interface {
+    Catalog() (catalogs.Catalog, error)
+}
+```
+
+<a name="Client"></a>
+## type [Client](<https://github.com/agentstation/starmap/blob/master/client.go#L79-L95>)
+
+Client manages a catalog with automatic updates and event hooks.
+
+```go
+type Client interface {
+
+    // Catalog provides copy-on-read access to the catalog
+    Catalog
+
+    // Updater handles catalog update and sync operations
+    Updater
+
+    // Persistence handles catalog persistence operations
+    Persistence
+
+    // AutoUpdater provides access to automatic update controls
+    AutoUpdater
+
+    // Hooks provides access to event callback registration
+    Hooks
+}
+```
+
+<a name="New"></a>
+### func [New](<https://github.com/agentstation/starmap/blob/master/client.go#L119>)
+
+```go
+func New(opts ...Option) (Client, error)
+```
+
+New creates a new Client instance with the given options.
+
+<a name="Hooks"></a>
+## type [Hooks](<https://github.com/agentstation/starmap/blob/master/hooks.go#L14-L23>)
+
+Hooks provides event callback registration for catalog changes.
+
+```go
+type Hooks interface {
+    // OnModelAdded registers a callback for when models are added
+    OnModelAdded(ModelAddedHook)
+
+    // OnModelUpdated registers a callback for when models are updated
+    OnModelUpdated(ModelUpdatedHook)
+
+    // OnModelRemoved registers a callback for when models are removed
+    OnModelRemoved(ModelRemovedHook)
+}
+```
+
 <a name="ModelAddedHook"></a>
-## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L13>)
+## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L28>)
 
 ModelAddedHook is called when a model is added to the catalog.
 
@@ -1051,7 +1111,7 @@ type ModelAddedHook func(model catalogs.Model)
 ```
 
 <a name="ModelRemovedHook"></a>
-## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L19>)
+## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L34>)
 
 ModelRemovedHook is called when a model is removed from the catalog.
 
@@ -1060,7 +1120,7 @@ type ModelRemovedHook func(model catalogs.Model)
 ```
 
 <a name="ModelUpdatedHook"></a>
-## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L16>)
+## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L31>)
 
 ModelUpdatedHook is called when a model is updated in the catalog.
 
@@ -1078,7 +1138,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAutoUpdateFunc"></a>
-### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L102>)
+### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L101>)
 
 ```go
 func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
@@ -1087,7 +1147,7 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
 WithAutoUpdateFunc configures a custom function for updating the catalog.
 
 <a name="WithAutoUpdateInterval"></a>
-### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L91>)
+### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L90>)
 
 ```go
 func WithAutoUpdateInterval(interval time.Duration) Option
@@ -1095,26 +1155,26 @@ func WithAutoUpdateInterval(interval time.Duration) Option
 
 WithAutoUpdateInterval configures how often to automatically update the catalog.
 
-<a name="WithAutoUpdates"></a>
-### func [WithAutoUpdates](<https://github.com/agentstation/starmap/blob/master/options.go#L83>)
+<a name="WithAutoUpdatesDisabled"></a>
+### func [WithAutoUpdatesDisabled](<https://github.com/agentstation/starmap/blob/master/options.go#L82>)
 
 ```go
-func WithAutoUpdates(enabled bool) Option
+func WithAutoUpdatesDisabled() Option
 ```
 
-WithAutoUpdates configures whether automatic updates are enabled.
+WithAutoUpdatesDisabled configures whether automatic updates are disabled.
 
-<a name="WithInitialCatalog"></a>
-### func [WithInitialCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L110>)
+<a name="WithEmbeddedCatalog"></a>
+### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L126>)
 
 ```go
-func WithInitialCatalog(catalog catalogs.Catalog) Option
+func WithEmbeddedCatalog() Option
 ```
 
-WithInitialCatalog configures the initial catalog to use.
+WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithLocalPath if set.
 
 <a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L118>)
+### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L117>)
 
 ```go
 func WithLocalPath(path string) Option
@@ -1123,7 +1183,7 @@ func WithLocalPath(path string) Option
 WithLocalPath configures the local source to use a specific catalog path.
 
 <a name="WithRemoteServer"></a>
-### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L66>)
+### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L65>)
 
 ```go
 func WithRemoteServer(url string, apiKey *string) Option
@@ -1132,311 +1192,40 @@ func WithRemoteServer(url string, apiKey *string) Option
 WithRemoteServer configures the remote server for catalog updates. A url is required, an api key can be provided for authentication, otherwise use nil to skip Bearer token authentication.
 
 <a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L75>)
+### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L74>)
 
 ```go
-func WithRemoteServerOnly(enabled bool) Option
+func WithRemoteServerOnly() Option
 ```
 
 WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
 
-<a name="Starmap"></a>
-## type [Starmap](<https://github.com/agentstation/starmap/blob/master/starmap.go#L74-L101>)
+<a name="Persistence"></a>
+## type [Persistence](<https://github.com/agentstation/starmap/blob/master/persistence.go#L12-L15>)
 
-Starmap manages a catalog with automatic updates and event hooks.
+Persistence handles catalog persistence operations.
 
 ```go
-type Starmap interface {
-    // Catalog returns a copy of the current catalog
-    Catalog() (catalogs.Catalog, error)
+type Persistence interface {
+    // Save with options
+    Save(opts ...save.Option) error
+}
+```
 
-    // AutoUpdatesOn begins automatic updates if configured
-    AutoUpdatesOn() error
+<a name="Updater"></a>
+## type [Updater](<https://github.com/agentstation/starmap/blob/master/update.go#L23-L29>)
 
-    // AutoUpdatesOff stops automatic updates
-    AutoUpdatesOff() error
+Updater handles catalog synchronization operations.
+
+```go
+type Updater interface {
+    // Sync synchronizes the catalog with provider APIs
+    Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
 
     // Update manually triggers a catalog update
     Update(ctx context.Context) error
-
-    // Sync synchronizes the catalog with provider APIs
-    Sync(ctx context.Context, opts ...SyncOption) (*SyncResult, error)
-
-    // OnModelAdded registers a callback for when models are added
-    OnModelAdded(ModelAddedHook)
-
-    // OnModelUpdated registers a callback for when models are updated
-    OnModelUpdated(ModelUpdatedHook)
-
-    // OnModelRemoved registers a callback for when models are removed
-    OnModelRemoved(ModelRemovedHook)
-
-    // Save persists the current catalog to disk
-    Save() error
-
-    // WriteTo writes the catalog to the given writer in JSON format
-    WriteTo(w io.Writer) (int64, error)
 }
 ```
-
-<a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/starmap.go#L121>)
-
-```go
-func New(opts ...Option) (Starmap, error)
-```
-
-New creates a new Starmap instance with the given options.
-
-<a name="SyncOption"></a>
-## type [SyncOption](<https://github.com/agentstation/starmap/blob/master/options.go#L180>)
-
-SyncOption is a function that configures SyncOptions.
-
-```go
-type SyncOption func(*SyncOptions)
-```
-
-<a name="WithAutoApprove"></a>
-### func [WithAutoApprove](<https://github.com/agentstation/starmap/blob/master/options.go#L251>)
-
-```go
-func WithAutoApprove(autoApprove bool) SyncOption
-```
-
-WithAutoApprove configures auto approval.
-
-<a name="WithCleanModelsDevRepo"></a>
-### func [WithCleanModelsDevRepo](<https://github.com/agentstation/starmap/blob/master/options.go#L300>)
-
-```go
-func WithCleanModelsDevRepo(cleanup bool) SyncOption
-```
-
-WithCleanModelsDevRepo configures whether to remove temporary models.dev repository after update.
-
-<a name="WithDryRun"></a>
-### func [WithDryRun](<https://github.com/agentstation/starmap/blob/master/options.go#L244>)
-
-```go
-func WithDryRun(dryRun bool) SyncOption
-```
-
-WithDryRun configures dry run mode.
-
-<a name="WithFailFast"></a>
-### func [WithFailFast](<https://github.com/agentstation/starmap/blob/master/options.go#L258>)
-
-```go
-func WithFailFast(failFast bool) SyncOption
-```
-
-WithFailFast configures fail\-fast behavior.
-
-<a name="WithFresh"></a>
-### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/options.go#L293>)
-
-```go
-func WithFresh(fresh bool) SyncOption
-```
-
-WithFresh configures whether to delete existing models and fetch fresh from APIs.
-
-<a name="WithOutputPath"></a>
-### func [WithOutputPath](<https://github.com/agentstation/starmap/blob/master/options.go#L286>)
-
-```go
-func WithOutputPath(path string) SyncOption
-```
-
-WithOutputPath configures the output path for saving.
-
-<a name="WithProvider"></a>
-### func [WithProvider](<https://github.com/agentstation/starmap/blob/master/options.go#L279>)
-
-```go
-func WithProvider(providerID catalogs.ProviderID) SyncOption
-```
-
-WithProvider configures syncing for a specific provider only.
-
-<a name="WithReformat"></a>
-### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/options.go#L307>)
-
-```go
-func WithReformat(reformat bool) SyncOption
-```
-
-WithReformat configures whether to reformat providers.yaml file even without changes.
-
-<a name="WithSources"></a>
-### func [WithSources](<https://github.com/agentstation/starmap/blob/master/options.go#L272>)
-
-```go
-func WithSources(types ...sources.Type) SyncOption
-```
-
-WithSources configures which sources to use.
-
-<a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/options.go#L265>)
-
-```go
-func WithTimeout(timeout time.Duration) SyncOption
-```
-
-WithTimeout configures the sync timeout.
-
-<a name="SyncOptions"></a>
-## type [SyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L130-L148>)
-
-SyncOptions controls the overall sync orchestration in Starmap.Sync\(\).
-
-```go
-type SyncOptions struct {
-    // Orchestration control
-    DryRun      bool          // Show changes without applying them
-    AutoApprove bool          // Skip confirmation prompts
-    FailFast    bool          // Stop on first source error instead of continuing
-    Timeout     time.Duration // Timeout for the entire sync operation
-
-    // Source selection
-    Sources    []sources.Type       // Which sources to use (empty means all)
-    ProviderID *catalogs.ProviderID // Filter for specific provider
-
-    // Output control (used AFTER merging)
-    OutputPath string // Where to save final catalog (empty means default location)
-
-    // Source behavior control
-    Fresh              bool // Delete existing models and fetch fresh from APIs (destructive)
-    CleanModelsDevRepo bool // Remove temporary models.dev repository after update
-    Reformat           bool // Reformat providers.yaml file even without changes
-}
-```
-
-<a name="NewSyncOptions"></a>
-### func [NewSyncOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L175>)
-
-```go
-func NewSyncOptions(opts ...SyncOption) *SyncOptions
-```
-
-NewSyncOptions returns sync options with default values.
-
-<a name="SyncOptions.SourceOptions"></a>
-### func \(\*SyncOptions\) [SourceOptions](<https://github.com/agentstation/starmap/blob/master/options.go#L224>)
-
-```go
-func (s *SyncOptions) SourceOptions() []sources.Option
-```
-
-SourceOptions converts sync options to properly typed source options.
-
-<a name="SyncOptions.Validate"></a>
-### func \(\*SyncOptions\) [Validate](<https://github.com/agentstation/starmap/blob/master/options.go#L183>)
-
-```go
-func (s *SyncOptions) Validate(providers *catalogs.Providers) error
-```
-
-Validate checks if the sync options are valid.
-
-<a name="SyncProviderResult"></a>
-## type [SyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L25-L40>)
-
-SyncProviderResult represents sync results for a single provider.
-
-```go
-type SyncProviderResult struct {
-    ProviderID catalogs.ProviderID  // The provider that was synced
-    Added      []catalogs.Model     // New models not in catalog
-    Updated    []differ.ModelUpdate // Existing models with changes
-    Removed    []catalogs.Model     // Models in catalog but not in API (informational only)
-
-    // Summary counts
-    AddedCount   int // Number of models added
-    UpdatedCount int // Number of models updated
-    RemovedCount int // Number of models removed from API (not deleted from catalog)
-
-    // Metadata
-    APIModelsCount      int // Total models fetched from API
-    ExistingModelsCount int // Total models that existed in catalog
-    EnhancedCount       int // Number of models enhanced with models.dev data
-}
-```
-
-<a name="NewSyncProviderResult"></a>
-### func [NewSyncProviderResult](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L92>)
-
-```go
-func NewSyncProviderResult(providerID catalogs.ProviderID) *SyncProviderResult
-```
-
-NewSyncProviderResult creates a new SyncProviderResult.
-
-<a name="SyncProviderResult.HasChanges"></a>
-### func \(\*SyncProviderResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L48>)
-
-```go
-func (spr *SyncProviderResult) HasChanges() bool
-```
-
-HasChanges returns true if the provider result contains any changes.
-
-<a name="SyncProviderResult.Summary"></a>
-### func \(\*SyncProviderResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L75>)
-
-```go
-func (spr *SyncProviderResult) Summary() string
-```
-
-Summary returns a human\-readable summary of the provider result.
-
-<a name="SyncResult"></a>
-## type [SyncResult](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L12-L22>)
-
-SyncResult represents the complete result of a sync operation.
-
-```go
-type SyncResult struct {
-    // Overall statistics
-    TotalChanges     int                                         // Total number of changes across all providers
-    ProvidersChanged int                                         // Number of providers with changes
-    ProviderResults  map[catalogs.ProviderID]*SyncProviderResult // Results per provider
-
-    // Operation metadata
-    DryRun    bool   // Whether this was a dry run
-    Fresh     bool   // Whether this was a fresh sync
-    OutputDir string // Where files were written (empty means default)
-}
-```
-
-<a name="NewSyncResult"></a>
-### func [NewSyncResult](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L85>)
-
-```go
-func NewSyncResult() *SyncResult
-```
-
-NewSyncResult creates a new Result with initialized maps.
-
-<a name="SyncResult.HasChanges"></a>
-### func \(\*SyncResult\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L43>)
-
-```go
-func (sr *SyncResult) HasChanges() bool
-```
-
-HasChanges returns true if the sync result contains any changes.
-
-<a name="SyncResult.Summary"></a>
-### func \(\*SyncResult\) [Summary](<https://github.com/agentstation/starmap/blob/master/sync_result.go#L53>)
-
-```go
-func (sr *SyncResult) Summary() string
-```
-
-Summary returns a human\-readable summary of the sync result.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

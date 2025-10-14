@@ -8,13 +8,16 @@ import (
 
 	"cloud.google.com/go/auth/credentials"
 	"github.com/spf13/cobra"
+
+	"github.com/agentstation/starmap/cmd/application"
 )
 
-// GCloudCmd manages Google Cloud authentication.
-var GCloudCmd = &cobra.Command{
-	Use:   "gcloud",
-	Short: "Manage Google Cloud authentication",
-	Long: `Authenticate with Google Cloud for Vertex AI access.
+// NewGCloudCommand creates the auth gcloud subcommand using app context.
+func NewGCloudCommand(app application.Application) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "gcloud",
+		Short: "Manage Google Cloud authentication",
+		Long: `Authenticate with Google Cloud for Vertex AI access.
 
 By default, checks if authenticated and runs 'gcloud auth application-default login' if needed.
 Use --check to only verify status without authenticating.
@@ -24,13 +27,16 @@ Examples:
   starmap auth gcloud --check   # Check status only (exit 0 if authenticated)
   starmap auth gcloud --force   # Force re-authentication
   starmap auth gcloud --project my-project  # Set default project`,
-	RunE: runGCloudAuth,
-}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runGCloudAuth(cmd, args)
+		},
+	}
 
-func init() {
-	GCloudCmd.Flags().Bool("check", false, "Only check status, don't authenticate")
-	GCloudCmd.Flags().Bool("force", false, "Force re-authentication")
-	GCloudCmd.Flags().String("project", "", "Set default project after auth")
+	cmd.Flags().Bool("check", false, "Only check status, don't authenticate")
+	cmd.Flags().Bool("force", false, "Force re-authentication")
+	cmd.Flags().String("project", "", "Set default project after auth")
+
+	return cmd
 }
 
 func runGCloudAuth(cmd *cobra.Command, args []string) error {

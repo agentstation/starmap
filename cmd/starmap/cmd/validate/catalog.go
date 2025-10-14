@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // ValidationResult represents the result of validating a catalog component.
@@ -20,34 +20,33 @@ type ValidationResult struct {
 	Details   string
 }
 
-// CatalogCmd validates the entire embedded catalog.
-var CatalogCmd = &cobra.Command{
-	Use:   "catalog",
-	Short: "Validate entire embedded catalog",
-	Long: `Validate the structure and completeness of the entire embedded catalog.
+// NewCatalogCommand creates the validate catalog subcommand using app context.
+func NewCatalogCommand(app application.Application) *cobra.Command {
+	return &cobra.Command{
+		Use:   "catalog",
+		Short: "Validate entire embedded catalog",
+		Long: `Validate the structure and completeness of the entire embedded catalog.
 
 This validates:
   - providers.yaml structure and required fields
   - authors.yaml structure and required fields
   - model definitions and consistency
   - cross-references between resources`,
-	RunE: RunCatalog,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runCatalog(cmd, args, app)
+		},
+	}
 }
 
-// RunCatalog validates the entire embedded catalog.
-func RunCatalog(cmd *cobra.Command, args []string) error {
+// runCatalog validates the entire embedded catalog.
+func runCatalog(cmd *cobra.Command, args []string, app application.Application) error {
 	// This command doesn't take positional arguments
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
 
-	verbose, _ := cmd.Flags().GetBool("verbose")
-
-	// Get global flags for output format
-	globalFlags, err := globals.Parse(cmd)
-	if err != nil {
-		return err
-	}
+	logger := app.Logger()
+	verbose := logger.GetLevel() <= zerolog.InfoLevel
 
 	var results []ValidationResult
 	var hasErrors bool
@@ -57,7 +56,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	// Validate providers.yaml
 	fmt.Print("Validating providers.yaml... ")
-	if err := validateProvidersStructure(verbose); err != nil {
+	if err := validateProvidersStructure(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Providers",
@@ -78,7 +77,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	// Validate authors.yaml
 	fmt.Print("Validating authors.yaml... ")
-	if err := validateAuthorsStructure(verbose); err != nil {
+	if err := validateAuthorsStructure(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Authors",
@@ -99,7 +98,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	// Validate model consistency
 	fmt.Print("Validating model definitions... ")
-	if err := validateModelConsistency(verbose); err != nil {
+	if err := validateModelConsistency(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Models",
@@ -120,7 +119,7 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	// Check cross-references
 	fmt.Print("Validating cross-references... ")
-	if err := validateCrossReferences(verbose); err != nil {
+	if err := validateCrossReferences(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Cross-references",
@@ -141,8 +140,8 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 
 	fmt.Println()
 
-	// Display results in table format
-	outputFormat := output.DetectFormat(globalFlags.Output)
+	// Display results in configured output format
+	outputFormat := output.DetectFormat(app.OutputFormat())
 	if outputFormat == output.FormatTable {
 		displayValidationTable(results, verbose)
 	} else {
@@ -175,9 +174,9 @@ func RunCatalog(cmd *cobra.Command, args []string) error {
 	return notifier.Hints(ctx)
 }
 
-func validateCrossReferences(verbose bool) error {
-	// Load catalog to check cross-references
-	cat, err := catalogs.New(catalogs.WithEmbedded())
+func validateCrossReferences(app application.Application, verbose bool) error {
+	// Load catalog from app context to check cross-references
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

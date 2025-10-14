@@ -16,7 +16,7 @@ import (
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
+func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 
 	// Step 0: Check and set context if nil
 	if ctx == nil {
@@ -47,7 +47,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, 
 	}
 
 	// Step 5: filter sources by options
-	srcs := s.filterSources(options)
+	srcs :=	c.filterSources(options)
 
 	// Step 6: Cleanup sources
 	defer func() {
@@ -62,7 +62,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, 
 	}
 
 	// Step 8: Get existing catalog for baseline comparison
-	existing, err := s.Catalog()
+	existing, err :=	c.Catalog()
 	if err != nil {
 		// If we can't get existing catalog, use empty one
 		existing, _ = catalogs.New()
@@ -115,7 +115,7 @@ func (s *starmap) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, 
 		if changeset == nil {
 			changeset = &differ.Changeset{}
 		}
-		if err := s.save(result.Catalog, options, changeset); err != nil {
+		if err :=	c.save(result.Catalog, options, changeset); err != nil {
 			return nil, err
 		}
 	} else if options.DryRun {
@@ -161,13 +161,13 @@ func update(ctx context.Context, baseline catalogs.Catalog, srcs []sources.Sourc
 // ============================================================================
 
 // save applies the catalog changes if not in dry-run mode.
-func (s *starmap) save(result catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
+func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
 
 	// Update internal catalog first
-	s.mu.Lock()
-	oldCatalog := s.catalog
-	s.catalog = result
-	s.mu.Unlock()
+	c.mu.Lock()
+	oldCatalog :=	c.catalog
+	c.catalog = result
+	c.mu.Unlock()
 
 	// Save to output path if specified
 	if options.OutputPath != "" {
@@ -227,7 +227,7 @@ func (s *starmap) save(result catalogs.Catalog, options *sync.Options, changeset
 		Msg("Sync completed successfully")
 
 	// Trigger hooks for catalog changes
-	s.hooks.triggerUpdate(oldCatalog, result)
+	c.hooks.triggerUpdate(oldCatalog, result)
 
 	return nil
 }

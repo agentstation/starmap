@@ -6,14 +6,16 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// CompletionCmd represents the uninstall completion command.
-var CompletionCmd = &cobra.Command{
-	Use:   "completion",
-	Short: "Uninstall shell completions",
-	Long: `Remove shell completions for starmap.
+// NewCompletionCommand creates the uninstall completion subcommand using app context.
+func NewCompletionCommand(app application.Application) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "completion",
+		Short: "Uninstall shell completions",
+		Long: `Remove shell completions for starmap.
 
 By default, removes completions for all supported shells (bash, zsh, fish).
 Use flags to remove from specific shells only.
@@ -23,71 +25,72 @@ Examples:
   starmap uninstall completion --bash    # Remove from bash only  
   starmap uninstall completion --zsh     # Remove from zsh only
   starmap uninstall completion --fish    # Remove from fish only`,
-	RunE: func(cmd *cobra.Command, _ []string) error {
-		bash, _ := cmd.Flags().GetBool("bash")
-		zsh, _ := cmd.Flags().GetBool("zsh")
-		fish, _ := cmd.Flags().GetBool("fish")
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			bash, _ := cmd.Flags().GetBool("bash")
+			zsh, _ := cmd.Flags().GetBool("zsh")
+			fish, _ := cmd.Flags().GetBool("fish")
 
-		// If no specific shell flags are set, uninstall from all shells
-		if !bash && !zsh && !fish {
-			bash, zsh, fish = true, true, true
-		}
-
-		fmt.Printf("Uninstalling shell completions...\n\n")
-
-		var errors []string
-		removed := 0
-
-		if bash {
-			fmt.Printf("🗑️  Removing bash completions...\n")
-			if err := completion.Uninstall("bash"); err != nil {
-				errors = append(errors, fmt.Sprintf("bash: %v", err))
-			} else {
-				removed++
+			// If no specific shell flags are set, uninstall from all shells
+			if !bash && !zsh && !fish {
+				bash, zsh, fish = true, true, true
 			}
-			fmt.Println()
-		}
 
-		if zsh {
-			fmt.Printf("🗑️  Removing zsh completions...\n")
-			if err := completion.Uninstall("zsh"); err != nil {
-				errors = append(errors, fmt.Sprintf("zsh: %v", err))
-			} else {
-				removed++
+			fmt.Printf("Uninstalling shell completions...\n\n")
+
+			var errors []string
+			removed := 0
+
+			if bash {
+				fmt.Printf("🗑️  Removing bash completions...\n")
+				if err := completion.Uninstall("bash"); err != nil {
+					errors = append(errors, fmt.Sprintf("bash: %v", err))
+				} else {
+					removed++
+				}
+				fmt.Println()
 			}
-			fmt.Println()
-		}
 
-		if fish {
-			fmt.Printf("🗑️  Removing fish completions...\n")
-			if err := completion.Uninstall("fish"); err != nil {
-				errors = append(errors, fmt.Sprintf("fish: %v", err))
-			} else {
-				removed++
+			if zsh {
+				fmt.Printf("🗑️  Removing zsh completions...\n")
+				if err := completion.Uninstall("zsh"); err != nil {
+					errors = append(errors, fmt.Sprintf("zsh: %v", err))
+				} else {
+					removed++
+				}
+				fmt.Println()
 			}
-			fmt.Println()
-		}
 
-		if len(errors) > 0 {
-			fmt.Printf("❌ Some removals failed:\n")
-			for _, err := range errors {
-				fmt.Printf("  - %s\n", err)
+			if fish {
+				fmt.Printf("🗑️  Removing fish completions...\n")
+				if err := completion.Uninstall("fish"); err != nil {
+					errors = append(errors, fmt.Sprintf("fish: %v", err))
+				} else {
+					removed++
+				}
+				fmt.Println()
 			}
-			if removed > 0 {
-				fmt.Printf("\n✅ Successfully removed completions from %d shell(s)\n", removed)
+
+			if len(errors) > 0 {
+				fmt.Printf("❌ Some removals failed:\n")
+				for _, err := range errors {
+					fmt.Printf("  - %s\n", err)
+				}
+				if removed > 0 {
+					fmt.Printf("\n✅ Successfully removed completions from %d shell(s)\n", removed)
+				}
+				return fmt.Errorf("failed to remove some completions")
 			}
-			return fmt.Errorf("failed to remove some completions")
-		}
 
-		fmt.Printf("🎉 Successfully removed completions from %d shell(s)!\n", removed)
-		fmt.Printf("💡 Start a new shell session to ensure completions are fully removed.\n")
-		return nil
-	},
-}
+			fmt.Printf("🎉 Successfully removed completions from %d shell(s)!\n", removed)
+			fmt.Printf("💡 Start a new shell session to ensure completions are fully removed.\n")
+			return nil
+		},
+	}
 
-func init() {
 	// Shell-specific flags
-	CompletionCmd.Flags().Bool("bash", false, "Remove bash completions only")
-	CompletionCmd.Flags().Bool("zsh", false, "Remove zsh completions only")
-	CompletionCmd.Flags().Bool("fish", false, "Remove fish completions only")
+	cmd.Flags().Bool("bash", false, "Remove bash completions only")
+	cmd.Flags().Bool("zsh", false, "Remove zsh completions only")
+	cmd.Flags().Bool("fish", false, "Remove fish completions only")
+
+	return cmd
 }

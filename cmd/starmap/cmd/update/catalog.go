@@ -5,19 +5,19 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// LoadCatalog creates a starmap instance with the appropriate catalog based on the input path.
-// If inputPath is empty, uses the embedded catalog. Otherwise, loads from the specified directory.
-func LoadCatalog(inputPath string, isQuiet bool) (starmap.Starmap, error) {
-	var sm starmap.Starmap
+// LoadCatalog creates a starmap instance using app context.
+// If inputPath is provided, creates a custom instance. Otherwise, uses app's default.
+func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (starmap.Client, error) {
+	var sm starmap.Client
 	var err error
 
-	// If input path is provided, use it
+	// If input path is provided, create custom starmap with that path
 	if inputPath != "" {
-		// Use file-based catalog from input directory
-		sm, err = starmap.New(starmap.WithLocalPath(inputPath))
+		sm, err = app.Starmap(starmap.WithLocalPath(inputPath))
 		if err != nil {
 			return nil, errors.WrapResource("create", "starmap", "files catalog", err)
 		}
@@ -25,13 +25,13 @@ func LoadCatalog(inputPath string, isQuiet bool) (starmap.Starmap, error) {
 			fmt.Fprintf(os.Stderr, "📁 Using catalog from: %s\n", inputPath)
 		}
 	} else {
-		// Use default starmap with embedded catalog
-		sm, err = starmap.New(starmap.WithEmbeddedCatalog())
+		// Use app's default starmap (may be embedded or configured via app config)
+		sm, err = app.Starmap()
 		if err != nil {
-			return nil, errors.WrapResource("create", "starmap", "", err)
+			return nil, errors.WrapResource("get", "starmap", "", err)
 		}
 		if !isQuiet {
-			fmt.Fprintf(os.Stderr, "📦 Using embedded catalog\n")
+			fmt.Fprintf(os.Stderr, "📦 Using default catalog\n")
 		}
 	}
 

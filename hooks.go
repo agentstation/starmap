@@ -35,13 +35,13 @@ type (
 )
 
 // OnModelAdded registers a callback for when models are added.
-func (s *starmap) OnModelAdded(fn ModelAddedHook) { s.hooks.OnModelAdded(fn) }
+func (c *client) OnModelAdded(fn ModelAddedHook) {	c.hooks.OnModelAdded(fn) }
 
 // OnModelUpdated registers a callback for when models are updated.
-func (s *starmap) OnModelUpdated(fn ModelUpdatedHook) { s.hooks.OnModelUpdated(fn) }
+func (c *client) OnModelUpdated(fn ModelUpdatedHook) {	c.hooks.OnModelUpdated(fn) }
 
 // OnModelRemoved registers a callback for when models are removed.
-func (s *starmap) OnModelRemoved(fn ModelRemovedHook) { s.hooks.OnModelRemoved(fn) }
+func (c *client) OnModelRemoved(fn ModelRemovedHook) {	c.hooks.OnModelRemoved(fn) }
 
 // hooks manages event callbacks for catalog changes.
 type hooks struct {
@@ -85,13 +85,13 @@ func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 }
 
 // triggerUpdate compares old and new catalogs and triggers appropriate hooks.
-func (h *hooks) triggerUpdate(old, new catalogs.Reader) {
+func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
 	// Get old and new models for comparison
 	oldModels := old.Models().List()
-	newModels := new.Models().List()
+	newModels := updated.Models().List()
 
 	// Create maps for efficient lookup
 	oldModelMap := make(map[string]catalogs.Model)

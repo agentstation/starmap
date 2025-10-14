@@ -1,16 +1,22 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code when working in this repository.
+> LLM coding assistant instructions for the Starmap project
+
+This file provides Claude Code with project-specific guidance for working in this repository. For technical architecture details, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
+## Project Overview
 
 Starmap is a unified AI model catalog system that combines data from provider APIs, models.dev, and embedded sources into a single authoritative catalog.
+
+**For technical deep dive:** See [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Quick Start
 
 ```bash
-make all                                                    # Clean, format, lint, test, build
-starmap update                                              # Update local catalog
-starmap update --provider openai                            # Update specific provider
-make testdata PROVIDER=openai                               # Update testdata
+make all                                # Clean, format, lint, test, build
+starmap update                          # Update local catalog
+starmap update --provider openai        # Update specific provider
+make testdata PROVIDER=openai           # Update testdata
 ```
 
 ## Tech Stack
@@ -23,7 +29,12 @@ make testdata PROVIDER=openai                               # Update testdata
 
 ## ⚠️ Critical Rules (YOU MUST FOLLOW)
 
-**Thread Safety - NEVER return direct references:**
+### Thread Safety
+
+**See ARCHITECTURE.md § Thread Safety for full details**
+
+**NEVER return direct references - ALWAYS return deep copies:**
+
 ```go
 // ❌ WRONG - returns mutable reference
 func Catalog() catalogs.Catalog { return s.catalog }
@@ -36,90 +47,258 @@ func Catalog() (catalogs.Catalog, error) {
 }
 ```
 
-**Error Handling - ALWAYS use typed errors:**
-- Use `&errors.NotFoundError{Resource, ID}`
-- Use `&errors.SyncError{Provider, Err}`
-- Use `&errors.APIError{Provider, Endpoint, StatusCode}`
+**Key patterns:**
+- Value semantics in collections (return values, not pointers)
+- Deep copy on read
+- Double-checked locking for singletons
+- RWMutex for concurrent access
 
-**Constants - NEVER hardcode values:**
-- Use `constants.DirPermissions` not `0755`
-- Use `constants.DefaultTimeout` not `30*time.Second`
+### Error Handling
 
-**Provider Clients - Check OpenAI-compatible first:**
-- Most providers use unified OpenAI client (`internal/sources/providers/openai/client.go`)
-- Only create custom client if API is incompatible
-- Register in `internal/sources/clients/factory.go`
+**ALWAYS use typed errors:**
 
-**Testdata - Update after provider changes:**
+```go
+// Use typed errors from pkg/errors
+&errors.NotFoundError{Resource: "model", ID: modelID}
+&errors.SyncError{Provider: "openai", Err: err}
+&errors.APIError{Provider: "openai", Endpoint: "/models", StatusCode: 500}
+```
+
+### Constants
+
+**NEVER hardcode values:**
+
+```go
+// ✅ CORRECT
+constants.DirPermissions
+constants.DefaultTimeout
+
+// ❌ WRONG
+0755
+30*time.Second
+```
+
+### Provider Clients
+
+**Check OpenAI-compatible first:**
+
+Most providers use unified OpenAI client (`internal/sources/providers/openai/client.go`). Only create custom client if API is incompatible.
+
+**Steps:**
+1. Check if provider uses OpenAI-compatible API
+2. If yes: configure in `internal/embedded/catalog/providers.yaml`
+3. If no: create custom client in `internal/sources/providers/<provider>/`
+4. Register in `internal/sources/clients/factory.go`
+
+### Testdata Updates
+
+After making changes to provider code:
+
 ```bash
 go test ./internal/sources/providers/<provider> -update
 ```
 
-## Architecture
+## Architecture Quick Reference
 
-### Two-Tier System
-1. **Simple Merging** (`pkg/catalogs/`) - 1-2 sources, last-write-wins
-2. **Complex Reconciliation** (`pkg/reconciler/`) - 3+ sources, field-level authority via `pkg/authority`
+For detailed architecture, see [ARCHITECTURE.md](ARCHITECTURE.md). Here's a quick reference:
 
-### Sync Pipeline
-Staged execution in `sync.go`: Filter → Fetch (concurrent) → Reconcile → Save
+### System Layers
 
-### Data Sources & Authority
-- **Provider APIs**: Model existence (concurrent goroutines + channels)
-- **models.dev**: Pricing, logos (Git/HTTP)
-- **Embedded**: Baseline data
-- **Local**: User overrides
+```
+User Interfaces (CLI, Go Package)
+    ↓
+Application Layer (cmd/application/ interface, cmd/starmap/app/ implementation)
+    ↓
+Root Package (starmap.Client - public API)
+    ↓
+Core Packages (catalogs, reconciler, authority, sources)
+    ↓
+Internal Implementations (embedded, providers, modelsdev)
+```
 
-Field-level authority in `pkg/authority` determines which source wins.
+**Key files:**
+- `starmap.go` - Public API
+- `sync.go` - 12-step sync pipeline
+- `cmd/application/application.go` - Application interface
+- `cmd/starmap/app/app.go` - App implementation
 
-### Interface Composition
-`Starmap` = Catalog + Updater + Persistence + AutoUpdater + Hooks (see `starmap.go`)
+### Sync Pipeline (12 Steps)
 
-## Package Map
+See ARCHITECTURE.md § Sync Pipeline for details:
 
-**Core packages**: catalogs, reconciler, authority, sources, errors, logging, constants, convert
-**Internal**: embedded, sources/{providers,modelsdev,local,clients}, transport
+1. Check/set context
+2. Parse options
+3. Setup timeout
+4. Load embedded catalog
+5. Validate options
+6. Filter sources
+7. Setup cleanup
+8. Fetch from sources (concurrent)
+9. Get existing catalog
+10. Reconcile catalogs
+11. Log changes
+12. Save if not dry-run
 
-## Common Tasks
+### Reconciliation System
+
+See ARCHITECTURE.md § Reconciliation System for details:
+
+- **Authority Strategy**: Field-level priorities (default)
+- **Source Order Strategy**: Fixed precedence
+- Sources: Provider APIs, models.dev (Git/HTTP), Local, Embedded
+- Field-level authority determines which source wins
+
+## Common Development Tasks
 
 ### Add New Provider
+
+See ARCHITECTURE.md § Data Sources for authority hierarchy.
+
 1. Add to `internal/embedded/catalog/providers.yaml`
 2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras)
 3. If compatible: Configure in YAML. If not: Create custom client
 4. Register in `internal/sources/clients/factory.go`
 5. Update testdata: `go test ./internal/sources/providers/<provider> -update`
 
-### Modify Embedded Data
-`starmap update --input ./internal/embedded/catalog --dry-run`
+### Modify Sync Logic
+
+See ARCHITECTURE.md § Sync Pipeline for 12-step process.
+
+The sync pipeline is in `sync.go` with staged execution:
+- Filter → Fetch (concurrent) → Reconcile → Save
+- Each stage has clear purpose and error handling
+
+### Update Reconciliation
+
+See ARCHITECTURE.md § Reconciliation System for strategy details.
+
+- Modify authorities: `pkg/authority/authority.go`
+- Strategies: `pkg/reconciler/strategy.go`
+- Field patterns support wildcards: "Pricing.*"
+
+### Working with Commands
+
+Commands use dependency injection via `application.Application` interface:
+
+```go
+// Commands accept Application interface
+func NewCommand(app application.Application) *cobra.Command {
+    return &cobra.Command{
+        RunE: func(cmd *cobra.Command, args []string) error {
+            catalog, err := app.Catalog()  // Thread-safe deep copy
+            // ... use catalog
+        },
+    }
+}
+```
 
 ## Code Patterns
 
 ### Functional Options
-See `starmap.New()`, `catalogs.New()`, `sync.WithProvider()` for examples.
+
+Used throughout for configuration:
+
+```go
+// Creating instances
+sm, _ := starmap.New(
+    starmap.WithAutoUpdateInterval(30 * time.Minute),
+    starmap.WithLocalPath("./catalog"),
+)
+
+// Sync options
+result, _ := sm.Sync(ctx,
+    sync.WithProvider("openai"),
+    sync.WithDryRun(true),
+)
+```
+
+See examples: `starmap.New()`, `catalogs.New()`, `sync.WithProvider()`
+
+### Dependency Injection
+
+See ARCHITECTURE.md § Application Layer for interface pattern.
+
+```go
+// Interface defined where it's used (cmd/application/)
+type Application interface {
+    Catalog() (catalogs.Catalog, error)
+    Starmap(...starmap.Option) (starmap.Client, error)
+    Logger() *zerolog.Logger
+    // ...
+}
+
+// Implementation in cmd/starmap/app/
+type App struct { /* ... */ }
+func (a *App) Catalog() (catalogs.Catalog, error) { /* ... */ }
+```
 
 ### Concurrent Fetching
-See `internal/sources/providers/providers.go` for goroutine + channel pattern.
+
+See ARCHITECTURE.md § Data Sources for concurrent pattern.
+
+Provider APIs fetched in parallel using goroutines + channels:
+```go
+results := make(chan Result, len(providers))
+for _, provider := range providers {
+    go func(p Provider) {
+        models, err := p.Client.ListModels(ctx)
+        results <- Result{Provider: p, Models: models, Error: err}
+    }(provider)
+}
+```
 
 ### Merge Strategies
-- `MergeReplaceAll`: Provider APIs (fresh data)
-- `MergeAdditive`: models.dev (enhancements)
+
+- `MergeReplaceAll`: Provider APIs (fresh data replaces all)
+- `MergeAdditive`: models.dev (enhancements, no removal)
+
+## Package Map
+
+**Core packages**: catalogs, reconciler, authority, sources, errors, logging, constants, convert
+
+**Internal**: embedded, sources/{providers,modelsdev,local,clients}, transport
+
+**Application**: cmd/application (interface), cmd/starmap/app (implementation)
+
+See [ARCHITECTURE.md § Package Organization](ARCHITECTURE.md#package-organization) for full structure.
 
 ## Environment Variables
 
-**Required** (per provider): `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`, `DEEPSEEK_API_KEY`, `CEREBRAS_API_KEY`
-**Google Vertex** (optional): `GOOGLE_VERTEX_PROJECT`, `GOOGLE_VERTEX_LOCATION`
+**Required** (per provider):
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+GROQ_API_KEY=...
+DEEPSEEK_API_KEY=...
+CEREBRAS_API_KEY=...
+```
 
-## Key Files
+**Google Vertex** (optional):
+```bash
+GOOGLE_VERTEX_PROJECT=my-project
+GOOGLE_VERTEX_LOCATION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+```
 
-- `sync.go` - Pipeline orchestration
-- `starmap.go` - Interface composition
-- `internal/sources/providers/providers.go` - Concurrent fetching
-- `internal/sources/clients/factory.go` - Provider registry
-- `internal/embedded/catalog/providers.yaml` - Provider configs
+## Key File Locations
 
-## Commands
+| File | Purpose |
+|------|---------|
+| `starmap.go` | Public API interface |
+| `sync.go` | 12-step sync pipeline |
+| `cmd/application/application.go` | Application interface (idiomatic location) |
+| `cmd/starmap/app/app.go` | App implementation |
+| `pkg/reconciler/reconciler.go` | Multi-source reconciliation |
+| `pkg/authority/authority.go` | Field-level authorities |
+| `internal/sources/providers/providers.go` | Concurrent provider fetching |
+| `internal/sources/clients/factory.go` | Provider client registry |
+| `internal/embedded/catalog/providers.yaml` | Provider configurations |
+
+## Development Commands
 
 ### Build & Development
+
 ```bash
 make all            # Full cycle: clean, fix, lint, test, build
 make build          # Build binary
@@ -129,6 +308,7 @@ make lint           # Run linters
 ```
 
 ### Testing
+
 ```bash
 make test                                   # Run all tests
 go test ./pkg/catalogs -race -v            # Race detection
@@ -136,6 +316,7 @@ go test ./... -race -short                 # All packages with race detector
 ```
 
 ### Catalog Management
+
 ```bash
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
@@ -144,6 +325,7 @@ make testdata PROVIDER=openai               # Update specific provider testdata
 ```
 
 ### Documentation
+
 ```bash
 make generate       # Generate Go docs
 make godoc          # Go docs only
@@ -152,8 +334,26 @@ make docs-check     # Verify docs current (CI)
 
 ## Implementation Notes
 
+**Important Constraints:**
 - Go embed requires binary rebuild for catalog changes
 - Sync pipeline order: Filter → Fetch → Reconcile → Save
 - Provider sources fetch concurrently (goroutines + channels)
 - Authority system determines field-level source priority
 - Always prefer editing existing files over creating new ones
+
+**Thread Safety:**
+- Collections return values (not pointers) for safety
+- All catalog access returns deep copies
+- See ARCHITECTURE.md § Thread Safety for full guidelines
+
+**Import Cycles:**
+- Zero import cycles (validated)
+- Dependency flow is unidirectional (see ARCHITECTURE.md)
+- Commands import `cmd/application/` interface, NOT `cmd/starmap/app/`
+
+## References
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical deep dive (system components, thread safety, sync pipeline)
+- **[README.md](README.md)** - User-facing documentation
+- **[Makefile](Makefile)** - Build automation and commands
+- **[pkg/*/README.md](pkg/)** - Individual package documentation

@@ -6,7 +6,7 @@ import (
 )
 
 // Compile-time interface check to ensure proper implementation.
-var _ Persistence = (*starmap)(nil)
+var _ Persistence = (*client)(nil)
 
 // Persistence handles catalog persistence operations.
 type Persistence interface {
@@ -15,10 +15,10 @@ type Persistence interface {
 }
 
 // Save persists the current catalog to disk using the catalog's native save functionality.
-func (s *starmap) Save(opts ...save.Option) error {
+func (c *client) Save(opts ...save.Option) error {
 
 	// Get the catalog
-	catalog, err := s.Catalog()
+	catalog, err :=	c.Catalog()
 	if err != nil {
 		return errors.WrapResource("get", "catalog", "", err)
 	}

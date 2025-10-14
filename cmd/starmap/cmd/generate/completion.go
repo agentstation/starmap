@@ -6,14 +6,16 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// CompletionCmd represents the generate completion subcommand.
-var CompletionCmd = &cobra.Command{
-	Use:   "completion [bash|zsh|fish]",
-	Short: "Generate shell completion scripts",
-	Long: `Generate shell completion scripts for starmap.
+// NewCompletionCommand creates the generate completion subcommand using app context.
+func NewCompletionCommand(app application.Application) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "completion [bash|zsh|fish]",
+		Short: "Generate shell completion scripts",
+		Long: `Generate shell completion scripts for starmap.
 
 💡 TIP: For easier installation, use the install/uninstall commands:
   starmap install completion    # Install for all shells
@@ -62,47 +64,48 @@ Advanced usage:
   $ starmap generate completion zsh > "${fpath[1]}/_starmap"
   $ starmap generate completion fish > ~/.config/fish/completions/starmap.fish
 `,
-	DisableFlagsInUseLine: true,
-	ValidArgs:             []string{"bash", "zsh", "fish"},
-	Args:                  cobra.MatchAll(cobra.RangeArgs(0, 1), cobra.OnlyValidArgs),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		uninstall, _ := cmd.Flags().GetBool("uninstall")
-		install, _ := cmd.Flags().GetBool("install")
+		DisableFlagsInUseLine: true,
+		ValidArgs:             []string{"bash", "zsh", "fish"},
+		Args:                  cobra.MatchAll(cobra.RangeArgs(0, 1), cobra.OnlyValidArgs),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			uninstall, _ := cmd.Flags().GetBool("uninstall")
+			install, _ := cmd.Flags().GetBool("install")
 
-		if uninstall {
-			if len(args) == 0 {
-				// Uninstall completions for all shells
-				return completion.UninstallAll()
+			if uninstall {
+				if len(args) == 0 {
+					// Uninstall completions for all shells
+					return completion.UninstallAll()
+				}
+				return completion.Uninstall(args[0])
 			}
-			return completion.Uninstall(args[0])
-		}
 
-		if install {
-			if len(args) == 0 {
-				return fmt.Errorf("shell argument required for --install (bash|zsh|fish)")
+			if install {
+				if len(args) == 0 {
+					return fmt.Errorf("shell argument required for --install (bash|zsh|fish)")
+				}
+				return completion.Install(cmd, args[0])
 			}
-			return completion.Install(cmd, args[0])
-		}
 
-		// Shell argument is required for default behavior (generate to stdout)
-		if len(args) == 0 {
-			return fmt.Errorf("shell argument required (bash|zsh|fish)")
-		}
+			// Shell argument is required for default behavior (generate to stdout)
+			if len(args) == 0 {
+				return fmt.Errorf("shell argument required (bash|zsh|fish)")
+			}
 
-		// Default: generate to stdout
-		switch args[0] {
-		case "bash":
-			return cmd.Root().GenBashCompletion(os.Stdout)
-		case "zsh":
-			return cmd.Root().GenZshCompletion(os.Stdout)
-		case "fish":
-			return cmd.Root().GenFishCompletion(os.Stdout, true)
-		}
-		return nil
-	},
-}
+			// Default: generate to stdout
+			switch args[0] {
+			case "bash":
+				return cmd.Root().GenBashCompletion(os.Stdout)
+			case "zsh":
+				return cmd.Root().GenZshCompletion(os.Stdout)
+			case "fish":
+				return cmd.Root().GenFishCompletion(os.Stdout, true)
+			}
+			return nil
+		},
+	}
 
-func init() {
-	CompletionCmd.Flags().Bool("install", false, "Install completions to system location")
-	CompletionCmd.Flags().Bool("uninstall", false, "Remove completions from system location")
+	cmd.Flags().Bool("install", false, "Install completions to system location")
+	cmd.Flags().Bool("uninstall", false, "Remove completions from system location")
+
+	return cmd
 }
