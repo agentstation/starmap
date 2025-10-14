@@ -306,6 +306,7 @@ sequenceDiagram
     G2-->>G2: Return existing instance
 
     style Lock fill:#fff3e0
+
     style SM fill:#e3f2fd
 ```
 
@@ -714,9 +715,13 @@ sequenceDiagram
     Rec-->>Sync: Result with changeset<br/>& provenance tracking
 
     style Auth fill:#fff9c4
+
     style Rec fill:#e1bee7
+
     style P fill:#e8f5e9
+
     style M fill:#e3f2fd
+
     style L fill:#fff3e0
 ```
 
