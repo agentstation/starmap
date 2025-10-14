@@ -221,10 +221,15 @@ func (a *App) buildStarmapOptions() []starmap.Option {
 		if a.config.RemoteServerAPIKey != "" {
 			apiKey = &a.config.RemoteServerAPIKey
 		}
-		opts = append(opts, starmap.WithRemoteServer(a.config.RemoteServerURL, apiKey))
 
 		if a.config.RemoteServerOnly {
-			opts = append(opts, starmap.WithRemoteServerOnly())
+			opts = append(opts, starmap.WithRemoteServerOnly(a.config.RemoteServerURL))
+		} else {
+			opts = append(opts, starmap.WithRemoteServerURL(a.config.RemoteServerURL))
+		}
+
+		if apiKey != nil {
+			opts = append(opts, starmap.WithRemoteServerAPIKey(*apiKey))
 		}
 	}
 

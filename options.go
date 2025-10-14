@@ -3,6 +3,7 @@ package starmap
 import (
 	"time"
 
+	"github.com/agentstation/starmap/internal/utils/ptr"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -59,21 +60,27 @@ func (o *options) apply(opts ...Option) *options {
 	return o
 }
 
-// WithRemoteServer configures the remote server for catalog updates.
-// A url is required, an api key can be provided for authentication,
-// otherwise use nil to skip Bearer token authentication.
-func WithRemoteServer(url string, apiKey *string) Option {
+// WithRemoteServerURL configures the remote server URL.
+func WithRemoteServerURL(url string) Option {
 	return func(o *options) error {
-		o.remoteServerURL = &url
-		o.remoteServerAPIKey = apiKey
+		o.remoteServerURL = ptr.String(url)
+		return nil
+	}
+}
+
+// WithRemoteServerAPIKey configures the remote server API key.
+func WithRemoteServerAPIKey(apiKey string) Option {
+	return func(o *options) error {
+		o.remoteServerAPIKey = ptr.String(apiKey)
 		return nil
 	}
 }
 
 // WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
-func WithRemoteServerOnly() Option {
+func WithRemoteServerOnly(url string) Option {
 	return func(o *options) error {
 		o.remoteServerOnly = true
+		o.remoteServerURL = ptr.String(url)
 		return nil
 	}
 }

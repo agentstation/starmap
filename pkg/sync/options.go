@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/agentstation/starmap/internal/utils/ptr"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -159,7 +160,7 @@ func WithSources(types ...sources.ID) Option {
 // WithProvider configures syncing for a specific provider only.
 func WithProvider(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
-		opts.ProviderID = &providerID
+		opts.ProviderID = ptr.To(providerID)
 	}
 }
 

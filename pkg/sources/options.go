@@ -1,6 +1,9 @@
 package sources
 
-import "github.com/agentstation/starmap/pkg/catalogs"
+import (
+	"github.com/agentstation/starmap/internal/utils/ptr"
+	"github.com/agentstation/starmap/pkg/catalogs"
+)
 
 // Options is the configuration for sources.
 type Options struct {
@@ -42,7 +45,7 @@ func (o *Options) Apply(opts ...Option) *Options {
 // WithProviderFilter configures filtering for a specific provider.
 func WithProviderFilter(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
-		opts.ProviderID = &providerID
+		opts.ProviderID = ptr.To(providerID)
 	}
 }
 
