@@ -1,3 +1,3 @@
 package middleware
 
-//go:generate go run ../../../pkg/constants/generate.go
+//go:generate gomarkdoc -e -o README.md . --repository.path /internal/server/middleware
