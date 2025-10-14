@@ -5,18 +5,18 @@
 <div align="center">
 
 ```
-     ____  _                                 
-    / ___|| |_ __ _ _ __ _ __ ___   __ _ _ __  
-    \___ \| __/ _` | '__| '_ ` _ \ / _` | '_ \ 
-     ___) | || (_| | |  | | | | | | (_| | |_) |
-    |____/ \__\__,_|_|  |_| |_| |_|\__,_| .__/ 
-                                        |_|    
+                 ____  _                                 
+                / ___|| |_ __ _ _ __ _ __ ___   __ _ _ __  
+                \___ \| __/ _` | '__| '_ ` _ \ / _` | '_ \ 
+                ___ ) | || (_| | |  | | | | | | (_| | |_) |
+                |____/ \__\__,_|_|  |_| |_| |_|\__,_| .__/ 
+                                                    |_|    
 ```
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-AGPL%203.0-blue)](LICENSE)
 
-[Installation](#installation) • [Quick Start](#quick-start) • [Architecture](#architecture) • [Documentation](#documentation) • [Contributing](#contributing)
+[Installation](#installation) • [Quick Start](#quick-start) • [API Reference](API.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -28,16 +28,17 @@
 - [Quick Start](#quick-start)
 - [Architecture](#architecture)
 - [Core Concepts](#core-concepts)
-- [Package Documentation](#package-documentation)
-- [Understanding the System](#understanding-the-system)
+- [Project Structure](#project-structure)
+- [Choosing Your Approach](#choosing-your-approach)
 - [CLI Usage](#cli-usage)
 - [Go Package](#go-package)
 - [Data Sources](#data-sources)
 - [Model Catalog](#model-catalog)
-- [HTTP Server (Coming Soon)](#http-server-coming-soon)
+- [HTTP Server](#http-server-coming-soon)
 - [Configuration](#configuration)
 - [Development](#development)
 - [Contributing](#contributing)
+- [API Reference](#api-reference)
 - [License](#license)
 
 ## Why Starmap?
@@ -205,54 +206,15 @@ Comprehensive AI model specification including capabilities (chat, vision, audio
 
 For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](ARCHITECTURE.md#system-components)**.
 
-## 📁 Project Structure
+## Project Structure
 
-Click on any package to view its documentation:
+Starmap follows Go best practices with clear package separation:
 
-```
-starmap/
-├── 📦 pkg/                         # Public API packages
-│   ├── 📚 [catalogs/](pkg/catalogs/)       # Unified catalog abstraction with storage backends
-│   ├── 🔢 [constants/](pkg/constants/)     # Centralized constants for the application  
-│   ├── 🔄 [convert/](pkg/convert/)         # Model format conversion utilities
-│   ├── ⚠️ [errors/](pkg/errors/)           # Custom error types and handling
-│   ├── 📝 [logging/](pkg/logging/)         # Structured logging with zerolog
-│   ├── 🔀 [reconcile/](pkg/reconcile/)     # Multi-source reconciliation engine
-│   └── 🌐 [sources/](pkg/sources/)         # Data source abstractions
-│
-├── 🔒 internal/                    # Internal implementation packages
-│   ├── 💾 [embedded/](internal/embedded/)  # Embedded catalog data
-│   ├── 🚀 [transport/](internal/transport/) # HTTP client utilities
-│   └── 📡 sources/                 # Source implementations
-│       ├── 🏠 [local/](internal/sources/local/)        # Local file source
-│       ├── 🌍 [modelsdev/](internal/sources/modelsdev/) # models.dev integration
-│       ├── 🏢 [providers/](internal/sources/providers/) # Provider API clients
-│       │   ├── [anthropic/](internal/sources/providers/anthropic/)
-│       │   ├── [cerebras/](internal/sources/providers/cerebras/)
-│       │   ├── [deepseek/](internal/sources/providers/deepseek/)
-│       │   ├── [google-ai-studio/](internal/sources/providers/google-ai-studio/)
-│       │   ├── [google-vertex/](internal/sources/providers/google-vertex/)
-│       │   ├── [groq/](internal/sources/providers/groq/)
-│       │   └── [openai/](internal/sources/providers/openai/)
-│       └── 📋 [registry/](internal/sources/registry/)   # Source registration
-│
-├── cmd/starmap/                    # CLI application
-├── docs/                           # Generated documentation
-└── scripts/                        # Build and utility scripts
-```
+- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [reconcile](pkg/reconcile/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`internal/`** - Internal implementations (providers, embedded data, transport)
+- **`cmd/starmap/`** - CLI application
 
-## 📦 Package Quick Reference
-
-| Package | Purpose | Key Types | Documentation |
-|---------|---------|-----------|---------------|
-| **[pkg/catalogs](pkg/catalogs/)** | Catalog storage abstraction | `Catalog`, `Model`, `Provider` | [📚 README](pkg/catalogs/README.md) |
-| **[pkg/reconcile](pkg/reconcile/)** | Multi-source data merging | `Reconciler`, `Strategy`, `Authority` | [📚 README](pkg/reconcile/README.md) |
-| **[pkg/sources](pkg/sources/)** | Data source interfaces | `Source`, `ProviderFetcher` | [📚 README](pkg/sources/README.md) |
-| **[pkg/errors](pkg/errors/)** | Error handling | `NotFoundError`, `APIError` | [📚 README](pkg/errors/README.md) |
-| **[pkg/constants](pkg/constants/)** | Application constants | Timeouts, Limits, Permissions | [📚 README](pkg/constants/README.md) |
-| **[pkg/logging](pkg/logging/)** | Structured logging | `Logger`, `Config` | [📚 README](pkg/logging/README.md) |
-| **[pkg/convert](pkg/convert/)** | Format conversion | `OpenAIModel`, `OpenRouterModel` | [📚 README](pkg/convert/README.md) |
-
+See [CONTRIBUTING.md § Project Structure](CONTRIBUTING.md#project-structure) for detailed directory layout and dependency rules.
 
 ## Choosing Your Approach
 
@@ -436,28 +398,7 @@ For detailed source hierarchy, authority rules, and how sources work together, s
 
 ## Model Catalog
 
-### Browse Documentation
-
-The catalog contains 500+ models from major providers:
-
-- 📋 **[Browse by Provider](./docs/catalog/providers/README.md)** - Models organized by service provider
-- 👥 **[Browse by Author](./docs/catalog/authors/README.md)** - Models organized by creator
-
-### Quick Provider Links
-
-- 🤖 [Anthropic Models](./docs/catalog/providers/anthropic/README.md) - Claude family
-- 🔥 [OpenAI Models](./docs/catalog/providers/openai/README.md) - GPT and O-series
-- 🔍 [Google AI Studio](./docs/catalog/providers/google-ai-studio/README.md) - Gemini models
-- ⚡ [Groq](./docs/catalog/providers/groq/README.md) - High-speed inference
-- 🚀 [DeepSeek](./docs/catalog/providers/deepseek/README.md) - Efficient models
-- 🧠 [Cerebras](./docs/catalog/providers/cerebras/README.md) - Fast inference
-
-### Generate Documentation
-
-```bash
-# Generate Go package documentation
-make generate
-```
+Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, and more). Each package includes comprehensive documentation in its README.
 
 ## HTTP Server (Coming Soon)
 
@@ -514,142 +455,30 @@ logging:
 
 ## Development
 
-### Prerequisites
-
-- Go 1.21 or later
-- Make (for build automation)
-- Git (for models.dev integration)
-
-### Setup
+To contribute or develop locally:
 
 ```bash
-# Clone repository
 git clone https://github.com/agentstation/starmap.git
 cd starmap
-
-# Install dependencies
-go mod download
-
-# Run tests
-make test
-
-# Build binary
-make build
+make all
 ```
 
-### Development Workflow
-
-```bash
-# Format and lint code
-make fix
-make lint
-
-# Run tests with coverage
-make test-coverage
-
-# Update provider testdata
-make testdata-update
-
-# Generate Go documentation
-make generate
-
-# Full build cycle
-make all  # clean, fix, lint, test, build
-```
-
-### Project Structure
-
-```
-starmap/
-├── cmd/starmap/        # CLI implementation
-├── pkg/
-│   ├── catalogs/      # Catalog abstraction and storage
-│   ├── reconcile/     # Multi-source reconciliation
-│   └── sources/       # Data source interfaces
-├── internal/
-│   ├── embedded/      # Embedded catalog data
-│   └── sources/       # Source implementations
-│       ├── providers/ # Provider API clients
-│       └── modelsdev/ # models.dev integration
-├── docs/              # Generated documentation
-└── scripts/           # Build and automation
-```
-
-### Testing
-
-```bash
-# Run all tests
-go test ./...
-
-# Run specific package tests
-go test ./pkg/catalogs/...
-
-# Update testdata
-go test ./internal/sources/providers/openai -update
-
-# Integration tests
-make test-integration
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for complete development setup, testing guidelines, and contribution process.
 
 ## Contributing
 
-We welcome contributions! Here's how to get involved:
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
-### Adding New Providers
-See our comprehensive [Provider Implementation Guide](docs/PROVIDER_IMPLEMENTATION_GUIDE.md) for step-by-step instructions.
+- Development setup and workflow
+- How to add new providers
+- Testing requirements
+- Pull request process
+- Code guidelines
 
-### Adding a New Provider
-
-1. **Add Provider Configuration**
-   ```yaml
-   # internal/embedded/catalog/providers.yaml
-   - id: newprovider
-     name: New Provider
-     api_key:
-       name: NEWPROVIDER_API_KEY
-   ```
-
-2. **Implement Client**
-   ```go
-   // internal/sources/providers/newprovider/client.go
-   type Client struct {...}
-   func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error)
-   ```
-
-3. **Update Provider Registry**
-   ```go
-   // internal/sources/providers/providers.go
-   case "newprovider":
-       return newprovider.NewClient(provider)
-   ```
-
-4. **Add Tests and Documentation**
-   ```bash
-   starmap testdata --provider newprovider --update
-   ```
-
-### Contributing to models.dev
-
-For pricing and metadata improvements:
-1. Visit https://models.dev
-2. Submit corrections via GitHub
-3. Data syncs automatically to starmap
-
-### Submitting Changes
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Write tests for new functionality
-- Update documentation
-- Follow Go best practices
-- Keep commits focused and atomic
-- Add yourself to CONTRIBUTORS.md
+Quick links:
+- [Report Bug](https://github.com/agentstation/starmap/issues)
+- [Request Feature](https://github.com/agentstation/starmap/issues)
+- [Contributing Guide](CONTRIBUTING.md)
 
 ## License
 
@@ -672,304 +501,13 @@ Built with ❤️ by the Starmap Community
 
 ---
 
-## 📚 Auto-Generated API Documentation
-
-The following API reference is automatically generated from Go source code. For architectural details and design patterns, see [ARCHITECTURE.md](ARCHITECTURE.md).
-
-<!-- gomarkdoc:embed:start -->
-
-<!-- Code generated by gomarkdoc. DO NOT EDIT -->
-
-# starmap
-
-```go
-import "github.com/agentstation/starmap"
-```
-
-Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with automatic updates, event hooks, and provider synchronization capabilities.
-
-Starmap wraps the underlying catalog system with additional features including: \- Automatic background synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe catalog access with copy\-on\-read semantics \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
-
-Example usage:
-
-```
-// Create a starmap instance with default settings
-sm, err := starmap.New()
-if err != nil {
-    log.Fatal(err)
-}
-defer sm.AutoUpdatesOff()
-
-// Register event hooks
-sm.OnModelAdded(func(model catalogs.Model) {
-    log.Printf("New model: %s", model.ID)
-})
-
-// Get catalog (returns a copy for thread safety)
-catalog, err := sm.Catalog()
-if err != nil {
-    log.Fatal(err)
-}
-
-// Access models
-models := catalog.Models()
-for _, model := range models.List() {
-    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
-}
-
-// Manually trigger sync
-result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
-if err != nil {
-    log.Fatal(err)
-}
-
-// Configure with custom options
-sm, err = starmap.New(
-    WithAutoUpdateInterval(30 * time.Minute),
-    WithLocalPath("./custom-catalog"),
-    WithAutoUpdates(true),
-)
-```
-
-Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
-
-## Index
-
-- [type AutoUpdateFunc](<#AutoUpdateFunc>)
-- [type AutoUpdater](<#AutoUpdater>)
-- [type Catalog](<#Catalog>)
-- [type Client](<#Client>)
-  - [func New\(opts ...Option\) \(Client, error\)](<#New>)
-- [type Hooks](<#Hooks>)
-- [type ModelAddedHook](<#ModelAddedHook>)
-- [type ModelRemovedHook](<#ModelRemovedHook>)
-- [type ModelUpdatedHook](<#ModelUpdatedHook>)
-- [type Option](<#Option>)
-  - [func WithAutoUpdateFunc\(fn AutoUpdateFunc\) Option](<#WithAutoUpdateFunc>)
-  - [func WithAutoUpdateInterval\(interval time.Duration\) Option](<#WithAutoUpdateInterval>)
-  - [func WithAutoUpdatesDisabled\(\) Option](<#WithAutoUpdatesDisabled>)
-  - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
-  - [func WithLocalPath\(path string\) Option](<#WithLocalPath>)
-  - [func WithRemoteServer\(url string, apiKey \*string\) Option](<#WithRemoteServer>)
-  - [func WithRemoteServerOnly\(\) Option](<#WithRemoteServerOnly>)
-- [type Persistence](<#Persistence>)
-- [type Updater](<#Updater>)
-
-
-<a name="AutoUpdateFunc"></a>
-## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L98>)
-
-AutoUpdateFunc is a function that updates the catalog.
-
-```go
-type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
-```
-
-<a name="AutoUpdater"></a>
-## type [AutoUpdater](<https://github.com/agentstation/starmap/blob/master/autoupdate.go#L17-L23>)
-
-AutoUpdater provides controls for automatic catalog updates.
-
-```go
-type AutoUpdater interface {
-    // AutoUpdatesOn begins automatic updates if configured
-    AutoUpdatesOn() error
-
-    // AutoUpdatesOff stops automatic updates
-    AutoUpdatesOff() error
-}
-```
-
-<a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/client.go#L66-L68>)
-
-Catalog provides copy\-on\-read access to the catalog.
-
-```go
-type Catalog interface {
-    Catalog() (catalogs.Catalog, error)
-}
-```
-
-<a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/master/client.go#L79-L95>)
-
-Client manages a catalog with automatic updates and event hooks.
-
-```go
-type Client interface {
-
-    // Catalog provides copy-on-read access to the catalog
-    Catalog
-
-    // Updater handles catalog update and sync operations
-    Updater
-
-    // Persistence handles catalog persistence operations
-    Persistence
-
-    // AutoUpdater provides access to automatic update controls
-    AutoUpdater
-
-    // Hooks provides access to event callback registration
-    Hooks
-}
-```
-
-<a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/client.go#L119>)
-
-```go
-func New(opts ...Option) (Client, error)
-```
-
-New creates a new Client instance with the given options.
-
-<a name="Hooks"></a>
-## type [Hooks](<https://github.com/agentstation/starmap/blob/master/hooks.go#L14-L23>)
-
-Hooks provides event callback registration for catalog changes.
-
-```go
-type Hooks interface {
-    // OnModelAdded registers a callback for when models are added
-    OnModelAdded(ModelAddedHook)
-
-    // OnModelUpdated registers a callback for when models are updated
-    OnModelUpdated(ModelUpdatedHook)
-
-    // OnModelRemoved registers a callback for when models are removed
-    OnModelRemoved(ModelRemovedHook)
-}
-```
-
-<a name="ModelAddedHook"></a>
-## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L28>)
-
-ModelAddedHook is called when a model is added to the catalog.
-
-```go
-type ModelAddedHook func(model catalogs.Model)
-```
-
-<a name="ModelRemovedHook"></a>
-## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L34>)
-
-ModelRemovedHook is called when a model is removed from the catalog.
-
-```go
-type ModelRemovedHook func(model catalogs.Model)
-```
-
-<a name="ModelUpdatedHook"></a>
-## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L31>)
-
-ModelUpdatedHook is called when a model is updated in the catalog.
-
-```go
-type ModelUpdatedHook func(old, updated catalogs.Model)
-```
-
-<a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L51>)
-
-Option is a function that configures a Starmap instance.
-
-```go
-type Option func(*options) error
-```
-
-<a name="WithAutoUpdateFunc"></a>
-### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L101>)
-
-```go
-func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
-```
-
-WithAutoUpdateFunc configures a custom function for updating the catalog.
-
-<a name="WithAutoUpdateInterval"></a>
-### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L90>)
-
-```go
-func WithAutoUpdateInterval(interval time.Duration) Option
-```
-
-WithAutoUpdateInterval configures how often to automatically update the catalog.
-
-<a name="WithAutoUpdatesDisabled"></a>
-### func [WithAutoUpdatesDisabled](<https://github.com/agentstation/starmap/blob/master/options.go#L82>)
-
-```go
-func WithAutoUpdatesDisabled() Option
-```
-
-WithAutoUpdatesDisabled configures whether automatic updates are disabled.
-
-<a name="WithEmbeddedCatalog"></a>
-### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L126>)
-
-```go
-func WithEmbeddedCatalog() Option
-```
-
-WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithLocalPath if set.
-
-<a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L117>)
-
-```go
-func WithLocalPath(path string) Option
-```
-
-WithLocalPath configures the local source to use a specific catalog path.
-
-<a name="WithRemoteServer"></a>
-### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L65>)
-
-```go
-func WithRemoteServer(url string, apiKey *string) Option
-```
-
-WithRemoteServer configures the remote server for catalog updates. A url is required, an api key can be provided for authentication, otherwise use nil to skip Bearer token authentication.
-
-<a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L74>)
-
-```go
-func WithRemoteServerOnly() Option
-```
-
-WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
-
-<a name="Persistence"></a>
-## type [Persistence](<https://github.com/agentstation/starmap/blob/master/persistence.go#L12-L15>)
-
-Persistence handles catalog persistence operations.
-
-```go
-type Persistence interface {
-    // Save with options
-    Save(opts ...save.Option) error
-}
-```
-
-<a name="Updater"></a>
-## type [Updater](<https://github.com/agentstation/starmap/blob/master/update.go#L23-L29>)
-
-Updater handles catalog synchronization operations.
-
-```go
-type Updater interface {
-    // Sync synchronizes the catalog with provider APIs
-    Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-
-    // Update manually triggers a catalog update
-    Update(ctx context.Context) error
-}
-```
-
-Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
-
-
-<!-- gomarkdoc:embed:end -->
+## API Reference
+
+For complete API documentation including all types, interfaces, and functions, see **[API.md](API.md)**.
+
+Quick links:
+- [Client Interface](API.md#client)
+- [Catalog Operations](API.md#catalog)
+- [Sync and Updates](API.md#updater)
+- [Event Hooks](API.md#hooks)
+- [Configuration Options](API.md#option)
