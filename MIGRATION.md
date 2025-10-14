@@ -66,7 +66,7 @@ type App struct {
     starmap  starmap.Starmap   // Lazy-initialized singleton
 }
 
-// Methods (implements cmd/starmap/application.Context interface)
+// Methods (implements cmd/application.Context interface)
 func (a *App) Catalog() (catalogs.Catalog, error)              // Thread-safe single copy
 func (a *App) Starmap(...opts) (starmap.Starmap, error)        // Variadic options pattern
 func (a *App) Logger() *zerolog.Logger
@@ -87,7 +87,7 @@ func listModels(cmd *cobra.Command, ...) error {
     // ...
 }
 
-// After (new pattern - interface defined in cmd/starmap/application)
+// After (new pattern - interface defined in cmd/application)
 package context
 
 type Context interface {
@@ -111,9 +111,9 @@ func NewCommand(appCtx application.Application) *cobra.Command {
 ```
 
 **Interface Design Principles:**
-- **Location**: `cmd/starmap/application/` (defined where it's used, not where it's implemented)
+- **Location**: `cmd/application/` (at cmd root, reusable across binaries)
 - **Idiomatic Go**: "Accept interfaces, return structs" + "Define interfaces where they're used"
-- **Zero Import Cycles**: Unidirectional flow: `context/` ← `cmd/*/` ← `app/`
+- **Zero Import Cycles**: Unidirectional flow: `cmd/application/` ← `cmd/starmap/cmd/*` ← `cmd/starmap/app/`
 
 **Migration Completed:**
 All 13 commands have been migrated to use `appcontext.Interface`:
@@ -168,7 +168,7 @@ func main() {
 ### Phase 4: Architecture Remediation (✅ COMPLETED)
 
 **Interface Improvements:**
-- [x] Moved interface from `internal/appcontext` to `cmd/starmap/application` (idiomatic Go)
+- [x] Moved interface from `internal/appcontext` to `cmd/application` (idiomatic Go)
 - [x] Consolidated `Starmap()` + `StarmapWithOptions()` → single `Starmap(...opts)` method
 - [x] Removed redundant double-copy in `App.Catalog()` (50% performance improvement)
 - [x] Updated all 36+ command files to new interface location
@@ -267,7 +267,7 @@ All phases have been successfully completed. The Starmap CLI now follows idiomat
 ### Key Achievements
 
 1. **Idiomatic Architecture** ✅
-   - Interface defined where it's used (`cmd/starmap/application/`)
+   - Interface defined where it's used (`cmd/application/`)
    - Implementation in `cmd/starmap/app/`
    - Zero import cycles with unidirectional dependency flow
 
@@ -296,7 +296,7 @@ All phases have been successfully completed. The Starmap CLI now follows idiomat
 - Scattered configuration loading
 
 **After:**
-- Interface in `cmd/starmap/application` (idiomatic: defined where used)
+- Interface in `cmd/application` (idiomatic: defined where used)
 - Single method: `Starmap(...opts)` (variadic options pattern)
 - Optimized `Catalog()` with single copy (50% faster)
 - Centralized configuration in `app/config.go`

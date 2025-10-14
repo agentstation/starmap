@@ -191,7 +191,7 @@ func listModels(...) error {
 
 ### New Pattern (Current Implementation)
 ```go
-// Interface defined in cmd/starmap/application (where it's used)
+// Interface defined in cmd/application (where it's used)
 package context
 
 type Context interface {
@@ -215,10 +215,10 @@ func NewCommand(appCtx application.Application) *cobra.Command {
 ```
 
 **Design Principles:**
-- **Interface location**: Defined in `cmd/starmap/application/` (where commands use it)
+- **Interface location**: Defined in `cmd/application/` (at cmd root, reusable across binaries)
 - **Implementation**: `cmd/starmap/app.App` implements `application.Application`
 - **Import flow**: Unidirectional - no cycles
-  - `context/` (interface) ← `cmd/*/` (commands) ← `app/` (implementation)
+  - `cmd/application/` (interface) ← `cmd/starmap/cmd/*` (commands) ← `cmd/starmap/app/` (implementation)
 - **Idiomatic Go**: "Accept interfaces, return structs" and "Define interfaces where they're used"
 
 **Benefits:**
@@ -366,7 +366,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed migration plan.
 - [x] All commands now use dependency injection
 
 ### Phase 3: Architecture Remediation ✅ COMPLETE
-- [x] Move interface from `internal/appcontext` to `cmd/starmap/application` (idiomatic location)
+- [x] Move interface from `internal/appcontext` to `cmd/application` (idiomatic location)
 - [x] Consolidate `Starmap()` and `StarmapWithOptions()` into single `Starmap(...opts)` method
 - [x] Remove redundant double-copy in `App.Catalog()` (50% performance improvement)
 - [x] Update all 36+ command files to new interface
@@ -399,7 +399,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed migration plan.
 **Status:** All Phases Complete - Architecture Fully Remediated ✅
 
 **Recent Changes:**
-- Moved context interface to idiomatic location (`cmd/starmap/application/`)
+- Moved context interface to idiomatic location (`cmd/application/`)
 - Simplified interface with single `Starmap(...opts)` method (variadic options pattern)
 - Optimized `Catalog()` to use single deep copy (removed redundant 2nd copy)
 - Zero import cycles, full test coverage with race detector

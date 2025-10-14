@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/application"
+	"github.com/agentstation/starmap/cmd/application"
 )
 
 // NewCommand creates the list command with app dependencies.

@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/application"
+	"github.com/agentstation/starmap/cmd/application"
 )
 
 // NewAPICommand creates the serve api command using app context.

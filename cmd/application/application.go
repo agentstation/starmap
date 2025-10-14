@@ -12,7 +12,7 @@
 //
 //	import (
 //	    "context"
-//	    "github.com/agentstation/starmap/cmd/starmap/application"
+//	    "github.com/agentstation/starmap/cmd/application"
 //	)
 //
 //	func NewCommand(app application.Application) *cobra.Command {
