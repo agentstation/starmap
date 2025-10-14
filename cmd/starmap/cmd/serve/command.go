@@ -3,11 +3,11 @@ package serve
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the serve command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "serve",
 		Short: "Start HTTP servers for various resources",
@@ -28,7 +28,7 @@ Environment Variables:
 	}
 
 	// Add subcommands with app context
-	cmd.AddCommand(NewAPICommand(appCtx))
+	cmd.AddCommand(NewAPICommand(app))
 
 	return cmd
 }

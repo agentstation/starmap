@@ -3,11 +3,11 @@ package validate
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the validate command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "validate",
 		GroupID: "management",
@@ -25,10 +25,10 @@ This command validates various aspects of the catalog including:
 	}
 
 	// Add subcommands with app context
-	cmd.AddCommand(NewModelsCommand(appCtx))
-	cmd.AddCommand(NewProvidersCommand(appCtx))
-	cmd.AddCommand(NewAuthorsCommand(appCtx))
-	cmd.AddCommand(NewCatalogCommand(appCtx))
+	cmd.AddCommand(NewModelsCommand(app))
+	cmd.AddCommand(NewProvidersCommand(app))
+	cmd.AddCommand(NewAuthorsCommand(app))
+	cmd.AddCommand(NewCatalogCommand(app))
 
 	return cmd
 }

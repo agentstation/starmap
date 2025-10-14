@@ -1,4 +1,4 @@
-package context
+package application
 
 import (
 	"github.com/rs/zerolog"
@@ -7,13 +7,13 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// MockContext provides a mock implementation of Context for testing.
+// Mock provides a mock implementation of Application for testing.
 // Each method can be customized by setting the corresponding function field.
 // If a function field is nil, the method returns a default/zero value.
 //
 // Example Usage:
 //
-//	mock := &context.MockContext{
+//	mock := &application.Mock{
 //	    CatalogFunc: func() (catalogs.Catalog, error) {
 //	        return testCatalog, nil
 //	    },
@@ -24,7 +24,7 @@ import (
 //	}
 //	cmd := list.NewCommand(mock)
 //	// ... test command
-type MockContext struct {
+type Mock struct {
 	CatalogFunc      func() (catalogs.Catalog, error)
 	StarmapFunc      func(opts ...starmap.Option) (starmap.Starmap, error)
 	LoggerFunc       func() *zerolog.Logger
@@ -36,7 +36,7 @@ type MockContext struct {
 }
 
 // Catalog returns a catalog using the mock function or nil.
-func (m *MockContext) Catalog() (catalogs.Catalog, error) {
+func (m *Mock) Catalog() (catalogs.Catalog, error) {
 	if m.CatalogFunc != nil {
 		return m.CatalogFunc()
 	}
@@ -44,7 +44,7 @@ func (m *MockContext) Catalog() (catalogs.Catalog, error) {
 }
 
 // Starmap returns a starmap using the mock function or nil.
-func (m *MockContext) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
+func (m *Mock) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
 	if m.StarmapFunc != nil {
 		return m.StarmapFunc(opts...)
 	}
@@ -52,7 +52,7 @@ func (m *MockContext) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
 }
 
 // Logger returns a logger using the mock function or a no-op logger.
-func (m *MockContext) Logger() *zerolog.Logger {
+func (m *Mock) Logger() *zerolog.Logger {
 	if m.LoggerFunc != nil {
 		return m.LoggerFunc()
 	}
@@ -61,7 +61,7 @@ func (m *MockContext) Logger() *zerolog.Logger {
 }
 
 // OutputFormat returns output format using the mock function or "table".
-func (m *MockContext) OutputFormat() string {
+func (m *Mock) OutputFormat() string {
 	if m.OutputFormatFunc != nil {
 		return m.OutputFormatFunc()
 	}
@@ -69,7 +69,7 @@ func (m *MockContext) OutputFormat() string {
 }
 
 // Version returns version using the mock function or "dev".
-func (m *MockContext) Version() string {
+func (m *Mock) Version() string {
 	if m.VersionFunc != nil {
 		return m.VersionFunc()
 	}
@@ -77,7 +77,7 @@ func (m *MockContext) Version() string {
 }
 
 // Commit returns commit using the mock function or "unknown".
-func (m *MockContext) Commit() string {
+func (m *Mock) Commit() string {
 	if m.CommitFunc != nil {
 		return m.CommitFunc()
 	}
@@ -85,7 +85,7 @@ func (m *MockContext) Commit() string {
 }
 
 // Date returns date using the mock function or "unknown".
-func (m *MockContext) Date() string {
+func (m *Mock) Date() string {
 	if m.DateFunc != nil {
 		return m.DateFunc()
 	}
@@ -93,12 +93,12 @@ func (m *MockContext) Date() string {
 }
 
 // BuiltBy returns builtBy using the mock function or "test".
-func (m *MockContext) BuiltBy() string {
+func (m *Mock) BuiltBy() string {
 	if m.BuiltByFunc != nil {
 		return m.BuiltByFunc()
 	}
 	return "test"
 }
 
-// Ensure MockContext implements Context at compile time.
-var _ Context = (*MockContext)(nil)
+// Ensure Mock implements Application at compile time.
+var _ Application = (*Mock)(nil)

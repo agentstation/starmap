@@ -7,12 +7,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // NewProvidersCommand creates the validate providers subcommand using app context.
-func NewProvidersCommand(appCtx context.Context) *cobra.Command {
+func NewProvidersCommand(app application.Application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "providers",
 		Short: "Validate providers.yaml structure",
@@ -29,16 +29,16 @@ This checks:
 				return fmt.Errorf("unexpected argument: %s", args[0])
 			}
 
-			logger := appCtx.Logger()
+			logger := app.Logger()
 			verbose := logger.GetLevel() <= zerolog.InfoLevel
-			return validateProvidersStructure(appCtx, verbose)
+			return validateProvidersStructure(app, verbose)
 		},
 	}
 }
 
-func validateProvidersStructure(appCtx context.Context, verbose bool) error {
+func validateProvidersStructure(app application.Application, verbose bool) error {
 	// Load catalog from app context
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

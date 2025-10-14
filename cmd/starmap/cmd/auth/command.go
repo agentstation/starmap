@@ -3,11 +3,11 @@ package auth
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the auth command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "auth",
 		Short: "Manage authentication for AI providers",
@@ -22,9 +22,9 @@ Google Vertex AI, Groq, DeepSeek, and Cerebras.`,
 	}
 
 	// Add subcommands with app context
-	cmd.AddCommand(NewStatusCommand(appCtx))
-	cmd.AddCommand(NewVerifyCommand(appCtx))
-	cmd.AddCommand(NewGCloudCommand(appCtx))
+	cmd.AddCommand(NewStatusCommand(app))
+	cmd.AddCommand(NewVerifyCommand(app))
+	cmd.AddCommand(NewGCloudCommand(app))
 
 	return cmd
 }

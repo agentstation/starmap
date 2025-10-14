@@ -10,13 +10,13 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	appcontext "github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Ensure App implements context.Context at compile time.
-var _ appcontext.Context = (*App)(nil)
+// Ensure App implements application.Application at compile time.
+var _ application.Application = (*App)(nil)
 
 // App represents the starmap application with all its dependencies.
 // It provides a centralized place for configuration, logging, and

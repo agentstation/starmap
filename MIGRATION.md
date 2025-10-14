@@ -66,7 +66,7 @@ type App struct {
     starmap  starmap.Starmap   // Lazy-initialized singleton
 }
 
-// Methods (implements cmd/starmap/context.Context interface)
+// Methods (implements cmd/starmap/application.Context interface)
 func (a *App) Catalog() (catalogs.Catalog, error)              // Thread-safe single copy
 func (a *App) Starmap(...opts) (starmap.Starmap, error)        // Variadic options pattern
 func (a *App) Logger() *zerolog.Logger
@@ -78,7 +78,7 @@ func (a *App) Shutdown(ctx) error
 
 ### Phase 2: Command Migration (✅ COMPLETED)
 
-All commands have been migrated to use the `context.Context` interface pattern:
+All commands have been migrated to use the `application.Application` interface pattern:
 
 ```go
 // Before (old pattern)
@@ -87,7 +87,7 @@ func listModels(cmd *cobra.Command, ...) error {
     // ...
 }
 
-// After (new pattern - interface defined in cmd/starmap/context)
+// After (new pattern - interface defined in cmd/starmap/application)
 package context
 
 type Context interface {
@@ -100,7 +100,7 @@ type Context interface {
 }
 
 // Command factory pattern
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(appCtx application.Application) *cobra.Command {
     return &cobra.Command{
         RunE: func(cmd *cobra.Command, args []string) error {
             cat, err := appCtx.Catalog()  // Single deep copy (thread-safe)
@@ -111,7 +111,7 @@ func NewCommand(appCtx context.Context) *cobra.Command {
 ```
 
 **Interface Design Principles:**
-- **Location**: `cmd/starmap/context/` (defined where it's used, not where it's implemented)
+- **Location**: `cmd/starmap/application/` (defined where it's used, not where it's implemented)
 - **Idiomatic Go**: "Accept interfaces, return structs" + "Define interfaces where they're used"
 - **Zero Import Cycles**: Unidirectional flow: `context/` ← `cmd/*/` ← `app/`
 
@@ -131,7 +131,7 @@ All 13 commands have been migrated to use `appcontext.Interface`:
 - ✅ Man command
 
 **Key Changes:**
-1. All commands use `NewCommand(appCtx context.Context)` factory pattern
+1. All commands use `NewCommand(appCtx application.Application)` factory pattern
 2. Replaced `catalog.Load()` with `appCtx.Catalog()` (single deep copy, 50% faster)
 3. Replaced direct `starmap.New()` with `appCtx.Starmap(opts...)` (variadic options)
 4. Use `appCtx.Logger()` for logging
@@ -168,7 +168,7 @@ func main() {
 ### Phase 4: Architecture Remediation (✅ COMPLETED)
 
 **Interface Improvements:**
-- [x] Moved interface from `internal/appcontext` to `cmd/starmap/context` (idiomatic Go)
+- [x] Moved interface from `internal/appcontext` to `cmd/starmap/application` (idiomatic Go)
 - [x] Consolidated `Starmap()` + `StarmapWithOptions()` → single `Starmap(...opts)` method
 - [x] Removed redundant double-copy in `App.Catalog()` (50% performance improvement)
 - [x] Updated all 36+ command files to new interface location
@@ -267,7 +267,7 @@ All phases have been successfully completed. The Starmap CLI now follows idiomat
 ### Key Achievements
 
 1. **Idiomatic Architecture** ✅
-   - Interface defined where it's used (`cmd/starmap/context/`)
+   - Interface defined where it's used (`cmd/starmap/application/`)
    - Implementation in `cmd/starmap/app/`
    - Zero import cycles with unidirectional dependency flow
 
@@ -296,7 +296,7 @@ All phases have been successfully completed. The Starmap CLI now follows idiomat
 - Scattered configuration loading
 
 **After:**
-- Interface in `cmd/starmap/context` (idiomatic: defined where used)
+- Interface in `cmd/starmap/application` (idiomatic: defined where used)
 - Single method: `Starmap(...opts)` (variadic options pattern)
 - Optimized `Catalog()` with single copy (50% faster)
 - Centralized configuration in `app/config.go`

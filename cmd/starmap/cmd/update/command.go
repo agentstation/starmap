@@ -3,11 +3,11 @@ package update
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the update command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	var flags *Flags
 
 	cmd := &cobra.Command{
@@ -36,8 +36,8 @@ By default, saves to ~/.starmap for the local user catalog.`,
   starmap update --force                    # Force fresh update`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
-			logger := appCtx.Logger()
-			return ExecuteUpdate(ctx, appCtx, flags, logger)
+			logger := app.Logger()
+			return ExecuteUpdate(ctx, app, flags, logger)
 		},
 	}
 

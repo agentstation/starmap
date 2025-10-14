@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -19,7 +19,7 @@ import (
 )
 
 // NewAuthorsCommand creates the list authors subcommand using app context.
-func NewAuthorsCommand(app context.Context) *cobra.Command {
+func NewAuthorsCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "authors [author-id]",
 		Short:   "List authors from catalog",
@@ -49,9 +49,9 @@ func NewAuthorsCommand(app context.Context) *cobra.Command {
 }
 
 // listAuthors lists all authors using app context.
-func listAuthors(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
@@ -115,9 +115,9 @@ func listAuthors(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Log
 }
 
 // showAuthorDetails shows detailed information about a specific author.
-func showAuthorDetails(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, authorID string) error {
+func showAuthorDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, authorID string) error {
 	// Get catalog from app
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}

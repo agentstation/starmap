@@ -2,7 +2,7 @@
 package fetch
 
 import (
-	stdctx "context"
+	"context"
 	"fmt"
 	"os"
 	"sort"
@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -21,7 +21,7 @@ import (
 )
 
 // NewModelsCommand creates the fetch models subcommand using app context.
-func NewModelsCommand(appCtx context.Context) *cobra.Command {
+func NewModelsCommand(app application.Application) *cobra.Command {
 	var (
 		providerFlag string
 		allFlag      bool
@@ -36,18 +36,18 @@ func NewModelsCommand(appCtx context.Context) *cobra.Command {
   starmap fetch models -p anthropic --timeout 60`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
-			logger := appCtx.Logger()
+			logger := app.Logger()
 			quiet := logger.GetLevel() > 0 // Use logger level to determine quiet mode
 
 			if allFlag {
-				return fetchAllProviders(ctx, appCtx, timeoutFlag, quiet)
+				return fetchAllProviders(ctx, app, timeoutFlag, quiet)
 			}
 
 			if providerFlag == "" {
 				return fmt.Errorf("--provider or --all required")
 			}
 
-			return fetchProviderModels(cmd, appCtx, providerFlag, timeoutFlag, quiet)
+			return fetchProviderModels(cmd, app, providerFlag, timeoutFlag, quiet)
 		},
 	}
 
@@ -63,14 +63,14 @@ func NewModelsCommand(appCtx context.Context) *cobra.Command {
 }
 
 // fetchProviderModels fetches models from a specific provider using app context.
-func fetchProviderModels(cmd *cobra.Command, appCtx context.Context, providerID string, timeout int, quiet bool) error {
+func fetchProviderModels(cmd *cobra.Command, app application.Application, providerID string, timeout int, quiet bool) error {
 	// Get context from command
 	ctx := cmd.Context()
 	// Create context with timeout
-	ctx, cancel := stdctx.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func fetchProviderModels(cmd *cobra.Command, appCtx context.Context, providerID 
 	}
 
 	// Determine output format from logger
-	logger := appCtx.Logger()
+	logger := app.Logger()
 	outputFormat := "table"
 	// Could be extended to read from config if needed
 
@@ -142,8 +142,8 @@ func fetchProviderModels(cmd *cobra.Command, appCtx context.Context, providerID 
 }
 
 // fetchAllProviders fetches models from all configured providers concurrently using app context.
-func fetchAllProviders(ctx stdctx.Context, appCtx context.Context, timeout int, quiet bool) error {
-	cat, err := appCtx.Catalog()
+func fetchAllProviders(ctx context.Context, app application.Application, timeout int, quiet bool) error {
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
@@ -183,7 +183,7 @@ func fetchAllProviders(ctx stdctx.Context, appCtx context.Context, timeout int, 
 			defer func() { <-semaphore }()
 
 			// Create timeout context for each provider
-			fetchCtx, cancel := stdctx.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
 			models, err := fetcher.FetchModels(fetchCtx, p)
@@ -236,7 +236,7 @@ func fetchAllProviders(ctx stdctx.Context, appCtx context.Context, timeout int, 
 	})
 
 	// Determine output format from logger
-	logger := appCtx.Logger()
+	logger := app.Logger()
 	outputFormat := "table"
 	// Could be extended to read from config if needed
 

@@ -3,11 +3,11 @@ package generate
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the generate command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate",
 		Short: "Generate various artifacts (completion)",
@@ -18,7 +18,7 @@ func NewCommand(appCtx context.Context) *cobra.Command {
 	}
 
 	// Add subcommands
-	cmd.AddCommand(NewCompletionCommand(appCtx))
+	cmd.AddCommand(NewCompletionCommand(app))
 
 	return cmd
 }

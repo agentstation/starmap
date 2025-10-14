@@ -5,11 +5,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the fetch command using app context.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "fetch [resource]",
 		GroupID: "core",
@@ -32,7 +32,7 @@ Supported providers include: openai, anthropic, google-ai-studio, google-vertex,
 	}
 
 	// Add subcommands with app context
-	cmd.AddCommand(NewModelsCommand(appCtx))
+	cmd.AddCommand(NewModelsCommand(app))
 
 	return cmd
 }

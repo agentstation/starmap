@@ -8,11 +8,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewAPICommand creates the serve api command using app context.
-func NewAPICommand(appCtx context.Context) *cobra.Command {
+func NewAPICommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "api",
 		Short: "Serve REST API server",
@@ -32,7 +32,7 @@ endpoints for listing, searching, and retrieving model information.`,
   starmap serve api --cors              # Enable CORS for all origins
   starmap serve api --auth              # Enable API key authentication`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runAPI(cmd, args, appCtx)
+			return runAPI(cmd, args, app)
 		},
 	}
 
@@ -52,7 +52,7 @@ endpoints for listing, searching, and retrieving model information.`,
 }
 
 // runAPI starts the API server using app context.
-func runAPI(cmd *cobra.Command, _ []string, appCtx context.Context) error {
+func runAPI(cmd *cobra.Command, _ []string, app application.Application) error {
 	config, err := GetServerConfig(cmd, getDefaultAPIPort())
 	if err != nil {
 		return fmt.Errorf("getting server config: %w", err)
@@ -74,7 +74,7 @@ func runAPI(cmd *cobra.Command, _ []string, appCtx context.Context) error {
 		}
 	}
 
-	logger := appCtx.Logger()
+	logger := app.Logger()
 	logger.Info().
 		Int("port", config.Port).
 		Str("host", config.Host).
@@ -87,7 +87,7 @@ func runAPI(cmd *cobra.Command, _ []string, appCtx context.Context) error {
 	// Create HTTP server
 	server := &http.Server{
 		Addr:         config.Address(),
-		Handler:      createAPIHandler(appCtx, corsEnabled, corsOrigins, authEnabled, authHeader, rateLimit, metricsEnabled, pathPrefix),
+		Handler:      createAPIHandler(app, corsEnabled, corsOrigins, authEnabled, authHeader, rateLimit, metricsEnabled, pathPrefix),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -98,11 +98,11 @@ func runAPI(cmd *cobra.Command, _ []string, appCtx context.Context) error {
 }
 
 // createAPIHandler creates the HTTP handler using app context.
-func createAPIHandler(appCtx context.Context, corsEnabled bool, corsOrigins []string, authEnabled bool, authHeader string, _ int, metricsEnabled bool, pathPrefix string) http.Handler {
+func createAPIHandler(app application.Application, corsEnabled bool, corsOrigins []string, authEnabled bool, authHeader string, _ int, metricsEnabled bool, pathPrefix string) http.Handler {
 	// Initialize API handlers with app context
-	apiHandlers, err := NewAPIHandlers(appCtx)
+	apiHandlers, err := NewAPIHandlers(app)
 	if err != nil {
-		logger := appCtx.Logger()
+		logger := app.Logger()
 		logger.Error().Err(err).Msg("Failed to initialize API handlers")
 		// Return a handler that returns 503 for all requests
 		return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
@@ -117,7 +117,7 @@ func createAPIHandler(appCtx context.Context, corsEnabled bool, corsOrigins []st
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		if _, err := fmt.Fprint(w, `{"status":"healthy","service":"starmap-api","version":"v1"}`); err != nil {
-			appCtx.Logger().Error().Err(err).Msg("Failed to write health check response")
+			app.Logger().Error().Err(err).Msg("Failed to write health check response")
 		}
 	})
 
@@ -178,7 +178,7 @@ func createAPIHandler(appCtx context.Context, corsEnabled bool, corsOrigins []st
 			w.Header().Set("Content-Type", "text/plain")
 			modelsCount := len(apiHandlers.catalog.Models().List())
 			if _, err := fmt.Fprintf(w, "# Starmap API Metrics\n# starmap_api_requests_total 0\n# starmap_catalog_models_total %d\n", modelsCount); err != nil {
-				appCtx.Logger().Error().Err(err).Msg("Failed to write metrics response")
+				app.Logger().Error().Err(err).Msg("Failed to write metrics response")
 			}
 		})
 	}

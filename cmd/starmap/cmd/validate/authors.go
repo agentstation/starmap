@@ -6,11 +6,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewAuthorsCommand creates the validate authors subcommand using app context.
-func NewAuthorsCommand(appCtx context.Context) *cobra.Command {
+func NewAuthorsCommand(app application.Application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "authors",
 		Short: "Validate authors.yaml structure",
@@ -27,16 +27,16 @@ This checks:
 				return fmt.Errorf("unexpected argument: %s", args[0])
 			}
 
-			logger := appCtx.Logger()
+			logger := app.Logger()
 			verbose := logger.GetLevel() <= zerolog.InfoLevel
-			return validateAuthorsStructure(appCtx, verbose)
+			return validateAuthorsStructure(app, verbose)
 		},
 	}
 }
 
-func validateAuthorsStructure(appCtx context.Context, verbose bool) error {
+func validateAuthorsStructure(app application.Application, verbose bool) error {
 	// Load catalog from app context
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

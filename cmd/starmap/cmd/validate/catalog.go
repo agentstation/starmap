@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 )
@@ -21,7 +21,7 @@ type ValidationResult struct {
 }
 
 // NewCatalogCommand creates the validate catalog subcommand using app context.
-func NewCatalogCommand(appCtx context.Context) *cobra.Command {
+func NewCatalogCommand(app application.Application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "catalog",
 		Short: "Validate entire embedded catalog",
@@ -33,19 +33,19 @@ This validates:
   - model definitions and consistency
   - cross-references between resources`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runCatalog(cmd, args, appCtx)
+			return runCatalog(cmd, args, app)
 		},
 	}
 }
 
 // runCatalog validates the entire embedded catalog.
-func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error {
+func runCatalog(cmd *cobra.Command, args []string, app application.Application) error {
 	// This command doesn't take positional arguments
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
 
-	logger := appCtx.Logger()
+	logger := app.Logger()
 	verbose := logger.GetLevel() <= zerolog.InfoLevel
 
 	var results []ValidationResult
@@ -56,7 +56,7 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 
 	// Validate providers.yaml
 	fmt.Print("Validating providers.yaml... ")
-	if err := validateProvidersStructure(appCtx, verbose); err != nil {
+	if err := validateProvidersStructure(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Providers",
@@ -77,7 +77,7 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 
 	// Validate authors.yaml
 	fmt.Print("Validating authors.yaml... ")
-	if err := validateAuthorsStructure(appCtx, verbose); err != nil {
+	if err := validateAuthorsStructure(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Authors",
@@ -98,7 +98,7 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 
 	// Validate model consistency
 	fmt.Print("Validating model definitions... ")
-	if err := validateModelConsistency(appCtx, verbose); err != nil {
+	if err := validateModelConsistency(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Models",
@@ -119,7 +119,7 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 
 	// Check cross-references
 	fmt.Print("Validating cross-references... ")
-	if err := validateCrossReferences(appCtx, verbose); err != nil {
+	if err := validateCrossReferences(app, verbose); err != nil {
 		fmt.Println("❌ Failed")
 		results = append(results, ValidationResult{
 			Component: "Cross-references",
@@ -141,7 +141,7 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 	fmt.Println()
 
 	// Display results in configured output format
-	outputFormat := output.DetectFormat(appCtx.OutputFormat())
+	outputFormat := output.DetectFormat(app.OutputFormat())
 	if outputFormat == output.FormatTable {
 		displayValidationTable(results, verbose)
 	} else {
@@ -174,9 +174,9 @@ func runCatalog(cmd *cobra.Command, args []string, appCtx context.Context) error
 	return notifier.Hints(ctx)
 }
 
-func validateCrossReferences(appCtx context.Context, verbose bool) error {
+func validateCrossReferences(app application.Application, verbose bool) error {
 	// Load catalog from app context to check cross-references
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

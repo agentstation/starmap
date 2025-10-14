@@ -5,11 +5,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewCommand creates the list command with app dependencies.
-func NewCommand(appCtx context.Context) *cobra.Command {
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list [resource]",
 		GroupID: "core",
@@ -34,9 +34,9 @@ Available subcommands:
 	}
 
 	// Add subcommands using the app context
-	cmd.AddCommand(NewModelsCommand(appCtx))
-	cmd.AddCommand(NewProvidersCommand(appCtx))
-	cmd.AddCommand(NewAuthorsCommand(appCtx))
+	cmd.AddCommand(NewModelsCommand(app))
+	cmd.AddCommand(NewProvidersCommand(app))
+	cmd.AddCommand(NewAuthorsCommand(app))
 
 	return cmd
 }

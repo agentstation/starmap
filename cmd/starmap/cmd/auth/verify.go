@@ -1,14 +1,14 @@
 package auth
 
 import (
-	stdctx "context"
+	"context"
 	"fmt"
 	"os"
 	"time"
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -25,7 +25,7 @@ type VerificationResult struct {
 }
 
 // NewVerifyCommand creates the auth verify subcommand using app context.
-func NewVerifyCommand(appCtx context.Context) *cobra.Command {
+func NewVerifyCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "verify [provider]",
 		Short: "Verify credentials work by making test API calls",
@@ -39,7 +39,7 @@ Examples:
   starmap auth verify openai    # Verify only OpenAI
   starmap auth verify --verbose # Show detailed verification output`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runAuthVerify(cmd, args, appCtx)
+			return runAuthVerify(cmd, args, app)
 		},
 	}
 
@@ -49,9 +49,9 @@ Examples:
 	return cmd
 }
 
-func runAuthVerify(cmd *cobra.Command, args []string, appCtx context.Context) error {
+func runAuthVerify(cmd *cobra.Command, args []string, app application.Application) error {
 	// Load catalog from app context
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
@@ -59,19 +59,19 @@ func runAuthVerify(cmd *cobra.Command, args []string, appCtx context.Context) er
 	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
-		return verifyProvider(cmd, cat, providerID, appCtx)
+		return verifyProvider(cmd, cat, providerID, app)
 	}
 
 	// Verify all configured providers
-	return verifyAllProviders(cmd, cat, appCtx)
+	return verifyAllProviders(cmd, cat, app)
 }
 
-func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx context.Context) error {
+func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app application.Application) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
 	// Get output format from app context
-	outputFormat := appCtx.OutputFormat()
+	outputFormat := app.OutputFormat()
 
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
@@ -105,7 +105,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx context
 		}
 
 		// Test the API
-		ctx, cancel := stdctx.WithTimeout(stdctx.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
@@ -248,7 +248,7 @@ func displaySummaryTable(verified, failed, skipped int) {
 	}
 }
 
-func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, appCtx context.Context) error {
+func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, app application.Application) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
@@ -274,7 +274,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 
 	fmt.Printf("Verifying %s credentials...\n", providerID)
 
-	ctx, cancel := stdctx.WithTimeout(stdctx.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	// Try to fetch models as a test
@@ -294,7 +294,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 		result.Error = err.Error()
 
 		// Display single result in configured format
-		outputFormat := output.DetectFormat(appCtx.OutputFormat())
+		outputFormat := output.DetectFormat(app.OutputFormat())
 		if outputFormat == output.FormatTable {
 			displayVerificationTable([]VerificationResult{result}, verbose)
 		} else {
@@ -310,7 +310,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 	result.ModelsFound = fmt.Sprintf("%d", len(models))
 
 	// Display single result in configured format
-	outputFormat := output.DetectFormat(appCtx.OutputFormat())
+	outputFormat := output.DetectFormat(app.OutputFormat())
 	if outputFormat == output.FormatTable {
 		displayVerificationTable([]VerificationResult{result}, verbose)
 	} else {

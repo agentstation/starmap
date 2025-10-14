@@ -6,11 +6,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 )
 
 // NewModelsCommand creates the validate models subcommand using app context.
-func NewModelsCommand(appCtx context.Context) *cobra.Command {
+func NewModelsCommand(app application.Application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "models",
 		Short: "Validate model definitions",
@@ -27,16 +27,16 @@ This checks:
 				return fmt.Errorf("unexpected argument: %s", args[0])
 			}
 
-			logger := appCtx.Logger()
+			logger := app.Logger()
 			verbose := logger.GetLevel() <= zerolog.InfoLevel
-			return validateModelConsistency(appCtx, verbose)
+			return validateModelConsistency(app, verbose)
 		},
 	}
 }
 
-func validateModelConsistency(appCtx context.Context, verbose bool) error {
+func validateModelConsistency(app application.Application, verbose bool) error {
 	// Load catalog from app context
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
 	}

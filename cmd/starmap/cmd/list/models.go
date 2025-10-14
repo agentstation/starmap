@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/starmap/context"
+	"github.com/agentstation/starmap/cmd/starmap/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
@@ -22,7 +22,7 @@ import (
 )
 
 // NewModelsCommand creates the list models subcommand using app context.
-func NewModelsCommand(appCtx context.Context) *cobra.Command {
+func NewModelsCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "models [model-id]",
 		Short:   "List models from catalog",
@@ -34,11 +34,11 @@ func NewModelsCommand(appCtx context.Context) *cobra.Command {
   starmap list models --search claude          # Search for models by name`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Get logger from app
-			logger := appCtx.Logger()
+			logger := app.Logger()
 
 			// Single model detail view
 			if len(args) == 1 {
-				return showModelDetails(cmd, appCtx, logger, args[0])
+				return showModelDetails(cmd, app, logger, args[0])
 			}
 
 			// List view with filters
@@ -49,7 +49,7 @@ func NewModelsCommand(appCtx context.Context) *cobra.Command {
 			maxPrice, _ := cmd.Flags().GetFloat64("max-price")
 			exportFormat, _ := cmd.Flags().GetString("export")
 
-			return listModels(cmd, appCtx, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
+			return listModels(cmd, app, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
 		},
 	}
 
@@ -70,9 +70,9 @@ func NewModelsCommand(appCtx context.Context) *cobra.Command {
 }
 
 // listModels lists all models with optional filters using app context.
-func listModels(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+func listModels(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
@@ -142,9 +142,9 @@ func listModels(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logg
 }
 
 // showModelDetails shows detailed information about a specific model using app context.
-func showModelDetails(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, modelID string) error {
+func showModelDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, modelID string) error {
 	// Get catalog from app
-	cat, err := appCtx.Catalog()
+	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
