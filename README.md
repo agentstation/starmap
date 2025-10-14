@@ -630,10 +630,6 @@ sequenceDiagram
     CLI->>Cat: Models().List()
     Cat-->>CLI: []Model
     CLI-->>User: Display formatted output
-
-    style App fill:#fff3e0
-    style SM fill:#f3e5f5
-    style Cat fill:#e8f5e9
 ```
 
 **Key Patterns:**
