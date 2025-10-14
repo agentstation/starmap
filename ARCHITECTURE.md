@@ -32,27 +32,60 @@ Starmap is a unified AI model catalog system that combines data from multiple so
 
 ### High-Level Architecture
 
+```mermaid
+graph TB
+    subgraph UI["User Interfaces"]
+        CLI[CLI Tool<br/>cmd/starmap]
+        GO[Go Package API]
+        HTTP[HTTP Server<br/>Future]
+    end
+
+    subgraph APP["Application Layer - cmd/application/"]
+        APPIF[Application Interface<br/>DI Pattern]
+        APPIMPL[App Implementation<br/>cmd/starmap/app/]
+    end
+
+    subgraph ROOT["Root Package - starmap.Client"]
+        SYNC[Sync Pipeline<br/>12 Stages]
+        HOOKS[Event Hooks<br/>Callbacks]
+        AUTO[Auto-Updates<br/>Background Sync]
+    end
+
+    subgraph CORE["Core Packages - pkg/"]
+        CAT[Catalogs<br/>Storage Abstraction]
+        REC[Reconciler<br/>Multi-Source Merging]
+        AUTH[Authority<br/>Field-Level Priorities]
+        SOURCES[Sources<br/>Data Interfaces]
+    end
+
+    subgraph IMPL["Internal Implementations"]
+        EMBED[Embedded Data<br/>go:embed]
+        PROVS[Provider Clients<br/>OpenAI, Anthropic, etc.]
+        MODELS[models.dev<br/>Git & HTTP]
+        LOCAL[Local Files<br/>User Overrides]
+    end
+
+    CLI --> APPIF
+    GO --> APPIF
+    HTTP -.future.-> APPIF
+    APPIF -.implemented by.-> APPIMPL
+    APPIMPL --> ROOT
+    ROOT --> CORE
+    PROVS & MODELS & LOCAL & EMBED -.implement.-> SOURCES
+
+    style UI fill:#e3f2fd
+    style APP fill:#fff3e0
+    style ROOT fill:#f3e5f5
+    style CORE fill:#e8f5e9
+    style IMPL fill:#fce4ec
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Interfaces                          │
-│              CLI │ Go Package │ Future HTTP API              │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-┌───────────────────────────▼─────────────────────────────────┐
-│                Application Layer (cmd/application/)          │
-│              Application interface (DI pattern)              │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-┌───────────────────────────▼─────────────────────────────────┐
-│               Root Package (starmap.Client)                  │
-│       Sync Pipeline │ Event Hooks │ Auto-updates            │
-└────┬──────────────┬──────────────┬──────────────┬───────────┘
-     │              │              │              │
-┌────▼────┐  ┌─────▼─────┐  ┌────▼─────┐  ┌─────▼──────┐
-│Catalogs │  │Reconciler │  │Authority │  │  Sources   │
-│ Storage │  │Multi-src  │  │Field-lvl │  │Interfaces  │
-└─────────┘  └───────────┘  └──────────┘  └────────────┘
-```
+
+**Architecture Layers:**
+1. **User Interfaces**: Multiple entry points (CLI, Go package, future HTTP API)
+2. **Application Layer**: Dependency injection pattern with interface/implementation separation
+3. **Root Package**: Public API with sync orchestration, hooks, and lifecycle management
+4. **Core Packages**: Reusable business logic for catalog management and reconciliation
+5. **Internal Implementations**: Provider-specific code and data sources
 
 ## Design Principles
 
@@ -155,13 +188,26 @@ type Application interface {
 ```
 
 **Dependency Flow:**
+
+```mermaid
+flowchart BT
+    APP[cmd/starmap/app/<br/>App implements Application]
+    CMD[cmd/starmap/cmd/*<br/>Commands use Application]
+    INT[cmd/application/<br/>Application interface]
+
+    APP -->|implements| INT
+    CMD -->|imports| INT
+
+    style INT fill:#e3f2fd
+    style CMD fill:#fff3e0
+    style APP fill:#f3e5f5
 ```
-cmd/application/ (interface)
-    ↑
-cmd/starmap/cmd/* (commands use interface)
-    ↑
-cmd/starmap/app/ (App implements interface)
-```
+
+**Key Points:**
+- Commands depend only on the interface, not the implementation
+- App is injected into commands at runtime
+- Zero import cycles (unidirectional dependencies)
+- Easy to test with mock implementations
 
 ### App Implementation
 
@@ -228,6 +274,46 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
     return sm, nil
 }
 ```
+
+**Visual Representation of Double-Checked Locking:**
+
+```mermaid
+sequenceDiagram
+    participant G1 as Goroutine 1
+    participant G2 as Goroutine 2
+    participant Lock as RWMutex
+    participant SM as Starmap Singleton
+
+    Note over G1,G2: Scenario 1: First Call (Uninitialized)
+    G1->>Lock: RLock()
+    G1->>SM: Check if nil
+    SM-->>G1: Yes, is nil
+    G1->>Lock: RUnlock()
+
+    G1->>Lock: Lock() [write lock]
+    G1->>SM: Double-check if nil
+    SM-->>G1: Still nil
+    Note over G1: Initialize starmap<br/>(only once)
+    G1->>SM: Set instance
+    G1->>Lock: Unlock()
+
+    Note over G1,G2: Scenario 2: Subsequent Calls (Initialized)
+    G2->>Lock: RLock()
+    G2->>SM: Check if nil
+    SM-->>G2: No, exists!
+    Note over G2: Fast path<br/>(no allocation)
+    G2->>Lock: RUnlock()
+    G2-->>G2: Return existing instance
+
+    style Lock fill:#fff3e0
+    style SM fill:#e3f2fd
+```
+
+**Why This Pattern?**
+- **First Check (Read Lock)**: Fast path for the common case (already initialized)
+- **Write Lock Acquisition**: Only when initialization needed
+- **Second Check (Write Lock)**: Prevent race condition between locks
+- **Result**: Thread-safe singleton with minimal overhead
 
 ## Core Package Layer
 
@@ -382,36 +468,40 @@ result, err := sm.Sync(ctx,
 
 ### Source Hierarchy and Authority
 
+Data flows from multiple sources into the reconciliation engine, with each source having specific authority for different types of data:
+
+```mermaid
+graph TD
+    LOCAL["Local Catalog<br/><b>Priority: 100</b> (API Config)<br/>• API keys & endpoints<br/>• Provider configurations<br/>• User overrides"]
+    API["Provider APIs<br/><b>Priority: 95</b> (Model Existence)<br/>• Real-time availability<br/>• Basic capabilities<br/>• Concurrent fetching"]
+    MD["models.dev<br/><b>Priority: 110</b> (Pricing)<br/><b>Priority: 100</b> (Metadata)<br/>• Community-verified pricing<br/>• Provider logos (SVG)<br/>• HTTP API & Git fallback"]
+    EMB["Embedded Catalog<br/><b>Priority: 80</b> (Baseline)<br/>• Ships with binary (go:embed)<br/>• Fallback data<br/>• Manual corrections"]
+
+    REC{Reconciliation<br/>Engine<br/>Authority-Based}
+    CAT["Unified Catalog<br/>✓ Complete<br/>✓ Accurate<br/>✓ Provenance Tracked"]
+
+    LOCAL --> REC
+    API --> REC
+    MD --> REC
+    EMB --> REC
+    REC --> CAT
+
+    style LOCAL fill:#fff3e0
+    style API fill:#e8f5e9
+    style MD fill:#e3f2fd
+    style EMB fill:#f3e5f5
+    style REC fill:#fff9c4
+    style CAT fill:#c8e6c9
 ```
-┌─────────────────────────────────────────────────────────┐
-│ Local Catalog (Highest Priority for API config)        │
-│   • API keys, endpoints                                 │
-│   • Provider configurations                             │
-│   • User overrides                                      │
-└───────────────────────┬─────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────┐
-│ Provider APIs (Authoritative for Model Existence)       │
-│   • Real-time model availability                        │
-│   • Basic capabilities                                  │
-│   • Fetched concurrently with goroutines               │
-└───────────────────────┬─────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────┐
-│ models.dev (Authoritative for Pricing/Metadata)        │
-│   • HTTP API (faster, priority 110)                     │
-│   • Git clone (fallback, priority 100)                  │
-│   • Community-verified pricing                          │
-│   • Provider logos (SVG)                                │
-└───────────────────────┬─────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────┐
-│ Embedded Catalog (Baseline)                             │
-│   • Ships with binary (go:embed)                        │
-│   • Fallback data                                       │
-│   • Manual corrections                                  │
-└─────────────────────────────────────────────────────────┘
-```
+
+**Authority Resolution:**
+- **Pricing & Limits**: models.dev is most authoritative (manually verified)
+- **Model Existence**: Provider APIs determine what models actually exist
+- **API Configuration**: Local catalog takes precedence (user's environment)
+- **Baseline Data**: Embedded catalog provides defaults when other sources unavailable
+
+**Concurrent Fetching:**
+Provider APIs are fetched concurrently using goroutines and channels for optimal performance.
 
 ### Concurrent Fetching
 
@@ -437,9 +527,62 @@ func fetch(ctx context.Context, providers []Provider) {
 
 Location: `sync.go`
 
-The sync pipeline executes in 12 stages:
+The sync pipeline executes in 12 stages with comprehensive error handling and decision points:
 
-### Stage-by-Stage Breakdown
+### Pipeline Flowchart
+
+```mermaid
+flowchart TD
+    Start([Sync Called]) --> S1{Context<br/>nil?}
+    S1 -->|Yes| S1B[Set Background Context]
+    S1 -->|No| S2
+    S1B --> S2[Parse Options<br/>with Defaults]
+
+    S2 --> S3{Timeout<br/>configured?}
+    S3 -->|Yes| S3B[Setup WithTimeout]
+    S3 -->|No| S4
+    S3B --> S4[Load Embedded<br/>Catalog]
+
+    S4 --> S5[Validate<br/>Options]
+    S5 --> E1{Valid?}
+    E1 -->|No| Error1[❌ Return Error]
+    E1 -->|Yes| S6[Filter Sources<br/>by Options]
+
+    S6 --> S7[Setup Cleanup<br/>defer]
+    S7 --> S8[Fetch from Sources<br/>⚡ Concurrent]
+
+    S8 --> E2{Fetch<br/>Success?}
+    E2 -->|No| Error2[❌ Return Error]
+    E2 -->|Yes| S9[Get Existing<br/>Catalog Baseline]
+
+    S9 --> S10[Reconcile<br/>All Sources]
+    S10 --> S11[Log Change<br/>Summary]
+
+    S11 --> D1{Has<br/>Changes?}
+    D1 -->|No| End1[✓ Return Result<br/>No Changes]
+    D1 -->|Yes| D2{Dry<br/>Run?}
+    D2 -->|Yes| End2[✓ Return Result<br/>Preview Only]
+    D2 -->|No| S12[Save Catalog &<br/>Trigger Hooks]
+
+    S12 --> End3([✅ Return Result<br/>Changes Applied])
+
+    style Start fill:#e3f2fd
+    style Error1 fill:#ffcdd2
+    style Error2 fill:#ffcdd2
+    style S8 fill:#fff9c4
+    style S10 fill:#e1bee7
+    style End1 fill:#c8e6c9
+    style End2 fill:#c8e6c9
+    style End3 fill:#c8e6c9
+```
+
+**Stage Groups:**
+- **Stages 1-5** (Setup): Context, options, validation
+- **Stages 6-8** (Preparation): Source filtering, cleanup, concurrent fetching
+- **Stages 9-10** (Processing): Baseline comparison, reconciliation
+- **Stages 11-12** (Finalization): Change detection, persistence, hooks
+
+### Stage-by-Stage Code
 
 ```go
 func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
@@ -526,6 +669,62 @@ Reconciled result:
   - Limits:      {...}             (models.dev, priority 100)
   - Description: "Custom desc"     (Local, priority 90)
 ```
+
+### Reconciliation Flow Visualization
+
+```mermaid
+sequenceDiagram
+    participant Sync as Sync Pipeline
+    participant Rec as Reconciler
+    participant Auth as Authority System
+    participant P as Provider API
+    participant M as models.dev
+    participant L as Local
+
+    Sync->>Rec: Reconcile(sources)
+
+    par Concurrent Fetch from all sources
+        Rec->>P: Fetch()
+        P-->>Rec: {Name, Features}
+        Rec->>M: Fetch()
+        M-->>Rec: {Pricing, Limits}
+        Rec->>L: Fetch()
+        L-->>Rec: {Description}
+    end
+
+    Note over Rec: Process each model field
+
+    Rec->>Auth: ResolveConflict("Name", values)
+    Auth-->>Rec: Provider API (priority 90)
+
+    Rec->>Auth: ResolveConflict("Features", values)
+    Auth-->>Rec: Provider API (priority 95)
+
+    Rec->>Auth: ResolveConflict("Pricing", values)
+    Auth-->>Rec: models.dev (priority 110)
+
+    Rec->>Auth: ResolveConflict("Limits", values)
+    Auth-->>Rec: models.dev (priority 100)
+
+    Rec->>Auth: ResolveConflict("Description", values)
+    Auth-->>Rec: Local (priority 90)
+
+    Note over Rec: Merge all reconciled fields
+
+    Rec-->>Sync: Result with changeset<br/>& provenance tracking
+
+    style Auth fill:#fff9c4
+    style Rec fill:#e1bee7
+    style P fill:#e8f5e9
+    style M fill:#e3f2fd
+    style L fill:#fff3e0
+```
+
+**Reconciliation Steps:**
+1. **Concurrent Fetch**: All sources fetched in parallel
+2. **Field-Level Resolution**: Authority system determines winner for each field
+3. **Provenance Tracking**: Record which source provided each value
+4. **Changeset Generation**: Compare with baseline to detect changes
 
 ### Changeset Generation
 
@@ -701,6 +900,39 @@ go func() {
 // This is fine because models are values
 models[0].Name = "Modified"  // Only affects local copy
 ```
+
+### Visual Comparison: Safe vs Unsafe Patterns
+
+```mermaid
+graph LR
+    subgraph "❌ UNSAFE: Shared Mutable State"
+        direction TB
+        G1A[Goroutine 1<br/>Read] -->|direct access| SHARED1[(Shared<br/>Data)]
+        G2A[Goroutine 2<br/>Write] -->|direct access| SHARED1
+        SHARED1 -.->|Race Condition| CRASH[💥 Data Race<br/>Undefined Behavior]
+        style SHARED1 fill:#ffcdd2
+        style CRASH fill:#f44336,color:#fff
+    end
+
+    subgraph "✅ SAFE: Value Semantics with Deep Copy"
+        direction TB
+        G1B[Goroutine 1] -->|DeepCopy| SHARED2[(Shared<br/>Data<br/>+RWMutex)]
+        SHARED2 -->|independent copy| COPY1[Local<br/>Copy 1]
+        G2B[Goroutine 2] -->|DeepCopy| SHARED2
+        SHARED2 -->|independent copy| COPY2[Local<br/>Copy 2]
+        COPY1 & COPY2 -.->|No Sharing| SAFE[✅ Thread Safe<br/>No Data Races]
+        style SHARED2 fill:#c8e6c9
+        style COPY1 fill:#e8f5e9
+        style COPY2 fill:#e8f5e9
+        style SAFE fill:#4caf50,color:#fff
+    end
+```
+
+**Key Differences:**
+- **Unsafe**: Direct access to shared mutable state causes race conditions
+- **Safe**: Deep copy creates independent instances, preventing data races
+- **Trade-off**: Safety vs. memory efficiency (copies allocate more memory)
+- **Starmap Choice**: Safety first with optimizations (e.g., single copy in App.Catalog)
 
 ### Thread Safety in Storage Layer
 
@@ -881,19 +1113,51 @@ starmap/
 
 **Dependency Flow (Unidirectional):**
 
+```mermaid
+graph BT
+    subgraph "Layer 6: Implementations"
+        INT[internal/*<br/>Embedded, Providers, models.dev]
+    end
+
+    subgraph "Layer 5: Core Packages"
+        PKG[pkg/*<br/>catalogs, reconciler, sources, authority]
+    end
+
+    subgraph "Layer 4: Root Package"
+        ROOT[starmap<br/>Client interface & implementation]
+    end
+
+    subgraph "Layer 3: App Implementation"
+        APPIMPL[cmd/starmap/app/<br/>App struct implements Application]
+    end
+
+    subgraph "Layer 2: Commands"
+        CMDS[cmd/starmap/cmd/*<br/>list, update, serve commands]
+    end
+
+    subgraph "Layer 1: Application Interface"
+        APPIF[cmd/application/<br/>Application interface]
+    end
+
+    INT --> PKG
+    PKG --> ROOT
+    ROOT --> APPIMPL
+    APPIMPL -.implements.-> APPIF
+    CMDS --> APPIF
+
+    style APPIF fill:#e3f2fd
+    style CMDS fill:#fff3e0
+    style APPIMPL fill:#f3e5f5
+    style ROOT fill:#e8f5e9
+    style PKG fill:#fff9c4
+    style INT fill:#fce4ec
 ```
-cmd/application/ (interface)
-    ↑
-cmd/starmap/cmd/* (commands)
-    ↑
-cmd/starmap/app/ (implementation)
-    ↑
-root package (starmap)
-    ↑
-pkg/* (core packages)
-    ↑
-internal/* (implementations)
-```
+
+**Architecture Benefits:**
+- **Clean Separation**: Each layer has clear responsibilities
+- **Testability**: Commands depend on interfaces, easily mocked
+- **Flexibility**: Implementation can change without affecting commands
+- **No Cycles**: Go enforces unidirectional dependencies
 
 **Rules:**
 - Never import from higher layers

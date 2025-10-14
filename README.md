@@ -287,6 +287,57 @@ type Model struct {
 }
 ```
 
+**Model Relationships:**
+
+```mermaid
+classDiagram
+    class Model {
+        +string ID
+        +string Name
+        +string ProviderID
+        +string AuthorID
+        +ModelFeatures* Features
+        +ModelTools* Tools
+        +ModelDelivery* Delivery
+        +ModelPricing* Pricing
+        +ModelLimits* Limits
+        +ModelMetadata* Metadata
+    }
+
+    class ModelFeatures {
+        +bool Chat
+        +bool Vision
+        +bool Audio
+        +bool FunctionCalling
+        +bool WebSearch
+    }
+
+    class ModelPricing {
+        +float64 Input
+        +float64 Output
+        +float64 Request
+        +string Currency
+    }
+
+    class ModelLimits {
+        +int ContextWindow
+        +int MaxOutputTokens
+        +int MaxInputTokens
+        +RateLimit* RateLimit
+    }
+
+    Model --> ModelFeatures : capabilities
+    Model --> ModelPricing : costs
+    Model --> ModelLimits : constraints
+
+    style Model fill:#e3f2fd
+    style ModelFeatures fill:#fff3e0
+    style ModelPricing fill:#c8e6c9
+    style ModelLimits fill:#f3e5f5
+```
+
+The Model type aggregates all information about an AI model, with clear separation between capabilities, pricing, and operational limits.
+
 ## 📁 Project Structure
 
 Click on any package to view its documentation:
@@ -334,6 +385,65 @@ starmap/
 | **[pkg/constants](pkg/constants/)** | Application constants | Timeouts, Limits, Permissions | [📚 README](pkg/constants/README.md) |
 | **[pkg/logging](pkg/logging/)** | Structured logging | `Logger`, `Config` | [📚 README](pkg/logging/README.md) |
 | **[pkg/convert](pkg/convert/)** | Format conversion | `OpenAIModel`, `OpenRouterModel` | [📚 README](pkg/convert/README.md) |
+
+### Package Dependency Graph
+
+Starmap follows clean architecture principles with unidirectional dependencies:
+
+```mermaid
+graph LR
+    subgraph "User Interfaces"
+        CLI[CLI Tool<br/>cmd/starmap]
+        PKG[Go Package<br/>Users]
+    end
+
+    subgraph "Public API - Root Package"
+        ROOT[starmap<br/>Client Interface]
+    end
+
+    subgraph "Core Packages - pkg/"
+        CATS[catalogs<br/>Storage]
+        REC[reconciler<br/>Multi-source]
+        SRC[sources<br/>Abstractions]
+        AUTH[authority<br/>Field-level]
+        ERR[errors<br/>Types]
+        LOG[logging<br/>Utils]
+    end
+
+    subgraph "Internal Implementations"
+        EMB[embedded<br/>Baseline Data]
+        PROV[providers<br/>API Clients]
+        MD[modelsdev<br/>Community Data]
+        LOCAL[local<br/>File Source]
+    end
+
+    CLI --> ROOT
+    PKG --> ROOT
+    ROOT --> CATS
+    ROOT --> REC
+    REC --> AUTH
+    REC --> SRC
+    CATS --> ERR
+    CATS --> LOG
+    PROV -.implements.-> SRC
+    MD -.implements.-> SRC
+    LOCAL -.implements.-> SRC
+    EMB -.embedded in.-> CATS
+
+    style CLI fill:#e3f2fd
+    style ROOT fill:#f3e5f5
+    style CATS fill:#e8f5e9
+    style REC fill:#e8f5e9
+    style SRC fill:#e8f5e9
+    style PROV fill:#fce4ec
+    style MD fill:#fce4ec
+```
+
+**Dependency Rules:**
+- User interfaces only import root package
+- Root package only imports `pkg/` packages
+- Internal packages implement `pkg/` interfaces
+- No circular dependencies (enforced by Go)
 
 ## Package Documentation
 
@@ -427,7 +537,42 @@ flowchart LR
 ✅ Integrating models.dev for pricing  
 ✅ Different sources own different fields  
 ✅ Need audit trail of data sources  
-✅ Building production systems  
+✅ Building production systems
+
+### Sync Pipeline Visualization
+
+Starmap's sync process executes in 12 well-defined stages:
+
+```mermaid
+flowchart TD
+    Start([Sync Request]) --> S1[1. Check Context]
+    S1 --> S2[2. Parse Options]
+    S2 --> S3[3. Setup Timeout]
+    S3 --> S4[4. Load Embedded]
+    S4 --> S5[5. Validate Options]
+    S5 --> S6[6. Filter Sources]
+    S6 --> S7[7. Setup Cleanup]
+    S7 --> S8[8. Fetch Concurrent]
+    S8 --> S9[9. Get Baseline]
+    S9 --> S10[10. Reconcile]
+    S10 --> S11[11. Log Changes]
+    S11 --> Decision{Dry Run?}
+    Decision -->|No| S12[12. Save Changes]
+    Decision -->|Yes| Skip[Skip Save]
+    S12 --> End([Result])
+    Skip --> End
+
+    style Start fill:#e3f2fd
+    style Decision fill:#fff3e0
+    style S12 fill:#c8e6c9
+    style End fill:#c8e6c9
+```
+
+**Key Stages:**
+- **Stages 1-5**: Setup and validation
+- **Stages 6-8**: Source preparation and concurrent fetching
+- **Stages 9-10**: Baseline comparison and reconciliation
+- **Stages 11-12**: Change detection and persistence
 
 ### Real-World Example
 
@@ -457,6 +602,45 @@ reconciler, _ := reconcile.New(
 // 4. Execute reconciliation
 result, _ := reconciler.ReconcileCatalogs(ctx, sources)
 ```
+
+### CLI Command Flow
+
+This diagram shows how CLI commands interact with the application layer using dependency injection:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant CLI as CLI Command
+    participant App as App (DI Container)
+    participant SM as Starmap Client
+    participant Cat as Catalog
+
+    User->>CLI: starmap list models
+    Note over CLI: Command created with<br/>app interface injection
+    CLI->>App: app.Catalog()
+
+    Note over App: Thread-safe singleton<br/>with double-checked locking
+    App->>SM: sm.Catalog()
+    Note over SM: Deep copy for<br/>thread safety
+    SM->>Cat: catalog.Copy()
+    Cat-->>SM: catalog copy
+    SM-->>App: catalog copy
+    App-->>CLI: catalog
+
+    CLI->>Cat: Models().List()
+    Cat-->>CLI: []Model
+    CLI-->>User: Display formatted output
+
+    style App fill:#fff3e0
+    style SM fill:#f3e5f5
+    style Cat fill:#e8f5e9
+```
+
+**Key Patterns:**
+- **Dependency Injection**: Commands receive `Application` interface, not concrete types
+- **Thread Safety**: All catalog access returns deep copies
+- **Singleton Management**: App manages starmap instance lifecycle
+- **Clean Architecture**: Clear separation between layers
 
 ## CLI Usage
 
