@@ -11,8 +11,8 @@ import (
 
 // LoadCatalog creates a starmap instance using app context.
 // If inputPath is provided, creates a custom instance. Otherwise, uses app's default.
-func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (starmap.Starmap, error) {
-	var sm starmap.Starmap
+func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (starmap.Client, error) {
+	var sm starmap.Client
 	var err error
 
 	// If input path is provided, create custom starmap with that path

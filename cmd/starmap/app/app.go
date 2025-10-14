@@ -36,7 +36,7 @@ type App struct {
 
 	// Starmap instance (lazy-initialized, singleton)
 	mu      sync.RWMutex
-	starmap starmap.Starmap
+	starmap starmap.Client
 }
 
 // New creates a new App instance with the given version information.
@@ -112,7 +112,7 @@ func (a *App) OutputFormat() string {
 //
 // This consolidates the previous Starmap() and StarmapWithOptions() methods into a single,
 // more idiomatic Go interface following the variadic options pattern.
-func (a *App) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
+func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 	// If options provided, create new instance (no caching)
 	if len(opts) > 0 {
 		sm, err := starmap.New(opts...)
@@ -251,7 +251,7 @@ func WithLogger(logger *zerolog.Logger) Option {
 }
 
 // WithStarmap sets a custom starmap instance (useful for testing).
-func WithStarmap(sm starmap.Starmap) Option {
+func WithStarmap(sm starmap.Client) Option {
 	return func(a *App) error {
 		a.starmap = sm
 		return nil

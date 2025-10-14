@@ -29,34 +29,34 @@ type Updater interface {
 }
 
 // Compile-time interface check to ensure proper implementation.
-var _ Updater = (*starmap)(nil)
+var _ Updater = (*client)(nil)
 
 // Update manually triggers a catalog update.
-func (s *starmap) Update(ctx context.Context) error {
-	if s.options.remoteServerURL != nil {
-		return s.updateFromServer(ctx)
+func (c *client) Update(ctx context.Context) error {
+	if	c.options.remoteServerURL != nil {
+		return	c.updateFromServer(ctx)
 	}
 
-	if s.options.autoUpdateFunc != nil {
-		s.mu.RLock()
-		currentCatalog := s.catalog
-		s.mu.RUnlock()
+	if	c.options.autoUpdateFunc != nil {
+		c.mu.RLock()
+		currentCatalog :=	c.catalog
+		c.mu.RUnlock()
 
-		newCatalog, err := s.options.autoUpdateFunc(currentCatalog)
+		newCatalog, err :=	c.options.autoUpdateFunc(currentCatalog)
 		if err != nil {
 			return err
 		}
-		s.setCatalog(newCatalog)
+		c.setCatalog(newCatalog)
 	} else {
 		// Use pipeline-based update as default
-		return s.updateWithPipeline(ctx)
+		return	c.updateWithPipeline(ctx)
 	}
 
 	return nil
 }
 
 // updateWithPipeline performs a pipeline-based update for all providers.
-func (s *starmap) updateWithPipeline(ctx context.Context) error {
+func (c *client) updateWithPipeline(ctx context.Context) error {
 	// Use default options for auto-updates
 	opts := []sync.Option{
 		sync.WithDryRun(false),
@@ -64,14 +64,14 @@ func (s *starmap) updateWithPipeline(ctx context.Context) error {
 	}
 
 	// Perform a sync operation with default options
-	_, err := s.Sync(ctx, opts...)
+	_, err :=	c.Sync(ctx, opts...)
 
 	return err
 }
 
 // updateFromServer fetches catalog updates from the remote server.
-func (s *starmap) updateFromServer(ctx context.Context) error {
-	if s.options.remoteServerURL == nil {
+func (c *client) updateFromServer(ctx context.Context) error {
+	if	c.options.remoteServerURL == nil {
 		return &errors.ConfigError{
 			Component: "starmap",
 			Message:   "remote server URL is not set",
@@ -80,23 +80,23 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 
 	logger := logging.FromContext(ctx)
 	logger.Debug().
-		Str("url", *s.options.remoteServerURL).
+		Str("url", *c.options.remoteServerURL).
 		Msg("Fetching catalog from remote server")
 
-	req, err := http.NewRequestWithContext(ctx, "GET", *s.options.remoteServerURL+"/catalog", nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", *c.options.remoteServerURL+"/catalog", nil)
 	if err != nil {
 		return errors.WrapResource("create", "request", "", err)
 	}
 
-	if s.options.remoteServerAPIKey != nil {
-		req.Header.Set("Authorization", "Bearer "+*s.options.remoteServerAPIKey)
+	if	c.options.remoteServerAPIKey != nil {
+		req.Header.Set("Authorization", "Bearer "+*c.options.remoteServerAPIKey)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return &errors.APIError{
 			Provider: "starmap-server",
-			Endpoint: *s.options.remoteServerURL,
+			Endpoint: *c.options.remoteServerURL,
 			Message:  "failed to make request",
 			Err:      err,
 		}
@@ -111,11 +111,11 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	if resp.StatusCode != http.StatusOK {
 		logger.Error().
 			Int("status_code", resp.StatusCode).
-			Str("url", *s.options.remoteServerURL).
+			Str("url", *c.options.remoteServerURL).
 			Msg("Remote server returned error status")
 		return &errors.APIError{
 			Provider:   "starmap-server",
-			Endpoint:   *s.options.remoteServerURL,
+			Endpoint:   *c.options.remoteServerURL,
 			StatusCode: resp.StatusCode,
 			Message:    fmt.Sprintf("server returned status %d", resp.StatusCode),
 		}
@@ -181,7 +181,7 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 	}
 
 	// Update the catalog
-	s.setCatalog(newCatalog)
+	c.setCatalog(newCatalog)
 
 	logger.Info().
 		Str("version", response.Version).
@@ -194,18 +194,18 @@ func (s *starmap) updateFromServer(ctx context.Context) error {
 }
 
 // setCatalog updates the catalog and triggers appropriate event hooks.
-func (s *starmap) setCatalog(newCatalog catalogs.Catalog) {
-	s.mu.Lock()
-	oldCatalog := s.catalog
-	s.catalog = newCatalog
-	s.mu.Unlock()
+func (c *client) setCatalog(newCatalog catalogs.Catalog) {
+	c.mu.Lock()
+	oldCatalog :=	c.catalog
+	c.catalog = newCatalog
+	c.mu.Unlock()
 
 	// Trigger hooks for catalog changes
-	s.hooks.triggerUpdate(oldCatalog, newCatalog)
+	c.hooks.triggerUpdate(oldCatalog, newCatalog)
 }
 
 // Sources returns the sources to use based on configuration.
-func (s *starmap) filterSources(options *sync.Options) []sources.Source {
+func (c *client) filterSources(options *sync.Options) []sources.Source {
 	// Create sources with configuration (especially SourcesDir)
 	configuredSources := createSourcesWithConfig(options)
 

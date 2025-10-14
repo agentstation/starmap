@@ -72,7 +72,7 @@ type Application interface {
 	// Examples:
 	//   sm, err := app.Starmap()                    // default instance (cached)
 	//   sm, err := app.Starmap(opt1, opt2)          // custom instance (new)
-	Starmap(opts ...starmap.Option) (starmap.Starmap, error)
+	Starmap(opts ...starmap.Option) (starmap.Client, error)
 
 	// Logger returns the configured logger instance.
 	// Commands should use this for all logging operations.

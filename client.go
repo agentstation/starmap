@@ -60,7 +60,7 @@ import (
 )
 
 // Compile-time interface check to ensure proper implementation.
-var _ Catalog = (*starmap)(nil)
+var _ Catalog = (*client)(nil)
 
 // Catalog provides copy-on-read access to the catalog.
 type Catalog interface {
@@ -68,15 +68,15 @@ type Catalog interface {
 }
 
 // Catalog returns a copy of the current catalog.
-func (s *starmap) Catalog() (catalogs.Catalog, error) {
-	s.mu.RLock()
-	cat, err := s.catalog.Copy()
-	s.mu.RUnlock()
+func (c *client) Catalog() (catalogs.Catalog, error) {
+	c.mu.RLock()
+	cat, err := c.catalog.Copy()
+	c.mu.RUnlock()
 	return cat, err
 }
 
-// Starmap manages a catalog with automatic updates and event hooks.
-type Starmap interface {
+// Client manages a catalog with automatic updates and event hooks.
+type Client interface {
 
 	// Catalog provides copy-on-read access to the catalog
 	Catalog
@@ -94,10 +94,10 @@ type Starmap interface {
 	Hooks
 }
 
-// starmap is the internal implementation of the Starmap interface.
-type starmap struct {
+// client is the internal implementation of the Client interface.
+type client struct {
 
-	// options are the configured options for the starmap
+	// options are the configured options for the client
 	options *options
 
 	// catalog is the working up to date catalog
@@ -115,8 +115,8 @@ type starmap struct {
 	hooks              *hooks             // Event hooks for catalog changes/updates
 }
 
-// New creates a new Starmap instance with the given options.
-func New(opts ...Option) (Starmap, error) {
+// New creates a new Client instance with the given options.
+func New(opts ...Option) (Client, error) {
 
 	// start with a new empty catalog to build on
 	catalog, err := catalogs.New()
@@ -124,8 +124,8 @@ func New(opts ...Option) (Starmap, error) {
 		return nil, errors.WrapResource("create", "catalog", "", err)
 	}
 
-	// create the starmap instance
-	sm := &starmap{
+	// create the client instance
+	sm := &client{
 		// options
 		options: defaults().apply(opts...),
 

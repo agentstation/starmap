@@ -35,13 +35,13 @@ type (
 )
 
 // OnModelAdded registers a callback for when models are added.
-func (s *starmap) OnModelAdded(fn ModelAddedHook) { s.hooks.OnModelAdded(fn) }
+func (c *client) OnModelAdded(fn ModelAddedHook) {	c.hooks.OnModelAdded(fn) }
 
 // OnModelUpdated registers a callback for when models are updated.
-func (s *starmap) OnModelUpdated(fn ModelUpdatedHook) { s.hooks.OnModelUpdated(fn) }
+func (c *client) OnModelUpdated(fn ModelUpdatedHook) {	c.hooks.OnModelUpdated(fn) }
 
 // OnModelRemoved registers a callback for when models are removed.
-func (s *starmap) OnModelRemoved(fn ModelRemovedHook) { s.hooks.OnModelRemoved(fn) }
+func (c *client) OnModelRemoved(fn ModelRemovedHook) {	c.hooks.OnModelRemoved(fn) }
 
 // hooks manages event callbacks for catalog changes.
 type hooks struct {

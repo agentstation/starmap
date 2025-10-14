@@ -63,12 +63,12 @@ cmd/starmap/
 type App struct {
     config   *Config           // Unified configuration
     logger   *zerolog.Logger   // Configured logger
-    starmap  starmap.Starmap   // Lazy-initialized singleton
+    starmap  starmap.Client   // Lazy-initialized singleton
 }
 
 // Methods (implements cmd/application.Context interface)
 func (a *App) Catalog() (catalogs.Catalog, error)              // Thread-safe single copy
-func (a *App) Starmap(...opts) (starmap.Starmap, error)        // Variadic options pattern
+func (a *App) Starmap(...opts) (starmap.Client, error)        // Variadic options pattern
 func (a *App) Logger() *zerolog.Logger
 func (a *App) OutputFormat() string
 func (a *App) Version() string
@@ -92,7 +92,7 @@ package context
 
 type Context interface {
     Catalog() (catalogs.Catalog, error)
-    Starmap(...starmap.Option) (starmap.Starmap, error)
+    Starmap(...starmap.Option) (starmap.Client, error)
     Logger() *zerolog.Logger
     OutputFormat() string
     Version() string

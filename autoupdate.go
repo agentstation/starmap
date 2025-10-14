@@ -11,7 +11,7 @@ import (
 )
 
 // Compile-time interface check to ensure proper implementation.
-var _ AutoUpdater = (*starmap)(nil)
+var _ AutoUpdater = (*client)(nil)
 
 // AutoUpdater provides controls for automatic catalog updates.
 type AutoUpdater interface {
@@ -23,36 +23,36 @@ type AutoUpdater interface {
 }
 
 // AutoUpdatesOn begins automatic updates if configured.
-func (s *starmap) AutoUpdatesOn() error {
-	if s.options.autoUpdateInterval <= 0 {
+func (c *client) AutoUpdatesOn() error {
+	if	c.options.autoUpdateInterval <= 0 {
 		return &errors.ValidationError{
 			Field:   "autoUpdateInterval",
-			Value:   s.options.autoUpdateInterval,
+			Value:  	c.options.autoUpdateInterval,
 			Message: "update interval must be positive",
 		}
 	}
 
 	// Stop any existing auto-updates to prevent resource leaks
-	if err := s.AutoUpdatesOff(); err != nil {
+	if err :=	c.AutoUpdatesOff(); err != nil {
 		return err
 	}
 
 	// Recreate stopCh since it was closed in AutoUpdatesOff
-	s.stopCh = make(chan struct{})
+	c.stopCh = make(chan struct{})
 
-	s.updateTicker = time.NewTicker(s.options.autoUpdateInterval)
+	c.updateTicker = time.NewTicker(c.options.autoUpdateInterval)
 
 	// Create a cancellable context for the update goroutine
 	ctx, cancel := context.WithCancel(context.Background())
-	s.updateCancel = cancel
+	c.updateCancel = cancel
 
 	go func(parentCtx context.Context) {
 		for {
 			select {
-			case <-s.updateTicker.C:
+			case <-c.updateTicker.C:
 				// Create a timeout context for each update (5 minutes default)
 				updateCtx, updateCancel := context.WithTimeout(parentCtx, constants.UpdateContextTimeout)
-				err := s.Update(updateCtx)
+				err :=	c.Update(updateCtx)
 				updateCancel() // Always cancel to release resources
 
 				if err != nil {
@@ -65,7 +65,7 @@ func (s *starmap) AutoUpdatesOn() error {
 				}
 			case <-parentCtx.Done():
 				return
-			case <-s.stopCh:
+			case <-c.stopCh:
 				return
 			}
 		}
@@ -75,20 +75,20 @@ func (s *starmap) AutoUpdatesOn() error {
 }
 
 // AutoUpdatesOff stops automatic updates.
-func (s *starmap) AutoUpdatesOff() error {
-	if s.updateTicker != nil {
-		s.updateTicker.Stop()
-		s.updateTicker = nil
+func (c *client) AutoUpdatesOff() error {
+	if	c.updateTicker != nil {
+		c.updateTicker.Stop()
+		c.updateTicker = nil
 	}
-	if s.updateCancel != nil {
-		s.updateCancel()
-		s.updateCancel = nil
+	if	c.updateCancel != nil {
+		c.updateCancel()
+		c.updateCancel = nil
 	}
 	select {
-	case <-s.stopCh:
+	case <-c.stopCh:
 		// Already closed
 	default:
-		close(s.stopCh)
+		close(c.stopCh)
 	}
 	return nil
 }

@@ -26,7 +26,7 @@ import (
 //	// ... test command
 type Mock struct {
 	CatalogFunc      func() (catalogs.Catalog, error)
-	StarmapFunc      func(opts ...starmap.Option) (starmap.Starmap, error)
+	StarmapFunc      func(opts ...starmap.Option) (starmap.Client, error)
 	LoggerFunc       func() *zerolog.Logger
 	OutputFormatFunc func() string
 	VersionFunc      func() string
@@ -44,7 +44,7 @@ func (m *Mock) Catalog() (catalogs.Catalog, error) {
 }
 
 // Starmap returns a starmap using the mock function or nil.
-func (m *Mock) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
+func (m *Mock) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 	if m.StarmapFunc != nil {
 		return m.StarmapFunc(opts...)
 	}

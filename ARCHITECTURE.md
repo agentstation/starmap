@@ -65,21 +65,21 @@ type App struct {
     logger  *zerolog.Logger // Configured logger
 
     mu      sync.RWMutex    // Thread safety
-    starmap starmap.Starmap // Lazy-initialized singleton
+    starmap starmap.Client // Lazy-initialized singleton
 }
 ```
 
 **Key Methods:**
 - `New(version, commit, date, builtBy, ...opts) (*App, error)` - Create app with version info
 - `Catalog() (catalogs.Catalog, error)` - Get thread-safe catalog copy (single deep copy)
-- `Starmap(...opts) (starmap.Starmap, error)` - Get starmap instance (cached if no opts, new if opts provided)
+- `Starmap(...opts) (starmap.Client, error)` - Get starmap instance (cached if no opts, new if opts provided)
 - `Execute(ctx, args) error` - Execute CLI with args
 - `Shutdown(ctx) error` - Graceful shutdown
 
 **Functional Options:**
 - `WithConfig(*Config)` - Custom configuration
 - `WithLogger(*zerolog.Logger)` - Custom logger
-- `WithStarmap(starmap.Starmap)` - Custom starmap (for testing)
+- `WithStarmap(starmap.Client)` - Custom starmap (for testing)
 
 #### 2. Configuration (`config.go`)
 Unified configuration loading from multiple sources:
@@ -196,7 +196,7 @@ package context
 
 type Context interface {
     Catalog() (catalogs.Catalog, error)
-    Starmap(...starmap.Option) (starmap.Starmap, error)
+    Starmap(...starmap.Option) (starmap.Client, error)
     Logger() *zerolog.Logger
     OutputFormat() string
     Version() string
@@ -281,7 +281,7 @@ func NewCommand(appCtx application.Application) *cobra.Command {
 The App struct ensures thread-safe lazy initialization of the starmap instance:
 
 ```go
-func (a *App) Starmap() (starmap.Starmap, error) {
+func (a *App) Starmap() (starmap.Client, error) {
     // Fast path: read lock check
     a.mu.RLock()
     if a.starmap != nil {

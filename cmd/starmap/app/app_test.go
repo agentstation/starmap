@@ -71,7 +71,7 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 
 	const goroutines = 100
 	var wg sync.WaitGroup
-	results := make([]starmap.Starmap, goroutines)
+	results := make([]starmap.Client, goroutines)
 	errors := make([]error, goroutines)
 
 	// Launch many goroutines to test concurrent access

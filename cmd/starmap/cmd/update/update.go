@@ -89,7 +89,7 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 }
 
 // updateCatalog executes the update operation using app context.
-func updateCatalog(ctx context.Context, sm starmap.Starmap, flags *Flags, logger *zerolog.Logger, quiet bool) error {
+func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger *zerolog.Logger, quiet bool) error {
 	// Build update options - use default output path if not specified
 	outputPath := flags.Output
 	if outputPath == "" {
@@ -129,7 +129,7 @@ func updateCatalog(ctx context.Context, sm starmap.Starmap, flags *Flags, logger
 }
 
 // handleResults processes the update results using app context.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
+func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
 	if !result.HasChanges() {
 		if !quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")
