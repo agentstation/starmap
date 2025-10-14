@@ -3,11 +3,11 @@ package install
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 )
 
 // NewCommand creates the install command using app context.
-func NewCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "install",
 		Short: "Install starmap components",

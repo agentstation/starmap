@@ -1,7 +1,7 @@
 package update
 
 import (
-	"context"
+	stdctx "context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -63,7 +63,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 }
 
 // ExecuteUpdate orchestrates the complete update process using app context.
-func ExecuteUpdate(ctx context.Context, appCtx appcontext.Interface, flags *Flags, logger *zerolog.Logger) error {
+func ExecuteUpdate(ctx stdctx.Context, appCtx context.Context, flags *Flags, logger *zerolog.Logger) error {
 	// Determine quiet mode from logger level
 	quiet := logger.GetLevel() > zerolog.InfoLevel
 
@@ -89,7 +89,7 @@ func ExecuteUpdate(ctx context.Context, appCtx appcontext.Interface, flags *Flag
 }
 
 // updateCatalog executes the update operation using app context.
-func updateCatalog(ctx context.Context, sm starmap.Starmap, flags *Flags, logger *zerolog.Logger, quiet bool) error {
+func updateCatalog(ctx stdctx.Context, sm starmap.Starmap, flags *Flags, logger *zerolog.Logger, quiet bool) error {
 	// Build update options - use default output path if not specified
 	outputPath := flags.Output
 	if outputPath == "" {
@@ -129,7 +129,7 @@ func updateCatalog(ctx context.Context, sm starmap.Starmap, flags *Flags, logger
 }
 
 // handleResults processes the update results using app context.
-func handleResults(ctx context.Context, sm starmap.Starmap, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
+func handleResults(ctx stdctx.Context, sm starmap.Starmap, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
 	if !result.HasChanges() {
 		if !quiet {
 			fmt.Fprintf(os.Stderr, "✅ All providers are up to date - no changes needed\n")

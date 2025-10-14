@@ -8,11 +8,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 )
 
 // NewAPICommand creates the serve api command using app context.
-func NewAPICommand(appCtx appcontext.Interface) *cobra.Command {
+func NewAPICommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "api",
 		Short: "Serve REST API server",
@@ -52,7 +52,7 @@ endpoints for listing, searching, and retrieving model information.`,
 }
 
 // runAPI starts the API server using app context.
-func runAPI(cmd *cobra.Command, _ []string, appCtx appcontext.Interface) error {
+func runAPI(cmd *cobra.Command, _ []string, appCtx context.Context) error {
 	config, err := GetServerConfig(cmd, getDefaultAPIPort())
 	if err != nil {
 		return fmt.Errorf("getting server config: %w", err)
@@ -98,7 +98,7 @@ func runAPI(cmd *cobra.Command, _ []string, appCtx appcontext.Interface) error {
 }
 
 // createAPIHandler creates the HTTP handler using app context.
-func createAPIHandler(appCtx appcontext.Interface, corsEnabled bool, corsOrigins []string, authEnabled bool, authHeader string, _ int, metricsEnabled bool, pathPrefix string) http.Handler {
+func createAPIHandler(appCtx context.Context, corsEnabled bool, corsOrigins []string, authEnabled bool, authHeader string, _ int, metricsEnabled bool, pathPrefix string) http.Handler {
 	// Initialize API handlers with app context
 	apiHandlers, err := NewAPIHandlers(appCtx)
 	if err != nil {

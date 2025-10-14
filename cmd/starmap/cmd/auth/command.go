@@ -3,11 +3,11 @@ package auth
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 )
 
 // NewCommand creates the auth command using app context.
-func NewCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "auth",
 		Short: "Manage authentication for AI providers",

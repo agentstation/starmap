@@ -189,27 +189,27 @@ func TestApp_Catalog_ThreadSafe(t *testing.T) {
 	}
 }
 
-// TestApp_StarmapWithOptions creates new instances each time.
+// TestApp_StarmapWithOptions tests that Starmap with options creates new instances each time.
 func TestApp_StarmapWithOptions(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")
 	if err != nil {
 		t.Fatalf("New() failed: %v", err)
 	}
 
-	// Create two starmaps with custom options
-	sm1, err := app.StarmapWithOptions()
+	// Create two starmaps with custom options (using embedded catalog as option)
+	sm1, err := app.Starmap(starmap.WithEmbeddedCatalog())
 	if err != nil {
-		t.Fatalf("StarmapWithOptions() failed: %v", err)
+		t.Fatalf("Starmap(opts...) failed: %v", err)
 	}
 
-	sm2, err := app.StarmapWithOptions()
+	sm2, err := app.Starmap(starmap.WithEmbeddedCatalog())
 	if err != nil {
-		t.Fatalf("StarmapWithOptions() failed on second call: %v", err)
+		t.Fatalf("Starmap(opts...) failed on second call: %v", err)
 	}
 
-	// These should be DIFFERENT instances (not singleton)
+	// These should be DIFFERENT instances (not singleton) when options provided
 	if sm1 == sm2 {
-		t.Error("StarmapWithOptions() returned same instance, expected new instance each time")
+		t.Error("Starmap(opts...) returned same instance, expected new instance each time")
 	}
 
 	// And they should be different from the default singleton
@@ -219,7 +219,7 @@ func TestApp_StarmapWithOptions(t *testing.T) {
 	}
 
 	if sm1 == smDefault {
-		t.Error("StarmapWithOptions() returned default singleton, expected new instance")
+		t.Error("Starmap(opts...) returned default singleton, expected new instance")
 	}
 }
 

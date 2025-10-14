@@ -6,12 +6,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
 // NewCompletionCommand creates the install completion subcommand using app context.
-func NewCompletionCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewCompletionCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 	Use:   "completion",
 	Short: "Install shell completions",

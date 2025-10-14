@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -19,7 +19,7 @@ import (
 )
 
 // NewProvidersCommand creates the list providers subcommand using app context.
-func NewProvidersCommand(app appcontext.Interface) *cobra.Command {
+func NewProvidersCommand(app context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "providers [provider-id]",
 		Short:   "List providers from catalog",
@@ -49,7 +49,7 @@ func NewProvidersCommand(app appcontext.Interface) *cobra.Command {
 }
 
 // listProviders lists all providers using app context.
-func listProviders(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listProviders(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -115,7 +115,7 @@ func listProviders(cmd *cobra.Command, appCtx appcontext.Interface, logger *zero
 }
 
 // showProviderDetails shows detailed information about a specific provider.
-func showProviderDetails(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, providerID string) error {
+func showProviderDetails(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, providerID string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {

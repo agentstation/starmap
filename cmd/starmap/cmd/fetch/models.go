@@ -2,7 +2,7 @@
 package fetch
 
 import (
-	"context"
+	stdctx "context"
 	"fmt"
 	"os"
 	"sort"
@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -21,7 +21,7 @@ import (
 )
 
 // NewModelsCommand creates the fetch models subcommand using app context.
-func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewModelsCommand(appCtx context.Context) *cobra.Command {
 	var (
 		providerFlag string
 		allFlag      bool
@@ -63,11 +63,11 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 }
 
 // fetchProviderModels fetches models from a specific provider using app context.
-func fetchProviderModels(cmd *cobra.Command, appCtx appcontext.Interface, providerID string, timeout int, quiet bool) error {
+func fetchProviderModels(cmd *cobra.Command, appCtx context.Context, providerID string, timeout int, quiet bool) error {
 	// Get context from command
 	ctx := cmd.Context()
 	// Create context with timeout
-	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+	ctx, cancel := stdctx.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 	defer cancel()
 
 	cat, err := appCtx.Catalog()
@@ -142,7 +142,7 @@ func fetchProviderModels(cmd *cobra.Command, appCtx appcontext.Interface, provid
 }
 
 // fetchAllProviders fetches models from all configured providers concurrently using app context.
-func fetchAllProviders(ctx context.Context, appCtx appcontext.Interface, timeout int, quiet bool) error {
+func fetchAllProviders(ctx stdctx.Context, appCtx context.Context, timeout int, quiet bool) error {
 	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
@@ -183,7 +183,7 @@ func fetchAllProviders(ctx context.Context, appCtx appcontext.Interface, timeout
 			defer func() { <-semaphore }()
 
 			// Create timeout context for each provider
-			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+			fetchCtx, cancel := stdctx.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
 			models, err := fetcher.FetchModels(fetchCtx, p)

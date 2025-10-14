@@ -6,11 +6,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 )
 
 // NewAuthorsCommand creates the validate authors subcommand using app context.
-func NewAuthorsCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewAuthorsCommand(appCtx context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "authors",
 		Short: "Validate authors.yaml structure",
@@ -34,7 +34,7 @@ This checks:
 	}
 }
 
-func validateAuthorsStructure(appCtx appcontext.Interface, verbose bool) error {
+func validateAuthorsStructure(appCtx context.Context, verbose bool) error {
 	// Load catalog from app context
 	cat, err := appCtx.Catalog()
 	if err != nil {

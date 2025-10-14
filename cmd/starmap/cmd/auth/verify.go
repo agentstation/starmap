@@ -1,14 +1,14 @@
 package auth
 
 import (
-	"context"
+	stdctx "context"
 	"fmt"
 	"os"
 	"time"
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -25,7 +25,7 @@ type VerificationResult struct {
 }
 
 // NewVerifyCommand creates the auth verify subcommand using app context.
-func NewVerifyCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewVerifyCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "verify [provider]",
 		Short: "Verify credentials work by making test API calls",
@@ -49,7 +49,7 @@ Examples:
 	return cmd
 }
 
-func runAuthVerify(cmd *cobra.Command, args []string, appCtx appcontext.Interface) error {
+func runAuthVerify(cmd *cobra.Command, args []string, appCtx context.Context) error {
 	// Load catalog from app context
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -66,7 +66,7 @@ func runAuthVerify(cmd *cobra.Command, args []string, appCtx appcontext.Interfac
 	return verifyAllProviders(cmd, cat, appCtx)
 }
 
-func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx appcontext.Interface) error {
+func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx context.Context) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
@@ -105,7 +105,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx appcont
 		}
 
 		// Test the API
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := stdctx.WithTimeout(stdctx.Background(), timeout)
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
@@ -153,18 +153,18 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx appcont
 		return err
 	}
 
-	// Create context for hints
+	// Create notification context for hints
 	succeeded := failed == 0
 	var errorType string
 	if failed > 0 {
 		errorType = "auth_failed"
 	}
-	ctx := notify.Contexts.AuthVerify(succeeded, errorType)
+	notifyCtx := notify.Contexts.AuthVerify(succeeded, errorType)
 
 	// Send appropriate notification
 	if failed > 0 {
 		message := fmt.Sprintf("%d provider(s) failed verification", failed)
-		if err := notifier.Error(message, ctx); err != nil {
+		if err := notifier.Error(message, notifyCtx); err != nil {
 			return err
 		}
 		return fmt.Errorf("%d provider(s) failed verification", failed)
@@ -172,9 +172,9 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, appCtx appcont
 
 	if verified > 0 {
 		// Just show hints, the verification table already shows success
-		return notifier.Hints(ctx)
+		return notifier.Hints(notifyCtx)
 	}
-	return notifier.Warning("No providers to verify. Configure API keys first.", ctx)
+	return notifier.Warning("No providers to verify. Configure API keys first.", notifyCtx)
 }
 
 // displayVerificationTable shows verification results in a table format.
@@ -248,7 +248,7 @@ func displaySummaryTable(verified, failed, skipped int) {
 	}
 }
 
-func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, appCtx appcontext.Interface) error {
+func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, appCtx context.Context) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 
@@ -274,7 +274,7 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 
 	fmt.Printf("Verifying %s credentials...\n", providerID)
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := stdctx.WithTimeout(stdctx.Background(), timeout)
 	defer cancel()
 
 	// Try to fetch models as a test

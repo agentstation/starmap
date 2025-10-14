@@ -7,12 +7,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // NewProvidersCommand creates the validate providers subcommand using app context.
-func NewProvidersCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewProvidersCommand(appCtx context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "providers",
 		Short: "Validate providers.yaml structure",
@@ -36,7 +36,7 @@ This checks:
 	}
 }
 
-func validateProvidersStructure(appCtx appcontext.Interface, verbose bool) error {
+func validateProvidersStructure(appCtx context.Context, verbose bool) error {
 	// Load catalog from app context
 	cat, err := appCtx.Catalog()
 	if err != nil {

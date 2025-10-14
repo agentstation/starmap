@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
@@ -19,7 +19,7 @@ import (
 const googleVertexProviderID = "google-vertex"
 
 // NewStatusCommand creates the auth status subcommand using app context.
-func NewStatusCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewStatusCommand(appCtx context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "status [provider]",
 		Short: "Show authentication status for all providers",
@@ -40,7 +40,7 @@ Use 'starmap auth verify' to test credentials.`,
 	}
 }
 
-func runAuthStatus(cmd *cobra.Command, args []string, appCtx appcontext.Interface) error {
+func runAuthStatus(cmd *cobra.Command, args []string, appCtx context.Context) error {
 	cat, err := appCtx.Catalog()
 	if err != nil {
 		return err
@@ -83,7 +83,7 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	return nil
 }
 
-func showAllProvidersStatus(appCtx appcontext.Interface, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool, cmd *cobra.Command) error {
+func showAllProvidersStatus(appCtx context.Context, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool, cmd *cobra.Command) error {
 	// Get output format from app context
 	outputFormat := output.DetectFormat(appCtx.OutputFormat())
 
@@ -196,7 +196,7 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	}
 }
 
-func printAuthSummary(cmd *cobra.Command, appCtx appcontext.Interface, verbose bool, configured, missing, optional, unsupported int) error {
+func printAuthSummary(cmd *cobra.Command, appCtx context.Context, verbose bool, configured, missing, optional, unsupported int) error {
 	fmt.Println()
 
 	// Create summary table

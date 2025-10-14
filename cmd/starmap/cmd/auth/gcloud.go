@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"context"
+	stdctx "context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,11 +9,11 @@ import (
 	"cloud.google.com/go/auth/credentials"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 )
 
 // NewGCloudCommand creates the auth gcloud subcommand using app context.
-func NewGCloudCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewGCloudCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gcloud",
 		Short: "Manage Google Cloud authentication",
@@ -49,7 +49,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	force, _ := cmd.Flags().GetBool("force")
 	project, _ := cmd.Flags().GetString("project")
 
-	ctx := context.Background()
+	ctx := stdctx.Background()
 
 	// Check current authentication status
 	authenticated, projectID, _ := checkGCloudAuthentication(ctx)
@@ -119,7 +119,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func checkGCloudAuthentication(ctx context.Context) (bool, string, error) {
+func checkGCloudAuthentication(ctx stdctx.Context) (bool, string, error) {
 	// Try to get credentials using the auth package
 	creds, err := credentials.DetectDefault(&credentials.DetectOptions{
 		Scopes: []string{"https://www.googleapis.com/auth/cloud-platform"},
@@ -156,7 +156,7 @@ func checkGCloudAuthentication(ctx context.Context) (bool, string, error) {
 func setGCloudProject(project string) error {
 	fmt.Printf("Setting default project to: %s\n", project)
 
-	ctx := context.Background()
+	ctx := stdctx.Background()
 
 	// Set using gcloud config
 	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project)

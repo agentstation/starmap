@@ -1,4 +1,4 @@
-package appcontext
+package context
 
 import (
 	"github.com/rs/zerolog"
@@ -7,23 +7,36 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Mock provides a mock implementation of Interface for testing.
+// MockContext provides a mock implementation of Context for testing.
 // Each method can be customized by setting the corresponding function field.
 // If a function field is nil, the method returns a default/zero value.
-type Mock struct {
-	CatalogFunc             func() (catalogs.Catalog, error)
-	StarmapFunc             func() (starmap.Starmap, error)
-	StarmapWithOptionsFunc  func(...starmap.Option) (starmap.Starmap, error)
-	LoggerFunc              func() *zerolog.Logger
-	OutputFormatFunc        func() string
-	VersionFunc             func() string
-	CommitFunc              func() string
-	DateFunc                func() string
-	BuiltByFunc             func() string
+//
+// Example Usage:
+//
+//	mock := &context.MockContext{
+//	    CatalogFunc: func() (catalogs.Catalog, error) {
+//	        return testCatalog, nil
+//	    },
+//	    LoggerFunc: func() *zerolog.Logger {
+//	        logger := zerolog.Nop()
+//	        return &logger
+//	    },
+//	}
+//	cmd := list.NewCommand(mock)
+//	// ... test command
+type MockContext struct {
+	CatalogFunc      func() (catalogs.Catalog, error)
+	StarmapFunc      func(opts ...starmap.Option) (starmap.Starmap, error)
+	LoggerFunc       func() *zerolog.Logger
+	OutputFormatFunc func() string
+	VersionFunc      func() string
+	CommitFunc       func() string
+	DateFunc         func() string
+	BuiltByFunc      func() string
 }
 
 // Catalog returns a catalog using the mock function or nil.
-func (m *Mock) Catalog() (catalogs.Catalog, error) {
+func (m *MockContext) Catalog() (catalogs.Catalog, error) {
 	if m.CatalogFunc != nil {
 		return m.CatalogFunc()
 	}
@@ -31,23 +44,15 @@ func (m *Mock) Catalog() (catalogs.Catalog, error) {
 }
 
 // Starmap returns a starmap using the mock function or nil.
-func (m *Mock) Starmap() (starmap.Starmap, error) {
+func (m *MockContext) Starmap(opts ...starmap.Option) (starmap.Starmap, error) {
 	if m.StarmapFunc != nil {
-		return m.StarmapFunc()
-	}
-	return nil, nil
-}
-
-// StarmapWithOptions returns a starmap using the mock function or nil.
-func (m *Mock) StarmapWithOptions(opts ...starmap.Option) (starmap.Starmap, error) {
-	if m.StarmapWithOptionsFunc != nil {
-		return m.StarmapWithOptionsFunc(opts...)
+		return m.StarmapFunc(opts...)
 	}
 	return nil, nil
 }
 
 // Logger returns a logger using the mock function or a no-op logger.
-func (m *Mock) Logger() *zerolog.Logger {
+func (m *MockContext) Logger() *zerolog.Logger {
 	if m.LoggerFunc != nil {
 		return m.LoggerFunc()
 	}
@@ -56,7 +61,7 @@ func (m *Mock) Logger() *zerolog.Logger {
 }
 
 // OutputFormat returns output format using the mock function or "table".
-func (m *Mock) OutputFormat() string {
+func (m *MockContext) OutputFormat() string {
 	if m.OutputFormatFunc != nil {
 		return m.OutputFormatFunc()
 	}
@@ -64,7 +69,7 @@ func (m *Mock) OutputFormat() string {
 }
 
 // Version returns version using the mock function or "dev".
-func (m *Mock) Version() string {
+func (m *MockContext) Version() string {
 	if m.VersionFunc != nil {
 		return m.VersionFunc()
 	}
@@ -72,7 +77,7 @@ func (m *Mock) Version() string {
 }
 
 // Commit returns commit using the mock function or "unknown".
-func (m *Mock) Commit() string {
+func (m *MockContext) Commit() string {
 	if m.CommitFunc != nil {
 		return m.CommitFunc()
 	}
@@ -80,7 +85,7 @@ func (m *Mock) Commit() string {
 }
 
 // Date returns date using the mock function or "unknown".
-func (m *Mock) Date() string {
+func (m *MockContext) Date() string {
 	if m.DateFunc != nil {
 		return m.DateFunc()
 	}
@@ -88,12 +93,12 @@ func (m *Mock) Date() string {
 }
 
 // BuiltBy returns builtBy using the mock function or "test".
-func (m *Mock) BuiltBy() string {
+func (m *MockContext) BuiltBy() string {
 	if m.BuiltByFunc != nil {
 		return m.BuiltByFunc()
 	}
 	return "test"
 }
 
-// Ensure Mock implements Interface at compile time.
-var _ Interface = (*Mock)(nil)
+// Ensure MockContext implements Context at compile time.
+var _ Context = (*MockContext)(nil)

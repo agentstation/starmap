@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/appcontext"
+	"github.com/agentstation/starmap/cmd/starmap/context"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
@@ -22,7 +22,7 @@ import (
 )
 
 // NewModelsCommand creates the list models subcommand using app context.
-func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
+func NewModelsCommand(appCtx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "models [model-id]",
 		Short:   "List models from catalog",
@@ -70,7 +70,7 @@ func NewModelsCommand(appCtx appcontext.Interface) *cobra.Command {
 }
 
 // listModels lists all models with optional filters using app context.
-func listModels(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+func listModels(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
@@ -142,7 +142,7 @@ func listModels(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog
 }
 
 // showModelDetails shows detailed information about a specific model using app context.
-func showModelDetails(cmd *cobra.Command, appCtx appcontext.Interface, logger *zerolog.Logger, modelID string) error {
+func showModelDetails(cmd *cobra.Command, appCtx context.Context, logger *zerolog.Logger, modelID string) error {
 	// Get catalog from app
 	cat, err := appCtx.Catalog()
 	if err != nil {
