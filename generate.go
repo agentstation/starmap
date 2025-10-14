@@ -1,4 +1,4 @@
-//go:generate gomarkdoc -e -f github -o API.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch master --repository.path /
+//go:generate gomarkdoc -e -f github -o GO_API.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch master --repository.path /
 
 // Package starmap provides a unified AI model catalog system with automatic
 // updates, event hooks, and support for multiple storage backends.
