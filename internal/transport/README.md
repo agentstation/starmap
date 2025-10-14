@@ -20,8 +20,7 @@ import "github.com/agentstation/starmap/internal/transport"
 - [type BearerAuth](<#BearerAuth>)
   - [func \(a \*BearerAuth\) Apply\(req \*http.Request, apiKey string\)](<#BearerAuth.Apply>)
 - [type Client](<#Client>)
-  - [func New\(auth Authenticator\) \*Client](<#New>)
-  - [func NewForProvider\(provider \*catalogs.Provider\) \*Client](<#NewForProvider>)
+  - [func New\(provider \*catalogs.Provider\) \*Client](<#New>)
   - [func \(c \*Client\) Do\(req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Do>)
   - [func \(c \*Client\) DoWithContext\(\_ context.Context, req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.DoWithContext>)
   - [func \(c \*Client\) Get\(ctx context.Context, url string, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Get>)
@@ -101,22 +100,13 @@ type Client struct {
 ### func [New](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L22>)
 
 ```go
-func New(auth Authenticator) *Client
+func New(provider *catalogs.Provider) *Client
 ```
 
 New creates a new transport client with the specified authenticator.
 
-<a name="NewForProvider"></a>
-### func [NewForProvider](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L30>)
-
-```go
-func NewForProvider(provider *catalogs.Provider) *Client
-```
-
-NewForProvider creates a transport client configured for a specific provider.
-
 <a name="Client.Do"></a>
-### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L36>)
+### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L30>)
 
 ```go
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error)
@@ -125,7 +115,7 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 Do performs an HTTP request with authentication applied.
 
 <a name="Client.DoWithContext"></a>
-### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L41>)
+### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L35>)
 
 ```go
 func (c *Client) DoWithContext(_ context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
@@ -134,7 +124,7 @@ func (c *Client) DoWithContext(_ context.Context, req *http.Request, provider *c
 DoWithContext performs an HTTP request with authentication applied and context support.
 
 <a name="Client.Get"></a>
-### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L72>)
+### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L66>)
 
 ```go
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error)

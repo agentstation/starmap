@@ -250,8 +250,8 @@ func WithLogger(logger *zerolog.Logger) Option {
 	}
 }
 
-// WithStarmap sets a custom starmap instance (useful for testing).
-func WithStarmap(sm starmap.Client) Option {
+// WithClient sets a custom starmap instance (useful for testing).
+func WithClient(sm starmap.Client) Option {
 	return func(a *App) error {
 		a.starmap = sm
 		return nil
