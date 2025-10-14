@@ -104,7 +104,7 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 }
 
 // TestApp_Catalog_ReturnsDeepCopy verifies the CRITICAL thread safety rule.
-// Per CLAUDE.md: "ALWAYS return deep copy" to prevent data races.
+// Per ARCHITECTURE.md § Thread Safety: "ALWAYS return deep copy" to prevent data races.
 func TestApp_Catalog_ReturnsDeepCopy(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")
 	if err != nil {
@@ -140,7 +140,7 @@ func TestApp_Catalog_ReturnsDeepCopy(t *testing.T) {
 	_, exists := cat2.Providers().Get("test-provider")
 	if exists {
 		t.Error("Catalog() did not return deep copy - mutation affected other instance!")
-		t.Error("This is a CRITICAL thread safety violation per CLAUDE.md")
+		t.Error("This is a CRITICAL thread safety violation per ARCHITECTURE.md § Thread Safety")
 	}
 }
 
