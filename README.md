@@ -178,165 +178,32 @@ starmap update --provider openai --auto-approve
 
 ## Architecture
 
-Starmap uses a layered architecture that separates concerns and enables flexibility:
+Starmap uses a layered architecture with clean separation of concerns:
 
-```mermaid
-flowchart TB
-    subgraph "User Interfaces"
-        CLI[CLI Tool]
-        PKG[Go Package]
-        HTTP[HTTP Server<br/>Coming Soon]
-    end
-    
-    subgraph "Core System"
-        SM[Starmap Interface<br/>Event Hooks & Updates]
-        CAT[Catalog Layer<br/>Unified Storage API]
-        REC[Reconciliation Engine<br/>Multi-Source Merging]
-    end
-    
-    subgraph "Data Sources"
-        API[Provider APIs<br/>Real-time Availability]
-        MD[models.dev<br/>Community Pricing & Logos]
-        EMB[Embedded Data<br/>Baseline Catalog]
-        FILE[Local Files<br/>Custom Overrides]
-    end
-    
-    subgraph "Storage Backends"
-        MEM[Memory<br/>Testing]
-        FS[Filesystem<br/>Development]
-        EMBED[Go Embed<br/>Production]
-        CUSTOM[Custom FS<br/>S3, GCS, etc.]
-    end
-    
-    CLI --> SM
-    PKG --> SM
-    HTTP --> SM
-    
-    SM --> CAT
-    SM --> REC
-    
-    REC --> API
-    REC --> MD
-    REC --> EMB
-    REC --> FILE
-    
-    CAT --> MEM
-    CAT --> FS
-    CAT --> EMBED
-    CAT --> CUSTOM
-    
-    style SM fill:#e3f2fd
-    style CAT fill:#fff3e0
-    style REC fill:#f3e5f5
-    style API fill:#e8f5e9
-    style MD fill:#e8f5e9
-```
+- **User Interfaces**: CLI, Go package, and future HTTP API
+- **Core System**: Catalog management, reconciliation engine, and event hooks
+- **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
+- **Storage Backends**: Memory, filesystem, embedded, or custom (S3, GCS, etc.)
 
-### Layer Responsibilities
-
-1. **User Interfaces**: Multiple ways to interact with starmap
-2. **Starmap Interface**: Main API with event hooks and auto-updates
-3. **Catalog Layer**: Unified storage abstraction with pluggable backends
-4. **Reconciliation Engine**: Intelligent multi-source data merging
-5. **Data Sources**: Various sources of model information
-6. **Storage Backends**: Where catalog data is persisted
+For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
 ## Core Concepts
 
+Starmap's core abstractions provide a clean separation of concerns:
+
 ### 1. Catalog
-The fundamental abstraction for storing and accessing model data:
-- Provides CRUD operations for models, providers, authors
-- Supports multiple storage backends (memory, files, embedded)
-- Thread-safe collections with rich query capabilities
-- See [Catalog Package Documentation](pkg/catalogs/README.md)
+The fundamental abstraction for model data storage and access. Provides CRUD operations, multiple storage backends, and thread-safe collections. See [Catalog Package Documentation](pkg/catalogs/README.md).
 
 ### 2. Source
-Abstraction for fetching data from external systems:
-- Provider APIs for real-time model availability
-- models.dev for community-verified pricing and logos
-- Local files for custom overrides
-- Each source implements a common interface
+Abstraction for fetching data from external systems (provider APIs, models.dev, local files). Each implements a common interface for consistent data access.
 
 ### 3. Reconciliation
-Intelligent merging of data from multiple sources:
-- Field-level authority system
-- Provenance tracking for audit trails
-- Conflict resolution strategies
-- See [Reconciliation Package Documentation](pkg/reconcile/README.md)
+Intelligent multi-source data merging with field-level authority, provenance tracking, and conflict resolution. See [Reconciliation Package Documentation](pkg/reconcile/README.md).
 
 ### 4. Model
-Comprehensive specification of an AI model:
-```go
-type Model struct {
-    ID            string           // Unique identifier
-    Name          string           // Display name
-    ProviderID    string           // Provider offering this model
-    AuthorID      string           // Creator organization
-    
-    // Capabilities
-    Features      *ModelFeatures   // Chat, vision, audio, etc.
-    Tools         *ModelTools      // Function calling, web search
-    Delivery      *ModelDelivery   // Streaming, formats
-    
-    // Operational
-    Pricing       *ModelPricing    // Token costs
-    Limits        *ModelLimits     // Context window, rate limits
-    
-    // Metadata
-    Metadata      *ModelMetadata   // Release date, architecture
-}
-```
+Comprehensive AI model specification including capabilities (chat, vision, audio), pricing (token costs), limits (context window, rate limits), and metadata. See [pkg/catalogs/README.md](pkg/catalogs/README.md) for the complete Model structure.
 
-**Model Relationships:**
-
-```mermaid
-classDiagram
-    class Model {
-        +string ID
-        +string Name
-        +string ProviderID
-        +string AuthorID
-        +ModelFeatures* Features
-        +ModelTools* Tools
-        +ModelDelivery* Delivery
-        +ModelPricing* Pricing
-        +ModelLimits* Limits
-        +ModelMetadata* Metadata
-    }
-
-    class ModelFeatures {
-        +bool Chat
-        +bool Vision
-        +bool Audio
-        +bool FunctionCalling
-        +bool WebSearch
-    }
-
-    class ModelPricing {
-        +float64 Input
-        +float64 Output
-        +float64 Request
-        +string Currency
-    }
-
-    class ModelLimits {
-        +int ContextWindow
-        +int MaxOutputTokens
-        +int MaxInputTokens
-        +RateLimit* RateLimit
-    }
-
-    Model --> ModelFeatures : capabilities
-    Model --> ModelPricing : costs
-    Model --> ModelLimits : constraints
-
-    style Model fill:#e3f2fd
-    style ModelFeatures fill:#fff3e0
-    style ModelPricing fill:#c8e6c9
-    style ModelLimits fill:#f3e5f5
-```
-
-The Model type aggregates all information about an AI model, with clear separation between capabilities, pricing, and operational limits.
+For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](ARCHITECTURE.md#system-components)**.
 
 ## 📁 Project Structure
 
@@ -386,257 +253,25 @@ starmap/
 | **[pkg/logging](pkg/logging/)** | Structured logging | `Logger`, `Config` | [📚 README](pkg/logging/README.md) |
 | **[pkg/convert](pkg/convert/)** | Format conversion | `OpenAIModel`, `OpenRouterModel` | [📚 README](pkg/convert/README.md) |
 
-### Package Dependency Graph
 
-Starmap follows clean architecture principles with unidirectional dependencies:
-
-```mermaid
-graph LR
-    subgraph "User Interfaces"
-        CLI[CLI Tool<br/>cmd/starmap]
-        PKG[Go Package<br/>Users]
-    end
-
-    subgraph "Public API - Root Package"
-        ROOT[starmap<br/>Client Interface]
-    end
-
-    subgraph "Core Packages - pkg/"
-        CATS[catalogs<br/>Storage]
-        REC[reconciler<br/>Multi-source]
-        SRC[sources<br/>Abstractions]
-        AUTH[authority<br/>Field-level]
-        ERR[errors<br/>Types]
-        LOG[logging<br/>Utils]
-    end
-
-    subgraph "Internal Implementations"
-        EMB[embedded<br/>Baseline Data]
-        PROV[providers<br/>API Clients]
-        MD[modelsdev<br/>Community Data]
-        LOCAL[local<br/>File Source]
-    end
-
-    CLI --> ROOT
-    PKG --> ROOT
-    ROOT --> CATS
-    ROOT --> REC
-    REC --> AUTH
-    REC --> SRC
-    CATS --> ERR
-    CATS --> LOG
-    PROV -.implements.-> SRC
-    MD -.implements.-> SRC
-    LOCAL -.implements.-> SRC
-    EMB -.embedded in.-> CATS
-
-    style CLI fill:#e3f2fd
-    style ROOT fill:#f3e5f5
-    style CATS fill:#e8f5e9
-    style REC fill:#e8f5e9
-    style SRC fill:#e8f5e9
-    style PROV fill:#fce4ec
-    style MD fill:#fce4ec
-```
-
-**Dependency Rules:**
-- User interfaces only import root package
-- Root package only imports `pkg/` packages
-- Internal packages implement `pkg/` interfaces
-- No circular dependencies (enforced by Go)
-
-## Package Documentation
-
-Starmap is organized into focused packages, each with comprehensive documentation:
-
-### 📦 [Catalog Package](pkg/catalogs/README.md)
-**Simple two-catalog merging with multiple storage backends**
-
-Use when:
-- Working with one or two data sources
-- Simple merge operations are sufficient
-- You control the data sources
-- Testing or development scenarios
-
-```go
-// Simple merge of two catalogs
-catalog.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeReplaceAll))
-```
-
-### 🔄 [Reconciliation Package](pkg/reconcile/README.md)
-**Complex multi-source reconciliation with field-level authority**
-
-Use when:
-- Combining 3+ data sources
-- Different sources are authoritative for different fields
-- Need provenance tracking and audit trails
-- Production systems with complex requirements
-
-```go
-// Multi-source reconciliation with authority system
-reconciler, _ := reconcile.New(
-    reconcile.WithAuthorities(authorities),
-    reconcile.WithProvenance(true),
-)
-result, _ := reconciler.ReconcileCatalogs(ctx, sources)
-```
-
-### 🌐 [Sources Package](pkg/sources/)
-**Abstractions for fetching data from external systems**
-
-Implements the Source interface for:
-- Provider APIs (OpenAI, Anthropic, Google, etc.)
-- models.dev repository (Git and HTTP)
-- Local catalog files
-- Custom data sources
-
-## Understanding the System
-
-### Two-Tier Architecture
+## Choosing Your Approach
 
 Starmap provides two levels of data management complexity:
 
-```mermaid
-flowchart LR
-    subgraph "Simple Use Cases"
-        S1[One Source]
-        S2[Two Sources]
-        SC[Simple Merge]
-    end
-    
-    subgraph "Complex Use Cases"
-        M1[3+ Sources]
-        M2[Field Authority]
-        M3[Provenance]
-        M4[Conflict Resolution]
-    end
-    
-    S1 --> CAT[Catalog Package]
-    S2 --> CAT
-    SC --> CAT
-    
-    M1 --> REC[Reconcile Package]
-    M2 --> REC
-    M3 --> REC
-    M4 --> REC
-    
-    style CAT fill:#e3f2fd
-    style REC fill:#f3e5f5
-```
+**Use [Catalog Package](pkg/catalogs/README.md) (Simple) When:**
+- ✅ Merging embedded catalog with local overrides
+- ✅ Combining two provider responses
+- ✅ Testing with mock data
+- ✅ Building simple tools
 
-### When to Use Each Approach
+**Use [Reconciliation Package](pkg/reconcile/README.md) (Complex) When:**
+- ✅ Syncing with multiple provider APIs
+- ✅ Integrating models.dev for pricing
+- ✅ Different sources own different fields
+- ✅ Need audit trail of data sources
+- ✅ Building production systems
 
-#### Use Catalog Package (Simple) When:
-✅ Merging embedded catalog with local overrides  
-✅ Combining two provider responses  
-✅ Testing with mock data  
-✅ Building simple tools  
-
-#### Use Reconciliation Package (Complex) When:
-✅ Syncing with multiple provider APIs  
-✅ Integrating models.dev for pricing  
-✅ Different sources own different fields  
-✅ Need audit trail of data sources  
-✅ Building production systems
-
-### Sync Pipeline Visualization
-
-Starmap's sync process executes in 12 well-defined stages:
-
-```mermaid
-flowchart TD
-    Start([Sync Request]) --> S1[1. Check Context]
-    S1 --> S2[2. Parse Options]
-    S2 --> S3[3. Setup Timeout]
-    S3 --> S4[4. Load Embedded]
-    S4 --> S5[5. Validate Options]
-    S5 --> S6[6. Filter Sources]
-    S6 --> S7[7. Setup Cleanup]
-    S7 --> S8[8. Fetch Concurrent]
-    S8 --> S9[9. Get Baseline]
-    S9 --> S10[10. Reconcile]
-    S10 --> S11[11. Log Changes]
-    S11 --> Decision{Dry Run?}
-    Decision -->|No| S12[12. Save Changes]
-    Decision -->|Yes| Skip[Skip Save]
-    S12 --> End([Result])
-    Skip --> End
-
-    style Start fill:#e3f2fd
-    style Decision fill:#fff3e0
-    style S12 fill:#c8e6c9
-    style End fill:#c8e6c9
-```
-
-**Key Stages:**
-- **Stages 1-5**: Setup and validation
-- **Stages 6-8**: Source preparation and concurrent fetching
-- **Stages 9-10**: Baseline comparison and reconciliation
-- **Stages 11-12**: Change detection and persistence
-
-### Real-World Example
-
-Here's how starmap's `sync` command uses reconciliation:
-
-```go
-// 1. Define field-level authorities
-authorities := map[string]reconcile.SourceAuthority{
-    "pricing":        {Primary: ModelsDevGit, Fallback: &ProviderAPI},
-    "limits":         {Primary: ModelsDevGit, Fallback: &ProviderAPI},
-    "model_list":     {Primary: ProviderAPI},  // Provider owns what exists
-}
-
-// 2. Configure sources
-sources := []sources.Source{
-    local.New(),                    // Embedded baseline
-    providers.New(),                 // Provider APIs
-    modelsdev.NewGitSource(),       // Community data
-}
-
-// 3. Reconcile with provenance tracking
-reconciler, _ := reconcile.New(
-    reconcile.WithAuthorities(authorities),
-    reconcile.WithProvenance(true),
-)
-
-// 4. Execute reconciliation
-result, _ := reconciler.ReconcileCatalogs(ctx, sources)
-```
-
-### CLI Command Flow
-
-This diagram shows how CLI commands interact with the application layer using dependency injection:
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant CLI as CLI Command
-    participant App as App (DI Container)
-    participant SM as Starmap Client
-    participant Cat as Catalog
-
-    User->>CLI: starmap list models
-    Note over CLI: Command created with<br/>app interface injection
-    CLI->>App: app.Catalog()
-
-    Note over App: Thread-safe singleton<br/>with double-checked locking
-    App->>SM: sm.Catalog()
-    Note over SM: Deep copy for<br/>thread safety
-    SM->>Cat: catalog.Copy()
-    Cat-->>SM: catalog copy
-    SM-->>App: catalog copy
-    App-->>CLI: catalog
-
-    CLI->>Cat: Models().List()
-    Cat-->>CLI: []Model
-    CLI-->>User: Display formatted output
-```
-
-**Key Patterns:**
-- **Dependency Injection**: Commands receive `Application` interface, not concrete types
-- **Thread Safety**: All catalog access returns deep copies
-- **Singleton Management**: App manages starmap instance lifecycle
-- **Clean Architecture**: Clear separation between layers
+For architecture details and reconciliation strategies, see **[ARCHITECTURE.md § Reconciliation System](ARCHITECTURE.md#reconciliation-system)**.
 
 ## CLI Usage
 
@@ -790,62 +425,14 @@ models.ForEach(func(id string, model *catalogs.Model) bool {
 
 ## Data Sources
 
-Understanding where data comes from and why we need multiple sources:
+Starmap combines data from multiple sources:
 
-### Provider APIs
-**Purpose**: Real-time model availability and basic specifications  
-**Authority**: Model existence, deprecation, basic capabilities  
-**Limitations**: Often missing pricing, incomplete metadata  
+- **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, etc.)
+- **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
+- **Embedded Catalog**: Baseline data shipped with starmap
+- **Local Files**: User customizations and overrides
 
-```yaml
-Example from OpenAI API:
-- Lists model IDs and capabilities
-- No pricing information
-- Basic context window data
-```
-
-### models.dev Repository
-**Purpose**: Community-verified pricing and enhanced metadata  
-**Authority**: Pricing, accurate limits, provider logos  
-**Source**: https://models.dev  
-
-```yaml
-Example enhancements:
-- Verified pricing per million tokens
-- Accurate context windows
-- Knowledge cutoff dates
-- SVG logos for providers
-```
-
-### Embedded Catalog
-**Purpose**: Baseline data shipped with starmap  
-**Authority**: Starting point, manual corrections  
-**Updates**: Rebuilt with each release  
-
-### Local Files
-**Purpose**: User customizations and overrides  
-**Authority**: User-specific requirements  
-**Location**: Configurable via `--input` flag  
-
-### How Sources Work Together
-
-```mermaid
-flowchart LR
-    API[Provider API<br/>✓ Model List<br/>✗ Pricing]
-    MD[models.dev<br/>✓ Pricing<br/>✓ Logos]
-    EMB[Embedded<br/>✓ Baseline<br/>✓ Fixes]
-    
-    API --> REC{Reconciliation}
-    MD --> REC
-    EMB --> REC
-    
-    REC --> CAT[Unified Catalog<br/>✓ Complete Data]
-    
-    style API fill:#ffe0e0
-    style MD fill:#e0ffe0
-    style EMB fill:#e0e0ff
-    style CAT fill:#fffacd
-```
+For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](ARCHITECTURE.md#data-sources)**.
 
 ## Model Catalog
 
@@ -874,38 +461,7 @@ make generate
 
 ## HTTP Server (Coming Soon)
 
-Future HTTP server for centralized catalog service:
-
-### Planned Features
-
-- **REST API**: Standard HTTP endpoints for catalog access
-- **GraphQL**: Flexible queries for complex data needs
-- **WebSocket**: Real-time updates for model changes
-- **Webhooks**: Push notifications for catalog updates
-- **Multi-tenant**: API key-based access control
-- **Caching**: Redis-backed performance optimization
-
-### Planned Endpoints
-
-```bash
-# Models
-GET    /api/v1/models                 # List all models
-GET    /api/v1/models/{id}            # Get specific model
-POST   /api/v1/models/search          # Search models
-
-# Providers  
-GET    /api/v1/providers              # List providers
-GET    /api/v1/providers/{id}         # Get provider
-GET    /api/v1/providers/{id}/models  # Provider's models
-
-# Updates
-POST   /api/v1/webhooks               # Subscribe to updates
-GET    /api/v1/updates/stream         # SSE update stream
-
-# Admin
-POST   /api/v1/sync                   # Trigger sync
-GET    /api/v1/health                 # Health check
-```
+Future HTTP server with REST API, GraphQL, WebSocket, and webhooks for centralized catalog service with multi-tenant support.
 
 ## Configuration
 
@@ -1113,6 +669,12 @@ Built with ❤️ by the Starmap Community
 
 [Report Bug](https://github.com/agentstation/starmap/issues) • [Request Feature](https://github.com/agentstation/starmap/issues) • [Join Discord](https://discord.gg/starmap)
 </div>
+
+---
+
+## 📚 Auto-Generated API Documentation
+
+The following API reference is automatically generated from Go source code. For architectural details and design patterns, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 <!-- gomarkdoc:embed:start -->
 
