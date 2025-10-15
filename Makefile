@@ -501,11 +501,17 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 	fi
 
 # Documentation
-generate: ## Generate all documentation (Go docs only)
+openapi: ## Generate OpenAPI/Swagger documentation
+	@echo "$(BLUE)Generating OpenAPI documentation...$(NC)"
+	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Install with devbox or: go install github.com/swaggo/swag/cmd/swag@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/api.go -o docs --parseDependency --parseInternal
+	@echo "$(GREEN)OpenAPI documentation generated in docs/$(NC)"
+
+generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
 	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
 	$(GOCMD) generate ./...
-	@echo "$(GREEN)Go documentation generation complete$(NC)"
+	@echo "$(GREEN)All documentation generation complete$(NC)"
 
 godoc: ## Generate only Go documentation using go generate
 	@echo "$(BLUE)Generating Go documentation...$(NC)"

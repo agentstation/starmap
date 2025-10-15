@@ -5,6 +5,54 @@
       "last_modified": "2025-09-02T13:16:47Z",
       "resolved": "github:NixOS/nixpkgs/aaff8c16d7fc04991cac6245bee1baa31f72b1e1?lastModified=1756819007&narHash=sha256-12V64nKG%2FO%2FguxSYnr5%2Fnq1EfqwJCdD2%2BcIGmhz3nrE%3D"
     },
+    "go-swag@1.16.6": {
+      "last_modified": "2025-09-18T16:33:27Z",
+      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#go-swag",
+      "source": "devbox-search",
+      "version": "1.16.6",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/si616ls2yn7pdhnvwj04p2kkjq08xy2b-go-swag-1.16.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/si616ls2yn7pdhnvwj04p2kkjq08xy2b-go-swag-1.16.6"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/wi3jm0c2i8iwm1m4c0sf4i93111xxgj0-go-swag-1.16.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/wi3jm0c2i8iwm1m4c0sf4i93111xxgj0-go-swag-1.16.6"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/60bl9ga64dd702ac4m8xyns1bidax51q-go-swag-1.16.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/60bl9ga64dd702ac4m8xyns1bidax51q-go-swag-1.16.6"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ir4lmgzrpmi0hnlcsbpwp1vgs0c08qql-go-swag-1.16.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ir4lmgzrpmi0hnlcsbpwp1vgs0c08qql-go-swag-1.16.6"
+        }
+      }
+    },
     "go@1.24.5": {
       "last_modified": "2025-07-28T17:09:23Z",
       "resolved": "github:NixOS/nixpkgs/648f70160c03151bc2121d179291337ad6bc564b#go",

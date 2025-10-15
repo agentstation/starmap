@@ -1,0 +1,3057 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "REST API for the Starmap AI model catalog with real-time updates via WebSocket and SSE.\n\nFeatures:\n- Comprehensive model and provider queries\n- Advanced filtering and search\n- Real-time updates via WebSocket and Server-Sent Events\n- In-memory caching for performance\n- Rate limiting and authentication support",
+        "title": "Starmap API",
+        "contact": {
+            "name": "Starmap Project",
+            "url": "https://github.com/agentstation/starmap"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/agentstation/starmap/blob/master/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/api/v1/health": {
+            "get": {
+                "description": "Health check endpoint (liveness probe)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/models": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List all models with optional filtering",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "List models",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by exact model ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by exact model name (case-insensitive)",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by partial model name match",
+                        "name": "name_contains",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by provider ID",
+                        "name": "provider",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by input modality (comma-separated)",
+                        "name": "modality_input",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by output modality (comma-separated)",
+                        "name": "modality_output",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by feature (streaming, tool_calls, etc.)",
+                        "name": "feature",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by tag (comma-separated)",
+                        "name": "tag",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filter by open weights status",
+                        "name": "open_weights",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum context window size",
+                        "name": "min_context",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Maximum context window size",
+                        "name": "max_context",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field (id, name, release_date, context_window, created_at, updated_at)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc, desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Maximum number of results (default: 100, max: 1000)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Result offset for pagination",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/models/search": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Advanced search with multiple criteria",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "Search models",
+                "parameters": [
+                    {
+                        "description": "Search criteria",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/serve.SearchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/models/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve detailed information about a specific model",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "Get model by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Model ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/catalogs.Model"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/providers": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List all providers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "providers"
+                ],
+                "summary": "List providers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/providers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve detailed information about a specific provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "providers"
+                ],
+                "summary": "Get provider by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/catalogs.Provider"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/providers/{id}/models": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List all models for a specific provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "providers"
+                ],
+                "summary": "Get provider models",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ready": {
+            "get": {
+                "description": "Readiness check including cache and data source status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Readiness check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stats": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get catalog statistics (model count, provider count, last sync)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Catalog statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/update": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Manually trigger catalog synchronization",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Trigger catalog update",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Update specific provider only",
+                        "name": "provider",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/response.Error"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/updates/stream": {
+            "get": {
+                "description": "Server-Sent Events stream for catalog change notifications",
+                "produces": [
+                    "text/event-stream"
+                ],
+                "tags": [
+                    "updates"
+                ],
+                "summary": "SSE updates stream",
+                "responses": {
+                    "200": {
+                        "description": "Event stream"
+                    }
+                }
+            }
+        },
+        "/api/v1/updates/ws": {
+            "get": {
+                "description": "WebSocket connection for real-time catalog updates",
+                "tags": [
+                    "updates"
+                ],
+                "summary": "WebSocket updates",
+                "responses": {
+                    "101": {
+                        "description": "Switching Protocols"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "catalogs.ArchitectureType": {
+            "type": "string",
+            "enum": [
+                "transformer",
+                "moe",
+                "cnn",
+                "rnn",
+                "lstm",
+                "gru",
+                "vae",
+                "gan",
+                "diffusion"
+            ],
+            "x-enum-comments": {
+                "ArchitectureTypeCNN": "Convolutional Neural Networks",
+                "ArchitectureTypeDiffusion": "Diffusion models (Stable Diffusion, DALL-E, etc.)",
+                "ArchitectureTypeGAN": "Generative Adversarial Networks",
+                "ArchitectureTypeGRU": "Gated Recurrent Unit networks",
+                "ArchitectureTypeLSTM": "Long Short-Term Memory networks",
+                "ArchitectureTypeMoE": "Mixture of Experts (Mixtral, GLaM, Switch Transformer)",
+                "ArchitectureTypeRNN": "Recurrent Neural Networks",
+                "ArchitectureTypeTransformer": "Transformer-based models (GPT, BERT, LLaMA, etc.)",
+                "ArchitectureTypeVAE": "Variational Autoencoders"
+            },
+            "x-enum-descriptions": [
+                "Transformer-based models (GPT, BERT, LLaMA, etc.)",
+                "Mixture of Experts (Mixtral, GLaM, Switch Transformer)",
+                "Convolutional Neural Networks",
+                "Recurrent Neural Networks",
+                "Long Short-Term Memory networks",
+                "Gated Recurrent Unit networks",
+                "Variational Autoencoders",
+                "Generative Adversarial Networks",
+                "Diffusion models (Stable Diffusion, DALL-E, etc.)"
+            ],
+            "x-enum-varnames": [
+                "ArchitectureTypeTransformer",
+                "ArchitectureTypeMoE",
+                "ArchitectureTypeCNN",
+                "ArchitectureTypeRNN",
+                "ArchitectureTypeLSTM",
+                "ArchitectureTypeGRU",
+                "ArchitectureTypeVAE",
+                "ArchitectureTypeGAN",
+                "ArchitectureTypeDiffusion"
+            ]
+        },
+        "catalogs.Author": {
+            "type": "object",
+            "properties": {
+                "aliases": {
+                    "description": "Alternative IDs this author is known by (e.g., in provider catalogs)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.AuthorID"
+                    }
+                },
+                "catalog": {
+                    "description": "Catalog and models",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.AuthorCatalog"
+                        }
+                    ]
+                },
+                "created_at": {
+                    "description": "Timestamps for record keeping and auditing",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of what the author is known for",
+                    "type": "string"
+                },
+                "github": {
+                    "description": "GitHub profile/organization URL",
+                    "type": "string"
+                },
+                "headquarters": {
+                    "description": "Company/organization info",
+                    "type": "string"
+                },
+                "huggingface": {
+                    "description": "Hugging Face profile/organization URL",
+                    "type": "string"
+                },
+                "icon_url": {
+                    "description": "Author icon/logo URL",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Unique identifier for the author",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.AuthorID"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "Display name of the author",
+                    "type": "string"
+                },
+                "twitter": {
+                    "description": "X (formerly Twitter) profile URL",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Last updated date (YYYY-MM or YYYY-MM-DD format)",
+                    "type": "string"
+                },
+                "website": {
+                    "description": "Website, social links, and other relevant URLs",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.AuthorAttribution": {
+            "type": "object",
+            "properties": {
+                "patterns": {
+                    "description": "Glob patterns to match model IDs",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "provider_id": {
+                    "description": "Optional provider to source models from",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderID"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.AuthorCatalog": {
+            "type": "object",
+            "properties": {
+                "attribution": {
+                    "description": "Model attribution configuration for multi-provider inference",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.AuthorAttribution"
+                        }
+                    ]
+                },
+                "description": {
+                    "description": "Optional description of this mapping relationship",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.AuthorID": {
+            "type": "string",
+            "enum": [
+                "openai",
+                "anthropic",
+                "google",
+                "deepmind",
+                "meta",
+                "microsoft",
+                "mistral",
+                "cohere",
+                "groq",
+                "alibaba",
+                "qwen",
+                "xai",
+                "stanford",
+                "mit",
+                "cmu",
+                "uc-berkeley",
+                "cornell",
+                "princeton",
+                "harvard",
+                "oxford",
+                "cambridge",
+                "eth-zurich",
+                "uw",
+                "uchicago",
+                "yale",
+                "duke",
+                "caltech",
+                "huggingface",
+                "eleutherai",
+                "together",
+                "mosaicml",
+                "stability",
+                "runway",
+                "midjourney",
+                "laion",
+                "bigscience",
+                "alignment-research",
+                "h2o.ai",
+                "moxin",
+                "baidu",
+                "tencent",
+                "bytedance",
+                "deepseek",
+                "baai",
+                "01.ai",
+                "baichuan",
+                "minimax",
+                "moonshotai",
+                "shanghai-ai-lab",
+                "zhipu-ai",
+                "sensetime",
+                "huawei",
+                "tsinghua",
+                "peking",
+                "nvidia",
+                "salesforce",
+                "ibm",
+                "apple",
+                "amazon",
+                "adept",
+                "ai21",
+                "inflection",
+                "character",
+                "perplexity",
+                "anysphere",
+                "cursor",
+                "cognitivecomputations",
+                "ehartford",
+                "nousresearch",
+                "teknium",
+                "jondurbin",
+                "lmsys",
+                "vicuna-team",
+                "stanford-alpaca",
+                "wizardlm",
+                "open-orca",
+                "phind",
+                "codefuse",
+                "thudm",
+                "gatech",
+                "fastchat",
+                "unknown"
+            ],
+            "x-enum-varnames": [
+                "AuthorIDOpenAI",
+                "AuthorIDAnthropic",
+                "AuthorIDGoogle",
+                "AuthorIDDeepMind",
+                "AuthorIDMeta",
+                "AuthorIDMicrosoft",
+                "AuthorIDMistralAI",
+                "AuthorIDCohere",
+                "AuthorIDGroq",
+                "AuthorIDAlibabaQwen",
+                "AuthorIDQwen",
+                "AuthorIDXAI",
+                "AuthorIDStanford",
+                "AuthorIDMIT",
+                "AuthorIDCMU",
+                "AuthorIDUCBerkeley",
+                "AuthorIDCornell",
+                "AuthorIDPrinceton",
+                "AuthorIDHarvard",
+                "AuthorIDOxford",
+                "AuthorIDCambridge",
+                "AuthorIDETHZurich",
+                "AuthorIDUWashington",
+                "AuthorIDUChicago",
+                "AuthorIDYale",
+                "AuthorIDDuke",
+                "AuthorIDCaltech",
+                "AuthorIDHuggingFace",
+                "AuthorIDEleutherAI",
+                "AuthorIDTogether",
+                "AuthorIDMosaicML",
+                "AuthorIDStabilityAI",
+                "AuthorIDRunwayML",
+                "AuthorIDMidjourney",
+                "AuthorIDLAION",
+                "AuthorIDBigScience",
+                "AuthorIDAlignmentRC",
+                "AuthorIDH2OAI",
+                "AuthorIDMoxin",
+                "AuthorIDBaidu",
+                "AuthorIDTencent",
+                "AuthorIDByteDance",
+                "AuthorIDDeepSeek",
+                "AuthorIDBAAI",
+                "AuthorID01AI",
+                "AuthorIDBaichuan",
+                "AuthorIDMiniMax",
+                "AuthorIDMoonshot",
+                "AuthorIDShanghaiAI",
+                "AuthorIDZhipuAI",
+                "AuthorIDSenseTime",
+                "AuthorIDHuawei",
+                "AuthorIDTsinghua",
+                "AuthorIDPeking",
+                "AuthorIDNVIDIA",
+                "AuthorIDSalesforce",
+                "AuthorIDIBM",
+                "AuthorIDApple",
+                "AuthorIDAmazon",
+                "AuthorIDAdept",
+                "AuthorIDAI21",
+                "AuthorIDInflection",
+                "AuthorIDCharacter",
+                "AuthorIDPerplexity",
+                "AuthorIDAnysphere",
+                "AuthorIDCursor",
+                "AuthorIDCognitiveComputations",
+                "AuthorIDEricHartford",
+                "AuthorIDNousResearch",
+                "AuthorIDTeknium",
+                "AuthorIDJonDurbin",
+                "AuthorIDLMSYS",
+                "AuthorIDVicuna",
+                "AuthorIDAlpacaTeam",
+                "AuthorIDWizardLM",
+                "AuthorIDOpenOrca",
+                "AuthorIDPhind",
+                "AuthorIDCodeFuse",
+                "AuthorIDTHUDM",
+                "AuthorIDGeorgiaTechRI",
+                "AuthorIDFastChat",
+                "AuthorIDUnknown"
+            ]
+        },
+        "catalogs.AuthorMapping": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "description": "Field to extract from (e.g., \"owned_by\")",
+                    "type": "string"
+                },
+                "normalized": {
+                    "description": "Normalization map (e.g., \"Meta\" -\u003e \"meta\")",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/catalogs.AuthorID"
+                    }
+                }
+            }
+        },
+        "catalogs.EndpointType": {
+            "type": "string",
+            "enum": [
+                "openai",
+                "anthropic",
+                "google",
+                "google-cloud"
+            ],
+            "x-enum-varnames": [
+                "EndpointTypeOpenAI",
+                "EndpointTypeAnthropic",
+                "EndpointTypeGoogle",
+                "EndpointTypeGoogleCloud"
+            ]
+        },
+        "catalogs.FeatureRule": {
+            "type": "object",
+            "properties": {
+                "contains": {
+                    "description": "If field contains any of these strings",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "feature": {
+                    "description": "Feature to enable (e.g., \"tools\", \"reasoning\")",
+                    "type": "string"
+                },
+                "field": {
+                    "description": "Field to check (e.g., \"id\", \"owned_by\")",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Value to set for the feature",
+                    "type": "boolean"
+                }
+            }
+        },
+        "catalogs.FieldMapping": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "description": "Source field path in API response (e.g., \"max_model_len\")",
+                    "type": "string"
+                },
+                "to": {
+                    "description": "Target field path in Model (e.g., \"limits.context_window\")",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.FloatRange": {
+            "type": "object",
+            "properties": {
+                "default": {
+                    "description": "Default value",
+                    "type": "number"
+                },
+                "max": {
+                    "description": "Maximum value",
+                    "type": "number"
+                },
+                "min": {
+                    "description": "Minimum value",
+                    "type": "number"
+                }
+            }
+        },
+        "catalogs.IntRange": {
+            "type": "object",
+            "properties": {
+                "default": {
+                    "description": "Default value",
+                    "type": "integer"
+                },
+                "max": {
+                    "description": "Maximum value",
+                    "type": "integer"
+                },
+                "min": {
+                    "description": "Minimum value",
+                    "type": "integer"
+                }
+            }
+        },
+        "catalogs.Model": {
+            "type": "object",
+            "properties": {
+                "attachments": {
+                    "description": "Attachments - attachment support details",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelAttachments"
+                        }
+                    ]
+                },
+                "authors": {
+                    "description": "Authors/organizations of the model (if known)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.Author"
+                    }
+                },
+                "created_at": {
+                    "description": "Timestamps for record keeping and auditing",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of the model and its use cases",
+                    "type": "string"
+                },
+                "features": {
+                    "description": "Features - what this model can do",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelFeatures"
+                        }
+                    ]
+                },
+                "generation": {
+                    "description": "Generation - core chat completions generation controls",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelGeneration"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "Core identity",
+                    "type": "string"
+                },
+                "limits": {
+                    "description": "Model limits",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelLimits"
+                        }
+                    ]
+                },
+                "metadata": {
+                    "description": "Metadata - version and timing information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelMetadata"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "Display name (must not be empty)",
+                    "type": "string"
+                },
+                "pricing": {
+                    "description": "Operational characteristics",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelPricing"
+                        }
+                    ]
+                },
+                "reasoning": {
+                    "description": "Reasoning - reasoning effort levels",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelControlLevels"
+                        }
+                    ]
+                },
+                "reasoning_tokens": {
+                    "description": "ReasoningTokens - specific token allocation for reasoning processes",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.IntRange"
+                        }
+                    ]
+                },
+                "response": {
+                    "description": "Delivery - technical response delivery capabilities (formats, protocols, streaming)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelDelivery"
+                        }
+                    ]
+                },
+                "tools": {
+                    "description": "Tools - external tool and capability integrations",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTools"
+                        }
+                    ]
+                },
+                "updated_at": {
+                    "description": "Last updated date (YYYY-MM or YYYY-MM-DD format)",
+                    "type": "string"
+                },
+                "verbosity": {
+                    "description": "Verbosity - response verbosity levels",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelControlLevels"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelArchitecture": {
+            "type": "object",
+            "properties": {
+                "base_model": {
+                    "description": "Base model ID if fine-tuned",
+                    "type": "string"
+                },
+                "fine_tuned": {
+                    "description": "Whether this is a fine-tuned variant",
+                    "type": "boolean"
+                },
+                "parameter_count": {
+                    "description": "Model size (e.g., \"7B\", \"70B\", \"405B\")",
+                    "type": "string"
+                },
+                "precision": {
+                    "description": "Legacy precision format (use Quantization for filtering)",
+                    "type": "string"
+                },
+                "quantization": {
+                    "description": "Quantization level used by the model",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.Quantization"
+                        }
+                    ]
+                },
+                "quantized": {
+                    "description": "Whether the model has been quantized",
+                    "type": "boolean"
+                },
+                "tokenizer": {
+                    "description": "Tokenizer type used by the model",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.Tokenizer"
+                        }
+                    ]
+                },
+                "type": {
+                    "description": "Type of architecture",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ArchitectureType"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelAttachments": {
+            "type": "object",
+            "properties": {
+                "max_file_size": {
+                    "description": "Maximum file size in bytes",
+                    "type": "integer"
+                },
+                "max_files": {
+                    "description": "Maximum number of files per request",
+                    "type": "integer"
+                },
+                "mime_types": {
+                    "description": "Supported MIME types",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "catalogs.ModelControlLevel": {
+            "type": "string",
+            "enum": [
+                "minimum",
+                "low",
+                "medium",
+                "high",
+                "maximum"
+            ],
+            "x-enum-varnames": [
+                "ModelControlLevelMinimum",
+                "ModelControlLevelLow",
+                "ModelControlLevelMedium",
+                "ModelControlLevelHigh",
+                "ModelControlLevelMaximum"
+            ]
+        },
+        "catalogs.ModelControlLevels": {
+            "type": "object",
+            "properties": {
+                "default": {
+                    "description": "Default level",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelControlLevel"
+                        }
+                    ]
+                },
+                "levels": {
+                    "description": "Which levels this model supports",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelControlLevel"
+                    }
+                }
+            }
+        },
+        "catalogs.ModelDelivery": {
+            "type": "object",
+            "properties": {
+                "formats": {
+                    "description": "Available response formats (if format_response feature enabled)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelResponseFormat"
+                    }
+                },
+                "protocols": {
+                    "description": "Response delivery mechanisms",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelResponseProtocol"
+                    }
+                },
+                "streaming": {
+                    "description": "Supported streaming modes (sse, websocket, chunked)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelStreaming"
+                    }
+                }
+            }
+        },
+        "catalogs.ModelFeatures": {
+            "type": "object",
+            "properties": {
+                "allowed_tokens": {
+                    "description": "[Niche] Supports token whitelist",
+                    "type": "boolean"
+                },
+                "attachments": {
+                    "description": "Attachment support details",
+                    "type": "boolean"
+                },
+                "bad_words": {
+                    "description": "[Advanced] Supports bad words/disallowed tokens",
+                    "type": "boolean"
+                },
+                "best_of": {
+                    "description": "[Advanced] Supports server-side sampling with best selection",
+                    "type": "boolean"
+                },
+                "contrastive_search_penalty_alpha": {
+                    "description": "[Niche] Supports contrastive decoding",
+                    "type": "boolean"
+                },
+                "diversity_penalty": {
+                    "description": "[Niche] Supports diversity penalty in beam search",
+                    "type": "boolean"
+                },
+                "early_stopping": {
+                    "description": "[Niche] Supports early stopping in beam search",
+                    "type": "boolean"
+                },
+                "echo": {
+                    "description": "[Advanced] Supports echoing prompt with completion",
+                    "type": "boolean"
+                },
+                "format_response": {
+                    "description": "Response delivery",
+                    "type": "boolean"
+                },
+                "frequency_penalty": {
+                    "description": "Generation control - Repetition control",
+                    "type": "boolean"
+                },
+                "include_reasoning": {
+                    "description": "Supports including reasoning traces in response",
+                    "type": "boolean"
+                },
+                "length_penalty": {
+                    "description": "[Niche] Supports length penalty (seq2seq style)",
+                    "type": "boolean"
+                },
+                "logit_bias": {
+                    "description": "Generation control - Token biasing",
+                    "type": "boolean"
+                },
+                "logprobs": {
+                    "description": "Generation control - Observability",
+                    "type": "boolean"
+                },
+                "max_output_tokens": {
+                    "description": "[Core] Supports max_output_tokens parameter (some providers distinguish from max_tokens)",
+                    "type": "boolean"
+                },
+                "max_tokens": {
+                    "description": "Generation control - Length and termination",
+                    "type": "boolean"
+                },
+                "min_p": {
+                    "description": "[Advanced] Supports min_p parameter (minimum probability threshold)",
+                    "type": "boolean"
+                },
+                "mirostat": {
+                    "description": "Generation control - Alternative sampling strategies (niche)",
+                    "type": "boolean"
+                },
+                "mirostat_eta": {
+                    "description": "[Niche] Supports Mirostat eta parameter",
+                    "type": "boolean"
+                },
+                "mirostat_tau": {
+                    "description": "[Niche] Supports Mirostat tau parameter",
+                    "type": "boolean"
+                },
+                "modalities": {
+                    "description": "Input/Output modalities",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelModalities"
+                        }
+                    ]
+                },
+                "n": {
+                    "description": "Generation control - Multiplicity and reranking",
+                    "type": "boolean"
+                },
+                "no_repeat_ngram_size": {
+                    "description": "[Niche] Supports n-gram repetition blocking",
+                    "type": "boolean"
+                },
+                "num_beams": {
+                    "description": "Generation control - Beam search (niche)",
+                    "type": "boolean"
+                },
+                "presence_penalty": {
+                    "description": "[Core] Supports presence penalty",
+                    "type": "boolean"
+                },
+                "reasoning": {
+                    "description": "Reasoning \u0026 Verbosity",
+                    "type": "boolean"
+                },
+                "reasoning_effort": {
+                    "description": "Supports configurable reasoning intensity",
+                    "type": "boolean"
+                },
+                "reasoning_tokens": {
+                    "description": "Supports specific reasoning token allocation",
+                    "type": "boolean"
+                },
+                "repetition_penalty": {
+                    "description": "[Advanced] Supports repetition penalty",
+                    "type": "boolean"
+                },
+                "seed": {
+                    "description": "Generation control - Determinism",
+                    "type": "boolean"
+                },
+                "stop": {
+                    "description": "[Core] Supports stop sequences/words",
+                    "type": "boolean"
+                },
+                "stop_token_ids": {
+                    "description": "[Advanced] Supports stop token IDs (numeric)",
+                    "type": "boolean"
+                },
+                "streaming": {
+                    "description": "Supports response streaming",
+                    "type": "boolean"
+                },
+                "structured_outputs": {
+                    "description": "Supports structured outputs (JSON schema validation)",
+                    "type": "boolean"
+                },
+                "temperature": {
+                    "description": "Generation control - Core sampling and decoding",
+                    "type": "boolean"
+                },
+                "tfs": {
+                    "description": "[Advanced] Supports tail free sampling",
+                    "type": "boolean"
+                },
+                "tool_calls": {
+                    "description": "Core capabilities\nTool calling system - three distinct aspects:",
+                    "type": "boolean"
+                },
+                "tool_choice": {
+                    "description": "Supports tool choice strategies (auto/none/required control)",
+                    "type": "boolean"
+                },
+                "tools": {
+                    "description": "Accepts tool definitions in requests (accepts tools parameter)",
+                    "type": "boolean"
+                },
+                "top_a": {
+                    "description": "[Advanced] Supports top_a parameter (top-a sampling)",
+                    "type": "boolean"
+                },
+                "top_k": {
+                    "description": "[Advanced] Supports top_k parameter",
+                    "type": "boolean"
+                },
+                "top_logprobs": {
+                    "description": "[Core] Supports returning top N log probabilities",
+                    "type": "boolean"
+                },
+                "top_p": {
+                    "description": "[Core] Supports top_p parameter (nucleus sampling)",
+                    "type": "boolean"
+                },
+                "typical_p": {
+                    "description": "[Advanced] Supports typical_p parameter (typical sampling)",
+                    "type": "boolean"
+                },
+                "verbosity": {
+                    "description": "Supports verbosity control (GPT-5+)",
+                    "type": "boolean"
+                },
+                "web_search": {
+                    "description": "Supports web search capabilities",
+                    "type": "boolean"
+                }
+            }
+        },
+        "catalogs.ModelGeneration": {
+            "type": "object",
+            "properties": {
+                "best_of": {
+                    "description": "Server-side sampling with best selection",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.IntRange"
+                        }
+                    ]
+                },
+                "contrastive_search_penalty_alpha": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "diversity_penalty": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "frequency_penalty": {
+                    "description": "Repetition control",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.FloatRange"
+                        }
+                    ]
+                },
+                "length_penalty": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "max_output_tokens": {
+                    "type": "integer"
+                },
+                "max_tokens": {
+                    "description": "Length and termination",
+                    "type": "integer"
+                },
+                "min_p": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "mirostat_eta": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "mirostat_tau": {
+                    "description": "Alternative sampling strategies (niche)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.FloatRange"
+                        }
+                    ]
+                },
+                "n": {
+                    "description": "Multiplicity and reranking",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.IntRange"
+                        }
+                    ]
+                },
+                "no_repeat_ngram_size": {
+                    "$ref": "#/definitions/catalogs.IntRange"
+                },
+                "num_beams": {
+                    "description": "Beam search (niche)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.IntRange"
+                        }
+                    ]
+                },
+                "presence_penalty": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "repetition_penalty": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "temperature": {
+                    "description": "Core sampling and decoding",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.FloatRange"
+                        }
+                    ]
+                },
+                "tfs": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "top_a": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "top_k": {
+                    "$ref": "#/definitions/catalogs.IntRange"
+                },
+                "top_logprobs": {
+                    "description": "Observability",
+                    "type": "integer"
+                },
+                "top_p": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                },
+                "typical_p": {
+                    "$ref": "#/definitions/catalogs.FloatRange"
+                }
+            }
+        },
+        "catalogs.ModelLimits": {
+            "type": "object",
+            "properties": {
+                "context_window": {
+                    "description": "Context window size in tokens",
+                    "type": "integer"
+                },
+                "output_tokens": {
+                    "description": "Maximum output tokens",
+                    "type": "integer"
+                }
+            }
+        },
+        "catalogs.ModelMetadata": {
+            "type": "object",
+            "properties": {
+                "architecture": {
+                    "description": "Technical architecture details",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelArchitecture"
+                        }
+                    ]
+                },
+                "knowledge_cutoff": {
+                    "description": "Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)",
+                    "type": "string"
+                },
+                "open_weights": {
+                    "description": "Whether model weights are open",
+                    "type": "boolean"
+                },
+                "release_date": {
+                    "description": "Release date (YYYY-MM or YYYY-MM-DD format)",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "Use case tags for categorizing the model",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelTag"
+                    }
+                }
+            }
+        },
+        "catalogs.ModelModalities": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "description": "Supported input modalities",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelModality"
+                    }
+                },
+                "output": {
+                    "description": "Supported output modalities",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelModality"
+                    }
+                }
+            }
+        },
+        "catalogs.ModelModality": {
+            "type": "string",
+            "enum": [
+                "text",
+                "audio",
+                "image",
+                "video",
+                "pdf",
+                "embedding"
+            ],
+            "x-enum-comments": {
+                "ModelModalityEmbedding": "Vector embeddings"
+            },
+            "x-enum-descriptions": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "Vector embeddings"
+            ],
+            "x-enum-varnames": [
+                "ModelModalityText",
+                "ModelModalityAudio",
+                "ModelModalityImage",
+                "ModelModalityVideo",
+                "ModelModalityPDF",
+                "ModelModalityEmbedding"
+            ]
+        },
+        "catalogs.ModelOperationPricing": {
+            "type": "object",
+            "properties": {
+                "audio_gen": {
+                    "description": "Cost per audio generated",
+                    "type": "number"
+                },
+                "audio_input": {
+                    "description": "Cost per audio input",
+                    "type": "number"
+                },
+                "function_call": {
+                    "description": "Cost per function call",
+                    "type": "number"
+                },
+                "image_gen": {
+                    "description": "Generation operations",
+                    "type": "number"
+                },
+                "image_input": {
+                    "description": "Media operations",
+                    "type": "number"
+                },
+                "request": {
+                    "description": "Core operations",
+                    "type": "number"
+                },
+                "tool_use": {
+                    "description": "Cost per tool usage",
+                    "type": "number"
+                },
+                "video_gen": {
+                    "description": "Cost per video generated",
+                    "type": "number"
+                },
+                "video_input": {
+                    "description": "Cost per video input",
+                    "type": "number"
+                },
+                "web_search": {
+                    "description": "Service operations",
+                    "type": "number"
+                }
+            }
+        },
+        "catalogs.ModelPricing": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "description": "Metadata",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelPricingCurrency"
+                        }
+                    ]
+                },
+                "operations": {
+                    "description": "Fixed costs per operation",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelOperationPricing"
+                        }
+                    ]
+                },
+                "tokens": {
+                    "description": "Token-based costs",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenPricing"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelPricingCurrency": {
+            "type": "string",
+            "enum": [
+                "USD",
+                "EUR",
+                "JPY",
+                "GBP",
+                "AUD",
+                "CAD",
+                "CNY",
+                "NZD"
+            ],
+            "x-enum-comments": {
+                "ModelPricingCurrencyAUD": "Australian Dollar",
+                "ModelPricingCurrencyCAD": "Canadian Dollar",
+                "ModelPricingCurrencyCNY": "Chinese Yuan",
+                "ModelPricingCurrencyEUR": "Euro",
+                "ModelPricingCurrencyGBP": "British Pound Sterling",
+                "ModelPricingCurrencyJPY": "Japanese Yen",
+                "ModelPricingCurrencyNZD": "New Zealand Dollar",
+                "ModelPricingCurrencyUSD": "US Dollar"
+            },
+            "x-enum-descriptions": [
+                "US Dollar",
+                "Euro",
+                "Japanese Yen",
+                "British Pound Sterling",
+                "Australian Dollar",
+                "Canadian Dollar",
+                "Chinese Yuan",
+                "New Zealand Dollar"
+            ],
+            "x-enum-varnames": [
+                "ModelPricingCurrencyUSD",
+                "ModelPricingCurrencyEUR",
+                "ModelPricingCurrencyJPY",
+                "ModelPricingCurrencyGBP",
+                "ModelPricingCurrencyAUD",
+                "ModelPricingCurrencyCAD",
+                "ModelPricingCurrencyCNY",
+                "ModelPricingCurrencyNZD"
+            ]
+        },
+        "catalogs.ModelResponseFormat": {
+            "type": "string",
+            "enum": [
+                "text",
+                "json",
+                "json_mode",
+                "json_object",
+                "json_schema",
+                "structured_output",
+                "function_call"
+            ],
+            "x-enum-comments": {
+                "ModelResponseFormatFunctionCall": "Tool/function calling for structured data",
+                "ModelResponseFormatJSON": "JSON encouraged via prompting",
+                "ModelResponseFormatJSONMode": "Forced valid JSON (OpenAI style)",
+                "ModelResponseFormatJSONObject": "Same as json_mode (OpenAI API name)",
+                "ModelResponseFormatJSONSchema": "Schema-validated JSON (OpenAI structured output)",
+                "ModelResponseFormatStructuredOutput": "General structured output support",
+                "ModelResponseFormatText": "Plain text responses (default)"
+            },
+            "x-enum-descriptions": [
+                "Plain text responses (default)",
+                "JSON encouraged via prompting",
+                "Forced valid JSON (OpenAI style)",
+                "Same as json_mode (OpenAI API name)",
+                "Schema-validated JSON (OpenAI structured output)",
+                "General structured output support",
+                "Tool/function calling for structured data"
+            ],
+            "x-enum-varnames": [
+                "ModelResponseFormatText",
+                "ModelResponseFormatJSON",
+                "ModelResponseFormatJSONMode",
+                "ModelResponseFormatJSONObject",
+                "ModelResponseFormatJSONSchema",
+                "ModelResponseFormatStructuredOutput",
+                "ModelResponseFormatFunctionCall"
+            ]
+        },
+        "catalogs.ModelResponseProtocol": {
+            "type": "string",
+            "enum": [
+                "http",
+                "grpc",
+                "websocket"
+            ],
+            "x-enum-comments": {
+                "ModelResponseProtocolGRPC": "gRPC protocol",
+                "ModelResponseProtocolHTTP": "HTTP/HTTPS REST API",
+                "ModelResponseProtocolWebSocket": "WebSocket protocol"
+            },
+            "x-enum-descriptions": [
+                "HTTP/HTTPS REST API",
+                "gRPC protocol",
+                "WebSocket protocol"
+            ],
+            "x-enum-varnames": [
+                "ModelResponseProtocolHTTP",
+                "ModelResponseProtocolGRPC",
+                "ModelResponseProtocolWebSocket"
+            ]
+        },
+        "catalogs.ModelStreaming": {
+            "type": "string",
+            "enum": [
+                "sse",
+                "websocket",
+                "chunked"
+            ],
+            "x-enum-comments": {
+                "ModelStreamingChunked": "HTTP chunked transfer encoding",
+                "ModelStreamingSSE": "Server-Sent Events streaming",
+                "ModelStreamingWebSocket": "WebSocket streaming"
+            },
+            "x-enum-descriptions": [
+                "Server-Sent Events streaming",
+                "WebSocket streaming",
+                "HTTP chunked transfer encoding"
+            ],
+            "x-enum-varnames": [
+                "ModelStreamingSSE",
+                "ModelStreamingWebSocket",
+                "ModelStreamingChunked"
+            ]
+        },
+        "catalogs.ModelTag": {
+            "type": "string",
+            "enum": [
+                "coding",
+                "writing",
+                "reasoning",
+                "math",
+                "chat",
+                "instruct",
+                "research",
+                "creative",
+                "roleplay",
+                "function_calling",
+                "embedding",
+                "summarization",
+                "translation",
+                "question_answering",
+                "vision",
+                "multimodal",
+                "audio",
+                "text_to_image",
+                "text_to_speech",
+                "speech_to_text",
+                "image_to_text",
+                "medical",
+                "legal",
+                "finance",
+                "science",
+                "education"
+            ],
+            "x-enum-comments": {
+                "ModelTagAudio": "Audio processing",
+                "ModelTagChat": "Conversational AI",
+                "ModelTagCoding": "Programming and code generation",
+                "ModelTagCreative": "Creative content generation",
+                "ModelTagEducation": "Educational content",
+                "ModelTagEmbedding": "Text embeddings",
+                "ModelTagFinance": "Financial analysis",
+                "ModelTagFunctionCalling": "Tool/function calling",
+                "ModelTagImageToText": "Image captioning/OCR",
+                "ModelTagInstruct": "Instruction following",
+                "ModelTagLegal": "Legal document processing",
+                "ModelTagMath": "Mathematical problem solving",
+                "ModelTagMedical": "Medical and healthcare",
+                "ModelTagMultimodal": "Multiple input modalities",
+                "ModelTagQA": "Question answering",
+                "ModelTagReasoning": "Logical reasoning and problem solving",
+                "ModelTagResearch": "Research and analysis",
+                "ModelTagRoleplay": "Character roleplay and simulation",
+                "ModelTagScience": "Scientific applications",
+                "ModelTagSpeechToText": "Speech recognition",
+                "ModelTagSummarization": "Text summarization",
+                "ModelTagTextToImage": "Text-to-image generation",
+                "ModelTagTextToSpeech": "Text-to-speech synthesis",
+                "ModelTagTranslation": "Language translation",
+                "ModelTagVision": "Computer vision",
+                "ModelTagWriting": "Creative and technical writing"
+            },
+            "x-enum-descriptions": [
+                "Programming and code generation",
+                "Creative and technical writing",
+                "Logical reasoning and problem solving",
+                "Mathematical problem solving",
+                "Conversational AI",
+                "Instruction following",
+                "Research and analysis",
+                "Creative content generation",
+                "Character roleplay and simulation",
+                "Tool/function calling",
+                "Text embeddings",
+                "Text summarization",
+                "Language translation",
+                "Question answering",
+                "Computer vision",
+                "Multiple input modalities",
+                "Audio processing",
+                "Text-to-image generation",
+                "Text-to-speech synthesis",
+                "Speech recognition",
+                "Image captioning/OCR",
+                "Medical and healthcare",
+                "Legal document processing",
+                "Financial analysis",
+                "Scientific applications",
+                "Educational content"
+            ],
+            "x-enum-varnames": [
+                "ModelTagCoding",
+                "ModelTagWriting",
+                "ModelTagReasoning",
+                "ModelTagMath",
+                "ModelTagChat",
+                "ModelTagInstruct",
+                "ModelTagResearch",
+                "ModelTagCreative",
+                "ModelTagRoleplay",
+                "ModelTagFunctionCalling",
+                "ModelTagEmbedding",
+                "ModelTagSummarization",
+                "ModelTagTranslation",
+                "ModelTagQA",
+                "ModelTagVision",
+                "ModelTagMultimodal",
+                "ModelTagAudio",
+                "ModelTagTextToImage",
+                "ModelTagTextToSpeech",
+                "ModelTagSpeechToText",
+                "ModelTagImageToText",
+                "ModelTagMedical",
+                "ModelTagLegal",
+                "ModelTagFinance",
+                "ModelTagScience",
+                "ModelTagEducation"
+            ]
+        },
+        "catalogs.ModelTokenCachePricing": {
+            "type": "object",
+            "properties": {
+                "read": {
+                    "description": "Cache read costs",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                },
+                "write": {
+                    "description": "Cache write costs",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelTokenCost": {
+            "type": "object",
+            "properties": {
+                "per_1m_tokens": {
+                    "description": "Cost per 1M tokens",
+                    "type": "number"
+                },
+                "per_token": {
+                    "description": "Cost per individual token",
+                    "type": "number"
+                }
+            }
+        },
+        "catalogs.ModelTokenPricing": {
+            "type": "object",
+            "properties": {
+                "cache": {
+                    "description": "Cache operations",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCachePricing"
+                        }
+                    ]
+                },
+                "cache_read": {
+                    "description": "Alternative flat cache structure (for backward compatibility)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                },
+                "cache_write": {
+                    "description": "Cache write costs (flat structure)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                },
+                "input": {
+                    "description": "Core tokens",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                },
+                "output": {
+                    "description": "Standard output tokens",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                },
+                "reasoning": {
+                    "description": "Advanced token types",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelTokenCost"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelTools": {
+            "type": "object",
+            "properties": {
+                "tool_choices": {
+                    "description": "Tool calling configuration\nSpecifies which tool choice strategies this model supports.\nRequires both Tools=true and ToolChoice=true in ModelFeatures.\nCommon values: [\"auto\"], [\"auto\", \"none\"], [\"auto\", \"none\", \"required\"]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ToolChoice"
+                    }
+                },
+                "web_search": {
+                    "description": "Web search configuration\nOnly applicable if WebSearch=true in ModelFeatures",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelWebSearch"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ModelWebSearch": {
+            "type": "object",
+            "properties": {
+                "default_context_size": {
+                    "description": "Default search context size",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ModelControlLevel"
+                        }
+                    ]
+                },
+                "max_results": {
+                    "description": "Plugin-based web search options (for models using OpenRouter's web plugin)",
+                    "type": "integer"
+                },
+                "search_context_sizes": {
+                    "description": "Built-in web search options (for models with native web search like GPT-4.1, Perplexity)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ModelControlLevel"
+                    }
+                },
+                "search_prompt": {
+                    "description": "Custom prompt for search results",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.Provider": {
+            "type": "object",
+            "properties": {
+                "aliases": {
+                    "description": "Alternative IDs this provider is known by (e.g., in models.dev)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ProviderID"
+                    }
+                },
+                "api_key": {
+                    "description": "API key configuration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderAPIKey"
+                        }
+                    ]
+                },
+                "catalog": {
+                    "description": "Models",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderCatalog"
+                        }
+                    ]
+                },
+                "chat_completions": {
+                    "description": "Chat completions API configuration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderChatCompletions"
+                        }
+                    ]
+                },
+                "env_vars": {
+                    "description": "Environment variables configuration",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ProviderEnvVar"
+                    }
+                },
+                "governance_policy": {
+                    "description": "Oversight and moderation practices",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderGovernancePolicy"
+                        }
+                    ]
+                },
+                "headquarters": {
+                    "description": "Company headquarters location",
+                    "type": "string"
+                },
+                "icon_url": {
+                    "description": "Provider icon/logo URL",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Core identification and integration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderID"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "Display name (must not be empty)",
+                    "type": "string"
+                },
+                "privacy_policy": {
+                    "description": "Privacy, Retention, and Governance Policies",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderPrivacyPolicy"
+                        }
+                    ]
+                },
+                "retention_policy": {
+                    "description": "Data retention and deletion practices",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderRetentionPolicy"
+                        }
+                    ]
+                },
+                "status_page_url": {
+                    "description": "Status \u0026 Health",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.ProviderAPIKey": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "description": "Header name to send the API key in",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the API key parameter",
+                    "type": "string"
+                },
+                "pattern": {
+                    "description": "Glob pattern to match the API key",
+                    "type": "string"
+                },
+                "query_param": {
+                    "description": "Query parameter name to send the API key in",
+                    "type": "string"
+                },
+                "scheme": {
+                    "description": "Authentication scheme (e.g., \"Bearer\", \"Basic\", or empty for direct value)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderAPIKeyScheme"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ProviderAPIKeyScheme": {
+            "type": "string",
+            "enum": [
+                "Bearer",
+                "Basic",
+                ""
+            ],
+            "x-enum-comments": {
+                "ProviderAPIKeySchemeBasic": "Basic authentication",
+                "ProviderAPIKeySchemeBearer": "Bearer token authentication (OAuth 2.0 style)",
+                "ProviderAPIKeySchemeDirect": "Direct value (no scheme prefix)"
+            },
+            "x-enum-descriptions": [
+                "Bearer token authentication (OAuth 2.0 style)",
+                "Basic authentication",
+                "Direct value (no scheme prefix)"
+            ],
+            "x-enum-varnames": [
+                "ProviderAPIKeySchemeBearer",
+                "ProviderAPIKeySchemeBasic",
+                "ProviderAPIKeySchemeDirect"
+            ]
+        },
+        "catalogs.ProviderCatalog": {
+            "type": "object",
+            "properties": {
+                "authors": {
+                    "description": "List of authors to fetch from (for providers like Google Vertex AI)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.AuthorID"
+                    }
+                },
+                "docs": {
+                    "description": "Documentation URL",
+                    "type": "string"
+                },
+                "endpoint": {
+                    "description": "API endpoint configuration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderEndpoint"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ProviderChatCompletions": {
+            "type": "object",
+            "properties": {
+                "health_api_url": {
+                    "description": "URL to health/status API for this service",
+                    "type": "string"
+                },
+                "health_components": {
+                    "description": "Specific components to monitor for chat completions",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.ProviderHealthComponent"
+                    }
+                },
+                "url": {
+                    "description": "Chat completions API endpoint URL",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.ProviderEndpoint": {
+            "type": "object",
+            "properties": {
+                "auth_required": {
+                    "description": "Required: Whether auth needed",
+                    "type": "boolean"
+                },
+                "author_mapping": {
+                    "description": "Author extraction",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.AuthorMapping"
+                        }
+                    ]
+                },
+                "feature_rules": {
+                    "description": "Feature inference rules",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.FeatureRule"
+                    }
+                },
+                "field_mappings": {
+                    "description": "Field mappings",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/catalogs.FieldMapping"
+                    }
+                },
+                "type": {
+                    "description": "Required: API style",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.EndpointType"
+                        }
+                    ]
+                },
+                "url": {
+                    "description": "Required: API endpoint",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.ProviderEnvVar": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Human-readable description",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Environment variable name",
+                    "type": "string"
+                },
+                "pattern": {
+                    "description": "Optional validation pattern",
+                    "type": "string"
+                },
+                "required": {
+                    "description": "Whether this env var is required",
+                    "type": "boolean"
+                }
+            }
+        },
+        "catalogs.ProviderGovernancePolicy": {
+            "type": "object",
+            "properties": {
+                "moderated": {
+                    "description": "Whether provider content is moderated",
+                    "type": "boolean"
+                },
+                "moderation_required": {
+                    "description": "Whether the provider requires moderation",
+                    "type": "boolean"
+                },
+                "moderator": {
+                    "description": "Who moderates the provider",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.ProviderHealthComponent": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Component ID from the health API",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human-readable component name",
+                    "type": "string"
+                }
+            }
+        },
+        "catalogs.ProviderID": {
+            "type": "string",
+            "enum": [
+                "alibaba",
+                "anthropic",
+                "anyscale",
+                "cerebras",
+                "checkstep",
+                "cohere",
+                "conectys",
+                "cove",
+                "deepmind",
+                "deepseek",
+                "google-ai-studio",
+                "google-vertex",
+                "groq",
+                "huggingface",
+                "meta",
+                "microsoft",
+                "mistral",
+                "openai",
+                "openrouter",
+                "perplexity",
+                "replicate",
+                "safetykit",
+                "together",
+                "virtuousai",
+                "webpurify",
+                "xai"
+            ],
+            "x-enum-varnames": [
+                "ProviderIDAlibabaQwen",
+                "ProviderIDAnthropic",
+                "ProviderIDAnyscale",
+                "ProviderIDCerebras",
+                "ProviderIDCheckstep",
+                "ProviderIDCohere",
+                "ProviderIDConectys",
+                "ProviderIDCove",
+                "ProviderIDDeepMind",
+                "ProviderIDDeepSeek",
+                "ProviderIDGoogleAIStudio",
+                "ProviderIDGoogleVertex",
+                "ProviderIDGroq",
+                "ProviderIDHuggingFace",
+                "ProviderIDMeta",
+                "ProviderIDMicrosoft",
+                "ProviderIDMistralAI",
+                "ProviderIDOpenAI",
+                "ProviderIDOpenRouter",
+                "ProviderIDPerplexity",
+                "ProviderIDReplicate",
+                "ProviderIDSafetyKit",
+                "ProviderIDTogetherAI",
+                "ProviderIDVirtuousAI",
+                "ProviderIDWebPurify",
+                "ProviderIDXAI"
+            ]
+        },
+        "catalogs.ProviderPrivacyPolicy": {
+            "type": "object",
+            "properties": {
+                "privacy_policy_url": {
+                    "description": "Link to privacy policy",
+                    "type": "string"
+                },
+                "retains_data": {
+                    "description": "Whether provider stores/retains user data",
+                    "type": "boolean"
+                },
+                "terms_of_service_url": {
+                    "description": "Link to terms of service",
+                    "type": "string"
+                },
+                "trains_on_data": {
+                    "description": "Whether provider trains models on user data",
+                    "type": "boolean"
+                }
+            }
+        },
+        "catalogs.ProviderRetentionPolicy": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "description": "Human-readable description",
+                    "type": "string"
+                },
+                "duration": {
+                    "description": "nil = forever, 0 = immediate deletion",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/time.Duration"
+                        }
+                    ]
+                },
+                "type": {
+                    "description": "Type of retention policy",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/catalogs.ProviderRetentionType"
+                        }
+                    ]
+                }
+            }
+        },
+        "catalogs.ProviderRetentionType": {
+            "type": "string",
+            "enum": [
+                "fixed",
+                "none",
+                "indefinite",
+                "conditional"
+            ],
+            "x-enum-comments": {
+                "ProviderRetentionTypeConditional": "Based on conditions (e.g., \"until account deletion\")",
+                "ProviderRetentionTypeFixed": "Specific duration (use Duration field)",
+                "ProviderRetentionTypeIndefinite": "Forever (duration = nil)",
+                "ProviderRetentionTypeNone": "No retention (immediate deletion)"
+            },
+            "x-enum-descriptions": [
+                "Specific duration (use Duration field)",
+                "No retention (immediate deletion)",
+                "Forever (duration = nil)",
+                "Based on conditions (e.g., \"until account deletion\")"
+            ],
+            "x-enum-varnames": [
+                "ProviderRetentionTypeFixed",
+                "ProviderRetentionTypeNone",
+                "ProviderRetentionTypeIndefinite",
+                "ProviderRetentionTypeConditional"
+            ]
+        },
+        "catalogs.Quantization": {
+            "type": "string",
+            "enum": [
+                "int4",
+                "int8",
+                "fp4",
+                "fp6",
+                "fp8",
+                "fp16",
+                "bf16",
+                "fp32",
+                "unknown"
+            ],
+            "x-enum-comments": {
+                "QuantizationBF16": "Brain floating point (16 bit)",
+                "QuantizationFP16": "Floating point (16 bit)",
+                "QuantizationFP32": "Floating point (32 bit)",
+                "QuantizationFP4": "Floating point (4 bit)",
+                "QuantizationFP6": "Floating point (6 bit)",
+                "QuantizationFP8": "Floating point (8 bit)",
+                "QuantizationINT4": "Integer (4 bit)",
+                "QuantizationINT8": "Integer (8 bit)",
+                "QuantizationUnknown": "Unknown quantization"
+            },
+            "x-enum-descriptions": [
+                "Integer (4 bit)",
+                "Integer (8 bit)",
+                "Floating point (4 bit)",
+                "Floating point (6 bit)",
+                "Floating point (8 bit)",
+                "Floating point (16 bit)",
+                "Brain floating point (16 bit)",
+                "Floating point (32 bit)",
+                "Unknown quantization"
+            ],
+            "x-enum-varnames": [
+                "QuantizationINT4",
+                "QuantizationINT8",
+                "QuantizationFP4",
+                "QuantizationFP6",
+                "QuantizationFP8",
+                "QuantizationFP16",
+                "QuantizationBF16",
+                "QuantizationFP32",
+                "QuantizationUnknown"
+            ]
+        },
+        "catalogs.Tokenizer": {
+            "type": "string",
+            "enum": [
+                "claude",
+                "cohere",
+                "deepseek",
+                "gpt",
+                "gemini",
+                "grok",
+                "llama2",
+                "llama3",
+                "llama4",
+                "mistral",
+                "nova",
+                "qwen",
+                "qwen3",
+                "router",
+                "yi",
+                "unknown"
+            ],
+            "x-enum-comments": {
+                "TokenizerClaude": "Claude tokenizer",
+                "TokenizerCohere": "Cohere tokenizer",
+                "TokenizerDeepSeek": "DeepSeek tokenizer",
+                "TokenizerGPT": "GPT tokenizer (OpenAI)",
+                "TokenizerGemini": "Gemini tokenizer (Google)",
+                "TokenizerGrok": "Grok tokenizer (xAI)",
+                "TokenizerLlama2": "LLaMA 2 tokenizer",
+                "TokenizerLlama3": "LLaMA 3 tokenizer",
+                "TokenizerLlama4": "LLaMA 4 tokenizer",
+                "TokenizerMistral": "Mistral tokenizer",
+                "TokenizerNova": "Nova tokenizer (Amazon)",
+                "TokenizerQwen": "Qwen tokenizer",
+                "TokenizerQwen3": "Qwen 3 tokenizer",
+                "TokenizerRouter": "Router-based tokenizer",
+                "TokenizerUnknown": "Unknown tokenizer type",
+                "TokenizerYi": "Yi tokenizer"
+            },
+            "x-enum-descriptions": [
+                "Claude tokenizer",
+                "Cohere tokenizer",
+                "DeepSeek tokenizer",
+                "GPT tokenizer (OpenAI)",
+                "Gemini tokenizer (Google)",
+                "Grok tokenizer (xAI)",
+                "LLaMA 2 tokenizer",
+                "LLaMA 3 tokenizer",
+                "LLaMA 4 tokenizer",
+                "Mistral tokenizer",
+                "Nova tokenizer (Amazon)",
+                "Qwen tokenizer",
+                "Qwen 3 tokenizer",
+                "Router-based tokenizer",
+                "Yi tokenizer",
+                "Unknown tokenizer type"
+            ],
+            "x-enum-varnames": [
+                "TokenizerClaude",
+                "TokenizerCohere",
+                "TokenizerDeepSeek",
+                "TokenizerGPT",
+                "TokenizerGemini",
+                "TokenizerGrok",
+                "TokenizerLlama2",
+                "TokenizerLlama3",
+                "TokenizerLlama4",
+                "TokenizerMistral",
+                "TokenizerNova",
+                "TokenizerQwen",
+                "TokenizerQwen3",
+                "TokenizerRouter",
+                "TokenizerYi",
+                "TokenizerUnknown"
+            ]
+        },
+        "catalogs.ToolChoice": {
+            "type": "string",
+            "enum": [
+                "auto",
+                "none",
+                "required"
+            ],
+            "x-enum-comments": {
+                "ToolChoiceAuto": "Model autonomously decides whether to call tools based on context",
+                "ToolChoiceNone": "Model will never call tools, even if tool definitions are provided",
+                "ToolChoiceRequired": "Model must call at least one tool before responding"
+            },
+            "x-enum-descriptions": [
+                "Model autonomously decides whether to call tools based on context",
+                "Model will never call tools, even if tool definitions are provided",
+                "Model must call at least one tool before responding"
+            ],
+            "x-enum-varnames": [
+                "ToolChoiceAuto",
+                "ToolChoiceNone",
+                "ToolChoiceRequired"
+            ]
+        },
+        "response.Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "$ref": "#/definitions/response.Error"
+                }
+            }
+        },
+        "serve.DateRange": {
+            "type": "object",
+            "properties": {
+                "after": {
+                    "type": "string"
+                },
+                "before": {
+                    "type": "string"
+                }
+            }
+        },
+        "serve.IntRange": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "integer"
+                },
+                "min": {
+                    "type": "integer"
+                }
+            }
+        },
+        "serve.SearchModalities": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "output": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serve.SearchRequest": {
+            "type": "object",
+            "properties": {
+                "context_window": {
+                    "$ref": "#/definitions/serve.IntRange"
+                },
+                "features": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
+                },
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "max_results": {
+                    "type": "integer"
+                },
+                "modalities": {
+                    "$ref": "#/definitions/serve.SearchModalities"
+                },
+                "name_contains": {
+                    "type": "string"
+                },
+                "open_weights": {
+                    "type": "boolean"
+                },
+                "order": {
+                    "type": "string"
+                },
+                "output_tokens": {
+                    "$ref": "#/definitions/serve.IntRange"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "release_date": {
+                    "$ref": "#/definitions/serve.DateRange"
+                },
+                "sort": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "time.Duration": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+                -9223372036854775808,
+                9223372036854775807,
+                1,
+                1000,
+                1000000,
+                1000000000,
+                60000000000,
+                3600000000000
+            ],
+            "x-enum-varnames": [
+                "minDuration",
+                "maxDuration",
+                "Nanosecond",
+                "Microsecond",
+                "Millisecond",
+                "Second",
+                "Minute",
+                "Hour"
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "API key for authentication (optional, configurable)",
+            "type": "apiKey",
+            "name": "X-API-Key",
+            "in": "header"
+        }
+    }
+}

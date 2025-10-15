@@ -122,7 +122,7 @@ func (id ID) String() string
 String returns the string representation of a source name.
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L31>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L34>)
 
 Option is a function that configures options.
 
@@ -131,7 +131,7 @@ type Option func(*Options)
 ```
 
 <a name="WithCleanupRepo"></a>
-### func [WithCleanupRepo](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L64>)
+### func [WithCleanupRepo](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L67>)
 
 ```go
 func WithCleanupRepo(cleanup bool) Option
@@ -140,7 +140,7 @@ func WithCleanupRepo(cleanup bool) Option
 WithCleanupRepo configures whether to clean up temporary repositories after fetch.
 
 <a name="WithFresh"></a>
-### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L50>)
+### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L53>)
 
 ```go
 func WithFresh(fresh bool) Option
@@ -149,7 +149,7 @@ func WithFresh(fresh bool) Option
 WithFresh configures fresh sync mode for sources.
 
 <a name="WithProviderFilter"></a>
-### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L43>)
+### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L46>)
 
 ```go
 func WithProviderFilter(providerID catalogs.ProviderID) Option
@@ -158,7 +158,7 @@ func WithProviderFilter(providerID catalogs.ProviderID) Option
 WithProviderFilter configures filtering for a specific provider.
 
 <a name="WithReformat"></a>
-### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L71>)
+### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L74>)
 
 ```go
 func WithReformat(reformat bool) Option
@@ -167,7 +167,7 @@ func WithReformat(reformat bool) Option
 WithReformat configures whether to reformat output files.
 
 <a name="WithSafeMode"></a>
-### func [WithSafeMode](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L57>)
+### func [WithSafeMode](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L60>)
 
 ```go
 func WithSafeMode(safeMode bool) Option
@@ -176,7 +176,7 @@ func WithSafeMode(safeMode bool) Option
 WithSafeMode configures safe mode for sources.
 
 <a name="Options"></a>
-## type [Options](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L6-L17>)
+## type [Options](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L9-L20>)
 
 Options is the configuration for sources.
 
@@ -196,7 +196,7 @@ type Options struct {
 ```
 
 <a name="Defaults"></a>
-### func [Defaults](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L20>)
+### func [Defaults](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L23>)
 
 ```go
 func Defaults() *Options
@@ -205,7 +205,7 @@ func Defaults() *Options
 Defaults returns source options with default values.
 
 <a name="Options.Apply"></a>
-### func \(\*Options\) [Apply](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L35>)
+### func \(\*Options\) [Apply](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L38>)
 
 ```go
 func (o *Options) Apply(opts ...Option) *Options

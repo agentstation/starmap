@@ -134,3 +134,6 @@ models.dev-git/
 /site/public/
 /site/resources/
 *.lock
+
+# Swagger/OpenAPI generated Go code (not the spec files)
+docs/docs.go
