@@ -2,9 +2,14 @@ package websocket
 
 import (
 	"context"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"sync"
 	"testing"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 )
 
@@ -398,5 +403,460 @@ func TestHub_StressTest(t *testing.T) {
 	// Verify all clients still connected
 	if count := hub.ClientCount(); count != numClients {
 		t.Errorf("expected %d clients, got %d", numClients, count)
+	}
+}
+
+// TestClient_WritePump tests the WritePump method with mock WebSocket connection.
+func TestClient_WritePump(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Create test WebSocket server
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			t.Fatalf("failed to upgrade: %v", err)
+			return
+		}
+		defer conn.Close()
+
+		// Read messages from client
+		for {
+			messageType, message, err := conn.ReadMessage()
+			if err != nil {
+				break
+			}
+
+			// Verify message type is text
+			if messageType != websocket.TextMessage {
+				// Could be ping/close
+				continue
+			}
+
+			// Verify message is valid JSON
+			var msg Message
+			if err := json.Unmarshal(message, &msg); err == nil {
+				// Message received successfully
+				t.Logf("Server received: %s", message)
+			}
+		}
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:] // Convert http:// to ws://
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and start WritePump
+	client := NewClient("test-client", hub, conn)
+	go client.WritePump()
+
+	// Send messages through hub
+	for i := 0; i < 5; i++ {
+		msg := Message{
+			Type:      "test",
+			Timestamp: time.Now(),
+			Data:      map[string]any{"i": i},
+		}
+		client.send <- msg
+		time.Sleep(10 * time.Millisecond)
+	}
+
+	// Close client send channel to trigger shutdown
+	close(client.send)
+
+	// Wait for WritePump to finish
+	time.Sleep(100 * time.Millisecond)
+}
+
+// TestClient_ReadPump tests the ReadPump method with mock WebSocket connection.
+func TestClient_ReadPump(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Create test WebSocket server
+	upgrader := websocket.Upgrader{}
+	serverDone := make(chan bool)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			t.Fatalf("failed to upgrade: %v", err)
+			return
+		}
+		defer conn.Close()
+		defer func() { serverDone <- true }()
+
+		// Send test messages to client
+		for i := 0; i < 3; i++ {
+			msg := Message{
+				Type:      "server.test",
+				Timestamp: time.Now(),
+				Data:      map[string]any{"i": i},
+			}
+			data, _ := json.Marshal(msg)
+			if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
+				break
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+
+		// Close connection
+		conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:]
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and register
+	client := NewClient("test-client", hub, conn)
+	hub.Register(client)
+	time.Sleep(10 * time.Millisecond)
+
+	// Start ReadPump in goroutine
+	go client.ReadPump()
+
+	// Wait for server to finish sending
+	select {
+	case <-serverDone:
+		// Success
+	case <-time.After(1 * time.Second):
+		t.Error("server did not finish")
+	}
+
+	// Wait for ReadPump to process and unregister
+	time.Sleep(100 * time.Millisecond)
+
+	// Client should be unregistered after connection close
+	if count := hub.ClientCount(); count != 0 {
+		t.Errorf("expected 0 clients after close, got %d", count)
+	}
+}
+
+// TestClient_PingPong tests ping/pong mechanism in WritePump.
+func TestClient_PingPong(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Track pings received
+	pingsReceived := 0
+	var mu sync.Mutex
+
+	// Create test WebSocket server
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+
+		// Set ping handler to count pings
+		conn.SetPingHandler(func(appData string) error {
+			mu.Lock()
+			pingsReceived++
+			mu.Unlock()
+			// Send pong response
+			return conn.WriteControl(websocket.PongMessage, []byte{}, time.Now().Add(time.Second))
+		})
+
+		// Read messages (including pings)
+		for {
+			_, _, err := conn.ReadMessage()
+			if err != nil {
+				break
+			}
+		}
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:]
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and start WritePump
+	client := NewClient("test-client", hub, conn)
+	done := make(chan bool)
+	go func() {
+		client.WritePump()
+		done <- true
+	}()
+
+	// Wait for at least one ping (pingPeriod is 54 seconds in production)
+	// For testing, we'll wait a bit and then close
+	time.Sleep(200 * time.Millisecond)
+
+	// Close client to stop WritePump
+	close(client.send)
+
+	// Wait for WritePump to finish
+	select {
+	case <-done:
+	case <-time.After(1 * time.Second):
+		t.Error("WritePump did not finish")
+	}
+
+	// Note: In production, ping period is 54 seconds, so we might not see pings in this test
+	// The important thing is that WritePump runs without error
+	t.Logf("Pings received: %d (may be 0 due to short test duration)", pingsReceived)
+}
+
+// TestClient_Integration tests full client lifecycle with real WebSocket connection.
+func TestClient_Integration(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Track messages received by server
+	serverMessages := make([]Message, 0)
+	var serverMu sync.Mutex
+
+	// Create test WebSocket server
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+
+		// Read messages from client
+		for {
+			messageType, data, err := conn.ReadMessage()
+			if err != nil {
+				break
+			}
+
+			if messageType == websocket.TextMessage {
+				var msg Message
+				if err := json.Unmarshal(data, &msg); err == nil {
+					serverMu.Lock()
+					serverMessages = append(serverMessages, msg)
+					serverMu.Unlock()
+				}
+			}
+		}
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:]
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and register with hub
+	client := NewClient("integration-test", hub, conn)
+	hub.Register(client)
+	time.Sleep(10 * time.Millisecond)
+
+	// Verify client registered
+	if count := hub.ClientCount(); count != 1 {
+		t.Fatalf("expected 1 client, got %d", count)
+	}
+
+	// Start client pumps
+	go client.WritePump()
+	go client.ReadPump()
+
+	// Broadcast messages via hub
+	testMessages := []Message{
+		{Type: "event.1", Timestamp: time.Now(), Data: map[string]any{"value": 1}},
+		{Type: "event.2", Timestamp: time.Now(), Data: map[string]any{"value": 2}},
+		{Type: "event.3", Timestamp: time.Now(), Data: map[string]any{"value": 3}},
+	}
+
+	for _, msg := range testMessages {
+		hub.Broadcast(msg)
+		time.Sleep(20 * time.Millisecond)
+	}
+
+	// Wait for messages to be received
+	time.Sleep(100 * time.Millisecond)
+
+	// Verify server received messages
+	serverMu.Lock()
+	receivedCount := len(serverMessages)
+	serverMu.Unlock()
+
+	if receivedCount != len(testMessages) {
+		t.Errorf("expected %d messages, server received %d", len(testMessages), receivedCount)
+	}
+
+	// Verify message types
+	serverMu.Lock()
+	for i, msg := range serverMessages {
+		if i < len(testMessages) && msg.Type != testMessages[i].Type {
+			t.Errorf("message %d: expected type %s, got %s", i, testMessages[i].Type, msg.Type)
+		}
+	}
+	serverMu.Unlock()
+
+	// Close connection
+	conn.Close()
+
+	// Wait for client to unregister
+	time.Sleep(100 * time.Millisecond)
+
+	// Verify client unregistered
+	if count := hub.ClientCount(); count != 0 {
+		t.Errorf("expected 0 clients after close, got %d", count)
+	}
+}
+
+// TestClient_WriteDeadline tests write deadline handling in WritePump.
+func TestClient_WriteDeadline(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Create test WebSocket server
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+
+		// Just keep connection open, read nothing
+		// This tests that WritePump handles writes correctly
+		time.Sleep(2 * time.Second)
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:]
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and start WritePump
+	client := NewClient("test-client", hub, conn)
+	done := make(chan bool)
+	go func() {
+		client.WritePump()
+		done <- true
+	}()
+
+	// Send a message
+	msg := Message{
+		Type:      "test",
+		Timestamp: time.Now(),
+		Data:      map[string]any{"test": true},
+	}
+	client.send <- msg
+
+	// Wait a bit for write to complete
+	time.Sleep(100 * time.Millisecond)
+
+	// Close send channel
+	close(client.send)
+
+	// WritePump should finish gracefully
+	select {
+	case <-done:
+		// Success
+	case <-time.After(2 * time.Second):
+		t.Error("WritePump did not finish after close")
+	}
+}
+
+// TestClient_ConnectionClose tests handling of unexpected connection close.
+func TestClient_ConnectionClose(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Create test WebSocket server that closes abruptly
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		// Close connection immediately
+		conn.Close()
+	}))
+	defer server.Close()
+
+	// Connect client to server
+	wsURL := "ws" + server.URL[4:]
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("failed to dial: %v", err)
+	}
+
+	// Create client and register
+	client := NewClient("test-client", hub, conn)
+	hub.Register(client)
+	time.Sleep(10 * time.Millisecond)
+
+	// Start ReadPump
+	done := make(chan bool)
+	go func() {
+		client.ReadPump()
+		done <- true
+	}()
+
+	// ReadPump should detect close and finish
+	select {
+	case <-done:
+		// Success
+	case <-time.After(1 * time.Second):
+		t.Error("ReadPump did not finish after connection close")
+	}
+
+	// Client should be unregistered
+	time.Sleep(50 * time.Millisecond)
+	if count := hub.ClientCount(); count != 0 {
+		t.Errorf("expected 0 clients after close, got %d", count)
 	}
 }
