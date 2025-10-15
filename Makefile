@@ -501,20 +501,24 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 	fi
 
 # Documentation
-openapi: ## Generate OpenAPI 3.0 documentation
+openapi: ## Generate OpenAPI 3.0 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.0 documentation...$(NC)"
 	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Install with devbox or: go install github.com/swaggo/swag/cmd/swag@latest$(NC)" && exit 1)
 	@$(RUN_PREFIX) which node > /dev/null || (echo "$(RED)node not found. Install with devbox$(NC)" && exit 1)
-	@echo "$(YELLOW)Step 1/3: Generating Swagger 2.0 with swag...$(NC)"
-	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/api.go -o docs --parseDependency --parseInternal
-	@echo "$(YELLOW)Step 2/3: Converting Swagger 2.0 to OpenAPI 3.0...$(NC)"
-	@$(RUN_PREFIX) npx --yes swagger2openapi@latest docs/swagger.json -o docs/openapi.json
-	@$(RUN_PREFIX) npx --yes swagger2openapi@latest docs/swagger.yaml -o docs/openapi.yaml -y
-	@echo "$(YELLOW)Step 3/3: Cleaning up Swagger 2.0 files...$(NC)"
-	@rm -f docs/swagger.json docs/swagger.yaml
-	@echo "$(GREEN)OpenAPI 3.0 documentation generated in docs/$(NC)"
-	@echo "$(GREEN)  - docs/openapi.json (JSON format)$(NC)"
-	@echo "$(GREEN)  - docs/openapi.yaml (YAML format)$(NC)"
+	@echo "$(YELLOW)Step 1/4: Generating Swagger 2.0 with swag...$(NC)"
+	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/api.go -o internal/embedded/openapi --parseDependency --parseInternal
+	@echo "$(YELLOW)Step 2/4: Converting Swagger 2.0 to OpenAPI 3.0...$(NC)"
+	@$(RUN_PREFIX) npx --yes swagger2openapi@latest internal/embedded/openapi/swagger.json -o internal/embedded/openapi/openapi.json
+	@$(RUN_PREFIX) npx --yes swagger2openapi@latest internal/embedded/openapi/swagger.yaml -o internal/embedded/openapi/openapi.yaml -y
+	@echo "$(YELLOW)Step 3/4: Cleaning up intermediate files...$(NC)"
+	@rm -f internal/embedded/openapi/swagger.json internal/embedded/openapi/swagger.yaml internal/embedded/openapi/docs.go
+	@echo "$(YELLOW)Step 4/4: Verifying embedded specs...$(NC)"
+	@test -f internal/embedded/openapi/openapi.json || (echo "$(RED)Error: openapi.json not found$(NC)" && exit 1)
+	@test -f internal/embedded/openapi/openapi.yaml || (echo "$(RED)Error: openapi.yaml not found$(NC)" && exit 1)
+	@echo "$(GREEN)OpenAPI 3.0 specs generated and ready for embedding$(NC)"
+	@echo "$(GREEN)  - internal/embedded/openapi/openapi.json$(NC)"
+	@echo "$(GREEN)  - internal/embedded/openapi/openapi.yaml$(NC)"
+	@echo "$(BLUE)Specs will be embedded in binary via //go:embed$(NC)"
 
 generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"

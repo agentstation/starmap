@@ -288,6 +288,10 @@ func buildHandler(apiServer *APIServer, app application.Application, config Serv
 	mux.HandleFunc(config.PathPrefix+"/updates/ws", apiServer.HandleWebSocket)
 	mux.HandleFunc(config.PathPrefix+"/updates/stream", apiServer.HandleSSE)
 
+	// OpenAPI specification endpoints
+	mux.HandleFunc(config.PathPrefix+"/openapi.json", apiServer.HandleOpenAPIJSON)
+	mux.HandleFunc(config.PathPrefix+"/openapi.yaml", apiServer.HandleOpenAPIYAML)
+
 	// Metrics endpoint (optional)
 	if config.MetricsEnabled {
 		mux.HandleFunc("/metrics", func(w http.ResponseWriter, _ *http.Request) {

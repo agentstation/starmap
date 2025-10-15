@@ -260,6 +260,32 @@ paths:
       summary: Search models
       tags:
         - models
+  /api/v1/openapi.json:
+    get:
+      description: Returns the OpenAPI 3.0 specification for this API in JSON format
+      responses:
+        "200":
+          description: OpenAPI 3.0 specification
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Get OpenAPI specification (JSON)
+      tags:
+        - meta
+  /api/v1/openapi.yaml:
+    get:
+      description: Returns the OpenAPI 3.0 specification for this API in YAML format
+      responses:
+        "200":
+          description: OpenAPI 3.0 specification
+          content:
+            application/x-yaml:
+              schema:
+                type: string
+      summary: Get OpenAPI specification (YAML)
+      tags:
+        - meta
   /api/v1/providers:
     get:
       description: List all providers

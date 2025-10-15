@@ -437,6 +437,48 @@
                 }
             }
         },
+        "/api/v1/openapi.json": {
+            "get": {
+                "description": "Returns the OpenAPI 3.0 specification for this API in JSON format",
+                "tags": [
+                    "meta"
+                ],
+                "summary": "Get OpenAPI specification (JSON)",
+                "responses": {
+                    "200": {
+                        "description": "OpenAPI 3.0 specification",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/openapi.yaml": {
+            "get": {
+                "description": "Returns the OpenAPI 3.0 specification for this API in YAML format",
+                "tags": [
+                    "meta"
+                ],
+                "summary": "Get OpenAPI specification (YAML)",
+                "responses": {
+                    "200": {
+                        "description": "OpenAPI 3.0 specification",
+                        "content": {
+                            "application/x-yaml": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/providers": {
             "get": {
                 "security": [

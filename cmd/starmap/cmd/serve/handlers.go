@@ -11,6 +11,7 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/provider"
+	"github.com/agentstation/starmap/internal/embedded/openapi"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/filter"
 	"github.com/agentstation/starmap/internal/server/response"
@@ -635,4 +636,30 @@ func extractPathParam(path, prefix string) string {
 		return parts[0]
 	}
 	return ""
+}
+
+// HandleOpenAPIJSON serves the embedded OpenAPI 3.0 specification in JSON format.
+// @Summary Get OpenAPI specification (JSON)
+// @Description Returns the OpenAPI 3.0 specification for this API in JSON format
+// @Tags meta
+// @Produce json
+// @Success 200 {object} object "OpenAPI 3.0 specification"
+// @Router /api/v1/openapi.json [get].
+func (s *APIServer) HandleOpenAPIJSON(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "public, max-age=3600") // Cache for 1 hour
+	_, _ = w.Write(openapi.SpecJSON)
+}
+
+// HandleOpenAPIYAML serves the embedded OpenAPI 3.0 specification in YAML format.
+// @Summary Get OpenAPI specification (YAML)
+// @Description Returns the OpenAPI 3.0 specification for this API in YAML format
+// @Tags meta
+// @Produce application/x-yaml
+// @Success 200 {string} string "OpenAPI 3.0 specification"
+// @Router /api/v1/openapi.yaml [get].
+func (s *APIServer) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/x-yaml")
+	w.Header().Set("Cache-Control", "public, max-age=3600") // Cache for 1 hour
+	_, _ = w.Write(openapi.SpecYAML)
 }

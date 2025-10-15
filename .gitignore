@@ -135,7 +135,7 @@ models.dev-git/
 /site/resources/
 *.lock
 
-# Swagger/OpenAPI generated files
-docs/docs.go          # Generated Go code (not needed in git)
-docs/swagger.json     # Intermediate Swagger 2.0 (converted to OpenAPI 3.0)
-docs/swagger.yaml     # Intermediate Swagger 2.0 (converted to OpenAPI 3.0)
+# Swagger/OpenAPI intermediate files (cleaned up during generation)
+internal/embedded/openapi/docs.go      # Generated Go code (not needed, we use //go:embed)
+internal/embedded/openapi/swagger.json # Intermediate Swagger 2.0 (converted to OpenAPI 3.0)
+internal/embedded/openapi/swagger.yaml # Intermediate Swagger 2.0 (converted to OpenAPI 3.0)
