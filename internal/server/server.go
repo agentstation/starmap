@@ -30,6 +30,7 @@ type Server struct {
 	config         Config
 	ctx            context.Context
 	cancel         context.CancelFunc
+	startTime      time.Time
 }
 
 // New creates a new server instance with the given configuration.
@@ -58,13 +59,13 @@ func New(app application.Application, cfg Config) (*Server, error) {
 	logger.Debug().Msg("SSE broadcaster created")
 
 	// Subscribe transports to broker
-	logger.Debug().Msg("Subscribing WebSocket adapter to broker")
+	logger.Debug().Msg("Subscribing WebSocket transport to event broker")
 	broker.Subscribe(adapters.NewWebSocketSubscriber(wsHub))
-	logger.Debug().Msg("WebSocket adapter subscribed")
+	logger.Debug().Msg("WebSocket transport subscribed - real-time updates active")
 
-	logger.Debug().Msg("Subscribing SSE adapter to broker")
+	logger.Debug().Msg("Subscribing SSE transport to event broker")
 	broker.Subscribe(adapters.NewSSESubscriber(sseBroadcaster))
-	logger.Debug().Msg("SSE adapter subscribed")
+	logger.Debug().Msg("SSE transport subscribed - streaming updates active")
 
 	// Create context for managing background services
 	ctx, cancel := context.WithCancel(context.Background())
@@ -82,10 +83,11 @@ func New(app application.Application, cfg Config) (*Server, error) {
 				return true // Allow all origins for WebSocket
 			},
 		},
-		logger: logger,
-		config: cfg,
-		ctx:    ctx,
-		cancel: cancel,
+		logger:    logger,
+		config:    cfg,
+		ctx:       ctx,
+		cancel:    cancel,
+		startTime: time.Now(),
 	}
 
 	// Connect Starmap hooks to event broker
@@ -201,4 +203,9 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster {
 // Broker returns the event broker for publishing events.
 func (s *Server) Broker() *events.Broker {
 	return s.broker
+}
+
+// StartTime returns the server start time for uptime calculations.
+func (s *Server) StartTime() time.Time {
+	return s.startTime
 }

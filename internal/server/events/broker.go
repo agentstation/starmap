@@ -3,6 +3,7 @@ package events
 import (
 	"context"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -12,12 +13,14 @@ import (
 // It provides a central hub for catalog events, fanning them out to
 // all registered subscribers (WebSocket, SSE, etc.) concurrently.
 type Broker struct {
-	subscribers []Subscriber
-	events      chan Event
-	register    chan Subscriber
-	unregister  chan Subscriber
-	mu          sync.RWMutex
-	logger      *zerolog.Logger
+	subscribers      []Subscriber
+	events           chan Event
+	register         chan Subscriber
+	unregister       chan Subscriber
+	mu               sync.RWMutex
+	logger           *zerolog.Logger
+	eventsPublished  uint64 // atomic counter
+	eventsDropped    uint64 // atomic counter
 }
 
 // NewBroker creates a new event broker.
@@ -51,9 +54,9 @@ func (b *Broker) Run(ctx context.Context) {
 			b.mu.Lock()
 			b.subscribers = append(b.subscribers, sub)
 			b.mu.Unlock()
-			b.logger.Info().
+			b.logger.Debug().
 				Int("total_subscribers", len(b.subscribers)).
-				Msg("Subscriber registered")
+				Msg("Internal subscriber registered")
 
 		case sub := <-b.unregister:
 			b.mu.Lock()
@@ -65,11 +68,13 @@ func (b *Broker) Run(ctx context.Context) {
 				}
 			}
 			b.mu.Unlock()
-			b.logger.Info().
+			b.logger.Debug().
 				Int("total_subscribers", len(b.subscribers)).
-				Msg("Subscriber unregistered")
+				Msg("Internal subscriber unregistered")
 
 		case event := <-b.events:
+			atomic.AddUint64(&b.eventsPublished, 1)
+
 			b.mu.RLock()
 			subs := make([]Subscriber, len(b.subscribers))
 			copy(subs, b.subscribers)
@@ -106,6 +111,7 @@ func (b *Broker) Publish(eventType EventType, data any) {
 	select {
 	case b.events <- event:
 	default:
+		atomic.AddUint64(&b.eventsDropped, 1)
 		b.logger.Warn().
 			Str("event_type", string(eventType)).
 			Msg("Event channel full, event dropped")
@@ -127,4 +133,19 @@ func (b *Broker) SubscriberCount() int {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 	return len(b.subscribers)
+}
+
+// EventsPublished returns the total number of events published.
+func (b *Broker) EventsPublished() uint64 {
+	return atomic.LoadUint64(&b.eventsPublished)
+}
+
+// EventsDropped returns the total number of events dropped.
+func (b *Broker) EventsDropped() uint64 {
+	return atomic.LoadUint64(&b.eventsDropped)
+}
+
+// QueueDepth returns the current number of events in the queue.
+func (b *Broker) QueueDepth() int {
+	return len(b.events)
 }

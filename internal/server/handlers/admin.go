@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"net/http"
+	"runtime"
+	"time"
 
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
@@ -61,7 +63,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 
 // HandleStats handles GET /api/v1/stats.
 // @Summary Catalog statistics
-// @Description Get catalog statistics (model count, provider count, last sync)
+// @Description Get comprehensive server and catalog statistics
 // @Tags admin
 // @Accept json
 // @Produce json
@@ -69,7 +71,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} response.Response{error=response.Error}
 // @Security ApiKeyAuth
 // @Router /api/v1/stats [get].
-func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
+func (h *Handlers) HandleStats(w http.ResponseWriter, r *http.Request) {
 	cat, err := h.app.Catalog()
 	if err != nil {
 		response.InternalError(w, err)
@@ -79,17 +81,36 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 	models := cat.Models().List()
 	providers := cat.Providers().List()
 
+	// Get runtime stats
+	var memStats runtime.MemStats
+	runtime.ReadMemStats(&memStats)
+
+	// Get server from context (if available) for uptime
+	uptime := time.Duration(0)
+	if srv, ok := r.Context().Value("server").(interface{ StartTime() time.Time }); ok {
+		uptime = time.Since(srv.StartTime())
+	}
+
 	response.OK(w, map[string]any{
-		"models": map[string]any{
-			"total": len(models),
+		"runtime": map[string]any{
+			"uptime_seconds": int64(uptime.Seconds()),
+			"goroutines":     runtime.NumGoroutine(),
+			"memory_mb":      memStats.Alloc / 1024 / 1024,
+			"memory_sys_mb":  memStats.Sys / 1024 / 1024,
 		},
-		"providers": map[string]any{
-			"total": len(providers),
+		"catalog": map[string]any{
+			"models_total":    len(models),
+			"providers_total": len(providers),
 		},
-		"cache": h.cache.GetStats(),
+		"events": map[string]any{
+			"published_total": h.broker.EventsPublished(),
+			"dropped_total":   h.broker.EventsDropped(),
+			"queue_depth":     h.broker.QueueDepth(),
+		},
 		"realtime": map[string]any{
 			"websocket_clients": h.wsHub.ClientCount(),
 			"sse_clients":       h.sseBroadcaster.ClientCount(),
 		},
+		"cache": h.cache.GetStats(),
 	})
 }
