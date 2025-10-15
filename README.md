@@ -400,9 +400,67 @@ For detailed source hierarchy, authority rules, and how sources work together, s
 
 Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, and more). Each package includes comprehensive documentation in its README.
 
-## HTTP Server (Coming Soon)
+## HTTP Server
 
-Future HTTP server with REST API, GraphQL, WebSocket, and webhooks for centralized catalog service with multi-tenant support.
+Start a production-ready REST API server for programmatic catalog access:
+
+```bash
+# Start on default port 8080
+starmap serve
+
+# Custom configuration
+starmap serve --port 3000 --cors --auth --rate-limit 100
+
+# With specific CORS origins
+starmap serve --cors-origins "https://example.com,https://app.example.com"
+```
+
+**Features:**
+- **RESTful API**: Models, providers, search endpoints with filtering
+- **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`)
+- **Performance**: In-memory caching, rate limiting (per-IP)
+- **Security**: Optional API key authentication, CORS support
+- **Monitoring**: Health checks (`/health`, `/api/v1/ready`), metrics endpoint
+- **Documentation**: OpenAPI 3.1 specs at `/api/v1/openapi.json`
+
+**API Endpoints:**
+```bash
+# Models
+GET  /api/v1/models              # List with filtering
+GET  /api/v1/models/{id}         # Get specific model
+POST /api/v1/models/search       # Advanced search
+
+# Providers
+GET  /api/v1/providers           # List providers
+GET  /api/v1/providers/{id}      # Get specific provider
+GET  /api/v1/providers/{id}/models  # Get provider's models
+
+# Admin
+POST /api/v1/update              # Trigger catalog sync
+GET  /api/v1/stats               # Catalog statistics
+
+# Health
+GET  /health                     # Liveness probe
+GET  /api/v1/ready               # Readiness check
+```
+
+**Configuration Flags:**
+- `--port, -p`: Server port (default: 8080)
+- `--host`: Bind address (default: localhost)
+- `--cors`: Enable CORS for all origins
+- `--cors-origins`: Specific CORS origins (comma-separated)
+- `--auth`: Enable API key authentication
+- `--rate-limit`: Requests per minute per IP (default: 100)
+- `--cache-ttl`: Cache TTL in seconds (default: 300)
+
+**Environment Variables:**
+```bash
+HTTP_PORT=8080
+HTTP_HOST=0.0.0.0
+STARMAP_API_KEY=your-api-key  # If --auth enabled
+```
+
+For full server documentation, see [internal/server/README.md](internal/server/README.md).
 
 ## Configuration
 

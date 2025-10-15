@@ -90,14 +90,15 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func WithAutoUpdatesDisabled\(\) Option](<#WithAutoUpdatesDisabled>)
   - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
   - [func WithLocalPath\(path string\) Option](<#WithLocalPath>)
-  - [func WithRemoteServer\(url string, apiKey \*string\) Option](<#WithRemoteServer>)
-  - [func WithRemoteServerOnly\(\) Option](<#WithRemoteServerOnly>)
+  - [func WithRemoteServerAPIKey\(apiKey string\) Option](<#WithRemoteServerAPIKey>)
+  - [func WithRemoteServerOnly\(url string\) Option](<#WithRemoteServerOnly>)
+  - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
 - [type Persistence](<#Persistence>)
 - [type Updater](<#Updater>)
 
 
 <a name="AutoUpdateFunc"></a>
-## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L98>)
+## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L105>)
 
 AutoUpdateFunc is a function that updates the catalog.
 
@@ -211,7 +212,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L51>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L52>)
 
 Option is a function that configures a Starmap instance.
 
@@ -220,7 +221,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAutoUpdateFunc"></a>
-### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L101>)
+### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L108>)
 
 ```go
 func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
@@ -229,7 +230,7 @@ func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
 WithAutoUpdateFunc configures a custom function for updating the catalog.
 
 <a name="WithAutoUpdateInterval"></a>
-### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L90>)
+### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L97>)
 
 ```go
 func WithAutoUpdateInterval(interval time.Duration) Option
@@ -238,7 +239,7 @@ func WithAutoUpdateInterval(interval time.Duration) Option
 WithAutoUpdateInterval configures how often to automatically update the catalog.
 
 <a name="WithAutoUpdatesDisabled"></a>
-### func [WithAutoUpdatesDisabled](<https://github.com/agentstation/starmap/blob/master/options.go#L82>)
+### func [WithAutoUpdatesDisabled](<https://github.com/agentstation/starmap/blob/master/options.go#L89>)
 
 ```go
 func WithAutoUpdatesDisabled() Option
@@ -247,7 +248,7 @@ func WithAutoUpdatesDisabled() Option
 WithAutoUpdatesDisabled configures whether automatic updates are disabled.
 
 <a name="WithEmbeddedCatalog"></a>
-### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L126>)
+### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L133>)
 
 ```go
 func WithEmbeddedCatalog() Option
@@ -256,7 +257,7 @@ func WithEmbeddedCatalog() Option
 WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithLocalPath if set.
 
 <a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L117>)
+### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L124>)
 
 ```go
 func WithLocalPath(path string) Option
@@ -264,23 +265,32 @@ func WithLocalPath(path string) Option
 
 WithLocalPath configures the local source to use a specific catalog path.
 
-<a name="WithRemoteServer"></a>
-### func [WithRemoteServer](<https://github.com/agentstation/starmap/blob/master/options.go#L65>)
+<a name="WithRemoteServerAPIKey"></a>
+### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/master/options.go#L72>)
 
 ```go
-func WithRemoteServer(url string, apiKey *string) Option
+func WithRemoteServerAPIKey(apiKey string) Option
 ```
 
-WithRemoteServer configures the remote server for catalog updates. A url is required, an api key can be provided for authentication, otherwise use nil to skip Bearer token authentication.
+WithRemoteServerAPIKey configures the remote server API key.
 
 <a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L74>)
+### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L80>)
 
 ```go
-func WithRemoteServerOnly() Option
+func WithRemoteServerOnly(url string) Option
 ```
 
 WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
+
+<a name="WithRemoteServerURL"></a>
+### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/master/options.go#L64>)
+
+```go
+func WithRemoteServerURL(url string) Option
+```
+
+WithRemoteServerURL configures the remote server URL.
 
 <a name="Persistence"></a>
 ## type [Persistence](<https://github.com/agentstation/starmap/blob/master/persistence.go#L12-L15>)

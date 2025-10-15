@@ -501,11 +501,28 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 	fi
 
 # Documentation
-generate: ## Generate all documentation (Go docs only)
+openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
+	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
+	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
+	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
+	@$(RUN_PREFIX) swag init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
+	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
+	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
+	@mv internal/embedded/openapi/swagger.yaml internal/embedded/openapi/openapi.yaml
+	@rm -f internal/embedded/openapi/docs.go
+	@echo "$(YELLOW)Step 3/3: Verifying embedded specs...$(NC)"
+	@test -f internal/embedded/openapi/openapi.json || (echo "$(RED)Error: openapi.json not found$(NC)" && exit 1)
+	@test -f internal/embedded/openapi/openapi.yaml || (echo "$(RED)Error: openapi.yaml not found$(NC)" && exit 1)
+	@echo "$(GREEN)OpenAPI 3.1 specs generated and ready for embedding$(NC)"
+	@echo "$(GREEN)  - internal/embedded/openapi/openapi.json$(NC)"
+	@echo "$(GREEN)  - internal/embedded/openapi/openapi.yaml$(NC)"
+	@echo "$(BLUE)Specs will be embedded in binary via //go:embed$(NC)"
+
+generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
 	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
 	$(GOCMD) generate ./...
-	@echo "$(GREEN)Go documentation generation complete$(NC)"
+	@echo "$(GREEN)All documentation generation complete$(NC)"
 
 godoc: ## Generate only Go documentation using go generate
 	@echo "$(BLUE)Generating Go documentation...$(NC)"

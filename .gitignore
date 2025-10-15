@@ -128,9 +128,14 @@ config.local.*
 # models.dev sources (created during sync)
 models.dev-git/
 
-# Hugo generated directories
+# Hugo-generated files (Hugo is no longer used but files may exist locally)
 /public/
-/resources/
-/site/public/
-/site/resources/
 *.lock
+
+# OpenAPI intermediate files (cleaned up during generation)
+internal/embedded/openapi/docs.go      # Generated Go code (not needed, we use //go:embed)
+internal/embedded/openapi/swagger.json # Temporary file (renamed to openapi.json)
+internal/embedded/openapi/swagger.yaml # Temporary file (renamed to openapi.yaml)
+
+# Nix build artifacts
+/devbox/swag/result  # Nix build output symlink

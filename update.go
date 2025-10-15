@@ -33,23 +33,23 @@ var _ Updater = (*client)(nil)
 
 // Update manually triggers a catalog update.
 func (c *client) Update(ctx context.Context) error {
-	if	c.options.remoteServerURL != nil {
-		return	c.updateFromServer(ctx)
+	if c.options.remoteServerURL != nil {
+		return c.updateFromServer(ctx)
 	}
 
-	if	c.options.autoUpdateFunc != nil {
+	if c.options.autoUpdateFunc != nil {
 		c.mu.RLock()
-		currentCatalog :=	c.catalog
+		currentCatalog := c.catalog
 		c.mu.RUnlock()
 
-		newCatalog, err :=	c.options.autoUpdateFunc(currentCatalog)
+		newCatalog, err := c.options.autoUpdateFunc(currentCatalog)
 		if err != nil {
 			return err
 		}
 		c.setCatalog(newCatalog)
 	} else {
 		// Use pipeline-based update as default
-		return	c.updateWithPipeline(ctx)
+		return c.updateWithPipeline(ctx)
 	}
 
 	return nil
@@ -64,14 +64,14 @@ func (c *client) updateWithPipeline(ctx context.Context) error {
 	}
 
 	// Perform a sync operation with default options
-	_, err :=	c.Sync(ctx, opts...)
+	_, err := c.Sync(ctx, opts...)
 
 	return err
 }
 
 // updateFromServer fetches catalog updates from the remote server.
 func (c *client) updateFromServer(ctx context.Context) error {
-	if	c.options.remoteServerURL == nil {
+	if c.options.remoteServerURL == nil {
 		return &errors.ConfigError{
 			Component: "starmap",
 			Message:   "remote server URL is not set",
@@ -88,7 +88,7 @@ func (c *client) updateFromServer(ctx context.Context) error {
 		return errors.WrapResource("create", "request", "", err)
 	}
 
-	if	c.options.remoteServerAPIKey != nil {
+	if c.options.remoteServerAPIKey != nil {
 		req.Header.Set("Authorization", "Bearer "+*c.options.remoteServerAPIKey)
 	}
 
@@ -196,7 +196,7 @@ func (c *client) updateFromServer(ctx context.Context) error {
 // setCatalog updates the catalog and triggers appropriate event hooks.
 func (c *client) setCatalog(newCatalog catalogs.Catalog) {
 	c.mu.Lock()
-	oldCatalog :=	c.catalog
+	oldCatalog := c.catalog
 	c.catalog = newCatalog
 	c.mu.Unlock()
 

@@ -256,7 +256,7 @@ for _, provider := range providers {
 
 **Core packages**: catalogs, reconciler, authority, sources, errors, logging, constants, convert
 
-**Internal**: embedded, sources/{providers,modelsdev,local,clients}, transport
+**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local,clients}, transport
 
 **Application**: cmd/application (interface), cmd/starmap/app (implementation)
 
@@ -289,6 +289,10 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `sync.go` | 12-step sync pipeline |
 | `cmd/application/application.go` | Application interface (idiomatic location) |
 | `cmd/starmap/app/app.go` | App implementation |
+| `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |
+| `internal/server/server.go` | Server lifecycle & dependencies |
+| `internal/server/router.go` | Route registration & middleware |
+| `internal/server/handlers/handlers.go` | Handler base structure |
 | `pkg/reconciler/reconciler.go` | Multi-source reconciliation |
 | `pkg/authority/authority.go` | Field-level authorities |
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |

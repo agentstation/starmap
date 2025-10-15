@@ -1,3 +1,4 @@
+// Package ptr provides utility functions for creating pointers to values.
 package ptr
 
 // To creates a pointer to the given value.
