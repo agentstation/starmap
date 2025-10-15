@@ -16,7 +16,7 @@
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-AGPL%203.0-blue)](LICENSE)
 
-[Installation](#installation) • [Quick Start](#quick-start) • [API Reference](API.md) • [Contributing](CONTRIBUTING.md)
+[Installation](#installation) • [Quick Start](#quick-start) • [API Reference](docs/API.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -186,7 +186,7 @@ Starmap uses a layered architecture with clean separation of concerns:
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
 - **Storage Backends**: Memory, filesystem, embedded, or custom (S3, GCS, etc.)
 
-For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## Core Concepts
 
@@ -204,7 +204,7 @@ Intelligent multi-source data merging with field-level authority, provenance tra
 ### 4. Model
 Comprehensive AI model specification including capabilities (chat, vision, audio), pricing (token costs), limits (context window, rate limits), and metadata. See [pkg/catalogs/README.md](pkg/catalogs/README.md) for the complete Model structure.
 
-For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](ARCHITECTURE.md#system-components)**.
+For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](docs/ARCHITECTURE.md#system-components)**.
 
 ## Project Structure
 
@@ -233,7 +233,7 @@ Starmap provides two levels of data management complexity:
 - ✅ Need audit trail of data sources
 - ✅ Building production systems
 
-For architecture details and reconciliation strategies, see **[ARCHITECTURE.md § Reconciliation System](ARCHITECTURE.md#reconciliation-system)**.
+For architecture details and reconciliation strategies, see **[ARCHITECTURE.md § Reconciliation System](docs/ARCHITECTURE.md#reconciliation-system)**.
 
 ## CLI Usage
 
@@ -394,7 +394,7 @@ Starmap combines data from multiple sources:
 - **Embedded Catalog**: Baseline data shipped with starmap
 - **Local Files**: User customizations and overrides
 
-For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](ARCHITECTURE.md#data-sources)**.
+For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](docs/ARCHITECTURE.md#data-sources)**.
 
 ## Model Catalog
 
@@ -561,11 +561,11 @@ Built with ❤️ by the Starmap Community
 
 ## API Reference
 
-For complete API documentation including all types, interfaces, and functions, see **[API.md](API.md)**.
+For complete API documentation including all types, interfaces, and functions, see **[API.md](docs/API.md)**.
 
 Quick links:
-- [Client Interface](API.md#client)
-- [Catalog Operations](API.md#catalog)
-- [Sync and Updates](API.md#updater)
-- [Event Hooks](API.md#hooks)
-- [Configuration Options](API.md#option)
+- [Client Interface](docs/API.md#client)
+- [Catalog Operations](docs/API.md#catalog)
+- [Sync and Updates](docs/API.md#updater)
+- [Event Hooks](docs/API.md#hooks)
+- [Configuration Options](docs/API.md#option)

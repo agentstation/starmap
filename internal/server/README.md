@@ -159,7 +159,7 @@ WS   /api/v1/updates/ws          # WebSocket connection
 GET  /api/v1/updates/stream      # Server-Sent Events
 ```
 
-For complete API documentation, see [REST_API.md](../../REST_API.md).
+For complete API documentation, see [REST_API.md](../../docs/REST_API.md).
 
 ## Features
 
@@ -289,6 +289,6 @@ swag init --dir internal/server --output internal/embedded/openapi --ot json,yam
 
 ## References
 
-- [REST_API.md](../../REST_API.md) - Complete REST API documentation
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) - Overall system architecture
+- [REST_API.md](../../docs/REST_API.md) - Complete REST API documentation
+- [ARCHITECTURE.md](../../docs/ARCHITECTURE.md) - Overall system architecture
 - [OpenAPI Spec](internal/embedded/openapi/) - Interactive API documentation

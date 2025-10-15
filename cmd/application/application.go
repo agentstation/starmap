@@ -61,7 +61,7 @@ import (
 // Thread Safety: All methods must be safe for concurrent access.
 type Application interface {
 	// Catalog returns a deep copy of the current catalog from the default starmap instance.
-	// Per ARCHITECTURE.md § Thread Safety section, this ALWAYS returns a deep copy to prevent data races.
+	// Per docs/ARCHITECTURE.md § Thread Safety section, this ALWAYS returns a deep copy to prevent data races.
 	// This is a convenience method for commands that just need catalog access.
 	Catalog() (catalogs.Catalog, error)
 

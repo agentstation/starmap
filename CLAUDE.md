@@ -2,13 +2,13 @@
 
 > LLM coding assistant instructions for the Starmap project
 
-This file provides Claude Code with project-specific guidance for working in this repository. For technical architecture details, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+This file provides Claude Code with project-specific guidance for working in this repository. For technical architecture details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## Project Overview
 
 Starmap is a unified AI model catalog system that combines data from provider APIs, models.dev, and embedded sources into a single authoritative catalog.
 
-**For technical deep dive:** See [ARCHITECTURE.md](ARCHITECTURE.md)
+**For technical deep dive:** See [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Quick Start
 
@@ -31,7 +31,7 @@ make testdata PROVIDER=openai           # Update testdata
 
 ### Thread Safety
 
-**See ARCHITECTURE.md § Thread Safety for full details**
+**See docs/ARCHITECTURE.md § Thread Safety for full details**
 
 **NEVER return direct references - ALWAYS return deep copies:**
 
@@ -100,7 +100,7 @@ go test ./internal/sources/providers/<provider> -update
 
 ## Architecture Quick Reference
 
-For detailed architecture, see [ARCHITECTURE.md](ARCHITECTURE.md). Here's a quick reference:
+For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md). Here's a quick reference:
 
 ### System Layers
 
@@ -124,7 +124,7 @@ Internal Implementations (embedded, providers, modelsdev)
 
 ### Sync Pipeline (12 Steps)
 
-See ARCHITECTURE.md § Sync Pipeline for details:
+See docs/ARCHITECTURE.md § Sync Pipeline for details:
 
 1. Check/set context
 2. Parse options
@@ -141,7 +141,7 @@ See ARCHITECTURE.md § Sync Pipeline for details:
 
 ### Reconciliation System
 
-See ARCHITECTURE.md § Reconciliation System for details:
+See docs/ARCHITECTURE.md § Reconciliation System for details:
 
 - **Authority Strategy**: Field-level priorities (default)
 - **Source Order Strategy**: Fixed precedence
@@ -152,7 +152,7 @@ See ARCHITECTURE.md § Reconciliation System for details:
 
 ### Add New Provider
 
-See ARCHITECTURE.md § Data Sources for authority hierarchy.
+See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 1. Add to `internal/embedded/catalog/providers.yaml`
 2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras)
@@ -162,7 +162,7 @@ See ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 ### Modify Sync Logic
 
-See ARCHITECTURE.md § Sync Pipeline for 12-step process.
+See docs/ARCHITECTURE.md § Sync Pipeline for 12-step process.
 
 The sync pipeline is in `sync.go` with staged execution:
 - Filter → Fetch (concurrent) → Reconcile → Save
@@ -170,7 +170,7 @@ The sync pipeline is in `sync.go` with staged execution:
 
 ### Update Reconciliation
 
-See ARCHITECTURE.md § Reconciliation System for strategy details.
+See docs/ARCHITECTURE.md § Reconciliation System for strategy details.
 
 - Modify authorities: `pkg/authority/authority.go`
 - Strategies: `pkg/reconciler/strategy.go`
@@ -216,7 +216,7 @@ See examples: `starmap.New()`, `catalogs.New()`, `sync.WithProvider()`
 
 ### Dependency Injection
 
-See ARCHITECTURE.md § Application Layer for interface pattern.
+See docs/ARCHITECTURE.md § Application Layer for interface pattern.
 
 ```go
 // Interface defined where it's used (cmd/application/)
@@ -234,7 +234,7 @@ func (a *App) Catalog() (catalogs.Catalog, error) { /* ... */ }
 
 ### Concurrent Fetching
 
-See ARCHITECTURE.md § Data Sources for concurrent pattern.
+See docs/ARCHITECTURE.md § Data Sources for concurrent pattern.
 
 Provider APIs fetched in parallel using goroutines + channels:
 ```go
@@ -260,7 +260,7 @@ for _, provider := range providers {
 
 **Application**: cmd/application (interface), cmd/starmap/app (implementation)
 
-See [ARCHITECTURE.md § Package Organization](ARCHITECTURE.md#package-organization) for full structure.
+See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for full structure.
 
 ## Environment Variables
 
@@ -348,16 +348,16 @@ make docs-check     # Verify docs current (CI)
 **Thread Safety:**
 - Collections return values (not pointers) for safety
 - All catalog access returns deep copies
-- See ARCHITECTURE.md § Thread Safety for full guidelines
+- See docs/ARCHITECTURE.md § Thread Safety for full guidelines
 
 **Import Cycles:**
 - Zero import cycles (validated)
-- Dependency flow is unidirectional (see ARCHITECTURE.md)
+- Dependency flow is unidirectional (see docs/ARCHITECTURE.md)
 - Commands import `cmd/application/` interface, NOT `cmd/starmap/app/`
 
 ## References
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical deep dive (system components, thread safety, sync pipeline)
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical deep dive (system components, thread safety, sync pipeline)
 - **[README.md](README.md)** - User-facing documentation
 - **[Makefile](Makefile)** - Build automation and commands
 - **[pkg/*/README.md](pkg/)** - Individual package documentation

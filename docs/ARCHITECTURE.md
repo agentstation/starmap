@@ -333,7 +333,7 @@ Location: `pkg/catalogs/`
 
 **Thread Safety:** Value semantics, all List() methods return slices of values (not pointers)
 
-See [pkg/catalogs/README.md](pkg/catalogs/README.md) for details.
+See [pkg/catalogs/README.md](../pkg/catalogs/README.md) for details.
 
 ### Reconciler Package
 
@@ -357,7 +357,7 @@ Location: `pkg/reconciler/`
 4. Generate changeset with provenance
 5. Return result
 
-See [pkg/reconciler/README.md](pkg/reconciler/README.md) for details.
+See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
 
 ### Authority Package
 
@@ -411,7 +411,7 @@ type Source interface {
 - **Local Catalog** (`sources.LocalCatalogID`) - User overrides
 - **Embedded** (`sources.EmbeddedID`) - Baseline data shipped with binary
 
-See [pkg/sources/README.md](pkg/sources/README.md) for details.
+See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 
 ## Root Package (starmap.Client)
 
@@ -1316,18 +1316,18 @@ func TestListModels(t *testing.T) {
 
 ### Package Documentation
 
-- [pkg/catalogs/README.md](pkg/catalogs/README.md) - Catalog storage
-- [pkg/reconciler/README.md](pkg/reconciler/README.md) - Multi-source reconciliation
-- [pkg/sources/README.md](pkg/sources/README.md) - Data source abstractions
-- [pkg/authority/](pkg/authority/) - Field-level authority system
-- [pkg/errors/README.md](pkg/errors/README.md) - Error types
-- [pkg/logging/README.md](pkg/logging/README.md) - Logging utilities
+- [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage
+- [pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
+- [pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
+- [pkg/authority/](../pkg/authority/) - Field-level authority system
+- [pkg/errors/README.md](../pkg/errors/README.md) - Error types
+- [pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 
 ### Related Documentation
 
-- [CLAUDE.md](CLAUDE.md) - LLM coding assistant instructions
-- [README.md](README.md) - User-facing documentation
-- [CHANGELOG.md](CHANGELOG.md) - Version history
+- [CLAUDE.md](../CLAUDE.md) - LLM coding assistant instructions
+- [README.md](../README.md) - User-facing documentation
+- [CHANGELOG.md](../CHANGELOG.md) - Version history
 
 ---
 

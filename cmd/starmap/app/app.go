@@ -160,7 +160,7 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 //
 // Performance: ~350-400ns per call with 9-10 allocations (single copy).
 //
-// Per ARCHITECTURE.md § Thread Safety section, this ALWAYS returns a deep copy
+// Per docs/ARCHITECTURE.md § Thread Safety section, this ALWAYS returns a deep copy
 // (provided by sm.Catalog()).
 func (a *App) Catalog() (catalogs.Catalog, error) {
 	sm, err := a.Starmap()

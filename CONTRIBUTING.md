@@ -20,7 +20,7 @@ Before contributing, please:
 
 1. Check [existing issues](https://github.com/agentstation/starmap/issues) to avoid duplicates
 2. Read our [Code of Conduct](CODE_OF_CONDUCT.md) (if available)
-3. Review the [ARCHITECTURE.md](ARCHITECTURE.md) to understand the system design
+3. Review the [ARCHITECTURE.md](docs/ARCHITECTURE.md) to understand the system design
 4. Join our [Discord](https://discord.gg/starmap) (if available) to discuss major changes
 
 ## Development Setup
@@ -121,7 +121,11 @@ starmap/
 │       ├── local/      # Local file source
 │       └── clients/    # Client registry
 │
-├── ARCHITECTURE.md     # System design documentation
+├── docs/               # Technical documentation
+│   ├── API.md          # Go package API reference
+│   ├── ARCHITECTURE.md # System design documentation
+│   └── REST_API.md     # HTTP server API reference
+│
 ├── CLAUDE.md           # LLM coding assistance guide
 ├── README.md           # User-facing documentation
 └── scripts/            # Build and automation scripts
@@ -134,13 +138,13 @@ starmap/
 - Internal packages implement `pkg/` interfaces
 - No circular dependencies (enforced by Go)
 
-See [ARCHITECTURE.md § Package Organization](ARCHITECTURE.md#package-organization) for detailed dependency rules.
+See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for detailed dependency rules.
 
 ## Adding New Providers
 
 ### Quick Reference
 
-For comprehensive instructions, see our [Provider Implementation Guide](docs/PROVIDER_IMPLEMENTATION_GUIDE.md).
+For comprehensive instructions, see the provider implementation section in [ARCHITECTURE.md](docs/ARCHITECTURE.md#data-sources).
 
 ### Basic Steps
 
@@ -212,7 +216,7 @@ For comprehensive instructions, see our [Provider Implementation Guide](docs/PRO
 5. **Update Documentation**
 
    - Add provider to README.md if it's a major provider
-   - Update ARCHITECTURE.md § Data Sources if needed
+   - Update docs/ARCHITECTURE.md § Data Sources if needed
    - Add yourself to CONTRIBUTORS.md
 
 ## Testing
@@ -336,14 +340,14 @@ All contributions must:
 - **Error handling**: Use typed errors from `pkg/errors`
 - **Constants**: Use `pkg/constants`, never hardcode values
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed design patterns.
+See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed design patterns.
 
 ### Documentation
 
 - Update package READMEs for new features
 - Use `//go:generate` comments for auto-generated docs
 - Include code examples in GoDoc comments
-- Link to ARCHITECTURE.md for design decisions
+- Link to docs/ARCHITECTURE.md for design decisions
 - Update CHANGELOG.md for user-facing changes
 
 ### Commit Guidelines
@@ -381,7 +385,7 @@ Data from models.dev syncs automatically to starmap's embedded catalog.
 
 ## Questions?
 
-- **Documentation**: See [README.md](README.md) and [ARCHITECTURE.md](ARCHITECTURE.md)
+- **Documentation**: See [README.md](README.md) and [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Issues**: [GitHub Issues](https://github.com/agentstation/starmap/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/agentstation/starmap/discussions)
 - **Discord**: [Join our community](https://discord.gg/starmap) (if available)
