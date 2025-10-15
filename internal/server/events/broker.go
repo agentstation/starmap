@@ -1,6 +1,7 @@
 package events
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -31,9 +32,21 @@ func NewBroker(logger *zerolog.Logger) *Broker {
 }
 
 // Run starts the broker's event loop. Should be called in a goroutine.
-func (b *Broker) Run() {
+// The broker will run until the context is cancelled.
+func (b *Broker) Run(ctx context.Context) {
 	for {
 		select {
+		case <-ctx.Done():
+			// Graceful shutdown: close all subscribers
+			b.mu.Lock()
+			for _, sub := range b.subscribers {
+				_ = sub.Close()
+			}
+			b.subscribers = nil
+			b.mu.Unlock()
+			b.logger.Info().Msg("Event broker shut down")
+			return
+
 		case sub := <-b.register:
 			b.mu.Lock()
 			b.subscribers = append(b.subscribers, sub)

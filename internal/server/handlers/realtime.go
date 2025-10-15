@@ -21,20 +21,14 @@ func (h *Handlers) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create client
+	// Create and register client
 	clientID := fmt.Sprintf("%s-%d", r.RemoteAddr, time.Now().Unix())
 	client := ws.NewClient(clientID, h.wsHub, conn)
 
-	// Register client
-	h.wsHub.Broadcast(ws.Message{
-		Type:      "client.connected",
-		Timestamp: time.Now(),
-		Data: map[string]any{
-			"message": "Client connected to Starmap updates",
-		},
-	})
+	// Register client with hub (this connects it to the event stream)
+	h.wsHub.Register(client)
 
-	// Start client pumps
+	// Start client pumps (read and write must run concurrently)
 	go client.WritePump()
 	go client.ReadPump()
 }

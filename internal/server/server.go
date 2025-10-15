@@ -28,6 +28,8 @@ type Server struct {
 	upgrader       websocket.Upgrader
 	logger         *zerolog.Logger
 	config         Config
+	ctx            context.Context
+	cancel         context.CancelFunc
 }
 
 // New creates a new server instance with the given configuration.
@@ -50,6 +52,9 @@ func New(app application.Application, cfg Config) (*Server, error) {
 	broker.Subscribe(adapters.NewWebSocketSubscriber(wsHub))
 	broker.Subscribe(adapters.NewSSESubscriber(sseBroadcaster))
 
+	// Create context for managing background services
+	ctx, cancel := context.WithCancel(context.Background())
+
 	server := &Server{
 		app:            app,
 		cache:          cache.New(cfg.CacheTTL, cfg.CacheTTL*2),
@@ -65,6 +70,8 @@ func New(app application.Application, cfg Config) (*Server, error) {
 		},
 		logger: logger,
 		config: cfg,
+		ctx:    ctx,
+		cancel: cancel,
 	}
 
 	// Connect Starmap hooks to event broker
@@ -119,9 +126,9 @@ func (s *Server) connectHooks() error {
 
 // Start starts background services (broker, WebSocket hub, SSE broadcaster).
 func (s *Server) Start() {
-	go s.broker.Run()
-	go s.wsHub.Run()
-	go s.sseBroadcaster.Run()
+	go s.broker.Run(s.ctx)
+	go s.wsHub.Run(s.ctx)
+	go s.sseBroadcaster.Run(s.ctx)
 }
 
 // Handler returns the configured http.Handler with middleware chain applied.
@@ -131,12 +138,21 @@ func (s *Server) Handler() http.Handler {
 
 // Shutdown gracefully shuts down background services.
 func (s *Server) Shutdown(ctx context.Context) error {
-	// Stop accepting new connections to WebSocket hub and SSE broadcaster
-	// They will drain existing connections gracefully
 	s.logger.Info().Msg("Shutting down server background services")
 
-	// Context cancellation will be handled by the HTTP server shutdown
-	// WebSocket and SSE clients will be closed when connections are terminated
+	// Cancel the context to stop all background services
+	s.cancel()
+
+	// Give services time to shutdown gracefully
+	shutdownTimeout := time.NewTimer(5 * time.Second)
+	defer shutdownTimeout.Stop()
+
+	select {
+	case <-shutdownTimeout.C:
+		s.logger.Warn().Msg("Background services shutdown timed out")
+	case <-time.After(100 * time.Millisecond):
+		s.logger.Info().Msg("Background services shut down successfully")
+	}
 
 	return nil
 }

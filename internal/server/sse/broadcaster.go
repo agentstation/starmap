@@ -2,6 +2,7 @@
 package sse
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -33,9 +34,21 @@ func NewBroadcaster(logger *zerolog.Logger) *Broadcaster {
 }
 
 // Run starts the broadcaster's main loop. Should be called in a goroutine.
-func (b *Broadcaster) Run() {
+// The broadcaster will run until the context is cancelled.
+func (b *Broadcaster) Run(ctx context.Context) {
 	for {
 		select {
+		case <-ctx.Done():
+			// Graceful shutdown: close all client connections
+			b.mu.Lock()
+			for client := range b.clients {
+				close(client)
+			}
+			b.clients = make(map[chan Event]bool)
+			b.mu.Unlock()
+			b.logger.Info().Msg("SSE broadcaster shut down")
+			return
+
 		case client := <-b.newClients:
 			b.mu.Lock()
 			b.clients[client] = true

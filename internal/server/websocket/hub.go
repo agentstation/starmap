@@ -2,6 +2,7 @@
 package websocket
 
 import (
+	"context"
 	"encoding/json"
 	"sync"
 	"time"
@@ -32,9 +33,21 @@ func NewHub(logger *zerolog.Logger) *Hub {
 }
 
 // Run starts the hub's main loop. Should be called in a goroutine.
-func (h *Hub) Run() {
+// The hub will run until the context is cancelled.
+func (h *Hub) Run(ctx context.Context) {
 	for {
 		select {
+		case <-ctx.Done():
+			// Graceful shutdown: close all client connections
+			h.mu.Lock()
+			for client := range h.clients {
+				close(client.send)
+			}
+			h.clients = make(map[*Client]bool)
+			h.mu.Unlock()
+			h.logger.Info().Msg("WebSocket hub shut down")
+			return
+
 		case client := <-h.register:
 			h.mu.Lock()
 			h.clients[client] = true
@@ -58,18 +71,29 @@ func (h *Hub) Run() {
 
 		case message := <-h.broadcast:
 			h.mu.RLock()
+			// Take snapshot of clients for safe iteration
+			clients := make([]*Client, 0, len(h.clients))
 			for client := range h.clients {
+				clients = append(clients, client)
+			}
+			h.mu.RUnlock()
+
+			// Send to clients (some may need disconnection)
+			for _, client := range clients {
 				select {
 				case client.send <- message:
 				default:
-					// Client buffer full, disconnect
-					close(client.send)
-					delete(h.clients, client)
+					// Client buffer full, disconnect via unregister channel
+					h.unregister <- client
 				}
 			}
-			h.mu.RUnlock()
 		}
 	}
+}
+
+// Register registers a client with the hub.
+func (h *Hub) Register(client *Client) {
+	h.register <- client
 }
 
 // Broadcast sends a message to all connected clients.
