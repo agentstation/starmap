@@ -41,20 +41,20 @@ The Starmap HTTP API provides programmatic access to the unified AI model catalo
 
 ```bash
 # Start with default settings (port 8080, no auth)
-starmap serve api
+starmap serve
 
 # Start with custom port
-starmap serve api --port 3000
+starmap serve --port 3000
 
 # Enable authentication
 export API_KEY="your-secret-key"
-starmap serve api --auth
+starmap serve --auth
 
 # Enable CORS for specific origins
-starmap serve api --cors-origins "https://example.com,https://app.example.com"
+starmap serve --cors-origins "https://example.com,https://app.example.com"
 
 # Full configuration
-starmap serve api \
+starmap serve \
   --port 8080 \
   --host localhost \
   --cors \
@@ -719,10 +719,10 @@ CORS can be configured via command-line flags:
 
 ```bash
 # Enable CORS for all origins
-starmap serve api --cors
+starmap serve --cors
 
 # Enable CORS for specific origins
-starmap serve api --cors-origins "https://example.com,https://app.example.com"
+starmap serve --cors-origins "https://example.com,https://app.example.com"
 ```
 
 ## Examples
@@ -731,7 +731,7 @@ starmap serve api --cors-origins "https://example.com,https://app.example.com"
 
 ```bash
 # 1. Start server
-starmap serve api --port 8080
+starmap serve --port 8080
 
 # 2. Check health
 curl http://localhost:8080/health
@@ -763,7 +763,7 @@ curl http://localhost:8080/api/v1/stats
 export API_KEY="your-secret-key"
 
 # Start server with auth
-starmap serve api --auth
+starmap serve --auth
 
 # Make authenticated request
 curl -H "X-API-Key: $API_KEY" \
