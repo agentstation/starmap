@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.15] - 2025-10-15
+
+### Added
+- **Production Logging & Metrics** - Comprehensive observability following industry best practices
+  - Runtime metrics: uptime, goroutines, memory usage
+  - Event metrics: events published, dropped, queue depth
+  - Enhanced `/api/v1/stats` endpoint with structured metric grouping
+  - Follows Prometheus/Grafana/Kubernetes patterns for monitoring
+
+- **CLI Logging Enhancements** - Hybrid logging pattern with clear precedence
+  - `--log-level` flag for explicit level control (trace, debug, info, warn, error)
+  - `-v/--verbose` shortcut for debug level
+  - `-q/--quiet` shortcut for warn level
+  - Clear precedence hierarchy following kubectl/docker patterns
+  - Comprehensive validation with user-friendly warnings
+
+### Fixed
+- **Embedded Catalog Loading** - Critical fix for immediate catalog availability
+  - Fixed empty catalog issue on startup (was showing 0 models/providers)
+  - Embedded catalog now loads immediately instead of waiting for auto-update
+  - Main catalog populated with embedded data during client initialization
+  - Users now see 436+ models and 7 providers instantly
+
+- **Server Logging** - Production-ready log levels and clarity
+  - Internal subscriber registration moved from INFO to DEBUG level
+  - Removed confusing "Subscriber registered" messages from production logs
+  - Added descriptive transport subscription messages (WebSocket/SSE)
+  - Improved startup log ordering for better readability
+
+- **Server Stability** - Deadlock prevention and clean operations
+  - Buffered broker event channels to prevent startup deadlocks
+  - Buffered WebSocket hub channels for reliable message delivery
+  - Buffered SSE broadcaster channels for stable streaming
+  - Added favicon handler (returns 204 No Content, eliminates 404 spam)
+
+### Changed
+- Event metrics no longer expose internal subscriber count (implementation detail)
+- Log levels now follow industry standard: DEBUG for internal wiring, INFO for user-facing events
+
+## [0.0.14] - 2024-10-09
+
 ### Added
 - **HTTP Server** - Production-ready REST API with real-time updates
   - RESTful endpoints for models, providers, and catalog operations
