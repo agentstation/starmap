@@ -503,7 +503,7 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 # Documentation
 openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
-	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(YELLOW)swag v2 not found, installing...$(NC)" && $(GOCMD) install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4)
+	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
 	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/command.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"

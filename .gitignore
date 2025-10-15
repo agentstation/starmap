@@ -136,3 +136,6 @@ models.dev-git/
 internal/embedded/openapi/docs.go      # Generated Go code (not needed, we use //go:embed)
 internal/embedded/openapi/swagger.json # Temporary file (renamed to openapi.json)
 internal/embedded/openapi/swagger.yaml # Temporary file (renamed to openapi.yaml)
+
+# Nix build artifacts
+/devbox/swag/result  # Nix build output symlink
