@@ -25,13 +25,13 @@ type Config struct {
 	ConfigFile string
 
 	// Starmap configuration
-	LocalPath           string
-	UseEmbeddedCatalog  bool
-	AutoUpdatesEnabled  bool
-	AutoUpdateInterval  time.Duration
-	RemoteServerURL     string
-	RemoteServerAPIKey  string
-	RemoteServerOnly    bool
+	LocalPath          string
+	UseEmbeddedCatalog bool
+	AutoUpdatesEnabled bool
+	AutoUpdateInterval time.Duration
+	RemoteServerURL    string
+	RemoteServerAPIKey string
+	RemoteServerOnly   bool
 
 	// Logging configuration
 	LogLevel  string
@@ -44,7 +44,7 @@ type Config struct {
 // 2. Environment variables
 // 3. .env files
 // 4. Config file (~/.starmap.yaml)
-// 5. Defaults
+// 5. Defaults.
 func LoadConfig() (*Config, error) {
 	// Load .env files first (before Viper env binding)
 	loadEnvFiles()

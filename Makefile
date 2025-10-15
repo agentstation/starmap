@@ -188,7 +188,7 @@ fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
 	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || echo "$(YELLOW)Warning: golangci-lint not found, skipping lint fixes$(NC)"
-	$(GOFMT) -w . && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || true) && $(GOMOD) tidy
+	$(GOFMT) ./... && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || true) && $(GOMOD) tidy
 	@echo "$(GREEN)Auto-fix complete$(NC)"
 
 vet: ## Run go vet only
