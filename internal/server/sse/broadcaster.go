@@ -26,8 +26,8 @@ type Broadcaster struct {
 func NewBroadcaster(logger *zerolog.Logger) *Broadcaster {
 	return &Broadcaster{
 		clients:    make(map[chan Event]bool),
-		newClients: make(chan chan Event),
-		closed:     make(chan chan Event),
+		newClients: make(chan chan Event, 10),    // Buffered to prevent blocking when clients connect before Run() starts
+		closed:     make(chan chan Event, 10),    // Buffered to prevent blocking during client cleanup
 		events:     make(chan Event, 256),
 		logger:     logger,
 	}

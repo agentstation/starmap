@@ -1031,6 +1031,77 @@ The codebase has been fully migrated to value semantics:
 - Reduced allocations: 18 → 9-10 per call
 - Maintained thread safety guarantees
 
+#### 4. Channel Buffering for Event-Driven Systems
+
+For event-driven systems using channels (event brokers, WebSocket hubs, SSE broadcasters), **ALWAYS buffer channels used for registration/unregistration**:
+
+```go
+// ❌ WRONG: Unbuffered channels cause initialization deadlocks
+type Broker struct {
+    register   chan Subscriber    // Blocks if Run() not started
+    unregister chan Subscriber    // Blocks during cleanup
+}
+
+// ✅ CORRECT: Buffered channels prevent blocking
+type Broker struct {
+    register   chan Subscriber, 10    // Buffer for setup phase
+    unregister chan Subscriber, 10    // Buffer for cleanup phase
+}
+```
+
+**Why buffering is critical:**
+
+1. **Initialization Order Independence**: Components can be initialized and subscribed before event loops start
+2. **No Deadlocks**: `Subscribe()` doesn't block waiting for `Run()` to read from channel
+3. **Graceful Cleanup**: Unregister operations during shutdown don't block
+
+**Buffer sizing guidelines:**
+
+- **Registration channels**: Size based on typical number of subscribers registered during initialization (commonly 5-10)
+- **Unregistration channels**: Same size as registration channels
+- **Event channels**: Size based on burst capacity (commonly 256+ for high-throughput systems)
+
+**Real-world example from `internal/server/events/broker.go`:**
+
+```go
+func NewBroker(logger *zerolog.Logger) *Broker {
+    return &Broker{
+        subscribers: make([]Subscriber, 0),
+        events:      make(chan Event, 256),        // High-capacity event buffer
+        register:    make(chan Subscriber, 10),    // Prevents blocking during setup
+        unregister:  make(chan Subscriber, 10),    // Prevents blocking during shutdown
+        logger:      logger,
+    }
+}
+```
+
+**Testing for initialization order bugs:**
+
+Always write tests that verify subscriptions work before `Run()` starts:
+
+```go
+func TestBroker_SubscribeBeforeRun(t *testing.T) {
+    b := NewBroker(logger)
+
+    // Subscribe BEFORE starting Run() - should NOT block
+    done := make(chan struct{})
+    go func() {
+        sub := newSubscriber()
+        b.Subscribe(sub)  // Would deadlock with unbuffered channels
+        close(done)
+    }()
+
+    select {
+    case <-done:
+        // Success
+    case <-time.After(2 * time.Second):
+        t.Fatal("Deadlock detected - channels not buffered!")
+    }
+}
+```
+
+See `internal/server/events/broker_test.go:TestBroker_SubscribeBeforeRun` for a complete example.
+
 ### Thread Safety Checklist
 
 When adding new code, ensure:
@@ -1041,6 +1112,8 @@ When adding new code, ensure:
 - [ ] Tests include `-race` detector runs
 - [ ] Singletons use double-checked locking
 - [ ] No direct pointer returns from getters
+- [ ] Event-driven channels are buffered (registration/unregistration channels especially)
+- [ ] Initialization order tests verify Subscribe/Register work before Run()
 
 ## Package Organization
 

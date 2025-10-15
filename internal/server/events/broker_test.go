@@ -128,3 +128,74 @@ func TestBroker_Shutdown(t *testing.T) {
 		t.Errorf("expected 0 subscribers after shutdown, got %d", count)
 	}
 }
+
+// TestBroker_SubscribeBeforeRun tests that Subscribe() doesn't block when called before Run().
+// This test catches the deadlock bug where unbuffered channels would block on Subscribe()
+// before the event loop starts running.
+func TestBroker_SubscribeBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroker(&logger)
+
+	// Try to subscribe BEFORE starting Run() - this should NOT block with buffered channels
+	done := make(chan struct{})
+	go func() {
+		sub := newMockSubscriber()
+		b.Subscribe(sub) // This would deadlock if channels weren't buffered
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - Subscribe() did not block
+	case <-time.After(2 * time.Second):
+		t.Fatal("broker.Subscribe() deadlocked when called before broker.Run() - channels are not buffered!")
+	}
+
+	// Now start the broker to clean up
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go b.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Verify subscriber was registered
+	if count := b.SubscriberCount(); count != 1 {
+		t.Errorf("expected 1 subscriber, got %d", count)
+	}
+}
+
+// TestBroker_MultipleSubscribersBeforeRun tests multiple Subscribe() calls before Run().
+// This tests the buffer size is adequate for typical initialization patterns.
+func TestBroker_MultipleSubscribersBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroker(&logger)
+
+	// Subscribe multiple times before Run() starts
+	const numSubscribers = 5
+	done := make(chan struct{})
+
+	go func() {
+		for i := 0; i < numSubscribers; i++ {
+			sub := newMockSubscriber()
+			b.Subscribe(sub)
+		}
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - all Subscribe() calls completed
+	case <-time.After(2 * time.Second):
+		t.Fatal("broker.Subscribe() deadlocked with multiple subscribers before Run()")
+	}
+
+	// Now start the broker
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go b.Run(ctx)
+	time.Sleep(50 * time.Millisecond)
+
+	// Verify all subscribers were registered
+	if count := b.SubscriberCount(); count != numSubscribers {
+		t.Errorf("expected %d subscribers, got %d", numSubscribers, count)
+	}
+}

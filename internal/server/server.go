@@ -36,21 +36,35 @@ type Server struct {
 func New(app application.Application, cfg Config) (*Server, error) {
 	logger := app.Logger()
 
+	logger.Debug().Msg("Creating new server instance")
+
 	// Set defaults
 	if cfg.CacheTTL == 0 {
 		cfg.CacheTTL = 5 * time.Minute
 	}
 
 	// Create unified event broker
+	logger.Debug().Msg("Creating event broker")
 	broker := events.NewBroker(logger)
+	logger.Debug().Msg("Event broker created")
 
 	// Create transport layers
+	logger.Debug().Msg("Creating WebSocket hub")
 	wsHub := ws.NewHub(logger)
+	logger.Debug().Msg("WebSocket hub created")
+
+	logger.Debug().Msg("Creating SSE broadcaster")
 	sseBroadcaster := sse.NewBroadcaster(logger)
+	logger.Debug().Msg("SSE broadcaster created")
 
 	// Subscribe transports to broker
+	logger.Debug().Msg("Subscribing WebSocket adapter to broker")
 	broker.Subscribe(adapters.NewWebSocketSubscriber(wsHub))
+	logger.Debug().Msg("WebSocket adapter subscribed")
+
+	logger.Debug().Msg("Subscribing SSE adapter to broker")
 	broker.Subscribe(adapters.NewSSESubscriber(sseBroadcaster))
+	logger.Debug().Msg("SSE adapter subscribed")
 
 	// Create context for managing background services
 	ctx, cancel := context.WithCancel(context.Background())
@@ -75,10 +89,13 @@ func New(app application.Application, cfg Config) (*Server, error) {
 	}
 
 	// Connect Starmap hooks to event broker
+	logger.Debug().Msg("Connecting Starmap hooks to event broker")
 	if err := server.connectHooks(); err != nil {
 		return nil, err
 	}
+	logger.Debug().Msg("Starmap hooks connected")
 
+	logger.Debug().Msg("Server instance created successfully")
 	return server, nil
 }
 
@@ -126,9 +143,18 @@ func (s *Server) connectHooks() error {
 
 // Start starts background services (broker, WebSocket hub, SSE broadcaster).
 func (s *Server) Start() {
+	s.logger.Debug().Msg("Starting background services")
+
+	s.logger.Debug().Msg("Starting event broker")
 	go s.broker.Run(s.ctx)
+
+	s.logger.Debug().Msg("Starting WebSocket hub")
 	go s.wsHub.Run(s.ctx)
+
+	s.logger.Debug().Msg("Starting SSE broadcaster")
 	go s.sseBroadcaster.Run(s.ctx)
+
+	s.logger.Debug().Msg("All background services started")
 }
 
 // Handler returns the configured http.Handler with middleware chain applied.

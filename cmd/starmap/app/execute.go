@@ -50,10 +50,11 @@ when API keys are configured.`,
 
 	// Add global flags
 	rootCmd.PersistentFlags().StringVar(&a.config.ConfigFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output")
+	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output (shortcut for --log-level=debug)")
+	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output (shortcut for --log-level=warn)")
 	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")
 	rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "output format: table, json, yaml, wide")
+	rootCmd.PersistentFlags().StringVar(&a.config.LogLevel, "log-level", "", "log level: trace, debug, info, warn, error (overrides -v/-q)")
 
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
@@ -71,8 +72,9 @@ func (a *App) setupCommand(cmd *cobra.Command, args []string) error {
 	quiet, _ := cmd.Flags().GetBool("quiet")
 	noColor, _ := cmd.Flags().GetBool("no-color")
 	output, _ := cmd.Flags().GetString("output")
+	logLevel, _ := cmd.Flags().GetString("log-level")
 
-	a.config.UpdateFromFlags(verbose, quiet, noColor, output)
+	a.config.UpdateFromFlags(verbose, quiet, noColor, output, logLevel)
 
 	// Reinitialize logger with updated config
 	logger := NewLogger(a.config)

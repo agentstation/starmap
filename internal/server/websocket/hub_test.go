@@ -860,3 +860,78 @@ func TestClient_ConnectionClose(t *testing.T) {
 		t.Errorf("expected 0 clients after close, got %d", count)
 	}
 }
+
+// TestHub_RegisterBeforeRun tests that Register() doesn't block when called before Run().
+// This test catches the deadlock bug where unbuffered channels would block on Register()
+// before the event loop starts running.
+func TestHub_RegisterBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	// Create a mock client
+	conn := &websocket.Conn{} // Will be nil but that's OK for this test
+	client := NewClient("test-client", hub, conn)
+
+	// Try to register BEFORE starting Run() - this should NOT block with buffered channels
+	done := make(chan struct{})
+	go func() {
+		hub.Register(client) // This would deadlock if channels weren't buffered
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - Register() did not block
+	case <-time.After(2 * time.Second):
+		t.Fatal("hub.Register() deadlocked when called before hub.Run() - channels are not buffered!")
+	}
+
+	// Now start the hub to clean up
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Verify client was registered
+	if count := hub.ClientCount(); count != 1 {
+		t.Errorf("expected 1 client, got %d", count)
+	}
+}
+
+// TestHub_MultipleRegistersBeforeRun tests multiple Register() calls before Run().
+// This tests the buffer size is adequate for typical initialization patterns.
+func TestHub_MultipleRegistersBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	// Register multiple clients before Run() starts
+	const numClients = 5
+	done := make(chan struct{})
+
+	go func() {
+		for i := 0; i < numClients; i++ {
+			conn := &websocket.Conn{}
+			client := NewClient("test-client", hub, conn)
+			hub.Register(client)
+		}
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - all Register() calls completed
+	case <-time.After(2 * time.Second):
+		t.Fatal("hub.Register() deadlocked with multiple clients before Run()")
+	}
+
+	// Now start the hub
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go hub.Run(ctx)
+	time.Sleep(50 * time.Millisecond)
+
+	// Verify all clients were registered
+	if count := hub.ClientCount(); count != numClients {
+		t.Errorf("expected %d clients, got %d", numClients, count)
+	}
+}

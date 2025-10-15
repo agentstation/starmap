@@ -95,7 +95,9 @@ func LoadConfig() (*Config, error) {
 		RemoteServerOnly:   viper.GetBool("remote_server_only"),
 
 		// Logging configuration
-		LogLevel:  getEnvOrDefault("LOG_LEVEL", "info"),
+		// LogLevel: empty string means "use precedence logic" (see logger.go)
+		// If LOG_LEVEL env var is set, it will be used; otherwise defaults to "info" via precedence
+		LogLevel:  getEnvOrDefault("LOG_LEVEL", ""),
 		LogFormat: getEnvOrDefault("LOG_FORMAT", "auto"),
 		LogOutput: getEnvOrDefault("LOG_OUTPUT", "stderr"),
 	}
@@ -111,12 +113,15 @@ func LoadConfig() (*Config, error) {
 // UpdateFromFlags updates config values from parsed command flags.
 // This should be called after cobra parses flags to ensure flag
 // values take precedence over config file and env vars.
-func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, output string) {
+func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, output, logLevel string) {
 	c.Verbose = verbose
 	c.Quiet = quiet
 	c.NoColor = noColor
 	if output != "" {
 		c.Output = output
+	}
+	if logLevel != "" {
+		c.LogLevel = logLevel
 	}
 }
 

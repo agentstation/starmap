@@ -18,9 +18,8 @@ func TestLoadConfig(t *testing.T) {
 	}
 
 	// Verify defaults are set
-	if config.LogLevel == "" {
-		t.Error("LogLevel not set to default")
-	}
+	// Note: LogLevel may be empty (triggers precedence logic in logger.go)
+	// LogFormat should have a default
 	if config.LogFormat == "" {
 		t.Error("LogFormat not set to default")
 	}

@@ -593,3 +593,74 @@ func (w *nonFlushingWriter) Write(data []byte) (int, error) {
 func (w *nonFlushingWriter) WriteHeader(statusCode int) {
 	w.statusCode = statusCode
 }
+
+// TestBroadcaster_RegisterBeforeRun tests that registering clients before Run() doesn't block.
+// This test catches the deadlock bug where unbuffered channels would block on client registration
+// before the event loop starts running.
+func TestBroadcaster_RegisterBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroadcaster(&logger)
+
+	// Try to register a client BEFORE starting Run() - this should NOT block with buffered channels
+	done := make(chan struct{})
+	go func() {
+		client := make(chan Event, 256)
+		b.newClients <- client // This would deadlock if channels weren't buffered
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - registering client did not block
+	case <-time.After(2 * time.Second):
+		t.Fatal("broadcaster client registration deadlocked when called before Run() - channels are not buffered!")
+	}
+
+	// Now start the broadcaster to clean up
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go b.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	// Verify client was registered
+	if count := b.ClientCount(); count != 1 {
+		t.Errorf("expected 1 client, got %d", count)
+	}
+}
+
+// TestBroadcaster_MultipleRegistersBeforeRun tests multiple client registrations before Run().
+// This tests the buffer size is adequate for typical initialization patterns.
+func TestBroadcaster_MultipleRegistersBeforeRun(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroadcaster(&logger)
+
+	// Register multiple clients before Run() starts
+	const numClients = 5
+	done := make(chan struct{})
+
+	go func() {
+		for i := 0; i < numClients; i++ {
+			client := make(chan Event, 256)
+			b.newClients <- client
+		}
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		// Success - all client registrations completed
+	case <-time.After(2 * time.Second):
+		t.Fatal("broadcaster client registration deadlocked with multiple clients before Run()")
+	}
+
+	// Now start the broadcaster
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	go b.Run(ctx)
+	time.Sleep(50 * time.Millisecond)
+
+	// Verify all clients were registered
+	if count := b.ClientCount(); count != numClients {
+		t.Errorf("expected %d clients, got %d", numClients, count)
+	}
+}

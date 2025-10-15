@@ -94,6 +94,8 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 	cfg := parseConfig(cmd)
 	logger := app.Logger()
 
+	logger.Debug().Msg("Parsed server configuration")
+
 	logger.Info().
 		Int("port", cfg.Port).
 		Str("host", cfg.Host).
@@ -105,15 +107,26 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 		Msg("Starting API server")
 
 	// Create server
+	logger.Debug().Msg("Creating server instance")
 	srv, err := server.New(app, cfg)
 	if err != nil {
 		return fmt.Errorf("creating server: %w", err)
 	}
+	logger.Debug().Msg("Server instance created")
 
 	// Start background services (WebSocket hub, SSE broadcaster)
+	logger.Debug().Msg("Starting background services")
 	srv.Start()
+	logger.Debug().Msg("Background services started")
 
 	// Create HTTP server
+	logger.Debug().
+		Str("addr", fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)).
+		Dur("read_timeout", cfg.ReadTimeout).
+		Dur("write_timeout", cfg.WriteTimeout).
+		Dur("idle_timeout", cfg.IdleTimeout).
+		Msg("Creating HTTP server")
+
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
 		Handler:      srv.Handler(),
@@ -123,6 +136,7 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 	}
 
 	// Start server with graceful shutdown
+	logger.Debug().Msg("Starting HTTP server with graceful shutdown handling")
 	return startWithGracefulShutdown(httpServer, srv, logger)
 }
 
