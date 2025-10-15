@@ -10,11 +10,11 @@ import (
 
 // AuthConfig holds authentication configuration.
 type AuthConfig struct {
-	Enabled        bool
-	APIKey         string
-	HeaderName     string
-	PublicPaths    []string
-	BearerPrefix   bool
+	Enabled      bool
+	APIKey       string
+	HeaderName   string
+	PublicPaths  []string
+	BearerPrefix bool
 }
 
 // DefaultAuthConfig returns default authentication configuration.

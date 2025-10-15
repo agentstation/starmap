@@ -24,16 +24,16 @@ type AutoUpdater interface {
 
 // AutoUpdatesOn begins automatic updates if configured.
 func (c *client) AutoUpdatesOn() error {
-	if	c.options.autoUpdateInterval <= 0 {
+	if c.options.autoUpdateInterval <= 0 {
 		return &errors.ValidationError{
 			Field:   "autoUpdateInterval",
-			Value:  	c.options.autoUpdateInterval,
+			Value:   c.options.autoUpdateInterval,
 			Message: "update interval must be positive",
 		}
 	}
 
 	// Stop any existing auto-updates to prevent resource leaks
-	if err :=	c.AutoUpdatesOff(); err != nil {
+	if err := c.AutoUpdatesOff(); err != nil {
 		return err
 	}
 
@@ -52,7 +52,7 @@ func (c *client) AutoUpdatesOn() error {
 			case <-c.updateTicker.C:
 				// Create a timeout context for each update (5 minutes default)
 				updateCtx, updateCancel := context.WithTimeout(parentCtx, constants.UpdateContextTimeout)
-				err :=	c.Update(updateCtx)
+				err := c.Update(updateCtx)
 				updateCancel() // Always cancel to release resources
 
 				if err != nil {
@@ -76,11 +76,11 @@ func (c *client) AutoUpdatesOn() error {
 
 // AutoUpdatesOff stops automatic updates.
 func (c *client) AutoUpdatesOff() error {
-	if	c.updateTicker != nil {
+	if c.updateTicker != nil {
 		c.updateTicker.Stop()
 		c.updateTicker = nil
 	}
-	if	c.updateCancel != nil {
+	if c.updateCancel != nil {
 		c.updateCancel()
 		c.updateCancel = nil
 	}

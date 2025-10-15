@@ -26,8 +26,8 @@ func NewHub(logger *zerolog.Logger) *Hub {
 	return &Hub{
 		clients:    make(map[*Client]bool),
 		broadcast:  make(chan Message, 256),
-		register:   make(chan *Client, 10),      // Buffered to prevent blocking when clients connect before Run() starts
-		unregister: make(chan *Client, 10),      // Buffered to prevent blocking during client cleanup
+		register:   make(chan *Client, 10), // Buffered to prevent blocking when clients connect before Run() starts
+		unregister: make(chan *Client, 10), // Buffered to prevent blocking during client cleanup
 		logger:     logger,
 	}
 }

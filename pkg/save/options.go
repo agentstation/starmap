@@ -4,7 +4,7 @@ import "io"
 
 type Format int
 
-// Format constants
+// Format constants.
 const (
 	FormatJSON Format = iota
 	FormatYAML
@@ -73,21 +73,21 @@ func (s *Options) Apply(opts ...Option) Options {
 // Option is a function that configures save options.
 type Option func(*Options)
 
-// WithFormat for custom output format
+// WithFormat for custom output format.
 func WithFormat(f Format) Option {
 	return func(s *Options) {
 		s.format = f
 	}
 }
 
-// WithPath for filesystem saves
+// WithPath for filesystem saves.
 func WithPath(path string) Option {
 	return func(s *Options) {
 		s.path = path
 	}
 }
 
-// WithWriter for custom outputs
+// WithWriter for custom outputs.
 func WithWriter(w io.Writer) Option {
 	return func(s *Options) {
 		s.writer = w

@@ -13,16 +13,16 @@ type EventType string
 
 // Event types for catalog changes.
 const (
-	// Model events (from Starmap hooks)
+	// Model events (from Starmap hooks).
 	ModelAdded   EventType = "model.added"
 	ModelUpdated EventType = "model.updated"
 	ModelDeleted EventType = "model.deleted"
 
-	// Sync events (from sync operations)
+	// Sync events (from sync operations).
 	SyncStarted   EventType = "sync.started"
 	SyncCompleted EventType = "sync.completed"
 
-	// Client events (from transport layers)
+	// Client events (from transport layers).
 	ClientConnected EventType = "client.connected"
 )
 

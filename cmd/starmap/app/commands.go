@@ -41,7 +41,7 @@ func (a *App) CreateValidateCommand() *cobra.Command {
 }
 
 // CreateInspectCommand creates the inspect command with app dependencies.
-// Note: No stuttering - inspect.LsCmd, not inspect.InspectCmd
+// Note: No stuttering - inspect.LsCmd, not inspect.InspectCmd.
 func (a *App) CreateInspectCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "inspect",

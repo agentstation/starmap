@@ -3,8 +3,9 @@ package attribution
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/utc"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestAttributions_NewWithEmptyCatalog(t *testing.T) {

@@ -7,8 +7,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/internal/cmd/output"
 )
 
 // Formatter formats hints for different output types.

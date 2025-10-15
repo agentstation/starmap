@@ -134,4 +134,3 @@ func ErrorFromType(w http.ResponseWriter, err error) {
 		InternalError(w, err)
 	}
 }
-

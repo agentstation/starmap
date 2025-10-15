@@ -130,19 +130,19 @@ func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelI
 
 // SearchRequest represents the POST /api/v1/models/search request body.
 type SearchRequest struct {
-	IDs            []string          `json:"ids,omitempty"`
-	NameContains   string            `json:"name_contains,omitempty"`
-	Provider       string            `json:"provider,omitempty"`
-	Modalities     *SearchModalities `json:"modalities,omitempty"`
-	Features       map[string]bool   `json:"features,omitempty"`
-	Tags           []string          `json:"tags,omitempty"`
-	OpenWeights    *bool             `json:"open_weights,omitempty"`
-	ContextWindow  *IntRange         `json:"context_window,omitempty"`
-	OutputTokens   *IntRange         `json:"output_tokens,omitempty"`
-	ReleaseDate    *DateRange        `json:"release_date,omitempty"`
-	Sort           string            `json:"sort,omitempty"`
-	Order          string            `json:"order,omitempty"`
-	MaxResults     int               `json:"max_results,omitempty"`
+	IDs           []string          `json:"ids,omitempty"`
+	NameContains  string            `json:"name_contains,omitempty"`
+	Provider      string            `json:"provider,omitempty"`
+	Modalities    *SearchModalities `json:"modalities,omitempty"`
+	Features      map[string]bool   `json:"features,omitempty"`
+	Tags          []string          `json:"tags,omitempty"`
+	OpenWeights   *bool             `json:"open_weights,omitempty"`
+	ContextWindow *IntRange         `json:"context_window,omitempty"`
+	OutputTokens  *IntRange         `json:"output_tokens,omitempty"`
+	ReleaseDate   *DateRange        `json:"release_date,omitempty"`
+	Sort          string            `json:"sort,omitempty"`
+	Order         string            `json:"order,omitempty"`
+	MaxResults    int               `json:"max_results,omitempty"`
 }
 
 // SearchModalities specifies modality requirements.

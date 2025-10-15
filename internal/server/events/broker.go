@@ -13,14 +13,14 @@ import (
 // It provides a central hub for catalog events, fanning them out to
 // all registered subscribers (WebSocket, SSE, etc.) concurrently.
 type Broker struct {
-	subscribers      []Subscriber
-	events           chan Event
-	register         chan Subscriber
-	unregister       chan Subscriber
-	mu               sync.RWMutex
-	logger           *zerolog.Logger
-	eventsPublished  uint64 // atomic counter
-	eventsDropped    uint64 // atomic counter
+	subscribers     []Subscriber
+	events          chan Event
+	register        chan Subscriber
+	unregister      chan Subscriber
+	mu              sync.RWMutex
+	logger          *zerolog.Logger
+	eventsPublished uint64 // atomic counter
+	eventsDropped   uint64 // atomic counter
 }
 
 // NewBroker creates a new event broker.
@@ -28,8 +28,8 @@ func NewBroker(logger *zerolog.Logger) *Broker {
 	return &Broker{
 		subscribers: make([]Subscriber, 0),
 		events:      make(chan Event, 256),
-		register:    make(chan Subscriber, 10),    // Buffer to prevent blocking during setup
-		unregister:  make(chan Subscriber, 10),    // Buffer to prevent blocking during shutdown
+		register:    make(chan Subscriber, 10), // Buffer to prevent blocking during setup
+		unregister:  make(chan Subscriber, 10), // Buffer to prevent blocking during shutdown
 		logger:      logger,
 	}
 }

@@ -40,10 +40,10 @@ type ModelFilter struct {
 	ReleasedBefore *time.Time
 
 	// Pagination
-	Sort      string
-	Order     string
-	Limit     int
-	Offset    int
+	Sort       string
+	Order      string
+	Limit      int
+	Offset     int
 	MaxResults int
 }
 

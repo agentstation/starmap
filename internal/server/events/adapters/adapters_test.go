@@ -4,10 +4,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/rs/zerolog"
+
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/sse"
 	ws "github.com/agentstation/starmap/internal/server/websocket"
-	"github.com/rs/zerolog"
 )
 
 // TestNewSSESubscriber tests SSE subscriber creation.

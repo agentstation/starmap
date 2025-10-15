@@ -18,7 +18,7 @@ type Persistence interface {
 func (c *client) Save(opts ...save.Option) error {
 
 	// Get the catalog
-	catalog, err :=	c.Catalog()
+	catalog, err := c.Catalog()
 	if err != nil {
 		return errors.WrapResource("get", "catalog", "", err)
 	}

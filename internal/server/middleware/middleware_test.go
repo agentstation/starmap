@@ -355,37 +355,37 @@ func TestLogger_Duration(t *testing.T) {
 // TestRecovery tests panic recovery middleware.
 func TestRecovery(t *testing.T) {
 	tests := []struct {
-		name          string
-		shouldPanic   bool
-		panicValue    interface{}
-		expectStatus  int
+		name           string
+		shouldPanic    bool
+		panicValue     interface{}
+		expectStatus   int
 		expectLogPanic bool
 	}{
 		{
-			name:          "no panic - normal execution",
-			shouldPanic:   false,
-			expectStatus:  http.StatusOK,
+			name:           "no panic - normal execution",
+			shouldPanic:    false,
+			expectStatus:   http.StatusOK,
 			expectLogPanic: false,
 		},
 		{
-			name:          "panic with string",
-			shouldPanic:   true,
-			panicValue:    "something went wrong",
-			expectStatus:  http.StatusInternalServerError,
+			name:           "panic with string",
+			shouldPanic:    true,
+			panicValue:     "something went wrong",
+			expectStatus:   http.StatusInternalServerError,
 			expectLogPanic: true,
 		},
 		{
-			name:          "panic with error",
-			shouldPanic:   true,
-			panicValue:    http.ErrAbortHandler,
-			expectStatus:  http.StatusInternalServerError,
+			name:           "panic with error",
+			shouldPanic:    true,
+			panicValue:     http.ErrAbortHandler,
+			expectStatus:   http.StatusInternalServerError,
 			expectLogPanic: true,
 		},
 		{
-			name:          "panic with nil",
-			shouldPanic:   true,
-			panicValue:    nil,
-			expectStatus:  http.StatusInternalServerError,
+			name:           "panic with nil",
+			shouldPanic:    true,
+			panicValue:     nil,
+			expectStatus:   http.StatusInternalServerError,
 			expectLogPanic: true,
 		},
 	}

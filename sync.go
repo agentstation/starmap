@@ -47,7 +47,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	}
 
 	// Step 5: filter sources by options
-	srcs :=	c.filterSources(options)
+	srcs := c.filterSources(options)
 
 	// Step 6: Cleanup sources
 	defer func() {
@@ -62,7 +62,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	}
 
 	// Step 8: Get existing catalog for baseline comparison
-	existing, err :=	c.Catalog()
+	existing, err := c.Catalog()
 	if err != nil {
 		// If we can't get existing catalog, use empty one
 		existing, _ = catalogs.New()
@@ -115,7 +115,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 		if changeset == nil {
 			changeset = &differ.Changeset{}
 		}
-		if err :=	c.save(result.Catalog, options, changeset); err != nil {
+		if err := c.save(result.Catalog, options, changeset); err != nil {
 			return nil, err
 		}
 	} else if options.DryRun {
@@ -165,7 +165,7 @@ func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset 
 
 	// Update internal catalog first
 	c.mu.Lock()
-	oldCatalog :=	c.catalog
+	oldCatalog := c.catalog
 	c.catalog = result
 	c.mu.Unlock()
 

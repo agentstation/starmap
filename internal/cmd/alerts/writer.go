@@ -7,8 +7,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/internal/cmd/output"
 )
 
 // FormatWriter writes alerts in different output formats.
