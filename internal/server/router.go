@@ -17,11 +17,11 @@ func (s *Server) setupRouter() http.Handler {
 	h := handlers.New(
 		s.app,
 		s.cache,
+		s.broker,
 		s.wsHub,
 		s.sseBroadcaster,
 		s.upgrader,
 		s.logger,
-		s.BroadcastEvent,
 	)
 
 	// Register routes

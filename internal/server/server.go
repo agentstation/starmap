@@ -3,7 +3,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -12,14 +11,18 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/server/cache"
+	"github.com/agentstation/starmap/internal/server/events"
+	"github.com/agentstation/starmap/internal/server/events/adapters"
 	"github.com/agentstation/starmap/internal/server/sse"
 	ws "github.com/agentstation/starmap/internal/server/websocket"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // Server holds the HTTP server state and dependencies.
 type Server struct {
 	app            application.Application
 	cache          *cache.Cache
+	broker         *events.Broker
 	wsHub          *ws.Hub
 	sseBroadcaster *sse.Broadcaster
 	upgrader       websocket.Upgrader
@@ -36,11 +39,23 @@ func New(app application.Application, cfg Config) (*Server, error) {
 		cfg.CacheTTL = 5 * time.Minute
 	}
 
+	// Create unified event broker
+	broker := events.NewBroker(logger)
+
+	// Create transport layers
+	wsHub := ws.NewHub(logger)
+	sseBroadcaster := sse.NewBroadcaster(logger)
+
+	// Subscribe transports to broker
+	broker.Subscribe(adapters.NewWebSocketSubscriber(wsHub))
+	broker.Subscribe(adapters.NewSSESubscriber(sseBroadcaster))
+
 	server := &Server{
 		app:            app,
 		cache:          cache.New(cfg.CacheTTL, cfg.CacheTTL*2),
-		wsHub:          ws.NewHub(logger),
-		sseBroadcaster: sse.NewBroadcaster(logger),
+		broker:         broker,
+		wsHub:          wsHub,
+		sseBroadcaster: sseBroadcaster,
 		upgrader: websocket.Upgrader{
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
@@ -52,11 +67,59 @@ func New(app application.Application, cfg Config) (*Server, error) {
 		config: cfg,
 	}
 
+	// Connect Starmap hooks to event broker
+	if err := server.connectHooks(); err != nil {
+		return nil, err
+	}
+
 	return server, nil
 }
 
-// Start starts background services (WebSocket hub, SSE broadcaster).
+// connectHooks registers Starmap event hooks to publish to the broker.
+func (s *Server) connectHooks() error {
+	sm, err := s.app.Starmap()
+	if err != nil {
+		return err
+	}
+
+	// Model added
+	sm.OnModelAdded(func(model catalogs.Model) {
+		s.broker.Publish(events.ModelAdded, map[string]any{
+			"model": model,
+		})
+		s.logger.Debug().
+			Str("model_id", model.ID).
+			Msg("Model added event published")
+	})
+
+	// Model updated
+	sm.OnModelUpdated(func(old, updated catalogs.Model) {
+		s.broker.Publish(events.ModelUpdated, map[string]any{
+			"old_model": old,
+			"new_model": updated,
+		})
+		s.logger.Debug().
+			Str("model_id", updated.ID).
+			Msg("Model updated event published")
+	})
+
+	// Model removed
+	sm.OnModelRemoved(func(model catalogs.Model) {
+		s.broker.Publish(events.ModelDeleted, map[string]any{
+			"model": model,
+		})
+		s.logger.Debug().
+			Str("model_id", model.ID).
+			Msg("Model deleted event published")
+	})
+
+	s.logger.Info().Msg("Starmap hooks connected to event broker")
+	return nil
+}
+
+// Start starts background services (broker, WebSocket hub, SSE broadcaster).
 func (s *Server) Start() {
+	go s.broker.Run()
 	go s.wsHub.Run()
 	go s.sseBroadcaster.Run()
 }
@@ -93,21 +156,7 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster {
 	return s.sseBroadcaster
 }
 
-// BroadcastEvent sends an event to both WebSocket and SSE clients.
-func (s *Server) BroadcastEvent(eventType string, data any) {
-	timestamp := time.Now()
-
-	// WebSocket
-	s.wsHub.Broadcast(ws.Message{
-		Type:      eventType,
-		Timestamp: timestamp,
-		Data:      data,
-	})
-
-	// SSE
-	s.sseBroadcaster.Broadcast(sse.Event{
-		Event: eventType,
-		ID:    fmt.Sprintf("%d", timestamp.Unix()),
-		Data:  data,
-	})
+// Broker returns the event broker for publishing events.
+func (s *Server) Broker() *events.Broker {
+	return s.broker
 }

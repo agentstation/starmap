@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"net/http"
-	"time"
 
+	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sync"
@@ -46,10 +46,9 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	h.cache.Clear()
 
 	// Broadcast update event
-	h.broadcastFn("sync.completed", map[string]any{
+	h.broker.Publish(events.SyncCompleted, map[string]any{
 		"total_changes":     result.TotalChanges,
 		"providers_changed": result.ProvidersChanged,
-		"timestamp":         time.Now(),
 	})
 
 	response.OK(w, map[string]any{
