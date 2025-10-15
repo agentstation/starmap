@@ -32,6 +32,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -191,6 +192,18 @@ func parseConfig(cmd *cobra.Command) server.Config {
 		IdleTimeout:    idleTimeout,
 		MetricsEnabled: metricsEnabled,
 	}
+}
+
+// parsePort safely parses a port string to integer.
+func parsePort(portStr string) (int, error) {
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		return 0, fmt.Errorf("invalid port number: %s", portStr)
+	}
+	if port < 1 || port > 65535 {
+		return 0, fmt.Errorf("port out of range: %d", port)
+	}
+	return port, nil
 }
 
 // startWithGracefulShutdown starts the HTTP server with graceful shutdown.
