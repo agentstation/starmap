@@ -37,6 +37,11 @@ func (s *Server) setupRouter() http.Handler {
 func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	prefix := s.config.PathPrefix
 
+	// Favicon handler (return 204 No Content to avoid 404 logs)
+	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	})
+
 	// Public health endpoints (no auth required)
 	mux.HandleFunc("/health", h.HandleHealth)
 	mux.HandleFunc(prefix+"/health", h.HandleHealth)

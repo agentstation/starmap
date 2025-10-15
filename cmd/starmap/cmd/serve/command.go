@@ -114,10 +114,16 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 	}
 	logger.Debug().Msg("Server instance created")
 
-	// Start background services (WebSocket hub, SSE broadcaster)
+	// Start background services (WebSocket hub, SSE broadcaster, event broker)
 	logger.Debug().Msg("Starting background services")
 	srv.Start()
 	logger.Debug().Msg("Background services started")
+
+	// Log that server is starting (after background services initialize)
+	logger.Info().
+		Str("addr", fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)).
+		Str("service", "API").
+		Msg("Server starting")
 
 	// Create HTTP server
 	logger.Debug().
@@ -135,8 +141,8 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 		IdleTimeout:  cfg.IdleTimeout,
 	}
 
-	// Start server with graceful shutdown
-	logger.Debug().Msg("Starting HTTP server with graceful shutdown handling")
+	// Start HTTP server with graceful shutdown
+	logger.Debug().Msg("Starting HTTP server listener with graceful shutdown handling")
 	return startWithGracefulShutdown(httpServer, srv, logger)
 }
 
@@ -205,9 +211,9 @@ func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logg
 		logger.Info().
 			Str("addr", httpServer.Addr).
 			Str("service", "API").
-			Msg("Server starting")
+			Msg("HTTP server listening")
 
-		fmt.Printf("🚀 Starting API server on %s\n", httpServer.Addr)
+		fmt.Printf("🚀 API server listening on %s\n", httpServer.Addr)
 		fmt.Println("   Press Ctrl+C to stop")
 
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
