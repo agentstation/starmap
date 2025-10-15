@@ -1,556 +1,7 @@
-openapi: 3.0.0
-info:
-  contact:
-    name: Starmap Project
-    url: https://github.com/agentstation/starmap
-  description: >-
-    REST API for the Starmap AI model catalog with real-time updates via
-    WebSocket and SSE.
-
-
-    Features:
-
-    - Comprehensive model and provider queries
-
-    - Advanced filtering and search
-
-    - Real-time updates via WebSocket and Server-Sent Events
-
-    - In-memory caching for performance
-
-    - Rate limiting and authentication support
-  license:
-    name: MIT
-    url: https://github.com/agentstation/starmap/blob/master/LICENSE
-  title: Starmap API
-  version: "1.0"
-paths:
-  /api/v1/health:
-    get:
-      description: Health check endpoint (liveness probe)
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-      summary: Health check
-      tags:
-        - health
-  /api/v1/models:
-    get:
-      description: List all models with optional filtering
-      parameters:
-        - description: Filter by exact model ID
-          in: query
-          name: id
-          schema:
-            type: string
-        - description: Filter by exact model name (case-insensitive)
-          in: query
-          name: name
-          schema:
-            type: string
-        - description: Filter by partial model name match
-          in: query
-          name: name_contains
-          schema:
-            type: string
-        - description: Filter by provider ID
-          in: query
-          name: provider
-          schema:
-            type: string
-        - description: Filter by input modality (comma-separated)
-          in: query
-          name: modality_input
-          schema:
-            type: string
-        - description: Filter by output modality (comma-separated)
-          in: query
-          name: modality_output
-          schema:
-            type: string
-        - description: Filter by feature (streaming, tool_calls, etc.)
-          in: query
-          name: feature
-          schema:
-            type: string
-        - description: Filter by tag (comma-separated)
-          in: query
-          name: tag
-          schema:
-            type: string
-        - description: Filter by open weights status
-          in: query
-          name: open_weights
-          schema:
-            type: boolean
-        - description: Minimum context window size
-          in: query
-          name: min_context
-          schema:
-            type: integer
-        - description: Maximum context window size
-          in: query
-          name: max_context
-          schema:
-            type: integer
-        - description: Sort field (id, name, release_date, context_window, created_at,
-            updated_at)
-          in: query
-          name: sort
-          schema:
-            type: string
-        - description: Sort order (asc, desc)
-          in: query
-          name: order
-          schema:
-            type: string
-        - description: "Maximum number of results (default: 100, max: 1000)"
-          in: query
-          name: limit
-          schema:
-            type: integer
-        - description: Result offset for pagination
-          in: query
-          name: offset
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: List models
-      tags:
-        - models
-  "/api/v1/models/{id}":
-    get:
-      description: Retrieve detailed information about a specific model
-      parameters:
-        - description: Model ID
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        $ref: "#/components/schemas/catalogs.Model"
-                    type: object
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Get model by ID
-      tags:
-        - models
-  /api/v1/models/search:
-    post:
-      description: Advanced search with multiple criteria
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/serve.SearchRequest"
-        description: Search criteria
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Search models
-      tags:
-        - models
-  /api/v1/openapi.json:
-    get:
-      description: Returns the OpenAPI 3.0 specification for this API in JSON format
-      responses:
-        "200":
-          description: OpenAPI 3.0 specification
-          content:
-            application/json:
-              schema:
-                type: object
-      summary: Get OpenAPI specification (JSON)
-      tags:
-        - meta
-  /api/v1/openapi.yaml:
-    get:
-      description: Returns the OpenAPI 3.0 specification for this API in YAML format
-      responses:
-        "200":
-          description: OpenAPI 3.0 specification
-          content:
-            application/x-yaml:
-              schema:
-                type: string
-      summary: Get OpenAPI specification (YAML)
-      tags:
-        - meta
-  /api/v1/providers:
-    get:
-      description: List all providers
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: List providers
-      tags:
-        - providers
-  "/api/v1/providers/{id}":
-    get:
-      description: Retrieve detailed information about a specific provider
-      parameters:
-        - description: Provider ID
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        $ref: "#/components/schemas/catalogs.Provider"
-                    type: object
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Get provider by ID
-      tags:
-        - providers
-  "/api/v1/providers/{id}/models":
-    get:
-      description: List all models for a specific provider
-      parameters:
-        - description: Provider ID
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Get provider models
-      tags:
-        - providers
-  /api/v1/ready:
-    get:
-      description: Readiness check including cache and data source status
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      summary: Readiness check
-      tags:
-        - health
-  /api/v1/stats:
-    get:
-      description: Get catalog statistics (model count, provider count, last sync)
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Catalog statistics
-      tags:
-        - admin
-  /api/v1/update:
-    post:
-      description: Manually trigger catalog synchronization
-      parameters:
-        - description: Update specific provider only
-          in: query
-          name: provider
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      data:
-                        type: object
-                    type: object
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/response.Response"
-                  - properties:
-                      error:
-                        $ref: "#/components/schemas/response.Error"
-                    type: object
-      security:
-        - ApiKeyAuth: []
-      summary: Trigger catalog update
-      tags:
-        - admin
-  /api/v1/updates/stream:
-    get:
-      description: Server-Sent Events stream for catalog change notifications
-      responses:
-        "200":
-          description: Event stream
-      summary: SSE updates stream
-      tags:
-        - updates
-  /api/v1/updates/ws:
-    get:
-      description: WebSocket connection for real-time catalog updates
-      responses:
-        "101":
-          description: Switching Protocols
-      summary: WebSocket updates
-      tags:
-        - updates
-servers:
-  - url: //localhost:8080/api/v1
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      description: API key for authentication (optional, configurable)
-      in: header
-      name: X-API-Key
-      type: apiKey
   schemas:
     catalogs.ArchitectureType:
-      enum:
-        - transformer
-        - moe
-        - cnn
-        - rnn
-        - lstm
-        - gru
-        - vae
-        - gan
-        - diffusion
+      description: Type of architecture
       type: string
       x-enum-comments:
         ArchitectureTypeCNN: Convolutional Neural Networks
@@ -562,37 +13,111 @@ components:
         ArchitectureTypeRNN: Recurrent Neural Networks
         ArchitectureTypeTransformer: Transformer-based models (GPT, BERT, LLaMA, etc.)
         ArchitectureTypeVAE: Variational Autoencoders
-      x-enum-descriptions:
-        - Transformer-based models (GPT, BERT, LLaMA, etc.)
-        - Mixture of Experts (Mixtral, GLaM, Switch Transformer)
-        - Convolutional Neural Networks
-        - Recurrent Neural Networks
-        - Long Short-Term Memory networks
-        - Gated Recurrent Unit networks
-        - Variational Autoencoders
-        - Generative Adversarial Networks
-        - Diffusion models (Stable Diffusion, DALL-E, etc.)
       x-enum-varnames:
-        - ArchitectureTypeTransformer
-        - ArchitectureTypeMoE
-        - ArchitectureTypeCNN
-        - ArchitectureTypeRNN
-        - ArchitectureTypeLSTM
-        - ArchitectureTypeGRU
-        - ArchitectureTypeVAE
-        - ArchitectureTypeGAN
-        - ArchitectureTypeDiffusion
+      - ArchitectureTypeTransformer
+      - ArchitectureTypeMoE
+      - ArchitectureTypeCNN
+      - ArchitectureTypeRNN
+      - ArchitectureTypeLSTM
+      - ArchitectureTypeGRU
+      - ArchitectureTypeVAE
+      - ArchitectureTypeGAN
+      - ArchitectureTypeDiffusion
     catalogs.Author:
       properties:
         aliases:
-          description: Alternative IDs this author is known by (e.g., in provider catalogs)
+          description: Alternative IDs this author is known by (e.g., in provider
+            catalogs)
           items:
-            $ref: "#/components/schemas/catalogs.AuthorID"
+            description: Unique identifier for the author
+            type: string
+            x-enum-varnames:
+            - AuthorIDOpenAI
+            - AuthorIDAnthropic
+            - AuthorIDGoogle
+            - AuthorIDDeepMind
+            - AuthorIDMeta
+            - AuthorIDMicrosoft
+            - AuthorIDMistralAI
+            - AuthorIDCohere
+            - AuthorIDGroq
+            - AuthorIDAlibabaQwen
+            - AuthorIDQwen
+            - AuthorIDXAI
+            - AuthorIDStanford
+            - AuthorIDMIT
+            - AuthorIDCMU
+            - AuthorIDUCBerkeley
+            - AuthorIDCornell
+            - AuthorIDPrinceton
+            - AuthorIDHarvard
+            - AuthorIDOxford
+            - AuthorIDCambridge
+            - AuthorIDETHZurich
+            - AuthorIDUWashington
+            - AuthorIDUChicago
+            - AuthorIDYale
+            - AuthorIDDuke
+            - AuthorIDCaltech
+            - AuthorIDHuggingFace
+            - AuthorIDEleutherAI
+            - AuthorIDTogether
+            - AuthorIDMosaicML
+            - AuthorIDStabilityAI
+            - AuthorIDRunwayML
+            - AuthorIDMidjourney
+            - AuthorIDLAION
+            - AuthorIDBigScience
+            - AuthorIDAlignmentRC
+            - AuthorIDH2OAI
+            - AuthorIDMoxin
+            - AuthorIDBaidu
+            - AuthorIDTencent
+            - AuthorIDByteDance
+            - AuthorIDDeepSeek
+            - AuthorIDBAAI
+            - AuthorID01AI
+            - AuthorIDBaichuan
+            - AuthorIDMiniMax
+            - AuthorIDMoonshot
+            - AuthorIDShanghaiAI
+            - AuthorIDZhipuAI
+            - AuthorIDSenseTime
+            - AuthorIDHuawei
+            - AuthorIDTsinghua
+            - AuthorIDPeking
+            - AuthorIDNVIDIA
+            - AuthorIDSalesforce
+            - AuthorIDIBM
+            - AuthorIDApple
+            - AuthorIDAmazon
+            - AuthorIDAdept
+            - AuthorIDAI21
+            - AuthorIDInflection
+            - AuthorIDCharacter
+            - AuthorIDPerplexity
+            - AuthorIDAnysphere
+            - AuthorIDCursor
+            - AuthorIDCognitiveComputations
+            - AuthorIDEricHartford
+            - AuthorIDNousResearch
+            - AuthorIDTeknium
+            - AuthorIDJonDurbin
+            - AuthorIDLMSYS
+            - AuthorIDVicuna
+            - AuthorIDAlpacaTeam
+            - AuthorIDWizardLM
+            - AuthorIDOpenOrca
+            - AuthorIDPhind
+            - AuthorIDCodeFuse
+            - AuthorIDTHUDM
+            - AuthorIDGeorgiaTechRI
+            - AuthorIDFastChat
+            - AuthorIDUnknown
           type: array
+          uniqueItems: false
         catalog:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.AuthorCatalog"
-          description: Catalog and models
+          $ref: '#/components/schemas/catalogs.AuthorCatalog'
         created_at:
           description: Timestamps for record keeping and auditing
           type: string
@@ -612,9 +137,7 @@ components:
           description: Author icon/logo URL
           type: string
         id:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.AuthorID"
-          description: Unique identifier for the author
+          $ref: '#/components/schemas/catalogs.AuthorID'
         name:
           description: Display name of the author
           type: string
@@ -629,218 +152,216 @@ components:
           type: string
       type: object
     catalogs.AuthorAttribution:
+      description: Model attribution configuration for multi-provider inference
       properties:
         patterns:
           description: Glob patterns to match model IDs
           items:
             type: string
           type: array
+          uniqueItems: false
         provider_id:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderID"
-          description: Optional provider to source models from
+          $ref: '#/components/schemas/catalogs.ProviderID'
       type: object
     catalogs.AuthorCatalog:
+      description: Catalog and models
       properties:
         attribution:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.AuthorAttribution"
-          description: Model attribution configuration for multi-provider inference
+          $ref: '#/components/schemas/catalogs.AuthorAttribution'
         description:
           description: Optional description of this mapping relationship
           type: string
       type: object
     catalogs.AuthorID:
-      enum:
-        - openai
-        - anthropic
-        - google
-        - deepmind
-        - meta
-        - microsoft
-        - mistral
-        - cohere
-        - groq
-        - alibaba
-        - qwen
-        - xai
-        - stanford
-        - mit
-        - cmu
-        - uc-berkeley
-        - cornell
-        - princeton
-        - harvard
-        - oxford
-        - cambridge
-        - eth-zurich
-        - uw
-        - uchicago
-        - yale
-        - duke
-        - caltech
-        - huggingface
-        - eleutherai
-        - together
-        - mosaicml
-        - stability
-        - runway
-        - midjourney
-        - laion
-        - bigscience
-        - alignment-research
-        - h2o.ai
-        - moxin
-        - baidu
-        - tencent
-        - bytedance
-        - deepseek
-        - baai
-        - 01.ai
-        - baichuan
-        - minimax
-        - moonshotai
-        - shanghai-ai-lab
-        - zhipu-ai
-        - sensetime
-        - huawei
-        - tsinghua
-        - peking
-        - nvidia
-        - salesforce
-        - ibm
-        - apple
-        - amazon
-        - adept
-        - ai21
-        - inflection
-        - character
-        - perplexity
-        - anysphere
-        - cursor
-        - cognitivecomputations
-        - ehartford
-        - nousresearch
-        - teknium
-        - jondurbin
-        - lmsys
-        - vicuna-team
-        - stanford-alpaca
-        - wizardlm
-        - open-orca
-        - phind
-        - codefuse
-        - thudm
-        - gatech
-        - fastchat
-        - unknown
+      description: Unique identifier for the author
       type: string
       x-enum-varnames:
-        - AuthorIDOpenAI
-        - AuthorIDAnthropic
-        - AuthorIDGoogle
-        - AuthorIDDeepMind
-        - AuthorIDMeta
-        - AuthorIDMicrosoft
-        - AuthorIDMistralAI
-        - AuthorIDCohere
-        - AuthorIDGroq
-        - AuthorIDAlibabaQwen
-        - AuthorIDQwen
-        - AuthorIDXAI
-        - AuthorIDStanford
-        - AuthorIDMIT
-        - AuthorIDCMU
-        - AuthorIDUCBerkeley
-        - AuthorIDCornell
-        - AuthorIDPrinceton
-        - AuthorIDHarvard
-        - AuthorIDOxford
-        - AuthorIDCambridge
-        - AuthorIDETHZurich
-        - AuthorIDUWashington
-        - AuthorIDUChicago
-        - AuthorIDYale
-        - AuthorIDDuke
-        - AuthorIDCaltech
-        - AuthorIDHuggingFace
-        - AuthorIDEleutherAI
-        - AuthorIDTogether
-        - AuthorIDMosaicML
-        - AuthorIDStabilityAI
-        - AuthorIDRunwayML
-        - AuthorIDMidjourney
-        - AuthorIDLAION
-        - AuthorIDBigScience
-        - AuthorIDAlignmentRC
-        - AuthorIDH2OAI
-        - AuthorIDMoxin
-        - AuthorIDBaidu
-        - AuthorIDTencent
-        - AuthorIDByteDance
-        - AuthorIDDeepSeek
-        - AuthorIDBAAI
-        - AuthorID01AI
-        - AuthorIDBaichuan
-        - AuthorIDMiniMax
-        - AuthorIDMoonshot
-        - AuthorIDShanghaiAI
-        - AuthorIDZhipuAI
-        - AuthorIDSenseTime
-        - AuthorIDHuawei
-        - AuthorIDTsinghua
-        - AuthorIDPeking
-        - AuthorIDNVIDIA
-        - AuthorIDSalesforce
-        - AuthorIDIBM
-        - AuthorIDApple
-        - AuthorIDAmazon
-        - AuthorIDAdept
-        - AuthorIDAI21
-        - AuthorIDInflection
-        - AuthorIDCharacter
-        - AuthorIDPerplexity
-        - AuthorIDAnysphere
-        - AuthorIDCursor
-        - AuthorIDCognitiveComputations
-        - AuthorIDEricHartford
-        - AuthorIDNousResearch
-        - AuthorIDTeknium
-        - AuthorIDJonDurbin
-        - AuthorIDLMSYS
-        - AuthorIDVicuna
-        - AuthorIDAlpacaTeam
-        - AuthorIDWizardLM
-        - AuthorIDOpenOrca
-        - AuthorIDPhind
-        - AuthorIDCodeFuse
-        - AuthorIDTHUDM
-        - AuthorIDGeorgiaTechRI
-        - AuthorIDFastChat
-        - AuthorIDUnknown
+      - AuthorIDOpenAI
+      - AuthorIDAnthropic
+      - AuthorIDGoogle
+      - AuthorIDDeepMind
+      - AuthorIDMeta
+      - AuthorIDMicrosoft
+      - AuthorIDMistralAI
+      - AuthorIDCohere
+      - AuthorIDGroq
+      - AuthorIDAlibabaQwen
+      - AuthorIDQwen
+      - AuthorIDXAI
+      - AuthorIDStanford
+      - AuthorIDMIT
+      - AuthorIDCMU
+      - AuthorIDUCBerkeley
+      - AuthorIDCornell
+      - AuthorIDPrinceton
+      - AuthorIDHarvard
+      - AuthorIDOxford
+      - AuthorIDCambridge
+      - AuthorIDETHZurich
+      - AuthorIDUWashington
+      - AuthorIDUChicago
+      - AuthorIDYale
+      - AuthorIDDuke
+      - AuthorIDCaltech
+      - AuthorIDHuggingFace
+      - AuthorIDEleutherAI
+      - AuthorIDTogether
+      - AuthorIDMosaicML
+      - AuthorIDStabilityAI
+      - AuthorIDRunwayML
+      - AuthorIDMidjourney
+      - AuthorIDLAION
+      - AuthorIDBigScience
+      - AuthorIDAlignmentRC
+      - AuthorIDH2OAI
+      - AuthorIDMoxin
+      - AuthorIDBaidu
+      - AuthorIDTencent
+      - AuthorIDByteDance
+      - AuthorIDDeepSeek
+      - AuthorIDBAAI
+      - AuthorID01AI
+      - AuthorIDBaichuan
+      - AuthorIDMiniMax
+      - AuthorIDMoonshot
+      - AuthorIDShanghaiAI
+      - AuthorIDZhipuAI
+      - AuthorIDSenseTime
+      - AuthorIDHuawei
+      - AuthorIDTsinghua
+      - AuthorIDPeking
+      - AuthorIDNVIDIA
+      - AuthorIDSalesforce
+      - AuthorIDIBM
+      - AuthorIDApple
+      - AuthorIDAmazon
+      - AuthorIDAdept
+      - AuthorIDAI21
+      - AuthorIDInflection
+      - AuthorIDCharacter
+      - AuthorIDPerplexity
+      - AuthorIDAnysphere
+      - AuthorIDCursor
+      - AuthorIDCognitiveComputations
+      - AuthorIDEricHartford
+      - AuthorIDNousResearch
+      - AuthorIDTeknium
+      - AuthorIDJonDurbin
+      - AuthorIDLMSYS
+      - AuthorIDVicuna
+      - AuthorIDAlpacaTeam
+      - AuthorIDWizardLM
+      - AuthorIDOpenOrca
+      - AuthorIDPhind
+      - AuthorIDCodeFuse
+      - AuthorIDTHUDM
+      - AuthorIDGeorgiaTechRI
+      - AuthorIDFastChat
+      - AuthorIDUnknown
     catalogs.AuthorMapping:
+      description: Author extraction
       properties:
         field:
           description: Field to extract from (e.g., "owned_by")
           type: string
         normalized:
           additionalProperties:
-            $ref: "#/components/schemas/catalogs.AuthorID"
+            description: Unique identifier for the author
+            type: string
+            x-enum-varnames:
+            - AuthorIDOpenAI
+            - AuthorIDAnthropic
+            - AuthorIDGoogle
+            - AuthorIDDeepMind
+            - AuthorIDMeta
+            - AuthorIDMicrosoft
+            - AuthorIDMistralAI
+            - AuthorIDCohere
+            - AuthorIDGroq
+            - AuthorIDAlibabaQwen
+            - AuthorIDQwen
+            - AuthorIDXAI
+            - AuthorIDStanford
+            - AuthorIDMIT
+            - AuthorIDCMU
+            - AuthorIDUCBerkeley
+            - AuthorIDCornell
+            - AuthorIDPrinceton
+            - AuthorIDHarvard
+            - AuthorIDOxford
+            - AuthorIDCambridge
+            - AuthorIDETHZurich
+            - AuthorIDUWashington
+            - AuthorIDUChicago
+            - AuthorIDYale
+            - AuthorIDDuke
+            - AuthorIDCaltech
+            - AuthorIDHuggingFace
+            - AuthorIDEleutherAI
+            - AuthorIDTogether
+            - AuthorIDMosaicML
+            - AuthorIDStabilityAI
+            - AuthorIDRunwayML
+            - AuthorIDMidjourney
+            - AuthorIDLAION
+            - AuthorIDBigScience
+            - AuthorIDAlignmentRC
+            - AuthorIDH2OAI
+            - AuthorIDMoxin
+            - AuthorIDBaidu
+            - AuthorIDTencent
+            - AuthorIDByteDance
+            - AuthorIDDeepSeek
+            - AuthorIDBAAI
+            - AuthorID01AI
+            - AuthorIDBaichuan
+            - AuthorIDMiniMax
+            - AuthorIDMoonshot
+            - AuthorIDShanghaiAI
+            - AuthorIDZhipuAI
+            - AuthorIDSenseTime
+            - AuthorIDHuawei
+            - AuthorIDTsinghua
+            - AuthorIDPeking
+            - AuthorIDNVIDIA
+            - AuthorIDSalesforce
+            - AuthorIDIBM
+            - AuthorIDApple
+            - AuthorIDAmazon
+            - AuthorIDAdept
+            - AuthorIDAI21
+            - AuthorIDInflection
+            - AuthorIDCharacter
+            - AuthorIDPerplexity
+            - AuthorIDAnysphere
+            - AuthorIDCursor
+            - AuthorIDCognitiveComputations
+            - AuthorIDEricHartford
+            - AuthorIDNousResearch
+            - AuthorIDTeknium
+            - AuthorIDJonDurbin
+            - AuthorIDLMSYS
+            - AuthorIDVicuna
+            - AuthorIDAlpacaTeam
+            - AuthorIDWizardLM
+            - AuthorIDOpenOrca
+            - AuthorIDPhind
+            - AuthorIDCodeFuse
+            - AuthorIDTHUDM
+            - AuthorIDGeorgiaTechRI
+            - AuthorIDFastChat
+            - AuthorIDUnknown
           description: Normalization map (e.g., "Meta" -> "meta")
           type: object
       type: object
     catalogs.EndpointType:
-      enum:
-        - openai
-        - anthropic
-        - google
-        - google-cloud
+      description: 'Required: API style'
       type: string
       x-enum-varnames:
-        - EndpointTypeOpenAI
-        - EndpointTypeAnthropic
-        - EndpointTypeGoogle
-        - EndpointTypeGoogleCloud
+      - EndpointTypeOpenAI
+      - EndpointTypeAnthropic
+      - EndpointTypeGoogle
+      - EndpointTypeGoogleCloud
     catalogs.FeatureRule:
       properties:
         contains:
@@ -848,6 +369,7 @@ components:
           items:
             type: string
           type: array
+          uniqueItems: false
         feature:
           description: Feature to enable (e.g., "tools", "reasoning")
           type: string
@@ -868,6 +390,7 @@ components:
           type: string
       type: object
     catalogs.FloatRange:
+      description: Alternative sampling strategies (niche)
       properties:
         default:
           description: Default value
@@ -880,6 +403,7 @@ components:
           type: number
       type: object
     catalogs.IntRange:
+      description: ReasoningTokens - specific token allocation for reasoning processes
       properties:
         default:
           description: Default value
@@ -894,14 +418,13 @@ components:
     catalogs.Model:
       properties:
         attachments:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelAttachments"
-          description: Attachments - attachment support details
+          $ref: '#/components/schemas/catalogs.ModelAttachments'
         authors:
           description: Authors/organizations of the model (if known)
           items:
-            $ref: "#/components/schemas/catalogs.Author"
+            $ref: '#/components/schemas/catalogs.Author'
           type: array
+          uniqueItems: false
         created_at:
           description: Timestamps for record keeping and auditing
           type: string
@@ -909,57 +432,37 @@ components:
           description: Description of the model and its use cases
           type: string
         features:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelFeatures"
-          description: Features - what this model can do
+          $ref: '#/components/schemas/catalogs.ModelFeatures'
         generation:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelGeneration"
-          description: Generation - core chat completions generation controls
+          $ref: '#/components/schemas/catalogs.ModelGeneration'
         id:
           description: Core identity
           type: string
         limits:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelLimits"
-          description: Model limits
+          $ref: '#/components/schemas/catalogs.ModelLimits'
         metadata:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelMetadata"
-          description: Metadata - version and timing information
+          $ref: '#/components/schemas/catalogs.ModelMetadata'
         name:
           description: Display name (must not be empty)
           type: string
         pricing:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelPricing"
-          description: Operational characteristics
+          $ref: '#/components/schemas/catalogs.ModelPricing'
         reasoning:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelControlLevels"
-          description: Reasoning - reasoning effort levels
+          $ref: '#/components/schemas/catalogs.ModelControlLevels'
         reasoning_tokens:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.IntRange"
-          description: ReasoningTokens - specific token allocation for reasoning processes
+          $ref: '#/components/schemas/catalogs.IntRange'
         response:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelDelivery"
-          description: Delivery - technical response delivery capabilities (formats,
-            protocols, streaming)
+          $ref: '#/components/schemas/catalogs.ModelDelivery'
         tools:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTools"
-          description: Tools - external tool and capability integrations
+          $ref: '#/components/schemas/catalogs.ModelTools'
         updated_at:
           description: Last updated date (YYYY-MM or YYYY-MM-DD format)
           type: string
         verbosity:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelControlLevels"
-          description: Verbosity - response verbosity levels
+          $ref: '#/components/schemas/catalogs.ModelControlLevels'
       type: object
     catalogs.ModelArchitecture:
+      description: Technical architecture details
       properties:
         base_model:
           description: Base model ID if fine-tuned
@@ -974,22 +477,17 @@ components:
           description: Legacy precision format (use Quantization for filtering)
           type: string
         quantization:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.Quantization"
-          description: Quantization level used by the model
+          $ref: '#/components/schemas/catalogs.Quantization'
         quantized:
           description: Whether the model has been quantized
           type: boolean
         tokenizer:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.Tokenizer"
-          description: Tokenizer type used by the model
+          $ref: '#/components/schemas/catalogs.Tokenizer'
         type:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ArchitectureType"
-          description: Type of architecture
+          $ref: '#/components/schemas/catalogs.ArchitectureType'
       type: object
     catalogs.ModelAttachments:
+      description: Attachments - attachment support details
       properties:
         max_file_size:
           description: Maximum file size in bytes
@@ -1002,76 +500,84 @@ components:
           items:
             type: string
           type: array
+          uniqueItems: false
       type: object
     catalogs.ModelControlLevel:
-      enum:
-        - minimum
-        - low
-        - medium
-        - high
-        - maximum
       type: string
       x-enum-varnames:
-        - ModelControlLevelMinimum
-        - ModelControlLevelLow
-        - ModelControlLevelMedium
-        - ModelControlLevelHigh
-        - ModelControlLevelMaximum
+      - ModelControlLevelMinimum
+      - ModelControlLevelLow
+      - ModelControlLevelMedium
+      - ModelControlLevelHigh
+      - ModelControlLevelMaximum
     catalogs.ModelControlLevels:
+      description: Verbosity - response verbosity levels
       properties:
         default:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelControlLevel"
           description: Default level
+          type: string
+          x-enum-varnames:
+          - ModelControlLevelMinimum
+          - ModelControlLevelLow
+          - ModelControlLevelMedium
+          - ModelControlLevelHigh
+          - ModelControlLevelMaximum
         levels:
           description: Which levels this model supports
           items:
-            $ref: "#/components/schemas/catalogs.ModelControlLevel"
+            $ref: '#/components/schemas/catalogs.ModelControlLevel'
           type: array
+          uniqueItems: false
       type: object
     catalogs.ModelDelivery:
+      description: Delivery - technical response delivery capabilities (formats, protocols,
+        streaming)
       properties:
         formats:
           description: Available response formats (if format_response feature enabled)
           items:
-            $ref: "#/components/schemas/catalogs.ModelResponseFormat"
+            $ref: '#/components/schemas/catalogs.ModelResponseFormat'
           type: array
+          uniqueItems: false
         protocols:
           description: Response delivery mechanisms
           items:
-            $ref: "#/components/schemas/catalogs.ModelResponseProtocol"
+            $ref: '#/components/schemas/catalogs.ModelResponseProtocol'
           type: array
+          uniqueItems: false
         streaming:
           description: Supported streaming modes (sse, websocket, chunked)
           items:
-            $ref: "#/components/schemas/catalogs.ModelStreaming"
+            $ref: '#/components/schemas/catalogs.ModelStreaming'
           type: array
+          uniqueItems: false
       type: object
     catalogs.ModelFeatures:
+      description: Features - what this model can do
       properties:
         allowed_tokens:
-          description: "[Niche] Supports token whitelist"
+          description: '[Niche] Supports token whitelist'
           type: boolean
         attachments:
           description: Attachment support details
           type: boolean
         bad_words:
-          description: "[Advanced] Supports bad words/disallowed tokens"
+          description: '[Advanced] Supports bad words/disallowed tokens'
           type: boolean
         best_of:
-          description: "[Advanced] Supports server-side sampling with best selection"
+          description: '[Advanced] Supports server-side sampling with best selection'
           type: boolean
         contrastive_search_penalty_alpha:
-          description: "[Niche] Supports contrastive decoding"
+          description: '[Niche] Supports contrastive decoding'
           type: boolean
         diversity_penalty:
-          description: "[Niche] Supports diversity penalty in beam search"
+          description: '[Niche] Supports diversity penalty in beam search'
           type: boolean
         early_stopping:
-          description: "[Niche] Supports early stopping in beam search"
+          description: '[Niche] Supports early stopping in beam search'
           type: boolean
         echo:
-          description: "[Advanced] Supports echoing prompt with completion"
+          description: '[Advanced] Supports echoing prompt with completion'
           type: boolean
         format_response:
           description: Response delivery
@@ -1083,7 +589,7 @@ components:
           description: Supports including reasoning traces in response
           type: boolean
         length_penalty:
-          description: "[Niche] Supports length penalty (seq2seq style)"
+          description: '[Niche] Supports length penalty (seq2seq style)'
           type: boolean
         logit_bias:
           description: Generation control - Token biasing
@@ -1092,39 +598,37 @@ components:
           description: Generation control - Observability
           type: boolean
         max_output_tokens:
-          description: "[Core] Supports max_output_tokens parameter (some providers
-            distinguish from max_tokens)"
+          description: '[Core] Supports max_output_tokens parameter (some providers
+            distinguish from max_tokens)'
           type: boolean
         max_tokens:
           description: Generation control - Length and termination
           type: boolean
         min_p:
-          description: "[Advanced] Supports min_p parameter (minimum probability threshold)"
+          description: '[Advanced] Supports min_p parameter (minimum probability threshold)'
           type: boolean
         mirostat:
           description: Generation control - Alternative sampling strategies (niche)
           type: boolean
         mirostat_eta:
-          description: "[Niche] Supports Mirostat eta parameter"
+          description: '[Niche] Supports Mirostat eta parameter'
           type: boolean
         mirostat_tau:
-          description: "[Niche] Supports Mirostat tau parameter"
+          description: '[Niche] Supports Mirostat tau parameter'
           type: boolean
         modalities:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelModalities"
-          description: Input/Output modalities
-        n:
+          $ref: '#/components/schemas/catalogs.ModelModalities'
+        "n":
           description: Generation control - Multiplicity and reranking
           type: boolean
         no_repeat_ngram_size:
-          description: "[Niche] Supports n-gram repetition blocking"
+          description: '[Niche] Supports n-gram repetition blocking'
           type: boolean
         num_beams:
           description: Generation control - Beam search (niche)
           type: boolean
         presence_penalty:
-          description: "[Core] Supports presence penalty"
+          description: '[Core] Supports presence penalty'
           type: boolean
         reasoning:
           description: Reasoning & Verbosity
@@ -1136,16 +640,16 @@ components:
           description: Supports specific reasoning token allocation
           type: boolean
         repetition_penalty:
-          description: "[Advanced] Supports repetition penalty"
+          description: '[Advanced] Supports repetition penalty'
           type: boolean
         seed:
           description: Generation control - Determinism
           type: boolean
         stop:
-          description: "[Core] Supports stop sequences/words"
+          description: '[Core] Supports stop sequences/words'
           type: boolean
         stop_token_ids:
-          description: "[Advanced] Supports stop token IDs (numeric)"
+          description: '[Advanced] Supports stop token IDs (numeric)'
           type: boolean
         streaming:
           description: Supports response streaming
@@ -1157,7 +661,7 @@ components:
           description: Generation control - Core sampling and decoding
           type: boolean
         tfs:
-          description: "[Advanced] Supports tail free sampling"
+          description: '[Advanced] Supports tail free sampling'
           type: boolean
         tool_calls:
           description: |-
@@ -1171,19 +675,19 @@ components:
           description: Accepts tool definitions in requests (accepts tools parameter)
           type: boolean
         top_a:
-          description: "[Advanced] Supports top_a parameter (top-a sampling)"
+          description: '[Advanced] Supports top_a parameter (top-a sampling)'
           type: boolean
         top_k:
-          description: "[Advanced] Supports top_k parameter"
+          description: '[Advanced] Supports top_k parameter'
           type: boolean
         top_logprobs:
-          description: "[Core] Supports returning top N log probabilities"
+          description: '[Core] Supports returning top N log probabilities'
           type: boolean
         top_p:
-          description: "[Core] Supports top_p parameter (nucleus sampling)"
+          description: '[Core] Supports top_p parameter (nucleus sampling)'
           type: boolean
         typical_p:
-          description: "[Advanced] Supports typical_p parameter (typical sampling)"
+          description: '[Advanced] Supports typical_p parameter (typical sampling)'
           type: boolean
         verbosity:
           description: Supports verbosity control (GPT-5+)
@@ -1193,67 +697,57 @@ components:
           type: boolean
       type: object
     catalogs.ModelGeneration:
+      description: Generation - core chat completions generation controls
       properties:
         best_of:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.IntRange"
-          description: Server-side sampling with best selection
+          $ref: '#/components/schemas/catalogs.IntRange'
         contrastive_search_penalty_alpha:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         diversity_penalty:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         frequency_penalty:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.FloatRange"
-          description: Repetition control
+          $ref: '#/components/schemas/catalogs.FloatRange'
         length_penalty:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         max_output_tokens:
           type: integer
         max_tokens:
           description: Length and termination
           type: integer
         min_p:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         mirostat_eta:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         mirostat_tau:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.FloatRange"
-          description: Alternative sampling strategies (niche)
-        n:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.IntRange"
-          description: Multiplicity and reranking
+          $ref: '#/components/schemas/catalogs.FloatRange'
+        "n":
+          $ref: '#/components/schemas/catalogs.IntRange'
         no_repeat_ngram_size:
-          $ref: "#/components/schemas/catalogs.IntRange"
+          $ref: '#/components/schemas/catalogs.IntRange'
         num_beams:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.IntRange"
-          description: Beam search (niche)
+          $ref: '#/components/schemas/catalogs.IntRange'
         presence_penalty:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         repetition_penalty:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         temperature:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.FloatRange"
-          description: Core sampling and decoding
+          $ref: '#/components/schemas/catalogs.FloatRange'
         tfs:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         top_a:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         top_k:
-          $ref: "#/components/schemas/catalogs.IntRange"
+          $ref: '#/components/schemas/catalogs.IntRange'
         top_logprobs:
           description: Observability
           type: integer
         top_p:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
         typical_p:
-          $ref: "#/components/schemas/catalogs.FloatRange"
+          $ref: '#/components/schemas/catalogs.FloatRange'
       type: object
     catalogs.ModelLimits:
+      description: Model limits
       properties:
         context_window:
           description: Context window size in tokens
@@ -1263,11 +757,10 @@ components:
           type: integer
       type: object
     catalogs.ModelMetadata:
+      description: Metadata - version and timing information
       properties:
         architecture:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelArchitecture"
-          description: Technical architecture details
+          $ref: '#/components/schemas/catalogs.ModelArchitecture'
         knowledge_cutoff:
           description: Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
           type: string
@@ -1280,48 +773,48 @@ components:
         tags:
           description: Use case tags for categorizing the model
           items:
-            $ref: "#/components/schemas/catalogs.ModelTag"
+            $ref: '#/components/schemas/catalogs.ModelTag'
           type: array
+          uniqueItems: false
       type: object
     catalogs.ModelModalities:
+      description: Input/Output modalities
       properties:
         input:
           description: Supported input modalities
           items:
-            $ref: "#/components/schemas/catalogs.ModelModality"
+            $ref: '#/components/schemas/catalogs.ModelModality'
           type: array
+          uniqueItems: false
         output:
           description: Supported output modalities
           items:
-            $ref: "#/components/schemas/catalogs.ModelModality"
+            type: string
+            x-enum-comments:
+              ModelModalityEmbedding: Vector embeddings
+            x-enum-varnames:
+            - ModelModalityText
+            - ModelModalityAudio
+            - ModelModalityImage
+            - ModelModalityVideo
+            - ModelModalityPDF
+            - ModelModalityEmbedding
           type: array
+          uniqueItems: false
       type: object
     catalogs.ModelModality:
-      enum:
-        - text
-        - audio
-        - image
-        - video
-        - pdf
-        - embedding
       type: string
       x-enum-comments:
         ModelModalityEmbedding: Vector embeddings
-      x-enum-descriptions:
-        - ""
-        - ""
-        - ""
-        - ""
-        - ""
-        - Vector embeddings
       x-enum-varnames:
-        - ModelModalityText
-        - ModelModalityAudio
-        - ModelModalityImage
-        - ModelModalityVideo
-        - ModelModalityPDF
-        - ModelModalityEmbedding
+      - ModelModalityText
+      - ModelModalityAudio
+      - ModelModalityImage
+      - ModelModalityVideo
+      - ModelModalityPDF
+      - ModelModalityEmbedding
     catalogs.ModelOperationPricing:
+      description: Fixed costs per operation
       properties:
         audio_gen:
           description: Cost per audio generated
@@ -1355,30 +848,17 @@ components:
           type: number
       type: object
     catalogs.ModelPricing:
+      description: Operational characteristics
       properties:
         currency:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelPricingCurrency"
-          description: Metadata
+          $ref: '#/components/schemas/catalogs.ModelPricingCurrency'
         operations:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelOperationPricing"
-          description: Fixed costs per operation
+          $ref: '#/components/schemas/catalogs.ModelOperationPricing'
         tokens:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenPricing"
-          description: Token-based costs
+          $ref: '#/components/schemas/catalogs.ModelTokenPricing'
       type: object
     catalogs.ModelPricingCurrency:
-      enum:
-        - USD
-        - EUR
-        - JPY
-        - GBP
-        - AUD
-        - CAD
-        - CNY
-        - NZD
+      description: Metadata
       type: string
       x-enum-comments:
         ModelPricingCurrencyAUD: Australian Dollar
@@ -1389,33 +869,16 @@ components:
         ModelPricingCurrencyJPY: Japanese Yen
         ModelPricingCurrencyNZD: New Zealand Dollar
         ModelPricingCurrencyUSD: US Dollar
-      x-enum-descriptions:
-        - US Dollar
-        - Euro
-        - Japanese Yen
-        - British Pound Sterling
-        - Australian Dollar
-        - Canadian Dollar
-        - Chinese Yuan
-        - New Zealand Dollar
       x-enum-varnames:
-        - ModelPricingCurrencyUSD
-        - ModelPricingCurrencyEUR
-        - ModelPricingCurrencyJPY
-        - ModelPricingCurrencyGBP
-        - ModelPricingCurrencyAUD
-        - ModelPricingCurrencyCAD
-        - ModelPricingCurrencyCNY
-        - ModelPricingCurrencyNZD
+      - ModelPricingCurrencyUSD
+      - ModelPricingCurrencyEUR
+      - ModelPricingCurrencyJPY
+      - ModelPricingCurrencyGBP
+      - ModelPricingCurrencyAUD
+      - ModelPricingCurrencyCAD
+      - ModelPricingCurrencyCNY
+      - ModelPricingCurrencyNZD
     catalogs.ModelResponseFormat:
-      enum:
-        - text
-        - json
-        - json_mode
-        - json_object
-        - json_schema
-        - structured_output
-        - function_call
       type: string
       x-enum-comments:
         ModelResponseFormatFunctionCall: Tool/function calling for structured data
@@ -1425,86 +888,35 @@ components:
         ModelResponseFormatJSONSchema: Schema-validated JSON (OpenAI structured output)
         ModelResponseFormatStructuredOutput: General structured output support
         ModelResponseFormatText: Plain text responses (default)
-      x-enum-descriptions:
-        - Plain text responses (default)
-        - JSON encouraged via prompting
-        - Forced valid JSON (OpenAI style)
-        - Same as json_mode (OpenAI API name)
-        - Schema-validated JSON (OpenAI structured output)
-        - General structured output support
-        - Tool/function calling for structured data
       x-enum-varnames:
-        - ModelResponseFormatText
-        - ModelResponseFormatJSON
-        - ModelResponseFormatJSONMode
-        - ModelResponseFormatJSONObject
-        - ModelResponseFormatJSONSchema
-        - ModelResponseFormatStructuredOutput
-        - ModelResponseFormatFunctionCall
+      - ModelResponseFormatText
+      - ModelResponseFormatJSON
+      - ModelResponseFormatJSONMode
+      - ModelResponseFormatJSONObject
+      - ModelResponseFormatJSONSchema
+      - ModelResponseFormatStructuredOutput
+      - ModelResponseFormatFunctionCall
     catalogs.ModelResponseProtocol:
-      enum:
-        - http
-        - grpc
-        - websocket
       type: string
       x-enum-comments:
         ModelResponseProtocolGRPC: gRPC protocol
         ModelResponseProtocolHTTP: HTTP/HTTPS REST API
         ModelResponseProtocolWebSocket: WebSocket protocol
-      x-enum-descriptions:
-        - HTTP/HTTPS REST API
-        - gRPC protocol
-        - WebSocket protocol
       x-enum-varnames:
-        - ModelResponseProtocolHTTP
-        - ModelResponseProtocolGRPC
-        - ModelResponseProtocolWebSocket
+      - ModelResponseProtocolHTTP
+      - ModelResponseProtocolGRPC
+      - ModelResponseProtocolWebSocket
     catalogs.ModelStreaming:
-      enum:
-        - sse
-        - websocket
-        - chunked
       type: string
       x-enum-comments:
         ModelStreamingChunked: HTTP chunked transfer encoding
         ModelStreamingSSE: Server-Sent Events streaming
         ModelStreamingWebSocket: WebSocket streaming
-      x-enum-descriptions:
-        - Server-Sent Events streaming
-        - WebSocket streaming
-        - HTTP chunked transfer encoding
       x-enum-varnames:
-        - ModelStreamingSSE
-        - ModelStreamingWebSocket
-        - ModelStreamingChunked
+      - ModelStreamingSSE
+      - ModelStreamingWebSocket
+      - ModelStreamingChunked
     catalogs.ModelTag:
-      enum:
-        - coding
-        - writing
-        - reasoning
-        - math
-        - chat
-        - instruct
-        - research
-        - creative
-        - roleplay
-        - function_calling
-        - embedding
-        - summarization
-        - translation
-        - question_answering
-        - vision
-        - multimodal
-        - audio
-        - text_to_image
-        - text_to_speech
-        - speech_to_text
-        - image_to_text
-        - medical
-        - legal
-        - finance
-        - science
-        - education
       type: string
       x-enum-comments:
         ModelTagAudio: Audio processing
@@ -1533,72 +945,43 @@ components:
         ModelTagTranslation: Language translation
         ModelTagVision: Computer vision
         ModelTagWriting: Creative and technical writing
-      x-enum-descriptions:
-        - Programming and code generation
-        - Creative and technical writing
-        - Logical reasoning and problem solving
-        - Mathematical problem solving
-        - Conversational AI
-        - Instruction following
-        - Research and analysis
-        - Creative content generation
-        - Character roleplay and simulation
-        - Tool/function calling
-        - Text embeddings
-        - Text summarization
-        - Language translation
-        - Question answering
-        - Computer vision
-        - Multiple input modalities
-        - Audio processing
-        - Text-to-image generation
-        - Text-to-speech synthesis
-        - Speech recognition
-        - Image captioning/OCR
-        - Medical and healthcare
-        - Legal document processing
-        - Financial analysis
-        - Scientific applications
-        - Educational content
       x-enum-varnames:
-        - ModelTagCoding
-        - ModelTagWriting
-        - ModelTagReasoning
-        - ModelTagMath
-        - ModelTagChat
-        - ModelTagInstruct
-        - ModelTagResearch
-        - ModelTagCreative
-        - ModelTagRoleplay
-        - ModelTagFunctionCalling
-        - ModelTagEmbedding
-        - ModelTagSummarization
-        - ModelTagTranslation
-        - ModelTagQA
-        - ModelTagVision
-        - ModelTagMultimodal
-        - ModelTagAudio
-        - ModelTagTextToImage
-        - ModelTagTextToSpeech
-        - ModelTagSpeechToText
-        - ModelTagImageToText
-        - ModelTagMedical
-        - ModelTagLegal
-        - ModelTagFinance
-        - ModelTagScience
-        - ModelTagEducation
+      - ModelTagCoding
+      - ModelTagWriting
+      - ModelTagReasoning
+      - ModelTagMath
+      - ModelTagChat
+      - ModelTagInstruct
+      - ModelTagResearch
+      - ModelTagCreative
+      - ModelTagRoleplay
+      - ModelTagFunctionCalling
+      - ModelTagEmbedding
+      - ModelTagSummarization
+      - ModelTagTranslation
+      - ModelTagQA
+      - ModelTagVision
+      - ModelTagMultimodal
+      - ModelTagAudio
+      - ModelTagTextToImage
+      - ModelTagTextToSpeech
+      - ModelTagSpeechToText
+      - ModelTagImageToText
+      - ModelTagMedical
+      - ModelTagLegal
+      - ModelTagFinance
+      - ModelTagScience
+      - ModelTagEducation
     catalogs.ModelTokenCachePricing:
+      description: Cache operations
       properties:
         read:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Cache read costs
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
         write:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Cache write costs
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
       type: object
     catalogs.ModelTokenCost:
+      description: Alternative flat cache structure (for backward compatibility)
       properties:
         per_1m_tokens:
           description: Cost per 1M tokens
@@ -1608,69 +991,68 @@ components:
           type: number
       type: object
     catalogs.ModelTokenPricing:
+      description: Token-based costs
       properties:
         cache:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCachePricing"
-          description: Cache operations
+          $ref: '#/components/schemas/catalogs.ModelTokenCachePricing'
         cache_read:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Alternative flat cache structure (for backward compatibility)
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
         cache_write:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Cache write costs (flat structure)
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
         input:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Core tokens
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
         output:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Standard output tokens
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
         reasoning:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelTokenCost"
-          description: Advanced token types
+          $ref: '#/components/schemas/catalogs.ModelTokenCost'
       type: object
     catalogs.ModelTools:
+      description: Tools - external tool and capability integrations
       properties:
         tool_choices:
-          description: >-
+          description: |-
             Tool calling configuration
-
             Specifies which tool choice strategies this model supports.
-
             Requires both Tools=true and ToolChoice=true in ModelFeatures.
-
             Common values: ["auto"], ["auto", "none"], ["auto", "none", "required"]
           items:
-            $ref: "#/components/schemas/catalogs.ToolChoice"
+            $ref: '#/components/schemas/catalogs.ToolChoice'
           type: array
+          uniqueItems: false
         web_search:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelWebSearch"
-          description: |-
-            Web search configuration
-            Only applicable if WebSearch=true in ModelFeatures
+          $ref: '#/components/schemas/catalogs.ModelWebSearch'
       type: object
     catalogs.ModelWebSearch:
+      description: |-
+        Web search configuration
+        Only applicable if WebSearch=true in ModelFeatures
       properties:
         default_context_size:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ModelControlLevel"
           description: Default search context size
+          type: string
+          x-enum-varnames:
+          - ModelControlLevelMinimum
+          - ModelControlLevelLow
+          - ModelControlLevelMedium
+          - ModelControlLevelHigh
+          - ModelControlLevelMaximum
         max_results:
-          description: Plugin-based web search options (for models using OpenRouter's web
-            plugin)
+          description: Plugin-based web search options (for models using OpenRouter's
+            web plugin)
           type: integer
         search_context_sizes:
-          description: Built-in web search options (for models with native web search like
-            GPT-4.1, Perplexity)
+          description: Built-in web search options (for models with native web search
+            like GPT-4.1, Perplexity)
           items:
-            $ref: "#/components/schemas/catalogs.ModelControlLevel"
+            type: string
+            x-enum-varnames:
+            - ModelControlLevelMinimum
+            - ModelControlLevelLow
+            - ModelControlLevelMedium
+            - ModelControlLevelHigh
+            - ModelControlLevelMaximum
           type: array
+          uniqueItems: false
         search_prompt:
           description: Custom prompt for search results
           type: string
@@ -1680,29 +1062,51 @@ components:
         aliases:
           description: Alternative IDs this provider is known by (e.g., in models.dev)
           items:
-            $ref: "#/components/schemas/catalogs.ProviderID"
+            description: Optional provider to source models from
+            type: string
+            x-enum-varnames:
+            - ProviderIDAlibabaQwen
+            - ProviderIDAnthropic
+            - ProviderIDAnyscale
+            - ProviderIDCerebras
+            - ProviderIDCheckstep
+            - ProviderIDCohere
+            - ProviderIDConectys
+            - ProviderIDCove
+            - ProviderIDDeepMind
+            - ProviderIDDeepSeek
+            - ProviderIDGoogleAIStudio
+            - ProviderIDGoogleVertex
+            - ProviderIDGroq
+            - ProviderIDHuggingFace
+            - ProviderIDMeta
+            - ProviderIDMicrosoft
+            - ProviderIDMistralAI
+            - ProviderIDOpenAI
+            - ProviderIDOpenRouter
+            - ProviderIDPerplexity
+            - ProviderIDReplicate
+            - ProviderIDSafetyKit
+            - ProviderIDTogetherAI
+            - ProviderIDVirtuousAI
+            - ProviderIDWebPurify
+            - ProviderIDXAI
           type: array
+          uniqueItems: false
         api_key:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderAPIKey"
-          description: API key configuration
+          $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderCatalog"
-          description: Models
+          $ref: '#/components/schemas/catalogs.ProviderCatalog'
         chat_completions:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderChatCompletions"
-          description: Chat completions API configuration
+          $ref: '#/components/schemas/catalogs.ProviderChatCompletions'
         env_vars:
           description: Environment variables configuration
           items:
-            $ref: "#/components/schemas/catalogs.ProviderEnvVar"
+            $ref: '#/components/schemas/catalogs.ProviderEnvVar'
           type: array
+          uniqueItems: false
         governance_policy:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderGovernancePolicy"
-          description: Oversight and moderation practices
+          $ref: '#/components/schemas/catalogs.ProviderGovernancePolicy'
         headquarters:
           description: Company headquarters location
           type: string
@@ -1710,25 +1114,48 @@ components:
           description: Provider icon/logo URL
           type: string
         id:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderID"
           description: Core identification and integration
+          type: string
+          x-enum-varnames:
+          - ProviderIDAlibabaQwen
+          - ProviderIDAnthropic
+          - ProviderIDAnyscale
+          - ProviderIDCerebras
+          - ProviderIDCheckstep
+          - ProviderIDCohere
+          - ProviderIDConectys
+          - ProviderIDCove
+          - ProviderIDDeepMind
+          - ProviderIDDeepSeek
+          - ProviderIDGoogleAIStudio
+          - ProviderIDGoogleVertex
+          - ProviderIDGroq
+          - ProviderIDHuggingFace
+          - ProviderIDMeta
+          - ProviderIDMicrosoft
+          - ProviderIDMistralAI
+          - ProviderIDOpenAI
+          - ProviderIDOpenRouter
+          - ProviderIDPerplexity
+          - ProviderIDReplicate
+          - ProviderIDSafetyKit
+          - ProviderIDTogetherAI
+          - ProviderIDVirtuousAI
+          - ProviderIDWebPurify
+          - ProviderIDXAI
         name:
           description: Display name (must not be empty)
           type: string
         privacy_policy:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderPrivacyPolicy"
-          description: Privacy, Retention, and Governance Policies
+          $ref: '#/components/schemas/catalogs.ProviderPrivacyPolicy'
         retention_policy:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderRetentionPolicy"
-          description: Data retention and deletion practices
+          $ref: '#/components/schemas/catalogs.ProviderRetentionPolicy'
         status_page_url:
           description: Status & Health
           type: string
       type: object
     catalogs.ProviderAPIKey:
+      description: API key configuration
       properties:
         header:
           description: Header name to send the API key in
@@ -1743,45 +1170,122 @@ components:
           description: Query parameter name to send the API key in
           type: string
         scheme:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderAPIKeyScheme"
-          description: Authentication scheme (e.g., "Bearer", "Basic", or empty for direct
-            value)
+          $ref: '#/components/schemas/catalogs.ProviderAPIKeyScheme'
       type: object
     catalogs.ProviderAPIKeyScheme:
-      enum:
-        - Bearer
-        - Basic
-        - ""
+      description: Authentication scheme (e.g., "Bearer", "Basic", or empty for direct
+        value)
       type: string
       x-enum-comments:
         ProviderAPIKeySchemeBasic: Basic authentication
         ProviderAPIKeySchemeBearer: Bearer token authentication (OAuth 2.0 style)
         ProviderAPIKeySchemeDirect: Direct value (no scheme prefix)
-      x-enum-descriptions:
-        - Bearer token authentication (OAuth 2.0 style)
-        - Basic authentication
-        - Direct value (no scheme prefix)
       x-enum-varnames:
-        - ProviderAPIKeySchemeBearer
-        - ProviderAPIKeySchemeBasic
-        - ProviderAPIKeySchemeDirect
+      - ProviderAPIKeySchemeBearer
+      - ProviderAPIKeySchemeBasic
+      - ProviderAPIKeySchemeDirect
     catalogs.ProviderCatalog:
+      description: Models
       properties:
         authors:
-          description: List of authors to fetch from (for providers like Google Vertex AI)
+          description: List of authors to fetch from (for providers like Google Vertex
+            AI)
           items:
-            $ref: "#/components/schemas/catalogs.AuthorID"
+            description: Unique identifier for the author
+            type: string
+            x-enum-varnames:
+            - AuthorIDOpenAI
+            - AuthorIDAnthropic
+            - AuthorIDGoogle
+            - AuthorIDDeepMind
+            - AuthorIDMeta
+            - AuthorIDMicrosoft
+            - AuthorIDMistralAI
+            - AuthorIDCohere
+            - AuthorIDGroq
+            - AuthorIDAlibabaQwen
+            - AuthorIDQwen
+            - AuthorIDXAI
+            - AuthorIDStanford
+            - AuthorIDMIT
+            - AuthorIDCMU
+            - AuthorIDUCBerkeley
+            - AuthorIDCornell
+            - AuthorIDPrinceton
+            - AuthorIDHarvard
+            - AuthorIDOxford
+            - AuthorIDCambridge
+            - AuthorIDETHZurich
+            - AuthorIDUWashington
+            - AuthorIDUChicago
+            - AuthorIDYale
+            - AuthorIDDuke
+            - AuthorIDCaltech
+            - AuthorIDHuggingFace
+            - AuthorIDEleutherAI
+            - AuthorIDTogether
+            - AuthorIDMosaicML
+            - AuthorIDStabilityAI
+            - AuthorIDRunwayML
+            - AuthorIDMidjourney
+            - AuthorIDLAION
+            - AuthorIDBigScience
+            - AuthorIDAlignmentRC
+            - AuthorIDH2OAI
+            - AuthorIDMoxin
+            - AuthorIDBaidu
+            - AuthorIDTencent
+            - AuthorIDByteDance
+            - AuthorIDDeepSeek
+            - AuthorIDBAAI
+            - AuthorID01AI
+            - AuthorIDBaichuan
+            - AuthorIDMiniMax
+            - AuthorIDMoonshot
+            - AuthorIDShanghaiAI
+            - AuthorIDZhipuAI
+            - AuthorIDSenseTime
+            - AuthorIDHuawei
+            - AuthorIDTsinghua
+            - AuthorIDPeking
+            - AuthorIDNVIDIA
+            - AuthorIDSalesforce
+            - AuthorIDIBM
+            - AuthorIDApple
+            - AuthorIDAmazon
+            - AuthorIDAdept
+            - AuthorIDAI21
+            - AuthorIDInflection
+            - AuthorIDCharacter
+            - AuthorIDPerplexity
+            - AuthorIDAnysphere
+            - AuthorIDCursor
+            - AuthorIDCognitiveComputations
+            - AuthorIDEricHartford
+            - AuthorIDNousResearch
+            - AuthorIDTeknium
+            - AuthorIDJonDurbin
+            - AuthorIDLMSYS
+            - AuthorIDVicuna
+            - AuthorIDAlpacaTeam
+            - AuthorIDWizardLM
+            - AuthorIDOpenOrca
+            - AuthorIDPhind
+            - AuthorIDCodeFuse
+            - AuthorIDTHUDM
+            - AuthorIDGeorgiaTechRI
+            - AuthorIDFastChat
+            - AuthorIDUnknown
           type: array
+          uniqueItems: false
         docs:
           description: Documentation URL
           type: string
         endpoint:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderEndpoint"
-          description: API endpoint configuration
+          $ref: '#/components/schemas/catalogs.ProviderEndpoint'
       type: object
     catalogs.ProviderChatCompletions:
+      description: Chat completions API configuration
       properties:
         health_api_url:
           description: URL to health/status API for this service
@@ -1789,37 +1293,37 @@ components:
         health_components:
           description: Specific components to monitor for chat completions
           items:
-            $ref: "#/components/schemas/catalogs.ProviderHealthComponent"
+            $ref: '#/components/schemas/catalogs.ProviderHealthComponent'
           type: array
+          uniqueItems: false
         url:
           description: Chat completions API endpoint URL
           type: string
       type: object
     catalogs.ProviderEndpoint:
+      description: API endpoint configuration
       properties:
         auth_required:
-          description: "Required: Whether auth needed"
+          description: 'Required: Whether auth needed'
           type: boolean
         author_mapping:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.AuthorMapping"
-          description: Author extraction
+          $ref: '#/components/schemas/catalogs.AuthorMapping'
         feature_rules:
           description: Feature inference rules
           items:
-            $ref: "#/components/schemas/catalogs.FeatureRule"
+            $ref: '#/components/schemas/catalogs.FeatureRule'
           type: array
+          uniqueItems: false
         field_mappings:
           description: Field mappings
           items:
-            $ref: "#/components/schemas/catalogs.FieldMapping"
+            $ref: '#/components/schemas/catalogs.FieldMapping'
           type: array
+          uniqueItems: false
         type:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.EndpointType"
-          description: "Required: API style"
+          $ref: '#/components/schemas/catalogs.EndpointType'
         url:
-          description: "Required: API endpoint"
+          description: 'Required: API endpoint'
           type: string
       type: object
     catalogs.ProviderEnvVar:
@@ -1838,6 +1342,7 @@ components:
           type: boolean
       type: object
     catalogs.ProviderGovernancePolicy:
+      description: Oversight and moderation practices
       properties:
         moderated:
           description: Whether provider content is moderated
@@ -1859,62 +1364,37 @@ components:
           type: string
       type: object
     catalogs.ProviderID:
-      enum:
-        - alibaba
-        - anthropic
-        - anyscale
-        - cerebras
-        - checkstep
-        - cohere
-        - conectys
-        - cove
-        - deepmind
-        - deepseek
-        - google-ai-studio
-        - google-vertex
-        - groq
-        - huggingface
-        - meta
-        - microsoft
-        - mistral
-        - openai
-        - openrouter
-        - perplexity
-        - replicate
-        - safetykit
-        - together
-        - virtuousai
-        - webpurify
-        - xai
+      description: Optional provider to source models from
       type: string
       x-enum-varnames:
-        - ProviderIDAlibabaQwen
-        - ProviderIDAnthropic
-        - ProviderIDAnyscale
-        - ProviderIDCerebras
-        - ProviderIDCheckstep
-        - ProviderIDCohere
-        - ProviderIDConectys
-        - ProviderIDCove
-        - ProviderIDDeepMind
-        - ProviderIDDeepSeek
-        - ProviderIDGoogleAIStudio
-        - ProviderIDGoogleVertex
-        - ProviderIDGroq
-        - ProviderIDHuggingFace
-        - ProviderIDMeta
-        - ProviderIDMicrosoft
-        - ProviderIDMistralAI
-        - ProviderIDOpenAI
-        - ProviderIDOpenRouter
-        - ProviderIDPerplexity
-        - ProviderIDReplicate
-        - ProviderIDSafetyKit
-        - ProviderIDTogetherAI
-        - ProviderIDVirtuousAI
-        - ProviderIDWebPurify
-        - ProviderIDXAI
+      - ProviderIDAlibabaQwen
+      - ProviderIDAnthropic
+      - ProviderIDAnyscale
+      - ProviderIDCerebras
+      - ProviderIDCheckstep
+      - ProviderIDCohere
+      - ProviderIDConectys
+      - ProviderIDCove
+      - ProviderIDDeepMind
+      - ProviderIDDeepSeek
+      - ProviderIDGoogleAIStudio
+      - ProviderIDGoogleVertex
+      - ProviderIDGroq
+      - ProviderIDHuggingFace
+      - ProviderIDMeta
+      - ProviderIDMicrosoft
+      - ProviderIDMistralAI
+      - ProviderIDOpenAI
+      - ProviderIDOpenRouter
+      - ProviderIDPerplexity
+      - ProviderIDReplicate
+      - ProviderIDSafetyKit
+      - ProviderIDTogetherAI
+      - ProviderIDVirtuousAI
+      - ProviderIDWebPurify
+      - ProviderIDXAI
     catalogs.ProviderPrivacyPolicy:
+      description: Privacy, Retention, and Governance Policies
       properties:
         privacy_policy_url:
           description: Link to privacy policy
@@ -1930,52 +1410,32 @@ components:
           type: boolean
       type: object
     catalogs.ProviderRetentionPolicy:
+      description: Data retention and deletion practices
       properties:
         details:
           description: Human-readable description
           type: string
         duration:
-          allOf:
-            - $ref: "#/components/schemas/time.Duration"
-          description: nil = forever, 0 = immediate deletion
+          $ref: '#/components/schemas/time.Duration'
         type:
-          allOf:
-            - $ref: "#/components/schemas/catalogs.ProviderRetentionType"
-          description: Type of retention policy
+          $ref: '#/components/schemas/catalogs.ProviderRetentionType'
       type: object
     catalogs.ProviderRetentionType:
-      enum:
-        - fixed
-        - none
-        - indefinite
-        - conditional
+      description: Type of retention policy
       type: string
       x-enum-comments:
-        ProviderRetentionTypeConditional: Based on conditions (e.g., "until account deletion")
+        ProviderRetentionTypeConditional: Based on conditions (e.g., "until account
+          deletion")
         ProviderRetentionTypeFixed: Specific duration (use Duration field)
         ProviderRetentionTypeIndefinite: Forever (duration = nil)
         ProviderRetentionTypeNone: No retention (immediate deletion)
-      x-enum-descriptions:
-        - Specific duration (use Duration field)
-        - No retention (immediate deletion)
-        - Forever (duration = nil)
-        - Based on conditions (e.g., "until account deletion")
       x-enum-varnames:
-        - ProviderRetentionTypeFixed
-        - ProviderRetentionTypeNone
-        - ProviderRetentionTypeIndefinite
-        - ProviderRetentionTypeConditional
+      - ProviderRetentionTypeFixed
+      - ProviderRetentionTypeNone
+      - ProviderRetentionTypeIndefinite
+      - ProviderRetentionTypeConditional
     catalogs.Quantization:
-      enum:
-        - int4
-        - int8
-        - fp4
-        - fp6
-        - fp8
-        - fp16
-        - bf16
-        - fp32
-        - unknown
+      description: Quantization level used by the model
       type: string
       x-enum-comments:
         QuantizationBF16: Brain floating point (16 bit)
@@ -1987,44 +1447,18 @@ components:
         QuantizationINT4: Integer (4 bit)
         QuantizationINT8: Integer (8 bit)
         QuantizationUnknown: Unknown quantization
-      x-enum-descriptions:
-        - Integer (4 bit)
-        - Integer (8 bit)
-        - Floating point (4 bit)
-        - Floating point (6 bit)
-        - Floating point (8 bit)
-        - Floating point (16 bit)
-        - Brain floating point (16 bit)
-        - Floating point (32 bit)
-        - Unknown quantization
       x-enum-varnames:
-        - QuantizationINT4
-        - QuantizationINT8
-        - QuantizationFP4
-        - QuantizationFP6
-        - QuantizationFP8
-        - QuantizationFP16
-        - QuantizationBF16
-        - QuantizationFP32
-        - QuantizationUnknown
+      - QuantizationINT4
+      - QuantizationINT8
+      - QuantizationFP4
+      - QuantizationFP6
+      - QuantizationFP8
+      - QuantizationFP16
+      - QuantizationBF16
+      - QuantizationFP32
+      - QuantizationUnknown
     catalogs.Tokenizer:
-      enum:
-        - claude
-        - cohere
-        - deepseek
-        - gpt
-        - gemini
-        - grok
-        - llama2
-        - llama3
-        - llama4
-        - mistral
-        - nova
-        - qwen
-        - qwen3
-        - router
-        - yi
-        - unknown
+      description: Tokenizer type used by the model
       type: string
       x-enum-comments:
         TokenizerClaude: Claude tokenizer
@@ -2043,58 +1477,45 @@ components:
         TokenizerRouter: Router-based tokenizer
         TokenizerUnknown: Unknown tokenizer type
         TokenizerYi: Yi tokenizer
-      x-enum-descriptions:
-        - Claude tokenizer
-        - Cohere tokenizer
-        - DeepSeek tokenizer
-        - GPT tokenizer (OpenAI)
-        - Gemini tokenizer (Google)
-        - Grok tokenizer (xAI)
-        - LLaMA 2 tokenizer
-        - LLaMA 3 tokenizer
-        - LLaMA 4 tokenizer
-        - Mistral tokenizer
-        - Nova tokenizer (Amazon)
-        - Qwen tokenizer
-        - Qwen 3 tokenizer
-        - Router-based tokenizer
-        - Yi tokenizer
-        - Unknown tokenizer type
       x-enum-varnames:
-        - TokenizerClaude
-        - TokenizerCohere
-        - TokenizerDeepSeek
-        - TokenizerGPT
-        - TokenizerGemini
-        - TokenizerGrok
-        - TokenizerLlama2
-        - TokenizerLlama3
-        - TokenizerLlama4
-        - TokenizerMistral
-        - TokenizerNova
-        - TokenizerQwen
-        - TokenizerQwen3
-        - TokenizerRouter
-        - TokenizerYi
-        - TokenizerUnknown
+      - TokenizerClaude
+      - TokenizerCohere
+      - TokenizerDeepSeek
+      - TokenizerGPT
+      - TokenizerGemini
+      - TokenizerGrok
+      - TokenizerLlama2
+      - TokenizerLlama3
+      - TokenizerLlama4
+      - TokenizerMistral
+      - TokenizerNova
+      - TokenizerQwen
+      - TokenizerQwen3
+      - TokenizerRouter
+      - TokenizerYi
+      - TokenizerUnknown
     catalogs.ToolChoice:
-      enum:
-        - auto
-        - none
-        - required
       type: string
       x-enum-comments:
-        ToolChoiceAuto: Model autonomously decides whether to call tools based on context
-        ToolChoiceNone: Model will never call tools, even if tool definitions are provided
+        ToolChoiceAuto: Model autonomously decides whether to call tools based on
+          context
+        ToolChoiceNone: Model will never call tools, even if tool definitions are
+          provided
         ToolChoiceRequired: Model must call at least one tool before responding
-      x-enum-descriptions:
-        - Model autonomously decides whether to call tools based on context
-        - Model will never call tools, even if tool definitions are provided
-        - Model must call at least one tool before responding
       x-enum-varnames:
-        - ToolChoiceAuto
-        - ToolChoiceNone
-        - ToolChoiceRequired
+      - ToolChoiceAuto
+      - ToolChoiceNone
+      - ToolChoiceRequired
+    data:
+      properties:
+        data:
+          type: object
+      type: object
+    error:
+      properties:
+        error:
+          $ref: '#/components/schemas/response.Error'
+      type: object
     response.Error:
       properties:
         code:
@@ -2105,10 +1526,12 @@ components:
           type: string
       type: object
     response.Response:
+      allOf:
+      - $ref: '#/components/schemas/error'
       properties:
         data: {}
         error:
-          $ref: "#/components/schemas/response.Error"
+          $ref: '#/components/schemas/response.Error'
       type: object
     serve.DateRange:
       properties:
@@ -2130,15 +1553,17 @@ components:
           items:
             type: string
           type: array
+          uniqueItems: false
         output:
           items:
             type: string
           type: array
+          uniqueItems: false
       type: object
     serve.SearchRequest:
       properties:
         context_window:
-          $ref: "#/components/schemas/serve.IntRange"
+          $ref: '#/components/schemas/serve.IntRange'
         features:
           additionalProperties:
             type: boolean
@@ -2147,10 +1572,11 @@ components:
           items:
             type: string
           type: array
+          uniqueItems: false
         max_results:
           type: integer
         modalities:
-          $ref: "#/components/schemas/serve.SearchModalities"
+          $ref: '#/components/schemas/serve.SearchModalities'
         name_contains:
           type: string
         open_weights:
@@ -2158,36 +1584,640 @@ components:
         order:
           type: string
         output_tokens:
-          $ref: "#/components/schemas/serve.IntRange"
+          $ref: '#/components/schemas/serve.IntRange'
         provider:
           type: string
         release_date:
-          $ref: "#/components/schemas/serve.DateRange"
+          $ref: '#/components/schemas/serve.DateRange'
         sort:
           type: string
         tags:
           items:
             type: string
           type: array
+          uniqueItems: false
       type: object
     time.Duration:
-      enum:
-        - -9223372036854776000
-        - 9223372036854776000
-        - 1
-        - 1000
-        - 1000000
-        - 1000000000
-        - 60000000000
-        - 3600000000000
-      format: int64
+      description: nil = forever, 0 = immediate deletion
       type: integer
       x-enum-varnames:
-        - minDuration
-        - maxDuration
-        - Nanosecond
-        - Microsecond
-        - Millisecond
-        - Second
-        - Minute
-        - Hour
+      - minDuration
+      - maxDuration
+      - Nanosecond
+      - Microsecond
+      - Millisecond
+      - Second
+      - Minute
+      - Hour
+  securitySchemes:
+    ApiKeyAuth:
+      description: API key for authentication (optional, configurable)
+      in: header
+      name: X-API-Key
+      type: apiKey
+externalDocs:
+  description: ""
+  url: ""
+info:
+  contact:
+    name: Starmap Project
+    url: https://github.com/agentstation/starmap
+  description: |-
+    REST API for the Starmap AI model catalog with real-time updates via WebSocket and SSE.
+
+    Features:
+    - Comprehensive model and provider queries
+    - Advanced filtering and search
+    - Real-time updates via WebSocket and Server-Sent Events
+    - In-memory caching for performance
+    - Rate limiting and authentication support
+  license:
+    name: MIT
+    url: https://github.com/agentstation/starmap/blob/master/LICENSE
+  title: Starmap API
+  version: "1.0"
+openapi: 3.1.0
+paths:
+  /api/v1/health:
+    get:
+      description: Health check endpoint (liveness probe)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+      summary: Health check
+      tags:
+      - health
+  /api/v1/models:
+    get:
+      description: List all models with optional filtering
+      parameters:
+      - description: Filter by exact model ID
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: Filter by exact model name (case-insensitive)
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Filter by partial model name match
+        in: query
+        name: name_contains
+        schema:
+          type: string
+      - description: Filter by provider ID
+        in: query
+        name: provider
+        schema:
+          type: string
+      - description: Filter by input modality (comma-separated)
+        in: query
+        name: modality_input
+        schema:
+          type: string
+      - description: Filter by output modality (comma-separated)
+        in: query
+        name: modality_output
+        schema:
+          type: string
+      - description: Filter by feature (streaming, tool_calls, etc.)
+        in: query
+        name: feature
+        schema:
+          type: string
+      - description: Filter by tag (comma-separated)
+        in: query
+        name: tag
+        schema:
+          type: string
+      - description: Filter by open weights status
+        in: query
+        name: open_weights
+        schema:
+          type: boolean
+      - description: Minimum context window size
+        in: query
+        name: min_context
+        schema:
+          type: integer
+      - description: Maximum context window size
+        in: query
+        name: max_context
+        schema:
+          type: integer
+      - description: Sort field (id, name, release_date, context_window, created_at,
+          updated_at)
+        in: query
+        name: sort
+        schema:
+          type: string
+      - description: Sort order (asc, desc)
+        in: query
+        name: order
+        schema:
+          type: string
+      - description: 'Maximum number of results (default: 100, max: 1000)'
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Result offset for pagination
+        in: query
+        name: offset
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List models
+      tags:
+      - models
+  /api/v1/models/{id}:
+    get:
+      description: Retrieve detailed information about a specific model
+      parameters:
+      - description: Model ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get model by ID
+      tags:
+      - models
+  /api/v1/models/search:
+    post:
+      description: Advanced search with multiple criteria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serve.SearchRequest'
+        description: Search criteria
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Search models
+      tags:
+      - models
+  /api/v1/openapi.json:
+    get:
+      description: Returns the OpenAPI 3.0 specification for this API in JSON format
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OpenAPI 3.0 specification
+      summary: Get OpenAPI specification (JSON)
+      tags:
+      - meta
+  /api/v1/openapi.yaml:
+    get:
+      description: Returns the OpenAPI 3.0 specification for this API in YAML format
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+            application/x-yaml:
+              schema:
+                type: string
+          description: OpenAPI 3.0 specification
+      summary: Get OpenAPI specification (YAML)
+      tags:
+      - meta
+  /api/v1/providers:
+    get:
+      description: List all providers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List providers
+      tags:
+      - providers
+  /api/v1/providers/{id}:
+    get:
+      description: Retrieve detailed information about a specific provider
+      parameters:
+      - description: Provider ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get provider by ID
+      tags:
+      - providers
+  /api/v1/providers/{id}/models:
+    get:
+      description: List all models for a specific provider
+      parameters:
+      - description: Provider ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get provider models
+      tags:
+      - providers
+  /api/v1/ready:
+    get:
+      description: Readiness check including cache and data source status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "503":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Service Unavailable
+      summary: Readiness check
+      tags:
+      - health
+  /api/v1/stats:
+    get:
+      description: Get catalog statistics (model count, provider count, last sync)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Catalog statistics
+      tags:
+      - admin
+  /api/v1/update:
+    post:
+      description: Manually trigger catalog synchronization
+      parameters:
+      - description: Update specific provider only
+        in: query
+        name: provider
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data: {}
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Trigger catalog update
+      tags:
+      - admin
+  /api/v1/updates/stream:
+    get:
+      description: Server-Sent Events stream for catalog change notifications
+      responses:
+        "200":
+          content:
+            text/event-stream:
+              schema:
+                type: string
+          description: Event stream
+      summary: SSE updates stream
+      tags:
+      - updates
+  /api/v1/updates/ws:
+    get:
+      description: WebSocket connection for real-time catalog updates
+      responses:
+        "101":
+          description: Switching Protocols
+      summary: WebSocket updates
+      tags:
+      - updates
+servers:
+- url: localhost:8080/api/v1
