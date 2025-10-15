@@ -128,11 +128,8 @@ config.local.*
 # models.dev sources (created during sync)
 models.dev-git/
 
-# Hugo generated directories
+# Hugo-generated files (Hugo is no longer used but files may exist locally)
 /public/
-/resources/
-/site/public/
-/site/resources/
 *.lock
 
 # Swagger/OpenAPI intermediate files (cleaned up during generation)
