@@ -1,4 +1,4 @@
-// Package providers provides provider client registry functions.
+// Package clients provides provider client registry functions.
 // This package is separate from the providers source to avoid circular dependencies.
 package clients
 

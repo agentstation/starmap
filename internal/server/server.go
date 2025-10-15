@@ -165,7 +165,7 @@ func (s *Server) Handler() http.Handler {
 }
 
 // Shutdown gracefully shuts down background services.
-func (s *Server) Shutdown(ctx context.Context) error {
+func (s *Server) Shutdown(_ context.Context) error {
 	s.logger.Info().Msg("Shutting down server background services")
 
 	// Cancel the context to stop all background services

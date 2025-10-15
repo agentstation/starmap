@@ -31,6 +31,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+// Sources is a thread-safe container for managing multiple data sources.
 type Sources struct {
 	mu      sync.RWMutex
 	sources map[ID]Source

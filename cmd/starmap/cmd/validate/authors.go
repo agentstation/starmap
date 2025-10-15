@@ -21,7 +21,7 @@ This checks:
   - URL formats for social links
   - Duplicate IDs
   - Data consistency`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			// This command doesn't take positional arguments yet
 			if len(args) > 0 {
 				return fmt.Errorf("unexpected argument: %s", args[0])

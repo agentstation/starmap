@@ -1,3 +1,4 @@
+// Package sync provides options and utilities for synchronizing the catalog with provider APIs.
 package sync
 
 import (
@@ -58,7 +59,7 @@ func Defaults() *Options {
 	}
 }
 
-// SyncOption is a function that configures SyncOptions.
+// Option is a function that configures sync Options.
 type Option func(*Options)
 
 // Validate checks if the sync options are valid.

@@ -66,7 +66,7 @@ when API keys are configured.`,
 }
 
 // setupCommand is called before any command runs.
-func (a *App) setupCommand(cmd *cobra.Command, args []string) error {
+func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	// Update config from parsed flags
 	verbose, _ := cmd.Flags().GetBool("verbose")
 	quiet, _ := cmd.Flags().GetBool("quiet")

@@ -115,7 +115,7 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 }
 
 // showProviderDetails shows detailed information about a specific provider.
-func showProviderDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, providerID string) error {
+func showProviderDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, providerID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

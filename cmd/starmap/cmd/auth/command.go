@@ -16,7 +16,7 @@ func NewCommand(app application.Application) *cobra.Command {
 This command helps you check, verify, and configure authentication
 for various AI providers including OpenAI, Anthropic, Google AI,
 Google Vertex AI, Groq, DeepSeek, and Cerebras.`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}

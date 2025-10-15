@@ -1,3 +1,4 @@
+// Package list provides commands for listing catalog resources like models, providers, and authors.
 package list
 
 import (
@@ -115,7 +116,7 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 }
 
 // showAuthorDetails shows detailed information about a specific author.
-func showAuthorDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, authorID string) error {
+func showAuthorDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, authorID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

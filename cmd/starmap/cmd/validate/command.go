@@ -19,7 +19,7 @@ This command validates various aspects of the catalog including:
   - Provider configurations
   - Author information
   - Overall catalog consistency`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}

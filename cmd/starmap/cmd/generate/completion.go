@@ -11,7 +11,7 @@ import (
 )
 
 // NewCompletionCommand creates the generate completion subcommand using app context.
-func NewCompletionCommand(app application.Application) *cobra.Command {
+func NewCompletionCommand(_ application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "completion [bash|zsh|fish]",
 		Short: "Generate shell completion scripts",

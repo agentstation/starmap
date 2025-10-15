@@ -1,7 +1,9 @@
+// Package save provides options and utilities for saving catalogs in various formats.
 package save
 
 import "io"
 
+// Format represents the output format for saving catalogs.
 type Format int
 
 // Format constants.

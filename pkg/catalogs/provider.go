@@ -385,7 +385,7 @@ func (p *Provider) HasRequiredEnvVars() bool {
 	return true
 }
 
-// MissingEnvVars returns a list of required environment variables that are not set.
+// MissingRequiredEnvVars returns a list of required environment variables that are not set.
 func (p *Provider) MissingRequiredEnvVars() []string {
 	var missing []string
 	for _, envVar := range p.EnvVars {

@@ -73,7 +73,7 @@ func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
 }
 
 // Fetch creates a catalog with models that have pricing/limits data from models.dev.
-func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error {
+func (s *HTTPSource) Fetch(ctx context.Context, _ ...sources.Option) error {
 	// Create a new catalog to build into
 	var err error
 	s.catalog, err = catalogs.New()

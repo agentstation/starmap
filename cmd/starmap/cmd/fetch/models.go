@@ -20,6 +20,11 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+const (
+	// outputFormatTable is the default table output format.
+	outputFormatTable = "table"
+)
+
 // NewModelsCommand creates the fetch models subcommand using app context.
 func NewModelsCommand(app application.Application) *cobra.Command {
 	var (
@@ -112,7 +117,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 
 	// Determine output format from logger
 	logger := app.Logger()
-	outputFormat := "table"
+	outputFormat := outputFormatTable
 	// Could be extended to read from config if needed
 
 	// Format output
@@ -121,7 +126,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 	// Transform to output format
 	var outputData any
 	switch outputFormat {
-	case "table", "wide", "":
+	case outputFormatTable, "wide", "":
 		// Convert to pointer slice for table compatibility
 		modelPointers := make([]*catalogs.Model, len(models))
 		for i := range models {
@@ -237,7 +242,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 
 	// Determine output format from logger
 	logger := app.Logger()
-	outputFormat := "table"
+	outputFormat := outputFormatTable
 	// Could be extended to read from config if needed
 
 	// Format output
@@ -246,7 +251,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 	// Transform to output format
 	var outputData any
 	switch outputFormat {
-	case "table", "wide", "":
+	case outputFormatTable, "wide", "":
 		tableData := table.ModelsToTableData(allModels, false)
 		// Convert to output.Data for formatter compatibility
 		outputData = output.Data{

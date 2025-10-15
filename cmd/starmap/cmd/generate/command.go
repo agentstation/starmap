@@ -1,3 +1,4 @@
+// Package generate provides commands for generating artifacts like shell completions.
 package generate
 
 import (
@@ -12,7 +13,7 @@ func NewCommand(app application.Application) *cobra.Command {
 		Use:   "generate",
 		Short: "Generate various artifacts (completion)",
 		Long:  `Generate shell completion scripts and other artifacts.`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}

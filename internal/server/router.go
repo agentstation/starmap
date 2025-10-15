@@ -38,7 +38,7 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	prefix := s.config.PathPrefix
 
 	// Favicon handler (return 204 No Content to avoid 404 logs)
-	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 

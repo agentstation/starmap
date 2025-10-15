@@ -12,7 +12,7 @@ func NewCommand(app application.Application) *cobra.Command {
 		Use:   "uninstall",
 		Short: "Uninstall starmap components",
 		Long:  `Uninstall shell completions and other starmap components.`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}

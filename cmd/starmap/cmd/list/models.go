@@ -142,7 +142,7 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 }
 
 // showModelDetails shows detailed information about a specific model using app context.
-func showModelDetails(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, modelID string) error {
+func showModelDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, modelID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

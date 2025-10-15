@@ -13,7 +13,7 @@ import (
 )
 
 // NewGCloudCommand creates the auth gcloud subcommand using app context.
-func NewGCloudCommand(app application.Application) *cobra.Command {
+func NewGCloudCommand(_ application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gcloud",
 		Short: "Manage Google Cloud authentication",

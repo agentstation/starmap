@@ -46,7 +46,7 @@ func (a *App) CreateInspectCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "inspect",
 		Short: "Inspect embedded filesystem",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}
@@ -83,7 +83,7 @@ func (a *App) CreateVersionCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "version",
 		Short: "Show version information",
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			cmd.Printf("starmap %s\n", a.version)
 			if a.config.Verbose {
 				cmd.Printf("  commit:   %s\n", a.commit)
@@ -100,7 +100,7 @@ func (a *App) CreateManCommand() *cobra.Command {
 		Use:    "man",
 		Short:  "Generate man pages",
 		Hidden: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			// TODO: Implement man page generation
 			return nil
 		},

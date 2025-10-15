@@ -23,7 +23,7 @@ This checks:
   - API key configuration consistency
   - Catalog configuration validity
   - URL formats and patterns`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			// This command doesn't take positional arguments yet
 			if len(args) > 0 {
 				return fmt.Errorf("unexpected argument: %s", args[0])

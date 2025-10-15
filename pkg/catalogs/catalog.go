@@ -143,11 +143,11 @@ func NewLocal(path string) (Catalog, error) {
 //	catalog.SetProvider(provider)
 func Empty() Catalog {
 	// Empty catalog cannot fail
-	if catalog, err := New(); err != nil {
-		panic(err) // panic for visibility sincewe should never error
-	} else {
-		return catalog
+	catalog, err := New()
+	if err != nil {
+		panic(err) // panic for visibility since we should never error
 	}
+	return catalog
 }
 
 // NewFromFS creates a catalog from a custom filesystem implementation.
