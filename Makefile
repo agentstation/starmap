@@ -505,7 +505,7 @@ openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
 	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
-	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/command.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
+	@$(RUN_PREFIX) swag init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
 	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
 	@mv internal/embedded/openapi/swagger.yaml internal/embedded/openapi/openapi.yaml

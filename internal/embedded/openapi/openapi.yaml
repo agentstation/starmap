@@ -1516,6 +1516,70 @@ components:
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
+    handlers.DateRange:
+      properties:
+        after:
+          type: string
+        before:
+          type: string
+      type: object
+    handlers.IntRange:
+      properties:
+        max:
+          type: integer
+        min:
+          type: integer
+      type: object
+    handlers.SearchModalities:
+      properties:
+        input:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        output:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    handlers.SearchRequest:
+      properties:
+        context_window:
+          $ref: '#/components/schemas/handlers.IntRange'
+        features:
+          additionalProperties:
+            type: boolean
+          type: object
+        ids:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        max_results:
+          type: integer
+        modalities:
+          $ref: '#/components/schemas/handlers.SearchModalities'
+        name_contains:
+          type: string
+        open_weights:
+          type: boolean
+        order:
+          type: string
+        output_tokens:
+          $ref: '#/components/schemas/handlers.IntRange'
+        provider:
+          type: string
+        release_date:
+          $ref: '#/components/schemas/handlers.DateRange'
+        sort:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
     response.Error:
       properties:
         code:
@@ -1532,70 +1596,6 @@ components:
         data: {}
         error:
           $ref: '#/components/schemas/response.Error'
-      type: object
-    serve.DateRange:
-      properties:
-        after:
-          type: string
-        before:
-          type: string
-      type: object
-    serve.IntRange:
-      properties:
-        max:
-          type: integer
-        min:
-          type: integer
-      type: object
-    serve.SearchModalities:
-      properties:
-        input:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        output:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    serve.SearchRequest:
-      properties:
-        context_window:
-          $ref: '#/components/schemas/serve.IntRange'
-        features:
-          additionalProperties:
-            type: boolean
-          type: object
-        ids:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        max_results:
-          type: integer
-        modalities:
-          $ref: '#/components/schemas/serve.SearchModalities'
-        name_contains:
-          type: string
-        open_weights:
-          type: boolean
-        order:
-          type: string
-        output_tokens:
-          $ref: '#/components/schemas/serve.IntRange'
-        provider:
-          type: string
-        release_date:
-          $ref: '#/components/schemas/serve.DateRange'
-        sort:
-          type: string
-        tags:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
       type: object
     time.Duration:
       description: nil = forever, 0 = immediate deletion
@@ -1853,7 +1853,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serve.SearchRequest'
+              $ref: '#/components/schemas/handlers.SearchRequest'
         description: Search criteria
         required: true
       responses:
@@ -1900,20 +1900,20 @@ paths:
       - models
   /api/v1/openapi.json:
     get:
-      description: Returns the OpenAPI 3.0 specification for this API in JSON format
+      description: Returns the OpenAPI 3.1 specification for this API in JSON format
       responses:
         "200":
           content:
             application/json:
               schema:
                 type: object
-          description: OpenAPI 3.0 specification
+          description: OpenAPI 3.1 specification
       summary: Get OpenAPI specification (JSON)
       tags:
       - meta
   /api/v1/openapi.yaml:
     get:
-      description: Returns the OpenAPI 3.0 specification for this API in YAML format
+      description: Returns the OpenAPI 3.1 specification for this API in YAML format
       responses:
         "200":
           content:
@@ -1923,7 +1923,7 @@ paths:
             application/x-yaml:
               schema:
                 type: string
-          description: OpenAPI 3.0 specification
+          description: OpenAPI 3.1 specification
       summary: Get OpenAPI specification (YAML)
       tags:
       - meta
