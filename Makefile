@@ -501,11 +501,20 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 	fi
 
 # Documentation
-openapi: ## Generate OpenAPI/Swagger documentation
-	@echo "$(BLUE)Generating OpenAPI documentation...$(NC)"
+openapi: ## Generate OpenAPI 3.0 documentation
+	@echo "$(BLUE)Generating OpenAPI 3.0 documentation...$(NC)"
 	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Install with devbox or: go install github.com/swaggo/swag/cmd/swag@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which node > /dev/null || (echo "$(RED)node not found. Install with devbox$(NC)" && exit 1)
+	@echo "$(YELLOW)Step 1/3: Generating Swagger 2.0 with swag...$(NC)"
 	@$(RUN_PREFIX) swag init -g cmd/starmap/cmd/serve/api.go -o docs --parseDependency --parseInternal
-	@echo "$(GREEN)OpenAPI documentation generated in docs/$(NC)"
+	@echo "$(YELLOW)Step 2/3: Converting Swagger 2.0 to OpenAPI 3.0...$(NC)"
+	@$(RUN_PREFIX) npx --yes swagger2openapi@latest docs/swagger.json -o docs/openapi.json
+	@$(RUN_PREFIX) npx --yes swagger2openapi@latest docs/swagger.yaml -o docs/openapi.yaml -y
+	@echo "$(YELLOW)Step 3/3: Cleaning up Swagger 2.0 files...$(NC)"
+	@rm -f docs/swagger.json docs/swagger.yaml
+	@echo "$(GREEN)OpenAPI 3.0 documentation generated in docs/$(NC)"
+	@echo "$(GREEN)  - docs/openapi.json (JSON format)$(NC)"
+	@echo "$(GREEN)  - docs/openapi.yaml (YAML format)$(NC)"
 
 generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
