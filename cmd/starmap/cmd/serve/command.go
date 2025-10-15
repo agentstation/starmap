@@ -32,7 +32,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
@@ -40,7 +39,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
-	"github.com/agentstation/starmap/internal/server/middleware"
+	"github.com/agentstation/starmap/internal/server"
 )
 
 // NewCommand creates the serve command using app context.
@@ -62,7 +61,7 @@ Features:
   - Request logging and panic recovery
   - Graceful shutdown with connection draining
   - Health checks and metrics endpoints
-  - OpenAPI 3.0 documentation (/api/v1/openapi.json)
+  - OpenAPI 3.1 documentation (/api/v1/openapi.json)
 
 The API provides programmatic access to the starmap catalog with
 comprehensive filtering, search, and real-time notification capabilities.`,
@@ -115,7 +114,44 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 
 // runServer starts the API server.
 func runServer(cmd *cobra.Command, _ []string, app application.Application) error {
-	// Parse flags
+	// Parse flags into configuration
+	cfg := parseConfig(cmd)
+	logger := app.Logger()
+
+	logger.Info().
+		Int("port", cfg.Port).
+		Str("host", cfg.Host).
+		Str("prefix", cfg.PathPrefix).
+		Bool("cors", cfg.CORSEnabled).
+		Bool("auth", cfg.AuthEnabled).
+		Int("rate_limit", cfg.RateLimit).
+		Dur("cache_ttl", cfg.CacheTTL).
+		Msg("Starting API server")
+
+	// Create server
+	srv, err := server.New(app, cfg)
+	if err != nil {
+		return fmt.Errorf("creating server: %w", err)
+	}
+
+	// Start background services (WebSocket hub, SSE broadcaster)
+	srv.Start()
+
+	// Create HTTP server
+	httpServer := &http.Server{
+		Addr:         fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
+		Handler:      srv.Handler(),
+		ReadTimeout:  cfg.ReadTimeout,
+		WriteTimeout: cfg.WriteTimeout,
+		IdleTimeout:  cfg.IdleTimeout,
+	}
+
+	// Start server with graceful shutdown
+	return startWithGracefulShutdown(httpServer, srv, logger)
+}
+
+// parseConfig parses command flags into server configuration.
+func parseConfig(cmd *cobra.Command) server.Config {
 	port, _ := cmd.Flags().GetInt("port")
 	host, _ := cmd.Flags().GetString("host")
 	corsEnabled, _ := cmd.Flags().GetBool("cors")
@@ -140,221 +176,39 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 		host = envHost
 	}
 
-	logger := app.Logger()
-	logger.Info().
-		Int("port", port).
-		Str("host", host).
-		Str("prefix", pathPrefix).
-		Bool("cors", corsEnabled).
-		Bool("auth", authEnabled).
-		Int("rate_limit", rateLimit).
-		Int("cache_ttl_seconds", cacheTTL).
-		Msg("Starting API server")
-
-	// Create API server
-	apiServer, err := NewAPIServer(app)
-	if err != nil {
-		return fmt.Errorf("creating API server: %w", err)
-	}
-
-	// Start background services
-	apiServer.Start()
-
-	// Create HTTP server with middleware
-	handler := buildHandler(apiServer, app, ServerConfig{
+	return server.Config{
+		Host:           host,
+		Port:           port,
 		PathPrefix:     pathPrefix,
 		CORSEnabled:    corsEnabled,
 		CORSOrigins:    corsOrigins,
 		AuthEnabled:    authEnabled,
 		AuthHeader:     authHeader,
 		RateLimit:      rateLimit,
+		CacheTTL:       time.Duration(cacheTTL) * time.Second,
+		ReadTimeout:    readTimeout,
+		WriteTimeout:   writeTimeout,
+		IdleTimeout:    idleTimeout,
 		MetricsEnabled: metricsEnabled,
-	})
-
-	server := &http.Server{
-		Addr:         fmt.Sprintf("%s:%d", host, port),
-		Handler:      handler,
-		ReadTimeout:  readTimeout,
-		WriteTimeout: writeTimeout,
-		IdleTimeout:  idleTimeout,
 	}
-
-	// Start server with graceful shutdown
-	return startServerWithGracefulShutdown(server, "API", logger)
 }
 
-// ServerConfig holds server configuration.
-type ServerConfig struct {
-	PathPrefix     string
-	CORSEnabled    bool
-	CORSOrigins    []string
-	AuthEnabled    bool
-	AuthHeader     string
-	RateLimit      int
-	MetricsEnabled bool
-}
-
-// buildHandler creates the HTTP handler with middleware chain.
-func buildHandler(apiServer *APIServer, app application.Application, config ServerConfig) http.Handler {
-	mux := http.NewServeMux()
-	logger := app.Logger()
-
-	// Public health endpoints (no auth required)
-	mux.HandleFunc("/health", apiServer.HandleHealth)
-	mux.HandleFunc(config.PathPrefix+"/health", apiServer.HandleHealth)
-	mux.HandleFunc(config.PathPrefix+"/ready", apiServer.HandleReady)
-
-	// Models endpoints
-	mux.HandleFunc(config.PathPrefix+"/models", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			// POST /api/v1/models is treated as search
-			if r.URL.Path == config.PathPrefix+"/models" || r.URL.Path == config.PathPrefix+"/models/" {
-				apiServer.HandleSearchModels(w, r)
-				return
-			}
-		}
-
-		if r.Method == http.MethodGet {
-			apiServer.HandleListModels(w, r)
-			return
-		}
-
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	mux.HandleFunc(config.PathPrefix+"/models/", func(w http.ResponseWriter, r *http.Request) {
-		modelID := extractPathParam(r.URL.Path, config.PathPrefix+"/models/")
-		if modelID != "" && r.Method == http.MethodGet {
-			apiServer.HandleGetModel(w, r, modelID)
-			return
-		}
-		http.Error(w, "Not found", http.StatusNotFound)
-	})
-
-	// Providers endpoints
-	mux.HandleFunc(config.PathPrefix+"/providers", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			apiServer.HandleListProviders(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	mux.HandleFunc(config.PathPrefix+"/providers/", func(w http.ResponseWriter, r *http.Request) {
-		path := r.URL.Path[len(config.PathPrefix+"/providers/"):]
-		parts := splitPath(path)
-
-		if len(parts) == 0 {
-			http.Error(w, "Provider ID required", http.StatusBadRequest)
-			return
-		}
-
-		providerID := parts[0]
-
-		if len(parts) == 1 {
-			// GET /providers/{id}
-			if r.Method == http.MethodGet {
-				apiServer.HandleGetProvider(w, r, providerID)
-				return
-			}
-		} else if len(parts) == 2 && parts[1] == "models" {
-			// GET /providers/{id}/models
-			if r.Method == http.MethodGet {
-				apiServer.HandleGetProviderModels(w, r, providerID)
-				return
-			}
-		}
-
-		http.Error(w, "Not found", http.StatusNotFound)
-	})
-
-	// Admin endpoints
-	mux.HandleFunc(config.PathPrefix+"/update", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			apiServer.HandleUpdate(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	mux.HandleFunc(config.PathPrefix+"/stats", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			apiServer.HandleStats(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	// Real-time endpoints
-	mux.HandleFunc(config.PathPrefix+"/updates/ws", apiServer.HandleWebSocket)
-	mux.HandleFunc(config.PathPrefix+"/updates/stream", apiServer.HandleSSE)
-
-	// OpenAPI specification endpoints
-	mux.HandleFunc(config.PathPrefix+"/openapi.json", apiServer.HandleOpenAPIJSON)
-	mux.HandleFunc(config.PathPrefix+"/openapi.yaml", apiServer.HandleOpenAPIYAML)
-
-	// Metrics endpoint (optional)
-	if config.MetricsEnabled {
-		mux.HandleFunc("/metrics", func(w http.ResponseWriter, _ *http.Request) {
-			w.Header().Set("Content-Type", "text/plain")
-			_, _ = fmt.Fprintf(w, "# Starmap API Metrics\n")
-			_, _ = fmt.Fprintf(w, "# TYPE starmap_api_info gauge\n")
-			_, _ = fmt.Fprintf(w, "starmap_api_info{version=\"v1\"} 1\n")
-		})
-	}
-
-	// Build middleware chain
-	var handler http.Handler = mux
-
-	// Rate limiting (if enabled)
-	if config.RateLimit > 0 {
-		rateLimiter := middleware.NewRateLimiter(config.RateLimit, logger)
-		handler = middleware.RateLimit(rateLimiter)(handler)
-	}
-
-	// Authentication (if enabled)
-	if config.AuthEnabled {
-		authConfig := middleware.DefaultAuthConfig()
-		authConfig.Enabled = true
-		authConfig.HeaderName = config.AuthHeader
-		handler = middleware.Auth(authConfig, logger)(handler)
-	}
-
-	// CORS (if enabled)
-	if config.CORSEnabled {
-		corsConfig := middleware.DefaultCORSConfig()
-		if len(config.CORSOrigins) > 0 {
-			corsConfig.AllowedOrigins = config.CORSOrigins
-			corsConfig.AllowAll = false
-		} else {
-			corsConfig.AllowAll = true
-		}
-		handler = middleware.CORS(corsConfig)(handler)
-	}
-
-	// Logging and recovery (always enabled)
-	handler = middleware.Logger(logger)(handler)
-	handler = middleware.Recovery(logger)(handler)
-
-	return handler
-}
-
-// startServerWithGracefulShutdown starts the server with graceful shutdown.
-func startServerWithGracefulShutdown(server *http.Server, serviceName string, logger *zerolog.Logger) error {
+// startWithGracefulShutdown starts the HTTP server with graceful shutdown.
+func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logger *zerolog.Logger) error {
 	// Server errors channel
 	serverErr := make(chan error, 1)
 
 	// Start server in goroutine
 	go func() {
 		logger.Info().
-			Str("addr", server.Addr).
-			Str("service", serviceName).
+			Str("addr", httpServer.Addr).
+			Str("service", "API").
 			Msg("Server starting")
 
-		fmt.Printf("🚀 Starting %s server on %s\n", serviceName, server.Addr)
+		fmt.Printf("🚀 Starting API server on %s\n", httpServer.Addr)
 		fmt.Println("   Press Ctrl+C to stop")
 
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			serverErr <- fmt.Errorf("server failed: %w", err)
 		}
 	}()
@@ -371,30 +225,24 @@ func startServerWithGracefulShutdown(server *http.Server, serviceName string, lo
 			Str("signal", sig.String()).
 			Msg("Shutdown signal received")
 
-		fmt.Printf("\n🛑 Shutting down %s server...\n", serviceName)
+		fmt.Printf("\n🛑 Shutting down API server...\n")
 
 		// Create shutdown context with timeout
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 
-		// Shutdown server
-		if err := server.Shutdown(ctx); err != nil {
+		// Shutdown HTTP server
+		if err := httpServer.Shutdown(ctx); err != nil {
 			return fmt.Errorf("server shutdown failed: %w", err)
 		}
 
+		// Shutdown background services
+		if err := srv.Shutdown(ctx); err != nil {
+			logger.Warn().Err(err).Msg("Background services shutdown had issues")
+		}
+
 		logger.Info().Msg("Server stopped gracefully")
-		fmt.Printf("✅ %s server stopped gracefully\n", serviceName)
+		fmt.Printf("✅ API server stopped gracefully\n")
 		return nil
 	}
-}
-
-// splitPath splits a URL path into parts, removing empty strings.
-func splitPath(path string) []string {
-	parts := []string{}
-	for _, part := range strings.Split(path, "/") {
-		if part != "" {
-			parts = append(parts, part)
-		}
-	}
-	return parts
 }
