@@ -4,7 +4,7 @@
 
 **Version:** v1
 **Base URL:** `http://localhost:8080/api/v1`
-**Last Updated:** 2025-10-14
+**Last Updated:** 2025-10-15
 
 ## Table of Contents
 
