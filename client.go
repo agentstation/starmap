@@ -57,6 +57,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // Compile-time interface check to ensure proper implementation.
@@ -146,9 +147,33 @@ func New(opts ...Option) (Client, error) {
 	}
 
 	// create the local catalog either from path or embedded
+	log := logging.Debug()
+	log.Msg("Creating local catalog (embedded or file-based)")
 	if sm.local, err = catalogs.NewLocal(sm.options.localPath); err != nil {
 		return nil, errors.WrapResource("create", "local catalog", sm.options.localPath, err)
 	}
+
+	// Get counts for logging
+	localProviders := sm.local.Providers().List()
+	localModels := sm.local.Models().List()
+	log.Int("providers", len(localProviders)).
+		Int("models", len(localModels)).
+		Msg("Local catalog loaded")
+
+	// Replace empty main catalog with local catalog immediately
+	// This provides embedded data on startup instead of waiting for auto-update
+	// Use ReplaceWith since sm.catalog is always empty at this point
+	log.Msg("Replacing main catalog with local catalog")
+	if err = sm.catalog.ReplaceWith(sm.local); err != nil {
+		return nil, errors.WrapResource("replace", "main catalog with local catalog", "", err)
+	}
+
+	// Verify merge
+	mainProviders := sm.catalog.Providers().List()
+	mainModels := sm.catalog.Models().List()
+	log.Int("providers", len(mainProviders)).
+		Int("models", len(mainModels)).
+		Msg("Main catalog after merge")
 
 	// set the auto update state
 	sm.autoUpdatesEnabled = sm.options.autoUpdatesEnabled
