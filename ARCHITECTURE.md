@@ -1076,7 +1076,19 @@ starmap/
 │
 ├── internal/                 # Internal packages
 │   ├── embedded/             # Embedded catalog data
-│   │   └── catalog/          # Embedded YAML files
+│   │   ├── catalog/          # Embedded YAML files
+│   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
+│   ├── server/               # HTTP server implementation
+│   │   ├── server.go         # Server struct & lifecycle
+│   │   ├── config.go         # Configuration management
+│   │   ├── router.go         # Route registration & middleware
+│   │   └── handlers/         # HTTP request handlers
+│   │       ├── models.go     # Model endpoints
+│   │       ├── providers.go  # Provider endpoints
+│   │       ├── admin.go      # Admin operations
+│   │       ├── health.go     # Health checks
+│   │       ├── realtime.go   # WebSocket/SSE
+│   │       └── openapi.go    # OpenAPI spec endpoints
 │   ├── sources/              # Source implementations
 │   │   ├── providers/        # Provider API clients
 │   │   │   ├── openai/       # OpenAI client
