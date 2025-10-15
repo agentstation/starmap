@@ -20,12 +20,13 @@ Package websocket provides WebSocket support for real\-time catalog updates.
   - [func NewHub\(logger \*zerolog.Logger\) \*Hub](<#NewHub>)
   - [func \(h \*Hub\) Broadcast\(message Message\)](<#Hub.Broadcast>)
   - [func \(h \*Hub\) ClientCount\(\) int](<#Hub.ClientCount>)
-  - [func \(h \*Hub\) Run\(\)](<#Hub.Run>)
+  - [func \(h \*Hub\) Register\(client \*Client\)](<#Hub.Register>)
+  - [func \(h \*Hub\) Run\(ctx context.Context\)](<#Hub.Run>)
 - [type Message](<#Message>)
 
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L99-L104>)
+## type [Client](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L123-L128>)
 
 Client represents a WebSocket client connection.
 
@@ -36,7 +37,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L107>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L131>)
 
 ```go
 func NewClient(id string, hub *Hub, conn *websocket.Conn) *Client
@@ -45,7 +46,7 @@ func NewClient(id string, hub *Hub, conn *websocket.Conn) *Client
 NewClient creates a new WebSocket client.
 
 <a name="Client.ReadPump"></a>
-### func \(\*Client\) [ReadPump](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L131>)
+### func \(\*Client\) [ReadPump](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L155>)
 
 ```go
 func (c *Client) ReadPump()
@@ -54,7 +55,7 @@ func (c *Client) ReadPump()
 ReadPump pumps messages from the WebSocket connection to the hub.
 
 <a name="Client.WritePump"></a>
-### func \(\*Client\) [WritePump](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L156>)
+### func \(\*Client\) [WritePump](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L180>)
 
 ```go
 func (c *Client) WritePump()
@@ -63,7 +64,7 @@ func (c *Client) WritePump()
 WritePump pumps messages from the hub to the WebSocket connection.
 
 <a name="Hub"></a>
-## type [Hub](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L14-L21>)
+## type [Hub](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L15-L22>)
 
 Hub maintains active WebSocket connections and broadcasts messages.
 
@@ -74,7 +75,7 @@ type Hub struct {
 ```
 
 <a name="NewHub"></a>
-### func [NewHub](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L24>)
+### func [NewHub](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L25>)
 
 ```go
 func NewHub(logger *zerolog.Logger) *Hub
@@ -83,7 +84,7 @@ func NewHub(logger *zerolog.Logger) *Hub
 NewHub creates a new WebSocket hub.
 
 <a name="Hub.Broadcast"></a>
-### func \(\*Hub\) [Broadcast](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L76>)
+### func \(\*Hub\) [Broadcast](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L100>)
 
 ```go
 func (h *Hub) Broadcast(message Message)
@@ -92,7 +93,7 @@ func (h *Hub) Broadcast(message Message)
 Broadcast sends a message to all connected clients.
 
 <a name="Hub.ClientCount"></a>
-### func \(\*Hub\) [ClientCount](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L85>)
+### func \(\*Hub\) [ClientCount](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L109>)
 
 ```go
 func (h *Hub) ClientCount() int
@@ -100,17 +101,26 @@ func (h *Hub) ClientCount() int
 
 ClientCount returns the number of connected clients.
 
-<a name="Hub.Run"></a>
-### func \(\*Hub\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L35>)
+<a name="Hub.Register"></a>
+### func \(\*Hub\) [Register](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L95>)
 
 ```go
-func (h *Hub) Run()
+func (h *Hub) Register(client *Client)
 ```
 
-Run starts the hub's main loop. Should be called in a goroutine.
+Register registers a client with the hub.
+
+<a name="Hub.Run"></a>
+### func \(\*Hub\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L37>)
+
+```go
+func (h *Hub) Run(ctx context.Context)
+```
+
+Run starts the hub's main loop. Should be called in a goroutine. The hub will run until the context is cancelled.
 
 <a name="Message"></a>
-## type [Message](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L92-L96>)
+## type [Message](<https://github.com/agentstation/starmap/blob/master/internal/server/websocket/hub.go#L116-L120>)
 
 Message represents a WebSocket message.
 

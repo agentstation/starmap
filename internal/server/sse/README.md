@@ -16,13 +16,13 @@ Package sse provides Server\-Sent Events support for real\-time updates.
   - [func NewBroadcaster\(logger \*zerolog.Logger\) \*Broadcaster](<#NewBroadcaster>)
   - [func \(b \*Broadcaster\) Broadcast\(event Event\)](<#Broadcaster.Broadcast>)
   - [func \(b \*Broadcaster\) ClientCount\(\) int](<#Broadcaster.ClientCount>)
-  - [func \(b \*Broadcaster\) Run\(\)](<#Broadcaster.Run>)
+  - [func \(b \*Broadcaster\) Run\(ctx context.Context\)](<#Broadcaster.Run>)
   - [func \(b \*Broadcaster\) ServeHTTP\(w http.ResponseWriter, r \*http.Request\)](<#Broadcaster.ServeHTTP>)
 - [type Event](<#Event>)
 
 
 <a name="Broadcaster"></a>
-## type [Broadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L15-L22>)
+## type [Broadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L16-L23>)
 
 Broadcaster manages Server\-Sent Events connections.
 
@@ -33,7 +33,7 @@ type Broadcaster struct {
 ```
 
 <a name="NewBroadcaster"></a>
-### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L25>)
+### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L26>)
 
 ```go
 func NewBroadcaster(logger *zerolog.Logger) *Broadcaster
@@ -42,7 +42,7 @@ func NewBroadcaster(logger *zerolog.Logger) *Broadcaster
 NewBroadcaster creates a new SSE broadcaster.
 
 <a name="Broadcaster.Broadcast"></a>
-### func \(\*Broadcaster\) [Broadcast](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L72>)
+### func \(\*Broadcaster\) [Broadcast](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L85>)
 
 ```go
 func (b *Broadcaster) Broadcast(event Event)
@@ -51,7 +51,7 @@ func (b *Broadcaster) Broadcast(event Event)
 Broadcast sends an event to all connected SSE clients.
 
 <a name="Broadcaster.ClientCount"></a>
-### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L81>)
+### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L94>)
 
 ```go
 func (b *Broadcaster) ClientCount() int
@@ -60,16 +60,16 @@ func (b *Broadcaster) ClientCount() int
 ClientCount returns the number of connected SSE clients.
 
 <a name="Broadcaster.Run"></a>
-### func \(\*Broadcaster\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L36>)
+### func \(\*Broadcaster\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L38>)
 
 ```go
-func (b *Broadcaster) Run()
+func (b *Broadcaster) Run(ctx context.Context)
 ```
 
-Run starts the broadcaster's main loop. Should be called in a goroutine.
+Run starts the broadcaster's main loop. Should be called in a goroutine. The broadcaster will run until the context is cancelled.
 
 <a name="Broadcaster.ServeHTTP"></a>
-### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L88>)
+### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L101>)
 
 ```go
 func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
@@ -78,7 +78,7 @@ func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
 ServeHTTP handles SSE connections.
 
 <a name="Event"></a>
-## type [Event](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L160-L164>)
+## type [Event](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L173-L177>)
 
 Event represents an SSE event.
 

@@ -2117,7 +2117,7 @@ paths:
       - health
   /api/v1/stats:
     get:
-      description: Get catalog statistics (model count, provider count, last sync)
+      description: Get comprehensive server and catalog statistics
       requestBody:
         content:
           application/json:

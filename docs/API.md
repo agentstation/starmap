@@ -122,7 +122,7 @@ type AutoUpdater interface {
 ```
 
 <a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/client.go#L66-L68>)
+## type [Catalog](<https://github.com/agentstation/starmap/blob/master/client.go#L67-L69>)
 
 Catalog provides copy\-on\-read access to the catalog.
 
@@ -133,7 +133,7 @@ type Catalog interface {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/master/client.go#L79-L95>)
+## type [Client](<https://github.com/agentstation/starmap/blob/master/client.go#L80-L96>)
 
 Client manages a catalog with automatic updates and event hooks.
 
@@ -158,7 +158,7 @@ type Client interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/client.go#L119>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/client.go#L120>)
 
 ```go
 func New(opts ...Option) (Client, error)
