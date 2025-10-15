@@ -2,7 +2,7 @@
 
 > Technical deep dive into Starmap's system design, components, and patterns
 
-**Last Updated:** 2025-10-14
+**Last Updated:** 2025-10-15
 **Status:** Production-ready architecture following idiomatic Go patterns
 
 ## Table of Contents
@@ -37,7 +37,7 @@ graph TB
     subgraph UI["User Interfaces"]
         CLI[CLI Tool<br/>cmd/starmap]
         GO[Go Package API]
-        HTTP[HTTP Server<br/>Future]
+        HTTP[HTTP Server<br/>REST API + WebSocket + SSE]
     end
 
     subgraph APP["Application Layer - cmd/application/"]
@@ -67,7 +67,7 @@ graph TB
 
     CLI --> APPIF
     GO --> APPIF
-    HTTP -.future.-> APPIF
+    HTTP --> APPIF
     APPIF -.implemented by.-> APPIMPL
     APPIMPL --> ROOT
     ROOT --> CORE
@@ -81,7 +81,7 @@ graph TB
 ```
 
 **Architecture Layers:**
-1. **User Interfaces**: Multiple entry points (CLI, Go package, future HTTP API)
+1. **User Interfaces**: Multiple entry points (CLI, Go package, HTTP API)
 2. **Application Layer**: Dependency injection pattern with interface/implementation separation
 3. **Root Package**: Public API with sync orchestration, hooks, and lifecycle management
 4. **Core Packages**: Reusable business logic for catalog management and reconciliation

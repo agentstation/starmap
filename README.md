@@ -1,6 +1,6 @@
 # Starmap ⭐🗺️
 
-> A unified AI model catalog system providing accurate, up-to-date information about AI models, their capabilities, pricing, and availability across providers
+> An auto-updating AI Model Catalog available as a Golang Package, CLI Tool, or Server (RESTful, WebSockets, SSE).
 
 <div align="center">
 
@@ -34,7 +34,7 @@
 - [Go Package](#go-package)
 - [Data Sources](#data-sources)
 - [Model Catalog](#model-catalog)
-- [HTTP Server](#http-server-coming-soon)
+- [HTTP Server](#http-server)
 - [Configuration](#configuration)
 - [Development](#development)
 - [Contributing](#contributing)
