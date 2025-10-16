@@ -4,15 +4,17 @@ package auth
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -77,10 +79,15 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	status := checker.CheckProvider(&provider, supportedMap)
 	printProviderStatus(&provider, status)
 
-	// Check Google Cloud if it's the vertex provider
+	// Show detailed authentication information based on provider type
 	if providerID == googleVertexProviderID {
+		// Google Vertex AI uses ADC
 		printGoogleCloudStatus(checker, cat)
+	} else if provider.APIKey != nil {
+		// API key providers get detailed view
+		printAPIKeyDetails(&provider, status)
 	}
+
 	return nil
 }
 
@@ -277,6 +284,119 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	default:
 		fmt.Printf("%s %s\n", emoji.Unknown, status.Details)
 	}
+}
+
+// printAPIKeyDetails displays detailed authentication information for API key providers.
+func printAPIKeyDetails(provider *catalogs.Provider, status *auth.Status) {
+	fmt.Println()
+	fmt.Printf("%s Authentication Details:\n", provider.Name)
+	fmt.Println()
+
+	// Build table rows based on status
+	var rows [][]string
+
+	switch status.State {
+	case auth.StateConfigured:
+		envValue := os.Getenv(provider.APIKey.Name)
+
+		rows = [][]string{
+			{"Status", emoji.Success + " Configured"},
+			{"Variable", provider.APIKey.Name},
+			{"Source", "Environment Variable"},
+		}
+
+		// Add key preview and length
+		if envValue != "" {
+			rows = append(rows, []string{"Key Preview", maskAPIKey(envValue)})
+			rows = append(rows, []string{"Key Length", fmt.Sprintf("%d characters", len(envValue))})
+		}
+
+		// Add pattern validation if pattern exists
+		if provider.APIKey.Pattern != "" && provider.APIKey.Pattern != ".*" {
+			rows = append(rows, []string{"Pattern", provider.APIKey.Pattern})
+
+			// Validate against pattern
+			matched, err := regexp.MatchString(provider.APIKey.Pattern, envValue)
+			if err == nil {
+				if matched {
+					rows = append(rows, []string{"Validation", emoji.Success + " Matches pattern"})
+				} else {
+					rows = append(rows, []string{"Validation", emoji.Warning + " Does not match pattern"})
+				}
+			}
+		} else if provider.APIKey.Pattern == ".*" {
+			rows = append(rows, []string{"Pattern", ".* (any value)"})
+			rows = append(rows, []string{"Validation", emoji.Success + " Matches pattern"})
+		}
+
+	case auth.StateMissing:
+		rows = [][]string{
+			{"Status", emoji.Error + " Missing"},
+			{"Variable", provider.APIKey.Name},
+			{"Source", "Environment Variable"},
+			{"Action Required", fmt.Sprintf("Set %s environment variable", provider.APIKey.Name)},
+		}
+
+	case auth.StateInvalid:
+		envValue := os.Getenv(provider.APIKey.Name)
+		rows = [][]string{
+			{"Status", emoji.Warning + " Invalid"},
+			{"Variable", provider.APIKey.Name},
+			{"Source", "Environment Variable"},
+		}
+
+		if envValue != "" {
+			rows = append(rows, []string{"Key Preview", maskAPIKey(envValue)})
+			rows = append(rows, []string{"Key Length", fmt.Sprintf("%d characters", len(envValue))})
+		}
+
+		if provider.APIKey.Pattern != "" {
+			rows = append(rows, []string{"Expected Pattern", provider.APIKey.Pattern})
+			rows = append(rows, []string{"Validation", emoji.Warning + " Does not match pattern"})
+		}
+
+	case auth.StateOptional:
+		rows = [][]string{
+			{"Status", emoji.Optional + " Optional"},
+			{"Variable", provider.APIKey.Name},
+			{"Source", "Environment Variable"},
+			{"Details", status.Details},
+		}
+
+	default:
+		rows = [][]string{
+			{"Status", emoji.Unknown + " Unknown"},
+			{"Details", status.Details},
+		}
+	}
+
+	// Display table
+	tableData := output.Data{
+		Headers: []string{"PROPERTY", "VALUE"},
+		Rows:    rows,
+	}
+
+	formatter := output.NewFormatter(output.FormatTable)
+	_ = formatter.Format(os.Stdout, tableData)
+}
+
+// maskAPIKey masks an API key for safe display, showing only first 8 and last 4 characters.
+func maskAPIKey(key string) string {
+	if key == "" {
+		return "(empty)"
+	}
+
+	// For very short keys, just show asterisks
+	if len(key) <= 12 {
+		return strings.Repeat("*", len(key))
+	}
+
+	// Show first 8 characters, mask middle, show last 4
+	prefix := key[:8]
+	suffix := key[len(key)-4:]
+	masked := strings.Repeat("*", 24) // 24 asterisks in the middle
+
+	return prefix + masked + suffix
 }
 
 func printAuthSummary(cmd *cobra.Command, app application.Application, verbose bool, configured, missing, optional, unsupported int) error {
