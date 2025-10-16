@@ -65,7 +65,7 @@ func TestEndpoint(t testing.TB) *Endpoint {
 func TestCatalog(t testing.TB) Catalog {
 	t.Helper()
 
-	catalog := Empty()
+	catalog := NewEmpty()
 
 	// Add test provider with a model
 	provider := TestProvider(t)

@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewAuthorsCommand creates the validate authors subcommand using app context.
@@ -91,17 +92,17 @@ func validateAuthorsStructure(app application.Application, verbose bool) error {
 		}
 
 		if verbose {
-			fmt.Printf("  ✓ Validated author: %s\n", author.Name)
+			fmt.Printf("  %s Validated author: %s\n", emoji.Success, author.Name)
 		}
 	}
 
 	if len(validationErrors) > 0 {
 		for _, err := range validationErrors {
-			fmt.Printf("  ❌ %s\n", err)
+			fmt.Printf("  %s %s\n", emoji.Error, err)
 		}
 		return fmt.Errorf("found %d validation errors", len(validationErrors))
 	}
 
-	fmt.Printf("✅ Validated %d authors successfully\n", len(authors))
+	fmt.Printf("%s Validated %d authors successfully\n", emoji.Success, len(authors))
 	return nil
 }

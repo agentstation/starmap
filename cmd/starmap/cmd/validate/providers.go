@@ -9,6 +9,7 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewProvidersCommand creates the validate providers subcommand using app context.
@@ -86,18 +87,18 @@ func validateProvidersStructure(app application.Application, verbose bool) error
 		}
 
 		if verbose {
-			fmt.Printf("  ✓ Validated provider: %s\n", provider.Name)
+			fmt.Printf("  %s Validated provider: %s\n", emoji.Success, provider.Name)
 		}
 	}
 
 	if len(validationErrors) > 0 {
 		for _, err := range validationErrors {
-			fmt.Printf("  ❌ %s\n", err)
+			fmt.Printf("  %s %s\n", emoji.Error, err)
 		}
 		return fmt.Errorf("found %d validation errors", len(validationErrors))
 	}
 
-	fmt.Printf("✅ Validated %d providers successfully\n", len(providers))
+	fmt.Printf("%s Validated %d providers successfully\n", emoji.Success, len(providers))
 	return nil
 }
 

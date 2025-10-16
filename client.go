@@ -120,10 +120,7 @@ type client struct {
 func New(opts ...Option) (Client, error) {
 
 	// start with a new empty catalog to build on
-	catalog, err := catalogs.New()
-	if err != nil {
-		return nil, errors.WrapResource("create", "catalog", "", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// create the client instance
 	sm := &client{
@@ -149,9 +146,11 @@ func New(opts ...Option) (Client, error) {
 	// create the local catalog either from path or embedded
 	log := logging.Debug()
 	log.Msg("Creating local catalog (embedded or file-based)")
-	if sm.local, err = catalogs.NewLocal(sm.options.localPath); err != nil {
+	local, err := catalogs.NewLocal(sm.options.localPath)
+	if err != nil {
 		return nil, errors.WrapResource("create", "local catalog", sm.options.localPath, err)
 	}
+	sm.local = local
 
 	// Get counts for logging
 	localProviders := sm.local.Providers().List()
@@ -164,7 +163,7 @@ func New(opts ...Option) (Client, error) {
 	// This provides embedded data on startup instead of waiting for auto-update
 	// Use ReplaceWith since sm.catalog is always empty at this point
 	log.Msg("Replacing main catalog with local catalog")
-	if err = sm.catalog.ReplaceWith(sm.local); err != nil {
+	if err := sm.catalog.ReplaceWith(sm.local); err != nil {
 		return nil, errors.WrapResource("replace", "main catalog with local catalog", "", err)
 	}
 

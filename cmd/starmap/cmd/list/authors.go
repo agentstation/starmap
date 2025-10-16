@@ -101,8 +101,9 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 		}
 		tableData := table.AuthorsToTableData(authorPointers)
 		outputData = output.Data{
-			Headers: tableData.Headers,
-			Rows:    tableData.Rows,
+			Headers:         tableData.Headers,
+			Rows:            tableData.Rows,
+			ColumnAlignment: tableData.ColumnAlignment,
 		}
 	default:
 		outputData = filtered

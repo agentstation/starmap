@@ -16,6 +16,7 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/server"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewCommand creates the serve command using app context.
@@ -233,7 +234,7 @@ func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logg
 			Str("signal", sig.String()).
 			Msg("Shutdown signal received")
 
-		fmt.Printf("\n🛑 Shutting down API server...\n")
+		fmt.Printf("\n%s Shutting down API server...\n", emoji.Stop)
 
 		// Create shutdown context with timeout
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -250,7 +251,7 @@ func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logg
 		}
 
 		logger.Info().Msg("Server stopped gracefully")
-		fmt.Printf("✅ API server stopped gracefully\n")
+		fmt.Printf("%s API server stopped gracefully\n", emoji.Success)
 		return nil
 	}
 }

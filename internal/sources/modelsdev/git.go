@@ -89,11 +89,7 @@ func (s *GitSource) Setup(providers *catalogs.Providers) error {
 // Fetch creates a catalog with models that have pricing/limits data from models.dev.
 func (s *GitSource) Fetch(ctx context.Context, _ ...sources.Option) error {
 	// Create a new catalog to build into
-	var err error
-	s.catalog, err = catalogs.New()
-	if err != nil {
-		return errors.WrapResource("create", "memory catalog", "", err)
-	}
+	s.catalog = catalogs.NewEmpty()
 
 	// Use configured sources directory or default
 	outputDir := s.sourcesDir

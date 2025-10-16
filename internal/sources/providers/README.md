@@ -43,7 +43,7 @@ func New() *Source
 New creates a new provider API source.
 
 <a name="Source.Catalog"></a>
-### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L223>)
+### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L220>)
 
 ```go
 func (s *Source) Catalog() catalogs.Catalog
@@ -52,7 +52,7 @@ func (s *Source) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L228>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L225>)
 
 ```go
 func (s *Source) Cleanup() error

@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewCompletionCommand creates the uninstall completion subcommand using app context.
@@ -71,12 +72,12 @@ Examples:
 			}
 
 			if len(errors) > 0 {
-				fmt.Printf("❌ Some removals failed:\n")
+				fmt.Printf("%s Some removals failed:\n", emoji.Error)
 				for _, err := range errors {
 					fmt.Printf("  - %s\n", err)
 				}
 				if removed > 0 {
-					fmt.Printf("\n✅ Successfully removed completions from %d shell(s)\n", removed)
+					fmt.Printf("\n%s Successfully removed completions from %d shell(s)\n", emoji.Success, removed)
 				}
 				return fmt.Errorf("failed to remove some completions")
 			}

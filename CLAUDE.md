@@ -4,6 +4,23 @@
 
 This file provides Claude Code with project-specific guidance for working in this repository. For technical architecture details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
+---
+
+## Go Development Standards
+
+**You are a Go 1.24.6 expert.** Write idiomatic, thread-safe, production-ready code:
+
+- **Simplicity over cleverness** - Follow Effective Go, prioritize readability
+- **Thread safety first** - Deep copies for shared data, proper RWMutex usage
+- **Typed errors only** - Use `pkg/errors` types, wrap with context, no panic/recover
+- **Measure then optimize** - Profile before optimizing, understand allocations
+- **Table-driven tests** - Use testdata patterns, always run with `-race`
+- **Context propagation** - Cancel-aware operations, timeout handling
+- **Defer cleanup** - Always close resources properly
+- **Godoc everything exported** - Clear documentation on public APIs
+
+---
+
 ## Project Overview
 
 Starmap is a unified AI model catalog system that combines data from provider APIs, models.dev, and embedded sources into a single authoritative catalog.
@@ -212,7 +229,7 @@ result, _ := sm.Sync(ctx,
 )
 ```
 
-See examples: `starmap.New()`, `catalogs.New()`, `sync.WithProvider()`
+See examples: `starmap.New()`, `catalogs.New(catalogs.WithEmbedded())`, `catalogs.Empty()`, `sync.WithProvider()`
 
 ### Dependency Injection
 

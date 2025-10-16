@@ -11,12 +11,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/constants"
+	cmdconstants "github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/convert"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -120,7 +121,7 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case constants.FormatTable, constants.FormatWide, "":
+	case cmdconstants.FormatTable, cmdconstants.FormatWide, "":
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
 			modelPointers[i] = &filtered[i]
@@ -160,7 +161,7 @@ func showModelDetails(cmd *cobra.Command, app application.Application, _ *zerolo
 			formatter := output.NewFormatter(output.Format(globalFlags.Output))
 
 			// For table output, show detailed view
-			if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
+			if globalFlags.Output == cmdconstants.FormatTable || globalFlags.Output == "" {
 				printModelDetails(model, provider)
 				return nil
 			}
@@ -326,13 +327,13 @@ func printFeaturesInfo(model *catalogs.Model, formatter output.Formatter) {
 
 	// Other features
 	if model.Features.ToolCalls {
-		featureRows = append(featureRows, []string{"Function Calling", "✅ Supported"})
+		featureRows = append(featureRows, []string{"Function Calling", emoji.Success + " Supported"})
 	}
 	if model.Features.WebSearch {
-		featureRows = append(featureRows, []string{"Web Search", "✅ Supported"})
+		featureRows = append(featureRows, []string{"Web Search", emoji.Success + " Supported"})
 	}
 	if model.Features.Reasoning {
-		featureRows = append(featureRows, []string{"Reasoning", "✅ Supported"})
+		featureRows = append(featureRows, []string{"Reasoning", emoji.Success + " Supported"})
 	}
 
 	if len(featureRows) > 0 {
@@ -350,7 +351,7 @@ func addModalityFeatures(featureRows [][]string, features *catalogs.ModelFeature
 	// Check for vision capability
 	for _, modality := range features.Modalities.Input {
 		if modality == "image" {
-			featureRows = append(featureRows, []string{"Vision", "✅ Supported"})
+			featureRows = append(featureRows, []string{"Vision", emoji.Success + " Supported"})
 			break
 		}
 	}
@@ -371,10 +372,10 @@ func addModalityFeatures(featureRows [][]string, features *catalogs.ModelFeature
 		}
 	}
 	if hasAudioInput {
-		featureRows = append(featureRows, []string{"Audio Input", "✅ Supported"})
+		featureRows = append(featureRows, []string{"Audio Input", emoji.Success + " Supported"})
 	}
 	if hasAudioOutput {
-		featureRows = append(featureRows, []string{"Audio Output", "✅ Supported"})
+		featureRows = append(featureRows, []string{"Audio Output", emoji.Success + " Supported"})
 	}
 
 	return featureRows

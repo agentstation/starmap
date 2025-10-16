@@ -58,7 +58,7 @@ func TestReconcilerBasic(t *testing.T) {
 	ctx := context.Background()
 
 	// Create test catalogs
-	catalog1, _ := catalogs.New()
+	catalog1 := catalogs.NewEmpty()
 	if err := addTestModels(catalog1, "test-provider", []*catalogs.Model{
 		createTestModel("gpt-4", "GPT-4", 8192),
 		createTestModel("gpt-3.5", "GPT-3.5", 4096),
@@ -66,7 +66,7 @@ func TestReconcilerBasic(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog1: %v", err)
 	}
 
-	catalog2, _ := catalogs.New()
+	catalog2 := catalogs.NewEmpty()
 	if err := addTestModels(catalog2, "test-provider", []*catalogs.Model{
 		createTestModel("gpt-4", "GPT-4 Updated", 32768), // Updated context
 		createTestModel("claude-3", "Claude 3", 100000),  // New model
@@ -127,7 +127,7 @@ func TestReconcilerBasic(t *testing.T) {
 
 func TestDifferChangeDetection(t *testing.T) {
 	// Create old catalog
-	oldCatalog, _ := catalogs.New()
+	oldCatalog := catalogs.NewEmpty()
 	if err := addTestModels(oldCatalog, "test-provider", []*catalogs.Model{
 		createTestModel("model-1", "Model 1", 1000),
 		createTestModel("model-2", "Model 2", 2000),
@@ -136,7 +136,7 @@ func TestDifferChangeDetection(t *testing.T) {
 	}
 
 	// Create new catalog with changes
-	newCatalog, _ := catalogs.New()
+	newCatalog := catalogs.NewEmpty()
 	if err := addTestModels(newCatalog, "test-provider", []*catalogs.Model{
 		createTestModel("model-1", "Model 1 Updated", 1500), // Updated
 		createTestModel("model-3", "Model 3", 3000),         // Added
@@ -321,7 +321,7 @@ func TestChangesetFiltering(t *testing.T) {
 
 func TestResultBuilder(t *testing.T) {
 	// Create a result using the builder
-	catalog, _ := catalogs.New()
+	catalog := catalogs.NewEmpty()
 	changeset := &differ.Changeset{
 		Models:    &differ.ModelChangeset{},
 		Providers: &differ.ProviderChangeset{},
@@ -358,8 +358,8 @@ func BenchmarkReconciliation(b *testing.B) {
 	ctx := context.Background()
 
 	// Create large catalogs
-	catalog1, _ := catalogs.New()
-	catalog2, _ := catalogs.New()
+	catalog1 := catalogs.NewEmpty()
+	catalog2 := catalogs.NewEmpty()
 
 	// Add many models to catalog1
 	models1 := make([]*catalogs.Model, 0, 1000)
@@ -420,8 +420,8 @@ func BenchmarkReconciliation(b *testing.B) {
 
 func BenchmarkDiffing(b *testing.B) {
 	// Create large catalogs
-	oldCatalog, _ := catalogs.New()
-	newCatalog, _ := catalogs.New()
+	oldCatalog := catalogs.NewEmpty()
+	newCatalog := catalogs.NewEmpty()
 
 	// Add many models
 	oldModels := make([]*catalogs.Model, 0, 1000)

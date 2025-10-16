@@ -18,6 +18,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 const (
@@ -226,7 +227,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 		successCount++
 		allModels = append(allModels, r.models...)
 		if !quiet {
-			fmt.Fprintf(os.Stderr, "✓ %s: %d models\n", r.provider, len(r.models))
+			fmt.Fprintf(os.Stderr, "%s %s: %d models\n", emoji.Success, r.provider, len(r.models))
 		}
 	}
 

@@ -10,12 +10,14 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // NewProvidersCommand creates the list providers subcommand using app context.
@@ -83,6 +85,15 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 		filtered = filtered[:flags.Limit]
 	}
 
+	// Create auth checker and get supported providers
+	checker := auth.NewChecker()
+	fetcher := sources.NewProviderFetcher(cat.Providers())
+	supportedProviders := fetcher.List()
+	supportedMap := make(map[string]bool)
+	for _, pid := range supportedProviders {
+		supportedMap[string(pid)] = true
+	}
+
 	// Get global flags and format output
 	globalFlags, err := globals.Parse(cmd)
 	if err != nil {
@@ -98,10 +109,11 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 		for i := range filtered {
 			providerPointers[i] = &filtered[i]
 		}
-		tableData := table.ProvidersToTableData(providerPointers, false)
+		tableData := table.ProvidersToTableData(providerPointers, checker, supportedMap)
 		outputData = output.Data{
-			Headers: tableData.Headers,
-			Rows:    tableData.Rows,
+			Headers:         tableData.Headers,
+			Rows:            tableData.Rows,
+			ColumnAlignment: tableData.ColumnAlignment,
 		}
 	default:
 		outputData = filtered

@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -95,7 +96,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 
 		// Check if API key is configured
 		if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-			result.Status = "⚪ Skipped"
+			result.Status = emoji.Optional + " Skipped"
 			result.ResponseTime = "-"
 			result.ModelsFound = "-"
 			result.Error = "No credentials configured"
@@ -115,15 +116,15 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 		duration := time.Since(start)
 
 		if err != nil {
-			fmt.Printf("❌ Failed\n")
-			result.Status = "❌ Failed"
+			fmt.Printf("%s Failed\n", emoji.Error)
+			result.Status = emoji.Error + " Failed"
 			result.ResponseTime = duration.Truncate(time.Millisecond).String()
 			result.ModelsFound = "-"
 			result.Error = err.Error()
 			failed++
 		} else {
-			fmt.Printf("✅ Success\n")
-			result.Status = "✅ Success"
+			fmt.Printf("%s Success\n", emoji.Success)
+			result.Status = emoji.Success + " Success"
 			result.ResponseTime = duration.Truncate(time.Millisecond).String()
 			result.ModelsFound = fmt.Sprintf("%d", len(models))
 			verified++
@@ -227,13 +228,13 @@ func displaySummaryTable(verified, failed, skipped int) {
 	rows := [][]string{}
 
 	if verified > 0 {
-		rows = append(rows, []string{"✅ Verified", fmt.Sprintf("%d", verified)})
+		rows = append(rows, []string{emoji.Success + " Verified", fmt.Sprintf("%d", verified)})
 	}
 	if failed > 0 {
-		rows = append(rows, []string{"❌ Failed", fmt.Sprintf("%d", failed)})
+		rows = append(rows, []string{emoji.Error + " Failed", fmt.Sprintf("%d", failed)})
 	}
 	if skipped > 0 {
-		rows = append(rows, []string{"⚪ Skipped", fmt.Sprintf("%d", skipped)})
+		rows = append(rows, []string{emoji.Optional + " Skipped", fmt.Sprintf("%d", skipped)})
 	}
 
 	if len(rows) > 0 {
@@ -288,8 +289,8 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 	}
 
 	if err != nil {
-		fmt.Printf("❌ Verification failed\n")
-		result.Status = "❌ Failed"
+		fmt.Printf("%s Verification failed\n", emoji.Error)
+		result.Status = emoji.Error + " Failed"
 		result.ModelsFound = "-"
 		result.Error = err.Error()
 
@@ -305,8 +306,8 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 		return fmt.Errorf("failed to verify %s: %w", providerID, err)
 	}
 
-	fmt.Printf("✅ Verification successful\n")
-	result.Status = "✅ Success"
+	fmt.Printf("%s Verification successful\n", emoji.Success)
+	result.Status = emoji.Success + " Success"
 	result.ModelsFound = fmt.Sprintf("%d", len(models))
 
 	// Display single result in configured format

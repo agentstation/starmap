@@ -65,7 +65,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	existing, err := c.Catalog()
 	if err != nil {
 		// If we can't get existing catalog, use empty one
-		existing, _ = catalogs.New()
+		existing = catalogs.NewEmpty()
 		logging.Debug().Msg("No existing catalog found, using empty baseline")
 	}
 

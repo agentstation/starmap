@@ -289,8 +289,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 
 // TestMemoryCatalog tests a pure memory catalog without filesystem.
 func TestMemoryCatalog(t *testing.T) {
-	cat, err := New() // No options = memory catalog
-	require.NoError(t, err)
+	cat := NewEmpty() // No options = memory catalog
 	assert.NotNil(t, cat)
 
 	// Should start empty
@@ -308,7 +307,7 @@ func TestMemoryCatalog(t *testing.T) {
 			},
 		},
 	}
-	err = cat.SetProvider(provider)
+	err := cat.SetProvider(provider)
 	assert.NoError(t, err)
 
 	// Verify data

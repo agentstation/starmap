@@ -9,8 +9,7 @@ import (
 
 func TestValidateAllProviders(t *testing.T) {
 	// Create a test catalog with various provider configurations
-	cat, err := New()
-	require.NoError(t, err)
+	cat := NewEmpty()
 
 	// Add test providers
 	trueVal := true

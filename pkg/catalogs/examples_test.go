@@ -14,10 +14,7 @@ import (
 // Example demonstrates basic catalog creation and usage.
 func Example() {
 	// Create a memory-based catalog
-	catalog, err := catalogs.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Add a provider with a model
 	provider := catalogs.Provider{
@@ -97,7 +94,7 @@ func Example_fileBasedCatalog() {
 // Example_mergeCatalogs demonstrates merging two catalogs.
 func Example_mergeCatalogs() {
 	// Create base catalog
-	base, _ := catalogs.New()
+	base := catalogs.NewEmpty()
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
@@ -112,7 +109,7 @@ func Example_mergeCatalogs() {
 	_ = base.SetProvider(baseProvider)
 
 	// Create updates catalog
-	updates, _ := catalogs.New()
+	updates := catalogs.NewEmpty()
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
@@ -149,7 +146,7 @@ func Example_mergeCatalogs() {
 
 // Example_mergeStrategies demonstrates different merge strategies.
 func Example_mergeStrategies() {
-	base, _ := catalogs.New()
+	base := catalogs.NewEmpty()
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
@@ -159,7 +156,7 @@ func Example_mergeStrategies() {
 	}
 	_ = base.SetProvider(baseProvider)
 
-	updates, _ := catalogs.New()
+	updates := catalogs.NewEmpty()
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
@@ -194,7 +191,7 @@ func Example_mergeStrategies() {
 
 // Example_concurrentAccess demonstrates thread-safe concurrent usage.
 func Example_concurrentAccess() {
-	catalog, _ := catalogs.New()
+	catalog := catalogs.NewEmpty()
 	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
 	defer cancel()
 
@@ -241,7 +238,7 @@ func Example_concurrentAccess() {
 
 // Example_providerCapabilities demonstrates working with provider features.
 func Example_providerCapabilities() {
-	catalog, _ := catalogs.New()
+	catalog := catalogs.NewEmpty()
 
 	// Add provider with capabilities
 	provider := catalogs.Provider{
@@ -298,7 +295,7 @@ func Example_modelFiltering() {
 // Example_catalogCopy demonstrates creating independent copies.
 func Example_catalogCopy() {
 	// Create original catalog
-	original, _ := catalogs.New()
+	original := catalogs.NewEmpty()
 	provider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",

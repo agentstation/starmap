@@ -253,10 +253,7 @@ func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
 		}
 	} else {
-		catalog, err = catalogs.New()
-		if err != nil {
-			return nil, errors.WrapResource("create", "merged catalog", "", err)
-		}
+		catalog = catalogs.NewEmpty()
 	}
 
 	// Add/update providers with their reconciled models

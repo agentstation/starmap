@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewGCloudCommand creates the auth gcloud subcommand using app context.
@@ -57,7 +58,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	if check {
 		// Only checking status
 		if authenticated {
-			fmt.Println("✅ Authenticated with Google Cloud")
+			fmt.Printf("%s Authenticated with Google Cloud\n", emoji.Success)
 			if projectID != "" {
 				fmt.Printf("   Project: %s\n", projectID)
 			}
@@ -70,7 +71,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 
 	// Show current status
 	if authenticated && !force {
-		fmt.Println("✅ Already authenticated with Google Cloud")
+		fmt.Printf("%s Already authenticated with Google Cloud\n", emoji.Success)
 		if projectID != "" {
 			fmt.Printf("   Current project: %s\n", projectID)
 		}
@@ -101,7 +102,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("authentication failed: %w", err)
 	}
 
-	fmt.Println("\n✅ Successfully authenticated with Google Cloud")
+	fmt.Printf("\n%s Successfully authenticated with Google Cloud\n", emoji.Success)
 
 	// Set project if specified
 	if project != "" {
@@ -111,7 +112,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	// Check if we need to set a project
 	_, currentProject, _ := checkGCloudAuthentication(ctx)
 	if currentProject == "" {
-		fmt.Println("\n⚠️  No default project set.")
+		fmt.Printf("\n%s No default project set.\n", emoji.Warning)
 		fmt.Println("Set one with: starmap auth gcloud --project YOUR_PROJECT_ID")
 		fmt.Println("Or: gcloud config set project YOUR_PROJECT_ID")
 	}
@@ -168,9 +169,9 @@ func setGCloudProject(project string) error {
 	cmd = exec.CommandContext(ctx, "gcloud", "auth", "application-default", "set-quota-project", project)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		// This is not fatal, just inform
-		fmt.Printf("⚠️  Could not set quota project: %s\n", output)
+		fmt.Printf("%s Could not set quota project: %s\n", emoji.Warning, output)
 	}
 
-	fmt.Printf("✅ Default project set to: %s\n", project)
+	fmt.Printf("%s Default project set to: %s\n", emoji.Success, project)
 	return nil
 }

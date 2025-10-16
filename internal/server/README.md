@@ -48,7 +48,7 @@ Package server provides HTTP server implementation for the Starmap API.
   - [func \(s \*Server\) Cache\(\) \*cache.Cache](<#Server.Cache>)
   - [func \(s \*Server\) Handler\(\) http.Handler](<#Server.Handler>)
   - [func \(s \*Server\) SSEBroadcaster\(\) \*sse.Broadcaster](<#Server.SSEBroadcaster>)
-  - [func \(s \*Server\) Shutdown\(ctx context.Context\) error](<#Server.Shutdown>)
+  - [func \(s \*Server\) Shutdown\(\_ context.Context\) error](<#Server.Shutdown>)
   - [func \(s \*Server\) Start\(\)](<#Server.Start>)
   - [func \(s \*Server\) StartTime\(\) time.Time](<#Server.StartTime>)
   - [func \(s \*Server\) WSHub\(\) \*ws.Hub](<#Server.WSHub>)
@@ -159,7 +159,7 @@ SSEBroadcaster returns the SSE broadcaster.
 ### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L168>)
 
 ```go
-func (s *Server) Shutdown(ctx context.Context) error
+func (s *Server) Shutdown(_ context.Context) error
 ```
 
 Shutdown gracefully shuts down background services.

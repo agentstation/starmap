@@ -48,7 +48,7 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func NewGitSource\(opts ...GitSourceOption\) \*GitSource](<#NewGitSource>)
   - [func \(s \*GitSource\) Catalog\(\) catalogs.Catalog](<#GitSource.Catalog>)
   - [func \(s \*GitSource\) Cleanup\(\) error](<#GitSource.Cleanup>)
-  - [func \(s \*GitSource\) Fetch\(ctx context.Context, opts ...sources.Option\) error](<#GitSource.Fetch>)
+  - [func \(s \*GitSource\) Fetch\(ctx context.Context, \_ ...sources.Option\) error](<#GitSource.Fetch>)
   - [func \(s \*GitSource\) ID\(\) sources.ID](<#GitSource.ID>)
   - [func \(s \*GitSource\) Setup\(providers \*catalogs.Providers\) error](<#GitSource.Setup>)
 - [type GitSourceOption](<#GitSourceOption>)
@@ -63,7 +63,7 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func NewHTTPSource\(opts ...HTTPSourceOption\) \*HTTPSource](<#NewHTTPSource>)
   - [func \(s \*HTTPSource\) Catalog\(\) catalogs.Catalog](<#HTTPSource.Catalog>)
   - [func \(s \*HTTPSource\) Cleanup\(\) error](<#HTTPSource.Cleanup>)
-  - [func \(s \*HTTPSource\) Fetch\(ctx context.Context, opts ...sources.Option\) error](<#HTTPSource.Fetch>)
+  - [func \(s \*HTTPSource\) Fetch\(ctx context.Context, \_ ...sources.Option\) error](<#HTTPSource.Fetch>)
   - [func \(s \*HTTPSource\) ID\(\) sources.ID](<#HTTPSource.ID>)
   - [func \(s \*HTTPSource\) Setup\(providers \*catalogs.Providers\) error](<#HTTPSource.Setup>)
 - [type HTTPSourceOption](<#HTTPSourceOption>)
@@ -393,7 +393,7 @@ func NewGitSource(opts ...GitSourceOption) *GitSource
 NewGitSource creates a new models.dev git source.
 
 <a name="GitSource.Catalog"></a>
-### func \(\*GitSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L123>)
+### func \(\*GitSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L119>)
 
 ```go
 func (s *GitSource) Catalog() catalogs.Catalog
@@ -402,7 +402,7 @@ func (s *GitSource) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="GitSource.Cleanup"></a>
-### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L128>)
+### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L124>)
 
 ```go
 func (s *GitSource) Cleanup() error
@@ -414,7 +414,7 @@ Cleanup releases any resources.
 ### func \(\*GitSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L90>)
 
 ```go
-func (s *GitSource) Fetch(ctx context.Context, opts ...sources.Option) error
+func (s *GitSource) Fetch(ctx context.Context, _ ...sources.Option) error
 ```
 
 Fetch creates a catalog with models that have pricing/limits data from models.dev.
@@ -534,7 +534,7 @@ func NewHTTPSource(opts ...HTTPSourceOption) *HTTPSource
 NewHTTPSource creates a new models.dev HTTP source.
 
 <a name="HTTPSource.Catalog"></a>
-### func \(\*HTTPSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L109>)
+### func \(\*HTTPSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L105>)
 
 ```go
 func (s *HTTPSource) Catalog() catalogs.Catalog
@@ -543,7 +543,7 @@ func (s *HTTPSource) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="HTTPSource.Cleanup"></a>
-### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L114>)
+### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L110>)
 
 ```go
 func (s *HTTPSource) Cleanup() error
@@ -555,7 +555,7 @@ Cleanup releases any resources.
 ### func \(\*HTTPSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L76>)
 
 ```go
-func (s *HTTPSource) Fetch(ctx context.Context, opts ...sources.Option) error
+func (s *HTTPSource) Fetch(ctx context.Context, _ ...sources.Option) error
 ```
 
 Fetch creates a catalog with models that have pricing/limits data from models.dev.

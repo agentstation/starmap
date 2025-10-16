@@ -7,10 +7,7 @@ import (
 func TestCatalogModes(t *testing.T) {
 	t.Run("MemoryCatalog", func(t *testing.T) {
 		// Create memory catalog (no filesystem)
-		cat, err := New()
-		if err != nil {
-			t.Fatalf("Failed to create memory catalog: %v", err)
-		}
+		cat := NewEmpty()
 
 		// Add a test model
 		// Create a provider with a model

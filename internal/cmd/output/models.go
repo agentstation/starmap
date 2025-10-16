@@ -4,6 +4,7 @@ package output
 import (
 	"os"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -28,14 +29,14 @@ func FormatModels(models []*catalogs.Model, showDetails bool, globalFlags *globa
 }
 
 // FormatProviders handles the common pattern of formatting providers for output.
-func FormatProviders(providers []*catalogs.Provider, showKeys bool, globalFlags *globals.Flags) error {
+func FormatProviders(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
-		outputData = table.ProvidersToTableData(providers, showKeys)
+		outputData = table.ProvidersToTableData(providers, checker, supportedMap)
 	default:
 		outputData = providers
 	}

@@ -40,10 +40,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	ctx := context.Background()
 
 	// Create three source catalogs with overlapping data
-	embeddedCat, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create embedded catalog: %v", err)
-	}
+	embeddedCat := catalogs.NewEmpty()
 
 	// Add models to embedded catalog
 	embeddedModels := []*catalogs.Model{
@@ -74,10 +71,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Create API catalog with updated data
-	apiCat, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create API catalog: %v", err)
-	}
+	apiCat := catalogs.NewEmpty()
 
 	apiModels := []*catalogs.Model{
 		{
@@ -113,10 +107,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Create models.dev catalog with pricing data
-	modelsDevCat, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create models.dev catalog: %v", err)
-	}
+	modelsDevCat := catalogs.NewEmpty()
 
 	modelsDevModels := []*catalogs.Model{
 		{
@@ -267,7 +258,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 	ctx := context.Background()
 
 	// Create test catalogs
-	catalog1, _ := catalogs.New()
+	catalog1 := catalogs.NewEmpty()
 	// Add the provider to catalog1 first (so it exists in primary source)
 	provider1 := catalogs.Provider{
 		ID:   "test-provider",
@@ -293,7 +284,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog1: %v", err)
 	}
 
-	catalog2, _ := catalogs.New()
+	catalog2 := catalogs.NewEmpty()
 	if err := addModelsToProvider(catalog2, "test-provider", []*catalogs.Model{{
 		ID:   "model-1",
 		Name: "Model 1 from Catalog 2",
@@ -392,7 +383,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	ctx := context.Background()
 
 	// Create initial catalog state
-	oldCatalog, _ := catalogs.New()
+	oldCatalog := catalogs.NewEmpty()
 	oldModels := []*catalogs.Model{
 		{
 			ID:   "model-1",
@@ -421,7 +412,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 
 	// Create new catalog state with changes
-	newCatalog, _ := catalogs.New()
+	newCatalog := catalogs.NewEmpty()
 	newModels := []*catalogs.Model{
 		{
 			ID:   "model-1",
@@ -513,7 +504,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 	ctx := context.Background()
 
 	// Create catalogs with conflicting data
-	catalog1, _ := catalogs.New()
+	catalog1 := catalogs.NewEmpty()
 	if err := addModelsToProvider(catalog1, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 1",
@@ -532,7 +523,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog1: %v", err)
 	}
 
-	catalog2, _ := catalogs.New()
+	catalog2 := catalogs.NewEmpty()
 	if err := addModelsToProvider(catalog2, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 2",
@@ -551,7 +542,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog2: %v", err)
 	}
 
-	catalog3, _ := catalogs.New()
+	catalog3 := catalogs.NewEmpty()
 	if err := addModelsToProvider(catalog3, "test-provider", []*catalogs.Model{{
 		ID:   "test-model",
 		Name: "From Catalog 3",

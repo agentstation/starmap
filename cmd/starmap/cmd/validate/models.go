@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewModelsCommand creates the validate models subcommand using app context.
@@ -111,7 +112,7 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 			}
 
 			if verbose {
-				fmt.Printf("  ✓ Validated model: %s\n", model.Name)
+				fmt.Printf("  %s Validated model: %s\n", emoji.Success, model.Name)
 			}
 		}
 	}
@@ -146,20 +147,20 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 			}
 
 			if verbose {
-				fmt.Printf("  ✓ Validated model: %s (from author %s)\n", model.Name, author.ID)
+				fmt.Printf("  %s Validated model: %s (from author %s)\n", emoji.Success, model.Name, author.ID)
 			}
 		}
 	}
 
 	if len(validationErrors) > 0 {
 		for _, err := range validationErrors {
-			fmt.Printf("  ❌ %s\n", err)
+			fmt.Printf("  %s %s\n", emoji.Error, err)
 		}
 		return fmt.Errorf("found %d validation errors", len(validationErrors))
 	}
 
 	if totalModels > 0 {
-		fmt.Printf("✅ Validated %d models successfully\n", totalModels)
+		fmt.Printf("%s Validated %d models successfully\n", emoji.Success, totalModels)
 	}
 	return nil
 }

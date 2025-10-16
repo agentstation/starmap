@@ -12,8 +12,11 @@ import (
 	"github.com/goccy/go-yaml"
 	"github.com/mattn/go-isatty"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"github.com/agentstation/starmap/internal/cmd/table"
 )
 
 // Format types for output.
@@ -112,7 +115,40 @@ func (f *TableFormatter) Format(w io.Writer, data any) error {
 
 func (f *TableFormatter) formatTable(w io.Writer, data Data) error {
 	// Use tablewriter for proper table formatting
-	table := tablewriter.NewTable(w)
+	opts := []tablewriter.Option{}
+
+	// Apply column alignment if specified
+	if len(data.ColumnAlignment) > 0 {
+		// Translate table.Align type to tablewriter's tw.Align type
+		twAlign := make([]tw.Align, len(data.ColumnAlignment))
+		for i, align := range data.ColumnAlignment {
+			switch align {
+			case table.AlignLeft:
+				twAlign[i] = tw.AlignLeft
+			case table.AlignCenter:
+				twAlign[i] = tw.AlignCenter
+			case table.AlignRight:
+				twAlign[i] = tw.AlignRight
+			default: // table.AlignDefault
+				twAlign[i] = tw.Skip
+			}
+		}
+
+		opts = append(opts, tablewriter.WithConfig(tablewriter.Config{
+			Header: tw.CellConfig{
+				Alignment: tw.CellAlignment{
+					PerColumn: twAlign,
+				},
+			},
+			Row: tw.CellConfig{
+				Alignment: tw.CellAlignment{
+					PerColumn: twAlign,
+				},
+			},
+		}))
+	}
+
+	table := tablewriter.NewTable(w, opts...)
 
 	// Set headers if present
 	if len(data.Headers) > 0 {
@@ -141,8 +177,9 @@ func (f *TableFormatter) formatTable(w io.Writer, data Data) error {
 
 // Data represents data formatted for table output.
 type Data struct {
-	Headers []string
-	Rows    [][]string
+	Headers         []string
+	Rows            [][]string
+	ColumnAlignment []table.Align // Optional: column alignment (use table.AlignDefault, table.AlignLeft, table.AlignCenter, table.AlignRight)
 }
 
 // DetectFormat auto-detects format based on terminal and environment.

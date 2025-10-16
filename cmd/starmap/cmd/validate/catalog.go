@@ -10,6 +10,7 @@ import (
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // ValidationResult represents the result of validating a catalog component.
@@ -57,19 +58,19 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	// Validate providers.yaml
 	fmt.Print("Validating providers.yaml... ")
 	if err := validateProvidersStructure(app, verbose); err != nil {
-		fmt.Println("❌ Failed")
+		fmt.Printf("%s Failed\n", emoji.Error)
 		results = append(results, ValidationResult{
 			Component: "Providers",
-			Status:    "❌ Failed",
+			Status:    emoji.Error + " Failed",
 			Issues:    "1",
 			Details:   err.Error(),
 		})
 		hasErrors = true
 	} else {
-		fmt.Println("✅ Success")
+		fmt.Printf("%s Success\n", emoji.Success)
 		results = append(results, ValidationResult{
 			Component: "Providers",
-			Status:    "✅ Success",
+			Status:    emoji.Success + " Success",
 			Issues:    "0",
 			Details:   "Structure valid",
 		})
@@ -78,19 +79,19 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	// Validate authors.yaml
 	fmt.Print("Validating authors.yaml... ")
 	if err := validateAuthorsStructure(app, verbose); err != nil {
-		fmt.Println("❌ Failed")
+		fmt.Printf("%s Failed\n", emoji.Error)
 		results = append(results, ValidationResult{
 			Component: "Authors",
-			Status:    "❌ Failed",
+			Status:    emoji.Error + " Failed",
 			Issues:    "1",
 			Details:   err.Error(),
 		})
 		hasErrors = true
 	} else {
-		fmt.Println("✅ Success")
+		fmt.Printf("%s Success\n", emoji.Success)
 		results = append(results, ValidationResult{
 			Component: "Authors",
-			Status:    "✅ Success",
+			Status:    emoji.Success + " Success",
 			Issues:    "0",
 			Details:   "Structure valid",
 		})
@@ -99,19 +100,19 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	// Validate model consistency
 	fmt.Print("Validating model definitions... ")
 	if err := validateModelConsistency(app, verbose); err != nil {
-		fmt.Println("❌ Failed")
+		fmt.Printf("%s Failed\n", emoji.Error)
 		results = append(results, ValidationResult{
 			Component: "Models",
-			Status:    "❌ Failed",
+			Status:    emoji.Error + " Failed",
 			Issues:    "1+",
 			Details:   err.Error(),
 		})
 		hasErrors = true
 	} else {
-		fmt.Println("✅ Success")
+		fmt.Printf("%s Success\n", emoji.Success)
 		results = append(results, ValidationResult{
 			Component: "Models",
-			Status:    "✅ Success",
+			Status:    emoji.Success + " Success",
 			Issues:    "0",
 			Details:   "Definitions valid",
 		})
@@ -120,19 +121,19 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	// Check cross-references
 	fmt.Print("Validating cross-references... ")
 	if err := validateCrossReferences(app, verbose); err != nil {
-		fmt.Println("❌ Failed")
+		fmt.Printf("%s Failed\n", emoji.Error)
 		results = append(results, ValidationResult{
 			Component: "Cross-references",
-			Status:    "❌ Failed",
+			Status:    emoji.Error + " Failed",
 			Issues:    "1+",
 			Details:   err.Error(),
 		})
 		hasErrors = true
 	} else {
-		fmt.Println("✅ Success")
+		fmt.Printf("%s Success\n", emoji.Success)
 		results = append(results, ValidationResult{
 			Component: "Cross-references",
-			Status:    "✅ Success",
+			Status:    emoji.Success + " Success",
 			Issues:    "0",
 			Details:   "References valid",
 		})
@@ -203,7 +204,7 @@ func validateCrossReferences(app application.Application, verbose bool) error {
 	if len(errors) > 0 {
 		for _, err := range errors {
 			if verbose {
-				fmt.Printf("    ❌ %s\n", err)
+				fmt.Printf("    %s %s\n", emoji.Error, err)
 			}
 		}
 		return fmt.Errorf("found %d cross-reference errors", len(errors))

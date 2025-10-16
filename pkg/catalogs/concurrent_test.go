@@ -43,7 +43,7 @@ func deleteModelFromProvider(catalog catalogs.Catalog, providerID string, modelI
 // TestConcurrentCatalogAccess tests thread safety with multiple readers and writers.
 func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("concurrent_reads_and_writes", func(t *testing.T) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
@@ -120,7 +120,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("concurrent_merge_operations", func(t *testing.T) {
-		base := catalogs.Empty()
+		base := catalogs.NewEmpty()
 		var wg sync.WaitGroup
 		errors := make(chan error, 100)
 
@@ -140,7 +140,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 				defer wg.Done()
 
 				// Create update catalog
-				updates := catalogs.Empty()
+				updates := catalogs.NewEmpty()
 				for j := 0; j < 5; j++ {
 					model := catalogs.Model{
 						ID:          fmt.Sprintf("model-%d", j),
@@ -170,7 +170,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("concurrent_provider_updates", func(t *testing.T) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		numProviders := 20
 		numUpdates := 50
 
@@ -210,7 +210,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("readers_during_bulk_write", func(t *testing.T) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
@@ -268,7 +268,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("concurrent_copy_operations", func(t *testing.T) {
-		source := catalogs.Empty()
+		source := catalogs.NewEmpty()
 
 		// Add test data
 		for i := 0; i < 100; i++ {
@@ -327,7 +327,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			t.Skip("Skipping race detection in short mode")
 		}
 
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		modelID := "race-model"
 
 		var wg sync.WaitGroup
@@ -359,8 +359,8 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("deadlock_prevention", func(t *testing.T) {
-		catalog1 := catalogs.Empty()
-		catalog2 := catalogs.Empty()
+		catalog1 := catalogs.NewEmpty()
+		catalog2 := catalogs.NewEmpty()
 
 		// Setup initial data
 		for i := 0; i < 10; i++ {
@@ -409,7 +409,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("concurrent_delete_operations", func(t *testing.T) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		numWorkers := 10
 		modelsPerWorker := 100
 
@@ -468,7 +468,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 // BenchmarkConcurrentAccess benchmarks concurrent operations.
 func BenchmarkConcurrentAccess(b *testing.B) {
 	b.Run("concurrent_reads", func(b *testing.B) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		// Pre-populate
 		for i := 0; i < 1000; i++ {
 			addModelToProvider(catalog, "test-provider", catalogs.Model{
@@ -486,7 +486,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 	})
 
 	b.Run("concurrent_writes", func(b *testing.B) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		counter := atomic.Int64{}
 
 		b.ResetTimer()
@@ -502,7 +502,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 	})
 
 	b.Run("concurrent_mixed", func(b *testing.B) {
-		catalog := catalogs.Empty()
+		catalog := catalogs.NewEmpty()
 		counter := atomic.Int64{}
 
 		// Pre-populate

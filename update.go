@@ -143,7 +143,7 @@ func (c *client) updateFromServer(ctx context.Context) error {
 	}
 
 	// Create a new memory catalog and populate it
-	newCatalog := catalogs.Empty()
+	newCatalog := catalogs.NewEmpty()
 
 	// Parse catalog data structure
 	type CatalogData struct {

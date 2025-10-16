@@ -37,10 +37,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	options := sources.Defaults().Apply(opts...)
 
 	// Create a new catalog to build into
-	catalog, err := catalogs.New()
-	if err != nil {
-		return pkgerrors.WrapResource("create", "memory catalog", "", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Set the default merge strategy for provider catalog (fresh API data)
 	catalog.SetMergeStrategy(catalogs.MergeReplaceAll)

@@ -75,7 +75,7 @@ if fetcher.HasClient(providerID) {
 
 
 <a name="ID"></a>
-## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L98>)
+## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L99>)
 
 ID represents the identifier of a data source.
 
@@ -95,7 +95,7 @@ const (
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L115>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L116>)
 
 ```go
 func IDs() []ID
@@ -104,7 +104,7 @@ func IDs() []ID
 IDs returns all available source types. This provides a convenient way to iterate over all Type values.
 
 <a name="ID.IsValid"></a>
-### func \(ID\) [IsValid](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L126>)
+### func \(ID\) [IsValid](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L127>)
 
 ```go
 func (id ID) IsValid() bool
@@ -113,7 +113,7 @@ func (id ID) IsValid() bool
 IsValid returns true if the ID is one of the defined constants. Uses IDs\(\) to ensure consistency with the authoritative id list.
 
 <a name="ID.String"></a>
-### func \(ID\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L101>)
+### func \(ID\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L102>)
 
 ```go
 func (id ID) String() string
@@ -331,7 +331,7 @@ func WithoutCredentialLoading() ProviderOption
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L147>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L148>)
 
 ResourceType identifies the type of resource being merged.
 
@@ -353,7 +353,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L131-L144>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L145>)
 
 Source represents a data source for catalog information.
 
@@ -375,9 +375,9 @@ type Source interface {
 ```
 
 <a name="Sources"></a>
-## type [Sources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L34-L37>)
+## type [Sources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L35-L38>)
 
-
+Sources is a thread\-safe container for managing multiple data sources.
 
 ```go
 type Sources struct {
@@ -386,7 +386,7 @@ type Sources struct {
 ```
 
 <a name="NewSources"></a>
-### func [NewSources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L40>)
+### func [NewSources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L41>)
 
 ```go
 func NewSources() *Sources
@@ -395,7 +395,7 @@ func NewSources() *Sources
 NewSources creates a new Sources instance.
 
 <a name="Sources.Delete"></a>
-### func \(\*Sources\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L62>)
+### func \(\*Sources\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L63>)
 
 ```go
 func (s *Sources) Delete(id ID)
@@ -404,7 +404,7 @@ func (s *Sources) Delete(id ID)
 Delete deletes a source by ID.
 
 <a name="Sources.Get"></a>
-### func \(\*Sources\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L47>)
+### func \(\*Sources\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L48>)
 
 ```go
 func (s *Sources) Get(id ID) (Source, bool)
@@ -413,7 +413,7 @@ func (s *Sources) Get(id ID) (Source, bool)
 Get returns a source by ID.
 
 <a name="Sources.IDs"></a>
-### func \(\*Sources\) [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L87>)
+### func \(\*Sources\) [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L88>)
 
 ```go
 func (s *Sources) IDs() []ID
@@ -422,7 +422,7 @@ func (s *Sources) IDs() []ID
 IDs returns a slice of all source IDs.
 
 <a name="Sources.Len"></a>
-### func \(\*Sources\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L69>)
+### func \(\*Sources\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L70>)
 
 ```go
 func (s *Sources) Len() int
@@ -431,7 +431,7 @@ func (s *Sources) Len() int
 Len returns the number of sources.
 
 <a name="Sources.List"></a>
-### func \(\*Sources\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L76>)
+### func \(\*Sources\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L77>)
 
 ```go
 func (s *Sources) List() []Source
@@ -440,7 +440,7 @@ func (s *Sources) List() []Source
 List returns a slice of all sources.
 
 <a name="Sources.Set"></a>
-### func \(\*Sources\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L55>)
+### func \(\*Sources\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L56>)
 
 ```go
 func (s *Sources) Set(id ID, src Source)

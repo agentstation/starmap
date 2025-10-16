@@ -8,7 +8,7 @@
 import "github.com/agentstation/starmap/internal/sources/clients"
 ```
 
-Package providers provides provider client registry functions. This package is separate from the providers source to avoid circular dependencies.
+Package clients provides provider client registry functions. This package is separate from the providers source to avoid circular dependencies.
 
 ## Index
 

@@ -9,10 +9,7 @@ import (
 )
 
 func TestAttributions_NewWithEmptyCatalog(t *testing.T) {
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	attributions, err := New(catalog)
 	if err != nil {
@@ -28,10 +25,7 @@ func TestAttributions_NewWithEmptyCatalog(t *testing.T) {
 
 func TestAttributions_NilChecks(t *testing.T) {
 	// Test with authors that have nil catalog/attribution
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Add authors with nil catalog/attribution fields
 	author1 := catalogs.Author{
@@ -51,12 +45,10 @@ func TestAttributions_NilChecks(t *testing.T) {
 		UpdatedAt: utc.Now(),
 	}
 
-	err = catalog.SetAuthor(author1)
-	if err != nil {
+	if err := catalog.SetAuthor(author1); err != nil {
 		t.Fatalf("Failed to set author1: %v", err)
 	}
-	err = catalog.SetAuthor(author2)
-	if err != nil {
+	if err := catalog.SetAuthor(author2); err != nil {
 		t.Fatalf("Failed to set author2: %v", err)
 	}
 
@@ -74,10 +66,7 @@ func TestAttributions_NilChecks(t *testing.T) {
 
 func TestAttributions_ProviderOnlyMode(t *testing.T) {
 	// Test Mode 1: Provider-only attribution
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Create author with provider-only attribution
 	author := catalogs.Author{
@@ -104,12 +93,10 @@ func TestAttributions_ProviderOnlyMode(t *testing.T) {
 	}
 
 	// Add to catalog
-	err = catalog.SetAuthor(author)
-	if err != nil {
+	if err := catalog.SetAuthor(author); err != nil {
 		t.Fatalf("Failed to set author: %v", err)
 	}
-	err = catalog.SetProvider(provider)
-	if err != nil {
+	if err := catalog.SetProvider(provider); err != nil {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 
@@ -149,10 +136,7 @@ func TestAttributions_ProviderOnlyMode(t *testing.T) {
 
 func TestAttributions_GlobalPatternsMode(t *testing.T) {
 	// Test Mode 3: Global pattern matching
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Create author with global patterns
 	author := catalogs.Author{
@@ -181,12 +165,10 @@ func TestAttributions_GlobalPatternsMode(t *testing.T) {
 	}
 
 	// Add to catalog
-	err = catalog.SetAuthor(author)
-	if err != nil {
+	if err := catalog.SetAuthor(author); err != nil {
 		t.Fatalf("Failed to set author: %v", err)
 	}
-	err = catalog.SetProvider(provider)
-	if err != nil {
+	if err := catalog.SetProvider(provider); err != nil {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 
@@ -233,10 +215,7 @@ func TestAttributions_GlobalPatternsMode(t *testing.T) {
 
 func TestAttributions_InvalidPatterns(t *testing.T) {
 	// Test that invalid glob patterns cause an error
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Create author with invalid pattern
 	author := catalogs.Author{
@@ -251,7 +230,7 @@ func TestAttributions_InvalidPatterns(t *testing.T) {
 		UpdatedAt: utc.Now(),
 	}
 
-	err = catalog.SetAuthor(author)
+	err := catalog.SetAuthor(author)
 	if err != nil {
 		t.Fatalf("Failed to set author: %v", err)
 	}
@@ -269,10 +248,7 @@ func TestAttributions_InvalidPatterns(t *testing.T) {
 
 func TestAttributions_MultipleAuthors(t *testing.T) {
 	// Test a model that matches patterns from multiple authors
-	catalog, err := catalogs.New()
-	if err != nil {
-		t.Fatalf("Failed to create catalog: %v", err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Create two authors with overlapping patterns
 	author1 := catalogs.Author{
@@ -308,16 +284,13 @@ func TestAttributions_MultipleAuthors(t *testing.T) {
 	}
 
 	// Add to catalog
-	err = catalog.SetAuthor(author1)
-	if err != nil {
+	if err := catalog.SetAuthor(author1); err != nil {
 		t.Fatalf("Failed to set author1: %v", err)
 	}
-	err = catalog.SetAuthor(author2)
-	if err != nil {
+	if err := catalog.SetAuthor(author2); err != nil {
 		t.Fatalf("Failed to set author2: %v", err)
 	}
-	err = catalog.SetProvider(provider)
-	if err != nil {
+	if err := catalog.SetProvider(provider); err != nil {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 

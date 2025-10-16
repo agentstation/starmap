@@ -998,7 +998,7 @@ go test -race -bench=. ./pkg/catalogs
 
 ```go
 func TestConcurrentCatalogAccess(t *testing.T) {
-    catalog, _ := catalogs.New()
+    catalog := catalogs.Empty()
 
     var wg sync.WaitGroup
     for i := 0; i < 100; i++ {
@@ -1251,7 +1251,7 @@ graph BT
 ```go
 // pkg/catalogs/catalog_test.go
 func TestCatalogOperations(t *testing.T) {
-    catalog, _ := catalogs.New()
+    catalog := catalogs.Empty()
 
     // Test adding models
     err := catalog.SetModel(model)

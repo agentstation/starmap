@@ -1,7 +1,10 @@
 // Package alerts provides a structured system for status notifications.
 package alerts
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
+)
 
 // Level represents the severity of an alert.
 type Level int
@@ -37,13 +40,13 @@ func (l Level) String() string {
 func (l Level) Icon() string {
 	switch l {
 	case LevelError:
-		return "❌"
+		return emoji.Error + ""
 	case LevelWarning:
 		return "⚠️"
 	case LevelInfo:
 		return "ℹ️"
 	case LevelSuccess:
-		return "✅"
+		return emoji.Success + ""
 	default:
 		return "❓"
 	}

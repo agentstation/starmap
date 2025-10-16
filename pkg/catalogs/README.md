@@ -55,10 +55,7 @@ import (
 
 func main() {
 	// Create a memory-based catalog
-	catalog, err := catalogs.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	catalog := catalogs.NewEmpty()
 
 	// Add a provider with a model
 	provider := catalogs.Provider{
@@ -108,7 +105,7 @@ import (
 
 func main() {
 	// Create original catalog
-	original, _ := catalogs.New()
+	original := catalogs.NewEmpty()
 	provider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
@@ -172,7 +169,7 @@ import (
 )
 
 func main() {
-	catalog, _ := catalogs.New()
+	catalog := catalogs.NewEmpty()
 	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
 	defer cancel()
 
@@ -328,7 +325,7 @@ import (
 
 func main() {
 	// Create base catalog
-	base, _ := catalogs.New()
+	base := catalogs.NewEmpty()
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
@@ -343,7 +340,7 @@ func main() {
 	_ = base.SetProvider(baseProvider)
 
 	// Create updates catalog
-	updates, _ := catalogs.New()
+	updates := catalogs.NewEmpty()
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test Provider",
@@ -402,7 +399,7 @@ import (
 )
 
 func main() {
-	base, _ := catalogs.New()
+	base := catalogs.NewEmpty()
 	baseProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
@@ -412,7 +409,7 @@ func main() {
 	}
 	_ = base.SetProvider(baseProvider)
 
-	updates, _ := catalogs.New()
+	updates := catalogs.NewEmpty()
 	updateProvider := catalogs.Provider{
 		ID:   "test",
 		Name: "Test",
@@ -510,7 +507,7 @@ import (
 )
 
 func main() {
-	catalog, _ := catalogs.New()
+	catalog := catalogs.NewEmpty()
 
 	// Add provider with capabilities
 	provider := catalogs.Provider{
@@ -583,11 +580,11 @@ func main() {
   - [func WithAuthorsCapacity\(capacity int\) AuthorsOption](<#WithAuthorsCapacity>)
   - [func WithAuthorsMap\(authors map\[AuthorID\]\*Author\) AuthorsOption](<#WithAuthorsMap>)
 - [type Catalog](<#Catalog>)
-  - [func Empty\(\) Catalog](<#Empty>)
-  - [func New\(opts ...Option\) \(Catalog, error\)](<#New>)
+  - [func New\(opt Option, opts ...Option\) \(Catalog, error\)](<#New>)
   - [func NewEmbedded\(\) \(Catalog, error\)](<#NewEmbedded>)
+  - [func NewEmpty\(\) Catalog](<#NewEmpty>)
   - [func NewFromFS\(fsys fs.FS, root string\) \(Catalog, error\)](<#NewFromFS>)
-  - [func NewFromFilePath\(path string\) \(Catalog, error\)](<#NewFromFilePath>)
+  - [func NewFromPath\(path string\) \(Catalog, error\)](<#NewFromPath>)
   - [func NewLocal\(path string\) \(Catalog, error\)](<#NewLocal>)
   - [func NewReadOnly\(source Catalog\) Catalog](<#NewReadOnly>)
   - [func TestCatalog\(t testing.TB\) Catalog](<#TestCatalog>)
@@ -1317,34 +1314,17 @@ type Catalog interface {
 }
 ```
 
-<a name="Empty"></a>
-### func [Empty](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L144>)
-
-```go
-func Empty() Catalog
-```
-
-Empty creates an in\-memory empty catalog. This is useful for testing or temporary catalogs that don't need persistence.
-
-Example:
-
-```
-catalog := Empty()
-provider := Provider{ID: "openai", Models: map[string]Model{}}
-catalog.SetProvider(provider)
-```
-
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L84>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L80>)
 
 ```go
-func New(opts ...Option) (Catalog, error)
+func New(opt Option, opts ...Option) (Catalog, error)
 ```
 
-New creates a new catalog with the given options No options = memory catalog WithEmbedded\(\) = embedded catalog with auto\-load WithFiles\(path\) = files catalog with auto\-load.
+New creates a new catalog with the given options WithEmbedded\(\) = embedded catalog with auto\-load WithFiles\(path\) = files catalog with auto\-load.
 
 <a name="NewEmbedded"></a>
-### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L105>)
+### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L101>)
 
 ```go
 func NewEmbedded() (Catalog, error)
@@ -1352,8 +1332,25 @@ func NewEmbedded() (Catalog, error)
 
 NewEmbedded creates a catalog backed by embedded files. This is the recommended catalog for production use as it includes all model data compiled into the binary.
 
+<a name="NewEmpty"></a>
+### func [NewEmpty](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L140>)
+
+```go
+func NewEmpty() Catalog
+```
+
+NewEmpty creates an in\-memory empty catalog. This is useful for testing or temporary catalogs that don't need persistence.
+
+Example:
+
+```
+catalog := NewEmpty()
+provider := Provider{ID: "openai", Models: map[string]Model{}}
+catalog.SetProvider(provider)
+```
+
 <a name="NewFromFS"></a>
-### func [NewFromFS](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L161>)
+### func [NewFromFS](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L157>)
 
 ```go
 func NewFromFS(fsys fs.FS, root string) (Catalog, error)
@@ -1368,26 +1365,26 @@ var myFS embed.FS
 catalog, err := NewFromFS(myFS, "catalog")
 ```
 
-<a name="NewFromFilePath"></a>
-### func [NewFromFilePath](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L119>)
+<a name="NewFromPath"></a>
+### func [NewFromPath](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L115>)
 
 ```go
-func NewFromFilePath(path string) (Catalog, error)
+func NewFromPath(path string) (Catalog, error)
 ```
 
-NewFromFilePath creates a catalog backed by files on disk. This is useful for development when you want to edit catalog files without recompiling the binary.
+NewFromPath creates a catalog backed by files on disk. This is useful for development when you want to edit catalog files without recompiling the binary.
 
 Example:
 
 ```
-catalog, err := NewFromFilePath("./internal/embedded/catalog")
+catalog, err := NewFromPath("./internal/embedded/catalog")
 if err != nil {
     log.Fatal(err)
 }
 ```
 
 <a name="NewLocal"></a>
-### func [NewLocal](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L128>)
+### func [NewLocal](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L124>)
 
 ```go
 func NewLocal(path string) (Catalog, error)
@@ -1734,7 +1731,7 @@ func ParseMergeOptions(opts ...MergeOption) *MergeOptions
 ParseMergeOptions processes merge options and returns the configuration.
 
 <a name="MergeStrategy"></a>
-## type [MergeStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L42>)
+## type [MergeStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L39>)
 
 MergeStrategy defines how catalogs should be merged.
 
@@ -2859,7 +2856,7 @@ LoadEnvVars loads environment variable values from the system into the provider.
 func (p *Provider) MissingRequiredEnvVars() []string
 ```
 
-MissingEnvVars returns a list of required environment variables that are not set.
+MissingRequiredEnvVars returns a list of required environment variables that are not set.
 
 <a name="Provider.Model"></a>
 ### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provider.go#L482>)

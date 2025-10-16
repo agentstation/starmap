@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
 // NewCompletionCommand creates the install completion subcommand using app context.
@@ -71,12 +72,12 @@ Examples:
 			}
 
 			if len(errors) > 0 {
-				fmt.Printf("❌ Some installations failed:\n")
+				fmt.Printf("%s Some installations failed:\n", emoji.Error)
 				for _, err := range errors {
 					fmt.Printf("  - %s\n", err)
 				}
 				if installed > 0 {
-					fmt.Printf("\n✅ Successfully installed completions for %d shell(s)\n", installed)
+					fmt.Printf("\n%s Successfully installed completions for %d shell(s)\n", emoji.Success, installed)
 				}
 				return fmt.Errorf("failed to install some completions")
 			}
