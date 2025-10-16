@@ -12,12 +12,12 @@ import (
 
 	"github.com/agentstation/starmap/cmd/application"
 	cmdconstants "github.com/agentstation/starmap/internal/cmd/constants"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/convert"
 	"github.com/agentstation/starmap/pkg/errors"
 )

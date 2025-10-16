@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/goccy/go-yaml"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/goccy/go-yaml"
 )
 
 // Load loads the catalog from the configured filesystem.

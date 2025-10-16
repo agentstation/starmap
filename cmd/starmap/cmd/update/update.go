@@ -133,7 +133,7 @@ func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger 
 func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
 	if !result.HasChanges() {
 		if !quiet {
-			fmt.Fprintf(os.Stderr, emoji.Success + " All providers are up to date - no changes needed\n")
+			fmt.Fprintf(os.Stderr, emoji.Success+" All providers are up to date - no changes needed\n")
 		}
 		return nil
 	}

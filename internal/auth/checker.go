@@ -403,4 +403,3 @@ func (c *Checker) checkGoogleVertexLocal() *Status {
 		Extra:   details,
 	}
 }
-

@@ -100,7 +100,7 @@ func Install(cmd *cobra.Command, shell string) error {
 		return fmt.Errorf("unsupported shell: %s", shell)
 	}
 
-	fmt.Printf(emoji.Success + " %s completions installed to: %s\n", shell, targetPath)
+	fmt.Printf(emoji.Success+" %s completions installed to: %s\n", shell, targetPath)
 	fmt.Printf("💡 Start a new shell session or reload your shell config to enable completions.\n")
 
 	return nil
@@ -133,11 +133,11 @@ func Uninstall(shell string) error {
 	if info, err := os.Stat(targetPath); err == nil && !info.IsDir() {
 		if err := os.Remove(targetPath); err != nil {
 			// If we can't remove it (permission issue), provide manual instructions
-			fmt.Printf(emoji.Error + " Could not remove: %s\n", targetPath)
+			fmt.Printf(emoji.Error+" Could not remove: %s\n", targetPath)
 			fmt.Printf("💡 Try manually: sudo rm -f %s\n", targetPath)
 			return nil
 		}
-		fmt.Printf(emoji.Success + " Removed %s completions from: %s\n", shell, targetPath)
+		fmt.Printf(emoji.Success+" Removed %s completions from: %s\n", shell, targetPath)
 	} else {
 		fmt.Printf("ℹ️  No %s completions found at: %s\n", shell, targetPath)
 
@@ -283,10 +283,10 @@ func checkAndRemoveFromCommonPaths(shell string) bool {
 	for _, path := range commonPaths {
 		if info, err := os.Stat(path); err == nil && !info.IsDir() {
 			if err := os.Remove(path); err == nil {
-				fmt.Printf(emoji.Success + " Removed: %s\n", path)
+				fmt.Printf(emoji.Success+" Removed: %s\n", path)
 				removed = true
 			} else {
-				fmt.Printf(emoji.Error + " Could not remove: %s (try: sudo rm %s)\n", path, path)
+				fmt.Printf(emoji.Error+" Could not remove: %s (try: sudo rm %s)\n", path, path)
 			}
 		}
 	}

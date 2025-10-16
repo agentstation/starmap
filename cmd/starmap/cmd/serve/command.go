@@ -15,8 +15,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/application"
-	"github.com/agentstation/starmap/internal/server"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
+	"github.com/agentstation/starmap/internal/server"
 )
 
 // NewCommand creates the serve command using app context.
