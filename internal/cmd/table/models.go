@@ -3,17 +3,33 @@ package table
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/catalogs"
+)
+
+// Align represents column alignment in tables.
+type Align int
+
+const (
+	// AlignDefault uses the default alignment (skip).
+	AlignDefault Align = iota
+	// AlignLeft aligns content to the left.
+	AlignLeft
+	// AlignCenter centers content.
+	AlignCenter
+	// AlignRight aligns content to the right.
+	AlignRight
 )
 
 // Data represents table formatting data to avoid import cycles.
 type Data struct {
-	Headers []string
-	Rows    [][]string
+	Headers         []string
+	Rows            [][]string
+	ColumnAlignment []Align // Optional: column alignment
 }
 
 // ModelsToTableData converts models to table format.
@@ -186,20 +202,14 @@ func BuildAuthorsString(authors []catalogs.Author) string {
 }
 
 // ProvidersToTableData converts providers to table format.
-func ProvidersToTableData(providers []*catalogs.Provider, showKeys bool) Data {
-	headers := []string{"ID", "NAME", "LOCATION", "STATUS"}
+func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool) Data {
+	headers := []string{"ID", "NAME", "LOCATION", "AUTH CONFIGURED"}
 
 	rows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
-		status := "✓"
-		if showKeys && provider.APIKey != nil {
-			if provider.IsAPIKeyRequired() {
-				// Check if key is configured
-				if os.Getenv(provider.APIKey.Name) == "" {
-					status = "✗"
-				}
-			}
-		}
+		// Check authentication status
+		authStatus := checker.CheckProvider(provider, supportedMap)
+		statusIcon := getAuthStatusIcon(authStatus.State)
 
 		location := ""
 		if provider.Headquarters != nil {
@@ -210,14 +220,33 @@ func ProvidersToTableData(providers []*catalogs.Provider, showKeys bool) Data {
 			string(provider.ID),
 			provider.Name,
 			location,
-			status,
+			statusIcon,
 		}
 		rows = append(rows, row)
 	}
 
 	return Data{
-		Headers: headers,
-		Rows:    rows,
+		Headers:         headers,
+		Rows:            rows,
+		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignDefault, AlignCenter}, // Center the last column (CONFIGURED)
+	}
+}
+
+// getAuthStatusIcon returns the icon for an auth state.
+func getAuthStatusIcon(state auth.State) string {
+	switch state {
+	case auth.StateConfigured:
+		return emoji.Success
+	case auth.StateMissing:
+		return emoji.Error
+	case auth.StateInvalid:
+		return emoji.Warning
+	case auth.StateOptional:
+		return emoji.Optional
+	case auth.StateUnsupported:
+		return emoji.Unsupported
+	default:
+		return emoji.Unknown
 	}
 }
 
@@ -242,7 +271,8 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 	}
 
 	return Data{
-		Headers: headers,
-		Rows:    rows,
+		Headers:         headers,
+		Rows:            rows,
+		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignCenter, AlignDefault}, // Center the MODELS column
 	}
 }

@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -157,12 +158,6 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 		return err
 	}
 
-	// Special section for Google Cloud authentication - only if relevant
-	gcloudStatus := checker.GCloud(cat)
-	if gcloudStatus != nil && (gcloudStatus.HasVertexProvider || gcloudStatus.Authenticated) {
-		printGoogleCloudStatus(checker, cat)
-	}
-
 	// Print summary
 	if err := printAuthSummary(cmd, app, verbose, configured, missing, optional, unsupported); err != nil {
 		return err
@@ -179,20 +174,108 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 }
 
 func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
+	// Get google-vertex provider
+	provider, err := cat.Provider("google-vertex")
+	if err != nil {
+		return // Provider not found
+	}
+
+	// Check status using local inspection
+	status := checker.CheckProvider(&provider, map[string]bool{"google-vertex": true})
+
 	fmt.Println()
-	fmt.Println("Google Cloud Authentication:")
-	gcloudStatus := checker.GCloud(cat)
-	if gcloudStatus.Authenticated {
-		fmt.Println("✅ Application Default Credentials configured")
-		if gcloudStatus.Project != "" {
-			fmt.Printf("   Project: %s\n", gcloudStatus.Project)
+	fmt.Println("Google Cloud Authentication Details:")
+	fmt.Println()
+
+	// Try to extract detailed information
+	details, ok := status.Extra.(*auth.GoogleVertexDetails)
+	if !ok || details == nil {
+		// Fallback to simple display
+		switch status.State {
+		case auth.StateConfigured:
+			fmt.Printf("%s %s\n", emoji.Success, status.Details)
+		case auth.StateMissing:
+			fmt.Printf("%s %s\n", emoji.Error, status.Details)
+		case auth.StateInvalid:
+			fmt.Printf("%s %s\n", emoji.Warning, status.Details)
+		default:
+			fmt.Printf("%s %s\n", emoji.Unknown, status.Details)
 		}
-		if gcloudStatus.Location != "" {
-			fmt.Printf("   Location: %s\n", gcloudStatus.Location)
+		return
+	}
+
+	// Display detailed information based on state
+	switch details.State {
+	case auth.StateConfigured:
+		fmt.Printf("%s Configured\n\n", emoji.Success)
+
+		// Build table rows
+		rows := [][]string{
+			{"Credential Type", details.Type},
 		}
-	} else {
-		fmt.Println("❌ Not authenticated")
-		fmt.Println("   Run: starmap auth gcloud")
+
+		if details.Account != "" {
+			rows = append(rows, []string{"Account", details.Account})
+		}
+
+		if details.Project != "" {
+			rows = append(rows, []string{"Project", fmt.Sprintf("%s (%s)", details.Project, details.ProjectSource)})
+		} else {
+			rows = append(rows, []string{"Project", fmt.Sprintf("not set (%s)", details.ProjectSource)})
+		}
+
+		rows = append(rows, []string{"Location", fmt.Sprintf("%s (%s)", details.Location, details.LocationSource)})
+
+		if details.UniverseDomain != "" {
+			rows = append(rows, []string{"Universe Domain", details.UniverseDomain})
+		}
+
+		if details.ADCPath != "" {
+			rows = append(rows, []string{"ADC Path", details.ADCPath})
+		}
+
+		if !details.LastAuth.IsZero() {
+			rows = append(rows, []string{"Last Authenticated", details.LastAuth.Format("2006-01-02 15:04:05")})
+		}
+
+		// Display table
+		tableData := output.Data{
+			Headers: []string{"Property", "Value"},
+			Rows:    rows,
+		}
+
+		formatter := output.NewFormatter(output.FormatTable)
+		_ = formatter.Format(os.Stdout, tableData)
+
+	case auth.StateMissing:
+		fmt.Printf("%s Missing\n\n", emoji.Error)
+		fmt.Printf("  %s\n", details.ErrorMessage)
+
+	case auth.StateInvalid:
+		fmt.Printf("%s Invalid\n\n", emoji.Warning)
+
+		rows := [][]string{}
+
+		if details.ADCPath != "" {
+			rows = append(rows, []string{"ADC Path", details.ADCPath})
+		}
+
+		if details.ErrorMessage != "" {
+			rows = append(rows, []string{"Error", details.ErrorMessage})
+		}
+
+		if len(rows) > 0 {
+			tableData := output.Data{
+				Headers: []string{"Property", "Value"},
+				Rows:    rows,
+			}
+
+			formatter := output.NewFormatter(output.FormatTable)
+			_ = formatter.Format(os.Stdout, tableData)
+		}
+
+	default:
+		fmt.Printf("%s %s\n", emoji.Unknown, status.Details)
 	}
 }
 
@@ -202,16 +285,16 @@ func printAuthSummary(cmd *cobra.Command, app application.Application, verbose b
 	// Create summary table
 	var summaryRows [][]string
 	if configured > 0 {
-		summaryRows = append(summaryRows, []string{"✅ Configured", fmt.Sprintf("%d", configured)})
+		summaryRows = append(summaryRows, []string{emoji.Success + " Configured", fmt.Sprintf("%d", configured)})
 	}
 	if missing > 0 {
-		summaryRows = append(summaryRows, []string{"❌ Missing", fmt.Sprintf("%d", missing)})
+		summaryRows = append(summaryRows, []string{emoji.Error + " Missing", fmt.Sprintf("%d", missing)})
 	}
 	if optional > 0 {
-		summaryRows = append(summaryRows, []string{"⚪ Optional", fmt.Sprintf("%d", optional)})
+		summaryRows = append(summaryRows, []string{emoji.Optional + " Optional", fmt.Sprintf("%d", optional)})
 	}
 	if unsupported > 0 && verbose {
-		summaryRows = append(summaryRows, []string{"⚫ Unsupported", fmt.Sprintf("%d", unsupported)})
+		summaryRows = append(summaryRows, []string{emoji.Unsupported + " Unsupported", fmt.Sprintf("%d", unsupported)})
 	}
 
 	if len(summaryRows) > 0 {
@@ -253,15 +336,17 @@ func printAuthSummary(cmd *cobra.Command, app application.Application, verbose b
 func getStatusDisplay(state auth.State) (string, string) {
 	switch state {
 	case auth.StateConfigured:
-		return "✅", "Configured"
+		return emoji.Success, "Configured"
 	case auth.StateMissing:
-		return "❌", "Missing"
+		return emoji.Error, "Missing"
+	case auth.StateInvalid:
+		return emoji.Warning, "Invalid"
 	case auth.StateOptional:
-		return "⚪", "Optional"
+		return emoji.Optional, "Optional"
 	case auth.StateUnsupported:
-		return "⚫", "Unsupported"
+		return emoji.Unsupported, "Unsupported"
 	default:
-		return "❓", "Unknown"
+		return emoji.Unknown, "Unknown"
 	}
 }
 
@@ -303,23 +388,23 @@ func getCredentialSource(provider *catalogs.Provider) string {
 func printProviderStatus(provider *catalogs.Provider, status *auth.Status) {
 	switch status.State {
 	case auth.StateConfigured:
-		fmt.Printf("✅ %s (%s)\n", provider.Name, provider.ID)
+		fmt.Printf("%s %s (%s)\n", emoji.Success, provider.Name, provider.ID)
 		if status.Details != "" {
 			fmt.Printf("   %s\n", status.Details)
 		}
 
 	case auth.StateMissing:
-		fmt.Printf("❌ %s (%s)\n", provider.Name, provider.ID)
+		fmt.Printf("%s %s (%s)\n", emoji.Error, provider.Name, provider.ID)
 		fmt.Printf("   %s\n", status.Details)
 
 	case auth.StateOptional:
-		fmt.Printf("⚪ %s (%s)\n", provider.Name, provider.ID)
+		fmt.Printf("%s %s (%s)\n", emoji.Optional, provider.Name, provider.ID)
 		if status.Details != "" {
 			fmt.Printf("   %s\n", status.Details)
 		}
 
 	case auth.StateUnsupported:
-		fmt.Printf("⚫ %s (%s)\n", provider.Name, provider.ID)
+		fmt.Printf("%s %s (%s)\n", emoji.Unsupported, provider.Name, provider.ID)
 		fmt.Printf("   No client implementation\n")
 	}
 }
