@@ -3,6 +3,7 @@ package alerts
 
 import (
 	"fmt"
+
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
