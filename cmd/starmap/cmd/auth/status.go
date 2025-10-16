@@ -216,10 +216,9 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 	// Display detailed information based on state
 	switch details.State {
 	case auth.StateConfigured:
-		fmt.Printf("%s Configured\n\n", emoji.Success)
-
-		// Build table rows
+		// Build table rows - start with Status
 		rows := [][]string{
+			{"Status", emoji.Success + " Configured"},
 			{"Credential Type", details.Type},
 		}
 
@@ -249,7 +248,7 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 
 		// Display table
 		tableData := output.Data{
-			Headers: []string{"Property", "Value"},
+			Headers: []string{"PROPERTY", "VALUE"},
 			Rows:    rows,
 		}
 
@@ -257,13 +256,23 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 		_ = formatter.Format(os.Stdout, tableData)
 
 	case auth.StateMissing:
-		fmt.Printf("%s Missing\n\n", emoji.Error)
-		fmt.Printf("  %s\n", details.ErrorMessage)
+		rows := [][]string{
+			{"Status", emoji.Error + " Missing"},
+			{"Error Message", details.ErrorMessage},
+		}
+
+		tableData := output.Data{
+			Headers: []string{"PROPERTY", "VALUE"},
+			Rows:    rows,
+		}
+
+		formatter := output.NewFormatter(output.FormatTable)
+		_ = formatter.Format(os.Stdout, tableData)
 
 	case auth.StateInvalid:
-		fmt.Printf("%s Invalid\n\n", emoji.Warning)
-
-		rows := [][]string{}
+		rows := [][]string{
+			{"Status", emoji.Warning + " Invalid"},
+		}
 
 		if details.ADCPath != "" {
 			rows = append(rows, []string{"ADC Path", details.ADCPath})
@@ -273,15 +282,13 @@ func printGoogleCloudStatus(checker *auth.Checker, cat catalogs.Catalog) {
 			rows = append(rows, []string{"Error", details.ErrorMessage})
 		}
 
-		if len(rows) > 0 {
-			tableData := output.Data{
-				Headers: []string{"Property", "Value"},
-				Rows:    rows,
-			}
-
-			formatter := output.NewFormatter(output.FormatTable)
-			_ = formatter.Format(os.Stdout, tableData)
+		tableData := output.Data{
+			Headers: []string{"PROPERTY", "VALUE"},
+			Rows:    rows,
 		}
+
+		formatter := output.NewFormatter(output.FormatTable)
+		_ = formatter.Format(os.Stdout, tableData)
 
 	default:
 		fmt.Printf("%s %s\n", emoji.Unknown, status.Details)
