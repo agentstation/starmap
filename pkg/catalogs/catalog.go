@@ -78,15 +78,14 @@ type catalog struct {
 }
 
 // New creates a new catalog with the given options
-// No options = memory catalog
 // WithEmbedded() = embedded catalog with auto-load
 // WithFiles(path) = files catalog with auto-load.
-func New(opts ...Option) (Catalog, error) {
+func New(opt Option, opts ...Option) (Catalog, error) {
 	cat := &catalog{
 		providers: NewProviders(),
 		authors:   NewAuthors(),
 		endpoints: NewEndpoints(),
-		options:   catalogDefaults().apply(opts...),
+		options:   catalogDefaults().apply(append([]Option{opt}, opts...)...),
 	}
 
 	// Auto-load if configured and has filesystem
@@ -106,17 +105,17 @@ func NewEmbedded() (Catalog, error) {
 	return New(WithEmbedded())
 }
 
-// NewFromFilePath creates a catalog backed by files on disk.
+// NewFromPath creates a catalog backed by files on disk.
 // This is useful for development when you want to edit catalog files
 // without recompiling the binary.
 //
 // Example:
 //
-//	catalog, err := NewFromFilePath("./internal/embedded/catalog")
+//	catalog, err := NewFromPath("./internal/embedded/catalog")
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-func NewFromFilePath(path string) (Catalog, error) {
+func NewFromPath(path string) (Catalog, error) {
 	// Verify path exists
 	if _, err := os.Stat(path); err != nil {
 		return nil, errors.WrapIO("stat", path, err)
@@ -127,27 +126,27 @@ func NewFromFilePath(path string) (Catalog, error) {
 // NewLocal creates a new local catalog.
 func NewLocal(path string) (Catalog, error) {
 	if path != "" {
-		return NewFromFilePath(path)
+		return NewFromPath(path)
 	}
 	return NewEmbedded()
 }
 
-// Empty creates an in-memory empty catalog.
+// NewEmpty creates an in-memory empty catalog.
 // This is useful for testing or temporary catalogs that don't
 // need persistence.
 //
 // Example:
 //
-//	catalog := Empty()
+//	catalog := NewEmpty()
 //	provider := Provider{ID: "openai", Models: map[string]Model{}}
 //	catalog.SetProvider(provider)
-func Empty() Catalog {
-	// Empty catalog cannot fail
-	catalog, err := New()
-	if err != nil {
-		panic(err) // panic for visibility since we should never error
+func NewEmpty() Catalog {
+	return &catalog{
+		providers: NewProviders(),
+		authors:   NewAuthors(),
+		endpoints: NewEndpoints(),
+		options:   catalogDefaults(),
 	}
-	return catalog
 }
 
 // NewFromFS creates a catalog from a custom filesystem implementation.
@@ -481,36 +480,132 @@ func (cat *catalog) SetMergeStrategy(strategy MergeStrategy) {
 // Load loads the catalog from the configured filesystem.
 func (cat *catalog) Load() error {
 	if cat.options.readFS == nil {
-		// Memory catalog - nothing to load
-		return nil
+		return nil // Memory catalog - nothing to load
 	}
 
 	// Load providers.yaml
-	if data, err := fs.ReadFile(cat.options.readFS, "providers.yaml"); err == nil {
-		var providers []Provider
-		if err := yaml.Unmarshal(data, &providers); err != nil {
-			return errors.WrapParse("yaml", "providers.yaml", err)
-		}
-		for _, p := range providers {
-			_ = cat.SetProvider(p)
-		}
+	if err := cat.loadProvidersYAML(); err != nil {
+		return err
 	}
 
 	// Load authors.yaml
-	if data, err := fs.ReadFile(cat.options.readFS, "authors.yaml"); err == nil {
-		var authors []Author
-		if err := yaml.Unmarshal(data, &authors); err != nil {
-			return errors.WrapParse("yaml", "authors.yaml", err)
-		}
-		for _, a := range authors {
-			_ = cat.SetAuthor(a)
-		}
+	if err := cat.loadAuthorsYAML(); err != nil {
+		return err
 	}
 
 	// Load model files from providers/
+	if err := cat.loadModelFiles(); err != nil {
+		return err
+	}
+
+	// Post-process: Populate author.Models from model.Authors field
+	if err := cat.populateAuthorModels(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// loadProvidersYAML loads providers from providers.yaml file.
+func (cat *catalog) loadProvidersYAML() error {
+	data, err := fs.ReadFile(cat.options.readFS, "providers.yaml")
+	if err != nil {
+		return nil // File doesn't exist is okay
+	}
+
+	var providers []Provider
+	if err := yaml.Unmarshal(data, &providers); err != nil {
+		return errors.WrapParse("yaml", "providers.yaml", err)
+	}
+
+	for _, p := range providers {
+		_ = cat.SetProvider(p)
+	}
+	return nil
+}
+
+// loadAuthorsYAML loads authors from authors.yaml file.
+func (cat *catalog) loadAuthorsYAML() error {
+	data, err := fs.ReadFile(cat.options.readFS, "authors.yaml")
+	if err != nil {
+		return nil // File doesn't exist is okay
+	}
+
+	var authors []Author
+	if err := yaml.Unmarshal(data, &authors); err != nil {
+		return errors.WrapParse("yaml", "authors.yaml", err)
+	}
+
+	for _, a := range authors {
+		_ = cat.SetAuthor(a)
+	}
+	return nil
+}
+
+// loadProviderModel loads a model into a provider's Models map.
+func (cat *catalog) loadProviderModel(pathParts []string, model *Model) error {
+	if len(pathParts) < 4 || pathParts[0] != "providers" || pathParts[2] != "models" {
+		return nil // Not a provider model path
+	}
+
+	providerID := ProviderID(pathParts[1])
+	provider, err := cat.Provider(providerID)
+	if err != nil {
+		return nil // Provider doesn't exist, skip
+	}
+
+	if provider.Models == nil {
+		provider.Models = make(map[string]*Model)
+	}
+	provider.Models[model.ID] = model
+	return cat.SetProvider(provider)
+}
+
+// loadAuthorModel loads a model into an author's Models map.
+func (cat *catalog) loadAuthorModel(pathParts []string, model *Model) error {
+	if len(pathParts) < 4 || pathParts[0] != "authors" || pathParts[2] != "models" {
+		return nil // Not an author model path
+	}
+
+	authorID := AuthorID(pathParts[1])
+	author, err := cat.Author(authorID)
+	if err != nil {
+		return nil // Author doesn't exist, skip
+	}
+
+	if author.Models == nil {
+		author.Models = make(map[string]*Model)
+	}
+	author.Models[model.ID] = model
+	return cat.SetAuthor(author)
+}
+
+// loadModelFile parses and loads a model file.
+func (cat *catalog) loadModelFile(path string, data []byte) error {
+	var model Model
+	if err := yaml.Unmarshal(data, &model); err != nil {
+		return nil // Skip invalid YAML
+	}
+
+	pathParts := strings.Split(path, "/")
+
+	// Handle providers/[provider-id]/models/[model].yaml
+	if err := cat.loadProviderModel(pathParts, &model); err != nil {
+		return err
+	}
+
+	// Handle authors/[author-id]/models/[model].yaml
+	if err := cat.loadAuthorModel(pathParts, &model); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// loadModelFiles walks the providers directory and loads all model files.
+func (cat *catalog) loadModelFiles() error {
 	err := fs.WalkDir(cat.options.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			// If providers directory doesn't exist, that's okay
 			if os.IsNotExist(err) {
 				return nil
 			}
@@ -520,59 +615,56 @@ func (cat *catalog) Load() error {
 			return nil
 		}
 
-		// Read the file
 		data, err := fs.ReadFile(cat.options.readFS, path)
 		if err != nil {
 			return nil // Skip files we can't read
 		}
 
-		var model Model
-		if err := yaml.Unmarshal(data, &model); err == nil {
-			// Associate the model with its provider or author based on path
-			pathParts := strings.Split(path, "/")
-
-			// Handle providers/[provider-id]/models/[model].yaml or providers/[provider-id]/models/[org]/[model].yaml
-			if len(pathParts) >= 4 && pathParts[0] == "providers" && pathParts[2] == "models" {
-				providerID := ProviderID(pathParts[1])
-
-				// Get the provider and add this model to its Models map
-				if provider, err := cat.Provider(providerID); err == nil {
-					// Initialize Models map if nil
-					if provider.Models == nil {
-						provider.Models = make(map[string]*Model)
-					}
-					// Add the model to the provider's Models map
-					provider.Models[model.ID] = &model
-					// Update the provider in the catalog
-					_ = cat.SetProvider(provider)
-				}
-			}
-
-			// Handle authors/[author-id]/models/[model].yaml or authors/[author-id]/models/[org]/[model].yaml
-			if len(pathParts) >= 4 && pathParts[0] == "authors" && pathParts[2] == "models" {
-				authorID := AuthorID(pathParts[1])
-
-				// Get the author and add this model to its Models map
-				if author, err := cat.Author(authorID); err == nil {
-					// Initialize Models map if nil
-					if author.Models == nil {
-						author.Models = make(map[string]*Model)
-					}
-					// Add the model to the author's Models map
-					author.Models[model.ID] = &model
-					// Update the author in the catalog
-					_ = cat.SetAuthor(author)
-				}
-			}
-		}
-		return nil
+		return cat.loadModelFile(path, data)
 	})
+
+	if err != nil && !os.IsNotExist(err) {
+		return errors.WrapIO("walk", "providers directory", err)
+	}
+	return nil
+}
+
+// addModelToAuthor adds a model to an author's Models map.
+func (cat *catalog) addModelToAuthor(authorID AuthorID, model *Model) error {
+	author, err := cat.Author(authorID)
 	if err != nil {
-		// Check if it's just that providers directory doesn't exist
-		if !os.IsNotExist(err) {
-			return errors.WrapIO("walk", "providers directory", err)
-		}
+		return err
 	}
 
+	if author.Models == nil {
+		author.Models = make(map[string]*Model)
+	}
+	author.Models[model.ID] = model
+	return cat.SetAuthor(author)
+}
+
+// populateAuthorModels populates author.Models from model.Authors field.
+// This ensures bidirectional relationship between models and authors.
+func (cat *catalog) populateAuthorModels() error {
+	providers := cat.providers.List()
+
+	for _, provider := range providers {
+		if provider.Models == nil {
+			continue
+		}
+
+		for _, model := range provider.Models {
+			if len(model.Authors) == 0 {
+				continue
+			}
+
+			for _, modelAuthor := range model.Authors {
+				if err := cat.addModelToAuthor(modelAuthor.ID, model); err != nil {
+					// Continue on error - not fatal
+					continue
+				}
+			}
+		}
+	}
 	return nil
 }
