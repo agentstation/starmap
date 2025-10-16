@@ -77,15 +77,17 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 	}
 
 	status := checker.CheckProvider(&provider, supportedMap)
-	printProviderStatus(&provider, status)
 
 	// Show detailed authentication information based on provider type
 	if providerID == googleVertexProviderID {
-		// Google Vertex AI uses ADC
+		// Google Vertex AI uses ADC - detailed table view
 		printGoogleCloudStatus(checker, cat)
 	} else if provider.APIKey != nil {
-		// API key providers get detailed view
+		// API key providers get detailed table view
 		printAPIKeyDetails(&provider, status)
+	} else {
+		// Fallback for providers without detailed view (unsupported, optional, etc.)
+		printProviderStatus(&provider, status)
 	}
 
 	return nil
