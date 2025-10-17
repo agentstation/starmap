@@ -1,4 +1,4 @@
-package inspect
+package embed
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	inspectutil "github.com/agentstation/starmap/internal/cmd/inspect"
+	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
 )
 
 var (
@@ -29,12 +29,12 @@ Similar to the Unix ls command, this shows the contents of embedded
 directories and files. By default, shows files in the root directory.
 
 Examples:
-  starmap inspect ls                      # List root directory
-  starmap inspect ls catalog              # List catalog directory
-  starmap inspect ls -l catalog/providers # Long format listing
-  starmap inspect ls -lh sources          # Long format with human-readable sizes
-  starmap inspect ls -lah sources         # Long, all files, human-readable sizes
-  starmap inspect ls --help               # Show help (or use -?)`,
+  starmap embed ls                      # List root directory
+  starmap embed ls catalog              # List catalog directory
+  starmap embed ls -l catalog/providers # Long format listing
+  starmap embed ls -lh sources          # Long format with human-readable sizes
+  starmap embed ls -lah sources         # Long, all files, human-readable sizes
+  starmap embed ls --help               # Show help (or use -?)`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If -h is used without -l, show help instead of using human-readable
@@ -44,10 +44,10 @@ Examples:
 
 		targetPath := "."
 		if len(args) > 0 {
-			targetPath = inspectutil.NormalizePath(args[0])
+			targetPath = embedutil.NormalizePath(args[0])
 		}
 
-		fsys := inspectutil.GetEmbeddedFS()
+		fsys := embedutil.GetEmbeddedFS()
 		return listPath(fsys, targetPath)
 	},
 }
@@ -83,13 +83,13 @@ func listPath(fsys fs.FS, targetPath string) error {
 }
 
 func listFile(fsys fs.FS, filePath string) error {
-	fileInfo, err := inspectutil.GetFileInfoFromPath(fsys, filePath)
+	fileInfo, err := embedutil.GetFileInfoFromPath(fsys, filePath)
 	if err != nil {
 		return fmt.Errorf("cannot get info for '%s': %v", filePath, err)
 	}
 
 	if lsLong {
-		printLongFormat([]*inspectutil.FileInfo{fileInfo})
+		printLongFormat([]*embedutil.FileInfo{fileInfo})
 	} else {
 		fmt.Println(fileInfo.Name)
 	}
@@ -104,10 +104,10 @@ func listDirectory(fsys fs.FS, dirPath string) error {
 	}
 
 	// Convert to FileInfo and filter
-	files := make([]*inspectutil.FileInfo, 0, len(entries))
+	files := make([]*embedutil.FileInfo, 0, len(entries))
 	for _, entry := range entries {
 		// Skip hidden files unless -a flag is set
-		if !lsAll && inspectutil.IsHidden(entry.Name()) {
+		if !lsAll && embedutil.IsHidden(entry.Name()) {
 			continue
 		}
 
@@ -116,7 +116,7 @@ func listDirectory(fsys fs.FS, dirPath string) error {
 			fullPath = entry.Name()
 		}
 
-		fileInfo, err := inspectutil.GetFileInfoFromEntry(entry, fullPath, fsys)
+		fileInfo, err := embedutil.GetFileInfoFromEntry(entry, fullPath, fsys)
 		if err != nil {
 			continue // Skip files we can't get info for
 		}
@@ -153,7 +153,7 @@ func listRecursive(fsys fs.FS, rootPath string) error {
 		}
 
 		// Skip hidden files unless -a flag is set
-		if !lsAll && inspectutil.IsHidden(d.Name()) {
+		if !lsAll && embedutil.IsHidden(d.Name()) {
 			if d.IsDir() {
 				return fs.SkipDir // Skip entire hidden directory
 			}
@@ -165,13 +165,13 @@ func listRecursive(fsys fs.FS, rootPath string) error {
 		}
 
 		if !d.IsDir() || currentPath == rootPath {
-			fileInfo, err := inspectutil.GetFileInfoFromEntry(d, currentPath, fsys)
+			fileInfo, err := embedutil.GetFileInfoFromEntry(d, currentPath, fsys)
 			if err != nil {
 				return nil
 			}
 
 			if lsLong {
-				printLongFormat([]*inspectutil.FileInfo{fileInfo})
+				printLongFormat([]*embedutil.FileInfo{fileInfo})
 			} else {
 				if d.IsDir() {
 					// For recursive listing, show the directory name
@@ -184,40 +184,4 @@ func listRecursive(fsys fs.FS, rootPath string) error {
 
 		return nil
 	})
-}
-
-func printShortFormat(files []*inspectutil.FileInfo) {
-	for _, file := range files {
-		name := file.Name
-		if file.IsDir {
-			name += "/"
-		}
-		fmt.Println(name)
-	}
-}
-
-func printLongFormat(files []*inspectutil.FileInfo) {
-	for _, file := range files {
-		mode := inspectutil.FormatMode(file.Mode)
-
-		var size string
-		if file.IsDir {
-			size = "-"
-		} else if lsHuman {
-			size = inspectutil.FormatBytes(file.Size)
-		} else {
-			size = fmt.Sprintf("%d", file.Size)
-		}
-
-		time := inspectutil.FormatTime(file.ModTime)
-
-		name := file.Name
-		if file.IsDir {
-			name += "/"
-		}
-
-		// Format: mode size time name
-		// Align size to right in a fixed-width field
-		fmt.Printf("%s %8s %s %s\n", mode, size, time, name)
-	}
 }

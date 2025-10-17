@@ -43,7 +43,7 @@ const (
 
 	// Info represents informational messages.
 	// Used for: general information, tips, context.
-	Info = "ℹ️"
+	Info = "ℹ"
 
 	// Spinner can be used for in-progress operations (static).
 	// Note: For animated spinners, use a dedicated spinner library.

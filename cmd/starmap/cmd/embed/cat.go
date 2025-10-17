@@ -1,5 +1,5 @@
-// Package inspect provides commands for inspecting the embedded filesystem.
-package inspect
+// Package embed provides commands for exploring the embedded filesystem.
+package embed
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	inspectutil "github.com/agentstation/starmap/internal/cmd/inspect"
+	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
 )
 
 var (
@@ -27,15 +27,15 @@ Similar to the Unix cat command, this reads and displays the contents
 of one or more files from the embedded filesystem.
 
 Examples:
-  starmap inspect cat catalog/providers/openai.yaml
-  starmap inspect cat sources/models.dev/api.json
-  starmap inspect cat -n catalog/models.yaml       # Show line numbers`,
+  starmap embed cat catalog/providers/openai.yaml
+  starmap embed cat sources/models.dev/api.json
+  starmap embed cat -n catalog/models.yaml       # Show line numbers`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		fsys := inspectutil.GetEmbeddedFS()
+		fsys := embedutil.GetEmbeddedFS()
 
 		for i, arg := range args {
-			targetPath := inspectutil.NormalizePath(arg)
+			targetPath := embedutil.NormalizePath(arg)
 
 			if i > 0 {
 				fmt.Println() // Blank line between files
@@ -90,19 +90,6 @@ func catFile(fsys fs.FS, filePath string) error {
 	}
 
 	return nil
-}
-
-func printWithLineNumbers(content string) {
-	lines := strings.Split(content, "\n")
-
-	// Don't number the final empty line if content ends with newline
-	if len(lines) > 0 && lines[len(lines)-1] == "" {
-		lines = lines[:len(lines)-1]
-	}
-
-	for i, line := range lines {
-		fmt.Printf("%6d  %s\n", i+1, line)
-	}
 }
 
 // DetectFileType returns a simple file type based on extension.

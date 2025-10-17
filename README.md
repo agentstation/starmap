@@ -252,6 +252,7 @@ starmap update --dry-run        # Preview changes
 
 # Development
 starmap validate                # Validate configurations
+starmap deps check              # Check dependency status
 starmap generate completion bash # Generate shell completion
 ```
 
@@ -269,6 +270,81 @@ starmap update --input ./dev --output ./prod
 
 # Specific sources only
 starmap update --sources "Provider APIs,models.dev (git)"
+```
+
+### Dependency Management
+
+Some data sources require external tools. Starmap handles missing dependencies gracefully:
+
+```bash
+# Interactive (default) - Prompts to install or skip
+starmap update
+
+# CI/CD - Skip sources with missing dependencies
+starmap update --skip-dep-prompts
+
+# Strict mode - Fail if dependencies missing
+starmap update --require-all-sources --skip-dep-prompts
+
+# Auto-install - Install dependencies automatically
+starmap update --auto-install-deps
+```
+
+**Available Flags:**
+- `--auto-install-deps` - Automatically install missing dependencies
+- `--skip-dep-prompts` - Skip sources with missing dependencies without prompting
+- `--require-all-sources` - Fail if any dependencies are missing (CI/CD mode)
+
+**Common Scenario:** The `models_dev_git` source requires `bun` for building. If missing, Starmap offers to install it or falls back to `models_dev_http` which provides the same data without dependencies.
+
+#### Checking Dependencies
+
+Use `starmap deps check` to verify dependency status before running updates:
+
+```bash
+# Check all dependencies
+starmap deps check
+
+# JSON output for tooling
+starmap deps check --output json
+
+# YAML output
+starmap deps check --output yaml
+```
+
+The command shows:
+- ✅ Available dependencies with version and path
+- ❌ Missing dependencies with installation instructions
+- ℹ️  Sources that don't require any dependencies
+
+Example output:
+```
+Dependency Status:
+
+┌────────────────────────────┬────────────────────────┬──────────────────┬─────────┬───────────────────────┐
+│           SOURCE           │       DEPENDENCY       │      STATUS      │ VERSION │         PATH          │
+├────────────────────────────┼────────────────────────┼──────────────────┼─────────┼───────────────────────┤
+│ local_catalog (optional)   │ -                      │ ✅ None required │ -       │ -                     │
+│ providers                  │ -                      │ ✅ None required │ -       │ -                     │
+│ models_dev_git (optional)  │ Bun JavaScript runtime │ ✅ Available     │ 1.2.21  │ /opt/homebrew/bin/bun │
+│                            │ Git version control    │ ✅ Available     │ 2.51.0  │ /opt/homebrew/bin/git │
+│ models_dev_http (optional) │ -                      │ ✅ None required │ -       │ -                     │
+└────────────────────────────┴────────────────────────┴──────────────────┴─────────┴───────────────────────┘
+
+Additional Information:
+
+Bun JavaScript runtime (models_dev_git):
+  Description: Fast JavaScript runtime for building models.dev data
+  Why needed:  Builds api.json from models.dev TypeScript source
+
+Summary:
+┌────────────────────────────────┬───────┐
+│             STATUS             │ COUNT │
+├────────────────────────────────┼───────┤
+│ ✅ Available                   │ 2     │
+│ ℹ️ Sources without dependencies │ 3     │
+└────────────────────────────────┴───────┘
+✅ All required dependencies are available.
 ```
 
 ### Environment Setup

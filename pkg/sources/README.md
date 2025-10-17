@@ -38,6 +38,8 @@ if fetcher.HasClient(providerID) {
 
 ## Index
 
+- [type Dependency](<#Dependency>)
+- [type DependencyStatus](<#DependencyStatus>)
 - [type ID](<#ID>)
   - [func IDs\(\) \[\]ID](<#IDs>)
   - [func \(id ID\) IsValid\(\) bool](<#ID.IsValid>)
@@ -73,6 +75,47 @@ if fetcher.HasClient(providerID) {
   - [func \(s \*Sources\) List\(\) \[\]Source](<#Sources.List>)
   - [func \(s \*Sources\) Set\(id ID, src Source\)](<#Sources.Set>)
 
+
+<a name="Dependency"></a>
+## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L154-L172>)
+
+Dependency represents an external tool or runtime required by a source.
+
+```go
+type Dependency struct {
+    // Core identification
+    Name        string // Machine name: "bun", "git", "docker"
+    DisplayName string // Human-readable: "Bun JavaScript runtime"
+    Required    bool   // false = source is optional or has fallback
+
+    // Checking availability
+    CheckCommands []string // Try in order: ["bun", "bunx"]
+    MinVersion    string   // Optional: "1.0.0"
+
+    // Installation
+    InstallURL         string // https://bun.sh/docs/installation
+    AutoInstallCommand string // Optional: "curl -fsSL https://bun.sh/install | bash"
+
+    // User messaging
+    Description       string // "Builds models.dev data locally (same as HTTP source)"
+    WhyNeeded         string // "Required to build api.json from TypeScript source"
+    AlternativeSource string // "models_dev_http provides same data without dependencies"
+}
+```
+
+<a name="DependencyStatus"></a>
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L175-L180>)
+
+DependencyStatus represents the availability status of a dependency.
+
+```go
+type DependencyStatus struct {
+    Available  bool   // Whether the dependency is available
+    Version    string // Version string if available and detectable
+    Path       string // Full path to executable if found
+    CheckError error  // Error from check command if not available
+}
+```
 
 <a name="ID"></a>
 ## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L99>)
@@ -331,7 +374,7 @@ func WithoutCredentialLoading() ProviderOption
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L148>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L183>)
 
 ResourceType identifies the type of resource being merged.
 
@@ -353,7 +396,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L145>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L151>)
 
 Source represents a data source for catalog information.
 
@@ -371,6 +414,12 @@ type Source interface {
 
     // Cleanup releases any resources (called after all Fetch operations)
     Cleanup() error
+
+    // Dependencies returns the list of external dependencies this source requires
+    Dependencies() []Dependency
+
+    // IsOptional returns true if the sync can succeed without this source
+    IsOptional() bool
 }
 ```
 

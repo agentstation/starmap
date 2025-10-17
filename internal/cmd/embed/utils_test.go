@@ -1,4 +1,4 @@
-package inspect
+package embed
 
 import (
 	"io/fs"

@@ -1,15 +1,15 @@
-package inspect
+package embed
 
 import (
 	"io/fs"
 	"strings"
 	"testing"
 
-	inspectutil "github.com/agentstation/starmap/internal/cmd/inspect"
+	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
 )
 
 func TestEmbeddedFilesystemAccess(t *testing.T) {
-	fsys := inspectutil.GetEmbeddedFS()
+	fsys := embedutil.GetEmbeddedFS()
 
 	// Test that we can access the embedded filesystem
 	if fsys == nil {
@@ -50,7 +50,7 @@ func TestEmbeddedFilesystemAccess(t *testing.T) {
 }
 
 func TestEmbeddedCatalogAccess(t *testing.T) {
-	fsys := inspectutil.GetEmbeddedFS()
+	fsys := embedutil.GetEmbeddedFS()
 
 	// Test catalog directory
 	entries, err := fs.ReadDir(fsys, "catalog")
@@ -79,7 +79,7 @@ func TestEmbeddedCatalogAccess(t *testing.T) {
 }
 
 func TestEmbeddedModelsDevAccess(t *testing.T) {
-	fsys := inspectutil.GetEmbeddedFS()
+	fsys := embedutil.GetEmbeddedFS()
 
 	// Test that models.dev api.json exists and is readable
 	data, err := fs.ReadFile(fsys, "sources/models.dev/api.json")
@@ -117,10 +117,10 @@ func TestPathNormalizationIntegration(t *testing.T) {
 		{"nonexistent", false},
 	}
 
-	fsys := inspectutil.GetEmbeddedFS()
+	fsys := embedutil.GetEmbeddedFS()
 
 	for _, test := range tests {
-		normalizedPath := inspectutil.NormalizePath(test.path)
+		normalizedPath := embedutil.NormalizePath(test.path)
 		_, err := fs.Stat(fsys, normalizedPath)
 
 		if test.shouldExist && err != nil {

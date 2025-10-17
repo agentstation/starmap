@@ -49,6 +49,9 @@ func (s *HTTPSource) ID() sources.ID {
 	return sources.ModelsDevHTTPID
 }
 
+// Name returns the human-friendly name of this source.
+func (s *HTTPSource) Name() string { return "models.dev (HTTP)" }
+
 // ensureHTTPAPI initializes models.dev data once via HTTP.
 func ensureHTTPAPI(ctx context.Context, outputDir string) (*API, error) {
 	httpOnce.Do(func() {
@@ -110,4 +113,16 @@ func (s *HTTPSource) Catalog() catalogs.Catalog {
 func (s *HTTPSource) Cleanup() error {
 	// HTTPSource doesn't hold persistent resources
 	return nil
+}
+
+// Dependencies returns the list of external dependencies.
+// HTTP source has no external dependencies.
+func (s *HTTPSource) Dependencies() []sources.Dependency {
+	return nil
+}
+
+// IsOptional returns whether this source is optional.
+// HTTP source is optional - git source provides same data, and we can work without models.dev.
+func (s *HTTPSource) IsOptional() bool {
+	return true
 }

@@ -1,7 +1,6 @@
 package list
 
 import (
-	"fmt"
 	"os"
 	"sort"
 	"strings"
@@ -158,37 +157,4 @@ func showProviderDetails(cmd *cobra.Command, app application.Application, _ *zer
 
 	// For structured output, return the provider
 	return formatter.Format(os.Stdout, provider)
-}
-
-// printProviderDetails prints detailed provider information.
-func printProviderDetails(provider *catalogs.Provider) {
-	formatter := output.NewFormatter(output.FormatTable)
-
-	fmt.Printf("Provider: %s\n\n", provider.ID)
-
-	// Basic info
-	basicRows := [][]string{
-		{"Provider ID", string(provider.ID)},
-		{"Name", provider.Name},
-	}
-
-	if provider.Headquarters != nil && *provider.Headquarters != "" {
-		basicRows = append(basicRows, []string{"Headquarters", *provider.Headquarters})
-	}
-
-	if provider.StatusPageURL != nil && *provider.StatusPageURL != "" {
-		basicRows = append(basicRows, []string{"Status Page", *provider.StatusPageURL})
-	}
-
-	basicTable := output.Data{
-		Headers: []string{"Property", "Value"},
-		Rows:    basicRows,
-	}
-
-	fmt.Println("Basic Information:")
-	_ = formatter.Format(os.Stdout, basicTable)
-	fmt.Println()
-
-	// Model count
-	fmt.Printf("Models: %d\n", len(provider.Models))
 }

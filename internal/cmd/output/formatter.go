@@ -117,6 +117,9 @@ func (f *TableFormatter) formatTable(w io.Writer, data Data) error {
 	// Use tablewriter for proper table formatting
 	opts := []tablewriter.Option{}
 
+	// Build config
+	config := tablewriter.Config{}
+
 	// Apply column alignment if specified
 	if len(data.ColumnAlignment) > 0 {
 		// Translate table.Align type to tablewriter's tw.Align type
@@ -134,20 +137,11 @@ func (f *TableFormatter) formatTable(w io.Writer, data Data) error {
 			}
 		}
 
-		opts = append(opts, tablewriter.WithConfig(tablewriter.Config{
-			Header: tw.CellConfig{
-				Alignment: tw.CellAlignment{
-					PerColumn: twAlign,
-				},
-			},
-			Row: tw.CellConfig{
-				Alignment: tw.CellAlignment{
-					PerColumn: twAlign,
-				},
-			},
-		}))
+		config.Header.Alignment = tw.CellAlignment{PerColumn: twAlign}
+		config.Row.Alignment = tw.CellAlignment{PerColumn: twAlign}
 	}
 
+	opts = append(opts, tablewriter.WithConfig(config))
 	table := tablewriter.NewTable(w, opts...)
 
 	// Set headers if present

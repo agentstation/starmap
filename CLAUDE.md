@@ -135,11 +135,11 @@ Internal Implementations (embedded, providers, modelsdev)
 
 **Key files:**
 - `starmap.go` - Public API
-- `sync.go` - 12-step sync pipeline
+- `sync.go` - 13-step sync pipeline
 - `cmd/application/application.go` - Application interface
 - `cmd/starmap/app/app.go` - App implementation
 
-### Sync Pipeline (12 Steps)
+### Sync Pipeline (13 Steps)
 
 See docs/ARCHITECTURE.md § Sync Pipeline for details:
 
@@ -149,12 +149,13 @@ See docs/ARCHITECTURE.md § Sync Pipeline for details:
 4. Load embedded catalog
 5. Validate options
 6. Filter sources
-7. Setup cleanup
-8. Fetch from sources (concurrent)
-9. Get existing catalog
-10. Reconcile catalogs
-11. Log changes
-12. Save if not dry-run
+7. **Resolve dependencies** (check/install missing deps, filter optional sources)
+8. Setup cleanup
+9. Fetch from sources (concurrent)
+10. Get existing catalog
+11. Reconcile catalogs
+12. Log changes
+13. Save if not dry-run
 
 ### Reconciliation System
 
@@ -208,6 +209,18 @@ func NewCommand(app application.Application) *cobra.Command {
     }
 }
 ```
+
+### Dependency Management
+
+Sources can declare external dependencies via `Dependencies()` interface method. The dependency resolver runs in step 7 of the sync pipeline before fetch.
+
+**Implementation:**
+- Add `Dependencies() []Dependency` and `IsOptional() bool` methods to Source
+- Resolver operates in 3 modes: Interactive, Auto-install, Skip prompts
+- Optional sources are gracefully skipped if deps missing
+- Use `//nolint:gosec` for subprocess calls (commands from trusted source code)
+
+See `internal/deps/checker.go` and `lifecycle.go:resolveDependencies()` for implementation.
 
 ## Code Patterns
 

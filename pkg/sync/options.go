@@ -33,6 +33,11 @@ type Options struct {
 	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
 	Reformat           bool   // Reformat providers.yaml file even without changes
 	SourcesDir         string // Directory for external source data (models.dev cache/git)
+
+	// Dependency control
+	AutoInstallDeps   bool // Automatically install missing dependencies without prompting
+	SkipDepPrompts    bool // Skip dependency prompts and continue without optional dependencies
+	RequireAllSources bool // Require all sources to succeed (fail if any dependencies are missing)
 }
 
 // Apply applies the given options to the sync options.
@@ -56,6 +61,9 @@ func Defaults() *Options {
 		Fresh:              false,
 		CleanModelsDevRepo: false,
 		Reformat:           false,
+		AutoInstallDeps:    false,
+		SkipDepPrompts:     false,
+		RequireAllSources:  false,
 	}
 }
 
@@ -197,5 +205,26 @@ func WithReformat(reformat bool) Option {
 func WithSourcesDir(dir string) Option {
 	return func(opts *Options) {
 		opts.SourcesDir = dir
+	}
+}
+
+// WithAutoInstallDeps configures whether to automatically install missing dependencies.
+func WithAutoInstallDeps(autoInstall bool) Option {
+	return func(opts *Options) {
+		opts.AutoInstallDeps = autoInstall
+	}
+}
+
+// WithSkipDepPrompts configures whether to skip dependency prompts.
+func WithSkipDepPrompts(skip bool) Option {
+	return func(opts *Options) {
+		opts.SkipDepPrompts = skip
+	}
+}
+
+// WithRequireAllSources configures whether all sources are required to succeed.
+func WithRequireAllSources(require bool) Option {
+	return func(opts *Options) {
+		opts.RequireAllSources = require
 	}
 }

@@ -2,7 +2,6 @@
 package list
 
 import (
-	"fmt"
 	"os"
 	"sort"
 	"strings"
@@ -148,33 +147,4 @@ func showAuthorDetails(cmd *cobra.Command, app application.Application, _ *zerol
 
 	// For structured output, return the author
 	return formatter.Format(os.Stdout, author)
-}
-
-// printAuthorDetails prints detailed author information.
-func printAuthorDetails(author *catalogs.Author) {
-	formatter := output.NewFormatter(output.FormatTable)
-
-	fmt.Printf("Author: %s\n\n", author.ID)
-
-	// Basic info
-	basicRows := [][]string{
-		{"Author ID", string(author.ID)},
-		{"Name", author.Name},
-	}
-
-	if author.Description != nil && *author.Description != "" {
-		basicRows = append(basicRows, []string{"Description", *author.Description})
-	}
-	if author.Website != nil && *author.Website != "" {
-		basicRows = append(basicRows, []string{"Website", *author.Website})
-	}
-
-	basicTable := output.Data{
-		Headers: []string{"Property", "Value"},
-		Rows:    basicRows,
-	}
-
-	fmt.Println("Basic Information:")
-	_ = formatter.Format(os.Stdout, basicTable)
-	fmt.Println()
 }

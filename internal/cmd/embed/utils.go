@@ -1,5 +1,5 @@
-// Package inspect provides utilities for working with the embedded filesystem.
-package inspect
+// Package embed provides utilities for working with the embedded filesystem.
+package embed
 
 import (
 	"fmt"

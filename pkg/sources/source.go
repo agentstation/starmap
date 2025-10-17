@@ -133,6 +133,9 @@ type Source interface {
 	// Type returns the type of this source
 	ID() ID
 
+	// Name returns a human-friendly name for this source
+	Name() string
+
 	// Fetch retrieves data from this source
 	// Sources handle their own concurrency internally
 	Fetch(ctx context.Context, opts ...Option) error
@@ -142,6 +145,41 @@ type Source interface {
 
 	// Cleanup releases any resources (called after all Fetch operations)
 	Cleanup() error
+
+	// Dependencies returns the list of external dependencies this source requires
+	Dependencies() []Dependency
+
+	// IsOptional returns true if the sync can succeed without this source
+	IsOptional() bool
+}
+
+// Dependency represents an external tool or runtime required by a source.
+type Dependency struct {
+	// Core identification
+	Name        string // Machine name: "bun", "git", "docker"
+	DisplayName string // Human-readable: "Bun JavaScript runtime"
+	Required    bool   // false = source is optional or has fallback
+
+	// Checking availability
+	CheckCommands []string // Try in order: ["bun", "bunx"]
+	MinVersion    string   // Optional: "1.0.0"
+
+	// Installation
+	InstallURL         string // https://bun.sh/docs/installation
+	AutoInstallCommand string // Optional: "curl -fsSL https://bun.sh/install | bash"
+
+	// User messaging
+	Description       string // "Builds models.dev data locally (same as HTTP source)"
+	WhyNeeded         string // "Required to build api.json from TypeScript source"
+	AlternativeSource string // "models_dev_http provides same data without dependencies"
+}
+
+// DependencyStatus represents the availability status of a dependency.
+type DependencyStatus struct {
+	Available  bool   // Whether the dependency is available
+	Version    string // Version string if available and detectable
+	Path       string // Full path to executable if found
+	CheckError error  // Error from check command if not available
 }
 
 // ResourceType identifies the type of resource being merged.

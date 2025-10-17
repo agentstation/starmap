@@ -21,16 +21,19 @@ import (
 
 // Flags holds flags for update command.
 type Flags struct {
-	Provider    string
-	Source      string
-	DryRun      bool
-	Force       bool
-	AutoApprove bool
-	Output      string
-	Input       string
-	Cleanup     bool
-	Reformat    bool
-	SourcesDir  string
+	Provider          string
+	Source            string
+	DryRun            bool
+	Force             bool
+	AutoApprove       bool
+	Output            string
+	Input             string
+	Cleanup           bool
+	Reformat          bool
+	SourcesDir        string
+	AutoInstallDeps   bool
+	SkipDepPrompts    bool
+	RequireAllSources bool
 }
 
 // addUpdateFlags adds update-specific flags to the update command.
@@ -59,6 +62,12 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Reformat catalog files even without changes")
 	cmd.Flags().StringVar(&flags.SourcesDir, "sources-dir", "",
 		"Directory for external source data (default: ~/.starmap/sources)")
+	cmd.Flags().BoolVar(&flags.AutoInstallDeps, "auto-install-deps", false,
+		"Automatically install missing dependencies without prompting")
+	cmd.Flags().BoolVar(&flags.SkipDepPrompts, "skip-dep-prompts", false,
+		"Skip dependency prompts and continue without optional dependencies")
+	cmd.Flags().BoolVar(&flags.RequireAllSources, "require-all-sources", false,
+		"Require all sources to succeed (fail if any dependencies are missing)")
 
 	return flags
 }
@@ -102,7 +111,7 @@ func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger 
 		sourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
 	}
 
-	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
+	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
 
 	if !quiet {
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
@@ -171,7 +180,7 @@ func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, 
 	}
 
 	// Rebuild options without dry-run
-	opts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir)
+	opts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
 
 	// Apply changes
 	finalResult, err := sm.Sync(ctx, opts...)
@@ -184,44 +193,6 @@ func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, 
 	}
 
 	return finalizeChanges(quiet, finalResult)
-}
-
-// displayResultsSummary shows a detailed summary of the update results.
-func displayResultsSummary(result *sync.Result) {
-	fmt.Fprintf(os.Stderr, "=== UPDATE RESULTS ===\n\n")
-
-	// Show summary for each provider
-	for providerID, providerResult := range result.ProviderResults {
-		if providerResult.HasChanges() {
-			fmt.Fprintf(os.Stderr, "🔄 %s:\n", providerID)
-
-			// Show API fetch status
-			if providerResult.APIModelsCount > 0 {
-				fmt.Fprintf(os.Stderr, "  📡 Provider API: %d models found\n", providerResult.APIModelsCount)
-			} else {
-				// When no models from API but we have updates, it's from enrichment
-				if providerResult.UpdatedCount > 0 {
-					fmt.Fprintf(os.Stderr, "  ⏭️  Provider API: Skipped (using cached models)\n")
-				} else {
-					fmt.Fprintf(os.Stderr, "  ⏭️  Provider API: No models fetched\n")
-				}
-			}
-
-			// Show enrichment if models were updated but not added
-			if providerResult.UpdatedCount > 0 && providerResult.AddedCount == 0 {
-				fmt.Fprintf(os.Stderr, "  🔗 Enriched: %d models with pricing/limits from models.dev\n", providerResult.UpdatedCount)
-			}
-
-			// Show changes summary
-			if providerResult.AddedCount > 0 || providerResult.RemovedCount > 0 {
-				fmt.Fprintf(os.Stderr, "  📊 Changes: %d added, %d updated, %d removed\n",
-					providerResult.AddedCount, providerResult.UpdatedCount, providerResult.RemovedCount)
-			} else if providerResult.UpdatedCount > 0 {
-				fmt.Fprintf(os.Stderr, "  📊 Changes: %d models enriched\n", providerResult.UpdatedCount)
-			}
-			fmt.Fprintf(os.Stderr, "\n")
-		}
-	}
 }
 
 // finalizeChanges displays the completion message.

@@ -56,6 +56,9 @@ func (s *GitSource) ID() sources.ID {
 	return sources.ModelsDevGitID
 }
 
+// Name returns the human-friendly name of this source.
+func (s *GitSource) Name() string { return "models.dev (Git)" }
+
 // ensureGitRepo initializes models.dev data once using sync.Once.
 func ensureGitRepo(ctx context.Context, outputDir string) (*API, error) {
 	gitOnce.Do(func() {
@@ -124,4 +127,44 @@ func (s *GitSource) Catalog() catalogs.Catalog {
 func (s *GitSource) Cleanup() error {
 	// GitSource doesn't hold persistent resources
 	return nil
+}
+
+// Dependencies returns the list of external dependencies required by this source.
+// Git source requires bun (for building) and git (for cloning).
+func (s *GitSource) Dependencies() []sources.Dependency {
+	return []sources.Dependency{
+		{
+			Name:          "bun",
+			DisplayName:   "Bun JavaScript runtime",
+			Required:      false, // HTTP fallback exists
+			CheckCommands: []string{"bun"},
+			MinVersion:    "1.0.0",
+
+			InstallURL:         "https://bun.sh/docs/installation",
+			AutoInstallCommand: "curl -fsSL https://bun.sh/install | bash",
+
+			Description:       "Fast JavaScript runtime for building models.dev data",
+			WhyNeeded:         "Builds api.json from models.dev TypeScript source",
+			AlternativeSource: "models_dev_http provides same data without dependencies",
+		},
+		{
+			Name:          "git",
+			DisplayName:   "Git version control",
+			Required:      false, // HTTP fallback exists
+			CheckCommands: []string{"git"},
+			MinVersion:    "2.0.0",
+
+			InstallURL: "https://git-scm.com/downloads",
+
+			Description:       "Version control system for cloning models.dev repository",
+			WhyNeeded:         "Clones models.dev repository to build local data",
+			AlternativeSource: "models_dev_http provides same data without dependencies",
+		},
+	}
+}
+
+// IsOptional returns whether this source is optional.
+// Git source is optional - HTTP source provides the same data without dependencies.
+func (s *GitSource) IsOptional() bool {
+	return true
 }

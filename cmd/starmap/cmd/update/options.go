@@ -7,7 +7,7 @@ import (
 )
 
 // BuildUpdateOptions creates a slice of update options based on the provided flags.
-func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool, sourcesDir string) []sync.Option {
+func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cleanup, reformat bool, sourcesDir string, autoInstallDeps, skipDepPrompts, requireAllSources bool) []sync.Option {
 	var opts []sync.Option
 
 	if provider != "" {
@@ -34,6 +34,16 @@ func BuildUpdateOptions(provider, output string, dryRun, force, autoApprove, cle
 	}
 	if sourcesDir != "" {
 		opts = append(opts, sync.WithSourcesDir(sourcesDir))
+	}
+	// Dependency options
+	if autoInstallDeps {
+		opts = append(opts, sync.WithAutoInstallDeps(true))
+	}
+	if skipDepPrompts {
+		opts = append(opts, sync.WithSkipDepPrompts(true))
+	}
+	if requireAllSources {
+		opts = append(opts, sync.WithRequireAllSources(true))
 	}
 
 	return opts

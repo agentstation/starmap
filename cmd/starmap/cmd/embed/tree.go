@@ -1,4 +1,4 @@
-package inspect
+package embed
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	inspectutil "github.com/agentstation/starmap/internal/cmd/inspect"
+	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
 )
 
 var (
@@ -28,18 +28,18 @@ Similar to the Unix tree command, this shows directories and files
 in a hierarchical tree format with ASCII art.
 
 Examples:
-  starmap inspect tree                  # Show full tree
-  starmap inspect tree catalog         # Show catalog directory tree  
-  starmap inspect tree -L 2            # Limit depth to 2 levels
-  starmap inspect tree -s catalog       # Show file sizes`,
+  starmap embed tree                  # Show full tree
+  starmap embed tree catalog         # Show catalog directory tree  
+  starmap embed tree -L 2            # Limit depth to 2 levels
+  starmap embed tree -s catalog       # Show file sizes`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
 		targetPath := "."
 		if len(args) > 0 {
-			targetPath = inspectutil.NormalizePath(args[0])
+			targetPath = embedutil.NormalizePath(args[0])
 		}
 
-		fsys := inspectutil.GetEmbeddedFS()
+		fsys := embedutil.GetEmbeddedFS()
 		return showTree(fsys, targetPath)
 	},
 }
@@ -137,7 +137,7 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 	// Build children
 	for _, entry := range entries {
 		// Skip hidden files unless -a flag is set
-		if !treeAll && inspectutil.IsHidden(entry.Name()) {
+		if !treeAll && embedutil.IsHidden(entry.Name()) {
 			continue
 		}
 
@@ -156,44 +156,6 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 	}
 
 	return node, nil
-}
-
-func printTree(nodes []*TreeNode, prefix string, _ bool) {
-	for i, node := range nodes {
-		isLast := i == len(nodes)-1
-
-		// Print current node
-		var connector, nextPrefix string
-
-		if treeNoIndent {
-			connector = ""
-			nextPrefix = prefix
-		} else if isLast {
-			connector = "└── "
-			nextPrefix = prefix + "    "
-		} else {
-			connector = "├── "
-			nextPrefix = prefix + "│   "
-		}
-
-		// Format name with optional size and directory indicator
-		name := node.Name
-		if node.IsDir {
-			name += "/"
-		}
-
-		if treeSizes && !node.IsDir {
-			sizeStr := inspectutil.FormatBytes(node.Size)
-			name += fmt.Sprintf(" [%s]", sizeStr)
-		}
-
-		fmt.Printf("%s%s%s\n", prefix, connector, name)
-
-		// Print children recursively
-		if len(node.Children) > 0 {
-			printTree(node.Children, nextPrefix, false)
-		}
-	}
 }
 
 func countNodes(node *TreeNode) (dirs, files int) {

@@ -27,6 +27,11 @@ func (m *mockSource) ID() sources.ID {
 	return m.sourceType
 }
 
+// Name returns the human-friendly name of this source.
+func (m *mockSource) Name() string {
+	return string(m.sourceType)
+}
+
 // Setup initializes the source with dependencies.
 func (m *mockSource) Setup(_ *catalogs.Providers) error {
 	return nil
@@ -46,6 +51,16 @@ func (m *mockSource) Catalog() catalogs.Catalog {
 // Cleanup releases any resources.
 func (m *mockSource) Cleanup() error {
 	return nil
+}
+
+// Dependencies returns the list of external dependencies.
+func (m *mockSource) Dependencies() []sources.Dependency {
+	return nil
+}
+
+// IsOptional returns whether this source is optional.
+func (m *mockSource) IsOptional() bool {
+	return false
 }
 
 // ConvertCatalogsMapToSources converts the old map format to sources slice for testing.

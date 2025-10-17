@@ -87,22 +87,23 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 // This is where we wire up all the command handlers.
 func (a *App) registerCommands(rootCmd *cobra.Command) {
 	// Core commands
-	rootCmd.AddCommand(a.CreateListCommand())
-	rootCmd.AddCommand(a.CreateUpdateCommand())
-	rootCmd.AddCommand(a.CreateServeCommand())
-	rootCmd.AddCommand(a.CreateFetchCommand())
+	rootCmd.AddCommand(a.NewListCommand())
+	rootCmd.AddCommand(a.NewUpdateCommand())
+	rootCmd.AddCommand(a.NewServeCommand())
+	rootCmd.AddCommand(a.NewFetchCommand())
 
 	// Management commands
-	rootCmd.AddCommand(a.CreateValidateCommand())
-	rootCmd.AddCommand(a.CreateInspectCommand())
-	rootCmd.AddCommand(a.CreateAuthCommand())
-	rootCmd.AddCommand(a.CreateGenerateCommand())
+	rootCmd.AddCommand(a.NewValidateCommand())
+	rootCmd.AddCommand(a.NewEmbedCommand())
+	rootCmd.AddCommand(a.NewAuthCommand())
+	rootCmd.AddCommand(a.NewDepsCommand())
+	rootCmd.AddCommand(a.NewGenerateCommand())
 
 	// Utility commands
-	rootCmd.AddCommand(a.CreateVersionCommand())
-	rootCmd.AddCommand(a.CreateManCommand())
-	rootCmd.AddCommand(a.CreateInstallCommand())
-	rootCmd.AddCommand(a.CreateUninstallCommand())
+	rootCmd.AddCommand(a.NewVersionCommand())
+	rootCmd.AddCommand(a.NewManCommand())
+	rootCmd.AddCommand(a.NewInstallCommand())
+	rootCmd.AddCommand(a.NewUninstallCommand())
 }
 
 // ExitOnError is a helper that prints an error and exits with status 1.

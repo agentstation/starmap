@@ -24,6 +24,9 @@ func New() *Source { return &Source{} }
 // ID returns the ID of this source.
 func (s *Source) ID() sources.ID { return sources.ProvidersID }
 
+// Name returns the human-friendly name of this source.
+func (s *Source) Name() string { return "Providers" }
+
 // providerModels holds models fetched from a specific provider.
 type providerModels struct {
 	providerID catalogs.ProviderID
@@ -225,4 +228,16 @@ func (s *Source) Catalog() catalogs.Catalog {
 func (s *Source) Cleanup() error {
 	// ProvidersSource doesn't hold persistent resources
 	return nil
+}
+
+// Dependencies returns the list of external dependencies.
+// Provider source has no external dependencies.
+func (s *Source) Dependencies() []sources.Dependency {
+	return nil
+}
+
+// IsOptional returns whether this source is optional.
+// Provider source is required - it's the core data source.
+func (s *Source) IsOptional() bool {
+	return false
 }

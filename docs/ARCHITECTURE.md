@@ -46,7 +46,7 @@ graph TB
     end
 
     subgraph ROOT["Root Package - starmap.Client"]
-        SYNC[Sync Pipeline<br/>12 Stages]
+        SYNC[Sync Pipeline<br/>13 Stages]
         HOOKS[Event Hooks<br/>Callbacks]
         AUTO[Auto-Updates<br/>Background Sync]
     end
@@ -524,7 +524,7 @@ func fetch(ctx context.Context, providers []Provider) {
 
 Location: `sync.go`
 
-The sync pipeline executes in 12 stages with comprehensive error handling and decision points:
+The sync pipeline executes in 13 stages with comprehensive error handling and decision points:
 
 ### Pipeline Flowchart
 
@@ -545,29 +545,30 @@ flowchart TD
     E1 -->|No| Error1[❌ Return Error]
     E1 -->|Yes| S6[Filter Sources<br/>by Options]
 
-    S6 --> S7[Setup Cleanup<br/>defer]
-    S7 --> S8[Fetch from Sources<br/>⚡ Concurrent]
+    S6 --> S7[Resolve Dependencies<br/>Check & Install]
+    S7 --> S8[Setup Cleanup<br/>defer]
+    S8 --> S9[Fetch from Sources<br/>⚡ Concurrent]
 
-    S8 --> E2{Fetch<br/>Success?}
+    S9 --> E2{Fetch<br/>Success?}
     E2 -->|No| Error2[❌ Return Error]
-    E2 -->|Yes| S9[Get Existing<br/>Catalog Baseline]
+    E2 -->|Yes| S10[Get Existing<br/>Catalog Baseline]
 
-    S9 --> S10[Reconcile<br/>All Sources]
-    S10 --> S11[Log Change<br/>Summary]
+    S10 --> S11[Reconcile<br/>All Sources]
+    S11 --> S12[Log Change<br/>Summary]
 
-    S11 --> D1{Has<br/>Changes?}
+    S12 --> D1{Has<br/>Changes?}
     D1 -->|No| End1[✓ Return Result<br/>No Changes]
     D1 -->|Yes| D2{Dry<br/>Run?}
     D2 -->|Yes| End2[✓ Return Result<br/>Preview Only]
-    D2 -->|No| S12[Save Catalog &<br/>Trigger Hooks]
+    D2 -->|No| S13[Save Catalog &<br/>Trigger Hooks]
 
-    S12 --> End3([✅ Return Result<br/>Changes Applied])
+    S13 --> End3([✅ Return Result<br/>Changes Applied])
 
     style Start fill:#e3f2fd
     style Error1 fill:#ffcdd2
     style Error2 fill:#ffcdd2
-    style S8 fill:#fff9c4
-    style S10 fill:#e1bee7
+    style S9 fill:#fff9c4
+    style S11 fill:#e1bee7
     style End1 fill:#c8e6c9
     style End2 fill:#c8e6c9
     style End3 fill:#c8e6c9
@@ -575,9 +576,9 @@ flowchart TD
 
 **Stage Groups:**
 - **Stages 1-5** (Setup): Context, options, validation
-- **Stages 6-8** (Preparation): Source filtering, cleanup, concurrent fetching
-- **Stages 9-10** (Processing): Baseline comparison, reconciliation
-- **Stages 11-12** (Finalization): Change detection, persistence, hooks
+- **Stages 6-9** (Preparation): Source filtering, dependency resolution, cleanup, concurrent fetching
+- **Stages 10-11** (Processing): Baseline comparison, reconciliation
+- **Stages 12-13** (Finalization): Change detection, persistence, hooks
 
 ### Stage-by-Stage Code
 
@@ -606,22 +607,25 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
     // Stage 6: Filter sources by options
     srcs := c.filterSources(options)
 
-    // Stage 7: Setup cleanup
+    // Stage 7: Resolve dependencies
+    srcs, err = resolveDependencies(ctx, srcs, options)
+
+    // Stage 8: Setup cleanup
     defer cleanup(srcs)
 
-    // Stage 8: Fetch catalogs from all sources
+    // Stage 9: Fetch catalogs from all sources
     err = fetch(ctx, srcs, options.SourceOptions())
 
-    // Stage 9: Get existing catalog for baseline
+    // Stage 10: Get existing catalog for baseline
     existing, err := c.Catalog()
 
-    // Stage 10: Reconcile catalogs from all sources
+    // Stage 11: Reconcile catalogs from all sources
     result, err := update(ctx, existing, srcs)
 
-    // Stage 11: Log change summary
+    // Stage 12: Log change summary
     logging.Info().Int("added", ...).Msg("Changes detected")
 
-    // Stage 12: Save if not dry-run
+    // Stage 13: Save if not dry-run
     if !options.DryRun && result.Changeset.HasChanges() {
         c.save(result.Catalog, options, result.Changeset)
     }
@@ -1381,7 +1385,7 @@ func TestListModels(t *testing.T) {
 | File | Purpose | Lines |
 |------|---------|-------|
 | `starmap.go` | Public API interface | ~100 |
-| `sync.go` | 12-step sync pipeline | ~234 |
+| `sync.go` | 13-step sync pipeline | ~234 |
 | `cmd/application/application.go` | Application interface | ~97 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |
 | `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |

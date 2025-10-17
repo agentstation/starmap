@@ -99,7 +99,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 		fmt.Printf("  ❌ Build failed\n")
 		return &errors.ProcessError{
 			Operation: "build api.json",
-			Command:   "npm run build",
+			Command:   "bun run script/build.ts",
 			Output:    string(output),
 			Err:       err,
 		}
@@ -129,7 +129,7 @@ func (c *GitClient) installDependencies(ctx context.Context) error {
 		fmt.Printf("  ❌ Dependency installation failed\n")
 		return &errors.ProcessError{
 			Operation: "install dependencies",
-			Command:   "npm install",
+			Command:   "bun install",
 			Output:    string(output),
 			Err:       err,
 		}

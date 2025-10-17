@@ -49,19 +49,25 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	// Step 5: filter sources by options
 	srcs := c.filterSources(options)
 
-	// Step 6: Cleanup sources
+	// Step 6: Resolve dependencies and filter sources
+	srcs, err = resolveDependencies(ctx, srcs, options)
+	if err != nil {
+		return nil, err
+	}
+
+	// Step 7: Cleanup sources
 	defer func() {
 		if cleanupErr := cleanup(srcs); cleanupErr != nil {
 			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
 		}
 	}()
 
-	// Step 7: Fetch catalogs from all sources
+	// Step 8: Fetch catalogs from all sources
 	if err = fetch(ctx, srcs, options.SourceOptions()); err != nil {
 		return nil, err
 	}
 
-	// Step 8: Get existing catalog for baseline comparison
+	// Step 9: Get existing catalog for baseline comparison
 	existing, err := c.Catalog()
 	if err != nil {
 		// If we can't get existing catalog, use empty one
@@ -69,13 +75,13 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 		logging.Debug().Msg("No existing catalog found, using empty baseline")
 	}
 
-	// Step 9: Reconcile catalogs from all sources with baseline
+	// Step 10: Reconcile catalogs from all sources with baseline
 	result, err := update(ctx, existing, srcs)
 	if err != nil {
 		return nil, err
 	}
 
-	// Step 10: Log change summary if changes detected
+	// Step 11: Log change summary if changes detected
 	if result.Changeset != nil && result.Changeset.HasChanges() {
 		logging.Info().
 			Int("added", len(result.Changeset.Models.Added)).
@@ -86,7 +92,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 		logging.Info().Msg("No changes detected")
 	}
 
-	// Step 11: Create sync result directly from reconciler's changeset
+	// Step 12: Create sync result directly from reconciler's changeset
 	syncResult := sync.ChangesetToResult(
 		result.Changeset,
 		options.DryRun,
@@ -95,7 +101,7 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 		result.ModelProviderMap,
 	)
 
-	// Step 12: Apply changes if not dry run
+	// Step 13: Apply changes if not dry run
 	shouldSave := result.Changeset != nil && result.Changeset.HasChanges()
 
 	// Force save if reformat or fresh flag is set (even without changes)

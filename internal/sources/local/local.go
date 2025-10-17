@@ -40,6 +40,9 @@ func (s *Source) ID() sources.ID {
 	return sources.LocalCatalogID
 }
 
+// Name returns the human-friendly name of this source.
+func (s *Source) Name() string { return "Local Catalog" }
+
 // Fetch returns catalog data from configured source.
 func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error {
 	// Use configured path if set
@@ -72,4 +75,16 @@ func (s *Source) Catalog() catalogs.Catalog {
 func (s *Source) Cleanup() error {
 	// LocalSource doesn't hold any resources
 	return nil
+}
+
+// Dependencies returns the list of external dependencies.
+// Local source has no external dependencies.
+func (s *Source) Dependencies() []sources.Dependency {
+	return nil
+}
+
+// IsOptional returns whether this source is optional.
+// Local source is optional - we can fall back to embedded catalog.
+func (s *Source) IsOptional() bool {
+	return true
 }
