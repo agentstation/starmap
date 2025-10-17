@@ -2,12 +2,10 @@ package deps
 
 import (
 	"github.com/spf13/cobra"
-
-	"github.com/agentstation/starmap/internal/cmd/application"
 )
 
-// NewCommand creates the deps command using app context.
-func NewCommand(app application.Application) *cobra.Command {
+// NewCommand creates the deps command.
+func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "deps",
 		GroupID: "management",
@@ -22,8 +20,8 @@ installation instructions for missing ones.`,
 		},
 	}
 
-	// Add subcommands with app context
-	cmd.AddCommand(NewCheckCommand(app))
+	// Add subcommands
+	cmd.AddCommand(NewCheckCommand())
 
 	return cmd
 }

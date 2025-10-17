@@ -29,6 +29,12 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 		go func(src sources.Source) {
 			defer wg.Done()
 
+			// Check if context is already cancelled before starting expensive fetch
+			if ctx.Err() != nil {
+				logger.Debug().Str("source", string(src.ID())).Msg("Skipping fetch - context cancelled")
+				return
+			}
+
 			logger.Info().Str("source", string(src.ID())).Msg("Fetching")
 
 			// Fetch catalog from source
@@ -253,7 +259,14 @@ func handleMissingDeps(ctx context.Context, src sources.Source, missingDeps []so
 }
 
 // cleanup cleans up all sources concurrently, logging and collecting any errors.
-func cleanup(srcs []sources.Source) error {
+// Respects context cancellation - if context is cancelled, cleanup is aborted.
+func cleanup(ctx context.Context, srcs []sources.Source) error {
+	// Check if context is already cancelled
+	if err := ctx.Err(); err != nil {
+		logging.Warn().Err(err).Msg("Cleanup skipped - context already cancelled")
+		return err
+	}
+
 	var wg sync.WaitGroup
 	var errs []error
 	var errMutex sync.Mutex
@@ -263,6 +276,11 @@ func cleanup(srcs []sources.Source) error {
 		wg.Add(1)
 		go func(src sources.Source) {
 			defer wg.Done()
+
+			// Check context before cleanup
+			if ctx.Err() != nil {
+				return
+			}
 
 			if err := src.Cleanup(); err != nil {
 				logging.Warn().

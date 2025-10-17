@@ -66,22 +66,22 @@ func (a *App) NewAuthCommand() *cobra.Command {
 
 // NewDepsCommand returns a new deps command with app dependencies.
 func (a *App) NewDepsCommand() *cobra.Command {
-	return deps.NewCommand(a)
+	return deps.NewCommand()
 }
 
 // NewGenerateCommand returns a new generate command with app dependencies.
 func (a *App) NewGenerateCommand() *cobra.Command {
-	return generate.NewCommand(a)
+	return generate.NewCommand()
 }
 
 // NewInstallCommand returns a new install command with app dependencies.
 func (a *App) NewInstallCommand() *cobra.Command {
-	return install.NewCommand(a)
+	return install.NewCommand()
 }
 
 // NewUninstallCommand returns a new uninstall command with app dependencies.
 func (a *App) NewUninstallCommand() *cobra.Command {
-	return uninstall.NewCommand(a)
+	return uninstall.NewCommand()
 }
 
 // NewVersionCommand returns a new version command.

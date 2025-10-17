@@ -22,8 +22,8 @@ package server
 // @license.name MIT
 // @license.url https://github.com/agentstation/starmap/blob/master/LICENSE
 //
-// @host localhost:8080
-// @BasePath /api/v1
+// @servers.url http://localhost:8080/api/v1
+// @servers.description Local development server
 //
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

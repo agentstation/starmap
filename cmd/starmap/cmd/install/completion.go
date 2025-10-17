@@ -6,13 +6,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
-// NewCompletionCommand creates the install completion subcommand using app context.
-func NewCompletionCommand(_ application.Application) *cobra.Command {
+// NewCompletionCommand creates the install completion subcommand.
+func NewCompletionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "completion",
 		Short: "Install shell completions",
@@ -27,9 +26,9 @@ Examples:
   starmap install completion --zsh     # Install for zsh only
   starmap install completion --fish    # Install for fish only`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			bash, _ := cmd.Flags().GetBool("bash")
-			zsh, _ := cmd.Flags().GetBool("zsh")
-			fish, _ := cmd.Flags().GetBool("fish")
+			bash := mustGetBool(cmd, "bash")
+			zsh := mustGetBool(cmd, "zsh")
+			fish := mustGetBool(cmd, "fish")
 
 			// If no specific shell flags are set, install for all shells
 			if !bash && !zsh && !fish {
@@ -94,4 +93,14 @@ Examples:
 	cmd.Flags().Bool("fish", false, "Install fish completions only")
 
 	return cmd
+}
+
+// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetBool(cmd *cobra.Command, name string) bool {
+	val, err := cmd.Flags().GetBool(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
 }

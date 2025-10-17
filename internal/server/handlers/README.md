@@ -150,7 +150,7 @@ func (h *Handlers) HandleOpenAPIJSON(w http.ResponseWriter, _ *http.Request)
 HandleOpenAPIJSON serves the embedded OpenAPI 3.1 specification in JSON format. @Summary Get OpenAPI specification \(JSON\) @Description Returns the OpenAPI 3.1 specification for this API in JSON format @Tags meta @Produce json @Success 200 \{object\} object "OpenAPI 3.1 specification" @Router /api/v1/openapi.json \[get\].
 
 <a name="Handlers.HandleOpenAPIYAML"></a>
-### func \(\*Handlers\) [HandleOpenAPIYAML](<https://github.com/agentstation/starmap/blob/master/internal/server/handlers/openapi.go#L29>)
+### func \(\*Handlers\) [HandleOpenAPIYAML](<https://github.com/agentstation/starmap/blob/master/internal/server/handlers/openapi.go#L32>)
 
 ```go
 func (h *Handlers) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request)

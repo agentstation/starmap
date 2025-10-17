@@ -62,7 +62,7 @@ func printLongFormat(files []*embedutil.FileInfo) {
 }
 
 // printTree displays nodes in tree format recursively.
-func printTree(nodes []*TreeNode, prefix string, _ bool) {
+func printTree(nodes []*TreeNode, prefix string) {
 	for i, node := range nodes {
 		isLast := i == len(nodes)-1
 
@@ -95,7 +95,7 @@ func printTree(nodes []*TreeNode, prefix string, _ bool) {
 
 		// Print children recursively
 		if len(node.Children) > 0 {
-			printTree(node.Children, nextPrefix, false)
+			printTree(node.Children, nextPrefix)
 		}
 	}
 }

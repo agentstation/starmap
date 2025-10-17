@@ -28,6 +28,9 @@ type Config struct {
 	WriteTimeout time.Duration
 	IdleTimeout  time.Duration
 
+	// Shutdown settings
+	ShutdownGracePeriod time.Duration // Time to wait for background services to shutdown gracefully
+
 	// Features
 	MetricsEnabled bool
 }
@@ -35,18 +38,19 @@ type Config struct {
 // DefaultConfig returns a Config with sensible defaults.
 func DefaultConfig() Config {
 	return Config{
-		Host:           "localhost",
-		Port:           8080,
-		PathPrefix:     "/api/v1",
-		CORSEnabled:    false,
-		CORSOrigins:    []string{},
-		AuthEnabled:    false,
-		AuthHeader:     "X-API-Key",
-		RateLimit:      100,
-		CacheTTL:       5 * time.Minute,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
-		IdleTimeout:    120 * time.Second,
-		MetricsEnabled: true,
+		Host:                "localhost",
+		Port:                8080,
+		PathPrefix:          "/api/v1",
+		CORSEnabled:         false,
+		CORSOrigins:         []string{},
+		AuthEnabled:         false,
+		AuthHeader:          "X-API-Key",
+		RateLimit:           100,
+		CacheTTL:            5 * time.Minute,
+		ReadTimeout:         10 * time.Second,
+		WriteTimeout:        10 * time.Second,
+		IdleTimeout:         120 * time.Second,
+		ShutdownGracePeriod: 100 * time.Millisecond,
+		MetricsEnabled:      true,
 	}
 }

@@ -16,7 +16,10 @@ import (
 func (h *Handlers) HandleOpenAPIJSON(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "public, max-age=3600") // Cache for 1 hour
-	_, _ = w.Write(openapi.SpecJSON)
+	// Write spec; if this fails, connection is likely broken
+	if _, err := w.Write(openapi.SpecJSON); err != nil {
+		h.logger.Error().Err(err).Msg("Failed to write OpenAPI JSON spec")
+	}
 }
 
 // HandleOpenAPIYAML serves the embedded OpenAPI 3.1 specification in YAML format.
@@ -29,5 +32,8 @@ func (h *Handlers) HandleOpenAPIJSON(w http.ResponseWriter, _ *http.Request) {
 func (h *Handlers) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/x-yaml")
 	w.Header().Set("Cache-Control", "public, max-age=3600") // Cache for 1 hour
-	_, _ = w.Write(openapi.SpecYAML)
+	// Write spec; if this fails, connection is likely broken
+	if _, err := w.Write(openapi.SpecYAML); err != nil {
+		h.logger.Error().Err(err).Msg("Failed to write OpenAPI YAML spec")
+	}
 }

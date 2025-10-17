@@ -179,7 +179,13 @@ func (a *App) Catalog() (catalogs.Catalog, error) {
 
 // Shutdown performs graceful shutdown of the application.
 // It stops any running background tasks and cleans up resources.
-func (a *App) Shutdown(_ context.Context) error {
+// The context controls the shutdown timeout - shutdown will abort if context is cancelled.
+func (a *App) Shutdown(ctx context.Context) error {
+	// Check if context is already cancelled
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	a.mu.RLock()
 	sm := a.starmap
 	a.mu.RUnlock()

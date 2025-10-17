@@ -116,8 +116,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 		fmt.Fprintf(os.Stderr, "Fetched %d models from %s\n", len(models), providerID)
 	}
 
-	// Determine output format from logger
-	logger := app.Logger()
+	// Determine output format
 	outputFormat := outputFormatTable
 	// Could be extended to read from config if needed
 
@@ -143,7 +142,6 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 		outputData = models
 	}
 
-	_ = logger // Silence unused warning
 	return formatter.Format(os.Stdout, outputData)
 }
 
@@ -241,8 +239,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 		return allModels[i].ID < allModels[j].ID
 	})
 
-	// Determine output format from logger
-	logger := app.Logger()
+	// Determine output format
 	outputFormat := outputFormatTable
 	// Could be extended to read from config if needed
 
@@ -263,6 +260,5 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 		outputData = allModels
 	}
 
-	_ = logger // Silence unused warning
 	return formatter.Format(os.Stdout, outputData)
 }

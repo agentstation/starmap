@@ -22,7 +22,7 @@ import "github.com/agentstation/starmap/internal/transport"
 - [type Client](<#Client>)
   - [func New\(provider \*catalogs.Provider\) \*Client](<#New>)
   - [func \(c \*Client\) Do\(req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Do>)
-  - [func \(c \*Client\) DoWithContext\(\_ context.Context, req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.DoWithContext>)
+  - [func \(c \*Client\) DoWithContext\(ctx context.Context, req \*http.Request, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.DoWithContext>)
   - [func \(c \*Client\) Get\(ctx context.Context, url string, provider \*catalogs.Provider\) \(\*http.Response, error\)](<#Client.Get>)
 - [type HeaderAuth](<#HeaderAuth>)
   - [func \(a \*HeaderAuth\) Apply\(req \*http.Request, apiKey string\)](<#HeaderAuth.Apply>)
@@ -115,16 +115,16 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 Do performs an HTTP request with authentication applied.
 
 <a name="Client.DoWithContext"></a>
-### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L35>)
+### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L36>)
 
 ```go
-func (c *Client) DoWithContext(_ context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
+func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
 ```
 
-DoWithContext performs an HTTP request with authentication applied and context support.
+DoWithContext performs an HTTP request with authentication applied and context support. The provided context will be used for the request, overriding any existing context in req.
 
 <a name="Client.Get"></a>
-### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L66>)
+### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/master/internal/transport/client.go#L70>)
 
 ```go
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error)

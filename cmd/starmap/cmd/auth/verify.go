@@ -68,8 +68,8 @@ func runAuthVerify(cmd *cobra.Command, args []string, app application.Applicatio
 }
 
 func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app application.Application) error {
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	timeout, _ := cmd.Flags().GetDuration("timeout")
+	verbose := mustGetBool(cmd, "verbose")
+	timeout := mustGetDuration(cmd, "timeout")
 
 	// Get output format from app context
 	outputFormat := app.OutputFormat()
@@ -105,8 +105,8 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 			continue
 		}
 
-		// Test the API
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		// Test the API with timeout (use cmd context for signal handling)
+		ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 		defer cancel()
 
 		fmt.Printf("Testing %s... ", providerID)
@@ -179,8 +179,8 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 }
 
 func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, app application.Application) error {
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	timeout, _ := cmd.Flags().GetDuration("timeout")
+	verbose := mustGetBool(cmd, "verbose")
+	timeout := mustGetDuration(cmd, "timeout")
 
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 
@@ -204,7 +204,8 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 
 	fmt.Printf("Verifying %s credentials...\n", providerID)
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	// Use cmd context for signal handling
+	ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 	defer cancel()
 
 	// Try to fetch models as a test

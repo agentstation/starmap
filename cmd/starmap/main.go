@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/agentstation/starmap/cmd/starmap/app"
 )
@@ -29,8 +30,15 @@ func main() {
 
 	// Execute with context
 	if err := application.Execute(ctx, os.Args[1:]); err != nil {
-		// Perform graceful shutdown
-		_ = application.Shutdown(ctx)
+		// Perform graceful shutdown with fresh context (signal context may be cancelled)
+		// Give shutdown operations 5 seconds to complete
+		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer shutdownCancel()
+
+		if shutdownErr := application.Shutdown(shutdownCtx); shutdownErr != nil {
+			// Log shutdown error to stderr, but don't let it mask the original error
+			application.Logger().Error().Err(shutdownErr).Msg("Shutdown error during error handling")
+		}
 		app.ExitOnError(err)
 	}
 }

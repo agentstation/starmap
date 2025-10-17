@@ -7,14 +7,16 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Response represents the standardized API response structure.
 // All endpoints return this format for consistency.
 type Response struct {
-	Data  any    `json:"data"`
-	Error *Error `json:"error"`
+	Data  any    `json:"data" swaggertype:"object"`
+	Error *Error `json:"error,omitempty"`
 }
 
 // Error represents an API error with code, message, and optional details.
@@ -96,9 +98,9 @@ func RateLimited(w http.ResponseWriter, message string) {
 }
 
 // InternalError writes a 500 error response.
-func InternalError(w http.ResponseWriter, _ error) {
+func InternalError(w http.ResponseWriter, err error) {
 	// Log the actual error but don't expose details to client
-	// Note: Logging should be handled by middleware or passed via context
+	log.Error().Err(err).Msg("Internal server error")
 	JSON(w, http.StatusInternalServerError, Fail(
 		"INTERNAL_ERROR",
 		"Internal server error",

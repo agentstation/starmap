@@ -117,7 +117,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L59>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L61>)
 
 ```go
 func WithAuthorities(authorities authority.Authority) Option
@@ -126,7 +126,7 @@ func WithAuthorities(authorities authority.Authority) Option
 WithAuthorities sets the field authorities.
 
 <a name="WithBaseline"></a>
-### func [WithBaseline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L92>)
+### func [WithBaseline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L94>)
 
 ```go
 func WithBaseline(catalog catalogs.Catalog) Option
@@ -135,7 +135,7 @@ func WithBaseline(catalog catalogs.Catalog) Option
 WithBaseline sets an existing catalog to compare against for change detection.
 
 <a name="WithEnhancers"></a>
-### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L84>)
+### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L86>)
 
 ```go
 func WithEnhancers(enhancers ...enhancer.Enhancer) Option
@@ -144,7 +144,7 @@ func WithEnhancers(enhancers ...enhancer.Enhancer) Option
 WithEnhancers adds model enhancers to the pipeline.
 
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L76>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L78>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -153,7 +153,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking.
 
 <a name="WithStrategy"></a>
-### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L45>)
+### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L47>)
 
 ```go
 func WithStrategy(strategy Strategy) Option

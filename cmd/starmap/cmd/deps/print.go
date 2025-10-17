@@ -4,16 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
-
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/output"
 )
 
 // displayResults shows dependency check results in the requested format.
-func displayResults(results *CheckResults, flags *globals.Flags, cmd *cobra.Command, _ application.Application) error {
+func displayResults(results *CheckResults, flags *globals.Flags) error {
 	format := output.DetectFormat(flags.Output)
 	formatter := output.NewFormatter(format)
 
@@ -23,13 +20,13 @@ func displayResults(results *CheckResults, flags *globals.Flags, cmd *cobra.Comm
 	}
 
 	// For table output, use custom display
-	return displayTableResults(results, cmd, formatter)
+	return displayTableResults(results)
 }
 
 // displayTableResults shows results in two-tier table format.
-func displayTableResults(results *CheckResults, cmd *cobra.Command, _ output.Formatter) error {
+func displayTableResults(results *CheckResults) error {
 	// Show status message first
-	if err := displayStatusMessage(cmd, results); err != nil {
+	if err := displayStatusMessage(results); err != nil {
 		return err
 	}
 
@@ -249,7 +246,7 @@ func displayMissingDependencyInfo(sourceStatus SourceDepStatus) {
 }
 
 // displayStatusMessage shows status message at the beginning of output.
-func displayStatusMessage(_ *cobra.Command, results *CheckResults) error {
+func displayStatusMessage(results *CheckResults) error {
 	fmt.Println()
 
 	// Show appropriate message

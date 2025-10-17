@@ -1874,7 +1874,7 @@ func (m *Model) FormatYAML() string
 FormatYAML returns a well\-formatted YAML representation with comments and proper structure.
 
 <a name="Model.FormatYAMLHeaderComment"></a>
-### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/model_yaml.go#L180>)
+### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/model_yaml.go#L184>)
 
 ```go
 func (m *Model) FormatYAMLHeaderComment() string

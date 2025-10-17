@@ -37,16 +37,16 @@ func NewModelsCommand(app application.Application) *cobra.Command {
 
 			// Single model detail view
 			if len(args) == 1 {
-				return showModelDetails(cmd, app, logger, args[0])
+				return showModelDetails(cmd, app, args[0])
 			}
 
 			// List view with filters
 			resourceFlags := globals.ParseResources(cmd)
-			showDetails, _ := cmd.Flags().GetBool("details")
-			capability, _ := cmd.Flags().GetString("capability")
-			minContext, _ := cmd.Flags().GetInt64("min-context")
-			maxPrice, _ := cmd.Flags().GetFloat64("max-price")
-			exportFormat, _ := cmd.Flags().GetString("export")
+			showDetails := mustGetBool(cmd, "details")
+			capability := mustGetString(cmd, "capability")
+			minContext := mustGetInt64(cmd, "min-context")
+			maxPrice := mustGetFloat64(cmd, "max-price")
+			exportFormat := mustGetString(cmd, "export")
 
 			return listModels(cmd, app, logger, resourceFlags, capability, minContext, maxPrice, showDetails, exportFormat)
 		},
@@ -141,7 +141,7 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 }
 
 // showModelDetails shows detailed information about a specific model using app context.
-func showModelDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, modelID string) error {
+func showModelDetails(cmd *cobra.Command, app application.Application, modelID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {
@@ -215,4 +215,44 @@ func exportModels(models []*catalogs.Model, format string) error {
 	}
 
 	return nil
+}
+
+// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetBool(cmd *cobra.Command, name string) bool {
+	val, err := cmd.Flags().GetBool(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
+}
+
+// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetString(cmd *cobra.Command, name string) string {
+	val, err := cmd.Flags().GetString(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
+}
+
+// mustGetInt64 retrieves an int64 flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetInt64(cmd *cobra.Command, name string) int64 {
+	val, err := cmd.Flags().GetInt64(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
+}
+
+// mustGetFloat64 retrieves a float64 flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetFloat64(cmd *cobra.Command, name string) float64 {
+	val, err := cmd.Flags().GetFloat64(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
 }

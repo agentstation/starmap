@@ -24,7 +24,7 @@ Google Vertex AI, Groq, DeepSeek, and Cerebras.`,
 	// Add subcommands with app context
 	cmd.AddCommand(NewStatusCommand(app))
 	cmd.AddCommand(NewVerifyCommand(app))
-	cmd.AddCommand(NewGCloudCommand(app))
+	cmd.AddCommand(NewGCloudCommand())
 
 	return cmd
 }

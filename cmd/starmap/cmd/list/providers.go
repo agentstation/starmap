@@ -34,7 +34,7 @@ func NewProvidersCommand(app application.Application) *cobra.Command {
 
 			// Single provider detail view
 			if len(args) == 1 {
-				return showProviderDetails(cmd, app, logger, args[0])
+				return showProviderDetails(cmd, app, args[0])
 			}
 
 			// List view
@@ -126,7 +126,7 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 }
 
 // showProviderDetails shows detailed information about a specific provider.
-func showProviderDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, providerID string) error {
+func showProviderDetails(cmd *cobra.Command, app application.Application, providerID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

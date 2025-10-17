@@ -67,7 +67,10 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler {
 
 					w.Header().Set("Content-Type", "application/json")
 					w.WriteHeader(http.StatusInternalServerError)
-					_, _ = w.Write([]byte(`{"data":null,"error":{"code":"INTERNAL_ERROR","message":"Internal server error","details":"An unexpected error occurred"}}`))
+					// Write error response; if this fails, connection is likely broken
+					if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"INTERNAL_ERROR","message":"Internal server error","details":"An unexpected error occurred"}}`)); writeErr != nil {
+						logger.Error().Err(writeErr).Msg("Failed to write panic recovery error response")
+					}
 				}
 			}()
 

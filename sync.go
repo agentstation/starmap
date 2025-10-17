@@ -2,6 +2,7 @@ package starmap
 
 import (
 	"context"
+	"time"
 
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/pkg/authority"
@@ -56,8 +57,12 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	}
 
 	// Step 7: Cleanup sources
+	// Use background context with timeout for cleanup to ensure it runs even if sync context is cancelled
 	defer func() {
-		if cleanupErr := cleanup(srcs); cleanupErr != nil {
+		cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cleanupCancel()
+
+		if cleanupErr := cleanup(cleanupCtx, srcs); cleanupErr != nil {
 			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
 		}
 	}()

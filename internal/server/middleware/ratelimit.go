@@ -122,7 +122,10 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler {
 
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusTooManyRequests)
-				_, _ = w.Write([]byte(`{"data":null,"error":{"code":"RATE_LIMITED","message":"Rate limit exceeded","details":"Too many requests. Please try again later."}}`))
+				// Write error response; if this fails, connection is likely broken
+				if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"RATE_LIMITED","message":"Rate limit exceeded","details":"Too many requests. Please try again later."}}`)); writeErr != nil {
+					rl.logger.Error().Err(writeErr).Msg("Failed to write rate limit error response")
+				}
 				return
 			}
 

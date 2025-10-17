@@ -87,7 +87,12 @@ func (c *Client) HasAPIKey() bool {
 }
 
 // initCredentials initializes or returns cached credentials for Google Cloud authentication.
-func (c *Client) initCredentials(_ context.Context) (*auth.Credentials, error) {
+func (c *Client) initCredentials(ctx context.Context) (*auth.Credentials, error) {
+	// Check if context is already cancelled
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -771,7 +776,13 @@ func (c *Client) getProjectID(ctx context.Context) string {
 }
 
 // getLocation gets the location from environment variables with sensible defaults.
-func (c *Client) getLocation(_ context.Context) string {
+// Returns empty string if context is cancelled.
+func (c *Client) getLocation(ctx context.Context) string {
+	// Check if context is already cancelled
+	if ctx.Err() != nil {
+		return ""
+	}
+
 	// Check environment variables
 	locations := []string{
 		c.provider.EnvVar("GOOGLE_CLOUD_LOCATION"),

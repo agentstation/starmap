@@ -9,12 +9,11 @@ import (
 	"cloud.google.com/go/auth/credentials"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
-// NewGCloudCommand creates the auth gcloud subcommand using app context.
-func NewGCloudCommand(_ application.Application) *cobra.Command {
+// NewGCloudCommand creates the auth gcloud subcommand.
+func NewGCloudCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gcloud",
 		Short: "Manage Google Cloud authentication",
@@ -46,13 +45,14 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
 
-	check, _ := cmd.Flags().GetBool("check")
-	force, _ := cmd.Flags().GetBool("force")
-	project, _ := cmd.Flags().GetString("project")
+	check := mustGetBool(cmd, "check")
+	force := mustGetBool(cmd, "force")
+	project := mustGetString(cmd, "project")
 
 	ctx := context.Background()
 
 	// Check current authentication status
+	// Error details are not needed - we only check the authenticated bool
 	authenticated, projectID, _ := checkGCloudAuthentication(ctx)
 
 	if check {
@@ -110,6 +110,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	}
 
 	// Check if we need to set a project
+	// Error details are not needed - we only check if currentProject is empty
 	_, currentProject, _ := checkGCloudAuthentication(ctx)
 	if currentProject == "" {
 		fmt.Printf("\n%s No default project set.\n", emoji.Warning)

@@ -52,12 +52,13 @@ func defaults() *options {
 type Option func(*options) error
 
 // apply applies the given options to the options.
-func (o *options) apply(opts ...Option) *options {
+func (o *options) apply(opts ...Option) (*options, error) {
 	for _, opt := range opts {
-		// Ignore errors during apply - they're handled during validation
-		_ = opt(o)
+		if err := opt(o); err != nil {
+			return nil, err
+		}
 	}
-	return o
+	return o, nil
 }
 
 // WithRemoteServerURL configures the remote server URL.

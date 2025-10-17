@@ -48,14 +48,14 @@ Package server provides HTTP server implementation for the Starmap API.
   - [func \(s \*Server\) Cache\(\) \*cache.Cache](<#Server.Cache>)
   - [func \(s \*Server\) Handler\(\) http.Handler](<#Server.Handler>)
   - [func \(s \*Server\) SSEBroadcaster\(\) \*sse.Broadcaster](<#Server.SSEBroadcaster>)
-  - [func \(s \*Server\) Shutdown\(\_ context.Context\) error](<#Server.Shutdown>)
+  - [func \(s \*Server\) Shutdown\(ctx context.Context\) error](<#Server.Shutdown>)
   - [func \(s \*Server\) Start\(\)](<#Server.Start>)
   - [func \(s \*Server\) StartTime\(\) time.Time](<#Server.StartTime>)
   - [func \(s \*Server\) WSHub\(\) \*ws.Hub](<#Server.WSHub>)
 
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/master/internal/server/config.go#L6-L33>)
+## type [Config](<https://github.com/agentstation/starmap/blob/master/internal/server/config.go#L6-L36>)
 
 Config holds server configuration.
 
@@ -85,13 +85,16 @@ type Config struct {
     WriteTimeout time.Duration
     IdleTimeout  time.Duration
 
+    // Shutdown settings
+    ShutdownGracePeriod time.Duration // Time to wait for background services to shutdown gracefully
+
     // Features
     MetricsEnabled bool
 }
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/config.go#L36>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/config.go#L39>)
 
 ```go
 func DefaultConfig() Config
@@ -120,7 +123,7 @@ func New(app application.Application, cfg Config) (*Server, error)
 New creates a new server instance with the given configuration.
 
 <a name="Server.Broker"></a>
-### func \(\*Server\) [Broker](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L204>)
+### func \(\*Server\) [Broker](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L214>)
 
 ```go
 func (s *Server) Broker() *events.Broker
@@ -129,7 +132,7 @@ func (s *Server) Broker() *events.Broker
 Broker returns the event broker for publishing events.
 
 <a name="Server.Cache"></a>
-### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L189>)
+### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L199>)
 
 ```go
 func (s *Server) Cache() *cache.Cache
@@ -147,7 +150,7 @@ func (s *Server) Handler() http.Handler
 Handler returns the configured http.Handler with middleware chain applied.
 
 <a name="Server.SSEBroadcaster"></a>
-### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L199>)
+### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L209>)
 
 ```go
 func (s *Server) SSEBroadcaster() *sse.Broadcaster
@@ -156,13 +159,13 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster
 SSEBroadcaster returns the SSE broadcaster.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L168>)
+### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L169>)
 
 ```go
-func (s *Server) Shutdown(_ context.Context) error
+func (s *Server) Shutdown(ctx context.Context) error
 ```
 
-Shutdown gracefully shuts down background services.
+Shutdown gracefully shuts down background services. The context controls the shutdown timeout \- shutdown will abort if context is cancelled.
 
 <a name="Server.Start"></a>
 ### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L147>)
@@ -174,7 +177,7 @@ func (s *Server) Start()
 Start starts background services \(broker, WebSocket hub, SSE broadcaster\).
 
 <a name="Server.StartTime"></a>
-### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L209>)
+### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L219>)
 
 ```go
 func (s *Server) StartTime() time.Time
@@ -183,7 +186,7 @@ func (s *Server) StartTime() time.Time
 StartTime returns the server start time for uptime calculations.
 
 <a name="Server.WSHub"></a>
-### func \(\*Server\) [WSHub](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L194>)
+### func \(\*Server\) [WSHub](<https://github.com/agentstation/starmap/blob/master/internal/server/server.go#L204>)
 
 ```go
 func (s *Server) WSHub() *ws.Hub

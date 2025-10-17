@@ -29,15 +29,17 @@ func defaultOptions() *options {
 // Option is a function that configures a Reconciler.
 type Option func(*options) error
 
-func (options *options) apply(opts ...Option) *options {
+func (options *options) apply(opts ...Option) (*options, error) {
 	for _, opt := range opts {
-		_ = opt(options)
+		if err := opt(options); err != nil {
+			return nil, err
+		}
 	}
-	return options
+	return options, nil
 }
 
 // newOptions returns reconciler options with default values.
-func newOptions(opts ...Option) *options {
+func newOptions(opts ...Option) (*options, error) {
 	return defaultOptions().apply(opts...)
 }
 

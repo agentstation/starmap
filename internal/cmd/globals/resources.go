@@ -13,11 +13,12 @@ type ResourceFlags struct {
 }
 
 // ParseResources extracts resource flags from a command.
+// The command must have had AddResourceFlags called on it, otherwise this will panic.
 func ParseResources(cmd *cobra.Command) *ResourceFlags {
-	provider, _ := cmd.Flags().GetString("provider")
-	author, _ := cmd.Flags().GetString("author")
-	search, _ := cmd.Flags().GetString("search")
-	limit, _ := cmd.Flags().GetInt("limit")
+	provider := mustGetString(cmd, "provider")
+	author := mustGetString(cmd, "author")
+	search := mustGetString(cmd, "search")
+	limit := mustGetInt(cmd, "limit")
 
 	return &ResourceFlags{
 		Provider: provider,
@@ -45,4 +46,22 @@ func AddResourceFlags(cmd *cobra.Command) *ResourceFlags {
 		"Include all results (no filtering)")
 
 	return flags
+}
+
+// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+func mustGetString(cmd *cobra.Command, name string) string {
+	val, err := cmd.Flags().GetString(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
+}
+
+// mustGetInt retrieves an integer flag value or panics if the flag doesn't exist.
+func mustGetInt(cmd *cobra.Command, name string) int {
+	val, err := cmd.Flags().GetInt(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
 }

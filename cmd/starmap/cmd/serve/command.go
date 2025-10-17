@@ -6,9 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"os/signal"
 	"strconv"
-	"syscall"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -143,25 +141,27 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 	}
 
 	// Start HTTP server with graceful shutdown
+	// Pass cmd.Context() which has signal handling from main.go
 	logger.Debug().Msg("Starting HTTP server listener with graceful shutdown handling")
-	return startWithGracefulShutdown(httpServer, srv, logger)
+	return startWithGracefulShutdown(cmd.Context(), httpServer, srv, logger)
 }
 
 // parseConfig parses command flags into server configuration.
 func parseConfig(cmd *cobra.Command) server.Config {
-	port, _ := cmd.Flags().GetInt("port")
-	host, _ := cmd.Flags().GetString("host")
-	corsEnabled, _ := cmd.Flags().GetBool("cors")
-	corsOrigins, _ := cmd.Flags().GetStringSlice("cors-origins")
-	authEnabled, _ := cmd.Flags().GetBool("auth")
-	authHeader, _ := cmd.Flags().GetString("auth-header")
-	rateLimit, _ := cmd.Flags().GetInt("rate-limit")
-	cacheTTL, _ := cmd.Flags().GetInt("cache-ttl")
-	readTimeout, _ := cmd.Flags().GetDuration("read-timeout")
-	writeTimeout, _ := cmd.Flags().GetDuration("write-timeout")
-	idleTimeout, _ := cmd.Flags().GetDuration("idle-timeout")
-	metricsEnabled, _ := cmd.Flags().GetBool("metrics")
-	pathPrefix, _ := cmd.Flags().GetString("prefix")
+	// Get flags with error checking - these should never fail since flags are defined in this package
+	port := mustGetInt(cmd, "port")
+	host := mustGetString(cmd, "host")
+	corsEnabled := mustGetBool(cmd, "cors")
+	corsOrigins := mustGetStringSlice(cmd, "cors-origins")
+	authEnabled := mustGetBool(cmd, "auth")
+	authHeader := mustGetString(cmd, "auth-header")
+	rateLimit := mustGetInt(cmd, "rate-limit")
+	cacheTTL := mustGetInt(cmd, "cache-ttl")
+	readTimeout := mustGetDuration(cmd, "read-timeout")
+	writeTimeout := mustGetDuration(cmd, "write-timeout")
+	idleTimeout := mustGetDuration(cmd, "idle-timeout")
+	metricsEnabled := mustGetBool(cmd, "metrics")
+	pathPrefix := mustGetString(cmd, "prefix")
 
 	// Override with environment variables
 	if envPort := os.Getenv("HTTP_PORT"); envPort != "" {
@@ -203,7 +203,8 @@ func parsePort(portStr string) (int, error) {
 }
 
 // startWithGracefulShutdown starts the HTTP server with graceful shutdown.
-func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logger *zerolog.Logger) error {
+// The context is used to detect shutdown signals - when cancelled, server will shutdown gracefully.
+func startWithGracefulShutdown(ctx context.Context, httpServer *http.Server, srv *server.Server, logger *zerolog.Logger) error {
 	// Server errors channel
 	serverErr := make(chan error, 1)
 
@@ -222,31 +223,27 @@ func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logg
 		}
 	}()
 
-	// Wait for interrupt signal
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
+	// Wait for server error or context cancellation (e.g., SIGINT/SIGTERM from main.go)
 	select {
 	case err := <-serverErr:
 		return err
-	case sig := <-quit:
-		logger.Info().
-			Str("signal", sig.String()).
-			Msg("Shutdown signal received")
+	case <-ctx.Done():
+		logger.Info().Msg("Shutdown signal received via context")
 
 		fmt.Printf("\n%s Shutting down API server...\n", emoji.Stop)
 
-		// Create shutdown context with timeout
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		// Create fresh shutdown context with timeout for cleanup operations
+		// Use Background() since the parent context is already cancelled
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 
 		// Shutdown HTTP server
-		if err := httpServer.Shutdown(ctx); err != nil {
+		if err := httpServer.Shutdown(shutdownCtx); err != nil {
 			return fmt.Errorf("server shutdown failed: %w", err)
 		}
 
 		// Shutdown background services
-		if err := srv.Shutdown(ctx); err != nil {
+		if err := srv.Shutdown(shutdownCtx); err != nil {
 			logger.Warn().Err(err).Msg("Background services shutdown had issues")
 		}
 
@@ -254,4 +251,54 @@ func startWithGracefulShutdown(httpServer *http.Server, srv *server.Server, logg
 		fmt.Printf("%s API server stopped gracefully\n", emoji.Success)
 		return nil
 	}
+}
+
+// mustGetInt retrieves an integer flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetInt(cmd *cobra.Command, name string) int {
+	val, err := cmd.Flags().GetInt(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
+}
+
+// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetString(cmd *cobra.Command, name string) string {
+	val, err := cmd.Flags().GetString(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
+}
+
+// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetBool(cmd *cobra.Command, name string) bool {
+	val, err := cmd.Flags().GetBool(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
+}
+
+// mustGetStringSlice retrieves a string slice flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetStringSlice(cmd *cobra.Command, name string) []string {
+	val, err := cmd.Flags().GetStringSlice(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
+}
+
+// mustGetDuration retrieves a duration flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetDuration(cmd *cobra.Command, name string) time.Duration {
+	val, err := cmd.Flags().GetDuration(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
 }

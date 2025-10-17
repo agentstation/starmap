@@ -75,7 +75,7 @@ func showTree(fsys fs.FS, rootPath string) error {
 		fmt.Println(rootPath)
 	}
 
-	printTree(root.Children, "", true)
+	printTree(root.Children, "")
 
 	// Print summary
 	dirCount, fileCount := countNodes(root)

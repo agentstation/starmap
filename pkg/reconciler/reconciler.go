@@ -40,7 +40,10 @@ type reconciler struct {
 // New creates a new Reconciler with options.
 func New(opts ...Option) (Reconciler, error) {
 	// Create options with defaults
-	options := newOptions(opts...)
+	options, err := newOptions(opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	// Create reconciler from options
 	r := &reconciler{

@@ -1593,7 +1593,8 @@ components:
       allOf:
       - $ref: '#/components/schemas/error'
       properties:
-        data: {}
+        data:
+          type: object
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
@@ -1654,7 +1655,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1755,7 +1757,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1767,7 +1770,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1779,7 +1783,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1812,7 +1817,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1824,7 +1830,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1836,7 +1843,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1864,7 +1872,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1876,7 +1885,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1888,7 +1898,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1943,7 +1954,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1955,7 +1967,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -1988,7 +2001,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2000,7 +2014,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2012,7 +2027,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2045,7 +2061,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2057,7 +2074,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2069,7 +2087,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2095,7 +2114,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2107,7 +2127,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2131,7 +2152,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2143,7 +2165,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2175,7 +2198,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2187,7 +2211,8 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/error'
                 properties:
-                  data: {}
+                  data:
+                    type: object
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
@@ -2220,4 +2245,5 @@ paths:
       tags:
       - updates
 servers:
-- url: localhost:8080/api/v1
+- description: Local development server
+  url: http://localhost:8080/api/v1

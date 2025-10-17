@@ -122,10 +122,16 @@ func New(opts ...Option) (Client, error) {
 	// start with a new empty catalog to build on
 	catalog := catalogs.NewEmpty()
 
+	// apply options
+	options, err := defaults().apply(opts...)
+	if err != nil {
+		return nil, err
+	}
+
 	// create the client instance
 	sm := &client{
 		// options
-		options: defaults().apply(opts...),
+		options: options,
 
 		// catalogs
 		catalog: catalog,

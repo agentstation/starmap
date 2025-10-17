@@ -6,12 +6,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/completion"
 )
 
-// NewCompletionCommand creates the generate completion subcommand using app context.
-func NewCompletionCommand(_ application.Application) *cobra.Command {
+// NewCompletionCommand creates the generate completion subcommand.
+func NewCompletionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "completion [bash|zsh|fish]",
 		Short: "Generate shell completion scripts",
@@ -68,8 +67,8 @@ Advanced usage:
 		ValidArgs:             []string{"bash", "zsh", "fish"},
 		Args:                  cobra.MatchAll(cobra.RangeArgs(0, 1), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			uninstall, _ := cmd.Flags().GetBool("uninstall")
-			install, _ := cmd.Flags().GetBool("install")
+			uninstall := mustGetBool(cmd, "uninstall")
+			install := mustGetBool(cmd, "install")
 
 			if uninstall {
 				if len(args) == 0 {
@@ -108,4 +107,14 @@ Advanced usage:
 	cmd.Flags().Bool("uninstall", false, "Remove completions from system location")
 
 	return cmd
+}
+
+// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetBool(cmd *cobra.Command, name string) bool {
+	val, err := cmd.Flags().GetBool(name)
+	if err != nil {
+		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
+	}
+	return val
 }

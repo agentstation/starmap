@@ -6,7 +6,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/deps"
 	"github.com/agentstation/starmap/internal/sources/local"
@@ -16,8 +15,8 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// NewCheckCommand creates the deps check subcommand using app context.
-func NewCheckCommand(app application.Application) *cobra.Command {
+// NewCheckCommand creates the deps check subcommand.
+func NewCheckCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "check",
 		Short: "Check dependency status for all sources",
@@ -36,7 +35,7 @@ Sources are marked as Optional if they can be skipped when dependencies are miss
   starmap deps check --output json  # JSON output
   starmap deps check -v             # Verbose output`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return runCheck(cmd, app)
+			return runCheck(cmd)
 		},
 	}
 }
@@ -65,7 +64,7 @@ type CheckResults struct {
 }
 
 // runCheck executes the dependency check command.
-func runCheck(cmd *cobra.Command, app application.Application) error {
+func runCheck(cmd *cobra.Command) error {
 	ctx := context.Background()
 
 	// Get all sources
@@ -81,7 +80,7 @@ func runCheck(cmd *cobra.Command, app application.Application) error {
 	}
 
 	// Display results based on format
-	if err := displayResults(results, globalFlags, cmd, app); err != nil {
+	if err := displayResults(results, globalFlags); err != nil {
 		return err
 	}
 

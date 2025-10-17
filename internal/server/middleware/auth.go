@@ -57,7 +57,10 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusUnauthorized)
-				_, _ = w.Write([]byte(`{"data":null,"error":{"code":"UNAUTHORIZED","message":"Invalid or missing API key","details":"Provide a valid API key in the ` + config.HeaderName + ` header"}}`))
+				// Write error response; if this fails, connection is likely broken
+				if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"UNAUTHORIZED","message":"Invalid or missing API key","details":"Provide a valid API key in the ` + config.HeaderName + ` header"}}`)); writeErr != nil {
+					logger.Error().Err(writeErr).Msg("Failed to write auth error response")
+				}
 				return
 			}
 

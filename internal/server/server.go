@@ -165,24 +165,34 @@ func (s *Server) Handler() http.Handler {
 }
 
 // Shutdown gracefully shuts down background services.
-func (s *Server) Shutdown(_ context.Context) error {
+// The context controls the shutdown timeout - shutdown will abort if context is cancelled.
+func (s *Server) Shutdown(ctx context.Context) error {
 	s.logger.Info().Msg("Shutting down server background services")
 
 	// Cancel the context to stop all background services
 	s.cancel()
 
-	// Give services time to shutdown gracefully
-	shutdownTimeout := time.NewTimer(5 * time.Second)
-	defer shutdownTimeout.Stop()
-
-	select {
-	case <-shutdownTimeout.C:
-		s.logger.Warn().Msg("Background services shutdown timed out")
-	case <-time.After(100 * time.Millisecond):
-		s.logger.Info().Msg("Background services shut down successfully")
+	// Give background services a grace period to finish in-flight operations
+	// The grace period is a minimum delay; context timeout is the maximum
+	gracePeriod := s.config.ShutdownGracePeriod
+	if gracePeriod == 0 {
+		gracePeriod = 100 * time.Millisecond // Fallback if not configured
 	}
 
-	return nil
+	// Wait for grace period to allow services to complete cleanly
+	timer := time.NewTimer(gracePeriod)
+	defer timer.Stop()
+
+	select {
+	case <-ctx.Done():
+		// Context cancelled/timed out before grace period
+		s.logger.Warn().Msg("Background services shutdown interrupted by context")
+		return ctx.Err()
+	case <-timer.C:
+		// Grace period elapsed, services should be stopped
+		s.logger.Info().Msg("Background services shut down successfully")
+		return nil
+	}
 }
 
 // Cache returns the server's cache instance.

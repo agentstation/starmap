@@ -53,7 +53,11 @@ func formatAuthorsYAML(authors []Author) string {
 	)
 	if err != nil {
 		// Fallback to basic YAML if enhanced formatting fails
-		basicYaml, _ := yaml.Marshal(authors)
+		basicYaml, err := yaml.Marshal(authors)
+		if err != nil {
+			// This should never happen with valid data - indicates programming error
+			panic(fmt.Sprintf("failed to marshal authors to YAML: %v", err))
+		}
 		return string(basicYaml)
 	}
 

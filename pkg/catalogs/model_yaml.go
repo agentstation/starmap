@@ -70,7 +70,11 @@ func (m *Model) FormatYAML() string {
 	)
 	if err != nil {
 		// Fallback to basic marshal if comment marshaling fails
-		yamlData, _ = yaml.Marshal(m)
+		yamlData, err = yaml.Marshal(m)
+		if err != nil {
+			// This should never happen with valid data - indicates programming error
+			panic(fmt.Sprintf("failed to marshal model %s to YAML: %v", m.ID, err))
+		}
 	}
 
 	// Post-process to add blank lines between major sections and clean up empty fields

@@ -33,7 +33,7 @@ func NewAuthorsCommand(app application.Application) *cobra.Command {
 
 			// Single author detail view
 			if len(args) == 1 {
-				return showAuthorDetails(cmd, app, logger, args[0])
+				return showAuthorDetails(cmd, app, args[0])
 			}
 
 			// List view
@@ -116,7 +116,7 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 }
 
 // showAuthorDetails shows detailed information about a specific author.
-func showAuthorDetails(cmd *cobra.Command, app application.Application, _ *zerolog.Logger, authorID string) error {
+func showAuthorDetails(cmd *cobra.Command, app application.Application, authorID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

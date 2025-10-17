@@ -68,11 +68,12 @@ when API keys are configured.`,
 // setupCommand is called before any command runs.
 func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	// Update config from parsed flags
-	verbose, _ := cmd.Flags().GetBool("verbose")
-	quiet, _ := cmd.Flags().GetBool("quiet")
-	noColor, _ := cmd.Flags().GetBool("no-color")
-	output, _ := cmd.Flags().GetString("output")
-	logLevel, _ := cmd.Flags().GetString("log-level")
+	// These flags are defined as persistent flags in createRootCommand, so errors indicate programming errors
+	verbose := mustGetBool(cmd, "verbose")
+	quiet := mustGetBool(cmd, "quiet")
+	noColor := mustGetBool(cmd, "no-color")
+	output := mustGetString(cmd, "output")
+	logLevel := mustGetString(cmd, "log-level")
 
 	a.config.UpdateFromFlags(verbose, quiet, noColor, output, logLevel)
 
@@ -110,8 +111,28 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 // This is meant to be used in main.go for top-level error handling.
 func ExitOnError(err error) {
 	if err != nil {
-		// Print to stderr (ignore write error since we're exiting anyway)
+		//nolint:errcheck // Ignoring write error since we're exiting anyway
 		_, _ = os.Stderr.WriteString(err.Error() + "\n")
 		os.Exit(1)
 	}
+}
+
+// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetBool(cmd *cobra.Command, name string) bool {
+	val, err := cmd.Flags().GetBool(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
+}
+
+// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+// This should only be used for flags defined in this package.
+func mustGetString(cmd *cobra.Command, name string) string {
+	val, err := cmd.Flags().GetString(name)
+	if err != nil {
+		panic("programming error: failed to get flag " + name + ": " + err.Error())
+	}
+	return val
 }
