@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/deps"
 	"github.com/agentstation/starmap/internal/sources/local"

@@ -40,7 +40,7 @@ graph TB
         HTTP[HTTP Server<br/>REST API + WebSocket + SSE]
     end
 
-    subgraph APP["Application Layer - cmd/application/"]
+    subgraph APP["Application Layer - internal/cmd/application/"]
         APPIF[Application Interface<br/>DI Pattern]
         APPIMPL[App Implementation<br/>cmd/starmap/app/]
     end
@@ -91,7 +91,7 @@ graph TB
 
 ### 1. Interface Segregation
 - **Define interfaces where they're used** (Go proverb)
-- Application interface in `cmd/application/` (reusable across binaries)
+- Application interface in `internal/cmd/application/` (reusable across binaries)
 - Implementation in `cmd/starmap/app/` (concrete types)
 - Commands depend only on what they need
 
@@ -125,7 +125,7 @@ graph TB
 
 ### Layer Responsibilities
 
-1. **Application Layer** (`cmd/application/`, `cmd/starmap/app/`)
+1. **Application Layer** (`internal/cmd/application/`, `cmd/starmap/app/`)
    - Dependency injection
    - Configuration management
    - Lifecycle control (startup/shutdown)
@@ -153,12 +153,12 @@ graph TB
 
 ### Application Interface
 
-Location: `cmd/application/application.go`
+Location: `internal/cmd/application/application.go`
 
 **Design Philosophy:**
 - "Accept interfaces, return structs" (Go proverb)
 - "Define interfaces where they're used" (idiomatic Go)
-- Located at `cmd` root for reusability across multiple binaries
+- Located in `internal/cmd` for internal package organization
 - Zero import cycles (unidirectional dependency flow)
 
 **Interface Definition:**
@@ -193,7 +193,7 @@ type Application interface {
 flowchart BT
     APP[cmd/starmap/app/<br/>App implements Application]
     CMD[cmd/starmap/cmd/*<br/>Commands use Application]
-    INT[cmd/application/<br/>Application interface]
+    INT[internal/cmd/application/<br/>Application interface]
 
     APP -->|implements| INT
     CMD -->|imports| INT
@@ -1124,8 +1124,6 @@ When adding new code, ensure:
 ```
 starmap/
 ├── cmd/
-│   ├── application/          # Application interface (idiomatic location)
-│   │   └── application.go    # Application interface definition
 │   └── starmap/              # CLI binary
 │       ├── main.go           # Entry point
 │       ├── app/              # App implementation
@@ -1152,6 +1150,9 @@ starmap/
 │   └── convert/              # Format conversion
 │
 ├── internal/                 # Internal packages
+│   ├── cmd/
+│   │   └── application/      # Application interface (internal)
+│   │       └── application.go # Application interface definition
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -1216,7 +1217,7 @@ graph BT
     end
 
     subgraph "Layer 1: Application Interface"
-        APPIF[cmd/application/<br/>Application interface]
+        APPIF[internal/cmd/application/<br/>Application interface]
     end
 
     INT --> PKG
@@ -1241,7 +1242,7 @@ graph BT
 
 **Rules:**
 - Never import from higher layers
-- Commands import `cmd/application/` interface, not `cmd/starmap/app/`
+- Commands import `internal/cmd/application/` interface, not `cmd/starmap/app/`
 - Root package imports pkg packages
 - Internal packages can import pkg packages
 - Pkg packages are fully independent
@@ -1386,7 +1387,7 @@ func TestListModels(t *testing.T) {
 |------|---------|-------|
 | `starmap.go` | Public API interface | ~100 |
 | `sync.go` | 13-step sync pipeline | ~234 |
-| `cmd/application/application.go` | Application interface | ~97 |
+| `internal/cmd/application/application.go` | Application interface | ~97 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |
 | `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |
 | `pkg/authority/authority.go` | Field-level authorities | ~210 |

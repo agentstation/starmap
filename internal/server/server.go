@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/events/adapters"

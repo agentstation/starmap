@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/cmd/application"
+	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 

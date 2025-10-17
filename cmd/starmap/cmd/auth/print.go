@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/cmd/application"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/auth/adc"
+	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/output"

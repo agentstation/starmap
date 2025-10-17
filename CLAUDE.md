@@ -124,7 +124,7 @@ For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md). Here's a
 ```
 User Interfaces (CLI, Go Package)
     ↓
-Application Layer (cmd/application/ interface, cmd/starmap/app/ implementation)
+Application Layer (internal/cmd/application/ interface, cmd/starmap/app/ implementation)
     ↓
 Root Package (starmap.Client - public API)
     ↓
@@ -136,7 +136,7 @@ Internal Implementations (embedded, providers, modelsdev)
 **Key files:**
 - `starmap.go` - Public API
 - `sync.go` - 13-step sync pipeline
-- `cmd/application/application.go` - Application interface
+- `internal/cmd/application/application.go` - Application interface
 - `cmd/starmap/app/app.go` - App implementation
 
 ### Sync Pipeline (13 Steps)
@@ -249,7 +249,7 @@ See examples: `starmap.New()`, `catalogs.New(catalogs.WithEmbedded())`, `catalog
 See docs/ARCHITECTURE.md § Application Layer for interface pattern.
 
 ```go
-// Interface defined where it's used (cmd/application/)
+// Interface defined where it's used (internal/cmd/application/)
 type Application interface {
     Catalog() (catalogs.Catalog, error)
     Starmap(...starmap.Option) (starmap.Client, error)
@@ -288,7 +288,7 @@ for _, provider := range providers {
 
 **Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local,clients}, transport
 
-**Application**: cmd/application (interface), cmd/starmap/app (implementation)
+**Application**: internal/cmd/application (interface), cmd/starmap/app (implementation)
 
 See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for full structure.
 
@@ -317,7 +317,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 |------|---------|
 | `starmap.go` | Public API interface |
 | `sync.go` | 12-step sync pipeline |
-| `cmd/application/application.go` | Application interface (idiomatic location) |
+| `internal/cmd/application/application.go` | Application interface (idiomatic location) |
 | `cmd/starmap/app/app.go` | App implementation |
 | `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |
 | `internal/server/server.go` | Server lifecycle & dependencies |
@@ -383,7 +383,7 @@ make docs-check     # Verify docs current (CI)
 **Import Cycles:**
 - Zero import cycles (validated)
 - Dependency flow is unidirectional (see docs/ARCHITECTURE.md)
-- Commands import `cmd/application/` interface, NOT `cmd/starmap/app/`
+- Commands import `internal/cmd/application/` interface, NOT `cmd/starmap/app/`
 
 ## References
 
