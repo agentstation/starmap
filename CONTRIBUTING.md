@@ -80,6 +80,32 @@ make generate
 make all  # clean, fix, lint, test, build
 ```
 
+### Inspecting Embedded Catalog
+
+The `starmap embed` command lets you inspect the embedded filesystem during development:
+
+```bash
+# List embedded files
+starmap embed ls catalog
+starmap embed ls catalog/providers
+
+# View file contents
+starmap embed cat catalog/providers.yaml
+starmap embed cat sources/models.dev/api.json
+
+# Display directory tree
+starmap embed tree catalog
+
+# Show file details
+starmap embed stat catalog/providers.yaml
+```
+
+This is useful for:
+- Verifying catalog structure after updates
+- Debugging embedded data issues
+- Understanding the catalog layout
+- Checking file contents without rebuilding
+
 ### Development Cycle
 
 1. Create a feature branch: `git checkout -b feature/your-feature`

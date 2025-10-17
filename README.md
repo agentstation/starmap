@@ -562,6 +562,34 @@ STARMAP_CACHE_DIR=/var/cache/starmap
 STARMAP_LOG_LEVEL=info
 ```
 
+### Authentication Management
+
+Check and verify your authentication setup:
+
+```bash
+# Check authentication status for all providers
+starmap auth status
+
+# Verify credentials by making test API calls
+starmap auth verify
+
+# Check specific provider
+starmap auth verify --provider openai
+
+# JSON output for automation
+starmap auth status --output json
+
+# Manage Google Cloud authentication
+starmap auth gcloud login
+starmap auth gcloud status
+```
+
+The `auth status` command shows:
+- Which providers have configured credentials
+- Authentication method (API key, ADC, OAuth)
+- Credential source (environment variable, config file, application default)
+- Missing credentials with setup instructions
+
 ### Configuration File
 
 ```yaml
