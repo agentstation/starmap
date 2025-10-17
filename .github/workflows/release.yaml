@@ -90,16 +90,7 @@ jobs:
       - name: Install gomarkdoc
         run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 
-      # Set up Docker for GoReleaser's Docker builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: image=moby/buildkit:master
-          buildkitd-flags: --debug
-
+      # Log in to GitHub Container Registry for ko image pushes
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -107,7 +98,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Install Syft for GoReleaser's SBOM generation
+      # Install Syft for GoReleaser's SBOM generation (archives)
+      # Note: ko generates SBOMs for container images automatically
       - name: Install Syft
         uses: anchore/sbom-action/download-syft@v0.20.4
 

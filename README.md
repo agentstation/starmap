@@ -103,12 +103,47 @@ starmap version
 go get github.com/agentstation/starmap
 ```
 
-### Docker (Coming Soon)
+### Docker
+
+Starmap provides production-ready container images built with [ko](https://ko.build) using Google's secure Chainguard base images (~2MB, zero CVEs).
+
+**Quick Start:**
 
 ```bash
-# Run as container
-docker run -p 8080:8080 ghcr.io/agentstation/starmap:latest
+# Pull and run the HTTP server
+docker run -p 8080:8080 ghcr.io/agentstation/starmap:latest serve --host 0.0.0.0
+
+# Or use docker-compose (recommended)
+docker-compose up
 ```
+
+**Using Docker Compose:**
+
+```bash
+# 1. Copy environment template
+cp .env.example .env
+
+# 2. Edit .env with your API keys (optional)
+nano .env
+
+# 3. Start the server
+docker-compose up -d
+
+# 4. Check health
+curl http://localhost:8080/api/v1/health
+```
+
+**Available Images:**
+
+- `ghcr.io/agentstation/starmap:latest` - Latest stable release
+- `ghcr.io/agentstation/starmap:v0.0.17` - Specific version
+- `ghcr.io/agentstation/starmap:0.0.17` - Specific version (no v prefix)
+
+**Supported Platforms:**
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM 64-bit)
+
+See [docs/DOCKER.md](docs/DOCKER.md) for detailed deployment guides including Kubernetes, security hardening, and production best practices.
 
 ## Quick Start
 

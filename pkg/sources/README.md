@@ -77,7 +77,7 @@ if fetcher.HasClient(providerID) {
 
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L154-L172>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L157-L175>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -104,7 +104,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L175-L180>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L178-L183>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -374,7 +374,7 @@ func WithoutCredentialLoading() ProviderOption
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L183>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L186>)
 
 ResourceType identifies the type of resource being merged.
 
@@ -396,7 +396,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L151>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L154>)
 
 Source represents a data source for catalog information.
 
@@ -404,6 +404,9 @@ Source represents a data source for catalog information.
 type Source interface {
     // Type returns the type of this source
     ID() ID
+
+    // Name returns a human-friendly name for this source
+    Name() string
 
     // Fetch retrieves data from this source
     // Sources handle their own concurrency internally

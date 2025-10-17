@@ -1,0 +1,87 @@
+version: '3.9'
+
+services:
+  starmap:
+    image: ghcr.io/agentstation/starmap:latest
+    container_name: starmap-server
+
+    # HTTP server port
+    ports:
+      - "8080:8080"
+
+    # Environment variables
+    # Copy .env.example to .env and customize
+    environment:
+      # Server configuration
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=8080
+
+      # Provider API keys (optional - for live data fetching)
+      # Uncomment and set in .env file
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      # - GROQ_API_KEY=${GROQ_API_KEY}
+      # - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      # - CEREBRAS_API_KEY=${CEREBRAS_API_KEY}
+
+      # Google Vertex (optional)
+      # - GOOGLE_VERTEX_PROJECT=${GOOGLE_VERTEX_PROJECT}
+      # - GOOGLE_VERTEX_LOCATION=${GOOGLE_VERTEX_LOCATION}
+      # - GOOGLE_APPLICATION_CREDENTIALS=/secrets/gcp-key.json
+
+    # Optional: Load environment from .env file
+    env_file:
+      - .env
+
+    # Persistent storage for catalog data
+    volumes:
+      - starmap-data:/home/nonroot/.starmap
+      # Optional: Mount Google Cloud credentials
+      # - ./secrets/gcp-key.json:/secrets/gcp-key.json:ro
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "/ko-app/starmap", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    # Restart policy
+    restart: unless-stopped
+
+    # Security: Run as nonroot user (UID 65532 in chainguard images)
+    user: "65532:65532"
+
+    # Security: Read-only root filesystem
+    read_only: true
+    tmpfs:
+      - /tmp
+
+    # Security: Drop all capabilities
+    cap_drop:
+      - ALL
+
+    # Security: No new privileges
+    security_opt:
+      - no-new-privileges:true
+
+    # Resource limits (adjust based on your needs)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+volumes:
+  starmap-data:
+    driver: local
+
+# Networks (optional - for multi-service deployments)
+# networks:
+#   starmap-net:
+#     driver: bridge

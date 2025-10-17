@@ -52,6 +52,7 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func \(s \*GitSource\) Fetch\(ctx context.Context, \_ ...sources.Option\) error](<#GitSource.Fetch>)
   - [func \(s \*GitSource\) ID\(\) sources.ID](<#GitSource.ID>)
   - [func \(s \*GitSource\) IsOptional\(\) bool](<#GitSource.IsOptional>)
+  - [func \(s \*GitSource\) Name\(\) string](<#GitSource.Name>)
   - [func \(s \*GitSource\) Setup\(providers \*catalogs.Providers\) error](<#GitSource.Setup>)
 - [type GitSourceOption](<#GitSourceOption>)
   - [func WithGitSourcesDir\(dir string\) GitSourceOption](<#WithGitSourcesDir>)
@@ -69,6 +70,7 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func \(s \*HTTPSource\) Fetch\(ctx context.Context, \_ ...sources.Option\) error](<#HTTPSource.Fetch>)
   - [func \(s \*HTTPSource\) ID\(\) sources.ID](<#HTTPSource.ID>)
   - [func \(s \*HTTPSource\) IsOptional\(\) bool](<#HTTPSource.IsOptional>)
+  - [func \(s \*HTTPSource\) Name\(\) string](<#HTTPSource.Name>)
   - [func \(s \*HTTPSource\) Setup\(providers \*catalogs.Providers\) error](<#HTTPSource.Setup>)
 - [type HTTPSourceOption](<#HTTPSourceOption>)
   - [func WithHTTPSourcesDir\(dir string\) HTTPSourceOption](<#WithHTTPSourcesDir>)
@@ -397,7 +399,7 @@ func NewGitSource(opts ...GitSourceOption) *GitSource
 NewGitSource creates a new models.dev git source.
 
 <a name="GitSource.Catalog"></a>
-### func \(\*GitSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L119>)
+### func \(\*GitSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L122>)
 
 ```go
 func (s *GitSource) Catalog() catalogs.Catalog
@@ -406,7 +408,7 @@ func (s *GitSource) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="GitSource.Cleanup"></a>
-### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L124>)
+### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L127>)
 
 ```go
 func (s *GitSource) Cleanup() error
@@ -415,7 +417,7 @@ func (s *GitSource) Cleanup() error
 Cleanup releases any resources.
 
 <a name="GitSource.Dependencies"></a>
-### func \(\*GitSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L131>)
+### func \(\*GitSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L134>)
 
 ```go
 func (s *GitSource) Dependencies() []sources.Dependency
@@ -424,7 +426,7 @@ func (s *GitSource) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies required by this source. Git source requires bun \(for building\) and git \(for cloning\).
 
 <a name="GitSource.Fetch"></a>
-### func \(\*GitSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L90>)
+### func \(\*GitSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L93>)
 
 ```go
 func (s *GitSource) Fetch(ctx context.Context, _ ...sources.Option) error
@@ -442,7 +444,7 @@ func (s *GitSource) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="GitSource.IsOptional"></a>
-### func \(\*GitSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L165>)
+### func \(\*GitSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L168>)
 
 ```go
 func (s *GitSource) IsOptional() bool
@@ -450,8 +452,17 @@ func (s *GitSource) IsOptional() bool
 
 IsOptional returns whether this source is optional. Git source is optional \- HTTP source provides the same data without dependencies.
 
+<a name="GitSource.Name"></a>
+### func \(\*GitSource\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L60>)
+
+```go
+func (s *GitSource) Name() string
+```
+
+Name returns the human\-friendly name of this source.
+
 <a name="GitSource.Setup"></a>
-### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L84>)
+### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/git.go#L87>)
 
 ```go
 func (s *GitSource) Setup(providers *catalogs.Providers) error
@@ -556,7 +567,7 @@ func NewHTTPSource(opts ...HTTPSourceOption) *HTTPSource
 NewHTTPSource creates a new models.dev HTTP source.
 
 <a name="HTTPSource.Catalog"></a>
-### func \(\*HTTPSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L105>)
+### func \(\*HTTPSource\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L108>)
 
 ```go
 func (s *HTTPSource) Catalog() catalogs.Catalog
@@ -565,7 +576,7 @@ func (s *HTTPSource) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="HTTPSource.Cleanup"></a>
-### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L110>)
+### func \(\*HTTPSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L113>)
 
 ```go
 func (s *HTTPSource) Cleanup() error
@@ -574,7 +585,7 @@ func (s *HTTPSource) Cleanup() error
 Cleanup releases any resources.
 
 <a name="HTTPSource.Dependencies"></a>
-### func \(\*HTTPSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L117>)
+### func \(\*HTTPSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L120>)
 
 ```go
 func (s *HTTPSource) Dependencies() []sources.Dependency
@@ -583,7 +594,7 @@ func (s *HTTPSource) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies. HTTP source has no external dependencies.
 
 <a name="HTTPSource.Fetch"></a>
-### func \(\*HTTPSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L76>)
+### func \(\*HTTPSource\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L79>)
 
 ```go
 func (s *HTTPSource) Fetch(ctx context.Context, _ ...sources.Option) error
@@ -601,7 +612,7 @@ func (s *HTTPSource) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="HTTPSource.IsOptional"></a>
-### func \(\*HTTPSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L123>)
+### func \(\*HTTPSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L126>)
 
 ```go
 func (s *HTTPSource) IsOptional() bool
@@ -609,8 +620,17 @@ func (s *HTTPSource) IsOptional() bool
 
 IsOptional returns whether this source is optional. HTTP source is optional \- git source provides same data, and we can work without models.dev.
 
+<a name="HTTPSource.Name"></a>
+### func \(\*HTTPSource\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L53>)
+
+```go
+func (s *HTTPSource) Name() string
+```
+
+Name returns the human\-friendly name of this source.
+
 <a name="HTTPSource.Setup"></a>
-### func \(\*HTTPSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L70>)
+### func \(\*HTTPSource\) [Setup](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/http.go#L73>)
 
 ```go
 func (s *HTTPSource) Setup(providers *catalogs.Providers) error

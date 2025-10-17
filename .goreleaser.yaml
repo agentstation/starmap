@@ -162,31 +162,47 @@ release:
 announce:
   skip: false
 
-# Docker configuration - using new v2 format
-dockers_v2:
-  - id: starmap
-    ids:
-      - starmap
-    dockerfile: Dockerfile
-    images:
-      - "ghcr.io/agentstation/starmap"
-    tags:
-      - "{{ .Version }}"  # e.g., 0.0.2
-      - "{{ .Tag }}"      # e.g., v0.0.2
-      - "latest"
+# Ko configuration - secure, minimal container images
+# Uses cgr.dev/chainguard/static (~2MB, zero CVEs)
+# No Dockerfile needed - builds directly from Go source
+kos:
+  - id: starmap-server
+    build: starmap
+    repositories:
+      - ghcr.io/agentstation/starmap
+    main: ./cmd/starmap
     platforms:
       - linux/amd64
       - linux/arm64
-    build_args:
-      BUILDKIT_INLINE_CACHE: "1"
+    tags:
+      - "{{ .Version }}"  # e.g., 0.0.17
+      - "{{ .Tag }}"      # e.g., v0.0.17
+      - "latest"
+    base_image: cgr.dev/chainguard/static:latest
+    sbom: spdx
+    bare: true
+    preserve_import_paths: false
+    base_import_paths: false
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.ShortCommit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
+    flags:
+      - -trimpath
+    env:
+      - CGO_ENABLED=0
     labels:
-      org.opencontainers.image.name: "{{.ProjectName}}"
-      org.opencontainers.image.description: "AI Model Catalog System"
+      org.opencontainers.image.title: "{{.ProjectName}}"
+      org.opencontainers.image.description: "AI Model Catalog System - HTTP Server"
       org.opencontainers.image.created: "{{.Date}}"
       org.opencontainers.image.revision: "{{.FullCommit}}"
       org.opencontainers.image.version: "{{.Version}}"
       org.opencontainers.image.source: "{{.GitURL}}"
       org.opencontainers.image.licenses: "AGPL-3.0"
+      org.opencontainers.image.url: "https://github.com/agentstation/starmap"
+      org.opencontainers.image.documentation: "https://starmap.agentstation.ai"
 
 # Homebrew Cask
 homebrew_casks:

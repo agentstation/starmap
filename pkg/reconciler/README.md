@@ -55,7 +55,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 
 
 <a name="ConvertCatalogsMapToSources"></a>
-## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L62>)
+## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L67>)
 
 ```go
 func ConvertCatalogsMapToSources(srcs map[sources.ID]catalogs.Catalog) []sources.Source
