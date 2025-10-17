@@ -291,8 +291,9 @@ func TestResponseStructure(t *testing.T) {
 		if _, ok := unmarshaled["data"]; !ok {
 			t.Error("expected 'data' field in JSON")
 		}
-		if _, ok := unmarshaled["error"]; !ok {
-			t.Error("expected 'error' field in JSON")
+		// Error field should be omitted (omitempty) when nil in success responses
+		if _, ok := unmarshaled["error"]; ok {
+			t.Error("expected 'error' field to be omitted in success response (omitempty)")
 		}
 	})
 
