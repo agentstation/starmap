@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
@@ -77,6 +78,13 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 
+	// Create auth checker for credential validation
+	checker := auth.NewChecker()
+	supportedMap := make(map[string]bool)
+	for _, pid := range supportedProviders {
+		supportedMap[string(pid)] = true
+	}
+
 	fmt.Println("Verifying provider credentials...")
 	fmt.Println()
 
@@ -94,15 +102,54 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 			Provider: string(providerID),
 		}
 
-		// Check if API key is configured
-		if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-			result.Status = emoji.Optional + " Skipped"
-			result.ResponseTime = "-"
-			result.ModelsFound = "-"
-			result.Error = "No credentials configured"
-			results = append(results, result)
-			skipped++
-			continue
+		// Special handling for Google Cloud providers (use ADC)
+		if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
+			status := checker.CheckProvider(&provider, supportedMap)
+
+			// Check if ADC is missing or invalid
+			if status.State == auth.StateMissing {
+				result.Status = emoji.Error + " Failed"
+				result.ResponseTime = "-"
+				result.ModelsFound = "-"
+				result.Error = "ADC not configured - run 'gcloud auth application-default login'"
+				results = append(results, result)
+				failed++
+				continue
+			} else if status.State == auth.StateInvalid {
+				result.Status = emoji.Error + " Failed"
+				result.ResponseTime = "-"
+				result.ModelsFound = "-"
+				result.Error = "ADC invalid - check 'gcloud auth application-default login'"
+				results = append(results, result)
+				failed++
+				continue
+			}
+
+			// For Google Cloud providers, also check that project is configured
+			// ADC can be valid but missing project ID which is required for API calls
+			// Check if project is set via environment variables
+			if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
+				// Project not in env, skip verification with a clear warning
+				result.Status = emoji.Warning + " Skipped"
+				result.ResponseTime = "-"
+				result.ModelsFound = "-"
+				result.Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
+				results = append(results, result)
+				skipped++
+				continue
+			}
+			// If StateConfigured and has project, proceed with verification below
+		} else {
+			// Check if API key is configured for non-Google Cloud providers
+			if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
+				result.Status = emoji.Optional + " Skipped"
+				result.ResponseTime = "-"
+				result.ModelsFound = "-"
+				result.Error = "No credentials configured"
+				results = append(results, result)
+				skipped++
+				continue
+			}
 		}
 
 		// Test the API with timeout (use cmd context for signal handling)
@@ -144,9 +191,6 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 		formatter := output.NewFormatter(detectedFormat)
 		return formatter.Format(os.Stdout, results)
 	}
-
-	// Summary table
-	displaySummaryTable(verified, failed, skipped)
 
 	// Create notifier and show contextual hints
 	notifier, err := notify.NewFromCommand(cmd)

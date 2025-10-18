@@ -411,32 +411,3 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 	_ = formatter.Format(os.Stdout, tableData)
 	fmt.Println()
 }
-
-// displaySummaryTable shows a summary of verification results.
-func displaySummaryTable(verified, failed, skipped int) {
-	formatter := output.NewFormatter(output.FormatTable)
-
-	headers := []string{"Status", "Count"}
-	rows := [][]string{}
-
-	if verified > 0 {
-		rows = append(rows, []string{emoji.Success + " Verified", fmt.Sprintf("%d", verified)})
-	}
-	if failed > 0 {
-		rows = append(rows, []string{emoji.Error + " Failed", fmt.Sprintf("%d", failed)})
-	}
-	if skipped > 0 {
-		rows = append(rows, []string{emoji.Optional + " Skipped", fmt.Sprintf("%d", skipped)})
-	}
-
-	if len(rows) > 0 {
-		tableData := output.Data{
-			Headers: headers,
-			Rows:    rows,
-		}
-
-		fmt.Println("Summary:")
-		_ = formatter.Format(os.Stdout, tableData)
-		fmt.Println()
-	}
-}

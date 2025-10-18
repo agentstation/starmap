@@ -156,7 +156,7 @@ func getModelProvider(model catalogs.Model, modelProviderMap map[string]catalogs
 		return "openai"
 	case strings.Contains(modelID, "claude"):
 		return "anthropic"
-	case strings.Contains(modelID, "gemini") || strings.Contains(modelID, "gemma"):
+	case strings.Contains(modelID, "gemini") || strings.Contains(modelID, "gemma") || strings.Contains(modelID, "imagen"):
 		return "google-ai-studio"
 	case strings.Contains(modelID, "llama") || strings.Contains(modelID, "mistral"):
 		return "groq"
