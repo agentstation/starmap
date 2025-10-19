@@ -1,0 +1,27 @@
+# claude-sonnet-4-5 - Claude Sonnet 4.5
+id: claude-sonnet-4-5
+name: Claude Sonnet 4.5
+
+# Model metadata
+metadata:
+  release_date: 2025-09-29
+  open_weights: false
+  knowledge_cutoff: 2025-07-31
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 3.0
+    output:
+      per_1m: 15.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 200000
+  output_tokens: 64000
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

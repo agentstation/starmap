@@ -11,6 +11,7 @@ import (
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -115,9 +116,20 @@ func runCheck(cmd *cobra.Command) error {
 
 // getAllSources creates all available sources.
 func getAllSources() []sources.Source {
+	// Load embedded catalog to get provider configs for dependency checking
+	embedded, err := catalogs.NewEmbedded()
+	if err != nil {
+		// If we can't load embedded catalog, return sources without providers
+		return []sources.Source{
+			local.New(),
+			modelsdev.NewGitSource(),
+			modelsdev.NewHTTPSource(),
+		}
+	}
+
 	return []sources.Source{
 		local.New(),
-		providers.New(),
+		providers.New(embedded.Providers()),
 		modelsdev.NewGitSource(),
 		modelsdev.NewHTTPSource(),
 	}

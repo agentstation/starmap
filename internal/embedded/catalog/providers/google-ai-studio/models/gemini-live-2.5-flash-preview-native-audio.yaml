@@ -1,0 +1,27 @@
+# gemini-live-2.5-flash-preview-native-audio - Gemini Live 2.5 Flash Preview Native Audio
+id: gemini-live-2.5-flash-preview-native-audio
+name: Gemini Live 2.5 Flash Preview Native Audio
+
+# Model metadata
+metadata:
+  release_date: 2025-06-17
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.5
+    output:
+      per_1m: 2.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 131072
+  output_tokens: 65536
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

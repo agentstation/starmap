@@ -1,0 +1,27 @@
+# claude-3-5-haiku-latest - Claude Haiku 3.5
+id: claude-3-5-haiku-latest
+name: Claude Haiku 3.5
+
+# Model metadata
+metadata:
+  release_date: 2024-10-22
+  open_weights: false
+  knowledge_cutoff: 2024-07-31
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.8
+    output:
+      per_1m: 4.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 200000
+  output_tokens: 8192
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

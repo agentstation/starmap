@@ -1,6 +1,6 @@
-# meta-llama/llama-prompt-guard-2-22m - llama-prompt-guard-2-22m
+# meta-llama/llama-prompt-guard-2-22m - AI model
 id: meta-llama/llama-prompt-guard-2-22m
-name: llama-prompt-guard-2-22m
+name: meta-llama/llama-prompt-guard-2-22m
 authors:
 - id: meta
   name: Meta
@@ -39,15 +39,15 @@ features:
   max_output_tokens: false
   stop: true
   stop_token_ids: false
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   no_repeat_ngram_size: false
   length_penalty: false
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: true
+  seed: false
   logprobs: false
   top_logprobs: false
   echo: false
@@ -63,7 +63,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: true
+  structured_outputs: false
   streaming: true
 
 # Model limits
@@ -72,5 +72,5 @@ limits:
   output_tokens: 512
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

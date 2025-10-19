@@ -54,7 +54,7 @@ func Defaults() *Options {
 		DryRun:             false,
 		AutoApprove:        false,
 		FailFast:           false,
-		Timeout:            0,
+		Timeout:            5 * time.Minute, // Default 5 minute timeout to prevent hanging
 		Sources:            nil,
 		ProviderID:         nil,
 		OutputPath:         "",

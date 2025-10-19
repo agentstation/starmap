@@ -5,14 +5,17 @@ package google
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"cloud.google.com/go/auth"
 	"cloud.google.com/go/auth/credentials"
 	"github.com/agentstation/utc"
 	"google.golang.org/genai"
 
+	"github.com/agentstation/starmap/internal/auth/adc"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -100,27 +103,50 @@ func (c *Client) initCredentials(ctx context.Context) (*auth.Credentials, error)
 		return c.credentials, nil
 	}
 
-	// Detect credentials with proper scopes
-	creds, err := credentials.DetectDefault(&credentials.DetectOptions{
-		Scopes: []string{
-			"https://www.googleapis.com/auth/cloud-platform",
-			"https://www.googleapis.com/auth/generative-language",
-		},
-		// Note: Service account impersonation can be configured via GOOGLE_IMPERSONATE_SERVICE_ACCOUNT
-		// environment variable which is automatically handled by DetectDefault
-	})
+	// Detect credentials with aggressive timeout (2 seconds max)
+	// DetectDefault doesn't accept context, so we run it in a goroutine
+	type result struct {
+		creds *auth.Credentials
+		err   error
+	}
 
-	if err != nil {
-		return nil, &errors.AuthenticationError{
-			Provider: string(c.provider.ID),
-			Method:   "application-default-credentials",
-			Message:  "failed to detect default credentials",
-			Err:      err,
+	resultChan := make(chan result, 1)
+	go func() {
+		creds, err := credentials.DetectDefault(&credentials.DetectOptions{
+			Scopes: []string{
+				"https://www.googleapis.com/auth/cloud-platform",
+				"https://www.googleapis.com/auth/generative-language",
+			},
+		})
+		resultChan <- result{creds: creds, err: err}
+	}()
+
+	// Wait for result or timeout (2 seconds - realistic time is under 100ms)
+	timeout := time.After(2 * time.Second)
+	select {
+	case res := <-resultChan:
+		if res.err != nil {
+			return nil, &errors.ConfigError{
+				Component: string(c.provider.ID),
+				Message:   "no valid credentials found - configure Application Default Credentials or set GOOGLE_CLOUD_PROJECT",
+			}
+		}
+		c.credentials = res.creds
+		return res.creds, nil
+
+	case <-timeout:
+		return nil, &errors.ConfigError{
+			Component: string(c.provider.ID),
+			Message:   "credential detection timed out (2s) - likely not configured or network issue",
+		}
+
+	case <-ctx.Done():
+		return nil, &errors.ConfigError{
+			Component: string(c.provider.ID),
+			Message:   "credential detection cancelled",
 		}
 	}
 
-	c.credentials = creds
-	return creds, nil
 }
 
 // ListModels retrieves all available models using the appropriate Google API.
@@ -142,6 +168,15 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	if useVertex {
 		return c.listModelsVertex(ctx)
 	}
+
+	// Check if AI Studio is configured
+	if !provider.HasAPIKey() {
+		return nil, &errors.ConfigError{
+			Component: string(provider.ID),
+			Message:   "no valid configuration found - set GOOGLE_API_KEY for AI Studio or GOOGLE_CLOUD_PROJECT for Vertex AI",
+		}
+	}
+
 	return c.listModelsAIStudio(ctx)
 }
 
@@ -163,8 +198,9 @@ func (c *Client) shouldUseVertexBackend() bool {
 		return false
 	}
 
-	// Default to Vertex if no API key (assumes ADC is available)
-	return true
+	// Don't default to Vertex - it requires explicit configuration
+	// Without project ID or API key, we can't use either backend
+	return false
 }
 
 // getOrCreateGenAIClient gets or creates a GenAI client for the appropriate backend.
@@ -251,14 +287,61 @@ func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, erro
 	return c.listModelsViaGenAI(ctx, client)
 }
 
+// checkVertexPrerequisites performs pre-flight checks for Vertex AI.
+// This uses the same logic as `starmap auth verify` to detect ADC configuration
+// locally without making network calls.
+func (c *Client) checkVertexPrerequisites() error {
+	// Check ADC status using the same logic as `starmap auth verify`
+	details := adc.BuildDetails()
+
+	switch details.State {
+	case adc.StateMissing:
+		return &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "Application Default Credentials not configured - run 'gcloud auth application-default login'",
+		}
+	case adc.StateInvalid:
+		return &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "Application Default Credentials invalid - check 'gcloud auth application-default login'",
+		}
+	case adc.StateConfigured:
+		// ADC is configured, now check if project is set
+		if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
+			return &errors.ConfigError{
+				Component: "google-vertex",
+				Message:   "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT environment variable",
+			}
+		}
+		// All checks passed
+		return nil
+	default:
+		return &errors.ConfigError{
+			Component: "google-vertex",
+			Message:   "Unknown ADC state",
+		}
+	}
+}
+
 // listModelsVertex fetches models using Vertex AI API.
 func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error) {
+	// Pre-flight check: Verify ADC is available before attempting network calls
+	// This is the same check used by `starmap auth verify`
+	if err := c.checkVertexPrerequisites(); err != nil {
+		return nil, err
+	}
+
+	// Create a strict timeout for Vertex operations (5 seconds)
+	// Realistic response time is under 1 second; 5 seconds is generous
+	vertexCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	// Detect project/location
 	if c.projectID == "" {
-		c.projectID = c.getProjectID(ctx)
+		c.projectID = c.getProjectID(vertexCtx)
 	}
 	if c.location == "" {
-		c.location = c.getLocation(ctx)
+		c.location = c.getLocation(vertexCtx)
 	}
 
 	if c.projectID == "" {
@@ -269,22 +352,44 @@ func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error)
 	}
 
 	// Use GenAI SDK only
-	client, err := c.getOrCreateGenAIClient(ctx, true)
+	client, err := c.getOrCreateGenAIClient(vertexCtx, true)
 	if err != nil {
 		return nil, err
 	}
 
-	// Get models from GenAI SDK
-	models, err := c.listModelsViaGenAI(ctx, client)
-	if err != nil {
-		return nil, err
+	// Get models from GenAI SDK with timeout protection
+	type result struct {
+		models []catalogs.Model
+		err    error
 	}
+	resultChan := make(chan result, 1)
 
-	// Add Model Garden models from pre-defined list
-	modelGardenModels := c.getModelGardenModels()
-	models = c.mergeModels(models, modelGardenModels)
+	go func() {
+		models, err := c.listModelsViaGenAI(vertexCtx, client)
+		resultChan <- result{models: models, err: err}
+	}()
 
-	return models, nil
+	// Wait for result or timeout
+	select {
+	case res := <-resultChan:
+		if res.err != nil {
+			return nil, res.err
+		}
+
+		// Add Model Garden models from pre-defined list
+		modelGardenModels := c.getModelGardenModels()
+		models := c.mergeModels(res.models, modelGardenModels)
+		return models, nil
+
+	case <-vertexCtx.Done():
+		return nil, &errors.APIError{
+			Provider:   "google-vertex",
+			Endpoint:   "models",
+			StatusCode: 0,
+			Message:    "request timed out after 5 seconds - vertex AI may not be properly configured or network is slow",
+			Err:        vertexCtx.Err(),
+		}
+	}
 }
 
 // listModelsViaGenAI uses the GenAI SDK to list models (works for both backends).

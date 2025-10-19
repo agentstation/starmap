@@ -18,8 +18,10 @@ type Source struct {
 	catalog   catalogs.Catalog    // Fetched catalog
 }
 
-// New creates a new provider API source.
-func New() *Source { return &Source{} }
+// New creates a new provider API source with the given provider configurations.
+func New(providers *catalogs.Providers) *Source {
+	return &Source{providers: providers}
+}
 
 // ID returns the ID of this source.
 func (s *Source) ID() sources.ID { return sources.ProvidersID }
@@ -125,6 +127,18 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 			// Create NEW client instance with dedicated HTTP client
 			client, err := clients.NewProvider(p)
 			if err != nil {
+				// Check if this is a configuration error (misconfigured provider)
+				var configErr *pkgerrors.ConfigError
+				if errors.As(err, &configErr) {
+					// Configuration errors are non-fatal - skip this provider with a warning
+					logging.Ctx(logger).Warn().
+						Err(err).
+						Str("provider_id", string(p.ID)).
+						Msg("Skipping provider - configuration error")
+					return
+				}
+
+				// Other errors during client creation are still logged but non-fatal
 				logging.Ctx(logger).Debug().
 					Err(err).
 					Str("provider_id", string(p.ID)).
@@ -140,6 +154,18 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 			// Fetch models from API
 			models, err := client.ListModels(ctx)
 			if err != nil {
+				// Check if this is a configuration error (misconfigured provider)
+				var configErr *pkgerrors.ConfigError
+				if errors.As(err, &configErr) {
+					// Configuration errors are non-fatal - skip this provider with a warning
+					logging.Ctx(logger).Warn().
+						Err(err).
+						Str("provider_id", string(p.ID)).
+						Msg("Skipping provider - configuration error")
+					return
+				}
+
+				// Other errors are fatal
 				result.err = &pkgerrors.SyncError{
 					Provider: string(p.ID),
 					Err:      err,

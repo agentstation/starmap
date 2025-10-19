@@ -8,22 +8,23 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-func TestAttributions_NewWithEmptyCatalog(t *testing.T) {
+func TestApply_EmptyCatalog(t *testing.T) {
 	catalog := catalogs.NewEmpty()
 
-	attributions, err := New(catalog)
+	err := Apply(catalog)
 	if err != nil {
 		t.Fatalf("Expected no error for empty catalog, got: %v", err)
 	}
 
-	// Should return no attribution for any model
-	authors, found := attributions.Attribute("any-model")
-	if found {
-		t.Errorf("Expected no attribution, got %v", authors)
+	// Should have no authors with models
+	for _, author := range catalog.Authors().List() {
+		if len(author.Models) > 0 {
+			t.Errorf("Expected no models for author %s, got %d", author.ID, len(author.Models))
+		}
 	}
 }
 
-func TestAttributions_NilChecks(t *testing.T) {
+func TestApply_NilChecks(t *testing.T) {
 	// Test with authors that have nil catalog/attribution
 	catalog := catalogs.NewEmpty()
 
@@ -53,18 +54,20 @@ func TestAttributions_NilChecks(t *testing.T) {
 	}
 
 	// Should not panic or error with nil catalog/attribution fields
-	attributions, err := New(catalog)
+	err := Apply(catalog)
 	if err != nil {
 		t.Fatalf("Expected no error with nil fields, got: %v", err)
 	}
 
-	authors, found := attributions.Attribute("any-model")
-	if found {
-		t.Errorf("Expected no attribution, got %v", authors)
+	// Verify no models attributed
+	for _, author := range catalog.Authors().List() {
+		if len(author.Models) > 0 {
+			t.Errorf("Expected no models for author %s with nil fields, got %d", author.ID, len(author.Models))
+		}
 	}
 }
 
-func TestAttributions_ProviderOnlyMode(t *testing.T) {
+func TestApply_ProviderOnlyMode(t *testing.T) {
 	// Test Mode 1: Provider-only attribution
 	catalog := catalogs.NewEmpty()
 
@@ -100,41 +103,32 @@ func TestAttributions_ProviderOnlyMode(t *testing.T) {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 
-	attributions, err := New(catalog)
+	// Apply attributions
+	err := Apply(catalog)
 	if err != nil {
-		t.Fatalf("Failed to create attributions: %v", err)
+		t.Fatalf("Failed to apply attributions: %v", err)
 	}
 
-	// Test that both models are attributed to Anthropic
-	tests := []struct {
-		modelID  string
-		expected catalogs.AuthorID
-	}{
-		{"claude-3-opus", "anthropic"},
-		{"claude-3-sonnet", "anthropic"},
+	// Verify author has both models
+	updatedAuthor, err := catalog.Author("anthropic")
+	if err != nil {
+		t.Fatalf("Failed to get author: %v", err)
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.modelID, func(t *testing.T) {
-			authors, found := attributions.Attribute(tt.modelID)
-			if !found {
-				t.Errorf("Expected attribution for %s, got none", tt.modelID)
-				return
-			}
+	if len(updatedAuthor.Models) != 2 {
+		t.Errorf("Expected 2 models for author, got %d", len(updatedAuthor.Models))
+	}
 
-			if len(authors) != 1 {
-				t.Errorf("Expected 1 author, got %d", len(authors))
-				return
-			}
-
-			if authors[0] != tt.expected {
-				t.Errorf("Expected author %s, got %s", tt.expected, authors[0])
-			}
-		})
+	// Verify specific models
+	expectedModels := []string{"claude-3-opus", "claude-3-sonnet"}
+	for _, modelID := range expectedModels {
+		if _, exists := updatedAuthor.Models[modelID]; !exists {
+			t.Errorf("Expected model %s in author.Models, not found", modelID)
+		}
 	}
 }
 
-func TestAttributions_GlobalPatternsMode(t *testing.T) {
+func TestApply_GlobalPatternsMode(t *testing.T) {
 	// Test Mode 3: Global pattern matching
 	catalog := catalogs.NewEmpty()
 
@@ -172,48 +166,121 @@ func TestAttributions_GlobalPatternsMode(t *testing.T) {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 
-	attributions, err := New(catalog)
+	// Apply attributions
+	err := Apply(catalog)
 	if err != nil {
-		t.Fatalf("Failed to create attributions: %v", err)
+		t.Fatalf("Failed to apply attributions: %v", err)
+	}
+
+	// Verify author has matching models
+	updatedAuthor, err := catalog.Author("meta")
+	if err != nil {
+		t.Fatalf("Failed to get author: %v", err)
 	}
 
 	tests := []struct {
-		modelID        string
-		shouldMatch    bool
-		expectedAuthor catalogs.AuthorID
+		modelID     string
+		shouldMatch bool
 	}{
-		{"llama-3-8b", true, "meta"},   // Matches "llama*"
-		{"meta-llama-3", true, "meta"}, // Matches "*-llama-*"
-		{"mixtral-8x7b", false, ""},    // No match
-		{"LLAMA-BIG", true, "meta"},    // Case insensitive match
+		{"llama-3-8b", true},    // Matches "llama*"
+		{"meta-llama-3", true},  // Matches "*-llama-*"
+		{"mixtral-8x7b", false}, // No match
+		{"LLAMA-BIG", true},     // Case insensitive match
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.modelID, func(t *testing.T) {
-			authors, found := attributions.Attribute(tt.modelID)
-
-			if tt.shouldMatch {
-				if !found {
-					t.Errorf("Expected attribution for %s, got none", tt.modelID)
-					return
-				}
-				if len(authors) != 1 {
-					t.Errorf("Expected 1 author, got %d", len(authors))
-					return
-				}
-				if authors[0] != tt.expectedAuthor {
-					t.Errorf("Expected author %s, got %s", tt.expectedAuthor, authors[0])
-				}
-			} else {
-				if found {
-					t.Errorf("Expected no attribution for %s, got %v", tt.modelID, authors)
-				}
+			_, exists := updatedAuthor.Models[tt.modelID]
+			if tt.shouldMatch && !exists {
+				t.Errorf("Expected model %s to be attributed to author, not found", tt.modelID)
+			}
+			if !tt.shouldMatch && exists {
+				t.Errorf("Expected model %s NOT to be attributed to author, but it was", tt.modelID)
 			}
 		})
 	}
 }
 
-func TestAttributions_InvalidPatterns(t *testing.T) {
+func TestApply_ProviderPatternMode(t *testing.T) {
+	// Test Mode 2: Provider + patterns
+	catalog := catalogs.NewEmpty()
+
+	// Create author with provider + patterns
+	author := catalogs.Author{
+		ID:   "moonshot-ai",
+		Name: "Moonshot AI",
+		Catalog: &catalogs.AuthorCatalog{
+			Attribution: &catalogs.AuthorAttribution{
+				ProviderID: "moonshot-ai",
+				Patterns:   []string{"*kimi*", "moonshot-ai/*"},
+			},
+		},
+		CreatedAt: utc.Now(),
+		UpdatedAt: utc.Now(),
+	}
+
+	// Create provider with models
+	provider := catalogs.Provider{
+		ID:   "moonshot-ai",
+		Name: "Moonshot AI",
+		Models: map[string]*catalogs.Model{
+			"kimi-k2-0711-preview":    &catalogs.Model{ID: "kimi-k2-0711-preview", Name: "Kimi K2 Preview"},
+			"moonshot-v1-128k":        &catalogs.Model{ID: "moonshot-v1-128k", Name: "Moonshot v1 128K"},
+			"moonshot-ai/other-model": &catalogs.Model{ID: "moonshot-ai/other-model", Name: "Other Model"},
+			"unrelated-model":         &catalogs.Model{ID: "unrelated-model", Name: "Unrelated"},
+		},
+	}
+
+	// Add to catalog
+	if err := catalog.SetAuthor(author); err != nil {
+		t.Fatalf("Failed to set author: %v", err)
+	}
+	if err := catalog.SetProvider(provider); err != nil {
+		t.Fatalf("Failed to set provider: %v", err)
+	}
+
+	// Apply attributions
+	err := Apply(catalog)
+	if err != nil {
+		t.Fatalf("Failed to apply attributions: %v", err)
+	}
+
+	// Verify author has matching models only
+	updatedAuthor, err := catalog.Author("moonshot-ai")
+	if err != nil {
+		t.Fatalf("Failed to get author: %v", err)
+	}
+
+	tests := []struct {
+		modelID     string
+		shouldMatch bool
+	}{
+		{"kimi-k2-0711-preview", true},    // Matches "*kimi*"
+		{"moonshot-v1-128k", false},       // Doesn't match patterns
+		{"moonshot-ai/other-model", true}, // Matches "moonshot-ai/*"
+		{"unrelated-model", false},        // No match
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.modelID, func(t *testing.T) {
+			_, exists := updatedAuthor.Models[tt.modelID]
+			if tt.shouldMatch && !exists {
+				t.Errorf("Expected model %s to be attributed to author, not found", tt.modelID)
+			}
+			if !tt.shouldMatch && exists {
+				t.Errorf("Expected model %s NOT to be attributed to author, but it was", tt.modelID)
+			}
+		})
+	}
+
+	// Verify total count
+	expectedCount := 2 // kimi-k2-0711-preview and moonshot-ai/other-model
+	if len(updatedAuthor.Models) != expectedCount {
+		t.Errorf("Expected %d models for author, got %d", expectedCount, len(updatedAuthor.Models))
+	}
+}
+
+func TestApply_InvalidPatterns(t *testing.T) {
 	// Test that invalid glob patterns cause an error
 	catalog := catalogs.NewEmpty()
 
@@ -235,7 +302,7 @@ func TestAttributions_InvalidPatterns(t *testing.T) {
 		t.Fatalf("Failed to set author: %v", err)
 	}
 
-	_, err = New(catalog)
+	err = Apply(catalog)
 	if err == nil {
 		t.Fatal("Expected error for invalid patterns, got nil")
 	}
@@ -246,7 +313,7 @@ func TestAttributions_InvalidPatterns(t *testing.T) {
 	}
 }
 
-func TestAttributions_MultipleAuthors(t *testing.T) {
+func TestApply_MultipleAuthors(t *testing.T) {
 	// Test a model that matches patterns from multiple authors
 	catalog := catalogs.NewEmpty()
 
@@ -294,35 +361,108 @@ func TestAttributions_MultipleAuthors(t *testing.T) {
 		t.Fatalf("Failed to set provider: %v", err)
 	}
 
-	attributions, err := New(catalog)
+	// Apply attributions
+	err := Apply(catalog)
 	if err != nil {
-		t.Fatalf("Failed to create attributions: %v", err)
+		t.Fatalf("Failed to apply attributions: %v", err)
 	}
 
-	// Test a model that should be attributed to multiple authors
-	authors, found := attributions.Attribute("shared-model")
-	if !found {
-		t.Fatal("Expected to find attribution for shared-model")
+	// Verify both authors have the shared model
+	for _, authorID := range []catalogs.AuthorID{"author1", "author2"} {
+		author, err := catalog.Author(authorID)
+		if err != nil {
+			t.Fatalf("Failed to get author %s: %v", authorID, err)
+		}
+
+		if _, exists := author.Models["shared-model"]; !exists {
+			t.Errorf("Expected shared-model in author %s, not found", authorID)
+		}
+	}
+}
+
+func TestApply_NewProviderWithModels(t *testing.T) {
+	// Test the moonshot-ai scenario: new provider with 12 models
+	catalog := catalogs.NewEmpty()
+
+	// Create moonshot-ai author with attribution patterns
+	author := catalogs.Author{
+		ID:   "moonshot-ai",
+		Name: "Moonshot AI",
+		Catalog: &catalogs.AuthorCatalog{
+			Attribution: &catalogs.AuthorAttribution{
+				ProviderID: "moonshot-ai",
+				Patterns:   []string{"*kimi*", "moonshot-ai/*"},
+			},
+		},
+		CreatedAt: utc.Now(),
+		UpdatedAt: utc.Now(),
 	}
 
-	// Should have multiple authors
-	if len(authors) != 2 {
-		t.Errorf("Expected 2 authors, got %d: %v", len(authors), authors)
+	// Create provider with 12 models (like API fetch)
+	models := make(map[string]*catalogs.Model)
+	modelIDs := []string{
+		"kimi-k2-0711-preview",
+		"kimi-k2-0905-preview",
+		"moonshot-v1-128k",
+		"moonshot-v1-32k",
+		"moonshot-v1-8k",
 	}
 
-	// Check that both expected authors are present (order may vary)
-	expectedAuthors := map[catalogs.AuthorID]bool{"author1": false, "author2": false}
-	for _, author := range authors {
-		if _, exists := expectedAuthors[author]; exists {
-			expectedAuthors[author] = true
-		} else {
-			t.Errorf("Unexpected author: %s", author)
+	for _, id := range modelIDs {
+		models[id] = &catalogs.Model{
+			ID:   id,
+			Name: id,
 		}
 	}
 
-	for author, found := range expectedAuthors {
-		if !found {
-			t.Errorf("Expected author %s not found in results", author)
+	provider := catalogs.Provider{
+		ID:     "moonshot-ai",
+		Name:   "Moonshot AI",
+		Models: models,
+	}
+
+	// Add to catalog
+	if err := catalog.SetAuthor(author); err != nil {
+		t.Fatalf("Failed to set author: %v", err)
+	}
+	if err := catalog.SetProvider(provider); err != nil {
+		t.Fatalf("Failed to set provider: %v", err)
+	}
+
+	// Apply attributions
+	err := Apply(catalog)
+	if err != nil {
+		t.Fatalf("Failed to apply attributions: %v", err)
+	}
+
+	// Verify author has kimi models attributed
+	updatedAuthor, err := catalog.Author("moonshot-ai")
+	if err != nil {
+		t.Fatalf("Failed to get author: %v", err)
+	}
+
+	// Should have 2 models (the kimi ones)
+	expectedModels := []string{
+		"kimi-k2-0711-preview",
+		"kimi-k2-0905-preview",
+	}
+
+	for _, modelID := range expectedModels {
+		if _, exists := updatedAuthor.Models[modelID]; !exists {
+			t.Errorf("Expected model %s in author.Models, not found", modelID)
+		}
+	}
+
+	// Verify moonshot-v1-* models are NOT attributed (don't match patterns)
+	notExpected := []string{
+		"moonshot-v1-128k",
+		"moonshot-v1-32k",
+		"moonshot-v1-8k",
+	}
+
+	for _, modelID := range notExpected {
+		if _, exists := updatedAuthor.Models[modelID]; exists {
+			t.Errorf("Model %s should NOT be in author.Models (doesn't match patterns)", modelID)
 		}
 	}
 }

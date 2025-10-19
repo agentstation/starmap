@@ -55,20 +55,22 @@
       auth_required: true
       feature_rules:
       - field: id
-        contains: ["llama"]
+        contains:
+        - llama
         feature: tools
         value: true
       - field: id
-        contains: ["r1"]
+        contains:
+        - r1
         feature: reasoning
         value: true
       author_mapping:
         field: owned_by
         normalized:
-          "Meta": "meta"
-          "DeepSeek": "deepseek"
-          "OpenAI": "openai"
-          "Alibaba": "alibaba"
+          Alibaba: alibaba
+          DeepSeek: deepseek
+          Meta: meta
+          OpenAI: openai
     authors:
     - alibaba
     - meta
@@ -114,9 +116,9 @@
 
 # DeepSeek
 - id: deepseek
-  name: DeepSeek
   aliases:
   - deepseek-ai
+  name: DeepSeek
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
   api_key:
@@ -153,6 +155,8 @@
 
 # Google AI Studio
 - id: google-ai-studio
+  aliases:
+  - google
   name: Google AI Studio
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
@@ -250,10 +254,10 @@
       url: https://api.groq.com/openai/v1/models
       auth_required: true
       field_mappings:
-      - from: "context_window"
-        to: "limits.context_window"
-      - from: "max_completion_tokens"
-        to: "limits.output_tokens"
+      - from: context_window
+        to: limits.context_window
+      - from: max_completion_tokens
+        to: limits.output_tokens
     authors:
     - alibaba
     - deepseek
@@ -261,7 +265,7 @@
     - groq
     - huggingfaceh4
     - meta
-    - moonshotai
+    - moonshot-ai
     - openai
     - playai
     - sdaia
@@ -285,6 +289,49 @@
     moderation_required: false
     moderated: true
     moderator: groq
+
+# Moonshot AI
+- id: moonshot-ai
+  aliases:
+  - moonshotai
+  - moonshot
+  name: Moonshot AI
+  headquarters: Beijing, China
+  icon_url: https://www.moonshot.ai/favicon.ico
+  api_key:
+    name: MOONSHOT_API_KEY
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  catalog:
+    docs: "https://platform.moonshot.ai/docs/api/chat#list-models"
+    endpoint:
+      type: openai
+      url: https://api.moonshot.ai/v1/models
+      auth_required: true
+      author_mapping:
+        field: owned_by
+        normalized:
+          moonshot: moonshot-ai
+    authors:
+    - moonshot-ai
+  status_page_url: https://status.moonshot.cn
+  chat_completions:
+    url: https://api.moonshot.ai/v1/chat/completions
+  privacy_policy:
+    privacy_policy_url: https://platform.moonshot.ai/docs/agreement/userprivacy
+    terms_of_service_url: https://platform.moonshot.ai/docs/agreement/modeluse
+    retains_data: true
+    trains_on_data: true
+  retention_policy:
+    type: indefinite
+    duration: 0s #immediate
+    details: Data retention period not specified in publicly available privacy policy; data is processed to generate responses and used for model training
+  governance_policy:
+    moderation_required: false
+    moderated: true
+    moderator: moonshot-ai
 
 # OpenAI
 - id: openai

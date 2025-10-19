@@ -1,7 +1,8 @@
-# This file contains the complete author information that can be loaded at runtime
+# 01.AI
 - id: 01.ai
   name: 01.AI
   description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models
+  icon_url: https://01.ai/favicon.ico
   website: https://01.ai
   huggingface: https://huggingface.co/01-ai
   github: https://github.com/01-ai
@@ -9,6 +10,7 @@
 # Adept
 - id: adept
   name: Adept
+  icon_url: https://adept.ai/favicon.ico
   website: https://adept.ai
   twitter: https://x.com/AdeptAILabs
 
@@ -16,6 +18,7 @@
 - id: ai21
   name: AI21 Labs
   description: Israeli AI company known for Jamba hybrid SSM-Transformer architecture and Jurassic language models
+  icon_url: https://ai21.com/favicon.ico
   website: https://ai21.com
   huggingface: https://huggingface.co/ai21labs
   github: https://github.com/AI21Labs
@@ -26,6 +29,7 @@
   name: Alibaba Cloud
   description: Chinese technology company known for Qwen (Tongyi Qianwen) language model series
   headquarters: Hangzhou, China
+  icon_url: https://alibabacloud.com/favicon.ico
   website: https://alibabacloud.com
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
@@ -35,12 +39,12 @@
       patterns:
       - qwen-*
       - "*-qwen-*"
-      # Global patterns - matches Qwen models across ALL providers
 
 # Alignment Research Center
 - id: alignment-research
   name: Alignment Research Center
   description: AI safety research organization focused on AI alignment and evaluation
+  icon_url: https://alignment.org/favicon.ico
   website: https://alignment.org
   github: https://github.com/ARC-AGI
 
@@ -48,6 +52,7 @@
 - id: amazon
   name: Amazon
   headquarters: Seattle, WA, USA
+  icon_url: https://amazon.com/favicon.ico
   website: https://amazon.com
   github: https://github.com/amazon-science
   twitter: https://x.com/amazon
@@ -57,6 +62,7 @@
   name: Anthropic
   description: AI safety company known for Claude models and Constitutional AI research
   headquarters: San Francisco, CA, USA
+  icon_url: https://www.anthropic.com/favicon.ico
   website: https://anthropic.com
   huggingface: https://huggingface.co/anthropic
   github: https://github.com/anthropics
@@ -65,11 +71,11 @@
     description: Anthropic's authoritative API catalog containing only Claude models
     attribution:
       provider_id: anthropic
-      # No patterns - all models from anthropic provider are Anthropic's
 
 # Anysphere
 - id: anysphere
   name: Anysphere
+  icon_url: https://anysphere.co/favicon.ico
   website: https://anysphere.co
   github: https://github.com/getcursor
   twitter: https://x.com/anysphere
@@ -78,6 +84,7 @@
 - id: apple
   name: Apple
   headquarters: Cupertino, CA, USA
+  icon_url: https://apple.com/favicon.ico
   website: https://apple.com
   github: https://github.com/apple
   twitter: https://x.com/Apple
@@ -86,6 +93,7 @@
 - id: baai
   name: Beijing Academy of Artificial Intelligence
   description: Chinese AI research institute known for Wu Dao multimodal model and FlagAI framework
+  icon_url: https://baai.ac.cn/favicon.ico
   website: https://baai.ac.cn
   huggingface: https://huggingface.co/BAAI
   github: https://github.com/FlagAI-Open
@@ -94,6 +102,7 @@
 - id: baichuan
   name: Baichuan Intelligence
   description: Beijing-based AI company known for Baichuan-7B and Baichuan-13B open-source models
+  icon_url: https://baichuan-ai.com/favicon.ico
   website: https://baichuan-ai.com
   huggingface: https://huggingface.co/baichuan-inc
   github: https://github.com/baichuan-inc
@@ -103,6 +112,7 @@
   name: Baidu
   description: Chinese technology company known for Ernie Bot and ERNIE series language models
   headquarters: Beijing, China
+  icon_url: https://yiyan.baidu.com/favicon.ico
   website: https://yiyan.baidu.com
   huggingface: https://huggingface.co/baidu
   github: https://github.com/baidu
@@ -111,6 +121,7 @@
 # BigScience
 - id: bigscience
   name: BigScience
+  icon_url: https://bigscience.huggingface.co/favicon.ico
   website: https://bigscience.huggingface.co
   huggingface: https://huggingface.co/bigscience
   github: https://github.com/bigscience-workshop
@@ -120,28 +131,33 @@
   name: ByteDance
   description: Chinese technology company behind TikTok with AI research in recommendation systems
   headquarters: Beijing, China
+  icon_url: https://bytedance.com/favicon.ico
   website: https://bytedance.com
   github: https://github.com/bytedance
 
 # California Institute of Technology
 - id: caltech
   name: California Institute of Technology
+  icon_url: https://caltech.edu/favicon.ico
   website: https://caltech.edu
 
 # University of Cambridge
 - id: cambridge
   name: University of Cambridge
+  icon_url: https://cam.ac.uk/favicon.ico
   website: https://cam.ac.uk
 
 # Character.AI
 - id: character
   name: Character.AI
+  icon_url: https://character.ai/favicon.ico
   website: https://character.ai
   twitter: https://x.com/CharacterAI
 
 # Carnegie Mellon University
 - id: cmu
   name: Carnegie Mellon University
+  icon_url: https://cmu.edu/favicon.ico
   website: https://cmu.edu
   github: https://github.com/cmu-lti
 
@@ -149,6 +165,7 @@
 - id: codefuse
   name: CodeFuse-AI
   description: Organization specializing in code-focused AI models and fine-tuning frameworks
+  icon_url: https://avatars.githubusercontent.com/u/151221416
   huggingface: https://huggingface.co/codefuse-ai
   github: https://github.com/codefuse-ai
 
@@ -156,6 +173,7 @@
 - id: cognitivecomputations
   name: Cognitive Computations
   description: Organization behind the popular Dolphin model series, led by Eric Hartford
+  icon_url: https://avatars.githubusercontent.com/u/133259654
   huggingface: https://huggingface.co/cognitivecomputations
   github: https://github.com/cognitivecomputations
 
@@ -163,6 +181,7 @@
 - id: cohere
   name: Cohere
   description: Enterprise AI company specializing in natural language processing and Command models
+  icon_url: https://cohere.com/favicon.ico
   website: https://cohere.com
   huggingface: https://huggingface.co/CohereForAI
   github: https://github.com/cohere-ai
@@ -171,11 +190,13 @@
 # Cornell University
 - id: cornell
   name: Cornell University
+  icon_url: https://cornell.edu/favicon.ico
   website: https://cornell.edu
 
 # Cursor
 - id: cursor
   name: Cursor
+  icon_url: https://cursor.sh/favicon.ico
   website: https://cursor.sh
   github: https://github.com/getcursor
   twitter: https://x.com/cursor_ai
@@ -184,6 +205,7 @@
 - id: deepmind
   name: Google DeepMind
   description: AI research lab formed in 2023 from merging Google Brain and DeepMind, known for developing Gemini models, AlphaGo, and breakthrough AI research
+  icon_url: https://deepmind.google/favicon.ico
   website: https://deepmind.google
   huggingface: https://huggingface.co/google
   github: https://github.com/google-deepmind
@@ -193,6 +215,7 @@
 - id: deepseek
   name: DeepSeek
   description: Chinese AI company known for DeepSeek-Coder and reasoning-focused language models
+  icon_url: https://www.deepseek.com/favicon.ico
   website: https://deepseek.com
   huggingface: https://huggingface.co/deepseek-ai
   github: https://github.com/deepseek-ai
@@ -201,17 +224,21 @@
     description: DeepSeek's authoritative API catalog containing only their models
     attribution:
       provider_id: deepseek
-      # No patterns - all models from deepseek provider are DeepSeek's
+      patterns:
+      - deepseek-*
+      - "*deepseek*"
 
 # Duke University
 - id: duke
   name: Duke University
+  icon_url: https://duke.edu/favicon.ico
   website: https://duke.edu
 
 # Eric Hartford
 - id: ehartford
   name: Eric Hartford
   description: Creator of the widely-used Dolphin model series and other fine-tuned language models
+  icon_url: https://avatars.githubusercontent.com/u/7557458
   huggingface: https://huggingface.co/ehartford
   github: https://github.com/ehartford
   twitter: https://x.com/erhartford
@@ -219,6 +246,7 @@
 # EleutherAI
 - id: eleutherai
   name: EleutherAI
+  icon_url: https://eleuther.ai/favicon.ico
   website: https://eleuther.ai
   huggingface: https://huggingface.co/EleutherAI
   github: https://github.com/EleutherAI
@@ -227,12 +255,14 @@
 # ETH Zurich
 - id: eth-zurich
   name: ETH Zurich
+  icon_url: https://ethz.ch/favicon.ico
   website: https://ethz.ch
 
 # FastChat Team
 - id: fastchat
   name: FastChat Team
   description: Team behind the FastChat framework for training and serving conversational AI models
+  icon_url: https://chat.lmsys.org/favicon.ico
   website: https://chat.lmsys.org
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys/FastChat
@@ -241,6 +271,7 @@
 - id: gatech
   name: Georgia Tech Research Institute
   description: Research institute known for creating the Galpaca model based on GALACTICA
+  icon_url: https://gtri.gatech.edu/favicon.ico
   website: https://gtri.gatech.edu
   huggingface: https://huggingface.co/GeorgiaTechResearchInstitute
 
@@ -248,6 +279,7 @@
 - id: google
   name: Google
   description: Technology company known for the Gemini line of multimodal AI models, cloud AI services, and AI product integrations
+  icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
   website: https://ai.google
   huggingface: https://huggingface.co/google
   github: https://github.com/google
@@ -257,22 +289,30 @@
     attribution:
       provider_id: google-vertex
       patterns:
-      - gemini-*
       - "*bison*"
+      - "*gemma*"
+      - gemini-*
+      - gemma*
       - palm*
-      # Only models matching these patterns from google-vertex are Google's
 
 # Groq
 - id: groq
   name: Groq
   description: AI inference company that developed the Compound system for orchestrating multiple models with external tools
+  icon_url: https://groq.com/favicon.ico
   website: https://groq.com
   twitter: https://x.com/GroqInc
+  catalog:
+    attribution:
+      patterns:
+      - compound*
+      - groq/*
 
 # H2O.ai
 - id: h2o.ai
   name: H2O.ai
   description: Machine learning company known for h2oGPT open-source language model suite
+  icon_url: https://h2o.ai/favicon.ico
   website: https://h2o.ai
   huggingface: https://huggingface.co/h2oai
   github: https://github.com/h2oai
@@ -281,19 +321,24 @@
 # Harvard University
 - id: harvard
   name: Harvard University
+  icon_url: https://harvard.edu/favicon.ico
   website: https://harvard.edu
 
 # Huawei
 - id: huawei
   name: Huawei
   description: Chinese technology company known for PanGu series of multimodal language models
+  icon_url: https://huawei.com/favicon.ico
   website: https://huawei.com
   huggingface: https://huggingface.co/huawei
   github: https://github.com/huawei
 
 # Hugging Face
 - id: huggingfaceh4
+  aliases:
+  - huggingface
   name: Hugging Face
+  icon_url: https://huggingface.co/favicon.ico
   website: https://huggingface.co
   huggingface: https://huggingface.co/huggingface
   github: https://github.com/huggingface
@@ -302,6 +347,7 @@
 # IBM
 - id: ibm
   name: IBM
+  icon_url: https://ibm.com/favicon.ico
   website: https://ibm.com
   huggingface: https://huggingface.co/ibm
   github: https://github.com/IBM
@@ -310,6 +356,7 @@
 # Inflection AI
 - id: inflection
   name: Inflection AI
+  icon_url: https://inflection.ai/favicon.ico
   website: https://inflection.ai
   twitter: https://x.com/InflectionAI
 
@@ -317,6 +364,7 @@
 - id: jondurbin
   name: jondurbin
   description: Model creator known for Bagel and Airoboros fine-tuned language models
+  icon_url: https://avatars.githubusercontent.com/u/715966
   huggingface: https://huggingface.co/jondurbin
   github: https://github.com/jondurbin
   twitter: https://x.com/jon_durbin
@@ -324,6 +372,7 @@
 # LAION
 - id: laion
   name: LAION
+  icon_url: https://laion.ai/favicon.ico
   website: https://laion.ai
   huggingface: https://huggingface.co/laion
   github: https://github.com/LAION-AI
@@ -333,14 +382,18 @@
 - id: lmsys
   name: LMSYS Org
   description: Research organization behind Vicuna, FastChat, and the Chatbot Arena platform
+  icon_url: https://lmsys.org/favicon.ico
   website: https://lmsys.org
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys
 
 # Meta
 - id: meta
+  aliases:
+  - llama
   name: Meta
   description: Social media company known for LLaMA/Llama model series and open-source AI research
+  icon_url: https://about.meta.com/favicon.ico
   website: https://about.meta.com
   huggingface: https://huggingface.co/meta-llama
   github: https://github.com/meta-llama
@@ -348,16 +401,16 @@
   catalog:
     attribution:
       patterns:
-      - llama-*
-      - "*-llama-*"
-      - "*@llama-*"
       - codellama*
-      # Global patterns - matches Llama models across ALL providers
+      - llama-*
+      - meta-llama/*
+      - "*@llama-*"
 
 # Microsoft
 - id: microsoft
   name: Microsoft
   description: Technology company with AI initiatives including Copilot and partnerships with OpenAI
+  icon_url: https://microsoft.com/favicon.ico
   website: https://microsoft.com
   huggingface: https://huggingface.co/microsoft
   github: https://github.com/microsoft
@@ -366,6 +419,7 @@
 # Midjourney
 - id: midjourney
   name: Midjourney
+  icon_url: https://midjourney.com/favicon.ico
   website: https://midjourney.com
   twitter: https://x.com/midjourney
 
@@ -373,6 +427,7 @@
 - id: minimax
   name: MiniMax
   description: Shanghai-based AI company known for ABAB series and MiniMax-M1 hybrid-attention reasoning model
+  icon_url: https://minimax.chat/favicon.ico
   website: https://minimax.chat
   huggingface: https://huggingface.co/MiniMaxAI
 
@@ -380,29 +435,47 @@
 - id: mistral
   name: Mistral AI
   description: French AI company known for efficient open-source language models and Mixture of Experts architectures
+  icon_url: https://mistral.ai/favicon.ico
   website: https://mistral.ai
   huggingface: https://huggingface.co/mistralai
   github: https://github.com/mistralai
   twitter: https://x.com/MistralAI
+  catalog:
+    attribution:
+      patterns:
+      - codestral*
+      - mistral*
 
 # MIT
 - id: mit
   name: MIT
+  icon_url: https://mit.edu/favicon.ico
   website: https://mit.edu
   github: https://github.com/mit-nlp
 
 # Moonshot AI
-- id: moonshotai
-  name: Moonshot AI
+- id: moonshot-ai
   aliases:
   - moonshot
+  - moonshotai
+  name: Moonshot AI
   description: Chinese AI company founded in 2023, known for Kimi chatbot with long-context capabilities
+  icon_url: https://www.moonshot.ai/favicon.ico
   website: https://kimi.moonshot.cn
   huggingface: https://huggingface.co/moonshot-ai
+  catalog:
+    description: Moonshot AI's authoritative API catalog containing Kimi and Moonshot models
+    attribution:
+      provider_id: moonshot-ai
+      patterns:
+      - "*kimi*"
+      - moonshot-ai/*
+      - moonshotai/*
 
 # MosaicML
 - id: mosaicml
   name: MosaicML
+  icon_url: https://mosaicml.com/favicon.ico
   website: https://mosaicml.com
   huggingface: https://huggingface.co/mosaicml
   github: https://github.com/mosaicml
@@ -411,6 +484,7 @@
 - id: moxin
   name: Moxin
   description: Creator of Moxin-7B, a fully open-source language model following Model Openness Framework
+  icon_url: https://avatars.githubusercontent.com/u/131888245
   huggingface: https://huggingface.co/moxin-ai
   github: https://github.com/moxin-ai
 
@@ -418,6 +492,7 @@
 - id: nousresearch
   name: Nous Research
   description: AI research organization known for OpenHermes and Nous-Hermes model series
+  icon_url: https://nousresearch.com/favicon.ico
   website: https://nousresearch.com
   huggingface: https://huggingface.co/NousResearch
   github: https://github.com/NousResearch
@@ -426,6 +501,7 @@
 # NVIDIA
 - id: nvidia
   name: NVIDIA
+  icon_url: https://nvidia.com/favicon.ico
   website: https://nvidia.com
   huggingface: https://huggingface.co/nvidia
   github: https://github.com/NVIDIA
@@ -435,6 +511,7 @@
 - id: open-orca
   name: Open-Orca
   description: Open-source project creating Orca-style reasoning models and datasets
+  icon_url: https://avatars.githubusercontent.com/u/135422046
   huggingface: https://huggingface.co/Open-Orca
   github: https://github.com/OpenOrca/OpenOrca
 
@@ -442,6 +519,7 @@
 - id: openai
   name: OpenAI
   description: AI research company known for GPT models, ChatGPT, and DALL-E
+  icon_url: https://cdn.openai.com/API/logo-openai.svg
   website: https://openai.com
   huggingface: https://huggingface.co/openai
   github: https://github.com/openai
@@ -450,22 +528,24 @@
     description: OpenAI's authoritative API catalog containing only their models
     attribution:
       provider_id: openai
-      # No patterns - all models from openai provider are OpenAI's
 
 # University of Oxford
 - id: oxford
   name: University of Oxford
+  icon_url: https://ox.ac.uk/favicon.ico
   website: https://ox.ac.uk
 
 # Peking University
 - id: peking
   name: Peking University
   description: Leading Chinese university with significant AI and machine learning research contributions
+  icon_url: https://pku.edu.cn/favicon.ico
   website: https://pku.edu.cn
 
 # Perplexity AI
 - id: perplexity
   name: Perplexity AI
+  icon_url: https://perplexity.ai/favicon.ico
   website: https://perplexity.ai
   twitter: https://x.com/perplexity_ai
 
@@ -473,6 +553,7 @@
 - id: phind
   name: Phind
   description: AI-powered search engine company known for fine-tuning CodeLlama models for coding tasks
+  icon_url: https://phind.com/favicon.ico
   website: https://phind.com
   huggingface: https://huggingface.co/Phind
 
@@ -480,18 +561,25 @@
 - id: playai
   name: PlayAI
   description: AI voice synthesis company known for text-to-speech models
+  icon_url: https://play.ai/favicon.ico
   website: https://play.ai
   twitter: https://x.com/PlayAI
+  catalog:
+    attribution:
+      patterns:
+      - playai*
 
 # Princeton University
 - id: princeton
   name: Princeton University
+  icon_url: https://princeton.edu/favicon.ico
   website: https://princeton.edu
 
 # Qwen Team
 - id: qwen
   name: Qwen Team
   description: AI research team within Alibaba Cloud responsible for developing the Qwen (Tongyi Qianwen) language model family
+  icon_url: https://qwen.ai/favicon.ico
   website: https://qwen.ai
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
@@ -499,6 +587,7 @@
 # Runway ML
 - id: runway
   name: Runway ML
+  icon_url: https://runwayml.com/favicon.ico
   website: https://runwayml.com
   github: https://github.com/runwayml
   twitter: https://x.com/runwayml
@@ -506,6 +595,7 @@
 # Salesforce
 - id: salesforce
   name: Salesforce
+  icon_url: https://salesforce.com/favicon.ico
   website: https://salesforce.com
   huggingface: https://huggingface.co/Salesforce
   github: https://github.com/salesforce
@@ -515,12 +605,18 @@
 - id: sdaia
   name: SDAIA
   description: Saudi Data and Artificial Intelligence Authority, known for Allam Arabic language models
+  icon_url: https://sdaia.gov.sa/favicon.ico
   website: https://sdaia.gov.sa
+  catalog:
+    attribution:
+      patterns:
+      - allam*
 
 # SenseTime
 - id: sensetime
   name: SenseTime
   description: Chinese AI company specializing in computer vision and known for SenseNova multimodal models
+  icon_url: https://sensetime.com/favicon.ico
   website: https://sensetime.com
   huggingface: https://huggingface.co/sensetime
 
@@ -528,6 +624,7 @@
 - id: shanghai-ai-lab
   name: Shanghai AI Laboratory
   description: Chinese AI research institute known for InternLM series and multimodal AI research
+  icon_url: https://shlab.org.cn/favicon.ico
   website: https://shlab.org.cn
   huggingface: https://huggingface.co/internlm
   github: https://github.com/InternLM
@@ -535,6 +632,7 @@
 # Stability AI
 - id: stability
   name: Stability AI
+  icon_url: https://stability.ai/favicon.ico
   website: https://stability.ai
   huggingface: https://huggingface.co/stabilityai
   github: https://github.com/Stability-AI
@@ -543,6 +641,7 @@
 # Stanford University
 - id: stanford
   name: Stanford University
+  icon_url: https://stanford.edu/favicon.ico
   website: https://stanford.edu
   github: https://github.com/stanford-futuredata
 
@@ -550,6 +649,7 @@
 - id: stanford-alpaca
   name: Stanford Alpaca
   description: Stanford research project that created the influential Alpaca instruction-tuned models
+  icon_url: https://stanford.edu/favicon.ico
   website: https://crfm.stanford.edu/2023/03/13/alpaca.html
   huggingface: https://huggingface.co/tatsu-lab
   github: https://github.com/tatsu-lab/stanford_alpaca
@@ -558,6 +658,7 @@
 - id: teknium
   name: teknium
   description: Individual researcher and creator of the OpenHermes model series
+  icon_url: https://avatars.githubusercontent.com/u/127238744
   huggingface: https://huggingface.co/teknium
   github: https://github.com/teknium1
   twitter: https://x.com/Teknium1
@@ -566,6 +667,7 @@
 - id: tencent
   name: Tencent
   description: Chinese technology conglomerate with various AI initiatives and gaming/social platforms
+  icon_url: https://tencent.com/favicon.ico
   website: https://tencent.com
   github: https://github.com/Tencent
 
@@ -573,13 +675,17 @@
 - id: thudm
   name: THUDM
   description: Tsinghua University research group known for ChatGLM bilingual language models
+  icon_url: https://avatars.githubusercontent.com/u/48590610
   website: https://thudm.github.io
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM
 
 # Together AI
 - id: together
+  aliases:
+  - togetherai
   name: Together AI
+  icon_url: https://together.ai/favicon.ico
   website: https://together.ai
   huggingface: https://huggingface.co/togethercomputer
   github: https://github.com/togethercomputer
@@ -588,29 +694,34 @@
 - id: tsinghua
   name: Tsinghua University
   description: Prestigious Chinese university with AI research, affiliated with THUDM and ChatGLM development
+  icon_url: https://tsinghua.edu.cn/favicon.ico
   website: https://tsinghua.edu.cn
   github: https://github.com/thudm
 
 # UC Berkeley
 - id: uc-berkeley
   name: UC Berkeley
+  icon_url: https://berkeley.edu/favicon.ico
   website: https://berkeley.edu
   github: https://github.com/ucbrise
 
 # University of Chicago
 - id: uchicago
   name: University of Chicago
+  icon_url: https://uchicago.edu/favicon.ico
   website: https://uchicago.edu
 
 # University of Washington
 - id: uw
   name: University of Washington
+  icon_url: https://washington.edu/favicon.ico
   website: https://washington.edu
 
 # Vicuna Team
 - id: vicuna-team
   name: Vicuna Team
   description: Team responsible for creating the popular Vicuna chatbot models
+  icon_url: https://lmsys.org/favicon.ico
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys/FastChat
 
@@ -618,6 +729,7 @@
 - id: wizardlm
   name: WizardLM Team
   description: Research team known for WizardLM and WizardCoder models with enhanced reasoning capabilities
+  icon_url: https://avatars.githubusercontent.com/u/131585127
   huggingface: https://huggingface.co/WizardLM
   github: https://github.com/nlpxucan/WizardLM
 
@@ -625,6 +737,7 @@
 - id: xai
   name: xAI
   description: Elon Musk's AI company focused on understanding the universe through AI, known for Grok models
+  icon_url: https://x.ai/favicon.ico
   website: https://x.ai
   huggingface: https://huggingface.co/xai-org
   github: https://github.com/xai-org
@@ -633,12 +746,16 @@
 # Yale University
 - id: yale
   name: Yale University
+  icon_url: https://yale.edu/favicon.ico
   website: https://yale.edu
 
 # Zhipu AI
 - id: zhipu-ai
+  aliases:
+  - zhipuai
   name: Zhipu AI
   description: Chinese AI company known for GLM-4 and ChatGLM series of bilingual language models
+  icon_url: https://zhipuai.cn/favicon.ico
   website: https://zhipuai.cn
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM

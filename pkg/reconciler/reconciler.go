@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/attribution"
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
@@ -54,6 +55,7 @@ func New(opts ...Option) (Reconciler, error) {
 		enhancers:   enhancer.NewPipeline(options.enhancers...),
 		baseline:    options.baseline,
 	}
+
 	return r, nil
 }
 
@@ -116,6 +118,14 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	catalog, err := r.catalog(providers, modelResults)
 	if err != nil {
 		return nil, err
+	}
+
+	// Step 5.5: Apply author attributions using the fresh catalog
+	// This populates author.Models based on attribution config from authors.yaml
+	// Attribution now uses the fresh catalog with API-fetched models instead of baseline
+	if err := attribution.Apply(catalog); err != nil {
+		rctx.logger.Warn().Err(err).Msg("Failed to apply author attributions")
+		// Non-fatal - continue with reconciliation
 	}
 
 	// Step 6: Compute changeset if we have a base catalog
@@ -349,16 +359,21 @@ func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, ch
 		maps.Copy(result.Provenance, mr.provenance)
 	}
 
-	// Build tracking maps
+	// Build tracking maps from final catalog (not just current sync results)
+	// This ensures all models in the catalog have provider mappings, including
+	// those from the baseline that weren't re-fetched in this sync
+	for _, provider := range catalog.Providers().List() {
+		if provider.Models != nil {
+			for modelID := range provider.Models {
+				result.ModelProviderMap[modelID] = provider.ID
+			}
+		}
+	}
+
+	// Track API counts from modelResults
 	for providerID, mr := range modelResults {
-		// Track API counts
 		if mr.apiCount > 0 {
 			result.ProviderAPICounts[providerID] = mr.apiCount
-		}
-
-		// Track model to provider mapping
-		for _, model := range mr.models {
-			result.ModelProviderMap[model.ID] = providerID
 		}
 	}
 

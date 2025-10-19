@@ -143,28 +143,12 @@ func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir strin
 
 // getModelProvider extracts the provider ID from a model using the provider map.
 func getModelProvider(model catalogs.Model, modelProviderMap map[string]catalogs.ProviderID) catalogs.ProviderID {
-	// Use the model-to-provider map if available
+	// Use the model-to-provider map (should always succeed now)
 	if providerID, ok := modelProviderMap[model.ID]; ok {
 		return providerID
 	}
 
-	// Fallback: Try to infer from model ID patterns (for models not in the map)
-	// This should rarely happen in practice
-	modelID := strings.ToLower(model.ID)
-	switch {
-	case strings.Contains(modelID, "gpt") || strings.Contains(modelID, "dall") || strings.Contains(modelID, "whisper") || strings.Contains(modelID, "o1") || strings.Contains(modelID, "o3"):
-		return "openai"
-	case strings.Contains(modelID, "claude"):
-		return "anthropic"
-	case strings.Contains(modelID, "gemini") || strings.Contains(modelID, "gemma") || strings.Contains(modelID, "imagen"):
-		return "google-ai-studio"
-	case strings.Contains(modelID, "llama") || strings.Contains(modelID, "mistral"):
-		return "groq"
-	case strings.Contains(modelID, "deepseek"):
-		return "deepseek"
-	default:
-		// If we really can't determine, return unknown
-		// This should be very rare with the provider map
-		return "unknown"
-	}
+	// This should never happen since the map is built from the final catalog
+	// If it does, it indicates a bug in the reconciler
+	return "unknown"
 }

@@ -205,9 +205,9 @@ func (c *client) setCatalog(newCatalog catalogs.Catalog) {
 }
 
 // Sources returns the sources to use based on configuration.
-func (c *client) filterSources(options *sync.Options) []sources.Source {
+func (c *client) filterSources(options *sync.Options, localCatalog catalogs.Catalog) []sources.Source {
 	// Create sources with configuration (especially SourcesDir)
-	configuredSources := createSourcesWithConfig(options)
+	configuredSources := createSourcesWithConfig(options, localCatalog)
 
 	// If specific sources are requested, filter to those
 	if len(options.Sources) > 0 {
@@ -225,10 +225,10 @@ func (c *client) filterSources(options *sync.Options) []sources.Source {
 }
 
 // createSourcesWithConfig creates sources configured with sync options.
-func createSourcesWithConfig(options *sync.Options) []sources.Source {
+func createSourcesWithConfig(options *sync.Options, localCatalog catalogs.Catalog) []sources.Source {
 	sources := []sources.Source{
-		local.New(),
-		providers.New(),
+		local.New(local.WithCatalog(localCatalog)),
+		providers.New(localCatalog.Providers()),
 	}
 
 	// Configure models.dev sources if SourcesDir is specified

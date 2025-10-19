@@ -6,6 +6,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -35,7 +36,7 @@ func TestCollectDependencyStatuses(t *testing.T) {
 		{
 			name: "providers source with no dependencies",
 			sources: []sources.Source{
-				providers.New(),
+				providers.New(catalogs.NewProviders()),
 			},
 			wantSourcesCount:      1,
 			wantSourcesWithNoDeps: 1,
@@ -43,7 +44,7 @@ func TestCollectDependencyStatuses(t *testing.T) {
 		{
 			name: "multiple sources",
 			sources: []sources.Source{
-				providers.New(),
+				providers.New(catalogs.NewProviders()),
 				modelsdev.NewGitSource(),
 				modelsdev.NewHTTPSource(),
 			},

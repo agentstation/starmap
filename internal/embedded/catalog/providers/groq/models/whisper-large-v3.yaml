@@ -15,7 +15,7 @@ metadata:
 features:
   modalities:
     input:
-    - audio
+    - text
     output:
     - text
 
@@ -45,15 +45,15 @@ features:
   max_output_tokens: false
   stop: true
   stop_token_ids: false
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   no_repeat_ngram_size: false
   length_penalty: false
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: true
+  seed: false
   logprobs: false
   top_logprobs: false
   echo: false
@@ -79,9 +79,9 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 0
-  output_tokens: 4096
+  context_window: 448
+  output_tokens: 448
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

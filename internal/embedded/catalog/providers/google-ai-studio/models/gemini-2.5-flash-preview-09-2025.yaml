@@ -1,0 +1,93 @@
+# gemini-2.5-flash-preview-09-2025 - Gemini 2.5 Flash Preview Sep 2025
+id: gemini-2.5-flash-preview-09-2025
+name: Gemini 2.5 Flash Preview Sep 2025
+authors:
+- id: google
+  name: Google
+description: Gemini 2.5 Flash Preview Sep 2025
+
+# Model metadata
+metadata:
+  release_date: 2025-09-25
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: false
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.3
+    output:
+      per_1m: 2.5
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 1048576
+  output_tokens: 65536
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

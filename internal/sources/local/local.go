@@ -10,8 +10,9 @@ import (
 
 // Source loads a catalog from either a file path or embedded catalog.
 type Source struct {
-	catalogPath string
-	catalog     catalogs.Catalog
+	catalogPath     string
+	catalog         catalogs.Catalog
+	catalogProvided bool // Track if catalog was provided via WithCatalog option
 }
 
 // New creates a new local source.
@@ -33,6 +34,15 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
+// WithCatalog sets a pre-loaded catalog to reuse.
+// This allows reusing an already-merged catalog instead of loading again.
+func WithCatalog(catalog catalogs.Catalog) Option {
+	return func(s *Source) {
+		s.catalog = catalog
+		s.catalogProvided = true
+	}
+}
+
 // ID returns the ID of this source.
 func (s *Source) ID() sources.ID {
 	// For local source, we always return the constant name
@@ -45,21 +55,19 @@ func (s *Source) Name() string { return "Local Catalog" }
 
 // Fetch returns catalog data from configured source.
 func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error {
-	// Use configured path if set
-	if s.catalogPath != "" {
-		var err error
-		s.catalog, err = catalogs.New(catalogs.WithPath(s.catalogPath))
-		if err != nil {
-			return errors.WrapResource("load", "catalog", s.catalogPath, err)
-		}
-		s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
+	// If catalog was provided via WithCatalog option, reuse it
+	if s.catalogProvided {
+		// Catalog already set, nothing to fetch
 		return nil
 	}
 
-	// Default to embedded catalog
+	// Otherwise, load using NewLocal logic
 	var err error
-	s.catalog, err = catalogs.New(catalogs.WithEmbedded())
+	s.catalog, err = catalogs.NewLocal(s.catalogPath)
 	if err != nil {
+		if s.catalogPath != "" {
+			return errors.WrapResource("load", "catalog", s.catalogPath, err)
+		}
 		return errors.WrapResource("load", "embedded catalog", "", err)
 	}
 	s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)

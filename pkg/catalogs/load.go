@@ -27,12 +27,12 @@ func (cat *catalog) Load() error {
 	}
 
 	// Load model files from providers/
-	if err := cat.loadModelFiles(); err != nil {
+	if err := cat.loadProviderModelFiles(); err != nil {
 		return err
 	}
 
-	// Post-process: Populate author.Models from model.Authors field
-	if err := cat.populateAuthorModels(); err != nil {
+	// Load model files from authors/ (denormalized view)
+	if err := cat.loadAuthorModelFiles(); err != nil {
 		return err
 	}
 
@@ -135,8 +135,8 @@ func (cat *catalog) loadModelFile(path string, data []byte) error {
 	return nil
 }
 
-// loadModelFiles walks the providers directory and loads all model files.
-func (cat *catalog) loadModelFiles() error {
+// loadProviderModelFiles walks the providers directory and loads all model files.
+func (cat *catalog) loadProviderModelFiles() error {
 	err := fs.WalkDir(cat.options.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if os.IsNotExist(err) {
@@ -162,42 +162,35 @@ func (cat *catalog) loadModelFiles() error {
 	return nil
 }
 
-// addModelToAuthor adds a model to an author's Models map.
-func (cat *catalog) addModelToAuthor(authorID AuthorID, model *Model) error {
-	author, err := cat.Author(authorID)
-	if err != nil {
-		return err
-	}
-
-	if author.Models == nil {
-		author.Models = make(map[string]*Model)
-	}
-	author.Models[model.ID] = model
-	return cat.SetAuthor(author)
-}
-
-// populateAuthorModels populates author.Models from model.Authors field.
-// This ensures bidirectional relationship between models and authors.
-func (cat *catalog) populateAuthorModels() error {
-	providers := cat.providers.List()
-
-	for _, provider := range providers {
-		if provider.Models == nil {
-			continue
+// loadAuthorModelFiles walks the authors directory and loads all model files.
+// These files are a denormalized view - the source of truth is provider catalogs + attribution config.
+func (cat *catalog) loadAuthorModelFiles() error {
+	err := fs.WalkDir(cat.options.readFS, "authors", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			if os.IsNotExist(err) {
+				return nil
+			}
+			return err
+		}
+		if d.IsDir() || !strings.HasSuffix(path, ".yaml") {
+			return nil
 		}
 
-		for _, model := range provider.Models {
-			if len(model.Authors) == 0 {
-				continue
-			}
-
-			for _, modelAuthor := range model.Authors {
-				if err := cat.addModelToAuthor(modelAuthor.ID, model); err != nil {
-					// Continue on error - not fatal
-					continue
-				}
-			}
+		// Skip authors.yaml itself
+		if path == "authors.yaml" {
+			return nil
 		}
+
+		data, err := fs.ReadFile(cat.options.readFS, path)
+		if err != nil {
+			return nil // Skip files we can't read
+		}
+
+		return cat.loadModelFile(path, data)
+	})
+
+	if err != nil && !os.IsNotExist(err) {
+		return errors.WrapIO("walk", "authors directory", err)
 	}
 	return nil
 }

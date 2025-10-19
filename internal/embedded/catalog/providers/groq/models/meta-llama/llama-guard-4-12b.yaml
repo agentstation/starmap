@@ -1,6 +1,6 @@
-# meta-llama/llama-guard-4-12b - llama-guard-4-12b
+# meta-llama/llama-guard-4-12b - AI model
 id: meta-llama/llama-guard-4-12b
-name: llama-guard-4-12b
+name: meta-llama/llama-guard-4-12b
 authors:
 - id: meta
   name: Meta
@@ -44,15 +44,15 @@ features:
   max_output_tokens: false
   stop: true
   stop_token_ids: false
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   no_repeat_ngram_size: false
   length_penalty: false
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: true
+  seed: false
   logprobs: false
   top_logprobs: false
   echo: false
@@ -68,7 +68,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: true
+  structured_outputs: false
   streaming: true
 
 # Model pricing
@@ -86,5 +86,5 @@ limits:
   output_tokens: 128
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

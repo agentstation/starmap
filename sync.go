@@ -36,19 +36,19 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	}
 	defer cancel()
 
-	// Step 3: Load embedded catalog for validation and base provider info
-	embedded, err := catalogs.NewEmbedded()
+	// Step 3: Load merged local catalog (embedded + file if exists)
+	local, err := catalogs.NewLocal(options.OutputPath)
 	if err != nil {
-		return nil, errors.WrapResource("load", "catalog", "embedded", err)
+		return nil, errors.WrapResource("load", "catalog", "local", err)
 	}
 
-	// Step 4: Validate options upfront with embedded catalog
-	if err = options.Validate(embedded.Providers()); err != nil {
+	// Step 4: Validate options upfront with local catalog
+	if err = options.Validate(local.Providers()); err != nil {
 		return nil, err
 	}
 
 	// Step 5: filter sources by options
-	srcs := c.filterSources(options)
+	srcs := c.filterSources(options, local)
 
 	// Step 6: Resolve dependencies and filter sources
 	srcs, err = resolveDependencies(ctx, srcs, options)
@@ -201,25 +201,39 @@ func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset 
 			}
 
 			// Copy models.dev logos after successful save
-			// Extract provider IDs from the saved catalog
-			providerIDs := make([]catalogs.ProviderID, 0)
-			for _, p := range providers {
-				if p.ID != "" {
-					providerIDs = append(providerIDs, p.ID)
-				}
+			// Convert provider values to pointers for logo copying
+			providerPtrs := make([]*catalogs.Provider, len(providers))
+			for i := range providers {
+				providerPtrs[i] = &providers[i]
 			}
 
-			// Copy logos if we have providers and an output path
-			if len(providerIDs) > 0 {
+			// Copy provider logos if we have providers and an output path
+			if len(providerPtrs) > 0 {
 				logging.Debug().
-					Int("provider_count", len(providerIDs)).
+					Int("provider_count", len(providerPtrs)).
 					Str("output_path", options.OutputPath).
 					Msg("Copying provider logos from models.dev")
 
-				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerIDs); logoErr != nil {
+				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
 					logging.Warn().
 						Err(logoErr).
 						Msg("Could not copy provider logos")
+					// Non-fatal error - continue without logos
+				}
+			}
+
+			// Copy author logos from provider logos
+			authors := result.Authors().List()
+			if len(authors) > 0 {
+				logging.Debug().
+					Int("author_count", len(authors)).
+					Str("output_path", options.OutputPath).
+					Msg("Copying author logos from models.dev provider logos")
+
+				if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
+					logging.Warn().
+						Err(logoErr).
+						Msg("Could not copy author logos")
 					// Non-fatal error - continue without logos
 				}
 			}

@@ -1,9 +1,11 @@
-# gemma-3-12b-it - Gemma 3 12B
+# gemma-3-12b-it - Google model: gemma-3-12b-it
 id: gemma-3-12b-it
 name: Gemma 3 12B
 authors:
 - id: google
   name: Google
+description: |-
+  Google model: gemma-3-12b-it
 
 # Model metadata
 metadata:
@@ -35,14 +37,14 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: true
+  stop: false
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -99,5 +101,5 @@ limits:
   output_tokens: 80000
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

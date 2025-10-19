@@ -1,6 +1,9 @@
 # imagen-4.0-generate-001 - Google Vertex AI model: imagen-4.0-generate-001
 id: imagen-4.0-generate-001
 name: imagen-4.0-generate-001
+authors:
+- id: google
+  name: Google
 description: |-
   Google Vertex AI model: imagen-4.0-generate-001
 
@@ -70,6 +73,11 @@ features:
   structured_outputs: false
   streaming: false
 
+# Model limits
+limits:
+  context_window: 480
+  output_tokens: 8192
+
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-10T03:09:42Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

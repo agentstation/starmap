@@ -95,23 +95,31 @@ func (cat *catalog) saveTo(basePath string) error {
 	}
 
 	// Save author models under authors/<author>/models/<model>.yaml
+	// These are denormalized views - only save non-hierarchical model IDs
 	for _, author := range cat.authors.List() {
-		if author.Models != nil {
-			for _, model := range author.Models {
-				var modelPath string
-				if strings.Contains(model.ID, "/") {
-					// Hierarchical ID -> authors/meta/models/meta-llama/llama-3.yaml
-					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
-				} else {
-					// Simple ID -> authors/openai/models/gpt-4.yaml
-					modelPath = filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
-				}
+		if author.Models == nil {
+			continue
+		}
 
-				// Use FormatYAML for nicely formatted output with comments
-				data := []byte(model.FormatYAML())
-				if err := writeFile(modelPath, data); err != nil {
-					return errors.WrapIO("write", "model "+model.ID, err)
-				}
+		for _, model := range author.Models {
+			// Skip hierarchical models (contain "/" in ID)
+			// These are provider-specific (e.g., "meta-llama/llama-3" from Groq)
+			// and should only exist in provider catalogs
+			if strings.Contains(model.ID, "/") {
+				logging.Debug().
+					Str("model_id", model.ID).
+					Str("author", string(author.ID)).
+					Msg("Skipping hierarchical model for author save")
+				continue
+			}
+
+			// Simple ID -> authors/<author>/models/<model>.yaml
+			modelPath := filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
+
+			// Use FormatYAML for nicely formatted output with comments
+			data := []byte(model.FormatYAML())
+			if err := writeFile(modelPath, data); err != nil {
+				return errors.WrapIO("write", "model "+model.ID, err)
 			}
 		}
 	}

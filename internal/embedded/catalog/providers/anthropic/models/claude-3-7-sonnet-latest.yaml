@@ -1,0 +1,27 @@
+# claude-3-7-sonnet-latest - Claude Sonnet 3.7
+id: claude-3-7-sonnet-latest
+name: Claude Sonnet 3.7
+
+# Model metadata
+metadata:
+  release_date: 2025-02-19
+  open_weights: false
+  knowledge_cutoff: 2024-10-31
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 3.0
+    output:
+      per_1m: 15.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 200000
+  output_tokens: 64000
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

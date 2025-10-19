@@ -157,6 +157,7 @@ func bindAPIKeys() {
 		"PERPLEXITY_API_KEY",
 		"DEEPSEEK_API_KEY",
 		"CEREBRAS_API_KEY",
+		"MOONSHOT_API_KEY",
 	}
 
 	for _, key := range apiKeys {

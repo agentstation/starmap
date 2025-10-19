@@ -1,6 +1,6 @@
-# meta-llama/llama-4-maverick-17b-128e-instruct - llama-4-maverick-17b-128e-instruct
+# meta-llama/llama-4-maverick-17b-128e-instruct - AI model
 id: meta-llama/llama-4-maverick-17b-128e-instruct
-name: llama-4-maverick-17b-128e-instruct
+name: meta-llama/llama-4-maverick-17b-128e-instruct
 authors:
 - id: meta
   name: Meta
@@ -21,8 +21,8 @@ features:
 
   # Core capabilities
   tool_calls: false
-  tools: true
-  tool_choice: true
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -45,15 +45,15 @@ features:
   max_output_tokens: false
   stop: true
   stop_token_ids: false
-  frequency_penalty: true
-  presence_penalty: true
+  frequency_penalty: false
+  presence_penalty: false
   repetition_penalty: false
   no_repeat_ngram_size: false
   length_penalty: false
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: true
+  seed: false
   logprobs: false
   top_logprobs: false
   echo: false
@@ -69,7 +69,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: true
+  structured_outputs: false
   streaming: true
 
 # Model pricing
@@ -87,5 +87,5 @@ limits:
   output_tokens: 8192
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

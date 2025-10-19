@@ -1,9 +1,16 @@
-# gemma-3-1b-it - Gemma 3 1B
+# gemma-3-1b-it - Google model: gemma-3-1b-it
 id: gemma-3-1b-it
 name: Gemma 3 1B
 authors:
 - id: google
   name: Google
+description: |-
+  Google model: gemma-3-1b-it
+
+# Model metadata
+metadata:
+  release_date: "2025-10-19T18:13:07Z"
+  open_weights: false
 
 # Model features
 features:
@@ -30,14 +37,14 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: true
+  stop: false
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -85,5 +92,5 @@ limits:
   output_tokens: 8192
 
 # Timestamps
-created_at: 2025-09-09T19:41:20Z
-updated_at: 2025-09-09T19:41:20Z
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

@@ -120,12 +120,41 @@ func NewFromPath(path string) (Catalog, error) {
 	return New(WithPath(path))
 }
 
-// NewLocal creates a new local catalog.
+// NewLocal creates a catalog by merging embedded catalog with local file.
+// - Always loads embedded catalog (latest provider configs)
+// - Merges with file catalog if path provided and file exists
+// - Returns embedded-only if file doesn't exist or path is empty
+//
+// This ensures that the catalog always has the latest provider configurations
+// from the embedded catalog, while preserving saved model data from files.
 func NewLocal(path string) (Catalog, error) {
-	if path != "" {
-		return NewFromPath(path)
+	// Always start with embedded (latest provider configs)
+	embedded, err := NewEmbedded()
+	if err != nil {
+		return nil, errors.WrapResource("load", "embedded catalog", "", err)
 	}
-	return NewEmbedded()
+
+	// If no path specified, return embedded only
+	if path == "" {
+		return embedded, nil
+	}
+
+	// Try to load file catalog
+	fileCatalog, err := NewFromPath(path)
+	if err != nil {
+		// File doesn't exist or is corrupt - that's OK on first run
+		// Return embedded only
+		return embedded, nil
+	}
+
+	// Merge file into embedded (preserves embedded configs, adds file models)
+	if merger, ok := embedded.(Merger); ok {
+		if err := merger.MergeWith(fileCatalog); err != nil {
+			return nil, errors.WrapResource("merge", "catalogs", "", err)
+		}
+	}
+
+	return embedded, nil
 }
 
 // NewEmpty creates an in-memory empty catalog.
