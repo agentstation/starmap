@@ -142,8 +142,8 @@ func TestMoonshotModelVariants(t *testing.T) {
 	client := openai.NewClient(provider)
 
 	testCases := []struct {
-		name     string
-		model    openai.Model
+		name       string
+		model      openai.Model
 		expectedID string
 	}{
 		{

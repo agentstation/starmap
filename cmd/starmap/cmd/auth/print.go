@@ -12,8 +12,8 @@ import (
 	"github.com/agentstation/starmap/internal/auth/adc"
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/internal/cmd/format"
+	"github.com/agentstation/starmap/internal/cmd/notify"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 

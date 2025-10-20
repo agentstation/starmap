@@ -229,7 +229,7 @@ func TestApp_WithOptions(t *testing.T) {
 	customConfig := &Config{
 		Verbose: true,
 		Quiet:   false,
-		Output:  "json",
+		Format:  "json",
 	}
 
 	// Create custom logger

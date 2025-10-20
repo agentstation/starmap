@@ -11,9 +11,9 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// FormatModels handles the common pattern of formatting models for output.
+// Models handles the common pattern of formatting models for output.
 // This encapsulates the switch logic for different output formats.
-func FormatModels(models []*catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
+func Models(models []*catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Format))
 
 	// Transform to output format
@@ -28,8 +28,8 @@ func FormatModels(models []*catalogs.Model, showDetails bool, globalFlags *globa
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// FormatProviders handles the common pattern of formatting providers for output.
-func FormatProviders(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool, globalFlags *globals.Flags) error {
+// Providers handles the common pattern of formatting providers for output.
+func Providers(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Format))
 
 	// Transform to output format
@@ -44,8 +44,8 @@ func FormatProviders(providers []*catalogs.Provider, checker *auth.Checker, supp
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// FormatAuthors handles the common pattern of formatting authors for output.
-func FormatAuthors(authors []*catalogs.Author, globalFlags *globals.Flags) error {
+// Authors handles the common pattern of formatting authors for output.
+func Authors(authors []*catalogs.Author, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Format))
 
 	// Transform to output format
@@ -60,9 +60,9 @@ func FormatAuthors(authors []*catalogs.Author, globalFlags *globals.Flags) error
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// FormatAny handles the common pattern of formatting any data type for output.
+// Any handles the common pattern of formatting any data type for output.
 // This is useful for commands with custom data structures.
-func FormatAny(data any, globalFlags *globals.Flags) error {
+func Any(data any, globalFlags *globals.Flags) error {
 	formatter := NewFormatter(Format(globalFlags.Format))
 	return formatter.Format(os.Stdout, data)
 }

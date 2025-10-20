@@ -15,7 +15,7 @@ import "github.com/agentstation/starmap/internal/sources/providers"
 ## Index
 
 - [type Source](<#Source>)
-  - [func New\(\) \*Source](<#New>)
+  - [func New\(providers \*catalogs.Providers\) \*Source](<#New>)
   - [func \(s \*Source\) Catalog\(\) catalogs.Catalog](<#Source.Catalog>)
   - [func \(s \*Source\) Cleanup\(\) error](<#Source.Cleanup>)
   - [func \(s \*Source\) Dependencies\(\) \[\]sources.Dependency](<#Source.Dependencies>)
@@ -40,13 +40,13 @@ type Source struct {
 ### func [New](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L22>)
 
 ```go
-func New() *Source
+func New(providers *catalogs.Providers) *Source
 ```
 
-New creates a new provider API source.
+New creates a new provider API source with the given provider configurations.
 
 <a name="Source.Catalog"></a>
-### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L223>)
+### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L249>)
 
 ```go
 func (s *Source) Catalog() catalogs.Catalog
@@ -55,7 +55,7 @@ func (s *Source) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L228>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L254>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -64,7 +64,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L235>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L261>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -73,7 +73,7 @@ func (s *Source) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies. Provider source has no external dependencies.
 
 <a name="Source.Fetch"></a>
-### func \(\*Source\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L38>)
+### func \(\*Source\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L40>)
 
 ```go
 func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error
@@ -82,7 +82,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error
 Fetch creates a new catalog with models fetched from all provider APIs concurrently.
 
 <a name="Source.ID"></a>
-### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L25>)
+### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L27>)
 
 ```go
 func (s *Source) ID() sources.ID
@@ -91,7 +91,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L241>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L267>)
 
 ```go
 func (s *Source) IsOptional() bool
@@ -100,7 +100,7 @@ func (s *Source) IsOptional() bool
 IsOptional returns whether this source is optional. Provider source is required \- it's the core data source.
 
 <a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L28>)
+### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/providers/providers.go#L30>)
 
 ```go
 func (s *Source) Name() string

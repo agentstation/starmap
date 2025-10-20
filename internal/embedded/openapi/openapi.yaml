@@ -1082,6 +1082,7 @@ components:
             - ProviderIDMeta
             - ProviderIDMicrosoft
             - ProviderIDMistralAI
+            - ProviderIDMoonshotAI
             - ProviderIDOpenAI
             - ProviderIDOpenRouter
             - ProviderIDPerplexity
@@ -1134,6 +1135,7 @@ components:
           - ProviderIDMeta
           - ProviderIDMicrosoft
           - ProviderIDMistralAI
+          - ProviderIDMoonshotAI
           - ProviderIDOpenAI
           - ProviderIDOpenRouter
           - ProviderIDPerplexity
@@ -1384,6 +1386,7 @@ components:
       - ProviderIDMeta
       - ProviderIDMicrosoft
       - ProviderIDMistralAI
+      - ProviderIDMoonshotAI
       - ProviderIDOpenAI
       - ProviderIDOpenRouter
       - ProviderIDPerplexity

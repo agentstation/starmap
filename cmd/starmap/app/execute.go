@@ -58,7 +58,7 @@ when API keys are configured.`,
 
 	// Add --output as deprecated alias for --format (backwards compatibility)
 	rootCmd.PersistentFlags().StringVar(&a.config.Format, "output", "", "")
-	rootCmd.PersistentFlags().MarkDeprecated("output", "use --format instead")
+	_ = rootCmd.PersistentFlags().MarkDeprecated("output", "use --format instead")
 
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")

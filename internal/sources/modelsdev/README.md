@@ -16,7 +16,8 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
 
 - [Constants](<#constants>)
 - [func ConvertToStarmapModel\(mdModel Model\) \*catalogs.Model](<#ConvertToStarmapModel>)
-- [func CopyProviderLogos\(outputDir string, providerIDs \[\]catalogs.ProviderID\) error](<#CopyProviderLogos>)
+- [func CopyAuthorLogos\(outputDir string, authors \[\]catalogs.Author, providers \*catalogs.Providers\) error](<#CopyAuthorLogos>)
+- [func CopyProviderLogos\(outputDir string, providers \[\]\*catalogs.Provider\) error](<#CopyProviderLogos>)
 - [type API](<#API>)
   - [func ParseAPI\(apiPath string\) \(\*API, error\)](<#ParseAPI>)
   - [func \(api \*API\) GetProvider\(providerID catalogs.ProviderID\) \(\*Provider, bool\)](<#API.GetProvider>)
@@ -116,14 +117,23 @@ func ConvertToStarmapModel(mdModel Model) *catalogs.Model
 
 ConvertToStarmapModel converts a models.dev model to a starmap model. This is shared between GitSource and HTTPSource to avoid duplication.
 
-<a name="CopyProviderLogos"></a>
-## func [CopyProviderLogos](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L15>)
+<a name="CopyAuthorLogos"></a>
+## func [CopyAuthorLogos](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L76>)
 
 ```go
-func CopyProviderLogos(outputDir string, providerIDs []catalogs.ProviderID) error
+func CopyAuthorLogos(outputDir string, authors []catalogs.Author, providers *catalogs.Providers) error
 ```
 
-CopyProviderLogos copies provider logos from models.dev to output directory.
+CopyAuthorLogos copies author logos from models.dev provider logos to author directories. Since models.dev doesn't have a separate authors directory, we copy from the provider directory when the author ID matches a provider ID \(or alias\).
+
+<a name="CopyProviderLogos"></a>
+## func [CopyProviderLogos](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/merge.go#L16>)
+
+```go
+func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error
+```
+
+CopyProviderLogos copies provider logos from models.dev to output directory. It tries the provider ID first, then checks aliases if the primary ID isn't found.
 
 <a name="API"></a>
 ## type [API](<https://github.com/agentstation/starmap/blob/master/internal/sources/modelsdev/parser.go#L17>)

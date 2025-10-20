@@ -53,6 +53,9 @@ func LoadConfig() (*Config, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
+	// Bind format with OUTPUT as backwards-compatible alias
+	_ = viper.BindEnv("format", "FORMAT", "OUTPUT")
+
 	// Bind common API keys
 	bindAPIKeys()
 

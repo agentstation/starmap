@@ -162,7 +162,7 @@ func WithStrategy(strategy Strategy) Option
 WithStrategy sets the merge strategy.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L24-L28>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L25-L29>)
 
 Reconciler is the main interface for reconciling data from multiple sources.
 
@@ -175,7 +175,7 @@ type Reconciler interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L41>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L42>)
 
 ```go
 func New(opts ...Option) (Reconciler, error)

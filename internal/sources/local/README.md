@@ -15,6 +15,7 @@ import "github.com/agentstation/starmap/internal/sources/local"
 ## Index
 
 - [type Option](<#Option>)
+  - [func WithCatalog\(catalog catalogs.Catalog\) Option](<#WithCatalog>)
   - [func WithCatalogPath\(path string\) Option](<#WithCatalogPath>)
 - [type Source](<#Source>)
   - [func New\(opts ...Option\) \*Source](<#New>)
@@ -28,7 +29,7 @@ import "github.com/agentstation/starmap/internal/sources/local"
 
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L27>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L28>)
 
 Option configures a local source.
 
@@ -36,8 +37,17 @@ Option configures a local source.
 type Option func(*Source)
 ```
 
+<a name="WithCatalog"></a>
+### func [WithCatalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L39>)
+
+```go
+func WithCatalog(catalog catalogs.Catalog) Option
+```
+
+WithCatalog sets a pre\-loaded catalog to reuse. This allows reusing an already\-merged catalog instead of loading again.
+
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L30>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L31>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -46,7 +56,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath sets the catalog path.
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L12-L15>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L12-L16>)
 
 Source loads a catalog from either a file path or embedded catalog.
 
@@ -57,7 +67,7 @@ type Source struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L18>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L19>)
 
 ```go
 func New(opts ...Option) *Source
@@ -66,7 +76,7 @@ func New(opts ...Option) *Source
 New creates a new local source.
 
 <a name="Source.Catalog"></a>
-### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L70>)
+### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L78>)
 
 ```go
 func (s *Source) Catalog() catalogs.Catalog
@@ -75,7 +85,7 @@ func (s *Source) Catalog() catalogs.Catalog
 Catalog returns the catalog of this source.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L75>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L83>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -84,7 +94,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L82>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L90>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -93,7 +103,7 @@ func (s *Source) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies. Local source has no external dependencies.
 
 <a name="Source.Fetch"></a>
-### func \(\*Source\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L47>)
+### func \(\*Source\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L57>)
 
 ```go
 func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error
@@ -102,7 +112,7 @@ func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error
 Fetch returns catalog data from configured source.
 
 <a name="Source.ID"></a>
-### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L37>)
+### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L47>)
 
 ```go
 func (s *Source) ID() sources.ID
@@ -111,7 +121,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L88>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L96>)
 
 ```go
 func (s *Source) IsOptional() bool
@@ -120,7 +130,7 @@ func (s *Source) IsOptional() bool
 IsOptional returns whether this source is optional. Local source is optional \- we can fall back to embedded catalog.
 
 <a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L44>)
+### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L54>)
 
 ```go
 func (s *Source) Name() string

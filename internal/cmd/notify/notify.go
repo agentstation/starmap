@@ -10,9 +10,9 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/alerts"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/hints"
-	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // Notifier is the main public API for sending alerts and displaying hints.

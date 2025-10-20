@@ -425,6 +425,8 @@ func fetchAllProvidersRaw(ctx context.Context, app application.Application, vali
 }
 
 // displayFetchStats displays fetch statistics to the provided writer (typically stderr).
+//
+//nolint:errcheck // Ignoring write errors for display output
 func displayFetchStats(w io.Writer, providerID catalogs.ProviderID, stats *sources.FetchStats) {
 	fmt.Fprintf(w, "\n%s Request Statistics:\n", emoji.Info)
 	fmt.Fprintf(w, "  Provider:     %s\n", providerID)
