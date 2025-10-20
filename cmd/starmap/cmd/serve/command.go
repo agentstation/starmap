@@ -21,8 +21,9 @@ import (
 func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "serve",
+		GroupID: "server",
 		Aliases: []string{"server"},
-		Short:   "Start the REST API server with WebSocket and SSE support",
+		Short:   "Start the REST API server",
 		Long: `Start a production-ready REST API server for the starmap catalog.
 
 Features:

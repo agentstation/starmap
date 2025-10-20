@@ -4,14 +4,12 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/starmap/cmd/auth"
+	"github.com/agentstation/starmap/cmd/starmap/cmd/completion"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/deps"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/embed"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/fetch"
-	"github.com/agentstation/starmap/cmd/starmap/cmd/generate"
-	"github.com/agentstation/starmap/cmd/starmap/cmd/install"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/list"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/serve"
-	"github.com/agentstation/starmap/cmd/starmap/cmd/uninstall"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/update"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/validate"
 )
@@ -45,6 +43,7 @@ func (a *App) NewValidateCommand() *cobra.Command {
 func (a *App) NewEmbedCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "embed",
+		GroupID: "development",
 		Aliases: []string{"inspect"},
 		Short:   "Explore embedded filesystem",
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -74,19 +73,10 @@ func (a *App) NewDepsCommand() *cobra.Command {
 	return deps.NewCommand()
 }
 
-// NewGenerateCommand returns a new generate command with app dependencies.
-func (a *App) NewGenerateCommand() *cobra.Command {
-	return generate.NewCommand()
-}
-
-// NewInstallCommand returns a new install command with app dependencies.
-func (a *App) NewInstallCommand() *cobra.Command {
-	return install.NewCommand()
-}
-
-// NewUninstallCommand returns a new uninstall command with app dependencies.
-func (a *App) NewUninstallCommand() *cobra.Command {
-	return uninstall.NewCommand()
+// NewCompletionCommand returns a new completion command with app dependencies.
+// This overrides Cobra's auto-generated completion command to add install/uninstall subcommands.
+func (a *App) NewCompletionCommand(rootCmd *cobra.Command) *cobra.Command {
+	return completion.NewCommand(rootCmd)
 }
 
 // NewVersionCommand returns a new version command.

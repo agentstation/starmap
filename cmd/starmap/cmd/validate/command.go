@@ -10,8 +10,8 @@ import (
 func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "validate",
-		GroupID: "management",
-		Short:   "Validate catalog configuration and structure",
+		GroupID: "development",
+		Short:   "Validate catalog structure",
 		Long: `Validate catalog configuration and structure.
 
 This command validates various aspects of the catalog including:

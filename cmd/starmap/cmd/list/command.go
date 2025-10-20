@@ -12,8 +12,8 @@ import (
 func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list [resource]",
-		GroupID: "core",
-		Short:   "List resources from local catalog",
+		GroupID: "catalog",
+		Short:   "List AI models, providers, and authors",
 		Long: `List displays resources from the local starmap catalog.
 
 Available subcommands:

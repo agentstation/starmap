@@ -12,7 +12,7 @@ func NewCommand(app application.Application) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:     "update [provider]",
-		GroupID: "core",
+		GroupID: "catalog",
 		Short:   "Synchronize catalog with all sources",
 		Args:    cobra.MaximumNArgs(1),
 		Long: `Update synchronizes your local starmap catalog by fetching the latest data

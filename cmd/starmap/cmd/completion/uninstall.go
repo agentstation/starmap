@@ -1,5 +1,4 @@
-// Package uninstall provides commands for uninstalling starmap components.
-package uninstall
+package completion
 
 import (
 	"fmt"
@@ -10,21 +9,21 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
-// NewCompletionCommand creates the uninstall completion subcommand.
-func NewCompletionCommand() *cobra.Command {
+// NewUninstallCommand creates the completion uninstall subcommand.
+func NewUninstallCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "completion",
-		Short: "Uninstall shell completions",
+		Use:   "uninstall",
+		Short: "Remove shell completions",
 		Long: `Remove shell completions for starmap.
 
 By default, removes completions for all supported shells (bash, zsh, fish).
 Use flags to remove from specific shells only.
 
 Examples:
-  starmap uninstall completion           # Remove from all shells
-  starmap uninstall completion --bash    # Remove from bash only  
-  starmap uninstall completion --zsh     # Remove from zsh only
-  starmap uninstall completion --fish    # Remove from fish only`,
+  starmap completion uninstall           # Remove from all shells
+  starmap completion uninstall --bash    # Remove from bash only
+  starmap completion uninstall --zsh     # Remove from zsh only
+  starmap completion uninstall --fish    # Remove from fish only`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			bash := mustGetBool(cmd, "bash")
 			zsh := mustGetBool(cmd, "zsh")
@@ -93,14 +92,4 @@ Examples:
 	cmd.Flags().Bool("fish", false, "Remove fish completions only")
 
 	return cmd
-}
-
-// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
-func mustGetBool(cmd *cobra.Command, name string) bool {
-	val, err := cmd.Flags().GetBool(name)
-	if err != nil {
-		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
-	}
-	return val
 }

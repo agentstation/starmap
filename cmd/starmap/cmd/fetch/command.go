@@ -12,8 +12,8 @@ import (
 func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "fetch [resource]",
-		GroupID: "core",
-		Short:   "Retrieve resources from provider APIs",
+		GroupID: "catalog",
+		Short:   "Fetch live data from provider APIs",
 		Long: `Fetch retrieves live data from provider APIs.
 
 This requires the appropriate API key to be configured either through

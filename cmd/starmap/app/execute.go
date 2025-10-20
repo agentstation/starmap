@@ -37,15 +37,25 @@ when API keys are configured.`,
 		SilenceErrors:     true,
 	}
 
-	// Add command groups
+	// Add command groups (workflow-based organization)
 	rootCmd.AddGroup(&cobra.Group{
-		ID:    "core",
-		Title: "Core Commands:",
+		ID:    "setup",
+		Title: "Setup Commands:",
 	})
 
 	rootCmd.AddGroup(&cobra.Group{
-		ID:    "management",
-		Title: "Management Commands:",
+		ID:    "catalog",
+		Title: "Catalog Commands:",
+	})
+
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "server",
+		Title: "Server Commands:",
+	})
+
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "development",
+		Title: "Development Commands:",
 	})
 
 	// Add global flags
@@ -94,24 +104,26 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 // registerCommands registers all subcommands with the root command.
 // This is where we wire up all the command handlers.
 func (a *App) registerCommands(rootCmd *cobra.Command) {
-	// Core commands
-	rootCmd.AddCommand(a.NewListCommand())
-	rootCmd.AddCommand(a.NewUpdateCommand())
-	rootCmd.AddCommand(a.NewServeCommand())
-	rootCmd.AddCommand(a.NewFetchCommand())
-
-	// Management commands
-	rootCmd.AddCommand(a.NewValidateCommand())
-	rootCmd.AddCommand(a.NewEmbedCommand())
+	// Setup commands (getting started)
 	rootCmd.AddCommand(a.NewAuthCommand())
 	rootCmd.AddCommand(a.NewDepsCommand())
-	rootCmd.AddCommand(a.NewGenerateCommand())
 
-	// Utility commands
+	// Catalog commands (working with models/providers)
+	rootCmd.AddCommand(a.NewListCommand())
+	rootCmd.AddCommand(a.NewFetchCommand())
+	rootCmd.AddCommand(a.NewUpdateCommand())
+
+	// Server commands (running the API)
+	rootCmd.AddCommand(a.NewServeCommand())
+
+	// Development commands (debugging and exploration)
+	rootCmd.AddCommand(a.NewValidateCommand())
+	rootCmd.AddCommand(a.NewEmbedCommand())
+
+	// Additional commands (no group)
+	rootCmd.AddCommand(a.NewCompletionCommand(rootCmd)) // Override Cobra's auto-generated completion
 	rootCmd.AddCommand(a.NewVersionCommand())
 	rootCmd.AddCommand(a.NewManCommand())
-	rootCmd.AddCommand(a.NewInstallCommand())
-	rootCmd.AddCommand(a.NewUninstallCommand())
 }
 
 // ExitOnError is a helper that prints an error and exits with status 1.

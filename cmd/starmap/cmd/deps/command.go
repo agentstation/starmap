@@ -8,8 +8,8 @@ import (
 func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "deps",
-		GroupID: "management",
-		Short:   "Manage external dependencies",
+		GroupID: "setup",
+		Short:   "Check and install external dependencies",
 		Long: `Check and manage external tool dependencies required by data sources.
 
 Data sources may require external tools like 'bun' for building data locally.

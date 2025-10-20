@@ -1,5 +1,4 @@
-// Package install provides commands for installing starmap components.
-package install
+package completion
 
 import (
 	"fmt"
@@ -10,10 +9,10 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 )
 
-// NewCompletionCommand creates the install completion subcommand.
-func NewCompletionCommand() *cobra.Command {
+// NewInstallCommand creates the completion install subcommand.
+func NewInstallCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "completion",
+		Use:   "install",
 		Short: "Install shell completions",
 		Long: `Install shell completions for starmap.
 
@@ -21,10 +20,10 @@ By default, installs completions for all supported shells (bash, zsh, fish).
 Use flags to install for specific shells only.
 
 Examples:
-  starmap install completion           # Install for all shells
-  starmap install completion --bash    # Install for bash only  
-  starmap install completion --zsh     # Install for zsh only
-  starmap install completion --fish    # Install for fish only`,
+  starmap completion install           # Install for all shells
+  starmap completion install --bash    # Install for bash only
+  starmap completion install --zsh     # Install for zsh only
+  starmap completion install --fish    # Install for fish only`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			bash := mustGetBool(cmd, "bash")
 			zsh := mustGetBool(cmd, "zsh")

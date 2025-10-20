@@ -9,8 +9,9 @@ import (
 // NewCommand creates the auth command using app context.
 func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "auth",
-		Short: "Manage authentication for AI providers",
+		Use:     "auth",
+		GroupID: "setup",
+		Short:   "Authenticate with AI providers",
 		Long: `Manage authentication credentials for AI provider APIs.
 
 This command helps you check, verify, and configure authentication
