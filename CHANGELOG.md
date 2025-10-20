@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.22] - 2025-10-20
+
+### BREAKING CHANGES
+- **CLI Restructuring**: Migrated from verb-first to resource-first command structure for improved discoverability and consistency
+  - `starmap list models` → `starmap models list`
+  - `starmap fetch models` → `starmap providers fetch`
+  - `starmap auth verify` → `starmap providers auth verify`
+  - `starmap auth status` → `starmap providers auth status`
+  - `starmap auth gcloud` → `starmap providers auth gcloud`
+  - See commit 2015cd0d for complete migration guide and rationale
+
+### Changed
+- **Documentation**: All markdown documentation updated to reflect new CLI structure
+  - Updated README.md with new command examples
+  - Updated CONTRIBUTING.md with new development patterns
+  - Updated docs/CLI.md with new command reference
+  - Updated docs/ARCHITECTURE.md with new CLI architecture
+  - Updated scripts/demo.tape VHS demo script
+- **Makefile**: Fixed completion installation command (`starmap completion install`)
+- **Internal References**: Updated all error messages, hints, and code comments with new command patterns
+
+### Fixed
+- Lint error in `cmd/starmap/cmd/embed/ls.go` (unused parameter)
+- Shell completion installation now uses correct command order
+- Contextual hints now reference correct command paths
+
+### Technical Details
+- No functionality removed - 100% feature parity maintained
+- All 27 flags preserved across commands (20 command-specific + 7 global)
+- Auth commands reused directly from old structure (zero implementation changes)
+- GoReleaser configuration updated for new command structure
+
 ## [0.0.15] - 2025-10-15
 
 ### Added
