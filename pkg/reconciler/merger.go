@@ -238,7 +238,7 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 	if baselineModel != nil {
 		// Compare models excluding timestamps
 		baselineCopy := *baselineModel
-		mergedCopy := merged
+		mergedCopy := *merged // Create a copy, not just copy the pointer
 		// Clear timestamps for comparison
 		baselineCopy.CreatedAt = utc.Time{}
 		baselineCopy.UpdatedAt = utc.Time{}

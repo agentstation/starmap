@@ -350,6 +350,10 @@
       type: openai
       url: https://api.openai.com/v1/models
       auth_required: true
+      author_mapping:
+        field: owned_by
+        normalized:
+          system: openai
   status_page_url: https://status.openai.com
   chat_completions:
     url: https://api.openai.com/v1/chat/completions

@@ -353,6 +353,201 @@ func TestResultBuilder(t *testing.T) {
 	}
 }
 
+func TestTimestampPreservation(t *testing.T) {
+	ctx := context.Background()
+
+	// Create a baseline catalog with models that have specific timestamps
+	parsedTime, err := time.Parse(time.RFC3339, "2024-01-01T00:00:00Z")
+	if err != nil {
+		t.Fatalf("Failed to parse baseline time: %v", err)
+	}
+	baselineTime := utc.New(parsedTime)
+	baseline := catalogs.NewEmpty()
+	baselineModel := &catalogs.Model{
+		ID:   "test-model",
+		Name: "Test Model",
+		Limits: &catalogs.ModelLimits{
+			ContextWindow: 8192,
+			OutputTokens:  4096,
+		},
+		Metadata: &catalogs.ModelMetadata{
+			ReleaseDate: baselineTime,
+		},
+		CreatedAt: baselineTime,
+		UpdatedAt: baselineTime,
+	}
+	if err := addTestModels(baseline, "test-provider", []*catalogs.Model{baselineModel}); err != nil {
+		t.Fatalf("Failed to add models to baseline catalog: %v", err)
+	}
+
+	t.Run("PreservesTimestampWhenNoChanges", func(t *testing.T) {
+		// Create a source with the same model (no changes)
+		unchangedCatalog := catalogs.NewEmpty()
+		unchangedModel := &catalogs.Model{
+			ID:   "test-model",
+			Name: "Test Model", // Same name
+			Limits: &catalogs.ModelLimits{
+				ContextWindow: 8192, // Same limits
+				OutputTokens:  4096,
+			},
+			Metadata: &catalogs.ModelMetadata{
+				ReleaseDate: baselineTime, // Same metadata
+			},
+		}
+		if err := addTestModels(unchangedCatalog, "test-provider", []*catalogs.Model{unchangedModel}); err != nil {
+			t.Fatalf("Failed to add models to unchanged catalog: %v", err)
+		}
+
+		// Create reconciler with baseline
+		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		if err != nil {
+			t.Fatalf("Failed to create reconciler: %v", err)
+		}
+
+		// Reconcile
+		srcMap := map[sources.ID]catalogs.Catalog{
+			sources.ProvidersID: unchangedCatalog,
+		}
+		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
+
+		result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
+		if err != nil {
+			t.Fatalf("Reconciliation failed: %v", err)
+		}
+
+		// Find the reconciled model
+		reconciledModel, err := result.Catalog.FindModel("test-model")
+		if err != nil {
+			t.Fatalf("Failed to find reconciled model: %v", err)
+		}
+
+		// Verify timestamps were preserved (not updated)
+		if !reconciledModel.UpdatedAt.Equal(baselineTime) {
+			t.Errorf("Expected UpdatedAt to be preserved as %v, got %v",
+				baselineTime, reconciledModel.UpdatedAt)
+		}
+
+		if !reconciledModel.CreatedAt.Equal(baselineTime) {
+			t.Errorf("Expected CreatedAt to be preserved as %v, got %v",
+				baselineTime, reconciledModel.CreatedAt)
+		}
+	})
+
+	t.Run("UpdatesTimestampWhenContentChanges", func(t *testing.T) {
+		// Create a source with a changed model
+		changedCatalog := catalogs.NewEmpty()
+		changedModel := &catalogs.Model{
+			ID:   "test-model",
+			Name: "Test Model Updated", // Changed name
+			Limits: &catalogs.ModelLimits{
+				ContextWindow: 16384, // Changed context window
+				OutputTokens:  4096,
+			},
+			Metadata: &catalogs.ModelMetadata{
+				ReleaseDate: baselineTime,
+			},
+		}
+		if err := addTestModels(changedCatalog, "test-provider", []*catalogs.Model{changedModel}); err != nil {
+			t.Fatalf("Failed to add models to changed catalog: %v", err)
+		}
+
+		// Create reconciler with baseline
+		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		if err != nil {
+			t.Fatalf("Failed to create reconciler: %v", err)
+		}
+
+		// Reconcile
+		srcMap := map[sources.ID]catalogs.Catalog{
+			sources.ProvidersID: changedCatalog,
+		}
+		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
+
+		result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
+		if err != nil {
+			t.Fatalf("Reconciliation failed: %v", err)
+		}
+
+		// Find the reconciled model
+		reconciledModel, err := result.Catalog.FindModel("test-model")
+		if err != nil {
+			t.Fatalf("Failed to find reconciled model: %v", err)
+		}
+
+		// Verify UpdatedAt was updated (not preserved)
+		if reconciledModel.UpdatedAt.Equal(baselineTime) {
+			t.Errorf("Expected UpdatedAt to be updated from %v, but it was preserved",
+				baselineTime)
+		}
+
+		// Verify CreatedAt was preserved
+		if !reconciledModel.CreatedAt.Equal(baselineTime) {
+			t.Errorf("Expected CreatedAt to be preserved as %v, got %v",
+				baselineTime, reconciledModel.CreatedAt)
+		}
+
+		// Verify content was actually updated
+		if reconciledModel.Name != "Test Model Updated" {
+			t.Errorf("Expected name to be updated to 'Test Model Updated', got %s",
+				reconciledModel.Name)
+		}
+	})
+
+	t.Run("SetsTimestampsForNewModel", func(t *testing.T) {
+		// Create a source with a new model
+		newCatalog := catalogs.NewEmpty()
+		newModel := &catalogs.Model{
+			ID:   "new-model",
+			Name: "New Model",
+			Limits: &catalogs.ModelLimits{
+				ContextWindow: 32768,
+				OutputTokens:  8192,
+			},
+		}
+		if err := addTestModels(newCatalog, "test-provider", []*catalogs.Model{newModel}); err != nil {
+			t.Fatalf("Failed to add models to new catalog: %v", err)
+		}
+
+		// Create reconciler with baseline
+		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		if err != nil {
+			t.Fatalf("Failed to create reconciler: %v", err)
+		}
+
+		// Reconcile
+		srcMap := map[sources.ID]catalogs.Catalog{
+			sources.ProvidersID: newCatalog,
+		}
+		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
+
+		result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
+		if err != nil {
+			t.Fatalf("Reconciliation failed: %v", err)
+		}
+
+		// Find the reconciled model
+		reconciledModel, err := result.Catalog.FindModel("new-model")
+		if err != nil {
+			t.Fatalf("Failed to find reconciled model: %v", err)
+		}
+
+		// Verify timestamps were set (not zero)
+		if reconciledModel.CreatedAt.IsZero() {
+			t.Error("Expected CreatedAt to be set for new model")
+		}
+
+		if reconciledModel.UpdatedAt.IsZero() {
+			t.Error("Expected UpdatedAt to be set for new model")
+		}
+
+		// Verify CreatedAt and UpdatedAt are the same for new models
+		if !reconciledModel.CreatedAt.Equal(reconciledModel.UpdatedAt) {
+			t.Errorf("Expected CreatedAt and UpdatedAt to be equal for new model, got %v and %v",
+				reconciledModel.CreatedAt, reconciledModel.UpdatedAt)
+		}
+	})
+}
+
 // Benchmark tests.
 func BenchmarkReconciliation(b *testing.B) {
 	ctx := context.Background()
