@@ -26,8 +26,8 @@ type Flags struct {
 	DryRun            bool
 	Force             bool
 	AutoApprove       bool
-	Output            string
-	Input             string
+	OutputDir         string
+	InputDir          string
 	Cleanup           bool
 	Reformat          bool
 	SourcesDir        string
@@ -52,9 +52,9 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Force fresh update (delete and recreate)")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
-	cmd.Flags().StringVar(&flags.Output, "output", "",
+	cmd.Flags().StringVar(&flags.OutputDir, "output-dir", "",
 		"Save updated catalog to directory")
-	cmd.Flags().StringVar(&flags.Input, "input", "",
+	cmd.Flags().StringVar(&flags.InputDir, "input-dir", "",
 		"Load catalog from directory instead of embedded")
 	cmd.Flags().BoolVar(&flags.Cleanup, "cleanup", false,
 		"Remove temporary models.dev repository after update")
@@ -89,7 +89,7 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 	}
 
 	// Load the appropriate catalog using app context
-	sm, err := LoadCatalog(app, flags.Input, quiet)
+	sm, err := LoadCatalog(app, flags.InputDir, quiet)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 // updateCatalog executes the update operation using app context.
 func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger *zerolog.Logger, quiet bool) error {
 	// Build update options - use default output path if not specified
-	outputPath := flags.Output
+	outputPath := flags.OutputDir
 	if outputPath == "" {
 		outputPath = expandPath(constants.DefaultCatalogPath)
 	}

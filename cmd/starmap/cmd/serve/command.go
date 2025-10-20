@@ -60,7 +60,7 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 	}
 
 	// Server configuration flags
-	cmd.Flags().IntP("port", "p", 8080, "Server port")
+	cmd.Flags().Int("port", 8080, "Server port")
 	cmd.Flags().String("host", "localhost", "Bind address")
 
 	// CORS flags

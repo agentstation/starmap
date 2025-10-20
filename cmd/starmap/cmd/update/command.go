@@ -22,7 +22,7 @@ from all configured sources:
 3. Embedded catalog - Baseline catalog data
 
 The command will:
-• Load the current catalog (embedded or from --input)
+• Load the current catalog (embedded or from --input-dir)
 • Fetch live data from provider APIs (if keys configured)
 • Enrich with models.dev data (pricing, limits, logos)
 • Reconcile all sources using field-level authority

@@ -45,7 +45,7 @@ Examples:
 		},
 	}
 
-	cmd.Flags().BoolP("verbose", "v", false, "Show detailed verification output")
+	cmd.Flags().Bool("verbose", false, "Show detailed verification output")
 	cmd.Flags().Duration("timeout", 10*time.Second, "Timeout for API calls")
 
 	return cmd

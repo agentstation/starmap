@@ -37,9 +37,9 @@ Examples:
   starmap embed ls --help               # Show help (or use -?)`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// If -h is used without -l, show help instead of using human-readable
+		// Human-readable sizes only make sense with long format
 		if lsHuman && !lsLong {
-			return cmd.Help()
+			lsLong = true // Auto-enable long format when human-readable is used
 		}
 
 		targetPath := "."
@@ -56,7 +56,7 @@ func init() {
 	// Define custom help flag ONLY for this ls subcommand to free up -h
 	LsCmd.Flags().BoolP("help", "?", false, "help for ls command")
 
-	// Now we can use -h for human-readable in this subcommand
+	// Now we can use -h for human-readable (like Unix ls)
 	LsCmd.Flags().BoolVarP(&lsLong, "long", "l", false, "use a long listing format")
 	LsCmd.Flags().BoolVarP(&lsHuman, "human-readable", "h", false, "print human readable sizes")
 	LsCmd.Flags().BoolVarP(&lsAll, "all", "a", false, "do not ignore entries starting with .")
