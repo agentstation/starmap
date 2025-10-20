@@ -88,11 +88,11 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Format))
+	formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Format {
+	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
 		authorPointers := make([]*catalogs.Author, len(filtered))
 		for i := range filtered {
@@ -137,10 +137,10 @@ func showAuthorDetails(cmd *cobra.Command, app application.Application, authorID
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Format))
+	formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 	// For table output, show detailed view
-	if globalFlags.Format == constants.FormatTable || globalFlags.Format == "" {
+	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
 		printAuthorDetails(author)
 		return nil
 	}

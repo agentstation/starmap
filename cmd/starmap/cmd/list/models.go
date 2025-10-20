@@ -114,11 +114,11 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Format))
+	formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Format {
+	switch globalFlags.Output {
 	case cmdconstants.FormatTable, cmdconstants.FormatWide, "":
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
@@ -156,10 +156,10 @@ func showModelDetails(cmd *cobra.Command, app application.Application, modelID s
 			if err != nil {
 				return err
 			}
-			formatter := format.NewFormatter(format.Format(globalFlags.Format))
+			formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 			// For table output, show detailed view
-			if globalFlags.Format == cmdconstants.FormatTable || globalFlags.Format == "" {
+			if globalFlags.Output == cmdconstants.FormatTable || globalFlags.Output == "" {
 				printModelDetails(model, provider)
 				return nil
 			}

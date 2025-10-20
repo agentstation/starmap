@@ -103,7 +103,7 @@ func (a *App) Logger() *zerolog.Logger {
 
 // OutputFormat returns the configured output format.
 func (a *App) OutputFormat() string {
-	return a.config.Format
+	return a.config.Output
 }
 
 // Starmap returns the starmap instance with optional configuration.

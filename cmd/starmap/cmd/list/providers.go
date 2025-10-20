@@ -98,11 +98,11 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Format))
+	formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Format {
+	switch globalFlags.Output {
 	case constants.FormatTable, constants.FormatWide, "":
 		providerPointers := make([]*catalogs.Provider, len(filtered))
 		for i := range filtered {
@@ -147,10 +147,10 @@ func showProviderDetails(cmd *cobra.Command, app application.Application, provid
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Format))
+	formatter := format.NewFormatter(format.Format(globalFlags.Output))
 
 	// For table output, show detailed view
-	if globalFlags.Format == constants.FormatTable || globalFlags.Format == "" {
+	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
 		printProviderDetails(provider)
 		return nil
 	}

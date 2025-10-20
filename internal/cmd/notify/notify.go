@@ -77,7 +77,7 @@ func NewFromCommand(cmd *cobra.Command) (*Notifier, error) {
 	}
 
 	// Configure from flags
-	config.OutputFormat = globalFlags.Format
+	config.OutputFormat = globalFlags.Output
 	config.ShowHints = !globalFlags.Quiet && !isCI()
 	config.UseColor = !globalFlags.NoColor && isTerminal(os.Stdout)
 

@@ -5,7 +5,7 @@ import "github.com/spf13/cobra"
 
 // Flags holds global common flags across all commands.
 type Flags struct {
-	Format  string
+	Output  string
 	Quiet   bool
 	Verbose bool
 	NoColor bool
@@ -15,9 +15,15 @@ type Flags struct {
 func AddFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
-	// Use -o for format (not -f) to avoid conflict with embed cat --filename
-	cmd.PersistentFlags().StringVarP(&flags.Format, "format", "o", "",
+	// Use -o for output (not -f) to avoid conflict with embed cat --filename
+	cmd.PersistentFlags().StringVarP(&flags.Output, "output", "o", "",
 		"Output format: table, json, yaml, wide")
+	// Add --format and --fmt as aliases for --output
+	cmd.PersistentFlags().StringVar(&flags.Output, "format", "", "")
+	cmd.PersistentFlags().StringVar(&flags.Output, "fmt", "", "")
+	_ = cmd.PersistentFlags().MarkHidden("format") // Hidden but functional
+	_ = cmd.PersistentFlags().MarkHidden("fmt")    // Hidden but functional
+
 	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
 		"Minimal output")
 	cmd.PersistentFlags().BoolVarP(&flags.Verbose, "verbose", "v", false,
@@ -38,13 +44,13 @@ func Parse(cmd *cobra.Command) (*Flags, error) {
 		root = root.Parent()
 	}
 
-	format, _ := root.PersistentFlags().GetString("format")
+	output, _ := root.PersistentFlags().GetString("output")
 	quiet, _ := root.PersistentFlags().GetBool("quiet")
 	verbose, _ := root.PersistentFlags().GetBool("verbose")
 	noColor, _ := root.PersistentFlags().GetBool("no-color")
 
 	return &Flags{
-		Format:  format,
+		Output:  output,
 		Quiet:   quiet,
 		Verbose: verbose,
 		NoColor: noColor,

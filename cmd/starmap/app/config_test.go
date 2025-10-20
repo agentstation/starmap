@@ -47,8 +47,8 @@ func TestConfig_EnvironmentVariables(t *testing.T) {
 	if !config.Verbose {
 		t.Error("VERBOSE environment variable not loaded")
 	}
-	if config.Format != "json" {
-		t.Errorf("FORMAT = %s, want json", config.Format)
+	if config.Output != "json" {
+		t.Errorf("OUTPUT = %s, want json", config.Output)
 	}
 }
 

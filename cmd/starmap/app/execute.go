@@ -53,13 +53,15 @@ when API keys are configured.`,
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output (shortcut for --log-level=debug)")
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output (shortcut for --log-level=warn)")
 	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")
-	// Use -o for format (not -f) to avoid conflict with embed cat --filename
-	rootCmd.PersistentFlags().StringVarP(&a.config.Format, "format", "o", "", "output format: table, json, yaml, wide")
+	// Use -o for output (not -f) to avoid conflict with embed cat --filename
+	rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "output format: table, json, yaml, wide")
 	rootCmd.PersistentFlags().StringVar(&a.config.LogLevel, "log-level", "", "log level: trace, debug, info, warn, error (overrides -v/-q)")
 
-	// Add --output as deprecated alias for --format (backwards compatibility)
-	rootCmd.PersistentFlags().StringVar(&a.config.Format, "output", "", "")
-	_ = rootCmd.PersistentFlags().MarkDeprecated("output", "use --format instead")
+	// Add --format and --fmt as aliases for --output (backwards compatibility)
+	rootCmd.PersistentFlags().StringVar(&a.config.Output, "format", "", "")
+	rootCmd.PersistentFlags().StringVar(&a.config.Output, "fmt", "", "")
+	_ = rootCmd.PersistentFlags().MarkHidden("format") // Hidden but functional
+	_ = rootCmd.PersistentFlags().MarkHidden("fmt")    // Hidden but functional
 
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
@@ -77,10 +79,10 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	verbose := mustGetBool(cmd, "verbose")
 	quiet := mustGetBool(cmd, "quiet")
 	noColor := mustGetBool(cmd, "no-color")
-	format := mustGetString(cmd, "format")
+	output := mustGetString(cmd, "output")
 	logLevel := mustGetString(cmd, "log-level")
 
-	a.config.UpdateFromFlags(verbose, quiet, noColor, format, logLevel)
+	a.config.UpdateFromFlags(verbose, quiet, noColor, output, logLevel)
 
 	// Reinitialize logger with updated config
 	logger := NewLogger(a.config)

@@ -11,7 +11,7 @@ import (
 
 // displayResults shows dependency check results in the requested format.
 func displayResults(results *CheckResults, flags *globals.Flags) error {
-	outputFormat := format.DetectFormat(flags.Format)
+	outputFormat := format.DetectFormat(flags.Output)
 	formatter := format.NewFormatter(outputFormat)
 
 	// For structured output (JSON/YAML), return the entire results object
