@@ -252,7 +252,7 @@ func getAuthStatusIcon(state auth.State) string {
 
 // AuthorsToTableData converts authors to table format.
 func AuthorsToTableData(authors []*catalogs.Author) Data {
-	headers := []string{"ID", "NAME", "MODELS", "WEBSITE"}
+	headers := []string{"ID", "NAME", "WEBSITE", "MODELS"}
 
 	rows := make([][]string, 0, len(authors))
 	for _, author := range authors {
@@ -264,8 +264,8 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 		row := []string{
 			string(author.ID),
 			author.Name,
-			fmt.Sprintf("%d", len(author.Models)),
 			website,
+			fmt.Sprintf("%d", len(author.Models)),
 		}
 		rows = append(rows, row)
 	}
@@ -273,6 +273,6 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 	return Data{
 		Headers:         headers,
 		Rows:            rows,
-		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignCenter, AlignDefault}, // Center the MODELS column
+		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignDefault, AlignCenter}, // Center the MODELS column
 	}
 }
