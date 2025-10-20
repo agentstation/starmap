@@ -37,9 +37,9 @@ Unlike 'status' which only checks if keys are set, this command
 makes actual API calls to verify the credentials are valid.
 
 Examples:
-  starmap auth verify           # Verify all configured providers
-  starmap auth verify openai    # Verify only OpenAI
-  starmap auth verify --verbose # Show detailed verification output`,
+  starmap providers auth verify           # Verify all configured providers
+  starmap providers auth verify openai    # Verify only OpenAI
+  starmap providers auth verify --verbose # Show detailed verification output`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runAuthVerify(cmd, args, app)
 		},

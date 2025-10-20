@@ -51,7 +51,7 @@ func BuildDetails() *Details {
 	if adcPath == "" {
 		return &Details{
 			State:        StateMissing,
-			ErrorMessage: "No ADC found. Run: starmap auth gcloud",
+			ErrorMessage: "No ADC found. Run: starmap providers auth gcloud",
 		}
 	}
 

@@ -81,10 +81,10 @@ install: ## Install the binary to GOPATH/bin and shell completions
 	@echo ""
 	@echo "$(BLUE)Installing shell completions...$(NC)"
 	@if command -v starmap >/dev/null 2>&1; then \
-		starmap install completion && echo "$(GREEN)✅ Completions installed for all shells$(NC)" || echo "$(YELLOW)⚠️  Some completions may have failed$(NC)"; \
+		starmap completion install && echo "$(GREEN)✅ Completions installed for all shells$(NC)" || echo "$(YELLOW)⚠️  Some completions may have failed$(NC)"; \
 	else \
 		echo "$(YELLOW)starmap not found in PATH. You may need to restart your shell first.$(NC)"; \
-		echo "$(YELLOW)Then run: starmap install completion$(NC)"; \
+		echo "$(YELLOW)Then run: starmap completion install$(NC)"; \
 	fi
 
 uninstall: ## Uninstall the binary from GOPATH/bin
@@ -235,15 +235,15 @@ update: ## Run update command with dry-run (use PROVIDER=name OUTPUT=dir for opt
 
 list-models: ## List all models in catalog
 	@echo "$(BLUE)Listing all models...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) list models
+	$(GOCMD) run $(MAIN_PATH) models list
 
 list-providers: ## List all providers
 	@echo "$(BLUE)Listing all providers...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) list providers
+	$(GOCMD) run $(MAIN_PATH) providers
 
 list-authors: ## List all authors
 	@echo "$(BLUE)Listing all authors...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) list authors
+	$(GOCMD) run $(MAIN_PATH) authors
 
 
 ##@ Release & CI Alignment
@@ -408,16 +408,16 @@ update-catalog-provider: ## Update specific provider in embedded catalog (use PR
 # Enhanced embed command with automatic authentication
 embed: ## Update embedded catalog with automatic Google Cloud auth
 	@echo "$(BLUE)Checking Google Cloud authentication...$(NC)"
-	@if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
+	@if $(GOCMD) run $(MAIN_PATH) providers auth gcloud --check 2>/dev/null; then \
 		echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
 	else \
 		echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
-		$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
+		$(GOCMD) run $(MAIN_PATH) providers auth gcloud || exit 1; \
 	fi
 	@echo "$(BLUE)Validating catalog structure...$(NC)"
 	@$(GOCMD) run $(MAIN_PATH) validate || exit 1
 	@echo "$(BLUE)Checking provider authentication...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) auth status
+	@$(GOCMD) run $(MAIN_PATH) providers auth status
 	@echo "$(BLUE)Updating embedded sources...$(NC)"
 	@curl -s https://models.dev/api.json -o internal/embedded/sources/models.dev/api.json || echo "$(YELLOW)Warning: Could not update models.dev api.json$(NC)"
 	@echo "$(BLUE)Updating embedded catalog...$(NC)"
@@ -432,11 +432,11 @@ embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
 	fi
 	@if [ "$(PROVIDER)" = "google-vertex" ] || [ "$(PROVIDER)" = "google-ai-studio" ]; then \
 		echo "$(BLUE)Checking Google Cloud authentication...$(NC)"; \
-		if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
+		if $(GOCMD) run $(MAIN_PATH) providers auth gcloud --check 2>/dev/null; then \
 			echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
 		else \
 			echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
-			$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
+			$(GOCMD) run $(MAIN_PATH) providers auth gcloud || exit 1; \
 		fi; \
 	fi
 	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
@@ -459,27 +459,27 @@ validate-models: ## Validate model definitions
 
 # Authentication targets
 auth: ## Check authentication status for all providers
-	@$(GOCMD) run $(MAIN_PATH) auth
+	@$(GOCMD) run $(MAIN_PATH) providers auth status
 
 auth-status: ## Show authentication status (same as auth)
-	@$(GOCMD) run $(MAIN_PATH) auth status
+	@$(GOCMD) run $(MAIN_PATH) providers auth status
 
 auth-verify: ## Verify credentials work with test API calls
-	@$(GOCMD) run $(MAIN_PATH) auth verify
+	@$(GOCMD) run $(MAIN_PATH) providers auth verify
 
 auth-gcloud: ## Authenticate with Google Cloud
-	@$(GOCMD) run $(MAIN_PATH) auth gcloud
+	@$(GOCMD) run $(MAIN_PATH) providers auth gcloud
 
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"
 	@echo "$(YELLOW)Testing OpenAI...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) providers fetch openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
 	@echo "$(YELLOW)Testing Anthropic...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) providers fetch anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
 	@echo "$(YELLOW)Testing Groq...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) providers fetch groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
 	@echo "$(YELLOW)Testing Google AI Studio...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) providers fetch google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
 
 # Testdata management targets
 # Examples:

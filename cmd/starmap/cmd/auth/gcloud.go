@@ -23,10 +23,10 @@ By default, checks if authenticated and runs 'gcloud auth application-default lo
 Use --check to only verify status without authenticating.
 
 Examples:
-  starmap auth gcloud           # Authenticate if needed
-  starmap auth gcloud --check   # Check status only (exit 0 if authenticated)
-  starmap auth gcloud --force   # Force re-authentication
-  starmap auth gcloud --project my-project  # Set default project`,
+  starmap providers auth gcloud           # Authenticate if needed
+  starmap providers auth gcloud --check   # Check status only (exit 0 if authenticated)
+  starmap providers auth gcloud --force   # Force re-authentication
+  starmap providers auth gcloud --project my-project  # Set default project`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runGCloudAuth(cmd, args)
 		},
@@ -114,7 +114,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	_, currentProject, _ := checkGCloudAuthentication(ctx)
 	if currentProject == "" {
 		fmt.Printf("\n%s No default project set.\n", emoji.Warning)
-		fmt.Println("Set one with: starmap auth gcloud --project YOUR_PROJECT_ID")
+		fmt.Println("Set one with: starmap providers auth gcloud --project YOUR_PROJECT_ID")
 		fmt.Println("Or: gcloud config set project YOUR_PROJECT_ID")
 	}
 

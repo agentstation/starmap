@@ -336,8 +336,8 @@ starmap <verb> <noun> [arguments] [flags]
 
 **Examples:**
 ```bash
-starmap list models                    # verb=list, noun=models
-starmap fetch models anthropic         # verb=fetch, noun=models, arg=anthropic
+starmap models list                    # resource=models, subcommand=list
+starmap providers fetch anthropic      # resource=providers, subcommand=fetch, arg=anthropic
 starmap update openai                  # verb=update, arg=openai
 ```
 

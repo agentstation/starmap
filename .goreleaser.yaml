@@ -252,18 +252,18 @@ homebrew_casks:
     # Custom caveats
     caveats: |
       Starmap has been installed! ⭐🗺️
-      
+
       Quick start:
-        starmap list models              # List all AI models
-        starmap fetch models --provider openai  # Fetch live model data
+        starmap models list              # List all AI models
+        starmap providers fetch openai   # Fetch live model data
         starmap update                   # Update entire catalog
         starmap --help                   # Show all commands
-      
+
       Shell completions have been installed to:
         Bash: #{HOMEBREW_PREFIX}/etc/bash_completion.d
         Zsh:  #{HOMEBREW_PREFIX}/share/zsh/site-functions
         Fish: #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
-      
+
       Documentation: https://starmap.agentstation.ai/
 
 # Sign release artifacts

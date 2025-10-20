@@ -47,7 +47,7 @@ func authHintProvider(ctx Context) []*Hint {
 		if len(ctx.UserState.AuthProviders) > 0 {
 			hints = append(hints, NewCommand(
 				"Test that your credentials work",
-				"starmap auth verify",
+				"starmap providers auth verify",
 			).WithTags("verification", "next-step"))
 		}
 	}
@@ -60,7 +60,7 @@ func authHintProvider(ctx Context) []*Hint {
 
 		hints = append(hints, NewCommand(
 			"View current authentication status",
-			"starmap auth status",
+			"starmap providers auth status",
 		).WithTags("troubleshooting", "auth"))
 	}
 
@@ -91,7 +91,7 @@ func onboardingHintProvider(ctx Context) []*Hint {
 	if ctx.Command == "help" || ctx.Command == "version" || len(ctx.UserState.AuthProviders) == 0 {
 		hints = append(hints, NewCommand(
 			"Start by checking authentication status",
-			"starmap auth status",
+			"starmap providers auth status",
 		).WithTags("onboarding", "getting-started"))
 	}
 
@@ -107,14 +107,14 @@ func commandHintProvider(ctx Context) []*Hint {
 		if ctx.Subcommand == "models" && ctx.Succeeded {
 			hints = append(hints, NewCommand(
 				"Get detailed information about a specific model",
-				"starmap list models <model-name>",
+				"starmap models <model-name>",
 			).WithTags("exploration", "models"))
 		}
 
 		if ctx.Subcommand == "providers" && ctx.Succeeded {
 			hints = append(hints, NewCommand(
 				"View authentication status for providers",
-				"starmap auth status",
+				"starmap providers auth status",
 			).WithTags("exploration", "auth"))
 		}
 
@@ -122,7 +122,7 @@ func commandHintProvider(ctx Context) []*Hint {
 		if ctx.Succeeded {
 			hints = append(hints, NewCommand(
 				"Verify updated provider credentials",
-				"starmap auth verify",
+				"starmap providers auth verify",
 			).WithTags("verification", "update"))
 		}
 
@@ -161,7 +161,7 @@ func errorRecoveryHintProvider(ctx Context) []*Hint {
 	case "auth_failed":
 		hints = append(hints, NewCommand(
 			"Check your API key configuration",
-			"starmap auth status",
+			"starmap providers auth status",
 		).WithTags("recovery", "auth"))
 
 	case "network_error":

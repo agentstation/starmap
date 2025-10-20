@@ -30,7 +30,7 @@ This shows:
 
 The command checks environment variables and credential files
 but does not make actual API calls to verify credentials work.
-Use 'starmap auth verify' to test credentials.`,
+Use 'starmap providers auth verify' to test credentials.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runAuthStatus(cmd, args, app)
 		},

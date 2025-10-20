@@ -151,16 +151,16 @@ See [docs/DOCKER.md](docs/DOCKER.md) for detailed deployment guides including Ku
 
 ```bash
 # List all models
-starmap list models
+starmap models list
 
 # Filter by provider
-starmap list models --provider openai
+starmap models list --provider openai
 
 # Search by capability
-starmap list models --capability vision
+starmap models list --capability vision
 
 # Export as JSON
-starmap list models --format json > models.json
+starmap models list --format json > models.json
 ```
 
 ### Go Package: Basic Usage
@@ -276,9 +276,9 @@ For architecture details and reconciliation strategies, see **[ARCHITECTURE.md Â
 
 ```bash
 # Discovery
-starmap list models              # List all models
-starmap list providers          # List all providers  
-starmap list authors            # List all authors
+starmap models list              # List all models
+starmap providers                # List all providers
+starmap authors                  # List all authors
 
 # Update catalog
 starmap update                  # Update all providers
@@ -288,7 +288,7 @@ starmap update --dry-run        # Preview changes
 # Development
 starmap validate                # Validate configurations
 starmap deps check              # Check dependency status
-starmap generate completion bash # Generate shell completion
+starmap completion bash         # Generate shell completion
 ```
 
 ### Advanced Update Workflows
@@ -603,23 +603,22 @@ Check and verify your authentication setup:
 
 ```bash
 # Check authentication status for all providers
-starmap auth status
+starmap providers auth status
 
 # Verify credentials by making test API calls
-starmap auth verify
+starmap providers auth verify
 
 # Check specific provider
-starmap auth verify --provider openai
+starmap providers auth verify openai
 
 # JSON output for automation
-starmap auth status --format json
+starmap providers auth status --format json
 
 # Manage Google Cloud authentication
-starmap auth gcloud login
-starmap auth gcloud status
+starmap providers auth gcloud
 ```
 
-The `auth status` command shows:
+The `providers auth status` command shows:
 - Which providers have configured credentials
 - Authentication method (API key, ADC, OAuth)
 - Credential source (environment variable, config file, application default)

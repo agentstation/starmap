@@ -13,8 +13,8 @@ Starmap's CLI follows industry best practices with a focus on:
 - **Ergonomics** - Short flags for common operations
 
 **Framework**: [Cobra](https://github.com/spf13/cobra)
-**Pattern**: VERB-NOUN command structure
-**Philosophy**: Positional arguments for resources, flags for modifiers
+**Pattern**: RESOURCE-FIRST command structure with subcommands
+**Philosophy**: Resource commands as parents, subcommands for actions, positional arguments for identity, flags for modifiers
 
 ## Global Flags (Reserved)
 
@@ -86,7 +86,7 @@ Use positional arguments for the primary resource or identity:
 ```bash
 # ✅ Good - resource is positional
 starmap update openai
-starmap fetch models anthropic
+starmap providers fetch anthropic
 
 # ❌ Avoid - resource as flag
 starmap update --provider openai
@@ -104,7 +104,7 @@ Use flags for filtering, options, and modifiers:
 ```bash
 # ✅ Good - options as flags
 starmap update openai --dry --force
-starmap list models --provider openai --format json
+starmap models list --provider openai --format json
 
 # Positional: what (resource/identity)
 # Flags: how (behavior modifiers)
@@ -229,15 +229,15 @@ starmap update openai             # Positional argument for provider
 starmap update openai --dry       # Short flag for common option
 starmap update --force -y         # Multiple short flags
 
-# Fetch command
-starmap fetch models              # Fetch all providers
-starmap fetch models anthropic    # Positional argument
-starmap fetch models --raw        # Long flag only (less common)
+# Providers fetch command
+starmap providers fetch              # Fetch all providers
+starmap providers fetch anthropic    # Positional argument
+starmap providers fetch --raw        # Long flag only (less common)
 
-# List command
-starmap list models               # List all
-starmap list models -o json       # Global output format flag
-starmap list models --provider openai --tag multimodal  # Filtering flags
+# Models list command
+starmap models list               # List all
+starmap models list -o json       # Global output format flag
+starmap models list --provider openai --tag multimodal  # Filtering flags
 
 # Embed ls command
 starmap embed ls -lah             # Unix-like combined short flags
@@ -296,8 +296,8 @@ When Starmap reaches 1.0, we may need:
 
 Consider adding common aliases:
 ```bash
-starmap ls models      # Alias for "list models"
-starmap get models     # Alias for "list models"
+starmap ls             # Alias for "models list"
+starmap get            # Alias for "models list"
 starmap sync           # Alias for "update"
 ```
 

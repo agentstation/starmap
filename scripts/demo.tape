@@ -50,7 +50,7 @@ Ctrl+L
 Type "# First, let's see all available models"
 Enter
 Sleep 3s
-Type "./starmap list models | head -26"
+Type "./starmap models list | head -26"
 Sleep 4s
 Enter
 Sleep 7s

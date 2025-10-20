@@ -52,10 +52,10 @@ make build
 
 ```bash
 # Run the built binary
-./bin/starmap version
+./starmap version
 
 # Run with embedded catalog
-./bin/starmap list models
+./starmap models list
 ```
 
 ## Development Workflow

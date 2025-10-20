@@ -36,7 +36,7 @@ Examples:
   starmap embed ls -lah sources         # Long, all files, human-readable sizes
   starmap embed ls -?                   # Show help`,
 	Args: cobra.MaximumNArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		// Human-readable sizes only make sense with long format
 		if lsHuman && !lsLong {
 			lsLong = true // Auto-enable long format when human-readable is used
