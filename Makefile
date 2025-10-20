@@ -473,13 +473,13 @@ auth-gcloud: ## Authenticate with Google Cloud
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"
 	@echo "$(YELLOW)Testing OpenAI...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models --provider openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models openai | head -5 || echo "$(RED)OpenAI: Failed$(NC)"
 	@echo "$(YELLOW)Testing Anthropic...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models --provider anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models anthropic | head -5 || echo "$(RED)Anthropic: Failed$(NC)"
 	@echo "$(YELLOW)Testing Groq...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models --provider groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models groq | head -5 || echo "$(RED)Groq: Failed$(NC)"
 	@echo "$(YELLOW)Testing Google AI Studio...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) fetch models --provider google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
+	@$(GOCMD) run $(MAIN_PATH) fetch models google-ai-studio | head -5 || echo "$(RED)Google AI Studio: Failed$(NC)"
 
 # Testdata management targets
 # Examples:

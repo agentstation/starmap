@@ -1,5 +1,5 @@
-// Package output provides formatters for command output.
-package output
+// Package format provides formatters for command output.
+package format
 
 import (
 	"encoding/json"

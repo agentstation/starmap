@@ -9,13 +9,13 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // Formatter formats hints for different output types.
 type Formatter struct {
 	writer io.Writer
-	format output.Format
+	format format.Format
 	config FormatterConfig
 }
 
@@ -27,7 +27,7 @@ type FormatterConfig struct {
 }
 
 // NewFormatter creates a new hint formatter.
-func NewFormatter(w io.Writer, format output.Format) *Formatter {
+func NewFormatter(w io.Writer, format format.Format) *Formatter {
 	return &Formatter{
 		writer: w,
 		format: format,
@@ -52,11 +52,11 @@ func (f *Formatter) FormatHints(hints []*Hint) error {
 	}
 
 	switch f.format {
-	case output.FormatJSON:
+	case format.FormatJSON:
 		return f.formatJSON(hints)
-	case output.FormatYAML:
+	case format.FormatYAML:
 		return f.formatYAML(hints)
-	case output.FormatTable, output.FormatWide:
+	case format.FormatTable, format.FormatWide:
 		return f.formatTable(hints)
 	default:
 		return f.formatPlain(hints)
@@ -193,12 +193,12 @@ func (f *Formatter) formatHintContent(hint *Hint) []string {
 }
 
 // Display is a convenience function to format and display hints.
-func Display(w io.Writer, format output.Format, hints []*Hint) error {
+func Display(w io.Writer, format format.Format, hints []*Hint) error {
 	formatter := NewFormatter(w, format)
 	return formatter.FormatHints(hints)
 }
 
 // DisplayHint is a convenience function to format and display a single hint.
-func DisplayHint(w io.Writer, format output.Format, hint *Hint) error {
+func DisplayHint(w io.Writer, format format.Format, hint *Hint) error {
 	return Display(w, format, []*Hint{hint})
 }

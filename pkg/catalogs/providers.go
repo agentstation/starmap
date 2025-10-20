@@ -59,6 +59,31 @@ func (p *Providers) Get(id ProviderID) (*Provider, bool) {
 	return provider, ok
 }
 
+// Resolve returns a provider by ID or alias.
+// It first tries an exact ID match, then searches all provider aliases.
+// This allows commands to accept both canonical IDs and common aliases silently.
+func (p *Providers) Resolve(id ProviderID) (*Provider, bool) {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	// Try exact match first
+	if provider, ok := p.providers[id]; ok {
+		return provider, true
+	}
+
+	// Search aliases
+	for _, provider := range p.providers {
+		for _, alias := range provider.Aliases {
+			if alias == id {
+				// Found via alias - return the provider with canonical ID
+				return p.providers[provider.ID], true
+			}
+		}
+	}
+
+	return nil, false
+}
+
 // Set sets a provider by id. Returns an error if provider is nil.
 func (p *Providers) Set(id ProviderID, provider *Provider) error {
 	if provider == nil {

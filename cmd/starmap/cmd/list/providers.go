@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -98,18 +98,18 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 	if err != nil {
 		return err
 	}
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Output {
+	switch globalFlags.Format {
 	case constants.FormatTable, constants.FormatWide, "":
 		providerPointers := make([]*catalogs.Provider, len(filtered))
 		for i := range filtered {
 			providerPointers[i] = &filtered[i]
 		}
 		tableData := table.ProvidersToTableData(providerPointers, checker, supportedMap)
-		outputData = output.Data{
+		outputData = format.Data{
 			Headers:         tableData.Headers,
 			Rows:            tableData.Rows,
 			ColumnAlignment: tableData.ColumnAlignment,
@@ -133,8 +133,8 @@ func showProviderDetails(cmd *cobra.Command, app application.Application, provid
 		return err
 	}
 
-	// Find specific provider
-	provider, exists := cat.Providers().Get(catalogs.ProviderID(providerID))
+	// Find specific provider (supports aliases)
+	provider, exists := cat.Providers().Resolve(catalogs.ProviderID(providerID))
 	if !exists {
 		cmd.SilenceUsage = true
 		return &errors.NotFoundError{
@@ -147,10 +147,10 @@ func showProviderDetails(cmd *cobra.Command, app application.Application, provid
 	if err != nil {
 		return err
 	}
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 	// For table output, show detailed view
-	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
+	if globalFlags.Format == constants.FormatTable || globalFlags.Format == "" {
 		printProviderDetails(provider)
 		return nil
 	}

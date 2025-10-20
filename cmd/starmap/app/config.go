@@ -19,7 +19,7 @@ type Config struct {
 	Verbose bool
 	Quiet   bool
 	NoColor bool
-	Output  string
+	Format  string
 
 	// Config file
 	ConfigFile string
@@ -80,7 +80,7 @@ func LoadConfig() (*Config, error) {
 		Verbose: viper.GetBool("verbose"),
 		Quiet:   viper.GetBool("quiet"),
 		NoColor: viper.GetBool("no-color"),
-		Output:  viper.GetString("output"),
+		Format:  viper.GetString("format"),
 
 		// Config file
 		ConfigFile: viper.ConfigFileUsed(),
@@ -113,12 +113,12 @@ func LoadConfig() (*Config, error) {
 // UpdateFromFlags updates config values from parsed command flags.
 // This should be called after cobra parses flags to ensure flag
 // values take precedence over config file and env vars.
-func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, output, logLevel string) {
+func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, format, logLevel string) {
 	c.Verbose = verbose
 	c.Quiet = quiet
 	c.NoColor = noColor
-	if output != "" {
-		c.Output = output
+	if format != "" {
+		c.Format = format
 	}
 	if logLevel != "" {
 		c.LogLevel = logLevel

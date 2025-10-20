@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // displayValidationTable shows validation results in a table format.
@@ -13,7 +13,7 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 		return
 	}
 
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 
 	headers := []string{"Component", "Status", "Issues"}
 	if verbose {
@@ -37,7 +37,7 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 		rows = append(rows, row)
 	}
 
-	tableData := output.Data{
+	tableData := format.Data{
 		Headers: headers,
 		Rows:    rows,
 	}

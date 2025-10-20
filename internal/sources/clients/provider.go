@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
+	"time"
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -50,11 +52,23 @@ func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
 	}
 }
 
+// FetchRawResult contains the result of a raw fetch operation.
+type FetchRawResult struct {
+	Data       []byte
+	Response   *http.Response
+	Latency    time.Duration
+	RequestURL string
+}
+
 // FetchRaw fetches raw response data from a provider's API endpoint.
 // This function is used for fetching raw API responses for testdata generation.
-func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) ([]byte, error) {
+// Returns a FetchRawResult containing the data, response headers, latency, and URL.
+func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) (*FetchRawResult, error) {
 	// Create transport client configured for this provider
 	transportClient := transport.New(provider)
+
+	// Track start time for latency calculation
+	startTime := time.Now()
 
 	// Make the raw request
 	resp, err := transportClient.Get(ctx, endpoint, provider)
@@ -72,11 +86,21 @@ func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string)
 		_ = resp.Body.Close()
 	}()
 
+	// Calculate latency
+	latency := time.Since(startTime)
+
 	// Read raw response body
 	rawData, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.WrapIO("read", "response body", err)
 	}
 
-	return rawData, nil
+	result := &FetchRawResult{
+		Data:       rawData,
+		Response:   resp,
+		Latency:    latency,
+		RequestURL: endpoint,
+	}
+
+	return result, nil
 }

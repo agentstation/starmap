@@ -160,7 +160,7 @@ starmap list models --provider openai
 starmap list models --capability vision
 
 # Export as JSON
-starmap export --format json > models.json
+starmap list models --format json > models.json
 ```
 
 ### Go Package: Basic Usage
@@ -341,10 +341,10 @@ Use `starmap deps check` to verify dependency status before running updates:
 starmap deps check
 
 # JSON output for tooling
-starmap deps check --output json
+starmap deps check --format json
 
 # YAML output
-starmap deps check --output yaml
+starmap deps check --format yaml
 ```
 
 The command shows:
@@ -612,7 +612,7 @@ starmap auth verify
 starmap auth verify --provider openai
 
 # JSON output for automation
-starmap auth status --output json
+starmap auth status --format json
 
 # Manage Google Cloud authentication
 starmap auth gcloud login

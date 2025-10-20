@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -77,12 +77,12 @@ func printGoogleCloudStatus(provider *catalogs.Provider, checker *auth.Checker) 
 		}
 
 		// Display table
-		tableData := output.Data{
+		tableData := format.Data{
 			Headers: []string{"PROPERTY", "VALUE"},
 			Rows:    rows,
 		}
 
-		formatter := output.NewFormatter(output.FormatTable)
+		formatter := format.NewFormatter(format.FormatTable)
 		_ = formatter.Format(os.Stdout, tableData)
 
 	case adc.StateMissing:
@@ -91,12 +91,12 @@ func printGoogleCloudStatus(provider *catalogs.Provider, checker *auth.Checker) 
 			{"Error Message", details.ErrorMessage},
 		}
 
-		tableData := output.Data{
+		tableData := format.Data{
 			Headers: []string{"PROPERTY", "VALUE"},
 			Rows:    rows,
 		}
 
-		formatter := output.NewFormatter(output.FormatTable)
+		formatter := format.NewFormatter(format.FormatTable)
 		_ = formatter.Format(os.Stdout, tableData)
 
 	case adc.StateInvalid:
@@ -112,12 +112,12 @@ func printGoogleCloudStatus(provider *catalogs.Provider, checker *auth.Checker) 
 			rows = append(rows, []string{"Error", details.ErrorMessage})
 		}
 
-		tableData := output.Data{
+		tableData := format.Data{
 			Headers: []string{"PROPERTY", "VALUE"},
 			Rows:    rows,
 		}
 
-		formatter := output.NewFormatter(output.FormatTable)
+		formatter := format.NewFormatter(format.FormatTable)
 		_ = formatter.Format(os.Stdout, tableData)
 
 	default:
@@ -210,12 +210,12 @@ func printAPIKeyDetails(provider *catalogs.Provider, status *auth.Status) {
 	}
 
 	// Display table
-	tableData := output.Data{
+	tableData := format.Data{
 		Headers: []string{"PROPERTY", "VALUE"},
 		Rows:    rows,
 	}
 
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 	_ = formatter.Format(os.Stdout, tableData)
 }
 
@@ -264,14 +264,14 @@ func printAuthSummary(cmd *cobra.Command, app application.Application, verbose b
 	}
 
 	if len(summaryRows) > 0 {
-		summaryData := output.Data{
+		summaryData := format.Data{
 			Headers: []string{"Status", "Count"},
 			Rows:    summaryRows,
 		}
 
 		// Get output format from app context
-		outputFormat := output.DetectFormat(app.OutputFormat())
-		formatter := output.NewFormatter(outputFormat)
+		outputFormat := format.DetectFormat(app.OutputFormat())
+		formatter := format.NewFormatter(outputFormat)
 		if err := formatter.Format(os.Stdout, summaryData); err != nil {
 			return err
 		}
@@ -376,7 +376,7 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 		return
 	}
 
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 
 	// Prepare table data
 	headers := []string{"Provider", "Status", "Response Time", "Models"}
@@ -402,7 +402,7 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 		rows = append(rows, row)
 	}
 
-	tableData := output.Data{
+	tableData := format.Data{
 		Headers: headers,
 		Rows:    rows,
 	}

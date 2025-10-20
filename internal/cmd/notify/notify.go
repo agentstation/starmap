@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/alerts"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/hints"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // Notifier is the main public API for sending alerts and displaying hints.
@@ -77,7 +77,7 @@ func NewFromCommand(cmd *cobra.Command) (*Notifier, error) {
 	}
 
 	// Configure from flags
-	config.OutputFormat = globalFlags.Output
+	config.OutputFormat = globalFlags.Format
 	config.ShowHints = !globalFlags.Quiet && !isCI()
 	config.UseColor = !globalFlags.NoColor && isTerminal(os.Stdout)
 
@@ -163,11 +163,11 @@ func (n *Notifier) WithConfig(config Config) *Notifier {
 }
 
 // detectOutputFormat determines the output format from a string.
-func detectOutputFormat(format string) output.Format {
-	if format == "" || format == "auto" {
-		return output.DetectFormat("")
+func detectOutputFormat(formatStr string) format.Format {
+	if formatStr == "" || formatStr == "auto" {
+		return format.DetectFormat("")
 	}
-	return output.Format(strings.ToLower(format))
+	return format.Format(strings.ToLower(formatStr))
 }
 
 // isTerminal checks if the given writer is a terminal.

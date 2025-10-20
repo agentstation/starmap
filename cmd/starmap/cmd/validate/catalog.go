@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // ValidationResult represents the result of validating a catalog component.
@@ -142,11 +142,11 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	fmt.Println()
 
 	// Display results in configured output format
-	outputFormat := output.DetectFormat(app.OutputFormat())
-	if outputFormat == output.FormatTable {
+	outputFormat := format.DetectFormat(app.OutputFormat())
+	if outputFormat == format.FormatTable {
 		displayValidationTable(results, verbose)
 	} else {
-		formatter := output.NewFormatter(outputFormat)
+		formatter := format.NewFormatter(outputFormat)
 		return formatter.Format(os.Stdout, results)
 	}
 

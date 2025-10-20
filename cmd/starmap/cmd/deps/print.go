@@ -6,16 +6,16 @@ import (
 
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // displayResults shows dependency check results in the requested format.
 func displayResults(results *CheckResults, flags *globals.Flags) error {
-	format := output.DetectFormat(flags.Output)
-	formatter := output.NewFormatter(format)
+	outputFormat := format.DetectFormat(flags.Format)
+	formatter := format.NewFormatter(outputFormat)
 
 	// For structured output (JSON/YAML), return the entire results object
-	if format == output.FormatJSON || format == output.FormatYAML {
+	if outputFormat == format.FormatJSON || outputFormat == format.FormatYAML {
 		return formatter.Format(os.Stdout, results)
 	}
 
@@ -49,12 +49,12 @@ func displayTableResults(results *CheckResults) error {
 func displaySummaryTable(results *CheckResults) error {
 	rows := buildSummaryTableRows(results)
 
-	tableData := output.Data{
+	tableData := format.Data{
 		Headers: []string{"Source", "Status", "Dependencies"},
 		Rows:    rows,
 	}
 
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 	return formatter.Format(os.Stdout, tableData)
 }
 
@@ -138,12 +138,12 @@ func displaySourceDetails(results *CheckResults) {
 
 		// Build dependency table for this source
 		rows := buildSourceDependencyRows(sourceStatus)
-		tableData := output.Data{
+		tableData := format.Data{
 			Headers: []string{"Dependency", "Status", "Version", "Path", "Purpose"},
 			Rows:    rows,
 		}
 
-		formatter := output.NewFormatter(output.FormatTable)
+		formatter := format.NewFormatter(format.FormatTable)
 		_ = formatter.Format(os.Stdout, tableData)
 
 		// Show alternative source if available

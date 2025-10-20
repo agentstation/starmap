@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -88,18 +88,18 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 	if err != nil {
 		return err
 	}
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Output {
+	switch globalFlags.Format {
 	case constants.FormatTable, constants.FormatWide, "":
 		authorPointers := make([]*catalogs.Author, len(filtered))
 		for i := range filtered {
 			authorPointers[i] = &filtered[i]
 		}
 		tableData := table.AuthorsToTableData(authorPointers)
-		outputData = output.Data{
+		outputData = format.Data{
 			Headers:         tableData.Headers,
 			Rows:            tableData.Rows,
 			ColumnAlignment: tableData.ColumnAlignment,
@@ -123,8 +123,8 @@ func showAuthorDetails(cmd *cobra.Command, app application.Application, authorID
 		return err
 	}
 
-	// Find specific author
-	author, exists := cat.Authors().Get(catalogs.AuthorID(authorID))
+	// Find specific author (supports aliases)
+	author, exists := cat.Authors().Resolve(catalogs.AuthorID(authorID))
 	if !exists {
 		cmd.SilenceUsage = true
 		return &errors.NotFoundError{
@@ -137,10 +137,10 @@ func showAuthorDetails(cmd *cobra.Command, app application.Application, authorID
 	if err != nil {
 		return err
 	}
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 	// For table output, show detailed view
-	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
+	if globalFlags.Format == constants.FormatTable || globalFlags.Format == "" {
 		printAuthorDetails(author)
 		return nil
 	}

@@ -13,7 +13,7 @@ import (
 	cmdconstants "github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/convert"
@@ -114,18 +114,18 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	if err != nil {
 		return err
 	}
-	formatter := output.NewFormatter(output.Format(globalFlags.Output))
+	formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 	// Transform to output format
 	var outputData any
-	switch globalFlags.Output {
+	switch globalFlags.Format {
 	case cmdconstants.FormatTable, cmdconstants.FormatWide, "":
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
 			modelPointers[i] = &filtered[i]
 		}
 		tableData := table.ModelsToTableData(modelPointers, showDetails)
-		outputData = output.Data{
+		outputData = format.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
 		}
@@ -156,10 +156,10 @@ func showModelDetails(cmd *cobra.Command, app application.Application, modelID s
 			if err != nil {
 				return err
 			}
-			formatter := output.NewFormatter(output.Format(globalFlags.Output))
+			formatter := format.NewFormatter(format.Format(globalFlags.Format))
 
 			// For table output, show detailed view
-			if globalFlags.Output == cmdconstants.FormatTable || globalFlags.Output == "" {
+			if globalFlags.Format == cmdconstants.FormatTable || globalFlags.Format == "" {
 				printModelDetails(model, provider)
 				return nil
 			}

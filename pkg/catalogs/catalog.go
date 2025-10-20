@@ -206,9 +206,10 @@ func (cat *catalog) Endpoints() *Endpoints {
 	return cat.endpoints
 }
 
-// Provider returns a provider by ID.
+// Provider returns a provider by ID or alias.
+// Silently resolves aliases to canonical provider IDs.
 func (cat *catalog) Provider(id ProviderID) (Provider, error) {
-	provider, ok := cat.providers.Get(id)
+	provider, ok := cat.providers.Resolve(id)
 	if !ok {
 		return Provider{}, &errors.NotFoundError{
 			Resource: "provider",
@@ -218,9 +219,10 @@ func (cat *catalog) Provider(id ProviderID) (Provider, error) {
 	return *provider, nil
 }
 
-// Author returns an author by ID.
+// Author returns an author by ID or alias.
+// Silently resolves aliases to canonical author IDs.
 func (cat *catalog) Author(id AuthorID) (Author, error) {
-	author, ok := cat.authors.Get(id)
+	author, ok := cat.authors.Resolve(id)
 	if !ok {
 		return Author{}, &errors.NotFoundError{
 			Resource: "author",

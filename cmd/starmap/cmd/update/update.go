@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sync"
@@ -130,7 +130,7 @@ func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger 
 	// Display results based on output format (checking if JSON logging is enabled)
 	if logger.GetLevel() == zerolog.TraceLevel {
 		// Assume structured output for trace level
-		formatter := output.NewFormatter(output.FormatJSON)
+		formatter := format.NewFormatter(format.FormatJSON)
 		return formatter.Format(os.Stdout, result)
 	}
 

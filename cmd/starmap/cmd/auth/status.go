@@ -9,7 +9,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -89,7 +89,7 @@ func showSingleProviderStatus(providerName string, cat catalogs.Catalog, checker
 
 func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, checker *auth.Checker, supportedMap map[string]bool, cmd *cobra.Command) error {
 	// Get output format from app context
-	outputFormat := output.DetectFormat(app.OutputFormat())
+	outputFormat := format.DetectFormat(app.OutputFormat())
 
 	var configured, missing, optional, unsupported int
 	logger := app.Logger()
@@ -136,13 +136,13 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 	}
 
 	// For structured output (JSON/YAML), return data only
-	if outputFormat != output.FormatTable {
-		tableData := output.Data{
+	if outputFormat != format.FormatTable {
+		tableData := format.Data{
 			Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 			Rows:    tableRows,
 		}
 
-		formatter := output.NewFormatter(outputFormat)
+		formatter := format.NewFormatter(outputFormat)
 		return formatter.Format(os.Stdout, tableData)
 	}
 
@@ -151,12 +151,12 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 	fmt.Println("Provider Authentication Status:")
 
 	// Create and display table
-	tableData := output.Data{
+	tableData := format.Data{
 		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
 		Rows:    tableRows,
 	}
 
-	formatter := output.NewFormatter(outputFormat)
+	formatter := format.NewFormatter(outputFormat)
 	if err := formatter.Format(os.Stdout, tableData); err != nil {
 		return err
 	}

@@ -44,6 +44,74 @@ func providerDefaults() *providerOptions {
 	}
 }
 
+// FetchStats contains metadata about a fetch operation.
+// This provides transparency into API requests for debugging and monitoring.
+type FetchStats struct {
+	URL          string        // Endpoint that was called
+	StatusCode   int           // HTTP response status code
+	Latency      time.Duration // Request duration
+	PayloadSize  int64         // Response body size in bytes
+	ContentType  string        // Content-Type from response header
+	AuthMethod   string        // How authentication was applied (Header, Query, None)
+	AuthLocation string        // Where auth was placed (header name or query param name)
+	AuthScheme   string        // Authentication scheme for header auth (Bearer, Basic, Direct)
+}
+
+// HumanSize returns the payload size in human-readable format.
+func (s *FetchStats) HumanSize() string {
+	const (
+		kb = 1024
+		mb = kb * 1024
+		gb = mb * 1024
+	)
+
+	size := float64(s.PayloadSize)
+	switch {
+	case s.PayloadSize >= gb:
+		return fmt.Sprintf("%.2f GB", size/gb)
+	case s.PayloadSize >= mb:
+		return fmt.Sprintf("%.2f MB", size/mb)
+	case s.PayloadSize >= kb:
+		return fmt.Sprintf("%.2f KB", size/kb)
+	default:
+		return fmt.Sprintf("%d B", s.PayloadSize)
+	}
+}
+
+// getAuthInfo extracts authentication configuration from a provider.
+// Returns method (Header/Query/None), location (header or query param name), and scheme (Bearer/Basic/Direct).
+func getAuthInfo(provider *catalogs.Provider) (method, location, scheme string) {
+	if provider == nil || provider.APIKey == nil {
+		return "None", "", ""
+	}
+
+	// Check for query parameter authentication
+	if provider.APIKey.QueryParam != "" {
+		return "Query", provider.APIKey.QueryParam, ""
+	}
+
+	// Header-based authentication
+	header := provider.APIKey.Header
+	if header == "" {
+		header = "Authorization"
+	}
+
+	// Determine auth scheme
+	var authScheme string
+	switch provider.APIKey.Scheme {
+	case catalogs.ProviderAPIKeySchemeBearer:
+		authScheme = "Bearer"
+	case catalogs.ProviderAPIKeySchemeBasic:
+		authScheme = "Basic"
+	case catalogs.ProviderAPIKeySchemeDirect:
+		authScheme = "Direct"
+	default:
+		authScheme = "Direct"
+	}
+
+	return "Header", header, authScheme
+}
+
 // NewProviderFetcher creates a new provider fetcher for interacting with provider APIs.
 // It provides a clean public interface for external packages.
 // The providers parameter should contain the catalog providers to create clients for.
@@ -199,10 +267,10 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 // This is useful for testing, debugging, or saving raw responses as testdata.
 //
 // The endpoint parameter should be the full URL to the API endpoint.
-// The response is returned as raw bytes (JSON) without any parsing.
-func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, error) {
+// The response is returned as raw bytes (JSON) without any parsing, along with fetch statistics.
+func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error) {
 	if provider == nil {
-		return nil, &errors.ValidationError{
+		return nil, nil, &errors.ValidationError{
 			Field:   "provider",
 			Message: "cannot be nil",
 		}
@@ -230,7 +298,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	// Check credentials unless explicitly allowed to be missing
 	if !options.allowMissingKey {
 		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
-			return nil, &errors.AuthenticationError{
+			return nil, nil, &errors.AuthenticationError{
 				Provider: string(provider.ID),
 				Method:   "api_key",
 				Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
@@ -239,7 +307,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 
 		missingEnvVars := provider.MissingRequiredEnvVars()
 		if len(missingEnvVars) > 0 {
-			return nil, &errors.ConfigError{
+			return nil, nil, &errors.ConfigError{
 				Component: string(provider.ID),
 				Message:   fmt.Sprintf("missing required environment variables: %v", missingEnvVars),
 			}
@@ -247,5 +315,37 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	}
 
 	// Call providers' FetchRaw function
-	return clients.FetchRaw(ctx, provider, endpoint)
+	result, err := clients.FetchRaw(ctx, provider, endpoint)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Build stats from result
+	contentType := result.Response.Header.Get("Content-Type")
+	// Clean up content type (remove charset and other parameters)
+	if idx := len(contentType); idx > 0 {
+		for i, c := range contentType {
+			if c == ';' {
+				idx = i
+				break
+			}
+		}
+		contentType = contentType[:idx]
+	}
+
+	// Get authentication info from provider config
+	authMethod, authLocation, authScheme := getAuthInfo(provider)
+
+	stats := &FetchStats{
+		URL:          result.RequestURL,
+		StatusCode:   result.Response.StatusCode,
+		Latency:      result.Latency,
+		PayloadSize:  int64(len(result.Data)),
+		ContentType:  contentType,
+		AuthMethod:   authMethod,
+		AuthLocation: authLocation,
+		AuthScheme:   authScheme,
+	}
+
+	return result.Data, stats, nil
 }

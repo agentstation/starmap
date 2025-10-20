@@ -20,8 +20,9 @@ This requires the appropriate API key to be configured either through
 environment variables or the configuration file.
 
 Supported providers include: openai, anthropic, google-ai-studio, google-vertex, groq`,
-		Example: `  starmap fetch models --provider openai
-  starmap fetch models --all`,
+		Example: `  starmap fetch models              # Fetch all providers
+  starmap fetch models openai       # Fetch OpenAI models
+  starmap fetch models openai --raw # Get raw OpenAI API response`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Default to models if no subcommand
 			if len(args) == 0 {

@@ -5,7 +5,7 @@ import "github.com/spf13/cobra"
 
 // Flags holds global common flags across all commands.
 type Flags struct {
-	Output  string
+	Format  string
 	Quiet   bool
 	Verbose bool
 	NoColor bool
@@ -15,7 +15,7 @@ type Flags struct {
 func AddFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
-	cmd.PersistentFlags().StringVarP(&flags.Output, "output", "o", "",
+	cmd.PersistentFlags().StringVarP(&flags.Format, "format", "f", "",
 		"Output format: table, json, yaml, wide")
 	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
 		"Minimal output")
@@ -37,13 +37,13 @@ func Parse(cmd *cobra.Command) (*Flags, error) {
 		root = root.Parent()
 	}
 
-	output, _ := root.PersistentFlags().GetString("output")
+	format, _ := root.PersistentFlags().GetString("format")
 	quiet, _ := root.PersistentFlags().GetBool("quiet")
 	verbose, _ := root.PersistentFlags().GetBool("verbose")
 	noColor, _ := root.PersistentFlags().GetBool("no-color")
 
 	return &Flags{
-		Output:  output,
+		Format:  format,
 		Quiet:   quiet,
 		Verbose: verbose,
 		NoColor: noColor,

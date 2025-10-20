@@ -55,6 +55,31 @@ func (a *Authors) Get(id AuthorID) (*Author, bool) {
 	return author, ok
 }
 
+// Resolve returns an author by ID or alias.
+// It first tries an exact ID match, then searches all author aliases.
+// This allows commands to accept both canonical IDs and common aliases silently.
+func (a *Authors) Resolve(id AuthorID) (*Author, bool) {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+
+	// Try exact match first
+	if author, ok := a.authors[id]; ok {
+		return author, true
+	}
+
+	// Search aliases
+	for _, author := range a.authors {
+		for _, alias := range author.Aliases {
+			if alias == id {
+				// Found via alias - return the author with canonical ID
+				return a.authors[author.ID], true
+			}
+		}
+	}
+
+	return nil, false
+}
+
 // Set sets an author by id. Returns an error if author is nil.
 func (a *Authors) Set(id AuthorID, author *Author) error {
 	if author == nil {

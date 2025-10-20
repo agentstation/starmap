@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/notify"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -183,12 +183,12 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 	fmt.Println()
 
 	// Display results in configured format
-	detectedFormat := output.DetectFormat(outputFormat)
-	if detectedFormat == output.FormatTable {
+	detectedFormat := format.DetectFormat(outputFormat)
+	if detectedFormat == format.FormatTable {
 		displayVerificationTable(results, verbose)
 	} else {
 		// For non-table formats, output the raw results
-		formatter := output.NewFormatter(detectedFormat)
+		formatter := format.NewFormatter(detectedFormat)
 		return formatter.Format(os.Stdout, results)
 	}
 
@@ -231,15 +231,15 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)
 
-	// Check if provider is supported
-	if !fetcher.HasClient(pid) {
-		return fmt.Errorf("provider %s not found or not supported", providerID)
-	}
-
-	// Get provider from catalog
+	// Get provider from catalog (supports aliases via Resolve)
 	provider, err := cat.Provider(pid)
 	if err != nil {
 		return fmt.Errorf("provider %s not found in catalog", providerID)
+	}
+
+	// Check if provider is supported using canonical ID
+	if !fetcher.HasClient(provider.ID) {
+		return fmt.Errorf("provider %s not found or not supported", providerID)
 	}
 
 	if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
@@ -269,11 +269,11 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 		result.Error = err.Error()
 
 		// Display single result in configured format
-		outputFormat := output.DetectFormat(app.OutputFormat())
-		if outputFormat == output.FormatTable {
+		outputFormat := format.DetectFormat(app.OutputFormat())
+		if outputFormat == format.FormatTable {
 			displayVerificationTable([]VerificationResult{result}, verbose)
 		} else {
-			formatter := output.NewFormatter(outputFormat)
+			formatter := format.NewFormatter(outputFormat)
 			_ = formatter.Format(os.Stdout, []VerificationResult{result})
 		}
 
@@ -285,11 +285,11 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 	result.ModelsFound = fmt.Sprintf("%d", len(models))
 
 	// Display single result in configured format
-	outputFormat := output.DetectFormat(app.OutputFormat())
-	if outputFormat == output.FormatTable {
+	outputFormat := format.DetectFormat(app.OutputFormat())
+	if outputFormat == format.FormatTable {
 		displayVerificationTable([]VerificationResult{result}, verbose)
 	} else {
-		formatter := output.NewFormatter(outputFormat)
+		formatter := format.NewFormatter(outputFormat)
 		return formatter.Format(os.Stdout, []VerificationResult{result})
 	}
 

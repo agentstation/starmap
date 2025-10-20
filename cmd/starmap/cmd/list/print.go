@@ -6,14 +6,14 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // printProviderDetails prints detailed provider information.
 func printProviderDetails(provider *catalogs.Provider) {
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 
 	fmt.Printf("Provider: %s\n\n", provider.ID)
 
@@ -31,7 +31,7 @@ func printProviderDetails(provider *catalogs.Provider) {
 		basicRows = append(basicRows, []string{"Status Page", *provider.StatusPageURL})
 	}
 
-	basicTable := output.Data{
+	basicTable := format.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
@@ -46,7 +46,7 @@ func printProviderDetails(provider *catalogs.Provider) {
 
 // printAuthorDetails prints detailed author information.
 func printAuthorDetails(author *catalogs.Author) {
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 
 	fmt.Printf("Author: %s\n\n", author.ID)
 
@@ -63,7 +63,7 @@ func printAuthorDetails(author *catalogs.Author) {
 		basicRows = append(basicRows, []string{"Website", *author.Website})
 	}
 
-	basicTable := output.Data{
+	basicTable := format.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
@@ -75,7 +75,7 @@ func printAuthorDetails(author *catalogs.Author) {
 
 // printModelDetails prints detailed model information using table format.
 func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
-	formatter := output.NewFormatter(output.FormatTable)
+	formatter := format.NewFormatter(format.FormatTable)
 
 	fmt.Printf("Model: %s\n\n", model.ID)
 
@@ -86,7 +86,7 @@ func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
 	printArchitectureInfo(model, formatter)
 }
 
-func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter output.Formatter) {
+func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter format.Formatter) {
 	basicRows := [][]string{
 		{"Model ID", model.ID},
 		{"Name", model.Name},
@@ -111,7 +111,7 @@ func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter
 		basicRows = append(basicRows, []string{"Description", description})
 	}
 
-	basicTable := output.Data{
+	basicTable := format.Data{
 		Headers: []string{"Property", "Value"},
 		Rows:    basicRows,
 	}
@@ -121,7 +121,7 @@ func printBasicInfo(model *catalogs.Model, provider catalogs.Provider, formatter
 	fmt.Println()
 }
 
-func printLimitsInfo(model *catalogs.Model, formatter output.Formatter) {
+func printLimitsInfo(model *catalogs.Model, formatter format.Formatter) {
 	if model.Limits == nil {
 		return
 	}
@@ -135,7 +135,7 @@ func printLimitsInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(limitRows) > 0 {
-		limitsTable := output.Data{
+		limitsTable := format.Data{
 			Headers: []string{"Limit", "Value"},
 			Rows:    limitRows,
 		}
@@ -145,7 +145,7 @@ func printLimitsInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 }
 
-func printPricingInfo(model *catalogs.Model, formatter output.Formatter) {
+func printPricingInfo(model *catalogs.Model, formatter format.Formatter) {
 	if model.Pricing == nil || model.Pricing.Tokens == nil {
 		return
 	}
@@ -159,7 +159,7 @@ func printPricingInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(pricingRows) > 0 {
-		pricingTable := output.Data{
+		pricingTable := format.Data{
 			Headers: []string{"Type", "Price"},
 			Rows:    pricingRows,
 		}
@@ -169,7 +169,7 @@ func printPricingInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 }
 
-func printFeaturesInfo(model *catalogs.Model, formatter output.Formatter) {
+func printFeaturesInfo(model *catalogs.Model, formatter format.Formatter) {
 	if model.Features == nil {
 		return
 	}
@@ -191,7 +191,7 @@ func printFeaturesInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(featureRows) > 0 {
-		featuresTable := output.Data{
+		featuresTable := format.Data{
 			Headers: []string{"Feature", "Status"},
 			Rows:    featureRows,
 		}
@@ -235,7 +235,7 @@ func addModalityFeatures(featureRows [][]string, features *catalogs.ModelFeature
 	return featureRows
 }
 
-func printArchitectureInfo(model *catalogs.Model, formatter output.Formatter) {
+func printArchitectureInfo(model *catalogs.Model, formatter format.Formatter) {
 	if model.Metadata == nil || model.Metadata.Architecture == nil {
 		return
 	}
@@ -249,7 +249,7 @@ func printArchitectureInfo(model *catalogs.Model, formatter output.Formatter) {
 	}
 
 	if len(archRows) > 0 {
-		archTable := output.Data{
+		archTable := format.Data{
 			Headers: []string{"Property", "Value"},
 			Rows:    archRows,
 		}

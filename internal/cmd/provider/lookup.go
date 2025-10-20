@@ -6,10 +6,11 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Get retrieves a provider by ID from the catalog.
+// Get retrieves a provider by ID or alias from the catalog.
 // This handles the common pattern of provider lookup with proper error handling.
+// Silently resolves aliases to canonical provider IDs.
 func Get(catalog catalogs.Catalog, providerID string) (*catalogs.Provider, error) {
-	provider, found := catalog.Providers().Get(catalogs.ProviderID(providerID))
+	provider, found := catalog.Providers().Resolve(catalogs.ProviderID(providerID))
 	if !found {
 		return nil, &errors.NotFoundError{
 			Resource: "provider",

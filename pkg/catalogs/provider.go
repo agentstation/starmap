@@ -166,6 +166,7 @@ const (
 	ProviderIDMeta           ProviderID = "meta"
 	ProviderIDMicrosoft      ProviderID = "microsoft"
 	ProviderIDMistralAI      ProviderID = "mistral"
+	ProviderIDMoonshotAI     ProviderID = "moonshot-ai"
 	ProviderIDOpenAI         ProviderID = "openai"
 	ProviderIDOpenRouter     ProviderID = "openrouter"
 	ProviderIDPerplexity     ProviderID = "perplexity"

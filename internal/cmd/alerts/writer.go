@@ -9,13 +9,13 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/internal/cmd/output"
+	"github.com/agentstation/starmap/internal/cmd/format"
 )
 
 // FormatWriter writes alerts in different output formats.
 type FormatWriter struct {
 	writer io.Writer
-	format output.Format
+	format format.Format
 	config WriterConfig
 }
 
@@ -27,10 +27,10 @@ type WriterConfig struct {
 }
 
 // NewFormatWriter creates a new FormatWriter for the specified format.
-func NewFormatWriter(w io.Writer, format output.Format) *FormatWriter {
+func NewFormatWriter(w io.Writer, fmt format.Format) *FormatWriter {
 	return &FormatWriter{
 		writer: w,
-		format: format,
+		format: fmt,
 		config: WriterConfig{
 			ShowTimestamp: false,
 			ShowDetails:   true,
@@ -48,11 +48,11 @@ func (fw *FormatWriter) WithConfig(config WriterConfig) *FormatWriter {
 // WriteAlert writes an alert in the configured format.
 func (fw *FormatWriter) WriteAlert(alert *Alert) error {
 	switch fw.format {
-	case output.FormatJSON:
+	case format.FormatJSON:
 		return fw.writeJSON(alert)
-	case output.FormatYAML:
+	case format.FormatYAML:
 		return fw.writeYAML(alert)
-	case output.FormatTable, output.FormatWide:
+	case format.FormatTable, format.FormatWide:
 		return fw.writeTable(alert)
 	default:
 		return fw.writePlain(alert)
