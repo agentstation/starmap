@@ -1,5 +1,4 @@
-// Package fetch provides commands for fetching starmap resources from provider APIs.
-package fetch
+package providers
 
 import (
 	"context"
@@ -28,8 +27,8 @@ const (
 	outputFormatTable = "table"
 )
 
-// NewModelsCommand creates the fetch models subcommand using app context.
-func NewModelsCommand(app application.Application) *cobra.Command {
+// NewFetchCommand creates the fetch subcommand for fetching models from provider APIs.
+func NewFetchCommand(app application.Application) *cobra.Command {
 	var (
 		timeoutFlag int
 		rawFlag     bool
@@ -37,16 +36,16 @@ func NewModelsCommand(app application.Application) *cobra.Command {
 	)
 
 	cmd := &cobra.Command{
-		Use:   "models [provider]",
+		Use:   "fetch [provider]",
 		Short: "Fetch models from provider APIs",
 		Args:  cobra.MaximumNArgs(1),
-		Example: `  starmap fetch models              # Fetch all providers (table)
-  starmap fetch models openai       # Fetch OpenAI models (table)
-  starmap fetch models openai --stats  # Show detailed request statistics
-  starmap fetch models groq --raw   # Get raw API response from Groq
-  starmap fetch models -o json      # Output as JSON instead of table
-  starmap fetch models --raw --stats # Raw response with statistics
-  starmap fetch models --stats      # All providers with statistics`,
+		Example: `  starmap providers fetch              # Fetch all providers (table)
+  starmap providers fetch openai       # Fetch OpenAI models (table)
+  starmap providers fetch openai --stats  # Show detailed request statistics
+  starmap providers fetch groq --raw   # Get raw API response from Groq
+  starmap providers fetch -o json      # Output as JSON instead of table
+  starmap providers fetch --raw --stats # Raw response with statistics
+  starmap providers fetch --stats      # All providers with statistics`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 			logger := app.Logger()

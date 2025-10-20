@@ -1,4 +1,5 @@
-package list
+// Package providers provides the providers resource command and subcommands.
+package providers
 
 import (
 	"os"
@@ -19,16 +20,21 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// NewProvidersCommand creates the list providers subcommand using app context.
-func NewProvidersCommand(app application.Application) *cobra.Command {
+// NewCommand creates the providers resource command.
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "providers [provider-id]",
-		Short:   "List providers from catalog",
-		Aliases: []string{"provider"},
-		Args:    cobra.MaximumNArgs(1),
-		Example: `  starmap list providers                    # List all providers
-  starmap list providers openai             # Show specific provider details
-  starmap list providers --search anthropic # Search providers by name`,
+		GroupID: "catalog",
+		Short:   "Manage AI providers",
+		Long: `Manage AI providers including authentication and data fetching.
+
+List providers, show provider details, fetch from provider APIs, and manage authentication.`,
+		Args: cobra.MaximumNArgs(1),
+		Example: `  starmap providers                    # List all providers
+  starmap providers openai             # Show OpenAI provider details
+  starmap providers fetch              # Fetch from all provider APIs
+  starmap providers fetch openai       # Fetch from OpenAI API
+  starmap providers auth verify        # Verify authentication`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger := app.Logger()
 
@@ -37,7 +43,7 @@ func NewProvidersCommand(app application.Application) *cobra.Command {
 				return showProviderDetails(cmd, app, args[0])
 			}
 
-			// List view
+			// List view (default behavior)
 			resourceFlags := globals.ParseResources(cmd)
 			return listProviders(cmd, app, logger, resourceFlags)
 		},
@@ -46,10 +52,14 @@ func NewProvidersCommand(app application.Application) *cobra.Command {
 	// Add resource-specific flags
 	globals.AddResourceFlags(cmd)
 
+	// Add subcommands
+	cmd.AddCommand(NewFetchCommand(app))
+	cmd.AddCommand(NewAuthCommand(app))
+
 	return cmd
 }
 
-// listProviders lists all providers using app context.
+// listProviders lists all providers.
 func listProviders(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := app.Catalog()

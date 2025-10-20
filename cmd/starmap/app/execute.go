@@ -105,12 +105,12 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 // This is where we wire up all the command handlers.
 func (a *App) registerCommands(rootCmd *cobra.Command) {
 	// Setup commands (getting started)
-	rootCmd.AddCommand(a.NewAuthCommand())
 	rootCmd.AddCommand(a.NewDepsCommand())
 
 	// Catalog commands (working with models/providers)
-	rootCmd.AddCommand(a.NewListCommand())
-	rootCmd.AddCommand(a.NewFetchCommand())
+	rootCmd.AddCommand(a.NewProvidersCommand())
+	rootCmd.AddCommand(a.NewModelsCommand())
+	rootCmd.AddCommand(a.NewAuthorsCommand())
 	rootCmd.AddCommand(a.NewUpdateCommand())
 
 	// Server commands (running the API)

@@ -1,4 +1,4 @@
-package list
+package models
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cmd/application"
-	cmdconstants "github.com/agentstation/starmap/internal/cmd/constants"
+	"github.com/agentstation/starmap/internal/cmd/constants"
 	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/globals"
@@ -20,27 +20,23 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// NewModelsCommand creates the list models subcommand using app context.
-func NewModelsCommand(app application.Application) *cobra.Command {
+// NewListCommand creates the list subcommand for models.
+func NewListCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "models [model-id]",
-		Short:   "List models from catalog",
-		Aliases: []string{"model"},
-		Args:    cobra.MaximumNArgs(1),
-		Example: `  starmap list models                          # List all models
-  starmap list models claude-3-5-sonnet        # Show specific model details
-  starmap list models --provider openai        # List OpenAI models only
-  starmap list models --search claude          # Search for models by name`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Use:   "list",
+		Short: "List models from catalog",
+		Example: `  starmap models list                          # List all models
+  starmap models list --provider openai        # List OpenAI models only
+  starmap models list --search claude          # Search for models by name
+  starmap models list --capability vision      # Filter by capability
+  starmap models list --min-context 100000     # Filter by context window
+  starmap models list --max-price 0.50         # Filter by price
+  starmap models list --details                # Show detailed information`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			// Get logger from app
 			logger := app.Logger()
 
-			// Single model detail view
-			if len(args) == 1 {
-				return showModelDetails(cmd, app, args[0])
-			}
-
-			// List view with filters
+			// Parse flags
 			resourceFlags := globals.ParseResources(cmd)
 			showDetails := mustGetBool(cmd, "details")
 			capability := mustGetString(cmd, "capability")
@@ -68,7 +64,7 @@ func NewModelsCommand(app application.Application) *cobra.Command {
 	return cmd
 }
 
-// listModels lists all models with optional filters using app context.
+// listModels lists all models with optional filters.
 func listModels(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
@@ -119,7 +115,7 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	// Transform to output format
 	var outputData any
 	switch globalFlags.Output {
-	case cmdconstants.FormatTable, cmdconstants.FormatWide, "":
+	case constants.FormatTable, constants.FormatWide, "":
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
 			modelPointers[i] = &filtered[i]
@@ -138,43 +134,6 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	}
 
 	return formatter.Format(os.Stdout, outputData)
-}
-
-// showModelDetails shows detailed information about a specific model using app context.
-func showModelDetails(cmd *cobra.Command, app application.Application, modelID string) error {
-	// Get catalog from app
-	cat, err := app.Catalog()
-	if err != nil {
-		return err
-	}
-
-	// Find specific model across all providers
-	providers := cat.Providers().List()
-	for _, provider := range providers {
-		if model, exists := provider.Models[modelID]; exists {
-			globalFlags, err := globals.Parse(cmd)
-			if err != nil {
-				return err
-			}
-			formatter := format.NewFormatter(format.Format(globalFlags.Output))
-
-			// For table output, show detailed view
-			if globalFlags.Output == cmdconstants.FormatTable || globalFlags.Output == "" {
-				printModelDetails(model, provider)
-				return nil
-			}
-
-			// For structured output, return the model
-			return formatter.Format(os.Stdout, model)
-		}
-	}
-
-	// Suppress usage display for not found errors
-	cmd.SilenceUsage = true
-	return &errors.NotFoundError{
-		Resource: "model",
-		ID:       modelID,
-	}
 }
 
 // exportModels exports models in the specified format (openai or openrouter).
@@ -215,44 +174,4 @@ func exportModels(models []*catalogs.Model, format string) error {
 	}
 
 	return nil
-}
-
-// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
-func mustGetBool(cmd *cobra.Command, name string) bool {
-	val, err := cmd.Flags().GetBool(name)
-	if err != nil {
-		panic("programming error: failed to get flag " + name + ": " + err.Error())
-	}
-	return val
-}
-
-// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
-func mustGetString(cmd *cobra.Command, name string) string {
-	val, err := cmd.Flags().GetString(name)
-	if err != nil {
-		panic("programming error: failed to get flag " + name + ": " + err.Error())
-	}
-	return val
-}
-
-// mustGetInt64 retrieves an int64 flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
-func mustGetInt64(cmd *cobra.Command, name string) int64 {
-	val, err := cmd.Flags().GetInt64(name)
-	if err != nil {
-		panic("programming error: failed to get flag " + name + ": " + err.Error())
-	}
-	return val
-}
-
-// mustGetFloat64 retrieves a float64 flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
-func mustGetFloat64(cmd *cobra.Command, name string) float64 {
-	val, err := cmd.Flags().GetFloat64(name)
-	if err != nil {
-		panic("programming error: failed to get flag " + name + ": " + err.Error())
-	}
-	return val
 }

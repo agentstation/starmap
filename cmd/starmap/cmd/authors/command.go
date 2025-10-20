@@ -1,5 +1,5 @@
-// Package list provides commands for listing catalog resources like models, providers, and authors.
-package list
+// Package authors provides the authors resource command.
+package authors
 
 import (
 	"os"
@@ -18,16 +18,19 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// NewAuthorsCommand creates the list authors subcommand using app context.
-func NewAuthorsCommand(app application.Application) *cobra.Command {
+// NewCommand creates the authors resource command.
+func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "authors [author-id]",
-		Short:   "List authors from catalog",
-		Aliases: []string{"author"},
-		Args:    cobra.MaximumNArgs(1),
-		Example: `  starmap list authors                  # List all authors
-  starmap list authors openai           # Show specific author details
-  starmap list authors --search meta    # Search authors by name`,
+		GroupID: "catalog",
+		Short:   "List AI model authors",
+		Long: `List AI model authors in the catalog.
+
+Show all authors or view detailed information about specific authors.`,
+		Args: cobra.MaximumNArgs(1),
+		Example: `  starmap authors                  # List all authors
+  starmap authors openai           # Show specific author details
+  starmap authors --search meta    # Search authors by name`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger := app.Logger()
 
@@ -36,7 +39,7 @@ func NewAuthorsCommand(app application.Application) *cobra.Command {
 				return showAuthorDetails(cmd, app, args[0])
 			}
 
-			// List view
+			// List view (default behavior)
 			resourceFlags := globals.ParseResources(cmd)
 			return listAuthors(cmd, app, logger, resourceFlags)
 		},
@@ -48,7 +51,7 @@ func NewAuthorsCommand(app application.Application) *cobra.Command {
 	return cmd
 }
 
-// listAuthors lists all authors using app context.
+// listAuthors lists all authors.
 func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
