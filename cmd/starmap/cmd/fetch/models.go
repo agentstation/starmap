@@ -44,7 +44,7 @@ func NewModelsCommand(app application.Application) *cobra.Command {
   starmap fetch models openai       # Fetch OpenAI models (table)
   starmap fetch models openai --stats  # Show detailed request statistics
   starmap fetch models groq --raw   # Get raw API response from Groq
-  starmap fetch models -f json      # Output as JSON instead of table
+  starmap fetch models -o json      # Output as JSON instead of table
   starmap fetch models --raw --stats # Raw response with statistics
   starmap fetch models --stats      # All providers with statistics`,
 		RunE: func(cmd *cobra.Command, args []string) error {

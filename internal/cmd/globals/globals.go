@@ -15,7 +15,7 @@ type Flags struct {
 func AddFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
-	cmd.PersistentFlags().StringVarP(&flags.Format, "format", "f", "",
+	cmd.PersistentFlags().StringVarP(&flags.Format, "format", "o", "",
 		"Output format: table, json, yaml, wide")
 	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
 		"Minimal output")
