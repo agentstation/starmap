@@ -7,7 +7,7 @@ import (
 
 // NewCommand creates the completion command with install/uninstall subcommands.
 // This overrides Cobra's auto-generated completion command to add our custom subcommands.
-func NewCommand(rootCmd *cobra.Command) *cobra.Command {
+func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "completion",
 		Short: "Manage shell completions",
@@ -35,10 +35,10 @@ Examples:
 
 	// Add Cobra's built-in shell-specific generation commands
 	// These generate completion scripts to stdout
-	cmd.AddCommand(newBashCommand(rootCmd))
-	cmd.AddCommand(newZshCommand(rootCmd))
-	cmd.AddCommand(newFishCommand(rootCmd))
-	cmd.AddCommand(newPowershellCommand(rootCmd))
+	cmd.AddCommand(newBashCommand())
+	cmd.AddCommand(newZshCommand())
+	cmd.AddCommand(newFishCommand())
+	cmd.AddCommand(newPowershellCommand())
 
 	// Add our custom install/uninstall commands
 	cmd.AddCommand(NewInstallCommand())
@@ -48,7 +48,7 @@ Examples:
 }
 
 // newBashCommand creates the bash completion generation subcommand.
-func newBashCommand(rootCmd *cobra.Command) *cobra.Command {
+func newBashCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "bash",
 		Short: "Generate bash completion script",
@@ -69,13 +69,13 @@ To load completions for every new session, execute once:
 You can also use "starmap completion install" to automatically install.`,
 		DisableFlagsInUseLine: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return rootCmd.GenBashCompletion(cmd.OutOrStdout())
+			return cmd.Root().GenBashCompletion(cmd.OutOrStdout())
 		},
 	}
 }
 
 // newZshCommand creates the zsh completion generation subcommand.
-func newZshCommand(rootCmd *cobra.Command) *cobra.Command {
+func newZshCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "zsh",
 		Short: "Generate zsh completion script",
@@ -94,13 +94,13 @@ You will need to start a new shell for this setup to take effect.
 You can also use "starmap completion install" to automatically install.`,
 		DisableFlagsInUseLine: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return rootCmd.GenZshCompletion(cmd.OutOrStdout())
+			return cmd.Root().GenZshCompletion(cmd.OutOrStdout())
 		},
 	}
 }
 
 // newFishCommand creates the fish completion generation subcommand.
-func newFishCommand(rootCmd *cobra.Command) *cobra.Command {
+func newFishCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "fish",
 		Short: "Generate fish completion script",
@@ -119,13 +119,13 @@ You will need to start a new shell for this setup to take effect.
 You can also use "starmap completion install" to automatically install.`,
 		DisableFlagsInUseLine: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return rootCmd.GenFishCompletion(cmd.OutOrStdout(), true)
+			return cmd.Root().GenFishCompletion(cmd.OutOrStdout(), true)
 		},
 	}
 }
 
 // newPowershellCommand creates the powershell completion generation subcommand.
-func newPowershellCommand(rootCmd *cobra.Command) *cobra.Command {
+func newPowershellCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "powershell",
 		Short: "Generate powershell completion script",
@@ -139,7 +139,7 @@ To load completions for every new session, add the output of the above command
 to your powershell profile.`,
 		DisableFlagsInUseLine: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return rootCmd.GenPowerShellCompletionWithDesc(cmd.OutOrStdout())
+			return cmd.Root().GenPowerShellCompletionWithDesc(cmd.OutOrStdout())
 		},
 	}
 }

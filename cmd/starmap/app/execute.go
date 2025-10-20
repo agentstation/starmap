@@ -121,7 +121,7 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 	rootCmd.AddCommand(a.NewEmbedCommand())
 
 	// Additional commands (no group)
-	rootCmd.AddCommand(a.NewCompletionCommand(rootCmd)) // Override Cobra's auto-generated completion
+	rootCmd.AddCommand(a.NewCompletionCommand()) // Custom completion with install/uninstall
 	rootCmd.AddCommand(a.NewVersionCommand())
 	rootCmd.AddCommand(a.NewManCommand())
 }

@@ -73,10 +73,10 @@ func (a *App) NewDepsCommand() *cobra.Command {
 	return deps.NewCommand()
 }
 
-// NewCompletionCommand returns a new completion command with app dependencies.
+// NewCompletionCommand returns a new completion command.
 // This overrides Cobra's auto-generated completion command to add install/uninstall subcommands.
-func (a *App) NewCompletionCommand(rootCmd *cobra.Command) *cobra.Command {
-	return completion.NewCommand(rootCmd)
+func (a *App) NewCompletionCommand() *cobra.Command {
+	return completion.NewCommand()
 }
 
 // NewVersionCommand returns a new version command.
