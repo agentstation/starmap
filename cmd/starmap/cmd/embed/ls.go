@@ -34,7 +34,7 @@ Examples:
   starmap embed ls -l catalog/providers # Long format listing
   starmap embed ls -lh sources          # Long format with human-readable sizes
   starmap embed ls -lah sources         # Long, all files, human-readable sizes
-  starmap embed ls --help               # Show help (or use -?)`,
+  starmap embed ls -?                   # Show help`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Human-readable sizes only make sense with long format
@@ -53,10 +53,8 @@ Examples:
 }
 
 func init() {
-	// Define custom help flag ONLY for this ls subcommand to free up -h
-	LsCmd.Flags().BoolP("help", "?", false, "help for ls command")
-
-	// Now we can use -h for human-readable (like Unix ls)
+	// Custom help flag (-?) is now inherited from embed parent command
+	// This frees up -h for human-readable (like Unix ls)
 	LsCmd.Flags().BoolVarP(&lsLong, "long", "l", false, "use a long listing format")
 	LsCmd.Flags().BoolVarP(&lsHuman, "human-readable", "h", false, "print human readable sizes")
 	LsCmd.Flags().BoolVarP(&lsAll, "all", "a", false, "do not ignore entries starting with .")

@@ -53,6 +53,7 @@ when API keys are configured.`,
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output (shortcut for --log-level=debug)")
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output (shortcut for --log-level=warn)")
 	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")
+	// Use -o for format (not -f) to avoid conflict with embed cat --filename
 	rootCmd.PersistentFlags().StringVarP(&a.config.Format, "format", "o", "", "output format: table, json, yaml, wide")
 	rootCmd.PersistentFlags().StringVar(&a.config.LogLevel, "log-level", "", "log level: trace, debug, info, warn, error (overrides -v/-q)")
 

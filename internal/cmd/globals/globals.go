@@ -15,6 +15,7 @@ type Flags struct {
 func AddFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
+	// Use -o for format (not -f) to avoid conflict with embed cat --filename
 	cmd.PersistentFlags().StringVarP(&flags.Format, "format", "o", "",
 		"Output format: table, json, yaml, wide")
 	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
