@@ -22,6 +22,7 @@ Comprehensive technical documentation covering:
 - Design principles and patterns
 - System components and layers
 - Application layer (dependency injection)
+- CLI architecture and design decisions
 - Core package layer (catalogs, reconciler, authority, sources)
 - Data sources and concurrent fetching
 - 12-stage sync pipeline
@@ -29,6 +30,19 @@ Comprehensive technical documentation covering:
 - Thread safety patterns
 - Package organization
 - Testing strategy
+
+### [CLI.md](CLI.md)
+**CLI Implementation Reference**
+
+Command-line interface reference and implementation guidelines:
+- Global flags and reserved short flags
+- Command-specific flags
+- Flag design principles
+- Positional arguments vs flags
+- Custom help flags pattern
+- Flag aliases and deprecation
+- Testing and migration guides
+- Examples and anti-patterns
 
 ### [REST_API.md](REST_API.md)
 **HTTP Server API Reference**
@@ -68,6 +82,8 @@ Individual package READMEs provide implementation details:
 ## Quick Links
 
 - [System Architecture](ARCHITECTURE.md#overview)
+- [CLI Architecture](ARCHITECTURE.md#cli-architecture)
+- [CLI Implementation Reference](CLI.md)
 - [Thread Safety Guidelines](ARCHITECTURE.md#thread-safety)
 - [Sync Pipeline (12 Stages)](ARCHITECTURE.md#sync-pipeline)
 - [Reconciliation System](ARCHITECTURE.md#reconciliation-system)

@@ -1,8 +1,20 @@
-# CLI Flag Policy
+# CLI Architecture & Reference
 
-> Guidelines for flag design and short flag allocation in Starmap CLI
+> Comprehensive CLI reference and implementation guidelines for Starmap
 
-This document defines the standards and conventions for CLI flags in Starmap to ensure consistency, avoid conflicts, and provide an excellent user experience.
+This document provides detailed CLI implementation guidelines. For high-level architectural decisions, see **[ARCHITECTURE.md § CLI Architecture](ARCHITECTURE.md#cli-architecture)**.
+
+## Overview
+
+Starmap's CLI follows industry best practices with a focus on:
+- **POSIX compliance** - Standard Unix flag conventions
+- **Discoverability** - Clear help text and intuitive commands
+- **Consistency** - Same patterns across all commands
+- **Ergonomics** - Short flags for common operations
+
+**Framework**: [Cobra](https://github.com/spf13/cobra)
+**Pattern**: VERB-NOUN command structure
+**Philosophy**: Positional arguments for resources, flags for modifiers
 
 ## Global Flags (Reserved)
 
@@ -12,8 +24,10 @@ These short flags are **RESERVED** globally and must not be used for command-spe
 |-------|--------------|----------------------------|---------------------------------|
 | `-v`  | `--verbose`  | Enable verbose output      | Sets log level to debug         |
 | `-q`  | `--quiet`    | Minimize output            | Sets log level to warn          |
-| `-o`  | `--format`   | Output format              | table, json, yaml, wide         |
+| `-o`  | `--output`   | Output format              | table, json, yaml, wide         |
 | `-h`  | `--help`     | Show help                  | Built-in Cobra flag             |
+
+**Aliases**: `--format` and `--fmt` are hidden aliases for `--output` (backward compatibility).
 
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:

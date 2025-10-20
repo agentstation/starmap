@@ -11,6 +11,7 @@
 - [Design Principles](#design-principles)
 - [System Components](#system-components)
 - [Application Layer](#application-layer)
+- [CLI Architecture](#cli-architecture)
 - [Core Package Layer](#core-package-layer)
 - [Root Package (starmap.Client)](#root-package-starmapclient)
 - [Data Sources](#data-sources)
@@ -311,6 +312,172 @@ sequenceDiagram
 - **Write Lock Acquisition**: Only when initialization needed
 - **Second Check (Write Lock)**: Prevent race condition between locks
 - **Result**: Thread-safe singleton with minimal overhead
+
+## CLI Architecture
+
+### Design Philosophy
+
+Starmap's CLI is built on these core principles:
+
+1. **POSIX Compliance**: Standard Unix flag conventions (`-o`, `--output`)
+2. **Discoverability**: Clear help text, intuitive command names
+3. **Consistency**: Same patterns across all commands
+4. **Ergonomics**: Short flags for common operations, sensible defaults
+
+### Command Structure
+
+Commands follow the **VERB-NOUN pattern** borrowed from kubectl and other modern CLIs:
+
+```
+starmap <verb> <noun> [arguments] [flags]
+        ↓      ↓         ↓           ↓
+     action  resource  identity   modifiers
+```
+
+**Examples:**
+```bash
+starmap list models                    # verb=list, noun=models
+starmap fetch models anthropic         # verb=fetch, noun=models, arg=anthropic
+starmap update openai                  # verb=update, arg=openai
+```
+
+**Command Groups:**
+- **Core Commands**: Primary operations (list, fetch, update, serve)
+- **Management Commands**: Maintenance (validate, auth, deps, generate, embed)
+- **Utility Commands**: Support (version, man, install, uninstall)
+
+### Flag Architecture
+
+#### Global Flags (Reserved)
+
+These flags are **always available** and must not be overridden by commands:
+
+| Short | Long | Purpose | Notes |
+|-------|------|---------|-------|
+| `-v` | `--verbose` | Verbose output | Sets log level to debug |
+| `-q` | `--quiet` | Minimal output | Sets log level to warn |
+| `-o` | `--output` | Output format | table, json, yaml, wide |
+| `-h` | `--help` | Show help | Built-in Cobra flag |
+
+**Why `-o` for output?**
+- Avoids conflict with embed cat's `--filename` (`-f`)
+- Matches common tools like `gcc -o output`
+- Frees up `-f` for `--force` in commands that need it
+
+#### Resource Filter Flags
+
+Added programmatically via `globals.AddResourceFlags()`:
+
+| Short | Long | Purpose |
+|-------|------|---------|
+| `-p` | `--provider` | Filter by provider |
+| | `--author` | Filter by author |
+| | `--search` | Search term |
+| `-l` | `--limit` | Limit results |
+
+#### Command-Specific Flags
+
+Commands define their own flags that don't conflict with global flags:
+
+**Update Command:**
+- `-f` / `--force` - Force fresh update
+- `-y` / `--yes` - Auto-approve changes
+- `--dry` - Preview changes (primary)
+- `--dry-run` - Preview changes (deprecated alias)
+
+**Embed Commands:**
+- Custom help flag (`-?`) frees up `-h` and `-f`
+- `ls -h` - Human-readable sizes (like Unix ls)
+- `cat -f` - Show filename before content
+
+### Architectural Decisions
+
+#### 1. Positional Arguments vs Flags
+
+**Decision**: Use positional arguments for **identity/resource**, flags for **options/modifiers**
+
+**Rationale:**
+```bash
+# ✅ Good: Resource is positional, options are flags
+starmap update openai --dry
+
+# ❌ Avoided: Resource as flag feels less natural
+starmap update --provider openai --dry
+```
+
+**Pattern:**
+- Positional = "What to act on" (which provider, which model)
+- Flags = "How to act" (dry run, force, output format)
+
+#### 2. Breaking Changes Strategy
+
+**Decision**: Clean breaks acceptable for young projects (<1.0)
+
+**Rationale:**
+- Project is pre-1.0, rapid iteration beneficial
+- Clear communication via commit messages
+- Deprecation periods add complexity without benefit at this stage
+- Post-1.0: Will use proper deprecation (6-12 months)
+
+**Example from Phase 2:**
+```bash
+# Before (v0.x)
+starmap update --provider openai
+
+# After (v0.x+1) - Clean break
+starmap update openai
+
+# Commit message included migration guide
+```
+
+#### 3. Custom Help Flags
+
+**Decision**: Allow command groups to override `-h` with custom patterns
+
+**Rationale:**
+- Embed commands need Unix-like flags (`ls -h` for human-readable)
+- Solution: Parent command defines `-?` for help
+- All subcommands inherit this, freeing `-h` and `-f`
+
+**Implementation:**
+```go
+// Parent: cmd/starmap/app/commands.go
+cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
+
+// Now subcommands can use -h
+LsCmd.Flags().BoolVarP(&lsHuman, "human-readable", "h", false, "...")
+```
+
+#### 4. Hidden Alias Flags
+
+**Decision**: Support backward compatibility via hidden aliases
+
+**Rationale:**
+- Users may have scripts depending on old flags
+- Hidden flags don't clutter help text
+- Smooth migration path
+
+**Example:**
+```go
+// Primary flag (shown in help)
+rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "...")
+
+// Hidden aliases (backward compat)
+rootCmd.PersistentFlags().StringVar(&a.config.Output, "format", "", "")
+_ = rootCmd.PersistentFlags().MarkHidden("format")
+```
+
+### Implementation Details
+
+**Framework**: [Cobra](https://github.com/spf13/cobra) - Industry-standard Go CLI library
+
+**Key Files:**
+- `cmd/starmap/app/execute.go` - Root command and global flags
+- `cmd/starmap/app/commands.go` - Command registration
+- `internal/cmd/globals/` - Shared flag utilities
+- `cmd/starmap/cmd/*/` - Individual command implementations
+
+**For comprehensive CLI reference and implementation guidelines**, see **[CLI.md](CLI.md)**.
 
 ## Core Package Layer
 

@@ -32,7 +32,7 @@ Starmap is a unified AI model catalog system that combines data from provider AP
 ```bash
 make all                                # Clean, format, lint, test, build
 starmap update                          # Update local catalog
-starmap update --provider openai        # Update specific provider
+starmap update openai                   # Update specific provider
 make testdata PROVIDER=openai           # Update testdata
 ```
 
@@ -388,6 +388,7 @@ make docs-check     # Verify docs current (CI)
 ## References
 
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical deep dive (system components, thread safety, sync pipeline)
+- **[CLI.md](docs/CLI.md)** - CLI implementation reference (flags, patterns, examples)
 - **[README.md](README.md)** - User-facing documentation
 - **[Makefile](Makefile)** - Build automation and commands
 - **[pkg/*/README.md](pkg/)** - Individual package documentation
