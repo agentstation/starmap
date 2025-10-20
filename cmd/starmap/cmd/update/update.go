@@ -40,14 +40,13 @@ type Flags struct {
 func addUpdateFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
-	cmd.Flags().StringVarP(&flags.Provider, "provider", "p", "",
-		"Update specific provider only")
 	cmd.Flags().StringVar(&flags.Source, "source", "",
 		"Update from specific source (provider-api, models.dev)")
-	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
-		"Preview changes without applying them")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
-		"Preview changes without applying them (alias for --dry-run)")
+		"Preview changes without applying them")
+	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
+		"Preview changes without applying them (alias for --dry)")
+	_ = cmd.Flags().MarkDeprecated("dry-run", "use --dry instead")
 	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
 		"Force fresh update (delete and recreate)")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,

@@ -11,9 +11,10 @@ func NewCommand(app application.Application) *cobra.Command {
 	var flags *Flags
 
 	cmd := &cobra.Command{
-		Use:     "update",
+		Use:     "update [provider]",
 		GroupID: "core",
 		Short:   "Synchronize catalog with all sources",
+		Args:    cobra.MaximumNArgs(1),
 		Long: `Update synchronizes your local starmap catalog by fetching the latest data
 from all configured sources:
 
@@ -30,13 +31,21 @@ The command will:
 
 By default, saves to ~/.starmap for the local user catalog.`,
 		Example: `  starmap update                            # Update entire catalog
-  starmap update --provider openai          # Update specific provider
+  starmap update openai                     # Update specific provider
   starmap update --dry                      # Preview changes
-  starmap update -y                          # Auto-approve changes
-  starmap update --force                    # Force fresh update`,
-		RunE: func(cmd *cobra.Command, _ []string) error {
+  starmap update -y                         # Auto-approve changes
+  starmap update --force                    # Force fresh update
+  starmap update openai --dry               # Preview OpenAI updates`,
+		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 			logger := app.Logger()
+
+			// Extract provider from positional argument if present
+			// This takes precedence over the --provider flag
+			if len(args) == 1 {
+				flags.Provider = args[0]
+			}
+
 			return ExecuteUpdate(ctx, app, flags, logger)
 		},
 	}
