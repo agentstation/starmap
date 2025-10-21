@@ -1,4 +1,4 @@
-//go:build (darwin || linux) && !js && !wasip1
+//go:build darwin
 
 package auth
 
