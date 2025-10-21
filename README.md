@@ -610,11 +610,11 @@ Check and verify your authentication setup:
 # Check authentication status for all providers
 starmap providers auth status
 
-# Verify credentials by making test API calls
-starmap providers auth verify
+# Test credentials by making test API calls
+starmap providers auth test
 
-# Check specific provider
-starmap providers auth verify openai
+# Test specific provider
+starmap providers auth test openai
 
 # JSON output for automation
 starmap providers auth status --format json

@@ -29,8 +29,8 @@ This shows:
   - Optional configurations
 
 The command checks environment variables and credential files
-but does not make actual API calls to verify credentials work.
-Use 'starmap providers auth verify' to test credentials.`,
+but does not make actual API calls to test credentials work.
+Use 'starmap providers auth test' to test credentials.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runAuthStatus(cmd, args, app)
 		},
@@ -164,7 +164,7 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 	}
 
 	// Print summary
-	if err := printAuthSummary(cmd, app, verbose, configured, missing, optional, unsupported); err != nil {
+	if err := printAuthSummary(cmd, configured, missing); err != nil {
 		return err
 	}
 

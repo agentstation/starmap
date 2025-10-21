@@ -42,18 +42,18 @@ func authHintProvider(ctx Context) []*Hint {
 		}
 	}
 
-	// Auth status success - suggest verification
+	// Auth status success - suggest testing
 	if ctx.Command == authCommand && ctx.Subcommand == "status" && ctx.Succeeded {
 		if len(ctx.UserState.AuthProviders) > 0 {
 			hints = append(hints, NewCommand(
 				"Test that your credentials work",
-				"starmap providers auth verify",
-			).WithTags("verification", "next-step"))
+				"starmap providers auth test",
+			).WithTags("testing", "next-step"))
 		}
 	}
 
-	// Auth verification failures
-	if ctx.Command == authCommand && ctx.Subcommand == "verify" && !ctx.Succeeded {
+	// Auth test failures
+	if ctx.Command == authCommand && ctx.Subcommand == "test" && !ctx.Succeeded {
 		hints = append(hints, New(
 			"Check that your API keys are valid and not expired",
 		).WithTags("troubleshooting", "auth"))
@@ -121,9 +121,9 @@ func commandHintProvider(ctx Context) []*Hint {
 	case "update":
 		if ctx.Succeeded {
 			hints = append(hints, NewCommand(
-				"Verify updated provider credentials",
-				"starmap providers auth verify",
-			).WithTags("verification", "update"))
+				"Test updated provider credentials",
+				"starmap providers auth test",
+			).WithTags("testing", "update"))
 		}
 
 	case "validate":

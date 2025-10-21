@@ -20,7 +20,7 @@ func NewGCloudCommand() *cobra.Command {
 		Long: `Authenticate with Google Cloud for Vertex AI access.
 
 By default, checks if authenticated and runs 'gcloud auth application-default login' if needed.
-Use --check to only verify status without authenticating.
+Use --check to only test status without authenticating.
 
 Examples:
   starmap providers auth gcloud           # Authenticate if needed

@@ -464,8 +464,8 @@ auth: ## Check authentication status for all providers
 auth-status: ## Show authentication status (same as auth)
 	@$(GOCMD) run $(MAIN_PATH) providers auth status
 
-auth-verify: ## Verify credentials work with test API calls
-	@$(GOCMD) run $(MAIN_PATH) providers auth verify
+auth-test: ## Test credentials work with test API calls
+	@$(GOCMD) run $(MAIN_PATH) providers auth test
 
 auth-gcloud: ## Authenticate with Google Cloud
 	@$(GOCMD) run $(MAIN_PATH) providers auth gcloud

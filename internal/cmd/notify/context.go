@@ -232,11 +232,11 @@ func (CommonContexts) AuthStatus(succeeded bool, providersConfigured int) hints.
 	return ctx
 }
 
-// AuthVerify creates a context for auth verification commands.
-func (CommonContexts) AuthVerify(succeeded bool, errorType string) hints.Context {
+// AuthTest creates a context for auth testing commands.
+func (CommonContexts) AuthTest(succeeded bool, errorType string) hints.Context {
 	ctx := NewContextBuilder().Build()
 	ctx.Command = "auth"
-	ctx.Subcommand = "verify"
+	ctx.Subcommand = "test"
 	ctx.Succeeded = succeeded
 
 	if !succeeded && errorType != "" {

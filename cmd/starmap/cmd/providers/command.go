@@ -34,7 +34,7 @@ List providers, show provider details, fetch from provider APIs, and manage auth
   starmap providers openai             # Show OpenAI provider details
   starmap providers fetch              # Fetch from all provider APIs
   starmap providers fetch openai       # Fetch from OpenAI API
-  starmap providers auth verify        # Verify authentication`,
+  starmap providers auth test          # Test authentication`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger := app.Logger()
 

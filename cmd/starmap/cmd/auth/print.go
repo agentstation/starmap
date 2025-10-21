@@ -10,7 +10,6 @@ import (
 
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/auth/adc"
-	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/emoji"
 	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/notify"
@@ -245,7 +244,7 @@ func printProviderStatus(provider *catalogs.Provider, status *auth.Status) {
 }
 
 // printAuthSummary displays contextual hints after authentication status.
-func printAuthSummary(cmd *cobra.Command, app application.Application, verbose bool, configured, missing, optional, unsupported int) error {
+func printAuthSummary(cmd *cobra.Command, configured, missing int) error {
 	fmt.Println()
 
 	// Create notifier and show contextual hints
@@ -364,13 +363,13 @@ func maskAPIKey(key string) string {
 	return prefix + masked + suffix
 }
 
-// displayVerificationTable shows verification results in a table format.
-func displayVerificationTable(results []VerificationResult, verbose bool) {
-	displayVerificationTableWithTitle(results, verbose, true)
+// displayTestTable shows test results in a table format.
+func displayTestTable(results []TestResult, verbose bool) {
+	displayTestTableWithTitle(results, verbose, true)
 }
 
-// displayVerificationTableWithTitle shows verification results with optional title.
-func displayVerificationTableWithTitle(results []VerificationResult, verbose bool, showTitle bool) {
+// displayTestTableWithTitle shows test results with optional title.
+func displayTestTableWithTitle(results []TestResult, verbose bool, showTitle bool) {
 	if len(results) == 0 {
 		return
 	}
@@ -407,7 +406,7 @@ func displayVerificationTableWithTitle(results []VerificationResult, verbose boo
 	}
 
 	if showTitle {
-		fmt.Println("Provider Verification Results:")
+		fmt.Println("Provider Test Results:")
 	}
 	_ = formatter.Format(os.Stdout, tableData)
 	if showTitle {

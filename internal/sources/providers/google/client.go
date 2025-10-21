@@ -288,10 +288,10 @@ func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, erro
 }
 
 // checkVertexPrerequisites performs pre-flight checks for Vertex AI.
-// This uses the same logic as `starmap providers auth verify` to detect ADC configuration
+// This uses the same logic as `starmap providers auth test` to detect ADC configuration
 // locally without making network calls.
 func (c *Client) checkVertexPrerequisites() error {
-	// Check ADC status using the same logic as `starmap providers auth verify`
+	// Check ADC status using the same logic as `starmap providers auth test`
 	details := adc.BuildDetails()
 
 	switch details.State {
@@ -326,7 +326,7 @@ func (c *Client) checkVertexPrerequisites() error {
 // listModelsVertex fetches models using Vertex AI API.
 func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error) {
 	// Pre-flight check: Verify ADC is available before attempting network calls
-	// This is the same check used by `starmap providers auth verify`
+	// This is the same check used by `starmap providers auth test`
 	if err := c.checkVertexPrerequisites(); err != nil {
 		return nil, err
 	}
