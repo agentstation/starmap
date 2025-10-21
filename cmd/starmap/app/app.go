@@ -109,10 +109,8 @@ func (a *App) OutputFormat() string {
 // Starmap returns the starmap instance with optional configuration.
 // When called without options, returns the default cached instance (lazy-initialized, thread-safe).
 // When called with options, creates a new instance with custom configuration (no caching).
-//
-// This consolidates the previous Starmap() and StarmapWithOptions() methods into a single,
-// more idiomatic Go interface following the variadic options pattern.
 func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
+
 	// If options provided, create new instance (no caching)
 	if len(opts) > 0 {
 		sm, err := starmap.New(opts...)
@@ -140,8 +138,8 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 	}
 
 	// Create starmap instance with options from config
-	configOpts := a.buildStarmapOptions()
-	sm, err := starmap.New(configOpts...)
+	o := a.buildStarmapOptions()
+	sm, err := starmap.New(o...)
 	if err != nil {
 		return nil, errors.WrapResource("create", "starmap", "", err)
 	}

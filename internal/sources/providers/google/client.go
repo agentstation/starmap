@@ -705,13 +705,8 @@ func (c *Client) convertGenAIModel(genaiModel *genai.Model) *catalogs.Model {
 		}
 	}
 
-	// Set metadata if available
-	if genaiModel.Version != "" {
-		if model.Metadata == nil {
-			model.Metadata = &catalogs.ModelMetadata{}
-		}
-		model.Metadata.ReleaseDate = utc.Now() // Placeholder
-	}
+	// Metadata.ReleaseDate will be provided by models.dev during reconciliation
+	// (models.dev is authoritative for metadata per authority hierarchy)
 
 	return model
 }
@@ -823,10 +818,8 @@ func (c *Client) createModelGardenModel(modelID, displayName string, authorID ca
 		}
 	}
 
-	// Set metadata for Model Garden models
-	model.Metadata = &catalogs.ModelMetadata{
-		ReleaseDate: utc.Now(), // Placeholder
-	}
+	// Metadata will be provided by models.dev during reconciliation
+	// (models.dev is authoritative for metadata per authority hierarchy)
 
 	// Special handling for vision models
 	if strings.Contains(modelLower, "vision") {

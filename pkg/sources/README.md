@@ -38,14 +38,13 @@ if fetcher.HasClient(providerID) {
 
 ## Index
 
+- [Constants](<#constants>)
 - [type Dependency](<#Dependency>)
 - [type DependencyStatus](<#DependencyStatus>)
 - [type FetchStats](<#FetchStats>)
   - [func \(s \*FetchStats\) HumanSize\(\) string](<#FetchStats.HumanSize>)
 - [type ID](<#ID>)
   - [func IDs\(\) \[\]ID](<#IDs>)
-  - [func \(id ID\) IsValid\(\) bool](<#ID.IsValid>)
-  - [func \(id ID\) String\(\) string](<#ID.String>)
 - [type Option](<#Option>)
   - [func WithCleanupRepo\(cleanup bool\) Option](<#WithCleanupRepo>)
   - [func WithFresh\(fresh bool\) Option](<#WithFresh>)
@@ -78,8 +77,31 @@ if fetcher.HasClient(providerID) {
   - [func \(s \*Sources\) Set\(id ID, src Source\)](<#Sources.Set>)
 
 
+## Constants
+
+<a name="ProvidersID"></a>Common source identifiers \- exported as package\-level constants for convenience.
+
+```go
+const (
+    ProvidersID     = types.ProvidersID
+    ModelsDevGitID  = types.ModelsDevGitID
+    ModelsDevHTTPID = types.ModelsDevHTTPID
+    LocalCatalogID  = types.LocalCatalogID
+)
+```
+
+<a name="ResourceTypeModel"></a>Common resource type identifiers \- exported as package\-level constants for convenience.
+
+```go
+const (
+    ResourceTypeModel    = types.ResourceTypeModel
+    ResourceTypeProvider = types.ResourceTypeProvider
+    ResourceTypeAuthor   = types.ResourceTypeAuthor
+)
+```
+
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L157-L175>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L144-L162>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -106,7 +128,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L178-L183>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L165-L170>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -147,51 +169,22 @@ func (s *FetchStats) HumanSize() string
 HumanSize returns the payload size in human\-readable format.
 
 <a name="ID"></a>
-## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L99>)
+## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L102>)
 
-ID represents the identifier of a data source.
-
-```go
-type ID string
-```
-
-<a name="ProvidersID"></a>Common source names.
+ID represents the identifier of a data source. ID is a type alias for types.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/types.
 
 ```go
-const (
-    ProvidersID     ID  = "providers"
-    ModelsDevGitID  ID  = "models_dev_git"
-    ModelsDevHTTPID ID  = "models_dev_http"
-    LocalCatalogID  ID  = "local_catalog"
-)
+type ID = types.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L116>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L114>)
 
 ```go
 func IDs() []ID
 ```
 
-IDs returns all available source types. This provides a convenient way to iterate over all Type values.
-
-<a name="ID.IsValid"></a>
-### func \(ID\) [IsValid](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L127>)
-
-```go
-func (id ID) IsValid() bool
-```
-
-IsValid returns true if the ID is one of the defined constants. Uses IDs\(\) to ensure consistency with the authoritative id list.
-
-<a name="ID.String"></a>
-### func \(ID\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L102>)
-
-```go
-func (id ID) String() string
-```
-
-String returns the string representation of a source name.
+IDs returns all available source identifiers. Delegates to types.SourceIDs\(\) to maintain consistency.
 
 <a name="Option"></a>
 ## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L34>)
@@ -403,29 +396,16 @@ func WithoutCredentialLoading() ProviderOption
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L186>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L175>)
 
-ResourceType identifies the type of resource being merged.
-
-```go
-type ResourceType string
-```
-
-<a name="ResourceTypeModel"></a>
+ResourceType is a type alias for types.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/types.
 
 ```go
-const (
-    // ResourceTypeModel represents a model resource.
-    ResourceTypeModel ResourceType = "model"
-    // ResourceTypeProvider represents a provider resource.
-    ResourceTypeProvider ResourceType = "provider"
-    // ResourceTypeAuthor represents an author resource.
-    ResourceTypeAuthor ResourceType = "author"
-)
+type ResourceType = types.ResourceType
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L132-L154>)
+## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L119-L141>)
 
 Source represents a data source for catalog information.
 

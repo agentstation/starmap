@@ -85,7 +85,7 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	}
 
 	// Step 2: Collect and merge providers
-	providers, provenanceMap, err := r.reconcileProviders(rctx)
+	providers, err := r.reconcileProviders(rctx)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +132,7 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	changeset := r.changeset(rctx, catalog)
 
 	// Step 7: Build and return result
-	return r.result(rctx, catalog, changeset, provenanceMap, modelResults), nil
+	return r.result(rctx, catalog, changeset, modelResults), nil
 }
 
 // initialize sets up reconciliation context.
@@ -170,7 +170,7 @@ func (r *reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 }
 
 // reconcileProviders merges providers from all sources.
-func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, provenance.Map, error) {
+func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, error) {
 	// Collect providers from all sources
 	providerSources := rctx.collector.collectProviders()
 
@@ -265,6 +265,8 @@ func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 		if err != nil {
 			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
 		}
+		// Clear old provenance data - we'll regenerate it from the current reconciliation
+		catalog.Provenance().Clear()
 	} else {
 		catalog = catalogs.NewEmpty()
 	}
@@ -346,17 +348,22 @@ func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog)
 }
 
 // result creates the final result.
-func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, changeset *differ.Changeset, providerProv provenance.Map, modelResults map[catalogs.ProviderID]modelResult) *Result {
+func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, changeset *differ.Changeset, modelResults map[catalogs.ProviderID]modelResult) *Result {
 	result := NewResult()
 
 	// Set core data
 	result.Catalog = catalog
 	result.Changeset = changeset
 
-	// Combine all provenance data
-	maps.Copy(result.Provenance, providerProv)
+	// Combine all provenance data (models only)
 	for _, mr := range modelResults {
 		maps.Copy(result.Provenance, mr.provenance)
+	}
+
+	// Copy tracker provenance into catalog for persistence
+	// This ensures the catalog contains the correctly-formatted provenance data
+	if r.provenance != nil {
+		catalog.Provenance().Merge(r.provenance.Map())
 	}
 
 	// Build tracking maps from final catalog (not just current sync results)

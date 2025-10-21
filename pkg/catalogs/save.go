@@ -18,7 +18,7 @@ func (cat *catalog) Save(opts ...save.Option) error {
 	options := save.Defaults().Apply(opts...)
 
 	// Check if a write path or options path is configured
-	if cat.options.writePath == "" && options.Path() == "" {
+	if cat.config.writePath == "" && options.Path() == "" {
 		return &errors.ConfigError{
 			Component: "catalog",
 			Message:   "no write path configured for saving",
@@ -26,12 +26,12 @@ func (cat *catalog) Save(opts ...save.Option) error {
 	}
 
 	// If the options path is configured, use it
-	if cat.options.writePath == "" && options.Path() != "" {
-		cat.options.writePath = options.Path()
+	if cat.config.writePath == "" && options.Path() != "" {
+		cat.config.writePath = options.Path()
 	}
 
 	// Save to the configured path
-	return cat.saveTo(cat.options.writePath)
+	return cat.saveTo(cat.config.writePath)
 }
 
 // saveTo saves the catalog to the specified path.
@@ -63,6 +63,14 @@ func (cat *catalog) saveTo(basePath string) error {
 		yamlData := cat.authors.FormatYAML()
 		if err := writeFile("authors.yaml", []byte(yamlData)); err != nil {
 			return errors.WrapIO("write", "authors.yaml", err)
+		}
+	}
+
+	// Save provenance.yaml
+	if cat.provenance.Len() > 0 {
+		yamlData := cat.provenance.FormatYAML()
+		if err := writeFile("provenance.yaml", []byte(yamlData)); err != nil {
+			return errors.WrapIO("write", "provenance.yaml", err)
 		}
 	}
 

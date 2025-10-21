@@ -8,11 +8,12 @@ import (
 	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/provenance"
 )
 
 // Load loads the catalog from the configured filesystem.
 func (cat *catalog) Load() error {
-	if cat.options.readFS == nil {
+	if cat.config.readFS == nil {
 		return nil // Memory catalog - nothing to load
 	}
 
@@ -23,6 +24,11 @@ func (cat *catalog) Load() error {
 
 	// Load authors.yaml
 	if err := cat.loadAuthorsYAML(); err != nil {
+		return err
+	}
+
+	// Load provenance.yaml
+	if err := cat.loadProvenanceYAML(); err != nil {
 		return err
 	}
 
@@ -41,7 +47,7 @@ func (cat *catalog) Load() error {
 
 // loadProvidersYAML loads providers from providers.yaml file.
 func (cat *catalog) loadProvidersYAML() error {
-	data, err := fs.ReadFile(cat.options.readFS, "providers.yaml")
+	data, err := fs.ReadFile(cat.config.readFS, "providers.yaml")
 	if err != nil {
 		return nil // File doesn't exist is okay
 	}
@@ -59,7 +65,7 @@ func (cat *catalog) loadProvidersYAML() error {
 
 // loadAuthorsYAML loads authors from authors.yaml file.
 func (cat *catalog) loadAuthorsYAML() error {
-	data, err := fs.ReadFile(cat.options.readFS, "authors.yaml")
+	data, err := fs.ReadFile(cat.config.readFS, "authors.yaml")
 	if err != nil {
 		return nil // File doesn't exist is okay
 	}
@@ -72,6 +78,22 @@ func (cat *catalog) loadAuthorsYAML() error {
 	for _, a := range authors {
 		_ = cat.SetAuthor(a)
 	}
+	return nil
+}
+
+// loadProvenanceYAML loads provenance from provenance.yaml file.
+func (cat *catalog) loadProvenanceYAML() error {
+	data, err := fs.ReadFile(cat.config.readFS, "provenance.yaml")
+	if err != nil {
+		return nil // File doesn't exist is okay
+	}
+
+	var pf provenance.ProvenanceFile
+	if err := yaml.Unmarshal(data, &pf); err != nil {
+		return errors.WrapParse("yaml", "provenance.yaml", err)
+	}
+
+	cat.provenance.Set(pf.Provenance)
 	return nil
 }
 
@@ -137,7 +159,7 @@ func (cat *catalog) loadModelFile(path string, data []byte) error {
 
 // loadProviderModelFiles walks the providers directory and loads all model files.
 func (cat *catalog) loadProviderModelFiles() error {
-	err := fs.WalkDir(cat.options.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(cat.config.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if os.IsNotExist(err) {
 				return nil
@@ -148,7 +170,7 @@ func (cat *catalog) loadProviderModelFiles() error {
 			return nil
 		}
 
-		data, err := fs.ReadFile(cat.options.readFS, path)
+		data, err := fs.ReadFile(cat.config.readFS, path)
 		if err != nil {
 			return nil // Skip files we can't read
 		}
@@ -165,7 +187,7 @@ func (cat *catalog) loadProviderModelFiles() error {
 // loadAuthorModelFiles walks the authors directory and loads all model files.
 // These files are a denormalized view - the source of truth is provider catalogs + attribution config.
 func (cat *catalog) loadAuthorModelFiles() error {
-	err := fs.WalkDir(cat.options.readFS, "authors", func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(cat.config.readFS, "authors", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if os.IsNotExist(err) {
 				return nil
@@ -181,7 +203,7 @@ func (cat *catalog) loadAuthorModelFiles() error {
 			return nil
 		}
 
-		data, err := fs.ReadFile(cat.options.readFS, path)
+		data, err := fs.ReadFile(cat.config.readFS, path)
 		if err != nil {
 			return nil // Skip files we can't read
 		}

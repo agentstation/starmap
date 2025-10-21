@@ -103,4 +103,55 @@ func TestCatalogModes(t *testing.T) {
 			t.Errorf("Provider count mismatch: embedded=%d, files=%d", len(embProviders), len(fileProviders))
 		}
 	})
+
+	t.Run("ProvenanceMerge", func(t *testing.T) {
+		// Create embedded catalog (should include provenance.yaml)
+		embCat, err := New(WithEmbedded())
+		if err != nil {
+			t.Fatalf("Failed to create embedded catalog: %v", err)
+		}
+
+		// Verify embedded catalog has provenance data
+		embProvenanceCount := embCat.Provenance().Len()
+		if embProvenanceCount == 0 {
+			t.Error("Embedded catalog should have provenance data")
+		}
+
+		// Create file catalog (same files, should have same provenance)
+		filesCat, err := New(WithPath("../../internal/embedded/catalog"))
+		if err != nil {
+			t.Fatalf("Failed to create files catalog: %v", err)
+		}
+
+		// Verify file catalog has provenance data
+		fileProvenanceCount := filesCat.Provenance().Len()
+		if fileProvenanceCount == 0 {
+			t.Error("Files catalog should have provenance data")
+		}
+
+		// Verify counts match (same source data)
+		if embProvenanceCount != fileProvenanceCount {
+			t.Errorf("Provenance count mismatch: embedded=%d, files=%d", embProvenanceCount, fileProvenanceCount)
+		}
+
+		// Test merge behavior
+		embCatCopy, err := embCat.Copy()
+		if err != nil {
+			t.Fatalf("Failed to copy embedded catalog: %v", err)
+		}
+
+		if merger, ok := embCatCopy.(Merger); ok {
+			if err := merger.MergeWith(filesCat); err != nil {
+				t.Fatalf("Failed to merge catalogs: %v", err)
+			}
+
+			// After merge, provenance should include data from both sources
+			mergedCount := embCatCopy.Provenance().Len()
+			if mergedCount < embProvenanceCount {
+				t.Errorf("Merged provenance lost data: before=%d, after=%d", embProvenanceCount, mergedCount)
+			}
+		} else {
+			t.Error("Catalog does not implement Merger interface")
+		}
+	})
 }

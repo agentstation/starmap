@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Enhancer defines the interface for model enrichment.
@@ -156,7 +157,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"pricing",
 			provenance.Provenance{
-				Source:    sources.ID(enhancer.Name()),
+				Source:    types.SourceID(enhancer.Name()),
 				Field:     "pricing",
 				Value:     enhanced.Pricing,
 				Timestamp: utcNow(),
@@ -170,7 +171,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"limits",
 			provenance.Provenance{
-				Source:    sources.ID(enhancer.Name()),
+				Source:    types.SourceID(enhancer.Name()),
 				Field:     "limits",
 				Value:     enhanced.Limits,
 				Timestamp: utcNow(),
@@ -184,7 +185,7 @@ func (p *Pipeline) track(original, enhanced catalogs.Model, enhancer Enhancer) {
 			enhanced.ID,
 			"metadata",
 			provenance.Provenance{
-				Source:    sources.ID(enhancer.Name()),
+				Source:    types.SourceID(enhancer.Name()),
 				Field:     "metadata",
 				Value:     enhanced.Metadata,
 				Timestamp: utcNow(),

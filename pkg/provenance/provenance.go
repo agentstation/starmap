@@ -3,23 +3,26 @@ package provenance
 
 import (
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Provenance tracks the origin and history of a field value.
 type Provenance struct {
-	Source        sources.ID // Source that provided the value
-	Field         string     // Field path
-	Value         any        // The actual value
-	Timestamp     time.Time  // When the value was set
-	Authority     float64    // Authority score (0.0 to 1.0)
-	Confidence    float64    // Confidence in the value (0.0 to 1.0)
-	Reason        string     // Reason for selecting this value
-	PreviousValue any        // Previous value if updated
+	Source        types.SourceID // Source that provided the value (e.g., "providers", "models_dev_git")
+	Field         string         // Field path
+	Value         any            // The actual value
+	Timestamp     time.Time      // When the value was set
+	Authority     float64        // Authority score (0.0 to 1.0)
+	Confidence    float64        // Confidence in the value (0.0 to 1.0)
+	Reason        string         // Reason for selecting this value
+	PreviousValue any            // Previous value if updated
 }
 
 // Map tracks provenance for multiple resources.
@@ -28,13 +31,13 @@ type Map map[string][]Provenance // key is "resourceType:resourceID:fieldPath"
 // Tracker manages provenance tracking during reconciliation.
 type Tracker interface {
 	// Track records provenance for a field
-	Track(resourceType sources.ResourceType, resourceID string, field string, history Provenance)
+	Track(resourceType types.ResourceType, resourceID string, field string, history Provenance)
 
 	// Find retrieves provenance for a specific field
-	FindByField(resourceType sources.ResourceType, resourceID string, field string) []Provenance
+	FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance
 
 	// FindByResource retrieves all provenance for a resource
-	FindByResource(resourceType sources.ResourceType, resourceID string) map[string][]Provenance
+	FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance
 
 	// Map returns the complete provenance map
 	Map() Map
@@ -58,12 +61,12 @@ func NewTracker(enabled bool) Tracker {
 }
 
 // Track records provenance for a field.
-func (p *tracker) Track(resourceType sources.ResourceType, resourceID string, field string, history Provenance) {
+func (p *tracker) Track(resourceType types.ResourceType, resourceID string, field string, history Provenance) {
 	if !p.enabled {
 		return
 	}
 
-	key := p.makeKey(resourceType, resourceID, field)
+	key := p.makeKey(string(resourceType), resourceID, field)
 
 	// Set timestamp if not provided
 	if history.Timestamp.IsZero() {
@@ -74,23 +77,23 @@ func (p *tracker) Track(resourceType sources.ResourceType, resourceID string, fi
 }
 
 // Find retrieves provenance for a specific field.
-func (p *tracker) FindByField(resourceType sources.ResourceType, resourceID string, field string) []Provenance {
+func (p *tracker) FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance {
 	if !p.enabled {
 		return nil
 	}
 
-	key := p.makeKey(resourceType, resourceID, field)
+	key := p.makeKey(string(resourceType), resourceID, field)
 	return p.provenance[key]
 }
 
 // GetResourceProvenance retrieves all provenance for a resource.
-func (p *tracker) FindByResource(resourceType sources.ResourceType, resourceID string) map[string][]Provenance {
+func (p *tracker) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance {
 	if !p.enabled {
 		return nil
 	}
 
 	result := make(map[string][]Provenance)
-	prefix := fmt.Sprintf("%s:%s:", resourceType, resourceID)
+	prefix := fmt.Sprintf("%s:%s:", string(resourceType), resourceID)
 
 	for key, info := range p.provenance {
 		if field, found := strings.CutPrefix(key, prefix); found {
@@ -121,7 +124,7 @@ func (p *tracker) Clear() {
 }
 
 // makeKey creates a unique key for provenance tracking.
-func (p *tracker) makeKey(resourceType sources.ResourceType, resourceID string, field string) string {
+func (p *tracker) makeKey(resourceType string, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }
 
@@ -132,7 +135,7 @@ type Report struct {
 
 // ResourceProvenance contains provenance for a single resource.
 type ResourceProvenance struct {
-	Type   sources.ResourceType
+	Type   types.ResourceType // Resource type (e.g., "model", "provider", "author")
 	ID     string
 	Fields map[string]Field
 }
@@ -146,10 +149,10 @@ type Field struct {
 
 // ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
-	Sources        []sources.ID // Sources that had conflicting values
-	Values         []any        // The conflicting values
-	Resolution     string       // How the conflict was resolved
-	SelectedSource sources.ID   // Which source was selected
+	Sources        []types.SourceID // Sources that had conflicting values
+	Values         []any            // The conflicting values
+	Resolution     string           // How the conflict was resolved
+	SelectedSource types.SourceID   // Which source was selected
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -165,7 +168,7 @@ func GenerateReport(provenance Map) *Report {
 			continue
 		}
 
-		resourceType := sources.ResourceType(parts[0])
+		resourceType := parts[0]
 		resourceID := parts[1]
 		field := parts[2]
 
@@ -175,7 +178,7 @@ func GenerateReport(provenance Map) *Report {
 		resource, exists := report.Resources[resourceKey]
 		if !exists {
 			resource = ResourceProvenance{
-				Type:   resourceType,
+				Type:   types.ResourceType(resourceType),
 				ID:     resourceID,
 				Fields: make(map[string]Field),
 			}
@@ -220,7 +223,7 @@ func detectConflicts(infos []Provenance) []ConflictInfo {
 	for _, group := range byTime {
 		if len(group) > 1 {
 			conflict := ConflictInfo{
-				Sources: []sources.ID{},
+				Sources: []types.SourceID{},
 				Values:  []any{},
 			}
 
@@ -328,4 +331,32 @@ type AuditResult struct {
 	Coverage    float64  // Percentage of fields with provenance
 	Conflicts   int      // Number of unresolved conflicts
 	MissingData []string // Fields without provenance
+}
+
+// ProvenanceFile represents a provenance file stored on disk.
+//nolint:revive // Name is intentionally descriptive for external clarity
+type ProvenanceFile struct {
+	Provenance Map `yaml:"provenance"`
+}
+
+// Load reads provenance data from a YAML file.
+// Returns nil, nil if the file doesn't exist (not an error).
+func Load(path string) (*ProvenanceFile, error) {
+	// Check if file exists
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil, nil
+	}
+
+	// Path is from catalog configuration, not user input
+	data, err := os.ReadFile(path) //nolint:gosec
+	if err != nil {
+		return nil, fmt.Errorf("failed to read provenance file: %w", err)
+	}
+
+	var pf ProvenanceFile
+	if err := yaml.Unmarshal(data, &pf); err != nil {
+		return nil, fmt.Errorf("failed to parse provenance file: %w", err)
+	}
+
+	return &pf, nil
 }

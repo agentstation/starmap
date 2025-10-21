@@ -37,6 +37,9 @@ func (r *readonly) Authors() *Authors { return r.source.Authors() }
 // Endpoints implements starmap.Catalog.
 func (r *readonly) Endpoints() *Endpoints { return r.source.Endpoints() }
 
+// Provenance implements starmap.Catalog.
+func (r *readonly) Provenance() *Provenance { return r.source.Provenance() }
+
 // Provider implements starmap.Catalog.
 func (r *readonly) Provider(id ProviderID) (Provider, error) { return r.source.Provider(id) }
 

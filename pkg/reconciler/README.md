@@ -103,7 +103,7 @@ type Merger interface {
     Models(sources map[sources.ID][]*catalogs.Model) ([]*catalogs.Model, provenance.Map, error)
 
     // Providers merges providers from multiple sources
-    Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error)
+    Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, error)
 }
 ```
 

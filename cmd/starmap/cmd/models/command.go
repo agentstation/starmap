@@ -38,6 +38,7 @@ List models with filtering options, or show detailed information about specific 
 
 	// Add subcommands
 	cmd.AddCommand(NewListCommand(app))
+	cmd.AddCommand(NewHistoryCommand(app))
 
 	return cmd
 }

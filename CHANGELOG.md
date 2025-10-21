@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.23] - TBD
+
+### Changed
+- **CLI Improvement**: Renamed `models provenance` command to `models history` for better user experience
+  - Old: `starmap models provenance gpt-4o`
+  - New: `starmap models history gpt-4o`
+  - Rationale: "history" is more intuitive terminology for field-level source tracking
+- **Enhanced History Command**: Improved field filtering with multiple fields and case-insensitive matching
+  - Renamed `--field` → `--fields` (plural, more intuitive)
+  - Support multiple fields: `--fields=Name,ID,Pricing.Input`
+  - Case-insensitive matching: `--fields=name` matches "Name" field
+  - Wildcard patterns now case-insensitive: `--fields='pricing.*'` matches "Pricing.Input"
+
+### Removed
+- Removed `starmap providers provenance` command (provider-level tracking no longer needed)
+- Removed `starmap authors provenance` command (author-level tracking no longer needed)
+- Only model-level field history tracking is retained as it's the primary use case
+
 ## [0.0.22] - 2025-10-20
 
 ### BREAKING CHANGES

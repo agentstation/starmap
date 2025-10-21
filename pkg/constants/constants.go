@@ -186,6 +186,9 @@ const (
 
 	// DefaultModelsDevCachePath is the default path for models.dev HTTP cache.
 	DefaultModelsDevCachePath = "~/.starmap/sources/models.dev"
+
+	// DefaultProvenancePath is the default path for provenance tracking data.
+	DefaultProvenancePath = "~/.starmap/provenance.yaml"
 )
 
 // Format constants.

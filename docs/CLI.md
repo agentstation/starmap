@@ -218,6 +218,49 @@ Before committing flag changes:
    - README.md examples
    - This policy document
 
+## Field History Tracking
+
+The `models history` command provides field-level source tracking for models, showing which data sources contributed to each field value.
+
+### Purpose
+
+- **Data Provenance**: Track which source (Provider API, models.dev, local, embedded) provided each field
+- **Authority Scores**: See why a particular source was chosen (based on field-level authorities)
+- **Change History**: View complete history of value changes over time
+- **Debugging**: Understand where data comes from and when it changed
+
+### Usage
+
+```bash
+# View all field history for a model
+starmap models history gpt-4o
+
+# Filter to specific fields (case-insensitive)
+starmap models history gpt-4o --fields=name
+starmap models history gpt-4o --fields=Name,ID,ContextWindow
+
+# Wildcard patterns (case-insensitive)
+starmap models history gpt-4o --fields='pricing.*'  # All pricing fields
+starmap models history gpt-4o --fields='features.*' # All feature flags
+
+# Output as JSON for analysis
+starmap models history gpt-4o -o json
+```
+
+### Output Format
+
+The table output shows:
+- **Field**: Field name (e.g., Name, Pricing.Input)
+  - Note: Field filtering is case-insensitive for convenience
+  - `--fields=name` matches "Name", `--fields=pricing.*` matches "Pricing.Input"
+- **Curr**: → indicator for current value
+- **Value**: Field value (formatted as YAML for complex structures)
+- **Source**: Data source that provided this value
+- **Authority**: Authority score (percentage)
+- **Confidence**: Confidence level (percentage)
+- **When**: Timestamp of last update
+- **Reason**: Explanation for why this source was chosen
+
 ## Examples by Command
 
 ### Good Flag Design
@@ -238,6 +281,13 @@ starmap providers fetch --raw        # Long flag only (less common)
 starmap models list               # List all
 starmap models list -o json       # Global output format flag
 starmap models list --provider openai --tag multimodal  # Filtering flags
+
+# Models history command
+starmap models history gpt-4o                        # View all field history
+starmap models history gpt-4o --fields=name          # Case-insensitive field filter
+starmap models history gpt-4o --fields=Name,ID       # Multiple fields
+starmap models history gpt-4o --fields='pricing.*'   # Wildcard patterns (case-insensitive)
+starmap models history gpt-4o -o json                # Output as JSON
 
 # Embed ls command
 starmap embed ls -lah             # Unix-like combined short flags

@@ -9,8 +9,8 @@ description: |-
 
 # Model metadata
 metadata:
-  release_date: "2025-10-19T18:13:07Z"
-  open_weights: false
+  release_date: 2025-03-01
+  open_weights: true
 
 # Model features
 features:
@@ -88,14 +88,18 @@ generation:
 
 # Model pricing
 pricing:
-  tokens: {}
+  tokens:
+    input:
+      per_1m: 0.25
+    output:
+      per_1m: 0.5
   currency: USD
 
 # Model limits
 limits:
-  context_window: 131072
+  context_window: 40000
   output_tokens: 8192
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2025-10-21T15:07:53Z

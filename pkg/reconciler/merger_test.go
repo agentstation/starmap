@@ -300,7 +300,7 @@ func TestMergeProviders(t *testing.T) {
 			strategy := NewAuthorityStrategy(authorities)
 			merger := newMerger(authorities, strategy, nil)
 
-			result, _, err := merger.Providers(tt.sources)
+			result, err := merger.Providers(tt.sources)
 			if err != nil {
 				t.Fatalf("MergeProviders failed: %v", err)
 			}

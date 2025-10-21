@@ -280,6 +280,11 @@ starmap models list              # List all models
 starmap providers                # List all providers
 starmap authors                  # List all authors
 
+# Model field history
+starmap models history gpt-4o                    # View field provenance
+starmap models history gpt-4o --fields=Name      # Filter to specific field
+starmap models history gpt-4o --fields=Name,ID   # Multiple fields
+
 # Update catalog
 starmap update                  # Update all providers
 starmap update -p openai        # Update specific provider

@@ -21,7 +21,7 @@ type Merger interface {
 	Models(sources map[sources.ID][]*catalogs.Model) ([]*catalogs.Model, provenance.Map, error)
 
 	// Providers merges providers from multiple sources
-	Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error)
+	Providers(sources map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, error)
 }
 
 // merger implements strategic three-way merge
@@ -51,6 +51,45 @@ func newMergerWithProvenance(authorities authority.Authority, strategy Strategy,
 		tracker:     tracker,
 		baseline:    baseline,
 	}
+}
+
+// calculateAuthorityScore converts priority to a 0-1.0 authority score.
+// Higher priority = higher authority score.
+func (merger *merger) calculateAuthorityScore(fieldPath string, source sources.ID) float64 {
+	// Find the authority configuration for this field
+	auth := merger.authorities.Find(sources.ResourceTypeModel, fieldPath)
+	if auth == nil || auth.Source != source {
+		// No authority match for this source, return 0
+		return 0.0
+	}
+
+	// Normalize priority to 0-1.0 scale
+	// Known priority range: 70-110 (from authority.go defaults)
+	// Using wider range for safety: 0-150
+	minPriority := 0.0
+	maxPriority := 150.0
+	priority := float64(auth.Priority)
+
+	if priority <= minPriority {
+		return 0.0
+	}
+	if priority >= maxPriority {
+		return 1.0
+	}
+
+	// Linear interpolation
+	return (priority - minPriority) / (maxPriority - minPriority)
+}
+
+// calculateConfidence returns confidence level for a data value.
+// Returns 1.0 for non-empty values (we trust the data we have).
+// Future enhancement: could factor in data quality indicators, source reliability, etc.
+func (merger *merger) calculateConfidence(value any) float64 {
+	// Simple implementation: if we have a value, we're confident in it
+	if value != nil && value != "" {
+		return 1.0
+	}
+	return 0.0
 }
 
 // Models merges models from multiple sources.
@@ -93,7 +132,7 @@ func (merger *merger) Models(srcs map[sources.ID][]*catalogs.Model) ([]*catalogs
 }
 
 // Providers merges providers from multiple sources.
-func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, provenance.Map, error) {
+func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*catalogs.Provider, error) {
 	// Create a map of providers by ID across all sources
 	providersByID := make(map[catalogs.ProviderID]map[sources.ID]*catalogs.Provider)
 
@@ -108,7 +147,6 @@ func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*ca
 	}
 
 	var mergedProviders []*catalogs.Provider
-	allProvenance := make(provenance.Map)
 
 	// Merge each provider
 	for providerID, sourceProviders := range providersByID {
@@ -119,25 +157,13 @@ func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*ca
 			sourcePtrs[source] = p
 		}
 
-		merged, history := merger.provider(providerID, sourcePtrs)
+		merged, _ := merger.provider(providerID, sourcePtrs)
 		if merged != nil {
 			mergedProviders = append(mergedProviders, merged)
-
-			// Add provenance with provider prefix
-			if merger.tracker != nil {
-				for field, fieldProv := range history {
-					key := fmt.Sprintf("providers.%s.%s", providerID, field)
-					// Convert FieldProvenance to []ProvenanceInfo
-					provInfos := []provenance.Provenance{fieldProv.Current}
-					provInfos = append(provInfos, fieldProv.History...)
-					allProvenance[key] = provInfos
-					merger.tracker.Track(sources.ResourceTypeProvider, string(providerID), field, fieldProv.Current)
-				}
-			}
 		}
 	}
 
-	return mergedProviders, allProvenance, nil
+	return mergedProviders, nil
 }
 
 // model merges a single model from multiple sources.
@@ -190,16 +216,19 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 
 	// Merge each field according to authorities
 	for _, fieldPath := range modelFields {
-		value, sourceType := merger.modelField(fieldPath, sourceModels)
+		value, sourceType, reason := merger.modelField(fieldPath, sourceModels)
 		if value != nil {
 			merger.setModelFieldValue(merged, fieldPath, value)
 
 			history[fieldPath] = provenance.Field{
 				Current: provenance.Provenance{
-					Source:    sourceType,
-					Field:     fieldPath,
-					Value:     value,
-					Timestamp: time.Now(),
+					Source:     sourceType,
+					Field:      fieldPath,
+					Value:      value,
+					Timestamp:  time.Now(),
+					Authority:  merger.calculateAuthorityScore(fieldPath, sourceType),
+					Confidence: merger.calculateConfidence(value),
+					Reason:     reason,
 				},
 			}
 		}
@@ -226,12 +255,8 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 		}
 	}
 
-	// Preserve CreatedAt from existing model, or set to now if new
-	originalCreatedAt := merged.CreatedAt
-	originalUpdatedAt := merged.UpdatedAt
-	if merged.CreatedAt.IsZero() {
-		merged.CreatedAt = utc.Now()
-	}
+	// Determine if this is truly a new model (not found in baseline)
+	isNewModel := baselineModel == nil
 
 	// Check if content has actually changed by comparing with baseline
 	hasContentChanged := true // Default to true if no baseline
@@ -248,13 +273,17 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 		hasContentChanged = !reflect.DeepEqual(baselineCopy, mergedCopy)
 	}
 
-	// Only update UpdatedAt if content changed or this is a new model
-	if hasContentChanged || originalCreatedAt.IsZero() {
+	// Update timestamps based on model state
+	if isNewModel {
+		// New model: set both timestamps
+		merged.CreatedAt = utc.Now()
 		merged.UpdatedAt = utc.Now()
-	} else {
-		// Preserve original UpdatedAt if no changes
-		merged.UpdatedAt = originalUpdatedAt
+	} else if hasContentChanged {
+		// Existing model with changes: preserve created_at, update updated_at
+		merged.UpdatedAt = utc.Now()
 	}
+	// else: Existing model, no changes: preserve both timestamps
+	// (timestamps already copied from baseline at line 178)
 
 	return merged, history
 }
@@ -303,7 +332,7 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 }
 
 // modelField merges a single field from multiple model sources.
-func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*catalogs.Model) (any, sources.ID) {
+func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*catalogs.Model) (any, sources.ID, string) {
 	// Collect all values from sources
 	values := make(map[sources.ID]any)
 	for source, model := range sourceModels {
@@ -315,11 +344,11 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*
 	if len(values) > 0 {
 		// Let the strategy decide - it will use authorities if it's AuthorityStrategy
 		// or source priority order if it's SourceOrderStrategy
-		value, source, _ := merger.strategy.ResolveConflict(fieldPath, values)
-		return value, source
+		value, source, reason := merger.strategy.ResolveConflict(fieldPath, values)
+		return value, source, reason
 	}
 
-	return nil, ""
+	return nil, "", ""
 }
 
 // providerField merges a single provider field from multiple sources.
@@ -481,10 +510,13 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 					if history != nil {
 						(*history)["limits.context_window"] = provenance.Field{
 							Current: provenance.Provenance{
-								Source:    sourceType,
-								Field:     "limits.context_window",
-								Value:     model.Limits.ContextWindow,
-								Timestamp: time.Now(),
+								Source:     sourceType,
+								Field:      "limits.context_window",
+								Value:      model.Limits.ContextWindow,
+								Timestamp:  time.Now(),
+								Authority:  merger.calculateAuthorityScore("Limits", sourceType),
+								Confidence: merger.calculateConfidence(model.Limits.ContextWindow),
+								Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
 							},
 						}
 					}
@@ -494,10 +526,13 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 					if history != nil {
 						(*history)["limits.output_tokens"] = provenance.Field{
 							Current: provenance.Provenance{
-								Source:    sourceType,
-								Field:     "limits.output_tokens",
-								Value:     model.Limits.OutputTokens,
-								Timestamp: time.Now(),
+								Source:     sourceType,
+								Field:      "limits.output_tokens",
+								Value:      model.Limits.OutputTokens,
+								Timestamp:  time.Now(),
+								Authority:  merger.calculateAuthorityScore("Limits", sourceType),
+								Confidence: merger.calculateConfidence(model.Limits.OutputTokens),
+								Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
 							},
 						}
 					}
@@ -516,10 +551,13 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 				if history != nil {
 					(*history)["pricing"] = provenance.Field{
 						Current: provenance.Provenance{
-							Source:    sourceType,
-							Field:     "pricing",
-							Value:     model.Pricing,
-							Timestamp: time.Now(),
+							Source:     sourceType,
+							Field:      "pricing",
+							Value:      model.Pricing,
+							Timestamp:  time.Now(),
+							Authority:  merger.calculateAuthorityScore("Pricing", sourceType),
+							Confidence: merger.calculateConfidence(model.Pricing),
+							Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
 						},
 					}
 				}
@@ -548,10 +586,13 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 				if history != nil {
 					(*history)["metadata"] = provenance.Field{
 						Current: provenance.Provenance{
-							Source:    sourceType,
-							Field:     "metadata",
-							Value:     model.Metadata,
-							Timestamp: time.Now(),
+							Source:     sourceType,
+							Field:      "metadata",
+							Value:      model.Metadata,
+							Timestamp:  time.Now(),
+							Authority:  merger.calculateAuthorityScore("Metadata", sourceType),
+							Confidence: merger.calculateConfidence(model.Metadata),
+							Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
 						},
 					}
 				}

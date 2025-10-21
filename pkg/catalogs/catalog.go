@@ -68,10 +68,11 @@ var (
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
 type catalog struct {
-	options   *catalogOptions
-	providers *Providers
-	authors   *Authors
-	endpoints *Endpoints
+	config     *options
+	providers  *Providers
+	authors    *Authors
+	endpoints  *Endpoints
+	provenance *Provenance
 }
 
 // New creates a new catalog with the given options
@@ -79,14 +80,15 @@ type catalog struct {
 // WithFiles(path) = files catalog with auto-load.
 func New(opt Option, opts ...Option) (Catalog, error) {
 	cat := &catalog{
-		providers: NewProviders(),
-		authors:   NewAuthors(),
-		endpoints: NewEndpoints(),
-		options:   catalogDefaults().apply(append([]Option{opt}, opts...)...),
+		providers:  NewProviders(),
+		authors:    NewAuthors(),
+		endpoints:  NewEndpoints(),
+		provenance: NewProvenance(),
+		config:     defaults().apply(append([]Option{opt}, opts...)...),
 	}
 
 	// Auto-load if configured and has filesystem
-	if cat.options.readFS != nil {
+	if cat.config.readFS != nil {
 		if err := cat.Load(); err != nil {
 			return nil, errors.WrapResource("load", "catalog", "", err)
 		}
@@ -168,10 +170,11 @@ func NewLocal(path string) (Catalog, error) {
 //	catalog.SetProvider(provider)
 func NewEmpty() Catalog {
 	return &catalog{
-		providers: NewProviders(),
-		authors:   NewAuthors(),
-		endpoints: NewEndpoints(),
-		options:   catalogDefaults(),
+		providers:  NewProviders(),
+		authors:    NewAuthors(),
+		endpoints:  NewEndpoints(),
+		provenance: NewProvenance(),
+		config:     defaults(),
 	}
 }
 
@@ -204,6 +207,11 @@ func (cat *catalog) Authors() *Authors {
 // Endpoints returns the endpoints collection.
 func (cat *catalog) Endpoints() *Endpoints {
 	return cat.endpoints
+}
+
+// Provenance returns the provenance collection.
+func (cat *catalog) Provenance() *Provenance {
+	return cat.provenance
 }
 
 // Provider returns a provider by ID or alias.
@@ -332,6 +340,7 @@ func (cat *catalog) ReplaceWith(source Reader) error {
 	cat.providers.Clear()
 	cat.authors.Clear()
 	cat.endpoints.Clear()
+	cat.provenance.Clear()
 
 	// Copy all data from source
 	for _, provider := range source.Providers().List() {
@@ -355,6 +364,9 @@ func (cat *catalog) ReplaceWith(source Reader) error {
 			return errors.WrapResource("set", "endpoint", endpoint.ID, err)
 		}
 	}
+
+	// Copy provenance
+	cat.provenance.Set(source.Provenance().Map())
 
 	return nil
 }
@@ -460,6 +472,9 @@ func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 			}
 		}
 
+		// Merge provenance data
+		cat.provenance.Merge(source.Provenance().Map())
+
 	case MergeAppendOnly:
 		// Only add new providers/authors
 		for _, provider := range source.Providers().List() {
@@ -476,6 +491,9 @@ func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 				}
 			}
 		}
+
+		// Merge provenance data
+		cat.provenance.Merge(source.Provenance().Map())
 	}
 
 	return nil
@@ -485,10 +503,11 @@ func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 func (cat *catalog) Copy() (Catalog, error) {
 	// Create a new catalog with the same configuration
 	NewCat := &catalog{
-		providers: NewProviders(),
-		authors:   NewAuthors(),
-		endpoints: NewEndpoints(),
-		options:   cat.options,
+		providers:  NewProviders(),
+		authors:    NewAuthors(),
+		endpoints:  NewEndpoints(),
+		provenance: NewProvenance(),
+		config:     cat.config,
 	}
 
 	// Copy all data
@@ -497,10 +516,10 @@ func (cat *catalog) Copy() (Catalog, error) {
 
 // MergeStrategy returns the default merge strategy.
 func (cat *catalog) MergeStrategy() MergeStrategy {
-	return cat.options.mergeStrategy
+	return cat.config.mergeStrategy
 }
 
 // SetMergeStrategy sets the default merge strategy.
 func (cat *catalog) SetMergeStrategy(strategy MergeStrategy) {
-	cat.options.mergeStrategy = strategy
+	cat.config.mergeStrategy = strategy
 }

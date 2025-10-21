@@ -9,6 +9,7 @@ type Reader interface {
 	Authors() *Authors
 	Endpoints() *Endpoints
 	Models() *Models
+	Provenance() *Provenance
 
 	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)

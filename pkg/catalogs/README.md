@@ -683,6 +683,17 @@ func main() {
   - [func WithPath\(path string\) Option](<#WithPath>)
   - [func WithWritePath\(path string\) Option](<#WithWritePath>)
 - [type Persistence](<#Persistence>)
+- [type Provenance](<#Provenance>)
+  - [func NewProvenance\(opts ...ProvenanceOption\) \*Provenance](<#NewProvenance>)
+  - [func \(p \*Provenance\) Clear\(\)](<#Provenance.Clear>)
+  - [func \(p \*Provenance\) FindByField\(resourceType types.ResourceType, resourceID string, field string\) \[\]provenance.Provenance](<#Provenance.FindByField>)
+  - [func \(p \*Provenance\) FindByResource\(resourceType types.ResourceType, resourceID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindByResource>)
+  - [func \(p \*Provenance\) FormatYAML\(\) string](<#Provenance.FormatYAML>)
+  - [func \(p \*Provenance\) Len\(\) int](<#Provenance.Len>)
+  - [func \(p \*Provenance\) Map\(\) provenance.Map](<#Provenance.Map>)
+  - [func \(p \*Provenance\) Merge\(m provenance.Map\)](<#Provenance.Merge>)
+  - [func \(p \*Provenance\) Set\(m provenance.Map\)](<#Provenance.Set>)
+- [type ProvenanceOption](<#ProvenanceOption>)
 - [type Provider](<#Provider>)
   - [func DeepCopyProvider\(provider Provider\) Provider](<#DeepCopyProvider>)
   - [func TestProvider\(t testing.TB\) \*Provider](<#TestProvider>)
@@ -1311,7 +1322,7 @@ func WithAuthorsMap(authors map[AuthorID]*Author) AuthorsOption
 WithAuthorsMap initializes the map with existing authors.
 
 <a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L62-L68>)
+## type [Catalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L63-L69>)
 
 Catalog is the complete interface combining all catalog capabilities. This interface is composed of smaller, focused interfaces following the Interface Segregation Principle.
 
@@ -1326,7 +1337,7 @@ type Catalog interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L80>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L81>)
 
 ```go
 func New(opt Option, opts ...Option) (Catalog, error)
@@ -1335,7 +1346,7 @@ func New(opt Option, opts ...Option) (Catalog, error)
 New creates a new catalog with the given options WithEmbedded\(\) = embedded catalog with auto\-load WithFiles\(path\) = files catalog with auto\-load.
 
 <a name="NewEmbedded"></a>
-### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L101>)
+### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L103>)
 
 ```go
 func NewEmbedded() (Catalog, error)
@@ -1344,7 +1355,7 @@ func NewEmbedded() (Catalog, error)
 NewEmbedded creates a catalog backed by embedded files. This is the recommended catalog for production use as it includes all model data compiled into the binary.
 
 <a name="NewEmpty"></a>
-### func [NewEmpty](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L169>)
+### func [NewEmpty](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L171>)
 
 ```go
 func NewEmpty() Catalog
@@ -1361,7 +1372,7 @@ catalog.SetProvider(provider)
 ```
 
 <a name="NewFromFS"></a>
-### func [NewFromFS](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L186>)
+### func [NewFromFS](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L189>)
 
 ```go
 func NewFromFS(fsys fs.FS, root string) (Catalog, error)
@@ -1377,7 +1388,7 @@ catalog, err := NewFromFS(myFS, "catalog")
 ```
 
 <a name="NewFromPath"></a>
-### func [NewFromPath](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L115>)
+### func [NewFromPath](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L117>)
 
 ```go
 func NewFromPath(path string) (Catalog, error)
@@ -1395,7 +1406,7 @@ if err != nil {
 ```
 
 <a name="NewLocal"></a>
-### func [NewLocal](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L130>)
+### func [NewLocal](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/catalog.go#L132>)
 
 ```go
 func NewLocal(path string) (Catalog, error)
@@ -1432,7 +1443,7 @@ func TestCatalog(t testing.TB) Catalog
 TestCatalog creates a test catalog with sample data.
 
 <a name="Copier"></a>
-## type [Copier](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L54-L57>)
+## type [Copier](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L55-L58>)
 
 Copier provides catalog copying capabilities.
 
@@ -1766,7 +1777,7 @@ const (
 ```
 
 <a name="MergeableCatalog"></a>
-## type [MergeableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L84-L86>)
+## type [MergeableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L85-L87>)
 
 MergeableCatalog provides full catalog functionality.
 
@@ -1777,7 +1788,7 @@ type MergeableCatalog interface {
 ```
 
 <a name="Merger"></a>
-## type [Merger](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L36-L51>)
+## type [Merger](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L37-L52>)
 
 Merger provides catalog merging capabilities.
 
@@ -2656,7 +2667,7 @@ func (m *Models) SetBatch(models map[string]*Model) error
 SetBatch sets multiple models in a single operation. Overwrites existing models or adds new ones \(upsert behavior\). Returns an error if any model is nil.
 
 <a name="MutableCatalog"></a>
-## type [MutableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L77-L81>)
+## type [MutableCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L78-L82>)
 
 MutableCatalog provides read\-write access without merge capabilities.
 
@@ -2674,7 +2685,7 @@ type MutableCatalog interface {
 Option configures a catalog.
 
 ```go
-type Option func(*catalogOptions)
+type Option func(*options)
 ```
 
 <a name="WithEmbedded"></a>
@@ -2723,7 +2734,7 @@ func WithWritePath(path string) Option
 WithWritePath sets a specific path for writing catalog files.
 
 <a name="Persistence"></a>
-## type [Persistence](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L89-L92>)
+## type [Persistence](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L90-L93>)
 
 Persistence provides catalog persistence capabilities.
 
@@ -2732,6 +2743,107 @@ type Persistence interface {
     // Save saves the catalog to persistent storage
     Save(opts ...save.Option) error
 }
+```
+
+<a name="Provenance"></a>
+## type [Provenance](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L17-L20>)
+
+Provenance is a concurrent\-safe container for provenance data. It follows the same pattern as Authors, Models, and Providers containers, using RWMutex for thread safety and returning deep copies to prevent external modification.
+
+```go
+type Provenance struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewProvenance"></a>
+### func [NewProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L26>)
+
+```go
+func NewProvenance(opts ...ProvenanceOption) *Provenance
+```
+
+NewProvenance creates a new Provenance container with optional configuration.
+
+<a name="Provenance.Clear"></a>
+### func \(\*Provenance\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L78>)
+
+```go
+func (p *Provenance) Clear()
+```
+
+Clear removes all provenance data.
+
+<a name="Provenance.FindByField"></a>
+### func \(\*Provenance\) [FindByField](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L98>)
+
+```go
+func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID string, field string) []provenance.Provenance
+```
+
+FindByField retrieves provenance for a specific field of a resource. Returns nil if no provenance is found.
+
+<a name="Provenance.FindByResource"></a>
+### func \(\*Provenance\) [FindByResource](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L112>)
+
+```go
+func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]provenance.Provenance
+```
+
+FindByResource retrieves all provenance for a resource. Returns a map of field names to their provenance entries.
+
+<a name="Provenance.FormatYAML"></a>
+### func \(\*Provenance\) [FormatYAML](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L131>)
+
+```go
+func (p *Provenance) FormatYAML() string
+```
+
+FormatYAML returns the provenance data formatted as YAML. This follows the same pattern as Authors and Providers containers.
+
+<a name="Provenance.Len"></a>
+### func \(\*Provenance\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L89>)
+
+```go
+func (p *Provenance) Len() int
+```
+
+Len returns the number of provenance entries.
+
+<a name="Provenance.Map"></a>
+### func \(\*Provenance\) [Map](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L40>)
+
+```go
+func (p *Provenance) Map() provenance.Map
+```
+
+Map returns a deep copy of the provenance map. This ensures thread safety by preventing external modification of internal state.
+
+<a name="Provenance.Merge"></a>
+### func \(\*Provenance\) [Merge](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L67>)
+
+```go
+func (p *Provenance) Merge(m provenance.Map)
+```
+
+Merge adds new provenance entries to existing data. This appends to existing keys rather than replacing them.
+
+<a name="Provenance.Set"></a>
+### func \(\*Provenance\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L54>)
+
+```go
+func (p *Provenance) Set(m provenance.Map)
+```
+
+Set replaces the entire provenance map with new data. The input map is deep copied to prevent external modification.
+
+<a name="ProvenanceOption"></a>
+## type [ProvenanceOption](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/provenance.go#L23>)
+
+ProvenanceOption defines a function that configures a Provenance instance.
+
+```go
+type ProvenanceOption func(*Provenance)
 ```
 
 <a name="Provider"></a>
@@ -3504,7 +3616,7 @@ func (q Quantization) String() string
 String returns the string representation of a Quantization.
 
 <a name="ReadOnlyCatalog"></a>
-## type [ReadOnlyCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L71-L74>)
+## type [ReadOnlyCatalog](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L72-L75>)
 
 ReadOnlyCatalog provides read\-only access to a catalog.
 
@@ -3516,7 +3628,7 @@ type ReadOnlyCatalog interface {
 ```
 
 <a name="Reader"></a>
-## type [Reader](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L6-L20>)
+## type [Reader](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L6-L21>)
 
 Reader provides read\-only access to catalog data.
 
@@ -3527,6 +3639,7 @@ type Reader interface {
     Authors() *Authors
     Endpoints() *Endpoints
     Models() *Models
+    Provenance() *Provenance
 
     // Gets a provider, author, or endpoint by id
     Provider(id ProviderID) (Provider, error)
@@ -3672,7 +3785,7 @@ func (tc ToolChoice) String() string
 String returns the string representation of a ToolChoice.
 
 <a name="Writer"></a>
-## type [Writer](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L23-L33>)
+## type [Writer](<https://github.com/agentstation/starmap/blob/master/pkg/catalogs/interfaces.go#L24-L34>)
 
 Writer provides write operations for catalog data.
 

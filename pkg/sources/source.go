@@ -25,10 +25,10 @@ package sources
 
 import (
 	"context"
-	"slices"
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Sources is a thread-safe container for managing multiple data sources.
@@ -96,36 +96,23 @@ func (s *Sources) IDs() []ID {
 }
 
 // ID represents the identifier of a data source.
-type ID string
+// ID is a type alias for types.SourceID to maintain backward compatibility.
+// This allows existing code to continue using sources.ID while benefiting from
+// the shared type definitions in pkg/types.
+type ID = types.SourceID
 
-// String returns the string representation of a source name.
-func (id ID) String() string {
-	return string(id)
-}
-
-// Common source names.
+// Common source identifiers - exported as package-level constants for convenience.
 const (
-	ProvidersID     ID = "providers"
-	ModelsDevGitID  ID = "models_dev_git"
-	ModelsDevHTTPID ID = "models_dev_http"
-	LocalCatalogID  ID = "local_catalog"
+	ProvidersID     = types.ProvidersID
+	ModelsDevGitID  = types.ModelsDevGitID
+	ModelsDevHTTPID = types.ModelsDevHTTPID
+	LocalCatalogID  = types.LocalCatalogID
 )
 
-// IDs returns all available source types.
-// This provides a convenient way to iterate over all Type values.
+// IDs returns all available source identifiers.
+// Delegates to types.SourceIDs() to maintain consistency.
 func IDs() []ID {
-	return []ID{
-		ProvidersID,
-		ModelsDevGitID,
-		ModelsDevHTTPID,
-		LocalCatalogID,
-	}
-}
-
-// IsValid returns true if the ID is one of the defined constants.
-// Uses IDs() to ensure consistency with the authoritative id list.
-func (id ID) IsValid() bool {
-	return slices.Contains(IDs(), id)
+	return types.SourceIDs()
 }
 
 // Source represents a data source for catalog information.
@@ -182,14 +169,14 @@ type DependencyStatus struct {
 	CheckError error  // Error from check command if not available
 }
 
-// ResourceType identifies the type of resource being merged.
-type ResourceType string
+// ResourceType is a type alias for types.ResourceType to maintain backward compatibility.
+// This allows existing code to continue using sources.ResourceType while benefiting from
+// the shared type definitions in pkg/types.
+type ResourceType = types.ResourceType
 
+// Common resource type identifiers - exported as package-level constants for convenience.
 const (
-	// ResourceTypeModel represents a model resource.
-	ResourceTypeModel ResourceType = "model"
-	// ResourceTypeProvider represents a provider resource.
-	ResourceTypeProvider ResourceType = "provider"
-	// ResourceTypeAuthor represents an author resource.
-	ResourceTypeAuthor ResourceType = "author"
+	ResourceTypeModel    = types.ResourceTypeModel
+	ResourceTypeProvider = types.ResourceTypeProvider
+	ResourceTypeAuthor   = types.ResourceTypeAuthor
 )
