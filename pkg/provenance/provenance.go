@@ -334,6 +334,7 @@ type AuditResult struct {
 }
 
 // ProvenanceFile represents a provenance file stored on disk.
+//
 //nolint:revive // Name is intentionally descriptive for external clarity
 type ProvenanceFile struct {
 	Provenance Map `yaml:"provenance"`
