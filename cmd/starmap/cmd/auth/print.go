@@ -321,6 +321,30 @@ func getCredentialSource(provider *catalogs.Provider) string {
 	return "-"
 }
 
+// getKeyPreview returns a masked preview of the API key for display in tables.
+func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
+	// Google Cloud providers use gcloud auth, not API keys
+	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
+		return "(gcloud auth)"
+	}
+
+	// Unsupported providers
+	if status.State == auth.StateUnsupported {
+		return "(n/a)"
+	}
+
+	// API key providers
+	if provider.APIKey != nil {
+		envValue := os.Getenv(provider.APIKey.Name)
+		if envValue != "" {
+			return maskAPIKey(envValue)
+		}
+		return "(not set)"
+	}
+
+	return "-"
+}
+
 // maskAPIKey masks an API key for safe display, showing only first 8 and last 4 characters.
 func maskAPIKey(key string) string {
 	if key == "" {

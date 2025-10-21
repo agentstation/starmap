@@ -113,12 +113,14 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 		statusIcon, statusText := getStatusDisplay(status.State)
 		keyVariable := getKeyVariable(&provider, status)
 		source := getCredentialSource(&provider)
+		keyPreview := getKeyPreview(&provider, status)
 
 		row := []string{
 			provider.Name,
-			statusIcon + " " + statusText,
-			keyVariable,
 			source,
+			keyVariable,
+			keyPreview,
+			statusIcon + " " + statusText,
 		}
 		tableRows = append(tableRows, row)
 
@@ -138,7 +140,7 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 	// For structured output (JSON/YAML), return data only
 	if outputFormat != format.FormatTable {
 		tableData := format.Data{
-			Headers: []string{"Provider", "Status", "Key Variable", "Source"},
+			Headers: []string{"PROVIDER", "AUTH SOURCE", "ENV KEY", "KEY", "STATUS"},
 			Rows:    tableRows,
 		}
 
@@ -152,7 +154,7 @@ func showAllProvidersStatus(app application.Application, cat catalogs.Catalog, c
 
 	// Create and display table
 	tableData := format.Data{
-		Headers: []string{"Provider", "Status", "Key Variable", "Source"},
+		Headers: []string{"PROVIDER", "AUTH SOURCE", "ENV KEY", "KEY", "STATUS"},
 		Rows:    tableRows,
 	}
 
