@@ -275,9 +275,10 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 
 	// Update timestamps based on model state
 	if isNewModel {
-		// New model: set both timestamps
-		merged.CreatedAt = utc.Now()
-		merged.UpdatedAt = utc.Now()
+		// New model: set both timestamps to the same value
+		now := utc.Now()
+		merged.CreatedAt = now
+		merged.UpdatedAt = now
 	} else if hasContentChanged {
 		// Existing model with changes: preserve created_at, update updated_at
 		merged.UpdatedAt = utc.Now()
