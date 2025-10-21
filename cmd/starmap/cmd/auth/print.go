@@ -244,39 +244,9 @@ func printProviderStatus(provider *catalogs.Provider, status *auth.Status) {
 	}
 }
 
-// printAuthSummary displays a summary table of authentication status counts.
+// printAuthSummary displays contextual hints after authentication status.
 func printAuthSummary(cmd *cobra.Command, app application.Application, verbose bool, configured, missing, optional, unsupported int) error {
 	fmt.Println()
-
-	// Create summary table
-	var summaryRows [][]string
-	if configured > 0 {
-		summaryRows = append(summaryRows, []string{emoji.Success + " Configured", fmt.Sprintf("%d", configured)})
-	}
-	if missing > 0 {
-		summaryRows = append(summaryRows, []string{emoji.Error + " Missing", fmt.Sprintf("%d", missing)})
-	}
-	if optional > 0 {
-		summaryRows = append(summaryRows, []string{emoji.Optional + " Optional", fmt.Sprintf("%d", optional)})
-	}
-	if unsupported > 0 && verbose {
-		summaryRows = append(summaryRows, []string{emoji.Unsupported + " Unsupported", fmt.Sprintf("%d", unsupported)})
-	}
-
-	if len(summaryRows) > 0 {
-		summaryData := format.Data{
-			Headers: []string{"Status", "Count"},
-			Rows:    summaryRows,
-		}
-
-		// Get output format from app context
-		outputFormat := format.DetectFormat(app.OutputFormat())
-		formatter := format.NewFormatter(outputFormat)
-		if err := formatter.Format(os.Stdout, summaryData); err != nil {
-			return err
-		}
-		fmt.Println()
-	}
 
 	// Create notifier and show contextual hints
 	notifier, err := notify.NewFromCommand(cmd)
