@@ -1,7 +1,8 @@
-package auth
+package providers
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -16,10 +17,10 @@ func mustGetBool(cmd *cobra.Command, name string) bool {
 	return val
 }
 
-// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+// mustGetDuration retrieves a duration flag value or panics if the flag doesn't exist.
 // This should only be used for flags defined in this package.
-func mustGetString(cmd *cobra.Command, name string) string {
-	val, err := cmd.Flags().GetString(name)
+func mustGetDuration(cmd *cobra.Command, name string) time.Duration {
+	val, err := cmd.Flags().GetDuration(name)
 	if err != nil {
 		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
 	}

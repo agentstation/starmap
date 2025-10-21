@@ -8,7 +8,7 @@ This file provides Claude Code with project-specific guidance for working in thi
 
 ## Go Development Standards
 
-**You are a Go 1.24.6 expert.** Write idiomatic, thread-safe, production-ready code:
+**You are a Go 1.25.1 expert.** Write idiomatic, thread-safe, production-ready code:
 
 - **Simplicity over cleverness** - Follow Effective Go, prioritize readability
 - **Thread safety first** - Deep copies for shared data, proper RWMutex usage
@@ -38,7 +38,7 @@ make testdata PROVIDER=openai           # Update testdata
 
 ## Tech Stack
 
-- **Language**: Go 1.24.6
+- **Language**: Go 1.25.1
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
 - **Testing**: Go testing, testdata pattern with `-update` flag

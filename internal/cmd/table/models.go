@@ -3,6 +3,7 @@ package table
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -203,13 +204,13 @@ func BuildAuthorsString(authors []catalogs.Author) string {
 
 // ProvidersToTableData converts providers to table format.
 func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool) Data {
-	headers := []string{"ID", "NAME", "LOCATION", "AUTH CONFIGURED"}
+	headers := []string{"NAME", "ID", "LOCATION", "API TYPE", "ENV KEY", "KEY", "MODELS", "STATUS"}
 
 	rows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
 		// Check authentication status
 		authStatus := checker.CheckProvider(provider, supportedMap)
-		statusIcon := getAuthStatusIcon(authStatus.State)
+		statusIcon, statusText := getStatusDisplay(authStatus.State)
 
 		location := ""
 		if provider.Headquarters != nil {
@@ -217,36 +218,31 @@ func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker,
 		}
 
 		row := []string{
-			string(provider.ID),
 			provider.Name,
+			string(provider.ID),
 			location,
-			statusIcon,
+			getEndpointType(provider),
+			getKeyVariable(provider, authStatus),
+			getKeyPreview(provider, authStatus),
+			fmt.Sprintf("%d", len(provider.Models)),
+			statusIcon + " " + statusText,
 		}
 		rows = append(rows, row)
 	}
 
 	return Data{
-		Headers:         headers,
-		Rows:            rows,
-		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignDefault, AlignCenter}, // Center the last column (CONFIGURED)
-	}
-}
-
-// getAuthStatusIcon returns the icon for an auth state.
-func getAuthStatusIcon(state auth.State) string {
-	switch state {
-	case auth.StateConfigured:
-		return emoji.Success
-	case auth.StateMissing:
-		return emoji.Error
-	case auth.StateInvalid:
-		return emoji.Warning
-	case auth.StateOptional:
-		return emoji.Optional
-	case auth.StateUnsupported:
-		return emoji.Unsupported
-	default:
-		return emoji.Unknown
+		Headers: headers,
+		Rows:    rows,
+		ColumnAlignment: []Align{
+			AlignDefault, // NAME
+			AlignDefault, // ID
+			AlignDefault, // LOCATION
+			AlignDefault, // TYPE
+			AlignDefault, // ENV KEY
+			AlignDefault, // KEY
+			AlignCenter,  // MODELS (centered)
+			AlignDefault, // STATUS
+		},
 	}
 }
 
@@ -275,4 +271,90 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 		Rows:            rows,
 		ColumnAlignment: []Align{AlignDefault, AlignDefault, AlignDefault, AlignCenter}, // Center the MODELS column
 	}
+}
+
+// getStatusDisplay returns icon and text for a status state.
+func getStatusDisplay(state auth.State) (string, string) {
+	switch state {
+	case auth.StateConfigured:
+		return emoji.Success, "Configured"
+	case auth.StateMissing:
+		return emoji.Error, "Missing"
+	case auth.StateInvalid:
+		return emoji.Warning, "Invalid"
+	case auth.StateOptional:
+		return emoji.Optional, "Optional"
+	case auth.StateUnsupported:
+		return emoji.Unsupported, "Unsupported"
+	default:
+		return emoji.Unknown, "Unknown"
+	}
+}
+
+// getKeyVariable returns the key variable name or special message for display.
+func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
+	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
+		return "(gcloud auth)"
+	}
+
+	if provider.APIKey != nil {
+		return provider.APIKey.Name
+	}
+
+	if status.State == auth.StateUnsupported {
+		return "(no implementation)"
+	}
+
+	return "(no key required)"
+}
+
+// getKeyPreview returns a masked preview of the API key for display in tables.
+func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
+	// Google Cloud providers use gcloud auth, not API keys
+	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
+		return "(gcloud auth)"
+	}
+
+	// Unsupported providers
+	if status.State == auth.StateUnsupported {
+		return "(n/a)"
+	}
+
+	// API key providers
+	if provider.APIKey != nil {
+		envValue := os.Getenv(provider.APIKey.Name)
+		if envValue != "" {
+			return maskAPIKey(envValue)
+		}
+		return "(not set)"
+	}
+
+	return "-"
+}
+
+// maskAPIKey masks an API key for safe display, showing only first 8 and last 4 characters.
+func maskAPIKey(key string) string {
+	if key == "" {
+		return "(empty)"
+	}
+
+	// For very short keys, just show asterisks
+	if len(key) <= 12 {
+		return strings.Repeat("*", len(key))
+	}
+
+	// Show first 8 characters, mask middle, show last 4
+	prefix := key[:8]
+	suffix := key[len(key)-4:]
+	masked := strings.Repeat("*", 24) // 24 asterisks in the middle
+
+	return prefix + masked + suffix
+}
+
+// getEndpointType returns the endpoint type for a provider.
+func getEndpointType(provider *catalogs.Provider) string {
+	if provider.Catalog != nil && provider.Catalog.Endpoint.Type != "" {
+		return string(provider.Catalog.Endpoint.Type)
+	}
+	return "-"
 }

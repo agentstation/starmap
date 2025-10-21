@@ -13,7 +13,7 @@
                                                                 |_|    
 ```
 
-[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-AGPL%203.0-blue)](LICENSE)
 
 [Installation](#installation) • [Quick Start](#quick-start) • [API Reference](docs/API.md) • [Contributing](CONTRIBUTING.md)
@@ -74,11 +74,11 @@ Starmap provides:
 
 ## Key Features
 
-✅ **Comprehensive Coverage**: 500+ models from 10+ providers  
-✅ **Accurate Pricing**: Community-verified pricing data via models.dev  
-✅ **Real-time Synchronization**: Automatic updates from provider APIs  
-✅ **Flexible Architecture**: Simple merging or complex reconciliation  
-✅ **Multiple Interfaces**: CLI, Go package, and future HTTP API  
+✅ **Comprehensive Coverage**: 500+ models from 10+ providers
+✅ **Accurate Pricing**: Community-verified pricing data via models.dev
+✅ **Real-time Synchronization**: Automatic updates from provider APIs
+✅ **Flexible Architecture**: Simple merging or complex reconciliation
+✅ **Multiple Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
 ✅ **Production Ready**: Thread-safe, well-tested, actively maintained  
 
 ## Installation
@@ -209,14 +209,14 @@ export ANTHROPIC_API_KEY=sk-ant-...
 starmap update
 
 # Update specific provider with auto-approve
-starmap update --provider openai --auto-approve
+starmap update openai -y
 ```
 
 ## Architecture
 
 Starmap uses a layered architecture with clean separation of concerns:
 
-- **User Interfaces**: CLI, Go package, and future HTTP API
+- **User Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
 - **Storage Backends**: Memory, filesystem, embedded, or custom (S3, GCS, etc.)
@@ -234,7 +234,7 @@ The fundamental abstraction for model data storage and access. Provides CRUD ope
 Abstraction for fetching data from external systems (provider APIs, models.dev, local files). Each implements a common interface for consistent data access.
 
 ### 3. Reconciliation
-Intelligent multi-source data merging with field-level authority, provenance tracking, and conflict resolution. See [Reconciliation Package Documentation](pkg/reconcile/README.md).
+Intelligent multi-source data merging with field-level authority, provenance tracking, and conflict resolution. See [Reconciliation Package Documentation](pkg/reconciler/README.md).
 
 ### 4. Model
 Comprehensive AI model specification including capabilities (chat, vision, audio), pricing (token costs), limits (context window, rate limits), and metadata. See [pkg/catalogs/README.md](pkg/catalogs/README.md) for the complete Model structure.
@@ -245,7 +245,7 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md �
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [reconcile](pkg/reconcile/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [reconciler](pkg/reconciler/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
 - **`internal/`** - Internal implementations (providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 
@@ -261,7 +261,7 @@ Starmap provides two levels of data management complexity:
 - ✅ Testing with mock data
 - ✅ Building simple tools
 
-**Use [Reconciliation Package](pkg/reconcile/README.md) (Complex) When:**
+**Use [Reconciliation Package](pkg/reconciler/README.md) (Complex) When:**
 - ✅ Syncing with multiple provider APIs
 - ✅ Integrating models.dev for pricing
 - ✅ Different sources own different fields
@@ -287,8 +287,8 @@ starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 
 # Update catalog
 starmap update                  # Update all providers
-starmap update -p openai        # Update specific provider
-starmap update --dry-run        # Preview changes
+starmap update openai           # Update specific provider
+starmap update --dry            # Preview changes
 
 # Development
 starmap validate                # Validate configurations
@@ -300,10 +300,10 @@ starmap completion bash         # Generate shell completion
 
 ```bash
 # Development: Use file-based catalog
-starmap update --input ./catalog --provider groq --dry-run
+starmap update groq --input-dir ./catalog --dry
 
 # Production: Fresh update with auto-approval
-starmap update --fresh --auto-approve
+starmap update --force -y
 
 # Custom directories
 starmap update --input ./dev --output ./prod
@@ -409,7 +409,7 @@ export GOOGLE_VERTEX_LOCATION=us-central1
 import (
     "github.com/agentstation/starmap"
     "github.com/agentstation/starmap/pkg/catalogs"
-    "github.com/agentstation/starmap/pkg/reconcile"
+    "github.com/agentstation/starmap/pkg/reconciler"
 )
 ```
 
@@ -452,24 +452,21 @@ sm, _ := starmap.New(
 )
 ```
 
-#### Complex Reconciliation
+#### Syncing with Provider APIs
 ```go
-// Set up multi-source reconciliation
-reconciler, _ := reconcile.New(
-    reconcile.WithAuthorities(map[string]reconcile.SourceAuthority{
-        "pricing": {Primary: "models.dev"},
-        "limits":  {Primary: "models.dev"},
-    }),
+// Sync with all configured provider APIs
+result, err := sm.Sync(ctx,
+    sync.WithProviders("openai", "anthropic"),
+    sync.WithDryRun(false),
 )
 
-// Fetch from all sources
-sources := []sources.Source{
-    providers.New(),
-    modelsdev.NewGitSource(),
+if err != nil {
+    log.Fatal(err)
 }
 
-// Reconcile and get unified catalog
-result, _ := reconciler.ReconcileCatalogs(ctx, sources)
+fmt.Printf("Added: %d models\n", result.Added)
+fmt.Printf("Updated: %d models\n", result.Updated)
+fmt.Printf("Removed: %d models\n", result.Removed)
 ```
 
 ### Advanced Patterns
@@ -561,7 +558,7 @@ GET  /api/v1/ready               # Readiness check
 ```
 
 **Configuration Flags:**
-- `--port, -p`: Server port (default: 8080)
+- `--port`: Server port (default: 8080)
 - `--host`: Bind address (default: localhost)
 - `--cors`: Enable CORS for all origins
 - `--cors-origins`: Specific CORS origins (comma-separated)
@@ -608,26 +605,27 @@ Check and verify your authentication setup:
 
 ```bash
 # Check authentication status for all providers
-starmap providers auth status
+starmap providers
 
 # Test credentials by making test API calls
-starmap providers auth test
+starmap providers --test
 
 # Test specific provider
-starmap providers auth test openai
+starmap providers openai --test
 
 # JSON output for automation
-starmap providers auth status --format json
+starmap providers --output json
 
 # Manage Google Cloud authentication
-starmap providers auth gcloud
+starmap auth gcloud
 ```
 
-The `providers auth status` command shows:
+The `providers` command shows:
 - Which providers have configured credentials
 - Authentication method (API key, ADC, OAuth)
 - Credential source (environment variable, config file, application default)
 - Missing credentials with setup instructions
+- Provider details (name, ID, location, type, models count)
 
 ### Configuration File
 

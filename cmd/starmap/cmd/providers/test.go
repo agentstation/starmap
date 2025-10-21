@@ -1,4 +1,4 @@
-package auth
+package providers
 
 import (
 	"context"
@@ -19,8 +19,8 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// TestResult represents the result of testing a provider's credentials.
-type TestResult struct {
+// testResult represents the result of testing a provider's credentials.
+type testResult struct {
 	Provider     string
 	Status       string
 	ResponseTime string
@@ -28,32 +28,8 @@ type TestResult struct {
 	Error        string
 }
 
-// NewTestCommand creates the auth test subcommand using app context.
-func NewTestCommand(app application.Application) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "test [provider]",
-		Short: "Test credentials work by making test API calls",
-		Long: `Test that configured API keys actually work.
-
-Unlike 'status' which only checks if keys are set, this command
-makes actual API calls to test the credentials are valid.
-
-Examples:
-  starmap providers auth test           # Test all configured providers
-  starmap providers auth test openai    # Test only OpenAI
-  starmap providers auth test --verbose # Show detailed testing output`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return runAuthTest(cmd, args, app)
-		},
-	}
-
-	cmd.Flags().Bool("verbose", false, "Show detailed testing output")
-	cmd.Flags().Duration("timeout", 10*time.Second, "Timeout for API calls")
-
-	return cmd
-}
-
-func runAuthTest(cmd *cobra.Command, args []string, app application.Application) error {
+// runTest executes the test command logic (called by providers --test flag).
+func runTest(cmd *cobra.Command, args []string, app application.Application) error {
 	// Load catalog from app context
 	cat, err := app.Catalog()
 	if err != nil {
@@ -63,13 +39,14 @@ func runAuthTest(cmd *cobra.Command, args []string, app application.Application)
 	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
-		return testProvider(cmd, cat, providerID, app)
+		return testSingleProvider(cmd, cat, providerID, app)
 	}
 
 	// Test all configured providers
 	return testAllProviders(cmd, cat, app)
 }
 
+// testAllProviders tests all configured providers.
 func testAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app application.Application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
@@ -92,9 +69,9 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app application.
 	isTTY := isatty.IsTerminal(os.Stdout.Fd()) && detectedFormat == format.FormatTable
 
 	// Initialize results array
-	results := make([]TestResult, len(supportedProviders))
+	results := make([]testResult, len(supportedProviders))
 	for i := range results {
-		results[i] = TestResult{
+		results[i] = testResult{
 			Provider:     string(supportedProviders[i]),
 			Status:       "-",
 			ResponseTime: "-",
@@ -192,7 +169,7 @@ type apiTestResult struct {
 // testProvidersSequential tests providers one at a time (for non-TTY output).
 func testProvidersSequential(cmd *cobra.Command, cat catalogs.Catalog, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
-	timeout time.Duration, results []TestResult, verified, failed, skipped *int) {
+	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
 
 	for i, providerID := range supportedProviders {
 		// Get provider from catalog
@@ -277,7 +254,7 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Catalog, supported
 // testProvidersConcurrent tests providers concurrently using a three-phase approach (for TTY output).
 func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Catalog, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
-	timeout time.Duration, results []TestResult, verified, failed, skipped *int) {
+	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
 
 	// Phase 1: Pre-flight checks (sequential, fast)
 	// Check credentials and ADC status, build list of providers to actually test
@@ -407,7 +384,8 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Catalog, supported
 	}
 }
 
-func testProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, app application.Application) error {
+// testSingleProvider tests a single provider.
+func testSingleProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, app application.Application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
@@ -442,7 +420,7 @@ func testProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, a
 	models, err := fetcher.FetchModels(ctx, &provider)
 	duration := time.Since(start)
 
-	result := TestResult{
+	result := testResult{
 		Provider:     providerID,
 		ResponseTime: duration.Truncate(time.Millisecond).String(),
 	}
@@ -456,10 +434,10 @@ func testProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, a
 		// Display single result in configured format
 		outputFormat := format.DetectFormat(app.OutputFormat())
 		if outputFormat == format.FormatTable {
-			displayTestTable([]TestResult{result}, verbose)
+			displayTestTable([]testResult{result}, verbose)
 		} else {
 			formatter := format.NewFormatter(outputFormat)
-			_ = formatter.Format(os.Stdout, []TestResult{result})
+			_ = formatter.Format(os.Stdout, []testResult{result})
 		}
 
 		return fmt.Errorf("failed to test %s: %w", providerID, err)
@@ -472,11 +450,62 @@ func testProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, a
 	// Display single result in configured format
 	outputFormat := format.DetectFormat(app.OutputFormat())
 	if outputFormat == format.FormatTable {
-		displayTestTable([]TestResult{result}, verbose)
+		displayTestTable([]testResult{result}, verbose)
 	} else {
 		formatter := format.NewFormatter(outputFormat)
-		return formatter.Format(os.Stdout, []TestResult{result})
+		return formatter.Format(os.Stdout, []testResult{result})
 	}
 
 	return nil
+}
+
+// displayTestTable shows test results in a table format.
+func displayTestTable(results []testResult, verbose bool) {
+	displayTestTableWithTitle(results, verbose, true)
+}
+
+// displayTestTableWithTitle shows test results with optional title.
+func displayTestTableWithTitle(results []testResult, verbose bool, showTitle bool) {
+	if len(results) == 0 {
+		return
+	}
+
+	formatter := format.NewFormatter(format.FormatTable)
+
+	// Prepare table data
+	headers := []string{"Provider", "Status", "Response Time", "Models"}
+	if verbose {
+		headers = append(headers, "Error")
+	}
+
+	rows := make([][]string, 0, len(results))
+	for _, result := range results {
+		row := []string{
+			result.Provider,
+			result.Status,
+			result.ResponseTime,
+			result.ModelsFound,
+		}
+		if verbose {
+			errorMsg := result.Error
+			if errorMsg == "" {
+				errorMsg = "-"
+			}
+			row = append(row, errorMsg)
+		}
+		rows = append(rows, row)
+	}
+
+	tableData := format.Data{
+		Headers: headers,
+		Rows:    rows,
+	}
+
+	if showTitle {
+		fmt.Println("Provider Test Results:")
+	}
+	_ = formatter.Format(os.Stdout, tableData)
+	if showTitle {
+		fmt.Println()
+	}
 }

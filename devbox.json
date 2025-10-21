@@ -1,8 +1,8 @@
 {
   "packages": [
-    "go@1.24.5",
+    "go@1.25.1",
     "gomarkdoc@1.1.0",
-    "golangci-lint@2.3.1",
+    "golangci-lint@2.5.0",
     "goreleaser@2.11.2",
     "path:./devbox/swag#swag"
   ],

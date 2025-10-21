@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/cmd/starmap/cmd/auth"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/authors"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/completion"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/deps"
@@ -71,6 +72,11 @@ func (a *App) NewEmbedCommand() *cobra.Command {
 // NewDepsCommand returns a new deps command with app dependencies.
 func (a *App) NewDepsCommand() *cobra.Command {
 	return deps.NewCommand()
+}
+
+// NewAuthCommand returns a new auth command with app dependencies.
+func (a *App) NewAuthCommand() *cobra.Command {
+	return auth.NewCommand()
 }
 
 // NewCompletionCommand returns a new completion command.

@@ -342,9 +342,11 @@ starmap update openai                  # verb=update, arg=openai
 ```
 
 **Command Groups:**
-- **Core Commands**: Primary operations (list, fetch, update, serve)
-- **Management Commands**: Maintenance (validate, auth, deps, generate, embed)
-- **Utility Commands**: Support (version, man, install, uninstall)
+- **Setup Commands**: Getting started (auth, deps)
+- **Catalog Commands**: Working with catalog resources (authors, models, providers, update)
+- **Server Commands**: Running the API (serve)
+- **Development Commands**: Debugging and exploration (embed, validate)
+- **Additional Commands**: Utilities (completion, version, help)
 
 ### Flag Architecture
 

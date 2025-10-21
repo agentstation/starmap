@@ -408,16 +408,16 @@ update-catalog-provider: ## Update specific provider in embedded catalog (use PR
 # Enhanced embed command with automatic authentication
 embed: ## Update embedded catalog with automatic Google Cloud auth
 	@echo "$(BLUE)Checking Google Cloud authentication...$(NC)"
-	@if $(GOCMD) run $(MAIN_PATH) providers auth gcloud --check 2>/dev/null; then \
+	@if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
 		echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
 	else \
 		echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
-		$(GOCMD) run $(MAIN_PATH) providers auth gcloud || exit 1; \
+		$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
 	fi
 	@echo "$(BLUE)Validating catalog structure...$(NC)"
 	@$(GOCMD) run $(MAIN_PATH) validate || exit 1
 	@echo "$(BLUE)Checking provider authentication...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) providers auth status
+	@$(GOCMD) run $(MAIN_PATH) providers
 	@echo "$(BLUE)Updating embedded sources...$(NC)"
 	@curl -s https://models.dev/api.json -o internal/embedded/sources/models.dev/api.json || echo "$(YELLOW)Warning: Could not update models.dev api.json$(NC)"
 	@echo "$(BLUE)Updating embedded catalog...$(NC)"
@@ -432,11 +432,11 @@ embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
 	fi
 	@if [ "$(PROVIDER)" = "google-vertex" ] || [ "$(PROVIDER)" = "google-ai-studio" ]; then \
 		echo "$(BLUE)Checking Google Cloud authentication...$(NC)"; \
-		if $(GOCMD) run $(MAIN_PATH) providers auth gcloud --check 2>/dev/null; then \
+		if $(GOCMD) run $(MAIN_PATH) auth gcloud --check 2>/dev/null; then \
 			echo "$(GREEN)✅ Google Cloud authenticated$(NC)"; \
 		else \
 			echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
-			$(GOCMD) run $(MAIN_PATH) providers auth gcloud || exit 1; \
+			$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
 		fi; \
 	fi
 	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
@@ -459,16 +459,16 @@ validate-models: ## Validate model definitions
 
 # Authentication targets
 auth: ## Check authentication status for all providers
-	@$(GOCMD) run $(MAIN_PATH) providers auth status
+	@$(GOCMD) run $(MAIN_PATH) providers
 
 auth-status: ## Show authentication status (same as auth)
-	@$(GOCMD) run $(MAIN_PATH) providers auth status
+	@$(GOCMD) run $(MAIN_PATH) providers
 
 auth-test: ## Test credentials work with test API calls
-	@$(GOCMD) run $(MAIN_PATH) providers auth test
+	@$(GOCMD) run $(MAIN_PATH) providers --test
 
 auth-gcloud: ## Authenticate with Google Cloud
-	@$(GOCMD) run $(MAIN_PATH) providers auth gcloud
+	@$(GOCMD) run $(MAIN_PATH) auth gcloud
 
 check-apis: ## Check API connectivity for all providers
 	@echo "$(BLUE)Checking API connectivity...$(NC)"

@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### BREAKING CHANGES
+- **Restructured Auth Commands**: Simplified authentication command structure
+  - **Removed**: `starmap providers auth` (entire subcommand tree)
+  - **New**: `starmap auth` (top-level command in "setup" group, alongside `starmap deps`)
+  - **Available**: `starmap auth gcloud` (Google Cloud authentication helper)
+  - **Migration**:
+    - For auth status: Use `starmap providers` (shows auth status with all provider info)
+    - For credential testing: Use `starmap providers --test` instead of `starmap providers auth test`
+    - For Google Cloud auth: Use `starmap auth gcloud` instead of `starmap providers auth gcloud`
+  - **Rationale**: Consolidate provider information and simplify command hierarchy
+
+### Added
+- **New `starmap auth` Command**: Top-level authentication helper in "setup" group
+  - `starmap auth gcloud` → Google Cloud authentication setup (ADC configuration)
+  - Provides guidance to use `starmap providers` for viewing auth status
+  - Provides guidance to use `starmap providers --test` for testing credentials
+
+- **`--test` Flag for Providers**: New flag to test provider credentials via API calls
+  - `starmap providers --test` → Test all configured providers
+  - `starmap providers openai --test` → Test specific provider
+  - `--timeout` flag controls API call timeout (default: 10s)
+  - Runs concurrent tests in TTY mode for faster execution
+  - Shows response time, model count, and detailed errors
+
+### Changed
+- **Enhanced `starmap providers` Output**: Now shows comprehensive provider information in unified table
+  - Added columns: TYPE (endpoint type), ENV KEY, KEY (masked), MODELS (count)
+  - Reordered columns: NAME, ID, LOCATION, TYPE, ENV KEY, KEY, MODELS, STATUS
+  - Combines functionality of both `providers` and `providers auth` commands
+  - All existing flags (--search, --limit, --output) continue to work
+  - Detail view for single provider preserved
+
+### Improved
+- **Stderr Suppression**: Replaced platform-specific implementation with idiomatic cross-platform solution
+  - Removed build tags (`//go:build darwin` and `//go:build !darwin`)
+  - Removed syscall manipulation (no more `syscall.Dup`, `syscall.Dup2`)
+  - Single `stderr.go` file instead of `stderr_darwin.go` and `stderr_other.go`
+  - Pure Go implementation using `os.Pipe()` and `io.Copy(io.Discard)`
+  - Works on all platforms (Darwin, Linux, Windows), not just macOS
+  - No linter exceptions needed (removed `//nolint:gosec`)
+  - Cleaner, more maintainable code following Go best practices
+
 ## [0.0.24] - 2025-10-21
 
 ### BREAKING CHANGES

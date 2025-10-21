@@ -106,6 +106,7 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 func (a *App) registerCommands(rootCmd *cobra.Command) {
 	// Setup commands (getting started)
 	rootCmd.AddCommand(a.NewDepsCommand())
+	rootCmd.AddCommand(a.NewAuthCommand())
 
 	// Catalog commands (working with models/providers)
 	rootCmd.AddCommand(a.NewProvidersCommand())

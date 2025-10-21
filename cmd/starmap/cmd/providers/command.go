@@ -5,6 +5,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
@@ -25,17 +26,28 @@ func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "providers [provider-id]",
 		GroupID: "catalog",
-		Short:   "Manage AI providers",
-		Long: `Manage AI providers including authentication and data fetching.
+		Short:   "Manage AI providers and test credentials",
+		Long: `Manage AI providers including authentication status, credential testing, and data fetching.
 
-List providers, show provider details, fetch from provider APIs, and manage authentication.`,
+List providers with authentication details, test credentials by making API calls,
+show provider details, and fetch from provider APIs.`,
 		Args: cobra.MaximumNArgs(1),
-		Example: `  starmap providers                    # List all providers
+		Example: `  starmap providers                    # List all providers with auth status
+  starmap providers --test             # Test all provider credentials
   starmap providers openai             # Show OpenAI provider details
+  starmap providers openai --test      # Test OpenAI credentials
   starmap providers fetch              # Fetch from all provider APIs
-  starmap providers fetch openai       # Fetch from OpenAI API
-  starmap providers auth test          # Test authentication`,
+  starmap providers fetch openai       # Fetch from OpenAI API`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// Check if --test flag is present
+			testMode, _ := cmd.Flags().GetBool("test")
+
+			if testMode {
+				// Test mode: test provider credentials
+				return runTest(cmd, args, app)
+			}
+
+			// Normal mode: show table or details
 			logger := app.Logger()
 
 			// Single provider detail view
@@ -52,9 +64,12 @@ List providers, show provider details, fetch from provider APIs, and manage auth
 	// Add resource-specific flags
 	globals.AddResourceFlags(cmd)
 
+	// Add test-specific flags
+	cmd.Flags().Bool("test", false, "Test provider credentials by making API calls")
+	cmd.Flags().Duration("timeout", 10*time.Second, "Timeout for API calls when testing")
+
 	// Add subcommands
 	cmd.AddCommand(NewFetchCommand(app))
-	cmd.AddCommand(NewAuthCommand(app))
 
 	return cmd
 }
