@@ -1,4 +1,4 @@
-//go:build unix
+//go:build (darwin || linux) && !js && !wasip1
 
 package auth
 
