@@ -7,7 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.23] - TBD
+## [0.0.24] - 2025-10-21
+
+### BREAKING CHANGES
+- **Authentication Command Rename**: `starmap providers auth verify` → `starmap providers auth test`
+  - Old: `starmap providers auth verify`
+  - New: `starmap providers auth test`
+  - Rationale: "test" is more accurate - command actually tests credentials by making API calls
+  - Migration: Update scripts/docs using `auth verify` to use `auth test`
+
+### Added
+- **Concurrent Provider Testing**: Tests now run in parallel for significantly faster execution
+  - TTY mode: All provider APIs tested concurrently using goroutines
+  - Non-TTY mode: Sequential testing preserved for clear line-by-line output
+  - Total test time reduced from sum of all tests to max of slowest test
+  - Three-phase architecture: pre-flight checks → concurrent API calls → result collection
+  - Proper error handling with panic recovery in goroutines
+
+### Changed
+- **Improved Auth Status Output**:
+  - Reordered columns: PROVIDER, AUTH SOURCE, ENV KEY, KEY (preview), STATUS
+  - Added masked key preview in status table
+  - Removed redundant summary table (kept helpful hints)
+- **Default Auth Behavior**: `starmap providers auth` now defaults to showing status (same as `auth status`)
+- **ASCII Symbols**: Replaced emojis with universally-compatible ASCII symbols
+  - Success: ✓ (check mark)
+  - Error: ✗ (ballot X)
+  - Warning: ! (exclamation)
+  - Optional: - (dash)
+  - Unsupported: × (multiplication)
+  - Unknown: ? (question mark)
+- **Simplified Test Output**: Clean progress message → concurrent testing → final results table
+
+### Fixed
+- **Concurrent stderr Suppression**: Fixed SDK warnings appearing during parallel testing
+  - Root cause: Multiple goroutines manipulating same stderr file descriptor
+  - Solution: Single stderr suppression wrapping all concurrent operations
+  - Result: Clean output without SDK warnings
+- **Code Quality**: Removed unused parameters and imports throughout auth package
+
+### Technical Details
+- Pre-allocated slices for better performance
+- Proper context cancellation in all goroutines
+- Buffered channels sized to number of providers
+- Thread-safe result collection with WaitGroup synchronization
+- All tests passing, linter clean (0 issues)
+
+## [0.0.23] - 2025-10-21
 
 ### Changed
 - **CLI Improvement**: Renamed `models provenance` command to `models history` for better user experience
