@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/auth"
@@ -74,6 +75,7 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 
 	// Get output format from app context
 	outputFormat := app.OutputFormat()
+	detectedFormat := format.DetectFormat(outputFormat)
 
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
@@ -85,21 +87,49 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 		supportedMap[string(pid)] = true
 	}
 
-	fmt.Println("Verifying provider credentials...")
-	fmt.Println()
+	// Check if we should use dynamic table updates (TTY + table format)
+	useDynamicTable := isatty.IsTerminal(os.Stdout.Fd()) && detectedFormat == format.FormatTable
 
-	results := make([]VerificationResult, 0, len(supportedProviders))
+	// Initialize results with pending status for all providers
+	results := make([]VerificationResult, len(supportedProviders))
+	for i, providerID := range supportedProviders {
+		results[i] = VerificationResult{
+			Provider:     string(providerID),
+			Status:       "⏸️ Pending",
+			ResponseTime: "-",
+			ModelsFound:  "-",
+		}
+	}
+
 	var verified, failed, skipped int
+	var tableLines int
 
-	for _, providerID := range supportedProviders {
+	// For dynamic table, print title once and then initial table
+	if useDynamicTable {
+		fmt.Println()
+		fmt.Println("Provider Verification Results:")
+		tableLines = printDynamicTable(results, verbose)
+	} else {
+		// For non-dynamic output, print traditional header
+		fmt.Println("Verifying provider credentials...")
+		fmt.Println()
+	}
+
+	// Process each provider
+	for i, providerID := range supportedProviders {
 		// Get provider from catalog
 		provider, err := cat.Provider(providerID)
 		if err != nil {
 			continue
 		}
 
-		result := VerificationResult{
-			Provider: string(providerID),
+		// Update status to "Testing..." if dynamic
+		if useDynamicTable {
+			results[i].Status = "⏳ Testing..."
+			clearTableLines(tableLines)
+			tableLines = printDynamicTable(results, verbose)
+		} else {
+			fmt.Printf("Testing %s... ", providerID)
 		}
 
 		// Special handling for Google Cloud providers (use ADC)
@@ -108,46 +138,54 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 
 			// Check if ADC is missing or invalid
 			if status.State == auth.StateMissing {
-				result.Status = emoji.Error + " Failed"
-				result.ResponseTime = "-"
-				result.ModelsFound = "-"
-				result.Error = "ADC not configured - run 'gcloud auth application-default login'"
-				results = append(results, result)
+				results[i].Status = emoji.Error + " Failed"
+				results[i].Error = "ADC not configured - run 'gcloud auth application-default login'"
 				failed++
+				if useDynamicTable {
+					clearTableLines(tableLines)
+					tableLines = printDynamicTable(results, verbose)
+				} else {
+					fmt.Printf("%s Failed\n", emoji.Error)
+				}
 				continue
 			} else if status.State == auth.StateInvalid {
-				result.Status = emoji.Error + " Failed"
-				result.ResponseTime = "-"
-				result.ModelsFound = "-"
-				result.Error = "ADC invalid - check 'gcloud auth application-default login'"
-				results = append(results, result)
+				results[i].Status = emoji.Error + " Failed"
+				results[i].Error = "ADC invalid - check 'gcloud auth application-default login'"
 				failed++
+				if useDynamicTable {
+					clearTableLines(tableLines)
+					tableLines = printDynamicTable(results, verbose)
+				} else {
+					fmt.Printf("%s Failed\n", emoji.Error)
+				}
 				continue
 			}
 
-			// For Google Cloud providers, also check that project is configured
-			// ADC can be valid but missing project ID which is required for API calls
-			// Check if project is set via environment variables
+			// Check if project is configured
 			if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
-				// Project not in env, skip verification with a clear warning
-				result.Status = emoji.Warning + " Skipped"
-				result.ResponseTime = "-"
-				result.ModelsFound = "-"
-				result.Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
-				results = append(results, result)
+				results[i].Status = emoji.Warning + " Skipped"
+				results[i].Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
 				skipped++
+				if useDynamicTable {
+					clearTableLines(tableLines)
+					tableLines = printDynamicTable(results, verbose)
+				} else {
+					fmt.Printf("%s Skipped\n", emoji.Warning)
+				}
 				continue
 			}
-			// If StateConfigured and has project, proceed with verification below
 		} else {
 			// Check if API key is configured for non-Google Cloud providers
 			if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-				result.Status = emoji.Optional + " Skipped"
-				result.ResponseTime = "-"
-				result.ModelsFound = "-"
-				result.Error = "No credentials configured"
-				results = append(results, result)
+				results[i].Status = emoji.Optional + " Skipped"
+				results[i].Error = "No credentials configured"
 				skipped++
+				if useDynamicTable {
+					clearTableLines(tableLines)
+					tableLines = printDynamicTable(results, verbose)
+				} else {
+					fmt.Printf("%s Skipped\n", emoji.Optional)
+				}
 				continue
 			}
 		}
@@ -156,40 +194,53 @@ func verifyAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app applicatio
 		ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
 		defer cancel()
 
-		fmt.Printf("Testing %s... ", providerID)
-
 		start := time.Now()
-		models, err := fetcher.FetchModels(ctx, &provider)
+		var models []catalogs.Model
+		var fetchErr error
+
+		// Suppress stderr to hide SDK warnings
+		_ = suppressStderr(func() error {
+			models, fetchErr = fetcher.FetchModels(ctx, &provider)
+			return nil
+		})
+
 		duration := time.Since(start)
 
-		if err != nil {
-			fmt.Printf("%s Failed\n", emoji.Error)
-			result.Status = emoji.Error + " Failed"
-			result.ResponseTime = duration.Truncate(time.Millisecond).String()
-			result.ModelsFound = "-"
-			result.Error = err.Error()
+		if fetchErr != nil {
+			results[i].Status = emoji.Error + " Failed"
+			results[i].ResponseTime = duration.Truncate(time.Millisecond).String()
+			results[i].Error = fetchErr.Error()
 			failed++
+			if !useDynamicTable {
+				fmt.Printf("%s Failed\n", emoji.Error)
+			}
 		} else {
-			fmt.Printf("%s Success\n", emoji.Success)
-			result.Status = emoji.Success + " Success"
-			result.ResponseTime = duration.Truncate(time.Millisecond).String()
-			result.ModelsFound = fmt.Sprintf("%d", len(models))
+			results[i].Status = emoji.Success + " Success"
+			results[i].ResponseTime = duration.Truncate(time.Millisecond).String()
+			results[i].ModelsFound = fmt.Sprintf("%d", len(models))
 			verified++
+			if !useDynamicTable {
+				fmt.Printf("%s Success\n", emoji.Success)
+			}
 		}
 
-		results = append(results, result)
+		// Update table with result
+		if useDynamicTable {
+			clearTableLines(tableLines)
+			tableLines = printDynamicTable(results, verbose)
+		}
 	}
 
-	fmt.Println()
-
-	// Display results in configured format
-	detectedFormat := format.DetectFormat(outputFormat)
-	if detectedFormat == format.FormatTable {
-		displayVerificationTable(results, verbose)
-	} else {
-		// For non-table formats, output the raw results
-		formatter := format.NewFormatter(detectedFormat)
-		return formatter.Format(os.Stdout, results)
+	// Display final results
+	if !useDynamicTable {
+		fmt.Println()
+		if detectedFormat == format.FormatTable {
+			displayVerificationTable(results, verbose)
+		} else {
+			// For non-table formats, output the raw results
+			formatter := format.NewFormatter(detectedFormat)
+			return formatter.Format(os.Stdout, results)
+		}
 	}
 
 	// Create notifier and show contextual hints
@@ -294,4 +345,54 @@ func verifyProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string,
 	}
 
 	return nil
+}
+
+// suppressStderr temporarily redirects stderr to /dev/null to suppress noisy SDK warnings.
+func suppressStderr(fn func() error) error {
+	// Save original stderr
+	origStderr := os.Stderr
+
+	// Open /dev/null
+	devNull, err := os.Open(os.DevNull)
+	if err != nil {
+		// If we can't open /dev/null, just run the function normally
+		return fn()
+	}
+	defer devNull.Close()
+
+	// Redirect stderr
+	os.Stderr = devNull
+	defer func() { os.Stderr = origStderr }()
+
+	return fn()
+}
+
+// clearTableLines moves cursor up and clears the specified number of lines.
+func clearTableLines(numLines int) {
+	if numLines <= 0 {
+		return
+	}
+
+	// Move cursor up numLines and clear each line
+	for i := 0; i < numLines; i++ {
+		fmt.Print("\033[A")    // Move cursor up one line
+		fmt.Print("\033[2K")   // Clear entire line
+		fmt.Print("\r")        // Move cursor to start of line
+	}
+}
+
+// printDynamicTable prints the verification table without title and returns the number of lines printed.
+func printDynamicTable(results []VerificationResult, verbose bool) int {
+	// Print the table without title (title is printed once before dynamic updates start)
+	displayVerificationTableWithTitle(results, verbose, false)
+
+	// Count lines in the output
+	// Table structure:
+	// - Top border: 1 line
+	// - Header row: 1 line
+	// - Separator: 1 line
+	// - Data rows: len(results) lines
+	// - Bottom border: 1 line
+	// Total: len(results) + 4
+	return len(results) + 4
 }

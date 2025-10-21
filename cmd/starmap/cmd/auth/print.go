@@ -366,6 +366,11 @@ func maskAPIKey(key string) string {
 
 // displayVerificationTable shows verification results in a table format.
 func displayVerificationTable(results []VerificationResult, verbose bool) {
+	displayVerificationTableWithTitle(results, verbose, true)
+}
+
+// displayVerificationTableWithTitle shows verification results with optional title.
+func displayVerificationTableWithTitle(results []VerificationResult, verbose bool, showTitle bool) {
 	if len(results) == 0 {
 		return
 	}
@@ -401,7 +406,11 @@ func displayVerificationTable(results []VerificationResult, verbose bool) {
 		Rows:    rows,
 	}
 
-	fmt.Println("Provider Verification Results:")
+	if showTitle {
+		fmt.Println("Provider Verification Results:")
+	}
 	_ = formatter.Format(os.Stdout, tableData)
-	fmt.Println()
+	if showTitle {
+		fmt.Println()
+	}
 }
