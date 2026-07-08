@@ -224,7 +224,7 @@ func (cat *catalog) Provider(id ProviderID) (Provider, error) {
 			ID:       string(id),
 		}
 	}
-	return *provider, nil
+	return DeepCopyProvider(*provider), nil
 }
 
 // Author returns an author by ID or alias.
@@ -237,7 +237,7 @@ func (cat *catalog) Author(id AuthorID) (Author, error) {
 			ID:       string(id),
 		}
 	}
-	return *author, nil
+	return DeepCopyAuthor(*author), nil
 }
 
 // Endpoint returns an endpoint by ID.

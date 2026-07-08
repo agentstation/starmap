@@ -3,15 +3,14 @@ package models
 import (
 	"encoding/json"
 	"os"
-	"sort"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cmd/application"
 	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/filter"
 	"github.com/agentstation/starmap/internal/cmd/format"
 	"github.com/agentstation/starmap/internal/cmd/globals"
 	"github.com/agentstation/starmap/internal/cmd/table"
@@ -74,27 +73,18 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 
 	// Get all models
 	allModels := cat.Models().List()
+	providerIndex := query.NewProviderModelIndex(cat.Providers().List())
 
-	// Apply filters
-	modelFilter := &filter.ModelFilter{
-		Provider:   flags.Provider,
-		Author:     flags.Author,
-		Capability: capability,
-		MinContext: minContext,
-		MaxPrice:   maxPrice,
-		Search:     flags.Search,
-	}
-	filtered := modelFilter.Apply(allModels)
-
-	// Sort models
-	sort.Slice(filtered, func(i, j int) bool {
-		return filtered[i].ID < filtered[j].ID
+	filtered := query.Models(allModels, query.ModelOptions{
+		Provider:           flags.Provider,
+		ProviderModelIndex: providerIndex,
+		Author:             flags.Author,
+		Capability:         capability,
+		MinContext:         minContext,
+		MaxPrice:           maxPrice,
+		Search:             flags.Search,
+		Limit:              flags.Limit,
 	})
-
-	// Apply limit
-	if flags.Limit > 0 && len(filtered) > flags.Limit {
-		filtered = filtered[:flags.Limit]
-	}
 
 	// Handle export format if specified
 	if exportFormat != "" {

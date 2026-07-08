@@ -458,6 +458,9 @@ const (
     // SyncTimeout is the timeout for sync operations.
     SyncTimeout = 30 * time.Minute
 
+    // SyncCleanupTimeout is the timeout for source cleanup after sync operations.
+    SyncCleanupTimeout = 30 * time.Second
+
     // RetryBackoff is the base backoff duration for retries.
     RetryBackoff = 1 * time.Second
 

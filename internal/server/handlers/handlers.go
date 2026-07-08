@@ -2,6 +2,8 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
@@ -21,6 +23,7 @@ type Handlers struct {
 	sseBroadcaster *sse.Broadcaster
 	upgrader       websocket.Upgrader
 	logger         *zerolog.Logger
+	startTime      time.Time
 }
 
 // New creates a new Handlers instance.
@@ -32,6 +35,7 @@ func New(
 	sseBroadcaster *sse.Broadcaster,
 	upgrader websocket.Upgrader,
 	logger *zerolog.Logger,
+	startTime time.Time,
 ) *Handlers {
 	return &Handlers{
 		app:            app,
@@ -41,5 +45,6 @@ func New(
 		sseBroadcaster: sseBroadcaster,
 		upgrader:       upgrader,
 		logger:         logger,
+		startTime:      startTime,
 	}
 }

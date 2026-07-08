@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
+
+	"github.com/agentstation/starmap/internal/server/events"
 )
 
 // Broadcaster manages Server-Sent Events connections.
@@ -20,6 +22,7 @@ type Broadcaster struct {
 	events     chan Event
 	mu         sync.RWMutex
 	logger     *zerolog.Logger
+	fanout     *events.Fanout[Event]
 }
 
 // NewBroadcaster creates a new SSE broadcaster.
@@ -30,6 +33,7 @@ func NewBroadcaster(logger *zerolog.Logger) *Broadcaster {
 		closed:     make(chan chan Event, 10), // Buffered to prevent blocking during client cleanup
 		events:     make(chan Event, 256),
 		logger:     logger,
+		fanout:     events.NewFanout[Event](events.BackpressureSkip, logger),
 	}
 }
 
@@ -67,16 +71,7 @@ func (b *Broadcaster) Run(ctx context.Context) {
 				Msg("SSE client disconnected")
 
 		case event := <-b.events:
-			b.mu.RLock()
-			for client := range b.clients {
-				select {
-				case client <- event:
-				default:
-					// Client buffer full, skip this event for this client
-					b.logger.Warn().Msg("SSE client buffer full, event skipped")
-				}
-			}
-			b.mu.RUnlock()
+			b.fanout.Deliver(b.deliveryTargets(), event)
 		}
 	}
 }
@@ -95,6 +90,28 @@ func (b *Broadcaster) ClientCount() int {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 	return len(b.clients)
+}
+
+// DeliveryStats returns cumulative SSE client delivery counters.
+func (b *Broadcaster) DeliveryStats() events.DeliveryStats {
+	return b.fanout.Stats()
+}
+
+func (b *Broadcaster) deliveryTargets() []events.DeliveryTarget[Event] {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	targets := make([]events.DeliveryTarget[Event], 0, len(b.clients))
+	for client := range b.clients {
+		client := client
+		targets = append(targets, events.DeliveryTarget[Event]{
+			ID: fmt.Sprintf("%p", client),
+			Send: func(event Event) error {
+				return events.TrySend(client, event)
+			},
+		})
+	}
+	return targets
 }
 
 // ServeHTTP handles SSE connections.

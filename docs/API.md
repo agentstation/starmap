@@ -305,7 +305,7 @@ type Persistence interface {
 ```
 
 <a name="Updater"></a>
-## type [Updater](<https://github.com/agentstation/starmap/blob/master/update.go#L23-L29>)
+## type [Updater](<https://github.com/agentstation/starmap/blob/master/update.go#L18-L24>)
 
 Updater handles catalog synchronization operations.
 

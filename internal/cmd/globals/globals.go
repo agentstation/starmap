@@ -11,29 +11,6 @@ type Flags struct {
 	NoColor bool
 }
 
-// AddFlags adds common flags to the root command.
-func AddFlags(cmd *cobra.Command) *Flags {
-	flags := &Flags{}
-
-	// Use -o for output (not -f) to avoid conflict with embed cat --filename
-	cmd.PersistentFlags().StringVarP(&flags.Output, "output", "o", "",
-		"Output format: table, json, yaml, wide")
-	// Add --format and --fmt as aliases for --output
-	cmd.PersistentFlags().StringVar(&flags.Output, "format", "", "")
-	cmd.PersistentFlags().StringVar(&flags.Output, "fmt", "", "")
-	_ = cmd.PersistentFlags().MarkHidden("format") // Hidden but functional
-	_ = cmd.PersistentFlags().MarkHidden("fmt")    // Hidden but functional
-
-	cmd.PersistentFlags().BoolVarP(&flags.Quiet, "quiet", "q", false,
-		"Minimal output")
-	cmd.PersistentFlags().BoolVarP(&flags.Verbose, "verbose", "v", false,
-		"Verbose output")
-	cmd.PersistentFlags().BoolVar(&flags.NoColor, "no-color", false,
-		"Disable colored output")
-
-	return flags
-}
-
 // Parse extracts global flags from the command hierarchy.
 // This is useful for subcommands that need to access global flags when
 // they weren't passed the flags struct directly.

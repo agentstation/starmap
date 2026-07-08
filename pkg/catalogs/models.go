@@ -1,7 +1,6 @@
 package catalogs
 
 import (
-	"maps"
 	"sort"
 	"sync"
 
@@ -24,7 +23,11 @@ func (m *Models) Get(id string) (*Model, bool) {
 	m.mu.RLock()
 	model, ok := m.models[id]
 	m.mu.RUnlock()
-	return model, ok
+	if !ok || model == nil {
+		return model, ok
+	}
+	modelCopy := DeepCopyModel(*model)
+	return &modelCopy, true
 }
 
 // Set sets a model by id. Returns an error if model is nil.
@@ -38,7 +41,8 @@ func (m *Models) Set(id string, model *Model) error {
 
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.models[id] = model
+	modelCopy := DeepCopyModel(*model)
+	m.models[id] = &modelCopy
 	return nil
 }
 
@@ -62,7 +66,8 @@ func (m *Models) Add(model *Model) error {
 		}
 	}
 
-	m.models[model.ID] = model
+	modelCopy := DeepCopyModel(*model)
+	m.models[model.ID] = &modelCopy
 	return nil
 }
 
@@ -103,9 +108,9 @@ func (m *Models) List() []Model {
 	m.mu.RLock()
 	models := make([]Model, 0, len(m.models))
 	for _, model := range m.models {
-		// Return copies to prevent external modification
+		// Return deep copies to prevent external modification
 		if model != nil {
-			models = append(models, *model)
+			models = append(models, DeepCopyModel(*model))
 		}
 	}
 	m.mu.RUnlock()
@@ -124,7 +129,14 @@ func (m *Models) Map() map[string]*Model {
 	defer m.mu.RUnlock()
 
 	result := make(map[string]*Model, len(m.models))
-	maps.Copy(result, m.models)
+	for id, model := range m.models {
+		if model == nil {
+			result[id] = nil
+			continue
+		}
+		modelCopy := DeepCopyModel(*model)
+		result[id] = &modelCopy
+	}
 	return result
 }
 
@@ -135,7 +147,14 @@ func (m *Models) ForEach(fn func(id string, model *Model) bool) {
 	defer m.mu.RUnlock()
 
 	for id, model := range m.models {
-		if !fn(id, model) {
+		if model == nil {
+			if !fn(id, nil) {
+				break
+			}
+			continue
+		}
+		modelCopy := DeepCopyModel(*model)
+		if !fn(id, &modelCopy) {
 			break
 		}
 	}
@@ -184,7 +203,8 @@ func (m *Models) AddBatch(models []*Model) map[string]error {
 			continue
 		}
 		if _, hasError := errs[model.ID]; !hasError {
-			m.models[model.ID] = model
+			modelCopy := DeepCopyModel(*model)
+			m.models[model.ID] = &modelCopy
 		}
 	}
 
@@ -216,7 +236,8 @@ func (m *Models) SetBatch(models map[string]*Model) error {
 	defer m.mu.Unlock()
 
 	for id, model := range models {
-		m.models[id] = model
+		modelCopy := DeepCopyModel(*model)
+		m.models[id] = &modelCopy
 	}
 
 	return nil

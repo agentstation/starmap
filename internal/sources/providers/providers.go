@@ -7,20 +7,55 @@ import (
 
 	"github.com/agentstation/starmap/internal/sources/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+// ClientFactory creates a client for a provider.
+type ClientFactory func(*catalogs.Provider) (sources.ProviderClient, error)
+
+// SourceOption configures the provider source.
+type SourceOption func(*Source)
+
 // Source fetches models from all provider APIs concurrently.
 type Source struct {
-	providers *catalogs.Providers // Provider configs injected during Setup
-	catalog   catalogs.Catalog    // Fetched catalog
+	providers      *catalogs.Providers // Provider configs injected during Setup
+	catalog        catalogs.Catalog    // Fetched catalog
+	clientFactory  ClientFactory
+	maxConcurrency int
 }
 
 // New creates a new provider API source with the given provider configurations.
-func New(providers *catalogs.Providers) *Source {
-	return &Source{providers: providers}
+func New(providers *catalogs.Providers, opts ...SourceOption) *Source {
+	src := &Source{
+		providers:      providers,
+		clientFactory:  defaultClientFactory,
+		maxConcurrency: constants.MaxConcurrentProviders,
+	}
+	for _, opt := range opts {
+		opt(src)
+	}
+	return src
+}
+
+func defaultClientFactory(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	return clients.NewProvider(provider)
+}
+
+// WithClientFactory configures the factory used to create provider clients.
+func WithClientFactory(factory ClientFactory) SourceOption {
+	return func(s *Source) {
+		s.clientFactory = factory
+	}
+}
+
+// WithMaxConcurrency configures the maximum number of provider fetches in flight.
+func WithMaxConcurrency(maxConcurrency int) SourceOption {
+	return func(s *Source) {
+		s.maxConcurrency = maxConcurrency
+	}
 }
 
 // ID returns the ID of this source.
@@ -91,16 +126,20 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	logger := logging.FromContext(ctx)
 	logger.Info().
 		Int("provider_count", len(providerConfigs)).
+		Int("max_concurrency", s.effectiveMaxConcurrency(len(providerConfigs))).
 		Msg("Syncing providers concurrently")
 
 	// Sync all providers concurrently
 	var wg sync.WaitGroup
 	resultChan := make(chan providerModels, len(providerConfigs))
+	semaphore := make(chan struct{}, s.effectiveMaxConcurrency(len(providerConfigs)))
 
 	for _, provider := range providerConfigs {
 		wg.Add(1)
 		go func(p *catalogs.Provider) {
 			defer wg.Done()
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
 
 			result := providerModels{providerID: p.ID}
 
@@ -125,7 +164,7 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 			}
 
 			// Create NEW client instance with dedicated HTTP client
-			client, err := clients.NewProvider(p)
+			client, err := s.clientFactory(p)
 			if err != nil {
 				// Check if this is a configuration error (misconfigured provider)
 				var configErr *pkgerrors.ConfigError
@@ -243,6 +282,19 @@ func (s *Source) Fetch(ctx context.Context, opts ...sources.Option) error {
 	}
 
 	return nil
+}
+
+func (s *Source) effectiveMaxConcurrency(providerCount int) int {
+	if providerCount <= 0 {
+		return 1
+	}
+	if s.maxConcurrency <= 0 {
+		return 1
+	}
+	if s.maxConcurrency > providerCount {
+		return providerCount
+	}
+	return s.maxConcurrency
 }
 
 // Catalog returns the catalog of this source.

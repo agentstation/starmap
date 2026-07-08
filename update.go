@@ -6,16 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/internal/sources/local"
-	"github.com/agentstation/starmap/internal/sources/modelsdev"
-	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
@@ -202,47 +197,4 @@ func (c *client) setCatalog(newCatalog catalogs.Catalog) {
 
 	// Trigger hooks for catalog changes
 	c.hooks.triggerUpdate(oldCatalog, newCatalog)
-}
-
-// Sources returns the sources to use based on configuration.
-func (c *client) filterSources(options *sync.Options, localCatalog catalogs.Catalog) []sources.Source {
-	// Create sources with configuration (especially SourcesDir)
-	configuredSources := createSourcesWithConfig(options, localCatalog)
-
-	// If specific sources are requested, filter to those
-	if len(options.Sources) > 0 {
-		var filtered []sources.Source
-		for _, src := range configuredSources {
-			if slices.Contains(options.Sources, src.ID()) {
-				filtered = append(filtered, src)
-			}
-		}
-		return filtered
-	}
-
-	// Otherwise return all configured sources
-	return configuredSources
-}
-
-// createSourcesWithConfig creates sources configured with sync options.
-func createSourcesWithConfig(options *sync.Options, localCatalog catalogs.Catalog) []sources.Source {
-	sources := []sources.Source{
-		local.New(local.WithCatalog(localCatalog)),
-		providers.New(localCatalog.Providers()),
-	}
-
-	// Configure models.dev sources if SourcesDir is specified
-	if options.SourcesDir != "" {
-		sources = append(sources,
-			modelsdev.NewGitSource(modelsdev.WithSourcesDir(options.SourcesDir)),
-			modelsdev.NewHTTPSource(modelsdev.WithHTTPSourcesDir(options.SourcesDir)),
-		)
-	} else {
-		sources = append(sources,
-			modelsdev.NewGitSource(),
-			modelsdev.NewHTTPSource(),
-		)
-	}
-
-	return sources
 }

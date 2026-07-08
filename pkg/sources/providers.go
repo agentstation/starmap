@@ -4,12 +4,41 @@ package sources
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"sync"
 	"time"
 
 	"github.com/agentstation/starmap/internal/sources/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
+
+// ProviderClient fetches model information from a provider API.
+type ProviderClient interface {
+	ListModels(ctx context.Context) ([]catalogs.Model, error)
+	IsAPIKeyRequired() bool
+	HasAPIKey() bool
+}
+
+// ProviderClientFactory creates provider API clients.
+type ProviderClientFactory func(*catalogs.Provider) (ProviderClient, error)
+
+// RawFetchResult contains the result of a raw provider fetch operation.
+type RawFetchResult struct {
+	Data       []byte
+	Response   *http.Response
+	Latency    time.Duration
+	RequestURL string
+}
+
+// ProviderRawFetcher fetches a raw provider API response.
+type ProviderRawFetcher func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error)
+
+var providerRegistry struct {
+	mu            sync.RWMutex
+	clientFactory ProviderClientFactory
+	rawFetcher    ProviderRawFetcher
+}
 
 // ProviderFetcher provides operations for fetching models from provider APIs.
 // This is the public API for external packages to interact with provider data.
@@ -23,6 +52,8 @@ type providerOptions struct {
 	loadCredentials bool          // Auto-load credentials from environment
 	allowMissingKey bool          // Allow operations without API key
 	timeout         time.Duration // Context timeout for operations
+	clientFactory   ProviderClientFactory
+	rawFetcher      ProviderRawFetcher
 }
 
 func (po *providerOptions) apply(opts ...ProviderOption) *providerOptions {
@@ -37,11 +68,81 @@ type ProviderOption func(*providerOptions)
 
 // providerDefaults returns options with sensible defaults.
 func providerDefaults() *providerOptions {
+	clientFactory, rawFetcher := registeredProviderHooks()
+	if clientFactory == nil {
+		clientFactory = defaultProviderClientFactory
+	}
+	if rawFetcher == nil {
+		rawFetcher = defaultProviderRawFetcher
+	}
 	return &providerOptions{
 		loadCredentials: true,  // Default: auto-load credentials
 		allowMissingKey: false, // Default: require API key
 		timeout:         0,     // Default: no timeout
+		clientFactory:   clientFactory,
+		rawFetcher:      rawFetcher,
 	}
+}
+
+func defaultProviderClientFactory(provider *catalogs.Provider) (ProviderClient, error) {
+	return clients.NewProvider(provider)
+}
+
+func defaultProviderRawFetcher(ctx context.Context, provider *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+	result, err := clients.FetchRaw(ctx, provider, endpoint)
+	if err != nil {
+		return nil, err
+	}
+	return &RawFetchResult{
+		Data:       result.Data,
+		Response:   result.Response,
+		Latency:    result.Latency,
+		RequestURL: result.RequestURL,
+	}, nil
+}
+
+func (po *providerOptions) clone() *providerOptions {
+	if po == nil {
+		return providerDefaults()
+	}
+	clone := *po
+	return &clone
+}
+
+// RegisterProviderClientFactory registers the default provider client factory.
+// It returns a restore function intended for tests and temporary integrations.
+func RegisterProviderClientFactory(factory ProviderClientFactory) func() {
+	providerRegistry.mu.Lock()
+	previous := providerRegistry.clientFactory
+	providerRegistry.clientFactory = factory
+	providerRegistry.mu.Unlock()
+
+	return func() {
+		providerRegistry.mu.Lock()
+		providerRegistry.clientFactory = previous
+		providerRegistry.mu.Unlock()
+	}
+}
+
+// RegisterProviderRawFetcher registers the default raw provider fetcher.
+// It returns a restore function intended for tests and temporary integrations.
+func RegisterProviderRawFetcher(fetcher ProviderRawFetcher) func() {
+	providerRegistry.mu.Lock()
+	previous := providerRegistry.rawFetcher
+	providerRegistry.rawFetcher = fetcher
+	providerRegistry.mu.Unlock()
+
+	return func() {
+		providerRegistry.mu.Lock()
+		providerRegistry.rawFetcher = previous
+		providerRegistry.mu.Unlock()
+	}
+}
+
+func registeredProviderHooks() (ProviderClientFactory, ProviderRawFetcher) {
+	providerRegistry.mu.RLock()
+	defer providerRegistry.mu.RUnlock()
+	return providerRegistry.clientFactory, providerRegistry.rawFetcher
 }
 
 // FetchStats contains metadata about a fetch operation.
@@ -152,6 +253,10 @@ func (pf *ProviderFetcher) List() []catalogs.ProviderID {
 
 // HasClient checks if a provider ID has a client implementation.
 func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
+	if pf.options.clientFactory == nil {
+		return false
+	}
+
 	// Check if we have a provider configuration
 	provider, found := pf.providers.Get(id)
 	if !found {
@@ -159,7 +264,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
 	}
 
 	// Try to create a client for this provider
-	_, err := clients.NewProvider(provider)
+	_, err := pf.options.clientFactory(provider)
 	return err == nil
 }
 
@@ -187,6 +292,20 @@ func WithTimeout(d time.Duration) ProviderOption {
 	}
 }
 
+// WithProviderClientFactory configures the factory used to create provider API clients.
+func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption {
+	return func(o *providerOptions) {
+		o.clientFactory = factory
+	}
+}
+
+// WithProviderRawFetcher configures the raw provider response fetcher.
+func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
+	return func(o *providerOptions) {
+		o.rawFetcher = fetcher
+	}
+}
+
 // FetchModels fetches available models from a single provider's API.
 // It handles credential loading, client creation, and API communication.
 //
@@ -207,11 +326,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 		}
 	}
 
-	// Apply options
-	options := providerDefaults()
-	for _, opt := range opts {
-		opt(options)
-	}
+	options := pf.options.clone().apply(opts...)
 
 	// Apply timeout if specified
 	if options.timeout > 0 {
@@ -246,7 +361,14 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	}
 
 	// Get client from providers
-	client, err := clients.NewProvider(provider)
+	if options.clientFactory == nil {
+		return nil, &errors.ConfigError{
+			Component: string(provider.ID),
+			Message:   "provider client factory is not configured",
+		}
+	}
+
+	client, err := options.clientFactory(provider)
 	if err != nil {
 		return nil, errors.WrapResource("get", "client", string(provider.ID), err)
 	}
@@ -276,11 +398,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 		}
 	}
 
-	// Apply options
-	options := providerDefaults()
-	for _, opt := range opts {
-		opt(options)
-	}
+	options := pf.options.clone().apply(opts...)
 
 	// Apply timeout if specified
 	if options.timeout > 0 {
@@ -314,8 +432,14 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 		}
 	}
 
-	// Call providers' FetchRaw function
-	result, err := clients.FetchRaw(ctx, provider, endpoint)
+	if options.rawFetcher == nil {
+		return nil, nil, &errors.ConfigError{
+			Component: string(provider.ID),
+			Message:   "provider raw fetcher is not configured",
+		}
+	}
+
+	result, err := options.rawFetcher(ctx, provider, endpoint)
 	if err != nil {
 		return nil, nil, err
 	}

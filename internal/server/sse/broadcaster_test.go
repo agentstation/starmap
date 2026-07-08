@@ -293,6 +293,38 @@ verify:
 	}
 }
 
+func TestBroadcaster_ClientBufferFullRecordsSkippedDelivery(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroadcaster(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go b.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	client := make(chan Event, 1)
+	b.newClients <- client
+	time.Sleep(10 * time.Millisecond)
+
+	b.Broadcast(Event{Event: "fill", Data: map[string]any{"i": 1}})
+	time.Sleep(10 * time.Millisecond)
+	b.Broadcast(Event{Event: "overflow", Data: map[string]any{"i": 2}})
+	time.Sleep(10 * time.Millisecond)
+
+	if count := b.ClientCount(); count != 1 {
+		t.Fatalf("expected slow SSE client to stay connected, got %d clients", count)
+	}
+
+	stats := b.DeliveryStats()
+	if stats.Skipped == 0 {
+		t.Fatalf("expected skipped delivery to be recorded, got stats %#v", stats)
+	}
+	if stats.Disconnected != 0 {
+		t.Fatalf("SSE should not disconnect slow clients, got stats %#v", stats)
+	}
+}
+
 // TestBroadcaster_ServeHTTP tests the SSE HTTP handler.
 func TestBroadcaster_ServeHTTP(t *testing.T) {
 	logger := zerolog.Nop()

@@ -284,7 +284,7 @@ func TestMergeProviders(t *testing.T) {
 			expected: []*catalogs.Provider{
 				{
 					ID:           "openai",
-					Name:         "OpenAI API", // ProviderAPI has higher authority for Name field
+					Name:         "OpenAI Embedded", // Local catalog is authoritative for provider metadata
 					Headquarters: stringPtr("San Francisco, USA"),
 					Models: map[string]*catalogs.Model{
 						"model-1": createTestModel("model-1", "Test Model", 1000),
@@ -336,6 +336,67 @@ func TestMergeProviders(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
+	authorities := authority.New()
+	strategy := NewAuthorityStrategy(authorities)
+	merger := newMerger(authorities, strategy, nil)
+
+	localURL := "https://local.example.com/models"
+	modelsDevURL := "https://models-dev.example.com/models"
+
+	result, err := merger.Providers(map[sources.ID][]*catalogs.Provider{
+		sources.LocalCatalogID: {
+			{
+				ID:   "openai",
+				Name: "OpenAI Local",
+				APIKey: &catalogs.ProviderAPIKey{
+					Name:   "LOCAL_KEY",
+					Header: "Authorization",
+				},
+				Catalog: &catalogs.ProviderCatalog{
+					Endpoint: catalogs.ProviderEndpoint{
+						Type: catalogs.EndpointTypeOpenAI,
+						URL:  localURL,
+					},
+				},
+			},
+		},
+		sources.ModelsDevHTTPID: {
+			{
+				ID:   "openai",
+				Name: "OpenAI models.dev",
+				APIKey: &catalogs.ProviderAPIKey{
+					Name:   "MODELS_DEV_KEY",
+					Header: "X-API-Key",
+				},
+				Catalog: &catalogs.ProviderCatalog{
+					Endpoint: catalogs.ProviderEndpoint{
+						Type: catalogs.EndpointTypeOpenAI,
+						URL:  modelsDevURL,
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("MergeProviders failed: %v", err)
+	}
+	if len(result) != 1 {
+		t.Fatalf("Expected 1 provider, got %d", len(result))
+	}
+
+	provider := result[0]
+	if provider.Name != "OpenAI Local" {
+		t.Fatalf("Expected local provider name, got %q", provider.Name)
+	}
+	if provider.APIKey == nil || provider.APIKey.Name != "LOCAL_KEY" {
+		t.Fatalf("Expected local API key configuration, got %#v", provider.APIKey)
+	}
+	if provider.Catalog == nil || provider.Catalog.Endpoint.URL != localURL {
+		t.Fatalf("Expected local catalog endpoint, got %#v", provider.Catalog)
 	}
 }
 

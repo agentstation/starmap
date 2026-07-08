@@ -85,10 +85,9 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, r *http.Request) {
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
 
-	// Get server from context (if available) for uptime
 	uptime := time.Duration(0)
-	if srv, ok := r.Context().Value("server").(interface{ StartTime() time.Time }); ok {
-		uptime = time.Since(srv.StartTime())
+	if !h.startTime.IsZero() {
+		uptime = time.Since(h.startTime)
 	}
 
 	response.OK(w, map[string]any{
@@ -106,11 +105,27 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, r *http.Request) {
 			"published_total": h.broker.EventsPublished(),
 			"dropped_total":   h.broker.EventsDropped(),
 			"queue_depth":     h.broker.QueueDepth(),
+			"delivery":        deliveryStatsMap(h.broker.DeliveryStats()),
 		},
 		"realtime": map[string]any{
 			"websocket_clients": h.wsHub.ClientCount(),
 			"sse_clients":       h.sseBroadcaster.ClientCount(),
+			"websocket_delivery": deliveryStatsMap(
+				h.wsHub.DeliveryStats(),
+			),
+			"sse_delivery": deliveryStatsMap(
+				h.sseBroadcaster.DeliveryStats(),
+			),
 		},
 		"cache": h.cache.GetStats(),
 	})
+}
+
+func deliveryStatsMap(stats events.DeliveryStats) map[string]uint64 {
+	return map[string]uint64{
+		"sent":         stats.Sent,
+		"skipped":      stats.Skipped,
+		"disconnected": stats.Disconnected,
+		"failed":       stats.Failed,
+	}
 }

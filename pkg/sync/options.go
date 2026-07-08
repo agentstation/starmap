@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/agentstation/starmap/internal/utils/ptr"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -54,7 +54,7 @@ func Defaults() *Options {
 		DryRun:             false,
 		AutoApprove:        false,
 		FailFast:           false,
-		Timeout:            5 * time.Minute, // Default 5 minute timeout to prevent hanging
+		Timeout:            constants.UpdateContextTimeout,
 		Sources:            nil,
 		ProviderID:         nil,
 		OutputPath:         "",
@@ -169,7 +169,7 @@ func WithSources(types ...sources.ID) Option {
 // WithProvider configures syncing for a specific provider only.
 func WithProvider(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
-		opts.ProviderID = ptr.To(providerID)
+		opts.ProviderID = &providerID
 	}
 }
 

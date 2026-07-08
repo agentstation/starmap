@@ -284,7 +284,7 @@ func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 		}
 
 		// Set provider in catalog (this will overwrite existing provider)
-		if err := catalog.Providers().Set(provider.ID, provider); err != nil {
+		if err := catalog.SetProvider(*provider); err != nil {
 			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}

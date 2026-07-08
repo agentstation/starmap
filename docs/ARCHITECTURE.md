@@ -2,7 +2,7 @@
 
 > Technical deep dive into Starmap's system design, components, and patterns
 
-**Last Updated:** 2025-10-15
+**Last Updated:** 2026-07-08
 **Status:** Production-ready architecture following idiomatic Go patterns
 
 ## Table of Contents
@@ -17,6 +17,7 @@
 - [Data Sources](#data-sources)
 - [Sync Pipeline](#sync-pipeline)
 - [Reconciliation System](#reconciliation-system)
+- [Real-Time Event Delivery](#real-time-event-delivery)
 - [Thread Safety](#thread-safety)
 - [Package Organization](#package-organization)
 - [Testing Strategy](#testing-strategy)
@@ -47,7 +48,7 @@ graph TB
     end
 
     subgraph ROOT["Root Package - starmap.Client"]
-        SYNC[Sync Pipeline<br/>13 Stages]
+        SYNC[Sync Adapter<br/>Client.Sync]
         HOOKS[Event Hooks<br/>Callbacks]
         AUTO[Auto-Updates<br/>Background Sync]
     end
@@ -60,6 +61,7 @@ graph TB
     end
 
     subgraph IMPL["Internal Implementations"]
+        PIPE[Sync Pipeline<br/>internal/catalog/pipeline]
         EMBED[Embedded Data<br/>go:embed]
         PROVS[Provider Clients<br/>OpenAI, Anthropic, etc.]
         MODELS[models.dev<br/>Git & HTTP]
@@ -71,7 +73,8 @@ graph TB
     HTTP --> APPIF
     APPIF -.implemented by.-> APPIMPL
     APPIMPL --> ROOT
-    ROOT --> CORE
+    ROOT --> PIPE
+    PIPE --> CORE
     PROVS & MODELS & LOCAL & EMBED -.implement.-> SOURCES
 
     style UI fill:#e3f2fd
@@ -134,7 +137,7 @@ graph TB
 
 2. **Root Package** (`starmap.Client`)
    - Public API surface
-   - Sync orchestration
+   - Sync adapter into `internal/catalog/pipeline`
    - Event hooks
    - Auto-updates
 
@@ -149,6 +152,7 @@ graph TB
    - Provider API clients
    - models.dev integration
    - Transport utilities
+   - Shared catalog query behavior for CLI and HTTP adapters
 
 ## Application Layer
 
@@ -513,6 +517,7 @@ Location: `pkg/reconciler/`
 **Key Components:**
 - `Reconciler` interface
 - `Strategy` - Defines how conflicts are resolved
+- Field rule catalog - Package-internal model/provider/author field inventory
 - `Result` - Reconciliation outcome with changeset and metadata
 
 **Strategies:**
@@ -525,6 +530,9 @@ Location: `pkg/reconciler/`
 3. Detect changes vs baseline
 4. Generate changeset with provenance
 5. Return result
+
+**Field Rules:**
+`pkg/reconciler/field_rules.go` is the canonical inventory for reconciled fields. Each rule carries the resource type, reflection path, authority path, and provenance path. The merger iterates this catalog instead of local string slices, so adding or renaming a catalog field requires updating one rule table and the matching authority entry. Tests verify that every model, provider, and author rule points at a real struct field and resolves through the authority system.
 
 See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
 
@@ -566,10 +574,13 @@ Location: `pkg/sources/`
 
 ```go
 type Source interface {
-    Type() Type
     ID() ID
-    Fetch(ctx context.Context, opts ...Option) (catalogs.Catalog, error)
+    Name() string
+    Fetch(ctx context.Context, opts ...Option) error
+    Catalog() catalogs.Catalog
     Cleanup() error
+    Dependencies() []Dependency
+    IsOptional() bool
 }
 ```
 
@@ -584,9 +595,9 @@ See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 
 ## Root Package (starmap.Client)
 
-Location: `starmap.go`, `sync.go`, `client.go`
+Location: `client.go`, `sync.go`
 
-**Purpose:** Main public API with sync orchestration and event hooks
+**Purpose:** Main public API with sync adapter, catalog access, persistence, and event hooks
 
 ### Client Interface
 
@@ -630,6 +641,25 @@ result, err := sm.Sync(ctx,
 )
 ```
 
+### Catalog Query Adapters
+
+Location: `internal/catalog/query/`
+
+CLI commands and HTTP handlers share catalog list behavior through `internal/catalog/query`. That package owns reusable filtering, stable ID sorting, limiting, and pagination for models, providers, and authors. Command and server packages still own input parsing, authentication, cache keys, transport responses, table formatting, and JSON/YAML output.
+
+This keeps adapters thin without moving UI-specific behavior into catalog storage:
+
+```go
+models := query.Models(cat.Models().List(), query.ModelOptions{
+    Author:     flags.Author,
+    Capability: capability,
+    Search:     flags.Search,
+    Limit:      flags.Limit,
+})
+
+page := query.Paginate(filteredModels, limit, offset)
+```
+
 ## Data Sources
 
 ### Source Hierarchy and Authority
@@ -666,34 +696,38 @@ graph TD
 - **API Configuration**: Local catalog takes precedence (user's environment)
 - **Baseline Data**: Embedded catalog provides defaults when other sources unavailable
 
-**Concurrent Fetching:**
-Provider APIs are fetched concurrently using goroutines and channels for optimal performance.
+**Provider Fetching Seam:**
+Provider API fetching is owned by `internal/sources/providers`. That source owns credential loading, provider client construction, bounded concurrency, provider-level error policy, and association of fetched models back to provider catalog entries. The public `pkg/sources.ProviderFetcher` preserves its default provider API behavior while also exposing reusable `ProviderClientFactory` and `ProviderRawFetcher` interfaces for tests and custom integrations.
 
 ### Concurrent Fetching
 
-Provider APIs are fetched concurrently:
+Provider APIs are fetched concurrently with a bounded worker gate:
 
 ```go
 // internal/sources/providers/providers.go
-func fetch(ctx context.Context, providers []Provider) {
-    results := make(chan Result, len(providers))
+resultChan := make(chan providerModels, len(providerConfigs))
+semaphore := make(chan struct{}, s.effectiveMaxConcurrency(len(providerConfigs)))
 
-    for _, provider := range providers {
-        go func(p Provider) {
-            models, err := p.Client.ListModels(ctx)
-            results <- Result{Provider: p, Models: models, Error: err}
-        }(provider)
-    }
+for _, provider := range providerConfigs {
+    wg.Add(1)
+    go func(p *catalogs.Provider) {
+        defer wg.Done()
+        semaphore <- struct{}{}
+        defer func() { <-semaphore }()
 
-    // Collect results...
+        client, err := s.clientFactory(p)
+        // Fetch, classify errors, and send provider result...
+    }(provider)
 }
 ```
 
 ## Sync Pipeline
 
-Location: `sync.go`
+Location: `internal/catalog/pipeline/` with public entry through `client.Sync` in `sync.go`
 
-The sync pipeline executes in 13 stages with comprehensive error handling and decision points:
+The sync pipeline is a deep internal module behind the public `starmap.Client.Sync` method. The root client supplies only a store adapter for reading the current catalog and applying a reconciled catalog after persistence succeeds. `internal/catalog/pipeline` owns execution ordering, source construction, dependency filtering, fetch/cleanup fan-out, reconciliation, dry-run behavior, no-change behavior, and forced-save policy.
+
+The pipeline executes in 13 stages with comprehensive error handling and decision points:
 
 ### Pipeline Flowchart
 
@@ -707,7 +741,7 @@ flowchart TD
     S2 --> S3{Timeout<br/>configured?}
     S3 -->|Yes| S3B[Setup WithTimeout]
     S3 -->|No| S4
-    S3B --> S4[Load Embedded<br/>Catalog]
+    S3B --> S4[Load Local<br/>Catalog]
 
     S4 --> S5[Validate<br/>Options]
     S5 --> E1{Valid?}
@@ -726,10 +760,12 @@ flowchart TD
     S11 --> S12[Log Change<br/>Summary]
 
     S12 --> D1{Has<br/>Changes?}
-    D1 -->|No| End1[✓ Return Result<br/>No Changes]
+    D1 -->|No| D1B{Force<br/>Save?}
+    D1B -->|No| End1[✓ Return Result<br/>No Changes]
+    D1B -->|Yes| D2
     D1 -->|Yes| D2{Dry<br/>Run?}
     D2 -->|Yes| End2[✓ Return Result<br/>Preview Only]
-    D2 -->|No| S13[Save Catalog &<br/>Trigger Hooks]
+    D2 -->|No| S13[Persist, Publish &<br/>Trigger Hooks]
 
     S13 --> End3([✅ Return Result<br/>Changes Applied])
 
@@ -753,64 +789,32 @@ flowchart TD
 
 ```go
 func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
-    // Stage 1: Check and set context
-    if ctx == nil {
-        ctx = context.Background()
-    }
+    return pipeline.New(pipelineStore{client: c}).Sync(ctx, opts...)
+}
 
-    // Stage 2: Parse options with defaults
-    options := sync.Defaults().Apply(opts...)
+type pipelineStore struct {
+    client *client
+}
 
-    // Stage 3: Setup context with timeout
-    if options.Timeout > 0 {
-        ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-        defer cancel()
-    }
+func (s pipelineStore) Catalog() (catalogs.Catalog, error) {
+    return s.client.Catalog()
+}
 
-    // Stage 4: Load embedded catalog for validation
-    embedded, err := catalogs.NewEmbedded()
-
-    // Stage 5: Validate options upfront
-    err = options.Validate(embedded.Providers())
-
-    // Stage 6: Filter sources by options
-    srcs := c.filterSources(options)
-
-    // Stage 7: Resolve dependencies
-    srcs, err = resolveDependencies(ctx, srcs, options)
-
-    // Stage 8: Setup cleanup
-    defer cleanup(srcs)
-
-    // Stage 9: Fetch catalogs from all sources
-    err = fetch(ctx, srcs, options.SourceOptions())
-
-    // Stage 10: Get existing catalog for baseline
-    existing, err := c.Catalog()
-
-    // Stage 11: Reconcile catalogs from all sources
-    result, err := update(ctx, existing, srcs)
-
-    // Stage 12: Log change summary
-    logging.Info().Int("added", ...).Msg("Changes detected")
-
-    // Stage 13: Save if not dry-run
-    if !options.DryRun && result.Changeset.HasChanges() {
-        c.save(result.Catalog, options, result.Changeset)
-    }
-
-    return syncResult, nil
+func (s pipelineStore) Apply(catalog catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
+    return s.client.save(catalog, options, changeset)
 }
 ```
 
 ### Key Pipeline Features
 
+- **Deep module boundary**: `internal/catalog/pipeline.Pipeline` owns orchestration; `client.Sync` remains a stable public adapter
 - **Staged execution**: Each stage has clear purpose
 - **Error handling**: Fail fast with context
 - **Concurrent fetching**: Sources fetched in parallel
 - **Change detection**: Diff against baseline
 - **Dry-run support**: Preview without applying
-- **Event triggers**: Hooks fire on successful save
+- **Force-save support**: `--fresh` and `--reformat` persist even when there are no detected changes
+- **Safe publication**: Catalog state and hooks update only after persistence succeeds
 
 ## Reconciliation System
 
@@ -819,10 +823,11 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 The default reconciliation strategy uses field-level authorities:
 
 **How it works:**
-1. For each field in a model, find matching authority
-2. Select value from highest-priority source
-3. Track provenance (which source provided which field)
-4. Generate changeset by comparing with baseline
+1. Iterate the reconciler field-rule catalog for each resource type
+2. Use each rule's authority path to find matching authority
+3. Select value from highest-priority source
+4. Track provenance using each rule's provenance path
+5. Generate changeset by comparing with baseline
 
 **Example:**
 
@@ -862,7 +867,7 @@ sequenceDiagram
         L-->>Rec: {Description}
     end
 
-    Note over Rec: Process each model field
+    Note over Rec: Process model field rules
 
     Rec->>Auth: ResolveConflict("Name", values)
     Auth-->>Rec: Provider API (priority 90)
@@ -915,6 +920,27 @@ type Changeset struct {
 - Track field-level changes
 - Preserve attribution for each field
 - Generate human-readable diffs
+
+## Real-Time Event Delivery
+
+The server exposes catalog update events through WebSocket and Server-Sent Events (SSE). Event delivery is split into lifecycle adapters and one shared fan-out policy module:
+
+- `internal/server/events.Broker` accepts catalog events and delivers them to internal subscribers.
+- `internal/server/sse.Broadcaster` owns SSE client registration, HTTP streaming, and SSE formatting.
+- `internal/server/websocket.Hub` owns WebSocket client registration, ping/write pumps, and WebSocket message formatting.
+- `internal/server/events.Fanout` owns target delivery, cumulative counters, and backpressure policy.
+
+Backpressure behavior is explicit per adapter:
+
+| Adapter | Policy | Behavior |
+| --- | --- | --- |
+| Broker subscribers | Skip/log failed delivery | Subscribers receive events through one bounded queue and worker per subscriber, so slow subscribers cannot stall the broker event loop and fan-out does not spawn one goroutine per subscriber per event |
+| SSE clients | Skip | A full SSE client buffer skips that event and keeps the client connected |
+| WebSocket clients | Disconnect | A full WebSocket client buffer removes and closes that client |
+
+`Fanout` exposes comparable delivery counters: sent, skipped, disconnected, and failed. Admin stats surface those counters for broker, SSE, and WebSocket delivery so production behavior can be monitored consistently.
+
+The broker, SSE broadcaster, and WebSocket hub still use buffered registration/unregistration channels so setup and cleanup do not depend on event-loop startup order.
 
 ## Thread Safety
 
@@ -1021,6 +1047,17 @@ func (m Model) DeepCopy() Model {
     return copy
 }
 ```
+
+### Catalog Ownership Contract
+
+Catalog collection boundaries are copy-on-read and copy-on-write:
+
+- `Providers`, `Authors`, `Models`, and `Endpoints` store caller input as owned copies.
+- `Get`, `Resolve`, `List`, `Map`, and catalog convenience methods return caller-owned values or pointers to copies.
+- Batch writes (`AddBatch`, `SetBatch`) copy accepted values before storing them.
+- `ForEach` callbacks receive copies; callback mutation must not affect catalog internals.
+- `Provenance` copies maps and slices on `Set`, `Map`, `FindByField`, and `FindByResource`. Provenance `Value` and `PreviousValue` are `any`, so callers should treat complex values placed there as immutable.
+- `Catalog.Copy()` is the cross-goroutine snapshot boundary used by `starmap.Client.Catalog()` and application adapters.
 
 ### Safe Usage Patterns
 
@@ -1322,6 +1359,9 @@ starmap/
 │   ├── cmd/
 │   │   └── application/      # Application interface (internal)
 │   │       └── application.go # Application interface definition
+│   ├── catalog/
+│   │   ├── query/           # Shared CLI/HTTP catalog query behavior
+│   │   └── pipeline/        # Sync orchestration behind Client.Sync
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -1329,6 +1369,9 @@ starmap/
 │   │   ├── server.go         # Server struct & lifecycle
 │   │   ├── config.go         # Configuration management
 │   │   ├── router.go         # Route registration & middleware
+│   │   ├── events/           # Shared event fan-out and broker
+│   │   ├── sse/              # Server-Sent Events adapter
+│   │   ├── websocket/        # WebSocket adapter
 │   │   └── handlers/         # HTTP request handlers
 │   │       ├── models.go     # Model endpoints
 │   │       ├── providers.go  # Provider endpoints
@@ -1350,11 +1393,10 @@ starmap/
 │   │   └── clients/          # Client factory
 │   └── transport/            # HTTP client utilities
 │
-├── starmap.go                # Root package - public API
 ├── client.go                 # Client implementation
-├── sync.go                   # Sync pipeline
+├── sync.go                   # Public sync adapter and persistence apply hook
 ├── hooks.go                  # Event hooks
-├── lifecycle.go              # Auto-updates
+├── autoupdate.go             # Auto-updates
 ├── options.go                # Functional options
 └── persistence.go            # Save/load operations
 ```
@@ -1554,8 +1596,9 @@ func TestListModels(t *testing.T) {
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `starmap.go` | Public API interface | ~100 |
-| `sync.go` | 13-step sync pipeline | ~234 |
+| `client.go` | Public API interface and client implementation | ~150 |
+| `sync.go` | Public sync adapter and persistence apply hook | ~120 |
+| `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
 | `internal/cmd/application/application.go` | Application interface | ~97 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |
 | `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |

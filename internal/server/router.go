@@ -22,6 +22,7 @@ func (s *Server) setupRouter() http.Handler {
 		s.sseBroadcaster,
 		s.upgrader,
 		s.logger,
+		s.startTime,
 	)
 
 	// Register routes

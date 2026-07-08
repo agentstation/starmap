@@ -158,8 +158,12 @@ func defaultModelAuthorities() []Field {
 func defaultProviderAuthorities() []Field {
 	return []Field{
 		// API configuration - local catalog for stability (using Go field names)
+		{Path: "APIKey", Source: sources.LocalCatalogID, Priority: 100},
 		{Path: "APIKey.*", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "EnvVars", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "Catalog.*", Source: sources.LocalCatalogID, Priority: 95},
+		{Path: "ChatCompletions", Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "ChatCompletions.URL", Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "ChatCompletions.HealthAPIURL", Source: sources.LocalCatalogID, Priority: 90},
 
@@ -169,12 +173,18 @@ func defaultProviderAuthorities() []Field {
 		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Policies - models.dev or manual (HTTP preferred, using Go field names)
+		{Path: "PrivacyPolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
 		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "RetentionPolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
 		{Path: "RetentionPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "GovernancePolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
 		{Path: "GovernancePolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
 		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: "PrivacyPolicy", Source: sources.ModelsDevGitID, Priority: 85},
 		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "RetentionPolicy", Source: sources.ModelsDevGitID, Priority: 85},
 		{Path: "RetentionPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "GovernancePolicy", Source: sources.ModelsDevGitID, Priority: 85},
 		{Path: "GovernancePolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
 		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevGitID, Priority: 80},
 
@@ -183,6 +193,10 @@ func defaultProviderAuthorities() []Field {
 
 		// Aliases - prefer local catalog (using Go field name)
 		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
+
+		// Runtime model maps are populated from provider/catalog sources.
+		{Path: "Models", Source: sources.ProvidersID, Priority: 90},
+		{Path: "Models", Source: sources.LocalCatalogID, Priority: 80},
 	}
 }
 
@@ -192,18 +206,39 @@ func defaultAuthorAuthorities() []Field {
 		// Core author info - prefer local catalog for stability
 		// Using capitalized field names to match Go struct fields
 		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "URL", Source: sources.LocalCatalogID, Priority: 85},
 		{Path: "Description", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Website", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "HuggingFace", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "GitHub", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Twitter", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: "Models", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Aliases - prefer local catalog (using Go field name)
 		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Fallback to models.dev
 		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "URL", Source: sources.ModelsDevHTTPID, Priority: 75},
 		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Headquarters", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "IconURL", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Website", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "HuggingFace", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "GitHub", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Twitter", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Catalog", Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: "Models", Source: sources.ModelsDevHTTPID, Priority: 75},
 		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 70},
-		{Path: "URL", Source: sources.ModelsDevGitID, Priority: 65},
 		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Headquarters", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "IconURL", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Website", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "HuggingFace", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "GitHub", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Twitter", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Catalog", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: "Models", Source: sources.ModelsDevGitID, Priority: 65},
 	}
 }

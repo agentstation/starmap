@@ -83,6 +83,8 @@ func (spr *ProviderResult) Summary() string {
 
 // ChangesetToResult converts a reconcile.Changeset to a SyncResult.
 func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID) *Result {
+	changeset = normalizeChangeset(changeset)
+
 	result := &Result{
 		TotalChanges:    changeset.Summary.TotalChanges,
 		DryRun:          dryRun,
@@ -139,6 +141,22 @@ func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir strin
 	}
 
 	return result
+}
+
+func normalizeChangeset(changeset *differ.Changeset) *differ.Changeset {
+	if changeset == nil {
+		changeset = &differ.Changeset{}
+	}
+	if changeset.Models == nil {
+		changeset.Models = &differ.ModelChangeset{}
+	}
+	if changeset.Providers == nil {
+		changeset.Providers = &differ.ProviderChangeset{}
+	}
+	if changeset.Authors == nil {
+		changeset.Authors = &differ.AuthorChangeset{}
+	}
+	return changeset
 }
 
 // getModelProvider extracts the provider ID from a model using the provider map.

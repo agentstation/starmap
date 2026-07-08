@@ -259,6 +259,40 @@ func TestHub_ClientBufferFull(t *testing.T) {
 	}
 }
 
+func TestHub_ClientBufferFullRecordsDisconnect(t *testing.T) {
+	logger := zerolog.Nop()
+	hub := NewHub(&logger)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	go hub.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	client := &Client{
+		id:   "slow-client",
+		hub:  hub,
+		conn: nil,
+		send: make(chan Message, 1),
+	}
+	hub.Register(client)
+	time.Sleep(10 * time.Millisecond)
+
+	hub.Broadcast(Message{Type: "fill"})
+	time.Sleep(10 * time.Millisecond)
+	hub.Broadcast(Message{Type: "overflow"})
+	time.Sleep(50 * time.Millisecond)
+
+	if count := hub.ClientCount(); count != 0 {
+		t.Fatalf("expected slow WebSocket client to be disconnected, got %d clients", count)
+	}
+
+	stats := hub.DeliveryStats()
+	if stats.Disconnected == 0 {
+		t.Fatalf("expected disconnected delivery to be recorded, got stats %#v", stats)
+	}
+}
+
 // TestHub_ConcurrentRegisterUnregister tests concurrent register/unregister operations.
 func TestHub_ConcurrentRegisterUnregister(t *testing.T) {
 	logger := zerolog.Nop()

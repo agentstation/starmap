@@ -59,6 +59,10 @@ type Strategy interface {
 	ApplyStrategy() differ.ApplyStrategy
 }
 
+type resourceConflictResolver interface {
+	ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
+}
+
 // baseStrategy provides common strategy functionality.
 type baseStrategy struct {
 	typ            StrategyType
@@ -123,8 +127,12 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 
 // ResolveConflict uses authorities to resolve conflicts.
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string) {
-	// Get all authorities for this resource type
-	authorities := s.authorities.ModelFields()
+	return s.ResolveResourceConflict(sources.ResourceTypeModel, field, values)
+}
+
+// ResolveResourceConflict uses resource-specific authorities to resolve conflicts.
+func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string) {
+	authorities := s.authoritiesFor(resourceType)
 
 	// Find all authorities that match this field, sorted by priority
 	var matchingAuthorities []authority.Field
@@ -173,6 +181,19 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 	return nil, "", "no value available"
 }
 
+func (s *AuthorityStrategy) authoritiesFor(resourceType sources.ResourceType) []authority.Field {
+	switch resourceType {
+	case sources.ResourceTypeModel:
+		return s.authorities.ModelFields()
+	case sources.ResourceTypeProvider:
+		return s.authorities.ProviderFields()
+	case sources.ResourceTypeAuthor:
+		return s.authorities.AuthorFields()
+	default:
+		return nil
+	}
+}
+
 // SourceOrderStrategy resolves conflicts using a fixed source precedence order.
 // Sources earlier in the priority slice have higher precedence than sources later in the slice.
 type SourceOrderStrategy struct {
@@ -200,6 +221,11 @@ func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy {
 
 // ResolveConflict uses source priority order to resolve conflicts.
 func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string) {
+	return s.ResolveResourceConflict("", "", values)
+}
+
+// ResolveResourceConflict resolves conflicts by source order; resource type does not affect this strategy.
+func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ string, values map[sources.ID]any) (any, sources.ID, string) {
 	// Check sources in priority order
 	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {

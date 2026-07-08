@@ -28,10 +28,5 @@ func (c *client) Save(opts ...save.Option) error {
 		return errors.WrapIO("write", "catalog", err)
 	}
 
-	// For catalogs that don't support direct saving, we'll use the persistence layer
-	// This could be extended later if needed
-	return &errors.ConfigError{
-		Component: "catalog",
-		Message:   "catalog type does not support direct saving",
-	}
+	return nil
 }

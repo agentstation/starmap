@@ -1,7 +1,6 @@
 package catalogs
 
 import (
-	"maps"
 	"sort"
 	"sync"
 
@@ -29,7 +28,14 @@ func WithAuthorsMap(authors map[AuthorID]*Author) AuthorsOption {
 	return func(a *Authors) {
 		if authors != nil {
 			a.authors = make(map[AuthorID]*Author, len(authors))
-			maps.Copy(a.authors, authors)
+			for id, author := range authors {
+				if author == nil {
+					a.authors[id] = nil
+					continue
+				}
+				authorCopy := DeepCopyAuthor(*author)
+				a.authors[id] = &authorCopy
+			}
 		}
 	}
 }
@@ -52,7 +58,11 @@ func (a *Authors) Get(id AuthorID) (*Author, bool) {
 	a.mu.RLock()
 	author, ok := a.authors[id]
 	a.mu.RUnlock()
-	return author, ok
+	if !ok || author == nil {
+		return author, ok
+	}
+	authorCopy := DeepCopyAuthor(*author)
+	return &authorCopy, true
 }
 
 // Resolve returns an author by ID or alias.
@@ -64,15 +74,27 @@ func (a *Authors) Resolve(id AuthorID) (*Author, bool) {
 
 	// Try exact match first
 	if author, ok := a.authors[id]; ok {
-		return author, true
+		if author == nil {
+			return nil, true
+		}
+		authorCopy := DeepCopyAuthor(*author)
+		return &authorCopy, true
 	}
 
 	// Search aliases
 	for _, author := range a.authors {
+		if author == nil {
+			continue
+		}
 		for _, alias := range author.Aliases {
 			if alias == id {
 				// Found via alias - return the author with canonical ID
-				return a.authors[author.ID], true
+				resolved := a.authors[author.ID]
+				if resolved == nil {
+					return nil, true
+				}
+				authorCopy := DeepCopyAuthor(*resolved)
+				return &authorCopy, true
 			}
 		}
 	}
@@ -91,7 +113,8 @@ func (a *Authors) Set(id AuthorID, author *Author) error {
 
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	a.authors[id] = author
+	authorCopy := DeepCopyAuthor(*author)
+	a.authors[id] = &authorCopy
 	return nil
 }
 
@@ -115,7 +138,8 @@ func (a *Authors) Add(author *Author) error {
 		}
 	}
 
-	a.authors[author.ID] = author
+	authorCopy := DeepCopyAuthor(*author)
+	a.authors[author.ID] = &authorCopy
 	return nil
 }
 
@@ -175,7 +199,14 @@ func (a *Authors) Map() map[AuthorID]*Author {
 	defer a.mu.RUnlock()
 
 	result := make(map[AuthorID]*Author, len(a.authors))
-	maps.Copy(result, a.authors)
+	for id, author := range a.authors {
+		if author == nil {
+			result[id] = nil
+			continue
+		}
+		authorCopy := DeepCopyAuthor(*author)
+		result[id] = &authorCopy
+	}
 	return result
 }
 
@@ -186,7 +217,14 @@ func (a *Authors) ForEach(fn func(id AuthorID, author *Author) bool) {
 	defer a.mu.RUnlock()
 
 	for id, author := range a.authors {
-		if !fn(id, author) {
+		if author == nil {
+			if !fn(id, nil) {
+				break
+			}
+			continue
+		}
+		authorCopy := DeepCopyAuthor(*author)
+		if !fn(id, &authorCopy) {
 			break
 		}
 	}
@@ -235,7 +273,8 @@ func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error {
 			continue
 		}
 		if _, hasError := errs[author.ID]; !hasError {
-			a.authors[author.ID] = author
+			authorCopy := DeepCopyAuthor(*author)
+			a.authors[author.ID] = &authorCopy
 		}
 	}
 
@@ -267,7 +306,8 @@ func (a *Authors) SetBatch(authors map[AuthorID]*Author) error {
 	defer a.mu.Unlock()
 
 	for id, author := range authors {
-		a.authors[id] = author
+		authorCopy := DeepCopyAuthor(*author)
+		a.authors[id] = &authorCopy
 	}
 
 	return nil

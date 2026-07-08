@@ -9,6 +9,8 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
+
+	"github.com/agentstation/starmap/internal/server/events"
 )
 
 // Hub maintains active WebSocket connections and broadcasts messages.
@@ -19,6 +21,7 @@ type Hub struct {
 	unregister chan *Client
 	mu         sync.RWMutex
 	logger     *zerolog.Logger
+	fanout     *events.Fanout[Message]
 }
 
 // NewHub creates a new WebSocket hub.
@@ -29,6 +32,7 @@ func NewHub(logger *zerolog.Logger) *Hub {
 		register:   make(chan *Client, 10), // Buffered to prevent blocking when clients connect before Run() starts
 		unregister: make(chan *Client, 10), // Buffered to prevent blocking during client cleanup
 		logger:     logger,
+		fanout:     events.NewFanout[Message](events.BackpressureDisconnect, logger),
 	}
 }
 
@@ -58,35 +62,10 @@ func (h *Hub) Run(ctx context.Context) {
 				Msg("WebSocket client connected")
 
 		case client := <-h.unregister:
-			h.mu.Lock()
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
-				close(client.send)
-			}
-			h.mu.Unlock()
-			h.logger.Info().
-				Str("client_id", client.id).
-				Int("total_clients", len(h.clients)).
-				Msg("WebSocket client disconnected")
+			h.disconnectClient(client)
 
 		case message := <-h.broadcast:
-			h.mu.RLock()
-			// Take snapshot of clients for safe iteration
-			clients := make([]*Client, 0, len(h.clients))
-			for client := range h.clients {
-				clients = append(clients, client)
-			}
-			h.mu.RUnlock()
-
-			// Send to clients (some may need disconnection)
-			for _, client := range clients {
-				select {
-				case client.send <- message:
-				default:
-					// Client buffer full, disconnect via unregister channel
-					h.unregister <- client
-				}
-			}
+			h.fanout.Deliver(h.deliveryTargets(), message)
 		}
 	}
 }
@@ -110,6 +89,52 @@ func (h *Hub) ClientCount() int {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 	return len(h.clients)
+}
+
+// DeliveryStats returns cumulative WebSocket client delivery counters.
+func (h *Hub) DeliveryStats() events.DeliveryStats {
+	return h.fanout.Stats()
+}
+
+func (h *Hub) deliveryTargets() []events.DeliveryTarget[Message] {
+	h.mu.RLock()
+	clients := make([]*Client, 0, len(h.clients))
+	for client := range h.clients {
+		clients = append(clients, client)
+	}
+	h.mu.RUnlock()
+
+	targets := make([]events.DeliveryTarget[Message], 0, len(clients))
+	for _, client := range clients {
+		client := client
+		targets = append(targets, events.DeliveryTarget[Message]{
+			ID: client.id,
+			Send: func(message Message) error {
+				return events.TrySend(client.send, message)
+			},
+			Close: func() error {
+				h.disconnectClient(client)
+				return nil
+			},
+		})
+	}
+	return targets
+}
+
+func (h *Hub) disconnectClient(client *Client) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	if _, ok := h.clients[client]; !ok {
+		return
+	}
+
+	delete(h.clients, client)
+	close(client.send)
+	h.logger.Info().
+		Str("client_id", client.id).
+		Int("total_clients", len(h.clients)).
+		Msg("WebSocket client disconnected")
 }
 
 // Message represents a WebSocket message.

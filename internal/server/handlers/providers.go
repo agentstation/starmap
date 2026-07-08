@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cmd/provider"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -32,7 +33,7 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 
-	providers := cat.Providers().List()
+	providers := query.Providers(cat.Providers().List(), query.ProviderOptions{})
 
 	// Build simplified provider list
 	providerList := make([]map[string]any, 0, len(providers))

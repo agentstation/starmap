@@ -20,6 +20,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [func NewMockSource\(sourceType sources.ID, catalog catalogs.Catalog\) sources.Source](<#NewMockSource>)
 - [type AuthorityStrategy](<#AuthorityStrategy>)
   - [func \(s \*AuthorityStrategy\) ResolveConflict\(field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveConflict>)
+  - [func \(s \*AuthorityStrategy\) ResolveResourceConflict\(resourceType sources.ResourceType, field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveResourceConflict>)
 - [type Merger](<#Merger>)
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Authority\) Option](<#WithAuthorities>)
@@ -40,6 +41,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [type ResultStatistics](<#ResultStatistics>)
 - [type SourceOrderStrategy](<#SourceOrderStrategy>)
   - [func \(s \*SourceOrderStrategy\) ResolveConflict\(\_ string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#SourceOrderStrategy.ResolveConflict>)
+  - [func \(s \*SourceOrderStrategy\) ResolveResourceConflict\(\_ sources.ResourceType, \_ string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#SourceOrderStrategy.ResolveResourceConflict>)
 - [type Strategy](<#Strategy>)
   - [func NewAuthorityStrategy\(authorities authority.Authority\) Strategy](<#NewAuthorityStrategy>)
   - [func NewSourceOrderStrategy\(priorityOrder \[\]sources.ID\) Strategy](<#NewSourceOrderStrategy>)
@@ -55,7 +57,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 
 
 <a name="ConvertCatalogsMapToSources"></a>
-## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L67>)
+## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/test_helpers.go#L67>)
 
 ```go
 func ConvertCatalogsMapToSources(srcs map[sources.ID]catalogs.Catalog) []sources.Source
@@ -64,7 +66,7 @@ func ConvertCatalogsMapToSources(srcs map[sources.ID]catalogs.Catalog) []sources
 ConvertCatalogsMapToSources converts the old map format to sources slice for testing.
 
 <a name="NewMockSource"></a>
-## func [NewMockSource](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/test_helpers.go#L18>)
+## func [NewMockSource](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/test_helpers.go#L18>)
 
 ```go
 func NewMockSource(sourceType sources.ID, catalog catalogs.Catalog) sources.Source
@@ -73,7 +75,7 @@ func NewMockSource(sourceType sources.ID, catalog catalogs.Catalog) sources.Sour
 NewMockSource creates a new mock source for testing.
 
 <a name="AuthorityStrategy"></a>
-## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L102-L105>)
+## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L106-L109>)
 
 AuthorityStrategy uses field authorities to resolve conflicts.
 
@@ -84,7 +86,7 @@ type AuthorityStrategy struct {
 ```
 
 <a name="AuthorityStrategy.ResolveConflict"></a>
-### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L125>)
+### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L129>)
 
 ```go
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
@@ -92,8 +94,17 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 
 ResolveConflict uses authorities to resolve conflicts.
 
+<a name="AuthorityStrategy.ResolveResourceConflict"></a>
+### func \(\*AuthorityStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L134>)
+
+```go
+func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
+```
+
+ResolveResourceConflict uses resource\-specific authorities to resolve conflicts.
+
 <a name="Merger"></a>
-## type [Merger](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/merger.go#L19-L25>)
+## type [Merger](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/merger.go#L19-L25>)
 
 Merger performs the actual merging of resources.
 
@@ -108,7 +119,7 @@ type Merger interface {
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L30>)
+## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L30>)
 
 Option is a function that configures a Reconciler.
 
@@ -117,7 +128,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L61>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L61>)
 
 ```go
 func WithAuthorities(authorities authority.Authority) Option
@@ -126,7 +137,7 @@ func WithAuthorities(authorities authority.Authority) Option
 WithAuthorities sets the field authorities.
 
 <a name="WithBaseline"></a>
-### func [WithBaseline](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L94>)
+### func [WithBaseline](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L94>)
 
 ```go
 func WithBaseline(catalog catalogs.Catalog) Option
@@ -135,7 +146,7 @@ func WithBaseline(catalog catalogs.Catalog) Option
 WithBaseline sets an existing catalog to compare against for change detection.
 
 <a name="WithEnhancers"></a>
-### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L86>)
+### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L86>)
 
 ```go
 func WithEnhancers(enhancers ...enhancer.Enhancer) Option
@@ -144,7 +155,7 @@ func WithEnhancers(enhancers ...enhancer.Enhancer) Option
 WithEnhancers adds model enhancers to the pipeline.
 
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L78>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L78>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -153,7 +164,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking.
 
 <a name="WithStrategy"></a>
-### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/options.go#L47>)
+### func [WithStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/options.go#L47>)
 
 ```go
 func WithStrategy(strategy Strategy) Option
@@ -162,7 +173,7 @@ func WithStrategy(strategy Strategy) Option
 WithStrategy sets the merge strategy.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L25-L29>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/reconciler.go#L25-L29>)
 
 Reconciler is the main interface for reconciling data from multiple sources.
 
@@ -175,7 +186,7 @@ type Reconciler interface {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/reconciler.go#L42>)
+### func [New](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/reconciler.go#L42>)
 
 ```go
 func New(opts ...Option) (Reconciler, error)
@@ -184,7 +195,7 @@ func New(opts ...Option) (Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Result"></a>
-## type [Result](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L14-L33>)
+## type [Result](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L14-L33>)
 
 Result represents the outcome of a reconciliation operation.
 
@@ -212,7 +223,7 @@ type Result struct {
 ```
 
 <a name="NewResult"></a>
-### func [NewResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L108>)
+### func [NewResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L108>)
 
 ```go
 func NewResult() *Result
@@ -221,7 +232,7 @@ func NewResult() *Result
 NewResult creates a new result with defaults.
 
 <a name="Result.Finalize"></a>
-### func \(\*Result\) [Finalize](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L123>)
+### func \(\*Result\) [Finalize](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L123>)
 
 ```go
 func (r *Result) Finalize()
@@ -230,7 +241,7 @@ func (r *Result) Finalize()
 Finalize calculates duration and marks completion.
 
 <a name="Result.HasChanges"></a>
-### func \(\*Result\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L74>)
+### func \(\*Result\) [HasChanges](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L74>)
 
 ```go
 func (r *Result) HasChanges() bool
@@ -239,7 +250,7 @@ func (r *Result) HasChanges() bool
 HasChanges returns true if any changes were detected.
 
 <a name="Result.IsSuccess"></a>
-### func \(\*Result\) [IsSuccess](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L69>)
+### func \(\*Result\) [IsSuccess](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L69>)
 
 ```go
 func (r *Result) IsSuccess() bool
@@ -248,7 +259,7 @@ func (r *Result) IsSuccess() bool
 IsSuccess returns true if the reconciliation was successful.
 
 <a name="Result.Summary"></a>
-### func \(\*Result\) [Summary](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L84>)
+### func \(\*Result\) [Summary](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L84>)
 
 ```go
 func (r *Result) Summary() string
@@ -257,7 +268,7 @@ func (r *Result) Summary() string
 Summary returns a human\-readable summary of the result.
 
 <a name="Result.WasApplied"></a>
-### func \(\*Result\) [WasApplied](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L79>)
+### func \(\*Result\) [WasApplied](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L79>)
 
 ```go
 func (r *Result) WasApplied() bool
@@ -266,7 +277,7 @@ func (r *Result) WasApplied() bool
 WasApplied returns true if changes were applied.
 
 <a name="ResultMetadata"></a>
-## type [ResultMetadata](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L36-L57>)
+## type [ResultMetadata](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L36-L57>)
 
 ResultMetadata contains metadata about the reconciliation process.
 
@@ -296,7 +307,7 @@ type ResultMetadata struct {
 ```
 
 <a name="ResultStatistics"></a>
-## type [ResultStatistics](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/result.go#L60-L66>)
+## type [ResultStatistics](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/result.go#L60-L66>)
 
 ResultStatistics contains statistics about the reconciliation.
 
@@ -311,7 +322,7 @@ type ResultStatistics struct {
 ```
 
 <a name="SourceOrderStrategy"></a>
-## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L178-L181>)
+## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L199-L202>)
 
 SourceOrderStrategy resolves conflicts using a fixed source precedence order. Sources earlier in the priority slice have higher precedence than sources later in the slice.
 
@@ -322,7 +333,7 @@ type SourceOrderStrategy struct {
 ```
 
 <a name="SourceOrderStrategy.ResolveConflict"></a>
-### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L202>)
+### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L223>)
 
 ```go
 func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string)
@@ -330,8 +341,17 @@ func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]an
 
 ResolveConflict uses source priority order to resolve conflicts.
 
+<a name="SourceOrderStrategy.ResolveResourceConflict"></a>
+### func \(\*SourceOrderStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L228>)
+
+```go
+func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ string, values map[sources.ID]any) (any, sources.ID, string)
+```
+
+ResolveResourceConflict resolves conflicts by source order; resource type does not affect this strategy.
+
 <a name="Strategy"></a>
-## type [Strategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L42-L60>)
+## type [Strategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L42-L60>)
 
 Strategy defines how reconciliation should be performed.
 
@@ -358,7 +378,7 @@ type Strategy interface {
 ```
 
 <a name="NewAuthorityStrategy"></a>
-### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L108>)
+### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L112>)
 
 ```go
 func NewAuthorityStrategy(authorities authority.Authority) Strategy
@@ -367,7 +387,7 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy
 NewAuthorityStrategy creates a new authority\-based strategy.
 
 <a name="NewSourceOrderStrategy"></a>
-### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L185>)
+### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L206>)
 
 ```go
 func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy
@@ -376,7 +396,7 @@ func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy
 NewSourceOrderStrategy creates a new source priority order strategy. The priorityOrder slice determines precedence: earlier elements have higher priority.
 
 <a name="StrategyType"></a>
-## type [StrategyType](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L14>)
+## type [StrategyType](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L14>)
 
 StrategyType represents the type of reconciliation strategy.
 
@@ -396,7 +416,7 @@ const (
 ```
 
 <a name="StrategyType.Name"></a>
-### func \(StrategyType\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L22>)
+### func \(StrategyType\) [Name](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L22>)
 
 ```go
 func (s StrategyType) Name() string
@@ -405,7 +425,7 @@ func (s StrategyType) Name() string
 Name returns the name of the strategy type.
 
 <a name="StrategyType.String"></a>
-### func \(StrategyType\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/strategy.go#L17>)
+### func \(StrategyType\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/strategy.go#L17>)
 
 ```go
 func (s StrategyType) String() string
@@ -414,7 +434,7 @@ func (s StrategyType) String() string
 String returns the string representation of a strategy type.
 
 <a name="ValidationError"></a>
-## type [ValidationError](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L17-L22>)
+## type [ValidationError](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L17-L22>)
 
 ValidationError represents a validation error.
 
@@ -428,7 +448,7 @@ type ValidationError struct {
 ```
 
 <a name="ValidationResult"></a>
-## type [ValidationResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L10-L14>)
+## type [ValidationResult](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L10-L14>)
 
 ValidationResult represents the result of validating a catalog or changeset.
 
@@ -441,7 +461,7 @@ type ValidationResult struct {
 ```
 
 <a name="ValidationResult.HasWarnings"></a>
-### func \(\*ValidationResult\) [HasWarnings](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L38>)
+### func \(\*ValidationResult\) [HasWarnings](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L38>)
 
 ```go
 func (v *ValidationResult) HasWarnings() bool
@@ -450,7 +470,7 @@ func (v *ValidationResult) HasWarnings() bool
 HasWarnings returns true if there are warnings.
 
 <a name="ValidationResult.IsValid"></a>
-### func \(\*ValidationResult\) [IsValid](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L33>)
+### func \(\*ValidationResult\) [IsValid](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L33>)
 
 ```go
 func (v *ValidationResult) IsValid() bool
@@ -459,7 +479,7 @@ func (v *ValidationResult) IsValid() bool
 IsValid returns true if validation passed.
 
 <a name="ValidationResult.String"></a>
-### func \(\*ValidationResult\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L43>)
+### func \(\*ValidationResult\) [String](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L43>)
 
 ```go
 func (v *ValidationResult) String() string
@@ -468,7 +488,7 @@ func (v *ValidationResult) String() string
 String returns a string representation of the validation result.
 
 <a name="ValidationWarning"></a>
-## type [ValidationWarning](<https://github.com/agentstation/starmap/blob/master/pkg/reconcile/validation.go#L25-L30>)
+## type [ValidationWarning](<https://github.com/agentstation/starmap/blob/master/pkg/reconciler/validation.go#L25-L30>)
 
 ValidationWarning represents a validation warning.
 

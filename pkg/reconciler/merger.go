@@ -55,9 +55,9 @@ func newMergerWithProvenance(authorities authority.Authority, strategy Strategy,
 
 // calculateAuthorityScore converts priority to a 0-1.0 authority score.
 // Higher priority = higher authority score.
-func (merger *merger) calculateAuthorityScore(fieldPath string, source sources.ID) float64 {
+func (merger *merger) calculateAuthorityScore(resourceType sources.ResourceType, fieldPath string, source sources.ID) float64 {
 	// Find the authority configuration for this field
-	auth := merger.authorities.Find(sources.ResourceTypeModel, fieldPath)
+	auth := merger.authorities.Find(resourceType, fieldPath)
 	if auth == nil || auth.Source != source {
 		// No authority match for this source, return 0
 		return 0.0
@@ -192,45 +192,12 @@ func (merger *merger) model(modelID string, sourceModels map[sources.ID]*catalog
 	}
 	history := make(map[string]provenance.Field)
 
-	// Model fields to merge - includes all fields with defined authorities
-	// Using actual Go struct field names (capitalized)
-	modelFields := []string{
-		// Basic identity fields
-		"Name", "Description", "Authors",
-
-		// Pricing fields (models.dev is authoritative)
-		"Pricing", // Will be handled by mergeComplexModelStructures
-
-		// Limits fields (models.dev is authoritative)
-		"Limits", // Will be handled by mergeComplexModelStructures
-
-		// Metadata fields (models.dev is authoritative)
-		"Metadata", // Will be handled by mergeComplexModelStructures
-
-		// Core features (models.dev and provider API both contribute)
-		"Features", // Will be handled by mergeComplexModelStructures
-
-		// Generation parameters (Provider API is authoritative)
-		"Generation",
-	}
-
 	// Merge each field according to authorities
-	for _, fieldPath := range modelFields {
-		value, sourceType, reason := merger.modelField(fieldPath, sourceModels)
+	for _, rule := range fieldRulesFor(sources.ResourceTypeModel) {
+		value, sourceType, reason := merger.modelField(rule, sourceModels)
 		if value != nil {
-			merger.setModelFieldValue(merged, fieldPath, value)
-
-			history[fieldPath] = provenance.Field{
-				Current: provenance.Provenance{
-					Source:     sourceType,
-					Field:      fieldPath,
-					Value:      value,
-					Timestamp:  time.Now(),
-					Authority:  merger.calculateAuthorityScore(fieldPath, sourceType),
-					Confidence: merger.calculateConfidence(value),
-					Reason:     reason,
-				},
-			}
+			merger.setModelFieldValue(merged, rule.reflectPath, value)
+			merger.recordModelHistory(&history, rule, sourceType, value, reason)
 		}
 	}
 
@@ -299,26 +266,17 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 	var merged catalogs.Provider
 	history := make(map[string]provenance.Field)
 
-	// Provider fields to merge - using Go struct field names
-	providerFields := []string{
-		"Name", "Headquarters", "IconURL", "StatusPageURL",
-		"Authors", "Models", "Aliases",
-		// API configuration
-		"APIKey", "EnvVars", "Catalog", "ChatCompletions",
-		// Policy fields
-		"PrivacyPolicy", "RetentionPolicy", "GovernancePolicy",
-	}
-
 	// Merge each field
-	for _, fieldPath := range providerFields {
-		value, sourceType := merger.providerField(fieldPath, sourceProviders)
+	for _, rule := range fieldRulesFor(sources.ResourceTypeProvider) {
+		value, sourceType := merger.providerField(rule, sourceProviders)
 		if value != nil {
-			merger.setProviderFieldValue(&merged, fieldPath, value)
+			merger.setProviderFieldValue(&merged, rule.reflectPath, value)
 
-			history[fieldPath] = provenance.Field{
+			provenancePath := rule.provenance()
+			history[provenancePath] = provenance.Field{
 				Current: provenance.Provenance{
 					Source:    sourceType,
-					Field:     fieldPath,
+					Field:     provenancePath,
 					Value:     value,
 					Timestamp: time.Now(),
 				},
@@ -333,11 +291,11 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 }
 
 // modelField merges a single field from multiple model sources.
-func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*catalogs.Model) (any, sources.ID, string) {
+func (merger *merger) modelField(rule fieldRule, sourceModels map[sources.ID]*catalogs.Model) (any, sources.ID, string) {
 	// Collect all values from sources
 	values := make(map[sources.ID]any)
 	for source, model := range sourceModels {
-		if value := merger.modelFieldValue(model, fieldPath); value != nil {
+		if value := merger.modelFieldValue(model, rule.reflectPath); value != nil {
 			values[source] = value
 		}
 	}
@@ -345,7 +303,7 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*
 	if len(values) > 0 {
 		// Let the strategy decide - it will use authorities if it's AuthorityStrategy
 		// or source priority order if it's SourceOrderStrategy
-		value, source, reason := merger.strategy.ResolveConflict(fieldPath, values)
+		value, source, reason := merger.resolveConflict(rule.resource, rule.authority(), values)
 		return value, source, reason
 	}
 
@@ -353,12 +311,12 @@ func (merger *merger) modelField(fieldPath string, sourceModels map[sources.ID]*
 }
 
 // providerField merges a single provider field from multiple sources.
-func (merger *merger) providerField(fieldPath string, sourceProviders map[sources.ID]*catalogs.Provider) (any, sources.ID) {
+func (merger *merger) providerField(rule fieldRule, sourceProviders map[sources.ID]*catalogs.Provider) (any, sources.ID) {
 	// Collect all values from sources
 	values := make(map[sources.ID]any)
 	for source, provider := range sourceProviders {
 		if provider != nil {
-			if value := merger.providerFieldValue(*provider, fieldPath); value != nil {
+			if value := merger.providerFieldValue(*provider, rule.reflectPath); value != nil {
 				values[source] = value
 			}
 		}
@@ -367,11 +325,37 @@ func (merger *merger) providerField(fieldPath string, sourceProviders map[source
 	if len(values) > 0 {
 		// Let the strategy decide - it will use authorities if it's AuthorityStrategy
 		// or source priority order if it's SourceOrderStrategy
-		value, source, _ := merger.strategy.ResolveConflict(fieldPath, values)
+		value, source, _ := merger.resolveConflict(rule.resource, rule.authority(), values)
 		return value, source
 	}
 
 	return nil, ""
+}
+
+func (merger *merger) resolveConflict(resourceType sources.ResourceType, fieldPath string, values map[sources.ID]any) (any, sources.ID, string) {
+	if resolver, ok := merger.strategy.(resourceConflictResolver); ok {
+		return resolver.ResolveResourceConflict(resourceType, fieldPath, values)
+	}
+	return merger.strategy.ResolveConflict(fieldPath, values)
+}
+
+func (merger *merger) recordModelHistory(history *map[string]provenance.Field, rule fieldRule, source sources.ID, value any, reason string) {
+	if history == nil {
+		return
+	}
+
+	provenancePath := rule.provenance()
+	(*history)[provenancePath] = provenance.Field{
+		Current: provenance.Provenance{
+			Source:     source,
+			Field:      provenancePath,
+			Value:      value,
+			Timestamp:  time.Now(),
+			Authority:  merger.calculateAuthorityScore(rule.resource, rule.authority(), source),
+			Confidence: merger.calculateConfidence(value),
+			Reason:     reason,
+		},
+	}
 }
 
 // getModelFieldValue extracts a field value from a model using reflection.
@@ -508,35 +492,13 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				if model.Limits.ContextWindow > 0 {
 					merged.Limits.ContextWindow = model.Limits.ContextWindow
-					if history != nil {
-						(*history)["limits.context_window"] = provenance.Field{
-							Current: provenance.Provenance{
-								Source:     sourceType,
-								Field:      "limits.context_window",
-								Value:      model.Limits.ContextWindow,
-								Timestamp:  time.Now(),
-								Authority:  merger.calculateAuthorityScore("Limits", sourceType),
-								Confidence: merger.calculateConfidence(model.Limits.ContextWindow),
-								Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
-							},
-						}
-					}
+					rule := modelProvenanceRule(modelProvenanceLimitsContextWindow)
+					merger.recordModelHistory(history, rule, sourceType, model.Limits.ContextWindow, fmt.Sprintf("selected from %s (complex structure merge)", sourceType))
 				}
 				if model.Limits.OutputTokens > 0 {
 					merged.Limits.OutputTokens = model.Limits.OutputTokens
-					if history != nil {
-						(*history)["limits.output_tokens"] = provenance.Field{
-							Current: provenance.Provenance{
-								Source:     sourceType,
-								Field:      "limits.output_tokens",
-								Value:      model.Limits.OutputTokens,
-								Timestamp:  time.Now(),
-								Authority:  merger.calculateAuthorityScore("Limits", sourceType),
-								Confidence: merger.calculateConfidence(model.Limits.OutputTokens),
-								Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
-							},
-						}
-					}
+					rule := modelProvenanceRule(modelProvenanceLimitsOutputTokens)
+					merger.recordModelHistory(history, rule, sourceType, model.Limits.OutputTokens, fmt.Sprintf("selected from %s (complex structure merge)", sourceType))
 				}
 			}
 			break // Use first available source in priority order
@@ -549,19 +511,8 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 			switch sourceType {
 			case sources.ModelsDevHTTPID, sources.ModelsDevGitID:
 				merged.Pricing = model.Pricing
-				if history != nil {
-					(*history)["pricing"] = provenance.Field{
-						Current: provenance.Provenance{
-							Source:     sourceType,
-							Field:      "pricing",
-							Value:      model.Pricing,
-							Timestamp:  time.Now(),
-							Authority:  merger.calculateAuthorityScore("Pricing", sourceType),
-							Confidence: merger.calculateConfidence(model.Pricing),
-							Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
-						},
-					}
-				}
+				rule := modelProvenanceRule(modelProvenancePricing)
+				merger.recordModelHistory(history, rule, sourceType, model.Pricing, fmt.Sprintf("selected from %s (complex structure merge)", sourceType))
 			}
 		}
 	}
@@ -585,17 +536,8 @@ func (merger *merger) complexModelStructures(merged *catalogs.Model, sourceModel
 				merged.Metadata.OpenWeights = model.Metadata.OpenWeights
 
 				if history != nil {
-					(*history)["metadata"] = provenance.Field{
-						Current: provenance.Provenance{
-							Source:     sourceType,
-							Field:      "metadata",
-							Value:      model.Metadata,
-							Timestamp:  time.Now(),
-							Authority:  merger.calculateAuthorityScore("Metadata", sourceType),
-							Confidence: merger.calculateConfidence(model.Metadata),
-							Reason:     fmt.Sprintf("selected from %s (complex structure merge)", sourceType),
-						},
-					}
+					rule := modelProvenanceRule(modelProvenanceMetadata)
+					merger.recordModelHistory(history, rule, sourceType, model.Metadata, fmt.Sprintf("selected from %s (complex structure merge)", sourceType))
 				}
 			}
 		}

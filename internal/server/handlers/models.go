@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/server/filter"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -55,30 +56,24 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 
 	// Get and filter models
 	allModels := cat.Models().List()
+	if f.Provider != "" {
+		allModels = query.Models(allModels, query.ModelOptions{
+			Provider:           f.Provider,
+			ProviderModelIndex: query.NewProviderModelIndex(cat.Providers().List()),
+		})
+	}
 	filtered := f.Apply(allModels)
 
-	// Apply pagination
-	total := len(filtered)
-	start := f.Offset
-	end := f.Offset + f.Limit
-
-	if start >= total {
-		filtered = []catalogs.Model{}
-	} else {
-		if end > total {
-			end = total
-		}
-		filtered = filtered[start:end]
-	}
+	page := query.Paginate(filtered, f.Limit, f.Offset)
 
 	// Build response
 	result := map[string]any{
-		"models": filtered,
+		"models": page.Items,
 		"pagination": map[string]any{
-			"total":  total,
-			"limit":  f.Limit,
-			"offset": f.Offset,
-			"count":  len(filtered),
+			"total":  page.Total,
+			"limit":  page.Limit,
+			"offset": page.Offset,
+			"count":  page.Count,
 		},
 	}
 
@@ -219,6 +214,12 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 
 	// Apply filters
 	allModels := cat.Models().List()
+	if f.Provider != "" {
+		allModels = query.Models(allModels, query.ModelOptions{
+			Provider:           f.Provider,
+			ProviderModelIndex: query.NewProviderModelIndex(cat.Providers().List()),
+		})
+	}
 	results := f.Apply(allModels)
 
 	// Filter by IDs if specified

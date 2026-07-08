@@ -28,7 +28,7 @@ func New(provider *catalogs.Provider) *Client {
 
 // Do performs an HTTP request with authentication applied.
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
-	return c.DoWithContext(context.Background(), req, provider)
+	return c.DoWithContext(req.Context(), req, provider)
 }
 
 // DoWithContext performs an HTTP request with authentication applied and context support.
