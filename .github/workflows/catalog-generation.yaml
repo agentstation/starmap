@@ -58,6 +58,9 @@ jobs:
           write_output payload_checksum "$PAYLOAD_CHECKSUM"
           write_output tag "$TAG"
           write_output generation_id "$GENERATION_ID"
+          PREVIOUS_TAG=$(gh release list --limit 100 --json tagName,isPrerelease,isDraft,publishedAt | jq -r --arg tag "$TAG" \
+            '[.[] | select(.isPrerelease == true and .isDraft == false and (.tagName | startswith("catalog-payload-")) and .tagName != $tag)] | sort_by(.publishedAt) | last | .tagName // ""')
+          write_output previous_tag "$PREVIOUS_TAG"
 
           if [[ "$CHANGED" != "true" ]]; then
             write_output publish false
@@ -114,8 +117,53 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${{ steps.change.outputs.tag }}" \
+            --prerelease \
             --title "Catalog ${{ steps.change.outputs.generation_id }}" \
             --notes "Immutable scheduled catalog payload ${{ steps.change.outputs.payload_checksum }}" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.intoto.json"
+
+      - name: Verify downloaded public catalog prerelease
+        if: ${{ steps.change.outputs.publish == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.change.outputs.tag }}"
+          STAGED_DIRECTORY=$(realpath "${{ steps.assets.outputs.directory }}")
+          DOWNLOAD_DIRECTORY=${RUNNER_TEMP}/catalog-public-download
+          rm -rf "$DOWNLOAD_DIRECTORY"
+          mkdir -p "$DOWNLOAD_DIRECTORY"
+
+          test "$(gh release view "$TAG" --json isPrerelease --jq .isPrerelease)" = "true"
+          gh release download "$TAG" --pattern 'starmap-catalog*' --dir "$DOWNLOAD_DIRECTORY"
+          go run ./cmd/starmap-catalog-release --verify-dir "$DOWNLOAD_DIRECTORY" > catalog-public-verification.json
+          test "$(jq -er .generation_id catalog-public-verification.json)" = "${{ steps.change.outputs.generation_id }}"
+          test "$(jq -er .archive_checksum catalog-public-verification.json)" = "$(jq -er .archive_checksum catalog-release.json)"
+          cmp "$STAGED_DIRECTORY/starmap-catalog.tar.gz" "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz"
+          cmp "$STAGED_DIRECTORY/starmap-catalog.tar.gz.sha256" "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz.sha256"
+          cmp "$STAGED_DIRECTORY/starmap-catalog.intoto.json" "$DOWNLOAD_DIRECTORY/starmap-catalog.intoto.json"
+          gh attestation verify \
+            "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+            --deny-self-hosted-runners
+
+      - name: Verify prior catalog prerelease remains readable
+        if: ${{ steps.change.outputs.publish == 'true' && steps.change.outputs.previous_tag != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREVIOUS_TAG="${{ steps.change.outputs.previous_tag }}"
+          ROLLBACK_DIRECTORY=${RUNNER_TEMP}/catalog-rollback-download
+          rm -rf "$ROLLBACK_DIRECTORY"
+          mkdir -p "$ROLLBACK_DIRECTORY"
+
+          gh release download "$PREVIOUS_TAG" --pattern 'starmap-catalog*' --dir "$ROLLBACK_DIRECTORY"
+          go run ./cmd/starmap-catalog-release --verify-dir "$ROLLBACK_DIRECTORY" > catalog-rollback-verification.json
+          test -n "$(jq -er .generation_id catalog-rollback-verification.json)"
+          gh attestation verify \
+            "$ROLLBACK_DIRECTORY/starmap-catalog.tar.gz" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+            --deny-self-hosted-runners

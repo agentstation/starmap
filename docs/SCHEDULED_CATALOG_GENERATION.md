@@ -14,7 +14,13 @@ The workflow performs these gates in order:
 4. run catalog-generation and embedded age/size/coverage gates;
 5. stage the validated deterministic archive and checksum assets;
 6. create and verify repository/workflow-bound provenance;
-7. publish an immutable GitHub Release keyed by canonical payload digest.
+7. publish an immutable GitHub prerelease keyed by canonical payload digest;
+8. download the three public assets, reopen the archive and detached statement,
+   verify the checksum and exact repository/workflow provenance, and compare the
+   downloaded bytes with the staged publication set;
+9. when a prior catalog prerelease exists, download and reopen it with the same
+   checksum, detached-statement, repository, and workflow identity checks so a
+   rollback target remains demonstrably readable.
 
 Manual execution cannot force an unchanged publication. If a payload-digest
 release already exists, the workflow downloads its archive, extracts the bound
@@ -23,7 +29,7 @@ It then exits without publishing. This makes retries and an unmerged embedded
 catalog refresh safe from duplicate releases while detecting a tag bound to the
 wrong payload.
 
-The scheduled release tag is catalog-payload followed by the full SHA-256 hex
+The scheduled prerelease tag is catalog-payload followed by the full SHA-256 hex
 digest. It is a distribution identity, not a Starmap binary version and not a
 mutable latest pointer. Runtime channel promotion remains a separate hosted
 control-plane action. Expiring Actions artifacts are never used as the runtime
