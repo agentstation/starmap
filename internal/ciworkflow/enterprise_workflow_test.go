@@ -26,8 +26,8 @@ func TestEnterprisePRWorkflowPinsGoModToolchainAndRequiredGates(t *testing.T) {
 		"FuzzSourceExtensionNoPanic",
 		"FuzzReconciliationNoPanic",
 		"Migration|Rollback|Fault|Corrupt|ReopensCurrent",
-		"actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5",
-		"actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff",
+		"actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+		"actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16",
 	}
 	for _, check := range checks {
 		if !strings.Contains(workflow, check) {
