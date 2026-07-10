@@ -46,6 +46,8 @@ type updateSyncer struct {
 	store  catalogstore.Store
 }
 
+const lastKnownGoodCommitGateTimeout = 30 * time.Second
+
 func (s updateSyncer) Sync(ctx context.Context, _ ...pkgsync.Option) (*pkgsync.Result, error) {
 	if err := s.client.Update(ctx); err != nil {
 		return nil, err
@@ -112,17 +114,25 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 		t.Fatalf("NewRunner: %v", err)
 	}
 	store.fail.Store(true)
-	done := make(chan catalogscheduler.RunResult, 1)
-	errs := make(chan error, 1)
+	releaseStore := sync.OnceFunc(func() { close(store.release) })
+	defer releaseStore()
+	type runOutcome struct {
+		result catalogscheduler.RunResult
+		err    error
+	}
+	outcomes := make(chan runOutcome, 1)
 	go func() {
 		result, runErr := runner.RunScheduledOnce(context.Background(), 0)
-		done <- result
-		errs <- runErr
+		outcomes <- runOutcome{result: result, err: runErr}
 	}()
+	commitGateTimer := time.NewTimer(lastKnownGoodCommitGateTimeout)
+	defer commitGateTimer.Stop()
 	select {
 	case <-store.entered:
-	case <-time.After(time.Second):
-		t.Fatal("failed candidate did not reach commit gate")
+	case outcome := <-outcomes:
+		t.Fatalf("scheduled refresh exited before commit gate: %#v/%v", outcome.result, outcome.err)
+	case <-commitGateTimer.C:
+		t.Fatalf("failed candidate did not reach commit gate within %s", lastKnownGoodCommitGateTimeout)
 	}
 
 	var readers sync.WaitGroup
@@ -144,9 +154,9 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 		}()
 	}
 	readers.Wait()
-	close(store.release)
-	result := <-done
-	runErr := <-errs
+	releaseStore()
+	outcome := <-outcomes
+	result, runErr := outcome.result, outcome.err
 	if !stderrors.Is(runErr, pkgerrors.ErrProviderUnavailable) || result.Status != catalogscheduler.RunStatusFailed || result.Attempts != 2 {
 		t.Fatalf("scheduled failed refresh = %#v/%v", result, runErr)
 	}
