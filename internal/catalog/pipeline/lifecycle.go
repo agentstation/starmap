@@ -15,6 +15,9 @@ import (
 
 func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) ([]sources.Observation, error) {
 	logger := logging.FromContext(ctx)
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 
 	var wg sync.WaitGroup
 	var errs []error
@@ -78,6 +81,9 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 	}
 
 	wg.Wait()
+	if err := ctx.Err(); err != nil {
+		errs = append(errs, err)
+	}
 
 	if len(errs) > 0 {
 		return observations, errors.Join(errs...)

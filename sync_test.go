@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/save"
@@ -59,7 +58,6 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 		pkgsync.WithDryRun(true),
 		pkgsync.WithOutputPath(outputPath),
 		pkgsync.WithSources(sources.LocalCatalogID, sources.ProvidersID),
-		pkgsync.WithTimeout(5*time.Second),
 	)
 	if err != nil {
 		t.Fatalf("Dry-run sync failed: %v", err)

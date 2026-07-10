@@ -169,7 +169,7 @@ func TestObserveCollectsSourceErrorsAndKeepsPartialCatalogs(t *testing.T) {
 	}
 }
 
-func TestObserveSkipsSourcesWhenContextAlreadyCanceled(t *testing.T) {
+func TestObserveReturnsContextErrorWhenAlreadyCanceled(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
@@ -179,8 +179,8 @@ func TestObserveSkipsSourcesWhenContextAlreadyCanceled(t *testing.T) {
 	}
 
 	observations, err := observe(ctx, []sources.Source{src}, nil)
-	if err != nil {
-		t.Fatalf("Expected canceled fetch pre-check to return nil, got %v", err)
+	if !stderrors.Is(err, context.Canceled) {
+		t.Fatalf("Expected canceled fetch pre-check to return context cancellation, got %v", err)
 	}
 	if len(observations) != 0 {
 		t.Fatalf("Expected canceled context to produce no observations, got %d", len(observations))
