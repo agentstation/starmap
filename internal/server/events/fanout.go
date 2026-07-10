@@ -96,12 +96,19 @@ func (f *Fanout[T]) Deliver(targets []DeliveryTarget[T], item T) DeliveryResult 
 		result.Sent++
 	}
 
-	atomic.AddUint64(&f.sent, uint64(result.Sent))
-	atomic.AddUint64(&f.skipped, uint64(result.Skipped))
-	atomic.AddUint64(&f.disconnected, uint64(result.Disconnected))
-	atomic.AddUint64(&f.failed, uint64(result.Failed))
+	addUint64(&f.sent, result.Sent)
+	addUint64(&f.skipped, result.Skipped)
+	addUint64(&f.disconnected, result.Disconnected)
+	addUint64(&f.failed, result.Failed)
 
 	return result
+}
+
+func addUint64(counter *uint64, value int) {
+	if value <= 0 {
+		return
+	}
+	atomic.AddUint64(counter, uint64(value))
 }
 
 // Stats returns cumulative fan-out counters.

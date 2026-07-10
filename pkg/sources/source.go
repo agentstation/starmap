@@ -26,6 +26,7 @@ package sources
 import (
 	"context"
 	"sync"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/types"
@@ -115,22 +116,23 @@ func IDs() []ID {
 	return types.SourceIDs()
 }
 
-// Source represents a data source for catalog information.
+// Source observes catalog information from one configured upstream.
+//
+// Implementations must be safe for repeated and concurrent Observe calls.
+// Observe returns the complete result of that call directly and must not require
+// a prior call or publish mutable result state through the Source.
 type Source interface {
-	// Type returns the type of this source
+	// ID returns the stable identity of this source.
 	ID() ID
 
 	// Name returns a human-friendly name for this source
 	Name() string
 
-	// Fetch retrieves data from this source
-	// Sources handle their own concurrency internally
-	Fetch(ctx context.Context, opts ...Option) error
+	// Observe retrieves and returns one immutable source result directly. Calls
+	// must not depend on prior Observe calls or publish result state on Source.
+	Observe(ctx context.Context, opts ...Option) (Observation, error)
 
-	// Catalog returns the catalog of this source
-	Catalog() catalogs.Catalog
-
-	// Cleanup releases any resources (called after all Fetch operations)
+	// Cleanup releases resources after all Observe calls have completed.
 	Cleanup() error
 
 	// Dependencies returns the list of external dependencies this source requires
@@ -138,6 +140,22 @@ type Source interface {
 
 	// IsOptional returns true if the sync can succeed without this source
 	IsOptional() bool
+}
+
+// Observation is one immutable direct source result. EvidenceChecksum binds
+// the normalized canonical catalog payload; raw upstream evidence retention is
+// a separate storage policy.
+type Observation struct {
+	ID               string                  `json:"id" yaml:"id"`
+	SourceID         ID                      `json:"source" yaml:"source"`
+	ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
+	Revision         Revision                `json:"revision" yaml:"revision"`
+	Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
+	Status           ObservationStatus       `json:"status" yaml:"status"`
+	Records          ObservationRecordCounts `json:"records" yaml:"records"`
+	Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
+	EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
 }
 
 // Dependency represents an external tool or runtime required by a source.
@@ -176,7 +194,9 @@ type ResourceType = types.ResourceType
 
 // Common resource type identifiers - exported as package-level constants for convenience.
 const (
-	ResourceTypeModel    = types.ResourceTypeModel
-	ResourceTypeProvider = types.ResourceTypeProvider
-	ResourceTypeAuthor   = types.ResourceTypeAuthor
+	ResourceTypeModel            = types.ResourceTypeModel
+	ResourceTypeProvider         = types.ResourceTypeProvider
+	ResourceTypeAuthor           = types.ResourceTypeAuthor
+	ResourceTypeModelDefinition  = types.ResourceTypeModelDefinition
+	ResourceTypeProviderOffering = types.ResourceTypeProviderOffering
 )

@@ -32,10 +32,19 @@ func createTestModel(id, name string, contextWindow int64) *catalogs.Model {
 	}
 }
 
+func mustCatalogSnapshot(t testing.TB, reader catalogs.Reader) *catalogs.Catalog {
+	t.Helper()
+	snapshot, err := catalogs.NewCatalog(reader)
+	if err != nil {
+		t.Fatalf("NewCatalog: %v", err)
+	}
+	return snapshot
+}
+
 // Helper function to create test provider
 
 // Helper function to add models to a catalog through a provider.
-func addTestModels(cat catalogs.Catalog, providerID string, models []*catalogs.Model) error {
+func addTestModels(cat *catalogs.Builder, providerID string, models []*catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
 		// Create provider if it doesn't exist
@@ -81,7 +90,7 @@ func TestReconcilerBasic(t *testing.T) {
 	}
 
 	// Reconcile catalogs
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		"source1": catalog1,
 		"source2": catalog2,
 	}
@@ -101,10 +110,11 @@ func TestReconcilerBasic(t *testing.T) {
 		t.Fatal("Expected non-nil catalog in result")
 	}
 
-	// Check models were merged
+	// Check models were merged. The primary source determines model existence;
+	// secondary sources can enrich matching models but cannot add their own.
 	models := result.Catalog.Models().List()
-	if len(models) != 3 {
-		t.Errorf("Expected 3 models, got %d", len(models))
+	if len(models) != 2 {
+		t.Errorf("Expected 2 primary models, got %d", len(models))
 	}
 
 	// Verify specific models
@@ -116,12 +126,8 @@ func TestReconcilerBasic(t *testing.T) {
 		t.Error("gpt-4 model not properly loaded")
 	}
 
-	claude, err := result.Catalog.FindModel("claude-3")
-	if err != nil {
-		t.Error("Expected claude-3 model to exist")
-	}
-	if claude.ID != "claude-3" {
-		t.Error("claude-3 model not properly loaded")
+	if _, err := result.Catalog.FindModel("claude-3"); err == nil {
+		t.Error("Expected claude-3 to be excluded because it is not in the primary source")
 	}
 }
 
@@ -189,9 +195,9 @@ func TestAuthorityBasedStrategy(t *testing.T) {
 
 	value, source, reason := strategy.ResolveConflict("Pricing", values)
 
-	// Should prefer ModelsDevGit or ModelsDevHTTP for pricing
-	if source != sources.ModelsDevGitID && source != sources.ModelsDevHTTPID {
-		t.Errorf("Expected ModelsDevGit or ModelsDevHTTP source for Pricing, got %s", source)
+	// Provider observations are authoritative for provider-offering pricing.
+	if source != sources.ProvidersID {
+		t.Errorf("Expected Providers source for Pricing, got %s", source)
 	}
 
 	if value == nil {
@@ -200,6 +206,34 @@ func TestAuthorityBasedStrategy(t *testing.T) {
 
 	if reason == "" {
 		t.Error("Expected reason to be provided")
+	}
+}
+
+func TestDeterministicFallbackDoesNotDependOnMapIteration(t *testing.T) {
+	strategies := []struct {
+		name     string
+		strategy reconciler.Strategy
+	}{
+		{name: "authority", strategy: reconciler.NewAuthorityStrategy(authority.New())},
+		{name: "source order", strategy: reconciler.NewSourceOrderStrategy([]sources.ID{"configured-but-absent"})},
+	}
+	for _, test := range strategies {
+		t.Run(test.name, func(t *testing.T) {
+			for iteration := 0; iteration < 1_000; iteration++ {
+				values := make(map[sources.ID]any, 2)
+				if iteration%2 == 0 {
+					values["source-z"] = "z"
+					values["source-a"] = "a"
+				} else {
+					values["source-a"] = "a"
+					values["source-z"] = "z"
+				}
+				value, source, _ := test.strategy.ResolveConflict("UnconfiguredField", values)
+				if source != "source-a" || value != "a" {
+					t.Fatalf("iteration %d selected (%q, %v), want deterministic source-a", iteration, source, value)
+				}
+			}
+		})
 	}
 }
 
@@ -399,13 +433,13 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Create reconciler with baseline
-		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		reconcile, err := reconciler.New(reconciler.WithBaseline(mustCatalogSnapshot(t, baseline)))
 		if err != nil {
 			t.Fatalf("Failed to create reconciler: %v", err)
 		}
 
 		// Reconcile
-		srcMap := map[sources.ID]catalogs.Catalog{
+		srcMap := map[sources.ID]*catalogs.Builder{
 			sources.ProvidersID: unchangedCatalog,
 		}
 		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
@@ -452,13 +486,13 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Create reconciler with baseline
-		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		reconcile, err := reconciler.New(reconciler.WithBaseline(mustCatalogSnapshot(t, baseline)))
 		if err != nil {
 			t.Fatalf("Failed to create reconciler: %v", err)
 		}
 
 		// Reconcile
-		srcMap := map[sources.ID]catalogs.Catalog{
+		srcMap := map[sources.ID]*catalogs.Builder{
 			sources.ProvidersID: changedCatalog,
 		}
 		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
@@ -509,13 +543,13 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Create reconciler with baseline
-		reconcile, err := reconciler.New(reconciler.WithBaseline(baseline))
+		reconcile, err := reconciler.New(reconciler.WithBaseline(mustCatalogSnapshot(t, baseline)))
 		if err != nil {
 			t.Fatalf("Failed to create reconciler: %v", err)
 		}
 
 		// Reconcile
-		srcMap := map[sources.ID]catalogs.Catalog{
+		srcMap := map[sources.ID]*catalogs.Builder{
 			sources.ProvidersID: newCatalog,
 		}
 		srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
@@ -598,7 +632,7 @@ func BenchmarkReconciliation(b *testing.B) {
 	if err != nil {
 		b.Fatalf("Failed to create reconciler: %v", err)
 	}
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		"source1": catalog1,
 		"source2": catalog2,
 	}

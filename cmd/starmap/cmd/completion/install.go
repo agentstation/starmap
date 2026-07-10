@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/completion"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
+	"github.com/agentstation/starmap/internal/cli/completion"
+	"github.com/agentstation/starmap/internal/cli/emoji"
 )
 
 // NewInstallCommand creates the completion install subcommand.

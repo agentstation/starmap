@@ -301,10 +301,19 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	precision := "fp16"
 	searchPrompt := "find sources"
 	topLogprobs := 5
+	root := "root-model"
+	parent := "parent-model"
+	tierInput := 2.5
+	modeInput := 3.5
 
 	original := Model{
 		ID:   "nested-model",
 		Name: "Nested Model",
+		Lineage: &ModelLineage{
+			Family: "nested",
+			Root:   &root,
+			Parent: &parent,
+		},
 		Metadata: &ModelMetadata{
 			Tags: []ModelTag{ModelTagCoding},
 			Architecture: &ModelArchitecture{
@@ -330,10 +339,43 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 			Tokens: &ModelTokenPricing{
 				Input: &ModelTokenCost{Per1M: 1.25},
 			},
+			Tiers: []ModelPricingTier{{
+				Type: ModelPricingTierTypeContext,
+				Size: 200000,
+				Tokens: &ModelTokenPricing{
+					Input: &ModelTokenCost{Per1M: tierInput},
+				},
+			}},
+		},
+		Modes: map[string]ModelMode{
+			"fast": {
+				Pricing: &ModelPricing{
+					Tokens: &ModelTokenPricing{
+						Input: &ModelTokenCost{Per1M: modeInput},
+					},
+				},
+				Provider: &ModelProviderMode{
+					Headers: map[string]string{"anthropic-beta": "fast-mode"},
+					Body: map[string]any{
+						"service_tier": "priority",
+						"reasoning":    map[string]any{"mode": "pro"},
+					},
+				},
+			},
+		},
+		Extensions: SourceExtensions{
+			"models.dev": {
+				Fields: map[string]any{
+					"provider_shape": "chat",
+					"flags":          []any{"experimental"},
+				},
+			},
 		},
 	}
 
 	copied := DeepCopyModel(original)
+	*copied.Lineage.Root = "changed-root"
+	*copied.Lineage.Parent = "changed-parent"
 	copied.Metadata.Tags[0] = ModelTagMath
 	*copied.Metadata.Architecture.Precision = "fp8"
 	copied.Features.Modalities.Input[0] = ModelModalityImage
@@ -341,9 +383,19 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	*copied.Tools.WebSearch.SearchPrompt = "changed"
 	copied.Tools.WebSearch.SearchContextSizes[0] = ModelControlLevelHigh
 	copied.Pricing.Tokens.Input.Per1M = 9.99
+	copied.Pricing.Tiers[0].Tokens.Input.Per1M = 7.77
+	copied.Modes["fast"].Pricing.Tokens.Input.Per1M = 8.88
+	copied.Modes["fast"].Provider.Headers["anthropic-beta"] = "changed-mode"
+	copied.Modes["fast"].Provider.Body["service_tier"] = "changed-tier"
+	copied.Modes["fast"].Provider.Body["reasoning"].(map[string]any)["mode"] = "changed-mode"
+	copied.Extensions["models.dev"].Fields["provider_shape"] = "responses"
+	copied.Extensions["models.dev"].Fields["flags"].([]any)[0] = "changed"
 
 	if original.Metadata.Tags[0] != ModelTagCoding {
 		t.Fatal("metadata tags were shared between original and copy")
+	}
+	if *original.Lineage.Root != "root-model" || *original.Lineage.Parent != "parent-model" {
+		t.Fatal("lineage pointers were shared between original and copy")
 	}
 	if *original.Metadata.Architecture.Precision != "fp16" {
 		t.Fatal("architecture precision pointer was shared between original and copy")
@@ -362,6 +414,27 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	}
 	if original.Pricing.Tokens.Input.Per1M != 1.25 {
 		t.Fatal("pricing token cost pointer was shared between original and copy")
+	}
+	if original.Pricing.Tiers[0].Tokens.Input.Per1M != tierInput {
+		t.Fatal("pricing tier token cost pointer was shared between original and copy")
+	}
+	if original.Modes["fast"].Pricing.Tokens.Input.Per1M != modeInput {
+		t.Fatal("mode pricing pointer was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Headers["anthropic-beta"] != "fast-mode" {
+		t.Fatal("mode provider headers map was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Body["service_tier"] != "priority" {
+		t.Fatal("mode provider body map was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Body["reasoning"].(map[string]any)["mode"] != "pro" {
+		t.Fatal("nested mode provider body map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["provider_shape"] != "chat" {
+		t.Fatal("model extension fields map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["flags"].([]any)[0] != "experimental" {
+		t.Fatal("model extension fields slice was shared between original and copy")
 	}
 }
 
@@ -397,6 +470,13 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 		EnvVarValues: map[string]string{
 			"API_KEY": "secret",
 		},
+		Extensions: SourceExtensions{
+			"models.dev": {
+				Fields: map[string]any{
+					"npm": "@ai-sdk/anthropic",
+				},
+			},
+		},
 	}
 
 	copied := DeepCopyProvider(original)
@@ -407,6 +487,7 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	copied.Catalog.Authors[0] = AuthorIDGoogle
 	*copied.PrivacyPolicy.PrivacyPolicyURL = "changed"
 	copied.EnvVarValues["API_KEY"] = "changed"
+	copied.Extensions["models.dev"].Fields["npm"] = "@changed/provider"
 
 	if original.Aliases[0] != "provider-alias" {
 		t.Fatal("provider aliases were shared between original and copy")
@@ -428,5 +509,8 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	}
 	if original.EnvVarValues["API_KEY"] != "secret" {
 		t.Fatal("provider environment values map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/anthropic" {
+		t.Fatal("provider extension fields map was shared between original and copy")
 	}
 }

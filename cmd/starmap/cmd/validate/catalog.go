@@ -7,10 +7,10 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/notify"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/notify"
 )
 
 // ValidationResult represents the result of validating a catalog component.
@@ -147,7 +147,13 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 		displayValidationTable(results, verbose)
 	} else {
 		formatter := format.NewFormatter(outputFormat)
-		return formatter.Format(os.Stdout, results)
+		if err := formatter.Format(os.Stdout, results); err != nil {
+			return err
+		}
+		if hasErrors {
+			return fmt.Errorf("catalog validation failed")
+		}
+		return nil
 	}
 
 	// Create notifier and show contextual hints
@@ -176,7 +182,6 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 }
 
 func validateCrossReferences(app application.Application, verbose bool) error {
-	// Load catalog from app context to check cross-references
 	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)
@@ -185,18 +190,12 @@ func validateCrossReferences(app application.Application, verbose bool) error {
 	var errors []string
 
 	// Check that all model authors exist
-	models := cat.Models().List()
-	authors := cat.Authors().List()
-	authorMap := make(map[string]bool)
-	for _, author := range authors {
-		authorMap[string(author.ID)] = true
-	}
-
+	models := cat.Definitions()
 	for _, model := range models {
 		// Check if model has authors
-		for _, author := range model.Authors {
-			if !authorMap[string(author.ID)] {
-				errors = append(errors, fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID))
+		for _, authorID := range model.AuthorIDs {
+			if _, found := cat.Authors().Resolve(authorID); !found {
+				errors = append(errors, fmt.Sprintf("model %s references unknown author: %s", model.ID, authorID))
 			}
 		}
 	}

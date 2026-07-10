@@ -6,7 +6,9 @@ on:
       - "v*"
 
 permissions:
+  attestations: write
   contents: write
+  id-token: write
   packages: write
   discussions: write
 
@@ -14,15 +16,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           lfs: true
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version-file: go.mod
           cache: true
+
+      - name: Check embedded catalog budgets
+        run: make embedded-catalog-budget-check
 
       - name: Install golangci-lint
         run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0
@@ -45,13 +50,13 @@ jobs:
         id: check
         run: |
           # Get repository stats via GitHub API
-          REPO_JSON=$(curl -s https://api.github.com/repos/${{ github.repository }})
+          REPO_JSON=$(curl --fail --silent --show-error "https://api.github.com/repos/${{ github.repository }}")
           STARS=$(echo "$REPO_JSON" | jq '.stargazers_count')
           FORKS=$(echo "$REPO_JSON" | jq '.forks_count')
           WATCHERS=$(echo "$REPO_JSON" | jq '.watchers_count')
           
-          echo "stars=$STARS" >> $GITHUB_OUTPUT
-          echo "forks=$FORKS" >> $GITHUB_OUTPUT
+          echo "stars=$STARS" >> "$GITHUB_OUTPUT"
+          echo "forks=$FORKS" >> "$GITHUB_OUTPUT"
           
           echo "📊 Current Stats:"
           echo "  Stars: $STARS"
@@ -59,14 +64,14 @@ jobs:
           echo "  Watchers: $WATCHERS"
           
           # Check if we meet requirements (75+ stars OR 30+ forks/watchers)
-          if [[ $STARS -ge 75 ]] || [[ $FORKS -ge 30 ]] || [[ $WATCHERS -ge 30 ]]; then
+          if [[ "$STARS" -ge 75 ]] || [[ "$FORKS" -ge 30 ]] || [[ "$WATCHERS" -ge 30 ]]; then
             echo "✅ Eligible for homebrew-cask!"
-            echo "eligible=true" >> $GITHUB_OUTPUT
+            echo "eligible=true" >> "$GITHUB_OUTPUT"
           else
             NEEDED=$((75 - STARS))
             echo "📈 Need $NEEDED more stars to qualify for homebrew-cask"
             echo "📦 Release will still proceed to agentstation/tap/starmap"
-            echo "eligible=false" >> $GITHUB_OUTPUT
+            echo "eligible=false" >> "$GITHUB_OUTPUT"
           fi
           
           echo "✅ Eligibility check completed"
@@ -76,23 +81,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version-file: go.mod
           cache: true
 
       # Install gomarkdoc for go generate in GoReleaser's before hooks
       - name: Install gomarkdoc
-        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
 
       # Log in to GitHub Container Registry for ko image pushes
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -101,7 +106,7 @@ jobs:
       # Install Syft for GoReleaser's SBOM generation (archives)
       # Note: ko generates SBOMs for container images automatically
       - name: Install Syft
-        uses: anchore/sbom-action/download-syft@v0.20.4
+        uses: anchore/sbom-action/download-syft@7b36ad622f042cab6f59a75c2ac24ccb256e9b45 # v0.20.4
 
       # Import GPG key for GoReleaser's artifact signing
       - name: Import GPG key
@@ -117,7 +122,7 @@ jobs:
           git config --global user.signingkey ${{ vars.ORG_GPG_KEY_ID }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
         with:
           distribution: goreleaser
           version: "~> v2"
@@ -127,9 +132,86 @@ jobs:
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
 
+      - name: Stage immutable catalog generation assets
+        id: catalog-assets
+        run: |
+          go run ./cmd/starmap-catalog-release --output-dir dist/catalog-release > catalog-release.json
+          echo "directory=$(jq -r .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Attest catalog archive provenance
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+        with:
+          subject-path: "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz"
+
+      - name: Verify catalog archive repository and workflow identity
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh attestation verify \
+            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
+            --deny-self-hosted-runners
+
+      - name: Publish immutable catalog generation assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" \
+            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz" \
+            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
+            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.intoto.json"
+
+      - name: Set up ORAS for optional catalog mirror
+        if: vars.STARMAP_CATALOG_OCI_MIRROR == 'true'
+        uses: oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6 # v1
+        with:
+          version: 1.3.2
+
+      - name: Publish and verify optional OCI catalog mirror
+        if: vars.STARMAP_CATALOG_OCI_MIRROR == 'true'
+        env:
+          OCI_REPOSITORY: ${{ vars.STARMAP_CATALOG_OCI_REPOSITORY }}
+        run: |
+          DIRECTORY=$(realpath "${{ steps.catalog-assets.outputs.directory }}")
+          GENERATION_ID=$(jq -er .generation_id catalog-release.json)
+          ARCHIVE_CHECKSUM=$(jq -er .archive_checksum catalog-release.json)
+          ARCHIVE_DIGEST=${ARCHIVE_CHECKSUM#sha256:}
+          OWNER=${GITHUB_REPOSITORY_OWNER,,}
+          OCI_REPOSITORY=${OCI_REPOSITORY:-ghcr.io/${OWNER}/starmap-catalog}
+          OCI_TAG=sha256-${ARCHIVE_DIGEST}
+          PUSH_REPORT=${RUNNER_TEMP}/catalog-oci-push.json
+          PULL_REPORT=${RUNNER_TEMP}/catalog-oci-pull.json
+          PULL_DIRECTORY=${RUNNER_TEMP}/catalog-oci-pull
+
+          (
+            cd "$DIRECTORY"
+            oras push "${OCI_REPOSITORY}:${OCI_TAG}" \
+              --artifact-type "application/vnd.agentstation.starmap.catalog-mirror.v1" \
+              --annotation "ai.agentstation.starmap.generation=${GENERATION_ID}" \
+              "starmap-catalog.tar.gz:application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip" \
+              "starmap-catalog.intoto.json:application/vnd.in-toto+json" \
+              "starmap-catalog.tar.gz.sha256:text/plain" \
+              --format json
+          ) > "$PUSH_REPORT"
+
+          REFERENCE=$(jq -er .reference "$PUSH_REPORT")
+          test "${REFERENCE#*@sha256:}" != "$REFERENCE"
+          rm -rf "$PULL_DIRECTORY"
+          mkdir -p "$PULL_DIRECTORY"
+          oras pull "$REFERENCE" --output "$PULL_DIRECTORY" --format json > "$PULL_REPORT"
+
+          PULLED_ARCHIVE_CHECKSUM=$(jq -er \
+            '.files[] | select(.mediaType == "application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip") | .digest' \
+            "$PULL_REPORT")
+          test "$PULLED_ARCHIVE_CHECKSUM" = "$ARCHIVE_CHECKSUM"
+          (cd "$PULL_DIRECTORY" && sha256sum --check "$DIRECTORY/starmap-catalog.tar.gz.sha256")
+          cmp "$DIRECTORY/starmap-catalog.tar.gz" "$PULL_DIRECTORY/starmap-catalog.tar.gz"
+          cmp "$DIRECTORY/starmap-catalog.intoto.json" "$PULL_DIRECTORY/starmap-catalog.intoto.json"
+
       - name: Create first-time submission issue
         if: needs.check-homebrew-eligibility.outputs.eligible == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Check if starmap already exists in homebrew-cask
@@ -194,7 +276,7 @@ jobs:
 
       - name: Upload release artifacts
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dist
           path: dist/

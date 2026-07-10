@@ -2,10 +2,12 @@
 package query
 
 import (
+	stderrors "errors"
 	"slices"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 // PageResult contains paginated query results and metadata.
@@ -54,46 +56,35 @@ func Paginate[T any](items []T, limit int, offset int) PageResult[T] {
 
 // ModelOptions controls model list filtering.
 type ModelOptions struct {
-	Provider           string
-	ProviderModelIndex ProviderModelIndex
-	Author             string
-	Capability         string
-	MinContext         int64
-	MaxPrice           float64
-	Search             string
-	Limit              int
+	Author     string
+	Capability string
+	MinContext int64
+	MaxPrice   float64
+	Search     string
+	Limit      int
 }
 
-// ProviderModelIndex maps provider IDs and aliases to the model IDs they serve.
-type ProviderModelIndex map[catalogs.ProviderID]map[string]struct{}
-
-// NewProviderModelIndex builds a provider membership index from catalog providers.
-func NewProviderModelIndex(providers []catalogs.Provider) ProviderModelIndex {
-	index := make(ProviderModelIndex, len(providers))
-	for _, provider := range providers {
-		modelIDs := make(map[string]struct{}, len(provider.Models))
-		for modelID := range provider.Models {
-			modelIDs[modelID] = struct{}{}
-		}
-		index[provider.ID] = modelIDs
-		for _, alias := range provider.Aliases {
-			index[alias] = modelIDs
+// CatalogModels returns either all legacy flattened models or the exact
+// provider-specific offerings from the catalog's provider index.
+func CatalogModels(catalog catalogs.Reader, provider string) ([]catalogs.Model, error) {
+	if catalog == nil {
+		return nil, &pkgerrors.ValidationError{
+			Field:   "catalog",
+			Message: "catalog reader cannot be nil",
 		}
 	}
-	return index
-}
-
-// Contains reports whether the provider or one of its aliases serves modelID.
-func (i ProviderModelIndex) Contains(provider catalogs.ProviderID, modelID string) bool {
-	if i == nil {
-		return false
+	if provider == "" {
+		return catalog.Models().List(), nil
 	}
-	models, ok := i[provider]
-	if !ok {
-		return false
+	models, err := catalog.ProviderModels(catalogs.ProviderID(provider))
+	if err != nil {
+		var notFound *pkgerrors.NotFoundError
+		if stderrors.As(err, &notFound) {
+			return []catalogs.Model{}, nil
+		}
+		return nil, err
 	}
-	_, ok = models[modelID]
-	return ok
+	return models.List(), nil
 }
 
 // Models filters, sorts, and limits model results.
@@ -116,9 +107,6 @@ func Models(models []catalogs.Model, opts ModelOptions) []catalogs.Model {
 }
 
 func modelMatches(model catalogs.Model, opts ModelOptions) bool {
-	if opts.Provider != "" && !opts.ProviderModelIndex.Contains(catalogs.ProviderID(opts.Provider), model.ID) {
-		return false
-	}
 	if opts.Author != "" && !modelMatchesAuthor(model, opts.Author) {
 		return false
 	}

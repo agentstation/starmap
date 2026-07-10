@@ -11,6 +11,36 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+type seamAuthority struct {
+	field authority.Field
+}
+
+func (a seamAuthority) Find(sources.ResourceType, string) *authority.Field { return &a.field }
+func (a seamAuthority) ModelFields() []authority.Field                     { return []authority.Field{a.field} }
+func (a seamAuthority) ProviderFields() []authority.Field                  { return []authority.Field{a.field} }
+func (a seamAuthority) AuthorFields() []authority.Field                    { return []authority.Field{a.field} }
+
+func TestSeamConformanceAuthorityAcceptsCustomAdapter(t *testing.T) {
+	auth := seamAuthority{field: authority.Field{
+		Path:     "Pricing",
+		Source:   sources.LocalCatalogID,
+		Priority: 999,
+	}}
+	strategy := NewAuthorityStrategy(auth)
+
+	_, source, _ := strategy.ResolveResourceConflict(
+		sources.ResourceTypeModel,
+		"Pricing",
+		map[sources.ID]any{
+			sources.LocalCatalogID:  "curated",
+			sources.ModelsDevHTTPID: "upstream",
+		},
+	)
+	if source != sources.LocalCatalogID {
+		t.Fatalf("custom authority selected %q, want %q", source, sources.LocalCatalogID)
+	}
+}
+
 func TestFieldRulesReferenceCatalogFields(t *testing.T) {
 	tests := []struct {
 		resource sources.ResourceType
@@ -91,13 +121,26 @@ func TestFieldRulesHaveAuthorities(t *testing.T) {
 	}
 }
 
+func TestSourceExtensionsExcludedFromAuthorityRules(t *testing.T) {
+	for _, tt := range []struct {
+		resource sources.ResourceType
+		rules    []fieldRule
+	}{
+		{resource: sources.ResourceTypeModel, rules: fieldRulesFor(sources.ResourceTypeModel)},
+		{resource: sources.ResourceTypeProvider, rules: fieldRulesFor(sources.ResourceTypeProvider)},
+	} {
+		for _, rule := range tt.rules {
+			if rule.reflectPath == "Extensions" {
+				t.Fatalf("%s extensions must stay out of authority field rules", tt.resource)
+			}
+		}
+	}
+}
+
 func TestFieldRuleAuthorityResolution(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
-	resolver, ok := strategy.(resourceConflictResolver)
-	if !ok {
-		t.Fatal("authority strategy does not resolve resource-specific conflicts")
-	}
+	var resolver resourceConflictResolver = strategy
 
 	tests := []struct {
 		name     string

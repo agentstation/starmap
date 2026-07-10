@@ -14,6 +14,8 @@ const (
 	loggerKey contextKey = iota
 	// requestIDKey is the context key for request ID.
 	requestIDKey
+	// runIDKey is the context key for one operation or synchronization run.
+	runIDKey
 )
 
 // WithLogger adds a logger to the context.
@@ -57,6 +59,22 @@ func WithRequestID(ctx context.Context, requestID string) context.Context {
 func RequestID(ctx context.Context) string {
 	if id, ok := ctx.Value(requestIDKey).(string); ok {
 		return id
+	}
+	return ""
+}
+
+// WithRunID adds a run correlation ID to the context logger.
+func WithRunID(ctx context.Context, runID string) context.Context {
+	ctx = context.WithValue(ctx, runIDKey, runID)
+	return WithField(ctx, "run_id", runID)
+}
+
+// RunID extracts the run correlation ID from context.
+func RunID(ctx context.Context) string {
+	if ctx != nil {
+		if id, ok := ctx.Value(runIDKey).(string); ok {
+			return id
+		}
 	}
 	return ""
 }

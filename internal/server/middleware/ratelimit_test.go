@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"sync"
 	"testing"
 	"time"
@@ -296,8 +297,9 @@ func TestRateLimiter_Middleware(t *testing.T) {
 	}
 }
 
-// TestRateLimiter_Middleware_XForwardedFor tests X-Forwarded-For header handling.
-func TestRateLimiter_Middleware_XForwardedFor(t *testing.T) {
+// TestRateLimiter_Middleware_IgnoresUntrustedForwardedFor proves callers cannot
+// select a new rate-limit bucket with a spoofed forwarding header or source port.
+func TestRateLimiter_Middleware_IgnoresUntrustedForwardedFor(t *testing.T) {
 	logger := zerolog.Nop()
 	rl := NewRateLimiter(3, &logger)
 	middleware := RateLimit(rl)
@@ -307,11 +309,10 @@ func TestRateLimiter_Middleware_XForwardedFor(t *testing.T) {
 	})
 	handler := middleware(testHandler)
 
-	// Use X-Forwarded-For
 	for i := 0; i < 3; i++ {
 		req := httptest.NewRequest("GET", "/api/v1/models", nil)
-		req.RemoteAddr = "proxy:8080"
-		req.Header.Set("X-Forwarded-For", "10.0.0.1")
+		req.RemoteAddr = "192.0.2.10:" + strconv.Itoa(8000+i)
+		req.Header.Set("X-Forwarded-For", "10.0.0."+strconv.Itoa(i+1))
 		w := httptest.NewRecorder()
 
 		handler.ServeHTTP(w, req)
@@ -323,8 +324,8 @@ func TestRateLimiter_Middleware_XForwardedFor(t *testing.T) {
 
 	// Next request should be blocked
 	req := httptest.NewRequest("GET", "/api/v1/models", nil)
-	req.RemoteAddr = "proxy:8080"
-	req.Header.Set("X-Forwarded-For", "10.0.0.1")
+	req.RemoteAddr = "192.0.2.10:9000"
+	req.Header.Set("X-Forwarded-For", "203.0.113.99")
 	w := httptest.NewRecorder()
 
 	handler.ServeHTTP(w, req)
@@ -374,7 +375,7 @@ func TestRateLimiter_Middleware_ErrorResponse(t *testing.T) {
 	}
 }
 
-// TestRateLimiter_Cleanup tests the cleanup goroutine behavior.
+// TestRateLimiter_Cleanup tests request-driven stale visitor cleanup.
 func TestRateLimiter_Cleanup(t *testing.T) {
 	logger := zerolog.Nop()
 	rl := NewRateLimiter(5, &logger)
@@ -390,27 +391,18 @@ func TestRateLimiter_Cleanup(t *testing.T) {
 		t.Errorf("expected 10 visitors, got %d", initialCount)
 	}
 
-	// Manually set lastReset to old time to trigger cleanup
+	now := time.Now()
+	// Manually set timestamps to trigger the request-driven cleanup interval.
 	rl.mu.Lock()
 	for _, v := range rl.visitors {
 		v.mu.Lock()
-		v.lastReset = time.Now().Add(-15 * time.Minute)
+		v.lastReset = now.Add(-rateLimitVisitorMaxIdle - time.Minute)
 		v.mu.Unlock()
 	}
+	rl.lastCleanup = now.Add(-rateLimitCleanupInterval - time.Minute)
 	rl.mu.Unlock()
 
-	// Trigger cleanup by calling the internal cleanup logic
-	// Note: In production, cleanup runs every 5 minutes
-	// For testing, we'll simulate it
-	rl.mu.Lock()
-	for ip, v := range rl.visitors {
-		v.mu.Lock()
-		if time.Since(v.lastReset) > 10*time.Minute {
-			delete(rl.visitors, ip)
-		}
-		v.mu.Unlock()
-	}
-	rl.mu.Unlock()
+	rl.cleanup(now)
 
 	// Verify cleanup occurred
 	if len(rl.visitors) != 0 {

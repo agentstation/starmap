@@ -25,13 +25,14 @@ type Config struct {
 	ConfigFile string
 
 	// Starmap configuration
-	LocalPath          string
-	UseEmbeddedCatalog bool
-	AutoUpdatesEnabled bool
-	AutoUpdateInterval time.Duration
-	RemoteServerURL    string
-	RemoteServerAPIKey string
-	RemoteServerOnly   bool
+	LocalPath                     string
+	CatalogStorePath              string
+	UseEmbeddedCatalog            bool
+	EmbeddedBootstrapMaxAge       time.Duration
+	EmbeddedBootstrapMaxSizeBytes int64
+	RemoteServerURL               string
+	RemoteServerAPIKey            string
+	RemoteServerOnly              bool
 
 	// Logging configuration
 	LogLevel  string
@@ -89,13 +90,14 @@ func LoadConfig() (*Config, error) {
 		ConfigFile: viper.ConfigFileUsed(),
 
 		// Starmap configuration
-		LocalPath:          viper.GetString("local_path"),
-		UseEmbeddedCatalog: viper.GetBool("use_embedded_catalog"),
-		AutoUpdatesEnabled: viper.GetBool("auto_updates_enabled"),
-		AutoUpdateInterval: viper.GetDuration("auto_update_interval"),
-		RemoteServerURL:    viper.GetString("remote_server_url"),
-		RemoteServerAPIKey: viper.GetString("remote_server_api_key"),
-		RemoteServerOnly:   viper.GetBool("remote_server_only"),
+		LocalPath:                     viper.GetString("local_path"),
+		CatalogStorePath:              viper.GetString("catalog_store_path"),
+		UseEmbeddedCatalog:            viper.GetBool("use_embedded_catalog"),
+		EmbeddedBootstrapMaxAge:       viper.GetDuration("embedded_bootstrap_max_age"),
+		EmbeddedBootstrapMaxSizeBytes: viper.GetInt64("embedded_bootstrap_max_size_bytes"),
+		RemoteServerURL:               viper.GetString("remote_server_url"),
+		RemoteServerAPIKey:            viper.GetString("remote_server_api_key"),
+		RemoteServerOnly:              viper.GetBool("remote_server_only"),
 
 		// Logging configuration
 		// LogLevel: empty string means "use precedence logic" (see logger.go)
@@ -106,8 +108,8 @@ func LoadConfig() (*Config, error) {
 	}
 
 	// Set defaults
-	if config.AutoUpdateInterval == 0 {
-		config.AutoUpdateInterval = constants.DefaultUpdateInterval
+	if config.CatalogStorePath == "" {
+		config.CatalogStorePath = constants.DefaultCatalogStorePath
 	}
 
 	return config, nil

@@ -2,25 +2,37 @@ package modelsdev
 
 import (
 	"context"
-	"fmt"
+	"crypto/sha256"
+	"encoding/hex"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 const (
 	// ModelsDevRepoURL is the URL for the models.dev git repository.
 	ModelsDevRepoURL = "https://github.com/sst/models.dev.git"
-	// DefaultBranch is the default branch to use for models.dev.
-	DefaultBranch = "dev"
+	lockfileName     = "bun.lock"
 )
 
 // GitClient handles models.dev repository operations.
 type GitClient struct {
 	RepoPath string
+	RepoURL  string
+	Commit   string
+}
+
+// GitInputs records the exact source and dependency graph used for a build.
+type GitInputs struct {
+	Commit           string
+	LockfilePath     string
+	LockfileChecksum string
 }
 
 // Client is an alias for backward compatibility.
@@ -34,6 +46,7 @@ func NewClient(outputDir string) *Client {
 	repoPath := filepath.Join(outputDir, "models.dev-git")
 	return &Client{
 		RepoPath: repoPath,
+		RepoURL:  ModelsDevRepoURL,
 	}
 }
 
@@ -45,42 +58,67 @@ func NewGitClient(outputDir string) *GitClient {
 	repoPath := filepath.Join(outputDir, "models.dev-git")
 	return &GitClient{
 		RepoPath: repoPath,
+		RepoURL:  ModelsDevRepoURL,
 	}
+}
+
+// NewPinnedGitClient creates a Git client that checks out one exact commit.
+func NewPinnedGitClient(outputDir, commit string) *GitClient {
+	client := NewGitClient(outputDir)
+	client.Commit = commit
+	return client
 }
 
 // EnsureRepository ensures the models.dev repository is available and up to date.
 func (c *GitClient) EnsureRepository(ctx context.Context) error {
-	var needsInstall bool
+	_, err := c.PrepareRepository(ctx)
+	return err
+}
 
-	if c.repositoryExists() {
-		fmt.Printf("  🔄 Updating models.dev repository...\n")
-		if err := c.updateRepository(ctx); err != nil {
-			return err
-		}
-		fmt.Printf("  ✅ Repository updated successfully\n")
-		needsInstall = true // Always install after pull to ensure deps are current
-	} else {
-		fmt.Printf("  📥 Cloning models.dev repository...\n")
+// PrepareRepository checks out the configured commit and verifies its frozen lockfile.
+func (c *GitClient) PrepareRepository(ctx context.Context) (GitInputs, error) {
+	ctx = logging.WithSource(ctx, sources.ModelsDevGitID.String())
+	logger := logging.FromContext(ctx)
+	if err := validateGitCommit(c.Commit); err != nil {
+		return GitInputs{}, err
+	}
+	if !c.repositoryExists() {
+		logger.Info().Str("repository", c.RepoURL).Msg("Cloning models.dev repository")
 		if err := c.cloneRepository(ctx); err != nil {
-			return err
+			return GitInputs{}, err
 		}
-		fmt.Printf("  ✅ Repository cloned successfully\n")
-		needsInstall = true // Always install after clone
+		logger.Info().Msg("Cloned models.dev repository")
 	}
 
-	if needsInstall {
-		fmt.Printf("  📦 Installing dependencies...\n")
-		if err := c.installDependencies(ctx); err != nil {
-			return err
-		}
-		fmt.Printf("  ✅ Dependencies installed successfully\n")
+	logger.Info().Str("commit", c.Commit).Msg("Checking out pinned models.dev commit")
+	if err := c.checkoutPinnedCommit(ctx); err != nil {
+		return GitInputs{}, err
 	}
-
-	return nil
+	inputs, err := c.gitInputs()
+	if err != nil {
+		return GitInputs{}, err
+	}
+	logger.Info().Str("lockfile", inputs.LockfilePath).Msg("Installing models.dev dependencies from frozen lockfile")
+	if err := c.installDependencies(ctx); err != nil {
+		return GitInputs{}, err
+	}
+	verified, err := c.gitInputs()
+	if err != nil {
+		return GitInputs{}, err
+	}
+	if verified != inputs {
+		return GitInputs{}, &errors.ValidationError{
+			Field: "models_dev.git.lockfile", Value: verified.LockfileChecksum,
+			Message: "changed during frozen dependency installation",
+		}
+	}
+	return inputs, nil
 }
 
 // BuildAPI runs the build process to generate api.json.
 func (c *GitClient) BuildAPI(ctx context.Context) error {
+	ctx = logging.WithSource(ctx, sources.ModelsDevGitID.String())
+	logger := logging.FromContext(ctx)
 	if !c.repositoryExists() {
 		return &errors.NotFoundError{
 			Resource: "repository",
@@ -88,7 +126,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 		}
 	}
 
-	fmt.Printf("  🔨 Building api.json (this may take a moment)...\n")
+	logger.Info().Str("commit", c.Commit).Msg("Building models.dev API")
 
 	// Change to repo directory and run build
 	cmd := exec.CommandContext(ctx, "bun", "run", "script/build.ts")
@@ -96,7 +134,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Printf("  ❌ Build failed\n")
+		logger.Error().Err(err).Msg("models.dev API build failed")
 		return &errors.ProcessError{
 			Operation: "build api.json",
 			Command:   "bun run script/build.ts",
@@ -108,28 +146,28 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 	// Verify api.json was created
 	apiPath := filepath.Join(c.RepoPath, "packages", "web", "dist", "_api.json")
 	if _, err := os.Stat(apiPath); os.IsNotExist(err) {
-		fmt.Printf("  ❌ Build completed but api.json not found\n")
+		logger.Error().Str("path", apiPath).Msg("models.dev API build output is missing")
 		return &errors.NotFoundError{
 			Resource: "file",
 			ID:       apiPath,
 		}
 	}
 
-	fmt.Printf("  ✅ API build completed successfully\n")
+	logger.Info().Str("path", apiPath).Msg("Built models.dev API")
 	return nil
 }
 
 // installDependencies runs bun install in the repository root.
 func (c *GitClient) installDependencies(ctx context.Context) error {
-	cmd := exec.CommandContext(ctx, "bun", "install")
+	cmd := exec.CommandContext(ctx, "bun", "install", "--frozen-lockfile")
 	cmd.Dir = c.RepoPath
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Printf("  ❌ Dependency installation failed\n")
+		logging.FromContext(ctx).Error().Err(err).Msg("models.dev frozen dependency installation failed")
 		return &errors.ProcessError{
 			Operation: "install dependencies",
-			Command:   "bun install",
+			Command:   "bun install --frozen-lockfile",
 			Output:    string(output),
 			Err:       err,
 		}
@@ -171,10 +209,14 @@ func (c *GitClient) cloneRepository(ctx context.Context) error {
 		return errors.WrapIO("create", "parent directory", err)
 	}
 
-	cmd := exec.CommandContext(ctx, "git", "clone", "--branch", DefaultBranch, "--depth", "1", ModelsDevRepoURL, c.RepoPath) //nolint:gosec // All parameters are controlled
+	repoURL := c.RepoURL
+	if repoURL == "" {
+		repoURL = ModelsDevRepoURL
+	}
+	cmd := exec.CommandContext(ctx, "git", "clone", "--no-checkout", "--filter=blob:none", repoURL, c.RepoPath) //nolint:gosec // Repository URL and path are configured inputs.
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Printf("  ❌ Clone failed\n")
+		logging.FromContext(ctx).Error().Err(err).Msg("models.dev repository clone failed")
 		return &errors.ProcessError{
 			Operation: "clone repository",
 			Command:   "git clone",
@@ -186,33 +228,51 @@ func (c *GitClient) cloneRepository(ctx context.Context) error {
 	return nil
 }
 
-// updateRepository updates the existing models.dev repository.
-func (c *GitClient) updateRepository(ctx context.Context) error {
-	// Reset any local changes
-	resetCmd := exec.CommandContext(ctx, "git", "reset", "--hard", "HEAD")
-	resetCmd.Dir = c.RepoPath
-	if output, err := resetCmd.CombinedOutput(); err != nil {
-		fmt.Printf("  ❌ Reset failed\n")
-		return &errors.ProcessError{
-			Operation: "reset repository",
-			Command:   "git reset",
-			Output:    string(output),
-			Err:       err,
+func (c *GitClient) checkoutPinnedCommit(ctx context.Context) error {
+	commands := [][]string{
+		{"fetch", "--depth", "1", "origin", c.Commit},
+		{"checkout", "--detach", "--force", c.Commit},
+		{"reset", "--hard", c.Commit},
+		{"clean", "-fdx"},
+	}
+	for _, args := range commands {
+		cmd := exec.CommandContext(ctx, "git", args...) //nolint:gosec // Exact git operation; commit is validated hexadecimal input.
+		cmd.Dir = c.RepoPath
+		if output, err := cmd.CombinedOutput(); err != nil {
+			return &errors.ProcessError{
+				Operation: "checkout pinned repository", Command: "git " + strings.Join(args, " "),
+				Output: string(output), Err: err,
+			}
 		}
 	}
-
-	// Pull latest changes
-	pullCmd := exec.CommandContext(ctx, "git", "pull", "origin", DefaultBranch)
-	pullCmd.Dir = c.RepoPath
-	if output, err := pullCmd.CombinedOutput(); err != nil {
-		fmt.Printf("  ❌ Pull failed\n")
-		return &errors.ProcessError{
-			Operation: "pull latest changes",
-			Command:   "git pull",
-			Output:    string(output),
-			Err:       err,
-		}
+	headCmd := exec.CommandContext(ctx, "git", "rev-parse", "HEAD")
+	headCmd.Dir = c.RepoPath
+	output, err := headCmd.CombinedOutput()
+	if err != nil {
+		return &errors.ProcessError{Operation: "verify pinned repository", Command: "git rev-parse HEAD", Output: string(output), Err: err}
 	}
+	if !strings.EqualFold(strings.TrimSpace(string(output)), c.Commit) {
+		return &errors.ValidationError{Field: "models_dev.git.commit", Value: strings.TrimSpace(string(output)), Message: "does not match requested commit"}
+	}
+	return nil
+}
 
+func (c *GitClient) gitInputs() (GitInputs, error) {
+	path := filepath.Join(c.RepoPath, lockfileName)
+	data, err := os.ReadFile(path) //nolint:gosec // Path is fixed under the checked-out repository.
+	if err != nil {
+		return GitInputs{}, errors.WrapResource("read", "models.dev lockfile", path, err)
+	}
+	digest := sha256.Sum256(data)
+	return GitInputs{Commit: strings.ToLower(c.Commit), LockfilePath: lockfileName, LockfileChecksum: "sha256:" + hex.EncodeToString(digest[:])}, nil
+}
+
+func validateGitCommit(commit string) error {
+	if len(commit) != 40 && len(commit) != 64 {
+		return &errors.ValidationError{Field: "models_dev.git.commit", Value: commit, Message: "must be an exact 40- or 64-character hexadecimal commit"}
+	}
+	if _, err := hex.DecodeString(commit); err != nil {
+		return &errors.ValidationError{Field: "models_dev.git.commit", Value: commit, Message: "must be hexadecimal"}
+	}
 	return nil
 }

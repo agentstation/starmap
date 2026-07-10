@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	stderrors "errors"
 	"io/fs"
 	"os"
 	"strings"
@@ -12,8 +13,8 @@ import (
 )
 
 // Load loads the catalog from the configured filesystem.
-func (cat *catalog) Load() error {
-	if cat.config.readFS == nil {
+func (cat *Builder) Load() error {
+	if cat.config.readFilesystem() == nil {
 		return nil // Memory catalog - nothing to load
 	}
 
@@ -46,10 +47,13 @@ func (cat *catalog) Load() error {
 }
 
 // loadProvidersYAML loads providers from providers.yaml file.
-func (cat *catalog) loadProvidersYAML() error {
-	data, err := fs.ReadFile(cat.config.readFS, "providers.yaml")
+func (cat *Builder) loadProvidersYAML() error {
+	data, err := fs.ReadFile(cat.config.readFilesystem(), "providers.yaml")
 	if err != nil {
-		return nil // File doesn't exist is okay
+		if stderrors.Is(err, fs.ErrNotExist) {
+			return nil
+		}
+		return errors.WrapIO("read", "providers.yaml", err)
 	}
 
 	var providers []Provider
@@ -58,16 +62,21 @@ func (cat *catalog) loadProvidersYAML() error {
 	}
 
 	for _, p := range providers {
-		_ = cat.SetProvider(p)
+		if err := cat.SetProvider(p); err != nil {
+			return errors.WrapResource("load", "provider", string(p.ID), err)
+		}
 	}
 	return nil
 }
 
 // loadAuthorsYAML loads authors from authors.yaml file.
-func (cat *catalog) loadAuthorsYAML() error {
-	data, err := fs.ReadFile(cat.config.readFS, "authors.yaml")
+func (cat *Builder) loadAuthorsYAML() error {
+	data, err := fs.ReadFile(cat.config.readFilesystem(), "authors.yaml")
 	if err != nil {
-		return nil // File doesn't exist is okay
+		if stderrors.Is(err, fs.ErrNotExist) {
+			return nil
+		}
+		return errors.WrapIO("read", "authors.yaml", err)
 	}
 
 	var authors []Author
@@ -76,16 +85,21 @@ func (cat *catalog) loadAuthorsYAML() error {
 	}
 
 	for _, a := range authors {
-		_ = cat.SetAuthor(a)
+		if err := cat.SetAuthor(a); err != nil {
+			return errors.WrapResource("load", "author", string(a.ID), err)
+		}
 	}
 	return nil
 }
 
 // loadProvenanceYAML loads provenance from provenance.yaml file.
-func (cat *catalog) loadProvenanceYAML() error {
-	data, err := fs.ReadFile(cat.config.readFS, "provenance.yaml")
+func (cat *Builder) loadProvenanceYAML() error {
+	data, err := fs.ReadFile(cat.config.readFilesystem(), "provenance.yaml")
 	if err != nil {
-		return nil // File doesn't exist is okay
+		if stderrors.Is(err, fs.ErrNotExist) {
+			return nil
+		}
+		return errors.WrapIO("read", "provenance.yaml", err)
 	}
 
 	var pf provenance.ProvenanceFile
@@ -98,7 +112,7 @@ func (cat *catalog) loadProvenanceYAML() error {
 }
 
 // loadProviderModel loads a model into a provider's Models map.
-func (cat *catalog) loadProviderModel(pathParts []string, model *Model) error {
+func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
 	if len(pathParts) < 4 || pathParts[0] != "providers" || pathParts[2] != "models" {
 		return nil // Not a provider model path
 	}
@@ -117,7 +131,7 @@ func (cat *catalog) loadProviderModel(pathParts []string, model *Model) error {
 }
 
 // loadAuthorModel loads a model into an author's Models map.
-func (cat *catalog) loadAuthorModel(pathParts []string, model *Model) error {
+func (cat *Builder) loadAuthorModel(pathParts []string, model *Model) error {
 	if len(pathParts) < 4 || pathParts[0] != "authors" || pathParts[2] != "models" {
 		return nil // Not an author model path
 	}
@@ -136,10 +150,10 @@ func (cat *catalog) loadAuthorModel(pathParts []string, model *Model) error {
 }
 
 // loadModelFile parses and loads a model file.
-func (cat *catalog) loadModelFile(path string, data []byte) error {
+func (cat *Builder) loadModelFile(path string, data []byte) error {
 	var model Model
 	if err := yaml.Unmarshal(data, &model); err != nil {
-		return nil // Skip invalid YAML
+		return errors.WrapParse("yaml", path, err)
 	}
 
 	pathParts := strings.Split(path, "/")
@@ -158,8 +172,8 @@ func (cat *catalog) loadModelFile(path string, data []byte) error {
 }
 
 // loadProviderModelFiles walks the providers directory and loads all model files.
-func (cat *catalog) loadProviderModelFiles() error {
-	err := fs.WalkDir(cat.config.readFS, "providers", func(path string, d fs.DirEntry, err error) error {
+func (cat *Builder) loadProviderModelFiles() error {
+	err := fs.WalkDir(cat.config.readFilesystem(), "providers", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if os.IsNotExist(err) {
 				return nil
@@ -170,9 +184,9 @@ func (cat *catalog) loadProviderModelFiles() error {
 			return nil
 		}
 
-		data, err := fs.ReadFile(cat.config.readFS, path)
+		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
 		if err != nil {
-			return nil // Skip files we can't read
+			return errors.WrapIO("read", path, err)
 		}
 
 		return cat.loadModelFile(path, data)
@@ -186,8 +200,8 @@ func (cat *catalog) loadProviderModelFiles() error {
 
 // loadAuthorModelFiles walks the authors directory and loads all model files.
 // These files are a denormalized view - the source of truth is provider catalogs + attribution config.
-func (cat *catalog) loadAuthorModelFiles() error {
-	err := fs.WalkDir(cat.config.readFS, "authors", func(path string, d fs.DirEntry, err error) error {
+func (cat *Builder) loadAuthorModelFiles() error {
+	err := fs.WalkDir(cat.config.readFilesystem(), "authors", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if os.IsNotExist(err) {
 				return nil
@@ -203,9 +217,9 @@ func (cat *catalog) loadAuthorModelFiles() error {
 			return nil
 		}
 
-		data, err := fs.ReadFile(cat.config.readFS, path)
+		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
 		if err != nil {
-			return nil // Skip files we can't read
+			return errors.WrapIO("read", path, err)
 		}
 
 		return cat.loadModelFile(path, data)

@@ -46,7 +46,32 @@ var (
 
 	// ErrReadOnly indicates an attempt to modify a read-only resource.
 	ErrReadOnly = errors.New("read only")
+
+	// ErrConflict indicates an optimistic concurrency or immutable identity conflict.
+	ErrConflict = errors.New("conflict")
 )
+
+// ConflictError reports that state did not match an expected version or that
+// an immutable identity was reused for different content.
+type ConflictError struct {
+	Resource string
+	Expected string
+	Actual   string
+	Message  string
+}
+
+// Error implements the error interface.
+func (e *ConflictError) Error() string {
+	if e.Message != "" {
+		return fmt.Sprintf("%s conflict: %s", e.Resource, e.Message)
+	}
+	return fmt.Sprintf("%s conflict: expected %q, actual %q", e.Resource, e.Expected, e.Actual)
+}
+
+// Is implements errors.Is support.
+func (e *ConflictError) Is(target error) bool {
+	return target == ErrConflict
+}
 
 // NotFoundError represents an error when a resource is not found.
 type NotFoundError struct {
@@ -246,6 +271,11 @@ func IsNotFound(err error) bool {
 // IsAlreadyExists checks if an error is an already exists error.
 func IsAlreadyExists(err error) bool {
 	return errors.Is(err, ErrAlreadyExists)
+}
+
+// IsConflict checks if an error is an optimistic concurrency or immutable identity conflict.
+func IsConflict(err error) bool {
+	return errors.Is(err, ErrConflict)
 }
 
 // IsValidationError checks if an error is a validation error.

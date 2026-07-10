@@ -1,12 +1,14 @@
 package starmap
 
 import (
+	"context"
+	"reflect"
 	"time"
 
 	"github.com/agentstation/starmap/internal/utils/ptr"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // ============================================================================
@@ -20,31 +22,61 @@ type options struct {
 	remoteServerAPIKey *string
 	remoteServerOnly   bool // If true (enabled), don't use any other sources for catalog updates including provider APIs
 
-	// Update configuration
-	autoUpdatesEnabled bool
-	autoUpdateInterval time.Duration
-	autoUpdateFunc     AutoUpdateFunc
+	// Explicit update injection; cadence belongs to the deployment layer.
+	updateFunc UpdateFunc
 
 	// local catalog path
 	localPath string
 
-	// embedded catalog
-	embeddedCatalogEnabled bool
+	// durable generation store required by every non-dry mutation path
+	catalogStore catalogstore.Store
 
-	sources []sources.ID // Configured sources for syncing
+	// embedded catalog
+	embeddedCatalogEnabled        bool
+	embeddedBootstrapMaxAge       time.Duration
+	embeddedBootstrapMaxSizeBytes int64
 }
 
 func defaults() *options {
 	return &options{
-		autoUpdatesEnabled:     true,                            // Default to auto-updates enabled
-		autoUpdateInterval:     constants.DefaultUpdateInterval, // Default to hourly updates
-		autoUpdateFunc:         nil,                             // Default to no auto-update function
-		localPath:              "",                              // Default to no local path
-		embeddedCatalogEnabled: false,                           // Default to no embedded catalog
-		sources:                []sources.ID{},                  // Default to no sources
-		remoteServerURL:        nil,                             // Default to no remote server
-		remoteServerAPIKey:     nil,                             // Default to no remote server API key
-		remoteServerOnly:       false,                           // Default to not only use remote server
+		updateFunc:                    nil,   // Default to pipeline-based updates
+		localPath:                     "",    // Default to no local path
+		catalogStore:                  nil,   // Mutation requires an explicit writable store
+		embeddedCatalogEnabled:        false, // Default to no embedded catalog
+		embeddedBootstrapMaxAge:       0,     // Disabled until explicitly configured
+		embeddedBootstrapMaxSizeBytes: 0,     // Disabled until explicitly configured
+		remoteServerURL:               nil,   // Default to no remote server
+		remoteServerAPIKey:            nil,   // Default to no remote server API key
+		remoteServerOnly:              false, // Default to not only use remote server
+	}
+}
+
+// WithCatalogStore configures the writable generation store used by non-dry
+// sync, manual, remote, and scheduled catalog updates. Read-only access and dry
+// runs do not require a store.
+func WithCatalogStore(store catalogstore.Store) Option {
+	return func(o *options) error {
+		if isNilCatalogStore(store) {
+			return &errors.ConfigError{
+				Component: "catalog store",
+				Message:   "writable store is required",
+			}
+		}
+		o.catalogStore = store
+		return nil
+	}
+}
+
+func isNilCatalogStore(store catalogstore.Store) bool {
+	if store == nil {
+		return true
+	}
+	value := reflect.ValueOf(store)
+	switch value.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
+		return value.IsNil()
+	default:
+		return false
 	}
 }
 
@@ -61,7 +93,9 @@ func (o *options) apply(opts ...Option) (*options, error) {
 	return o, nil
 }
 
-// WithRemoteServerURL configures the remote server URL.
+// WithRemoteServerURL configures a versioned remote API base URL, for example
+// https://starmap.example.com/api/v1, without changing the update source. Use
+// WithRemoteServerOnly to make Client.Update fetch exclusively from that server.
 func WithRemoteServerURL(url string) Option {
 	return func(o *options) error {
 		o.remoteServerURL = ptr.String(url)
@@ -77,7 +111,8 @@ func WithRemoteServerAPIKey(apiKey string) Option {
 	}
 }
 
-// WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
+// WithRemoteServerOnly configures Client.Update to use only the versioned remote
+// manifest and immutable generation snapshot contract at url.
 func WithRemoteServerOnly(url string) Option {
 	return func(o *options) error {
 		o.remoteServerOnly = true
@@ -86,35 +121,20 @@ func WithRemoteServerOnly(url string) Option {
 	}
 }
 
-// WithAutoUpdatesDisabled configures whether automatic updates are disabled.
-func WithAutoUpdatesDisabled() Option {
-	return func(o *options) error {
-		o.autoUpdatesEnabled = false
-		return nil
-	}
-}
+// UpdateFunc builds an explicit candidate catalog and must honor cancellation.
+// Scheduling, retry, and high-availability ownership remain above Client.
+type UpdateFunc func(context.Context, *catalogs.Builder) (*catalogs.Builder, error)
 
-// WithAutoUpdateInterval configures how often to automatically update the catalog.
-func WithAutoUpdateInterval(interval time.Duration) Option {
+// WithUpdateFunc configures an explicit context-aware update implementation.
+func WithUpdateFunc(fn UpdateFunc) Option {
 	return func(o *options) error {
-		o.autoUpdateInterval = interval
-		return nil
-	}
-}
-
-// AutoUpdateFunc is a function that updates the catalog.
-type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
-
-// WithAutoUpdateFunc configures a custom function for updating the catalog.
-func WithAutoUpdateFunc(fn AutoUpdateFunc) Option {
-	return func(o *options) error {
-		o.autoUpdateFunc = fn
+		o.updateFunc = fn
 		return nil
 	}
 }
 
 // // WithInitialCatalog configures the initial catalog to use.
-// func WithInitialCatalog(catalog catalogs.Catalog) Option {
+// func WithInitialCatalog(catalog *catalogs.Builder) Option {
 // 	return func(o *options) error {
 // 		o.initialCatalog = &catalog
 // 		return nil
@@ -134,6 +154,30 @@ func WithLocalPath(path string) Option {
 func WithEmbeddedCatalog() Option {
 	return func(o *options) error {
 		o.embeddedCatalogEnabled = true
+		return nil
+	}
+}
+
+// WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the
+// embedded bootstrap and its generation age exceeds maxAge.
+func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option {
+	return func(o *options) error {
+		if maxAge <= 0 {
+			return &errors.ValidationError{Field: "embeddedBootstrapMaxAge", Value: maxAge, Message: "must be positive"}
+		}
+		o.embeddedBootstrapMaxAge = maxAge
+		return nil
+	}
+}
+
+// WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded
+// bootstrap canonical payload exceeds maxSizeBytes.
+func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option {
+	return func(o *options) error {
+		if maxSizeBytes <= 0 {
+			return &errors.ValidationError{Field: "embeddedBootstrapMaxSizeBytes", Value: maxSizeBytes, Message: "must be positive"}
+		}
+		o.embeddedBootstrapMaxSizeBytes = maxSizeBytes
 		return nil
 	}
 }

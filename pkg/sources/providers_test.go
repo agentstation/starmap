@@ -95,6 +95,39 @@ func TestProviderFetcherFetchModelsRequiresFactory(t *testing.T) {
 	}
 }
 
+func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testing.T) {
+	provider := providerForFetcherTest("credential-policy")
+	provider.Catalog.Endpoint.AuthRequired = true
+	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_FETCHER_CONFORMANCE_KEY"}
+	t.Setenv("STARMAP_FETCHER_CONFORMANCE_KEY", "")
+	clientCalls := 0
+	rawCalls := 0
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) {
+			clientCalls++
+			return providerFetcherTestClient{}, nil
+		}),
+		WithProviderRawFetcher(func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error) {
+			rawCalls++
+			return nil, nil
+		}),
+	)
+
+	providerForModels := provider
+	_, modelsErr := fetcher.FetchModels(context.Background(), &providerForModels)
+	providerForRaw := provider
+	_, _, rawErr := fetcher.FetchRawResponse(context.Background(), &providerForRaw, "https://example.test/raw")
+	for name, err := range map[string]error{"models": modelsErr, "raw": rawErr} {
+		var authenticationErr *pkgerrors.AuthenticationError
+		if !stderrors.As(err, &authenticationErr) {
+			t.Fatalf("%s error = %T, want *errors.AuthenticationError: %v", name, err, err)
+		}
+	}
+	if clientCalls != 0 || rawCalls != 0 {
+		t.Fatalf("credential preflight reached adapters: client=%d raw=%d", clientCalls, rawCalls)
+	}
+}
+
 func TestProviderFetcherFetchRawResponseUsesInjectedFetcher(t *testing.T) {
 	provider := providerForFetcherTest("provider-a")
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
@@ -123,6 +156,68 @@ func TestProviderFetcherFetchRawResponseUsesInjectedFetcher(t *testing.T) {
 	}
 	if stats.URL != "https://example.test/raw" {
 		t.Fatalf("Expected request URL in stats, got %q", stats.URL)
+	}
+}
+
+func TestProviderFetcherFetchRawResponseReportsNoAuthWhenOptionalKeyMissing(t *testing.T) {
+	provider := providerForFetcherTest("optional-auth")
+	provider.APIKey = &catalogs.ProviderAPIKey{
+		Name:   "OPTIONAL_AUTH_API_KEY",
+		Header: "Authorization",
+		Scheme: catalogs.ProviderAPIKeySchemeBearer,
+	}
+	t.Setenv("OPTIONAL_AUTH_API_KEY", "")
+
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderRawFetcher(func(_ context.Context, _ *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+			return &RawFetchResult{
+				Data:       []byte(`{"ok":true}`),
+				Response:   &http.Response{StatusCode: http.StatusOK, Header: http.Header{}},
+				RequestURL: endpoint,
+			}, nil
+		}),
+	)
+
+	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "https://example.test/raw")
+	if err != nil {
+		t.Fatalf("FetchRawResponse failed: %v", err)
+	}
+	if stats.AuthMethod != "None" {
+		t.Fatalf("AuthMethod = %q, want None", stats.AuthMethod)
+	}
+}
+
+func TestProviderFetcherFetchRawResponseReportsAuthWhenOptionalKeyPresent(t *testing.T) {
+	provider := providerForFetcherTest("optional-auth")
+	provider.APIKey = &catalogs.ProviderAPIKey{
+		Name:   "OPTIONAL_AUTH_API_KEY",
+		Header: "Authorization",
+		Scheme: catalogs.ProviderAPIKeySchemeBearer,
+	}
+	t.Setenv("OPTIONAL_AUTH_API_KEY", "secret")
+
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderRawFetcher(func(_ context.Context, _ *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+			return &RawFetchResult{
+				Data:       []byte(`{"ok":true}`),
+				Response:   &http.Response{StatusCode: http.StatusOK, Header: http.Header{}},
+				RequestURL: endpoint,
+			}, nil
+		}),
+	)
+
+	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "https://example.test/raw")
+	if err != nil {
+		t.Fatalf("FetchRawResponse failed: %v", err)
+	}
+	if stats.AuthMethod != "Header" {
+		t.Fatalf("AuthMethod = %q, want Header", stats.AuthMethod)
+	}
+	if stats.AuthLocation != "Authorization" {
+		t.Fatalf("AuthLocation = %q, want Authorization", stats.AuthLocation)
+	}
+	if stats.AuthScheme != "Bearer" {
+		t.Fatalf("AuthScheme = %q, want Bearer", stats.AuthScheme)
 	}
 }
 

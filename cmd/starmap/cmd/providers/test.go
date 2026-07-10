@@ -10,11 +10,11 @@ import (
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/notify"
+	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/notify"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -47,7 +47,7 @@ func runTest(cmd *cobra.Command, args []string, app application.Application) err
 }
 
 // testAllProviders tests all configured providers.
-func testAllProviders(cmd *cobra.Command, cat catalogs.Catalog, app application.Application) error {
+func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application.Application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
@@ -167,7 +167,7 @@ type apiTestResult struct {
 }
 
 // testProvidersSequential tests providers one at a time (for non-TTY output).
-func testProvidersSequential(cmd *cobra.Command, cat catalogs.Catalog, supportedProviders []catalogs.ProviderID,
+func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
 	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
 
@@ -252,7 +252,7 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Catalog, supported
 }
 
 // testProvidersConcurrent tests providers concurrently using a three-phase approach (for TTY output).
-func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Catalog, supportedProviders []catalogs.ProviderID,
+func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
 	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
 
@@ -385,7 +385,7 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Catalog, supported
 }
 
 // testSingleProvider tests a single provider.
-func testSingleProvider(cmd *cobra.Command, cat catalogs.Catalog, providerID string, app application.Application) error {
+func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID string, app application.Application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 

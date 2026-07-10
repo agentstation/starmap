@@ -1,3 +1,42 @@
+# Alibaba Cloud Model Studio
+- id: alibaba
+  aliases:
+  - alibaba-cloud
+  - alibaba-model-studio
+  - dashscope
+  - model-studio
+  - qwen
+  name: Alibaba Cloud Model Studio
+  headquarters: Hangzhou, China
+  icon_url: https://www.alibabacloud.com/favicon.ico
+  api_key:
+    name: DASHSCOPE_API_KEY
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  catalog:
+    docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
+    endpoint:
+      type: openai
+      url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/models
+      base_url_env_var: ALIBABA_MODEL_STUDIO_BASE_URL
+      path: /models
+      auth_required: true
+      author_mapping:
+        field: id
+        normalized:
+          "qwen*": alibaba
+          "qwq*": alibaba
+          "qvq*": alibaba
+          "wan*": alibaba
+          "deepseek*": deepseek
+          "kimi*": moonshot-ai
+          "glm*": zhipu-ai
+          "minimax*": minimax
+  chat_completions:
+    url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+
 # Anthropic
 - id: anthropic
   name: Anthropic
@@ -17,7 +56,7 @@
       auth_required: true
   status_page_url: https://status.anthropic.com
   chat_completions:
-    url: https://api.anthropic.com/v1/chat/completions
+    url: https://api.anthropic.com/v1/messages
     health_api_url: https://status.anthropic.com/api/v2/summary.json
     health_components:
     - id: k8w3r06qmzrp
@@ -152,6 +191,107 @@
     moderation_required: false
     moderated: true
     moderator: deepseek
+
+# DeepInfra
+- id: deepinfra
+  name: DeepInfra
+  headquarters: San Francisco, CA, USA
+  icon_url: https://deepinfra.com/favicon.ico
+  api_key:
+    name: DEEPINFRA_TOKEN
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  catalog:
+    docs: https://docs.deepinfra.com/chat/overview
+    endpoint:
+      type: openai
+      url: https://api.deepinfra.com/v1/openai/models
+      auth_required: false
+      field_mappings:
+      - from: metadata.description
+        to: description
+      - from: metadata.context_length
+        to: limits.context_window
+      - from: metadata.tags
+        to: metadata.tags
+      feature_rules:
+      - field: metadata.tags
+        contains:
+        - reasoning
+        feature: reasoning
+        value: true
+      author_mapping:
+        field: id
+        normalized:
+          "01-ai/*": 01.ai
+          "BAAI/*": baai
+          "ByteDance/*": bytedance
+          "MiniMaxAI/*": minimax
+          "NousResearch/*": nousresearch
+          "Qwen/*": alibaba
+          "cognitivecomputations/*": cognitivecomputations
+          "deepseek-ai/*": deepseek
+          "google/*": google
+          "meta-llama/*": meta
+          "microsoft/*": microsoft
+          "mistralai/*": mistral
+          "moonshotai/*": moonshot-ai
+          "nvidia/*": nvidia
+          "openai/*": openai
+          "zai-org/*": zhipu-ai
+  chat_completions:
+    url: https://api.deepinfra.com/v1/openai/chat/completions
+
+# Fireworks AI
+- id: fireworks-ai
+  aliases:
+  - fireworks
+  name: Fireworks AI
+  headquarters: Redwood City, CA, USA
+  icon_url: https://fireworks.ai/favicon.ico
+  api_key:
+    name: FIREWORKS_API_KEY
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  catalog:
+    docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
+    endpoint:
+      type: openai
+      url: https://api.fireworks.ai/inference/v1/models
+      auth_required: true
+      feature_rules:
+      - field: id
+        contains:
+        - deepseek-r1
+        - qwen3
+        feature: reasoning
+        value: true
+      author_mapping:
+        field: id
+        normalized:
+          "accounts/fireworks/models/deepseek*": deepseek
+          "accounts/fireworks/models/gpt-oss*": openai
+          "accounts/fireworks/models/kimi*": moonshot-ai
+          "accounts/fireworks/models/llama*": meta
+          "accounts/fireworks/models/mistral*": mistral
+          "accounts/fireworks/models/mixtral*": mistral
+          "accounts/fireworks/models/qwen*": alibaba
+          "accounts/fireworks/models/yi-*": 01.ai
+          "accounts/fireworks/routers/deepseek*": deepseek
+          "accounts/fireworks/routers/gpt-oss*": openai
+          "accounts/fireworks/routers/kimi*": moonshot-ai
+          "accounts/fireworks/routers/llama*": meta
+          "accounts/fireworks/routers/mistral*": mistral
+          "accounts/fireworks/routers/mixtral*": mistral
+          "accounts/fireworks/routers/qwen*": alibaba
+          "accounts/fireworks/routers/yi-*": 01.ai
+  status_page_url: https://status.fireworks.ai
+  chat_completions:
+    url: https://api.fireworks.ai/inference/v1/chat/completions
 
 # Google AI Studio
 - id: google-ai-studio

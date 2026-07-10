@@ -2,8 +2,8 @@
 id: gpt-audio-mini-2025-10-06
 name: gpt-audio-mini-2025-10-06
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model features
 features:

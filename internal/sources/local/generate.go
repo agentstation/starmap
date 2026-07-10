@@ -1,2 +1,2 @@
-//go:generate gomarkdoc -e -o README.md . --repository.path /internal/sources/local
+//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /internal/sources/local
 package local

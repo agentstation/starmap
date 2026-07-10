@@ -14,6 +14,12 @@ const (
 
 	// ResourceTypeAuthor represents an author resource (e.g., openai, meta).
 	ResourceTypeAuthor ResourceType = "author"
+
+	// ResourceTypeModelDefinition represents provider-independent canonical model facts.
+	ResourceTypeModelDefinition ResourceType = "model_definition"
+
+	// ResourceTypeProviderOffering represents one provider-specific model service contract.
+	ResourceTypeProviderOffering ResourceType = "provider_offering"
 )
 
 // String returns the string representation of a resource type.

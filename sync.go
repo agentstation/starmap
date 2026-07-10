@@ -10,12 +10,30 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/save"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
-	return pipeline.New(pipelineStore{client: c}).Sync(ctx, opts...)
+func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
+	options := sync.Defaults().Apply(opts...)
+	if !options.DryRun {
+		if err := c.requireWritableCatalogStore(); err != nil {
+			return nil, err
+		}
+	}
+
+	release, err := c.updates.acquire(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer release()
+
+	effective := append([]sync.Option(nil), opts...)
+	if options.OutputPath == "" && c.options.localPath != "" && !c.options.embeddedCatalogEnabled {
+		effective = append(effective, sync.WithOutputPath(c.options.localPath))
+	}
+	return pipeline.New(pipelineStore{client: c}).Sync(ctx, effective...)
 }
 
 // ============================================================================
@@ -23,7 +41,12 @@ func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 // ============================================================================
 
 // save applies the catalog changes if not in dry-run mode.
-func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
+func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+	published, err := snapshotBuilder(result)
+	if err != nil {
+		return pipeline.Publication{}, err
+	}
+
 	// Persist first so a failed save does not publish unsaved in-memory state.
 	if options.OutputPath != "" {
 		// Debug: check what providers have models
@@ -39,82 +62,73 @@ func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset 
 				Msg("Provider model count before save")
 		}
 
-		if saveable, ok := result.(catalogs.Persistence); ok {
-			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
-				return errors.WrapIO("write", options.OutputPath, err)
+		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
+			return pipeline.Publication{}, errors.WrapIO("write", options.OutputPath, err)
+		}
+
+		// Copy models.dev logos after successful save.
+		providerPtrs := make([]*catalogs.Provider, len(providers))
+		for i := range providers {
+			providerPtrs[i] = &providers[i]
+		}
+
+		// Copy provider logos if we have providers and an output path.
+		if len(providerPtrs) > 0 {
+			logging.Debug().
+				Int("provider_count", len(providerPtrs)).
+				Str("output_path", options.OutputPath).
+				Msg("Copying provider logos from models.dev")
+
+			if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
+				logging.Warn().
+					Err(logoErr).
+					Msg("Could not copy provider logos")
+				// Non-fatal error - continue without logos
 			}
+		}
 
-			// Copy models.dev logos after successful save
-			// Convert provider values to pointers for logo copying
-			providerPtrs := make([]*catalogs.Provider, len(providers))
-			for i := range providers {
-				providerPtrs[i] = &providers[i]
-			}
+		// Copy author logos from provider logos.
+		authors := result.Authors().List()
+		if len(authors) > 0 {
+			logging.Debug().
+				Int("author_count", len(authors)).
+				Str("output_path", options.OutputPath).
+				Msg("Copying author logos from models.dev provider logos")
 
-			// Copy provider logos if we have providers and an output path
-			if len(providerPtrs) > 0 {
-				logging.Debug().
-					Int("provider_count", len(providerPtrs)).
-					Str("output_path", options.OutputPath).
-					Msg("Copying provider logos from models.dev")
-
-				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
-					logging.Warn().
-						Err(logoErr).
-						Msg("Could not copy provider logos")
-					// Non-fatal error - continue without logos
-				}
-			}
-
-			// Copy author logos from provider logos
-			authors := result.Authors().List()
-			if len(authors) > 0 {
-				logging.Debug().
-					Int("author_count", len(authors)).
-					Str("output_path", options.OutputPath).
-					Msg("Copying author logos from models.dev provider logos")
-
-				if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
-					logging.Warn().
-						Err(logoErr).
-						Msg("Could not copy author logos")
-					// Non-fatal error - continue without logos
-				}
+			if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
+				logging.Warn().
+					Err(logoErr).
+					Msg("Could not copy author logos")
+				// Non-fatal error - continue without logos
 			}
 		}
 	} else {
 		// Save to default location
-		if saveable, ok := result.(catalogs.Persistence); ok {
-			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
-				return errors.WrapIO("write", "catalog", err)
-			}
+		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
+			return pipeline.Publication{}, errors.WrapIO("write", "catalog", err)
 		}
 	}
 
-	// Update internal catalog only after persistence succeeds.
-	c.mu.Lock()
-	oldCatalog := c.catalog
-	c.catalog = result
-	c.mu.Unlock()
+	publication, err := c.commitAndPublish(ctx, published, observations)
+	if err != nil {
+		return pipeline.Publication{}, err
+	}
 
 	logging.Info().
 		Int("changes_applied", changeset.Summary.TotalChanges).
 		Msg("Sync completed successfully")
 
-	// Trigger hooks for catalog changes
-	c.hooks.triggerUpdate(oldCatalog, result)
-
-	return nil
+	return publication, nil
 }
 
 type pipelineStore struct {
-	client *client
+	client *Client
 }
 
-func (s pipelineStore) Catalog() (catalogs.Catalog, error) {
-	return s.client.Catalog()
+func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
+	return s.client.Catalog(), nil
 }
 
-func (s pipelineStore) Apply(catalog catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
-	return s.client.save(catalog, options, changeset)
+func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+	return s.client.save(ctx, catalog, options, changeset, observations)
 }

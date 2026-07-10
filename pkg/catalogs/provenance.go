@@ -7,6 +7,7 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/types"
 )
@@ -129,6 +130,13 @@ func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID 
 // FormatYAML returns the provenance data formatted as YAML.
 // This follows the same pattern as Authors and Providers containers.
 func (p *Provenance) FormatYAML() string {
+	formatted, _ := p.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns provenance YAML or a typed parse error when evidence
+// values cannot be represented safely.
+func (p *Provenance) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -139,12 +147,10 @@ func (p *Provenance) FormatYAML() string {
 
 	data, err := yaml.Marshal(pf)
 	if err != nil {
-		// In practice this should never happen with valid provenance data
-		// Return empty string rather than panicking
-		return ""
+		return "", errors.WrapParse("yaml", "provenance", err)
 	}
 
-	return string(data)
+	return string(data), nil
 }
 
 // newKey returns a unique key for provenance tracking.

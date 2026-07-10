@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"crypto/subtle"
 	"net/http"
 	"os"
 	"strings"
@@ -48,7 +49,7 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 			apiKey := extractAPIKey(r, config)
 
 			// Validate API key
-			if apiKey == "" || apiKey != config.APIKey {
+			if apiKey == "" || subtle.ConstantTimeCompare([]byte(apiKey), []byte(config.APIKey)) != 1 {
 				logger.Warn().
 					Str("path", r.URL.Path).
 					Str("remote_addr", r.RemoteAddr).

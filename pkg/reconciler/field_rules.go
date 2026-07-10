@@ -72,25 +72,42 @@ func modelProvenanceRule(provenancePath string) fieldRule {
 
 const (
 	modelProvenanceLimitsContextWindow = "limits.context_window"
+	modelProvenanceLimitsInputTokens   = "limits.input_tokens"
 	modelProvenanceLimitsOutputTokens  = "limits.output_tokens"
+	modelProvenanceLineageFamily       = "lineage.family"
+	modelProvenanceLineageRoot         = "lineage.root"
+	modelProvenanceLineageParent       = "lineage.parent"
 	modelProvenancePricing             = "pricing"
 	modelProvenanceMetadata            = "metadata"
+	modelProvenanceModes               = "modes"
 )
 
 var modelFieldRules = []fieldRule{
 	newFieldRule(sources.ResourceTypeModel, "Name"),
 	newFieldRule(sources.ResourceTypeModel, "Description"),
+	newFieldRule(sources.ResourceTypeModel, "Status"),
 	newFieldRule(sources.ResourceTypeModel, "Authors"),
-	newFieldRule(sources.ResourceTypeModel, "Pricing"),
+	newFieldRule(sources.ResourceTypeModel, "Lineage"),
 	newFieldRule(sources.ResourceTypeModel, "Limits"),
 	newFieldRule(sources.ResourceTypeModel, "Metadata"),
 	newFieldRule(sources.ResourceTypeModel, "Features"),
+	newFieldRule(sources.ResourceTypeModel, "Attachments"),
 	newFieldRule(sources.ResourceTypeModel, "Generation"),
+	newFieldRule(sources.ResourceTypeModel, "Reasoning"),
+	newFieldRule(sources.ResourceTypeModel, "ReasoningTokens"),
+	newFieldRule(sources.ResourceTypeModel, "Verbosity"),
+	newFieldRule(sources.ResourceTypeModel, "Tools"),
+	newFieldRule(sources.ResourceTypeModel, "Delivery"),
+	newProvenanceFieldRule(sources.ResourceTypeModel, "Modes", modelProvenanceModes),
 }
 
 var modelProvenanceFieldRules = map[string]fieldRule{
 	modelProvenanceLimitsContextWindow: newProvenanceFieldRule(sources.ResourceTypeModel, "Limits", modelProvenanceLimitsContextWindow),
+	modelProvenanceLimitsInputTokens:   newProvenanceFieldRule(sources.ResourceTypeModel, "Limits", modelProvenanceLimitsInputTokens),
 	modelProvenanceLimitsOutputTokens:  newProvenanceFieldRule(sources.ResourceTypeModel, "Limits", modelProvenanceLimitsOutputTokens),
+	modelProvenanceLineageFamily:       newProvenanceFieldRule(sources.ResourceTypeModel, "Lineage", modelProvenanceLineageFamily),
+	modelProvenanceLineageRoot:         newProvenanceFieldRule(sources.ResourceTypeModel, "Lineage", modelProvenanceLineageRoot),
+	modelProvenanceLineageParent:       newProvenanceFieldRule(sources.ResourceTypeModel, "Lineage", modelProvenanceLineageParent),
 	modelProvenancePricing:             newProvenanceFieldRule(sources.ResourceTypeModel, "Pricing", modelProvenancePricing),
 	modelProvenanceMetadata:            newProvenanceFieldRule(sources.ResourceTypeModel, "Metadata", modelProvenanceMetadata),
 }

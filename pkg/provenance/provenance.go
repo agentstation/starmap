@@ -15,14 +15,25 @@ import (
 
 // Provenance tracks the origin and history of a field value.
 type Provenance struct {
-	Source        types.SourceID // Source that provided the value (e.g., "providers", "models_dev_git")
-	Field         string         // Field path
-	Value         any            // The actual value
-	Timestamp     time.Time      // When the value was set
-	Authority     float64        // Authority score (0.0 to 1.0)
-	Confidence    float64        // Confidence in the value (0.0 to 1.0)
-	Reason        string         // Reason for selecting this value
-	PreviousValue any            // Previous value if updated
+	Source           types.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
+	Field            string                    // Field path
+	Value            any                       // The actual value
+	Timestamp        time.Time                 // When the value was set
+	ObservationID    string                    // Stable identity of the winning source observation
+	ObservedAt       time.Time                 // When the winning source was observed
+	Revision         types.ObservationRevision // Exact revision of the winning observation
+	EvidenceChecksum string                    // Digest binding the winning normalized evidence
+	Rejections       []Rejection               // Higher-authority observations rejected before selection
+	Authority        float64                   // Authority score (0.0 to 1.0)
+	Confidence       float64                   // Confidence in the value (0.0 to 1.0)
+	Reason           string                    // Reason for selecting this value
+	PreviousValue    any                       // Previous value if updated
+}
+
+// Rejection records why a higher-authority field observation did not win.
+type Rejection struct {
+	Source types.SourceID // Source whose field observation was rejected
+	Reason string         // Stable human-readable validation or applicability reason
 }
 
 // Map tracks provenance for multiple resources.
@@ -83,7 +94,7 @@ func (p *tracker) FindByField(resourceType types.ResourceType, resourceID string
 	}
 
 	key := p.makeKey(string(resourceType), resourceID, field)
-	return p.provenance[key]
+	return cloneProvenance(p.provenance[key])
 }
 
 // GetResourceProvenance retrieves all provenance for a resource.
@@ -97,7 +108,7 @@ func (p *tracker) FindByResource(resourceType types.ResourceType, resourceID str
 
 	for key, info := range p.provenance {
 		if field, found := strings.CutPrefix(key, prefix); found {
-			result[field] = info
+			result[field] = cloneProvenance(info)
 		}
 	}
 
@@ -113,7 +124,16 @@ func (p *tracker) Map() Map {
 	// Return a copy to prevent external modification
 	result := make(Map)
 	for k, v := range p.provenance {
-		result[k] = append([]Provenance{}, v...)
+		result[k] = cloneProvenance(v)
+	}
+	return result
+}
+
+func cloneProvenance(source []Provenance) []Provenance {
+	result := make([]Provenance, len(source))
+	copy(result, source)
+	for index := range result {
+		result[index].Rejections = append([]Rejection(nil), source[index].Rejections...)
 	}
 	return result
 }
@@ -267,12 +287,12 @@ func (r *Report) String() string {
 
 	for _, key := range resourceKeys {
 		resource := r.Resources[key]
-		sb.WriteString(fmt.Sprintf("%s: %s\n", resource.Type, resource.ID))
+		fmt.Fprintf(&sb, "%s: %s\n", resource.Type, resource.ID)
 		sb.WriteString(strings.Repeat("-", 40))
 		sb.WriteString("\n")
 
 		// Sort fields for consistent output
-		var fieldKeys []string
+		fieldKeys := make([]string, 0, len(resource.Fields))
 		for field := range resource.Fields {
 			fieldKeys = append(fieldKeys, field)
 		}
@@ -280,16 +300,16 @@ func (r *Report) String() string {
 
 		for _, field := range fieldKeys {
 			fieldProv := resource.Fields[field]
-			sb.WriteString(fmt.Sprintf("  %s:\n", field))
-			sb.WriteString(fmt.Sprintf("    Current: %v (from %s)\n",
-				fieldProv.Current.Value, fieldProv.Current.Source))
+			fmt.Fprintf(&sb, "  %s:\n", field)
+			fmt.Fprintf(&sb, "    Current: %v (from %s)\n",
+				fieldProv.Current.Value, fieldProv.Current.Source)
 
 			if len(fieldProv.Conflicts) > 0 {
 				sb.WriteString("    Conflicts:\n")
 				for _, conflict := range fieldProv.Conflicts {
-					sb.WriteString(fmt.Sprintf("      - Sources: %v\n", conflict.Sources))
-					sb.WriteString(fmt.Sprintf("        Selected: %s\n", conflict.SelectedSource))
-					sb.WriteString(fmt.Sprintf("        Reason: %s\n", conflict.Resolution))
+					fmt.Fprintf(&sb, "      - Sources: %v\n", conflict.Sources)
+					fmt.Fprintf(&sb, "        Selected: %s\n", conflict.SelectedSource)
+					fmt.Fprintf(&sb, "        Reason: %s\n", conflict.Resolution)
 				}
 			}
 
@@ -297,11 +317,11 @@ func (r *Report) String() string {
 				sb.WriteString("    History:\n")
 				for i, info := range fieldProv.History {
 					if i > 3 { // Limit history display
-						sb.WriteString(fmt.Sprintf("      ... and %d more\n", len(fieldProv.History)-i))
+						fmt.Fprintf(&sb, "      ... and %d more\n", len(fieldProv.History)-i)
 						break
 					}
-					sb.WriteString(fmt.Sprintf("      - %v from %s at %s\n",
-						info.Value, info.Source, info.Timestamp.Format("15:04:05")))
+					fmt.Fprintf(&sb, "      - %v from %s at %s\n",
+						info.Value, info.Source, info.Timestamp.Format("15:04:05"))
 				}
 			}
 		}
@@ -309,18 +329,6 @@ func (r *Report) String() string {
 	}
 
 	return sb.String()
-}
-
-// Auditor validates provenance tracking.
-type Auditor interface {
-	// Audit checks provenance for completeness and consistency
-	Audit(provenance Map) *AuditResult
-
-	// ValidateAuthority ensures authority scores are valid
-	ValidateAuthority(provenance Map) []string
-
-	// CheckCoverage verifies all required fields have provenance
-	CheckCoverage(provenance Map, requiredFields []string) []string
 }
 
 // AuditResult contains audit findings.

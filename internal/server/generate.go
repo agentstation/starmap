@@ -23,4 +23,4 @@
 //	http.ListenAndServe(":8080", srv.Handler())
 package server
 
-//go:generate gomarkdoc -e -o README.md . --repository.path /internal/server
+//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /internal/server

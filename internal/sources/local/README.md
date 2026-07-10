@@ -15,21 +15,20 @@ import "github.com/agentstation/starmap/internal/sources/local"
 ## Index
 
 - [type Option](<#Option>)
-  - [func WithCatalog\(catalog catalogs.Catalog\) Option](<#WithCatalog>)
+  - [func WithCatalog\(catalog \*catalogs.Catalog\) Option](<#WithCatalog>)
   - [func WithCatalogPath\(path string\) Option](<#WithCatalogPath>)
 - [type Source](<#Source>)
   - [func New\(opts ...Option\) \*Source](<#New>)
-  - [func \(s \*Source\) Catalog\(\) catalogs.Catalog](<#Source.Catalog>)
   - [func \(s \*Source\) Cleanup\(\) error](<#Source.Cleanup>)
   - [func \(s \*Source\) Dependencies\(\) \[\]sources.Dependency](<#Source.Dependencies>)
-  - [func \(s \*Source\) Fetch\(\_ context.Context, \_ ...sources.Option\) error](<#Source.Fetch>)
   - [func \(s \*Source\) ID\(\) sources.ID](<#Source.ID>)
   - [func \(s \*Source\) IsOptional\(\) bool](<#Source.IsOptional>)
   - [func \(s \*Source\) Name\(\) string](<#Source.Name>)
+  - [func \(s \*Source\) Observe\(\_ context.Context, \_ ...sources.Option\) \(sources.Observation, error\)](<#Source.Observe>)
 
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L28>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L31>)
 
 Option configures a local source.
 
@@ -38,16 +37,16 @@ type Option func(*Source)
 ```
 
 <a name="WithCatalog"></a>
-### func [WithCatalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L39>)
+### func [WithCatalog](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L42>)
 
 ```go
-func WithCatalog(catalog catalogs.Catalog) Option
+func WithCatalog(catalog *catalogs.Catalog) Option
 ```
 
 WithCatalog sets a pre\-loaded catalog to reuse. This allows reusing an already\-merged catalog instead of loading again.
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L31>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L34>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -56,7 +55,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath sets the catalog path.
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L12-L16>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L13-L17>)
 
 Source loads a catalog from either a file path or embedded catalog.
 
@@ -67,7 +66,7 @@ type Source struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L19>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L22>)
 
 ```go
 func New(opts ...Option) *Source
@@ -75,17 +74,8 @@ func New(opts ...Option) *Source
 
 New creates a new local source.
 
-<a name="Source.Catalog"></a>
-### func \(\*Source\) [Catalog](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L78>)
-
-```go
-func (s *Source) Catalog() catalogs.Catalog
-```
-
-Catalog returns the catalog of this source.
-
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L83>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L92>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -94,7 +84,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L90>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L99>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -102,17 +92,8 @@ func (s *Source) Dependencies() []sources.Dependency
 
 Dependencies returns the list of external dependencies. Local source has no external dependencies.
 
-<a name="Source.Fetch"></a>
-### func \(\*Source\) [Fetch](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L57>)
-
-```go
-func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error
-```
-
-Fetch returns catalog data from configured source.
-
 <a name="Source.ID"></a>
-### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L47>)
+### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L50>)
 
 ```go
 func (s *Source) ID() sources.ID
@@ -121,7 +102,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L96>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L105>)
 
 ```go
 func (s *Source) IsOptional() bool
@@ -130,13 +111,22 @@ func (s *Source) IsOptional() bool
 IsOptional returns whether this source is optional. Local source is optional \- we can fall back to embedded catalog.
 
 <a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/master/internal/sources/local/local.go#L54>)
+### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L57>)
 
 ```go
 func (s *Source) Name() string
 ```
 
 Name returns the human\-friendly name of this source.
+
+<a name="Source.Observe"></a>
+### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L60>)
+
+```go
+func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error)
+```
+
+Observe returns catalog data from the configured source without retaining result state.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

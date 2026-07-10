@@ -1,6 +1,7 @@
 package modelsdev
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -13,6 +14,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // mockAPI creates a valid models.dev-like JSON response
@@ -33,20 +35,24 @@ func mockAPI() map[string]any {
 			},
 		},
 		"anthropic": map[string]any{
-			"id":   "anthropic",
-			"name": "Anthropic",
+			"id":     "anthropic",
+			"name":   "Anthropic",
+			"models": map[string]any{},
 		},
 		"google": map[string]any{
-			"id":   "google",
-			"name": "Google",
+			"id":     "google",
+			"name":   "Google",
+			"models": map[string]any{},
 		},
 		"deepseek": map[string]any{
-			"id":   "deepseek",
-			"name": "DeepSeek",
+			"id":     "deepseek",
+			"name":   "DeepSeek",
+			"models": map[string]any{},
 		},
 		"cerebras": map[string]any{
-			"id":   "cerebras",
-			"name": "Cerebras",
+			"id":     "cerebras",
+			"name":   "Cerebras",
+			"models": map[string]any{},
 		},
 	}
 }
@@ -84,6 +90,137 @@ func largeMockAPIJSON() string {
 	return string(data)
 }
 
+func largeSchemaIncompatibleAPIJSON(t *testing.T) string {
+	t.Helper()
+
+	var api map[string]any
+	if err := json.Unmarshal([]byte(largeMockAPIJSON()), &api); err != nil {
+		t.Fatalf("unmarshal large mock API: %v", err)
+	}
+	openAI := api["openai"].(map[string]any)
+	models := openAI["models"].(map[string]any)
+	gpt4 := models["gpt-4"].(map[string]any)
+	gpt4["limit"] = map[string]any{
+		"context": map[string]any{"unexpected": true},
+	}
+
+	data, err := json.Marshal(api)
+	if err != nil {
+		t.Fatalf("marshal incompatible mock API: %v", err)
+	}
+	return string(data)
+}
+
+func semanticallyIncompleteAPIJSON(t *testing.T) string {
+	t.Helper()
+
+	var api map[string]any
+	if err := json.Unmarshal([]byte(largeMockAPIJSON()), &api); err != nil {
+		t.Fatalf("unmarshal large mock API: %v", err)
+	}
+	models := api["openai"].(map[string]any)["models"].(map[string]any)
+	for index := 200; index < 1000; index++ {
+		delete(models, fmt.Sprintf("model-%d", index))
+	}
+	models["gpt-4"].(map[string]any)["description"] = strings.Repeat("syntactically-valid-padding", 5000)
+
+	data, err := json.Marshal(api)
+	if err != nil {
+		t.Fatalf("marshal semantically incomplete API: %v", err)
+	}
+	return string(data)
+}
+
+func TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(semanticallyIncompleteAPIJSON(t)))
+	}))
+	defer server.Close()
+
+	now := time.Date(2026, time.July, 10, 20, 0, 0, 0, time.UTC)
+	client := &HTTPClient{
+		CacheDir: filepath.Join(t.TempDir(), "models.dev"), APIURL: server.URL,
+		Client: server.Client(), nowFunc: func() time.Time { return now },
+	}
+	if err := os.MkdirAll(client.CacheDir, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	want := []byte(largeMockAPIJSON())
+	apiPath := client.GetAPIPath()
+	if err := os.WriteFile(apiPath, want, constants.FilePermissions); err != nil {
+		t.Fatalf("write last-known-good cache: %v", err)
+	}
+	wantChecksum := checksumBytes(want)
+	if err := client.writeCacheMetadata(apiPath, httpCacheMetadata{
+		Version: httpCacheMetadataVersion, Origin: HTTPAcquisitionDownloaded,
+		ContentChecksum: wantChecksum, ValidatedAt: now.Add(-2 * HTTPCacheTTL),
+	}); err != nil {
+		t.Fatalf("write cache metadata: %v", err)
+	}
+
+	result, err := client.AcquireAPI(context.Background())
+	if err != nil {
+		t.Fatalf("AcquireAPI: %v", err)
+	}
+	if result.Kind != HTTPAcquisitionStaleCache {
+		t.Fatalf("acquisition = %q, want %q", result.Kind, HTTPAcquisitionStaleCache)
+	}
+	if len(result.Issues) != 1 || result.Issues[0].Code != sources.ObservationIssueCodeSchemaDrift {
+		t.Fatalf("semantic rejection evidence = %#v", result.Issues)
+	}
+	got, err := os.ReadFile(apiPath)
+	if err != nil {
+		t.Fatalf("read retained cache: %v", err)
+	}
+	if !bytes.Equal(got, want) || checksumBytes(got) != wantChecksum {
+		t.Fatal("semantically incomplete download replaced the last-known-good cache")
+	}
+}
+
+func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(largeSchemaIncompatibleAPIJSON(t)))
+	}))
+	defer server.Close()
+
+	client := &HTTPClient{
+		CacheDir: filepath.Join(t.TempDir(), "models.dev"),
+		APIURL:   server.URL,
+		Client:   &http.Client{Timeout: constants.DefaultHTTPTimeout},
+	}
+	if err := os.MkdirAll(client.CacheDir, constants.DirPermissions); err != nil {
+		t.Fatalf("create cache directory: %v", err)
+	}
+
+	want := []byte(largeMockAPIJSON())
+	apiPath := client.GetAPIPath()
+	if err := os.WriteFile(apiPath, want, constants.FilePermissions); err != nil {
+		t.Fatalf("write last-known-good cache: %v", err)
+	}
+	staleTime := time.Now().Add(-2 * HTTPCacheTTL)
+	if err := os.Chtimes(apiPath, staleTime, staleTime); err != nil {
+		t.Fatalf("age last-known-good cache: %v", err)
+	}
+
+	if err := client.EnsureAPI(context.Background()); err != nil {
+		t.Fatalf("EnsureAPI should retain last-known-good cache: %v", err)
+	}
+	got, err := os.ReadFile(apiPath)
+	if err != nil {
+		t.Fatalf("read retained cache: %v", err)
+	}
+	if string(got) != string(want) {
+		t.Fatal("schema-incompatible download replaced the last-known-good cache")
+	}
+	if _, err := ParseAPI(apiPath); err != nil {
+		t.Fatalf("retained cache is not typed-parseable: %v", err)
+	}
+}
+
 func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 	// Create mock server
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -105,9 +242,12 @@ func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 
 	// Test successful download
 	ctx := context.Background()
-	err := client.EnsureAPI(ctx)
+	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
 		t.Fatalf("Expected no error, got: %v", err)
+	}
+	if acquisition.Kind != HTTPAcquisitionDownloaded {
+		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionDownloaded)
 	}
 
 	// Verify file was created
@@ -157,12 +297,25 @@ func TestHTTPClient_EnsureAPI_CachedFile(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create cache file: %v", err)
 	}
+	cacheData, err := os.ReadFile(apiPath)
+	if err != nil {
+		t.Fatalf("Failed to read cache file: %v", err)
+	}
+	if err := client.writeCacheMetadata(apiPath, httpCacheMetadata{
+		Version: httpCacheMetadataVersion, Origin: HTTPAcquisitionDownloaded,
+		ContentChecksum: checksumBytes(cacheData), ValidatedAt: time.Now().UTC(),
+	}); err != nil {
+		t.Fatalf("Failed to write cache metadata: %v", err)
+	}
 
 	// Test that cached file is used
 	ctx := context.Background()
-	err = client.EnsureAPI(ctx)
+	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
 		t.Fatalf("Expected no error, got: %v", err)
+	}
+	if acquisition.Kind != HTTPAcquisitionFreshCache {
+		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionFreshCache)
 	}
 
 	// Verify cache file still exists and wasn't modified
@@ -174,6 +327,147 @@ func TestHTTPClient_EnsureAPI_CachedFile(t *testing.T) {
 	// File should be recent (just created)
 	if time.Since(info.ModTime()) > time.Minute {
 		t.Error("Cache file should be recent")
+	}
+}
+
+func TestHTTPClientConditionalRevalidationRetainsHTTPRevision(t *testing.T) {
+	tests := []struct {
+		name              string
+		responseHeader    string
+		responseValue     string
+		conditionalHeader string
+		wantRevisionKind  sources.RevisionKind
+	}{
+		{
+			name: "etag", responseHeader: "ETag", responseValue: `"models-v1"`,
+			conditionalHeader: "If-None-Match", wantRevisionKind: sources.RevisionKindETag,
+		},
+		{
+			name: "last modified", responseHeader: "Last-Modified", responseValue: "Wed, 08 Jul 2026 18:00:00 GMT",
+			conditionalHeader: "If-Modified-Since", wantRevisionKind: sources.RevisionKindLastModified,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			body := []byte(largeMockAPIJSON())
+			requestCount := 0
+			servedBytes := 0
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
+				requestCount++
+				w.Header().Set(test.responseHeader, test.responseValue)
+				if requestCount == 1 {
+					servedBytes += len(body)
+					_, _ = w.Write(body)
+					return
+				}
+				if got := request.Header.Get(test.conditionalHeader); got != test.responseValue {
+					t.Errorf("%s = %q, want %q", test.conditionalHeader, got, test.responseValue)
+					w.WriteHeader(http.StatusPreconditionFailed)
+					return
+				}
+				w.WriteHeader(http.StatusNotModified)
+			}))
+			defer server.Close()
+
+			now := time.Date(2026, time.July, 10, 18, 0, 0, 0, time.UTC)
+			client := &HTTPClient{
+				CacheDir: filepath.Join(t.TempDir(), "models.dev"), APIURL: server.URL,
+				Client: server.Client(), nowFunc: func() time.Time { return now },
+			}
+			first, err := client.AcquireAPI(context.Background())
+			if err != nil {
+				t.Fatalf("first AcquireAPI: %v", err)
+			}
+			if first.Kind != HTTPAcquisitionDownloaded || first.Revision.Kind != test.wantRevisionKind || first.Revision.Value != test.responseValue {
+				t.Fatalf("first acquisition = %#v", first)
+			}
+			firstPayload, err := os.ReadFile(client.GetAPIPath())
+			if err != nil {
+				t.Fatalf("ReadFile first payload: %v", err)
+			}
+
+			now = now.Add(HTTPCacheTTL + time.Minute)
+			second, err := client.AcquireAPI(context.Background())
+			if err != nil {
+				t.Fatalf("second AcquireAPI: %v", err)
+			}
+			if second.Kind != HTTPAcquisitionRevalidatedCache || second.Revision != first.Revision {
+				t.Fatalf("second acquisition = %#v, want 304 revision %#v", second, first.Revision)
+			}
+			secondPayload, err := os.ReadFile(client.GetAPIPath())
+			if err != nil {
+				t.Fatalf("ReadFile second payload: %v", err)
+			}
+			if !bytes.Equal(secondPayload, firstPayload) {
+				t.Fatal("304 revalidation changed the cached payload")
+			}
+			if requestCount != 2 || servedBytes != len(body) {
+				t.Fatalf("requests/served bytes = %d/%d, want 2/%d", requestCount, servedBytes, len(body))
+			}
+		})
+	}
+}
+
+func TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess(t *testing.T) {
+	requestCount := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		requestCount++
+		w.WriteHeader(http.StatusServiceUnavailable)
+	}))
+	defer server.Close()
+	client := &HTTPClient{
+		CacheDir: filepath.Join(t.TempDir(), "models.dev"), APIURL: server.URL, Client: server.Client(),
+	}
+
+	first, err := client.AcquireAPI(context.Background())
+	if err != nil {
+		t.Fatalf("first AcquireAPI: %v", err)
+	}
+	second, err := client.AcquireAPI(context.Background())
+	if err != nil {
+		t.Fatalf("second AcquireAPI: %v", err)
+	}
+	if first.Kind != HTTPAcquisitionEmbeddedBootstrap || second.Kind != HTTPAcquisitionEmbeddedBootstrap {
+		t.Fatalf("bootstrap acquisitions = (%q, %q), want embedded bootstrap twice", first.Kind, second.Kind)
+	}
+	if requestCount != 1 {
+		t.Fatalf("request count = %d, want bootstrap cache reuse without relabeling", requestCount)
+	}
+}
+
+func TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
+		if got := request.Header.Get("If-None-Match"); got != "" {
+			t.Errorf("If-None-Match = %q, want empty for mismatched cache metadata", got)
+		}
+		w.Header().Set("ETag", `"models-v2"`)
+		_, _ = w.Write([]byte(largeMockAPIJSON()))
+	}))
+	defer server.Close()
+	client := &HTTPClient{
+		CacheDir: filepath.Join(t.TempDir(), "models.dev"), APIURL: server.URL, Client: server.Client(),
+	}
+	if err := os.MkdirAll(client.CacheDir, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	apiPath := client.GetAPIPath()
+	cache := []byte(largeMockAPIJSON())
+	if err := os.WriteFile(apiPath, cache, constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if err := client.writeCacheMetadata(apiPath, httpCacheMetadata{
+		Version: httpCacheMetadataVersion, Origin: HTTPAcquisitionDownloaded, ETag: `"models-v1"`,
+		ContentChecksum: checksumBytes([]byte("different payload")), ValidatedAt: time.Now().UTC(),
+	}); err != nil {
+		t.Fatalf("writeCacheMetadata: %v", err)
+	}
+
+	result, err := client.AcquireAPI(context.Background())
+	if err != nil {
+		t.Fatalf("AcquireAPI: %v", err)
+	}
+	if result.Kind != HTTPAcquisitionDownloaded || result.Revision != (sources.Revision{Kind: sources.RevisionKindETag, Value: `"models-v2"`}) {
+		t.Fatalf("acquisition = %#v", result)
 	}
 }
 
@@ -214,9 +508,12 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithCache(t *testing.T) {
 
 	// Test that stale cache is used when HTTP fails
 	ctx := context.Background()
-	err = client.EnsureAPI(ctx)
+	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
 		t.Fatalf("Expected no error, got: %v", err)
+	}
+	if acquisition.Kind != HTTPAcquisitionStaleCache {
+		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionStaleCache)
 	}
 
 	// Verify cache file is still there
@@ -243,9 +540,12 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback(t *testing.T) {
 
 	// No cache file exists - should use embedded
 	ctx := context.Background()
-	err := client.EnsureAPI(ctx)
+	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
 		t.Fatalf("Expected no error, got: %v", err)
+	}
+	if acquisition.Kind != HTTPAcquisitionEmbeddedBootstrap {
+		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionEmbeddedBootstrap)
 	}
 
 	// Verify embedded data was copied to cache

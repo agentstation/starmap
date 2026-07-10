@@ -2,8 +2,8 @@
 id: gpt-image-1-mini
 name: gpt-image-1-mini
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model features
 features:

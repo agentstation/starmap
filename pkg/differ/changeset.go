@@ -32,10 +32,17 @@ type FieldChange struct {
 
 // ModelUpdate represents an update to an existing model.
 type ModelUpdate struct {
-	ID       string         // ID of the model being updated
-	Existing catalogs.Model // Current model
-	New      catalogs.Model // New model
-	Changes  []FieldChange  // Detailed list of field changes
+	ID         string              // ID of the model being updated
+	ProviderID catalogs.ProviderID // Provider scope for this model update, when known
+	Existing   catalogs.Model      // Current model
+	New        catalogs.Model      // New model
+	Changes    []FieldChange       // Detailed list of field changes
+}
+
+// ModelChange represents a provider-scoped model add or remove.
+type ModelChange struct {
+	ProviderID catalogs.ProviderID // Provider scope for this model change, when known
+	Model      catalogs.Model      // Added or removed model
 }
 
 // ProviderUpdate represents an update to an existing provider.
@@ -56,9 +63,11 @@ type AuthorUpdate struct {
 
 // ModelChangeset represents changes to models.
 type ModelChangeset struct {
-	Added   []catalogs.Model // New models
-	Updated []ModelUpdate    // Updated models
-	Removed []catalogs.Model // Removed models
+	Added         []catalogs.Model // New models
+	AddedScoped   []ModelChange    // Provider-scoped new models, when available
+	Updated       []ModelUpdate    // Updated models
+	Removed       []catalogs.Model // Removed models
+	RemovedScoped []ModelChange    // Provider-scoped removed models, when available
 }
 
 // ProviderChangeset represents changes to providers.

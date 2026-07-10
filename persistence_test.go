@@ -1,6 +1,7 @@
 package starmap
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"testing"
@@ -27,7 +28,7 @@ func TestSave(t *testing.T) {
 }
 
 func TestSaveReturnsNilAfterSuccessfulCatalogSave(t *testing.T) {
-	sm, err := New(WithAutoUpdatesDisabled())
+	sm, err := New()
 	if err != nil {
 		t.Fatalf("Failed to create starmap: %v", err)
 	}
@@ -55,20 +56,17 @@ func TestSaveDoesNotPublishCatalogWhenPersistenceFails(t *testing.T) {
 		t.Fatalf("Failed to create blocking file: %v", err)
 	}
 
-	c := &client{
-		catalog: oldCatalog,
+	c := &Client{
+		catalog: mustTestCatalog(t, oldCatalog),
 		hooks:   newHooks(),
 	}
 
-	err := c.save(newCatalog, &pkgsync.Options{OutputPath: blockingFile}, &differ.Changeset{})
+	_, err := c.save(context.Background(), newCatalog, &pkgsync.Options{OutputPath: blockingFile}, &differ.Changeset{}, nil)
 	if err == nil {
 		t.Fatal("Expected save to fail")
 	}
 
-	current, err := c.Catalog()
-	if err != nil {
-		t.Fatalf("Failed to read current catalog: %v", err)
-	}
+	current := c.Catalog()
 	if _, err := current.Provider("old"); err != nil {
 		t.Fatalf("Expected old catalog to remain published after failed save: %v", err)
 	}

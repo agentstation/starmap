@@ -24,7 +24,7 @@ type ProviderValidationReport struct {
 // ValidateAllProviders checks all providers in the catalog for API key availability.
 // This helps users understand which providers they can use based on their configuration.
 // The supportedProviders parameter should be a list of provider IDs that have client implementations.
-func ValidateAllProviders(catalog Catalog, supportedProviders []ProviderID) (*ProviderValidationReport, error) {
+func ValidateAllProviders(catalog Reader, supportedProviders []ProviderID) (*ProviderValidationReport, error) {
 	report := &ProviderValidationReport{
 		Configured:  []ProviderValidationEntry{},
 		Missing:     []ProviderValidationEntry{},

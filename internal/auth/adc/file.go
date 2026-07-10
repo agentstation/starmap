@@ -34,7 +34,7 @@ type File struct {
 func FindFile() string {
 	// 1. Check GOOGLE_APPLICATION_CREDENTIALS environment variable
 	if path := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"); path != "" {
-		if _, err := os.Stat(path); err == nil {
+		if _, err := os.Stat(path); err == nil { //nolint:gosec // ADC credential path is intentionally user/environment supplied.
 			return path
 		}
 	}

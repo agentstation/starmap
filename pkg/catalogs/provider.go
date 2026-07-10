@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -36,6 +37,9 @@ type Provider struct {
 	PrivacyPolicy    *ProviderPrivacyPolicy    `json:"privacy_policy,omitempty" yaml:"privacy_policy,omitempty"`       // Data collection and usage practices
 	RetentionPolicy  *ProviderRetentionPolicy  `json:"retention_policy,omitempty" yaml:"retention_policy,omitempty"`   // Data retention and deletion practices
 	GovernancePolicy *ProviderGovernancePolicy `json:"governance_policy,omitempty" yaml:"governance_policy,omitempty"` // Oversight and moderation practices
+
+	// Extensions - controlled source-specific fields that are not canonical schema
+	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
 	// Runtime fields (not serialized)
 	apiKeyValue  string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
@@ -79,12 +83,14 @@ type AuthorMapping struct {
 
 // ProviderEndpoint configures how to access the provider's model catalog.
 type ProviderEndpoint struct {
-	Type          EndpointType   `yaml:"type" json:"type"`                                         // Required: API style
-	URL           string         `yaml:"url" json:"url"`                                           // Required: API endpoint
-	AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                       // Required: Whether auth needed
-	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"` // Field mappings
-	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`   // Feature inference rules
-	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"` // Author extraction
+	Type          EndpointType   `yaml:"type" json:"type"`                                             // Required: API style
+	URL           string         `yaml:"url" json:"url"`                                               // Required: API endpoint
+	BaseURLEnvVar string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"` // Optional env var for overriding the endpoint base URL
+	Path          string         `yaml:"path,omitempty" json:"path,omitempty"`                         // Path appended when BaseURLEnvVar is set
+	AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                           // Required: Whether auth needed
+	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
+	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
+	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
 }
 
 // ProviderCatalog represents information about a provider's models.
@@ -150,6 +156,7 @@ func (pid ProviderID) String() string {
 // Provider ID constants for compile-time safety and consistency.
 const (
 	ProviderIDAlibabaQwen    ProviderID = "alibaba"
+	ProviderIDAlibabaCloud   ProviderID = "alibaba"
 	ProviderIDAnthropic      ProviderID = "anthropic"
 	ProviderIDAnyscale       ProviderID = "anyscale"
 	ProviderIDCerebras       ProviderID = "cerebras"
@@ -158,7 +165,9 @@ const (
 	ProviderIDConectys       ProviderID = "conectys"
 	ProviderIDCove           ProviderID = "cove"
 	ProviderIDDeepMind       ProviderID = "deepmind"
+	ProviderIDDeepInfra      ProviderID = "deepinfra"
 	ProviderIDDeepSeek       ProviderID = "deepseek"
+	ProviderIDFireworksAI    ProviderID = "fireworks-ai"
 	ProviderIDGoogleAIStudio ProviderID = "google-ai-studio"
 	ProviderIDGoogleVertex   ProviderID = "google-vertex"
 	ProviderIDGroq           ProviderID = "groq"
@@ -365,6 +374,31 @@ func (p *Provider) EnvVar(name string) string {
 	return os.Getenv(name)
 }
 
+// CatalogEndpointURL returns the resolved model catalog endpoint URL.
+func (p *Provider) CatalogEndpointURL() string {
+	if p == nil || p.Catalog == nil {
+		return ""
+	}
+
+	endpoint := p.Catalog.Endpoint
+	if endpoint.BaseURLEnvVar != "" {
+		if baseURL := strings.TrimSpace(p.EnvVar(endpoint.BaseURLEnvVar)); baseURL != "" {
+			return joinEndpointURL(baseURL, endpoint.Path)
+		}
+	}
+
+	return endpoint.URL
+}
+
+func joinEndpointURL(baseURL, endpointPath string) string {
+	baseURL = strings.TrimRight(strings.TrimSpace(baseURL), "/")
+	endpointPath = strings.TrimLeft(strings.TrimSpace(endpointPath), "/")
+	if endpointPath == "" {
+		return baseURL
+	}
+	return baseURL + "/" + endpointPath
+}
+
 // HasRequiredEnvVars checks if all required environment variables are set.
 func (p *Provider) HasRequiredEnvVars() bool {
 	for _, envVar := range p.EnvVars {
@@ -412,8 +446,8 @@ func (p *Provider) MissingRequiredEnvVars() []string {
 // HasAPIKey checks if the provider has a valid API key configured.
 // This checks both existence and validation (pattern matching).
 func (p *Provider) HasAPIKey() bool {
-	_, err := p.APIKeyValue()
-	return err == nil
+	apiKey, err := p.APIKeyValue()
+	return err == nil && apiKey != ""
 }
 
 // Validate performs validation checks on this provider and returns the result.

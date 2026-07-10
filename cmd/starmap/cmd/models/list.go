@@ -8,12 +8,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/catalog/query"
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/table"
+	"github.com/agentstation/starmap/internal/cli/constants"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
+	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/convert"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -71,19 +71,18 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 		return err
 	}
 
-	// Get all models
-	allModels := cat.Models().List()
-	providerIndex := query.NewProviderModelIndex(cat.Providers().List())
+	allModels, err := query.CatalogModels(cat, flags.Provider)
+	if err != nil {
+		return err
+	}
 
 	filtered := query.Models(allModels, query.ModelOptions{
-		Provider:           flags.Provider,
-		ProviderModelIndex: providerIndex,
-		Author:             flags.Author,
-		Capability:         capability,
-		MinContext:         minContext,
-		MaxPrice:           maxPrice,
-		Search:             flags.Search,
-		Limit:              flags.Limit,
+		Author:     flags.Author,
+		Capability: capability,
+		MinContext: minContext,
+		MaxPrice:   maxPrice,
+		Search:     flags.Search,
+		Limit:      flags.Limit,
 	})
 
 	// Handle export format if specified

@@ -2,46 +2,62 @@ package starmap
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
-	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
-// Updater handles catalog synchronization operations.
-type Updater interface {
-	// Sync synchronizes the catalog with provider APIs
-	Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-
-	// Update manually triggers a catalog update
-	Update(ctx context.Context) error
-}
-
-// Compile-time interface check to ensure proper implementation.
-var _ Updater = (*client)(nil)
-
 // Update manually triggers a catalog update.
-func (c *client) Update(ctx context.Context) error {
-	if c.options.remoteServerURL != nil {
-		return c.updateFromServer(ctx)
+func (c *Client) Update(ctx context.Context) error {
+	if err := c.requireWritableCatalogStore(); err != nil {
+		return err
 	}
-
-	if c.options.autoUpdateFunc != nil {
-		c.mu.RLock()
-		currentCatalog := c.catalog
-		c.mu.RUnlock()
-
-		newCatalog, err := c.options.autoUpdateFunc(currentCatalog)
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if c.options.remoteServerOnly {
+		release, err := c.updates.acquire(ctx)
 		if err != nil {
 			return err
 		}
-		c.setCatalog(newCatalog)
+		defer release()
+		return c.updateFromServer(ctx)
+	}
+
+	if c.options.updateFunc != nil {
+		release, err := c.updates.acquire(ctx)
+		if err != nil {
+			return err
+		}
+		defer release()
+
+		currentCatalog, err := c.catalogCopy()
+		if err != nil {
+			return err
+		}
+
+		newCatalog, err := c.options.updateFunc(ctx, currentCatalog)
+		if err != nil {
+			return err
+		}
+		published, err := snapshotBuilder(newCatalog)
+		if err != nil {
+			return err
+		}
+		observation, err := c.catalogObservation(customUpdateSourceID, published, sources.Revision{Kind: sources.RevisionKindContentDigest})
+		if err != nil {
+			return err
+		}
+		if _, err := c.commitAndPublish(ctx, published, []sources.Observation{observation}); err != nil {
+			return err
+		}
 	} else {
 		// Use pipeline-based update as default
 		return c.updateWithPipeline(ctx)
@@ -51,11 +67,10 @@ func (c *client) Update(ctx context.Context) error {
 }
 
 // updateWithPipeline performs a pipeline-based update for all providers.
-func (c *client) updateWithPipeline(ctx context.Context) error {
-	// Use default options for auto-updates
+func (c *Client) updateWithPipeline(ctx context.Context) error {
+	// Use default options for an explicit pipeline update.
 	opts := []sync.Option{
 		sync.WithDryRun(false),
-		sync.WithAutoApprove(true),
 	}
 
 	// Perform a sync operation with default options
@@ -65,7 +80,7 @@ func (c *client) updateWithPipeline(ctx context.Context) error {
 }
 
 // updateFromServer fetches catalog updates from the remote server.
-func (c *client) updateFromServer(ctx context.Context) error {
+func (c *Client) updateFromServer(ctx context.Context) error {
 	if c.options.remoteServerURL == nil {
 		return &errors.ConfigError{
 			Component: "starmap",
@@ -74,127 +89,63 @@ func (c *client) updateFromServer(ctx context.Context) error {
 	}
 
 	logger := logging.FromContext(ctx)
-	logger.Debug().
-		Str("url", *c.options.remoteServerURL).
-		Msg("Fetching catalog from remote server")
-
-	req, err := http.NewRequestWithContext(ctx, "GET", *c.options.remoteServerURL+"/catalog", nil)
-	if err != nil {
-		return errors.WrapResource("create", "request", "", err)
-	}
-
+	logger.Debug().Str("url", *c.options.remoteServerURL).Msg("Fetching remote catalog generation")
+	var httpClient *http.Client
 	if c.options.remoteServerAPIKey != nil {
-		req.Header.Set("Authorization", "Bearer "+*c.options.remoteServerAPIKey)
+		httpClient = &http.Client{Transport: authorizationTransport{
+			base: http.DefaultTransport, token: *c.options.remoteServerAPIKey,
+		}, Timeout: constants.DefaultHTTPTimeout}
 	}
-
-	resp, err := http.DefaultClient.Do(req)
+	remote, err := catalogremote.NewClient(*c.options.remoteServerURL, httpClient, catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
-		return &errors.APIError{
-			Provider: "starmap-server",
-			Endpoint: *c.options.remoteServerURL,
-			Message:  "failed to make request",
-			Err:      err,
-		}
+		return err
 	}
-	defer func() {
-		// Drain and close body to allow connection reuse
-		_, _ = io.Copy(io.Discard, resp.Body)
-		_ = resp.Body.Close()
-	}()
-
-	// Check response status
-	if resp.StatusCode != http.StatusOK {
-		logger.Error().
-			Int("status_code", resp.StatusCode).
-			Str("url", *c.options.remoteServerURL).
-			Msg("Remote server returned error status")
-		return &errors.APIError{
-			Provider:   "starmap-server",
-			Endpoint:   *c.options.remoteServerURL,
-			StatusCode: resp.StatusCode,
-			Message:    fmt.Sprintf("server returned status %d", resp.StatusCode),
-		}
-	}
-
-	logger.Trace().Msg("Parsing catalog response")
-
-	// Read response body
-	body, err := io.ReadAll(resp.Body)
+	generation, err := remote.FetchCurrent(ctx)
 	if err != nil {
-		return errors.WrapIO("read", "response body", err)
+		return err
 	}
-
-	// Parse remote catalog response
-	type RemoteCatalogResponse struct {
-		Version   string          `json:"version"`
-		Catalog   json.RawMessage `json:"catalog"`
-		Checksum  string          `json:"checksum,omitempty"`
-		Timestamp time.Time       `json:"timestamp"`
+	published, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	if err != nil {
+		return errors.WrapResource("decode", "remote catalog generation", generation.Manifest.GenerationID, err)
 	}
-
-	var response RemoteCatalogResponse
-	if err := json.Unmarshal(body, &response); err != nil {
-		return errors.WrapParse("json", "remote catalog response", err)
+	if err := c.commitReceivedGeneration(ctx, published, generation); err != nil {
+		return err
 	}
-
-	// Create a new memory catalog and populate it
-	newCatalog := catalogs.NewEmpty()
-
-	// Parse catalog data structure
-	type CatalogData struct {
-		Providers []catalogs.Provider `json:"providers,omitempty"`
-		Authors   []catalogs.Author   `json:"authors,omitempty"`
-		Models    []catalogs.Model    `json:"models,omitempty"`
-		Endpoints []catalogs.Endpoint `json:"endpoints,omitempty"`
-	}
-
-	var catalogData CatalogData
-	if err := json.Unmarshal(response.Catalog, &catalogData); err != nil {
-		return errors.WrapParse("json", "catalog data", err)
-	}
-
-	// Populate the catalog
-	for _, provider := range catalogData.Providers {
-		if err := newCatalog.SetProvider(provider); err != nil {
-			logger.Warn().Err(err).Str("provider", string(provider.ID)).Msg("Failed to set provider")
-		}
-	}
-
-	for _, author := range catalogData.Authors {
-		if err := newCatalog.SetAuthor(author); err != nil {
-			logger.Warn().Err(err).Str("author", string(author.ID)).Msg("Failed to set author")
-		}
-	}
-
-	// Models are now associated with providers and authors, not set directly
-	// They should already be included in the provider/author data structures
-
-	for _, endpoint := range catalogData.Endpoints {
-		if err := newCatalog.SetEndpoint(endpoint); err != nil {
-			logger.Warn().Err(err).Str("endpoint", endpoint.ID).Msg("Failed to set endpoint")
-		}
-	}
-
-	// Update the catalog
-	c.setCatalog(newCatalog)
-
-	logger.Info().
-		Str("version", response.Version).
-		Time("timestamp", response.Timestamp).
-		Int("providers", len(catalogData.Providers)).
-		Int("models", len(catalogData.Models)).
-		Msg("Successfully updated catalog from remote server")
-
+	logger.Info().Str("generation_id", generation.Manifest.GenerationID).
+		Str("sync_run_id", generation.Manifest.SyncRunID).
+		Msg("Successfully updated catalog from remote generation")
 	return nil
 }
 
-// setCatalog updates the catalog and triggers appropriate event hooks.
-func (c *client) setCatalog(newCatalog catalogs.Catalog) {
+type authorizationTransport struct {
+	base  http.RoundTripper
+	token string
+}
+
+func (t authorizationTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	clone := request.Clone(request.Context())
+	clone.Header.Set("Authorization", "Bearer "+t.token)
+	return t.base.RoundTrip(clone)
+}
+
+func (c *Client) catalogObservation(sourceID sources.ID, catalog *catalogs.Catalog, revision sources.Revision) (sources.Observation, error) {
+	return sources.NewObservation(sourceID, catalog, sources.ObservationMetadata{
+		ObservedAt:   c.currentTime(),
+		Revision:     revision,
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+}
+
+func (c *Client) swapCatalogGeneration(published *catalogs.Catalog, generationID string) *catalogs.Catalog {
 	c.mu.Lock()
 	oldCatalog := c.catalog
-	c.catalog = newCatalog
+	c.catalog = published
+	c.usingEmbeddedBootstrap = false
+	c.generationSequence++
+	if generationID != "" {
+		c.generationID = generationID
+	}
 	c.mu.Unlock()
-
-	// Trigger hooks for catalog changes
-	c.hooks.triggerUpdate(oldCatalog, newCatalog)
+	return oldCatalog
 }

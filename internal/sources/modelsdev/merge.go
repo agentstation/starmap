@@ -73,7 +73,7 @@ func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error {
 // CopyAuthorLogos copies author logos from models.dev provider logos to author directories.
 // Since models.dev doesn't have a separate authors directory, we copy from the provider
 // directory when the author ID matches a provider ID (or alias).
-func CopyAuthorLogos(outputDir string, authors []catalogs.Author, providers *catalogs.Providers) error {
+func CopyAuthorLogos(outputDir string, authors []catalogs.Author, providers catalogs.ProvidersReader) error {
 	// The models.dev repo is always cloned to this location by git.Fetch()
 	sourcesPath := expandPath(constants.DefaultSourcesPath)
 	modelsDevRepo := filepath.Join(sourcesPath, "models.dev-git")

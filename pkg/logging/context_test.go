@@ -27,6 +27,13 @@ func TestContextFunctions(t *testing.T) {
 		assert.NotNil(t, logger)
 	})
 
+	t.Run("WithRunID adds run correlation", func(t *testing.T) {
+		ctx := logging.WithRunID(context.Background(), "run-123")
+		if got := logging.RunID(ctx); got != "run-123" {
+			t.Fatalf("RunID = %q, want run-123", got)
+		}
+	})
+
 	t.Run("WithOperation adds operation to context", func(t *testing.T) {
 		ctx := context.Background()
 		ctx = logging.WithOperation(ctx, "fetch_models")

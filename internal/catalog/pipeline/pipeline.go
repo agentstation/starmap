@@ -1,8 +1,10 @@
-// Package pipeline owns catalog sync orchestration behind starmap.Client.Sync.
+// Package pipeline owns catalog sync orchestration behind *starmap.Client.Sync.
 package pipeline
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -16,18 +18,24 @@ import (
 
 // Store is the catalog boundary required by the sync pipeline.
 type Store interface {
-	Catalog() (catalogs.Catalog, error)
-	Apply(catalogs.Catalog, *pkgsync.Options, *differ.Changeset) error
+	Catalog() (*catalogs.Catalog, error)
+	Apply(context.Context, *catalogs.Builder, *pkgsync.Options, *differ.Changeset, []sources.Observation) (Publication, error)
 }
 
-type loadLocalFunc func(string) (catalogs.Catalog, error)
-type sourcesFunc func(*pkgsync.Options, catalogs.Catalog) []sources.Source
+// Publication identifies the durable generation produced by Apply.
+type Publication struct {
+	GenerationID string
+	SyncRunID    string
+}
+
+type loadLocalFunc func(string) (*catalogs.Builder, error)
+type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
-type fetchFunc func(context.Context, []sources.Source, []sources.Option) error
-type reconcileFunc func(context.Context, catalogs.Catalog, []sources.Source) (*reconciler.Result, error)
+type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
+type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error)
 
-// Pipeline executes catalog sync through source fetch, reconciliation, and persistence.
+// Pipeline executes catalog sync through source observation, reconciliation, and persistence.
 type Pipeline struct {
 	store Store
 
@@ -35,7 +43,7 @@ type Pipeline struct {
 	createSources       sourcesFunc
 	resolveDependencies resolveDependenciesFunc
 	cleanup             cleanupFunc
-	fetch               fetchFunc
+	observe             observeFunc
 	reconcile           reconcileFunc
 }
 
@@ -47,12 +55,12 @@ func New(store Store) *Pipeline {
 		createSources:       filterSources,
 		resolveDependencies: resolveDependencies,
 		cleanup:             cleanup,
-		fetch:               fetch,
+		observe:             observe,
 		reconcile:           reconcile,
 	}
 }
 
-// Sync synchronizes the catalog through source fetch, reconciliation, and optional persistence.
+// Sync synchronizes the catalog through source observation, reconciliation, and optional persistence.
 func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.Result, error) {
 	if p.store == nil {
 		return nil, &pkgerrors.ConfigError{
@@ -63,6 +71,13 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 
 	if ctx == nil {
 		ctx = context.Background()
+	}
+	if logging.RunID(ctx) == "" {
+		runID, runErr := uuid.NewRandom()
+		if runErr != nil {
+			return nil, pkgerrors.WrapResource("generate", "source run ID", "", runErr)
+		}
+		ctx = logging.WithRunID(ctx, "source-run-"+runID.String())
 	}
 
 	options := pkgsync.Defaults().Apply(opts...)
@@ -84,7 +99,11 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		return nil, err
 	}
 
-	srcs := p.createSources(options, local)
+	localSnapshot, err := local.Build()
+	if err != nil {
+		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
+	}
+	srcs := p.createSources(options, localSnapshot)
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -100,30 +119,50 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 	}()
 
-	if err = p.fetch(ctx, srcs, options.SourceOptions()); err != nil {
+	observations, err := p.observe(ctx, srcs, options.SourceOptions())
+	if err != nil {
 		return nil, err
 	}
 
 	existing, err := p.store.Catalog()
 	if err != nil {
-		existing = catalogs.NewEmpty()
+		empty := catalogs.NewEmpty()
+		existing, err = empty.Build()
+		if err != nil {
+			return nil, pkgerrors.WrapResource("publish", "empty baseline snapshot", "", err)
+		}
 		logging.Debug().Msg("No existing catalog found, using empty baseline")
 	}
+	if options.Fresh {
+		empty := catalogs.NewEmpty()
+		existing, err = empty.Build()
+		if err != nil {
+			return nil, pkgerrors.WrapResource("publish", "fresh baseline snapshot", "", err)
+		}
+		logging.Info().Msg("Fresh sync uses an empty reconciliation baseline")
+	}
 
-	result, err := p.reconcile(ctx, existing, srcs)
+	result, err := p.reconcile(ctx, existing, observations)
 	if err != nil {
 		return nil, err
 	}
 
 	logChanges(result)
 
-	syncResult := pkgsync.ChangesetToResult(
+	syncResult := pkgsync.ChangesetToResultWithProvenance(
 		result.Changeset,
 		options.DryRun,
 		options.OutputPath,
 		result.ProviderAPICounts,
 		result.ModelProviderMap,
+		result.Provenance,
+		activeSourceIDs(observations)...,
 	)
+	syncResult.Fresh = options.Fresh
+	syncResult.SourceObservations = make([]catalogs.SourceObservationLink, 0, len(observations))
+	for _, observation := range observations {
+		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())
+	}
 
 	if options.DryRun {
 		logging.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")
@@ -135,12 +174,23 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		if changeset == nil {
 			changeset = &differ.Changeset{}
 		}
-		if err := p.store.Apply(result.Catalog, options, changeset); err != nil {
+		publication, err := p.store.Apply(ctx, result.Catalog, options, changeset, observations)
+		if err != nil {
 			return nil, err
 		}
+		syncResult.GenerationID = publication.GenerationID
+		syncResult.SyncRunID = publication.SyncRunID
 	}
 
 	return syncResult, nil
+}
+
+func activeSourceIDs(observations []sources.Observation) []sources.ID {
+	ids := make([]sources.ID, 0, len(observations))
+	for _, observation := range observations {
+		ids = append(ids, observation.SourceID)
+	}
+	return ids
 }
 
 func shouldSave(options *pkgsync.Options, changeset *differ.Changeset) bool {

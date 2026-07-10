@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "provider": "deepseek",
+  "fetched_at": "2025-09-11T14:02:09Z",
+  "source_revision": {"kind": "content_digest", "value": "sha256:de677d4eec3ce90c7f6dc08af296a9e97e600f7999edbf59d4b2bdd14726f661"},
+  "payload": {"path": "models_list.json", "checksum": "sha256:de677d4eec3ce90c7f6dc08af296a9e97e600f7999edbf59d4b2bdd14726f661"},
+  "max_age": "8760h0m0s"
+}

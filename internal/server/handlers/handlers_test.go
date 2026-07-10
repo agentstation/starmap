@@ -4,14 +4,45 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/utc"
+
+	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
+
+func TestHandleUpdateRequiresWritableStoreBeforeSync(t *testing.T) {
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	h := &Handlers{
+		app: &application.Mock{StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
+			return client, nil
+		}},
+	}
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)
+	rec := httptest.NewRecorder()
+
+	h.HandleUpdate(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Fatalf("status = %d, want %d: %s", rec.Code, http.StatusInternalServerError, rec.Body.String())
+	}
+	var got response.Response
+	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
+		t.Fatalf("Decode response: %v", err)
+	}
+	if got.Error == nil || got.Error.Code != "INTERNAL_ERROR" {
+		t.Fatalf("response error = %#v, want INTERNAL_ERROR", got.Error)
+	}
+}
 
 func TestHandleListModelsUsesSharedPagination(t *testing.T) {
 	cat := catalogs.NewEmpty()
@@ -54,13 +85,25 @@ func TestHandleListModelsUsesSharedPagination(t *testing.T) {
 	}
 }
 
+func TestHandleListModelsRejectsInvalidSortAndFilterParameters(t *testing.T) {
+	h := newTestHandlers(catalogs.NewEmpty())
+	for _, query := range []string{"sort=price", "limit=invalid", "feature=invented", "min_context=100&max_context=10"} {
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/models?"+query, nil)
+		recorder := httptest.NewRecorder()
+		h.HandleListModels(recorder, req)
+		if recorder.Code != http.StatusBadRequest {
+			t.Fatalf("query %q status = %d, want %d: %s", query, recorder.Code, http.StatusBadRequest, recorder.Body.String())
+		}
+	}
+}
+
 func TestHandleListModelsFiltersByProvider(t *testing.T) {
 	cat := catalogs.NewEmpty()
 	if err := cat.SetProvider(catalogs.Provider{
 		ID:   "openai",
 		Name: "OpenAI",
 		Models: map[string]*catalogs.Model{
-			"openai-model": {ID: "openai-model", Name: "OpenAI Model"},
+			"shared-model": {ID: "shared-model", Name: "OpenAI Offering"},
 		},
 	}); err != nil {
 		t.Fatalf("Failed to seed OpenAI provider: %v", err)
@@ -69,7 +112,7 @@ func TestHandleListModelsFiltersByProvider(t *testing.T) {
 		ID:   "anthropic",
 		Name: "Anthropic",
 		Models: map[string]*catalogs.Model{
-			"anthropic-model": {ID: "anthropic-model", Name: "Anthropic Model"},
+			"shared-model": {ID: "shared-model", Name: "Anthropic Offering"},
 		},
 	}); err != nil {
 		t.Fatalf("Failed to seed Anthropic provider: %v", err)
@@ -95,8 +138,61 @@ func TestHandleListModelsFiltersByProvider(t *testing.T) {
 		t.Fatalf("Expected one OpenAI model, got %d", len(models))
 	}
 	first := models[0].(map[string]any)
-	if first["id"] != "openai-model" {
+	if first["id"] != "shared-model" || first["name"] != "OpenAI Offering" {
 		t.Fatalf("Expected OpenAI model, got %#v", first)
+	}
+}
+
+func TestHandleSearchModelsAppliesReleaseDateRange(t *testing.T) {
+	cat := catalogs.NewEmpty()
+	if err := cat.SetProvider(catalogs.Provider{
+		ID:   "provider",
+		Name: "Provider",
+		Models: map[string]*catalogs.Model{
+			"old-model": {
+				ID:   "old-model",
+				Name: "Old Model",
+				Metadata: &catalogs.ModelMetadata{
+					ReleaseDate: utc.New(time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)),
+				},
+			},
+			"new-model": {
+				ID:   "new-model",
+				Name: "New Model",
+				Metadata: &catalogs.ModelMetadata{
+					ReleaseDate: utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+				},
+			},
+		},
+	}); err != nil {
+		t.Fatalf("Failed to seed provider: %v", err)
+	}
+
+	h := newTestHandlers(cat)
+	req := httptest.NewRequest(
+		http.MethodPost,
+		"/api/v1/models/search",
+		strings.NewReader(`{"release_date":{"after":"2024-01-01T00:00:00Z"}}`),
+	)
+	rec := httptest.NewRecorder()
+
+	h.HandleSearchModels(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("Expected status %d, got %d: %s", http.StatusOK, rec.Code, rec.Body.String())
+	}
+	var got response.Response
+	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+	data := got.Data.(map[string]any)
+	models := data["models"].([]any)
+	if len(models) != 1 {
+		t.Fatalf("Expected one model, got %d", len(models))
+	}
+	first := models[0].(map[string]any)
+	if first["id"] != "new-model" {
+		t.Fatalf("Expected new-model, got %#v", first)
 	}
 }
 
@@ -137,11 +233,11 @@ func TestHandleListProvidersUsesSharedProviderQuery(t *testing.T) {
 	}
 }
 
-func newTestHandlers(cat catalogs.Catalog) *Handlers {
+func newTestHandlers(cat *catalogs.Builder) *Handlers {
 	return &Handlers{
 		app: &application.Mock{
-			CatalogFunc: func() (catalogs.Catalog, error) {
-				return cat, nil
+			CatalogFunc: func() (*catalogs.Catalog, error) {
+				return cat.Build()
 			},
 		},
 		cache: cache.New(time.Minute, time.Minute),

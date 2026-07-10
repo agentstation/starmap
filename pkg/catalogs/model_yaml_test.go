@@ -1,29 +1,67 @@
 package catalogs
 
 import (
+	stderrors "errors"
 	"fmt"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/agentstation/utc"
+
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/save"
 )
+
+func TestNoPanicUnsupportedSerializationReturnsTypedError(t *testing.T) {
+	model := &Model{
+		ID: "unsupported", Name: "Unsupported",
+		Extensions: SourceExtensions{"test": {Fields: map[string]any{"function": func() {}}}},
+	}
+	encoded, err := model.EncodeYAML()
+	if err == nil {
+		t.Fatalf("EncodeYAML = %q, want error", encoded)
+	}
+	var parseErr *pkgerrors.ParseError
+	if !stderrors.As(err, &parseErr) {
+		t.Fatalf("EncodeYAML error = %T, want *errors.ParseError", err)
+	}
+	if got := model.FormatYAML(); got != "" {
+		t.Fatalf("legacy FormatYAML = %q, want safe empty result", got)
+	}
+	builder := NewEmpty()
+	if err := builder.SetProvider(Provider{ID: "provider", Name: "Provider", Models: map[string]*Model{model.ID: model}}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := builder.Save(save.WithPath(t.TempDir())); !stderrors.As(err, &parseErr) {
+		t.Fatalf("Save error = %T %v, want *errors.ParseError", err, err)
+	}
+}
 
 func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 	// Create a comprehensive test model with all features enabled to test formatting
 	testTime := time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)
 	releaseDate := time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC)
 	knowledgeCutoff := time.Date(2024, 4, 1, 0, 0, 0, 0, time.UTC)
+	rootModel := "test-root"
+	parentModel := "test-parent"
 
 	model := Model{
 		ID:          "test-model-comprehensive",
 		Name:        "Test Model Comprehensive",
 		Description: "A comprehensive test model used for verifying YAML formatting with all sections and subsections enabled",
+		Status:      ModelStatusBeta,
 		Authors: []Author{
 			{
 				ID:   "test-corp",
 				Name: "Test Corporation",
 			},
+		},
+
+		Lineage: &ModelLineage{
+			Family: "test-family",
+			Root:   &rootModel,
+			Parent: &parentModel,
 		},
 
 		// Metadata section - should have blank line before
@@ -150,6 +188,7 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 		// Limits section - should have blank line before
 		Limits: &ModelLimits{
 			ContextWindow: 128000,
+			InputTokens:   96000,
 			OutputTokens:  8192,
 		},
 
@@ -171,6 +210,37 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 				AudioInput:   float64Ptr(0.005),
 				WebSearch:    float64Ptr(0.02),
 				FunctionCall: float64Ptr(0.001),
+			},
+			Tiers: []ModelPricingTier{{
+				Type: ModelPricingTierTypeContext,
+				Size: 200000,
+				Tokens: &ModelTokenPricing{
+					Input:  &ModelTokenCost{Per1M: 2.50},
+					Output: &ModelTokenCost{Per1M: 15.00},
+				},
+			}},
+		},
+
+		Modes: map[string]ModelMode{
+			"fast": {
+				Pricing: &ModelPricing{
+					Currency: ModelPricingCurrencyUSD,
+					Tokens: &ModelTokenPricing{
+						Input: &ModelTokenCost{Per1M: 3.50},
+					},
+				},
+				Provider: &ModelProviderMode{
+					Headers: map[string]string{"anthropic-beta": "fast-mode"},
+					Body:    map[string]any{"service_tier": "priority"},
+				},
+			},
+		},
+
+		Extensions: SourceExtensions{
+			"models.dev": {
+				Fields: map[string]any{
+					"provider_shape": "responses",
+				},
 			},
 		},
 
@@ -281,12 +351,23 @@ func testStructurePreservation(t *testing.T, yaml string, original Model) {
 		fmt.Sprintf("id: %s", original.ID),
 		fmt.Sprintf("name: %s", original.Name),
 		"description: A comprehensive test model used for verifying YAML formatting with all sections and subsections enabled",
+		"status: beta",
 
 		// Major sections should be present
 		"metadata:",
+		"lineage:",
+		"family: test-family",
 		"features:",
 		"limits:",
+		"input_tokens: 96000",
 		"pricing:",
+		"tiers:",
+		"modes:",
+		"fast:",
+		"service_tier: priority",
+		"extensions:",
+		"models.dev:",
+		"provider_shape: responses",
 
 		// Key feature flags that were set to true
 		"tool_calls: true",

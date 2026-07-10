@@ -74,10 +74,7 @@ func TestModelsFiltersSortsAndLimits(t *testing.T) {
 }
 
 func TestModelsFiltersByProvider(t *testing.T) {
-	models := []catalogs.Model{
-		{ID: "anthropic-model", Name: "Anthropic Model"},
-		{ID: "openai-model", Name: "OpenAI Model"},
-	}
+	catalog := catalogs.NewEmpty()
 	providers := []catalogs.Provider{
 		{
 			ID:      "openai",
@@ -93,35 +90,81 @@ func TestModelsFiltersByProvider(t *testing.T) {
 			},
 		},
 	}
-	index := NewProviderModelIndex(providers)
+	for _, provider := range providers {
+		if err := catalog.SetProvider(provider); err != nil {
+			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
+		}
+	}
+	snapshot, err := catalog.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
 
-	filtered := Models(models, ModelOptions{
-		Provider:           "openai",
-		ProviderModelIndex: index,
-	})
+	filtered, err := CatalogModels(snapshot, "openai")
+	if err != nil {
+		t.Fatalf("CatalogModels(openai): %v", err)
+	}
 	if len(filtered) != 1 || filtered[0].ID != "openai-model" {
 		t.Fatalf("Expected only OpenAI model, got %#v", filtered)
 	}
 
-	aliasFiltered := Models(models, ModelOptions{
-		Provider:           "openai-alias",
-		ProviderModelIndex: index,
-	})
+	aliasFiltered, err := CatalogModels(snapshot, "openai-alias")
+	if err != nil {
+		t.Fatalf("CatalogModels(openai-alias): %v", err)
+	}
 	if len(aliasFiltered) != 1 || aliasFiltered[0].ID != "openai-model" {
 		t.Fatalf("Expected OpenAI alias to resolve provider models, got %#v", aliasFiltered)
 	}
 
-	unknown := Models(models, ModelOptions{
-		Provider:           "missing-provider",
-		ProviderModelIndex: index,
-	})
+	unknown, err := CatalogModels(snapshot, "missing-provider")
+	if err != nil {
+		t.Fatalf("CatalogModels(missing-provider): %v", err)
+	}
 	if len(unknown) != 0 {
 		t.Fatalf("Expected unknown provider to return no models, got %#v", unknown)
 	}
+}
 
-	withoutIndex := Models(models, ModelOptions{Provider: "openai"})
-	if len(withoutIndex) != 0 {
-		t.Fatalf("Expected provider filter without index to fail closed, got %#v", withoutIndex)
+func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
+	catalog := catalogs.NewEmpty()
+	for _, provider := range []catalogs.Provider{
+		{
+			ID:   "a-provider",
+			Name: "Provider A",
+			Models: map[string]*catalogs.Model{
+				"shared-model": {ID: "shared-model", Name: "Provider A Offering"},
+			},
+		},
+		{
+			ID:   "b-provider",
+			Name: "Provider B",
+			Models: map[string]*catalogs.Model{
+				"shared-model": {ID: "shared-model", Name: "Provider B Offering"},
+			},
+		},
+	} {
+		if err := catalog.SetProvider(provider); err != nil {
+			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
+		}
+	}
+
+	snapshot, err := catalog.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	filtered, err := CatalogModels(snapshot, "a-provider")
+	if err != nil {
+		t.Fatalf("CatalogModels(a-provider): %v", err)
+	}
+	if len(filtered) != 1 || filtered[0].Name != "Provider A Offering" {
+		t.Fatalf("Provider A lookup returned flattened offering: %#v", filtered)
+	}
+	bOffering, err := snapshot.ProviderModel("b-provider", "shared-model")
+	if err != nil {
+		t.Fatalf("ProviderModel(b-provider/shared-model): %v", err)
+	}
+	if bOffering.Name != "Provider B Offering" {
+		t.Fatalf("Provider B offering = %#v", bOffering)
 	}
 }
 

@@ -56,6 +56,7 @@ log.Error().
 - [func NewNopLogger\(\) \*zerolog.Logger](<#NewNopLogger>)
 - [func Panic\(\) \*zerolog.Event](<#Panic>)
 - [func RequestID\(ctx context.Context\) string](<#RequestID>)
+- [func RunID\(ctx context.Context\) string](<#RunID>)
 - [func SetDefault\(logger zerolog.Logger\)](<#SetDefault>)
 - [func Warn\(\) \*zerolog.Event](<#Warn>)
 - [func With\(\) zerolog.Context](<#With>)
@@ -68,6 +69,7 @@ log.Error().
 - [func WithOperation\(ctx context.Context, operation string\) context.Context](<#WithOperation>)
 - [func WithProvider\(ctx context.Context, providerID string\) context.Context](<#WithProvider>)
 - [func WithRequestID\(ctx context.Context, requestID string\) context.Context](<#WithRequestID>)
+- [func WithRunID\(ctx context.Context, runID string\) context.Context](<#WithRunID>)
 - [func WithSource\(ctx context.Context, source string\) context.Context](<#WithSource>)
 - [type Config](<#Config>)
   - [func DefaultConfig\(\) \*Config](<#DefaultConfig>)
@@ -99,7 +101,7 @@ var (
 ```
 
 <a name="Configure"></a>
-## func [Configure](<https://github.com/agentstation/starmap/blob/master/pkg/logging/config.go#L89>)
+## func [Configure](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L89>)
 
 ```go
 func Configure(cfg *Config)
@@ -108,7 +110,7 @@ func Configure(cfg *Config)
 Configure updates the default logger with the given configuration.
 
 <a name="ConfigureFromEnv"></a>
-## func [ConfigureFromEnv](<https://github.com/agentstation/starmap/blob/master/pkg/logging/config.go#L95>)
+## func [ConfigureFromEnv](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L95>)
 
 ```go
 func ConfigureFromEnv()
@@ -117,7 +119,7 @@ func ConfigureFromEnv()
 ConfigureFromEnv configures the logger from environment variables.
 
 <a name="Ctx"></a>
-## func [Ctx](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L42>)
+## func [Ctx](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L44>)
 
 ```go
 func Ctx(ctx context.Context) *zerolog.Logger
@@ -126,7 +128,7 @@ func Ctx(ctx context.Context) *zerolog.Logger
 Ctx returns a logger from the context or the default logger This is a shorter alias for FromContext.
 
 <a name="Debug"></a>
-## func [Debug](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L132>)
+## func [Debug](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L132>)
 
 ```go
 func Debug() *zerolog.Event
@@ -135,7 +137,7 @@ func Debug() *zerolog.Event
 Debug starts a new debug level log event.
 
 <a name="Default"></a>
-## func [Default](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L83>)
+## func [Default](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L83>)
 
 ```go
 func Default() *zerolog.Logger
@@ -144,7 +146,7 @@ func Default() *zerolog.Logger
 Default returns the default global logger.
 
 <a name="DisableLoggingForTest"></a>
-## func [DisableLoggingForTest](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L126>)
+## func [DisableLoggingForTest](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L126>)
 
 ```go
 func DisableLoggingForTest(t testing.TB)
@@ -153,7 +155,7 @@ func DisableLoggingForTest(t testing.TB)
 DisableLoggingForTest disables logging for the duration of a test.
 
 <a name="Err"></a>
-## func [Err](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L167>)
+## func [Err](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L167>)
 
 ```go
 func Err(err error) *zerolog.Event
@@ -162,7 +164,7 @@ func Err(err error) *zerolog.Event
 Err creates a new error log event with the given error.
 
 <a name="Error"></a>
-## func [Error](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L147>)
+## func [Error](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L147>)
 
 ```go
 func Error() *zerolog.Event
@@ -171,7 +173,7 @@ func Error() *zerolog.Event
 Error starts a new error level log event.
 
 <a name="Fatal"></a>
-## func [Fatal](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L152>)
+## func [Fatal](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L152>)
 
 ```go
 func Fatal() *zerolog.Event
@@ -180,7 +182,7 @@ func Fatal() *zerolog.Event
 Fatal starts a new fatal level log event \(will exit after logging\).
 
 <a name="FromContext"></a>
-## func [FromContext](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L28>)
+## func [FromContext](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L30>)
 
 ```go
 func FromContext(ctx context.Context) *zerolog.Logger
@@ -189,7 +191,7 @@ func FromContext(ctx context.Context) *zerolog.Logger
 FromContext extracts the logger from context, or returns the default logger.
 
 <a name="Info"></a>
-## func [Info](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L137>)
+## func [Info](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L137>)
 
 ```go
 func Info() *zerolog.Event
@@ -198,7 +200,7 @@ func Info() *zerolog.Event
 Info starts a new info level log event.
 
 <a name="Level"></a>
-## func [Level](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L127>)
+## func [Level](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L127>)
 
 ```go
 func Level(level zerolog.Level) zerolog.Logger
@@ -207,7 +209,7 @@ func Level(level zerolog.Level) zerolog.Logger
 Level creates a child logger with the specified log level.
 
 <a name="New"></a>
-## func [New](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L94>)
+## func [New](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L94>)
 
 ```go
 func New(w io.Writer) zerolog.Logger
@@ -216,7 +218,7 @@ func New(w io.Writer) zerolog.Logger
 New creates a new logger with the given writer.
 
 <a name="NewConsole"></a>
-## func [NewConsole](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L103>)
+## func [NewConsole](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L103>)
 
 ```go
 func NewConsole() zerolog.Logger
@@ -225,7 +227,7 @@ func NewConsole() zerolog.Logger
 NewConsole creates a new console logger for human\-readable output.
 
 <a name="NewJSON"></a>
-## func [NewJSON](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L114>)
+## func [NewJSON](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L114>)
 
 ```go
 func NewJSON(w io.Writer) zerolog.Logger
@@ -234,7 +236,7 @@ func NewJSON(w io.Writer) zerolog.Logger
 NewJSON creates a new JSON logger for structured output.
 
 <a name="NewLoggerFromConfig"></a>
-## func [NewLoggerFromConfig](<https://github.com/agentstation/starmap/blob/master/pkg/logging/config.go#L52>)
+## func [NewLoggerFromConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L52>)
 
 ```go
 func NewLoggerFromConfig(cfg *Config) zerolog.Logger
@@ -243,7 +245,7 @@ func NewLoggerFromConfig(cfg *Config) zerolog.Logger
 NewLoggerFromConfig creates a new logger from configuration.
 
 <a name="NewNopLogger"></a>
-## func [NewNopLogger](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L120>)
+## func [NewNopLogger](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L120>)
 
 ```go
 func NewNopLogger() *zerolog.Logger
@@ -252,7 +254,7 @@ func NewNopLogger() *zerolog.Logger
 NewNopLogger creates a logger that discards all output \(useful for tests\).
 
 <a name="Panic"></a>
-## func [Panic](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L157>)
+## func [Panic](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L157>)
 
 ```go
 func Panic() *zerolog.Event
@@ -261,7 +263,7 @@ func Panic() *zerolog.Event
 Panic starts a new panic level log event \(will panic after logging\).
 
 <a name="RequestID"></a>
-## func [RequestID](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L57>)
+## func [RequestID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L59>)
 
 ```go
 func RequestID(ctx context.Context) string
@@ -269,8 +271,17 @@ func RequestID(ctx context.Context) string
 
 RequestID extracts the request ID from context.
 
+<a name="RunID"></a>
+## func [RunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L73>)
+
+```go
+func RunID(ctx context.Context) string
+```
+
+RunID extracts the run correlation ID from context.
+
 <a name="SetDefault"></a>
-## func [SetDefault](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L88>)
+## func [SetDefault](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L88>)
 
 ```go
 func SetDefault(logger zerolog.Logger)
@@ -279,7 +290,7 @@ func SetDefault(logger zerolog.Logger)
 SetDefault sets the default global logger.
 
 <a name="Warn"></a>
-## func [Warn](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L142>)
+## func [Warn](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L142>)
 
 ```go
 func Warn() *zerolog.Event
@@ -288,7 +299,7 @@ func Warn() *zerolog.Event
 Warn starts a new warning level log event.
 
 <a name="With"></a>
-## func [With](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L122>)
+## func [With](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L122>)
 
 ```go
 func With() zerolog.Context
@@ -297,7 +308,7 @@ func With() zerolog.Context
 With creates a child logger with additional context fields.
 
 <a name="WithError"></a>
-## func [WithError](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L136>)
+## func [WithError](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L154>)
 
 ```go
 func WithError(ctx context.Context, err error) context.Context
@@ -306,7 +317,7 @@ func WithError(ctx context.Context, err error) context.Context
 WithError adds an error to the context logger.
 
 <a name="WithField"></a>
-## func [WithField](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L78>)
+## func [WithField](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L96>)
 
 ```go
 func WithField(ctx context.Context, key string, value any) context.Context
@@ -315,7 +326,7 @@ func WithField(ctx context.Context, key string, value any) context.Context
 WithField adds a single field to the logger in the context.
 
 <a name="WithFields"></a>
-## func [WithFields](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L65>)
+## func [WithFields](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L83>)
 
 ```go
 func WithFields(ctx context.Context, fields map[string]any) context.Context
@@ -324,7 +335,7 @@ func WithFields(ctx context.Context, fields map[string]any) context.Context
 WithFields adds structured fields to the logger in the context.
 
 <a name="WithLevel"></a>
-## func [WithLevel](<https://github.com/agentstation/starmap/blob/master/pkg/logging/logger.go#L162>)
+## func [WithLevel](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L162>)
 
 ```go
 func WithLevel(level zerolog.Level) *zerolog.Event
@@ -333,7 +344,7 @@ func WithLevel(level zerolog.Level) *zerolog.Event
 WithLevel starts a new log event with the given level.
 
 <a name="WithLogger"></a>
-## func [WithLogger](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L20>)
+## func [WithLogger](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L22>)
 
 ```go
 func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context
@@ -342,7 +353,7 @@ func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context
 WithLogger adds a logger to the context.
 
 <a name="WithModel"></a>
-## func [WithModel](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L121>)
+## func [WithModel](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L139>)
 
 ```go
 func WithModel(ctx context.Context, modelID string) context.Context
@@ -351,7 +362,7 @@ func WithModel(ctx context.Context, modelID string) context.Context
 WithModel adds model context to the logger.
 
 <a name="WithOperation"></a>
-## func [WithOperation](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L131>)
+## func [WithOperation](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L149>)
 
 ```go
 func WithOperation(ctx context.Context, operation string) context.Context
@@ -360,7 +371,7 @@ func WithOperation(ctx context.Context, operation string) context.Context
 WithOperation adds operation context to the logger.
 
 <a name="WithProvider"></a>
-## func [WithProvider](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L116>)
+## func [WithProvider](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L134>)
 
 ```go
 func WithProvider(ctx context.Context, providerID string) context.Context
@@ -369,7 +380,7 @@ func WithProvider(ctx context.Context, providerID string) context.Context
 WithProvider adds provider context to the logger.
 
 <a name="WithRequestID"></a>
-## func [WithRequestID](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L47>)
+## func [WithRequestID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L49>)
 
 ```go
 func WithRequestID(ctx context.Context, requestID string) context.Context
@@ -377,8 +388,17 @@ func WithRequestID(ctx context.Context, requestID string) context.Context
 
 WithRequestID adds a request ID to the context for tracing.
 
+<a name="WithRunID"></a>
+## func [WithRunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L67>)
+
+```go
+func WithRunID(ctx context.Context, runID string) context.Context
+```
+
+WithRunID adds a run correlation ID to the context logger.
+
 <a name="WithSource"></a>
-## func [WithSource](<https://github.com/agentstation/starmap/blob/master/pkg/logging/context.go#L126>)
+## func [WithSource](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L144>)
 
 ```go
 func WithSource(ctx context.Context, source string) context.Context
@@ -387,7 +407,7 @@ func WithSource(ctx context.Context, source string) context.Context
 WithSource adds source context to the logger.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/master/pkg/logging/config.go#L15-L36>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L15-L36>)
 
 Config holds logger configuration options.
 
@@ -417,7 +437,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/master/pkg/logging/config.go#L39>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L39>)
 
 ```go
 func DefaultConfig() *Config
@@ -426,7 +446,7 @@ func DefaultConfig() *Config
 DefaultConfig returns a configuration with sensible defaults.
 
 <a name="TestLogger"></a>
-## type [TestLogger](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L12-L15>)
+## type [TestLogger](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L12-L15>)
 
 TestLogger creates a test logger that captures output.
 
@@ -438,7 +458,7 @@ type TestLogger struct {
 ```
 
 <a name="CaptureLoggingForTest"></a>
-### func [CaptureLoggingForTest](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L142>)
+### func [CaptureLoggingForTest](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L142>)
 
 ```go
 func CaptureLoggingForTest(t testing.TB) *TestLogger
@@ -447,7 +467,7 @@ func CaptureLoggingForTest(t testing.TB) *TestLogger
 CaptureLoggingForTest captures logging output for the duration of a test.
 
 <a name="NewTestLogger"></a>
-### func [NewTestLogger](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L18>)
+### func [NewTestLogger](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L18>)
 
 ```go
 func NewTestLogger(t testing.TB) *TestLogger
@@ -456,7 +476,7 @@ func NewTestLogger(t testing.TB) *TestLogger
 NewTestLogger creates a new test logger that captures output.
 
 <a name="TestLogger.AssertContains"></a>
-### func \(\*TestLogger\) [AssertContains](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L95>)
+### func \(\*TestLogger\) [AssertContains](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L95>)
 
 ```go
 func (tl *TestLogger) AssertContains(t testing.TB, substr string)
@@ -465,7 +485,7 @@ func (tl *TestLogger) AssertContains(t testing.TB, substr string)
 AssertContains asserts that the log contains the given string.
 
 <a name="TestLogger.AssertCount"></a>
-### func \(\*TestLogger\) [AssertCount](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L111>)
+### func \(\*TestLogger\) [AssertCount](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L111>)
 
 ```go
 func (tl *TestLogger) AssertCount(t testing.TB, expected int)
@@ -474,7 +494,7 @@ func (tl *TestLogger) AssertCount(t testing.TB, expected int)
 AssertCount asserts that the log has the expected number of entries.
 
 <a name="TestLogger.AssertNotContains"></a>
-### func \(\*TestLogger\) [AssertNotContains](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L103>)
+### func \(\*TestLogger\) [AssertNotContains](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L103>)
 
 ```go
 func (tl *TestLogger) AssertNotContains(t testing.TB, substr string)
@@ -483,7 +503,7 @@ func (tl *TestLogger) AssertNotContains(t testing.TB, substr string)
 AssertNotContains asserts that the log does not contain the given string.
 
 <a name="TestLogger.Clear"></a>
-### func \(\*TestLogger\) [Clear](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L90>)
+### func \(\*TestLogger\) [Clear](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L90>)
 
 ```go
 func (tl *TestLogger) Clear()
@@ -492,7 +512,7 @@ func (tl *TestLogger) Clear()
 Clear clears the captured log output.
 
 <a name="TestLogger.Contains"></a>
-### func \(\*TestLogger\) [Contains](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L58>)
+### func \(\*TestLogger\) [Contains](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L58>)
 
 ```go
 func (tl *TestLogger) Contains(substr string) bool
@@ -501,7 +521,7 @@ func (tl *TestLogger) Contains(substr string) bool
 Contains checks if the log output contains the given string.
 
 <a name="TestLogger.ContainsAll"></a>
-### func \(\*TestLogger\) [ContainsAll](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L63>)
+### func \(\*TestLogger\) [ContainsAll](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L63>)
 
 ```go
 func (tl *TestLogger) ContainsAll(substrs ...string) bool
@@ -510,7 +530,7 @@ func (tl *TestLogger) ContainsAll(substrs ...string) bool
 ContainsAll checks if the log output contains all given strings.
 
 <a name="TestLogger.ContainsAny"></a>
-### func \(\*TestLogger\) [ContainsAny](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L74>)
+### func \(\*TestLogger\) [ContainsAny](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L74>)
 
 ```go
 func (tl *TestLogger) ContainsAny(substrs ...string) bool
@@ -519,7 +539,7 @@ func (tl *TestLogger) ContainsAny(substrs ...string) bool
 ContainsAny checks if the log output contains any of the given strings.
 
 <a name="TestLogger.Count"></a>
-### func \(\*TestLogger\) [Count](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L85>)
+### func \(\*TestLogger\) [Count](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L85>)
 
 ```go
 func (tl *TestLogger) Count() int
@@ -528,7 +548,7 @@ func (tl *TestLogger) Count() int
 Count returns the number of log entries.
 
 <a name="TestLogger.Lines"></a>
-### func \(\*TestLogger\) [Lines](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L49>)
+### func \(\*TestLogger\) [Lines](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L49>)
 
 ```go
 func (tl *TestLogger) Lines() []string
@@ -537,7 +557,7 @@ func (tl *TestLogger) Lines() []string
 Lines returns the captured log output as individual lines.
 
 <a name="TestLogger.Output"></a>
-### func \(\*TestLogger\) [Output](<https://github.com/agentstation/starmap/blob/master/pkg/logging/testing.go#L44>)
+### func \(\*TestLogger\) [Output](<https://github.com/agentstation/starmap/blob/main/pkg/logging/testing.go#L44>)
 
 ```go
 func (tl *TestLogger) Output() string

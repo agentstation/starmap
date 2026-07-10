@@ -1,0 +1,121 @@
+name: Catalog Generation
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+
+concurrency:
+  group: catalog-generation-publisher
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Refresh candidate catalog
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          DEEPINFRA_TOKEN: ${{ secrets.DEEPINFRA_TOKEN }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          FIREWORKS_API_KEY: ${{ secrets.FIREWORKS_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          STARMAP_GENERATION_NONINTERACTIVE: "1"
+          STARMAP_GENERATION_REPORT_PATH: catalog-generation.json
+        run: ./scripts/generate-embedded-catalog.sh
+
+      - name: Classify canonical payload change
+        id: change
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CHANGED=$(jq -er .changed catalog-generation.json)
+          PAYLOAD_CHECKSUM=$(jq -er .payload_checksum catalog-generation.json)
+          PAYLOAD_DIGEST=${PAYLOAD_CHECKSUM#sha256:}
+          TAG=catalog-payload-${PAYLOAD_DIGEST}
+          GENERATION_ID=$(jq -er .generation_id catalog-generation.json)
+          write_output() {
+            printf '%s=%s\n' "$1" "$2" >> "$GITHUB_OUTPUT"
+          }
+          write_output changed "$CHANGED"
+          write_output payload_checksum "$PAYLOAD_CHECKSUM"
+          write_output tag "$TAG"
+          write_output generation_id "$GENERATION_ID"
+
+          if [[ "$CHANGED" != "true" ]]; then
+            write_output publish false
+            write_output reason "canonical payload unchanged"
+            exit 0
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            EXISTING=$(mktemp -d)
+            gh release download "$TAG" --pattern starmap-catalog.tar.gz --dir "$EXISTING"
+            EXISTING_PAYLOAD_CHECKSUM=$(tar -xOzf "$EXISTING/starmap-catalog.tar.gz" manifest.json | jq -er .payload.checksum)
+            test "$EXISTING_PAYLOAD_CHECKSUM" = "$PAYLOAD_CHECKSUM"
+            write_output publish false
+            write_output reason "canonical payload already published and verified"
+            exit 0
+          fi
+
+          write_output publish true
+          write_output reason "new canonical payload"
+
+      - name: Validate changed candidate
+        if: ${{ steps.change.outputs.changed == 'true' }}
+        run: |
+          make catalog-generation-check
+          make embedded-catalog-budget-check
+
+      - name: Stage validated immutable generation
+        if: ${{ steps.change.outputs.publish == 'true' }}
+        id: assets
+        run: |
+          go run ./cmd/starmap-catalog-release --output-dir dist/catalog-generation > catalog-release.json
+          printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Attest scheduled catalog generation
+        if: ${{ steps.change.outputs.publish == 'true' }}
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+        with:
+          subject-path: "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz"
+
+      - name: Verify scheduled catalog provenance
+        if: ${{ steps.change.outputs.publish == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh attestation verify \
+            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+            --deny-self-hosted-runners
+
+      - name: Publish changed validated catalog generation
+        if: ${{ steps.change.outputs.publish == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.change.outputs.tag }}" \
+            --title "Catalog ${{ steps.change.outputs.generation_id }}" \
+            --notes "Immutable scheduled catalog payload ${{ steps.change.outputs.payload_checksum }}" \
+            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
+            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
+            "${{ steps.assets.outputs.directory }}/starmap-catalog.intoto.json"

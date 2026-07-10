@@ -27,7 +27,7 @@ Known unrelated dirty files that predated this architecture pass and must not be
 - `cmd/starmap/app/execute.go`
 - `cmd/starmap/main.go`
 - `docs/CLI.md`
-- `internal/cmd/globals/globals.go`
+- `internal/cli/globals/globals.go`
 
 Architecture review report generated outside the repo:
 
@@ -65,13 +65,13 @@ Architecture review report generated outside the repo:
 | 2026-07-08 09:42 America/Chicago | P1 characterization tests added for source filtering, source config, dependency resolution, fetch/cleanup error joining, context cancellation, and dry-run publication behavior. `go test .` and `go test ./...` passed. |
 | 2026-07-08 09:55 America/Chicago | `internal/catalog/pipeline` introduced. `client.Sync` now delegates to the pipeline store adapter; source construction, dependency resolution, cleanup, fetch, reconciliation, dry-run, no-change, and force-save policy are tested at the pipeline seam. `go test ./internal/catalog/pipeline ./pkg/sync .`, `go test ./internal/sources/providers ./pkg/reconciler ./pkg/sync`, and `go test ./...` passed. |
 | 2026-07-08 10:04 America/Chicago | P1 documentation updated in `docs/ARCHITECTURE.md`. Acceptance gates passed: `go test .`, `go test ./internal/sources/providers ./pkg/reconciler ./pkg/sync`, `go test ./...`, `go test ./... -race -short`, `go vet ./...`, and `git diff --check`. Public `pkg/*` to `internal/*` imports remain only as known pre-existing seams for P2/P3. |
-| 2026-07-08 10:09 America/Chicago | P2 started. Baseline provider source and public provider fetcher coverage is 0.0%. Current design has unbounded provider goroutine fan-out and `pkg/sources` importing `internal/sources/clients`. |
+| 2026-07-08 10:09 America/Chicago | P2 started. Baseline provider source and public provider fetcher coverage is 0.0%. Current design has unbounded provider goroutine fan-out and `pkg/sources` importing `internal/providers/clients`. |
 | 2026-07-08 10:25 America/Chicago | P2 provider seam implemented. `internal/sources/providers` now accepts fake client factories and bounds provider fetch concurrency. `pkg/sources.ProviderFetcher` uses public `ProviderClientFactory`/`ProviderRawFetcher` seams. Focused coverage: `internal/sources/providers` 77.7%, `pkg/sources` 36.5%. `go test ./...` and `go vet ./...` passed. |
-| 2026-07-08 10:29 America/Chicago | P2 acceptance gates passed: `go test ./internal/sources/providers ./internal/sources/providers/openai ./internal/sources/providers/anthropic`, `go test ./pkg/sources`, `go test ./...`, `go test ./... -race -short`, `go vet ./...`, and `git diff --check`. |
+| 2026-07-08 10:29 America/Chicago | P2 acceptance gates passed: `go test ./internal/sources/providers ./internal/providers/openai ./internal/providers/anthropic`, `go test ./pkg/sources`, `go test ./...`, `go test ./... -race -short`, `go vet ./...`, and `git diff --check`. |
 | 2026-07-08 10:39 America/Chicago | P3 endpoint ownership leak fixed. `Endpoints` now copies on map initialization, set/add, batch writes, get, map, and callback iteration. Architecture docs now state the catalog ownership contract. `go test ./pkg/catalogs`, `go test ./pkg/catalogs -race`, and `go test ./...` passed. |
 | 2026-07-08 10:42 America/Chicago | P3 acceptance gates passed: `go test ./pkg/catalogs -race`, `go test ./pkg/catalogs`, `go test ./...`, `go vet ./...`, and `git diff --check`. |
 | 2026-07-08 10:43 America/Chicago | P4 started with query behavior inventory across HTTP handlers and CLI commands. |
-| 2026-07-08 10:55 America/Chicago | P4 shared query module added at `internal/catalog/query`. CLI model/provider/author list commands and HTTP model/provider list handlers now use shared query/pagination behavior. Handler adapter tests added; `internal/server/handlers` coverage increased from 0.0% to 15.0%. Gates passed: `go test ./internal/catalog/query ./internal/server/handlers ./internal/server/filter ./cmd/starmap/cmd/models ./cmd/starmap/cmd/providers ./cmd/starmap/cmd/authors`, `go test ./...`, `go vet ./...`, and `git diff --check`. |
+| 2026-07-08 10:55 America/Chicago | P4 shared query module added at `internal/catalog/query`. CLI model/provider/author list commands and HTTP model/provider list handlers now use shared query/pagination behavior. Handler adapter tests added; `internal/server/handlers` coverage increased from 0.0% to 15.0%. Gates passed: `go test ./internal/catalog/query ./internal/server/handlers ./internal/server/params ./cmd/starmap/cmd/models ./cmd/starmap/cmd/providers ./cmd/starmap/cmd/authors`, `go test ./...`, `go vet ./...`, and `git diff --check`. |
 | 2026-07-08 10:56 America/Chicago | P5 started with reconciliation field-rule inventory. |
 | 2026-07-08 11:12 America/Chicago | P5 field-rule catalog added in `pkg/reconciler`. Model/provider/author field paths now live in one rule table; model/provider merge loops use rules for reflection, authority lookup, and provenance names. Complex model provenance names now route through model provenance rules. Author authority paths were corrected from stale `URL` entries to current author fields such as `Website`, and provider `Models` authority is explicit. Focused gate passed: `go test ./pkg/authority ./pkg/reconciler`. |
 | 2026-07-08 11:14 America/Chicago | P6 started with real-time event fan-out inventory across broker, SSE, and WebSocket packages. |
@@ -82,7 +82,7 @@ Architecture review report generated outside the repo:
 | 2026-07-08 12:24 America/Chicago | Autoreview fixes implemented. `pkg/sources.ProviderFetcher` now preserves default provider client/raw-fetch behavior while retaining injectable test seams. Broker subscribers now use bounded per-subscriber queues/workers so one slow subscriber cannot stall broker control-plane operations. Generated docs were normalized for idempotent `make generate`/`make docs-check` behavior. Gates passed: `go test ./pkg/sources`, `go test ./internal/server/events`, `go test ./internal/server/events -race`, `go test ./...`, `go vet ./...`, `go test ./... -race -short`, `git diff --check`, and `make docs-check`. Second autoreview run is pending. |
 | 2026-07-08 12:38 America/Chicago | Second autoreview found one valid issue: shared model query accepted `ModelOptions.Provider` but did not apply it. Fix implemented with `query.ProviderModelIndex` built from provider model membership and aliases; CLI model listing and HTTP model list/search now prefilter by provider before applying flattened model filters. Regression coverage added for provider IDs, aliases, unknown providers, missing index fail-closed behavior, and HTTP provider filtering. Gates passed: `go test ./internal/catalog/query ./internal/server/handlers ./cmd/starmap/cmd/models`, `go test ./...`, `go vet ./...`, `make docs-check`, `git diff --check`, and `go test ./... -race -short`. Final autoreview rerun is pending. |
 | 2026-07-08 12:43 America/Chicago | Final autoreview rerun passed cleanly with no accepted/actionable findings. Autoreview parallel gate `go test ./... && go vet ./...` exited 0. |
-| 2026-07-08 12:50 America/Chicago | Naming cleanup completed after architecture review. `internal/catalogquery` moved to `internal/catalog/query` with package name `query`. `internal/syncpipeline` moved to `internal/catalog/pipeline` with package name `pipeline`, `Pipeline.Sync`, and root `pipelineStore`. Architecture docs now show catalog-scoped internal query and pipeline packages. Verification is in progress. |
+| 2026-07-08 12:50 America/Chicago | Naming cleanup completed after architecture review. `internal/catalogquery` moved to `internal/catalog/query`, `internal/syncpipeline` moved to `internal/catalog/pipeline`, `internal/cmd/application` moved to `internal/application`, remaining `internal/cmd/*` helpers moved to `internal/cli/*`, provider clients moved to `internal/providers/*`, HTTP model parsing moved to `internal/server/params`, catalog model filtering moved to `internal/catalog/query`, and attribution-only matchers moved to `internal/attribution/matcher`. Gates passed: `go test ./internal/attribution ./internal/attribution/matcher ./internal/application ./internal/catalog/query ./internal/server/params ./internal/server/handlers ./internal/providers/... ./internal/sources/providers ./pkg/sources ./cmd/starmap/cmd/models ./cmd/starmap/cmd/providers ./cmd/starmap/cmd/authors`, `go test ./...`, `go vet ./...`, `go test ./... -race -short`, `make docs-check`, and `git diff --check`. |
 
 ## Global Constraints
 
@@ -150,7 +150,7 @@ Candidate module shape:
 
 ### Problem
 
-Provider fetching is split across public `pkg/sources`, internal client factory, provider source concurrency, and provider-specific clients. Public `pkg/sources` currently imports `internal/sources/clients`, which weakens the advertised package layering. Provider source fetch uses one goroutine per provider and has no direct package tests in the coverage run.
+Provider fetching is split across public `pkg/sources`, internal client factory, provider source concurrency, and provider-specific clients. Public `pkg/sources` currently imports `internal/providers/clients`, which weakens the advertised package layering. Provider source fetch uses one goroutine per provider and has no direct package tests in the coverage run.
 
 ### Target Shape
 
@@ -174,7 +174,7 @@ Provider fetching should have one deep module that owns:
 
 ### Acceptance Gate
 
-- `go test ./internal/sources/providers ./internal/sources/providers/openai ./internal/sources/providers/anthropic`
+- `go test ./internal/sources/providers ./internal/providers/openai ./internal/providers/anthropic`
 - `go test ./pkg/sources`
 - `go test ./...`
 - `go test ./... -race -short`
@@ -229,7 +229,7 @@ Create catalog query modules for model/provider/author list/detail/search behavi
 
 ### Acceptance Gate
 
-- `go test ./internal/server/handlers ./internal/server/filter`
+- `go test ./internal/server/handlers ./internal/server/params`
 - `go test ./cmd/starmap/cmd/models ./cmd/starmap/cmd/providers ./cmd/starmap/cmd/authors`
 - `go test ./...`
 - `go vet ./...`
@@ -310,7 +310,7 @@ Create one event stream module that owns backpressure policy, counters, and fan-
 Use this prompt to drive autonomous execution:
 
 ```text
-/goal Execute /Users/jack/src/github.com/agentstation/starmap/docs/ARCHITECTURE_CONTROL_PLANE.md end to end. Treat the ledger, execution log, constraints, and acceptance criteria in that file as the source of truth. Work phases in order unless a blocker makes a later independent phase clearly safer. After every meaningful implementation step, update the ledger and execution log in the control plane. Do not revert unrelated pre-existing edits in cmd/starmap/app/execute.go, cmd/starmap/main.go, docs/CLI.md, or internal/cmd/globals/globals.go. Preserve public Go compatibility unless explicitly approved. Keep modules idiomatic Go: small interfaces at use sites, concrete types by default, typed errors, context propagation, bounded concurrency, table-driven tests, and race-safe ownership. Continue autonomously through implementation, focused tests, full tests, race tests, vet, docs, and final verification until all phases are DONE or a real blocker is recorded with evidence.
+/goal Execute /Users/jack/src/github.com/agentstation/starmap/docs/ARCHITECTURE_CONTROL_PLANE.md end to end. Treat the ledger, execution log, constraints, and acceptance criteria in that file as the source of truth. Work phases in order unless a blocker makes a later independent phase clearly safer. After every meaningful implementation step, update the ledger and execution log in the control plane. Do not revert unrelated pre-existing edits in cmd/starmap/app/execute.go, cmd/starmap/main.go, docs/CLI.md, or internal/cli/globals/globals.go. Preserve public Go compatibility unless explicitly approved. Keep modules idiomatic Go: small interfaces at use sites, concrete types by default, typed errors, context propagation, bounded concurrency, table-driven tests, and race-safe ownership. Continue autonomously through implementation, focused tests, full tests, race tests, vet, docs, and final verification until all phases are DONE or a real blocker is recorded with evidence.
 ```
 
 ## Plan Review Checklist

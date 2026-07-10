@@ -419,6 +419,13 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 
 // FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure.
 func (p *Providers) FormatYAML() string {
+	formatted, _ := p.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns formatted provider YAML or a typed parse error when a
+// provider value cannot be represented safely.
+func (p *Providers) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -447,7 +454,7 @@ func (p *Providers) FormatYAML() string {
 }
 
 // formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing.
-func formatProvidersYAML(providers []Provider) string {
+func formatProvidersYAML(providers []Provider) (string, error) {
 	// Create comment map for provider section headers and duration comments
 	commentMap := yaml.CommentMap{}
 
@@ -499,14 +506,13 @@ func formatProvidersYAML(providers []Provider) string {
 		// Fallback to basic YAML if enhanced formatting fails
 		basicYaml, err := yaml.Marshal(providers)
 		if err != nil {
-			// This should never happen with valid data - indicates programming error
-			panic(fmt.Sprintf("failed to marshal providers to YAML: %v", err))
+			return "", errors.WrapParse("yaml", "providers", err)
 		}
-		return string(basicYaml)
+		return string(basicYaml), nil
 	}
 
 	// Post-process to add spacing between providers
-	return addBlankLinesBetweenProviders(string(yamlData))
+	return addBlankLinesBetweenProviders(string(yamlData)), nil
 }
 
 // addBlankLinesBetweenProviders adds spacing between provider sections.

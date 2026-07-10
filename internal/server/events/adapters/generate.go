@@ -1,21 +1,3 @@
-//go:build ignore
+//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /internal/server/events/adapters
 
-package main
-
-import (
-	"log"
-	"os"
-	"os/exec"
-)
-
-func main() {
-	cmd := exec.Command("gomarkdoc", "--output", "README.md", ".")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	if err := cmd.Run(); err != nil {
-		log.Fatalf("gomarkdoc failed: %v", err)
-	}
-
-	log.Println("Generated README.md for events/adapters package")
-}
+package adapters

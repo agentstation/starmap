@@ -64,6 +64,18 @@ func TestValidationError(t *testing.T) {
 	})
 }
 
+func TestConflictError(t *testing.T) {
+	err := &pkgerrors.ConflictError{
+		Resource: "catalog generation",
+		Expected: "generation-1",
+		Actual:   "generation-2",
+	}
+	assert.Contains(t, err.Error(), "generation-1")
+	assert.Contains(t, err.Error(), "generation-2")
+	assert.True(t, errors.Is(err, pkgerrors.ErrConflict))
+	assert.True(t, pkgerrors.IsConflict(err))
+}
+
 func TestAPIError(t *testing.T) {
 	t.Run("with status code", func(t *testing.T) {
 		err := &pkgerrors.APIError{
@@ -471,6 +483,7 @@ func TestSentinelErrors(t *testing.T) {
 		{"ErrCanceled", pkgerrors.ErrCanceled},
 		{"ErrNotImplemented", pkgerrors.ErrNotImplemented},
 		{"ErrReadOnly", pkgerrors.ErrReadOnly},
+		{"ErrConflict", pkgerrors.ErrConflict},
 	}
 
 	for _, tc := range sentinels {

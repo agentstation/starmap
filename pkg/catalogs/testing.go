@@ -62,7 +62,7 @@ func TestEndpoint(t testing.TB) *Endpoint {
 }
 
 // TestCatalog creates a test catalog with sample data.
-func TestCatalog(t testing.TB) Catalog {
+func TestCatalog(t testing.TB) *Builder {
 	t.Helper()
 
 	catalog := NewEmpty()
@@ -191,17 +191,17 @@ func AssertProvidersEqual(t testing.TB, expected, actual *Provider) {
 }
 
 // AssertCatalogHasModel asserts that a catalog contains a model with the given ID.
-func AssertCatalogHasModel(t testing.TB, catalog Catalog, modelID string) {
+func AssertCatalogHasModel(t testing.TB, catalog Reader, modelID string) {
 	t.Helper()
 
-	_, err := catalog.FindModel(modelID)
-	if err != nil {
-		t.Errorf("Expected catalog to have model %q, but got error: %v", modelID, err)
+	model, found := catalog.Models().Get(modelID)
+	if !found || model == nil {
+		t.Errorf("Expected catalog to have model %q", modelID)
 	}
 }
 
 // AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.
-func AssertCatalogHasProvider(t testing.TB, catalog Catalog, providerID ProviderID) {
+func AssertCatalogHasProvider(t testing.TB, catalog Reader, providerID ProviderID) {
 	t.Helper()
 
 	_, err := catalog.Provider(providerID)

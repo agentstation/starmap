@@ -13,11 +13,12 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) error {
+func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) ([]sources.Observation, error) {
 	logger := logging.FromContext(ctx)
 
 	var wg sync.WaitGroup
 	var errs []error
+	var observations []sources.Observation
 	var errMutex sync.Mutex
 
 	for _, src := range srcs {
@@ -26,31 +27,51 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 			defer wg.Done()
 
 			if ctx.Err() != nil {
-				logger.Debug().Str("source", string(src.ID())).Msg("Skipping fetch - context cancelled")
+				logger.Debug().Str("source", string(src.ID())).Msg("Skipping observation - context cancelled")
 				return
 			}
 
-			logger.Info().Str("source", string(src.ID())).Msg("Fetching")
+			logger.Info().Str("source", string(src.ID())).Msg("Observing")
 
-			if err := src.Fetch(ctx, opts...); err != nil {
-				logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source fetch had errors")
+			observation, err := src.Observe(ctx, opts...)
+			if err != nil {
+				logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source observation had errors")
 
-				wrappedErr := pkgerrors.WrapResource("fetch", "source", string(src.ID()), err)
+				wrappedErr := pkgerrors.WrapResource("observe", "source", string(src.ID()), err)
 				errMutex.Lock()
 				errs = append(errs, wrappedErr)
 				errMutex.Unlock()
 
-				if src.Catalog() == nil {
+				if observation.Catalog == nil {
 					logger.Warn().Str("source", string(src.ID())).Msg("No catalog returned, skipping source")
 					return
 				}
 			}
 
-			if src.Catalog() != nil {
+			if observation.Catalog != nil {
+				if validationErr := observation.Validate(); validationErr != nil {
+					errMutex.Lock()
+					errs = append(errs, pkgerrors.WrapResource("validate", "source observation", string(src.ID()), validationErr))
+					errMutex.Unlock()
+					return
+				}
+				if observation.SourceID != src.ID() {
+					errMutex.Lock()
+					errs = append(errs, &pkgerrors.ValidationError{
+						Field:   "observation.source",
+						Value:   observation.SourceID,
+						Message: "must match configured source " + src.ID().String(),
+					})
+					errMutex.Unlock()
+					return
+				}
+				errMutex.Lock()
+				observations = append(observations, observation)
+				errMutex.Unlock()
 				logger.Debug().
 					Str("source", string(src.ID())).
-					Int("providers", len(src.Catalog().Providers().List())).
-					Int("models", len(src.Catalog().Models().List())).
+					Int("providers", len(observation.Catalog.Providers().List())).
+					Int("models", len(observation.Catalog.Definitions())).
 					Msg("Added source catalog to reconciliation")
 			}
 		}(src)
@@ -59,9 +80,9 @@ func fetch(ctx context.Context, srcs []sources.Source, opts []sources.Option) er
 	wg.Wait()
 
 	if len(errs) > 0 {
-		return errors.Join(errs...)
+		return observations, errors.Join(errs...)
 	}
-	return nil
+	return observations, nil
 }
 
 func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, error) {
@@ -118,11 +139,17 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 	}
 
 	if opts.RequireAllSources && len(skippedSources) > 0 {
-		return nil, fmt.Errorf("required sources unavailable due to missing dependencies: %v", skippedSources)
+		return nil, &pkgerrors.DependencyError{
+			Dependency: "source-set",
+			Message:    fmt.Sprintf("required sources unavailable due to missing dependencies: %v", skippedSources),
+		}
 	}
 
 	if len(availableSources) == 0 {
-		return nil, fmt.Errorf("no sources available - all sources have missing dependencies")
+		return nil, &pkgerrors.ConfigError{
+			Component: "sync sources",
+			Message:   "no sources available; all configured sources have missing dependencies",
+		}
 	}
 
 	if len(skippedSources) > 0 {
@@ -145,11 +172,17 @@ func handleMissingDeps(ctx context.Context, src sources.Source, missingDeps []so
 				Msg("Skipping optional source (--skip-dep-prompts)")
 			return true, nil
 		}
-		return false, fmt.Errorf("required source %s has missing dependencies (use --skip-dep-prompts=false to install)", src.ID())
+		return false, dependencyError(src, missingDeps[0], "required source has a missing dependency")
 	}
 
 	for _, dep := range missingDeps {
-		if opts.AutoInstallDeps {
+		decision, err := dependencyDecision(ctx, src, dep, opts)
+		if err != nil {
+			return false, err
+		}
+
+		switch decision {
+		case pkgsync.DependencyDecisionInstall:
 			logger.Info().
 				Str("dependency", dep.Name).
 				Str("source", string(src.ID())).
@@ -162,45 +195,53 @@ func handleMissingDeps(ctx context.Context, src sources.Source, missingDeps []so
 					Msg("Auto-install failed")
 
 				if !src.IsOptional() {
-					return false, fmt.Errorf("failed to install required dependency %s for source %s: %w", dep.Name, src.ID(), err)
+					return false, dependencyError(src, dep, fmt.Sprintf("automatic installation failed: %v", err))
 				}
 				return true, nil
 			}
 
-			continue
-		}
-
-		result := deps.PromptForMissingDep(dep, string(src.ID()))
-
-		switch result {
-		case deps.PromptInstall:
-			if err := deps.AutoInstall(ctx, dep); err != nil {
-				logger.Warn().
-					Err(err).
-					Str("dependency", dep.Name).
-					Msg("Installation failed")
-
-				if !src.IsOptional() {
-					return false, fmt.Errorf("failed to install required dependency %s: %w", dep.Name, err)
-				}
-				if deps.ConfirmSkipSource(string(src.ID()), missingDeps) {
-					return true, nil
-				}
-				return false, fmt.Errorf("cannot continue without %s", dep.Name)
-			}
-
-		case deps.PromptSkip:
+		case pkgsync.DependencyDecisionSkip:
 			if !src.IsOptional() {
-				return false, fmt.Errorf("cannot skip required source %s (missing: %s)", src.ID(), dep.Name)
+				return false, dependencyError(src, dep, "cannot skip a required source")
 			}
 			return true, nil
 
-		case deps.PromptCancel:
-			return false, fmt.Errorf("operation cancelled by user")
+		case pkgsync.DependencyDecisionCancel:
+			return false, pkgerrors.ErrCanceled
+
+		default:
+			return false, &pkgerrors.ValidationError{
+				Field:   "DependencyDecision",
+				Value:   decision,
+				Message: "decision must be install, skip, or cancel",
+			}
 		}
 	}
 
 	return false, nil
+}
+
+func dependencyDecision(ctx context.Context, src sources.Source, dep sources.Dependency, opts *pkgsync.Options) (pkgsync.DependencyDecision, error) {
+	if err := ctx.Err(); err != nil {
+		return 0, err
+	}
+	if opts.AutoInstallDeps {
+		return pkgsync.DependencyDecisionInstall, nil
+	}
+	if opts.DependencyDecisionHandler != nil {
+		return opts.DependencyDecisionHandler(ctx, src.ID(), dep, src.IsOptional())
+	}
+	if src.IsOptional() {
+		return pkgsync.DependencyDecisionSkip, nil
+	}
+	return 0, dependencyError(src, dep, "required dependency is missing and no interactive decision adapter is configured")
+}
+
+func dependencyError(src sources.Source, dep sources.Dependency, message string) error {
+	return &pkgerrors.DependencyError{
+		Dependency: dep.Name,
+		Message:    fmt.Sprintf("source %s: %s", src.ID(), message),
+	}
 }
 
 func cleanup(ctx context.Context, srcs []sources.Source) error {

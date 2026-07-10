@@ -7,10 +7,6 @@ type Options struct {
 	// Provider filtering (needed by provider source)
 	ProviderID *catalogs.ProviderID
 
-	// Behavior flags (needed by various sources)
-	Fresh    bool // Fresh sync (delete existing before adding)
-	SafeMode bool // Don't delete models, only add/update
-
 	// Typed source-specific options
 	CleanupRepo bool // For models.dev git source - remove repo after fetch
 	Reformat    bool // For file-based sources - reformat output files
@@ -20,8 +16,6 @@ type Options struct {
 func Defaults() *Options {
 	return &Options{
 		ProviderID:  nil,
-		Fresh:       false,
-		SafeMode:    false,
 		CleanupRepo: false,
 		Reformat:    false,
 	}
@@ -43,20 +37,6 @@ func (o *Options) Apply(opts ...Option) *Options {
 func WithProviderFilter(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
 		opts.ProviderID = &providerID
-	}
-}
-
-// WithFresh configures fresh sync mode for sources.
-func WithFresh(fresh bool) Option {
-	return func(opts *Options) {
-		opts.Fresh = fresh
-	}
-}
-
-// WithSafeMode configures safe mode for sources.
-func WithSafeMode(safeMode bool) Option {
-	return func(opts *Options) {
-		opts.SafeMode = safeMode
 	}
 }
 

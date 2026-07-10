@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/agentstation/starmap/internal/sources/clients"
+	"github.com/agentstation/starmap/internal/providers/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -43,7 +43,7 @@ var providerRegistry struct {
 // ProviderFetcher provides operations for fetching models from provider APIs.
 // This is the public API for external packages to interact with provider data.
 type ProviderFetcher struct {
-	providers *catalogs.Providers
+	providers catalogs.ProvidersReader
 	options   *providerOptions
 }
 
@@ -185,6 +185,9 @@ func getAuthInfo(provider *catalogs.Provider) (method, location, scheme string) 
 	if provider == nil || provider.APIKey == nil {
 		return "None", "", ""
 	}
+	if !provider.HasAPIKey() {
+		return "None", "", ""
+	}
 
 	// Check for query parameter authentication
 	if provider.APIKey.QueryParam != "" {
@@ -216,7 +219,7 @@ func getAuthInfo(provider *catalogs.Provider) (method, location, scheme string) 
 // NewProviderFetcher creates a new provider fetcher for interacting with provider APIs.
 // It provides a clean public interface for external packages.
 // The providers parameter should contain the catalog providers to create clients for.
-func NewProviderFetcher(providers *catalogs.Providers, opts ...ProviderOption) *ProviderFetcher {
+func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher {
 	options := providerDefaults().apply(opts...)
 
 	return &ProviderFetcher{
@@ -319,46 +322,13 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
 //	fetcher := NewProviderFetcher(WithTimeout(30 * time.Second))
 //	models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error) {
-	if provider == nil {
-		return nil, &errors.ValidationError{
-			Field:   "provider",
-			Message: "cannot be nil",
-		}
-	}
-
 	options := pf.options.clone().apply(opts...)
-
-	// Apply timeout if specified
-	if options.timeout > 0 {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, options.timeout)
-		defer cancel()
+	ctx, cancel, err := prepareProviderOperation(ctx, provider, options)
+	if err != nil {
+		cancel()
+		return nil, err
 	}
-
-	// Load credentials if requested
-	if options.loadCredentials {
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-	}
-
-	// Check credentials unless explicitly allowed to be missing
-	if !options.allowMissingKey {
-		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
-			return nil, &errors.AuthenticationError{
-				Provider: string(provider.ID),
-				Method:   "api_key",
-				Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
-			}
-		}
-
-		missingEnvVars := provider.MissingRequiredEnvVars()
-		if len(missingEnvVars) > 0 {
-			return nil, &errors.ConfigError{
-				Component: string(provider.ID),
-				Message:   fmt.Sprintf("missing required environment variables: %v", missingEnvVars),
-			}
-		}
-	}
+	defer cancel()
 
 	// Get client from providers
 	if options.clientFactory == nil {
@@ -391,46 +361,13 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 // The endpoint parameter should be the full URL to the API endpoint.
 // The response is returned as raw bytes (JSON) without any parsing, along with fetch statistics.
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error) {
-	if provider == nil {
-		return nil, nil, &errors.ValidationError{
-			Field:   "provider",
-			Message: "cannot be nil",
-		}
-	}
-
 	options := pf.options.clone().apply(opts...)
-
-	// Apply timeout if specified
-	if options.timeout > 0 {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, options.timeout)
-		defer cancel()
+	ctx, cancel, err := prepareProviderOperation(ctx, provider, options)
+	if err != nil {
+		cancel()
+		return nil, nil, err
 	}
-
-	// Load credentials if requested
-	if options.loadCredentials {
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-	}
-
-	// Check credentials unless explicitly allowed to be missing
-	if !options.allowMissingKey {
-		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
-			return nil, nil, &errors.AuthenticationError{
-				Provider: string(provider.ID),
-				Method:   "api_key",
-				Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
-			}
-		}
-
-		missingEnvVars := provider.MissingRequiredEnvVars()
-		if len(missingEnvVars) > 0 {
-			return nil, nil, &errors.ConfigError{
-				Component: string(provider.ID),
-				Message:   fmt.Sprintf("missing required environment variables: %v", missingEnvVars),
-			}
-		}
-	}
+	defer cancel()
 
 	if options.rawFetcher == nil {
 		return nil, nil, &errors.ConfigError{
@@ -472,4 +409,42 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	}
 
 	return result.Data, stats, nil
+}
+
+func prepareProviderOperation(
+	ctx context.Context,
+	provider *catalogs.Provider,
+	options *providerOptions,
+) (context.Context, context.CancelFunc, error) {
+	if provider == nil {
+		return ctx, func() {}, &errors.ValidationError{Field: "provider", Message: "cannot be nil"}
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	cancel := func() {}
+	if options.timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, options.timeout)
+	}
+	if options.loadCredentials {
+		provider.LoadAPIKey()
+		provider.LoadEnvVars()
+	}
+	if options.allowMissingKey {
+		return ctx, cancel, nil
+	}
+	if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
+		return ctx, cancel, &errors.AuthenticationError{
+			Provider: string(provider.ID),
+			Method:   "api_key",
+			Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
+		}
+	}
+	if missing := provider.MissingRequiredEnvVars(); len(missing) > 0 {
+		return ctx, cancel, &errors.ConfigError{
+			Component: string(provider.ID),
+			Message:   fmt.Sprintf("missing required environment variables: %v", missing),
+		}
+	}
+	return ctx, cancel, nil
 }

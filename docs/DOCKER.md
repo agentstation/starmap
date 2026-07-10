@@ -40,6 +40,10 @@ docker run -p 8080:8080 \
 docker run -p 8080:8080 \
   -e OPENAI_API_KEY=sk-... \
   -e ANTHROPIC_API_KEY=sk-ant-... \
+  -e DASHSCOPE_API_KEY=... \
+  -e ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1 \
+  -e FIREWORKS_API_KEY=... \
+  -e DEEPINFRA_TOKEN=... \
   ghcr.io/agentstation/starmap:latest \
   serve --host 0.0.0.0
 
@@ -117,6 +121,10 @@ HTTP_PORT=8080
 # Optional: Provider API keys
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
+DASHSCOPE_API_KEY=...
+ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
+FIREWORKS_API_KEY=...
+DEEPINFRA_TOKEN=...
 ```
 
 3. **Start the services:**
@@ -376,6 +384,10 @@ stringData:
   OPENAI_API_KEY: "sk-..."
   ANTHROPIC_API_KEY: "sk-ant-..."
   GOOGLE_API_KEY: "..."
+  DASHSCOPE_API_KEY: "..."
+  ALIBABA_MODEL_STUDIO_BASE_URL: "https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1"
+  FIREWORKS_API_KEY: "..."
+  DEEPINFRA_TOKEN: "..."
 ```
 
 ### Apply Kubernetes Resources
@@ -418,6 +430,10 @@ curl http://localhost:8080/api/v1/health
 | `GROQ_API_KEY` | Groq | API key for Groq models |
 | `DEEPSEEK_API_KEY` | DeepSeek | API key for DeepSeek models |
 | `CEREBRAS_API_KEY` | Cerebras | API key for Cerebras models |
+| `DASHSCOPE_API_KEY` | Alibaba Cloud Model Studio | API key for Model Studio models |
+| `ALIBABA_MODEL_STUDIO_BASE_URL` | Alibaba Cloud Model Studio | Optional workspace OpenAI-compatible base URL for non-US regions |
+| `FIREWORKS_API_KEY` | Fireworks AI | API key for Fireworks AI models |
+| `DEEPINFRA_TOKEN` | DeepInfra | Optional for catalog fetch; required for inference calls |
 
 ### Google Vertex AI (Optional)
 
@@ -500,7 +516,11 @@ secrets:
 ```bash
 kubectl create secret generic starmap-api-keys \
   --from-literal=OPENAI_API_KEY=sk-... \
-  --from-literal=ANTHROPIC_API_KEY=sk-ant-...
+  --from-literal=ANTHROPIC_API_KEY=sk-ant-... \
+  --from-literal=DASHSCOPE_API_KEY=... \
+  --from-literal=ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1 \
+  --from-literal=FIREWORKS_API_KEY=... \
+  --from-literal=DEEPINFRA_TOKEN=...
 ```
 
 ### 6. Network Policies (Kubernetes)

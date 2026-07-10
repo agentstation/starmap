@@ -8,11 +8,11 @@ import (
 // filter handles primary source filtering logic.
 type filter struct {
 	primary        sources.ID
-	primaryCatalog catalogs.Catalog
+	primaryCatalog *catalogs.Catalog
 }
 
 // newFilter creates a new filter.
-func newFilter(primary sources.ID, catalog catalogs.Catalog) *filter {
+func newFilter(primary sources.ID, catalog *catalogs.Catalog) *filter {
 	return &filter{
 		primary:        primary,
 		primaryCatalog: catalog,

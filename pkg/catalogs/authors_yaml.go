@@ -6,23 +6,32 @@ import (
 	"strings"
 
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // FormatYAML returns the authors as formatted YAML sorted alphabetically by ID.
 func (a *Authors) FormatYAML() string {
+	formatted, _ := a.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns formatted author YAML or a typed parse error when an
+// author value cannot be represented safely.
+func (a *Authors) EncodeYAML() (string, error) {
 	if a == nil {
-		return ""
+		return "", nil
 	}
 
 	authors := a.List()
 	if len(authors) == 0 {
-		return ""
+		return "", nil
 	}
 
 	return formatAuthorsYAML(authors)
 }
 
-func formatAuthorsYAML(authors []Author) string {
+func formatAuthorsYAML(authors []Author) (string, error) {
 	// Sort authors alphabetically by ID
 	sort.Slice(authors, func(i, j int) bool {
 		return authors[i].ID < authors[j].ID
@@ -55,15 +64,14 @@ func formatAuthorsYAML(authors []Author) string {
 		// Fallback to basic YAML if enhanced formatting fails
 		basicYaml, err := yaml.Marshal(authors)
 		if err != nil {
-			// This should never happen with valid data - indicates programming error
-			panic(fmt.Sprintf("failed to marshal authors to YAML: %v", err))
+			return "", errors.WrapParse("yaml", "authors", err)
 		}
-		return string(basicYaml)
+		return string(basicYaml), nil
 	}
 
 	// Post-process to filter unwanted fields and add spacing between authors
 	filtered := filterUnwantedFields(string(yamlData))
-	return addBlankLinesBetweenAuthors(filtered)
+	return addBlankLinesBetweenAuthors(filtered), nil
 }
 
 // filterUnwantedFields removes unwanted YAML fields from authors.

@@ -59,9 +59,17 @@ func (a *authorities) Find(resourceType sources.ResourceType, fieldPath string) 
 	return findByFieldPath(authorities, fieldPath)
 }
 
-func (a *authorities) ModelFields() []Field    { return a.modelFields }
-func (a *authorities) ProviderFields() []Field { return a.providerFields }
-func (a *authorities) AuthorFields() []Field   { return a.authorFields }
+func (a *authorities) ModelFields() []Field {
+	return append([]Field(nil), a.modelFields...)
+}
+
+func (a *authorities) ProviderFields() []Field {
+	return append([]Field(nil), a.providerFields...)
+}
+
+func (a *authorities) AuthorFields() []Field {
+	return append([]Field(nil), a.authorFields...)
+}
 
 // ByField returns the highest priority authority for a given field path.
 func findByFieldPath(authorities []Field, fieldPath string) *Field {
@@ -109,15 +117,38 @@ func MatchesPattern(fieldPath, pattern string) bool {
 // defaultModelAuthorities returns the default field authorities for models.
 func defaultModelAuthorities() []Field {
 	return []Field{
-		// Pricing - models.dev is most reliable (HTTP preferred for speed)
-		// Using capitalized field names to match Go struct fields
-		{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 110},
-		{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 100},
+		// Pricing is provider-offering data. A semantically valid provider
+		// observation wins atomically; models.dev is fallback evidence.
+		{Path: "Pricing", Source: sources.ProvidersID, Priority: 110},
+		{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 100},
+		{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 90},
+		{Path: "Pricing", Source: sources.LocalCatalogID, Priority: 80},
 
 		// Availability - Provider API is truth
 		{Path: "Features", Source: sources.ProvidersID, Priority: 95},
 		{Path: "Features", Source: sources.ModelsDevHTTPID, Priority: 90},
 		{Path: "Features", Source: sources.ModelsDevGitID, Priority: 85},
+
+		// Capability substructures - Provider API wins when it has explicit data;
+		// models.dev fills gaps for providers with sparse /models responses.
+		{Path: "Attachments", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Attachments", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Attachments", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Reasoning", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Reasoning", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Reasoning", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "ReasoningTokens", Source: sources.ProvidersID, Priority: 95},
+		{Path: "ReasoningTokens", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "ReasoningTokens", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Verbosity", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Verbosity", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Verbosity", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Tools", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Tools", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Tools", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Delivery", Source: sources.ProvidersID, Priority: 95},
+		{Path: "Delivery", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Delivery", Source: sources.ModelsDevGitID, Priority: 85},
 
 		// Limits - models.dev has better data (HTTP preferred)
 		{Path: "Limits", Source: sources.ModelsDevHTTPID, Priority: 100},
@@ -140,6 +171,22 @@ func defaultModelAuthorities() []Field {
 		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 80},
 		{Path: "Description", Source: sources.ProvidersID, Priority: 70},
 
+		// Lifecycle status - models.dev is authoritative until provider
+		// availability fields are mapped into the canonical status enum.
+		{Path: "Status", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Status", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Status", Source: sources.ProvidersID, Priority: 70},
+
+		// Lineage - models.dev is best for family; provider APIs can fill root/parent.
+		{Path: "Lineage", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Lineage", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Lineage", Source: sources.ProvidersID, Priority: 80},
+
+		// Modes - models.dev currently provides mode-specific pricing and request overrides.
+		{Path: "Modes", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "Modes", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "Modes", Source: sources.ProvidersID, Priority: 70},
+
 		// Core identity - Provider API is authoritative for names
 		{Path: "Name", Source: sources.ProvidersID, Priority: 90},
 		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 85},
@@ -161,6 +208,9 @@ func defaultProviderAuthorities() []Field {
 		{Path: "APIKey", Source: sources.LocalCatalogID, Priority: 100},
 		{Path: "APIKey.*", Source: sources.LocalCatalogID, Priority: 100},
 		{Path: "EnvVars", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "EnvVars", Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: "EnvVars", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: "EnvVars", Source: sources.ProvidersID, Priority: 80},
 		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "Catalog.*", Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "ChatCompletions", Source: sources.LocalCatalogID, Priority: 95},

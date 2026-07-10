@@ -49,8 +49,8 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 		t.Fatalf("Failed to seed old catalog: %v", err)
 	}
 
-	c := &client{
-		catalog: oldCatalog,
+	c := &Client{
+		catalog: mustTestCatalog(t, oldCatalog),
 		hooks:   newHooks(),
 	}
 
@@ -71,10 +71,7 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 		t.Fatal("Expected dry-run sync to detect fetched catalog changes")
 	}
 
-	current, err := c.Catalog()
-	if err != nil {
-		t.Fatalf("Failed to read current catalog: %v", err)
-	}
+	current := c.Catalog()
 	if _, err := current.Provider("old-provider"); err != nil {
 		t.Fatalf("Expected dry-run to keep old catalog published: %v", err)
 	}

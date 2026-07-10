@@ -49,7 +49,7 @@ var ErrBackpressure = errors.New("event delivery backpressure")
 ```
 
 <a name="TrySend"></a>
-## func [TrySend](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L142>)
+## func [TrySend](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L149>)
 
 ```go
 func TrySend[T any](ch chan<- T, item T) error
@@ -58,7 +58,7 @@ func TrySend[T any](ch chan<- T, item T) error
 TrySend attempts a non\-blocking channel send and reports backpressure if full.
 
 <a name="BackpressurePolicy"></a>
-## type [BackpressurePolicy](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L14>)
+## type [BackpressurePolicy](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L14>)
 
 BackpressurePolicy controls what fan\-out does when a target is full.
 
@@ -78,7 +78,7 @@ const (
 ```
 
 <a name="Broker"></a>
-## type [Broker](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L20-L30>)
+## type [Broker](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L20-L30>)
 
 Broker manages event distribution to multiple subscribers. It provides a central hub for catalog events, fanning them out to all registered subscribers \(WebSocket, SSE, etc.\) concurrently.
 
@@ -89,7 +89,7 @@ type Broker struct {
 ```
 
 <a name="NewBroker"></a>
-### func [NewBroker](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L79>)
+### func [NewBroker](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L79>)
 
 ```go
 func NewBroker(logger *zerolog.Logger) *Broker
@@ -98,7 +98,7 @@ func NewBroker(logger *zerolog.Logger) *Broker
 NewBroker creates a new event broker.
 
 <a name="Broker.DeliveryStats"></a>
-### func \(\*Broker\) [DeliveryStats](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L210>)
+### func \(\*Broker\) [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L210>)
 
 ```go
 func (b *Broker) DeliveryStats() DeliveryStats
@@ -107,7 +107,7 @@ func (b *Broker) DeliveryStats() DeliveryStats
 DeliveryStats returns cumulative subscriber delivery counters.
 
 <a name="Broker.EventsDropped"></a>
-### func \(\*Broker\) [EventsDropped](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L200>)
+### func \(\*Broker\) [EventsDropped](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L200>)
 
 ```go
 func (b *Broker) EventsDropped() uint64
@@ -116,7 +116,7 @@ func (b *Broker) EventsDropped() uint64
 EventsDropped returns the total number of events dropped.
 
 <a name="Broker.EventsPublished"></a>
-### func \(\*Broker\) [EventsPublished](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L195>)
+### func \(\*Broker\) [EventsPublished](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L195>)
 
 ```go
 func (b *Broker) EventsPublished() uint64
@@ -125,7 +125,7 @@ func (b *Broker) EventsPublished() uint64
 EventsPublished returns the total number of events published.
 
 <a name="Broker.Publish"></a>
-### func \(\*Broker\) [Publish](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L160>)
+### func \(\*Broker\) [Publish](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L160>)
 
 ```go
 func (b *Broker) Publish(eventType EventType, data any)
@@ -134,7 +134,7 @@ func (b *Broker) Publish(eventType EventType, data any)
 Publish sends an event to all subscribers.
 
 <a name="Broker.QueueDepth"></a>
-### func \(\*Broker\) [QueueDepth](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L205>)
+### func \(\*Broker\) [QueueDepth](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L205>)
 
 ```go
 func (b *Broker) QueueDepth() int
@@ -143,7 +143,7 @@ func (b *Broker) QueueDepth() int
 QueueDepth returns the current number of events in the queue.
 
 <a name="Broker.Run"></a>
-### func \(\*Broker\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L92>)
+### func \(\*Broker\) [Run](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L92>)
 
 ```go
 func (b *Broker) Run(ctx context.Context)
@@ -152,7 +152,7 @@ func (b *Broker) Run(ctx context.Context)
 Run starts the broker's event loop. Should be called in a goroutine. The broker will run until the context is cancelled.
 
 <a name="Broker.Subscribe"></a>
-### func \(\*Broker\) [Subscribe](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L178>)
+### func \(\*Broker\) [Subscribe](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L178>)
 
 ```go
 func (b *Broker) Subscribe(sub Subscriber)
@@ -161,7 +161,7 @@ func (b *Broker) Subscribe(sub Subscriber)
 Subscribe registers a new subscriber to receive events.
 
 <a name="Broker.SubscriberCount"></a>
-### func \(\*Broker\) [SubscriberCount](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L188>)
+### func \(\*Broker\) [SubscriberCount](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L188>)
 
 ```go
 func (b *Broker) SubscriberCount() int
@@ -170,7 +170,7 @@ func (b *Broker) SubscriberCount() int
 SubscriberCount returns the current number of subscribers.
 
 <a name="Broker.Unsubscribe"></a>
-### func \(\*Broker\) [Unsubscribe](<https://github.com/agentstation/starmap/blob/master/internal/server/events/broker.go#L183>)
+### func \(\*Broker\) [Unsubscribe](<https://github.com/agentstation/starmap/blob/main/internal/server/events/broker.go#L183>)
 
 ```go
 func (b *Broker) Unsubscribe(sub Subscriber)
@@ -179,7 +179,7 @@ func (b *Broker) Unsubscribe(sub Subscriber)
 Unsubscribe removes a subscriber from receiving events.
 
 <a name="DeliveryResult"></a>
-## type [DeliveryResult](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L31-L36>)
+## type [DeliveryResult](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L31-L36>)
 
 DeliveryResult describes one fan\-out attempt.
 
@@ -193,7 +193,7 @@ type DeliveryResult struct {
 ```
 
 <a name="DeliveryStats"></a>
-## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L39-L44>)
+## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L39-L44>)
 
 DeliveryStats contains cumulative fan\-out counters.
 
@@ -207,7 +207,7 @@ type DeliveryStats struct {
 ```
 
 <a name="DeliveryTarget"></a>
-## type [DeliveryTarget](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L24-L28>)
+## type [DeliveryTarget](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L24-L28>)
 
 DeliveryTarget is one event fan\-out destination.
 
@@ -220,7 +220,7 @@ type DeliveryTarget[T any] struct {
 ```
 
 <a name="Event"></a>
-## type [Event](<https://github.com/agentstation/starmap/blob/master/internal/server/events/types.go#L30-L34>)
+## type [Event](<https://github.com/agentstation/starmap/blob/main/internal/server/events/types.go#L32-L36>)
 
 Event represents a catalog event with type, timestamp, and data.
 
@@ -233,7 +233,7 @@ type Event struct {
 ```
 
 <a name="EventType"></a>
-## type [EventType](<https://github.com/agentstation/starmap/blob/master/internal/server/events/types.go#L12>)
+## type [EventType](<https://github.com/agentstation/starmap/blob/main/internal/server/events/types.go#L12>)
 
 EventType represents the type of catalog event.
 
@@ -253,6 +253,8 @@ const (
     // Sync events (from sync operations).
     SyncStarted   EventType = "sync.started"
     SyncCompleted EventType = "sync.completed"
+    // CatalogPublished is emitted once a durable generation becomes visible.
+    CatalogPublished EventType = "catalog.published"
 
     // Client events (from transport layers).
     ClientConnected EventType = "client.connected"
@@ -260,7 +262,7 @@ const (
 ```
 
 <a name="Fanout"></a>
-## type [Fanout](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L47-L55>)
+## type [Fanout](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L47-L55>)
 
 Fanout delivers events to targets using one explicit backpressure policy.
 
@@ -271,7 +273,7 @@ type Fanout[T any] struct {
 ```
 
 <a name="NewFanout"></a>
-### func [NewFanout](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L58>)
+### func [NewFanout](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L58>)
 
 ```go
 func NewFanout[T any](policy BackpressurePolicy, logger *zerolog.Logger) *Fanout[T]
@@ -280,7 +282,7 @@ func NewFanout[T any](policy BackpressurePolicy, logger *zerolog.Logger) *Fanout
 NewFanout creates a fan\-out dispatcher.
 
 <a name="Fanout[T].Deliver"></a>
-### func \(\*Fanout\[T\]\) [Deliver](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L70>)
+### func \(\*Fanout\[T\]\) [Deliver](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L70>)
 
 ```go
 func (f *Fanout[T]) Deliver(targets []DeliveryTarget[T], item T) DeliveryResult
@@ -289,7 +291,7 @@ func (f *Fanout[T]) Deliver(targets []DeliveryTarget[T], item T) DeliveryResult
 Deliver sends an item to all targets without spawning per\-target goroutines.
 
 <a name="Fanout[T].Stats"></a>
-### func \(\*Fanout\[T\]\) [Stats](<https://github.com/agentstation/starmap/blob/master/internal/server/events/fanout.go#L108>)
+### func \(\*Fanout\[T\]\) [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/events/fanout.go#L115>)
 
 ```go
 func (f *Fanout[T]) Stats() DeliveryStats
@@ -298,7 +300,7 @@ func (f *Fanout[T]) Stats() DeliveryStats
 Stats returns cumulative fan\-out counters.
 
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/master/internal/server/events/subscriber.go#L6-L13>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/internal/server/events/subscriber.go#L6-L13>)
 
 Subscriber is an interface for event consumers. Implementations adapt the unified event stream to specific transport mechanisms \(WebSocket, SSE, MQTT, webhooks, etc.\).
 

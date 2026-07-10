@@ -8,7 +8,7 @@ Technical documentation for the Starmap AI Model Catalog project.
 **Go Package API Reference**
 
 Auto-generated API documentation for the Starmap Go package including:
-- Client interface and usage
+- Concrete Client API and usage
 - Catalog operations
 - Sync and update mechanisms
 - Event hooks system
@@ -25,11 +25,47 @@ Comprehensive technical documentation covering:
 - CLI architecture and design decisions
 - Core package layer (catalogs, reconciler, authority, sources)
 - Data sources and concurrent fetching
-- 12-stage sync pipeline
+- 13-stage sync pipeline
 - Authority-based reconciliation system
 - Thread safety patterns
 - Package organization
 - Testing strategy
+
+### [CATALOG_AUTHORITY_POLICY.md](CATALOG_AUTHORITY_POLICY.md)
+**Canonical Field Authority Policy**
+
+Executable authority order, merge semantics, empty-value semantics, and
+rationale for every model-definition and provider-offering attribute family.
+
+### [SCHEMA_DRIFT_POLICY.md](SCHEMA_DRIFT_POLICY.md)
+**Strict and Tolerant Source Schema Policy**
+
+Executable failure scope for identities, containers, additive unknown fields,
+and lossless source extensions.
+
+### [SCHEDULED_CATALOG_GENERATION.md](SCHEDULED_CATALOG_GENERATION.md)
+**Validated Catalog Publication Workflow**
+
+Daily/manual change detection, manifest derivation, validation, attestation,
+payload-digest deduplication, and immutable release publication.
+
+### [DURABLE_SCHEDULING.md](DURABLE_SCHEDULING.md)
+**Deployment-Owned HA Synchronization**
+
+Lease/single-flight composition above explicit Sync, with deterministic and
+shared-filesystem adapters.
+
+### [REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md)
+**Versioned Online Generation Protocol**
+
+Strict current-manifest and immutable generation-snapshot routes, client
+compatibility/checksum verification, and atomic remote publication semantics.
+
+### [HOSTED_CATALOG_DISTRIBUTION.md](HOSTED_CATALOG_DISTRIBUTION.md)
+**Hosted Generation and Promotion Protocol**
+
+Verified immutable assets, schema-compatible pointers, dev/canary/stable
+promotion, SLO evidence, and rollback behavior.
 
 ### [CLI.md](CLI.md)
 **CLI Implementation Reference**
@@ -43,6 +79,16 @@ Command-line interface reference and implementation guidelines:
 - Flag aliases and deprecation
 - Testing and migration guides
 - Examples and anti-patterns
+
+### [TESTING.md](TESTING.md)
+**Testing and Verification Strategy**
+
+Enterprise verification guidance covering:
+- Full deterministic verification with `make verify`
+- Critical seam coverage thresholds
+- Focused package test commands
+- Race detection and docs checks
+- Live provider verification with credentials
 
 ### [REST_API.md](REST_API.md)
 **HTTP Server API Reference**
@@ -75,6 +121,7 @@ Individual package READMEs provide implementation details:
 - [../pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
 - [../pkg/authority/](../pkg/authority/) - Field-level authority system
 - [../pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
+- [../pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) - Source evidence retention and deterministic replay
 - [../pkg/errors/README.md](../pkg/errors/README.md) - Typed errors
 - [../pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 - [../internal/server/README.md](../internal/server/README.md) - HTTP server implementation
@@ -84,8 +131,9 @@ Individual package READMEs provide implementation details:
 - [System Architecture](ARCHITECTURE.md#overview)
 - [CLI Architecture](ARCHITECTURE.md#cli-architecture)
 - [CLI Implementation Reference](CLI.md)
+- [Testing and Verification](TESTING.md)
 - [Thread Safety Guidelines](ARCHITECTURE.md#thread-safety)
-- [Sync Pipeline (12 Stages)](ARCHITECTURE.md#sync-pipeline)
+- [Sync Pipeline (13 Stages)](ARCHITECTURE.md#sync-pipeline)
 - [Reconciliation System](ARCHITECTURE.md#reconciliation-system)
 - [HTTP Server Configuration](REST_API.md#configuration)
 - [Real-time Updates (WebSocket/SSE)](REST_API.md#real-time-updates)

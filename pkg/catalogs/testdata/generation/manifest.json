@@ -1,0 +1,50 @@
+{
+  "manifest_version": 1,
+  "schema_version": 1,
+  "generation_id": "gen-20260709T170000Z-64376181773c",
+  "generated_at": "2026-07-09T17:00:00Z",
+  "payload": {
+    "checksum": "sha256:64376181773c4a49f84a04c790c4115d5792e101226f99712fccb8eba4516bce",
+    "size_bytes": 120,
+    "media_type": "application/vnd.agentstation.starmap.catalog+json"
+  },
+  "validation": {
+    "validator_version": "catalog-validator/v1",
+    "validated_at": "2026-07-09T17:00:01Z",
+    "status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "checks": [
+      {"name": "schema", "status": "passed"},
+      {"name": "referential_integrity", "status": "passed"},
+      {"name": "source_policy", "status": "passed"}
+    ]
+  },
+  "sync_run_id": "sync-20260709T165900Z-0001",
+  "source_observations": [
+    {
+      "source": "providers",
+      "observation_id": "obs-providers-20260709T165901Z",
+      "observed_at": "2026-07-09T16:59:01Z",
+      "revision": {"kind": "source_version", "value": "providers-20260709"},
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "source": "models_dev_http",
+      "observation_id": "obs-models-dev-20260709T165905Z",
+      "observed_at": "2026-07-09T16:59:05Z",
+      "revision": {"kind": "etag", "value": "\"models-dev-20260709\""},
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "completeness": "complete",
+  "degraded": false,
+  "consumer_compatibility": {
+    "min_schema_version": 1,
+    "max_schema_version": 1
+  }
+}

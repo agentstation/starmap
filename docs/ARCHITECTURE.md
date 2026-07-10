@@ -2,7 +2,7 @@
 
 > Technical deep dive into Starmap's system design, components, and patterns
 
-**Last Updated:** 2026-07-08
+**Last Updated:** 2026-07-09
 **Status:** Production-ready architecture following idiomatic Go patterns
 
 ## Table of Contents
@@ -42,7 +42,7 @@ graph TB
         HTTP[HTTP Server<br/>REST API + WebSocket + SSE]
     end
 
-    subgraph APP["Application Layer - internal/cmd/application/"]
+    subgraph APP["Application Layer - internal/application/"]
         APPIF[Application Interface<br/>DI Pattern]
         APPIMPL[App Implementation<br/>cmd/starmap/app/]
     end
@@ -95,7 +95,7 @@ graph TB
 
 ### 1. Interface Segregation
 - **Define interfaces where they're used** (Go proverb)
-- Application interface in `internal/cmd/application/` (reusable across binaries)
+- Application interface in `internal/application/` (reusable across binaries)
 - Implementation in `cmd/starmap/app/` (concrete types)
 - Commands depend only on what they need
 
@@ -107,7 +107,8 @@ graph TB
 
 ### 3. Thread Safety
 - Value semantics for collections
-- Deep copy on read
+- Deep copy once at immutable catalog publication
+- Atomic generation reads; caller-owned copies at collection boundaries
 - Double-checked locking for singletons
 - RWMutex for concurrent access
 - See [Thread Safety](#thread-safety) section for details
@@ -129,7 +130,7 @@ graph TB
 
 ### Layer Responsibilities
 
-1. **Application Layer** (`internal/cmd/application/`, `cmd/starmap/app/`)
+1. **Application Layer** (`internal/application/`, `cmd/starmap/app/`)
    - Dependency injection
    - Configuration management
    - Lifecycle control (startup/shutdown)
@@ -139,10 +140,11 @@ graph TB
    - Public API surface
    - Sync adapter into `internal/catalog/pipeline`
    - Event hooks
-   - Auto-updates
+   - Atomic immutable generation publication
 
 3. **Core Packages** (`pkg/`)
-   - Catalog storage (`pkg/catalogs/`)
+   - Catalog domain and immutable reads (`pkg/catalogs/`)
+   - Transactional generation storage (`pkg/catalogstore/`)
    - Multi-source reconciliation (`pkg/reconciler/`)
    - Field-level authority (`pkg/authority/`)
    - Data source abstractions (`pkg/sources/`)
@@ -158,25 +160,25 @@ graph TB
 
 ### Application Interface
 
-Location: `internal/cmd/application/application.go`
+Location: `internal/application/application.go`
 
 **Design Philosophy:**
 - "Accept interfaces, return structs" (Go proverb)
 - "Define interfaces where they're used" (idiomatic Go)
-- Located in `internal/cmd` for internal package organization
+- Located in `internal/application` for internal package organization
 - Zero import cycles (unidirectional dependency flow)
 
 **Interface Definition:**
 
 ```go
 type Application interface {
-    // Catalog returns a deep copy of the current catalog
-    Catalog() (catalogs.Catalog, error)
+    // Catalog adapts the concrete immutable catalog for command callers
+    Catalog() (*catalogs.Catalog, error)
 
     // Starmap returns starmap instance with optional configuration
     // Without options: returns cached instance (thread-safe singleton)
     // With options: creates new instance (no caching)
-    Starmap(opts ...starmap.Option) (starmap.Client, error)
+    Starmap(opts ...starmap.Option) (*starmap.Client, error)
 
     // Logger returns the configured logger
     Logger() *zerolog.Logger
@@ -192,13 +194,57 @@ type Application interface {
 }
 ```
 
-**Dependency Flow:**
+### Interface seam inventory
+
+Starmap applies the deletion test to interfaces: retain them at algorithm,
+transport, or application input boundaries only when there are multiple real
+adapters, or when an executable alternate adapter proves the extension seam.
+Constructors return concrete types when a package owns one implementation.
+
+| Interface seam | Count | Adapters exercised by the repository | Disposition |
+|---|---:|---|---|
+| `catalogs.Reader` | 2 | `*catalogs.Builder`, `*catalogs.Catalog` | Retained algorithm input; `TestSeamConformanceReaderHasBuilderAndCatalogAdapters` executes both |
+| Catalog collection readers | 2 each | Mutable `Providers`/`Authors`/`Endpoints`/`Models`/`Provenance` and immutable reader wrappers | Retained read-only collection boundaries with two implementations each |
+| `catalogstore.Store` | 4 | memory, filesystem, SQLite, conditional object storage | Retained generation-storage boundary; all adapters run the same `TestCatalogStoreConformance` suite |
+| `catalogstore.ObjectBackend` | 2 | memory reference backend, recording alternate backend | Retained cloud-object input; `TestSeamConformanceObjectStoreAcceptsAlternateBackend` executes replacement injection |
+| `authority.Authority` | 2 | default authorities, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
+| `provenance.Tracker` | 2 | in-memory tracker, custom `seamTracker` | Retained observation input; `TestSeamConformancePipelineAcceptsCustomTracker` proves replacement tracking |
+| `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
+| `reconciler.Strategy` and internal `resourceConflictResolver` | 2 each | authority and source-order strategies | Retained policy boundaries with two production algorithms |
+| `sources.Source` | 5+ | local, provider, models.dev HTTP, models.dev Git, test sources | Retained source/plugin boundary with four production adapters |
+| Public and internal provider-client seams | 4+ each | OpenAI-compatible, Anthropic, Google, injected fakes | Retained provider transport boundaries with three production families |
+| `application.Application` | 2 | CLI `App`, `application.Mock` | Retained consumer-owned command boundary; compile assertions cover both |
+| Pipeline `Store` | 2 | root `pipelineStore`, `pipelineTestStore` | Retained consumer-owned persistence boundary |
+| Pipeline `providerSetter` | 2 | `*catalogs.Builder`, failing test adapter | Retained failure-injection boundary exercised by pipeline tests |
+| Update `syncClient` | 2 | `*starmap.Client`, `recordingSyncClient` | Retained command boundary exercised without network calls |
+| Attribution `Matcher` | 2 | compiled matcher, custom `seamMatcher` | Retained composite-algorithm input; `TestSeamConformanceMultiMatcherAcceptsCustomAdapter` proves injection |
+| CLI hints `Provider` | 2 | `ProviderFunc`, named provider | Retained registry/plugin boundary with two adapters |
+| CLI `Formatter` | 4 | JSON, YAML, table, function adapter | Retained output boundary with four adapters |
+| CLI alerts `Writer` | 2 | function and structured format writers | Retained output boundary with two adapters |
+| Transport `Authenticator` | 5 | no-auth, bearer, header, query, provider auth | Retained transport policy boundary with five adapters |
+| Event `Subscriber` | 2 | SSE and WebSocket subscribers | Retained fan-out boundary with two production transports |
+
+Deleted one-adapter or unused abstractions include the exported `Snapshot`, the
+catalog `Builder`, `Writer`, `Merger`, `Copier`, and `Persistence` interfaces,
+the root `Client`, `Catalog`, `Updater`, `AutoUpdater`, `Hooks`, and
+`Persistence` capability interfaces, reconciler `Merger` and `Reconciler`,
+differ `Differ`, and provenance `Auditor`. `Builder`, `Client`, `Reconciler`,
+and `Differ` are now concrete product types; mutation and publication remain
+separate.
+
+The root client exposes explicit idempotent `Sync`/`Update` operations and owns
+no ticker, cadence lifecycle, retry loop, or constructor-started goroutine.
+Starport and deployment composition own scheduling, startup policy, jitter,
+leases, and HA coordination. Custom candidate construction uses the
+context-aware `WithUpdateFunc` seam; it does not imply cadence.
+
+### Application dependency flow
 
 ```mermaid
 flowchart BT
     APP[cmd/starmap/app/<br/>App implements Application]
     CMD[cmd/starmap/cmd/*<br/>Commands use Application]
-    INT[internal/cmd/application/<br/>Application interface]
+    INT[internal/application/<br/>Application interface]
 
     APP -->|implements| INT
     CMD -->|imports| INT
@@ -480,7 +526,7 @@ _ = rootCmd.PersistentFlags().MarkHidden("format")
 **Key Files:**
 - `cmd/starmap/app/execute.go` - Root command and global flags
 - `cmd/starmap/app/commands.go` - Command registration
-- `internal/cmd/globals/` - Shared flag utilities
+- `internal/cli/globals/` - Shared flag utilities
 - `cmd/starmap/cmd/*/` - Individual command implementations
 
 **For comprehensive CLI reference and implementation guidelines**, see **[CLI.md](CLI.md)**.
@@ -491,10 +537,12 @@ _ = rootCmd.PersistentFlags().MarkHidden("format")
 
 Location: `pkg/catalogs/`
 
-**Purpose:** Unified storage abstraction with pluggable backends
+**Purpose:** Immutable catalog product plus a separate advanced construction type
 
 **Key Types:**
-- `Catalog` - Main interface for catalog operations
+- `Catalog` - Concrete immutable catalog returned to consumers
+- `Builder` - Concrete mutable construction type for sources/plugins and update pipelines
+- `Reader` - Narrow algorithm-input interface implemented by both types
 - `Model`, `Provider`, `Author`, `Endpoint` - Core data types
 - Collections: `Providers`, `Authors`, `Models`, `Endpoints`
 
@@ -508,6 +556,175 @@ Location: `pkg/catalogs/`
 
 See [pkg/catalogs/README.md](../pkg/catalogs/README.md) for details.
 
+### Generation manifest contract
+
+`catalogs.GenerationManifest` is the transport-neutral identity and audit record
+for one immutable catalog payload. P3.1 defines the contract; P3.2 and later
+store work is responsible for committing and activating it atomically.
+
+| Manifest field | Meaning |
+|---|---|
+| `manifest_version` | Version of the manifest envelope itself |
+| `schema_version` | Version of the canonical catalog payload schema |
+| `generation_id`, `generated_at` | Immutable generation identity and UTC creation time |
+| `payload` | SHA-256 checksum, exact byte size, and canonical media type |
+| `validation` | Validator version/time, overall status, counts, and named check results |
+| `sync_run_id` | Correlation ID for the synchronization attempt that built the candidate |
+| `source_observations` | Source/observation IDs and evidence checksums needed for audit and replay |
+| `completeness`, `degraded`, `degradation_reasons` | Separate record-coverage and quality/fallback state |
+| `consumer_compatibility` | Inclusive catalog-schema range; never a Starmap or Starport binary range |
+
+Publication eligibility requires a passed validation report, no failed checks,
+valid checksums, a non-empty observation set, internally consistent
+completeness/degradation state, and a schema version inside the declared
+consumer range. The checked-in JSON Schema, example manifest, and exact payload
+fixture live in `pkg/catalogs/testdata/generation/`.
+
+### Catalog distribution artifact
+
+`pkg/catalogartifact` packages one validated `catalogstore.Generation` as a
+deterministic archive plus detached in-toto statement. The archive contains a
+strict descriptor, the complete generation manifest, and the exact canonical
+payload. Rebuilds of identical inputs are byte-identical; opening revalidates
+the manifest/payload binding, member descriptors, compatibility identity, and
+all statement subjects before returning a generation. See
+[Catalog Artifact Format](CATALOG_ARTIFACT_FORMAT.md).
+
+Generation IDs are immutable logical IDs. SHA-256 independently content-addresses
+the payload and archive; schema compatibility is not coupled to binary versions.
+Release staging writes archive, statement, and checksum as one fsynced atomic
+directory; exact retries are idempotent and same-generation byte changes are
+typed conflicts. The GitHub tag workflow uploads these assets without an
+overwrite flag.
+
+`pkg/catalogremote` owns the online Starmap-to-Starmap protocol. A client reads
+the current strict manifest from a versioned API base, then fetches the exact
+generation-addressed canonical snapshot. Strict media type, body bounds,
+catalog-schema compatibility, size, and checksum validation all precede decode
+and compare-and-swap publication. The server and root remote-update path share
+these route constants; the old ad-hoc unversioned catalog envelope is removed.
+See [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
+
+`pkg/catalogdistribution` owns the separate hosted protocol. A small
+latest-compatible pointer selects immutable archive and attestation URLs under
+the same origin; the client verifies pointer compatibility, URL origin, media
+type, size, checksum, artifact, statement, and downloaded manifest identity.
+The handler reads through a narrow repository boundary. Hosted pointers are
+explicit `dev`, `canary`, or `stable` channels, with stable as the consumer
+default. Promotion is ordered dev-to-canary-to-stable; stable additionally
+requires recent hosted canary evidence for availability, generation freshness,
+latency, and exact archive identity. Promotion failures and successes are
+queryable telemetry. Reasoned rollback may select only a generation previously
+served by that channel and never deletes immutable history. See
+[Hosted Catalog Distribution](HOSTED_CATALOG_DISTRIBUTION.md).
+Channel-specific trust roots and availability/freshness tradeoffs are defined in
+[Catalog Distribution Trust Model](CATALOG_DISTRIBUTION_TRUST.md).
+
+The embedded fallback has a separate checked-in budget gate for generation age,
+canonical uncompressed payload size, deterministic compressed archive size, and
+minimum provider/model coverage. Runtime readiness and hosted CI report distinct
+evidence. See [Embedded Catalog Budgets](EMBEDDED_CATALOG_BUDGETS.md).
+
+Repository-owned [Scheduled Catalog Generation](SCHEDULED_CATALOG_GENERATION.md)
+runs daily or manually above the idempotent sync/generation boundary. It derives
+new manifest identity only when canonical payload bytes change, validates and
+attests before immutable payload-digest release publication, and never uses
+Actions artifacts as runtime distribution.
+
+Deployment-owned [Durable Scheduling](DURABLE_SCHEDULING.md) composes a narrow
+Syncer with a named Lease. Contending replicas skip before source work. The
+reference lease uses expiry plus fencing, and the filesystem adapter coordinates
+independent processes on a shared volume; Starport can supply a distributed
+adapter without changing Starmap's core client. Scheduled triggers add bounded
+pre-lease jitter; typed retry is fail-closed and bounded while the lease remains
+held. An optional RunLedger begins before acquisition, records every attempt,
+and completes with the base and published generation identities. Memory and
+SQLite reference adapters make lifecycle semantics and crash-visible `running`
+records executable; Starport can bind the same narrow interface to its database.
+Successful Sync results also expose validated source-observation projections
+even when catalog bytes do not change. An explicit deployment FreshnessPolicy
+turns those observations into ready/degraded/unready states and stable alerts;
+there are no implicit SLA durations. Out-of-order completion cannot regress the
+latest source evidence, and a current generation can seed state after restart.
+An `InitialRunController` requires one of blocking, background, or schedule-only
+startup modes. It composes an explicit baseline-readiness probe, performs at
+most one startup attempt, and coalesces only scheduled due-times inside a
+configured window. Failed startup never suppresses the recovery tick. The
+controller remains passive and owns no ticker.
+
+### CatalogStore contract
+
+`pkg/catalogstore.Store` persists a `Generation` (manifest plus exact payload)
+and exposes `Current`, `Get`, and `Commit`. Every commit is compare-and-swap:
+the caller supplies the expected current generation ID, with an empty ID meaning
+the store must still be empty. Implementations validate the manifest and payload
+before storage, retain old immutable generations, return caller-owned bytes, and
+make an identical retry idempotent.
+
+| Adapter | Baseline P3.2 mechanism | Later hardening owner |
+|---|---|---|
+| Memory | Locked immutable map and current ID | Reference semantics/conformance |
+| Filesystem | Cross-instance advisory commit lock plus fsynced immutable directory/current rename | P3.3/P3.5 durability and same-base CAS complete |
+| SQLite | Serializable `database/sql` transaction over generation/current tables | P3.8 rollback, reactivation, deletion, CAS, reopen, and fault matrix complete |
+| Object | Immutable manifest/payload objects plus version-conditional current object | P3.9 upload/promotion faults, corruption, rollback, deletion, CAS, and reopen complete |
+
+The shared conformance suite covers empty reads, commit/current/get, immutable
+ownership, durable reopen, retained history, idempotent retries, stale CAS,
+checksum rejection, generation-ID collisions, and cancellation. Passing the
+baseline suite does not substitute for the later adapter-specific fault gates.
+The concurrent same-base matrix opens independent adapters over one backend and
+requires exactly one success and one typed conflict. SQLite deployments use
+immediate transactions with bounded busy waiting; filesystem writers coordinate
+through a context-aware advisory lock shared across processes.
+
+Legacy `Builder.Save` also uses replacement semantics for its managed YAML
+indexes and provider/author model trees, so deleted records cannot survive a
+save/reload. It deliberately preserves unmanaged neighboring files such as
+logos and operator notes. It is a compatibility materialization, not a second
+transactional database: a process failure or rejected durable commit can leave
+that directory temporarily ahead of or behind the authoritative generation.
+Enterprise readers must consume `catalogstore.Store`/the immutable distribution
+protocol rather than serve the YAML view directly; restart with a durable
+current deliberately ignores the compatibility view. Catalog-generation jobs
+may still use it as an explicit checked export.
+
+The root client makes that dependency explicit: `WithCatalogStore` is required
+before any non-dry manual, remote, server-triggered, or scheduled mutation. The
+preflight runs before source fetch, custom callbacks, remote HTTP, or scheduler
+startup and returns a typed `errors.ConfigError` when the store is absent.
+Read-only construction, `Catalog`, and dry-run synchronization remain usable
+without a store. The CLI composition root supplies a passive filesystem store
+at `catalog_store_path` (default `~/.starmap/catalog-store`); constructing the
+adapter does not create storage until its first commit.
+
+An explicitly configured local catalog is optional only when its path does not
+exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded
+bootstrap; malformed provider, author, provenance, or model YAML and other I/O
+or validation failures remain typed errors. When a configured CatalogStore has
+a current generation, that validated durable generation is authoritative and
+local YAML is not parsed; this prevents a stale or partially materialized
+compatibility view from blocking restart. Local YAML is consulted only when no
+durable current exists.
+
+The embedded bootstrap has a strict embedded `generation.json` binding its
+generation ID, generation time, catalog schema version, canonical payload
+SHA-256, and byte size. `starmap.New` verifies that manifest entirely offline
+before publication. `Client.Readiness` reports the generation metadata and age;
+`WithEmbeddedBootstrapMaxAge` and `WithEmbeddedBootstrapMaxSizeBytes` make the
+HTTP readiness endpoint fail with stable reason codes while an out-of-budget
+bootstrap remains active. A committed generation supersedes bootstrap budgets.
+The CLI/server composition root accepts the same policies through
+`embedded_bootstrap_max_age` and `embedded_bootstrap_max_size_bytes` (or their
+uppercase environment-variable forms).
+
+The documented pre-generation directory format is frozen under
+`pkg/catalogstore/testdata/legacy-v0/`. `MigrateLegacyDirectory` parses that
+format without mutation, requires caller-supplied generation/run/observation
+identity and UTC time, and deterministically emits schema-v1 `CatalogPayload`
+bytes plus a validated manifest. Provider-specific and author model indexes are
+encoded separately because the legacy record structs intentionally exclude
+their runtime model maps from JSON/YAML indexes.
+
 ### Reconciler Package
 
 Location: `pkg/reconciler/`
@@ -515,7 +732,7 @@ Location: `pkg/reconciler/`
 **Purpose:** Multi-source data reconciliation with conflict resolution
 
 **Key Components:**
-- `Reconciler` interface
+- `Reconciler` concrete engine
 - `Strategy` - Defines how conflicts are resolved
 - Field rule catalog - Package-internal model/provider/author field inventory
 - `Result` - Reconciliation outcome with changeset and metadata
@@ -551,9 +768,9 @@ Location: `pkg/authority/`
 **Example Authorities:**
 
 ```go
-// Pricing - models.dev is most reliable
-{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 110}
-{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 100}
+// Pricing - a valid provider-offering observation wins atomically
+{Path: "Pricing", Source: sources.ProvidersID, Priority: 110}
+{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 100}
 
 // Availability - Provider API is truth
 {Path: "Features", Source: sources.ProvidersID, Priority: 95}
@@ -562,13 +779,23 @@ Location: `pkg/authority/`
 {Path: "Description", Source: sources.LocalCatalogID, Priority: 90}
 ```
 
-See `pkg/authority/authority.go` for complete authority configuration.
+See `pkg/authority/authority.go` for legacy field authority configuration.
+The canonical definition/offering inventory and merge/empty semantics are
+documented in [CATALOG_AUTHORITY_POLICY.md](CATALOG_AUTHORITY_POLICY.md) and
+enforced by `pkg/authority.CanonicalPolicies` coverage tests.
+
+Source decoding uses scoped strictness rather than a global permissive or
+strict mode. Identity and container type drift rejects its source/record scope;
+unknown additive members are preserved inside extensions or classified as
+reviewable evidence before promotion. The executable inventory and rationale
+are documented in [SCHEMA_DRIFT_POLICY.md](SCHEMA_DRIFT_POLICY.md) and exposed
+by `pkg/sources.SchemaDriftPolicies`.
 
 ### Sources Package
 
 Location: `pkg/sources/`
 
-**Purpose:** Abstraction for fetching data from external systems
+**Purpose:** Reentrant observation boundary for external catalog data
 
 **Source Interface:**
 
@@ -576,22 +803,106 @@ Location: `pkg/sources/`
 type Source interface {
     ID() ID
     Name() string
-    Fetch(ctx context.Context, opts ...Option) error
-    Catalog() catalogs.Catalog
+    Observe(ctx context.Context, opts ...Option) (Observation, error)
     Cleanup() error
     Dependencies() []Dependency
     IsOptional() bool
 }
+
+type Observation struct {
+    ID               string
+    SourceID         ID
+    ObservedAt       time.Time
+    Revision         Revision
+    Completeness     ObservationCompleteness
+    Status           ObservationStatus
+    EvidenceChecksum string
+    Catalog          *catalogs.Catalog
+}
 ```
+
+`Observe` returns one immutable result directly. Implementations are safe for
+repeated and concurrent calls and never require stateful `Fetch` then `Catalog`
+ordering. Each call builds its mutable candidate off to the side and publishes
+only the resulting immutable catalog. Observation construction deterministically
+encodes the normalized catalog, binds its SHA-256 evidence checksum, and derives
+an event ID from source, UTC observation time, revision, completeness, status,
+and checksum. HTTP ETags and exact Git commits are preferred when available;
+until those transport-specific revisions are exposed, adapters explicitly use
+the normalized content digest rather than inventing an upstream revision.
+models.dev transport loaders execute per observation and honor that source
+instance's configured directory; no package-level `sync.Once` or cached parsed
+API survives between scheduled/manual calls. The HTTP transport may still reuse
+a validated on-disk response under its explicit cache policy, while parsing it
+again for every observation. A versioned sidecar binds cache origin,
+validation time, ETag/Last-Modified, and the raw response checksum to the exact
+`api.json` bytes. Only a checksum-matching sidecar can supply conditional
+headers or be classified as fresh. After TTL, ETag is preferred and
+Last-Modified is the fallback validator; a valid `304 Not Modified` refreshes
+the sidecar without transferring or rewriting the catalog body, and its exact
+validator becomes the observation revision. A missing/mismatched sidecar forces
+an unconditional fetch and can only degrade to unverified stale fallback.
+Embedded cache origin is retained across reuse and therefore never becomes a
+successful fresh HTTP observation. Git verification checks/builds its
+configured checkout for every observation. Because Git is an explicit
+verification transport, callers must supply an exact 40- or 64-character commit
+through `sync.WithModelsDevGitCommit` (or the corresponding CLI flag); branch
+names and empty revisions fail validation before clone/fetch. The Git client
+fetches that object, uses a forced detached checkout, verifies `HEAD`, hashes
+`bun.lock`, runs `bun install --frozen-lockfile`, and rejects any lockfile
+mutation. Its observation revision records the exact Git commit plus lockfile
+path and SHA-256, so the build input can be reproduced after the remote branch
+moves.
+
+The pipeline validates every observation before reconciliation. Durable
+generation manifests preserve the exact observation ID, UTC time, revision,
+completeness, typed status, and evidence checksum; they never substitute the
+final reconciled catalog checksum for source evidence. A partial observation
+forces partial/degraded generation state.
+
+`pkg/sourceevidence` implements the separate evidence-retention boundary. Its
+long-term normalized record contains the canonical catalog payload (including
+provenance), observation metadata, checksum, and machine-readable issue
+scope/code/subject. Diagnostic issue messages are deliberately omitted because
+they can contain upstream response text or credentials. Loading a normalized
+record verifies its payload checksum and reconstructs the same observation ID,
+candidate catalog bytes, and provenance before it can be used for replay.
+
+Raw evidence is response-body-only: request headers, query parameters, and
+credentials have no representation in the retained type. `Archive` encrypts it
+with AES-256-GCM using a caller-supplied 32-byte key, binds the ciphertext to
+the observation ID and expiry, writes directories/files with `0700`/`0600`
+permissions, and uses fsynced atomic replacement. The default raw retention is
+24 hours and the enforced maximum is seven days; `PurgeExpiredRaw` removes
+expired envelopes. Archive construction is passive, and normalized evidence
+can be retained independently of optional raw retention.
+
+Observation outcomes use one explicit policy:
+
+- a non-nil Go error means the source call failed and produced no policy-usable
+  observation (a diagnostic partial catalog may accompany it, but publication
+  stops);
+- a usable incomplete result returns nil error with `partial`/`degraded` state
+  and typed issues, so valid sibling providers/records remain reconcilable;
+- issue scope is exactly `record`, `provider`, `source`, or `stale_fallback`;
+  record/provider issues name their subject and every issue carries a stable
+  code and message;
+- missing provider credentials/configuration and provider fetch failures are
+  provider-scoped partial degradation, not successful empty live fetches;
+- stale last-known-good fallback is explicitly degraded (and can remain
+  structurally complete), never mislabeled as a fresh success.
 
 **Source Types:**
 - **Provider APIs** (`sources.ProvidersID`) - Real-time model availability
-- **models.dev Git** (`sources.ModelsDevGitID`) - Community-verified pricing/logos
-- **models.dev HTTP** (`sources.ModelsDevHTTPID`) - Faster HTTP API variant
+- **models.dev HTTP** (`sources.ModelsDevHTTPID`) - Default production input,
+  with validated disk-cache and embedded last-known-good fallback
+- **models.dev Git** (`sources.ModelsDevGitID`) - Explicit build/verification
+  transport; never runs alongside HTTP in one sync
 - **Local Catalog** (`sources.LocalCatalogID`) - User overrides
 - **Embedded** (`sources.EmbeddedID`) - Baseline data shipped with binary
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
+See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence retention and replay.
 
 ## Root Package (starmap.Client)
 
@@ -599,27 +910,22 @@ Location: `client.go`, `sync.go`
 
 **Purpose:** Main public API with sync adapter, catalog access, persistence, and event hooks
 
-### Client Interface
+### Concrete Client API
 
 ```go
-type Client interface {
-    // Catalog returns a copy of the current catalog
-    Catalog() (catalogs.Catalog, error)
-
-    // Sync synchronizes with provider APIs
-    Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-
-    // Event hooks
-    OnModelAdded(ModelAddedHook)
-    OnModelUpdated(ModelUpdatedHook)
-    OnModelRemoved(ModelRemovedHook)
-
-    // Lifecycle
-    AutoUpdatesOn() error
-    AutoUpdatesOff() error
-    Save() error
+type Client struct {
+    // unexported state
 }
+
+func New(opts ...Option) (*Client, error)
+func (c *Client) Catalog() *catalogs.Catalog
+func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
 ```
+
+The root package returns concrete `*Client`; consumers that need substitution
+define the smallest interface at their own use site. After `New` succeeds,
+`Catalog` is non-failing, non-nil, O(1), and returns a retained immutable
+generation.
 
 ### Functional Options Pattern
 
@@ -627,10 +933,13 @@ Used throughout for configuration:
 
 ```go
 // Creating with options
+store, err := catalogstore.NewFilesystem("./catalog-store")
+if err != nil {
+    return err
+}
 sm, err := starmap.New(
-    starmap.WithAutoUpdateInterval(30 * time.Minute),
+	starmap.WithCatalogStore(store),
     starmap.WithLocalPath("./catalog"),
-    starmap.WithAutoUpdates(true),
 )
 
 // Sync with options
@@ -646,6 +955,33 @@ result, err := sm.Sync(ctx,
 Location: `internal/catalog/query/`
 
 CLI commands and HTTP handlers share catalog list behavior through `internal/catalog/query`. That package owns reusable filtering, stable ID sorting, limiting, and pagination for models, providers, and authors. Command and server packages still own input parsing, authentication, cache keys, transport responses, table formatting, and JSON/YAML output.
+
+The HTTP model query contract validates every declared sort, order, range,
+modality, feature, date, and pagination value before execution. Supported model
+sorts are `id`, `name`, `release_date`, `context_window`, `created_at`, and
+`updated_at`; missing date/numeric values sort last in either direction and ID
+is the deterministic tie-breaker. Unsupported or malformed values return a
+typed client error rather than silently changing semantics.
+
+Each catalog publication also advances a monotonic process-local sequence tied
+to the durable `generation_id`. Request handlers atomically read the immutable
+catalog, generation ID, and sequence together, set `X-Starmap-Generation-ID`,
+and use that pair as the cache namespace. Advancing a sequence flushes the old
+namespace; an in-flight request from an older sequence cannot reactivate or
+populate it. Only a successful durable commit swaps the catalog and emits the
+asynchronous `catalog.published` event containing the same generation,
+sync-run, and sequence identities. Failed commits change neither state nor
+events, and an identical remote-generation retry is not republished.
+
+`pkg/catalogscheduler.Operations` is the deployment composition boundary for
+operator telemetry. It owns no ticker or update lifecycle: the deployment
+injects its durable `RunLedger`, `FreshnessMonitor`, and optional
+`InitialRunController`, then supplies the atomic catalog identity when reading
+state. `GET /api/v1/operations` exposes the evaluated generation, source SLA
+report, degraded source IDs, latest actual sync (excluding lease/coalescing
+skips), and whether scheduler/startup telemetry is configured. A deployment
+that has not wired scheduling reports `scheduler.configured=false` explicitly
+instead of presenting fabricated freshness or success state.
 
 This keeps adapters thin without moving UI-specific behavior into catalog storage:
 
@@ -669,8 +1005,8 @@ Data flows from multiple sources into the reconciliation engine, with each sourc
 ```mermaid
 graph TD
     LOCAL["Local Catalog<br/><b>Priority: 100</b> (API Config)<br/>• API keys & endpoints<br/>• Provider configurations<br/>• User overrides"]
-    API["Provider APIs<br/><b>Priority: 95</b> (Model Existence)<br/>• Real-time availability<br/>• Basic capabilities<br/>• Concurrent fetching"]
-    MD["models.dev<br/><b>Priority: 110</b> (Pricing)<br/><b>Priority: 100</b> (Metadata)<br/>• Community-verified pricing<br/>• Provider logos (SVG)<br/>• HTTP API & Git fallback"]
+    API["Provider APIs<br/><b>Priority: 110</b> (Valid Offering Price)<br/><b>Priority: 95</b> (Model Existence)<br/>• Real-time availability<br/>• Offering-specific pricing<br/>• Concurrent fetching"]
+    MD["models.dev<br/><b>Priority: 100</b> (Price Fallback / Metadata)<br/>• Community pricing fallback<br/>• Provider logos (SVG)<br/>• HTTP default; Git verification"]
     EMB["Embedded Catalog<br/><b>Priority: 80</b> (Baseline)<br/>• Ships with binary (go:embed)<br/>• Fallback data<br/>• Manual corrections"]
 
     REC{Reconciliation<br/>Engine<br/>Authority-Based}
@@ -691,13 +1027,65 @@ graph TD
 ```
 
 **Authority Resolution:**
-- **Pricing & Limits**: models.dev is most authoritative (manually verified)
+- **Pricing**: A semantically valid, currently effective provider observation
+  wins for that provider offering; models.dev and local data are fallbacks
+- **Limits**: models.dev remains the legacy reconciler authority while the
+  canonical provider-offering policy is implemented
 - **Model Existence**: Provider APIs determine what models actually exist
 - **API Configuration**: Local catalog takes precedence (user's environment)
 - **Baseline Data**: Embedded catalog provides defaults when other sources unavailable
 
 **Provider Fetching Seam:**
-Provider API fetching is owned by `internal/sources/providers`. That source owns credential loading, provider client construction, bounded concurrency, provider-level error policy, and association of fetched models back to provider catalog entries. The public `pkg/sources.ProviderFetcher` preserves its default provider API behavior while also exposing reusable `ProviderClientFactory` and `ProviderRawFetcher` interfaces for tests and custom integrations.
+Provider API acquisition has one implementation in the public
+`pkg/sources.ProviderFetcher`: context timeouts, credential loading/preflight,
+client construction, and `ListModels` execution. Model and raw fetches share the
+same credential preflight. `internal/sources/providers` composes that concrete
+fetcher to add bounded multi-provider concurrency, translate typed fetch errors
+into observation issues, and associate models with provider catalog entries; it
+does not own a second credential/client/fetch policy. Public/internal
+conformance tests cover missing credentials, configuration errors, fetch
+failures, and adapter call suppression.
+
+Provider configuration and provider evidence are deliberately separated. The
+configuration catalog may contain embedded or last-known-good models needed by
+the baseline source, but `internal/sources/providers` removes those models from
+its copied configuration before fetching. Its observation therefore contains
+only models returned by that invocation. Missing credentials yield a
+provider-scoped partial/degraded observation with zero live models, while a
+successful fetch replaces bootstrap models instead of blending them into
+current evidence. Reconciliation may still use the separately identified local
+baseline observation according to authority policy.
+
+Source and provider libraries never write directly to process stdout/stderr.
+They emit context-bound zerolog events through `pkg/logging`; the pipeline adds
+one `run_id` before source work, every source adds its stable `source`, and
+provider-scoped work adds `provider_id`. Direct library callers can supply the
+same correlation with `logging.WithRunID`. The operation `run_id` correlates
+pre-publication logs and is intentionally distinct from the durable
+`sync_run_id` assigned to a committed generation. AST and captured-output tests
+prevent regressions to `fmt.Print*`, standard-log printing, or direct
+`os.Stdout`/`os.Stderr` access in source/provider packages.
+
+### Source Completeness Policy
+
+Starmap treats source fields as an explicit contract. Every attribute from models.dev, provider APIs, local catalogs, and embedded catalogs must have one of three outcomes:
+
+- mapped into canonical catalog schema when the field is broadly meaningful;
+- preserved in a controlled `extensions` bucket when the field is source-specific but still useful;
+- intentionally ignored with a documented reason and regression coverage when the field is operational noise or not meaningful to the catalog.
+
+Canonical fields cover lifecycle status, lineage, context/input/output limits, generation controls, reasoning controls, tiered pricing, mode-specific pricing/request overrides, and provider/model metadata. Controlled extensions preserve source-specific details without letting them participate in field-authority decisions. Reconciliation merges extension buckets additively by source while the field-rule catalog continues to own canonical precedence.
+
+Source-shape tests in `internal/sources/modelsdev` and `internal/providers/*` classify representative response paths so upstream schema drift fails deterministically. Live refreshes are opt-in and must write raw payloads outside the repository, print only normalized path summaries, and never persist secrets.
+
+Every checked-in provider response fixture has an adjacent versioned metadata
+record containing provider, capture time, content-digest source revision,
+payload path/SHA-256, and an explicit maximum age (currently 365 days for the
+legacy capture set). `internal/providers/testhelper` rejects missing, future,
+stale, provider-mismatched, or checksum-mismatched metadata. Refresh helpers
+write payload and metadata together; the Make target propagates test/fetch
+failures and also fails when an alleged refresh changes neither file, preventing
+`-update` no-ops from silently reporting success.
 
 ### Concurrent Fetching
 
@@ -725,7 +1113,7 @@ for _, provider := range providerConfigs {
 
 Location: `internal/catalog/pipeline/` with public entry through `client.Sync` in `sync.go`
 
-The sync pipeline is a deep internal module behind the public `starmap.Client.Sync` method. The root client supplies only a store adapter for reading the current catalog and applying a reconciled catalog after persistence succeeds. `internal/catalog/pipeline` owns execution ordering, source construction, dependency filtering, fetch/cleanup fan-out, reconciliation, dry-run behavior, no-change behavior, and forced-save policy.
+The sync pipeline is a deep internal module behind the public `starmap.Client.Sync` method. The root client supplies only a store adapter for reading the current catalog and applying a reconciled catalog after persistence succeeds. `internal/catalog/pipeline` owns execution ordering, source construction, dependency filtering, observation/cleanup fan-out, reconciliation, dry-run behavior, no-change behavior, and forced-save policy.
 
 The pipeline executes in 13 stages with comprehensive error handling and decision points:
 
@@ -750,9 +1138,9 @@ flowchart TD
 
     S6 --> S7[Resolve Dependencies<br/>Check & Install]
     S7 --> S8[Setup Cleanup<br/>defer]
-    S8 --> S9[Fetch from Sources<br/>⚡ Concurrent]
+    S8 --> S9[Observe Sources<br/>⚡ Concurrent]
 
-    S9 --> E2{Fetch<br/>Success?}
+    S9 --> E2{Observation<br/>Success?}
     E2 -->|No| Error2[❌ Return Error]
     E2 -->|Yes| S10[Get Existing<br/>Catalog Baseline]
 
@@ -781,27 +1169,27 @@ flowchart TD
 
 **Stage Groups:**
 - **Stages 1-5** (Setup): Context, options, validation
-- **Stages 6-9** (Preparation): Source filtering, dependency resolution, cleanup, concurrent fetching
+- **Stages 6-9** (Preparation): Source filtering, dependency resolution, cleanup, concurrent observation
 - **Stages 10-11** (Processing): Baseline comparison, reconciliation
 - **Stages 12-13** (Finalization): Change detection, persistence, hooks
 
 ### Stage-by-Stage Code
 
 ```go
-func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
+func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
     return pipeline.New(pipelineStore{client: c}).Sync(ctx, opts...)
 }
 
 type pipelineStore struct {
-    client *client
+    client *Client
 }
 
-func (s pipelineStore) Catalog() (catalogs.Catalog, error) {
-    return s.client.Catalog()
+func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
+    return s.client.Catalog(), nil
 }
 
-func (s pipelineStore) Apply(catalog catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
-    return s.client.save(catalog, options, changeset)
+func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+    return s.client.save(ctx, catalog, options, changeset, observations)
 }
 ```
 
@@ -810,13 +1198,62 @@ func (s pipelineStore) Apply(catalog catalogs.Catalog, options *sync.Options, ch
 - **Deep module boundary**: `internal/catalog/pipeline.Pipeline` owns orchestration; `client.Sync` remains a stable public adapter
 - **Staged execution**: Each stage has clear purpose
 - **Error handling**: Fail fast with context
-- **Concurrent fetching**: Sources fetched in parallel
+- **Concurrent observation**: Reentrant sources return immutable observations in parallel
 - **Change detection**: Diff against baseline
 - **Dry-run support**: Preview without applying
 - **Force-save support**: `--fresh` and `--reformat` persist even when there are no detected changes
-- **Safe publication**: Catalog state and hooks update only after persistence succeeds
+- **Safe publication**: A validated generation commits through `CatalogStore`
+  before the immutable in-memory swap; failed commits emit no callback
+- **Restart recovery**: `New` reads, validates, decodes, and publishes the exact
+  durable current generation before consulting local compatibility YAML; an
+  empty store alone falls back to the verified bootstrap/local baseline, while
+  corrupt or unavailable store state fails initialization
+- **Isolated hooks**: Post-commit callbacks run asynchronously through bounded
+  delivery slots; publication observers within a slot run independently so one
+  slow callback cannot head-of-line block cache/SSE/WebSocket notification.
+  Returned errors, panics, drops, and latency are observable through
+  `Client.HookStats` and cannot fail or delay the commit path
+
+The HTTP logging middleware preserves the optional `http.Flusher`,
+`http.Hijacker`, and `http.Pusher` capabilities of the underlying response
+writer. This is required for SSE flushing and WebSocket upgrades; middleware
+must not accidentally turn supported streaming transports into HTTP 500s.
 
 ## Reconciliation System
+
+Model definition, provider offering, alias, and Starport routing identities
+follow the normative [Catalog Identity Contract](CATALOG_IDENTITY.md). In
+particular, offering identity is the `(provider ID, provider model ID)` tuple;
+route aliases are policy-layer objects and never source-ingestion aliases.
+`catalogs.ProviderOffering` is the provider-specific schema: its comparable key
+is `(ProviderID, ProviderModelID)`, and it owns pricing, limits, availability,
+regions, endpoint behavior, provider lifecycle, modes, and typed request
+overrides. The legacy `Model` compatibility record remains in place until the
+P4 migration moves intrinsic definition fields into their canonical schema.
+`catalogs.ModelDefinition` is the complementary provider-independent record;
+reflection and round-trip tests keep its authorship, lineage, weights, and
+capabilities surface disjoint from every offering-owned field.
+Legacy embedded and source catalogs pass through `MigrateLegacySchema`, which
+uses deterministic provider ordering and classifies exact/defaulted/missing/
+conflicting transformations. Its checked embedded baseline currently contains
+516 offerings, 490 definitions, 1,073 defaults, 23 reviewed definition
+conflicts, 81 explicit missing-authorship records, and zero unclassified
+changes. Multi-author marketplace declarations are candidate sets and are never
+copied onto every model as invented joint authorship.
+Published catalogs precompute definition and offering indexes. Canonical reads
+use `Definition`, `Offering`, and `ProviderOfferings`; the latter two retain the
+exact provider-scoped identity and return deep copies of nested mutable values.
+Route aliases remain caller-supplied policy-layer identities.
+`MaterializeRouteAlias` resolves their exact offering keys against a retained
+catalog generation and reports ineligible targets without storing routing
+weights or fallback policy in ingestion.
+
+Public compatibility is versioned through the concrete `LegacyCatalogV0`
+adapter. Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts
+come from `Offering`. Existing callers that require the former flattened
+`Model` use `catalog.LegacyV0()`. Direct legacy collection methods remain
+deprecated during the v1 transition, and schema-v0/v1 constants make the
+compatibility boundary executable rather than release-version folklore.
 
 ### Authority-Based Strategy
 
@@ -833,14 +1270,14 @@ The default reconciliation strategy uses field-level authorities:
 
 ```
 Model "gpt-4o" exists in 3 sources:
-  - Provider API: { Name: "GPT-4o", Features: {...} }
-  - models.dev:   { Pricing: {...}, Limits: {...} }
+  - Provider API: { Name: "GPT-4o", Features: {...}, Pricing: {...} }
+  - models.dev:   { Pricing: {fallback...}, Limits: {...} }
   - Local:        { Description: "Custom description" }
 
 Reconciled result:
   - Name:        "GPT-4o"         (Provider API, priority 90)
   - Features:    {...}             (Provider API, priority 95)
-  - Pricing:     {...}             (models.dev, priority 110)
+  - Pricing:     {...}             (Provider API, validated and atomic)
   - Limits:      {...}             (models.dev, priority 100)
   - Description: "Custom desc"     (Local, priority 90)
 ```
@@ -858,11 +1295,11 @@ sequenceDiagram
 
     Sync->>Rec: Reconcile(sources)
 
-    par Concurrent Fetch from all sources
+    par Concurrent observation from selected sources
         Rec->>P: Fetch()
-        P-->>Rec: {Name, Features}
+        P-->>Rec: {Name, Features, Pricing}
         Rec->>M: Fetch()
-        M-->>Rec: {Pricing, Limits}
+        M-->>Rec: {Pricing fallback, Limits}
         Rec->>L: Fetch()
         L-->>Rec: {Description}
     end
@@ -875,8 +1312,8 @@ sequenceDiagram
     Rec->>Auth: ResolveConflict("Features", values)
     Auth-->>Rec: Provider API (priority 95)
 
-    Rec->>Auth: ResolveConflict("Pricing", values)
-    Auth-->>Rec: models.dev (priority 110)
+    Rec->>Auth: SelectValidOfferingPricing(values, effectiveAt)
+    Auth-->>Rec: Provider API, or next valid fallback
 
     Rec->>Auth: ResolveConflict("Limits", values)
     Auth-->>Rec: models.dev (priority 100)
@@ -942,6 +1379,13 @@ Backpressure behavior is explicit per adapter:
 
 The broker, SSE broadcaster, and WebSocket hub still use buffered registration/unregistration channels so setup and cleanup do not depend on event-loop startup order.
 
+Browser WebSocket upgrades are same-origin by default and follow an explicit
+CORS allowlist only when CORS is enabled. The application rate limiter keys on
+the normalized socket-peer IP and deliberately ignores untrusted forwarding
+headers; deployments that need end-client limits behind a proxy should enforce
+them at a trusted ingress boundary. Cleanup is request-driven and owns no
+background goroutine or shutdown lifecycle.
+
 ## Thread Safety
 
 Starmap's catalog system is designed for thread-safe concurrent access. This section consolidates all thread safety patterns and guidelines.
@@ -960,17 +1404,17 @@ func (c *Catalog) Models() []Model
 func (c *Catalog) Models() []*Model
 ```
 
-**Deep Copy on Read**
+**Immutable Generation Publication**
 
-All catalog access methods return independent copies:
+Builders are deep-copied once when published. Readers atomically load the same
+sealed immutable generation; collection methods return caller-owned copies:
 
 ```go
-// Per ARCHITECTURE.md § Thread Safety section:
-// This ALWAYS returns a deep copy to prevent data races
-func (a *App) Catalog() (catalogs.Catalog, error) {
-    a.mu.RLock()
-    defer a.mu.RUnlock()
-    return a.catalog.Copy()  // Single deep copy
+func (c *Client) Catalog() *catalogs.Catalog {
+    c.mu.RLock()
+    catalog := c.catalog
+    c.mu.RUnlock()
+    return catalog
 }
 ```
 
@@ -1057,7 +1501,13 @@ Catalog collection boundaries are copy-on-read and copy-on-write:
 - Batch writes (`AddBatch`, `SetBatch`) copy accepted values before storing them.
 - `ForEach` callbacks receive copies; callback mutation must not affect catalog internals.
 - `Provenance` copies maps and slices on `Set`, `Map`, `FindByField`, and `FindByResource`. Provenance `Value` and `PreviousValue` are `any`, so callers should treat complex values placed there as immutable.
-- `Catalog.Copy()` is the cross-goroutine snapshot boundary used by `starmap.Client.Catalog()` and application adapters.
+- `Builder.Build()` is the deep-copy publication boundary. `starmap.Client`
+  stores only a concrete immutable `*catalogs.Catalog`, swaps it under one lock after persistence,
+  and returns that immutable generation without a full-catalog read copy.
+- Catalog publication precomputes provider/model indexes keyed by canonical
+  provider ID and aliases. Provider-specific queries use `ProviderModels` or
+  `ProviderModel`; they never recover membership from the legacy flattened
+  `Models()` view, where equal model IDs from different providers are lossy.
 
 ### Safe Usage Patterns
 
@@ -1166,27 +1616,28 @@ func (c *ProviderCollection) Set(provider Provider) {
 
 ### Performance Characteristics
 
-**Memory Impact:**
-- Value semantics increase allocation during reads
-- Trade-off: Safety vs. memory efficiency
-- Deep copies prevent sharing but ensure correctness
+**Budget scope:** `BenchmarkClientCatalog` measures only loading the current
+embedded immutable catalog through `Client.Catalog`. It does not include
+materializing provider/model lists, filtering, serialization, or network I/O.
 
-**Concurrent Performance:**
-- Reads scale linearly with goroutines (RWMutex)
-- Writes are serialized where necessary
-- Double-checked locking minimizes lock contention
+The executable fast-path budget is zero allocations per call and no more than
+10 microseconds per call. The latency ceiling intentionally has broad CI
+headroom while still rejecting the former millisecond-scale full-catalog copy.
+`scripts/verify-catalog-performance.sh` enforces both limits across three runs;
+race tests remain a separate gate because race instrumentation distorts
+allocation measurements.
 
-**Benchmarks:**
+On 2026-07-09, `darwin/arm64` on an Apple M2 Max with Go 1.25.1 measured:
 
 ```
-BenchmarkCatalogAccess-8              1000000    350 ns/op    10 allocs/op
-BenchmarkCatalogAccessWithCopy-8      1000000    725 ns/op    18 allocs/op
-BenchmarkConcurrentReads-8           10000000    120 ns/op     2 allocs/op
+BenchmarkClientCatalog-12    11.09-11.32 ns/op    0 B/op    0 allocs/op
 ```
 
-After optimization (removed redundant double-copy):
-```
-BenchmarkCatalogAccess-8              1000000    350 ns/op     9 allocs/op  (50% faster)
+Bytes-per-operation in Go benchmark output can reflect amortized harness or
+initialization effects even when allocations round to zero. Reproduce with:
+
+```bash
+go test . -run '^$' -bench BenchmarkClientCatalog -benchmem -count=3
 ```
 
 ### Testing for Thread Safety
@@ -1237,9 +1688,9 @@ The codebase has been fully migrated to value semantics:
 - ✅ Removed redundant double-copy in App.Catalog()
 
 **Performance Improvements:**
-- 50% reduction in Catalog() overhead (removed 2nd copy)
-- Reduced allocations: 18 → 9-10 per call
-- Maintained thread safety guarantees
+- Catalog generation reads perform no full-catalog copy
+- The fast path is guarded at zero allocations with a 10 microsecond ceiling
+- Collection materialization retains caller-owned copies and is outside this budget
 
 #### 4. Channel Buffering for Event-Driven Systems
 
@@ -1345,7 +1796,8 @@ starmap/
 │           └── ...           # Other commands
 │
 ├── pkg/                      # Public packages
-│   ├── catalogs/             # Catalog storage abstraction
+│   ├── catalogs/             # Catalog domain, builder, and immutable reads
+│   ├── catalogstore/         # Generation commit/read/CAS adapters
 │   ├── reconciler/           # Multi-source reconciliation
 │   ├── authority/            # Field-level authority system
 │   ├── sources/              # Source interfaces
@@ -1356,12 +1808,21 @@ starmap/
 │   └── convert/              # Format conversion
 │
 ├── internal/                 # Internal packages
-│   ├── cmd/
-│   │   └── application/      # Application interface (internal)
-│   │       └── application.go # Application interface definition
+│   ├── application/          # Application interface used by CLI and server
+│   ├── cli/                  # CLI support helpers
+│   │   ├── format/           # Output formatting
+│   │   ├── table/            # Table rendering
+│   │   ├── globals/          # Shared flag utilities
+│   │   └── ...               # Command support packages
 │   ├── catalog/
 │   │   ├── query/           # Shared CLI/HTTP catalog query behavior
 │   │   └── pipeline/        # Sync orchestration behind Client.Sync
+│   ├── providers/            # Provider API clients and registry
+│   │   ├── clients/          # Provider client registry and raw fetch
+│   │   ├── openai/           # OpenAI-compatible client
+│   │   ├── anthropic/        # Anthropic client
+│   │   ├── google/           # Google AI Studio and Vertex client
+│   │   └── ...               # Provider-specific test wrappers
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -1380,17 +1841,10 @@ starmap/
 │   │       ├── realtime.go   # WebSocket/SSE
 │   │       └── openapi.go    # OpenAPI spec endpoints
 │   ├── sources/              # Source implementations
-│   │   ├── providers/        # Provider API clients
-│   │   │   ├── openai/       # OpenAI client
-│   │   │   ├── anthropic/    # Anthropic client
-│   │   │   ├── google-ai-studio/
-│   │   │   ├── google-vertex/
-│   │   │   ├── groq/
-│   │   │   ├── deepseek/
-│   │   │   └── cerebras/
+│   │   ├── providers/        # Provider-backed catalog source
 │   │   ├── modelsdev/        # models.dev integration
-│   │   ├── local/            # Local file source
-│   │   └── clients/          # Client factory
+│   │   └── local/            # Local file source
+│   ├── attribution/          # Model author attribution and matcher
 │   └── transport/            # HTTP client utilities
 │
 ├── client.go                 # Client implementation
@@ -1412,11 +1866,11 @@ graph BT
     end
 
     subgraph "Layer 5: Core Packages"
-        PKG[pkg/*<br/>catalogs, reconciler, sources, authority]
+        PKG[pkg/*<br/>catalogs, catalogstore, reconciler, sources, authority]
     end
 
     subgraph "Layer 4: Root Package"
-        ROOT[starmap<br/>Client interface & implementation]
+        ROOT[starmap<br/>Concrete Client API]
     end
 
     subgraph "Layer 3: App Implementation"
@@ -1428,7 +1882,7 @@ graph BT
     end
 
     subgraph "Layer 1: Application Interface"
-        APPIF[internal/cmd/application/<br/>Application interface]
+        APPIF[internal/application/<br/>Application interface]
     end
 
     INT --> PKG
@@ -1453,12 +1907,22 @@ graph BT
 
 **Rules:**
 - Never import from higher layers
-- Commands import `internal/cmd/application/` interface, not `cmd/starmap/app/`
+- Commands import `internal/application/` interface, not `cmd/starmap/app/`
 - Root package imports pkg packages
 - Internal packages can import pkg packages
 - Pkg packages are fully independent
 
 ## Testing Strategy
+
+The primary deterministic verification gate is:
+
+```bash
+make verify
+```
+
+This runs full tests, race-short tests, vet, lint when available, generated-doc checks, whitespace checks, local CLI smoke checks, and critical seam coverage thresholds. See [TESTING.md](TESTING.md) for the maintained verification contract and the current module thresholds.
+
+Use global coverage as an orientation metric only. Enterprise trust comes from coverage at the interfaces where correctness concentrates: catalog ownership, sync pipeline, provider source and client registry, query/params translation, authority and reconciliation, transport, and event fan-out.
 
 ### Unit Tests
 
@@ -1569,7 +2033,7 @@ make testdata
 make testdata PROVIDER=openai
 
 # Or directly
-go test ./internal/sources/providers/openai -update
+go test ./internal/providers/openai -update
 ```
 
 **Testdata Pattern:**
@@ -1596,10 +2060,10 @@ func TestListModels(t *testing.T) {
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `client.go` | Public API interface and client implementation | ~150 |
+| `client.go` | Concrete public Client API and immutable catalog publication | ~150 |
 | `sync.go` | Public sync adapter and persistence apply hook | ~120 |
 | `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
-| `internal/cmd/application/application.go` | Application interface | ~97 |
+| `internal/application/application.go` | Application interface | ~97 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |
 | `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |
 | `pkg/authority/authority.go` | Field-level authorities | ~210 |

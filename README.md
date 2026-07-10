@@ -75,7 +75,7 @@ Starmap provides:
 ## Key Features
 
 ✅ **Comprehensive Coverage**: 500+ models from 10+ providers
-✅ **Accurate Pricing**: Community-verified pricing data via models.dev
+✅ **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback
 ✅ **Real-time Synchronization**: Automatic updates from provider APIs
 ✅ **Flexible Architecture**: Simple merging or complex reconciliation
 ✅ **Multiple Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
@@ -182,19 +182,21 @@ func main() {
         log.Fatal(err)
     }
     
-    // Get the catalog
-    catalog, err := sm.Catalog()
-    if err != nil {
-        log.Fatal(err)
-    }
+    // Get the concrete immutable catalog
+    catalog := sm.Catalog()
     
-    // Find GPT-4 model
-    model, err := catalog.Model("gpt-4o")
+    // Find the canonical GPT-4o definition
+    model, err := catalog.FindModel("gpt-4o")
     if err == nil {
         fmt.Printf("Model: %s\n", model.Name)
-        fmt.Printf("Context: %d tokens\n", model.ContextWindow)
-        fmt.Printf("Input Price: $%.2f/1M tokens\n", model.Pricing.Input)
+        fmt.Printf("Model ID: %s\n", model.ID)
     }
+
+	// Provider price and service facts live on an offering.
+	offering, err := catalog.Offering("openai", "gpt-4o")
+	if err == nil && offering.Pricing != nil {
+		fmt.Printf("OpenAI pricing: %#v\n", offering.Pricing)
+	}
 }
 ```
 
@@ -219,7 +221,7 @@ Starmap uses a layered architecture with clean separation of concerns:
 - **User Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
-- **Storage Backends**: Memory, filesystem, embedded, or custom (S3, GCS, etc.)
+- **Generation Stores**: Memory, filesystem, SQLite, or conditional object storage
 
 For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -228,16 +230,38 @@ For detailed architecture diagrams, design principles, and implementation detail
 Starmap's core abstractions provide a clean separation of concerns:
 
 ### 1. Catalog
-The fundamental abstraction for model data storage and access. Provides CRUD operations, multiple storage backends, and thread-safe collections. See [Catalog Package Documentation](pkg/catalogs/README.md).
+The concrete immutable product for model data access. Advanced producers use a separate builder; ordinary consumers retain and share the catalog safely. See [Catalog Package Documentation](pkg/catalogs/README.md).
 
-### 2. Source
+### 2. CatalogStore
+A generation-oriented commit/read/CAS boundary. The same conformance contract covers memory, filesystem, SQLite, and conditional object-storage adapters while retaining old immutable generations.
+When a client starts with a configured store, it validates and publishes that
+store's current generation before returning from `starmap.New`; an empty store
+uses the verified embedded/local baseline until its first successful commit.
+
+Validated generations use a deterministic archive and detached in-toto
+statement for release/hosted distribution. See the
+[Catalog Artifact Format](docs/CATALOG_ARTIFACT_FORMAT.md).
+
+### 3. Provider Offering
+
+The provider-scoped service contract for a model definition. Its key combines
+the provider ID with the provider's exact opaque model ID, so equal model IDs at
+different providers retain independent pricing, limits, availability, regions,
+endpoint behavior, lifecycle, modes, and request overrides.
+
+### 4. Source
 Abstraction for fetching data from external systems (provider APIs, models.dev, local files). Each implements a common interface for consistent data access.
 
-### 3. Reconciliation
+### 5. Reconciliation
 Intelligent multi-source data merging with field-level authority, provenance tracking, and conflict resolution. See [Reconciliation Package Documentation](pkg/reconciler/README.md).
 
-### 4. Model
-Comprehensive AI model specification including capabilities (chat, vision, audio), pricing (token costs), limits (context window, rate limits), and metadata. See [pkg/catalogs/README.md](pkg/catalogs/README.md) for the complete Model structure.
+### 6. Model Definition
+
+The canonical provider-independent model record: authorship, lineage,
+weights/architecture, release metadata, and intrinsic capabilities. Provider
+pricing, limits, availability, regions, lifecycle, modes, endpoints, and
+request behavior belong to provider offerings. See
+[pkg/catalogs/README.md](pkg/catalogs/README.md) for the schema reference.
 
 For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](docs/ARCHITECTURE.md#system-components)**.
 
@@ -245,7 +269,7 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md �
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [reconciler](pkg/reconciler/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [catalogstore](pkg/catalogstore/), [reconciler](pkg/reconciler/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
 - **`internal/`** - Internal implementations (providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 
@@ -309,7 +333,10 @@ starmap update --force -y
 starmap update --input ./dev --output ./prod
 
 # Specific sources only
-starmap update --sources "Provider APIs,models.dev (git)"
+starmap update --source models.dev
+
+# Reproducible Git verification requires an exact commit
+starmap update --source models.dev-git --models-dev-git-commit <40-or-64-hex-commit>
 ```
 
 ### Dependency Management
@@ -329,6 +356,11 @@ starmap update --require-all-sources --skip-dep-prompts
 # Auto-install - Install dependencies automatically
 starmap update --auto-install-deps
 ```
+
+The `starmap update` command owns the interactive prompt adapter. Go library,
+server, scheduler, and other non-CLI sync calls never read stdin: they skip an
+optional source with missing dependencies and return a typed error for a required
+source unless an explicit noninteractive dependency policy is configured.
 
 **Available Flags:**
 - `--auto-install-deps` - Automatically install missing dependencies
@@ -395,6 +427,16 @@ export OPENAI_API_KEY=sk-...
 export ANTHROPIC_API_KEY=sk-ant-...
 export GOOGLE_API_KEY=...
 export GROQ_API_KEY=...
+export DEEPSEEK_API_KEY=...
+export CEREBRAS_API_KEY=...
+export DASHSCOPE_API_KEY=...
+export FIREWORKS_API_KEY=...
+
+# Optional for DeepInfra catalog fetch; required for inference calls
+export DEEPINFRA_TOKEN=...
+
+# Optional for Alibaba Cloud Model Studio regions that use workspace domains
+export ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
 
 # Optional for Google Vertex
 export GOOGLE_VERTEX_PROJECT=my-project
@@ -417,13 +459,25 @@ import (
 
 #### Simple Catalog Access
 ```go
-// Default embedded catalog with auto-updates
-sm, _ := starmap.New()
-catalog, _ := sm.Catalog()
+// Default embedded catalog; construction starts no background work.
+sm, err := starmap.New()
+if err != nil {
+    return err
+}
+catalog := sm.Catalog()
 
-// Query models
-model, _ := catalog.Model("claude-3-opus")
-fmt.Printf("Context: %d tokens\n", model.ContextWindow)
+// Query canonical model definitions
+model, err := catalog.FindModel("gpt-4o")
+if err != nil {
+    return err
+}
+fmt.Printf("Model: %s\n", model.Name)
+
+// Explicit compatibility adapter for the old flattened Model shape.
+legacyModel, err := catalog.LegacyV0().FindModel("gpt-4o")
+if err == nil {
+    fmt.Printf("Legacy model: %s\n", legacyModel.Name)
+}
 ```
 
 #### Event-Driven Updates
@@ -438,25 +492,46 @@ sm.OnModelUpdated(func(old, new catalogs.Model) {
         log.Printf("Price changed for %s", new.ID)
     }
 })
+
+// Durable publication callbacks run asynchronously after Store.Commit.
+sm.OnCatalogPublished(func(event starmap.CatalogPublishedEvent) error {
+    log.Printf("catalog generation %s from sync %s", event.GenerationID, event.SyncRunID)
+    return nil
+})
+
+stats := sm.HookStats() // failures, panics, drops, and callback latency
 ```
 
-#### Custom Storage Backend
+#### Advanced Catalog Construction
 ```go
-// Use filesystem for development
-catalog, _ := catalogs.New(
+// Builders are for custom source/plugin authors and update pipelines.
+builder, err := catalogs.New(
     catalogs.WithPath("./my-catalog"),
 )
-
-sm, _ := starmap.New(
-    starmap.WithInitialCatalog(catalog),
-)
+if err != nil {
+    return err
+}
+catalog, err := builder.Build()
+if err != nil {
+    return err
+}
 ```
 
 #### Syncing with Provider APIs
 ```go
-// Sync with all configured provider APIs
+// Non-dry mutation requires an explicit writable generation store.
+store, err := catalogstore.NewFilesystem("./catalog-store")
+if err != nil {
+    return err
+}
+sm, err := starmap.New(starmap.WithCatalogStore(store))
+if err != nil {
+    return err
+}
+
+// Sync a selected provider API.
 result, err := sm.Sync(ctx,
-    sync.WithProviders("openai", "anthropic"),
+    sync.WithProvider("openai"),
     sync.WithDryRun(false),
 )
 
@@ -471,18 +546,23 @@ fmt.Printf("Removed: %d models\n", result.Removed)
 
 ### Advanced Patterns
 
-#### Automatic Updates with Custom Logic
+#### Explicit Updates with Custom Logic
 ```go
-updateFunc := func(current catalogs.Catalog) (catalogs.Catalog, error) {
+updateFunc := func(ctx context.Context, current *catalogs.Builder) (*catalogs.Builder, error) {
     // Custom sync logic
-    // Could call provider APIs, merge data, etc.
+    // Honor ctx while calling providers or merging data.
     return updatedCatalog, nil
 }
 
 sm, _ := starmap.New(
-    starmap.WithAutoUpdateInterval(30 * time.Minute),
+    starmap.WithCatalogStore(store),
     starmap.WithUpdateFunc(updateFunc),
 )
+
+// The deployment or Starport scheduler invokes this idempotent operation.
+if err := sm.Update(ctx); err != nil {
+    return err
+}
 ```
 
 #### Filtering and Querying
@@ -502,7 +582,7 @@ models.ForEach(func(id string, model *catalogs.Model) bool {
 
 Starmap combines data from multiple sources:
 
-- **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, etc.)
+- **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, Alibaba Cloud, Fireworks AI, DeepInfra, etc.)
 - **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
 - **Embedded Catalog**: Baseline data shipped with starmap
 - **Local Files**: User customizations and overrides
@@ -511,7 +591,7 @@ For detailed source hierarchy, authority rules, and how sources work together, s
 
 ## Model Catalog
 
-Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, and more). Each package includes comprehensive documentation in its README.
+Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra, and more). Each package includes comprehensive documentation in its README.
 
 ## HTTP Server
 
@@ -530,10 +610,11 @@ starmap serve --cors-origins "https://example.com,https://app.example.com"
 
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering
-- **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`)
-- **Performance**: In-memory caching, rate limiting (per-IP)
+- **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`) carry the same post-commit generation/sync-run identity
+- **Performance**: Generation-scoped in-memory caching, deterministic query sorting, rate limiting (per-IP)
 - **Security**: Optional API key authentication, CORS support
 - **Monitoring**: Health checks (`/health`, `/api/v1/ready`), metrics endpoint
+- **Publication identity**: Catalog responses and real-time publication events carry the durable generation identity
 - **Documentation**: OpenAPI 3.1 specs at `/api/v1/openapi.json`
 
 **API Endpoints:**
@@ -548,9 +629,14 @@ GET  /api/v1/providers           # List providers
 GET  /api/v1/providers/{id}      # Get specific provider
 GET  /api/v1/providers/{id}/models  # Get provider's models
 
+# Remote generation consumption
+GET  /api/v1/catalog/manifest
+GET  /api/v1/catalog/generations/{generation_id}/snapshot
+
 # Admin
 POST /api/v1/update              # Trigger catalog sync
 GET  /api/v1/stats               # Catalog statistics
+GET  /api/v1/operations          # Generation, freshness, last sync, scheduler state
 
 # Health
 GET  /health                     # Liveness probe
@@ -587,6 +673,14 @@ GOOGLE_API_KEY=...
 GROQ_API_KEY=...
 DEEPSEEK_API_KEY=...
 CEREBRAS_API_KEY=...
+DASHSCOPE_API_KEY=...
+FIREWORKS_API_KEY=...
+
+# Optional for DeepInfra catalog fetch; required for inference calls
+DEEPINFRA_TOKEN=...
+
+# Alibaba Cloud Model Studio workspace domain override (optional)
+ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
 
 # Google Vertex (optional)
 GOOGLE_VERTEX_PROJECT=my-project
@@ -597,6 +691,10 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 STARMAP_CONFIG=/path/to/config.yaml
 STARMAP_CACHE_DIR=/var/cache/starmap
 STARMAP_LOG_LEVEL=info
+
+# Optional readiness budgets while the embedded offline bootstrap is active
+EMBEDDED_BOOTSTRAP_MAX_AGE=168h
+EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=2097152
 ```
 
 ### Authentication Management
@@ -631,6 +729,10 @@ The `providers` command shows:
 
 ```yaml
 # ~/.starmap.yaml
+catalog_store_path: ~/.starmap/catalog-store
+embedded_bootstrap_max_age: 168h
+embedded_bootstrap_max_size_bytes: 2097152
+
 providers:
   openai:
     api_key: ${OPENAI_API_KEY}
@@ -638,8 +740,6 @@ providers:
   
 catalog:
   type: embedded
-  auto_update: true
-  update_interval: 1h
   
 sync:
   sources:

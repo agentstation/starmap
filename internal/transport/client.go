@@ -63,7 +63,7 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 		req.Header.Set("Content-Type", "application/json")
 	}
 
-	return c.http.Do(req)
+	return c.http.Do(req) //nolint:gosec // Provider endpoints are trusted catalog configuration or caller-supplied integration points.
 }
 
 // Get performs a GET request.

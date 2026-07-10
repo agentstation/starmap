@@ -44,7 +44,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -156,6 +156,13 @@ test-coverage: ## Run tests with coverage
 	$(GOCMD) tool cover -html=coverage.out -o coverage.html
 	@echo "$(GREEN)Coverage report generated: coverage.html$(NC)"
 
+test-critical-coverage: ## Run critical seam coverage gates
+	@echo "$(BLUE)Running critical seam coverage gates...$(NC)"
+	@STARMAP_VERIFY_COVERAGE_ONLY=1 ./scripts/verify-enterprise.sh
+
+test-catalog-performance: ## Verify the immutable catalog accessor budget
+	@./scripts/verify-catalog-performance.sh
+
 test-race: ## Run tests with race detector
 	@echo "$(BLUE)Running tests with race detector...$(NC)"
 	$(GOTEST) -race -v ./...
@@ -184,6 +191,9 @@ check: ## Run all checks: vet + lint + test (no fixes)
 	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOTEST) ./...
 	@echo "$(GREEN)All checks passed$(NC)"
 
+verify: ## Run enterprise verification gate
+	@./scripts/verify-enterprise.sh
+
 fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
 	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
@@ -205,7 +215,7 @@ install-tools: ## Install development tools
 	@$(RUN_PREFIX) go install golang.org/x/vuln/cmd/govulncheck@latest
 	@$(RUN_PREFIX) go install honnef.co/go/tools/cmd/staticcheck@latest
 	@$(RUN_PREFIX) go install github.com/tetafro/godot/cmd/godot@latest
-	@$(RUN_PREFIX) go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+	@$(RUN_PREFIX) go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
 	@echo "$(GREEN)Tools installed successfully$(NC)"
 
 deps: ## Download dependencies
@@ -260,9 +270,9 @@ release-snapshot-devbox: ## Create snapshot release using devbox tools
 	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
 
 ci-test: ## Run CI-equivalent tests locally
-	@echo "$(BLUE)Running CI-equivalent test suite...$(NC)"
-	@$(MAKE) clean fix check test-race
-	@echo "$(GREEN)✅ All CI tests passed$(NC)"
+	@echo "$(BLUE)Running CI-equivalent verification suite...$(NC)"
+	@$(MAKE) verify
+	@echo "$(GREEN)✅ CI-equivalent verification passed$(NC)"
 
 release: clean fix check ## Prepare for release (use: make release VERSION=x.y.z)
 	@if [ -z "$(VERSION)" ]; then \
@@ -392,7 +402,7 @@ version: ## Show version information
 update-catalog: ## Update embedded catalog with latest API data (requires API keys)
 	@echo "$(BLUE)Updating embedded catalog...$(NC)"
 	@echo "$(YELLOW)This will fetch latest models from all configured provider APIs$(NC)"
-	$(GOCMD) run $(MAIN_PATH) update --output-dir ./internal/embedded/catalog --force -y
+	./scripts/generate-embedded-catalog.sh
 	@echo "$(GREEN)Embedded catalog updated successfully!$(NC)"
 
 update-catalog-provider: ## Update specific provider in embedded catalog (use PROVIDER=name)
@@ -402,7 +412,7 @@ update-catalog-provider: ## Update specific provider in embedded catalog (use PR
 		exit 1; \
 	fi
 	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) update $(PROVIDER) --output-dir ./internal/embedded/catalog --force -y
+	./scripts/generate-embedded-catalog.sh "$(PROVIDER)"
 	@echo "$(GREEN)Provider $(PROVIDER) updated successfully!$(NC)"
 
 # Enhanced embed command with automatic authentication
@@ -414,14 +424,9 @@ embed: ## Update embedded catalog with automatic Google Cloud auth
 		echo "$(YELLOW)Google Cloud authentication required$(NC)"; \
 		$(GOCMD) run $(MAIN_PATH) auth gcloud || exit 1; \
 	fi
-	@echo "$(BLUE)Validating catalog structure...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) validate || exit 1
 	@echo "$(BLUE)Checking provider authentication...$(NC)"
 	@$(GOCMD) run $(MAIN_PATH) providers
-	@echo "$(BLUE)Updating embedded sources...$(NC)"
-	@curl -s https://models.dev/api.json -o internal/embedded/sources/models.dev/api.json || echo "$(YELLOW)Warning: Could not update models.dev api.json$(NC)"
-	@echo "$(BLUE)Updating embedded catalog...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) update --output ./internal/embedded/catalog --force -y
+	@./scripts/generate-embedded-catalog.sh
 	@echo "$(GREEN)✅ Embedded catalog and sources updated successfully!$(NC)"
 
 embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
@@ -440,13 +445,22 @@ embed-provider: ## Update specific provider with auth check (use PROVIDER=name)
 		fi; \
 	fi
 	@echo "$(BLUE)Updating provider $(PROVIDER) in embedded catalog...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) update --provider $(PROVIDER) --output ./internal/embedded/catalog --force -y
+	@./scripts/generate-embedded-catalog.sh "$(PROVIDER)"
 	@echo "$(GREEN)✅ Provider $(PROVIDER) updated successfully!$(NC)"
 
 # Validation targets
 validate: ## Validate entire embedded catalog structure
 	@echo "$(BLUE)Validating catalog structure...$(NC)"
-	@$(GOCMD) run $(MAIN_PATH) validate
+	@$(GOCMD) run $(MAIN_PATH) validate catalog
+
+catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and refresh tooling
+	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh
+	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
+	@$(GOCMD) test ./internal/bootstrapmanifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
+	@$(GOCMD) test ./internal/providers/testhelper -run ProviderFixtureRefreshFailure -count=1
+
+embedded-catalog-budget-check: ## Enforce embedded catalog age, size, and coverage budgets
+	@$(GOCMD) run ./cmd/starmap-embedded-budget
 
 validate-providers: ## Validate providers.yaml only
 	@$(GOCMD) run $(MAIN_PATH) validate providers
@@ -489,15 +503,17 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 	@echo "$(BLUE)Updating testdata for $(if $(PROVIDER),$(PROVIDER),all providers)...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
 	@if [ -n "$(PROVIDER)" ]; then \
-		$(GOTEST) ./internal/sources/providers/$(PROVIDER) -update -v; \
+		./scripts/refresh-provider-testdata.sh "$(PROVIDER)"; \
 	else \
-		for dir in internal/sources/providers/*/; do \
+		status=0; \
+		for dir in internal/providers/*/; do \
 			provider=$$(basename $$dir); \
-			if [ -f "$$dir/client_test.go" ]; then \
+			if [ -f "$$dir/testdata/models_list.json" ]; then \
 				echo "$(BLUE)Updating $$provider testdata...$(NC)"; \
-				$(GOTEST) ./internal/sources/providers/$$provider -update || true; \
+				./scripts/refresh-provider-testdata.sh "$$provider" || status=$$?; \
 			fi; \
 		done; \
+		exit $$status; \
 	fi
 
 # Documentation
@@ -521,22 +537,22 @@ openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 
 generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	$(GOCMD) generate ./...
 	@echo "$(GREEN)All documentation generation complete$(NC)"
 
 godoc: ## Generate only Go documentation using go generate
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	$(GOCMD) generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
 docs-check: ## Check if documentation is up to date (for CI)
 	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \
 		echo "Checking $$pkg..."; \
-		cd $$pkg && gomarkdoc -c -e -o README.md . || exit 1; \
+		cd $$pkg && gomarkdoc -c -e -o README.md . --repository.default-branch main || exit 1; \
 		cd - > /dev/null; \
 	done
 	@echo "$(GREEN)All documentation is up to date$(NC)"

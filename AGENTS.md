@@ -8,7 +8,7 @@ This file provides Codex with project-specific guidance for working in this repo
 
 ## Go Development Standards
 
-**You are a Go 1.25.1 expert.** Write idiomatic, thread-safe, production-ready code:
+**You are a Go 1.25.12 expert.** Write idiomatic, thread-safe, production-ready code:
 
 - **Simplicity over cleverness** - Follow Effective Go, prioritize readability
 - **Thread safety first** - Deep copies for shared data, proper RWMutex usage
@@ -38,11 +38,11 @@ make testdata PROVIDER=openai           # Update testdata
 
 ## Tech Stack
 
-- **Language**: Go 1.25.1
+- **Language**: Go 1.25.12
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
 - **Testing**: Go testing, testdata pattern with `-update` flag
-- **Providers**: OpenAI, Anthropic, Google AI/Vertex, Groq, DeepSeek, Cerebras
+- **Providers**: OpenAI, Anthropic, Google AI/Vertex, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra
 
 ## ⚠️ Critical Rules (YOU MUST FOLLOW)
 
@@ -50,23 +50,24 @@ make testdata PROVIDER=openai           # Update testdata
 
 **See docs/ARCHITECTURE.md § Thread Safety for full details**
 
-**NEVER return direct references - ALWAYS return deep copies:**
+**Publish concrete immutable catalogs; copy values at collection boundaries:**
 
 ```go
-// ❌ WRONG - returns mutable reference
-func Catalog() catalogs.Catalog { return s.catalog }
+// ❌ WRONG - publishes a mutable builder
+func Catalog() *catalogs.Builder { return s.builder }
 
-// ✅ CORRECT - returns deep copy
-func Catalog() (catalogs.Catalog, error) {
+// ✅ CORRECT - atomically returns the concrete immutable catalog
+func Catalog() *catalogs.Catalog {
     s.mu.RLock()
     defer s.mu.RUnlock()
-    return s.catalog.Copy()  // Always copy
+    return s.catalog
 }
 ```
 
 **Key patterns:**
-- Value semantics in collections (return values, not pointers)
-- Deep copy on read
+- `*catalogs.Builder` is the advanced mutation type; publish via `Builder.Build()`
+- Published catalogs are immutable and swapped as complete generations
+- Collection reads return caller-owned deep copies
 - Double-checked locking for singletons
 - RWMutex for concurrent access
 
@@ -99,20 +100,20 @@ constants.DefaultTimeout
 
 **Check OpenAI-compatible first:**
 
-Most providers use unified OpenAI client (`internal/sources/providers/openai/client.go`). Only create custom client if API is incompatible.
+Most providers use unified OpenAI client (`internal/providers/openai/client.go`). Only create custom client if API is incompatible.
 
 **Steps:**
 1. Check if provider uses OpenAI-compatible API
 2. If yes: configure in `internal/embedded/catalog/providers.yaml`
-3. If no: create custom client in `internal/sources/providers/<provider>/`
-4. Register in `internal/sources/clients/factory.go`
+3. If no: create custom client in `internal/providers/<provider>/`
+4. Register in `internal/providers/clients/provider.go`
 
 ### Testdata Updates
 
 After making changes to provider code:
 
 ```bash
-go test ./internal/sources/providers/<provider> -update
+go test ./internal/providers/<provider> -update
 ```
 
 ## Architecture Quick Reference
@@ -124,11 +125,11 @@ For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md). Here's a
 ```
 User Interfaces (CLI, Go Package)
     ↓
-Application Layer (internal/cmd/application/ interface, cmd/starmap/app/ implementation)
+Application Layer (internal/application/ interface, cmd/starmap/app/ implementation)
     ↓
 Root Package (starmap.Client - public API)
     ↓
-Core Packages (catalogs, reconciler, authority, sources)
+Core Packages (catalogs, catalogstore, reconciler, authority, sources)
     ↓
 Internal Implementations (embedded, providers, modelsdev)
 ```
@@ -136,7 +137,7 @@ Internal Implementations (embedded, providers, modelsdev)
 **Key files:**
 - `starmap.go` - Public API
 - `sync.go` - 13-step sync pipeline
-- `internal/cmd/application/application.go` - Application interface
+- `internal/application/application.go` - Application interface
 - `cmd/starmap/app/app.go` - App implementation
 
 ### Sync Pipeline (13 Steps)
@@ -173,10 +174,10 @@ See docs/ARCHITECTURE.md § Reconciliation System for details:
 See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 1. Add to `internal/embedded/catalog/providers.yaml`
-2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras)
+2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
 3. If compatible: Configure in YAML. If not: Create custom client
-4. Register in `internal/sources/clients/factory.go`
-5. Update testdata: `go test ./internal/sources/providers/<provider> -update`
+4. Register in `internal/providers/clients/provider.go`
+5. Update testdata: `go test ./internal/providers/<provider> -update`
 
 ### Modify Sync Logic
 
@@ -203,7 +204,7 @@ Commands use dependency injection via `application.Application` interface:
 func NewCommand(app application.Application) *cobra.Command {
     return &cobra.Command{
         RunE: func(cmd *cobra.Command, args []string) error {
-            catalog, err := app.Catalog()  // Thread-safe deep copy
+            catalog, err := app.Catalog()  // Atomic immutable generation
             // ... use catalog
         },
     }
@@ -216,7 +217,8 @@ Sources can declare external dependencies via `Dependencies()` interface method.
 
 **Implementation:**
 - Add `Dependencies() []Dependency` and `IsOptional() bool` methods to Source
-- Resolver operates in 3 modes: Interactive, Auto-install, Skip prompts
+- Core resolution is noninteractive by default; the CLI supplies the only prompt adapter
+- Explicit noninteractive policies support auto-install or optional-source skipping
 - Optional sources are gracefully skipped if deps missing
 - Use `//nolint:gosec` for subprocess calls (commands from trusted source code)
 
@@ -231,7 +233,6 @@ Used throughout for configuration:
 ```go
 // Creating instances
 sm, _ := starmap.New(
-    starmap.WithAutoUpdateInterval(30 * time.Minute),
     starmap.WithLocalPath("./catalog"),
 )
 
@@ -249,9 +250,9 @@ See examples: `starmap.New()`, `catalogs.New(catalogs.WithEmbedded())`, `catalog
 See docs/ARCHITECTURE.md § Application Layer for interface pattern.
 
 ```go
-// Interface defined where it's used (internal/cmd/application/)
+// Interface defined where it's used (internal/application/)
 type Application interface {
-    Catalog() (catalogs.Catalog, error)
+    Catalog() (*catalogs.Catalog, error)
     Starmap(...starmap.Option) (starmap.Client, error)
     Logger() *zerolog.Logger
     // ...
@@ -259,7 +260,7 @@ type Application interface {
 
 // Implementation in cmd/starmap/app/
 type App struct { /* ... */ }
-func (a *App) Catalog() (catalogs.Catalog, error) { /* ... */ }
+func (a *App) Catalog() (*catalogs.Catalog, error) { /* ... */ }
 ```
 
 ### Concurrent Fetching
@@ -284,11 +285,11 @@ for _, provider := range providers {
 
 ## Package Map
 
-**Core packages**: catalogs, reconciler, authority, sources, errors, logging, constants, convert
+**Core packages**: catalogs, catalogstore, reconciler, authority, sources, errors, logging, constants, convert
 
-**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local,clients}, transport
+**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, transport
 
-**Application**: internal/cmd/application (interface), cmd/starmap/app (implementation)
+**Application**: internal/application (interface), cmd/starmap/app (implementation)
 
 See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for full structure.
 
@@ -302,6 +303,16 @@ GOOGLE_API_KEY=...
 GROQ_API_KEY=...
 DEEPSEEK_API_KEY=...
 CEREBRAS_API_KEY=...
+DASHSCOPE_API_KEY=...
+FIREWORKS_API_KEY=...
+DEEPINFRA_TOKEN=...
+```
+
+`DEEPINFRA_TOKEN` is optional for DeepInfra catalog fetching because `GET /v1/openai/models` is public, but it is required for DeepInfra inference calls.
+
+**Alibaba Cloud Model Studio** (optional non-US workspace domains):
+```bash
+ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
 ```
 
 **Google Vertex** (optional):
@@ -317,7 +328,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 |------|---------|
 | `starmap.go` | Public API interface |
 | `sync.go` | 12-step sync pipeline |
-| `internal/cmd/application/application.go` | Application interface (idiomatic location) |
+| `internal/application/application.go` | Application interface (idiomatic location) |
 | `cmd/starmap/app/app.go` | App implementation |
 | `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |
 | `internal/server/server.go` | Server lifecycle & dependencies |
@@ -326,7 +337,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `pkg/reconciler/reconciler.go` | Multi-source reconciliation |
 | `pkg/authority/authority.go` | Field-level authorities |
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |
-| `internal/sources/clients/factory.go` | Provider client registry |
+| `internal/providers/clients/provider.go` | Provider client registry |
 | `internal/embedded/catalog/providers.yaml` | Provider configurations |
 
 ## Development Commands
@@ -354,6 +365,7 @@ go test ./... -race -short                 # All packages with race detector
 ```bash
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
+make catalog-generation-check               # Verify safe download/promotion/CLI tooling
 make testdata                               # Update all testdata
 make testdata PROVIDER=openai               # Update specific provider testdata
 ```
@@ -383,7 +395,7 @@ make docs-check     # Verify docs current (CI)
 **Import Cycles:**
 - Zero import cycles (validated)
 - Dependency flow is unidirectional (see docs/ARCHITECTURE.md)
-- Commands import `internal/cmd/application/` interface, NOT `cmd/starmap/app/`
+- Commands import `internal/application/` interface, NOT `cmd/starmap/app/`
 
 ## References
 

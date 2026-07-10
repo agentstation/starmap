@@ -4,12 +4,15 @@ package server
 import (
 	"context"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/events/adapters"
@@ -79,8 +82,8 @@ func New(app application.Application, cfg Config) (*Server, error) {
 		upgrader: websocket.Upgrader{
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
-			CheckOrigin: func(_ *http.Request) bool {
-				return true // Allow all origins for WebSocket
+			CheckOrigin: func(request *http.Request) bool {
+				return websocketOriginAllowed(cfg, request)
 			},
 		},
 		logger:    logger,
@@ -101,12 +104,47 @@ func New(app application.Application, cfg Config) (*Server, error) {
 	return server, nil
 }
 
+func websocketOriginAllowed(config Config, request *http.Request) bool {
+	origin := request.Header.Get("Origin")
+	if origin == "" {
+		return true
+	}
+	if config.CORSEnabled {
+		if len(config.CORSOrigins) == 0 {
+			return true
+		}
+		for _, allowed := range config.CORSOrigins {
+			if allowed == "*" || strings.EqualFold(strings.TrimRight(allowed, "/"), strings.TrimRight(origin, "/")) {
+				return true
+			}
+		}
+		return false
+	}
+	parsed, err := url.Parse(origin)
+	return err == nil && parsed.Host != "" && strings.EqualFold(parsed.Host, request.Host)
+}
+
 // connectHooks registers Starmap event hooks to publish to the broker.
 func (s *Server) connectHooks() error {
 	sm, err := s.app.Starmap()
 	if err != nil {
 		return err
 	}
+
+	// Generation publication is the cache/event authority. Request-side cache
+	// keys also read the atomic catalog state, so hook scheduling cannot expose a
+	// stale namespace after publication.
+	sm.OnCatalogPublished(func(event starmap.CatalogPublishedEvent) error {
+		if sm.CurrentCatalogState().GenerationID == event.GenerationID {
+			s.cache.ActivateGeneration(event.Sequence, event.GenerationID)
+		}
+		s.broker.Publish(events.CatalogPublished, map[string]any{
+			"generation_id": event.GenerationID,
+			"sync_run_id":   event.SyncRunID,
+			"sequence":      event.Sequence,
+		})
+		return nil
+	})
 
 	// Model added
 	sm.OnModelAdded(func(model catalogs.Model) {

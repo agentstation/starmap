@@ -2,8 +2,8 @@
 id: sora-2-pro
 name: sora-2-pro
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model features
 features:

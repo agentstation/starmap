@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "provider": "moonshot-ai",
+  "fetched_at": "2025-10-20T11:45:23Z",
+  "source_revision": {"kind": "content_digest", "value": "sha256:fa5667320d0dc489b6ac171bd27049aa1ccd9f3ed0b5798da3b5785b9acfb7d1"},
+  "payload": {"path": "models_list.json", "checksum": "sha256:fa5667320d0dc489b6ac171bd27049aa1ccd9f3ed0b5798da3b5785b9acfb7d1"},
+  "max_age": "8760h0m0s"
+}

@@ -9,7 +9,7 @@ package attribution
 import (
 	"fmt"
 
-	"github.com/agentstation/starmap/internal/matcher"
+	"github.com/agentstation/starmap/internal/attribution/matcher"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -27,7 +27,7 @@ import (
 //	if err := attribution.Apply(catalog); err != nil {
 //	    return fmt.Errorf("failed to apply attributions: %w", err)
 //	}
-func Apply(catalog catalogs.Catalog) error {
+func Apply(catalog *catalogs.Builder) error {
 	// Build attribution mappings from catalog's authors
 	attributions, err := buildAttributions(catalog)
 	if err != nil {
@@ -165,7 +165,7 @@ func processGlobalPatternAttributions(catalog catalogs.Reader, attributions map[
 // This uses the attribution patterns from authors.yaml to determine which models
 // belong to which authors. Models may have .Authors field set by provider clients
 // (for display/metadata), but author.Models is populated based on attribution patterns.
-func applyAttributions(cat catalogs.Catalog, attributions map[string][]catalogs.AuthorID) error {
+func applyAttributions(cat *catalogs.Builder, attributions map[string][]catalogs.AuthorID) error {
 	// Get all models from all providers
 	allModels := cat.Models().List()
 

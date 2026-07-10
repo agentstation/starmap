@@ -4,38 +4,42 @@ import (
 	"context"
 	stderrors "errors"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 type pipelineTestStore struct {
-	catalog catalogs.Catalog
+	catalog *catalogs.Catalog
 	err     error
 
 	applyCalls     int
-	appliedCatalog catalogs.Catalog
+	appliedCatalog *catalogs.Builder
 	appliedOptions *pkgsync.Options
 	appliedChanges *differ.Changeset
+	observations   []sources.Observation
 }
 
-func (s *pipelineTestStore) Catalog() (catalogs.Catalog, error) {
+func (s *pipelineTestStore) Catalog() (*catalogs.Catalog, error) {
 	if s.err != nil {
 		return nil, s.err
 	}
 	return s.catalog, nil
 }
 
-func (s *pipelineTestStore) Apply(catalog catalogs.Catalog, options *pkgsync.Options, changeset *differ.Changeset) error {
+func (s *pipelineTestStore) Apply(_ context.Context, catalog *catalogs.Builder, options *pkgsync.Options, changeset *differ.Changeset, observations []sources.Observation) (Publication, error) {
 	s.applyCalls++
 	s.appliedCatalog = catalog
 	s.appliedOptions = options
 	s.appliedChanges = changeset
-	return nil
+	s.observations = append([]sources.Observation(nil), observations...)
+	return Publication{}, nil
 }
 
 func TestPipelineRequiresStore(t *testing.T) {
@@ -50,14 +54,14 @@ func TestPipelineRequiresStore(t *testing.T) {
 }
 
 func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
-	store := &pipelineTestStore{catalog: catalogs.NewEmpty()}
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := New(store)
-	runner.loadLocal = func(string) (catalogs.Catalog, error) {
+	runner.loadLocal = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(*pkgsync.Options, catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
 		sourceWorkStarted = true
 		return nil
 	}
@@ -72,7 +76,7 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 }
 
 func TestPipelineDryRunSkipsApplyEvenWithChanges(t *testing.T) {
-	store := &pipelineTestStore{catalog: catalogs.NewEmpty()}
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, &reconciler.Result{
 		Catalog:           catalogs.NewEmpty(),
 		Changeset:         changesetWithAddedModel("dry-run-model"),
@@ -90,13 +94,55 @@ func TestPipelineDryRunSkipsApplyEvenWithChanges(t *testing.T) {
 	if !result.HasChanges() {
 		t.Fatal("Expected dry-run result to retain detected changes")
 	}
+	if len(result.SourceObservations) != 1 || result.SourceObservations[0].Source != sources.LocalCatalogID {
+		t.Fatalf("dry-run source observations = %#v", result.SourceObservations)
+	}
+	if err := result.SourceObservations[0].Validate(); err != nil {
+		t.Fatalf("dry-run source observation: %v", err)
+	}
 	if store.applyCalls != 0 {
 		t.Fatalf("Expected dry run to skip apply, got %d calls", store.applyCalls)
 	}
 }
 
+func TestPipelineAddsSourceRunCorrelationBeforeObservation(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog: catalogs.NewEmpty(), Changeset: emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{}, ModelProviderMap: map[string]catalogs.ProviderID{},
+	})
+	originalObserve := runner.observe
+	runner.observe = func(ctx context.Context, srcs []sources.Source, opts []sources.Option) ([]sources.Observation, error) {
+		if logging.RunID(ctx) == "" {
+			t.Fatal("source observation context has no run correlation ID")
+		}
+		return originalObserve(ctx, srcs, opts)
+	}
+	if _, err := runner.Sync(context.Background(), pkgsync.WithDryRun(true)); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+}
+
+func TestPipelineNoChangeStillReportsSourceFreshnessObservation(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog: catalogs.NewEmpty(), Changeset: emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{}, ModelProviderMap: map[string]catalogs.ProviderID{},
+	})
+	result, err := runner.Sync(context.Background(), pkgsync.WithDryRun(true))
+	if err != nil {
+		t.Fatalf("no-change Sync: %v", err)
+	}
+	if result.HasChanges() || len(result.SourceObservations) != 1 {
+		t.Fatalf("no-change result = %#v", result)
+	}
+	if err := result.SourceObservations[0].Validate(); err != nil {
+		t.Fatalf("source freshness observation: %v", err)
+	}
+}
+
 func TestPipelineSkipsApplyWhenThereAreNoChanges(t *testing.T) {
-	store := &pipelineTestStore{catalog: catalogs.NewEmpty()}
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, &reconciler.Result{
 		Catalog:           catalogs.NewEmpty(),
 		Changeset:         emptyChangeset(),
@@ -118,14 +164,15 @@ func TestPipelineSkipsApplyWhenThereAreNoChanges(t *testing.T) {
 
 func TestPipelineForceSavesWhenReformatOrFreshIsSet(t *testing.T) {
 	for _, tc := range []struct {
-		name string
-		opt  pkgsync.Option
+		name      string
+		opt       pkgsync.Option
+		wantFresh bool
 	}{
 		{name: "reformat", opt: pkgsync.WithReformat(true)},
-		{name: "fresh", opt: pkgsync.WithFresh(true)},
+		{name: "fresh", opt: pkgsync.WithFresh(true), wantFresh: true},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			store := &pipelineTestStore{catalog: catalogs.NewEmpty()}
+			store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 			finalCatalog := catalogs.NewEmpty()
 			runner := newStubPipeline(store, &reconciler.Result{
 				Catalog:           finalCatalog,
@@ -141,6 +188,9 @@ func TestPipelineForceSavesWhenReformatOrFreshIsSet(t *testing.T) {
 			if result.HasChanges() {
 				t.Fatal("Expected force-save result to preserve no-change summary")
 			}
+			if result.Fresh != tc.wantFresh {
+				t.Fatalf("Fresh result = %t, want %t", result.Fresh, tc.wantFresh)
+			}
 			if store.applyCalls != 1 {
 				t.Fatalf("Expected force-save sync to apply once, got %d calls", store.applyCalls)
 			}
@@ -153,28 +203,73 @@ func TestPipelineForceSavesWhenReformatOrFreshIsSet(t *testing.T) {
 			if store.appliedChanges == nil {
 				t.Fatal("Expected apply to receive a non-nil changeset")
 			}
+			if len(store.observations) != 1 {
+				t.Fatalf("Apply observations = %#v", store.observations)
+			}
+			if err := store.observations[0].Validate(); err != nil {
+				t.Fatalf("Apply observation: %v", err)
+			}
 		})
+	}
+}
+
+func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
+	existing := catalogs.NewEmpty()
+	if err := existing.SetProvider(catalogs.Provider{ID: "stale", Name: "Stale"}); err != nil {
+		t.Fatalf("Seed existing catalog: %v", err)
+	}
+
+	store := &pipelineTestStore{catalog: asSnapshot(existing)}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog:           catalogs.NewEmpty(),
+		Changeset:         emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{},
+		ModelProviderMap:  map[string]catalogs.ProviderID{},
+	})
+	runner.reconcile = func(_ context.Context, baseline *catalogs.Catalog, _ []sources.Observation) (*reconciler.Result, error) {
+		if baseline.Providers().Len() != 0 {
+			t.Fatalf("Fresh reconciliation baseline contains %d providers, want 0", baseline.Providers().Len())
+		}
+		return &reconciler.Result{
+			Catalog:           catalogs.NewEmpty(),
+			Changeset:         emptyChangeset(),
+			ProviderAPICounts: map[catalogs.ProviderID]int{},
+			ModelProviderMap:  map[string]catalogs.ProviderID{},
+		}, nil
+	}
+
+	if _, err := runner.Sync(context.Background(), pkgsync.WithFresh(true)); err != nil {
+		t.Fatalf("Fresh sync failed: %v", err)
 	}
 }
 
 func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner := New(store)
-	runner.loadLocal = func(string) (catalogs.Catalog, error) {
+	runner.loadLocal = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(*pkgsync.Options, catalogs.Catalog) []sources.Source {
-		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: catalogs.NewEmpty()}}
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {
 		return srcs, nil
 	}
-	runner.fetch = func(context.Context, []sources.Source, []sources.Option) error {
-		return nil
+	runner.observe = func(_ context.Context, srcs []sources.Source, _ []sources.Option) ([]sources.Observation, error) {
+		observation, err := sources.NewObservation(srcs[0].ID(), asSnapshot(catalogs.NewEmpty()), sources.ObservationMetadata{
+			ObservedAt:   time.Date(2026, time.July, 9, 12, 0, 0, 0, time.UTC),
+			Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+			Completeness: sources.ObservationCompletenessComplete,
+			Status:       sources.ObservationStatusSucceeded,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return []sources.Observation{observation}, nil
 	}
 	runner.cleanup = func(context.Context, []sources.Source) error {
 		return nil
 	}
-	runner.reconcile = func(context.Context, catalogs.Catalog, []sources.Source) (*reconciler.Result, error) {
+	runner.reconcile = func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error) {
 		return result, nil
 	}
 	return runner

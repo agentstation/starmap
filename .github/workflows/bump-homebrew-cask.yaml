@@ -24,10 +24,10 @@ jobs:
         run: |
           # Check if starmap cask exists in official homebrew-cask
           if brew info --cask starmap 2>/dev/null | grep -q "From: https://github.com/Homebrew/homebrew-cask"; then
-            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "exists=true" >> "$GITHUB_OUTPUT"
             echo "✅ Starmap found in official homebrew-cask"
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "exists=false" >> "$GITHUB_OUTPUT"
             echo "❌ Starmap not yet in homebrew-cask"
             echo "👉 This workflow only works after first manual submission"
           fi

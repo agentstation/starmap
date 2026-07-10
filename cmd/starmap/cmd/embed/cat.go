@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
+	embedutil "github.com/agentstation/starmap/internal/cli/embed"
 )
 
 var (

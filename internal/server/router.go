@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/agentstation/starmap/internal/server/handlers"
@@ -67,7 +68,11 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	})
 
 	mux.HandleFunc(prefix+"/models/", func(w http.ResponseWriter, r *http.Request) {
-		modelID := extractPathParam(r.URL.Path, prefix+"/models/")
+		modelID, err := extractPathParam(r, prefix+"/models/")
+		if err != nil {
+			http.Error(w, "Invalid model ID", http.StatusBadRequest)
+			return
+		}
 		if modelID != "" && r.Method == http.MethodGet {
 			h.HandleGetModel(w, r, modelID)
 			return
@@ -113,6 +118,23 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	})
 
 	// Admin endpoints
+	mux.HandleFunc(prefix+"/catalog/manifest", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			h.HandleCatalogManifest(w, r)
+			return
+		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	})
+	mux.HandleFunc(prefix+"/catalog/generations/", func(w http.ResponseWriter, r *http.Request) {
+		path := strings.TrimPrefix(r.URL.Path, prefix+"/catalog/generations/")
+		generationID, suffix, found := strings.Cut(path, "/")
+		if r.Method == http.MethodGet && found && suffix == "snapshot" && generationID != "" {
+			h.HandleCatalogSnapshot(w, r, generationID)
+			return
+		}
+		http.Error(w, "Not found", http.StatusNotFound)
+	})
+
 	mux.HandleFunc(prefix+"/update", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			h.HandleUpdate(w, r)
@@ -124,6 +146,14 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/stats", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			h.HandleStats(w, r)
+			return
+		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	})
+
+	mux.HandleFunc(prefix+"/operations", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			h.HandleOperations(w, r)
 			return
 		}
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -186,13 +216,17 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 }
 
 // extractPathParam extracts path parameter from URL.
-func extractPathParam(path, prefix string) string {
-	trimmed := strings.TrimPrefix(path, prefix)
-	parts := strings.Split(trimmed, "/")
-	if len(parts) > 0 {
-		return parts[0]
+func extractPathParam(request *http.Request, prefix string) (string, error) {
+	escapedPath := request.URL.EscapedPath()
+	escapedPrefix := (&url.URL{Path: prefix}).EscapedPath()
+	if !strings.HasPrefix(escapedPath, escapedPrefix) {
+		return "", nil
 	}
-	return ""
+	value, err := url.PathUnescape(strings.TrimPrefix(escapedPath, escapedPrefix))
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSuffix(value, "/"), nil
 }
 
 // splitPath splits a URL path into parts, removing empty strings.

@@ -11,8 +11,13 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func filterSources(options *pkgsync.Options, localCatalog catalogs.Catalog) []sources.Source {
+func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
 	configuredSources := createSourcesWithConfig(options, localCatalog)
+	if options.Fresh {
+		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
+			return src.ID() == sources.LocalCatalogID
+		})
+	}
 
 	if len(options.Sources) > 0 {
 		filtered := make([]sources.Source, 0, len(options.Sources))
@@ -27,21 +32,27 @@ func filterSources(options *pkgsync.Options, localCatalog catalogs.Catalog) []so
 	return configuredSources
 }
 
-func createSourcesWithConfig(options *pkgsync.Options, localCatalog catalogs.Catalog) []sources.Source {
+func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
 	srcs := []sources.Source{
 		local.New(local.WithCatalog(localCatalog)),
 		providers.New(localCatalog.Providers()),
 	}
 
-	if options.SourcesDir != "" {
-		return append(srcs,
-			modelsdev.NewGitSource(modelsdev.WithSourcesDir(options.SourcesDir)),
-			modelsdev.NewHTTPSource(modelsdev.WithHTTPSourcesDir(options.SourcesDir)),
-		)
+	useGit := slices.Contains(options.Sources, sources.ModelsDevGitID)
+	useHTTP := len(options.Sources) == 0 || slices.Contains(options.Sources, sources.ModelsDevHTTPID)
+	if useGit {
+		gitOptions := []modelsdev.GitSourceOption{modelsdev.WithGitCommit(options.ModelsDevGitCommit)}
+		if options.SourcesDir != "" {
+			gitOptions = append(gitOptions, modelsdev.WithSourcesDir(options.SourcesDir))
+		}
+		srcs = append(srcs, modelsdev.NewGitSource(gitOptions...))
 	}
-
-	return append(srcs,
-		modelsdev.NewGitSource(),
-		modelsdev.NewHTTPSource(),
-	)
+	if useHTTP {
+		if options.SourcesDir != "" {
+			srcs = append(srcs, modelsdev.NewHTTPSource(modelsdev.WithHTTPSourcesDir(options.SourcesDir)))
+		} else {
+			srcs = append(srcs, modelsdev.NewHTTPSource())
+		}
+	}
+	return srcs
 }

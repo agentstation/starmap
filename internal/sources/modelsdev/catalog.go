@@ -103,6 +103,11 @@ func (c *Catalog) SetEndpoint(endpoint catalogs.Endpoint) error {
 	return c.endpoints.Set(endpoint.ID, &endpoint)
 }
 
+// SetProviderModel sets a model on a provider.
+func (c *Catalog) SetProviderModel(providerID catalogs.ProviderID, model catalogs.Model) error {
+	return c.providers.SetModel(providerID, model)
+}
+
 // DeleteProvider implements starmap.Catalog.
 func (c *Catalog) DeleteProvider(id catalogs.ProviderID) error {
 	return c.providers.Delete(id)
@@ -140,7 +145,7 @@ func (c *Catalog) loadFromAPI() error {
 			}
 
 			// Add model to catalog
-			if err := c.Providers().SetModel(catalogs.ProviderID(providerID), *model); err != nil {
+			if err := c.SetProviderModel(catalogs.ProviderID(providerID), *model); err != nil {
 				return errors.WrapResource("add", "model", modelID, err)
 			}
 		}

@@ -13,7 +13,7 @@ type options struct {
 	authorities authority.Authority
 	enhancers   []enhancer.Enhancer
 	tracking    bool
-	baseline    catalogs.Catalog // Existing catalog for comparison
+	baseline    *catalogs.Catalog // Existing catalog for comparison
 }
 
 func defaultOptions() *options {
@@ -91,7 +91,7 @@ func WithEnhancers(enhancers ...enhancer.Enhancer) Option {
 }
 
 // WithBaseline sets an existing catalog to compare against for change detection.
-func WithBaseline(catalog catalogs.Catalog) Option {
+func WithBaseline(catalog *catalogs.Catalog) Option {
 	return func(r *options) error {
 		r.baseline = catalog
 		return nil

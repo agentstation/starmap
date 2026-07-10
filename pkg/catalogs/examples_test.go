@@ -11,10 +11,10 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-// Example demonstrates basic catalog creation and usage.
+// Example demonstrates advanced catalog construction and publication.
 func Example() {
-	// Create a memory-based catalog
-	catalog := catalogs.NewEmpty()
+	// Create a memory-based draft.
+	builder := catalogs.NewEmpty()
 
 	// Add a provider with a model
 	provider := catalogs.Provider{
@@ -28,7 +28,11 @@ func Example() {
 			},
 		},
 	}
-	if err := catalog.SetProvider(provider); err != nil {
+	if err := builder.SetProvider(provider); err != nil {
+		log.Fatal(err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -40,8 +44,12 @@ func Example() {
 
 // Example_embeddedCatalog demonstrates using the embedded catalog.
 func Example_embeddedCatalog() {
-	// Create catalog with embedded data
-	catalog, err := catalogs.New(catalogs.WithEmbedded())
+	// Load embedded data into a builder, then publish it.
+	builder, err := catalogs.New(catalogs.WithEmbedded())
+	if err != nil {
+		log.Fatal(err)
+	}
+	catalog, err := builder.Build()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,9 +67,9 @@ func Example_embeddedCatalog() {
 
 // Example_fileBasedCatalog demonstrates file-based persistence.
 func Example_fileBasedCatalog() {
-	// Create a file-based catalog
+	// Create a file-based builder.
 	catalogPath := filepath.Join(".", "my-catalog")
-	catalog, err := catalogs.New(
+	builder, err := catalogs.New(
 		catalogs.WithPath(catalogPath),
 		catalogs.WithWritePath(catalogPath),
 	)
@@ -80,7 +88,7 @@ func Example_fileBasedCatalog() {
 			},
 		},
 	}
-	if err := catalog.SetProvider(provider); err != nil {
+	if err := builder.SetProvider(provider); err != nil {
 		log.Fatal(err)
 	}
 

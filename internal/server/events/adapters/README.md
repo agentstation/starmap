@@ -23,7 +23,7 @@ Package adapters provides transport\-specific implementations of the Subscriber 
 
 
 <a name="SSESubscriber"></a>
-## type [SSESubscriber](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/sse.go#L11-L13>)
+## type [SSESubscriber](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/sse.go#L11-L13>)
 
 SSESubscriber adapts the SSE broadcaster to the Subscriber interface.
 
@@ -34,7 +34,7 @@ type SSESubscriber struct {
 ```
 
 <a name="NewSSESubscriber"></a>
-### func [NewSSESubscriber](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/sse.go#L16>)
+### func [NewSSESubscriber](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/sse.go#L16>)
 
 ```go
 func NewSSESubscriber(broadcaster *sse.Broadcaster) *SSESubscriber
@@ -43,7 +43,7 @@ func NewSSESubscriber(broadcaster *sse.Broadcaster) *SSESubscriber
 NewSSESubscriber creates a new SSE subscriber.
 
 <a name="SSESubscriber.Close"></a>
-### func \(\*SSESubscriber\) [Close](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/sse.go#L31>)
+### func \(\*SSESubscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/sse.go#L31>)
 
 ```go
 func (s *SSESubscriber) Close() error
@@ -52,7 +52,7 @@ func (s *SSESubscriber) Close() error
 Close is a no\-op for SSE \(broadcaster manages its own lifecycle\).
 
 <a name="SSESubscriber.Send"></a>
-### func \(\*SSESubscriber\) [Send](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/sse.go#L21>)
+### func \(\*SSESubscriber\) [Send](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/sse.go#L21>)
 
 ```go
 func (s *SSESubscriber) Send(event events.Event) error
@@ -61,7 +61,7 @@ func (s *SSESubscriber) Send(event events.Event) error
 Send delivers an event to all SSE clients.
 
 <a name="WebSocketSubscriber"></a>
-## type [WebSocketSubscriber](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/websocket.go#L10-L12>)
+## type [WebSocketSubscriber](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/websocket.go#L10-L12>)
 
 WebSocketSubscriber adapts the WebSocket hub to the Subscriber interface.
 
@@ -72,7 +72,7 @@ type WebSocketSubscriber struct {
 ```
 
 <a name="NewWebSocketSubscriber"></a>
-### func [NewWebSocketSubscriber](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/websocket.go#L15>)
+### func [NewWebSocketSubscriber](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/websocket.go#L15>)
 
 ```go
 func NewWebSocketSubscriber(hub *ws.Hub) *WebSocketSubscriber
@@ -81,7 +81,7 @@ func NewWebSocketSubscriber(hub *ws.Hub) *WebSocketSubscriber
 NewWebSocketSubscriber creates a new WebSocket subscriber.
 
 <a name="WebSocketSubscriber.Close"></a>
-### func \(\*WebSocketSubscriber\) [Close](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/websocket.go#L30>)
+### func \(\*WebSocketSubscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/websocket.go#L30>)
 
 ```go
 func (w *WebSocketSubscriber) Close() error
@@ -90,7 +90,7 @@ func (w *WebSocketSubscriber) Close() error
 Close is a no\-op for WebSocket \(hub manages its own lifecycle\).
 
 <a name="WebSocketSubscriber.Send"></a>
-### func \(\*WebSocketSubscriber\) [Send](<https://github.com/agentstation/starmap/blob/master/internal/server/events/adapters/websocket.go#L20>)
+### func \(\*WebSocketSubscriber\) [Send](<https://github.com/agentstation/starmap/blob/main/internal/server/events/adapters/websocket.go#L20>)
 
 ```go
 func (w *WebSocketSubscriber) Send(event events.Event) error

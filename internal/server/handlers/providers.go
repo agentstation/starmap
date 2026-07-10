@@ -4,9 +4,8 @@ import (
 	"net/http"
 
 	"github.com/agentstation/starmap/internal/catalog/query"
-	"github.com/agentstation/starmap/internal/cmd/provider"
+	"github.com/agentstation/starmap/internal/cli/provider"
 	"github.com/agentstation/starmap/internal/server/response"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // HandleListProviders handles GET /api/v1/providers.
@@ -20,18 +19,20 @@ import (
 // @Security ApiKeyAuth
 // @Router /api/v1/providers [get].
 func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
 	// Check cache
-	if cached, found := h.cache.Get("providers"); found {
+	if cached, found := h.cache.GetGeneration(state.Sequence, state.GenerationID, "providers"); found {
 		response.OK(w, cached)
 		return
 	}
 
 	// Get catalog
-	cat, err := h.app.Catalog()
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
+	cat := state.Catalog
 
 	providers := query.Providers(cat.Providers().List(), query.ProviderOptions{})
 
@@ -61,7 +62,7 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 	}
 
 	// Cache result
-	h.cache.Set("providers", result)
+	h.cache.SetGeneration(state.Sequence, state.GenerationID, "providers", result)
 
 	response.OK(w, result)
 }
@@ -79,19 +80,21 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 // @Security ApiKeyAuth
 // @Router /api/v1/providers/{id} [get].
 func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, providerID string) {
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
 	// Check cache
 	cacheKey := "provider:" + providerID
-	if cached, found := h.cache.Get(cacheKey); found {
+	if cached, found := h.cache.GetGeneration(state.Sequence, state.GenerationID, cacheKey); found {
 		response.OK(w, cached)
 		return
 	}
 
 	// Get catalog
-	cat, err := h.app.Catalog()
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
+	cat := state.Catalog
 
 	// Get provider
 	prov, err := provider.Get(cat, providerID)
@@ -101,7 +104,7 @@ func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, pro
 	}
 
 	// Cache result
-	h.cache.Set(cacheKey, prov)
+	h.cache.SetGeneration(state.Sequence, state.GenerationID, cacheKey, prov)
 
 	response.OK(w, prov)
 }
@@ -133,11 +136,12 @@ func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Reques
 		return
 	}
 
-	// Convert map to slice
-	models := make([]*catalogs.Model, 0, len(prov.Models))
-	for _, model := range prov.Models {
-		models = append(models, model)
+	modelsIndex, err := cat.LegacyV0().ProviderModels(prov.ID)
+	if err != nil {
+		response.ErrorFromType(w, err)
+		return
 	}
+	models := modelsIndex.List()
 
 	result := map[string]any{
 		"provider": map[string]any{

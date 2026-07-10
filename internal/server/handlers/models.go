@@ -3,9 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/query"
-	"github.com/agentstation/starmap/internal/server/filter"
+	"github.com/agentstation/starmap/internal/server/params"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -20,6 +21,7 @@ import (
 // @Param name query string false "Filter by exact model name (case-insensitive)"
 // @Param name_contains query string false "Filter by partial model name match"
 // @Param provider query string false "Filter by provider ID"
+// @Param status query string false "Filter by model lifecycle status"
 // @Param modality_input query string false "Filter by input modality (comma-separated)"
 // @Param modality_output query string false "Filter by output modality (comma-separated)"
 // @Param feature query string false "Filter by feature (streaming, tool_calls, etc.)"
@@ -27,6 +29,8 @@ import (
 // @Param open_weights query boolean false "Filter by open weights status"
 // @Param min_context query integer false "Minimum context window size"
 // @Param max_context query integer false "Maximum context window size"
+// @Param min_input query integer false "Minimum input token limit"
+// @Param max_input query integer false "Maximum input token limit"
 // @Param sort query string false "Sort field (id, name, release_date, context_window, created_at, updated_at)"
 // @Param order query string false "Sort order (asc, desc)"
 // @Param limit query integer false "Maximum number of results (default: 100, max: 1000)"
@@ -37,30 +41,34 @@ import (
 // @Security ApiKeyAuth
 // @Router /api/v1/models [get].
 func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
 	// Check cache
 	cacheKey := "models:" + r.URL.RawQuery
-	if cached, found := h.cache.Get(cacheKey); found {
+	if cached, found := h.cache.GetGeneration(state.Sequence, state.GenerationID, cacheKey); found {
 		response.OK(w, cached)
 		return
 	}
 
 	// Get catalog
-	cat, err := h.app.Catalog()
+	cat := state.Catalog
+
+	// Parse filters
+	f, err := params.ParseModelFilterStrict(r)
 	if err != nil {
-		response.InternalError(w, err)
+		response.ErrorFromType(w, err)
 		return
 	}
 
-	// Parse filters
-	f := filter.ParseModelFilter(r)
-
-	// Get and filter models
-	allModels := cat.Models().List()
-	if f.Provider != "" {
-		allModels = query.Models(allModels, query.ModelOptions{
-			Provider:           f.Provider,
-			ProviderModelIndex: query.NewProviderModelIndex(cat.Providers().List()),
-		})
+	// Get exact provider offerings before applying model field filters.
+	allModels, err := query.CatalogModels(cat, f.Provider)
+	if err != nil {
+		response.ErrorFromType(w, err)
+		return
 	}
 	filtered := f.Apply(allModels)
 
@@ -78,7 +86,7 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Cache result
-	h.cache.Set(cacheKey, result)
+	h.cache.SetGeneration(state.Sequence, state.GenerationID, cacheKey, result)
 
 	response.OK(w, result)
 }
@@ -90,25 +98,27 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Model ID"
-// @Success 200 {object} response.Response{data=catalogs.Model}
+// @Success 200 {object} response.Response{data=catalogs.ModelDefinition}
 // @Failure 404 {object} response.Response{error=response.Error}
 // @Failure 500 {object} response.Response{error=response.Error}
 // @Security ApiKeyAuth
 // @Router /api/v1/models/{id} [get].
 func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelID string) {
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
 	// Check cache
 	cacheKey := "model:" + modelID
-	if cached, found := h.cache.Get(cacheKey); found {
+	if cached, found := h.cache.GetGeneration(state.Sequence, state.GenerationID, cacheKey); found {
 		response.OK(w, cached)
 		return
 	}
 
 	// Get catalog
-	cat, err := h.app.Catalog()
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
+	cat := state.Catalog
 
 	// Find model
 	model, err := cat.FindModel(modelID)
@@ -118,7 +128,7 @@ func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelI
 	}
 
 	// Cache result
-	h.cache.Set(cacheKey, model)
+	h.cache.SetGeneration(state.Sequence, state.GenerationID, cacheKey, model)
 
 	response.OK(w, model)
 }
@@ -128,11 +138,13 @@ type SearchRequest struct {
 	IDs           []string          `json:"ids,omitempty"`
 	NameContains  string            `json:"name_contains,omitempty"`
 	Provider      string            `json:"provider,omitempty"`
+	Status        string            `json:"status,omitempty"`
 	Modalities    *SearchModalities `json:"modalities,omitempty"`
 	Features      map[string]bool   `json:"features,omitempty"`
 	Tags          []string          `json:"tags,omitempty"`
 	OpenWeights   *bool             `json:"open_weights,omitempty"`
 	ContextWindow *IntRange         `json:"context_window,omitempty"`
+	InputTokens   *IntRange         `json:"input_tokens,omitempty"`
 	OutputTokens  *IntRange         `json:"output_tokens,omitempty"`
 	ReleaseDate   *DateRange        `json:"release_date,omitempty"`
 	Sort          string            `json:"sort,omitempty"`
@@ -185,9 +197,10 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Convert search request to filter
-	f := filter.ModelFilter{
+	f := query.ModelFilter{
 		NameContains: req.NameContains,
 		Provider:     req.Provider,
+		Status:       req.Status,
 		Features:     req.Features,
 		Tags:         req.Tags,
 		OpenWeights:  req.OpenWeights,
@@ -196,7 +209,6 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 		Limit:        100,
 		MaxResults:   req.MaxResults,
 	}
-
 	if req.Modalities != nil {
 		f.ModalityInput = req.Modalities.Input
 		f.ModalityOutput = req.Modalities.Output
@@ -207,18 +219,44 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 		f.MaxContext = req.ContextWindow.Max
 	}
 
+	if req.InputTokens != nil {
+		f.MinInput = req.InputTokens.Min
+		f.MaxInput = req.InputTokens.Max
+	}
+
 	if req.OutputTokens != nil {
 		f.MinOutput = req.OutputTokens.Min
 		f.MaxOutput = req.OutputTokens.Max
 	}
 
-	// Apply filters
-	allModels := cat.Models().List()
-	if f.Provider != "" {
-		allModels = query.Models(allModels, query.ModelOptions{
-			Provider:           f.Provider,
-			ProviderModelIndex: query.NewProviderModelIndex(cat.Providers().List()),
-		})
+	if req.ReleaseDate != nil {
+		if req.ReleaseDate.After != "" {
+			after, err := time.Parse(time.RFC3339, req.ReleaseDate.After)
+			if err != nil {
+				response.BadRequest(w, "Invalid release_date.after", err.Error())
+				return
+			}
+			f.ReleasedAfter = &after
+		}
+		if req.ReleaseDate.Before != "" {
+			before, err := time.Parse(time.RFC3339, req.ReleaseDate.Before)
+			if err != nil {
+				response.BadRequest(w, "Invalid release_date.before", err.Error())
+				return
+			}
+			f.ReleasedBefore = &before
+		}
+	}
+	if err := f.Validate(); err != nil {
+		response.ErrorFromType(w, err)
+		return
+	}
+
+	// Apply filters to exact provider offerings when a provider is selected.
+	allModels, err := query.CatalogModels(cat, f.Provider)
+	if err != nil {
+		response.ErrorFromType(w, err)
+		return
 	}
 	results := f.Apply(allModels)
 

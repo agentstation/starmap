@@ -27,7 +27,7 @@ Package middleware provides HTTP middleware for the Starmap API server. It inclu
 
 
 <a name="Auth"></a>
-## func [Auth](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/auth.go#L32>)
+## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L33>)
 
 ```go
 func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -36,7 +36,7 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 Auth middleware validates API keys for protected endpoints.
 
 <a name="CORS"></a>
-## func [CORS](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/cors.go#L27>)
+## func [CORS](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/cors.go#L27>)
 
 ```go
 func CORS(config CORSConfig) func(http.Handler) http.Handler
@@ -45,7 +45,7 @@ func CORS(config CORSConfig) func(http.Handler) http.Handler
 CORS middleware adds CORS headers to responses.
 
 <a name="Chain"></a>
-## func [Chain](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/middleware.go#L13>)
+## func [Chain](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L16>)
 
 ```go
 func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) http.Handler
@@ -54,7 +54,7 @@ func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) ht
 Chain combines multiple middleware functions into a single middleware.
 
 <a name="Logger"></a>
-## func [Logger](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/middleware.go#L23>)
+## func [Logger](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L26>)
 
 ```go
 func Logger(logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -63,7 +63,7 @@ func Logger(logger *zerolog.Logger) func(http.Handler) http.Handler
 Logger logs HTTP requests with structured logging.
 
 <a name="RateLimit"></a>
-## func [RateLimit](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/ratelimit.go#L107>)
+## func [RateLimit](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/ratelimit.go#L113>)
 
 ```go
 func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler
@@ -72,7 +72,7 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler
 RateLimit middleware limits requests per IP address.
 
 <a name="Recovery"></a>
-## func [Recovery](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/middleware.go#L57>)
+## func [Recovery](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L60>)
 
 ```go
 func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -81,7 +81,7 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
 Recovery recovers from panics and returns 500 error.
 
 <a name="AuthConfig"></a>
-## type [AuthConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/auth.go#L12-L18>)
+## type [AuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L13-L19>)
 
 AuthConfig holds authentication configuration.
 
@@ -96,7 +96,7 @@ type AuthConfig struct {
 ```
 
 <a name="DefaultAuthConfig"></a>
-### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/auth.go#L21>)
+### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L22>)
 
 ```go
 func DefaultAuthConfig() AuthConfig
@@ -105,7 +105,7 @@ func DefaultAuthConfig() AuthConfig
 DefaultAuthConfig returns default authentication configuration.
 
 <a name="CORSConfig"></a>
-## type [CORSConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/cors.go#L9-L14>)
+## type [CORSConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/cors.go#L9-L14>)
 
 CORSConfig holds CORS configuration.
 
@@ -119,7 +119,7 @@ type CORSConfig struct {
 ```
 
 <a name="DefaultCORSConfig"></a>
-### func [DefaultCORSConfig](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/cors.go#L17>)
+### func [DefaultCORSConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/cors.go#L17>)
 
 ```go
 func DefaultCORSConfig() CORSConfig
@@ -128,7 +128,7 @@ func DefaultCORSConfig() CORSConfig
 DefaultCORSConfig returns the default CORS configuration.
 
 <a name="RateLimiter"></a>
-## type [RateLimiter](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/ratelimit.go#L12-L18>)
+## type [RateLimiter](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/ratelimit.go#L13-L20>)
 
 RateLimiter implements token bucket rate limiting per IP address.
 
@@ -139,7 +139,7 @@ type RateLimiter struct {
 ```
 
 <a name="NewRateLimiter"></a>
-### func [NewRateLimiter](<https://github.com/agentstation/starmap/blob/master/internal/server/middleware/ratelimit.go#L29>)
+### func [NewRateLimiter](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/ratelimit.go#L36>)
 
 ```go
 func NewRateLimiter(limit int, logger *zerolog.Logger) *RateLimiter

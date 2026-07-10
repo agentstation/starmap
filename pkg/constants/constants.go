@@ -16,9 +16,6 @@ const (
 	// UpdateContextTimeout is the timeout for each catalog update operation.
 	UpdateContextTimeout = 5 * time.Minute
 
-	// DefaultUpdateInterval is the default interval between automatic catalog updates.
-	DefaultUpdateInterval = 1 * time.Hour
-
 	// ProviderFetchTimeout is the timeout for fetching models from a single provider.
 	ProviderFetchTimeout = 2 * time.Minute
 
@@ -33,6 +30,9 @@ const (
 
 	// SyncCleanupTimeout is the timeout for source cleanup after sync operations.
 	SyncCleanupTimeout = 30 * time.Second
+
+	// CatalogStoreLockRetryDelay is the retry interval for a contended filesystem commit lock.
+	CatalogStoreLockRetryDelay = 10 * time.Millisecond
 
 	// RetryBackoff is the base backoff duration for retries.
 	RetryBackoff = 1 * time.Second
@@ -54,6 +54,9 @@ const (
 
 	// SecureFilePermissions is for sensitive files like API keys (rw-------).
 	SecureFilePermissions = 0600
+
+	// SecureDirPermissions is for owner-only sensitive-data directories (rwx------).
+	SecureDirPermissions = 0700
 )
 
 // Limit constants define various limits and capacities.
@@ -96,6 +99,9 @@ const (
 
 	// MaxProviders is the maximum number of providers.
 	MaxProviders = 100
+
+	// MaxSourcePayloadBytes bounds one provider or catalog source JSON payload.
+	MaxSourcePayloadBytes = 16 << 20
 )
 
 // Rate limiting constants.
@@ -171,6 +177,9 @@ const (
 const (
 	// DefaultCatalogPath is the default path for the local catalog.
 	DefaultCatalogPath = "~/.starmap"
+
+	// DefaultCatalogStorePath is the default generation-store root.
+	DefaultCatalogStorePath = "~/.starmap/catalog-store"
 
 	// DefaultConfigPath is the default path for configuration files.
 	DefaultConfigPath = "~/.starmap/config.yaml"

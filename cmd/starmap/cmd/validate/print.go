@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/format"
+	"github.com/agentstation/starmap/internal/cli/format"
 )
 
 // displayValidationTable shows validation results in a table format.

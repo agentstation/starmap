@@ -29,7 +29,7 @@ func TestProvidersFormatYAML(t *testing.T) {
 			},
 			StatusPageURL: stringPtr("https://status.anthropic.com"),
 			ChatCompletions: &ProviderChatCompletions{
-				URL: stringPtr("https://api.anthropic.com/v1/chat/completions"),
+				URL: stringPtr("https://api.anthropic.com/v1/messages"),
 			},
 			PrivacyPolicy: &ProviderPrivacyPolicy{
 				PrivacyPolicyURL:  stringPtr("https://www.anthropic.com/privacy"),
@@ -46,6 +46,13 @@ func TestProvidersFormatYAML(t *testing.T) {
 				ModerationRequired: boolPtr(false),
 				Moderated:          boolPtr(true),
 				Moderator:          stringPtr("anthropic"),
+			},
+			Extensions: SourceExtensions{
+				"models.dev": {
+					Fields: map[string]any{
+						"npm": "@ai-sdk/anthropic",
+					},
+				},
 			},
 		},
 		{
@@ -98,6 +105,9 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"pattern: .*",
 		"header: x-api-key",
 		"duration: 720h0m0s #30 days", // Inline comment for duration
+		"extensions:",
+		"models.dev:",
+		"npm: \"@ai-sdk/anthropic\"",
 
 		"# Cerebras",
 		"- id: cerebras",

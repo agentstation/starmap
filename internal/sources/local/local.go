@@ -2,6 +2,7 @@ package local
 
 import (
 	"context"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -11,9 +12,11 @@ import (
 // Source loads a catalog from either a file path or embedded catalog.
 type Source struct {
 	catalogPath     string
-	catalog         catalogs.Catalog
+	snapshot        *catalogs.Catalog
 	catalogProvided bool // Track if catalog was provided via WithCatalog option
 }
+
+var _ sources.Source = (*Source)(nil)
 
 // New creates a new local source.
 func New(opts ...Option) *Source {
@@ -36,9 +39,9 @@ func WithCatalogPath(path string) Option {
 
 // WithCatalog sets a pre-loaded catalog to reuse.
 // This allows reusing an already-merged catalog instead of loading again.
-func WithCatalog(catalog catalogs.Catalog) Option {
+func WithCatalog(catalog *catalogs.Catalog) Option {
 	return func(s *Source) {
-		s.catalog = catalog
+		s.snapshot = catalog
 		s.catalogProvided = true
 	}
 }
@@ -53,30 +56,36 @@ func (s *Source) ID() sources.ID {
 // Name returns the human-friendly name of this source.
 func (s *Source) Name() string { return "Local Catalog" }
 
-// Fetch returns catalog data from configured source.
-func (s *Source) Fetch(_ context.Context, _ ...sources.Option) error {
+// Observe returns catalog data from the configured source without retaining result state.
+func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error) {
 	// If catalog was provided via WithCatalog option, reuse it
 	if s.catalogProvided {
-		// Catalog already set, nothing to fetch
-		return nil
+		return s.observation(s.snapshot)
 	}
 
 	// Otherwise, load using NewLocal logic
-	var err error
-	s.catalog, err = catalogs.NewLocal(s.catalogPath)
+	builder, err := catalogs.NewLocal(s.catalogPath)
 	if err != nil {
 		if s.catalogPath != "" {
-			return errors.WrapResource("load", "catalog", s.catalogPath, err)
+			return sources.Observation{}, errors.WrapResource("load", "catalog", s.catalogPath, err)
 		}
-		return errors.WrapResource("load", "embedded catalog", "", err)
+		return sources.Observation{}, errors.WrapResource("load", "embedded catalog", "", err)
 	}
-	s.catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-	return nil
+	builder.SetMergeStrategy(catalogs.MergeReplaceAll)
+	catalog, err := builder.Build()
+	if err != nil {
+		return sources.Observation{}, errors.WrapResource("publish", "local source observation", "", err)
+	}
+	return s.observation(catalog)
 }
 
-// Catalog returns the catalog of this source.
-func (s *Source) Catalog() catalogs.Catalog {
-	return s.catalog
+func (s *Source) observation(catalog *catalogs.Catalog) (sources.Observation, error) {
+	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
+		ObservedAt:   time.Now().UTC(),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
 }
 
 // Cleanup releases any resources.

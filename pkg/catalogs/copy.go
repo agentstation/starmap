@@ -62,6 +62,7 @@ func DeepCopyModel(model Model) Model {
 	modelCopy := model
 	modelCopy.Authors = deepCopyModelAuthors(model.Authors)
 	modelCopy.Metadata = deepCopyModelMetadata(model.Metadata)
+	modelCopy.Lineage = deepCopyModelLineage(model.Lineage)
 	modelCopy.Features = deepCopyModelFeatures(model.Features)
 	modelCopy.Attachments = deepCopyModelAttachments(model.Attachments)
 	modelCopy.Generation = deepCopyModelGeneration(model.Generation)
@@ -70,8 +71,10 @@ func DeepCopyModel(model Model) Model {
 	modelCopy.Verbosity = deepCopyModelControlLevels(model.Verbosity)
 	modelCopy.Tools = deepCopyModelTools(model.Tools)
 	modelCopy.Delivery = deepCopyModelDelivery(model.Delivery)
+	modelCopy.Modes = deepCopyModelModes(model.Modes)
 	modelCopy.Pricing = deepCopyModelPricing(model.Pricing)
 	modelCopy.Limits = copyPtr(model.Limits)
+	modelCopy.Extensions = model.Extensions.Copy()
 	return modelCopy
 }
 
@@ -113,6 +116,7 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.PrivacyPolicy = deepCopyProviderPrivacyPolicy(provider.PrivacyPolicy)
 	providerCopy.RetentionPolicy = deepCopyProviderRetentionPolicy(provider.RetentionPolicy)
 	providerCopy.GovernancePolicy = deepCopyProviderGovernancePolicy(provider.GovernancePolicy)
+	providerCopy.Extensions = provider.Extensions.Copy()
 	providerCopy.EnvVarValues = copyMap(provider.EnvVarValues)
 	return providerCopy
 }
@@ -162,6 +166,16 @@ func deepCopyModelArchitecture(architecture *ModelArchitecture) *ModelArchitectu
 	copied := *architecture
 	copied.Precision = copyPtr(architecture.Precision)
 	copied.BaseModel = copyPtr(architecture.BaseModel)
+	return &copied
+}
+
+func deepCopyModelLineage(lineage *ModelLineage) *ModelLineage {
+	if lineage == nil {
+		return nil
+	}
+	copied := *lineage
+	copied.Root = copyPtr(lineage.Root)
+	copied.Parent = copyPtr(lineage.Parent)
 	return &copied
 }
 
@@ -259,14 +273,54 @@ func deepCopyModelDelivery(delivery *ModelDelivery) *ModelDelivery {
 	return &copied
 }
 
+func deepCopyModelModes(modes map[string]ModelMode) map[string]ModelMode {
+	if modes == nil {
+		return nil
+	}
+	copied := make(map[string]ModelMode, len(modes))
+	for name, mode := range modes {
+		copied[name] = ModelMode{
+			Pricing:  deepCopyModelPricing(mode.Pricing),
+			Provider: deepCopyModelProviderMode(mode.Provider),
+		}
+	}
+	return copied
+}
+
+func deepCopyModelProviderMode(mode *ModelProviderMode) *ModelProviderMode {
+	if mode == nil {
+		return nil
+	}
+	copied := *mode
+	copied.Headers = copyMap(mode.Headers)
+	copied.Body = deepCopyExtensionMap(mode.Body)
+	return &copied
+}
+
 func deepCopyModelPricing(pricing *ModelPricing) *ModelPricing {
 	if pricing == nil {
 		return nil
 	}
 	copied := *pricing
+	copied.EffectiveFrom = copyPtr(pricing.EffectiveFrom)
+	copied.EffectiveUntil = copyPtr(pricing.EffectiveUntil)
 	copied.Tokens = deepCopyModelTokenPricing(pricing.Tokens)
 	copied.Operations = deepCopyModelOperationPricing(pricing.Operations)
+	copied.Tiers = deepCopyModelPricingTiers(pricing.Tiers)
 	return &copied
+}
+
+func deepCopyModelPricingTiers(tiers []ModelPricingTier) []ModelPricingTier {
+	if tiers == nil {
+		return nil
+	}
+	copied := make([]ModelPricingTier, len(tiers))
+	for i, tier := range tiers {
+		copied[i] = tier
+		copied[i].Tokens = deepCopyModelTokenPricing(tier.Tokens)
+		copied[i].Operations = deepCopyModelOperationPricing(tier.Operations)
+	}
+	return copied
 }
 
 func deepCopyModelTokenPricing(pricing *ModelTokenPricing) *ModelTokenPricing {
