@@ -52,7 +52,7 @@ Architecture review report generated outside the repo:
 | P4 | Extract catalog query modules for CLI and HTTP | DONE | Share list/detail/search/sort/pagination behavior between CLI and server adapters | Query module tests cover behavior; handlers and commands are thin adapters; HTTP handler coverage materially improves |
 | P5 | Make reconciliation field rules first-class | DONE | Replace scattered string lists/reflection authority drift with one field rule catalog | Rule table drives merge iteration, authority lookup, and provenance names; existing reconciler tests pass |
 | P6 | Unify real-time event fan-out | DONE | Put broker, SSE, and WebSocket fan-out behind one event stream module with explicit backpressure policy | Delivery adapters share policy, metrics are comparable, no unbounded per-event goroutine growth |
-| P7 | Documentation and enterprise gates | DONE | Update architecture docs and validate final state | `docs/ARCHITECTURE.md` reflects implemented architecture and all final verification commands pass |
+| P7 | Documentation and repository verification | DONE | Update architecture docs and validate final state | `docs/ARCHITECTURE.md` reflects implemented architecture and all final verification commands pass |
 
 ## Execution Log
 
@@ -263,7 +263,7 @@ Create a field rule catalog that drives merge iteration, authority lookup, prove
 
 ### Problem
 
-Broker, SSE broadcaster, and WebSocket hub each implement fan-out and backpressure differently. The broker spawns a goroutine per subscriber per event; SSE skips on full client buffer; WebSocket disconnects on full client buffer. Enterprise behavior should be explicit and tested.
+Broker, SSE broadcaster, and WebSocket hub each implement fan-out and backpressure differently. The broker spawns a goroutine per subscriber per event; SSE skips on full client buffer; WebSocket disconnects on full client buffer. Production behavior should be explicit and tested.
 
 ### Target Shape
 
@@ -286,7 +286,7 @@ Create one event stream module that owns backpressure policy, counters, and fan-
 - `go test ./...`
 - `go vet ./...`
 
-## Phase P7: Documentation and Enterprise Gates
+## Phase P7: Documentation and Repository Verification
 
 ### Tasks
 

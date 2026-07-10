@@ -81,7 +81,7 @@ Secrets must not be persisted in this document, test fixtures, logs, or generate
 | P4 | Provider API full-field mapping | DONE | Parse and map every reachable provider list endpoint field by provider family | Provider fixture tests prove every known provider response path is classified and important fields survive conversion |
 | P5 | Reconciliation and authority completion | DONE | Ensure new fields survive merge with explicit source authority and provenance | Multi-source integration tests prove no new field is dropped during reconciliation |
 | P6 | Output, query, and docs completion | DONE | Expose new fields through YAML, CLI/server query surfaces where appropriate, and architecture/testing docs | Catalog output and relevant query tests pass; docs describe source completeness policy |
-| P7 | Enterprise verification and closeout | DONE | Run full deterministic gates, live opt-in checks where credentials are available, and autoreview if requested | `make verify` or documented equivalent passes; focused live checks are logged separately from deterministic tests |
+| P7 | Repository verification and closeout | DONE | Run full deterministic gates, live opt-in checks where credentials are available, and autoreview if requested | `make verify` or documented equivalent passes; focused live checks are logged separately from deterministic tests |
 
 ## Attribute Ledger
 
@@ -265,7 +265,7 @@ make docs-check
 go test ./...
 ```
 
-### P7: Enterprise Verification and Closeout
+### P7: Repository Verification and Closeout
 
 Tasks:
 
@@ -290,7 +290,7 @@ starmap providers --test
 Use this as the active goal prompt:
 
 ```text
-/goal Execute docs/SOURCE_SCHEMA_CONTROL_PLANE.md to completion. Treat that file as the durable source of truth. Work through the phase ledger in order unless a later task is required to unblock the current phase. After every meaningful code or test change, update the execution log and task statuses. Preserve unrelated dirty work. Do not print or persist secrets. For every source attribute, ensure it is mapped into canonical schema, preserved in a controlled extension, or intentionally ignored with a documented reason and regression coverage. Run focused gates after each phase and deterministic enterprise gates before closeout. Continue autonomously until all phases are DONE or a real blocker is recorded with exact evidence.
+/goal Execute docs/SOURCE_SCHEMA_CONTROL_PLANE.md to completion. Treat that file as the durable source of truth. Work through the phase ledger in order unless a later task is required to unblock the current phase. After every meaningful code or test change, update the execution log and task statuses. Preserve unrelated dirty work. Do not print or persist secrets. For every source attribute, ensure it is mapped into canonical schema, preserved in a controlled extension, or intentionally ignored with a documented reason and regression coverage. Run focused gates after each phase and deterministic repository verification before closeout. Continue autonomously until all phases are DONE or a real blocker is recorded with exact evidence.
 ```
 
 ## Execution Log

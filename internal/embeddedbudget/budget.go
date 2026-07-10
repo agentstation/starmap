@@ -45,7 +45,7 @@ func (l Limits) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// DefaultLimits returns the checked-in enterprise budget policy.
+// DefaultLimits returns the checked-in production budget policy.
 func DefaultLimits() Limits {
 	return Limits{
 		MaxAge: DefaultMaxAge, MaxUncompressedBytes: DefaultMaxUncompressedBytes,

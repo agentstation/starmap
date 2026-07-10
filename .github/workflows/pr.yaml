@@ -1,4 +1,4 @@
-name: Enterprise PR
+name: Pull Request
 
 on:
   pull_request:
@@ -10,12 +10,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: enterprise-pr-${{ github.event.pull_request.number || github.ref }}
+  group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  enterprise-gate:
-    name: Enterprise Gate
+  verification:
+    name: Verification Gate
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -33,7 +33,7 @@ jobs:
           go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
           go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
 
-      - name: Run enterprise gate
+      - name: Run verification gate
         run: make verify
 
   security-reliability:

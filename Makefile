@@ -158,7 +158,7 @@ test-coverage: ## Run tests with coverage
 
 test-critical-coverage: ## Run critical seam coverage gates
 	@echo "$(BLUE)Running critical seam coverage gates...$(NC)"
-	@STARMAP_VERIFY_COVERAGE_ONLY=1 ./scripts/verify-enterprise.sh
+	@STARMAP_VERIFY_COVERAGE_ONLY=1 ./scripts/verify.sh
 
 test-catalog-performance: ## Verify the immutable catalog accessor budget
 	@./scripts/verify-catalog-performance.sh
@@ -191,8 +191,8 @@ check: ## Run all checks: vet + lint + test (no fixes)
 	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOTEST) ./...
 	@echo "$(GREEN)All checks passed$(NC)"
 
-verify: ## Run enterprise verification gate
-	@./scripts/verify-enterprise.sh
+verify: ## Run repository verification gate
+	@./scripts/verify.sh
 
 fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"

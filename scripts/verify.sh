@@ -107,4 +107,4 @@ printf '\n==> isolated credential-free provider listing\n'
 )
 run "$TMPDIR/starmap" models list --limit 5
 
-printf '\nenterprise verification passed\n'
+printf '\nrepository verification passed\n'

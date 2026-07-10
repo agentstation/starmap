@@ -4,7 +4,7 @@ This document defines the verification model for Starmap. The goal is not only h
 
 ## Primary Gate
 
-Run the full deterministic enterprise gate before merging architecture, sync, catalog, provider, reconciliation, server, or transport changes:
+Run the full deterministic repository verification gate before merging architecture, sync, catalog, provider, reconciliation, server, or transport changes:
 
 ```bash
 make verify
@@ -48,7 +48,7 @@ go test ./pkg/catalogs -race
 
 ## Critical Seam Coverage
 
-Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and enterprise reliability concentrate:
+Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and production reliability concentrate:
 
 | Module | Minimum |
 | --- | ---: |

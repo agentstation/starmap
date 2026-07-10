@@ -683,7 +683,7 @@ save/reload. It deliberately preserves unmanaged neighboring files such as
 logos and operator notes. It is a compatibility materialization, not a second
 transactional database: a process failure or rejected durable commit can leave
 that directory temporarily ahead of or behind the authoritative generation.
-Enterprise readers must consume `catalogstore.Store`/the immutable distribution
+Production readers must consume `catalogstore.Store`/the immutable distribution
 protocol rather than serve the YAML view directly; restart with a durable
 current deliberately ignores the compatibility view. Catalog-generation jobs
 may still use it as an explicit checked export.
@@ -1922,7 +1922,7 @@ make verify
 
 This runs full tests, race-short tests, vet, lint when available, generated-doc checks, whitespace checks, local CLI smoke checks, and critical seam coverage thresholds. See [TESTING.md](TESTING.md) for the maintained verification contract and the current module thresholds.
 
-Use global coverage as an orientation metric only. Enterprise trust comes from coverage at the interfaces where correctness concentrates: catalog ownership, sync pipeline, provider source and client registry, query/params translation, authority and reconciliation, transport, and event fan-out.
+Use global coverage as an orientation metric only. Production trust comes from coverage at the interfaces where correctness concentrates: catalog ownership, sync pipeline, provider source and client registry, query/params translation, authority and reconciliation, transport, and event fan-out.
 
 ### Unit Tests
 

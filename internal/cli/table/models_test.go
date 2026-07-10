@@ -11,7 +11,7 @@ import (
 func TestProviderTableDoesNotExposeCredentialFingerprint(t *testing.T) {
 	const (
 		envName = "STARMAP_TABLE_TEST_API_KEY"
-		secret  = "sk-enterprise-secret-fingerprint-1234"
+		secret  = "sk-production-secret-fingerprint-1234"
 	)
 	t.Setenv(envName, secret)
 

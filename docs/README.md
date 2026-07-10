@@ -83,7 +83,7 @@ Command-line interface reference and implementation guidelines:
 ### [TESTING.md](TESTING.md)
 **Testing and Verification Strategy**
 
-Enterprise verification guidance covering:
+Repository verification guidance covering:
 - Full deterministic verification with `make verify`
 - Critical seam coverage thresholds
 - Focused package test commands

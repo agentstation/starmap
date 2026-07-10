@@ -1,4 +1,4 @@
-# Starmap Enterprise Catalog Control Plane
+# Starmap Production Catalog Control Plane
 
 Last updated: 2026-07-09
 
@@ -9,7 +9,7 @@ with explicit evidence, regressions, and completion gates.
 ## Mission
 
 Make Starmap a reliable, auditable, provider-aware catalog engine and
-distribution system for Starport, an open-source enterprise OpenRouter-style
+distribution system for Starport, an open-source OpenRouter-style
 product written in Go.
 
 The target provides:
@@ -22,7 +22,7 @@ The target provides:
 - durable scheduling above an idempotent sync transaction;
 - reproducible artifact and hosted distribution;
 - graceful handling of upstream schema drift;
-- deterministic and live verification suitable for enterprise trust.
+- deterministic and live verification suitable for production trust.
 
 ## Baseline
 
@@ -68,7 +68,7 @@ also established the distribution and scheduling decisions recorded below.
 7. Publish a catalog generation only after validation and durable commit.
 8. Report deterministic, live-provider, hosted-CI, and distribution gates separately.
 9. Compatibility changes require a migration path and old-format fixture.
-10. Coverage alone never proves enterprise readiness.
+10. Coverage alone never proves production readiness.
 11. Every finding class is in scope: blocker, reliability, cleanup, and
     nice-to-have. Classification affects order and risk, not whether the finding
     must receive a terminal disposition.
@@ -99,7 +99,7 @@ also established the distribution and scheduling decisions recorded below.
 | P8 | Reproducible catalog distribution | DONE | Embedded, artifact, and hosted snapshots share one manifest | Reproducibility, compatibility, ETag, and rollback tests |
 | P9 | Durable scheduled synchronization | DONE | HA scheduling has lease, jitter, retries, freshness, and history | Fake-clock and multi-trigger tests |
 | P10 | Server and remote consumption | DONE | Remote clients consume versioned generations and caches follow publication | HTTP contract and cache-generation tests |
-| P11 | Enterprise closeout | IN_PROGRESS | PR CI and production-readiness evidence are green | Full local, hosted, live, artifact, and release gates |
+| P11 | Production closeout | IN_PROGRESS | PR CI and production-readiness evidence are green | Full local, hosted, live, artifact, and release gates |
 
 ## P0: Control Plane and Second Review
 
@@ -399,11 +399,11 @@ P9 gate: `go test ./... -run 'Scheduler|InitialRun|StartupReadiness|Lease|Single
 
 P10 gate: `go test ./internal/server/... ./internal/catalog/query . -race && go test ./... -run 'RemoteCatalog|DurableServerUpdate|WritableStore|Checksum|CacheGeneration|GenerationEvent|PostCommitNotification|HierarchicalID|Sort'`
 
-## P11: Enterprise Closeout
+## P11: Production Closeout
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P11.1 | DONE | Add required, pinned PR CI | Active PR workflow pins the exact `go.mod` Go/toolchain version, runs the named enterprise gate, and repository branch protection reports those exact checks as required; workflow fixture and hosted PR evidence are recorded |
+| P11.1 | DONE | Add required, pinned PR CI | Active PR workflow pins the exact `go.mod` Go/toolchain version, runs the named required verification gate, and repository branch protection reports those exact checks as required; workflow fixture and hosted PR evidence are recorded |
 | P11.2 | DONE | Add security/reliability gates | `govulncheck`, fuzz smoke, migration fixtures, and persistence faults run in CI |
 | P11.3 | DONE | Run deterministic closeout | Verify, race, lint, docs, build, smoke, migration, and artifact checks pass |
 | P11.4 | DONE | Run live-provider matrix | Configured providers pass without secret output; skips are explicit |
@@ -411,6 +411,7 @@ P10 gate: `go test ./internal/server/... ./internal/catalog/query . -race && go 
 | P11.6 | DONE | Run final architecture review | No unresolved P0/P1 findings; remaining risk is explicit |
 | P11.7 | DONE | Rename the default branch to `main` | GitHub reports `main` as default; PR workflows and live repository links target `main`; required protection is attached to `main`; the former `master` branch is no longer the governance target |
 | P11.8 | DONE | Propagate sync cancellation without false success | A context canceled before or during source observation returns a cancellation/deadline error, invokes no not-yet-started source, and cannot be reported as a successful zero-source/no-change dry run; focused and hosted race gates pass |
+| P11.9 | IN_PROGRESS | Normalize standard PR verification terminology | The only standard PR workflow is `.github/workflows/pr.yaml`, displayed as `Pull Request`; its required jobs are `Verification Gate` and `Security & Reliability`; `scripts/verify.sh` is the sole `make verify` implementation; current prescriptive docs use repository/required/production verification while legitimate enterprise deployment, registry, provider, dependency, and historical evidence language remains intact; protected-check migration and exact-head local/hosted proof are recorded |
 
 P11 gate: `make verify && govulncheck ./... && go test ./... -race -short && make release-check && git diff --check`
 
@@ -518,6 +519,7 @@ disappear when those tasks are refactored or consolidated.
 | F-085 | CP,R1 | Generic public `pkg/types` naming and its lint suppression are non-canonical and platform-order dependent | reliability | P11.1,P11.6 | Canonical domain package, source-compatible migration shim, direct pinned-linter proof, and hosted Linux lint pass | DONE | Real composition imports zero-dependency `pkg/catalogmeta`; deprecated `pkg/types` contains aliases only and retains assignment compatibility; direct Go-installed and hosted Linux golangci-lint v2.5.0 both report zero issues |
 | F-086 | CP,R1 | Last-known-good scheduler fault test uses a one-second deadline for full catalog construction | reliability | P9.7,P11.1 | Bounded commit-gate synchronization has early-exit diagnostics, guaranteed cleanup, repeated race proof, and hosted pass | DONE | The test uses one atomic run outcome, releases the injected commit fault on every exit, and applies a 30-second ceiling only to reaching the real commit gate; five race-enabled repetitions and hosted Enterprise Gate job `86437643271` pass |
 | F-087 | CP,R1 | Source observation silently converts pre-observation context expiry into a successful empty source set | blocker | P11.8 | Cancellation is returned, unrelated dry-run timing is removed, and repeated local/hosted race proof passes | DONE | Observation returns cancellation/deadline errors before and after concurrent source work; the dry-run semantic test no longer imposes an unrelated whole-sync timeout; 10 focused dry-run and 20 cancellation/error-aggregation race repetitions, full local verification, and hosted run `29116553109` pass |
+| F-088 | CP,R1 | Standard PR verification is labeled as an enterprise-only workflow and gate | maintainability | P11.9 | Canonical names, reviewed residual terminology, atomic protected-check migration, and exact-head local/hosted proof | IN_PROGRESS | `Enterprise PR`, `Enterprise Gate`, `enterprise-pr-*`, `verify-enterprise.sh`, and related fixture/docs vocabulary imply a special product tier even though production-grade safety is the repository baseline; migration is recorded before implementation and P11.5 remains paused |
 
 Finding coverage gate:
 
@@ -785,11 +787,13 @@ git diff --check -- docs/STARPORT_CATALOG_CONTROL_PLANE.md
 | 2026-07-10 | Final implementation-head run `29115466651` on exact commit `c951c3b2892f0b793f1c98e77bcbb269433ea070` is green: `Security & Reliability` job `86437643236` passed in 1m16s and `Enterprise Gate` job `86437643271` passed in 7m7s, with zero check annotations. GitHub readback reports `main` as the sole remote default branch and strict protection requiring both checks, one fresh approval, resolved conversations, admin enforcement, and no force-push/deletion; draft PR #27 targets `main` and remains correctly review-blocked. P11.1, P11.2, P11.7, F-033, F-034, F-035, F-082, F-084, F-085, and F-086 are DONE. Mechanical state is 107 tasks (106 `DONE`, 1 `IN_PROGRESS`) and 86 findings (86 `DONE`). P11.5 remains the sole open task because Cloudflare/canonical-origin deployment was explicitly declined; local artifact, checksum, protocol, promotion, and rollback evidence is not misreported as a live hosted drill. |
 | 2026-07-10 | The ledger-only head `41427963` retained a green `Security & Reliability` job `86439197480`, but `Enterprise Gate` job `86439197423` exposed a distinct root race failure: `TestSyncDryRunDoesNotPublishFetchedCatalog` used an unrelated five-second whole-sync timeout, which could expire during catalog loading before source goroutines began. The coordinator then silently skipped canceled observations and reconciled an empty source set as a successful no-change dry run. P11.8 and F-087 record the reliability defect rather than erasing the prior exact-head evidence. Remediation returns cancellation/deadline errors from observation and removes the unrelated timing constraint from the dry-run semantic test. Mechanical state is 108 tasks (106 `DONE`, 2 `IN_PROGRESS`) and 87 findings (86 `DONE`, 1 `IN_PROGRESS`). |
 | 2026-07-10 | Cancellation remediation head `9c5e22c0` is green locally and hosted. Ten focused dry-run race repetitions, 20 cancellation/error-aggregation race repetitions, and exact Go 1.25.12 `make verify` pass locally; the full verifier includes repository-wide short race, vet, 10.91-11.06 ns/op and zero-allocation `Client.Catalog`, zero-issue lint, coverage, generated docs, build, catalog/cross-reference validation, and credential-isolated smoke. Hosted run `29116553109` passed `Security & Reliability` job `86441270527` in 1m11s and `Enterprise Gate` job `86441270422` in 6m42s. P11.8 and F-087 are DONE. Mechanical state is 108 tasks (107 `DONE`, 1 `IN_PROGRESS`) and 87 findings (87 `DONE`); P11.5 canonical hosted distribution remains the sole open task. |
+| 2026-07-10 | Steering review found that `Enterprise PR` and `Enterprise Gate` incorrectly describe Starmap's one standard required PR workflow as an enterprise-only product tier. P11.9 and F-088 record the terminology/maintainability migration before implementation. Canonical targets are `.github/workflows/pr.yaml`, workflow `Pull Request`, job ID `verification`, required check `Verification Gate`, `pr-*` concurrency, step `Run verification gate`, `scripts/verify.sh`, and `internal/ciworkflow/pr_workflow_test.go`. Historical evidence retains the names that existed when each run occurred; legitimate enterprise registry, mirroring, private-deployment, restricted-egress, provider, and dependency language remains eligible after review. Mechanical state is 109 tasks (107 `DONE`, 2 `IN_PROGRESS`) and 88 findings (87 `DONE`, 1 `IN_PROGRESS`). P11.5 remains paused until the protected terminology migration is fully green. |
+| 2026-07-10 | P11.9 local implementation is green. The sole active PR workflow is `.github/workflows/pr.yaml`, displayed as `Pull Request`, with `verification`/`Verification Gate`, `security-reliability`/`Security & Reliability`, `pr-*` concurrency, exact Go 1.25.12, SHA-pinned Node 24 actions, pinned verification tools, and `make verify`; `scripts/verify.sh` is executable and is the direct implementation behind the Make target. Ten race-enabled structural fixture repetitions, `actionlint`, script syntax, `docs-check`, `git diff --check`, and exact Go 1.25.12 `make verify` pass; the latter includes repository-wide short race, vet, zero-issue lint, coverage, 10.80-11.18 ns/op zero-allocation catalog access, build, catalog/cross-reference validation, and credential-isolated smoke. Case-insensitive terminology review leaves only dependency names, provider/catalog descriptions, private deployment/registry/mirroring/restricted-egress guidance, the explicit migration finding, and preserved historical evidence. P11.9 and F-088 remain IN_PROGRESS until the new hosted context is green and protected `main` atomically requires `Verification Gate` plus `Security & Reliability`. Mechanical state remains 109 tasks (107 `DONE`, 2 `IN_PROGRESS`) and 88 findings (87 `DONE`, 1 `IN_PROGRESS`). |
 
 ## /goal Prompt
 
 ```text
-/goal Make Starmap the authoritative, enterprise-trustworthy LLM catalog for
+/goal Make Starmap the authoritative, production-trustworthy LLM catalog for
 Starport by executing docs/STARPORT_CATALOG_CONTROL_PLANE.md in ledger order.
 
 Treat the document as the durable source of truth. Start at the first non-DONE
