@@ -804,8 +804,8 @@ func main() {
   - [func NewProvenance\(opts ...ProvenanceOption\) \*Provenance](<#NewProvenance>)
   - [func \(p \*Provenance\) Clear\(\)](<#Provenance.Clear>)
   - [func \(p \*Provenance\) EncodeYAML\(\) \(string, error\)](<#Provenance.EncodeYAML>)
-  - [func \(p \*Provenance\) FindByField\(resourceType types.ResourceType, resourceID string, field string\) \[\]provenance.Provenance](<#Provenance.FindByField>)
-  - [func \(p \*Provenance\) FindByResource\(resourceType types.ResourceType, resourceID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindByResource>)
+  - [func \(p \*Provenance\) FindByField\(resourceType catalogmeta.ResourceType, resourceID string, field string\) \[\]provenance.Provenance](<#Provenance.FindByField>)
+  - [func \(p \*Provenance\) FindByResource\(resourceType catalogmeta.ResourceType, resourceID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindByResource>)
   - [func \(p \*Provenance\) FormatYAML\(\) string](<#Provenance.FormatYAML>)
   - [func \(p \*Provenance\) Len\(\) int](<#Provenance.Len>)
   - [func \(p \*Provenance\) Map\(\) provenance.Map](<#Provenance.Map>)
@@ -4126,7 +4126,7 @@ EncodeYAML returns provenance YAML or a typed parse error when evidence values c
 ### func \(\*Provenance\) [FindByField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L99>)
 
 ```go
-func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID string, field string) []provenance.Provenance
+func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Provenance
 ```
 
 FindByField retrieves provenance for a specific field of a resource. Returns nil if no provenance is found.
@@ -4135,7 +4135,7 @@ FindByField retrieves provenance for a specific field of a resource. Returns nil
 ### func \(\*Provenance\) [FindByResource](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L113>)
 
 ```go
-func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]provenance.Provenance
+func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance
 ```
 
 FindByResource retrieves all provenance for a resource. Returns a map of field names to their provenance entries.
@@ -4203,8 +4203,8 @@ ProvenanceReader exposes provenance reads without mutation methods.
 type ProvenanceReader interface {
     Map() provenance.Map
     Len() int
-    FindByField(types.ResourceType, string, string) []provenance.Provenance
-    FindByResource(types.ResourceType, string) map[string][]provenance.Provenance
+    FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
+    FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
     FormatYAML() string
 }
 ```
@@ -5279,13 +5279,13 @@ SourceObservationLink binds a generation to one immutable source observation. Th
 
 ```go
 type SourceObservationLink struct {
-    Source           types.SourceID                `json:"source" yaml:"source"`
-    ObservationID    string                        `json:"observation_id" yaml:"observation_id"`
-    ObservedAt       time.Time                     `json:"observed_at" yaml:"observed_at"`
-    Revision         types.ObservationRevision     `json:"revision" yaml:"revision"`
-    Completeness     types.ObservationCompleteness `json:"completeness" yaml:"completeness"`
-    Status           types.ObservationStatus       `json:"status" yaml:"status"`
-    EvidenceChecksum string                        `json:"evidence_checksum" yaml:"evidence_checksum"`
+    Source           catalogmeta.SourceID                `json:"source" yaml:"source"`
+    ObservationID    string                              `json:"observation_id" yaml:"observation_id"`
+    ObservedAt       time.Time                           `json:"observed_at" yaml:"observed_at"`
+    Revision         catalogmeta.ObservationRevision     `json:"revision" yaml:"revision"`
+    Completeness     catalogmeta.ObservationCompleteness `json:"completeness" yaml:"completeness"`
+    Status           catalogmeta.ObservationStatus       `json:"status" yaml:"status"`
+    EvidenceChecksum string                              `json:"evidence_checksum" yaml:"evidence_checksum"`
 }
 ```
 

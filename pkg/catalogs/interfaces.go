@@ -1,8 +1,8 @@
 package catalogs
 
 import (
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // ProvidersReader exposes provider collection reads without mutation methods.
@@ -53,8 +53,8 @@ type ModelsReader interface {
 type ProvenanceReader interface {
 	Map() provenance.Map
 	Len() int
-	FindByField(types.ResourceType, string, string) []provenance.Provenance
-	FindByResource(types.ResourceType, string) map[string][]provenance.Provenance
+	FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
+	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
 	FormatYAML() string
 }
 

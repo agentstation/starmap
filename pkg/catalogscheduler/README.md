@@ -290,10 +290,10 @@ FreshnessAlert is one machine\-readable operator signal.
 
 ```go
 type FreshnessAlert struct {
-    Code     string         `json:"code"`
-    Severity AlertSeverity  `json:"severity"`
-    Source   types.SourceID `json:"source"`
-    Message  string         `json:"message"`
+    Code     string               `json:"code"`
+    Severity AlertSeverity        `json:"severity"`
+    Source   catalogmeta.SourceID `json:"source"`
+    Message  string               `json:"message"`
 }
 ```
 
@@ -730,7 +730,7 @@ type OperationalState struct {
     Catalog         CatalogIdentity           `json:"catalog"`
     Freshness       *FreshnessReport          `json:"freshness,omitempty"`
     LastSync        *OperationalRun           `json:"last_sync,omitempty"`
-    DegradedSources []types.SourceID          `json:"degraded_sources"`
+    DegradedSources []catalogmeta.SourceID    `json:"degraded_sources"`
     Scheduler       SchedulerOperationalState `json:"scheduler"`
 }
 ```
@@ -1154,19 +1154,19 @@ SourceFreshness is one source's evaluated observation and SLA state.
 
 ```go
 type SourceFreshness struct {
-    Source               types.SourceID                `json:"source"`
-    Required             bool                          `json:"required"`
-    ObservationID        string                        `json:"observation_id,omitempty"`
-    ObservedAt           time.Time                     `json:"observed_at,omitempty"`
-    Age                  time.Duration                 `json:"-"`
-    AgeSeconds           int64                         `json:"age_seconds"`
-    DegradedAfter        time.Duration                 `json:"-"`
-    DegradedAfterSeconds int64                         `json:"degraded_after_seconds"`
-    UnreadyAfter         time.Duration                 `json:"-"`
-    UnreadyAfterSeconds  int64                         `json:"unready_after_seconds"`
-    ObservationStatus    types.ObservationStatus       `json:"observation_status,omitempty"`
-    Completeness         types.ObservationCompleteness `json:"completeness,omitempty"`
-    State                FreshnessState                `json:"state"`
+    Source               catalogmeta.SourceID                `json:"source"`
+    Required             bool                                `json:"required"`
+    ObservationID        string                              `json:"observation_id,omitempty"`
+    ObservedAt           time.Time                           `json:"observed_at,omitempty"`
+    Age                  time.Duration                       `json:"-"`
+    AgeSeconds           int64                               `json:"age_seconds"`
+    DegradedAfter        time.Duration                       `json:"-"`
+    DegradedAfterSeconds int64                               `json:"degraded_after_seconds"`
+    UnreadyAfter         time.Duration                       `json:"-"`
+    UnreadyAfterSeconds  int64                               `json:"unready_after_seconds"`
+    ObservationStatus    catalogmeta.ObservationStatus       `json:"observation_status,omitempty"`
+    Completeness         catalogmeta.ObservationCompleteness `json:"completeness,omitempty"`
+    State                FreshnessState                      `json:"state"`
 }
 ```
 
@@ -1177,7 +1177,7 @@ SourceFreshnessSLA defines warning and readiness budgets for one source.
 
 ```go
 type SourceFreshnessSLA struct {
-    Source        types.SourceID
+    Source        catalogmeta.SourceID
     DegradedAfter time.Duration
     UnreadyAfter  time.Duration
     Required      bool

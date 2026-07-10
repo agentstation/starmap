@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestProviderFixtureFreshness(t *testing.T) {
@@ -40,7 +40,7 @@ func TestProviderFixtureFreshnessRejectsMissingStaleAndTamperedMetadata(t *testi
 	}
 	metadata := FixtureMetadata{
 		Version: 1, Provider: filepath.Base(filepath.Dir(filepath.Dir(fixture))), FetchedAt: now.Add(-2 * time.Hour),
-		SourceRevision: types.ObservationRevision{Kind: types.ObservationRevisionKindContentDigest, Value: fixtureChecksum([]byte(`{"data":[]}`))},
+		SourceRevision: catalogmeta.ObservationRevision{Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: fixtureChecksum([]byte(`{"data":[]}`))},
 		Payload:        FixturePayload{Path: filepath.Base(fixture), Checksum: fixtureChecksum([]byte(`{"data":[]}`))}, MaxAge: time.Hour.String(),
 	}
 	data, err := json.Marshal(metadata)

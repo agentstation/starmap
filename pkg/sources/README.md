@@ -109,17 +109,17 @@ if fetcher.HasClient(providerID) {
 ```go
 const (
     // RevisionKindUnknown means the upstream exposes no stable revision.
-    RevisionKindUnknown = types.ObservationRevisionKindUnknown
+    RevisionKindUnknown = catalogmeta.ObservationRevisionKindUnknown
     // RevisionKindETag identifies an HTTP entity-tag revision.
-    RevisionKindETag = types.ObservationRevisionKindETag
+    RevisionKindETag = catalogmeta.ObservationRevisionKindETag
     // RevisionKindLastModified identifies an HTTP Last-Modified validator.
-    RevisionKindLastModified = types.ObservationRevisionKindLastModified
+    RevisionKindLastModified = catalogmeta.ObservationRevisionKindLastModified
     // RevisionKindGitCommit identifies an exact Git commit.
-    RevisionKindGitCommit = types.ObservationRevisionKindGitCommit
+    RevisionKindGitCommit = catalogmeta.ObservationRevisionKindGitCommit
     // RevisionKindSourceVersion identifies an upstream-declared version.
-    RevisionKindSourceVersion = types.ObservationRevisionKindSourceVersion
+    RevisionKindSourceVersion = catalogmeta.ObservationRevisionKindSourceVersion
     // RevisionKindContentDigest identifies the normalized observation content.
-    RevisionKindContentDigest = types.ObservationRevisionKindContentDigest
+    RevisionKindContentDigest = catalogmeta.ObservationRevisionKindContentDigest
 )
 ```
 
@@ -128,9 +128,9 @@ const (
 ```go
 const (
     // ObservationCompletenessComplete means every expected record was observed.
-    ObservationCompletenessComplete = types.ObservationCompletenessComplete
+    ObservationCompletenessComplete = catalogmeta.ObservationCompletenessComplete
     // ObservationCompletenessPartial means at least one expected record is absent.
-    ObservationCompletenessPartial = types.ObservationCompletenessPartial
+    ObservationCompletenessPartial = catalogmeta.ObservationCompletenessPartial
 )
 ```
 
@@ -139,9 +139,9 @@ const (
 ```go
 const (
     // ObservationStatusSucceeded means the observation completed without known degradation.
-    ObservationStatusSucceeded = types.ObservationStatusSucceeded
+    ObservationStatusSucceeded = catalogmeta.ObservationStatusSucceeded
     // ObservationStatusDegraded means usable catalog data was returned with a known limitation.
-    ObservationStatusDegraded = types.ObservationStatusDegraded
+    ObservationStatusDegraded = catalogmeta.ObservationStatusDegraded
 )
 ```
 
@@ -149,10 +149,10 @@ const (
 
 ```go
 const (
-    ObservationIssueScopeRecord        = types.ObservationIssueScopeRecord
-    ObservationIssueScopeProvider      = types.ObservationIssueScopeProvider
-    ObservationIssueScopeSource        = types.ObservationIssueScopeSource
-    ObservationIssueScopeStaleFallback = types.ObservationIssueScopeStaleFallback
+    ObservationIssueScopeRecord        = catalogmeta.ObservationIssueScopeRecord
+    ObservationIssueScopeProvider      = catalogmeta.ObservationIssueScopeProvider
+    ObservationIssueScopeSource        = catalogmeta.ObservationIssueScopeSource
+    ObservationIssueScopeStaleFallback = catalogmeta.ObservationIssueScopeStaleFallback
 )
 ```
 
@@ -160,14 +160,14 @@ const (
 
 ```go
 const (
-    ObservationIssueCodeInvalidRecord      = types.ObservationIssueCodeInvalidRecord
-    ObservationIssueCodeSchemaDrift        = types.ObservationIssueCodeSchemaDrift
-    ObservationIssueCodePayloadLimit       = types.ObservationIssueCodePayloadLimit
-    ObservationIssueCodeMissingCredentials = types.ObservationIssueCodeMissingCredentials
-    ObservationIssueCodeConfiguration      = types.ObservationIssueCodeConfiguration
-    ObservationIssueCodeFetchFailed        = types.ObservationIssueCodeFetchFailed
-    ObservationIssueCodeStaleFallback      = types.ObservationIssueCodeStaleFallback
-    ObservationIssueCodeBootstrapFallback  = types.ObservationIssueCodeBootstrapFallback
+    ObservationIssueCodeInvalidRecord      = catalogmeta.ObservationIssueCodeInvalidRecord
+    ObservationIssueCodeSchemaDrift        = catalogmeta.ObservationIssueCodeSchemaDrift
+    ObservationIssueCodePayloadLimit       = catalogmeta.ObservationIssueCodePayloadLimit
+    ObservationIssueCodeMissingCredentials = catalogmeta.ObservationIssueCodeMissingCredentials
+    ObservationIssueCodeConfiguration      = catalogmeta.ObservationIssueCodeConfiguration
+    ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
+    ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
+    ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
 )
 ```
 
@@ -175,10 +175,10 @@ const (
 
 ```go
 const (
-    ProvidersID     = types.ProvidersID
-    ModelsDevGitID  = types.ModelsDevGitID
-    ModelsDevHTTPID = types.ModelsDevHTTPID
-    LocalCatalogID  = types.LocalCatalogID
+    ProvidersID     = catalogmeta.ProvidersID
+    ModelsDevGitID  = catalogmeta.ModelsDevGitID
+    ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
+    LocalCatalogID  = catalogmeta.LocalCatalogID
 )
 ```
 
@@ -186,11 +186,11 @@ const (
 
 ```go
 const (
-    ResourceTypeModel            = types.ResourceTypeModel
-    ResourceTypeProvider         = types.ResourceTypeProvider
-    ResourceTypeAuthor           = types.ResourceTypeAuthor
-    ResourceTypeModelDefinition  = types.ResourceTypeModelDefinition
-    ResourceTypeProviderOffering = types.ResourceTypeProviderOffering
+    ResourceTypeModel            = catalogmeta.ResourceTypeModel
+    ResourceTypeProvider         = catalogmeta.ResourceTypeProvider
+    ResourceTypeAuthor           = catalogmeta.ResourceTypeAuthor
+    ResourceTypeModelDefinition  = catalogmeta.ResourceTypeModelDefinition
+    ResourceTypeProviderOffering = catalogmeta.ResourceTypeProviderOffering
 )
 ```
 
@@ -298,10 +298,10 @@ HumanSize returns the payload size in human\-readable format.
 <a name="ID"></a>
 ## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L103>)
 
-ID represents the identifier of a data source. ID is a type alias for types.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/types.
+ID represents the identifier of a data source. ID is a type alias for catalogmeta.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/catalogmeta.
 
 ```go
-type ID = types.SourceID
+type ID = catalogmeta.SourceID
 ```
 
 <a name="IDs"></a>
@@ -311,7 +311,7 @@ type ID = types.SourceID
 func IDs() []ID
 ```
 
-IDs returns all available source identifiers. Delegates to types.SourceIDs\(\) to maintain consistency.
+IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
 
 <a name="Observation"></a>
 ## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L148-L159>)
@@ -366,7 +366,7 @@ Validate verifies required metadata and binds the evidence checksum to Catalog.
 ObservationCompleteness states whether all expected records were observed.
 
 ```go
-type ObservationCompleteness = types.ObservationCompleteness
+type ObservationCompleteness = catalogmeta.ObservationCompleteness
 ```
 
 <a name="ObservationIssue"></a>
@@ -375,7 +375,7 @@ type ObservationCompleteness = types.ObservationCompleteness
 ObservationIssue records one classified, non\-fatal degradation.
 
 ```go
-type ObservationIssue = types.ObservationIssue
+type ObservationIssue = catalogmeta.ObservationIssue
 ```
 
 <a name="ObservationIssueCode"></a>
@@ -384,7 +384,7 @@ type ObservationIssue = types.ObservationIssue
 ObservationIssueCode is a stable machine\-readable degradation reason.
 
 ```go
-type ObservationIssueCode = types.ObservationIssueCode
+type ObservationIssueCode = catalogmeta.ObservationIssueCode
 ```
 
 <a name="ObservationIssueScope"></a>
@@ -393,7 +393,7 @@ type ObservationIssueCode = types.ObservationIssueCode
 ObservationIssueScope identifies the level at which degradation occurred.
 
 ```go
-type ObservationIssueScope = types.ObservationIssueScope
+type ObservationIssueScope = catalogmeta.ObservationIssueScope
 ```
 
 <a name="ObservationMetadata"></a>
@@ -418,7 +418,7 @@ type ObservationMetadata struct {
 ObservationRecordCounts reports accepted and rejected source records.
 
 ```go
-type ObservationRecordCounts = types.ObservationRecordCounts
+type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
 ```
 
 <a name="ObservationStatus"></a>
@@ -427,7 +427,7 @@ type ObservationRecordCounts = types.ObservationRecordCounts
 ObservationStatus is the typed outcome of a source observation.
 
 ```go
-type ObservationStatus = types.ObservationStatus
+type ObservationStatus = catalogmeta.ObservationStatus
 ```
 
 <a name="Option"></a>
@@ -683,10 +683,10 @@ type RawFetchResult struct {
 <a name="ResourceType"></a>
 ## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L193>)
 
-ResourceType is a type alias for types.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/types.
+ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
 
 ```go
-type ResourceType = types.ResourceType
+type ResourceType = catalogmeta.ResourceType
 ```
 
 <a name="Revision"></a>
@@ -695,7 +695,7 @@ type ResourceType = types.ResourceType
 Revision identifies the exact upstream or normalized content revision.
 
 ```go
-type Revision = types.ObservationRevision
+type Revision = catalogmeta.ObservationRevision
 ```
 
 <a name="RevisionKind"></a>
@@ -704,7 +704,7 @@ type Revision = types.ObservationRevision
 RevisionKind identifies how an upstream observation revision was obtained.
 
 ```go
-type RevisionKind = types.ObservationRevisionKind
+type RevisionKind = catalogmeta.ObservationRevisionKind
 ```
 
 <a name="SchemaDriftDisposition"></a>

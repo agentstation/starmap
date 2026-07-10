@@ -1,5 +1,4 @@
-//nolint:revive // Package types provides common type definitions
-package types
+package catalogmeta
 
 import "slices"
 

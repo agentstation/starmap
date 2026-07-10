@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestNormalizedEvidenceRoundTripReplaysCandidateAndProvenanceWithoutSecrets(t *testing.T) {
@@ -98,7 +98,7 @@ func TestRawEvidenceIsShortLivedEncryptedAndAccessControlledByPolicy(t *testing.
 	}
 	key := bytes.Repeat([]byte{0x2a}, 32)
 	record := RawRecord{
-		SourceID:   types.SourceID("provider-a"),
+		SourceID:   catalogmeta.SourceID("provider-a"),
 		ObservedAt: time.Date(2026, time.July, 10, 12, 0, 0, 0, time.UTC),
 		MediaType:  "application/json",
 		Payload:    []byte(`{"models":["model-a"],"raw_secret":"short-lived"}`),

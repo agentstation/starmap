@@ -6,9 +6,9 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Mock provides a mock implementation of Application for testing.
@@ -50,7 +50,7 @@ func (m *Mock) OperationalState(ctx context.Context) (catalogscheduler.Operation
 	state, err := m.CatalogState()
 	return catalogscheduler.OperationalState{
 		Catalog:         catalogscheduler.CatalogIdentity{GenerationID: state.GenerationID, Sequence: state.Sequence},
-		DegradedSources: []types.SourceID{},
+		DegradedSources: []catalogmeta.SourceID{},
 	}, err
 }
 

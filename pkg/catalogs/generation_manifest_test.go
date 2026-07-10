@@ -13,8 +13,8 @@ import (
 	"github.com/goccy/go-yaml"
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestGenerationManifestFixtureRoundTrip(t *testing.T) {
@@ -57,8 +57,8 @@ func TestGenerationManifestFixtureRoundTrip(t *testing.T) {
 
 func TestGenerationManifestRetainsPinnedGitLockfileInput(t *testing.T) {
 	manifest := loadGenerationManifestFixture(t)
-	manifest.SourceObservations[0].Revision = types.ObservationRevision{
-		Kind: types.ObservationRevisionKindGitCommit, Value: strings.Repeat("a", 40),
+	manifest.SourceObservations[0].Revision = catalogmeta.ObservationRevision{
+		Kind: catalogmeta.ObservationRevisionKindGitCommit, Value: strings.Repeat("a", 40),
 		InputName: "bun.lock", InputChecksum: "sha256:" + strings.Repeat("b", 64),
 	}
 	if err := manifest.Validate(); err != nil {

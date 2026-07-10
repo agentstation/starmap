@@ -9,11 +9,11 @@ import (
 
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/pipeline"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // CurrentGeneration returns the exact immutable generation currently published
@@ -67,7 +67,7 @@ func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Genera
 const (
 	generationValidatorVersion = "starmap-v1"
 	generationValidationCheck  = "catalog_publication"
-	customUpdateSourceID       = types.SourceID("custom_update")
+	customUpdateSourceID       = catalogmeta.SourceID("custom_update")
 )
 
 func (c *Client) commitAndPublish(

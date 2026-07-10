@@ -7,15 +7,15 @@ import (
 	"sync"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // SourceFreshnessSLA defines warning and readiness budgets for one source.
 type SourceFreshnessSLA struct {
-	Source        types.SourceID
+	Source        catalogmeta.SourceID
 	DegradedAfter time.Duration
 	UnreadyAfter  time.Duration
 	Required      bool
@@ -74,27 +74,27 @@ const (
 
 // FreshnessAlert is one machine-readable operator signal.
 type FreshnessAlert struct {
-	Code     string         `json:"code"`
-	Severity AlertSeverity  `json:"severity"`
-	Source   types.SourceID `json:"source"`
-	Message  string         `json:"message"`
+	Code     string               `json:"code"`
+	Severity AlertSeverity        `json:"severity"`
+	Source   catalogmeta.SourceID `json:"source"`
+	Message  string               `json:"message"`
 }
 
 // SourceFreshness is one source's evaluated observation and SLA state.
 type SourceFreshness struct {
-	Source               types.SourceID                `json:"source"`
-	Required             bool                          `json:"required"`
-	ObservationID        string                        `json:"observation_id,omitempty"`
-	ObservedAt           time.Time                     `json:"observed_at,omitempty"`
-	Age                  time.Duration                 `json:"-"`
-	AgeSeconds           int64                         `json:"age_seconds"`
-	DegradedAfter        time.Duration                 `json:"-"`
-	DegradedAfterSeconds int64                         `json:"degraded_after_seconds"`
-	UnreadyAfter         time.Duration                 `json:"-"`
-	UnreadyAfterSeconds  int64                         `json:"unready_after_seconds"`
-	ObservationStatus    types.ObservationStatus       `json:"observation_status,omitempty"`
-	Completeness         types.ObservationCompleteness `json:"completeness,omitempty"`
-	State                FreshnessState                `json:"state"`
+	Source               catalogmeta.SourceID                `json:"source"`
+	Required             bool                                `json:"required"`
+	ObservationID        string                              `json:"observation_id,omitempty"`
+	ObservedAt           time.Time                           `json:"observed_at,omitempty"`
+	Age                  time.Duration                       `json:"-"`
+	AgeSeconds           int64                               `json:"age_seconds"`
+	DegradedAfter        time.Duration                       `json:"-"`
+	DegradedAfterSeconds int64                               `json:"degraded_after_seconds"`
+	UnreadyAfter         time.Duration                       `json:"-"`
+	UnreadyAfterSeconds  int64                               `json:"unready_after_seconds"`
+	ObservationStatus    catalogmeta.ObservationStatus       `json:"observation_status,omitempty"`
+	Completeness         catalogmeta.ObservationCompleteness `json:"completeness,omitempty"`
+	State                FreshnessState                      `json:"state"`
 }
 
 // FreshnessReport is the deterministic readiness/degradation decision for all
@@ -119,7 +119,7 @@ func (r FreshnessReport) Copy() FreshnessReport {
 type FreshnessMonitor struct {
 	mu           sync.RWMutex
 	policy       []SourceFreshnessSLA
-	observations map[types.SourceID]catalogs.SourceObservationLink
+	observations map[catalogmeta.SourceID]catalogs.SourceObservationLink
 }
 
 // NewFreshnessMonitor creates an empty fail-closed monitor.
@@ -138,7 +138,7 @@ func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error) {
 		}
 	}
 	return &FreshnessMonitor{
-		policy: rules, observations: make(map[types.SourceID]catalogs.SourceObservationLink, len(rules)),
+		policy: rules, observations: make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(rules)),
 	}, nil
 }
 
@@ -166,7 +166,7 @@ func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink)
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	next := make(map[types.SourceID]catalogs.SourceObservationLink, len(m.observations)+len(validated))
+	next := make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(m.observations)+len(validated))
 	for source, observation := range m.observations {
 		next[source] = observation
 	}
@@ -222,7 +222,7 @@ func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error) {
 	at = at.UTC()
 	m.mu.RLock()
 	policy := append([]SourceFreshnessSLA(nil), m.policy...)
-	observations := make(map[types.SourceID]catalogs.SourceObservationLink, len(m.observations))
+	observations := make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(m.observations))
 	for source, observation := range m.observations {
 		observations[source] = observation
 	}
@@ -245,7 +245,7 @@ func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error) {
 	return report, nil
 }
 
-func (m *FreshnessMonitor) monitors(source types.SourceID) bool {
+func (m *FreshnessMonitor) monitors(source catalogmeta.SourceID) bool {
 	index := sort.Search(len(m.policy), func(index int) bool { return m.policy[index].Source >= source })
 	return index < len(m.policy) && m.policy[index].Source == source
 }
@@ -285,13 +285,13 @@ func evaluateSourceFreshness(at time.Time, rule SourceFreshnessSLA, observation 
 		return state, freshnessAlert(FreshnessAlertSourceStale, AlertSeverityWarning, rule.Source,
 			fmt.Sprintf("source age %s exceeds degraded SLA %s", state.Age.Round(time.Second), rule.DegradedAfter))
 	}
-	if observation.Status == types.ObservationStatusDegraded || observation.Completeness == types.ObservationCompletenessPartial {
+	if observation.Status == catalogmeta.ObservationStatusDegraded || observation.Completeness == catalogmeta.ObservationCompletenessPartial {
 		state.State = FreshnessStateDegraded
 		return state, freshnessAlert(FreshnessAlertSourceDegraded, AlertSeverityWarning, rule.Source, "latest source observation is degraded or partial")
 	}
 	return state, FreshnessAlert{}
 }
 
-func freshnessAlert(code string, severity AlertSeverity, source types.SourceID, message string) FreshnessAlert {
+func freshnessAlert(code string, severity AlertSeverity, source catalogmeta.SourceID, message string) FreshnessAlert {
 	return FreshnessAlert{Code: code, Severity: severity, Source: source, Message: message}
 }

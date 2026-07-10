@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 var (
@@ -139,13 +139,13 @@ type GenerationValidationReport struct {
 // observation. The observation schema and retention policy are defined by the
 // source pipeline; this link is deliberately small and replay-oriented.
 type SourceObservationLink struct {
-	Source           types.SourceID                `json:"source" yaml:"source"`
-	ObservationID    string                        `json:"observation_id" yaml:"observation_id"`
-	ObservedAt       time.Time                     `json:"observed_at" yaml:"observed_at"`
-	Revision         types.ObservationRevision     `json:"revision" yaml:"revision"`
-	Completeness     types.ObservationCompleteness `json:"completeness" yaml:"completeness"`
-	Status           types.ObservationStatus       `json:"status" yaml:"status"`
-	EvidenceChecksum string                        `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Source           catalogmeta.SourceID                `json:"source" yaml:"source"`
+	ObservationID    string                              `json:"observation_id" yaml:"observation_id"`
+	ObservedAt       time.Time                           `json:"observed_at" yaml:"observed_at"`
+	Revision         catalogmeta.ObservationRevision     `json:"revision" yaml:"revision"`
+	Completeness     catalogmeta.ObservationCompleteness `json:"completeness" yaml:"completeness"`
+	Status           catalogmeta.ObservationStatus       `json:"status" yaml:"status"`
+	EvidenceChecksum string                              `json:"evidence_checksum" yaml:"evidence_checksum"`
 }
 
 // Validate verifies one complete source-observation link.
@@ -281,10 +281,10 @@ func (m GenerationManifest) Validate() error {
 		return err
 	}
 	for _, observation := range m.SourceObservations {
-		if observation.Completeness == types.ObservationCompletenessPartial && m.Completeness != GenerationCompletenessPartial {
+		if observation.Completeness == catalogmeta.ObservationCompletenessPartial && m.Completeness != GenerationCompletenessPartial {
 			return validationError("completeness", m.Completeness, "must be partial when a linked observation is partial")
 		}
-		if observation.Status == types.ObservationStatusDegraded && !m.Degraded {
+		if observation.Status == catalogmeta.ObservationStatusDegraded && !m.Degraded {
 			return validationError("degraded", m.Degraded, "must be true when a linked observation is degraded")
 		}
 	}
@@ -385,11 +385,11 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			return err
 		}
 		switch observation.Revision.Kind {
-		case types.ObservationRevisionKindUnknown:
+		case catalogmeta.ObservationRevisionKindUnknown:
 			if strings.TrimSpace(observation.Revision.Value) != "" {
 				return validationError(prefix+".revision.value", observation.Revision.Value, "must be empty when revision kind is unknown")
 			}
-		case types.ObservationRevisionKindGitCommit:
+		case catalogmeta.ObservationRevisionKindGitCommit:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
 				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
 			}
@@ -399,10 +399,10 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			if observation.Revision.InputName == "" || observation.Revision.InputChecksum == "" {
 				return validationError(prefix+".revision.input", observation.Revision, "Git revisions require a lockfile name and checksum")
 			}
-		case types.ObservationRevisionKindETag,
-			types.ObservationRevisionKindLastModified,
-			types.ObservationRevisionKindSourceVersion,
-			types.ObservationRevisionKindContentDigest:
+		case catalogmeta.ObservationRevisionKindETag,
+			catalogmeta.ObservationRevisionKindLastModified,
+			catalogmeta.ObservationRevisionKindSourceVersion,
+			catalogmeta.ObservationRevisionKindContentDigest:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
 				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
 			}
@@ -413,20 +413,20 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			return validationError(prefix+".revision.input", observation.Revision, "name and checksum must be supplied together")
 		}
 		if observation.Revision.InputName != "" {
-			if observation.Revision.Kind != types.ObservationRevisionKindGitCommit {
+			if observation.Revision.Kind != catalogmeta.ObservationRevisionKindGitCommit {
 				return validationError(prefix+".revision.input", observation.Revision, "content-addressed build input is only supported for Git revisions")
 			}
 			if err := validateChecksum(prefix+".revision.input_checksum", observation.Revision.InputChecksum); err != nil {
 				return err
 			}
 		}
-		if observation.Completeness != types.ObservationCompletenessComplete && observation.Completeness != types.ObservationCompletenessPartial {
+		if observation.Completeness != catalogmeta.ObservationCompletenessComplete && observation.Completeness != catalogmeta.ObservationCompletenessPartial {
 			return validationError(prefix+".completeness", observation.Completeness, "must be complete or partial")
 		}
-		if observation.Status != types.ObservationStatusSucceeded && observation.Status != types.ObservationStatusDegraded {
+		if observation.Status != catalogmeta.ObservationStatusSucceeded && observation.Status != catalogmeta.ObservationStatusDegraded {
 			return validationError(prefix+".status", observation.Status, "must be succeeded or degraded")
 		}
-		if observation.Completeness == types.ObservationCompletenessPartial && observation.Status != types.ObservationStatusDegraded {
+		if observation.Completeness == catalogmeta.ObservationCompletenessPartial && observation.Status != catalogmeta.ObservationStatusDegraded {
 			return validationError(prefix+".status", observation.Status, "partial observations must be degraded")
 		}
 		if err := validateChecksum(prefix+".evidence_checksum", observation.EvidenceChecksum); err != nil {

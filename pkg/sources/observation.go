@@ -7,83 +7,83 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // RevisionKind identifies how an upstream observation revision was obtained.
-type RevisionKind = types.ObservationRevisionKind
+type RevisionKind = catalogmeta.ObservationRevisionKind
 
 const (
 	// RevisionKindUnknown means the upstream exposes no stable revision.
-	RevisionKindUnknown = types.ObservationRevisionKindUnknown
+	RevisionKindUnknown = catalogmeta.ObservationRevisionKindUnknown
 	// RevisionKindETag identifies an HTTP entity-tag revision.
-	RevisionKindETag = types.ObservationRevisionKindETag
+	RevisionKindETag = catalogmeta.ObservationRevisionKindETag
 	// RevisionKindLastModified identifies an HTTP Last-Modified validator.
-	RevisionKindLastModified = types.ObservationRevisionKindLastModified
+	RevisionKindLastModified = catalogmeta.ObservationRevisionKindLastModified
 	// RevisionKindGitCommit identifies an exact Git commit.
-	RevisionKindGitCommit = types.ObservationRevisionKindGitCommit
+	RevisionKindGitCommit = catalogmeta.ObservationRevisionKindGitCommit
 	// RevisionKindSourceVersion identifies an upstream-declared version.
-	RevisionKindSourceVersion = types.ObservationRevisionKindSourceVersion
+	RevisionKindSourceVersion = catalogmeta.ObservationRevisionKindSourceVersion
 	// RevisionKindContentDigest identifies the normalized observation content.
-	RevisionKindContentDigest = types.ObservationRevisionKindContentDigest
+	RevisionKindContentDigest = catalogmeta.ObservationRevisionKindContentDigest
 )
 
 // Revision identifies the exact upstream or normalized content revision.
-type Revision = types.ObservationRevision
+type Revision = catalogmeta.ObservationRevision
 
 // ObservationCompleteness states whether all expected records were observed.
-type ObservationCompleteness = types.ObservationCompleteness
+type ObservationCompleteness = catalogmeta.ObservationCompleteness
 
 const (
 	// ObservationCompletenessComplete means every expected record was observed.
-	ObservationCompletenessComplete = types.ObservationCompletenessComplete
+	ObservationCompletenessComplete = catalogmeta.ObservationCompletenessComplete
 	// ObservationCompletenessPartial means at least one expected record is absent.
-	ObservationCompletenessPartial = types.ObservationCompletenessPartial
+	ObservationCompletenessPartial = catalogmeta.ObservationCompletenessPartial
 )
 
 // ObservationStatus is the typed outcome of a source observation.
-type ObservationStatus = types.ObservationStatus
+type ObservationStatus = catalogmeta.ObservationStatus
 
 const (
 	// ObservationStatusSucceeded means the observation completed without known degradation.
-	ObservationStatusSucceeded = types.ObservationStatusSucceeded
+	ObservationStatusSucceeded = catalogmeta.ObservationStatusSucceeded
 	// ObservationStatusDegraded means usable catalog data was returned with a known limitation.
-	ObservationStatusDegraded = types.ObservationStatusDegraded
+	ObservationStatusDegraded = catalogmeta.ObservationStatusDegraded
 )
 
 // ObservationRecordCounts reports accepted and rejected source records.
-type ObservationRecordCounts = types.ObservationRecordCounts
+type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
 
 // ObservationIssueScope identifies the level at which degradation occurred.
-type ObservationIssueScope = types.ObservationIssueScope
+type ObservationIssueScope = catalogmeta.ObservationIssueScope
 
 // Observation issue scope values.
 const (
-	ObservationIssueScopeRecord        = types.ObservationIssueScopeRecord
-	ObservationIssueScopeProvider      = types.ObservationIssueScopeProvider
-	ObservationIssueScopeSource        = types.ObservationIssueScopeSource
-	ObservationIssueScopeStaleFallback = types.ObservationIssueScopeStaleFallback
+	ObservationIssueScopeRecord        = catalogmeta.ObservationIssueScopeRecord
+	ObservationIssueScopeProvider      = catalogmeta.ObservationIssueScopeProvider
+	ObservationIssueScopeSource        = catalogmeta.ObservationIssueScopeSource
+	ObservationIssueScopeStaleFallback = catalogmeta.ObservationIssueScopeStaleFallback
 )
 
 // ObservationIssueCode is a stable machine-readable degradation reason.
-type ObservationIssueCode = types.ObservationIssueCode
+type ObservationIssueCode = catalogmeta.ObservationIssueCode
 
 // Observation issue code values.
 const (
-	ObservationIssueCodeInvalidRecord      = types.ObservationIssueCodeInvalidRecord
-	ObservationIssueCodeSchemaDrift        = types.ObservationIssueCodeSchemaDrift
-	ObservationIssueCodePayloadLimit       = types.ObservationIssueCodePayloadLimit
-	ObservationIssueCodeMissingCredentials = types.ObservationIssueCodeMissingCredentials
-	ObservationIssueCodeConfiguration      = types.ObservationIssueCodeConfiguration
-	ObservationIssueCodeFetchFailed        = types.ObservationIssueCodeFetchFailed
-	ObservationIssueCodeStaleFallback      = types.ObservationIssueCodeStaleFallback
-	ObservationIssueCodeBootstrapFallback  = types.ObservationIssueCodeBootstrapFallback
+	ObservationIssueCodeInvalidRecord      = catalogmeta.ObservationIssueCodeInvalidRecord
+	ObservationIssueCodeSchemaDrift        = catalogmeta.ObservationIssueCodeSchemaDrift
+	ObservationIssueCodePayloadLimit       = catalogmeta.ObservationIssueCodePayloadLimit
+	ObservationIssueCodeMissingCredentials = catalogmeta.ObservationIssueCodeMissingCredentials
+	ObservationIssueCodeConfiguration      = catalogmeta.ObservationIssueCodeConfiguration
+	ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
+	ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
+	ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
 )
 
 // ObservationIssue records one classified, non-fatal degradation.
-type ObservationIssue = types.ObservationIssue
+type ObservationIssue = catalogmeta.ObservationIssue
 
 // ObservationMetadata supplies source-owned metadata used to construct an observation.
 type ObservationMetadata struct {

@@ -7,23 +7,23 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 type seamTracker struct {
 	tracked []provenance.Provenance
 }
 
-func (t *seamTracker) Track(_ types.ResourceType, _ string, _ string, value provenance.Provenance) {
+func (t *seamTracker) Track(_ catalogmeta.ResourceType, _ string, _ string, value provenance.Provenance) {
 	t.tracked = append(t.tracked, value)
 }
-func (*seamTracker) FindByField(types.ResourceType, string, string) []provenance.Provenance {
+func (*seamTracker) FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance {
 	return nil
 }
-func (*seamTracker) FindByResource(types.ResourceType, string) map[string][]provenance.Provenance {
+func (*seamTracker) FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance {
 	return nil
 }
 func (*seamTracker) Map() provenance.Map { return nil }

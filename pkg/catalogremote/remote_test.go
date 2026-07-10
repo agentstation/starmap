@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestRemoteClientDefaultHTTPTimeout(t *testing.T) {
@@ -139,9 +139,9 @@ func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility cata
 			},
 			SyncRunID: "remote-sync-run",
 			SourceObservations: []catalogs.SourceObservationLink{{
-				Source: types.LocalCatalogID, ObservationID: "remote-observation", ObservedAt: generatedAt,
-				Revision:     types.ObservationRevision{Kind: types.ObservationRevisionKindContentDigest, Value: descriptor.Checksum},
-				Completeness: types.ObservationCompletenessComplete, Status: types.ObservationStatusSucceeded,
+				Source: catalogmeta.LocalCatalogID, ObservationID: "remote-observation", ObservedAt: generatedAt,
+				Revision:     catalogmeta.ObservationRevision{Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: descriptor.Checksum},
+				Completeness: catalogmeta.ObservationCompletenessComplete, Status: catalogmeta.ObservationStatusSucceeded,
 				EvidenceChecksum: descriptor.Checksum,
 			}},
 			Completeness: catalogs.GenerationCompletenessComplete, ConsumerCompatibility: compatibility,

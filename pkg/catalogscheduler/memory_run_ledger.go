@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // MemoryRunLedger is the concurrency-safe reference run-ledger adapter.
@@ -192,7 +192,7 @@ func sameSourceObservationLinks(left, right []catalogs.SourceObservationLink) bo
 	if len(left) != len(right) {
 		return false
 	}
-	indexed := make(map[types.SourceID]catalogs.SourceObservationLink, len(left))
+	indexed := make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(left))
 	for _, observation := range left {
 		indexed[observation.Source] = observation
 	}

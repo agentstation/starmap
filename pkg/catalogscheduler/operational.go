@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // CatalogIdentity is the atomic immutable-catalog identity supplied by the
@@ -45,7 +45,7 @@ type OperationalState struct {
 	Catalog         CatalogIdentity           `json:"catalog"`
 	Freshness       *FreshnessReport          `json:"freshness,omitempty"`
 	LastSync        *OperationalRun           `json:"last_sync,omitempty"`
-	DegradedSources []types.SourceID          `json:"degraded_sources"`
+	DegradedSources []catalogmeta.SourceID    `json:"degraded_sources"`
 	Scheduler       SchedulerOperationalState `json:"scheduler"`
 }
 
@@ -132,7 +132,7 @@ func (o *Operations) State(ctx context.Context, identity CatalogIdentity) (Opera
 	}
 	state := OperationalState{
 		EvaluatedAt: o.now().UTC(), Catalog: identity,
-		DegradedSources: make([]types.SourceID, 0),
+		DegradedSources: make([]catalogmeta.SourceID, 0),
 		Scheduler:       SchedulerOperationalState{Configured: o.ledger != nil || o.freshness != nil || o.initial != nil},
 	}
 	if o.freshness != nil {

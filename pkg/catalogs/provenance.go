@@ -7,9 +7,9 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Provenance is a concurrent-safe container for provenance data.
@@ -96,7 +96,7 @@ func (p *Provenance) Len() int {
 
 // FindByField retrieves provenance for a specific field of a resource.
 // Returns nil if no provenance is found.
-func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID string, field string) []provenance.Provenance {
+func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Provenance {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -110,7 +110,7 @@ func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID str
 
 // FindByResource retrieves all provenance for a resource.
 // Returns a map of field names to their provenance entries.
-func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]provenance.Provenance {
+func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -155,6 +155,6 @@ func (p *Provenance) EncodeYAML() (string, error) {
 
 // newKey returns a unique key for provenance tracking.
 // Format: "resourceType:resourceID:field".
-func newKey(resourceType types.ResourceType, resourceID string, field string) string {
+func newKey(resourceType catalogmeta.ResourceType, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }

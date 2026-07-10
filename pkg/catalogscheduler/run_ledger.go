@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Trigger identifies why a scheduler run was requested.
@@ -164,7 +164,7 @@ func (r RunRecord) ValidateComplete() error {
 			return err
 		}
 	}
-	seenSources := make(map[types.SourceID]struct{}, len(r.SourceObservations))
+	seenSources := make(map[catalogmeta.SourceID]struct{}, len(r.SourceObservations))
 	for _, observation := range r.SourceObservations {
 		if err := observation.Validate(); err != nil {
 			return err

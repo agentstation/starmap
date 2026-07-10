@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 const (
@@ -29,24 +29,24 @@ const (
 
 // MinimizedIssue retains machine-readable degradation without diagnostic text.
 type MinimizedIssue struct {
-	Scope   types.ObservationIssueScope `json:"scope"`
-	Code    types.ObservationIssueCode  `json:"code"`
-	Subject string                      `json:"subject,omitempty"`
+	Scope   catalogmeta.ObservationIssueScope `json:"scope"`
+	Code    catalogmeta.ObservationIssueCode  `json:"code"`
+	Subject string                            `json:"subject,omitempty"`
 }
 
 // NormalizedRecord is the long-term, secret-minimized replay record for one observation.
 type NormalizedRecord struct {
-	Version          uint64                        `json:"version"`
-	ObservationID    string                        `json:"observation_id"`
-	SourceID         types.SourceID                `json:"source"`
-	ObservedAt       time.Time                     `json:"observed_at"`
-	Revision         types.ObservationRevision     `json:"revision"`
-	Completeness     types.ObservationCompleteness `json:"completeness"`
-	Status           types.ObservationStatus       `json:"status"`
-	Records          types.ObservationRecordCounts `json:"records"`
-	Issues           []MinimizedIssue              `json:"issues,omitempty"`
-	EvidenceChecksum string                        `json:"evidence_checksum"`
-	Payload          []byte                        `json:"payload"`
+	Version          uint64                              `json:"version"`
+	ObservationID    string                              `json:"observation_id"`
+	SourceID         catalogmeta.SourceID                `json:"source"`
+	ObservedAt       time.Time                           `json:"observed_at"`
+	Revision         catalogmeta.ObservationRevision     `json:"revision"`
+	Completeness     catalogmeta.ObservationCompleteness `json:"completeness"`
+	Status           catalogmeta.ObservationStatus       `json:"status"`
+	Records          catalogmeta.ObservationRecordCounts `json:"records"`
+	Issues           []MinimizedIssue                    `json:"issues,omitempty"`
+	EvidenceChecksum string                              `json:"evidence_checksum"`
+	Payload          []byte                              `json:"payload"`
 }
 
 // Capture creates a long-term normalized evidence record from an observation.
@@ -154,10 +154,10 @@ func (p Policy) Validate() error {
 // RawRecord contains response-body evidence only; request headers, query values,
 // and credentials have no representation in this type.
 type RawRecord struct {
-	SourceID   types.SourceID `json:"source"`
-	ObservedAt time.Time      `json:"observed_at"`
-	MediaType  string         `json:"media_type"`
-	Payload    []byte         `json:"payload"`
+	SourceID   catalogmeta.SourceID `json:"source"`
+	ObservedAt time.Time            `json:"observed_at"`
+	MediaType  string               `json:"media_type"`
+	Payload    []byte               `json:"payload"`
 }
 
 // SealedRawRecord is an encrypted, expiring raw evidence envelope.

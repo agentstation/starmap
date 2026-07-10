@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestOperationalStateComposesGenerationFreshnessLastSyncAndScheduler(t *testing.T) {
@@ -41,8 +41,8 @@ func TestOperationalStateComposesGenerationFreshnessLastSyncAndScheduler(t *test
 
 	monitor := newTestFreshnessMonitor(t)
 	if err := monitor.Record([]catalogs.SourceObservationLink{
-		testFreshnessObservation(types.ProvidersID, "provider-fresh", now.Add(-time.Minute), types.ObservationStatusSucceeded, types.ObservationCompletenessComplete),
-		testFreshnessObservation(types.ModelsDevHTTPID, "models-degraded", now.Add(-time.Minute), types.ObservationStatusDegraded, types.ObservationCompletenessPartial),
+		testFreshnessObservation(catalogmeta.ProvidersID, "provider-fresh", now.Add(-time.Minute), catalogmeta.ObservationStatusSucceeded, catalogmeta.ObservationCompletenessComplete),
+		testFreshnessObservation(catalogmeta.ModelsDevHTTPID, "models-degraded", now.Add(-time.Minute), catalogmeta.ObservationStatusDegraded, catalogmeta.ObservationCompletenessPartial),
 	}); err != nil {
 		t.Fatalf("Record freshness: %v", err)
 	}
@@ -64,7 +64,7 @@ func TestOperationalStateComposesGenerationFreshnessLastSyncAndScheduler(t *test
 		!state.Scheduler.Configured {
 		t.Fatalf("operational state = %#v", state)
 	}
-	if len(state.DegradedSources) != 1 || state.DegradedSources[0] != types.ModelsDevHTTPID {
+	if len(state.DegradedSources) != 1 || state.DegradedSources[0] != catalogmeta.ModelsDevHTTPID {
 		t.Fatalf("degraded sources = %#v", state.DegradedSources)
 	}
 }

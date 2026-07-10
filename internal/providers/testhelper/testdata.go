@@ -12,21 +12,21 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 const defaultFixtureMaxAge = 365 * 24 * time.Hour
 
 // FixtureMetadata binds a provider fixture to its source revision and freshness policy.
 type FixtureMetadata struct {
-	Version        uint64                    `json:"version"`
-	Provider       string                    `json:"provider"`
-	FetchedAt      time.Time                 `json:"fetched_at"`
-	SourceRevision types.ObservationRevision `json:"source_revision"`
-	Payload        FixturePayload            `json:"payload"`
-	MaxAge         string                    `json:"max_age"`
+	Version        uint64                          `json:"version"`
+	Provider       string                          `json:"provider"`
+	FetchedAt      time.Time                       `json:"fetched_at"`
+	SourceRevision catalogmeta.ObservationRevision `json:"source_revision"`
+	Payload        FixturePayload                  `json:"payload"`
+	MaxAge         string                          `json:"max_age"`
 }
 
 // FixturePayload identifies the exact fixture bytes governed by metadata.
@@ -79,7 +79,7 @@ func SaveTestdata(t *testing.T, filename string, data []byte) {
 	checksum := fixtureChecksum(data)
 	metadata := FixtureMetadata{
 		Version: 1, Provider: filepath.Base(provider), FetchedAt: time.Now().UTC(),
-		SourceRevision: types.ObservationRevision{Kind: types.ObservationRevisionKindContentDigest, Value: checksum},
+		SourceRevision: catalogmeta.ObservationRevision{Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: checksum},
 		Payload:        FixturePayload{Path: filename, Checksum: checksum}, MaxAge: defaultFixtureMaxAge.String(),
 	}
 	metadataData, err := json.MarshalIndent(metadata, "", "  ")
@@ -124,7 +124,7 @@ func VerifyFixture(testdataPath string, now time.Time) error {
 	if metadata.Payload.Checksum != checksum {
 		return &errors.ValidationError{Field: "fixture.payload.checksum", Value: metadata.Payload.Checksum, Message: "does not match fixture bytes"}
 	}
-	if metadata.SourceRevision.Kind != types.ObservationRevisionKindContentDigest || metadata.SourceRevision.Value != checksum {
+	if metadata.SourceRevision.Kind != catalogmeta.ObservationRevisionKindContentDigest || metadata.SourceRevision.Value != checksum {
 		return &errors.ValidationError{Field: "fixture.source_revision", Value: metadata.SourceRevision, Message: "must identify the fixture content digest"}
 	}
 	if metadata.FetchedAt.IsZero() || metadata.FetchedAt.After(now.Add(5*time.Minute)) {

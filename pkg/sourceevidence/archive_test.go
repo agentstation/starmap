@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestArchiveRetainsOwnerOnlyReplayableEvidenceAcrossReopen(t *testing.T) {
@@ -49,7 +49,7 @@ func TestArchiveRetainsOwnerOnlyReplayableEvidenceAcrossReopen(t *testing.T) {
 		t.Fatalf("RetainNormalized: %v", err)
 	}
 	raw := RawRecord{
-		SourceID: types.SourceID("provider-a"), ObservedAt: observedAt,
+		SourceID: catalogmeta.SourceID("provider-a"), ObservedAt: observedAt,
 		MediaType: "application/json", Payload: []byte(`{"models":["model-a"],"secret":"ephemeral"}`),
 	}
 	if err := archive.RetainRaw(observation.ID, raw); err != nil {

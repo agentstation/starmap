@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 func TestOperationsEndpointExposesGenerationFreshnessLastSyncDegradationAndScheduler(t *testing.T) {
@@ -22,7 +22,7 @@ func TestOperationsEndpointExposesGenerationFreshnessLastSyncDegradationAndSched
 			ID: "run-1", Trigger: catalogscheduler.TriggerScheduled,
 			Status: catalogscheduler.RunStatusSucceeded, SyncRunID: "sync-1",
 		},
-		DegradedSources: []types.SourceID{types.ModelsDevHTTPID},
+		DegradedSources: []catalogmeta.SourceID{catalogmeta.ModelsDevHTTPID},
 		Scheduler:       catalogscheduler.SchedulerOperationalState{Configured: true},
 	}
 	handler := &Handlers{app: &application.Mock{OperationalStateFunc: func(context.Context) (catalogscheduler.OperationalState, error) {

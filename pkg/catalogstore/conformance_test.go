@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 type storeFactory func(*testing.T) Store
@@ -185,15 +185,15 @@ func testGeneration(id, value string) Generation {
 			SyncRunID: "sync-" + id,
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        types.ProvidersID,
+					Source:        catalogmeta.ProvidersID,
 					ObservationID: "observation-" + id,
 					ObservedAt:    generatedAt,
-					Revision: types.ObservationRevision{
-						Kind:  types.ObservationRevisionKindContentDigest,
+					Revision: catalogmeta.ObservationRevision{
+						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
 						Value: evidence.Checksum,
 					},
-					Completeness:     types.ObservationCompletenessComplete,
-					Status:           types.ObservationStatusSucceeded,
+					Completeness:     catalogmeta.ObservationCompletenessComplete,
+					Status:           catalogmeta.ObservationStatusSucceeded,
 					EvidenceChecksum: evidence.Checksum,
 				},
 			},

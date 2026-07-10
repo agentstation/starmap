@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // LegacyMigrationOptions supplies deterministic identity and time metadata that
@@ -76,15 +76,15 @@ func MigrateLegacyDirectory(ctx context.Context, path string, options LegacyMigr
 			SyncRunID: options.SyncRunID,
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        types.LocalCatalogID,
+					Source:        catalogmeta.LocalCatalogID,
 					ObservationID: options.ObservationID,
 					ObservedAt:    options.GeneratedAt,
-					Revision: types.ObservationRevision{
-						Kind:  types.ObservationRevisionKindContentDigest,
+					Revision: catalogmeta.ObservationRevision{
+						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
 						Value: descriptor.Checksum,
 					},
-					Completeness:     types.ObservationCompletenessComplete,
-					Status:           types.ObservationStatusSucceeded,
+					Completeness:     catalogmeta.ObservationCompletenessComplete,
+					Status:           catalogmeta.ObservationStatusSucceeded,
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},

@@ -4,9 +4,9 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // NewCatalog copies source into an immutable canonical catalog.
@@ -245,10 +245,10 @@ type provenanceReader struct{ source ProvenanceReader }
 
 func (r provenanceReader) Map() provenance.Map { return r.source.Map() }
 func (r provenanceReader) Len() int            { return r.source.Len() }
-func (r provenanceReader) FindByField(resourceType types.ResourceType, resourceID, field string) []provenance.Provenance {
+func (r provenanceReader) FindByField(resourceType catalogmeta.ResourceType, resourceID, field string) []provenance.Provenance {
 	return r.source.FindByField(resourceType, resourceID, field)
 }
-func (r provenanceReader) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]provenance.Provenance {
+func (r provenanceReader) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
 	return r.source.FindByResource(resourceType, resourceID)
 }
 func (r provenanceReader) FormatYAML() string { return r.source.FormatYAML() }

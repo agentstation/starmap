@@ -10,30 +10,30 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/types"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 )
 
 // Provenance tracks the origin and history of a field value.
 type Provenance struct {
-	Source           types.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
-	Field            string                    // Field path
-	Value            any                       // The actual value
-	Timestamp        time.Time                 // When the value was set
-	ObservationID    string                    // Stable identity of the winning source observation
-	ObservedAt       time.Time                 // When the winning source was observed
-	Revision         types.ObservationRevision // Exact revision of the winning observation
-	EvidenceChecksum string                    // Digest binding the winning normalized evidence
-	Rejections       []Rejection               // Higher-authority observations rejected before selection
-	Authority        float64                   // Authority score (0.0 to 1.0)
-	Confidence       float64                   // Confidence in the value (0.0 to 1.0)
-	Reason           string                    // Reason for selecting this value
-	PreviousValue    any                       // Previous value if updated
+	Source           catalogmeta.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
+	Field            string                          // Field path
+	Value            any                             // The actual value
+	Timestamp        time.Time                       // When the value was set
+	ObservationID    string                          // Stable identity of the winning source observation
+	ObservedAt       time.Time                       // When the winning source was observed
+	Revision         catalogmeta.ObservationRevision // Exact revision of the winning observation
+	EvidenceChecksum string                          // Digest binding the winning normalized evidence
+	Rejections       []Rejection                     // Higher-authority observations rejected before selection
+	Authority        float64                         // Authority score (0.0 to 1.0)
+	Confidence       float64                         // Confidence in the value (0.0 to 1.0)
+	Reason           string                          // Reason for selecting this value
+	PreviousValue    any                             // Previous value if updated
 }
 
 // Rejection records why a higher-authority field observation did not win.
 type Rejection struct {
-	Source types.SourceID // Source whose field observation was rejected
-	Reason string         // Stable human-readable validation or applicability reason
+	Source catalogmeta.SourceID // Source whose field observation was rejected
+	Reason string               // Stable human-readable validation or applicability reason
 }
 
 // Map tracks provenance for multiple resources.
@@ -42,13 +42,13 @@ type Map map[string][]Provenance // key is "resourceType:resourceID:fieldPath"
 // Tracker manages provenance tracking during reconciliation.
 type Tracker interface {
 	// Track records provenance for a field
-	Track(resourceType types.ResourceType, resourceID string, field string, history Provenance)
+	Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance)
 
 	// Find retrieves provenance for a specific field
-	FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance
+	FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance
 
 	// FindByResource retrieves all provenance for a resource
-	FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance
+	FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance
 
 	// Map returns the complete provenance map
 	Map() Map
@@ -72,7 +72,7 @@ func NewTracker(enabled bool) Tracker {
 }
 
 // Track records provenance for a field.
-func (p *tracker) Track(resourceType types.ResourceType, resourceID string, field string, history Provenance) {
+func (p *tracker) Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance) {
 	if !p.enabled {
 		return
 	}
@@ -88,7 +88,7 @@ func (p *tracker) Track(resourceType types.ResourceType, resourceID string, fiel
 }
 
 // Find retrieves provenance for a specific field.
-func (p *tracker) FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance {
+func (p *tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance {
 	if !p.enabled {
 		return nil
 	}
@@ -98,7 +98,7 @@ func (p *tracker) FindByField(resourceType types.ResourceType, resourceID string
 }
 
 // GetResourceProvenance retrieves all provenance for a resource.
-func (p *tracker) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance {
+func (p *tracker) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance {
 	if !p.enabled {
 		return nil
 	}
@@ -155,7 +155,7 @@ type Report struct {
 
 // ResourceProvenance contains provenance for a single resource.
 type ResourceProvenance struct {
-	Type   types.ResourceType // Resource type (e.g., "model", "provider", "author")
+	Type   catalogmeta.ResourceType // Resource type (e.g., "model", "provider", "author")
 	ID     string
 	Fields map[string]Field
 }
@@ -169,10 +169,10 @@ type Field struct {
 
 // ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
-	Sources        []types.SourceID // Sources that had conflicting values
-	Values         []any            // The conflicting values
-	Resolution     string           // How the conflict was resolved
-	SelectedSource types.SourceID   // Which source was selected
+	Sources        []catalogmeta.SourceID // Sources that had conflicting values
+	Values         []any                  // The conflicting values
+	Resolution     string                 // How the conflict was resolved
+	SelectedSource catalogmeta.SourceID   // Which source was selected
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -198,7 +198,7 @@ func GenerateReport(provenance Map) *Report {
 		resource, exists := report.Resources[resourceKey]
 		if !exists {
 			resource = ResourceProvenance{
-				Type:   types.ResourceType(resourceType),
+				Type:   catalogmeta.ResourceType(resourceType),
 				ID:     resourceID,
 				Fields: make(map[string]Field),
 			}
@@ -243,7 +243,7 @@ func detectConflicts(infos []Provenance) []ConflictInfo {
 	for _, group := range byTime {
 		if len(group) > 1 {
 			conflict := ConflictInfo{
-				Sources: []types.SourceID{},
+				Sources: []catalogmeta.SourceID{},
 				Values:  []any{},
 			}
 
