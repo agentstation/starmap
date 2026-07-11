@@ -186,6 +186,7 @@ func TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation(t *testing.T) {
 	starmapSpy := filepath.Join(directory, "starmap-spy")
 	spy := `#!/usr/bin/env bash
 set -euo pipefail
+	printf '[CATALOG_STORE_PATH=%s][LOCAL_PATH=%s]' "${CATALOG_STORE_PATH:-}" "${LOCAL_PATH:-}" >> "$STARMAP_COMMAND_LOG"
 for argument in "$@"; do printf '[%s]' "$argument" >> "$STARMAP_COMMAND_LOG"; done
 printf '\n' >> "$STARMAP_COMMAND_LOG"
 `
@@ -205,6 +206,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	catalogPath := filepath.Join(directory, "catalog")
 	manifestPath := filepath.Join(catalogPath, "generation.json")
 	reportPath := filepath.Join(directory, "generation-report.json")
+	generationStatePath := filepath.Join(directory, "generation-state")
 	command := exec.Command("bash", filepath.Join(root, "scripts", "generate-embedded-catalog.sh"), "openai")
 	command.Dir = root
 	command.Env = append(os.Environ(),
@@ -214,6 +216,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		"STARMAP_EMBEDDED_CATALOG_PATH="+catalogPath,
 		"STARMAP_EMBEDDED_MANIFEST_PATH="+manifestPath,
 		"STARMAP_GENERATION_REPORT_PATH="+reportPath,
+		"STARMAP_GENERATION_STATE_PATH="+generationStatePath,
 		"STARMAP_BOOTSTRAP_MANIFEST_BIN="+manifestSpy,
 		"STARMAP_MANIFEST_LOG="+manifestLog,
 	)
@@ -224,7 +227,10 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	if err != nil {
 		t.Fatalf("ReadFile command log: %v", err)
 	}
-	want := "[update][openai][--output-dir][" + catalogPath + "][--force][-y]\n[validate][catalog]\n"
+	want := "[CATALOG_STORE_PATH=" + filepath.Join(generationStatePath, "update-store") + "][LOCAL_PATH=]" +
+		"[update][openai][--input-dir][" + catalogPath + "][--output-dir][" + catalogPath + "][-y]\n" +
+		"[CATALOG_STORE_PATH=" + filepath.Join(generationStatePath, "validation-store") + "][LOCAL_PATH=" + catalogPath + "]" +
+		"[validate][catalog]\n"
 	if string(log) != want {
 		t.Fatalf("commands = %q, want %q", log, want)
 	}
@@ -239,7 +245,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	if report, err := os.ReadFile(reportPath); err != nil || string(report) != "{\"changed\":false}\n" {
 		t.Fatalf("generation report = %q, %v", report, err)
 	}
-	for _, obsolete := range []string{"[--provider]", "[--output]", "[validate]\n"} {
+	for _, obsolete := range []string{"[--provider]", "[--output]", "[--force]", "[validate]\n"} {
 		if strings.Contains(string(log), obsolete) {
 			t.Errorf("command log contains obsolete/help-only invocation %q: %s", obsolete, log)
 		}
