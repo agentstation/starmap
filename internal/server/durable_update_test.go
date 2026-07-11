@@ -31,7 +31,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
-	client, err := starmap.New(starmap.WithCatalogStore(store), starmap.WithLocalPath(catalogPath))
+	client, err := starmap.New(starmap.WithCatalogStore(store), starmap.WithCatalogExportPath(catalogPath))
 	if err != nil {
 		t.Fatalf("New client: %v", err)
 	}
@@ -66,7 +66,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err != nil {
 		t.Fatalf("Reopen filesystem store: %v", err)
 	}
-	restarted, err := starmap.New(starmap.WithCatalogStore(reopened), starmap.WithLocalPath(catalogPath))
+	restarted, err := starmap.New(starmap.WithCatalogStore(reopened), starmap.WithCatalogExportPath(catalogPath))
 	if err != nil {
 		t.Fatalf("Restart client: %v", err)
 	}

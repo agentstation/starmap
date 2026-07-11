@@ -46,6 +46,14 @@ func NewFilesystem(path string) (*Filesystem, error) {
 	}, nil
 }
 
+// Root returns the configured filesystem root without creating it.
+func (s *Filesystem) Root() string {
+	if s == nil {
+		return ""
+	}
+	return s.root
+}
+
 // Current returns the currently active generation.
 func (s *Filesystem) Current(ctx context.Context) (Generation, error) {
 	if err := ctx.Err(); err != nil {

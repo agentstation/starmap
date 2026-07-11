@@ -25,8 +25,8 @@ type options struct {
 	// Explicit update injection; cadence belongs to the deployment layer.
 	updateFunc UpdateFunc
 
-	// local catalog path
-	localPath string
+	// optional editable YAML catalog import/export tree
+	catalogExportPath string
 
 	// durable generation store required by every non-dry mutation path
 	catalogStore catalogstore.Store
@@ -40,7 +40,7 @@ type options struct {
 func defaults() *options {
 	return &options{
 		updateFunc:                    nil,   // Default to pipeline-based updates
-		localPath:                     "",    // Default to no local path
+		catalogExportPath:              "",    // Default to no YAML import/export tree
 		catalogStore:                  nil,   // Mutation requires an explicit writable store
 		embeddedCatalogEnabled:        false, // Default to no embedded catalog
 		embeddedBootstrapMaxAge:       0,     // Disabled until explicitly configured
@@ -141,16 +141,17 @@ func WithUpdateFunc(fn UpdateFunc) Option {
 // 	}
 // }
 
-// WithLocalPath configures the local source to use a specific catalog path.
-func WithLocalPath(path string) Option {
+// WithCatalogExportPath configures an optional editable YAML catalog tree for
+// import and explicit materialization. It is not the durable catalog database.
+func WithCatalogExportPath(path string) Option {
 	return func(o *options) error {
-		o.localPath = path
+		o.catalogExportPath = path
 		return nil
 	}
 }
 
 // WithEmbeddedCatalog configures whether to use an embedded catalog.
-// It defaults to false, but takes precedence over WithLocalPath if set.
+// It defaults to false, but takes precedence over WithCatalogExportPath if set.
 func WithEmbeddedCatalog() Option {
 	return func(o *options) error {
 		o.embeddedCatalogEnabled = true

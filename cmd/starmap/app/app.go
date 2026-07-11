@@ -156,7 +156,10 @@ func (a *App) Starmap(opts ...starmap.Option) (*starmap.Client, error) {
 	}
 
 	// Create starmap instance with options from config
-	o := a.buildStarmapOptions(storeOption)
+	o, err := a.buildStarmapOptions(storeOption)
+	if err != nil {
+		return nil, err
+	}
 	sm, err := starmap.New(o...)
 	if err != nil {
 		return nil, errors.WrapResource("create", "starmap", "", err)
@@ -227,12 +230,16 @@ func (a *App) Shutdown(ctx context.Context) error {
 }
 
 // buildStarmapOptions constructs starmap options from the app configuration.
-func (a *App) buildStarmapOptions(storeOption starmap.Option) []starmap.Option {
+func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option, error) {
 	opts := []starmap.Option{storeOption}
 
-	// Add local path if configured
-	if a.config.LocalPath != "" {
-		opts = append(opts, starmap.WithLocalPath(a.config.LocalPath))
+	// Add the editable YAML catalog only when explicitly configured.
+	exportPath, err := a.configuredCatalogExportPath()
+	if err != nil {
+		return nil, err
+	}
+	if exportPath != "" {
+		opts = append(opts, starmap.WithCatalogExportPath(exportPath))
 	}
 
 	// Add embedded catalog if configured
@@ -264,11 +271,11 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) []starmap.Option {
 		}
 	}
 
-	return opts
+	return opts, nil
 }
 
 func (a *App) catalogStoreOption() (starmap.Option, error) {
-	path, err := expandHomePath(a.config.CatalogStorePath)
+	path, err := a.catalogDatabasePath()
 	if err != nil {
 		return nil, err
 	}

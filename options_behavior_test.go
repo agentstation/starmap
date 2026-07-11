@@ -28,7 +28,7 @@ func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
 	); err != nil {
 		t.Fatalf("Write corrupt catalog: %v", err)
 	}
-	client, err := New(WithLocalPath(path))
+	client, err := New(WithCatalogExportPath(path))
 	if err == nil || client != nil {
 		t.Fatalf("New = (%v, %v), want nil client and error", client, err)
 	}
@@ -38,7 +38,7 @@ func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
 	}
 }
 
-func TestEmbeddedCatalogTakesPrecedenceOverLocalPath(t *testing.T) {
+func TestEmbeddedCatalogTakesPrecedenceOverCatalogExportPath(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "catalog")
 	local := catalogs.NewEmpty()
 	if err := local.SetProvider(catalogs.Provider{ID: "local-only", Name: "Local only"}); err != nil {
@@ -49,7 +49,7 @@ func TestEmbeddedCatalogTakesPrecedenceOverLocalPath(t *testing.T) {
 	}
 
 	client, err := New(
-		WithLocalPath(path),
+		WithCatalogExportPath(path),
 		WithEmbeddedCatalog(),
 	)
 	if err != nil {
@@ -84,7 +84,7 @@ func TestConfiguredLocalCatalogHasNoInventedGenerationID(t *testing.T) {
 	if err := catalogs.NewEmpty().Save(save.WithPath(path)); err != nil {
 		t.Fatalf("Save local catalog: %v", err)
 	}
-	client, err := New(WithLocalPath(path))
+	client, err := New(WithCatalogExportPath(path))
 	if err != nil {
 		t.Fatalf("New local: %v", err)
 	}

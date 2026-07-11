@@ -17,6 +17,15 @@ import (
 // Sync synchronizes the catalog with provider APIs using staged source execution.
 func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 	options := sync.Defaults().Apply(opts...)
+	outputPath := options.OutputPath
+	if c.options != nil && outputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
+		outputPath = c.options.catalogExportPath
+	}
+	if c.options != nil {
+		if err := validateCatalogPathSeparation(c.options.catalogStore, outputPath); err != nil {
+			return nil, err
+		}
+	}
 	if !options.DryRun {
 		if err := c.requireWritableCatalogStore(); err != nil {
 			return nil, err
@@ -30,8 +39,8 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	defer release()
 
 	effective := append([]sync.Option(nil), opts...)
-	if options.OutputPath == "" && c.options.localPath != "" && !c.options.embeddedCatalogEnabled {
-		effective = append(effective, sync.WithOutputPath(c.options.localPath))
+	if options.OutputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
+		effective = append(effective, sync.WithOutputPath(c.options.catalogExportPath))
 	}
 	return pipeline.New(pipelineStore{client: c}).Sync(ctx, effective...)
 }

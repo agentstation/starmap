@@ -29,7 +29,8 @@ The command will:
 • Reconcile all sources using field-level authority
 • Save the updated catalog to disk
 
-By default, saves to ~/.starmap for the local user catalog.`,
+By default, materializes editable YAML at ~/.starmap/exports/catalog. The
+durable canonical generation database remains separate at ~/.starmap/catalog.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update openai                     # Update specific provider
   starmap update --dry                      # Preview changes

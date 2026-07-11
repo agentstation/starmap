@@ -50,7 +50,7 @@ func (s *HTTPSource) Name() string { return "models.dev (HTTP)" }
 
 func acquireHTTPAPI(ctx context.Context, outputDir string) (*API, HTTPAcquisitionResult, error) {
 	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
+		outputDir = expandPath(constants.DefaultCachePath)
 	}
 	client := NewHTTPClient(outputDir)
 	acquisition, err := client.AcquireAPI(ctx)
@@ -76,7 +76,7 @@ func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sourc
 	// Use configured sources directory or default
 	outputDir := s.sourcesDir
 	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
+		outputDir = expandPath(constants.DefaultCachePath)
 	}
 
 	// Initialize models.dev data once

@@ -65,9 +65,9 @@ func TestApp_Starmap_Singleton(t *testing.T) {
 }
 
 func TestApp_StarmapConfiguresPassiveFilesystemCatalogStore(t *testing.T) {
-	storePath := filepath.Join(t.TempDir(), "catalog-store")
+	storePath := filepath.Join(t.TempDir(), "catalog")
 	app, err := New("1.0.0", "test", "2024-01-01", "test", WithConfig(&Config{
-		CatalogStorePath: storePath,
+		CatalogPath: storePath,
 	}))
 	if err != nil {
 		t.Fatalf("New() failed: %v", err)
@@ -82,7 +82,7 @@ func TestApp_StarmapConfiguresPassiveFilesystemCatalogStore(t *testing.T) {
 
 func TestEmbeddedBudgetConfigurationPropagatesToReadiness(t *testing.T) {
 	app, err := New("1.0.0", "test", "2026-07-10", "test", WithConfig(&Config{
-		CatalogStorePath:              filepath.Join(t.TempDir(), "catalog-store"),
+		CatalogPath:                   filepath.Join(t.TempDir(), "catalog"),
 		EmbeddedBootstrapMaxSizeBytes: 1,
 	}))
 	if err != nil {

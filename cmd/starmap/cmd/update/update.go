@@ -40,6 +40,10 @@ type syncClient interface {
 	Sync(context.Context, ...sync.Option) (*sync.Result, error)
 }
 
+type catalogExportPathProvider interface {
+	CatalogExportPath() (string, error)
+}
+
 // addUpdateFlags adds update-specific flags to the update command.
 func addUpdateFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
@@ -98,9 +102,25 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 	if err != nil {
 		return err
 	}
+	outputPath, err := resolveUpdateOutputPath(app, flags.OutputDir)
+	if err != nil {
+		return err
+	}
+	resolvedFlags := *flags
+	resolvedFlags.OutputDir = outputPath
 
 	// Execute the update operation
-	return updateCatalog(ctx, sm, flags, logger, quiet)
+	return updateCatalog(ctx, sm, &resolvedFlags, logger, quiet)
+}
+
+func resolveUpdateOutputPath(app any, explicit string) (string, error) {
+	if explicit != "" {
+		return explicit, nil
+	}
+	if provider, ok := app.(catalogExportPathProvider); ok {
+		return provider.CatalogExportPath()
+	}
+	return expandPath(constants.DefaultCatalogExportPath), nil
 }
 
 // updateCatalog executes the update operation using app context.
@@ -109,11 +129,9 @@ func updateCatalog(ctx context.Context, sm syncClient, flags *Flags, logger *zer
 }
 
 func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Flags, logger *zerolog.Logger, quiet bool, confirm func() (bool, error)) error {
-	// Build update options - use default output path if not specified
+	// Leave an omitted output path unset so the configured catalog export path
+	// at the composition root remains authoritative.
 	outputPath := flags.OutputDir
-	if outputPath == "" {
-		outputPath = expandPath(constants.DefaultCatalogPath)
-	}
 	// Support environment variable fallback for sources directory
 	sourcesDir := flags.SourcesDir
 	if sourcesDir == "" {
@@ -219,25 +237,19 @@ func finalizeChanges(isQuiet bool, result *sync.Result) error {
 	return nil
 }
 
-// expandPath expands a path that may contain ~ to the user's home directory.
 func expandPath(path string) string {
 	if !strings.HasPrefix(path, "~") {
 		return path
 	}
-
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		// Fall back to the original path if we can't get home dir
 		return path
 	}
-
 	if path == "~" {
 		return homeDir
 	}
-
 	if strings.HasPrefix(path, "~/") {
 		return filepath.Join(homeDir, path[2:])
 	}
-
 	return path
 }

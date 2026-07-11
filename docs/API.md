@@ -58,13 +58,13 @@ if err != nil {
 }
 
 // Configure mutation with an explicit writable generation store
-store, err := catalogstore.NewFilesystem("./catalog-store")
+store, err := catalogstore.NewFilesystem("./catalog")
 if err != nil {
     log.Fatal(err)
 }
 sm, err = starmap.New(
     WithCatalogStore(store),
-    WithLocalPath("./custom-catalog"),
+    WithCatalogExportPath("./catalog-export"),
 )
 ```
 
@@ -99,11 +99,11 @@ Package starmap provides a unified AI model catalog system with automatic update
 - [type ModelRemovedHook](<#ModelRemovedHook>)
 - [type ModelUpdatedHook](<#ModelUpdatedHook>)
 - [type Option](<#Option>)
+  - [func WithCatalogExportPath\(path string\) Option](<#WithCatalogExportPath>)
   - [func WithCatalogStore\(store catalogstore.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
   - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
-  - [func WithLocalPath\(path string\) Option](<#WithLocalPath>)
   - [func WithRemoteServerAPIKey\(apiKey string\) Option](<#WithRemoteServerAPIKey>)
   - [func WithRemoteServerOnly\(url string\) Option](<#WithRemoteServerOnly>)
   - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
@@ -396,6 +396,15 @@ Option is a function that configures a Starmap instance.
 type Option func(*options) error
 ```
 
+<a name="WithCatalogExportPath"></a>
+### func [WithCatalogExportPath](<https://github.com/agentstation/starmap/blob/main/options.go#L146>)
+
+```go
+func WithCatalogExportPath(path string) Option
+```
+
+WithCatalogExportPath configures an optional editable YAML catalog tree for import and explicit materialization. It is not the durable catalog database.
+
 <a name="WithCatalogStore"></a>
 ### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L57>)
 
@@ -406,7 +415,7 @@ func WithCatalogStore(store catalogstore.Store) Option
 WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L163>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L164>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -415,7 +424,7 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L175>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L176>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
@@ -424,22 +433,13 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
 <a name="WithEmbeddedCatalog"></a>
-### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/main/options.go#L154>)
+### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/main/options.go#L155>)
 
 ```go
 func WithEmbeddedCatalog() Option
 ```
 
-WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithLocalPath if set.
-
-<a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/main/options.go#L145>)
-
-```go
-func WithLocalPath(path string) Option
-```
-
-WithLocalPath configures the local source to use a specific catalog path.
+WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithCatalogExportPath if set.
 
 <a name="WithRemoteServerAPIKey"></a>
 ### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/main/options.go#L107>)

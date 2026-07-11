@@ -62,10 +62,10 @@ if [[ "${STARMAP_GENERATION_NONINTERACTIVE:-}" == "1" ]]; then
 fi
 
 if [[ -n "$PROVIDER" ]]; then
-  CATALOG_STORE_PATH="$UPDATE_STORE_PATH" run_starmap update "$PROVIDER" "${UPDATE_ARGS[@]}"
+  CATALOG_PATH="$UPDATE_STORE_PATH" run_starmap update "$PROVIDER" "${UPDATE_ARGS[@]}"
 else
-  CATALOG_STORE_PATH="$UPDATE_STORE_PATH" run_starmap update "${UPDATE_ARGS[@]}"
+  CATALOG_PATH="$UPDATE_STORE_PATH" run_starmap update "${UPDATE_ARGS[@]}"
 fi
 
 run_manifest --catalog-dir "$CATALOG_DIR" --output "$MANIFEST_PATH" > "$REPORT_PATH"
-CATALOG_STORE_PATH="$VALIDATION_STORE_PATH" LOCAL_PATH="$CATALOG_DIR" run_starmap validate catalog
+CATALOG_PATH="$VALIDATION_STORE_PATH" CATALOG_EXPORT_PATH="$CATALOG_DIR" run_starmap validate catalog

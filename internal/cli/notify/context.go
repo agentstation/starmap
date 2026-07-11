@@ -138,25 +138,10 @@ func detectConfiguredProviders() []string {
 
 // hasConfigFile checks if the user has a starmap configuration file.
 func hasConfigFile() bool {
-	// Check common config locations
-	configPaths := []string{
-		".starmap.yaml",
-		".starmap.yml",
-	}
-
 	if home, err := os.UserHomeDir(); err == nil {
-		configPaths = append(configPaths,
-			filepath.Join(home, ".starmap.yaml"),
-			filepath.Join(home, ".starmap.yml"),
-		)
+		_, err := os.Stat(filepath.Join(home, ".starmap", "config.yaml"))
+		return err == nil
 	}
-
-	for _, path := range configPaths {
-		if _, err := os.Stat(path); err == nil {
-			return true
-		}
-	}
-
 	return false
 }
 
@@ -165,8 +150,6 @@ func isFirstRun() bool {
 	// Check for any indication of previous usage
 	indicators := []string{
 		".starmap",
-		".starmap.yaml",
-		".starmap.yml",
 	}
 
 	// Check current directory

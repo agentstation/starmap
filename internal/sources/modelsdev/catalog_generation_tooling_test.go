@@ -27,6 +27,14 @@ func TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord(t *testing
 	if err := json.Unmarshal(valid, &payload); err != nil {
 		t.Fatalf("Unmarshal source: %v", err)
 	}
+	baselineAPI, err := parseAPIData(valid)
+	if err != nil {
+		t.Fatalf("parseAPIData source: %v", err)
+	}
+	baselineStats, err := validateAPISemantics(baselineAPI)
+	if err != nil {
+		t.Fatalf("validateAPISemantics source: %v", err)
+	}
 	mutated := false
 	for _, providerValue := range payload {
 		provider, ok := providerValue.(map[string]any)
@@ -37,13 +45,14 @@ func TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord(t *testing
 		if !ok {
 			continue
 		}
-		for _, modelValue := range models {
+		for modelKey, modelValue := range models {
 			model, ok := modelValue.(map[string]any)
 			if !ok {
 				continue
 			}
 			name, ok := model["name"].(string)
-			if !ok || name == "" {
+			id, idOK := model["id"].(string)
+			if !ok || name == "" || strings.TrimSpace(name) != name || !idOK || id != modelKey || strings.TrimSpace(id) == "" {
 				continue
 			}
 			model["name"] = name + "\t"
@@ -76,7 +85,7 @@ func TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord(t *testing
 	if err != nil {
 		t.Fatalf("PromoteAPIFile: %v", err)
 	}
-	if promotion.RejectedModelCount != 1 || promotion.ModelCount < minimumModelsDevPromotionModels {
+	if promotion.RejectedModelCount != baselineStats.rejectedModels+1 || promotion.ModelCount != baselineStats.models-1 {
 		t.Fatalf("promotion counts = %#v", promotion)
 	}
 	promoted, err := os.ReadFile(destination)
@@ -186,7 +195,7 @@ func TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation(t *testing.T) {
 	starmapSpy := filepath.Join(directory, "starmap-spy")
 	spy := `#!/usr/bin/env bash
 set -euo pipefail
-	printf '[CATALOG_STORE_PATH=%s][LOCAL_PATH=%s]' "${CATALOG_STORE_PATH:-}" "${LOCAL_PATH:-}" >> "$STARMAP_COMMAND_LOG"
+	printf '[CATALOG_PATH=%s][CATALOG_EXPORT_PATH=%s]' "${CATALOG_PATH:-}" "${CATALOG_EXPORT_PATH:-}" >> "$STARMAP_COMMAND_LOG"
 for argument in "$@"; do printf '[%s]' "$argument" >> "$STARMAP_COMMAND_LOG"; done
 printf '\n' >> "$STARMAP_COMMAND_LOG"
 `
@@ -227,9 +236,9 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	if err != nil {
 		t.Fatalf("ReadFile command log: %v", err)
 	}
-	want := "[CATALOG_STORE_PATH=" + filepath.Join(generationStatePath, "update-store") + "][LOCAL_PATH=]" +
+	want := "[CATALOG_PATH=" + filepath.Join(generationStatePath, "update-store") + "][CATALOG_EXPORT_PATH=]" +
 		"[update][openai][--input-dir][" + catalogPath + "][--output-dir][" + catalogPath + "][-y]\n" +
-		"[CATALOG_STORE_PATH=" + filepath.Join(generationStatePath, "validation-store") + "][LOCAL_PATH=" + catalogPath + "]" +
+		"[CATALOG_PATH=" + filepath.Join(generationStatePath, "validation-store") + "][CATALOG_EXPORT_PATH=" + catalogPath + "]" +
 		"[validate][catalog]\n"
 	if string(log) != want {
 		t.Fatalf("commands = %q, want %q", log, want)

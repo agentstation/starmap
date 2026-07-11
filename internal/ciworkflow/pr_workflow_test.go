@@ -84,8 +84,8 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 
 	for _, check := range []string{
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
-		`VERIFY_CATALOG_STORE_PATH="$TMPDIR/catalog-store"`,
-		`CATALOG_STORE_PATH="$VERIFY_CATALOG_STORE_PATH" LOCAL_PATH="$VERIFY_CATALOG_PATH"`,
+		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
+		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
 	} {
 		if !strings.Contains(verifyScript, check) {
 			t.Fatalf("repository verification script is missing isolated catalog state %q", check)

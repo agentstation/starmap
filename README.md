@@ -520,7 +520,7 @@ if err != nil {
 #### Syncing with Provider APIs
 ```go
 // Non-dry mutation requires an explicit writable generation store.
-store, err := catalogstore.NewFilesystem("./catalog-store")
+store, err := catalogstore.NewFilesystem("./catalog")
 if err != nil {
     return err
 }
@@ -727,9 +727,30 @@ The `providers` command shows:
 
 ### Configuration File
 
+Local storage uses separate lifecycle roots:
+
+```text
+~/.starmap/
+├── catalog/          # canonical immutable generation database
+│   ├── current
+│   └── generations/
+├── exports/catalog/  # optional editable/portable YAML tree
+├── cache/
+├── logs/
+├── sources/
+└── config.yaml
+```
+
+The canonical database is passive until the first commit. YAML exports are
+never used as the durable publication database, and Starmap rejects configured
+database/export paths that contain one another. Because this layout predates
+the first public launch, draft path names and configuration aliases are not
+carried forward as compatibility surface.
+
 ```yaml
-# ~/.starmap.yaml
-catalog_store_path: ~/.starmap/catalog-store
+# ~/.starmap/config.yaml
+catalog_path: ~/.starmap/catalog
+catalog_export_path: ~/.starmap/exports/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 2097152
 
