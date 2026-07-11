@@ -46,14 +46,18 @@ from an exact checkout, and canonical catalog generations have their own
 validate-before-publication boundary.
 
 Every models.dev HTTP cache read and every HTTP/Git candidate therefore passes
-deterministic semantic validation. Provider and model map identities must match
-their records; provider/model names and provider model containers are required;
-and at least five providers must exist. A newly produced candidate must contain
-at least 100 models. When a validated last-known-good HTTP cache exists, a
-candidate must also retain at least 80 percent of its provider count and 50
-percent of its model count. These conservative floors reject truncation while
-allowing normal upstream removals; changing them requires an explicit policy
-and regression-test update.
+deterministic semantic validation. Provider map identities must match their
+records; provider names and model containers are required; and at least five
+providers must exist. Model identity or name failures are record-local: the raw
+source bytes remain available as evidence, invalid models are excluded from
+accepted-model counts, and observation quarantines them with typed issues while
+preserving valid siblings. Promotion reports both accepted and rejected model
+counts. A newly produced candidate must contain at least 100 accepted models.
+When a validated last-known-good HTTP cache exists, a candidate must also retain
+at least 80 percent of its provider count and 50 percent of its accepted-model
+count. These conservative floors reject truncation while allowing normal
+upstream removals and isolated malformed records; changing them requires an
+explicit policy and regression-test update.
 
 Semantic rejection occurs before cache mutation. HTTP retains the checksum-bound
 last-known-good payload and emits source-scoped `schema_drift` evidence plus the

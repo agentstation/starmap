@@ -182,21 +182,22 @@ func (api *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
 GetProvider returns a specific provider from the API data.
 
 <a name="APIPromotion"></a>
-## type [APIPromotion](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L71-L76>)
+## type [APIPromotion](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L71-L77>)
 
 APIPromotion describes a models.dev payload that passed typed and semantic validation and was atomically promoted to its destination.
 
 ```go
 type APIPromotion struct {
-    Checksum      string `json:"checksum"`
-    SizeBytes     int64  `json:"size_bytes"`
-    ProviderCount int    `json:"provider_count"`
-    ModelCount    int    `json:"model_count"`
+    Checksum           string `json:"checksum"`
+    SizeBytes          int64  `json:"size_bytes"`
+    ProviderCount      int    `json:"provider_count"`
+    ModelCount         int    `json:"model_count"`
+    RejectedModelCount int    `json:"rejected_model_count"`
 }
 ```
 
 <a name="PromoteAPIFile"></a>
-### func [PromoteAPIFile](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L368>)
+### func [PromoteAPIFile](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L369>)
 
 ```go
 func PromoteAPIFile(candidatePath, destinationPath string) (APIPromotion, error)
@@ -721,7 +722,7 @@ type HTTPClient struct {
 ```
 
 <a name="NewHTTPClient"></a>
-### func [NewHTTPClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L90>)
+### func [NewHTTPClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L91>)
 
 ```go
 func NewHTTPClient(outputDir string) *HTTPClient
@@ -730,7 +731,7 @@ func NewHTTPClient(outputDir string) *HTTPClient
 NewHTTPClient creates a new models.dev HTTP client.
 
 <a name="HTTPClient.AcquireAPI"></a>
-### func \(\*HTTPClient\) [AcquireAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L109>)
+### func \(\*HTTPClient\) [AcquireAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L110>)
 
 ```go
 func (c *HTTPClient) AcquireAPI(ctx context.Context) (HTTPAcquisitionResult, error)
@@ -739,7 +740,7 @@ func (c *HTTPClient) AcquireAPI(ctx context.Context) (HTTPAcquisitionResult, err
 AcquireAPI ensures api.json is available and reports the exact evidence path.
 
 <a name="HTTPClient.Cleanup"></a>
-### func \(\*HTTPClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L236>)
+### func \(\*HTTPClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L237>)
 
 ```go
 func (c *HTTPClient) Cleanup() error
@@ -748,7 +749,7 @@ func (c *HTTPClient) Cleanup() error
 Cleanup removes the cache directory.
 
 <a name="HTTPClient.EnsureAPI"></a>
-### func \(\*HTTPClient\) [EnsureAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L103>)
+### func \(\*HTTPClient\) [EnsureAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L104>)
 
 ```go
 func (c *HTTPClient) EnsureAPI(ctx context.Context) error
@@ -757,7 +758,7 @@ func (c *HTTPClient) EnsureAPI(ctx context.Context) error
 EnsureAPI ensures the api.json is available and up to date.
 
 <a name="HTTPClient.GetAPIPath"></a>
-### func \(\*HTTPClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L231>)
+### func \(\*HTTPClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L232>)
 
 ```go
 func (c *HTTPClient) GetAPIPath() string
