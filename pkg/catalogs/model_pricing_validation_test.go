@@ -99,11 +99,11 @@ func TestPriceUnitEffectiveTimeValidation(t *testing.T) {
 	if !pricing.IsEffectiveAt(now) {
 		t.Fatal("pricing was not effective inside its interval")
 	}
-	if pricing.IsEffectiveAt(until.Time) {
+	if pricing.IsEffectiveAt(until.Time()) {
 		t.Fatal("pricing was effective at the exclusive upper boundary")
 	}
 
-	invalidUntil := utc.New(from.Time)
+	invalidUntil := utc.New(from.Time())
 	pricing.EffectiveUntil = &invalidUntil
 	if err := pricing.Validate(); err == nil {
 		t.Fatal("Validate accepted an empty effective interval")

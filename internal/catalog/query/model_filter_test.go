@@ -11,8 +11,8 @@ import (
 
 func TestModelFilterSortImplementsDeclaredFieldsWithMissingValuesLast(t *testing.T) {
 	models := []catalogs.Model{
-		{ID: "b", Name: "Alpha", CreatedAt: utc.Time{Time: time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)}, UpdatedAt: utc.Time{Time: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}, Limits: &catalogs.ModelLimits{ContextWindow: 20}, Metadata: &catalogs.ModelMetadata{ReleaseDate: utc.Time{Time: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)}}},
-		{ID: "a", Name: "Zulu", CreatedAt: utc.Time{Time: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)}, UpdatedAt: utc.Time{Time: time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)}, Limits: &catalogs.ModelLimits{ContextWindow: 10}, Metadata: &catalogs.ModelMetadata{ReleaseDate: utc.Time{Time: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}}},
+		{ID: "b", Name: "Alpha", CreatedAt: utc.New(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)), UpdatedAt: utc.New(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)), Limits: &catalogs.ModelLimits{ContextWindow: 20}, Metadata: &catalogs.ModelMetadata{ReleaseDate: utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))}},
+		{ID: "a", Name: "Zulu", CreatedAt: utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)), UpdatedAt: utc.New(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)), Limits: &catalogs.ModelLimits{ContextWindow: 10}, Metadata: &catalogs.ModelMetadata{ReleaseDate: utc.New(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))}},
 		{ID: "c", Name: ""},
 	}
 	for _, test := range []struct {

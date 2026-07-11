@@ -37,12 +37,12 @@ func TestDeepCopyProviderModels(t *testing.T) {
 		model1 := &Model{
 			ID:        "model-1",
 			Name:      "Test Model 1",
-			CreatedAt: utc.Time{Time: time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt: utc.New(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)),
 		}
 		model2 := &Model{
 			ID:        "model-2",
 			Name:      "Test Model 2",
-			CreatedAt: utc.Time{Time: time.Date(2024, 1, 2, 0, 0, 0, 0, time.UTC)},
+			CreatedAt: utc.New(time.Date(2024, 1, 2, 0, 0, 0, 0, time.UTC)),
 		}
 
 		input := map[string]*Model{
@@ -113,7 +113,7 @@ func TestDeepCopyAuthorModels(t *testing.T) {
 		model := &Model{
 			ID:        "author-model",
 			Name:      "Author Test Model",
-			CreatedAt: utc.Time{Time: time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt: utc.New(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)),
 		}
 
 		input := map[string]*Model{

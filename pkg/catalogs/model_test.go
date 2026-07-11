@@ -17,8 +17,8 @@ func TestModel_FormatYAML_EnhancedFormat(t *testing.T) {
 
 		// Add metadata section with date-only formatting
 		Metadata: &ModelMetadata{
-			ReleaseDate:     utc.Time{Time: time.Date(2025, 3, 20, 0, 0, 0, 0, time.UTC)},
-			KnowledgeCutoff: &utc.Time{Time: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)},
+			ReleaseDate:     utc.New(time.Date(2025, 3, 20, 0, 0, 0, 0, time.UTC)),
+			KnowledgeCutoff: utcTimePtr(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 		},
 
 		Features: &ModelFeatures{
@@ -68,8 +68,8 @@ func TestModel_FormatYAML_EnhancedFormat(t *testing.T) {
 			},
 		},
 
-		CreatedAt: utc.Time{Time: time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)},
-		UpdatedAt: utc.Time{Time: time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)},
+		CreatedAt: utc.New(time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)),
+		UpdatedAt: utc.New(time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)),
 	}
 
 	yaml := model.FormatYAML()
@@ -121,4 +121,9 @@ func TestModel_FormatYAML_EnhancedFormat(t *testing.T) {
 			t.Errorf("YAML should contain: %s", element)
 		}
 	}
+}
+
+func utcTimePtr(value time.Time) *utc.Time {
+	timestamp := utc.New(value)
+	return &timestamp
 }

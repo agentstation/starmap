@@ -280,10 +280,10 @@ func (f ModelFilter) matchesDateFilters(model catalogs.Model) bool {
 	if model.Metadata == nil || model.Metadata.ReleaseDate.IsZero() {
 		return false
 	}
-	if f.ReleasedAfter != nil && model.Metadata.ReleaseDate.Time.Before(*f.ReleasedAfter) {
+	if f.ReleasedAfter != nil && model.Metadata.ReleaseDate.Time().Before(*f.ReleasedAfter) {
 		return false
 	}
-	if f.ReleasedBefore != nil && model.Metadata.ReleaseDate.Time.After(*f.ReleasedBefore) {
+	if f.ReleasedBefore != nil && model.Metadata.ReleaseDate.Time().After(*f.ReleasedBefore) {
 		return false
 	}
 	return true
@@ -340,9 +340,9 @@ func compareModelField(left, right catalogs.Model, field string) int {
 	case sortContextWindow:
 		return compareOptionalInt(modelContextWindow(left), modelContextWindow(right))
 	case sortCreatedAt:
-		return compareOptionalTime(left.CreatedAt.Time, right.CreatedAt.Time)
+		return compareOptionalTime(left.CreatedAt.Time(), right.CreatedAt.Time())
 	case sortUpdatedAt:
-		return compareOptionalTime(left.UpdatedAt.Time, right.UpdatedAt.Time)
+		return compareOptionalTime(left.UpdatedAt.Time(), right.UpdatedAt.Time())
 	default:
 		return strings.Compare(left.ID, right.ID)
 	}
@@ -352,7 +352,7 @@ func modelReleaseDate(model catalogs.Model) time.Time {
 	if model.Metadata == nil {
 		return time.Time{}
 	}
-	return model.Metadata.ReleaseDate.Time
+	return model.Metadata.ReleaseDate.Time()
 }
 
 func modelContextWindow(model catalogs.Model) int64 {

@@ -207,7 +207,7 @@ func (c *Client) convertToModel(m modelResponse) *catalogs.Model {
 
 	// Set created time
 	if !m.CreatedAt.IsZero() {
-		model.CreatedAt = utc.Time{Time: m.CreatedAt}
+		model.CreatedAt = utc.New(m.CreatedAt)
 		model.UpdatedAt = model.CreatedAt
 	}
 

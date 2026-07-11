@@ -357,7 +357,7 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 		model.Name = apiModel.Name
 	}
 	if apiModel.Created > 0 {
-		created := utc.Time{Time: time.Unix(apiModel.Created, 0).UTC()}
+		created := utc.New(time.Unix(apiModel.Created, 0))
 		model.CreatedAt = created
 		if model.UpdatedAt.IsZero() {
 			model.UpdatedAt = created
