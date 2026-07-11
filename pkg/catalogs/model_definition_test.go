@@ -20,7 +20,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 		AuthorIDs:   []AuthorID{"author-a", "author-b"},
 		Description: "Provider-independent model definition",
 		Metadata: ModelDefinitionMetadata{
-			ReleaseDate: utc.Time{Time: time.Date(2026, 7, 9, 0, 0, 0, 0, time.UTC)},
+			ReleaseDate: utc.New(time.Date(2026, 7, 9, 0, 0, 0, 0, time.UTC)),
 			Tags:        []ModelTag{"chat"},
 		},
 		Lineage: ModelDefinitionLineage{Family: "shared", Root: &root},

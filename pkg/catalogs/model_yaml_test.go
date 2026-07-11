@@ -66,8 +66,8 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 
 		// Metadata section - should have blank line before
 		Metadata: &ModelMetadata{
-			ReleaseDate:     utc.Time{Time: releaseDate},
-			KnowledgeCutoff: &utc.Time{Time: knowledgeCutoff},
+			ReleaseDate:     utc.New(releaseDate),
+			KnowledgeCutoff: utcTimePtr(knowledgeCutoff),
 			OpenWeights:     true,
 			Tags:            []ModelTag{ModelTagMultimodal, ModelTagChat},
 			Architecture: &ModelArchitecture{
@@ -245,8 +245,8 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 		},
 
 		// Timestamps section - should have blank line before
-		CreatedAt: utc.Time{Time: testTime},
-		UpdatedAt: utc.Time{Time: testTime},
+		CreatedAt: utc.New(testTime),
+		UpdatedAt: utc.New(testTime),
 	}
 
 	yaml := model.FormatYAML()
@@ -472,8 +472,8 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 	model := Model{
 		ID:        "minimal-model",
 		Name:      "Minimal Model",
-		CreatedAt: utc.Time{Time: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)},
-		UpdatedAt: utc.Time{Time: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)},
+		CreatedAt: utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		UpdatedAt: utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 	}
 
 	yaml := model.FormatYAML()
@@ -513,7 +513,7 @@ func createTestModel() Model {
 		Description: "A test model for YAML formatting verification",
 
 		Metadata: &ModelMetadata{
-			ReleaseDate: utc.Time{Time: time.Date(2024, 6, 1, 0, 0, 0, 0, time.UTC)},
+			ReleaseDate: utc.New(time.Date(2024, 6, 1, 0, 0, 0, 0, time.UTC)),
 		},
 
 		Features: &ModelFeatures{
@@ -541,8 +541,8 @@ func createTestModel() Model {
 			},
 		},
 
-		CreatedAt: utc.Time{Time: testTime},
-		UpdatedAt: utc.Time{Time: testTime},
+		CreatedAt: utc.New(testTime),
+		UpdatedAt: utc.New(testTime),
 	}
 }
 

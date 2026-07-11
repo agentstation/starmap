@@ -455,17 +455,17 @@ func convertModelTokenCachePricing(cost *Cost) *catalogs.ModelTokenCachePricing 
 func applyModelsDevDates(model *catalogs.Model, source *Model) {
 	if source.ReleaseDate != "" {
 		if releaseDate, err := parseDate(source.ReleaseDate); err == nil {
-			ensureModelsDevMetadata(model).ReleaseDate = utc.Time{Time: *releaseDate}
+			ensureModelsDevMetadata(model).ReleaseDate = utc.New(*releaseDate)
 		}
 	}
 	if source.LastUpdated != "" {
 		if lastUpdated, err := parseDate(source.LastUpdated); err == nil {
-			model.UpdatedAt = utc.Time{Time: *lastUpdated}
+			model.UpdatedAt = utc.New(*lastUpdated)
 		}
 	}
 	if source.Knowledge != nil && *source.Knowledge != "" {
 		if knowledgeDate, err := parseDate(*source.Knowledge); err == nil {
-			knowledgeCutoff := utc.Time{Time: *knowledgeDate}
+			knowledgeCutoff := utc.New(*knowledgeDate)
 			ensureModelsDevMetadata(model).KnowledgeCutoff = &knowledgeCutoff
 		}
 	}

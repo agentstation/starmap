@@ -86,10 +86,10 @@ func (p *ModelPricing) IsEffectiveAt(at time.Time) bool {
 	if p == nil {
 		return false
 	}
-	if p.EffectiveFrom != nil && at.Before(p.EffectiveFrom.Time) {
+	if p.EffectiveFrom != nil && at.Before(p.EffectiveFrom.Time()) {
 		return false
 	}
-	return p.EffectiveUntil == nil || at.Before(p.EffectiveUntil.Time)
+	return p.EffectiveUntil == nil || at.Before(p.EffectiveUntil.Time())
 }
 
 // ModelPricingTier represents conditional pricing for a model.
