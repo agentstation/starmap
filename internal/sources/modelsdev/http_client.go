@@ -69,10 +69,11 @@ type HTTPAcquisitionResult struct {
 // APIPromotion describes a models.dev payload that passed typed and semantic
 // validation and was atomically promoted to its destination.
 type APIPromotion struct {
-	Checksum      string `json:"checksum"`
-	SizeBytes     int64  `json:"size_bytes"`
-	ProviderCount int    `json:"provider_count"`
-	ModelCount    int    `json:"model_count"`
+	Checksum           string `json:"checksum"`
+	SizeBytes          int64  `json:"size_bytes"`
+	ProviderCount      int    `json:"provider_count"`
+	ModelCount         int    `json:"model_count"`
+	RejectedModelCount int    `json:"rejected_model_count"`
 }
 
 const httpCacheMetadataVersion uint64 = 1
@@ -400,12 +401,14 @@ func PromoteAPIFile(candidatePath, destinationPath string) (APIPromotion, error)
 	return APIPromotion{
 		Checksum: checksumBytes(data), SizeBytes: int64(len(data)),
 		ProviderCount: stats.providers, ModelCount: stats.models,
+		RejectedModelCount: stats.rejectedModels,
 	}, nil
 }
 
 type apiSemanticStats struct {
-	providers int
-	models    int
+	providers      int
+	models         int
+	rejectedModels int
 }
 
 func validateAPISemantics(api *API) (apiSemanticStats, error) {
@@ -450,7 +453,8 @@ func validateAPISemantics(api *API) (apiSemanticStats, error) {
 		for _, modelKey := range modelKeys {
 			model := provider.Models[modelKey]
 			if err := validateModelsDevModelIdentity(modelKey, &model); err != nil {
-				return stats, errors.WrapResource("validate", "models.dev model", providerKey+"/"+modelKey, err)
+				stats.rejectedModels++
+				continue
 			}
 			stats.models++
 		}

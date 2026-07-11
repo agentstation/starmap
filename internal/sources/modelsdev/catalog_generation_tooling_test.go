@@ -2,6 +2,7 @@ package modelsdev
 
 import (
 	"bytes"
+	"encoding/json"
 	stderrors "errors"
 	"net/http"
 	"net/http/httptest"
@@ -15,6 +16,77 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 )
+
+func TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord(t *testing.T) {
+	source := filepath.Join("..", "..", "embedded", "sources", "models.dev", "api.json")
+	valid, err := os.ReadFile(source)
+	if err != nil {
+		t.Fatalf("ReadFile source: %v", err)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(valid, &payload); err != nil {
+		t.Fatalf("Unmarshal source: %v", err)
+	}
+	mutated := false
+	for _, providerValue := range payload {
+		provider, ok := providerValue.(map[string]any)
+		if !ok {
+			continue
+		}
+		models, ok := provider["models"].(map[string]any)
+		if !ok {
+			continue
+		}
+		for _, modelValue := range models {
+			model, ok := modelValue.(map[string]any)
+			if !ok {
+				continue
+			}
+			name, ok := model["name"].(string)
+			if !ok || name == "" {
+				continue
+			}
+			model["name"] = name + "\t"
+			mutated = true
+			break
+		}
+		if mutated {
+			break
+		}
+	}
+	if !mutated {
+		t.Fatal("fixture has no model name to mutate")
+	}
+	candidateData, err := json.Marshal(payload)
+	if err != nil {
+		t.Fatalf("Marshal candidate: %v", err)
+	}
+
+	directory := t.TempDir()
+	candidate := filepath.Join(directory, "candidate.json")
+	destination := filepath.Join(directory, "api.json")
+	if err := os.WriteFile(candidate, candidateData, constants.SecureFilePermissions); err != nil {
+		t.Fatalf("WriteFile candidate: %v", err)
+	}
+	if err := os.WriteFile(destination, valid, constants.SecureFilePermissions); err != nil {
+		t.Fatalf("WriteFile destination: %v", err)
+	}
+
+	promotion, err := PromoteAPIFile(candidate, destination)
+	if err != nil {
+		t.Fatalf("PromoteAPIFile: %v", err)
+	}
+	if promotion.RejectedModelCount != 1 || promotion.ModelCount < minimumModelsDevPromotionModels {
+		t.Fatalf("promotion counts = %#v", promotion)
+	}
+	promoted, err := os.ReadFile(destination)
+	if err != nil {
+		t.Fatalf("ReadFile promoted: %v", err)
+	}
+	if !bytes.Equal(promoted, candidateData) {
+		t.Fatal("promotion did not preserve exact source evidence bytes")
+	}
+}
 
 func TestCatalogGenerationToolingTypedAtomicPromotion(t *testing.T) {
 	source := filepath.Join("..", "..", "embedded", "sources", "models.dev", "api.json")
