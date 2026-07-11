@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-verify.XXXXXX")"
 trap 'rm -rf "$TMPDIR"' EXIT
+VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"
+VERIFY_CATALOG_STORE_PATH="$TMPDIR/catalog-store"
 
 cd "$ROOT"
 
@@ -87,7 +89,8 @@ run git diff --check
 
 run go build -o "$TMPDIR/starmap" ./cmd/starmap
 run "$TMPDIR/starmap" version
-run "$TMPDIR/starmap" validate catalog
+run env CATALOG_STORE_PATH="$VERIFY_CATALOG_STORE_PATH" LOCAL_PATH="$VERIFY_CATALOG_PATH" \
+	"$TMPDIR/starmap" validate catalog
 printf '\n==> isolated credential-free provider listing\n'
 (
 	cd "$TMPDIR"
@@ -103,8 +106,11 @@ printf '\n==> isolated credential-free provider listing\n'
 	-u GROQ_API_KEY \
 	-u MOONSHOT_API_KEY \
 	-u OPENAI_API_KEY \
+	CATALOG_STORE_PATH="$VERIFY_CATALOG_STORE_PATH" \
+	LOCAL_PATH="$VERIFY_CATALOG_PATH" \
 	"$TMPDIR/starmap" providers
 )
-run "$TMPDIR/starmap" models list --limit 5
+run env CATALOG_STORE_PATH="$VERIFY_CATALOG_STORE_PATH" LOCAL_PATH="$VERIFY_CATALOG_PATH" \
+	"$TMPDIR/starmap" models list --limit 5
 
 printf '\nrepository verification passed\n'

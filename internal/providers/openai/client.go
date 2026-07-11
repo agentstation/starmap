@@ -966,11 +966,10 @@ func (c *Client) extractAuthors(modelID, ownedBy string) []catalogs.Author {
 			return []catalogs.Author{{ID: authorID, Name: authorID.String()}}
 		}
 
-		if mapping.Field == fieldOwnedBy || mapping.Field == "" {
-			if authorID := catalogs.ParseAuthorID(fieldValue); authorID != catalogs.AuthorIDUnknown {
-				return []catalogs.Author{{ID: authorID, Name: authorID.String()}}
-			}
-		}
+		// Explicit mappings are an allowlist. Unmatched model IDs are unknown,
+		// while owned_by often identifies the serving aggregator rather than the
+		// model author; neither may invent an author cross-reference.
+		return nil
 	}
 
 	// Fallback to provider's configured authors or infer from owned_by

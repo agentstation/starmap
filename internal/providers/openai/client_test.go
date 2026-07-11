@@ -333,13 +333,19 @@ func TestConvertToModelWithWildcardAuthorMapping(t *testing.T) {
 	}
 }
 
-func TestConvertToModelDoesNotUseGlobalSystemAliasForNonOpenAIProvider(t *testing.T) {
+func TestConvertToModelPreservesUnknownAuthorshipWhenExplicitMappingMisses(t *testing.T) {
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDAlibabaCloud,
 		Name: "Alibaba",
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
+				AuthorMapping: &catalogs.AuthorMapping{
+					Field: "id",
+					Normalized: map[string]catalogs.AuthorID{
+						"qwen*": catalogs.AuthorIDAlibabaQwen,
+					},
+				},
 			},
 		},
 	}
@@ -351,11 +357,8 @@ func TestConvertToModelDoesNotUseGlobalSystemAliasForNonOpenAIProvider(t *testin
 		OwnedBy: "system",
 	})
 
-	if len(model.Authors) != 1 {
-		t.Fatalf("Expected one author, got %#v", model.Authors)
-	}
-	if model.Authors[0].ID == catalogs.AuthorIDOpenAI {
-		t.Fatalf("non-OpenAI provider owned_by=system was attributed to OpenAI: %#v", model.Authors)
+	if len(model.Authors) != 0 {
+		t.Fatalf("unmatched explicit mapping invented provider authorship: %#v", model.Authors)
 	}
 }
 

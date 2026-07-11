@@ -68,6 +68,7 @@ func TestPullRequestWorkflowIsTheOnlyActivePRWorkflow(t *testing.T) {
 
 func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	makefile := readFixture(t, "../../Makefile")
+	verifyScript := readFixture(t, "../../scripts/verify.sh")
 	verifyRecipe := regexp.MustCompile(`(?m)^verify:.*\n\t@\./scripts/verify\.sh$`)
 	if !verifyRecipe.MatchString(makefile) {
 		t.Fatal("make verify must invoke scripts/verify.sh directly")
@@ -79,6 +80,16 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	}
 	if info.Mode()&0o111 == 0 {
 		t.Fatal("scripts/verify.sh must be executable")
+	}
+
+	for _, check := range []string{
+		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
+		`VERIFY_CATALOG_STORE_PATH="$TMPDIR/catalog-store"`,
+		`CATALOG_STORE_PATH="$VERIFY_CATALOG_STORE_PATH" LOCAL_PATH="$VERIFY_CATALOG_PATH"`,
+	} {
+		if !strings.Contains(verifyScript, check) {
+			t.Fatalf("repository verification script is missing isolated catalog state %q", check)
+		}
 	}
 }
 
