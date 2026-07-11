@@ -15,7 +15,10 @@ func TestHostedPromotionDevCanaryStableProbeRollbackAndTelemetry(t *testing.T) {
 	policy := PromotionPolicy{
 		MaxGenerationAge: 24 * time.Hour,
 		MaxProbeAge:      5 * time.Minute,
-		MaxProbeLatency:  time.Second,
+		// The positive path uses a real httptest round trip, whose wall time is
+		// scheduler-dependent under the race detector. The exact SLO boundary is
+		// exercised below with synthetic probe evidence.
+		MaxProbeLatency: 30 * time.Second,
 	}
 	repository, err := NewMemoryRepositoryWithPolicy(policy)
 	if err != nil {
