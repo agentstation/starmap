@@ -61,12 +61,10 @@ func TestCatalogStoreConcurrentSameBaseCAS(t *testing.T) {
 			results := make(chan error, 2)
 			var wait sync.WaitGroup
 			for index := range stores {
-				wait.Add(1)
-				go func() {
-					defer wait.Done()
+				wait.Go(func() {
 					<-start
 					results <- stores[index].Commit(context.Background(), candidates[index], "cas-base")
-				}()
+				})
 			}
 			close(start)
 			wait.Wait()

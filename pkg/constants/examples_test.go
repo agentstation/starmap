@@ -87,7 +87,7 @@ func Example_retryLogic() {
 	}
 
 	var lastErr error
-	for i := 0; i < constants.MaxRetries; i++ {
+	for i := range constants.MaxRetries {
 		err := operation()
 		if err == nil {
 			fmt.Println("Success")
@@ -97,10 +97,7 @@ func Example_retryLogic() {
 
 		if i < constants.MaxRetries-1 {
 			// Calculate backoff
-			backoff := constants.RetryBackoff * time.Duration(1<<i)
-			if backoff > constants.MaxRetryBackoff {
-				backoff = constants.MaxRetryBackoff
-			}
+			backoff := min(constants.RetryBackoff*time.Duration(1<<i), constants.MaxRetryBackoff)
 			fmt.Printf("Retry %d/%d after %v\n", i+1, constants.MaxRetries, backoff)
 			time.Sleep(backoff)
 		}
@@ -135,7 +132,7 @@ func Example_concurrencyLimits() {
 	results := make(chan int, 100)
 
 	// Start workers up to max concurrent limit
-	for w := 0; w < constants.MaxConcurrentRequests; w++ {
+	for w := range constants.MaxConcurrentRequests {
 		go func(id int) {
 			for job := range jobs {
 				// Simulate work
@@ -145,7 +142,7 @@ func Example_concurrencyLimits() {
 	}
 
 	// Send jobs
-	for i := 0; i < 20; i++ {
+	for i := range 20 {
 		jobs <- i
 	}
 	close(jobs)
@@ -177,7 +174,6 @@ func Example_rateLimiting() {
 		}
 	}
 }
-
 
 // Example_contextTimeouts shows different context timeout scenarios.
 func Example_contextTimeouts() {

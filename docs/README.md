@@ -111,6 +111,7 @@ Located in the project root:
 - [../CLAUDE.md](../CLAUDE.md) - LLM coding assistant instructions
 - [../CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines and development setup
 - [../CHANGELOG.md](../CHANGELOG.md) - Version history and release notes
+- [RELEASES.md](RELEASES.md) - Go compatibility and application release policy
 - [../LICENSE](../LICENSE) - AGPL 3.0 license
 
 ## Package Documentation

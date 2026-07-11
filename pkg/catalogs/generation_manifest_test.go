@@ -308,7 +308,7 @@ func TestGenerationManifestConsumerCompatibilityUsesSchemaVersions(t *testing.T)
 		}
 	}
 
-	typ := reflect.TypeOf(GenerationManifest{})
+	typ := reflect.TypeFor[GenerationManifest]()
 	for _, forbidden := range []string{"BinaryVersion", "MinBinaryVersion", "MaxBinaryVersion"} {
 		if _, found := typ.FieldByName(forbidden); found {
 			t.Fatalf("manifest compatibility is coupled to %s", forbidden)

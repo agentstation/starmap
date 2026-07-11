@@ -137,9 +137,7 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 
 	var readers sync.WaitGroup
 	for range 8 {
-		readers.Add(1)
-		go func() {
-			defer readers.Done()
+		readers.Go(func() {
 			for range 25 {
 				catalog := client.Catalog()
 				if _, err := catalog.Provider("last-known-good"); err != nil {
@@ -151,7 +149,7 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 					return
 				}
 			}
-		}()
+		})
 	}
 	readers.Wait()
 	releaseStore()

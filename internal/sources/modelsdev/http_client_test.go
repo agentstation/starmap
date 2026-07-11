@@ -69,7 +69,7 @@ func largeMockAPIJSON() string {
 	api := mockAPI()
 
 	// Add many models to reach >100KB
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		modelID := fmt.Sprintf("model-%d", i)
 		if openai, ok := api["openai"].(map[string]any); ok {
 			if models, ok := openai["models"].(map[string]any); ok {

@@ -440,7 +440,7 @@ func TestClientConcurrency(t *testing.T) {
 	done := make(chan bool, numGoroutines)
 	errorChan := make(chan error, numGoroutines)
 
-	for i := 0; i < numGoroutines; i++ {
+	for range numGoroutines {
 		go func() {
 			models, err := client.ListModels(context.Background())
 			if err != nil {
@@ -453,7 +453,7 @@ func TestClientConcurrency(t *testing.T) {
 	}
 
 	// Wait for all goroutines to complete
-	for i := 0; i < numGoroutines; i++ {
+	for range numGoroutines {
 		<-done
 	}
 

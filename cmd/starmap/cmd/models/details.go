@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 
@@ -158,11 +159,8 @@ func addFeatureRows(rows [][]string, model *catalogs.Model) [][]string {
 	}
 
 	// Check for vision capability
-	for _, modality := range model.Features.Modalities.Input {
-		if modality == "image" {
-			rows = append(rows, []string{"Vision", emoji.Success + " Supported"})
-			break
-		}
+	if slices.Contains(model.Features.Modalities.Input, "image") {
+		rows = append(rows, []string{"Vision", emoji.Success + " Supported"})
 	}
 
 	// Check for audio capabilities
@@ -187,17 +185,11 @@ func addAudioFeatures(rows [][]string, features *catalogs.ModelFeatures) [][]str
 	hasAudioInput := false
 	hasAudioOutput := false
 
-	for _, modality := range features.Modalities.Input {
-		if modality == "audio" {
-			hasAudioInput = true
-			break
-		}
+	if slices.Contains(features.Modalities.Input, "audio") {
+		hasAudioInput = true
 	}
-	for _, modality := range features.Modalities.Output {
-		if modality == "audio" {
-			hasAudioOutput = true
-			break
-		}
+	if slices.Contains(features.Modalities.Output, "audio") {
+		hasAudioOutput = true
 	}
 
 	if hasAudioInput {

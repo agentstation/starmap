@@ -18,12 +18,12 @@ import (
 )
 
 func TestProviderSourceDelegatesFetchPolicyToPublicFetcher(t *testing.T) {
-	typeOfSource := reflect.TypeOf(Source{})
+	typeOfSource := reflect.TypeFor[Source]()
 	if _, found := typeOfSource.FieldByName("clientFactory"); found {
 		t.Fatal("provider Source still owns a duplicate client factory/fetch policy")
 	}
 	field, found := typeOfSource.FieldByName("fetcher")
-	if !found || field.Type != reflect.TypeOf((*sources.ProviderFetcher)(nil)) {
+	if !found || field.Type != reflect.TypeFor[*sources.ProviderFetcher]() {
 		t.Fatalf("provider Source fetcher field = %#v", field)
 	}
 }
@@ -470,7 +470,7 @@ func TestSourceObserveBoundsProviderConcurrency(t *testing.T) {
 		done <- err
 	}()
 
-	for i := 0; i < maxConcurrency; i++ {
+	for i := range maxConcurrency {
 		select {
 		case <-started:
 		case <-time.After(time.Second):

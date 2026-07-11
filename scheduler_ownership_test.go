@@ -22,7 +22,7 @@ var _ explicitCatalogSyncer = (*Client)(nil)
 var _ catalogscheduler.CurrentGenerationReader = (*Client)(nil)
 
 func TestSchedulerOwnershipRootClientExposesSyncWithoutCadenceLifecycle(t *testing.T) {
-	clientType := reflect.TypeOf((*Client)(nil))
+	clientType := reflect.TypeFor[*Client]()
 	for _, forbidden := range []string{"AutoUpdatesOn", "AutoUpdatesOff", "StartScheduler", "StopScheduler"} {
 		if _, found := clientType.MethodByName(forbidden); found {
 			t.Errorf("root Client retains deployment cadence method %s", forbidden)

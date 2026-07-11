@@ -208,7 +208,7 @@ func (s directObservationSource) Observe(context.Context, ...Option) (Observatio
 }
 
 func TestSourceUsesDirectObservationContract(t *testing.T) {
-	interfaceType := reflect.TypeOf((*Source)(nil)).Elem()
+	interfaceType := reflect.TypeFor[Source]()
 	if _, found := interfaceType.MethodByName("Observe"); !found {
 		t.Fatal("Source has no direct Observe method")
 	}

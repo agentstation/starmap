@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"slices"
 	"sync"
 	"time"
 
@@ -68,40 +69,40 @@ type supportedCapability struct {
 }
 
 type modelCapabilities struct {
-	Batch             supportedCapability         `json:"batch,omitempty"`
-	Citations         supportedCapability         `json:"citations,omitempty"`
-	CodeExecution     supportedCapability         `json:"code_execution,omitempty"`
-	ContextManagement contextManagementCapability `json:"context_management,omitempty"`
-	Effort            effortCapability            `json:"effort,omitempty"`
-	ImageInput        supportedCapability         `json:"image_input,omitempty"`
-	PDFInput          supportedCapability         `json:"pdf_input,omitempty"`
-	StructuredOutputs supportedCapability         `json:"structured_outputs,omitempty"`
-	Thinking          thinkingCapability          `json:"thinking,omitempty"`
+	Batch             supportedCapability         `json:"batch"`
+	Citations         supportedCapability         `json:"citations"`
+	CodeExecution     supportedCapability         `json:"code_execution"`
+	ContextManagement contextManagementCapability `json:"context_management"`
+	Effort            effortCapability            `json:"effort"`
+	ImageInput        supportedCapability         `json:"image_input"`
+	PDFInput          supportedCapability         `json:"pdf_input"`
+	StructuredOutputs supportedCapability         `json:"structured_outputs"`
+	Thinking          thinkingCapability          `json:"thinking"`
 }
 
 type contextManagementCapability struct {
 	Supported             bool                `json:"supported"`
-	ClearToolUses20250919 supportedCapability `json:"clear_tool_uses_20250919,omitempty"`
-	ClearThinking20251015 supportedCapability `json:"clear_thinking_20251015,omitempty"`
-	Compact20260112       supportedCapability `json:"compact_20260112,omitempty"`
+	ClearToolUses20250919 supportedCapability `json:"clear_tool_uses_20250919"`
+	ClearThinking20251015 supportedCapability `json:"clear_thinking_20251015"`
+	Compact20260112       supportedCapability `json:"compact_20260112"`
 }
 
 type effortCapability struct {
 	Supported bool                `json:"supported"`
-	Low       supportedCapability `json:"low,omitempty"`
-	Medium    supportedCapability `json:"medium,omitempty"`
-	High      supportedCapability `json:"high,omitempty"`
-	Max       supportedCapability `json:"max,omitempty"`
+	Low       supportedCapability `json:"low"`
+	Medium    supportedCapability `json:"medium"`
+	High      supportedCapability `json:"high"`
+	Max       supportedCapability `json:"max"`
 }
 
 type thinkingCapability struct {
 	Supported bool                     `json:"supported"`
-	Types     thinkingTypeCapabilities `json:"types,omitempty"`
+	Types     thinkingTypeCapabilities `json:"types"`
 }
 
 type thinkingTypeCapabilities struct {
-	Adaptive supportedCapability `json:"adaptive,omitempty"`
-	Enabled  supportedCapability `json:"enabled,omitempty"`
+	Adaptive supportedCapability `json:"adaptive"`
+	Enabled  supportedCapability `json:"enabled"`
 }
 
 // Client implements the catalogs.Client interface for Anthropic.
@@ -289,10 +290,8 @@ func (c *Client) applyResponseFields(model *catalogs.Model, response modelRespon
 }
 
 func appendAnthropicModality(modalities []catalogs.ModelModality, modality catalogs.ModelModality) []catalogs.ModelModality {
-	for _, existing := range modalities {
-		if existing == modality {
-			return modalities
-		}
+	if slices.Contains(modalities, modality) {
+		return modalities
 	}
 	return append(modalities, modality)
 }

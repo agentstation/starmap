@@ -35,6 +35,7 @@ package catalogs
 import (
 	stderrors "errors"
 	"io/fs"
+	"maps"
 	"os"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -518,9 +519,7 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 
 					// Copy existing models first
 					if existingAuthor.Models != nil {
-						for k, v := range existingAuthor.Models {
-							mergedModels[k] = v
-						}
+						maps.Copy(mergedModels, existingAuthor.Models)
 					}
 
 					// Merge source models

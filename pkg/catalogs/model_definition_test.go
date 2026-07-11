@@ -66,7 +66,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 }
 
 func TestModelDefinitionExcludesProviderOfferingFacts(t *testing.T) {
-	typeOfDefinition := reflect.TypeOf(ModelDefinition{})
+	typeOfDefinition := reflect.TypeFor[ModelDefinition]()
 	for _, forbidden := range []string{
 		"ProviderID", "ProviderModelID", "Pricing", "Limits", "Availability",
 		"Regions", "Endpoint", "Lifecycle", "Modes", "Request",
@@ -80,7 +80,7 @@ func TestModelDefinitionExcludesProviderOfferingFacts(t *testing.T) {
 			t.Fatalf("ModelDefinition missing intrinsic field %s", required)
 		}
 	}
-	typeOfOffering := reflect.TypeOf(ProviderOffering{})
+	typeOfOffering := reflect.TypeFor[ProviderOffering]()
 	for _, forbidden := range []string{"AuthorIDs", "Metadata", "Lineage", "Weights", "Capabilities"} {
 		if _, found := typeOfOffering.FieldByName(forbidden); found {
 			t.Fatalf("ProviderOffering exposes definition field %s", forbidden)

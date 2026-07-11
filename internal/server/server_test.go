@@ -195,17 +195,17 @@ func (s *testSubscriber) Close() error {
 // testBroker creates a broker instance for testing
 func newTestBroker(logger *zerolog.Logger) *testBrokerWrapper {
 	return &testBrokerWrapper{
-		register:   make(chan interface{}, 10), // Buffered like production
-		unregister: make(chan interface{}, 10), // Buffered like production
+		register:   make(chan any, 10), // Buffered like production
+		unregister: make(chan any, 10), // Buffered like production
 	}
 }
 
 type testBrokerWrapper struct {
-	register   chan interface{}
-	unregister chan interface{}
+	register   chan any
+	unregister chan any
 }
 
-func (b *testBrokerWrapper) Subscribe(sub interface{}) {
+func (b *testBrokerWrapper) Subscribe(sub any) {
 	// Simulate the broker.Subscribe() call
 	b.register <- sub
 }

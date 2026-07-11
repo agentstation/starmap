@@ -3,6 +3,7 @@ package modelsdev
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"os"
 	"strconv"
 	"strings"
@@ -580,9 +581,7 @@ func copyStringMap(input map[string]string) map[string]string {
 		return nil
 	}
 	copied := make(map[string]string, len(input))
-	for key, value := range input {
-		copied[key] = value
-	}
+	maps.Copy(copied, input)
 	return copied
 }
 

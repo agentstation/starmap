@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -245,7 +246,8 @@ func isHex(value string) bool {
 }
 
 func observationID(observation Observation) string {
-	identity := strings.Join([]string{
+	var identity strings.Builder
+	identity.WriteString(strings.Join([]string{
 		string(observation.SourceID),
 		observation.ObservedAt.UTC().Format(time.RFC3339Nano),
 		string(observation.Revision.Kind),
@@ -253,17 +255,20 @@ func observationID(observation Observation) string {
 		string(observation.Completeness),
 		string(observation.Status),
 		observation.EvidenceChecksum,
-	}, "\x00")
-	identity += "\x00" + observation.Revision.InputName + "\x00" + observation.Revision.InputChecksum
+	}, "\x00"))
+	identity.WriteString("\x00" + observation.Revision.InputName + "\x00" + observation.Revision.InputChecksum)
 	if observation.Records.Accepted != 0 || observation.Records.Rejected != 0 {
-		identity += fmt.Sprintf("\x00records:%d:%d", observation.Records.Accepted, observation.Records.Rejected)
+		identity.WriteString("\x00records:")
+		identity.WriteString(strconv.Itoa(observation.Records.Accepted))
+		identity.WriteByte(':')
+		identity.WriteString(strconv.Itoa(observation.Records.Rejected))
 	}
 	for _, issue := range observation.Issues {
 		// Human-readable diagnostics can contain transport details or secrets and
 		// are deliberately excluded from stable identity and long-term evidence.
-		identity += "\x00" + string(issue.Scope) + "\x00" + string(issue.Code) + "\x00" + issue.Subject
+		identity.WriteString("\x00" + string(issue.Scope) + "\x00" + string(issue.Code) + "\x00" + issue.Subject)
 	}
-	digest := sha256.Sum256([]byte(identity))
+	digest := sha256.Sum256([]byte(identity.String()))
 	return "observation:" + hex.EncodeToString(digest[:])
 }
 

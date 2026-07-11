@@ -1,5 +1,7 @@
 package catalogs
 
+import "maps"
+
 func copyPtr[T any](value *T) *T {
 	if value == nil {
 		return nil
@@ -13,9 +15,7 @@ func copyMap[K comparable, V any](input map[K]V) map[K]V {
 		return nil
 	}
 	result := make(map[K]V, len(input))
-	for k, v := range input {
-		result[k] = v
-	}
+	maps.Copy(result, input)
 	return result
 }
 
@@ -471,9 +471,7 @@ func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model {
 	}
 
 	result := make(map[string]*Model, len(models))
-	for k, v := range models {
-		result[k] = v
-	}
+	maps.Copy(result, models)
 	return result
 }
 
@@ -486,8 +484,6 @@ func ShallowCopyAuthorModels(models map[string]*Model) map[string]*Model {
 	}
 
 	result := make(map[string]*Model, len(models))
-	for k, v := range models {
-		result[k] = v
-	}
+	maps.Copy(result, models)
 	return result
 }

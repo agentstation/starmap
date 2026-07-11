@@ -177,11 +177,11 @@ func readPublicationSSE(body io.Reader, eventsOut chan<- map[string]any, errorsO
 			if line == "" {
 				break
 			}
-			if strings.HasPrefix(line, "event: ") {
-				eventType = strings.TrimPrefix(line, "event: ")
+			if after, ok := strings.CutPrefix(line, "event: "); ok {
+				eventType = after
 			}
-			if strings.HasPrefix(line, "data: ") {
-				if err := json.Unmarshal([]byte(strings.TrimPrefix(line, "data: ")), &data); err != nil {
+			if after, ok := strings.CutPrefix(line, "data: "); ok {
+				if err := json.Unmarshal([]byte(after), &data); err != nil {
 					errorsOut <- err
 					return
 				}

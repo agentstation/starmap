@@ -144,7 +144,7 @@ const (
 ```
 
 <a name="AlertSeverity"></a>
-## type [AlertSeverity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L58>)
+## type [AlertSeverity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L59>)
 
 AlertSeverity is the operational priority of a freshness alert.
 
@@ -284,7 +284,7 @@ func (l *FilesystemLease) Acquire(ctx context.Context, request LeaseRequest) (Le
 Acquire takes a non\-blocking OS\-backed lock before provider work.
 
 <a name="FreshnessAlert"></a>
-## type [FreshnessAlert](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L76-L81>)
+## type [FreshnessAlert](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L77-L82>)
 
 FreshnessAlert is one machine\-readable operator signal.
 
@@ -298,7 +298,7 @@ type FreshnessAlert struct {
 ```
 
 <a name="FreshnessMonitor"></a>
-## type [FreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L119-L123>)
+## type [FreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L120-L124>)
 
 FreshnessMonitor retains only the newest validated observation per configured source and evaluates it against explicit deployment SLAs.
 
@@ -309,7 +309,7 @@ type FreshnessMonitor struct {
 ```
 
 <a name="NewFreshnessMonitor"></a>
-### func [NewFreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L126>)
+### func [NewFreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L127>)
 
 ```go
 func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error)
@@ -318,7 +318,7 @@ func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error)
 NewFreshnessMonitor creates an empty fail\-closed monitor.
 
 <a name="FreshnessMonitor.Record"></a>
-### func \(\*FreshnessMonitor\) [Record](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L156>)
+### func \(\*FreshnessMonitor\) [Record](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L157>)
 
 ```go
 func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink) error
@@ -327,7 +327,7 @@ func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink)
 Record advances configured sources without allowing out\-of\-order completion to regress their latest observation.
 
 <a name="FreshnessMonitor.RecordManifest"></a>
-### func \(\*FreshnessMonitor\) [RecordManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L194>)
+### func \(\*FreshnessMonitor\) [RecordManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L193>)
 
 ```go
 func (m *FreshnessMonitor) RecordManifest(manifest catalogs.GenerationManifest) error
@@ -336,7 +336,7 @@ func (m *FreshnessMonitor) RecordManifest(manifest catalogs.GenerationManifest) 
 RecordManifest seeds freshness from a validated catalog generation.
 
 <a name="FreshnessMonitor.RecordResult"></a>
-### func \(\*FreshnessMonitor\) [RecordResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L147>)
+### func \(\*FreshnessMonitor\) [RecordResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L148>)
 
 ```go
 func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error
@@ -345,7 +345,7 @@ func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error
 RecordResult advances source freshness from a completed Sync result. It does not require catalog changes or a newly published generation.
 
 <a name="FreshnessMonitor.RecordRuns"></a>
-### func \(\*FreshnessMonitor\) [RecordRuns](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L204>)
+### func \(\*FreshnessMonitor\) [RecordRuns](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L203>)
 
 ```go
 func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error
@@ -354,7 +354,7 @@ func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error
 RecordRuns restores no\-change and published source observations from durable run history. Input order does not matter because older observations cannot replace newer state.
 
 <a name="FreshnessMonitor.Report"></a>
-### func \(\*FreshnessMonitor\) [Report](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L215>)
+### func \(\*FreshnessMonitor\) [Report](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L214>)
 
 ```go
 func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error)
@@ -363,7 +363,7 @@ func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error)
 Report evaluates source ages at an explicit UTC instant. Missing required sources and future observations fail readiness; optional missing sources and warning\-threshold/degraded observations preserve readiness but degrade it.
 
 <a name="FreshnessPolicy"></a>
-## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L39-L41>)
+## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L40-L42>)
 
 FreshnessPolicy is the explicit set of sources a deployment monitors.
 
@@ -374,7 +374,7 @@ type FreshnessPolicy struct {
 ```
 
 <a name="FreshnessReport"></a>
-## type [FreshnessReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L102-L108>)
+## type [FreshnessReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L103-L109>)
 
 FreshnessReport is the deterministic readiness/degradation decision for all configured sources.
 
@@ -389,7 +389,7 @@ type FreshnessReport struct {
 ```
 
 <a name="FreshnessReport.Copy"></a>
-### func \(FreshnessReport\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L111>)
+### func \(FreshnessReport\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L112>)
 
 ```go
 func (r FreshnessReport) Copy() FreshnessReport
@@ -398,7 +398,7 @@ func (r FreshnessReport) Copy() FreshnessReport
 Copy returns a report with caller\-owned collection state.
 
 <a name="FreshnessState"></a>
-## type [FreshnessState](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L44>)
+## type [FreshnessState](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L45>)
 
 FreshnessState is one source's current SLA disposition.
 
@@ -1148,7 +1148,7 @@ type SchedulerOperationalState struct {
 ```
 
 <a name="SourceFreshness"></a>
-## type [SourceFreshness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L84-L98>)
+## type [SourceFreshness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L85-L99>)
 
 SourceFreshness is one source's evaluated observation and SLA state.
 
@@ -1157,7 +1157,7 @@ type SourceFreshness struct {
     Source               catalogmeta.SourceID                `json:"source"`
     Required             bool                                `json:"required"`
     ObservationID        string                              `json:"observation_id,omitempty"`
-    ObservedAt           time.Time                           `json:"observed_at,omitempty"`
+    ObservedAt           time.Time                           `json:"observed_at"`
     Age                  time.Duration                       `json:"-"`
     AgeSeconds           int64                               `json:"age_seconds"`
     DegradedAfter        time.Duration                       `json:"-"`
@@ -1171,7 +1171,7 @@ type SourceFreshness struct {
 ```
 
 <a name="SourceFreshnessSLA"></a>
-## type [SourceFreshnessSLA](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L17-L22>)
+## type [SourceFreshnessSLA](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L18-L23>)
 
 SourceFreshnessSLA defines warning and readiness budgets for one source.
 
@@ -1185,7 +1185,7 @@ type SourceFreshnessSLA struct {
 ```
 
 <a name="SourceFreshnessSLA.Validate"></a>
-### func \(SourceFreshnessSLA\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L25>)
+### func \(SourceFreshnessSLA\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L26>)
 
 ```go
 func (s SourceFreshnessSLA) Validate() error

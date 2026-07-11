@@ -26,7 +26,7 @@ type Status struct {
 	State       State
 	Summary     string         // Brief one-line summary
 	APIKey      *APIKeyDetails // For API key providers (nil if not applicable)
-	GoogleCloud interface{}    // For Google Cloud providers (*adc.Details, nil if not applicable)
+	GoogleCloud any            // For Google Cloud providers (*adc.Details, nil if not applicable)
 }
 
 // APIKeyDetails contains API key authentication details.

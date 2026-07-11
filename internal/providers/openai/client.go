@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"path"
 	"reflect"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -667,10 +668,8 @@ func convertProviderModalities(modalities []string) []catalogs.ModelModality {
 }
 
 func appendUniqueModality(modalities []catalogs.ModelModality, modality catalogs.ModelModality) []catalogs.ModelModality {
-	for _, existing := range modalities {
-		if existing == modality {
-			return modalities
-		}
+	if slices.Contains(modalities, modality) {
+		return modalities
 	}
 	return append(modalities, modality)
 }

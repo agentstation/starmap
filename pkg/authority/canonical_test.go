@@ -14,8 +14,8 @@ func TestCanonicalAttributePolicyInventoryCoversSchema(t *testing.T) {
 		resource sources.ResourceType
 		typeOf   reflect.Type
 	}{
-		{sources.ResourceTypeModelDefinition, reflect.TypeOf(catalogs.ModelDefinition{})},
-		{sources.ResourceTypeProviderOffering, reflect.TypeOf(catalogs.ProviderOffering{})},
+		{sources.ResourceTypeModelDefinition, reflect.TypeFor[catalogs.ModelDefinition]()},
+		{sources.ResourceTypeProviderOffering, reflect.TypeFor[catalogs.ProviderOffering]()},
 	}
 	for _, test := range tests {
 		t.Run(test.resource.String(), func(t *testing.T) {

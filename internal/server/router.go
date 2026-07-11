@@ -232,7 +232,7 @@ func extractPathParam(request *http.Request, prefix string) (string, error) {
 // splitPath splits a URL path into parts, removing empty strings.
 func splitPath(path string) []string {
 	parts := []string{}
-	for _, part := range strings.Split(path, "/") {
+	for part := range strings.SplitSeq(path, "/") {
 		if part != "" {
 			parts = append(parts, part)
 		}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
 )
@@ -300,12 +301,7 @@ func (mm *MultiMatcher) MatchAll(inputs ...string) []string {
 
 // MatchAny returns true if any of the inputs match any pattern.
 func (mm *MultiMatcher) MatchAny(inputs ...string) bool {
-	for _, input := range inputs {
-		if mm.Match(input) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(inputs, mm.Match)
 }
 
 // AddMatcher adds a new matcher to the collection.

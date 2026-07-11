@@ -260,7 +260,7 @@ func validateRawRecord(record RawRecord) error {
 }
 
 func rawAAD(observationID string, expiresAt time.Time) []byte {
-	return []byte(fmt.Sprintf("starmap-raw-evidence-v%d\x00%s\x00%s", sealedRawRecordVersion, observationID, expiresAt.UTC().Format(time.RFC3339Nano)))
+	return fmt.Appendf(nil, "starmap-raw-evidence-v%d\x00%s\x00%s", sealedRawRecordVersion, observationID, expiresAt.UTC().Format(time.RFC3339Nano))
 }
 
 func evidenceValidation(field string, value any, message string) error {

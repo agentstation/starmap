@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"slices"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -213,7 +214,7 @@ func Example_concurrentAccess() {
 			Name:   "Test Provider",
 			Models: make(map[string]*catalogs.Model),
 		}
-		for i := 0; i < 100; i++ {
+		for i := range 100 {
 			provider.Models[fmt.Sprintf("model-%d", i)] = &catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
@@ -289,11 +290,8 @@ func Example_modelFiltering() {
 	var visionModels []catalogs.Model
 	for _, model := range catalog.Models().List() {
 		if model.Features != nil {
-			for _, modality := range model.Features.Modalities.Input {
-				if modality == "image" {
-					visionModels = append(visionModels, model)
-					break
-				}
+			if slices.Contains(model.Features.Modalities.Input, "image") {
+				visionModels = append(visionModels, model)
 			}
 		}
 	}

@@ -36,6 +36,8 @@ GOGET=$(GOCMD) get
 GOMOD=$(GOCMD) mod
 GOFMT=$(GOCMD) fmt
 GOVET=$(GOCMD) vet
+GOBIN?=$(shell go env GOPATH)/bin
+GOMARKDOC=$(GOBIN)/gomarkdoc
 
 # Colors for output
 RED=\033[0;31m
@@ -266,7 +268,7 @@ goreleaser-check: ## Validate GoReleaser config (CI-friendly)
 
 release-snapshot-devbox: ## Create snapshot release using devbox tools
 	@echo "$(BLUE)Creating snapshot release with devbox...$(NC)"
-	@$(RUN_PREFIX) goreleaser release --snapshot --clean
+	@$(RUN_PREFIX) goreleaser release --snapshot --clean --skip=ko,sign
 	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
 
 ci-test: ## Run CI-equivalent tests locally
@@ -337,7 +339,7 @@ release-check: ## Check if ready for release (CI-friendly)
 release-snapshot: ## Create a snapshot release with goreleaser (no tag required)
 	@echo "$(BLUE)Creating snapshot release with goreleaser...$(NC)"
 	@which goreleaser > /dev/null || (echo "$(RED)goreleaser not found. Install from https://goreleaser.com$(NC)" && exit 1)
-	goreleaser release --snapshot --clean
+	goreleaser release --snapshot --clean --skip=ko,sign
 	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
 	@echo "$(YELLOW)Test the binaries in ./dist/ before creating a real release$(NC)"
 
@@ -537,22 +539,22 @@ openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 
 generate: openapi ## Generate all documentation (Go docs and OpenAPI)
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
-	$(GOCMD) generate ./...
+	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
+	$(RUN_PREFIX) env PATH="$(GOBIN):$$PATH" go generate ./...
 	@echo "$(GREEN)All documentation generation complete$(NC)"
 
 godoc: ## Generate only Go documentation using go generate
 	@echo "$(BLUE)Generating Go documentation...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
-	$(GOCMD) generate ./...
+	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
+	$(RUN_PREFIX) env PATH="$(GOBIN):$$PATH" go generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
 docs-check: ## Check if documentation is up to date (for CI)
 	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
-	@$(RUN_PREFIX) which gomarkdoc > /dev/null || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
+	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \
 		echo "Checking $$pkg..."; \
-		cd $$pkg && gomarkdoc -c -e -o README.md . --repository.default-branch main || exit 1; \
+		cd $$pkg && "$(GOMARKDOC)" -c -e -o README.md . --repository.default-branch main || exit 1; \
 		cd - > /dev/null; \
 	done
 	@echo "$(GREEN)All documentation is up to date$(NC)"

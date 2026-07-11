@@ -24,7 +24,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
-          go-version-file: go.mod
+          go-version: "1.26.5"
           cache: true
 
       - name: Refresh candidate catalog
@@ -96,7 +96,7 @@ jobs:
 
       - name: Attest scheduled catalog generation
         if: ${{ steps.change.outputs.publish == 'true' }}
-        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
         with:
           subject-path: "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz"
 
@@ -167,3 +167,50 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
             --deny-self-hosted-runners
+
+      - name: Set up ORAS for optional catalog mirror
+        if: ${{ steps.change.outputs.publish == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
+        uses: oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1
+        with:
+          version: 1.3.3
+
+      - name: Publish and verify optional OCI catalog mirror
+        if: ${{ steps.change.outputs.publish == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
+        env:
+          OCI_REPOSITORY: ${{ vars.STARMAP_CATALOG_OCI_REPOSITORY }}
+        run: |
+          DIRECTORY=$(realpath "${{ steps.assets.outputs.directory }}")
+          GENERATION_ID=$(jq -er .generation_id catalog-release.json)
+          ARCHIVE_CHECKSUM=$(jq -er .archive_checksum catalog-release.json)
+          ARCHIVE_DIGEST=${ARCHIVE_CHECKSUM#sha256:}
+          OWNER=${GITHUB_REPOSITORY_OWNER,,}
+          OCI_REPOSITORY=${OCI_REPOSITORY:-ghcr.io/${OWNER}/starmap-catalog}
+          OCI_TAG=sha256-${ARCHIVE_DIGEST}
+          PUSH_REPORT=${RUNNER_TEMP}/catalog-oci-push.json
+          PULL_REPORT=${RUNNER_TEMP}/catalog-oci-pull.json
+          PULL_DIRECTORY=${RUNNER_TEMP}/catalog-oci-pull
+
+          (
+            cd "$DIRECTORY"
+            oras push "${OCI_REPOSITORY}:${OCI_TAG}" \
+              --artifact-type "application/vnd.agentstation.starmap.catalog-mirror.v1" \
+              --annotation "ai.agentstation.starmap.generation=${GENERATION_ID}" \
+              "starmap-catalog.tar.gz:application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip" \
+              "starmap-catalog.intoto.json:application/vnd.in-toto+json" \
+              "starmap-catalog.tar.gz.sha256:text/plain" \
+              --format json
+          ) > "$PUSH_REPORT"
+
+          REFERENCE=$(jq -er .reference "$PUSH_REPORT")
+          test "${REFERENCE#*@sha256:}" != "$REFERENCE"
+          rm -rf "$PULL_DIRECTORY"
+          mkdir -p "$PULL_DIRECTORY"
+          oras pull "$REFERENCE" --output "$PULL_DIRECTORY" --format json > "$PULL_REPORT"
+
+          PULLED_ARCHIVE_CHECKSUM=$(jq -er \
+            '.files[] | select(.mediaType == "application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip") | .digest' \
+            "$PULL_REPORT")
+          test "$PULLED_ARCHIVE_CHECKSUM" = "$ARCHIVE_CHECKSUM"
+          (cd "$PULL_DIRECTORY" && sha256sum --check "$DIRECTORY/starmap-catalog.tar.gz.sha256")
+          cmp "$DIRECTORY/starmap-catalog.tar.gz" "$PULL_DIRECTORY/starmap-catalog.tar.gz"
+          cmp "$DIRECTORY/starmap-catalog.intoto.json" "$PULL_DIRECTORY/starmap-catalog.intoto.json"

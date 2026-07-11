@@ -3,6 +3,7 @@ package hints
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -57,12 +58,7 @@ func (h *Hint) WithTags(tags ...string) *Hint {
 
 // HasTag checks if the hint has a specific tag.
 func (h *Hint) HasTag(tag string) bool {
-	for _, t := range h.Tags {
-		if t == tag {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(h.Tags, tag)
 }
 
 // String returns a string representation of the hint.
@@ -212,13 +208,7 @@ func (r *Registry) filterHints(hints []*Hint) []*Hint {
 
 	for _, hint := range hints {
 		// Skip if hint has excluded tags
-		excluded := false
-		for _, excludeTag := range r.config.ExcludeTags {
-			if hint.HasTag(excludeTag) {
-				excluded = true
-				break
-			}
-		}
+		excluded := slices.ContainsFunc(r.config.ExcludeTags, hint.HasTag)
 		if excluded {
 			continue
 		}
@@ -229,11 +219,8 @@ func (r *Registry) filterHints(hints []*Hint) []*Hint {
 			continue
 		}
 
-		for _, filterTag := range r.config.FilterTags {
-			if hint.HasTag(filterTag) {
-				filtered = append(filtered, hint)
-				break
-			}
+		if slices.ContainsFunc(r.config.FilterTags, hint.HasTag) {
+			filtered = append(filtered, hint)
 		}
 	}
 

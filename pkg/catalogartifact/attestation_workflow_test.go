@@ -43,8 +43,8 @@ func TestArtifactAttestationWorkflowPinsRepositoryAndSignerWorkflow(t *testing.T
 	}
 	workflow := string(data)
 	for _, required := range []string{
-		"attestations: write", "id-token: write", "actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2",
-		"subject-path:", "gh attestation verify", `--repo "$GITHUB_REPOSITORY"`,
+		"attestations: write", "id-token: write", "actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
+		"subject-checksums: dist/checksums.txt", "gh attestation verify", `--repo "$GITHUB_REPOSITORY"`,
 		`--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml"`,
 		"--deny-self-hosted-runners",
 	} {
@@ -58,13 +58,13 @@ func TestArtifactAttestationWorkflowPinsRepositoryAndSignerWorkflow(t *testing.T
 }
 
 func TestArtifactOCIMirrorWorkflowRequiresIdenticalArchiveDigest(t *testing.T) {
-	data, err := os.ReadFile("../../.github/workflows/release.yaml")
+	data, err := os.ReadFile("../../.github/workflows/catalog-generation.yaml")
 	if err != nil {
 		t.Fatalf("Read release workflow: %v", err)
 	}
 	workflow := string(data)
 	for _, required := range []string{
-		"if: vars.STARMAP_CATALOG_OCI_MIRROR == 'true'", "oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6 # v1", "version: 1.3.2",
+		"vars.STARMAP_CATALOG_OCI_MIRROR == 'true'", "oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1", "version: 1.3.3",
 		`OCI_TAG=sha256-${ARCHIVE_DIGEST}`, `oras push "${OCI_REPOSITORY}:${OCI_TAG}"`,
 		`--artifact-type "` + OCIMirrorArtifactType + `"`,
 		`--annotation "` + OCIGenerationAnnotation + `=${GENERATION_ID}"`,

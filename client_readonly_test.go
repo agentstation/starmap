@@ -99,9 +99,7 @@ func TestCatalogPublicationIsAtomicForConcurrentReaders(t *testing.T) {
 	errs := make(chan string, 32)
 	var readers sync.WaitGroup
 	for range 32 {
-		readers.Add(1)
-		go func() {
-			defer readers.Done()
+		readers.Go(func() {
 			<-start
 			for range 200 {
 				catalog := c.Catalog()
@@ -112,7 +110,7 @@ func TestCatalogPublicationIsAtomicForConcurrentReaders(t *testing.T) {
 					return
 				}
 			}
-		}()
+		})
 	}
 	close(start)
 	if err := publishTestCatalog(c, after); err != nil {

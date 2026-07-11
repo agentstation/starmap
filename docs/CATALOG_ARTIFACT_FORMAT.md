@@ -73,21 +73,24 @@ the same generation ID return a typed conflict and are never overwritten.
 
 `go run ./cmd/starmap-catalog-release --output-dir <dir>` performs that staging
 for the verified embedded generation and emits a JSON report of exact paths.
-The tag release workflow uploads those three paths to GitHub Releases without
-`--clobber`; a rerun cannot silently replace a published asset. Hosted workflow
-execution evidence remains separate from deterministic local verification.
+The scheduled catalog-generation workflow publishes those three paths in a
+catalog-only prerelease keyed by payload digest; a rerun cannot silently replace
+a published asset. Application releases never append catalog-generation assets.
+Hosted workflow execution evidence remains separate from deterministic local
+verification.
 
 The workflow uses GitHub's `actions/attest-build-provenance` v2 action pinned
 to an immutable commit with
 `attestations: write` and `id-token: write`, then runs `gh attestation verify`
-with the exact repository, signer workflow, and hosted-runner policy before
-upload. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
+with the exact repository, signer workflow, and hosted-runner policy before and
+after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
 ## Optional OCI mirror
 
-The release workflow can additionally mirror the same three immutable assets to
-an OCI registry when `STARMAP_CATALOG_OCI_MIRROR=true`. The target defaults to
+The scheduled catalog-generation workflow can additionally mirror the same
+three immutable assets to an OCI registry when
+`STARMAP_CATALOG_OCI_MIRROR=true`. The target defaults to
 `ghcr.io/<owner>/starmap-catalog` and can be replaced with
 `STARMAP_CATALOG_OCI_REPOSITORY` for an enterprise registry. ORAS publishes the
 manifest under `sha256-<archive digest>`, records the logical generation ID as

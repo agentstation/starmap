@@ -183,7 +183,7 @@ func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
 		t.Fatal("schema-3 consumer accepted range [1,2]")
 	}
 
-	typeOfPointer := reflect.TypeOf(LatestPointer{})
+	typeOfPointer := reflect.TypeFor[LatestPointer]()
 	for _, forbidden := range []string{"StarmapVersion", "StarportVersion", "BinaryVersion", "ReleaseVersion"} {
 		if _, found := typeOfPointer.FieldByName(forbidden); found {
 			t.Fatalf("latest pointer couples catalog compatibility to %s", forbidden)

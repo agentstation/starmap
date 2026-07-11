@@ -300,10 +300,10 @@ func TestAdapters_ConcurrentSend(t *testing.T) {
 		sub := NewSSESubscriber(broadcaster)
 
 		done := make(chan bool)
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			go func(id int) {
 				defer func() { done <- true }()
-				for j := 0; j < 10; j++ {
+				for j := range 10 {
 					event := events.Event{
 						Type:      events.ModelAdded,
 						Timestamp: time.Now(),
@@ -317,7 +317,7 @@ func TestAdapters_ConcurrentSend(t *testing.T) {
 		}
 
 		// Wait for all goroutines
-		for i := 0; i < 10; i++ {
+		for range 10 {
 			<-done
 		}
 	})
@@ -327,10 +327,10 @@ func TestAdapters_ConcurrentSend(t *testing.T) {
 		sub := NewWebSocketSubscriber(hub)
 
 		done := make(chan bool)
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			go func(id int) {
 				defer func() { done <- true }()
-				for j := 0; j < 10; j++ {
+				for j := range 10 {
 					event := events.Event{
 						Type:      events.ModelAdded,
 						Timestamp: time.Now(),
@@ -344,7 +344,7 @@ func TestAdapters_ConcurrentSend(t *testing.T) {
 		}
 
 		// Wait for all goroutines
-		for i := 0; i < 10; i++ {
+		for range 10 {
 			<-done
 		}
 	})

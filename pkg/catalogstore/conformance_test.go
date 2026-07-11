@@ -164,7 +164,7 @@ func assertStoredGeneration(t *testing.T, store Store, want Generation) {
 }
 
 func testGeneration(id, value string) Generation {
-	payload := []byte(fmt.Sprintf(`{"value":%q}`, value))
+	payload := fmt.Appendf(nil, `{"value":%q}`, value)
 	evidence := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 9, 18, 0, 0, 0, time.UTC)
 	return Generation{

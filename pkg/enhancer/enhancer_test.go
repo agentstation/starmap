@@ -326,7 +326,7 @@ func BenchmarkEnhancerPipeline(b *testing.B) {
 
 	// Create test enhancers
 	enhancers := []Enhancer{}
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		enhancer := &TestEnhancer{
 			name:     fmt.Sprintf("enhancer-%d", i),
 			priority: 100 - i*10,
@@ -345,7 +345,7 @@ func BenchmarkEnhancerPipeline(b *testing.B) {
 
 	// Create test models
 	models := make([]*catalogs.Model, 100)
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		models[i] = &catalogs.Model{
 			ID:   fmt.Sprintf("model-%d", i),
 			Name: fmt.Sprintf("Model %d", i),

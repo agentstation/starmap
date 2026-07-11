@@ -52,7 +52,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		var reads, writes atomic.Int64
 
 		// 50 concurrent readers
-		for i := 0; i < 50; i++ {
+		for i := range 50 {
 			wg.Add(1)
 			go func(id int) {
 				defer wg.Done()
@@ -78,11 +78,11 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// 10 concurrent writers
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			wg.Add(1)
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < 100; j++ {
+				for j := range 100 {
 					select {
 					case <-ctx.Done():
 						return
@@ -123,7 +123,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		errors := make(chan error, 100)
 
 		// Add initial data
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			err := addModelToProvider(base, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
@@ -132,14 +132,14 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// Multiple concurrent mergers
-		for i := 0; i < 5; i++ {
+		for i := range 5 {
 			wg.Add(1)
 			go func(id int) {
 				defer wg.Done()
 
 				// Create update catalog
 				updates := catalogs.NewEmpty()
-				for j := 0; j < 5; j++ {
+				for j := range 5 {
 					model := catalogs.Model{
 						ID:          fmt.Sprintf("model-%d", j),
 						Name:        fmt.Sprintf("Updated Model %d by merger %d", j, id),
@@ -176,13 +176,13 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		errors := make(chan error, numProviders*numUpdates)
 
 		// Each goroutine updates its own provider repeatedly
-		for i := 0; i < numProviders; i++ {
+		for i := range numProviders {
 			wg.Add(1)
 			go func(id int) {
 				defer wg.Done()
 				providerID := catalogs.ProviderID(fmt.Sprintf("provider-%d", id))
 
-				for j := 0; j < numUpdates; j++ {
+				for j := range numUpdates {
 					provider := catalogs.Provider{
 						ID:   providerID,
 						Name: fmt.Sprintf("Provider %d v%d", id, j),
@@ -216,10 +216,8 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		readErrors := make(chan error, 100)
 
 		// Start continuous readers
-		for i := 0; i < 10; i++ {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
+		for range 10 {
+			wg.Go(func() {
 				for {
 					select {
 					case <-ctx.Done():
@@ -232,14 +230,12 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						}
 					}
 				}
-			}()
+			})
 		}
 
 		// Perform bulk write
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for i := 0; i < 1000; i++ {
+		wg.Go(func() {
+			for i := range 1000 {
 				model := catalogs.Model{
 					ID:   fmt.Sprintf("bulk-model-%d", i),
 					Name: fmt.Sprintf("Bulk Model %d", i),
@@ -247,7 +243,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 				err := addModelToProvider(catalog, "test-provider", model)
 				assert.NoError(t, err)
 			}
-		}()
+		})
 
 		// Let it run for a bit
 		time.Sleep(2 * time.Second)
@@ -269,7 +265,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		source := catalogs.NewEmpty()
 
 		// Add test data
-		for i := 0; i < 100; i++ {
+		for i := range 100 {
 			err := addModelToProvider(source, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
@@ -281,7 +277,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		copies := make([]*catalogs.Builder, 10)
 
 		// Multiple concurrent copies
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			wg.Add(1)
 			go func(idx int) {
 				defer wg.Done()
@@ -332,11 +328,11 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		updates := 100
 
 		// Two goroutines racing to update the same model
-		for i := 0; i < 2; i++ {
+		for i := range 2 {
 			wg.Add(1)
 			go func(writer int) {
 				defer wg.Done()
-				for j := 0; j < updates; j++ {
+				for j := range updates {
 					model := catalogs.Model{
 						ID:          modelID,
 						Name:        fmt.Sprintf("Model by writer %d iteration %d", writer, j),
@@ -361,7 +357,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		catalog2 := catalogs.NewEmpty()
 
 		// Setup initial data
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			model := catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
@@ -374,7 +370,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Goroutine 1: Copy from catalog1 to catalog2
 		go func() {
-			for i := 0; i < 100; i++ {
+			for range 100 {
 				models := catalog1.Models().List()
 				for _, model := range models {
 					_ = addModelToProvider(catalog2, "test-provider", model)
@@ -385,7 +381,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Goroutine 2: Copy from catalog2 to catalog1
 		go func() {
-			for i := 0; i < 100; i++ {
+			for range 100 {
 				models := catalog2.Models().List()
 				for _, model := range models {
 					_ = addModelToProvider(catalog1, "test-provider", model)
@@ -396,7 +392,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Wait with timeout to detect deadlock
 		timeout := time.After(5 * time.Second)
-		for i := 0; i < 2; i++ {
+		for range 2 {
 			select {
 			case <-done:
 				// Success
@@ -412,9 +408,9 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		modelsPerWorker := 100
 
 		// Add models to different providers (one provider per worker)
-		for worker := 0; worker < numWorkers; worker++ {
+		for worker := range numWorkers {
 			providerID := fmt.Sprintf("provider-%d", worker)
-			for i := 0; i < modelsPerWorker; i++ {
+			for i := range modelsPerWorker {
 				err := addModelToProvider(catalog, providerID, catalogs.Model{
 					ID:   fmt.Sprintf("model-%d-%d", worker, i),
 					Name: fmt.Sprintf("Model %d-%d", worker, i),
@@ -427,13 +423,13 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		errors := make(chan error, numWorkers*modelsPerWorker)
 
 		// Concurrent deletions - each worker deletes from their own provider
-		for worker := 0; worker < numWorkers; worker++ {
+		for worker := range numWorkers {
 			wg.Add(1)
 			go func(w int) {
 				defer wg.Done()
 				providerID := fmt.Sprintf("provider-%d", w)
 
-				for i := 0; i < modelsPerWorker; i++ {
+				for i := range modelsPerWorker {
 					modelID := fmt.Sprintf("model-%d-%d", w, i)
 					if err := deleteModelFromProvider(catalog, providerID, modelID); err != nil {
 						// Should not fail since each worker has their own provider
@@ -468,7 +464,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 	b.Run("concurrent_reads", func(b *testing.B) {
 		catalog := catalogs.NewEmpty()
 		// Pre-populate
-		for i := 0; i < 1000; i++ {
+		for i := range 1000 {
 			addModelToProvider(catalog, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),
@@ -504,7 +500,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 		counter := atomic.Int64{}
 
 		// Pre-populate
-		for i := 0; i < 100; i++ {
+		for i := range 100 {
 			addModelToProvider(catalog, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("model-%d", i),
 				Name: fmt.Sprintf("Model %d", i),

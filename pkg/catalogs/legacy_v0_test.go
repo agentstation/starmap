@@ -40,7 +40,7 @@ func TestLegacyV0CompatibilityAdapter(t *testing.T) {
 	}
 	var _ ModelDefinition = definition
 
-	typeOfLegacy := reflect.TypeOf(legacy)
+	typeOfLegacy := reflect.TypeFor[LegacyCatalogV0]()
 	for _, forbidden := range []string{"Definition", "Offering", "ProviderOfferings", "MaterializeRouteAlias"} {
 		if _, found := typeOfLegacy.MethodByName(forbidden); found {
 			t.Fatalf("LegacyCatalogV0 exposes canonical method %s", forbidden)

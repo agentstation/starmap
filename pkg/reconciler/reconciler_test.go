@@ -219,7 +219,7 @@ func TestDeterministicFallbackDoesNotDependOnMapIteration(t *testing.T) {
 	}
 	for _, test := range strategies {
 		t.Run(test.name, func(t *testing.T) {
-			for iteration := 0; iteration < 1_000; iteration++ {
+			for iteration := range 1_000 {
 				values := make(map[sources.ID]any, 2)
 				if iteration%2 == 0 {
 					values["source-z"] = "z"
@@ -592,7 +592,7 @@ func BenchmarkReconciliation(b *testing.B) {
 
 	// Add many models to catalog1
 	models1 := make([]*catalogs.Model, 0, 1000)
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		models1 = append(models1, createTestModel(
 			fmt.Sprintf("model-%d", i),
 			fmt.Sprintf("Model %d", i),
@@ -605,7 +605,7 @@ func BenchmarkReconciliation(b *testing.B) {
 
 	// Add half the models to catalog2 with updates, plus new models
 	models2 := make([]*catalogs.Model, 0, 1000)
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		if i%2 == 0 {
 			// Half the models in second catalog with updates
 			models2 = append(models2, createTestModel(
@@ -655,7 +655,7 @@ func BenchmarkDiffing(b *testing.B) {
 	// Add many models
 	oldModels := make([]*catalogs.Model, 0, 1000)
 	newModels := make([]*catalogs.Model, 0, 1000)
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		model := createTestModel(
 			fmt.Sprintf("model-%d", i),
 			fmt.Sprintf("Model %d", i),

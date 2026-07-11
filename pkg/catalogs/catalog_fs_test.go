@@ -382,7 +382,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 
 	// Reader 1
 	go func() {
-		for i := 0; i < 100; i++ {
+		for range 100 {
 			_ = len(cat.Models().List())
 			_ = cat.Providers().Len()
 		}
@@ -391,7 +391,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 
 	// Reader 2
 	go func() {
-		for i := 0; i < 100; i++ {
+		for range 100 {
 			_, _ = cat.FindModel("gpt-4")
 			_, _ = cat.Provider("openai")
 		}
@@ -409,7 +409,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 				Models: make(map[string]*Model),
 			}
 		}
-		for i := 0; i < 100; i++ {
+		for i := range 100 {
 			model := &Model{
 				ID:   "test-" + string(rune(i)),
 				Name: "Test Model",
@@ -421,7 +421,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	}()
 
 	// Wait for all goroutines
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		<-done
 	}
 }

@@ -410,7 +410,7 @@ func testCommentFormatting(t *testing.T, yaml string) {
 
 	for _, comment := range expectedComments {
 		found := false
-		for _, line := range strings.Split(yaml, "\n") {
+		for line := range strings.SplitSeq(yaml, "\n") {
 			if strings.Contains(line, comment) || strings.HasPrefix(strings.TrimSpace(line), comment) {
 				found = true
 				break

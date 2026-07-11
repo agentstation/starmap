@@ -68,7 +68,7 @@ func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
 }
 
 func TestRouteAliasContainsIdentityNotRoutingPolicy(t *testing.T) {
-	typeOfAlias := reflect.TypeOf(RouteAlias{})
+	typeOfAlias := reflect.TypeFor[RouteAlias]()
 	for _, forbidden := range []string{"Weights", "Fallback", "Tenant", "Policy", "Strategy"} {
 		if _, found := typeOfAlias.FieldByName(forbidden); found {
 			t.Fatalf("RouteAlias exposes routing policy field %s", forbidden)

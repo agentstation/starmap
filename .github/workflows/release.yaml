@@ -8,275 +8,149 @@ on:
 permissions:
   attestations: write
   contents: write
+  discussions: write
   id-token: write
   packages: write
-  discussions: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
+          fetch-depth: 0
           lfs: true
 
-      - name: Set up Go
+      - name: Set up release Go toolchain
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
-          go-version-file: go.mod
+          go-version: "1.26.5"
           cache: true
+
+      - name: Require release tag from main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+      - name: Install pinned release tools
+        run: |
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
+          go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
+          go install github.com/goreleaser/goreleaser/v2@v2.17.0
 
       - name: Check embedded catalog budgets
         run: make embedded-catalog-budget-check
 
-      - name: Install golangci-lint
-        run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0
-
-      - name: Run comprehensive tests
+      - name: Run release verification
         run: |
-          make test
-          make test-race
-          make lint
-
-  check-homebrew-eligibility:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    outputs:
-      eligible: ${{ steps.check.outputs.eligible }}
-      stars: ${{ steps.check.outputs.stars }}
-      forks: ${{ steps.check.outputs.forks }}
-    steps:
-      - name: Check notability requirements
-        id: check
-        run: |
-          # Get repository stats via GitHub API
-          REPO_JSON=$(curl --fail --silent --show-error "https://api.github.com/repos/${{ github.repository }}")
-          STARS=$(echo "$REPO_JSON" | jq '.stargazers_count')
-          FORKS=$(echo "$REPO_JSON" | jq '.forks_count')
-          WATCHERS=$(echo "$REPO_JSON" | jq '.watchers_count')
-          
-          echo "stars=$STARS" >> "$GITHUB_OUTPUT"
-          echo "forks=$FORKS" >> "$GITHUB_OUTPUT"
-          
-          echo "📊 Current Stats:"
-          echo "  Stars: $STARS"
-          echo "  Forks: $FORKS"  
-          echo "  Watchers: $WATCHERS"
-          
-          # Check if we meet requirements (75+ stars OR 30+ forks/watchers)
-          if [[ "$STARS" -ge 75 ]] || [[ "$FORKS" -ge 30 ]] || [[ "$WATCHERS" -ge 30 ]]; then
-            echo "✅ Eligible for homebrew-cask!"
-            echo "eligible=true" >> "$GITHUB_OUTPUT"
-          else
-            NEEDED=$((75 - STARS))
-            echo "📈 Need $NEEDED more stars to qualify for homebrew-cask"
-            echo "📦 Release will still proceed to agentstation/tap/starmap"
-            echo "eligible=false" >> "$GITHUB_OUTPUT"
-          fi
-          
-          echo "✅ Eligibility check completed"
+          make verify
+          make release-check
 
   release:
-    needs: [test, check-homebrew-eligibility]
+    needs: test
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
-      - name: Set up Go
+      - name: Set up release Go toolchain
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
-          go-version-file: go.mod
+          go-version: "1.26.5"
           cache: true
 
-      # Install gomarkdoc for go generate in GoReleaser's before hooks
       - name: Install gomarkdoc
         run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
 
-      # Log in to GitHub Container Registry for ko image pushes
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Install Syft for GoReleaser's SBOM generation (archives)
-      # Note: ko generates SBOMs for container images automatically
       - name: Install Syft
-        uses: anchore/sbom-action/download-syft@7b36ad622f042cab6f59a75c2ac24ccb256e9b45 # v0.20.4
+        uses: anchore/sbom-action/download-syft@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          syft-version: v1.46.0
 
-      # Import GPG key for GoReleaser's artifact signing
-      - name: Import GPG key
+      - name: Import release signing key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
         run: |
           echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-          # Configure GPG for non-interactive use
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           gpgconf --reload gpg-agent
-          # Set up git config for signing
-          git config --global user.signingkey ${{ vars.ORG_GPG_KEY_ID }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
+        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
         with:
           distribution: goreleaser
-          version: "~> v2"
+          version: v2.17.0
           args: release --clean --parallelism 2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+          MACOS_SIGN_P12: ${{ secrets.MACOS_SIGN_P12 }}
+          MACOS_SIGN_PASSWORD: ${{ secrets.MACOS_SIGN_PASSWORD }}
+          MACOS_NOTARY_KEY: ${{ secrets.MACOS_NOTARY_KEY }}
+          MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
+          MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
 
-      - name: Stage immutable catalog generation assets
-        id: catalog-assets
-        run: |
-          go run ./cmd/starmap-catalog-release --output-dir dist/catalog-release > catalog-release.json
-          echo "directory=$(jq -r .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
-
-      - name: Attest catalog archive provenance
-        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+      - name: Attest released archives and SBOMs
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
         with:
-          subject-path: "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz"
+          subject-checksums: dist/checksums.txt
 
-      - name: Verify catalog archive repository and workflow identity
+      - name: Verify downloaded release assets and publisher identity
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh attestation verify \
-            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
-            --deny-self-hosted-runners
-
-      - name: Publish immutable catalog generation assets
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release upload "${GITHUB_REF_NAME}" \
-            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz" \
-            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
-            "${{ steps.catalog-assets.outputs.directory }}/starmap-catalog.intoto.json"
-
-      - name: Set up ORAS for optional catalog mirror
-        if: vars.STARMAP_CATALOG_OCI_MIRROR == 'true'
-        uses: oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6 # v1
-        with:
-          version: 1.3.2
-
-      - name: Publish and verify optional OCI catalog mirror
-        if: vars.STARMAP_CATALOG_OCI_MIRROR == 'true'
-        env:
-          OCI_REPOSITORY: ${{ vars.STARMAP_CATALOG_OCI_REPOSITORY }}
-        run: |
-          DIRECTORY=$(realpath "${{ steps.catalog-assets.outputs.directory }}")
-          GENERATION_ID=$(jq -er .generation_id catalog-release.json)
-          ARCHIVE_CHECKSUM=$(jq -er .archive_checksum catalog-release.json)
-          ARCHIVE_DIGEST=${ARCHIVE_CHECKSUM#sha256:}
-          OWNER=${GITHUB_REPOSITORY_OWNER,,}
-          OCI_REPOSITORY=${OCI_REPOSITORY:-ghcr.io/${OWNER}/starmap-catalog}
-          OCI_TAG=sha256-${ARCHIVE_DIGEST}
-          PUSH_REPORT=${RUNNER_TEMP}/catalog-oci-push.json
-          PULL_REPORT=${RUNNER_TEMP}/catalog-oci-pull.json
-          PULL_DIRECTORY=${RUNNER_TEMP}/catalog-oci-pull
-
+          DOWNLOAD_DIRECTORY=${RUNNER_TEMP}/release-download
+          mkdir -p "$DOWNLOAD_DIRECTORY"
+          gh release download "$GITHUB_REF_NAME" --dir "$DOWNLOAD_DIRECTORY"
+          cmp dist/checksums.txt "$DOWNLOAD_DIRECTORY/checksums.txt"
+          cmp dist/checksums.txt.sig "$DOWNLOAD_DIRECTORY/checksums.txt.sig"
           (
-            cd "$DIRECTORY"
-            oras push "${OCI_REPOSITORY}:${OCI_TAG}" \
-              --artifact-type "application/vnd.agentstation.starmap.catalog-mirror.v1" \
-              --annotation "ai.agentstation.starmap.generation=${GENERATION_ID}" \
-              "starmap-catalog.tar.gz:application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip" \
-              "starmap-catalog.intoto.json:application/vnd.in-toto+json" \
-              "starmap-catalog.tar.gz.sha256:text/plain" \
-              --format json
-          ) > "$PUSH_REPORT"
+            cd "$DOWNLOAD_DIRECTORY"
+            gpg --batch --verify checksums.txt.sig checksums.txt
+            sha256sum --check checksums.txt
+          )
+          while read -r _ asset; do
+            gh attestation verify \
+              "$DOWNLOAD_DIRECTORY/$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
+              --deny-self-hosted-runners
+          done < "$DOWNLOAD_DIRECTORY/checksums.txt"
 
-          REFERENCE=$(jq -er .reference "$PUSH_REPORT")
-          test "${REFERENCE#*@sha256:}" != "$REFERENCE"
-          rm -rf "$PULL_DIRECTORY"
-          mkdir -p "$PULL_DIRECTORY"
-          oras pull "$REFERENCE" --output "$PULL_DIRECTORY" --format json > "$PULL_REPORT"
-
-          PULLED_ARCHIVE_CHECKSUM=$(jq -er \
-            '.files[] | select(.mediaType == "application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip") | .digest' \
-            "$PULL_REPORT")
-          test "$PULLED_ARCHIVE_CHECKSUM" = "$ARCHIVE_CHECKSUM"
-          (cd "$PULL_DIRECTORY" && sha256sum --check "$DIRECTORY/starmap-catalog.tar.gz.sha256")
-          cmp "$DIRECTORY/starmap-catalog.tar.gz" "$PULL_DIRECTORY/starmap-catalog.tar.gz"
-          cmp "$DIRECTORY/starmap-catalog.intoto.json" "$PULL_DIRECTORY/starmap-catalog.intoto.json"
-
-      - name: Create first-time submission issue
-        if: needs.check-homebrew-eligibility.outputs.eligible == 'true'
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
-        with:
-          script: |
-            // Check if starmap already exists in homebrew-cask
-            try {
-              const response = await fetch('https://formulae.brew.sh/api/cask/starmap.json');
-              if (response.ok) {
-                console.log('✅ Starmap already in homebrew-cask!');
-                return;
-              }
-            } catch (e) {
-              // Not in homebrew-cask yet, continue
-            }
-            
-            // Check for existing open issue
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: 'homebrew-cask-ready',
-              state: 'open'
-            });
-            
-            if (issues.data.length === 0) {
-              const tag = context.ref.replace('refs/tags/', '');
-              
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `🎉 Submit ${tag} to homebrew-cask`,
-                body: `## Starmap is eligible for homebrew-cask! 🚀
-                
-                ### Current Stats
-                - ⭐ **Stars**: ${{ needs.check-homebrew-eligibility.outputs.stars }}
-                - 🍴 **Forks**: ${{ needs.check-homebrew-eligibility.outputs.forks }}
-                
-                ### Version to Submit
-                **${tag}** - The release that just completed
-                
-                ### Manual First Submission Required
-                
-                Since this is our first submission to homebrew-cask, it must be done manually:
-                
-                1. ✅ GoReleaser has generated the cask in our tap
-                2. 📋 Copy from: https://github.com/agentstation/homebrew-tap/blob/main/Casks/starmap.rb  
-                3. 🔧 Test locally with \`brew audit --cask starmap\`
-                4. 📝 Submit PR to homebrew-cask manually (one-time)
-                
-                ### After First Acceptance
-                Future updates can be automated with the \`bump-homebrew-cask.yaml\` workflow.
-                
-                ### References
-                - [Release](https://github.com/agentstation/starmap/releases/tag/${tag})
-                - [Submission Guide](.github/HOMEBREW_SUBMISSION.md)
-                - [Homebrew-Cask Contributing](https://github.com/Homebrew/homebrew-cask/blob/master/CONTRIBUTING.md)
-                `,
-                labels: ['homebrew-cask-ready', 'enhancement']
-              });
-              
-              console.log('✅ Created homebrew-cask submission issue');
-            } else {
-              console.log('📝 Issue already exists, skipping creation');
-            }
-
-      - name: Upload release artifacts
+      - name: Upload diagnostics on failure
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: dist
+          name: release-dist
           path: dist/
+
+  verify-homebrew:
+    needs: release
+    if: ${{ !contains(github.ref_name, '-') }}
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install from AgentStation tap
+        run: brew install agentstation/tap/starmap
+
+      - name: Verify installed release
+        run: |
+          EXPECTED=${GITHUB_REF_NAME#v}
+          test "$(starmap version | awk '{print $2}')" = "$EXPECTED"

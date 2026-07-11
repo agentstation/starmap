@@ -141,7 +141,7 @@ func TestHub_ConcurrentBroadcast(t *testing.T) {
 	// Broadcast multiple messages concurrently
 	done := make(chan bool)
 	go func() {
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			hub.Broadcast(Message{
 				Type: "test",
 				Data: map[string]any{"i": i},
@@ -188,7 +188,7 @@ func TestHub_MultipleClients(t *testing.T) {
 	// Register multiple clients
 	const numClients = 20
 	clients := make([]*Client, numClients)
-	for i := 0; i < numClients; i++ {
+	for i := range numClients {
 		clients[i] = NewClient("client-"+string(rune(i)), hub, nil)
 		hub.Register(clients[i])
 	}
@@ -241,7 +241,7 @@ func TestHub_ClientBufferFull(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 
 	// Send messages rapidly
-	for i := 0; i < 20; i++ {
+	for i := range 20 {
 		hub.Broadcast(Message{
 			Type: "rapid",
 			Data: map[string]any{"i": i},
@@ -309,7 +309,7 @@ func TestHub_ConcurrentRegisterUnregister(t *testing.T) {
 	done := make(chan bool, numOperations*2)
 
 	// Registrations
-	for i := 0; i < numOperations; i++ {
+	for i := range numOperations {
 		go func(id int) {
 			client := NewClient("client-"+string(rune(id)), hub, nil)
 			hub.Register(client)
@@ -318,7 +318,7 @@ func TestHub_ConcurrentRegisterUnregister(t *testing.T) {
 	}
 
 	// Unregistrations (for some clients) via unregister channel
-	for i := 0; i < numOperations/2; i++ {
+	for i := range numOperations / 2 {
 		go func(id int) {
 			time.Sleep(5 * time.Millisecond)
 			client := NewClient("client-"+string(rune(id)), hub, nil)
@@ -328,7 +328,7 @@ func TestHub_ConcurrentRegisterUnregister(t *testing.T) {
 	}
 
 	// Wait for all operations
-	for i := 0; i < numOperations+numOperations/2; i++ {
+	for range numOperations + numOperations/2 {
 		<-done
 	}
 
@@ -359,7 +359,7 @@ func TestHub_MessageOrdering(t *testing.T) {
 
 	// Send ordered messages
 	const numMessages = 20
-	for i := 0; i < numMessages; i++ {
+	for i := range numMessages {
 		hub.Broadcast(Message{
 			Type: "ordered",
 			Data: map[string]any{"seq": i},
@@ -367,7 +367,7 @@ func TestHub_MessageOrdering(t *testing.T) {
 	}
 
 	// Verify order is maintained
-	for i := 0; i < numMessages; i++ {
+	for i := range numMessages {
 		select {
 		case msg := <-client.send:
 			data, ok := msg.Data.(map[string]any)
@@ -405,7 +405,7 @@ func TestHub_StressTest(t *testing.T) {
 	// Register many clients
 	const numClients = 100
 	clients := make([]*Client, numClients)
-	for i := 0; i < numClients; i++ {
+	for i := range numClients {
 		clients[i] = NewClient("stress-"+string(rune(i)), hub, nil)
 		hub.Register(clients[i])
 	}
@@ -415,7 +415,7 @@ func TestHub_StressTest(t *testing.T) {
 	const numMessages = 100
 	done := make(chan bool)
 	go func() {
-		for i := 0; i < numMessages; i++ {
+		for i := range numMessages {
 			hub.Broadcast(Message{
 				Type: "stress",
 				Data: map[string]any{"id": i},
@@ -496,7 +496,7 @@ func TestClient_WritePump(t *testing.T) {
 	go client.WritePump()
 
 	// Send messages through hub
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		msg := Message{
 			Type:      "test",
 			Timestamp: time.Now(),
@@ -538,7 +538,7 @@ func TestClient_ReadPump(t *testing.T) {
 		defer func() { serverDone <- true }()
 
 		// Send test messages to client
-		for i := 0; i < 3; i++ {
+		for i := range 3 {
 			msg := Message{
 				Type:      "server.test",
 				Timestamp: time.Now(),
@@ -943,7 +943,7 @@ func TestHub_MultipleRegistersBeforeRun(t *testing.T) {
 	done := make(chan struct{})
 
 	go func() {
-		for i := 0; i < numClients; i++ {
+		for range numClients {
 			conn := &websocket.Conn{}
 			client := NewClient("test-client", hub, conn)
 			hub.Register(client)

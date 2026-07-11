@@ -27,7 +27,7 @@ Package websocket provides WebSocket support for real\-time catalog updates.
 
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L148-L153>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L147-L152>)
 
 Client represents a WebSocket client connection.
 
@@ -38,7 +38,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L156>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L155>)
 
 ```go
 func NewClient(id string, hub *Hub, conn *websocket.Conn) *Client
@@ -47,7 +47,7 @@ func NewClient(id string, hub *Hub, conn *websocket.Conn) *Client
 NewClient creates a new WebSocket client.
 
 <a name="Client.ReadPump"></a>
-### func \(\*Client\) [ReadPump](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L180>)
+### func \(\*Client\) [ReadPump](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L179>)
 
 ```go
 func (c *Client) ReadPump()
@@ -56,7 +56,7 @@ func (c *Client) ReadPump()
 ReadPump pumps messages from the WebSocket connection to the hub.
 
 <a name="Client.WritePump"></a>
-### func \(\*Client\) [WritePump](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L205>)
+### func \(\*Client\) [WritePump](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L204>)
 
 ```go
 func (c *Client) WritePump()
@@ -130,7 +130,7 @@ func (h *Hub) Run(ctx context.Context)
 Run starts the hub's main loop. Should be called in a goroutine. The hub will run until the context is cancelled.
 
 <a name="Message"></a>
-## type [Message](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L141-L145>)
+## type [Message](<https://github.com/agentstation/starmap/blob/main/internal/server/websocket/hub.go#L140-L144>)
 
 Message represents a WebSocket message.
 

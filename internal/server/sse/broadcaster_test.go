@@ -120,7 +120,7 @@ func TestBroadcaster_MultipleClients(t *testing.T) {
 	// Register multiple clients
 	const numClients = 10
 	clients := make([]chan Event, numClients)
-	for i := 0; i < numClients; i++ {
+	for i := range numClients {
 		clients[i] = make(chan Event, 256)
 		b.newClients <- clients[i]
 	}
@@ -164,7 +164,7 @@ func TestBroadcaster_BroadcastChannelFull(t *testing.T) {
 	// This will cause the channel to fill up
 
 	// Fill the channel (capacity is 256)
-	for i := 0; i < 256; i++ {
+	for i := range 256 {
 		b.Broadcast(Event{
 			Event: "fill",
 			Data:  map[string]any{"i": i},
@@ -259,13 +259,13 @@ func TestBroadcaster_ClientBufferFull(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 
 	// Fill client buffer
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		b.Broadcast(Event{Event: "fill", Data: map[string]any{"i": i}})
 		time.Sleep(5 * time.Millisecond)
 	}
 
 	// Broadcast more events - should skip when buffer full
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		b.Broadcast(Event{Event: "overflow", Data: map[string]any{"i": i}})
 		time.Sleep(5 * time.Millisecond)
 	}
@@ -352,7 +352,7 @@ func TestBroadcaster_ServeHTTP(t *testing.T) {
 	}()
 
 	// Wait for client to register
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		if b.ClientCount() == 1 {
 			break
 		}
@@ -573,7 +573,7 @@ func TestBroadcaster_ConcurrentBroadcast(t *testing.T) {
 	const numEvents = 50
 	done := make(chan bool)
 	go func() {
-		for i := 0; i < numEvents; i++ {
+		for i := range numEvents {
 			b.Broadcast(Event{
 				Event: "concurrent",
 				Data:  map[string]any{"i": i},
@@ -671,7 +671,7 @@ func TestBroadcaster_MultipleRegistersBeforeRun(t *testing.T) {
 	done := make(chan struct{})
 
 	go func() {
-		for i := 0; i < numClients; i++ {
+		for range numClients {
 			client := make(chan Event, 256)
 			b.newClients <- client
 		}

@@ -8,7 +8,7 @@ trap 'rm -f "$OUTPUT"' EXIT
 cd "$ROOT"
 
 status=0
-GOTOOLCHAIN="${GOTOOLCHAIN:-go1.25.12}" \
+GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.5}" \
 	go run ./cmd/starmap providers --test --timeout 30s --no-color >"$OUTPUT" 2>&1 || status=$?
 
 credential_names=(

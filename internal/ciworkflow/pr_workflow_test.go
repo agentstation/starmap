@@ -11,9 +11,17 @@ import (
 func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.T) {
 	workflow := readFixture(t, "../../.github/workflows/pr.yaml")
 	module := readFixture(t, "../../go.mod")
-	goVersion := regexp.MustCompile(`(?m)^go ([0-9]+\.[0-9]+\.[0-9]+)$`).FindStringSubmatch(module)
-	if len(goVersion) != 2 {
+	minimumVersion := regexp.MustCompile(`(?m)^go ([0-9]+\.[0-9]+\.[0-9]+)$`).FindStringSubmatch(module)
+	if len(minimumVersion) != 2 {
 		t.Fatal("go.mod does not declare an exact three-component Go version")
+	}
+	preferredVersion := regexp.MustCompile(`(?m)^toolchain go([0-9]+\.[0-9]+\.[0-9]+)$`).FindStringSubmatch(module)
+	if len(preferredVersion) != 2 {
+		t.Fatal("go.mod does not declare an exact preferred Go toolchain")
+	}
+	minimumPatchVersion := "1.25.12"
+	if minimumVersion[1] != "1.25.0" {
+		t.Fatalf("minimum Go language version = %q, want 1.25.0", minimumVersion[1])
 	}
 	checks := []string{
 		"name: Pull Request",
@@ -26,7 +34,10 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"name: Run verification gate",
 		"  security-reliability:",
 		"name: Security & Reliability",
-		`go-version: "` + goVersion[1] + `"`,
+		"name: Test minimum supported Go version",
+		`go-version: "` + minimumPatchVersion + `"`,
+		"GOTOOLCHAIN: local",
+		`go-version: "` + preferredVersion[1] + `"`,
 		"run: make verify",
 		"golangci-lint@v2.5.0",
 		"gomarkdoc@v1.1.0",

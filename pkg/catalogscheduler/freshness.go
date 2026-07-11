@@ -2,6 +2,7 @@ package catalogscheduler
 
 import (
 	"fmt"
+	"maps"
 	"sort"
 	"strings"
 	"sync"
@@ -85,7 +86,7 @@ type SourceFreshness struct {
 	Source               catalogmeta.SourceID                `json:"source"`
 	Required             bool                                `json:"required"`
 	ObservationID        string                              `json:"observation_id,omitempty"`
-	ObservedAt           time.Time                           `json:"observed_at,omitempty"`
+	ObservedAt           time.Time                           `json:"observed_at"`
 	Age                  time.Duration                       `json:"-"`
 	AgeSeconds           int64                               `json:"age_seconds"`
 	DegradedAfter        time.Duration                       `json:"-"`
@@ -167,9 +168,7 @@ func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink)
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	next := make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(m.observations)+len(validated))
-	for source, observation := range m.observations {
-		next[source] = observation
-	}
+	maps.Copy(next, m.observations)
 	for _, observation := range validated {
 		if !m.monitors(observation.Source) {
 			continue
@@ -223,9 +222,7 @@ func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error) {
 	m.mu.RLock()
 	policy := append([]SourceFreshnessSLA(nil), m.policy...)
 	observations := make(map[catalogmeta.SourceID]catalogs.SourceObservationLink, len(m.observations))
-	for source, observation := range m.observations {
-		observations[source] = observation
-	}
+	maps.Copy(observations, m.observations)
 	m.mu.RUnlock()
 
 	report := FreshnessReport{EvaluatedAt: at, Ready: true, Sources: make([]SourceFreshness, 0, len(policy))}

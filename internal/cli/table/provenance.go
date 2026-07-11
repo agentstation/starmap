@@ -116,8 +116,8 @@ func MatchField(field string, patterns []string) bool {
 		}
 
 		// Also support prefix matching for patterns like "pricing.*"
-		if strings.HasSuffix(patternLower, ".*") {
-			prefix := strings.TrimSuffix(patternLower, ".*")
+		if before, ok := strings.CutSuffix(patternLower, ".*"); ok {
+			prefix := before
 			if strings.HasPrefix(fieldLower, prefix+".") || fieldLower == prefix {
 				return true
 			}
