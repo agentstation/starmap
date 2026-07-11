@@ -175,11 +175,11 @@ const (
 
 // Path constants.
 const (
-	// DefaultCatalogPath is the default path for the local catalog.
-	DefaultCatalogPath = "~/.starmap"
+	// DefaultCatalogDatabasePath is the default durable canonical catalog root.
+	DefaultCatalogDatabasePath = "~/.starmap/catalog"
 
-	// DefaultCatalogStorePath is the default generation-store root.
-	DefaultCatalogStorePath = "~/.starmap/catalog-store"
+	// DefaultCatalogExportPath is the default editable YAML catalog tree.
+	DefaultCatalogExportPath = "~/.starmap/exports/catalog"
 
 	// DefaultConfigPath is the default path for configuration files.
 	DefaultConfigPath = "~/.starmap/config.yaml"
@@ -197,10 +197,10 @@ const (
 	DefaultModelsDevGitPath = "~/.starmap/sources/models.dev-git"
 
 	// DefaultModelsDevCachePath is the default path for models.dev HTTP cache.
-	DefaultModelsDevCachePath = "~/.starmap/sources/models.dev"
+	DefaultModelsDevCachePath = "~/.starmap/cache/models.dev"
 
-	// DefaultProvenancePath is the default path for provenance tracking data.
-	DefaultProvenancePath = "~/.starmap/provenance.yaml"
+	// DefaultProvenancePath is the default provenance file in the editable export.
+	DefaultProvenancePath = "~/.starmap/exports/catalog/provenance.yaml"
 )
 
 // Format constants.

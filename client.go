@@ -36,13 +36,13 @@
 //	}
 //
 //	// Configure mutation with an explicit writable generation store
-//	store, err := catalogstore.NewFilesystem("./catalog-store")
+//	store, err := catalogstore.NewFilesystem("./catalog")
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
 //	sm, err = starmap.New(
 //	    WithCatalogStore(store),
-//	    WithLocalPath("./custom-catalog"),
+//	    WithCatalogExportPath("./catalog-export"),
 //	)
 package starmap
 
@@ -164,6 +164,9 @@ func New(opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := validateCatalogPathSeparation(options.catalogStore, options.catalogExportPath); err != nil {
+		return nil, err
+	}
 
 	// create the client instance
 	sm := &Client{
@@ -177,9 +180,9 @@ func New(opts ...Option) (*Client, error) {
 	// Load and verify the embedded bootstrap before any optional local overlay.
 	log := logging.Debug()
 	log.Msg("Creating local catalog (embedded or file-based)")
-	localPath := sm.options.localPath
+	exportPath := sm.options.catalogExportPath
 	if sm.options.embeddedCatalogEnabled {
-		localPath = ""
+		exportPath = ""
 	}
 	embeddedBuilder, err := catalogs.NewEmbedded()
 	if err != nil {
@@ -220,14 +223,14 @@ func New(opts ...Option) (*Client, error) {
 			return nil, errors.WrapResource("load", "stored current catalog generation", "current", currentErr)
 		}
 	}
-	if generationID == "" && localPath != "" {
-		local, localErr := catalogs.NewLocal(localPath)
+	if generationID == "" && exportPath != "" {
+		local, localErr := catalogs.NewLocal(exportPath)
 		if localErr != nil {
-			return nil, errors.WrapResource("create", "local catalog", localPath, localErr)
+			return nil, errors.WrapResource("create", "catalog export", exportPath, localErr)
 		}
 		initial, err = local.Build()
 		if err != nil {
-			return nil, errors.WrapResource("publish", "initial catalog", localPath, err)
+			return nil, errors.WrapResource("publish", "initial catalog", exportPath, err)
 		}
 		usingEmbeddedBootstrap = false
 	}

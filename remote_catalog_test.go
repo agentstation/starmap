@@ -29,7 +29,7 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 		t.Fatalf("Write corrupt local view: %v", err)
 	}
 
-	client, err := New(WithCatalogStore(store), WithLocalPath(localPath))
+	client, err := New(WithCatalogStore(store), WithCatalogExportPath(localPath))
 	if err != nil {
 		t.Fatalf("New rejected valid durable current because local view was corrupt: %v", err)
 	}

@@ -90,7 +90,7 @@ type httpCacheMetadata struct {
 // NewHTTPClient creates a new models.dev HTTP client.
 func NewHTTPClient(outputDir string) *HTTPClient {
 	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
+		outputDir = expandPath(constants.DefaultCachePath)
 	}
 	cacheDir := filepath.Join(outputDir, "models.dev")
 	return &HTTPClient{

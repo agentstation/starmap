@@ -59,7 +59,7 @@ when API keys are configured.`,
 	})
 
 	// Add global flags
-	rootCmd.PersistentFlags().StringVar(&a.config.ConfigFile, "config", "", "config file (default is $HOME/.starmap.yaml)")
+	rootCmd.PersistentFlags().StringVar(&a.config.ConfigFile, "config", "", "config file (default is $HOME/.starmap/config.yaml)")
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output (shortcut for --log-level=debug)")
 	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output (shortcut for --log-level=warn)")
 	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")

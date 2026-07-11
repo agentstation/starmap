@@ -2,7 +2,10 @@ package app
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
+
+	"github.com/agentstation/starmap/pkg/constants"
 )
 
 // TestLoadConfig verifies basic config loading.
@@ -21,6 +24,54 @@ func TestLoadConfig(t *testing.T) {
 	// LogFormat should have a default
 	if config.LogFormat == "" {
 		t.Error("LogFormat not set to default")
+	}
+}
+
+func TestConfigCatalogPathVocabularyHasNoPrelaunchAliases(t *testing.T) {
+	t.Setenv("CATALOG_PATH", "/canonical")
+	t.Setenv("CATALOG_EXPORT_PATH", "/exports")
+	t.Setenv("CATALOG_STORE_PATH", "/ignored-draft")
+	t.Setenv("LOCAL_PATH", "/ignored-local")
+	config, err := LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig: %v", err)
+	}
+	if config.CatalogPath != "/canonical" || config.CatalogExportPath != "/exports" {
+		t.Fatalf("paths = %q %q", config.CatalogPath, config.CatalogExportPath)
+	}
+}
+
+func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("CONFIG", "")
+	canonical := filepath.Join(home, ".starmap", "config.yaml")
+	legacy := filepath.Join(home, ".starmap.yaml")
+	if err := os.MkdirAll(filepath.Dir(canonical), constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	if err := os.WriteFile(canonical, []byte("catalog_path: /canonical\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile canonical: %v", err)
+	}
+	if err := os.WriteFile(legacy, []byte("catalog_path: /ignored-legacy\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile legacy: %v", err)
+	}
+	config, err := LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig: %v", err)
+	}
+	if config.ConfigFile != canonical || config.CatalogPath != "/canonical" {
+		t.Fatalf("config = %#v, want canonical file", config)
+	}
+	if err := os.Remove(canonical); err != nil {
+		t.Fatalf("Remove canonical: %v", err)
+	}
+	config, err = LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig legacy: %v", err)
+	}
+	if config.ConfigFile == legacy || config.CatalogPath != "" {
+		t.Fatalf("legacy config was discovered: %#v", config)
 	}
 }
 
@@ -163,22 +214,22 @@ func TestConfig_LoggingOptions(t *testing.T) {
 	}
 }
 
-// TestConfig_LocalPath verifies local path configuration.
-func TestConfig_LocalPath(t *testing.T) {
+// TestConfig_CatalogExportPath verifies editable export path configuration.
+func TestConfig_CatalogExportPath(t *testing.T) {
 	// Save original env
-	oldPath := os.Getenv("LOCAL_PATH")
-	defer os.Setenv("LOCAL_PATH", oldPath)
+	oldPath := os.Getenv("CATALOG_EXPORT_PATH")
+	defer os.Setenv("CATALOG_EXPORT_PATH", oldPath)
 
 	// Set test value
 	testPath := "/tmp/starmap-test"
-	os.Setenv("LOCAL_PATH", testPath)
+	os.Setenv("CATALOG_EXPORT_PATH", testPath)
 
 	config, err := LoadConfig()
 	if err != nil {
 		t.Fatalf("LoadConfig() failed: %v", err)
 	}
 
-	if config.LocalPath != testPath {
-		t.Errorf("LocalPath = %s, want %s", config.LocalPath, testPath)
+	if config.CatalogExportPath != testPath {
+		t.Errorf("CatalogExportPath = %s, want %s", config.CatalogExportPath, testPath)
 	}
 }

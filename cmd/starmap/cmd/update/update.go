@@ -112,7 +112,7 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	// Build update options - use default output path if not specified
 	outputPath := flags.OutputDir
 	if outputPath == "" {
-		outputPath = expandPath(constants.DefaultCatalogPath)
+		outputPath = expandPath(constants.DefaultCatalogExportPath)
 	}
 	// Support environment variable fallback for sources directory
 	sourcesDir := flags.SourcesDir

@@ -17,7 +17,7 @@ func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (*
 
 	// If input path is provided, create custom starmap with that path
 	if inputPath != "" {
-		sm, err = app.Starmap(starmap.WithLocalPath(inputPath))
+		sm, err = app.Starmap(starmap.WithCatalogExportPath(inputPath))
 		if err != nil {
 			return nil, errors.WrapResource("create", "starmap", "files catalog", err)
 		}

@@ -3,13 +3,12 @@ package app
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-
-	"github.com/agentstation/starmap/pkg/constants"
 )
 
 // Config holds the application configuration loaded from various sources
@@ -25,8 +24,10 @@ type Config struct {
 	ConfigFile string
 
 	// Starmap configuration
-	LocalPath                     string
-	CatalogStorePath              string
+	// CatalogExportPath is an optional editable YAML import/export tree.
+	CatalogExportPath string
+	// CatalogPath is the durable canonical catalog database root.
+	CatalogPath                   string
 	UseEmbeddedCatalog            bool
 	EmbeddedBootstrapMaxAge       time.Duration
 	EmbeddedBootstrapMaxSizeBytes int64
@@ -44,11 +45,12 @@ type Config struct {
 // 1. Command-line flags (handled by cobra)
 // 2. Environment variables
 // 3. .env files
-// 4. Config file (~/.starmap.yaml)
+// 4. Config file (~/.starmap/config.yaml)
 // 5. Defaults.
 func LoadConfig() (*Config, error) {
 	// Load .env files first (before Viper env binding)
 	loadEnvFiles()
+	viper.Reset()
 
 	// Set up Viper for environment variables
 	viper.AutomaticEnv()
@@ -65,18 +67,18 @@ func LoadConfig() (*Config, error) {
 	if configFile != "" {
 		viper.SetConfigFile(configFile)
 	} else {
-		// Search for config in standard locations
+		// Use the canonical namespaced configuration file.
 		home, err := os.UserHomeDir()
 		if err == nil {
-			viper.AddConfigPath(home)
-			viper.AddConfigPath(".")
-			viper.SetConfigType("yaml")
-			viper.SetConfigName(".starmap")
+			viper.SetConfigFile(filepath.Join(home, ".starmap", "config.yaml"))
 		}
 	}
 
-	// Read config file (ignore error if not found)
-	_ = viper.ReadInConfig()
+	// Read config file (ignore error if not found).
+	configFileUsed := ""
+	if err := viper.ReadInConfig(); err == nil {
+		configFileUsed = viper.ConfigFileUsed()
+	}
 
 	// Build config from viper
 	config := &Config{
@@ -87,11 +89,11 @@ func LoadConfig() (*Config, error) {
 		Output:  viper.GetString("output"),
 
 		// Config file
-		ConfigFile: viper.ConfigFileUsed(),
+		ConfigFile: configFileUsed,
 
 		// Starmap configuration
-		LocalPath:                     viper.GetString("local_path"),
-		CatalogStorePath:              viper.GetString("catalog_store_path"),
+		CatalogExportPath:             viper.GetString("catalog_export_path"),
+		CatalogPath:                   viper.GetString("catalog_path"),
 		UseEmbeddedCatalog:            viper.GetBool("use_embedded_catalog"),
 		EmbeddedBootstrapMaxAge:       viper.GetDuration("embedded_bootstrap_max_age"),
 		EmbeddedBootstrapMaxSizeBytes: viper.GetInt64("embedded_bootstrap_max_size_bytes"),
@@ -105,11 +107,6 @@ func LoadConfig() (*Config, error) {
 		LogLevel:  getEnvOrDefault("LOG_LEVEL", ""),
 		LogFormat: getEnvOrDefault("LOG_FORMAT", "auto"),
 		LogOutput: getEnvOrDefault("LOG_OUTPUT", "stderr"),
-	}
-
-	// Set defaults
-	if config.CatalogStorePath == "" {
-		config.CatalogStorePath = constants.DefaultCatalogStorePath
 	}
 
 	return config, nil
