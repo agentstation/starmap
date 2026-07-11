@@ -21,6 +21,8 @@ const (
 	// Sync events (from sync operations).
 	SyncStarted   EventType = "sync.started"
 	SyncCompleted EventType = "sync.completed"
+	// CatalogPublished is emitted once a durable generation becomes visible.
+	CatalogPublished EventType = "catalog.published"
 
 	// Client events (from transport layers).
 	ClientConnected EventType = "client.connected"

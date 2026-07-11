@@ -3,19 +3,18 @@ package providers
 
 import (
 	"os"
-	"sort"
-	"strings"
 	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/table"
+	"github.com/agentstation/starmap/internal/catalog/query"
+	"github.com/agentstation/starmap/internal/cli/constants"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
+	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -85,29 +84,10 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 	// Get all providers
 	allProviders := cat.Providers().List()
 
-	// Apply search filter if specified
-	var filtered []catalogs.Provider
-	if flags.Search != "" {
-		searchLower := strings.ToLower(flags.Search)
-		for _, p := range allProviders {
-			if strings.Contains(strings.ToLower(string(p.ID)), searchLower) ||
-				strings.Contains(strings.ToLower(p.Name), searchLower) {
-				filtered = append(filtered, p)
-			}
-		}
-	} else {
-		filtered = allProviders
-	}
-
-	// Sort providers
-	sort.Slice(filtered, func(i, j int) bool {
-		return filtered[i].ID < filtered[j].ID
+	filtered := query.Providers(allProviders, query.ProviderOptions{
+		Search: flags.Search,
+		Limit:  flags.Limit,
 	})
-
-	// Apply limit
-	if flags.Limit > 0 && len(filtered) > flags.Limit {
-		filtered = filtered[:flags.Limit]
-	}
 
 	// Create auth checker and get supported providers
 	checker := auth.NewChecker()

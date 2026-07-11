@@ -30,7 +30,7 @@ Package response provides standardized HTTP response structures and helpers for 
 
 
 <a name="BadRequest"></a>
-## func [BadRequest](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L68>)
+## func [BadRequest](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L68>)
 
 ```go
 func BadRequest(w http.ResponseWriter, message, details string)
@@ -39,7 +39,7 @@ func BadRequest(w http.ResponseWriter, message, details string)
 BadRequest writes a 400 error response.
 
 <a name="Created"></a>
-## func [Created](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L63>)
+## func [Created](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L63>)
 
 ```go
 func Created(w http.ResponseWriter, data any)
@@ -48,7 +48,7 @@ func Created(w http.ResponseWriter, data any)
 Created writes a successful response with 201 status.
 
 <a name="ErrorFromType"></a>
-## func [ErrorFromType](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L121>)
+## func [ErrorFromType](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L121>)
 
 ```go
 func ErrorFromType(w http.ResponseWriter, err error)
@@ -57,7 +57,7 @@ func ErrorFromType(w http.ResponseWriter, err error)
 ErrorFromType maps typed errors to appropriate HTTP responses.
 
 <a name="InternalError"></a>
-## func [InternalError](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L101>)
+## func [InternalError](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L101>)
 
 ```go
 func InternalError(w http.ResponseWriter, err error)
@@ -66,7 +66,7 @@ func InternalError(w http.ResponseWriter, err error)
 InternalError writes a 500 error response.
 
 <a name="JSON"></a>
-## func [JSON](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L50>)
+## func [JSON](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L50>)
 
 ```go
 func JSON(w http.ResponseWriter, status int, resp Response)
@@ -75,7 +75,7 @@ func JSON(w http.ResponseWriter, status int, resp Response)
 JSON writes a JSON response with the given status code.
 
 <a name="MethodNotAllowed"></a>
-## func [MethodNotAllowed](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L83>)
+## func [MethodNotAllowed](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L83>)
 
 ```go
 func MethodNotAllowed(w http.ResponseWriter, method string)
@@ -84,7 +84,7 @@ func MethodNotAllowed(w http.ResponseWriter, method string)
 MethodNotAllowed writes a 405 error response.
 
 <a name="NotFound"></a>
-## func [NotFound](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L78>)
+## func [NotFound](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L78>)
 
 ```go
 func NotFound(w http.ResponseWriter, message, details string)
@@ -93,7 +93,7 @@ func NotFound(w http.ResponseWriter, message, details string)
 NotFound writes a 404 error response.
 
 <a name="OK"></a>
-## func [OK](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L58>)
+## func [OK](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L58>)
 
 ```go
 func OK(w http.ResponseWriter, data any)
@@ -102,7 +102,7 @@ func OK(w http.ResponseWriter, data any)
 OK writes a successful response with 200 status.
 
 <a name="RateLimited"></a>
-## func [RateLimited](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L92>)
+## func [RateLimited](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L92>)
 
 ```go
 func RateLimited(w http.ResponseWriter, message string)
@@ -111,7 +111,7 @@ func RateLimited(w http.ResponseWriter, message string)
 RateLimited writes a 429 error response.
 
 <a name="ServiceUnavailable"></a>
-## func [ServiceUnavailable](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L112>)
+## func [ServiceUnavailable](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L112>)
 
 ```go
 func ServiceUnavailable(w http.ResponseWriter, message string)
@@ -120,7 +120,7 @@ func ServiceUnavailable(w http.ResponseWriter, message string)
 ServiceUnavailable writes a 503 error response.
 
 <a name="Unauthorized"></a>
-## func [Unauthorized](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L73>)
+## func [Unauthorized](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L73>)
 
 ```go
 func Unauthorized(w http.ResponseWriter, message, details string)
@@ -129,7 +129,7 @@ func Unauthorized(w http.ResponseWriter, message, details string)
 Unauthorized writes a 401 error response.
 
 <a name="Error"></a>
-## type [Error](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L23-L27>)
+## type [Error](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L23-L27>)
 
 Error represents an API error with code, message, and optional details.
 
@@ -142,7 +142,7 @@ type Error struct {
 ```
 
 <a name="Response"></a>
-## type [Response](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L17-L20>)
+## type [Response](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L17-L20>)
 
 Response represents the standardized API response structure. All endpoints return this format for consistency.
 
@@ -154,7 +154,7 @@ type Response struct {
 ```
 
 <a name="Fail"></a>
-### func [Fail](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L38>)
+### func [Fail](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L38>)
 
 ```go
 func Fail(code, message, details string) Response
@@ -163,7 +163,7 @@ func Fail(code, message, details string) Response
 Fail creates an error response.
 
 <a name="Success"></a>
-### func [Success](<https://github.com/agentstation/starmap/blob/master/internal/server/response/response.go#L30>)
+### func [Success](<https://github.com/agentstation/starmap/blob/main/internal/server/response/response.go#L30>)
 
 ```go
 func Success(data any) Response

@@ -15,7 +15,7 @@ import (
 )
 
 // Helper function to add a model to a catalog through a provider.
-func addModelToProvider(catalog catalogs.Catalog, providerID string, model catalogs.Model) error {
+func addModelToProvider(catalog *catalogs.Builder, providerID string, model catalogs.Model) error {
 	// First ensure the provider exists
 	_, err := catalog.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
@@ -30,14 +30,12 @@ func addModelToProvider(catalog catalogs.Catalog, providerID string, model catal
 		}
 	}
 
-	// Use the thread-safe SetModel method on providers
-	return catalog.Providers().SetModel(catalogs.ProviderID(providerID), model)
+	return catalog.SetProviderModel(catalogs.ProviderID(providerID), model)
 }
 
 // Helper function to delete a model from a provider.
-func deleteModelFromProvider(catalog catalogs.Catalog, providerID string, modelID string) error {
-	// Use the thread-safe DeleteModel method on providers
-	return catalog.Providers().DeleteModel(catalogs.ProviderID(providerID), modelID)
+func deleteModelFromProvider(catalog *catalogs.Builder, providerID string, modelID string) error {
+	return catalog.DeleteProviderModel(catalogs.ProviderID(providerID), modelID)
 }
 
 // TestConcurrentCatalogAccess tests thread safety with multiple readers and writers.
@@ -280,7 +278,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		var wg sync.WaitGroup
-		copies := make([]catalogs.Catalog, 10)
+		copies := make([]*catalogs.Builder, 10)
 
 		// Multiple concurrent copies
 		for i := 0; i < 10; i++ {

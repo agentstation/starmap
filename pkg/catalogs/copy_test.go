@@ -296,3 +296,221 @@ func TestShallowCopyAuthorModels(t *testing.T) {
 		}
 	})
 }
+
+func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
+	precision := "fp16"
+	searchPrompt := "find sources"
+	topLogprobs := 5
+	root := "root-model"
+	parent := "parent-model"
+	tierInput := 2.5
+	modeInput := 3.5
+
+	original := Model{
+		ID:   "nested-model",
+		Name: "Nested Model",
+		Lineage: &ModelLineage{
+			Family: "nested",
+			Root:   &root,
+			Parent: &parent,
+		},
+		Metadata: &ModelMetadata{
+			Tags: []ModelTag{ModelTagCoding},
+			Architecture: &ModelArchitecture{
+				Precision: &precision,
+			},
+		},
+		Features: &ModelFeatures{
+			Modalities: ModelModalities{
+				Input: []ModelModality{ModelModalityText},
+			},
+		},
+		Generation: &ModelGeneration{
+			TopLogprobs: &topLogprobs,
+		},
+		Tools: &ModelTools{
+			ToolChoices: []ToolChoice{ToolChoiceAuto},
+			WebSearch: &ModelWebSearch{
+				SearchPrompt:       &searchPrompt,
+				SearchContextSizes: []ModelControlLevel{ModelControlLevelLow},
+			},
+		},
+		Pricing: &ModelPricing{
+			Tokens: &ModelTokenPricing{
+				Input: &ModelTokenCost{Per1M: 1.25},
+			},
+			Tiers: []ModelPricingTier{{
+				Type: ModelPricingTierTypeContext,
+				Size: 200000,
+				Tokens: &ModelTokenPricing{
+					Input: &ModelTokenCost{Per1M: tierInput},
+				},
+			}},
+		},
+		Modes: map[string]ModelMode{
+			"fast": {
+				Pricing: &ModelPricing{
+					Tokens: &ModelTokenPricing{
+						Input: &ModelTokenCost{Per1M: modeInput},
+					},
+				},
+				Provider: &ModelProviderMode{
+					Headers: map[string]string{"anthropic-beta": "fast-mode"},
+					Body: map[string]any{
+						"service_tier": "priority",
+						"reasoning":    map[string]any{"mode": "pro"},
+					},
+				},
+			},
+		},
+		Extensions: SourceExtensions{
+			"models.dev": {
+				Fields: map[string]any{
+					"provider_shape": "chat",
+					"flags":          []any{"experimental"},
+				},
+			},
+		},
+	}
+
+	copied := DeepCopyModel(original)
+	*copied.Lineage.Root = "changed-root"
+	*copied.Lineage.Parent = "changed-parent"
+	copied.Metadata.Tags[0] = ModelTagMath
+	*copied.Metadata.Architecture.Precision = "fp8"
+	copied.Features.Modalities.Input[0] = ModelModalityImage
+	*copied.Generation.TopLogprobs = 10
+	*copied.Tools.WebSearch.SearchPrompt = "changed"
+	copied.Tools.WebSearch.SearchContextSizes[0] = ModelControlLevelHigh
+	copied.Pricing.Tokens.Input.Per1M = 9.99
+	copied.Pricing.Tiers[0].Tokens.Input.Per1M = 7.77
+	copied.Modes["fast"].Pricing.Tokens.Input.Per1M = 8.88
+	copied.Modes["fast"].Provider.Headers["anthropic-beta"] = "changed-mode"
+	copied.Modes["fast"].Provider.Body["service_tier"] = "changed-tier"
+	copied.Modes["fast"].Provider.Body["reasoning"].(map[string]any)["mode"] = "changed-mode"
+	copied.Extensions["models.dev"].Fields["provider_shape"] = "responses"
+	copied.Extensions["models.dev"].Fields["flags"].([]any)[0] = "changed"
+
+	if original.Metadata.Tags[0] != ModelTagCoding {
+		t.Fatal("metadata tags were shared between original and copy")
+	}
+	if *original.Lineage.Root != "root-model" || *original.Lineage.Parent != "parent-model" {
+		t.Fatal("lineage pointers were shared between original and copy")
+	}
+	if *original.Metadata.Architecture.Precision != "fp16" {
+		t.Fatal("architecture precision pointer was shared between original and copy")
+	}
+	if original.Features.Modalities.Input[0] != ModelModalityText {
+		t.Fatal("feature modality slice was shared between original and copy")
+	}
+	if *original.Generation.TopLogprobs != 5 {
+		t.Fatal("generation pointer was shared between original and copy")
+	}
+	if *original.Tools.WebSearch.SearchPrompt != "find sources" {
+		t.Fatal("web search prompt pointer was shared between original and copy")
+	}
+	if original.Tools.WebSearch.SearchContextSizes[0] != ModelControlLevelLow {
+		t.Fatal("web search context size slice was shared between original and copy")
+	}
+	if original.Pricing.Tokens.Input.Per1M != 1.25 {
+		t.Fatal("pricing token cost pointer was shared between original and copy")
+	}
+	if original.Pricing.Tiers[0].Tokens.Input.Per1M != tierInput {
+		t.Fatal("pricing tier token cost pointer was shared between original and copy")
+	}
+	if original.Modes["fast"].Pricing.Tokens.Input.Per1M != modeInput {
+		t.Fatal("mode pricing pointer was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Headers["anthropic-beta"] != "fast-mode" {
+		t.Fatal("mode provider headers map was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Body["service_tier"] != "priority" {
+		t.Fatal("mode provider body map was shared between original and copy")
+	}
+	if original.Modes["fast"].Provider.Body["reasoning"].(map[string]any)["mode"] != "pro" {
+		t.Fatal("nested mode provider body map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["provider_shape"] != "chat" {
+		t.Fatal("model extension fields map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["flags"].([]any)[0] != "experimental" {
+		t.Fatal("model extension fields slice was shared between original and copy")
+	}
+}
+
+func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
+	docs := "https://example.com/docs"
+	privacyURL := "https://example.com/privacy"
+
+	original := Provider{
+		ID:      "provider",
+		Name:    "Provider",
+		Aliases: []ProviderID{"provider-alias"},
+		Catalog: &ProviderCatalog{
+			Docs: &docs,
+			Endpoint: ProviderEndpoint{
+				FeatureRules: []FeatureRule{{
+					Field:    "id",
+					Contains: []string{"reasoning"},
+					Feature:  "reasoning",
+					Value:    true,
+				}},
+				AuthorMapping: &AuthorMapping{
+					Field: "owned_by",
+					Normalized: map[string]AuthorID{
+						"openai": AuthorIDOpenAI,
+					},
+				},
+			},
+			Authors: []AuthorID{AuthorIDOpenAI},
+		},
+		PrivacyPolicy: &ProviderPrivacyPolicy{
+			PrivacyPolicyURL: &privacyURL,
+		},
+		EnvVarValues: map[string]string{
+			"API_KEY": "secret",
+		},
+		Extensions: SourceExtensions{
+			"models.dev": {
+				Fields: map[string]any{
+					"npm": "@ai-sdk/anthropic",
+				},
+			},
+		},
+	}
+
+	copied := DeepCopyProvider(original)
+	copied.Aliases[0] = "changed"
+	*copied.Catalog.Docs = "changed"
+	copied.Catalog.Endpoint.FeatureRules[0].Contains[0] = "changed"
+	copied.Catalog.Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
+	copied.Catalog.Authors[0] = AuthorIDGoogle
+	*copied.PrivacyPolicy.PrivacyPolicyURL = "changed"
+	copied.EnvVarValues["API_KEY"] = "changed"
+	copied.Extensions["models.dev"].Fields["npm"] = "@changed/provider"
+
+	if original.Aliases[0] != "provider-alias" {
+		t.Fatal("provider aliases were shared between original and copy")
+	}
+	if *original.Catalog.Docs != "https://example.com/docs" {
+		t.Fatal("provider catalog docs pointer was shared between original and copy")
+	}
+	if original.Catalog.Endpoint.FeatureRules[0].Contains[0] != "reasoning" {
+		t.Fatal("feature rule contains slice was shared between original and copy")
+	}
+	if original.Catalog.Endpoint.AuthorMapping.Normalized["openai"] != AuthorIDOpenAI {
+		t.Fatal("author mapping map was shared between original and copy")
+	}
+	if original.Catalog.Authors[0] != AuthorIDOpenAI {
+		t.Fatal("provider catalog authors slice was shared between original and copy")
+	}
+	if *original.PrivacyPolicy.PrivacyPolicyURL != "https://example.com/privacy" {
+		t.Fatal("provider privacy pointer was shared between original and copy")
+	}
+	if original.EnvVarValues["API_KEY"] != "secret" {
+		t.Fatal("provider environment values map was shared between original and copy")
+	}
+	if original.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/anthropic" {
+		t.Fatal("provider extension fields map was shared between original and copy")
+	}
+}

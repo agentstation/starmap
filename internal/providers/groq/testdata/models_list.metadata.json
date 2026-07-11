@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "provider": "groq",
+  "fetched_at": "2025-09-11T13:53:08Z",
+  "source_revision": {"kind": "content_digest", "value": "sha256:75b616244297d50ad381c66aef29aee3468eb6c0280809f884248f2a087a72c8"},
+  "payload": {"path": "models_list.json", "checksum": "sha256:75b616244297d50ad381c66aef29aee3468eb6c0280809f884248f2a087a72c8"},
+  "max_age": "8760h0m0s"
+}

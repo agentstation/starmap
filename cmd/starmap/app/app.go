@@ -5,13 +5,18 @@ package app
 
 import (
 	"context"
+	"os"
+	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogscheduler"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -35,19 +40,25 @@ type App struct {
 	logger *zerolog.Logger
 
 	// Starmap instance (lazy-initialized, singleton)
-	mu      sync.RWMutex
-	starmap starmap.Client
+	mu         sync.RWMutex
+	starmap    *starmap.Client
+	operations *catalogscheduler.Operations
 }
 
 // New creates a new App instance with the given version information.
 // The app is initialized with default configuration that can be
 // customized using functional options.
 func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
+	operations, err := catalogscheduler.NewOperations()
+	if err != nil {
+		return nil, err
+	}
 	app := &App{
-		version: version,
-		commit:  commit,
-		date:    date,
-		builtBy: builtBy,
+		version:    version,
+		commit:     commit,
+		date:       date,
+		builtBy:    builtBy,
+		operations: operations,
 	}
 
 	// Load configuration
@@ -109,11 +120,18 @@ func (a *App) OutputFormat() string {
 // Starmap returns the starmap instance with optional configuration.
 // When called without options, returns the default cached instance (lazy-initialized, thread-safe).
 // When called with options, creates a new instance with custom configuration (no caching).
-func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
+func (a *App) Starmap(opts ...starmap.Option) (*starmap.Client, error) {
+	storeOption, err := a.catalogStoreOption()
+	if err != nil {
+		return nil, err
+	}
 
 	// If options provided, create new instance (no caching)
 	if len(opts) > 0 {
-		sm, err := starmap.New(opts...)
+		configured := make([]starmap.Option, 0, len(opts)+1)
+		configured = append(configured, storeOption)
+		configured = append(configured, opts...)
+		sm, err := starmap.New(configured...)
 		if err != nil {
 			return nil, errors.WrapResource("create", "starmap", "with custom options", err)
 		}
@@ -138,7 +156,7 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 	}
 
 	// Create starmap instance with options from config
-	o := a.buildStarmapOptions()
+	o := a.buildStarmapOptions(storeOption)
 	sm, err := starmap.New(o...)
 	if err != nil {
 		return nil, errors.WrapResource("create", "starmap", "", err)
@@ -148,31 +166,52 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 	return sm, nil
 }
 
-// Catalog returns a deep copy of the current catalog from the starmap instance.
+// Catalog returns the current structurally read-only snapshot from the starmap instance.
 // This is a convenience method that handles the starmap initialization
 // and catalog retrieval in one call.
 //
-// Thread Safety: This method is thread-safe because sm.Catalog() acquires
-// a read lock and returns a deep copy (see starmap.go:71-76). Each caller
-// receives an independent catalog instance with no shared mutable state.
-//
-// Performance: ~350-400ns per call with 9-10 allocations (single copy).
-//
-// Per docs/ARCHITECTURE.md § Thread Safety section, this ALWAYS returns a deep copy
-// (provided by sm.Catalog()).
-func (a *App) Catalog() (catalogs.Catalog, error) {
+// Thread Safety: sm.Catalog atomically loads an immutable generation. Collection
+// reads return caller-owned copies behind interfaces that expose no mutation
+// methods.
+func (a *App) Catalog() (*catalogs.Catalog, error) {
 	sm, err := a.Starmap()
 	if err != nil {
 		return nil, err
 	}
 
-	// sm.Catalog() returns a deep copy with proper locking - no second copy needed
-	catalog, err := sm.Catalog()
-	if err != nil {
-		return nil, errors.WrapResource("get", "catalog", "", err)
-	}
+	return sm.Catalog(), nil
+}
 
-	return catalog, nil
+// CatalogState atomically returns the current catalog and generation identity.
+func (a *App) CatalogState() (starmap.CatalogState, error) {
+	sm, err := a.Starmap()
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	return sm.CurrentCatalogState(), nil
+}
+
+// Readiness reports catalog availability and active embedded-bootstrap budgets.
+func (a *App) Readiness() (starmap.CatalogReadiness, error) {
+	sm, err := a.Starmap()
+	if err != nil {
+		return starmap.CatalogReadiness{}, err
+	}
+	return sm.Readiness(), nil
+}
+
+// OperationalState composes the current atomic catalog identity with all
+// deployment-owned scheduler telemetry configured at the composition root.
+func (a *App) OperationalState(ctx context.Context) (catalogscheduler.OperationalState, error) {
+	sm, err := a.Starmap()
+	if err != nil {
+		return catalogscheduler.OperationalState{}, err
+	}
+	state := sm.CurrentCatalogState()
+	return a.operations.State(ctx, catalogscheduler.CatalogIdentity{
+		GenerationID: state.GenerationID,
+		Sequence:     state.Sequence,
+	})
 }
 
 // Shutdown performs graceful shutdown of the application.
@@ -184,23 +223,12 @@ func (a *App) Shutdown(ctx context.Context) error {
 		return err
 	}
 
-	a.mu.RLock()
-	sm := a.starmap
-	a.mu.RUnlock()
-
-	if sm != nil {
-		// Stop auto-updates if running
-		if err := sm.AutoUpdatesOff(); err != nil {
-			a.logger.Error().Err(err).Msg("Failed to stop auto-updates during shutdown")
-		}
-	}
-
 	return nil
 }
 
 // buildStarmapOptions constructs starmap options from the app configuration.
-func (a *App) buildStarmapOptions() []starmap.Option {
-	var opts []starmap.Option
+func (a *App) buildStarmapOptions(storeOption starmap.Option) []starmap.Option {
+	opts := []starmap.Option{storeOption}
 
 	// Add local path if configured
 	if a.config.LocalPath != "" {
@@ -211,12 +239,11 @@ func (a *App) buildStarmapOptions() []starmap.Option {
 	if a.config.UseEmbeddedCatalog {
 		opts = append(opts, starmap.WithEmbeddedCatalog())
 	}
-
-	// Add auto-update settings
-	if !a.config.AutoUpdatesEnabled {
-		opts = append(opts, starmap.WithAutoUpdatesDisabled())
-	} else if a.config.AutoUpdateInterval > 0 {
-		opts = append(opts, starmap.WithAutoUpdateInterval(a.config.AutoUpdateInterval))
+	if a.config.EmbeddedBootstrapMaxAge > 0 {
+		opts = append(opts, starmap.WithEmbeddedBootstrapMaxAge(a.config.EmbeddedBootstrapMaxAge))
+	}
+	if a.config.EmbeddedBootstrapMaxSizeBytes > 0 {
+		opts = append(opts, starmap.WithEmbeddedBootstrapMaxSizeBytes(a.config.EmbeddedBootstrapMaxSizeBytes))
 	}
 
 	// Add remote server if configured
@@ -240,6 +267,32 @@ func (a *App) buildStarmapOptions() []starmap.Option {
 	return opts
 }
 
+func (a *App) catalogStoreOption() (starmap.Option, error) {
+	path, err := expandHomePath(a.config.CatalogStorePath)
+	if err != nil {
+		return nil, err
+	}
+	store, err := catalogstore.NewFilesystem(path)
+	if err != nil {
+		return nil, errors.WrapResource("create", "catalog store", path, err)
+	}
+	return starmap.WithCatalogStore(store), nil
+}
+
+func expandHomePath(path string) (string, error) {
+	if path != "~" && !strings.HasPrefix(path, "~/") {
+		return path, nil
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", errors.WrapResource("resolve", "home directory", path, err)
+	}
+	if path == "~" {
+		return home, nil
+	}
+	return filepath.Join(home, strings.TrimPrefix(path, "~/")), nil
+}
+
 // Option is a functional option for configuring the App.
 type Option func(*App) error
 
@@ -260,9 +313,20 @@ func WithLogger(logger *zerolog.Logger) Option {
 }
 
 // WithClient sets a custom starmap instance (useful for testing).
-func WithClient(sm starmap.Client) Option {
+func WithClient(sm *starmap.Client) Option {
 	return func(a *App) error {
 		a.starmap = sm
+		return nil
+	}
+}
+
+// WithOperations sets the deployment-owned operational-state composer.
+func WithOperations(operations *catalogscheduler.Operations) Option {
+	return func(a *App) error {
+		if operations == nil {
+			return &errors.ValidationError{Field: "application.operations", Message: "is required"}
+		}
+		a.operations = operations
 		return nil
 	}
 }

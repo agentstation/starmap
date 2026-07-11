@@ -42,6 +42,35 @@ func (m *mockSubscriber) EventCount() int {
 	return len(m.events)
 }
 
+type blockingSubscriber struct {
+	started   chan struct{}
+	release   chan struct{}
+	startOnce sync.Once
+	closeOnce sync.Once
+}
+
+func newBlockingSubscriber() *blockingSubscriber {
+	return &blockingSubscriber{
+		started: make(chan struct{}),
+		release: make(chan struct{}),
+	}
+}
+
+func (b *blockingSubscriber) Send(Event) error {
+	b.startOnce.Do(func() {
+		close(b.started)
+	})
+	<-b.release
+	return nil
+}
+
+func (b *blockingSubscriber) Close() error {
+	b.closeOnce.Do(func() {
+		close(b.release)
+	})
+	return nil
+}
+
 // TestBroker_NewBroker tests broker creation.
 func TestBroker_NewBroker(t *testing.T) {
 	logger := zerolog.Nop()
@@ -95,6 +124,49 @@ func TestBroker_BasicOperation(t *testing.T) {
 	// Verify event received
 	if count := sub.EventCount(); count != 1 {
 		t.Errorf("expected 1 event, got %d", count)
+	}
+}
+
+func TestBrokerSlowSubscriberDoesNotStallEventLoop(t *testing.T) {
+	logger := zerolog.Nop()
+	b := NewBroker(&logger)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go b.Run(ctx)
+	time.Sleep(10 * time.Millisecond)
+
+	blocking := newBlockingSubscriber()
+	b.Subscribe(blocking)
+	time.Sleep(10 * time.Millisecond)
+
+	b.Publish(ModelAdded, map[string]any{"model": "blocking"})
+
+	select {
+	case <-blocking.started:
+	case <-time.After(500 * time.Millisecond):
+		t.Fatal("blocking subscriber did not receive initial event")
+	}
+
+	second := newMockSubscriber()
+	b.Subscribe(second)
+
+	deadline := time.After(500 * time.Millisecond)
+	for {
+		if b.SubscriberCount() == 2 {
+			break
+		}
+		select {
+		case <-deadline:
+			t.Fatal("broker event loop stalled behind blocking subscriber")
+		default:
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+
+	if err := blocking.Close(); err != nil {
+		t.Fatalf("Failed to release blocking subscriber: %v", err)
 	}
 }
 

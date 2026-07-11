@@ -140,3 +140,35 @@ func TestProviderValidationReport_Print(t *testing.T) {
 	// Also test the convenience function
 	PrintProviderValidationReport(report)
 }
+
+func TestProviderValidateOptionalAPIKeyWithoutValue(t *testing.T) {
+	provider := &Provider{
+		ID:   "optional-auth-provider",
+		Name: "Optional Auth Provider",
+		APIKey: &ProviderAPIKey{
+			Name:    "OPTIONAL_AUTH_PROVIDER_API_KEY",
+			Pattern: ".*",
+			Header:  "Authorization",
+			Scheme:  ProviderAPIKeySchemeBearer,
+		},
+		Catalog: &ProviderCatalog{
+			Endpoint: ProviderEndpoint{
+				Type:         EndpointTypeOpenAI,
+				URL:          "https://api.example.com/v1/models",
+				AuthRequired: false,
+			},
+		},
+	}
+
+	t.Setenv("OPTIONAL_AUTH_PROVIDER_API_KEY", "")
+
+	result := provider.Validate(map[ProviderID]bool{
+		provider.ID: true,
+	})
+
+	assert.False(t, result.HasAPIKey)
+	assert.False(t, result.IsAPIKeyRequired)
+	assert.True(t, result.IsConfigured)
+	assert.Equal(t, ProviderValidationStatusConfigured, result.Status)
+	assert.NoError(t, result.Error)
+}

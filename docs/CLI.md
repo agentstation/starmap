@@ -27,7 +27,7 @@ These short flags are **RESERVED** globally and must not be used for command-spe
 | `-o`  | `--output`   | Output format              | table, json, yaml, wide         |
 | `-h`  | `--help`     | Show help                  | Built-in Cobra flag             |
 
-**Aliases**: `--format` and `--fmt` are hidden aliases for `--output` (backward compatibility).
+**Aliases**: `--format` and `--fmt` are aliases for `--output` (all three flags accept the same values).
 
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:

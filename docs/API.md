@@ -26,9 +26,9 @@ This document provides a complete API reference for Starmap's public interfaces.
 import "github.com/agentstation/starmap"
 ```
 
-Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with automatic updates, event hooks, and provider synchronization capabilities.
+Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with explicit synchronization, event hooks, and provider synchronization capabilities.
 
-Starmap wraps the underlying catalog system with additional features including: \- Automatic background synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe catalog access with copy\-on\-read semantics \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
+Starmap wraps the underlying catalog system with additional features including: \- Explicit, idempotent synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe access to an immutable canonical catalog \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
 
 Example usage:
 
@@ -38,36 +38,33 @@ sm, err := starmap.New()
 if err != nil {
     log.Fatal(err)
 }
-defer sm.AutoUpdatesOff()
-
 // Register event hooks
 sm.OnModelAdded(func(model catalogs.Model) {
     log.Printf("New model: %s", model.ID)
 })
 
-// Get catalog (returns a copy for thread safety)
-catalog, err := sm.Catalog()
+// Get the current immutable catalog
+catalog := sm.Catalog()
+
+model, err := catalog.FindModel("gpt-4o")
 if err != nil {
     log.Fatal(err)
 }
 
-// Access models
-models := catalog.Models()
-for _, model := range models.List() {
-    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
-}
-
-// Manually trigger sync
-result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
+// Manually trigger a dry run (read-only; no store required)
+result, err := sm.Sync(ctx, sync.WithProvider("openai"), sync.WithDryRun(true))
 if err != nil {
     log.Fatal(err)
 }
 
-// Configure with custom options
+// Configure mutation with an explicit writable generation store
+store, err := catalogstore.NewFilesystem("./catalog-store")
+if err != nil {
+    log.Fatal(err)
+}
 sm, err = starmap.New(
-    WithAutoUpdateInterval(30 * time.Minute),
+    WithCatalogStore(store),
     WithLocalPath("./custom-catalog"),
-    WithAutoUpdates(true),
 )
 ```
 
@@ -75,117 +72,296 @@ Package starmap provides a unified AI model catalog system with automatic update
 
 ## Index
 
-- [type AutoUpdateFunc](<#AutoUpdateFunc>)
-- [type AutoUpdater](<#AutoUpdater>)
-- [type Catalog](<#Catalog>)
+- [Constants](<#constants>)
+- [type CatalogPublishedEvent](<#CatalogPublishedEvent>)
+- [type CatalogPublishedHook](<#CatalogPublishedHook>)
+- [type CatalogReadiness](<#CatalogReadiness>)
+- [type CatalogState](<#CatalogState>)
 - [type Client](<#Client>)
-  - [func New\(opts ...Option\) \(Client, error\)](<#New>)
-- [type Hooks](<#Hooks>)
+  - [func New\(opts ...Option\) \(\*Client, error\)](<#New>)
+  - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
+  - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
+  - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogstore.Generation, error\)](<#Client.CurrentGeneration>)
+  - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
+  - [func \(c \*Client\) Generation\(ctx context.Context, id string\) \(catalogstore.Generation, error\)](<#Client.Generation>)
+  - [func \(c \*Client\) HookStats\(\) HookDeliveryStats](<#Client.HookStats>)
+  - [func \(c \*Client\) OnCatalogPublished\(fn CatalogPublishedHook\)](<#Client.OnCatalogPublished>)
+  - [func \(c \*Client\) OnModelAdded\(fn ModelAddedHook\)](<#Client.OnModelAdded>)
+  - [func \(c \*Client\) OnModelRemoved\(fn ModelRemovedHook\)](<#Client.OnModelRemoved>)
+  - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
+  - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
+  - [func \(c \*Client\) Save\(opts ...save.Option\) error](<#Client.Save>)
+  - [func \(c \*Client\) Sync\(ctx context.Context, opts ...sync.Option\) \(\*sync.Result, error\)](<#Client.Sync>)
+  - [func \(c \*Client\) Update\(ctx context.Context\) error](<#Client.Update>)
+- [type EmbeddedBootstrapInfo](<#EmbeddedBootstrapInfo>)
+- [type HookDeliveryStats](<#HookDeliveryStats>)
 - [type ModelAddedHook](<#ModelAddedHook>)
 - [type ModelRemovedHook](<#ModelRemovedHook>)
 - [type ModelUpdatedHook](<#ModelUpdatedHook>)
 - [type Option](<#Option>)
-  - [func WithAutoUpdateFunc\(fn AutoUpdateFunc\) Option](<#WithAutoUpdateFunc>)
-  - [func WithAutoUpdateInterval\(interval time.Duration\) Option](<#WithAutoUpdateInterval>)
-  - [func WithAutoUpdatesDisabled\(\) Option](<#WithAutoUpdatesDisabled>)
+  - [func WithCatalogStore\(store catalogstore.Store\) Option](<#WithCatalogStore>)
+  - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
+  - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
   - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
   - [func WithLocalPath\(path string\) Option](<#WithLocalPath>)
   - [func WithRemoteServerAPIKey\(apiKey string\) Option](<#WithRemoteServerAPIKey>)
   - [func WithRemoteServerOnly\(url string\) Option](<#WithRemoteServerOnly>)
   - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
-- [type Persistence](<#Persistence>)
-- [type Updater](<#Updater>)
+  - [func WithUpdateFunc\(fn UpdateFunc\) Option](<#WithUpdateFunc>)
+- [type ReadinessIssue](<#ReadinessIssue>)
+- [type UpdateFunc](<#UpdateFunc>)
 
 
-<a name="AutoUpdateFunc"></a>
-## type [AutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L106>)
+## Constants
 
-AutoUpdateFunc is a function that updates the catalog.
+<a name="ReadinessIssueCatalogUnavailable"></a>
 
 ```go
-type AutoUpdateFunc func(catalogs.Catalog) (catalogs.Catalog, error)
+const (
+    // ReadinessIssueCatalogUnavailable means no active immutable catalog exists.
+    ReadinessIssueCatalogUnavailable = "catalog_unavailable"
+    // ReadinessIssueEmbeddedBootstrapFuture means embedded metadata is dated in the future.
+    ReadinessIssueEmbeddedBootstrapFuture = "embedded_bootstrap_future"
+    // ReadinessIssueEmbeddedBootstrapStale means the configured age budget was exceeded.
+    ReadinessIssueEmbeddedBootstrapStale = "embedded_bootstrap_stale"
+    // ReadinessIssueEmbeddedBootstrapOversize means the configured size budget was exceeded.
+    ReadinessIssueEmbeddedBootstrapOversize = "embedded_bootstrap_oversize"
+)
 ```
 
-<a name="AutoUpdater"></a>
-## type [AutoUpdater](<https://github.com/agentstation/starmap/blob/master/autoupdate.go#L17-L23>)
+<a name="CatalogPublishedEvent"></a>
+## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L16-L21>)
 
-AutoUpdater provides controls for automatic catalog updates.
+CatalogPublishedEvent identifies one durably committed immutable catalog. Catalog is safe to retain and share across goroutines.
 
 ```go
-type AutoUpdater interface {
-    // AutoUpdatesOn begins automatic updates if configured
-    AutoUpdatesOn() error
-
-    // AutoUpdatesOff stops automatic updates
-    AutoUpdatesOff() error
+type CatalogPublishedEvent struct {
+    GenerationID string
+    SyncRunID    string
+    Sequence     uint64
+    Catalog      *catalogs.Catalog
 }
 ```
 
-<a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/master/client.go#L67-L69>)
+<a name="CatalogPublishedHook"></a>
+## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L25>)
 
-Catalog provides copy\-on\-read access to the catalog.
+CatalogPublishedHook is called after a catalog generation is durably committed and atomically published.
 
 ```go
-type Catalog interface {
-    Catalog() (catalogs.Catalog, error)
+type CatalogPublishedHook func(CatalogPublishedEvent) error
+```
+
+<a name="CatalogReadiness"></a>
+## type [CatalogReadiness](<https://github.com/agentstation/starmap/blob/main/readiness.go#L42-L46>)
+
+CatalogReadiness reports whether the current immutable catalog is safe to serve and includes embedded\-bootstrap generation evidence.
+
+```go
+type CatalogReadiness struct {
+    Ready    bool                  `json:"ready"`
+    Embedded EmbeddedBootstrapInfo `json:"embedded_bootstrap"`
+    Issues   []ReadinessIssue      `json:"issues,omitempty"`
+}
+```
+
+<a name="CatalogState"></a>
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L73-L77>)
+
+CatalogState atomically pairs the current immutable catalog with its logical generation identity for generation\-scoped caches and responses.
+
+```go
+type CatalogState struct {
+    Catalog      *catalogs.Catalog
+    GenerationID string
+    Sequence     uint64
 }
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/master/client.go#L80-L96>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L140-L157>)
 
-Client manages a catalog with automatic updates and event hooks.
+Client manages an immutable canonical catalog, explicit synchronization, persistence, and event hooks. It owns no scheduling goroutine or cadence.
 
 ```go
-type Client interface {
-
-    // Catalog provides copy-on-read access to the catalog
-    Catalog
-
-    // Updater handles catalog update and sync operations
-    Updater
-
-    // Persistence handles catalog persistence operations
-    Persistence
-
-    // AutoUpdater provides access to automatic update controls
-    AutoUpdater
-
-    // Hooks provides access to event callback registration
-    Hooks
+type Client struct {
+    // contains filtered or unexported fields
 }
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/master/client.go#L120>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L160>)
 
 ```go
-func New(opts ...Option) (Client, error)
+func New(opts ...Option) (*Client, error)
 ```
 
 New creates a new Client instance with the given options.
 
-<a name="Hooks"></a>
-## type [Hooks](<https://github.com/agentstation/starmap/blob/master/hooks.go#L14-L23>)
-
-Hooks provides event callback registration for catalog changes.
+<a name="Client.Catalog"></a>
+### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L64>)
 
 ```go
-type Hooks interface {
-    // OnModelAdded registers a callback for when models are added
-    OnModelAdded(ModelAddedHook)
+func (c *Client) Catalog() *catalogs.Catalog
+```
 
-    // OnModelUpdated registers a callback for when models are updated
-    OnModelUpdated(ModelUpdatedHook)
+Catalog returns the current immutable canonical catalog.
 
-    // OnModelRemoved registers a callback for when models are removed
-    OnModelRemoved(ModelRemovedHook)
+<a name="Client.CurrentCatalogState"></a>
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L80>)
+
+```go
+func (c *Client) CurrentCatalogState() CatalogState
+```
+
+CurrentCatalogState returns one atomic catalog/generation pair.
+
+<a name="Client.CurrentGeneration"></a>
+### func \(\*Client\) [CurrentGeneration](<https://github.com/agentstation/starmap/blob/main/generation.go#L21>)
+
+```go
+func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation, error)
+```
+
+CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
+
+<a name="Client.CurrentGenerationID"></a>
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L95>)
+
+```go
+func (c *Client) CurrentGenerationID() string
+```
+
+CurrentGenerationID returns the logical identity of the currently published catalog. Before the first durable mutation, this is the embedded bootstrap ID.
+
+<a name="Client.Generation"></a>
+### func \(\*Client\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L45>)
+
+```go
+func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Generation, error)
+```
+
+Generation returns one retained immutable generation by ID.
+
+<a name="Client.HookStats"></a>
+### func \(\*Client\) [HookStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L53>)
+
+```go
+func (c *Client) HookStats() HookDeliveryStats
+```
+
+HookStats returns a lock\-free snapshot of callback delivery health.
+
+<a name="Client.OnCatalogPublished"></a>
+### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L50>)
+
+```go
+func (c *Client) OnCatalogPublished(fn CatalogPublishedHook)
+```
+
+OnCatalogPublished registers a callback for durable catalog publication.
+
+<a name="Client.OnModelAdded"></a>
+### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L56>)
+
+```go
+func (c *Client) OnModelAdded(fn ModelAddedHook)
+```
+
+OnModelAdded registers a callback for when models are added.
+
+<a name="Client.OnModelRemoved"></a>
+### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L62>)
+
+```go
+func (c *Client) OnModelRemoved(fn ModelRemovedHook)
+```
+
+OnModelRemoved registers a callback for when models are removed.
+
+<a name="Client.OnModelUpdated"></a>
+### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L59>)
+
+```go
+func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
+```
+
+OnModelUpdated registers a callback for when models are updated.
+
+<a name="Client.Readiness"></a>
+### func \(\*Client\) [Readiness](<https://github.com/agentstation/starmap/blob/main/readiness.go#L50>)
+
+```go
+func (c *Client) Readiness() CatalogReadiness
+```
+
+Readiness evaluates catalog availability and configured embedded\-bootstrap age/size budgets without performing I/O.
+
+<a name="Client.Save"></a>
+### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L9>)
+
+```go
+func (c *Client) Save(opts ...save.Option) error
+```
+
+Save persists the current catalog to disk using the catalog's native save functionality.
+
+<a name="Client.Sync"></a>
+### func \(\*Client\) [Sync](<https://github.com/agentstation/starmap/blob/main/sync.go#L18>)
+
+```go
+func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
+```
+
+Sync synchronizes the catalog with provider APIs using staged source execution.
+
+<a name="Client.Update"></a>
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L18>)
+
+```go
+func (c *Client) Update(ctx context.Context) error
+```
+
+Update manually triggers a catalog update.
+
+<a name="EmbeddedBootstrapInfo"></a>
+## type [EmbeddedBootstrapInfo](<https://github.com/agentstation/starmap/blob/main/readiness.go#L27-L38>)
+
+EmbeddedBootstrapInfo reports the exact offline generation embedded in the binary and the budgets applied while it remains active.
+
+```go
+type EmbeddedBootstrapInfo struct {
+    Active            bool      `json:"active"`
+    ManifestVersion   uint64    `json:"manifest_version"`
+    GenerationID      string    `json:"generation_id"`
+    GeneratedAt       time.Time `json:"generated_at"`
+    AgeSeconds        int64     `json:"age_seconds"`
+    SchemaVersion     uint64    `json:"schema_version"`
+    PayloadChecksum   string    `json:"payload_checksum"`
+    PayloadSizeBytes  int64     `json:"payload_size_bytes"`
+    MaximumAgeSeconds int64     `json:"maximum_age_seconds,omitempty"`
+    MaximumSizeBytes  int64     `json:"maximum_size_bytes,omitempty"`
+}
+```
+
+<a name="HookDeliveryStats"></a>
+## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L38-L45>)
+
+HookDeliveryStats reports isolated callback delivery health.
+
+```go
+type HookDeliveryStats struct {
+    Completed   uint64
+    Failures    uint64
+    Panics      uint64
+    Dropped     uint64
+    LastLatency time.Duration
+    MaxLatency  time.Duration
 }
 ```
 
 <a name="ModelAddedHook"></a>
-## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L28>)
+## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L28>)
 
 ModelAddedHook is called when a model is added to the catalog.
 
@@ -194,7 +370,7 @@ type ModelAddedHook func(model catalogs.Model)
 ```
 
 <a name="ModelRemovedHook"></a>
-## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L34>)
+## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L34>)
 
 ModelRemovedHook is called when a model is removed from the catalog.
 
@@ -203,7 +379,7 @@ type ModelRemovedHook func(model catalogs.Model)
 ```
 
 <a name="ModelUpdatedHook"></a>
-## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/master/hooks.go#L31>)
+## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L31>)
 
 ModelUpdatedHook is called when a model is updated in the catalog.
 
@@ -212,7 +388,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/options.go#L52>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L84>)
 
 Option is a function that configures a Starmap instance.
 
@@ -220,35 +396,35 @@ Option is a function that configures a Starmap instance.
 type Option func(*options) error
 ```
 
-<a name="WithAutoUpdateFunc"></a>
-### func [WithAutoUpdateFunc](<https://github.com/agentstation/starmap/blob/master/options.go#L109>)
+<a name="WithCatalogStore"></a>
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L57>)
 
 ```go
-func WithAutoUpdateFunc(fn AutoUpdateFunc) Option
+func WithCatalogStore(store catalogstore.Store) Option
 ```
 
-WithAutoUpdateFunc configures a custom function for updating the catalog.
+WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store.
 
-<a name="WithAutoUpdateInterval"></a>
-### func [WithAutoUpdateInterval](<https://github.com/agentstation/starmap/blob/master/options.go#L98>)
+<a name="WithEmbeddedBootstrapMaxAge"></a>
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L163>)
 
 ```go
-func WithAutoUpdateInterval(interval time.Duration) Option
+func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 ```
 
-WithAutoUpdateInterval configures how often to automatically update the catalog.
+WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
-<a name="WithAutoUpdatesDisabled"></a>
-### func [WithAutoUpdatesDisabled](<https://github.com/agentstation/starmap/blob/master/options.go#L90>)
+<a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L175>)
 
 ```go
-func WithAutoUpdatesDisabled() Option
+func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 ```
 
-WithAutoUpdatesDisabled configures whether automatic updates are disabled.
+WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
 <a name="WithEmbeddedCatalog"></a>
-### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/master/options.go#L134>)
+### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/main/options.go#L154>)
 
 ```go
 func WithEmbeddedCatalog() Option
@@ -257,7 +433,7 @@ func WithEmbeddedCatalog() Option
 WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false, but takes precedence over WithLocalPath if set.
 
 <a name="WithLocalPath"></a>
-### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/master/options.go#L125>)
+### func [WithLocalPath](<https://github.com/agentstation/starmap/blob/main/options.go#L145>)
 
 ```go
 func WithLocalPath(path string) Option
@@ -266,7 +442,7 @@ func WithLocalPath(path string) Option
 WithLocalPath configures the local source to use a specific catalog path.
 
 <a name="WithRemoteServerAPIKey"></a>
-### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/master/options.go#L73>)
+### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/main/options.go#L107>)
 
 ```go
 func WithRemoteServerAPIKey(apiKey string) Option
@@ -275,48 +451,51 @@ func WithRemoteServerAPIKey(apiKey string) Option
 WithRemoteServerAPIKey configures the remote server API key.
 
 <a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/master/options.go#L81>)
+### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/main/options.go#L116>)
 
 ```go
 func WithRemoteServerOnly(url string) Option
 ```
 
-WithRemoteServerOnly configures whether to only use the remote server and not hit provider APIs.
+WithRemoteServerOnly configures Client.Update to use only the versioned remote manifest and immutable generation snapshot contract at url.
 
 <a name="WithRemoteServerURL"></a>
-### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/master/options.go#L65>)
+### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/main/options.go#L99>)
 
 ```go
 func WithRemoteServerURL(url string) Option
 ```
 
-WithRemoteServerURL configures the remote server URL.
+WithRemoteServerURL configures a versioned remote API base URL, for example https://starmap.example.com/api/v1, without changing the update source. Use WithRemoteServerOnly to make Client.Update fetch exclusively from that server.
 
-<a name="Persistence"></a>
-## type [Persistence](<https://github.com/agentstation/starmap/blob/master/persistence.go#L12-L15>)
-
-Persistence handles catalog persistence operations.
+<a name="WithUpdateFunc"></a>
+### func [WithUpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L129>)
 
 ```go
-type Persistence interface {
-    // Save with options
-    Save(opts ...save.Option) error
+func WithUpdateFunc(fn UpdateFunc) Option
+```
+
+WithUpdateFunc configures an explicit context\-aware update implementation.
+
+<a name="ReadinessIssue"></a>
+## type [ReadinessIssue](<https://github.com/agentstation/starmap/blob/main/readiness.go#L20-L23>)
+
+ReadinessIssue is one stable machine\-readable reason a client is not ready.
+
+```go
+type ReadinessIssue struct {
+    Code    string `json:"code"`
+    Message string `json:"message"`
 }
 ```
 
-<a name="Updater"></a>
-## type [Updater](<https://github.com/agentstation/starmap/blob/master/update.go#L23-L29>)
+<a name="UpdateFunc"></a>
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L126>)
 
-Updater handles catalog synchronization operations.
+UpdateFunc builds an explicit candidate catalog and must honor cancellation. Scheduling, retry, and high\-availability ownership remain above Client.
 
 ```go
-type Updater interface {
-    // Sync synchronizes the catalog with provider APIs
-    Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-
-    // Update manually triggers a catalog update
-    Update(ctx context.Context) error
-}
+type UpdateFunc func(context.Context, *catalogs.Builder) (*catalogs.Builder, error)
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

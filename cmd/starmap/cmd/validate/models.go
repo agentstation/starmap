@@ -6,8 +6,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/cli/emoji"
 )
 
 // NewModelsCommand creates the validate models subcommand using app context.
@@ -48,16 +48,6 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 		providerMap[string(p.ID)] = true
 	}
 
-	authors := cat.Authors().List()
-	authorMap := make(map[string]bool)
-	for _, a := range authors {
-		authorMap[string(a.ID)] = true
-		// Add aliases to the map
-		for _, alias := range a.Aliases {
-			authorMap[string(alias)] = true
-		}
-	}
-
 	var validationErrors []string
 	totalModels := 0
 
@@ -93,7 +83,7 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 
 			// Check author references if specified
 			for _, author := range model.Authors {
-				if !authorMap[string(author.ID)] {
+				if _, found := cat.Authors().Resolve(author.ID); !found {
 					validationErrors = append(validationErrors,
 						fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID))
 				}
@@ -104,6 +94,10 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 				if model.Limits.ContextWindow < 0 {
 					validationErrors = append(validationErrors,
 						fmt.Sprintf("model %s has invalid context_window: %d", model.ID, model.Limits.ContextWindow))
+				}
+				if model.Limits.InputTokens < 0 {
+					validationErrors = append(validationErrors,
+						fmt.Sprintf("model %s has invalid input_tokens: %d", model.ID, model.Limits.InputTokens))
 				}
 				if model.Limits.OutputTokens < 0 {
 					validationErrors = append(validationErrors,
@@ -140,7 +134,7 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 
 			// Check author references if specified
 			for _, modelAuthor := range model.Authors {
-				if !authorMap[string(modelAuthor.ID)] {
+				if _, found := cat.Authors().Resolve(modelAuthor.ID); !found {
 					validationErrors = append(validationErrors,
 						fmt.Sprintf("model %s references unknown author: %s", model.ID, modelAuthor.ID))
 				}

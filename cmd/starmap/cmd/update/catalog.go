@@ -5,14 +5,14 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // LoadCatalog creates a starmap instance using app context.
 // If inputPath is provided, creates a custom instance. Otherwise, uses app's default.
-func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (starmap.Client, error) {
-	var sm starmap.Client
+func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (*starmap.Client, error) {
+	var sm *starmap.Client
 	var err error
 
 	// If input path is provided, create custom starmap with that path

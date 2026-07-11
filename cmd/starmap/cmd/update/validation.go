@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+const (
+	affirmativeShort = "y"
+	affirmativeLong  = "yes"
+)
+
 // ValidateForceUpdate shows a warning for force updates and asks for confirmation.
 // Returns true if the user confirms to proceed, false if cancelled.
 func ValidateForceUpdate(isQuiet, autoApprove bool) (bool, error) {
@@ -24,7 +29,7 @@ func ValidateForceUpdate(isQuiet, autoApprove bool) (bool, error) {
 	}
 	response = strings.ToLower(strings.TrimSpace(response))
 
-	if response != "y" && response != "yes" {
+	if response != affirmativeShort && response != affirmativeLong {
 		fmt.Println("Force update cancelled")
 		return false, nil
 	}
@@ -43,7 +48,7 @@ func ConfirmChanges() (bool, error) {
 	}
 	response = strings.ToLower(strings.TrimSpace(response))
 
-	if response != "y" && response != "yes" {
+	if response != affirmativeShort && response != affirmativeLong {
 		fmt.Println("Update cancelled")
 		return false, nil
 	}

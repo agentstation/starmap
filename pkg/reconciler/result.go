@@ -13,7 +13,7 @@ import (
 // Result represents the outcome of a reconciliation operation.
 type Result struct {
 	// Core data
-	Catalog        catalogs.Catalog
+	Catalog        *catalogs.Builder
 	Changeset      *differ.Changeset
 	AppliedChanges *differ.Changeset
 

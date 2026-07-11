@@ -39,23 +39,37 @@ if fetcher.HasClient(providerID) {
 ## Index
 
 - [Constants](<#constants>)
+- [func RegisterProviderClientFactory\(factory ProviderClientFactory\) func\(\)](<#RegisterProviderClientFactory>)
+- [func RegisterProviderRawFetcher\(fetcher ProviderRawFetcher\) func\(\)](<#RegisterProviderRawFetcher>)
+- [func ValidateJSONPayload\(data \[\]byte\) error](<#ValidateJSONPayload>)
 - [type Dependency](<#Dependency>)
 - [type DependencyStatus](<#DependencyStatus>)
 - [type FetchStats](<#FetchStats>)
   - [func \(s \*FetchStats\) HumanSize\(\) string](<#FetchStats.HumanSize>)
 - [type ID](<#ID>)
   - [func IDs\(\) \[\]ID](<#IDs>)
+- [type Observation](<#Observation>)
+  - [func NewObservation\(sourceID ID, catalog \*catalogs.Catalog, metadata ObservationMetadata\) \(Observation, error\)](<#NewObservation>)
+  - [func \(o Observation\) Link\(\) catalogs.SourceObservationLink](<#Observation.Link>)
+  - [func \(o Observation\) Validate\(\) error](<#Observation.Validate>)
+- [type ObservationCompleteness](<#ObservationCompleteness>)
+- [type ObservationIssue](<#ObservationIssue>)
+- [type ObservationIssueCode](<#ObservationIssueCode>)
+- [type ObservationIssueScope](<#ObservationIssueScope>)
+- [type ObservationMetadata](<#ObservationMetadata>)
+- [type ObservationRecordCounts](<#ObservationRecordCounts>)
+- [type ObservationStatus](<#ObservationStatus>)
 - [type Option](<#Option>)
   - [func WithCleanupRepo\(cleanup bool\) Option](<#WithCleanupRepo>)
-  - [func WithFresh\(fresh bool\) Option](<#WithFresh>)
   - [func WithProviderFilter\(providerID catalogs.ProviderID\) Option](<#WithProviderFilter>)
   - [func WithReformat\(reformat bool\) Option](<#WithReformat>)
-  - [func WithSafeMode\(safeMode bool\) Option](<#WithSafeMode>)
 - [type Options](<#Options>)
   - [func Defaults\(\) \*Options](<#Defaults>)
   - [func \(o \*Options\) Apply\(opts ...Option\) \*Options](<#Options.Apply>)
+- [type ProviderClient](<#ProviderClient>)
+- [type ProviderClientFactory](<#ProviderClientFactory>)
 - [type ProviderFetcher](<#ProviderFetcher>)
-  - [func NewProviderFetcher\(providers \*catalogs.Providers, opts ...ProviderOption\) \*ProviderFetcher](<#NewProviderFetcher>)
+  - [func NewProviderFetcher\(providers catalogs.ProvidersReader, opts ...ProviderOption\) \*ProviderFetcher](<#NewProviderFetcher>)
   - [func \(pf \*ProviderFetcher\) FetchModels\(ctx context.Context, provider \*catalogs.Provider, opts ...ProviderOption\) \(\[\]catalogs.Model, error\)](<#ProviderFetcher.FetchModels>)
   - [func \(pf \*ProviderFetcher\) FetchRawResponse\(ctx context.Context, provider \*catalogs.Provider, endpoint string, opts ...ProviderOption\) \(\[\]byte, \*FetchStats, error\)](<#ProviderFetcher.FetchRawResponse>)
   - [func \(pf \*ProviderFetcher\) HasClient\(id catalogs.ProviderID\) bool](<#ProviderFetcher.HasClient>)
@@ -63,9 +77,20 @@ if fetcher.HasClient(providerID) {
   - [func \(pf \*ProviderFetcher\) Providers\(\) \*catalogs.Providers](<#ProviderFetcher.Providers>)
 - [type ProviderOption](<#ProviderOption>)
   - [func WithAllowMissingAPIKey\(\) ProviderOption](<#WithAllowMissingAPIKey>)
+  - [func WithProviderClientFactory\(factory ProviderClientFactory\) ProviderOption](<#WithProviderClientFactory>)
+  - [func WithProviderRawFetcher\(fetcher ProviderRawFetcher\) ProviderOption](<#WithProviderRawFetcher>)
   - [func WithTimeout\(d time.Duration\) ProviderOption](<#WithTimeout>)
   - [func WithoutCredentialLoading\(\) ProviderOption](<#WithoutCredentialLoading>)
+- [type ProviderRawFetcher](<#ProviderRawFetcher>)
+- [type RawFetchResult](<#RawFetchResult>)
 - [type ResourceType](<#ResourceType>)
+- [type Revision](<#Revision>)
+- [type RevisionKind](<#RevisionKind>)
+- [type SchemaDriftDisposition](<#SchemaDriftDisposition>)
+- [type SchemaDriftPolicy](<#SchemaDriftPolicy>)
+  - [func SchemaDriftPolicies\(record SchemaRecord\) \[\]SchemaDriftPolicy](<#SchemaDriftPolicies>)
+- [type SchemaFieldClass](<#SchemaFieldClass>)
+- [type SchemaRecord](<#SchemaRecord>)
 - [type Source](<#Source>)
 - [type Sources](<#Sources>)
   - [func NewSources\(\) \*Sources](<#NewSources>)
@@ -79,14 +104,81 @@ if fetcher.HasClient(providerID) {
 
 ## Constants
 
+<a name="RevisionKindUnknown"></a>
+
+```go
+const (
+    // RevisionKindUnknown means the upstream exposes no stable revision.
+    RevisionKindUnknown = catalogmeta.ObservationRevisionKindUnknown
+    // RevisionKindETag identifies an HTTP entity-tag revision.
+    RevisionKindETag = catalogmeta.ObservationRevisionKindETag
+    // RevisionKindLastModified identifies an HTTP Last-Modified validator.
+    RevisionKindLastModified = catalogmeta.ObservationRevisionKindLastModified
+    // RevisionKindGitCommit identifies an exact Git commit.
+    RevisionKindGitCommit = catalogmeta.ObservationRevisionKindGitCommit
+    // RevisionKindSourceVersion identifies an upstream-declared version.
+    RevisionKindSourceVersion = catalogmeta.ObservationRevisionKindSourceVersion
+    // RevisionKindContentDigest identifies the normalized observation content.
+    RevisionKindContentDigest = catalogmeta.ObservationRevisionKindContentDigest
+)
+```
+
+<a name="ObservationCompletenessComplete"></a>
+
+```go
+const (
+    // ObservationCompletenessComplete means every expected record was observed.
+    ObservationCompletenessComplete = catalogmeta.ObservationCompletenessComplete
+    // ObservationCompletenessPartial means at least one expected record is absent.
+    ObservationCompletenessPartial = catalogmeta.ObservationCompletenessPartial
+)
+```
+
+<a name="ObservationStatusSucceeded"></a>
+
+```go
+const (
+    // ObservationStatusSucceeded means the observation completed without known degradation.
+    ObservationStatusSucceeded = catalogmeta.ObservationStatusSucceeded
+    // ObservationStatusDegraded means usable catalog data was returned with a known limitation.
+    ObservationStatusDegraded = catalogmeta.ObservationStatusDegraded
+)
+```
+
+<a name="ObservationIssueScopeRecord"></a>Observation issue scope values.
+
+```go
+const (
+    ObservationIssueScopeRecord        = catalogmeta.ObservationIssueScopeRecord
+    ObservationIssueScopeProvider      = catalogmeta.ObservationIssueScopeProvider
+    ObservationIssueScopeSource        = catalogmeta.ObservationIssueScopeSource
+    ObservationIssueScopeStaleFallback = catalogmeta.ObservationIssueScopeStaleFallback
+)
+```
+
+<a name="ObservationIssueCodeInvalidRecord"></a>Observation issue code values.
+
+```go
+const (
+    ObservationIssueCodeInvalidRecord      = catalogmeta.ObservationIssueCodeInvalidRecord
+    ObservationIssueCodeSchemaDrift        = catalogmeta.ObservationIssueCodeSchemaDrift
+    ObservationIssueCodePayloadLimit       = catalogmeta.ObservationIssueCodePayloadLimit
+    ObservationIssueCodeMissingCredentials = catalogmeta.ObservationIssueCodeMissingCredentials
+    ObservationIssueCodeConfiguration      = catalogmeta.ObservationIssueCodeConfiguration
+    ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
+    ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
+    ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
+)
+```
+
 <a name="ProvidersID"></a>Common source identifiers \- exported as package\-level constants for convenience.
 
 ```go
 const (
-    ProvidersID     = types.ProvidersID
-    ModelsDevGitID  = types.ModelsDevGitID
-    ModelsDevHTTPID = types.ModelsDevHTTPID
-    LocalCatalogID  = types.LocalCatalogID
+    ProvidersID     = catalogmeta.ProvidersID
+    ModelsDevGitID  = catalogmeta.ModelsDevGitID
+    ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
+    LocalCatalogID  = catalogmeta.LocalCatalogID
 )
 ```
 
@@ -94,14 +186,49 @@ const (
 
 ```go
 const (
-    ResourceTypeModel    = types.ResourceTypeModel
-    ResourceTypeProvider = types.ResourceTypeProvider
-    ResourceTypeAuthor   = types.ResourceTypeAuthor
+    ResourceTypeModel            = catalogmeta.ResourceTypeModel
+    ResourceTypeProvider         = catalogmeta.ResourceTypeProvider
+    ResourceTypeAuthor           = catalogmeta.ResourceTypeAuthor
+    ResourceTypeModelDefinition  = catalogmeta.ResourceTypeModelDefinition
+    ResourceTypeProviderOffering = catalogmeta.ResourceTypeProviderOffering
 )
 ```
 
+<a name="MaxJSONNestingDepth"></a>MaxJSONNestingDepth bounds object/array nesting before JSON decode.
+
+```go
+const MaxJSONNestingDepth = sourcepayload.MaxJSONNestingDepth
+```
+
+<a name="RegisterProviderClientFactory"></a>
+## func [RegisterProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L114>)
+
+```go
+func RegisterProviderClientFactory(factory ProviderClientFactory) func()
+```
+
+RegisterProviderClientFactory registers the default provider client factory. It returns a restore function intended for tests and temporary integrations.
+
+<a name="RegisterProviderRawFetcher"></a>
+## func [RegisterProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L129>)
+
+```go
+func RegisterProviderRawFetcher(fetcher ProviderRawFetcher) func()
+```
+
+RegisterProviderRawFetcher registers the default raw provider fetcher. It returns a restore function intended for tests and temporary integrations.
+
+<a name="ValidateJSONPayload"></a>
+## func [ValidateJSONPayload](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload.go#L9>)
+
+```go
+func ValidateJSONPayload(data []byte) error
+```
+
+ValidateJSONPayload enforces source byte and nesting limits before decoding.
+
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L144-L162>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L162-L180>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -128,7 +255,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L165-L170>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L183-L188>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -142,7 +269,7 @@ type DependencyStatus struct {
 ```
 
 <a name="FetchStats"></a>
-## type [FetchStats](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L49-L58>)
+## type [FetchStats](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L150-L159>)
 
 FetchStats contains metadata about a fetch operation. This provides transparency into API requests for debugging and monitoring.
 
@@ -160,7 +287,7 @@ type FetchStats struct {
 ```
 
 <a name="FetchStats.HumanSize"></a>
-### func \(\*FetchStats\) [HumanSize](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L61>)
+### func \(\*FetchStats\) [HumanSize](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L162>)
 
 ```go
 func (s *FetchStats) HumanSize() string
@@ -169,25 +296,142 @@ func (s *FetchStats) HumanSize() string
 HumanSize returns the payload size in human\-readable format.
 
 <a name="ID"></a>
-## type [ID](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L102>)
+## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L103>)
 
-ID represents the identifier of a data source. ID is a type alias for types.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/types.
+ID represents the identifier of a data source. ID is a type alias for catalogmeta.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/catalogmeta.
 
 ```go
-type ID = types.SourceID
+type ID = catalogmeta.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L114>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L115>)
 
 ```go
 func IDs() []ID
 ```
 
-IDs returns all available source identifiers. Delegates to types.SourceIDs\(\) to maintain consistency.
+IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
+
+<a name="Observation"></a>
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L148-L159>)
+
+Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
+
+```go
+type Observation struct {
+    ID               string                  `json:"id" yaml:"id"`
+    SourceID         ID                      `json:"source" yaml:"source"`
+    ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
+    Revision         Revision                `json:"revision" yaml:"revision"`
+    Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
+    Status           ObservationStatus       `json:"status" yaml:"status"`
+    Records          ObservationRecordCounts `json:"records" yaml:"records"`
+    Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
+    EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
+    Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
+}
+```
+
+<a name="NewObservation"></a>
+### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L99>)
+
+```go
+func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata ObservationMetadata) (Observation, error)
+```
+
+NewObservation binds an immutable catalog to typed, deterministic audit metadata.
+
+<a name="Observation.Link"></a>
+### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L134>)
+
+```go
+func (o Observation) Link() catalogs.SourceObservationLink
+```
+
+Link returns the immutable manifest/audit projection of this observation.
+
+<a name="Observation.Validate"></a>
+### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L143>)
+
+```go
+func (o Observation) Validate() error
+```
+
+Validate verifies required metadata and binds the evidence checksum to Catalog.
+
+<a name="ObservationCompleteness"></a>
+## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L37>)
+
+ObservationCompleteness states whether all expected records were observed.
+
+```go
+type ObservationCompleteness = catalogmeta.ObservationCompleteness
+```
+
+<a name="ObservationIssue"></a>
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L86>)
+
+ObservationIssue records one classified, non\-fatal degradation.
+
+```go
+type ObservationIssue = catalogmeta.ObservationIssue
+```
+
+<a name="ObservationIssueCode"></a>
+## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L71>)
+
+ObservationIssueCode is a stable machine\-readable degradation reason.
+
+```go
+type ObservationIssueCode = catalogmeta.ObservationIssueCode
+```
+
+<a name="ObservationIssueScope"></a>
+## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L60>)
+
+ObservationIssueScope identifies the level at which degradation occurred.
+
+```go
+type ObservationIssueScope = catalogmeta.ObservationIssueScope
+```
+
+<a name="ObservationMetadata"></a>
+## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L89-L96>)
+
+ObservationMetadata supplies source\-owned metadata used to construct an observation.
+
+```go
+type ObservationMetadata struct {
+    ObservedAt   time.Time
+    Revision     Revision
+    Completeness ObservationCompleteness
+    Status       ObservationStatus
+    Records      ObservationRecordCounts
+    Issues       []ObservationIssue
+}
+```
+
+<a name="ObservationRecordCounts"></a>
+## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L57>)
+
+ObservationRecordCounts reports accepted and rejected source records.
+
+```go
+type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
+```
+
+<a name="ObservationStatus"></a>
+## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L47>)
+
+ObservationStatus is the typed outcome of a source observation.
+
+```go
+type ObservationStatus = catalogmeta.ObservationStatus
+```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L34>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L25>)
 
 Option is a function that configures options.
 
@@ -196,7 +440,7 @@ type Option func(*Options)
 ```
 
 <a name="WithCleanupRepo"></a>
-### func [WithCleanupRepo](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L67>)
+### func [WithCleanupRepo](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L44>)
 
 ```go
 func WithCleanupRepo(cleanup bool) Option
@@ -204,17 +448,8 @@ func WithCleanupRepo(cleanup bool) Option
 
 WithCleanupRepo configures whether to clean up temporary repositories after fetch.
 
-<a name="WithFresh"></a>
-### func [WithFresh](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L53>)
-
-```go
-func WithFresh(fresh bool) Option
-```
-
-WithFresh configures fresh sync mode for sources.
-
 <a name="WithProviderFilter"></a>
-### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L46>)
+### func [WithProviderFilter](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L37>)
 
 ```go
 func WithProviderFilter(providerID catalogs.ProviderID) Option
@@ -223,7 +458,7 @@ func WithProviderFilter(providerID catalogs.ProviderID) Option
 WithProviderFilter configures filtering for a specific provider.
 
 <a name="WithReformat"></a>
-### func [WithReformat](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L74>)
+### func [WithReformat](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L51>)
 
 ```go
 func WithReformat(reformat bool) Option
@@ -231,17 +466,8 @@ func WithReformat(reformat bool) Option
 
 WithReformat configures whether to reformat output files.
 
-<a name="WithSafeMode"></a>
-### func [WithSafeMode](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L60>)
-
-```go
-func WithSafeMode(safeMode bool) Option
-```
-
-WithSafeMode configures safe mode for sources.
-
 <a name="Options"></a>
-## type [Options](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L9-L20>)
+## type [Options](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L6-L13>)
 
 Options is the configuration for sources.
 
@@ -250,10 +476,6 @@ type Options struct {
     // Provider filtering (needed by provider source)
     ProviderID *catalogs.ProviderID
 
-    // Behavior flags (needed by various sources)
-    Fresh    bool // Fresh sync (delete existing before adding)
-    SafeMode bool // Don't delete models, only add/update
-
     // Typed source-specific options
     CleanupRepo bool // For models.dev git source - remove repo after fetch
     Reformat    bool // For file-based sources - reformat output files
@@ -261,7 +483,7 @@ type Options struct {
 ```
 
 <a name="Defaults"></a>
-### func [Defaults](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L23>)
+### func [Defaults](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L16>)
 
 ```go
 func Defaults() *Options
@@ -270,7 +492,7 @@ func Defaults() *Options
 Defaults returns source options with default values.
 
 <a name="Options.Apply"></a>
-### func \(\*Options\) [Apply](<https://github.com/agentstation/starmap/blob/master/pkg/sources/options.go#L38>)
+### func \(\*Options\) [Apply](<https://github.com/agentstation/starmap/blob/main/pkg/sources/options.go#L29>)
 
 ```go
 func (o *Options) Apply(opts ...Option) *Options
@@ -278,8 +500,30 @@ func (o *Options) Apply(opts ...Option) *Options
 
 Apply applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
+<a name="ProviderClient"></a>
+## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L17-L21>)
+
+ProviderClient fetches model information from a provider API.
+
+```go
+type ProviderClient interface {
+    ListModels(ctx context.Context) ([]catalogs.Model, error)
+    IsAPIKeyRequired() bool
+    HasAPIKey() bool
+}
+```
+
+<a name="ProviderClientFactory"></a>
+## type [ProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L24>)
+
+ProviderClientFactory creates provider API clients.
+
+```go
+type ProviderClientFactory func(*catalogs.Provider) (ProviderClient, error)
+```
+
 <a name="ProviderFetcher"></a>
-## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L16-L19>)
+## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L45-L48>)
 
 ProviderFetcher provides operations for fetching models from provider APIs. This is the public API for external packages to interact with provider data.
 
@@ -290,16 +534,16 @@ type ProviderFetcher struct {
 ```
 
 <a name="NewProviderFetcher"></a>
-### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L118>)
+### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L222>)
 
 ```go
-func NewProviderFetcher(providers *catalogs.Providers, opts ...ProviderOption) *ProviderFetcher
+func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher
 ```
 
 NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages. The providers parameter should contain the catalog providers to create clients for.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L202>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L324>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
@@ -322,7 +566,7 @@ models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L271>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L363>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error)
@@ -333,7 +577,7 @@ FetchRawResponse fetches the raw API response from a provider's endpoint. This i
 The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing, along with fetch statistics.
 
 <a name="ProviderFetcher.HasClient"></a>
-### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L154>)
+### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L258>)
 
 ```go
 func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
@@ -342,7 +586,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
 HasClient checks if a provider ID has a client implementation.
 
 <a name="ProviderFetcher.List"></a>
-### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L143>)
+### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L247>)
 
 ```go
 func (pf *ProviderFetcher) List() []catalogs.ProviderID
@@ -351,7 +595,7 @@ func (pf *ProviderFetcher) List() []catalogs.ProviderID
 List returns all provider IDs that have client implementations.
 
 <a name="ProviderFetcher.Providers"></a>
-### func \(\*ProviderFetcher\) [Providers](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L128>)
+### func \(\*ProviderFetcher\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L232>)
 
 ```go
 func (pf *ProviderFetcher) Providers() *catalogs.Providers
@@ -360,7 +604,7 @@ func (pf *ProviderFetcher) Providers() *catalogs.Providers
 Providers returns the providers that can be used by the provider fetcher.
 
 <a name="ProviderOption"></a>
-## type [ProviderOption](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L36>)
+## type [ProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L67>)
 
 ProviderOption configures ProviderFetcher behavior.
 
@@ -369,7 +613,7 @@ type ProviderOption func(*providerOptions)
 ```
 
 <a name="WithAllowMissingAPIKey"></a>
-### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L176>)
+### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L284>)
 
 ```go
 func WithAllowMissingAPIKey() ProviderOption
@@ -377,8 +621,26 @@ func WithAllowMissingAPIKey() ProviderOption
 
 WithAllowMissingAPIKey allows operations even when API key is not configured. Useful for checking provider support without credentials.
 
+<a name="WithProviderClientFactory"></a>
+### func [WithProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L299>)
+
+```go
+func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption
+```
+
+WithProviderClientFactory configures the factory used to create provider API clients.
+
+<a name="WithProviderRawFetcher"></a>
+### func [WithProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L306>)
+
+```go
+func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption
+```
+
+WithProviderRawFetcher configures the raw provider response fetcher.
+
 <a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L184>)
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L292>)
 
 ```go
 func WithTimeout(d time.Duration) ProviderOption
@@ -387,7 +649,7 @@ func WithTimeout(d time.Duration) ProviderOption
 WithTimeout sets a timeout for provider operations. The timeout applies to the context passed to FetchModels.
 
 <a name="WithoutCredentialLoading"></a>
-### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/master/pkg/sources/providers.go#L168>)
+### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L276>)
 
 ```go
 func WithoutCredentialLoading() ProviderOption
@@ -395,36 +657,180 @@ func WithoutCredentialLoading() ProviderOption
 
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
-<a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L175>)
+<a name="ProviderRawFetcher"></a>
+## type [ProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L35>)
 
-ResourceType is a type alias for types.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/types.
+ProviderRawFetcher fetches a raw provider API response.
 
 ```go
-type ResourceType = types.ResourceType
+type ProviderRawFetcher func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error)
+```
+
+<a name="RawFetchResult"></a>
+## type [RawFetchResult](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L27-L32>)
+
+RawFetchResult contains the result of a raw provider fetch operation.
+
+```go
+type RawFetchResult struct {
+    Data       []byte
+    Response   *http.Response
+    Latency    time.Duration
+    RequestURL string
+}
+```
+
+<a name="ResourceType"></a>
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L193>)
+
+ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
+
+```go
+type ResourceType = catalogmeta.ResourceType
+```
+
+<a name="Revision"></a>
+## type [Revision](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L34>)
+
+Revision identifies the exact upstream or normalized content revision.
+
+```go
+type Revision = catalogmeta.ObservationRevision
+```
+
+<a name="RevisionKind"></a>
+## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L16>)
+
+RevisionKind identifies how an upstream observation revision was obtained.
+
+```go
+type RevisionKind = catalogmeta.ObservationRevisionKind
+```
+
+<a name="SchemaDriftDisposition"></a>
+## type [SchemaDriftDisposition](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L38>)
+
+SchemaDriftDisposition defines how a mismatch or unknown member is handled.
+
+```go
+type SchemaDriftDisposition string
+```
+
+<a name="SchemaDriftRejectSource"></a>
+
+```go
+const (
+    // SchemaDriftRejectSource rejects a structurally unusable source observation.
+    SchemaDriftRejectSource SchemaDriftDisposition = "reject_source"
+    // SchemaDriftRejectRecord quarantines one malformed record and preserves valid siblings.
+    SchemaDriftRejectRecord SchemaDriftDisposition = "reject_record"
+    // SchemaDriftClassify preserves a fingerprint/evidence record for review without promotion.
+    SchemaDriftClassify SchemaDriftDisposition = "classify"
+    // SchemaDriftPreserve retains the exact value inside the source extension boundary.
+    SchemaDriftPreserve SchemaDriftDisposition = "preserve"
+    // SchemaDriftNotApplicable means the disposition does not apply at this path.
+    SchemaDriftNotApplicable SchemaDriftDisposition = "n/a"
+)
+```
+
+<a name="SchemaDriftPolicy"></a>
+## type [SchemaDriftPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L54-L62>)
+
+SchemaDriftPolicy is the executable strict/tolerant contract for one path.
+
+```go
+type SchemaDriftPolicy struct {
+    Record       SchemaRecord
+    Path         string
+    Class        SchemaFieldClass
+    Required     bool
+    Mismatch     SchemaDriftDisposition
+    UnknownField SchemaDriftDisposition
+    Rationale    string
+}
+```
+
+<a name="SchemaDriftPolicies"></a>
+### func [SchemaDriftPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L65>)
+
+```go
+func SchemaDriftPolicies(record SchemaRecord) []SchemaDriftPolicy
+```
+
+SchemaDriftPolicies returns caller\-owned policies for a source record shape.
+
+<a name="SchemaFieldClass"></a>
+## type [SchemaFieldClass](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L24>)
+
+SchemaFieldClass explains why a field boundary is strict or tolerant.
+
+```go
+type SchemaFieldClass string
+```
+
+<a name="SchemaFieldIdentity"></a>
+
+```go
+const (
+    // SchemaFieldIdentity is required identity whose absence or type drift rejects the record.
+    SchemaFieldIdentity SchemaFieldClass = "strict_identity"
+    // SchemaFieldContainer is an object/array boundary whose type drift rejects its scope.
+    SchemaFieldContainer SchemaFieldClass = "strict_container"
+    // SchemaFieldValue is a known scalar value validated before canonical promotion.
+    SchemaFieldValue SchemaFieldClass = "validated_value"
+    // SchemaFieldExtension is an explicitly lossless source-extension boundary.
+    SchemaFieldExtension SchemaFieldClass = "tolerant_extension"
+)
+```
+
+<a name="SchemaRecord"></a>
+## type [SchemaRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L6>)
+
+SchemaRecord identifies one independently validated source record shape.
+
+```go
+type SchemaRecord string
+```
+
+<a name="SchemaRecordObservation"></a>
+
+```go
+const (
+    // SchemaRecordObservation is the source observation envelope.
+    SchemaRecordObservation SchemaRecord = "observation"
+    // SchemaRecordCatalog is a complete decoded source catalog.
+    SchemaRecordCatalog SchemaRecord = "catalog"
+    // SchemaRecordProvider is one provider record inside a source catalog.
+    SchemaRecordProvider SchemaRecord = "provider"
+    // SchemaRecordModel is one source model record before canonical promotion.
+    SchemaRecordModel SchemaRecord = "model"
+    // SchemaRecordModelDefinition is one canonical provider-independent definition.
+    SchemaRecordModelDefinition SchemaRecord = "model_definition"
+    // SchemaRecordProviderOffering is one canonical provider-scoped offering.
+    SchemaRecordProviderOffering SchemaRecord = "provider_offering"
+)
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L119-L141>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L124-L143>)
 
-Source represents a data source for catalog information.
+Source observes catalog information from one configured upstream.
+
+Implementations must be safe for repeated and concurrent Observe calls. Observe returns the complete result of that call directly and must not require a prior call or publish mutable result state through the Source.
 
 ```go
 type Source interface {
-    // Type returns the type of this source
+    // ID returns the stable identity of this source.
     ID() ID
 
     // Name returns a human-friendly name for this source
     Name() string
 
-    // Fetch retrieves data from this source
-    // Sources handle their own concurrency internally
-    Fetch(ctx context.Context, opts ...Option) error
+    // Observe retrieves and returns one immutable source result directly. Calls
+    // must not depend on prior Observe calls or publish result state on Source.
+    Observe(ctx context.Context, opts ...Option) (Observation, error)
 
-    // Catalog returns the catalog of this source
-    Catalog() catalogs.Catalog
-
-    // Cleanup releases any resources (called after all Fetch operations)
+    // Cleanup releases resources after all Observe calls have completed.
     Cleanup() error
 
     // Dependencies returns the list of external dependencies this source requires
@@ -436,7 +842,7 @@ type Source interface {
 ```
 
 <a name="Sources"></a>
-## type [Sources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L35-L38>)
+## type [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L36-L39>)
 
 Sources is a thread\-safe container for managing multiple data sources.
 
@@ -447,7 +853,7 @@ type Sources struct {
 ```
 
 <a name="NewSources"></a>
-### func [NewSources](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L41>)
+### func [NewSources](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L42>)
 
 ```go
 func NewSources() *Sources
@@ -456,7 +862,7 @@ func NewSources() *Sources
 NewSources creates a new Sources instance.
 
 <a name="Sources.Delete"></a>
-### func \(\*Sources\) [Delete](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L63>)
+### func \(\*Sources\) [Delete](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L64>)
 
 ```go
 func (s *Sources) Delete(id ID)
@@ -465,7 +871,7 @@ func (s *Sources) Delete(id ID)
 Delete deletes a source by ID.
 
 <a name="Sources.Get"></a>
-### func \(\*Sources\) [Get](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L48>)
+### func \(\*Sources\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L49>)
 
 ```go
 func (s *Sources) Get(id ID) (Source, bool)
@@ -474,7 +880,7 @@ func (s *Sources) Get(id ID) (Source, bool)
 Get returns a source by ID.
 
 <a name="Sources.IDs"></a>
-### func \(\*Sources\) [IDs](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L88>)
+### func \(\*Sources\) [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L89>)
 
 ```go
 func (s *Sources) IDs() []ID
@@ -483,7 +889,7 @@ func (s *Sources) IDs() []ID
 IDs returns a slice of all source IDs.
 
 <a name="Sources.Len"></a>
-### func \(\*Sources\) [Len](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L70>)
+### func \(\*Sources\) [Len](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L71>)
 
 ```go
 func (s *Sources) Len() int
@@ -492,7 +898,7 @@ func (s *Sources) Len() int
 Len returns the number of sources.
 
 <a name="Sources.List"></a>
-### func \(\*Sources\) [List](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L77>)
+### func \(\*Sources\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L78>)
 
 ```go
 func (s *Sources) List() []Source
@@ -501,7 +907,7 @@ func (s *Sources) List() []Source
 List returns a slice of all sources.
 
 <a name="Sources.Set"></a>
-### func \(\*Sources\) [Set](<https://github.com/agentstation/starmap/blob/master/pkg/sources/source.go#L56>)
+### func \(\*Sources\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L57>)
 
 ```go
 func (s *Sources) Set(id ID, src Source)

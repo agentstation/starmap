@@ -7,7 +7,106 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Clients configured with `WithCatalogStore` now recover and publish the exact
+  durable current generation during `starmap.New`, so server and remote updates
+  survive process restart. Server updates may select a single source with the
+  `source` query parameter; a configured `WithLocalPath` is now also the default
+  sync input/output path when `sync.WithOutputPath` is omitted.
+- Catalog publication observers no longer head-of-line block one another, and
+  server logging middleware preserves SSE flushing and WebSocket hijacking.
+  HTTP catalog responses, SSE, WebSocket, and cache state now correlate the
+  same durable generation and sync-run identity after commit.
+
 ### BREAKING CHANGES
+- **Scheduling moved above the core client**: `starmap.Client` no longer owns a
+  ticker goroutine or cadence lifecycle. `AutoUpdatesOn`, `AutoUpdatesOff`,
+  `WithAutoUpdatesEnabled`, `WithAutoUpdatesDisabled`,
+  `WithAutoUpdateInterval`, `AutoUpdateFunc`, `AutoUpdateContextFunc`,
+  `WithAutoUpdateFunc`, and `WithAutoUpdateContextFunc` were removed.
+  Deployments and Starport own cadence, jitter, retry, leases, and startup
+  policy and invoke the idempotent `Client.Sync` or `Client.Update` operation.
+  Custom candidate construction migrates to the context-aware
+  `UpdateFunc`/`WithUpdateFunc` seam:
+
+  ```go
+  sm, err := starmap.New(
+      starmap.WithCatalogStore(store),
+      starmap.WithUpdateFunc(updateFunc),
+  )
+  err = sm.Update(ctx)
+  ```
+
+- **Canonical model-definition lookup and explicit legacy adapter**:
+  `catalog.FindModel(id)` now returns `catalogs.ModelDefinition`. Provider price,
+  limits, availability, modes, and request behavior are read through
+  `catalog.Offering(providerID, providerModelID)`. Code that requires the former
+  flattened `catalogs.Model` result migrates mechanically to
+  `catalog.LegacyV0().FindModel(id)`; the same adapter exposes legacy `Models`,
+  `ProviderModel`, and `ProviderModels` reads. The adapter is schema version 0;
+  canonical catalogs are schema version 1.
+
+- **`Client.Catalog()` now returns a concrete immutable catalog**: the old
+  `Catalog() (catalogs.Snapshot, error)` signature is replaced by
+  `Catalog() *catalogs.Catalog`. After `starmap.New` succeeds, catalog access is
+  non-failing, non-nil, O(1), and safe to retain across goroutines:
+
+  ```go
+  catalog := sm.Catalog()
+  model, err := catalog.FindModel("gpt-4o")
+  ```
+
+  `catalogs.Catalog` has unexported state and read-only methods; its collection
+  readers expose no set, delete, clear, merge, copy, or save operations. The
+  former exported `catalogs.Snapshot` lifecycle interface was removed. Advanced
+  catalog producers may use the concrete `*catalogs.Builder` and call
+  `Builder.Build()`; create a new draft from an immutable catalog with
+  `catalogs.NewBuilderFrom(catalog)`. Builder remains public for custom update
+  callbacks and source/plugin authors, not for ordinary read consumers.
+
+  `starmap.New` now returns concrete `*starmap.Client`. The one-implementation
+  root `Client`, `Updater`, `AutoUpdater`, `Hooks`, and `Persistence` interfaces
+  were removed; consumers should define narrow interfaces at their own use
+  sites when substitution is needed.
+
+  The client deep-copies a builder once, validates/builds the immutable catalog,
+  and atomically swaps one complete generation after persistence. Catalogs
+  precompute alias-aware provider/model indexes; use `ProviderModels` or
+  `ProviderModel` for provider-specific offerings rather than a lossy bare-ID
+  model view.
+
+- **Sync option contract corrected**:
+  - Removed `sync.WithAutoApprove`; confirmation belongs to the CLI and core
+    synchronization never prompts. Remove this option from programmatic calls.
+  - Removed `sync.WithFailFast`; it was stored but never affected concurrent
+    source fetching. Remove this option; existing source errors remain typed and
+    fatal until the source-observation policy provides explicit partial-success
+    semantics.
+  - Removed `sources.WithSafeMode` and `sources.WithFresh`; neither source-level
+    option had an implementation. Use `sync.WithFresh(true)` for an explicitly
+    destructive replacement sync. Default reconciliation remains non-destructive
+    according to source merge and field-authority policy.
+  - `WithRemoteServerURL` now configures a remote endpoint without silently
+    diverting `Client.Update`. Use `WithRemoteServerOnly` when updates must come
+    exclusively from the configured remote endpoint.
+  - Programmatic `sync.WithSources` now rejects unknown source IDs and copies
+    caller input. A fresh sync rejects `local_catalog` because an existing local
+    catalog cannot also be the input to a replacement generation.
+  - Explicit models.dev Git verification no longer follows the floating `dev`
+    branch. Supply `sync.WithModelsDevGitCommit(exactCommit)` or CLI flag
+    `--models-dev-git-commit`; Starmap checks out that detached commit, installs
+    with `bun install --frozen-lockfile`, and records the `bun.lock` SHA-256 in
+    source-observation revision metadata.
+
+- **Remote catalog protocol is generation-based and versioned**: the ad-hoc
+  unversioned `GET /catalog` envelope was removed. Configure
+  `WithRemoteServerURL`/`WithRemoteServerOnly` with the versioned API base (for
+  example `https://catalog.example.com/api/v1`). Consumers now read
+  `GET /catalog/manifest` and then the immutable
+  `GET /catalog/generations/{generation_id}/snapshot`; schema compatibility,
+  media type, size, and SHA-256 are verified before durable publication.
+
 - **Restructured Auth Commands**: Simplified authentication command structure
   - **Removed**: `starmap providers auth` (entire subcommand tree)
   - **New**: `starmap auth` (top-level command in "setup" group, alongside `starmap deps`)
@@ -19,6 +118,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Rationale**: Consolidate provider information and simplify command hierarchy
 
 ### Added
+- **Catalog generation manifest contract**: added the transport-neutral
+  `catalogs.GenerationManifest`, a checked-in JSON Schema and payload fixture,
+  exact SHA-256/size verification, validator/check results, sync-run and source
+  observation correlation, completeness/degradation state, and catalog-schema
+  compatibility independent of binary versions. Atomic store activation follows
+  in the transactional catalog-store work.
+- **Generation-oriented CatalogStore**: added one CAS-based store contract and
+  a shared conformance suite covering memory, filesystem, SQLite, and
+  conditional object-storage adapters. Generations are validated before commit,
+  retained immutably, defensively copied, and activated only when the expected
+  current ID matches; identical retries are idempotent.
+- **Deletion-correct catalog saves**: legacy builder saves now replace
+  Starmap-managed YAML indexes and provider/author model trees, preventing
+  deleted records from reappearing after reload while preserving unmanaged
+  neighboring files. Generation stores already replace the payload as one
+  immutable unit.
+- **Configured local catalog failures are visible**: a missing optional path
+  still falls back to the embedded bootstrap, while existing corrupt YAML,
+  unreadable managed files, and invalid provider/author records now propagate
+  typed errors and make `starmap.New` fail before publication.
+- **Legacy v0 migration reader**: the shipped multi-file YAML layout is frozen
+  as a fixture and can be converted deterministically into schema-v1 catalog
+  payload bytes and a validated generation. Migration requires explicit IDs,
+  UTC time, and validator version rather than inventing missing historical
+  metadata; corrupt legacy input remains a typed parse failure.
 - **New `starmap auth` Command**: Top-level authentication helper in "setup" group
   - `starmap auth gcloud` → Google Cloud authentication setup (ADC configuration)
   - Provides guidance to use `starmap providers` for viewing auth status
@@ -32,6 +156,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Shows response time, model count, and detailed errors
 
 ### Changed
+- **Dependency prompts are CLI-owned**: Library, server, scheduler, and other
+  non-CLI sync calls no longer read stdin. Optional sources with missing tools
+  are skipped by default, required sources return `DependencyError`, and the
+  update command supplies an explicit interactive decision adapter.
+
 - **Enhanced `starmap providers` Output**: Now shows comprehensive provider information in unified table
   - Added columns: TYPE (endpoint type), ENV KEY, KEY (masked), MODELS (count)
   - Reordered columns: NAME, ID, LOCATION, TYPE, ENV KEY, KEY, MODELS, STATUS

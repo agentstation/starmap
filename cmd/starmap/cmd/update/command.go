@@ -3,7 +3,7 @@ package update
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/starmap/internal/application"
 )
 
 // NewCommand creates the update command using app context.
@@ -13,7 +13,7 @@ func NewCommand(app application.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update [provider]",
 		GroupID: "catalog",
-		Short:   "Synchronize catalog with all sources",
+		Short:   "Synchronize catalog with the default or selected sources",
 		Args:    cobra.MaximumNArgs(1),
 		Long: `Update synchronizes your local starmap catalog by fetching the latest data
 from all configured sources:
@@ -25,7 +25,7 @@ from all configured sources:
 The command will:
 • Load the current catalog (embedded or from --input-dir)
 • Fetch live data from provider APIs (if keys configured)
-• Enrich with models.dev data (pricing, limits, logos)
+• Enrich with models.dev data (descriptions, features, pricing, limits, logos)
 • Reconcile all sources using field-level authority
 • Save the updated catalog to disk
 

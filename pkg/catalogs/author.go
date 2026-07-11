@@ -225,15 +225,15 @@ func normalizeAuthorString(s string) string {
 // Singleton for embedded catalog to avoid repeated loading.
 var (
 	embeddedCatalogOnce sync.Once
-	embeddedCatalog     Catalog
+	embeddedCatalog     *Catalog
 )
 
 // getEmbeddedCatalogSingleton returns a singleton instance of the embedded catalog.
 // Returns nil if the catalog cannot be loaded.
-func getEmbeddedCatalogSingleton() Catalog {
+func getEmbeddedCatalogSingleton() *Catalog {
 	embeddedCatalogOnce.Do(func() {
-		if cat, err := NewEmbedded(); err == nil {
-			embeddedCatalog = cat
+		if builder, err := NewEmbedded(); err == nil {
+			embeddedCatalog, _ = builder.Build()
 		}
 		// If error, embeddedCatalog remains nil
 	})

@@ -1,7 +1,6 @@
 package catalogs
 
 import (
-	"maps"
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -28,7 +27,14 @@ func WithEndpointsMap(endpoints map[string]*Endpoint) EndpointsOption {
 	return func(e *Endpoints) {
 		if endpoints != nil {
 			e.endpoints = make(map[string]*Endpoint, len(endpoints))
-			maps.Copy(e.endpoints, endpoints)
+			for id, endpoint := range endpoints {
+				if endpoint == nil {
+					e.endpoints[id] = nil
+					continue
+				}
+				endpointCopy := DeepCopyEndpoint(*endpoint)
+				e.endpoints[id] = &endpointCopy
+			}
 		}
 	}
 }
@@ -51,7 +57,11 @@ func (e *Endpoints) Get(id string) (*Endpoint, bool) {
 	e.mu.RLock()
 	endpoint, ok := e.endpoints[id]
 	e.mu.RUnlock()
-	return endpoint, ok
+	if !ok || endpoint == nil {
+		return endpoint, ok
+	}
+	endpointCopy := DeepCopyEndpoint(*endpoint)
+	return &endpointCopy, true
 }
 
 // Set sets an endpoint by id. Returns an error if endpoint is nil.
@@ -65,7 +75,8 @@ func (e *Endpoints) Set(id string, endpoint *Endpoint) error {
 
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	e.endpoints[id] = endpoint
+	endpointCopy := DeepCopyEndpoint(*endpoint)
+	e.endpoints[id] = &endpointCopy
 	return nil
 }
 
@@ -89,7 +100,8 @@ func (e *Endpoints) Add(endpoint *Endpoint) error {
 		}
 	}
 
-	e.endpoints[endpoint.ID] = endpoint
+	endpointCopy := DeepCopyEndpoint(*endpoint)
+	e.endpoints[endpoint.ID] = &endpointCopy
 	return nil
 }
 
@@ -145,7 +157,14 @@ func (e *Endpoints) Map() map[string]*Endpoint {
 	defer e.mu.RUnlock()
 
 	result := make(map[string]*Endpoint, len(e.endpoints))
-	maps.Copy(result, e.endpoints)
+	for id, endpoint := range e.endpoints {
+		if endpoint == nil {
+			result[id] = nil
+			continue
+		}
+		endpointCopy := DeepCopyEndpoint(*endpoint)
+		result[id] = &endpointCopy
+	}
 	return result
 }
 
@@ -156,7 +175,14 @@ func (e *Endpoints) ForEach(fn func(id string, endpoint *Endpoint) bool) {
 	defer e.mu.RUnlock()
 
 	for id, endpoint := range e.endpoints {
-		if !fn(id, endpoint) {
+		if endpoint == nil {
+			if !fn(id, nil) {
+				break
+			}
+			continue
+		}
+		endpointCopy := DeepCopyEndpoint(*endpoint)
+		if !fn(id, &endpointCopy) {
 			break
 		}
 	}
@@ -205,7 +231,8 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error {
 			continue
 		}
 		if _, hasError := errs[endpoint.ID]; !hasError {
-			e.endpoints[endpoint.ID] = endpoint
+			endpointCopy := DeepCopyEndpoint(*endpoint)
+			e.endpoints[endpoint.ID] = &endpointCopy
 		}
 	}
 
@@ -237,7 +264,8 @@ func (e *Endpoints) SetBatch(endpoints map[string]*Endpoint) error {
 	defer e.mu.Unlock()
 
 	for id, endpoint := range endpoints {
-		e.endpoints[id] = endpoint
+		endpointCopy := DeepCopyEndpoint(*endpoint)
+		e.endpoints[id] = &endpointCopy
 	}
 
 	return nil

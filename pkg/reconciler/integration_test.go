@@ -16,7 +16,7 @@ import (
 )
 
 // Helper function to add models to a catalog through a provider.
-func addModelsToProvider(cat catalogs.Catalog, providerID string, models []*catalogs.Model) error {
+func addModelsToProvider(cat *catalogs.Builder, providerID string, models []*catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
 		// Create provider if it doesn't exist
@@ -49,6 +49,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 			Name:   "GPT-4 (Embedded)",
 			Limits: &catalogs.ModelLimits{ContextWindow: 8192},
 			Pricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyUSD,
 				Tokens: &catalogs.ModelTokenPricing{
 					Input:  &catalogs.ModelTokenCost{Per1M: 30.0},
 					Output: &catalogs.ModelTokenCost{Per1M: 60.0},
@@ -114,6 +115,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 			ID:   "gpt-4",
 			Name: "GPT-4",
 			Pricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyUSD,
 				Tokens: &catalogs.ModelTokenPricing{
 					Input: &catalogs.ModelTokenCost{
 						Per1M: 10.0, // More accurate pricing
@@ -141,6 +143,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 			ID:   "gpt-4o",
 			Name: "GPT-4o",
 			Pricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyUSD,
 				Tokens: &catalogs.ModelTokenPricing{
 					Input: &catalogs.ModelTokenCost{
 						Per1M: 5.0,
@@ -157,6 +160,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 			ID:   "claude-3",
 			Name: "Claude 3",
 			Pricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyUSD,
 				Tokens: &catalogs.ModelTokenPricing{
 					Input: &catalogs.ModelTokenCost{
 						Per1M: 15.0,
@@ -187,7 +191,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 
 	// Reconcile catalogs from multiple sources
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		sources.LocalCatalogID:  embeddedCat,
 		sources.ProvidersID:     apiCat,
 		sources.ModelsDevHTTPID: modelsDevCat,
@@ -204,10 +208,15 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Fatal("Expected non-nil result with catalog")
 	}
 
-	// Check merged models
+	// Check merged models. The provider API is the primary source, so
+	// models.dev/local data can enrich provider-returned models but cannot add
+	// models that the provider API did not return.
 	models := result.Catalog.Models().List()
-	if len(models) != 3 {
-		t.Errorf("Expected 3 models after reconciliation, got %d", len(models))
+	if len(models) != 2 {
+		t.Errorf("Expected 2 primary models after reconciliation, got %d", len(models))
+	}
+	if _, err := result.Catalog.FindModel("claude-3"); err == nil {
+		t.Error("Expected claude-3 to be excluded because it is not in the primary provider API source")
 	}
 
 	// Verify GPT-4 was properly merged
@@ -222,10 +231,10 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Error("Expected gpt-4 to have features from API")
 	}
 
-	// models.dev should win for pricing
+	// models.dev supplies fallback pricing because the provider omitted it.
 	if gpt4.Pricing == nil || gpt4.Pricing.Tokens == nil ||
 		gpt4.Pricing.Tokens.Input == nil || gpt4.Pricing.Tokens.Input.Per1M != 10.0 {
-		t.Errorf("Expected gpt-4 pricing from models.dev, got %v", gpt4.Pricing)
+		t.Errorf("Expected gpt-4 fallback pricing from models.dev, got %v", gpt4.Pricing)
 	}
 
 	// models.dev should win for metadata
@@ -253,6 +262,184 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	}
 }
 
+func TestPricingAuthorityProviderOfferingSelection(t *testing.T) {
+	expired := utc.New(time.Now().Add(-time.Hour))
+	tests := []struct {
+		name             string
+		providerPricing  *catalogs.ModelPricing
+		wantCurrency     catalogs.ModelPricingCurrency
+		wantInputPer1M   float64
+		wantOutputAbsent bool
+	}{
+		{
+			name: "valid provider price wins atomically",
+			providerPricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyEUR,
+				Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: 2}},
+			},
+			wantCurrency:     catalogs.ModelPricingCurrencyEUR,
+			wantInputPer1M:   2,
+			wantOutputAbsent: true,
+		},
+		{
+			name: "invalid provider price falls back",
+			providerPricing: &catalogs.ModelPricing{
+				Currency: catalogs.ModelPricingCurrencyUSD,
+				Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: -1}},
+			},
+			wantCurrency:   catalogs.ModelPricingCurrencyUSD,
+			wantInputPer1M: 0.5,
+		},
+		{
+			name: "expired provider price falls back",
+			providerPricing: &catalogs.ModelPricing{
+				Currency:       catalogs.ModelPricingCurrencyEUR,
+				EffectiveUntil: &expired,
+				Tokens:         &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: 3}},
+			},
+			wantCurrency:   catalogs.ModelPricingCurrencyUSD,
+			wantInputPer1M: 0.5,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			providerCatalog := catalogs.NewEmpty()
+			if err := addModelsToProvider(providerCatalog, "test-provider", []*catalogs.Model{{
+				ID: "model-1", Name: "Provider Model", Pricing: test.providerPricing,
+			}}); err != nil {
+				t.Fatalf("add provider model: %v", err)
+			}
+			fallbackCatalog := catalogs.NewEmpty()
+			if err := addModelsToProvider(fallbackCatalog, "test-provider", []*catalogs.Model{{
+				ID:   "model-1",
+				Name: "Fallback Model",
+				Pricing: &catalogs.ModelPricing{
+					Currency: catalogs.ModelPricingCurrencyUSD,
+					Tokens: &catalogs.ModelTokenPricing{
+						Input:  &catalogs.ModelTokenCost{Per1M: 0.5},
+						Output: &catalogs.ModelTokenCost{Per1M: 1},
+					},
+				},
+			}}); err != nil {
+				t.Fatalf("add fallback model: %v", err)
+			}
+
+			reconcile, err := reconciler.New(
+				reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
+				reconciler.WithProvenance(true),
+			)
+			if err != nil {
+				t.Fatalf("new reconciler: %v", err)
+			}
+			observations := reconciler.ConvertCatalogsMapToSources(map[sources.ID]*catalogs.Builder{
+				sources.ProvidersID:     providerCatalog,
+				sources.ModelsDevHTTPID: fallbackCatalog,
+			})
+			result, err := reconcile.Sources(context.Background(), sources.ProvidersID, observations)
+			if err != nil {
+				t.Fatalf("reconcile: %v", err)
+			}
+
+			published, err := result.Catalog.Build()
+			if err != nil {
+				t.Fatalf("publish catalog: %v", err)
+			}
+			offering, err := published.Offering("test-provider", "model-1")
+			if err != nil {
+				t.Fatalf("Offering: %v", err)
+			}
+			if offering.Pricing == nil || offering.Pricing.Currency != test.wantCurrency {
+				t.Fatalf("offering pricing = %#v, want currency %q", offering.Pricing, test.wantCurrency)
+			}
+			if offering.Pricing.Tokens == nil || offering.Pricing.Tokens.Input == nil || offering.Pricing.Tokens.Input.Per1M != test.wantInputPer1M {
+				t.Fatalf("offering input pricing = %#v, want %v", offering.Pricing.Tokens, test.wantInputPer1M)
+			}
+			if test.wantOutputAbsent && offering.Pricing.Tokens.Output != nil {
+				t.Fatalf("fallback output price leaked into provider offering: %#v", offering.Pricing.Tokens.Output)
+			}
+		})
+	}
+}
+
+func TestFieldEvidencePricingFallbackQueryable(t *testing.T) {
+	providerCatalog := catalogs.NewEmpty()
+	if err := addModelsToProvider(providerCatalog, "test-provider", []*catalogs.Model{{
+		ID: "model-1", Name: "Provider Model", Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
+			Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: -1}},
+		},
+	}}); err != nil {
+		t.Fatalf("add provider model: %v", err)
+	}
+	fallbackCatalog := catalogs.NewEmpty()
+	if err := addModelsToProvider(fallbackCatalog, "test-provider", []*catalogs.Model{{
+		ID: "model-1", Name: "Fallback Model", Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
+			Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: 0.5}},
+		},
+	}}); err != nil {
+		t.Fatalf("add fallback model: %v", err)
+	}
+	providerSnapshot, err := providerCatalog.Build()
+	if err != nil {
+		t.Fatalf("build provider catalog: %v", err)
+	}
+	fallbackSnapshot, err := fallbackCatalog.Build()
+	if err != nil {
+		t.Fatalf("build fallback catalog: %v", err)
+	}
+	providerObservedAt := time.Date(2026, time.July, 10, 10, 0, 0, 0, time.UTC)
+	fallbackObservedAt := providerObservedAt.Add(time.Minute)
+	observations := []sources.Observation{
+		{
+			ID:               "provider-observation",
+			SourceID:         sources.ProvidersID,
+			ObservedAt:       providerObservedAt,
+			Revision:         sources.Revision{Kind: sources.RevisionKindETag, Value: "provider-v1"},
+			EvidenceChecksum: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			Catalog:          providerSnapshot,
+		},
+		{
+			ID:               "modelsdev-observation",
+			SourceID:         sources.ModelsDevHTTPID,
+			ObservedAt:       fallbackObservedAt,
+			Revision:         sources.Revision{Kind: sources.RevisionKindETag, Value: "modelsdev-v2"},
+			EvidenceChecksum: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+			Catalog:          fallbackSnapshot,
+		},
+	}
+
+	reconcile, err := reconciler.New(
+		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
+		reconciler.WithProvenance(true),
+	)
+	if err != nil {
+		t.Fatalf("new reconciler: %v", err)
+	}
+	result, err := reconcile.Sources(context.Background(), sources.ProvidersID, observations)
+	if err != nil {
+		t.Fatalf("reconcile: %v", err)
+	}
+	entries := result.Provenance["models.test-provider.model-1.pricing"]
+	if len(entries) != 1 {
+		t.Fatalf("pricing evidence entries = %d, want 1: %#v", len(entries), entries)
+	}
+	evidence := entries[0]
+	if evidence.Source != sources.ModelsDevHTTPID || evidence.ObservationID != "modelsdev-observation" {
+		t.Fatalf("winning evidence = %#v, want models.dev observation", evidence)
+	}
+	if !evidence.ObservedAt.Equal(fallbackObservedAt) || evidence.Revision.Value != "modelsdev-v2" {
+		t.Fatalf("winning observation metadata = %#v", evidence)
+	}
+	if len(evidence.Rejections) != 1 || evidence.Rejections[0].Source != sources.ProvidersID {
+		t.Fatalf("rejections = %#v, want rejected provider price", evidence.Rejections)
+	}
+	if !strings.Contains(evidence.Rejections[0].Reason, "must not be negative") {
+		t.Fatalf("provider rejection reason = %q", evidence.Rejections[0].Reason)
+	}
+}
+
 // TestIntegrationWithDifferentStrategies tests reconciliation with various strategies.
 func TestIntegrationWithDifferentStrategies(t *testing.T) {
 	ctx := context.Background()
@@ -272,6 +459,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		ID:   "model-1",
 		Name: "Model 1 from Catalog 1",
 		Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input: &catalogs.ModelTokenCost{
 					Per1M: 10.0,
@@ -289,6 +477,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		ID:   "model-1",
 		Name: "Model 1 from Catalog 2",
 		Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input: &catalogs.ModelTokenCost{
 					Per1M: 20.0,
@@ -301,7 +490,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 		t.Fatalf("Failed to add models to catalog2: %v", err)
 	}
 
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		sources.ProvidersID:    catalog1,
 		sources.ModelsDevGitID: catalog2,
 	}
@@ -318,7 +507,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 			name:      "Authority-based",
 			strategy:  reconciler.NewAuthorityStrategy(authority.New()),
 			wantName:  "Model 1 from Catalog 1", // ProviderAPI (priority 90) wins over ModelsDevGit (priority 80) for name
-			wantPrice: 20.0,                     // ModelsDevGit has higher priority for pricing
+			wantPrice: 10.0,                     // Provider-offering pricing is canonical regardless of general merge strategy
 		},
 		{
 			name: "Source Priority Order",
@@ -327,7 +516,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 				sources.ProvidersID,
 			}),
 			wantName:  "Model 1 from Catalog 2", // ModelsDevGit has higher priority in the strategy
-			wantPrice: 20.0,                     // Price from ModelsDevGit which has higher priority
+			wantPrice: 10.0,                     // Provider-offering pricing retains canonical provider authority
 		},
 	}
 
@@ -447,7 +636,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 
 	// First reconcile to get the new state
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		sources.LocalCatalogID: newCatalog,
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
@@ -509,6 +698,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		ID:   "test-model",
 		Name: "From Catalog 1",
 		Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input:  &catalogs.ModelTokenCost{Per1M: 10.0},
 				Output: &catalogs.ModelTokenCost{Per1M: 20.0},
@@ -528,6 +718,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		ID:   "test-model",
 		Name: "From Catalog 2",
 		Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input:  &catalogs.ModelTokenCost{Per1M: 20.0},
 				Output: &catalogs.ModelTokenCost{Per1M: 40.0},
@@ -547,6 +738,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		ID:   "test-model",
 		Name: "From Catalog 3",
 		Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input:  &catalogs.ModelTokenCost{Per1M: 30.0},
 				Output: &catalogs.ModelTokenCost{Per1M: 60.0},
@@ -570,7 +762,7 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		t.Fatalf("Failed to create reconciler: %v", err)
 	}
 
-	srcMap := map[sources.ID]catalogs.Catalog{
+	srcMap := map[sources.ID]*catalogs.Builder{
 		sources.LocalCatalogID:  catalog1,
 		sources.ProvidersID:     catalog2,
 		sources.ModelsDevHTTPID: catalog3,
@@ -590,17 +782,15 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 	// Look for pricing provenance - keys are prefixed with "models.<id>.<field>"
 	foundPricingProvenance := false
 	for field, infos := range result.Provenance {
-		// Check for pricing fields (could be models.model-1.pricing.tokens.input or similar)
+		// Pricing is selected atomically, so it has one field-level provenance record.
 		if strings.Contains(field, "pricing") {
 			foundPricingProvenance = true
 			// Should have provenance info
 			if len(infos) == 0 {
 				t.Errorf("Expected provenance info for %s", field)
 			}
-			// The winning source should be ModelsDevGit (since we don't have ModelsDevHTTP in test)
-			// ModelsDevGit has priority 100 for pricing.input
-			if strings.Contains(field, "input") && infos[0].Source != sources.ModelsDevGitID {
-				t.Errorf("Expected pricing.input from ModelsDevGit, got %s for field %s", infos[0].Source, field)
+			if infos[0].Source != sources.ProvidersID {
+				t.Errorf("Expected pricing from Providers, got %s for field %s", infos[0].Source, field)
 			}
 		}
 	}

@@ -2,169 +2,38 @@ package starmap
 
 import (
 	"context"
-	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/pipeline"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
-	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
 // Sync synchronizes the catalog with provider APIs using staged source execution.
-func (c *client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
-
-	// Step 0: Check and set context if nil
-	if ctx == nil {
-		ctx = context.Background()
-	}
-
-	// Step 1: Parse options with defaults
+func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 	options := sync.Defaults().Apply(opts...)
-
-	// Step 2: Setup context with timeout
-	var cancel context.CancelFunc
-	if options.Timeout > 0 {
-		ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-	} else {
-		cancel = func() {} // No-op cancel if no timeout
-	}
-	defer cancel()
-
-	// Step 3: Load merged local catalog (embedded + file if exists)
-	local, err := catalogs.NewLocal(options.OutputPath)
-	if err != nil {
-		return nil, errors.WrapResource("load", "catalog", "local", err)
-	}
-
-	// Step 4: Validate options upfront with local catalog
-	if err = options.Validate(local.Providers()); err != nil {
-		return nil, err
-	}
-
-	// Step 5: filter sources by options
-	srcs := c.filterSources(options, local)
-
-	// Step 6: Resolve dependencies and filter sources
-	srcs, err = resolveDependencies(ctx, srcs, options)
-	if err != nil {
-		return nil, err
-	}
-
-	// Step 7: Cleanup sources
-	// Use background context with timeout for cleanup to ensure it runs even if sync context is cancelled
-	defer func() {
-		cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cleanupCancel()
-
-		if cleanupErr := cleanup(cleanupCtx, srcs); cleanupErr != nil {
-			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
-		}
-	}()
-
-	// Step 8: Fetch catalogs from all sources
-	if err = fetch(ctx, srcs, options.SourceOptions()); err != nil {
-		return nil, err
-	}
-
-	// Step 9: Get existing catalog for baseline comparison
-	existing, err := c.Catalog()
-	if err != nil {
-		// If we can't get existing catalog, use empty one
-		existing = catalogs.NewEmpty()
-		logging.Debug().Msg("No existing catalog found, using empty baseline")
-	}
-
-	// Step 10: Reconcile catalogs from all sources with baseline
-	result, err := update(ctx, existing, srcs)
-	if err != nil {
-		return nil, err
-	}
-
-	// Step 11: Log change summary if changes detected
-	if result.Changeset != nil && result.Changeset.HasChanges() {
-		logging.Info().
-			Int("added", len(result.Changeset.Models.Added)).
-			Int("updated", len(result.Changeset.Models.Updated)).
-			Int("removed", len(result.Changeset.Models.Removed)).
-			Msg("Changes detected")
-	} else {
-		logging.Info().Msg("No changes detected")
-	}
-
-	// Step 12: Create sync result directly from reconciler's changeset
-	syncResult := sync.ChangesetToResult(
-		result.Changeset,
-		options.DryRun,
-		options.OutputPath,
-		result.ProviderAPICounts,
-		result.ModelProviderMap,
-	)
-
-	// Step 13: Apply changes if not dry run
-	shouldSave := result.Changeset != nil && result.Changeset.HasChanges()
-
-	// Force save if reformat or fresh flag is set (even without changes)
-	if options.Reformat || options.Fresh {
-		shouldSave = true
-		if result.Changeset == nil || !result.Changeset.HasChanges() {
-			logging.Info().
-				Bool("reformat", options.Reformat).
-				Bool("force", options.Fresh).
-				Msg("Forcing save due to reformat/force flag")
-		}
-	}
-
-	if !options.DryRun && shouldSave {
-		// Create empty changeset if nil but we're forcing save
-		changeset := result.Changeset
-		if changeset == nil {
-			changeset = &differ.Changeset{}
-		}
-		if err := c.save(result.Catalog, options, changeset); err != nil {
+	if !options.DryRun {
+		if err := c.requireWritableCatalogStore(); err != nil {
 			return nil, err
 		}
-	} else if options.DryRun {
-		logging.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")
 	}
 
-	return syncResult, nil
-}
-
-// update reconciles the catalog with an optional baseline for comparison.
-func update(ctx context.Context, baseline catalogs.Catalog, srcs []sources.Source) (*reconciler.Result, error) {
-
-	// create reconciler options
-	opts := []reconciler.Option{
-		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
-	}
-
-	// Add baseline if provided
-	if baseline != nil {
-		opts = append(opts, reconciler.WithBaseline(baseline))
-	}
-
-	// create a new reconciler
-	reconcile, err := reconciler.New(opts...)
+	release, err := c.updates.acquire(ctx)
 	if err != nil {
-		return nil, errors.WrapResource("create", "reconciler", "", err)
+		return nil, err
 	}
+	defer release()
 
-	// reconcile the sources catalogs into a single result
-	result, err := reconcile.Sources(ctx, sources.ProvidersID, srcs)
-	if err != nil {
-		return nil, &errors.SyncError{
-			Provider: "all",
-			Err:      err,
-		}
+	effective := append([]sync.Option(nil), opts...)
+	if options.OutputPath == "" && c.options.localPath != "" && !c.options.embeddedCatalogEnabled {
+		effective = append(effective, sync.WithOutputPath(c.options.localPath))
 	}
-
-	return result, nil
+	return pipeline.New(pipelineStore{client: c}).Sync(ctx, effective...)
 }
 
 // ============================================================================
@@ -172,15 +41,13 @@ func update(ctx context.Context, baseline catalogs.Catalog, srcs []sources.Sourc
 // ============================================================================
 
 // save applies the catalog changes if not in dry-run mode.
-func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset *differ.Changeset) error {
+func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+	published, err := snapshotBuilder(result)
+	if err != nil {
+		return pipeline.Publication{}, err
+	}
 
-	// Update internal catalog first
-	c.mu.Lock()
-	oldCatalog := c.catalog
-	c.catalog = result
-	c.mu.Unlock()
-
-	// Save to output path if specified
+	// Persist first so a failed save does not publish unsaved in-memory state.
 	if options.OutputPath != "" {
 		// Debug: check what providers have models
 		providers := result.Providers().List()
@@ -195,64 +62,73 @@ func (c *client) save(result catalogs.Catalog, options *sync.Options, changeset 
 				Msg("Provider model count before save")
 		}
 
-		if saveable, ok := result.(catalogs.Persistence); ok {
-			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
-				return errors.WrapIO("write", options.OutputPath, err)
+		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
+			return pipeline.Publication{}, errors.WrapIO("write", options.OutputPath, err)
+		}
+
+		// Copy models.dev logos after successful save.
+		providerPtrs := make([]*catalogs.Provider, len(providers))
+		for i := range providers {
+			providerPtrs[i] = &providers[i]
+		}
+
+		// Copy provider logos if we have providers and an output path.
+		if len(providerPtrs) > 0 {
+			logging.Debug().
+				Int("provider_count", len(providerPtrs)).
+				Str("output_path", options.OutputPath).
+				Msg("Copying provider logos from models.dev")
+
+			if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
+				logging.Warn().
+					Err(logoErr).
+					Msg("Could not copy provider logos")
+				// Non-fatal error - continue without logos
 			}
+		}
 
-			// Copy models.dev logos after successful save
-			// Convert provider values to pointers for logo copying
-			providerPtrs := make([]*catalogs.Provider, len(providers))
-			for i := range providers {
-				providerPtrs[i] = &providers[i]
-			}
+		// Copy author logos from provider logos.
+		authors := result.Authors().List()
+		if len(authors) > 0 {
+			logging.Debug().
+				Int("author_count", len(authors)).
+				Str("output_path", options.OutputPath).
+				Msg("Copying author logos from models.dev provider logos")
 
-			// Copy provider logos if we have providers and an output path
-			if len(providerPtrs) > 0 {
-				logging.Debug().
-					Int("provider_count", len(providerPtrs)).
-					Str("output_path", options.OutputPath).
-					Msg("Copying provider logos from models.dev")
-
-				if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
-					logging.Warn().
-						Err(logoErr).
-						Msg("Could not copy provider logos")
-					// Non-fatal error - continue without logos
-				}
-			}
-
-			// Copy author logos from provider logos
-			authors := result.Authors().List()
-			if len(authors) > 0 {
-				logging.Debug().
-					Int("author_count", len(authors)).
-					Str("output_path", options.OutputPath).
-					Msg("Copying author logos from models.dev provider logos")
-
-				if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
-					logging.Warn().
-						Err(logoErr).
-						Msg("Could not copy author logos")
-					// Non-fatal error - continue without logos
-				}
+			if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
+				logging.Warn().
+					Err(logoErr).
+					Msg("Could not copy author logos")
+				// Non-fatal error - continue without logos
 			}
 		}
 	} else {
 		// Save to default location
-		if saveable, ok := result.(catalogs.Persistence); ok {
-			if err := saveable.Save(save.WithPath(options.OutputPath)); err != nil {
-				return errors.WrapIO("write", "catalog", err)
-			}
+		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
+			return pipeline.Publication{}, errors.WrapIO("write", "catalog", err)
 		}
+	}
+
+	publication, err := c.commitAndPublish(ctx, published, observations)
+	if err != nil {
+		return pipeline.Publication{}, err
 	}
 
 	logging.Info().
 		Int("changes_applied", changeset.Summary.TotalChanges).
 		Msg("Sync completed successfully")
 
-	// Trigger hooks for catalog changes
-	c.hooks.triggerUpdate(oldCatalog, result)
+	return publication, nil
+}
 
-	return nil
+type pipelineStore struct {
+	client *Client
+}
+
+func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
+	return s.client.Catalog(), nil
+}
+
+func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+	return s.client.save(ctx, catalog, options, changeset, observations)
 }

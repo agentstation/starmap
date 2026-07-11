@@ -140,18 +140,14 @@ func TestCatalogModes(t *testing.T) {
 			t.Fatalf("Failed to copy embedded catalog: %v", err)
 		}
 
-		if merger, ok := embCatCopy.(Merger); ok {
-			if err := merger.MergeWith(filesCat); err != nil {
-				t.Fatalf("Failed to merge catalogs: %v", err)
-			}
+		if err := embCatCopy.MergeWith(filesCat); err != nil {
+			t.Fatalf("Failed to merge catalogs: %v", err)
+		}
 
-			// After merge, provenance should include data from both sources
-			mergedCount := embCatCopy.Provenance().Len()
-			if mergedCount < embProvenanceCount {
-				t.Errorf("Merged provenance lost data: before=%d, after=%d", embProvenanceCount, mergedCount)
-			}
-		} else {
-			t.Error("Catalog does not implement Merger interface")
+		// After merge, provenance should include data from both sources
+		mergedCount := embCatCopy.Provenance().Len()
+		if mergedCount < embProvenanceCount {
+			t.Errorf("Merged provenance lost data: before=%d, after=%d", embProvenanceCount, mergedCount)
 		}
 	})
 }

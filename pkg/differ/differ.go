@@ -6,27 +6,17 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Differ handles change detection between resources.
-type Differ interface {
-	// Models compares two sets of models and returns changes
-	Models(existing, updated []*catalogs.Model) *ModelChangeset
-
-	// Providers compares two sets of providers and returns changes
-	Providers(existing, updated []catalogs.Provider) *ProviderChangeset
-
-	// Authors compares two sets of authors and returns changes
-	Authors(existing, updated []catalogs.Author) *AuthorChangeset
-
-	// Catalogs compares two complete catalogs
-	// Both catalogs only need to be readable
-	Catalogs(existing, updated catalogs.Reader) *Changeset
-}
-
-// differ is the default implementation of Differ.
-type differ struct {
+// Differ detects changes between catalog resources.
+//
+// Differ is concrete because the package has one implementation. Its algorithm
+// inputs remain the narrow catalogs.Reader interface where substitutability is
+// useful.
+type Differ struct {
 	// Options for controlling diff behavior
 	ignoreFields   map[string]bool
 	deepComparison bool
@@ -34,8 +24,8 @@ type differ struct {
 }
 
 // New creates a updated Differ with default settings.
-func New(opts ...Option) Differ {
-	d := &differ{
+func New(opts ...Option) *Differ {
+	d := &Differ{
 		ignoreFields:   make(map[string]bool),
 		deepComparison: true,
 		tracking:       true,
@@ -49,11 +39,13 @@ func New(opts ...Option) Differ {
 }
 
 // Models compares two sets of models and returns changes.
-func (diff *differ) Models(existing, updated []*catalogs.Model) *ModelChangeset {
+func (diff *Differ) Models(existing, updated []*catalogs.Model) *ModelChangeset {
 	changeset := &ModelChangeset{
-		Added:   []catalogs.Model{},
-		Updated: []ModelUpdate{},
-		Removed: []catalogs.Model{},
+		Added:         []catalogs.Model{},
+		AddedScoped:   []ModelChange{},
+		Updated:       []ModelUpdate{},
+		Removed:       []catalogs.Model{},
+		RemovedScoped: []ModelChange{},
 	}
 
 	// Create maps for efficient lookup
@@ -96,7 +88,7 @@ func (diff *differ) Models(existing, updated []*catalogs.Model) *ModelChangeset 
 // Providers compares two sets of providers and returns changes.
 //
 //nolint:dupl // Similar to Authors method but for different types
-func (diff *differ) Providers(existing, updated []catalogs.Provider) *ProviderChangeset {
+func (diff *Differ) Providers(existing, updated []catalogs.Provider) *ProviderChangeset {
 	changeset := &ProviderChangeset{
 		Added:   []catalogs.Provider{},
 		Updated: []ProviderUpdate{},
@@ -143,7 +135,7 @@ func (diff *differ) Providers(existing, updated []catalogs.Provider) *ProviderCh
 // Authors compares two sets of authors and returns changes.
 //
 //nolint:dupl // Similar to Providers method but for different types
-func (diff *differ) Authors(existing, updated []catalogs.Author) *AuthorChangeset {
+func (diff *Differ) Authors(existing, updated []catalogs.Author) *AuthorChangeset {
 	changeset := &AuthorChangeset{
 		Added:   []catalogs.Author{},
 		Updated: []AuthorUpdate{},
@@ -189,28 +181,13 @@ func (diff *differ) Authors(existing, updated []catalogs.Author) *AuthorChangese
 
 // Catalogs compares two complete catalogs
 // Both catalogs only need to be readable.
-func (diff *differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
+func (diff *Differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
 	changeset := &Changeset{}
-
-	// Diff models (from providers and authors)
-	existingModelValues := existing.Models().List()
-	newModelValues := updated.Models().List()
-
-	// Convert to pointers for diff
-	existingModels := make([]*catalogs.Model, len(existingModelValues))
-	for i, m := range existingModelValues {
-		existingModels[i] = &m
-	}
-	newModels := make([]*catalogs.Model, len(newModelValues))
-	for i, m := range newModelValues {
-		newModels[i] = &m
-	}
-
-	changeset.Models = diff.Models(existingModels, newModels)
 
 	// Diff providers
 	existingProviders := existing.Providers().List()
 	newProviders := updated.Providers().List()
+	changeset.Models = diff.providerScopedModels(existingProviders, newProviders)
 	changeset.Providers = diff.Providers(existingProviders, newProviders)
 
 	// Diff authors
@@ -224,8 +201,92 @@ func (diff *differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
 	return changeset
 }
 
+func (diff *Differ) providerScopedModels(existingProviders, updatedProviders []catalogs.Provider) *ModelChangeset {
+	changeset := &ModelChangeset{
+		Added:         []catalogs.Model{},
+		AddedScoped:   []ModelChange{},
+		Updated:       []ModelUpdate{},
+		Removed:       []catalogs.Model{},
+		RemovedScoped: []ModelChange{},
+	}
+
+	existingByProvider := make(map[catalogs.ProviderID]catalogs.Provider, len(existingProviders))
+	for _, provider := range existingProviders {
+		existingByProvider[provider.ID] = provider
+	}
+	updatedByProvider := make(map[catalogs.ProviderID]catalogs.Provider, len(updatedProviders))
+	for _, provider := range updatedProviders {
+		updatedByProvider[provider.ID] = provider
+	}
+
+	for _, updatedProvider := range updatedProviders {
+		existingProvider, exists := existingByProvider[updatedProvider.ID]
+		if !exists {
+			models := providerModels(updatedProvider)
+			changeset.Added = append(changeset.Added, models...)
+			changeset.AddedScoped = append(changeset.AddedScoped, providerModelChanges(updatedProvider.ID, models)...)
+			continue
+		}
+
+		providerChanges := diff.Models(
+			providerModelPointers(existingProvider),
+			providerModelPointers(updatedProvider),
+		)
+		for i := range providerChanges.Updated {
+			providerChanges.Updated[i].ProviderID = updatedProvider.ID
+		}
+		changeset.Added = append(changeset.Added, providerChanges.Added...)
+		changeset.AddedScoped = append(changeset.AddedScoped, providerModelChanges(updatedProvider.ID, providerChanges.Added)...)
+		changeset.Updated = append(changeset.Updated, providerChanges.Updated...)
+		changeset.Removed = append(changeset.Removed, providerChanges.Removed...)
+		changeset.RemovedScoped = append(changeset.RemovedScoped, providerModelChanges(updatedProvider.ID, providerChanges.Removed)...)
+	}
+
+	for _, existingProvider := range existingProviders {
+		if _, exists := updatedByProvider[existingProvider.ID]; !exists {
+			models := providerModels(existingProvider)
+			changeset.Removed = append(changeset.Removed, models...)
+			changeset.RemovedScoped = append(changeset.RemovedScoped, providerModelChanges(existingProvider.ID, models)...)
+		}
+	}
+
+	sortModelChangeset(changeset)
+	return changeset
+}
+
+func providerModelPointers(provider catalogs.Provider) []*catalogs.Model {
+	models := make([]*catalogs.Model, 0, len(provider.Models))
+	for _, model := range provider.Models {
+		if model != nil {
+			models = append(models, model)
+		}
+	}
+	return models
+}
+
+func providerModels(provider catalogs.Provider) []catalogs.Model {
+	models := make([]catalogs.Model, 0, len(provider.Models))
+	for _, model := range provider.Models {
+		if model != nil {
+			models = append(models, *model)
+		}
+	}
+	return models
+}
+
+func providerModelChanges(providerID catalogs.ProviderID, models []catalogs.Model) []ModelChange {
+	changes := make([]ModelChange, 0, len(models))
+	for _, model := range models {
+		changes = append(changes, ModelChange{
+			ProviderID: providerID,
+			Model:      model,
+		})
+	}
+	return changes
+}
+
 // model compares two models and returns an update if they differ.
-func (diff *differ) model(existing, updated catalogs.Model) *ModelUpdate {
+func (diff *Differ) model(existing, updated catalogs.Model) *ModelUpdate {
 	changes := []FieldChange{}
 
 	// Compare basic fields
@@ -247,10 +308,54 @@ func (diff *differ) model(existing, updated catalogs.Model) *ModelUpdate {
 		})
 	}
 
+	if existing.Status != updated.Status && !diff.ignoreFields["status"] {
+		changes = append(changes, FieldChange{
+			Path:     "status",
+			OldValue: existing.Status.String(),
+			NewValue: updated.Status.String(),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
 	// Compare features
 	if diff.deepComparison && !diff.ignoreFields["features"] {
 		featureChanges := diffModelFeatures(existing.Features, updated.Features)
 		changes = append(changes, featureChanges...)
+	}
+
+	if diff.deepComparison {
+		if !diff.ignoreFields["attachments"] {
+			changes = append(changes, diffModelPointer("attachments", existing.Attachments, updated.Attachments)...)
+		}
+		if !diff.ignoreFields["lineage"] {
+			changes = append(changes, diffModelPointer("lineage", existing.Lineage, updated.Lineage)...)
+		}
+		if !diff.ignoreFields["generation"] {
+			changes = append(changes, diffModelPointer("generation", existing.Generation, updated.Generation)...)
+		}
+		if !diff.ignoreFields["reasoning"] {
+			changes = append(changes, diffModelPointer("reasoning", existing.Reasoning, updated.Reasoning)...)
+		}
+		if !diff.ignoreFields["reasoning_tokens"] {
+			changes = append(changes, diffModelPointer("reasoning_tokens", existing.ReasoningTokens, updated.ReasoningTokens)...)
+		}
+		if !diff.ignoreFields["verbosity"] {
+			changes = append(changes, diffModelPointer("verbosity", existing.Verbosity, updated.Verbosity)...)
+		}
+		if !diff.ignoreFields["tools"] {
+			changes = append(changes, diffModelPointer("tools", existing.Tools, updated.Tools)...)
+		}
+		if !diff.ignoreFields["response"] {
+			changes = append(changes, diffModelPointer("response", existing.Delivery, updated.Delivery)...)
+		}
+		if !diff.ignoreFields["modes"] && !reflect.DeepEqual(existing.Modes, updated.Modes) {
+			changes = append(changes, FieldChange{
+				Path:     "modes",
+				OldValue: fmt.Sprintf("%d modes", len(existing.Modes)),
+				NewValue: fmt.Sprintf("%d modes", len(updated.Modes)),
+				Type:     ChangeTypeUpdate,
+			})
+		}
 	}
 
 	// Compare pricing
@@ -271,6 +376,20 @@ func (diff *differ) model(existing, updated catalogs.Model) *ModelUpdate {
 		changes = append(changes, metadataChanges...)
 	}
 
+	if diff.deepComparison &&
+		!diff.ignoreFields["extensions"] &&
+		!reflect.DeepEqual(
+			catalogs.NormalizeSourceExtensions(existing.Extensions),
+			catalogs.NormalizeSourceExtensions(updated.Extensions),
+		) {
+		changes = append(changes, FieldChange{
+			Path:     "extensions",
+			OldValue: fmt.Sprintf("%d sources", len(existing.Extensions)),
+			NewValue: fmt.Sprintf("%d sources", len(updated.Extensions)),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
 	// If no changes, return nil
 	if len(changes) == 0 {
 		return nil
@@ -282,6 +401,25 @@ func (diff *differ) model(existing, updated catalogs.Model) *ModelUpdate {
 		New:      updated,
 		Changes:  changes,
 	}
+}
+
+func diffModelPointer[T any](path string, existing, updated *T) []FieldChange {
+	if reflect.DeepEqual(existing, updated) {
+		return nil
+	}
+	return []FieldChange{{
+		Path:     path,
+		OldValue: formatPointerPresence(existing),
+		NewValue: formatPointerPresence(updated),
+		Type:     ChangeTypeUpdate,
+	}}
+}
+
+func formatPointerPresence[T any](value *T) string {
+	if value == nil {
+		return "absent"
+	}
+	return "present"
 }
 
 // diffModelFeatures compares model features.
@@ -370,29 +508,40 @@ func diffModelPricing(existing, updated *catalogs.ModelPricing) []FieldChange {
 		return changes
 	}
 
-	// Compare token pricing
-	if existing.Tokens != nil && updated.Tokens != nil {
-		if existing.Tokens.Input != nil && updated.Tokens.Input != nil {
-			if existing.Tokens.Input.Per1M != updated.Tokens.Input.Per1M {
-				changes = append(changes, FieldChange{
-					Path:     "pricing.tokens.input",
-					OldValue: fmt.Sprintf("%.6f", existing.Tokens.Input.Per1M),
-					NewValue: fmt.Sprintf("%.6f", updated.Tokens.Input.Per1M),
-					Type:     ChangeTypeUpdate,
-				})
-			}
-		}
+	if existing.Currency != updated.Currency {
+		changes = append(changes, FieldChange{
+			Path:     "pricing.currency",
+			OldValue: string(existing.Currency),
+			NewValue: string(updated.Currency),
+			Type:     ChangeTypeUpdate,
+		})
+	}
 
-		if existing.Tokens.Output != nil && updated.Tokens.Output != nil {
-			if existing.Tokens.Output.Per1M != updated.Tokens.Output.Per1M {
-				changes = append(changes, FieldChange{
-					Path:     "pricing.tokens.output",
-					OldValue: fmt.Sprintf("%.6f", existing.Tokens.Output.Per1M),
-					NewValue: fmt.Sprintf("%.6f", updated.Tokens.Output.Per1M),
-					Type:     ChangeTypeUpdate,
-				})
-			}
-		}
+	if !reflect.DeepEqual(existing.Tokens, updated.Tokens) {
+		changes = append(changes, FieldChange{
+			Path:     "pricing.tokens",
+			OldValue: formatPresent(existing.Tokens != nil),
+			NewValue: formatPresent(updated.Tokens != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.Operations, updated.Operations) {
+		changes = append(changes, FieldChange{
+			Path:     "pricing.operations",
+			OldValue: formatPresent(existing.Operations != nil),
+			NewValue: formatPresent(updated.Operations != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.Tiers, updated.Tiers) {
+		changes = append(changes, FieldChange{
+			Path:     "pricing.tiers",
+			OldValue: fmt.Sprintf("%d tiers", len(existing.Tiers)),
+			NewValue: fmt.Sprintf("%d tiers", len(updated.Tiers)),
+			Type:     ChangeTypeUpdate,
+		})
 	}
 
 	return changes
@@ -421,6 +570,15 @@ func diffModelLimits(existing, updated *catalogs.ModelLimits) []FieldChange {
 			Path:     "limits.context_window",
 			OldValue: formatTokens(existing.ContextWindow),
 			NewValue: formatTokens(updated.ContextWindow),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if existing.InputTokens != updated.InputTokens {
+		changes = append(changes, FieldChange{
+			Path:     "limits.input_tokens",
+			OldValue: formatTokens(existing.InputTokens),
+			NewValue: formatTokens(updated.InputTokens),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -455,11 +613,11 @@ func diffModelMetadata(existing, updated *catalogs.ModelMetadata) []FieldChange 
 		return changes
 	}
 
-	if existing.KnowledgeCutoff != nil && updated.KnowledgeCutoff != nil && !existing.KnowledgeCutoff.Equal(*updated.KnowledgeCutoff) {
+	if !equalOptionalTime(existing.KnowledgeCutoff, updated.KnowledgeCutoff) {
 		changes = append(changes, FieldChange{
 			Path:     "metadata.knowledge_cutoff",
-			OldValue: existing.KnowledgeCutoff.Format("2006-01-02"),
-			NewValue: updated.KnowledgeCutoff.Format("2006-01-02"),
+			OldValue: formatOptionalTime(existing.KnowledgeCutoff),
+			NewValue: formatOptionalTime(updated.KnowledgeCutoff),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -482,11 +640,29 @@ func diffModelMetadata(existing, updated *catalogs.ModelMetadata) []FieldChange 
 		})
 	}
 
+	if !reflect.DeepEqual(existing.Tags, updated.Tags) {
+		changes = append(changes, FieldChange{
+			Path:     "metadata.tags",
+			OldValue: fmt.Sprintf("%d tags", len(existing.Tags)),
+			NewValue: fmt.Sprintf("%d tags", len(updated.Tags)),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.Architecture, updated.Architecture) {
+		changes = append(changes, FieldChange{
+			Path:     "metadata.architecture",
+			OldValue: formatPresent(existing.Architecture != nil),
+			NewValue: formatPresent(updated.Architecture != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
 	return changes
 }
 
 // provider compares two providers.
-func (diff *differ) provider(existing, updated catalogs.Provider) *ProviderUpdate {
+func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdate {
 	changes := []FieldChange{}
 
 	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
@@ -494,6 +670,33 @@ func (diff *differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 			Path:     "name",
 			OldValue: existing.Name,
 			NewValue: updated.Name,
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.Aliases, updated.Aliases) && !diff.ignoreFields["aliases"] {
+		changes = append(changes, FieldChange{
+			Path:     "aliases",
+			OldValue: fmt.Sprintf("%d aliases", len(existing.Aliases)),
+			NewValue: fmt.Sprintf("%d aliases", len(updated.Aliases)),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !equalOptionalString(existing.Headquarters, updated.Headquarters) && !diff.ignoreFields["headquarters"] {
+		changes = append(changes, FieldChange{
+			Path:     "headquarters",
+			OldValue: optionalStringValue(existing.Headquarters),
+			NewValue: optionalStringValue(updated.Headquarters),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !equalOptionalString(existing.IconURL, updated.IconURL) && !diff.ignoreFields["icon_url"] {
+		changes = append(changes, FieldChange{
+			Path:     "icon_url",
+			OldValue: optionalStringValue(existing.IconURL),
+			NewValue: optionalStringValue(updated.IconURL),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -508,12 +711,79 @@ func (diff *differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
+	if !reflect.DeepEqual(existing.EnvVars, updated.EnvVars) && !diff.ignoreFields["env_vars"] {
+		changes = append(changes, FieldChange{
+			Path:     "env_vars",
+			OldValue: fmt.Sprintf("%d env vars", len(existing.EnvVars)),
+			NewValue: fmt.Sprintf("%d env vars", len(updated.EnvVars)),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
 	// Check catalog settings changes
 	if !reflect.DeepEqual(existing.Catalog, updated.Catalog) && !diff.ignoreFields["catalog"] {
 		changes = append(changes, FieldChange{
 			Path:     "catalog",
 			OldValue: "settings changed",
 			NewValue: "updated",
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !equalOptionalString(existing.StatusPageURL, updated.StatusPageURL) && !diff.ignoreFields["status_page_url"] {
+		changes = append(changes, FieldChange{
+			Path:     "status_page_url",
+			OldValue: optionalStringValue(existing.StatusPageURL),
+			NewValue: optionalStringValue(updated.StatusPageURL),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.ChatCompletions, updated.ChatCompletions) && !diff.ignoreFields["chat_completions"] {
+		changes = append(changes, FieldChange{
+			Path:     "chat_completions",
+			OldValue: formatPresent(existing.ChatCompletions != nil),
+			NewValue: formatPresent(updated.ChatCompletions != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.PrivacyPolicy, updated.PrivacyPolicy) && !diff.ignoreFields["privacy_policy"] {
+		changes = append(changes, FieldChange{
+			Path:     "privacy_policy",
+			OldValue: formatPresent(existing.PrivacyPolicy != nil),
+			NewValue: formatPresent(updated.PrivacyPolicy != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.RetentionPolicy, updated.RetentionPolicy) && !diff.ignoreFields["retention_policy"] {
+		changes = append(changes, FieldChange{
+			Path:     "retention_policy",
+			OldValue: formatPresent(existing.RetentionPolicy != nil),
+			NewValue: formatPresent(updated.RetentionPolicy != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !reflect.DeepEqual(existing.GovernancePolicy, updated.GovernancePolicy) && !diff.ignoreFields["governance_policy"] {
+		changes = append(changes, FieldChange{
+			Path:     "governance_policy",
+			OldValue: formatPresent(existing.GovernancePolicy != nil),
+			NewValue: formatPresent(updated.GovernancePolicy != nil),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
+	if !diff.ignoreFields["extensions"] &&
+		!reflect.DeepEqual(
+			catalogs.NormalizeSourceExtensions(existing.Extensions),
+			catalogs.NormalizeSourceExtensions(updated.Extensions),
+		) {
+		changes = append(changes, FieldChange{
+			Path:     "extensions",
+			OldValue: fmt.Sprintf("%d sources", len(existing.Extensions)),
+			NewValue: fmt.Sprintf("%d sources", len(updated.Extensions)),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -530,8 +800,22 @@ func (diff *differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 	}
 }
 
+func equalOptionalString(left, right *string) bool {
+	if left == nil || right == nil {
+		return left == right
+	}
+	return *left == *right
+}
+
+func optionalStringValue(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return *value
+}
+
 // author compares two authors.
-func (diff *differ) author(existing, updated catalogs.Author) *AuthorUpdate {
+func (diff *Differ) author(existing, updated catalogs.Author) *AuthorUpdate {
 	changes := []FieldChange{}
 
 	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
@@ -592,12 +876,28 @@ func sortModelChangeset(changeset *ModelChangeset) {
 	sort.Slice(changeset.Added, func(i, j int) bool {
 		return changeset.Added[i].ID < changeset.Added[j].ID
 	})
+	sort.Slice(changeset.AddedScoped, func(i, j int) bool {
+		return modelChangeLess(changeset.AddedScoped[i], changeset.AddedScoped[j])
+	})
 	sort.Slice(changeset.Updated, func(i, j int) bool {
+		if changeset.Updated[i].ID == changeset.Updated[j].ID {
+			return changeset.Updated[i].ProviderID < changeset.Updated[j].ProviderID
+		}
 		return changeset.Updated[i].ID < changeset.Updated[j].ID
 	})
 	sort.Slice(changeset.Removed, func(i, j int) bool {
 		return changeset.Removed[i].ID < changeset.Removed[j].ID
 	})
+	sort.Slice(changeset.RemovedScoped, func(i, j int) bool {
+		return modelChangeLess(changeset.RemovedScoped[i], changeset.RemovedScoped[j])
+	})
+}
+
+func modelChangeLess(left, right ModelChange) bool {
+	if left.Model.ID == right.Model.ID {
+		return left.ProviderID < right.ProviderID
+	}
+	return left.Model.ID < right.Model.ID
 }
 
 // sortProviderChangeset sorts all slices in the changeset.
@@ -640,6 +940,30 @@ func formatTokens(tokens int64) string {
 		return fmt.Sprintf("%.1fK", float64(tokens)/1000)
 	}
 	return fmt.Sprintf("%d", tokens)
+}
+
+func formatPresent(present bool) string {
+	if present {
+		return "present"
+	}
+	return "absent"
+}
+
+func equalOptionalTime(a, b *utc.Time) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return a.Equal(*b)
+}
+
+func formatOptionalTime(t *utc.Time) string {
+	if t == nil {
+		return ""
+	}
+	return t.Format("2006-01-02")
 }
 
 // truncateString truncates a string to a maximum length.

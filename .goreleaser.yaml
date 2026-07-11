@@ -232,8 +232,9 @@ homebrew_casks:
     # License
     license: "AGPL-3.0"
     
-    # Binary name (extracted from archive)
-    binary: starmap
+    # Binary names (extracted from archive)
+    binaries:
+      - starmap
     
     # Post-install hook for unsigned binaries (macOS)
     hooks:

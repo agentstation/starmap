@@ -2,8 +2,8 @@
 id: gpt-5-pro
 name: gpt-5-pro
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

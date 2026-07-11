@@ -9,7 +9,7 @@ import (
 	"cloud.google.com/go/auth/credentials"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/emoji"
+	"github.com/agentstation/starmap/internal/cli/emoji"
 )
 
 // NewGCloudCommand creates the auth gcloud subcommand.
@@ -161,13 +161,13 @@ func setGCloudProject(project string) error {
 	ctx := context.Background()
 
 	// Set using gcloud config
-	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project)
+	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project) //nolint:gosec // gcloud executable is fixed; project is passed as an argument.
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to set project: %w\nOutput: %s", err, output)
 	}
 
 	// Also set quota project for ADC
-	cmd = exec.CommandContext(ctx, "gcloud", "auth", "application-default", "set-quota-project", project)
+	cmd = exec.CommandContext(ctx, "gcloud", "auth", "application-default", "set-quota-project", project) //nolint:gosec // gcloud executable is fixed; project is passed as an argument.
 	if output, err := cmd.CombinedOutput(); err != nil {
 		// This is not fatal, just inform
 		fmt.Printf("%s Could not set quota project: %s\n", emoji.Warning, output)

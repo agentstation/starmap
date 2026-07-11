@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/globals"
+	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
 )
 
 // displayResults shows dependency check results in the requested format.

@@ -3,17 +3,16 @@ package authors
 
 import (
 	"os"
-	"sort"
-	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/table"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/catalog/query"
+	"github.com/agentstation/starmap/internal/cli/constants"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
+	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -62,29 +61,10 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 	// Get all authors
 	allAuthors := cat.Authors().List()
 
-	// Apply search filter if specified
-	var filtered []catalogs.Author
-	if flags.Search != "" {
-		searchLower := strings.ToLower(flags.Search)
-		for _, a := range allAuthors {
-			if strings.Contains(strings.ToLower(string(a.ID)), searchLower) ||
-				strings.Contains(strings.ToLower(a.Name), searchLower) {
-				filtered = append(filtered, a)
-			}
-		}
-	} else {
-		filtered = allAuthors
-	}
-
-	// Sort authors
-	sort.Slice(filtered, func(i, j int) bool {
-		return filtered[i].ID < filtered[j].ID
+	filtered := query.Authors(allAuthors, query.AuthorOptions{
+		Search: flags.Search,
+		Limit:  flags.Limit,
 	})
-
-	// Apply limit
-	if flags.Limit > 0 && len(filtered) > flags.Limit {
-		filtered = filtered[:flags.Limit]
-	}
 
 	// Get global flags and format output
 	globalFlags, err := globals.Parse(cmd)

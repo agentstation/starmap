@@ -12,30 +12,33 @@ import (
 )
 
 // Save saves the catalog to the configured filesystem.
-func (cat *catalog) Save(opts ...save.Option) error {
+func (cat *Builder) Save(opts ...save.Option) error {
 
 	// Apply the options
 	options := save.Defaults().Apply(opts...)
 
-	// Check if a write path or options path is configured
-	if cat.config.writePath == "" && options.Path() == "" {
+	writePath := cat.config.resolveWritePath(options.Path())
+	if writePath == "" {
 		return &errors.ConfigError{
 			Component: "catalog",
 			Message:   "no write path configured for saving",
 		}
 	}
 
-	// If the options path is configured, use it
-	if cat.config.writePath == "" && options.Path() != "" {
-		cat.config.writePath = options.Path()
-	}
-
 	// Save to the configured path
-	return cat.saveTo(cat.config.writePath)
+	return cat.saveTo(writePath)
 }
 
 // saveTo saves the catalog to the specified path.
-func (cat *catalog) saveTo(basePath string) error {
+func (cat *Builder) saveTo(basePath string) error {
+	// A save is a replacement of Starmap-managed records. Remove the prior
+	// managed indexes/model trees first so deleted records cannot survive and be
+	// loaded into the next catalog. Transactional callers should publish through
+	// pkg/catalogstore, which preserves the previous generation on failure.
+	if err := removeManagedCatalogData(basePath); err != nil {
+		return err
+	}
+
 	// Helper function to write a file
 	writeFile := func(path string, data []byte) error {
 		fullPath := filepath.Join(basePath, path)
@@ -50,7 +53,10 @@ func (cat *catalog) saveTo(basePath string) error {
 	providers := cat.providers.List()
 	if len(providers) > 0 {
 		// Use FormatYAML if available
-		yamlData := cat.providers.FormatYAML()
+		yamlData, err := cat.providers.EncodeYAML()
+		if err != nil {
+			return err
+		}
 		if err := writeFile("providers.yaml", []byte(yamlData)); err != nil {
 			return errors.WrapIO("write", "providers.yaml", err)
 		}
@@ -60,7 +66,10 @@ func (cat *catalog) saveTo(basePath string) error {
 	authors := cat.authors.List()
 	if len(authors) > 0 {
 		// Use FormatYAML for nicely formatted output with comments and sections
-		yamlData := cat.authors.FormatYAML()
+		yamlData, err := cat.authors.EncodeYAML()
+		if err != nil {
+			return err
+		}
 		if err := writeFile("authors.yaml", []byte(yamlData)); err != nil {
 			return errors.WrapIO("write", "authors.yaml", err)
 		}
@@ -68,7 +77,10 @@ func (cat *catalog) saveTo(basePath string) error {
 
 	// Save provenance.yaml
 	if cat.provenance.Len() > 0 {
-		yamlData := cat.provenance.FormatYAML()
+		yamlData, err := cat.provenance.EncodeYAML()
+		if err != nil {
+			return err
+		}
 		if err := writeFile("provenance.yaml", []byte(yamlData)); err != nil {
 			return errors.WrapIO("write", "provenance.yaml", err)
 		}
@@ -94,7 +106,11 @@ func (cat *catalog) saveTo(basePath string) error {
 				}
 
 				// Use FormatYAML for nicely formatted output with comments
-				data := []byte(model.FormatYAML())
+				formatted, err := model.EncodeYAML()
+				if err != nil {
+					return err
+				}
+				data := []byte(formatted)
 				if err := writeFile(modelPath, data); err != nil {
 					return errors.WrapIO("write", "model "+model.ID, err)
 				}
@@ -125,12 +141,46 @@ func (cat *catalog) saveTo(basePath string) error {
 			modelPath := filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
 
 			// Use FormatYAML for nicely formatted output with comments
-			data := []byte(model.FormatYAML())
+			formatted, err := model.EncodeYAML()
+			if err != nil {
+				return err
+			}
+			data := []byte(formatted)
 			if err := writeFile(modelPath, data); err != nil {
 				return errors.WrapIO("write", "model "+model.ID, err)
 			}
 		}
 	}
 
+	return nil
+}
+
+func removeManagedCatalogData(basePath string) error {
+	for _, filename := range []string{"providers.yaml", "authors.yaml", "provenance.yaml"} {
+		path := filepath.Join(basePath, filename)
+		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+			return errors.WrapIO("remove", path, err)
+		}
+	}
+
+	for _, collection := range []string{"providers", "authors"} {
+		root := filepath.Join(basePath, collection)
+		entries, err := os.ReadDir(root)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return errors.WrapIO("read", root, err)
+		}
+		for _, entry := range entries {
+			if !entry.IsDir() {
+				continue
+			}
+			modelsPath := filepath.Join(root, entry.Name(), "models")
+			if err := os.RemoveAll(modelsPath); err != nil {
+				return errors.WrapIO("remove", modelsPath, err)
+			}
+		}
+	}
 	return nil
 }

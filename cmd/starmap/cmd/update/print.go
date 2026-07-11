@@ -28,9 +28,9 @@ func displayResultsSummary(result *sync.Result) {
 				}
 			}
 
-			// Show enrichment if models were updated but not added
-			if providerResult.UpdatedCount > 0 && providerResult.AddedCount == 0 {
-				fmt.Fprintf(os.Stderr, "  🔗 Enriched: %d models with pricing/limits from models.dev\n", providerResult.UpdatedCount)
+			// Show enrichment only when models.dev was an active source.
+			if providerResult.EnhancedCount > 0 {
+				fmt.Fprintf(os.Stderr, "  🔗 Enriched: %d models with models.dev data\n", providerResult.EnhancedCount)
 			}
 
 			// Show changes summary
@@ -38,7 +38,7 @@ func displayResultsSummary(result *sync.Result) {
 				fmt.Fprintf(os.Stderr, "  📊 Changes: %d added, %d updated, %d removed\n",
 					providerResult.AddedCount, providerResult.UpdatedCount, providerResult.RemovedCount)
 			} else if providerResult.UpdatedCount > 0 {
-				fmt.Fprintf(os.Stderr, "  📊 Changes: %d models enriched\n", providerResult.UpdatedCount)
+				fmt.Fprintf(os.Stderr, "  📊 Changes: %d updated\n", providerResult.UpdatedCount)
 			}
 			fmt.Fprintf(os.Stderr, "\n")
 		}

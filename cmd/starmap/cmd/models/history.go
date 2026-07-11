@@ -7,11 +7,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/constants"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/globals"
-	"github.com/agentstation/starmap/internal/cmd/table"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/cli/constants"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
+	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"

@@ -10,19 +10,30 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/types"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 )
 
 // Provenance tracks the origin and history of a field value.
 type Provenance struct {
-	Source        types.SourceID // Source that provided the value (e.g., "providers", "models_dev_git")
-	Field         string         // Field path
-	Value         any            // The actual value
-	Timestamp     time.Time      // When the value was set
-	Authority     float64        // Authority score (0.0 to 1.0)
-	Confidence    float64        // Confidence in the value (0.0 to 1.0)
-	Reason        string         // Reason for selecting this value
-	PreviousValue any            // Previous value if updated
+	Source           catalogmeta.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
+	Field            string                          // Field path
+	Value            any                             // The actual value
+	Timestamp        time.Time                       // When the value was set
+	ObservationID    string                          // Stable identity of the winning source observation
+	ObservedAt       time.Time                       // When the winning source was observed
+	Revision         catalogmeta.ObservationRevision // Exact revision of the winning observation
+	EvidenceChecksum string                          // Digest binding the winning normalized evidence
+	Rejections       []Rejection                     // Higher-authority observations rejected before selection
+	Authority        float64                         // Authority score (0.0 to 1.0)
+	Confidence       float64                         // Confidence in the value (0.0 to 1.0)
+	Reason           string                          // Reason for selecting this value
+	PreviousValue    any                             // Previous value if updated
+}
+
+// Rejection records why a higher-authority field observation did not win.
+type Rejection struct {
+	Source catalogmeta.SourceID // Source whose field observation was rejected
+	Reason string               // Stable human-readable validation or applicability reason
 }
 
 // Map tracks provenance for multiple resources.
@@ -31,13 +42,13 @@ type Map map[string][]Provenance // key is "resourceType:resourceID:fieldPath"
 // Tracker manages provenance tracking during reconciliation.
 type Tracker interface {
 	// Track records provenance for a field
-	Track(resourceType types.ResourceType, resourceID string, field string, history Provenance)
+	Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance)
 
 	// Find retrieves provenance for a specific field
-	FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance
+	FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance
 
 	// FindByResource retrieves all provenance for a resource
-	FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance
+	FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance
 
 	// Map returns the complete provenance map
 	Map() Map
@@ -61,7 +72,7 @@ func NewTracker(enabled bool) Tracker {
 }
 
 // Track records provenance for a field.
-func (p *tracker) Track(resourceType types.ResourceType, resourceID string, field string, history Provenance) {
+func (p *tracker) Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance) {
 	if !p.enabled {
 		return
 	}
@@ -77,17 +88,17 @@ func (p *tracker) Track(resourceType types.ResourceType, resourceID string, fiel
 }
 
 // Find retrieves provenance for a specific field.
-func (p *tracker) FindByField(resourceType types.ResourceType, resourceID string, field string) []Provenance {
+func (p *tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance {
 	if !p.enabled {
 		return nil
 	}
 
 	key := p.makeKey(string(resourceType), resourceID, field)
-	return p.provenance[key]
+	return cloneProvenance(p.provenance[key])
 }
 
 // GetResourceProvenance retrieves all provenance for a resource.
-func (p *tracker) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]Provenance {
+func (p *tracker) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance {
 	if !p.enabled {
 		return nil
 	}
@@ -97,7 +108,7 @@ func (p *tracker) FindByResource(resourceType types.ResourceType, resourceID str
 
 	for key, info := range p.provenance {
 		if field, found := strings.CutPrefix(key, prefix); found {
-			result[field] = info
+			result[field] = cloneProvenance(info)
 		}
 	}
 
@@ -113,7 +124,16 @@ func (p *tracker) Map() Map {
 	// Return a copy to prevent external modification
 	result := make(Map)
 	for k, v := range p.provenance {
-		result[k] = append([]Provenance{}, v...)
+		result[k] = cloneProvenance(v)
+	}
+	return result
+}
+
+func cloneProvenance(source []Provenance) []Provenance {
+	result := make([]Provenance, len(source))
+	copy(result, source)
+	for index := range result {
+		result[index].Rejections = append([]Rejection(nil), source[index].Rejections...)
 	}
 	return result
 }
@@ -135,7 +155,7 @@ type Report struct {
 
 // ResourceProvenance contains provenance for a single resource.
 type ResourceProvenance struct {
-	Type   types.ResourceType // Resource type (e.g., "model", "provider", "author")
+	Type   catalogmeta.ResourceType // Resource type (e.g., "model", "provider", "author")
 	ID     string
 	Fields map[string]Field
 }
@@ -149,10 +169,10 @@ type Field struct {
 
 // ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
-	Sources        []types.SourceID // Sources that had conflicting values
-	Values         []any            // The conflicting values
-	Resolution     string           // How the conflict was resolved
-	SelectedSource types.SourceID   // Which source was selected
+	Sources        []catalogmeta.SourceID // Sources that had conflicting values
+	Values         []any                  // The conflicting values
+	Resolution     string                 // How the conflict was resolved
+	SelectedSource catalogmeta.SourceID   // Which source was selected
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -178,7 +198,7 @@ func GenerateReport(provenance Map) *Report {
 		resource, exists := report.Resources[resourceKey]
 		if !exists {
 			resource = ResourceProvenance{
-				Type:   types.ResourceType(resourceType),
+				Type:   catalogmeta.ResourceType(resourceType),
 				ID:     resourceID,
 				Fields: make(map[string]Field),
 			}
@@ -223,7 +243,7 @@ func detectConflicts(infos []Provenance) []ConflictInfo {
 	for _, group := range byTime {
 		if len(group) > 1 {
 			conflict := ConflictInfo{
-				Sources: []types.SourceID{},
+				Sources: []catalogmeta.SourceID{},
 				Values:  []any{},
 			}
 
@@ -267,12 +287,12 @@ func (r *Report) String() string {
 
 	for _, key := range resourceKeys {
 		resource := r.Resources[key]
-		sb.WriteString(fmt.Sprintf("%s: %s\n", resource.Type, resource.ID))
+		fmt.Fprintf(&sb, "%s: %s\n", resource.Type, resource.ID)
 		sb.WriteString(strings.Repeat("-", 40))
 		sb.WriteString("\n")
 
 		// Sort fields for consistent output
-		var fieldKeys []string
+		fieldKeys := make([]string, 0, len(resource.Fields))
 		for field := range resource.Fields {
 			fieldKeys = append(fieldKeys, field)
 		}
@@ -280,16 +300,16 @@ func (r *Report) String() string {
 
 		for _, field := range fieldKeys {
 			fieldProv := resource.Fields[field]
-			sb.WriteString(fmt.Sprintf("  %s:\n", field))
-			sb.WriteString(fmt.Sprintf("    Current: %v (from %s)\n",
-				fieldProv.Current.Value, fieldProv.Current.Source))
+			fmt.Fprintf(&sb, "  %s:\n", field)
+			fmt.Fprintf(&sb, "    Current: %v (from %s)\n",
+				fieldProv.Current.Value, fieldProv.Current.Source)
 
 			if len(fieldProv.Conflicts) > 0 {
 				sb.WriteString("    Conflicts:\n")
 				for _, conflict := range fieldProv.Conflicts {
-					sb.WriteString(fmt.Sprintf("      - Sources: %v\n", conflict.Sources))
-					sb.WriteString(fmt.Sprintf("        Selected: %s\n", conflict.SelectedSource))
-					sb.WriteString(fmt.Sprintf("        Reason: %s\n", conflict.Resolution))
+					fmt.Fprintf(&sb, "      - Sources: %v\n", conflict.Sources)
+					fmt.Fprintf(&sb, "        Selected: %s\n", conflict.SelectedSource)
+					fmt.Fprintf(&sb, "        Reason: %s\n", conflict.Resolution)
 				}
 			}
 
@@ -297,11 +317,11 @@ func (r *Report) String() string {
 				sb.WriteString("    History:\n")
 				for i, info := range fieldProv.History {
 					if i > 3 { // Limit history display
-						sb.WriteString(fmt.Sprintf("      ... and %d more\n", len(fieldProv.History)-i))
+						fmt.Fprintf(&sb, "      ... and %d more\n", len(fieldProv.History)-i)
 						break
 					}
-					sb.WriteString(fmt.Sprintf("      - %v from %s at %s\n",
-						info.Value, info.Source, info.Timestamp.Format("15:04:05")))
+					fmt.Fprintf(&sb, "      - %v from %s at %s\n",
+						info.Value, info.Source, info.Timestamp.Format("15:04:05"))
 				}
 			}
 		}
@@ -309,18 +329,6 @@ func (r *Report) String() string {
 	}
 
 	return sb.String()
-}
-
-// Auditor validates provenance tracking.
-type Auditor interface {
-	// Audit checks provenance for completeness and consistency
-	Audit(provenance Map) *AuditResult
-
-	// ValidateAuthority ensures authority scores are valid
-	ValidateAuthority(provenance Map) []string
-
-	// CheckCoverage verifies all required fields have provenance
-	CheckCoverage(provenance Map, requiredFields []string) []string
 }
 
 // AuditResult contains audit findings.

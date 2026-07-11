@@ -28,7 +28,7 @@ func New(provider *catalogs.Provider) *Client {
 
 // Do performs an HTTP request with authentication applied.
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
-	return c.DoWithContext(context.Background(), req, provider)
+	return c.DoWithContext(req.Context(), req, provider)
 }
 
 // DoWithContext performs an HTTP request with authentication applied and context support.
@@ -63,7 +63,7 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 		req.Header.Set("Content-Type", "application/json")
 	}
 
-	return c.http.Do(req)
+	return c.http.Do(req) //nolint:gosec // Provider endpoints are trusted catalog configuration or caller-supplied integration points.
 }
 
 // Get performs a GET request.

@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	stderrors "errors"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -11,8 +12,63 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/agentstation/starmap/pkg/constants"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/save"
 )
+
+func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T) {
+	missing := filepath.Join(t.TempDir(), "missing")
+	if _, err := NewLocal(missing); err != nil {
+		t.Fatalf("missing optional path: %v", err)
+	}
+	if _, err := NewFromPath(missing); !stderrors.Is(err, os.ErrNotExist) {
+		t.Fatalf("NewFromPath missing error = %v, want errors.Is(os.ErrNotExist)", err)
+	}
+
+	corrupt := filepath.Join(t.TempDir(), "corrupt")
+	if err := os.MkdirAll(corrupt, constants.DirPermissions); err != nil {
+		t.Fatalf("Mkdir corrupt: %v", err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(corrupt, "providers.yaml"),
+		[]byte("- id: invalid\n  name: [unterminated\n"),
+		constants.FilePermissions,
+	); err != nil {
+		t.Fatalf("Write corrupt catalog: %v", err)
+	}
+	_, err := NewLocal(corrupt)
+	if err == nil {
+		t.Fatal("corrupt configured catalog was treated as optional absence")
+	}
+	var parseErr *pkgerrors.ParseError
+	if !stderrors.As(err, &parseErr) {
+		t.Fatalf("corrupt error = %T: %v, want *errors.ParseError", err, err)
+	}
+
+	corruptModel := filepath.Join(t.TempDir(), "corrupt-model")
+	modelDir := filepath.Join(corruptModel, "providers", "test-provider", "models")
+	if err := os.MkdirAll(modelDir, constants.DirPermissions); err != nil {
+		t.Fatalf("Mkdir corrupt model: %v", err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(corruptModel, "providers.yaml"),
+		[]byte("- id: test-provider\n  name: Test Provider\n"),
+		constants.FilePermissions,
+	); err != nil {
+		t.Fatalf("Write provider index: %v", err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(modelDir, "broken.yaml"),
+		[]byte("id: broken\nname: [unterminated\n"),
+		constants.FilePermissions,
+	); err != nil {
+		t.Fatalf("Write corrupt model: %v", err)
+	}
+	_, err = NewLocal(corruptModel)
+	if !stderrors.As(err, &parseErr) {
+		t.Fatalf("corrupt model error = %T: %v, want *errors.ParseError", err, err)
+	}
+}
 
 // testFS creates a test filesystem with sample catalog data.
 func testFS() fs.FS {
@@ -181,6 +237,89 @@ func TestCatalogWrite(t *testing.T) {
 	assert.Equal(t, cat.Providers().Len(), cat2.Providers().Len())
 	assert.Equal(t, cat.Authors().Len(), cat2.Authors().Len())
 	assert.Equal(t, len(cat.Models().List()), len(cat2.Models().List()))
+}
+
+func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
+	tmpDir := t.TempDir()
+	cat := NewEmpty()
+	provider := Provider{
+		ID:   "replacement-provider",
+		Name: "Replacement Provider",
+		Models: map[string]*Model{
+			"stale-provider-model": {ID: "stale-provider-model", Name: "Stale"},
+		},
+	}
+	if err := cat.SetProvider(provider); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := cat.SetAuthor(Author{
+		ID:   "replacement-author",
+		Name: "Replacement Author",
+		Models: map[string]*Model{
+			"stale-author-model": {ID: "stale-author-model", Name: "Stale Author Model"},
+		},
+	}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := cat.Save(save.WithPath(tmpDir)); err != nil {
+		t.Fatalf("Save first generation: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tmpDir, "notes.txt"), []byte("unmanaged"), constants.FilePermissions); err != nil {
+		t.Fatalf("Write unmanaged root file: %v", err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(tmpDir, "providers", "replacement-provider", "logo.svg"),
+		[]byte("<svg/>"),
+		constants.FilePermissions,
+	); err != nil {
+		t.Fatalf("Write unmanaged provider file: %v", err)
+	}
+
+	if err := cat.DeleteProviderModel(provider.ID, "stale-provider-model"); err != nil {
+		t.Fatalf("DeleteProviderModel: %v", err)
+	}
+	if err := cat.SetProviderModel(provider.ID, Model{ID: "current-provider-model", Name: "Current"}); err != nil {
+		t.Fatalf("SetProviderModel: %v", err)
+	}
+	if err := cat.SetAuthor(Author{
+		ID:   "replacement-author",
+		Name: "Replacement Author",
+		Models: map[string]*Model{
+			"current-author-model": {ID: "current-author-model", Name: "Current Author Model"},
+		},
+	}); err != nil {
+		t.Fatalf("replace author: %v", err)
+	}
+	if err := cat.Save(); err != nil {
+		t.Fatalf("Save replacement generation: %v", err)
+	}
+
+	reloaded, err := New(WithPath(tmpDir))
+	if err != nil {
+		t.Fatalf("Reload: %v", err)
+	}
+	if _, err := reloaded.ProviderModel(provider.ID, "stale-provider-model"); !pkgerrors.IsNotFound(err) {
+		t.Fatalf("stale provider model reappeared, error = %v", err)
+	}
+	if _, err := reloaded.ProviderModel(provider.ID, "current-provider-model"); err != nil {
+		t.Fatalf("current provider model missing: %v", err)
+	}
+	author, err := reloaded.Author("replacement-author")
+	if err != nil {
+		t.Fatalf("Author: %v", err)
+	}
+	if _, found := author.Models["stale-author-model"]; found {
+		t.Fatal("stale author model reappeared")
+	}
+	if _, found := author.Models["current-author-model"]; !found {
+		t.Fatal("current author model missing")
+	}
+	if _, err := os.Stat(filepath.Join(tmpDir, "notes.txt")); err != nil {
+		t.Fatalf("unmanaged root file was removed: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(tmpDir, "providers", "replacement-provider", "logo.svg")); err != nil {
+		t.Fatalf("unmanaged provider file was removed: %v", err)
+	}
 }
 
 // TestCatalogLoadMalformed tests handling of malformed YAML.

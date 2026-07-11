@@ -2,13 +2,16 @@
 package sync
 
 import (
+	"context"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/internal/utils/ptr"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -16,13 +19,11 @@ import (
 // Options controls the overall sync orchestration in Starmap.Sync().
 type Options struct {
 	// Orchestration control
-	DryRun      bool          // Show changes without applying them
-	AutoApprove bool          // Skip confirmation prompts
-	FailFast    bool          // Stop on first source error instead of continuing
-	Timeout     time.Duration // Timeout for the entire sync operation
+	DryRun  bool          // Show changes without applying them
+	Timeout time.Duration // Timeout for the entire sync operation
 
 	// Source selection
-	Sources    []sources.ID         // Which sources to use (empty means all)
+	Sources    []sources.ID         // Which sources to use (empty means default providers/local/models.dev HTTP)
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
 	// Output control (used AFTER merging)
@@ -33,12 +34,35 @@ type Options struct {
 	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
 	Reformat           bool   // Reformat providers.yaml file even without changes
 	SourcesDir         string // Directory for external source data (models.dev cache/git)
+	ModelsDevGitCommit string // Exact models.dev commit required by Git verification
 
 	// Dependency control
 	AutoInstallDeps   bool // Automatically install missing dependencies without prompting
 	SkipDepPrompts    bool // Skip dependency prompts and continue without optional dependencies
 	RequireAllSources bool // Require all sources to succeed (fail if any dependencies are missing)
+
+	// DependencyDecisionHandler is supplied by an interactive adapter. It is nil
+	// for library, server, scheduler, and other noninteractive callers.
+	DependencyDecisionHandler DependencyDecisionHandler
 }
+
+// DependencyDecision describes how an interactive adapter wants to handle one
+// missing source dependency.
+type DependencyDecision uint8
+
+const (
+	// DependencyDecisionInstall requests automatic installation.
+	DependencyDecisionInstall DependencyDecision = iota + 1
+	// DependencyDecisionSkip requests skipping the source.
+	DependencyDecisionSkip
+	// DependencyDecisionCancel cancels synchronization.
+	DependencyDecisionCancel
+)
+
+// DependencyDecisionHandler lets an interactive adapter decide how to handle a
+// missing dependency. Core synchronization never installs a terminal reader or
+// prompts on its own.
+type DependencyDecisionHandler func(context.Context, sources.ID, sources.Dependency, bool) (DependencyDecision, error)
 
 // Apply applies the given options to the sync options.
 func (s *Options) Apply(opts ...Option) *Options {
@@ -52,9 +76,7 @@ func (s *Options) Apply(opts ...Option) *Options {
 func Defaults() *Options {
 	return &Options{
 		DryRun:             false,
-		AutoApprove:        false,
-		FailFast:           false,
-		Timeout:            5 * time.Minute, // Default 5 minute timeout to prevent hanging
+		Timeout:            constants.UpdateContextTimeout,
 		Sources:            nil,
 		ProviderID:         nil,
 		OutputPath:         "",
@@ -71,13 +93,28 @@ func Defaults() *Options {
 type Option func(*Options)
 
 // Validate checks if the sync options are valid.
-func (s *Options) Validate(providers *catalogs.Providers) error {
+func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 	// Validate timeout
 	if s.Timeout < 0 {
 		return &errors.ValidationError{
 			Field:   "Timeout",
 			Value:   s.Timeout,
 			Message: "timeout must be non-negative",
+		}
+	}
+
+	if s.AutoInstallDeps && s.SkipDepPrompts {
+		return &errors.ValidationError{
+			Field:   "DependencyPolicy",
+			Value:   "auto-install+skip",
+			Message: "automatic installation and dependency skipping are mutually exclusive",
+		}
+	}
+	if s.DependencyDecisionHandler != nil && (s.AutoInstallDeps || s.SkipDepPrompts) {
+		return &errors.ValidationError{
+			Field:   "DependencyPolicy",
+			Value:   "interactive+noninteractive",
+			Message: "an interactive dependency decision handler cannot be combined with automatic installation or skipping",
 		}
 	}
 
@@ -90,6 +127,44 @@ func (s *Options) Validate(providers *catalogs.Providers) error {
 				Value:   *s.ProviderID,
 				Message: fmt.Sprintf("provider '%s' not found", *s.ProviderID),
 			}
+		}
+	}
+
+	for _, sourceID := range s.Sources {
+		if !sourceID.IsValid() {
+			return &errors.ValidationError{
+				Field:   "Sources",
+				Value:   sourceID,
+				Message: fmt.Sprintf("source %q is not supported", sourceID),
+			}
+		}
+		if s.Fresh && sourceID == sources.LocalCatalogID {
+			return &errors.ValidationError{
+				Field:   "Sources",
+				Value:   sourceID,
+				Message: "fresh sync cannot use the existing local catalog as an input source",
+			}
+		}
+	}
+	if slices.Contains(s.Sources, sources.ModelsDevHTTPID) && slices.Contains(s.Sources, sources.ModelsDevGitID) {
+		return &errors.ValidationError{
+			Field:   "Sources",
+			Value:   s.Sources,
+			Message: "models.dev HTTP and Git are alternative transports; select exactly one",
+		}
+	}
+	usesGit := slices.Contains(s.Sources, sources.ModelsDevGitID)
+	if usesGit {
+		if !isExactGitCommit(s.ModelsDevGitCommit) {
+			return &errors.ValidationError{
+				Field: "ModelsDevGitCommit", Value: s.ModelsDevGitCommit,
+				Message: "an exact 40- or 64-character hexadecimal commit is required for models.dev Git verification",
+			}
+		}
+	} else if s.ModelsDevGitCommit != "" {
+		return &errors.ValidationError{
+			Field: "ModelsDevGitCommit", Value: s.ModelsDevGitCommit,
+			Message: "requires models_dev_git as an explicitly selected source",
 		}
 	}
 
@@ -118,9 +193,6 @@ func (s *Options) SourceOptions() []sources.Option {
 	if s.ProviderID != nil {
 		sourceOpts = append(sourceOpts, sources.WithProviderFilter(*s.ProviderID))
 	}
-	if s.Fresh {
-		sourceOpts = append(sourceOpts, sources.WithFresh(true))
-	}
 	if s.CleanModelsDevRepo {
 		sourceOpts = append(sourceOpts, sources.WithCleanupRepo(true))
 	}
@@ -138,20 +210,6 @@ func WithDryRun(dryRun bool) Option {
 	}
 }
 
-// WithAutoApprove configures auto approval.
-func WithAutoApprove(autoApprove bool) Option {
-	return func(opts *Options) {
-		opts.AutoApprove = autoApprove
-	}
-}
-
-// WithFailFast configures fail-fast behavior.
-func WithFailFast(failFast bool) Option {
-	return func(opts *Options) {
-		opts.FailFast = failFast
-	}
-}
-
 // WithTimeout configures the sync timeout.
 func WithTimeout(timeout time.Duration) Option {
 	return func(opts *Options) {
@@ -162,14 +220,14 @@ func WithTimeout(timeout time.Duration) Option {
 // WithSources configures which sources to use.
 func WithSources(types ...sources.ID) Option {
 	return func(opts *Options) {
-		opts.Sources = types
+		opts.Sources = append([]sources.ID(nil), types...)
 	}
 }
 
 // WithProvider configures syncing for a specific provider only.
 func WithProvider(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
-		opts.ProviderID = ptr.To(providerID)
+		opts.ProviderID = &providerID
 	}
 }
 
@@ -208,6 +266,21 @@ func WithSourcesDir(dir string) Option {
 	}
 }
 
+// WithModelsDevGitCommit pins explicit models.dev Git verification to one commit.
+func WithModelsDevGitCommit(commit string) Option {
+	return func(opts *Options) {
+		opts.ModelsDevGitCommit = commit
+	}
+}
+
+func isExactGitCommit(commit string) bool {
+	if len(commit) != 40 && len(commit) != 64 {
+		return false
+	}
+	_, err := hex.DecodeString(commit)
+	return err == nil
+}
+
 // WithAutoInstallDeps configures whether to automatically install missing dependencies.
 func WithAutoInstallDeps(autoInstall bool) Option {
 	return func(opts *Options) {
@@ -215,10 +288,19 @@ func WithAutoInstallDeps(autoInstall bool) Option {
 	}
 }
 
-// WithSkipDepPrompts configures whether to skip dependency prompts.
+// WithSkipDepPrompts skips optional sources with missing dependencies without
+// consulting a configured DependencyDecisionHandler.
 func WithSkipDepPrompts(skip bool) Option {
 	return func(opts *Options) {
 		opts.SkipDepPrompts = skip
+	}
+}
+
+// WithDependencyDecisionHandler configures the interactive dependency decision
+// adapter. Noninteractive callers should leave it unset.
+func WithDependencyDecisionHandler(handler DependencyDecisionHandler) Option {
+	return func(opts *Options) {
+		opts.DependencyDecisionHandler = handler
 	}
 }
 

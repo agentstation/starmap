@@ -20,7 +20,7 @@ package server
 // @contact.url https://github.com/agentstation/starmap
 //
 // @license.name MIT
-// @license.url https://github.com/agentstation/starmap/blob/master/LICENSE
+// @license.url https://github.com/agentstation/starmap/blob/main/LICENSE
 //
 // @servers.url http://localhost:8080/api/v1
 // @servers.description Local development server

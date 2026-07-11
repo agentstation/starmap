@@ -1,5 +1,11 @@
 package catalogs
 
+import (
+	"time"
+
+	"github.com/agentstation/utc"
+)
+
 const (
 	// ModelPricingCurrencyUSD is the US Dollar currency constant.
 	ModelPricingCurrencyUSD ModelPricingCurrency = "USD" // US Dollar
@@ -64,9 +70,49 @@ type ModelPricing struct {
 	// Fixed costs per operation
 	Operations *ModelOperationPricing `json:"operations,omitempty" yaml:"operations,omitempty"`
 
+	// Conditional/tiered pricing
+	Tiers []ModelPricingTier `json:"tiers,omitempty" yaml:"tiers,omitempty"`
+
 	// Metadata
 	Currency ModelPricingCurrency `json:"currency" yaml:"currency"` // "USD", "EUR", etc.
+
+	// Optional half-open validity interval [effective_from, effective_until).
+	EffectiveFrom  *utc.Time `json:"effective_from,omitempty" yaml:"effective_from,omitempty"`
+	EffectiveUntil *utc.Time `json:"effective_until,omitempty" yaml:"effective_until,omitempty"`
 }
+
+// IsEffectiveAt reports whether pricing applies at the supplied instant.
+func (p *ModelPricing) IsEffectiveAt(at time.Time) bool {
+	if p == nil {
+		return false
+	}
+	if p.EffectiveFrom != nil && at.Before(p.EffectiveFrom.Time) {
+		return false
+	}
+	return p.EffectiveUntil == nil || at.Before(p.EffectiveUntil.Time)
+}
+
+// ModelPricingTier represents conditional pricing for a model.
+type ModelPricingTier struct {
+	Name       string                 `json:"name,omitempty" yaml:"name,omitempty"`             // Optional source/name, such as context_over_200k
+	Type       ModelPricingTierType   `json:"type" yaml:"type"`                                 // Tier dimension, such as context
+	Size       int64                  `json:"size,omitempty" yaml:"size,omitempty"`             // Threshold size for the tier dimension
+	Tokens     *ModelTokenPricing     `json:"tokens,omitempty" yaml:"tokens,omitempty"`         // Token prices in this tier
+	Operations *ModelOperationPricing `json:"operations,omitempty" yaml:"operations,omitempty"` // Operation prices in this tier
+}
+
+// ModelPricingTierType represents the dimension that activates a pricing tier.
+type ModelPricingTierType string
+
+// String returns the string representation of a ModelPricingTierType.
+func (m ModelPricingTierType) String() string {
+	return string(m)
+}
+
+const (
+	// ModelPricingTierTypeContext means the tier applies above a context-size threshold.
+	ModelPricingTierTypeContext ModelPricingTierType = "context"
+)
 
 // ModelTokenPricing represents all token-based costs.
 type ModelTokenPricing struct {

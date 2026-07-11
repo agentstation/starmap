@@ -3,7 +3,7 @@ package validate
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
+	"github.com/agentstation/starmap/internal/application"
 )
 
 // NewCommand creates the validate command using app context.

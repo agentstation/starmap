@@ -1,2 +1,2 @@
-//go:generate gomarkdoc -e -o README.md . --repository.path /pkg/convert
+//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /pkg/convert
 package convert

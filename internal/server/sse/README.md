@@ -16,13 +16,14 @@ Package sse provides Server\-Sent Events support for real\-time updates.
   - [func NewBroadcaster\(logger \*zerolog.Logger\) \*Broadcaster](<#NewBroadcaster>)
   - [func \(b \*Broadcaster\) Broadcast\(event Event\)](<#Broadcaster.Broadcast>)
   - [func \(b \*Broadcaster\) ClientCount\(\) int](<#Broadcaster.ClientCount>)
+  - [func \(b \*Broadcaster\) DeliveryStats\(\) events.DeliveryStats](<#Broadcaster.DeliveryStats>)
   - [func \(b \*Broadcaster\) Run\(ctx context.Context\)](<#Broadcaster.Run>)
   - [func \(b \*Broadcaster\) ServeHTTP\(w http.ResponseWriter, r \*http.Request\)](<#Broadcaster.ServeHTTP>)
 - [type Event](<#Event>)
 
 
 <a name="Broadcaster"></a>
-## type [Broadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L16-L23>)
+## type [Broadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L18-L26>)
 
 Broadcaster manages Server\-Sent Events connections.
 
@@ -33,7 +34,7 @@ type Broadcaster struct {
 ```
 
 <a name="NewBroadcaster"></a>
-### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L26>)
+### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L29>)
 
 ```go
 func NewBroadcaster(logger *zerolog.Logger) *Broadcaster
@@ -42,7 +43,7 @@ func NewBroadcaster(logger *zerolog.Logger) *Broadcaster
 NewBroadcaster creates a new SSE broadcaster.
 
 <a name="Broadcaster.Broadcast"></a>
-### func \(\*Broadcaster\) [Broadcast](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L85>)
+### func \(\*Broadcaster\) [Broadcast](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L80>)
 
 ```go
 func (b *Broadcaster) Broadcast(event Event)
@@ -51,7 +52,7 @@ func (b *Broadcaster) Broadcast(event Event)
 Broadcast sends an event to all connected SSE clients.
 
 <a name="Broadcaster.ClientCount"></a>
-### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L94>)
+### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L89>)
 
 ```go
 func (b *Broadcaster) ClientCount() int
@@ -59,8 +60,17 @@ func (b *Broadcaster) ClientCount() int
 
 ClientCount returns the number of connected SSE clients.
 
+<a name="Broadcaster.DeliveryStats"></a>
+### func \(\*Broadcaster\) [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L96>)
+
+```go
+func (b *Broadcaster) DeliveryStats() events.DeliveryStats
+```
+
+DeliveryStats returns cumulative SSE client delivery counters.
+
 <a name="Broadcaster.Run"></a>
-### func \(\*Broadcaster\) [Run](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L38>)
+### func \(\*Broadcaster\) [Run](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L42>)
 
 ```go
 func (b *Broadcaster) Run(ctx context.Context)
@@ -69,7 +79,7 @@ func (b *Broadcaster) Run(ctx context.Context)
 Run starts the broadcaster's main loop. Should be called in a goroutine. The broadcaster will run until the context is cancelled.
 
 <a name="Broadcaster.ServeHTTP"></a>
-### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L101>)
+### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L118>)
 
 ```go
 func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
@@ -78,7 +88,7 @@ func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
 ServeHTTP handles SSE connections.
 
 <a name="Event"></a>
-## type [Event](<https://github.com/agentstation/starmap/blob/master/internal/server/sse/broadcaster.go#L173-L177>)
+## type [Event](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L190-L194>)
 
 Event represents an SSE event.
 

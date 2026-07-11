@@ -27,7 +27,7 @@ import "github.com/agentstation/starmap/pkg/convert"
 
 
 <a name="OpenRouterSupportedParameters"></a>
-## func [OpenRouterSupportedParameters](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L121>)
+## func [OpenRouterSupportedParameters](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L121>)
 
 ```go
 func OpenRouterSupportedParameters(m *catalogs.Model) []string
@@ -36,7 +36,7 @@ func OpenRouterSupportedParameters(m *catalogs.Model) []string
 OpenRouterSupportedParameters returns a list of parameters that this model supports. This matches the OpenRouter API format for supported\_parameters.
 
 <a name="OpenAIModel"></a>
-## type [OpenAIModel](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openai_model.go#L11-L16>)
+## type [OpenAIModel](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openai_model.go#L11-L16>)
 
 OpenAIModel represents a model in OpenAI API format. Field order matches the OpenAI API response schema.
 
@@ -50,7 +50,7 @@ type OpenAIModel struct {
 ```
 
 <a name="ToOpenAIModel"></a>
-### func [ToOpenAIModel](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openai_model.go#L25>)
+### func [ToOpenAIModel](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openai_model.go#L25>)
 
 ```go
 func ToOpenAIModel(m *catalogs.Model) OpenAIModel
@@ -59,7 +59,7 @@ func ToOpenAIModel(m *catalogs.Model) OpenAIModel
 ToOpenAIModel converts a Model to OpenAI format.
 
 <a name="OpenAIModelsResponse"></a>
-## type [OpenAIModelsResponse](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openai_model.go#L19-L22>)
+## type [OpenAIModelsResponse](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openai_model.go#L19-L22>)
 
 OpenAIModelsResponse represents the root response object for OpenAI models list API.
 
@@ -71,7 +71,7 @@ type OpenAIModelsResponse struct {
 ```
 
 <a name="OpenRouterArchitecture"></a>
-## type [OpenRouterArchitecture](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L27-L32>)
+## type [OpenRouterArchitecture](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L27-L32>)
 
 OpenRouterArchitecture represents the architecture object in OpenRouter format.
 
@@ -85,7 +85,7 @@ type OpenRouterArchitecture struct {
 ```
 
 <a name="OpenRouterModel"></a>
-## type [OpenRouterModel](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L11-L24>)
+## type [OpenRouterModel](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L11-L24>)
 
 OpenRouterModel represents a model in OpenRouter API format. Field order matches the OpenRouter API response schema.
 
@@ -107,7 +107,7 @@ type OpenRouterModel struct {
 ```
 
 <a name="ToOpenRouterModel"></a>
-### func [ToOpenRouterModel](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L59>)
+### func [ToOpenRouterModel](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L59>)
 
 ```go
 func ToOpenRouterModel(m *catalogs.Model) OpenRouterModel
@@ -116,7 +116,7 @@ func ToOpenRouterModel(m *catalogs.Model) OpenRouterModel
 ToOpenRouterModel converts a Model to OpenRouter format.
 
 <a name="OpenRouterModelsResponse"></a>
-## type [OpenRouterModelsResponse](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L54-L56>)
+## type [OpenRouterModelsResponse](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L54-L56>)
 
 OpenRouterModelsResponse represents the root response object for OpenRouter models API.
 
@@ -127,7 +127,7 @@ type OpenRouterModelsResponse struct {
 ```
 
 <a name="OpenRouterPricing"></a>
-## type [OpenRouterPricing](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L35-L44>)
+## type [OpenRouterPricing](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L35-L44>)
 
 OpenRouterPricing represents the pricing object in OpenRouter format.
 
@@ -145,7 +145,7 @@ type OpenRouterPricing struct {
 ```
 
 <a name="OpenRouterTopProvider"></a>
-## type [OpenRouterTopProvider](<https://github.com/agentstation/starmap/blob/master/pkg/convert/openrouter_model.go#L47-L51>)
+## type [OpenRouterTopProvider](<https://github.com/agentstation/starmap/blob/main/pkg/convert/openrouter_model.go#L47-L51>)
 
 OpenRouterTopProvider represents the top provider object in OpenRouter format.
 

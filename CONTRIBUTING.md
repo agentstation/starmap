@@ -192,7 +192,7 @@ For comprehensive instructions, see the provider implementation section in [ARCH
 
 2. **Implement Client**
 
-   Create `internal/sources/providers/newprovider/client.go`:
+   Create `internal/providers/newprovider/client.go`:
 
    ```go
    package newprovider
@@ -218,25 +218,25 @@ For comprehensive instructions, see the provider implementation section in [ARCH
 
 3. **Register in Provider Registry**
 
-   Edit `internal/sources/providers/providers.go`:
+   Edit `internal/providers/clients/provider.go`:
 
    ```go
-   case "newprovider":
-       return newprovider.NewClient(provider)
+   case catalogs.EndpointTypeNewProvider:
+       return newprovider.NewClient(provider), nil
    ```
 
 4. **Add Tests and Testdata**
 
    ```bash
    # Create test file
-   touch internal/sources/providers/newprovider/client_test.go
+   touch internal/providers/newprovider/client_test.go
 
    # Generate testdata (requires API key)
    export NEWPROVIDER_API_KEY=your-key
-   go test ./internal/sources/providers/newprovider -update
+   go test ./internal/providers/newprovider -update
 
    # Run tests
-   go test ./internal/sources/providers/newprovider -v
+   go test ./internal/providers/newprovider -v
    ```
 
 5. **Update Documentation**
@@ -272,7 +272,7 @@ Provider tests use the `-update` flag to generate testdata:
 
 ```bash
 # Update testdata for a specific provider
-go test ./internal/sources/providers/openai -update
+go test ./internal/providers/openai -update
 
 # Update all provider testdata
 make testdata-update
@@ -307,7 +307,7 @@ All contributions must:
 
 ### Pull Request Process
 
-1. **Fork the repository** and create your branch from `master`
+1. **Fork the repository** and create your branch from `main`
 
 2. **Make your changes** following our coding guidelines
 
@@ -338,7 +338,7 @@ All contributions must:
 - [ ] Tests added/updated and passing
 - [ ] Documentation updated
 - [ ] Commits are focused and atomic
-- [ ] No merge conflicts with `master`
+- [ ] No merge conflicts with `main`
 - [ ] Passes CI checks (linting, tests, build)
 
 ### Code Review Process

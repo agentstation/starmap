@@ -178,27 +178,6 @@ func Example_rateLimiting() {
 	}
 }
 
-// Example_updateInterval demonstrates update interval usage.
-func Example_updateInterval() {
-	// Auto-update ticker
-	ticker := time.NewTicker(constants.DefaultUpdateInterval)
-	defer ticker.Stop()
-
-	// Simulated update check
-	updates := 0
-	timeout := time.After(3 * time.Second)
-
-	for {
-		select {
-		case <-ticker.C:
-			updates++
-			fmt.Printf("Checking for updates... (check #%d)\n", updates)
-		case <-timeout:
-			fmt.Printf("Performed %d update checks\n", updates)
-			return
-		}
-	}
-}
 
 // Example_contextTimeouts shows different context timeout scenarios.
 func Example_contextTimeouts() {

@@ -1,10 +1,8 @@
-// Package types provides shared type definitions used across the starmap packages.
+// Package types provides compatibility aliases for Starmap's former shared-type
+// package.
 //
-// This package contains fundamental types like SourceID and ResourceType that are
-// referenced by multiple packages (sources, provenance, reconciler, etc.) to avoid
-// import cycles while maintaining type safety.
+// Deprecated: use package catalogmeta. This package remains alias-only so
+// existing consumers retain source and assignment compatibility.
 //
-// The package has zero dependencies and serves as a foundation for the type system.
-//
-//nolint:revive // Package name 'types' is appropriate for common type definitions
+//nolint:revive // The generic name is retained only as a deprecated compatibility path.
 package types

@@ -12,11 +12,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/format"
-	"github.com/agentstation/starmap/internal/cmd/provider"
-	"github.com/agentstation/starmap/internal/cmd/table"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/provider"
+	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -99,7 +99,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 
 	// Handle raw response mode
 	if raw {
-		rawData, fetchStats, err := fetcher.FetchRawResponse(ctx, prov, prov.Catalog.Endpoint.URL)
+		rawData, fetchStats, err := fetcher.FetchRawResponse(ctx, prov, prov.CatalogEndpointURL())
 		if err != nil {
 			return &errors.SyncError{
 				Provider: providerID,
@@ -135,7 +135,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 
 	if stats {
 		// Use FetchRawResponse to get stats, then parse models
-		rawData, fetchStats, fetchErr := fetcher.FetchRawResponse(ctx, prov, prov.Catalog.Endpoint.URL)
+		rawData, fetchStats, fetchErr := fetcher.FetchRawResponse(ctx, prov, prov.CatalogEndpointURL())
 		if fetchErr != nil {
 			return &errors.SyncError{
 				Provider: providerID,
@@ -368,7 +368,7 @@ func fetchAllProvidersRaw(ctx context.Context, app application.Application, vali
 			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
-			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, p, p.Catalog.Endpoint.URL)
+			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, p, p.CatalogEndpointURL())
 			results <- rawResult{
 				provider: string(p.ID),
 				rawData:  json.RawMessage(rawData),

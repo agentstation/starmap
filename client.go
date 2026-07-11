@@ -1,11 +1,11 @@
 // Package starmap provides the main entry point for the Starmap AI model catalog system.
-// It offers a high-level interface for managing AI model catalogs with automatic updates,
+// It offers a high-level interface for managing AI model catalogs with explicit synchronization,
 // event hooks, and provider synchronization capabilities.
 //
 // Starmap wraps the underlying catalog system with additional features including:
-// - Automatic background synchronization with provider APIs
+// - Explicit, idempotent synchronization with provider APIs
 // - Event hooks for model changes (added, updated, removed)
-// - Thread-safe catalog access with copy-on-read semantics
+// - Thread-safe access to an immutable canonical catalog
 // - Flexible configuration through functional options
 // - Support for multiple data sources and merge strategies
 //
@@ -16,111 +16,148 @@
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//	defer sm.AutoUpdatesOff()
-//
 //	// Register event hooks
 //	sm.OnModelAdded(func(model catalogs.Model) {
 //	    log.Printf("New model: %s", model.ID)
 //	})
 //
-//	// Get catalog (returns a copy for thread safety)
-//	catalog, err := sm.Catalog()
+//	// Get the current immutable catalog
+//	catalog := sm.Catalog()
+//
+//	model, err := catalog.FindModel("gpt-4o")
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
 //
-//	// Access models
-//	models := catalog.Models()
-//	for _, model := range models.List() {
-//	    fmt.Printf("Model: %s - %s\n", model.ID, model.Name)
-//	}
-//
-//	// Manually trigger sync
-//	result, err := sm.Sync(ctx, WithProviders("openai", "anthropic"))
+//	// Manually trigger a dry run (read-only; no store required)
+//	result, err := sm.Sync(ctx, sync.WithProvider("openai"), sync.WithDryRun(true))
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
 //
-//	// Configure with custom options
+//	// Configure mutation with an explicit writable generation store
+//	store, err := catalogstore.NewFilesystem("./catalog-store")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
 //	sm, err = starmap.New(
-//	    WithAutoUpdateInterval(30 * time.Minute),
+//	    WithCatalogStore(store),
 //	    WithLocalPath("./custom-catalog"),
-//	    WithAutoUpdates(true),
 //	)
 package starmap
 
 import (
 	"context"
+	stderrors "errors"
 	"sync"
 	"time"
 
+	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// Compile-time interface check to ensure proper implementation.
-var _ Catalog = (*client)(nil)
-
-// Catalog provides copy-on-read access to the catalog.
-type Catalog interface {
-	Catalog() (catalogs.Catalog, error)
-}
-
-// Catalog returns a copy of the current catalog.
-func (c *client) Catalog() (catalogs.Catalog, error) {
+// Catalog returns the current immutable canonical catalog.
+func (c *Client) Catalog() *catalogs.Catalog {
 	c.mu.RLock()
-	cat, err := c.catalog.Copy()
+	catalog := c.catalog
 	c.mu.RUnlock()
-	return cat, err
+	return catalog
 }
 
-// Client manages a catalog with automatic updates and event hooks.
-type Client interface {
-
-	// Catalog provides copy-on-read access to the catalog
-	Catalog
-
-	// Updater handles catalog update and sync operations
-	Updater
-
-	// Persistence handles catalog persistence operations
-	Persistence
-
-	// AutoUpdater provides access to automatic update controls
-	AutoUpdater
-
-	// Hooks provides access to event callback registration
-	Hooks
+// CatalogState atomically pairs the current immutable catalog with its logical
+// generation identity for generation-scoped caches and responses.
+type CatalogState struct {
+	Catalog      *catalogs.Catalog
+	GenerationID string
+	Sequence     uint64
 }
 
-// client is the internal implementation of the Client interface.
-type client struct {
+// CurrentCatalogState returns one atomic catalog/generation pair.
+func (c *Client) CurrentCatalogState() CatalogState {
+	if c == nil {
+		return CatalogState{}
+	}
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	id := c.generationID
+	if id == "" && c.usingEmbeddedBootstrap {
+		id = c.embeddedBootstrap.GenerationID
+	}
+	return CatalogState{Catalog: c.catalog, GenerationID: id, Sequence: c.generationSequence}
+}
+
+// CurrentGenerationID returns the logical identity of the currently published
+// catalog. Before the first durable mutation, this is the embedded bootstrap ID.
+func (c *Client) CurrentGenerationID() string {
+	if c == nil {
+		return ""
+	}
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if c.generationID != "" {
+		return c.generationID
+	}
+	if c.usingEmbeddedBootstrap {
+		return c.embeddedBootstrap.GenerationID
+	}
+	return ""
+}
+
+func (c *Client) catalogCopy() (*catalogs.Builder, error) {
+	return catalogs.NewBuilderFrom(c.Catalog())
+}
+
+func (c *Client) requireWritableCatalogStore() error {
+	if c == nil || c.options == nil || isNilCatalogStore(c.options.catalogStore) {
+		return &errors.ConfigError{
+			Component: "catalog store",
+			Message:   "an explicit writable store is required for catalog mutation",
+		}
+	}
+	return nil
+}
+
+func snapshotBuilder(builder *catalogs.Builder) (*catalogs.Catalog, error) {
+	if builder == nil {
+		return nil, &errors.ValidationError{
+			Field:   "catalog",
+			Message: "catalog builder cannot be nil",
+		}
+	}
+	snapshot, err := builder.Build()
+	if err != nil {
+		return nil, errors.WrapResource("publish", "catalog snapshot", "", err)
+	}
+	return snapshot, nil
+}
+
+// Client manages an immutable canonical catalog, explicit synchronization,
+// persistence, and event hooks. It owns no scheduling goroutine or cadence.
+type Client struct {
 
 	// options are the configured options for the client
 	options *options
 
-	// catalog is the working up to date catalog
-	mu      sync.RWMutex
-	catalog catalogs.Catalog // working up to date catalog
-	local   catalogs.Catalog // local catalog
+	// catalog is the atomically published immutable generation.
+	mu                     sync.RWMutex
+	catalog                *catalogs.Catalog
+	updates                updateCoordinator
+	generationID           string
+	generationSequence     uint64
+	usingEmbeddedBootstrap bool
+	embeddedBootstrap      catalogs.BootstrapManifest
+	now                    func() time.Time
+	newID                  func() (string, error)
 
-	// auto update state
-	autoUpdatesEnabled bool
-	autoUpdateInterval time.Duration
-	autoUpdateFunc     AutoUpdateFunc
-	updateTicker       *time.Ticker       // update ticker to trigger auto-updates
-	stopCh             chan struct{}      // stop channel to stop auto-updates
-	updateCancel       context.CancelFunc // Cancel function for update goroutine
-	hooks              *hooks             // Event hooks for catalog changes/updates
+	hooks *hooks // Event hooks for catalog changes/updates
 }
 
 // New creates a new Client instance with the given options.
-func New(opts ...Option) (Client, error) {
-
-	// start with a new empty catalog to build on
-	catalog := catalogs.NewEmpty()
+func New(opts ...Option) (*Client, error) {
 
 	// apply options
 	options, err := defaults().apply(opts...)
@@ -129,68 +166,85 @@ func New(opts ...Option) (Client, error) {
 	}
 
 	// create the client instance
-	sm := &client{
+	sm := &Client{
 		// options
 		options: options,
-
-		// catalogs
-		catalog: catalog,
-		local:   nil,
-
-		// auto update state
-		autoUpdatesEnabled: true,
-		autoUpdateInterval: constants.DefaultUpdateInterval,
-		autoUpdateFunc:     nil,
-		updateTicker:       time.NewTicker(constants.DefaultUpdateInterval),
-		stopCh:             make(chan struct{}),
-		updateCancel:       nil,
 
 		// hooks
 		hooks: newHooks(),
 	}
 
-	// create the local catalog either from path or embedded
+	// Load and verify the embedded bootstrap before any optional local overlay.
 	log := logging.Debug()
 	log.Msg("Creating local catalog (embedded or file-based)")
-	local, err := catalogs.NewLocal(sm.options.localPath)
-	if err != nil {
-		return nil, errors.WrapResource("create", "local catalog", sm.options.localPath, err)
+	localPath := sm.options.localPath
+	if sm.options.embeddedCatalogEnabled {
+		localPath = ""
 	}
-	sm.local = local
+	embeddedBuilder, err := catalogs.NewEmbedded()
+	if err != nil {
+		return nil, errors.WrapResource("create", "embedded bootstrap catalog", "", err)
+	}
+	embeddedCatalog, err := embeddedBuilder.Build()
+	if err != nil {
+		return nil, errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
+	}
+	bootstrapManifest, err := bootstraploader.Load(embeddedCatalog)
+	if err != nil {
+		return nil, err
+	}
+	initial := embeddedCatalog
+	generationID := ""
+	usingEmbeddedBootstrap := true
+	if !isNilCatalogStore(sm.options.catalogStore) {
+		loadCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultTimeout)
+		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
+		cancel()
+		switch {
+		case currentErr == nil:
+			if err := stored.Validate(); err != nil {
+				return nil, errors.WrapResource("validate", "stored current catalog generation", stored.Manifest.GenerationID, err)
+			}
+			initial, err = catalogstore.DecodeCatalogPayload(stored.Payload)
+			if err != nil {
+				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
+			}
+			generationID = stored.Manifest.GenerationID
+			usingEmbeddedBootstrap = false
+		case stderrors.Is(currentErr, errors.ErrNotFound):
+			// A newly configured store has no durable generation yet; the verified
+			// embedded/local baseline remains active until the first commit. Local
+			// YAML is deliberately consulted only in this empty-store case: once a
+			// durable current exists it is the authoritative restart source.
+		default:
+			return nil, errors.WrapResource("load", "stored current catalog generation", "current", currentErr)
+		}
+	}
+	if generationID == "" && localPath != "" {
+		local, localErr := catalogs.NewLocal(localPath)
+		if localErr != nil {
+			return nil, errors.WrapResource("create", "local catalog", localPath, localErr)
+		}
+		initial, err = local.Build()
+		if err != nil {
+			return nil, errors.WrapResource("publish", "initial catalog", localPath, err)
+		}
+		usingEmbeddedBootstrap = false
+	}
+	sm.catalog = initial
+	sm.generationID = generationID
+	sm.generationSequence = 1
+	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
+	sm.embeddedBootstrap = bootstrapManifest
 
 	// Get counts for logging
-	localProviders := sm.local.Providers().List()
-	localModels := sm.local.Models().List()
+	localProviders := initial.Providers().List()
+	localModels := initial.Definitions()
 	log.Int("providers", len(localProviders)).
 		Int("models", len(localModels)).
 		Msg("Local catalog loaded")
 
-	// Replace empty main catalog with local catalog immediately
-	// This provides embedded data on startup instead of waiting for auto-update
-	// Use ReplaceWith since sm.catalog is always empty at this point
-	log.Msg("Replacing main catalog with local catalog")
-	if err := sm.catalog.ReplaceWith(sm.local); err != nil {
-		return nil, errors.WrapResource("replace", "main catalog with local catalog", "", err)
-	}
-
-	// Verify merge
-	mainProviders := sm.catalog.Providers().List()
-	mainModels := sm.catalog.Models().List()
-	log.Int("providers", len(mainProviders)).
-		Int("models", len(mainModels)).
-		Msg("Main catalog after merge")
-
-	// set the auto update state
-	sm.autoUpdatesEnabled = sm.options.autoUpdatesEnabled
-	sm.autoUpdateInterval = sm.options.autoUpdateInterval
-	sm.autoUpdateFunc = sm.options.autoUpdateFunc
-
-	// start auto-updates if enabled
-	if sm.autoUpdatesEnabled {
-		if err := sm.AutoUpdatesOn(); err != nil {
-			return nil, errors.WrapResource("start", "auto-updates", "", err)
-		}
-	}
+	log.Msg("Published initial catalog generation")
 
 	return sm, nil
 }

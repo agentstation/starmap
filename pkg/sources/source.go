@@ -26,9 +26,10 @@ package sources
 import (
 	"context"
 	"sync"
+	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Sources is a thread-safe container for managing multiple data sources.
@@ -96,41 +97,42 @@ func (s *Sources) IDs() []ID {
 }
 
 // ID represents the identifier of a data source.
-// ID is a type alias for types.SourceID to maintain backward compatibility.
+// ID is a type alias for catalogmeta.SourceID to maintain backward compatibility.
 // This allows existing code to continue using sources.ID while benefiting from
-// the shared type definitions in pkg/types.
-type ID = types.SourceID
+// the shared type definitions in pkg/catalogmeta.
+type ID = catalogmeta.SourceID
 
 // Common source identifiers - exported as package-level constants for convenience.
 const (
-	ProvidersID     = types.ProvidersID
-	ModelsDevGitID  = types.ModelsDevGitID
-	ModelsDevHTTPID = types.ModelsDevHTTPID
-	LocalCatalogID  = types.LocalCatalogID
+	ProvidersID     = catalogmeta.ProvidersID
+	ModelsDevGitID  = catalogmeta.ModelsDevGitID
+	ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
+	LocalCatalogID  = catalogmeta.LocalCatalogID
 )
 
 // IDs returns all available source identifiers.
-// Delegates to types.SourceIDs() to maintain consistency.
+// Delegates to catalogmeta.SourceIDs() to maintain consistency.
 func IDs() []ID {
-	return types.SourceIDs()
+	return catalogmeta.SourceIDs()
 }
 
-// Source represents a data source for catalog information.
+// Source observes catalog information from one configured upstream.
+//
+// Implementations must be safe for repeated and concurrent Observe calls.
+// Observe returns the complete result of that call directly and must not require
+// a prior call or publish mutable result state through the Source.
 type Source interface {
-	// Type returns the type of this source
+	// ID returns the stable identity of this source.
 	ID() ID
 
 	// Name returns a human-friendly name for this source
 	Name() string
 
-	// Fetch retrieves data from this source
-	// Sources handle their own concurrency internally
-	Fetch(ctx context.Context, opts ...Option) error
+	// Observe retrieves and returns one immutable source result directly. Calls
+	// must not depend on prior Observe calls or publish result state on Source.
+	Observe(ctx context.Context, opts ...Option) (Observation, error)
 
-	// Catalog returns the catalog of this source
-	Catalog() catalogs.Catalog
-
-	// Cleanup releases any resources (called after all Fetch operations)
+	// Cleanup releases resources after all Observe calls have completed.
 	Cleanup() error
 
 	// Dependencies returns the list of external dependencies this source requires
@@ -138,6 +140,22 @@ type Source interface {
 
 	// IsOptional returns true if the sync can succeed without this source
 	IsOptional() bool
+}
+
+// Observation is one immutable direct source result. EvidenceChecksum binds
+// the normalized canonical catalog payload; raw upstream evidence retention is
+// a separate storage policy.
+type Observation struct {
+	ID               string                  `json:"id" yaml:"id"`
+	SourceID         ID                      `json:"source" yaml:"source"`
+	ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
+	Revision         Revision                `json:"revision" yaml:"revision"`
+	Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
+	Status           ObservationStatus       `json:"status" yaml:"status"`
+	Records          ObservationRecordCounts `json:"records" yaml:"records"`
+	Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
+	EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
 }
 
 // Dependency represents an external tool or runtime required by a source.
@@ -169,14 +187,16 @@ type DependencyStatus struct {
 	CheckError error  // Error from check command if not available
 }
 
-// ResourceType is a type alias for types.ResourceType to maintain backward compatibility.
+// ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility.
 // This allows existing code to continue using sources.ResourceType while benefiting from
-// the shared type definitions in pkg/types.
-type ResourceType = types.ResourceType
+// the shared type definitions in pkg/catalogmeta.
+type ResourceType = catalogmeta.ResourceType
 
 // Common resource type identifiers - exported as package-level constants for convenience.
 const (
-	ResourceTypeModel    = types.ResourceTypeModel
-	ResourceTypeProvider = types.ResourceTypeProvider
-	ResourceTypeAuthor   = types.ResourceTypeAuthor
+	ResourceTypeModel            = catalogmeta.ResourceTypeModel
+	ResourceTypeProvider         = catalogmeta.ResourceTypeProvider
+	ResourceTypeAuthor           = catalogmeta.ResourceTypeAuthor
+	ResourceTypeModelDefinition  = catalogmeta.ResourceTypeModelDefinition
+	ResourceTypeProviderOffering = catalogmeta.ResourceTypeProviderOffering
 )

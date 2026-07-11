@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agentstation/starmap/internal/cmd/format"
+	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 

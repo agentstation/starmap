@@ -2,13 +2,15 @@ package app
 
 import (
 	"context"
+	"fmt"
+	"os"
+	"path/filepath"
 	"sync"
 	"testing"
 
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // TestApp_New verifies app initialization.
@@ -62,6 +64,40 @@ func TestApp_Starmap_Singleton(t *testing.T) {
 	}
 }
 
+func TestApp_StarmapConfiguresPassiveFilesystemCatalogStore(t *testing.T) {
+	storePath := filepath.Join(t.TempDir(), "catalog-store")
+	app, err := New("1.0.0", "test", "2024-01-01", "test", WithConfig(&Config{
+		CatalogStorePath: storePath,
+	}))
+	if err != nil {
+		t.Fatalf("New() failed: %v", err)
+	}
+	if _, err := app.Starmap(); err != nil {
+		t.Fatalf("Starmap() failed: %v", err)
+	}
+	if _, err := os.Stat(storePath); !os.IsNotExist(err) {
+		t.Fatalf("read-only client construction created store path: %v", err)
+	}
+}
+
+func TestEmbeddedBudgetConfigurationPropagatesToReadiness(t *testing.T) {
+	app, err := New("1.0.0", "test", "2026-07-10", "test", WithConfig(&Config{
+		CatalogStorePath:              filepath.Join(t.TempDir(), "catalog-store"),
+		EmbeddedBootstrapMaxSizeBytes: 1,
+	}))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	readiness, err := app.Readiness()
+	if err != nil {
+		t.Fatalf("Readiness: %v", err)
+	}
+	if readiness.Ready || len(readiness.Issues) != 1 ||
+		readiness.Issues[0].Code != starmap.ReadinessIssueEmbeddedBootstrapOversize {
+		t.Fatalf("readiness = %#v", readiness)
+	}
+}
+
 // TestApp_Starmap_ThreadSafe verifies concurrent Starmap() calls are safe.
 func TestApp_Starmap_ThreadSafe(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")
@@ -71,7 +107,7 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 
 	const goroutines = 100
 	var wg sync.WaitGroup
-	results := make([]starmap.Client, goroutines)
+	results := make([]*starmap.Client, goroutines)
 	errors := make([]error, goroutines)
 
 	// Launch many goroutines to test concurrent access
@@ -103,9 +139,9 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 	}
 }
 
-// TestApp_Catalog_ReturnsDeepCopy verifies the CRITICAL thread safety rule.
-// Per docs/ARCHITECTURE.md § Thread Safety: "ALWAYS return deep copy" to prevent data races.
-func TestApp_Catalog_ReturnsDeepCopy(t *testing.T) {
+// TestApp_Catalog_ReturnsImmutableSnapshot verifies collection reads cannot
+// mutate the published generation.
+func TestApp_Catalog_ReturnsImmutableSnapshot(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")
 	if err != nil {
 		t.Fatalf("New() failed: %v", err)
@@ -122,25 +158,18 @@ func TestApp_Catalog_ReturnsDeepCopy(t *testing.T) {
 		t.Fatalf("Catalog() failed on second call: %v", err)
 	}
 
-	// CRITICAL: Verify these are different instances (deep copies)
-	// We can't directly compare pointers since Catalog is an interface,
-	// but we can verify that modifying one doesn't affect the other
-
-	// Add a test provider to cat1
-	testProvider := &catalogs.Provider{
-		ID:   "test-provider",
-		Name: "Test Provider",
+	providers := cat1.Providers().List()
+	if len(providers) == 0 {
+		t.Fatal("Expected embedded providers")
 	}
-
-	if err := cat1.Providers().Set(testProvider.ID, testProvider); err != nil {
-		t.Fatalf("Failed to set test provider: %v", err)
+	originalName := providers[0].Name
+	providers[0].Name = "mutated caller value"
+	provider, ok := cat2.Providers().Get(providers[0].ID)
+	if !ok {
+		t.Fatalf("Provider %s missing from second snapshot", providers[0].ID)
 	}
-
-	// Verify cat2 doesn't have the test provider (proving it's a copy)
-	_, exists := cat2.Providers().Get("test-provider")
-	if exists {
-		t.Error("Catalog() did not return deep copy - mutation affected other instance!")
-		t.Error("This is a CRITICAL thread safety violation per docs/ARCHITECTURE.md § Thread Safety")
+	if provider.Name != originalName {
+		t.Error("Catalog() returned shared provider state")
 	}
 }
 
@@ -155,7 +184,7 @@ func TestApp_Catalog_ThreadSafe(t *testing.T) {
 	var wg sync.WaitGroup
 	errors := make([]error, goroutines)
 
-	// Launch many goroutines that all get and mutate catalogs
+	// Launch many goroutines that all get and read catalog snapshots.
 	for i := 0; i < goroutines; i++ {
 		wg.Add(1)
 		go func(idx int) {
@@ -167,14 +196,8 @@ func TestApp_Catalog_ThreadSafe(t *testing.T) {
 				return
 			}
 
-			// Try to mutate the catalog (should be safe since it's a copy)
-			providerID := catalogs.ProviderID("test-" + string(rune(idx)))
-			testProvider := &catalogs.Provider{
-				ID:   providerID,
-				Name: "Test",
-			}
-			if err := cat.Providers().Set(providerID, testProvider); err != nil {
-				errors[idx] = err
+			if cat.Providers().Len() == 0 {
+				errors[idx] = fmt.Errorf("snapshot has no providers")
 			}
 		}(i)
 	}
@@ -284,22 +307,6 @@ func TestApp_ShutdownWithoutStarmap(t *testing.T) {
 	ctx := context.Background()
 	if err := app.Shutdown(ctx); err != nil {
 		t.Errorf("Shutdown() failed: %v", err)
-	}
-}
-
-// BenchmarkApp_Catalog measures catalog retrieval performance.
-func BenchmarkApp_Catalog(b *testing.B) {
-	app, err := New("1.0.0", "test", "2024-01-01", "test")
-	if err != nil {
-		b.Fatalf("New() failed: %v", err)
-	}
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_, err := app.Catalog()
-		if err != nil {
-			b.Fatalf("Catalog() failed: %v", err)
-		}
 	}
 }
 

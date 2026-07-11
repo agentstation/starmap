@@ -7,9 +7,47 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/provenance"
 )
+
+type seamTracker struct {
+	tracked []provenance.Provenance
+}
+
+func (t *seamTracker) Track(_ catalogmeta.ResourceType, _ string, _ string, value provenance.Provenance) {
+	t.tracked = append(t.tracked, value)
+}
+func (*seamTracker) FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance {
+	return nil
+}
+func (*seamTracker) FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance {
+	return nil
+}
+func (*seamTracker) Map() provenance.Map { return nil }
+func (t *seamTracker) Clear()            { t.tracked = nil }
+
+func TestSeamConformancePipelineAcceptsCustomTracker(t *testing.T) {
+	tracker := &seamTracker{}
+	pipeline := NewPipeline(&TestEnhancer{
+		name:     "custom",
+		priority: 1,
+		enhance: func(model *catalogs.Model) (*catalogs.Model, error) {
+			result := *model
+			result.Pricing = &catalogs.ModelPricing{}
+			return &result, nil
+		},
+	}).WithProvenance(tracker)
+
+	if _, err := pipeline.Enhance(context.Background(), &catalogs.Model{ID: "model"}); err != nil {
+		t.Fatalf("Enhance: %v", err)
+	}
+	if len(tracker.tracked) != 1 {
+		t.Fatalf("tracked entries = %d, want 1", len(tracker.tracked))
+	}
+}
 
 // TestEnhancer is a test implementation of the Enhancer interface.
 type TestEnhancer struct {

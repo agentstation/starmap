@@ -7,13 +7,17 @@ import (
 // Model represents a model configuration.
 type Model struct {
 	// Core identity
-	ID          string   `json:"id" yaml:"id"`                                       // Unique model identifier
-	Name        string   `json:"name" yaml:"name"`                                   // Display name (must not be empty)
-	Authors     []Author `json:"authors,omitempty" yaml:"authors,omitempty"`         // Authors/organizations of the model (if known)
-	Description string   `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
+	ID          string      `json:"id" yaml:"id"`                                       // Unique model identifier
+	Name        string      `json:"name" yaml:"name"`                                   // Display name (must not be empty)
+	Authors     []Author    `json:"authors,omitempty" yaml:"authors,omitempty"`         // Authors/organizations of the model (if known)
+	Description string      `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
+	Status      ModelStatus `json:"status,omitempty" yaml:"status,omitempty"`           // Lifecycle status such as active, beta, preview, or deprecated
 
 	// Metadata - version and timing information
 	Metadata *ModelMetadata `json:"metadata,omitempty" yaml:"metadata,omitempty"` // Metadata for the model
+
+	// Lineage - model family and derivation information
+	Lineage *ModelLineage `json:"lineage,omitempty" yaml:"lineage,omitempty"`
 
 	// Features - what this model can do
 	Features *ModelFeatures `json:"features,omitempty" yaml:"features,omitempty"`
@@ -39,9 +43,15 @@ type Model struct {
 	// Delivery - technical response delivery capabilities (formats, protocols, streaming)
 	Delivery *ModelDelivery `json:"response,omitempty" yaml:"response,omitempty"`
 
+	// Modes - alternate service modes such as fast/priority variants
+	Modes map[string]ModelMode `json:"modes,omitempty" yaml:"modes,omitempty"`
+
 	// Operational characteristics
 	Pricing *ModelPricing `json:"pricing,omitempty" yaml:"pricing,omitempty"` // Optional pricing information
 	Limits  *ModelLimits  `json:"limits,omitempty" yaml:"limits,omitempty"`   // Model limits
+
+	// Extensions - controlled source-specific fields that are not canonical schema
+	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
 	// Timestamps for record keeping and auditing
 	CreatedAt utc.Time `json:"created_at" yaml:"created_at"` // Created date (YYYY-MM or YYYY-MM-DD format)
@@ -55,6 +65,25 @@ type ModelMetadata struct {
 	KnowledgeCutoff *utc.Time          `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"` // Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
 	Tags            []ModelTag         `json:"tags,omitempty" yaml:"tags,omitempty"`                         // Use case tags for categorizing the model
 	Architecture    *ModelArchitecture `json:"architecture,omitempty" yaml:"architecture,omitempty"`         // Technical architecture details
+}
+
+// ModelLineage represents model family and derivation metadata.
+type ModelLineage struct {
+	Family string  `json:"family,omitempty" yaml:"family,omitempty"` // Model family or series, such as gpt-5 or claude
+	Root   *string `json:"root,omitempty" yaml:"root,omitempty"`     // Root/base model ID reported by a provider
+	Parent *string `json:"parent,omitempty" yaml:"parent,omitempty"` // Parent model ID for derived/fine-tuned models
+}
+
+// ModelMode represents an alternate provider service mode for a model.
+type ModelMode struct {
+	Pricing  *ModelPricing      `json:"pricing,omitempty" yaml:"pricing,omitempty"`   // Mode-specific pricing
+	Provider *ModelProviderMode `json:"provider,omitempty" yaml:"provider,omitempty"` // Mode-specific provider request overrides
+}
+
+// ModelProviderMode represents provider request overrides for a model mode.
+type ModelProviderMode struct {
+	Headers map[string]string `json:"headers,omitempty" yaml:"headers,omitempty"` // HTTP headers required by this mode
+	Body    map[string]any    `json:"body,omitempty" yaml:"body,omitempty"`       // JSON request body fields required by this mode
 }
 
 // ModelFeatures represents a set of feature flags that describe what a model can do.
@@ -134,6 +163,23 @@ type ModelFeatures struct {
 
 }
 
+// ModelStatus represents a model lifecycle or availability state.
+type ModelStatus string
+
+// String returns the string representation of a ModelStatus.
+func (ms ModelStatus) String() string {
+	return string(ms)
+}
+
+// Model lifecycle states.
+const (
+	ModelStatusActive     ModelStatus = "active"
+	ModelStatusBeta       ModelStatus = "beta"
+	ModelStatusPreview    ModelStatus = "preview"
+	ModelStatusDeprecated ModelStatus = "deprecated"
+	ModelStatusUnknown    ModelStatus = "unknown"
+)
+
 // ModelModalities represents the input/output modalities supported by a model.
 type ModelModalities struct {
 	Input  []ModelModality `json:"input" yaml:"input"`   // Supported input modalities
@@ -208,6 +254,7 @@ type ModelAttachments struct {
 // ModelLimits represents the limits for a model.
 type ModelLimits struct {
 	ContextWindow int64 `json:"context_window" yaml:"context_window"` // Context window size in tokens
+	InputTokens   int64 `json:"input_tokens" yaml:"input_tokens"`     // Maximum input tokens
 	OutputTokens  int64 `json:"output_tokens" yaml:"output_tokens"`   // Maximum output tokens
 }
 

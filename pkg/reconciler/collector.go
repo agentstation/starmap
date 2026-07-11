@@ -10,13 +10,13 @@ import (
 
 // collector encapsulates data collection logic.
 type collector struct {
-	sources []sources.Source
+	sources []sources.Observation
 	primary sources.ID
 	logger  *zerolog.Logger
 }
 
 // newCollector creates a new data collector.
-func newCollector(srcs []sources.Source, primary sources.ID) *collector {
+func newCollector(srcs []sources.Observation, primary sources.ID) *collector {
 	return &collector{
 		sources: srcs,
 		primary: primary,
@@ -29,7 +29,7 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 	result := make(map[sources.ID][]*catalogs.Provider)
 
 	for _, src := range c.sources {
-		catalog := src.Catalog()
+		catalog := src.Catalog
 		if catalog == nil {
 			continue
 		}
@@ -40,7 +40,7 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 			for _, p := range providers {
 				providerList = append(providerList, &p)
 			}
-			result[src.ID()] = providerList
+			result[src.SourceID] = providerList
 		}
 	}
 
@@ -50,14 +50,14 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 // collectModelsForProvider gathers models for a specific provider.
 func (c *collector) collectModelsForProvider(
 	provider *catalogs.Provider,
-	primaryCatalog catalogs.Catalog,
+	primaryCatalog *catalogs.Catalog,
 ) map[sources.ID][]*catalogs.Model {
 	result := make(map[sources.ID][]*catalogs.Model)
 
 	for _, src := range c.sources {
 		models := c.providerModels(src, provider, primaryCatalog)
 		if len(models) > 0 {
-			result[src.ID()] = models
+			result[src.SourceID] = models
 		}
 	}
 
@@ -65,13 +65,13 @@ func (c *collector) collectModelsForProvider(
 }
 
 // providerModels extracts models for a provider from a source.
-func (c *collector) providerModels(src sources.Source, provider *catalogs.Provider, primaryCatalog catalogs.Catalog) []*catalogs.Model {
-	catalog := src.Catalog()
+func (c *collector) providerModels(src sources.Observation, provider *catalogs.Provider, primaryCatalog *catalogs.Catalog) []*catalogs.Model {
+	catalog := src.Catalog
 	if catalog == nil {
 		return nil
 	}
 
-	sourceName := src.ID()
+	sourceName := src.SourceID
 
 	// Find provider in source (check ID and aliases)
 	sourceProvider := c.findProvider(catalog, provider.ID, provider.Aliases)
@@ -94,7 +94,6 @@ func (c *collector) providerModels(src sources.Source, provider *catalogs.Provid
 	// For enrichment sources, add models that primary serves
 	if c.isPrimaryFiltering() && sourceName != c.primary {
 		models = c.enrichWithPrimaryModels(
-			catalog,
 			provider,
 			models,
 			primaryCatalog,
@@ -105,7 +104,7 @@ func (c *collector) providerModels(src sources.Source, provider *catalogs.Provid
 }
 
 // findProvider looks up provider by ID or aliases.
-func (c *collector) findProvider(catalog catalogs.Catalog, id catalogs.ProviderID, aliases []catalogs.ProviderID) *catalogs.Provider {
+func (c *collector) findProvider(catalog catalogs.Reader, id catalogs.ProviderID, aliases []catalogs.ProviderID) *catalogs.Provider {
 	if provider, exists := catalog.Providers().Get(id); exists {
 		return provider
 	}
@@ -126,10 +125,9 @@ func (c *collector) isPrimaryFiltering() bool {
 
 // enrichWithPrimaryModels adds models that primary source serves.
 func (c *collector) enrichWithPrimaryModels(
-	sourceCatalog catalogs.Catalog,
 	provider *catalogs.Provider,
 	existingModels []*catalogs.Model,
-	primaryCatalog catalogs.Catalog,
+	primaryCatalog *catalogs.Catalog,
 ) []*catalogs.Model {
 	if primaryCatalog == nil {
 		return existingModels
@@ -138,58 +136,57 @@ func (c *collector) enrichWithPrimaryModels(
 	// Find primary provider
 	primaryProvider := c.findProvider(primaryCatalog, provider.ID, provider.Aliases)
 	if primaryProvider == nil || primaryProvider.Models == nil {
-		return existingModels
+		return nil
 	}
 
-	// Get all models from source for potential enrichment
-	allModels := sourceCatalog.Models().List()
+	primaryModelIDs := make(map[string]struct{}, len(primaryProvider.Models))
+	for id := range primaryProvider.Models {
+		primaryModelIDs[id] = struct{}{}
+	}
+	included := make(map[string]struct{}, len(existingModels))
+	filtered := make([]*catalogs.Model, 0, len(existingModels))
 
 	c.logger.Debug().
 		Str("source", "enrichment").
 		Str("provider", string(provider.ID)).
-		Int("potential_models", len(allModels)).
+		Int("provider_models", len(existingModels)).
 		Msg("Filtering non-primary source models by primary authority")
 
-	// Check each model from source
-	for _, model := range allModels {
-		// Skip if we already have this model
-		shouldInclude := false
-		for _, existingModel := range existingModels {
-			if existingModel.ID == model.ID {
-				shouldInclude = true
-				break
-			}
+	for _, model := range existingModels {
+		if model == nil {
+			continue
 		}
-
-		// If not already included, check if primary has it
-		if !shouldInclude {
-			if _, exists := primaryProvider.Models[model.ID]; exists {
-				existingModels = append(existingModels, &model)
-			}
+		if _, ok := primaryModelIDs[model.ID]; !ok {
+			continue
 		}
+		if _, ok := included[model.ID]; ok {
+			continue
+		}
+		included[model.ID] = struct{}{}
+		filtered = append(filtered, model)
 	}
 
-	return existingModels
+	return filtered
 }
 
 // sourceTypes extracts source types from sources.
 func (c *collector) sourceTypes() []sources.ID {
 	types := make([]sources.ID, 0, len(c.sources))
 	for _, src := range c.sources {
-		types = append(types, src.ID())
+		types = append(types, src.SourceID)
 	}
 	return types
 }
 
 // primaryCatalog finds and returns the primary catalog.
-func (c *collector) primaryCatalog() catalogs.Catalog {
+func (c *collector) primaryCatalog() *catalogs.Catalog {
 	if c.primary == "" {
 		return nil
 	}
 
 	for _, src := range c.sources {
-		if src.ID() == c.primary {
-			return src.Catalog()
+		if src.SourceID == c.primary {
+			return src.Catalog
 		}
 	}
 
@@ -197,9 +194,9 @@ func (c *collector) primaryCatalog() catalogs.Catalog {
 }
 
 // baseCatalog returns the first available catalog for comparison.
-func (c *collector) baseCatalog() catalogs.Catalog {
+func (c *collector) baseCatalog() *catalogs.Catalog {
 	for _, src := range c.sources {
-		if catalog := src.Catalog(); catalog != nil {
+		if catalog := src.Catalog; catalog != nil {
 			return catalog
 		}
 	}

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"net"
 	"net/http"
 	"sync"
 	"time"
@@ -10,12 +11,18 @@ import (
 
 // RateLimiter implements token bucket rate limiting per IP address.
 type RateLimiter struct {
-	mu       sync.RWMutex
-	visitors map[string]*visitor
-	limit    int           // requests per minute
-	interval time.Duration // cleanup interval
-	logger   *zerolog.Logger
+	mu          sync.RWMutex
+	visitors    map[string]*visitor
+	limit       int           // requests per minute
+	interval    time.Duration // token reset interval
+	lastCleanup time.Time
+	logger      *zerolog.Logger
 }
+
+const (
+	rateLimitCleanupInterval = 5 * time.Minute
+	rateLimitVisitorMaxIdle  = 10 * time.Minute
+)
 
 // visitor tracks rate limit state for a single IP.
 type visitor struct {
@@ -28,38 +35,37 @@ type visitor struct {
 // limit is requests per minute per IP.
 func NewRateLimiter(limit int, logger *zerolog.Logger) *RateLimiter {
 	rl := &RateLimiter{
-		visitors: make(map[string]*visitor),
-		limit:    limit,
-		interval: time.Minute,
-		logger:   logger,
+		visitors:    make(map[string]*visitor),
+		limit:       limit,
+		interval:    time.Minute,
+		lastCleanup: time.Now(),
+		logger:      logger,
 	}
-
-	// Start cleanup goroutine
-	go rl.cleanup()
-
 	return rl
 }
 
-// cleanup removes stale visitors every 5 minutes.
-func (rl *RateLimiter) cleanup() {
-	ticker := time.NewTicker(5 * time.Minute)
-	defer ticker.Stop()
-
-	for range ticker.C {
-		rl.mu.Lock()
-		for ip, v := range rl.visitors {
-			v.mu.Lock()
-			if time.Since(v.lastReset) > 10*time.Minute {
-				delete(rl.visitors, ip)
-			}
-			v.mu.Unlock()
-		}
-		rl.mu.Unlock()
+// cleanup removes stale visitors opportunistically on request traffic so the
+// middleware owns no goroutine or shutdown lifecycle.
+func (rl *RateLimiter) cleanup(now time.Time) {
+	rl.mu.Lock()
+	defer rl.mu.Unlock()
+	if now.Sub(rl.lastCleanup) < rateLimitCleanupInterval {
+		return
 	}
+	for ip, v := range rl.visitors {
+		v.mu.Lock()
+		if now.Sub(v.lastReset) > rateLimitVisitorMaxIdle {
+			delete(rl.visitors, ip)
+		}
+		v.mu.Unlock()
+	}
+	rl.lastCleanup = now
 }
 
 // getVisitor returns or creates a visitor for the IP.
 func (rl *RateLimiter) getVisitor(ip string) *visitor {
+	now := time.Now()
+	rl.cleanup(now)
 	rl.mu.RLock()
 	v, exists := rl.visitors[ip]
 	rl.mu.RUnlock()
@@ -71,7 +77,7 @@ func (rl *RateLimiter) getVisitor(ip string) *visitor {
 		if !exists {
 			v = &visitor{
 				tokens:    rl.limit,
-				lastReset: time.Now(),
+				lastReset: now,
 			}
 			rl.visitors[ip] = v
 		}
@@ -107,11 +113,9 @@ func (rl *RateLimiter) allow(ip string) bool {
 func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Extract IP address (handle X-Forwarded-For)
-			ip := r.RemoteAddr
-			if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
-				ip = forwarded
-			}
+			// Trust only the socket peer. Forwarded headers are attacker-controlled
+			// unless an explicitly configured trusted-proxy boundary validates them.
+			ip := clientAddress(r.RemoteAddr)
 
 			// Check rate limit
 			if !rl.allow(ip) {
@@ -132,4 +136,12 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+func clientAddress(remoteAddress string) string {
+	host, _, err := net.SplitHostPort(remoteAddress)
+	if err == nil && host != "" {
+		return host
+	}
+	return remoteAddress
 }

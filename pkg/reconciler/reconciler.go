@@ -6,6 +6,7 @@ package reconciler
 import (
 	"context"
 	"maps"
+	"strings"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -21,25 +22,21 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Reconciler is the main interface for reconciling data from multiple sources.
-type Reconciler interface {
-	// Sources reconciles multiple catalogs from different sources
-	// The primary source determines which models exist; other sources provide enrichment only
-	Sources(ctx context.Context, primary sources.ID, srcs []sources.Source) (*Result, error)
-}
-
-// reconciler is the default implementation of Reconciler.
-type reconciler struct {
+// Reconciler combines data from multiple sources into a canonical catalog.
+// It is concrete because this package has one reconciliation engine; extension
+// points are accepted through the narrow Strategy, Authority, Source, and
+// Enhancer interfaces.
+type Reconciler struct {
 	strategy    Strategy
 	authorities authority.Authority
 	provenance  provenance.Tracker
 	tracking    bool
 	enhancers   *enhancer.Pipeline
-	baseline    catalogs.Catalog // Baseline catalog for comparison
+	baseline    *catalogs.Catalog // Baseline catalog for comparison
 }
 
 // New creates a new Reconciler with options.
-func New(opts ...Option) (Reconciler, error) {
+func New(opts ...Option) (*Reconciler, error) {
 	// Create options with defaults
 	options, err := newOptions(opts...)
 	if err != nil {
@@ -47,7 +44,7 @@ func New(opts ...Option) (Reconciler, error) {
 	}
 
 	// Create reconciler from options
-	r := &reconciler{
+	r := &Reconciler{
 		strategy:    options.strategy,
 		authorities: options.authorities,
 		provenance:  provenance.NewTracker(options.tracking),
@@ -63,10 +60,10 @@ func New(opts ...Option) (Reconciler, error) {
 type reconcileContext struct {
 	collector *collector
 	filter    *filter
-	merger    Merger
+	merger    *merger
 	logger    *zerolog.Logger
 	startTime time.Time
-	baseline  catalogs.Catalog // Baseline for comparison
+	baseline  *catalogs.Catalog // Baseline for comparison
 }
 
 // modelResult holds reconciled models and provenance.
@@ -77,7 +74,7 @@ type modelResult struct {
 }
 
 // Sources performs reconciliation with clean step-by-step flow.
-func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Source) (*Result, error) {
+func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error) {
 	// Step 1: Initialize context and validate
 	rctx, err := r.initialize(ctx, primary, srcs)
 	if err != nil {
@@ -136,14 +133,14 @@ func (r *reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 }
 
 // initialize sets up reconciliation context.
-func (r *reconciler) initialize(ctx context.Context, primary sources.ID, srcs []sources.Source) (*reconcileContext, error) {
+func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*reconcileContext, error) {
 	logger := logging.FromContext(ctx)
 
 	// Create collector
 	collector := newCollector(srcs, primary)
 
 	// Validate and get primary catalog if specified
-	var primaryCatalog catalogs.Catalog
+	var primaryCatalog *catalogs.Catalog
 	if primary != "" {
 		primaryCatalog = collector.primaryCatalog()
 		if primaryCatalog == nil {
@@ -158,11 +155,14 @@ func (r *reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 			Msg("Using primary catalog for filtering")
 	}
 
+	merger := r.createMerger()
+	merger.setObservations(srcs)
+
 	// Create context
 	return &reconcileContext{
 		collector: collector,
 		filter:    newFilter(primary, primaryCatalog),
-		merger:    r.createMerger(),
+		merger:    merger,
 		logger:    logger,
 		startTime: time.Now(),
 		baseline:  r.baseline,
@@ -170,7 +170,7 @@ func (r *reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 }
 
 // reconcileProviders merges providers from all sources.
-func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, error) {
+func (r *Reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, error) {
 	// Collect providers from all sources
 	providerSources := rctx.collector.collectProviders()
 
@@ -179,7 +179,7 @@ func (r *reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Pro
 }
 
 // reconcileAllModels processes models for all providers.
-func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []*catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
+func (r *Reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []*catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
 	results := make(map[catalogs.ProviderID]modelResult)
 
 	for _, provider := range providers {
@@ -204,7 +204,7 @@ func (r *reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileCont
 }
 
 // reconcileProviderModels merges models for a single provider.
-func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider *catalogs.Provider) (modelResult, error) {
+func (r *Reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider *catalogs.Provider) (modelResult, error) {
 	// Collect models for this provider from all sources
 	primaryCatalog := rctx.filter.primaryCatalog
 	if primaryCatalog == nil {
@@ -229,7 +229,7 @@ func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 	}
 
 	// Merge models using configured strategy
-	models, prov, err := rctx.merger.Models(modelSources)
+	models, prov, err := rctx.merger.ModelsForProvider(provider.ID, modelSources)
 	if err != nil {
 		return modelResult{}, err
 	}
@@ -255,18 +255,18 @@ func (r *reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 }
 
 // catalog creates the final catalog with providers and models.
-func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (catalogs.Catalog, error) {
-	var catalog catalogs.Catalog
+func (r *Reconciler) catalog(providers []*catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (*catalogs.Builder, error) {
+	var catalog *catalogs.Builder
 	var err error
 
 	// Start with baseline catalog if available to preserve existing providers
 	if r.baseline != nil {
-		catalog, err = r.baseline.Copy()
+		catalog, err = catalogs.NewBuilderFrom(r.baseline)
 		if err != nil {
 			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
 		}
 		// Clear old provenance data - we'll regenerate it from the current reconciliation
-		catalog.Provenance().Clear()
+		catalog.ClearProvenance()
 	} else {
 		catalog = catalogs.NewEmpty()
 	}
@@ -277,14 +277,11 @@ func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 
 		// Add models if we have results for this provider
 		if result, ok := modelResults[provider.ID]; ok && len(result.models) > 0 {
-			provider.Models = make(map[string]*catalogs.Model)
-			for _, model := range result.models {
-				provider.Models[model.ID] = model
-			}
+			provider.Models = r.providerModels(result.models)
 		}
 
 		// Set provider in catalog (this will overwrite existing provider)
-		if err := catalog.Providers().Set(provider.ID, provider); err != nil {
+		if err := catalog.SetProvider(*provider); err != nil {
 			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}
@@ -292,10 +289,21 @@ func (r *reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 	return catalog, nil
 }
 
+func (r *Reconciler) providerModels(models []*catalogs.Model) map[string]*catalogs.Model {
+	providerModels := make(map[string]*catalogs.Model)
+	for _, model := range models {
+		if model == nil {
+			continue
+		}
+		providerModels[model.ID] = model
+	}
+	return providerModels
+}
+
 // changeset calculates differences between baseline and new catalog.
-func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog) *differ.Changeset {
+func (r *Reconciler) changeset(rctx *reconcileContext, catalog *catalogs.Builder) *differ.Changeset {
 	// Use provided baseline if available, otherwise fall back to first source
-	var baseCatalog catalogs.Catalog
+	var baseCatalog *catalogs.Catalog
 	if rctx.baseline != nil {
 		baseCatalog = rctx.baseline
 		rctx.logger.Debug().Msg("Using provided baseline catalog for comparison")
@@ -308,62 +316,28 @@ func (r *reconciler) changeset(rctx *reconcileContext, catalog catalogs.Catalog)
 		rctx.logger.Debug().Msg("No baseline provided, using first source catalog")
 	}
 
-	// Collect all models from merged catalog
-	var allMergedModels []*catalogs.Model
-	for _, provider := range catalog.Providers().List() {
-		if provider.Models != nil {
-			for _, model := range provider.Models {
-				allMergedModels = append(allMergedModels, model)
-			}
-		}
-	}
-
-	// Create differ and compute changes
-	d := differ.New()
-
-	// Convert base models to pointers for diff
-	baseModelValues := baseCatalog.Models().List()
-	baseModels := make([]*catalogs.Model, len(baseModelValues))
-	for i, m := range baseModelValues {
-		baseModels[i] = &m
-	}
-
-	modelChangeset := d.Models(
-		baseModels,
-		allMergedModels,
-	)
-
-	// Build changeset structure
-	changeset := &differ.Changeset{
-		Models: modelChangeset,
-		Summary: differ.ChangesetSummary{
-			ModelsAdded:   len(modelChangeset.Added),
-			ModelsUpdated: len(modelChangeset.Updated),
-			ModelsRemoved: len(modelChangeset.Removed),
-			TotalChanges:  len(modelChangeset.Added) + len(modelChangeset.Updated) + len(modelChangeset.Removed),
-		},
-	}
-
-	return changeset
+	return differ.New().Catalogs(baseCatalog, catalog)
 }
 
 // result creates the final result.
-func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, changeset *differ.Changeset, modelResults map[catalogs.ProviderID]modelResult) *Result {
+func (r *Reconciler) result(rctx *reconcileContext, catalog *catalogs.Builder, changeset *differ.Changeset, modelResults map[catalogs.ProviderID]modelResult) *Result {
 	result := NewResult()
 
 	// Set core data
 	result.Catalog = catalog
 	result.Changeset = changeset
 
-	// Combine all provenance data (models only)
-	for _, mr := range modelResults {
-		maps.Copy(result.Provenance, mr.provenance)
+	// Combine all provenance data (models only). Scope merge-local provenance
+	// keys by provider so shared model IDs from different providers cannot
+	// overwrite one another in the flat result map.
+	for providerID, mr := range modelResults {
+		maps.Copy(result.Provenance, providerScopedProvenance(providerID, mr.provenance))
 	}
 
 	// Copy tracker provenance into catalog for persistence
 	// This ensures the catalog contains the correctly-formatted provenance data
 	if r.provenance != nil {
-		catalog.Provenance().Merge(r.provenance.Map())
+		catalog.MergeProvenance(r.provenance.Map())
 	}
 
 	// Build tracking maps from final catalog (not just current sync results)
@@ -397,8 +371,22 @@ func (r *reconciler) result(rctx *reconcileContext, catalog catalogs.Catalog, ch
 	return result
 }
 
+func providerScopedProvenance(providerID catalogs.ProviderID, source provenance.Map) provenance.Map {
+	scoped := make(provenance.Map, len(source))
+	prefix := "models."
+	scopedPrefix := "models." + string(providerID) + "."
+	for key, entries := range source {
+		if rest, ok := strings.CutPrefix(key, prefix); ok && providerID != "" {
+			scoped[scopedPrefix+rest] = entries
+			continue
+		}
+		scoped[key] = entries
+	}
+	return scoped
+}
+
 // createMerger creates a merger based on configuration.
-func (r *reconciler) createMerger() Merger {
+func (r *Reconciler) createMerger() *merger {
 	if r.tracking && r.provenance != nil {
 		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
 	}
@@ -406,7 +394,7 @@ func (r *reconciler) createMerger() Merger {
 }
 
 // calcStats computes statistics from the catalog.
-func (r *reconciler) calcStats(catalog catalogs.Catalog, modelResults map[catalogs.ProviderID]modelResult) ResultStatistics {
+func (r *Reconciler) calcStats(catalog catalogs.Reader, modelResults map[catalogs.ProviderID]modelResult) ResultStatistics {
 	var stats ResultStatistics
 
 	// Count providers

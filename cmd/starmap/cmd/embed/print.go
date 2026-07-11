@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	embedutil "github.com/agentstation/starmap/internal/cmd/embed"
+	embedutil "github.com/agentstation/starmap/internal/cli/embed"
 )
 
 // printWithLineNumbers displays content with line numbers.

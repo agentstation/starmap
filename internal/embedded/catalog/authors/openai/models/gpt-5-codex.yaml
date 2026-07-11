@@ -2,8 +2,8 @@
 id: gpt-5-codex
 name: gpt-5-codex
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

@@ -1,93 +1,76 @@
 package catalogs
 
-import "github.com/agentstation/starmap/pkg/save"
+import (
+	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/provenance"
+)
+
+// ProvidersReader exposes provider collection reads without mutation methods.
+type ProvidersReader interface {
+	Get(ProviderID) (*Provider, bool)
+	Resolve(ProviderID) (*Provider, bool)
+	Exists(ProviderID) bool
+	Len() int
+	List() []Provider
+	Map() map[ProviderID]*Provider
+	ForEach(func(ProviderID, *Provider) bool)
+	FormatYAML() string
+}
+
+// AuthorsReader exposes author collection reads without mutation methods.
+type AuthorsReader interface {
+	Get(AuthorID) (*Author, bool)
+	Resolve(AuthorID) (*Author, bool)
+	Exists(AuthorID) bool
+	Len() int
+	List() []Author
+	Map() map[AuthorID]*Author
+	ForEach(func(AuthorID, *Author) bool)
+	FormatYAML() string
+}
+
+// EndpointsReader exposes endpoint collection reads without mutation methods.
+type EndpointsReader interface {
+	Get(string) (*Endpoint, bool)
+	Exists(string) bool
+	Len() int
+	List() []Endpoint
+	Map() map[string]*Endpoint
+	ForEach(func(string, *Endpoint) bool)
+}
+
+// ModelsReader exposes model collection reads without mutation methods.
+type ModelsReader interface {
+	Get(string) (*Model, bool)
+	Exists(string) bool
+	Len() int
+	List() []Model
+	Map() map[string]*Model
+	ForEach(func(string, *Model) bool)
+}
+
+// ProvenanceReader exposes provenance reads without mutation methods.
+type ProvenanceReader interface {
+	Map() provenance.Map
+	Len() int
+	FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
+	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
+	FormatYAML() string
+}
 
 // Reader provides read-only access to catalog data.
 type Reader interface {
 	// Lists all providers, authors, and endpoints
-	Providers() *Providers
-	Authors() *Authors
-	Endpoints() *Endpoints
-	Models() *Models
-	Provenance() *Provenance
+	Providers() ProvidersReader
+	Authors() AuthorsReader
+	Endpoints() EndpointsReader
+	Models() ModelsReader
+	Provenance() ProvenanceReader
 
 	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)
 	Author(id AuthorID) (Author, error)
 	Endpoint(id string) (Endpoint, error)
-
-	// Helper methods for accessing models through providers/authors
-	FindModel(id string) (Model, error)
-}
-
-// Writer provides write operations for catalog data.
-type Writer interface {
-	// Sets a provider, author, or endpoint (upsert semantics)
-	SetProvider(provider Provider) error
-	SetAuthor(author Author) error
-	SetEndpoint(endpoint Endpoint) error
-
-	// Deletes a provider, author, or endpoint by id
-	DeleteProvider(id ProviderID) error
-	DeleteAuthor(id AuthorID) error
-	DeleteEndpoint(id string) error
-}
-
-// Merger provides catalog merging capabilities.
-type Merger interface {
-	// Replace this catalog's contents with another catalog
-	// The source only needs to be readable
-	ReplaceWith(source Reader) error
-
-	// Merge another catalog into this one
-	// The source only needs to be readable
-	// Use WithStrategy option to specify merge strategy (defaults to MergeEnrichEmpty)
-	MergeWith(source Reader, opts ...MergeOption) error
-
-	// MergeStrategy returns the default merge strategy for this catalog
-	MergeStrategy() MergeStrategy
-
-	// SetMergeStrategy sets the default merge strategy for this catalog
-	SetMergeStrategy(strategy MergeStrategy)
-}
-
-// Copier provides catalog copying capabilities.
-type Copier interface {
-	// Return a copy of the catalog
-	Copy() (Catalog, error)
-}
-
-// Catalog is the complete interface combining all catalog capabilities.
-// This interface is composed of smaller, focused interfaces following
-// the Interface Segregation Principle.
-type Catalog interface {
-	Reader
-	Writer
-	Merger
-	Copier
-	Persistence
-}
-
-// ReadOnlyCatalog provides read-only access to a catalog.
-type ReadOnlyCatalog interface {
-	Reader
-	Copier
-}
-
-// MutableCatalog provides read-write access without merge capabilities.
-type MutableCatalog interface {
-	Reader
-	Writer
-	Copier
-}
-
-// MergeableCatalog provides full catalog functionality.
-type MergeableCatalog interface {
-	Catalog
-}
-
-// Persistence provides catalog persistence capabilities.
-type Persistence interface {
-	// Save saves the catalog to persistent storage
-	Save(opts ...save.Option) error
+	ProviderModels(id ProviderID) (ModelsReader, error)
+	ProviderModel(providerID ProviderID, modelID string) (Model, error)
 }

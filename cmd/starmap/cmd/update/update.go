@@ -10,10 +10,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/cmd/application"
-	"github.com/agentstation/starmap/internal/cmd/emoji"
-	"github.com/agentstation/starmap/internal/cmd/format"
+	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sync"
@@ -21,19 +20,24 @@ import (
 
 // Flags holds flags for update command.
 type Flags struct {
-	Provider          string
-	Source            string
-	DryRun            bool
-	Force             bool
-	AutoApprove       bool
-	OutputDir         string
-	InputDir          string
-	Cleanup           bool
-	Reformat          bool
-	SourcesDir        string
-	AutoInstallDeps   bool
-	SkipDepPrompts    bool
-	RequireAllSources bool
+	Provider           string
+	Source             string
+	DryRun             bool
+	Force              bool
+	AutoApprove        bool
+	OutputDir          string
+	InputDir           string
+	Cleanup            bool
+	Reformat           bool
+	SourcesDir         string
+	ModelsDevGitCommit string
+	AutoInstallDeps    bool
+	SkipDepPrompts     bool
+	RequireAllSources  bool
+}
+
+type syncClient interface {
+	Sync(context.Context, ...sync.Option) (*sync.Result, error)
 }
 
 // addUpdateFlags adds update-specific flags to the update command.
@@ -41,7 +45,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
 	cmd.Flags().StringVar(&flags.Source, "source", "",
-		"Update from specific source (provider-api, models.dev)")
+		"Update from a specific source: all, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
 		"Preview changes without applying them")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
@@ -61,6 +65,8 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Reformat catalog files even without changes")
 	cmd.Flags().StringVar(&flags.SourcesDir, "sources-dir", "",
 		"Directory for external source data (default: ~/.starmap/sources)")
+	cmd.Flags().StringVar(&flags.ModelsDevGitCommit, "models-dev-git-commit", "",
+		"Exact commit required with --source models.dev-git")
 	cmd.Flags().BoolVar(&flags.AutoInstallDeps, "auto-install-deps", false,
 		"Automatically install missing dependencies without prompting")
 	cmd.Flags().BoolVar(&flags.SkipDepPrompts, "skip-dep-prompts", false,
@@ -98,7 +104,11 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 }
 
 // updateCatalog executes the update operation using app context.
-func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger *zerolog.Logger, quiet bool) error {
+func updateCatalog(ctx context.Context, sm syncClient, flags *Flags, logger *zerolog.Logger, quiet bool) error {
+	return updateCatalogWithConfirmation(ctx, sm, flags, logger, quiet, ConfirmChanges)
+}
+
+func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Flags, logger *zerolog.Logger, quiet bool, confirm func() (bool, error)) error {
 	// Build update options - use default output path if not specified
 	outputPath := flags.OutputDir
 	if outputPath == "" {
@@ -110,7 +120,11 @@ func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger 
 		sourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
 	}
 
-	opts := BuildUpdateOptions(flags.Provider, outputPath, flags.DryRun, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	preview := flags.DryRun || !flags.AutoApprove
+	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, outputPath, preview, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	if err != nil {
+		return err
+	}
 
 	if !quiet {
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
@@ -134,11 +148,10 @@ func updateCatalog(ctx context.Context, sm starmap.Client, flags *Flags, logger 
 	}
 
 	// Handle results
-	return handleResults(ctx, sm, result, flags, outputPath, sourcesDir, quiet)
+	return handleResultsWithConfirmation(ctx, sm, result, flags, outputPath, sourcesDir, quiet, confirm)
 }
 
-// handleResults processes the update results using app context.
-func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool) error {
+func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool, confirm func() (bool, error)) error {
 	if !result.HasChanges() {
 		if !quiet {
 			fmt.Fprintf(os.Stderr, emoji.Success+" All providers are up to date - no changes needed\n")
@@ -152,7 +165,7 @@ func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, 
 	}
 
 	// Handle dry run
-	if result.DryRun {
+	if flags.DryRun {
 		if !quiet {
 			fmt.Fprintf(os.Stderr, "🔍 Dry run mode - no changes will be made\n")
 		}
@@ -165,7 +178,7 @@ func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, 
 	}
 
 	// Ask for confirmation
-	confirmed, err := ConfirmChanges()
+	confirmed, err := confirm()
 	if err != nil {
 		return err
 	}
@@ -179,7 +192,10 @@ func handleResults(ctx context.Context, sm starmap.Client, result *sync.Result, 
 	}
 
 	// Rebuild options without dry-run
-	opts := BuildUpdateOptions(flags.Provider, outputPath, false, flags.Force, flags.AutoApprove, flags.Cleanup, flags.Reformat, sourcesDir, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, outputPath, false, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	if err != nil {
+		return err
+	}
 
 	// Apply changes
 	finalResult, err := sm.Sync(ctx, opts...)

@@ -2,7 +2,6 @@ package catalogs
 
 import (
 	"fmt"
-	"maps"
 	"sort"
 	"strings"
 	"sync"
@@ -33,7 +32,14 @@ func WithProvidersMap(providers map[ProviderID]*Provider) ProvidersOption {
 	return func(p *Providers) {
 		if providers != nil {
 			p.providers = make(map[ProviderID]*Provider, len(providers))
-			maps.Copy(p.providers, providers)
+			for id, provider := range providers {
+				if provider == nil {
+					p.providers[id] = nil
+					continue
+				}
+				providerCopy := DeepCopyProvider(*provider)
+				p.providers[id] = &providerCopy
+			}
 		}
 	}
 }
@@ -56,7 +62,11 @@ func (p *Providers) Get(id ProviderID) (*Provider, bool) {
 	p.mu.RLock()
 	provider, ok := p.providers[id]
 	p.mu.RUnlock()
-	return provider, ok
+	if !ok || provider == nil {
+		return provider, ok
+	}
+	providerCopy := DeepCopyProvider(*provider)
+	return &providerCopy, true
 }
 
 // Resolve returns a provider by ID or alias.
@@ -68,15 +78,27 @@ func (p *Providers) Resolve(id ProviderID) (*Provider, bool) {
 
 	// Try exact match first
 	if provider, ok := p.providers[id]; ok {
-		return provider, true
+		if provider == nil {
+			return nil, true
+		}
+		providerCopy := DeepCopyProvider(*provider)
+		return &providerCopy, true
 	}
 
 	// Search aliases
 	for _, provider := range p.providers {
+		if provider == nil {
+			continue
+		}
 		for _, alias := range provider.Aliases {
 			if alias == id {
 				// Found via alias - return the provider with canonical ID
-				return p.providers[provider.ID], true
+				resolved := p.providers[provider.ID]
+				if resolved == nil {
+					return nil, true
+				}
+				providerCopy := DeepCopyProvider(*resolved)
+				return &providerCopy, true
 			}
 		}
 	}
@@ -95,7 +117,8 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error {
 
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.providers[id] = provider
+	providerCopy := DeepCopyProvider(*provider)
+	p.providers[id] = &providerCopy
 	return nil
 }
 
@@ -119,7 +142,8 @@ func (p *Providers) Add(provider *Provider) error {
 		}
 	}
 
-	p.providers[provider.ID] = provider
+	providerCopy := DeepCopyProvider(*provider)
+	p.providers[provider.ID] = &providerCopy
 	return nil
 }
 
@@ -179,7 +203,14 @@ func (p *Providers) Map() map[ProviderID]*Provider {
 	defer p.mu.RUnlock()
 
 	result := make(map[ProviderID]*Provider, len(p.providers))
-	maps.Copy(result, p.providers)
+	for id, provider := range p.providers {
+		if provider == nil {
+			result[id] = nil
+			continue
+		}
+		providerCopy := DeepCopyProvider(*provider)
+		result[id] = &providerCopy
+	}
 	return result
 }
 
@@ -190,7 +221,14 @@ func (p *Providers) ForEach(fn func(id ProviderID, provider *Provider) bool) {
 	defer p.mu.RUnlock()
 
 	for id, provider := range p.providers {
-		if !fn(id, provider) {
+		if provider == nil {
+			if !fn(id, nil) {
+				break
+			}
+			continue
+		}
+		providerCopy := DeepCopyProvider(*provider)
+		if !fn(id, &providerCopy) {
 			break
 		}
 	}
@@ -225,15 +263,13 @@ func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 	}
 
 	// Create a copy of the provider to avoid modifying the original
-	providerCopy := *provider
+	providerCopy := DeepCopyProvider(*provider)
 	if providerCopy.Models == nil {
 		providerCopy.Models = make(map[string]*Model)
-	} else {
-		// Shallow copy the models map (we'll replace one entry)
-		providerCopy.Models = ShallowCopyProviderModels(providerCopy.Models)
 	}
 
-	providerCopy.Models[model.ID] = &model
+	modelCopy := DeepCopyModel(model)
+	providerCopy.Models[model.ID] = &modelCopy
 	p.providers[providerID] = &providerCopy
 
 	return nil
@@ -267,7 +303,7 @@ func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 	}
 
 	// Create a copy of the provider to avoid modifying the original
-	providerCopy := *provider
+	providerCopy := DeepCopyProvider(*provider)
 	newModels := make(map[string]*Model, len(providerCopy.Models)-1)
 	for k, v := range providerCopy.Models {
 		if k != modelID {
@@ -313,7 +349,8 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 			continue
 		}
 		if _, hasError := errs[provider.ID]; !hasError {
-			p.providers[provider.ID] = provider
+			providerCopy := DeepCopyProvider(*provider)
+			p.providers[provider.ID] = &providerCopy
 		}
 	}
 
@@ -345,7 +382,8 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error {
 	defer p.mu.Unlock()
 
 	for id, provider := range providers {
-		p.providers[id] = provider
+		providerCopy := DeepCopyProvider(*provider)
+		p.providers[id] = &providerCopy
 	}
 
 	return nil
@@ -381,6 +419,13 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 
 // FormatYAML returns the providers as formatted YAML with enhanced formatting, comments, and structure.
 func (p *Providers) FormatYAML() string {
+	formatted, _ := p.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns formatted provider YAML or a typed parse error when a
+// provider value cannot be represented safely.
+func (p *Providers) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -409,7 +454,7 @@ func (p *Providers) FormatYAML() string {
 }
 
 // formatProvidersYAML formats a slice of providers with proper formatting, comments, and spacing.
-func formatProvidersYAML(providers []Provider) string {
+func formatProvidersYAML(providers []Provider) (string, error) {
 	// Create comment map for provider section headers and duration comments
 	commentMap := yaml.CommentMap{}
 
@@ -461,14 +506,13 @@ func formatProvidersYAML(providers []Provider) string {
 		// Fallback to basic YAML if enhanced formatting fails
 		basicYaml, err := yaml.Marshal(providers)
 		if err != nil {
-			// This should never happen with valid data - indicates programming error
-			panic(fmt.Sprintf("failed to marshal providers to YAML: %v", err))
+			return "", errors.WrapParse("yaml", "providers", err)
 		}
-		return string(basicYaml)
+		return string(basicYaml), nil
 	}
 
 	// Post-process to add spacing between providers
-	return addBlankLinesBetweenProviders(string(yamlData))
+	return addBlankLinesBetweenProviders(string(yamlData)), nil
 }
 
 // addBlankLinesBetweenProviders adds spacing between provider sections.

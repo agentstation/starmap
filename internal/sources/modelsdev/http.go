@@ -2,7 +2,7 @@ package modelsdev
 
 import (
 	"context"
-	"sync"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -11,23 +11,19 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Package-level state for expensive HTTP operations.
-var (
-	httpOnce sync.Once
-	httpAPI  *API
-	httpErr  error
-)
-
 // HTTPSource enhances models with models.dev data via HTTP.
 type HTTPSource struct {
 	providers  *catalogs.Providers
-	catalog    catalogs.Catalog
 	sourcesDir string
+	loadAPI    func(context.Context, string) (*API, error)
+	acquireAPI func(context.Context, string) (*API, HTTPAcquisitionResult, error)
 }
+
+var _ sources.Source = (*HTTPSource)(nil)
 
 // NewHTTPSource creates a new models.dev HTTP source.
 func NewHTTPSource(opts ...HTTPSourceOption) *HTTPSource {
-	s := &HTTPSource{}
+	s := &HTTPSource{acquireAPI: acquireHTTPAPI}
 	for _, opt := range opts {
 		opt(s)
 	}
@@ -52,21 +48,17 @@ func (s *HTTPSource) ID() sources.ID {
 // Name returns the human-friendly name of this source.
 func (s *HTTPSource) Name() string { return "models.dev (HTTP)" }
 
-// ensureHTTPAPI initializes models.dev data once via HTTP.
-func ensureHTTPAPI(ctx context.Context, outputDir string) (*API, error) {
-	httpOnce.Do(func() {
-		if outputDir == "" {
-			outputDir = expandPath(constants.DefaultSourcesPath)
-		}
-
-		client := NewHTTPClient(outputDir)
-		if err := client.EnsureAPI(ctx); err != nil {
-			httpErr = err
-			return
-		}
-		httpAPI, httpErr = ParseAPI(client.GetAPIPath())
-	})
-	return httpAPI, httpErr
+func acquireHTTPAPI(ctx context.Context, outputDir string) (*API, HTTPAcquisitionResult, error) {
+	if outputDir == "" {
+		outputDir = expandPath(constants.DefaultSourcesPath)
+	}
+	client := NewHTTPClient(outputDir)
+	acquisition, err := client.AcquireAPI(ctx)
+	if err != nil {
+		return nil, HTTPAcquisitionResult{}, err
+	}
+	api, err := ParseAPI(client.GetAPIPath())
+	return api, acquisition, err
 }
 
 // Setup initializes the source with dependencies.
@@ -75,10 +67,11 @@ func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
 	return nil
 }
 
-// Fetch creates a catalog with models that have pricing/limits data from models.dev.
-func (s *HTTPSource) Fetch(ctx context.Context, _ ...sources.Option) error {
+// Observe returns a catalog with mapped models.dev data directly.
+func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error) {
+	ctx = logging.WithSource(ctx, s.ID().String())
 	// Create a new catalog to build into
-	s.catalog = catalogs.NewEmpty()
+	builder := catalogs.NewEmpty()
 
 	// Use configured sources directory or default
 	outputDir := s.sourcesDir
@@ -87,26 +80,72 @@ func (s *HTTPSource) Fetch(ctx context.Context, _ ...sources.Option) error {
 	}
 
 	// Initialize models.dev data once
-	api, err := ensureHTTPAPI(ctx, outputDir)
+	var api *API
+	var acquisition HTTPAcquisitionResult
+	var err error
+	if s.loadAPI != nil {
+		api, err = s.loadAPI(ctx, outputDir)
+		acquisition = HTTPAcquisitionResult{Kind: HTTPAcquisitionDownloaded}
+	} else {
+		loader := s.acquireAPI
+		if loader == nil {
+			loader = acquireHTTPAPI
+		}
+		api, acquisition, err = loader(ctx, outputDir)
+	}
 	if err != nil {
-		return errors.WrapResource("initialize", "models.dev HTTP", "", err)
+		return sources.Observation{}, errors.WrapResource("initialize", "models.dev HTTP", "", err)
 	}
 
 	// Process the API data using shared logic
-	added, err := processFetch(s.catalog, api)
+	added, rejected, recordIssues, err := processFetch(builder, api, opts...)
 	if err != nil {
-		return err
+		return sources.Observation{}, err
 	}
 
-	logging.Info().
-		Int("model_count", added).
-		Msg("Found models with pricing/limits from models.dev HTTP")
-	return nil
-}
+	catalog, err := builder.Build()
+	if err != nil {
+		return sources.Observation{}, errors.WrapResource("publish", "models.dev HTTP observation", "", err)
+	}
 
-// Catalog returns the catalog of this source.
-func (s *HTTPSource) Catalog() catalogs.Catalog {
-	return s.catalog
+	logging.FromContext(ctx).Info().
+		Int("model_count", added).
+		Msg("Found models with catalog data from models.dev HTTP")
+	metadata := sources.ObservationMetadata{
+		ObservedAt:   time.Now().UTC(),
+		Revision:     acquisition.Revision,
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+		Records:      sources.ObservationRecordCounts{Accepted: added, Rejected: rejected},
+		Issues:       append([]sources.ObservationIssue(nil), acquisition.Issues...),
+	}
+	if len(acquisition.Issues) > 0 {
+		metadata.Completeness = sources.ObservationCompletenessPartial
+		metadata.Status = sources.ObservationStatusDegraded
+	}
+	if metadata.Revision.Kind == "" {
+		metadata.Revision = sources.Revision{Kind: sources.RevisionKindContentDigest}
+	}
+	switch acquisition.Kind {
+	case HTTPAcquisitionStaleCache:
+		metadata.Status = sources.ObservationStatusDegraded
+		metadata.Issues = append(metadata.Issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeStaleFallback, Code: sources.ObservationIssueCodeStaleFallback,
+			Message: "upstream HTTP acquisition failed; using stale last-known-good cache",
+		})
+	case HTTPAcquisitionEmbeddedBootstrap:
+		metadata.Status = sources.ObservationStatusDegraded
+		metadata.Issues = append(metadata.Issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeSource, Code: sources.ObservationIssueCodeBootstrapFallback,
+			Message: "upstream HTTP acquisition and cache were unavailable; using embedded bootstrap",
+		})
+	}
+	if len(recordIssues) > 0 {
+		metadata.Completeness = sources.ObservationCompletenessPartial
+		metadata.Status = sources.ObservationStatusDegraded
+		metadata.Issues = append(metadata.Issues, recordIssues...)
+	}
+	return sources.NewObservation(s.ID(), catalog, metadata)
 }
 
 // Cleanup releases any resources.

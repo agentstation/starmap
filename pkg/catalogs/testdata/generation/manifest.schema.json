@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://starmap.agentstation.ai/schemas/generation-manifest-v1.json",
+  "title": "Starmap catalog generation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_version",
+    "schema_version",
+    "generation_id",
+    "generated_at",
+    "payload",
+    "validation",
+    "sync_run_id",
+    "source_observations",
+    "completeness",
+    "degraded",
+    "consumer_compatibility"
+  ],
+  "properties": {
+    "manifest_version": {"type": "integer", "const": 1},
+    "schema_version": {"type": "integer", "minimum": 1},
+    "generation_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "payload": {"$ref": "#/$defs/payload"},
+    "validation": {"$ref": "#/$defs/validation"},
+    "sync_run_id": {"type": "string", "minLength": 1},
+    "source_observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source_observation"}
+    },
+    "completeness": {"enum": ["complete", "partial"]},
+    "degraded": {"type": "boolean"},
+    "degradation_reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "consumer_compatibility": {"$ref": "#/$defs/consumer_compatibility"}
+  },
+  "$defs": {
+    "checksum": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checksum", "size_bytes", "media_type"],
+      "properties": {
+        "checksum": {"$ref": "#/$defs/checksum"},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "media_type": {"type": "string", "minLength": 1}
+      }
+    },
+    "validation_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "warning", "failed"]},
+        "message": {"type": "string"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validator_version",
+        "validated_at",
+        "status",
+        "error_count",
+        "warning_count",
+        "checks"
+      ],
+      "properties": {
+        "validator_version": {"type": "string", "minLength": 1},
+        "validated_at": {"type": "string", "format": "date-time"},
+        "status": {"const": "passed"},
+        "error_count": {"type": "integer", "const": 0},
+        "warning_count": {"type": "integer", "minimum": 0},
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/validation_check"}
+        }
+      }
+    },
+    "source_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "observation_id": {"type": "string", "minLength": 1},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "revision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "dependentRequired": {
+            "input_name": ["input_checksum"],
+            "input_checksum": ["input_name"]
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"kind": {"const": "git_commit"}}},
+              "then": {"required": ["input_name", "input_checksum"]}
+            },
+            {
+              "if": {"required": ["input_name"]},
+              "then": {"properties": {"kind": {"const": "git_commit"}}}
+            }
+          ],
+          "properties": {
+            "kind": {"enum": ["unknown", "etag", "last_modified", "git_commit", "source_version", "content_digest"]},
+            "value": {"type": "string"},
+            "input_name": {"type": "string", "minLength": 1},
+            "input_checksum": {"$ref": "#/$defs/checksum"}
+          }
+        },
+        "completeness": {"enum": ["complete", "partial"]},
+        "status": {"enum": ["succeeded", "degraded"]},
+        "evidence_checksum": {"$ref": "#/$defs/checksum"}
+      }
+    },
+    "consumer_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min_schema_version", "max_schema_version"],
+      "properties": {
+        "min_schema_version": {"type": "integer", "minimum": 1},
+        "max_schema_version": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

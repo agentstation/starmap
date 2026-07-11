@@ -7,8 +7,9 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/types"
 )
 
 // Provenance is a concurrent-safe container for provenance data.
@@ -95,7 +96,7 @@ func (p *Provenance) Len() int {
 
 // FindByField retrieves provenance for a specific field of a resource.
 // Returns nil if no provenance is found.
-func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID string, field string) []provenance.Provenance {
+func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Provenance {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -109,7 +110,7 @@ func (p *Provenance) FindByField(resourceType types.ResourceType, resourceID str
 
 // FindByResource retrieves all provenance for a resource.
 // Returns a map of field names to their provenance entries.
-func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID string) map[string][]provenance.Provenance {
+func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -129,6 +130,13 @@ func (p *Provenance) FindByResource(resourceType types.ResourceType, resourceID 
 // FormatYAML returns the provenance data formatted as YAML.
 // This follows the same pattern as Authors and Providers containers.
 func (p *Provenance) FormatYAML() string {
+	formatted, _ := p.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns provenance YAML or a typed parse error when evidence
+// values cannot be represented safely.
+func (p *Provenance) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -139,16 +147,14 @@ func (p *Provenance) FormatYAML() string {
 
 	data, err := yaml.Marshal(pf)
 	if err != nil {
-		// In practice this should never happen with valid provenance data
-		// Return empty string rather than panicking
-		return ""
+		return "", errors.WrapParse("yaml", "provenance", err)
 	}
 
-	return string(data)
+	return string(data), nil
 }
 
 // newKey returns a unique key for provenance tracking.
 // Format: "resourceType:resourceID:field".
-func newKey(resourceType types.ResourceType, resourceID string, field string) string {
+func newKey(resourceType catalogmeta.ResourceType, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }

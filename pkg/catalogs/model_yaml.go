@@ -5,10 +5,19 @@ import (
 	"strings"
 
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // FormatYAML returns a well-formatted YAML representation with comments and proper structure.
 func (m *Model) FormatYAML() string {
+	formatted, _ := m.EncodeYAML()
+	return formatted
+}
+
+// EncodeYAML returns formatted YAML or a typed parse error when model values
+// cannot be represented safely.
+func (m *Model) EncodeYAML() (string, error) {
 	// Create comment map for proper sectioning and headers
 	commentMap := yaml.CommentMap{}
 
@@ -72,14 +81,13 @@ func (m *Model) FormatYAML() string {
 		// Fallback to basic marshal if comment marshaling fails
 		yamlData, err = yaml.Marshal(m)
 		if err != nil {
-			// This should never happen with valid data - indicates programming error
-			panic(fmt.Sprintf("failed to marshal model %s to YAML: %v", m.ID, err))
+			return "", errors.WrapParse("yaml", "model "+m.ID, err)
 		}
 	}
 
 	// Post-process to add blank lines between major sections and clean up empty fields
 	processed := postProcessModelYAML(string(yamlData))
-	return processed
+	return processed, nil
 }
 
 // postProcessModelYAML adds proper spacing and formatting to model YAML output.

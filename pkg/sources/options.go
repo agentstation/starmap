@@ -1,18 +1,11 @@
 package sources
 
-import (
-	"github.com/agentstation/starmap/internal/utils/ptr"
-	"github.com/agentstation/starmap/pkg/catalogs"
-)
+import "github.com/agentstation/starmap/pkg/catalogs"
 
 // Options is the configuration for sources.
 type Options struct {
 	// Provider filtering (needed by provider source)
 	ProviderID *catalogs.ProviderID
-
-	// Behavior flags (needed by various sources)
-	Fresh    bool // Fresh sync (delete existing before adding)
-	SafeMode bool // Don't delete models, only add/update
 
 	// Typed source-specific options
 	CleanupRepo bool // For models.dev git source - remove repo after fetch
@@ -23,8 +16,6 @@ type Options struct {
 func Defaults() *Options {
 	return &Options{
 		ProviderID:  nil,
-		Fresh:       false,
-		SafeMode:    false,
 		CleanupRepo: false,
 		Reformat:    false,
 	}
@@ -45,21 +36,7 @@ func (o *Options) Apply(opts ...Option) *Options {
 // WithProviderFilter configures filtering for a specific provider.
 func WithProviderFilter(providerID catalogs.ProviderID) Option {
 	return func(opts *Options) {
-		opts.ProviderID = ptr.To(providerID)
-	}
-}
-
-// WithFresh configures fresh sync mode for sources.
-func WithFresh(fresh bool) Option {
-	return func(opts *Options) {
-		opts.Fresh = fresh
-	}
-}
-
-// WithSafeMode configures safe mode for sources.
-func WithSafeMode(safeMode bool) Option {
-	return func(opts *Options) {
-		opts.SafeMode = safeMode
+		opts.ProviderID = &providerID
 	}
 }
 

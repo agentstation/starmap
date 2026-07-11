@@ -2,8 +2,8 @@
 id: gpt-5-search-api-2025-10-14
 name: gpt-5-search-api-2025-10-14
 authors:
-- id: system
-  name: system
+- id: openai
+  name: OpenAI
 
 # Model features
 features:

@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
@@ -18,12 +19,14 @@ import (
 // @Accept json
 // @Produce json
 // @Param provider query string false "Update specific provider only"
+// @Param source query string false "Update one source only (local_catalog, providers, models_dev_http, or models_dev_git)"
 // @Success 200 {object} response.Response{data=object}
 // @Failure 500 {object} response.Response{error=response.Error}
 // @Security ApiKeyAuth
 // @Router /api/v1/update [post].
 func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	providerFilter := r.URL.Query().Get("provider")
+	sourceFilter := r.URL.Query().Get("source")
 
 	sm, err := h.app.Starmap()
 	if err != nil {
@@ -36,6 +39,9 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	if providerFilter != "" {
 		opts = append(opts, sync.WithProvider(catalogs.ProviderID(providerFilter)))
 	}
+	if sourceFilter != "" {
+		opts = append(opts, sync.WithSources(sources.ID(sourceFilter)))
+	}
 
 	// Run sync
 	result, err := sm.Sync(r.Context(), opts...)
@@ -44,13 +50,12 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Invalidate cache
-	h.cache.Clear()
-
 	// Broadcast update event
 	h.broker.Publish(events.SyncCompleted, map[string]any{
 		"total_changes":     result.TotalChanges,
 		"providers_changed": result.ProvidersChanged,
+		"generation_id":     result.GenerationID,
+		"sync_run_id":       result.SyncRunID,
 	})
 
 	response.OK(w, map[string]any{
@@ -58,6 +63,8 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		"total_changes":     result.TotalChanges,
 		"providers_changed": result.ProvidersChanged,
 		"dry_run":           result.DryRun,
+		"generation_id":     result.GenerationID,
+		"sync_run_id":       result.SyncRunID,
 	})
 }
 
@@ -71,24 +78,23 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} response.Response{error=response.Error}
 // @Security ApiKeyAuth
 // @Router /api/v1/stats [get].
-func (h *Handlers) HandleStats(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 	cat, err := h.app.Catalog()
 	if err != nil {
 		response.InternalError(w, err)
 		return
 	}
 
-	models := cat.Models().List()
+	models := cat.Definitions()
 	providers := cat.Providers().List()
 
 	// Get runtime stats
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
 
-	// Get server from context (if available) for uptime
 	uptime := time.Duration(0)
-	if srv, ok := r.Context().Value("server").(interface{ StartTime() time.Time }); ok {
-		uptime = time.Since(srv.StartTime())
+	if !h.startTime.IsZero() {
+		uptime = time.Since(h.startTime)
 	}
 
 	response.OK(w, map[string]any{
@@ -106,11 +112,27 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, r *http.Request) {
 			"published_total": h.broker.EventsPublished(),
 			"dropped_total":   h.broker.EventsDropped(),
 			"queue_depth":     h.broker.QueueDepth(),
+			"delivery":        deliveryStatsMap(h.broker.DeliveryStats()),
 		},
 		"realtime": map[string]any{
 			"websocket_clients": h.wsHub.ClientCount(),
 			"sse_clients":       h.sseBroadcaster.ClientCount(),
+			"websocket_delivery": deliveryStatsMap(
+				h.wsHub.DeliveryStats(),
+			),
+			"sse_delivery": deliveryStatsMap(
+				h.sseBroadcaster.DeliveryStats(),
+			),
 		},
 		"cache": h.cache.GetStats(),
 	})
+}
+
+func deliveryStatsMap(stats events.DeliveryStats) map[string]uint64 {
+	return map[string]uint64{
+		"sent":         stats.Sent,
+		"skipped":      stats.Skipped,
+		"disconnected": stats.Disconnected,
+		"failed":       stats.Failed,
+	}
 }

@@ -11,7 +11,7 @@ embed: true
 # Repository configuration for generating source links
 repository:
   url: https://github.com/agentstation/starmap
-  defaultBranch: master
+  defaultBranch: main
 
 # Exclude certain directories from documentation
 excludeDirs:

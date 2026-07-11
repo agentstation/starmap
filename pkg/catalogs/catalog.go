@@ -9,8 +9,12 @@
 //
 // Example usage:
 //
-//	// Create an embedded catalog (production use)
-//	catalog, err := New(WithEmbedded())
+//	// Advanced producers construct a draft, then publish an immutable catalog.
+//	builder, err := New(WithEmbedded())
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	catalog, err := builder.Build()
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -21,18 +25,20 @@
 //	    fmt.Printf("Model: %s\n", model.ID)
 //	}
 //
-//	// Create a file-based catalog (development use)
-//	catalog, err := New(WithFiles("./catalog"))
+//	// Create a file-based draft (development use)
+//	builder, err = New(WithFiles("./catalog"))
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
 package catalogs
 
 import (
+	stderrors "errors"
 	"io/fs"
 	"os"
 
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/provenance"
 )
 
 // MergeStrategy defines how catalogs should be merged.
@@ -47,27 +53,22 @@ const (
 	MergeAppendOnly
 )
 
-// Note: The Catalog interface is defined in interfaces.go following
-// the Interface Segregation Principle. It combines Reader, Writer,
-// Merger, and Copier interfaces for complete catalog functionality.
+// Catalog is the immutable concrete product type. Builder is the advanced
+// mutation seam used to construct it.
 
-// Compile-time interface checks to ensure proper implementation.
-var (
-	_ Catalog     = (*catalog)(nil)
-	_ Reader      = (*catalog)(nil)
-	_ Writer      = (*catalog)(nil)
-	_ Merger      = (*catalog)(nil)
-	_ Copier      = (*catalog)(nil)
-	_ Persistence = (*catalog)(nil)
-)
+// Compile-time interface check for the open algorithm input boundary.
+var _ Reader = (*Builder)(nil)
 
-// catalog is the single concrete implementation of the Catalog interface
+// Builder is the advanced mutable catalog construction type. It is intended for
+// custom update callbacks, source/plugin authors, and persistence pipelines;
+// ordinary consumers should use the immutable *Catalog returned by
+// *starmap.Client.Catalog.
 // It can work as:
 // - Memory catalog (readFS == nil)
 // - Embedded catalog (readFS is embed.FS)
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
-type catalog struct {
+type Builder struct {
 	config     *options
 	providers  *Providers
 	authors    *Authors
@@ -75,11 +76,11 @@ type catalog struct {
 	provenance *Provenance
 }
 
-// New creates a new catalog with the given options
+// New creates a new builder with the given options
 // WithEmbedded() = embedded catalog with auto-load
 // WithFiles(path) = files catalog with auto-load.
-func New(opt Option, opts ...Option) (Catalog, error) {
-	cat := &catalog{
+func New(opt Option, opts ...Option) (*Builder, error) {
+	cat := &Builder{
 		providers:  NewProviders(),
 		authors:    NewAuthors(),
 		endpoints:  NewEndpoints(),
@@ -88,7 +89,7 @@ func New(opt Option, opts ...Option) (Catalog, error) {
 	}
 
 	// Auto-load if configured and has filesystem
-	if cat.config.readFS != nil {
+	if cat.config.readFilesystem() != nil {
 		if err := cat.Load(); err != nil {
 			return nil, errors.WrapResource("load", "catalog", "", err)
 		}
@@ -100,7 +101,7 @@ func New(opt Option, opts ...Option) (Catalog, error) {
 // NewEmbedded creates a catalog backed by embedded files.
 // This is the recommended catalog for production use as it includes
 // all model data compiled into the binary.
-func NewEmbedded() (Catalog, error) {
+func NewEmbedded() (*Builder, error) {
 	return New(WithEmbedded())
 }
 
@@ -114,7 +115,7 @@ func NewEmbedded() (Catalog, error) {
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-func NewFromPath(path string) (Catalog, error) {
+func NewFromPath(path string) (*Builder, error) {
 	// Verify path exists
 	if _, err := os.Stat(path); err != nil {
 		return nil, errors.WrapIO("stat", path, err)
@@ -129,7 +130,7 @@ func NewFromPath(path string) (Catalog, error) {
 //
 // This ensures that the catalog always has the latest provider configurations
 // from the embedded catalog, while preserving saved model data from files.
-func NewLocal(path string) (Catalog, error) {
+func NewLocal(path string) (*Builder, error) {
 	// Always start with embedded (latest provider configs)
 	embedded, err := NewEmbedded()
 	if err != nil {
@@ -144,16 +145,16 @@ func NewLocal(path string) (Catalog, error) {
 	// Try to load file catalog
 	fileCatalog, err := NewFromPath(path)
 	if err != nil {
-		// File doesn't exist or is corrupt - that's OK on first run
-		// Return embedded only
-		return embedded, nil
+		if stderrors.Is(err, os.ErrNotExist) {
+			// An absent optional path is normal on first run.
+			return embedded, nil
+		}
+		return nil, errors.WrapResource("load", "local catalog", path, err)
 	}
 
 	// Merge file into embedded (preserves embedded configs, adds file models)
-	if merger, ok := embedded.(Merger); ok {
-		if err := merger.MergeWith(fileCatalog); err != nil {
-			return nil, errors.WrapResource("merge", "catalogs", "", err)
-		}
+	if err := embedded.MergeWith(fileCatalog); err != nil {
+		return nil, errors.WrapResource("merge", "catalogs", "", err)
 	}
 
 	return embedded, nil
@@ -168,14 +169,29 @@ func NewLocal(path string) (Catalog, error) {
 //	catalog := NewEmpty()
 //	provider := Provider{ID: "openai", Models: map[string]Model{}}
 //	catalog.SetProvider(provider)
-func NewEmpty() Catalog {
-	return &catalog{
+func NewEmpty() *Builder {
+	return &Builder{
 		providers:  NewProviders(),
 		authors:    NewAuthors(),
 		endpoints:  NewEndpoints(),
 		provenance: NewProvenance(),
 		config:     defaults(),
 	}
+}
+
+// NewBuilderFrom copies source into a new independent builder.
+func NewBuilderFrom(source Reader) (*Builder, error) {
+	if source == nil {
+		return nil, &errors.ValidationError{
+			Field:   "source",
+			Message: "builder source cannot be nil",
+		}
+	}
+	builder := NewEmpty()
+	if err := builder.ReplaceWith(source); err != nil {
+		return nil, errors.WrapResource("create", "catalog builder", "", err)
+	}
+	return builder, nil
 }
 
 // NewFromFS creates a catalog from a custom filesystem implementation.
@@ -186,7 +202,7 @@ func NewEmpty() Catalog {
 //
 //	var myFS embed.FS
 //	catalog, err := NewFromFS(myFS, "catalog")
-func NewFromFS(fsys fs.FS, root string) (Catalog, error) {
+func NewFromFS(fsys fs.FS, root string) (*Builder, error) {
 	subFS, err := fs.Sub(fsys, root)
 	if err != nil {
 		return nil, errors.WrapResource("create", "sub filesystem", root, err)
@@ -195,28 +211,28 @@ func NewFromFS(fsys fs.FS, root string) (Catalog, error) {
 }
 
 // Providers returns the providers collection.
-func (cat *catalog) Providers() *Providers {
+func (cat *Builder) Providers() ProvidersReader {
 	return cat.providers
 }
 
 // Authors returns the authors collection.
-func (cat *catalog) Authors() *Authors {
+func (cat *Builder) Authors() AuthorsReader {
 	return cat.authors
 }
 
 // Endpoints returns the endpoints collection.
-func (cat *catalog) Endpoints() *Endpoints {
+func (cat *Builder) Endpoints() EndpointsReader {
 	return cat.endpoints
 }
 
 // Provenance returns the provenance collection.
-func (cat *catalog) Provenance() *Provenance {
+func (cat *Builder) Provenance() ProvenanceReader {
 	return cat.provenance
 }
 
 // Provider returns a provider by ID or alias.
 // Silently resolves aliases to canonical provider IDs.
-func (cat *catalog) Provider(id ProviderID) (Provider, error) {
+func (cat *Builder) Provider(id ProviderID) (Provider, error) {
 	provider, ok := cat.providers.Resolve(id)
 	if !ok {
 		return Provider{}, &errors.NotFoundError{
@@ -224,12 +240,12 @@ func (cat *catalog) Provider(id ProviderID) (Provider, error) {
 			ID:       string(id),
 		}
 	}
-	return *provider, nil
+	return DeepCopyProvider(*provider), nil
 }
 
 // Author returns an author by ID or alias.
 // Silently resolves aliases to canonical author IDs.
-func (cat *catalog) Author(id AuthorID) (Author, error) {
+func (cat *Builder) Author(id AuthorID) (Author, error) {
 	author, ok := cat.authors.Resolve(id)
 	if !ok {
 		return Author{}, &errors.NotFoundError{
@@ -237,11 +253,11 @@ func (cat *catalog) Author(id AuthorID) (Author, error) {
 			ID:       string(id),
 		}
 	}
-	return *author, nil
+	return DeepCopyAuthor(*author), nil
 }
 
 // Endpoint returns an endpoint by ID.
-func (cat *catalog) Endpoint(id string) (Endpoint, error) {
+func (cat *Builder) Endpoint(id string) (Endpoint, error) {
 	endpoint, ok := cat.endpoints.Get(id)
 	if !ok {
 		return Endpoint{}, &errors.NotFoundError{
@@ -252,8 +268,43 @@ func (cat *catalog) Endpoint(id string) (Endpoint, error) {
 	return *endpoint, nil
 }
 
+// ProviderModels returns the models served by a provider or one of its aliases.
+func (cat *Builder) ProviderModels(id ProviderID) (ModelsReader, error) {
+	provider, ok := cat.providers.Resolve(id)
+	if !ok {
+		return nil, &errors.NotFoundError{Resource: "provider", ID: string(id)}
+	}
+	models := NewModels()
+	for modelID, model := range provider.Models {
+		if model == nil {
+			continue
+		}
+		if err := models.Set(modelID, model); err != nil {
+			return nil, errors.WrapResource("index", "provider model", string(provider.ID)+"/"+modelID, err)
+		}
+	}
+	return models, nil
+}
+
+// ProviderModel returns one provider-specific model offering without flattening
+// equal model IDs from other providers.
+func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model, error) {
+	provider, ok := cat.providers.Resolve(providerID)
+	if !ok {
+		return Model{}, &errors.NotFoundError{Resource: "provider", ID: string(providerID)}
+	}
+	model, ok := provider.Models[modelID]
+	if !ok || model == nil {
+		return Model{}, &errors.NotFoundError{
+			Resource: "provider model",
+			ID:       string(provider.ID) + "/" + modelID,
+		}
+	}
+	return DeepCopyModel(*model), nil
+}
+
 // Models returns all models from all providers and authors.
-func (cat *catalog) Models() *Models {
+func (cat *Builder) Models() ModelsReader {
 	models := NewModels()
 
 	// Collect models from providers
@@ -285,7 +336,7 @@ func (cat *catalog) Models() *Models {
 }
 
 // FindModel searches for a model by ID.
-func (cat *catalog) FindModel(id string) (Model, error) {
+func (cat *Builder) FindModel(id string) (Model, error) {
 	// Check each model in the catalog for the given Model ID.
 	for _, model := range cat.Models().List() {
 		if model.ID == id {
@@ -301,41 +352,66 @@ func (cat *catalog) FindModel(id string) (Model, error) {
 }
 
 // SetProvider sets a provider (upsert).
-func (cat *catalog) SetProvider(provider Provider) error {
+func (cat *Builder) SetProvider(provider Provider) error {
 	// Deep copy to prevent shared references
 	providerCopy := DeepCopyProvider(provider)
 	return cat.providers.Set(providerCopy.ID, &providerCopy)
 }
 
 // SetAuthor sets an author (upsert).
-func (cat *catalog) SetAuthor(author Author) error {
+func (cat *Builder) SetAuthor(author Author) error {
 	// Deep copy to prevent shared references
 	authorCopy := DeepCopyAuthor(author)
 	return cat.authors.Set(authorCopy.ID, &authorCopy)
 }
 
 // SetEndpoint sets an endpoint (upsert).
-func (cat *catalog) SetEndpoint(endpoint Endpoint) error {
+func (cat *Builder) SetEndpoint(endpoint Endpoint) error {
 	return cat.endpoints.Set(endpoint.ID, &endpoint)
 }
 
+// SetProviderModel sets a model on a provider atomically.
+func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error {
+	return cat.providers.SetModel(providerID, model)
+}
+
+// SetProvenance replaces catalog provenance.
+func (cat *Builder) SetProvenance(value provenance.Map) {
+	cat.provenance.Set(value)
+}
+
+// MergeProvenance appends catalog provenance.
+func (cat *Builder) MergeProvenance(value provenance.Map) {
+	cat.provenance.Merge(value)
+}
+
+// ClearProvenance removes catalog provenance.
+func (cat *Builder) ClearProvenance() {
+	cat.provenance.Clear()
+}
+
 // DeleteProvider deletes a provider.
-func (cat *catalog) DeleteProvider(id ProviderID) error {
+func (cat *Builder) DeleteProvider(id ProviderID) error {
 	return cat.providers.Delete(id)
 }
 
 // DeleteAuthor deletes an author.
-func (cat *catalog) DeleteAuthor(id AuthorID) error {
+func (cat *Builder) DeleteAuthor(id AuthorID) error {
 	return cat.authors.Delete(id)
 }
 
 // DeleteEndpoint deletes an endpoint.
-func (cat *catalog) DeleteEndpoint(id string) error {
+func (cat *Builder) DeleteEndpoint(id string) error {
 	return cat.endpoints.Delete(id)
 }
 
+// DeleteProviderModel deletes a model from a provider atomically.
+func (cat *Builder) DeleteProviderModel(providerID ProviderID, modelID string) error {
+	return cat.providers.DeleteModel(providerID, modelID)
+}
+
 // ReplaceWith replaces this catalog's contents with another.
-func (cat *catalog) ReplaceWith(source Reader) error {
+func (cat *Builder) ReplaceWith(source Reader) error {
 	// Clear existing data
 	cat.providers.Clear()
 	cat.authors.Clear()
@@ -374,7 +450,7 @@ func (cat *catalog) ReplaceWith(source Reader) error {
 // MergeWith merges another catalog into this one.
 //
 //nolint:gocyclo // Complex merge logic with many fields
-func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
+func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 	// Parse merge options (defaults to MergeEnrichEmpty if not specified)
 	mergeOpts := &MergeOptions{Strategy: MergeEnrichEmpty}
 	for _, opt := range opts {
@@ -500,26 +576,31 @@ func (cat *catalog) MergeWith(source Reader, opts ...MergeOption) error {
 }
 
 // Copy creates a deep copy of the catalog.
-func (cat *catalog) Copy() (Catalog, error) {
+func (cat *Builder) Copy() (*Builder, error) {
 	// Create a new catalog with the same configuration
-	NewCat := &catalog{
+	NewCat := &Builder{
 		providers:  NewProviders(),
 		authors:    NewAuthors(),
 		endpoints:  NewEndpoints(),
 		provenance: NewProvenance(),
-		config:     cat.config,
+		config:     cat.config.copy(),
 	}
 
 	// Copy all data
 	return NewCat, NewCat.ReplaceWith(cat)
 }
 
+// Build publishes an immutable deep copy of the builder's current state.
+func (cat *Builder) Build() (*Catalog, error) {
+	return NewCatalog(cat)
+}
+
 // MergeStrategy returns the default merge strategy.
-func (cat *catalog) MergeStrategy() MergeStrategy {
-	return cat.config.mergeStrategy
+func (cat *Builder) MergeStrategy() MergeStrategy {
+	return cat.config.strategy()
 }
 
 // SetMergeStrategy sets the default merge strategy.
-func (cat *catalog) SetMergeStrategy(strategy MergeStrategy) {
-	cat.config.mergeStrategy = strategy
+func (cat *Builder) SetMergeStrategy(strategy MergeStrategy) {
+	cat.config.setStrategy(strategy)
 }

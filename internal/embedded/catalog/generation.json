@@ -1,0 +1,11 @@
+{
+  "manifest_version": 1,
+  "generation_id": "embedded-bootstrap-371bc00316e9",
+  "generated_at": "2026-07-10T00:00:00Z",
+  "schema_version": 1,
+  "payload": {
+    "checksum": "sha256:371bc00316e997939cb952adeec48f1c26e73ef680d0179d47d8c9014beb56ba",
+    "size_bytes": 1318193,
+    "media_type": "application/vnd.agentstation.starmap.catalog+json"
+  }
+}

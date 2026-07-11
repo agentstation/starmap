@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/authority"
@@ -59,6 +60,10 @@ type Strategy interface {
 	ApplyStrategy() differ.ApplyStrategy
 }
 
+type resourceConflictResolver interface {
+	ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
+}
+
 // baseStrategy provides common strategy functionality.
 type baseStrategy struct {
 	typ            StrategyType
@@ -105,7 +110,7 @@ type AuthorityStrategy struct {
 }
 
 // NewAuthorityStrategy creates a new authority-based strategy.
-func NewAuthorityStrategy(authorities authority.Authority) Strategy {
+func NewAuthorityStrategy(authorities authority.Authority) *AuthorityStrategy {
 	return &AuthorityStrategy{
 		baseStrategy: baseStrategy{
 			typ:           StrategyTypeFieldAuthority,
@@ -123,8 +128,12 @@ func NewAuthorityStrategy(authorities authority.Authority) Strategy {
 
 // ResolveConflict uses authorities to resolve conflicts.
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string) {
-	// Get all authorities for this resource type
-	authorities := s.authorities.ModelFields()
+	return s.ResolveResourceConflict(sources.ResourceTypeModel, field, values)
+}
+
+// ResolveResourceConflict uses resource-specific authorities to resolve conflicts.
+func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string) {
+	authorities := s.authoritiesFor(resourceType)
 
 	// Find all authorities that match this field, sorted by priority
 	var matchingAuthorities []authority.Field
@@ -134,14 +143,14 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 		}
 	}
 
-	// Sort by priority (highest first)
-	for i := 0; i < len(matchingAuthorities)-1; i++ {
-		for j := i + 1; j < len(matchingAuthorities); j++ {
-			if matchingAuthorities[j].Priority > matchingAuthorities[i].Priority {
-				matchingAuthorities[i], matchingAuthorities[j] = matchingAuthorities[j], matchingAuthorities[i]
-			}
+	// Sort by priority, then source identity, so equal-priority authorities are
+	// stable even if their configuration is assembled in a different order.
+	sort.Slice(matchingAuthorities, func(i, j int) bool {
+		if matchingAuthorities[i].Priority != matchingAuthorities[j].Priority {
+			return matchingAuthorities[i].Priority > matchingAuthorities[j].Priority
 		}
-	}
+		return string(matchingAuthorities[i].Source) < string(matchingAuthorities[j].Source)
+	})
 
 	// Filter authorities to only those with available sources
 	var availableAuthorities []authority.Field
@@ -159,18 +168,32 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 	}
 
 	// No matching authority had a value, fallback to first non-empty value
-	for source, value := range values {
+	for _, source := range sortedValueSources(values) {
+		value := values[source]
 		if value != nil && value != "" {
-			return value, source, "using first non-empty value (no authority match)"
+			return value, source, "using deterministic non-empty fallback (no authority match)"
 		}
 	}
 
 	// Return any value
-	for source, value := range values {
-		return value, source, "using first available value"
+	for _, source := range sortedValueSources(values) {
+		return values[source], source, "using deterministic available fallback"
 	}
 
 	return nil, "", "no value available"
+}
+
+func (s *AuthorityStrategy) authoritiesFor(resourceType sources.ResourceType) []authority.Field {
+	switch resourceType {
+	case sources.ResourceTypeModel:
+		return s.authorities.ModelFields()
+	case sources.ResourceTypeProvider:
+		return s.authorities.ProviderFields()
+	case sources.ResourceTypeAuthor:
+		return s.authorities.AuthorFields()
+	default:
+		return nil
+	}
 }
 
 // SourceOrderStrategy resolves conflicts using a fixed source precedence order.
@@ -182,7 +205,7 @@ type SourceOrderStrategy struct {
 
 // NewSourceOrderStrategy creates a new source priority order strategy.
 // The priorityOrder slice determines precedence: earlier elements have higher priority.
-func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy {
+func NewSourceOrderStrategy(priorityOrder []sources.ID) *SourceOrderStrategy {
 	return &SourceOrderStrategy{
 		baseStrategy: baseStrategy{
 			typ:           StrategyTypeSourceOrder,
@@ -200,6 +223,11 @@ func NewSourceOrderStrategy(priorityOrder []sources.ID) Strategy {
 
 // ResolveConflict uses source priority order to resolve conflicts.
 func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string) {
+	return s.ResolveResourceConflict("", "", values)
+}
+
+// ResolveResourceConflict resolves conflicts by source order; resource type does not affect this strategy.
+func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ string, values map[sources.ID]any) (any, sources.ID, string) {
 	// Check sources in priority order
 	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {
@@ -210,16 +238,26 @@ func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]an
 	}
 
 	// No priority source found, use first available non-empty value
-	for source, value := range values {
+	for _, source := range sortedValueSources(values) {
+		value := values[source]
 		if value != nil && value != "" {
-			return value, source, "no priority source available, using first non-empty"
+			return value, source, "no priority source available, using deterministic non-empty fallback"
 		}
 	}
 
 	// Return any value as last resort
-	for source, value := range values {
-		return value, source, "using first available value"
+	for _, source := range sortedValueSources(values) {
+		return values[source], source, "using deterministic available fallback"
 	}
 
 	return nil, "", "no value available"
+}
+
+func sortedValueSources(values map[sources.ID]any) []sources.ID {
+	ids := make([]sources.ID, 0, len(values))
+	for source := range values {
+		ids = append(ids, source)
+	}
+	sort.Slice(ids, func(i, j int) bool { return string(ids[i]) < string(ids[j]) })
+	return ids
 }

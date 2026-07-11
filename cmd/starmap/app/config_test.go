@@ -3,7 +3,6 @@ package app
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 // TestLoadConfig verifies basic config loading.
@@ -52,25 +51,6 @@ func TestConfig_EnvironmentVariables(t *testing.T) {
 	}
 }
 
-// TestConfig_AutoUpdateInterval verifies time duration parsing.
-func TestConfig_AutoUpdateInterval(t *testing.T) {
-	// Save original env
-	oldInterval := os.Getenv("AUTO_UPDATE_INTERVAL")
-	defer os.Setenv("AUTO_UPDATE_INTERVAL", oldInterval)
-
-	// Set test interval
-	os.Setenv("AUTO_UPDATE_INTERVAL", "1h")
-
-	config, err := LoadConfig()
-	if err != nil {
-		t.Fatalf("LoadConfig() failed: %v", err)
-	}
-
-	if config.AutoUpdateInterval != time.Hour {
-		t.Errorf("AutoUpdateInterval = %v, want 1h", config.AutoUpdateInterval)
-	}
-}
-
 // TestConfig_BooleanFlags verifies boolean flag parsing.
 func TestConfig_BooleanFlags(t *testing.T) {
 	tests := []struct {
@@ -86,13 +66,6 @@ func TestConfig_BooleanFlags(t *testing.T) {
 			envValue: "true",
 			check:    func(c *Config) bool { return c.UseEmbeddedCatalog },
 			want:     true,
-		},
-		{
-			name:     "AutoUpdatesEnabled",
-			envVar:   "AUTO_UPDATES_ENABLED",
-			envValue: "false",
-			check:    func(c *Config) bool { return c.AutoUpdatesEnabled },
-			want:     false,
 		},
 		{
 			name:     "NoColor",

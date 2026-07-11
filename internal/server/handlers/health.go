@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/agentstation/starmap/internal/server/response"
 )
@@ -32,15 +33,23 @@ func (h *Handlers) HandleHealth(w http.ResponseWriter, _ *http.Request) {
 // @Failure 503 {object} response.Response{error=response.Error}
 // @Router /api/v1/ready [get].
 func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
-	// Check catalog availability
-	_, err := h.app.Catalog()
+	readiness, err := h.app.Readiness()
 	if err != nil {
 		response.ServiceUnavailable(w, "Catalog not available")
 		return
 	}
+	if !readiness.Ready {
+		reasons := make([]string, 0, len(readiness.Issues))
+		for _, issue := range readiness.Issues {
+			reasons = append(reasons, issue.Code+": "+issue.Message)
+		}
+		response.ServiceUnavailable(w, strings.Join(reasons, "; "))
+		return
+	}
 
 	response.OK(w, map[string]any{
-		"status": "ready",
+		"status":  "ready",
+		"catalog": readiness,
 		"cache": map[string]any{
 			"items": h.cache.ItemCount(),
 		},
