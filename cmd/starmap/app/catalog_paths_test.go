@@ -28,11 +28,22 @@ func TestCatalogDatabasePathFreshInstallIsCanonicalAndPassive(t *testing.T) {
 	if path != want {
 		t.Fatalf("path = %q, want %q", path, want)
 	}
+	exportPath, err := app.CatalogExportPath()
+	if err != nil {
+		t.Fatalf("catalogExportPath: %v", err)
+	}
+	wantExport := filepath.Join(home, ".starmap", "exports", "catalog")
+	if exportPath != wantExport {
+		t.Fatalf("export path = %q, want %q", exportPath, wantExport)
+	}
 	if _, err := app.Starmap(); err != nil {
 		t.Fatalf("Starmap: %v", err)
 	}
 	if _, err := os.Stat(want); !os.IsNotExist(err) {
 		t.Fatalf("passive construction created %q: %v", want, err)
+	}
+	if _, err := os.Stat(wantExport); !os.IsNotExist(err) {
+		t.Fatalf("passive construction created %q: %v", wantExport, err)
 	}
 	store, err := catalogstore.NewFilesystem(want)
 	if err != nil {

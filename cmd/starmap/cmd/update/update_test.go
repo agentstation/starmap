@@ -9,6 +9,16 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
+type exportPathProviderStub struct {
+	path  string
+	calls int
+}
+
+func (s *exportPathProviderStub) CatalogExportPath() (string, error) {
+	s.calls++
+	return s.path, nil
+}
+
 type recordingSyncClient struct {
 	options []*pkgsync.Options
 }
@@ -85,4 +95,39 @@ func TestUpdateCatalogCommitBehavior(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestUpdateCatalogLeavesOmittedOutputForConfiguredExportPath(t *testing.T) {
+	client := &recordingSyncClient{}
+	flags := Flags{AutoApprove: true}
+	logger := zerolog.Nop()
+	if err := updateCatalogWithConfirmation(context.Background(), client, &flags, &logger, true, func() (bool, error) {
+		return true, nil
+	}); err != nil {
+		t.Fatalf("updateCatalogWithConfirmation: %v", err)
+	}
+	if len(client.options) != 1 || client.options[0].OutputPath != "" {
+		t.Fatalf("sync options = %#v, want omitted output path", client.options)
+	}
+}
+
+func TestResolveUpdateOutputPath(t *testing.T) {
+	t.Run("explicit flag wins without config lookup", func(t *testing.T) {
+		app := &exportPathProviderStub{path: "/configured"}
+		got, err := resolveUpdateOutputPath(app, "/explicit")
+		if err != nil || got != "/explicit" {
+			t.Fatalf("resolveUpdateOutputPath = %q, %v", got, err)
+		}
+		if app.calls != 0 {
+			t.Fatalf("CatalogExportPath calls = %d, want 0", app.calls)
+		}
+	})
+
+	t.Run("omitted flag uses configured or default path", func(t *testing.T) {
+		app := &exportPathProviderStub{path: "/configured"}
+		got, err := resolveUpdateOutputPath(app, "")
+		if err != nil || got != "/configured" {
+			t.Fatalf("resolveUpdateOutputPath = %q, %v", got, err)
+		}
+	})
 }

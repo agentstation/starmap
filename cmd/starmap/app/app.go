@@ -234,7 +234,7 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 	opts := []starmap.Option{storeOption}
 
 	// Add the editable YAML catalog only when explicitly configured.
-	exportPath, err := a.catalogExportPath()
+	exportPath, err := a.configuredCatalogExportPath()
 	if err != nil {
 		return nil, err
 	}
