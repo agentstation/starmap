@@ -476,7 +476,7 @@ func (merger *merger) fieldValue(v reflect.Value, fieldPath string) any {
 
 	current := v
 	for _, part := range parts {
-		if current.Kind() == reflect.Ptr {
+		if current.Kind() == reflect.Pointer {
 			if current.IsNil() {
 				return nil
 			}
@@ -534,7 +534,7 @@ func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any
 
 	current := v
 	for i, part := range parts {
-		if current.Kind() == reflect.Ptr {
+		if current.Kind() == reflect.Pointer {
 			if current.IsNil() {
 				// Create new struct for pointer field
 				newStruct := reflect.New(current.Type().Elem())

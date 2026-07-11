@@ -54,7 +54,7 @@ func mergeFields(dest, src reflect.Value) {
 				dest.SetMapIndex(key, src.MapIndex(key))
 			}
 		}
-	case reflect.Ptr:
+	case reflect.Pointer:
 		if !src.IsNil() {
 			if dest.IsNil() {
 				dest.Set(reflect.New(dest.Type().Elem()))

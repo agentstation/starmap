@@ -46,9 +46,9 @@ func TestFieldRulesReferenceCatalogFields(t *testing.T) {
 		resource sources.ResourceType
 		typ      reflect.Type
 	}{
-		{resource: sources.ResourceTypeModel, typ: reflect.TypeOf(catalogs.Model{})},
-		{resource: sources.ResourceTypeProvider, typ: reflect.TypeOf(catalogs.Provider{})},
-		{resource: sources.ResourceTypeAuthor, typ: reflect.TypeOf(catalogs.Author{})},
+		{resource: sources.ResourceTypeModel, typ: reflect.TypeFor[catalogs.Model]()},
+		{resource: sources.ResourceTypeProvider, typ: reflect.TypeFor[catalogs.Provider]()},
+		{resource: sources.ResourceTypeAuthor, typ: reflect.TypeFor[catalogs.Author]()},
 	}
 
 	for _, tt := range tests {
@@ -76,7 +76,7 @@ func TestFieldRulesReferenceCatalogFields(t *testing.T) {
 }
 
 func TestModelProvenanceRulesReferenceCatalogFields(t *testing.T) {
-	modelType := reflect.TypeOf(catalogs.Model{})
+	modelType := reflect.TypeFor[catalogs.Model]()
 	seen := make(map[string]bool)
 
 	for provenancePath, rule := range modelProvenanceFieldRules {
@@ -232,8 +232,8 @@ func TestMergeModelsUsesFieldRuleProvenancePaths(t *testing.T) {
 
 func hasReflectPath(typ reflect.Type, path string) bool {
 	current := typ
-	for _, part := range strings.Split(path, ".") {
-		if current.Kind() == reflect.Ptr {
+	for part := range strings.SplitSeq(path, ".") {
+		if current.Kind() == reflect.Pointer {
 			current = current.Elem()
 		}
 		if current.Kind() != reflect.Struct {

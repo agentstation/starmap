@@ -219,7 +219,7 @@ func parseFields(fields string) map[string]any {
 		return result
 	}
 
-	for _, field := range strings.Split(fields, ",") {
+	for field := range strings.SplitSeq(fields, ",") {
 		parts := strings.SplitN(field, "=", 2)
 		if len(parts) == 2 {
 			key := strings.TrimSpace(parts[0])

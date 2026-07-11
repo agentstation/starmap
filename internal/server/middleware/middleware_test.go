@@ -259,7 +259,7 @@ func TestLogger(t *testing.T) {
 			}
 
 			// Verify log is valid JSON
-			var logEntry map[string]interface{}
+			var logEntry map[string]any
 			if err := json.Unmarshal([]byte(logOutput), &logEntry); err != nil {
 				t.Errorf("log is not valid JSON: %v", err)
 			}
@@ -312,7 +312,7 @@ func TestLogger_StatusCodeCapture(t *testing.T) {
 			wrapped.ServeHTTP(w, req)
 
 			// Parse log and verify status
-			var logEntry map[string]interface{}
+			var logEntry map[string]any
 			if err := json.Unmarshal(buf.Bytes(), &logEntry); err != nil {
 				t.Fatalf("failed to parse log: %v", err)
 			}
@@ -351,7 +351,7 @@ func TestLogger_Duration(t *testing.T) {
 	elapsed := time.Since(start)
 
 	// Parse log
-	var logEntry map[string]interface{}
+	var logEntry map[string]any
 	if err := json.Unmarshal(buf.Bytes(), &logEntry); err != nil {
 		t.Fatalf("failed to parse log: %v", err)
 	}
@@ -385,7 +385,7 @@ func TestRecovery(t *testing.T) {
 	tests := []struct {
 		name           string
 		shouldPanic    bool
-		panicValue     interface{}
+		panicValue     any
 		expectStatus   int
 		expectLogPanic bool
 	}{
@@ -483,7 +483,7 @@ func TestRecovery(t *testing.T) {
 				}
 
 				// Verify valid JSON
-				var errorResp map[string]interface{}
+				var errorResp map[string]any
 				if err := json.Unmarshal([]byte(body), &errorResp); err != nil {
 					t.Errorf("response is not valid JSON: %v", err)
 				}

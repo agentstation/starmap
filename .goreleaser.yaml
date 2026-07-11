@@ -35,10 +35,6 @@ builds:
     goarch:
       - amd64
       - arm64
-    # Skip windows/arm64 as it's not well supported
-    ignore:
-      - goos: windows
-        goarch: arm64
 
 archives:
   - id: starmap
@@ -154,6 +150,8 @@ release:
   # Attach built binaries
   draft: false
   prerelease: auto
+  make_latest: '{{ if .Prerelease }}false{{ else }}true{{ end }}'
+  mode: keep-existing
   
   # Discussion category for releases
   discussion_category_name: releases
@@ -177,8 +175,8 @@ kos:
     tags:
       - "{{ .Version }}"  # e.g., 0.0.17
       - "{{ .Tag }}"      # e.g., v0.0.17
-      - "latest"
-    base_image: cgr.dev/chainguard/static:latest
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    base_image: cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638
     sbom: spdx
     bare: true
     preserve_import_paths: false
@@ -210,6 +208,9 @@ homebrew_casks:
       owner: agentstation
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+
+    # Never replace the stable cask with a release candidate.
+    skip_upload: auto
     
     # Cask name
     name: starmap
@@ -266,6 +267,23 @@ homebrew_casks:
         Fish: #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
 
       Documentation: https://starmap.agentstation.ai/
+
+# Sign and notarize Darwin binaries when Apple credentials are provisioned.
+# The release remains buildable without them until the stable launch gate.
+notarize:
+  macos:
+    - enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'
+      ids:
+        - starmap
+      sign:
+        certificate: "{{ .Env.MACOS_SIGN_P12 }}"
+        password: "{{ .Env.MACOS_SIGN_PASSWORD }}"
+      notarize:
+        issuer_id: "{{ .Env.MACOS_NOTARY_ISSUER_ID }}"
+        key_id: "{{ .Env.MACOS_NOTARY_KEY_ID }}"
+        key: "{{ .Env.MACOS_NOTARY_KEY }}"
+        wait: true
+        timeout: 20m
 
 # Sign release artifacts
 signs:

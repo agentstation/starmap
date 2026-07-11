@@ -20,7 +20,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		`gh release view "$TAG"`, `tar -xOzf "$EXISTING/starmap-catalog.tar.gz" manifest.json`,
 		`test "$EXISTING_PAYLOAD_CHECKSUM" = "$PAYLOAD_CHECKSUM"`,
 		"Validate changed candidate", "make catalog-generation-check", "make embedded-catalog-budget-check",
-		"go run ./cmd/starmap-catalog-release", "actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2",
+		"go run ./cmd/starmap-catalog-release", "actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
 		"gh attestation verify", "--signer-workflow \"$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml\"",
 		"Publish changed validated catalog generation", `if: ${{ steps.change.outputs.publish == 'true' }}`,
 		`gh release create "${{ steps.change.outputs.tag }}"`, "--prerelease",

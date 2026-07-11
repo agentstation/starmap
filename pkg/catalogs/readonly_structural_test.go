@@ -38,7 +38,7 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 		t.Error("Read-only provenance exposes Clear")
 	}
 
-	catalogType := reflect.TypeOf(catalog)
+	catalogType := reflect.TypeFor[*Catalog]()
 	for _, method := range []string{
 		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteEndpoint",
 		"DeleteProvider", "DeleteProviderModel", "MergeProvenance", "MergeWith",
@@ -52,7 +52,7 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 }
 
 func TestCatalogStateIsUnexported(t *testing.T) {
-	catalogType := reflect.TypeOf(Catalog{})
+	catalogType := reflect.TypeFor[Catalog]()
 	for index := 0; index < catalogType.NumField(); index++ {
 		field := catalogType.Field(index)
 		if field.IsExported() {

@@ -181,10 +181,10 @@ func TestCache_ConcurrentAccess(t *testing.T) {
 	// Concurrent writes
 	t.Run("concurrent writes", func(t *testing.T) {
 		wg.Add(numGoroutines)
-		for i := 0; i < numGoroutines; i++ {
+		for i := range numGoroutines {
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < numOperations; j++ {
+				for j := range numOperations {
 					key := "key-" + string(rune(id)) + "-" + string(rune(j))
 					c.Set(key, id*numOperations+j)
 				}
@@ -196,10 +196,10 @@ func TestCache_ConcurrentAccess(t *testing.T) {
 	// Concurrent reads
 	t.Run("concurrent reads", func(t *testing.T) {
 		wg.Add(numGoroutines)
-		for i := 0; i < numGoroutines; i++ {
+		for i := range numGoroutines {
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < numOperations; j++ {
+				for j := range numOperations {
 					key := "key-" + string(rune(id)) + "-" + string(rune(j))
 					c.Get(key)
 				}
@@ -213,30 +213,30 @@ func TestCache_ConcurrentAccess(t *testing.T) {
 		wg.Add(numGoroutines * 3)
 
 		// Writers
-		for i := 0; i < numGoroutines; i++ {
+		for i := range numGoroutines {
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < numOperations; j++ {
+				for j := range numOperations {
 					c.Set("mixed-"+string(rune(id)), j)
 				}
 			}(i)
 		}
 
 		// Readers
-		for i := 0; i < numGoroutines; i++ {
+		for i := range numGoroutines {
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < numOperations; j++ {
+				for range numOperations {
 					c.Get("mixed-" + string(rune(id)))
 				}
 			}(i)
 		}
 
 		// Deleters
-		for i := 0; i < numGoroutines; i++ {
+		for i := range numGoroutines {
 			go func(id int) {
 				defer wg.Done()
-				for j := 0; j < numOperations; j++ {
+				for range numOperations {
 					c.Delete("mixed-" + string(rune(id)))
 				}
 			}(i)

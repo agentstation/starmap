@@ -106,7 +106,6 @@ func (h *Hub) deliveryTargets() []events.DeliveryTarget[Message] {
 
 	targets := make([]events.DeliveryTarget[Message], 0, len(clients))
 	for _, client := range clients {
-		client := client
 		targets = append(targets, events.DeliveryTarget[Message]{
 			ID: client.id,
 			Send: func(message Message) error {

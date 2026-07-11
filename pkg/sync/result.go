@@ -277,8 +277,8 @@ func splitModelProvenanceKey(key string, providerIDs map[catalogs.ProviderID]boo
 	}
 	for _, field := range modelProvenanceFieldSuffixes {
 		suffix := "." + field
-		if strings.HasSuffix(rest, suffix) {
-			modelKey := strings.TrimSuffix(rest, suffix)
+		if before, ok0 := strings.CutSuffix(rest, suffix); ok0 {
+			modelKey := before
 			providerID, modelID := splitProviderScopedModelKey(modelKey, providerIDs)
 			return providerID, modelID, field, modelID != ""
 		}

@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/providers/testhelper"
@@ -249,13 +250,7 @@ func TestConvertToOpenAIModel(t *testing.T) {
 		t.Fatal("Expected Modalities.Input to be set")
 	}
 
-	hasTextInput := false
-	for _, modality := range model.Features.Modalities.Input {
-		if modality == catalogs.ModelModalityText {
-			hasTextInput = true
-			break
-		}
-	}
+	hasTextInput := slices.Contains(model.Features.Modalities.Input, catalogs.ModelModalityText)
 	if !hasTextInput {
 		t.Error("Expected GPT-4o to support text input")
 	}
@@ -719,12 +714,7 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 }
 
 func containsOpenAITestModality(modalities []catalogs.ModelModality, want catalogs.ModelModality) bool {
-	for _, modality := range modalities {
-		if modality == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(modalities, want)
 }
 
 func TestConvertToModelWithNilCatalogProvider(t *testing.T) {

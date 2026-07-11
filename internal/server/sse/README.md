@@ -79,7 +79,7 @@ func (b *Broadcaster) Run(ctx context.Context)
 Run starts the broadcaster's main loop. Should be called in a goroutine. The broadcaster will run until the context is cancelled.
 
 <a name="Broadcaster.ServeHTTP"></a>
-### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L118>)
+### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L117>)
 
 ```go
 func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
@@ -88,7 +88,7 @@ func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request)
 ServeHTTP handles SSE connections.
 
 <a name="Event"></a>
-## type [Event](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L190-L194>)
+## type [Event](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L189-L193>)
 
 Event represents an SSE event.
 

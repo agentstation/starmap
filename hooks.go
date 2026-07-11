@@ -116,7 +116,6 @@ func (h *hooks) dispatchUpdate(old, updated *catalogs.Catalog, event CatalogPubl
 		var publicationGroup sync.WaitGroup
 		publicationGroup.Add(len(publicationHooks))
 		for _, hook := range publicationHooks {
-			hook := hook
 			go func() {
 				defer publicationGroup.Done()
 				h.invoke(func() error { return hook(event) })

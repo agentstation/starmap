@@ -111,7 +111,7 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 	errors := make([]error, goroutines)
 
 	// Launch many goroutines to test concurrent access
-	for i := 0; i < goroutines; i++ {
+	for i := range goroutines {
 		wg.Add(1)
 		go func(idx int) {
 			defer wg.Done()
@@ -185,7 +185,7 @@ func TestApp_Catalog_ThreadSafe(t *testing.T) {
 	errors := make([]error, goroutines)
 
 	// Launch many goroutines that all get and read catalog snapshots.
-	for i := 0; i < goroutines; i++ {
+	for i := range goroutines {
 		wg.Add(1)
 		go func(idx int) {
 			defer wg.Done()

@@ -103,7 +103,6 @@ func (b *Broadcaster) deliveryTargets() []events.DeliveryTarget[Event] {
 
 	targets := make([]events.DeliveryTarget[Event], 0, len(b.clients))
 	for client := range b.clients {
-		client := client
 		targets = append(targets, events.DeliveryTarget[Event]{
 			ID: fmt.Sprintf("%p", client),
 			Send: func(event Event) error {

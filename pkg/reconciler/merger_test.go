@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"context"
+	"slices"
 	"testing"
 	"time"
 
@@ -1211,12 +1212,7 @@ func TestNilHandling(t *testing.T) {
 }
 
 func hasModelTag(tags []catalogs.ModelTag, want catalogs.ModelTag) bool {
-	for _, tag := range tags {
-		if tag == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(tags, want)
 }
 
 func TestMergeModelsPreservesModelsDevInputTokenLimit(t *testing.T) {
@@ -1891,7 +1887,7 @@ func TestConcurrentMerging(t *testing.T) {
 
 	// Run multiple merges concurrently
 	done := make(chan bool, 10)
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		go func(id int) {
 			sources := map[sources.ID][]*catalogs.Model{
 				sources.ProvidersID: {
@@ -1908,18 +1904,13 @@ func TestConcurrentMerging(t *testing.T) {
 	}
 
 	// Wait for all goroutines
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		<-done
 	}
 }
 
 func containsModality(modalities []catalogs.ModelModality, want catalogs.ModelModality) bool {
-	for _, modality := range modalities {
-		if modality == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(modalities, want)
 }
 
 // BenchmarkMergeModels benchmarks model merging performance.
@@ -1934,7 +1925,7 @@ func BenchmarkMergeModels(b *testing.B) {
 		sources.ModelsDevHTTPID: make([]*catalogs.Model, 100),
 	}
 
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		id := string(rune('a'+i%26)) + string(rune('0'+i/26))
 		testSources[sources.ProvidersID][i] = createTestModel(id, "API Model", int64(i*1000))
 		testSources[sources.ModelsDevHTTPID][i] = createTestModelWithPricing(id, "ModelsDev Model", float64(i)*0.1, float64(i)*0.2)

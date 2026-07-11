@@ -2,6 +2,7 @@ package convert
 
 import (
 	"encoding/json"
+	"slices"
 	"testing"
 
 	"github.com/agentstation/utc"
@@ -275,12 +276,7 @@ func equalStringSlices(a, b []string) bool {
 }
 
 func containsString(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(slice, item)
 }
 
 func ptrFloat64(f float64) *float64 {

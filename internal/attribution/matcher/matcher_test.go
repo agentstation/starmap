@@ -442,7 +442,7 @@ func TestConcurrency(t *testing.T) {
 
 	// Test concurrent reads
 	done := make(chan bool, 100)
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		go func(id int) {
 			result := m.Match("test.txt")
 			if !result {
@@ -452,7 +452,7 @@ func TestConcurrency(t *testing.T) {
 		}(i)
 	}
 
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		<-done
 	}
 }
@@ -465,7 +465,7 @@ func TestMultiMatcherConcurrency(t *testing.T) {
 	done := make(chan bool, 100)
 
 	// Add matchers concurrently
-	for i := 0; i < 50; i++ {
+	for range 50 {
 		go func() {
 			m := MustNew(Glob, "*.md")
 			mm.AddMatcher(m)
@@ -474,14 +474,14 @@ func TestMultiMatcherConcurrency(t *testing.T) {
 	}
 
 	// Match concurrently
-	for i := 0; i < 50; i++ {
+	for range 50 {
 		go func() {
 			_ = mm.Match("test.txt")
 			done <- true
 		}()
 	}
 
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		<-done
 	}
 }

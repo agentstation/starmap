@@ -4,6 +4,7 @@ package table
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -136,14 +137,14 @@ func FormatNumber(n int64) string {
 	}
 
 	// Add commas every 3 digits
-	result := ""
+	var result strings.Builder
 	for i, r := range str {
 		if i > 0 && (len(str)-i)%3 == 0 {
-			result += ","
+			result.WriteString(",")
 		}
-		result += string(r)
+		result.WriteRune(r)
 	}
-	return result
+	return result.String()
 }
 
 // BuildFeaturesString creates a comma-separated list of model features.
@@ -152,25 +153,16 @@ func BuildFeaturesString(model *catalogs.Model) string {
 
 	if model.Features != nil {
 		// Check for vision in modalities
-		for _, modality := range model.Features.Modalities.Input {
-			if modality == "image" {
-				features = append(features, "vision")
-				break
-			}
+		if slices.Contains(model.Features.Modalities.Input, "image") {
+			features = append(features, "vision")
 		}
 
 		// Check for audio in modalities
-		for _, modality := range model.Features.Modalities.Input {
-			if modality == "audio" {
-				features = append(features, "audio_input")
-				break
-			}
+		if slices.Contains(model.Features.Modalities.Input, "audio") {
+			features = append(features, "audio_input")
 		}
-		for _, modality := range model.Features.Modalities.Output {
-			if modality == "audio" {
-				features = append(features, "audio_output")
-				break
-			}
+		if slices.Contains(model.Features.Modalities.Output, "audio") {
+			features = append(features, "audio_output")
 		}
 
 		if model.Features.ToolCalls {

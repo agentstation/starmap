@@ -334,7 +334,7 @@ type Observation struct {
 ```
 
 <a name="NewObservation"></a>
-### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L99>)
+### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L100>)
 
 ```go
 func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata ObservationMetadata) (Observation, error)
@@ -343,7 +343,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 NewObservation binds an immutable catalog to typed, deterministic audit metadata.
 
 <a name="Observation.Link"></a>
-### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L134>)
+### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L135>)
 
 ```go
 func (o Observation) Link() catalogs.SourceObservationLink
@@ -352,7 +352,7 @@ func (o Observation) Link() catalogs.SourceObservationLink
 Link returns the immutable manifest/audit projection of this observation.
 
 <a name="Observation.Validate"></a>
-### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L143>)
+### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L144>)
 
 ```go
 func (o Observation) Validate() error
@@ -361,7 +361,7 @@ func (o Observation) Validate() error
 Validate verifies required metadata and binds the evidence checksum to Catalog.
 
 <a name="ObservationCompleteness"></a>
-## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L37>)
+## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L38>)
 
 ObservationCompleteness states whether all expected records were observed.
 
@@ -370,7 +370,7 @@ type ObservationCompleteness = catalogmeta.ObservationCompleteness
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L86>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L87>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -379,7 +379,7 @@ type ObservationIssue = catalogmeta.ObservationIssue
 ```
 
 <a name="ObservationIssueCode"></a>
-## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L71>)
+## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L72>)
 
 ObservationIssueCode is a stable machine\-readable degradation reason.
 
@@ -388,7 +388,7 @@ type ObservationIssueCode = catalogmeta.ObservationIssueCode
 ```
 
 <a name="ObservationIssueScope"></a>
-## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L60>)
+## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L61>)
 
 ObservationIssueScope identifies the level at which degradation occurred.
 
@@ -397,7 +397,7 @@ type ObservationIssueScope = catalogmeta.ObservationIssueScope
 ```
 
 <a name="ObservationMetadata"></a>
-## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L89-L96>)
+## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L90-L97>)
 
 ObservationMetadata supplies source\-owned metadata used to construct an observation.
 
@@ -413,7 +413,7 @@ type ObservationMetadata struct {
 ```
 
 <a name="ObservationRecordCounts"></a>
-## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L57>)
+## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L58>)
 
 ObservationRecordCounts reports accepted and rejected source records.
 
@@ -422,7 +422,7 @@ type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
 ```
 
 <a name="ObservationStatus"></a>
-## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L47>)
+## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L48>)
 
 ObservationStatus is the typed outcome of a source observation.
 
@@ -690,7 +690,7 @@ type ResourceType = catalogmeta.ResourceType
 ```
 
 <a name="Revision"></a>
-## type [Revision](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L34>)
+## type [Revision](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L35>)
 
 Revision identifies the exact upstream or normalized content revision.
 
@@ -699,7 +699,7 @@ type Revision = catalogmeta.ObservationRevision
 ```
 
 <a name="RevisionKind"></a>
-## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L16>)
+## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L17>)
 
 RevisionKind identifies how an upstream observation revision was obtained.
 

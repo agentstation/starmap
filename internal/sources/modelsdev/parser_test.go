@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 
@@ -649,12 +650,7 @@ func TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData(t *testing.T) {
 }
 
 func containsModality(modalities []catalogs.ModelModality, want catalogs.ModelModality) bool {
-	for _, modality := range modalities {
-		if modality == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(modalities, want)
 }
 
 func boolPtr(v bool) *bool {

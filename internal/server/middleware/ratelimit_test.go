@@ -101,7 +101,7 @@ func TestRateLimiter_MultipleIPs(t *testing.T) {
 	// Each IP should get their own limit
 	for _, ip := range ips {
 		allowed := 0
-		for i := 0; i < 10; i++ {
+		for range 10 {
 			if rl.allow(ip) {
 				allowed++
 			}
@@ -128,7 +128,7 @@ func TestRateLimiter_TokenRefresh(t *testing.T) {
 	ip := "192.168.1.1"
 
 	// Use all tokens
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		if !rl.allow(ip) {
 			t.Fatalf("expected request %d to be allowed", i)
 		}
@@ -163,10 +163,10 @@ func TestRateLimiter_ConcurrentRequests(t *testing.T) {
 	allowed := 0
 
 	wg.Add(numGoroutines)
-	for i := 0; i < numGoroutines; i++ {
+	for range numGoroutines {
 		go func() {
 			defer wg.Done()
-			for j := 0; j < requestsPerGoroutine; j++ {
+			for range requestsPerGoroutine {
 				if rl.allow(ip) {
 					mu.Lock()
 					allowed++
@@ -198,13 +198,13 @@ func TestRateLimiter_ConcurrentMultipleIPs(t *testing.T) {
 	var mu sync.Mutex
 
 	wg.Add(numIPs)
-	for i := 0; i < numIPs; i++ {
+	for i := range numIPs {
 		go func(id int) {
 			defer wg.Done()
 			ip := "192.168.1." + string(rune(id+1))
 			allowed := 0
 
-			for j := 0; j < requestsPerIP; j++ {
+			for range requestsPerIP {
 				if rl.allow(ip) {
 					allowed++
 				}
@@ -309,7 +309,7 @@ func TestRateLimiter_Middleware_IgnoresUntrustedForwardedFor(t *testing.T) {
 	})
 	handler := middleware(testHandler)
 
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		req := httptest.NewRequest("GET", "/api/v1/models", nil)
 		req.RemoteAddr = "192.0.2.10:" + strconv.Itoa(8000+i)
 		req.Header.Set("X-Forwarded-For", "10.0.0."+strconv.Itoa(i+1))
@@ -381,7 +381,7 @@ func TestRateLimiter_Cleanup(t *testing.T) {
 	rl := NewRateLimiter(5, &logger)
 
 	// Add some visitors
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		ip := "192.168.1." + string(rune(i+1))
 		rl.allow(ip)
 	}
@@ -420,7 +420,7 @@ func TestRateLimiter_VisitorCreation(t *testing.T) {
 	// Concurrent creation should only create one visitor
 	var wg sync.WaitGroup
 	wg.Add(10)
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		go func() {
 			defer wg.Done()
 			rl.allow(ip)
@@ -447,7 +447,7 @@ func TestRateLimiter_BurstTraffic(t *testing.T) {
 	allowed := 0
 
 	start := time.Now()
-	for i := 0; i < burstSize; i++ {
+	for range burstSize {
 		if rl.allow(ip) {
 			allowed++
 		}

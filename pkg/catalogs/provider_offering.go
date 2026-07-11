@@ -3,6 +3,7 @@ package catalogs
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -71,7 +72,7 @@ type ProviderRequestOverrides struct {
 type ProviderOfferingMode struct {
 	Pricing *ModelPricing            `json:"pricing,omitempty" yaml:"pricing,omitempty"`
 	Limits  *ModelLimits             `json:"limits,omitempty" yaml:"limits,omitempty"`
-	Request ProviderRequestOverrides `json:"request,omitempty" yaml:"request,omitempty"`
+	Request ProviderRequestOverrides `json:"request" yaml:"request,omitempty"`
 }
 
 // ProviderOffering is one provider's service contract for a model definition.
@@ -85,7 +86,7 @@ type ProviderOffering struct {
 	Limits          *ModelLimits                    `json:"limits,omitempty" yaml:"limits,omitempty"`
 	Availability    OfferingAvailability            `json:"availability" yaml:"availability"`
 	Regions         []string                        `json:"regions,omitempty" yaml:"regions,omitempty"`
-	Endpoint        ProviderOfferingEndpoint        `json:"endpoint,omitempty" yaml:"endpoint,omitempty"`
+	Endpoint        ProviderOfferingEndpoint        `json:"endpoint" yaml:"endpoint,omitempty"`
 	Lifecycle       OfferingLifecycle               `json:"lifecycle" yaml:"lifecycle"`
 	Modes           map[string]ProviderOfferingMode `json:"modes,omitempty" yaml:"modes,omitempty"`
 }
@@ -186,9 +187,7 @@ func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 				copyMode.Limits = &limits
 			}
 			copyMode.Request.Headers = make(OfferingRequestHeaders, len(mode.Request.Headers))
-			for header, value := range mode.Request.Headers {
-				copyMode.Request.Headers[header] = value
-			}
+			maps.Copy(copyMode.Request.Headers, mode.Request.Headers)
 			copyMode.Request.Body = make(OfferingRequestBody, len(mode.Request.Body))
 			for field, value := range mode.Request.Body {
 				copyMode.Request.Body[field] = append(json.RawMessage(nil), value...)

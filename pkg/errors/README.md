@@ -210,7 +210,7 @@ func main() {
 	}
 
 	maxRetries := 3
-	for i := 0; i < maxRetries; i++ {
+	for i := range maxRetries {
 		err := attemptRequest()
 
 		if apiErr, ok := err.(*errors.APIError); ok && apiErr.StatusCode == 429 {

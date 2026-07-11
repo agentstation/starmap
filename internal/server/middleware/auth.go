@@ -4,6 +4,7 @@ import (
 	"crypto/subtle"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -72,12 +73,7 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 
 // isPublicPath checks if a path is in the public paths list.
 func isPublicPath(path string, publicPaths []string) bool {
-	for _, p := range publicPaths {
-		if path == p {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(publicPaths, path)
 }
 
 // extractAPIKey extracts the API key from the request.
@@ -92,8 +88,8 @@ func extractAPIKey(r *http.Request, config AuthConfig) string {
 	auth := r.Header.Get("Authorization")
 	if auth != "" {
 		// Support both "Bearer <key>" and raw key
-		if strings.HasPrefix(auth, "Bearer ") {
-			return strings.TrimPrefix(auth, "Bearer ")
+		if after, ok := strings.CutPrefix(auth, "Bearer "); ok {
+			return after
 		}
 		return auth
 	}

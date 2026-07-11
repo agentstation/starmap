@@ -121,7 +121,7 @@ func TestSchedulerFreshnessConcurrentRecordAndReport(t *testing.T) {
 	monitor := newTestFreshnessMonitor(t)
 	now := time.Date(2026, time.July, 10, 23, 30, 0, 0, time.UTC)
 	var wait sync.WaitGroup
-	for index := 0; index < 20; index++ {
+	for index := range 20 {
 		wait.Add(2)
 		go func(index int) {
 			defer wait.Done()

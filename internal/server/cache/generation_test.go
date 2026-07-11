@@ -34,15 +34,13 @@ func TestCacheGenerationConcurrentReadersObserveOnlyRequestedNamespace(t *testin
 	var wait sync.WaitGroup
 	for sequence := uint64(2); sequence <= 20; sequence++ {
 		sequence := sequence
-		wait.Add(1)
-		go func() {
-			defer wait.Done()
+		wait.Go(func() {
 			generation := fmt.Sprintf("generation-%d", sequence)
 			cache.SetGeneration(sequence, generation, "value", generation)
 			if value, found := cache.GetGeneration(sequence, generation, "value"); found && value != generation {
 				t.Errorf("generation %d observed %#v", sequence, value)
 			}
-		}()
+		})
 	}
 	wait.Wait()
 	if stats := cache.GetStats(); stats.Sequence != 20 || stats.GenerationID != "generation-20" {

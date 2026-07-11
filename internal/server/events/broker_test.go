@@ -131,8 +131,7 @@ func TestBrokerSlowSubscriberDoesNotStallEventLoop(t *testing.T) {
 	logger := zerolog.Nop()
 	b := NewBroker(&logger)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := t.Context()
 
 	go b.Run(ctx)
 	time.Sleep(10 * time.Millisecond)
@@ -246,7 +245,7 @@ func TestBroker_MultipleSubscribersBeforeRun(t *testing.T) {
 	done := make(chan struct{})
 
 	go func() {
-		for i := 0; i < numSubscribers; i++ {
+		for range numSubscribers {
 			sub := newMockSubscriber()
 			b.Subscribe(sub)
 		}

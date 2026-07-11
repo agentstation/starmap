@@ -382,7 +382,7 @@ func TestAuth_ConcurrentRequests(t *testing.T) {
 	const numRequests = 100
 	done := make(chan bool, numRequests)
 
-	for i := 0; i < numRequests; i++ {
+	for i := range numRequests {
 		go func(id int) {
 			// Alternate between valid and invalid keys
 			key := "secret-key"
@@ -412,7 +412,7 @@ func TestAuth_ConcurrentRequests(t *testing.T) {
 	}
 
 	// Wait for all requests
-	for i := 0; i < numRequests; i++ {
+	for range numRequests {
 		<-done
 	}
 }

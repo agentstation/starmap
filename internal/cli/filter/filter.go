@@ -2,6 +2,7 @@
 package filter
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -108,10 +109,8 @@ func (f *ModelFilter) matchesCapability(model *catalogs.Model) bool {
 		return model.Features.Streaming
 	case "vision", "image":
 		if model.Features.Modalities.Input != nil {
-			for _, modality := range model.Features.Modalities.Input {
-				if modality == "image" {
-					return true
-				}
+			if slices.Contains(model.Features.Modalities.Input, "image") {
+				return true
 			}
 		}
 	}

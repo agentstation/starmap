@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 	"time"
 
@@ -253,12 +254,7 @@ func TestAnthropicAPIFormatChanges(t *testing.T) {
 }
 
 func containsAnthropicTestModality(modalities []catalogs.ModelModality, want catalogs.ModelModality) bool {
-	for _, modality := range modalities {
-		if modality == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(modalities, want)
 }
 
 func mustParseAnthropicTime(t *testing.T, value string) time.Time {
