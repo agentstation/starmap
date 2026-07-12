@@ -3,12 +3,14 @@ package starmap
 import (
 	"testing"
 	"time"
+
+	"github.com/agentstation/starmap/internal/embeddedbudget"
 )
 
 func TestEmbeddedBudgetReadinessReportsGenerationAgeVersionAndSize(t *testing.T) {
 	client, err := New(
 		WithEmbeddedBootstrapMaxAge(24*time.Hour),
-		WithEmbeddedBootstrapMaxSizeBytes(2<<20),
+		WithEmbeddedBootstrapMaxSizeBytes(embeddedbudget.DefaultMaxUncompressedBytes),
 	)
 	if err != nil {
 		t.Fatalf("New offline bootstrap: %v", err)

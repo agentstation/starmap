@@ -1,21 +1,26 @@
-# claude-haiku-4-5-20251001 - Claude Haiku 4.5
+# claude-haiku-4-5-20251001 - Fast Claude model for responsive assistance, classification,...
 id: claude-haiku-4-5-20251001
 name: Claude Haiku 4.5
 authors:
 - id: anthropic
   name: Anthropic
+description: Fast Claude model for responsive assistance, classification, and lightweight agents
 
 # Model metadata
 metadata:
   release_date: 2025-10-15
   open_weights: false
-  knowledge_cutoff: 2025-01-01
+  knowledge_cutoff: 2025-02-28
+lineage:
+  family: claude-haiku
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
+    - pdf
     output:
     - text
 
@@ -24,13 +29,13 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
-  include_reasoning: false
+  include_reasoning: true
   verbosity: false
 
   # Generation control support flags
@@ -69,12 +74,20 @@ features:
 
   # Response delivery
   format_response: true
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
+reasoning_tokens:
+  min: 1024
+  max: 0
+  default: 0
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.1
+    cache_write:
+      per_1m: 1.25
     input:
       per_1m: 1.0
     output:
@@ -84,8 +97,29 @@ pricing:
 # Model limits
 limits:
   context_window: 200000
+  input_tokens: 200000
   output_tokens: 64000
+extensions:
+  anthropic:
+    fields:
+      batch: true
+      citations: true
+      context_management:
+        clear_thinking_20251015: true
+        clear_tool_uses_20250919: true
+        compact_20260112: false
+        supported: true
+      thinking_types:
+        adaptive: false
+        enabled: true
+      unknown_fields:
+      - checksum: sha256:30c1f92362fbf9ad1f8aae0e41fc431d190aad5c12b8c740592f799925c9b2ca
+        path: $.first_id
+      - checksum: sha256:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa
+        path: $.has_more
+      - checksum: sha256:2b016047e6c223edc2f60e0f288af101a6115c76d8b8b7706680660c04b7febb
+        path: $.last_id
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.080303Z

@@ -8,15 +8,19 @@ description: Obtain a distributed representation of a text.
 
 # Model metadata
 metadata:
-  release_date: "2025-10-19T18:13:07Z"
+  release_date: 2025-05-20
   open_weights: false
+  knowledge_cutoff: 2025-05-01
+lineage:
+  family: gemini
 
 # Model features
 features:
   modalities:
     input:
     - text
-    output: []
+    output:
+    - text
 
   # Core capabilities
   tool_calls: false
@@ -71,11 +75,34 @@ features:
   structured_outputs: false
   streaming: false
 
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+    output: {}
+  currency: USD
+
 # Model limits
 limits:
   context_window: 2048
+  input_tokens: 2048
   output_tokens: 1
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - embedContent
+      - countTextTokens
+      - countTokens
+      - asyncBatchEmbedContent
+      supported_generation_methods:
+      - embedContent
+      - countTextTokens
+      - countTokens
+      - asyncBatchEmbedContent
+      version: "001"
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.070027Z

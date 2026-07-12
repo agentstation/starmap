@@ -22,4 +22,4 @@
 // dependencies through the Handlers struct.
 package handlers
 
-//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /internal/server/handlers
+//go:generate gomarkdoc -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main --repository.path /internal/server/handlers

@@ -1,15 +1,19 @@
-# claude-opus-4-1-20250805 - Claude Opus 4.1
+# claude-opus-4-1-20250805 - Flagship Claude model for deep reasoning, coding, and long-h...
 id: claude-opus-4-1-20250805
 name: Claude Opus 4.1
 authors:
 - id: anthropic
   name: Anthropic
+description: Flagship Claude model for deep reasoning, coding, and long-horizon agents
+status: deprecated
 
 # Model metadata
 metadata:
   release_date: 2025-08-05
   open_weights: false
   knowledge_cutoff: 2025-03-31
+lineage:
+  family: claude-opus
 
 # Model features
 features:
@@ -17,6 +21,7 @@ features:
     input:
     - text
     - image
+    - pdf
     output:
     - text
 
@@ -25,7 +30,7 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -72,10 +77,18 @@ features:
   format_response: true
   structured_outputs: true
   streaming: true
+reasoning_tokens:
+  min: 1024
+  max: 0
+  default: 0
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 1.5
+    cache_write:
+      per_1m: 18.75
     input:
       per_1m: 15.0
     output:
@@ -85,8 +98,29 @@ pricing:
 # Model limits
 limits:
   context_window: 200000
+  input_tokens: 200000
   output_tokens: 32000
+extensions:
+  anthropic:
+    fields:
+      batch: true
+      citations: true
+      context_management:
+        clear_thinking_20251015: true
+        clear_tool_uses_20250919: true
+        compact_20260112: false
+        supported: true
+      thinking_types:
+        adaptive: false
+        enabled: true
+      unknown_fields:
+      - checksum: sha256:30c1f92362fbf9ad1f8aae0e41fc431d190aad5c12b8c740592f799925c9b2ca
+        path: $.first_id
+      - checksum: sha256:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa
+        path: $.has_more
+      - checksum: sha256:2b016047e6c223edc2f60e0f288af101a6115c76d8b8b7706680660c04b7febb
+        path: $.last_id
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.080062Z

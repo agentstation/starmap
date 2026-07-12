@@ -1,15 +1,18 @@
-# gpt-3.5-turbo - AI model
+# gpt-3.5-turbo - Compact GPT model for low-latency assistance and high-volume...
 id: gpt-3.5-turbo
 name: gpt-3.5-turbo
 authors:
 - id: openai
   name: OpenAI
+description: Compact GPT model for low-latency assistance and high-volume workloads
 
 # Model metadata
 metadata:
   release_date: 2023-03-01
   open_weights: false
   knowledge_cutoff: 2021-09-01
+lineage:
+  family: gpt
 
 # Model features
 features:
@@ -75,6 +78,7 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read: {}
     input:
       per_1m: 0.5
     output:
@@ -84,8 +88,9 @@ pricing:
 # Model limits
 limits:
   context_window: 16385
+  input_tokens: 0
   output_tokens: 4096
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.099844Z

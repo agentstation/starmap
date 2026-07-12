@@ -9,9 +9,11 @@ description: |-
 
 # Model metadata
 metadata:
-  release_date: 2025-03-20
+  release_date: 2025-06-17
   open_weights: false
   knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-pro
 
 # Model features
 features:
@@ -19,6 +21,9 @@ features:
     input:
     - text
     - image
+    - audio
+    - video
+    - pdf
     output:
     - text
 
@@ -87,6 +92,10 @@ generation:
     min: 1
     max: 100
     default: 64
+reasoning_tokens:
+  min: 128
+  max: 32768
+  default: 0
 
 # Model pricing
 pricing:
@@ -100,8 +109,13 @@ pricing:
 # Model limits
 limits:
   context_window: 1048576
+  input_tokens: 0
   output_tokens: 65536
+extensions:
+  google-vertex:
+    fields:
+      version: default
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.613159Z

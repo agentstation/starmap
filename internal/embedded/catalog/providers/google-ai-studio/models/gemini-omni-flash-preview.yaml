@@ -1,0 +1,122 @@
+# gemini-omni-flash-preview - Video generation and editing model for fast, conversational ...
+id: gemini-omni-flash-preview
+name: Gemini Omni Flash Preview
+authors:
+- id: google
+  name: Google
+description: |-
+  Video generation and editing model for fast, conversational text- and image-to-video workflows
+
+# Model metadata
+metadata:
+  release_date: 2026-06-30
+  open_weights: false
+lineage:
+  family: gemini
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    - video
+    output:
+    - text
+    - video
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: true
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: false
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: false
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 0.0
+    default: 0.95
+  top_k:
+    min: 0
+    max: 0
+    default: 64
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 1.5
+    output:
+      per_1m: 17.5
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 131072
+  input_tokens: 131072
+  output_tokens: 65536
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - generateContent
+      - countTokens
+      supported_generation_methods:
+      - generateContent
+      - countTokens
+      thinking: true
+      version: "001"
+
+# Timestamps
+created_at: 2026-07-11T20:15:12.209023Z
+updated_at: 2026-06-30T00:00:00Z

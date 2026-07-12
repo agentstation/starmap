@@ -8,9 +8,11 @@ description: Stable version of Gemini 2.5 Flash, our mid-size multimodal model t
 
 # Model metadata
 metadata:
-  release_date: 2025-03-20
+  release_date: 2025-06-17
   open_weights: false
   knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-flash
 
 # Model features
 features:
@@ -18,6 +20,9 @@ features:
     input:
     - text
     - image
+    - audio
+    - video
+    - pdf
     output:
     - text
 
@@ -29,7 +34,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -38,7 +43,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
@@ -72,7 +77,7 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: true
+  streaming: false
 generation:
   temperature:
     min: 0.0
@@ -80,27 +85,55 @@ generation:
     default: 1.0
   top_p:
     min: 0.0
-    max: 1.0
+    max: 0.0
     default: 0.95
   top_k:
-    min: 1
-    max: 100
+    min: 0
+    max: 0
     default: 64
+reasoning_tokens:
+  min: 0
+  max: 24576
+  default: 0
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.03
     input:
       per_1m: 0.3
     output:
       per_1m: 2.5
+  operations:
+    audio_input: 1.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 1048576
+  input_tokens: 1048576
   output_tokens: 65536
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - generateContent
+      - countTokens
+      - createCachedContent
+      - batchGenerateContent
+      supported_generation_methods:
+      - generateContent
+      - countTokens
+      - createCachedContent
+      - batchGenerateContent
+      thinking: true
+      version: "001"
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: toggle
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.069341Z

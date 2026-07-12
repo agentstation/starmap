@@ -1,0 +1,81 @@
+# wan2.6-image - AI model
+id: wan2.6-image
+name: wan2.6-image
+authors:
+- id: alibaba
+  name: alibaba
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+extensions:
+  alibaba:
+    fields:
+      unknown_fields:
+      - checksum: sha256:5334fbe45e0b4b8ccacfb6cff72c6b1729a531a0a72efa58088e92544b62d01f
+        path: $.first_id
+      - checksum: sha256:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa
+        path: $.has_more
+      - checksum: sha256:9fd095fb2bdfdc287db966fc64b7587b48f1ab59d472bef76606fa7088f643b5
+        path: $.last_id
+
+# Timestamps
+created_at: 2026-06-05T07:31:08Z
+updated_at: 2026-06-05T07:31:08Z

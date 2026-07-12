@@ -1,20 +1,25 @@
-# whisper-large-v3 - AI model
+# whisper-large-v3 - Speech transcription model for accurate audio-to-text and ca...
 id: whisper-large-v3
-name: whisper-large-v3
+name: Whisper
 authors:
 - id: openai
   name: OpenAI
+description: Speech transcription model for accurate audio-to-text and captioning workflows
+status: active
 
 # Model metadata
 metadata:
   release_date: 2023-09-01
   open_weights: true
   knowledge_cutoff: 2023-09-01
+lineage:
+  family: whisper
 
 # Model features
 features:
   modalities:
     input:
+    - audio
     - text
     output:
     - text
@@ -80,8 +85,13 @@ pricing:
 # Model limits
 limits:
   context_window: 448
+  input_tokens: 0
   output_tokens: 448
+extensions:
+  groq:
+    fields:
+      hugging_face_id: openai/whisper-large-v3
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.079157Z

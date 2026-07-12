@@ -1,0 +1,78 @@
+# llama-3-1-405b-instruct-maas - Llama 3.1 405B Instruct model available through Vertex AI Mo...
+id: llama-3-1-405b-instruct-maas
+name: Llama 3.1 405B Instruct
+authors:
+- id: meta
+  name: meta
+description: Llama 3.1 405B Instruct model available through Vertex AI Model Garden
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 128000
+  input_tokens: 0
+  output_tokens: 4096
+
+# Timestamps
+created_at: 2026-07-11T23:53:11.592666Z
+updated_at: 2026-07-11T23:53:11.592666Z

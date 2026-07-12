@@ -1,0 +1,153 @@
+# claude-opus-4-7 - Stronger Opus tier for advanced software work and high-stake...
+id: claude-opus-4-7
+name: Claude Opus 4.7
+authors:
+- id: anthropic
+  name: Anthropic
+description: Stronger Opus tier for advanced software work and high-stakes reasoning
+
+# Model metadata
+metadata:
+  release_date: 2026-04-14
+  open_weights: false
+  knowledge_cutoff: 2026-01-31
+lineage:
+  family: claude-opus
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    - pdf
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: true
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: true
+  reasoning_tokens: false
+  include_reasoning: true
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: true
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  - maximum
+  default: null
+modes:
+  fast:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 3.0
+        cache_write:
+          per_1m: 37.5
+        input:
+          per_1m: 30.0
+        output:
+          per_1m: 150.0
+      currency: USD
+    provider:
+      headers:
+        anthropic-beta: fast-mode-2026-02-01
+      body:
+        speed: fast
+
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.5
+    cache_write:
+      per_1m: 6.25
+    input:
+      per_1m: 5.0
+    output:
+      per_1m: 25.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 1000000
+  input_tokens: 1000000
+  output_tokens: 128000
+extensions:
+  anthropic:
+    fields:
+      batch: true
+      citations: true
+      code_execution: true
+      context_management:
+        clear_thinking_20251015: true
+        clear_tool_uses_20250919: true
+        compact_20260112: true
+        supported: true
+      thinking_types:
+        adaptive: true
+        enabled: false
+      unknown_fields:
+      - checksum: sha256:30c1f92362fbf9ad1f8aae0e41fc431d190aad5c12b8c740592f799925c9b2ca
+        path: $.first_id
+      - checksum: sha256:fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa
+        path: $.has_more
+      - checksum: sha256:2b016047e6c223edc2f60e0f288af101a6115c76d8b8b7706680660c04b7febb
+        path: $.last_id
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: effort
+        values:
+        - xhigh
+
+# Timestamps
+created_at: 2026-04-14T00:00:00Z
+updated_at: 2026-04-16T00:00:00Z

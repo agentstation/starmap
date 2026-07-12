@@ -21,6 +21,7 @@ import (
 	"github.com/agentstation/starmap/internal/auth/adc"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
@@ -263,26 +264,28 @@ func (c *Client) shouldUseVertexBackend() bool {
 
 // getOrCreateGenAIClient gets or creates a GenAI client for the appropriate backend.
 func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*genai.Client, error) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	// Return existing client if available and matches backend
+	c.mu.RLock()
 	if c.genaiClient != nil {
-		return c.genaiClient, nil
+		client := c.genaiClient
+		c.mu.RUnlock()
+		return client, nil
 	}
+	projectID := c.projectID
+	location := c.location
+	c.mu.RUnlock()
 
 	var config *genai.ClientConfig
 
 	if forVertex {
 		// Ensure we have project and location
-		if c.projectID == "" {
-			c.projectID = c.getProjectID(ctx)
+		if projectID == "" {
+			projectID = c.getProjectID(ctx)
 		}
-		if c.location == "" {
-			c.location = c.getLocation(ctx)
+		if location == "" {
+			location = c.getLocation(ctx)
 		}
 
-		if c.projectID == "" {
+		if projectID == "" {
 			return nil, &errors.ConfigError{
 				Component: "google-vertex",
 				Message:   "project ID not configured - set GOOGLE_CLOUD_PROJECT or configure ADC with project",
@@ -291,8 +294,8 @@ func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*g
 
 		config = &genai.ClientConfig{
 			Backend:  genai.BackendVertexAI,
-			Project:  c.projectID,
-			Location: c.location,
+			Project:  projectID,
+			Location: location,
 		}
 
 		// Check if API key is available for Vertex AI (optional)
@@ -330,6 +333,13 @@ func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*g
 		return nil, err
 	}
 
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.genaiClient != nil {
+		return c.genaiClient, nil
+	}
+	c.projectID = projectID
+	c.location = location
 	c.genaiClient = client
 	return client, nil
 }
@@ -458,25 +468,11 @@ func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error)
 		return nil, err
 	}
 
-	// Create a strict timeout for Vertex operations (5 seconds)
-	// Realistic response time is under 1 second; 5 seconds is generous
-	vertexCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	// Bound the complete paginated operation while respecting any shorter caller
+	// deadline. Vertex model listings can span multiple requests, so a per-call
+	// latency assumption is not an appropriate operation deadline.
+	vertexCtx, cancel := context.WithTimeout(ctx, constants.ProviderFetchTimeout)
 	defer cancel()
-
-	// Detect project/location
-	if c.projectID == "" {
-		c.projectID = c.getProjectID(vertexCtx)
-	}
-	if c.location == "" {
-		c.location = c.getLocation(vertexCtx)
-	}
-
-	if c.projectID == "" {
-		return nil, &errors.ConfigError{
-			Component: "google-vertex",
-			Message:   "project ID not configured - set GOOGLE_CLOUD_PROJECT env var or run 'gcloud auth application-default set-quota-project YOUR_PROJECT'",
-		}
-	}
 
 	// Use GenAI SDK only
 	client, err := c.getOrCreateGenAIClient(vertexCtx, true)
@@ -513,7 +509,7 @@ func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error)
 			Provider:   "google-vertex",
 			Endpoint:   "models",
 			StatusCode: 0,
-			Message:    "request timed out after 5 seconds - vertex AI may not be properly configured or network is slow",
+			Message:    fmt.Sprintf("request timed out after %s", constants.ProviderFetchTimeout),
 			Err:        vertexCtx.Err(),
 		}
 	}

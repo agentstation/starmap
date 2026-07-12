@@ -74,6 +74,7 @@ features:
 # Model limits
 limits:
   context_window: 128000
+  input_tokens: 0
   output_tokens: 4096
 
 # Timestamps

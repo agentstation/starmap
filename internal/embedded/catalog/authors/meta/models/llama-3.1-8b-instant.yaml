@@ -1,15 +1,19 @@
-# llama-3.1-8b-instant - AI model
+# llama-3.1-8b-instant - Compact Llama instruction model for fast chat and local depl...
 id: llama-3.1-8b-instant
-name: llama-3.1-8b-instant
+name: Llama 3.1 8B
 authors:
 - id: meta
   name: Meta
+description: Compact Llama instruction model for fast chat and local deployment
+status: active
 
 # Model metadata
 metadata:
   release_date: 2024-07-23
   open_weights: true
   knowledge_cutoff: 2023-12-01
+lineage:
+  family: llama
 
 # Model features
 features:
@@ -20,9 +24,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -53,7 +57,7 @@ features:
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -68,24 +72,34 @@ features:
   diversity_penalty: false
 
   # Response delivery
-  format_response: false
+  format_response: true
   structured_outputs: false
   streaming: true
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 2.5e-08
     input:
-      per_1m: 0.05
+      per_1m: 5e-08
     output:
-      per_1m: 0.08
+      per_1m: 8e-08
+  operations:
+    request: 0.0
+    image_gen: 0.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 131072
-  output_tokens: 8192
+  input_tokens: 0
+  output_tokens: 131072
+extensions:
+  groq:
+    fields:
+      hugging_face_id: meta-llama/Llama-3.1-8B-Instruct
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.079079Z

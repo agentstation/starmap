@@ -1,5 +1,11 @@
 version: 2
 
+git:
+  # Catalog generations have their own immutable prerelease namespace and must
+  # never participate in application SemVer discovery or changelog boundaries.
+  ignore_tags:
+    - "catalog-payload-*"
+
 before:
   hooks:
     - go mod tidy

@@ -1,0 +1,84 @@
+# ResembleAI/chatterbox-turbo - Chatterbox is a family of three state-of-the-art, open-sourc...
+id: ResembleAI/chatterbox-turbo
+name: ResembleAI/chatterbox-turbo
+description: Chatterbox is a family of three state-of-the-art, open-source text-to-speech models by Resemble AI. We are excited to introduce Chatterbox-Turbo, our most efficient model yet. Built on a streamlined 350M parameter architecture, Turbo delivers high-quality speech with less compute and VRAM than our previous models. We have also distilled the speech-token-to-mel decoder, previously a bottleneck, reducing generation from 10 steps to just one, while retaining high-fidelity audio output. Paralinguistic tags are now native to the Turbo model, allowing you to use [cough], [laugh], [chuckle], and more to add distinct realism. While Turbo was built primarily for low-latency voice agents, it excels at narration and creative workflows. If you like the model but need to scale or tune it for higher accuracy, check out our competitively priced TTS service (link).
+
+# Model metadata
+metadata:
+  release_date: null
+  open_weights: false
+  tags:
+  - tts
+lineage:
+  root: ResembleAI/chatterbox-turbo
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+extensions:
+  deepinfra:
+    fields:
+      metadata:
+        pricing:
+          input_characters: 1
+
+# Timestamps
+created_at: 2026-07-11T20:15:13.096686Z
+updated_at: 2026-07-11T20:15:13.096686Z

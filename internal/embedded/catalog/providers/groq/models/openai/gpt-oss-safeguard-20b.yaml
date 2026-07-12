@@ -1,0 +1,128 @@
+# openai/gpt-oss-safeguard-20b - Safety model for policy screening, moderation, and risk-awar...
+id: openai/gpt-oss-safeguard-20b
+name: Safety GPT OSS 20B
+authors:
+- id: alibaba
+  name: alibaba
+- id: deepseek
+  name: deepseek
+- id: google
+  name: google
+- id: groq
+  name: groq
+- id: huggingfaceh4
+  name: huggingfaceh4
+- id: meta
+  name: meta
+- id: moonshot-ai
+  name: moonshot-ai
+- id: openai
+  name: openai
+- id: playai
+  name: playai
+- id: sdaia
+  name: sdaia
+description: Safety model for policy screening, moderation, and risk-aware routing workflows
+status: beta
+
+# Model metadata
+metadata:
+  release_date: 2025-10-29
+  open_weights: true
+lineage:
+  family: gpt-oss
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: true
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: true
+  structured_outputs: true
+  streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  default: null
+
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 3.75e-08
+    input:
+      per_1m: 7.5e-08
+    output:
+      per_1m: 3e-07
+  operations:
+    request: 0.0
+    image_gen: 0.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 131072
+  input_tokens: 0
+  output_tokens: 65536
+extensions:
+  groq:
+    fields:
+      hugging_face_id: openai/gpt-oss-safeguard-20b
+
+# Timestamps
+created_at: 2025-10-29T03:33:09Z
+updated_at: 2026-06-29T00:00:00Z

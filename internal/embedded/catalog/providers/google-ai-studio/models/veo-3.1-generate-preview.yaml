@@ -75,8 +75,17 @@ features:
 # Model limits
 limits:
   context_window: 480
+  input_tokens: 480
   output_tokens: 8192
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - predictLongRunning
+      supported_generation_methods:
+      - predictLongRunning
+      version: "3.1"
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.069959Z

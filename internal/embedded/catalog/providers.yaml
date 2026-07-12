@@ -15,6 +15,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: DASHSCOPE_API_KEY
+    required: false
   catalog:
     docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
     endpoint:
@@ -26,16 +29,21 @@
       author_mapping:
         field: id
         normalized:
-          "qwen*": alibaba
-          "qwq*": alibaba
-          "qvq*": alibaba
-          "wan*": alibaba
-          "deepseek*": deepseek
-          "kimi*": moonshot-ai
-          "glm*": zhipu-ai
-          "minimax*": minimax
+          deepseek*: deepseek
+          glm*: zhipu-ai
+          kimi*: moonshot-ai
+          minimax*: minimax
+          qvq*: alibaba
+          qwen*: alibaba
+          qwq*: alibaba
+          wan*: alibaba
   chat_completions:
     url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  extensions:
+    models.dev:
+      fields:
+        api: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+        npm: "@ai-sdk/openai-compatible"
 
 # Anthropic
 - id: anthropic
@@ -48,6 +56,9 @@
     header: x-api-key
     scheme: ""
     query_param: ""
+  env_vars:
+  - name: ANTHROPIC_API_KEY
+    required: false
   catalog:
     docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
     endpoint:
@@ -74,6 +85,10 @@
     moderation_required: false
     moderated: true
     moderator: anthropic
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/anthropic"
 
 # Cerebras
 - id: cerebras
@@ -86,6 +101,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: CEREBRAS_API_KEY
+    required: false
   catalog:
     docs: https://inference-docs.cerebras.ai/models/overview
     endpoint:
@@ -152,6 +170,69 @@
     moderation_required: false
     moderated: true
     moderator: cerebras
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/cerebras"
+
+# DeepInfra
+- id: deepinfra
+  name: DeepInfra
+  headquarters: San Francisco, CA, USA
+  icon_url: https://deepinfra.com/favicon.ico
+  api_key:
+    name: DEEPINFRA_TOKEN
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  env_vars:
+  - name: DEEPINFRA_API_KEY
+    required: false
+  catalog:
+    docs: https://docs.deepinfra.com/chat/overview
+    endpoint:
+      type: openai
+      url: https://api.deepinfra.com/v1/openai/models
+      auth_required: false
+      field_mappings:
+      - from: metadata.description
+        to: description
+      - from: metadata.context_length
+        to: limits.context_window
+      - from: metadata.tags
+        to: metadata.tags
+      feature_rules:
+      - field: metadata.tags
+        contains:
+        - reasoning
+        feature: reasoning
+        value: true
+      author_mapping:
+        field: id
+        normalized:
+          01-ai/*: 01.ai
+          BAAI/*: baai
+          ByteDance/*: bytedance
+          MiniMaxAI/*: minimax
+          NousResearch/*: nousresearch
+          Qwen/*: alibaba
+          cognitivecomputations/*: cognitivecomputations
+          deepseek-ai/*: deepseek
+          google/*: google
+          meta-llama/*: meta
+          microsoft/*: microsoft
+          mistralai/*: mistral
+          moonshotai/*: moonshot-ai
+          nvidia/*: nvidia
+          openai/*: openai
+          zai-org/*: zhipu-ai
+  chat_completions:
+    url: https://api.deepinfra.com/v1/openai/chat/completions
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/deepinfra"
 
 # DeepSeek
 - id: deepseek
@@ -166,6 +247,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: DEEPSEEK_API_KEY
+    required: false
   catalog:
     docs: https://api-docs.deepseek.com/quick_start/pricing
     endpoint:
@@ -191,58 +275,11 @@
     moderation_required: false
     moderated: true
     moderator: deepseek
-
-# DeepInfra
-- id: deepinfra
-  name: DeepInfra
-  headquarters: San Francisco, CA, USA
-  icon_url: https://deepinfra.com/favicon.ico
-  api_key:
-    name: DEEPINFRA_TOKEN
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  catalog:
-    docs: https://docs.deepinfra.com/chat/overview
-    endpoint:
-      type: openai
-      url: https://api.deepinfra.com/v1/openai/models
-      auth_required: false
-      field_mappings:
-      - from: metadata.description
-        to: description
-      - from: metadata.context_length
-        to: limits.context_window
-      - from: metadata.tags
-        to: metadata.tags
-      feature_rules:
-      - field: metadata.tags
-        contains:
-        - reasoning
-        feature: reasoning
-        value: true
-      author_mapping:
-        field: id
-        normalized:
-          "01-ai/*": 01.ai
-          "BAAI/*": baai
-          "ByteDance/*": bytedance
-          "MiniMaxAI/*": minimax
-          "NousResearch/*": nousresearch
-          "Qwen/*": alibaba
-          "cognitivecomputations/*": cognitivecomputations
-          "deepseek-ai/*": deepseek
-          "google/*": google
-          "meta-llama/*": meta
-          "microsoft/*": microsoft
-          "mistralai/*": mistral
-          "moonshotai/*": moonshot-ai
-          "nvidia/*": nvidia
-          "openai/*": openai
-          "zai-org/*": zhipu-ai
-  chat_completions:
-    url: https://api.deepinfra.com/v1/openai/chat/completions
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.deepseek.com
+        npm: "@ai-sdk/openai-compatible"
 
 # Fireworks AI
 - id: fireworks-ai
@@ -257,6 +294,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: FIREWORKS_API_KEY
+    required: false
   catalog:
     docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
     endpoint:
@@ -273,25 +313,30 @@
       author_mapping:
         field: id
         normalized:
-          "accounts/fireworks/models/deepseek*": deepseek
-          "accounts/fireworks/models/gpt-oss*": openai
-          "accounts/fireworks/models/kimi*": moonshot-ai
-          "accounts/fireworks/models/llama*": meta
-          "accounts/fireworks/models/mistral*": mistral
-          "accounts/fireworks/models/mixtral*": mistral
-          "accounts/fireworks/models/qwen*": alibaba
-          "accounts/fireworks/models/yi-*": 01.ai
-          "accounts/fireworks/routers/deepseek*": deepseek
-          "accounts/fireworks/routers/gpt-oss*": openai
-          "accounts/fireworks/routers/kimi*": moonshot-ai
-          "accounts/fireworks/routers/llama*": meta
-          "accounts/fireworks/routers/mistral*": mistral
-          "accounts/fireworks/routers/mixtral*": mistral
-          "accounts/fireworks/routers/qwen*": alibaba
-          "accounts/fireworks/routers/yi-*": 01.ai
+          accounts/fireworks/models/deepseek*: deepseek
+          accounts/fireworks/models/gpt-oss*: openai
+          accounts/fireworks/models/kimi*: moonshot-ai
+          accounts/fireworks/models/llama*: meta
+          accounts/fireworks/models/mistral*: mistral
+          accounts/fireworks/models/mixtral*: mistral
+          accounts/fireworks/models/qwen*: alibaba
+          accounts/fireworks/models/yi-*: 01.ai
+          accounts/fireworks/routers/deepseek*: deepseek
+          accounts/fireworks/routers/gpt-oss*: openai
+          accounts/fireworks/routers/kimi*: moonshot-ai
+          accounts/fireworks/routers/llama*: meta
+          accounts/fireworks/routers/mistral*: mistral
+          accounts/fireworks/routers/mixtral*: mistral
+          accounts/fireworks/routers/qwen*: alibaba
+          accounts/fireworks/routers/yi-*: 01.ai
   status_page_url: https://status.fireworks.ai
   chat_completions:
     url: https://api.fireworks.ai/inference/v1/chat/completions
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.fireworks.ai/inference/v1/
+        npm: "@ai-sdk/openai-compatible"
 
 # Google AI Studio
 - id: google-ai-studio
@@ -375,6 +420,10 @@
     moderation_required: false
     moderated: true
     moderator: google-vertex
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/google-vertex"
 
 # Groq
 - id: groq
@@ -387,6 +436,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: GROQ_API_KEY
+    required: false
   catalog:
     docs: https://console.groq.com/docs/models
     endpoint:
@@ -429,6 +481,10 @@
     moderation_required: false
     moderated: true
     moderator: groq
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/groq"
 
 # Moonshot AI
 - id: moonshot-ai
@@ -484,6 +540,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: OPENAI_API_KEY
+    required: false
   catalog:
     docs: https://platform.openai.com/docs/models
     endpoint:
@@ -514,3 +573,7 @@
     moderation_required: false
     moderated: true
     moderator: openai
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/openai"

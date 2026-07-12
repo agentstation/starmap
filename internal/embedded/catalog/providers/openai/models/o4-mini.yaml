@@ -1,21 +1,25 @@
-# o4-mini - AI model
+# o4-mini - Fast o-series model for compact reasoning, coding, and tool ...
 id: o4-mini
 name: o4-mini
 authors:
 - id: openai
   name: OpenAI
+description: Fast o-series model for compact reasoning, coding, and tool use
 
 # Model metadata
 metadata:
   release_date: 2025-04-16
   open_weights: false
   knowledge_cutoff: 2024-05-01
+lineage:
+  family: o-mini
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
 
@@ -71,10 +75,18 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  default: null
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.275
     input:
       per_1m: 1.1
     output:
@@ -84,8 +96,9 @@ pricing:
 # Model limits
 limits:
   context_window: 200000
+  input_tokens: 0
   output_tokens: 100000
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.104069Z

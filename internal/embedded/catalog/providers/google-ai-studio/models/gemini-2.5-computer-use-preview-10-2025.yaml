@@ -28,7 +28,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -37,7 +37,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
@@ -71,13 +71,38 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: true
+  streaming: false
+generation:
+  temperature:
+    min: 0.0
+    max: 2.0
+    default: 1.0
+  top_p:
+    min: 0.0
+    max: 0.0
+    default: 0.95
+  top_k:
+    min: 0
+    max: 0
+    default: 64
 
 # Model limits
 limits:
   context_window: 131072
+  input_tokens: 131072
   output_tokens: 65536
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - generateContent
+      - countTokens
+      supported_generation_methods:
+      - generateContent
+      - countTokens
+      thinking: true
+      version: Gemini 2.5 Computer Use Preview 10-2025
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.069899Z

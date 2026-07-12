@@ -34,9 +34,9 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: false
-  top_p: false
-  top_k: false
+  temperature: true
+  top_p: true
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
@@ -74,22 +74,31 @@ features:
 generation:
   temperature:
     min: 0.0
-    max: 2.0
+    max: 0.0
     default: 0.2
   top_p:
     min: 0.0
-    max: 1.0
+    max: 0.0
     default: 1.0
   top_k:
-    min: 1
-    max: 100
+    min: 0
+    max: 0
     default: 40
 
 # Model limits
 limits:
   context_window: 7168
+  input_tokens: 7168
   output_tokens: 1024
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - generateAnswer
+      supported_generation_methods:
+      - generateAnswer
+      version: "001"
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.066026Z

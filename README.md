@@ -697,7 +697,7 @@ STARMAP_LOG_LEVEL=info
 
 # Optional readiness budgets while the embedded offline bootstrap is active
 EMBEDDED_BOOTSTRAP_MAX_AGE=168h
-EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=2097152
+EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
 ```
 
 ### Authentication Management
@@ -755,7 +755,7 @@ carried forward as compatibility surface.
 catalog_path: ~/.starmap/catalog
 catalog_export_path: ~/.starmap/exports/catalog
 embedded_bootstrap_max_age: 168h
-embedded_bootstrap_max_size_bytes: 2097152
+embedded_bootstrap_max_size_bytes: 16777216
 
 providers:
   openai:

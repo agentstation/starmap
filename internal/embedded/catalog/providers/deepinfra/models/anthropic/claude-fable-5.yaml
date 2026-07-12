@@ -1,0 +1,98 @@
+# anthropic/claude-fable-5 - Claude Fable 5 is Anthropic's next generation of intelligenc...
+id: anthropic/claude-fable-5
+name: anthropic/claude-fable-5
+description: |-
+  Claude Fable 5 is Anthropic's next generation of intelligence for the hardest knowledge work and coding problems. It works independently for longer than any prior generally available Claude model: run it in an agent harness and it can work for days at a time, planning across stages, delegating to sub-agents, and checking its own work.
+
+# Model metadata
+metadata:
+  release_date: null
+  open_weights: false
+  tags:
+  - chat
+  - vlm
+  - vision
+  - reasoning_effort
+  - reasoning
+lineage:
+  root: anthropic/claude-fable-5
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 10.00
+    output:
+      per_1m: 50.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 1000000
+  input_tokens: 0
+  output_tokens: 1000000
+
+# Timestamps
+created_at: 2026-07-11T20:15:13.08944Z
+updated_at: 2026-07-11T20:15:13.08944Z

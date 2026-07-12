@@ -1,17 +1,27 @@
-# gpt-image-1-mini - AI model
+# gpt-image-1-mini - Image model for prompt-driven generation, editing, and visua...
 id: gpt-image-1-mini
 name: gpt-image-1-mini
 authors:
 - id: openai
   name: OpenAI
+description: Image model for prompt-driven generation, editing, and visual design workflows
+
+# Model metadata
+metadata:
+  release_date: 2025-09-26
+  open_weights: false
+lineage:
+  family: gpt-image
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
+    - image
 
   # Core capabilities
   tool_calls: false
@@ -68,4 +78,4 @@ features:
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.102814Z

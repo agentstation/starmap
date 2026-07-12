@@ -1,15 +1,19 @@
-# claude-3-5-haiku@20241022 - Claude 3 5 Haiku
+# claude-3-5-haiku@20241022 - Fast Claude model for responsive assistance, classification,...
 id: claude-3-5-haiku@20241022
-name: Claude 3 5 Haiku
+name: Claude 3.5 Haiku
 authors:
 - id: anthropic
   name: anthropic
+description: Fast Claude model for responsive assistance, classification, and lightweight agents
+status: deprecated
 
 # Model metadata
 metadata:
   release_date: 2024-10-22
   open_weights: false
   knowledge_cutoff: 2024-07-31
+lineage:
+  family: claude-haiku
 
 # Model features
 features:
@@ -17,6 +21,7 @@ features:
     input:
     - text
     - image
+    - pdf
     output:
     - text
 
@@ -44,7 +49,7 @@ features:
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -76,6 +81,10 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.08
+    cache_write:
+      per_1m: 1.0
     input:
       per_1m: 0.8
     output:
@@ -85,8 +94,14 @@ pricing:
 # Model limits
 limits:
   context_window: 200000
+  input_tokens: 0
   output_tokens: 8192
+extensions:
+  models.dev:
+    fields:
+      provider:
+        npm: "@ai-sdk/google-vertex/anthropic"
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.610127Z

@@ -11,6 +11,8 @@ metadata:
   release_date: 2025-06-17
   open_weights: false
   knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-flash-lite
 
 # Model features
 features:
@@ -18,6 +20,9 @@ features:
     input:
     - text
     - image
+    - audio
+    - video
+    - pdf
     output:
     - text
 
@@ -86,21 +91,38 @@ generation:
     min: 1
     max: 100
     default: 64
+reasoning_tokens:
+  min: 512
+  max: 24576
+  default: 0
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.01
     input:
       per_1m: 0.1
     output:
       per_1m: 0.4
+  operations:
+    audio_input: 0.3
   currency: USD
 
 # Model limits
 limits:
   context_window: 1048576
+  input_tokens: 0
   output_tokens: 65536
+extensions:
+  google-vertex:
+    fields:
+      version: default
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: toggle
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.610679Z
