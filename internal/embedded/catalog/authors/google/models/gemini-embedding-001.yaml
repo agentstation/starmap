@@ -8,8 +8,11 @@ description: Obtain a distributed representation of a text.
 
 # Model metadata
 metadata:
-  release_date: "2025-09-10T03:09:38Z"
+  release_date: 2025-05-20
   open_weights: false
+  knowledge_cutoff: 2025-05-01
+lineage:
+  family: gemini
 
 # Model features
 features:
@@ -72,11 +75,24 @@ features:
   structured_outputs: false
   streaming: false
 
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+    output: {}
+  currency: USD
+
 # Model limits
 limits:
   context_window: 2048
+  input_tokens: 0
   output_tokens: 1
+extensions:
+  google-vertex:
+    fields:
+      version: default
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.610194Z

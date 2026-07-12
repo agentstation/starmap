@@ -1,21 +1,26 @@
-# o1 - AI model
+# o1 - O-series reasoning model for hard analysis, math, coding, an...
 id: o1
 name: o1
 authors:
 - id: openai
   name: OpenAI
+description: O-series reasoning model for hard analysis, math, coding, and planning
 
 # Model metadata
 metadata:
   release_date: 2024-12-05
   open_weights: false
   knowledge_cutoff: 2023-09-01
+lineage:
+  family: o
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
+    - pdf
     output:
     - text
 
@@ -71,10 +76,18 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  default: null
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 7.5
     input:
       per_1m: 15.0
     output:
@@ -84,8 +97,9 @@ pricing:
 # Model limits
 limits:
   context_window: 200000
+  input_tokens: 0
   output_tokens: 100000
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.102498Z

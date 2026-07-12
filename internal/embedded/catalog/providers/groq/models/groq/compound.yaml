@@ -1,6 +1,6 @@
-# groq/compound - AI model
+# groq/compound - General-purpose chat model for instruction following, writin...
 id: groq/compound
-name: groq/compound
+name: Compound
 authors:
 - id: groq
   name: Groq
@@ -8,6 +8,15 @@ authors:
   name: OpenAI
 - id: meta
   name: Meta
+description: General-purpose chat model for instruction following, writing, and analysis
+status: active
+
+# Model metadata
+metadata:
+  release_date: 2025-09-04
+  open_weights: false
+lineage:
+  family: groq
 
 # Model features
 features:
@@ -51,7 +60,7 @@ features:
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -66,15 +75,20 @@ features:
   diversity_penalty: false
 
   # Response delivery
-  format_response: false
+  format_response: true
   structured_outputs: false
   streaming: true
 
 # Model limits
 limits:
   context_window: 131072
+  input_tokens: 0
   output_tokens: 8192
+extensions:
+  groq:
+    fields:
+      hugging_face_id: groq/compound-beta
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.079478Z

@@ -3,10 +3,9 @@ package catalogs
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"sort"
 	"strings"
 	"testing"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestLegacySchemaMigrationPreservesProviderOfferings(t *testing.T) {
@@ -109,9 +108,9 @@ func TestEmbeddedLegacySchemaMigrationHasReviewedDiffs(t *testing.T) {
 	if migrated.Report.Unclassified != 0 {
 		t.Fatalf("unclassified changes = %d, want 0", migrated.Report.Unclassified)
 	}
-	if len(migrated.Offerings) != 516 || len(migrated.Definitions) != 490 ||
-		migrated.Report.Exact != 0 || migrated.Report.Defaulted != 1073 ||
-		migrated.Report.Conflicts != 23 || migrated.Report.Missing != 81 {
+	if len(migrated.Offerings) != 611 || len(migrated.Definitions) != 583 ||
+		migrated.Report.Exact != 0 || migrated.Report.Defaulted != 1197 ||
+		migrated.Report.Conflicts != 196 || migrated.Report.Missing != 71 {
 		t.Fatalf("embedded migration review baseline changed: offerings=%d definitions=%d report=%#v",
 			len(migrated.Offerings), len(migrated.Definitions), migrated.Report)
 	}
@@ -132,36 +131,14 @@ func TestEmbeddedLegacySchemaMigrationHasReviewedDiffs(t *testing.T) {
 			}
 		}
 	}
-	wantConflicts := []string{
-		"conflict|google-vertex|gemini-1.5-flash-002|definition",
-		"conflict|google-vertex|gemini-1.5-pro-002|definition",
-		"conflict|google-vertex|gemini-2.0-flash|definition",
-		"conflict|google-vertex|gemini-2.0-flash-001|definition",
-		"conflict|google-vertex|gemini-2.0-flash-lite|definition",
-		"conflict|google-vertex|gemini-2.0-flash-lite-001|definition",
-		"conflict|google-vertex|gemini-2.5-flash|definition",
-		"conflict|google-vertex|gemini-2.5-flash-image-preview|definition",
-		"conflict|google-vertex|gemini-2.5-flash-lite|definition",
-		"conflict|google-vertex|gemini-2.5-flash-lite-preview-06-17|definition",
-		"conflict|google-vertex|gemini-2.5-flash-lite-preview-09-2025|definition",
-		"conflict|google-vertex|gemini-2.5-flash-preview-05-20|definition",
-		"conflict|google-vertex|gemini-2.5-flash-preview-09-2025|definition",
-		"conflict|google-vertex|gemini-2.5-pro|definition",
-		"conflict|google-vertex|gemini-2.5-pro-preview-05-06|definition",
-		"conflict|google-vertex|gemini-2.5-pro-preview-06-05|definition",
-		"conflict|google-vertex|gemini-embedding-001|definition",
-		"conflict|google-vertex|imagen-3.0-generate-002|definition",
-		"conflict|google-vertex|imagen-4.0-fast-generate-001|definition",
-		"conflict|google-vertex|imagen-4.0-generate-001|definition",
-		"conflict|google-vertex|imagen-4.0-generate-preview-06-06|definition",
-		"conflict|google-vertex|imagen-4.0-ultra-generate-001|definition",
-		"conflict|google-vertex|imagen-4.0-ultra-generate-preview-06-06|definition",
+	sort.Strings(conflicts)
+	conflictDigest := sha256.Sum256([]byte(strings.Join(conflicts, "\n")))
+	if got, want := hex.EncodeToString(conflictDigest[:]), "87f7bd687d1519d48c7d5cad2ba8fe33710a5d3fe769a537f3e221f2063e8cfd"; got != want {
+		t.Fatalf("reviewed conflict set checksum = %s, want %s", got, want)
 	}
-	if diff := cmp.Diff(wantConflicts, conflicts); diff != "" {
-		t.Fatalf("reviewed conflict set changed (-want +got):\n%s", diff)
-	}
+	sort.Strings(missing)
 	missingDigest := sha256.Sum256([]byte(strings.Join(missing, "\n")))
-	if got, want := hex.EncodeToString(missingDigest[:]), "6eb0b7b2b831bc887a107b2a706d474b7b0ad79ef755fbbba52fac2ac79dbb50"; got != want {
+	if got, want := hex.EncodeToString(missingDigest[:]), "4e4cab8e058d3a93bb84f23f0945aa0867d2b4941bd956bdc9bfeb277eaa993f"; got != want {
 		t.Fatalf("reviewed missing-authorship set checksum = %s, want %s", got, want)
 	}
 	for key, offering := range migrated.Offerings {

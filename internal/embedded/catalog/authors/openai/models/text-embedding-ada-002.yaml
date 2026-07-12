@@ -1,9 +1,18 @@
-# text-embedding-ada-002 - AI model
+# text-embedding-ada-002 - Embedding model for semantic search, retrieval, clustering, ...
 id: text-embedding-ada-002
 name: text-embedding-ada-002
 authors:
 - id: openai
   name: OpenAI
+description: Embedding model for semantic search, retrieval, clustering, and ranking pipelines
+
+# Model metadata
+metadata:
+  release_date: 2022-12-15
+  open_weights: false
+  knowledge_cutoff: 2022-12-01
+lineage:
+  family: text-embedding
 
 # Model features
 features:
@@ -66,6 +75,20 @@ features:
   structured_outputs: false
   streaming: true
 
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.1
+    output: {}
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 8192
+  input_tokens: 0
+  output_tokens: 1536
+
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.103222Z

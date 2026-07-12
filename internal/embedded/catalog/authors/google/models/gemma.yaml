@@ -1,6 +1,9 @@
 # gemma - Google Vertex AI model: gemma
 id: gemma
 name: gemma
+authors:
+- id: google
+  name: Google
 description: |-
   Google Vertex AI model: gemma
 
@@ -69,7 +72,11 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
+extensions:
+  google-vertex:
+    fields:
+      version: gemma-2b
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.610451Z

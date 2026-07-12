@@ -90,6 +90,7 @@ generation:
 # Model limits
 limits:
   context_window: 1000000
+  input_tokens: 0
   output_tokens: 8192
 
 # Timestamps

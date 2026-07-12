@@ -1,0 +1,94 @@
+# Qwen/Qwen-Image-Edit - Qwen-Image-Edit is a next-generation image editing model bui...
+id: Qwen/Qwen-Image-Edit
+name: Qwen/Qwen-Image-Edit
+authors:
+- id: alibaba
+  name: alibaba
+description: Qwen-Image-Edit is a next-generation image editing model built on top of Qwen-Image, designed for both semantic and appearance-level edits. It excels at tasks like precise text modifications, style transfers, viewpoint transformations, and element adjustments while preserving overall visual consistency.
+
+# Model metadata
+metadata:
+  release_date: null
+  open_weights: false
+  tags:
+  - image-gen
+lineage:
+  root: Qwen/Qwen-Image-Edit
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model pricing
+pricing:
+  operations:
+    image_gen: 0.025
+  currency: USD
+extensions:
+  deepinfra:
+    fields:
+      metadata:
+        default_height: 1024
+        default_iterations: 25
+        default_width: 1024
+
+# Timestamps
+created_at: 2026-07-11T20:15:13.085647Z
+updated_at: 2026-07-11T20:15:13.085647Z

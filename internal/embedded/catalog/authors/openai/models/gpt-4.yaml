@@ -20,6 +20,7 @@ pricing:
 # Model limits
 limits:
   context_window: 8192
+  input_tokens: 0
   output_tokens: 8192
 
 # Timestamps

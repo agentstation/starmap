@@ -11,6 +11,8 @@ metadata:
   release_date: 2025-05-01
   open_weights: false
   knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-flash
 
 # Model features
 features:
@@ -20,6 +22,7 @@ features:
     - image
     output:
     - text
+    - audio
 
   # Core capabilities
   tool_calls: true
@@ -38,7 +41,7 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: false
+  top_k: true
   top_a: false
   min_p: false
   typical_p: false
@@ -72,7 +75,7 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: true
+  streaming: false
 generation:
   temperature:
     min: 0.0
@@ -80,11 +83,11 @@ generation:
     default: 1.0
   top_p:
     min: 0.0
-    max: 1.0
+    max: 0.0
     default: 0.95
   top_k:
-    min: 1
-    max: 100
+    min: 0
+    max: 0
     default: 64
 
 # Model pricing
@@ -98,9 +101,20 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 8000
-  output_tokens: 16000
+  context_window: 8192
+  input_tokens: 8192
+  output_tokens: 16384
+extensions:
+  google-ai-studio:
+    fields:
+      supported_actions:
+      - countTokens
+      - generateContent
+      supported_generation_methods:
+      - countTokens
+      - generateContent
+      version: gemini-2.5-flash-exp-tts-2025-05-19
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.0658Z

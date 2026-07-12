@@ -1,2 +1,2 @@
-//go:generate gomarkdoc -e -o README.md . --repository.default-branch main --repository.path /pkg/sources
+//go:generate gomarkdoc -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main --repository.path /pkg/sources
 package sources

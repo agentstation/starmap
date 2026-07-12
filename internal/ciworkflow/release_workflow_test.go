@@ -49,6 +49,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	config := readFixture(t, "../../.goreleaser.yaml")
 	for _, check := range []string{
+		"ignore_tags:\n    - \"catalog-payload-*\"",
 		"goos:\n      - linux\n      - darwin\n      - windows",
 		"goarch:\n      - amd64\n      - arm64",
 		"cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",

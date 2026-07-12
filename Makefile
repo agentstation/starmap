@@ -554,7 +554,7 @@ docs-check: ## Check if documentation is up to date (for CI)
 	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \
 		echo "Checking $$pkg..."; \
-		cd $$pkg && "$(GOMARKDOC)" -c -e -o README.md . --repository.default-branch main || exit 1; \
+		cd $$pkg && "$(GOMARKDOC)" -c -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main || exit 1; \
 		cd - > /dev/null; \
 	done
 	@echo "$(GREEN)All documentation is up to date$(NC)"

@@ -1,9 +1,10 @@
-# allam-2-7b - AI model
+# allam-2-7b - ALLaM-2-7b
 id: allam-2-7b
-name: allam-2-7b
+name: ALLaM-2-7b
 authors:
 - id: sdaia
   name: SDAIA
+status: active
 
 # Model features
 features:
@@ -47,7 +48,7 @@ features:
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -62,15 +63,20 @@ features:
   diversity_penalty: false
 
   # Response delivery
-  format_response: false
+  format_response: true
   structured_outputs: false
   streaming: true
 
 # Model limits
 limits:
   context_window: 4096
+  input_tokens: 0
   output_tokens: 4096
+extensions:
+  groq:
+    fields:
+      hugging_face_id: ALLaM-AI/ALLaM-2.0-7B-Instruct
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.079403Z

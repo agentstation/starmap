@@ -1,17 +1,27 @@
-# gpt-image-1 - AI model
+# gpt-image-1 - OpenAI image model for production generation, edits, and bra...
 id: gpt-image-1
 name: gpt-image-1
 authors:
 - id: openai
   name: OpenAI
+description: OpenAI image model for production generation, edits, and brand-safe visual workflows
+
+# Model metadata
+metadata:
+  release_date: 2025-04-24
+  open_weights: false
+lineage:
+  family: gpt-image
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
+    - image
 
   # Core capabilities
   tool_calls: false
@@ -68,4 +78,4 @@ features:
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.102721Z

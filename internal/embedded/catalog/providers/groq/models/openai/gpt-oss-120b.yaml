@@ -1,14 +1,18 @@
-# openai/gpt-oss-120b - AI model
+# openai/gpt-oss-120b - Open GPT reasoning model for self-hosted agents and controll...
 id: openai/gpt-oss-120b
-name: openai/gpt-oss-120b
+name: GPT OSS 120B
 authors:
 - id: openai
   name: OpenAI
+description: Open GPT reasoning model for self-hosted agents and controllable deployments
+status: active
 
 # Model metadata
 metadata:
   release_date: 2025-08-05
   open_weights: true
+lineage:
+  family: gpt-oss
 
 # Model features
 features:
@@ -19,14 +23,14 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -52,7 +56,7 @@ features:
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -67,24 +71,40 @@ features:
   diversity_penalty: false
 
   # Response delivery
-  format_response: false
-  structured_outputs: false
+  format_response: true
+  structured_outputs: true
   streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  default: null
 
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 7.5e-08
     input:
-      per_1m: 0.15
+      per_1m: 1.5e-07
     output:
-      per_1m: 0.75
+      per_1m: 6e-07
+  operations:
+    request: 0.0
+    image_gen: 0.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 131072
-  output_tokens: 32768
+  input_tokens: 0
+  output_tokens: 65536
+extensions:
+  groq:
+    fields:
+      hugging_face_id: openai/gpt-oss-120b
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.078655Z

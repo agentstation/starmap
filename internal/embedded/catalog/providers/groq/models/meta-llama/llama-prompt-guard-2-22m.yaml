@@ -1,9 +1,18 @@
-# meta-llama/llama-prompt-guard-2-22m - AI model
+# meta-llama/llama-prompt-guard-2-22m - Safety model for policy screening, moderation, and risk-awar...
 id: meta-llama/llama-prompt-guard-2-22m
-name: meta-llama/llama-prompt-guard-2-22m
+name: Llama Prompt Guard 2 22M
 authors:
 - id: meta
   name: Meta
+description: Safety model for policy screening, moderation, and risk-aware routing workflows
+status: beta
+
+# Model metadata
+metadata:
+  release_date: 2025-05-29
+  open_weights: true
+lineage:
+  family: llama
 
 # Model features
 features:
@@ -47,7 +56,7 @@ features:
   logit_bias: false
   bad_words: false
   allowed_tokens: false
-  seed: false
+  seed: true
   logprobs: false
   top_logprobs: false
   echo: false
@@ -66,11 +75,26 @@ features:
   structured_outputs: false
   streaming: true
 
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 1.5e-08
+    input:
+      per_1m: 3e-08
+    output:
+      per_1m: 3e-08
+  operations:
+    request: 0.0
+    image_gen: 0.0
+  currency: USD
+
 # Model limits
 limits:
   context_window: 512
+  input_tokens: 0
   output_tokens: 512
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T20:15:13.078994Z

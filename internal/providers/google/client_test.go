@@ -5,12 +5,47 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
+	"cloud.google.com/go/auth"
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
+
+type staticTokenProvider struct{}
+
+func (staticTokenProvider) Token(context.Context) (*auth.Token, error) {
+	return &auth.Token{Value: "test-token", Expiry: time.Now().Add(time.Hour)}, nil
+}
+
+func TestGetOrCreateVertexClientDoesNotDeadlockOnCachedCredentials(t *testing.T) {
+	client := NewClient(&catalogs.Provider{
+		ID:   catalogs.ProviderIDGoogleVertex,
+		Name: "Google Vertex AI",
+	})
+	client.projectID = "test-project"
+	client.location = "us-central1"
+	client.credentials = auth.NewCredentials(&auth.CredentialsOptions{
+		TokenProvider: staticTokenProvider{},
+	})
+
+	result := make(chan error, 1)
+	go func() {
+		_, err := client.getOrCreateGenAIClient(context.Background(), true)
+		result <- err
+	}()
+
+	select {
+	case err := <-result:
+		if err != nil {
+			t.Fatalf("getOrCreateGenAIClient: %v", err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("getOrCreateGenAIClient deadlocked while reusing cached credentials")
+	}
+}
 
 func TestConvertGenAIModelPreservesProviderFields(t *testing.T) {
 	client := NewClient(&catalogs.Provider{

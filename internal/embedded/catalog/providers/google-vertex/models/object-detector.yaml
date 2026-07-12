@@ -1,6 +1,9 @@
 # object-detector - Google Vertex AI model: object-detector
 id: object-detector
 name: object-detector
+authors:
+- id: google
+  name: Google
 description: |-
   Google Vertex AI model: object-detector
 
@@ -69,7 +72,11 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
+extensions:
+  google-vertex:
+    fields:
+      version: "001"
 
 # Timestamps
 created_at: null
-updated_at: 2025-10-19T18:13:08Z
+updated_at: 2026-07-11T23:53:11.612152Z

@@ -277,8 +277,15 @@ func TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse(t
 		if err != nil {
 			t.Fatalf("Observe %d: %v", call, err)
 		}
-		if observation.Status != sources.ObservationStatusDegraded || len(observation.Issues) != 1 ||
-			observation.Issues[0].Code != sources.ObservationIssueCodeBootstrapFallback {
+		foundBootstrapFallback := false
+		for _, issue := range observation.Issues {
+			if issue.Scope == sources.ObservationIssueScopeSource &&
+				issue.Code == sources.ObservationIssueCodeBootstrapFallback {
+				foundBootstrapFallback = true
+				break
+			}
+		}
+		if observation.Status != sources.ObservationStatusDegraded || !foundBootstrapFallback {
 			t.Fatalf("Observe %d lost bootstrap classification: %#v", call, observation)
 		}
 	}

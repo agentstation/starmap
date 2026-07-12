@@ -1,0 +1,161 @@
+# gpt-5.6-terra - Balanced GPT-5.6 model for capable, cost-efficient everyday ...
+id: gpt-5.6-terra
+name: gpt-5.6-terra
+authors:
+- id: openai
+  name: openai
+description: Balanced GPT-5.6 model for capable, cost-efficient everyday work
+
+# Model metadata
+metadata:
+  release_date: 2026-07-09
+  open_weights: false
+  knowledge_cutoff: 2026-02-16
+lineage:
+  family: gpt-mini
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    - pdf
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  - maximum
+  default: null
+modes:
+  fast:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.5
+        cache_write:
+          per_1m: 6.25
+        input:
+          per_1m: 5.0
+        output:
+          per_1m: 30.0
+      currency: USD
+    provider:
+      body:
+        service_tier: priority
+  pro:
+    provider:
+      body:
+        reasoning:
+          mode: pro
+
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.25
+    cache_write:
+      per_1m: 3.125
+    input:
+      per_1m: 2.5
+    output:
+      per_1m: 15.0
+  tiers:
+  - type: context
+    size: 272000
+    tokens:
+      cache_read:
+        per_1m: 0.5
+      cache_write:
+        per_1m: 6.25
+      input:
+        per_1m: 5.0
+      output:
+        per_1m: 22.5
+  - name: context_over_200k
+    type: context
+    size: 200000
+    tokens:
+      cache_read:
+        per_1m: 0.5
+      cache_write:
+        per_1m: 6.25
+      input:
+        per_1m: 5.0
+      output:
+        per_1m: 22.5
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 1050000
+  input_tokens: 922000
+  output_tokens: 128000
+extensions:
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: effort
+        values:
+        - none
+        - xhigh
+
+# Timestamps
+created_at: 2026-06-23T15:27:39Z
+updated_at: 2026-07-09T00:00:00Z

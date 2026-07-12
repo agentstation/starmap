@@ -1,21 +1,25 @@
-# gpt-5-pro - AI model
+# gpt-5-pro - Higher-accuracy GPT-5 tier for tough analysis, coding review...
 id: gpt-5-pro
 name: gpt-5-pro
 authors:
 - id: openai
   name: OpenAI
+description: Higher-accuracy GPT-5 tier for tough analysis, coding reviews, and planning
 
 # Model metadata
 metadata:
-  release_date: 2025-09-15
+  release_date: 2025-10-06
   open_weights: false
   knowledge_cutoff: 2024-09-30
+lineage:
+  family: gpt-pro
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
 
@@ -71,21 +75,26 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+reasoning:
+  levels:
+  - high
+  default: null
 
 # Model pricing
 pricing:
   tokens:
     input:
-      per_1m: 7.0
+      per_1m: 15.0
     output:
-      per_1m: 28.0
+      per_1m: 120.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 400000
-  output_tokens: 128000
+  input_tokens: 272000
+  output_tokens: 272000
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2025-10-20T22:31:57Z
+updated_at: 2026-07-11T20:15:13.101577Z
