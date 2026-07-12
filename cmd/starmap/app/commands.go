@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/cmd/starmap/cmd/auth"
@@ -91,11 +93,11 @@ func (a *App) NewVersionCommand() *cobra.Command {
 		Use:   "version",
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, _ []string) {
-			cmd.Printf("starmap %s\n", a.version)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "starmap %s\n", a.version)
 			if a.config.Verbose {
-				cmd.Printf("  commit:   %s\n", a.commit)
-				cmd.Printf("  built:    %s\n", a.date)
-				cmd.Printf("  built by: %s\n", a.builtBy)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "  commit:   %s\n", a.commit)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "  built:    %s\n", a.date)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "  built by: %s\n", a.builtBy)
 			}
 		},
 	}
