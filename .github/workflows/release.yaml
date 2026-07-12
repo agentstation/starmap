@@ -112,6 +112,41 @@ jobs:
         with:
           subject-checksums: dist/checksums.txt
 
+      - name: Verify draft release assets before publication
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gpg --batch --verify dist/checksums.txt.sig dist/checksums.txt
+          (
+            cd dist
+            sha256sum --check checksums.txt
+          )
+          while read -r _ asset; do
+            gh attestation verify \
+              "dist/$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
+              --deny-self-hosted-runners
+          done < dist/checksums.txt
+
+      - name: Publish verified immutable release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            gh release edit "$GITHUB_REF_NAME" --draft=false --latest=false
+          else
+            gh release edit "$GITHUB_REF_NAME" --draft=false --latest
+          fi
+          for _ in {1..10}; do
+            if [[ "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$GITHUB_REF_NAME" --jq .immutable)" == true ]]; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "release did not become immutable after publication" >&2
+          exit 1
+
       - name: Verify downloaded release assets and publisher identity
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -133,6 +168,7 @@ jobs:
               --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
               --deny-self-hosted-runners
           done < "$DOWNLOAD_DIRECTORY/checksums.txt"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$GITHUB_REF_NAME" --jq .immutable)" = true
 
       - name: Upload diagnostics on failure
         if: failure()

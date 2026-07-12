@@ -154,7 +154,10 @@ release:
   name_template: "v{{ .Version }}"
   
   # Attach built binaries
-  draft: false
+  # Immutable-release repositories must assemble and verify assets before the
+  # one-way publication transition. The release workflow publishes this draft
+  # only after checksums, signatures, SBOMs, and attestations pass.
+  draft: true
   prerelease: auto
   make_latest: '{{ if .Prerelease }}false{{ else }}true{{ end }}'
   mode: keep-existing
