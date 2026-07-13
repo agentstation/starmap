@@ -1,10 +1,10 @@
 # Enterprise provider expansion report
 
-Status: P13.39 local closeout complete; protected exact-head proof blocked on publication authorization
+Status: P13.39 complete; protected exact-head draft-PR proof green
 
-This report describes the exact uncommitted tree rooted at protected-main commit
-`9508ee7866e4683e001e7ad153319d348433045d`. It is not release, deployment, or
-hosted-CI evidence. The durable task and finding ledger remains
+This report describes the enterprise catalog implemented by draft PR #40. It is
+not release, deployment, publication, or merge evidence. Exact hosted-check
+commits, runs, jobs, and the durable task/finding closeout remain in
 [`STARPORT_CATALOG_CONTROL_PLANE.md`](STARPORT_CATALOG_CONTROL_PLANE.md).
 
 ## Catalog products and counts
@@ -122,10 +122,10 @@ identifies its pricing authority and any live or document observation date.
   account/region/scope and explicit canonical mappings are supplied without
   weakening public/customer isolation.
 
-## Remaining closeout blocker
+## Hosted verification and authorization boundary
 
-P13.12, P13.17, P13.21, P13.26, P13.38, their wave rows, and P13.39 remain
-`IN_PROGRESS` only because the exact provider-expansion head does not exist on
-GitHub. Completing them requires user authorization to stage, commit, push, and
-open a protected PR, followed by both required exact-head checks. Publishing,
-merging, releasing, or deploying remains separately unauthorized.
+Draft PR #40 carries the protected exact-head `Verification Gate` and
+`Security & Reliability` checks. The durable ledger records the final commit,
+workflow run, job IDs, and results after the evidence-only closeout head passes.
+The PR remains draft. Publishing, merging, releasing, and deploying remain
+separately unauthorized and did not occur.
