@@ -81,7 +81,7 @@ func sameOriginRedirectPolicy(origin *url.URL, previous func(*http.Request, []*h
 }
 
 // FetchCurrent fetches the current manifest followed by its immutable,
-// generation-addressed snapshot and validates their binding and compatibility.
+// generation-addressed snapshot and validates their binding and exact schema.
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error) {
 	manifestData, err := c.fetch(ctx, ManifestPath, ManifestMediaType)
 	if err != nil {
@@ -91,10 +91,10 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, err
 	if err != nil {
 		return catalogstore.Generation{}, errors.WrapResource("parse", "remote catalog manifest", "current", err)
 	}
-	if !manifest.ConsumerCompatibility.SupportsSchema(c.schemaVersion) {
+	if manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion || c.schemaVersion != catalogs.CurrentCatalogSchemaVersion {
 		return catalogstore.Generation{}, &errors.ValidationError{
 			Field: "catalog_remote.schema_version", Value: c.schemaVersion,
-			Message: fmt.Sprintf("is incompatible with remote range %d..%d", manifest.ConsumerCompatibility.MinSchemaVersion, manifest.ConsumerCompatibility.MaxSchemaVersion),
+			Message: fmt.Sprintf("must match exact current schema %d", catalogs.CurrentCatalogSchemaVersion),
 		}
 	}
 	payload, err := c.fetch(ctx, SnapshotPath(manifest.GenerationID), catalogs.CatalogPayloadMediaType)

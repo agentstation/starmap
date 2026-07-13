@@ -38,8 +38,6 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func \(c \*Catalog\) SetEndpoint\(endpoint catalogs.Endpoint\) error](<#Catalog.SetEndpoint>)
   - [func \(c \*Catalog\) SetProvider\(provider catalogs.Provider\) error](<#Catalog.SetProvider>)
   - [func \(c \*Catalog\) SetProviderModel\(providerID catalogs.ProviderID, model catalogs.Model\) error](<#Catalog.SetProviderModel>)
-- [type Client](<#Client>)
-  - [func NewClient\(outputDir string\) \*Client](<#NewClient>)
 - [type Cost](<#Cost>)
 - [type CostTier](<#CostTier>)
 - [type CostTierInfo](<#CostTierInfo>)
@@ -68,7 +66,6 @@ import "github.com/agentstation/starmap/internal/sources/modelsdev"
   - [func \(s \*GitSource\) Setup\(providers \*catalogs.Providers\) error](<#GitSource.Setup>)
 - [type GitSourceOption](<#GitSourceOption>)
   - [func WithGitCommit\(commit string\) GitSourceOption](<#WithGitCommit>)
-  - [func WithGitSourcesDir\(dir string\) GitSourceOption](<#WithGitSourcesDir>)
   - [func WithSourcesDir\(dir string\) GitSourceOption](<#WithSourcesDir>)
 - [type HTTPAcquisition](<#HTTPAcquisition>)
 - [type HTTPAcquisitionResult](<#HTTPAcquisitionResult>)
@@ -342,24 +339,6 @@ func (c *Catalog) SetProviderModel(providerID catalogs.ProviderID, model catalog
 
 SetProviderModel sets a model on a provider.
 
-<a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L39>)
-
-Client is an alias for backward compatibility.
-
-```go
-type Client = GitClient
-```
-
-<a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L42>)
-
-```go
-func NewClient(outputDir string) *Client
-```
-
-NewClient creates a new models.dev git client.
-
 <a name="Cost"></a>
 ## type [Cost](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L121-L132>)
 
@@ -463,7 +442,7 @@ type GitClient struct {
 ```
 
 <a name="NewGitClient"></a>
-### func [NewGitClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L54>)
+### func [NewGitClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L39>)
 
 ```go
 func NewGitClient(outputDir string) *GitClient
@@ -472,7 +451,7 @@ func NewGitClient(outputDir string) *GitClient
 NewGitClient creates a new models.dev git client.
 
 <a name="NewPinnedGitClient"></a>
-### func [NewPinnedGitClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L66>)
+### func [NewPinnedGitClient](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L51>)
 
 ```go
 func NewPinnedGitClient(outputDir, commit string) *GitClient
@@ -481,7 +460,7 @@ func NewPinnedGitClient(outputDir, commit string) *GitClient
 NewPinnedGitClient creates a Git client that checks out one exact commit.
 
 <a name="GitClient.BuildAPI"></a>
-### func \(\*GitClient\) [BuildAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L119>)
+### func \(\*GitClient\) [BuildAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L104>)
 
 ```go
 func (c *GitClient) BuildAPI(ctx context.Context) error
@@ -490,7 +469,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error
 BuildAPI runs the build process to generate api.json.
 
 <a name="GitClient.Cleanup"></a>
-### func \(\*GitClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L190>)
+### func \(\*GitClient\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L175>)
 
 ```go
 func (c *GitClient) Cleanup() error
@@ -499,7 +478,7 @@ func (c *GitClient) Cleanup() error
 Cleanup removes the models.dev repository.
 
 <a name="GitClient.EnsureRepository"></a>
-### func \(\*GitClient\) [EnsureRepository](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L73>)
+### func \(\*GitClient\) [EnsureRepository](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L58>)
 
 ```go
 func (c *GitClient) EnsureRepository(ctx context.Context) error
@@ -508,7 +487,7 @@ func (c *GitClient) EnsureRepository(ctx context.Context) error
 EnsureRepository ensures the models.dev repository is available and up to date.
 
 <a name="GitClient.GetAPIPath"></a>
-### func \(\*GitClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L180>)
+### func \(\*GitClient\) [GetAPIPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L165>)
 
 ```go
 func (c *GitClient) GetAPIPath() string
@@ -517,7 +496,7 @@ func (c *GitClient) GetAPIPath() string
 GetAPIPath returns the path to the generated api.json file.
 
 <a name="GitClient.GetProvidersPath"></a>
-### func \(\*GitClient\) [GetProvidersPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L185>)
+### func \(\*GitClient\) [GetProvidersPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L170>)
 
 ```go
 func (c *GitClient) GetProvidersPath() string
@@ -526,7 +505,7 @@ func (c *GitClient) GetProvidersPath() string
 GetProvidersPath returns the path to the providers directory.
 
 <a name="GitClient.PrepareRepository"></a>
-### func \(\*GitClient\) [PrepareRepository](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L79>)
+### func \(\*GitClient\) [PrepareRepository](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git_client.go#L64>)
 
 ```go
 func (c *GitClient) PrepareRepository(ctx context.Context) (GitInputs, error)
@@ -568,7 +547,7 @@ func NewGitSource(opts ...GitSourceOption) *GitSource
 NewGitSource creates a new models.dev git source.
 
 <a name="GitSource.Cleanup"></a>
-### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L156>)
+### func \(\*GitSource\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L151>)
 
 ```go
 func (s *GitSource) Cleanup() error
@@ -577,7 +556,7 @@ func (s *GitSource) Cleanup() error
 Cleanup releases any resources.
 
 <a name="GitSource.Dependencies"></a>
-### func \(\*GitSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L163>)
+### func \(\*GitSource\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L158>)
 
 ```go
 func (s *GitSource) Dependencies() []sources.Dependency
@@ -586,7 +565,7 @@ func (s *GitSource) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies required by this source. Git source requires bun \(for building\) and git \(for cloning\).
 
 <a name="GitSource.ID"></a>
-### func \(\*GitSource\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L58>)
+### func \(\*GitSource\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L53>)
 
 ```go
 func (s *GitSource) ID() sources.ID
@@ -595,7 +574,7 @@ func (s *GitSource) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="GitSource.IsOptional"></a>
-### func \(\*GitSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L197>)
+### func \(\*GitSource\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L192>)
 
 ```go
 func (s *GitSource) IsOptional() bool
@@ -604,7 +583,7 @@ func (s *GitSource) IsOptional() bool
 IsOptional returns whether this source is optional. Git source is optional \- HTTP source provides the same data without dependencies.
 
 <a name="GitSource.Name"></a>
-### func \(\*GitSource\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L63>)
+### func \(\*GitSource\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L58>)
 
 ```go
 func (s *GitSource) Name() string
@@ -613,7 +592,7 @@ func (s *GitSource) Name() string
 Name returns the human\-friendly name of this source.
 
 <a name="GitSource.Observe"></a>
-### func \(\*GitSource\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L102>)
+### func \(\*GitSource\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L97>)
 
 ```go
 func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error)
@@ -622,7 +601,7 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 Observe returns a catalog with mapped models.dev data directly.
 
 <a name="GitSource.Setup"></a>
-### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L96>)
+### func \(\*GitSource\) [Setup](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L91>)
 
 ```go
 func (s *GitSource) Setup(providers *catalogs.Providers) error
@@ -647,15 +626,6 @@ func WithGitCommit(commit string) GitSourceOption
 ```
 
 WithGitCommit pins Git verification to one exact commit.
-
-<a name="WithGitSourcesDir"></a>
-### func [WithGitSourcesDir](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L53>)
-
-```go
-func WithGitSourcesDir(dir string) GitSourceOption
-```
-
-WithGitSourcesDir is an alias for WithSourcesDir for backward compatibility.
 
 <a name="WithSourcesDir"></a>
 ### func [WithSourcesDir](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/git.go#L46>)

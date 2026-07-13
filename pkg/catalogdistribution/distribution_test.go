@@ -3,6 +3,7 @@ package catalogdistribution
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -81,17 +82,16 @@ func TestHostedDistributionVerifiedLatestPointerReturnsExactGeneration(t *testin
 
 func TestHostedDistributionRejectsCrossOriginLatestAsset(t *testing.T) {
 	pointer := LatestPointer{
-		Version: PointerVersion, Channel: ChannelStable, GenerationID: "generation", SchemaVersion: 1,
-		ConsumerCompatibility: catalogs.ConsumerCompatibility{MinSchemaVersion: 1, MaxSchemaVersion: 1},
-		Artifact:              AssetDescriptor{URL: "https://attacker.example/catalog.tar.gz", MediaType: catalogartifact.MediaType},
-		Attestation:           AssetDescriptor{URL: "/attestation", MediaType: "application/vnd.in-toto+json"},
+		Version: PointerVersion, Channel: ChannelStable, GenerationID: "generation", SchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		Artifact:    AssetDescriptor{URL: "https://attacker.example/catalog.tar.gz", MediaType: catalogartifact.MediaType},
+		Attestation: AssetDescriptor{URL: "/attestation", MediaType: "application/vnd.in-toto+json"},
 	}
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(pointer)
 	}))
 	defer server.Close()
-	client, err := NewClient(server.URL, server.Client(), 1)
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
@@ -146,16 +146,8 @@ func TestHostedDistributionRejectsArtifactChecksumDrift(t *testing.T) {
 	}
 }
 
-func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
+func TestDistributionNegotiationRequiresExactCurrentSchema(t *testing.T) {
 	published := hostedFixture(t)
-	published.Generation.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{
-		MinSchemaVersion: 1, MaxSchemaVersion: 2,
-	}
-	artifact, err := catalogartifact.Build(published.Generation)
-	if err != nil {
-		t.Fatalf("Build widened compatibility artifact: %v", err)
-	}
-	published.Artifact = artifact
 	repository := NewMemoryRepository()
 	if err := repository.Publish(published); err != nil {
 		t.Fatalf("Publish: %v", err)
@@ -168,23 +160,21 @@ func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
 	server := httptest.NewServer(handler)
 	defer server.Close()
 
-	compatible, err := NewClient(server.URL, server.Client(), 2)
+	compatible, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient compatible: %v", err)
 	}
 	if _, err := compatible.FetchLatest(context.Background()); err != nil {
-		t.Fatalf("schema-2 consumer rejected declared compatible schema-1 payload: %v", err)
+		t.Fatalf("exact-schema consumer rejected current payload: %v", err)
 	}
-	incompatible, err := NewClient(server.URL, server.Client(), 3)
-	if err != nil {
-		t.Fatalf("NewClient incompatible: %v", err)
-	}
-	if _, err := incompatible.FetchLatest(context.Background()); err == nil {
-		t.Fatal("schema-3 consumer accepted range [1,2]")
+	for _, schemaVersion := range []uint64{1, catalogs.CurrentCatalogSchemaVersion + 1} {
+		if _, err := NewClient(server.URL, server.Client(), schemaVersion); err == nil {
+			t.Fatalf("NewClient accepted schema %d", schemaVersion)
+		}
 	}
 
 	typeOfPointer := reflect.TypeFor[LatestPointer]()
-	for _, forbidden := range []string{"StarmapVersion", "StarportVersion", "BinaryVersion", "ReleaseVersion"} {
+	for _, forbidden := range []string{"ConsumerCompatibility", "StarmapVersion", "StarportVersion", "BinaryVersion", "ReleaseVersion"} {
 		if _, found := typeOfPointer.FieldByName(forbidden); found {
 			t.Fatalf("latest pointer couples catalog compatibility to %s", forbidden)
 		}
@@ -246,14 +236,14 @@ func TestETagImmutableCacheAndRollbackRetainPriorGenerations(t *testing.T) {
 		}
 	}
 
-	assertConditionalCache(APIPrefix+"/latest?schema_version=1", LatestCacheControl)
+	assertConditionalCache(fmt.Sprintf("%s/latest?schema_version=%d", APIPrefix, catalogs.CurrentCatalogSchemaVersion), LatestCacheControl)
 	assertConditionalCache(APIPrefix+"/"+second.Generation.Manifest.GenerationID, ImmutableCacheControl)
 	assertConditionalCache(APIPrefix+"/"+first.Generation.Manifest.GenerationID, ImmutableCacheControl)
 
 	if err := repository.Rollback(ChannelStable, first.Generation.Manifest.GenerationID, "rollback fixture"); err != nil {
 		t.Fatalf("Rollback first: %v", err)
 	}
-	client, err := NewClient(server.URL, server.Client(), 1)
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}

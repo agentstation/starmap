@@ -118,7 +118,7 @@ When assigning short flags, follow this priority:
 2. **Common conventions** - Prefer industry standards:
    - `-f` for `--force` or `--file`
    - `-y` for `--yes` (auto-approve)
-   - `-n` for `--dry-run` (alternative to `--dry`)
+   - `-n` for a future non-destructive operation when unambiguous
    - `-a` for `--all`
    - `-l` for `--long` or `--list`
 3. **Mnemonic first letter** - Use first letter of long flag when possible
@@ -174,21 +174,6 @@ catCmd.Flags().StringVarP(&catFilename, "filename", "f", "", "...")
 
 **Example**: `embed` command uses `-?` for help, freeing `-h` for ls (human-readable) and `-f` for cat (filename).
 
-### Flag Aliases
-
-Support both long and short forms for common patterns:
-
-```go
-// Primary flag
-cmd.Flags().BoolVar(&flags.Dry, "dry", false, "Preview changes")
-
-// Deprecated alias for compatibility
-cmd.Flags().BoolVar(&flags.Dry, "dry-run", false, "Preview changes (alias for --dry)")
-_ = cmd.Flags().MarkDeprecated("dry-run", "use --dry instead")
-```
-
-Prefer **shorter primary flags** (`--dry`) with longer deprecated aliases (`--dry-run`) for backward compatibility.
-
 ## Testing Flag Changes
 
 Before committing flag changes:
@@ -204,8 +189,8 @@ Before committing flag changes:
    # Verify global flags work
    ./starmap <command> -v --dry
 
-   # Test deprecated flags show warnings
-   ./starmap <command> --old-flag
+   # Removed prelaunch flags must fail as unknown
+   ! ./starmap <command> --old-flag
    ```
 
 3. **Run full test suite**
@@ -369,6 +354,6 @@ starmap sync           # Alias for "update"
 **Special Cases**:
 - Embed commands: Use `-?` for help
 - Update command: Removed `--provider` flag, use positional
-- Dry run: `--dry` is primary, `--dry-run` deprecated
+- Dry run: `--dry`
 
 **Questions?** See examples in this document or check `cmd/starmap/cmd/*/` source code.

@@ -81,10 +81,6 @@ func Generation() (catalogstore.Generation, error) {
 			Status: observation.Status, EvidenceChecksum: observation.EvidenceChecksum,
 		}},
 		Completeness: catalogs.GenerationCompletenessComplete,
-		ConsumerCompatibility: catalogs.ConsumerCompatibility{
-			MinSchemaVersion: bootstrapManifest.SchemaVersion,
-			MaxSchemaVersion: bootstrapManifest.SchemaVersion,
-		},
 	}
 	generation := catalogstore.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {

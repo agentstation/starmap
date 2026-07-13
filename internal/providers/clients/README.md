@@ -19,7 +19,7 @@ Package clients provides provider client registry functions. This package is sep
 
 
 <a name="FetchRawResult"></a>
-## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L61-L66>)
+## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L115-L120>)
 
 FetchRawResult contains the result of a raw fetch operation.
 
@@ -33,7 +33,7 @@ type FetchRawResult struct {
 ```
 
 <a name="FetchRaw"></a>
-### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L71>)
+### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L125>)
 
 ```go
 func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) (*FetchRawResult, error)
@@ -42,7 +42,7 @@ func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string)
 FetchRaw fetches raw response data from a provider's API endpoint. This function is used for fetching raw API responses for testdata generation. Returns a FetchRawResult containing the data, response headers, latency, and URL.
 
 <a name="ProviderClient"></a>
-## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L26-L35>)
+## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L38-L47>)
 
 ProviderClient defines the interface for provider API clients. Each provider implementation must satisfy this interface to fetch model information.
 
@@ -60,7 +60,7 @@ type ProviderClient interface {
 ```
 
 <a name="NewProvider"></a>
-### func [NewProvider](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L38>)
+### func [NewProvider](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L50>)
 
 ```go
 func NewProvider(provider *catalogs.Provider) (ProviderClient, error)

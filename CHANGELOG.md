@@ -45,14 +45,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   err = sm.Update(ctx)
   ```
 
-- **Canonical model-definition lookup and explicit legacy adapter**:
+- **Canonical model-definition and provider-offering lookup**:
   `catalog.FindModel(id)` now returns `catalogs.ModelDefinition`. Provider price,
   limits, availability, modes, and request behavior are read through
-  `catalog.Offering(providerID, providerModelID)`. Code that requires the former
-  flattened `catalogs.Model` result migrates mechanically to
-  `catalog.LegacyV0().FindModel(id)`; the same adapter exposes legacy `Models`,
-  `ProviderModel`, and `ProviderModels` reads. The adapter is schema version 0;
-  canonical catalogs are schema version 1.
+  `catalog.Offering(providerID, providerModelID)`. Immutable catalogs expose no
+  flattened-model compatibility adapter. Canonical catalog payloads use schema
+  version 2 and require explicit definitions and offerings.
 
 - **`Client.Catalog()` now returns a concrete immutable catalog**: the old
   `Catalog() (catalogs.Snapshot, error)` signature is replaced by
@@ -145,11 +143,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   still falls back to the embedded bootstrap, while existing corrupt YAML,
   unreadable managed files, and invalid provider/author records now propagate
   typed errors and make `starmap.New` fail before publication.
-- **Legacy v0 migration reader**: the shipped multi-file YAML layout is frozen
-  as a fixture and can be converted deterministically into schema-v1 catalog
-  payload bytes and a validated generation. Migration requires explicit IDs,
-  UTC time, and validator version rather than inventing missing historical
-  metadata; corrupt legacy input remains a typed parse failure.
+- **Prelaunch schema-v2 clean break**: catalog payload, bootstrap, remote,
+  artifact, and hosted-distribution readers accept only exact schema version 2.
+  Schema-v1 payloads and manifests fail before publication; no on-read format
+  migration or old-directory discovery is shipped.
 - **New `starmap auth` Command**: Top-level authentication helper in "setup" group
   - `starmap auth gcloud` → Google Cloud authentication setup (ADC configuration)
   - Provides guidance to use `starmap providers` for viewing auth status

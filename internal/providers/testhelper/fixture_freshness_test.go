@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/constants"
 )
@@ -40,14 +41,14 @@ func TestProviderFixtureFreshnessRejectsMissingStaleAndTamperedMetadata(t *testi
 	}
 	metadata := FixtureMetadata{
 		Version: 1, Provider: filepath.Base(filepath.Dir(filepath.Dir(fixture))), FetchedAt: now.Add(-2 * time.Hour),
-		SourceRevision: catalogmeta.ObservationRevision{Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: fixtureChecksum([]byte(`{"data":[]}`))},
-		Payload:        FixturePayload{Path: filepath.Base(fixture), Checksum: fixtureChecksum([]byte(`{"data":[]}`))}, MaxAge: time.Hour.String(),
+		SourceRevision: catalogmeta.ObservationRevision{Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: providerfixture.Checksum([]byte(`{"data":[]}`))},
+		Payload:        FixturePayload{Path: filepath.Base(fixture), Checksum: providerfixture.Checksum([]byte(`{"data":[]}`))}, MaxAge: time.Hour.String(),
 	}
 	data, err := json.Marshal(metadata)
 	if err != nil {
 		t.Fatalf("Marshal: %v", err)
 	}
-	if err := os.WriteFile(fixtureMetadataPath(fixture), data, constants.SecureFilePermissions); err != nil {
+	if err := os.WriteFile(providerfixture.MetadataPath(fixture), data, constants.SecureFilePermissions); err != nil {
 		t.Fatalf("WriteFile metadata: %v", err)
 	}
 	if err := VerifyFixture(fixture, now); err == nil {
@@ -56,7 +57,7 @@ func TestProviderFixtureFreshnessRejectsMissingStaleAndTamperedMetadata(t *testi
 	metadata.FetchedAt = now
 	metadata.Payload.Checksum = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 	data, _ = json.Marshal(metadata)
-	if err := os.WriteFile(fixtureMetadataPath(fixture), data, constants.SecureFilePermissions); err != nil {
+	if err := os.WriteFile(providerfixture.MetadataPath(fixture), data, constants.SecureFilePermissions); err != nil {
 		t.Fatalf("WriteFile tampered metadata: %v", err)
 	}
 	if err := VerifyFixture(fixture, now); err == nil {
@@ -64,29 +65,19 @@ func TestProviderFixtureFreshnessRejectsMissingStaleAndTamperedMetadata(t *testi
 	}
 }
 
-func TestProviderFixtureRefreshFailurePropagatesNonZero(t *testing.T) {
+func TestProviderFixtureRefreshCommandFailurePropagatesNonZero(t *testing.T) {
 	root, err := filepath.Abs(filepath.Join("..", "..", ".."))
 	if err != nil {
 		t.Fatalf("repository root: %v", err)
 	}
-	for _, test := range []struct {
-		name     string
-		exitCode string
-	}{
-		{name: "test command failure", exitCode: "42"},
-		{name: "successful no-op refresh", exitCode: "0"},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			fakeGo := filepath.Join(t.TempDir(), "fake-go")
-			if err := os.WriteFile(fakeGo, []byte("#!/bin/sh\nexit "+test.exitCode+"\n"), constants.ExecutablePermissions); err != nil {
-				t.Fatalf("WriteFile fake go: %v", err)
-			}
-			command := exec.Command("bash", filepath.Join(root, "scripts", "refresh-provider-testdata.sh"), "openai")
-			command.Dir = root
-			command.Env = append(os.Environ(), "STARMAP_GO_TEST_BIN="+fakeGo)
-			if err := command.Run(); err == nil {
-				t.Fatal("provider refresh helper reported success without a verified refresh")
-			}
-		})
+	fakeGo := filepath.Join(t.TempDir(), "fake-go")
+	if err := os.WriteFile(fakeGo, []byte("#!/bin/sh\nexit 42\n"), constants.ExecutablePermissions); err != nil {
+		t.Fatalf("WriteFile fake go: %v", err)
+	}
+	command := exec.Command("bash", filepath.Join(root, "scripts", "refresh-provider-testdata.sh"), "openai")
+	command.Dir = root
+	command.Env = append(os.Environ(), "STARMAP_GO_RUN_BIN="+fakeGo)
+	if err := command.Run(); err == nil {
+		t.Fatal("provider refresh helper suppressed command failure")
 	}
 }

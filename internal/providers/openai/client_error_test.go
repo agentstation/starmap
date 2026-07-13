@@ -234,7 +234,7 @@ func TestNewClientMappingValidationRejectsInvalidConfiguredPaths(t *testing.T) {
 		{
 			name: "destination", mapping: catalogs.FieldMapping{
 				From: "context_window", To: "unknown.destination",
-			}, wantField: "field_mappings.to",
+			}, wantField: "provider.catalog.endpoint.field_mappings[0].to",
 		},
 	}
 	for _, test := range tests {

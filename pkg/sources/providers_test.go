@@ -17,6 +17,26 @@ type providerFetcherTestClient struct {
 	err    error
 }
 
+type retryingProviderFetcherTestClient struct {
+	attempts int
+	status   int
+}
+
+func (c *retryingProviderFetcherTestClient) ListModels(context.Context) ([]catalogs.Model, error) {
+	c.attempts++
+	if c.attempts < 3 || c.status != 0 {
+		status := c.status
+		if status == 0 {
+			status = http.StatusTooManyRequests
+		}
+		return nil, &pkgerrors.APIError{Provider: "mistral", StatusCode: status, Message: "fixture"}
+	}
+	return []catalogs.Model{{ID: "mistral-small-latest", Name: "Mistral Small"}}, nil
+}
+
+func (*retryingProviderFetcherTestClient) IsAPIKeyRequired() bool { return false }
+func (*retryingProviderFetcherTestClient) HasAPIKey() bool        { return true }
+
 func (c providerFetcherTestClient) ListModels(context.Context) ([]catalogs.Model, error) {
 	return c.models, c.err
 }
@@ -78,6 +98,29 @@ func TestProviderFetcherFetchModelsUsesInjectedFactory(t *testing.T) {
 	}
 	if len(models) != 1 || models[0].ID != "model-a" {
 		t.Fatalf("Expected fetched model, got %#v", models)
+	}
+}
+
+func TestProviderFetcherAppliesBoundedRetryPolicy(t *testing.T) {
+	provider := providerForFetcherTest(catalogs.ProviderIDMistralAI)
+	client := &retryingProviderFetcherTestClient{}
+	policy := ProviderRetryPolicy{MaxAttempts: 3, BaseDelay: time.Nanosecond, MaxDelay: time.Nanosecond}
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) { return client, nil }),
+		WithProviderRetryPolicy(policy),
+	)
+	models, err := fetcher.FetchModels(context.Background(), &provider)
+	if err != nil || client.attempts != 3 || len(models) != 1 {
+		t.Fatalf("retry result = attempts %d models %#v err %v", client.attempts, models, err)
+	}
+
+	terminal := &retryingProviderFetcherTestClient{status: http.StatusUnauthorized}
+	fetcher = NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) { return terminal, nil }),
+		WithProviderRetryPolicy(policy),
+	)
+	if _, err := fetcher.FetchModels(context.Background(), &provider); err == nil || terminal.attempts != 1 {
+		t.Fatalf("terminal retry = attempts %d err %v", terminal.attempts, err)
 	}
 }
 

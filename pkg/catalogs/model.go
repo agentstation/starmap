@@ -50,6 +50,17 @@ type Model struct {
 	Pricing *ModelPricing `json:"pricing,omitempty" yaml:"pricing,omitempty"` // Optional pricing information
 	Limits  *ModelLimits  `json:"limits,omitempty" yaml:"limits,omitempty"`   // Model limits
 
+	// Provider invocation facts retained during source-to-offering projection.
+	InvocationAPIs           []InvocationAPI              `json:"invocation_apis,omitempty" yaml:"invocation_apis,omitempty"`
+	OfferingEndpoint         ProviderOfferingEndpoint     `json:"offering_endpoint,omitempty" yaml:"offering_endpoint,omitempty"`
+	OfferingAccess           *OfferingAccess              `json:"offering_access,omitempty" yaml:"offering_access,omitempty"`
+	OfferingDeployment       ProviderDeployment           `json:"offering_deployment,omitempty" yaml:"offering_deployment,omitempty"`
+	DefinitionID             ModelDefinitionID            `json:"definition_id,omitempty" yaml:"definition_id,omitempty"`
+	OfferingAvailability     OfferingAvailability         `json:"offering_availability,omitempty" yaml:"offering_availability,omitempty"`
+	AggregatorUpstream       *AggregatorUpstream          `json:"aggregator_upstream,omitempty" yaml:"aggregator_upstream,omitempty"`
+	OfferingRegions          []CloudRegion                `json:"offering_regions,omitempty" yaml:"offering_regions,omitempty"`
+	OfferingInferenceProfile *CrossRegionInferenceProfile `json:"offering_inference_profile,omitempty" yaml:"offering_inference_profile,omitempty"`
+
 	// Extensions - controlled source-specific fields that are not canonical schema
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
@@ -76,8 +87,9 @@ type ModelLineage struct {
 
 // ModelMode represents an alternate provider service mode for a model.
 type ModelMode struct {
-	Pricing  *ModelPricing      `json:"pricing,omitempty" yaml:"pricing,omitempty"`   // Mode-specific pricing
-	Provider *ModelProviderMode `json:"provider,omitempty" yaml:"provider,omitempty"` // Mode-specific provider request overrides
+	Pricing    *ModelPricing       `json:"pricing,omitempty" yaml:"pricing,omitempty"`       // Mode-specific pricing
+	Deployment *ProviderDeployment `json:"deployment,omitempty" yaml:"deployment,omitempty"` // Mode-specific deployment form
+	Provider   *ModelProviderMode  `json:"provider,omitempty" yaml:"provider,omitempty"`     // Mode-specific provider request overrides
 }
 
 // ModelProviderMode represents provider request overrides for a model mode.

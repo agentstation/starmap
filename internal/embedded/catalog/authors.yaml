@@ -733,6 +733,26 @@
   huggingface: https://huggingface.co/WizardLM
   github: https://github.com/nlpxucan/WizardLM
 
+# H Company
+- id: hcompany
+  name: H Company
+  description: French AI company developing Holo vision-language models for computer-use agents
+  headquarters: Paris, France
+  icon_url: https://hcompany.ai/favicon.ico
+  website: https://hcompany.ai
+  huggingface: https://huggingface.co/Hcompany
+  github: https://github.com/hcompanyai
+
+# Xiaomi
+- id: xiaomi
+  name: Xiaomi
+  description: Technology company developing the MiMo family of language models
+  headquarters: Beijing, China
+  icon_url: https://www.mi.com/favicon.ico
+  website: https://www.mi.com
+  huggingface: https://huggingface.co/XiaomiMiMo
+  github: https://github.com/XiaomiMiMo
+
 # xAI
 - id: xai
   name: xAI

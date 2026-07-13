@@ -969,3 +969,21 @@ func TestAPIFormatChanges(t *testing.T) {
 		}
 	})
 }
+
+func TestConfiguredResponseModelsUsesValidatedCollectionPath(t *testing.T) {
+	provider := &catalogs.Provider{Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{ResponseCollection: "payload.models"}}}
+	response := Response{RawJSON: []byte(`{"payload":{"models":[{"id":"configured-model","object":"model"}]}}`)}
+	models, err := configuredResponseModels(provider, response)
+	if err != nil || len(models) != 1 || models[0].ID != "configured-model" {
+		t.Fatalf("configuredResponseModels = %#v, %v", models, err)
+	}
+
+	response.RawJSON = []byte(`{"payload":{"models":null}}`)
+	if _, err := configuredResponseModels(provider, response); err == nil {
+		t.Fatal("configuredResponseModels accepted a null collection")
+	}
+	response.RawJSON = []byte(`{"payload":{"models":{}}}`)
+	if _, err := configuredResponseModels(provider, response); err == nil {
+		t.Fatal("configuredResponseModels accepted a non-array collection")
+	}
+}

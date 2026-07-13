@@ -17,8 +17,20 @@ import (
 	// Import provider implementations for clients.
 
 	"github.com/agentstation/starmap/internal/providers/anthropic"
+	"github.com/agentstation/starmap/internal/providers/cloudflare"
+	"github.com/agentstation/starmap/internal/providers/cohere"
+	"github.com/agentstation/starmap/internal/providers/databricks"
 	"github.com/agentstation/starmap/internal/providers/google"
+	"github.com/agentstation/starmap/internal/providers/huggingface"
+	"github.com/agentstation/starmap/internal/providers/mistral"
+	"github.com/agentstation/starmap/internal/providers/novita"
+	"github.com/agentstation/starmap/internal/providers/nvidia"
 	"github.com/agentstation/starmap/internal/providers/openai"
+	"github.com/agentstation/starmap/internal/providers/sambanova"
+	"github.com/agentstation/starmap/internal/providers/snowflake"
+	"github.com/agentstation/starmap/internal/providers/together"
+	"github.com/agentstation/starmap/internal/providers/watsonx"
+	"github.com/agentstation/starmap/internal/providers/xai"
 )
 
 // ProviderClient defines the interface for provider API clients.
@@ -36,15 +48,38 @@ type ProviderClient interface {
 
 // NewProvider creates a new provider client for the given provider.
 func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
+	if err := provider.ValidateConfiguration(); err != nil {
+		return nil, err
+	}
 	switch provider.Catalog.Endpoint.Type {
 	case catalogs.EndpointTypeOpenAI:
-		client, err := openai.NewClient(provider)
+		client, err := openai.NewClient(provider, openAIProviderOptions(provider.ID)...)
 		if err != nil {
 			return nil, err
 		}
 		return client, nil
 	case catalogs.EndpointTypeAnthropic:
 		return anthropic.NewClient(provider), nil
+	case catalogs.EndpointTypeCohere:
+		return cohere.NewClient(provider), nil
+	case catalogs.EndpointTypeCloudflare:
+		return cloudflare.NewClient(provider), nil
+	case catalogs.EndpointTypeSambaNova:
+		return sambanova.NewClient(provider), nil
+	case catalogs.EndpointTypeApplication:
+		return applicationClient{}, nil
+	case catalogs.EndpointTypeTogether:
+		return together.NewClient(provider), nil
+	case catalogs.EndpointTypeHuggingFace:
+		return huggingface.NewClient(provider), nil
+	case catalogs.EndpointTypeNVIDIA:
+		return nvidia.NewClient(provider), nil
+	case catalogs.EndpointTypeDatabricks:
+		return databricks.NewClient(provider), nil
+	case catalogs.EndpointTypeSnowflake:
+		return snowflake.NewClient(provider), nil
+	case catalogs.EndpointTypeWatsonx:
+		return watsonx.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogle:
 		return google.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogleCloud:
@@ -56,6 +91,25 @@ func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
 		Message: fmt.Sprintf("unsupported endpoint type: %s", provider.Catalog.Endpoint.Type),
 	}
 }
+
+func openAIProviderOptions(providerID catalogs.ProviderID) []openai.Option {
+	switch providerID {
+	case catalogs.ProviderIDMistralAI:
+		return mistral.Options()
+	case catalogs.ProviderIDNovita:
+		return novita.Options()
+	case catalogs.ProviderIDXAI:
+		return xai.Options()
+	default:
+		return nil
+	}
+}
+
+type applicationClient struct{}
+
+func (applicationClient) ListModels(context.Context) ([]catalogs.Model, error) { return nil, nil }
+func (applicationClient) IsAPIKeyRequired() bool                               { return false }
+func (applicationClient) HasAPIKey() bool                                      { return false }
 
 // FetchRawResult contains the result of a raw fetch operation.
 type FetchRawResult struct {

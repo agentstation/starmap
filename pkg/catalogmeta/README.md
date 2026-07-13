@@ -20,20 +20,24 @@ The package has zero dependencies and serves as a foundation for the type system
 - [type ObservationIssue](<#ObservationIssue>)
 - [type ObservationIssueCode](<#ObservationIssueCode>)
 - [type ObservationIssueScope](<#ObservationIssueScope>)
+- [type ObservationMetrics](<#ObservationMetrics>)
 - [type ObservationRecordCounts](<#ObservationRecordCounts>)
 - [type ObservationRevision](<#ObservationRevision>)
 - [type ObservationRevisionKind](<#ObservationRevisionKind>)
+- [type ObservationScope](<#ObservationScope>)
 - [type ObservationStatus](<#ObservationStatus>)
+- [type ProviderCoverage](<#ProviderCoverage>)
 - [type ResourceType](<#ResourceType>)
   - [func \(rt ResourceType\) String\(\) string](<#ResourceType.String>)
 - [type SourceID](<#SourceID>)
   - [func SourceIDs\(\) \[\]SourceID](<#SourceIDs>)
   - [func \(id SourceID\) IsValid\(\) bool](<#SourceID.IsValid>)
   - [func \(id SourceID\) String\(\) string](<#SourceID.String>)
+- [type SourceKind](<#SourceKind>)
 
 
 <a name="ObservationCompleteness"></a>
-## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L30>)
+## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L32>)
 
 ObservationCompleteness states whether every expected record was observed.
 
@@ -53,7 +57,7 @@ const (
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L93-L98>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L140-L145>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -67,7 +71,7 @@ type ObservationIssue struct {
 ```
 
 <a name="ObservationIssueCode"></a>
-## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L71>)
+## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L118>)
 
 ObservationIssueCode is a stable machine\-readable degradation reason.
 
@@ -99,7 +103,7 @@ const (
 ```
 
 <a name="ObservationIssueScope"></a>
-## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L57>)
+## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L104>)
 
 ObservationIssueScope identifies the level at which degradation occurred.
 
@@ -122,8 +126,23 @@ const (
 )
 ```
 
+<a name="ObservationMetrics"></a>
+## type [ObservationMetrics](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L95-L101>)
+
+ObservationMetrics carries operator\-safe source health facts.
+
+```go
+type ObservationMetrics struct {
+    Scope             ObservationScope        `json:"scope" yaml:"scope"`
+    Kind              SourceKind              `json:"kind" yaml:"kind"`
+    Records           ObservationRecordCounts `json:"records" yaml:"records"`
+    ProviderCoverage  ProviderCoverage        `json:"provider_coverage" yaml:"provider_coverage"`
+    PricingObservedAt *time.Time              `json:"pricing_observed_at,omitempty" yaml:"pricing_observed_at,omitempty"`
+}
+```
+
 <a name="ObservationRecordCounts"></a>
-## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L51-L54>)
+## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L53-L56>)
 
 ObservationRecordCounts reports source records accepted into or rejected from one observation.
 
@@ -135,7 +154,7 @@ type ObservationRecordCounts struct {
 ```
 
 <a name="ObservationRevision"></a>
-## type [ObservationRevision](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L22-L27>)
+## type [ObservationRevision](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L24-L29>)
 
 ObservationRevision identifies an upstream or normalized content revision.
 
@@ -149,7 +168,7 @@ type ObservationRevision struct {
 ```
 
 <a name="ObservationRevisionKind"></a>
-## type [ObservationRevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L4>)
+## type [ObservationRevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L6>)
 
 ObservationRevisionKind identifies how an upstream revision was obtained.
 
@@ -176,8 +195,30 @@ const (
 )
 ```
 
+<a name="ObservationScope"></a>
+## type [ObservationScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L59>)
+
+ObservationScope identifies whether evidence is public or credential\-scoped.
+
+```go
+type ObservationScope string
+```
+
+<a name="ObservationScopeGlobalPublic"></a>
+
+```go
+const (
+    // ObservationScopeGlobalPublic is provider-wide public evidence.
+    ObservationScopeGlobalPublic ObservationScope = "global_public"
+    // ObservationScopeRegionalPublic is public evidence scoped to cloud regions.
+    ObservationScopeRegionalPublic ObservationScope = "regional_public"
+    // ObservationScopeCustomer is private credential-scoped evidence.
+    ObservationScopeCustomer ObservationScope = "customer_scoped"
+)
+```
+
 <a name="ObservationStatus"></a>
-## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L40>)
+## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L42>)
 
 ObservationStatus is the typed outcome of a source observation.
 
@@ -194,6 +235,18 @@ const (
     // ObservationStatusDegraded means usable data has a known limitation.
     ObservationStatusDegraded ObservationStatus = "degraded"
 )
+```
+
+<a name="ProviderCoverage"></a>
+## type [ProviderCoverage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L89-L92>)
+
+ProviderCoverage reports provider inventory completeness without secrets.
+
+```go
+type ProviderCoverage struct {
+    Expected int `json:"expected" yaml:"expected"`
+    Observed int `json:"observed" yaml:"observed"`
+}
 ```
 
 <a name="ResourceType"></a>
@@ -259,11 +312,20 @@ const (
 
     // LocalCatalogID identifies the local filesystem catalog source.
     LocalCatalogID SourceID = "local_catalog"
+
+    // AmazonBedrockID identifies the native regional Bedrock control-plane source.
+    AmazonBedrockID SourceID = "amazon_bedrock"
+
+    // MicrosoftFoundryID identifies the native Microsoft Foundry control-plane source.
+    MicrosoftFoundryID SourceID = "microsoft_foundry"
+
+    // OCIGenerativeAIID identifies the native OCI Generative AI regional source.
+    OCIGenerativeAIID SourceID = "oci_generative_ai"
 )
 ```
 
 <a name="SourceIDs"></a>
-### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L31>)
+### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L40>)
 
 ```go
 func SourceIDs() []SourceID
@@ -272,7 +334,7 @@ func SourceIDs() []SourceID
 SourceIDs returns all available source identifiers. This provides a convenient way to iterate over all defined source IDs.
 
 <a name="SourceID.IsValid"></a>
-### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L42>)
+### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L54>)
 
 ```go
 func (id SourceID) IsValid() bool
@@ -288,6 +350,34 @@ func (id SourceID) String() string
 ```
 
 String returns the string representation of a source ID.
+
+<a name="SourceKind"></a>
+## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L71>)
+
+SourceKind classifies cadence, freshness, and publication policy.
+
+```go
+type SourceKind string
+```
+
+<a name="SourceKindDirectInventory"></a>
+
+```go
+const (
+    // SourceKindDirectInventory is a provider's direct public inventory.
+    SourceKindDirectInventory SourceKind = "direct_inventory"
+    // SourceKindRegionalSweep is a public cloud-region sweep.
+    SourceKindRegionalSweep SourceKind = "regional_sweep"
+    // SourceKindPricing is an official provider pricing source.
+    SourceKindPricing SourceKind = "pricing"
+    // SourceKindEnrichment is lower-authority catalog enrichment.
+    SourceKindEnrichment SourceKind = "enrichment"
+    // SourceKindCurated is reviewed non-API evidence.
+    SourceKindCurated SourceKind = "curated"
+    // SourceKindCustomer is credential-scoped customer inventory.
+    SourceKindCustomer SourceKind = "customer_inventory"
+)
+```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

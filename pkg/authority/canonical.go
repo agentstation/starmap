@@ -74,8 +74,8 @@ func FindCanonicalPolicy(resource sources.ResourceType, path string) (AttributeP
 }
 
 func definitionPolicies() []AttributePolicy {
-	curated := []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.ProvidersID}
-	observedCapability := []sources.ID{sources.ProvidersID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.LocalCatalogID}
+	curated := []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.ProvidersID}
+	observedCapability := []sources.ID{sources.ProvidersID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.LocalCatalogID}
 	return []AttributePolicy{
 		{sources.ResourceTypeModelDefinition, "ID", curated, MergeIdentity, EmptyReject, "Canonical definition identity is curated and provider-independent."},
 		{sources.ResourceTypeModelDefinition, "Name", curated, MergeReplace, EmptyReject, "A stable curated display name avoids provider branding drift."},
@@ -93,8 +93,8 @@ func definitionPolicies() []AttributePolicy {
 }
 
 func offeringPolicies() []AttributePolicy {
-	providerFirst := []sources.ID{sources.ProvidersID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.LocalCatalogID}
-	curatedIdentity := []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.ProvidersID}
+	providerFirst := []sources.ID{sources.ProvidersID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.OCIGenerativeAIID, sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID}
+	curatedIdentity := []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.ProvidersID}
 	return []AttributePolicy{
 		{sources.ResourceTypeProviderOffering, "ProviderID", providerFirst, MergeIdentity, EmptyReject, "Offering identity is scoped to the provider that serves it."},
 		{sources.ResourceTypeProviderOffering, "ProviderModelID", providerFirst, MergeIdentity, EmptyReject, "The provider model ID is the exact opaque inference identifier."},
@@ -102,7 +102,11 @@ func offeringPolicies() []AttributePolicy {
 		{sources.ResourceTypeProviderOffering, "Pricing*", providerFirst, MergeReplace, EmptyAbsent, "A semantically valid provider price is atomic and leads offering-specific fallbacks."},
 		{sources.ResourceTypeProviderOffering, "Limits*", providerFirst, MergeFillMissing, EmptyAbsent, "Provider limits lead; community data fills only absent dimensions."},
 		{sources.ResourceTypeProviderOffering, "Availability", providerFirst, MergeReplace, EmptyReject, "The live provider observation is authoritative for current service availability."},
+		{sources.ResourceTypeProviderOffering, "Access*", providerFirst, MergeReplace, EmptyReject, "Provider invocation evidence leads and routability fails closed."},
 		{sources.ResourceTypeProviderOffering, "Regions", providerFirst, MergeSetUnion, EmptyAbsent, "Provider regions lead; lower sources may add documented non-duplicate regions."},
+		{sources.ResourceTypeProviderOffering, "Deployment*", providerFirst, MergeReplace, EmptyReject, "Deployment type and service tier are provider-specific facts."},
+		{sources.ResourceTypeProviderOffering, "InferenceProfile*", providerFirst, MergeReplace, EmptyAbsent, "Cloud providers own cross-region profile identity and destinations."},
+		{sources.ResourceTypeProviderOffering, "AggregatorUpstream*", providerFirst, MergeReplace, EmptyAbsent, "Aggregators retain underlying provider offering identity when known."},
 		{sources.ResourceTypeProviderOffering, "Endpoint*", providerFirst, MergeFillMissing, EmptyAbsent, "Provider behavior leads while curated configuration may supply absent connection details."},
 		{sources.ResourceTypeProviderOffering, "Lifecycle", providerFirst, MergeReplace, EmptyReject, "Provider lifecycle is offering-specific and current provider evidence leads."},
 		{sources.ResourceTypeProviderOffering, "Modes*", providerFirst, MergeDeep, EmptyAbsent, "Named provider modes merge by name while price, limits, and request leaves retain provider authority."},

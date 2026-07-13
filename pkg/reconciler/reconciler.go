@@ -116,6 +116,9 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	if err != nil {
 		return nil, err
 	}
+	if err := r.reconcileCanonical(rctx, catalog); err != nil {
+		return nil, err
+	}
 
 	// Step 5.5: Apply author attributions using the fresh catalog
 	// This populates author.Models based on attribution config from authors.yaml
@@ -308,7 +311,7 @@ func (r *Reconciler) changeset(rctx *reconcileContext, catalog *catalogs.Builder
 		baseCatalog = rctx.baseline
 		rctx.logger.Debug().Msg("Using provided baseline catalog for comparison")
 	} else {
-		// Fall back to first source catalog for backward compatibility
+		// Use the first source as the comparison baseline when none was supplied.
 		baseCatalog = rctx.collector.baseCatalog()
 		if baseCatalog == nil {
 			return nil

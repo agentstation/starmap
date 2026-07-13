@@ -58,19 +58,29 @@ type ProvenanceReader interface {
 	FormatYAML() string
 }
 
-// Reader provides read-only access to catalog data.
+// Reader provides read-only access to the canonical catalog schema.
 type Reader interface {
 	// Lists all providers, authors, and endpoints
 	Providers() ProvidersReader
 	Authors() AuthorsReader
 	Endpoints() EndpointsReader
-	Models() ModelsReader
 	Provenance() ProvenanceReader
 
 	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)
 	Author(id AuthorID) (Author, error)
 	Endpoint(id string) (Endpoint, error)
+	Definitions() []ModelDefinition
+	Offerings() []ProviderOffering
+}
+
+// ModelSourceReader extends the canonical reader with mutable-source model
+// records used only while importing provider and author data into a Builder.
+// Published and immutable catalogs intentionally do not implement this
+// ingestion boundary.
+type ModelSourceReader interface {
+	Reader
+	Models() ModelsReader
 	ProviderModels(id ProviderID) (ModelsReader, error)
 	ProviderModel(providerID ProviderID, modelID string) (Model, error)
 }

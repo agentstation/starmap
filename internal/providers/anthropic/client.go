@@ -112,7 +112,7 @@ type Client struct {
 	mu        sync.RWMutex
 }
 
-// NewClient creates a new Anthropic client (kept for backward compatibility).
+// NewClient creates a new Anthropic client.
 func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,

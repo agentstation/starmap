@@ -1,0 +1,98 @@
+# zai-org/GLM-5.2 - AI model
+id: zai-org/GLM-5.2
+name: zai-org/GLM-5.2
+authors:
+- id: zhipu-ai
+  name: zhipu-ai
+status: active
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: true
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: true
+  streaming: true
+
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.26
+      per_token: 2.6e-07
+    input:
+      per_1m: 1.4
+      per_token: 1.4e-06
+    output:
+      per_1m: 4.4
+      per_token: 4.4e-06
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 262144
+  input_tokens: 0
+  output_tokens: 65536
+extensions:
+  baseten:
+    fields:
+      unknown_fields:
+      - path: data[].quantization
+        checksum: sha256:307ff4229d0451b8906d14d458872f657b0774ebbec027cab364883f9f558e12
+
+# Timestamps
+created_at: null
+updated_at: null

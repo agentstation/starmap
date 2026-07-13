@@ -136,12 +136,11 @@ func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Reques
 		return
 	}
 
-	modelsIndex, err := cat.LegacyV0().ProviderModels(prov.ID)
+	models, err := query.CatalogModels(cat, string(prov.ID))
 	if err != nil {
 		response.ErrorFromType(w, err)
 		return
 	}
-	models := modelsIndex.List()
 
 	result := map[string]any{
 		"provider": map[string]any{

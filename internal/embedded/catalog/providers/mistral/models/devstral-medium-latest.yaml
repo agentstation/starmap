@@ -1,0 +1,123 @@
+# devstral-medium-latest - Legacy model retained for compatibility with older integrati...
+id: devstral-medium-latest
+name: devstral-2512
+authors:
+- id: mistral
+  name: mistral
+description: Legacy model retained for compatibility with older integrations
+status: deprecated
+
+# Model metadata
+metadata:
+  release_date: 2025-12-02
+  open_weights: true
+  knowledge_cutoff: 2025-12-01
+  tags:
+  - chat
+  - function_calling
+lineage:
+  family: devstral
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.4
+    output:
+      per_1m: 2.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 262144
+  input_tokens: 0
+  output_tokens: 262144
+extensions:
+  mistral:
+    fields:
+      aliases:
+      - devstral-2512
+      - devstral-latest
+      - mistral-code-agent-latest
+      classification: false
+      completion_fim: false
+      fine_tuning: false
+      type: base
+      unknown_fields:
+      - path: data[].capabilities
+        checksum: sha256:2cbfb6109af43dd1f09581de78a85e629afc2cdd203075ad043a1682ffa06335
+      - path: data[].default_model_temperature
+        checksum: sha256:44896b09365746b5f7167ee4d64988a38f7f4628803cbf86224e74eeb7c69e9d
+      - path: data[].deprecation
+        checksum: sha256:053683c739689c6ed8a248f864a7a2fffc2064d9035623ff975849858b5fa5bf
+      - path: data[].deprecation_replacement_model
+        checksum: sha256:9478cc02c23bcdf6e904b5d2377ff604f6d0f60212c6fcf5cc6dd0e8e1877298
+      - path: data[].description
+        checksum: sha256:c66b3a8f2ab2d924529b11fa00b3371720d9f3cbcd76ca0dd51a9b6018c25bdc
+      - path: data[].type
+        checksum: sha256:751bbc009e4ccaff946a3bc62bf453a7b95af64a0e55530e8f1f4d031fa41822
+
+# Timestamps
+created_at: 2026-07-13T00:31:47Z
+updated_at: 2025-12-02T00:00:00Z

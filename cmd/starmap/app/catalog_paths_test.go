@@ -170,10 +170,6 @@ func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 				},
 			},
 			Completeness: catalogs.GenerationCompletenessComplete,
-			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-			},
 		},
 		Payload: payload,
 	}

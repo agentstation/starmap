@@ -52,9 +52,6 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Update from a specific source: all, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
 		"Preview changes without applying them")
-	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
-		"Preview changes without applying them (alias for --dry)")
-	_ = cmd.Flags().MarkDeprecated("dry-run", "use --dry instead")
 	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
 		"Force fresh update (delete and recreate)")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,

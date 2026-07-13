@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -47,6 +48,9 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	}
 	if observation.Records.Accepted != 2 || observation.Records.Rejected != 0 {
 		t.Fatalf("record counts = %#v", observation.Records)
+	}
+	if observation.Metrics.Scope != catalogmeta.ObservationScopeGlobalPublic || observation.Metrics.Kind != catalogmeta.SourceKindCurated || observation.Metrics.Records != observation.Records {
+		t.Fatalf("metrics = %#v", observation.Metrics)
 	}
 	if err := observation.Validate(); err != nil {
 		t.Fatalf("Validate: %v", err)
@@ -90,6 +94,21 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	partialSuccess.ID = observationID(partialSuccess)
 	if err := partialSuccess.Validate(); err == nil {
 		t.Fatal("Validate accepted a partial observation with succeeded status")
+	}
+}
+
+func TestObservationRejectsCustomerInventoryPublication(t *testing.T) {
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	_, err = NewObservation("customer", catalog, ObservationMetadata{
+		ObservedAt: time.Now().UTC(), Revision: Revision{Kind: RevisionKindContentDigest},
+		Completeness: ObservationCompletenessComplete, Status: ObservationStatusSucceeded,
+		Scope: catalogmeta.ObservationScopeCustomer, Kind: catalogmeta.SourceKindCustomer,
+	})
+	if err == nil {
+		t.Fatal("NewObservation accepted customer inventory for public publication")
 	}
 }
 

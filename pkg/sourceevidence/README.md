@@ -35,7 +35,7 @@ Package sourceevidence captures replayable normalized observations and protects 
 
 
 <a name="Replay"></a>
-## func [Replay](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L81>)
+## func [Replay](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L83>)
 
 ```go
 func Replay(record NormalizedRecord) (sources.Observation, error)
@@ -131,7 +131,7 @@ type MinimizedIssue struct {
 ```
 
 <a name="NormalizedRecord"></a>
-## type [NormalizedRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L38-L50>)
+## type [NormalizedRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L38-L51>)
 
 NormalizedRecord is the long\-term, secret\-minimized replay record for one observation.
 
@@ -147,12 +147,13 @@ type NormalizedRecord struct {
     Records          catalogmeta.ObservationRecordCounts `json:"records"`
     Issues           []MinimizedIssue                    `json:"issues,omitempty"`
     EvidenceChecksum string                              `json:"evidence_checksum"`
+    Metrics          catalogmeta.ObservationMetrics      `json:"metrics"`
     Payload          []byte                              `json:"payload"`
 }
 ```
 
 <a name="Capture"></a>
-### func [Capture](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L53>)
+### func [Capture](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L54>)
 
 ```go
 func Capture(observation sources.Observation) (NormalizedRecord, error)
@@ -161,7 +162,7 @@ func Capture(observation sources.Observation) (NormalizedRecord, error)
 Capture creates a long\-term normalized evidence record from an observation.
 
 <a name="Policy"></a>
-## type [Policy](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L121-L127>)
+## type [Policy](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L125-L131>)
 
 Policy defines raw and normalized evidence retention requirements.
 
@@ -176,7 +177,7 @@ type Policy struct {
 ```
 
 <a name="DefaultPolicy"></a>
-### func [DefaultPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L130>)
+### func [DefaultPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L134>)
 
 ```go
 func DefaultPolicy() Policy
@@ -185,7 +186,7 @@ func DefaultPolicy() Policy
 DefaultPolicy returns Starmap's bounded, encrypted, owner\-only raw policy.
 
 <a name="Policy.Validate"></a>
-### func \(Policy\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L138>)
+### func \(Policy\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L142>)
 
 ```go
 func (p Policy) Validate() error
@@ -194,7 +195,7 @@ func (p Policy) Validate() error
 Validate rejects policies that could expose raw credentials or retain raw data indefinitely.
 
 <a name="RawAccess"></a>
-## type [RawAccess](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L113>)
+## type [RawAccess](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L117>)
 
 RawAccess describes the access boundary required for raw evidence storage.
 
@@ -212,7 +213,7 @@ const (
 ```
 
 <a name="RawRecord"></a>
-## type [RawRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L156-L161>)
+## type [RawRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L160-L165>)
 
 RawRecord contains response\-body evidence only; request headers, query values, and credentials have no representation in this type.
 
@@ -226,7 +227,7 @@ type RawRecord struct {
 ```
 
 <a name="OpenRaw"></a>
-### func [OpenRaw](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L206>)
+### func [OpenRaw](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L210>)
 
 ```go
 func OpenRaw(key []byte, sealed SealedRawRecord, now time.Time) (RawRecord, error)
@@ -235,7 +236,7 @@ func OpenRaw(key []byte, sealed SealedRawRecord, now time.Time) (RawRecord, erro
 OpenRaw decrypts non\-expired raw evidence and authenticates its envelope.
 
 <a name="SealedRawRecord"></a>
-## type [SealedRawRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L164-L171>)
+## type [SealedRawRecord](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L168-L175>)
 
 SealedRawRecord is an encrypted, expiring raw evidence envelope.
 
@@ -251,7 +252,7 @@ type SealedRawRecord struct {
 ```
 
 <a name="SealRaw"></a>
-### func [SealRaw](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L174>)
+### func [SealRaw](<https://github.com/agentstation/starmap/blob/main/pkg/sourceevidence/evidence.go#L178>)
 
 ```go
 func SealRaw(key []byte, record RawRecord, expiresAt time.Time) (SealedRawRecord, error)

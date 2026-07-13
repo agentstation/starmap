@@ -49,11 +49,6 @@ func WithSourcesDir(dir string) GitSourceOption {
 	}
 }
 
-// WithGitSourcesDir is an alias for WithSourcesDir for backward compatibility.
-func WithGitSourcesDir(dir string) GitSourceOption {
-	return WithSourcesDir(dir)
-}
-
 // ID returns the ID of this source.
 func (s *GitSource) ID() sources.ID {
 	return sources.ModelsDevGitID

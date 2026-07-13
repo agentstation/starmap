@@ -217,6 +217,25 @@ func testFreshnessObservation(source catalogmeta.SourceID, id string, observedAt
 	}
 }
 
+func TestFreshnessReportsProviderCoverageRejectedRecordsAndPricingAge(t *testing.T) {
+	now := time.Date(2026, time.July, 12, 12, 0, 0, 0, time.UTC)
+	monitor := newTestFreshnessMonitor(t)
+	observation := testFreshnessObservation(catalogmeta.ProvidersID, "provider-health", now.Add(-time.Hour), catalogmeta.ObservationStatusDegraded, catalogmeta.ObservationCompletenessPartial)
+	pricingAt := now.Add(-2 * time.Hour)
+	observation.Metrics = catalogmeta.ObservationMetrics{
+		Scope: catalogmeta.ObservationScopeGlobalPublic, Kind: catalogmeta.SourceKindDirectInventory,
+		Records:          catalogmeta.ObservationRecordCounts{Accepted: 10, Rejected: 2},
+		ProviderCoverage: catalogmeta.ProviderCoverage{Expected: 5, Observed: 4}, PricingObservedAt: &pricingAt,
+	}
+	if err := monitor.Record([]catalogs.SourceObservationLink{observation}); err != nil {
+		t.Fatalf("Record: %v", err)
+	}
+	source := freshnessBySource(t, freshnessReport(t, monitor, now), catalogmeta.ProvidersID)
+	if source.Records.Rejected != 2 || source.ProviderCoverage.Observed != 4 || source.PricingAgeSeconds != int64((2*time.Hour)/time.Second) {
+		t.Fatalf("source health = %#v", source)
+	}
+}
+
 func freshnessReport(t *testing.T, monitor *FreshnessMonitor, at time.Time) FreshnessReport {
 	t.Helper()
 	report, err := monitor.Report(at)

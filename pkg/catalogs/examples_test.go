@@ -38,7 +38,7 @@ func Example() {
 	}
 
 	// List all models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Found %d models\n", len(models))
 	// Output: Found 1 models
 }
@@ -56,7 +56,7 @@ func Example_embeddedCatalog() {
 	}
 
 	// Access pre-loaded models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
 
 	// Find a specific model

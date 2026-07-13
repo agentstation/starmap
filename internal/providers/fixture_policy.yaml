@@ -1,0 +1,102 @@
+providers:
+- id: anthropic
+  role: native_client
+  fixture: refreshable
+- id: azurefoundry
+  role: regional_source
+  fixture: exception
+  reason: ARM catalog and Retail Prices are separately paginated regional APIs whose account-free wire contracts are covered by client and source httptest fixtures.
+  evidence: internal/providers/azurefoundry/client_test.go,internal/providers/azurefoundry/source_test.go
+- id: baseten
+  role: yaml_only
+  fixture: refreshable
+- id: bedrock
+  role: regional_source
+  fixture: exception
+  reason: AWS SDK operations require signed regional protocol requests; deterministic SDK fakes plus typed pricing and region catalog fixtures cover the public and customer split.
+  evidence: internal/providers/bedrock/source_test.go,internal/providers/bedrock/pricing_test.go
+- id: cerebras
+  role: yaml_only
+  fixture: refreshable
+- id: cloudflare
+  role: native_client
+  fixture: exception
+  reason: Model search is account-scoped and requires an account path parameter; bounded httptest pages cover the raw wire shape without recording an operator account identifier.
+  evidence: internal/providers/cloudflare/client_test.go
+- id: cohere
+  role: native_client
+  fixture: exception
+  reason: Cohere inventory spans paginated endpoint families rather than one representative list payload; httptest pages cover each family and catalog YAML owns reviewed pricing.
+  evidence: internal/providers/cohere/client_test.go
+- id: databricks
+  role: native_client
+  fixture: exception
+  reason: Discovery is workspace and credential scoped, so inline workspace wire fixtures prove customer isolation without retaining a real workspace response.
+  evidence: internal/providers/databricks/client_test.go
+- id: deepseek
+  role: yaml_only
+  fixture: refreshable
+- id: google
+  role: native_client
+  fixture: exception
+  reason: AI Studio and Vertex use distinct paginated Google contracts and regional project scopes; httptest fixtures and source-shape classification cover both without project data.
+  evidence: internal/providers/google/client_test.go,internal/providers/google/source_shape_test.go
+- id: groq
+  role: yaml_only
+  fixture: refreshable
+- id: huggingface
+  role: native_client
+  fixture: exception
+  reason: Router inventory expands one model into multiple upstream offerings; inline fixtures exercise upstream separation and unavailable-provider behavior without credential-scoped preferences.
+  evidence: internal/providers/huggingface/client_test.go
+- id: hyperbolic
+  role: yaml_only
+  fixture: refreshable
+- id: mistral
+  role: adapter
+  fixture: refreshable
+- id: moonshot-ai
+  role: yaml_only
+  fixture: refreshable
+- id: novita
+  role: adapter
+  fixture: refreshable
+- id: nvidia
+  role: native_client
+  fixture: exception
+  reason: Public API Catalog and optional customer NIM deployment inventory are separate scopes; inline fixtures prove the public and private boundary without customer deployment data.
+  evidence: internal/providers/nvidia/client_test.go
+- id: oci
+  role: regional_source
+  fixture: exception
+  reason: OCI SDK list and endpoint operations are region and tenancy scoped; SDK fakes plus typed catalog pricing evidence cover behavior without tenancy identifiers.
+  evidence: internal/providers/oci/source_test.go,internal/providers/oci/pricing_test.go
+- id: openai
+  role: shared_transport
+  fixture: refreshable
+- id: sambanova
+  role: native_client
+  fixture: exception
+  reason: The richer OpenAI-compatible response is fully represented by bounded httptest wire fixtures; no stable unauthenticated source revision is exposed.
+  evidence: internal/providers/sambanova/client_test.go
+- id: scaleway
+  role: yaml_only
+  fixture: refreshable
+- id: snowflake
+  role: native_client
+  fixture: exception
+  reason: Cortex discovery is session, account, region, and cross-region-policy scoped; inline wire fixtures and typed pricing evidence avoid persisting account inventory.
+  evidence: internal/providers/snowflake/client_test.go
+- id: together
+  role: native_client
+  fixture: exception
+  reason: Serverless and dedicated inventories are separate paginated endpoints; httptest fixtures cover both and avoid treating a partial single endpoint as representative.
+  evidence: internal/providers/together/client_test.go
+- id: watsonx
+  role: native_client
+  fixture: exception
+  reason: Public model specs and optional customer deployments use different account and region scopes; inline fixtures prove isolation without retaining customer resources.
+  evidence: internal/providers/watsonx/client_test.go
+- id: xai
+  role: adapter
+  fixture: refreshable

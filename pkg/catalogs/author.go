@@ -134,6 +134,7 @@ const (
 	AuthorIDZhipuAI    AuthorID = "zhipu-ai"
 	AuthorIDSenseTime  AuthorID = "sensetime"
 	AuthorIDHuawei     AuthorID = "huawei"
+	AuthorIDXiaomi     AuthorID = "xiaomi"
 	AuthorIDTsinghua   AuthorID = "tsinghua"
 	AuthorIDPeking     AuthorID = "peking"
 
@@ -147,6 +148,7 @@ const (
 	AuthorIDAI21       AuthorID = "ai21"
 	AuthorIDInflection AuthorID = "inflection"
 	AuthorIDCharacter  AuthorID = "character"
+	AuthorIDHCompany   AuthorID = "hcompany"
 	AuthorIDPerplexity AuthorID = "perplexity"
 	AuthorIDAnysphere  AuthorID = "anysphere"
 	AuthorIDCursor     AuthorID = "cursor"

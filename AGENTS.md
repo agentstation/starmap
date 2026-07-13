@@ -42,7 +42,7 @@ make testdata PROVIDER=openai           # Update testdata
 - **Development/release toolchain**: Go 1.26.5
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
-- **Testing**: Go testing, testdata pattern with `-update` flag
+- **Testing**: Go testing, integrity-bound provider fixtures, always with `-race`
 - **Providers**: OpenAI, Anthropic, Google AI/Vertex, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra
 
 ## ⚠️ Critical Rules (YOU MUST FOLLOW)
@@ -99,22 +99,22 @@ constants.DefaultTimeout
 
 ### Provider Clients
 
-**Check OpenAI-compatible first:**
-
-Most providers use unified OpenAI client (`internal/providers/openai/client.go`). Only create custom client if API is incompatible.
-
-**Steps:**
-1. Check if provider uses OpenAI-compatible API
-2. If yes: configure in `internal/embedded/catalog/providers.yaml`
-3. If no: create custom client in `internal/providers/<provider>/`
-4. Register in `internal/providers/clients/provider.go`
+Use the complete role decision tree in
+[docs/ADDING_PROVIDERS.md](docs/ADDING_PROVIDERS.md). OpenAI compatibility is
+the first question, but configuration-only, adapter, native-client,
+regional/account-source, and live-pricing-importer roles are distinct. Shared
+OpenAI transport must not contain named provider policy. `pricing.go` is only
+for a live official pricing parser/importer, and `source_shape_test.go` is
+supplemental coverage that never replaces the role's behavioral test.
 
 ### Testdata Updates
 
 After making changes to provider code:
 
 ```bash
-go test ./internal/providers/<provider> -update
+go test -race ./internal/providers/<provider>
+make testdata PROVIDER=<provider> # explicit live raw-fixture refresh
+make provider-contract-check
 ```
 
 ## Architecture Quick Reference
@@ -172,13 +172,17 @@ See docs/ARCHITECTURE.md § Reconciliation System for details:
 
 ### Add New Provider
 
-See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
+Follow [docs/ADDING_PROVIDERS.md](docs/ADDING_PROVIDERS.md); it is the normative
+decision tree and data-ownership contract.
 
-1. Add to `internal/embedded/catalog/providers.yaml`
-2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
-3. If compatible: Configure in YAML. If not: Create custom client
-4. Register in `internal/providers/clients/provider.go`
-5. Update testdata: `go test ./internal/providers/<provider> -update`
+1. Put stable endpoint/response/offering interpretation in `providers.yaml`.
+2. Use YAML-only shared-client configuration when it is sufficient; add no production Go.
+3. Add `adapter.go` only for irreducible provider record semantics.
+4. Add `client.go` for an incompatible acquisition protocol, or `source.go` for regional/account sweeps.
+5. Put reviewed prices/lifecycle/capabilities in schema-v2 catalog data, not Go tables.
+6. Own `client_test.go`, `adapter_test.go`, or `source_test.go` according to the selected role.
+7. Refresh representative raw evidence with `make testdata PROVIDER=<provider>` or record a tested source-specific exception.
+8. Run `make provider-contract-check` plus the focused race, catalog, docs, and repository gates.
 
 ### Modify Sync Logic
 
@@ -367,6 +371,7 @@ go test ./... -race -short                 # All packages with race detector
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
 make catalog-generation-check               # Verify safe download/promotion/CLI tooling
+make provider-contract-check                 # Verify provider roles, fixtures, and refresh contract
 make testdata                               # Update all testdata
 make testdata PROVIDER=openai               # Update specific provider testdata
 ```

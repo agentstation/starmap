@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
-func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
+func TestRouteAliasMaterializesEligibleProjectedOfferings(t *testing.T) {
 	builder := NewEmpty()
 	providers := []Provider{
-		{ID: "available", Name: "Available", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 1, "standard")}},
-		{ID: "unavailable", Name: "Unavailable", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 2, "standard")}},
-		{ID: "retired", Name: "Retired", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 3, "standard")}},
+		{ID: "available", Name: "Available", Models: map[string]*Model{"shared": sourceProjectionTestModel("shared", 1, "standard")}},
+		{ID: "unavailable", Name: "Unavailable", Models: map[string]*Model{"shared": sourceProjectionTestModel("shared", 2, "standard")}},
+		{ID: "retired", Name: "Retired", Models: map[string]*Model{"shared": sourceProjectionTestModel("shared", 3, "standard")}},
 	}
 	for _, provider := range providers {
 		if err := builder.SetProvider(provider); err != nil {
@@ -91,5 +91,23 @@ func TestRouteAliasContainsIdentityNotRoutingPolicy(t *testing.T) {
 				t.Fatal("Validate returned nil error")
 			}
 		})
+	}
+}
+
+func TestRouteAliasRejectsApplicationOnlyOffering(t *testing.T) {
+	catalog := &Catalog{offerings: map[OfferingKey]ProviderOffering{
+		{ProviderID: "cursor", ProviderModelID: "composer-2.5"}: {
+			ProviderID: "cursor", ProviderModelID: "composer-2.5", DefinitionID: "composer-2.5",
+			Availability: OfferingAvailabilityAvailable, Lifecycle: OfferingLifecycleActive,
+			Access:     OfferingAccess{Channel: OfferingAccessChannelApplication, Routability: OfferingRoutabilityDiscoverable},
+			Deployment: ProviderDeployment{Type: "application"},
+		},
+	}}
+	resolution, err := catalog.MaterializeRouteAlias(RouteAlias{ID: "composer", Targets: []OfferingKey{{ProviderID: "cursor", ProviderModelID: "composer-2.5"}}})
+	if err != nil {
+		t.Fatalf("MaterializeRouteAlias: %v", err)
+	}
+	if len(resolution.Eligible) != 0 || len(resolution.Rejected) != 1 || resolution.Rejected[0].Reason != RouteAliasRejectedNotRoutable {
+		t.Fatalf("resolution = %#v", resolution)
 	}
 }

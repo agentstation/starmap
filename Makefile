@@ -46,7 +46,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version catalog-generation-check embedded-catalog-budget-check
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version catalog-generation-check provider-contract-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -459,7 +459,11 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
 	@$(GOCMD) test ./internal/bootstrapmanifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
-	@$(GOCMD) test ./internal/providers/testhelper -run ProviderFixtureRefreshFailure -count=1
+	@$(GOCMD) test ./internal/providerfixture ./cmd/starmap-provider-testdata-refresh ./internal/providers/testhelper -run 'Refresh|Fixture' -count=1
+
+provider-contract-check: ## Verify provider roles, evidence policy, and refresh safety
+	@bash -n scripts/refresh-provider-testdata.sh
+	@$(GOCMD) test -race ./internal/providers ./internal/providerfixture ./internal/providers/testhelper ./cmd/starmap-provider-testdata-refresh
 
 embedded-catalog-budget-check: ## Enforce embedded catalog age, size, and coverage budgets
 	@$(GOCMD) run ./cmd/starmap-embedded-budget
@@ -499,8 +503,8 @@ check-apis: ## Check API connectivity for all providers
 
 # Testdata management targets
 # Examples:
-#   make testdata              # Update all provider testdata (requires API keys)
-#   make testdata PROVIDER=groq  # Update specific provider testdata
+#   make testdata                # Refresh every declared raw fixture (requires API keys)
+#   make testdata PROVIDER=groq  # Refresh one provider through the production command
 testdata: ## Update testdata for all providers (use PROVIDER=name for specific provider)
 	@echo "$(BLUE)Updating testdata for $(if $(PROVIDER),$(PROVIDER),all providers)...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"

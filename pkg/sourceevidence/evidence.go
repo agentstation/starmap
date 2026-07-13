@@ -46,6 +46,7 @@ type NormalizedRecord struct {
 	Records          catalogmeta.ObservationRecordCounts `json:"records"`
 	Issues           []MinimizedIssue                    `json:"issues,omitempty"`
 	EvidenceChecksum string                              `json:"evidence_checksum"`
+	Metrics          catalogmeta.ObservationMetrics      `json:"metrics"`
 	Payload          []byte                              `json:"payload"`
 }
 
@@ -73,6 +74,7 @@ func Capture(observation sources.Observation) (NormalizedRecord, error) {
 		Records:          observation.Records,
 		Issues:           issues,
 		EvidenceChecksum: observation.EvidenceChecksum,
+		Metrics:          observation.Metrics,
 		Payload:          payload,
 	}, nil
 }
@@ -99,6 +101,8 @@ func Replay(record NormalizedRecord) (sources.Observation, error) {
 	observation, err := sources.NewObservation(record.SourceID, catalog, sources.ObservationMetadata{
 		ObservedAt: record.ObservedAt, Revision: record.Revision,
 		Completeness: record.Completeness, Status: record.Status, Records: record.Records, Issues: issues,
+		Scope: record.Metrics.Scope, Kind: record.Metrics.Kind, Coverage: record.Metrics.ProviderCoverage,
+		PricingObservedAt: record.Metrics.PricingObservedAt,
 	})
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("replay", "source observation", record.ObservationID, err)

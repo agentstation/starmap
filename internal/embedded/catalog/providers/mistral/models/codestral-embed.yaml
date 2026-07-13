@@ -1,0 +1,111 @@
+# codestral-embed - AI model
+id: codestral-embed
+name: codestral-embed
+authors:
+- id: mistral
+  name: mistral
+
+# Model metadata
+metadata:
+  release_date: null
+  open_weights: false
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: false
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.15
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 8192
+  input_tokens: 0
+  output_tokens: 0
+extensions:
+  mistral:
+    fields:
+      aliases:
+      - codestral-embed-2505
+      classification: false
+      completion_fim: false
+      fine_tuning: false
+      type: base
+      unknown_fields:
+      - path: data[].capabilities
+        checksum: sha256:7740dcd368f29fa586a9ddbc80eef3d9b7def7f000b7da90946869d3e4386a32
+      - path: data[].default_model_temperature
+        checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+      - path: data[].deprecation
+        checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+      - path: data[].deprecation_replacement_model
+        checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+      - path: data[].description
+        checksum: sha256:04fce12a29207179d257c19894b510fadeca5f28db66bd3ae7006363b618975e
+      - path: data[].type
+        checksum: sha256:751bbc009e4ccaff946a3bc62bf453a7b95af64a0e55530e8f1f4d031fa41822
+
+# Timestamps
+created_at: 2026-07-13T00:31:47Z
+updated_at: 2026-07-13T00:31:47Z

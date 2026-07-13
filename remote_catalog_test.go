@@ -1,7 +1,9 @@
 package starmap
 
 import (
+	"bytes"
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -53,7 +55,7 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 		{name: "incompatible manifest", generation: incompatibleRemoteGeneration(t, valid)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			manifest, err := catalogremote.MarshalManifest(test.generation.Manifest)
+			manifest, err := rootRemoteManifestBytes(test.generation.Manifest)
 			if err != nil {
 				t.Fatalf("MarshalManifest: %v", err)
 			}
@@ -100,6 +102,16 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 	}
 }
 
+func rootRemoteManifestBytes(manifest catalogs.GenerationManifest) ([]byte, error) {
+	wantSchema := manifest.SchemaVersion
+	manifest.SchemaVersion = catalogs.CurrentCatalogSchemaVersion
+	data, err := catalogremote.MarshalManifest(manifest)
+	if err != nil || wantSchema == catalogs.CurrentCatalogSchemaVersion {
+		return data, err
+	}
+	return bytes.Replace(data, []byte(`"schema_version":2`), []byte(fmt.Sprintf(`"schema_version":%d`, wantSchema)), 1), nil
+}
+
 func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
@@ -128,10 +140,6 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 func incompatibleRemoteGeneration(t *testing.T, generation catalogstore.Generation) catalogstore.Generation {
 	t.Helper()
 	incompatible := generation.Copy()
-	incompatible.Manifest.SchemaVersion = 2
-	incompatible.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 2}
-	if err := incompatible.Validate(); err != nil {
-		t.Fatalf("incompatible fixture must remain internally valid: %v", err)
-	}
+	incompatible.Manifest.SchemaVersion = 1
 	return incompatible
 }

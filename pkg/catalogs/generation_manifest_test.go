@@ -112,9 +112,6 @@ func TestGenerationManifestParserRejectsMissingAndUnknownMembers(t *testing.T) {
 			observations := value["source_observations"].([]any)
 			delete(observations[0].(map[string]any)["revision"].(map[string]any), "kind")
 		}},
-		{name: "missing compatibility maximum", field: "consumer_compatibility.max_schema_version", mutate: func(value map[string]any) {
-			delete(value["consumer_compatibility"].(map[string]any), "max_schema_version")
-		}},
 		{name: "unknown member", field: "manifest", mutate: func(value map[string]any) { value["binary_version"] = "1.2.3" }},
 	}
 
@@ -176,8 +173,6 @@ func TestGenerationManifestRequiredFields(t *testing.T) {
 		{name: "observation status", field: "source_observations[0].status", mutate: func(m *GenerationManifest) { m.SourceObservations[0].Status = "" }},
 		{name: "observation checksum", field: "source_observations[0].evidence_checksum", mutate: func(m *GenerationManifest) { m.SourceObservations[0].EvidenceChecksum = "" }},
 		{name: "completeness", field: "completeness", mutate: func(m *GenerationManifest) { m.Completeness = "" }},
-		{name: "compatibility minimum", field: "consumer_compatibility.min_schema_version", mutate: func(m *GenerationManifest) { m.ConsumerCompatibility.MinSchemaVersion = 0 }},
-		{name: "compatibility maximum", field: "consumer_compatibility.max_schema_version", mutate: func(m *GenerationManifest) { m.ConsumerCompatibility.MaxSchemaVersion = 0 }},
 	}
 
 	for _, tt := range tests {
@@ -300,14 +295,7 @@ func TestGenerationManifestPayloadDescriptor(t *testing.T) {
 	}
 }
 
-func TestGenerationManifestConsumerCompatibilityUsesSchemaVersions(t *testing.T) {
-	compatibility := ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 4}
-	for schema, want := range map[uint64]bool{1: false, 2: true, 3: true, 4: true, 5: false} {
-		if got := compatibility.SupportsSchema(schema); got != want {
-			t.Fatalf("SupportsSchema(%d) = %v, want %v", schema, got, want)
-		}
-	}
-
+func TestGenerationManifestHasNoBinaryCompatibilitySurface(t *testing.T) {
 	typ := reflect.TypeFor[GenerationManifest]()
 	for _, forbidden := range []string{"BinaryVersion", "MinBinaryVersion", "MaxBinaryVersion"} {
 		if _, found := typ.FieldByName(forbidden); found {
@@ -334,7 +322,7 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 	want := []string{
 		"manifest_version", "schema_version", "generation_id", "generated_at",
 		"payload", "validation", "sync_run_id", "source_observations",
-		"completeness", "degraded", "consumer_compatibility",
+		"completeness", "degraded",
 	}
 	slices.Sort(schema.Required)
 	slices.Sort(want)
@@ -348,10 +336,9 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 	}
 
 	for definition, required := range map[string][]string{
-		"payload":                {"checksum", "size_bytes", "media_type"},
-		"validation":             {"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"},
-		"source_observation":     {"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"},
-		"consumer_compatibility": {"min_schema_version", "max_schema_version"},
+		"payload":            {"checksum", "size_bytes", "media_type"},
+		"validation":         {"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"},
+		"source_observation": {"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"},
 	} {
 		data, found := schema.Definitions[definition]
 		if !found {

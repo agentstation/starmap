@@ -197,10 +197,6 @@ func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations [
 			Completeness:       completeness,
 			Degraded:           degraded,
 			DegradationReasons: degradationReasons,
-			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-			},
 		},
 		Payload: payload,
 	}

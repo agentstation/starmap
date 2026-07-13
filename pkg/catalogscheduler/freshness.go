@@ -95,6 +95,10 @@ type SourceFreshness struct {
 	UnreadyAfterSeconds  int64                               `json:"unready_after_seconds"`
 	ObservationStatus    catalogmeta.ObservationStatus       `json:"observation_status,omitempty"`
 	Completeness         catalogmeta.ObservationCompleteness `json:"completeness,omitempty"`
+	Records              catalogmeta.ObservationRecordCounts `json:"records"`
+	ProviderCoverage     catalogmeta.ProviderCoverage        `json:"provider_coverage"`
+	PricingObservedAt    *time.Time                          `json:"pricing_observed_at,omitempty"`
+	PricingAgeSeconds    int64                               `json:"pricing_age_seconds,omitempty"`
 	State                FreshnessState                      `json:"state"`
 }
 
@@ -111,6 +115,12 @@ type FreshnessReport struct {
 // Copy returns a report with caller-owned collection state.
 func (r FreshnessReport) Copy() FreshnessReport {
 	r.Sources = append([]SourceFreshness(nil), r.Sources...)
+	for index := range r.Sources {
+		if r.Sources[index].PricingObservedAt != nil {
+			observedAt := *r.Sources[index].PricingObservedAt
+			r.Sources[index].PricingObservedAt = &observedAt
+		}
+	}
 	r.Alerts = append([]FreshnessAlert(nil), r.Alerts...)
 	return r
 }
@@ -268,6 +278,13 @@ func evaluateSourceFreshness(at time.Time, rule SourceFreshnessSLA, observation 
 	state.AgeSeconds = int64(state.Age / time.Second)
 	state.ObservationStatus = observation.Status
 	state.Completeness = observation.Completeness
+	state.Records = observation.Metrics.Records
+	state.ProviderCoverage = observation.Metrics.ProviderCoverage
+	if observation.Metrics.PricingObservedAt != nil {
+		pricingObservedAt := *observation.Metrics.PricingObservedAt
+		state.PricingObservedAt = &pricingObservedAt
+		state.PricingAgeSeconds = int64(at.Sub(pricingObservedAt) / time.Second)
+	}
 	if state.Age < 0 {
 		state.State = FreshnessStateUnready
 		return state, freshnessAlert(FreshnessAlertSourceFuture, AlertSeverityCritical, rule.Source, "source observation timestamp is in the future")

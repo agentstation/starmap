@@ -74,6 +74,30 @@ func DeepCopyModel(model Model) Model {
 	modelCopy.Modes = deepCopyModelModes(model.Modes)
 	modelCopy.Pricing = deepCopyModelPricing(model.Pricing)
 	modelCopy.Limits = copyPtr(model.Limits)
+	modelCopy.InvocationAPIs = append([]InvocationAPI(nil), model.InvocationAPIs...)
+	if model.OfferingAccess != nil {
+		access := *model.OfferingAccess
+		access.APIs = append([]InvocationAPI(nil), model.OfferingAccess.APIs...)
+		modelCopy.OfferingAccess = &access
+	}
+	if model.AggregatorUpstream != nil {
+		upstream := *model.AggregatorUpstream
+		modelCopy.AggregatorUpstream = &upstream
+	}
+	modelCopy.OfferingRegions = append([]CloudRegion(nil), model.OfferingRegions...)
+	for index := range modelCopy.OfferingRegions {
+		if model.OfferingRegions[index].Residency != nil {
+			residency := *model.OfferingRegions[index].Residency
+			residency.Countries = append([]string(nil), residency.Countries...)
+			modelCopy.OfferingRegions[index].Residency = &residency
+		}
+	}
+	if model.OfferingInferenceProfile != nil {
+		profile := *model.OfferingInferenceProfile
+		profile.SourceRegions = append([]string(nil), profile.SourceRegions...)
+		profile.DestinationRegions = append([]string(nil), profile.DestinationRegions...)
+		modelCopy.OfferingInferenceProfile = &profile
+	}
 	modelCopy.Extensions = model.Extensions.Copy()
 	return modelCopy
 }
@@ -280,8 +304,9 @@ func deepCopyModelModes(modes map[string]ModelMode) map[string]ModelMode {
 	copied := make(map[string]ModelMode, len(modes))
 	for name, mode := range modes {
 		copied[name] = ModelMode{
-			Pricing:  deepCopyModelPricing(mode.Pricing),
-			Provider: deepCopyModelProviderMode(mode.Provider),
+			Pricing:    deepCopyModelPricing(mode.Pricing),
+			Deployment: copyPtr(mode.Deployment),
+			Provider:   deepCopyModelProviderMode(mode.Provider),
 		}
 	}
 	return copied
@@ -371,10 +396,41 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 	}
 	copied := *catalog
 	copied.Docs = copyPtr(catalog.Docs)
-	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
+	copied.Endpoint.FieldMappings = deepCopyFieldMappings(catalog.Endpoint.FieldMappings)
 	copied.Endpoint.FeatureRules = deepCopyFeatureRules(catalog.Endpoint.FeatureRules)
 	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)
+	copied.Offering = deepCopyProviderOfferingDefaults(catalog.Offering)
 	copied.Authors = append([]AuthorID(nil), catalog.Authors...)
+	return &copied
+}
+
+func deepCopyFieldMappings(mappings []FieldMapping) []FieldMapping {
+	if mappings == nil {
+		return nil
+	}
+	copied := append([]FieldMapping(nil), mappings...)
+	for index := range copied {
+		copied[index].Tier = copyPtr(mappings[index].Tier)
+		copied[index].Values = copyMap(mappings[index].Values)
+	}
+	return copied
+}
+
+func deepCopyProviderOfferingDefaults(defaults *ProviderOfferingDefaults) *ProviderOfferingDefaults {
+	if defaults == nil {
+		return nil
+	}
+	copied := *defaults
+	copied.Access.APIs = append([]InvocationAPI(nil), defaults.Access.APIs...)
+	copied.Regions = append([]CloudRegion(nil), defaults.Regions...)
+	for index := range copied.Regions {
+		if defaults.Regions[index].Residency == nil {
+			continue
+		}
+		residency := *defaults.Regions[index].Residency
+		residency.Countries = append([]string(nil), defaults.Regions[index].Residency.Countries...)
+		copied.Regions[index].Residency = &residency
+	}
 	return &copied
 }
 

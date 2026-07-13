@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	wantArtifactFixtureChecksum    = "sha256:d3edcd5558e470540465abe65b92304326c2dc815c53895ece224ff222d13e2f"
-	wantAttestationFixtureChecksum = "sha256:669b186d808667cedaa120a25c38e6f1809b86abb24a584af703aa47ded07419"
+	wantArtifactFixtureChecksum    = "sha256:27ded9bab36bdbe6e5effd55c07bbfee6d0fe9e6ea9cd5ebd7315c0eaec49553"
+	wantAttestationFixtureChecksum = "sha256:0cbf615a16f4866c5b26bf1b62d758a06009a45a34bf85b4bdaa904ae5988ea7"
 )
 
 func TestArtifactReproducibleFixtureHashes(t *testing.T) {
@@ -104,9 +104,8 @@ func TestArtifactManifestPayloadCompatibilityAndAttestationRoundTrip(t *testing.
 		t.Fatal("opened artifact differs from exact generation input")
 	}
 	if got.Manifest.GenerationID != want.Manifest.GenerationID ||
-		got.Manifest.SchemaVersion != want.Manifest.SchemaVersion ||
-		got.Manifest.ConsumerCompatibility != want.Manifest.ConsumerCompatibility {
-		t.Fatalf("generation identity/compatibility changed: %#v", got.Manifest)
+		got.Manifest.SchemaVersion != want.Manifest.SchemaVersion {
+		t.Fatalf("generation identity changed: %#v", got.Manifest)
 	}
 }
 

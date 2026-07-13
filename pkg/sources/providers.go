@@ -52,6 +52,7 @@ type providerOptions struct {
 	loadCredentials bool          // Auto-load credentials from environment
 	allowMissingKey bool          // Allow operations without API key
 	timeout         time.Duration // Context timeout for operations
+	retry           ProviderRetryPolicy
 	clientFactory   ProviderClientFactory
 	rawFetcher      ProviderRawFetcher
 }
@@ -79,6 +80,7 @@ func providerDefaults() *providerOptions {
 		loadCredentials: true,  // Default: auto-load credentials
 		allowMissingKey: false, // Default: require API key
 		timeout:         0,     // Default: no timeout
+		retry:           DefaultProviderRetryPolicy(),
 		clientFactory:   clientFactory,
 		rawFetcher:      rawFetcher,
 	}
@@ -295,6 +297,13 @@ func WithTimeout(d time.Duration) ProviderOption {
 	}
 }
 
+// WithProviderRetryPolicy configures bounded retry for provider model calls.
+func WithProviderRetryPolicy(policy ProviderRetryPolicy) ProviderOption {
+	return func(o *providerOptions) {
+		o.retry = policy
+	}
+}
+
 // WithProviderClientFactory configures the factory used to create provider API clients.
 func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption {
 	return func(o *providerOptions) {
@@ -344,7 +353,14 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	}
 
 	// Fetch models from API
-	models, err := client.ListModels(ctx)
+	var models []catalogs.Model
+	err = RetryProviderCall(ctx, options.retry, func(callCtx context.Context) (RetryHint, error) {
+		fetched, fetchErr := client.ListModels(callCtx)
+		if fetchErr == nil {
+			models = fetched
+		}
+		return RetryHint{}, fetchErr
+	})
 	if err != nil {
 		return nil, &errors.SyncError{
 			Provider: string(provider.ID),

@@ -27,6 +27,8 @@ const (
 	RouteAliasRejectedUnavailable RouteAliasRejectionReason = "unavailable"
 	// RouteAliasRejectedRetired means the provider has retired the offering.
 	RouteAliasRejectedRetired RouteAliasRejectionReason = "retired"
+	// RouteAliasRejectedNotRoutable means the offering has no supported server-to-server invocation contract.
+	RouteAliasRejectedNotRoutable RouteAliasRejectionReason = "not_routable"
 )
 
 // RouteAliasRejection records one ineligible target without hiding it.
@@ -84,6 +86,8 @@ func (r *Catalog) MaterializeRouteAlias(alias RouteAlias) (RouteAliasResolution,
 			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedRetired})
 		case offering.Availability == OfferingAvailabilityUnavailable:
 			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedUnavailable})
+		case !offering.IsRoutable():
+			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedNotRoutable})
 		default:
 			resolution.Eligible = append(resolution.Eligible, copyProviderOffering(offering))
 		}

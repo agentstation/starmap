@@ -31,6 +31,9 @@ type sourceObservationEvidence struct {
 	observedAt       time.Time
 	revision         sources.Revision
 	evidenceChecksum string
+	completeness     sources.ObservationCompleteness
+	status           sources.ObservationStatus
+	issues           []sources.ObservationIssue
 }
 
 // newMerger creates a new strategic merger.
@@ -52,6 +55,9 @@ func (merger *merger) setObservations(observations []sources.Observation) {
 			observedAt:       observation.ObservedAt,
 			revision:         observation.Revision,
 			evidenceChecksum: observation.EvidenceChecksum,
+			completeness:     observation.Completeness,
+			status:           observation.Status,
+			issues:           append([]sources.ObservationIssue(nil), observation.Issues...),
 		}
 	}
 }

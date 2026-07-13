@@ -231,10 +231,11 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Error("Expected gpt-4 to have features from API")
 	}
 
-	// models.dev supplies fallback pricing because the provider omitted it.
+	// The reviewed local catalog is the last-known-good price ahead of
+	// models.dev when the live provider inventory omits pricing.
 	if gpt4.Pricing == nil || gpt4.Pricing.Tokens == nil ||
-		gpt4.Pricing.Tokens.Input == nil || gpt4.Pricing.Tokens.Input.Per1M != 10.0 {
-		t.Errorf("Expected gpt-4 fallback pricing from models.dev, got %v", gpt4.Pricing)
+		gpt4.Pricing.Tokens.Input == nil || gpt4.Pricing.Tokens.Input.Per1M != 30.0 {
+		t.Errorf("Expected gpt-4 last-known-good local pricing, got %v", gpt4.Pricing)
 	}
 
 	// models.dev should win for metadata

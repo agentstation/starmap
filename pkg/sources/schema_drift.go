@@ -124,8 +124,12 @@ func schemaDriftPolicies(record SchemaRecord) []SchemaDriftPolicy {
 			strictRecordContainer(record, "pricing", false, SchemaDriftClassify, "Invalid pricing is rejected at field scope so the offering remains usable."),
 			strictRecordContainer(record, "limits", false, SchemaDriftClassify, "Offering limits are typed when present."),
 			strictRecordContainer(record, "endpoint", true, SchemaDriftClassify, "Endpoint behavior is a typed offering fact."),
+			strictRecordContainer(record, "access", true, SchemaDriftClassify, "Access channel and routability fail closed."),
+			strictRecordContainer(record, "deployment", true, SchemaDriftClassify, "Deployment type and tier are provider facts."),
 			strictRecordContainer(record, "modes", false, SchemaDriftClassify, "Named service modes require a typed map when present."),
 			strictRecordContainer(record, "regions", false, SchemaDriftClassify, "Regions require a typed set-like array when present."),
+			strictRecordContainer(record, "inference_profile", false, SchemaDriftClassify, "Cross-region profile identity and destinations remain typed."),
+			strictRecordContainer(record, "aggregator_upstream", false, SchemaDriftClassify, "Aggregator offerings retain the underlying provider identity when known."),
 		}
 	default:
 		return nil

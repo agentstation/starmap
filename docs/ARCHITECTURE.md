@@ -434,8 +434,7 @@ Commands define their own flags that don't conflict with global flags:
 **Update Command:**
 - `-f` / `--force` - Force fresh update
 - `-y` / `--yes` - Auto-approve changes
-- `--dry` - Preview changes (primary)
-- `--dry-run` - Preview changes (deprecated alias)
+- `--dry` - Preview changes
 
 **Embed Commands:**
 - Custom help flag (`-?`) frees up `-h` and `-f`
@@ -500,25 +499,6 @@ cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
 LsCmd.Flags().BoolVarP(&lsHuman, "human-readable", "h", false, "...")
 ```
 
-#### 4. Hidden Alias Flags
-
-**Decision**: Support backward compatibility via hidden aliases
-
-**Rationale:**
-- Users may have scripts depending on old flags
-- Hidden flags don't clutter help text
-- Smooth migration path
-
-**Example:**
-```go
-// Primary flag (shown in help)
-rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "...")
-
-// Hidden aliases (backward compat)
-rootCmd.PersistentFlags().StringVar(&a.config.Output, "format", "", "")
-_ = rootCmd.PersistentFlags().MarkHidden("format")
-```
-
 ### Implementation Details
 
 **Framework**: [Cobra](https://github.com/spf13/cobra) - Industry-standard Go CLI library
@@ -572,12 +552,11 @@ store work is responsible for committing and activating it atomically.
 | `sync_run_id` | Correlation ID for the synchronization attempt that built the candidate |
 | `source_observations` | Source/observation IDs and evidence checksums needed for audit and replay |
 | `completeness`, `degraded`, `degradation_reasons` | Separate record-coverage and quality/fallback state |
-| `consumer_compatibility` | Inclusive catalog-schema range; never a Starmap or Starport binary range |
 
 Publication eligibility requires a passed validation report, no failed checks,
 valid checksums, a non-empty observation set, internally consistent
-completeness/degradation state, and a schema version inside the declared
-consumer range. The checked-in JSON Schema, example manifest, and exact payload
+completeness/degradation state, and the exact current catalog schema version.
+The checked-in JSON Schema, example manifest, and exact payload
 fixture live in `pkg/catalogs/testdata/generation/`.
 
 ### Catalog distribution artifact
@@ -586,12 +565,12 @@ fixture live in `pkg/catalogs/testdata/generation/`.
 deterministic archive plus detached in-toto statement. The archive contains a
 strict descriptor, the complete generation manifest, and the exact canonical
 payload. Rebuilds of identical inputs are byte-identical; opening revalidates
-the manifest/payload binding, member descriptors, compatibility identity, and
+the manifest/payload binding, member descriptors, schema identity, and
 all statement subjects before returning a generation. See
 [Catalog Artifact Format](CATALOG_ARTIFACT_FORMAT.md).
 
 Generation IDs are immutable logical IDs. SHA-256 independently content-addresses
-the payload and archive; schema compatibility is not coupled to binary versions.
+the payload and archive; exact schema validation is not coupled to binary versions.
 Release staging writes archive, statement, and checksum as one fsynced atomic
 directory; exact retries are idempotent and same-generation byte changes are
 typed conflicts. The GitHub tag workflow uploads these assets without an
@@ -600,14 +579,14 @@ overwrite flag.
 `pkg/catalogremote` owns the online Starmap-to-Starmap protocol. A client reads
 the current strict manifest from a versioned API base, then fetches the exact
 generation-addressed canonical snapshot. Strict media type, body bounds,
-catalog-schema compatibility, size, and checksum validation all precede decode
+exact catalog-schema, size, and checksum validation all precede decode
 and compare-and-swap publication. The server and root remote-update path share
 these route constants; the old ad-hoc unversioned catalog envelope is removed.
 See [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 `pkg/catalogdistribution` owns the separate hosted protocol. A small
-latest-compatible pointer selects immutable archive and attestation URLs under
-the same origin; the client verifies pointer compatibility, URL origin, media
+latest pointer selects immutable archive and attestation URLs under the same
+origin; the client verifies exact schema, URL origin, media
 type, size, checksum, artifact, statement, and downloaded manifest identity.
 The handler reads through a narrow repository boundary. Hosted pointers are
 explicit `dev`, `canary`, or `stable` channels, with stable as the consumer
@@ -722,13 +701,10 @@ The CLI/server composition root accepts the same policies through
 `embedded_bootstrap_max_age` and `embedded_bootstrap_max_size_bytes` (or their
 uppercase environment-variable forms).
 
-The documented pre-generation directory format is frozen under
-`pkg/catalogstore/testdata/legacy-v0/`. `MigrateLegacyDirectory` parses that
-format without mutation, requires caller-supplied generation/run/observation
-identity and UTC time, and deterministically emits schema-v1 `CatalogPayload`
-bytes plus a validated manifest. Provider-specific and author model indexes are
-encoded separately because the legacy record structs intentionally exclude
-their runtime model maps from JSON/YAML indexes.
+No pre-generation directory decoder or location migration ships. The durable
+store accepts only canonical schema-v2 payloads; editable checked-in/source YAML
+is a current ingestion format and is never auto-discovered as an old durable
+generation.
 
 ### Reconciler Package
 
@@ -1009,9 +985,9 @@ Data flows from multiple sources into the reconciliation engine, with each sourc
 
 ```mermaid
 graph TD
-    LOCAL["Local Catalog<br/><b>Priority: 100</b> (API Config)<br/>• API keys & endpoints<br/>• Provider configurations<br/>• User overrides"]
+    LOCAL["Local / Published Catalog<br/><b>Priority: 105</b> (Last Known Good)<br/>• API configuration<br/>• Reviewed provider facts<br/>• Durable price fallback"]
     API["Provider APIs<br/><b>Priority: 110</b> (Valid Offering Price)<br/><b>Priority: 95</b> (Model Existence)<br/>• Real-time availability<br/>• Offering-specific pricing<br/>• Concurrent fetching"]
-    MD["models.dev<br/><b>Priority: 100</b> (Price Fallback / Metadata)<br/>• Community pricing fallback<br/>• Provider logos (SVG)<br/>• HTTP default; Git verification"]
+    MD["models.dev<br/><b>Priority: 90</b> (Lower Fallback / Metadata)<br/>• Community pricing fallback after catalog baseline<br/>• Provider logos (SVG)<br/>• HTTP default; Git verification"]
     EMB["Embedded Catalog<br/><b>Priority: 80</b> (Baseline)<br/>• Ships with binary (go:embed)<br/>• Fallback data<br/>• Manual corrections"]
 
     REC{Reconciliation<br/>Engine<br/>Authority-Based}
@@ -1060,6 +1036,15 @@ provider-scoped partial/degraded observation with zero live models, while a
 successful fetch replaces bootstrap models instead of blending them into
 current evidence. Reconciliation may still use the separately identified local
 baseline observation according to authority policy.
+
+Offering authority is ordered provider-official, durable catalog baseline,
+then models.dev. Inventory-only success preserves valid baseline price and
+capability facts. Partial/degraded observations, quarantined malformed pricing,
+and explicitly stale fallback evidence cannot displace the baseline. A complete
+successful authoritative observation may delete an absent offering within the
+providers it actually covers; partial provider absence and every models.dev
+absence are non-deleting. Schema-v2 encode/decode preserves the same behavior
+across process restart.
 
 Source and provider libraries never write directly to process stdout/stderr.
 They emit context-bound zerolog events through `pkg/logging`; the pipeline adds
@@ -1233,18 +1218,16 @@ route aliases are policy-layer objects and never source-ingestion aliases.
 `catalogs.ProviderOffering` is the provider-specific schema: its comparable key
 is `(ProviderID, ProviderModelID)`, and it owns pricing, limits, availability,
 regions, endpoint behavior, provider lifecycle, modes, and typed request
-overrides. The legacy `Model` compatibility record remains in place until the
-P4 migration moves intrinsic definition fields into their canonical schema.
+overrides. Mutable source builders may contain `Model` ingestion records, but
+immutable catalogs expose only canonical definitions and offerings.
 `catalogs.ModelDefinition` is the complementary provider-independent record;
 reflection and round-trip tests keep its authorship, lineage, weights, and
 capabilities surface disjoint from every offering-owned field.
-Legacy embedded and source catalogs pass through `MigrateLegacySchema`, which
-uses deterministic provider ordering and classifies exact/defaulted/missing/
-conflicting transformations. Its checked embedded baseline currently contains
-516 offerings, 490 definitions, 1,073 defaults, 23 reviewed definition
-conflicts, 81 explicit missing-authorship records, and zero unclassified
-changes. Multi-author marketplace declarations are candidate sets and are never
-copied onto every model as invented joint authorship.
+Current embedded and provider-source models pass through an ingestion-only
+projection with deterministic provider ordering. It cannot be invoked by any
+payload, manifest, remote, distribution, or artifact reader. Multi-author
+marketplace declarations are candidate sets and are never copied onto every
+model as invented joint authorship.
 Published catalogs precompute definition and offering indexes. Canonical reads
 use `Definition`, `Offering`, and `ProviderOfferings`; the latter two retain the
 exact provider-scoped identity and return deep copies of nested mutable values.
@@ -1253,12 +1236,10 @@ Route aliases remain caller-supplied policy-layer identities.
 catalog generation and reports ineligible targets without storing routing
 weights or fallback policy in ingestion.
 
-Public compatibility is versioned through the concrete `LegacyCatalogV0`
-adapter. Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts
-come from `Offering`. Existing callers that require the former flattened
-`Model` use `catalog.LegacyV0()`. Direct legacy collection methods remain
-deprecated during the v1 transition, and schema-v0/v1 constants make the
-compatibility boundary executable rather than release-version folklore.
+Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
+from `Offering` and `ProviderOfferings`. The immutable catalog has no flattened
+model adapter or deprecated read methods. Catalog payload, bootstrap, remote,
+distribution, and artifact readers require exact schema version 2.
 
 ### Authority-Based Strategy
 
@@ -1824,10 +1805,12 @@ starmap/
 │   │   └── pipeline/        # Sync orchestration behind Client.Sync
 │   ├── providers/            # Provider API clients and registry
 │   │   ├── clients/          # Provider client registry and raw fetch
-│   │   ├── openai/           # OpenAI-compatible client
+│   │   ├── openai/           # Shared OpenAI-compatible transport and conversion
 │   │   ├── anthropic/        # Anthropic client
 │   │   ├── google/           # Google AI Studio and Vertex client
-│   │   └── ...               # Provider-specific test wrappers
+│   │   ├── mistral/          # Provider-owned adapter, tests, and fixtures
+│   │   ├── xai/              # Provider-owned envelope adapter, tests, and fixtures
+│   │   └── ...               # Provider adapters or custom clients with local evidence
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -2036,28 +2019,15 @@ make testdata
 
 # Update specific provider
 make testdata PROVIDER=openai
-
-# Or directly
-go test ./internal/providers/openai -update
 ```
 
-**Testdata Pattern:**
-
-```go
-var updateFlag = flag.Bool("update", false, "update testdata files")
-
-func TestListModels(t *testing.T) {
-    if *updateFlag {
-        // Fetch from real API and save
-        models, _ := client.ListModels(ctx)
-        saveTestdata(models)
-    } else {
-        // Load from testdata
-        models := loadTestdata()
-        // Test with loaded data
-    }
-}
-```
+The production refresh command fetches raw response bytes, validates them
+through the registered provider client, rejects no-op/failure/invalid or
+secret-bearing responses, and atomically replaces the payload and adjacent
+integrity/freshness metadata. Ordinary tests are offline and read-only. Provider
+module roles, filenames, catalog/config ownership, and tested fixture exceptions
+are normative in [ADDING_PROVIDERS.md](ADDING_PROVIDERS.md) and mechanically
+enforced by `make provider-contract-check`.
 
 ## References
 

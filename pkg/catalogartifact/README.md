@@ -68,7 +68,7 @@ const (
 ```
 
 <a name="Open"></a>
-## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L178>)
+## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L175>)
 
 ```go
 func Open(archive, attestation []byte) (catalogstore.Generation, error)
@@ -77,7 +77,7 @@ func Open(archive, attestation []byte) (catalogstore.Generation, error)
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
 
 <a name="Artifact"></a>
-## type [Artifact](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L105-L113>)
+## type [Artifact](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L103-L111>)
 
 Artifact is one reproducible archive and its detached attestation statement.
 
@@ -94,7 +94,7 @@ type Artifact struct {
 ```
 
 <a name="Build"></a>
-### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L118>)
+### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L116>)
 
 ```go
 func Build(generation catalogstore.Generation) (Artifact, error)
@@ -103,21 +103,20 @@ func Build(generation catalogstore.Generation) (Artifact, error)
 Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
 
 <a name="AttestationPredicate"></a>
-## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L87-L92>)
+## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L86-L90>)
 
 AttestationPredicate records the catalog compatibility identity asserted by the detached statement. Signature and builder provenance are added and verified by the publication boundary.
 
 ```go
 type AttestationPredicate struct {
-    GenerationID          string                         `json:"generation_id"`
-    ManifestVersion       uint64                         `json:"manifest_version"`
-    SchemaVersion         uint64                         `json:"schema_version"`
-    ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
+    GenerationID    string `json:"generation_id"`
+    ManifestVersion uint64 `json:"manifest_version"`
+    SchemaVersion   uint64 `json:"schema_version"`
 }
 ```
 
 <a name="AttestationStatement"></a>
-## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L97-L102>)
+## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L95-L100>)
 
 AttestationStatement is the deterministic in\-toto statement emitted beside an artifact. It is deliberately detached to avoid a self\-referential archive digest and to permit signing without changing reproducible artifact bytes.
 
@@ -131,25 +130,24 @@ type AttestationStatement struct {
 ```
 
 <a name="Descriptor"></a>
-## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L62-L71>)
+## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L62-L70>)
 
 Descriptor describes the complete logical generation carried by an archive.
 
 ```go
 type Descriptor struct {
-    FormatVersion         uint64                         `json:"format_version"`
-    MediaType             string                         `json:"media_type"`
-    GenerationID          string                         `json:"generation_id"`
-    ManifestVersion       uint64                         `json:"manifest_version"`
-    SchemaVersion         uint64                         `json:"schema_version"`
-    ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
-    Manifest              FileDescriptor                 `json:"manifest"`
-    Payload               FileDescriptor                 `json:"payload"`
+    FormatVersion   uint64         `json:"format_version"`
+    MediaType       string         `json:"media_type"`
+    GenerationID    string         `json:"generation_id"`
+    ManifestVersion uint64         `json:"manifest_version"`
+    SchemaVersion   uint64         `json:"schema_version"`
+    Manifest        FileDescriptor `json:"manifest"`
+    Payload         FileDescriptor `json:"payload"`
 }
 ```
 
 <a name="Descriptor.String"></a>
-### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L404>)
+### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L400>)
 
 ```go
 func (d Descriptor) String() string
@@ -158,7 +156,7 @@ func (d Descriptor) String() string
 String returns a concise descriptor useful in logs.
 
 <a name="DigestSet"></a>
-## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L74-L76>)
+## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L73-L75>)
 
 DigestSet is the SHA\-256 digest map used by an in\-toto subject.
 
@@ -206,7 +204,7 @@ func StageReleaseAssets(root string, artifact Artifact) (ReleaseAssets, error)
 StageReleaseAssets validates and atomically stages archive, attestation, and checksum assets. An exact retry is idempotent; rebinding the same generation ID to different bytes returns a typed conflict.
 
 <a name="Subject"></a>
-## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L79-L82>)
+## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L78-L81>)
 
 Subject is one byte object bound by the detached statement.
 

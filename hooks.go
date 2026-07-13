@@ -166,9 +166,9 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	modelRemoved := append([]ModelRemovedHook(nil), h.modelRemoved...)
 	h.mu.RUnlock()
 
-	// Get old and new models for comparison
-	oldModels := old.Models().List()
-	newModels := updated.Models().List()
+	// Project current canonical definitions into the hook's model event shape.
+	oldModels := hookModels(old.Definitions())
+	newModels := hookModels(updated.Definitions())
 
 	// Create maps for efficient lookup
 	oldModelMap := make(map[string]catalogs.Model)
@@ -215,6 +215,21 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 			}
 		}
 	}
+}
+
+func hookModels(definitions []catalogs.ModelDefinition) []catalogs.Model {
+	models := make([]catalogs.Model, 0, len(definitions))
+	for _, definition := range definitions {
+		models = append(models, catalogs.Model{
+			ID: string(definition.ID), Name: definition.Name, Description: definition.Description,
+			Features: definition.Capabilities.Features, Attachments: definition.Capabilities.Attachments,
+			Generation: definition.Capabilities.Generation, Reasoning: definition.Capabilities.Reasoning,
+			ReasoningTokens: definition.Capabilities.ReasoningTokens, Verbosity: definition.Capabilities.Verbosity,
+			Tools: definition.Capabilities.Tools, Delivery: definition.Capabilities.Delivery,
+			CreatedAt: definition.CreatedAt, UpdatedAt: definition.UpdatedAt,
+		})
+	}
+	return models
 }
 
 func (h *hooks) invoke(fn func() error) {

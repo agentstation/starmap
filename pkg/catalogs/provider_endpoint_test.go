@@ -57,3 +57,17 @@ func TestProviderCatalogEndpointURLUsesLoadedEnvVarValue(t *testing.T) {
 		t.Fatalf("CatalogEndpointURL() = %q, want %q", got, want)
 	}
 }
+
+func TestProviderCatalogOfferingEndpointUsesCatalogAuthority(t *testing.T) {
+	provider := &Provider{Catalog: &ProviderCatalog{
+		Endpoint: ProviderEndpoint{
+			URL: "https://api.example.com/v1/models", BaseURLEnvVar: "EXAMPLE_BASE_URL", Path: "/models",
+		},
+		Offering: &ProviderOfferingDefaults{Endpoint: ProviderOfferingEndpoint{Type: EndpointTypeOpenAI}},
+	}}
+	provider.EnvVarValues = map[string]string{"EXAMPLE_BASE_URL": "https://regional.example.com/v2"}
+
+	if got, want := provider.CatalogOfferingEndpoint().BaseURL, "https://regional.example.com/v2"; got != want {
+		t.Fatalf("CatalogOfferingEndpoint().BaseURL = %q, want %q", got, want)
+	}
+}

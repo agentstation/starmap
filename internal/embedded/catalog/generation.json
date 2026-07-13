@@ -1,11 +1,11 @@
 {
   "manifest_version": 1,
-  "generation_id": "catalog-20260711T235312Z-bc35069f054f",
-  "generated_at": "2026-07-11T23:53:12.954979Z",
-  "schema_version": 1,
+  "generation_id": "catalog-20260713T011645Z-3d47e10f17a4",
+  "generated_at": "2026-07-13T01:16:45.62913Z",
+  "schema_version": 2,
   "payload": {
-    "checksum": "sha256:bc35069f054f385724b31f13828061d1d4f78a3c2b568b37b4ae028708d42d1e",
-    "size_bytes": 2241095,
+    "checksum": "sha256:3d47e10f17a4a2f60f63888c808ed93b02bec4e0552ce679ebdf529c2c05db37",
+    "size_bytes": 2068393,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   }
 }

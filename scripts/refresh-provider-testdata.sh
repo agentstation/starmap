@@ -7,24 +7,15 @@ if [[ ! "$provider" =~ ^[a-z0-9-]+$ ]]; then
   exit 2
 fi
 
-fixture="internal/providers/${provider}/testdata/models_list.json"
-metadata="internal/providers/${provider}/testdata/models_list.metadata.json"
-if [[ ! -f "$fixture" || ! -f "$metadata" ]]; then
-  echo "provider fixture or metadata is missing for ${provider}" >&2
+if [[ ! -d "internal/providers/${provider}" ]]; then
+  echo "provider package is missing for ${provider}" >&2
   exit 3
 fi
 
-before="$(cksum "$fixture" "$metadata")"
-if [[ -n "${STARMAP_GO_TEST_BIN:-}" ]]; then
-  "$STARMAP_GO_TEST_BIN" test "./internal/providers/${provider}" -update -v
+if [[ -n "${STARMAP_GO_RUN_BIN:-}" ]]; then
+  "$STARMAP_GO_RUN_BIN" run ./cmd/starmap-provider-testdata-refresh --provider "$provider"
 elif command -v devbox >/dev/null 2>&1; then
-  devbox run go test "./internal/providers/${provider}" -update -v
+  devbox run go run ./cmd/starmap-provider-testdata-refresh --provider "$provider"
 else
-  go test "./internal/providers/${provider}" -update -v
-fi
-after="$(cksum "$fixture" "$metadata")"
-
-if [[ "$before" == "$after" ]]; then
-  echo "provider refresh completed without updating payload/metadata for ${provider}" >&2
-  exit 4
+  go run ./cmd/starmap-provider-testdata-refresh --provider "$provider"
 fi

@@ -1,0 +1,10 @@
+id: c4ai-aya-expanse-8b
+name: c4ai-aya-expanse-8b
+authors:
+- id: cohere
+  name: Cohere
+pricing:
+  currency: USD
+  tokens:
+    input: {per_1m: 0.5}
+    output: {per_1m: 1.5}

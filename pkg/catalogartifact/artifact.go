@@ -60,14 +60,13 @@ type FileDescriptor struct {
 
 // Descriptor describes the complete logical generation carried by an archive.
 type Descriptor struct {
-	FormatVersion         uint64                         `json:"format_version"`
-	MediaType             string                         `json:"media_type"`
-	GenerationID          string                         `json:"generation_id"`
-	ManifestVersion       uint64                         `json:"manifest_version"`
-	SchemaVersion         uint64                         `json:"schema_version"`
-	ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
-	Manifest              FileDescriptor                 `json:"manifest"`
-	Payload               FileDescriptor                 `json:"payload"`
+	FormatVersion   uint64         `json:"format_version"`
+	MediaType       string         `json:"media_type"`
+	GenerationID    string         `json:"generation_id"`
+	ManifestVersion uint64         `json:"manifest_version"`
+	SchemaVersion   uint64         `json:"schema_version"`
+	Manifest        FileDescriptor `json:"manifest"`
+	Payload         FileDescriptor `json:"payload"`
 }
 
 // DigestSet is the SHA-256 digest map used by an in-toto subject.
@@ -85,10 +84,9 @@ type Subject struct {
 // the detached statement. Signature and builder provenance are added and
 // verified by the publication boundary.
 type AttestationPredicate struct {
-	GenerationID          string                         `json:"generation_id"`
-	ManifestVersion       uint64                         `json:"manifest_version"`
-	SchemaVersion         uint64                         `json:"schema_version"`
-	ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
+	GenerationID    string `json:"generation_id"`
+	ManifestVersion uint64 `json:"manifest_version"`
+	SchemaVersion   uint64 `json:"schema_version"`
 }
 
 // AttestationStatement is the deterministic in-toto statement emitted beside
@@ -127,14 +125,13 @@ func Build(generation catalogstore.Generation) (Artifact, error) {
 		return Artifact{}, artifactValidation("manifest", generation.Manifest.GenerationID, err.Error())
 	}
 	descriptor := Descriptor{
-		FormatVersion:         FormatVersion,
-		MediaType:             MediaType,
-		GenerationID:          generation.Manifest.GenerationID,
-		ManifestVersion:       generation.Manifest.ManifestVersion,
-		SchemaVersion:         generation.Manifest.SchemaVersion,
-		ConsumerCompatibility: generation.Manifest.ConsumerCompatibility,
-		Manifest:              describeFile(manifestFilename, "application/json", manifest),
-		Payload:               describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, generation.Payload),
+		FormatVersion:   FormatVersion,
+		MediaType:       MediaType,
+		GenerationID:    generation.Manifest.GenerationID,
+		ManifestVersion: generation.Manifest.ManifestVersion,
+		SchemaVersion:   generation.Manifest.SchemaVersion,
+		Manifest:        describeFile(manifestFilename, "application/json", manifest),
+		Payload:         describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, generation.Payload),
 	}
 	descriptorData, err := json.Marshal(descriptor)
 	if err != nil {
@@ -160,7 +157,7 @@ func Build(generation catalogstore.Generation) (Artifact, error) {
 		PredicateType: AttestationPredicateType,
 		Predicate: AttestationPredicate{
 			GenerationID: descriptor.GenerationID, ManifestVersion: descriptor.ManifestVersion,
-			SchemaVersion: descriptor.SchemaVersion, ConsumerCompatibility: descriptor.ConsumerCompatibility,
+			SchemaVersion: descriptor.SchemaVersion,
 		},
 	}
 	attestation, err := json.Marshal(statement)
@@ -310,9 +307,8 @@ func validateDescriptor(descriptor Descriptor, generation catalogstore.Generatio
 	}
 	if descriptor.GenerationID != manifest.GenerationID ||
 		descriptor.ManifestVersion != manifest.ManifestVersion ||
-		descriptor.SchemaVersion != manifest.SchemaVersion ||
-		descriptor.ConsumerCompatibility != manifest.ConsumerCompatibility {
-		return artifactValidation("descriptor.generation", descriptor.GenerationID, "does not match manifest identity or compatibility")
+		descriptor.SchemaVersion != manifest.SchemaVersion {
+		return artifactValidation("descriptor.generation", descriptor.GenerationID, "does not match manifest identity")
 	}
 	wantManifest := describeFile(manifestFilename, "application/json", manifestData)
 	wantPayload := describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, generation.Payload)
@@ -332,7 +328,7 @@ func verifyAttestation(data, archive []byte, descriptor Descriptor, descriptorDa
 	}
 	wantPredicate := AttestationPredicate{
 		GenerationID: descriptor.GenerationID, ManifestVersion: descriptor.ManifestVersion,
-		SchemaVersion: descriptor.SchemaVersion, ConsumerCompatibility: descriptor.ConsumerCompatibility,
+		SchemaVersion: descriptor.SchemaVersion,
 	}
 	if statement.Predicate != wantPredicate {
 		return artifactValidation("attestation.predicate", statement.Predicate.GenerationID, "does not match artifact descriptor")

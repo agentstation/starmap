@@ -78,6 +78,7 @@ components:
       - AuthorIDZhipuAI
       - AuthorIDSenseTime
       - AuthorIDHuawei
+      - AuthorIDXiaomi
       - AuthorIDTsinghua
       - AuthorIDPeking
       - AuthorIDNVIDIA
@@ -89,6 +90,7 @@ components:
       - AuthorIDAI21
       - AuthorIDInflection
       - AuthorIDCharacter
+      - AuthorIDHCompany
       - AuthorIDPerplexity
       - AuthorIDAnysphere
       - AuthorIDCursor
@@ -170,6 +172,7 @@ components:
             - AuthorIDZhipuAI
             - AuthorIDSenseTime
             - AuthorIDHuawei
+            - AuthorIDXiaomi
             - AuthorIDTsinghua
             - AuthorIDPeking
             - AuthorIDNVIDIA
@@ -181,6 +184,7 @@ components:
             - AuthorIDAI21
             - AuthorIDInflection
             - AuthorIDCharacter
+            - AuthorIDHCompany
             - AuthorIDPerplexity
             - AuthorIDAnysphere
             - AuthorIDCursor
@@ -211,6 +215,19 @@ components:
       - EndpointTypeAnthropic
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
+      - EndpointTypeBedrock
+      - EndpointTypeAzureOpenAI
+      - EndpointTypeCohere
+      - EndpointTypeApplication
+      - EndpointTypeTogether
+      - EndpointTypeHuggingFace
+      - EndpointTypeNVIDIA
+      - EndpointTypeDatabricks
+      - EndpointTypeSnowflake
+      - EndpointTypeWatsonx
+      - EndpointTypeOCI
+      - EndpointTypeCloudflare
+      - EndpointTypeSambaNova
     catalogs.FeatureRule:
       properties:
         contains:
@@ -810,6 +827,7 @@ components:
             - ProviderIDCerebras
             - ProviderIDCheckstep
             - ProviderIDCohere
+            - ProviderIDCursor
             - ProviderIDConectys
             - ProviderIDCove
             - ProviderIDDeepMind
@@ -823,6 +841,17 @@ components:
             - ProviderIDMeta
             - ProviderIDMicrosoft
             - ProviderIDMistralAI
+            - ProviderIDNVIDIA
+            - ProviderIDDatabricks
+            - ProviderIDSnowflake
+            - ProviderIDWatsonx
+            - ProviderIDOCI
+            - ProviderIDCloudflare
+            - ProviderIDSambaNova
+            - ProviderIDBaseten
+            - ProviderIDScaleway
+            - ProviderIDHyperbolic
+            - ProviderIDNovita
             - ProviderIDMoonshotAI
             - ProviderIDOpenAI
             - ProviderIDOpenRouter
@@ -961,6 +990,7 @@ components:
             - AuthorIDZhipuAI
             - AuthorIDSenseTime
             - AuthorIDHuawei
+            - AuthorIDXiaomi
             - AuthorIDTsinghua
             - AuthorIDPeking
             - AuthorIDNVIDIA
@@ -972,6 +1002,7 @@ components:
             - AuthorIDAI21
             - AuthorIDInflection
             - AuthorIDCharacter
+            - AuthorIDHCompany
             - AuthorIDPerplexity
             - AuthorIDAnysphere
             - AuthorIDCursor
@@ -1095,6 +1126,7 @@ components:
       - ProviderIDCerebras
       - ProviderIDCheckstep
       - ProviderIDCohere
+      - ProviderIDCursor
       - ProviderIDConectys
       - ProviderIDCove
       - ProviderIDDeepMind
@@ -1108,6 +1140,17 @@ components:
       - ProviderIDMeta
       - ProviderIDMicrosoft
       - ProviderIDMistralAI
+      - ProviderIDNVIDIA
+      - ProviderIDDatabricks
+      - ProviderIDSnowflake
+      - ProviderIDWatsonx
+      - ProviderIDOCI
+      - ProviderIDCloudflare
+      - ProviderIDSambaNova
+      - ProviderIDBaseten
+      - ProviderIDScaleway
+      - ProviderIDHyperbolic
+      - ProviderIDNovita
       - ProviderIDMoonshotAI
       - ProviderIDOpenAI
       - ProviderIDOpenRouter

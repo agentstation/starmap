@@ -39,7 +39,7 @@ func (m BootstrapManifest) Validate() error {
 		return bootstrapValidation("generated_at", m.GeneratedAt, "must be UTC")
 	}
 	if m.SchemaVersion != CurrentCatalogSchemaVersion {
-		return bootstrapValidation("schema_version", m.SchemaVersion, "does not match the current catalog schema")
+		return bootstrapValidation("schema_version", m.SchemaVersion, "must match the exact current catalog schema")
 	}
 	if m.Payload.MediaType != CatalogPayloadMediaType || m.Payload.SizeBytes <= 0 ||
 		!strings.HasPrefix(m.Payload.Checksum, checksumAlgorithmPrefix) || len(m.Payload.Checksum) != len(checksumAlgorithmPrefix)+64 {

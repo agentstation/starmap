@@ -145,7 +145,14 @@ make testdata PROVIDER=openai
 make update PROVIDER=openai
 ```
 
-Use live checks when changing provider clients, authentication, transport behavior, or embedded catalog update workflows. Treat generated testdata diffs as review artifacts.
+`make testdata` invokes the production provider-fixture refresh command; it does
+not route through a test-only `-update` flag. The command validates raw bytes
+through the registered client, rejects no-op/failure/invalid/secret-bearing
+responses, and atomically replaces the payload and adjacent metadata. See
+[ADDING_PROVIDERS.md](ADDING_PROVIDERS.md) for fixture exceptions and role
+requirements. Use live checks when changing provider clients, authentication,
+transport behavior, or embedded catalog update workflows. Treat generated
+testdata diffs as review artifacts.
 
 ## Release Readiness
 

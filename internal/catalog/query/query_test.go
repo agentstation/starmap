@@ -157,13 +157,13 @@ func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 		t.Fatalf("CatalogModels(a-provider): %v", err)
 	}
 	if len(filtered) != 1 || filtered[0].Name != "Provider A Offering" {
-		t.Fatalf("Provider A lookup returned flattened offering: %#v", filtered)
+		t.Fatalf("Provider A lookup returned wrong canonical definition: %#v", filtered)
 	}
-	bOffering, err := snapshot.ProviderModel("b-provider", "shared-model")
+	bOffering, err := snapshot.Offering("b-provider", "shared-model")
 	if err != nil {
-		t.Fatalf("ProviderModel(b-provider/shared-model): %v", err)
+		t.Fatalf("Offering(b-provider/shared-model): %v", err)
 	}
-	if bOffering.Name != "Provider B Offering" {
+	if bOffering.ProviderModelID != "shared-model" {
 		t.Fatalf("Provider B offering = %#v", bOffering)
 	}
 }

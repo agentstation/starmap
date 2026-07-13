@@ -146,6 +146,28 @@ func TestSourceObserveAddsFetchedModels(t *testing.T) {
 	}
 }
 
+func TestSourceObserveNeverFetchesApplicationOnlyProviders(t *testing.T) {
+	provider := providerForTest("cursor")
+	provider.Catalog.Endpoint.Type = catalogs.EndpointTypeApplication
+	provider.Models = map[string]*catalogs.Model{"composer-2.5": {ID: "composer-2.5", Name: "Composer 2.5"}}
+	providerSet := newProviderSet(provider)
+	var calls int
+	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+		calls++
+		return fakeProviderClient{}, nil
+	}))
+	observation, err := src.Observe(context.Background())
+	if err != nil {
+		t.Fatalf("Observe: %v", err)
+	}
+	if calls != 0 {
+		t.Fatalf("application provider fetch calls = %d, want zero", calls)
+	}
+	if len(observation.Catalog.Providers().List()) != 0 {
+		t.Fatalf("provider API observation invented application records: %#v", observation.Catalog.Providers().List())
+	}
+}
+
 func TestInvalidIdentityQuarantineMalformedProviderRecordsWithCounts(t *testing.T) {
 	providerSet := newProviderSet(providerForTest("provider-a"))
 	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {

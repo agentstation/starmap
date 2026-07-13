@@ -3,6 +3,7 @@ package differ
 import (
 	"fmt"
 	"reflect"
+	"slices"
 	"sort"
 	"strings"
 
@@ -194,11 +195,84 @@ func (diff *Differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
 	existingAuthors := existing.Authors().List()
 	newAuthors := updated.Authors().List()
 	changeset.Authors = diff.Authors(existingAuthors, newAuthors)
+	existingDefinitions, existingOfferings := canonicalRecords(existing)
+	updatedDefinitions, updatedOfferings := canonicalRecords(updated)
+	changeset.Definitions = diff.modelDefinitions(existingDefinitions, updatedDefinitions)
+	changeset.Offerings = diff.providerOfferings(existingOfferings, updatedOfferings)
 
 	// Calculate summary
-	changeset.Summary = calculateSummary(changeset.Models, changeset.Providers, changeset.Authors)
+	changeset.Summary = calculateSummary(changeset.Models, changeset.Providers, changeset.Authors, changeset.Definitions, changeset.Offerings)
 
 	return changeset
+}
+
+func canonicalRecords(reader catalogs.Reader) ([]catalogs.ModelDefinition, []catalogs.ProviderOffering) {
+	return reader.Definitions(), reader.Offerings()
+}
+
+func (diff *Differ) modelDefinitions(existing, updated []catalogs.ModelDefinition) *ModelDefinitionChangeset {
+	changes := &ModelDefinitionChangeset{}
+	existingByID := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition, len(existing))
+	updatedByID := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition, len(updated))
+	for _, value := range existing {
+		existingByID[value.ID] = value
+	}
+	for _, value := range updated {
+		updatedByID[value.ID] = value
+	}
+	for _, value := range updated {
+		if previous, found := existingByID[value.ID]; !found {
+			changes.Added = append(changes.Added, value)
+		} else if !reflect.DeepEqual(previous, value) {
+			changes.Updated = append(changes.Updated, ModelDefinitionUpdate{ID: value.ID, Existing: previous, New: value})
+		}
+	}
+	for _, value := range existing {
+		if _, found := updatedByID[value.ID]; !found {
+			changes.Removed = append(changes.Removed, value)
+		}
+	}
+	slices.SortFunc(changes.Added, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(changes.Removed, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(changes.Updated, func(left, right ModelDefinitionUpdate) int { return strings.Compare(string(left.ID), string(right.ID)) })
+	return changes
+}
+
+func (diff *Differ) providerOfferings(existing, updated []catalogs.ProviderOffering) *ProviderOfferingChangeset {
+	changes := &ProviderOfferingChangeset{}
+	existingByKey := make(map[catalogs.OfferingKey]catalogs.ProviderOffering, len(existing))
+	updatedByKey := make(map[catalogs.OfferingKey]catalogs.ProviderOffering, len(updated))
+	for _, value := range existing {
+		existingByKey[value.Key()] = value
+	}
+	for _, value := range updated {
+		updatedByKey[value.Key()] = value
+	}
+	for _, value := range updated {
+		if previous, found := existingByKey[value.Key()]; !found {
+			changes.Added = append(changes.Added, value)
+		} else if !reflect.DeepEqual(previous, value) {
+			changes.Updated = append(changes.Updated, ProviderOfferingUpdate{Key: value.Key(), Existing: previous, New: value})
+		}
+	}
+	for _, value := range existing {
+		if _, found := updatedByKey[value.Key()]; !found {
+			changes.Removed = append(changes.Removed, value)
+		}
+	}
+	compareOffering := func(left, right catalogs.ProviderOffering) int {
+		return strings.Compare(string(left.ProviderID)+"/"+string(left.ProviderModelID), string(right.ProviderID)+"/"+string(right.ProviderModelID))
+	}
+	slices.SortFunc(changes.Added, compareOffering)
+	slices.SortFunc(changes.Removed, compareOffering)
+	slices.SortFunc(changes.Updated, func(left, right ProviderOfferingUpdate) int {
+		return strings.Compare(string(left.Key.ProviderID)+"/"+string(left.Key.ProviderModelID), string(right.Key.ProviderID)+"/"+string(right.Key.ProviderModelID))
+	})
+	return changes
 }
 
 func (diff *Differ) providerScopedModels(existingProviders, updatedProviders []catalogs.Provider) *ModelChangeset {

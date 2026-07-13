@@ -35,21 +35,6 @@ type GitInputs struct {
 	LockfileChecksum string
 }
 
-// Client is an alias for backward compatibility.
-type Client = GitClient
-
-// NewClient creates a new models.dev git client.
-func NewClient(outputDir string) *Client {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
-	}
-	repoPath := filepath.Join(outputDir, "models.dev-git")
-	return &Client{
-		RepoPath: repoPath,
-		RepoURL:  ModelsDevRepoURL,
-	}
-}
-
 // NewGitClient creates a new models.dev git client.
 func NewGitClient(outputDir string) *GitClient {
 	if outputDir == "" {

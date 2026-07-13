@@ -1,11 +1,10 @@
-// Package openai provides a unified, dynamic client for OpenAI-compatible APIs.
-// This package replaces the separate openaicompat package and provides configuration-driven
-// behavior based on provider YAML configuration.
+// Package openai provides the shared client for OpenAI-compatible model APIs.
 package openai
 
 import (
 	"context"
 	"encoding/json"
+	stderrors "errors"
 	"fmt"
 	"path"
 	"reflect"
@@ -28,6 +27,7 @@ const (
 	fieldID           = "id"
 	fieldOwnedBy      = "owned_by"
 	fieldMetadataTags = "metadata.tags"
+	featureReasoning  = "reasoning"
 )
 
 // Response represents the OpenAI API list models response.
@@ -35,6 +35,9 @@ type Response struct {
 	Object        string                           `json:"object"`
 	Data          []Model                          `json:"data"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	// RawJSON retains the source payload for provider-owned adapters whose
+	// response envelope extends the OpenAI-compatible list contract.
+	RawJSON json.RawMessage `json:"-"`
 }
 
 // UnmarshalJSON retains fingerprints for additive top-level fields.
@@ -50,6 +53,7 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 	}
 	*r = Response(decoded)
 	r.UnknownFields = unknown
+	r.RawJSON = append(r.RawJSON[:0], data...)
 	return nil
 }
 
@@ -64,6 +68,7 @@ type Model struct {
 	Name    string  `json:"name,omitempty"`
 	// Dynamic fields from provider-specific responses
 	MaxModelLen                 *int64   `json:"max_model_len,omitempty"`
+	MaxContextLength            *int64   `json:"max_context_length,omitempty"`
 	ContextWindow               *int64   `json:"context_window,omitempty"`
 	ContextLength               *int64   `json:"context_length,omitempty"`
 	MaxCompletionTokens         *int64   `json:"max_completion_tokens,omitempty"`
@@ -88,7 +93,15 @@ type Model struct {
 	SupportsReasoning  *bool                            `json:"supports_reasoning,omitempty"`   // Moonshot-specific
 	Permission         []ModelPermission                `json:"permission,omitempty"`           // Moonshot/OpenAI permission metadata
 	Metadata           *ModelMetadata                   `json:"metadata,omitempty"`
+	Aliases            []string                         `json:"aliases,omitempty"`
+	Type               string                           `json:"TYPE,omitempty"`
+	Archived           *bool                            `json:"archived,omitempty"`
+	Fingerprint        string                           `json:"fingerprint,omitempty"`
+	Version            string                           `json:"version,omitempty"`
 	UnknownFields      []sourcepayload.UnknownJSONField `json:"-"`
+	// RawJSON retains one source record for provider-owned enrichment and
+	// validation without teaching the shared transport provider-specific fields.
+	RawJSON json.RawMessage `json:"-"`
 }
 
 // UnmarshalJSON retains fingerprints for additive model fields.
@@ -104,6 +117,7 @@ func (m *Model) UnmarshalJSON(data []byte) error {
 	}
 	*m = Model(decoded)
 	m.UnknownFields = unknown
+	m.RawJSON = append(m.RawJSON[:0], data...)
 	return nil
 }
 
@@ -212,12 +226,37 @@ type Client struct {
 	// Provider with mutex protection
 	provider *catalogs.Provider
 	mu       sync.RWMutex
+
+	responseModels ResponseModelsFunc
+	modelEnricher  ModelEnricher
+}
+
+// ResponseModelsFunc validates a provider response and returns its model records.
+type ResponseModelsFunc func(Response) ([]Model, error)
+
+// ModelEnricher applies provider-owned facts after the shared conversion.
+type ModelEnricher func(*catalogs.Model, Model) error
+
+// Option configures an OpenAI-compatible client.
+type Option func(*Client)
+
+// WithResponseModels installs a provider-owned response-envelope adapter.
+func WithResponseModels(adapter ResponseModelsFunc) Option {
+	return func(client *Client) { client.responseModels = adapter }
+}
+
+// WithModelEnricher installs a provider-owned model enrichment adapter.
+func WithModelEnricher(enricher ModelEnricher) Option {
+	return func(client *Client) { client.modelEnricher = enricher }
 }
 
 // NewClient creates a validated dynamic OpenAI-compatible client.
-func NewClient(provider *catalogs.Provider) (*Client, error) {
+func NewClient(provider *catalogs.Provider, opts ...Option) (*Client, error) {
 	client := &Client{
 		provider: provider,
+	}
+	for _, opt := range opts {
+		opt(client)
 	}
 	if err := client.validateFieldMappings(provider); err != nil {
 		return nil, err
@@ -277,49 +316,67 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		}
 	}
 
-	// Make the request
-	resp, err := c.transport.Get(ctx, url, provider)
+	var result Response
+	if err := c.fetchModelsResponse(ctx, provider, url, &result); err != nil {
+		statusCode := 0
+		message := "failed to decode response"
+		var apiErr *errors.APIError
+		if stderrors.As(err, &apiErr) {
+			statusCode = apiErr.StatusCode
+			if statusCode == 0 && apiErr.Message == "request failed" {
+				message = "request failed"
+			}
+		}
+		return nil, &errors.APIError{
+			Provider: provider.ID.String(), StatusCode: statusCode,
+			Message: message, Err: err,
+		}
+	}
+	var sourceModels []Model
+	var err error
+	if c.responseModels != nil {
+		sourceModels, err = c.responseModels(result)
+	} else {
+		sourceModels, err = configuredResponseModels(provider, result)
+	}
 	if err != nil {
 		return nil, &errors.APIError{
-			Provider:   provider.ID.String(),
-			StatusCode: 0,
-			Message:    "request failed",
-			Err:        err,
-		}
-	}
-
-	// Decode response
-	var result Response
-	if err := transport.DecodeResponse(resp, &result); err != nil {
-		return nil, &errors.APIError{
-			Provider:   provider.ID.String(),
-			StatusCode: resp.StatusCode,
-			Message:    "failed to decode response",
-			Err:        err,
-		}
-	}
-	if result.Data == nil {
-		return nil, &errors.APIError{
-			Provider: provider.ID.String(), StatusCode: resp.StatusCode,
-			Message: "models response schema drift",
-			Err:     errors.NewParseError("json", "openai-compatible response", "required data array is missing or null", nil),
+			Provider: provider.ID.String(),
+			Message:  "models response schema drift",
+			Err:      err,
 		}
 	}
 
 	// Convert to starmap models
-	models := make([]catalogs.Model, 0, len(result.Data))
-	for _, m := range result.Data {
+	models := make([]catalogs.Model, 0, len(sourceModels))
+	for _, m := range sourceModels {
 		m.UnknownFields = append(m.UnknownFields, result.UnknownFields...)
-		model := c.ConvertToModel(m)
+		model, err := c.convertToModel(m)
+		if err != nil {
+			return nil, &errors.APIError{Provider: provider.ID.String(), Message: "model normalization failed", Err: err}
+		}
 		models = append(models, *model)
 	}
 
 	return models, nil
 }
 
+func (c *Client) fetchModelsResponse(ctx context.Context, provider *catalogs.Provider, url string, result *Response) error {
+	resp, err := c.transport.Get(ctx, url, provider)
+	if err != nil {
+		return &errors.APIError{Provider: provider.ID.String(), Message: "request failed", Err: err}
+	}
+	return transport.DecodeResponse(resp, result)
+}
+
 // ConvertToModel converts an OpenAI model response to a starmap Model using dynamic configuration.
 // This method is public for testing purposes.
 func (c *Client) ConvertToModel(m Model) *catalogs.Model {
+	model, _ := c.convertToModel(m)
+	return model
+}
+
+func (c *Client) convertToModel(m Model) (*catalogs.Model, error) {
 	model := &catalogs.Model{
 		ID:          m.ID,
 		Name:        m.ID, // Default to ID, may be overridden
@@ -327,7 +384,9 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 	}
 
 	// Apply dynamic field mappings
-	c.applyFieldMappings(model, m)
+	if err := c.applyFieldMappings(model, m); err != nil {
+		return nil, err
+	}
 
 	// Apply dynamic author extraction
 	model.Authors = c.extractAuthors(m.ID, m.OwnedBy)
@@ -335,7 +394,14 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 	// Apply dynamic feature rules
 	model.Features = c.applyFeatureRules(m)
 
-	c.applyProviderDefaults(model, m)
+	if err := c.applyProviderDefaults(model, m); err != nil {
+		return nil, err
+	}
+	if c.modelEnricher != nil {
+		if err := c.modelEnricher(model, m); err != nil {
+			return nil, err
+		}
+	}
 
 	if m.Root != "" || m.Parent != nil {
 		model.Lineage = &catalogs.ModelLineage{}
@@ -349,10 +415,10 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 		}
 	}
 
-	return model
+	return model, nil
 }
 
-func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
+func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) error {
 	if apiModel.Name != "" && model.Name == model.ID {
 		model.Name = apiModel.Name
 	}
@@ -370,15 +436,25 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 			model.Status = catalogs.ModelStatusUnknown
 		}
 	}
+	if apiModel.Archived != nil {
+		if *apiModel.Archived {
+			model.Status = catalogs.ModelStatusDeprecated
+		} else if model.Status == "" {
+			model.Status = catalogs.ModelStatusActive
+		}
+	}
 	c.applyProviderLimits(model, apiModel)
 	c.applyProviderMetadata(model, apiModel)
 	c.applyProviderFeatures(model, apiModel)
-	c.applyProviderPricing(model, apiModel)
+	if err := c.applyProviderPricing(model, apiModel); err != nil {
+		return err
+	}
 	c.applyProviderExtensions(model, apiModel)
+	return nil
 }
 
 func (c *Client) applyProviderLimits(model *catalogs.Model, apiModel Model) {
-	contextWindow := firstInt64(apiModel.ContextWindow, apiModel.ContextLength, apiModel.MaxModelLen)
+	contextWindow := firstInt64(apiModel.ContextWindow, apiModel.ContextLength, apiModel.MaxModelLen, apiModel.MaxContextLength)
 	if apiModel.Metadata != nil && contextWindow == nil {
 		contextWindow = apiModel.Metadata.ContextLength
 	}
@@ -452,7 +528,7 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 			features.FormatResponse = true
 		case "structured_outputs", "structured_output", "json_schema":
 			features.StructuredOutputs = true
-		case "reasoning", "thinking":
+		case featureReasoning, "thinking":
 			features.Reasoning = true
 		}
 	}
@@ -480,18 +556,44 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	}
 }
 
-func (c *Client) applyProviderPricing(model *catalogs.Model, apiModel Model) {
+func (c *Client) applyProviderPricing(model *catalogs.Model, apiModel Model) error {
+	if c.hasConfiguredPricingMappings() {
+		return nil
+	}
 	if apiModel.Pricing == nil && (apiModel.Metadata == nil || apiModel.Metadata.Pricing == nil) {
-		return
+		return nil
 	}
 	ensureModelPricing(model)
-	applyOpenAICompatiblePricing(model.Pricing, apiModel.Pricing)
+	if err := applyOpenAICompatiblePricing(model.Pricing, apiModel.Pricing); err != nil {
+		return err
+	}
 	if apiModel.Metadata != nil {
-		applyOpenAICompatibleMetadataPricing(model.Pricing, apiModel.Metadata.Pricing)
+		if err := applyOpenAICompatibleMetadataPricing(model.Pricing, apiModel.Metadata.Pricing); err != nil {
+			return err
+		}
 	}
 	if model.Pricing.Tokens.Input == nil && model.Pricing.Tokens.Output == nil && model.Pricing.Tokens.Cache == nil {
 		model.Pricing.Tokens = nil
 	}
+	if model.Pricing.Tokens == nil && model.Pricing.Operations == nil {
+		model.Pricing = nil
+		return nil
+	}
+	return model.Pricing.Validate()
+}
+
+func (c *Client) hasConfiguredPricingMappings() bool {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if c.provider == nil || c.provider.Catalog == nil {
+		return false
+	}
+	for _, mapping := range c.provider.Catalog.Endpoint.FieldMappings {
+		if strings.HasPrefix(mapping.To, "pricing.") {
+			return true
+		}
+	}
+	return false
 }
 
 func ensureModelPricing(model *catalogs.Model) {
@@ -506,24 +608,36 @@ func ensureModelPricing(model *catalogs.Model) {
 	}
 }
 
-func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelPricing) {
+func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelPricing) error {
 	if source == nil {
-		return
+		return nil
 	}
 	// Current OpenAI-compatible providers that expose this top-level block
 	// (notably Groq) report token prices in USD per 1M tokens, matching
 	// catalogs.ModelTokenCost.Per1M. Provider families with different units
 	// need an explicit provider-specific conversion before this mapping.
 	if source.Prompt != nil && pricing.Tokens.Input == nil {
-		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: *source.Prompt}
+		cost, err := catalogs.NormalizeProviderTokenPrice(*source.Prompt, catalogs.ProviderNormalizationUnitPerMillionTokens)
+		if err != nil {
+			return err
+		}
+		pricing.Tokens.Input = &cost
 	}
 	if source.Completion != nil && pricing.Tokens.Output == nil {
-		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.Completion}
+		cost, err := catalogs.NormalizeProviderTokenPrice(*source.Completion, catalogs.ProviderNormalizationUnitPerMillionTokens)
+		if err != nil {
+			return err
+		}
+		pricing.Tokens.Output = &cost
 	}
 	if source.InputCacheRead != nil {
 		ensureTokenCachePricing(pricing.Tokens)
 		if pricing.Tokens.Cache.Read == nil {
-			pricing.Tokens.Cache.Read = &catalogs.ModelTokenCost{Per1M: *source.InputCacheRead}
+			cost, err := catalogs.NormalizeProviderTokenPrice(*source.InputCacheRead, catalogs.ProviderNormalizationUnitPerMillionTokens)
+			if err != nil {
+				return err
+			}
+			pricing.Tokens.Cache.Read = &cost
 		}
 	}
 	if source.Request != nil || source.Image != nil {
@@ -535,24 +649,37 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 			pricing.Operations.ImageGen = source.Image
 		}
 	}
+	return nil
 }
 
-func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source *ModelMetadataPricing) {
+func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source *ModelMetadataPricing) error {
 	if source == nil {
-		return
+		return nil
 	}
 	// DeepInfra's metadata.pricing token fields are reported in USD per 1M
 	// tokens by its public /v1/openai/models payload, matching Per1M.
 	if source.InputTokens != nil && pricing.Tokens.Input == nil {
-		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: *source.InputTokens}
+		cost, err := catalogs.NormalizeProviderTokenPrice(*source.InputTokens, catalogs.ProviderNormalizationUnitPerMillionTokens)
+		if err != nil {
+			return err
+		}
+		pricing.Tokens.Input = &cost
 	}
 	if source.OutputTokens != nil && pricing.Tokens.Output == nil {
-		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.OutputTokens}
+		cost, err := catalogs.NormalizeProviderTokenPrice(*source.OutputTokens, catalogs.ProviderNormalizationUnitPerMillionTokens)
+		if err != nil {
+			return err
+		}
+		pricing.Tokens.Output = &cost
 	}
 	if source.CacheReadTokens != nil {
 		ensureTokenCachePricing(pricing.Tokens)
 		if pricing.Tokens.Cache.Read == nil {
-			pricing.Tokens.Cache.Read = &catalogs.ModelTokenCost{Per1M: *source.CacheReadTokens}
+			cost, err := catalogs.NormalizeProviderTokenPrice(*source.CacheReadTokens, catalogs.ProviderNormalizationUnitPerMillionTokens)
+			if err != nil {
+				return err
+			}
+			pricing.Tokens.Cache.Read = &cost
 		}
 	}
 	if source.PerImageUnit != nil || source.InputSeconds != nil || source.OutputSeconds != nil {
@@ -567,6 +694,7 @@ func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source
 			pricing.Operations.AudioGen = source.OutputSeconds
 		}
 	}
+	return nil
 }
 
 func (c *Client) applyProviderExtensions(model *catalogs.Model, apiModel Model) {
@@ -579,6 +707,21 @@ func (c *Client) applyProviderExtensions(model *catalogs.Model, apiModel Model) 
 	}
 	if apiModel.Kind != "" {
 		fields["kind"] = apiModel.Kind
+	}
+	if len(apiModel.Aliases) > 0 {
+		fields["aliases"] = append([]string(nil), apiModel.Aliases...)
+	}
+	if apiModel.Type != "" {
+		fields["type"] = apiModel.Type
+	}
+	if apiModel.Archived != nil {
+		fields["archived"] = *apiModel.Archived
+	}
+	if apiModel.Fingerprint != "" {
+		fields["fingerprint"] = apiModel.Fingerprint
+	}
+	if apiModel.Version != "" {
+		fields["version"] = apiModel.Version
 	}
 	if apiModel.SupportsChat != nil {
 		fields["supports_chat"] = *apiModel.SupportsChat
@@ -723,29 +866,70 @@ func (c *Client) extensionSource() string {
 	return "provider_api"
 }
 
+func dataModels(response Response) ([]Model, error) {
+	if response.Data == nil {
+		return nil, errors.NewParseError("json", "openai-compatible response", "required data array is missing or null", nil)
+	}
+	return response.Data, nil
+}
+
+func configuredResponseModels(provider *catalogs.Provider, response Response) ([]Model, error) {
+	collection := "data"
+	if provider != nil && provider.Catalog != nil && provider.Catalog.Endpoint.ResponseCollection != "" {
+		collection = provider.Catalog.Endpoint.ResponseCollection
+	}
+	if collection == "data" {
+		return dataModels(response)
+	}
+
+	current := response.RawJSON
+	for _, segment := range strings.Split(collection, ".") {
+		var object map[string]json.RawMessage
+		if err := json.Unmarshal(current, &object); err != nil {
+			return nil, errors.NewParseError("json", "openai-compatible response collection "+collection, "collection parent must be an object", err)
+		}
+		next, found := object[segment]
+		if !found || len(next) == 0 || string(next) == "null" {
+			return nil, errors.NewParseError("json", "openai-compatible response collection "+collection, "required model array is missing or null", nil)
+		}
+		current = next
+	}
+	var models []Model
+	if err := json.Unmarshal(current, &models); err != nil {
+		return nil, errors.NewParseError("json", "openai-compatible response collection "+collection, "collection must be a model array", err)
+	}
+	if models == nil {
+		return nil, errors.NewParseError("json", "openai-compatible response collection "+collection, "required model array is missing or null", nil)
+	}
+	return models, nil
+}
+
 // applyFieldMappings applies configured field mappings using direct path matching.
-func (c *Client) applyFieldMappings(model *catalogs.Model, apiModel Model) {
+func (c *Client) applyFieldMappings(model *catalogs.Model, apiModel Model) error {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
 
 	if provider == nil || provider.Catalog == nil || provider.Catalog.Endpoint.FieldMappings == nil {
-		return
+		return nil
 	}
 
 	// Apply field mappings using direct path matching
 	for _, mapping := range provider.Catalog.Endpoint.FieldMappings {
-		c.setFieldByPath(model, mapping.From, mapping.To, apiModel)
+		if err := c.setFieldByPath(model, mapping, apiModel); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 // setFieldByPath directly sets model fields based on path strings with type-safe conversion.
-func (c *Client) setFieldByPath(model *catalogs.Model, fromPath, toPath string, apiModel Model) {
-	sourceValue, ok := fieldMappingSourceValue(fromPath, apiModel)
+func (c *Client) setFieldByPath(model *catalogs.Model, mapping catalogs.FieldMapping, apiModel Model) error {
+	sourceValue, ok := fieldMappingSourceValue(mapping.From, apiModel)
 	if !ok || isNilFieldMappingValue(sourceValue) {
-		return
+		return nil
 	}
-	c.applyMappedField(model, toPath, sourceValue)
+	return c.applyMappedField(model, mapping, sourceValue)
 }
 
 func isNilFieldMappingValue(value any) bool {
@@ -761,7 +945,7 @@ func isNilFieldMappingValue(value any) bool {
 	}
 }
 
-func fieldMappingSourceValue(fromPath string, apiModel Model) (any, bool) {
+func fieldMappingSourceValue(fromPath string, apiModel Model) (any, bool) { //nolint:gocyclo // Declarative allow-list dispatch is intentionally exhaustive.
 	switch fromPath {
 	case "max_model_len":
 		return apiModel.MaxModelLen, true
@@ -801,12 +985,57 @@ func fieldMappingSourceValue(fromPath string, apiModel Model) (any, bool) {
 		return apiModel.OwnedBy, true
 	case "created":
 		return apiModel.Created, true
+	case "archived":
+		return apiModel.Archived, true
+	case "supports_tools":
+		return apiModel.SupportsTools, true
+	case "supports_reasoning":
+		return apiModel.SupportsReasoning, true
+	case "pricing.request":
+		if apiModel.Pricing != nil {
+			return apiModel.Pricing.Request, true
+		}
+	case "pricing.prompt":
+		if apiModel.Pricing != nil {
+			return apiModel.Pricing.Prompt, true
+		}
+	case "pricing.completion":
+		if apiModel.Pricing != nil {
+			return apiModel.Pricing.Completion, true
+		}
+	case "pricing.input_cache_read":
+		if apiModel.Pricing != nil {
+			return apiModel.Pricing.InputCacheRead, true
+		}
+	case "pricing.image":
+		if apiModel.Pricing != nil {
+			return apiModel.Pricing.Image, true
+		}
+	case "metadata.pricing.input_tokens":
+		if apiModel.Metadata != nil && apiModel.Metadata.Pricing != nil {
+			return apiModel.Metadata.Pricing.InputTokens, true
+		}
+	case "metadata.pricing.output_tokens":
+		if apiModel.Metadata != nil && apiModel.Metadata.Pricing != nil {
+			return apiModel.Metadata.Pricing.OutputTokens, true
+		}
+	case "metadata.pricing.cache_read_tokens":
+		if apiModel.Metadata != nil && apiModel.Metadata.Pricing != nil {
+			return apiModel.Metadata.Pricing.CacheReadTokens, true
+		}
+	case "metadata.pricing.per_image_unit":
+		if apiModel.Metadata != nil && apiModel.Metadata.Pricing != nil {
+			return apiModel.Metadata.Pricing.PerImageUnit, true
+		}
 	}
 	return nil, false
 }
 
-func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceValue any) {
-	switch toPath {
+func (c *Client) applyMappedField(model *catalogs.Model, mapping catalogs.FieldMapping, sourceValue any) error {
+	if strings.HasPrefix(mapping.To, "pricing.") {
+		return applyMappedPricing(model, mapping, sourceValue)
+	}
+	switch mapping.To {
 	// Limits fields
 	case "limits.context_window":
 		if model.Limits == nil {
@@ -824,7 +1053,7 @@ func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceVa
 		}
 		model.Limits.OutputTokens = c.toInt64(sourceValue)
 
-	// Direct model fields for backward compatibility
+	// Direct fields accepted from current provider metadata mappings.
 	case "context_window":
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
@@ -847,17 +1076,43 @@ func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceVa
 			model.Metadata = &catalogs.ModelMetadata{}
 		}
 		model.Metadata.Tags = c.toModelTags(sourceValue)
-
-	// Future extensibility - add more paths as needed:
-	// case "pricing.input.base":
-	//     if model.Pricing == nil { model.Pricing = &catalogs.ModelPricing{} }
-	//     if model.Pricing.Input == nil { model.Pricing.Input = &catalogs.ModelTokenPricing{} }
-	//     model.Pricing.Input.Base = c.toFloat64(sourceValue)
-
+	case "lifecycle":
+		value := c.toString(sourceValue)
+		if mapped, found := mapping.Values[value]; found {
+			value = mapped
+		}
+		model.Status = catalogs.ModelStatus(value)
+	case "features.tools", "features.reasoning", "features.structured_outputs":
+		value, ok := mappedBool(sourceValue)
+		if !ok {
+			return &errors.ValidationError{Field: mapping.From, Value: sourceValue, Message: "must contain a boolean capability value"}
+		}
+		if model.Features == nil {
+			model.Features = &catalogs.ModelFeatures{}
+		}
+		switch mapping.To {
+		case "features.tools":
+			model.Features.Tools = value
+		case "features.reasoning":
+			model.Features.Reasoning = value
+		case "features.structured_outputs":
+			model.Features.StructuredOutputs = value
+		}
 	default:
-		// Unknown destination path - skip silently
-		return
+		if strings.HasPrefix(mapping.To, "extensions.") {
+			parts := strings.Split(mapping.To, ".")
+			if model.Extensions == nil {
+				model.Extensions = make(catalogs.SourceExtensions)
+			}
+			extension := model.Extensions[parts[1]]
+			if extension.Fields == nil {
+				extension.Fields = make(map[string]any)
+			}
+			extension.Fields[parts[2]] = sourceValue
+			model.Extensions[parts[1]] = extension
+		}
 	}
+	return nil
 }
 
 // toInt64 converts various types to int64 with nil-safe handling.
@@ -912,6 +1167,12 @@ func (c *Client) toString(v any) string {
 		return strconv.FormatInt(val, 10)
 	case int:
 		return strconv.Itoa(val)
+	case *bool:
+		if val != nil {
+			return strconv.FormatBool(*val)
+		}
+	case bool:
+		return strconv.FormatBool(val)
 	}
 	return ""
 }
@@ -1100,7 +1361,7 @@ func (c *Client) applyFeatureRule(features *catalogs.ModelFeatures, apiModel Mod
 		features.ToolChoice = rule.Value
 	case "structured_outputs":
 		features.StructuredOutputs = rule.Value
-	case "reasoning":
+	case featureReasoning:
 		features.Reasoning = rule.Value
 	case "top_k":
 		features.TopK = rule.Value
@@ -1115,17 +1376,14 @@ func (c *Client) validateFieldMappings(provider *catalogs.Provider) error {
 		return nil
 	}
 
+	if err := catalogs.ValidateProviderFieldMappings(provider.Catalog.Endpoint.FieldMappings); err != nil {
+		return err
+	}
 	for _, mapping := range provider.Catalog.Endpoint.FieldMappings {
 		if !c.isValidSourceField(mapping.From) {
 			return &errors.ValidationError{
 				Field: "field_mappings.from", Value: mapping.From,
 				Message: "invalid source field: " + mapping.From,
-			}
-		}
-		if !c.isValidDestinationPath(mapping.To) {
-			return &errors.ValidationError{
-				Field: "field_mappings.to", Value: mapping.To,
-				Message: "invalid destination path: " + mapping.To,
 			}
 		}
 	}
@@ -1135,49 +1393,33 @@ func (c *Client) validateFieldMappings(provider *catalogs.Provider) error {
 // isValidSourceField checks if a source field exists in the API model.
 func (c *Client) isValidSourceField(field string) bool {
 	validFields := map[string]bool{
-		"max_model_len":           true,
-		"context_window":          true,
-		"context_length":          true,
-		"max_completion_tokens":   true,
-		"max_output_length":       true,
-		"input_token_limit":       true,
-		"output_token_limit":      true,
-		"name":                    true,
-		"metadata.description":    true,
-		"metadata.context_length": true,
-		"metadata.max_tokens":     true,
-		fieldMetadataTags:         true,
-		fieldID:                   true,
-		fieldOwnedBy:              true,
-		"created":                 true,
+		"max_model_len":                      true,
+		"context_window":                     true,
+		"context_length":                     true,
+		"max_completion_tokens":              true,
+		"max_output_length":                  true,
+		"input_token_limit":                  true,
+		"output_token_limit":                 true,
+		"name":                               true,
+		"metadata.description":               true,
+		"metadata.context_length":            true,
+		"metadata.max_tokens":                true,
+		fieldMetadataTags:                    true,
+		fieldID:                              true,
+		fieldOwnedBy:                         true,
+		"created":                            true,
+		"archived":                           true,
+		"supports_tools":                     true,
+		"supports_reasoning":                 true,
+		"pricing.request":                    true,
+		"pricing.prompt":                     true,
+		"pricing.completion":                 true,
+		"pricing.input_cache_read":           true,
+		"pricing.image":                      true,
+		"metadata.pricing.input_tokens":      true,
+		"metadata.pricing.output_tokens":     true,
+		"metadata.pricing.cache_read_tokens": true,
+		"metadata.pricing.per_image_unit":    true,
 	}
 	return validFields[field]
-}
-
-// isValidDestinationPath checks if a destination path is valid in the Model struct.
-func (c *Client) isValidDestinationPath(path string) bool {
-	validPaths := map[string]bool{
-		// Limits fields
-		"limits.context_window": true,
-		"limits.input_tokens":   true,
-		"limits.output_tokens":  true,
-
-		// Direct model fields for backward compatibility
-		"context_window":        true,
-		"max_completion_tokens": true,
-
-		// Core model fields
-		"name":            true,
-		"description":     true,
-		fieldMetadataTags: true,
-
-		// Future paths can be added here as needed:
-		// "metadata.release_date":     true,
-		// "metadata.open_weights":     true,
-		// "features.tools":            true,
-		// "features.reasoning":        true,
-		// "pricing.input.base":        true,
-		// "pricing.output.base":       true,
-	}
-	return validPaths[path]
 }

@@ -70,8 +70,8 @@ make lint
 # Run tests with coverage
 make test-coverage
 
-# Update provider testdata
-make testdata-update
+# Refresh provider testdata (requires provider credentials)
+make testdata PROVIDER=openai
 
 # Generate Go documentation
 make generate
@@ -168,82 +168,21 @@ See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organ
 
 ## Adding New Providers
 
-### Quick Reference
+Follow [docs/ADDING_PROVIDERS.md](docs/ADDING_PROVIDERS.md). It defines the
+normative decision tree for YAML-only providers, shared-client adapters, native
+clients, regional/account sources, pricing importers, and supplemental
+source-shape tests. It also defines whether a value belongs in provider
+configuration, schema-v2 catalog data, provenance, or irreducible Go behavior.
 
-For comprehensive instructions, see the provider implementation section in [ARCHITECTURE.md](docs/ARCHITECTURE.md#data-sources).
+Do not create a custom client merely because a provider is OpenAI-compatible,
+and do not put current prices, lifecycle lists, capabilities, regions, or
+provider-wide routing defaults in Go. Provider-local filenames and evidence are
+enforced by:
 
-### Basic Steps
-
-1. **Add Provider Configuration**
-
-   Edit `internal/embedded/catalog/providers.yaml`:
-
-   ```yaml
-   - id: newprovider
-     name: New Provider
-     description: Description of the provider
-     api_key:
-       name: NEWPROVIDER_API_KEY
-       env_var: NEWPROVIDER_API_KEY
-     api:
-       base_url: https://api.newprovider.com/v1
-       models_endpoint: /models
-   ```
-
-2. **Implement Client**
-
-   Create `internal/providers/newprovider/client.go`:
-
-   ```go
-   package newprovider
-
-   import (
-       "context"
-       "github.com/agentstation/starmap/pkg/catalogs"
-   )
-
-   type Client struct {
-       provider *catalogs.Provider
-   }
-
-   func NewClient(provider *catalogs.Provider) (*Client, error) {
-       return &Client{provider: provider}, nil
-   }
-
-   func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
-       // Implement API call and model parsing
-       return nil, nil
-   }
-   ```
-
-3. **Register in Provider Registry**
-
-   Edit `internal/providers/clients/provider.go`:
-
-   ```go
-   case catalogs.EndpointTypeNewProvider:
-       return newprovider.NewClient(provider), nil
-   ```
-
-4. **Add Tests and Testdata**
-
-   ```bash
-   # Create test file
-   touch internal/providers/newprovider/client_test.go
-
-   # Generate testdata (requires API key)
-   export NEWPROVIDER_API_KEY=your-key
-   go test ./internal/providers/newprovider -update
-
-   # Run tests
-   go test ./internal/providers/newprovider -v
-   ```
-
-5. **Update Documentation**
-
-   - Add provider to README.md if it's a major provider
-   - Update docs/ARCHITECTURE.md § Data Sources if needed
-   - Add yourself to CONTRIBUTORS.md
+```bash
+make provider-contract-check
+go test -race ./internal/providers/<provider>
+```
 
 ## Testing
 
@@ -268,20 +207,20 @@ go tool cover -html=coverage.out
 
 ### Updating Testdata
 
-Provider tests use the `-update` flag to generate testdata:
+Provider fixtures are refreshed by one explicit production command:
 
 ```bash
-# Update testdata for a specific provider
-go test ./internal/providers/openai -update
-
-# Update all provider testdata
-make testdata-update
-
-# Update testdata for specific provider via make
+# Refresh one provider
 make testdata PROVIDER=openai
+
+# Refresh every provider with a declared raw fixture
+make testdata
 ```
 
-**Note**: Updating testdata requires valid API keys set in environment variables.
+The command requires the provider's live credentials, validates the response
+through the registered client, rejects no-op/failure/invalid/secret-bearing
+payloads, and atomically updates raw payload plus metadata. Ordinary tests are
+offline and never refresh fixtures implicitly.
 
 ### Integration Tests
 

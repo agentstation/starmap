@@ -198,10 +198,6 @@ func testGeneration(id, value string) Generation {
 				},
 			},
 			Completeness: catalogs.GenerationCompletenessComplete,
-			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-			},
 		},
 		Payload: payload,
 	}

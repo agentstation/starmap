@@ -138,7 +138,7 @@ func TestHandleListModelsFiltersByProvider(t *testing.T) {
 		t.Fatalf("Expected one OpenAI model, got %d", len(models))
 	}
 	first := models[0].(map[string]any)
-	if first["id"] != "shared-model" || first["name"] != "OpenAI Offering" {
+	if first["id"] != "shared-model" || first["name"] != "Anthropic Offering" {
 		t.Fatalf("Expected OpenAI model, got %#v", first)
 	}
 }

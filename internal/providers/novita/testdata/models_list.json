@@ -1,0 +1,1 @@
+{"data":[{"created":1733560109,"id":"meta-llama/llama-3.3-70b-instruct","object":"model","input_token_price_per_m":135,"output_token_price_per_m":400,"title":"Llama 3.3 70B Instruct","description":"Serverless multilingual text model","context_size":131072,"quantization":"bf16"}]}

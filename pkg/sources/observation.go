@@ -57,6 +57,9 @@ const (
 // ObservationRecordCounts reports accepted and rejected source records.
 type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
 
+// ProviderCoverage reports provider inventory completeness.
+type ProviderCoverage = catalogmeta.ProviderCoverage
+
 // ObservationIssueScope identifies the level at which degradation occurred.
 type ObservationIssueScope = catalogmeta.ObservationIssueScope
 
@@ -88,12 +91,16 @@ type ObservationIssue = catalogmeta.ObservationIssue
 
 // ObservationMetadata supplies source-owned metadata used to construct an observation.
 type ObservationMetadata struct {
-	ObservedAt   time.Time
-	Revision     Revision
-	Completeness ObservationCompleteness
-	Status       ObservationStatus
-	Records      ObservationRecordCounts
-	Issues       []ObservationIssue
+	ObservedAt        time.Time
+	Revision          Revision
+	Completeness      ObservationCompleteness
+	Status            ObservationStatus
+	Records           ObservationRecordCounts
+	Issues            []ObservationIssue
+	Scope             catalogmeta.ObservationScope
+	Kind              catalogmeta.SourceKind
+	Coverage          catalogmeta.ProviderCoverage
+	PricingObservedAt *time.Time
 }
 
 // NewObservation binds an immutable catalog to typed, deterministic audit metadata.
@@ -105,6 +112,16 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 		return Observation{}, &errors.ValidationError{Field: "observation.catalog", Message: "is required"}
 	}
 	metadata.ObservedAt = metadata.ObservedAt.UTC()
+	if metadata.Scope == "" {
+		metadata.Scope = catalogmeta.ObservationScopeGlobalPublic
+	}
+	if metadata.Kind == "" {
+		metadata.Kind = defaultSourceKind(sourceID)
+	}
+	if metadata.PricingObservedAt != nil {
+		pricingObservedAt := metadata.PricingObservedAt.UTC()
+		metadata.PricingObservedAt = &pricingObservedAt
+	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		return Observation{}, errors.WrapResource("encode", "observation evidence", string(sourceID), err)
@@ -114,12 +131,16 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 		metadata.Revision.Value = checksum
 	}
 	observation := Observation{
-		SourceID:         sourceID,
-		ObservedAt:       metadata.ObservedAt,
-		Revision:         metadata.Revision,
-		Completeness:     metadata.Completeness,
-		Status:           metadata.Status,
-		Records:          metadata.Records,
+		SourceID:     sourceID,
+		ObservedAt:   metadata.ObservedAt,
+		Revision:     metadata.Revision,
+		Completeness: metadata.Completeness,
+		Status:       metadata.Status,
+		Records:      metadata.Records,
+		Metrics: catalogmeta.ObservationMetrics{
+			Scope: metadata.Scope, Kind: metadata.Kind, Records: metadata.Records,
+			ProviderCoverage: metadata.Coverage, PricingObservedAt: metadata.PricingObservedAt,
+		},
 		Issues:           append([]ObservationIssue(nil), metadata.Issues...),
 		EvidenceChecksum: checksum,
 		Catalog:          catalog,
@@ -133,10 +154,16 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 
 // Link returns the immutable manifest/audit projection of this observation.
 func (o Observation) Link() catalogs.SourceObservationLink {
+	metrics := o.Metrics
+	if o.Metrics.PricingObservedAt != nil {
+		observedAt := *o.Metrics.PricingObservedAt
+		metrics.PricingObservedAt = &observedAt
+	}
 	return catalogs.SourceObservationLink{
 		Source: o.SourceID, ObservationID: o.ID, ObservedAt: o.ObservedAt,
 		Revision: o.Revision, Completeness: o.Completeness,
 		Status: o.Status, EvidenceChecksum: o.EvidenceChecksum,
+		Metrics: metrics,
 	}
 }
 
@@ -182,6 +209,9 @@ func (o Observation) Validate() error {
 	if o.Records.Rejected > 0 && (o.Completeness != ObservationCompletenessPartial || o.Status != ObservationStatusDegraded) {
 		return observationValidationError("records.rejected", o.Records.Rejected, "requires a partial degraded observation")
 	}
+	if err := validateObservationMetrics(o.Records, o.Metrics); err != nil {
+		return err
+	}
 	for index, issue := range o.Issues {
 		if err := validateObservationIssue(index, issue); err != nil {
 			return err
@@ -201,6 +231,53 @@ func (o Observation) Validate() error {
 	expectedID := observationID(o)
 	if o.ID != expectedID {
 		return observationValidationError("id", o.ID, fmt.Sprintf("must match %s", expectedID))
+	}
+	return nil
+}
+
+func defaultSourceKind(sourceID ID) catalogmeta.SourceKind {
+	switch sourceID {
+	case ProvidersID:
+		return catalogmeta.SourceKindDirectInventory
+	case ModelsDevGitID, ModelsDevHTTPID:
+		return catalogmeta.SourceKindEnrichment
+	case AmazonBedrockID, OCIGenerativeAIID:
+		return catalogmeta.SourceKindRegionalSweep
+	default:
+		return catalogmeta.SourceKindCurated
+	}
+}
+
+func validateObservationMetrics(records ObservationRecordCounts, metrics catalogmeta.ObservationMetrics) error {
+	if records != metrics.Records {
+		return observationValidationError("metrics.records", metrics.Records, "must match observation record counts")
+	}
+	switch metrics.Scope {
+	case catalogmeta.ObservationScopeGlobalPublic, catalogmeta.ObservationScopeRegionalPublic:
+	case catalogmeta.ObservationScopeCustomer:
+		return observationValidationError("metrics.scope", metrics.Scope, "customer-scoped inventory cannot be a public catalog observation")
+	default:
+		return observationValidationError("metrics.scope", metrics.Scope, "is not supported")
+	}
+	switch metrics.Kind {
+	case catalogmeta.SourceKindDirectInventory, catalogmeta.SourceKindRegionalSweep, catalogmeta.SourceKindPricing,
+		catalogmeta.SourceKindEnrichment, catalogmeta.SourceKindCurated:
+	case catalogmeta.SourceKindCustomer:
+		return observationValidationError("metrics.kind", metrics.Kind, "customer inventory uses the separate customer product")
+	default:
+		return observationValidationError("metrics.kind", metrics.Kind, "is not supported")
+	}
+	if metrics.Records.Accepted < 0 || metrics.Records.Rejected < 0 || metrics.ProviderCoverage.Expected < 0 || metrics.ProviderCoverage.Observed < 0 || metrics.ProviderCoverage.Observed > metrics.ProviderCoverage.Expected && metrics.ProviderCoverage.Expected != 0 {
+		return observationValidationError("metrics", metrics, "record and provider coverage counts must be non-negative and observed cannot exceed expected")
+	}
+	if metrics.PricingObservedAt != nil {
+		if metrics.PricingObservedAt.IsZero() {
+			return observationValidationError("metrics.pricing_observed_at", metrics.PricingObservedAt, "must be non-zero")
+		}
+		_, offset := metrics.PricingObservedAt.Zone()
+		if offset != 0 {
+			return observationValidationError("metrics.pricing_observed_at", metrics.PricingObservedAt, "must be UTC")
+		}
 	}
 	return nil
 }
@@ -262,6 +339,11 @@ func observationID(observation Observation) string {
 		identity.WriteString(strconv.Itoa(observation.Records.Accepted))
 		identity.WriteByte(':')
 		identity.WriteString(strconv.Itoa(observation.Records.Rejected))
+	}
+	identity.WriteString("\x00metrics:" + string(observation.Metrics.Scope) + ":" + string(observation.Metrics.Kind))
+	identity.WriteString(":" + strconv.Itoa(observation.Metrics.ProviderCoverage.Expected) + ":" + strconv.Itoa(observation.Metrics.ProviderCoverage.Observed))
+	if observation.Metrics.PricingObservedAt != nil {
+		identity.WriteString(":" + observation.Metrics.PricingObservedAt.UTC().Format(time.RFC3339Nano))
 	}
 	for _, issue := range observation.Issues {
 		// Human-readable diagnostics can contain transport details or secrets and

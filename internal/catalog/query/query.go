@@ -2,7 +2,6 @@
 package query
 
 import (
-	stderrors "errors"
 	"slices"
 	"strings"
 
@@ -64,8 +63,8 @@ type ModelOptions struct {
 	Limit      int
 }
 
-// CatalogModels returns either all legacy flattened models or the exact
-// provider-specific offerings from the catalog's provider index.
+// CatalogModels returns presentation models projected from canonical
+// definitions and, when filtered, exact provider offerings.
 func CatalogModels(catalog catalogs.Reader, provider string) ([]catalogs.Model, error) {
 	if catalog == nil {
 		return nil, &pkgerrors.ValidationError{
@@ -74,17 +73,64 @@ func CatalogModels(catalog catalogs.Reader, provider string) ([]catalogs.Model, 
 		}
 	}
 	if provider == "" {
-		return catalog.Models().List(), nil
-	}
-	models, err := catalog.ProviderModels(catalogs.ProviderID(provider))
-	if err != nil {
-		var notFound *pkgerrors.NotFoundError
-		if stderrors.As(err, &notFound) {
-			return []catalogs.Model{}, nil
+		definitions := catalog.Definitions()
+		models := make([]catalogs.Model, 0, len(definitions))
+		for _, definition := range definitions {
+			models = append(models, presentationModel(catalog, definition, nil))
 		}
-		return nil, err
+		return models, nil
 	}
-	return models.List(), nil
+	resolved, found := catalog.Providers().Resolve(catalogs.ProviderID(provider))
+	if !found {
+		return []catalogs.Model{}, nil
+	}
+	definitions := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition)
+	for _, definition := range catalog.Definitions() {
+		definitions[definition.ID] = definition
+	}
+	models := make([]catalogs.Model, 0)
+	for _, offering := range catalog.Offerings() {
+		if offering.ProviderID != resolved.ID {
+			continue
+		}
+		definition, ok := definitions[offering.DefinitionID]
+		if !ok {
+			return nil, &pkgerrors.NotFoundError{Resource: "model definition", ID: string(offering.DefinitionID)}
+		}
+		models = append(models, presentationModel(catalog, definition, &offering))
+	}
+	return models, nil
+}
+
+func presentationModel(catalog catalogs.Reader, definition catalogs.ModelDefinition, offering *catalogs.ProviderOffering) catalogs.Model {
+	authors := make([]catalogs.Author, 0, len(definition.AuthorIDs))
+	for _, authorID := range definition.AuthorIDs {
+		if author, err := catalog.Author(authorID); err == nil {
+			authors = append(authors, author)
+		}
+	}
+	model := catalogs.Model{
+		ID:          string(definition.ID),
+		Name:        definition.Name,
+		Authors:     authors,
+		Description: definition.Description,
+		Metadata: &catalogs.ModelMetadata{
+			ReleaseDate: definition.Metadata.ReleaseDate, OpenWeights: definition.Weights.Open,
+			KnowledgeCutoff: definition.Metadata.KnowledgeCutoff, Tags: definition.Metadata.Tags,
+			Architecture: definition.Weights.Architecture,
+		},
+		Features: definition.Capabilities.Features, Attachments: definition.Capabilities.Attachments,
+		Generation: definition.Capabilities.Generation, Reasoning: definition.Capabilities.Reasoning,
+		ReasoningTokens: definition.Capabilities.ReasoningTokens, Verbosity: definition.Capabilities.Verbosity,
+		Tools: definition.Capabilities.Tools, Delivery: definition.Capabilities.Delivery,
+		CreatedAt: definition.CreatedAt, UpdatedAt: definition.UpdatedAt,
+	}
+	if offering != nil {
+		model.ID = string(offering.ProviderModelID)
+		model.Pricing = offering.Pricing
+		model.Limits = offering.Limits
+	}
+	return model
 }
 
 // Models filters, sorts, and limits model results.

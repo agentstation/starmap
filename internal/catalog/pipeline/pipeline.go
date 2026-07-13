@@ -213,6 +213,8 @@ func logChanges(result *reconciler.Result) {
 			Int("added", result.Changeset.Summary.ModelsAdded).
 			Int("updated", result.Changeset.Summary.ModelsUpdated).
 			Int("removed", result.Changeset.Summary.ModelsRemoved).
+			Int("definitions_updated", result.Changeset.Summary.DefinitionsUpdated).
+			Int("offerings_updated", result.Changeset.Summary.OfferingsUpdated).
 			Msg("Changes detected")
 		return
 	}

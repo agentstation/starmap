@@ -1,0 +1,10 @@
+id: command
+name: command
+authors:
+- id: cohere
+  name: Cohere
+pricing:
+  currency: USD
+  tokens:
+    input: {per_1m: 1}
+    output: {per_1m: 2}

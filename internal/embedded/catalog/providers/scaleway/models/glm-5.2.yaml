@@ -1,0 +1,96 @@
+# glm-5.2 - AI model
+id: glm-5.2
+name: glm-5.2
+authors:
+- id: zhipu-ai
+  name: zhipu-ai
+status: active
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: true
+  streaming: true
+modes:
+  batch:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.9
+        output:
+          per_1m: 2.75
+      currency: EUR
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 1.8
+    output:
+      per_1m: 5.5
+  currency: EUR
+extensions:
+  scaleway:
+    fields:
+      unknown_fields:
+      - path: data[].revision
+        checksum: sha256:c5161a1a367584578afe7690dd12724c4792981576d17b924f0c061631691990
+
+# Timestamps
+created_at: 2026-06-26T00:00:00Z
+updated_at: 2026-06-26T00:00:00Z

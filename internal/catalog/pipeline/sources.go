@@ -3,6 +3,9 @@ package pipeline
 import (
 	"slices"
 
+	"github.com/agentstation/starmap/internal/providers/azurefoundry"
+	"github.com/agentstation/starmap/internal/providers/bedrock"
+	"github.com/agentstation/starmap/internal/providers/oci"
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
@@ -36,6 +39,9 @@ func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Ca
 	srcs := []sources.Source{
 		local.New(local.WithCatalog(localCatalog)),
 		providers.New(localCatalog.Providers()),
+		bedrock.NewCommercialSource(),
+		azurefoundry.NewCommercialSource(),
+		oci.NewCommercialSource(),
 	}
 
 	useGit := slices.Contains(options.Sources, sources.ModelsDevGitID)

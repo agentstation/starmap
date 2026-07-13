@@ -60,7 +60,7 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source
 New creates a new provider API source with the given provider configurations.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L359>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L371>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -69,7 +69,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L366>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L378>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -87,7 +87,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L372>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L384>)
 
 ```go
 func (s *Source) IsOptional() bool
@@ -105,7 +105,7 @@ func (s *Source) Name() string
 Name returns the human\-friendly name of this source.
 
 <a name="Source.Observe"></a>
-### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L88>)
+### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L89>)
 
 ```go
 func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error)

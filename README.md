@@ -476,10 +476,10 @@ if err != nil {
 }
 fmt.Printf("Model: %s\n", model.Name)
 
-// Explicit compatibility adapter for the old flattened Model shape.
-legacyModel, err := catalog.LegacyV0().FindModel("gpt-4o")
+// Query exact provider service facts separately.
+offering, err := catalog.Offering("openai", "gpt-4o")
 if err == nil {
-    fmt.Printf("Legacy model: %s\n", legacyModel.Name)
+    fmt.Printf("Provider model: %s\n", offering.ProviderModelID)
 }
 ```
 
@@ -786,7 +786,7 @@ cd starmap
 make all
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for complete development setup, testing guidelines, and contribution process.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for complete development setup, testing guidelines, and contribution process. Provider work follows the normative [Adding a Provider](docs/ADDING_PROVIDERS.md) contract.
 
 ## Contributing
 

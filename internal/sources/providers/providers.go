@@ -82,6 +82,7 @@ type providerModels struct {
 	models     []*catalogs.Model
 	rejected   int
 	issues     []sources.ObservationIssue
+	observed   bool
 }
 
 // Observe returns a new immutable provider catalog without retaining result state.
@@ -99,7 +100,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	// Check if we have provider configs
 	if s.providers == nil {
 		// Can't fetch without provider configs
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{})
+		return s.observation(catalog, nil, sources.ObservationRecordCounts{}, 0, 0)
 	}
 
 	// Determine which providers to sync
@@ -117,12 +118,15 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	var providerConfigs []*catalogs.Provider
 	for _, id := range providerIDs {
 		if p, found := s.providers.Get(id); found {
+			if p.Catalog != nil && p.Catalog.Endpoint.Type == catalogs.EndpointTypeApplication {
+				continue
+			}
 			providerConfigs = append(providerConfigs, p)
 		}
 	}
 
 	if len(providerConfigs) == 0 {
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{}) // No providers to sync
+		return s.observation(catalog, nil, sources.ObservationRecordCounts{}, 0, 0) // No providers to sync
 	}
 
 	// Add provider configurations to the catalog first
@@ -175,6 +179,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 			}
 
 			result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+			result.observed = true
 			resultChan <- result
 
 			logging.Ctx(logger).Info().
@@ -189,7 +194,11 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 
 	// Process results and update catalog
 	records := sources.ObservationRecordCounts{}
+	observedProviders := 0
 	for result := range resultChan {
+		if result.observed {
+			observedProviders++
+		}
 		issues = append(issues, result.issues...)
 		records.Rejected += result.rejected
 		if len(result.models) == 0 {
@@ -237,7 +246,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 		// Sources should only create catalogs, not persist them
 	}
 
-	return s.observation(catalog, issues, records)
+	return s.observation(catalog, issues, records, len(providerConfigs), observedProviders)
 }
 
 func (s *Source) effectiveMaxConcurrency(providerCount int) int {
@@ -257,6 +266,8 @@ func (s *Source) observation(
 	builder *catalogs.Builder,
 	issues []sources.ObservationIssue,
 	records sources.ObservationRecordCounts,
+	expectedProviders int,
+	observedProviders int,
 ) (sources.Observation, error) {
 	catalog, err := builder.Build()
 	if err != nil {
@@ -274,6 +285,7 @@ func (s *Source) observation(
 		Completeness: completeness,
 		Status:       status,
 		Records:      records,
+		Coverage:     sources.ProviderCoverage{Expected: expectedProviders, Observed: observedProviders},
 		Issues:       issues,
 	})
 }

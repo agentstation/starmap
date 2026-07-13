@@ -40,7 +40,7 @@ func Apply(catalog *catalogs.Builder) error {
 
 // buildAttributions creates model-to-author mappings from catalog's authors.
 // All attribution mappings are pre-computed for O(1) lookups during application.
-func buildAttributions(catalog catalogs.Reader) (map[string][]catalogs.AuthorID, error) {
+func buildAttributions(catalog catalogs.ModelSourceReader) (map[string][]catalogs.AuthorID, error) {
 	attributions := make(map[string][]catalogs.AuthorID)
 
 	// Process authors in priority order: provider-only, provider+patterns, patterns-only
@@ -60,7 +60,7 @@ func buildAttributions(catalog catalogs.Reader) (map[string][]catalogs.AuthorID,
 }
 
 // processProviderOnlyAttributions handles Mode 1: All models from a provider belong to an author.
-func processProviderOnlyAttributions(catalog catalogs.Reader, attributions map[string][]catalogs.AuthorID) error {
+func processProviderOnlyAttributions(catalog catalogs.ModelSourceReader, attributions map[string][]catalogs.AuthorID) error {
 	for _, author := range catalog.Authors().List() {
 		// Check for nil pointers
 		if author.Catalog == nil || author.Catalog.Attribution == nil {
@@ -89,7 +89,7 @@ func processProviderOnlyAttributions(catalog catalogs.Reader, attributions map[s
 }
 
 // processProviderPatternAttributions handles Mode 2: Only matching models from a provider.
-func processProviderPatternAttributions(catalog catalogs.Reader, attributions map[string][]catalogs.AuthorID) error {
+func processProviderPatternAttributions(catalog catalogs.ModelSourceReader, attributions map[string][]catalogs.AuthorID) error {
 	for _, author := range catalog.Authors().List() {
 		// Check for nil pointers
 		if author.Catalog == nil || author.Catalog.Attribution == nil {
@@ -128,7 +128,7 @@ func processProviderPatternAttributions(catalog catalogs.Reader, attributions ma
 }
 
 // processGlobalPatternAttributions handles Mode 3: Pattern matching across all providers.
-func processGlobalPatternAttributions(catalog catalogs.Reader, attributions map[string][]catalogs.AuthorID) error {
+func processGlobalPatternAttributions(catalog catalogs.ModelSourceReader, attributions map[string][]catalogs.AuthorID) error {
 	for _, author := range catalog.Authors().List() {
 		// Check for nil pointers
 		if author.Catalog == nil || author.Catalog.Attribution == nil {

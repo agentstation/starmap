@@ -58,7 +58,7 @@ const (
 // mutation seam used to construct it.
 
 // Compile-time interface check for the open algorithm input boundary.
-var _ Reader = (*Builder)(nil)
+var _ ModelSourceReader = (*Builder)(nil)
 
 // Builder is the advanced mutable catalog construction type. It is intended for
 // custom update callbacks, source/plugin authors, and persistence pipelines;
@@ -70,11 +70,13 @@ var _ Reader = (*Builder)(nil)
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
 type Builder struct {
-	config     *options
-	providers  *Providers
-	authors    *Authors
-	endpoints  *Endpoints
-	provenance *Provenance
+	config      *options
+	providers   *Providers
+	authors     *Authors
+	endpoints   *Endpoints
+	provenance  *Provenance
+	definitions map[ModelDefinitionID]ModelDefinition
+	offerings   map[OfferingKey]ProviderOffering
 }
 
 // New creates a new builder with the given options
@@ -82,11 +84,13 @@ type Builder struct {
 // WithFiles(path) = files catalog with auto-load.
 func New(opt Option, opts ...Option) (*Builder, error) {
 	cat := &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     defaults().apply(append([]Option{opt}, opts...)...),
+		providers:   NewProviders(),
+		authors:     NewAuthors(),
+		endpoints:   NewEndpoints(),
+		provenance:  NewProvenance(),
+		definitions: make(map[ModelDefinitionID]ModelDefinition),
+		offerings:   make(map[OfferingKey]ProviderOffering),
+		config:      defaults().apply(append([]Option{opt}, opts...)...),
 	}
 
 	// Auto-load if configured and has filesystem
@@ -172,11 +176,13 @@ func NewLocal(path string) (*Builder, error) {
 //	catalog.SetProvider(provider)
 func NewEmpty() *Builder {
 	return &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     defaults(),
+		providers:   NewProviders(),
+		authors:     NewAuthors(),
+		endpoints:   NewEndpoints(),
+		provenance:  NewProvenance(),
+		definitions: make(map[ModelDefinitionID]ModelDefinition),
+		offerings:   make(map[OfferingKey]ProviderOffering),
+		config:      defaults(),
 	}
 }
 
@@ -376,6 +382,39 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error {
 	return cat.providers.SetModel(providerID, model)
 }
 
+// SetDefinition validates and upserts one canonical model definition.
+func (cat *Builder) SetDefinition(definition ModelDefinition) error {
+	if err := definition.Validate(); err != nil {
+		return err
+	}
+	cat.definitions[definition.ID] = copyModelDefinition(definition)
+	return nil
+}
+
+// SetOffering validates and upserts one exact provider-scoped offering.
+func (cat *Builder) SetOffering(offering ProviderOffering) error {
+	if err := offering.Validate(); err != nil {
+		return err
+	}
+	cat.offerings[offering.Key()] = copyProviderOffering(offering)
+	return nil
+}
+
+// DeleteOffering removes one exact provider-scoped canonical offering.
+func (cat *Builder) DeleteOffering(providerID ProviderID, providerModelID ProviderModelID) {
+	delete(cat.offerings, OfferingKey{ProviderID: providerID, ProviderModelID: providerModelID})
+}
+
+// Definitions returns caller-owned canonical definitions in ID order.
+func (cat *Builder) Definitions() []ModelDefinition {
+	return sortedDefinitions(cat.definitions)
+}
+
+// Offerings returns caller-owned canonical offerings in provider/key order.
+func (cat *Builder) Offerings() []ProviderOffering {
+	return sortedOfferings(cat.offerings)
+}
+
 // SetProvenance replaces catalog provenance.
 func (cat *Builder) SetProvenance(value provenance.Map) {
 	cat.provenance.Set(value)
@@ -418,6 +457,8 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 	cat.authors.Clear()
 	cat.endpoints.Clear()
 	cat.provenance.Clear()
+	clear(cat.definitions)
+	clear(cat.offerings)
 
 	// Copy all data from source
 	for _, provider := range source.Providers().List() {
@@ -444,6 +485,18 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 
 	// Copy provenance
 	cat.provenance.Set(source.Provenance().Map())
+	{
+		for _, definition := range source.Definitions() {
+			if err := cat.SetDefinition(definition); err != nil {
+				return errors.WrapResource("set", "model definition", string(definition.ID), err)
+			}
+		}
+		for _, offering := range source.Offerings() {
+			if err := cat.SetOffering(offering); err != nil {
+				return errors.WrapResource("set", "provider offering", string(offering.ProviderID)+"/"+string(offering.ProviderModelID), err)
+			}
+		}
+	}
 
 	return nil
 }
@@ -578,11 +631,13 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 func (cat *Builder) Copy() (*Builder, error) {
 	// Create a new catalog with the same configuration
 	NewCat := &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     cat.config.copy(),
+		providers:   NewProviders(),
+		authors:     NewAuthors(),
+		endpoints:   NewEndpoints(),
+		provenance:  NewProvenance(),
+		definitions: make(map[ModelDefinitionID]ModelDefinition),
+		offerings:   make(map[OfferingKey]ProviderOffering),
+		config:      cat.config.copy(),
 	}
 
 	// Copy all data

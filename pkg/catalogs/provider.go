@@ -46,6 +46,8 @@ type Provider struct {
 	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
+var safeResponseCollectionSegment = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*$`)
+
 // EndpointType specifies the API style for model listing.
 type EndpointType string
 
@@ -58,13 +60,44 @@ const (
 	EndpointTypeGoogle EndpointType = "google"
 	// EndpointTypeGoogleCloud represents Google Vertex AI.
 	EndpointTypeGoogleCloud EndpointType = "google-cloud"
+	// EndpointTypeBedrock represents native Amazon Bedrock runtime contracts.
+	EndpointTypeBedrock EndpointType = "amazon-bedrock"
+	// EndpointTypeAzureOpenAI represents Microsoft Foundry's Azure OpenAI contract.
+	EndpointTypeAzureOpenAI EndpointType = "azure-openai"
+	// EndpointTypeCohere represents Cohere's native model and inference contracts.
+	EndpointTypeCohere EndpointType = "cohere"
+	// EndpointTypeApplication represents a provider application without a public inference endpoint.
+	EndpointTypeApplication EndpointType = "application"
+	// EndpointTypeTogether represents Together AI's native model inventory.
+	EndpointTypeTogether EndpointType = "together"
+	// EndpointTypeHuggingFace represents Hugging Face Inference Providers routing inventory.
+	EndpointTypeHuggingFace EndpointType = "huggingface"
+	// EndpointTypeNVIDIA represents NVIDIA's hosted API Catalog inventory.
+	EndpointTypeNVIDIA EndpointType = "nvidia"
+	// EndpointTypeDatabricks represents Databricks foundation-model availability.
+	EndpointTypeDatabricks EndpointType = "databricks"
+	// EndpointTypeSnowflake represents Snowflake Cortex session inventory.
+	EndpointTypeSnowflake EndpointType = "snowflake"
+	// EndpointTypeWatsonx represents IBM watsonx.ai foundation model inventory.
+	EndpointTypeWatsonx EndpointType = "watsonx"
+	// EndpointTypeOCI represents OCI Generative AI regional contracts.
+	EndpointTypeOCI EndpointType = "oci-generative-ai"
+	// EndpointTypeCloudflare represents Cloudflare Workers AI contracts.
+	EndpointTypeCloudflare EndpointType = "cloudflare-workers-ai"
+	// EndpointTypeSambaNova represents SambaNova Cloud model contracts.
+	EndpointTypeSambaNova EndpointType = "sambanova"
 )
 
 // FieldMapping defines how to map API response fields to model fields.
 // Type conversion is automatic based on the destination field type.
 type FieldMapping struct {
-	From string `yaml:"from" json:"from"` // Source field path in API response (e.g., "max_model_len")
-	To   string `yaml:"to" json:"to"`     // Target field path in Model (e.g., "limits.context_window")
+	From     string                    `yaml:"from" json:"from"`                             // Source field path in API response (e.g., "max_model_len")
+	To       string                    `yaml:"to" json:"to"`                                 // Target field path in Model (e.g., "limits.context_window")
+	Unit     ProviderNormalizationUnit `yaml:"unit,omitempty" json:"unit,omitempty"`         // Bounded numeric source unit
+	Currency ModelPricingCurrency      `yaml:"currency,omitempty" json:"currency,omitempty"` // Required for pricing targets
+	Mode     string                    `yaml:"mode,omitempty" json:"mode,omitempty"`         // Optional provider offering mode
+	Tier     *ProviderPricingTier      `yaml:"tier,omitempty" json:"tier,omitempty"`         // Optional pricing tier
+	Values   map[string]string         `yaml:"values,omitempty" json:"values,omitempty"`     // Optional exact source-to-canonical enum mapping
 }
 
 // FeatureRule defines conditions for inferring model features.
@@ -83,21 +116,99 @@ type AuthorMapping struct {
 
 // ProviderEndpoint configures how to access the provider's model catalog.
 type ProviderEndpoint struct {
-	Type          EndpointType   `yaml:"type" json:"type"`                                             // Required: API style
-	URL           string         `yaml:"url" json:"url"`                                               // Required: API endpoint
-	BaseURLEnvVar string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"` // Optional env var for overriding the endpoint base URL
-	Path          string         `yaml:"path,omitempty" json:"path,omitempty"`                         // Path appended when BaseURLEnvVar is set
-	AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                           // Required: Whether auth needed
-	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
-	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
-	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
+	Type               EndpointType   `yaml:"type" json:"type"`                                                   // Required: API style
+	URL                string         `yaml:"url" json:"url"`                                                     // Required: API endpoint
+	BaseURLEnvVar      string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"`       // Optional env var for overriding the endpoint base URL
+	Path               string         `yaml:"path,omitempty" json:"path,omitempty"`                               // Path appended when BaseURLEnvVar is set
+	ResponseCollection string         `yaml:"response_collection,omitempty" json:"response_collection,omitempty"` // Optional dotted path to the model array in the response
+	AuthRequired       bool           `yaml:"auth_required" json:"auth_required"`                                 // Required: Whether auth needed
+	FieldMappings      []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`           // Field mappings
+	FeatureRules       []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`             // Feature inference rules
+	AuthorMapping      *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`           // Author extraction
+}
+
+// ProviderOfferingDefaults contains provider-wide defaults applied to models
+// discovered from the provider catalog endpoint. Per-model values override
+// these defaults during source projection.
+type ProviderOfferingDefaults struct {
+	Access     OfferingAccess           `yaml:"access" json:"access"`
+	Endpoint   ProviderOfferingEndpoint `yaml:"endpoint" json:"endpoint"`
+	Deployment ProviderDeployment       `yaml:"deployment" json:"deployment"`
+	Regions    []CloudRegion            `yaml:"regions,omitempty" json:"regions,omitempty"`
+}
+
+// Validate verifies that the defaults form a complete, routing-safe offering
+// contract. The synthetic identity and lifecycle fields are only used to reuse
+// canonical offering validation; they are not serialized or published.
+func (d ProviderOfferingDefaults) Validate() error {
+	return (ProviderOffering{
+		ProviderID:      "provider-configuration",
+		ProviderModelID: "provider-configuration",
+		DefinitionID:    "provider-configuration",
+		Availability:    OfferingAvailabilityAvailable,
+		Access:          d.Access,
+		Regions:         d.Regions,
+		Deployment:      d.Deployment,
+		Endpoint:        d.Endpoint,
+		Lifecycle:       OfferingLifecycleActive,
+	}).Validate()
 }
 
 // ProviderCatalog represents information about a provider's models.
 type ProviderCatalog struct {
-	Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
-	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
-	Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+	Docs     *string                   `yaml:"docs" json:"docs"`                             // Documentation URL
+	Endpoint ProviderEndpoint          `yaml:"endpoint" json:"endpoint"`                     // API endpoint configuration
+	Offering *ProviderOfferingDefaults `yaml:"offering,omitempty" json:"offering,omitempty"` // Provider-wide offering defaults
+	Authors  []AuthorID                `json:"authors,omitempty" yaml:"authors,omitempty"`   // List of authors to fetch from (for providers like Google Vertex AI)
+}
+
+// ValidateConfiguration verifies the serialized provider catalog contract.
+// Runtime credential values are intentionally excluded from this validation.
+func (p *Provider) ValidateConfiguration() error {
+	if p == nil {
+		return &errors.ValidationError{Field: "provider", Message: "is required"}
+	}
+	if p.Catalog == nil {
+		return &errors.ValidationError{Field: "provider.catalog", Message: "is required"}
+	}
+	if p.Catalog.Endpoint.Type == "" {
+		return &errors.ValidationError{Field: "provider.catalog.endpoint.type", Message: "is required"}
+	}
+	if collection := p.Catalog.Endpoint.ResponseCollection; collection != "" {
+		for index, segment := range strings.Split(collection, ".") {
+			if !safeResponseCollectionSegment.MatchString(segment) {
+				return &errors.ValidationError{
+					Field:   fmt.Sprintf("provider.catalog.endpoint.response_collection[%d]", index),
+					Value:   segment,
+					Message: "must be a safe dotted JSON object path",
+				}
+			}
+		}
+	}
+	if p.Catalog.Offering != nil {
+		if err := p.Catalog.Offering.Validate(); err != nil {
+			return errors.WrapResource("validate", "provider offering defaults", string(p.ID), err)
+		}
+		if p.Catalog.Offering.Endpoint.BaseURL == "" {
+			if strings.TrimSpace(p.Catalog.Endpoint.Path) == "" {
+				return &errors.ValidationError{
+					Field:   "provider.catalog.endpoint.path",
+					Message: "is required when the offering base URL is derived from the catalog endpoint",
+				}
+			}
+			if catalogBaseURL(p.Catalog.Endpoint.URL, p.Catalog.Endpoint.Path) == p.Catalog.Endpoint.URL {
+				return &errors.ValidationError{
+					Field:   "provider.catalog.endpoint.path",
+					Value:   p.Catalog.Endpoint.Path,
+					Message: "must be the catalog endpoint URL suffix when deriving the offering base URL",
+				}
+			}
+		}
+	}
+	if err := ValidateProviderFieldMappings(p.Catalog.Endpoint.FieldMappings); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ProviderAPIKey represents configuration for an API key to access a provider's catalog.
@@ -162,6 +273,7 @@ const (
 	ProviderIDCerebras       ProviderID = "cerebras"
 	ProviderIDCheckstep      ProviderID = "checkstep"
 	ProviderIDCohere         ProviderID = "cohere"
+	ProviderIDCursor         ProviderID = "cursor"
 	ProviderIDConectys       ProviderID = "conectys"
 	ProviderIDCove           ProviderID = "cove"
 	ProviderIDDeepMind       ProviderID = "deepmind"
@@ -175,6 +287,17 @@ const (
 	ProviderIDMeta           ProviderID = "meta"
 	ProviderIDMicrosoft      ProviderID = "microsoft"
 	ProviderIDMistralAI      ProviderID = "mistral"
+	ProviderIDNVIDIA         ProviderID = "nvidia"
+	ProviderIDDatabricks     ProviderID = "databricks"
+	ProviderIDSnowflake      ProviderID = "snowflake"
+	ProviderIDWatsonx        ProviderID = "watsonx"
+	ProviderIDOCI            ProviderID = "oracle-oci-generative-ai"
+	ProviderIDCloudflare     ProviderID = "cloudflare-workers-ai"
+	ProviderIDSambaNova      ProviderID = "sambanova"
+	ProviderIDBaseten        ProviderID = "baseten"
+	ProviderIDScaleway       ProviderID = "scaleway"
+	ProviderIDHyperbolic     ProviderID = "hyperbolic"
+	ProviderIDNovita         ProviderID = "novita"
 	ProviderIDMoonshotAI     ProviderID = "moonshot-ai"
 	ProviderIDOpenAI         ProviderID = "openai"
 	ProviderIDOpenRouter     ProviderID = "openrouter"
@@ -388,6 +511,30 @@ func (p *Provider) CatalogEndpointURL() string {
 	}
 
 	return endpoint.URL
+}
+
+// CatalogOfferingEndpoint returns the effective inference endpoint contract.
+// When configuration omits an explicit offering base URL, it derives the base
+// from the same resolved catalog endpoint used for acquisition. Runtime base
+// URL overrides therefore affect acquisition and publication together.
+func (p *Provider) CatalogOfferingEndpoint() ProviderOfferingEndpoint {
+	if p == nil || p.Catalog == nil || p.Catalog.Offering == nil {
+		return ProviderOfferingEndpoint{}
+	}
+	endpoint := p.Catalog.Offering.Endpoint
+	if endpoint.BaseURL == "" {
+		endpoint.BaseURL = catalogBaseURL(p.CatalogEndpointURL(), p.Catalog.Endpoint.Path)
+	}
+	return endpoint
+}
+
+func catalogBaseURL(endpointURL, endpointPath string) string {
+	endpointURL = strings.TrimRight(strings.TrimSpace(endpointURL), "/")
+	endpointPath = "/" + strings.Trim(strings.TrimSpace(endpointPath), "/")
+	if endpointPath == "/" || !strings.HasSuffix(endpointURL, endpointPath) {
+		return endpointURL
+	}
+	return strings.TrimSuffix(endpointURL, endpointPath)
 }
 
 func joinEndpointURL(baseURL, endpointPath string) string {

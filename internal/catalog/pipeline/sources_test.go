@@ -48,6 +48,9 @@ func TestCreateSourcesWithConfigUsesModelsDevSourcesDir(t *testing.T) {
 	want := []sources.ID{
 		sources.LocalCatalogID,
 		sources.ProvidersID,
+		sources.AmazonBedrockID,
+		sources.MicrosoftFoundryID,
+		sources.OCIGenerativeAIID,
 		sources.ModelsDevHTTPID,
 	}
 	if len(got) != len(want) {
@@ -69,7 +72,7 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 	}{
 		{
 			name: "default uses HTTP transport only",
-			want: []sources.ID{sources.LocalCatalogID, sources.ProvidersID, sources.ModelsDevHTTPID},
+			want: []sources.ID{sources.LocalCatalogID, sources.ProvidersID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.OCIGenerativeAIID, sources.ModelsDevHTTPID},
 		},
 		{
 			name:    "explicit HTTP verification",
@@ -85,6 +88,21 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 			name:    "provider-only does not add a models.dev fallback transport",
 			sources: []sources.ID{sources.ProvidersID},
 			want:    []sources.ID{sources.ProvidersID},
+		},
+		{
+			name:    "explicit Bedrock regional sweep",
+			sources: []sources.ID{sources.AmazonBedrockID},
+			want:    []sources.ID{sources.AmazonBedrockID},
+		},
+		{
+			name:    "explicit Microsoft Foundry account sweep",
+			sources: []sources.ID{sources.MicrosoftFoundryID},
+			want:    []sources.ID{sources.MicrosoftFoundryID},
+		},
+		{
+			name:    "explicit OCI regional sweep",
+			sources: []sources.ID{sources.OCIGenerativeAIID},
+			want:    []sources.ID{sources.OCIGenerativeAIID},
 		},
 	}
 
