@@ -31,6 +31,9 @@ type sourceObservationEvidence struct {
 	observedAt       time.Time
 	revision         sources.Revision
 	evidenceChecksum string
+	completeness     sources.ObservationCompleteness
+	status           sources.ObservationStatus
+	issues           []sources.ObservationIssue
 }
 
 // newMerger creates a new strategic merger.
@@ -52,6 +55,9 @@ func (merger *merger) setObservations(observations []sources.Observation) {
 			observedAt:       observation.ObservedAt,
 			revision:         observation.Revision,
 			evidenceChecksum: observation.EvidenceChecksum,
+			completeness:     observation.Completeness,
+			status:           observation.Status,
+			issues:           append([]sources.ObservationIssue(nil), observation.Issues...),
 		}
 	}
 }
@@ -226,7 +232,7 @@ func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*ca
 
 	// Merge each provider
 	for providerID, sourceProviders := range providersByID {
-		// Convert to pointer map for compatibility
+		// Build the pointer map consumed by the provider merge implementation.
 		sourcePtrs := make(map[sources.ID]*catalogs.Provider)
 		for source, provider := range sourceProviders {
 			p := provider // Create a copy
@@ -949,7 +955,6 @@ func copyModelArchitecture(source *catalogs.ModelArchitecture) *catalogs.ModelAr
 		return nil
 	}
 	copied := *source
-	copied.Precision = copyValuePtr(source.Precision)
 	copied.BaseModel = copyValuePtr(source.BaseModel)
 	return &copied
 }
@@ -969,9 +974,6 @@ func mergeModelArchitecture(target, source *catalogs.ModelArchitecture) *catalog
 	}
 	if target.Tokenizer == "" {
 		target.Tokenizer = source.Tokenizer
-	}
-	if target.Precision == nil {
-		target.Precision = copyValuePtr(source.Precision)
 	}
 	if target.Quantization == "" {
 		target.Quantization = source.Quantization

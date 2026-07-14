@@ -27,8 +27,6 @@ These short flags are **RESERVED** globally and must not be used for command-spe
 | `-o`  | `--output`   | Output format              | table, json, yaml, wide         |
 | `-h`  | `--help`     | Show help                  | Built-in Cobra flag             |
 
-**Aliases**: `--format` and `--fmt` are aliases for `--output` (all three flags accept the same values).
-
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:
 - Avoid conflict with embed cat's `--filename` flag
@@ -104,7 +102,7 @@ Use flags for filtering, options, and modifiers:
 ```bash
 # ✅ Good - options as flags
 starmap update openai --dry --force
-starmap models list --provider openai --format json
+starmap models list --provider openai --output json
 
 # Positional: what (resource/identity)
 # Flags: how (behavior modifiers)
@@ -118,7 +116,7 @@ When assigning short flags, follow this priority:
 2. **Common conventions** - Prefer industry standards:
    - `-f` for `--force` or `--file`
    - `-y` for `--yes` (auto-approve)
-   - `-n` for `--dry-run` (alternative to `--dry`)
+   - `-n` for a future non-destructive operation when unambiguous
    - `-a` for `--all`
    - `-l` for `--long` or `--list`
 3. **Mnemonic first letter** - Use first letter of long flag when possible
@@ -174,21 +172,6 @@ catCmd.Flags().StringVarP(&catFilename, "filename", "f", "", "...")
 
 **Example**: `embed` command uses `-?` for help, freeing `-h` for ls (human-readable) and `-f` for cat (filename).
 
-### Flag Aliases
-
-Support both long and short forms for common patterns:
-
-```go
-// Primary flag
-cmd.Flags().BoolVar(&flags.Dry, "dry", false, "Preview changes")
-
-// Deprecated alias for compatibility
-cmd.Flags().BoolVar(&flags.Dry, "dry-run", false, "Preview changes (alias for --dry)")
-_ = cmd.Flags().MarkDeprecated("dry-run", "use --dry instead")
-```
-
-Prefer **shorter primary flags** (`--dry`) with longer deprecated aliases (`--dry-run`) for backward compatibility.
-
 ## Testing Flag Changes
 
 Before committing flag changes:
@@ -204,8 +187,8 @@ Before committing flag changes:
    # Verify global flags work
    ./starmap <command> -v --dry
 
-   # Test deprecated flags show warnings
-   ./starmap <command> --old-flag
+   # Removed prelaunch flags must fail as unknown
+   ! ./starmap <command> --old-flag
    ```
 
 3. **Run full test suite**
@@ -305,7 +288,7 @@ starmap update --provider openai  # Use positional instead
 
 # ❌ Don't create ambiguous flag names
 starmap update --output catalog   # Does this mean format or directory?
-# Use: --output-dir for directory, --format for style
+# Use: --output-dir for directory, --output for style
 
 # ❌ Don't use short flags that aren't mnemonic without good reason
 starmap update -x  # What does -x mean? Not obvious
@@ -328,18 +311,18 @@ When breaking changes are necessary:
 
 2. **Update CHANGELOG** (when we have one)
 
-3. **Consider compatibility**
-   - Pre-1.0: Breaking changes acceptable with clear communication
-   - Post-1.0: Use deprecation period (6-12 months) before removal
+3. **Use the current prelaunch contract**
+   - Before launch: remove superseded shapes directly and add negative fixtures
+   - After a public stability commitment: define a versioned deprecation policy
 
 ## Future Considerations
 
 ### Version-Specific Behavior
 
-When Starmap reaches 1.0, we may need:
+After Starmap makes a public stability commitment, it may need:
 - Semantic versioning for breaking CLI changes
 - Longer deprecation periods
-- Compatibility shims
+- Explicitly versioned transition adapters
 - Version warnings
 
 ### Command Aliases
@@ -369,6 +352,6 @@ starmap sync           # Alias for "update"
 **Special Cases**:
 - Embed commands: Use `-?` for help
 - Update command: Removed `--provider` flag, use positional
-- Dry run: `--dry` is primary, `--dry-run` deprecated
+- Dry run: `--dry`
 
 **Questions?** See examples in this document or check `cmd/starmap/cmd/*/` source code.

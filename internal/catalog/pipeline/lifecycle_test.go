@@ -6,10 +6,12 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -122,6 +124,80 @@ func (s *lifecycleTestSource) counts() (fetchCalls int, fetchOptionSize int, cle
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.fetchCalls, s.fetchOptionSize, s.cleanupCalls
+}
+
+type boundedObservationSource struct {
+	id       sources.ID
+	started  chan<- struct{}
+	release  <-chan struct{}
+	inFlight *atomic.Int32
+	maximum  *atomic.Int32
+}
+
+func (source *boundedObservationSource) ID() sources.ID { return source.id }
+func (source *boundedObservationSource) Name() string   { return string(source.id) }
+func (source *boundedObservationSource) Cleanup() error { return nil }
+func (source *boundedObservationSource) Dependencies() []sources.Dependency {
+	return nil
+}
+func (source *boundedObservationSource) IsOptional() bool { return false }
+
+func (source *boundedObservationSource) Observe(context.Context, ...sources.Option) (sources.Observation, error) {
+	current := source.inFlight.Add(1)
+	for {
+		maximum := source.maximum.Load()
+		if current <= maximum || source.maximum.CompareAndSwap(maximum, current) {
+			break
+		}
+	}
+	source.started <- struct{}{}
+	<-source.release
+	source.inFlight.Add(-1)
+	catalog := asSnapshot(catalogs.NewEmpty())
+	return sources.NewObservation(source.id, catalog, sources.ObservationMetadata{
+		ObservedAt:   time.Date(2026, time.July, 13, 12, 0, 0, 0, time.UTC),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+}
+
+func TestObserveBoundsConfiguredSourceConcurrency(t *testing.T) {
+	count := constants.MaxConcurrentProviders + 2
+	started := make(chan struct{}, count)
+	release := make(chan struct{})
+	var inFlight, maximum atomic.Int32
+	configured := make([]sources.Source, count)
+	for index := range configured {
+		configured[index] = &boundedObservationSource{
+			id: sources.ID("provider-source-" + string(rune('a'+index))), started: started, release: release,
+			inFlight: &inFlight, maximum: &maximum,
+		}
+	}
+	done := make(chan error, 1)
+	go func() {
+		_, err := observe(context.Background(), configured, nil)
+		done <- err
+	}()
+	for range constants.MaxConcurrentProviders {
+		select {
+		case <-started:
+		case <-time.After(time.Second):
+			t.Fatal("timed out waiting for bounded observations")
+		}
+	}
+	select {
+	case <-started:
+		t.Fatal("more configured sources started than the concurrency bound")
+	case <-time.After(25 * time.Millisecond):
+	}
+	close(release)
+	if err := <-done; err != nil {
+		t.Fatalf("observe: %v", err)
+	}
+	if maximum.Load() > constants.MaxConcurrentProviders {
+		t.Fatalf("maximum concurrency = %d, want <= %d", maximum.Load(), constants.MaxConcurrentProviders)
+	}
 }
 
 func TestObserveCollectsSourceErrorsAndKeepsPartialCatalogs(t *testing.T) {

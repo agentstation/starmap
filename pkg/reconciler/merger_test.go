@@ -412,36 +412,10 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 
 	result, err := merger.Providers(map[sources.ID][]*catalogs.Provider{
 		sources.LocalCatalogID: {
-			{
-				ID:   "openai",
-				Name: "OpenAI Local",
-				APIKey: &catalogs.ProviderAPIKey{
-					Name:   "LOCAL_KEY",
-					Header: "Authorization",
-				},
-				Catalog: &catalogs.ProviderCatalog{
-					Endpoint: catalogs.ProviderEndpoint{
-						Type: catalogs.EndpointTypeOpenAI,
-						URL:  localURL,
-					},
-				},
-			},
+			mergeTestProvider("OpenAI Local", "LOCAL_KEY", localURL),
 		},
 		sources.ModelsDevHTTPID: {
-			{
-				ID:   "openai",
-				Name: "OpenAI models.dev",
-				APIKey: &catalogs.ProviderAPIKey{
-					Name:   "MODELS_DEV_KEY",
-					Header: "X-API-Key",
-				},
-				Catalog: &catalogs.ProviderCatalog{
-					Endpoint: catalogs.ProviderEndpoint{
-						Type: catalogs.EndpointTypeOpenAI,
-						URL:  modelsDevURL,
-					},
-				},
-			},
+			mergeTestProvider("OpenAI models.dev", "MODELS_DEV_KEY", modelsDevURL),
 		},
 	})
 	if err != nil {
@@ -455,11 +429,25 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 	if provider.Name != "OpenAI Local" {
 		t.Fatalf("Expected local provider name, got %q", provider.Name)
 	}
-	if provider.APIKey == nil || provider.APIKey.Name != "LOCAL_KEY" {
-		t.Fatalf("Expected local API key configuration, got %#v", provider.APIKey)
+	credential, found := provider.Credentials["api_key"]
+	if !found || len(credential.Env) != 1 || credential.Env[0] != "LOCAL_KEY" {
+		t.Fatalf("Expected local API key configuration, got %#v", provider.Credentials)
 	}
-	if provider.Catalog == nil || provider.Catalog.Endpoint.URL != localURL {
+	if provider.Catalog == nil || provider.Catalog.Sources[0].Endpoint.URL != localURL {
 		t.Fatalf("Expected local catalog endpoint, got %#v", provider.Catalog)
+	}
+}
+
+func mergeTestProvider(name, environmentName, endpointURL string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: "openai", Name: name,
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{
+			"api_key": {Env: catalogs.ProviderEnvironmentNames{environmentName}},
+		},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth: catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: endpointURL},
+		}}},
 	}
 }
 
@@ -1123,9 +1111,8 @@ func TestCopyModelPricingDeepCopiesNestedFields(t *testing.T) {
 
 func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 	knowledge := utc.Now()
-	precision := "fp16"
-	wantPrecision := precision
 	baseModel := "base-model"
+	wantBaseModel := baseModel
 	source := &catalogs.ModelMetadata{
 		KnowledgeCutoff: &knowledge,
 		Tags:            []catalogs.ModelTag{catalogs.ModelTagResearch},
@@ -1133,7 +1120,6 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 			ParameterCount: "70B",
 			Type:           catalogs.ArchitectureTypeTransformer,
 			Tokenizer:      catalogs.TokenizerGPT,
-			Precision:      &precision,
 			Quantization:   catalogs.QuantizationFP16,
 			Quantized:      true,
 			FineTuned:      true,
@@ -1145,13 +1131,12 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 	if copied == nil ||
 		copied.KnowledgeCutoff == nil ||
 		copied.Architecture == nil ||
-		copied.Architecture.Precision == nil ||
 		copied.Architecture.BaseModel == nil {
 		t.Fatalf("metadata was not copied deeply: %#v", copied)
 	}
 	source.Tags[0] = catalogs.ModelTagMath
-	*source.Architecture.Precision = "int8"
-	if copied.Tags[0] != catalogs.ModelTagResearch || *copied.Architecture.Precision != wantPrecision {
+	*source.Architecture.BaseModel = "changed-base"
+	if copied.Tags[0] != catalogs.ModelTagResearch || *copied.Architecture.BaseModel != wantBaseModel {
 		t.Fatalf("copied metadata aliases source: %#v", copied)
 	}
 
@@ -1162,7 +1147,7 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 		!hasModelTag(filled.Tags, catalogs.ModelTagResearch) ||
 		filled.Architecture == nil ||
 		filled.Architecture.BaseModel == nil ||
-		*filled.Architecture.BaseModel != baseModel {
+		*filled.Architecture.BaseModel != wantBaseModel {
 		t.Fatalf("metadata missing fields were not filled: %#v", filled)
 	}
 }

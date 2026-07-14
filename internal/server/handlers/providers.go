@@ -49,16 +49,16 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 			providerInfo["headquarters"] = *prov.Headquarters
 		}
 
-		if prov.Catalog != nil && prov.Catalog.Docs != nil {
-			providerInfo["docs_url"] = *prov.Catalog.Docs
+		if prov.Catalog != nil && len(prov.Catalog.Sources) > 0 && prov.Catalog.Sources[0].Docs != "" {
+			providerInfo["docs_url"] = prov.Catalog.Sources[0].Docs
 		}
 
 		providerList = append(providerList, providerInfo)
 	}
 
 	result := map[string]any{
-		"providers": providerList,
-		"count":     len(providerList),
+		"providers":        providerList,
+		responseFieldCount: len(providerList),
 	}
 
 	// Cache result
@@ -136,20 +136,19 @@ func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Reques
 		return
 	}
 
-	modelsIndex, err := cat.LegacyV0().ProviderModels(prov.ID)
+	models, err := query.CatalogModels(cat, string(prov.ID))
 	if err != nil {
 		response.ErrorFromType(w, err)
 		return
 	}
-	models := modelsIndex.List()
 
 	result := map[string]any{
 		"provider": map[string]any{
 			"id":   prov.ID,
 			"name": prov.Name,
 		},
-		"models": models,
-		"count":  len(models),
+		responseFieldModels: models,
+		responseFieldCount:  len(models),
 	}
 
 	response.OK(w, result)

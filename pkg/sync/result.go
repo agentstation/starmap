@@ -36,9 +36,15 @@ var modelProvenanceFieldSuffixes = []string{
 // Result represents the complete result of a sync operation.
 type Result struct {
 	// Overall statistics
-	TotalChanges     int                                     // Total number of changes across all providers
-	ProvidersChanged int                                     // Number of providers with changes
-	ProviderResults  map[catalogs.ProviderID]*ProviderResult // Results per provider
+	TotalChanges       int                                     // Total number of changes across all providers
+	ProvidersChanged   int                                     // Number of providers with changes
+	ProviderResults    map[catalogs.ProviderID]*ProviderResult // Results per provider
+	DefinitionsAdded   int
+	DefinitionsUpdated int
+	DefinitionsRemoved int
+	OfferingsAdded     int
+	OfferingsUpdated   int
+	OfferingsRemoved   int
 
 	// Operation metadata
 	DryRun    bool   // Whether this was a dry run
@@ -50,6 +56,7 @@ type Result struct {
 	SourceObservations []catalogs.SourceObservationLink
 	GenerationID       string // Durable generation activated by a non-dry sync
 	SyncRunID          string // Correlation ID for the synchronization attempt
+	Contextual         bool   // Applied in memory only because credential-scoped observations prohibit public persistence
 }
 
 // ProviderResult represents sync results for a single provider.
@@ -65,9 +72,12 @@ type ProviderResult struct {
 	RemovedCount int // Number of models removed from API (not deleted from catalog)
 
 	// Metadata
-	APIModelsCount      int // Total models fetched from API
-	ExistingModelsCount int // Total models that existed in catalog
-	EnhancedCount       int // Number of models enhanced with models.dev data
+	APIModelsCount       int // Total models fetched from API
+	ExistingModelsCount  int // Total models that existed in catalog
+	EnhancedCount        int // Number of models enhanced with models.dev data
+	OfferingAddedCount   int
+	OfferingUpdatedCount int
+	OfferingRemovedCount int
 }
 
 // HasChanges returns true if the sync result contains any changes.
@@ -77,7 +87,8 @@ func (sr *Result) HasChanges() bool {
 
 // HasChanges returns true if the provider result contains any changes.
 func (spr *ProviderResult) HasChanges() bool {
-	return spr.AddedCount > 0 || spr.UpdatedCount > 0 || spr.RemovedCount > 0
+	return spr.AddedCount > 0 || spr.UpdatedCount > 0 || spr.RemovedCount > 0 ||
+		spr.OfferingAddedCount > 0 || spr.OfferingUpdatedCount > 0 || spr.OfferingRemovedCount > 0
 }
 
 // Summary returns a human-readable summary of the sync result.
@@ -108,8 +119,9 @@ func (spr *ProviderResult) Summary() string {
 		return fmt.Sprintf("%s: No changes", spr.ProviderID)
 	}
 
-	return fmt.Sprintf("%s: %d added, %d updated, %d removed",
-		spr.ProviderID, spr.AddedCount, spr.UpdatedCount, spr.RemovedCount)
+	return fmt.Sprintf("%s: %d models added, %d updated, %d removed; %d offerings added, %d updated, %d removed",
+		spr.ProviderID, spr.AddedCount, spr.UpdatedCount, spr.RemovedCount,
+		spr.OfferingAddedCount, spr.OfferingUpdatedCount, spr.OfferingRemovedCount)
 }
 
 // ChangesetToResult converts a reconcile.Changeset to a SyncResult.
@@ -131,11 +143,17 @@ func ChangesetToResultWithProvenance(changeset *differ.Changeset, dryRun bool, o
 	changeset = normalizeChangeset(changeset)
 
 	result := &Result{
-		TotalChanges:    changeset.Summary.TotalChanges,
-		DryRun:          dryRun,
-		OutputDir:       outputDir,
-		Sources:         append([]sources.ID(nil), activeSources...),
-		ProviderResults: make(map[catalogs.ProviderID]*ProviderResult),
+		TotalChanges:       changeset.Summary.TotalChanges,
+		DryRun:             dryRun,
+		OutputDir:          outputDir,
+		Sources:            append([]sources.ID(nil), activeSources...),
+		ProviderResults:    make(map[catalogs.ProviderID]*ProviderResult),
+		DefinitionsAdded:   changeset.Summary.DefinitionsAdded,
+		DefinitionsUpdated: changeset.Summary.DefinitionsUpdated,
+		DefinitionsRemoved: changeset.Summary.DefinitionsRemoved,
+		OfferingsAdded:     changeset.Summary.OfferingsAdded,
+		OfferingsUpdated:   changeset.Summary.OfferingsUpdated,
+		OfferingsRemoved:   changeset.Summary.OfferingsRemoved,
 	}
 
 	// Group models by provider for the provider results
@@ -183,20 +201,44 @@ func ChangesetToResultWithProvenance(changeset *differ.Changeset, dryRun bool, o
 	for providerID := range providerRemoved {
 		allProviders[providerID] = true
 	}
+	offeringCounts := make(map[catalogs.ProviderID][3]int)
+	if changeset.Offerings != nil {
+		for _, offering := range changeset.Offerings.Added {
+			counts := offeringCounts[offering.ProviderID]
+			counts[0]++
+			offeringCounts[offering.ProviderID] = counts
+			allProviders[offering.ProviderID] = true
+		}
+		for _, update := range changeset.Offerings.Updated {
+			counts := offeringCounts[update.Key.ProviderID]
+			counts[1]++
+			offeringCounts[update.Key.ProviderID] = counts
+			allProviders[update.Key.ProviderID] = true
+		}
+		for _, offering := range changeset.Offerings.Removed {
+			counts := offeringCounts[offering.ProviderID]
+			counts[2]++
+			offeringCounts[offering.ProviderID] = counts
+			allProviders[offering.ProviderID] = true
+		}
+	}
 
 	provenanceIndex := indexModelProvenance(fieldProvenance, allProviders)
 
 	// Create provider results
 	for providerID := range allProviders {
 		providerResult := &ProviderResult{
-			ProviderID:     providerID,
-			Added:          providerAdded[providerID],
-			Updated:        providerUpdated[providerID],
-			Removed:        providerRemoved[providerID],
-			AddedCount:     len(providerAdded[providerID]),
-			UpdatedCount:   len(providerUpdated[providerID]),
-			RemovedCount:   len(providerRemoved[providerID]),
-			APIModelsCount: providerAPICounts[providerID], // Now properly set from actual API fetch
+			ProviderID:           providerID,
+			Added:                providerAdded[providerID],
+			Updated:              providerUpdated[providerID],
+			Removed:              providerRemoved[providerID],
+			AddedCount:           len(providerAdded[providerID]),
+			UpdatedCount:         len(providerUpdated[providerID]),
+			RemovedCount:         len(providerRemoved[providerID]),
+			APIModelsCount:       providerAPICounts[providerID], // Now properly set from actual API fetch
+			OfferingAddedCount:   offeringCounts[providerID][0],
+			OfferingUpdatedCount: offeringCounts[providerID][1],
+			OfferingRemovedCount: offeringCounts[providerID][2],
 		}
 		if hasModelsDevSource(activeSources) {
 			providerResult.EnhancedCount = countEnrichmentUpdates(providerUpdated[providerID], provenanceIndex)
@@ -360,6 +402,12 @@ func normalizeChangeset(changeset *differ.Changeset) *differ.Changeset {
 	}
 	if changeset.Authors == nil {
 		changeset.Authors = &differ.AuthorChangeset{}
+	}
+	if changeset.Definitions == nil {
+		changeset.Definitions = &differ.ModelDefinitionChangeset{}
+	}
+	if changeset.Offerings == nil {
+		changeset.Offerings = &differ.ProviderOfferingChangeset{}
 	}
 	return changeset
 }

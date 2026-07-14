@@ -25,7 +25,7 @@ type SourceFreshnessSLA struct {
 // Validate verifies a useful two-threshold source policy.
 func (s SourceFreshnessSLA) Validate() error {
 	if strings.TrimSpace(s.Source.String()) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness.source", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.freshness.source", Message: validationRequiredMessage}
 	}
 	if s.DegradedAfter <= 0 || s.UnreadyAfter <= s.DegradedAfter {
 		return &errors.ValidationError{
@@ -95,6 +95,10 @@ type SourceFreshness struct {
 	UnreadyAfterSeconds  int64                               `json:"unready_after_seconds"`
 	ObservationStatus    catalogmeta.ObservationStatus       `json:"observation_status,omitempty"`
 	Completeness         catalogmeta.ObservationCompleteness `json:"completeness,omitempty"`
+	Records              catalogmeta.ObservationRecordCounts `json:"records"`
+	ProviderCoverage     catalogmeta.ProviderCoverage        `json:"provider_coverage"`
+	PricingObservedAt    *time.Time                          `json:"pricing_observed_at,omitempty"`
+	PricingAgeSeconds    int64                               `json:"pricing_age_seconds,omitempty"`
 	State                FreshnessState                      `json:"state"`
 }
 
@@ -111,6 +115,12 @@ type FreshnessReport struct {
 // Copy returns a report with caller-owned collection state.
 func (r FreshnessReport) Copy() FreshnessReport {
 	r.Sources = append([]SourceFreshness(nil), r.Sources...)
+	for index := range r.Sources {
+		if r.Sources[index].PricingObservedAt != nil {
+			observedAt := *r.Sources[index].PricingObservedAt
+			r.Sources[index].PricingObservedAt = &observedAt
+		}
+	}
 	r.Alerts = append([]FreshnessAlert(nil), r.Alerts...)
 	return r
 }
@@ -147,7 +157,7 @@ func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error) {
 // not require catalog changes or a newly published generation.
 func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error {
 	if result == nil {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness.sync_result", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.freshness.sync_result", Message: validationRequiredMessage}
 	}
 	return m.Record(result.SourceObservations)
 }
@@ -156,7 +166,7 @@ func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error {
 // to regress their latest observation.
 func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink) error {
 	if m == nil {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: "is required"}
+		return &errors.ValidationError{Field: freshnessMonitorField, Message: validationRequiredMessage}
 	}
 	validated := make([]catalogs.SourceObservationLink, len(observations))
 	copy(validated, observations)
@@ -213,10 +223,10 @@ func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error {
 // warning-threshold/degraded observations preserve readiness but degrade it.
 func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error) {
 	if m == nil {
-		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: "is required"}
+		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: validationRequiredMessage}
 	}
 	if at.IsZero() {
-		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness.evaluated_at", Message: "is required"}
+		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness.evaluated_at", Message: validationRequiredMessage}
 	}
 	at = at.UTC()
 	m.mu.RLock()
@@ -268,6 +278,13 @@ func evaluateSourceFreshness(at time.Time, rule SourceFreshnessSLA, observation 
 	state.AgeSeconds = int64(state.Age / time.Second)
 	state.ObservationStatus = observation.Status
 	state.Completeness = observation.Completeness
+	state.Records = observation.Metrics.Records
+	state.ProviderCoverage = observation.Metrics.ProviderCoverage
+	if observation.Metrics.PricingObservedAt != nil {
+		pricingObservedAt := *observation.Metrics.PricingObservedAt
+		state.PricingObservedAt = &pricingObservedAt
+		state.PricingAgeSeconds = int64(at.Sub(pricingObservedAt) / time.Second)
+	}
 	if state.Age < 0 {
 		state.State = FreshnessStateUnready
 		return state, freshnessAlert(FreshnessAlertSourceFuture, AlertSeverityCritical, rule.Source, "source observation timestamp is in the future")

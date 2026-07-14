@@ -1,0 +1,10 @@
+id: command-r-03-2024
+name: command-r-03-2024
+authors:
+- id: cohere
+  name: Cohere
+pricing:
+  currency: USD
+  tokens:
+    input: {per_1m: 0.5}
+    output: {per_1m: 1.5}

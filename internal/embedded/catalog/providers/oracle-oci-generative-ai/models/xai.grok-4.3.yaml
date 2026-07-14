@@ -1,0 +1,33 @@
+id: xai.grok-4.3
+name: xai.grok-4.3
+authors:
+- id: xai
+  name: xai
+definition_id: xai/grok-4-3
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 1.25
+    output:
+      per_1m: 2.5
+    cache_read:
+      per_1m: 0.2
+  tiers:
+  - name: context_over_threshold
+    type: context
+    size: 200000
+    tokens:
+      input:
+        per_1m: 2.5
+      output:
+        per_1m: 5
+      cache_read:
+        per_1m: 0.4
+invocation_apis:
+- responses
+offering_endpoint:
+  type: oci-generative-ai
+offering_deployment:
+  type: on-demand
+  tier: pay-as-you-go

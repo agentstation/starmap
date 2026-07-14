@@ -1,0 +1,20 @@
+id: openai.gpt-oss-120b
+name: openai.gpt-oss-120b
+authors:
+- id: openai
+  name: openai
+definition_id: openai/gpt-oss-120b
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.15
+    output:
+      per_1m: 0.6
+invocation_apis:
+- responses
+offering_endpoint:
+  type: oci-generative-ai
+offering_deployment:
+  type: on-demand
+  tier: pay-as-you-go

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "provider": "anthropic",
+  "source": "models",
+  "fetched_at": "2025-08-16T22:10:58Z",
+  "source_revision": {"kind": "content_digest", "value": "sha256:53e9ac10b7f614aeb737c62c8d6521654bb3d7a1887980829857ba0c2e73d4ad"},
+  "payload": {"path": "models_list.json", "checksum": "sha256:53e9ac10b7f614aeb737c62c8d6521654bb3d7a1887980829857ba0c2e73d4ad"},
+  "max_age": "8760h0m0s"
+}

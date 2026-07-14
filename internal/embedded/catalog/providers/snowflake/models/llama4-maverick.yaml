@@ -1,0 +1,38 @@
+id: llama4-maverick
+name: llama4-maverick
+authors:
+- id: meta
+  name: meta
+definition_id: llama4-maverick
+pricing:
+  tokens:
+    input:
+      per_1m: 0.264
+    output:
+      per_1m: 1.067
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.24
+        output:
+          per_1m: 0.97
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.264
+        output:
+          per_1m: 1.067
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

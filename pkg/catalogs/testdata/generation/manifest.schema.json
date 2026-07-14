@@ -14,12 +14,11 @@
     "sync_run_id",
     "source_observations",
     "completeness",
-    "degraded",
-    "consumer_compatibility"
+    "degraded"
   ],
   "properties": {
     "manifest_version": {"type": "integer", "const": 1},
-    "schema_version": {"type": "integer", "minimum": 1},
+    "schema_version": {"type": "integer", "const": 2},
     "generation_id": {"type": "string", "minLength": 1},
     "generated_at": {"type": "string", "format": "date-time"},
     "payload": {"$ref": "#/$defs/payload"},
@@ -36,8 +35,7 @@
       "type": "array",
       "minItems": 1,
       "items": {"type": "string", "minLength": 1}
-    },
-    "consumer_compatibility": {"$ref": "#/$defs/consumer_compatibility"}
+    }
   },
   "$defs": {
     "checksum": {
@@ -124,15 +122,6 @@
         "completeness": {"enum": ["complete", "partial"]},
         "status": {"enum": ["succeeded", "degraded"]},
         "evidence_checksum": {"$ref": "#/$defs/checksum"}
-      }
-    },
-    "consumer_compatibility": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["min_schema_version", "max_schema_version"],
-      "properties": {
-        "min_schema_version": {"type": "integer", "minimum": 1},
-        "max_schema_version": {"type": "integer", "minimum": 1}
       }
     }
   }

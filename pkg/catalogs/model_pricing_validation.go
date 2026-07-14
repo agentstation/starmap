@@ -13,7 +13,7 @@ const tokenPriceScale = 1_000_000
 // to use as an authoritative provider-offering observation.
 func (p *ModelPricing) Validate() error {
 	if p == nil {
-		return pricingValidationError("pricing", nil, "is required")
+		return pricingValidationError("pricing", nil, validationMessageIsRequired)
 	}
 	if !validPricingCurrency(p.Currency) {
 		return pricingValidationError("currency", p.Currency, "must be a three-letter uppercase currency code")

@@ -33,7 +33,7 @@ Starmap is a unified AI model catalog system that combines data from provider AP
 make all                                # Clean, format, lint, test, build
 starmap update                          # Update local catalog
 starmap update openai                   # Update specific provider
-make testdata PROVIDER=openai           # Update testdata
+make testdata PROVIDER=openai SOURCE=models # Refresh one governed observation
 ```
 
 ## Tech Stack
@@ -42,7 +42,7 @@ make testdata PROVIDER=openai           # Update testdata
 - **Development/release toolchain**: Go 1.26.5
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
-- **Testing**: Go testing, testdata pattern with `-update` flag
+- **Testing**: Go testing, deterministic module-local fixtures plus separately governed provider observations, always with `-race`
 - **Providers**: OpenAI, Anthropic, Google AI/Vertex, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra
 
 ## ⚠️ Critical Rules (YOU MUST FOLLOW)
@@ -97,24 +97,26 @@ constants.DefaultTimeout
 30*time.Second
 ```
 
-### Provider Clients
+### Provider Connectors
 
-**Check OpenAI-compatible first:**
-
-Most providers use unified OpenAI client (`internal/providers/openai/client.go`). Only create custom client if API is incompatible.
-
-**Steps:**
-1. Check if provider uses OpenAI-compatible API
-2. If yes: configure in `internal/embedded/catalog/providers.yaml`
-3. If no: create custom client in `internal/providers/<provider>/`
-4. Register in `internal/providers/clients/provider.go`
+Use the complete role decision tree in
+[docs/ADDING_PROVIDERS.md](docs/ADDING_PROVIDERS.md). OpenAI compatibility is
+the first question, but configuration-only provider, connector, adapter,
+regional/account-source, and live-pricing-importer roles are distinct.
+Connectors live in `internal/connectors`; they own deliberately reusable
+protocol behavior and must not contain named provider policy. Provider-specific
+acquisition lives in `internal/providers/<provider>/client.go`. `pricing.go` is only for a
+live official pricing parser/importer, and `response_schema_test.go` is
+supplemental connector coverage that never replaces behavioral tests.
 
 ### Testdata Updates
 
 After making changes to provider code:
 
 ```bash
-go test ./internal/providers/<provider> -update
+go test -race ./internal/connectors/... ./internal/providers/<provider>
+make testdata PROVIDER=<provider> SOURCE=<source> # explicit governed raw-observation refresh
+make provider-contract-check
 ```
 
 ## Architecture Quick Reference
@@ -172,13 +174,17 @@ See docs/ARCHITECTURE.md § Reconciliation System for details:
 
 ### Add New Provider
 
-See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
+Follow [docs/ADDING_PROVIDERS.md](docs/ADDING_PROVIDERS.md); it is the normative
+decision tree and data-ownership contract.
 
-1. Add to `internal/embedded/catalog/providers.yaml`
-2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
-3. If compatible: Configure in YAML. If not: Create custom client
-4. Register in `internal/providers/clients/provider.go`
-5. Update testdata: `go test ./internal/providers/<provider> -update`
+1. Put stable endpoint/response/offering interpretation in `providers.yaml`.
+2. Use YAML-only protocol-connector configuration when it is sufficient; add no provider production Go.
+3. Add `adapter.go` only for irreducible provider record semantics.
+4. Add provider `client.go` for single-provider acquisition, a protocol connector only for deliberate reuse, or provider `source.go` for regional/account sweeps.
+5. Put reviewed prices/lifecycle/capabilities in schema-v2 catalog data, not Go tables.
+6. Own connector `client_test.go`, provider `provider_test.go`/`adapter_test.go`, or `source_test.go` according to the selected role.
+7. Refresh eligible global-public raw evidence with `make testdata PROVIDER=<provider> SOURCE=<source>`; credential-scoped raw captures are prohibited and use deterministic SDK/client fakes.
+8. Run `make provider-contract-check` plus the focused race, catalog, docs, and repository gates.
 
 ### Modify Sync Logic
 
@@ -288,7 +294,7 @@ for _, provider := range providers {
 
 **Core packages**: catalogs, catalogstore, reconciler, authority, sources, errors, logging, constants, convert
 
-**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, transport
+**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local}, connectors/{openai,anthropic,google}, providers/{registry,clients,adapters,regional-sources,fixtures}, transport
 
 **Application**: internal/application (interface), cmd/starmap/app (implementation)
 
@@ -338,7 +344,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `pkg/reconciler/reconciler.go` | Multi-source reconciliation |
 | `pkg/authority/authority.go` | Field-level authorities |
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |
-| `internal/providers/clients/provider.go` | Provider client registry |
+| `internal/providers/registry/provider.go` | Provider acquisition registry |
 | `internal/embedded/catalog/providers.yaml` | Provider configurations |
 
 ## Development Commands
@@ -367,8 +373,9 @@ go test ./... -race -short                 # All packages with race detector
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
 make catalog-generation-check               # Verify safe download/promotion/CLI tooling
-make testdata                               # Update all testdata
-make testdata PROVIDER=openai               # Update specific provider testdata
+make provider-contract-check                 # Verify provider roles, fixtures, and refresh contract
+make testdata                               # Refresh all checked-in governed observations
+make testdata PROVIDER=openai SOURCE=models # Refresh one exact logical source
 ```
 
 ### Documentation

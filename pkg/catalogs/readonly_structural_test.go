@@ -31,9 +31,6 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	if _, ok := any(catalog.Endpoints()).(interface{ Clear() }); ok {
 		t.Error("Read-only endpoints expose Clear")
 	}
-	if _, ok := any(catalog.Models()).(interface{ Clear() }); ok {
-		t.Error("Read-only models expose Clear")
-	}
 	if _, ok := any(catalog.Provenance()).(interface{ Clear() }); ok {
 		t.Error("Read-only provenance exposes Clear")
 	}
@@ -42,6 +39,7 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	for _, method := range []string{
 		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteEndpoint",
 		"DeleteProvider", "DeleteProviderModel", "MergeProvenance", "MergeWith",
+		"LegacyV0", "Models", "ProviderModel", "ProviderModels",
 		"ReplaceWith", "Save", "SetAuthor", "SetEndpoint", "SetMergeStrategy",
 		"SetProvider", "SetProviderModel", "SetProvenance",
 	} {
@@ -137,22 +135,20 @@ func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 	if err := builder.SetProviderModel("provider-a", Model{ID: "shared", Name: "Later Draft"}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
-	offering, err := catalog.ProviderModel("provider-alias", "shared")
+	offering, err := catalog.Offering("provider-alias", "shared")
 	if err != nil {
 		t.Fatalf("ProviderModel through alias: %v", err)
 	}
-	if offering.Name != "Published Offering" {
-		t.Fatalf("Indexed offering name = %q, want published value", offering.Name)
+	if offering.ProviderModelID != "shared" {
+		t.Fatalf("Indexed offering ID = %q, want shared", offering.ProviderModelID)
 	}
 
-	models, err := catalog.ProviderModels("provider-a")
+	offerings, err := catalog.ProviderOfferings("provider-a")
 	if err != nil {
-		t.Fatalf("ProviderModels: %v", err)
+		t.Fatalf("ProviderOfferings: %v", err)
 	}
-	if _, ok := any(models).(interface {
-		Set(string, *Model) error
-	}); ok {
-		t.Fatal("Provider offering index exposes model mutation")
+	if len(offerings) != 1 || offerings[0].ProviderModelID != "shared" {
+		t.Fatalf("ProviderOfferings = %#v", offerings)
 	}
 }
 
@@ -161,11 +157,11 @@ func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) 
 	providers := []Provider{
 		{
 			ID: "provider-a", Aliases: []ProviderID{"provider-a-alias"}, Name: "Provider A",
-			Models: map[string]*Model{"shared": legacyMigrationModel("shared", 1, "priority")},
+			Models: map[string]*Model{"shared": sourceProjectionTestModel("shared", 1, "priority")},
 		},
 		{
 			ID: "provider-b", Name: "Provider B",
-			Models: map[string]*Model{"shared": legacyMigrationModel("shared", 2, "standard")},
+			Models: map[string]*Model{"shared": sourceProjectionTestModel("shared", 2, "standard")},
 		},
 	}
 	for _, provider := range providers {

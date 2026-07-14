@@ -1,10 +1,10 @@
-# gemini-3.1-flash-lite-preview - Legacy model retained for compatibility with older integrati...
+# gemini-3.1-flash-lite-preview - Deprecated preview retained as a lifecycle record.
 id: gemini-3.1-flash-lite-preview
 name: Gemini 3.1 Flash Lite Preview
 authors:
 - id: google
   name: Google
-description: Legacy model retained for compatibility with older integrations
+description: Deprecated Google preview retained as a current lifecycle record.
 status: deprecated
 
 # Model metadata

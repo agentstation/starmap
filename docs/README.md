@@ -58,13 +58,13 @@ shared-filesystem adapters.
 ### [REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md)
 **Versioned Online Generation Protocol**
 
-Strict current-manifest and immutable generation-snapshot routes, client
-compatibility/checksum verification, and atomic remote publication semantics.
+Strict current-manifest and immutable generation-snapshot routes, exact-schema
+and checksum verification, and atomic remote publication semantics.
 
 ### [HOSTED_CATALOG_DISTRIBUTION.md](HOSTED_CATALOG_DISTRIBUTION.md)
 **Hosted Generation and Promotion Protocol**
 
-Verified immutable assets, schema-compatible pointers, dev/canary/stable
+Verified immutable assets, exact-current-schema pointers, dev/canary/stable
 promotion, SLO evidence, and rollback behavior.
 
 ### [CLI.md](CLI.md)

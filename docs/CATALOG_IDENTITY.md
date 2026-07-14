@@ -33,22 +33,14 @@ routing identity. These identifiers are not interchangeable.
 8. Every offering references exactly one existing provider and one existing
    definition. Every route target references an existing offering key.
 
-## Compatibility boundary
+## Schema boundary
 
-The current `catalogs.Model.ID`, provider `Models` map key, `Models`, and
-`FindModel` APIs predate this split and remain compatibility surfaces until the
-P4 migration is complete. New code must not treat the legacy bare-ID view as an
-offering identity. Provider-scoped reads use `ProviderModel(providerID,
-providerModelID)` today; P4 introduces explicit definition/offering types and a
-versioned compatibility adapter.
-
-The transition is explicit. `Catalog.FindModel` keeps the canonical consumer
-syntax but returns `ModelDefinition`; provider facts come from `Offering`.
-Callers that still require the pre-split `Model` use
-`Catalog.LegacyV0().FindModel`, `ProviderModel`, `ProviderModels`, or `Models`.
-The adapter declares schema version 0; canonical generation payloads declare
-schema version 1. Direct legacy collection methods on `Catalog` remain
-deprecated for source compatibility during the v1 transition.
+`Catalog.FindModel` returns `ModelDefinition`; provider facts come from
+`Offering` and `ProviderOfferings`. Immutable catalogs expose no flattened
+`Model` reader or provider-model compatibility methods. Canonical generation
+payloads declare schema version 2 and explicitly contain definitions and
+offerings. Every reader requires exact schema version 2; prelaunch schema-v1
+artifacts fail rather than being decoded or migrated.
 
 `catalogs.ProviderOffering` is the first schema implementing this contract. It
 uses a comparable `OfferingKey`, typed `ProviderModelID` and
@@ -58,10 +50,10 @@ overrides retain exact JSON values rather than passing through `map[string]any`.
 canonical authorship, release metadata, typed lineage, weights/architecture,
 and intrinsic capabilities, and cannot contain provider service facts.
 
-`catalogs.MigrateLegacySchema` converts the pre-split model records without
-mutating them and emits a review report for every default, missing value, or
-conflicting canonical definition. The embedded baseline is locked so catalog
-updates cannot silently alter the migration disposition.
+During current source ingestion only, `ModelSourceReader` lets a mutable
+`Builder` project checked-in provider model records into canonical definitions
+and offerings. That projection is not reachable from payload, manifest,
+remote, distribution, or artifact decoding.
 
 Immutable catalogs expose canonical `Definition`, `Offering`, and
 `ProviderOfferings` lookups. Offering reads are keyed by the exact provider

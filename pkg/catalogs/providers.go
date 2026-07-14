@@ -110,8 +110,8 @@ func (p *Providers) Resolve(id ProviderID) (*Provider, bool) {
 func (p *Providers) Set(id ProviderID, provider *Provider) error {
 	if provider == nil {
 		return &errors.ValidationError{
-			Field:   "provider",
-			Message: "cannot be nil",
+			Field:   catalogResourceProvider,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -126,8 +126,8 @@ func (p *Providers) Set(id ProviderID, provider *Provider) error {
 func (p *Providers) Add(provider *Provider) error {
 	if provider == nil {
 		return &errors.ValidationError{
-			Field:   "provider",
-			Message: "cannot be nil",
+			Field:   catalogResourceProvider,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -138,7 +138,7 @@ func (p *Providers) Add(provider *Provider) error {
 		return &errors.ValidationError{
 			Field:   "provider.ID",
 			Value:   provider.ID,
-			Message: "already exists",
+			Message: validationMessageAlreadyExists,
 		}
 	}
 
@@ -154,7 +154,7 @@ func (p *Providers) Delete(id ProviderID) error {
 
 	if _, exists := p.providers[id]; !exists {
 		return &errors.NotFoundError{
-			Resource: "provider",
+			Resource: catalogResourceProvider,
 			ID:       string(id),
 		}
 	}
@@ -252,7 +252,7 @@ func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 	provider, exists := p.providers[providerID]
 	if !exists {
 		return &errors.NotFoundError{
-			Resource: "provider",
+			Resource: catalogResourceProvider,
 			ID:       string(providerID),
 		}
 	}
@@ -283,21 +283,21 @@ func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 	provider, exists := p.providers[providerID]
 	if !exists {
 		return &errors.NotFoundError{
-			Resource: "provider",
+			Resource: catalogResourceProvider,
 			ID:       string(providerID),
 		}
 	}
 
 	if len(provider.Models) == 0 {
 		return &errors.NotFoundError{
-			Resource: "model",
+			Resource: catalogResourceModel,
 			ID:       modelID,
 		}
 	}
 
 	if _, exists := provider.Models[modelID]; !exists {
 		return &errors.NotFoundError{
-			Resource: "model",
+			Resource: catalogResourceModel,
 			ID:       modelID,
 		}
 	}
@@ -338,7 +338,7 @@ func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 			errs[provider.ID] = &errors.ValidationError{
 				Field:   "provider.ID",
 				Value:   provider.ID,
-				Message: "already exists",
+				Message: validationMessageAlreadyExists,
 			}
 		}
 	}
@@ -373,7 +373,7 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error {
 		if provider == nil {
 			return &errors.ValidationError{
 				Field:   "providers[" + string(id) + "]",
-				Message: "cannot be nil",
+				Message: validationMessageCannotBeNil,
 			}
 		}
 	}
@@ -403,7 +403,7 @@ func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 	for _, id := range ids {
 		if _, exists := p.providers[id]; !exists {
 			errs[id] = &errors.NotFoundError{
-				Resource: "provider",
+				Resource: catalogResourceProvider,
 				ID:       string(id),
 			}
 		} else {

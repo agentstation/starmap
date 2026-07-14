@@ -46,6 +46,7 @@ type NormalizedRecord struct {
 	Records          catalogmeta.ObservationRecordCounts `json:"records"`
 	Issues           []MinimizedIssue                    `json:"issues,omitempty"`
 	EvidenceChecksum string                              `json:"evidence_checksum"`
+	Metrics          catalogmeta.ObservationMetrics      `json:"metrics"`
 	Payload          []byte                              `json:"payload"`
 }
 
@@ -53,6 +54,9 @@ type NormalizedRecord struct {
 func Capture(observation sources.Observation) (NormalizedRecord, error) {
 	if err := observation.Validate(); err != nil {
 		return NormalizedRecord{}, errors.WrapResource("capture", "source observation", observation.ID, err)
+	}
+	if observation.Metrics.Scope == catalogmeta.ObservationScopeCredentialScoped {
+		return NormalizedRecord{}, evidenceValidation("metrics.scope", observation.Metrics.Scope, "credential-scoped observations cannot enter retained publication evidence")
 	}
 	payload, err := catalogs.EncodeCatalogPayload(observation.Catalog)
 	if err != nil {
@@ -73,6 +77,7 @@ func Capture(observation sources.Observation) (NormalizedRecord, error) {
 		Records:          observation.Records,
 		Issues:           issues,
 		EvidenceChecksum: observation.EvidenceChecksum,
+		Metrics:          copyMetrics(observation.Metrics),
 		Payload:          payload,
 	}, nil
 }
@@ -81,6 +86,9 @@ func Capture(observation sources.Observation) (NormalizedRecord, error) {
 func Replay(record NormalizedRecord) (sources.Observation, error) {
 	if record.Version != normalizedRecordVersion {
 		return sources.Observation{}, evidenceValidation("version", record.Version, fmt.Sprintf("must be %d", normalizedRecordVersion))
+	}
+	if record.Metrics.Scope == catalogmeta.ObservationScopeCredentialScoped {
+		return sources.Observation{}, evidenceValidation("metrics.scope", record.Metrics.Scope, "credential-scoped observations cannot enter retained publication evidence")
 	}
 	descriptor := catalogs.DescribeCatalogPayload(record.Payload)
 	if descriptor.Checksum != record.EvidenceChecksum {
@@ -99,6 +107,9 @@ func Replay(record NormalizedRecord) (sources.Observation, error) {
 	observation, err := sources.NewObservation(record.SourceID, catalog, sources.ObservationMetadata{
 		ObservedAt: record.ObservedAt, Revision: record.Revision,
 		Completeness: record.Completeness, Status: record.Status, Records: record.Records, Issues: issues,
+		Scope: record.Metrics.Scope, Kind: record.Metrics.Kind, Coverage: record.Metrics.ProviderCoverage,
+		PricingObservedAt: record.Metrics.PricingObservedAt,
+		Acquisitions:      append([]catalogmeta.AcquisitionProvenance(nil), record.Metrics.Acquisitions...),
 	})
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("replay", "source observation", record.ObservationID, err)
@@ -107,6 +118,16 @@ func Replay(record NormalizedRecord) (sources.Observation, error) {
 		return sources.Observation{}, evidenceValidation("observation_id", record.ObservationID, "does not match replayed metadata")
 	}
 	return observation, nil
+}
+
+func copyMetrics(metrics catalogmeta.ObservationMetrics) catalogmeta.ObservationMetrics {
+	copied := metrics
+	copied.Acquisitions = append([]catalogmeta.AcquisitionProvenance(nil), metrics.Acquisitions...)
+	if metrics.PricingObservedAt != nil {
+		observedAt := *metrics.PricingObservedAt
+		copied.PricingObservedAt = &observedAt
+	}
+	return copied
 }
 
 // RawAccess describes the access boundary required for raw evidence storage.

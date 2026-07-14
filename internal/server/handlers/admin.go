@@ -59,7 +59,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	})
 
 	response.OK(w, map[string]any{
-		"status":            "completed",
+		responseFieldStatus: "completed",
 		"total_changes":     result.TotalChanges,
 		"providers_changed": result.ProvidersChanged,
 		"dry_run":           result.DryRun,

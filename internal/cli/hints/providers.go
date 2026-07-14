@@ -36,8 +36,8 @@ func authHintProvider(ctx Context) []*Hint {
 	if len(ctx.UserState.AuthProviders) == 0 {
 		if ctx.Command == authCommand && ctx.Subcommand == "status" {
 			hints = append(hints, NewCommand(
-				"Set up API keys to access AI models",
-				"export OPENAI_API_KEY=your-key-here",
+				"Review each provider's configured credential names",
+				"starmap providers list",
 			).WithTags("setup", "auth"))
 		}
 	}

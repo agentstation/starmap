@@ -97,17 +97,24 @@ func (s *Sources) IDs() []ID {
 }
 
 // ID represents the identifier of a data source.
-// ID is a type alias for catalogmeta.SourceID to maintain backward compatibility.
+// ID is the source-domain spelling of catalogmeta.SourceID.
 // This allows existing code to continue using sources.ID while benefiting from
 // the shared type definitions in pkg/catalogmeta.
 type ID = catalogmeta.SourceID
 
 // Common source identifiers - exported as package-level constants for convenience.
 const (
-	ProvidersID     = catalogmeta.ProvidersID
-	ModelsDevGitID  = catalogmeta.ModelsDevGitID
-	ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
-	LocalCatalogID  = catalogmeta.LocalCatalogID
+	ProvidersID           = catalogmeta.ProvidersID
+	ModelsDevGitID        = catalogmeta.ModelsDevGitID
+	ModelsDevHTTPID       = catalogmeta.ModelsDevHTTPID
+	LocalCatalogID        = catalogmeta.LocalCatalogID
+	AmazonBedrockID       = catalogmeta.AmazonBedrockID
+	MicrosoftFoundryID    = catalogmeta.MicrosoftFoundryID
+	OCIGenerativeAIID     = catalogmeta.OCIGenerativeAIID
+	DatabricksWorkspaceID = catalogmeta.DatabricksWorkspaceID
+	WatsonxDeploymentsID  = catalogmeta.WatsonxDeploymentsID
+	validationCannotBeNil = "cannot be nil"
+	validationIsRequired  = "is required"
 )
 
 // IDs returns all available source identifiers.
@@ -146,16 +153,17 @@ type Source interface {
 // the normalized canonical catalog payload; raw upstream evidence retention is
 // a separate storage policy.
 type Observation struct {
-	ID               string                  `json:"id" yaml:"id"`
-	SourceID         ID                      `json:"source" yaml:"source"`
-	ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
-	Revision         Revision                `json:"revision" yaml:"revision"`
-	Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
-	Status           ObservationStatus       `json:"status" yaml:"status"`
-	Records          ObservationRecordCounts `json:"records" yaml:"records"`
-	Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
-	EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
-	Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
+	ID               string                         `json:"id" yaml:"id"`
+	SourceID         ID                             `json:"source" yaml:"source"`
+	ObservedAt       time.Time                      `json:"observed_at" yaml:"observed_at"`
+	Revision         Revision                       `json:"revision" yaml:"revision"`
+	Completeness     ObservationCompleteness        `json:"completeness" yaml:"completeness"`
+	Status           ObservationStatus              `json:"status" yaml:"status"`
+	Records          ObservationRecordCounts        `json:"records" yaml:"records"`
+	Metrics          catalogmeta.ObservationMetrics `json:"metrics" yaml:"metrics"`
+	Issues           []ObservationIssue             `json:"issues,omitempty" yaml:"issues,omitempty"`
+	EvidenceChecksum string                         `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Catalog          *catalogs.Catalog              `json:"-" yaml:"-"`
 }
 
 // Dependency represents an external tool or runtime required by a source.
@@ -187,7 +195,7 @@ type DependencyStatus struct {
 	CheckError error  // Error from check command if not available
 }
 
-// ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility.
+// ResourceType is the source-domain spelling of catalogmeta.ResourceType.
 // This allows existing code to continue using sources.ResourceType while benefiting from
 // the shared type definitions in pkg/catalogmeta.
 type ResourceType = catalogmeta.ResourceType

@@ -97,7 +97,7 @@ func (s *baseStrategy) ValidateResult(result *Result) error {
 	if result == nil {
 		return &errors.ValidationError{
 			Field:   "result",
-			Message: "cannot be nil",
+			Message: validationCannotBeNil,
 		}
 	}
 	return nil

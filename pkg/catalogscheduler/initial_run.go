@@ -110,13 +110,13 @@ type InitialRunController struct {
 // NewInitialRunController creates a passive startup policy controller.
 func NewInitialRunController(runner *Runner, policy InitialRunPolicy, baseline BaselineReadinessProbe) (*InitialRunController, error) {
 	if runner == nil {
-		return nil, &errors.ValidationError{Field: "catalog_scheduler.initial_run.runner", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "catalog_scheduler.initial_run.runner", Message: validationRequiredMessage}
 	}
 	if err := policy.Validate(); err != nil {
 		return nil, err
 	}
 	if baseline == nil {
-		return nil, &errors.ValidationError{Field: "catalog_scheduler.initial_run.baseline", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "catalog_scheduler.initial_run.baseline", Message: validationRequiredMessage}
 	}
 	return &InitialRunController{
 		runner: runner, policy: policy, baseline: baseline, now: time.Now,
@@ -258,7 +258,7 @@ func (c *InitialRunController) Readiness() InitialRunReadiness {
 // failed startup attempts never suppress the recovery tick.
 func (c *InitialRunController) RunScheduledAt(ctx context.Context, dueAt time.Time, jitterWindow time.Duration, options ...pkgsync.Option) (RunResult, error) {
 	if dueAt.IsZero() {
-		return RunResult{}, &errors.ValidationError{Field: "catalog_scheduler.scheduled_tick.due_at", Message: "is required"}
+		return RunResult{}, &errors.ValidationError{Field: "catalog_scheduler.scheduled_tick.due_at", Message: validationRequiredMessage}
 	}
 	dueAt = dueAt.UTC()
 	c.mu.RLock()

@@ -273,10 +273,7 @@ func (c *HTTPClient) useCacheFallback(ctx context.Context, apiPath string, issue
 			result.Issues = append(result.Issues, issues...)
 			return result, nil
 		}
-		logger.Warn().Str("acquisition", string(HTTPAcquisitionStaleCache)).Msg("Using unverified legacy models.dev cache")
-		return HTTPAcquisitionResult{
-			Kind: HTTPAcquisitionStaleCache, Issues: append([]sources.ObservationIssue(nil), issues...),
-		}, nil
+		logger.Warn().Str("acquisition", string(HTTPAcquisitionEmbeddedBootstrap)).Msg("Rejecting models.dev cache without exact-current metadata")
 	} else if !os.IsNotExist(err) {
 		logger.Warn().Err(err).Msg("models.dev cache is unusable")
 	}
@@ -368,10 +365,10 @@ func readValidatedAPIFileData(apiPath string) ([]byte, *API, error) {
 // destination byte-for-byte unchanged.
 func PromoteAPIFile(candidatePath, destinationPath string) (APIPromotion, error) {
 	if strings.TrimSpace(candidatePath) == "" {
-		return APIPromotion{}, &errors.ValidationError{Field: "models_dev.candidate_path", Message: "is required"}
+		return APIPromotion{}, &errors.ValidationError{Field: "models_dev.candidate_path", Message: validationRequiredMessage}
 	}
 	if strings.TrimSpace(destinationPath) == "" {
-		return APIPromotion{}, &errors.ValidationError{Field: "models_dev.destination_path", Message: "is required"}
+		return APIPromotion{}, &errors.ValidationError{Field: "models_dev.destination_path", Message: validationRequiredMessage}
 	}
 
 	data, candidate, err := readValidatedAPIFileData(candidatePath)
@@ -413,7 +410,7 @@ type apiSemanticStats struct {
 
 func validateAPISemantics(api *API) (apiSemanticStats, error) {
 	if api == nil {
-		return apiSemanticStats{}, &errors.ValidationError{Field: "models_dev.api", Message: "is required"}
+		return apiSemanticStats{}, &errors.ValidationError{Field: "models_dev.api", Message: validationRequiredMessage}
 	}
 	stats := apiSemanticStats{providers: len(*api)}
 	if stats.providers < minimumModelsDevProviders {
@@ -437,7 +434,7 @@ func validateAPISemantics(api *API) (apiSemanticStats, error) {
 			}
 		}
 		if strings.TrimSpace(provider.Name) == "" {
-			return stats, &errors.ValidationError{Field: "models_dev.provider.name", Value: provider.Name, Message: "is required"}
+			return stats, &errors.ValidationError{Field: "models_dev.provider.name", Value: provider.Name, Message: validationRequiredMessage}
 		}
 		if provider.Models == nil {
 			return stats, &errors.ValidationError{

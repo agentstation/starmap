@@ -1,59 +1,30 @@
 {
+  "object": "list",
   "data": [
     {
-      "created": 0,
-      "id": "llama-3.3-70b",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "qwen-3-235b-a22b-thinking-2507",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "qwen-3-coder-480b",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "llama-4-maverick-17b-128e-instruct",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "llama-4-scout-17b-16e-instruct",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "qwen-3-32b",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "llama3.1-8b",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
-      "id": "qwen-3-235b-a22b-instruct-2507",
-      "object": "model",
-      "owned_by": "Cerebras"
-    },
-    {
-      "created": 0,
       "id": "gpt-oss-120b",
       "object": "model",
-      "owned_by": "Cerebras"
+      "created": 1754438400,
+      "owned_by": "OpenAI",
+      "name": "GPT OSS 120B",
+      "description": "Deterministic Cerebras OpenRouter-format provider contract fixture.",
+      "hugging_face_id": "openai/gpt-oss-120b",
+      "input_modalities": ["text"],
+      "output_modalities": ["text"],
+      "context_length": 131072,
+      "max_output_length": 32768,
+      "pricing": {
+        "prompt": "0.00000085",
+        "completion": "0.00000120",
+        "input_cache_read": "0.00000010",
+        "request": "0",
+        "image": "0"
+      },
+      "supported_sampling_parameters": ["temperature", "top_p", "stop", "seed"],
+      "supported_features": ["tools", "structured_outputs", "reasoning", "json_mode"],
+      "deprecated": false,
+      "quantization": "fp16",
+      "fixture_schema_revision": "cerebras-openrouter-v1"
     }
-  ],
-  "object": "list"
+  ]
 }

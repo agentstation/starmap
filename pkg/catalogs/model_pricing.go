@@ -124,7 +124,7 @@ type ModelTokenPricing struct {
 	Reasoning *ModelTokenCost         `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
 	Cache     *ModelTokenCachePricing `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
 
-	// Alternative flat cache structure (for backward compatibility)
+	// Flat cache fields are the canonical checked-in source YAML representation.
 	CacheRead  *ModelTokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
 	CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
 }

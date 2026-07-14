@@ -14,7 +14,14 @@ import (
 )
 
 const (
-	runTimeLayout = "2006-01-02T15:04:05.000000000Z07:00"
+	runTimeLayout                = "2006-01-02T15:04:05.000000000Z07:00"
+	schedulerAttemptResource     = "catalog scheduler attempt"
+	freshnessMonitorField        = "catalog_scheduler.freshness_monitor"
+	runAttemptsValidationField   = "catalog_scheduler.run.attempts"
+	validationInvalidMessage     = "is invalid"
+	validationNonnegativeMessage = "must not be negative"
+	validationPositiveMessage    = "must be positive"
+	validationRequiredMessage    = "is required"
 
 	createRunsTable = `CREATE TABLE IF NOT EXISTS catalog_sync_runs (
 run_id TEXT PRIMARY KEY,
@@ -142,7 +149,7 @@ func (l *SQLRunLedger) RecordAttempt(ctx context.Context, runID string, attempt 
 		}
 	}
 	if record.Status != RunStatusRunning || attempt.Number != len(record.Attempts)+1 {
-		return &errors.ConflictError{Resource: "catalog scheduler attempt", Expected: strconv.Itoa(len(record.Attempts) + 1), Actual: strconv.Itoa(attempt.Number)}
+		return &errors.ConflictError{Resource: schedulerAttemptResource, Expected: strconv.Itoa(len(record.Attempts) + 1), Actual: strconv.Itoa(attempt.Number)}
 	}
 	if _, err := tx.ExecContext(ctx, `INSERT INTO catalog_sync_attempts (
 run_id, attempt_number, started_at, completed_at, duration_ns, status,
@@ -151,10 +158,10 @@ retry_class, retry_delay_ns, failure_type
 		runID, attempt.Number, formatRunTime(attempt.StartedAt), formatRunTime(attempt.CompletedAt),
 		int64(attempt.Duration), attempt.Status, attempt.RetryClass, int64(attempt.RetryDelay), attempt.FailureType,
 	); err != nil {
-		return errors.WrapResource("insert", "catalog scheduler attempt", runID, err)
+		return errors.WrapResource("insert", schedulerAttemptResource, runID, err)
 	}
 	if err := tx.Commit(); err != nil {
-		return errors.WrapResource("commit", "catalog scheduler attempt", runID, err)
+		return errors.WrapResource("commit", schedulerAttemptResource, runID, err)
 	}
 	return nil
 }
@@ -365,7 +372,7 @@ FROM catalog_sync_attempts WHERE run_id = ? ORDER BY attempt_number`, runID)
 		var duration, retryDelay int64
 		if err := rows.Scan(&attempt.Number, &startedAt, &completedAt, &duration, &attempt.Status,
 			&attempt.RetryClass, &retryDelay, &attempt.FailureType); err != nil {
-			return nil, errors.WrapResource("scan", "catalog scheduler attempt", runID, err)
+			return nil, errors.WrapResource("scan", schedulerAttemptResource, runID, err)
 		}
 		attempt.StartedAt, err = parseRunTime("attempt.started_at", startedAt)
 		if err != nil {

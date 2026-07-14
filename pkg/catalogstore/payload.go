@@ -8,28 +8,32 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
-// CatalogPayload is the canonical catalog schema-v1 payload.
+// CatalogPayload is the canonical catalog schema-v2 payload.
 type CatalogPayload = catalogs.CatalogPayload
 
-// EncodeCatalogPayload deterministically encodes a readable catalog as schema v1.
+// EncodeCatalogPayload deterministically encodes a readable catalog as schema v2.
 func EncodeCatalogPayload(reader catalogs.Reader) ([]byte, error) {
 	return catalogs.EncodeCatalogPayload(reader)
 }
 
-// DecodeCatalogPayload strictly decodes and publishes a schema-v1 catalog payload.
+// DecodeCatalogPayload strictly decodes the sole current schema-v2 payload.
 func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return nil, err
+	}
 	var required map[string]json.RawMessage
 	if err := json.Unmarshal(data, &required); err != nil {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: err.Error(), Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: err.Error(), Err: err}
 	}
 	for _, field := range []string{
 		"schema_version", "providers", "authors", "endpoints",
-		"provider_models", "author_models", "provenance",
+		"definitions", "offerings", "provenance",
 	} {
 		if _, found := required[field]; !found {
-			return nil, &errors.ValidationError{Field: field, Message: "is required"}
+			return nil, &errors.ValidationError{Field: field, Message: validationRequiredMessage}
 		}
 	}
 
@@ -37,16 +41,16 @@ func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
 	decoder.DisallowUnknownFields()
 	var payload CatalogPayload
 	if err := decoder.Decode(&payload); err != nil {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: err.Error(), Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: err.Error(), Err: err}
 	}
 	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: "invalid trailing JSON", Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: "invalid trailing JSON", Err: err}
 	}
 	if payload.SchemaVersion != catalogs.CurrentCatalogSchemaVersion {
 		return nil, &errors.ValidationError{
 			Field:   "schema_version",
 			Value:   payload.SchemaVersion,
-			Message: fmt.Sprintf("must be %d", catalogs.CurrentCatalogSchemaVersion),
+			Message: fmt.Sprintf("must be exactly %d", catalogs.CurrentCatalogSchemaVersion),
 		}
 	}
 
@@ -57,26 +61,10 @@ func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
 			return nil, errors.WrapResource("decode", "provider", string(provider.ID), err)
 		}
 	}
-	for providerID, models := range payload.ProviderModels {
-		for _, model := range models {
-			if err := builder.SetProviderModel(catalogs.ProviderID(providerID), model); err != nil {
-				return nil, errors.WrapResource("decode", "provider model", providerID+"/"+model.ID, err)
-			}
-		}
-	}
 	for _, author := range payload.Authors {
-		author.Models = make(map[string]*catalogs.Model)
-		for _, model := range payload.AuthorModels[string(author.ID)] {
-			modelCopy := catalogs.DeepCopyModel(model)
-			author.Models[model.ID] = &modelCopy
-		}
+		author.Models = nil
 		if err := builder.SetAuthor(author); err != nil {
 			return nil, errors.WrapResource("decode", "author", string(author.ID), err)
-		}
-	}
-	for authorID := range payload.AuthorModels {
-		if _, err := builder.Author(catalogs.AuthorID(authorID)); err != nil {
-			return nil, errors.WrapResource("decode", "author models", authorID, err)
 		}
 	}
 	for _, endpoint := range payload.Endpoints {
@@ -85,5 +73,25 @@ func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
 		}
 	}
 	builder.SetProvenance(payload.Provenance)
+	definitionIDs := make(map[catalogs.ModelDefinitionID]struct{}, len(payload.Definitions))
+	for _, definition := range payload.Definitions {
+		if _, found := definitionIDs[definition.ID]; found {
+			return nil, &errors.ValidationError{Field: "definitions.id", Value: definition.ID, Message: "must be unique"}
+		}
+		definitionIDs[definition.ID] = struct{}{}
+		if err := builder.SetDefinition(definition); err != nil {
+			return nil, errors.WrapResource("decode", "model definition", string(definition.ID), err)
+		}
+	}
+	offeringKeys := make(map[catalogs.OfferingKey]struct{}, len(payload.Offerings))
+	for _, offering := range payload.Offerings {
+		if _, found := offeringKeys[offering.Key()]; found {
+			return nil, &errors.ValidationError{Field: "offerings.key", Value: offering.Key(), Message: "must be unique"}
+		}
+		offeringKeys[offering.Key()] = struct{}{}
+		if err := builder.SetOffering(offering); err != nil {
+			return nil, errors.WrapResource("decode", "provider offering", string(offering.ProviderID)+"/"+string(offering.ProviderModelID), err)
+		}
+	}
 	return builder.Build()
 }

@@ -39,7 +39,7 @@ Use focused packages while editing a module:
 
 ```bash
 go test ./internal/catalog/pipeline ./pkg/sync .
-go test ./internal/sources/providers ./internal/providers/clients ./pkg/sources
+go test ./internal/sources/providers ./internal/providers/registry ./pkg/sources
 go test ./internal/catalog/query ./internal/server/params ./internal/server/handlers
 go test ./pkg/authority ./pkg/reconciler
 go test ./internal/server/events ./internal/server/sse ./internal/server/websocket
@@ -56,7 +56,7 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `internal/attribution/matcher` | 75% |
 | `internal/catalog/pipeline` | 70% |
 | `internal/catalog/query` | 75% |
-| `internal/providers/clients` | 80% |
+| `internal/providers/registry` | 80% |
 | `internal/sources/providers` | 75% |
 | `internal/server/events` | 70% |
 | `internal/server/middleware` | 90% |
@@ -145,7 +145,17 @@ make testdata PROVIDER=openai
 make update PROVIDER=openai
 ```
 
-Use live checks when changing provider clients, authentication, transport behavior, or embedded catalog update workflows. Treat generated testdata diffs as review artifacts.
+`make testdata` invokes the governed provider-observation refresh command; it does
+not route through a test-only `-update` flag. The command validates raw bytes
+through the registered client, rejects no-op/failure/invalid/secret-bearing
+responses, and atomically replaces the payload and adjacent metadata under
+`internal/providers/fixtures/responses/<provider>`. Connector protocol fixtures
+and provider-delta fixtures are deterministic, module-local, and never receive
+observation metadata. See
+[ADDING_PROVIDERS.md](ADDING_PROVIDERS.md) for fixture exceptions and role
+requirements. Use live checks when changing provider clients, authentication,
+transport behavior, or embedded catalog update workflows. Treat generated
+testdata diffs as review artifacts.
 
 ## Release Readiness
 

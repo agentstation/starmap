@@ -80,7 +80,7 @@ func NewOperations(options ...OperationsOption) (*Operations, error) {
 func WithOperationsRunLedger(ledger RunLedger) OperationsOption {
 	return func(operations *Operations) error {
 		if isNilInterface(ledger) {
-			return &errors.ValidationError{Field: "catalog_scheduler.operations.run_ledger", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.operations.run_ledger", Message: validationRequiredMessage}
 		}
 		operations.ledger = ledger
 		return nil
@@ -91,7 +91,7 @@ func WithOperationsRunLedger(ledger RunLedger) OperationsOption {
 func WithOperationsFreshness(monitor *FreshnessMonitor) OperationsOption {
 	return func(operations *Operations) error {
 		if monitor == nil {
-			return &errors.ValidationError{Field: "catalog_scheduler.operations.freshness", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.operations.freshness", Message: validationRequiredMessage}
 		}
 		operations.freshness = monitor
 		return nil
@@ -102,7 +102,7 @@ func WithOperationsFreshness(monitor *FreshnessMonitor) OperationsOption {
 func WithOperationsInitialRun(controller *InitialRunController) OperationsOption {
 	return func(operations *Operations) error {
 		if controller == nil {
-			return &errors.ValidationError{Field: "catalog_scheduler.operations.initial_run", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.operations.initial_run", Message: validationRequiredMessage}
 		}
 		operations.initial = controller
 		return nil
@@ -115,7 +115,7 @@ func WithOperationsInitialRun(controller *InitialRunController) OperationsOption
 func WithOperationsClock(now func() time.Time) OperationsOption {
 	return func(operations *Operations) error {
 		if now == nil {
-			return &errors.ValidationError{Field: "catalog_scheduler.operations.clock", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.operations.clock", Message: validationRequiredMessage}
 		}
 		operations.now = now
 		return nil
@@ -125,7 +125,7 @@ func WithOperationsClock(now func() time.Time) OperationsOption {
 // State evaluates all configured operational inputs at one UTC instant.
 func (o *Operations) State(ctx context.Context, identity CatalogIdentity) (OperationalState, error) {
 	if o == nil {
-		return OperationalState{}, &errors.ValidationError{Field: "catalog_scheduler.operations", Message: "is required"}
+		return OperationalState{}, &errors.ValidationError{Field: "catalog_scheduler.operations", Message: validationRequiredMessage}
 	}
 	if ctx == nil {
 		ctx = context.Background()

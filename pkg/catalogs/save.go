@@ -20,7 +20,7 @@ func (cat *Builder) Save(opts ...save.Option) error {
 	writePath := cat.config.resolveWritePath(options.Path())
 	if writePath == "" {
 		return &errors.ConfigError{
-			Component: "catalog",
+			Component: catalogResourceCatalog,
 			Message:   "no write path configured for saving",
 		}
 	}
@@ -91,7 +91,7 @@ func (cat *Builder) saveTo(basePath string) error {
 		if len(provider.Models) > 0 {
 			// Debug: log provider with models
 			logging.Debug().
-				Str("provider", string(provider.ID)).
+				Str(catalogResourceProvider, string(provider.ID)).
 				Int("model_count", len(provider.Models)).
 				Msg("Saving provider models")
 
@@ -99,10 +99,10 @@ func (cat *Builder) saveTo(basePath string) error {
 				var modelPath string
 				if strings.Contains(model.ID, "/") {
 					// Hierarchical ID like "meta-llama/llama-3" -> providers/groq/models/meta-llama/llama-3.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
+					modelPath = filepath.Join("providers", string(provider.ID), catalogPathModels, model.ID+".yaml")
 				} else {
 					// Simple ID like "gpt-4" -> providers/openai/models/gpt-4.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
+					modelPath = filepath.Join("providers", string(provider.ID), catalogPathModels, model.ID+".yaml")
 				}
 
 				// Use FormatYAML for nicely formatted output with comments
@@ -132,13 +132,13 @@ func (cat *Builder) saveTo(basePath string) error {
 			if strings.Contains(model.ID, "/") {
 				logging.Debug().
 					Str("model_id", model.ID).
-					Str("author", string(author.ID)).
+					Str(catalogResourceAuthor, string(author.ID)).
 					Msg("Skipping hierarchical model for author save")
 				continue
 			}
 
 			// Simple ID -> authors/<author>/models/<model>.yaml
-			modelPath := filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
+			modelPath := filepath.Join("authors", string(author.ID), catalogPathModels, model.ID+".yaml")
 
 			// Use FormatYAML for nicely formatted output with comments
 			formatted, err := model.EncodeYAML()
@@ -176,7 +176,7 @@ func removeManagedCatalogData(basePath string) error {
 			if !entry.IsDir() {
 				continue
 			}
-			modelsPath := filepath.Join(root, entry.Name(), "models")
+			modelsPath := filepath.Join(root, entry.Name(), catalogPathModels)
 			if err := os.RemoveAll(modelsPath); err != nil {
 				return errors.WrapIO("remove", modelsPath, err)
 			}

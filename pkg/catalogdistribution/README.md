@@ -63,7 +63,7 @@ const (
     PointerVersion uint64 = 1
     // ImmutableCacheControl is sent for generation-addressed assets.
     ImmutableCacheControl = "public, max-age=31536000, immutable"
-    // LatestCacheControl is sent for the mutable latest-compatible pointer.
+    // LatestCacheControl is sent for the mutable exact-schema latest pointer.
     LatestCacheControl = "public, max-age=60, must-revalidate"
 )
 ```
@@ -83,7 +83,7 @@ const (
 ```
 
 <a name="AssetDescriptor"></a>
-## type [AssetDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L42-L47>)
+## type [AssetDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L46-L51>)
 
 AssetDescriptor identifies one immutable hosted byte object.
 
@@ -125,7 +125,7 @@ const (
 func ParseChannel(value string) (Channel, error)
 ```
 
-ParseChannel parses a channel query value. An empty value defaults to stable for backward\-compatible consumer behavior.
+ParseChannel parses a channel query value. An empty value selects the stable channel as the exact current default.
 
 <a name="Channel.String"></a>
 ### func \(Channel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/promotion.go#L35>)
@@ -146,7 +146,7 @@ func (c Channel) Validate() error
 Validate verifies a supported promotion channel.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L284-L288>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L285-L289>)
 
 Client fetches and verifies hosted catalog generations.
 
@@ -157,7 +157,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L291>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L292>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
@@ -172,7 +172,7 @@ NewClient creates a hosted distribution client for one consumer schema.
 func (c *Client) FetchChannel(ctx context.Context, channel Channel) (catalogstore.Generation, error)
 ```
 
-FetchChannel resolves, downloads, and verifies the latest compatible immutable generation selected for one explicit promotion channel.
+FetchChannel resolves, downloads, and verifies the exact\-schema latest immutable generation selected for one explicit promotion channel.
 
 <a name="Client.FetchLatest"></a>
 ### func \(\*Client\) [FetchLatest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L328>)
@@ -181,7 +181,7 @@ FetchChannel resolves, downloads, and verifies the latest compatible immutable g
 func (c *Client) FetchLatest(ctx context.Context) (catalogstore.Generation, error)
 ```
 
-FetchLatest resolves, downloads, and verifies the latest compatible immutable generation before returning it.
+FetchLatest resolves, downloads, and verifies the exact\-schema latest immutable generation.
 
 <a name="Client.ProbeChannel"></a>
 ### func \(\*Client\) [ProbeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/promotion.go#L221>)
@@ -193,9 +193,9 @@ func (c *Client) ProbeChannel(ctx context.Context, channel Channel, policy Promo
 ProbeChannel fetches a hosted channel through the public HTTP protocol and returns evidence suitable for stable promotion under the supplied policy.
 
 <a name="Handler"></a>
-## type [Handler](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L165-L167>)
+## type [Handler](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L166-L168>)
 
-Handler serves latest\-compatible pointers and immutable generation assets.
+Handler serves exact\-schema latest pointers and immutable generation assets.
 
 ```go
 type Handler struct {
@@ -204,7 +204,7 @@ type Handler struct {
 ```
 
 <a name="NewHandler"></a>
-### func [NewHandler](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L170>)
+### func [NewHandler](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L171>)
 
 ```go
 func NewHandler(repository Repository) (*Handler, error)
@@ -213,7 +213,7 @@ func NewHandler(repository Repository) (*Handler, error)
 NewHandler creates the versioned hosted distribution HTTP adapter.
 
 <a name="Handler.ServeHTTP"></a>
-### func \(\*Handler\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L178>)
+### func \(\*Handler\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L179>)
 
 ```go
 func (h *Handler) ServeHTTP(writer http.ResponseWriter, request *http.Request)
@@ -222,19 +222,18 @@ func (h *Handler) ServeHTTP(writer http.ResponseWriter, request *http.Request)
 ServeHTTP serves /v1/catalogs/latest and immutable generation assets.
 
 <a name="LatestPointer"></a>
-## type [LatestPointer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L51-L59>)
+## type [LatestPointer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L54-L61>)
 
-LatestPointer selects one immutable generation compatible with a consumer's catalog schema.
+LatestPointer selects one immutable generation for the exact current schema.
 
 ```go
 type LatestPointer struct {
-    Version               uint64                         `json:"version"`
-    Channel               Channel                        `json:"channel"`
-    GenerationID          string                         `json:"generation_id"`
-    SchemaVersion         uint64                         `json:"schema_version"`
-    ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
-    Artifact              AssetDescriptor                `json:"artifact"`
-    Attestation           AssetDescriptor                `json:"attestation"`
+    Version       uint64          `json:"version"`
+    Channel       Channel         `json:"channel"`
+    GenerationID  string          `json:"generation_id"`
+    SchemaVersion uint64          `json:"schema_version"`
+    Artifact      AssetDescriptor `json:"artifact"`
+    Attestation   AssetDescriptor `json:"attestation"`
 }
 ```
 
@@ -248,7 +247,7 @@ func (p LatestPointer) String() string
 String returns a concise latest\-pointer description.
 
 <a name="MemoryRepository"></a>
-## type [MemoryRepository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L92-L101>)
+## type [MemoryRepository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L94-L103>)
 
 MemoryRepository is a thread\-safe immutable hosted repository for tests and single\-process deployments.
 
@@ -259,7 +258,7 @@ type MemoryRepository struct {
 ```
 
 <a name="NewMemoryRepository"></a>
-### func [NewMemoryRepository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L104>)
+### func [NewMemoryRepository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L106>)
 
 ```go
 func NewMemoryRepository() *MemoryRepository
@@ -277,7 +276,7 @@ func NewMemoryRepositoryWithPolicy(policy PromotionPolicy) (*MemoryRepository, e
 NewMemoryRepositoryWithPolicy creates an empty repository with explicit stable\-promotion SLO budgets.
 
 <a name="MemoryRepository.Get"></a>
-### func \(\*MemoryRepository\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L154>)
+### func \(\*MemoryRepository\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L155>)
 
 ```go
 func (r *MemoryRepository) Get(generationID string) (PublishedGeneration, error)
@@ -286,22 +285,22 @@ func (r *MemoryRepository) Get(generationID string) (PublishedGeneration, error)
 Get returns one immutable generation by logical ID.
 
 <a name="MemoryRepository.Latest"></a>
-### func \(\*MemoryRepository\) [Latest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L130>)
+### func \(\*MemoryRepository\) [Latest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L131>)
 
 ```go
 func (r *MemoryRepository) Latest(schemaVersion uint64) (PublishedGeneration, error)
 ```
 
-Latest returns the stable generation only when its catalog schema range is compatible with the requested consumer schema.
+Latest returns the stable generation only for the exact current schema.
 
 <a name="MemoryRepository.LatestForChannel"></a>
-### func \(\*MemoryRepository\) [LatestForChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L136>)
+### func \(\*MemoryRepository\) [LatestForChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L137>)
 
 ```go
 func (r *MemoryRepository) LatestForChannel(channel Channel, schemaVersion uint64) (PublishedGeneration, error)
 ```
 
-LatestForChannel returns the selected channel generation only when its catalog schema range is compatible with the requested consumer schema.
+LatestForChannel returns the selected channel generation only for the exact current schema.
 
 <a name="MemoryRepository.Promote"></a>
 ### func \(\*MemoryRepository\) [Promote](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/promotion.go#L141>)
@@ -322,7 +321,7 @@ func (r *MemoryRepository) PromotionEvents() []PromotionEvent
 PromotionEvents returns caller\-owned promotion and rollback telemetry, including rejected attempts.
 
 <a name="MemoryRepository.Publish"></a>
-### func \(\*MemoryRepository\) [Publish](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L110>)
+### func \(\*MemoryRepository\) [Publish](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L112>)
 
 ```go
 func (r *MemoryRepository) Publish(published PublishedGeneration) error
@@ -427,7 +426,7 @@ type PromotionProbe struct {
 ```
 
 <a name="PublishedGeneration"></a>
-## type [PublishedGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L63-L66>)
+## type [PublishedGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L65-L68>)
 
 PublishedGeneration is one verified generation and its exact distribution artifact set.
 
@@ -439,7 +438,7 @@ type PublishedGeneration struct {
 ```
 
 <a name="PublishedGeneration.Validate"></a>
-### func \(PublishedGeneration\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L69>)
+### func \(PublishedGeneration\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L71>)
 
 ```go
 func (p PublishedGeneration) Validate() error
@@ -448,7 +447,7 @@ func (p PublishedGeneration) Validate() error
 Validate verifies that the artifact opens to exactly the supplied generation.
 
 <a name="Repository"></a>
-## type [Repository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L85-L88>)
+## type [Repository](<https://github.com/agentstation/starmap/blob/main/pkg/catalogdistribution/distribution.go#L87-L90>)
 
 Repository is the narrow hosted read boundary.
 

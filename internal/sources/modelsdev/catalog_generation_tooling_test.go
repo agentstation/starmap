@@ -261,7 +261,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	}
 }
 
-func TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe(t *testing.T) {
+func TestCatalogGenerationToolingMakefileHasNoUnsafeSupersededRecipe(t *testing.T) {
 	makefile, err := os.ReadFile(filepath.Join(repositoryRoot(t), "Makefile"))
 	if err != nil {
 		t.Fatalf("ReadFile Makefile: %v", err)
@@ -274,7 +274,7 @@ func TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe(t *testing.T) {
 		"update --output ",
 	} {
 		if strings.Contains(text, forbidden) {
-			t.Errorf("Makefile retains unsafe legacy catalog recipe %q", forbidden)
+			t.Errorf("Makefile retains unsafe superseded catalog recipe %q", forbidden)
 		}
 	}
 	for _, required := range []string{"catalog-generation-check:", "./scripts/generate-embedded-catalog.sh"} {

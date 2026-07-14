@@ -35,21 +35,6 @@ type GitInputs struct {
 	LockfileChecksum string
 }
 
-// Client is an alias for backward compatibility.
-type Client = GitClient
-
-// NewClient creates a new models.dev git client.
-func NewClient(outputDir string) *Client {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
-	}
-	repoPath := filepath.Join(outputDir, "models.dev-git")
-	return &Client{
-		RepoPath: repoPath,
-		RepoURL:  ModelsDevRepoURL,
-	}
-}
-
 // NewGitClient creates a new models.dev git client.
 func NewGitClient(outputDir string) *GitClient {
 	if outputDir == "" {
@@ -252,7 +237,7 @@ func (c *GitClient) checkoutPinnedCommit(ctx context.Context) error {
 		return &errors.ProcessError{Operation: "verify pinned repository", Command: "git rev-parse HEAD", Output: string(output), Err: err}
 	}
 	if !strings.EqualFold(strings.TrimSpace(string(output)), c.Commit) {
-		return &errors.ValidationError{Field: "models_dev.git.commit", Value: strings.TrimSpace(string(output)), Message: "does not match requested commit"}
+		return &errors.ValidationError{Field: gitCommitField, Value: strings.TrimSpace(string(output)), Message: "does not match requested commit"}
 	}
 	return nil
 }
@@ -269,10 +254,10 @@ func (c *GitClient) gitInputs() (GitInputs, error) {
 
 func validateGitCommit(commit string) error {
 	if len(commit) != 40 && len(commit) != 64 {
-		return &errors.ValidationError{Field: "models_dev.git.commit", Value: commit, Message: "must be an exact 40- or 64-character hexadecimal commit"}
+		return &errors.ValidationError{Field: gitCommitField, Value: commit, Message: "must be an exact 40- or 64-character hexadecimal commit"}
 	}
 	if _, err := hex.DecodeString(commit); err != nil {
-		return &errors.ValidationError{Field: "models_dev.git.commit", Value: commit, Message: "must be hexadecimal"}
+		return &errors.ValidationError{Field: gitCommitField, Value: commit, Message: "must be hexadecimal"}
 	}
 	return nil
 }

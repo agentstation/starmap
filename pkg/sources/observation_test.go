@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -26,6 +27,10 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 		Completeness: ObservationCompletenessComplete,
 		Status:       ObservationStatusSucceeded,
 		Records:      ObservationRecordCounts{Accepted: 2},
+		Acquisitions: []catalogmeta.AcquisitionProvenance{{
+			ProviderID: "provider-a", SourceID: "models", AuthMethod: "api_key",
+			Scope: catalogmeta.ObservationScopeGlobalPublic, Topology: catalogmeta.AcquisitionTopologySingleEndpoint,
+		}},
 	})
 	if err != nil {
 		t.Fatalf("NewObservation: %v", err)
@@ -47,6 +52,14 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	}
 	if observation.Records.Accepted != 2 || observation.Records.Rejected != 0 {
 		t.Fatalf("record counts = %#v", observation.Records)
+	}
+	if observation.Metrics.Scope != catalogmeta.ObservationScopeGlobalPublic || observation.Metrics.Kind != catalogmeta.SourceKindCurated || observation.Metrics.Records != observation.Records {
+		t.Fatalf("metrics = %#v", observation.Metrics)
+	}
+	link := observation.Link()
+	link.Metrics.Acquisitions[0].SourceID = "changed"
+	if observation.Metrics.Acquisitions[0].SourceID != "models" {
+		t.Fatal("observation link aliases acquisition provenance")
 	}
 	if err := observation.Validate(); err != nil {
 		t.Fatalf("Validate: %v", err)
@@ -90,6 +103,24 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	partialSuccess.ID = observationID(partialSuccess)
 	if err := partialSuccess.Validate(); err == nil {
 		t.Fatal("Validate accepted a partial observation with succeeded status")
+	}
+}
+
+func TestObservationAcceptsCredentialScopedCanonicalCatalog(t *testing.T) {
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	observation, err := NewObservation(ProvidersID, catalog, ObservationMetadata{
+		ObservedAt: time.Now().UTC(), Revision: Revision{Kind: RevisionKindContentDigest},
+		Completeness: ObservationCompletenessComplete, Status: ObservationStatusSucceeded,
+		Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindDirectInventory,
+	})
+	if err != nil {
+		t.Fatalf("NewObservation credential-scoped catalog: %v", err)
+	}
+	if observation.Metrics.Scope != catalogmeta.ObservationScopeCredentialScoped {
+		t.Fatalf("observation scope = %q", observation.Metrics.Scope)
 	}
 }
 

@@ -179,7 +179,7 @@ func TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegressi
 	}
 }
 
-func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testing.T) {
+func TestHTTPClient_EnsureAPI_RejectsSchemaIncompatibleDownloadAndUnverifiedCache(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -196,10 +196,10 @@ func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testin
 		t.Fatalf("create cache directory: %v", err)
 	}
 
-	want := []byte(largeMockAPIJSON())
+	unverified := []byte(largeMockAPIJSON())
 	apiPath := client.GetAPIPath()
-	if err := os.WriteFile(apiPath, want, constants.FilePermissions); err != nil {
-		t.Fatalf("write last-known-good cache: %v", err)
+	if err := os.WriteFile(apiPath, unverified, constants.FilePermissions); err != nil {
+		t.Fatalf("write unverified cache: %v", err)
 	}
 	staleTime := time.Now().Add(-2 * HTTPCacheTTL)
 	if err := os.Chtimes(apiPath, staleTime, staleTime); err != nil {
@@ -207,17 +207,21 @@ func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testin
 	}
 
 	if err := client.EnsureAPI(context.Background()); err != nil {
-		t.Fatalf("EnsureAPI should retain last-known-good cache: %v", err)
+		t.Fatalf("EnsureAPI should install the verified bootstrap: %v", err)
 	}
 	got, err := os.ReadFile(apiPath)
 	if err != nil {
 		t.Fatalf("read retained cache: %v", err)
 	}
-	if string(got) != string(want) {
-		t.Fatal("schema-incompatible download replaced the last-known-good cache")
+	if bytes.Equal(got, unverified) {
+		t.Fatal("unverified cache survived schema-incompatible download")
 	}
 	if _, err := ParseAPI(apiPath); err != nil {
-		t.Fatalf("retained cache is not typed-parseable: %v", err)
+		t.Fatalf("bootstrap cache is not typed-parseable: %v", err)
+	}
+	metadata, err := client.readCacheMetadata(apiPath)
+	if err != nil || metadata.Origin != HTTPAcquisitionEmbeddedBootstrap {
+		t.Fatalf("cache was not replaced by verified bootstrap: metadata=%#v err=%v", metadata, err)
 	}
 }
 
@@ -506,19 +510,19 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithCache(t *testing.T) {
 		t.Fatalf("Failed to make cache file stale: %v", err)
 	}
 
-	// Test that stale cache is used when HTTP fails
+	// A cache without exact-current metadata is not trusted when HTTP fails.
 	ctx := context.Background()
 	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
 		t.Fatalf("Expected no error, got: %v", err)
 	}
-	if acquisition.Kind != HTTPAcquisitionStaleCache {
-		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionStaleCache)
+	if acquisition.Kind != HTTPAcquisitionEmbeddedBootstrap {
+		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionEmbeddedBootstrap)
 	}
 
-	// Verify cache file is still there
-	if _, err := os.Stat(apiPath); err != nil {
-		t.Fatalf("Cache file should still exist: %v", err)
+	metadata, err := client.readCacheMetadata(apiPath)
+	if err != nil || metadata.Origin != HTTPAcquisitionEmbeddedBootstrap {
+		t.Fatalf("cache was not replaced by verified bootstrap: metadata=%#v err=%v", metadata, err)
 	}
 }
 

@@ -78,6 +78,7 @@ components:
       - AuthorIDZhipuAI
       - AuthorIDSenseTime
       - AuthorIDHuawei
+      - AuthorIDXiaomi
       - AuthorIDTsinghua
       - AuthorIDPeking
       - AuthorIDNVIDIA
@@ -89,6 +90,7 @@ components:
       - AuthorIDAI21
       - AuthorIDInflection
       - AuthorIDCharacter
+      - AuthorIDHCompany
       - AuthorIDPerplexity
       - AuthorIDAnysphere
       - AuthorIDCursor
@@ -109,7 +111,6 @@ components:
       - AuthorIDFastChat
       - AuthorIDUnknown
     catalogs.AuthorMapping:
-      description: Author extraction
       properties:
         field:
           description: Field to extract from (e.g., "owned_by")
@@ -170,6 +171,7 @@ components:
             - AuthorIDZhipuAI
             - AuthorIDSenseTime
             - AuthorIDHuawei
+            - AuthorIDXiaomi
             - AuthorIDTsinghua
             - AuthorIDPeking
             - AuthorIDNVIDIA
@@ -181,6 +183,7 @@ components:
             - AuthorIDAI21
             - AuthorIDInflection
             - AuthorIDCharacter
+            - AuthorIDHCompany
             - AuthorIDPerplexity
             - AuthorIDAnysphere
             - AuthorIDCursor
@@ -203,14 +206,37 @@ components:
           description: Normalization map (e.g., "Meta" -> "meta")
           type: object
       type: object
+    catalogs.CloudRegion:
+      properties:
+        destination:
+          type: boolean
+        id:
+          type: string
+        realm:
+          type: string
+        residency:
+          $ref: '#/components/schemas/catalogs.GeographicBoundary'
+      type: object
     catalogs.EndpointType:
-      description: 'Required: API style'
       type: string
       x-enum-varnames:
       - EndpointTypeOpenAI
       - EndpointTypeAnthropic
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
+      - EndpointTypeBedrock
+      - EndpointTypeAzureOpenAI
+      - EndpointTypeCohere
+      - EndpointTypeApplication
+      - EndpointTypeTogether
+      - EndpointTypeHuggingFace
+      - EndpointTypeNVIDIA
+      - EndpointTypeDatabricks
+      - EndpointTypeSnowflake
+      - EndpointTypeWatsonx
+      - EndpointTypeOCI
+      - EndpointTypeCloudflare
+      - EndpointTypeSambaNova
     catalogs.FeatureRule:
       properties:
         contains:
@@ -231,12 +257,29 @@ components:
       type: object
     catalogs.FieldMapping:
       properties:
+        currency:
+          $ref: '#/components/schemas/catalogs.ModelPricingCurrency'
         from:
           description: Source field path in API response (e.g., "max_model_len")
           type: string
+        mode:
+          description: Optional provider offering mode
+          type: string
+        scale:
+          description: Optional finite non-negative pricing multiplier
+          type: number
+        tier:
+          $ref: '#/components/schemas/catalogs.ProviderPricingTier'
         to:
           description: Target field path in Model (e.g., "limits.context_window")
           type: string
+        unit:
+          $ref: '#/components/schemas/catalogs.ProviderNormalizationUnit'
+        values:
+          additionalProperties:
+            type: string
+          description: Optional exact source-to-canonical enum mapping
+          type: object
       type: object
     catalogs.FloatRange:
       description: Alternative sampling strategies (niche)
@@ -251,6 +294,25 @@ components:
           description: Minimum value
           type: number
       type: object
+    catalogs.GeographicBoundary:
+      properties:
+        countries:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+        kind:
+          $ref: '#/components/schemas/catalogs.GeographicBoundaryKind'
+      type: object
+    catalogs.GeographicBoundaryKind:
+      type: string
+      x-enum-varnames:
+      - GeographicBoundaryGlobal
+      - GeographicBoundaryGeography
+      - GeographicBoundaryCountry
+      - GeographicBoundarySovereign
     catalogs.IntRange:
       description: Beam search (niche)
       properties:
@@ -264,6 +326,22 @@ components:
           description: Minimum value
           type: integer
       type: object
+    catalogs.InvocationAPI:
+      type: string
+      x-enum-varnames:
+      - InvocationAPIChatCompletions
+      - InvocationAPICompletions
+      - InvocationAPIResponses
+      - InvocationAPIMessages
+      - InvocationAPIEmbeddings
+      - InvocationAPIImageGeneration
+      - InvocationAPIAudio
+      - InvocationAPIRerank
+      - InvocationAPIBedrockConverse
+      - InvocationAPIBedrockInvokeModel
+      - InvocationAPISnowflakeComplete
+      - InvocationAPIWatsonxGenerate
+      - InvocationAPIOCIInference
     catalogs.ModelArchitecture:
       properties:
         base_model:
@@ -651,6 +729,31 @@ components:
       - ModelModalityVideo
       - ModelModalityPDF
       - ModelModalityEmbedding
+    catalogs.ModelPricingCurrency:
+      description: Required for pricing targets
+      type: string
+      x-enum-comments:
+        ModelPricingCurrencyAUD: Australian Dollar
+        ModelPricingCurrencyCAD: Canadian Dollar
+        ModelPricingCurrencyCNY: Chinese Yuan
+        ModelPricingCurrencyEUR: Euro
+        ModelPricingCurrencyGBP: British Pound Sterling
+        ModelPricingCurrencyJPY: Japanese Yen
+        ModelPricingCurrencyNZD: New Zealand Dollar
+        ModelPricingCurrencyUSD: US Dollar
+      x-enum-varnames:
+      - ModelPricingCurrencyUSD
+      - ModelPricingCurrencyEUR
+      - ModelPricingCurrencyJPY
+      - ModelPricingCurrencyGBP
+      - ModelPricingCurrencyAUD
+      - ModelPricingCurrencyCAD
+      - ModelPricingCurrencyCNY
+      - ModelPricingCurrencyNZD
+    catalogs.ModelPricingTierType:
+      type: string
+      x-enum-varnames:
+      - ModelPricingTierTypeContext
     catalogs.ModelResponseFormat:
       type: string
       x-enum-comments:
@@ -795,6 +898,42 @@ components:
           description: Custom prompt for search results
           type: string
       type: object
+    catalogs.OfferingAccess:
+      properties:
+        apis:
+          items:
+            type: string
+            x-enum-varnames:
+            - InvocationAPIChatCompletions
+            - InvocationAPICompletions
+            - InvocationAPIResponses
+            - InvocationAPIMessages
+            - InvocationAPIEmbeddings
+            - InvocationAPIImageGeneration
+            - InvocationAPIAudio
+            - InvocationAPIRerank
+            - InvocationAPIBedrockConverse
+            - InvocationAPIBedrockInvokeModel
+            - InvocationAPISnowflakeComplete
+            - InvocationAPIWatsonxGenerate
+            - InvocationAPIOCIInference
+          type: array
+          uniqueItems: false
+        channel:
+          $ref: '#/components/schemas/catalogs.OfferingAccessChannel'
+        routability:
+          $ref: '#/components/schemas/catalogs.OfferingRoutability'
+      type: object
+    catalogs.OfferingAccessChannel:
+      type: string
+      x-enum-varnames:
+      - OfferingAccessChannelServerToServer
+      - OfferingAccessChannelApplication
+    catalogs.OfferingRoutability:
+      type: string
+      x-enum-varnames:
+      - OfferingRoutabilityRoutable
+      - OfferingRoutabilityDiscoverable
     catalogs.Provider:
       properties:
         aliases:
@@ -810,6 +949,7 @@ components:
             - ProviderIDCerebras
             - ProviderIDCheckstep
             - ProviderIDCohere
+            - ProviderIDCursor
             - ProviderIDConectys
             - ProviderIDCove
             - ProviderIDDeepMind
@@ -823,6 +963,17 @@ components:
             - ProviderIDMeta
             - ProviderIDMicrosoft
             - ProviderIDMistralAI
+            - ProviderIDNVIDIA
+            - ProviderIDDatabricks
+            - ProviderIDSnowflake
+            - ProviderIDWatsonx
+            - ProviderIDOCI
+            - ProviderIDCloudflare
+            - ProviderIDSambaNova
+            - ProviderIDBaseten
+            - ProviderIDScaleway
+            - ProviderIDHyperbolic
+            - ProviderIDNovita
             - ProviderIDMoonshotAI
             - ProviderIDOpenAI
             - ProviderIDOpenRouter
@@ -835,16 +986,16 @@ components:
             - ProviderIDXAI
           type: array
           uniqueItems: false
-        api_key:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
-        chat_completions:
-          $ref: '#/components/schemas/catalogs.ProviderChatCompletions'
-        env_vars:
-          description: Environment variables configuration
+        credentials:
+          additionalProperties:
+            $ref: '#/components/schemas/catalogs.ProviderCredential'
+          description: Exact-current provider acquisition and invocation configuration.
+          type: object
+        environment_advisories:
           items:
-            $ref: '#/components/schemas/catalogs.ProviderEnvVar'
+            $ref: '#/components/schemas/catalogs.ProviderEnvironmentAdvisory'
           type: array
           uniqueItems: false
         extensions:
@@ -859,6 +1010,8 @@ components:
           type: string
         id:
           $ref: '#/components/schemas/catalogs.ProviderID'
+        invocation:
+          $ref: '#/components/schemas/catalogs.ProviderInvocation'
         name:
           description: Display name (must not be empty)
           type: string
@@ -870,42 +1023,367 @@ components:
           description: Status & Health
           type: string
       type: object
-    catalogs.ProviderAPIKey:
-      description: API key configuration
-      properties:
-        header:
-          description: Header name to send the API key in
-          type: string
-        name:
-          description: Name of the API key parameter
-          type: string
-        pattern:
-          description: Glob pattern to match the API key
-          type: string
-        query_param:
-          description: Query parameter name to send the API key in
-          type: string
-        scheme:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKeyScheme'
-      type: object
-    catalogs.ProviderAPIKeyScheme:
-      description: Authentication scheme (e.g., "Bearer", "Basic", or empty for direct
-        value)
+    catalogs.ProviderAuthMode:
+      enum:
+      - none
+      - optional
       type: string
-      x-enum-comments:
-        ProviderAPIKeySchemeBasic: Basic authentication
-        ProviderAPIKeySchemeBearer: Bearer token authentication (OAuth 2.0 style)
-        ProviderAPIKeySchemeDirect: Direct value (no scheme prefix)
       x-enum-varnames:
-      - ProviderAPIKeySchemeBearer
-      - ProviderAPIKeySchemeBasic
-      - ProviderAPIKeySchemeDirect
+      - ProviderAuthModeNone
+      - ProviderAuthModeOptional
+    catalogs.ProviderAuthPolicy:
+      properties:
+        methods:
+          items:
+            type: string
+          type: array
+        mode:
+          $ref: '#/components/schemas/catalogs.ProviderAuthMode'
+      type: object
+    catalogs.ProviderBindingRole:
+      type: string
+      x-enum-varnames:
+      - ProviderBindingRoleRequiredInput
+      - ProviderBindingRoleIteration
+      - ProviderBindingRoleOutput
+    catalogs.ProviderBindingSource:
+      type: string
+      x-enum-varnames:
+      - ProviderBindingSourceEnv
+      - ProviderBindingSourceStatic
+      - ProviderBindingSourceCloudProfile
+      - ProviderBindingSourceAPIResult
+      - ProviderBindingSourceGovernedSweep
     catalogs.ProviderCatalog:
       description: Models
       properties:
+        sources:
+          description: Exact-current logical acquisition sources
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderSource'
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderCredential:
+      properties:
+        description:
+          type: string
+        env:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        kind:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialKind'
+        transport:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialTransport'
+      type: object
+    catalogs.ProviderCredentialKind:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialKindAPIKey
+    catalogs.ProviderCredentialScheme:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialSchemeBearer
+      - ProviderCredentialSchemeBasic
+      - ProviderCredentialSchemeDirect
+    catalogs.ProviderCredentialTransport:
+      properties:
+        header:
+          type: string
+        query_param:
+          type: string
+        scheme:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialScheme'
+      type: object
+    catalogs.ProviderDeployment:
+      properties:
+        tier:
+          type: string
+        type:
+          type: string
+      type: object
+    catalogs.ProviderEnvironmentAdvisory:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    catalogs.ProviderGovernancePolicy:
+      description: Oversight and moderation practices
+      properties:
+        moderated:
+          description: Whether provider content is moderated
+          type: boolean
+        moderation_required:
+          description: Whether the provider requires moderation
+          type: boolean
+        moderator:
+          description: Who moderates the provider
+          type: string
+      type: object
+    catalogs.ProviderHealthComponent:
+      properties:
+        id:
+          description: Component ID from the health API
+          type: string
+        name:
+          description: Human-readable component name
+          type: string
+      type: object
+    catalogs.ProviderID:
+      description: Core identification and integration
+      type: string
+      x-enum-varnames:
+      - ProviderIDAlibabaQwen
+      - ProviderIDAlibabaCloud
+      - ProviderIDAnthropic
+      - ProviderIDAnyscale
+      - ProviderIDCerebras
+      - ProviderIDCheckstep
+      - ProviderIDCohere
+      - ProviderIDCursor
+      - ProviderIDConectys
+      - ProviderIDCove
+      - ProviderIDDeepMind
+      - ProviderIDDeepInfra
+      - ProviderIDDeepSeek
+      - ProviderIDFireworksAI
+      - ProviderIDGoogleAIStudio
+      - ProviderIDGoogleVertex
+      - ProviderIDGroq
+      - ProviderIDHuggingFace
+      - ProviderIDMeta
+      - ProviderIDMicrosoft
+      - ProviderIDMistralAI
+      - ProviderIDNVIDIA
+      - ProviderIDDatabricks
+      - ProviderIDSnowflake
+      - ProviderIDWatsonx
+      - ProviderIDOCI
+      - ProviderIDCloudflare
+      - ProviderIDSambaNova
+      - ProviderIDBaseten
+      - ProviderIDScaleway
+      - ProviderIDHyperbolic
+      - ProviderIDNovita
+      - ProviderIDMoonshotAI
+      - ProviderIDOpenAI
+      - ProviderIDOpenRouter
+      - ProviderIDPerplexity
+      - ProviderIDReplicate
+      - ProviderIDSafetyKit
+      - ProviderIDTogetherAI
+      - ProviderIDVirtuousAI
+      - ProviderIDWebPurify
+      - ProviderIDXAI
+    catalogs.ProviderInvocation:
+      properties:
+        routes:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderInvocationRoute'
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderInvocationRoute:
+      properties:
+        api:
+          $ref: '#/components/schemas/catalogs.InvocationAPI'
+        auth:
+          $ref: '#/components/schemas/catalogs.ProviderAuthPolicy'
+        endpoint:
+          type: string
+        health_api_url:
+          type: string
+        health_components:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderHealthComponent'
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+      type: object
+    catalogs.ProviderNormalizationUnit:
+      description: Bounded numeric source unit
+      type: string
+      x-enum-comments:
+        ProviderNormalizationUnitCentsPer100MillionTokens: nolint:gosec // Public
+          pricing unit label, not a credential.
+      x-enum-varnames:
+      - ProviderNormalizationUnitPerMillionTokens
+      - ProviderNormalizationUnitPerToken
+      - ProviderNormalizationUnitCentsPer100MillionTokens
+      - ProviderNormalizationUnitMilliCurrencyPerMillionTokens
+      - ProviderNormalizationUnitPerOperation
+    catalogs.ProviderObservationPolicy:
+      properties:
+        anonymous:
+          $ref: '#/components/schemas/catalogs.ProviderObservationScope'
+        authenticated:
+          $ref: '#/components/schemas/catalogs.ProviderObservationScope'
+        invariant:
+          $ref: '#/components/schemas/catalogs.ProviderObservationScope'
+      type: object
+    catalogs.ProviderObservationScope:
+      enum:
+      - global_public
+      - regional_public
+      - credential_scoped
+      type: string
+      x-enum-varnames:
+      - ProviderObservationScopeGlobalPublic
+      - ProviderObservationScopeRegionalPublic
+      - ProviderObservationScopeCredentialScoped
+    catalogs.ProviderOfferingDefaults:
+      properties:
+        access:
+          $ref: '#/components/schemas/catalogs.OfferingAccess'
+        deployment:
+          $ref: '#/components/schemas/catalogs.ProviderDeployment'
+        endpoint:
+          $ref: '#/components/schemas/catalogs.ProviderOfferingEndpoint'
+        regions:
+          items:
+            $ref: '#/components/schemas/catalogs.CloudRegion'
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderOfferingEndpoint:
+      properties:
+        base_url:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+          x-enum-varnames:
+          - EndpointTypeOpenAI
+          - EndpointTypeAnthropic
+          - EndpointTypeGoogle
+          - EndpointTypeGoogleCloud
+          - EndpointTypeBedrock
+          - EndpointTypeAzureOpenAI
+          - EndpointTypeCohere
+          - EndpointTypeApplication
+          - EndpointTypeTogether
+          - EndpointTypeHuggingFace
+          - EndpointTypeNVIDIA
+          - EndpointTypeDatabricks
+          - EndpointTypeSnowflake
+          - EndpointTypeWatsonx
+          - EndpointTypeOCI
+          - EndpointTypeCloudflare
+          - EndpointTypeSambaNova
+      type: object
+    catalogs.ProviderOptionBinding:
+      properties:
+        description:
+          type: string
+        name:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        source:
+          type: string
+          x-enum-varnames:
+          - ProviderBindingSourceEnv
+          - ProviderBindingSourceStatic
+          - ProviderBindingSourceCloudProfile
+          - ProviderBindingSourceAPIResult
+          - ProviderBindingSourceGovernedSweep
+        value:
+          type: string
+      type: object
+    catalogs.ProviderPricingTier:
+      description: Optional pricing tier
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        type:
+          $ref: '#/components/schemas/catalogs.ModelPricingTierType'
+      type: object
+    catalogs.ProviderPrivacyPolicy:
+      description: Privacy, Retention, and Governance Policies
+      properties:
+        privacy_policy_url:
+          description: Link to privacy policy
+          type: string
+        retains_data:
+          description: Whether provider stores/retains user data
+          type: boolean
+        terms_of_service_url:
+          description: Link to terms of service
+          type: string
+        trains_on_data:
+          description: Whether provider trains models on user data
+          type: boolean
+      type: object
+    catalogs.ProviderRetentionPolicy:
+      description: Data retention and deletion practices
+      properties:
+        details:
+          description: Human-readable description
+          type: string
+        duration:
+          $ref: '#/components/schemas/time.Duration'
+        type:
+          $ref: '#/components/schemas/catalogs.ProviderRetentionType'
+      type: object
+    catalogs.ProviderRetentionType:
+      description: Type of retention policy
+      type: string
+      x-enum-comments:
+        ProviderRetentionTypeConditional: Based on conditions (e.g., "until account
+          deletion")
+        ProviderRetentionTypeFixed: Specific duration (use Duration field)
+        ProviderRetentionTypeIndefinite: Forever (duration = nil)
+        ProviderRetentionTypeNone: No retention (immediate deletion)
+      x-enum-varnames:
+      - ProviderRetentionTypeFixed
+      - ProviderRetentionTypeNone
+      - ProviderRetentionTypeIndefinite
+      - ProviderRetentionTypeConditional
+    catalogs.ProviderScopeBinding:
+      properties:
+        description:
+          type: string
+        fallback:
+          type: string
+          x-enum-varnames:
+          - ProviderBindingSourceEnv
+          - ProviderBindingSourceStatic
+          - ProviderBindingSourceCloudProfile
+          - ProviderBindingSourceAPIResult
+          - ProviderBindingSourceGovernedSweep
+        name:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        role:
+          $ref: '#/components/schemas/catalogs.ProviderBindingRole'
+        source:
+          $ref: '#/components/schemas/catalogs.ProviderBindingSource'
+        value:
+          type: string
+        values:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderSource:
+      properties:
+        acquisition_group:
+          type: string
+        auth:
+          $ref: '#/components/schemas/catalogs.ProviderAuthPolicy'
         authors:
-          description: List of authors to fetch from (for providers like Google Vertex
-            AI)
           items:
             type: string
             x-enum-varnames:
@@ -961,6 +1439,7 @@ components:
             - AuthorIDZhipuAI
             - AuthorIDSenseTime
             - AuthorIDHuawei
+            - AuthorIDXiaomi
             - AuthorIDTsinghua
             - AuthorIDPeking
             - AuthorIDNVIDIA
@@ -972,6 +1451,7 @@ components:
             - AuthorIDAI21
             - AuthorIDInflection
             - AuthorIDCharacter
+            - AuthorIDHCompany
             - AuthorIDPerplexity
             - AuthorIDAnysphere
             - AuthorIDCursor
@@ -994,171 +1474,60 @@ components:
           type: array
           uniqueItems: false
         docs:
-          description: Documentation URL
           type: string
         endpoint:
-          $ref: '#/components/schemas/catalogs.ProviderEndpoint'
-      type: object
-    catalogs.ProviderChatCompletions:
-      description: Chat completions API configuration
-      properties:
-        health_api_url:
-          description: URL to health/status API for this service
+          $ref: '#/components/schemas/catalogs.ProviderSourceEndpoint'
+        id:
           type: string
-        health_components:
-          description: Specific components to monitor for chat completions
-          items:
-            $ref: '#/components/schemas/catalogs.ProviderHealthComponent'
-          type: array
-          uniqueItems: false
-        url:
-          description: Chat completions API endpoint URL
-          type: string
-      type: object
-    catalogs.ProviderEndpoint:
-      description: API endpoint configuration
-      properties:
-        auth_required:
-          description: 'Required: Whether auth needed'
+        observation_scope:
+          $ref: '#/components/schemas/catalogs.ProviderObservationPolicy'
+        offering:
+          $ref: '#/components/schemas/catalogs.ProviderOfferingDefaults'
+        optional:
           type: boolean
+        options:
+          additionalProperties:
+            $ref: '#/components/schemas/catalogs.ProviderOptionBinding'
+          type: object
+        scopes:
+          additionalProperties:
+            $ref: '#/components/schemas/catalogs.ProviderScopeBinding'
+          type: object
+        topology:
+          $ref: '#/components/schemas/catalogs.ProviderSourceTopology'
+      type: object
+    catalogs.ProviderSourceEndpoint:
+      properties:
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
-        base_url_env_var:
-          description: Optional env var for overriding the endpoint base URL
+        base_url_env:
           type: string
         feature_rules:
-          description: Feature inference rules
           items:
             $ref: '#/components/schemas/catalogs.FeatureRule'
           type: array
           uniqueItems: false
         field_mappings:
-          description: Field mappings
           items:
             $ref: '#/components/schemas/catalogs.FieldMapping'
           type: array
           uniqueItems: false
         path:
-          description: Path appended when BaseURLEnvVar is set
+          type: string
+        response_collection:
           type: string
         type:
           $ref: '#/components/schemas/catalogs.EndpointType'
         url:
-          description: 'Required: API endpoint'
           type: string
       type: object
-    catalogs.ProviderEnvVar:
-      properties:
-        description:
-          description: Human-readable description
-          type: string
-        name:
-          description: Environment variable name
-          type: string
-        pattern:
-          description: Optional validation pattern
-          type: string
-        required:
-          description: Whether this env var is required
-          type: boolean
-      type: object
-    catalogs.ProviderGovernancePolicy:
-      description: Oversight and moderation practices
-      properties:
-        moderated:
-          description: Whether provider content is moderated
-          type: boolean
-        moderation_required:
-          description: Whether the provider requires moderation
-          type: boolean
-        moderator:
-          description: Who moderates the provider
-          type: string
-      type: object
-    catalogs.ProviderHealthComponent:
-      properties:
-        id:
-          description: Component ID from the health API
-          type: string
-        name:
-          description: Human-readable component name
-          type: string
-      type: object
-    catalogs.ProviderID:
-      description: Core identification and integration
+    catalogs.ProviderSourceTopology:
       type: string
       x-enum-varnames:
-      - ProviderIDAlibabaQwen
-      - ProviderIDAlibabaCloud
-      - ProviderIDAnthropic
-      - ProviderIDAnyscale
-      - ProviderIDCerebras
-      - ProviderIDCheckstep
-      - ProviderIDCohere
-      - ProviderIDConectys
-      - ProviderIDCove
-      - ProviderIDDeepMind
-      - ProviderIDDeepInfra
-      - ProviderIDDeepSeek
-      - ProviderIDFireworksAI
-      - ProviderIDGoogleAIStudio
-      - ProviderIDGoogleVertex
-      - ProviderIDGroq
-      - ProviderIDHuggingFace
-      - ProviderIDMeta
-      - ProviderIDMicrosoft
-      - ProviderIDMistralAI
-      - ProviderIDMoonshotAI
-      - ProviderIDOpenAI
-      - ProviderIDOpenRouter
-      - ProviderIDPerplexity
-      - ProviderIDReplicate
-      - ProviderIDSafetyKit
-      - ProviderIDTogetherAI
-      - ProviderIDVirtuousAI
-      - ProviderIDWebPurify
-      - ProviderIDXAI
-    catalogs.ProviderPrivacyPolicy:
-      description: Privacy, Retention, and Governance Policies
-      properties:
-        privacy_policy_url:
-          description: Link to privacy policy
-          type: string
-        retains_data:
-          description: Whether provider stores/retains user data
-          type: boolean
-        terms_of_service_url:
-          description: Link to terms of service
-          type: string
-        trains_on_data:
-          description: Whether provider trains models on user data
-          type: boolean
-      type: object
-    catalogs.ProviderRetentionPolicy:
-      description: Data retention and deletion practices
-      properties:
-        details:
-          description: Human-readable description
-          type: string
-        duration:
-          $ref: '#/components/schemas/time.Duration'
-        type:
-          $ref: '#/components/schemas/catalogs.ProviderRetentionType'
-      type: object
-    catalogs.ProviderRetentionType:
-      description: Type of retention policy
-      type: string
-      x-enum-comments:
-        ProviderRetentionTypeConditional: Based on conditions (e.g., "until account
-          deletion")
-        ProviderRetentionTypeFixed: Specific duration (use Duration field)
-        ProviderRetentionTypeIndefinite: Forever (duration = nil)
-        ProviderRetentionTypeNone: No retention (immediate deletion)
-      x-enum-varnames:
-      - ProviderRetentionTypeFixed
-      - ProviderRetentionTypeNone
-      - ProviderRetentionTypeIndefinite
-      - ProviderRetentionTypeConditional
+      - ProviderSourceTopologySingleEndpoint
+      - ProviderSourceTopologyPaginated
+      - ProviderSourceTopologyRegionalSweep
+      - ProviderSourceTopologyGrouped
     catalogs.Quantization:
       description: Quantization level used by the model
       type: string

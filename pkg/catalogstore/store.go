@@ -11,6 +11,14 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+const (
+	catalogGenerationResource = "catalog generation"
+	catalogPayloadFile        = "catalog payload"
+	catalogStoreComponent     = "catalog store"
+	objectResource            = "object"
+	validationRequiredMessage = "is required"
+)
+
 // Generation is an immutable manifest and its exact catalog payload bytes.
 type Generation struct {
 	Manifest catalogs.GenerationManifest
@@ -77,11 +85,11 @@ func marshalManifest(manifest catalogs.GenerationManifest) ([]byte, error) {
 }
 
 func currentNotFound() error {
-	return &errors.NotFoundError{Resource: "catalog generation", ID: "current"}
+	return &errors.NotFoundError{Resource: catalogGenerationResource, ID: currentFilename}
 }
 
 func generationNotFound(id string) error {
-	return &errors.NotFoundError{Resource: "catalog generation", ID: id}
+	return &errors.NotFoundError{Resource: catalogGenerationResource, ID: id}
 }
 
 func casConflict(expected, actual string) error {
@@ -94,7 +102,7 @@ func casConflict(expected, actual string) error {
 
 func identityConflict(id string) error {
 	return &errors.ConflictError{
-		Resource: "catalog generation",
+		Resource: catalogGenerationResource,
 		Expected: id,
 		Actual:   id,
 		Message:  "generation ID is already bound to different content",

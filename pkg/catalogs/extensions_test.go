@@ -172,3 +172,13 @@ func TestNormalizeSourceExtensionsProducesRoundTripStableTypes(t *testing.T) {
 		t.Fatalf("yaml extensions = %#v, want %#v", yamlModel.Extensions, model.Extensions)
 	}
 }
+
+func TestNormalizeExtensionFieldsCanonicalizesJSONNumbers(t *testing.T) {
+	fields := NormalizeExtensionFields(map[string]any{
+		"integer": json.Number("135"),
+		"decimal": json.Number("0.125"),
+	})
+	if fields["integer"] != int64(135) || fields["decimal"] != 0.125 {
+		t.Fatalf("normalized JSON numbers = %#v", fields)
+	}
+}

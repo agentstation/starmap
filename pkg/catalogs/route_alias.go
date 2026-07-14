@@ -27,6 +27,8 @@ const (
 	RouteAliasRejectedUnavailable RouteAliasRejectionReason = "unavailable"
 	// RouteAliasRejectedRetired means the provider has retired the offering.
 	RouteAliasRejectedRetired RouteAliasRejectionReason = "retired"
+	// RouteAliasRejectedNotRoutable means the offering has no supported server-to-server invocation contract.
+	RouteAliasRejectedNotRoutable RouteAliasRejectionReason = "not_routable"
 )
 
 // RouteAliasRejection records one ineligible target without hiding it.
@@ -45,7 +47,7 @@ type RouteAliasResolution struct {
 // Validate verifies route identity and exact target uniqueness.
 func (a RouteAlias) Validate() error {
 	if strings.TrimSpace(string(a.ID)) == "" {
-		return &errors.ValidationError{Field: "id", Value: a.ID, Message: "is required"}
+		return &errors.ValidationError{Field: "id", Value: a.ID, Message: validationMessageIsRequired}
 	}
 	if len(a.Targets) == 0 {
 		return &errors.ValidationError{Field: "targets", Message: "at least one offering key is required"}
@@ -53,10 +55,10 @@ func (a RouteAlias) Validate() error {
 	seen := make(map[OfferingKey]struct{}, len(a.Targets))
 	for index, target := range a.Targets {
 		if strings.TrimSpace(string(target.ProviderID)) == "" {
-			return &errors.ValidationError{Field: fmt.Sprintf("targets[%d].provider_id", index), Message: "is required"}
+			return &errors.ValidationError{Field: fmt.Sprintf("targets[%d].provider_id", index), Message: validationMessageIsRequired}
 		}
 		if strings.TrimSpace(string(target.ProviderModelID)) == "" {
-			return &errors.ValidationError{Field: fmt.Sprintf("targets[%d].provider_model_id", index), Message: "is required"}
+			return &errors.ValidationError{Field: fmt.Sprintf("targets[%d].provider_model_id", index), Message: validationMessageIsRequired}
 		}
 		if _, exists := seen[target]; exists {
 			return &errors.ValidationError{Field: fmt.Sprintf("targets[%d]", index), Value: target, Message: "offering key must be unique"}
@@ -84,6 +86,8 @@ func (r *Catalog) MaterializeRouteAlias(alias RouteAlias) (RouteAliasResolution,
 			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedRetired})
 		case offering.Availability == OfferingAvailabilityUnavailable:
 			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedUnavailable})
+		case !offering.IsRoutable():
+			resolution.Rejected = append(resolution.Rejected, RouteAliasRejection{Key: key, Reason: RouteAliasRejectedNotRoutable})
 		default:
 			resolution.Eligible = append(resolution.Eligible, copyProviderOffering(offering))
 		}

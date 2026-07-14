@@ -166,7 +166,7 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L73-L77>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L85-L89>)
 
 CatalogState atomically pairs the current immutable catalog with its logical generation identity for generation\-scoped caches and responses.
 
@@ -179,7 +179,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L140-L157>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L158-L177>)
 
 Client manages an immutable canonical catalog, explicit synchronization, persistence, and event hooks. It owns no scheduling goroutine or cadence.
 
@@ -190,7 +190,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L160>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L180>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -208,7 +208,7 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L80>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L92>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
@@ -226,7 +226,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation
 CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L95>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L110>)
 
 ```go
 func (c *Client) CurrentGenerationID() string

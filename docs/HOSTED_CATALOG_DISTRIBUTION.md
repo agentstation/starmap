@@ -1,30 +1,30 @@
 # Hosted Catalog Distribution
 
 The canonical hosted origin is `https://starmap.agentstation.ai`. Its transport
-contract is independent of the legacy Starmap server update API:
+contract is independent of the operational Starmap server update API:
 
 | Route | Meaning |
 | --- | --- |
-| `GET /v1/catalogs/latest?schema_version=N&channel=stable` | Small strict JSON pointer selecting the channel generation compatible with consumer catalog schema `N`; omitted channel defaults to `stable` |
+| `GET /v1/catalogs/latest?schema_version=2&channel=stable` | Small strict JSON pointer selecting the channel's exact schema-v2 generation; omitted channel defaults to `stable` |
 | `GET /v1/catalogs/{generation}` | Immutable deterministic catalog archive |
 | `GET /v1/catalogs/{generation}/attestation` | Detached in-toto statement for the same archive |
 
 The latest pointer includes its own version, explicit `dev`, `canary`, or
-`stable` channel, generation ID, catalog schema and
-consumer-compatibility range, and exact URL/media type/SHA-256/size descriptors
+`stable` channel, generation ID, exact catalog schema, and exact
+URL/media type/SHA-256/size descriptors
 for archive and statement. It does not contain a Starmap or Starport binary
 version.
 
-A consumer submits its supported catalog schema to `latest`. Selection uses the
-manifest's inclusive `consumer_compatibility` range. The payload's own schema
-may be older than the consumer when that range explicitly permits it; neither
-pointer nor selection code has a Starmap version, Starport version, release tag,
+A consumer submits schema version 2 to `latest`. The handler, pointer, client,
+downloaded manifest, and payload must all equal the current schema version;
+neither side negotiates a range or accepts an older prelaunch payload. No
+pointer or selection code has a Starmap version, Starport version, release tag,
 or binary-version field.
 
 `catalogdistribution.Client.FetchLatest` bounds every body, strictly parses the
 pointer, requires all asset URLs to remain on the configured origin, verifies
 media types/sizes/checksums, opens the artifact and detached statement, and
-requires the downloaded manifest identity and compatibility to equal the
+requires the downloaded manifest identity and exact schema to equal the
 pointer. No catalog is returned before all checks pass.
 
 `catalogdistribution.Handler` and its repository boundary provide the serving

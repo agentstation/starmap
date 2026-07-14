@@ -19,7 +19,10 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			Pricing:         testOfferingPricing(1.25),
 			Limits:          &ModelLimits{ContextWindow: 128000},
 			Availability:    OfferingAvailabilityAvailable,
-			Regions:         []string{"us-east", "eu-west"},
+			Access: OfferingAccess{Channel: OfferingAccessChannelServerToServer, Routability: OfferingRoutabilityRoutable,
+				APIs: []InvocationAPI{InvocationAPIChatCompletions}},
+			Regions:    []CloudRegion{{ID: "us-east", Residency: &GeographicBoundary{ID: "us", Kind: GeographicBoundaryCountry, Countries: []string{"US"}}}, {ID: "eu-west"}},
+			Deployment: ProviderDeployment{Type: "serverless", Tier: "priority"},
 			Endpoint: ProviderOfferingEndpoint{
 				Type:    EndpointTypeOpenAI,
 				BaseURL: "https://a.example/v1",
@@ -42,7 +45,10 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			DefinitionID:    "shared-model",
 			Pricing:         testOfferingPricing(0.75),
 			Availability:    OfferingAvailabilityRestricted,
-			Regions:         []string{"us-central"},
+			Access: OfferingAccess{Channel: OfferingAccessChannelServerToServer, Routability: OfferingRoutabilityRoutable,
+				APIs: []InvocationAPI{InvocationAPIMessages}},
+			Regions:    []CloudRegion{{ID: "us-central"}},
+			Deployment: ProviderDeployment{Type: "provisioned"},
 			Endpoint: ProviderOfferingEndpoint{
 				Type:    EndpointTypeAnthropic,
 				BaseURL: "https://b.example",
@@ -82,7 +88,11 @@ func TestProviderOfferingValidation(t *testing.T) {
 		ProviderModelID: "model",
 		DefinitionID:    "definition",
 		Availability:    OfferingAvailabilityAvailable,
-		Lifecycle:       OfferingLifecycleActive,
+		Access: OfferingAccess{Channel: OfferingAccessChannelServerToServer, Routability: OfferingRoutabilityRoutable,
+			APIs: []InvocationAPI{InvocationAPIChatCompletions}},
+		Endpoint:   ProviderOfferingEndpoint{Type: EndpointTypeOpenAI},
+		Deployment: ProviderDeployment{Type: "serverless"},
+		Lifecycle:  OfferingLifecycleActive,
 	}
 	tests := []struct {
 		name   string
@@ -93,8 +103,12 @@ func TestProviderOfferingValidation(t *testing.T) {
 		{name: "definition", mutate: func(o *ProviderOffering) { o.DefinitionID = "" }},
 		{name: "availability", mutate: func(o *ProviderOffering) { o.Availability = "unknown-value" }},
 		{name: "lifecycle", mutate: func(o *ProviderOffering) { o.Lifecycle = "unknown-value" }},
-		{name: "empty region", mutate: func(o *ProviderOffering) { o.Regions = []string{""} }},
-		{name: "duplicate region", mutate: func(o *ProviderOffering) { o.Regions = []string{"us", "us"} }},
+		{name: "empty region", mutate: func(o *ProviderOffering) { o.Regions = []CloudRegion{{}} }},
+		{name: "duplicate region", mutate: func(o *ProviderOffering) { o.Regions = []CloudRegion{{ID: "us"}, {ID: "us"}} }},
+		{name: "missing deployment", mutate: func(o *ProviderOffering) { o.Deployment = ProviderDeployment{} }},
+		{name: "application routable", mutate: func(o *ProviderOffering) {
+			o.Access = OfferingAccess{Channel: OfferingAccessChannelApplication, Routability: OfferingRoutabilityRoutable}
+		}},
 		{name: "invalid body JSON", mutate: func(o *ProviderOffering) {
 			o.Modes = map[string]ProviderOfferingMode{"fast": {Request: ProviderRequestOverrides{Body: OfferingRequestBody{"tier": json.RawMessage(`{`)}}}}
 		}},

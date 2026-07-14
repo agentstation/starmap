@@ -14,23 +14,28 @@ func TestProvidersFormatYAML(t *testing.T) {
 			Name:         "Anthropic",
 			Headquarters: stringPtr("San Francisco, CA, USA"),
 			IconURL:      stringPtr("https://www.anthropic.com/favicon.ico"),
-			APIKey: &ProviderAPIKey{
-				Name:    "ANTHROPIC_API_KEY",
-				Pattern: ".*",
-				Header:  "x-api-key",
-				Scheme:  "",
-			},
-			Catalog: &ProviderCatalog{
-				Docs: stringPtr("https://docs.anthropic.com/en/docs/about-claude/models/overview"),
-				Endpoint: ProviderEndpoint{
-					URL:          "https://api.anthropic.com/v1/models",
-					AuthRequired: true,
+			Credentials: map[ProviderCredentialID]ProviderCredential{
+				"api_key": {
+					Env: ProviderEnvironmentNames{"ANTHROPIC_API_KEY"},
+					Transport: ProviderCredentialTransport{
+						Header: "x-api-key", Scheme: ProviderCredentialSchemeDirect,
+					},
 				},
 			},
-			StatusPageURL: stringPtr("https://status.anthropic.com"),
-			ChatCompletions: &ProviderChatCompletions{
-				URL: stringPtr("https://api.anthropic.com/v1/messages"),
+			Catalog: &ProviderCatalog{
+				Sources: []ProviderSource{{
+					ID: "models", Docs: "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+					ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+					Auth:             ProviderAuthPolicy{Methods: []ProviderCredentialID{"api_key"}},
+					Endpoint:         ProviderSourceEndpoint{Type: EndpointTypeAnthropic, URL: "https://api.anthropic.com/v1/models"},
+				}},
 			},
+			StatusPageURL: stringPtr("https://status.anthropic.com"),
+			Invocation: &ProviderInvocation{Routes: []ProviderInvocationRoute{{
+				ID: "messages", API: InvocationAPIMessages,
+				Auth:     ProviderAuthPolicy{Methods: []ProviderCredentialID{"api_key"}},
+				Endpoint: "https://api.anthropic.com/v1/messages",
+			}}},
 			PrivacyPolicy: &ProviderPrivacyPolicy{
 				PrivacyPolicyURL:  stringPtr("https://www.anthropic.com/privacy"),
 				TermsOfServiceURL: stringPtr("https://www.anthropic.com/terms"),
@@ -60,19 +65,17 @@ func TestProvidersFormatYAML(t *testing.T) {
 			Name:         "Cerebras",
 			Headquarters: stringPtr("Sunnyvale, CA, USA"),
 			IconURL:      stringPtr("https://cerebras.ai/favicon.ico"),
-			APIKey: &ProviderAPIKey{
-				Name:    "CEREBRAS_API_KEY",
-				Pattern: ".*",
-				Header:  "Authorization",
-				Scheme:  "Bearer",
+			Credentials: map[ProviderCredentialID]ProviderCredential{
+				"api_key": {Env: ProviderEnvironmentNames{"CEREBRAS_API_KEY"}},
 			},
 			Catalog: &ProviderCatalog{
-				Docs: stringPtr("https://inference-docs.cerebras.ai/models/overview"),
-				Endpoint: ProviderEndpoint{
-					URL:          "https://api.cerebras.ai/v1/models",
-					AuthRequired: true,
-				},
-				Authors: []AuthorID{"alibaba", "meta", "openai"},
+				Sources: []ProviderSource{{
+					ID: "public-models", Docs: "https://inference-docs.cerebras.ai/models/overview",
+					ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+					Auth:             ProviderAuthPolicy{Mode: ProviderAuthModeOptional},
+					Endpoint:         ProviderSourceEndpoint{Type: EndpointTypeOpenAI, URL: "https://api.cerebras.ai/v1/models"},
+					Authors:          []AuthorID{"alibaba", "meta", "openai"},
+				}},
 			},
 			RetentionPolicy: &ProviderRetentionPolicy{
 				Type:     ProviderRetentionTypeNone,
@@ -100,10 +103,10 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"name: Anthropic",
 		"headquarters: San Francisco, CA, USA",
 		"icon_url: https://www.anthropic.com/favicon.ico",
-		"api_key:",
-		"name: ANTHROPIC_API_KEY",
-		"pattern: .*",
+		"credentials:",
+		"env: ANTHROPIC_API_KEY",
 		"header: x-api-key",
+		"scheme: direct",
 		"duration: 720h0m0s #30 days", // Inline comment for duration
 		"extensions:",
 		"models.dev:",

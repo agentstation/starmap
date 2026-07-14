@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "provider": "cerebras",
-  "fetched_at": "2025-09-11T14:02:01Z",
-  "source_revision": {"kind": "content_digest", "value": "sha256:5365041e31e4512703517777bf2d69347b5d76ce43b5dfa01dd681a7e0899b5a"},
-  "payload": {"path": "models_list.json", "checksum": "sha256:5365041e31e4512703517777bf2d69347b5d76ce43b5dfa01dd681a7e0899b5a"},
-  "max_age": "8760h0m0s"
-}

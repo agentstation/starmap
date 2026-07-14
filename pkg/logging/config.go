@@ -11,6 +11,8 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
+const logOutputStderr = "stderr"
+
 // Config holds logger configuration options.
 type Config struct {
 	// Level is the minimum log level to output
@@ -40,7 +42,7 @@ func DefaultConfig() *Config {
 	return &Config{
 		Level:      "info",
 		Format:     "auto", // auto-detect based on terminal
-		Output:     "stderr",
+		Output:     logOutputStderr,
 		TimeFormat: "kitchen",
 		NoColor:    os.Getenv("NO_COLOR") != "",
 		AddCaller:  false,
@@ -96,7 +98,7 @@ func ConfigureFromEnv() {
 	cfg := &Config{
 		Level:      getEnvOrDefault("LOG_LEVEL", "info"),
 		Format:     getEnvOrDefault("LOG_FORMAT", "auto"),
-		Output:     getEnvOrDefault("LOG_OUTPUT", "stderr"),
+		Output:     getEnvOrDefault("LOG_OUTPUT", logOutputStderr),
 		TimeFormat: getEnvOrDefault("LOG_TIME_FORMAT", "kitchen"),
 		NoColor:    os.Getenv("NO_COLOR") != "",
 		AddCaller:  os.Getenv("LOG_CALLER") == "true",
@@ -112,13 +114,13 @@ func getWriter(cfg *Config) io.Writer {
 	switch strings.ToLower(cfg.Output) {
 	case "stdout":
 		output = os.Stdout
-	case "stderr":
+	case logOutputStderr:
 		output = os.Stderr
 	case "discard", "none":
 		output = io.Discard
 	default:
 		// Treat as file path
-		if cfg.Output != "" && cfg.Output != "stderr" {
+		if cfg.Output != "" && cfg.Output != logOutputStderr {
 			file, err := os.OpenFile(cfg.Output, os.O_CREATE|os.O_APPEND|os.O_WRONLY, constants.FilePermissions)
 			if err != nil {
 				// Fall back to stderr

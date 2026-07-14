@@ -1,5 +1,7 @@
 package catalogmeta
 
+import "time"
+
 // ObservationRevisionKind identifies how an upstream revision was obtained.
 type ObservationRevisionKind string
 
@@ -51,6 +53,75 @@ const (
 type ObservationRecordCounts struct {
 	Accepted int `json:"accepted" yaml:"accepted"`
 	Rejected int `json:"rejected" yaml:"rejected"`
+}
+
+// ObservationScope identifies whether evidence is public or credential-scoped.
+type ObservationScope string
+
+const (
+	// ObservationScopeGlobalPublic is provider-wide public evidence.
+	ObservationScopeGlobalPublic ObservationScope = "global_public"
+	// ObservationScopeRegionalPublic is public evidence scoped to cloud regions.
+	ObservationScopeRegionalPublic ObservationScope = "regional_public"
+	// ObservationScopeCredentialScoped is contextual evidence that cannot enter public generation.
+	ObservationScopeCredentialScoped ObservationScope = "credential_scoped" //nolint:gosec // Publication scope label, not a credential.
+)
+
+// SourceKind classifies acquisition topology and evidence role, not publication eligibility.
+type SourceKind string
+
+const (
+	// SourceKindDirectInventory is a provider's direct public inventory.
+	SourceKindDirectInventory SourceKind = "direct_inventory"
+	// SourceKindRegionalSweep is a public cloud-region sweep.
+	SourceKindRegionalSweep SourceKind = "regional_sweep"
+	// SourceKindPricing is an official provider pricing source.
+	SourceKindPricing SourceKind = "pricing"
+	// SourceKindEnrichment is lower-authority catalog enrichment.
+	SourceKindEnrichment SourceKind = "enrichment"
+	// SourceKindCurated is reviewed non-API evidence.
+	SourceKindCurated SourceKind = "curated"
+)
+
+// ProviderCoverage reports provider inventory completeness without secrets.
+type ProviderCoverage struct {
+	Expected int `json:"expected" yaml:"expected"`
+	Observed int `json:"observed" yaml:"observed"`
+}
+
+// AcquisitionTopology identifies the bounded request shape used to produce a
+// logical provider-source observation.
+type AcquisitionTopology string
+
+const (
+	// AcquisitionTopologySingleEndpoint executes one configured endpoint.
+	AcquisitionTopologySingleEndpoint AcquisitionTopology = "single_endpoint"
+	// AcquisitionTopologyPaginated executes a bounded sequence of pages.
+	AcquisitionTopologyPaginated AcquisitionTopology = "paginated"
+	// AcquisitionTopologyRegionalSweep executes a bounded configured region set.
+	AcquisitionTopologyRegionalSweep AcquisitionTopology = "regional_sweep"
+	// AcquisitionTopologyGrouped executes a bounded provider-specific request group.
+	AcquisitionTopologyGrouped AcquisitionTopology = "grouped"
+)
+
+// AcquisitionProvenance identifies one configured logical provider source
+// without retaining credentials, binding values, endpoints, or tenant IDs.
+type AcquisitionProvenance struct {
+	ProviderID string              `json:"provider_id" yaml:"provider_id"`
+	SourceID   string              `json:"source_id" yaml:"source_id"`
+	AuthMethod string              `json:"auth_method,omitempty" yaml:"auth_method,omitempty"`
+	Scope      ObservationScope    `json:"scope" yaml:"scope"`
+	Topology   AcquisitionTopology `json:"topology" yaml:"topology"`
+}
+
+// ObservationMetrics carries operator-safe source health facts.
+type ObservationMetrics struct {
+	Scope             ObservationScope        `json:"scope" yaml:"scope"`
+	Kind              SourceKind              `json:"kind" yaml:"kind"`
+	Records           ObservationRecordCounts `json:"records" yaml:"records"`
+	ProviderCoverage  ProviderCoverage        `json:"provider_coverage" yaml:"provider_coverage"`
+	PricingObservedAt *time.Time              `json:"pricing_observed_at,omitempty" yaml:"pricing_observed_at,omitempty"`
+	Acquisitions      []AcquisitionProvenance `json:"acquisitions,omitempty" yaml:"acquisitions,omitempty"`
 }
 
 // ObservationIssueScope identifies the level at which degradation occurred.

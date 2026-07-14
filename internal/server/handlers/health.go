@@ -17,9 +17,9 @@ import (
 // @Router /api/v1/health [get].
 func (h *Handlers) HandleHealth(w http.ResponseWriter, _ *http.Request) {
 	response.OK(w, map[string]any{
-		"status":  "healthy",
-		"service": "starmap-api",
-		"version": "v1",
+		responseFieldStatus: "healthy",
+		"service":           "starmap-api",
+		"version":           "v1",
 	})
 }
 
@@ -48,8 +48,8 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 	}
 
 	response.OK(w, map[string]any{
-		"status":  "ready",
-		"catalog": readiness,
+		responseFieldStatus: "ready",
+		"catalog":           readiness,
 		"cache": map[string]any{
 			"items": h.cache.ItemCount(),
 		},

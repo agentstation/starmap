@@ -1,0 +1,107 @@
+# magistral-small-2509 - AI model
+id: magistral-small-2509
+name: magistral-small-2509
+authors:
+- id: mistral
+  name: mistral
+
+# Model metadata
+metadata:
+  release_date: null
+  open_weights: false
+  tags:
+  - chat
+  - function_calling
+  - vision
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+
+# Model limits
+limits:
+  context_window: 131072
+  input_tokens: 0
+  output_tokens: 0
+extensions:
+  mistral:
+    fields:
+      classification: false
+      completion_fim: false
+      fine_tuning: true
+      type: base
+      unknown_fields:
+      - path: data[].capabilities
+        checksum: sha256:9386404152b892b5a93a423fc6885c8b8bd0d04ced8e511da4c30ea81e115a4d
+      - path: data[].default_model_temperature
+        checksum: sha256:973b372a514f91db8219fef585cdf81b09196afd7948f5fb1e29c2016dd995a0
+      - path: data[].deprecation
+        checksum: sha256:053683c739689c6ed8a248f864a7a2fffc2064d9035623ff975849858b5fa5bf
+      - path: data[].deprecation_replacement_model
+        checksum: sha256:a17fc2a4ef7c30e16cf417dd5b0a4f778df7409c89b210536690a91a79648d9c
+      - path: data[].description
+        checksum: sha256:073ad0bb707877ad4427b6b7b80f2b5a51057ef3bfd3c5b24890adb2af08c30d
+      - path: data[].type
+        checksum: sha256:751bbc009e4ccaff946a3bc62bf453a7b95af64a0e55530e8f1f4d031fa41822
+
+# Timestamps
+created_at: 2026-07-13T00:31:47Z
+updated_at: 2026-07-13T00:31:47Z

@@ -106,6 +106,14 @@ func normalizeExtensionValue(value any) any {
 	switch v := value.(type) {
 	case nil, string, bool:
 		return v
+	case json.Number:
+		if integer, err := v.Int64(); err == nil {
+			return integer
+		}
+		if number, err := v.Float64(); err == nil {
+			return normalizeExtensionFloat(number)
+		}
+		return v.String()
 	case int:
 		return int64(v)
 	case int8:

@@ -1,0 +1,10 @@
+id: command-light
+name: command-light
+authors:
+- id: cohere
+  name: Cohere
+pricing:
+  currency: USD
+  tokens:
+    input: {per_1m: 0.3}
+    output: {per_1m: 0.6}

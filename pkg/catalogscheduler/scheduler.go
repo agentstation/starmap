@@ -49,13 +49,13 @@ type LeaseRequest struct {
 // Validate verifies a complete lease request.
 func (r LeaseRequest) Validate() error {
 	if strings.TrimSpace(r.Key) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.lease.key", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.lease.key", Message: validationRequiredMessage}
 	}
 	if strings.TrimSpace(r.Owner) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.lease.owner", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.lease.owner", Message: validationRequiredMessage}
 	}
 	if r.TTL <= 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.lease.ttl", Value: r.TTL, Message: "must be positive"}
+		return &errors.ValidationError{Field: "catalog_scheduler.lease.ttl", Value: r.TTL, Message: validationPositiveMessage}
 	}
 	return nil
 }
@@ -110,10 +110,10 @@ type Runner struct {
 // NewRunner creates a deployment-owned synchronization runner.
 func NewRunner(syncer Syncer, lease Lease, request LeaseRequest, options ...RunnerOption) (*Runner, error) {
 	if isNilInterface(syncer) {
-		return nil, &errors.ValidationError{Field: "catalog_scheduler.syncer", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "catalog_scheduler.syncer", Message: validationRequiredMessage}
 	}
 	if isNilInterface(lease) {
-		return nil, &errors.ValidationError{Field: "catalog_scheduler.lease", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "catalog_scheduler.lease", Message: validationRequiredMessage}
 	}
 	if err := request.Validate(); err != nil {
 		return nil, err
@@ -258,7 +258,7 @@ func (r *Runner) recordAttempt(ctx context.Context, runID string, attempt Attemp
 		return nil
 	}
 	if err := r.ledger.RecordAttempt(context.WithoutCancel(ctx), runID, attempt); err != nil {
-		return errors.WrapResource("record", "catalog scheduler attempt", runID, err)
+		return errors.WrapResource("record", schedulerAttemptResource, runID, err)
 	}
 	return nil
 }

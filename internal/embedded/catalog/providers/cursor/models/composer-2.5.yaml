@@ -1,0 +1,61 @@
+id: composer-2.5
+name: Composer 2.5
+authors:
+- id: cursor
+  name: Cursor
+description: Cursor's application-hosted agentic coding model for sustained long-running software engineering tasks
+status: active
+metadata:
+  open_weights: false
+  release_date: 2026-05-18
+  tags:
+  - coding
+  - reasoning
+  - function_calling
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+  reasoning: true
+  tool_calls: true
+  tools: true
+  tool_choice: true
+  streaming: true
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 3.0
+    output:
+      per_1m: 15.0
+modes:
+  standard:
+    pricing:
+      currency: USD
+      tokens:
+        input:
+          per_1m: 0.5
+        output:
+          per_1m: 2.5
+  fast:
+    pricing:
+      currency: USD
+      tokens:
+        input:
+          per_1m: 3.0
+        output:
+          per_1m: 15.0
+offering_access:
+  channel: application_only
+  routability: discoverable_only
+offering_endpoint:
+  type: application
+extensions:
+  cursor:
+    fields:
+      default_mode: fast
+      access_surface: Cursor application and cloud agents
+created_at: 2026-05-18T00:00:00Z
+updated_at: 2026-05-18T00:00:00Z

@@ -59,13 +59,13 @@ type AttemptRecord struct {
 // Validate verifies a complete terminal attempt record.
 func (a AttemptRecord) Validate() error {
 	if a.Number <= 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.attempt.number", Value: a.Number, Message: "must be positive"}
+		return &errors.ValidationError{Field: "catalog_scheduler.attempt.number", Value: a.Number, Message: validationPositiveMessage}
 	}
 	if a.StartedAt.IsZero() || a.CompletedAt.IsZero() || a.CompletedAt.Before(a.StartedAt) {
 		return &errors.ValidationError{Field: "catalog_scheduler.attempt.time", Message: "must contain ordered start and completion times"}
 	}
 	if a.Duration < 0 || a.RetryDelay < 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.attempt.duration", Message: "must not be negative"}
+		return &errors.ValidationError{Field: "catalog_scheduler.attempt.duration", Message: validationNonnegativeMessage}
 	}
 	if a.Duration != a.CompletedAt.Sub(a.StartedAt) {
 		return &errors.ValidationError{Field: "catalog_scheduler.attempt.duration", Value: a.Duration, Message: "does not match attempt timestamps"}
@@ -80,13 +80,13 @@ func (a AttemptRecord) Validate() error {
 			return &errors.ValidationError{Field: "catalog_scheduler.attempt.failure_type", Message: "is required for failed attempts"}
 		}
 		if a.RetryClass != RetryClassTransient && a.RetryClass != RetryClassPermanent {
-			return &errors.ValidationError{Field: "catalog_scheduler.attempt.retry_class", Value: a.RetryClass, Message: "is invalid"}
+			return &errors.ValidationError{Field: "catalog_scheduler.attempt.retry_class", Value: a.RetryClass, Message: validationInvalidMessage}
 		}
 		if a.RetryClass == RetryClassPermanent && a.RetryDelay != 0 {
 			return &errors.ValidationError{Field: "catalog_scheduler.attempt.retry_delay", Value: a.RetryDelay, Message: "permanent failure cannot schedule a retry"}
 		}
 	default:
-		return &errors.ValidationError{Field: "catalog_scheduler.attempt.status", Value: a.Status, Message: "is invalid"}
+		return &errors.ValidationError{Field: "catalog_scheduler.attempt.status", Value: a.Status, Message: validationInvalidMessage}
 	}
 	return nil
 }
@@ -120,16 +120,16 @@ func (r RunRecord) Copy() RunRecord {
 // ValidateBegin verifies the immutable fields of a newly triggered run.
 func (r RunRecord) ValidateBegin() error {
 	if strings.TrimSpace(r.ID) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.id", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.run.id", Message: validationRequiredMessage}
 	}
 	if err := r.Trigger.Validate(); err != nil {
 		return err
 	}
 	if strings.TrimSpace(r.LeaseOwner) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.lease_owner", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.run.lease_owner", Message: validationRequiredMessage}
 	}
 	if r.StartedAt.IsZero() {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.started_at", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.run.started_at", Message: validationRequiredMessage}
 	}
 	if r.Status != RunStatusRunning || !r.CompletedAt.IsZero() || r.Duration != 0 ||
 		len(r.Attempts) != 0 || len(r.SourceObservations) != 0 {
@@ -151,14 +151,14 @@ func (r RunRecord) ValidateComplete() error {
 		return &errors.ValidationError{Field: "catalog_scheduler.run.status", Value: r.Status, Message: "must be terminal"}
 	}
 	if r.Duration < 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.duration", Value: r.Duration, Message: "must not be negative"}
+		return &errors.ValidationError{Field: "catalog_scheduler.run.duration", Value: r.Duration, Message: validationNonnegativeMessage}
 	}
 	if r.Duration != r.CompletedAt.Sub(r.StartedAt) {
 		return &errors.ValidationError{Field: "catalog_scheduler.run.duration", Value: r.Duration, Message: "does not match run timestamps"}
 	}
 	for index, attempt := range r.Attempts {
 		if attempt.Number != index+1 {
-			return &errors.ValidationError{Field: "catalog_scheduler.run.attempts", Value: attempt.Number, Message: "must be contiguous and ordered"}
+			return &errors.ValidationError{Field: runAttemptsValidationField, Value: attempt.Number, Message: "must be contiguous and ordered"}
 		}
 		if err := attempt.Validate(); err != nil {
 			return err
@@ -175,10 +175,10 @@ func (r RunRecord) ValidateComplete() error {
 		seenSources[observation.Source] = struct{}{}
 	}
 	if r.Status == RunStatusSucceeded && len(r.Attempts) == 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.attempts", Message: "successful run requires an attempt"}
+		return &errors.ValidationError{Field: runAttemptsValidationField, Message: "successful run requires an attempt"}
 	}
 	if isSkippedRunStatus(r.Status) && len(r.Attempts) != 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.run.attempts", Message: "lease-skipped run cannot contain attempts"}
+		return &errors.ValidationError{Field: runAttemptsValidationField, Message: "lease-skipped run cannot contain attempts"}
 	}
 	if isSkippedRunStatus(r.Status) && len(r.SourceObservations) != 0 {
 		return &errors.ValidationError{Field: "catalog_scheduler.run.source_observations", Message: "lease-skipped run cannot contain source observations"}

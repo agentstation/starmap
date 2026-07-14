@@ -1,4 +1,111 @@
-# Alibaba Cloud Model Studio
+- id: amazon-bedrock
+  name: Amazon Bedrock
+  headquarters: Seattle, WA, USA
+  environment_advisories:
+  - name: AWS_PROFILE
+    description: Optional AWS SDK profile selected by the official default credential chain
+  catalog:
+    sources:
+    - id: account-regional-inventory
+      docs: https://docs.aws.amazon.com/bedrock/latest/APIReference/API_Operations_Amazon_Bedrock.html
+      observation_scope: credential_scoped
+      auth: cloud_chain
+      optional: true
+      topology: regional_sweep
+      scopes:
+        regions:
+          source: governed_sweep
+          values:
+          - us-east-1
+          - us-east-2
+          - us-west-2
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - ap-northeast-1
+          - ap-northeast-3
+          - ap-south-1
+          - ap-southeast-1
+          - ap-southeast-2
+          role: iteration
+      endpoint:
+        type: amazon-bedrock
+        url: https://bedrock.us-east-1.amazonaws.com
+- id: microsoft-foundry
+  name: Microsoft Foundry
+  headquarters: Redmond, WA, USA
+  environment_advisories:
+  - name: AZURE_TENANT_ID
+    description: Optional Microsoft Entra tenant used by the official default credential chain
+  catalog:
+    sources:
+    - id: account-inventory
+      docs: https://learn.microsoft.com/azure/ai-foundry/
+      observation_scope: credential_scoped
+      auth: cloud_chain
+      optional: true
+      topology: paginated
+      scopes:
+        subscription:
+          source: env
+          name: AZURE_SUBSCRIPTION_ID
+          role: required_input
+        resource_group:
+          source: env
+          name: AZURE_RESOURCE_GROUP
+          role: required_input
+        account:
+          source: env
+          name: AZURE_FOUNDRY_ACCOUNT
+          role: required_input
+        location:
+          source: env
+          name: AZURE_FOUNDRY_LOCATION
+          role: required_input
+        endpoint:
+          source: env
+          name: AZURE_FOUNDRY_ENDPOINT
+          fallback: cloud_profile
+          role: required_input
+      options:
+        realm:
+          source: static
+          value: azure-public
+      endpoint:
+        type: azure-openai
+        url: https://management.azure.com
+- id: oracle-oci-generative-ai
+  name: Oracle OCI Generative AI
+  headquarters: Austin, TX, USA
+  environment_advisories:
+  - name: OCI_CONFIG_FILE
+    description: Optional OCI SDK config path used by the official default configuration provider
+  catalog:
+    sources:
+    - id: regional-inventory
+      docs: https://docs.oracle.com/en-us/iaas/Content/generative-ai/home.htm
+      observation_scope: credential_scoped
+      auth: cloud_chain
+      optional: true
+      topology: paginated
+      scopes:
+        region:
+          source: env
+          name: OCI_REGION
+          fallback: cloud_profile
+          role: required_input
+        compartment:
+          source: env
+          name: OCI_COMPARTMENT_ID
+          role: required_input
+      options:
+        realm:
+          source: static
+          value: oc1
+      endpoint:
+        type: oci-generative-ai
+        url: https://generativeai.us-chicago-1.oci.oraclecloud.com
 - id: alibaba
   aliases:
   - alibaba-cloud
@@ -9,69 +116,84 @@
   name: Alibaba Cloud Model Studio
   headquarters: Hangzhou, China
   icon_url: https://www.alibabacloud.com/favicon.ico
-  api_key:
-    name: DASHSCOPE_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DASHSCOPE_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: DASHSCOPE_API_KEY
   catalog:
-    docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
-    endpoint:
-      type: openai
-      url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/models
-      base_url_env_var: ALIBABA_MODEL_STUDIO_BASE_URL
-      path: /models
-      auth_required: true
-      author_mapping:
-        field: id
-        normalized:
-          deepseek*: deepseek
-          glm*: zhipu-ai
-          kimi*: moonshot-ai
-          minimax*: minimax
-          qvq*: alibaba
-          qwen*: alibaba
-          qwq*: alibaba
-          wan*: alibaba
-  chat_completions:
-    url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+    sources:
+    - id: models
+      docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/models
+        path: "/models"
+        author_mapping:
+          field: id
+          normalized:
+            deepseek*: deepseek
+            glm*: zhipu-ai
+            kimi*: moonshot-ai
+            minimax*: minimax
+            qvq*: alibaba
+            qwen*: alibaba
+            qwq*: alibaba
+            wan*: alibaba
+        base_url_env: ALIBABA_MODEL_STUDIO_BASE_URL
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
   extensions:
     models.dev:
       fields:
         api: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
         npm: "@ai-sdk/openai-compatible"
-
-# Anthropic
 - id: anthropic
   name: Anthropic
   headquarters: San Francisco, CA, USA
   icon_url: https://www.anthropic.com/favicon.ico
-  api_key:
-    name: ANTHROPIC_API_KEY
-    pattern: .*
-    header: x-api-key
-    scheme: ""
-    query_param: ""
-  env_vars:
-  - name: ANTHROPIC_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: ANTHROPIC_API_KEY
+      transport:
+        header: x-api-key
+        scheme: direct
   catalog:
-    docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
-    endpoint:
-      type: anthropic
-      url: https://api.anthropic.com/v1/models
-      auth_required: true
+    sources:
+    - id: models
+      docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
+      observation_scope: global_public
+      auth: api_key
+      topology: paginated
+      endpoint:
+        type: anthropic
+        url: https://api.anthropic.com/v1/models
+        path: "/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - messages
+        endpoint:
+          type: anthropic
+        deployment:
+          type: serverless
+  invocation:
+    routes:
+    - id: messages
+      api: messages
+      auth: api_key
+      endpoint: https://api.anthropic.com/v1/messages
+      health_api_url: https://status.anthropic.com/api/v2/summary.json
+      health_components:
+      - id: k8w3r06qmzrp
+        name: api.anthropic.com
   status_page_url: https://status.anthropic.com
-  chat_completions:
-    url: https://api.anthropic.com/v1/messages
-    health_api_url: https://status.anthropic.com/api/v2/summary.json
-    health_components:
-    - id: k8w3r06qmzrp
-      name: api.anthropic.com
   privacy_policy:
     privacy_policy_url: https://www.anthropic.com/privacy
     terms_of_service_url: https://www.anthropic.com/terms
@@ -79,8 +201,9 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 720h0m0s #30 days
-    details: API inputs and outputs are automatically deleted within 30 days unless required for policy enforcement or legal compliance
+    duration: 720h0m0s
+    details: API inputs and outputs are automatically deleted within 30 days unless
+      required for policy enforcement or legal compliance
   governance_policy:
     moderation_required: false
     moderated: true
@@ -89,74 +212,174 @@
     models.dev:
       fields:
         npm: "@ai-sdk/anthropic"
-
-# Cerebras
+- id: baseten
+  name: Baseten Model APIs
+  headquarters: San Francisco, CA, USA
+  icon_url: https://www.baseten.co/favicon.ico
+  credentials:
+    api_key:
+      env: BASETEN_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://docs.baseten.co/inference/model-apis/overview
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://inference.baseten.co/v1/models
+        path: "/models"
+        author_mapping:
+          field: id
+          normalized:
+            deepseek-ai/*: deepseek
+            moonshotai/*: moonshot-ai
+            nvidia/*: nvidia
+            openai/*: openai
+            zai-org/*: zhipu-ai
+        base_url_env: BASETEN_BASE_URL
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+          - messages
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: model-api
+      authors:
+      - deepseek
+      - moonshot-ai
+      - nvidia
+      - openai
+      - zhipu-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://inference.baseten.co/v1/chat/completions
 - id: cerebras
   name: Cerebras
   headquarters: Sunnyvale, CA, USA
   icon_url: https://cerebras.ai/favicon.ico
-  api_key:
-    name: CEREBRAS_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: CEREBRAS_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: CEREBRAS_API_KEY
   catalog:
-    docs: https://inference-docs.cerebras.ai/models/overview
-    endpoint:
-      type: openai
-      url: https://api.cerebras.ai/v1/models
-      auth_required: true
-      feature_rules:
-      - field: id
-        contains:
-        - llama
-        feature: tools
-        value: true
-      - field: id
-        contains:
-        - r1
-        feature: reasoning
-        value: true
-      author_mapping:
-        field: owned_by
-        normalized:
-          Alibaba: alibaba
-          DeepSeek: deepseek
-          Meta: meta
-          OpenAI: openai
-    authors:
-    - alibaba
-    - meta
-    - openai
+    sources:
+    - id: public-models
+      docs: https://inference-docs.cerebras.ai/api-reference/models/public-models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: openai
+        url: https://api.cerebras.ai/public/v1/models?format=openrouter
+        field_mappings:
+        - from: name
+          to: name
+        - from: description
+          to: description
+        - from: context_length
+          to: limits.context_window
+        - from: max_output_length
+          to: limits.output_tokens
+        - from: input_modalities
+          to: features.modalities.input
+        - from: output_modalities
+          to: features.modalities.output
+        - from: deprecated
+          to: lifecycle
+          values:
+            'false': active
+            'true': deprecated
+        - from: pricing.prompt
+          to: pricing.tokens.input
+          unit: per_token
+          currency: USD
+        - from: pricing.completion
+          to: pricing.tokens.output
+          unit: per_token
+          currency: USD
+        - from: pricing.input_cache_read
+          to: pricing.tokens.cache_read
+          unit: per_token
+          currency: USD
+        feature_rules:
+        - field: supported_features
+          contains:
+          - tools
+          feature: tools
+          value: true
+        - field: supported_features
+          contains:
+          - reasoning
+          feature: reasoning
+          value: true
+        - field: supported_features
+          contains:
+          - structured_outputs
+          feature: structured_outputs
+          value: true
+        - field: supported_features
+          contains:
+          - json_mode
+          feature: format_response
+          value: true
+        author_mapping:
+          field: owned_by
+          normalized:
+            Alibaba: alibaba
+            DeepSeek: deepseek
+            Meta: meta
+            OpenAI: openai
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+          base_url: https://api.cerebras.ai/v1
+        deployment:
+          type: serverless
+      authors:
+      - alibaba
+      - meta
+      - openai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.cerebras.ai/v1/chat/completions
+      health_api_url: https://status.cerebras.ai/api/v2/summary.json
+      health_components:
+      - id: 7xvps6c9lqwc
+        name: Llama3.1-8B
+      - id: s2bwxqnnvxrm
+        name: Llama-3.3-70B
+      - id: j1zb29zpldhn
+        name: DeepSeek-R1-Distill-Llama-70B
+      - id: wnty4dn86r6z
+        name: Llama-4-Scout
+      - id: lg464gw325m6
+        name: Llama-4-Maverick
+      - id: fb0rz0v52prv
+        name: Qwen-3-32B
+      - id: bhqw2gr7r710
+        name: Qwen-3-235B-Instruct-2507
+      - id: 6fy6xk2ttdk5
+        name: Qwen-3-235B-Thinking-2507
+      - id: 8xslm6vgnmtb
+        name: Qwen-3-480B-Coder
+      - id: hgfykfsb36gn
+        name: GPT-OSS-120B
   status_page_url: https://status.cerebras.ai/
-  chat_completions:
-    url: https://api.cerebras.ai/v1/chat/completions
-    health_api_url: https://status.cerebras.ai/api/v2/summary.json
-    health_components:
-    - id: 7xvps6c9lqwc
-      name: Llama3.1-8B
-    - id: s2bwxqnnvxrm
-      name: Llama-3.3-70B
-    - id: j1zb29zpldhn
-      name: DeepSeek-R1-Distill-Llama-70B
-    - id: wnty4dn86r6z
-      name: Llama-4-Scout
-    - id: lg464gw325m6
-      name: Llama-4-Maverick
-    - id: fb0rz0v52prv
-      name: Qwen-3-32B
-    - id: bhqw2gr7r710
-      name: Qwen-3-235B-Instruct-2507
-    - id: 6fy6xk2ttdk5
-      name: Qwen-3-235B-Thinking-2507
-    - id: 8xslm6vgnmtb
-      name: Qwen-3-480B-Coder
-    - id: hgfykfsb36gn
-      name: GPT-OSS-120B
   privacy_policy:
     privacy_policy_url: https://www.cerebras.ai/privacy-policy
     terms_of_service_url: https://www.cerebras.ai/terms-of-service
@@ -164,8 +387,9 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0s #immediate
-    details: API inputs and outputs are not retained for training, inference and chatbot services. Data is processed for immediate response generation and then discarded.
+    duration: 0s
+    details: API inputs and outputs are not retained for training, inference and chatbot
+      services. Data is processed for immediate response generation and then discarded.
   governance_policy:
     moderation_required: false
     moderated: true
@@ -174,95 +398,307 @@
     models.dev:
       fields:
         npm: "@ai-sdk/cerebras"
-
-# DeepInfra
+- id: cloudflare-workers-ai
+  aliases:
+  - cloudflare
+  name: Cloudflare Workers AI
+  headquarters: San Francisco, CA, USA
+  icon_url: https://www.cloudflare.com/favicon.ico
+  credentials:
+    api_key:
+      env: CLOUDFLARE_API_TOKEN
+  catalog:
+    sources:
+    - id: catalog
+      docs: https://developers.cloudflare.com/api/resources/ai/subresources/models/methods/list/
+      observation_scope: global_public
+      auth: api_key
+      topology: paginated
+      scopes:
+        account:
+          source: env
+          name: CLOUDFLARE_ACCOUNT_ID
+          role: required_input
+      endpoint:
+        type: cloudflare-workers-ai
+        url: https://api.cloudflare.com/client/v4
+        base_url_env: CLOUDFLARE_API_BASE_URL
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: cloudflare-workers-ai
+          path: "/accounts/{account_id}/ai/v1"
+        deployment:
+          type: serverless
+          tier: workers-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions
+- id: sambanova
+  aliases:
+  - sambacloud
+  name: SambaNova Cloud
+  headquarters: Palo Alto, CA, USA
+  icon_url: https://sambanova.ai/favicon.ico
+  credentials:
+    api_key:
+      env: SAMBANOVA_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://docs.sambanova.ai/docs/api-reference/endpoints/model-list
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.sambanova.ai/v1/models
+        path: "/models"
+        field_mappings:
+        - from: context_length
+          to: limits.context_window
+        - from: max_completion_tokens
+          to: limits.output_tokens
+        - from: pricing.prompt
+          to: pricing.tokens.input
+          unit: per_token
+          currency: USD
+        - from: pricing.completion
+          to: pricing.tokens.output
+          unit: per_token
+          currency: USD
+        author_mapping:
+          field: id
+          normalized:
+            deepseek*: deepseek
+            meta-llama*: meta
+            llama*: meta
+            qwen*: alibaba
+            mistral*: mistral
+            gpt-oss*: openai
+            openai*: openai
+            '*': sambanova
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: on-demand
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.sambanova.ai/v1/chat/completions
+- id: cohere
+  name: Cohere
+  headquarters: Toronto, Canada
+  icon_url: https://cohere.com/favicon.ico
+  credentials:
+    api_key:
+      env: COHERE_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://docs.cohere.com/v2/reference/list-models
+      observation_scope: global_public
+      auth: api_key
+      topology: paginated
+      endpoint:
+        type: cohere
+        url: https://api.cohere.com/v1/models
+        path: "/v1/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: cohere
+        deployment:
+          type: serverless
+      authors:
+      - cohere
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.cohere.com/v2/chat
+  status_page_url: https://status.cohere.com
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.cohere.com/v2
+        npm: cohere-ai
+- id: cursor
+  name: Cursor
+  headquarters: San Francisco, CA, USA
+  icon_url: https://cursor.com/favicon.ico
+  catalog:
+    sources:
+    - id: application
+      docs: https://cursor.com/changelog/composer-2-5
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
+        url: ''
+      authors:
+      - cursor
+  status_page_url: https://status.cursor.com
+- id: databricks
+  name: Databricks Mosaic AI Model Serving
+  headquarters: San Francisco, CA, USA
+  icon_url: https://www.databricks.com/favicon.ico
+  credentials:
+    api_key:
+      env: DATABRICKS_TOKEN
+  catalog:
+    sources:
+    - id: public-foundation-models
+      docs: https://docs.databricks.com/aws/en/machine-learning/model-serving/foundation-model-overview
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: databricks
+        url: https://docs.databricks.com/aws/en/machine-learning/model-serving/foundation-model-overview
+    - id: workspace-endpoints
+      docs: https://docs.databricks.com/api/workspace/servingendpoints/list
+      observation_scope: credential_scoped
+      auth: api_key
+      optional: true
+      topology: paginated
+      scopes:
+        workspace_id:
+          source: env
+          name: DATABRICKS_WORKSPACE_ID
+          role: required_input
+        region:
+          source: env
+          name: DATABRICKS_REGION
+          role: output_metadata
+      endpoint:
+        type: databricks-workspace
+        base_url_env: DATABRICKS_HOST
+        path: "/api/2.0/serving-endpoints"
 - id: deepinfra
   name: DeepInfra
   headquarters: San Francisco, CA, USA
   icon_url: https://deepinfra.com/favicon.ico
-  api_key:
-    name: DEEPINFRA_TOKEN
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DEEPINFRA_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env:
+      - DEEPINFRA_TOKEN
+      - DEEPINFRA_API_KEY
   catalog:
-    docs: https://docs.deepinfra.com/chat/overview
-    endpoint:
-      type: openai
-      url: https://api.deepinfra.com/v1/openai/models
-      auth_required: false
-      field_mappings:
-      - from: metadata.description
-        to: description
-      - from: metadata.context_length
-        to: limits.context_window
-      - from: metadata.tags
-        to: metadata.tags
-      feature_rules:
-      - field: metadata.tags
-        contains:
-        - reasoning
-        feature: reasoning
-        value: true
-      author_mapping:
-        field: id
-        normalized:
-          01-ai/*: 01.ai
-          BAAI/*: baai
-          ByteDance/*: bytedance
-          MiniMaxAI/*: minimax
-          NousResearch/*: nousresearch
-          Qwen/*: alibaba
-          cognitivecomputations/*: cognitivecomputations
-          deepseek-ai/*: deepseek
-          google/*: google
-          meta-llama/*: meta
-          microsoft/*: microsoft
-          mistralai/*: mistral
-          moonshotai/*: moonshot-ai
-          nvidia/*: nvidia
-          openai/*: openai
-          zai-org/*: zhipu-ai
-  chat_completions:
-    url: https://api.deepinfra.com/v1/openai/chat/completions
+    sources:
+    - id: account-models
+      docs: https://docs.deepinfra.com/chat/overview
+      observation_scope: global_public
+      auth: optional
+      endpoint:
+        type: openai
+        url: https://api.deepinfra.com/v1/openai/models
+        field_mappings:
+        - from: metadata.description
+          to: description
+        - from: metadata.context_length
+          to: limits.context_window
+        - from: metadata.tags
+          to: metadata.tags
+        - from: metadata.pricing.input_tokens
+          to: pricing.tokens.input
+          unit: per_million_tokens
+          currency: USD
+        - from: metadata.pricing.output_tokens
+          to: pricing.tokens.output
+          unit: per_million_tokens
+          currency: USD
+        - from: metadata.pricing.cache_read_tokens
+          to: pricing.tokens.cache_read
+          unit: per_million_tokens
+          currency: USD
+        - from: metadata.pricing.per_image_unit
+          to: pricing.operations.image_gen
+          unit: per_operation
+          currency: USD
+        feature_rules:
+        - field: metadata.tags
+          contains:
+          - reasoning
+          feature: reasoning
+          value: true
+        author_mapping:
+          field: id
+          normalized:
+            01-ai/*: 01.ai
+            BAAI/*: baai
+            ByteDance/*: bytedance
+            MiniMaxAI/*: minimax
+            NousResearch/*: nousresearch
+            Qwen/*: alibaba
+            cognitivecomputations/*: cognitivecomputations
+            deepseek-ai/*: deepseek
+            google/*: google
+            meta-llama/*: meta
+            microsoft/*: microsoft
+            mistralai/*: mistral
+            moonshotai/*: moonshot-ai
+            nvidia/*: nvidia
+            openai/*: openai
+            zai-org/*: zhipu-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.deepinfra.com/v1/openai/chat/completions
   extensions:
     models.dev:
       fields:
         npm: "@ai-sdk/deepinfra"
-
-# DeepSeek
 - id: deepseek
   aliases:
   - deepseek-ai
   name: DeepSeek
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
-  api_key:
-    name: DEEPSEEK_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DEEPSEEK_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: DEEPSEEK_API_KEY
   catalog:
-    docs: https://api-docs.deepseek.com/quick_start/pricing
-    endpoint:
-      type: openai
-      url: https://api.deepseek.com/models
-      auth_required: true
+    sources:
+    - id: models
+      docs: https://api-docs.deepseek.com/quick_start/pricing
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.deepseek.com/models
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.deepseek.com/v1/chat/completions
+      health_api_url: https://status.deepseek.com/api/v2/summary.json
+      health_components:
+      - id: j4n367d9mh3x
+        name: API 服务 (API Service)
   status_page_url: https://status.deepseek.com
-  chat_completions:
-    url: https://api.deepseek.com/v1/chat/completions
-    health_api_url: https://status.deepseek.com/api/v2/summary.json
-    health_components:
-    - id: j4n367d9mh3x
-      name: API 服务 (API Service)
   privacy_policy:
     privacy_policy_url: https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html
     terms_of_service_url: https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html
@@ -270,7 +706,9 @@
     trains_on_data: true
   retention_policy:
     type: indefinite
-    details: Personal data retained for as long as necessary to provide services and for as long as you have an account. Account data, input and payment data kept for account lifecycle duration.
+    details: Personal data retained for as long as necessary to provide services and
+      for as long as you have an account. Account data, input and payment data kept
+      for account lifecycle duration.
   governance_policy:
     moderation_required: false
     moderated: true
@@ -280,86 +718,99 @@
       fields:
         api: https://api.deepseek.com
         npm: "@ai-sdk/openai-compatible"
-
-# Fireworks AI
 - id: fireworks-ai
   aliases:
   - fireworks
   name: Fireworks AI
   headquarters: Redwood City, CA, USA
   icon_url: https://fireworks.ai/favicon.ico
-  api_key:
-    name: FIREWORKS_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: FIREWORKS_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: FIREWORKS_API_KEY
   catalog:
-    docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
-    endpoint:
-      type: openai
-      url: https://api.fireworks.ai/inference/v1/models
-      auth_required: true
-      feature_rules:
-      - field: id
-        contains:
-        - deepseek-r1
-        - qwen3
-        feature: reasoning
-        value: true
-      author_mapping:
-        field: id
-        normalized:
-          accounts/fireworks/models/deepseek*: deepseek
-          accounts/fireworks/models/gpt-oss*: openai
-          accounts/fireworks/models/kimi*: moonshot-ai
-          accounts/fireworks/models/llama*: meta
-          accounts/fireworks/models/mistral*: mistral
-          accounts/fireworks/models/mixtral*: mistral
-          accounts/fireworks/models/qwen*: alibaba
-          accounts/fireworks/models/yi-*: 01.ai
-          accounts/fireworks/routers/deepseek*: deepseek
-          accounts/fireworks/routers/gpt-oss*: openai
-          accounts/fireworks/routers/kimi*: moonshot-ai
-          accounts/fireworks/routers/llama*: meta
-          accounts/fireworks/routers/mistral*: mistral
-          accounts/fireworks/routers/mixtral*: mistral
-          accounts/fireworks/routers/qwen*: alibaba
-          accounts/fireworks/routers/yi-*: 01.ai
+    sources:
+    - id: models
+      docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.fireworks.ai/inference/v1/models
+        field_mappings:
+        - from: kind
+          to: extensions.fireworks.kind
+        - from: supports_chat
+          to: extensions.fireworks.supports_chat
+        - from: supports_tools
+          to: features.tools
+        - from: supports_image_input
+          to: features.modalities.image_input
+        feature_rules:
+        - field: id
+          contains:
+          - deepseek-r1
+          - qwen3
+          feature: reasoning
+          value: true
+        author_mapping:
+          field: id
+          normalized:
+            accounts/fireworks/models/deepseek*: deepseek
+            accounts/fireworks/models/gpt-oss*: openai
+            accounts/fireworks/models/kimi*: moonshot-ai
+            accounts/fireworks/models/llama*: meta
+            accounts/fireworks/models/mistral*: mistral
+            accounts/fireworks/models/mixtral*: mistral
+            accounts/fireworks/models/qwen*: alibaba
+            accounts/fireworks/models/yi-*: 01.ai
+            accounts/fireworks/routers/deepseek*: deepseek
+            accounts/fireworks/routers/gpt-oss*: openai
+            accounts/fireworks/routers/kimi*: moonshot-ai
+            accounts/fireworks/routers/llama*: meta
+            accounts/fireworks/routers/mistral*: mistral
+            accounts/fireworks/routers/mixtral*: mistral
+            accounts/fireworks/routers/qwen*: alibaba
+            accounts/fireworks/routers/yi-*: 01.ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.fireworks.ai/inference/v1/chat/completions
   status_page_url: https://status.fireworks.ai
-  chat_completions:
-    url: https://api.fireworks.ai/inference/v1/chat/completions
   extensions:
     models.dev:
       fields:
         api: https://api.fireworks.ai/inference/v1/
         npm: "@ai-sdk/openai-compatible"
-
-# Google AI Studio
 - id: google-ai-studio
   aliases:
   - google
   name: Google AI Studio
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
-  api_key:
-    name: GOOGLE_API_KEY
-    pattern: .*
-    header: x-goog-api-key
-    scheme: ""
-    query_param: ""
+  credentials:
+    api_key:
+      env: GOOGLE_API_KEY
+      transport:
+        header: x-goog-api-key
+        scheme: direct
   catalog:
-    docs: https://ai.google.dev/gemini-api/docs/models
-    endpoint:
-      type: google
-      url: https://generativelanguage.googleapis.com/v1beta/models
-      auth_required: true
+    sources:
+    - id: models
+      docs: https://ai.google.dev/gemini-api/docs/models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: google
+        url: https://generativelanguage.googleapis.com/v1beta/models
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://generativelanguage.googleapis.com/v1beta/models
   status_page_url: https://status.cloud.google.com
-  chat_completions:
-    url: https://generativelanguage.googleapis.com/v1beta/models
   privacy_policy:
     privacy_policy_url: https://policies.google.com/privacy
     terms_of_service_url: https://policies.google.com/terms
@@ -367,46 +818,65 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 48h0m0s #2 days
-    details: Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices
+    duration: 48h0m0s
+    details: Data retention period not specified in privacy policy; estimated 48 hours
+      based on typical Google Cloud practices
   governance_policy:
     moderation_required: false
     moderated: true
     moderator: google-ai-studio
-
-# Google Vertex AI
 - id: google-vertex
   name: Google Vertex AI
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
-  env_vars:
-  - name: GOOGLE_VERTEX_PROJECT
-    required: false
-    description: "GCP project ID (optional - falls back to gcloud config)"
-  - name: GOOGLE_VERTEX_LOCATION
-    required: false
-    description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
+  environment_advisories:
   - name: GOOGLE_APPLICATION_CREDENTIALS
-    required: false
-    description: "Path to service account JSON file (optional - uses Application Default Credentials)"
+    description: Path to service account JSON file (optional - uses Application Default
+      Credentials)
   catalog:
-    docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
-    endpoint:
-      type: google-cloud
-      url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
-      auth_required: false
-    authors:
-    - ai21
-    - anthropic
-    - deepseek-ai
-    - google
-    - meta
-    - mistralai
-    - openai
-    - qwen
+    sources:
+    - id: regional-models
+      docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
+      observation_scope: regional_public
+      auth: cloud_chain
+      scopes:
+        project:
+          source: env
+          name:
+          - GOOGLE_CLOUD_PROJECT
+          - GOOGLE_VERTEX_PROJECT
+          fallback: cloud_profile
+          role: required_input
+          description: GCP project ID (optional - falls back to gcloud config)
+        location:
+          source: env
+          name:
+          - GOOGLE_CLOUD_LOCATION
+          - GOOGLE_CLOUD_REGION
+          - GOOGLE_VERTEX_LOCATION
+          fallback: cloud_profile
+          role: required_input
+          description: GCP location/region (optional - falls back to gcloud config
+            or us-central1)
+      endpoint:
+        type: google-cloud
+        url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
+      authors:
+      - ai21
+      - anthropic
+      - deepseek-ai
+      - google
+      - meta
+      - mistralai
+      - openai
+      - qwen
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: cloud_chain
+      endpoint: https://us-central1-aiplatform.googleapis.com/v1/projects
   status_page_url: https://status.cloud.google.com
-  chat_completions:
-    url: https://us-central1-aiplatform.googleapis.com/v1/projects
   privacy_policy:
     privacy_policy_url: https://cloud.google.com/privacy
     terms_of_service_url: https://cloud.google.com/terms
@@ -414,8 +884,10 @@
     trains_on_data: false
   retention_policy:
     type: fixed
-    duration: 48h0m0s #2 days
-    details: Data retention period not specified in privacy policy; estimated 48 hours based on typical Google Cloud practices; enterprise customers may configure longer periods
+    duration: 48h0m0s
+    details: Data retention period not specified in privacy policy; estimated 48 hours
+      based on typical Google Cloud practices; enterprise customers may configure
+      longer periods
   governance_policy:
     moderation_required: false
     moderated: true
@@ -424,50 +896,64 @@
     models.dev:
       fields:
         npm: "@ai-sdk/google-vertex"
-
-# Groq
 - id: groq
   name: Groq
   headquarters: Mountain View, CA, USA
   icon_url: https://groq.com/favicon.ico
-  api_key:
-    name: GROQ_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: GROQ_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: GROQ_API_KEY
   catalog:
-    docs: https://console.groq.com/docs/models
-    endpoint:
-      type: openai
-      url: https://api.groq.com/openai/v1/models
-      auth_required: true
-      field_mappings:
-      - from: context_window
-        to: limits.context_window
-      - from: max_completion_tokens
-        to: limits.output_tokens
-    authors:
-    - alibaba
-    - deepseek
-    - google
-    - groq
-    - huggingfaceh4
-    - meta
-    - moonshot-ai
-    - openai
-    - playai
-    - sdaia
+    sources:
+    - id: models
+      docs: https://console.groq.com/docs/models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.groq.com/openai/v1/models
+        field_mappings:
+        - from: context_window
+          to: limits.context_window
+        - from: max_completion_tokens
+          to: limits.output_tokens
+        - from: active
+          to: lifecycle
+          values:
+            'false': unknown
+            'true': active
+        author_mapping:
+          field: owned_by
+          normalized:
+            Alibaba Cloud: alibaba
+            DeepSeek: deepseek
+            Google: google
+            Meta: meta
+            Moonshot AI: moonshot-ai
+            OpenAI: openai
+            PlayAI: playai
+      authors:
+      - alibaba
+      - deepseek
+      - google
+      - groq
+      - huggingfaceh4
+      - meta
+      - moonshot-ai
+      - openai
+      - playai
+      - sdaia
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.groq.com/openai/v1/chat/completions
+      health_api_url: https://groqstatus.com/api/v2/summary.json
+      health_components:
+      - id: 01K053E2FAKWKEYHXEV7WAHJBM
+        name: API
   status_page_url: https://status.groq.com
-  chat_completions:
-    url: https://api.groq.com/openai/v1/chat/completions
-    health_api_url: https://groqstatus.com/api/v2/summary.json
-    health_components:
-    - id: 01K053E2FAKWKEYHXEV7WAHJBM
-      name: API
   privacy_policy:
     privacy_policy_url: https://groq.com/privacy-policy/
     terms_of_service_url: https://groq.com/terms-of-use/
@@ -475,8 +961,9 @@
     trains_on_data: false
   retention_policy:
     type: none
-    duration: 0s #immediate
-    details: Input prompts and context are not retained; data is processed for immediate response generation and then discarded
+    duration: 0s
+    details: Input prompts and context are not retained; data is processed for immediate
+      response generation and then discarded
   governance_policy:
     moderation_required: false
     moderated: true
@@ -485,8 +972,238 @@
     models.dev:
       fields:
         npm: "@ai-sdk/groq"
-
-# Moonshot AI
+- id: hyperbolic
+  name: Hyperbolic Serverless Inference
+  headquarters: San Francisco, CA, USA
+  icon_url: https://www.hyperbolic.ai/favicon.ico
+  credentials:
+    api_key:
+      env: HYPERBOLIC_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://www.hyperbolic.ai/docs/inference/text-apis
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.hyperbolic.xyz/v1/models
+        path: "/models"
+        author_mapping:
+          field: id
+          normalized:
+            Qwen/*: alibaba
+            deepseek-ai/*: deepseek
+            meta-llama/*: meta
+            moonshotai/*: moonshot-ai
+            openai/*: openai
+        base_url_env: HYPERBOLIC_BASE_URL
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: pay-per-token
+      authors:
+      - alibaba
+      - deepseek
+      - meta
+      - moonshot-ai
+      - openai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.hyperbolic.xyz/v1/chat/completions
+- id: huggingface
+  name: Hugging Face Inference Providers
+  headquarters: New York, NY, USA
+  icon_url: https://huggingface.co/favicon.ico
+  credentials:
+    api_key:
+      env: HF_TOKEN
+  catalog:
+    sources:
+    - id: router-models
+      docs: https://huggingface.co/docs/inference-providers/hub-api
+      observation_scope: global_public
+      auth: optional
+      topology: paginated
+      endpoint:
+        type: huggingface
+        url: https://router.huggingface.co/v1/models
+        path: "/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: inference-provider
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://router.huggingface.co/v1/chat/completions
+- id: novita
+  aliases:
+  - novita-ai
+  name: Novita AI LLM API
+  headquarters: Singapore
+  icon_url: https://novita.ai/favicon.ico
+  credentials:
+    api_key:
+      env: NOVITA_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://novita.ai/docs/api-reference/model-apis-llm-list-models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.novita.ai/openai/v1/models
+        path: "/models"
+        field_mappings:
+        - from: title
+          to: name
+        - from: description
+          to: description
+        - from: context_size
+          to: limits.context_window
+        - from: input_token_price_per_m
+          to: pricing.tokens.input
+          unit: milli_currency_per_million_tokens
+          currency: USD
+        - from: output_token_price_per_m
+          to: pricing.tokens.output
+          unit: milli_currency_per_million_tokens
+          currency: USD
+        - from: input_token_price_per_m
+          to: pricing.tokens.input
+          unit: milli_currency_per_million_tokens
+          currency: USD
+          mode: batch
+          scale: 0.5
+        - from: output_token_price_per_m
+          to: pricing.tokens.output
+          unit: milli_currency_per_million_tokens
+          currency: USD
+          mode: batch
+          scale: 0.5
+        - from: input_token_price_per_m
+          to: extensions.novita.input_token_price_per_m_raw
+        - from: output_token_price_per_m
+          to: extensions.novita.output_token_price_per_m_raw
+        author_mapping:
+          field: id
+          normalized:
+            BAAI/*: baai
+            Qwen/*: alibaba
+            XiaomiMiMo/*: xiaomi
+            deepseek-ai/*: deepseek
+            google/*: google
+            meta-llama/*: meta
+            microsoft/*: microsoft
+            mistralai/*: mistral
+            moonshotai/*: moonshot-ai
+            openai/*: openai
+            zai-org/*: zhipu-ai
+        base_url_env: NOVITA_BASE_URL
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+          - completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: pay-per-token
+      authors:
+      - alibaba
+      - baai
+      - deepseek
+      - google
+      - meta
+      - microsoft
+      - mistral
+      - moonshot-ai
+      - openai
+      - xiaomi
+      - zhipu-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.novita.ai/openai/v1/chat/completions
+- id: nvidia
+  name: NVIDIA API Catalog
+  headquarters: Santa Clara, CA, USA
+  icon_url: https://www.nvidia.com/favicon.ico
+  credentials:
+    api_key:
+      env: NVIDIA_API_KEY
+  catalog:
+    sources:
+    - id: public-models
+      docs: https://build.nvidia.com/models
+      observation_scope: global_public
+      auth: optional
+      endpoint:
+        type: nvidia
+        url: https://integrate.api.nvidia.com/v1/models
+        path: "/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: discoverable_only
+          apis: []
+        endpoint:
+          type: openai
+        deployment:
+          type: nvidia-hosted
+          tier: developer-catalog
+    - id: account-nim-models
+      docs: https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html
+      observation_scope: credential_scoped
+      auth: api_key
+      optional: true
+      endpoint:
+        type: nvidia
+        base_url_env: NVIDIA_NIM_BASE_URL
+        path: "/v1/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: nim
+          tier: account
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://integrate.api.nvidia.com/v1/chat/completions
 - id: moonshot-ai
   aliases:
   - moonshotai
@@ -494,27 +1211,31 @@
   name: Moonshot AI
   headquarters: Beijing, China
   icon_url: https://www.moonshot.ai/favicon.ico
-  api_key:
-    name: MOONSHOT_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
+  credentials:
+    api_key:
+      env: MOONSHOT_API_KEY
   catalog:
-    docs: "https://platform.moonshot.ai/docs/api/chat#list-models"
-    endpoint:
-      type: openai
-      url: https://api.moonshot.ai/v1/models
-      auth_required: true
-      author_mapping:
-        field: owned_by
-        normalized:
-          moonshot: moonshot-ai
-    authors:
-    - moonshot-ai
+    sources:
+    - id: models
+      docs: https://platform.moonshot.ai/docs/api/chat#list-models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.moonshot.ai/v1/models
+        author_mapping:
+          field: owned_by
+          normalized:
+            moonshot: moonshot-ai
+      authors:
+      - moonshot-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.moonshot.ai/v1/chat/completions
   status_page_url: https://status.moonshot.cn
-  chat_completions:
-    url: https://api.moonshot.ai/v1/chat/completions
   privacy_policy:
     privacy_policy_url: https://platform.moonshot.ai/docs/agreement/userprivacy
     terms_of_service_url: https://platform.moonshot.ai/docs/agreement/modeluse
@@ -522,44 +1243,104 @@
     trains_on_data: true
   retention_policy:
     type: indefinite
-    duration: 0s #immediate
-    details: Data retention period not specified in publicly available privacy policy; data is processed to generate responses and used for model training
+    duration: 0s
+    details: Data retention period not specified in publicly available privacy policy;
+      data is processed to generate responses and used for model training
   governance_policy:
     moderation_required: false
     moderated: true
     moderator: moonshot-ai
-
-# OpenAI
+- id: mistral
+  aliases:
+  - mistral-ai
+  - mistralai
+  name: Mistral AI
+  headquarters: Paris, France
+  icon_url: https://mistral.ai/favicon.ico
+  credentials:
+    api_key:
+      env: MISTRAL_API_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://docs.mistral.ai/api/endpoint/models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.mistral.ai/v1/models
+        field_mappings:
+        - from: capabilities.function_calling
+          to: features.tools
+        - from: capabilities.vision
+          to: features.modalities.image_input
+        - from: capabilities.completion_chat
+          to: features.streaming
+        - from: capabilities.completion_fim
+          to: extensions.mistral.completion_fim
+        - from: capabilities.fine_tuning
+          to: extensions.mistral.fine_tuning
+        - from: capabilities.classification
+          to: extensions.mistral.classification
+        author_mapping:
+          field: owned_by
+          normalized:
+            mistral: mistral
+            mistralai: mistral
+      authors:
+      - mistral
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.mistral.ai/v1/chat/completions
+  status_page_url: https://status.mistral.ai
+  privacy_policy:
+    privacy_policy_url: https://mistral.ai/terms-of-use
+    terms_of_service_url: https://mistral.ai/terms-of-use
+    retains_data: true
+    trains_on_data: false
+  governance_policy:
+    moderation_required: false
+    moderated: false
+    moderator: mistral
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.mistral.ai/v1
+        npm: "@ai-sdk/mistral"
 - id: openai
   name: OpenAI
   headquarters: San Francisco, CA, USA
   icon_url: https://cdn.openai.com/API/logo-openai.svg
-  api_key:
-    name: OPENAI_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: OPENAI_API_KEY
-    required: false
+  credentials:
+    api_key:
+      env: OPENAI_API_KEY
   catalog:
-    docs: https://platform.openai.com/docs/models
-    endpoint:
-      type: openai
-      url: https://api.openai.com/v1/models
-      auth_required: true
-      author_mapping:
-        field: owned_by
-        normalized:
-          system: openai
+    sources:
+    - id: models
+      docs: https://platform.openai.com/docs/models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.openai.com/v1/models
+        author_mapping:
+          field: owned_by
+          normalized:
+            system: openai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.openai.com/v1/chat/completions
+      health_api_url: https://status.openai.com/api/v2/summary.json
+      health_components:
+      - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW
+        name: Chat
   status_page_url: https://status.openai.com
-  chat_completions:
-    url: https://api.openai.com/v1/chat/completions
-    health_api_url: https://status.openai.com/api/v2/summary.json
-    health_components:
-    - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW
-      name: Chat
   privacy_policy:
     privacy_policy_url: https://openai.com/privacy
     terms_of_service_url: https://openai.com/terms
@@ -567,8 +1348,13 @@
     trains_on_data: false
   retention_policy:
     type: conditional
-    duration: 720h0m0s #30 days
-    details: "Standard policy: API data retained for 30 days for abuse monitoring. However, due to The New York Times copyright lawsuit, OpenAI is under court order to preserve ChatGPT output data indefinitely. OpenAI is appealing these preservation orders, arguing they conflict with privacy commitments to users. Current legal proceedings may require indefinite data retention regardless of stated policy."
+    duration: 720h0m0s
+    details: 'Standard policy: API data retained for 30 days for abuse monitoring.
+      However, due to The New York Times copyright lawsuit, OpenAI is under court
+      order to preserve ChatGPT output data indefinitely. OpenAI is appealing these
+      preservation orders, arguing they conflict with privacy commitments to users.
+      Current legal proceedings may require indefinite data retention regardless of
+      stated policy.'
   governance_policy:
     moderation_required: false
     moderated: true
@@ -577,3 +1363,269 @@
     models.dev:
       fields:
         npm: "@ai-sdk/openai"
+- id: scaleway
+  name: Scaleway Generative APIs
+  headquarters: Paris, France
+  icon_url: https://www.scaleway.com/favicon.ico
+  credentials:
+    api_key:
+      env: SCW_SECRET_KEY
+  catalog:
+    sources:
+    - id: models
+      docs: https://www.scaleway.com/en/developers/api/generative-apis
+      observation_scope: regional_public
+      auth: api_key
+      scopes:
+        region:
+          source: env
+          name: SCW_REGION
+          role: required_input
+      endpoint:
+        type: openai
+        url: https://api.scaleway.ai/v1/models
+        path: "/models"
+        author_mapping:
+          field: id
+          normalized:
+            bge-*: baai
+            devstral-*: mistral
+            gemma-*: google
+            glm-*: zhipu-ai
+            gpt-oss-*: openai
+            holo*: hcompany
+            llama-*: meta
+            mistral-*: mistral
+            pixtral-*: mistral
+            qwen*: alibaba
+            voxtral-*: mistral
+            whisper-*: openai
+        base_url_env: SCW_BASE_URL
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+          tier: pay-per-use
+        regions:
+        - id: fr-par
+          residency:
+            id: france
+            kind: country
+            countries:
+            - FR
+      authors:
+      - alibaba
+      - baai
+      - google
+      - hcompany
+      - meta
+      - mistral
+      - openai
+      - zhipu-ai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.scaleway.ai/v1/chat/completions
+- id: snowflake
+  name: Snowflake Cortex AI
+  headquarters: Bozeman, MT, USA
+  icon_url: https://www.snowflake.com/favicon.ico
+  credentials:
+    api_key:
+      env: SNOWFLAKE_TOKEN
+  catalog:
+    sources:
+    - id: session-models
+      docs: https://docs.snowflake.com/en/developer-guide/snowflake-rest-api/reference/cortex-inference
+      observation_scope: credential_scoped
+      auth: api_key
+      topology: paginated
+      scopes:
+        region:
+          source: env
+          name: SNOWFLAKE_REGION
+          role: required_input
+      options:
+        cross_region:
+          source: env
+          name: SNOWFLAKE_CORTEX_CROSS_REGION
+      endpoint:
+        type: snowflake
+        url: https://docs.snowflake.com/en/developer-guide/snowflake-rest-api/reference/cortex-inference
+        path: "/api/v2/cortex/models"
+        base_url_env: SNOWFLAKE_ACCOUNT_URL
+- id: together
+  aliases:
+  - together-ai
+  name: Together AI
+  headquarters: San Francisco, CA, USA
+  icon_url: https://www.together.ai/favicon.ico
+  credentials:
+    api_key:
+      env: TOGETHER_API_KEY
+  catalog:
+    sources:
+    - id: serverless-models
+      docs: https://docs.together.ai/reference/models
+      observation_scope: global_public
+      auth: api_key
+      topology: paginated
+      options:
+        inventory:
+          source: static
+          value: serverless
+      endpoint:
+        type: together
+        url: https://api.together.ai/v1/models
+        path: "/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: serverless
+    - id: dedicated-models
+      docs: https://docs.together.ai/docs/dedicated-endpoints
+      observation_scope: global_public
+      auth: api_key
+      options:
+        inventory:
+          source: static
+          value: dedicated
+      endpoint:
+        type: together
+        url: https://api.together.ai/v1/models
+        path: "/models"
+      offering:
+        access:
+          channel: server_to_server
+          routability: routable
+          apis:
+          - chat_completions
+        endpoint:
+          type: openai
+        deployment:
+          type: dedicated
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.together.ai/v1/chat/completions
+  status_page_url: https://status.together.ai
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.together.ai/v1
+        npm: "@ai-sdk/togetherai"
+- id: watsonx
+  aliases:
+  - ibm-watsonx
+  name: IBM watsonx.ai
+  headquarters: Armonk, NY, USA
+  icon_url: https://www.ibm.com/favicon.ico
+  credentials:
+    api_key:
+      env: IBM_WATSONX_TOKEN
+  catalog:
+    sources:
+    - id: regional-models
+      docs: https://cloud.ibm.com/apidocs/watsonx-ai
+      observation_scope: regional_public
+      auth: api_key
+      topology: paginated
+      scopes:
+        region:
+          source: env
+          name: IBM_WATSONX_REGION
+          role: required_input
+      endpoint:
+        type: watsonx
+        url: https://cloud.ibm.com/apidocs/watsonx-ai
+        path: "/ml/v1/foundation_model_specs"
+        base_url_env: IBM_WATSONX_BASE_URL
+    - id: project-or-space-deployments
+      docs: https://cloud.ibm.com/apidocs/machine-learning-cp/machine-learning-cp-5.2.2#list-deployments
+      observation_scope: credential_scoped
+      auth: api_key
+      optional: true
+      topology: paginated
+      scopes:
+        region:
+          source: env
+          name: IBM_WATSONX_REGION
+          role: required_input
+      options:
+        project_id:
+          source: env
+          name: IBM_WATSONX_PROJECT_ID
+        space_id:
+          source: env
+          name: IBM_WATSONX_SPACE_ID
+      endpoint:
+        type: watsonx-deployments
+        base_url_env: IBM_WATSONX_BASE_URL
+        path: "/ml/v4/deployments"
+- id: xai
+  aliases:
+  - x-ai
+  name: xAI
+  headquarters: San Francisco, CA, USA
+  icon_url: https://x.ai/favicon.ico
+  credentials:
+    api_key:
+      env: XAI_API_KEY
+  catalog:
+    sources:
+    - id: language-models
+      docs: https://docs.x.ai/developers/rest-api-reference/inference/models
+      observation_scope: global_public
+      auth: api_key
+      endpoint:
+        type: openai
+        url: https://api.x.ai/v1/language-models
+        response_collection: models
+        author_mapping:
+          field: owned_by
+          normalized:
+            xai: xai
+      authors:
+      - xai
+  invocation:
+    routes:
+    - id: chat-completions
+      api: chat_completions
+      auth: api_key
+      endpoint: https://api.x.ai/v1/chat/completions
+  status_page_url: https://status.x.ai
+  privacy_policy:
+    privacy_policy_url: https://x.ai/legal/privacy-policy
+    terms_of_service_url: https://x.ai/legal/terms-of-service-enterprise
+    retains_data: true
+    trains_on_data: false
+  retention_policy:
+    type: fixed
+    duration: 720h0m0s
+    details: API requests and responses are stored for 30 days for abuse review unless
+      enterprise Zero Data Retention is enabled
+  governance_policy:
+    moderation_required: false
+    moderated: true
+    moderator: xai
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.x.ai/v1
+        npm: "@ai-sdk/xai"

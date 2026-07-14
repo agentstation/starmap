@@ -129,6 +129,13 @@ func setBaselineProviders(filtered providerSetter, sourceCatalog, baseline catal
 			continue
 		}
 		sourceProvider.ID = baselineProvider.ID
+		// models.dev enriches provider/model facts; it never owns executable
+		// acquisition configuration or configured aliases.
+		sourceProvider.Aliases = baselineProvider.Aliases
+		sourceProvider.Credentials = baselineProvider.Credentials
+		sourceProvider.Advisories = baselineProvider.Advisories
+		sourceProvider.Catalog = baselineProvider.Catalog
+		sourceProvider.Invocation = baselineProvider.Invocation
 		if err := filtered.SetProvider(sourceProvider); err != nil {
 			return pkgerrors.WrapResource(
 				"filter",

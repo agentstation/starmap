@@ -74,6 +74,33 @@ func DeepCopyModel(model Model) Model {
 	modelCopy.Modes = deepCopyModelModes(model.Modes)
 	modelCopy.Pricing = deepCopyModelPricing(model.Pricing)
 	modelCopy.Limits = copyPtr(model.Limits)
+	if model.InvocationAPIs != nil {
+		modelCopy.InvocationAPIs = make([]InvocationAPI, len(model.InvocationAPIs))
+		copy(modelCopy.InvocationAPIs, model.InvocationAPIs)
+	}
+	if model.OfferingAccess != nil {
+		access := *model.OfferingAccess
+		access.APIs = append([]InvocationAPI(nil), model.OfferingAccess.APIs...)
+		modelCopy.OfferingAccess = &access
+	}
+	if model.AggregatorUpstream != nil {
+		upstream := *model.AggregatorUpstream
+		modelCopy.AggregatorUpstream = &upstream
+	}
+	modelCopy.OfferingRegions = append([]CloudRegion(nil), model.OfferingRegions...)
+	for index := range modelCopy.OfferingRegions {
+		if model.OfferingRegions[index].Residency != nil {
+			residency := *model.OfferingRegions[index].Residency
+			residency.Countries = append([]string(nil), residency.Countries...)
+			modelCopy.OfferingRegions[index].Residency = &residency
+		}
+	}
+	if model.OfferingInferenceProfile != nil {
+		profile := *model.OfferingInferenceProfile
+		profile.SourceRegions = append([]string(nil), profile.SourceRegions...)
+		profile.DestinationRegions = append([]string(nil), profile.DestinationRegions...)
+		modelCopy.OfferingInferenceProfile = &profile
+	}
 	modelCopy.Extensions = model.Extensions.Copy()
 	return modelCopy
 }
@@ -107,17 +134,16 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.Aliases = append([]ProviderID(nil), provider.Aliases...)
 	providerCopy.Headquarters = copyPtr(provider.Headquarters)
 	providerCopy.IconURL = copyPtr(provider.IconURL)
-	providerCopy.APIKey = copyPtr(provider.APIKey)
-	providerCopy.EnvVars = append([]ProviderEnvVar(nil), provider.EnvVars...)
+	providerCopy.Credentials = deepCopyProviderCredentials(provider.Credentials)
+	providerCopy.Invocation = deepCopyProviderInvocation(provider.Invocation)
+	providerCopy.Advisories = append([]ProviderEnvironmentAdvisory(nil), provider.Advisories...)
 	providerCopy.Catalog = deepCopyProviderCatalog(provider.Catalog)
 	providerCopy.Models = DeepCopyProviderModels(provider.Models)
 	providerCopy.StatusPageURL = copyPtr(provider.StatusPageURL)
-	providerCopy.ChatCompletions = deepCopyProviderChatCompletions(provider.ChatCompletions)
 	providerCopy.PrivacyPolicy = deepCopyProviderPrivacyPolicy(provider.PrivacyPolicy)
 	providerCopy.RetentionPolicy = deepCopyProviderRetentionPolicy(provider.RetentionPolicy)
 	providerCopy.GovernancePolicy = deepCopyProviderGovernancePolicy(provider.GovernancePolicy)
 	providerCopy.Extensions = provider.Extensions.Copy()
-	providerCopy.EnvVarValues = copyMap(provider.EnvVarValues)
 	return providerCopy
 }
 
@@ -164,7 +190,6 @@ func deepCopyModelArchitecture(architecture *ModelArchitecture) *ModelArchitectu
 		return nil
 	}
 	copied := *architecture
-	copied.Precision = copyPtr(architecture.Precision)
 	copied.BaseModel = copyPtr(architecture.BaseModel)
 	return &copied
 }
@@ -280,8 +305,9 @@ func deepCopyModelModes(modes map[string]ModelMode) map[string]ModelMode {
 	copied := make(map[string]ModelMode, len(modes))
 	for name, mode := range modes {
 		copied[name] = ModelMode{
-			Pricing:  deepCopyModelPricing(mode.Pricing),
-			Provider: deepCopyModelProviderMode(mode.Provider),
+			Pricing:    deepCopyModelPricing(mode.Pricing),
+			Deployment: copyPtr(mode.Deployment),
+			Provider:   deepCopyModelProviderMode(mode.Provider),
 		}
 	}
 	return copied
@@ -370,11 +396,99 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 		return nil
 	}
 	copied := *catalog
-	copied.Docs = copyPtr(catalog.Docs)
-	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
-	copied.Endpoint.FeatureRules = deepCopyFeatureRules(catalog.Endpoint.FeatureRules)
-	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)
-	copied.Authors = append([]AuthorID(nil), catalog.Authors...)
+	copied.Sources = make([]ProviderSource, len(catalog.Sources))
+	for index := range catalog.Sources {
+		copied.Sources[index] = deepCopyProviderSource(catalog.Sources[index])
+	}
+	return &copied
+}
+
+func deepCopyProviderCredentials(credentials map[ProviderCredentialID]ProviderCredential) map[ProviderCredentialID]ProviderCredential {
+	if credentials == nil {
+		return nil
+	}
+	copied := make(map[ProviderCredentialID]ProviderCredential, len(credentials))
+	for id, credential := range credentials {
+		credential.Env = append(ProviderEnvironmentNames(nil), credential.Env...)
+		if credential.Inputs != nil {
+			credential.Inputs = make(map[string]ProviderCredentialInput, len(credential.Inputs))
+			for inputID, input := range credentials[id].Inputs {
+				input.Env = append(ProviderEnvironmentNames(nil), input.Env...)
+				credential.Inputs[inputID] = input
+			}
+		}
+		copied[id] = credential
+	}
+	return copied
+}
+
+func deepCopyProviderInvocation(invocation *ProviderInvocation) *ProviderInvocation {
+	if invocation == nil {
+		return nil
+	}
+	copied := *invocation
+	copied.Routes = append([]ProviderInvocationRoute(nil), invocation.Routes...)
+	for index := range copied.Routes {
+		copied.Routes[index].Auth.Methods = append([]ProviderCredentialID(nil), invocation.Routes[index].Auth.Methods...)
+		copied.Routes[index].HealthComponents = append([]ProviderHealthComponent(nil), invocation.Routes[index].HealthComponents...)
+	}
+	return &copied
+}
+
+func deepCopyProviderSource(source ProviderSource) ProviderSource {
+	copied := source
+	copied.Auth.Methods = append([]ProviderCredentialID(nil), source.Auth.Methods...)
+	copied.Endpoint.FieldMappings = deepCopyFieldMappings(source.Endpoint.FieldMappings)
+	copied.Endpoint.FeatureRules = deepCopyFeatureRules(source.Endpoint.FeatureRules)
+	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(source.Endpoint.AuthorMapping)
+	copied.Offering = deepCopyProviderOfferingDefaults(source.Offering)
+	copied.Authors = append([]AuthorID(nil), source.Authors...)
+	if source.Scopes != nil {
+		copied.Scopes = make(map[string]ProviderScopeBinding, len(source.Scopes))
+		for dimension, binding := range source.Scopes {
+			binding.Name = append(ProviderEnvironmentNames(nil), binding.Name...)
+			binding.Values = append([]string(nil), binding.Values...)
+			copied.Scopes[dimension] = binding
+		}
+	}
+	if source.Options != nil {
+		copied.Options = make(map[string]ProviderOptionBinding, len(source.Options))
+		for name, option := range source.Options {
+			option.Name = append(ProviderEnvironmentNames(nil), option.Name...)
+			copied.Options[name] = option
+		}
+	}
+	return copied
+}
+
+func deepCopyFieldMappings(mappings []FieldMapping) []FieldMapping {
+	if mappings == nil {
+		return nil
+	}
+	copied := append([]FieldMapping(nil), mappings...)
+	for index := range copied {
+		copied[index].Tier = copyPtr(mappings[index].Tier)
+		copied[index].Scale = copyPtr(mappings[index].Scale)
+		copied[index].Values = copyMap(mappings[index].Values)
+	}
+	return copied
+}
+
+func deepCopyProviderOfferingDefaults(defaults *ProviderOfferingDefaults) *ProviderOfferingDefaults {
+	if defaults == nil {
+		return nil
+	}
+	copied := *defaults
+	copied.Access.APIs = append([]InvocationAPI(nil), defaults.Access.APIs...)
+	copied.Regions = append([]CloudRegion(nil), defaults.Regions...)
+	for index := range copied.Regions {
+		if defaults.Regions[index].Residency == nil {
+			continue
+		}
+		residency := *defaults.Regions[index].Residency
+		residency.Countries = append([]string(nil), defaults.Regions[index].Residency.Countries...)
+		copied.Regions[index].Residency = &residency
+	}
 	return &copied
 }
 
@@ -396,17 +510,6 @@ func deepCopyAuthorMapping(mapping *AuthorMapping) *AuthorMapping {
 	}
 	copied := *mapping
 	copied.Normalized = copyMap(mapping.Normalized)
-	return &copied
-}
-
-func deepCopyProviderChatCompletions(chat *ProviderChatCompletions) *ProviderChatCompletions {
-	if chat == nil {
-		return nil
-	}
-	copied := *chat
-	copied.URL = copyPtr(chat.URL)
-	copied.HealthAPIURL = copyPtr(chat.HealthAPIURL)
-	copied.HealthComponents = append([]ProviderHealthComponent(nil), chat.HealthComponents...)
 	return &copied
 }
 

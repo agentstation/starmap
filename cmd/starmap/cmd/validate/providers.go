@@ -64,20 +64,9 @@ func validateProvidersStructure(app application.Application, verbose bool) error
 				fmt.Sprintf("provider %s missing required field 'name'", provider.ID))
 		}
 
-		// Validate API key configuration if present
-		if provider.APIKey != nil {
-			if err := validateAPIKeyConfig(&provider); err != nil {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("provider %s API key config: %v", provider.ID, err))
-			}
-		}
-
-		// Validate catalog section
-		if provider.Catalog != nil {
-			if err := validateCatalogConfig(&provider); err != nil {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("provider %s catalog config: %v", provider.ID, err))
-			}
+		if err := provider.ValidateConfiguration(); err != nil {
+			validationErrors = append(validationErrors,
+				fmt.Sprintf("provider %s configuration: %v", provider.ID, err))
 		}
 
 		// Validate URLs
@@ -102,43 +91,6 @@ func validateProvidersStructure(app application.Application, verbose bool) error
 	return nil
 }
 
-func validateAPIKeyConfig(provider *catalogs.Provider) error {
-	if provider.APIKey.Name == "" {
-		return fmt.Errorf("missing 'name' field")
-	}
-
-	// Check that auth method is specified (header or query_param)
-	// Scheme is optional and works with header (e.g., "Authorization: Bearer token")
-	if provider.APIKey.Header == "" && provider.APIKey.QueryParam == "" {
-		return fmt.Errorf("no auth method specified (header or query_param)")
-	}
-	if provider.APIKey.Header != "" && provider.APIKey.QueryParam != "" {
-		return fmt.Errorf("cannot specify both header and query_param")
-	}
-
-	return nil
-}
-
-func validateCatalogConfig(provider *catalogs.Provider) error {
-	catalog := provider.Catalog
-
-	// Check API key requirement consistency
-	if catalog.Endpoint.AuthRequired && provider.APIKey == nil {
-		return fmt.Errorf("api_key_required is true but no api_key configuration")
-	}
-
-	// Validate URLs are present if specified
-	if catalog.Endpoint.URL != "" && !isValidURL(catalog.Endpoint.URL) {
-		return fmt.Errorf("invalid api_url format")
-	}
-
-	if catalog.Docs != nil && *catalog.Docs != "" && !isValidURL(*catalog.Docs) {
-		return fmt.Errorf("invalid docs_url format")
-	}
-
-	return nil
-}
-
 func validateProviderURLs(provider *catalogs.Provider) error {
 	// Check various URL fields
 	if provider.IconURL != nil && *provider.IconURL != "" && !isValidURL(*provider.IconURL) {
@@ -147,6 +99,13 @@ func validateProviderURLs(provider *catalogs.Provider) error {
 
 	if provider.StatusPageURL != nil && *provider.StatusPageURL != "" && !isValidURL(*provider.StatusPageURL) {
 		return fmt.Errorf("invalid status_page_url")
+	}
+	if provider.Catalog != nil {
+		for _, source := range provider.Catalog.Sources {
+			if source.Docs != "" && !isValidURL(source.Docs) {
+				return fmt.Errorf("invalid docs URL for source %s", source.ID)
+			}
+		}
 	}
 
 	return nil

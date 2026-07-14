@@ -99,7 +99,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 
 	// Handle raw response mode
 	if raw {
-		rawData, fetchStats, err := fetcher.FetchRawResponse(ctx, prov, prov.CatalogEndpointURL())
+		rawData, fetchStats, err := fetcher.FetchRawResponse(ctx, prov, primarySourceID(prov))
 		if err != nil {
 			return &errors.SyncError{
 				Provider: providerID,
@@ -130,43 +130,17 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 		return formatter.Format(os.Stdout, jsonData)
 	}
 
-	// Normal mode - fetch models with or without stats
-	var models []catalogs.Model
-
+	start := time.Now()
+	models, fetchErr := fetcher.FetchModels(ctx, prov)
+	if fetchErr != nil {
+		return &errors.SyncError{Provider: providerID, Err: fetchErr}
+	}
 	if stats {
-		// Use FetchRawResponse to get stats, then parse models
-		rawData, fetchStats, fetchErr := fetcher.FetchRawResponse(ctx, prov, prov.CatalogEndpointURL())
-		if fetchErr != nil {
-			return &errors.SyncError{
-				Provider: providerID,
-				Err:      fetchErr,
-			}
-		}
-
-		// Display stats
-		if fetchStats != nil {
-			displayFetchStats(os.Stderr, prov.ID, fetchStats)
-		}
-
-		// Parse models from raw response
-		var parseErr error
-		models, parseErr = parseModelsFromRaw(prov, rawData)
-		if parseErr != nil {
-			return &errors.SyncError{
-				Provider: providerID,
-				Err:      parseErr,
-			}
-		}
-	} else {
-		// Normal fetch without stats
-		var fetchErr error
-		models, fetchErr = fetcher.FetchModels(ctx, prov)
-		if fetchErr != nil {
-			return &errors.SyncError{
-				Provider: providerID,
-				Err:      fetchErr,
-			}
-		}
+		fmt.Fprintf(os.Stderr, "\n%s Acquisition Statistics:\n", emoji.Info)
+		fmt.Fprintf(os.Stderr, "  Provider:     %s\n", prov.ID)
+		fmt.Fprintf(os.Stderr, "  Sources:      %d\n", len(prov.Catalog.Sources))
+		fmt.Fprintf(os.Stderr, "  Models:       %d\n", len(models))
+		fmt.Fprintf(os.Stderr, "  Latency:      %dms\n\n", time.Since(start).Milliseconds())
 	}
 
 	if len(models) == 0 {
@@ -198,13 +172,13 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 	var outputData any
 	switch outputFormat {
 	case outputFormatTable, "wide", "":
-		// Convert to pointer slice for table compatibility
+		// Build the pointer slice consumed by the table renderer.
 		modelPointers := make([]*catalogs.Model, len(models))
 		for i := range models {
 			modelPointers[i] = &models[i]
 		}
 		tableData := table.ModelsToTableData(modelPointers, false)
-		// Convert to format.Data for formatter compatibility
+		// Build the formatter's tabular data contract.
 		outputData = format.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -227,7 +201,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 
 	// Filter to only providers with clients
-	// Convert to pointer slice for compatibility
+	// Build the pointer slice consumed by provider filtering.
 	providerPointers := make([]*catalogs.Provider, len(providers))
 	for i := range providers {
 		providerPointers[i] = &providers[i]
@@ -267,7 +241,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 			defer cancel()
 
 			models, err := fetcher.FetchModels(fetchCtx, p)
-			// Convert to pointer slice for result struct compatibility
+			// Transfer caller-owned model values into the aggregate result.
 			modelPointers := make([]*catalogs.Model, len(models))
 			for i := range models {
 				modelPointers[i] = &models[i]
@@ -294,7 +268,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 		if r.err != nil {
 			errorCount++
 			if !quiet {
-				fmt.Fprintf(os.Stderr, "Warning: %s: %v\n", r.provider, r.err)
+				fmt.Fprintf(os.Stderr, "Warning: %s: %s\n", r.provider, errors.SafeSummary(r.err))
 			}
 			continue
 		}
@@ -329,7 +303,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 	switch outputFormat {
 	case outputFormatTable, "wide", "":
 		tableData := table.ModelsToTableData(allModels, false)
-		// Convert to format.Data for formatter compatibility
+		// Build the formatter's tabular data contract.
 		outputData = format.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -368,7 +342,7 @@ func fetchAllProvidersRaw(ctx context.Context, app application.Application, vali
 			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
-			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, p, p.CatalogEndpointURL())
+			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, p, primarySourceID(p))
 			results <- rawResult{
 				provider: string(p.ID),
 				rawData:  json.RawMessage(rawData),
@@ -392,7 +366,7 @@ func fetchAllProvidersRaw(ctx context.Context, app application.Application, vali
 		if r.err != nil {
 			errorCount++
 			if !quiet {
-				fmt.Fprintf(os.Stderr, "Warning: %s: %v\n", r.provider, r.err)
+				fmt.Fprintf(os.Stderr, "Warning: %s: %s\n", r.provider, errors.SafeSummary(r.err))
 			}
 			continue
 		}
@@ -429,7 +403,6 @@ func fetchAllProvidersRaw(ctx context.Context, app application.Application, vali
 func displayFetchStats(w io.Writer, providerID catalogs.ProviderID, stats *sources.FetchStats) {
 	fmt.Fprintf(w, "\n%s Request Statistics:\n", emoji.Info)
 	fmt.Fprintf(w, "  Provider:     %s\n", providerID)
-	fmt.Fprintf(w, "  URL:          %s\n", stats.URL)
 	fmt.Fprintf(w, "  Status:       %d\n", stats.StatusCode)
 	fmt.Fprintf(w, "  Latency:      %dms\n", stats.Latency.Milliseconds())
 	fmt.Fprintf(w, "  Payload:      %s (%d bytes)\n", stats.HumanSize(), stats.PayloadSize)
@@ -447,52 +420,9 @@ func displayFetchStats(w io.Writer, providerID catalogs.ProviderID, stats *sourc
 	fmt.Fprintln(w)
 }
 
-// parseModelsFromRaw parses raw JSON response bytes into models using the provider's client.
-// This allows us to get both stats and models from a single FetchRawResponse call.
-func parseModelsFromRaw(prov *catalogs.Provider, rawData []byte) ([]catalogs.Model, error) {
-	// For now, we only support parsing OpenAI-compatible responses
-	// This covers: OpenAI, Groq, DeepSeek, Cerebras, Moonshot, etc.
-	if prov.Catalog.Endpoint.Type != catalogs.EndpointTypeOpenAI {
-		return nil, fmt.Errorf("parsing raw responses only supported for OpenAI-compatible endpoints, got %s", prov.Catalog.Endpoint.Type)
+func primarySourceID(provider *catalogs.Provider) string {
+	if provider == nil || provider.Catalog == nil || len(provider.Catalog.Sources) == 0 {
+		return ""
 	}
-
-	// Parse raw JSON into generic structure to avoid import cycles
-	var response struct {
-		Data []json.RawMessage `json:"data"`
-	}
-	if err := json.Unmarshal(rawData, &response); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
-	}
-
-	// For each model in the response, parse it generically and extract fields
-	models := make([]catalogs.Model, 0, len(response.Data))
-	for _, modelData := range response.Data {
-		var apiModel struct {
-			ID      string `json:"id"`
-			Object  string `json:"object"`
-			Created int64  `json:"created"`
-			OwnedBy string `json:"owned_by"`
-		}
-		if err := json.Unmarshal(modelData, &apiModel); err != nil {
-			continue // Skip invalid models
-		}
-
-		// Build basic model
-		model := catalogs.Model{
-			ID: apiModel.ID,
-		}
-
-		// Apply author mapping if configured
-		if prov.Catalog.Endpoint.AuthorMapping != nil {
-			authorID := catalogs.AuthorID(apiModel.OwnedBy)
-			if normalized, ok := prov.Catalog.Endpoint.AuthorMapping.Normalized[apiModel.OwnedBy]; ok {
-				authorID = normalized
-			}
-			model.Authors = []catalogs.Author{{Name: string(authorID)}}
-		}
-
-		models = append(models, model)
-	}
-
-	return models, nil
+	return provider.Catalog.Sources[0].ID
 }

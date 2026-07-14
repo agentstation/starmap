@@ -1,0 +1,115 @@
+# meta-llama/llama-3.3-70b-instruct - Serverless multilingual text model
+id: meta-llama/llama-3.3-70b-instruct
+name: Llama 3.3 70B Instruct
+authors:
+- id: meta
+  name: meta
+description: Serverless multilingual text model
+status: active
+
+# Model features
+features:
+  modalities:
+    input:
+    - text
+    output:
+    - text
+
+  # Core capabilities
+  tool_calls: false
+  tools: false
+  tool_choice: false
+  web_search: false
+  attachments: false
+
+  # Reasoning & Verbosity
+  reasoning: false
+  reasoning_effort: false
+  reasoning_tokens: false
+  include_reasoning: false
+  verbosity: false
+
+  # Generation control support flags
+  temperature: true
+  top_p: true
+  top_k: false
+  top_a: false
+  min_p: false
+  typical_p: false
+  tfs: false
+  max_tokens: true
+  max_output_tokens: false
+  stop: true
+  stop_token_ids: false
+  frequency_penalty: false
+  presence_penalty: false
+  repetition_penalty: false
+  no_repeat_ngram_size: false
+  length_penalty: false
+  logit_bias: false
+  bad_words: false
+  allowed_tokens: false
+  seed: false
+  logprobs: false
+  top_logprobs: false
+  echo: false
+  "n": false
+  best_of: false
+  mirostat: false
+  mirostat_tau: false
+  mirostat_eta: false
+  contrastive_search_penalty_alpha: false
+  num_beams: false
+  early_stopping: false
+  diversity_penalty: false
+
+  # Response delivery
+  format_response: false
+  structured_outputs: false
+  streaming: true
+modes:
+  batch:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.0675
+        output:
+          per_1m: 0.2
+      currency: USD
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.135
+    output:
+      per_1m: 0.4
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 131072
+  input_tokens: 0
+  output_tokens: 0
+extensions:
+  novita:
+    fields:
+      input_token_price_per_m_raw: 135
+      output_token_price_per_m_raw: 400
+      unknown_fields:
+      - path: data[].context_size
+        checksum: sha256:f1de634787fe5cc0fe96b0b7f617755847d22b30d06aee392ffb5787d7c9f1c9
+      - path: data[].description
+        checksum: sha256:a3093a5e6c7a452c02e229d3e12c60e4d21a8e7a7a4b235cb0ee39e3dd58b59d
+      - path: data[].input_token_price_per_m
+        checksum: sha256:13671077b66a29874a2578b5240319092ef2a1043228e433e9b006b5e53e7513
+      - path: data[].output_token_price_per_m
+        checksum: sha256:26d228663f13a88592a12d16cf9587caab0388b262d6d9f126ed62f9333aca94
+      - path: data[].quantization
+        checksum: sha256:aa11ee2dcd25726739c0df91c5985ac9b3ae8a3f56e8a43a51f273ac0d6b7138
+      - path: data[].title
+        checksum: sha256:880a877ab9ccfc9a734f8036cafcdb9f476beda000bbdab6dbada1dc190842a4
+
+# Timestamps
+created_at: 2024-12-07T08:28:29Z
+updated_at: 2024-12-07T08:28:29Z

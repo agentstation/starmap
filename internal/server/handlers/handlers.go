@@ -14,6 +14,12 @@ import (
 	ws "github.com/agentstation/starmap/internal/server/websocket"
 )
 
+const (
+	responseFieldCount  = "count"
+	responseFieldModels = "models"
+	responseFieldStatus = "status"
+)
+
 // Handlers provides access to all HTTP handlers.
 type Handlers struct {
 	app            application.Application

@@ -84,26 +84,62 @@ type AuthorChangeset struct {
 	Removed []catalogs.Author // Removed authors
 }
 
+// ModelDefinitionUpdate describes one canonical definition replacement.
+type ModelDefinitionUpdate struct {
+	ID       catalogs.ModelDefinitionID
+	Existing catalogs.ModelDefinition
+	New      catalogs.ModelDefinition
+}
+
+// ModelDefinitionChangeset describes canonical definition identity changes.
+type ModelDefinitionChangeset struct {
+	Added   []catalogs.ModelDefinition
+	Updated []ModelDefinitionUpdate
+	Removed []catalogs.ModelDefinition
+}
+
+// ProviderOfferingUpdate describes one provider-scoped offering replacement.
+type ProviderOfferingUpdate struct {
+	Key      catalogs.OfferingKey
+	Existing catalogs.ProviderOffering
+	New      catalogs.ProviderOffering
+}
+
+// ProviderOfferingChangeset describes exact provider-offering identity changes.
+type ProviderOfferingChangeset struct {
+	Added   []catalogs.ProviderOffering
+	Updated []ProviderOfferingUpdate
+	Removed []catalogs.ProviderOffering
+}
+
 // Changeset represents all changes between two catalogs.
 type Changeset struct {
-	Models    *ModelChangeset    // Model changes
-	Providers *ProviderChangeset // Provider changes
-	Authors   *AuthorChangeset   // Author changes
-	Summary   ChangesetSummary   // Summary statistics
+	Models      *ModelChangeset            // Model changes
+	Providers   *ProviderChangeset         // Provider changes
+	Authors     *AuthorChangeset           // Author changes
+	Definitions *ModelDefinitionChangeset  // Canonical definition changes
+	Offerings   *ProviderOfferingChangeset // Canonical offering changes
+	Summary     ChangesetSummary           // Summary statistics
 }
 
 // ChangesetSummary provides summary statistics for a changeset.
 type ChangesetSummary struct {
-	ModelsAdded      int
-	ModelsUpdated    int
-	ModelsRemoved    int
-	ProvidersAdded   int
-	ProvidersUpdated int
-	ProvidersRemoved int
-	AuthorsAdded     int
-	AuthorsUpdated   int
-	AuthorsRemoved   int
-	TotalChanges     int
+	ModelsAdded        int
+	ModelsUpdated      int
+	ModelsRemoved      int
+	ProvidersAdded     int
+	ProvidersUpdated   int
+	ProvidersRemoved   int
+	AuthorsAdded       int
+	AuthorsUpdated     int
+	AuthorsRemoved     int
+	DefinitionsAdded   int
+	DefinitionsUpdated int
+	DefinitionsRemoved int
+	OfferingsAdded     int
+	OfferingsUpdated   int
+	OfferingsRemoved   int
+	TotalChanges       int
 }
 
 // HasChanges returns true if the changeset contains any changes.
@@ -112,7 +148,7 @@ func (c *Changeset) HasChanges() bool {
 }
 
 // calculateSummary computes the summary for a changeset.
-func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, authors *AuthorChangeset) ChangesetSummary {
+func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, authors *AuthorChangeset, canonical ...any) ChangesetSummary {
 	modelsAdded := len(models.Added)
 	modelsUpdated := len(models.Updated)
 	modelsRemoved := len(models.Removed)
@@ -123,6 +159,29 @@ func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, auth
 	authorsUpdated := len(authors.Updated)
 	authorsRemoved := len(authors.Removed)
 
+	var definitionsAdded, definitionsUpdated, definitionsRemoved int
+	var offeringsAdded, offeringsUpdated, offeringsRemoved int
+	for _, value := range canonical {
+		switch changes := value.(type) {
+		case *ModelDefinitionChangeset:
+			if changes != nil {
+				definitionsAdded, definitionsUpdated, definitionsRemoved = len(changes.Added), len(changes.Updated), len(changes.Removed)
+			}
+		case *ProviderOfferingChangeset:
+			if changes != nil {
+				offeringsAdded, offeringsUpdated, offeringsRemoved = len(changes.Added), len(changes.Updated), len(changes.Removed)
+			}
+		}
+	}
+	legacyTotal := modelsAdded + modelsUpdated + modelsRemoved +
+		providersAdded + providersUpdated + providersRemoved +
+		authorsAdded + authorsUpdated + authorsRemoved
+	canonicalTotal := definitionsAdded + definitionsUpdated + definitionsRemoved +
+		offeringsAdded + offeringsUpdated + offeringsRemoved
+	total := legacyTotal
+	if total == 0 {
+		total = canonicalTotal
+	}
 	return ChangesetSummary{
 		ModelsAdded:      modelsAdded,
 		ModelsUpdated:    modelsUpdated,
@@ -133,10 +192,20 @@ func calculateSummary(models *ModelChangeset, providers *ProviderChangeset, auth
 		AuthorsAdded:     authorsAdded,
 		AuthorsUpdated:   authorsUpdated,
 		AuthorsRemoved:   authorsRemoved,
-		TotalChanges: modelsAdded + modelsUpdated + modelsRemoved +
-			providersAdded + providersUpdated + providersRemoved +
-			authorsAdded + authorsUpdated + authorsRemoved,
+		DefinitionsAdded: definitionsAdded, DefinitionsUpdated: definitionsUpdated, DefinitionsRemoved: definitionsRemoved,
+		OfferingsAdded: offeringsAdded, OfferingsUpdated: offeringsUpdated, OfferingsRemoved: offeringsRemoved,
+		TotalChanges: total,
 	}
+}
+
+// HasChanges reports whether canonical definitions changed.
+func (c *ModelDefinitionChangeset) HasChanges() bool {
+	return c != nil && (len(c.Added) > 0 || len(c.Updated) > 0 || len(c.Removed) > 0)
+}
+
+// HasChanges reports whether canonical provider offerings changed.
+func (c *ProviderOfferingChangeset) HasChanges() bool {
+	return c != nil && (len(c.Added) > 0 || len(c.Updated) > 0 || len(c.Removed) > 0)
 }
 
 // IsEmpty returns true if the changeset contains no changes.
@@ -210,6 +279,12 @@ func (c *Changeset) String() string {
 			authorParts = append(authorParts, fmt.Sprintf("%d removed", len(c.Authors.Removed)))
 		}
 		parts = append(parts, fmt.Sprintf("Authors: %s", strings.Join(authorParts, ", ")))
+	}
+	if c.Definitions.HasChanges() {
+		parts = append(parts, fmt.Sprintf("Definitions: %d added, %d updated, %d removed", len(c.Definitions.Added), len(c.Definitions.Updated), len(c.Definitions.Removed)))
+	}
+	if c.Offerings.HasChanges() {
+		parts = append(parts, fmt.Sprintf("Offerings: %d added, %d updated, %d removed", len(c.Offerings.Added), len(c.Offerings.Updated), len(c.Offerings.Removed)))
 	}
 
 	return fmt.Sprintf("Changeset: %s (Total: %d changes)", strings.Join(parts, "; "), c.Summary.TotalChanges)
@@ -368,9 +443,11 @@ const (
 // Filter filters the changeset based on the apply strategy.
 func (c *Changeset) Filter(strategy ApplyStrategy) *Changeset {
 	filtered := &Changeset{
-		Models:    &ModelChangeset{},
-		Providers: &ProviderChangeset{},
-		Authors:   &AuthorChangeset{},
+		Models:      &ModelChangeset{},
+		Providers:   &ProviderChangeset{},
+		Authors:     &AuthorChangeset{},
+		Definitions: &ModelDefinitionChangeset{},
+		Offerings:   &ProviderOfferingChangeset{},
 	}
 
 	switch strategy {
@@ -386,22 +463,46 @@ func (c *Changeset) Filter(strategy ApplyStrategy) *Changeset {
 		filtered.Providers.Updated = c.Providers.Updated
 		filtered.Authors.Added = c.Authors.Added
 		filtered.Authors.Updated = c.Authors.Updated
+		copyCanonicalAdditionsAndUpdates(filtered, c)
 
 	case ApplyUpdatesOnly:
 		// Only include updates
 		filtered.Models.Updated = c.Models.Updated
 		filtered.Providers.Updated = c.Providers.Updated
 		filtered.Authors.Updated = c.Authors.Updated
+		if c.Definitions != nil {
+			filtered.Definitions.Updated = c.Definitions.Updated
+		}
+		if c.Offerings != nil {
+			filtered.Offerings.Updated = c.Offerings.Updated
+		}
 
 	case ApplyAdditionsOnly:
 		// Only include additions
 		filtered.Models.Added = c.Models.Added
 		filtered.Providers.Added = c.Providers.Added
 		filtered.Authors.Added = c.Authors.Added
+		if c.Definitions != nil {
+			filtered.Definitions.Added = c.Definitions.Added
+		}
+		if c.Offerings != nil {
+			filtered.Offerings.Added = c.Offerings.Added
+		}
 	}
 
 	// Recalculate summary
-	filtered.Summary = calculateSummary(filtered.Models, filtered.Providers, filtered.Authors)
+	filtered.Summary = calculateSummary(filtered.Models, filtered.Providers, filtered.Authors, filtered.Definitions, filtered.Offerings)
 
 	return filtered
+}
+
+func copyCanonicalAdditionsAndUpdates(destination, source *Changeset) {
+	if source.Definitions != nil {
+		destination.Definitions.Added = source.Definitions.Added
+		destination.Definitions.Updated = source.Definitions.Updated
+	}
+	if source.Offerings != nil {
+		destination.Offerings.Added = source.Offerings.Added
+		destination.Offerings.Updated = source.Offerings.Updated
+	}
 }

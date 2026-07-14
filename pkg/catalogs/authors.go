@@ -106,8 +106,8 @@ func (a *Authors) Resolve(id AuthorID) (*Author, bool) {
 func (a *Authors) Set(id AuthorID, author *Author) error {
 	if author == nil {
 		return &errors.ValidationError{
-			Field:   "author",
-			Message: "cannot be nil",
+			Field:   catalogResourceAuthor,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -122,8 +122,8 @@ func (a *Authors) Set(id AuthorID, author *Author) error {
 func (a *Authors) Add(author *Author) error {
 	if author == nil {
 		return &errors.ValidationError{
-			Field:   "author",
-			Message: "cannot be nil",
+			Field:   catalogResourceAuthor,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -134,7 +134,7 @@ func (a *Authors) Add(author *Author) error {
 		return &errors.ValidationError{
 			Field:   "author.ID",
 			Value:   author.ID,
-			Message: "already exists",
+			Message: validationMessageAlreadyExists,
 		}
 	}
 
@@ -150,7 +150,7 @@ func (a *Authors) Delete(id AuthorID) error {
 
 	if _, exists := a.authors[id]; !exists {
 		return &errors.NotFoundError{
-			Resource: "author",
+			Resource: catalogResourceAuthor,
 			ID:       string(id),
 		}
 	}
@@ -262,7 +262,7 @@ func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error {
 			errs[author.ID] = &errors.ValidationError{
 				Field:   "author.ID",
 				Value:   author.ID,
-				Message: "already exists",
+				Message: validationMessageAlreadyExists,
 			}
 		}
 	}
@@ -297,7 +297,7 @@ func (a *Authors) SetBatch(authors map[AuthorID]*Author) error {
 		if author == nil {
 			return &errors.ValidationError{
 				Field:   "authors[" + string(id) + "]",
-				Message: "cannot be nil",
+				Message: validationMessageCannotBeNil,
 			}
 		}
 	}
@@ -327,7 +327,7 @@ func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error {
 	for _, id := range ids {
 		if _, exists := a.authors[id]; !exists {
 			errs[id] = &errors.NotFoundError{
-				Resource: "author",
+				Resource: catalogResourceAuthor,
 				ID:       string(id),
 			}
 		} else {

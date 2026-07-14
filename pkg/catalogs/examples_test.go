@@ -38,7 +38,7 @@ func Example() {
 	}
 
 	// List all models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Found %d models\n", len(models))
 	// Output: Found 1 models
 }
@@ -56,7 +56,7 @@ func Example_embeddedCatalog() {
 	}
 
 	// Access pre-loaded models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
 
 	// Find a specific model
@@ -243,33 +243,6 @@ func Example_concurrentAccess() {
 	<-done
 
 	fmt.Printf("Created %d models concurrently\n", len(catalog.Models().List()))
-}
-
-// Example_providerCapabilities demonstrates working with provider features.
-func Example_providerCapabilities() {
-	catalog := catalogs.NewEmpty()
-
-	// Add provider with capabilities
-	provider := catalogs.Provider{
-		ID:   "openai",
-		Name: "OpenAI",
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				URL:          "https://api.openai.com/v1/models",
-				AuthRequired: true,
-			},
-		},
-	}
-	_ = catalog.SetProvider(provider)
-
-	// Check capabilities
-	p, _ := catalog.Provider("openai")
-	if p.HasAPIKey() {
-		fmt.Println("Provider has API key configured")
-	}
-	if p.Catalog != nil && p.Catalog.Endpoint.AuthRequired {
-		fmt.Println("Provider requires API key")
-	}
 }
 
 // Example_modelFiltering demonstrates filtering models.

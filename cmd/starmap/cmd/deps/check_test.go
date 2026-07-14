@@ -5,8 +5,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
-	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -34,22 +32,13 @@ func TestCollectDependencyStatuses(t *testing.T) {
 			wantSourcesWithNoDeps: 1,
 		},
 		{
-			name: "providers source with no dependencies",
-			sources: []sources.Source{
-				providers.New(catalogs.NewProviders()),
-			},
-			wantSourcesCount:      1,
-			wantSourcesWithNoDeps: 1,
-		},
-		{
 			name: "multiple sources",
 			sources: []sources.Source{
-				providers.New(catalogs.NewProviders()),
 				modelsdev.NewGitSource(),
 				modelsdev.NewHTTPSource(),
 			},
-			wantSourcesCount:      3,
-			wantSourcesWithNoDeps: 2, // providers and http have no deps
+			wantSourcesCount:      2,
+			wantSourcesWithNoDeps: 1,
 		},
 	}
 
@@ -79,11 +68,12 @@ func TestCollectDependencyStatuses(t *testing.T) {
 }
 
 func TestGetAllSources(t *testing.T) {
-	allSources := getAllSources()
-
-	// We expect 4 sources: local, providers, git, http
-	if len(allSources) != 4 {
-		t.Errorf("getAllSources() returned %d sources, want 4", len(allSources))
+	allSources, err := getAllSources()
+	if err != nil {
+		t.Fatalf("getAllSources: %v", err)
+	}
+	if len(allSources) < 4 {
+		t.Fatalf("getAllSources() returned %d sources, want configured provider sources plus local/git/http", len(allSources))
 	}
 
 	// Verify we have all expected source IDs

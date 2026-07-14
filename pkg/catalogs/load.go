@@ -56,17 +56,30 @@ func (cat *Builder) loadProvidersYAML() error {
 		return errors.WrapIO("read", "providers.yaml", err)
 	}
 
-	var providers []Provider
-	if err := yaml.Unmarshal(data, &providers); err != nil {
+	providers, err := decodeProvidersYAML(data)
+	if err != nil {
 		return errors.WrapParse("yaml", "providers.yaml", err)
 	}
 
 	for _, p := range providers {
 		if err := cat.SetProvider(p); err != nil {
-			return errors.WrapResource("load", "provider", string(p.ID), err)
+			return errors.WrapResource("load", catalogResourceProvider, string(p.ID), err)
 		}
 	}
 	return nil
+}
+
+func decodeProvidersYAML(data []byte) ([]Provider, error) {
+	var providers []Provider
+	if err := yaml.UnmarshalWithOptions(data, &providers, yaml.Strict()); err != nil {
+		return nil, err
+	}
+	for index := range providers {
+		if err := providers[index].ValidateConfiguration(); err != nil {
+			return nil, errors.WrapResource("validate", catalogResourceProvider, string(providers[index].ID), err)
+		}
+	}
+	return providers, nil
 }
 
 // loadAuthorsYAML loads authors from authors.yaml file.
@@ -86,7 +99,7 @@ func (cat *Builder) loadAuthorsYAML() error {
 
 	for _, a := range authors {
 		if err := cat.SetAuthor(a); err != nil {
-			return errors.WrapResource("load", "author", string(a.ID), err)
+			return errors.WrapResource("load", catalogResourceAuthor, string(a.ID), err)
 		}
 	}
 	return nil
@@ -113,7 +126,7 @@ func (cat *Builder) loadProvenanceYAML() error {
 
 // loadProviderModel loads a model into a provider's Models map.
 func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
-	if len(pathParts) < 4 || pathParts[0] != "providers" || pathParts[2] != "models" {
+	if len(pathParts) < 4 || pathParts[0] != "providers" || pathParts[2] != catalogPathModels {
 		return nil // Not a provider model path
 	}
 
@@ -132,7 +145,7 @@ func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
 
 // loadAuthorModel loads a model into an author's Models map.
 func (cat *Builder) loadAuthorModel(pathParts []string, model *Model) error {
-	if len(pathParts) < 4 || pathParts[0] != "authors" || pathParts[2] != "models" {
+	if len(pathParts) < 4 || pathParts[0] != "authors" || pathParts[2] != catalogPathModels {
 		return nil // Not an author model path
 	}
 

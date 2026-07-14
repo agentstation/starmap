@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/internal/deps"
+	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -23,11 +24,14 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 	var errs []error
 	var observations []sources.Observation
 	var errMutex sync.Mutex
+	semaphore := make(chan struct{}, constants.MaxConcurrentProviders)
 
 	for _, src := range srcs {
 		wg.Add(1)
 		go func(src sources.Source) {
 			defer wg.Done()
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
 
 			if ctx.Err() != nil {
 				logger.Debug().Str("source", string(src.ID())).Msg("Skipping observation - context cancelled")
@@ -38,7 +42,10 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 
 			observation, err := src.Observe(ctx, opts...)
 			if err != nil {
-				logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source observation had errors")
+				logger.Warn().
+					Str("error_class", pkgerrors.SafeSummary(err)).
+					Str("source", string(src.ID())).
+					Msg("Source observation had errors")
 
 				wrappedErr := pkgerrors.WrapResource("observe", "source", string(src.ID()), err)
 				errMutex.Lock()

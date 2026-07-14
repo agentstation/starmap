@@ -77,6 +77,21 @@ func TestGenerationManifestRetainsPinnedGitLockfileInput(t *testing.T) {
 	}
 }
 
+func TestGenerationManifestRejectsCredentialScopedObservation(t *testing.T) {
+	manifest := loadGenerationManifestFixture(t)
+	manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	if err := manifest.Validate(); err == nil {
+		t.Fatal("Validate accepted credential-scoped observation for public generation")
+	}
+	encoded, err := json.Marshal(manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	if _, err := ParseGenerationManifestJSON(encoded); err == nil {
+		t.Fatal("ParseGenerationManifestJSON accepted credential-scoped observation")
+	}
+}
+
 func TestGenerationManifestParserRejectsMissingAndUnknownMembers(t *testing.T) {
 	fixture, err := os.ReadFile("testdata/generation/manifest.json")
 	if err != nil {
@@ -111,9 +126,6 @@ func TestGenerationManifestParserRejectsMissingAndUnknownMembers(t *testing.T) {
 		{name: "missing observation revision kind", field: "source_observations[0].revision.kind", mutate: func(value map[string]any) {
 			observations := value["source_observations"].([]any)
 			delete(observations[0].(map[string]any)["revision"].(map[string]any), "kind")
-		}},
-		{name: "missing compatibility maximum", field: "consumer_compatibility.max_schema_version", mutate: func(value map[string]any) {
-			delete(value["consumer_compatibility"].(map[string]any), "max_schema_version")
 		}},
 		{name: "unknown member", field: "manifest", mutate: func(value map[string]any) { value["binary_version"] = "1.2.3" }},
 	}
@@ -176,8 +188,6 @@ func TestGenerationManifestRequiredFields(t *testing.T) {
 		{name: "observation status", field: "source_observations[0].status", mutate: func(m *GenerationManifest) { m.SourceObservations[0].Status = "" }},
 		{name: "observation checksum", field: "source_observations[0].evidence_checksum", mutate: func(m *GenerationManifest) { m.SourceObservations[0].EvidenceChecksum = "" }},
 		{name: "completeness", field: "completeness", mutate: func(m *GenerationManifest) { m.Completeness = "" }},
-		{name: "compatibility minimum", field: "consumer_compatibility.min_schema_version", mutate: func(m *GenerationManifest) { m.ConsumerCompatibility.MinSchemaVersion = 0 }},
-		{name: "compatibility maximum", field: "consumer_compatibility.max_schema_version", mutate: func(m *GenerationManifest) { m.ConsumerCompatibility.MaxSchemaVersion = 0 }},
 	}
 
 	for _, tt := range tests {
@@ -239,11 +249,18 @@ func TestGenerationManifestCopyOwnership(t *testing.T) {
 	original := loadGenerationManifestFixture(t)
 	copyManifest := original.Copy()
 	copyManifest.SourceObservations[0].ObservationID = "changed"
+	copyManifest.SourceObservations[0].Metrics.Acquisitions = []catalogmeta.AcquisitionProvenance{{
+		ProviderID: "provider-a", SourceID: "changed", Scope: catalogmeta.ObservationScopeGlobalPublic,
+		Topology: catalogmeta.AcquisitionTopologySingleEndpoint,
+	}}
 	copyManifest.Validation.Checks[0].Name = "changed"
 	copyManifest.DegradationReasons = append(copyManifest.DegradationReasons, "changed")
 
 	if original.SourceObservations[0].ObservationID == "changed" {
 		t.Fatal("source observations alias the original")
+	}
+	if len(original.SourceObservations[0].Metrics.Acquisitions) != 0 {
+		t.Fatal("acquisition provenance aliases the original")
 	}
 	if original.Validation.Checks[0].Name == "changed" {
 		t.Fatal("validation checks alias the original")
@@ -300,14 +317,7 @@ func TestGenerationManifestPayloadDescriptor(t *testing.T) {
 	}
 }
 
-func TestGenerationManifestConsumerCompatibilityUsesSchemaVersions(t *testing.T) {
-	compatibility := ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 4}
-	for schema, want := range map[uint64]bool{1: false, 2: true, 3: true, 4: true, 5: false} {
-		if got := compatibility.SupportsSchema(schema); got != want {
-			t.Fatalf("SupportsSchema(%d) = %v, want %v", schema, got, want)
-		}
-	}
-
+func TestGenerationManifestHasNoBinaryCompatibilitySurface(t *testing.T) {
 	typ := reflect.TypeFor[GenerationManifest]()
 	for _, forbidden := range []string{"BinaryVersion", "MinBinaryVersion", "MaxBinaryVersion"} {
 		if _, found := typ.FieldByName(forbidden); found {
@@ -334,7 +344,7 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 	want := []string{
 		"manifest_version", "schema_version", "generation_id", "generated_at",
 		"payload", "validation", "sync_run_id", "source_observations",
-		"completeness", "degraded", "consumer_compatibility",
+		"completeness", "degraded",
 	}
 	slices.Sort(schema.Required)
 	slices.Sort(want)
@@ -348,10 +358,9 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 	}
 
 	for definition, required := range map[string][]string{
-		"payload":                {"checksum", "size_bytes", "media_type"},
-		"validation":             {"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"},
-		"source_observation":     {"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"},
-		"consumer_compatibility": {"min_schema_version", "max_schema_version"},
+		"payload":            {"checksum", "size_bytes", "media_type"},
+		"validation":         {"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"},
+		"source_observation": {"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"},
 	} {
 		data, found := schema.Definitions[definition]
 		if !found {
@@ -381,4 +390,10 @@ func loadGenerationManifestFixture(t *testing.T) GenerationManifest {
 		t.Fatalf("Parse fixture: %v", err)
 	}
 	return manifest
+}
+
+func TestGenerationManifestParserRejectsDuplicateJSONMembers(t *testing.T) {
+	if _, err := ParseGenerationManifestJSON([]byte(`{"manifest_version":1,"manifest_version":1}`)); err == nil {
+		t.Fatal("ParseGenerationManifestJSON accepted duplicate JSON member")
+	}
 }

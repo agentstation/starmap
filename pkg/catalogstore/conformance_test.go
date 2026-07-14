@@ -72,6 +72,25 @@ func TestCatalogStoreConformanceStaleRecordsDoNotReappear(t *testing.T) {
 	}
 }
 
+func TestCatalogStoreConformanceRejectsCredentialScopedGenerationBeforeWrite(t *testing.T) {
+	for name, factory := range catalogStoreFactories() {
+		t.Run(name, func(t *testing.T) {
+			store := factory(t)
+			generation := testGeneration("credential-scoped", "private")
+			generation.Manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+			if err := store.Commit(context.Background(), generation, ""); err == nil {
+				t.Fatal("Commit accepted credential-scoped generation")
+			}
+			if _, err := store.Current(context.Background()); !stderrors.Is(err, pkgerrors.ErrNotFound) {
+				t.Fatalf("Current after rejection = %v, want ErrNotFound", err)
+			}
+			if _, err := store.Get(context.Background(), generation.Manifest.GenerationID); !stderrors.Is(err, pkgerrors.ErrNotFound) {
+				t.Fatalf("Get after rejection = %v, want ErrNotFound", err)
+			}
+		})
+	}
+}
+
 func runCatalogStoreConformance(t *testing.T, store Store) {
 	t.Helper()
 	ctx := context.Background()
@@ -198,10 +217,6 @@ func testGeneration(id, value string) Generation {
 				},
 			},
 			Completeness: catalogs.GenerationCompletenessComplete,
-			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-			},
 		},
 		Payload: payload,
 	}

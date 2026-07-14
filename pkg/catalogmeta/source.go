@@ -24,6 +24,21 @@ const (
 
 	// LocalCatalogID identifies the local filesystem catalog source.
 	LocalCatalogID SourceID = "local_catalog"
+
+	// AmazonBedrockID identifies the native regional Bedrock control-plane source.
+	AmazonBedrockID SourceID = "amazon_bedrock"
+
+	// MicrosoftFoundryID identifies the native Microsoft Foundry control-plane source.
+	MicrosoftFoundryID SourceID = "microsoft_foundry"
+
+	// OCIGenerativeAIID identifies the native OCI Generative AI regional source.
+	OCIGenerativeAIID SourceID = "oci_generative_ai"
+
+	// DatabricksWorkspaceID identifies credential-scoped Databricks serving endpoints.
+	DatabricksWorkspaceID SourceID = "databricks_workspace"
+
+	// WatsonxDeploymentsID identifies credential-scoped watsonx deployments.
+	WatsonxDeploymentsID SourceID = "watsonx_deployments"
 )
 
 // SourceIDs returns all available source identifiers.
@@ -34,6 +49,11 @@ func SourceIDs() []SourceID {
 		ModelsDevGitID,
 		ModelsDevHTTPID,
 		LocalCatalogID,
+		AmazonBedrockID,
+		MicrosoftFoundryID,
+		OCIGenerativeAIID,
+		DatabricksWorkspaceID,
+		WatsonxDeploymentsID,
 	}
 }
 

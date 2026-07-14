@@ -1,0 +1,20 @@
+id: openai.gpt-oss-20b
+name: openai.gpt-oss-20b
+authors:
+- id: openai
+  name: openai
+definition_id: openai/gpt-oss-20b
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.07
+    output:
+      per_1m: 0.3
+invocation_apis:
+- responses
+offering_endpoint:
+  type: oci-generative-ai
+offering_deployment:
+  type: on-demand
+  tier: pay-as-you-go

@@ -294,6 +294,23 @@ func TestChangesetToResultGroupsAddedModelsByProvider(t *testing.T) {
 	}
 }
 
+func TestChangesetToResultReportsCanonicalOfferingChangesByProvider(t *testing.T) {
+	changes := &differ.Changeset{
+		Offerings: &differ.ProviderOfferingChangeset{
+			Updated: []differ.ProviderOfferingUpdate{{Key: catalogs.OfferingKey{ProviderID: "amazon-bedrock", ProviderModelID: "model"}}},
+		},
+		Summary: differ.ChangesetSummary{OfferingsUpdated: 1, TotalChanges: 1},
+	}
+	result := ChangesetToResult(changes, false, "", nil, nil, sources.AmazonBedrockID)
+	if !result.HasChanges() || result.OfferingsUpdated != 1 || result.ProvidersChanged != 1 {
+		t.Fatalf("canonical sync result = %#v", result)
+	}
+	provider := result.ProviderResults["amazon-bedrock"]
+	if provider == nil || !provider.HasChanges() || provider.OfferingUpdatedCount != 1 {
+		t.Fatalf("canonical provider result = %#v", provider)
+	}
+}
+
 func catalogWithProvider(t *testing.T, providerID catalogs.ProviderID, model catalogs.Model) *catalogs.Builder {
 	t.Helper()
 

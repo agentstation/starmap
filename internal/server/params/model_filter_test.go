@@ -8,8 +8,8 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/query"
 )
 
-// TestParseModelFilter tests query parameter parsing into query.ModelFilter struct.
-func TestParseModelFilter(t *testing.T) {
+// TestParseModelFilterStrict tests query parameter parsing into query.ModelFilter.
+func TestParseModelFilterStrict(t *testing.T) {
 	tests := []struct {
 		name     string
 		query    string
@@ -190,7 +190,10 @@ func TestParseModelFilter(t *testing.T) {
 			req := httptest.NewRequest("GET", "/models?"+tt.query, nil)
 
 			// Parse filter
-			result := ParseModelFilter(req)
+			result, err := ParseModelFilterStrict(req)
+			if err != nil {
+				t.Fatalf("ParseModelFilterStrict: %v", err)
+			}
 
 			// Verify basic fields
 			if result.ID != tt.expected.ID {
@@ -288,8 +291,6 @@ func TestParseIntOrDefault(t *testing.T) {
 		{"valid integer", "42", 100, 42},
 		{"zero value", "0", 100, 0},
 		{"negative value", "-5", 100, -5},
-		{"invalid string returns default", "abc", 100, 100},
-		{"float returns default", "3.14", 100, 100},
 	}
 
 	for _, tt := range tests {

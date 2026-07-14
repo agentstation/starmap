@@ -438,17 +438,14 @@ func TestProviderToStarmapProviderPreservesModelsDevMetadata(t *testing.T) {
 		t.Fatalf("ToStarmapProvider returned error: %v", err)
 	}
 
-	if provider.Catalog == nil ||
-		provider.Catalog.Docs == nil ||
-		*provider.Catalog.Docs != "https://example.test/docs" ||
-		provider.Catalog.Endpoint.URL != "" ||
-		provider.Catalog.Endpoint.Type != "" {
+	if provider.Catalog != nil {
 		t.Fatalf("provider catalog = %#v", provider.Catalog)
 	}
-	if len(provider.EnvVars) != 1 ||
-		provider.EnvVars[0].Name != "EXAMPLE_API_KEY" ||
-		provider.EnvVars[0].Required {
-		t.Fatalf("provider env vars = %#v", provider.EnvVars)
+	if len(provider.Advisories) != 1 || provider.Advisories[0].Name != "EXAMPLE_API_KEY" {
+		t.Fatalf("provider advisories = %#v", provider.Advisories)
+	}
+	if provider.Extensions["models.dev"].Fields["doc"] != "https://example.test/docs" {
+		t.Fatalf("provider doc extension = %#v", provider.Extensions)
 	}
 	if provider.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/example" {
 		t.Fatalf("provider extensions = %#v", provider.Extensions)
@@ -521,17 +518,14 @@ func TestProcessFetchIncludesModelsWithNonCoreCostData(t *testing.T) {
 	if provider.Name != "Provider" {
 		t.Fatalf("provider name = %q, want models.dev provider name", provider.Name)
 	}
-	if provider.Catalog == nil ||
-		provider.Catalog.Docs == nil ||
-		*provider.Catalog.Docs != "https://example.test/docs" ||
-		provider.Catalog.Endpoint.URL != "" ||
-		provider.Catalog.Endpoint.Type != "" {
+	if provider.Catalog != nil {
 		t.Fatalf("provider catalog = %#v", provider.Catalog)
 	}
-	if len(provider.EnvVars) != 1 ||
-		provider.EnvVars[0].Name != "PROVIDER_API_KEY" ||
-		provider.EnvVars[0].Required {
-		t.Fatalf("provider env vars = %#v", provider.EnvVars)
+	if len(provider.Advisories) != 1 || provider.Advisories[0].Name != "PROVIDER_API_KEY" {
+		t.Fatalf("provider advisories = %#v", provider.Advisories)
+	}
+	if provider.Extensions["models.dev"].Fields["doc"] != "https://example.test/docs" {
+		t.Fatalf("provider doc extension = %#v", provider.Extensions)
 	}
 	if provider.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/provider" {
 		t.Fatalf("provider extensions = %#v", provider.Extensions)

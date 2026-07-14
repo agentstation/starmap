@@ -1,20 +1,17 @@
 package auth
 
 import (
+	"context"
+	stderrors "errors"
 	"fmt"
-	"os"
-	"regexp"
+	"slices"
 
-	"github.com/agentstation/starmap/internal/auth/adc"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // CheckProvider checks authentication status for a provider.
 // Performs local checks only - no network calls are made.
-//
-// Returns a Status with type-safe details:
-//   - Status.GoogleCloud for Google Cloud providers
-//   - Status.APIKey for API key providers
 func (c *Checker) CheckProvider(provider *catalogs.Provider, supportedMap map[string]bool) *Status {
 	// Check if provider is supported
 	if !supportedMap[string(provider.ID)] {
@@ -24,99 +21,88 @@ func (c *Checker) CheckProvider(provider *catalogs.Provider, supportedMap map[st
 		}
 	}
 
-	// Google Cloud providers (Vertex AI, etc.)
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return c.checkGoogleCloud()
-	}
-
-	// API key providers
-	return c.checkAPIKey(provider)
+	sources := c.CheckSources(context.Background(), provider)
+	status := aggregateSourceStatus(sources)
+	status.Sources = sources
+	return status
 }
 
-// checkGoogleCloud checks Google Cloud authentication using ADC.
-func (c *Checker) checkGoogleCloud() *Status {
-	details := adc.BuildDetails()
-
-	// Map adc.State to auth.State
-	var state State
-	switch details.State {
-	case adc.StateConfigured:
-		state = StateConfigured
-	case adc.StateMissing:
-		state = StateMissing
-	case adc.StateInvalid:
-		state = StateInvalid
-	default:
-		state = StateInvalid
+// CheckSources reports every configured source independently without exposing values.
+func (c *Checker) CheckSources(ctx context.Context, provider *catalogs.Provider) []SourceStatus {
+	if provider.Catalog == nil || len(provider.Catalog.Sources) == 0 {
+		return []SourceStatus{{State: StateInvalid, Summary: "Provider has no catalog source"}}
 	}
-
-	return &Status{
-		State:       state,
-		Summary:     adc.FormatBrief(details),
-		GoogleCloud: details,
+	resolver := c.resolver
+	if resolver == nil {
+		resolver = NewResolver()
 	}
-}
-
-// checkAPIKey checks API key-based authentication.
-func (c *Checker) checkAPIKey(provider *catalogs.Provider) *Status {
-	// No API key configured
-	if provider.APIKey == nil {
-		return &Status{
-			State:   StateOptional,
-			Summary: "No API key required",
-		}
-	}
-
-	envValue := os.Getenv(provider.APIKey.Name)
-
-	// API key not set
-	if envValue == "" {
-		if provider.Catalog != nil && provider.Catalog.Endpoint.AuthRequired {
-			return &Status{
-				State:   StateMissing,
-				Summary: fmt.Sprintf("Set %s environment variable", provider.APIKey.Name),
-				APIKey: &APIKeyDetails{
-					EnvVar: provider.APIKey.Name,
-					IsSet:  false,
-				},
+	statuses := make([]SourceStatus, 0, len(provider.Catalog.Sources))
+	for _, source := range provider.Catalog.Sources {
+		status := SourceStatus{SourceID: source.ID, AcceptedMethods: slices.Clone(source.Auth.Methods)}
+		for _, method := range source.Auth.Methods {
+			if credential, found := provider.Credentials[method]; found {
+				status.Environment = appendCredentialEnvironment(status.Environment, credential)
 			}
 		}
-		return &Status{
-			State:   StateOptional,
-			Summary: fmt.Sprintf("Optional: %s not set", provider.APIKey.Name),
+		if source.Auth.Mode == catalogs.ProviderAuthModeOptional {
+			if credential, found := provider.Credentials[catalogs.ProviderCredentialID(catalogs.ProviderCredentialKindAPIKey)]; found {
+				status.AcceptedMethods = append(status.AcceptedMethods, catalogs.ProviderCredentialID(catalogs.ProviderCredentialKindAPIKey))
+				status.Environment = appendCredentialEnvironment(status.Environment, credential)
+			}
+			if _, found := resolver.cloud.adapter(provider.ID); found {
+				status.AcceptedMethods = append(status.AcceptedMethods, "cloud_chain")
+			}
+		}
+		resolved, err := resolver.Resolve(ctx, provider, source)
+		if err != nil {
+			status.State = StateInvalid
+			if stderrors.Is(err, errors.ErrAPIKeyRequired) || stderrors.Is(err, errors.ErrNotFound) {
+				status.State = StateUnavailable
+			}
+			status.Summary = errors.SafeSummary(err)
+			statuses = append(statuses, status)
+			continue
+		}
+		if resolved.Anonymous() {
+			status.State = StateUnauthenticated
+			status.Summary = "Unauthenticated source"
+		} else {
+			status.State = StateReady
+			status.Summary = fmt.Sprintf("Authentication configured (%s)", resolved.Method())
+		}
+		statuses = append(statuses, status)
+	}
+	return statuses
+}
+
+func appendCredentialEnvironment(target []string, credential catalogs.ProviderCredential) []string {
+	target = append(target, credential.Env...)
+	inputIDs := make([]string, 0, len(credential.Inputs))
+	for inputID := range credential.Inputs {
+		inputIDs = append(inputIDs, inputID)
+	}
+	slices.Sort(inputIDs)
+	for _, inputID := range inputIDs {
+		target = append(target, credential.Inputs[inputID].Env...)
+	}
+	return target
+}
+
+func aggregateSourceStatus(sources []SourceStatus) *Status {
+	status := &Status{State: StateUnauthenticated, Summary: "All sources are unauthenticated"}
+	for _, source := range sources {
+		switch source.State {
+		case StateInvalid:
+			return &Status{State: StateInvalid, Summary: source.SourceID + ": " + source.Summary}
+		case StateReady:
+			status.State = StateReady
+			status.Summary = "At least one source has authentication configured"
+		case StateUnavailable:
+			if status.State != StateReady {
+				status.State = StateUnavailable
+				status.Summary = source.SourceID + ": " + source.Summary
+			}
 		}
 	}
-
-	// Validate pattern if specified
-	isValid := true
-	if provider.APIKey.Pattern != "" && provider.APIKey.Pattern != ".*" {
-		matched, err := regexp.MatchString(provider.APIKey.Pattern, envValue)
-		if err != nil || !matched {
-			isValid = false
-		}
-	}
-
-	if !isValid {
-		return &Status{
-			State:   StateInvalid,
-			Summary: "API key does not match required pattern",
-			APIKey: &APIKeyDetails{
-				EnvVar:  provider.APIKey.Name,
-				IsSet:   true,
-				IsValid: false,
-				Source:  "env",
-			},
-		}
-	}
-
-	return &Status{
-		State:   StateConfigured,
-		Summary: fmt.Sprintf("API key configured (%s)", provider.APIKey.Name),
-		APIKey: &APIKeyDetails{
-			EnvVar:  provider.APIKey.Name,
-			IsSet:   true,
-			IsValid: true,
-			Source:  "env",
-		},
-	}
+	return status
 }

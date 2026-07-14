@@ -12,6 +12,12 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+const (
+	gitCommitField            = "models_dev.git.commit"
+	modelIDField              = "model.id"
+	validationRequiredMessage = "is required"
+)
+
 // processFetch handles the common logic for fetching models from models.dev API.
 func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (int, int, []sources.ObservationIssue, error) {
 	options := sources.Defaults().Apply(opts...)
@@ -126,22 +132,22 @@ func modelsDevCandidateCount(api *API, providerFilter *catalogs.ProviderID) int 
 
 func validateModelsDevModelIdentity(mapKey string, model *Model) error {
 	if model == nil {
-		return &errors.ValidationError{Field: "model", Message: "is required"}
+		return &errors.ValidationError{Field: "model", Message: validationRequiredMessage}
 	}
 	if strings.TrimSpace(model.ID) == "" {
-		return &errors.ValidationError{Field: "model.id", Value: model.ID, Message: "is required"}
+		return &errors.ValidationError{Field: modelIDField, Value: model.ID, Message: validationRequiredMessage}
 	}
 	if model.ID != strings.TrimSpace(model.ID) {
-		return &errors.ValidationError{Field: "model.id", Value: model.ID, Message: "must not contain leading or trailing whitespace"}
+		return &errors.ValidationError{Field: modelIDField, Value: model.ID, Message: "must not contain leading or trailing whitespace"}
 	}
 	if strings.IndexFunc(model.ID, unicode.IsControl) >= 0 {
-		return &errors.ValidationError{Field: "model.id", Value: model.ID, Message: "must not contain control characters"}
+		return &errors.ValidationError{Field: modelIDField, Value: model.ID, Message: "must not contain control characters"}
 	}
 	if model.ID != mapKey {
-		return &errors.ValidationError{Field: "model.id", Value: model.ID, Message: fmt.Sprintf("must match map identity %q", mapKey)}
+		return &errors.ValidationError{Field: modelIDField, Value: model.ID, Message: fmt.Sprintf("must match map identity %q", mapKey)}
 	}
 	if strings.TrimSpace(model.Name) == "" {
-		return &errors.ValidationError{Field: "model.name", Value: model.Name, Message: "is required"}
+		return &errors.ValidationError{Field: "model.name", Value: model.Name, Message: validationRequiredMessage}
 	}
 	if strings.IndexFunc(model.Name, unicode.IsControl) >= 0 {
 		return &errors.ValidationError{Field: "model.name", Value: model.Name, Message: "must not contain control characters"}
@@ -163,35 +169,16 @@ func mergeModelsDevProviderMetadata(provider *catalogs.Provider, metadata *catal
 	if provider.Name == "" || provider.Name == string(provider.ID) {
 		provider.Name = metadata.Name
 	}
-	if metadata.Catalog != nil {
-		if provider.Catalog == nil {
-			catalogCopy := *metadata.Catalog
-			if metadata.Catalog.Docs != nil {
-				docs := *metadata.Catalog.Docs
-				catalogCopy.Docs = &docs
-			}
-			provider.Catalog = &catalogCopy
-		} else {
-			if provider.Catalog.Docs == nil && metadata.Catalog.Docs != nil {
-				docs := *metadata.Catalog.Docs
-				provider.Catalog.Docs = &docs
-			}
-			if provider.Catalog.Endpoint.URL == "" {
-				provider.Catalog.Endpoint.URL = metadata.Catalog.Endpoint.URL
-				provider.Catalog.Endpoint.AuthRequired = metadata.Catalog.Endpoint.AuthRequired
-			}
+	if len(metadata.Advisories) > 0 {
+		existingAdvisories := make(map[string]struct{}, len(provider.Advisories))
+		for _, advisory := range provider.Advisories {
+			existingAdvisories[advisory.Name] = struct{}{}
 		}
-	}
-	if len(metadata.EnvVars) > 0 {
-		existingEnvVars := make(map[string]struct{}, len(provider.EnvVars))
-		for _, envVar := range provider.EnvVars {
-			existingEnvVars[envVar.Name] = struct{}{}
-		}
-		for _, envVar := range metadata.EnvVars {
-			if _, exists := existingEnvVars[envVar.Name]; exists {
+		for _, advisory := range metadata.Advisories {
+			if _, exists := existingAdvisories[advisory.Name]; exists {
 				continue
 			}
-			provider.EnvVars = append(provider.EnvVars, envVar)
+			provider.Advisories = append(provider.Advisories, advisory)
 		}
 	}
 	if len(metadata.Extensions) > 0 {

@@ -101,7 +101,7 @@ var (
 ```
 
 <a name="Configure"></a>
-## func [Configure](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L89>)
+## func [Configure](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L91>)
 
 ```go
 func Configure(cfg *Config)
@@ -110,7 +110,7 @@ func Configure(cfg *Config)
 Configure updates the default logger with the given configuration.
 
 <a name="ConfigureFromEnv"></a>
-## func [ConfigureFromEnv](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L95>)
+## func [ConfigureFromEnv](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L97>)
 
 ```go
 func ConfigureFromEnv()
@@ -236,7 +236,7 @@ func NewJSON(w io.Writer) zerolog.Logger
 NewJSON creates a new JSON logger for structured output.
 
 <a name="NewLoggerFromConfig"></a>
-## func [NewLoggerFromConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L52>)
+## func [NewLoggerFromConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L54>)
 
 ```go
 func NewLoggerFromConfig(cfg *Config) zerolog.Logger
@@ -407,7 +407,7 @@ func WithSource(ctx context.Context, source string) context.Context
 WithSource adds source context to the logger.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L15-L36>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L17-L38>)
 
 Config holds logger configuration options.
 
@@ -437,7 +437,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L39>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L41>)
 
 ```go
 func DefaultConfig() *Config

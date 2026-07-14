@@ -11,8 +11,9 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// ParseModelFilter extracts model filter parameters from an HTTP request.
-func ParseModelFilter(r *http.Request) query.ModelFilter {
+// parseModelFilter extracts values after ParseModelFilterStrict has validated
+// every supplied query parameter.
+func parseModelFilter(r *http.Request) query.ModelFilter {
 	q := r.URL.Query()
 
 	filter := query.ModelFilter{
@@ -105,8 +106,7 @@ func ParseModelFilter(r *http.Request) query.ModelFilter {
 }
 
 // ParseModelFilterStrict parses and validates every supplied query parameter.
-// Unlike the compatibility parser, malformed client input is never silently
-// replaced by a default or ignored.
+// Malformed client input is never silently replaced by a default or ignored.
 func ParseModelFilterStrict(r *http.Request) (query.ModelFilter, error) {
 	q := r.URL.Query()
 	for _, field := range []string{
@@ -136,7 +136,7 @@ func ParseModelFilterStrict(r *http.Request) (query.ModelFilter, error) {
 			}
 		}
 	}
-	filter := ParseModelFilter(r)
+	filter := parseModelFilter(r)
 	if err := filter.Validate(); err != nil {
 		return query.ModelFilter{}, err
 	}

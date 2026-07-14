@@ -22,6 +22,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 const (
@@ -33,9 +34,12 @@ const (
 	PointerVersion uint64 = 1
 	// ImmutableCacheControl is sent for generation-addressed assets.
 	ImmutableCacheControl = "public, max-age=31536000, immutable"
-	// LatestCacheControl is sent for the mutable latest-compatible pointer.
-	LatestCacheControl = "public, max-age=60, must-revalidate"
-	maxHostedBodyBytes = 64 << 20
+	// LatestCacheControl is sent for the mutable exact-schema latest pointer.
+	LatestCacheControl          = "public, max-age=60, must-revalidate"
+	latestValidationField       = "catalog_distribution.latest"
+	maxHostedBodyBytes          = 64 << 20
+	publishedGenerationResource = "hosted catalog generation"
+	stableProbeValidationField  = "catalog_distribution.stable_probe"
 )
 
 // AssetDescriptor identifies one immutable hosted byte object.
@@ -46,16 +50,14 @@ type AssetDescriptor struct {
 	SizeBytes int64  `json:"size_bytes"`
 }
 
-// LatestPointer selects one immutable generation compatible with a consumer's
-// catalog schema.
+// LatestPointer selects one immutable generation for the exact current schema.
 type LatestPointer struct {
-	Version               uint64                         `json:"version"`
-	Channel               Channel                        `json:"channel"`
-	GenerationID          string                         `json:"generation_id"`
-	SchemaVersion         uint64                         `json:"schema_version"`
-	ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
-	Artifact              AssetDescriptor                `json:"artifact"`
-	Attestation           AssetDescriptor                `json:"attestation"`
+	Version       uint64          `json:"version"`
+	Channel       Channel         `json:"channel"`
+	GenerationID  string          `json:"generation_id"`
+	SchemaVersion uint64          `json:"schema_version"`
+	Artifact      AssetDescriptor `json:"artifact"`
+	Attestation   AssetDescriptor `json:"attestation"`
 }
 
 // PublishedGeneration is one verified generation and its exact distribution
@@ -117,7 +119,7 @@ func (r *MemoryRepository) Publish(published PublishedGeneration) error {
 	if existing, found := r.items[id]; found {
 		if existing.Artifact.Checksum != published.Artifact.Checksum ||
 			!bytes.Equal(existing.Artifact.Attestation, published.Artifact.Attestation) {
-			return &errors.ConflictError{Resource: "hosted catalog generation", Expected: id, Actual: id, Message: "generation ID is immutable"}
+			return &errors.ConflictError{Resource: publishedGenerationResource, Expected: id, Actual: id, Message: "generation ID is immutable"}
 		}
 		return nil
 	}
@@ -125,14 +127,13 @@ func (r *MemoryRepository) Publish(published PublishedGeneration) error {
 	return nil
 }
 
-// Latest returns the stable generation only when its catalog schema range is
-// compatible with the requested consumer schema.
+// Latest returns the stable generation only for the exact current schema.
 func (r *MemoryRepository) Latest(schemaVersion uint64) (PublishedGeneration, error) {
 	return r.LatestForChannel(ChannelStable, schemaVersion)
 }
 
-// LatestForChannel returns the selected channel generation only when its
-// catalog schema range is compatible with the requested consumer schema.
+// LatestForChannel returns the selected channel generation only for the exact
+// current schema.
 func (r *MemoryRepository) LatestForChannel(channel Channel, schemaVersion uint64) (PublishedGeneration, error) {
 	if err := channel.Validate(); err != nil {
 		return PublishedGeneration{}, err
@@ -144,8 +145,8 @@ func (r *MemoryRepository) LatestForChannel(channel Channel, schemaVersion uint6
 	if !found {
 		return PublishedGeneration{}, &errors.NotFoundError{Resource: "hosted catalog channel " + channel.String(), ID: generationID}
 	}
-	if !published.Generation.Manifest.ConsumerCompatibility.SupportsSchema(schemaVersion) {
-		return PublishedGeneration{}, &errors.ValidationError{Field: "catalog_distribution.schema_version", Value: schemaVersion, Message: "no compatible latest generation"}
+	if schemaVersion != catalogs.CurrentCatalogSchemaVersion || published.Generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion {
+		return PublishedGeneration{}, &errors.ValidationError{Field: "catalog_distribution.schema_version", Value: schemaVersion, Message: "must match the exact current schema"}
 	}
 	return copyPublished(published), nil
 }
@@ -156,12 +157,12 @@ func (r *MemoryRepository) Get(generationID string) (PublishedGeneration, error)
 	defer r.mu.RUnlock()
 	published, found := r.items[generationID]
 	if !found {
-		return PublishedGeneration{}, &errors.NotFoundError{Resource: "hosted catalog generation", ID: generationID}
+		return PublishedGeneration{}, &errors.NotFoundError{Resource: publishedGenerationResource, ID: generationID}
 	}
 	return copyPublished(published), nil
 }
 
-// Handler serves latest-compatible pointers and immutable generation assets.
+// Handler serves exact-schema latest pointers and immutable generation assets.
 type Handler struct {
 	repository Repository
 }
@@ -267,7 +268,7 @@ func pointerFor(published PublishedGeneration, channel Channel) LatestPointer {
 	manifest := published.Generation.Manifest
 	return LatestPointer{
 		Version: PointerVersion, Channel: channel, GenerationID: manifest.GenerationID,
-		SchemaVersion: manifest.SchemaVersion, ConsumerCompatibility: manifest.ConsumerCompatibility,
+		SchemaVersion: manifest.SchemaVersion,
 		Artifact: AssetDescriptor{
 			URL: APIPrefix + "/" + url.PathEscape(manifest.GenerationID), MediaType: catalogartifact.MediaType,
 			Checksum: published.Artifact.Checksum, SizeBytes: int64(len(published.Artifact.Data)),
@@ -299,8 +300,8 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 	if httpClient == nil {
 		httpClient = &http.Client{Timeout: constants.DefaultHTTPTimeout}
 	}
-	if schemaVersion == 0 {
-		return nil, &errors.ValidationError{Field: "catalog_distribution.schema_version", Value: schemaVersion, Message: "must be positive"}
+	if schemaVersion != catalogs.CurrentCatalogSchemaVersion {
+		return nil, &errors.ValidationError{Field: "catalog_distribution.schema_version", Value: schemaVersion, Message: fmt.Sprintf("must be exactly %d", catalogs.CurrentCatalogSchemaVersion)}
 	}
 	client := *httpClient
 	previousRedirectPolicy := client.CheckRedirect
@@ -323,13 +324,12 @@ func sameOriginRedirectPolicy(origin *url.URL, previous func(*http.Request, []*h
 	}
 }
 
-// FetchLatest resolves, downloads, and verifies the latest compatible immutable
-// generation before returning it.
+// FetchLatest resolves, downloads, and verifies the exact-schema latest immutable generation.
 func (c *Client) FetchLatest(ctx context.Context) (catalogstore.Generation, error) {
 	return c.FetchChannel(ctx, ChannelStable)
 }
 
-// FetchChannel resolves, downloads, and verifies the latest compatible
+// FetchChannel resolves, downloads, and verifies the exact-schema latest
 // immutable generation selected for one explicit promotion channel.
 func (c *Client) FetchChannel(ctx context.Context, channel Channel) (catalogstore.Generation, error) {
 	generation, _, err := c.fetchChannel(ctx, channel)
@@ -350,17 +350,15 @@ func (c *Client) fetchChannel(ctx context.Context, channel Channel) (catalogstor
 		return catalogstore.Generation{}, LatestPointer{}, err
 	}
 	if pointerMediaType != "application/json" {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointerMediaType, Message: "has unexpected media type"}
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointerMediaType, Message: "has unexpected media type"}
 	}
 	var pointer LatestPointer
 	if err := decodeStrictJSON(pointerData, &pointer); err != nil {
 		return catalogstore.Generation{}, LatestPointer{}, err
 	}
 	if pointer.Version != PointerVersion || pointer.Channel != channel || pointer.GenerationID == "" ||
-		!pointer.ConsumerCompatibility.SupportsSchema(c.schemaVersion) ||
-		pointer.SchemaVersion < pointer.ConsumerCompatibility.MinSchemaVersion ||
-		pointer.SchemaVersion > pointer.ConsumerCompatibility.MaxSchemaVersion {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointer.GenerationID, Message: "is incompatible or malformed"}
+		pointer.SchemaVersion != catalogs.CurrentCatalogSchemaVersion || pointer.SchemaVersion != c.schemaVersion {
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointer.GenerationID, Message: "is incompatible or malformed"}
 	}
 	artifactURL, err := c.assetURL(pointer.Artifact.URL)
 	if err != nil {
@@ -389,9 +387,8 @@ func (c *Client) fetchChannel(ctx context.Context, channel Channel) (catalogstor
 		return catalogstore.Generation{}, LatestPointer{}, err
 	}
 	manifest := generation.Manifest
-	if manifest.GenerationID != pointer.GenerationID || manifest.SchemaVersion != pointer.SchemaVersion ||
-		manifest.ConsumerCompatibility != pointer.ConsumerCompatibility {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointer.GenerationID, Message: "does not match downloaded generation"}
+	if manifest.GenerationID != pointer.GenerationID || manifest.SchemaVersion != pointer.SchemaVersion {
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointer.GenerationID, Message: "does not match downloaded generation"}
 	}
 	return generation, pointer, nil
 }
@@ -441,6 +438,9 @@ func verifyAsset(descriptor AssetDescriptor, data []byte, mediaType string) erro
 }
 
 func decodeStrictJSON(data []byte, destination any) error {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return err
+	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(destination); err != nil {

@@ -76,12 +76,12 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 
 	// Build response
 	result := map[string]any{
-		"models": page.Items,
+		responseFieldModels: page.Items,
 		"pagination": map[string]any{
-			"total":  page.Total,
-			"limit":  page.Limit,
-			"offset": page.Offset,
-			"count":  page.Count,
+			"total":            page.Total,
+			"limit":            page.Limit,
+			"offset":           page.Offset,
+			responseFieldCount: page.Count,
 		},
 	}
 
@@ -282,8 +282,8 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 
 	// Build response
 	result := map[string]any{
-		"models": results,
-		"count":  len(results),
+		responseFieldModels: results,
+		responseFieldCount:  len(results),
 	}
 
 	response.OK(w, result)

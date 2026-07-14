@@ -3,6 +3,7 @@ package differ
 import (
 	"fmt"
 	"reflect"
+	"slices"
 	"sort"
 	"strings"
 
@@ -10,6 +11,8 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
+
+const differFieldName = "name"
 
 // Differ detects changes between catalog resources.
 //
@@ -194,11 +197,84 @@ func (diff *Differ) Catalogs(existing, updated catalogs.Reader) *Changeset {
 	existingAuthors := existing.Authors().List()
 	newAuthors := updated.Authors().List()
 	changeset.Authors = diff.Authors(existingAuthors, newAuthors)
+	existingDefinitions, existingOfferings := canonicalRecords(existing)
+	updatedDefinitions, updatedOfferings := canonicalRecords(updated)
+	changeset.Definitions = diff.modelDefinitions(existingDefinitions, updatedDefinitions)
+	changeset.Offerings = diff.providerOfferings(existingOfferings, updatedOfferings)
 
 	// Calculate summary
-	changeset.Summary = calculateSummary(changeset.Models, changeset.Providers, changeset.Authors)
+	changeset.Summary = calculateSummary(changeset.Models, changeset.Providers, changeset.Authors, changeset.Definitions, changeset.Offerings)
 
 	return changeset
+}
+
+func canonicalRecords(reader catalogs.Reader) ([]catalogs.ModelDefinition, []catalogs.ProviderOffering) {
+	return reader.Definitions(), reader.Offerings()
+}
+
+func (diff *Differ) modelDefinitions(existing, updated []catalogs.ModelDefinition) *ModelDefinitionChangeset {
+	changes := &ModelDefinitionChangeset{}
+	existingByID := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition, len(existing))
+	updatedByID := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition, len(updated))
+	for _, value := range existing {
+		existingByID[value.ID] = value
+	}
+	for _, value := range updated {
+		updatedByID[value.ID] = value
+	}
+	for _, value := range updated {
+		if previous, found := existingByID[value.ID]; !found {
+			changes.Added = append(changes.Added, value)
+		} else if !reflect.DeepEqual(previous, value) {
+			changes.Updated = append(changes.Updated, ModelDefinitionUpdate{ID: value.ID, Existing: previous, New: value})
+		}
+	}
+	for _, value := range existing {
+		if _, found := updatedByID[value.ID]; !found {
+			changes.Removed = append(changes.Removed, value)
+		}
+	}
+	slices.SortFunc(changes.Added, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(changes.Removed, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(changes.Updated, func(left, right ModelDefinitionUpdate) int { return strings.Compare(string(left.ID), string(right.ID)) })
+	return changes
+}
+
+func (diff *Differ) providerOfferings(existing, updated []catalogs.ProviderOffering) *ProviderOfferingChangeset {
+	changes := &ProviderOfferingChangeset{}
+	existingByKey := make(map[catalogs.OfferingKey]catalogs.ProviderOffering, len(existing))
+	updatedByKey := make(map[catalogs.OfferingKey]catalogs.ProviderOffering, len(updated))
+	for _, value := range existing {
+		existingByKey[value.Key()] = value
+	}
+	for _, value := range updated {
+		updatedByKey[value.Key()] = value
+	}
+	for _, value := range updated {
+		if previous, found := existingByKey[value.Key()]; !found {
+			changes.Added = append(changes.Added, value)
+		} else if !reflect.DeepEqual(previous, value) {
+			changes.Updated = append(changes.Updated, ProviderOfferingUpdate{Key: value.Key(), Existing: previous, New: value})
+		}
+	}
+	for _, value := range existing {
+		if _, found := updatedByKey[value.Key()]; !found {
+			changes.Removed = append(changes.Removed, value)
+		}
+	}
+	compareOffering := func(left, right catalogs.ProviderOffering) int {
+		return strings.Compare(string(left.ProviderID)+"/"+string(left.ProviderModelID), string(right.ProviderID)+"/"+string(right.ProviderModelID))
+	}
+	slices.SortFunc(changes.Added, compareOffering)
+	slices.SortFunc(changes.Removed, compareOffering)
+	slices.SortFunc(changes.Updated, func(left, right ProviderOfferingUpdate) int {
+		return strings.Compare(string(left.Key.ProviderID)+"/"+string(left.Key.ProviderModelID), string(right.Key.ProviderID)+"/"+string(right.Key.ProviderModelID))
+	})
+	return changes
 }
 
 func (diff *Differ) providerScopedModels(existingProviders, updatedProviders []catalogs.Provider) *ModelChangeset {
@@ -290,9 +366,9 @@ func (diff *Differ) model(existing, updated catalogs.Model) *ModelUpdate {
 	changes := []FieldChange{}
 
 	// Compare basic fields
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,
@@ -665,9 +741,9 @@ func diffModelMetadata(existing, updated *catalogs.ModelMetadata) []FieldChange 
 func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdate {
 	changes := []FieldChange{}
 
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,
@@ -701,21 +777,21 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	// Check API configuration changes
-	if !reflect.DeepEqual(existing.APIKey, updated.APIKey) && !diff.ignoreFields["api_key"] {
+	// Check credential metadata changes.
+	if !reflect.DeepEqual(existing.Credentials, updated.Credentials) && !diff.ignoreFields["credentials"] {
 		changes = append(changes, FieldChange{
-			Path:     "api_key",
+			Path:     "credentials",
 			OldValue: "config changed",
 			NewValue: "updated",
 			Type:     ChangeTypeUpdate,
 		})
 	}
 
-	if !reflect.DeepEqual(existing.EnvVars, updated.EnvVars) && !diff.ignoreFields["env_vars"] {
+	if !reflect.DeepEqual(existing.Advisories, updated.Advisories) && !diff.ignoreFields["environment_advisories"] {
 		changes = append(changes, FieldChange{
-			Path:     "env_vars",
-			OldValue: fmt.Sprintf("%d env vars", len(existing.EnvVars)),
-			NewValue: fmt.Sprintf("%d env vars", len(updated.EnvVars)),
+			Path:     "environment_advisories",
+			OldValue: fmt.Sprintf("%d advisories", len(existing.Advisories)),
+			NewValue: fmt.Sprintf("%d advisories", len(updated.Advisories)),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -739,11 +815,11 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	if !reflect.DeepEqual(existing.ChatCompletions, updated.ChatCompletions) && !diff.ignoreFields["chat_completions"] {
+	if !reflect.DeepEqual(existing.Invocation, updated.Invocation) && !diff.ignoreFields["invocation"] {
 		changes = append(changes, FieldChange{
-			Path:     "chat_completions",
-			OldValue: formatPresent(existing.ChatCompletions != nil),
-			NewValue: formatPresent(updated.ChatCompletions != nil),
+			Path:     "invocation",
+			OldValue: formatPresent(existing.Invocation != nil),
+			NewValue: formatPresent(updated.Invocation != nil),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -818,9 +894,9 @@ func optionalStringValue(value *string) string {
 func (diff *Differ) author(existing, updated catalogs.Author) *AuthorUpdate {
 	changes := []FieldChange{}
 
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,

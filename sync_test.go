@@ -28,13 +28,10 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 	provider := catalogs.Provider{
 		ID:   "dry-run-provider",
 		Name: "Dry Run Provider",
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          modelServer.URL,
-				AuthRequired: false,
-			},
-		},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth: catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: modelServer.URL},
+		}}},
 	}
 	if err := localCatalog.SetProvider(provider); err != nil {
 		t.Fatalf("Failed to seed local provider: %v", err)

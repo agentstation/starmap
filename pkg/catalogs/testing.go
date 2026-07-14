@@ -10,26 +10,22 @@ import (
 func TestProvider(t testing.TB) *Provider {
 	t.Helper()
 	hq := "Test City, Test Country"
-	apiKeyRequired := true
 	apiURL := "https://api.test-provider.com/v1/models"
 	return &Provider{
 		ID:           "test-provider",
 		Name:         "Test Provider",
 		Headquarters: &hq,
-		APIKey: &ProviderAPIKey{
-			Name:    "TEST_API_KEY",
-			Pattern: "test-.*",
-			Header:  "Authorization",
-			Scheme:  "Bearer",
+		Credentials: map[ProviderCredentialID]ProviderCredential{
+			ProviderCredentialID(ProviderCredentialKindAPIKey): {Env: ProviderEnvironmentNames{"TEST_API_KEY"}},
 		},
 		Catalog: &ProviderCatalog{
-			Endpoint: ProviderEndpoint{
-				AuthRequired: apiKeyRequired,
-				URL:          apiURL,
-			},
-			Authors: []AuthorID{
-				"test-author",
-			},
+			Sources: []ProviderSource{{
+				ID:               catalogPathModels,
+				ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+				Auth:             ProviderAuthPolicy{Methods: []ProviderCredentialID{ProviderCredentialID(ProviderCredentialKindAPIKey)}},
+				Endpoint:         ProviderSourceEndpoint{Type: EndpointTypeOpenAI, URL: apiURL},
+				Authors:          []AuthorID{"test-author"},
+			}},
 		},
 	}
 }
@@ -125,25 +121,6 @@ func WithProviderID(id ProviderID) TestProviderOption {
 	}
 }
 
-// WithProviderAPIKey sets a custom API key configuration.
-func WithProviderAPIKey(name, pattern string) TestProviderOption {
-	return func(p *Provider) {
-		p.APIKey = &ProviderAPIKey{
-			Name:    name,
-			Pattern: pattern,
-			Header:  "Authorization",
-			Scheme:  "Bearer",
-		}
-	}
-}
-
-// WithProviderEnvVars sets environment variables for the test provider.
-func WithProviderEnvVars(envVars []ProviderEnvVar) TestProviderOption {
-	return func(p *Provider) {
-		p.EnvVars = envVars
-	}
-}
-
 // TestProviderWithOptions creates a test provider with custom options.
 func TestProviderWithOptions(t testing.TB, opts ...TestProviderOption) *Provider {
 	t.Helper()
@@ -185,19 +162,21 @@ func AssertProvidersEqual(t testing.TB, expected, actual *Provider) {
 		t.Errorf("Provider Name mismatch: expected %q, got %q", expected.Name, actual.Name)
 	}
 
-	if expected.APIKey.Name != actual.APIKey.Name {
-		t.Errorf("Provider APIKey Name mismatch: expected %q, got %q", expected.APIKey.Name, actual.APIKey.Name)
+	if len(expected.Catalog.Sources) != len(actual.Catalog.Sources) {
+		t.Errorf("Provider source count mismatch: expected %d, got %d", len(expected.Catalog.Sources), len(actual.Catalog.Sources))
 	}
 }
 
-// AssertCatalogHasModel asserts that a catalog contains a model with the given ID.
+// AssertCatalogHasModel asserts that a catalog contains a definition with the given ID.
 func AssertCatalogHasModel(t testing.TB, catalog Reader, modelID string) {
 	t.Helper()
 
-	model, found := catalog.Models().Get(modelID)
-	if !found || model == nil {
-		t.Errorf("Expected catalog to have model %q", modelID)
+	for _, definition := range catalog.Definitions() {
+		if definition.ID == ModelDefinitionID(modelID) {
+			return
+		}
 	}
+	t.Errorf("Expected catalog to have model definition %q", modelID)
 }
 
 // AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.
@@ -221,7 +200,7 @@ func TestAPIResponse(models ...string) map[string]any {
 	for i, modelID := range models {
 		modelList[i] = map[string]any{
 			"id":       modelID,
-			"object":   "model",
+			"object":   catalogResourceModel,
 			"created":  TestTimeNow().Unix(),
 			"owned_by": "test-owner",
 		}

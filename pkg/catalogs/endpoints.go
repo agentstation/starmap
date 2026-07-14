@@ -68,8 +68,8 @@ func (e *Endpoints) Get(id string) (*Endpoint, bool) {
 func (e *Endpoints) Set(id string, endpoint *Endpoint) error {
 	if endpoint == nil {
 		return &errors.ValidationError{
-			Field:   "endpoint",
-			Message: "cannot be nil",
+			Field:   catalogResourceEndpoint,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -84,8 +84,8 @@ func (e *Endpoints) Set(id string, endpoint *Endpoint) error {
 func (e *Endpoints) Add(endpoint *Endpoint) error {
 	if endpoint == nil {
 		return &errors.ValidationError{
-			Field:   "endpoint",
-			Message: "cannot be nil",
+			Field:   catalogResourceEndpoint,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -96,7 +96,7 @@ func (e *Endpoints) Add(endpoint *Endpoint) error {
 		return &errors.ValidationError{
 			Field:   "endpoint.ID",
 			Value:   endpoint.ID,
-			Message: "already exists",
+			Message: validationMessageAlreadyExists,
 		}
 	}
 
@@ -112,7 +112,7 @@ func (e *Endpoints) Delete(id string) error {
 
 	if _, exists := e.endpoints[id]; !exists {
 		return &errors.NotFoundError{
-			Resource: "endpoint",
+			Resource: catalogResourceEndpoint,
 			ID:       id,
 		}
 	}
@@ -220,7 +220,7 @@ func (e *Endpoints) AddBatch(endpoints []*Endpoint) map[string]error {
 			errs[endpoint.ID] = &errors.ValidationError{
 				Field:   "endpoint.ID",
 				Value:   endpoint.ID,
-				Message: "already exists",
+				Message: validationMessageAlreadyExists,
 			}
 		}
 	}
@@ -255,7 +255,7 @@ func (e *Endpoints) SetBatch(endpoints map[string]*Endpoint) error {
 		if endpoint == nil {
 			return &errors.ValidationError{
 				Field:   "endpoints[" + id + "]",
-				Message: "cannot be nil",
+				Message: validationMessageCannotBeNil,
 			}
 		}
 	}
@@ -285,7 +285,7 @@ func (e *Endpoints) DeleteBatch(ids []string) map[string]error {
 	for _, id := range ids {
 		if _, exists := e.endpoints[id]; !exists {
 			errs[id] = &errors.NotFoundError{
-				Resource: "endpoint",
+				Resource: catalogResourceEndpoint,
 				ID:       id,
 			}
 		} else {

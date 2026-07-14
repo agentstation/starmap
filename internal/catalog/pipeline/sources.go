@@ -11,11 +11,20 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
-	configuredSources := createSourcesWithConfig(options, localCatalog)
+func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) ([]sources.Source, error) {
+	configuredSources, err := createSourcesWithConfig(options, localCatalog)
+	if err != nil {
+		return nil, err
+	}
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
+		})
+	}
+	if options.ProviderID != nil {
+		configuredSources = slices.DeleteFunc(configuredSources, func(source sources.Source) bool {
+			providerSource, scoped := source.(interface{ ProviderID() catalogs.ProviderID })
+			return scoped && providerSource.ProviderID() != *options.ProviderID
 		})
 	}
 
@@ -26,17 +35,19 @@ func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) []s
 				filtered = append(filtered, src)
 			}
 		}
-		return filtered
+		return filtered, nil
 	}
 
-	return configuredSources
+	return configuredSources, nil
 }
 
-func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
-	srcs := []sources.Source{
-		local.New(local.WithCatalog(localCatalog)),
-		providers.New(localCatalog.Providers()),
+func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Catalog) ([]sources.Source, error) {
+	providerSources, err := providers.NewConfigured(localCatalog.Providers())
+	if err != nil {
+		return nil, err
 	}
+	srcs := []sources.Source{local.New(local.WithCatalog(localCatalog))}
+	srcs = append(srcs, providerSources...)
 
 	useGit := slices.Contains(options.Sources, sources.ModelsDevGitID)
 	useHTTP := len(options.Sources) == 0 || slices.Contains(options.Sources, sources.ModelsDevHTTPID)
@@ -54,5 +65,5 @@ func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Ca
 			srcs = append(srcs, modelsdev.NewHTTPSource())
 		}
 	}
-	return srcs
+	return srcs, nil
 }

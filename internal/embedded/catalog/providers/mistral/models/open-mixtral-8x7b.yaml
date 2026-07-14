@@ -1,0 +1,10 @@
+id: open-mixtral-8x7b
+name: open-mixtral-8x7b
+authors:
+- id: mistral
+  name: Mistral AI
+pricing:
+  currency: USD
+  tokens:
+    input: {per_1m: 0.7}
+    output: {per_1m: 0.7}

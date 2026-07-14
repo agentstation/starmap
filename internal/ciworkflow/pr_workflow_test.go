@@ -58,6 +58,14 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 	if strings.Contains(workflow, "go-version-file:") {
 		t.Fatal("pull request workflow must pin the exact three-component Go version explicitly")
 	}
+	minimumSetup := regexp.MustCompile(`(?s)name: Set up minimum supported Go toolchain.*?go-version: "` + regexp.QuoteMeta(minimumPatchVersion) + `".*?cache: true`)
+	if !minimumSetup.MatchString(workflow) {
+		t.Fatal("minimum-version setup must remain the sole Go module cache owner")
+	}
+	releaseSetup := regexp.MustCompile(`(?s)name: Set up release Go toolchain.*?go-version: "` + regexp.QuoteMeta(preferredVersion[1]) + `".*?cache: false`)
+	if !releaseSetup.MatchString(workflow) {
+		t.Fatal("release-toolchain setup must reuse the existing cache without restoring it again")
+	}
 }
 
 func TestPullRequestWorkflowIsTheOnlyActivePRWorkflow(t *testing.T) {

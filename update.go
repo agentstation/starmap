@@ -141,11 +141,24 @@ func (c *Client) swapCatalogGeneration(published *catalogs.Catalog, generationID
 	c.mu.Lock()
 	oldCatalog := c.catalog
 	c.catalog = published
+	c.publicationBaseline = published
+	c.contextual = false
 	c.usingEmbeddedBootstrap = false
 	c.generationSequence++
 	if generationID != "" {
 		c.generationID = generationID
 	}
+	c.mu.Unlock()
+	return oldCatalog
+}
+
+func (c *Client) swapContextualCatalog(contextual *catalogs.Catalog) *catalogs.Catalog {
+	c.mu.Lock()
+	oldCatalog := c.catalog
+	c.catalog = contextual
+	c.contextual = true
+	c.usingEmbeddedBootstrap = false
+	c.generationSequence++
 	c.mu.Unlock()
 	return oldCatalog
 }

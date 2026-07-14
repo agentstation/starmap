@@ -1,0 +1,44 @@
+id: openai-gpt-4.1
+name: openai-gpt-4.1
+authors:
+- id: openai
+  name: openai
+definition_id: openai-gpt-4.1
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.55
+    input:
+      per_1m: 2.2
+    output:
+      per_1m: 8.8
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.5
+        input:
+          per_1m: 2.0
+        output:
+          per_1m: 8.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.55
+        input:
+          per_1m: 2.2
+        output:
+          per_1m: 8.8
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

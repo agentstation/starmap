@@ -2,9 +2,12 @@
 package sourcepayload
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"io"
 	"reflect"
 	"sort"
 	"strings"
@@ -20,13 +23,17 @@ type UnknownJSONField struct {
 	Checksum string `json:"checksum" yaml:"checksum"`
 }
 
-// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
-const MaxJSONNestingDepth = 64
+const (
+	payloadField = "payload"
+	jsonFormat   = "json"
+	// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
+	MaxJSONNestingDepth = 64
+)
 
 // ValidateJSON enforces source byte and nesting limits before decoding.
 func ValidateJSON(data []byte) error {
 	if len(data) > constants.MaxSourcePayloadBytes {
-		return &errors.ValidationError{Field: "payload", Value: len(data), Message: "exceeds maximum source payload size"}
+		return &errors.ValidationError{Field: payloadField, Value: len(data), Message: "exceeds maximum source payload size"}
 	}
 	depth := 0
 	inString := false
@@ -51,7 +58,7 @@ func ValidateJSON(data []byte) error {
 		case '{', '[':
 			depth++
 			if depth > MaxJSONNestingDepth {
-				return &errors.ValidationError{Field: "payload", Value: depth, Message: "exceeds maximum JSON nesting depth"}
+				return &errors.ValidationError{Field: payloadField, Value: depth, Message: "exceeds maximum JSON nesting depth"}
 			}
 		case '}', ']':
 			if depth > 0 {
@@ -62,12 +69,79 @@ func ValidateJSON(data []byte) error {
 	return nil
 }
 
+// ValidateExactJSON enforces resource bounds, valid single-document JSON, and
+// unique member names in every object before typed decoding.
+func ValidateExactJSON(data []byte) error {
+	if err := ValidateJSON(data); err != nil {
+		return err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	if err := validateExactJSONValue(decoder, "$"); err != nil {
+		return err
+	}
+	if token, err := decoder.Token(); err != io.EOF {
+		if err == nil {
+			return &errors.ValidationError{Field: payloadField, Value: token, Message: "must contain exactly one JSON document"}
+		}
+		return &errors.ParseError{Format: jsonFormat, File: payloadField, Message: err.Error(), Err: err}
+	}
+	return nil
+}
+
+func validateExactJSONValue(decoder *json.Decoder, path string) error {
+	token, err := decoder.Token()
+	if err != nil {
+		return &errors.ParseError{Format: jsonFormat, File: payloadField, Message: err.Error(), Err: err}
+	}
+	delimiter, isDelimiter := token.(json.Delim)
+	if !isDelimiter {
+		return nil
+	}
+	switch delimiter {
+	case '{':
+		seen := make(map[string]struct{})
+		for decoder.More() {
+			keyToken, keyErr := decoder.Token()
+			if keyErr != nil {
+				return &errors.ParseError{Format: jsonFormat, File: payloadField, Message: keyErr.Error(), Err: keyErr}
+			}
+			key, ok := keyToken.(string)
+			if !ok {
+				return &errors.ValidationError{Field: path, Value: keyToken, Message: "object member name must be a string"}
+			}
+			memberPath := path + "." + key
+			if _, found := seen[key]; found {
+				return &errors.ValidationError{Field: memberPath, Message: "duplicate JSON member is not allowed"}
+			}
+			seen[key] = struct{}{}
+			if valueErr := validateExactJSONValue(decoder, memberPath); valueErr != nil {
+				return valueErr
+			}
+		}
+		_, err = decoder.Token()
+	case '[':
+		for index := 0; decoder.More(); index++ {
+			if valueErr := validateExactJSONValue(decoder, fmt.Sprintf("%s[%d]", path, index)); valueErr != nil {
+				return valueErr
+			}
+		}
+		_, err = decoder.Token()
+	default:
+		return &errors.ValidationError{Field: path, Value: delimiter, Message: "unexpected JSON delimiter"}
+	}
+	if err != nil {
+		return &errors.ParseError{Format: jsonFormat, File: payloadField, Message: err.Error(), Err: err}
+	}
+	return nil
+}
+
 // UnknownJSONFields returns deterministic path/digest evidence for top-level
 // JSON members not declared by schema. Raw values are intentionally omitted.
 func UnknownJSONFields(data []byte, schema any, prefix string) ([]UnknownJSONField, error) {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, errors.WrapParse("json", "unknown-field inspection", err)
+		return nil, errors.WrapParse(jsonFormat, "unknown-field inspection", err)
 	}
 	known := jsonFieldNames(reflect.TypeOf(schema))
 	unknown := make([]UnknownJSONField, 0)
@@ -99,7 +173,7 @@ func jsonFieldNames(typ reflect.Type) map[string]struct{} {
 	}
 	result := make(map[string]struct{}, typ.NumField())
 	for index := 0; index < typ.NumField(); index++ {
-		tag := typ.Field(index).Tag.Get("json")
+		tag := typ.Field(index).Tag.Get(jsonFormat)
 		name := strings.Split(tag, ",")[0]
 		if name != "" && name != "-" {
 			result[name] = struct{}{}

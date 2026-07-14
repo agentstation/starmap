@@ -64,7 +64,7 @@ func (l *MemoryRunLedger) RecordAttempt(ctx context.Context, runID string, attem
 		return attemptIdentityConflict(runID, attempt.Number)
 	}
 	if record.Status != RunStatusRunning || attempt.Number != len(record.Attempts)+1 {
-		return &errors.ConflictError{Resource: "catalog scheduler attempt", Expected: strconv.Itoa(len(record.Attempts) + 1), Actual: strconv.Itoa(attempt.Number)}
+		return &errors.ConflictError{Resource: schedulerAttemptResource, Expected: strconv.Itoa(len(record.Attempts) + 1), Actual: strconv.Itoa(attempt.Number)}
 	}
 	record.Attempts = append(record.Attempts, attempt)
 	l.records[runID] = record
@@ -155,7 +155,7 @@ func validateRunQuery(query RunQuery) (int, error) {
 		switch query.Status {
 		case RunStatusRunning, RunStatusSucceeded, RunStatusFailed, RunStatusSkippedLeaseHeld, RunStatusSkippedInitialRun:
 		default:
-			return 0, &errors.ValidationError{Field: "catalog_scheduler.run_query.status", Value: query.Status, Message: "is invalid"}
+			return 0, &errors.ValidationError{Field: "catalog_scheduler.run_query.status", Value: query.Status, Message: validationInvalidMessage}
 		}
 	}
 	if query.Limit < 0 || query.Limit > 1000 {
@@ -213,5 +213,5 @@ func runIdentityConflict(id string) error {
 }
 
 func attemptIdentityConflict(runID string, number int) error {
-	return &errors.ConflictError{Resource: "catalog scheduler attempt", Expected: runID, Actual: strconv.Itoa(number), Message: "attempt number is already bound to different state"}
+	return &errors.ConflictError{Resource: schedulerAttemptResource, Expected: runID, Actual: strconv.Itoa(number), Message: "attempt number is already bound to different state"}
 }

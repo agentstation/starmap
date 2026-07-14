@@ -127,6 +127,24 @@ func TestConfigError(t *testing.T) {
 	})
 }
 
+func TestMergeError(t *testing.T) {
+	baseErr := errors.New("conflicting catalog state")
+
+	t.Run("conflict identifiers", func(t *testing.T) {
+		err := pkgerrors.NewMergeError("provider", "catalog", []string{"model-a"}, baseErr)
+		assert.Contains(t, err.Error(), "provider")
+		assert.Contains(t, err.Error(), "catalog")
+		assert.Contains(t, err.Error(), "model-a")
+		assert.Equal(t, baseErr, err.Unwrap())
+	})
+
+	t.Run("underlying failure", func(t *testing.T) {
+		err := pkgerrors.NewMergeError("provider", "catalog", nil, baseErr)
+		assert.Contains(t, err.Error(), "conflicting catalog state")
+		assert.Equal(t, baseErr, err.Unwrap())
+	})
+}
+
 func TestIOError(t *testing.T) {
 	t.Run("basic error", func(t *testing.T) {
 		err := &pkgerrors.IOError{
@@ -273,6 +291,7 @@ func TestAuthenticationError(t *testing.T) {
 			Provider: "openai",
 			Method:   "api_key",
 			Message:  "invalid API key format",
+			Err:      pkgerrors.ErrAPIKeyInvalid,
 		}
 		assert.Contains(t, err.Error(), "openai")
 		assert.Contains(t, err.Error(), "api_key")
@@ -293,6 +312,7 @@ func TestAuthenticationError(t *testing.T) {
 			Provider: "anthropic",
 			Method:   "api_key",
 			Message:  "missing",
+			Err:      pkgerrors.ErrAPIKeyRequired,
 		}
 		assert.True(t, pkgerrors.IsAPIKeyError(err))
 	})
@@ -490,6 +510,42 @@ func TestSentinelErrors(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			assert.NotNil(t, tc.err)
 			assert.NotEmpty(t, tc.err.Error())
+		})
+	}
+}
+
+func TestSafeSummaryRedactsUnderlyingValuesAndContextualIdentifiers(t *testing.T) {
+	const sensitive = "tenant-a/private-endpoint?token=top-secret"
+	tests := []struct {
+		name string
+		err  error
+		want string
+	}{
+		{
+			name: "authentication",
+			err: &pkgerrors.AuthenticationError{
+				Provider: "provider", Method: "api_key", Message: sensitive, Err: pkgerrors.ErrAPIKeyInvalid,
+			},
+			want: "authentication unavailable for provider provider using api_key",
+		},
+		{
+			name: "provider response",
+			err:  &pkgerrors.APIError{Provider: "provider", StatusCode: 403, Endpoint: sensitive, Message: sensitive, Err: errors.New(sensitive)},
+			want: "provider provider returned HTTP status 403",
+		},
+		{
+			name: "resource wrapper",
+			err:  pkgerrors.WrapResource("fetch", "deployment", sensitive, errors.New(sensitive)),
+			want: "failed to fetch deployment",
+		},
+		{name: "unknown", err: errors.New(sensitive), want: "operation failed"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := pkgerrors.SafeSummary(test.err)
+			assert.Equal(t, test.want, got)
+			assert.NotContains(t, got, sensitive)
+			assert.NotContains(t, got, "top-secret")
 		})
 	}
 }

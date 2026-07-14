@@ -65,7 +65,7 @@ func testCatalogWithModelAuthor(t *testing.T, authorID catalogs.AuthorID) *catal
 	}
 
 	provider := catalogs.TestProvider(t)
-	provider.Catalog.Authors = []catalogs.AuthorID{authorID}
+	provider.Catalog.Sources[0].Authors = []catalogs.AuthorID{authorID}
 	model := catalogs.TestModel(t)
 	model.Authors = []catalogs.Author{{ID: authorID, Name: authorID.String()}}
 	provider.Models = map[string]*catalogs.Model{model.ID: model}

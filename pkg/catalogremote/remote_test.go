@@ -1,7 +1,9 @@
 package catalogremote
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -49,8 +51,9 @@ func TestRemoteClientRejectsCrossOriginRedirect(t *testing.T) {
 	}
 }
 
-func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *testing.T) {
-	valid := remoteTestGeneration(t, 1, catalogs.ConsumerCompatibility{MinSchemaVersion: 1, MaxSchemaVersion: 1})
+func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndExactSchema(t *testing.T) {
+	current := catalogs.CurrentCatalogSchemaVersion
+	valid := remoteTestGeneration(t, current)
 	for _, test := range []struct {
 		name            string
 		generation      catalogstore.Generation
@@ -68,10 +71,10 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 		}, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
 		{name: "wrong manifest media type", generation: valid, manifestType: "application/json", snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
 		{name: "wrong snapshot media type", generation: valid, manifestType: ManifestMediaType, snapshotType: "application/json", wantError: true, wantSnapshotGet: true},
-		{name: "incompatible before snapshot", generation: remoteTestGeneration(t, 2, catalogs.ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 2}), manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "wrong schema before snapshot", generation: remoteTestGeneration(t, 1), manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			manifest, err := MarshalManifest(test.generation.Manifest)
+			manifest, err := remoteTestManifestBytes(test.generation.Manifest)
 			if err != nil {
 				t.Fatalf("MarshalManifest: %v", err)
 			}
@@ -112,7 +115,51 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 	}
 }
 
-func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility catalogs.ConsumerCompatibility) catalogstore.Generation {
+func TestRemoteCatalogRejectsCredentialScopedManifestBeforeSnapshotRequest(t *testing.T) {
+	generation := remoteTestGeneration(t, catalogs.CurrentCatalogSchemaVersion)
+	generation.Manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	manifest, err := json.Marshal(generation.Manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	var snapshotGets atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		switch request.URL.Path {
+		case ManifestPath:
+			writer.Header().Set("Content-Type", ManifestMediaType)
+			_, _ = writer.Write(manifest)
+		case SnapshotPath(generation.Manifest.GenerationID):
+			snapshotGets.Add(1)
+			writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
+			_, _ = writer.Write(generation.Payload)
+		default:
+			http.NotFound(writer, request)
+		}
+	}))
+	defer server.Close()
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if _, err := client.FetchCurrent(context.Background()); err == nil {
+		t.Fatal("FetchCurrent accepted credential-scoped manifest")
+	}
+	if got := snapshotGets.Load(); got != 0 {
+		t.Fatalf("snapshot GETs = %d, want 0", got)
+	}
+}
+
+func remoteTestManifestBytes(manifest catalogs.GenerationManifest) ([]byte, error) {
+	wantSchema := manifest.SchemaVersion
+	manifest.SchemaVersion = catalogs.CurrentCatalogSchemaVersion
+	data, err := MarshalManifest(manifest)
+	if err != nil || wantSchema == catalogs.CurrentCatalogSchemaVersion {
+		return data, err
+	}
+	return bytes.Replace(data, []byte(`"schema_version":2`), []byte(fmt.Sprintf(`"schema_version":%d`, wantSchema)), 1), nil
+}
+
+func remoteTestGeneration(t *testing.T, schemaVersion uint64) catalogstore.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: "remote-test", Name: "Remote Test"}); err != nil {
@@ -144,12 +191,14 @@ func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility cata
 				Completeness: catalogmeta.ObservationCompletenessComplete, Status: catalogmeta.ObservationStatusSucceeded,
 				EvidenceChecksum: descriptor.Checksum,
 			}},
-			Completeness: catalogs.GenerationCompletenessComplete, ConsumerCompatibility: compatibility,
+			Completeness: catalogs.GenerationCompletenessComplete,
 		},
 		Payload: payload,
 	}
-	if err := generation.Validate(); err != nil {
-		t.Fatalf("Validate: %v", err)
+	if schemaVersion == catalogs.CurrentCatalogSchemaVersion {
+		if err := generation.Validate(); err != nil {
+			t.Fatalf("Validate: %v", err)
+		}
 	}
 	return generation
 }

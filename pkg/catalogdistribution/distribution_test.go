@@ -3,6 +3,7 @@ package catalogdistribution
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 )
@@ -81,17 +83,16 @@ func TestHostedDistributionVerifiedLatestPointerReturnsExactGeneration(t *testin
 
 func TestHostedDistributionRejectsCrossOriginLatestAsset(t *testing.T) {
 	pointer := LatestPointer{
-		Version: PointerVersion, Channel: ChannelStable, GenerationID: "generation", SchemaVersion: 1,
-		ConsumerCompatibility: catalogs.ConsumerCompatibility{MinSchemaVersion: 1, MaxSchemaVersion: 1},
-		Artifact:              AssetDescriptor{URL: "https://attacker.example/catalog.tar.gz", MediaType: catalogartifact.MediaType},
-		Attestation:           AssetDescriptor{URL: "/attestation", MediaType: "application/vnd.in-toto+json"},
+		Version: PointerVersion, Channel: ChannelStable, GenerationID: "generation", SchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		Artifact:    AssetDescriptor{URL: "https://attacker.example/catalog.tar.gz", MediaType: catalogartifact.MediaType},
+		Attestation: AssetDescriptor{URL: "/attestation", MediaType: "application/vnd.in-toto+json"},
 	}
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(pointer)
 	}))
 	defer server.Close()
-	client, err := NewClient(server.URL, server.Client(), 1)
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
@@ -114,6 +115,18 @@ func TestHostedDistributionGenerationIdentityCannotBeRebound(t *testing.T) {
 	}
 	if err := repository.Publish(PublishedGeneration{Generation: secondGeneration, Artifact: secondArtifact}); err == nil {
 		t.Fatal("Publish rebound an immutable generation ID")
+	}
+}
+
+func TestHostedDistributionRejectsCredentialScopedGenerationBeforeRepositoryWrite(t *testing.T) {
+	published := hostedFixture(t)
+	published.Generation.Manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	repository := NewMemoryRepository()
+	if err := repository.Publish(published); err == nil {
+		t.Fatal("Publish accepted credential-scoped generation")
+	}
+	if _, err := repository.Get(published.Generation.Manifest.GenerationID); err == nil {
+		t.Fatal("rejected credential-scoped generation was retained")
 	}
 }
 
@@ -146,16 +159,8 @@ func TestHostedDistributionRejectsArtifactChecksumDrift(t *testing.T) {
 	}
 }
 
-func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
+func TestDistributionNegotiationRequiresExactCurrentSchema(t *testing.T) {
 	published := hostedFixture(t)
-	published.Generation.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{
-		MinSchemaVersion: 1, MaxSchemaVersion: 2,
-	}
-	artifact, err := catalogartifact.Build(published.Generation)
-	if err != nil {
-		t.Fatalf("Build widened compatibility artifact: %v", err)
-	}
-	published.Artifact = artifact
 	repository := NewMemoryRepository()
 	if err := repository.Publish(published); err != nil {
 		t.Fatalf("Publish: %v", err)
@@ -168,23 +173,21 @@ func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
 	server := httptest.NewServer(handler)
 	defer server.Close()
 
-	compatible, err := NewClient(server.URL, server.Client(), 2)
+	compatible, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient compatible: %v", err)
 	}
 	if _, err := compatible.FetchLatest(context.Background()); err != nil {
-		t.Fatalf("schema-2 consumer rejected declared compatible schema-1 payload: %v", err)
+		t.Fatalf("exact-schema consumer rejected current payload: %v", err)
 	}
-	incompatible, err := NewClient(server.URL, server.Client(), 3)
-	if err != nil {
-		t.Fatalf("NewClient incompatible: %v", err)
-	}
-	if _, err := incompatible.FetchLatest(context.Background()); err == nil {
-		t.Fatal("schema-3 consumer accepted range [1,2]")
+	for _, schemaVersion := range []uint64{1, catalogs.CurrentCatalogSchemaVersion + 1} {
+		if _, err := NewClient(server.URL, server.Client(), schemaVersion); err == nil {
+			t.Fatalf("NewClient accepted schema %d", schemaVersion)
+		}
 	}
 
 	typeOfPointer := reflect.TypeFor[LatestPointer]()
-	for _, forbidden := range []string{"StarmapVersion", "StarportVersion", "BinaryVersion", "ReleaseVersion"} {
+	for _, forbidden := range []string{"ConsumerCompatibility", "StarmapVersion", "StarportVersion", "BinaryVersion", "ReleaseVersion"} {
 		if _, found := typeOfPointer.FieldByName(forbidden); found {
 			t.Fatalf("latest pointer couples catalog compatibility to %s", forbidden)
 		}
@@ -246,14 +249,14 @@ func TestETagImmutableCacheAndRollbackRetainPriorGenerations(t *testing.T) {
 		}
 	}
 
-	assertConditionalCache(APIPrefix+"/latest?schema_version=1", LatestCacheControl)
+	assertConditionalCache(fmt.Sprintf("%s/latest?schema_version=%d", APIPrefix, catalogs.CurrentCatalogSchemaVersion), LatestCacheControl)
 	assertConditionalCache(APIPrefix+"/"+second.Generation.Manifest.GenerationID, ImmutableCacheControl)
 	assertConditionalCache(APIPrefix+"/"+first.Generation.Manifest.GenerationID, ImmutableCacheControl)
 
 	if err := repository.Rollback(ChannelStable, first.Generation.Manifest.GenerationID, "rollback fixture"); err != nil {
 		t.Fatalf("Rollback first: %v", err)
 	}
-	client, err := NewClient(server.URL, server.Client(), 1)
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
@@ -308,5 +311,14 @@ func promoteStableForTest(t *testing.T, repository *MemoryRepository, published 
 	}
 	if err := repository.Promote(ChannelStable, id, &probe); err != nil {
 		t.Fatalf("Promote stable %s: %v", id, err)
+	}
+}
+
+func TestDecodeStrictJSONRejectsDuplicateMembers(t *testing.T) {
+	var destination struct {
+		Version int `json:"version"`
+	}
+	if err := decodeStrictJSON([]byte(`{"version":1,"version":2}`), &destination); err == nil {
+		t.Fatal("decodeStrictJSON accepted duplicate JSON member")
 	}
 }

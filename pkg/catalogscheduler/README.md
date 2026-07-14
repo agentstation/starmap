@@ -298,7 +298,7 @@ type FreshnessAlert struct {
 ```
 
 <a name="FreshnessMonitor"></a>
-## type [FreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L120-L124>)
+## type [FreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L130-L134>)
 
 FreshnessMonitor retains only the newest validated observation per configured source and evaluates it against explicit deployment SLAs.
 
@@ -309,7 +309,7 @@ type FreshnessMonitor struct {
 ```
 
 <a name="NewFreshnessMonitor"></a>
-### func [NewFreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L127>)
+### func [NewFreshnessMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L137>)
 
 ```go
 func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error)
@@ -318,7 +318,7 @@ func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error)
 NewFreshnessMonitor creates an empty fail\-closed monitor.
 
 <a name="FreshnessMonitor.Record"></a>
-### func \(\*FreshnessMonitor\) [Record](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L157>)
+### func \(\*FreshnessMonitor\) [Record](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L167>)
 
 ```go
 func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink) error
@@ -327,7 +327,7 @@ func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink)
 Record advances configured sources without allowing out\-of\-order completion to regress their latest observation.
 
 <a name="FreshnessMonitor.RecordManifest"></a>
-### func \(\*FreshnessMonitor\) [RecordManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L193>)
+### func \(\*FreshnessMonitor\) [RecordManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L203>)
 
 ```go
 func (m *FreshnessMonitor) RecordManifest(manifest catalogs.GenerationManifest) error
@@ -336,7 +336,7 @@ func (m *FreshnessMonitor) RecordManifest(manifest catalogs.GenerationManifest) 
 RecordManifest seeds freshness from a validated catalog generation.
 
 <a name="FreshnessMonitor.RecordResult"></a>
-### func \(\*FreshnessMonitor\) [RecordResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L148>)
+### func \(\*FreshnessMonitor\) [RecordResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L158>)
 
 ```go
 func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error
@@ -345,7 +345,7 @@ func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error
 RecordResult advances source freshness from a completed Sync result. It does not require catalog changes or a newly published generation.
 
 <a name="FreshnessMonitor.RecordRuns"></a>
-### func \(\*FreshnessMonitor\) [RecordRuns](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L203>)
+### func \(\*FreshnessMonitor\) [RecordRuns](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L213>)
 
 ```go
 func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error
@@ -354,7 +354,7 @@ func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error
 RecordRuns restores no\-change and published source observations from durable run history. Input order does not matter because older observations cannot replace newer state.
 
 <a name="FreshnessMonitor.Report"></a>
-### func \(\*FreshnessMonitor\) [Report](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L214>)
+### func \(\*FreshnessMonitor\) [Report](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L224>)
 
 ```go
 func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error)
@@ -374,7 +374,7 @@ type FreshnessPolicy struct {
 ```
 
 <a name="FreshnessReport"></a>
-## type [FreshnessReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L103-L109>)
+## type [FreshnessReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L107-L113>)
 
 FreshnessReport is the deterministic readiness/degradation decision for all configured sources.
 
@@ -389,7 +389,7 @@ type FreshnessReport struct {
 ```
 
 <a name="FreshnessReport.Copy"></a>
-### func \(FreshnessReport\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L112>)
+### func \(FreshnessReport\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L116>)
 
 ```go
 func (r FreshnessReport) Copy() FreshnessReport
@@ -1071,7 +1071,7 @@ func WithRunLedger(ledger RunLedger, current CurrentGenerationReader) RunnerOpti
 WithRunLedger enables durable run auditing and base\-generation capture.
 
 <a name="SQLRunLedger"></a>
-## type [SQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L64-L66>)
+## type [SQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L71-L73>)
 
 SQLRunLedger persists queryable run and attempt records through database/sql. The baseline statements use SQLite\-compatible question\-mark bind parameters.
 
@@ -1082,7 +1082,7 @@ type SQLRunLedger struct {
 ```
 
 <a name="NewSQLRunLedger"></a>
-### func [NewSQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L69>)
+### func [NewSQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L76>)
 
 ```go
 func NewSQLRunLedger(ctx context.Context, db *sql.DB) (*SQLRunLedger, error)
@@ -1091,7 +1091,7 @@ func NewSQLRunLedger(ctx context.Context, db *sql.DB) (*SQLRunLedger, error)
 NewSQLRunLedger initializes the durable run\-ledger schema.
 
 <a name="SQLRunLedger.Begin"></a>
-### func \(\*SQLRunLedger\) [Begin](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L85>)
+### func \(\*SQLRunLedger\) [Begin](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L92>)
 
 ```go
 func (l *SQLRunLedger) Begin(ctx context.Context, record RunRecord) error
@@ -1100,7 +1100,7 @@ func (l *SQLRunLedger) Begin(ctx context.Context, record RunRecord) error
 Begin inserts an idempotent running trigger.
 
 <a name="SQLRunLedger.Complete"></a>
-### func \(\*SQLRunLedger\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L163>)
+### func \(\*SQLRunLedger\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L170>)
 
 ```go
 func (l *SQLRunLedger) Complete(ctx context.Context, record RunRecord) error
@@ -1109,7 +1109,7 @@ func (l *SQLRunLedger) Complete(ctx context.Context, record RunRecord) error
 Complete atomically makes a running record terminal.
 
 <a name="SQLRunLedger.Get"></a>
-### func \(\*SQLRunLedger\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L225>)
+### func \(\*SQLRunLedger\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L232>)
 
 ```go
 func (l *SQLRunLedger) Get(ctx context.Context, runID string) (RunRecord, error)
@@ -1118,7 +1118,7 @@ func (l *SQLRunLedger) Get(ctx context.Context, runID string) (RunRecord, error)
 Get returns one complete run and its ordered attempts.
 
 <a name="SQLRunLedger.List"></a>
-### func \(\*SQLRunLedger\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L237>)
+### func \(\*SQLRunLedger\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L244>)
 
 ```go
 func (l *SQLRunLedger) List(ctx context.Context, query RunQuery) ([]RunRecord, error)
@@ -1127,7 +1127,7 @@ func (l *SQLRunLedger) List(ctx context.Context, query RunQuery) ([]RunRecord, e
 List returns newest\-first complete records matching query.
 
 <a name="SQLRunLedger.RecordAttempt"></a>
-### func \(\*SQLRunLedger\) [RecordAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L120>)
+### func \(\*SQLRunLedger\) [RecordAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L127>)
 
 ```go
 func (l *SQLRunLedger) RecordAttempt(ctx context.Context, runID string, attempt AttemptRecord) error
@@ -1148,7 +1148,7 @@ type SchedulerOperationalState struct {
 ```
 
 <a name="SourceFreshness"></a>
-## type [SourceFreshness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L85-L99>)
+## type [SourceFreshness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/freshness.go#L85-L103>)
 
 SourceFreshness is one source's evaluated observation and SLA state.
 
@@ -1166,6 +1166,10 @@ type SourceFreshness struct {
     UnreadyAfterSeconds  int64                               `json:"unready_after_seconds"`
     ObservationStatus    catalogmeta.ObservationStatus       `json:"observation_status,omitempty"`
     Completeness         catalogmeta.ObservationCompleteness `json:"completeness,omitempty"`
+    Records              catalogmeta.ObservationRecordCounts `json:"records"`
+    ProviderCoverage     catalogmeta.ProviderCoverage        `json:"provider_coverage"`
+    PricingObservedAt    *time.Time                          `json:"pricing_observed_at,omitempty"`
+    PricingAgeSeconds    int64                               `json:"pricing_age_seconds,omitempty"`
     State                FreshnessState                      `json:"state"`
 }
 ```

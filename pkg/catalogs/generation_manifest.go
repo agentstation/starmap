@@ -12,20 +12,20 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 var (
 	requiredManifestJSONFields = []string{
 		"manifest_version", "schema_version", "generation_id", "generated_at",
 		"payload", "validation", "sync_run_id", "source_observations",
-		"completeness", "degraded", "consumer_compatibility",
+		"completeness", "degraded",
 	}
 	requiredPayloadJSONFields         = []string{"checksum", "size_bytes", "media_type"}
-	requiredValidationJSONFields      = []string{"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"}
-	requiredValidationCheckJSONFields = []string{"name", "status"}
-	requiredObservationJSONFields     = []string{"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"}
+	requiredValidationJSONFields      = []string{"validator_version", "validated_at", catalogFieldStatus, "error_count", "warning_count", "checks"}
+	requiredValidationCheckJSONFields = []string{"name", catalogFieldStatus}
+	requiredObservationJSONFields     = []string{catalogFieldSource, "observation_id", "observed_at", "revision", "completeness", catalogFieldStatus, "evidence_checksum"}
 	requiredObservationRevisionFields = []string{"kind"}
-	requiredCompatibilityJSONFields   = []string{"min_schema_version", "max_schema_version"}
 )
 
 const (
@@ -36,7 +36,7 @@ const (
 
 	// CurrentCatalogSchemaVersion identifies the canonical catalog payload
 	// schema emitted by this release.
-	CurrentCatalogSchemaVersion uint64 = 1
+	CurrentCatalogSchemaVersion uint64 = 2
 
 	// CatalogPayloadMediaType identifies the canonical JSON catalog payload.
 	CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
@@ -146,6 +146,7 @@ type SourceObservationLink struct {
 	Completeness     catalogmeta.ObservationCompleteness `json:"completeness" yaml:"completeness"`
 	Status           catalogmeta.ObservationStatus       `json:"status" yaml:"status"`
 	EvidenceChecksum string                              `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Metrics          catalogmeta.ObservationMetrics      `json:"metrics,omitempty" yaml:"metrics,omitempty"`
 }
 
 // Validate verifies one complete source-observation link.
@@ -153,34 +154,21 @@ func (o SourceObservationLink) Validate() error {
 	return validateObservationLinks([]SourceObservationLink{o})
 }
 
-// ConsumerCompatibility declares the catalog schema versions that can consume
-// this generation. It never refers to a Starmap or Starport binary version.
-type ConsumerCompatibility struct {
-	MinSchemaVersion uint64 `json:"min_schema_version" yaml:"min_schema_version"`
-	MaxSchemaVersion uint64 `json:"max_schema_version" yaml:"max_schema_version"`
-}
-
-// SupportsSchema reports whether a consumer catalog schema is compatible.
-func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool {
-	return schemaVersion >= c.MinSchemaVersion && schemaVersion <= c.MaxSchemaVersion
-}
-
 // GenerationManifest describes one immutable, validated catalog generation.
 // It is shared by local stores and distribution transports; transport-specific
 // URLs, release tags, and binary versions do not belong in this domain record.
 type GenerationManifest struct {
-	ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
-	SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
-	GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
-	GeneratedAt           time.Time                  `json:"generated_at" yaml:"generated_at"`
-	Payload               PayloadDescriptor          `json:"payload" yaml:"payload"`
-	Validation            GenerationValidationReport `json:"validation" yaml:"validation"`
-	SyncRunID             string                     `json:"sync_run_id" yaml:"sync_run_id"`
-	SourceObservations    []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
-	Completeness          GenerationCompleteness     `json:"completeness" yaml:"completeness"`
-	Degraded              bool                       `json:"degraded" yaml:"degraded"`
-	DegradationReasons    []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
-	ConsumerCompatibility ConsumerCompatibility      `json:"consumer_compatibility" yaml:"consumer_compatibility"`
+	ManifestVersion    uint64                     `json:"manifest_version" yaml:"manifest_version"`
+	SchemaVersion      uint64                     `json:"schema_version" yaml:"schema_version"`
+	GenerationID       string                     `json:"generation_id" yaml:"generation_id"`
+	GeneratedAt        time.Time                  `json:"generated_at" yaml:"generated_at"`
+	Payload            PayloadDescriptor          `json:"payload" yaml:"payload"`
+	Validation         GenerationValidationReport `json:"validation" yaml:"validation"`
+	SyncRunID          string                     `json:"sync_run_id" yaml:"sync_run_id"`
+	SourceObservations []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
+	Completeness       GenerationCompleteness     `json:"completeness" yaml:"completeness"`
+	Degraded           bool                       `json:"degraded" yaml:"degraded"`
+	DegradationReasons []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
 }
 
 // ParseGenerationManifestJSON strictly parses and validates a JSON manifest.
@@ -188,6 +176,9 @@ type GenerationManifest struct {
 // members), malformed JSON, and trailing documents are rejected with typed
 // validation errors.
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return GenerationManifest{}, err
+	}
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return GenerationManifest{}, validationError("manifest", string(data), fmt.Sprintf("invalid JSON: %v", err))
@@ -217,10 +208,6 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 			return GenerationManifest{}, err
 		}
 	}
-	if _, err := requireJSONObject(raw["consumer_compatibility"], "consumer_compatibility", requiredCompatibilityJSONFields); err != nil {
-		return GenerationManifest{}, err
-	}
-
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var manifest GenerationManifest
@@ -243,6 +230,16 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 func (m GenerationManifest) Copy() GenerationManifest {
 	copyManifest := m
 	copyManifest.SourceObservations = append([]SourceObservationLink(nil), m.SourceObservations...)
+	for index := range copyManifest.SourceObservations {
+		copyManifest.SourceObservations[index].Metrics.Acquisitions = append(
+			[]catalogmeta.AcquisitionProvenance(nil),
+			m.SourceObservations[index].Metrics.Acquisitions...,
+		)
+		if m.SourceObservations[index].Metrics.PricingObservedAt != nil {
+			observedAt := *m.SourceObservations[index].Metrics.PricingObservedAt
+			copyManifest.SourceObservations[index].Metrics.PricingObservedAt = &observedAt
+		}
+	}
 	copyManifest.DegradationReasons = append([]string(nil), m.DegradationReasons...)
 	copyManifest.Validation.Checks = append([]GenerationValidationCheck(nil), m.Validation.Checks...)
 	return copyManifest
@@ -253,11 +250,11 @@ func (m GenerationManifest) Validate() error {
 	if m.ManifestVersion != CurrentGenerationManifestVersion {
 		return validationError("manifest_version", m.ManifestVersion, fmt.Sprintf("must be %d", CurrentGenerationManifestVersion))
 	}
-	if m.SchemaVersion == 0 {
-		return validationError("schema_version", m.SchemaVersion, "must be greater than zero")
+	if m.SchemaVersion != CurrentCatalogSchemaVersion {
+		return validationError("schema_version", m.SchemaVersion, fmt.Sprintf("must be exactly %d", CurrentCatalogSchemaVersion))
 	}
 	if strings.TrimSpace(m.GenerationID) == "" {
-		return validationError("generation_id", m.GenerationID, "is required")
+		return validationError("generation_id", m.GenerationID, validationMessageIsRequired)
 	}
 	if err := validateUTCTime("generated_at", m.GeneratedAt); err != nil {
 		return err
@@ -269,13 +266,13 @@ func (m GenerationManifest) Validate() error {
 		return validationError("payload.size_bytes", m.Payload.SizeBytes, "must be greater than zero")
 	}
 	if strings.TrimSpace(m.Payload.MediaType) == "" {
-		return validationError("payload.media_type", m.Payload.MediaType, "is required")
+		return validationError("payload.media_type", m.Payload.MediaType, validationMessageIsRequired)
 	}
 	if err := m.Validation.validate(); err != nil {
 		return err
 	}
 	if strings.TrimSpace(m.SyncRunID) == "" {
-		return validationError("sync_run_id", m.SyncRunID, "is required")
+		return validationError("sync_run_id", m.SyncRunID, validationMessageIsRequired)
 	}
 	if err := validateObservationLinks(m.SourceObservations); err != nil {
 		return err
@@ -300,24 +297,12 @@ func (m GenerationManifest) Validate() error {
 	if !m.Degraded && len(m.DegradationReasons) > 0 {
 		return validationError("degradation_reasons", m.DegradationReasons, "reasons require degraded=true")
 	}
-	if m.ConsumerCompatibility.MinSchemaVersion == 0 {
-		return validationError("consumer_compatibility.min_schema_version", m.ConsumerCompatibility.MinSchemaVersion, "must be greater than zero")
-	}
-	if m.ConsumerCompatibility.MaxSchemaVersion == 0 {
-		return validationError("consumer_compatibility.max_schema_version", m.ConsumerCompatibility.MaxSchemaVersion, "must be greater than zero")
-	}
-	if m.ConsumerCompatibility.MaxSchemaVersion < m.ConsumerCompatibility.MinSchemaVersion {
-		return validationError("consumer_compatibility.max_schema_version", m.ConsumerCompatibility.MaxSchemaVersion, "must not be less than min_schema_version")
-	}
-	if !m.ConsumerCompatibility.SupportsSchema(m.SchemaVersion) {
-		return validationError("schema_version", m.SchemaVersion, "is outside the declared consumer compatibility range")
-	}
 	return nil
 }
 
 func (r GenerationValidationReport) validate() error {
 	if strings.TrimSpace(r.ValidatorVersion) == "" {
-		return validationError("validation.validator_version", r.ValidatorVersion, "is required")
+		return validationError("validation.validator_version", r.ValidatorVersion, validationMessageIsRequired)
 	}
 	if err := validateUTCTime("validation.validated_at", r.ValidatedAt); err != nil {
 		return err
@@ -340,10 +325,10 @@ func (r GenerationValidationReport) validate() error {
 	for index, check := range r.Checks {
 		prefix := fmt.Sprintf("validation.checks[%d]", index)
 		if strings.TrimSpace(check.Name) == "" {
-			return validationError(prefix+".name", check.Name, "is required")
+			return validationError(prefix+".name", check.Name, validationMessageIsRequired)
 		}
 		if _, found := seen[check.Name]; found {
-			return validationError(prefix+".name", check.Name, "must be unique")
+			return validationError(prefix+".name", check.Name, validationMessageMustBeUnique)
 		}
 		seen[check.Name] = struct{}{}
 		switch check.Status {
@@ -376,10 +361,10 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 	for index, observation := range observations {
 		prefix := fmt.Sprintf("source_observations[%d]", index)
 		if strings.TrimSpace(observation.Source.String()) == "" {
-			return validationError(prefix+".source", observation.Source, "is required")
+			return validationError(prefix+".source", observation.Source, validationMessageIsRequired)
 		}
 		if strings.TrimSpace(observation.ObservationID) == "" {
-			return validationError(prefix+".observation_id", observation.ObservationID, "is required")
+			return validationError(prefix+".observation_id", observation.ObservationID, validationMessageIsRequired)
 		}
 		if err := validateUTCTime(prefix+".observed_at", observation.ObservedAt); err != nil {
 			return err
@@ -391,7 +376,7 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			}
 		case catalogmeta.ObservationRevisionKindGitCommit:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
+				return validationError(prefix+".revision.value", observation.Revision.Value, validationMessageIsRequired)
 			}
 			if (len(observation.Revision.Value) != 40 && len(observation.Revision.Value) != 64) || !isHexChecksumValue(observation.Revision.Value) {
 				return validationError(prefix+".revision.value", observation.Revision.Value, "must be an exact hexadecimal Git commit")
@@ -404,10 +389,10 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			catalogmeta.ObservationRevisionKindSourceVersion,
 			catalogmeta.ObservationRevisionKindContentDigest:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
+				return validationError(prefix+".revision.value", observation.Revision.Value, validationMessageIsRequired)
 			}
 		default:
-			return validationError(prefix+".revision.kind", observation.Revision.Kind, "is not supported")
+			return validationError(prefix+".revision.kind", observation.Revision.Kind, validationMessageIsNotSupported)
 		}
 		if (observation.Revision.InputName == "") != (observation.Revision.InputChecksum == "") {
 			return validationError(prefix+".revision.input", observation.Revision, "name and checksum must be supplied together")
@@ -432,11 +417,28 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 		if err := validateChecksum(prefix+".evidence_checksum", observation.EvidenceChecksum); err != nil {
 			return err
 		}
+		if err := validateObservationLinkMetrics(prefix, observation.Metrics); err != nil {
+			return err
+		}
 		key := observation.Source.String() + "\x00" + observation.ObservationID
 		if _, found := seen[key]; found {
 			return validationError(prefix+".observation_id", observation.ObservationID, "source and observation ID must be unique")
 		}
 		seen[key] = struct{}{}
+	}
+	return nil
+}
+
+func validateObservationLinkMetrics(prefix string, metrics catalogmeta.ObservationMetrics) error {
+	if metrics.Scope == "" {
+		return nil
+	}
+	if metrics.Scope == catalogmeta.ObservationScopeCredentialScoped {
+		return validationError(prefix+".metrics.scope", metrics.Scope, "credential-scoped observations are not eligible for public generation")
+	}
+	if metrics.Records.Accepted < 0 || metrics.Records.Rejected < 0 ||
+		metrics.ProviderCoverage.Expected < 0 || metrics.ProviderCoverage.Observed < 0 {
+		return validationError(prefix+".metrics", metrics, "counts must be non-negative")
 	}
 	return nil
 }
@@ -460,7 +462,7 @@ func validateChecksum(field, checksum string) error {
 
 func validateUTCTime(field string, value time.Time) error {
 	if value.IsZero() {
-		return validationError(field, value, "is required")
+		return validationError(field, value, validationMessageIsRequired)
 	}
 	_, offset := value.Zone()
 	if offset != 0 {
@@ -506,7 +508,7 @@ func requireJSONFields(object map[string]json.RawMessage, path string, fields []
 		if path != "" {
 			fieldPath = path + "." + field
 		}
-		return validationError(fieldPath, nil, "is required")
+		return validationError(fieldPath, nil, validationMessageIsRequired)
 	}
 	return nil
 }

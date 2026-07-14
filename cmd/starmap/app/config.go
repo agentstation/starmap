@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,6 +9,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
+
+const envDisableDotenv = "STARMAP_DISABLE_DOTENV"
 
 // Config holds the application configuration loaded from various sources
 // including config files, environment variables, and .env files.
@@ -56,11 +57,7 @@ func LoadConfig() (*Config, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
-	// Bind output with FORMAT as backwards-compatible alias
-	_ = viper.BindEnv("output", "OUTPUT", "FORMAT")
-
-	// Bind common API keys
-	bindAPIKeys()
+	_ = viper.BindEnv("output", "OUTPUT")
 
 	// Try to read config file if it exists
 	configFile := viper.GetString("config")
@@ -129,44 +126,18 @@ func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, output, logLevel 
 
 // loadEnvFiles loads environment variables from .env files.
 func loadEnvFiles() {
-	// Try to load .env files in order of precedence
-	// .env.local overrides .env
+	if os.Getenv(envDisableDotenv) != "" {
+		return
+	}
+	// Load the higher-precedence local file first. godotenv.Load never replaces
+	// an already-present process value, so process environment remains highest.
 	envFiles := []string{
-		".env",
 		".env.local",
+		".env",
 	}
 
 	for _, envFile := range envFiles {
 		_ = godotenv.Load(envFile)
-	}
-}
-
-// bindAPIKeys explicitly binds common API key environment variables to Viper.
-func bindAPIKeys() {
-	// Common API keys that might be in .env files
-	apiKeys := []string{
-		"OPENAI_API_KEY",
-		"ANTHROPIC_API_KEY",
-		"GOOGLE_API_KEY",
-		"GROQ_API_KEY",
-		"GEMINI_API_KEY",
-		"CLAUDE_API_KEY",
-		"AZURE_API_KEY",
-		"COHERE_API_KEY",
-		"HUGGINGFACE_API_KEY",
-		"REPLICATE_API_KEY",
-		"TOGETHER_API_KEY",
-		"PERPLEXITY_API_KEY",
-		"DEEPSEEK_API_KEY",
-		"CEREBRAS_API_KEY",
-		"MOONSHOT_API_KEY",
-	}
-
-	for _, key := range apiKeys {
-		if err := viper.BindEnv(key); err != nil {
-			// Log warning but continue - this isn't critical
-			fmt.Fprintf(os.Stderr, "Warning: failed to bind environment variable %s: %v\n", key, err)
-		}
 	}
 }
 

@@ -16,7 +16,7 @@ checks defined here.
 
 | Member | Role |
 | --- | --- |
-| `artifact.json` | Format version, generation identity, schema/consumer compatibility, and exact member descriptors |
+| `artifact.json` | Format version, generation identity, exact catalog schema, and exact member descriptors |
 | `manifest.json` | Complete validated `catalogs.GenerationManifest` |
 | `catalog.json` | Exact canonical catalog payload bound by the manifest |
 
@@ -27,9 +27,9 @@ must pass before build and after open.
 
 The generation ID is an immutable logical identifier. The payload and archive
 are content-addressed independently by SHA-256; consumers must not infer a
-digest from the generation ID. Catalog compatibility is determined only by the
-manifest schema version and consumer-compatibility range, never a Starmap or
-Starport binary/release version.
+digest from the generation ID. Catalog acceptance requires the exact current
+manifest schema version, never a compatibility range or a Starmap/Starport
+binary or release version.
 
 ## Reproducibility
 
@@ -54,9 +54,9 @@ Consumers:
 2. parse only the three allowed regular-file members;
 3. strictly decode `artifact.json` and `manifest.json`;
 4. verify manifest identity, validation result, payload checksum/size/media type,
-   schema version, and consumer compatibility;
+   exact current schema version;
 5. verify descriptor member hashes and sizes;
-6. verify all detached in-toto subjects and the compatibility predicate;
+6. verify all detached in-toto subjects and the schema predicate;
 7. at the publication boundary, verify the signed repository/workflow
    attestation before atomic activation.
 
