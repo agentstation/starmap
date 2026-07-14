@@ -105,7 +105,7 @@ Build validates a generation and deterministically packages it for distribution.
 <a name="AttestationPredicate"></a>
 ## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L86-L90>)
 
-AttestationPredicate records the catalog compatibility identity asserted by the detached statement. Signature and builder provenance are added and verified by the publication boundary.
+AttestationPredicate records the exact catalog schema identity asserted by the detached statement. Signature and builder provenance are added and verified by the publication boundary.
 
 ```go
 type AttestationPredicate struct {

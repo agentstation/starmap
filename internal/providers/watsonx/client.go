@@ -8,8 +8,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
-	"time"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -51,33 +51,27 @@ type model struct {
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
+	region    string
 	transport *transport.Client
 }
 
 // NewClient creates a watsonx.ai client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
-}
-
-// IsAPIKeyRequired reports that regional discovery requires IBM auth.
-func (c *Client) IsAPIKeyRequired() bool { return true }
-
-// HasAPIKey reports whether token and regional base URL are resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey() && c.provider.EnvVar("IBM_WATSONX_BASE_URL") != ""
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	region, _ := source.Binding("region")
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), region: region, transport: transport.New(source.Auth())}
 }
 
 // ListModels traverses the opaque start-token pagination contract.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
-	configured, client := c.provider, c.transport
+	configured, client, endpointValue, region := c.provider, c.transport, c.endpoint, c.region
 	c.mu.RUnlock()
-	if configured == nil || configured.EnvVar("IBM_WATSONX_BASE_URL") == "" {
-		return nil, &errors.ConfigError{Component: "watsonx", Message: "regional base URL is required"}
+	if configured == nil || endpointValue == "" {
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDWatsonx), Message: "regional base URL is required"}
 	}
-	endpoint, err := url.Parse(configured.CatalogEndpointURL())
+	endpoint, err := url.Parse(endpointValue)
 	if err != nil {
 		return nil, errors.WrapParse("url", "watsonx foundation models", err)
 	}
@@ -88,12 +82,12 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	result := make([]catalogs.Model, 0)
 	seen := make(map[string]struct{})
 	for page := 0; page < maxPages; page++ {
-		pageResult, fetchErr := fetchPage(ctx, client, configured, endpoint.String())
+		pageResult, fetchErr := fetchPage(ctx, client, endpoint.String())
 		if fetchErr != nil {
 			return nil, fetchErr
 		}
 		for _, source := range pageResult.Resources {
-			converted, convertErr := convertModel(source, configured.EnvVar("IBM_WATSONX_REGION"))
+			converted, convertErr := convertModel(source, region)
 			if convertErr != nil {
 				return nil, convertErr
 			}
@@ -119,15 +113,15 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return nil, &errors.ValidationError{Field: "watsonx.pages", Value: maxPages, Message: "page limit exceeded"}
 }
 
-func fetchPage(ctx context.Context, client *transport.Client, provider *catalogs.Provider, endpoint string) (response, error) {
-	httpResponse, err := client.Get(ctx, endpoint, provider)
+func fetchPage(ctx context.Context, client *transport.Client, endpoint string) (response, error) {
+	httpResponse, err := client.Get(ctx, endpoint)
 	if err != nil {
-		return response{}, &errors.APIError{Provider: "watsonx", Endpoint: endpoint, Message: "request failed", Err: err}
+		return response{}, &errors.APIError{Provider: string(catalogs.ProviderIDWatsonx), Endpoint: endpoint, Message: "request failed", Err: err}
 	}
 	defer func() { _ = httpResponse.Body.Close() }()
 	var result response
 	if err := transport.DecodeResponse(httpResponse, &result); err != nil {
-		return response{}, &errors.APIError{Provider: "watsonx", Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
+		return response{}, &errors.APIError{Provider: string(catalogs.ProviderIDWatsonx), Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
 	}
 	if result.Resources == nil {
 		return response{}, &errors.ValidationError{Field: "watsonx.resources", Message: "required resource array is null"}
@@ -148,7 +142,7 @@ func convertModel(source model, region string) (catalogs.Model, error) {
 		Authors: []catalogs.Author{{ID: watsonxAuthor(source.Provider), Name: source.Provider}}, Status: lifecycle(source.Lifecycle),
 		InvocationAPIs: invocationAPIs(source.Tasks), OfferingEndpoint: catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeWatsonx},
 		OfferingDeployment: catalogs.ProviderDeployment{Type: "curated-multitenant", Tier: "pay-per-token"},
-		Extensions:         catalogs.SourceExtensions{"watsonx": {Fields: catalogs.NormalizeExtensionFields(map[string]any{"source": source.Source, "api_version": apiVersion})}},
+		Extensions:         catalogs.SourceExtensions{string(catalogs.ProviderIDWatsonx): {Fields: catalogs.NormalizeExtensionFields(map[string]any{"source": source.Source, "api_version": apiVersion})}},
 	}
 	if region != "" {
 		result.OfferingRegions = []catalogs.CloudRegion{{ID: region}}
@@ -222,6 +216,32 @@ type DeploymentConfig struct {
 	Region            *catalogs.CloudRegion                 `json:"-" yaml:"-"`
 }
 
+// DeploymentResult contains canonical records returned by one project or space observation.
+type DeploymentResult struct {
+	Definitions []catalogs.ModelDefinition
+	Offerings   []catalogs.ProviderOffering
+}
+
+// Catalog materializes deployment records in the single canonical catalog.
+func (result DeploymentResult) Catalog(provider catalogs.Provider) (*catalogs.Catalog, error) {
+	builder := catalogs.NewEmpty()
+	provider.Models = nil
+	if err := builder.SetProvider(provider); err != nil {
+		return nil, err
+	}
+	for _, definition := range result.Definitions {
+		if err := builder.SetDefinition(definition); err != nil {
+			return nil, err
+		}
+	}
+	for _, offering := range result.Offerings {
+		if err := builder.SetOffering(offering); err != nil {
+			return nil, err
+		}
+	}
+	return builder.Build()
+}
+
 type deploymentPage struct {
 	Resources []deploymentResource `json:"resources"`
 	Next      *struct {
@@ -253,11 +273,11 @@ type deploymentResource struct {
 	} `json:"entity"`
 }
 
-// FetchDeployments returns credential-scoped deployments without admitting them to the public catalog.
-func FetchDeployments(ctx context.Context, config DeploymentConfig) (catalogs.CustomerInventory, error) {
-	base, scope, err := validateDeploymentConfig(config)
+// FetchDeployments returns credential-scoped deployments as canonical contextual offerings.
+func FetchDeployments(ctx context.Context, config DeploymentConfig) (DeploymentResult, error) {
+	base, err := validateDeploymentConfig(config)
 	if err != nil {
-		return catalogs.CustomerInventory{}, err
+		return DeploymentResult{}, err
 	}
 	client := &http.Client{Timeout: constants.DefaultTimeout}
 	resources := make([]deploymentResource, 0)
@@ -274,41 +294,37 @@ func FetchDeployments(ctx context.Context, config DeploymentConfig) (catalogs.Cu
 	for page := 0; page < maxPages; page++ {
 		result, fetchErr := fetchDeploymentPage(ctx, client, endpoint.String(), config.Token)
 		if fetchErr != nil {
-			return catalogs.CustomerInventory{}, fetchErr
+			return DeploymentResult{}, fetchErr
 		}
 		resources = append(resources, result.Resources...)
 		if result.Next == nil || result.Next.Href == "" {
-			return deploymentInventory(config, scope, resources)
+			return deploymentOfferings(config, resources)
 		}
 		next, parseErr := url.Parse(result.Next.Href)
 		if parseErr != nil || next.Scheme != endpoint.Scheme || next.Host != endpoint.Host {
-			return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "watsonx.deployments.next.href", Value: result.Next.Href, Message: "must remain on the configured regional origin"}
+			return DeploymentResult{}, &errors.ValidationError{Field: "watsonx.deployments.next.href", Value: result.Next.Href, Message: "must remain on the configured regional origin"}
 		}
 		if next.String() == endpoint.String() {
-			return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "watsonx.deployments.next.href", Value: next.String(), Message: "cursor repeated"}
+			return DeploymentResult{}, &errors.ValidationError{Field: "watsonx.deployments.next.href", Value: next.String(), Message: "cursor repeated"}
 		}
 		endpoint = *next
 	}
-	return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "watsonx.deployments.pages", Value: maxPages, Message: "page limit exceeded"}
+	return DeploymentResult{}, &errors.ValidationError{Field: "watsonx.deployments.pages", Value: maxPages, Message: "page limit exceeded"}
 }
 
-func validateDeploymentConfig(config DeploymentConfig) (*url.URL, catalogs.CustomerScope, error) {
-	if config.Token == "" || len(config.DefinitionByAsset) == 0 || (config.ProjectID == "") == (config.SpaceID == "") {
-		return nil, catalogs.CustomerScope{}, &errors.ValidationError{Field: "watsonx.deployments.config", Message: "token, explicit definition mapping, and exactly one project or space are required"}
+func validateDeploymentConfig(config DeploymentConfig) (*url.URL, error) {
+	if config.Token == "" || (config.ProjectID == "") == (config.SpaceID == "") {
+		return nil, &errors.ValidationError{Field: "watsonx.deployments.config", Message: "token and exactly one project or space are required"}
 	}
 	base, err := url.Parse(config.BaseURL)
 	if err != nil {
-		return nil, catalogs.CustomerScope{}, errors.WrapParse("url", "watsonx regional base URL", err)
+		return nil, errors.WrapParse("url", "watsonx regional base URL", err)
 	}
 	loopbackHTTP := base.Scheme == "http" && (base.Hostname() == "127.0.0.1" || base.Hostname() == "localhost")
 	if (base.Scheme != "https" && !loopbackHTTP) || base.Host == "" {
-		return nil, catalogs.CustomerScope{}, &errors.ValidationError{Field: "watsonx.deployments.base_url", Value: config.BaseURL, Message: "absolute HTTPS or loopback development URL is required"}
+		return nil, &errors.ValidationError{Field: "watsonx.deployments.base_url", Value: config.BaseURL, Message: "absolute HTTPS or loopback development URL is required"}
 	}
-	scope := catalogs.CustomerScope{ProjectID: config.ProjectID}
-	if config.SpaceID != "" {
-		scope.WorkspaceID = config.SpaceID
-	}
-	return base, scope, nil
+	return base, nil
 }
 
 func fetchDeploymentPage(ctx context.Context, client *http.Client, endpoint, token string) (deploymentPage, error) {
@@ -319,12 +335,12 @@ func fetchDeploymentPage(ctx context.Context, client *http.Client, endpoint, tok
 	request.Header.Set("Authorization", "Bearer "+token)
 	response, err := client.Do(request)
 	if err != nil {
-		return deploymentPage{}, &errors.APIError{Provider: "watsonx", Endpoint: endpoint, Message: "request failed", Err: err}
+		return deploymentPage{}, &errors.APIError{Provider: string(catalogs.ProviderIDWatsonx), Endpoint: endpoint, Message: "request failed", Err: err}
 	}
 	defer func() { _ = response.Body.Close() }()
 	var result deploymentPage
 	if err := transport.DecodeResponse(response, &result); err != nil {
-		return deploymentPage{}, &errors.APIError{Provider: "watsonx", Endpoint: endpoint, StatusCode: response.StatusCode, Message: "failed to decode deployment response", Err: err}
+		return deploymentPage{}, &errors.APIError{Provider: string(catalogs.ProviderIDWatsonx), Endpoint: endpoint, StatusCode: response.StatusCode, Message: "failed to decode deployment response", Err: err}
 	}
 	if result.Resources == nil {
 		return deploymentPage{}, &errors.ValidationError{Field: "watsonx.deployments.resources", Message: "required resource array is null"}
@@ -332,14 +348,20 @@ func fetchDeploymentPage(ctx context.Context, client *http.Client, endpoint, tok
 	return result, nil
 }
 
-func deploymentInventory(config DeploymentConfig, scope catalogs.CustomerScope, resources []deploymentResource) (catalogs.CustomerInventory, error) {
-	inventory := catalogs.CustomerInventory{ProviderID: catalogs.ProviderIDWatsonx, Scope: scope, ObservedAt: time.Now().UTC()}
+func deploymentOfferings(config DeploymentConfig, resources []deploymentResource) (DeploymentResult, error) {
+	offerings := make([]catalogs.ProviderOffering, 0, len(resources))
+	definitions := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition)
 	for _, resource := range resources {
 		identity, providerModelID := deploymentIdentity(resource)
 		definitionID, found := config.DefinitionByAsset[identity]
 		if !found {
-			return catalogs.CustomerInventory{}, &errors.NotFoundError{Resource: "watsonx deployment definition", ID: identity}
+			definitionID = catalogs.ModelDefinitionID(identity)
 		}
+		name := resource.Entity.Name
+		if name == "" {
+			name = providerModelID
+		}
+		definitions[definitionID] = catalogs.ModelDefinition{ID: definitionID, Name: name}
 		aliases := make([]string, 0, 2)
 		if resource.Entity.Name != "" {
 			aliases = append(aliases, resource.Entity.Name)
@@ -347,16 +369,34 @@ func deploymentInventory(config DeploymentConfig, scope catalogs.CustomerScope, 
 		if resource.Entity.Online.Parameters.ServingName != "" {
 			aliases = append(aliases, resource.Entity.Online.Parameters.ServingName)
 		}
-		inventory.Deployments = append(inventory.Deployments, catalogs.CustomerDeployment{
-			ID: resource.Metadata.ID, DefinitionID: definitionID, ProviderModelID: catalogs.ProviderModelID(providerModelID), Region: config.Region,
-			Deployment: catalogs.ProviderDeployment{Type: deploymentType(resource.Entity.DeployedAssetType)},
-			Endpoint:   strings.TrimRight(config.BaseURL, "/") + "/ml/v1/deployments/" + resource.Metadata.ID + "/text/generation", Aliases: aliases,
-		})
+		offering := catalogs.ProviderOffering{
+			ProviderID: catalogs.ProviderIDWatsonx, ProviderModelID: catalogs.ProviderModelID(providerModelID),
+			DeploymentID: resource.Metadata.ID, DefinitionID: definitionID, Aliases: aliases,
+			Availability: catalogs.OfferingAvailabilityRestricted,
+			Access:       catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIWatsonxGenerate}},
+			Deployment:   catalogs.ProviderDeployment{Type: deploymentType(resource.Entity.DeployedAssetType)},
+			Endpoint:     catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeWatsonx, BaseURL: strings.TrimRight(config.BaseURL, "/"), Path: "/ml/v1/deployments/" + resource.Metadata.ID + "/text/generation"},
+			Lifecycle:    catalogs.OfferingLifecycleActive,
+		}
+		if config.Region != nil {
+			offering.Regions = []catalogs.CloudRegion{*config.Region}
+		}
+		if err := offering.Validate(); err != nil {
+			return DeploymentResult{}, err
+		}
+		offerings = append(offerings, offering)
 	}
-	if err := inventory.Validate(); err != nil {
-		return catalogs.CustomerInventory{}, err
+	definitionList := make([]catalogs.ModelDefinition, 0, len(definitions))
+	for _, definition := range definitions {
+		definitionList = append(definitionList, definition)
 	}
-	return inventory, nil
+	slices.SortFunc(definitionList, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(offerings, func(left, right catalogs.ProviderOffering) int {
+		return strings.Compare(left.DeploymentID, right.DeploymentID)
+	})
+	return DeploymentResult{Definitions: definitionList, Offerings: offerings}, nil
 }
 
 func deploymentIdentity(resource deploymentResource) (string, string) {

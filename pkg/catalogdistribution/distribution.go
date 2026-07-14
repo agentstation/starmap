@@ -22,6 +22,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 const (
@@ -34,8 +35,11 @@ const (
 	// ImmutableCacheControl is sent for generation-addressed assets.
 	ImmutableCacheControl = "public, max-age=31536000, immutable"
 	// LatestCacheControl is sent for the mutable exact-schema latest pointer.
-	LatestCacheControl = "public, max-age=60, must-revalidate"
-	maxHostedBodyBytes = 64 << 20
+	LatestCacheControl          = "public, max-age=60, must-revalidate"
+	latestValidationField       = "catalog_distribution.latest"
+	maxHostedBodyBytes          = 64 << 20
+	publishedGenerationResource = "hosted catalog generation"
+	stableProbeValidationField  = "catalog_distribution.stable_probe"
 )
 
 // AssetDescriptor identifies one immutable hosted byte object.
@@ -115,7 +119,7 @@ func (r *MemoryRepository) Publish(published PublishedGeneration) error {
 	if existing, found := r.items[id]; found {
 		if existing.Artifact.Checksum != published.Artifact.Checksum ||
 			!bytes.Equal(existing.Artifact.Attestation, published.Artifact.Attestation) {
-			return &errors.ConflictError{Resource: "hosted catalog generation", Expected: id, Actual: id, Message: "generation ID is immutable"}
+			return &errors.ConflictError{Resource: publishedGenerationResource, Expected: id, Actual: id, Message: "generation ID is immutable"}
 		}
 		return nil
 	}
@@ -153,7 +157,7 @@ func (r *MemoryRepository) Get(generationID string) (PublishedGeneration, error)
 	defer r.mu.RUnlock()
 	published, found := r.items[generationID]
 	if !found {
-		return PublishedGeneration{}, &errors.NotFoundError{Resource: "hosted catalog generation", ID: generationID}
+		return PublishedGeneration{}, &errors.NotFoundError{Resource: publishedGenerationResource, ID: generationID}
 	}
 	return copyPublished(published), nil
 }
@@ -346,7 +350,7 @@ func (c *Client) fetchChannel(ctx context.Context, channel Channel) (catalogstor
 		return catalogstore.Generation{}, LatestPointer{}, err
 	}
 	if pointerMediaType != "application/json" {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointerMediaType, Message: "has unexpected media type"}
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointerMediaType, Message: "has unexpected media type"}
 	}
 	var pointer LatestPointer
 	if err := decodeStrictJSON(pointerData, &pointer); err != nil {
@@ -354,7 +358,7 @@ func (c *Client) fetchChannel(ctx context.Context, channel Channel) (catalogstor
 	}
 	if pointer.Version != PointerVersion || pointer.Channel != channel || pointer.GenerationID == "" ||
 		pointer.SchemaVersion != catalogs.CurrentCatalogSchemaVersion || pointer.SchemaVersion != c.schemaVersion {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointer.GenerationID, Message: "is incompatible or malformed"}
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointer.GenerationID, Message: "is incompatible or malformed"}
 	}
 	artifactURL, err := c.assetURL(pointer.Artifact.URL)
 	if err != nil {
@@ -384,7 +388,7 @@ func (c *Client) fetchChannel(ctx context.Context, channel Channel) (catalogstor
 	}
 	manifest := generation.Manifest
 	if manifest.GenerationID != pointer.GenerationID || manifest.SchemaVersion != pointer.SchemaVersion {
-		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: "catalog_distribution.latest", Value: pointer.GenerationID, Message: "does not match downloaded generation"}
+		return catalogstore.Generation{}, LatestPointer{}, &errors.ValidationError{Field: latestValidationField, Value: pointer.GenerationID, Message: "does not match downloaded generation"}
 	}
 	return generation, pointer, nil
 }
@@ -434,6 +438,9 @@ func verifyAsset(descriptor AssetDescriptor, data []byte, mediaType string) erro
 }
 
 func decodeStrictJSON(data []byte, destination any) error {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return err
+	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(destination); err != nil {

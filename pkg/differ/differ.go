@@ -12,6 +12,8 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+const differFieldName = "name"
+
 // Differ detects changes between catalog resources.
 //
 // Differ is concrete because the package has one implementation. Its algorithm
@@ -364,9 +366,9 @@ func (diff *Differ) model(existing, updated catalogs.Model) *ModelUpdate {
 	changes := []FieldChange{}
 
 	// Compare basic fields
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,
@@ -739,9 +741,9 @@ func diffModelMetadata(existing, updated *catalogs.ModelMetadata) []FieldChange 
 func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdate {
 	changes := []FieldChange{}
 
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,
@@ -775,21 +777,21 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	// Check API configuration changes
-	if !reflect.DeepEqual(existing.APIKey, updated.APIKey) && !diff.ignoreFields["api_key"] {
+	// Check credential metadata changes.
+	if !reflect.DeepEqual(existing.Credentials, updated.Credentials) && !diff.ignoreFields["credentials"] {
 		changes = append(changes, FieldChange{
-			Path:     "api_key",
+			Path:     "credentials",
 			OldValue: "config changed",
 			NewValue: "updated",
 			Type:     ChangeTypeUpdate,
 		})
 	}
 
-	if !reflect.DeepEqual(existing.EnvVars, updated.EnvVars) && !diff.ignoreFields["env_vars"] {
+	if !reflect.DeepEqual(existing.Advisories, updated.Advisories) && !diff.ignoreFields["environment_advisories"] {
 		changes = append(changes, FieldChange{
-			Path:     "env_vars",
-			OldValue: fmt.Sprintf("%d env vars", len(existing.EnvVars)),
-			NewValue: fmt.Sprintf("%d env vars", len(updated.EnvVars)),
+			Path:     "environment_advisories",
+			OldValue: fmt.Sprintf("%d advisories", len(existing.Advisories)),
+			NewValue: fmt.Sprintf("%d advisories", len(updated.Advisories)),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -813,11 +815,11 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	if !reflect.DeepEqual(existing.ChatCompletions, updated.ChatCompletions) && !diff.ignoreFields["chat_completions"] {
+	if !reflect.DeepEqual(existing.Invocation, updated.Invocation) && !diff.ignoreFields["invocation"] {
 		changes = append(changes, FieldChange{
-			Path:     "chat_completions",
-			OldValue: formatPresent(existing.ChatCompletions != nil),
-			NewValue: formatPresent(updated.ChatCompletions != nil),
+			Path:     "invocation",
+			OldValue: formatPresent(existing.Invocation != nil),
+			NewValue: formatPresent(updated.Invocation != nil),
 			Type:     ChangeTypeUpdate,
 		})
 	}
@@ -892,9 +894,9 @@ func optionalStringValue(value *string) string {
 func (diff *Differ) author(existing, updated catalogs.Author) *AuthorUpdate {
 	changes := []FieldChange{}
 
-	if existing.Name != updated.Name && !diff.ignoreFields["name"] {
+	if existing.Name != updated.Name && !diff.ignoreFields[differFieldName] {
 		changes = append(changes, FieldChange{
-			Path:     "name",
+			Path:     differFieldName,
 			OldValue: existing.Name,
 			NewValue: updated.Name,
 			Type:     ChangeTypeUpdate,

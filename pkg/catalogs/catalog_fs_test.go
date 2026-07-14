@@ -16,6 +16,15 @@ import (
 	"github.com/agentstation/starmap/pkg/save"
 )
 
+func testProviderCatalog() *ProviderCatalog {
+	return &ProviderCatalog{Sources: []ProviderSource{{
+		ID:               "models",
+		ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+		Auth:             ProviderAuthPolicy{Mode: ProviderAuthModeNone},
+		Endpoint:         ProviderSourceEndpoint{Type: EndpointTypeApplication},
+	}}}
+}
+
 func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T) {
 	missing := filepath.Join(t.TempDir(), "missing")
 	if _, err := NewLocal(missing); err != nil {
@@ -52,7 +61,7 @@ func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T
 	}
 	if err := os.WriteFile(
 		filepath.Join(corruptModel, "providers.yaml"),
-		[]byte("- id: test-provider\n  name: Test Provider\n"),
+		[]byte("- id: test-provider\n  name: Test Provider\n  catalog:\n    sources:\n    - id: models\n      observation_scope: global_public\n      auth: none\n      endpoint:\n        type: application\n"),
 		constants.FilePermissions,
 	); err != nil {
 		t.Fatalf("Write provider index: %v", err)
@@ -76,24 +85,31 @@ func testFS() fs.FS {
 		"providers.yaml": &fstest.MapFile{
 			Data: []byte(`- id: openai
   name: OpenAI
-  api_key:
-    name: OPENAI_API_KEY
-    pattern: "sk-.*"
-    header: "Authorization"
-    scheme: "Bearer"
+  catalog:
+    sources:
+    - id: models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
 - id: anthropic
   name: Anthropic
-  api_key:
-    name: ANTHROPIC_API_KEY
-    pattern: "sk-ant-.*"
-    header: "x-api-key"
+  catalog:
+    sources:
+    - id: models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
 - id: groq
   name: Groq
-  api_key:
-    name: GROQ_API_KEY
-    pattern: "gsk_.*"
-    header: "Authorization"
-    scheme: "Bearer"
+  catalog:
+    sources:
+    - id: models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
 `),
 		},
 		"authors.yaml": &fstest.MapFile{
@@ -187,6 +203,13 @@ func TestCatalogWithPath(t *testing.T) {
 		filepath.Join(tmpDir, "providers.yaml"),
 		[]byte(`- id: test-provider
   name: Test Provider
+  catalog:
+    sources:
+    - id: models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
 `), constants.FilePermissions))
 
 	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test-provider", "models"), constants.DirPermissions))
@@ -243,8 +266,9 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	tmpDir := t.TempDir()
 	cat := NewEmpty()
 	provider := Provider{
-		ID:   "replacement-provider",
-		Name: "Replacement Provider",
+		ID:      "replacement-provider",
+		Name:    "Replacement Provider",
+		Catalog: testProviderCatalog(),
 		Models: map[string]*Model{
 			"stale-provider-model": {ID: "stale-provider-model", Name: "Stale"},
 		},
@@ -344,6 +368,13 @@ func TestCatalogNestedModels(t *testing.T) {
 		"providers.yaml": &fstest.MapFile{
 			Data: []byte(`- id: groq
   name: Groq
+  catalog:
+    sources:
+    - id: models
+      observation_scope: global_public
+      auth: none
+      endpoint:
+        type: application
 `),
 		},
 		"providers/groq/models/meta-llama/llama-3.1/70b.yaml": &fstest.MapFile{

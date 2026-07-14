@@ -1,0 +1,50 @@
+id: claude-sonnet-4-5
+name: claude-sonnet-4-5
+authors:
+- id: anthropic
+  name: anthropic
+definition_id: claude-sonnet-4-5
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.33
+    cache_write:
+      per_1m: 4.125
+    input:
+      per_1m: 3.3
+    output:
+      per_1m: 16.5
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.3
+        cache_write:
+          per_1m: 3.75
+        input:
+          per_1m: 3.0
+        output:
+          per_1m: 15.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.33
+        cache_write:
+          per_1m: 4.125
+        input:
+          per_1m: 3.3
+        output:
+          per_1m: 16.5
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

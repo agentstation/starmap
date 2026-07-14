@@ -33,3 +33,19 @@ func TestUnknownSourcePathsProduceDeterministicFingerprintEvidence(t *testing.T)
 		t.Fatalf("evidence leaked raw unknown value: %s", encoded)
 	}
 }
+
+func TestValidateExactJSONRejectsDuplicateMembersAtEveryDepth(t *testing.T) {
+	for _, payload := range []string{
+		`{"id":"one","id":"two"}`,
+		`{"items":[{"id":"one","id":"two"}]}`,
+		`{"outer":{"value":1,"value":2}}`,
+		`{} {}`,
+	} {
+		if err := ValidateExactJSON([]byte(payload)); err == nil {
+			t.Fatalf("ValidateExactJSON(%s) accepted non-exact JSON", payload)
+		}
+	}
+	if err := ValidateExactJSON([]byte(`{"items":[{"id":"one"},{"id":"two"}]}`)); err != nil {
+		t.Fatalf("ValidateExactJSON exact document: %v", err)
+	}
+}

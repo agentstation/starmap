@@ -15,10 +15,13 @@ type sdkClient struct {
 	compartmentID string
 }
 
-func newSDKClient(_ context.Context, config Config) (API, error) {
-	client, err := generativeai.NewGenerativeAiClientWithConfigurationProvider(common.DefaultConfigProvider())
+func newSDKClient(config Config, provider common.ConfigurationProvider) (API, error) {
+	if provider == nil {
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved OCI configuration provider is required", Err: errors.ErrAPIKeyRequired}
+	}
+	client, err := generativeai.NewGenerativeAiClientWithConfigurationProvider(provider)
 	if err != nil {
-		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: "oci_sdk_default_chain", Message: "OCI SDK configuration is unavailable", Err: err}
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "OCI SDK configuration is unavailable", Err: err}
 	}
 	client.SetRegion(config.Region)
 	return &sdkClient{client: client, compartmentID: config.CompartmentID}, nil

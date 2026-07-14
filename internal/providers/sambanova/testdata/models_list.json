@@ -1,0 +1,28 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "DeepSeek-R1",
+      "object": "model",
+      "owned_by": "SambaNova",
+      "context_length": 16384,
+      "max_completion_tokens": 8192,
+      "pricing": {
+        "prompt": "0.00000500",
+        "completion": "0.00000700"
+      },
+      "new_field": true
+    },
+    {
+      "id": "Meta-Llama-3.3-70B-Instruct",
+      "object": "model",
+      "owned_by": "Meta",
+      "context_length": 131072,
+      "max_completion_tokens": 4096,
+      "pricing": {
+        "prompt": "0.00000080",
+        "completion": "0.00000120"
+      }
+    }
+  ]
+}

@@ -33,3 +33,9 @@ func TestBootstrapManifestRequiresExactCurrentSchema(t *testing.T) {
 		t.Fatal("ParseBootstrapManifestJSON accepted a prelaunch schema-v1 manifest")
 	}
 }
+
+func TestParseBootstrapManifestRejectsDuplicateJSONMembers(t *testing.T) {
+	if _, err := ParseBootstrapManifestJSON([]byte(`{"manifest_version":1,"manifest_version":1}`)); err == nil {
+		t.Fatal("ParseBootstrapManifestJSON accepted duplicate JSON member")
+	}
+}

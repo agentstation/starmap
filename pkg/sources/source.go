@@ -104,13 +104,17 @@ type ID = catalogmeta.SourceID
 
 // Common source identifiers - exported as package-level constants for convenience.
 const (
-	ProvidersID        = catalogmeta.ProvidersID
-	ModelsDevGitID     = catalogmeta.ModelsDevGitID
-	ModelsDevHTTPID    = catalogmeta.ModelsDevHTTPID
-	LocalCatalogID     = catalogmeta.LocalCatalogID
-	AmazonBedrockID    = catalogmeta.AmazonBedrockID
-	MicrosoftFoundryID = catalogmeta.MicrosoftFoundryID
-	OCIGenerativeAIID  = catalogmeta.OCIGenerativeAIID
+	ProvidersID           = catalogmeta.ProvidersID
+	ModelsDevGitID        = catalogmeta.ModelsDevGitID
+	ModelsDevHTTPID       = catalogmeta.ModelsDevHTTPID
+	LocalCatalogID        = catalogmeta.LocalCatalogID
+	AmazonBedrockID       = catalogmeta.AmazonBedrockID
+	MicrosoftFoundryID    = catalogmeta.MicrosoftFoundryID
+	OCIGenerativeAIID     = catalogmeta.OCIGenerativeAIID
+	DatabricksWorkspaceID = catalogmeta.DatabricksWorkspaceID
+	WatsonxDeploymentsID  = catalogmeta.WatsonxDeploymentsID
+	validationCannotBeNil = "cannot be nil"
+	validationIsRequired  = "is required"
 )
 
 // IDs returns all available source identifiers.

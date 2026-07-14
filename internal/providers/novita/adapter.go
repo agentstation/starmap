@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/providers/openai"
+	"github.com/agentstation/starmap/internal/connectors/openai"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -78,64 +78,13 @@ func validate(model sourceModel) error {
 }
 
 func enrich(model *catalogs.Model, source openai.Model) error {
-	wire, err := decode(source)
-	if err != nil {
+	if _, err := decode(source); err != nil {
 		return err
 	}
-	model.Name, model.Description, model.Status = wire.Title, wire.Description, catalogs.ModelStatusActive
-	model.Limits = &catalogs.ModelLimits{ContextWindow: *wire.ContextSize}
+	model.Status = catalogs.ModelStatusActive
 	if model.Features == nil {
 		model.Features = &catalogs.ModelFeatures{}
 	}
 	model.Features.Streaming = true
-	input, err := catalogs.NormalizeProviderTokenPrice(float64(*wire.InputTokenPricePerM), catalogs.ProviderNormalizationUnitMilliCurrencyPerMillionTokens)
-	if err != nil {
-		return err
-	}
-	output, err := catalogs.NormalizeProviderTokenPrice(float64(*wire.OutputTokenPricePerM), catalogs.ProviderNormalizationUnitMilliCurrencyPerMillionTokens)
-	if err != nil {
-		return err
-	}
-	pricing := &catalogs.ModelPricing{Currency: catalogs.ModelPricingCurrencyUSD, Tokens: &catalogs.ModelTokenPricing{Input: &input, Output: &output}}
-	batch, err := discount(pricing)
-	if err != nil {
-		return err
-	}
-	model.Pricing = pricing
-	model.Modes = map[string]catalogs.ModelMode{"batch": {Pricing: batch}}
-	mergeExtension(model, map[string]any{"input_token_price_per_m_raw": *wire.InputTokenPricePerM, "output_token_price_per_m_raw": *wire.OutputTokenPricePerM})
 	return nil
-}
-
-func discount(pricing *catalogs.ModelPricing) (*catalogs.ModelPricing, error) {
-	result := &catalogs.ModelPricing{Currency: pricing.Currency, Tokens: &catalogs.ModelTokenPricing{}}
-	if pricing.Tokens.Input != nil {
-		cost, err := catalogs.ScaleProviderTokenPrice(*pricing.Tokens.Input, 0.5)
-		if err != nil {
-			return nil, err
-		}
-		result.Tokens.Input = &cost
-	}
-	if pricing.Tokens.Output != nil {
-		cost, err := catalogs.ScaleProviderTokenPrice(*pricing.Tokens.Output, 0.5)
-		if err != nil {
-			return nil, err
-		}
-		result.Tokens.Output = &cost
-	}
-	return result, nil
-}
-
-func mergeExtension(model *catalogs.Model, fields map[string]any) {
-	if model.Extensions == nil {
-		model.Extensions = catalogs.SourceExtensions{}
-	}
-	ext := model.Extensions[catalogs.ProviderIDNovita.String()]
-	if ext.Fields == nil {
-		ext.Fields = map[string]any{}
-	}
-	for key, value := range catalogs.NormalizeExtensionFields(fields) {
-		ext.Fields[key] = value
-	}
-	model.Extensions[catalogs.ProviderIDNovita.String()] = ext
 }

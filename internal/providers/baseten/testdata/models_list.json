@@ -1,1 +1,0 @@
-{"object":"list","data":[{"id":"zai-org/GLM-5.2","object":"model","owned_by":"zai-org","max_context_length":262144,"max_completion_tokens":65536,"input_modalities":["text"],"output_modalities":["text"],"supported_features":["reasoning","structured_outputs"],"pricing":{"prompt":"1.40","completion":"4.40","input_cache_read":"0.26"},"quantization":"fp8"}]}

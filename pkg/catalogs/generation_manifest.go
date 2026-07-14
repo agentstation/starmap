@@ -12,6 +12,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 var (
@@ -21,9 +22,9 @@ var (
 		"completeness", "degraded",
 	}
 	requiredPayloadJSONFields         = []string{"checksum", "size_bytes", "media_type"}
-	requiredValidationJSONFields      = []string{"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"}
-	requiredValidationCheckJSONFields = []string{"name", "status"}
-	requiredObservationJSONFields     = []string{"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"}
+	requiredValidationJSONFields      = []string{"validator_version", "validated_at", catalogFieldStatus, "error_count", "warning_count", "checks"}
+	requiredValidationCheckJSONFields = []string{"name", catalogFieldStatus}
+	requiredObservationJSONFields     = []string{catalogFieldSource, "observation_id", "observed_at", "revision", "completeness", catalogFieldStatus, "evidence_checksum"}
 	requiredObservationRevisionFields = []string{"kind"}
 )
 
@@ -175,6 +176,9 @@ type GenerationManifest struct {
 // members), malformed JSON, and trailing documents are rejected with typed
 // validation errors.
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return GenerationManifest{}, err
+	}
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return GenerationManifest{}, validationError("manifest", string(data), fmt.Sprintf("invalid JSON: %v", err))
@@ -227,6 +231,10 @@ func (m GenerationManifest) Copy() GenerationManifest {
 	copyManifest := m
 	copyManifest.SourceObservations = append([]SourceObservationLink(nil), m.SourceObservations...)
 	for index := range copyManifest.SourceObservations {
+		copyManifest.SourceObservations[index].Metrics.Acquisitions = append(
+			[]catalogmeta.AcquisitionProvenance(nil),
+			m.SourceObservations[index].Metrics.Acquisitions...,
+		)
 		if m.SourceObservations[index].Metrics.PricingObservedAt != nil {
 			observedAt := *m.SourceObservations[index].Metrics.PricingObservedAt
 			copyManifest.SourceObservations[index].Metrics.PricingObservedAt = &observedAt
@@ -246,7 +254,7 @@ func (m GenerationManifest) Validate() error {
 		return validationError("schema_version", m.SchemaVersion, fmt.Sprintf("must be exactly %d", CurrentCatalogSchemaVersion))
 	}
 	if strings.TrimSpace(m.GenerationID) == "" {
-		return validationError("generation_id", m.GenerationID, "is required")
+		return validationError("generation_id", m.GenerationID, validationMessageIsRequired)
 	}
 	if err := validateUTCTime("generated_at", m.GeneratedAt); err != nil {
 		return err
@@ -258,13 +266,13 @@ func (m GenerationManifest) Validate() error {
 		return validationError("payload.size_bytes", m.Payload.SizeBytes, "must be greater than zero")
 	}
 	if strings.TrimSpace(m.Payload.MediaType) == "" {
-		return validationError("payload.media_type", m.Payload.MediaType, "is required")
+		return validationError("payload.media_type", m.Payload.MediaType, validationMessageIsRequired)
 	}
 	if err := m.Validation.validate(); err != nil {
 		return err
 	}
 	if strings.TrimSpace(m.SyncRunID) == "" {
-		return validationError("sync_run_id", m.SyncRunID, "is required")
+		return validationError("sync_run_id", m.SyncRunID, validationMessageIsRequired)
 	}
 	if err := validateObservationLinks(m.SourceObservations); err != nil {
 		return err
@@ -294,7 +302,7 @@ func (m GenerationManifest) Validate() error {
 
 func (r GenerationValidationReport) validate() error {
 	if strings.TrimSpace(r.ValidatorVersion) == "" {
-		return validationError("validation.validator_version", r.ValidatorVersion, "is required")
+		return validationError("validation.validator_version", r.ValidatorVersion, validationMessageIsRequired)
 	}
 	if err := validateUTCTime("validation.validated_at", r.ValidatedAt); err != nil {
 		return err
@@ -317,10 +325,10 @@ func (r GenerationValidationReport) validate() error {
 	for index, check := range r.Checks {
 		prefix := fmt.Sprintf("validation.checks[%d]", index)
 		if strings.TrimSpace(check.Name) == "" {
-			return validationError(prefix+".name", check.Name, "is required")
+			return validationError(prefix+".name", check.Name, validationMessageIsRequired)
 		}
 		if _, found := seen[check.Name]; found {
-			return validationError(prefix+".name", check.Name, "must be unique")
+			return validationError(prefix+".name", check.Name, validationMessageMustBeUnique)
 		}
 		seen[check.Name] = struct{}{}
 		switch check.Status {
@@ -353,10 +361,10 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 	for index, observation := range observations {
 		prefix := fmt.Sprintf("source_observations[%d]", index)
 		if strings.TrimSpace(observation.Source.String()) == "" {
-			return validationError(prefix+".source", observation.Source, "is required")
+			return validationError(prefix+".source", observation.Source, validationMessageIsRequired)
 		}
 		if strings.TrimSpace(observation.ObservationID) == "" {
-			return validationError(prefix+".observation_id", observation.ObservationID, "is required")
+			return validationError(prefix+".observation_id", observation.ObservationID, validationMessageIsRequired)
 		}
 		if err := validateUTCTime(prefix+".observed_at", observation.ObservedAt); err != nil {
 			return err
@@ -368,7 +376,7 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			}
 		case catalogmeta.ObservationRevisionKindGitCommit:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
+				return validationError(prefix+".revision.value", observation.Revision.Value, validationMessageIsRequired)
 			}
 			if (len(observation.Revision.Value) != 40 && len(observation.Revision.Value) != 64) || !isHexChecksumValue(observation.Revision.Value) {
 				return validationError(prefix+".revision.value", observation.Revision.Value, "must be an exact hexadecimal Git commit")
@@ -381,10 +389,10 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 			catalogmeta.ObservationRevisionKindSourceVersion,
 			catalogmeta.ObservationRevisionKindContentDigest:
 			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
+				return validationError(prefix+".revision.value", observation.Revision.Value, validationMessageIsRequired)
 			}
 		default:
-			return validationError(prefix+".revision.kind", observation.Revision.Kind, "is not supported")
+			return validationError(prefix+".revision.kind", observation.Revision.Kind, validationMessageIsNotSupported)
 		}
 		if (observation.Revision.InputName == "") != (observation.Revision.InputChecksum == "") {
 			return validationError(prefix+".revision.input", observation.Revision, "name and checksum must be supplied together")
@@ -425,8 +433,8 @@ func validateObservationLinkMetrics(prefix string, metrics catalogmeta.Observati
 	if metrics.Scope == "" {
 		return nil
 	}
-	if metrics.Scope == catalogmeta.ObservationScopeCustomer || metrics.Kind == catalogmeta.SourceKindCustomer {
-		return validationError(prefix+".metrics", metrics, "customer inventory is not eligible for public generation")
+	if metrics.Scope == catalogmeta.ObservationScopeCredentialScoped {
+		return validationError(prefix+".metrics.scope", metrics.Scope, "credential-scoped observations are not eligible for public generation")
 	}
 	if metrics.Records.Accepted < 0 || metrics.Records.Rejected < 0 ||
 		metrics.ProviderCoverage.Expected < 0 || metrics.ProviderCoverage.Observed < 0 {
@@ -454,7 +462,7 @@ func validateChecksum(field, checksum string) error {
 
 func validateUTCTime(field string, value time.Time) error {
 	if value.IsZero() {
-		return validationError(field, value, "is required")
+		return validationError(field, value, validationMessageIsRequired)
 	}
 	_, offset := value.Zone()
 	if offset != 0 {
@@ -500,7 +508,7 @@ func requireJSONFields(object map[string]json.RawMessage, path string, fields []
 		if path != "" {
 			fieldPath = path + "." + field
 		}
-		return validationError(fieldPath, nil, "is required")
+		return validationError(fieldPath, nil, validationMessageIsRequired)
 	}
 	return nil
 }

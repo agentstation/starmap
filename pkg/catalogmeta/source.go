@@ -33,6 +33,12 @@ const (
 
 	// OCIGenerativeAIID identifies the native OCI Generative AI regional source.
 	OCIGenerativeAIID SourceID = "oci_generative_ai"
+
+	// DatabricksWorkspaceID identifies credential-scoped Databricks serving endpoints.
+	DatabricksWorkspaceID SourceID = "databricks_workspace"
+
+	// WatsonxDeploymentsID identifies credential-scoped watsonx deployments.
+	WatsonxDeploymentsID SourceID = "watsonx_deployments"
 )
 
 // SourceIDs returns all available source identifiers.
@@ -46,6 +52,8 @@ func SourceIDs() []SourceID {
 		AmazonBedrockID,
 		MicrosoftFoundryID,
 		OCIGenerativeAIID,
+		DatabricksWorkspaceID,
+		WatsonxDeploymentsID,
 	}
 }
 

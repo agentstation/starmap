@@ -298,7 +298,7 @@ func TestShallowCopyAuthorModels(t *testing.T) {
 }
 
 func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
-	precision := "fp16"
+	baseModel := "base-model"
 	searchPrompt := "find sources"
 	topLogprobs := 5
 	root := "root-model"
@@ -317,7 +317,7 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 		Metadata: &ModelMetadata{
 			Tags: []ModelTag{ModelTagCoding},
 			Architecture: &ModelArchitecture{
-				Precision: &precision,
+				BaseModel: &baseModel,
 			},
 		},
 		Features: &ModelFeatures{
@@ -377,7 +377,7 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	*copied.Lineage.Root = "changed-root"
 	*copied.Lineage.Parent = "changed-parent"
 	copied.Metadata.Tags[0] = ModelTagMath
-	*copied.Metadata.Architecture.Precision = "fp8"
+	*copied.Metadata.Architecture.BaseModel = "changed-base"
 	copied.Features.Modalities.Input[0] = ModelModalityImage
 	*copied.Generation.TopLogprobs = 10
 	*copied.Tools.WebSearch.SearchPrompt = "changed"
@@ -397,8 +397,8 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	if *original.Lineage.Root != "root-model" || *original.Lineage.Parent != "parent-model" {
 		t.Fatal("lineage pointers were shared between original and copy")
 	}
-	if *original.Metadata.Architecture.Precision != "fp16" {
-		t.Fatal("architecture precision pointer was shared between original and copy")
+	if *original.Metadata.Architecture.BaseModel != "base-model" {
+		t.Fatal("architecture base-model pointer was shared between original and copy")
 	}
 	if original.Features.Modalities.Input[0] != ModelModalityText {
 		t.Fatal("feature modality slice was shared between original and copy")
@@ -439,7 +439,6 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 }
 
 func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
-	docs := "https://example.com/docs"
 	privacyURL := "https://example.com/privacy"
 
 	original := Provider{
@@ -447,28 +446,28 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 		Name:    "Provider",
 		Aliases: []ProviderID{"provider-alias"},
 		Catalog: &ProviderCatalog{
-			Docs: &docs,
-			Endpoint: ProviderEndpoint{
-				FeatureRules: []FeatureRule{{
-					Field:    "id",
-					Contains: []string{"reasoning"},
-					Feature:  "reasoning",
-					Value:    true,
-				}},
-				AuthorMapping: &AuthorMapping{
-					Field: "owned_by",
-					Normalized: map[string]AuthorID{
-						"openai": AuthorIDOpenAI,
+			Sources: []ProviderSource{{
+				ID:   "models",
+				Docs: "https://example.com/docs",
+				Endpoint: ProviderSourceEndpoint{
+					FeatureRules: []FeatureRule{{
+						Field:    "id",
+						Contains: []string{"reasoning"},
+						Feature:  "reasoning",
+						Value:    true,
+					}},
+					AuthorMapping: &AuthorMapping{
+						Field: "owned_by",
+						Normalized: map[string]AuthorID{
+							"openai": AuthorIDOpenAI,
+						},
 					},
 				},
-			},
-			Authors: []AuthorID{AuthorIDOpenAI},
+				Authors: []AuthorID{AuthorIDOpenAI},
+			}},
 		},
 		PrivacyPolicy: &ProviderPrivacyPolicy{
 			PrivacyPolicyURL: &privacyURL,
-		},
-		EnvVarValues: map[string]string{
-			"API_KEY": "secret",
 		},
 		Extensions: SourceExtensions{
 			"models.dev": {
@@ -481,34 +480,30 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 
 	copied := DeepCopyProvider(original)
 	copied.Aliases[0] = "changed"
-	*copied.Catalog.Docs = "changed"
-	copied.Catalog.Endpoint.FeatureRules[0].Contains[0] = "changed"
-	copied.Catalog.Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
-	copied.Catalog.Authors[0] = AuthorIDGoogle
+	copied.Catalog.Sources[0].Docs = "changed"
+	copied.Catalog.Sources[0].Endpoint.FeatureRules[0].Contains[0] = "changed"
+	copied.Catalog.Sources[0].Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
+	copied.Catalog.Sources[0].Authors[0] = AuthorIDGoogle
 	*copied.PrivacyPolicy.PrivacyPolicyURL = "changed"
-	copied.EnvVarValues["API_KEY"] = "changed"
 	copied.Extensions["models.dev"].Fields["npm"] = "@changed/provider"
 
 	if original.Aliases[0] != "provider-alias" {
 		t.Fatal("provider aliases were shared between original and copy")
 	}
-	if *original.Catalog.Docs != "https://example.com/docs" {
+	if original.Catalog.Sources[0].Docs != "https://example.com/docs" {
 		t.Fatal("provider catalog docs pointer was shared between original and copy")
 	}
-	if original.Catalog.Endpoint.FeatureRules[0].Contains[0] != "reasoning" {
+	if original.Catalog.Sources[0].Endpoint.FeatureRules[0].Contains[0] != "reasoning" {
 		t.Fatal("feature rule contains slice was shared between original and copy")
 	}
-	if original.Catalog.Endpoint.AuthorMapping.Normalized["openai"] != AuthorIDOpenAI {
+	if original.Catalog.Sources[0].Endpoint.AuthorMapping.Normalized["openai"] != AuthorIDOpenAI {
 		t.Fatal("author mapping map was shared between original and copy")
 	}
-	if original.Catalog.Authors[0] != AuthorIDOpenAI {
+	if original.Catalog.Sources[0].Authors[0] != AuthorIDOpenAI {
 		t.Fatal("provider catalog authors slice was shared between original and copy")
 	}
 	if *original.PrivacyPolicy.PrivacyPolicyURL != "https://example.com/privacy" {
 		t.Fatal("provider privacy pointer was shared between original and copy")
-	}
-	if original.EnvVarValues["API_KEY"] != "secret" {
-		t.Fatal("provider environment values map was shared between original and copy")
 	}
 	if original.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/anthropic" {
 		t.Fatal("provider extension fields map was shared between original and copy")

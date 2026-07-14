@@ -18,9 +18,10 @@ scopes are meaningful:
 - A public offering is discoverable-only. Azure inference addresses a customer
   deployment name, not the catalog model/version, so Starmap does not invent a
   globally routable alias or endpoint.
-- Account `deployments` results are requested only when customer inventory is
-  explicitly enabled. Subscription, resource group, account, deployment alias,
-  and account endpoint stay exclusively in `CustomerInventory`.
+- Account `deployments` results are part of the configured credential-scoped
+  source. Subscription, resource group, account, deployment alias, and account
+  endpoint remain ordinary contextual offering facts and make the complete
+  observation ineligible for public publication.
 - Microsoft Foundry/Azure OpenAI remains distinct from the model author. The
   returned model `publisher` supplies authorship evidence; `format` is only a
   fallback when publisher is absent. An OpenAI-compatible format never turns a
@@ -49,7 +50,7 @@ fail.
 | --- | --- | --- |
 | Control-plane versions and purpose | [Azure OpenAI REST API reference](https://learn.microsoft.com/en-us/azure/foundry/openai/reference) | Use a stable ARM control plane for account model/deployment inventory; do not confuse it with inference/data-plane model listing |
 | Location model inventory | [Models - List](https://learn.microsoft.com/en-us/rest/api/aiservices/accountmanagement/models/list?view=rest-aiservices-accountmanagement-2024-10-01) | Call the subscription/location route and treat nested publisher, model name, version/default marker, format, lifecycle, and SKUs as scoped availability evidence |
-| Customer deployment inventory | [Deployments - List](https://learn.microsoft.com/en-us/rest/api/aiservices/accountmanagement/deployments/list?view=rest-aiservices-accountmanagement-2024-10-01) | Keep deployment name, scale/SKU, resource endpoint, and alias in private customer inventory |
+| Account deployment inventory | [Deployments - List](https://learn.microsoft.com/en-us/rest/api/aiservices/accountmanagement/deployments/list?view=rest-aiservices-accountmanagement-2024-10-01) | Keep deployment name, scale/SKU, resource endpoint, and alias in the credential-scoped catalog observation |
 | Inference aliases | [Azure OpenAI REST reference](https://learn.microsoft.com/en-us/azure/foundry/openai/reference) | Inference paths use `deployments/{deployment-id}`; a base model/version alone is not a routable Azure target |
 | Foundry v1 model surface | [Azure OpenAI models](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/models) | The endpoint model list is authenticated and endpoint-scoped; it is not a credential-free global catalog |
 | Microsoft Entra chain | [Credential chains in Azure Identity for Go](https://learn.microsoft.com/en-us/azure/developer/go/sdk/authentication/credential-chains) | Use `DefaultAzureCredential` with injected API fixtures and serialize no token or credential value |
@@ -66,8 +67,8 @@ has the repository default timeout and all response bodies use the repository
 source-payload limit.
 
 A failed or partial account observation is not deletion evidence. Reconciliation
-retains the last-known-good Foundry offerings and records degradation. Customer
-deployment inventory has an independent private lifecycle and never enters
+retains the last-known-good Foundry offerings and records degradation. Account
+deployment observations have an independent contextual lifecycle and never enter
 scheduled public publication.
 
 The public Retail Prices importer filters `serviceName eq 'Foundry Models'`,
@@ -83,7 +84,7 @@ reported independently as pricing freshness.
 - deterministic model/deployment pagination and conversion fixtures;
 - bounded retry and repeated-cursor fault fixtures;
 - commercial/Government realm separation;
-- zero deployment calls when customer inventory is disabled;
+- zero account calls when required credential or account bindings are absent;
 - public-payload absence checks for subscription, resource group, account,
   endpoint, and deployment alias;
 - Retail Prices parsing and live public-feed evidence;

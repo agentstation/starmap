@@ -85,53 +85,8 @@ func ValidateProviderFieldMappings(mappings []FieldMapping) error {
 	seenTargets := make(map[string]struct{}, len(mappings))
 	for index, mapping := range mappings {
 		field := fmt.Sprintf("provider.catalog.endpoint.field_mappings[%d]", index)
-		if strings.TrimSpace(mapping.From) == "" {
-			return providerNormalizationError(field+".from", mapping.From, "is required")
-		}
-		targetKind := providerMappingTargetKind(mapping.To)
-		if targetKind == "" {
-			return providerNormalizationError(field+".to", mapping.To, "is not an allow-listed canonical target")
-		}
-		if mapping.Mode != "" && !safeProviderPathSegment(mapping.Mode) {
-			return providerNormalizationError(field+".mode", mapping.Mode, "must be a safe mode name")
-		}
-		if mapping.Tier != nil {
-			if targetKind != providerTargetTokenPrice && targetKind != providerTargetOperationPrice {
-				return providerNormalizationError(field+".tier", mapping.Tier, "is only valid for pricing targets")
-			}
-			if mapping.Tier.Type != ModelPricingTierTypeContext || mapping.Tier.Size <= 0 {
-				return providerNormalizationError(field+".tier", mapping.Tier, "requires context type and a positive size")
-			}
-		}
-		if len(mapping.Values) > 0 {
-			if mapping.To != "lifecycle" {
-				return providerNormalizationError(field+".values", mapping.Values, "is only valid for lifecycle mappings")
-			}
-			for source, destination := range mapping.Values {
-				if strings.TrimSpace(source) == "" || !validMappedLifecycle(destination) {
-					return providerNormalizationError(field+".values", mapping.Values, "requires non-empty source values and supported lifecycle destinations")
-				}
-			}
-		}
-		switch targetKind {
-		case providerTargetTokenPrice:
-			if !validPricingCurrency(mapping.Currency) {
-				return providerNormalizationError(field+".currency", mapping.Currency, "must be a three-letter uppercase currency code")
-			}
-			if _, err := NormalizeProviderTokenPrice(0, mapping.Unit); err != nil {
-				return providerNormalizationError(field+".unit", mapping.Unit, "is incompatible with a token pricing target")
-			}
-		case providerTargetOperationPrice:
-			if !validPricingCurrency(mapping.Currency) {
-				return providerNormalizationError(field+".currency", mapping.Currency, "must be a three-letter uppercase currency code")
-			}
-			if mapping.Unit != ProviderNormalizationUnitPerOperation {
-				return providerNormalizationError(field+".unit", mapping.Unit, "must be per_operation for an operation pricing target")
-			}
-		default:
-			if mapping.Unit != "" || mapping.Currency != "" || mapping.Mode != "" || mapping.Tier != nil {
-				return providerNormalizationError(field, mapping, "non-pricing targets cannot declare pricing unit, currency, mode, or tier")
-			}
+		if err := validateProviderFieldMapping(mapping, field); err != nil {
+			return err
 		}
 		key := fmt.Sprintf("%s|%s|%v", mapping.Mode, mapping.To, mapping.Tier)
 		if _, found := seenTargets[key]; found {
@@ -140,6 +95,122 @@ func ValidateProviderFieldMappings(mappings []FieldMapping) error {
 		seenTargets[key] = struct{}{}
 	}
 	return nil
+}
+
+func validateProviderFieldMapping(mapping FieldMapping, field string) error {
+	if strings.TrimSpace(mapping.From) == "" {
+		return providerNormalizationError(field+".from", mapping.From, validationMessageIsRequired)
+	}
+	if !safeProviderSourcePath(mapping.From) {
+		return providerNormalizationError(field+".from", mapping.From, "must be a safe non-sensitive dotted JSON path")
+	}
+	targetKind := providerMappingTargetKind(mapping.To)
+	if targetKind == "" {
+		return providerNormalizationError(field+".to", mapping.To, "is not an allow-listed canonical target")
+	}
+	if mapping.Mode != "" && !safeProviderPathSegment(mapping.Mode) {
+		return providerNormalizationError(field+".mode", mapping.Mode, "must be a safe mode name")
+	}
+	if err := validateProviderMappingTierAndScale(mapping, targetKind, field); err != nil {
+		return err
+	}
+	if err := validateProviderMappingValues(mapping, field); err != nil {
+		return err
+	}
+	return validateProviderMappingUnits(mapping, targetKind, field)
+}
+
+func validateProviderMappingTierAndScale(mapping FieldMapping, targetKind, field string) error {
+	pricing := targetKind == providerTargetTokenPrice || targetKind == providerTargetOperationPrice
+	if mapping.Tier != nil && !pricing {
+		return providerNormalizationError(field+".tier", mapping.Tier, "is only valid for pricing targets")
+	}
+	if mapping.Tier != nil && (mapping.Tier.Type != ModelPricingTierTypeContext || mapping.Tier.Size <= 0) {
+		return providerNormalizationError(field+".tier", mapping.Tier, "requires context type and a positive size")
+	}
+	if mapping.Scale != nil && !pricing {
+		return providerNormalizationError(field+".scale", *mapping.Scale, "is only valid for pricing targets")
+	}
+	if mapping.Scale != nil && (math.IsNaN(*mapping.Scale) || math.IsInf(*mapping.Scale, 0) || *mapping.Scale < 0) {
+		return providerNormalizationError(field+".scale", *mapping.Scale, "must be finite and non-negative")
+	}
+	return nil
+}
+
+func validateProviderMappingValues(mapping FieldMapping, field string) error {
+	if len(mapping.Values) == 0 {
+		return nil
+	}
+	if mapping.To != catalogFieldLifecycle {
+		return providerNormalizationError(field+".values", mapping.Values, "is only valid for lifecycle mappings")
+	}
+	for source, destination := range mapping.Values {
+		if strings.TrimSpace(source) == "" || !validMappedLifecycle(destination) {
+			return providerNormalizationError(field+".values", mapping.Values, "requires non-empty source values and supported lifecycle destinations")
+		}
+	}
+	return nil
+}
+
+func validateProviderMappingUnits(mapping FieldMapping, targetKind, field string) error {
+	switch targetKind {
+	case providerTargetTokenPrice:
+		if !validPricingCurrency(mapping.Currency) {
+			return providerNormalizationError(field+".currency", mapping.Currency, "must be a three-letter uppercase currency code")
+		}
+		if _, err := NormalizeProviderTokenPrice(0, mapping.Unit); err != nil {
+			return providerNormalizationError(field+".unit", mapping.Unit, "is incompatible with a token pricing target")
+		}
+	case providerTargetOperationPrice:
+		if !validPricingCurrency(mapping.Currency) {
+			return providerNormalizationError(field+".currency", mapping.Currency, "must be a three-letter uppercase currency code")
+		}
+		if mapping.Unit != ProviderNormalizationUnitPerOperation {
+			return providerNormalizationError(field+".unit", mapping.Unit, "must be per_operation for an operation pricing target")
+		}
+	default:
+		if mapping.Unit != "" || mapping.Currency != "" || mapping.Mode != "" || mapping.Tier != nil || mapping.Scale != nil {
+			return providerNormalizationError(field, mapping, "non-pricing targets cannot declare pricing unit, currency, mode, tier, or scale")
+		}
+	}
+	return nil
+}
+
+// ValidateProviderFeatureRules validates bounded source-field feature rules.
+func ValidateProviderFeatureRules(rules []FeatureRule) error {
+	for index, rule := range rules {
+		field := fmt.Sprintf("provider.catalog.endpoint.feature_rules[%d]", index)
+		if !safeProviderSourcePath(rule.Field) {
+			return providerNormalizationError(field+".field", rule.Field, "must be a safe non-sensitive dotted JSON path")
+		}
+		if len(rule.Contains) == 0 {
+			return providerNormalizationError(field+".contains", rule.Contains, "must contain at least one non-empty value")
+		}
+		for _, value := range rule.Contains {
+			if strings.TrimSpace(value) == "" {
+				return providerNormalizationError(field+".contains", rule.Contains, "must contain only non-empty values")
+			}
+		}
+		switch rule.Feature {
+		case "tools", "tool_choice", "structured_outputs", "reasoning", "top_k", "format_response":
+		default:
+			return providerNormalizationError(field+".feature", rule.Feature, "is not an allow-listed model feature")
+		}
+	}
+	return nil
+}
+
+func safeProviderSourcePath(source string) bool {
+	segments := strings.Split(source, ".")
+	if len(segments) == 0 {
+		return false
+	}
+	for _, segment := range segments {
+		if !safeProviderPathSegment(segment) || sensitiveProviderField(segment) {
+			return false
+		}
+	}
+	return true
 }
 
 func validMappedLifecycle(value string) bool {
@@ -153,8 +224,9 @@ func validMappedLifecycle(value string) bool {
 
 func providerMappingTargetKind(target string) string {
 	switch target {
-	case "limits.context_window", "limits.input_tokens", "limits.output_tokens", "name", "description", "metadata.tags", "lifecycle",
-		"features.tools", "features.reasoning", "features.structured_outputs":
+	case "limits.context_window", "limits.input_tokens", "limits.output_tokens", "name", "description", "metadata.tags", catalogFieldLifecycle,
+		"features.tools", "features.tool_choice", "features.reasoning", "features.structured_outputs", "features.format_response", "features.streaming",
+		"features.modalities.input", "features.modalities.output", "features.modalities.image_input":
 		return "field"
 	case "pricing.tokens.input", "pricing.tokens.output", "pricing.tokens.reasoning", "pricing.tokens.cache_read", "pricing.tokens.cache_write":
 		return providerTargetTokenPrice
@@ -176,7 +248,7 @@ func providerMappingTargetKind(target string) string {
 func sensitiveProviderField(value string) bool {
 	normalized := strings.ToLower(strings.ReplaceAll(value, "-", "_"))
 	switch normalized {
-	case "api_key", "apikey", "access_token", "auth_token", "authorization", "credential", "credentials", "password", "secret":
+	case string(ProviderCredentialKindAPIKey), "apikey", "access_token", "auth_token", "authorization", "credential", "credentials", "password", "secret":
 		return true
 	default:
 		return false

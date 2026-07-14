@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -81,6 +82,33 @@ func TestGenerationDerivesDegradedCompletenessFromObservations(t *testing.T) {
 	}
 	if len(generation.Manifest.DegradationReasons) != 1 {
 		t.Fatalf("degradation reasons = %#v", generation.Manifest.DegradationReasons)
+	}
+}
+
+func TestGenerationRejectsCredentialScopedObservationBeforeIdentityOrPayloadPublication(t *testing.T) {
+	observedAt := time.Date(2026, time.July, 9, 12, 0, 0, 0, time.UTC)
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{
+		ObservedAt: observedAt, Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
+		Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindDirectInventory,
+	})
+	if err != nil {
+		t.Fatalf("NewObservation: %v", err)
+	}
+	identityCalls := 0
+	client := &Client{now: func() time.Time { return observedAt }, newID: func() (string, error) {
+		identityCalls++
+		return "must-not-be-created", nil
+	}}
+	if _, err := client.newGeneration(catalog, []sources.Observation{observation}); err == nil {
+		t.Fatal("newGeneration accepted credential-scoped observation")
+	}
+	if identityCalls != 0 {
+		t.Fatalf("credential-scoped generation allocated %d publication identities", identityCalls)
 	}
 }
 

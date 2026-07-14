@@ -78,9 +78,9 @@ func definitionPolicies() []AttributePolicy {
 	observedCapability := []sources.ID{sources.ProvidersID, sources.AmazonBedrockID, sources.MicrosoftFoundryID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.LocalCatalogID}
 	return []AttributePolicy{
 		{sources.ResourceTypeModelDefinition, "ID", curated, MergeIdentity, EmptyReject, "Canonical definition identity is curated and provider-independent."},
-		{sources.ResourceTypeModelDefinition, "Name", curated, MergeReplace, EmptyReject, "A stable curated display name avoids provider branding drift."},
+		{sources.ResourceTypeModelDefinition, authorityPathName, curated, MergeReplace, EmptyReject, "A stable curated display name avoids provider branding drift."},
 		{sources.ResourceTypeModelDefinition, "AuthorIDs", curated, MergeSetUnion, EmptyAbsent, "Curated authorship leads; discovered authors may add non-duplicate evidence."},
-		{sources.ResourceTypeModelDefinition, "Description", curated, MergeReplace, EmptyAbsent, "Human-reviewed copy leads community and provider descriptions."},
+		{sources.ResourceTypeModelDefinition, authorityPathDescription, curated, MergeReplace, EmptyAbsent, "Human-reviewed copy leads community and provider descriptions."},
 		{sources.ResourceTypeModelDefinition, "Metadata*", curated, MergeFillMissing, EmptyAbsent, "Release, knowledge, and discovery metadata are definition facts led by curated/community evidence."},
 		{sources.ResourceTypeModelDefinition, "Lineage*", curated, MergeFillMissing, EmptyAbsent, "Family and derivation are canonical identity facts, not offering labels."},
 		{sources.ResourceTypeModelDefinition, "Weights.Open", curated, MergeReplace, EmptyAuthoritative, "Open=false is an explicit provider-independent weight fact."},
@@ -98,7 +98,9 @@ func offeringPolicies() []AttributePolicy {
 	return []AttributePolicy{
 		{sources.ResourceTypeProviderOffering, "ProviderID", providerFirst, MergeIdentity, EmptyReject, "Offering identity is scoped to the provider that serves it."},
 		{sources.ResourceTypeProviderOffering, "ProviderModelID", providerFirst, MergeIdentity, EmptyReject, "The provider model ID is the exact opaque inference identifier."},
+		{sources.ResourceTypeProviderOffering, "DeploymentID", providerFirst, MergeIdentity, EmptyAbsent, "A contextual deployment ID distinguishes multiple deployments of one provider model."},
 		{sources.ResourceTypeProviderOffering, "DefinitionID", curatedIdentity, MergeIdentity, EmptyReject, "Definition resolution is curated independently of provider naming."},
+		{sources.ResourceTypeProviderOffering, authorityPathAliases, providerFirst, MergeSetUnion, EmptyAbsent, "Provider-observed deployment and routing aliases are additive contextual facts."},
 		{sources.ResourceTypeProviderOffering, "Pricing*", providerFirst, MergeReplace, EmptyAbsent, "A semantically valid provider price is atomic and leads offering-specific fallbacks."},
 		{sources.ResourceTypeProviderOffering, "Limits*", providerFirst, MergeFillMissing, EmptyAbsent, "Provider limits lead; community data fills only absent dimensions."},
 		{sources.ResourceTypeProviderOffering, "Availability", providerFirst, MergeReplace, EmptyReject, "The live provider observation is authoritative for current service availability."},

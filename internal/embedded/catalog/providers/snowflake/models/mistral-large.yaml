@@ -1,0 +1,38 @@
+id: mistral-large
+name: mistral-large
+authors:
+- id: mistral
+  name: mistral
+definition_id: mistral-large
+pricing:
+  tokens:
+    input:
+      per_1m: 4.4
+    output:
+      per_1m: 13.2
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 4.0
+        output:
+          per_1m: 12.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 4.4
+        output:
+          per_1m: 13.2
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

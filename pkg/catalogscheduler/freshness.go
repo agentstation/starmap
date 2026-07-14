@@ -25,7 +25,7 @@ type SourceFreshnessSLA struct {
 // Validate verifies a useful two-threshold source policy.
 func (s SourceFreshnessSLA) Validate() error {
 	if strings.TrimSpace(s.Source.String()) == "" {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness.source", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.freshness.source", Message: validationRequiredMessage}
 	}
 	if s.DegradedAfter <= 0 || s.UnreadyAfter <= s.DegradedAfter {
 		return &errors.ValidationError{
@@ -157,7 +157,7 @@ func NewFreshnessMonitor(policy FreshnessPolicy) (*FreshnessMonitor, error) {
 // not require catalog changes or a newly published generation.
 func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error {
 	if result == nil {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness.sync_result", Message: "is required"}
+		return &errors.ValidationError{Field: "catalog_scheduler.freshness.sync_result", Message: validationRequiredMessage}
 	}
 	return m.Record(result.SourceObservations)
 }
@@ -166,7 +166,7 @@ func (m *FreshnessMonitor) RecordResult(result *pkgsync.Result) error {
 // to regress their latest observation.
 func (m *FreshnessMonitor) Record(observations []catalogs.SourceObservationLink) error {
 	if m == nil {
-		return &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: "is required"}
+		return &errors.ValidationError{Field: freshnessMonitorField, Message: validationRequiredMessage}
 	}
 	validated := make([]catalogs.SourceObservationLink, len(observations))
 	copy(validated, observations)
@@ -223,10 +223,10 @@ func (m *FreshnessMonitor) RecordRuns(records []RunRecord) error {
 // warning-threshold/degraded observations preserve readiness but degrade it.
 func (m *FreshnessMonitor) Report(at time.Time) (FreshnessReport, error) {
 	if m == nil {
-		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: "is required"}
+		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: validationRequiredMessage}
 	}
 	if at.IsZero() {
-		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness.evaluated_at", Message: "is required"}
+		return FreshnessReport{}, &errors.ValidationError{Field: "catalog_scheduler.freshness.evaluated_at", Message: validationRequiredMessage}
 	}
 	at = at.UTC()
 	m.mu.RLock()

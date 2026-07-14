@@ -1,0 +1,20 @@
+{
+  "object": "list",
+  "data": [{
+    "id": "deepseek-ai/DeepSeek-V3",
+    "object": "model",
+    "owned_by": "deepinfra",
+    "metadata": {
+      "description": "Deterministic DeepInfra declarative-delta fixture.",
+      "context_length": 131072,
+      "tags": ["reasoning"],
+      "pricing": {
+        "input_tokens": "0.40",
+        "output_tokens": "1.20",
+        "cache_read_tokens": "0.10",
+        "per_image_unit": "0.02"
+      }
+    },
+    "precision": "fp8"
+  }]
+}

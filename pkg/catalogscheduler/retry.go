@@ -40,7 +40,7 @@ func DefaultRetryPolicy() RetryPolicy {
 // Validate verifies a finite bounded retry policy.
 func (p RetryPolicy) Validate() error {
 	if p.MaxAttempts <= 0 {
-		return &errors.ValidationError{Field: "catalog_scheduler.retry.max_attempts", Value: p.MaxAttempts, Message: "must be positive"}
+		return &errors.ValidationError{Field: "catalog_scheduler.retry.max_attempts", Value: p.MaxAttempts, Message: validationPositiveMessage}
 	}
 	if p.BaseDelay <= 0 || p.MaxDelay <= 0 || p.BaseDelay > p.MaxDelay {
 		return &errors.ValidationError{Field: "catalog_scheduler.retry.delay", Value: p, Message: "delays must be positive and base must not exceed maximum"}
@@ -69,10 +69,10 @@ func WithRetryPolicy(policy RetryPolicy) RunnerOption {
 func WithRunLedger(ledger RunLedger, current CurrentGenerationReader) RunnerOption {
 	return func(runner *Runner) error {
 		if isNilInterface(ledger) {
-			return &errors.ValidationError{Field: "catalog_scheduler.run_ledger", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.run_ledger", Message: validationRequiredMessage}
 		}
 		if isNilInterface(current) {
-			return &errors.ValidationError{Field: "catalog_scheduler.current_generation_reader", Message: "is required"}
+			return &errors.ValidationError{Field: "catalog_scheduler.current_generation_reader", Message: validationRequiredMessage}
 		}
 		runner.ledger = ledger
 		runner.current = current
@@ -85,7 +85,7 @@ func WithRunLedger(ledger RunLedger, current CurrentGenerationReader) RunnerOpti
 func WithFreshnessMonitor(monitor *FreshnessMonitor) RunnerOption {
 	return func(runner *Runner) error {
 		if monitor == nil {
-			return &errors.ValidationError{Field: "catalog_scheduler.freshness_monitor", Message: "is required"}
+			return &errors.ValidationError{Field: freshnessMonitorField, Message: validationRequiredMessage}
 		}
 		runner.freshness = monitor
 		return nil
@@ -141,7 +141,7 @@ func ClassifyRetry(err error) RetryClass {
 // same leased attempt sequence as RunOnce. Manual callers use RunOnce directly.
 func (r *Runner) RunScheduledOnce(ctx context.Context, jitterWindow time.Duration, options ...sync.Option) (RunResult, error) {
 	if jitterWindow < 0 {
-		return RunResult{}, &errors.ValidationError{Field: "catalog_scheduler.jitter_window", Value: jitterWindow, Message: "must not be negative"}
+		return RunResult{}, &errors.ValidationError{Field: "catalog_scheduler.jitter_window", Value: jitterWindow, Message: validationNonnegativeMessage}
 	}
 	if ctx == nil {
 		ctx = context.Background()

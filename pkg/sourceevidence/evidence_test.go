@@ -19,10 +19,9 @@ func TestNormalizedEvidenceRoundTripReplaysCandidateAndProvenanceWithoutSecrets(
 	builder := catalogs.NewEmpty()
 	provider := catalogs.Provider{
 		ID: "provider-a", Name: "Provider A",
-		APIKey: &catalogs.ProviderAPIKey{Name: "STARMAP_EVIDENCE_SECRET"},
-		Models: map[string]*catalogs.Model{"model-a": {ID: "model-a", Name: "Model A"}},
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"STARMAP_EVIDENCE_SECRET"}}},
+		Models:      map[string]*catalogs.Model{"model-a": {ID: "model-a", Name: "Model A"}},
 	}
-	provider.LoadAPIKey()
 	if err := builder.SetProvider(provider); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
@@ -48,6 +47,10 @@ func TestNormalizedEvidenceRoundTripReplaysCandidateAndProvenanceWithoutSecrets(
 		Issues: []sources.ObservationIssue{{
 			Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodeFetchFailed,
 			Subject: "provider-b", Message: "request failed with " + secret,
+		}},
+		Acquisitions: []catalogmeta.AcquisitionProvenance{{
+			ProviderID: "provider-a", SourceID: "models", AuthMethod: "api_key",
+			Scope: catalogmeta.ObservationScopeGlobalPublic, Topology: catalogmeta.AcquisitionTopologySingleEndpoint,
 		}},
 	})
 	if err != nil {
@@ -85,6 +88,29 @@ func TestNormalizedEvidenceRoundTripReplaysCandidateAndProvenanceWithoutSecrets(
 	}
 	if !bytes.Equal(replayedPayload, record.Payload) {
 		t.Fatal("replay did not reproduce candidate catalog and provenance bytes")
+	}
+}
+
+func TestNormalizedEvidenceRejectsCredentialScopedObservationBeforeEncoding(t *testing.T) {
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{
+		ObservedAt:   time.Date(2026, time.July, 14, 6, 45, 0, 0, time.UTC),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
+		Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindDirectInventory,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Capture(observation); err == nil {
+		t.Fatal("Capture accepted credential-scoped publication evidence")
+	}
+	record := NormalizedRecord{Version: normalizedRecordVersion, Metrics: catalogmeta.ObservationMetrics{Scope: catalogmeta.ObservationScopeCredentialScoped}}
+	if _, err := Replay(record); err == nil {
+		t.Fatal("Replay accepted credential-scoped publication evidence")
 	}
 }
 

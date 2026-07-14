@@ -149,7 +149,7 @@ func (c *collector) enrichWithPrimaryModels(
 	c.logger.Debug().
 		Str("source", "enrichment").
 		Str("provider", string(provider.ID)).
-		Int("provider_models", len(existingModels)).
+		Int("candidate_models", len(existingModels)).
 		Msg("Filtering non-primary source models by primary authority")
 
 	for _, model := range existingModels {

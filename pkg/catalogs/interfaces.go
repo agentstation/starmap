@@ -74,11 +74,11 @@ type Reader interface {
 	Offerings() []ProviderOffering
 }
 
-// ModelSourceReader extends the canonical reader with mutable-source model
+// modelSourceReader extends the canonical reader with mutable-source model
 // records used only while importing provider and author data into a Builder.
 // Published and immutable catalogs intentionally do not implement this
 // ingestion boundary.
-type ModelSourceReader interface {
+type modelSourceReader interface {
 	Reader
 	Models() ModelsReader
 	ProviderModels(id ProviderID) (ModelsReader, error)

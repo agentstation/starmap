@@ -68,6 +68,18 @@ func (c *Client) Catalog() *catalogs.Catalog {
 	return catalog
 }
 
+// publicationCatalog returns the isolated public-only reconciliation baseline.
+// Contextual acquisitions update Catalog without becoming input to another
+// credential context or a later public generation.
+func (c *Client) publicationCatalog() *catalogs.Catalog {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if c.publicationBaseline != nil {
+		return c.publicationBaseline
+	}
+	return c.catalog
+}
+
 // CatalogState atomically pairs the current immutable catalog with its logical
 // generation identity for generation-scoped caches and responses.
 type CatalogState struct {
@@ -84,6 +96,9 @@ func (c *Client) CurrentCatalogState() CatalogState {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 	id := c.generationID
+	if c.contextual {
+		id = ""
+	}
 	if id == "" && c.usingEmbeddedBootstrap {
 		id = c.embeddedBootstrap.GenerationID
 	}
@@ -99,6 +114,9 @@ func (c *Client) CurrentGenerationID() string {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 	if c.generationID != "" {
+		if c.contextual {
+			return ""
+		}
 		return c.generationID
 	}
 	if c.usingEmbeddedBootstrap {
@@ -145,6 +163,8 @@ type Client struct {
 	// catalog is the atomically published immutable generation.
 	mu                     sync.RWMutex
 	catalog                *catalogs.Catalog
+	publicationBaseline    *catalogs.Catalog
+	contextual             bool
 	updates                updateCoordinator
 	generationID           string
 	generationSequence     uint64
@@ -235,6 +255,7 @@ func New(opts ...Option) (*Client, error) {
 		usingEmbeddedBootstrap = false
 	}
 	sm.catalog = initial
+	sm.publicationBaseline = initial
 	sm.generationID = generationID
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap

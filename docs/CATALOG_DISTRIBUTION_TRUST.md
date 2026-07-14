@@ -9,7 +9,7 @@ before atomic activation. Failure retains the last-known-good generation.
 | --- | --- | --- | --- | --- |
 | Embedded bootstrap | Installed Starmap binary signature/provenance plus embedded manifest checksum | Works offline and air-gapped; freshness stops at binary build time | Stale catalog, binary growth, compromised build supply chain | Startup fallback; enforce runtime/CI age and size budgets; replace with a verified committed generation when policy permits |
 | GitHub Release assets | Expected `agentstation/starmap` repository and approved workflow identity, signed artifact attestation, archive/payload digests | Durable immutable public history, but depends on GitHub availability and outbound enterprise policy | Repository/workflow compromise, unavailable/blocked GitHub, mistaken asset replacement | Public immutable source of record; pin exact generation/digest; never use expiring Actions artifacts as runtime distribution |
-| Hosted `starmap.agentstation.ai` | TLS origin plus the same signed repository/workflow attestation and immutable digests | Lowest-latency latest-compatible discovery; operated availability, CDN, telemetry, and promotion SLO required | Domain/operator/object-store compromise, stale latest pointer, outage or rollback error | Primary online adapter; same-origin URLs, ETag revalidation, staged channel promotion, instant pointer rollback, retain prior generations |
+| Hosted `starmap.agentstation.ai` | TLS origin plus the same signed repository/workflow attestation and immutable digests | Lowest-latency exact-current-schema discovery; operated availability, CDN, telemetry, and promotion SLO required | Domain/operator/object-store compromise, stale latest pointer, outage or rollback error | Primary online adapter; same-origin URLs, ETag revalidation, staged channel promotion, instant pointer rollback, retain prior generations |
 | OCI mirror | Enterprise registry authentication/policy plus identical artifact digest and publisher attestation | Fits replication, admission, and air-gap workflows; freshness follows mirror policy | Registry retention/tag mutation, delayed replication, mirror trust misconfiguration | Optional enterprise transport; consume by digest, require equality with release/hosted archive digest, never grant tags authority over digest |
 
 ## Policy choices
@@ -21,8 +21,9 @@ before atomic activation. Failure retains the last-known-good generation.
 - OCI consumers distinguish the OCI manifest digest from the archive-layer
   digest, pull by the immutable manifest reference, and require the archive
   layer bytes to equal the trusted GitHub/hosted archive checksum.
-- Connected deployments may track hosted latest-compatible, but activation is
-  still checksum/compatibility/attestation gated and preserves last-known-good.
+- Connected deployments may track the hosted exact-current generation, but
+  activation is still checksum/schema/attestation gated and preserves
+  last-known-good.
 - Starport policy decides whether to pin, track canary, or track stable. Starmap
   supplies facts and verified generations; it does not silently choose risk.
 - Stable hosted promotion requires the identical generation to pass dev and

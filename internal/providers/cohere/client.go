@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -18,10 +19,9 @@ import (
 )
 
 const (
-	defaultModelsURL = "https://api.cohere.com/v1/models"
-	pageSize         = 1000
-	maxPages         = 20
-	maxRecords       = 10_000
+	pageSize   = 1000
+	maxPages   = 20
+	maxRecords = 10_000
 )
 
 type modelsResponse struct {
@@ -77,47 +77,45 @@ func (m *model) UnmarshalJSON(data []byte) error {
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
 	transport *transport.Client
 }
 
 // NewClient creates a Cohere client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), transport: transport.New(source.Auth())}
 }
 
-// IsAPIKeyRequired reports whether the configured inventory requires a key.
-func (c *Client) IsAPIKeyRequired() bool {
+// CaptureURL returns the exact first-page URL used for a governed raw
+// observation. A non-empty cursor would make the capture incomplete.
+func (c *Client) CaptureURL() (string, error) {
 	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey reports whether the configured provider has a resolved key.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey()
+	baseURL := c.endpoint
+	c.mu.RUnlock()
+	return coherePageURL(baseURL, "")
 }
 
 // ListModels retrieves all bounded public Cohere model pages.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
+	baseURL := c.endpoint
 	transportClient := c.transport
 	c.mu.RUnlock()
 	if provider == nil {
-		return nil, &errors.ConfigError{Component: "cohere", Message: "provider not configured"}
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDCohere), Message: "provider not configured"}
 	}
-	baseURL := provider.CatalogEndpointURL()
 	if baseURL == "" {
-		baseURL = defaultModelsURL
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDCohere), Message: "catalog endpoint is required"}
 	}
 	models := make([]catalogs.Model, 0)
+	seenModels := make(map[string]struct{})
 	recordCount := 0
 	seenCursors := make(map[string]struct{})
 	cursor := ""
 	for page := 1; page <= maxPages; page++ {
-		response, err := c.fetchPage(ctx, transportClient, provider, baseURL, cursor)
+		response, err := c.fetchPage(ctx, transportClient, baseURL, cursor)
 		if err != nil {
 			return nil, err
 		}
@@ -134,6 +132,10 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 			if err != nil {
 				return nil, err
 			}
+			if _, found := seenModels[converted.ID]; found {
+				return nil, &errors.ConflictError{Resource: "cohere model", Actual: converted.ID, Message: "duplicate model identity"}
+			}
+			seenModels[converted.ID] = struct{}{}
 			models = append(models, converted)
 		}
 		if response.NextPageToken == "" {
@@ -151,10 +153,65 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return nil, &errors.ValidationError{Field: "cohere.pages", Value: maxPages, Message: "source did not terminate within maximum pages"}
 }
 
-func (c *Client) fetchPage(ctx context.Context, transportClient *transport.Client, provider *catalogs.Provider, baseURL, cursor string) (modelsResponse, error) {
+// DecodeModels validates and normalizes one complete captured Cohere response
+// through the same schema and conversion path as live acquisition.
+func (c *Client) DecodeModels(payload []byte) ([]catalogs.Model, error) {
+	if err := sourcepayload.ValidateJSON(payload); err != nil {
+		return nil, err
+	}
+	var response modelsResponse
+	if err := json.Unmarshal(payload, &response); err != nil {
+		return nil, errors.WrapParse("json", "Cohere models response fixture", err)
+	}
+	if response.Models == nil {
+		return nil, errors.NewParseError("json", "Cohere models response", "required models array is missing or null", nil)
+	}
+	if response.NextPageToken != "" {
+		return nil, &errors.ValidationError{Field: "cohere.next_page_token", Message: "captured response is not a complete inventory"}
+	}
+	result := make([]catalogs.Model, 0, len(response.Models))
+	seen := make(map[string]struct{}, len(response.Models))
+	for _, source := range response.Models {
+		if source.Finetuned {
+			continue
+		}
+		source.UnknownFields = append(source.UnknownFields, response.UnknownFields...)
+		converted, err := convertModel(source)
+		if err != nil {
+			return nil, err
+		}
+		if _, found := seen[converted.ID]; found {
+			return nil, &errors.ConflictError{Resource: "cohere model", Actual: converted.ID, Message: "duplicate model identity"}
+		}
+		seen[converted.ID] = struct{}{}
+		result = append(result, converted)
+	}
+	return result, nil
+}
+
+func (c *Client) fetchPage(ctx context.Context, transportClient *transport.Client, baseURL, cursor string) (modelsResponse, error) {
+	requestURL, err := coherePageURL(baseURL, cursor)
+	if err != nil {
+		return modelsResponse{}, err
+	}
+	response, err := transportClient.Get(ctx, requestURL)
+	if err != nil {
+		return modelsResponse{}, &errors.APIError{Provider: string(catalogs.ProviderIDCohere), Endpoint: requestURL, Message: "request failed", Err: err}
+	}
+	var result modelsResponse
+	if err := transport.DecodeResponse(response, &result); err != nil {
+		return modelsResponse{}, &errors.APIError{Provider: string(catalogs.ProviderIDCohere), Endpoint: requestURL, StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
+	}
+	if result.Models == nil {
+		return modelsResponse{}, errors.NewParseError("json", "Cohere models response", "required models array is missing or null", nil)
+	}
+	return result, nil
+}
+
+func coherePageURL(baseURL, cursor string) (string, error) {
 	parsed, err := url.Parse(baseURL)
 	if err != nil {
-		return modelsResponse{}, errors.WrapParse("url", "Cohere models endpoint", err)
+		return "", errors.WrapParse("url", "Cohere models endpoint", err)
 	}
 	query := parsed.Query()
 	query.Set("page_size", fmt.Sprint(pageSize))
@@ -162,18 +219,7 @@ func (c *Client) fetchPage(ctx context.Context, transportClient *transport.Clien
 		query.Set("page_token", cursor)
 	}
 	parsed.RawQuery = query.Encode()
-	response, err := transportClient.Get(ctx, parsed.String(), provider)
-	if err != nil {
-		return modelsResponse{}, &errors.APIError{Provider: "cohere", Endpoint: parsed.String(), Message: "request failed", Err: err}
-	}
-	var result modelsResponse
-	if err := transport.DecodeResponse(response, &result); err != nil {
-		return modelsResponse{}, &errors.APIError{Provider: "cohere", Endpoint: parsed.String(), StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
-	}
-	if result.Models == nil {
-		return modelsResponse{}, errors.NewParseError("json", "Cohere models response", "required models array is missing or null", nil)
-	}
-	return result, nil
+	return parsed.String(), nil
 }
 
 func convertModel(source model) (catalogs.Model, error) {
@@ -191,8 +237,7 @@ func convertModel(source model) (catalogs.Model, error) {
 		Features: &catalogs.ModelFeatures{Modalities: catalogs.ModelModalities{
 			Input: []catalogs.ModelModality{catalogs.ModelModalityText}, Output: []catalogs.ModelModality{catalogs.ModelModalityText},
 		}},
-		Metadata:         &catalogs.ModelMetadata{Architecture: &catalogs.ModelArchitecture{Tokenizer: catalogs.TokenizerCohere}},
-		OfferingEndpoint: catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeCohere, BaseURL: "https://api.cohere.com"},
+		Metadata: &catalogs.ModelMetadata{Architecture: &catalogs.ModelArchitecture{Tokenizer: catalogs.TokenizerCohere}},
 	}
 	if source.IsDeprecated {
 		result.Status = catalogs.ModelStatusDeprecated
@@ -213,7 +258,7 @@ func convertModel(source model) (catalogs.Model, error) {
 	if len(source.UnknownFields) > 0 {
 		fields["unknown_fields"] = source.UnknownFields
 	}
-	result.Extensions = catalogs.SourceExtensions{"cohere": {Fields: catalogs.NormalizeExtensionFields(fields)}}
+	result.Extensions = catalogs.SourceExtensions{string(catalogs.ProviderIDCohere): {Fields: catalogs.NormalizeExtensionFields(fields)}}
 	return result, nil
 }
 

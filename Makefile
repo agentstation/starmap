@@ -459,11 +459,11 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
 	@$(GOCMD) test ./internal/bootstrapmanifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
-	@$(GOCMD) test ./internal/providerfixture ./cmd/starmap-provider-testdata-refresh ./internal/providers/testhelper -run 'Refresh|Fixture' -count=1
+	@$(GOCMD) test ./internal/providers/fixtures ./internal/providers/fixtures/responses ./cmd/provider-fixtures -run 'Refresh|Fixture|Import' -count=1
 
 provider-contract-check: ## Verify provider roles, evidence policy, and refresh safety
 	@bash -n scripts/refresh-provider-testdata.sh
-	@$(GOCMD) test -race ./internal/providers ./internal/providerfixture ./internal/providers/testhelper ./cmd/starmap-provider-testdata-refresh
+	@$(GOCMD) test -race ./internal/connectors/... ./internal/providers/... ./cmd/provider-fixtures
 
 embedded-catalog-budget-check: ## Enforce embedded catalog age, size, and coverage budgets
 	@$(GOCMD) run ./cmd/starmap-embedded-budget
@@ -503,21 +503,21 @@ check-apis: ## Check API connectivity for all providers
 
 # Testdata management targets
 # Examples:
-#   make testdata                # Refresh every declared raw fixture (requires API keys)
-#   make testdata PROVIDER=groq  # Refresh one provider through the production command
-testdata: ## Update testdata for all providers (use PROVIDER=name for specific provider)
+#   make testdata                # Refresh every governed raw observation (requires API keys)
+#   make testdata PROVIDER=groq SOURCE=models  # Refresh one exact logical source
+testdata: ## Update governed observations (use PROVIDER=name SOURCE=source for one source)
 	@echo "$(BLUE)Updating testdata for $(if $(PROVIDER),$(PROVIDER),all providers)...$(NC)"
 	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
 	@if [ -n "$(PROVIDER)" ]; then \
-		./scripts/refresh-provider-testdata.sh "$(PROVIDER)"; \
+		./scripts/refresh-provider-testdata.sh "$(PROVIDER)" "$(SOURCE)"; \
 	else \
 		status=0; \
-		for dir in internal/providers/*/; do \
-			provider=$$(basename $$dir); \
-			if [ -f "$$dir/testdata/models_list.json" ]; then \
-				echo "$(BLUE)Updating $$provider testdata...$(NC)"; \
-				./scripts/refresh-provider-testdata.sh "$$provider" || status=$$?; \
-			fi; \
+		for fixture in internal/providers/fixtures/responses/*/*/models_list.json; do \
+			[ -f "$$fixture" ] || continue; \
+			source=$$(basename $$(dirname "$$fixture")); \
+			provider=$$(basename $$(dirname $$(dirname "$$fixture"))); \
+			echo "$(BLUE)Updating $$provider/$$source testdata...$(NC)"; \
+			./scripts/refresh-provider-testdata.sh "$$provider" "$$source" || status=$$?; \
 		done; \
 		exit $$status; \
 	fi

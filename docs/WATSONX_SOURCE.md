@@ -23,14 +23,15 @@ similarity tasks map to embeddings. Unknown tasks remain discoverable-only.
 Lifecycle and model limits are source-native and malformed or duplicate records
 fail the source rather than publishing a partial generation.
 
-## Private customer deployments
+## Credential-scoped deployments
 
 IBM's dated `GET /ml/v4/deployments` contract requires exactly one project or
 deployment-space scope. Starmap exposes this only through opt-in
 `FetchDeployments`; it never enters public source generation. Project/space ID,
 deployment ID and name, serving name, regional invocation URL, asset ID, and
-customer aliases remain in `CustomerInventory`. Every returned model or asset
-must have an explicit canonical-definition mapping, preventing a customer asset
+aliases become ordinary contextual offerings in the caller's catalog. Every
+returned model or asset must have an explicit canonical-definition mapping,
+preventing a scoped asset
 name from silently becoming a public definition.
 
 Deployment types remain distinct:
@@ -40,15 +41,15 @@ Deployment types remain distinct:
 - `foundation_model` is a prompt-template deployment over provided multitenant
   hosting.
 
-The customer path uses bounded same-origin pagination, validates exactly one
+The credential-scoped path uses bounded same-origin pagination, validates exactly one
 scope, rejects unmapped assets, and never serializes its token.
 
 ## Failure and live policy
 
 Fixtures prove dated public requests, bearer auth, opaque pagination, task and
 lifecycle mapping, regional projection, unknown-task non-routability,
-cross-origin cursor rejection, invalid limits, customer project pagination,
+cross-origin cursor rejection, invalid limits, scoped project pagination,
 on-demand/custom separation, explicit mapping, and credential isolation. Live
-public and customer discovery are explicitly skipped when no IBM regional base
+public and credential-scoped discovery are explicitly skipped when no IBM regional base
 URL, token, project/space, and mapping are configured. No generic global
-endpoint or public customer deployment is inferred.
+endpoint or globally public deployment is inferred.

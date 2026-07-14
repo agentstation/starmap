@@ -1,0 +1,20 @@
+id: google.gemini-2.5-flash-lite
+name: google.gemini-2.5-flash-lite
+authors:
+- id: google
+  name: google
+definition_id: google/gemini-2-5-flash-lite
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.1
+    output:
+      per_1m: 0.4
+invocation_apis:
+- responses
+offering_endpoint:
+  type: oci-generative-ai
+offering_deployment:
+  type: on-demand
+  tier: pay-as-you-go

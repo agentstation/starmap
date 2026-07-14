@@ -1,0 +1,44 @@
+id: openai-gpt-5-mini
+name: openai-gpt-5-mini
+authors:
+- id: openai
+  name: openai
+definition_id: openai-gpt-5-mini
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.033
+    input:
+      per_1m: 0.275
+    output:
+      per_1m: 2.2
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.03
+        input:
+          per_1m: 0.25
+        output:
+          per_1m: 2.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.033
+        input:
+          per_1m: 0.275
+        output:
+          per_1m: 2.2
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

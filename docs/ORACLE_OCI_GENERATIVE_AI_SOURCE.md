@@ -25,14 +25,14 @@ Capabilities become typed invocation contracts; inactive or retired models are
 unavailable. Unknown capabilities remain discoverable-only. Model pages use the
 shared retry and bounded pagination policy.
 
-## Customer endpoint isolation
+## Credential-scoped endpoint isolation
 
-Fine-tuned custom model records do not become public definitions or offerings.
-When explicitly requested, `ListEndpoints` results become `CustomerInventory`:
-compartment, endpoint, model, dedicated-cluster and private-endpoint OCIDs plus
-display aliases stay outside the public catalog. Every endpoint must resolve to
-a model returned by the same bounded observation. Public observation never
-calls `ListEndpoints`.
+Fine-tuned custom model records do not become globally public definitions or
+offerings. The configured credential-scoped source includes `ListEndpoints`
+results as ordinary contextual offerings: compartment, endpoint, model,
+dedicated-cluster and private-endpoint OCIDs plus display aliases remain in the
+current caller context. Every endpoint must resolve to a model returned by the
+same bounded observation, and the observation is rejected before public writes.
 
 ## Pricing
 

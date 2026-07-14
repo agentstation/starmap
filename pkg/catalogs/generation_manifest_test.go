@@ -77,6 +77,21 @@ func TestGenerationManifestRetainsPinnedGitLockfileInput(t *testing.T) {
 	}
 }
 
+func TestGenerationManifestRejectsCredentialScopedObservation(t *testing.T) {
+	manifest := loadGenerationManifestFixture(t)
+	manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	if err := manifest.Validate(); err == nil {
+		t.Fatal("Validate accepted credential-scoped observation for public generation")
+	}
+	encoded, err := json.Marshal(manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	if _, err := ParseGenerationManifestJSON(encoded); err == nil {
+		t.Fatal("ParseGenerationManifestJSON accepted credential-scoped observation")
+	}
+}
+
 func TestGenerationManifestParserRejectsMissingAndUnknownMembers(t *testing.T) {
 	fixture, err := os.ReadFile("testdata/generation/manifest.json")
 	if err != nil {
@@ -234,11 +249,18 @@ func TestGenerationManifestCopyOwnership(t *testing.T) {
 	original := loadGenerationManifestFixture(t)
 	copyManifest := original.Copy()
 	copyManifest.SourceObservations[0].ObservationID = "changed"
+	copyManifest.SourceObservations[0].Metrics.Acquisitions = []catalogmeta.AcquisitionProvenance{{
+		ProviderID: "provider-a", SourceID: "changed", Scope: catalogmeta.ObservationScopeGlobalPublic,
+		Topology: catalogmeta.AcquisitionTopologySingleEndpoint,
+	}}
 	copyManifest.Validation.Checks[0].Name = "changed"
 	copyManifest.DegradationReasons = append(copyManifest.DegradationReasons, "changed")
 
 	if original.SourceObservations[0].ObservationID == "changed" {
 		t.Fatal("source observations alias the original")
+	}
+	if len(original.SourceObservations[0].Metrics.Acquisitions) != 0 {
+		t.Fatal("acquisition provenance aliases the original")
 	}
 	if original.Validation.Checks[0].Name == "changed" {
 		t.Fatal("validation checks alias the original")
@@ -368,4 +390,10 @@ func loadGenerationManifestFixture(t *testing.T) GenerationManifest {
 		t.Fatalf("Parse fixture: %v", err)
 	}
 	return manifest
+}
+
+func TestGenerationManifestParserRejectsDuplicateJSONMembers(t *testing.T) {
+	if _, err := ParseGenerationManifestJSON([]byte(`{"manifest_version":1,"manifest_version":1}`)); err == nil {
+		t.Fatal("ParseGenerationManifestJSON accepted duplicate JSON member")
+	}
 }

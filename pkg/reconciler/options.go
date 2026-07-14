@@ -7,6 +7,8 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+const validationCannotBeNil = "cannot be nil"
+
 // Options configures a reconciler.
 type options struct {
 	strategy    Strategy
@@ -49,7 +51,7 @@ func WithStrategy(strategy Strategy) Option {
 		if strategy == nil {
 			return &errors.ValidationError{
 				Field:   "strategy",
-				Message: "cannot be nil",
+				Message: validationCannotBeNil,
 			}
 		}
 		r.strategy = strategy
@@ -63,7 +65,7 @@ func WithAuthorities(authorities authority.Authority) Option {
 		if authorities == nil {
 			return &errors.ValidationError{
 				Field:   "authorities",
-				Message: "cannot be nil",
+				Message: validationCannotBeNil,
 			}
 		}
 		r.authorities = authorities

@@ -1,0 +1,44 @@
+id: openai-gpt-5.5-long-context
+name: openai-gpt-5.5-long-context
+authors:
+- id: openai
+  name: openai
+definition_id: openai-gpt-5.5-long-context
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 1.1
+    input:
+      per_1m: 11.0
+    output:
+      per_1m: 49.5
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 1.0
+        input:
+          per_1m: 10.0
+        output:
+          per_1m: 45.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 1.1
+        input:
+          per_1m: 11.0
+        output:
+          per_1m: 49.5
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

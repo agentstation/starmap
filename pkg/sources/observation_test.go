@@ -27,6 +27,10 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 		Completeness: ObservationCompletenessComplete,
 		Status:       ObservationStatusSucceeded,
 		Records:      ObservationRecordCounts{Accepted: 2},
+		Acquisitions: []catalogmeta.AcquisitionProvenance{{
+			ProviderID: "provider-a", SourceID: "models", AuthMethod: "api_key",
+			Scope: catalogmeta.ObservationScopeGlobalPublic, Topology: catalogmeta.AcquisitionTopologySingleEndpoint,
+		}},
 	})
 	if err != nil {
 		t.Fatalf("NewObservation: %v", err)
@@ -51,6 +55,11 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	}
 	if observation.Metrics.Scope != catalogmeta.ObservationScopeGlobalPublic || observation.Metrics.Kind != catalogmeta.SourceKindCurated || observation.Metrics.Records != observation.Records {
 		t.Fatalf("metrics = %#v", observation.Metrics)
+	}
+	link := observation.Link()
+	link.Metrics.Acquisitions[0].SourceID = "changed"
+	if observation.Metrics.Acquisitions[0].SourceID != "models" {
+		t.Fatal("observation link aliases acquisition provenance")
 	}
 	if err := observation.Validate(); err != nil {
 		t.Fatalf("Validate: %v", err)
@@ -97,18 +106,21 @@ func TestNewObservationProvidesTypedAuditMetadata(t *testing.T) {
 	}
 }
 
-func TestObservationRejectsCustomerInventoryPublication(t *testing.T) {
+func TestObservationAcceptsCredentialScopedCanonicalCatalog(t *testing.T) {
 	catalog, err := catalogs.NewEmpty().Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	_, err = NewObservation("customer", catalog, ObservationMetadata{
+	observation, err := NewObservation(ProvidersID, catalog, ObservationMetadata{
 		ObservedAt: time.Now().UTC(), Revision: Revision{Kind: RevisionKindContentDigest},
 		Completeness: ObservationCompletenessComplete, Status: ObservationStatusSucceeded,
-		Scope: catalogmeta.ObservationScopeCustomer, Kind: catalogmeta.SourceKindCustomer,
+		Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindDirectInventory,
 	})
-	if err == nil {
-		t.Fatal("NewObservation accepted customer inventory for public publication")
+	if err != nil {
+		t.Fatalf("NewObservation credential-scoped catalog: %v", err)
+	}
+	if observation.Metrics.Scope != catalogmeta.ObservationScopeCredentialScoped {
+		t.Fatalf("observation scope = %q", observation.Metrics.Scope)
 	}
 }
 

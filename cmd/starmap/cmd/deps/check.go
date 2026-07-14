@@ -69,7 +69,10 @@ func runCheck(cmd *cobra.Command) error {
 	ctx := context.Background()
 
 	// Get all sources
-	allSources := getAllSources()
+	allSources, err := getAllSources()
+	if err != nil {
+		return err
+	}
 
 	// Collect dependency statuses
 	results := collectDependencyStatuses(ctx, allSources)
@@ -115,24 +118,21 @@ func runCheck(cmd *cobra.Command) error {
 }
 
 // getAllSources creates all available sources.
-func getAllSources() []sources.Source {
+func getAllSources() ([]sources.Source, error) {
 	// Load embedded catalog to get provider configs for dependency checking
 	embedded, err := catalogs.NewEmbedded()
 	if err != nil {
-		// If we can't load embedded catalog, return sources without providers
-		return []sources.Source{
-			local.New(),
-			modelsdev.NewGitSource(),
-			modelsdev.NewHTTPSource(),
-		}
+		return nil, errors.WrapResource("load", "embedded provider configuration", "", err)
 	}
-
-	return []sources.Source{
-		local.New(),
-		providers.New(embedded.Providers()),
-		modelsdev.NewGitSource(),
-		modelsdev.NewHTTPSource(),
+	providerSources, err := providers.NewConfigured(embedded.Providers())
+	if err != nil {
+		return nil, errors.WrapResource("configure", "provider sources", "", err)
 	}
+	all := make([]sources.Source, 0, 1+len(providerSources)+2)
+	all = append(all, local.New())
+	all = append(all, providerSources...)
+	all = append(all, modelsdev.NewGitSource(), modelsdev.NewHTTPSource())
+	return all, nil
 }
 
 // collectDependencyStatuses checks all sources and collects dependency statuses.

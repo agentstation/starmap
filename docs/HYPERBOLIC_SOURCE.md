@@ -15,7 +15,7 @@ Hyperbolic remains the provider while exact `deepseek-ai/`, `meta-llama/`, `moon
 
 Only model IDs in the current first-party table receive pricing, tool, or sunset enrichment. Additive live fields remain source-drift evidence. Unknown live IDs keep their observed identity and route but receive no invented pricing or tool claim.
 
-Dedicated hosting is customer inventory. Private endpoint URLs, customer weights/model aliases, cluster/GPU identity, capacity, and hourly contracts must never enter public generation and require an explicit future private reader plus canonical mapping.
+Dedicated hosting is contextual inventory. Private endpoint URLs, caller weights/model aliases, cluster/GPU identity, capacity, and hourly contracts must never enter public generation and require an explicit future credential-scoped source plus canonical mapping.
 
 ## Verification
 

@@ -4,10 +4,12 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"strings"
 	"sync/atomic"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -18,7 +20,7 @@ func TestPublicSupportMatrixProducesDiscoveryOnlyModels(t *testing.T) {
 	}, " ")
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) { _, _ = writer.Write([]byte(body)) }))
 	defer server.Close()
-	models, err := NewClient(databricksTestProvider(server.URL)).ListModels(context.Background())
+	models, err := NewClient(testsource.Unauthenticated(t, databricksTestProvider(server.URL))).ListModels(context.Background())
 	if err != nil {
 		t.Fatalf("ListModels: %v", err)
 	}
@@ -50,18 +52,21 @@ func TestWorkspacePaginationExternalModelsAndTrafficAliasesStayPrivate(t *testin
 	config := WorkspaceConfig{Host: server.URL, Token: "workspace-secret", WorkspaceID: "workspace-private", DefinitionByEntity: map[string]catalogs.ModelDefinitionID{
 		"openai/gpt-5": "gpt-5", "anthropic/claude-sonnet": "claude-sonnet", "catalog.schema.model@7": "catalog.schema.model@7",
 	}}
-	inventory, err := FetchWorkspace(context.Background(), config)
+	result, err := FetchWorkspace(context.Background(), config)
 	if err != nil {
 		t.Fatalf("FetchWorkspace: %v", err)
 	}
-	if calls.Load() != 2 || inventory.Scope.WorkspaceID != "workspace-private" || len(inventory.Deployments) != 3 {
-		t.Fatalf("calls/inventory = %d/%#v", calls.Load(), inventory)
+	offerings := result.Offerings
+	if calls.Load() != 2 || len(offerings) != 3 || len(result.Definitions) != 3 {
+		t.Fatalf("calls/result = %d/%#v", calls.Load(), result)
 	}
-	if inventory.Deployments[0].Deployment.Type != "external-model" || inventory.Deployments[0].ProviderModelID != "gpt-5" || !strings.Contains(strings.Join(inventory.Deployments[0].Aliases, ","), "traffic=90%") {
-		t.Fatalf("external deployment = %#v", inventory.Deployments[0])
+	primary := offerings[slices.IndexFunc(offerings, func(offering catalogs.ProviderOffering) bool { return offering.DeploymentID == "gateway/primary" })]
+	managed := offerings[slices.IndexFunc(offerings, func(offering catalogs.ProviderOffering) bool { return offering.DeploymentID == "managed/current" })]
+	if primary.Deployment.Type != "external-model" || primary.ProviderModelID != "gpt-5" || !strings.Contains(strings.Join(primary.Aliases, ","), "traffic=90%") {
+		t.Fatalf("external deployment = %#v", primary)
 	}
-	if inventory.Deployments[2].Deployment.Type != "workspace-serving-endpoint" || inventory.Deployments[2].ProviderModelID != "catalog.schema.model@7" {
-		t.Fatalf("managed deployment = %#v", inventory.Deployments[2])
+	if managed.Deployment.Type != "workspace-serving-endpoint" || managed.ProviderModelID != "catalog.schema.model@7" || managed.Endpoint.Path != "/serving-endpoints/managed/invocations" {
+		t.Fatalf("managed deployment = %#v", managed)
 	}
 	public := publicModel("databricks-gpt-5")
 	if public.Extensions["databricks"].Fields["workspace_id"] != nil || strings.Contains(public.ID, "gateway") {
@@ -69,7 +74,7 @@ func TestWorkspacePaginationExternalModelsAndTrafficAliasesStayPrivate(t *testin
 	}
 }
 
-func TestWorkspaceFailsClosedWithoutMappingOrSecureHost(t *testing.T) {
+func TestWorkspaceRejectsInsecureHostAndInfersUnmappedCanonicalDefinition(t *testing.T) {
 	if _, err := FetchWorkspace(context.Background(), WorkspaceConfig{Host: "http://workspace.example.com", Token: "token", WorkspaceID: "workspace", DefinitionByEntity: map[string]catalogs.ModelDefinitionID{"x": "x"}}); err == nil {
 		t.Fatal("expected insecure-host failure")
 	}
@@ -78,11 +83,15 @@ func TestWorkspaceFailsClosedWithoutMappingOrSecureHost(t *testing.T) {
 		_, _ = writer.Write([]byte(`{"endpoints":[{"name":"endpoint","config":{"served_entities":[{"name":"served","entity_name":"unknown","entity_version":"1"}]}}]}`))
 	}))
 	defer server.Close()
-	if _, err := FetchWorkspace(context.Background(), WorkspaceConfig{Host: server.URL, Token: "token", WorkspaceID: "workspace", DefinitionByEntity: map[string]catalogs.ModelDefinitionID{"other": "other"}}); err == nil {
-		t.Fatal("expected missing-mapping failure")
+	result, err := FetchWorkspace(context.Background(), WorkspaceConfig{Host: server.URL, Token: "token", WorkspaceID: "workspace"})
+	if err != nil || len(result.Definitions) != 1 || result.Definitions[0].ID != "unknown@1" || result.Offerings[0].DefinitionID != "unknown@1" {
+		t.Fatalf("inferred canonical records = %#v err=%v", result, err)
 	}
 }
 
 func databricksTestProvider(endpoint string) *catalogs.Provider {
-	return &catalogs.Provider{ID: catalogs.ProviderIDDatabricks, Name: "Databricks", Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeDatabricks, URL: endpoint}}}
+	return &catalogs.Provider{ID: catalogs.ProviderIDDatabricks, Name: "Databricks", Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+		ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeCredentialScoped},
+		Auth: catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeDatabricks, URL: endpoint},
+	}}}}
 }

@@ -1,7 +1,7 @@
 # Hosted Catalog Distribution
 
 The canonical hosted origin is `https://starmap.agentstation.ai`. Its transport
-contract is independent of the legacy Starmap server update API:
+contract is independent of the operational Starmap server update API:
 
 | Route | Meaning |
 | --- | --- |

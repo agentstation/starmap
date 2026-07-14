@@ -1,16 +1,17 @@
-// Package oci discovers OCI Generative AI regional models and isolates tenancy endpoints.
+// Package oci discovers OCI Generative AI regional and contextual offerings.
 package oci
 
 import (
 	"context"
 	stderrors "errors"
 	"fmt"
-	"os"
 	"slices"
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/internal/providerdata"
+	"github.com/oracle/oci-go-sdk/v65/common"
+
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -21,8 +22,10 @@ import (
 const ProviderID = catalogs.ProviderIDOCI
 
 const (
-	defaultMaxPages   = 32
-	defaultMaxRecords = 10000
+	authMethodCloudChain      = "cloud_chain"
+	defaultMaxPages           = 32
+	defaultMaxRecords         = 10000
+	validationRequiredMessage = "is required"
 )
 
 // Config identifies one credential-scoped OCI region and realm.
@@ -47,7 +50,7 @@ type Model struct {
 	TimeDedicatedRetired *time.Time
 }
 
-// Endpoint is the private OCI ListEndpoints subset admitted to customer inventory.
+// Endpoint is the credential-scoped OCI ListEndpoints subset admitted to the catalog.
 type Endpoint struct {
 	ID                   string
 	ModelID              string
@@ -63,18 +66,16 @@ type API interface {
 	ListEndpoints(context.Context, string) (sources.Page[Endpoint], error)
 }
 
-// Result separates sanitized regional offerings from private tenancy inventory.
+// Result contains canonical definitions and offerings acquired from OCI.
 type Result struct {
-	Definitions       []catalogs.ModelDefinition
-	Offerings         []catalogs.ProviderOffering
-	CustomerInventory []catalogs.CustomerInventory
+	Definitions []catalogs.ModelDefinition
+	Offerings   []catalogs.ProviderOffering
 }
 
 // Source observes one explicitly configured OCI region.
 type Source struct {
 	config     Config
 	client     API
-	clientFunc func(context.Context, Config) (API, error)
 	retry      sources.ProviderRetryPolicy
 	pagination sources.PaginationPolicy
 	now        func() time.Time
@@ -88,7 +89,7 @@ func NewSource(config Config, client API) (*Source, error) {
 		return nil, err
 	}
 	if client == nil {
-		return nil, &errors.ValidationError{Field: "oci.client", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "oci.client", Message: validationRequiredMessage}
 	}
 	return newSource(config, client), nil
 }
@@ -97,11 +98,41 @@ func newSource(config Config, client API) *Source {
 	return &Source{config: config, client: client, retry: sources.DefaultProviderRetryPolicy(), pagination: sources.PaginationPolicy{MaxPages: defaultMaxPages, MaxRecords: defaultMaxRecords}, now: func() time.Time { return time.Now().UTC() }}
 }
 
-// NewCommercialSource constructs the optional default OC1 source from OCI configuration.
-func NewCommercialSource() *Source {
-	source := newSource(Config{Region: os.Getenv("OCI_REGION"), Realm: "oc1", CompartmentID: os.Getenv("OCI_COMPARTMENT_ID")}, nil)
-	source.clientFunc = newSDKClient
-	return source
+type ociCloudSession interface {
+	ConfigurationProvider() common.ConfigurationProvider
+}
+
+// NewResolvedSource constructs an OCI source from one fully resolved logical source.
+func NewResolvedSource(resolved acquisition.Source) (*Source, error) {
+	if resolved.ProviderID() != ProviderID || resolved.Config().Endpoint.Type != catalogs.EndpointTypeOCI {
+		return nil, &errors.ValidationError{Field: "oci.source", Value: resolved.String(), Message: "must be an OCI Generative AI source"}
+	}
+	session, ok := resolved.Auth().CloudSession().(ociCloudSession)
+	if !ok {
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved OCI configuration provider is required", Err: errors.ErrAPIKeyRequired}
+	}
+	region, found := resolved.Binding("region")
+	if !found {
+		var err error
+		region, err = session.ConfigurationProvider().Region()
+		if err != nil || strings.TrimSpace(region) == "" {
+			return nil, &errors.ValidationError{Field: "oci.region", Message: validationRequiredMessage}
+		}
+	}
+	compartment, found := resolved.Binding("compartment")
+	if !found {
+		return nil, &errors.ValidationError{Field: "oci.compartment", Message: validationRequiredMessage}
+	}
+	realm := "oc1"
+	if value, found := resolved.Option("realm"); found {
+		realm = value
+	}
+	config := Config{Region: region, Realm: realm, CompartmentID: compartment}
+	client, err := newSDKClient(config, session.ConfigurationProvider())
+	if err != nil {
+		return nil, err
+	}
+	return newSource(config, client), nil
 }
 
 // ID returns the stable OCI source identity.
@@ -110,11 +141,11 @@ func (s *Source) ID() sources.ID { return sources.OCIGenerativeAIID }
 // Name returns the operator-facing source name.
 func (s *Source) Name() string { return "Oracle OCI Generative AI" }
 
-// Observe emits only sanitized base-model regional offerings.
+// Observe emits one credential-scoped canonical OCI observation.
 func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Observation, error) {
-	result, fetchErr := s.Fetch(ctx, false)
+	result, fetchErr := s.Fetch(ctx)
 	if fetchErr != nil {
-		catalog, err := emptyPublicCatalog()
+		catalog, err := emptyCatalog()
 		if err != nil {
 			return sources.Observation{}, err
 		}
@@ -126,19 +157,19 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 		return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 			ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 			Completeness: sources.ObservationCompletenessPartial, Status: sources.ObservationStatusDegraded,
-			Scope: catalogmeta.ObservationScopeRegionalPublic, Kind: catalogmeta.SourceKindRegionalSweep,
+			Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindRegionalSweep,
 			Coverage: catalogmeta.ProviderCoverage{Expected: 1},
-			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: code, Subject: string(ProviderID), Message: fetchErr.Error()}},
+			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: code, Subject: string(ProviderID), Message: errors.SafeSummary(fetchErr)}},
 		})
 	}
-	catalog, err := result.PublicCatalog()
+	catalog, err := result.Catalog()
 	if err != nil {
 		return sources.Observation{}, err
 	}
 	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 		ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
-		Records: sources.ObservationRecordCounts{Accepted: len(result.Offerings)}, Scope: catalogmeta.ObservationScopeRegionalPublic,
+		Records: sources.ObservationRecordCounts{Accepted: len(result.Offerings)}, Scope: catalogmeta.ObservationScopeCredentialScoped,
 		Kind: catalogmeta.SourceKindRegionalSweep, Coverage: catalogmeta.ProviderCoverage{Expected: 1, Observed: 1},
 	})
 }
@@ -152,8 +183,8 @@ func (s *Source) Dependencies() []sources.Dependency { return nil }
 // IsOptional keeps credential-free catalog generation operational.
 func (s *Source) IsOptional() bool { return true }
 
-// Fetch reads regional models and optionally private dedicated endpoints.
-func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Result, error) {
+// Fetch reads regional models and contextual dedicated endpoints.
+func (s *Source) Fetch(ctx context.Context) (Result, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -162,11 +193,7 @@ func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Resu
 	}
 	client := s.client
 	if client == nil {
-		var err error
-		client, err = s.clientFunc(ctx, s.config)
-		if err != nil {
-			return Result{}, err
-		}
+		return Result{}, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved OCI client is required", Err: errors.ErrAPIKeyRequired}
 	}
 	models, err := s.collectModels(ctx, client)
 	if err != nil {
@@ -176,17 +203,15 @@ func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Resu
 	if err != nil {
 		return Result{}, err
 	}
-	if includeCustomerInventory {
-		endpoints, listErr := s.collectEndpoints(ctx, client)
-		if listErr != nil {
-			return Result{}, listErr
-		}
-		inventory, convertErr := customerInventory(s.config, s.now(), endpoints, index)
-		if convertErr != nil {
-			return Result{}, convertErr
-		}
-		result.CustomerInventory = []catalogs.CustomerInventory{inventory}
+	endpoints, listErr := s.collectEndpoints(ctx, client)
+	if listErr != nil {
+		return Result{}, listErr
 	}
+	endpointRecords, convertErr := endpointOfferings(s.config, endpoints, index)
+	if convertErr != nil {
+		return Result{}, convertErr
+	}
+	result.Offerings = append(result.Offerings, endpointRecords...)
 	return result, nil
 }
 
@@ -218,10 +243,6 @@ func (s *Source) collectEndpoints(ctx context.Context, client API) ([]Endpoint, 
 }
 
 func recordsFromModels(config Config, now time.Time, models []Model) (Result, map[string]catalogs.ModelDefinitionID, error) {
-	pricingCatalog, err := providerdata.LoadPricingCatalog(ProviderID)
-	if err != nil {
-		return Result{}, nil, errors.WrapResource("load", "OCI pricing catalog", string(ProviderID), err)
-	}
 	result := Result{}
 	index := make(map[string]catalogs.ModelDefinitionID, len(models))
 	seen := make(map[catalogs.OfferingKey]struct{})
@@ -231,10 +252,14 @@ func recordsFromModels(config Config, now time.Time, models []Model) (Result, ma
 		}
 		definitionID := canonicalDefinitionID(model)
 		index[model.ID] = definitionID
+		definition := catalogs.ModelDefinition{ID: definitionID, Name: firstNonempty(model.DisplayName, model.ID), AuthorIDs: []catalogs.AuthorID{canonicalAuthor(model.Vendor)}}
+		if err := definition.Validate(); err != nil {
+			return Result{}, nil, err
+		}
+		result.Definitions = append(result.Definitions, definition)
 		if !strings.EqualFold(model.Type, "BASE") {
 			continue
 		}
-		definition := catalogs.ModelDefinition{ID: definitionID, Name: firstNonempty(model.DisplayName, model.ID), AuthorIDs: []catalogs.AuthorID{canonicalAuthor(model.Vendor)}}
 		apis := invocationAPIs(model.ID, model.Capabilities)
 		access := catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityDiscoverable, APIs: []catalogs.InvocationAPI{}}
 		if len(apis) > 0 {
@@ -248,12 +273,6 @@ func recordsFromModels(config Config, now time.Time, models []Model) (Result, ma
 			Deployment: catalogs.ProviderDeployment{Type: "on-demand", Tier: "pay-as-you-go"}, Lifecycle: lifecycle,
 			Endpoint: endpointForModel(config.Region, model.ID),
 		}
-		if facts, found := pricingCatalog.Models[model.ID]; found {
-			offering.Pricing = facts.Pricing
-		}
-		if err := definition.Validate(); err != nil {
-			return Result{}, nil, err
-		}
 		if err := offering.Validate(); err != nil {
 			return Result{}, nil, err
 		}
@@ -261,7 +280,6 @@ func recordsFromModels(config Config, now time.Time, models []Model) (Result, ma
 			return Result{}, nil, &errors.ConflictError{Resource: "OCI model offering", Actual: fmt.Sprint(offering.Key()), Message: "duplicate model ID"}
 		}
 		seen[offering.Key()] = struct{}{}
-		result.Definitions = append(result.Definitions, definition)
 		result.Offerings = append(result.Offerings, offering)
 	}
 	slices.SortFunc(result.Definitions, func(left, right catalogs.ModelDefinition) int {
@@ -273,15 +291,15 @@ func recordsFromModels(config Config, now time.Time, models []Model) (Result, ma
 	return result, index, nil
 }
 
-func customerInventory(config Config, observedAt time.Time, endpoints []Endpoint, index map[string]catalogs.ModelDefinitionID) (catalogs.CustomerInventory, error) {
-	inventory := catalogs.CustomerInventory{ProviderID: ProviderID, Scope: catalogs.CustomerScope{AccountID: config.CompartmentID}, ObservedAt: observedAt}
+func endpointOfferings(config Config, endpoints []Endpoint, index map[string]catalogs.ModelDefinitionID) ([]catalogs.ProviderOffering, error) {
+	offerings := make([]catalogs.ProviderOffering, 0, len(endpoints))
 	for _, endpoint := range endpoints {
 		definitionID, found := index[endpoint.ModelID]
 		if !found {
-			return catalogs.CustomerInventory{}, &errors.NotFoundError{Resource: "OCI endpoint model definition", ID: endpoint.ModelID}
+			return nil, &errors.NotFoundError{Resource: "OCI endpoint model definition", ID: endpoint.ModelID}
 		}
 		if endpoint.ID == "" || endpoint.DedicatedAIClusterID == "" {
-			return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "oci.endpoint", Value: endpoint.ID, Message: "endpoint and dedicated cluster IDs are required"}
+			return nil, &errors.ValidationError{Field: "oci.endpoint", Value: endpoint.ID, Message: "endpoint and dedicated cluster IDs are required"}
 		}
 		aliases := []string{}
 		if endpoint.DisplayName != "" {
@@ -290,19 +308,27 @@ func customerInventory(config Config, observedAt time.Time, endpoints []Endpoint
 		if endpoint.PrivateEndpointID != "" {
 			aliases = append(aliases, "private")
 		}
-		inventory.Deployments = append(inventory.Deployments, catalogs.CustomerDeployment{
-			ID: endpoint.ID, DefinitionID: definitionID, ProviderModelID: catalogs.ProviderModelID(endpoint.ModelID), Region: &catalogs.CloudRegion{ID: config.Region, Realm: config.Realm},
-			Deployment: catalogs.ProviderDeployment{Type: "dedicated-ai-cluster", Tier: endpoint.DedicatedAIClusterID}, Aliases: aliases,
-		})
+		availability, lifecycle := catalogs.OfferingAvailabilityRestricted, catalogs.OfferingLifecycleActive
+		if !strings.EqualFold(endpoint.LifecycleState, "ACTIVE") {
+			availability, lifecycle = catalogs.OfferingAvailabilityUnavailable, catalogs.OfferingLifecycleRetired
+		}
+		offering := catalogs.ProviderOffering{
+			ProviderID: ProviderID, ProviderModelID: catalogs.ProviderModelID(endpoint.ModelID), DeploymentID: endpoint.ID, DefinitionID: definitionID, Aliases: aliases,
+			Availability: availability,
+			Access:       catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIOCIInference}},
+			Regions:      []catalogs.CloudRegion{{ID: config.Region, Realm: config.Realm}}, Deployment: catalogs.ProviderDeployment{Type: "dedicated-ai-cluster", Tier: endpoint.DedicatedAIClusterID},
+			Endpoint: endpointForModel(config.Region, endpoint.ModelID), Lifecycle: lifecycle,
+		}
+		if err := offering.Validate(); err != nil {
+			return nil, err
+		}
+		offerings = append(offerings, offering)
 	}
-	if err := inventory.Validate(); err != nil {
-		return catalogs.CustomerInventory{}, err
-	}
-	return inventory, nil
+	return offerings, nil
 }
 
-// PublicCatalog materializes only globally publishable OCI base-model records.
-func (r Result) PublicCatalog() (*catalogs.Catalog, error) {
+// Catalog materializes only globally publishable OCI base-model records.
+func (r Result) Catalog() (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: ProviderID, Name: "Oracle OCI Generative AI"}); err != nil {
 		return nil, err
@@ -329,7 +355,7 @@ func (r Result) PublicCatalog() (*catalogs.Catalog, error) {
 	return builder.Build()
 }
 
-func emptyPublicCatalog() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
+func emptyCatalog() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
 
 func canonicalDefinitionID(model Model) catalogs.ModelDefinitionID {
 	if !strings.EqualFold(model.Type, "BASE") {

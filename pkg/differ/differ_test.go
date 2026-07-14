@@ -118,14 +118,14 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 			Name:         "Provider A",
 			Headquarters: &hq,
 			IconURL:      &iconURL,
-			EnvVars: []catalogs.ProviderEnvVar{{
-				Name:     "PROVIDER_API_KEY",
-				Required: true,
-			}},
-			StatusPageURL: &statusURL,
-			ChatCompletions: &catalogs.ProviderChatCompletions{
-				URL: &chatURL,
+			Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{
+				"api_key": {Env: catalogs.ProviderEnvironmentNames{"PROVIDER_API_KEY"}},
 			},
+			StatusPageURL: &statusURL,
+			Invocation: &catalogs.ProviderInvocation{Routes: []catalogs.ProviderInvocationRoute{{
+				ID: "chat", API: catalogs.InvocationAPIChatCompletions,
+				Auth: catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}}, Endpoint: chatURL,
+			}}},
 			PrivacyPolicy: &catalogs.ProviderPrivacyPolicy{
 				PrivacyPolicyURL: &privacyURL,
 				RetainsData:      &retainsData,
@@ -148,9 +148,9 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 		"aliases",
 		"headquarters",
 		"icon_url",
-		"env_vars",
+		"credentials",
 		"status_page_url",
-		"chat_completions",
+		"invocation",
 		"privacy_policy",
 		"retention_policy",
 		"governance_policy",

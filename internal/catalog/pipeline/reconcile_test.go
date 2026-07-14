@@ -61,16 +61,12 @@ func TestReconcileModelsDevOnlyEnrichesBaselineProviderData(t *testing.T) {
 		ID:   "provider-only",
 		Name: "Provider Only",
 	}
-	apiKey := &catalogs.ProviderAPIKey{
-		Name:   "OPENAI_API_KEY",
-		Header: "Authorization",
-		Scheme: catalogs.ProviderAPIKeySchemeBearer,
-	}
+	apiKey := catalogs.ProviderCredential{Env: catalogs.ProviderEnvironmentNames{"OPENAI_API_KEY"}}
 	baselineProvider := catalogs.Provider{
-		ID:      "openai",
-		Name:    "OpenAI",
-		Aliases: []catalogs.ProviderID{"open-ai"},
-		APIKey:  apiKey,
+		ID:          "openai",
+		Name:        "OpenAI",
+		Aliases:     []catalogs.ProviderID{"open-ai"},
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": apiKey},
 		Models: map[string]*catalogs.Model{
 			sharedModel.ID:       &sharedModel,
 			providerOnlyModel.ID: &providerOnlyModel,
@@ -118,8 +114,8 @@ func TestReconcileModelsDevOnlyEnrichesBaselineProviderData(t *testing.T) {
 	if err != nil {
 		t.Fatalf("provider not found: %v", err)
 	}
-	if provider.APIKey == nil || provider.APIKey.Name != apiKey.Name {
-		t.Fatalf("provider API key was not preserved: %#v", provider.APIKey)
+	if credential, found := provider.Credentials["api_key"]; !found || len(credential.Env) != 1 || credential.Env[0] != apiKey.Env[0] {
+		t.Fatalf("provider API key was not preserved: %#v", provider.Credentials)
 	}
 	if len(provider.Aliases) != 1 || provider.Aliases[0] != "open-ai" {
 		t.Fatalf("provider aliases were not preserved: %#v", provider.Aliases)

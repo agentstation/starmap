@@ -170,7 +170,7 @@ func ParseAPI(apiPath string) (*API, error)
 ParseAPI parses the api.json file and returns an API.
 
 <a name="API.GetProvider"></a>
-### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L841>)
+### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L837>)
 
 ```go
 func (api *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
@@ -194,7 +194,7 @@ type APIPromotion struct {
 ```
 
 <a name="PromoteAPIFile"></a>
-### func [PromoteAPIFile](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L369>)
+### func [PromoteAPIFile](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/http_client.go#L366>)
 
 ```go
 func PromoteAPIFile(candidatePath, destinationPath string) (APIPromotion, error)
@@ -349,7 +349,7 @@ type Cost struct {
     Input           *float64    `json:"input,omitempty"`
     Output          *float64    `json:"output,omitempty"`
     Reasoning       *float64    `json:"reasoning,omitempty"`
-    Cache           *float64    `json:"cache,omitempty"`       // Legacy cache field
+    Cache           *float64    `json:"cache,omitempty"`       // Upstream shorthand for cache-write cost
     CacheRead       *float64    `json:"cache_read,omitempty"`  // Cache read costs
     CacheWrite      *float64    `json:"cache_write,omitempty"` // Cache write costs
     InputAudio      *float64    `json:"input_audio,omitempty"`
@@ -402,7 +402,7 @@ type Experimental struct {
 func (e *Experimental) UnmarshalJSON(data []byte) error
 ```
 
-UnmarshalJSON accepts both the legacy boolean marker and the current object form containing mode overrides.
+UnmarshalJSON accepts the two forms emitted by the current external models.dev source: a boolean marker or an object containing mode overrides.
 
 <a name="ExperimentalMode"></a>
 ## type [ExperimentalMode](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L162-L165>)
@@ -916,7 +916,7 @@ type Model struct {
 ```
 
 <a name="Model.ToStarmapModel"></a>
-### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L309>)
+### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L304>)
 
 ```go
 func (m *Model) ToStarmapModel() (*catalogs.Model, error)
@@ -965,7 +965,7 @@ type Provider struct {
 ```
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L847>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L843>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, bool)

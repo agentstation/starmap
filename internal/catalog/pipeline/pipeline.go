@@ -26,10 +26,11 @@ type Store interface {
 type Publication struct {
 	GenerationID string
 	SyncRunID    string
+	Contextual   bool
 }
 
 type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog) []sources.Source
+type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog) ([]sources.Source, error)
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -103,7 +104,10 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
 	}
-	srcs := p.createSources(options, localSnapshot)
+	srcs, err := p.createSources(options, localSnapshot)
+	if err != nil {
+		return nil, pkgerrors.WrapResource("create", "catalog sources", "", err)
+	}
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -180,6 +184,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 		syncResult.GenerationID = publication.GenerationID
 		syncResult.SyncRunID = publication.SyncRunID
+		syncResult.Contextual = publication.Contextual
 	}
 
 	return syncResult, nil
@@ -187,7 +192,12 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 
 func activeSourceIDs(observations []sources.Observation) []sources.ID {
 	ids := make([]sources.ID, 0, len(observations))
+	seen := make(map[sources.ID]struct{}, len(observations))
 	for _, observation := range observations {
+		if _, found := seen[observation.SourceID]; found {
+			continue
+		}
+		seen[observation.SourceID] = struct{}{}
 		ids = append(ids, observation.SourceID)
 	}
 	return ids

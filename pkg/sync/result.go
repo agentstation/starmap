@@ -56,6 +56,7 @@ type Result struct {
 	SourceObservations []catalogs.SourceObservationLink
 	GenerationID       string // Durable generation activated by a non-dry sync
 	SyncRunID          string // Correlation ID for the synchronization attempt
+	Contextual         bool   // Applied in memory only because credential-scoped observations prohibit public persistence
 }
 
 // ProviderResult represents sync results for a single provider.

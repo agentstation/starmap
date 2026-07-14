@@ -39,9 +39,9 @@ Negative/non-finite price or metric values and unknown statuses fail closed.
 
 `auto`, `fastest`, `cheapest`, and `preferred` are policies, not provider or
 model identities. They are rejected if returned as provider records and are
-never materialized as definitions. Customer billing targets, tokens, custom
-provider keys, preferences, and dedicated Inference Endpoints remain outside
-the public catalog.
+never materialized as definitions. Caller billing targets, tokens, custom
+provider keys, preferences, and dedicated Inference Endpoints require a
+separate credential-scoped source and remain outside public generation.
 
 ## Verification
 

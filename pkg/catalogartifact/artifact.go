@@ -80,7 +80,7 @@ type Subject struct {
 	Digest DigestSet `json:"digest"`
 }
 
-// AttestationPredicate records the catalog compatibility identity asserted by
+// AttestationPredicate records the exact catalog schema identity asserted by
 // the detached statement. Signature and builder provenance are added and
 // verified by the publication boundary.
 type AttestationPredicate struct {

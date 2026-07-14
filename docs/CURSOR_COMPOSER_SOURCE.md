@@ -29,4 +29,4 @@ base URL, request schema, or serverless inference deployment.
 
 Cursor's documented routing of older Composer 2 selections to Composer 2.5 is
 an operational behavior of the current Cursor application. It does not create
-a second current model definition or a Starmap compatibility alias.
+a second current model definition or a Starmap catalog alias.

@@ -11,7 +11,7 @@ Status: P13.37 implementation evidence
 
 ## Public/private boundary
 
-Only the `/openai/v1/models` LLM inventory enters this public source. The separate `/v3/model` API spans public and private image checkpoints, LoRAs, training outputs, uploaded weights, download URLs, hashes, and cursors; it is not an enterprise LLM catalog and is deliberately excluded. Dedicated endpoints, customer aliases, endpoint URLs, GPU selections, and uploaded/custom weights are customer inventory and require explicit future configuration and canonical mapping.
+Only the `/openai/v1/models` LLM inventory enters this public source. The separate `/v3/model` API spans public and private image checkpoints, LoRAs, training outputs, uploaded weights, download URLs, hashes, and cursors; it is not an enterprise LLM catalog and is deliberately excluded. Dedicated endpoints, aliases, endpoint URLs, GPU selections, and uploaded/custom weights require an explicit future credential-scoped source and canonical mapping.
 
 Novita is the provider; exact model-ID prefixes retain Alibaba/Qwen, BAAI, DeepSeek, Google, Meta, Microsoft, Mistral, Moonshot, OpenAI, Xiaomi, and Zhipu authors. Public models use the stable `https://api.novita.ai/openai/v1` base and `serverless/pay-per-token` deployment.
 

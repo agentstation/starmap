@@ -11,6 +11,8 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/acquisition"
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -38,9 +40,8 @@ func TestListModelsUsesAccountSearchPaginationAndOpenRouterPricing(t *testing.T)
 		_ = json.NewEncoder(writer).Encode(map[string]any{"data": models})
 	}))
 	defer server.Close()
-	provider := testProvider(server.URL, "account-123")
-	provider.LoadAPIKey()
-	models, err := NewClient(provider).ListModels(context.Background())
+	provider := testProvider(t, server.URL, "account-123")
+	models, err := NewClient(testsource.Authenticated(t, provider)).ListModels(context.Background())
 	if err != nil {
 		t.Fatalf("ListModels: %v", err)
 	}
@@ -67,8 +68,8 @@ func TestListModelsUsesAccountSearchPaginationAndOpenRouterPricing(t *testing.T)
 }
 
 func TestListModelsRejectsMissingAccountNullDataAndInvalidPricing(t *testing.T) {
-	provider := testProvider("https://api.cloudflare.test", "")
-	if _, err := NewClient(provider).ListModels(context.Background()); err == nil {
+	provider := testProvider(t, "https://api.cloudflare.test", "")
+	if _, err := acquisition.NewResolver().Resolve(context.Background(), provider, "models"); err == nil {
 		t.Fatal("expected missing-account failure")
 	}
 	if _, err := convertModel(model{ID: "@cf/meta/model", Pricing: pricing{Prompt: "-0.1"}}); err == nil {
@@ -79,8 +80,8 @@ func TestListModelsRejectsMissingAccountNullDataAndInvalidPricing(t *testing.T) 
 		_, _ = writer.Write([]byte(`{"data":null}`))
 	}))
 	defer server.Close()
-	provider = testProvider(server.URL, "account")
-	if _, err := NewClient(provider).ListModels(context.Background()); err == nil {
+	provider = testProvider(t, server.URL, "account")
+	if _, err := NewClient(testsource.Unauthenticated(t, provider)).ListModels(context.Background()); err == nil {
 		t.Fatal("expected null-data failure")
 	}
 }
@@ -95,13 +96,20 @@ func TestUnknownModalityRemainsDiscoverableOnly(t *testing.T) {
 	}
 }
 
-func testProvider(baseURL, accountID string) *catalogs.Provider {
-	provider := &catalogs.Provider{
+func testProvider(t *testing.T, baseURL, accountID string) *catalogs.Provider {
+	t.Helper()
+	t.Setenv("CLOUDFLARE_ACCOUNT_ID", accountID)
+	t.Setenv("CLOUDFLARE_API_BASE_URL", baseURL)
+	return &catalogs.Provider{
 		ID: catalogs.ProviderIDCloudflare, Name: "Cloudflare Workers AI",
-		APIKey:  &catalogs.ProviderAPIKey{Name: "CLOUDFLARE_API_TOKEN", Header: "Authorization", Scheme: catalogs.ProviderAPIKeySchemeBearer},
-		EnvVars: []catalogs.ProviderEnvVar{{Name: "CLOUDFLARE_ACCOUNT_ID"}, {Name: "CLOUDFLARE_API_BASE_URL"}},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeCloudflare, URL: defaultAPIBaseURL, AuthRequired: true}},
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"CLOUDFLARE_API_TOKEN"}}},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeCredentialScoped},
+			Auth: catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}},
+			Scopes: map[string]catalogs.ProviderScopeBinding{
+				"account": {Source: catalogs.ProviderBindingSourceEnv, Name: catalogs.ProviderEnvironmentNames{"CLOUDFLARE_ACCOUNT_ID"}, Role: catalogs.ProviderBindingRoleRequiredInput},
+			},
+			Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeCloudflare, URL: "https://api.cloudflare.com/client/v4", BaseURLEnv: "CLOUDFLARE_API_BASE_URL"},
+		}}},
 	}
-	provider.EnvVarValues = map[string]string{"CLOUDFLARE_ACCOUNT_ID": accountID, "CLOUDFLARE_API_BASE_URL": baseURL}
-	return provider
 }

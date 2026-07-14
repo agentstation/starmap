@@ -4,7 +4,6 @@ import (
 	"context"
 	stderrors "errors"
 	"net/http"
-	"slices"
 	"strings"
 	"sync"
 	"testing"
@@ -15,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/bedrock/types"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -87,7 +87,7 @@ func (f *fakeAPI) ListInferenceProfiles(_ context.Context, input *awsbedrock.Lis
 	}}}, nil
 }
 
-func TestSourceMergesRegionalModelsAndSeparatesApplicationProfiles(t *testing.T) {
+func TestSourceMergesRegionalModelsAndNormalizesApplicationProfiles(t *testing.T) {
 	clients := map[string]*fakeAPI{
 		"us-east-1": {region: "us-east-1"},
 		"us-west-2": {region: "us-west-2"},
@@ -100,7 +100,7 @@ func TestSourceMergesRegionalModelsAndSeparatesApplicationProfiles(t *testing.T)
 	}
 	source.now = func() time.Time { return time.Date(2026, 7, 12, 12, 0, 0, 0, time.UTC) }
 
-	result, err := source.Fetch(context.Background(), true)
+	result, err := source.Fetch(context.Background())
 	if err != nil {
 		t.Fatalf("Fetch: %v", err)
 	}
@@ -110,10 +110,10 @@ func TestSourceMergesRegionalModelsAndSeparatesApplicationProfiles(t *testing.T)
 	if result.Definitions[0].Capabilities.Features == nil || len(result.Definitions[0].Capabilities.Features.Modalities.Input) != 2 || result.Definitions[0].Capabilities.Delivery == nil || len(result.Definitions[0].Capabilities.Delivery.Streaming) != 1 {
 		t.Fatalf("foundation capabilities = %#v", result.Definitions[0].Capabilities)
 	}
-	if len(result.Offerings) != 2 {
+	if len(result.Offerings) != 3 {
 		t.Fatalf("offerings = %#v", result.Offerings)
 	}
-	var foundation, system catalogs.ProviderOffering
+	var foundation, system, application catalogs.ProviderOffering
 	for _, offering := range result.Offerings {
 		switch offering.ProviderModelID {
 		case "anthropic.claude-3":
@@ -121,7 +121,7 @@ func TestSourceMergesRegionalModelsAndSeparatesApplicationProfiles(t *testing.T)
 		case "us.anthropic.claude-3":
 			system = offering
 		case "team":
-			t.Fatal("application profile leaked into public offerings")
+			application = offering
 		}
 	}
 	if len(foundation.Regions) != 2 || foundation.Endpoint.Type != catalogs.EndpointTypeBedrock {
@@ -130,8 +130,8 @@ func TestSourceMergesRegionalModelsAndSeparatesApplicationProfiles(t *testing.T)
 	if system.InferenceProfile == nil || len(system.InferenceProfile.SourceRegions) != 2 || len(system.InferenceProfile.DestinationRegions) != 2 || system.InferenceProfile.Scope != "US" {
 		t.Fatalf("system profile = %#v", system)
 	}
-	if len(result.CustomerInventory) != 1 || result.CustomerInventory[0].Scope.AccountID != "123456789012" || result.CustomerInventory[0].Deployments[0].ProviderModelID != "team" {
-		t.Fatalf("customer inventory = %#v", result.CustomerInventory)
+	if application.DeploymentID != "arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/team" || application.Deployment.Type != "application_inference_profile" || application.DefinitionID != "anthropic/claude-3" {
+		t.Fatalf("application offering = %#v", application)
 	}
 }
 
@@ -166,21 +166,6 @@ func TestSystemInferenceProfileRejectsMultipleCanonicalModels(t *testing.T) {
 	}
 }
 
-func TestSourceSkipsCustomerAPIWhenInventoryDisabled(t *testing.T) {
-	client := &fakeAPI{region: "us-east-1"}
-	source, err := NewSource([]string{"us-east-1"}, func(context.Context, string) (API, error) { return client, nil })
-	if err != nil {
-		t.Fatal(err)
-	}
-	result, err := source.Fetch(context.Background(), false)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(result.CustomerInventory) != 0 || client.profileCalls[types.InferenceProfileTypeApplication] != 0 {
-		t.Fatalf("private API calls/inventory = (%d, %#v)", client.profileCalls[types.InferenceProfileTypeApplication], result.CustomerInventory)
-	}
-}
-
 func TestSourceRetriesThrottlingWithinBound(t *testing.T) {
 	throttle := &smithyhttp.ResponseError{Response: &smithyhttp.Response{Response: &http.Response{StatusCode: http.StatusTooManyRequests}}, Err: stderrors.New("throttled")}
 	client := &fakeAPI{region: "us-east-1", foundationErrs: []error{throttle, nil}}
@@ -191,7 +176,7 @@ func TestSourceRetriesThrottlingWithinBound(t *testing.T) {
 	source.retry.BaseDelay = time.Nanosecond
 	source.retry.MaxDelay = time.Nanosecond
 	source.retry.JitterFraction = 0
-	if _, err := source.Fetch(context.Background(), false); err != nil {
+	if _, err := source.Fetch(context.Background()); err != nil {
 		t.Fatalf("Fetch after throttle: %v", err)
 	}
 	if client.foundationCalls != 2 {
@@ -199,7 +184,7 @@ func TestSourceRetriesThrottlingWithinBound(t *testing.T) {
 	}
 }
 
-func TestSourceObservationPublishesCanonicalRegionalCatalog(t *testing.T) {
+func TestSourceObservationReturnsCanonicalCredentialScopedCatalog(t *testing.T) {
 	client := &fakeAPI{region: "us-east-1"}
 	source, err := NewSource([]string{"us-east-1"}, func(context.Context, string) (API, error) { return client, nil })
 	if err != nil {
@@ -217,7 +202,7 @@ func TestSourceObservationPublishesCanonicalRegionalCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Observe: %v", err)
 	}
-	if observation.SourceID != sources.AmazonBedrockID || observation.Metrics.ProviderCoverage.Expected != 1 || observation.Metrics.ProviderCoverage.Observed != 1 || observation.Metrics.PricingObservedAt == nil || !observation.Metrics.PricingObservedAt.Equal(pricingAt) {
+	if observation.SourceID != sources.AmazonBedrockID || observation.Metrics.Scope != catalogmeta.ObservationScopeCredentialScoped || observation.Metrics.ProviderCoverage.Expected != 1 || observation.Metrics.ProviderCoverage.Observed != 1 || observation.Metrics.PricingObservedAt == nil || !observation.Metrics.PricingObservedAt.Equal(pricingAt) {
 		t.Fatalf("observation identity/coverage = %#v", observation)
 	}
 	offering, err := observation.Catalog.Offering(ProviderID, "anthropic.claude-3")
@@ -231,8 +216,8 @@ func TestSourceObservationPublishesCanonicalRegionalCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(payload) == "" || containsAny(string(payload), "application-inference-profile/team", "123456789012") {
-		t.Fatalf("public observation leaked customer data: %s", payload)
+	if string(payload) == "" || !containsAny(string(payload), "application-inference-profile/team", "123456789012") {
+		t.Fatalf("contextual observation omitted deployment identity: %s", payload)
 	}
 }
 
@@ -253,28 +238,6 @@ func TestSourceObservationDegradesSafelyWithoutCredentials(t *testing.T) {
 	}
 	if observation.Catalog == nil || observation.Metrics.ProviderCoverage.Expected != 1 || observation.Metrics.ProviderCoverage.Observed != 0 {
 		t.Fatalf("missing-credential catalog/coverage = %#v", observation)
-	}
-}
-
-func TestReviewedRegionInventoriesAreCallerOwnedAndRealmSeparated(t *testing.T) {
-	commercial := CommercialRegions()
-	govCloud := GovCloudRegions()
-	if len(commercial) != 32 || len(govCloud) != 2 {
-		t.Fatalf("region inventory counts = (%d, %d), want (32, 2)", len(commercial), len(govCloud))
-	}
-	for _, region := range commercial {
-		if strings.HasPrefix(region, "us-gov-") {
-			t.Fatalf("commercial inventory contains GovCloud region %q", region)
-		}
-	}
-	for _, region := range govCloud {
-		if realm(region) != "aws-us-gov" || slices.Contains(commercial, region) {
-			t.Fatalf("GovCloud region %q has wrong realm or overlaps commercial inventory", region)
-		}
-	}
-	commercial[0] = "mutated"
-	if CommercialRegions()[0] == "mutated" {
-		t.Fatal("CommercialRegions returned shared mutable state")
 	}
 }
 

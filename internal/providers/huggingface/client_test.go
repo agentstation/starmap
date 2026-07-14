@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -20,7 +21,7 @@ func TestListModelsPreservesProviderOfferingsAndProbeTime(t *testing.T) {
 	}))
 	defer server.Close()
 
-	models, err := NewClient(huggingFaceTestProvider(server.URL + "/v1/models")).ListModels(context.Background())
+	models, err := NewClient(testsource.Unauthenticated(t, huggingFaceTestProvider(server.URL+"/v1/models"))).ListModels(context.Background())
 	if err != nil {
 		t.Fatalf("ListModels: %v", err)
 	}
@@ -54,7 +55,7 @@ func TestCanonicalProjectionSharesDefinitionWithoutCollapsingProviders(t *testin
 	if err != nil {
 		t.Fatalf("convertModel: %v", err)
 	}
-	configured := huggingFaceTestProvider(defaultModelsURL)
+	configured := huggingFaceTestProvider("https://router.huggingface.co/v1/models")
 	configured.Models = map[string]*catalogs.Model{}
 	for index := range models {
 		configured.Models[models[index].ID] = &models[index]
@@ -93,11 +94,22 @@ func TestRejectsPolicyLikeStatusAndNegativeMetrics(t *testing.T) {
 	}
 }
 
+func TestDecodeModelsRejectsDuplicateRouteIdentity(t *testing.T) {
+	client := NewClient(testsource.Unauthenticated(t, huggingFaceTestProvider("https://example.test/v1/models")))
+	payload := []byte(`{"object":"list","data":[{"id":"author/model","object":"model","owned_by":"author","providers":[{"provider":"provider-a","status":"live"},{"provider":"provider-a","status":"live"}]}]}`)
+	if _, err := client.DecodeModels(payload); err == nil {
+		t.Fatal("DecodeModels accepted duplicate route identity")
+	}
+}
+
 func huggingFaceTestProvider(endpoint string) *catalogs.Provider {
 	return &catalogs.Provider{
 		ID: catalogs.ProviderIDHuggingFace, Name: "Hugging Face Inference Providers",
-		APIKey:  &catalogs.ProviderAPIKey{Name: "HF_TOKEN", Header: "Authorization", Scheme: catalogs.ProviderAPIKeySchemeBearer},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeHuggingFace, URL: endpoint}},
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"HF_TOKEN"}}},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth: catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeHuggingFace, URL: endpoint},
+		}}},
 	}
 }
 

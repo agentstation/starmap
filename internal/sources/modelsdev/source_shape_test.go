@@ -58,7 +58,7 @@ func modelsDevPathDecisions() map[string]sourcePathDecision {
 		"npm":    {outcome: outcomeCanonical, note: "provider SDK/package metadata"},
 
 		"models.{}.attachment":                     {outcome: outcomeCanonical, note: "attachment feature flag"},
-		"models.{}.cost.cache":                     {outcome: outcomeCanonical, note: "legacy cache pricing"},
+		"models.{}.cost.cache":                     {outcome: outcomeCanonical, note: "external cache pricing field"},
 		"models.{}.cost.cache_read":                {outcome: outcomeCanonical, note: "cache read token pricing"},
 		"models.{}.cost.cache_write":               {outcome: outcomeCanonical, note: "cache write token pricing"},
 		"models.{}.cost.input":                     {outcome: outcomeCanonical, note: "input token pricing"},

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/agentstation/starmap/internal/providerdata"
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -59,53 +59,44 @@ func decodeModels(data []byte, target *[]sessionModel) error {
 
 // Client retrieves models eligible in the configured Snowflake session.
 type Client struct {
-	mu        sync.RWMutex
-	provider  *catalogs.Provider
-	transport *transport.Client
+	mu          sync.RWMutex
+	provider    *catalogs.Provider
+	endpoint    string
+	region      string
+	crossRegion string
+	transport   *transport.Client
 }
 
 // NewClient creates a Snowflake Cortex client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
-}
-
-// IsAPIKeyRequired reports that session inventory requires Snowflake auth.
-func (c *Client) IsAPIKeyRequired() bool { return true }
-
-// HasAPIKey reports whether a Snowflake token is resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey() && c.provider.EnvVar("SNOWFLAKE_ACCOUNT_URL") != ""
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	region, _ := source.Binding("region")
+	crossRegion, _ := source.Option("cross_region")
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), region: region, crossRegion: crossRegion, transport: transport.New(source.Auth())}
 }
 
 // ListModels returns models eligible for the configured account session.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
-	configured, client := c.provider, c.transport
+	configured, client, endpoint, region, crossRegion := c.provider, c.transport, c.endpoint, c.region, c.crossRegion
 	c.mu.RUnlock()
-	if configured == nil || configured.EnvVar("SNOWFLAKE_ACCOUNT_URL") == "" {
-		return nil, &errors.ConfigError{Component: "snowflake", Message: "account URL is required"}
+	if configured == nil || endpoint == "" {
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDSnowflake), Message: "account URL is required"}
 	}
-	endpoint := configured.CatalogEndpointURL()
-	response, err := client.Get(ctx, endpoint, configured)
+	response, err := client.Get(ctx, endpoint)
 	if err != nil {
-		return nil, &errors.APIError{Provider: "snowflake", Endpoint: endpoint, Message: "request failed", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDSnowflake), Endpoint: endpoint, Message: "request failed", Err: err}
 	}
 	var envelope modelEnvelope
 	if err := transport.DecodeResponse(response, &envelope); err != nil {
-		return nil, &errors.APIError{Provider: "snowflake", Endpoint: endpoint, StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDSnowflake), Endpoint: endpoint, StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
 	}
 	if envelope.Models == nil {
 		return nil, &errors.ValidationError{Field: "snowflake.models", Message: "required model array is null"}
 	}
-	pricingCatalog, err := providerdata.LoadPricingCatalog(catalogs.ProviderIDSnowflake)
-	if err != nil {
-		return nil, errors.WrapResource("load", "Snowflake pricing catalog", string(catalogs.ProviderIDSnowflake), err)
-	}
 	result := make([]catalogs.Model, 0, len(envelope.Models))
 	for _, source := range envelope.Models {
-		converted := convertModel(source, configured, pricingCatalog)
+		converted := convertModel(source, region, crossRegion)
 		if converted.ID == "" {
 			return nil, &errors.ValidationError{Field: "snowflake.model", Value: source, Message: "model name is required"}
 		}
@@ -115,7 +106,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return result, nil
 }
 
-func convertModel(source sessionModel, provider *catalogs.Provider, pricingCatalog providerdata.PricingCatalog) catalogs.Model {
+func convertModel(source sessionModel, region, crossRegion string) catalogs.Model {
 	id := source.Name
 	if id == "" {
 		id = source.ID
@@ -133,11 +124,11 @@ func convertModel(source sessionModel, provider *catalogs.Provider, pricingCatal
 		OfferingEndpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeSnowflake},
 		OfferingDeployment: catalogs.ProviderDeployment{Type: "snowflake-hosted", Tier: "cortex-inference"},
 	}
-	region := strings.TrimSpace(provider.EnvVar("SNOWFLAKE_REGION"))
+	region = strings.TrimSpace(region)
 	if region != "" {
 		result.OfferingRegions = []catalogs.CloudRegion{{ID: region}}
 	}
-	crossRegion := strings.TrimSpace(provider.EnvVar("SNOWFLAKE_CORTEX_CROSS_REGION"))
+	crossRegion = strings.TrimSpace(crossRegion)
 	if crossRegion != "" && !strings.EqualFold(crossRegion, "DISABLED") {
 		profile := &catalogs.CrossRegionInferenceProfile{ID: crossRegion, Scope: "snowflake-cross-region", DestinationRegions: []string{strings.ToLower(crossRegion)}}
 		if region != "" {
@@ -145,24 +136,7 @@ func convertModel(source sessionModel, provider *catalogs.Provider, pricingCatal
 		}
 		result.OfferingInferenceProfile = profile
 	}
-	if facts, found := pricingCatalog.Models[id]; found {
-		result.Modes = facts.Modes
-		if isGlobalRouting(crossRegion) {
-			result.Pricing = facts.Modes["global-routing"].Pricing
-		} else {
-			result.Pricing = facts.Pricing
-		}
-	}
 	return result
-}
-
-func isGlobalRouting(value string) bool {
-	switch strings.ToUpper(value) {
-	case "ANY_REGION", "AWS_GLOBAL", "GCP_GLOBAL", "AZURE_GLOBAL":
-		return true
-	default:
-		return false
-	}
 }
 
 func snowflakeAuthor(id string) catalogs.AuthorID {
@@ -182,6 +156,6 @@ func snowflakeAuthor(id string) catalogs.AuthorID {
 	case strings.HasPrefix(id, "mistral-"):
 		return catalogs.AuthorIDMistralAI
 	default:
-		return catalogs.AuthorID("snowflake")
+		return catalogs.AuthorID(catalogs.ProviderIDSnowflake)
 	}
 }

@@ -3,8 +3,9 @@ package transport
 import (
 	"context"
 	"net/http"
+	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -15,48 +16,44 @@ var DefaultHTTPTimeout = constants.DefaultHTTPTimeout
 // Client provides HTTP client functionality with authentication.
 type Client struct {
 	http *http.Client
-	auth Authenticator
+	auth auth.ResolvedAuth
 }
 
-// New creates a new transport client with the specified authenticator.
-func New(provider *catalogs.Provider) *Client {
+// New creates a source-local transport. Authentication has already been
+// resolved and no environment lookup occurs in the transport layer.
+func New(resolvedAuth auth.ResolvedAuth) *Client {
 	return &Client{
-		http: &http.Client{Timeout: DefaultHTTPTimeout},
-		auth: newAuthenticator(provider),
+		http: &http.Client{Timeout: DefaultHTTPTimeout, CheckRedirect: sameOriginRedirect},
+		auth: resolvedAuth,
 	}
 }
 
+func sameOriginRedirect(request *http.Request, via []*http.Request) error {
+	if len(via) == 0 {
+		return nil
+	}
+	origin := via[0].URL
+	target := request.URL
+	if !strings.EqualFold(origin.Scheme, target.Scheme) || !strings.EqualFold(origin.Host, target.Host) {
+		return &errors.ValidationError{Field: "provider.redirect.origin", Value: target.Scheme + "://" + target.Host, Message: "must match configured request origin " + origin.Scheme + "://" + origin.Host}
+	}
+	return nil
+}
+
 // Do performs an HTTP request with authentication applied.
-func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
-	return c.DoWithContext(req.Context(), req, provider)
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
+	return c.DoWithContext(req.Context(), req)
 }
 
 // DoWithContext performs an HTTP request with authentication applied and context support.
 // The provided context will be used for the request, overriding any existing context in req.
-func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
+func (c *Client) DoWithContext(ctx context.Context, req *http.Request) (*http.Response, error) {
 	// Clone the request with the provided context to ensure context is respected
 	req = req.Clone(ctx)
 
-	// Apply authentication if provider has API key
-	if provider != nil {
-		apiKey, err := provider.APIKeyValue()
-		if err != nil {
-			return nil, &errors.AuthenticationError{
-				Provider: string(provider.ID),
-				Method:   "api_key",
-				Message:  "failed to retrieve API key",
-				Err:      err,
-			}
-		}
-		if apiKey != "" {
-			c.auth.Apply(req, apiKey)
-		}
-
-		// Apply provider-specific headers
-		rb := NewRequestBuilder(provider)
-		rb.AddProviderHeaders(req)
+	if err := c.auth.Apply(req); err != nil {
+		return nil, err
 	}
-
 	// Set common headers
 	req.Header.Set("Accept", "application/json")
 	if req.Method == "POST" || req.Method == "PUT" || req.Method == "PATCH" {
@@ -67,20 +64,10 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 }
 
 // Get performs a GET request.
-func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error) {
+func (c *Client) Get(ctx context.Context, url string) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, errors.WrapResource("create", "request", "GET "+url, err)
 	}
-	return c.DoWithContext(ctx, req, provider)
-}
-
-// newAuthenticator returns the appropriate authenticator for a provider.
-func newAuthenticator(provider *catalogs.Provider) Authenticator {
-	if provider == nil {
-		return &NoAuth{}
-	}
-
-	// Use ProviderAuth to read authentication configuration from YAML
-	return &ProviderAuth{Provider: provider}
+	return c.DoWithContext(ctx, req)
 }

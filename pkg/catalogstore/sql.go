@@ -31,7 +31,7 @@ type SQL struct {
 // NewSQL initializes a SQL catalog store.
 func NewSQL(ctx context.Context, db *sql.DB) (*SQL, error) {
 	if db == nil {
-		return nil, &errors.ConfigError{Component: "catalog store", Message: "SQL database is required"}
+		return nil, &errors.ConfigError{Component: catalogStoreComponent, Message: "SQL database is required"}
 	}
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ WHERE c.singleton = 1`)
 		return Generation{}, currentNotFound()
 	}
 	if err != nil {
-		return Generation{}, errors.WrapResource("read", "catalog generation", "current", err)
+		return Generation{}, errors.WrapResource("read", catalogGenerationResource, currentFilename, err)
 	}
 	return generation, nil
 }
@@ -74,7 +74,7 @@ func (s *SQL) Get(ctx context.Context, id string) (Generation, error) {
 		return Generation{}, generationNotFound(id)
 	}
 	if err != nil {
-		return Generation{}, errors.WrapResource("read", "catalog generation", id, err)
+		return Generation{}, errors.WrapResource("read", catalogGenerationResource, id, err)
 	}
 	return generation, nil
 }
@@ -120,7 +120,7 @@ func (s *SQL) Commit(ctx context.Context, generation Generation, expectedGenerat
 			`INSERT INTO catalog_generations (generation_id, manifest, payload) VALUES (?, ?, ?)`,
 			candidate.Manifest.GenerationID, manifestData, candidate.Payload,
 		); err != nil {
-			return errors.WrapResource("write", "catalog generation", candidate.Manifest.GenerationID, err)
+			return errors.WrapResource("write", catalogGenerationResource, candidate.Manifest.GenerationID, err)
 		}
 	}
 	if currentID == "" {
@@ -128,13 +128,13 @@ func (s *SQL) Commit(ctx context.Context, generation Generation, expectedGenerat
 			`INSERT INTO catalog_current (singleton, generation_id) VALUES (1, ?)`,
 			candidate.Manifest.GenerationID,
 		); err != nil {
-			return errors.WrapResource("activate", "catalog generation", candidate.Manifest.GenerationID, err)
+			return errors.WrapResource("activate", catalogGenerationResource, candidate.Manifest.GenerationID, err)
 		}
 	} else if _, err := tx.ExecContext(ctx,
 		`UPDATE catalog_current SET generation_id = ? WHERE singleton = 1`,
 		candidate.Manifest.GenerationID,
 	); err != nil {
-		return errors.WrapResource("activate", "catalog generation", candidate.Manifest.GenerationID, err)
+		return errors.WrapResource("activate", catalogGenerationResource, candidate.Manifest.GenerationID, err)
 	}
 	if s.beforeCommit != nil {
 		if err := s.beforeCommit(); err != nil {
@@ -187,7 +187,7 @@ func sqlGeneration(ctx context.Context, tx *sql.Tx, id string) (Generation, bool
 		return Generation{}, false, nil
 	}
 	if err != nil {
-		return Generation{}, false, errors.WrapResource("read", "catalog generation", id, err)
+		return Generation{}, false, errors.WrapResource("read", catalogGenerationResource, id, err)
 	}
 	return generation, true, nil
 }

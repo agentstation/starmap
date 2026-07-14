@@ -2,7 +2,7 @@
   "packages": [
     "go@1.25.1",
     "gomarkdoc@1.1.0",
-    "golangci-lint@2.5.0",
+    "golangci-lint@2.12.2",
     "goreleaser@2.11.2",
     "path:./devbox/swag#swag"
   ],

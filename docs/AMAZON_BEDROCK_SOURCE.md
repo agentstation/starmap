@@ -19,9 +19,9 @@ and Bedrock provider offerings keyed by the exact `modelId`.
   profile ID is routable, their source regions are the regions where the profile
   was observed, and destination regions come from model ARNs.
 - `APPLICATION` inference profiles are account-owned cost-attribution resources.
-  They are requested only when customer inventory is explicitly enabled and are
-  returned exclusively as `CustomerInventory`; their account ARN and profile ID
-  cannot enter a public catalog payload.
+  The configured credential-scoped source returns them as ordinary canonical
+  offerings in the caller's contextual catalog. Their account ARN and profile
+  ID make the complete observation ineligible for public publication.
 - Regional, geographic cross-region, global cross-region, on-demand, and
   provisioned distinctions are provider-offering facts. They never modify a
   provider-independent model definition.
@@ -41,7 +41,7 @@ and Bedrock provider offerings keyed by the exact `modelId`.
 | Source and destination region semantics | [Supported regions and models for inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) | Source region is the control-plane region; destination regions are parsed from `Get/ListInferenceProfiles` model ARNs |
 | Geographic residency | [Geographic cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/geographic-cross-region-inference.html) | Keep geography scope and destination regions explicit; never imply single-region residency |
 | Global routing mutability | [Global cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/global-cross-region-inference.html) | Global destinations are observations, not a permanent closed set |
-| Application profile ownership | [Application inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles.html) | Application profiles are customer inventory and cost attribution, not public offerings |
+| Application profile ownership | [Application inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles.html) | Application profiles are credential-scoped cost-attribution offerings, not publicly publishable offerings |
 | Credential resolution | [Configure the AWS SDK for Go v2](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) | Use `config.LoadDefaultConfig`, its concurrency-safe credential cache, and injected client factories; serialize no credentials |
 | Complete runtime region inventory | [Regional availability by endpoints](https://docs.aws.amazon.com/bedrock/latest/userguide/endpoints-region-availability.html) | Sweep 32 commercial runtime regions by default and expose the two GovCloud regions as a separate realm-specific sweep |
 | Endpoint/API compatibility is model-specific | [Get list of models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-get-info.html) and [Endpoints supported by Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/endpoints.html) | Treat native `InvokeModel` as the discovered runtime contract; add Converse/OpenAI/Anthropic-compatible APIs only from explicit model-level evidence |
@@ -57,7 +57,7 @@ evidence that offerings were deleted. Publication must retain the last-known-goo
 Bedrock observation and mark provider/region coverage degraded.
 
 Public regional discovery uses the regional-control-plane freshness budget.
-Customer application profiles use the customer-inventory budget and are never
+Application profiles use the credential-scoped observation budget and are never
 part of scheduled public generation. Pricing has its own observation timestamp
 and is stale independently of model availability.
 

@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -34,8 +35,7 @@ func TestListModelsPaginatesMapsNativeFactsAndExcludesCustomerFineTunes(t *testi
 	}))
 	defer server.Close()
 	provider := testProvider(server.URL)
-	provider.LoadAPIKey()
-	models, err := NewClient(provider).ListModels(context.Background())
+	models, err := NewClient(testsource.Authenticated(t, provider)).ListModels(context.Background())
 	if err != nil {
 		t.Fatalf("ListModels: %v", err)
 	}
@@ -152,8 +152,8 @@ func TestListModelsFailsClosedOnMalformedEnvelopeAndRepeatedCursor(t *testing.T)
 			}))
 			defer server.Close()
 			provider := testProvider(server.URL)
-			provider.Catalog.Endpoint.AuthRequired = false
-			_, err := NewClient(provider).ListModels(context.Background())
+			provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}
+			_, err := NewClient(testsource.Authenticated(t, provider)).ListModels(context.Background())
 			if err == nil {
 				t.Fatal("expected failure")
 			}
@@ -167,10 +167,21 @@ func TestListModelsFailsClosedOnMalformedEnvelopeAndRepeatedCursor(t *testing.T)
 	}
 }
 
+func TestDecodeModelsRejectsDuplicateIdentity(t *testing.T) {
+	client := NewClient(testsource.Unauthenticated(t, testProvider("https://example.test/models")))
+	if _, err := client.DecodeModels([]byte(`{"models":[{"name":"duplicate"},{"name":"duplicate"}]}`)); err == nil {
+		t.Fatal("DecodeModels accepted duplicate model identity")
+	}
+}
+
 func testProvider(endpoint string) *catalogs.Provider {
 	return &catalogs.Provider{
 		ID: catalogs.ProviderIDCohere, Name: "Cohere",
-		APIKey:  &catalogs.ProviderAPIKey{Name: "COHERE_API_KEY", Header: "Authorization", Scheme: catalogs.ProviderAPIKeySchemeBearer},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeCohere, URL: endpoint, AuthRequired: true}, Authors: []catalogs.AuthorID{catalogs.AuthorIDCohere}},
+		Credentials: map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"COHERE_API_KEY"}}},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth:     catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}},
+			Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeCohere, URL: endpoint}, Authors: []catalogs.AuthorID{catalogs.AuthorIDCohere},
+		}}},
 	}
 }

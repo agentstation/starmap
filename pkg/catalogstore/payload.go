@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 // CatalogPayload is the canonical catalog schema-v2 payload.
@@ -20,16 +21,19 @@ func EncodeCatalogPayload(reader catalogs.Reader) ([]byte, error) {
 
 // DecodeCatalogPayload strictly decodes the sole current schema-v2 payload.
 func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return nil, err
+	}
 	var required map[string]json.RawMessage
 	if err := json.Unmarshal(data, &required); err != nil {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: err.Error(), Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: err.Error(), Err: err}
 	}
 	for _, field := range []string{
 		"schema_version", "providers", "authors", "endpoints",
 		"definitions", "offerings", "provenance",
 	} {
 		if _, found := required[field]; !found {
-			return nil, &errors.ValidationError{Field: field, Message: "is required"}
+			return nil, &errors.ValidationError{Field: field, Message: validationRequiredMessage}
 		}
 	}
 
@@ -37,10 +41,10 @@ func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
 	decoder.DisallowUnknownFields()
 	var payload CatalogPayload
 	if err := decoder.Decode(&payload); err != nil {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: err.Error(), Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: err.Error(), Err: err}
 	}
 	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		return nil, &errors.ParseError{Format: "json", File: "catalog payload", Message: "invalid trailing JSON", Err: err}
+		return nil, &errors.ParseError{Format: string(catalogs.ModelResponseFormatJSON), File: catalogPayloadFile, Message: "invalid trailing JSON", Err: err}
 	}
 	if payload.SchemaVersion != catalogs.CurrentCatalogSchemaVersion {
 		return nil, &errors.ValidationError{

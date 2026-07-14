@@ -2,8 +2,8 @@
 package table
 
 import (
+	"context"
 	"fmt"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
@@ -196,30 +196,49 @@ func BuildAuthorsString(authors []catalogs.Author) string {
 
 // ProvidersToTableData converts providers to table format.
 func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool) Data {
-	headers := []string{"NAME", "ID", "LOCATION", "API TYPE", "ENV KEY", "KEY", "MODELS", "STATUS"}
+	headers := []string{"NAME", "ID", "SOURCE", "API TYPE", "AUTH", "ENV", "MODELS", "STATUS"}
 
 	rows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
-		// Check authentication status
-		authStatus := checker.CheckProvider(provider, supportedMap)
-		statusIcon, statusText := getStatusDisplay(authStatus.State)
-
-		location := ""
-		if provider.Headquarters != nil {
-			location = *provider.Headquarters
+		statuses := checker.CheckSources(context.Background(), provider)
+		bySource := make(map[string]auth.SourceStatus, len(statuses))
+		for _, status := range statuses {
+			bySource[status.SourceID] = status
 		}
-
-		row := []string{
-			provider.Name,
-			string(provider.ID),
-			location,
-			getEndpointType(provider),
-			getKeyVariable(provider, authStatus),
-			getKeyPreview(provider, authStatus),
-			fmt.Sprintf("%d", len(provider.Models)),
-			statusIcon + " " + statusText,
+		if provider.Catalog == nil || len(provider.Catalog.Sources) == 0 {
+			state := auth.StateInvalid
+			if !supportedMap[string(provider.ID)] {
+				state = auth.StateUnsupported
+			}
+			statusIcon, statusText := getStatusDisplay(state)
+			rows = append(rows, []string{provider.Name, string(provider.ID), "-", "-", "-", "-", fmt.Sprintf("%d", len(provider.Models)), statusIcon + " " + statusText})
+			continue
 		}
-		rows = append(rows, row)
+		for _, source := range provider.Catalog.Sources {
+			status := bySource[source.ID]
+			if !supportedMap[string(provider.ID)] {
+				status.State = auth.StateUnsupported
+			}
+			statusIcon, statusText := getStatusDisplay(status.State)
+			authMethods := "none"
+			if source.Auth.Mode == catalogs.ProviderAuthModeOptional {
+				authMethods = "optional"
+			} else if len(source.Auth.Methods) > 0 {
+				methods := make([]string, len(source.Auth.Methods))
+				for index, method := range source.Auth.Methods {
+					methods[index] = string(method)
+				}
+				authMethods = strings.Join(methods, ",")
+			}
+			environment := "-"
+			if len(status.Environment) > 0 {
+				environment = strings.Join(status.Environment, ",")
+			}
+			rows = append(rows, []string{
+				provider.Name, string(provider.ID), source.ID, string(source.Endpoint.Type),
+				authMethods, environment, fmt.Sprintf("%d", len(provider.Models)), statusIcon + " " + statusText,
+			})
+		}
 	}
 
 	return Data{
@@ -228,7 +247,7 @@ func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker,
 		ColumnAlignment: []Align{
 			AlignDefault, // NAME
 			AlignDefault, // ID
-			AlignDefault, // LOCATION
+			AlignDefault, // SOURCE
 			AlignDefault, // TYPE
 			AlignDefault, // ENV KEY
 			AlignDefault, // KEY
@@ -268,67 +287,17 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 // getStatusDisplay returns icon and text for a status state.
 func getStatusDisplay(state auth.State) (string, string) {
 	switch state {
-	case auth.StateConfigured:
-		return emoji.Success, "Configured"
-	case auth.StateMissing:
-		return emoji.Error, "Missing"
+	case auth.StateReady:
+		return emoji.Success, "Ready"
+	case auth.StateUnavailable:
+		return emoji.Error, "Unavailable"
 	case auth.StateInvalid:
 		return emoji.Warning, "Invalid"
-	case auth.StateOptional:
-		return emoji.Optional, "Optional"
+	case auth.StateUnauthenticated:
+		return emoji.Optional, "Unauthenticated"
 	case auth.StateUnsupported:
 		return emoji.Unsupported, "Unsupported"
 	default:
 		return emoji.Unknown, "Unknown"
 	}
-}
-
-// getKeyVariable returns the key variable name or special message for display.
-func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return "(gcloud auth)"
-	}
-
-	if provider.APIKey != nil {
-		return provider.APIKey.Name
-	}
-
-	if status.State == auth.StateUnsupported {
-		return "(no implementation)"
-	}
-
-	return "(no key required)"
-}
-
-// getKeyPreview reports whether an API key is present without exposing any
-// reusable credential fingerprint.
-func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
-	// Google Cloud providers use gcloud auth, not API keys
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return "(gcloud auth)"
-	}
-
-	// Unsupported providers
-	if status.State == auth.StateUnsupported {
-		return "(n/a)"
-	}
-
-	// API key providers
-	if provider.APIKey != nil {
-		envValue := os.Getenv(provider.APIKey.Name)
-		if envValue != "" {
-			return "(configured)"
-		}
-		return "(not set)"
-	}
-
-	return "-"
-}
-
-// getEndpointType returns the endpoint type for a provider.
-func getEndpointType(provider *catalogs.Provider) string {
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type != "" {
-		return string(provider.Catalog.Endpoint.Type)
-	}
-	return "-"
 }

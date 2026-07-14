@@ -57,10 +57,10 @@ OpenAI. Anthropic and the two Google channels use custom clients.
 | Retry | Deployment scheduler has typed bounded retry; provider HTTP calls do not share a `Retry-After`-aware policy | Add provider-call retry separately from scheduler retry |
 | Evidence | normalized replay plus encrypted, owner-only, bounded raw evidence | Extend source descriptors with primary URL, retrieval time, API version, and schema assumptions |
 | Resilience | bounded payloads, unknown-field fingerprints, record quarantine, last-known-good generation | Reuse these policies for every provider; source-wide corruption remains fail-closed |
-| Authority | valid provider offering price wins; several canonical fields still use legacy models.dev-first rules | Replace prose intent with an executable enterprise attribute matrix |
-| Scheduling | daily 03:17 UTC serialized public generation; deployment scheduler supplies lease/jitter/retry/freshness | Add source-type budgets; customer inventory stays disabled by default and is never embedded |
+| Authority | valid provider offering price wins through production `CanonicalPolicies`; models.dev remains lower-authority enrichment | Keep one production authority module and reject cross-context merges |
+| Scheduling | daily 03:17 UTC serialized public generation; deployment scheduler supplies lease/jitter/retry/freshness | Credential-scoped sources remain opt-in and make their run ineligible for public generation |
 | Observability | source age/status/degradation and last publication are available | Carry rejected counts, provider coverage, and pricing observation age into the operator projection |
-| Publication | immutable exact schema-v2 generation with validation, checksum, source links, and rollback | Public generation requires explicit definitions/offerings, accepts only public/regional-public offerings, and keeps customer inventory separate |
+| Publication | immutable exact schema-v2 generation with validation, checksum, source links, and rollback | Any credential-scoped observation rejects the complete public write before bytes; there is no parallel catalog product |
 
 ## Wave source classifications
 
@@ -69,7 +69,7 @@ OpenAI. Anthropic and the two Google channels use custom clients.
 | Direct provider inventory | daily | degraded after 30h; unready after 72h when required | Public when the endpoint is a provider-wide catalog |
 | Provider pricing | daily | degraded after 30h; unready after 72h when required | Last-known-good price retained; lower-authority evidence cannot replace a current provider price |
 | Regional cloud sweep | daily, serialized by provider | degraded after 30h; unready after 72h | Public only for provider-documented regional offerings |
-| Customer deployment inventory | operator configured; disabled by default | operator configured | Never embedded or included in public generation |
+| Credential-scoped provider source | operator configured; disabled when credentials or bindings are absent | operator configured | Reconciles into the caller's catalog; never embedded or included in public generation |
 | Curated application-only evidence | daily evidence check or scheduled review PR | degraded after 7d; unready after 30d | Discoverable-only and never route eligible |
 
 ## Primary research registry

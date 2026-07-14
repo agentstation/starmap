@@ -1,0 +1,38 @@
+id: llama3.1-70b
+name: llama3.1-70b
+authors:
+- id: meta
+  name: meta
+definition_id: llama3.1-70b
+pricing:
+  tokens:
+    input:
+      per_1m: 0.792
+    output:
+      per_1m: 0.792
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.72
+        output:
+          per_1m: 0.72
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        input:
+          per_1m: 0.792
+        output:
+          per_1m: 0.792
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

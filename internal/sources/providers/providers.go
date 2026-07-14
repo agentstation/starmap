@@ -6,15 +6,24 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 	"unicode"
 
+	"github.com/agentstation/starmap/internal/acquisition"
+	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/auth/cloudchains"
+	"github.com/agentstation/starmap/internal/providers/registry"
+	"github.com/agentstation/starmap/internal/sources/nativeproviders"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
+)
+
+const (
+	providerModelIDField      = "model.id"
+	validationRequiredMessage = "is required"
 )
 
 // ClientFactory creates a client for a provider.
@@ -24,37 +33,155 @@ type ClientFactory = sources.ProviderClientFactory
 type SourceOption func(*sourceOptions)
 
 type sourceOptions struct {
-	clientFactory  ClientFactory
-	maxConcurrency int
+	clientFactory ClientFactory
+	resolver      *acquisition.Resolver
 }
 
-// Source fetches models from all provider APIs concurrently.
-type Source struct {
-	providers      catalogs.ProvidersReader // Provider configs injected during setup
-	fetcher        *sources.ProviderFetcher
-	maxConcurrency int
+// NewConfigured returns every executable provider acquisition source selected
+// from the normalized provider catalog. Reusable HTTP connectors remain behind
+// the provider fan-out source; official-SDK topologies remain independent
+// sources so their observation scope and completeness are not collapsed.
+func NewConfigured(providerConfigurations catalogs.ProvidersReader, opts ...SourceOption) ([]sources.Source, error) {
+	if providerConfigurations == nil {
+		return nil, nil
+	}
+	settings := sourceOptions{}
+	for _, option := range opts {
+		option(&settings)
+	}
+	resolver := settings.resolver
+	if resolver == nil {
+		cloud, err := cloudchains.NewRegistry()
+		if err != nil {
+			return nil, pkgerrors.WrapResource("initialize", "cloud credential chain registry", "", err)
+		}
+		resolver = acquisition.NewResolver(acquisition.WithAuthResolver(auth.NewResolver(auth.WithCloudChainRegistry(cloud))))
+	}
+	configured := make([]sources.Source, 0)
+	fetcherOptions := []sources.ProviderOption{sources.WithProviderSourceResolver(resolver)}
+	if settings.clientFactory != nil {
+		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(settings.clientFactory))
+	}
+	fetcher := sources.NewProviderFetcher(providerConfigurations, fetcherOptions...)
+	for _, provider := range providerConfigurations.List() {
+		if provider.Catalog == nil {
+			continue
+		}
+		for _, source := range provider.Catalog.Sources {
+			if registry.Supports(source.Endpoint.Type) {
+				configured = append(configured, &configuredConnectorSource{
+					provider: catalogs.DeepCopyProvider(provider), sourceID: source.ID,
+					optional: source.Optional, fetcher: fetcher,
+				})
+			}
+		}
+	}
+	native, err := nativeproviders.New(providerConfigurations, nativeproviders.WithResolver(resolver))
+	if err != nil {
+		return nil, err
+	}
+	return append(configured, native...), nil
 }
 
-var _ sources.Source = (*Source)(nil)
-
-// New creates a new provider API source with the given provider configurations.
-func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
-	options := sourceOptions{
-		maxConcurrency: constants.MaxConcurrentProviders,
-	}
-	for _, opt := range opts {
-		opt(&options)
-	}
-	fetcherOptions := make([]sources.ProviderOption, 0, 1)
-	if options.clientFactory != nil {
-		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
-	}
-	return &Source{
-		providers:      providers,
-		fetcher:        sources.NewProviderFetcher(providers, fetcherOptions...),
-		maxConcurrency: options.maxConcurrency,
-	}
+type configuredConnectorSource struct {
+	provider catalogs.Provider
+	sourceID string
+	optional bool
+	fetcher  *sources.ProviderFetcher
 }
+
+func (source *configuredConnectorSource) ID() sources.ID { return sources.ProvidersID }
+
+func (source *configuredConnectorSource) Name() string {
+	return fmt.Sprintf("%s / %s", source.provider.Name, source.sourceID)
+}
+
+func (source *configuredConnectorSource) ProviderID() catalogs.ProviderID { return source.provider.ID }
+
+func (source *configuredConnectorSource) Observe(ctx context.Context, _ ...sources.Option) (sources.Observation, error) {
+	builder := catalogs.NewEmpty()
+	provider := catalogs.DeepCopyProvider(source.provider)
+	provider.Models = nil
+	if err := builder.SetProvider(provider); err != nil {
+		return sources.Observation{}, pkgerrors.WrapResource("configure", "provider observation", string(provider.ID), err)
+	}
+	result, fetchErr := source.fetcher.FetchSource(ctx, &provider, source.sourceID)
+	config := configuredProviderSource(provider, source.sourceID)
+	scope := catalogmeta.ObservationScope(config.ObservationScope.Scope(false))
+	records := sources.ObservationRecordCounts{}
+	issues := make([]sources.ObservationIssue, 0, 1)
+	coverage := catalogmeta.ProviderCoverage{Expected: 1}
+	status := sources.ObservationStatusSucceeded
+	completeness := sources.ObservationCompletenessComplete
+	acquisition := catalogmeta.AcquisitionProvenance{
+		ProviderID: string(provider.ID), SourceID: source.sourceID,
+		Scope: scope, Topology: catalogmeta.AcquisitionTopology(normalizedSourceTopology(config.Topology)),
+	}
+	if fetchErr != nil {
+		status = sources.ObservationStatusDegraded
+		completeness = sources.ObservationCompletenessPartial
+		issues = append(issues, classifyProviderSourceFetchIssue(provider.ID, source.sourceID, fetchErr))
+	} else {
+		scope = catalogmeta.ObservationScope(result.Scope)
+		acquisition.Scope = scope
+		acquisition.AuthMethod = string(result.AuthMethod)
+		if acquisition.AuthMethod == "" {
+			acquisition.AuthMethod = "none"
+		}
+		accepted, rejected, modelIssues := quarantineProviderModels(provider.ID, result.Models)
+		records.Accepted = len(accepted)
+		records.Rejected = rejected
+		issues = append(issues, modelIssues...)
+		if len(modelIssues) > 0 {
+			status = sources.ObservationStatusDegraded
+			completeness = sources.ObservationCompletenessPartial
+		}
+		if len(accepted) > 0 {
+			provider.Models = make(map[string]*catalogs.Model, len(accepted))
+			for _, model := range accepted {
+				provider.Models[model.ID] = model
+			}
+			if err := builder.SetProvider(provider); err != nil {
+				return sources.Observation{}, pkgerrors.WrapResource("populate", "provider observation", string(provider.ID), err)
+			}
+		}
+		coverage.Observed = 1
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		return sources.Observation{}, pkgerrors.WrapResource("publish", "provider source observation", string(provider.ID)+"/"+source.sourceID, err)
+	}
+	return sources.NewObservation(source.ID(), catalog, sources.ObservationMetadata{
+		ObservedAt: time.Now().UTC(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: completeness, Status: status, Records: records,
+		Scope: scope, Kind: catalogmeta.SourceKindDirectInventory, Coverage: coverage,
+		Acquisitions: []catalogmeta.AcquisitionProvenance{acquisition}, Issues: issues,
+	})
+}
+
+func normalizedSourceTopology(topology catalogs.ProviderSourceTopology) catalogs.ProviderSourceTopology {
+	if topology == "" {
+		return catalogs.ProviderSourceTopologySingleEndpoint
+	}
+	return topology
+}
+
+func configuredProviderSource(provider catalogs.Provider, sourceID string) catalogs.ProviderSource {
+	if provider.Catalog != nil {
+		for _, source := range provider.Catalog.Sources {
+			if source.ID == sourceID {
+				return source
+			}
+		}
+	}
+	return catalogs.ProviderSource{}
+}
+
+func (source *configuredConnectorSource) Cleanup() error { return nil }
+
+func (source *configuredConnectorSource) Dependencies() []sources.Dependency { return nil }
+
+func (source *configuredConnectorSource) IsOptional() bool { return source.optional }
 
 // WithClientFactory configures the factory used to create provider clients.
 func WithClientFactory(factory ClientFactory) SourceOption {
@@ -63,231 +190,9 @@ func WithClientFactory(factory ClientFactory) SourceOption {
 	}
 }
 
-// WithMaxConcurrency configures the maximum number of provider fetches in flight.
-func WithMaxConcurrency(maxConcurrency int) SourceOption {
-	return func(s *sourceOptions) {
-		s.maxConcurrency = maxConcurrency
-	}
-}
-
-// ID returns the ID of this source.
-func (s *Source) ID() sources.ID { return sources.ProvidersID }
-
-// Name returns the human-friendly name of this source.
-func (s *Source) Name() string { return "Providers" }
-
-// providerModels holds models fetched from a specific provider.
-type providerModels struct {
-	providerID catalogs.ProviderID
-	models     []*catalogs.Model
-	rejected   int
-	issues     []sources.ObservationIssue
-	observed   bool
-}
-
-// Observe returns a new immutable provider catalog without retaining result state.
-func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error) {
-	ctx = logging.WithSource(ctx, s.ID().String())
-	// Apply options
-	options := sources.Defaults().Apply(opts...)
-
-	// Create a new catalog to build into
-	catalog := catalogs.NewEmpty()
-
-	// Set the default merge strategy for provider catalog (fresh API data)
-	catalog.SetMergeStrategy(catalogs.MergeReplaceAll)
-
-	// Check if we have provider configs
-	if s.providers == nil {
-		// Can't fetch without provider configs
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{}, 0, 0)
-	}
-
-	// Determine which providers to sync
-	var providerIDs []catalogs.ProviderID
-	if options.ProviderID != nil {
-		providerIDs = []catalogs.ProviderID{*options.ProviderID}
-	} else {
-		// Get all provider IDs from the providers collection
-		for _, p := range s.providers.List() {
-			providerIDs = append(providerIDs, p.ID)
-		}
-	}
-
-	// Get provider configs from injected providers
-	var providerConfigs []*catalogs.Provider
-	for _, id := range providerIDs {
-		if p, found := s.providers.Get(id); found {
-			if p.Catalog != nil && p.Catalog.Endpoint.Type == catalogs.EndpointTypeApplication {
-				continue
-			}
-			providerConfigs = append(providerConfigs, p)
-		}
-	}
-
-	if len(providerConfigs) == 0 {
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{}, 0, 0) // No providers to sync
-	}
-
-	// Add provider configurations to the catalog first
-	issues := make([]sources.ObservationIssue, 0)
-	for _, provider := range providerConfigs {
-		// The configured catalog may contain embedded or last-known-good models.
-		// Provider observations contain only models returned by this live call;
-		// bootstrap data remains a separate local-catalog observation.
-		providerConfig := catalogs.DeepCopyProvider(*provider)
-		providerConfig.Models = nil
-		if err := catalog.SetProvider(providerConfig); err != nil {
-			logging.FromContext(ctx).Warn().
-				Err(err).
-				Str("provider_id", string(provider.ID)).
-				Msg("Failed to add provider to catalog")
-			issues = append(issues, providerIssue(provider.ID, sources.ObservationIssueCodeInvalidRecord, err))
-		}
-	}
-
-	logger := logging.FromContext(ctx)
-	logger.Info().
-		Int("provider_count", len(providerConfigs)).
-		Int("max_concurrency", s.effectiveMaxConcurrency(len(providerConfigs))).
-		Msg("Syncing providers concurrently")
-
-	// Sync all providers concurrently
-	var wg sync.WaitGroup
-	resultChan := make(chan providerModels, len(providerConfigs))
-	semaphore := make(chan struct{}, s.effectiveMaxConcurrency(len(providerConfigs)))
-
-	for _, provider := range providerConfigs {
-		wg.Add(1)
-		go func(p *catalogs.Provider) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			result := providerModels{providerID: p.ID}
-
-			logger := logging.WithProvider(ctx, string(p.ID))
-			models, err := s.fetcher.FetchModels(logger, p)
-			if err != nil {
-				logging.Ctx(logger).Warn().
-					Err(err).
-					Str("provider_id", string(p.ID)).
-					Msg("Provider observation degraded")
-				result.issues = append(result.issues, classifyProviderFetchIssue(p.ID, err))
-				resultChan <- result
-				return
-			}
-
-			result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
-			result.observed = true
-			resultChan <- result
-
-			logging.Ctx(logger).Info().
-				Str("provider_id", string(p.ID)).
-				Int("model_count", len(models)).
-				Msg("Fetched models")
-		}(provider)
-	}
-
-	wg.Wait()
-	close(resultChan)
-
-	// Process results and update catalog
-	records := sources.ObservationRecordCounts{}
-	observedProviders := 0
-	for result := range resultChan {
-		if result.observed {
-			observedProviders++
-		}
-		issues = append(issues, result.issues...)
-		records.Rejected += result.rejected
-		if len(result.models) == 0 {
-			continue
-		}
-
-		// Get the provider from catalog
-		provider, err := catalog.Provider(result.providerID)
-		if err != nil {
-			logger.Warn().
-				Err(err).
-				Str("provider_id", string(result.providerID)).
-				Msg("Failed to get provider from catalog")
-			issues = append(issues, providerIssue(result.providerID, sources.ObservationIssueCodeInvalidRecord, err))
-			records.Rejected += len(result.models)
-			continue
-		}
-
-		// Initialize Models map if nil
-		if provider.Models == nil {
-			provider.Models = make(map[string]*catalogs.Model)
-		}
-
-		// Associate models with provider
-		for _, model := range result.models {
-			// Create copy to avoid modifying original
-			modelCopy := model
-			// Associate model with provider
-			provider.Models[modelCopy.ID] = modelCopy
-		}
-
-		// Update the provider in the catalog with its models
-		if err := catalog.SetProvider(provider); err != nil {
-			logger.Warn().
-				Err(err).
-				Str("provider_id", string(result.providerID)).
-				Msg("Failed to update provider with models")
-			issues = append(issues, providerIssue(result.providerID, sources.ObservationIssueCodeInvalidRecord, err))
-			records.Rejected += len(result.models)
-			continue
-		}
-		records.Accepted += len(result.models)
-
-		// Note: Saving is now handled by the catalog's Save() method
-		// Sources should only create catalogs, not persist them
-	}
-
-	return s.observation(catalog, issues, records, len(providerConfigs), observedProviders)
-}
-
-func (s *Source) effectiveMaxConcurrency(providerCount int) int {
-	if providerCount <= 0 {
-		return 1
-	}
-	if s.maxConcurrency <= 0 {
-		return 1
-	}
-	if s.maxConcurrency > providerCount {
-		return providerCount
-	}
-	return s.maxConcurrency
-}
-
-func (s *Source) observation(
-	builder *catalogs.Builder,
-	issues []sources.ObservationIssue,
-	records sources.ObservationRecordCounts,
-	expectedProviders int,
-	observedProviders int,
-) (sources.Observation, error) {
-	catalog, err := builder.Build()
-	if err != nil {
-		return sources.Observation{}, pkgerrors.WrapResource("publish", "provider source observation", "", err)
-	}
-	completeness := sources.ObservationCompletenessComplete
-	status := sources.ObservationStatusSucceeded
-	if len(issues) > 0 {
-		completeness = sources.ObservationCompletenessPartial
-		status = sources.ObservationStatusDegraded
-	}
-	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
-		ObservedAt:   time.Now().UTC(),
-		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
-		Completeness: completeness,
-		Status:       status,
-		Records:      records,
-		Coverage:     sources.ProviderCoverage{Expected: expectedProviders, Observed: observedProviders},
-		Issues:       issues,
-	})
+// WithSourceResolver supplies one immutable request-scoped resolution context.
+func WithSourceResolver(resolver *acquisition.Resolver) SourceOption {
+	return func(options *sourceOptions) { options.resolver = resolver }
 }
 
 func providerIssue(providerID catalogs.ProviderID, code sources.ObservationIssueCode, err error) sources.ObservationIssue {
@@ -295,11 +200,11 @@ func providerIssue(providerID catalogs.ProviderID, code sources.ObservationIssue
 		Scope:   sources.ObservationIssueScopeProvider,
 		Code:    code,
 		Subject: string(providerID),
-		Message: err.Error(),
+		Message: pkgerrors.SafeSummary(err),
 	}
 }
 
-func classifyProviderFetchIssue(providerID catalogs.ProviderID, err error) sources.ObservationIssue {
+func classifyProviderSourceFetchIssue(providerID catalogs.ProviderID, sourceID string, err error) sources.ObservationIssue {
 	code := sources.ObservationIssueCodeFetchFailed
 	var authenticationErr *pkgerrors.AuthenticationError
 	var configurationErr *pkgerrors.ConfigError
@@ -312,7 +217,11 @@ func classifyProviderFetchIssue(providerID catalogs.ProviderID, err error) sourc
 	case errors.As(err, &parseErr):
 		code = sources.ObservationIssueCodeSchemaDrift
 	}
-	return providerIssue(providerID, code, err)
+	issue := providerIssue(providerID, code, err)
+	if sourceID != "" {
+		issue.Subject += "/" + sourceID
+	}
+	return issue
 }
 
 func quarantineProviderModels(providerID catalogs.ProviderID, models []catalogs.Model) ([]*catalogs.Model, int, []sources.ObservationIssue) {
@@ -334,25 +243,25 @@ func quarantineProviderModels(providerID catalogs.ProviderID, models []catalogs.
 		var err error
 		switch {
 		case strings.TrimSpace(modelID) == "":
-			err = &pkgerrors.ValidationError{Field: "model.id", Value: model.ID, Message: "is required"}
+			err = &pkgerrors.ValidationError{Field: providerModelIDField, Value: model.ID, Message: validationRequiredMessage}
 		case modelID != strings.TrimSpace(modelID):
-			err = &pkgerrors.ValidationError{Field: "model.id", Value: model.ID, Message: "must not contain leading or trailing whitespace"}
+			err = &pkgerrors.ValidationError{Field: providerModelIDField, Value: model.ID, Message: "must not contain leading or trailing whitespace"}
 		case strings.IndexFunc(modelID, unicode.IsControl) >= 0:
-			err = &pkgerrors.ValidationError{Field: "model.id", Value: model.ID, Message: "must not contain control characters"}
+			err = &pkgerrors.ValidationError{Field: providerModelIDField, Value: model.ID, Message: "must not contain control characters"}
 		case strings.TrimSpace(model.Name) == "":
 			subject = string(providerID) + "/" + modelID
-			err = &pkgerrors.ValidationError{Field: "model.name", Value: model.Name, Message: "is required"}
+			err = &pkgerrors.ValidationError{Field: "model.name", Value: model.Name, Message: validationRequiredMessage}
 		case strings.IndexFunc(model.Name, unicode.IsControl) >= 0:
 			subject = string(providerID) + "/" + modelID
 			err = &pkgerrors.ValidationError{Field: "model.name", Value: model.Name, Message: "must not contain control characters"}
 		case hasProviderModelID(seen, modelID):
 			subject = string(providerID) + "/" + modelID
-			err = &pkgerrors.ValidationError{Field: "model.id", Value: modelID, Message: "must be unique within provider observation"}
+			err = &pkgerrors.ValidationError{Field: providerModelIDField, Value: modelID, Message: "must be unique within provider observation"}
 		}
 		if err != nil {
 			issues = append(issues, sources.ObservationIssue{
 				Scope: sources.ObservationIssueScopeRecord, Code: sources.ObservationIssueCodeInvalidRecord,
-				Subject: subject, Message: err.Error(),
+				Subject: subject, Message: pkgerrors.SafeSummary(err),
 			})
 			continue
 		}
@@ -365,22 +274,4 @@ func quarantineProviderModels(providerID catalogs.ProviderID, models []catalogs.
 func hasProviderModelID(seen map[string]struct{}, id string) bool {
 	_, exists := seen[id]
 	return exists
-}
-
-// Cleanup releases any resources.
-func (s *Source) Cleanup() error {
-	// ProvidersSource doesn't hold persistent resources
-	return nil
-}
-
-// Dependencies returns the list of external dependencies.
-// Provider source has no external dependencies.
-func (s *Source) Dependencies() []sources.Dependency {
-	return nil
-}
-
-// IsOptional returns whether this source is optional.
-// Provider source is required - it's the core data source.
-func (s *Source) IsOptional() bool {
-	return false
 }

@@ -12,13 +12,12 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
-
-const defaultModelsURL = "https://router.huggingface.co/v1/models"
 
 type response struct {
 	Object string  `json:"object"`
@@ -77,22 +76,14 @@ type pricing struct {
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
 	transport *transport.Client
 }
 
 // NewClient creates a Hugging Face inventory client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
-}
-
-// IsAPIKeyRequired reports whether public inventory authentication is required.
-func (c *Client) IsAPIKeyRequired() bool { return false }
-
-// HasAPIKey reports whether an invocation token is resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey()
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), transport: transport.New(source.Auth())}
 }
 
 // ListModels expands every model/provider pair into an independently routable offering.
@@ -100,21 +91,21 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	configured := c.provider
 	client := c.transport
+	endpoint := c.endpoint
 	c.mu.RUnlock()
 	if configured == nil {
-		return nil, &errors.ConfigError{Component: "huggingface", Message: "provider not configured"}
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDHuggingFace), Message: "provider not configured"}
 	}
-	endpoint := configured.CatalogEndpointURL()
 	if endpoint == "" {
-		endpoint = defaultModelsURL
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDHuggingFace), Message: "catalog endpoint is required"}
 	}
-	httpResponse, err := client.Get(ctx, endpoint, configured)
+	httpResponse, err := client.Get(ctx, endpoint)
 	if err != nil {
-		return nil, &errors.APIError{Provider: "huggingface", Endpoint: endpoint, Message: "request failed", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDHuggingFace), Endpoint: endpoint, Message: "request failed", Err: err}
 	}
 	var envelope response
 	if err := transport.DecodeResponse(httpResponse, &envelope); err != nil {
-		return nil, &errors.APIError{Provider: "huggingface", Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDHuggingFace), Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
 	}
 	if envelope.Object != "list" || envelope.Data == nil {
 		return nil, &errors.ValidationError{Field: "huggingface.models", Value: envelope.Object, Message: "requires object=list and a non-null data array"}
@@ -125,13 +116,40 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	} else {
 		observedAt = ""
 	}
+	return normalizeResponse(envelope, observedAt)
+}
+
+// DecodeModels validates and normalizes one captured Hugging Face router
+// response through the same schema and conversion path as live acquisition.
+func (c *Client) DecodeModels(payload []byte) ([]catalogs.Model, error) {
+	if err := sourcepayload.ValidateJSON(payload); err != nil {
+		return nil, err
+	}
+	var envelope response
+	if err := json.Unmarshal(payload, &envelope); err != nil {
+		return nil, errors.WrapParse("json", "Hugging Face models response fixture", err)
+	}
+	if envelope.Object != "list" || envelope.Data == nil {
+		return nil, &errors.ValidationError{Field: "huggingface.models", Value: envelope.Object, Message: "requires object=list and a non-null data array"}
+	}
+	return normalizeResponse(envelope, "")
+}
+
+func normalizeResponse(envelope response, observedAt string) ([]catalogs.Model, error) {
 	result := make([]catalogs.Model, 0)
+	seen := make(map[string]struct{})
 	for _, source := range envelope.Data {
 		converted, convertErr := convertModel(source, observedAt)
 		if convertErr != nil {
 			return nil, convertErr
 		}
-		result = append(result, converted...)
+		for _, model := range converted {
+			if _, found := seen[model.ID]; found {
+				return nil, &errors.ConflictError{Resource: "huggingface model route", Actual: model.ID, Message: "duplicate model identity"}
+			}
+			seen[model.ID] = struct{}{}
+			result = append(result, model)
+		}
 	}
 	slices.SortFunc(result, func(left, right catalogs.Model) int { return strings.Compare(left.ID, right.ID) })
 	return result, nil
@@ -171,8 +189,6 @@ func convertProvider(source model, upstream provider, observedAt string) (catalo
 		ID: routeID, DefinitionID: catalogs.ModelDefinitionID(source.ID), Name: source.ID,
 		Authors: []catalogs.Author{{ID: authorID(source.OwnedBy), Name: source.OwnedBy}},
 		Status:  catalogs.ModelStatusActive, Features: features, InvocationAPIs: apis,
-		OfferingEndpoint:     catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeOpenAI, BaseURL: "https://router.huggingface.co/v1"},
-		OfferingDeployment:   catalogs.ProviderDeployment{Type: "serverless", Tier: "inference-provider"},
 		OfferingAvailability: availability,
 		AggregatorUpstream:   &catalogs.AggregatorUpstream{ProviderID: catalogs.ProviderID(providerID), ProviderModelID: catalogs.ProviderModelID(source.ID)},
 	}
@@ -188,7 +204,7 @@ func convertProvider(source model, upstream provider, observedAt string) (catalo
 		return catalogs.Model{}, err
 	}
 	result.Pricing = pricing
-	result.Extensions = catalogs.SourceExtensions{"huggingface": {Fields: catalogs.NormalizeExtensionFields(providerEvidence(source, upstream, observedAt))}}
+	result.Extensions = catalogs.SourceExtensions{string(catalogs.ProviderIDHuggingFace): {Fields: catalogs.NormalizeExtensionFields(providerEvidence(source, upstream, observedAt))}}
 	return result, nil
 }
 

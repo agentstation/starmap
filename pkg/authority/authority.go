@@ -7,6 +7,35 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+const (
+	authorityPathAliases         = "Aliases"
+	authorityPathAttachments     = "Attachments"
+	authorityPathAuthors         = "Authors"
+	authorityPathCatalog         = "Catalog"
+	authorityPathDelivery        = "Delivery"
+	authorityPathDescription     = "Description"
+	authorityPathFeatures        = "Features"
+	authorityPathGeneration      = "Generation"
+	authorityPathGitHub          = "GitHub"
+	authorityPathHeadquarters    = "Headquarters"
+	authorityPathHuggingFace     = "HuggingFace"
+	authorityPathIconURL         = "IconURL"
+	authorityPathLimits          = "Limits"
+	authorityPathLineage         = "Lineage"
+	authorityPathMetadata        = "Metadata"
+	authorityPathModes           = "Modes"
+	authorityPathModels          = "Models"
+	authorityPathName            = "Name"
+	authorityPathPricing         = "Pricing"
+	authorityPathReasoning       = "Reasoning"
+	authorityPathReasoningTokens = "ReasoningTokens"
+	authorityPathStatus          = "Status"
+	authorityPathTools           = "Tools"
+	authorityPathTwitter         = "Twitter"
+	authorityPathVerbosity       = "Verbosity"
+	authorityPathWebsite         = "Website"
+)
+
 // Authority determines which source is authoritative for each field.
 type Authority interface {
 	// Find returns the authority configuration for a specific field
@@ -119,108 +148,104 @@ func defaultModelAuthorities() []Field {
 	return []Field{
 		// Pricing is provider-offering data. A semantically valid provider
 		// observation wins atomically; models.dev is fallback evidence.
-		{Path: "Pricing", Source: sources.ProvidersID, Priority: 110},
-		{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 100},
-		{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 90},
-		{Path: "Pricing", Source: sources.LocalCatalogID, Priority: 80},
+		{Path: authorityPathPricing, Source: sources.ProvidersID, Priority: 110},
+		{Path: authorityPathPricing, Source: sources.ModelsDevHTTPID, Priority: 100},
+		{Path: authorityPathPricing, Source: sources.ModelsDevGitID, Priority: 90},
+		{Path: authorityPathPricing, Source: sources.LocalCatalogID, Priority: 80},
 
 		// Availability - Provider API is truth
-		{Path: "Features", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Features", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Features", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathFeatures, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathFeatures, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathFeatures, Source: sources.ModelsDevGitID, Priority: 85},
 
 		// Capability substructures - Provider API wins when it has explicit data;
 		// models.dev fills gaps for providers with sparse /models responses.
-		{Path: "Attachments", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Attachments", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Attachments", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Reasoning", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Reasoning", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Reasoning", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "ReasoningTokens", Source: sources.ProvidersID, Priority: 95},
-		{Path: "ReasoningTokens", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "ReasoningTokens", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Verbosity", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Verbosity", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Verbosity", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Tools", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Tools", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Tools", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Delivery", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Delivery", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Delivery", Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathAttachments, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathAttachments, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathAttachments, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathReasoning, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathReasoning, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathReasoning, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathReasoningTokens, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathReasoningTokens, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathReasoningTokens, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathVerbosity, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathVerbosity, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathVerbosity, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathTools, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathTools, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathTools, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathDelivery, Source: sources.ProvidersID, Priority: 95},
+		{Path: authorityPathDelivery, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathDelivery, Source: sources.ModelsDevGitID, Priority: 85},
 
 		// Limits - models.dev has better data (HTTP preferred)
-		{Path: "Limits", Source: sources.ModelsDevHTTPID, Priority: 100},
-		{Path: "Limits", Source: sources.ModelsDevGitID, Priority: 90},
-		{Path: "Limits", Source: sources.ProvidersID, Priority: 85},
+		{Path: authorityPathLimits, Source: sources.ModelsDevHTTPID, Priority: 100},
+		{Path: authorityPathLimits, Source: sources.ModelsDevGitID, Priority: 90},
+		{Path: authorityPathLimits, Source: sources.ProvidersID, Priority: 85},
 
 		// Metadata - models.dev is authoritative (HTTP preferred)
-		{Path: "Metadata", Source: sources.ModelsDevHTTPID, Priority: 110},
-		{Path: "Metadata", Source: sources.ModelsDevGitID, Priority: 100},
-		{Path: "Metadata", Source: sources.ProvidersID, Priority: 80},
+		{Path: authorityPathMetadata, Source: sources.ModelsDevHTTPID, Priority: 110},
+		{Path: authorityPathMetadata, Source: sources.ModelsDevGitID, Priority: 100},
+		{Path: authorityPathMetadata, Source: sources.ProvidersID, Priority: 80},
 
 		// Generation parameters - Provider API for current settings
-		{Path: "Generation", Source: sources.ProvidersID, Priority: 85},
-		{Path: "Generation", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Generation", Source: sources.ModelsDevGitID, Priority: 75},
+		{Path: authorityPathGeneration, Source: sources.ProvidersID, Priority: 85},
+		{Path: authorityPathGeneration, Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: authorityPathGeneration, Source: sources.ModelsDevGitID, Priority: 75},
 
 		// Descriptions - prefer manual edits, then models.dev
-		{Path: "Description", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 85},
-		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 80},
-		{Path: "Description", Source: sources.ProvidersID, Priority: 70},
+		{Path: authorityPathDescription, Source: sources.LocalCatalogID, Priority: 90},
+		{Path: authorityPathDescription, Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: authorityPathDescription, Source: sources.ModelsDevGitID, Priority: 80},
+		{Path: authorityPathDescription, Source: sources.ProvidersID, Priority: 70},
 
 		// Lifecycle status - models.dev is authoritative until provider
 		// availability fields are mapped into the canonical status enum.
-		{Path: "Status", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Status", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Status", Source: sources.ProvidersID, Priority: 70},
+		{Path: authorityPathStatus, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathStatus, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathStatus, Source: sources.ProvidersID, Priority: 70},
 
 		// Lineage - models.dev is best for family; provider APIs can fill root/parent.
-		{Path: "Lineage", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Lineage", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Lineage", Source: sources.ProvidersID, Priority: 80},
+		{Path: authorityPathLineage, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathLineage, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathLineage, Source: sources.ProvidersID, Priority: 80},
 
 		// Modes - models.dev currently provides mode-specific pricing and request overrides.
-		{Path: "Modes", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Modes", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Modes", Source: sources.ProvidersID, Priority: 70},
+		{Path: authorityPathModes, Source: sources.ModelsDevHTTPID, Priority: 90},
+		{Path: authorityPathModes, Source: sources.ModelsDevGitID, Priority: 85},
+		{Path: authorityPathModes, Source: sources.ProvidersID, Priority: 70},
 
 		// Core identity - Provider API is authoritative for names
-		{Path: "Name", Source: sources.ProvidersID, Priority: 90},
-		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 85},
-		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 80},
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 75},
+		{Path: authorityPathName, Source: sources.ProvidersID, Priority: 90},
+		{Path: authorityPathName, Source: sources.ModelsDevHTTPID, Priority: 85},
+		{Path: authorityPathName, Source: sources.ModelsDevGitID, Priority: 80},
+		{Path: authorityPathName, Source: sources.LocalCatalogID, Priority: 75},
 
 		// Authors field
-		{Path: "Authors", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Authors", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Authors", Source: sources.ModelsDevGitID, Priority: 75},
-		{Path: "Authors", Source: sources.ProvidersID, Priority: 70},
+		{Path: authorityPathAuthors, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathAuthors, Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: authorityPathAuthors, Source: sources.ModelsDevGitID, Priority: 75},
+		{Path: authorityPathAuthors, Source: sources.ProvidersID, Priority: 70},
 	}
 }
 
 // defaultProviderAuthorities returns the default field authorities for providers.
 func defaultProviderAuthorities() []Field {
 	return []Field{
-		// API configuration - local catalog for stability (using Go field names)
-		{Path: "APIKey", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "APIKey.*", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "EnvVars", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "EnvVars", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "EnvVars", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "EnvVars", Source: sources.ProvidersID, Priority: 80},
-		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 95},
+		// Executable acquisition configuration is owned by the local catalog.
+		{Path: "Credentials", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "Credentials.*", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: "Advisories", Source: sources.LocalCatalogID, Priority: 100},
+		{Path: authorityPathCatalog, Source: sources.LocalCatalogID, Priority: 95},
 		{Path: "Catalog.*", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions.URL", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions.HealthAPIURL", Source: sources.LocalCatalogID, Priority: 90},
+		{Path: "Invocation", Source: sources.LocalCatalogID, Priority: 95},
+		{Path: "Invocation.*", Source: sources.LocalCatalogID, Priority: 95},
 
 		// Core info - prefer manual edits (using Go field names)
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathName, Source: sources.LocalCatalogID, Priority: 90},
+		{Path: authorityPathHeadquarters, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathIconURL, Source: sources.LocalCatalogID, Priority: 85},
 
 		// Policies - models.dev or manual (HTTP preferred, using Go field names)
 		{Path: "PrivacyPolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
@@ -242,11 +267,11 @@ func defaultProviderAuthorities() []Field {
 		{Path: "StatusPageURL", Source: sources.LocalCatalogID, Priority: 85},
 
 		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathAliases, Source: sources.LocalCatalogID, Priority: 85},
 
 		// Runtime model maps are populated from provider/catalog sources.
-		{Path: "Models", Source: sources.ProvidersID, Priority: 90},
-		{Path: "Models", Source: sources.LocalCatalogID, Priority: 80},
+		{Path: authorityPathModels, Source: sources.ProvidersID, Priority: 90},
+		{Path: authorityPathModels, Source: sources.LocalCatalogID, Priority: 80},
 	}
 }
 
@@ -255,40 +280,40 @@ func defaultAuthorAuthorities() []Field {
 	return []Field{
 		// Core author info - prefer local catalog for stability
 		// Using capitalized field names to match Go struct fields
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Description", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Website", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "HuggingFace", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "GitHub", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Twitter", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Models", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathName, Source: sources.LocalCatalogID, Priority: 90},
+		{Path: authorityPathDescription, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathHeadquarters, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathIconURL, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathWebsite, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathHuggingFace, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathGitHub, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathTwitter, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathCatalog, Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathModels, Source: sources.LocalCatalogID, Priority: 85},
 
 		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
+		{Path: authorityPathAliases, Source: sources.LocalCatalogID, Priority: 85},
 
 		// Fallback to models.dev
-		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Headquarters", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "IconURL", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Website", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "HuggingFace", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "GitHub", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Twitter", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Catalog", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Models", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 70},
-		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Headquarters", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "IconURL", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Website", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "HuggingFace", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "GitHub", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Twitter", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Catalog", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Models", Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathName, Source: sources.ModelsDevHTTPID, Priority: 80},
+		{Path: authorityPathDescription, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathHeadquarters, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathIconURL, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathWebsite, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathHuggingFace, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathGitHub, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathTwitter, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathCatalog, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathModels, Source: sources.ModelsDevHTTPID, Priority: 75},
+		{Path: authorityPathName, Source: sources.ModelsDevGitID, Priority: 70},
+		{Path: authorityPathDescription, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathHeadquarters, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathIconURL, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathWebsite, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathHuggingFace, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathGitHub, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathTwitter, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathCatalog, Source: sources.ModelsDevGitID, Priority: 65},
+		{Path: authorityPathModels, Source: sources.ModelsDevGitID, Priority: 65},
 	}
 }

@@ -24,7 +24,7 @@ type CatalogPayload struct {
 // EncodeCatalogPayload deterministically encodes a readable catalog as schema v2.
 func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 	if reader == nil {
-		return nil, &errors.ValidationError{Field: "catalog", Message: "is required"}
+		return nil, &errors.ValidationError{Field: catalogResourceCatalog, Message: validationMessageIsRequired}
 	}
 	payload := CatalogPayload{
 		SchemaVersion: CurrentCatalogSchemaVersion,
@@ -37,7 +37,7 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 	}
 	data, err := json.Marshal(payload)
 	if err != nil {
-		return nil, &errors.ValidationError{Field: "catalog", Message: fmt.Sprintf("cannot encode payload: %v", err)}
+		return nil, &errors.ValidationError{Field: catalogResourceCatalog, Message: fmt.Sprintf("cannot encode payload: %v", err)}
 	}
 	return data, nil
 }

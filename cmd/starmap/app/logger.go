@@ -9,6 +9,12 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
+const (
+	logLevelDebug = "debug"
+	logLevelInfo  = "info"
+	logLevelWarn  = "warn"
+)
+
 // NewLogger creates a configured logger based on the application configuration.
 // Log level precedence (highest to lowest):
 //  1. --log-level flag (explicit always wins)
@@ -25,7 +31,7 @@ func NewLogger(config *Config) zerolog.Logger {
 		Level:     level,
 		Format:    config.LogFormat,
 		Output:    config.LogOutput,
-		AddCaller: level == "debug" || level == "trace",
+		AddCaller: level == logLevelDebug || level == "trace",
 	}
 
 	// Create logger from config
@@ -48,38 +54,38 @@ func determineLogLevel(config *Config) string {
 	if config.Verbose && config.Quiet {
 		// Both specified - warn user and use quiet (more restrictive)
 		fmt.Fprintf(os.Stderr, "Warning: both --verbose and --quiet specified, using --quiet\n")
-		return "warn"
+		return logLevelWarn
 	}
 
 	// 3. Boolean shortcuts
 	if config.Verbose {
-		return "debug"
+		return logLevelDebug
 	}
 	if config.Quiet {
-		return "warn"
+		return logLevelWarn
 	}
 
 	// 4. Environment variable (already loaded in config)
 	// This is handled by LoadConfig reading LOG_LEVEL env var
 
 	// 5. Default
-	return "info"
+	return logLevelInfo
 }
 
 // validateLogLevel validates a log level string and returns a valid level.
 // If the input is invalid, returns "info" as a safe default.
 func validateLogLevel(level string) string {
 	validLevels := map[string]bool{
-		"trace": true,
-		"debug": true,
-		"info":  true,
-		"warn":  true,
-		"error": true,
+		"trace":       true,
+		logLevelDebug: true,
+		logLevelInfo:  true,
+		logLevelWarn:  true,
+		"error":       true,
 	}
 
 	if validLevels[level] {
 		return level
 	}
 
-	return "info"
+	return logLevelInfo
 }

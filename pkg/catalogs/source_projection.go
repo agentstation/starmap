@@ -55,11 +55,11 @@ func newSourceProjection() *sourceProjection {
 }
 
 // projectSourceModels derives canonical records from current provider-source
-// models while a Builder is assembled. It is not a payload decoder or a
-// compatibility migration path.
-func projectSourceModels(reader ModelSourceReader) (*sourceProjection, error) {
+// authoring data while a Builder is assembled. Publication decoders cannot
+// reach this in-memory construction path.
+func projectSourceModels(reader modelSourceReader) (*sourceProjection, error) {
 	if reader == nil {
-		return nil, &errors.ValidationError{Field: "catalog", Message: "reader is required"}
+		return nil, &errors.ValidationError{Field: catalogResourceCatalog, Message: "reader is required"}
 	}
 	result := newSourceProjection()
 	authorIndex := sourceAuthorIndex(reader)
@@ -74,15 +74,15 @@ func projectSourceModels(reader ModelSourceReader) (*sourceProjection, error) {
 		}
 		slices.Sort(modelIDs)
 		for _, mapModelID := range modelIDs {
-			legacy := provider.Models[mapModelID]
-			if legacy == nil {
+			sourceModel := provider.Models[mapModelID]
+			if sourceModel == nil {
 				continue
 			}
-			fallbackAuthors := authorIndex[legacy.ID]
+			fallbackAuthors := authorIndex[sourceModel.ID]
 			fallbackSource := "source author-model catalog"
 			if len(fallbackAuthors) == 0 {
 				var err error
-				fallbackAuthors, err = sourceAttributedAuthors(reader, provider.ID, legacy.ID)
+				fallbackAuthors, err = sourceAttributedAuthors(reader, provider.ID, sourceModel.ID)
 				if err != nil {
 					return nil, err
 				}
@@ -91,11 +91,11 @@ func projectSourceModels(reader ModelSourceReader) (*sourceProjection, error) {
 			// A provider catalog may enumerate every author available through a
 			// marketplace. That is a candidate set, not joint authorship of every
 			// model. Only a single unambiguous declaration is a safe fallback.
-			if len(fallbackAuthors) == 0 && provider.Catalog != nil && len(provider.Catalog.Authors) == 1 {
-				fallbackAuthors = canonicalSourceAuthors(reader, provider.Catalog.Authors)
+			if len(fallbackAuthors) == 0 && provider.Catalog != nil && len(provider.Catalog.Sources) > 0 && len(provider.Catalog.Sources[0].Authors) == 1 {
+				fallbackAuthors = canonicalSourceAuthors(reader, provider.Catalog.Sources[0].Authors)
 				fallbackSource = "single provider catalog author declaration"
 			}
-			if err := projectSourceModel(result, provider, mapModelID, *legacy, fallbackAuthors, fallbackSource); err != nil {
+			if err := projectSourceModel(result, provider, mapModelID, *sourceModel, fallbackAuthors, fallbackSource); err != nil {
 				return nil, err
 			}
 		}
@@ -103,7 +103,7 @@ func projectSourceModels(reader ModelSourceReader) (*sourceProjection, error) {
 	return result, nil
 }
 
-func canonicalSourceAuthors(reader ModelSourceReader, ids []AuthorID) []AuthorID {
+func canonicalSourceAuthors(reader modelSourceReader, ids []AuthorID) []AuthorID {
 	canonical := make([]AuthorID, 0, len(ids))
 	for _, id := range ids {
 		if author, found := reader.Authors().Resolve(id); found {
@@ -116,25 +116,25 @@ func canonicalSourceAuthors(reader ModelSourceReader, ids []AuthorID) []AuthorID
 	return slices.Compact(canonical)
 }
 
-func projectSourceModel(result *sourceProjection, provider Provider, mapModelID string, legacy Model, fallbackAuthors []AuthorID, fallbackSource string) error {
+func projectSourceModel(result *sourceProjection, provider Provider, mapModelID string, sourceModel Model, fallbackAuthors []AuthorID, fallbackSource string) error {
 	providerID := provider.ID
-	providerModelID := ProviderModelID(legacy.ID)
+	providerModelID := ProviderModelID(sourceModel.ID)
 	key := OfferingKey{ProviderID: providerID, ProviderModelID: providerModelID}
-	if mapModelID != legacy.ID {
+	if mapModelID != sourceModel.ID {
 		result.addChange(projectionChangeConflict, "provider_model_id", key,
-			fmt.Sprintf("provider map key %q differs from model ID %q; exact model ID retained", mapModelID, legacy.ID))
+			fmt.Sprintf("provider map key %q differs from model ID %q; exact model ID retained", mapModelID, sourceModel.ID))
 	}
-	if strings.TrimSpace(legacy.Name) == "" {
+	if strings.TrimSpace(sourceModel.Name) == "" {
 		result.addChange(projectionChangeDefaulted, "name", key,
 			"source display name was absent; exact provider model ID retained as the definition name")
-		legacy.Name = legacy.ID
+		sourceModel.Name = sourceModel.ID
 	}
-	definition := sourceModelDefinition(legacy, fallbackAuthors)
-	if len(legacy.Authors) == 0 && len(fallbackAuthors) > 0 {
+	definition := sourceModelDefinition(sourceModel, fallbackAuthors)
+	if len(sourceModel.Authors) == 0 && len(fallbackAuthors) > 0 {
 		result.addChange(projectionChangeDefaulted, "author_ids", key,
 			"inline authorship was absent; author IDs derived from "+fallbackSource)
 	}
-	if len(legacy.Authors) == 0 && len(fallbackAuthors) == 0 {
+	if len(sourceModel.Authors) == 0 && len(fallbackAuthors) == 0 {
 		result.addChange(projectionChangeMissing, "author_ids", key,
 			"no inline, author-model, provider-declared, or attribution-rule authorship exists; preserved as unknown")
 	}
@@ -149,7 +149,7 @@ func projectSourceModel(result *sourceProjection, provider Provider, mapModelID 
 		definition.Lineage.Parent = nil
 	}
 	if err := definition.Validate(); err != nil {
-		return errors.WrapResource("migrate", "model definition", legacy.ID, err)
+		return errors.WrapResource("project", "model definition", sourceModel.ID, err)
 	}
 	if existing, found := result.Definitions[definition.ID]; found {
 		if !reflect.DeepEqual(existing, definition) {
@@ -160,15 +160,15 @@ func projectSourceModel(result *sourceProjection, provider Provider, mapModelID 
 		result.Definitions[definition.ID] = definition
 	}
 
-	offering, changes, err := sourceProviderOffering(provider, legacy)
+	offering, changes, err := sourceProviderOffering(provider, sourceModel)
 	if err != nil {
 		return err
 	}
 	if err := offering.Validate(); err != nil {
-		return errors.WrapResource("migrate", "provider offering", string(providerID)+"/"+legacy.ID, err)
+		return errors.WrapResource("project", catalogResourceProviderOffering, string(providerID)+"/"+sourceModel.ID, err)
 	}
 	if _, exists := result.Offerings[offering.Key()]; exists {
-		return &errors.ConflictError{Resource: "provider offering", Message: "duplicate offering key"}
+		return &errors.ConflictError{Resource: catalogResourceProviderOffering, Message: "duplicate offering key"}
 	}
 	result.Offerings[offering.Key()] = offering
 	for _, change := range changes {
@@ -177,8 +177,8 @@ func projectSourceModel(result *sourceProjection, provider Provider, mapModelID 
 	return nil
 }
 
-func sourceModelDefinition(legacy Model, fallbackAuthors []AuthorID) ModelDefinition {
-	copied := DeepCopyModel(legacy)
+func sourceModelDefinition(sourceModel Model, fallbackAuthors []AuthorID) ModelDefinition {
+	copied := DeepCopyModel(sourceModel)
 	authorIDs := make([]AuthorID, 0, len(copied.Authors))
 	for _, author := range copied.Authors {
 		authorIDs = append(authorIDs, author.ID)
@@ -227,7 +227,7 @@ func sourceModelDefinition(legacy Model, fallbackAuthors []AuthorID) ModelDefini
 	return definition
 }
 
-func sourceAuthorIndex(reader ModelSourceReader) map[string][]AuthorID {
+func sourceAuthorIndex(reader modelSourceReader) map[string][]AuthorID {
 	index := make(map[string][]AuthorID)
 	for _, author := range reader.Authors().List() {
 		for modelID, model := range author.Models {
@@ -244,7 +244,7 @@ func sourceAuthorIndex(reader ModelSourceReader) map[string][]AuthorID {
 	return index
 }
 
-func sourceAttributedAuthors(reader ModelSourceReader, providerID ProviderID, modelID string) ([]AuthorID, error) {
+func sourceAttributedAuthors(reader modelSourceReader, providerID ProviderID, modelID string) ([]AuthorID, error) {
 	var resolved []AuthorID
 	for _, author := range reader.Authors().List() {
 		if author.Catalog == nil || author.Catalog.Attribution == nil {
@@ -275,11 +275,11 @@ func sourceAttributedAuthors(reader ModelSourceReader, providerID ProviderID, mo
 	return slices.Compact(resolved), nil
 }
 
-func sourceProviderOffering(provider Provider, legacy Model) (ProviderOffering, []sourceProjectionChange, error) { //nolint:gocyclo // Explicit precedence stages keep definition/offering projection auditable.
-	copied := DeepCopyModel(legacy)
+func sourceProviderOffering(provider Provider, sourceModel Model) (ProviderOffering, []sourceProjectionChange, error) { //nolint:gocyclo // Explicit precedence stages keep definition/offering projection auditable.
+	copied := DeepCopyModel(sourceModel)
 	endpointType := EndpointTypeOpenAI
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type != "" {
-		endpointType = provider.Catalog.Endpoint.Type
+	if provider.Catalog != nil && len(provider.Catalog.Sources) > 0 && provider.Catalog.Sources[0].Endpoint.Type != "" {
+		endpointType = provider.Catalog.Sources[0].Endpoint.Type
 	}
 	api := InvocationAPIChatCompletions
 	if endpointType == EndpointTypeAnthropic {
@@ -287,18 +287,18 @@ func sourceProviderOffering(provider Provider, legacy Model) (ProviderOffering, 
 	}
 	apis := []InvocationAPI{api}
 	var providerDefaults *ProviderOfferingDefaults
-	if provider.Catalog != nil {
-		if provider.Catalog.Offering != nil {
-			defaults := deepCopyProviderOfferingDefaults(provider.Catalog.Offering)
-			defaults.Endpoint = provider.CatalogOfferingEndpoint()
+	if provider.Catalog != nil && len(provider.Catalog.Sources) > 0 {
+		source := provider.Catalog.Sources[0]
+		if source.Offering != nil {
+			defaults := deepCopyProviderOfferingDefaults(source.Offering)
+			if defaults.Endpoint.BaseURL == "" {
+				defaults.Endpoint.BaseURL = catalogBaseURL(source.Endpoint.URL, source.Endpoint.Path)
+			}
 			providerDefaults = defaults
 		}
 	}
 	if providerDefaults != nil {
 		apis = append([]InvocationAPI(nil), providerDefaults.Access.APIs...)
-	}
-	if copied.InvocationAPIs != nil {
-		apis = append([]InvocationAPI(nil), copied.InvocationAPIs...)
 	}
 	routability := OfferingRoutabilityRoutable
 	if len(apis) == 0 {
@@ -308,6 +308,13 @@ func sourceProviderOffering(provider Provider, legacy Model) (ProviderOffering, 
 	if providerDefaults != nil {
 		access = providerDefaults.Access
 		access.APIs = append([]InvocationAPI(nil), providerDefaults.Access.APIs...)
+	}
+	if copied.InvocationAPIs != nil {
+		access.APIs = append([]InvocationAPI(nil), copied.InvocationAPIs...)
+		access.Routability = OfferingRoutabilityRoutable
+		if len(access.APIs) == 0 {
+			access.Routability = OfferingRoutabilityDiscoverable
+		}
 	}
 	if copied.OfferingAccess != nil {
 		access = *copied.OfferingAccess
@@ -393,7 +400,7 @@ func sourceProviderOffering(provider Provider, legacy Model) (ProviderOffering, 
 	if copied.OfferingEndpoint.Type != "" {
 		changes = append(changes, sourceProjectionChange{
 			Classification: projectionChangeExact,
-			Field:          "endpoint",
+			Field:          catalogResourceEndpoint,
 			Message:        "source offering endpoint preserved exactly",
 		})
 	}
@@ -404,20 +411,20 @@ func sourceProviderOffering(provider Provider, legacy Model) (ProviderOffering, 
 	if copied.Status == "" || copied.Status == ModelStatusUnknown {
 		changes = append(changes, sourceProjectionChange{
 			Classification: projectionChangeDefaulted,
-			Field:          "lifecycle",
+			Field:          catalogFieldLifecycle,
 			Message:        "source lifecycle was absent or unknown; defaulted to active",
 		})
 	}
 	if len(copied.Modes) > 0 {
 		offering.Modes = make(map[string]ProviderOfferingMode, len(copied.Modes))
 	}
-	for modeName, legacyMode := range copied.Modes {
-		mode := ProviderOfferingMode{Pricing: legacyMode.Pricing, Deployment: legacyMode.Deployment}
-		if legacyMode.Provider != nil {
-			mode.Request.Headers = OfferingRequestHeaders(legacyMode.Provider.Headers)
-			if len(legacyMode.Provider.Body) > 0 {
-				mode.Request.Body = make(OfferingRequestBody, len(legacyMode.Provider.Body))
-				for field, value := range legacyMode.Provider.Body {
+	for modeName, sourceMode := range copied.Modes {
+		mode := ProviderOfferingMode{Pricing: sourceMode.Pricing, Deployment: sourceMode.Deployment}
+		if sourceMode.Provider != nil {
+			mode.Request.Headers = OfferingRequestHeaders(sourceMode.Provider.Headers)
+			if len(sourceMode.Provider.Body) > 0 {
+				mode.Request.Body = make(OfferingRequestBody, len(sourceMode.Provider.Body))
+				for field, value := range sourceMode.Provider.Body {
 					encoded, err := json.Marshal(value)
 					if err != nil {
 						return ProviderOffering{}, nil, errors.WrapParse("json", "mode "+modeName+" body field "+field, err)

@@ -1,5 +1,4 @@
-// Package bedrock discovers Amazon Bedrock's regional public offerings and
-// keeps account-scoped application inference profiles in customer inventory.
+// Package bedrock discovers Amazon Bedrock regional and contextual offerings.
 package bedrock
 
 import (
@@ -12,12 +11,11 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
 	awsbedrock "github.com/aws/aws-sdk-go-v2/service/bedrock"
 	"github.com/aws/aws-sdk-go-v2/service/bedrock/types"
 	"github.com/aws/smithy-go/transport/http"
 
-	"github.com/agentstation/starmap/internal/providerdata"
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -31,6 +29,7 @@ const (
 	defaultMaxProfilePages = 32
 	defaultMaxProfiles     = 10000
 	modeRegional           = "regional"
+	tierOnDemand           = "on_demand"
 )
 
 // API is the native Bedrock control-plane surface used by Source.
@@ -42,11 +41,10 @@ type API interface {
 // ClientFactory creates a region-scoped native Bedrock client.
 type ClientFactory func(context.Context, string) (API, error)
 
-// Result separates globally publishable offerings from private customer inventory.
+// Result contains canonical definitions and offerings acquired from Bedrock.
 type Result struct {
 	Definitions       []catalogs.ModelDefinition
 	Offerings         []catalogs.ProviderOffering
-	CustomerInventory []catalogs.CustomerInventory
 	PricingObservedAt *time.Time
 	PricingVersion    string
 	PricingMatched    int
@@ -73,7 +71,7 @@ func NewSource(regions []string, clients ClientFactory) (*Source, error) {
 		return nil, &errors.ValidationError{Field: "bedrock.regions", Message: "at least one region is required"}
 	}
 	if clients == nil {
-		clients = defaultClientFactory
+		return nil, &errors.ValidationError{Field: "bedrock.clients", Message: "resolved client factory is required"}
 	}
 	return newSource(regions, clients), nil
 }
@@ -86,42 +84,33 @@ func newSource(regions []string, clients ClientFactory) *Source {
 	}
 }
 
-// CommercialRegions returns the reviewed AWS Bedrock runtime region inventory.
-func CommercialRegions() []string {
-	catalog, err := providerdata.LoadRegionCatalog(ProviderID)
-	if err != nil {
-		return nil
-	}
-	return slices.Clone(catalog.Commercial)
-}
+type awsCloudSession interface{ Config() aws.Config }
 
-// GovCloudRegions returns the separate AWS GovCloud Bedrock region inventory.
-func GovCloudRegions() []string {
-	catalog, err := providerdata.LoadRegionCatalog(ProviderID)
-	if err != nil {
-		return nil
+// NewResolvedSource constructs a Bedrock source from one fully resolved logical source.
+func NewResolvedSource(resolved acquisition.Source) (*Source, error) {
+	if resolved.ProviderID() != ProviderID || resolved.Config().Endpoint.Type != catalogs.EndpointTypeBedrock {
+		return nil, &errors.ValidationError{Field: "bedrock.source", Value: resolved.String(), Message: "must be an Amazon Bedrock source"}
 	}
-	return slices.Clone(catalog.GovCloud)
-}
-
-// NewCommercialSource constructs the default public commercial-region sweep.
-func NewCommercialSource() *Source {
-	regionCatalog, err := providerdata.LoadRegionCatalog(ProviderID)
-	source := newSource(regionCatalog.Commercial, defaultClientFactory)
-	source.configErr = err
+	session, ok := resolved.Auth().CloudSession().(awsCloudSession)
+	if !ok {
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: "cloud_chain", Message: "resolved AWS SDK session is required", Err: errors.ErrAPIKeyRequired}
+	}
+	regions := slices.Clone(resolved.Config().Scopes["regions"].Values)
+	if region, found := resolved.Binding("region"); found {
+		regions = append(regions, region)
+	}
+	base := session.Config()
+	source, err := NewSource(regions, func(_ context.Context, region string) (API, error) {
+		configuration := base
+		configuration.Region = region
+		configuration.RetryMaxAttempts = 1
+		return awsbedrock.NewFromConfig(configuration), nil
+	})
+	if err != nil {
+		return nil, err
+	}
 	source.pricing = newHTTPPricingFetcher()
-	return source
-}
-
-func defaultClientFactory(ctx context.Context, region string) (API, error) {
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region), config.WithRetryMaxAttempts(1))
-	if err != nil {
-		return nil, errors.WrapResource("load", "AWS SDK configuration", region, err)
-	}
-	if _, err := cfg.Credentials.Retrieve(ctx); err != nil {
-		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: "aws_sdk_default_chain", Message: "AWS credentials are unavailable", Err: err}
-	}
-	return awsbedrock.NewFromConfig(cfg), nil
+	return source, nil
 }
 
 // ID returns the stable native Bedrock source identity.
@@ -130,12 +119,11 @@ func (s *Source) ID() sources.ID { return sources.AmazonBedrockID }
 // Name returns the operator-facing source name.
 func (s *Source) Name() string { return "Amazon Bedrock" }
 
-// Observe returns a public regional observation. Customer inventory is never
-// requested through the public Source interface.
+// Observe returns one credential-scoped canonical Bedrock observation.
 func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Observation, error) {
-	result, fetchErr := s.Fetch(ctx, false)
+	result, fetchErr := s.Fetch(ctx)
 	if fetchErr != nil {
-		catalog, err := emptyPublicCatalog()
+		catalog, err := emptyCatalog()
 		if err != nil {
 			return sources.Observation{}, err
 		}
@@ -147,12 +135,12 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 		return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 			ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 			Completeness: sources.ObservationCompletenessPartial, Status: sources.ObservationStatusDegraded,
-			Records: sources.ObservationRecordCounts{}, Scope: catalogmeta.ObservationScopeRegionalPublic, Kind: catalogmeta.SourceKindRegionalSweep,
+			Records: sources.ObservationRecordCounts{}, Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindRegionalSweep,
 			Coverage: catalogmeta.ProviderCoverage{Expected: len(s.regions)},
-			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: issueCode, Subject: string(ProviderID), Message: fetchErr.Error()}},
+			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: issueCode, Subject: string(ProviderID), Message: errors.SafeSummary(fetchErr)}},
 		})
 	}
-	catalog, err := result.PublicCatalog()
+	catalog, err := result.Catalog()
 	if err != nil {
 		return sources.Observation{}, err
 	}
@@ -160,7 +148,7 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 		ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
 		Records: sources.ObservationRecordCounts{Accepted: len(result.Offerings)},
-		Scope:   catalogmeta.ObservationScopeRegionalPublic, Kind: catalogmeta.SourceKindRegionalSweep,
+		Scope:   catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindRegionalSweep,
 		Coverage:          catalogmeta.ProviderCoverage{Expected: len(s.regions), Observed: len(s.regions)},
 		PricingObservedAt: result.PricingObservedAt,
 	})
@@ -175,8 +163,8 @@ func (s *Source) Dependencies() []sources.Dependency { return nil }
 // IsOptional keeps credential-free public generation operational.
 func (s *Source) IsOptional() bool { return true }
 
-// PublicCatalog materializes only globally publishable Bedrock records.
-func (r Result) PublicCatalog() (*catalogs.Catalog, error) {
+// Catalog materializes only globally publishable Bedrock records.
+func (r Result) Catalog() (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: ProviderID, Name: "Amazon Bedrock"}); err != nil {
 		return nil, err
@@ -203,14 +191,12 @@ func (r Result) PublicCatalog() (*catalogs.Catalog, error) {
 	return builder.Build()
 }
 
-func emptyPublicCatalog() (*catalogs.Catalog, error) {
+func emptyCatalog() (*catalogs.Catalog, error) {
 	return catalogs.NewEmpty().Build()
 }
 
-// Fetch discovers public foundation models and system inference profiles. When
-// includeCustomerInventory is true, application profiles are returned only in
-// the separate credential-scoped customer product.
-func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Result, error) {
+// Fetch discovers foundation models and both system and application inference profiles.
+func (s *Source) Fetch(ctx context.Context) (Result, error) {
 	if s.configErr != nil {
 		return Result{}, errors.WrapResource("load", "Bedrock region catalog", string(ProviderID), s.configErr)
 	}
@@ -219,7 +205,6 @@ func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Resu
 	}
 	definitions := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition)
 	offerings := make(map[catalogs.OfferingKey]catalogs.ProviderOffering)
-	inventories := make([]catalogs.CustomerInventory, 0)
 	for _, region := range s.regions {
 		client, err := s.clients(ctx, region)
 		if err != nil {
@@ -253,21 +238,19 @@ func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Resu
 			}
 			mergeOffering(offerings, offering)
 		}
-		if includeCustomerInventory {
-			applicationProfiles, listErr := s.listProfiles(ctx, client, types.InferenceProfileTypeApplication)
-			if listErr != nil {
-				return Result{}, errors.WrapResource("list", "Bedrock application inference profiles", region, listErr)
-			}
-			inventory, convertErr := applicationInventory(region, s.now(), applicationProfiles, modelDefinitions)
-			if convertErr != nil {
-				return Result{}, convertErr
-			}
-			if len(inventory.Deployments) > 0 {
-				inventories = append(inventories, inventory)
-			}
+		applicationProfiles, listErr := s.listProfiles(ctx, client, types.InferenceProfileTypeApplication)
+		if listErr != nil {
+			return Result{}, errors.WrapResource("list", "Bedrock application inference profiles", region, listErr)
+		}
+		applicationOfferings, convertErr := applicationProfileOfferings(region, applicationProfiles, modelDefinitions)
+		if convertErr != nil {
+			return Result{}, convertErr
+		}
+		for _, offering := range applicationOfferings {
+			mergeOffering(offerings, offering)
 		}
 	}
-	result := Result{Definitions: definitionValues(definitions), Offerings: offeringValues(offerings), CustomerInventory: inventories}
+	result := Result{Definitions: definitionValues(definitions), Offerings: offeringValues(offerings)}
 	if s.pricing != nil {
 		prices, err := s.pricing.Fetch(ctx)
 		if err != nil {
@@ -357,7 +340,7 @@ func foundationRecords(region string, summary types.FoundationModelSummary) (cat
 	}
 	tier := "provisioned"
 	if onDemand {
-		tier = "on_demand"
+		tier = tierOnDemand
 	}
 	offering := catalogs.ProviderOffering{
 		ProviderID: ProviderID, ProviderModelID: catalogs.ProviderModelID(modelID), DefinitionID: definitionID,
@@ -400,41 +383,50 @@ func systemProfileOffering(sourceRegion string, profile types.InferenceProfileSu
 		ProviderID: ProviderID, ProviderModelID: catalogs.ProviderModelID(profileID), DefinitionID: definitionID,
 		Availability: availability,
 		Access:       catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIBedrockInvokeModel}},
-		Regions:      []catalogs.CloudRegion{cloudRegion(sourceRegion, false)}, Deployment: catalogs.ProviderDeployment{Type: "cross_region", Tier: "on_demand"},
+		Regions:      []catalogs.CloudRegion{cloudRegion(sourceRegion, false)}, Deployment: catalogs.ProviderDeployment{Type: "cross_region", Tier: tierOnDemand},
 		InferenceProfile: &catalogs.CrossRegionInferenceProfile{ID: profileID, Scope: profileScope(profileID), SourceRegions: []string{sourceRegion}, DestinationRegions: destinations},
 		Endpoint:         catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeBedrock}, Lifecycle: lifecycle,
 	}
 	return offering, offering.Validate()
 }
 
-func applicationInventory(region string, observedAt time.Time, profiles []types.InferenceProfileSummary, definitions map[string]catalogs.ModelDefinitionID) (catalogs.CustomerInventory, error) {
-	inventory := catalogs.CustomerInventory{ProviderID: ProviderID, ObservedAt: observedAt.UTC()}
+func applicationProfileOfferings(region string, profiles []types.InferenceProfileSummary, definitions map[string]catalogs.ModelDefinitionID) ([]catalogs.ProviderOffering, error) {
+	offerings := make([]catalogs.ProviderOffering, 0, len(profiles))
+	var accountID string
 	for _, profile := range profiles {
 		profileID := strings.TrimSpace(aws.ToString(profile.InferenceProfileId))
 		profileARN := strings.TrimSpace(aws.ToString(profile.InferenceProfileArn))
 		modelIDs, _ := profileModels(profile.Models)
 		if profileID == "" || profileARN == "" || len(modelIDs) == 0 {
-			return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "bedrock.application_inference_profile", Value: profileID, Message: "profile id, ARN, and model are required"}
+			return nil, &errors.ValidationError{Field: "bedrock.application_inference_profile", Value: profileID, Message: "profile id, ARN, and model are required"}
 		}
-		accountID := arnPart(profileARN, 4)
-		if inventory.Scope.AccountID == "" {
-			inventory.Scope.AccountID = accountID
-		} else if inventory.Scope.AccountID != accountID {
-			return catalogs.CustomerInventory{}, &errors.ConflictError{Resource: "Bedrock account scope", Expected: inventory.Scope.AccountID, Actual: accountID}
+		profileAccountID := arnPart(profileARN, 4)
+		if accountID == "" {
+			accountID = profileAccountID
+		} else if accountID != profileAccountID {
+			return nil, &errors.ConflictError{Resource: "Bedrock account scope", Expected: accountID, Actual: profileAccountID}
 		}
 		definitionID := definitions[modelIDs[0]]
 		if definitionID == "" {
-			definitionID = catalogs.ModelDefinitionID("bedrock/" + modelIDs[0])
+			return nil, &errors.NotFoundError{Resource: "Bedrock foundation model", ID: modelIDs[0]}
 		}
-		inventory.Deployments = append(inventory.Deployments, catalogs.CustomerDeployment{
-			ID: profileARN, DefinitionID: definitionID, ProviderModelID: catalogs.ProviderModelID(profileID),
-			Region: &catalogs.CloudRegion{ID: region, Realm: realm(region)}, Deployment: catalogs.ProviderDeployment{Type: "application_inference_profile", Tier: "on_demand"},
-		})
+		availability, lifecycle := catalogs.OfferingAvailabilityAvailable, catalogs.OfferingLifecycleActive
+		if profile.Status != types.InferenceProfileStatusActive {
+			availability, lifecycle = catalogs.OfferingAvailabilityUnavailable, catalogs.OfferingLifecycleRetired
+		}
+		offering := catalogs.ProviderOffering{
+			ProviderID: ProviderID, ProviderModelID: catalogs.ProviderModelID(profileID), DeploymentID: profileARN, DefinitionID: definitionID,
+			Availability: availability,
+			Access:       catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIBedrockInvokeModel}},
+			Regions:      []catalogs.CloudRegion{{ID: region, Realm: realm(region)}}, Deployment: catalogs.ProviderDeployment{Type: "application_inference_profile", Tier: tierOnDemand},
+			Endpoint: catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeBedrock}, Lifecycle: lifecycle,
+		}
+		if err := offering.Validate(); err != nil {
+			return nil, err
+		}
+		offerings = append(offerings, offering)
 	}
-	if len(inventory.Deployments) == 0 {
-		return inventory, nil
-	}
-	return inventory, inventory.Validate()
+	return offerings, nil
 }
 
 func mergeOffering(values map[catalogs.OfferingKey]catalogs.ProviderOffering, incoming catalogs.ProviderOffering) {

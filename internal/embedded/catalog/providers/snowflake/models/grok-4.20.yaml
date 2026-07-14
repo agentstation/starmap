@@ -1,0 +1,44 @@
+id: grok-4.20
+name: grok-4.20
+authors:
+- id: xai
+  name: xai
+definition_id: grok-4.20
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.22
+    input:
+      per_1m: 1.375
+    output:
+      per_1m: 2.75
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.2
+        input:
+          per_1m: 1.25
+        output:
+          per_1m: 2.5
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.22
+        input:
+          per_1m: 1.375
+        output:
+          per_1m: 2.75
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

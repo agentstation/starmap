@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/agentstation/starmap/internal/providers/openai"
+	"github.com/agentstation/starmap/internal/connectors/openai"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 

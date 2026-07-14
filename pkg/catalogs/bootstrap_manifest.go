@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 // CurrentBootstrapManifestVersion is the embedded-bootstrap metadata format.
@@ -26,13 +27,13 @@ type BootstrapManifest struct {
 // Validate checks the embedded-bootstrap metadata contract.
 func (m BootstrapManifest) Validate() error {
 	if m.ManifestVersion != CurrentBootstrapManifestVersion {
-		return bootstrapValidation("manifest_version", m.ManifestVersion, "is not supported")
+		return bootstrapValidation("manifest_version", m.ManifestVersion, validationMessageIsNotSupported)
 	}
 	if strings.TrimSpace(m.GenerationID) == "" {
-		return bootstrapValidation("generation_id", m.GenerationID, "is required")
+		return bootstrapValidation("generation_id", m.GenerationID, validationMessageIsRequired)
 	}
 	if m.GeneratedAt.IsZero() {
-		return bootstrapValidation("generated_at", m.GeneratedAt, "is required")
+		return bootstrapValidation("generated_at", m.GeneratedAt, validationMessageIsRequired)
 	}
 	_, offset := m.GeneratedAt.Zone()
 	if offset != 0 {
@@ -50,23 +51,26 @@ func (m BootstrapManifest) Validate() error {
 
 // ParseBootstrapManifestJSON strictly parses embedded-bootstrap metadata.
 func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error) {
+	if err := sourcepayload.ValidateExactJSON(data); err != nil {
+		return BootstrapManifest{}, err
+	}
 	var required map[string]json.RawMessage
 	if err := json.Unmarshal(data, &required); err != nil {
-		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: err.Error(), Err: err}
+		return BootstrapManifest{}, &errors.ParseError{Format: string(ModelResponseFormatJSON), File: catalogBootstrapManifestFile, Message: err.Error(), Err: err}
 	}
 	for _, field := range []string{"manifest_version", "generation_id", "generated_at", "schema_version", "payload"} {
 		if _, exists := required[field]; !exists {
-			return BootstrapManifest{}, bootstrapValidation(field, nil, "is required")
+			return BootstrapManifest{}, bootstrapValidation(field, nil, validationMessageIsRequired)
 		}
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var manifest BootstrapManifest
 	if err := decoder.Decode(&manifest); err != nil {
-		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: err.Error(), Err: err}
+		return BootstrapManifest{}, &errors.ParseError{Format: string(ModelResponseFormatJSON), File: catalogBootstrapManifestFile, Message: err.Error(), Err: err}
 	}
 	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: "invalid trailing JSON", Err: err}
+		return BootstrapManifest{}, &errors.ParseError{Format: string(ModelResponseFormatJSON), File: catalogBootstrapManifestFile, Message: "invalid trailing JSON", Err: err}
 	}
 	if err := manifest.Validate(); err != nil {
 		return BootstrapManifest{}, err

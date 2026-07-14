@@ -3,6 +3,7 @@ package catalogremote
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -111,6 +112,40 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndExactSchema(t *te
 				t.Fatalf("generation ID = %q", got.Manifest.GenerationID)
 			}
 		})
+	}
+}
+
+func TestRemoteCatalogRejectsCredentialScopedManifestBeforeSnapshotRequest(t *testing.T) {
+	generation := remoteTestGeneration(t, catalogs.CurrentCatalogSchemaVersion)
+	generation.Manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	manifest, err := json.Marshal(generation.Manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	var snapshotGets atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		switch request.URL.Path {
+		case ManifestPath:
+			writer.Header().Set("Content-Type", ManifestMediaType)
+			_, _ = writer.Write(manifest)
+		case SnapshotPath(generation.Manifest.GenerationID):
+			snapshotGets.Add(1)
+			writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
+			_, _ = writer.Write(generation.Payload)
+		default:
+			http.NotFound(writer, request)
+		}
+	}))
+	defer server.Close()
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if _, err := client.FetchCurrent(context.Background()); err == nil {
+		t.Fatal("FetchCurrent accepted credential-scoped manifest")
+	}
+	if got := snapshotGets.Load(); got != 0 {
+		t.Fatalf("snapshot GETs = %d, want 0", got)
 	}
 }
 

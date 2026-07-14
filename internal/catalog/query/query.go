@@ -187,11 +187,11 @@ func modelMatchesCapability(model catalogs.Model, capability string) bool {
 	}
 
 	switch strings.ToLower(capability) {
-	case "tool_calls", "tools":
+	case featureToolCalls, featureTools:
 		return model.Features.ToolCalls || model.Features.Tools
-	case "reasoning":
+	case featureReasoning:
 		return model.Features.Reasoning
-	case "streaming":
+	case featureStreaming:
 		return model.Features.Streaming
 	case "vision", "image":
 		return slices.Contains(model.Features.Modalities.Input, catalogs.ModelModalityImage)

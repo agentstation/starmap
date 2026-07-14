@@ -32,10 +32,10 @@ func TestWritableStoreTriggerMatrixRejectsBeforeWork(t *testing.T) {
 		if err := seed.SetProvider(catalogs.Provider{
 			ID:   "preflight-provider",
 			Name: "Preflight Provider",
-			Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
-			}},
+			Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+				ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+				Auth: catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: server.URL},
+			}}},
 		}); err != nil {
 			t.Fatalf("Seed provider: %v", err)
 		}
@@ -95,7 +95,14 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 	t.Run("manual sync", func(t *testing.T) {
 		outputPath := t.TempDir()
 		seed := catalogs.NewEmpty()
-		if err := seed.SetProvider(catalogs.Provider{ID: "local-provider", Name: "Local Provider"}); err != nil {
+		if err := seed.SetProvider(catalogs.Provider{
+			ID: "local-provider", Name: "Local Provider",
+			Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+				ID: "curated", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+				Auth:     catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone},
+				Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeApplication, URL: "https://example.test/catalog"},
+			}}},
+		}); err != nil {
 			t.Fatalf("Seed provider: %v", err)
 		}
 		if err := seed.Save(save.WithPath(outputPath)); err != nil {

@@ -25,29 +25,48 @@ func TestProviderConfigurationRoundTripsAndDeepCopies(t *testing.T) {
 	assert.Equal(t, provider, yamlProvider)
 
 	copied := DeepCopyProvider(provider)
-	copied.Catalog.Offering.Access.APIs[0] = InvocationAPIMessages
-	copied.Catalog.Offering.Regions[0].Residency.Countries[0] = "CA"
-	assert.Equal(t, InvocationAPIChatCompletions, provider.Catalog.Offering.Access.APIs[0])
-	assert.Equal(t, "US", provider.Catalog.Offering.Regions[0].Residency.Countries[0])
+	copied.Catalog.Sources[0].Offering.Access.APIs[0] = InvocationAPIMessages
+	copied.Catalog.Sources[0].Offering.Regions[0].Residency.Countries[0] = "CA"
+	*copied.Catalog.Sources[0].Endpoint.FieldMappings[0].Scale = 0.25
+	assert.Equal(t, InvocationAPIChatCompletions, provider.Catalog.Sources[0].Offering.Access.APIs[0])
+	assert.Equal(t, "US", provider.Catalog.Sources[0].Offering.Regions[0].Residency.Countries[0])
+	assert.Equal(t, 0.5, *provider.Catalog.Sources[0].Endpoint.FieldMappings[0].Scale)
 }
 
 func TestProviderValidateConfiguration(t *testing.T) {
 	tests := map[string]func(*Provider){
 		"valid": func(*Provider) {},
 		"unsafe response collection": func(provider *Provider) {
-			provider.Catalog.Endpoint.ResponseCollection = "data[0]"
+			provider.Catalog.Sources[0].Endpoint.ResponseCollection = "data[0]"
 		},
 		"duplicate invocation API": func(provider *Provider) {
-			provider.Catalog.Offering.Access.APIs = append(provider.Catalog.Offering.Access.APIs, InvocationAPIChatCompletions)
+			provider.Catalog.Sources[0].Offering.Access.APIs = append(provider.Catalog.Sources[0].Offering.Access.APIs, InvocationAPIChatCompletions)
 		},
 		"missing deployment type": func(provider *Provider) {
-			provider.Catalog.Offering.Deployment.Type = ""
+			provider.Catalog.Sources[0].Offering.Deployment.Type = ""
 		},
 		"duplicate region": func(provider *Provider) {
-			provider.Catalog.Offering.Regions = append(provider.Catalog.Offering.Regions, provider.Catalog.Offering.Regions[0])
+			provider.Catalog.Sources[0].Offering.Regions = append(provider.Catalog.Sources[0].Offering.Regions, provider.Catalog.Sources[0].Offering.Regions[0])
 		},
 		"routable without endpoint": func(provider *Provider) {
-			provider.Catalog.Offering.Endpoint.Type = ""
+			provider.Catalog.Sources[0].Offering.Endpoint.Type = ""
+		},
+		"missing acquisition endpoint": func(provider *Provider) {
+			provider.Catalog.Sources[0].Endpoint.URL = ""
+			provider.Catalog.Sources[0].Endpoint.BaseURLEnv = ""
+		},
+		"unsafe source path": func(provider *Provider) {
+			provider.Catalog.Sources[0].Endpoint.FieldMappings = []FieldMapping{{From: "models[0].limit", To: "limits.context_window"}}
+		},
+		"secret-bearing source path": func(provider *Provider) {
+			provider.Catalog.Sources[0].Endpoint.FieldMappings = []FieldMapping{{From: "metadata.api_key", To: "extensions.example.value"}}
+		},
+		"unsafe feature rule": func(provider *Provider) {
+			provider.Catalog.Sources[0].Endpoint.FeatureRules = []FeatureRule{{Field: "capabilities[0]", Contains: []string{"tools"}, Feature: "tools", Value: true}}
+		},
+		"negative pricing scale": func(provider *Provider) {
+			negative := -0.5
+			provider.Catalog.Sources[0].Endpoint.FieldMappings[0].Scale = &negative
 		},
 	}
 
@@ -65,39 +84,72 @@ func TestProviderValidateConfiguration(t *testing.T) {
 	}
 }
 
+func TestProviderValidateConfigurationAllowsApplicationWithoutAcquisitionEndpoint(t *testing.T) {
+	provider := Provider{
+		ID: "application", Name: "Application",
+		Catalog: &ProviderCatalog{Sources: []ProviderSource{{
+			ID:               "application",
+			ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+			Auth:             ProviderAuthPolicy{Mode: ProviderAuthModeNone},
+			Endpoint:         ProviderSourceEndpoint{Type: EndpointTypeApplication},
+		}}},
+	}
+	require.NoError(t, provider.ValidateConfiguration())
+}
+
 func TestSourceProviderOfferingUsesConfigurationDefaults(t *testing.T) {
 	provider := providerWithOfferingDefaults()
 	offering, changes, err := sourceProviderOffering(provider, Model{ID: "example-model", Name: "Example Model"})
 	require.NoError(t, err)
 
-	assert.Equal(t, provider.Catalog.Offering.Access, offering.Access)
-	assert.Equal(t, provider.Catalog.Offering.Endpoint, offering.Endpoint)
-	assert.Equal(t, provider.Catalog.Offering.Deployment, offering.Deployment)
-	assert.Equal(t, provider.Catalog.Offering.Regions, offering.Regions)
+	assert.Equal(t, provider.Catalog.Sources[0].Offering.Access, offering.Access)
+	assert.Equal(t, provider.Catalog.Sources[0].Offering.Endpoint, offering.Endpoint)
+	assert.Equal(t, provider.Catalog.Sources[0].Offering.Deployment, offering.Deployment)
+	assert.Equal(t, provider.Catalog.Sources[0].Offering.Regions, offering.Regions)
 	assert.Contains(t, changes[1].Message, "provider-configured")
 
 	offering.Access.APIs[0] = InvocationAPIMessages
 	offering.Regions[0].Residency.Countries[0] = "CA"
-	assert.Equal(t, InvocationAPIChatCompletions, provider.Catalog.Offering.Access.APIs[0])
-	assert.Equal(t, "US", provider.Catalog.Offering.Regions[0].Residency.Countries[0])
+	assert.Equal(t, InvocationAPIChatCompletions, provider.Catalog.Sources[0].Offering.Access.APIs[0])
+	assert.Equal(t, "US", provider.Catalog.Sources[0].Offering.Regions[0].Residency.Countries[0])
 }
 
-func TestSourceProviderOfferingDerivesEndpointFromAcquisitionOverride(t *testing.T) {
+func TestSourceProviderOfferingModelInvocationOverridesConfigurationDefault(t *testing.T) {
 	provider := providerWithOfferingDefaults()
-	provider.Catalog.Endpoint.BaseURLEnvVar = "EXAMPLE_BASE_URL"
-	provider.Catalog.Endpoint.Path = "/models"
-	provider.Catalog.Offering.Endpoint.BaseURL = ""
-	provider.EnvVarValues = map[string]string{"EXAMPLE_BASE_URL": "https://regional.example.com/v2"}
+	offering, _, err := sourceProviderOffering(provider, Model{
+		ID:             "embedding-model",
+		Name:           "Embedding Model",
+		InvocationAPIs: []InvocationAPI{InvocationAPIEmbeddings},
+	})
+	require.NoError(t, err)
+	assert.Equal(t, []InvocationAPI{InvocationAPIEmbeddings}, offering.Access.APIs)
+	assert.Equal(t, OfferingRoutabilityRoutable, offering.Access.Routability)
+
+	offering, _, err = sourceProviderOffering(provider, Model{
+		ID:             "unroutable-model",
+		Name:           "Unroutable Model",
+		InvocationAPIs: []InvocationAPI{},
+	})
+	require.NoError(t, err)
+	assert.Empty(t, offering.Access.APIs)
+	assert.Equal(t, OfferingRoutabilityDiscoverable, offering.Access.Routability)
+}
+
+func TestSourceProviderOfferingUsesConfiguredCatalogAuthority(t *testing.T) {
+	provider := providerWithOfferingDefaults()
+	provider.Catalog.Sources[0].Endpoint.BaseURLEnv = "EXAMPLE_BASE_URL"
+	provider.Catalog.Sources[0].Endpoint.Path = "/models"
+	provider.Catalog.Sources[0].Offering.Endpoint.BaseURL = ""
+	t.Setenv("EXAMPLE_BASE_URL", "https://regional.example.com/v2")
 
 	require.NoError(t, provider.ValidateConfiguration())
-	assert.Equal(t, "https://regional.example.com/v2/models", provider.CatalogEndpointURL())
 	offering, _, err := sourceProviderOffering(provider, Model{ID: "example-model", Name: "Example Model"})
 	require.NoError(t, err)
-	assert.Equal(t, "https://regional.example.com/v2", offering.Endpoint.BaseURL)
-	assert.Equal(t, "", provider.Catalog.Offering.Endpoint.BaseURL)
+	assert.Equal(t, "https://api.example.com/v1", offering.Endpoint.BaseURL)
+	assert.Equal(t, "", provider.Catalog.Sources[0].Offering.Endpoint.BaseURL)
 }
 
-func TestConfigurationOnlyProvidersShareAcquisitionAndOfferingOverrides(t *testing.T) {
+func TestConfigurationOnlyProvidersKeepPublicationEndpointConfigured(t *testing.T) {
 	builder, err := NewEmbedded()
 	require.NoError(t, err)
 	for _, providerID := range []ProviderID{ProviderIDBaseten, ProviderIDHyperbolic, ProviderIDNovita, ProviderIDScaleway} {
@@ -105,10 +157,10 @@ func TestConfigurationOnlyProvidersShareAcquisitionAndOfferingOverrides(t *testi
 			provider, err := builder.Provider(providerID)
 			require.NoError(t, err)
 			require.NoError(t, provider.ValidateConfiguration())
-			provider.EnvVarValues = map[string]string{provider.Catalog.Endpoint.BaseURLEnvVar: "https://regional.example.test/v9/"}
-
-			assert.Equal(t, "https://regional.example.test/v9/models", provider.CatalogEndpointURL())
-			assert.Equal(t, "https://regional.example.test/v9", provider.CatalogOfferingEndpoint().BaseURL)
+			configured := provider.Catalog.Sources[0].Endpoint.URL
+			offering, _, projectErr := sourceProviderOffering(provider, Model{ID: "example-model", Name: "Example Model"})
+			require.NoError(t, projectErr)
+			assert.Equal(t, catalogBaseURL(configured, provider.Catalog.Sources[0].Endpoint.Path), offering.Endpoint.BaseURL)
 		})
 	}
 }
@@ -118,31 +170,43 @@ func providerWithOfferingDefaults() Provider {
 		ID:   "example",
 		Name: "Example",
 		Catalog: &ProviderCatalog{
-			Endpoint: ProviderEndpoint{
-				Type:               EndpointTypeOpenAI,
-				URL:                "https://api.example.com/v1/models",
-				ResponseCollection: "data.models",
-			},
-			Offering: &ProviderOfferingDefaults{
-				Access: OfferingAccess{
-					Channel:     OfferingAccessChannelServerToServer,
-					Routability: OfferingRoutabilityRoutable,
-					APIs:        []InvocationAPI{InvocationAPIChatCompletions},
+			Sources: []ProviderSource{{
+				ID:               "models",
+				ObservationScope: ProviderObservationPolicy{Invariant: ProviderObservationScopeGlobalPublic},
+				Auth:             ProviderAuthPolicy{Mode: ProviderAuthModeNone},
+				Endpoint: ProviderSourceEndpoint{
+					Type:               EndpointTypeOpenAI,
+					URL:                "https://api.example.com/v1/models",
+					ResponseCollection: "data.models",
+					FieldMappings: []FieldMapping{{
+						From: "pricing.prompt", To: "pricing.tokens.input",
+						Unit: ProviderNormalizationUnitPerMillionTokens, Currency: ModelPricingCurrencyUSD,
+						Mode: "batch", Scale: float64Pointer(0.5),
+					}},
 				},
-				Endpoint: ProviderOfferingEndpoint{
-					Type:    EndpointTypeOpenAI,
-					BaseURL: "https://api.example.com/v1",
-				},
-				Deployment: ProviderDeployment{Type: "serverless", Tier: "managed"},
-				Regions: []CloudRegion{{
-					ID: "us-example-1",
-					Residency: &GeographicBoundary{
-						ID:        "united-states",
-						Kind:      GeographicBoundaryCountry,
-						Countries: []string{"US"},
+				Offering: &ProviderOfferingDefaults{
+					Access: OfferingAccess{
+						Channel:     OfferingAccessChannelServerToServer,
+						Routability: OfferingRoutabilityRoutable,
+						APIs:        []InvocationAPI{InvocationAPIChatCompletions},
 					},
-				}},
-			},
+					Endpoint: ProviderOfferingEndpoint{
+						Type:    EndpointTypeOpenAI,
+						BaseURL: "https://api.example.com/v1",
+					},
+					Deployment: ProviderDeployment{Type: "serverless", Tier: "managed"},
+					Regions: []CloudRegion{{
+						ID: "us-example-1",
+						Residency: &GeographicBoundary{
+							ID:        "united-states",
+							Kind:      GeographicBoundaryCountry,
+							Countries: []string{"US"},
+						},
+					}},
+				},
+			}},
 		},
 	}
 }
+
+func float64Pointer(value float64) *float64 { return &value }

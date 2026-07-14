@@ -23,7 +23,7 @@ type FilesystemLease struct {
 // NewFilesystemLease creates a shared-filesystem lease adapter.
 func NewFilesystemLease(root string) (*FilesystemLease, error) {
 	if strings.TrimSpace(root) == "" {
-		return nil, &errors.ValidationError{Field: "catalog_scheduler.filesystem_lease_root", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "catalog_scheduler.filesystem_lease_root", Message: validationRequiredMessage}
 	}
 	absolute, err := filepath.Abs(root)
 	if err != nil {

@@ -34,7 +34,7 @@ type Filesystem struct {
 // NewFilesystem creates a filesystem catalog store rooted at path.
 func NewFilesystem(path string) (*Filesystem, error) {
 	if strings.TrimSpace(path) == "" {
-		return nil, &errors.ConfigError{Component: "catalog store", Message: "filesystem path is required"}
+		return nil, &errors.ConfigError{Component: catalogStoreComponent, Message: "filesystem path is required"}
 	}
 	root, err := filepath.Abs(path)
 	if err != nil {
@@ -159,7 +159,7 @@ func (s *Filesystem) currentIDOrEmpty() (string, error) {
 	}
 	id := strings.TrimSpace(string(data))
 	if id == "" {
-		return "", &errors.ValidationError{Field: "current", Message: "generation ID is empty"}
+		return "", &errors.ValidationError{Field: currentFilename, Message: "generation ID is empty"}
 	}
 	return id, nil
 }

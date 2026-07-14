@@ -14,6 +14,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 )
@@ -114,6 +115,18 @@ func TestHostedDistributionGenerationIdentityCannotBeRebound(t *testing.T) {
 	}
 	if err := repository.Publish(PublishedGeneration{Generation: secondGeneration, Artifact: secondArtifact}); err == nil {
 		t.Fatal("Publish rebound an immutable generation ID")
+	}
+}
+
+func TestHostedDistributionRejectsCredentialScopedGenerationBeforeRepositoryWrite(t *testing.T) {
+	published := hostedFixture(t)
+	published.Generation.Manifest.SourceObservations[0].Metrics.Scope = catalogmeta.ObservationScopeCredentialScoped
+	repository := NewMemoryRepository()
+	if err := repository.Publish(published); err == nil {
+		t.Fatal("Publish accepted credential-scoped generation")
+	}
+	if _, err := repository.Get(published.Generation.Manifest.GenerationID); err == nil {
+		t.Fatal("rejected credential-scoped generation was retained")
 	}
 }
 
@@ -298,5 +311,14 @@ func promoteStableForTest(t *testing.T, repository *MemoryRepository, published 
 	}
 	if err := repository.Promote(ChannelStable, id, &probe); err != nil {
 		t.Fatalf("Promote stable %s: %v", id, err)
+	}
+}
+
+func TestDecodeStrictJSONRejectsDuplicateMembers(t *testing.T) {
+	var destination struct {
+		Version int `json:"version"`
+	}
+	if err := decodeStrictJSON([]byte(`{"version":1,"version":2}`), &destination); err == nil {
+		t.Fatal("decodeStrictJSON accepted duplicate JSON member")
 	}
 }

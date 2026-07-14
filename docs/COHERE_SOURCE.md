@@ -35,7 +35,7 @@ Primary evidence:
 
 The current pricing page no longer publishes pay-as-you-go prices for every
 active model. Starmap therefore prices only exact IDs for which that page gives
-a first-party numeric value (legacy Command variants, Command R+ 08-2024, and
+a first-party numeric value (retired Command variants, Command R+ 08-2024, and
 Aya Expanse). All other IDs remain explicitly unpriced instead of inheriting a
 family guess or cloud-marketplace price.
 

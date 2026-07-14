@@ -11,15 +11,14 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"time"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-const defaultFoundationURL = "https://docs.databricks.com/aws/en/machine-learning/model-serving/foundation-model-overview"
 const maxWorkspacePages = 32
 
 var foundationIDPattern = regexp.MustCompile(`\bdatabricks-[a-z0-9][a-z0-9-]*\b`)
@@ -28,39 +27,30 @@ var foundationIDPattern = regexp.MustCompile(`\bdatabricks-[a-z0-9][a-z0-9-]*\b`
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
 	transport *transport.Client
 }
 
 // NewClient creates a Databricks public availability client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
-}
-
-// IsAPIKeyRequired reports whether public availability authentication is required.
-func (c *Client) IsAPIKeyRequired() bool { return false }
-
-// HasAPIKey reports whether a workspace token is resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey()
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), transport: transport.New(source.Auth())}
 }
 
 // ListModels parses exact Databricks endpoint IDs from the current first-party support matrix.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
-	configured, client := c.provider, c.transport
+	configured, client, endpoint := c.provider, c.transport, c.endpoint
 	c.mu.RUnlock()
 	if configured == nil {
-		return nil, &errors.ConfigError{Component: "databricks", Message: "provider not configured"}
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDDatabricks), Message: "provider not configured"}
 	}
-	endpoint := configured.CatalogEndpointURL()
 	if endpoint == "" {
-		endpoint = defaultFoundationURL
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDDatabricks), Message: "catalog endpoint is required"}
 	}
-	response, err := client.Get(ctx, endpoint, configured)
+	response, err := client.Get(ctx, endpoint)
 	if err != nil {
-		return nil, &errors.APIError{Provider: "databricks", Endpoint: endpoint, Message: "request failed", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDDatabricks), Endpoint: endpoint, Message: "request failed", Err: err}
 	}
 	defer func() { _ = response.Body.Close() }()
 	body, err := io.ReadAll(io.LimitReader(response.Body, constants.MaxSourcePayloadBytes+1))
@@ -89,7 +79,7 @@ func publicModel(id string) catalogs.Model {
 		ID: id, Name: id, Authors: []catalogs.Author{{ID: foundationAuthor(id), Name: foundationAuthor(id).String()}}, Status: catalogs.ModelStatusActive,
 		InvocationAPIs: []catalogs.InvocationAPI{}, OfferingAccess: access,
 		OfferingDeployment: catalogs.ProviderDeployment{Type: "pay-per-token", Tier: "foundation-model-api"},
-		Extensions:         catalogs.SourceExtensions{"databricks": {Fields: catalogs.NormalizeExtensionFields(map[string]any{"source": "supported-foundation-matrix"})}},
+		Extensions:         catalogs.SourceExtensions{string(catalogs.ProviderIDDatabricks): {Fields: catalogs.NormalizeExtensionFields(map[string]any{"source": "supported-foundation-matrix"})}},
 	}
 }
 
@@ -106,7 +96,7 @@ func foundationAuthor(id string) catalogs.AuthorID {
 	case strings.Contains(id, "qwen"), strings.Contains(id, "gte"):
 		return catalogs.AuthorIDAlibabaQwen
 	default:
-		return catalogs.AuthorID("databricks")
+		return catalogs.AuthorID(catalogs.ProviderIDDatabricks)
 	}
 }
 
@@ -117,6 +107,32 @@ type WorkspaceConfig struct {
 	WorkspaceID        string                                `json:"-" yaml:"-"`
 	DefinitionByEntity map[string]catalogs.ModelDefinitionID `json:"-" yaml:"-"`
 	Region             *catalogs.CloudRegion                 `json:"-" yaml:"-"`
+}
+
+// WorkspaceResult contains canonical records returned by one workspace observation.
+type WorkspaceResult struct {
+	Definitions []catalogs.ModelDefinition
+	Offerings   []catalogs.ProviderOffering
+}
+
+// Catalog materializes workspace records in the single canonical catalog.
+func (result WorkspaceResult) Catalog(provider catalogs.Provider) (*catalogs.Catalog, error) {
+	builder := catalogs.NewEmpty()
+	provider.Models = nil
+	if err := builder.SetProvider(provider); err != nil {
+		return nil, err
+	}
+	for _, definition := range result.Definitions {
+		if err := builder.SetDefinition(definition); err != nil {
+			return nil, err
+		}
+	}
+	for _, offering := range result.Offerings {
+		if err := builder.SetOffering(offering); err != nil {
+			return nil, err
+		}
+	}
+	return builder.Build()
 }
 
 type endpointPage struct {
@@ -150,11 +166,11 @@ type trafficRoute struct {
 	TrafficPercentage int    `json:"traffic_percentage"`
 }
 
-// FetchWorkspace returns private serving endpoints as customer inventory.
-func FetchWorkspace(ctx context.Context, config WorkspaceConfig) (catalogs.CustomerInventory, error) {
+// FetchWorkspace returns private serving endpoints as canonical contextual offerings.
+func FetchWorkspace(ctx context.Context, config WorkspaceConfig) (WorkspaceResult, error) {
 	base, err := validateWorkspaceConfig(config)
 	if err != nil {
-		return catalogs.CustomerInventory{}, err
+		return WorkspaceResult{}, err
 	}
 	client := &http.Client{Timeout: constants.DefaultTimeout}
 	endpoints := make([]servingEndpoint, 0)
@@ -162,23 +178,23 @@ func FetchWorkspace(ctx context.Context, config WorkspaceConfig) (catalogs.Custo
 	for pageNumber := 0; pageNumber < maxWorkspacePages; pageNumber++ {
 		page, fetchErr := fetchEndpointPage(ctx, client, base, config.Token, next)
 		if fetchErr != nil {
-			return catalogs.CustomerInventory{}, fetchErr
+			return WorkspaceResult{}, fetchErr
 		}
 		endpoints = append(endpoints, page.Endpoints...)
 		if page.NextPageToken == "" {
-			return workspaceInventory(config, endpoints)
+			return workspaceOfferings(config, endpoints)
 		}
 		if page.NextPageToken == next {
-			return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "databricks.workspace.next_page_token", Value: next, Message: "cursor repeated"}
+			return WorkspaceResult{}, &errors.ValidationError{Field: "databricks.workspace.next_page_token", Value: next, Message: "cursor repeated"}
 		}
 		next = page.NextPageToken
 	}
-	return catalogs.CustomerInventory{}, &errors.ValidationError{Field: "databricks.workspace.pages", Value: maxWorkspacePages, Message: "page limit exceeded"}
+	return WorkspaceResult{}, &errors.ValidationError{Field: "databricks.workspace.pages", Value: maxWorkspacePages, Message: "page limit exceeded"}
 }
 
 func validateWorkspaceConfig(config WorkspaceConfig) (*url.URL, error) {
-	if config.WorkspaceID == "" || config.Token == "" || len(config.DefinitionByEntity) == 0 {
-		return nil, &errors.ValidationError{Field: "databricks.workspace.config", Message: "workspace, token, and explicit definition mapping are required"}
+	if config.WorkspaceID == "" || config.Token == "" {
+		return nil, &errors.ValidationError{Field: "databricks.workspace.config", Message: "workspace and token are required"}
 	}
 	base, err := url.Parse(config.Host)
 	if err != nil {
@@ -206,12 +222,12 @@ func fetchEndpointPage(ctx context.Context, client *http.Client, base *url.URL, 
 	request.Header.Set("Authorization", "Bearer "+token)
 	response, err := client.Do(request)
 	if err != nil {
-		return endpointPage{}, &errors.APIError{Provider: "databricks", Endpoint: requestURL.String(), Message: "request failed", Err: err}
+		return endpointPage{}, &errors.APIError{Provider: string(catalogs.ProviderIDDatabricks), Endpoint: requestURL.String(), Message: "request failed", Err: err}
 	}
 	defer func() { _ = response.Body.Close() }()
 	var page endpointPage
 	if err := transport.DecodeResponse(response, &page); err != nil {
-		return endpointPage{}, &errors.APIError{Provider: "databricks", Endpoint: requestURL.String(), StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
+		return endpointPage{}, &errors.APIError{Provider: string(catalogs.ProviderIDDatabricks), Endpoint: requestURL.String(), StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
 	}
 	if page.Endpoints == nil {
 		return endpointPage{}, &errors.ValidationError{Field: "databricks.workspace.endpoints", Message: "required endpoint array is null"}
@@ -219,8 +235,9 @@ func fetchEndpointPage(ctx context.Context, client *http.Client, base *url.URL, 
 	return page, nil
 }
 
-func workspaceInventory(config WorkspaceConfig, endpoints []servingEndpoint) (catalogs.CustomerInventory, error) {
-	inventory := catalogs.CustomerInventory{ProviderID: catalogs.ProviderIDDatabricks, Scope: catalogs.CustomerScope{WorkspaceID: config.WorkspaceID}, ObservedAt: time.Now().UTC()}
+func workspaceOfferings(config WorkspaceConfig, endpoints []servingEndpoint) (WorkspaceResult, error) {
+	offerings := make([]catalogs.ProviderOffering, 0)
+	definitions := make(map[catalogs.ModelDefinitionID]catalogs.ModelDefinition)
 	for _, endpoint := range endpoints {
 		traffic := make(map[string]int)
 		for _, route := range endpoint.Config.TrafficConfig.Routes {
@@ -230,23 +247,44 @@ func workspaceInventory(config WorkspaceConfig, endpoints []servingEndpoint) (ca
 			identity, providerModelID := entityIdentity(entity)
 			definitionID, found := config.DefinitionByEntity[identity]
 			if !found {
-				return catalogs.CustomerInventory{}, &errors.NotFoundError{Resource: "Databricks served entity definition", ID: identity}
+				definitionID = catalogs.ModelDefinitionID(identity)
 			}
+			definitions[definitionID] = catalogs.ModelDefinition{ID: definitionID, Name: providerModelID}
 			aliases := []string{endpoint.Name, entity.Name}
 			if percentage, routed := traffic[entity.Name]; routed {
 				aliases = append(aliases, "traffic="+strconv.Itoa(percentage)+"%")
 			}
-			inventory.Deployments = append(inventory.Deployments, catalogs.CustomerDeployment{
-				ID: endpoint.Name + "/" + entity.Name, DefinitionID: definitionID, ProviderModelID: catalogs.ProviderModelID(providerModelID), Region: config.Region,
-				Deployment: catalogs.ProviderDeployment{Type: deploymentType(entity)}, Endpoint: strings.TrimRight(config.Host, "/") + "/serving-endpoints/" + endpoint.Name + "/invocations",
-				Aliases: aliases,
-			})
+			offering := catalogs.ProviderOffering{
+				ProviderID: catalogs.ProviderIDDatabricks, ProviderModelID: catalogs.ProviderModelID(providerModelID),
+				DeploymentID: endpoint.Name + "/" + entity.Name, DefinitionID: definitionID, Aliases: aliases,
+				Availability: catalogs.OfferingAvailabilityRestricted,
+				Access:       catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIChatCompletions}},
+				Deployment:   catalogs.ProviderDeployment{Type: deploymentType(entity)}, Lifecycle: catalogs.OfferingLifecycleActive,
+				Endpoint: catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeDatabricks, BaseURL: strings.TrimRight(config.Host, "/"), Path: "/serving-endpoints/" + endpoint.Name + "/invocations"},
+			}
+			if config.Region != nil {
+				offering.Regions = []catalogs.CloudRegion{*config.Region}
+			}
+			if err := offering.Validate(); err != nil {
+				return WorkspaceResult{}, err
+			}
+			offerings = append(offerings, offering)
 		}
 	}
-	if err := inventory.Validate(); err != nil {
-		return catalogs.CustomerInventory{}, err
+	definitionList := make([]catalogs.ModelDefinition, 0, len(definitions))
+	for _, definition := range definitions {
+		definitionList = append(definitionList, definition)
 	}
-	return inventory, nil
+	slices.SortFunc(definitionList, func(left, right catalogs.ModelDefinition) int {
+		return strings.Compare(string(left.ID), string(right.ID))
+	})
+	slices.SortFunc(offerings, func(left, right catalogs.ProviderOffering) int {
+		if compared := strings.Compare(left.DeploymentID, right.DeploymentID); compared != 0 {
+			return compared
+		}
+		return strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID))
+	})
+	return WorkspaceResult{Definitions: definitionList, Offerings: offerings}, nil
 }
 
 func entityIdentity(entity servedEntity) (string, string) {

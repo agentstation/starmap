@@ -16,22 +16,24 @@ Package providers implements the provider\-backed catalog source.
 
 ## Index
 
+- [func NewConfigured\(providerConfigurations catalogs.ProvidersReader, opts ...SourceOption\) \(\[\]sources.Source, error\)](<#NewConfigured>)
 - [type ClientFactory](<#ClientFactory>)
-- [type Source](<#Source>)
-  - [func New\(providers catalogs.ProvidersReader, opts ...SourceOption\) \*Source](<#New>)
-  - [func \(s \*Source\) Cleanup\(\) error](<#Source.Cleanup>)
-  - [func \(s \*Source\) Dependencies\(\) \[\]sources.Dependency](<#Source.Dependencies>)
-  - [func \(s \*Source\) ID\(\) sources.ID](<#Source.ID>)
-  - [func \(s \*Source\) IsOptional\(\) bool](<#Source.IsOptional>)
-  - [func \(s \*Source\) Name\(\) string](<#Source.Name>)
-  - [func \(s \*Source\) Observe\(ctx context.Context, opts ...sources.Option\) \(sources.Observation, error\)](<#Source.Observe>)
 - [type SourceOption](<#SourceOption>)
   - [func WithClientFactory\(factory ClientFactory\) SourceOption](<#WithClientFactory>)
-  - [func WithMaxConcurrency\(maxConcurrency int\) SourceOption](<#WithMaxConcurrency>)
+  - [func WithSourceResolver\(resolver \*acquisition.Resolver\) SourceOption](<#WithSourceResolver>)
 
+
+<a name="NewConfigured"></a>
+## func [NewConfigured](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L44>)
+
+```go
+func NewConfigured(providerConfigurations catalogs.ProvidersReader, opts ...SourceOption) ([]sources.Source, error)
+```
+
+NewConfigured returns every executable provider acquisition source selected from the normalized provider catalog. Reusable HTTP connectors remain behind the provider fan\-out source; official\-SDK topologies remain independent sources so their observation scope and completeness are not collapsed.
 
 <a name="ClientFactory"></a>
-## type [ClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L21>)
+## type [ClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L30>)
 
 ClientFactory creates a client for a provider.
 
@@ -39,82 +41,8 @@ ClientFactory creates a client for a provider.
 type ClientFactory = sources.ProviderClientFactory
 ```
 
-<a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L32-L36>)
-
-Source fetches models from all provider APIs concurrently.
-
-```go
-type Source struct {
-    // contains filtered or unexported fields
-}
-```
-
-<a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L41>)
-
-```go
-func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source
-```
-
-New creates a new provider API source with the given provider configurations.
-
-<a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L371>)
-
-```go
-func (s *Source) Cleanup() error
-```
-
-Cleanup releases any resources.
-
-<a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L378>)
-
-```go
-func (s *Source) Dependencies() []sources.Dependency
-```
-
-Dependencies returns the list of external dependencies. Provider source has no external dependencies.
-
-<a name="Source.ID"></a>
-### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L74>)
-
-```go
-func (s *Source) ID() sources.ID
-```
-
-ID returns the ID of this source.
-
-<a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L384>)
-
-```go
-func (s *Source) IsOptional() bool
-```
-
-IsOptional returns whether this source is optional. Provider source is required \- it's the core data source.
-
-<a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L77>)
-
-```go
-func (s *Source) Name() string
-```
-
-Name returns the human\-friendly name of this source.
-
-<a name="Source.Observe"></a>
-### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L89>)
-
-```go
-func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error)
-```
-
-Observe returns a new immutable provider catalog without retaining result state.
-
 <a name="SourceOption"></a>
-## type [SourceOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L24>)
+## type [SourceOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L33>)
 
 SourceOption configures the provider source.
 
@@ -123,7 +51,7 @@ type SourceOption func(*sourceOptions)
 ```
 
 <a name="WithClientFactory"></a>
-### func [WithClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L60>)
+### func [WithClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L187>)
 
 ```go
 func WithClientFactory(factory ClientFactory) SourceOption
@@ -131,14 +59,14 @@ func WithClientFactory(factory ClientFactory) SourceOption
 
 WithClientFactory configures the factory used to create provider clients.
 
-<a name="WithMaxConcurrency"></a>
-### func [WithMaxConcurrency](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L67>)
+<a name="WithSourceResolver"></a>
+### func [WithSourceResolver](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L194>)
 
 ```go
-func WithMaxConcurrency(maxConcurrency int) SourceOption
+func WithSourceResolver(resolver *acquisition.Resolver) SourceOption
 ```
 
-WithMaxConcurrency configures the maximum number of provider fetches in flight.
+WithSourceResolver supplies one immutable request\-scoped resolution context.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

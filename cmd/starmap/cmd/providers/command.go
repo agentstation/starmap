@@ -10,11 +10,13 @@ import (
 
 	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/auth/cloudchains"
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/globals"
 	"github.com/agentstation/starmap/internal/cli/table"
+	"github.com/agentstation/starmap/internal/sources/nativeproviders"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -91,11 +93,24 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 
 	// Create auth checker and get supported providers
 	checker := auth.NewChecker()
+	if cloudRegistry, registryErr := cloudchains.NewRegistry(); registryErr == nil {
+		checker = auth.NewChecker(auth.WithCheckerCloudChainRegistry(cloudRegistry))
+	}
 	fetcher := sources.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 	supportedMap := make(map[string]bool)
 	for _, pid := range supportedProviders {
 		supportedMap[string(pid)] = true
+	}
+	for _, provider := range filtered {
+		if provider.Catalog == nil {
+			continue
+		}
+		for _, source := range provider.Catalog.Sources {
+			if nativeproviders.Supports(source.Endpoint.Type) {
+				supportedMap[string(provider.ID)] = true
+			}
+		}
 	}
 
 	// Get global flags and format output

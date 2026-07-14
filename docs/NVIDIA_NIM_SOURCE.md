@@ -8,9 +8,9 @@ NVIDIA exposes two different catalog products that must not be collapsed:
 
 - NVIDIA-hosted API Catalog models are public provider offerings reached at
   `https://integrate.api.nvidia.com` for development and prototyping.
-- NIM containers are customer-hosted deployments. Their base URL, served-name
-  overrides, infrastructure, account, region, and aliases are private customer
-  inventory, not public catalog facts.
+- NIM containers are caller-hosted deployments. Their base URL, served-name
+  overrides, infrastructure, account, region, and aliases are contextual
+  offering facts, not publicly publishable catalog facts.
 
 Primary evidence:
 
@@ -48,14 +48,14 @@ discoverable-only; the temporary state was removed. This is live inventory and
 credential-resolution evidence, not proof that every listed model supports the
 same invocation API.
 
-## Customer NIM mapping
+## Contextual NIM mapping
 
-Private NIM discovery is opt-in and calls the configured deployment's own
+NIM discovery is a separate optional credential-scoped source and calls the configured deployment's own
 `/v1/models`. Because `NIM_SERVED_MODEL_NAME` can replace the model name, the
 caller must provide an explicit served-name-to-canonical-definition mapping;
-unknown names fail closed. The resulting `CustomerInventory` retains account,
-deployment, URL, region, and aliases only in the private product. Public
-generation cannot consume that type.
+unknown names fail closed. The resulting ordinary canonical catalog retains
+account, deployment, URL, region, and aliases for the current caller context.
+Its credential-scoped observation is rejected before every public write.
 
 Fixtures prove strict list envelopes, public non-routability, author/provider
 separation, private endpoint and scope retention, explicit mapping, missing

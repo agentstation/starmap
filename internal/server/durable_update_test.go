@@ -21,7 +21,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	catalogPath := t.TempDir()
 	storePath := t.TempDir()
 	local := catalogs.NewEmpty()
-	if err := local.SetProvider(catalogs.Provider{ID: "before", Name: "Before"}); err != nil {
+	if err := local.SetProvider(durableTestProvider("before", "Before")); err != nil {
 		t.Fatalf("Set initial provider: %v", err)
 	}
 	if err := local.Save(save.WithPath(catalogPath)); err != nil {
@@ -36,7 +36,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 		t.Fatalf("New client: %v", err)
 	}
 
-	if err := local.SetProvider(catalogs.Provider{ID: "after-restart", Name: "After Restart"}); err != nil {
+	if err := local.SetProvider(durableTestProvider("after-restart", "After Restart")); err != nil {
 		t.Fatalf("Set updated provider: %v", err)
 	}
 	if err := local.Save(save.WithPath(catalogPath)); err != nil {
@@ -83,5 +83,17 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if !bytes.Equal(restartedGeneration.Payload, published.Payload) ||
 		!reflect.DeepEqual(restartedGeneration.Manifest, published.Manifest) {
 		t.Fatal("restarted process did not publish the exact committed generation")
+	}
+}
+
+func durableTestProvider(id catalogs.ProviderID, name string) catalogs.Provider {
+	return catalogs.Provider{
+		ID: id, Name: name,
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID:               "application",
+			ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth:             catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone},
+			Endpoint:         catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeApplication},
+		}}},
 	}
 }

@@ -19,6 +19,7 @@ type ProviderModelID string
 type OfferingKey struct {
 	ProviderID      ProviderID      `json:"provider_id" yaml:"provider_id"`
 	ProviderModelID ProviderModelID `json:"provider_model_id" yaml:"provider_model_id"`
+	DeploymentID    string          `json:"deployment_id,omitempty" yaml:"deployment_id,omitempty"`
 }
 
 // OfferingAvailability describes whether an offering can currently be used.
@@ -73,7 +74,7 @@ type InvocationAPI string
 const (
 	// InvocationAPIChatCompletions is the OpenAI chat-completions contract.
 	InvocationAPIChatCompletions InvocationAPI = "chat_completions"
-	// InvocationAPICompletions is the OpenAI legacy text-completions contract still used by base models.
+	// InvocationAPICompletions is the OpenAI text-completions contract still used by base models.
 	InvocationAPICompletions InvocationAPI = "completions"
 	// InvocationAPIResponses is the OpenAI responses contract.
 	InvocationAPIResponses InvocationAPI = "responses"
@@ -190,7 +191,9 @@ type ProviderOfferingMode struct {
 type ProviderOffering struct {
 	ProviderID         ProviderID                      `json:"provider_id" yaml:"provider_id"`
 	ProviderModelID    ProviderModelID                 `json:"provider_model_id" yaml:"provider_model_id"`
+	DeploymentID       string                          `json:"deployment_id,omitempty" yaml:"deployment_id,omitempty"`
 	DefinitionID       ModelDefinitionID               `json:"definition_id" yaml:"definition_id"`
+	Aliases            []string                        `json:"aliases,omitempty" yaml:"aliases,omitempty"`
 	Pricing            *ModelPricing                   `json:"pricing,omitempty" yaml:"pricing,omitempty"`
 	Limits             *ModelLimits                    `json:"limits,omitempty" yaml:"limits,omitempty"`
 	Availability       OfferingAvailability            `json:"availability" yaml:"availability"`
@@ -206,7 +209,7 @@ type ProviderOffering struct {
 
 // Key returns the provider-scoped immutable offering identity.
 func (o ProviderOffering) Key() OfferingKey {
-	return OfferingKey{ProviderID: o.ProviderID, ProviderModelID: o.ProviderModelID}
+	return OfferingKey{ProviderID: o.ProviderID, ProviderModelID: o.ProviderModelID, DeploymentID: o.DeploymentID}
 }
 
 // Validate verifies required identity and provider-specific fields.
@@ -220,14 +223,14 @@ func (o ProviderOffering) Validate() error {
 		{field: "definition_id", value: string(o.DefinitionID)},
 	} {
 		if strings.TrimSpace(required.value) == "" {
-			return offeringValidationError(required.field, required.value, "is required")
+			return offeringValidationError(required.field, required.value, validationMessageIsRequired)
 		}
 	}
 	if !validOfferingAvailability(o.Availability) {
 		return offeringValidationError("availability", o.Availability, "must be available, restricted, or unavailable")
 	}
 	if !validOfferingLifecycle(o.Lifecycle) {
-		return offeringValidationError("lifecycle", o.Lifecycle, "must be active, preview, deprecated, or retired")
+		return offeringValidationError(catalogFieldLifecycle, o.Lifecycle, "must be active, preview, deprecated, or retired")
 	}
 	if err := validateOfferingAccess(o.Access, o.Endpoint); err != nil {
 		return err
@@ -235,10 +238,10 @@ func (o ProviderOffering) Validate() error {
 	seenRegions := make(map[string]struct{}, len(o.Regions))
 	for index, region := range o.Regions {
 		if strings.TrimSpace(region.ID) == "" {
-			return offeringValidationError(fmt.Sprintf("regions[%d]", index), region, "must not be empty")
+			return offeringValidationError(fmt.Sprintf("regions[%d]", index), region, validationMessageMustNotBeEmpty)
 		}
 		if _, exists := seenRegions[region.ID]; exists {
-			return offeringValidationError(fmt.Sprintf("regions[%d]", index), region, "must be unique")
+			return offeringValidationError(fmt.Sprintf("regions[%d]", index), region, validationMessageMustBeUnique)
 		}
 		seenRegions[region.ID] = struct{}{}
 		if region.Residency != nil {
@@ -248,7 +251,18 @@ func (o ProviderOffering) Validate() error {
 		}
 	}
 	if strings.TrimSpace(o.Deployment.Type) == "" {
-		return offeringValidationError("deployment.type", o.Deployment.Type, "is required")
+		return offeringValidationError("deployment.type", o.Deployment.Type, validationMessageIsRequired)
+	}
+	seenAliases := make(map[string]struct{}, len(o.Aliases))
+	for index, alias := range o.Aliases {
+		alias = strings.TrimSpace(alias)
+		if alias == "" {
+			return offeringValidationError(fmt.Sprintf("aliases[%d]", index), alias, validationMessageMustNotBeEmpty)
+		}
+		if _, found := seenAliases[alias]; found {
+			return offeringValidationError(fmt.Sprintf("aliases[%d]", index), alias, validationMessageMustBeUnique)
+		}
+		seenAliases[alias] = struct{}{}
 	}
 	if o.InferenceProfile != nil {
 		if err := validateInferenceProfile(*o.InferenceProfile); err != nil {
@@ -265,7 +279,7 @@ func (o ProviderOffering) Validate() error {
 			return offeringValidationError("modes", modeName, "mode name must not be empty")
 		}
 		if mode.Deployment != nil && strings.TrimSpace(mode.Deployment.Type) == "" {
-			return offeringValidationError("modes."+modeName+".deployment.type", mode.Deployment.Type, "must not be empty")
+			return offeringValidationError("modes."+modeName+".deployment.type", mode.Deployment.Type, validationMessageMustNotBeEmpty)
 		}
 		for header := range mode.Request.Headers {
 			if strings.TrimSpace(header) == "" {
@@ -301,22 +315,22 @@ func validateOfferingAccess(access OfferingAccess, endpoint ProviderOfferingEndp
 				return offeringValidationError("endpoint.type", endpoint.Type, "routable offerings require an endpoint contract")
 			}
 		} else if access.Routability != OfferingRoutabilityDiscoverable {
-			return offeringValidationError("access.routability", access.Routability, "is not supported")
+			return offeringValidationError("access.routability", access.Routability, validationMessageIsNotSupported)
 		}
 	case OfferingAccessChannelApplication:
 		if access.Routability != OfferingRoutabilityDiscoverable || len(access.APIs) != 0 {
 			return offeringValidationError("access", access, "application-only offerings must be discoverable-only with no invocation APIs")
 		}
 	default:
-		return offeringValidationError("access.channel", access.Channel, "is not supported")
+		return offeringValidationError("access.channel", access.Channel, validationMessageIsNotSupported)
 	}
 	seen := make(map[InvocationAPI]struct{}, len(access.APIs))
 	for index, api := range access.APIs {
 		if strings.TrimSpace(string(api)) == "" {
-			return offeringValidationError(fmt.Sprintf("access.apis[%d]", index), api, "must not be empty")
+			return offeringValidationError(fmt.Sprintf("access.apis[%d]", index), api, validationMessageMustNotBeEmpty)
 		}
 		if _, found := seen[api]; found {
-			return offeringValidationError(fmt.Sprintf("access.apis[%d]", index), api, "must be unique")
+			return offeringValidationError(fmt.Sprintf("access.apis[%d]", index), api, validationMessageMustBeUnique)
 		}
 		seen[api] = struct{}{}
 	}
@@ -325,12 +339,12 @@ func validateOfferingAccess(access OfferingAccess, endpoint ProviderOfferingEndp
 
 func validateGeographicBoundary(boundary GeographicBoundary, field string) error {
 	if strings.TrimSpace(boundary.ID) == "" {
-		return offeringValidationError(field+".id", boundary.ID, "is required")
+		return offeringValidationError(field+".id", boundary.ID, validationMessageIsRequired)
 	}
 	switch boundary.Kind {
 	case GeographicBoundaryGlobal, GeographicBoundaryGeography, GeographicBoundaryCountry, GeographicBoundarySovereign:
 	default:
-		return offeringValidationError(field+".kind", boundary.Kind, "is not supported")
+		return offeringValidationError(field+".kind", boundary.Kind, validationMessageIsNotSupported)
 	}
 	return nil
 }
@@ -344,7 +358,7 @@ func validateInferenceProfile(profile CrossRegionInferenceProfile) error {
 	}
 	for index, region := range append(append([]string(nil), profile.SourceRegions...), profile.DestinationRegions...) {
 		if strings.TrimSpace(region) == "" {
-			return offeringValidationError(fmt.Sprintf("inference_profile.regions[%d]", index), region, "must not be empty")
+			return offeringValidationError(fmt.Sprintf("inference_profile.regions[%d]", index), region, validationMessageMustNotBeEmpty)
 		}
 	}
 	return nil
@@ -380,6 +394,7 @@ func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 		copyOffering.Limits = &limits
 	}
 	copyOffering.Access.APIs = append([]InvocationAPI(nil), offering.Access.APIs...)
+	copyOffering.Aliases = append([]string(nil), offering.Aliases...)
 	copyOffering.Regions = append([]CloudRegion(nil), offering.Regions...)
 	for index := range copyOffering.Regions {
 		if offering.Regions[index].Residency != nil {

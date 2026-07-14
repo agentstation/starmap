@@ -1,17 +1,18 @@
-// Package azurefoundry discovers Microsoft Foundry and Azure OpenAI account
-// model availability while isolating deployments in customer inventory.
+// Package azurefoundry discovers Microsoft Foundry and Azure OpenAI offerings.
 package azurefoundry
 
 import (
 	"context"
 	stderrors "errors"
 	"fmt"
-	"os"
 	"slices"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -22,9 +23,10 @@ import (
 const ProviderID catalogs.ProviderID = "microsoft-foundry"
 
 const (
-	defaultMaxPages   = 32
-	defaultMaxRecords = 10000
-	modelsAPIVersion  = "2024-10-01"
+	authMethodCloudChain = "cloud_chain"
+	defaultMaxPages      = 32
+	defaultMaxRecords    = 10000
+	modelsAPIVersion     = "2024-10-01"
 )
 
 // Realm defines one Azure control-plane and identity boundary.
@@ -95,11 +97,10 @@ type API interface {
 	ListDeployments(context.Context, string) (sources.Page[Deployment], error)
 }
 
-// Result separates sanitized service offerings from private account state.
+// Result contains canonical definitions and offerings acquired from Foundry.
 type Result struct {
 	Definitions       []catalogs.ModelDefinition
 	Offerings         []catalogs.ProviderOffering
-	CustomerInventory []catalogs.CustomerInventory
 	PricingObservedAt *time.Time
 	PricingMatched    int
 	PricingIgnored    int
@@ -110,7 +111,6 @@ type Source struct {
 	realm      Realm
 	account    Account
 	client     API
-	clientFunc clientFactory
 	retry      sources.ProviderRetryPolicy
 	pagination sources.PaginationPolicy
 	pricing    pricingFetcher
@@ -134,15 +134,56 @@ func newSource(realm Realm, account Account, client API) *Source {
 	return &Source{realm: realm, account: account, client: client, retry: sources.DefaultProviderRetryPolicy(), pagination: sources.PaginationPolicy{MaxPages: defaultMaxPages, MaxRecords: defaultMaxRecords}, now: func() time.Time { return time.Now().UTC() }}
 }
 
-// NewCommercialSource constructs the optional default source from AZURE_* environment configuration.
-func NewCommercialSource() *Source {
-	source := newSource(CommercialRealm(), Account{
-		SubscriptionID: os.Getenv("AZURE_SUBSCRIPTION_ID"), ResourceGroup: os.Getenv("AZURE_RESOURCE_GROUP"),
-		Name: os.Getenv("AZURE_FOUNDRY_ACCOUNT"), Location: os.Getenv("AZURE_FOUNDRY_LOCATION"), Endpoint: os.Getenv("AZURE_FOUNDRY_ENDPOINT"),
-	}, nil)
-	source.clientFunc = newDefaultClient
+type azureCloudSession interface{ Credential() azcore.TokenCredential }
+
+// NewResolvedSource constructs a Foundry source from one fully resolved logical source.
+func NewResolvedSource(resolved acquisition.Source) (*Source, error) {
+	if resolved.ProviderID() != ProviderID || resolved.Config().Endpoint.Type != catalogs.EndpointTypeAzureOpenAI {
+		return nil, &errors.ValidationError{Field: "azure_foundry.source", Value: resolved.String(), Message: "must be a Microsoft Foundry source"}
+	}
+	session, ok := resolved.Auth().CloudSession().(azureCloudSession)
+	if !ok {
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved Microsoft Entra credential is required", Err: errors.ErrAPIKeyRequired}
+	}
+	realm := CommercialRealm()
+	if value, found := resolved.Option("realm"); found && value == governmentRealm.ID {
+		realm = GovernmentRealm()
+	}
+	required := func(name string) (string, error) {
+		value, found := resolved.Binding(name)
+		if !found || strings.TrimSpace(value) == "" {
+			return "", &errors.ValidationError{Field: "azure_foundry." + name, Message: "is required"}
+		}
+		return value, nil
+	}
+	subscription, err := required("subscription")
+	if err != nil {
+		return nil, err
+	}
+	resourceGroup, err := required("resource_group")
+	if err != nil {
+		return nil, err
+	}
+	name, err := required("account")
+	if err != nil {
+		return nil, err
+	}
+	location, err := required("location")
+	if err != nil {
+		return nil, err
+	}
+	endpoint := "https://" + name + ".openai.azure.com"
+	if value, found := resolved.Binding("endpoint"); found {
+		endpoint = value
+	}
+	account := Account{SubscriptionID: subscription, ResourceGroup: resourceGroup, Name: name, Location: location, Endpoint: endpoint}
+	client, err := newClientWithCredential(realm, account, session.Credential())
+	if err != nil {
+		return nil, err
+	}
+	source := newSource(realm, account, client)
 	source.pricing = newHTTPPricingFetcher()
-	return source
+	return source, nil
 }
 
 // ID returns the stable Microsoft source identity.
@@ -151,11 +192,11 @@ func (s *Source) ID() sources.ID { return sources.MicrosoftFoundryID }
 // Name returns the operator-facing source name.
 func (s *Source) Name() string { return "Microsoft Foundry and Azure OpenAI" }
 
-// Observe emits only sanitized public-catalog records.
+// Observe emits one credential-scoped canonical Foundry observation.
 func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Observation, error) {
-	result, fetchErr := s.Fetch(ctx, false)
+	result, fetchErr := s.Fetch(ctx)
 	if fetchErr != nil {
-		catalog, err := emptyPublicCatalog()
+		catalog, err := emptyCatalog()
 		if err != nil {
 			return sources.Observation{}, err
 		}
@@ -167,19 +208,19 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 		return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 			ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 			Completeness: sources.ObservationCompletenessPartial, Status: sources.ObservationStatusDegraded,
-			Scope: catalogmeta.ObservationScopeRegionalPublic, Kind: catalogmeta.SourceKindRegionalSweep,
+			Scope: catalogmeta.ObservationScopeCredentialScoped, Kind: catalogmeta.SourceKindRegionalSweep,
 			Coverage: catalogmeta.ProviderCoverage{Expected: 1},
-			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: code, Subject: string(ProviderID), Message: fetchErr.Error()}},
+			Issues:   []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeSource, Code: code, Subject: string(ProviderID), Message: errors.SafeSummary(fetchErr)}},
 		})
 	}
-	catalog, err := result.PublicCatalog()
+	catalog, err := result.Catalog()
 	if err != nil {
 		return sources.Observation{}, err
 	}
 	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 		ObservedAt: s.now(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
 		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
-		Records: sources.ObservationRecordCounts{Accepted: len(result.Offerings)}, Scope: catalogmeta.ObservationScopeRegionalPublic,
+		Records: sources.ObservationRecordCounts{Accepted: len(result.Offerings)}, Scope: catalogmeta.ObservationScopeCredentialScoped,
 		Kind: catalogmeta.SourceKindRegionalSweep, Coverage: catalogmeta.ProviderCoverage{Expected: 1, Observed: 1}, PricingObservedAt: result.PricingObservedAt,
 	})
 }
@@ -193,26 +234,20 @@ func (s *Source) Dependencies() []sources.Dependency { return nil }
 // IsOptional keeps credential-free public generation operational.
 func (s *Source) IsOptional() bool { return true }
 
-// Fetch reads account model availability and optionally private deployments.
-func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Result, error) {
+// Fetch reads account model availability and contextual deployments.
+func (s *Source) Fetch(ctx context.Context) (Result, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 	if err := validateConfig(s.realm, s.account); err != nil {
 		return Result{}, &errors.AuthenticationError{Provider: string(ProviderID), Method: "azure_account_configuration", Message: "Azure account discovery is not configured", Err: err}
 	}
-	if includeCustomerInventory {
-		if err := validateCustomerAccount(s.account); err != nil {
-			return Result{}, err
-		}
+	if err := validateCustomerAccount(s.account); err != nil {
+		return Result{}, err
 	}
 	client := s.client
 	if client == nil {
-		var err error
-		client, err = s.clientFunc(ctx, s.realm, s.account)
-		if err != nil {
-			return Result{}, err
-		}
+		return Result{}, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved Foundry client is required", Err: errors.ErrAPIKeyRequired}
 	}
 	models, err := s.collectModels(ctx, client)
 	if err != nil {
@@ -233,17 +268,15 @@ func (s *Source) Fetch(ctx context.Context, includeCustomerInventory bool) (Resu
 			return Result{}, err
 		}
 	}
-	if includeCustomerInventory {
-		deployments, listErr := s.collectDeployments(ctx, client)
-		if listErr != nil {
-			return Result{}, listErr
-		}
-		inventory, convertErr := customerInventory(s.realm, s.account, s.now(), deployments, index)
-		if convertErr != nil {
-			return Result{}, convertErr
-		}
-		result.CustomerInventory = []catalogs.CustomerInventory{inventory}
+	deployments, listErr := s.collectDeployments(ctx, client)
+	if listErr != nil {
+		return Result{}, listErr
 	}
+	deploymentRecords, convertErr := deploymentOfferings(s.realm, s.account, deployments, index)
+	if convertErr != nil {
+		return Result{}, convertErr
+	}
+	result.Offerings = append(result.Offerings, deploymentRecords...)
 	return result, nil
 }
 
@@ -320,26 +353,36 @@ func recordsFromModels(realm Realm, account Account, models []Model) (Result, ma
 	return result, index, nil
 }
 
-func customerInventory(realm Realm, account Account, observedAt time.Time, deployments []Deployment, definitions map[string]modelReference) (catalogs.CustomerInventory, error) {
-	inventory := catalogs.CustomerInventory{ProviderID: ProviderID, Scope: catalogs.CustomerScope{SubscriptionID: account.SubscriptionID}, ObservedAt: observedAt}
+func deploymentOfferings(realm Realm, account Account, deployments []Deployment, definitions map[string]modelReference) ([]catalogs.ProviderOffering, error) {
+	offerings := make([]catalogs.ProviderOffering, 0, len(deployments))
 	for _, deployment := range deployments {
 		reference, found := definitions[deployment.ModelName+"@"+deployment.ModelVersion]
 		if !found {
-			return catalogs.CustomerInventory{}, &errors.NotFoundError{Resource: "Azure model definition", ID: deployment.ModelName + "@" + deployment.ModelVersion}
+			return nil, &errors.NotFoundError{Resource: "Azure model definition", ID: deployment.ModelName + "@" + deployment.ModelVersion}
 		}
-		inventory.Deployments = append(inventory.Deployments, catalogs.CustomerDeployment{
-			ID: deployment.Name, DefinitionID: reference.DefinitionID, ProviderModelID: reference.ProviderModelID,
-			Region:     &catalogs.CloudRegion{ID: account.Location, Realm: realm.ID},
+		availability, lifecycle := catalogs.OfferingAvailabilityRestricted, catalogs.OfferingLifecycleActive
+		if !strings.EqualFold(deployment.ProvisioningState, "succeeded") {
+			availability, lifecycle = catalogs.OfferingAvailabilityUnavailable, catalogs.OfferingLifecycleRetired
+		}
+		offering := catalogs.ProviderOffering{
+			ProviderID: ProviderID, ProviderModelID: reference.ProviderModelID, DeploymentID: deployment.Name, DefinitionID: reference.DefinitionID,
+			Aliases: []string{deployment.Name}, Availability: availability,
+			Access:     catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIChatCompletions}},
+			Regions:    []catalogs.CloudRegion{{ID: account.Location, Realm: realm.ID}},
 			Deployment: catalogs.ProviderDeployment{Type: "customer_deployment", Tier: firstNonempty(deployment.SKUName, deployment.ScaleType)},
-			Endpoint:   account.Endpoint, Aliases: []string{deployment.Name},
-		})
+			Endpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeAzureOpenAI, BaseURL: strings.TrimRight(account.Endpoint, "/"), Path: "/openai/deployments/" + deployment.Name}, Lifecycle: lifecycle,
+		}
+		if err := offering.Validate(); err != nil {
+			return nil, err
+		}
+		offerings = append(offerings, offering)
 	}
-	sort.Slice(inventory.Deployments, func(i, j int) bool { return inventory.Deployments[i].ID < inventory.Deployments[j].ID })
-	return inventory, inventory.Validate()
+	sort.Slice(offerings, func(i, j int) bool { return offerings[i].DeploymentID < offerings[j].DeploymentID })
+	return offerings, nil
 }
 
-// PublicCatalog materializes records that contain no account identity or endpoint.
-func (r Result) PublicCatalog() (*catalogs.Catalog, error) {
+// Catalog materializes records that contain no account identity or endpoint.
+func (r Result) Catalog() (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: ProviderID, Name: "Microsoft Foundry"}); err != nil {
 		return nil, err
@@ -426,7 +469,7 @@ func canonicalAuthor(format string) catalogs.AuthorID {
 	}
 }
 
-func emptyPublicCatalog() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
+func emptyCatalog() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
 
 func firstNonempty(values ...string) string {
 	for _, value := range values {

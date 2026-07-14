@@ -3,7 +3,6 @@ package azurefoundry
 import (
 	"context"
 	stderrors "errors"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -43,7 +42,7 @@ func testModel() Model {
 	return Model{Name: "gpt-4.1", Format: "OpenAI", Publisher: "OpenAI", Version: "2025-04-14", IsDefaultVersion: true, LifecycleStatus: "GenerallyAvailable", SKUs: []ModelSKU{{Name: "GlobalStandard", MaxCapacity: 100}}}
 }
 
-func TestFetchSeparatesPublicModelsAndCustomerDeployments(t *testing.T) {
+func TestFetchNormalizesContextualDeploymentsIntoCanonicalOfferings(t *testing.T) {
 	api := &fakeAPI{
 		modelPages:      map[string]sources.Page[Model]{"": {Records: []Model{testModel()}, NextCursor: "models-2"}, "models-2": {}},
 		deploymentPages: map[string]sources.Page[Deployment]{"": {Records: []Deployment{{Name: "customer-chat", ModelName: "gpt-4.1", ModelFormat: "OpenAI", ModelVersion: "2025-04-14", SKUName: "GlobalStandard", ProvisioningState: "Succeeded"}}}},
@@ -54,30 +53,25 @@ func TestFetchSeparatesPublicModelsAndCustomerDeployments(t *testing.T) {
 	}
 	source.now = func() time.Time { return time.Date(2026, 7, 12, 18, 0, 0, 0, time.UTC) }
 
-	publicOnly, err := source.Fetch(context.Background(), false)
+	withContext, err := source.Fetch(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if api.modelCalls != 2 || api.deploymentCalls != 0 {
+	if api.modelCalls != 2 || api.deploymentCalls != 1 {
 		t.Fatalf("calls models=%d deployments=%d", api.modelCalls, api.deploymentCalls)
 	}
-	if got := publicOnly.Offerings[0]; got.IsRoutable() || got.Access.Routability != catalogs.OfferingRoutabilityDiscoverable || got.Regions[0].Realm != "azure-public" {
+	if got := withContext.Offerings[0]; got.IsRoutable() || got.Access.Routability != catalogs.OfferingRoutabilityDiscoverable || got.Regions[0].Realm != "azure-public" {
 		t.Fatalf("unsafe public offering: %#v", got)
 	}
-
-	withCustomer, err := source.Fetch(context.Background(), true)
-	if err != nil {
-		t.Fatal(err)
+	if len(withContext.Offerings) != 2 {
+		t.Fatalf("contextual offerings = %#v", withContext.Offerings)
 	}
-	if len(withCustomer.CustomerInventory) != 1 || len(withCustomer.CustomerInventory[0].Deployments) != 1 {
-		t.Fatalf("customer inventory = %#v", withCustomer.CustomerInventory)
-	}
-	deployment := withCustomer.CustomerInventory[0].Deployments[0]
-	if deployment.Aliases[0] != "customer-chat" || deployment.Endpoint != testAccount().Endpoint {
+	deployment := withContext.Offerings[1]
+	if deployment.Aliases[0] != "customer-chat" || deployment.DeploymentID != "customer-chat" || deployment.Endpoint.BaseURL != testAccount().Endpoint {
 		t.Fatalf("deployment = %#v", deployment)
 	}
 
-	catalog, err := withCustomer.PublicCatalog()
+	catalog, err := withContext.Catalog()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,7 +79,7 @@ func TestFetchSeparatesPublicModelsAndCustomerDeployments(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, privateValue := range []string{"private-subscription", "private-rg", "private-account", "customer-chat"} {
+	for _, privateValue := range []string{"private-subscription", "private-rg"} {
 		if strings.Contains(string(payload), privateValue) {
 			t.Fatalf("public catalog contains %q", privateValue)
 		}
@@ -99,7 +93,7 @@ func TestFetchUsesBoundedRetryAndRejectsRepeatedCursor(t *testing.T) {
 		t.Fatal(err)
 	}
 	source.retry = sources.ProviderRetryPolicy{MaxAttempts: 2, BaseDelay: time.Nanosecond, MaxDelay: time.Nanosecond}
-	if _, err := source.Fetch(context.Background(), false); err != nil {
+	if _, err := source.Fetch(context.Background()); err != nil {
 		t.Fatal(err)
 	}
 	if api.modelCalls != 2 {
@@ -111,7 +105,7 @@ func TestFetchUsesBoundedRetryAndRejectsRepeatedCursor(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = source.Fetch(context.Background(), false)
+	_, err = source.Fetch(context.Background())
 	var conflict *errors.ConflictError
 	if !stderrors.As(err, &conflict) {
 		t.Fatalf("expected typed cursor conflict, got %v", err)
@@ -124,7 +118,7 @@ func TestGovernmentRealmRemainsDistinct(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := source.Fetch(context.Background(), false)
+	result, err := source.Fetch(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,23 +127,14 @@ func TestGovernmentRealmRemainsDistinct(t *testing.T) {
 	}
 }
 
-func TestMissingDefaultConfigurationDegradesWithoutClientCall(t *testing.T) {
-	t.Setenv("AZURE_SUBSCRIPTION_ID", "")
-	t.Setenv("AZURE_RESOURCE_GROUP", "")
-	t.Setenv("AZURE_FOUNDRY_ACCOUNT", "")
-	t.Setenv("AZURE_FOUNDRY_LOCATION", "")
-	source := NewCommercialSource()
-	called := false
-	source.clientFunc = func(context.Context, Realm, Account) (API, error) {
-		called = true
-		return nil, stderrors.New("must not be called")
-	}
+func TestMissingResolvedConfigurationDegradesWithoutClientCall(t *testing.T) {
+	source := newSource(CommercialRealm(), Account{}, nil)
 	observation, err := source.Observe(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if called || observation.Status != sources.ObservationStatusDegraded || observation.Issues[0].Code != sources.ObservationIssueCodeMissingCredentials {
-		t.Fatalf("observation=%#v called=%v", observation, called)
+	if observation.Status != sources.ObservationStatusDegraded || observation.Issues[0].Code != sources.ObservationIssueCodeMissingCredentials {
+		t.Fatalf("observation=%#v", observation)
 	}
 }
 
@@ -170,11 +155,11 @@ func TestPublisherOwnsDefinitionAndDefaultVersionResolvesDeployment(t *testing.T
 	if got := result.Definitions[0]; got.ID != "mistral-ai/mistral-large" || got.AuthorIDs[0] != "mistral-ai" {
 		t.Fatalf("definition = %#v", got)
 	}
-	inventory, err := customerInventory(CommercialRealm(), testAccount(), time.Now().UTC(), []Deployment{{Name: "alias", ModelName: "mistral-large", ModelFormat: "OpenAI"}}, index)
+	offerings, err := deploymentOfferings(CommercialRealm(), testAccount(), []Deployment{{Name: "alias", ModelName: "mistral-large", ModelFormat: "OpenAI", ProvisioningState: "Succeeded"}}, index)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := inventory.Deployments[0]; got.ProviderModelID != "mistral-large@2502" || got.DefinitionID != "mistral-ai/mistral-large" {
+	if got := offerings[0]; got.ProviderModelID != "mistral-large@2502" || got.DefinitionID != "mistral-ai/mistral-large" {
 		t.Fatalf("deployment = %#v", got)
 	}
 }
@@ -188,26 +173,4 @@ func TestRecordsRejectMultipleDefaultVersions(t *testing.T) {
 	if !stderrors.As(err, &conflict) {
 		t.Fatalf("expected default-version conflict, got %v", err)
 	}
-}
-
-func TestLiveCommercialAccount(t *testing.T) {
-	if os.Getenv("STARMAP_LIVE_AZURE") != "1" {
-		t.Skip("set STARMAP_LIVE_AZURE=1 with AZURE_* account configuration to run the credential-aware fixture")
-	}
-	source := NewCommercialSource()
-	if err := validateConfig(source.realm, source.account); err != nil {
-		t.Skipf("Azure account configuration unavailable: %v", err)
-	}
-	result, err := source.Fetch(context.Background(), false)
-	if err != nil {
-		var authenticationErr *errors.AuthenticationError
-		if stderrors.As(err, &authenticationErr) {
-			t.Skipf("Microsoft Entra default credential chain unavailable: %v", authenticationErr)
-		}
-		t.Fatal(err)
-	}
-	if len(result.Offerings) == 0 {
-		t.Fatal("live Azure model inventory returned no offerings")
-	}
-	t.Logf("definitions=%d offerings=%d pricing_matched=%d", len(result.Definitions), len(result.Offerings), result.PricingMatched)
 }

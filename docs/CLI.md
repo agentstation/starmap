@@ -27,8 +27,6 @@ These short flags are **RESERVED** globally and must not be used for command-spe
 | `-o`  | `--output`   | Output format              | table, json, yaml, wide         |
 | `-h`  | `--help`     | Show help                  | Built-in Cobra flag             |
 
-**Aliases**: `--format` and `--fmt` are aliases for `--output` (all three flags accept the same values).
-
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:
 - Avoid conflict with embed cat's `--filename` flag
@@ -104,7 +102,7 @@ Use flags for filtering, options, and modifiers:
 ```bash
 # ✅ Good - options as flags
 starmap update openai --dry --force
-starmap models list --provider openai --format json
+starmap models list --provider openai --output json
 
 # Positional: what (resource/identity)
 # Flags: how (behavior modifiers)
@@ -290,7 +288,7 @@ starmap update --provider openai  # Use positional instead
 
 # ❌ Don't create ambiguous flag names
 starmap update --output catalog   # Does this mean format or directory?
-# Use: --output-dir for directory, --format for style
+# Use: --output-dir for directory, --output for style
 
 # ❌ Don't use short flags that aren't mnemonic without good reason
 starmap update -x  # What does -x mean? Not obvious
@@ -313,18 +311,18 @@ When breaking changes are necessary:
 
 2. **Update CHANGELOG** (when we have one)
 
-3. **Consider compatibility**
-   - Pre-1.0: Breaking changes acceptable with clear communication
-   - Post-1.0: Use deprecation period (6-12 months) before removal
+3. **Use the current prelaunch contract**
+   - Before launch: remove superseded shapes directly and add negative fixtures
+   - After a public stability commitment: define a versioned deprecation policy
 
 ## Future Considerations
 
 ### Version-Specific Behavior
 
-When Starmap reaches 1.0, we may need:
+After Starmap makes a public stability commitment, it may need:
 - Semantic versioning for breaking CLI changes
 - Longer deprecation periods
-- Compatibility shims
+- Explicitly versioned transition adapters
 - Version warnings
 
 ### Command Aliases

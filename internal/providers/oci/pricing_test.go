@@ -3,7 +3,7 @@ package oci
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/internal/providerdata"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestExactTokenPricing(t *testing.T) {
@@ -20,13 +20,21 @@ func TestExactTokenPricing(t *testing.T) {
 		{id: "openai.gpt-oss-20b", input: 0.07, output: 0.30},
 		{id: "xai.grok-4.3", input: 1.25, output: 2.50, cache: 0.20, tierSize: 200000},
 	}
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		t.Fatalf("NewEmbedded: %v", err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
 	for _, test := range tests {
 		t.Run(test.id, func(t *testing.T) {
-			catalog, err := providerdata.LoadPricingCatalog(ProviderID)
+			offering, err := catalog.Offering(ProviderID, catalogs.ProviderModelID(test.id))
 			if err != nil {
-				t.Fatalf("LoadPricingCatalog: %v", err)
+				t.Fatalf("Offering: %v", err)
 			}
-			pricing := catalog.Models[test.id].Pricing
+			pricing := offering.Pricing
 			if pricing == nil || pricing.Tokens.Input.Per1M != test.input || pricing.Tokens.Output.Per1M != test.output {
 				t.Fatalf("pricing = %#v", pricing)
 			}
@@ -38,11 +46,7 @@ func TestExactTokenPricing(t *testing.T) {
 			}
 		})
 	}
-	catalog, err := providerdata.LoadPricingCatalog(ProviderID)
-	if err != nil {
-		t.Fatalf("LoadPricingCatalog: %v", err)
-	}
-	if _, found := catalog.Models["unknown.model"]; found {
+	if _, err := catalog.Offering(ProviderID, "unknown.model"); err == nil {
 		t.Fatal("unknown model inherited pricing")
 	}
 }

@@ -55,6 +55,17 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 	if err != nil {
 		return pipeline.Publication{}, err
 	}
+	contextual, err := validateObservationPublication(observations)
+	if err != nil {
+		return pipeline.Publication{}, err
+	}
+	if contextual {
+		c.swapContextualCatalog(published)
+		logging.Info().
+			Int("changes_applied", changeset.Summary.TotalChanges).
+			Msg("Credential-scoped catalog applied in memory without public persistence")
+		return pipeline.Publication{Contextual: true}, nil
+	}
 
 	// Persist first so a failed save does not publish unsaved in-memory state.
 	if options.OutputPath != "" {
@@ -135,7 +146,7 @@ type pipelineStore struct {
 }
 
 func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
-	return s.client.Catalog(), nil
+	return s.client.publicationCatalog(), nil
 }
 
 func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {

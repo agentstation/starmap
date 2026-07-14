@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // NewGCloudCommand creates the auth gcloud subcommand.
@@ -147,32 +149,55 @@ func checkGCloudAuthentication(ctx context.Context) (bool, string, error) {
 		projectID = pid
 	}
 
-	// Also check environment variable
+	// Use the same ordered project binding declared by the Vertex source. The
+	// provider catalog remains the sole owner of accepted environment aliases.
 	if projectID == "" {
-		projectID = os.Getenv("GOOGLE_CLOUD_PROJECT")
+		for _, name := range vertexProjectEnvironmentNames() {
+			if value := os.Getenv(name); value != "" {
+				projectID = value
+				break
+			}
+		}
 	}
 
 	return true, projectID, nil
 }
 
+func vertexProjectEnvironmentNames() catalogs.ProviderEnvironmentNames {
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		return nil
+	}
+	provider, err := builder.Provider(catalogs.ProviderIDGoogleVertex)
+	if err != nil || provider.Catalog == nil {
+		return nil
+	}
+	for _, source := range provider.Catalog.Sources {
+		if binding, found := source.Scopes["project"]; found {
+			return append(catalogs.ProviderEnvironmentNames(nil), binding.Name...)
+		}
+	}
+	return nil
+}
+
 func setGCloudProject(project string) error {
-	fmt.Printf("Setting default project to: %s\n", project)
+	fmt.Println("Setting default Google Cloud project")
 
 	ctx := context.Background()
 
 	// Set using gcloud config
 	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project) //nolint:gosec // gcloud executable is fixed; project is passed as an argument.
-	if output, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("failed to set project: %w\nOutput: %s", err, output)
+	if _, err := cmd.CombinedOutput(); err != nil {
+		return &errors.ConfigError{Component: "gcloud project", Message: "failed to set configured project", Err: err}
 	}
 
 	// Also set quota project for ADC
 	cmd = exec.CommandContext(ctx, "gcloud", "auth", "application-default", "set-quota-project", project) //nolint:gosec // gcloud executable is fixed; project is passed as an argument.
-	if output, err := cmd.CombinedOutput(); err != nil {
+	if _, err := cmd.CombinedOutput(); err != nil {
 		// This is not fatal, just inform
-		fmt.Printf("%s Could not set quota project: %s\n", emoji.Warning, output)
+		fmt.Printf("%s Could not set the ADC quota project\n", emoji.Warning)
 	}
 
-	fmt.Printf("%s Default project set to: %s\n", emoji.Success, project)
+	fmt.Printf("%s Default project configured\n", emoji.Success)
 	return nil
 }

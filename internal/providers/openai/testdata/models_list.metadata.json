@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "provider": "openai",
-  "fetched_at": "2025-08-16T22:10:58Z",
-  "source_revision": {"kind": "content_digest", "value": "sha256:5733a220b5aa834f6258646c4be869c0bb3699bb4e29a4fcc58e2c59f459dc39"},
-  "payload": {"path": "models_list.json", "checksum": "sha256:5733a220b5aa834f6258646c4be869c0bb3699bb4e29a4fcc58e2c59f459dc39"},
-  "max_age": "8760h0m0s"
-}

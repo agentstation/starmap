@@ -61,9 +61,9 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) ([]sources.Source, error) {
 		sourceWorkStarted = true
-		return nil
+		return nil, nil
 	}
 
 	_, err := runner.Sync(context.Background(), pkgsync.WithProvider("missing-provider"))
@@ -72,6 +72,29 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 	if sourceWorkStarted {
 		t.Fatal("Expected validation to fail before source construction")
+	}
+}
+
+func TestPipelineFailsClosedWhenSourceConstructionFails(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := New(store)
+	runner.loadLocal = func(string) (*catalogs.Builder, error) { return catalogs.NewEmpty(), nil }
+	constructionFailure := stderrors.New("cloud registry construction failed")
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) ([]sources.Source, error) {
+		return nil, constructionFailure
+	}
+	dependencyResolutionStarted := false
+	runner.resolveDependencies = func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error) {
+		dependencyResolutionStarted = true
+		return nil, nil
+	}
+
+	_, err := runner.Sync(context.Background())
+	if !stderrors.Is(err, constructionFailure) {
+		t.Fatalf("Sync error = %v, want source construction failure", err)
+	}
+	if dependencyResolutionStarted {
+		t.Fatal("pipeline continued after source construction failure")
 	}
 }
 
@@ -267,8 +290,8 @@ func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner.loadLocal = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
-		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) ([]sources.Source, error) {
+		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}, nil
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {
 		return srcs, nil

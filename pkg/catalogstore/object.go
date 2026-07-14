@@ -55,7 +55,7 @@ func (b *MemoryObjectBackend) Get(ctx context.Context, key string) (ObjectValue,
 	defer b.mu.RUnlock()
 	value, found := b.objects[key]
 	if !found {
-		return ObjectValue{}, &errors.NotFoundError{Resource: "object", ID: key}
+		return ObjectValue{}, &errors.NotFoundError{Resource: objectResource, ID: key}
 	}
 	value.Data = append([]byte(nil), value.Data...)
 	return value, nil
@@ -67,7 +67,7 @@ func (b *MemoryObjectBackend) Put(ctx context.Context, key string, data []byte, 
 		return ObjectValue{}, err
 	}
 	if strings.TrimSpace(key) == "" {
-		return ObjectValue{}, &errors.ValidationError{Field: "object.key", Message: "is required"}
+		return ObjectValue{}, &errors.ValidationError{Field: "object.key", Message: validationRequiredMessage}
 	}
 	if condition.IfAbsent && condition.IfVersion != "" {
 		return ObjectValue{}, &errors.ValidationError{Field: "object.condition", Message: "cannot combine IfAbsent and IfVersion"}
@@ -76,14 +76,14 @@ func (b *MemoryObjectBackend) Put(ctx context.Context, key string, data []byte, 
 	defer b.mu.Unlock()
 	existing, found := b.objects[key]
 	if condition.IfAbsent && found {
-		return ObjectValue{}, &errors.ConflictError{Resource: "object", Expected: "", Actual: existing.Version}
+		return ObjectValue{}, &errors.ConflictError{Resource: objectResource, Expected: "", Actual: existing.Version}
 	}
 	if condition.IfVersion != "" && (!found || existing.Version != condition.IfVersion) {
 		actual := ""
 		if found {
 			actual = existing.Version
 		}
-		return ObjectValue{}, &errors.ConflictError{Resource: "object", Expected: condition.IfVersion, Actual: actual}
+		return ObjectValue{}, &errors.ConflictError{Resource: objectResource, Expected: condition.IfVersion, Actual: actual}
 	}
 	b.next++
 	value := ObjectValue{Data: append([]byte(nil), data...), Version: fmt.Sprintf("%d", b.next)}
@@ -102,11 +102,11 @@ type Object struct {
 // NewObject creates an object-backed catalog store.
 func NewObject(backend ObjectBackend, prefix string) (*Object, error) {
 	if backend == nil {
-		return nil, &errors.ConfigError{Component: "catalog store", Message: "object backend is required"}
+		return nil, &errors.ConfigError{Component: catalogStoreComponent, Message: "object backend is required"}
 	}
 	prefix = strings.Trim(prefix, "/")
 	if prefix == "" {
-		return nil, &errors.ConfigError{Component: "catalog store", Message: "object prefix is required"}
+		return nil, &errors.ConfigError{Component: catalogStoreComponent, Message: "object prefix is required"}
 	}
 	return &Object{backend: backend, prefix: prefix}, nil
 }
@@ -195,7 +195,7 @@ func (s *Object) Commit(ctx context.Context, generation Generation, expectedGene
 		GenerationID string `json:"generation_id"`
 	}{GenerationID: id})
 	if err != nil {
-		return &errors.ValidationError{Field: "current", Value: id, Message: fmt.Sprintf("cannot encode pointer: %v", err)}
+		return &errors.ValidationError{Field: currentFilename, Value: id, Message: fmt.Sprintf("cannot encode pointer: %v", err)}
 	}
 	condition := ObjectPutCondition{IfAbsent: !state.exists}
 	if state.exists {
@@ -239,10 +239,10 @@ func (s *Object) current(ctx context.Context) (objectCurrent, error) {
 		GenerationID string `json:"generation_id"`
 	}
 	if err := json.Unmarshal(value.Data, &pointer); err != nil {
-		return objectCurrent{}, &errors.ValidationError{Field: "current", Value: string(value.Data), Message: fmt.Sprintf("invalid JSON: %v", err)}
+		return objectCurrent{}, &errors.ValidationError{Field: currentFilename, Value: string(value.Data), Message: fmt.Sprintf("invalid JSON: %v", err)}
 	}
 	if strings.TrimSpace(pointer.GenerationID) == "" {
-		return objectCurrent{}, &errors.ValidationError{Field: "current.generation_id", Message: "is required"}
+		return objectCurrent{}, &errors.ValidationError{Field: "current.generation_id", Message: validationRequiredMessage}
 	}
 	return objectCurrent{id: pointer.GenerationID, version: value.Version, exists: true}, nil
 }
@@ -257,7 +257,7 @@ func (s *Object) putImmutable(ctx context.Context, key string, data []byte) erro
 			return getErr
 		}
 		if !bytes.Equal(existing.Data, data) {
-			return &errors.ConflictError{Resource: "object", Expected: key, Actual: key, Message: "immutable object has different content"}
+			return &errors.ConflictError{Resource: objectResource, Expected: key, Actual: key, Message: "immutable object has different content"}
 		}
 	}
 	return nil

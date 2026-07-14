@@ -34,8 +34,8 @@ func (m *Models) Get(id string) (*Model, bool) {
 func (m *Models) Set(id string, model *Model) error {
 	if model == nil {
 		return &errors.ValidationError{
-			Field:   "model",
-			Message: "cannot be nil",
+			Field:   catalogResourceModel,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -50,8 +50,8 @@ func (m *Models) Set(id string, model *Model) error {
 func (m *Models) Add(model *Model) error {
 	if model == nil {
 		return &errors.ValidationError{
-			Field:   "model",
-			Message: "cannot be nil",
+			Field:   catalogResourceModel,
+			Message: validationMessageCannotBeNil,
 		}
 	}
 
@@ -62,7 +62,7 @@ func (m *Models) Add(model *Model) error {
 		return &errors.ValidationError{
 			Field:   "model.ID",
 			Value:   model.ID,
-			Message: "already exists",
+			Message: validationMessageAlreadyExists,
 		}
 	}
 
@@ -78,7 +78,7 @@ func (m *Models) Delete(id string) error {
 
 	if _, exists := m.models[id]; !exists {
 		return &errors.NotFoundError{
-			Resource: "model",
+			Resource: catalogResourceModel,
 			ID:       id,
 		}
 	}
@@ -192,7 +192,7 @@ func (m *Models) AddBatch(models []*Model) map[string]error {
 			errs[model.ID] = &errors.ValidationError{
 				Field:   "model.ID",
 				Value:   model.ID,
-				Message: "already exists",
+				Message: validationMessageAlreadyExists,
 			}
 		}
 	}
@@ -227,7 +227,7 @@ func (m *Models) SetBatch(models map[string]*Model) error {
 		if model == nil {
 			return &errors.ValidationError{
 				Field:   "models[" + id + "]",
-				Message: "cannot be nil",
+				Message: validationMessageCannotBeNil,
 			}
 		}
 	}
@@ -257,7 +257,7 @@ func (m *Models) DeleteBatch(ids []string) map[string]error {
 	for _, id := range ids {
 		if _, exists := m.models[id]; !exists {
 			errs[id] = &errors.NotFoundError{
-				Resource: "model",
+				Resource: catalogResourceModel,
 				ID:       id,
 			}
 		} else {

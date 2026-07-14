@@ -52,7 +52,6 @@ func (a *App) NewEmbedCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "embed",
 		GroupID: "development",
-		Aliases: []string{"inspect"},
 		Short:   "Explore embedded filesystem",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()

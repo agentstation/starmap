@@ -13,6 +13,11 @@ import (
 	pkgconstants "github.com/agentstation/starmap/pkg/constants"
 )
 
+const (
+	defaultHomebrewPrefix = "/opt/homebrew"
+	defaultLocalPrefix    = "/usr/local"
+)
+
 // Install installs completion files to appropriate system locations.
 func Install(cmd *cobra.Command, shell string) error {
 	fmt.Printf("Installing %s completions for starmap...\n", shell)
@@ -189,7 +194,7 @@ func GetBashPath() (string, error) {
 	}
 
 	// Try to detect Homebrew
-	for _, prefix := range []string{"/opt/homebrew", "/usr/local"} {
+	for _, prefix := range []string{defaultHomebrewPrefix, defaultLocalPrefix} {
 		if _, err := os.Stat(filepath.Join(prefix, "bin", "brew")); err == nil {
 			return filepath.Join(prefix, "etc", "bash_completion.d", "starmap"), nil
 		}
@@ -211,7 +216,7 @@ func GetZshPath() (string, error) {
 	}
 
 	// Try to detect Homebrew
-	for _, prefix := range []string{"/opt/homebrew", "/usr/local"} {
+	for _, prefix := range []string{defaultHomebrewPrefix, "/usr/local"} {
 		if _, err := os.Stat(filepath.Join(prefix, "bin", "brew")); err == nil {
 			return filepath.Join(prefix, "share", "zsh", "site-functions", "_starmap"), nil
 		}
@@ -233,7 +238,7 @@ func GetFishPath() (string, error) {
 	}
 
 	// Try to detect Homebrew
-	for _, prefix := range []string{"/opt/homebrew", "/usr/local"} {
+	for _, prefix := range []string{defaultHomebrewPrefix, "/usr/local"} {
 		if _, err := os.Stat(filepath.Join(prefix, "bin", "brew")); err == nil {
 			return filepath.Join(prefix, "share", "fish", "vendor_completions.d", "starmap.fish"), nil
 		}

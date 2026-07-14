@@ -46,15 +46,15 @@ func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
 	t.Setenv("HOME", home)
 	t.Setenv("CONFIG", "")
 	canonical := filepath.Join(home, ".starmap", "config.yaml")
-	legacy := filepath.Join(home, ".starmap.yaml")
+	rejectedDraft := filepath.Join(home, ".starmap.yaml")
 	if err := os.MkdirAll(filepath.Dir(canonical), constants.DirPermissions); err != nil {
 		t.Fatalf("MkdirAll: %v", err)
 	}
 	if err := os.WriteFile(canonical, []byte("catalog_path: /canonical\n"), constants.FilePermissions); err != nil {
 		t.Fatalf("WriteFile canonical: %v", err)
 	}
-	if err := os.WriteFile(legacy, []byte("catalog_path: /ignored-legacy\n"), constants.FilePermissions); err != nil {
-		t.Fatalf("WriteFile legacy: %v", err)
+	if err := os.WriteFile(rejectedDraft, []byte("catalog_path: /ignored-draft\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile rejected draft: %v", err)
 	}
 	config, err := LoadConfig()
 	if err != nil {
@@ -68,10 +68,40 @@ func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
 	}
 	config, err = LoadConfig()
 	if err != nil {
-		t.Fatalf("LoadConfig legacy: %v", err)
+		t.Fatalf("LoadConfig without canonical file: %v", err)
 	}
-	if config.ConfigFile == legacy || config.CatalogPath != "" {
-		t.Fatalf("legacy config was discovered: %#v", config)
+	if config.ConfigFile == rejectedDraft || config.CatalogPath != "" {
+		t.Fatalf("rejected draft config was discovered: %#v", config)
+	}
+}
+
+func TestLoadEnvFilesCanBeDisabledForSecretIsolatedVerification(t *testing.T) {
+	originalDirectory, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Getwd: %v", err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(originalDirectory) })
+	if err := os.Chdir(t.TempDir()); err != nil {
+		t.Fatalf("Chdir: %v", err)
+	}
+	if err := os.WriteFile(".env", []byte("STARMAP_DOTENV_TEST_VALUE=must-not-load\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	t.Setenv(envDisableDotenv, "1")
+	originalValue, hadOriginalValue := os.LookupEnv("STARMAP_DOTENV_TEST_VALUE")
+	if err := os.Unsetenv("STARMAP_DOTENV_TEST_VALUE"); err != nil {
+		t.Fatalf("Unsetenv: %v", err)
+	}
+	t.Cleanup(func() {
+		if hadOriginalValue {
+			_ = os.Setenv("STARMAP_DOTENV_TEST_VALUE", originalValue)
+			return
+		}
+		_ = os.Unsetenv("STARMAP_DOTENV_TEST_VALUE")
+	})
+	loadEnvFiles()
+	if value := os.Getenv("STARMAP_DOTENV_TEST_VALUE"); value != "" {
+		t.Fatalf("disabled dotenv loaded a value: %q", value)
 	}
 }
 

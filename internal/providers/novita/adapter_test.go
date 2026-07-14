@@ -8,14 +8,15 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/providers/openai"
-	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
+	"github.com/agentstation/starmap/internal/connectors/openai"
+	"github.com/agentstation/starmap/internal/providers/fixtures"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestNovitaPreservesFixedPointPricingLimitsAndRawEvidence(t *testing.T) {
-	client, closeServer := newNovitaFixtureClient(t, string(testhelper.LoadTestdata(t, "models_list.json")))
+	client, closeServer := newNovitaFixtureClient(t, string(fixtures.Load(t, "models_list.json")))
 	defer closeServer()
 	models, err := client.ListModels(context.Background())
 	if err != nil {
@@ -92,16 +93,11 @@ func newNovitaFixtureClient(t *testing.T, body string) (*openai.Client, func()) 
 		writer.Header().Set("Content-Type", "application/json")
 		_, _ = writer.Write([]byte(body))
 	}))
-	provider := &catalogs.Provider{
-		ID: catalogs.ProviderIDNovita, Name: "Novita AI LLM API",
-		APIKey: &catalogs.ProviderAPIKey{Name: "NOVITA_API_KEY", Header: "Authorization", Scheme: catalogs.ProviderAPIKeySchemeBearer},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
-			Type: catalogs.EndpointTypeOpenAI, URL: server.URL, AuthRequired: true,
-			AuthorMapping: &catalogs.AuthorMapping{Field: "id", Normalized: map[string]catalogs.AuthorID{"meta-llama/*": catalogs.AuthorIDMeta}},
-		}},
-	}
-	provider.LoadAPIKey()
-	client, err := openai.NewClient(provider, Options()...)
+	provider := fixtures.EmbeddedProvider(t, catalogs.ProviderIDNovita)
+	provider.Catalog.Sources[0].Endpoint.URL = server.URL
+	provider.Catalog.Sources[0].Endpoint.BaseURLEnv = ""
+	provider.Catalog.Sources[0].Endpoint.Path = ""
+	client, err := openai.NewClient(testsource.Authenticated(t, &provider), Options()...)
 	if err != nil {
 		server.Close()
 		t.Fatalf("NewClient: %v", err)

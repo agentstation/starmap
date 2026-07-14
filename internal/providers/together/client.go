@@ -13,13 +13,18 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
-const defaultModelsURL = "https://api.together.ai/v1/models"
+const (
+	inventoryDedicated    = "dedicated"
+	inventoryServerless   = "serverless"
+	invalidInventoryError = "source option inventory must be serverless or dedicated"
+)
 
 type model struct {
 	ID            string                           `json:"id"`
@@ -63,78 +68,88 @@ type pricing struct {
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
 	transport *transport.Client
+	inventory string
 }
 
 // NewClient creates a Together inventory client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	inventory, _ := source.Option("inventory")
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), transport: transport.New(source.Auth()), inventory: inventory}
 }
 
-// IsAPIKeyRequired reports whether inventory authentication is required.
-func (c *Client) IsAPIKeyRequired() bool {
+// CaptureURL returns the exact configured Together inventory request URL.
+func (c *Client) CaptureURL() (string, error) {
 	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.IsAPIKeyRequired()
+	endpoint, inventory := c.endpoint, c.inventory
+	c.mu.RUnlock()
+	if inventory != inventoryServerless && inventory != inventoryDedicated {
+		return "", &errors.ConfigError{Component: string(catalogs.ProviderIDTogetherAI), Message: invalidInventoryError}
+	}
+	return inventoryURL(endpoint, inventory == inventoryDedicated)
 }
 
-// HasAPIKey reports whether a Together key is resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey()
-}
-
-// ListModels merges the public serverless and dedicated model catalogs.
+// ListModels retrieves exactly one configured Together inventory.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	transportClient := c.transport
+	endpoint := c.endpoint
+	inventory := c.inventory
 	c.mu.RUnlock()
 	if provider == nil {
-		return nil, &errors.ConfigError{Component: "together", Message: "provider not configured"}
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDTogetherAI), Message: "provider not configured"}
 	}
-	endpoint := provider.CatalogEndpointURL()
 	if endpoint == "" {
-		endpoint = defaultModelsURL
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDTogetherAI), Message: "catalog endpoint is required"}
 	}
-	serverless, err := fetchInventory(ctx, transportClient, provider, endpoint, false)
+	if inventory != inventoryServerless && inventory != inventoryDedicated {
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDTogetherAI), Message: invalidInventoryError}
+	}
+	sourceModels, err := fetchInventory(ctx, transportClient, endpoint, inventory == inventoryDedicated)
 	if err != nil {
 		return nil, err
 	}
-	dedicated, err := fetchInventory(ctx, transportClient, provider, endpoint, true)
-	if err != nil {
+	return normalizeModels(sourceModels, inventory)
+}
+
+// DecodeModels validates and normalizes one captured Together inventory using
+// the same source-specific filtering and conversion path as live acquisition.
+func (c *Client) DecodeModels(payload []byte) ([]catalogs.Model, error) {
+	c.mu.RLock()
+	inventory := c.inventory
+	c.mu.RUnlock()
+	if inventory != inventoryServerless && inventory != inventoryDedicated {
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDTogetherAI), Message: invalidInventoryError}
+	}
+	if err := sourcepayload.ValidateJSON(payload); err != nil {
 		return nil, err
 	}
+	var sourceModels []model
+	if err := json.Unmarshal(payload, &sourceModels); err != nil {
+		return nil, errors.WrapParse("json", "Together models response fixture", err)
+	}
+	if sourceModels == nil {
+		return nil, errors.NewParseError("json", "Together models response", "required model array is null", nil)
+	}
+	return normalizeModels(sourceModels, inventory)
+}
+
+func normalizeModels(sourceModels []model, inventory string) ([]catalogs.Model, error) {
 	models := make(map[string]catalogs.Model)
-	for _, source := range serverless {
-		converted, ok, err := convertModel(source, "serverless")
+	for _, source := range sourceModels {
+		converted, ok, err := convertModel(source, inventory)
 		if err != nil {
 			return nil, err
 		}
 		if ok {
+			if _, found := models[converted.ID]; found {
+				return nil, &errors.ConflictError{Resource: "together model", Actual: converted.ID, Message: "duplicate model identity"}
+			}
 			models[converted.ID] = converted
 		}
-	}
-	for _, source := range dedicated {
-		converted, ok, err := convertModel(source, "dedicated")
-		if err != nil {
-			return nil, err
-		}
-		if !ok {
-			continue
-		}
-		if existing, found := models[converted.ID]; found {
-			deployment := catalogs.ProviderDeployment{Type: "dedicated"}
-			if existing.Modes == nil {
-				existing.Modes = make(map[string]catalogs.ModelMode)
-			}
-			existing.Modes["dedicated"] = catalogs.ModelMode{Pricing: converted.Pricing, Deployment: &deployment}
-			existing.Extensions = mergeTogetherEvidence(existing.Extensions, converted.Extensions)
-			models[converted.ID] = existing
-			continue
-		}
-		models[converted.ID] = converted
 	}
 	ids := make([]string, 0, len(models))
 	for id := range models {
@@ -148,28 +163,36 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	return result, nil
 }
 
-func fetchInventory(ctx context.Context, client *transport.Client, provider *catalogs.Provider, endpoint string, dedicated bool) ([]model, error) {
-	parsed, err := url.Parse(endpoint)
+func fetchInventory(ctx context.Context, client *transport.Client, endpoint string, dedicated bool) ([]model, error) {
+	requestURL, err := inventoryURL(endpoint, dedicated)
 	if err != nil {
-		return nil, errors.WrapParse("url", "Together models endpoint", err)
+		return nil, err
 	}
-	query := parsed.Query()
-	if dedicated {
-		query.Set("dedicated", "true")
-	}
-	parsed.RawQuery = query.Encode()
-	response, err := client.Get(ctx, parsed.String(), provider)
+	response, err := client.Get(ctx, requestURL)
 	if err != nil {
-		return nil, &errors.APIError{Provider: "together", Endpoint: parsed.String(), Message: "request failed", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDTogetherAI), Endpoint: requestURL, Message: "request failed", Err: err}
 	}
 	var result []model
 	if err := transport.DecodeResponse(response, &result); err != nil {
-		return nil, &errors.APIError{Provider: "together", Endpoint: parsed.String(), StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
+		return nil, &errors.APIError{Provider: string(catalogs.ProviderIDTogetherAI), Endpoint: requestURL, StatusCode: response.StatusCode, Message: "failed to decode response", Err: err}
 	}
 	if result == nil {
 		return nil, errors.NewParseError("json", "Together models response", "required model array is null", nil)
 	}
 	return result, nil
+}
+
+func inventoryURL(endpoint string, dedicated bool) (string, error) {
+	parsed, err := url.Parse(endpoint)
+	if err != nil {
+		return "", errors.WrapParse("url", "Together models endpoint", err)
+	}
+	query := parsed.Query()
+	if dedicated {
+		query.Set(inventoryDedicated, "true")
+	}
+	parsed.RawQuery = query.Encode()
+	return parsed.String(), nil
 }
 
 func convertModel(source model, deploymentType string) (catalogs.Model, bool, error) {
@@ -194,7 +217,6 @@ func convertModel(source model, deploymentType string) (catalogs.Model, bool, er
 		ID: source.ID, Name: name, Authors: []catalogs.Author{{ID: authorID, Name: authorID.String()}},
 		Status: catalogs.ModelStatusActive, Limits: &catalogs.ModelLimits{ContextWindow: source.ContextLength},
 		Features:           &catalogs.ModelFeatures{Modalities: catalogs.ModelModalities{Input: []catalogs.ModelModality{catalogs.ModelModalityText}, Output: []catalogs.ModelModality{catalogs.ModelModalityText}}},
-		OfferingEndpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeOpenAI, BaseURL: "https://api.together.ai/v1"},
 		OfferingDeployment: catalogs.ProviderDeployment{Type: deploymentType},
 	}
 	result.InvocationAPIs = invocationAPIs(source.Type)
@@ -229,7 +251,7 @@ func convertModel(source model, deploymentType string) (catalogs.Model, bool, er
 	if len(source.UnknownFields) > 0 {
 		fields["unknown_fields"] = source.UnknownFields
 	}
-	result.Extensions = catalogs.SourceExtensions{"together": {Fields: catalogs.NormalizeExtensionFields(fields)}}
+	result.Extensions = catalogs.SourceExtensions{string(catalogs.ProviderIDTogetherAI): {Fields: catalogs.NormalizeExtensionFields(fields)}}
 	return result, true, nil
 }
 
@@ -298,25 +320,9 @@ func togetherAuthor(organization, modelID string) (catalogs.AuthorID, bool) {
 		"mistral": catalogs.AuthorIDMistralAI, "mistralai": catalogs.AuthorIDMistralAI,
 		"moonshotai": catalogs.AuthorIDMoonshot, "nvidia": catalogs.AuthorIDNVIDIA,
 		"minimax": catalogs.AuthorIDMiniMax, "minimaxai": catalogs.AuthorIDMiniMax,
-		"openai": catalogs.AuthorIDOpenAI, "together": catalogs.AuthorIDTogether,
+		"openai": catalogs.AuthorIDOpenAI, string(catalogs.ProviderIDTogetherAI): catalogs.AuthorIDTogether,
 		"zai-org": catalogs.AuthorIDZhipuAI, "zhipu ai": catalogs.AuthorIDZhipuAI,
 	}
 	author, found := authors[value]
 	return author, found
-}
-
-func mergeTogetherEvidence(left, right catalogs.SourceExtensions) catalogs.SourceExtensions {
-	merged := left.Copy()
-	if merged == nil {
-		merged = make(catalogs.SourceExtensions)
-	}
-	leftFields := merged["together"].Fields
-	if leftFields == nil {
-		leftFields = make(map[string]any)
-	}
-	for key, value := range right["together"].Fields {
-		leftFields["dedicated_"+key] = value
-	}
-	merged["together"] = catalogs.SourceExtension{Fields: catalogs.NormalizeExtensionFields(leftFields)}
-	return merged
 }

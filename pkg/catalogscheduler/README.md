@@ -1071,7 +1071,7 @@ func WithRunLedger(ledger RunLedger, current CurrentGenerationReader) RunnerOpti
 WithRunLedger enables durable run auditing and base\-generation capture.
 
 <a name="SQLRunLedger"></a>
-## type [SQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L64-L66>)
+## type [SQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L71-L73>)
 
 SQLRunLedger persists queryable run and attempt records through database/sql. The baseline statements use SQLite\-compatible question\-mark bind parameters.
 
@@ -1082,7 +1082,7 @@ type SQLRunLedger struct {
 ```
 
 <a name="NewSQLRunLedger"></a>
-### func [NewSQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L69>)
+### func [NewSQLRunLedger](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L76>)
 
 ```go
 func NewSQLRunLedger(ctx context.Context, db *sql.DB) (*SQLRunLedger, error)
@@ -1091,7 +1091,7 @@ func NewSQLRunLedger(ctx context.Context, db *sql.DB) (*SQLRunLedger, error)
 NewSQLRunLedger initializes the durable run\-ledger schema.
 
 <a name="SQLRunLedger.Begin"></a>
-### func \(\*SQLRunLedger\) [Begin](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L85>)
+### func \(\*SQLRunLedger\) [Begin](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L92>)
 
 ```go
 func (l *SQLRunLedger) Begin(ctx context.Context, record RunRecord) error
@@ -1100,7 +1100,7 @@ func (l *SQLRunLedger) Begin(ctx context.Context, record RunRecord) error
 Begin inserts an idempotent running trigger.
 
 <a name="SQLRunLedger.Complete"></a>
-### func \(\*SQLRunLedger\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L163>)
+### func \(\*SQLRunLedger\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L170>)
 
 ```go
 func (l *SQLRunLedger) Complete(ctx context.Context, record RunRecord) error
@@ -1109,7 +1109,7 @@ func (l *SQLRunLedger) Complete(ctx context.Context, record RunRecord) error
 Complete atomically makes a running record terminal.
 
 <a name="SQLRunLedger.Get"></a>
-### func \(\*SQLRunLedger\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L225>)
+### func \(\*SQLRunLedger\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L232>)
 
 ```go
 func (l *SQLRunLedger) Get(ctx context.Context, runID string) (RunRecord, error)
@@ -1118,7 +1118,7 @@ func (l *SQLRunLedger) Get(ctx context.Context, runID string) (RunRecord, error)
 Get returns one complete run and its ordered attempts.
 
 <a name="SQLRunLedger.List"></a>
-### func \(\*SQLRunLedger\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L237>)
+### func \(\*SQLRunLedger\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L244>)
 
 ```go
 func (l *SQLRunLedger) List(ctx context.Context, query RunQuery) ([]RunRecord, error)
@@ -1127,7 +1127,7 @@ func (l *SQLRunLedger) List(ctx context.Context, query RunQuery) ([]RunRecord, e
 List returns newest\-first complete records matching query.
 
 <a name="SQLRunLedger.RecordAttempt"></a>
-### func \(\*SQLRunLedger\) [RecordAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L120>)
+### func \(\*SQLRunLedger\) [RecordAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogscheduler/sql_run_ledger.go#L127>)
 
 ```go
 func (l *SQLRunLedger) RecordAttempt(ctx context.Context, runID string, attempt AttemptRecord) error

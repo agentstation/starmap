@@ -163,7 +163,7 @@ starmap models list --provider openai
 starmap models list --capability vision
 
 # Export as JSON
-starmap models list --format json > models.json
+starmap models list --output json > models.json
 ```
 
 ### Go Package: Basic Usage
@@ -381,10 +381,10 @@ Use `starmap deps check` to verify dependency status before running updates:
 starmap deps check
 
 # JSON output for tooling
-starmap deps check --format json
+starmap deps check --output json
 
 # YAML output
-starmap deps check --format yaml
+starmap deps check --output yaml
 ```
 
 The command shows:
@@ -746,9 +746,8 @@ Local storage uses separate lifecycle roots:
 
 The canonical database is passive until the first commit. YAML exports are
 never used as the durable publication database, and Starmap rejects configured
-database/export paths that contain one another. Because this layout predates
-the first public launch, draft path names and configuration aliases are not
-carried forward as compatibility surface.
+database/export paths that contain one another. This is the only current
+prelaunch layout; superseded draft paths and aliases fail rather than migrate.
 
 ```yaml
 # ~/.starmap/config.yaml
@@ -757,20 +756,6 @@ catalog_export_path: ~/.starmap/exports/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
 
-providers:
-  openai:
-    api_key: ${OPENAI_API_KEY}
-    rate_limit: 100
-  
-catalog:
-  type: embedded
-  
-sync:
-  sources:
-    - Provider APIs
-    - models.dev (git)
-  auto_approve: false
-  
 logging:
   level: info
   format: json

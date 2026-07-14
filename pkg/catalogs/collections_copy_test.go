@@ -3,11 +3,10 @@ package catalogs
 import "testing"
 
 func TestProvidersCopyOnReadWrite(t *testing.T) {
-	docs := "https://example.com/docs"
 	provider := &Provider{
 		ID:      "provider",
 		Aliases: []ProviderID{"provider-alias"},
-		Catalog: &ProviderCatalog{Docs: &docs},
+		Catalog: &ProviderCatalog{Sources: []ProviderSource{{ID: "models", Docs: "https://example.com/docs"}}},
 		Models: map[string]*Model{
 			"model": {
 				ID: "model",
@@ -23,28 +22,28 @@ func TestProvidersCopyOnReadWrite(t *testing.T) {
 		t.Fatalf("Set failed: %v", err)
 	}
 
-	*provider.Catalog.Docs = "mutated input"
+	provider.Catalog.Sources[0].Docs = "mutated input"
 	provider.Models["model"].Metadata.Tags[0] = ModelTagMath
 
 	stored, ok := providers.Get("provider")
 	if !ok {
 		t.Fatal("Expected provider to exist")
 	}
-	if *stored.Catalog.Docs != "https://example.com/docs" {
+	if stored.Catalog.Sources[0].Docs != "https://example.com/docs" {
 		t.Fatal("Set stored caller-owned provider references")
 	}
 	if stored.Models["model"].Metadata.Tags[0] != ModelTagCoding {
 		t.Fatal("Set stored caller-owned model references")
 	}
 
-	*stored.Catalog.Docs = "mutated get"
+	stored.Catalog.Sources[0].Docs = "mutated get"
 	stored.Models["model"].Metadata.Tags[0] = ModelTagMath
 
 	resolved, ok := providers.Resolve("provider-alias")
 	if !ok {
 		t.Fatal("Expected alias to resolve")
 	}
-	if *resolved.Catalog.Docs != "https://example.com/docs" {
+	if resolved.Catalog.Sources[0].Docs != "https://example.com/docs" {
 		t.Fatal("Get returned provider catalog internals")
 	}
 	if resolved.Models["model"].Metadata.Tags[0] != ModelTagCoding {
@@ -52,13 +51,13 @@ func TestProvidersCopyOnReadWrite(t *testing.T) {
 	}
 
 	mapped := providers.Map()
-	*mapped["provider"].Catalog.Docs = "mutated map"
+	mapped["provider"].Catalog.Sources[0].Docs = "mutated map"
 
 	again, ok := providers.Get("provider")
 	if !ok {
 		t.Fatal("Expected provider to still exist")
 	}
-	if *again.Catalog.Docs != "https://example.com/docs" {
+	if again.Catalog.Sources[0].Docs != "https://example.com/docs" {
 		t.Fatal("Map returned provider internals")
 	}
 }

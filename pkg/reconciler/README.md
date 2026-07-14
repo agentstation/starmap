@@ -113,7 +113,7 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.Resourc
 ResolveResourceConflict uses resource\-specific authorities to resolve conflicts.
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L30>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L32>)
 
 Option is a function that configures a Reconciler.
 
@@ -122,7 +122,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L61>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L63>)
 
 ```go
 func WithAuthorities(authorities authority.Authority) Option
@@ -131,7 +131,7 @@ func WithAuthorities(authorities authority.Authority) Option
 WithAuthorities sets the field authorities.
 
 <a name="WithBaseline"></a>
-### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L94>)
+### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L96>)
 
 ```go
 func WithBaseline(catalog *catalogs.Catalog) Option
@@ -140,7 +140,7 @@ func WithBaseline(catalog *catalogs.Catalog) Option
 WithBaseline sets an existing catalog to compare against for change detection.
 
 <a name="WithEnhancers"></a>
-### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L86>)
+### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L88>)
 
 ```go
 func WithEnhancers(enhancers ...enhancer.Enhancer) Option
@@ -149,7 +149,7 @@ func WithEnhancers(enhancers ...enhancer.Enhancer) Option
 WithEnhancers adds model enhancers to the pipeline.
 
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L78>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L80>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -158,7 +158,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking.
 
 <a name="WithStrategy"></a>
-### func [WithStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L47>)
+### func [WithStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L49>)
 
 ```go
 func WithStrategy(strategy Strategy) Option

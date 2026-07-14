@@ -4,6 +4,7 @@
 package errors
 
 import (
+	"context"
 	"errors"
 	"fmt"
 )
@@ -50,6 +51,72 @@ var (
 	// ErrConflict indicates an optimistic concurrency or immutable identity conflict.
 	ErrConflict = errors.New("conflict")
 )
+
+// SafeSummary returns a stable diagnostic classification that excludes
+// underlying messages, paths, endpoints, credential values, and contextual
+// resource identities. Callers may persist or log this summary while retaining
+// the original error separately for errors.Is/errors.As handling.
+func SafeSummary(err error) string {
+	if err == nil {
+		return ""
+	}
+	if errors.Is(err, context.Canceled) || errors.Is(err, ErrCanceled) {
+		return "operation canceled"
+	}
+	if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, ErrTimeout) {
+		return "operation timed out"
+	}
+	var authentication *AuthenticationError
+	if errors.As(err, &authentication) {
+		return fmt.Sprintf("authentication unavailable for provider %s using %s", authentication.Provider, authentication.Method)
+	}
+	var api *APIError
+	if errors.As(err, &api) {
+		if api.StatusCode != 0 {
+			return fmt.Sprintf("provider %s returned HTTP status %d", api.Provider, api.StatusCode)
+		}
+		return fmt.Sprintf("provider %s request failed", api.Provider)
+	}
+	var configuration *ConfigError
+	if errors.As(err, &configuration) {
+		if configuration.Component != "" {
+			return fmt.Sprintf("configuration unavailable for %s", configuration.Component)
+		}
+		return "configuration unavailable"
+	}
+	var validation *ValidationError
+	if errors.As(err, &validation) {
+		if validation.Field != "" {
+			return fmt.Sprintf("validation failed for %s", validation.Field)
+		}
+		return "validation failed"
+	}
+	var parse *ParseError
+	if errors.As(err, &parse) {
+		return fmt.Sprintf("%s payload parsing failed", parse.Format)
+	}
+	var timeout *TimeoutError
+	if errors.As(err, &timeout) {
+		return "operation timed out"
+	}
+	var dependency *DependencyError
+	if errors.As(err, &dependency) {
+		return fmt.Sprintf("dependency %s is unavailable", dependency.Dependency)
+	}
+	var syncFailure *SyncError
+	if errors.As(err, &syncFailure) {
+		return fmt.Sprintf("provider %s synchronization failed", syncFailure.Provider)
+	}
+	var resource *ResourceError
+	if errors.As(err, &resource) {
+		return fmt.Sprintf("failed to %s %s", resource.Operation, resource.Resource)
+	}
+	var inputOutput *IOError
+	if errors.As(err, &inputOutput) {
+		return fmt.Sprintf("I/O %s failed", inputOutput.Operation)
+	}
+	return "operation failed"
+}
 
 // ConflictError reports that state did not match an expected version or that
 // an immutable identity was reused for different content.
@@ -439,7 +506,7 @@ func (e *AuthenticationError) Unwrap() error {
 
 // Is implements errors.Is support.
 func (e *AuthenticationError) Is(target error) bool {
-	return target == ErrAPIKeyRequired || target == ErrAPIKeyInvalid
+	return errors.Is(e.Err, target)
 }
 
 // NewAuthenticationError creates a new AuthenticationError.

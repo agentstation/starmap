@@ -145,20 +145,16 @@ func (c *Client) commitReceivedGeneration(ctx context.Context, published *catalo
 }
 
 func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations []sources.Observation) (catalogstore.Generation, error) {
-	payload, err := catalogstore.EncodeCatalogPayload(published)
+	contextual, err := validateObservationPublication(sourceObservations)
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}
-	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generationID, err := c.nextID()
-	if err != nil {
-		return catalogstore.Generation{}, err
+	if contextual {
+		return catalogstore.Generation{}, &errors.ValidationError{
+			Field: "source_observations.metrics.scope", Value: catalogmeta.ObservationScopeCredentialScoped,
+			Message: "credential-scoped observations are not eligible for public generation",
+		}
 	}
-	syncRunID, err := c.nextID()
-	if err != nil {
-		return catalogstore.Generation{}, err
-	}
-	generatedAt := c.currentTime()
 	observations := make([]catalogs.SourceObservationLink, 0, len(sourceObservations))
 	completeness := catalogs.GenerationCompletenessComplete
 	degraded := false
@@ -176,6 +172,20 @@ func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations [
 			degradationReasons = append(degradationReasons, "source "+observation.SourceID.String()+" observation is degraded")
 		}
 	}
+	payload, err := catalogstore.EncodeCatalogPayload(published)
+	if err != nil {
+		return catalogstore.Generation{}, err
+	}
+	descriptor := catalogs.DescribeCatalogPayload(payload)
+	generationID, err := c.nextID()
+	if err != nil {
+		return catalogstore.Generation{}, err
+	}
+	syncRunID, err := c.nextID()
+	if err != nil {
+		return catalogstore.Generation{}, err
+	}
+	generatedAt := c.currentTime()
 	generation := catalogstore.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
@@ -204,6 +214,19 @@ func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations [
 		return catalogstore.Generation{}, err
 	}
 	return generation, nil
+}
+
+func validateObservationPublication(observations []sources.Observation) (bool, error) {
+	contextual := false
+	for _, observation := range observations {
+		if err := observation.Validate(); err != nil {
+			return false, errors.WrapResource("validate", "source observation", observation.ID, err)
+		}
+		if observation.Metrics.Scope == catalogmeta.ObservationScopeCredentialScoped {
+			contextual = true
+		}
+	}
+	return contextual, nil
 }
 
 func (c *Client) nextID() (string, error) {

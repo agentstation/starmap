@@ -38,7 +38,7 @@ func (f *fakeAPI) ListEndpoints(_ context.Context, cursor string) (sources.Page[
 	return f.endpointPages[cursor], f.endpointErr
 }
 
-func TestFetchSeparatesRegionalBaseModelsAndCustomerEndpoints(t *testing.T) {
+func TestFetchNormalizesRegionalModelsAndContextualEndpoints(t *testing.T) {
 	fixed := time.Date(2026, 7, 12, 20, 45, 0, 0, time.UTC)
 	api := &fakeAPI{
 		modelPages: map[string]sources.Page[Model]{
@@ -52,11 +52,11 @@ func TestFetchSeparatesRegionalBaseModelsAndCustomerEndpoints(t *testing.T) {
 		t.Fatalf("NewSource: %v", err)
 	}
 	source.now = func() time.Time { return fixed }
-	result, err := source.Fetch(context.Background(), true)
+	result, err := source.Fetch(context.Background())
 	if err != nil {
 		t.Fatalf("Fetch: %v", err)
 	}
-	if len(result.Definitions) != 1 || len(result.Offerings) != 1 || len(result.CustomerInventory) != 1 {
+	if len(result.Definitions) != 2 || len(result.Offerings) != 2 {
 		t.Fatalf("result = %#v", result)
 	}
 	offering := result.Offerings[0]
@@ -66,19 +66,19 @@ func TestFetchSeparatesRegionalBaseModelsAndCustomerEndpoints(t *testing.T) {
 	if !containsAPI(offering.Access.APIs, catalogs.InvocationAPIOCIInference) || !containsAPI(offering.Access.APIs, catalogs.InvocationAPIEmbeddings) || offering.Endpoint.BaseURL != "https://inference.generativeai.us-chicago-1.oci.oraclecloud.com" {
 		t.Fatalf("invocation = %#v/%#v", offering.Access, offering.Endpoint)
 	}
-	inventory := result.CustomerInventory[0]
-	if inventory.Scope.AccountID != "ocid1.compartment.oc1..private" || inventory.Deployments[0].Deployment.Type != "dedicated-ai-cluster" || inventory.Deployments[0].DefinitionID != "oci-private/ocid1-generativeaimodel-oc1--private" {
-		t.Fatalf("inventory = %#v", inventory)
+	contextual := result.Offerings[1]
+	if contextual.DeploymentID != "ocid1.generativeaiendpoint.oc1..private" || contextual.Deployment.Type != "dedicated-ai-cluster" || contextual.DefinitionID != "oci-private/ocid1-generativeaimodel-oc1--private" {
+		t.Fatalf("contextual offering = %#v", contextual)
 	}
-	public, err := result.PublicCatalog()
+	public, err := result.Catalog()
 	if err != nil {
-		t.Fatalf("PublicCatalog: %v", err)
+		t.Fatalf("Catalog: %v", err)
 	}
 	payload, err := catalogs.EncodeCatalogPayload(public)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
-	for _, private := range []string{"ocid1.compartment.oc1..private", "ocid1.generativeaiendpoint.oc1..private", "customer-command"} {
+	for _, private := range []string{"ocid1.compartment.oc1..private"} {
 		if strings.Contains(string(payload), private) {
 			t.Fatalf("private customer identity leaked into public catalog: %s", payload)
 		}
@@ -101,26 +101,12 @@ func TestOpenAICompatibleModelsUseExactResponsesBaseURL(t *testing.T) {
 	}
 }
 
-func TestFetchWithoutCustomerInventoryNeverListsEndpoints(t *testing.T) {
-	api := &fakeAPI{modelPages: map[string]sources.Page[Model]{"": {Records: []Model{}}}, endpointPages: map[string]sources.Page[Endpoint]{}}
-	source, err := NewSource(Config{Region: "eu-frankfurt-1", Realm: "oc1", CompartmentID: "compartment"}, api)
-	if err != nil {
-		t.Fatalf("NewSource: %v", err)
-	}
-	if _, err := source.Fetch(context.Background(), false); err != nil {
-		t.Fatalf("Fetch: %v", err)
-	}
-	if api.endpointCalls != 0 {
-		t.Fatalf("private endpoints called %d times", api.endpointCalls)
-	}
-}
-
 func TestFetchRejectsDuplicateAndUnmappedRecords(t *testing.T) {
 	base := Model{ID: "cohere.command", DisplayName: "Command", Vendor: "Cohere", LifecycleState: "ACTIVE", Type: "BASE"}
 	if _, _, err := recordsFromModels(Config{Region: "us-chicago-1", Realm: "oc1", CompartmentID: "compartment"}, time.Now(), []Model{base, base}); err == nil {
 		t.Fatal("expected duplicate model failure")
 	}
-	_, err := customerInventory(Config{Region: "us-chicago-1", Realm: "oc1", CompartmentID: "compartment"}, time.Now(), []Endpoint{{ID: "endpoint", ModelID: "missing", DedicatedAIClusterID: "cluster"}}, map[string]catalogs.ModelDefinitionID{})
+	_, err := endpointOfferings(Config{Region: "us-chicago-1", Realm: "oc1", CompartmentID: "compartment"}, []Endpoint{{ID: "endpoint", ModelID: "missing", DedicatedAIClusterID: "cluster"}}, map[string]catalogs.ModelDefinitionID{})
 	if err == nil {
 		t.Fatal("expected unmapped endpoint failure")
 	}
@@ -149,7 +135,7 @@ func TestFetchPropagatesNativeFailures(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewSource: %v", err)
 	}
-	if _, err := source.Fetch(context.Background(), false); err == nil {
+	if _, err := source.Fetch(context.Background()); err == nil {
 		t.Fatal("expected native failure")
 	}
 }

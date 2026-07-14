@@ -8,20 +8,21 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/providers/openai"
-	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/acquisition/testsource"
+	"github.com/agentstation/starmap/internal/connectors/openai"
+	"github.com/agentstation/starmap/internal/providers/fixtures"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestXAILanguageModelMapsExactInventoryContract(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
-		_, _ = writer.Write(testhelper.LoadTestdata(t, "models_list.json"))
+		_, _ = writer.Write(fixtures.Load(t, "models_list.json"))
 	}))
 	defer server.Close()
-	provider := xaiTestProvider(server.URL)
-	provider.Catalog.Endpoint.AuthRequired = false
-	client, err := openai.NewClient(provider, Options()...)
+	provider := xaiTestProvider(t, server.URL)
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}
+	client, err := openai.NewClient(testsource.Authenticated(t, &provider), Options()...)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
@@ -70,9 +71,8 @@ func TestXAIListModelsUsesLanguageModelsBearerContractAndCanonicalSeparation(t *
 		_, _ = writer.Write([]byte(`{"models":[{"id":"grok-4.5","owned_by":"xai","input_modalities":["text","image"],"output_modalities":["text"],"prompt_text_token_price":20000,"completion_text_token_price":60000}]}`))
 	}))
 	defer server.Close()
-	provider := xaiTestProvider(server.URL + "/v1/language-models")
-	provider.LoadAPIKey()
-	client, err := openai.NewClient(provider, Options()...)
+	provider := xaiTestProvider(t, server.URL+"/v1/language-models")
+	client, err := openai.NewClient(testsource.Authenticated(t, &provider), Options()...)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
@@ -85,7 +85,7 @@ func TestXAIListModelsUsesLanguageModelsBearerContractAndCanonicalSeparation(t *
 	}
 	provider.Models = map[string]*catalogs.Model{models[0].ID: &models[0]}
 	builder := catalogs.NewEmpty()
-	if err := builder.SetProvider(*provider); err != nil {
+	if err := builder.SetProvider(provider); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
 	catalog, err := builder.Build()
@@ -111,9 +111,9 @@ func TestXAILanguageModelsMissingModelsFailsClosed(t *testing.T) {
 		_, _ = writer.Write([]byte(`{"data":[]}`))
 	}))
 	defer server.Close()
-	provider := xaiTestProvider(server.URL)
-	provider.Catalog.Endpoint.AuthRequired = false
-	client, newErr := openai.NewClient(provider, Options()...)
+	provider := xaiTestProvider(t, server.URL)
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}
+	client, newErr := openai.NewClient(testsource.Authenticated(t, &provider), Options()...)
 	if newErr != nil {
 		t.Fatalf("NewClient: %v", newErr)
 	}
@@ -129,9 +129,9 @@ func TestXAILanguageModelsRejectsNegativeSourcePricing(t *testing.T) {
 		_, _ = writer.Write([]byte(`{"models":[{"id":"grok-invalid","owned_by":"xai","prompt_text_token_price":-1}]}`))
 	}))
 	defer server.Close()
-	provider := xaiTestProvider(server.URL)
-	provider.Catalog.Endpoint.AuthRequired = false
-	client, newErr := openai.NewClient(provider, Options()...)
+	provider := xaiTestProvider(t, server.URL)
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}
+	client, newErr := openai.NewClient(testsource.Authenticated(t, &provider), Options()...)
 	if newErr != nil {
 		t.Fatalf("NewClient: %v", newErr)
 	}
@@ -141,15 +141,11 @@ func TestXAILanguageModelsRejectsNegativeSourcePricing(t *testing.T) {
 	}
 }
 
-func xaiTestProvider(endpoint string) *catalogs.Provider {
-	return &catalogs.Provider{
-		ID: catalogs.ProviderIDXAI, Name: "xAI",
-		APIKey: &catalogs.ProviderAPIKey{Name: "XAI_API_KEY", Header: "Authorization", Scheme: catalogs.ProviderAPIKeySchemeBearer},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
-			Type: catalogs.EndpointTypeOpenAI, URL: endpoint, ResponseCollection: "models", AuthRequired: endpoint != "",
-			AuthorMapping: &catalogs.AuthorMapping{Field: "owned_by", Normalized: map[string]catalogs.AuthorID{
-				"xai": catalogs.AuthorIDXAI,
-			}},
-		}},
-	}
+func xaiTestProvider(t *testing.T, endpoint string) catalogs.Provider {
+	t.Helper()
+	provider := fixtures.EmbeddedProvider(t, catalogs.ProviderIDXAI)
+	provider.Catalog.Sources[0].Endpoint.URL = endpoint
+	provider.Catalog.Sources[0].Endpoint.BaseURLEnv = ""
+	provider.Catalog.Sources[0].Endpoint.Path = ""
+	return provider
 }

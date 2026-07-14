@@ -16,6 +16,8 @@ The package has zero dependencies and serves as a foundation for the type system
 
 ## Index
 
+- [type AcquisitionProvenance](<#AcquisitionProvenance>)
+- [type AcquisitionTopology](<#AcquisitionTopology>)
 - [type ObservationCompleteness](<#ObservationCompleteness>)
 - [type ObservationIssue](<#ObservationIssue>)
 - [type ObservationIssueCode](<#ObservationIssueCode>)
@@ -35,6 +37,45 @@ The package has zero dependencies and serves as a foundation for the type system
   - [func \(id SourceID\) String\(\) string](<#SourceID.String>)
 - [type SourceKind](<#SourceKind>)
 
+
+<a name="AcquisitionProvenance"></a>
+## type [AcquisitionProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L109-L115>)
+
+AcquisitionProvenance identifies one configured logical provider source without retaining credentials, binding values, endpoints, or tenant IDs.
+
+```go
+type AcquisitionProvenance struct {
+    ProviderID string              `json:"provider_id" yaml:"provider_id"`
+    SourceID   string              `json:"source_id" yaml:"source_id"`
+    AuthMethod string              `json:"auth_method,omitempty" yaml:"auth_method,omitempty"`
+    Scope      ObservationScope    `json:"scope" yaml:"scope"`
+    Topology   AcquisitionTopology `json:"topology" yaml:"topology"`
+}
+```
+
+<a name="AcquisitionTopology"></a>
+## type [AcquisitionTopology](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L94>)
+
+AcquisitionTopology identifies the bounded request shape used to produce a logical provider\-source observation.
+
+```go
+type AcquisitionTopology string
+```
+
+<a name="AcquisitionTopologySingleEndpoint"></a>
+
+```go
+const (
+    // AcquisitionTopologySingleEndpoint executes one configured endpoint.
+    AcquisitionTopologySingleEndpoint AcquisitionTopology = "single_endpoint"
+    // AcquisitionTopologyPaginated executes a bounded sequence of pages.
+    AcquisitionTopologyPaginated AcquisitionTopology = "paginated"
+    // AcquisitionTopologyRegionalSweep executes a bounded configured region set.
+    AcquisitionTopologyRegionalSweep AcquisitionTopology = "regional_sweep"
+    // AcquisitionTopologyGrouped executes a bounded provider-specific request group.
+    AcquisitionTopologyGrouped AcquisitionTopology = "grouped"
+)
+```
 
 <a name="ObservationCompleteness"></a>
 ## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L32>)
@@ -57,7 +98,7 @@ const (
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L140-L145>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L164-L169>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -71,7 +112,7 @@ type ObservationIssue struct {
 ```
 
 <a name="ObservationIssueCode"></a>
-## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L118>)
+## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L142>)
 
 ObservationIssueCode is a stable machine\-readable degradation reason.
 
@@ -103,7 +144,7 @@ const (
 ```
 
 <a name="ObservationIssueScope"></a>
-## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L104>)
+## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L128>)
 
 ObservationIssueScope identifies the level at which degradation occurred.
 
@@ -127,7 +168,7 @@ const (
 ```
 
 <a name="ObservationMetrics"></a>
-## type [ObservationMetrics](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L95-L101>)
+## type [ObservationMetrics](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L118-L125>)
 
 ObservationMetrics carries operator\-safe source health facts.
 
@@ -138,6 +179,7 @@ type ObservationMetrics struct {
     Records           ObservationRecordCounts `json:"records" yaml:"records"`
     ProviderCoverage  ProviderCoverage        `json:"provider_coverage" yaml:"provider_coverage"`
     PricingObservedAt *time.Time              `json:"pricing_observed_at,omitempty" yaml:"pricing_observed_at,omitempty"`
+    Acquisitions      []AcquisitionProvenance `json:"acquisitions,omitempty" yaml:"acquisitions,omitempty"`
 }
 ```
 
@@ -212,8 +254,8 @@ const (
     ObservationScopeGlobalPublic ObservationScope = "global_public"
     // ObservationScopeRegionalPublic is public evidence scoped to cloud regions.
     ObservationScopeRegionalPublic ObservationScope = "regional_public"
-    // ObservationScopeCustomer is private credential-scoped evidence.
-    ObservationScopeCustomer ObservationScope = "customer_scoped"
+    // ObservationScopeCredentialScoped is contextual evidence that cannot enter public generation.
+    ObservationScopeCredentialScoped ObservationScope = "credential_scoped" //nolint:gosec // Publication scope label, not a credential.
 )
 ```
 
@@ -238,7 +280,7 @@ const (
 ```
 
 <a name="ProviderCoverage"></a>
-## type [ProviderCoverage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L89-L92>)
+## type [ProviderCoverage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L87-L90>)
 
 ProviderCoverage reports provider inventory completeness without secrets.
 
@@ -321,11 +363,17 @@ const (
 
     // OCIGenerativeAIID identifies the native OCI Generative AI regional source.
     OCIGenerativeAIID SourceID = "oci_generative_ai"
+
+    // DatabricksWorkspaceID identifies credential-scoped Databricks serving endpoints.
+    DatabricksWorkspaceID SourceID = "databricks_workspace"
+
+    // WatsonxDeploymentsID identifies credential-scoped watsonx deployments.
+    WatsonxDeploymentsID SourceID = "watsonx_deployments"
 )
 ```
 
 <a name="SourceIDs"></a>
-### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L40>)
+### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L46>)
 
 ```go
 func SourceIDs() []SourceID
@@ -334,7 +382,7 @@ func SourceIDs() []SourceID
 SourceIDs returns all available source identifiers. This provides a convenient way to iterate over all defined source IDs.
 
 <a name="SourceID.IsValid"></a>
-### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L54>)
+### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L62>)
 
 ```go
 func (id SourceID) IsValid() bool
@@ -354,7 +402,7 @@ String returns the string representation of a source ID.
 <a name="SourceKind"></a>
 ## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L71>)
 
-SourceKind classifies cadence, freshness, and publication policy.
+SourceKind classifies acquisition topology and evidence role, not publication eligibility.
 
 ```go
 type SourceKind string
@@ -374,8 +422,6 @@ const (
     SourceKindEnrichment SourceKind = "enrichment"
     // SourceKindCurated is reviewed non-API evidence.
     SourceKindCurated SourceKind = "curated"
-    // SourceKindCustomer is credential-scoped customer inventory.
-    SourceKindCustomer SourceKind = "customer_inventory"
 )
 ```
 

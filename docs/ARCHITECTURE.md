@@ -151,7 +151,7 @@ graph TB
 
 4. **Internal Implementations** (`internal/`)
    - Embedded catalog data
-   - Provider API clients
+   - Outbound provider connectors
    - models.dev integration
    - Transport utilities
    - Shared catalog query behavior for CLI and HTTP adapters
@@ -212,7 +212,7 @@ Constructors return concrete types when a package owns one implementation.
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
 | `reconciler.Strategy` and internal `resourceConflictResolver` | 2 each | authority and source-order strategies | Retained policy boundaries with two production algorithms |
 | `sources.Source` | 5+ | local, provider, models.dev HTTP, models.dev Git, test sources | Retained source/plugin boundary with four production adapters |
-| Public and internal provider-client seams | 4+ each | OpenAI-compatible, Anthropic, Google, injected fakes | Retained provider transport boundaries with three production families |
+| Public provider-fetch and internal connector seams | 4+ each | OpenAI-compatible, Anthropic, Google, injected fakes | Retained outbound acquisition boundaries with multiple production families |
 | `application.Application` | 2 | CLI `App`, `application.Mock` | Retained consumer-owned command boundary; compile assertions cover both |
 | Pipeline `Store` | 2 | root `pipelineStore`, `pipelineTestStore` | Retained consumer-owned persistence boundary |
 | Pipeline `providerSetter` | 2 | `*catalogs.Builder`, failing test adapter | Retained failure-injection boundary exercised by pipeline tests |
@@ -760,7 +760,7 @@ Location: `pkg/authority/`
 {Path: "Description", Source: sources.LocalCatalogID, Priority: 90}
 ```
 
-See `pkg/authority/authority.go` for legacy field authority configuration.
+See `pkg/authority/authority.go` for the production field-authority implementation.
 The canonical definition/offering inventory and merge/empty semantics are
 documented in [CATALOG_AUTHORITY_POLICY.md](CATALOG_AUTHORITY_POLICY.md) and
 enforced by `pkg/authority.CanonicalPolicies` coverage tests.
@@ -1010,8 +1010,8 @@ graph TD
 **Authority Resolution:**
 - **Pricing**: A semantically valid, currently effective provider observation
   wins for that provider offering; models.dev and local data are fallbacks
-- **Limits**: models.dev remains the legacy reconciler authority while the
-  canonical provider-offering policy is implemented
+- **Limits**: provider-official observations and the canonical baseline win;
+  models.dev remains lower-authority enrichment
 - **Model Existence**: Provider APIs determine what models actually exist
 - **API Configuration**: Local catalog takes precedence (user's environment)
 - **Baseline Data**: Embedded catalog provides defaults when other sources unavailable
@@ -1066,16 +1066,21 @@ Starmap treats source fields as an explicit contract. Every attribute from model
 
 Canonical fields cover lifecycle status, lineage, context/input/output limits, generation controls, reasoning controls, tiered pricing, mode-specific pricing/request overrides, and provider/model metadata. Controlled extensions preserve source-specific details without letting them participate in field-authority decisions. Reconciliation merges extension buckets additively by source while the field-rule catalog continues to own canonical precedence.
 
-Source-shape tests in `internal/sources/modelsdev` and `internal/providers/*` classify representative response paths so upstream schema drift fails deterministically. Live refreshes are opt-in and must write raw payloads outside the repository, print only normalized path summaries, and never persist secrets.
+Source-shape tests in `internal/sources/modelsdev` and response-schema tests in
+the reusable protocol modules under `internal/connectors/*` classify representative response paths so upstream
+schema drift fails deterministically. Live refreshes are opt-in and must write
+raw payloads outside the repository, print only normalized path summaries, and
+never persist secrets.
 
-Every checked-in provider response fixture has an adjacent versioned metadata
-record containing provider, capture time, content-digest source revision,
-payload path/SHA-256, and an explicit maximum age (currently 365 days for the
-legacy capture set). `internal/providers/testhelper` rejects missing, future,
-stale, provider-mismatched, or checksum-mismatched metadata. Refresh helpers
-write payload and metadata together; the Make target propagates test/fetch
-failures and also fails when an alleged refresh changes neither file, preventing
-`-update` no-ops from silently reporting success.
+Deterministic connector fixtures live under
+`internal/connectors/<protocol>/testdata`; deterministic provider-delta fixtures
+live under `internal/providers/<id>/testdata`. Neither carries capture metadata.
+Genuine replay/import observations live under
+`internal/providers/fixtures/responses/<id>` with adjacent versioned metadata
+containing provider, capture time, content-digest source revision, payload
+path/SHA-256, and an explicit maximum age. Verification rejects missing,
+future, stale, provider-mismatched, or checksum-mismatched metadata before
+import reads the payload.
 
 ### Concurrent Fetching
 
@@ -1195,7 +1200,7 @@ func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, opt
 - **Safe publication**: A validated generation commits through `CatalogStore`
   before the immutable in-memory swap; failed commits emit no callback
 - **Restart recovery**: `New` reads, validates, decodes, and publishes the exact
-  durable current generation before consulting local compatibility YAML; an
+  durable current generation before consulting an explicitly configured local YAML import; an
   empty store alone falls back to the verified bootstrap/local baseline, while
   corrupt or unavailable store state fails initialization
 - **Isolated hooks**: Post-commit callbacks run asynchronously through bounded
@@ -1492,8 +1497,9 @@ Catalog collection boundaries are copy-on-read and copy-on-write:
   and returns that immutable generation without a full-catalog read copy.
 - Catalog publication precomputes provider/model indexes keyed by canonical
   provider ID and aliases. Provider-specific queries use `ProviderModels` or
-  `ProviderModel`; they never recover membership from the legacy flattened
-  `Models()` view, where equal model IDs from different providers are lossy.
+  `ProviderModel`; they never recover membership from the provider-independent
+  `Models()` convenience view, where equal model IDs from different providers
+  are intentionally lossy.
 
 ### Safe Usage Patterns
 
@@ -1803,14 +1809,16 @@ starmap/
 │   ├── catalog/
 │   │   ├── query/           # Shared CLI/HTTP catalog query behavior
 │   │   └── pipeline/        # Sync orchestration behind Client.Sync
-│   ├── providers/            # Provider API clients and registry
-│   │   ├── clients/          # Provider client registry and raw fetch
+│   ├── connectors/           # Reusable protocol modules only
 │   │   ├── openai/           # Shared OpenAI-compatible transport and conversion
-│   │   ├── anthropic/        # Anthropic client
-│   │   ├── google/           # Google AI Studio and Vertex client
+│   │   ├── anthropic/        # Anthropic protocol client
+│   │   └── google/           # Google AI Studio and Vertex protocol client
+│   ├── providers/            # Provider-local acquisition, policy, and evidence
+│   │   ├── registry/         # Protocol/provider implementation composition
 │   │   ├── mistral/          # Provider-owned adapter, tests, and fixtures
+│   │   ├── together/         # Provider-local client, tests, and evidence
 │   │   ├── xai/              # Provider-owned envelope adapter, tests, and fixtures
-│   │   └── ...               # Provider adapters or custom clients with local evidence
+│   │   └── ...               # Provider clients, adapters, or regional sources
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -2011,7 +2019,7 @@ go tool cover -func=coverage.out
 
 ### Testdata Management
 
-Provider API responses are captured as testdata:
+Governed provider observations are refreshed separately from deterministic testdata:
 
 ```bash
 # Update testdata for all providers
@@ -2021,10 +2029,12 @@ make testdata
 make testdata PROVIDER=openai
 ```
 
-The production refresh command fetches raw response bytes, validates them
+The production refresh command fetches raw response bytes into
+`internal/providers/fixtures/responses/<provider>`, validates them
 through the registered provider client, rejects no-op/failure/invalid or
 secret-bearing responses, and atomically replaces the payload and adjacent
-integrity/freshness metadata. Ordinary tests are offline and read-only. Provider
+integrity/freshness metadata. Ordinary connector/provider tests use minimized
+module-local deterministic fixtures and are offline and read-only. Provider
 module roles, filenames, catalog/config ownership, and tested fixture exceptions
 are normative in [ADDING_PROVIDERS.md](ADDING_PROVIDERS.md) and mechanically
 enforced by `make provider-contract-check`.

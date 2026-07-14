@@ -1,0 +1,50 @@
+id: claude-fable-5
+name: claude-fable-5
+authors:
+- id: anthropic
+  name: anthropic
+definition_id: claude-fable-5
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 1.1
+    cache_write:
+      per_1m: 13.75
+    input:
+      per_1m: 11.0
+    output:
+      per_1m: 55.0
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 1.0
+        cache_write:
+          per_1m: 12.5
+        input:
+          per_1m: 10.0
+        output:
+          per_1m: 50.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 1.1
+        cache_write:
+          per_1m: 13.75
+        input:
+          per_1m: 11.0
+        output:
+          per_1m: 55.0
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

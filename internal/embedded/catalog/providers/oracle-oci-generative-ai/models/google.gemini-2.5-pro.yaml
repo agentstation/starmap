@@ -1,0 +1,29 @@
+id: google.gemini-2.5-pro
+name: google.gemini-2.5-pro
+authors:
+- id: google
+  name: google
+definition_id: google/gemini-2-5-pro
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 1.25
+    output:
+      per_1m: 10
+  tiers:
+  - name: context_over_threshold
+    type: context
+    size: 200000
+    tokens:
+      input:
+        per_1m: 2.5
+      output:
+        per_1m: 15
+invocation_apis:
+- responses
+offering_endpoint:
+  type: oci-generative-ai
+offering_deployment:
+  type: on-demand
+  tier: pay-as-you-go

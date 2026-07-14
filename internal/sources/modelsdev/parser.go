@@ -122,7 +122,7 @@ type Cost struct {
 	Input           *float64    `json:"input,omitempty"`
 	Output          *float64    `json:"output,omitempty"`
 	Reasoning       *float64    `json:"reasoning,omitempty"`
-	Cache           *float64    `json:"cache,omitempty"`       // Legacy cache field
+	Cache           *float64    `json:"cache,omitempty"`       // Upstream shorthand for cache-write cost
 	CacheRead       *float64    `json:"cache_read,omitempty"`  // Cache read costs
 	CacheWrite      *float64    `json:"cache_write,omitempty"` // Cache write costs
 	InputAudio      *float64    `json:"input_audio,omitempty"`
@@ -170,8 +170,8 @@ type ExperimentalModeProvider struct {
 	Body    map[string]any    `json:"body,omitempty"`
 }
 
-// UnmarshalJSON accepts both the legacy boolean marker and the current object
-// form containing mode overrides.
+// UnmarshalJSON accepts the two forms emitted by the current external
+// models.dev source: a boolean marker or an object containing mode overrides.
 func (e *Experimental) UnmarshalJSON(data []byte) error {
 	if strings.EqualFold(strings.TrimSpace(string(data)), "null") {
 		return nil
@@ -270,24 +270,19 @@ func (p *Provider) toStarmapProviderMetadata() *catalogs.Provider {
 		ID:   catalogs.ProviderID(p.ID),
 		Name: p.Name,
 	}
-	if p.Doc != "" {
-		provider.Catalog = &catalogs.ProviderCatalog{}
-		doc := p.Doc
-		provider.Catalog.Docs = &doc
-	}
 	if len(p.Env) > 0 {
-		provider.EnvVars = make([]catalogs.ProviderEnvVar, 0, len(p.Env))
+		provider.Advisories = make([]catalogs.ProviderEnvironmentAdvisory, 0, len(p.Env))
 		for _, envName := range p.Env {
 			if envName == "" {
 				continue
 			}
-			provider.EnvVars = append(provider.EnvVars, catalogs.ProviderEnvVar{
-				Name:     envName,
-				Required: false,
-			})
+			provider.Advisories = append(provider.Advisories, catalogs.ProviderEnvironmentAdvisory{Name: envName})
 		}
 	}
 	fields := make(map[string]any)
+	if p.Doc != "" {
+		fields["doc"] = p.Doc
+	}
 	if p.NPM != "" || p.API != nil {
 		if p.NPM != "" {
 			fields["npm"] = p.NPM
@@ -443,7 +438,8 @@ func convertModelTokenCachePricing(cost *Cost) *catalogs.ModelTokenCachePricing 
 			Per1M: *cost.CacheWrite,
 		}
 	}
-	// Legacy fallback: if no specific cache_read/cache_write, use cache for write.
+	// Current upstream shorthand: when cache_read/cache_write are absent, the
+	// models.dev cache field supplies write pricing.
 	if cost.Cache != nil && cacheCost.Read == nil && cacheCost.Write == nil {
 		cacheCost.Write = &catalogs.ModelTokenCost{
 			Per1M: *cost.Cache,

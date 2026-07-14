@@ -60,7 +60,7 @@ func retryProviderCall(
 		return err
 	}
 	if operation == nil {
-		return &errors.ValidationError{Field: "provider_retry.operation", Message: "is required"}
+		return &errors.ValidationError{Field: "provider_retry.operation", Message: validationIsRequired}
 	}
 	if ctx == nil {
 		ctx = context.Background()
@@ -169,7 +169,7 @@ func CollectPages[T any](ctx context.Context, policy PaginationPolicy, fetch fun
 		return nil, &errors.ValidationError{Field: "pagination.policy", Value: policy, Message: "page and record limits must be positive"}
 	}
 	if fetch == nil {
-		return nil, &errors.ValidationError{Field: "pagination.fetch", Message: "is required"}
+		return nil, &errors.ValidationError{Field: "pagination.fetch", Message: validationIsRequired}
 	}
 	if ctx == nil {
 		ctx = context.Background()

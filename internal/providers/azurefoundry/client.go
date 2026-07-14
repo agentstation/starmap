@@ -10,17 +10,13 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
 )
-
-type clientFactory func(context.Context, Realm, Account) (API, error)
 
 type armClient struct {
 	realm      Realm
@@ -76,15 +72,11 @@ type armDeployment struct {
 	} `json:"properties"`
 }
 
-func newDefaultClient(_ context.Context, realm Realm, account Account) (API, error) {
-	configuration := cloud.AzurePublic
-	if realm.ID == governmentRealm.ID {
-		configuration = cloud.AzureGovernment
+func newClientWithCredential(realm Realm, account Account, credential azcore.TokenCredential) (API, error) {
+	if credential == nil {
+		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: authMethodCloudChain, Message: "resolved Microsoft Entra credential is required", Err: errors.ErrAPIKeyRequired}
 	}
-	credential, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{ClientOptions: azcore.ClientOptions{Cloud: configuration}})
-	if err != nil {
-		return nil, &errors.AuthenticationError{Provider: string(ProviderID), Method: "default_azure_credential", Message: "create Microsoft Entra credential chain", Err: err}
-	}
+	var err error
 	accountURL := ""
 	if validateCustomerAccount(account) == nil {
 		accountURL, err = accountResourceURL(realm, account)

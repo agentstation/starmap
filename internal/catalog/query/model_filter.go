@@ -50,19 +50,24 @@ type ModelFilter struct {
 	MaxResults int
 }
 
-var validFeatureFilters = map[string]struct{}{
-	"streaming": {}, "tool_calls": {}, "tools": {}, "tool_choice": {},
-	"reasoning": {}, "temperature": {}, "max_tokens": {},
-}
-
 const (
-	sortID            = "id"
-	sortName          = "name"
-	sortReleaseDate   = "release_date"
-	sortContextWindow = "context_window"
-	sortCreatedAt     = "created_at"
-	sortUpdatedAt     = "updated_at"
+	featureReasoning       = "reasoning"
+	featureStreaming       = "streaming"
+	featureToolCalls       = "tool_calls"
+	featureTools           = "tools"
+	validationNotSupported = "is not supported"
+	sortID                 = "id"
+	sortName               = "name"
+	sortReleaseDate        = "release_date"
+	sortContextWindow      = "context_window"
+	sortCreatedAt          = "created_at"
+	sortUpdatedAt          = "updated_at"
 )
+
+var validFeatureFilters = map[string]struct{}{
+	featureStreaming: {}, featureToolCalls: {}, featureTools: {}, "tool_choice": {},
+	featureReasoning: {}, "temperature": {}, "max_tokens": {},
+}
 
 // Validate rejects unsupported or ambiguous filter, sort, range, and page
 // values before query execution.
@@ -71,7 +76,7 @@ func (f ModelFilter) Validate() error {
 		switch f.Sort {
 		case sortID, sortName, sortReleaseDate, sortContextWindow, sortCreatedAt, sortUpdatedAt:
 		default:
-			return &errors.ValidationError{Field: "model_filter.sort", Value: f.Sort, Message: "is not supported"}
+			return &errors.ValidationError{Field: "model_filter.sort", Value: f.Sort, Message: validationNotSupported}
 		}
 	}
 	if f.Order != "" && !strings.EqualFold(f.Order, "asc") && !strings.EqualFold(f.Order, "desc") {
@@ -104,7 +109,7 @@ func (f ModelFilter) Validate() error {
 	}
 	for feature := range f.Features {
 		if _, found := validFeatureFilters[feature]; !found {
-			return &errors.ValidationError{Field: "model_filter.feature", Value: feature, Message: "is not supported"}
+			return &errors.ValidationError{Field: "model_filter.feature", Value: feature, Message: validationNotSupported}
 		}
 	}
 	for _, modality := range append(append([]string(nil), f.ModalityInput...), f.ModalityOutput...) {
@@ -112,7 +117,7 @@ func (f ModelFilter) Validate() error {
 		case catalogs.ModelModalityText, catalogs.ModelModalityAudio, catalogs.ModelModalityImage,
 			catalogs.ModelModalityVideo, catalogs.ModelModalityPDF, catalogs.ModelModalityEmbedding:
 		default:
-			return &errors.ValidationError{Field: "model_filter.modality", Value: modality, Message: "is not supported"}
+			return &errors.ValidationError{Field: "model_filter.modality", Value: modality, Message: validationNotSupported}
 		}
 	}
 	if f.Status != "" {
@@ -120,7 +125,7 @@ func (f ModelFilter) Validate() error {
 		case catalogs.ModelStatusActive, catalogs.ModelStatusBeta, catalogs.ModelStatusPreview,
 			catalogs.ModelStatusDeprecated, catalogs.ModelStatusUnknown:
 		default:
-			return &errors.ValidationError{Field: "model_filter.status", Value: f.Status, Message: "is not supported"}
+			return &errors.ValidationError{Field: "model_filter.status", Value: f.Status, Message: validationNotSupported}
 		}
 	}
 	if f.ReleasedAfter != nil && f.ReleasedBefore != nil && f.ReleasedAfter.After(*f.ReleasedBefore) {

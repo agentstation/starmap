@@ -11,13 +11,13 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
-const defaultAPIBaseURL = "https://api.cloudflare.com/client/v4"
 const perPage = 50
 const maxPages = 32
 
@@ -66,49 +66,43 @@ type architecture struct {
 type Client struct {
 	mu        sync.RWMutex
 	provider  *catalogs.Provider
+	endpoint  string
+	accountID string
 	transport *transport.Client
 }
 
 // NewClient creates a Cloudflare Workers AI client.
-func NewClient(provider *catalogs.Provider) *Client {
-	return &Client{provider: provider, transport: transport.New(provider)}
-}
-
-// IsAPIKeyRequired reports that Workers AI model search requires an API token.
-func (c *Client) IsAPIKeyRequired() bool { return true }
-
-// HasAPIKey reports whether token and account configuration are resolved.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider != nil && c.provider.HasAPIKey() && c.provider.EnvVar("CLOUDFLARE_ACCOUNT_ID") != ""
+func NewClient(source acquisition.Source) *Client {
+	provider := source.Provider()
+	accountID, _ := source.Binding("account")
+	return &Client{provider: &provider, endpoint: source.EndpointURL(), accountID: accountID, transport: transport.New(source.Auth())}
 }
 
 // ListModels traverses the bounded OpenRouter-format model search response.
 func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	c.mu.RLock()
-	provider, client := c.provider, c.transport
+	provider, client, baseURL, accountID := c.provider, c.transport, c.endpoint, c.accountID
 	c.mu.RUnlock()
-	if provider == nil || provider.EnvVar("CLOUDFLARE_ACCOUNT_ID") == "" {
-		return nil, &errors.ConfigError{Component: "cloudflare-workers-ai", Message: "account ID is required"}
+	if provider == nil || accountID == "" {
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDCloudflare), Message: "account ID is required"}
 	}
-	baseURL := provider.EnvVar("CLOUDFLARE_API_BASE_URL")
+	baseURL = strings.TrimSpace(baseURL)
 	if baseURL == "" {
-		baseURL = defaultAPIBaseURL
+		return nil, &errors.ConfigError{Component: string(catalogs.ProviderIDCloudflare), Message: "catalog endpoint is required"}
 	}
 	result := make([]catalogs.Model, 0)
 	for page := 1; page <= maxPages; page++ {
-		endpoint, err := modelsURL(baseURL, provider.EnvVar("CLOUDFLARE_ACCOUNT_ID"), page)
+		endpoint, err := modelsURL(baseURL, accountID, page)
 		if err != nil {
 			return nil, err
 		}
-		httpResponse, err := client.Get(ctx, endpoint, provider)
+		httpResponse, err := client.Get(ctx, endpoint)
 		if err != nil {
-			return nil, &errors.APIError{Provider: "cloudflare-workers-ai", Endpoint: endpoint, Message: "request failed", Err: err}
+			return nil, &errors.APIError{Provider: string(catalogs.ProviderIDCloudflare), Endpoint: endpoint, Message: "request failed", Err: err}
 		}
 		var envelope response
 		if err := transport.DecodeResponse(httpResponse, &envelope); err != nil {
-			return nil, &errors.APIError{Provider: "cloudflare-workers-ai", Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
+			return nil, &errors.APIError{Provider: string(catalogs.ProviderIDCloudflare), Endpoint: endpoint, StatusCode: httpResponse.StatusCode, Message: "failed to decode response", Err: err}
 		}
 		if envelope.Data == nil {
 			return nil, &errors.ValidationError{Field: "cloudflare.models.data", Message: "required data array is null"}
@@ -168,9 +162,7 @@ func convertModel(source model) (catalogs.Model, error) {
 		ID: source.ID, Name: name, Description: source.Description, Authors: []catalogs.Author{{ID: authorID(source.ID), Name: authorID(source.ID).String()}},
 		Status: catalogs.ModelStatusActive, Limits: &catalogs.ModelLimits{ContextWindow: source.ContextLength}, Pricing: pricing,
 		Features: &catalogs.ModelFeatures{Modalities: catalogs.ModelModalities{Input: modalities(input), Output: modalities(output)}}, InvocationAPIs: apis,
-		OfferingEndpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeCloudflare, BaseURL: defaultAPIBaseURL, Path: "/accounts/{account_id}/ai/v1"},
-		OfferingDeployment: catalogs.ProviderDeployment{Type: "serverless", Tier: "workers-ai"},
-		Extensions:         catalogs.SourceExtensions{"cloudflare": {Fields: catalogs.NormalizeExtensionFields(map[string]any{"supported_parameters": source.SupportedParameters, "unknown_fields": source.UnknownFields})}},
+		Extensions: catalogs.SourceExtensions{"cloudflare": {Fields: catalogs.NormalizeExtensionFields(map[string]any{"supported_parameters": source.SupportedParameters, "unknown_fields": source.UnknownFields})}},
 	}
 	if len(apis) == 0 {
 		result.OfferingAccess = &catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityDiscoverable, APIs: []catalogs.InvocationAPI{}}

@@ -101,15 +101,16 @@ type ObservationMetadata struct {
 	Kind              catalogmeta.SourceKind
 	Coverage          catalogmeta.ProviderCoverage
 	PricingObservedAt *time.Time
+	Acquisitions      []catalogmeta.AcquisitionProvenance
 }
 
 // NewObservation binds an immutable catalog to typed, deterministic audit metadata.
 func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata ObservationMetadata) (Observation, error) {
 	if sourceID == "" {
-		return Observation{}, &errors.ValidationError{Field: "observation.source", Message: "is required"}
+		return Observation{}, &errors.ValidationError{Field: "observation.source", Message: validationIsRequired}
 	}
 	if catalog == nil {
-		return Observation{}, &errors.ValidationError{Field: "observation.catalog", Message: "is required"}
+		return Observation{}, &errors.ValidationError{Field: "observation.catalog", Message: validationIsRequired}
 	}
 	metadata.ObservedAt = metadata.ObservedAt.UTC()
 	if metadata.Scope == "" {
@@ -140,6 +141,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 		Metrics: catalogmeta.ObservationMetrics{
 			Scope: metadata.Scope, Kind: metadata.Kind, Records: metadata.Records,
 			ProviderCoverage: metadata.Coverage, PricingObservedAt: metadata.PricingObservedAt,
+			Acquisitions: append([]catalogmeta.AcquisitionProvenance(nil), metadata.Acquisitions...),
 		},
 		Issues:           append([]ObservationIssue(nil), metadata.Issues...),
 		EvidenceChecksum: checksum,
@@ -155,6 +157,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 // Link returns the immutable manifest/audit projection of this observation.
 func (o Observation) Link() catalogs.SourceObservationLink {
 	metrics := o.Metrics
+	metrics.Acquisitions = append([]catalogmeta.AcquisitionProvenance(nil), o.Metrics.Acquisitions...)
 	if o.Metrics.PricingObservedAt != nil {
 		observedAt := *o.Metrics.PricingObservedAt
 		metrics.PricingObservedAt = &observedAt
@@ -170,13 +173,13 @@ func (o Observation) Link() catalogs.SourceObservationLink {
 // Validate verifies required metadata and binds the evidence checksum to Catalog.
 func (o Observation) Validate() error {
 	if o.SourceID == "" {
-		return observationValidationError("source", o.SourceID, "is required")
+		return observationValidationError("source", o.SourceID, validationIsRequired)
 	}
 	if o.Catalog == nil {
-		return observationValidationError("catalog", nil, "is required")
+		return observationValidationError("catalog", nil, validationIsRequired)
 	}
 	if o.ObservedAt.IsZero() {
-		return observationValidationError("observed_at", o.ObservedAt, "is required")
+		return observationValidationError("observed_at", o.ObservedAt, validationIsRequired)
 	}
 	_, offset := o.ObservedAt.Zone()
 	if offset != 0 {
@@ -253,17 +256,13 @@ func validateObservationMetrics(records ObservationRecordCounts, metrics catalog
 		return observationValidationError("metrics.records", metrics.Records, "must match observation record counts")
 	}
 	switch metrics.Scope {
-	case catalogmeta.ObservationScopeGlobalPublic, catalogmeta.ObservationScopeRegionalPublic:
-	case catalogmeta.ObservationScopeCustomer:
-		return observationValidationError("metrics.scope", metrics.Scope, "customer-scoped inventory cannot be a public catalog observation")
+	case catalogmeta.ObservationScopeGlobalPublic, catalogmeta.ObservationScopeRegionalPublic, catalogmeta.ObservationScopeCredentialScoped:
 	default:
 		return observationValidationError("metrics.scope", metrics.Scope, "is not supported")
 	}
 	switch metrics.Kind {
 	case catalogmeta.SourceKindDirectInventory, catalogmeta.SourceKindRegionalSweep, catalogmeta.SourceKindPricing,
 		catalogmeta.SourceKindEnrichment, catalogmeta.SourceKindCurated:
-	case catalogmeta.SourceKindCustomer:
-		return observationValidationError("metrics.kind", metrics.Kind, "customer inventory uses the separate customer product")
 	default:
 		return observationValidationError("metrics.kind", metrics.Kind, "is not supported")
 	}
@@ -279,7 +278,49 @@ func validateObservationMetrics(records ObservationRecordCounts, metrics catalog
 			return observationValidationError("metrics.pricing_observed_at", metrics.PricingObservedAt, "must be UTC")
 		}
 	}
+	seenAcquisitions := make(map[string]struct{}, len(metrics.Acquisitions))
+	for index, acquisition := range metrics.Acquisitions {
+		field := fmt.Sprintf("metrics.acquisitions[%d]", index)
+		if !safeObservationID(acquisition.ProviderID) {
+			return observationValidationError(field+".provider_id", acquisition.ProviderID, "must be a safe provider identifier")
+		}
+		if !safeObservationID(acquisition.SourceID) {
+			return observationValidationError(field+".source_id", acquisition.SourceID, "must be a safe source identifier")
+		}
+		if acquisition.AuthMethod != "" && acquisition.AuthMethod != "none" && !safeObservationID(acquisition.AuthMethod) {
+			return observationValidationError(field+".auth_method", acquisition.AuthMethod, "must be a safe authentication method identifier")
+		}
+		switch acquisition.Scope {
+		case catalogmeta.ObservationScopeGlobalPublic, catalogmeta.ObservationScopeRegionalPublic, catalogmeta.ObservationScopeCredentialScoped:
+		default:
+			return observationValidationError(field+".scope", acquisition.Scope, "is not supported")
+		}
+		switch acquisition.Topology {
+		case catalogmeta.AcquisitionTopologySingleEndpoint, catalogmeta.AcquisitionTopologyPaginated,
+			catalogmeta.AcquisitionTopologyRegionalSweep, catalogmeta.AcquisitionTopologyGrouped:
+		default:
+			return observationValidationError(field+".topology", acquisition.Topology, "is not supported")
+		}
+		identity := acquisition.ProviderID + "\x00" + acquisition.SourceID
+		if _, duplicate := seenAcquisitions[identity]; duplicate {
+			return observationValidationError(field, identity, "duplicates a logical provider source")
+		}
+		seenAcquisitions[identity] = struct{}{}
+	}
 	return nil
+}
+
+func safeObservationID(value string) bool {
+	if value == "" {
+		return false
+	}
+	for index, character := range value {
+		if character >= 'a' && character <= 'z' || character >= '0' && character <= '9' || index > 0 && (character == '-' || character == '_') {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func validateRevision(r Revision) error {
@@ -290,7 +331,7 @@ func validateRevision(r Revision) error {
 		}
 	case RevisionKindGitCommit:
 		if strings.TrimSpace(r.Value) == "" {
-			return observationValidationError("revision.value", r.Value, "is required")
+			return observationValidationError("revision.value", r.Value, validationIsRequired)
 		}
 		if (len(r.Value) != 40 && len(r.Value) != 64) || !isHex(r.Value) {
 			return observationValidationError("revision.value", r.Value, "must be an exact hexadecimal Git commit")
@@ -300,7 +341,7 @@ func validateRevision(r Revision) error {
 		}
 	case RevisionKindETag, RevisionKindLastModified, RevisionKindSourceVersion, RevisionKindContentDigest:
 		if strings.TrimSpace(r.Value) == "" {
-			return observationValidationError("revision.value", r.Value, "is required")
+			return observationValidationError("revision.value", r.Value, validationIsRequired)
 		}
 	default:
 		return observationValidationError("revision.kind", r.Kind, "is not supported")
@@ -345,6 +386,9 @@ func observationID(observation Observation) string {
 	if observation.Metrics.PricingObservedAt != nil {
 		identity.WriteString(":" + observation.Metrics.PricingObservedAt.UTC().Format(time.RFC3339Nano))
 	}
+	for _, acquisition := range observation.Metrics.Acquisitions {
+		identity.WriteString("\x00acquisition:" + acquisition.ProviderID + ":" + acquisition.SourceID + ":" + acquisition.AuthMethod + ":" + string(acquisition.Scope) + ":" + string(acquisition.Topology))
+	}
 	for _, issue := range observation.Issues {
 		// Human-readable diagnostics can contain transport details or secrets and
 		// are deliberately excluded from stable identity and long-term evidence.
@@ -378,7 +422,7 @@ func validateObservationIssue(index int, issue ObservationIssue) error {
 		return observationValidationError(prefix+".code", issue.Code, "is not supported")
 	}
 	if strings.TrimSpace(issue.Message) == "" {
-		return observationValidationError(prefix+".message", issue.Message, "is required")
+		return observationValidationError(prefix+".message", issue.Message, validationIsRequired)
 	}
 	return nil
 }

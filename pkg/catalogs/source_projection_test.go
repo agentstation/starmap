@@ -29,7 +29,9 @@ func TestSourceProjectionPreservesCursorApplicationBoundaryAndModes(t *testing.T
 		"standard": {Pricing: testOfferingPricing(0.5)},
 		"fast":     {Pricing: testOfferingPricing(3)},
 	}
-	provider := Provider{ID: ProviderIDCursor, Name: "Cursor", Catalog: &ProviderCatalog{Endpoint: ProviderEndpoint{Type: EndpointTypeApplication}}, Models: map[string]*Model{model.ID: model}}
+	provider := Provider{ID: ProviderIDCursor, Name: "Cursor", Catalog: &ProviderCatalog{Sources: []ProviderSource{{
+		ID: "application", Endpoint: ProviderSourceEndpoint{Type: EndpointTypeApplication},
+	}}}, Models: map[string]*Model{model.ID: model}}
 	builder := NewEmpty()
 	if err := builder.SetAuthor(Author{ID: AuthorIDCursor, Name: "Cursor"}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)

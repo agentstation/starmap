@@ -5,11 +5,13 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
 	"github.com/agentstation/starmap/internal/cli/hints"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // ContextBuilder helps build hint contexts from command execution.
@@ -106,7 +108,7 @@ func detectUserState() hints.UserState {
 	}
 
 	// Detect preferred output format from environment or config
-	if format := os.Getenv("STARMAP_OUTPUT_FORMAT"); format != "" {
+	if format := os.Getenv("OUTPUT"); format != "" {
 		state.ConfiguredOutput = format
 	}
 
@@ -115,25 +117,30 @@ func detectUserState() hints.UserState {
 
 // detectConfiguredProviders detects which authentication providers are configured.
 func detectConfiguredProviders() []string {
-	var providers []string
-
-	// Check common API key environment variables
-	apiKeys := map[string]string{
-		"OPENAI_API_KEY":    "openai",
-		"ANTHROPIC_API_KEY": "anthropic",
-		"GOOGLE_API_KEY":    "google-ai-studio",
-		"GROQ_API_KEY":      "groq",
-		"DEEPSEEK_API_KEY":  "deepseek",
-		"CEREBRAS_API_KEY":  "cerebras",
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		return nil
 	}
-
-	for envVar, provider := range apiKeys {
-		if os.Getenv(envVar) != "" {
-			providers = append(providers, provider)
+	configured := make([]string, 0)
+	for _, provider := range builder.Providers().List() {
+		found := false
+		for _, credential := range provider.Credentials {
+			for _, name := range credential.Env {
+				if value, present := os.LookupEnv(name); present && value != "" {
+					found = true
+					break
+				}
+			}
+			if found {
+				break
+			}
+		}
+		if found {
+			configured = append(configured, string(provider.ID))
 		}
 	}
-
-	return providers
+	slices.Sort(configured)
+	return configured
 }
 
 // hasConfigFile checks if the user has a starmap configuration file.

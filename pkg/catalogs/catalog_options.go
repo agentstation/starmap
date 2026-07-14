@@ -93,7 +93,7 @@ func WithPath(path string) Option {
 func WithEmbedded() Option {
 	return func(c *options) {
 		// Use fs.Sub to get the catalog subdirectory
-		catalogFS, err := fs.Sub(embedded.FS, "catalog")
+		catalogFS, err := fs.Sub(embedded.FS, catalogResourceCatalog)
 		if err != nil {
 			// Fall back to using the full embedded FS
 			c.readFS = embedded.FS

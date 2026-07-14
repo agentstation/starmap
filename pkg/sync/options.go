@@ -51,6 +51,7 @@ type Options struct {
 type DependencyDecision uint8
 
 const (
+	optionFieldSources = "Sources"
 	// DependencyDecisionInstall requests automatic installation.
 	DependencyDecisionInstall DependencyDecision = iota + 1
 	// DependencyDecisionSkip requests skipping the source.
@@ -133,14 +134,14 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 	for _, sourceID := range s.Sources {
 		if !sourceID.IsValid() {
 			return &errors.ValidationError{
-				Field:   "Sources",
+				Field:   optionFieldSources,
 				Value:   sourceID,
 				Message: fmt.Sprintf("source %q is not supported", sourceID),
 			}
 		}
 		if s.Fresh && sourceID == sources.LocalCatalogID {
 			return &errors.ValidationError{
-				Field:   "Sources",
+				Field:   optionFieldSources,
 				Value:   sourceID,
 				Message: "fresh sync cannot use the existing local catalog as an input source",
 			}
@@ -148,7 +149,7 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 	}
 	if slices.Contains(s.Sources, sources.ModelsDevHTTPID) && slices.Contains(s.Sources, sources.ModelsDevGitID) {
 		return &errors.ValidationError{
-			Field:   "Sources",
+			Field:   optionFieldSources,
 			Value:   s.Sources,
 			Message: "models.dev HTTP and Git are alternative transports; select exactly one",
 		}

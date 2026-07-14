@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestParsePricingAndApplyPerRegionModes(t *testing.T) {
@@ -74,22 +73,6 @@ func TestLiveBedrockPublicPriceList(t *testing.T) {
 		t.Fatalf("live price-list evidence incomplete: version=%q etag=%q accepted=%d published=%s", prices.Version, prices.ETag, prices.AcceptedSKUs, prices.PublishedAt)
 	}
 	t.Logf("Bedrock price list version=%s published=%s accepted=%d ignored=%d", prices.Version, prices.PublishedAt.Format(time.RFC3339), prices.AcceptedSKUs, prices.IgnoredSKUs)
-}
-
-func TestLiveBedrockCommercialObservation(t *testing.T) {
-	if os.Getenv("STARMAP_LIVE_BEDROCK") != "1" {
-		t.Skip("set STARMAP_LIVE_BEDROCK=1 for credential-aware commercial-region proof")
-	}
-	observation, err := NewCommercialSource().Observe(context.Background())
-	if err != nil {
-		t.Fatalf("Observe: %v", err)
-	}
-	if observation.Status == sources.ObservationStatusDegraded && len(observation.Issues) == 1 && observation.Issues[0].Code == sources.ObservationIssueCodeMissingCredentials {
-		t.Skip("AWS SDK default credential chain unavailable")
-	}
-	if observation.Status != sources.ObservationStatusSucceeded || observation.Catalog == nil || observation.Metrics.ProviderCoverage.Observed != len(CommercialRegions()) || observation.Metrics.PricingObservedAt == nil {
-		t.Fatalf("live Bedrock observation = %#v", observation)
-	}
 }
 
 func pricingFixture(t testing.TB, products ...string) string {

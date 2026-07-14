@@ -1,0 +1,50 @@
+id: claude-opus-4-5
+name: claude-opus-4-5
+authors:
+- id: anthropic
+  name: anthropic
+definition_id: claude-opus-4-5
+pricing:
+  tokens:
+    cache_read:
+      per_1m: 0.55
+    cache_write:
+      per_1m: 6.875
+    input:
+      per_1m: 5.5
+    output:
+      per_1m: 27.5
+  currency: USD
+modes:
+  global-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.5
+        cache_write:
+          per_1m: 6.25
+        input:
+          per_1m: 5.0
+        output:
+          per_1m: 25.0
+      currency: USD
+  regional-routing:
+    pricing:
+      tokens:
+        cache_read:
+          per_1m: 0.55
+        cache_write:
+          per_1m: 6.875
+        input:
+          per_1m: 5.5
+        output:
+          per_1m: 27.5
+      currency: USD
+invocation_apis:
+- chat_completions
+- snowflake_complete
+offering_endpoint:
+  type: snowflake
+offering_deployment:
+  type: snowflake-hosted
+  tier: cortex-inference

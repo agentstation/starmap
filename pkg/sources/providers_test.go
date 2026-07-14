@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -34,24 +35,14 @@ func (c *retryingProviderFetcherTestClient) ListModels(context.Context) ([]catal
 	return []catalogs.Model{{ID: "mistral-small-latest", Name: "Mistral Small"}}, nil
 }
 
-func (*retryingProviderFetcherTestClient) IsAPIKeyRequired() bool { return false }
-func (*retryingProviderFetcherTestClient) HasAPIKey() bool        { return true }
-
 func (c providerFetcherTestClient) ListModels(context.Context) ([]catalogs.Model, error) {
 	return c.models, c.err
 }
 
-func (c providerFetcherTestClient) IsAPIKeyRequired() bool {
-	return false
-}
-
-func (c providerFetcherTestClient) HasAPIKey() bool {
-	return true
-}
-
 func TestProviderFetcherHasClientUsesInjectedFactory(t *testing.T) {
 	fetcher := NewProviderFetcher(newFetcherProviderSet(providerForFetcherTest("supported")),
-		WithProviderClientFactory(func(provider *catalogs.Provider) (ProviderClient, error) {
+		WithProviderClientFactory(func(source acquisition.Source) (ProviderClient, error) {
+			provider := source.Provider()
 			if provider.ID == "supported" {
 				return providerFetcherTestClient{}, nil
 			}
@@ -85,7 +76,7 @@ func TestProviderFetcherUsesDefaultProviderHooks(t *testing.T) {
 func TestProviderFetcherFetchModelsUsesInjectedFactory(t *testing.T) {
 	provider := providerForFetcherTest("provider-a")
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderClientFactory(func(provider *catalogs.Provider) (ProviderClient, error) {
+		WithProviderClientFactory(func(source acquisition.Source) (ProviderClient, error) {
 			return providerFetcherTestClient{
 				models: []catalogs.Model{{ID: "model-a", Name: "Model A"}},
 			}, nil
@@ -101,12 +92,81 @@ func TestProviderFetcherFetchModelsUsesInjectedFactory(t *testing.T) {
 	}
 }
 
+func TestProviderFetcherRetainsLogicalSourceIdentityAndScope(t *testing.T) {
+	provider := providerForFetcherTest("source-scope")
+	provider.Credentials = map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{
+		"api_key": {Env: catalogs.ProviderEnvironmentNames{"STARMAP_SOURCE_SCOPE_KEY"}},
+	}
+	provider.Catalog.Sources = append(provider.Catalog.Sources, catalogs.ProviderSource{
+		ID: "private-models",
+		ObservationScope: catalogs.ProviderObservationPolicy{
+			Anonymous: catalogs.ProviderObservationScopeGlobalPublic, Authenticated: catalogs.ProviderObservationScopeCredentialScoped,
+		},
+		Auth:     catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeOptional},
+		Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: "https://example.test/private-models"},
+	})
+	t.Setenv("STARMAP_SOURCE_SCOPE_KEY", "secret")
+	calls := map[string]int{}
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider), WithProviderClientFactory(func(source acquisition.Source) (ProviderClient, error) {
+		calls[source.SourceID()]++
+		return providerFetcherTestClient{models: []catalogs.Model{{ID: source.SourceID()}}}, nil
+	}))
+
+	results, err := fetcher.FetchModelSources(context.Background(), &provider)
+	if err != nil {
+		t.Fatalf("FetchModelSources: %v", err)
+	}
+	if len(results) != 2 || calls["models"] != 1 || calls["private-models"] != 1 {
+		t.Fatalf("results/calls = %#v %#v", results, calls)
+	}
+	if results[0].SourceID != "models" || results[0].Scope != catalogs.ProviderObservationScopeGlobalPublic || results[0].Authenticated {
+		t.Fatalf("public source = %#v", results[0])
+	}
+	if results[1].SourceID != "private-models" || results[1].Scope != catalogs.ProviderObservationScopeCredentialScoped || !results[1].Authenticated {
+		t.Fatalf("private source = %#v", results[1])
+	}
+}
+
+func TestProviderFetcherAppliesEachLogicalSourcesOfferingDefaultsBeforeAggregation(t *testing.T) {
+	provider := providerForFetcherTest("source-defaults")
+	provider.Catalog.Sources[0].Offering = &catalogs.ProviderOfferingDefaults{
+		Access:     catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIChatCompletions}},
+		Endpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeOpenAI},
+		Deployment: catalogs.ProviderDeployment{Type: "serverless"},
+	}
+	provider.Catalog.Sources = append(provider.Catalog.Sources, catalogs.ProviderSource{
+		ID: "dedicated", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+		Auth:     catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone},
+		Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: "https://example.test/dedicated"},
+		Offering: &catalogs.ProviderOfferingDefaults{
+			Access:     catalogs.OfferingAccess{Channel: catalogs.OfferingAccessChannelServerToServer, Routability: catalogs.OfferingRoutabilityRoutable, APIs: []catalogs.InvocationAPI{catalogs.InvocationAPIChatCompletions}},
+			Endpoint:   catalogs.ProviderOfferingEndpoint{Type: catalogs.EndpointTypeOpenAI},
+			Deployment: catalogs.ProviderDeployment{Type: "dedicated"},
+			Regions:    []catalogs.CloudRegion{{ID: "region-a", Residency: &catalogs.GeographicBoundary{ID: "geo", Kind: catalogs.GeographicBoundaryCountry, Countries: []string{"US"}}}},
+		},
+	})
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider), WithProviderClientFactory(func(source acquisition.Source) (ProviderClient, error) {
+		return providerFetcherTestClient{models: []catalogs.Model{{ID: source.SourceID(), Name: source.SourceID()}}}, nil
+	}))
+	results, err := fetcher.FetchModelSources(context.Background(), &provider)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(results) != 2 || results[0].Models[0].OfferingDeployment.Type != "serverless" || results[1].Models[0].OfferingDeployment.Type != "dedicated" || results[1].Models[0].OfferingRegions[0].ID != "region-a" {
+		t.Fatalf("source-specific defaults = %#v", results)
+	}
+	results[1].Models[0].OfferingRegions[0].Residency.Countries[0] = "changed"
+	if provider.Catalog.Sources[1].Offering.Regions[0].Residency.Countries[0] != "US" {
+		t.Fatal("source default regions alias provider configuration")
+	}
+}
+
 func TestProviderFetcherAppliesBoundedRetryPolicy(t *testing.T) {
 	provider := providerForFetcherTest(catalogs.ProviderIDMistralAI)
 	client := &retryingProviderFetcherTestClient{}
 	policy := ProviderRetryPolicy{MaxAttempts: 3, BaseDelay: time.Nanosecond, MaxDelay: time.Nanosecond}
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) { return client, nil }),
+		WithProviderClientFactory(func(acquisition.Source) (ProviderClient, error) { return client, nil }),
 		WithProviderRetryPolicy(policy),
 	)
 	models, err := fetcher.FetchModels(context.Background(), &provider)
@@ -116,7 +176,7 @@ func TestProviderFetcherAppliesBoundedRetryPolicy(t *testing.T) {
 
 	terminal := &retryingProviderFetcherTestClient{status: http.StatusUnauthorized}
 	fetcher = NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) { return terminal, nil }),
+		WithProviderClientFactory(func(acquisition.Source) (ProviderClient, error) { return terminal, nil }),
 		WithProviderRetryPolicy(policy),
 	)
 	if _, err := fetcher.FetchModels(context.Background(), &provider); err == nil || terminal.attempts != 1 {
@@ -140,17 +200,17 @@ func TestProviderFetcherFetchModelsRequiresFactory(t *testing.T) {
 
 func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testing.T) {
 	provider := providerForFetcherTest("credential-policy")
-	provider.Catalog.Endpoint.AuthRequired = true
-	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_FETCHER_CONFORMANCE_KEY"}
+	provider.Credentials = map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"STARMAP_FETCHER_CONFORMANCE_KEY"}}}
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}}
 	t.Setenv("STARMAP_FETCHER_CONFORMANCE_KEY", "")
 	clientCalls := 0
 	rawCalls := 0
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) {
+		WithProviderClientFactory(func(acquisition.Source) (ProviderClient, error) {
 			clientCalls++
 			return providerFetcherTestClient{}, nil
 		}),
-		WithProviderRawFetcher(func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error) {
+		WithProviderRawFetcher(func(context.Context, acquisition.Source) (*RawFetchResult, error) {
 			rawCalls++
 			return nil, nil
 		}),
@@ -159,7 +219,7 @@ func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testin
 	providerForModels := provider
 	_, modelsErr := fetcher.FetchModels(context.Background(), &providerForModels)
 	providerForRaw := provider
-	_, _, rawErr := fetcher.FetchRawResponse(context.Background(), &providerForRaw, "https://example.test/raw")
+	_, _, rawErr := fetcher.FetchRawResponse(context.Background(), &providerForRaw, "models")
 	for name, err := range map[string]error{"models": modelsErr, "raw": rawErr} {
 		var authenticationErr *pkgerrors.AuthenticationError
 		if !stderrors.As(err, &authenticationErr) {
@@ -171,20 +231,47 @@ func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testin
 	}
 }
 
+func TestProviderFetcherOptionalSourceSkipsOnlyAbsentCredentials(t *testing.T) {
+	provider := providerForFetcherTest("optional-source")
+	provider.Credentials = map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{
+		"api_key": {Env: catalogs.ProviderEnvironmentNames{"STARMAP_OPTIONAL_SOURCE_ABSENT_KEY"}},
+	}
+	provider.Catalog.Sources[0].Optional = true
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Methods: []catalogs.ProviderCredentialID{"api_key"}}
+	clientCalls := 0
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider), WithProviderClientFactory(func(acquisition.Source) (ProviderClient, error) {
+		clientCalls++
+		return providerFetcherTestClient{}, nil
+	}))
+
+	models, err := fetcher.FetchModels(context.Background(), &provider)
+	if err != nil || len(models) != 0 || clientCalls != 0 {
+		t.Fatalf("absent optional source = models %#v calls %d err %v", models, clientCalls, err)
+	}
+
+	t.Setenv("STARMAP_OPTIONAL_SOURCE_ABSENT_KEY", "")
+	if _, err := fetcher.FetchModels(context.Background(), &provider); err == nil {
+		t.Fatal("present-empty optional credential must fail closed")
+	}
+	if clientCalls != 0 {
+		t.Fatalf("present-invalid credential reached connector: calls=%d", clientCalls)
+	}
+}
+
 func TestProviderFetcherFetchRawResponseUsesInjectedFetcher(t *testing.T) {
 	provider := providerForFetcherTest("provider-a")
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderRawFetcher(func(_ context.Context, _ *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+		WithProviderRawFetcher(func(_ context.Context, source acquisition.Source) (*RawFetchResult, error) {
 			return &RawFetchResult{
 				Data:       []byte(`{"ok":true}`),
-				Response:   &http.Response{StatusCode: http.StatusAccepted, Header: http.Header{"Content-Type": []string{"application/json; charset=utf-8"}}},
+				StatusCode: http.StatusAccepted,
+				Header:     http.Header{"Content-Type": []string{"application/json; charset=utf-8"}},
 				Latency:    12 * time.Millisecond,
-				RequestURL: endpoint,
 			}, nil
 		}),
 	)
 
-	data, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "https://example.test/raw")
+	data, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "models")
 	if err != nil {
 		t.Fatalf("FetchRawResponse failed: %v", err)
 	}
@@ -197,31 +284,24 @@ func TestProviderFetcherFetchRawResponseUsesInjectedFetcher(t *testing.T) {
 	if stats.ContentType != "application/json" {
 		t.Fatalf("Expected cleaned content type, got %q", stats.ContentType)
 	}
-	if stats.URL != "https://example.test/raw" {
-		t.Fatalf("Expected request URL in stats, got %q", stats.URL)
-	}
 }
 
 func TestProviderFetcherFetchRawResponseReportsNoAuthWhenOptionalKeyMissing(t *testing.T) {
 	provider := providerForFetcherTest("optional-auth")
-	provider.APIKey = &catalogs.ProviderAPIKey{
-		Name:   "OPTIONAL_AUTH_API_KEY",
-		Header: "Authorization",
-		Scheme: catalogs.ProviderAPIKeySchemeBearer,
-	}
-	t.Setenv("OPTIONAL_AUTH_API_KEY", "")
+	provider.Credentials = map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"STARMAP_TEST_OPTIONAL_AUTH_KEY_MUST_BE_UNSET"}}}
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeOptional}
 
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderRawFetcher(func(_ context.Context, _ *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+		WithProviderRawFetcher(func(_ context.Context, source acquisition.Source) (*RawFetchResult, error) {
 			return &RawFetchResult{
 				Data:       []byte(`{"ok":true}`),
-				Response:   &http.Response{StatusCode: http.StatusOK, Header: http.Header{}},
-				RequestURL: endpoint,
+				StatusCode: http.StatusOK,
+				Header:     http.Header{},
 			}, nil
 		}),
 	)
 
-	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "https://example.test/raw")
+	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "models")
 	if err != nil {
 		t.Fatalf("FetchRawResponse failed: %v", err)
 	}
@@ -232,24 +312,21 @@ func TestProviderFetcherFetchRawResponseReportsNoAuthWhenOptionalKeyMissing(t *t
 
 func TestProviderFetcherFetchRawResponseReportsAuthWhenOptionalKeyPresent(t *testing.T) {
 	provider := providerForFetcherTest("optional-auth")
-	provider.APIKey = &catalogs.ProviderAPIKey{
-		Name:   "OPTIONAL_AUTH_API_KEY",
-		Header: "Authorization",
-		Scheme: catalogs.ProviderAPIKeySchemeBearer,
-	}
+	provider.Credentials = map[catalogs.ProviderCredentialID]catalogs.ProviderCredential{"api_key": {Env: catalogs.ProviderEnvironmentNames{"OPTIONAL_AUTH_API_KEY"}}}
+	provider.Catalog.Sources[0].Auth = catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeOptional}
 	t.Setenv("OPTIONAL_AUTH_API_KEY", "secret")
 
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
-		WithProviderRawFetcher(func(_ context.Context, _ *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
+		WithProviderRawFetcher(func(_ context.Context, source acquisition.Source) (*RawFetchResult, error) {
 			return &RawFetchResult{
 				Data:       []byte(`{"ok":true}`),
-				Response:   &http.Response{StatusCode: http.StatusOK, Header: http.Header{}},
-				RequestURL: endpoint,
+				StatusCode: http.StatusOK,
+				Header:     http.Header{},
 			}, nil
 		}),
 	)
 
-	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "https://example.test/raw")
+	_, stats, err := fetcher.FetchRawResponse(context.Background(), &provider, "models")
 	if err != nil {
 		t.Fatalf("FetchRawResponse failed: %v", err)
 	}
@@ -277,12 +354,9 @@ func providerForFetcherTest(id catalogs.ProviderID) catalogs.Provider {
 	return catalogs.Provider{
 		ID:   id,
 		Name: string(id),
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://example.test/models",
-				AuthRequired: false,
-			},
-		},
+		Catalog: &catalogs.ProviderCatalog{Sources: []catalogs.ProviderSource{{
+			ID: "models", ObservationScope: catalogs.ProviderObservationPolicy{Invariant: catalogs.ProviderObservationScopeGlobalPublic},
+			Auth: catalogs.ProviderAuthPolicy{Mode: catalogs.ProviderAuthModeNone}, Endpoint: catalogs.ProviderSourceEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: "https://example.test/models"},
+		}}},
 	}
 }

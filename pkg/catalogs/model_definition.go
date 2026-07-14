@@ -60,18 +60,18 @@ type ModelDefinitionCapabilities struct {
 // Validate verifies canonical identity and authorship invariants.
 func (d ModelDefinition) Validate() error {
 	if strings.TrimSpace(string(d.ID)) == "" {
-		return definitionValidationError("id", d.ID, "is required")
+		return definitionValidationError("id", d.ID, validationMessageIsRequired)
 	}
 	if strings.TrimSpace(d.Name) == "" {
-		return definitionValidationError("name", d.Name, "is required")
+		return definitionValidationError("name", d.Name, validationMessageIsRequired)
 	}
 	seenAuthors := make(map[AuthorID]struct{}, len(d.AuthorIDs))
 	for index, authorID := range d.AuthorIDs {
 		if strings.TrimSpace(string(authorID)) == "" {
-			return definitionValidationError(fmt.Sprintf("author_ids[%d]", index), authorID, "must not be empty")
+			return definitionValidationError(fmt.Sprintf("author_ids[%d]", index), authorID, validationMessageMustNotBeEmpty)
 		}
 		if _, exists := seenAuthors[authorID]; exists {
-			return definitionValidationError(fmt.Sprintf("author_ids[%d]", index), authorID, "must be unique")
+			return definitionValidationError(fmt.Sprintf("author_ids[%d]", index), authorID, validationMessageMustBeUnique)
 		}
 		seenAuthors[authorID] = struct{}{}
 	}

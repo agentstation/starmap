@@ -1,10 +1,10 @@
-# open-mistral-nemo - Legacy model retained for compatibility with older integrati...
+# open-mistral-nemo - Deprecated Mistral model retained as a lifecycle record.
 id: open-mistral-nemo
 name: open-mistral-nemo
 authors:
 - id: mistral
   name: mistral
-description: Legacy model retained for compatibility with older integrations
+description: Deprecated Mistral model retained as a current lifecycle record.
 status: deprecated
 
 # Model metadata

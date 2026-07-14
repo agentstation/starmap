@@ -44,8 +44,8 @@ func (c Channel) Validate() error {
 	}
 }
 
-// ParseChannel parses a channel query value. An empty value defaults to stable
-// for backward-compatible consumer behavior.
+// ParseChannel parses a channel query value. An empty value selects the stable
+// channel as the exact current default.
 func ParseChannel(value string) (Channel, error) {
 	if strings.TrimSpace(value) == "" {
 		return ChannelStable, nil
@@ -152,7 +152,7 @@ func (r *MemoryRepository) Promote(channel Channel, generationID string, probe *
 	}
 	published, found := r.items[generationID]
 	if !found {
-		return fail(&errors.NotFoundError{Resource: "hosted catalog generation", ID: generationID})
+		return fail(&errors.NotFoundError{Resource: publishedGenerationResource, ID: generationID})
 	}
 	if from == generationID {
 		return nil
@@ -195,7 +195,7 @@ func (r *MemoryRepository) Rollback(channel Channel, generationID, reason string
 		return fail(&errors.ValidationError{Field: "catalog_distribution.rollback_reason", Message: "is required"})
 	}
 	if _, found := r.items[generationID]; !found {
-		return fail(&errors.NotFoundError{Resource: "hosted catalog generation", ID: generationID})
+		return fail(&errors.NotFoundError{Resource: publishedGenerationResource, ID: generationID})
 	}
 	if _, served := r.history[channel][generationID]; !served {
 		return fail(&errors.ValidationError{Field: "catalog_distribution.rollback_generation", Value: generationID, Message: "was not previously served by this channel"})
@@ -252,14 +252,14 @@ func (c *Client) ProbeChannel(ctx context.Context, channel Channel, policy Promo
 
 func (r *MemoryRepository) validateStableProbeLocked(published PublishedGeneration, probe *PromotionProbe, now time.Time) error {
 	if probe == nil {
-		return &errors.ValidationError{Field: "catalog_distribution.stable_probe", Message: "passing canary evidence is required"}
+		return &errors.ValidationError{Field: stableProbeValidationField, Message: "passing canary evidence is required"}
 	}
 	if probe.Channel != ChannelCanary || probe.GenerationID != published.Generation.Manifest.GenerationID ||
 		probe.ArtifactChecksum != published.Artifact.Checksum {
-		return &errors.ValidationError{Field: "catalog_distribution.stable_probe", Value: probe.GenerationID, Message: "does not match the canary generation and archive"}
+		return &errors.ValidationError{Field: stableProbeValidationField, Value: probe.GenerationID, Message: "does not match the canary generation and archive"}
 	}
 	if !probe.Available || !probe.Fresh || probe.Failure != "" {
-		return &errors.ValidationError{Field: "catalog_distribution.stable_probe", Value: probe.Failure, Message: "availability, freshness, and latency SLOs must pass"}
+		return &errors.ValidationError{Field: stableProbeValidationField, Value: probe.Failure, Message: "availability, freshness, and latency SLOs must pass"}
 	}
 	if probe.Latency < 0 || probe.Latency > r.policy.MaxProbeLatency {
 		return &errors.ValidationError{Field: "catalog_distribution.probe_latency", Value: probe.Latency, Message: "exceeds stable promotion policy"}

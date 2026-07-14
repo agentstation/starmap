@@ -13,7 +13,7 @@ import (
 func NewCatalog(source Reader) (*Catalog, error) {
 	if source == nil {
 		return nil, &errors.ValidationError{
-			Field:   "source",
+			Field:   catalogFieldSource,
 			Message: "catalog source cannot be nil",
 		}
 	}
@@ -37,7 +37,7 @@ type Catalog struct {
 
 func buildCatalog(source Reader) (*Catalog, error) {
 	projected := newSourceProjection()
-	if modelSource, ok := source.(ModelSourceReader); ok {
+	if modelSource, ok := source.(modelSourceReader); ok {
 		var err error
 		projected, err = projectSourceModels(modelSource)
 		if err != nil {
@@ -53,7 +53,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 		}
 		for _, offering := range source.Offerings() {
 			if err := offering.Validate(); err != nil {
-				return nil, errors.WrapResource("index", "provider offering", string(offering.ProviderID)+"/"+string(offering.ProviderModelID), err)
+				return nil, errors.WrapResource("index", catalogResourceProviderOffering, string(offering.ProviderID)+"/"+string(offering.ProviderModelID), err)
 			}
 			if _, found := projected.Definitions[offering.DefinitionID]; !found {
 				return nil, &errors.NotFoundError{Resource: "model definition", ID: string(offering.DefinitionID)}
@@ -67,7 +67,10 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	}
 	for providerID, keys := range providerOfferings {
 		slices.SortFunc(keys, func(left, right OfferingKey) int {
-			return strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID))
+			if order := strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID)); order != 0 {
+				return order
+			}
+			return strings.Compare(left.DeploymentID, right.DeploymentID)
 		})
 		providerOfferings[providerID] = keys
 	}
@@ -156,9 +159,26 @@ func sortedOfferings(values map[OfferingKey]ProviderOffering) []ProviderOffering
 		if order := strings.Compare(string(left.ProviderID), string(right.ProviderID)); order != 0 {
 			return order
 		}
-		return strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID))
+		if order := strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID)); order != 0 {
+			return order
+		}
+		return strings.Compare(left.DeploymentID, right.DeploymentID)
 	})
 	return result
+}
+
+// OfferingByKey returns one exact caller-owned offering, including a scoped deployment.
+func (r *Catalog) OfferingByKey(key OfferingKey) (ProviderOffering, error) {
+	provider, found := r.source.Providers().Resolve(key.ProviderID)
+	if !found || provider == nil {
+		return ProviderOffering{}, &errors.NotFoundError{Resource: catalogResourceProvider, ID: string(key.ProviderID)}
+	}
+	key.ProviderID = provider.ID
+	offering, found := r.offerings[key]
+	if !found {
+		return ProviderOffering{}, &errors.NotFoundError{Resource: catalogResourceProviderOffering, ID: string(key.ProviderID) + "/" + string(key.ProviderModelID) + "/" + key.DeploymentID}
+	}
+	return copyProviderOffering(offering), nil
 }
 
 // Offering returns one caller-owned provider-scoped model offering. Provider
@@ -166,13 +186,13 @@ func sortedOfferings(values map[OfferingKey]ProviderOffering) []ProviderOffering
 func (r *Catalog) Offering(providerID ProviderID, providerModelID ProviderModelID) (ProviderOffering, error) {
 	provider, found := r.source.Providers().Resolve(providerID)
 	if !found || provider == nil {
-		return ProviderOffering{}, &errors.NotFoundError{Resource: "provider", ID: string(providerID)}
+		return ProviderOffering{}, &errors.NotFoundError{Resource: catalogResourceProvider, ID: string(providerID)}
 	}
 	key := OfferingKey{ProviderID: provider.ID, ProviderModelID: providerModelID}
 	offering, found := r.offerings[key]
 	if !found {
 		return ProviderOffering{}, &errors.NotFoundError{
-			Resource: "provider offering",
+			Resource: catalogResourceProviderOffering,
 			ID:       string(provider.ID) + "/" + string(providerModelID),
 		}
 	}
@@ -183,7 +203,7 @@ func (r *Catalog) Offering(providerID ProviderID, providerModelID ProviderModelI
 func (r *Catalog) ProviderOfferings(providerID ProviderID) ([]ProviderOffering, error) {
 	keys, found := r.providerOfferings[providerID]
 	if !found {
-		return nil, &errors.NotFoundError{Resource: "provider", ID: string(providerID)}
+		return nil, &errors.NotFoundError{Resource: catalogResourceProvider, ID: string(providerID)}
 	}
 	offerings := make([]ProviderOffering, 0, len(keys))
 	for _, key := range keys {

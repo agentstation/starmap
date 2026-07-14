@@ -156,7 +156,9 @@ func mergeOffering(key catalogs.OfferingKey, candidates offeringCandidates, pric
 	merged := identity[0]
 	merged.ProviderID = key.ProviderID
 	merged.ProviderModelID = key.ProviderModelID
+	merged.DeploymentID = key.DeploymentID
 	merged.DefinitionID = definitionID
+	merged.Aliases = unionOfferingAliases(orderedOfferingCandidates(candidates, sources.ResourceTypeProviderOffering, "Aliases"))
 	merged.Pricing = firstValidPricing(candidates, pricingAt, observations)
 	limits, err := mergeLimits(orderedOfferingCandidates(candidates, sources.ResourceTypeProviderOffering, "Limits"))
 	if err != nil {
@@ -350,9 +352,25 @@ func applyCompleteOfferingDeletions(observations []sources.Observation, offering
 		if order := strings.Compare(string(left.ProviderID), string(right.ProviderID)); order != 0 {
 			return order
 		}
-		return strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID))
+		if order := strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID)); order != 0 {
+			return order
+		}
+		return strings.Compare(left.DeploymentID, right.DeploymentID)
 	})
 	return keys
+}
+
+func unionOfferingAliases(candidates []catalogs.ProviderOffering) []string {
+	var result []string
+	for _, candidate := range candidates {
+		for _, alias := range candidate.Aliases {
+			if alias != "" && !slices.Contains(result, alias) {
+				result = append(result, alias)
+			}
+		}
+	}
+	slices.Sort(result)
+	return result
 }
 
 func sourceCanDeleteCatalogBaseline(sourceID sources.ID) bool {

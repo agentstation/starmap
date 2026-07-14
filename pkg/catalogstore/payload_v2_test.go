@@ -154,7 +154,7 @@ func TestCanonicalPayloadV2RejectsDuplicateIdentities(t *testing.T) {
 
 func TestCatalogPayloadV1FailsIncompatibly(t *testing.T) {
 	builder := catalogs.NewEmpty()
-	if err := builder.SetProvider(catalogs.Provider{ID: "legacy", Name: "Legacy"}); err != nil {
+	if err := builder.SetProvider(catalogs.Provider{ID: "prelaunch", Name: "Prelaunch"}); err != nil {
 		t.Fatal(err)
 	}
 	payload, err := EncodeCatalogPayload(builder)
@@ -168,11 +168,11 @@ func TestCatalogPayloadV1FailsIncompatibly(t *testing.T) {
 	object["schema_version"] = float64(1)
 	delete(object, "definitions")
 	delete(object, "offerings")
-	legacy, err := json.Marshal(object)
+	prelaunchPayload, err := json.Marshal(object)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := DecodeCatalogPayload(legacy); err == nil {
+	if _, err := DecodeCatalogPayload(prelaunchPayload); err == nil {
 		t.Fatal("DecodeCatalogPayload accepted prelaunch schema v1")
 	}
 }
@@ -218,5 +218,11 @@ func TestCanonicalPayloadV2RejectsOfferingWithMissingDefinition(t *testing.T) {
 	}
 	if _, err := DecodeCatalogPayload(payload); err == nil {
 		t.Fatal("DecodeCatalogPayload accepted offering with missing definition")
+	}
+}
+
+func TestCanonicalPayloadV2RejectsDuplicateJSONMembers(t *testing.T) {
+	if _, err := DecodeCatalogPayload([]byte(`{"schema_version":2,"schema_version":2}`)); err == nil {
+		t.Fatal("DecodeCatalogPayload accepted duplicate JSON member")
 	}
 }

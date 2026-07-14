@@ -65,9 +65,9 @@ Architecture review report generated outside the repo:
 | 2026-07-08 09:42 America/Chicago | P1 characterization tests added for source filtering, source config, dependency resolution, fetch/cleanup error joining, context cancellation, and dry-run publication behavior. `go test .` and `go test ./...` passed. |
 | 2026-07-08 09:55 America/Chicago | `internal/catalog/pipeline` introduced. `client.Sync` now delegates to the pipeline store adapter; source construction, dependency resolution, cleanup, fetch, reconciliation, dry-run, no-change, and force-save policy are tested at the pipeline seam. `go test ./internal/catalog/pipeline ./pkg/sync .`, `go test ./internal/sources/providers ./pkg/reconciler ./pkg/sync`, and `go test ./...` passed. |
 | 2026-07-08 10:04 America/Chicago | P1 documentation updated in `docs/ARCHITECTURE.md`. Acceptance gates passed: `go test .`, `go test ./internal/sources/providers ./pkg/reconciler ./pkg/sync`, `go test ./...`, `go test ./... -race -short`, `go vet ./...`, and `git diff --check`. Public `pkg/*` to `internal/*` imports remain only as known pre-existing seams for P2/P3. |
-| 2026-07-08 10:09 America/Chicago | P2 started. Baseline provider source and public provider fetcher coverage is 0.0%. Current design has unbounded provider goroutine fan-out and `pkg/sources` importing `internal/providers/clients`. |
+| 2026-07-08 10:09 America/Chicago | P2 started. Baseline provider source and public provider fetcher coverage was 0.0%. The then-current design had unbounded provider goroutine fan-out and direct concrete-factory coupling; that registry now lives at `internal/connectors/registry`. |
 | 2026-07-08 10:25 America/Chicago | P2 provider seam implemented. `internal/sources/providers` now accepts fake client factories and bounds provider fetch concurrency. `pkg/sources.ProviderFetcher` uses public `ProviderClientFactory`/`ProviderRawFetcher` seams. Focused coverage: `internal/sources/providers` 77.7%, `pkg/sources` 36.5%. `go test ./...` and `go vet ./...` passed. |
-| 2026-07-08 10:29 America/Chicago | P2 acceptance gates passed: `go test ./internal/sources/providers ./internal/providers/openai ./internal/providers/anthropic`, `go test ./pkg/sources`, `go test ./...`, `go test ./... -race -short`, `go vet ./...`, and `git diff --check`. |
+| 2026-07-08 10:29 America/Chicago | P2 acceptance gates passed; the OpenAI and Anthropic implementations exercised there now live under `internal/connectors`, while the repository-wide race, vet, and diff gates remain authoritative. |
 | 2026-07-08 10:39 America/Chicago | P3 endpoint ownership leak fixed. `Endpoints` now copies on map initialization, set/add, batch writes, get, map, and callback iteration. Architecture docs now state the catalog ownership contract. `go test ./pkg/catalogs`, `go test ./pkg/catalogs -race`, and `go test ./...` passed. |
 | 2026-07-08 10:42 America/Chicago | P3 acceptance gates passed: `go test ./pkg/catalogs -race`, `go test ./pkg/catalogs`, `go test ./...`, `go vet ./...`, and `git diff --check`. |
 | 2026-07-08 10:43 America/Chicago | P4 started with query behavior inventory across HTTP handlers and CLI commands. |
@@ -86,7 +86,8 @@ Architecture review report generated outside the repo:
 
 ## Global Constraints
 
-- Preserve public Go package compatibility unless a breaking change is explicitly justified and approved.
+- Starmap is prelaunch: remove superseded unpublished Go/package shapes directly;
+  retain a surface only for a current architectural requirement with evidence.
 - Keep edits scoped to the active phase.
 - Do not revert unrelated dirty files.
 - Prefer idiomatic Go: small concrete types, interfaces at use sites, explicit errors, context propagation, bounded concurrency, and table-driven tests.
@@ -150,7 +151,7 @@ Candidate module shape:
 
 ### Problem
 
-Provider fetching is split across public `pkg/sources`, internal client factory, provider source concurrency, and provider-specific clients. Public `pkg/sources` currently imports `internal/providers/clients`, which weakens the advertised package layering. Provider source fetch uses one goroutine per provider and has no direct package tests in the coverage run.
+Provider fetching is split across public `pkg/sources`, the provider acquisition registry, provider source concurrency, reusable protocol connectors, and provider-specific implementations. The concrete registry is now `internal/providers/registry`; provider source fetch is bounded and directly tested.
 
 ### Target Shape
 
@@ -174,7 +175,7 @@ Provider fetching should have one deep module that owns:
 
 ### Acceptance Gate
 
-- `go test ./internal/sources/providers ./internal/providers/openai ./internal/providers/anthropic`
+- `go test ./internal/sources/providers ./internal/connectors/openai ./internal/connectors/anthropic`
 - `go test ./pkg/sources`
 - `go test ./...`
 - `go test ./... -race -short`
@@ -310,7 +311,7 @@ Create one event stream module that owns backpressure policy, counters, and fan-
 Use this prompt to drive autonomous execution:
 
 ```text
-/goal Execute /Users/jack/src/github.com/agentstation/starmap/docs/ARCHITECTURE_CONTROL_PLANE.md end to end. Treat the ledger, execution log, constraints, and acceptance criteria in that file as the source of truth. Work phases in order unless a blocker makes a later independent phase clearly safer. After every meaningful implementation step, update the ledger and execution log in the control plane. Do not revert unrelated pre-existing edits in cmd/starmap/app/execute.go, cmd/starmap/main.go, docs/CLI.md, or internal/cli/globals/globals.go. Preserve public Go compatibility unless explicitly approved. Keep modules idiomatic Go: small interfaces at use sites, concrete types by default, typed errors, context propagation, bounded concurrency, table-driven tests, and race-safe ownership. Continue autonomously through implementation, focused tests, full tests, race tests, vet, docs, and final verification until all phases are DONE or a real blocker is recorded with evidence.
+/goal Execute /Users/jack/src/github.com/agentstation/starmap/docs/ARCHITECTURE_CONTROL_PLANE.md end to end. Treat the ledger, execution log, constraints, and acceptance criteria in that file as the source of truth. Work phases in order unless a blocker makes a later independent phase clearly safer. After every meaningful implementation step, update the ledger and execution log in the control plane. Do not revert unrelated pre-existing edits in cmd/starmap/app/execute.go, cmd/starmap/main.go, docs/CLI.md, or internal/cli/globals/globals.go. Starmap is prelaunch, so remove superseded unpublished shapes directly and retain a surface only for a current architectural requirement with evidence. Keep modules idiomatic Go: small interfaces at use sites, concrete types by default, typed errors, context propagation, bounded concurrency, table-driven tests, and race-safe ownership. Continue autonomously through implementation, focused tests, full tests, race tests, vet, docs, and final verification until all phases are DONE or a real blocker is recorded with evidence.
 ```
 
 ## Plan Review Checklist

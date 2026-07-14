@@ -31,14 +31,15 @@ foundation offerings. Databricks invocation URLs are workspace-specific, so the
 public support list never receives an invented global endpoint or customer
 workspace URL.
 
-## Private workspace inventory
+## Credential-scoped workspace inventory
 
 Workspace discovery is opt-in and calls the paginated
 `GET /api/2.0/serving-endpoints` contract with a private bearer token. The
 workspace ID, host, endpoint name, served-entity name/version, external upstream
-provider/model, traffic percentage, region, and invocation URL remain only in
-`CustomerInventory`. External model provider names and traffic aliases are not
-canonical model IDs.
+provider/model, traffic percentage, region, and invocation URL become ordinary
+contextual offering facts in the caller's catalog. The credential-scoped
+observation is rejected before public writes. External model provider names and
+traffic aliases are not canonical model IDs.
 
 Because workspace entities can be custom, fine-tuned, versioned, or external,
 the caller must supply an explicit entity-to-definition mapping. An unknown

@@ -27,7 +27,7 @@ func TestNoPanicUnsupportedSerializationReturnsTypedError(t *testing.T) {
 		t.Fatalf("EncodeYAML error = %T, want *errors.ParseError", err)
 	}
 	if got := model.FormatYAML(); got != "" {
-		t.Fatalf("legacy FormatYAML = %q, want safe empty result", got)
+		t.Fatalf("FormatYAML = %q, want safe empty result", got)
 	}
 	builder := NewEmpty()
 	if err := builder.SetProvider(Provider{ID: "provider", Name: "Provider", Models: map[string]*Model{model.ID: model}}); err != nil {
