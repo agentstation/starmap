@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starmap Catalog Architecture, Upgrade Lifecycle & Simplification Plan</title>
+  <meta name="starmap-review-baseline" content="9508ee7866e4683e001e7ad153319d348433045d" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#ecfeff",
+        primaryTextColor: "#164e63",
+        primaryBorderColor: "#0891b2",
+        lineColor: "#64748b",
+        secondaryColor: "#f8fafc",
+        tertiaryColor: "#fffbeb",
+        fontFamily: "ui-sans-serif, system-ui, sans-serif"
+      }
+    });
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #f8fafc; }
+    .code-scroll { scrollbar-color: #475569 #0f172a; }
+    .signal-strong { border-left-color: #0891b2; }
+    .signal-medium { border-left-color: #d97706; }
+    .signal-review { border-left-color: #7c3aed; }
+    .file-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; }
+    .mermaid svg { margin: 0 auto; max-width: 100%; height: auto; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased">
+  <header class="border-b border-slate-200 bg-slate-950 text-white">
+    <div class="mx-auto max-w-7xl px-6 py-10">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan-300">Architecture review · 27 July 2026</p>
+          <h1 class="mt-3 max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">Starmap catalog architecture, upgrade lifecycle &amp; simplification plan</h1>
+        </div>
+        <div class="rounded-xl border border-slate-700 bg-slate-900 px-5 py-4 text-sm text-slate-300">
+          <div><span class="text-slate-500">Compared:</span> <code>3787d716</code> → <code>9508ee78</code></div>
+          <div class="mt-1"><span class="text-slate-500">Scope:</span> catalog YAML, source flow, reconciliation, publication, DX</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl space-y-12 px-6 py-10">
+    <section class="grid gap-5 lg:grid-cols-3">
+      <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Verdict</p>
+        <h2 class="mt-2 text-xl font-bold text-emerald-950">The previous model was better in role, not in data quality.</h2>
+        <p class="mt-3 text-sm leading-6 text-emerald-900">The old local YAML had the clearer mental model: it was the catalog humans edited and updates wrote. The current catalog has richer records and much stronger immutable publication.</p>
+      </article>
+      <article class="rounded-2xl border border-cyan-200 bg-cyan-50 p-6">
+        <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Important correction</p>
+        <h2 class="mt-2 text-xl font-bold text-cyan-950">There was no YAML migration to definitions or offerings.</h2>
+        <p class="mt-3 text-sm leading-6 text-cyan-900"><code>/providers</code> remains the stored tree. <code>ModelDefinition</code> and <code>ProviderOffering</code> were layered on as Go read models and synthesized during build.</p>
+      </article>
+      <article class="rounded-2xl border border-amber-200 bg-amber-50 p-6">
+        <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Top risk</p>
+        <h2 class="mt-2 text-xl font-bold text-amber-950">Editable YAML is currently treated like an export.</h2>
+        <p class="mt-3 text-sm leading-6 text-amber-900">Once a durable generation exists, restart favors it and can ignore local YAML. That contradicts the intended operator workflow and makes two stores feel authoritative.</p>
+      </article>
+    </section>
+
+    <nav class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+        <a class="text-cyan-700 hover:text-cyan-950" href="#history">History &amp; YAML diff</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#dx">DX gained and lost</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#architecture">Architecture</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#lifecycle">Upgrade &amp; edit lifecycle</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#edge-cases">Workflow matrix</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#changes">Proposed changes</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#plan">Phased plan</a>
+        <a class="text-cyan-700 hover:text-cyan-950" href="#decision">Top recommendation</a>
+      </div>
+    </nav>
+
+    <section id="history" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Historical comparison</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">What actually changed</h2>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-3">
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-xs font-bold text-slate-500">EARLIEST</p>
+          <h3 class="mt-1 font-bold text-slate-950">Sparse provider YAML</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Easy to scan, but incomplete and occasionally inaccurate. Provider models were the clear persisted concept.</p>
+        </article>
+        <article class="rounded-xl border-2 border-cyan-400 bg-cyan-50 p-5 shadow-sm">
+          <p class="text-xs font-bold text-cyan-700">PRE-CONTROL-PLANE · 3787d716</p>
+          <h3 class="mt-1 font-bold text-cyan-950">One local catalog</h3>
+          <p class="mt-2 text-sm leading-6 text-cyan-900"><code>WithLocalPath</code>, embedded + local, and <code>starmap update</code> wrote the same human-readable catalog tree.</p>
+        </article>
+        <article class="rounded-xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
+          <p class="text-xs font-bold text-violet-700">CURRENT · 9508ee78</p>
+          <h3 class="mt-1 font-bold text-violet-950">Generation store + YAML export</h3>
+          <p class="mt-2 text-sm leading-6 text-violet-900">Excellent immutable publication, but the machine generation store became authoritative while editable YAML moved to an export path.</p>
+        </article>
+      </div>
+
+      <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 px-6 py-4">
+          <h3 class="text-lg font-bold text-slate-950">Exact representative YAML diff: OpenAI <code>gpt-4o</code></h3>
+          <p class="mt-1 text-sm text-slate-600">Pre-control-plane baseline → protected main. This is data enrichment, not a structural split.</p>
+        </div>
+        <pre class="code-scroll overflow-x-auto bg-slate-950 p-6 text-sm leading-6 text-slate-200"><code><span class="text-red-300">-# gpt-4o - AI model</span>
+<span class="text-emerald-300">+# gpt-4o - Omni-era GPT ...</span>
+ id: gpt-4o
+ name: gpt-4o
+ authors:
+ - id: openai
+   name: OpenAI
+<span class="text-emerald-300">+description: Omni-era GPT for multimodal chat, practical coding, and general assistants</span>
+
+ metadata:
+   release_date: 2024-05-13
+   open_weights: false
+   knowledge_cutoff: 2023-09-01
+<span class="text-emerald-300">+lineage:</span>
+<span class="text-emerald-300">+  family: gpt</span>
+
+ features:
+   modalities:
+<span class="text-red-300">-    input: [text]</span>
+<span class="text-emerald-300">+    input: [text, image, pdf]</span>
+     output: [text]
+
+ pricing:
+   tokens:
+<span class="text-emerald-300">+    cache_read: {per_1m: 1.25}</span>
+     input: {per_1m: 2.5}
+     output: {per_1m: 10.00}
+
+ limits:
+   context_window: 128000
+<span class="text-amber-300">+  input_tokens: 0</span>
+   output_tokens: 16384
+<span class="text-red-300">-updated_at: 2025-10-20T22:31:57Z</span>
+<span class="text-emerald-300">+updated_at: 2026-07-11T20:15:13.101089Z</span></code></pre>
+        <div class="grid gap-4 border-t border-slate-200 bg-slate-50 p-5 sm:grid-cols-2">
+          <div>
+            <h4 class="font-semibold text-emerald-800">Keep</h4>
+            <p class="mt-1 text-sm text-slate-600">Description, lineage, multimodal inputs, and cache pricing are useful improvements.</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-amber-800">Correct</h4>
+            <p class="mt-1 text-sm text-slate-600"><code>input_tokens: 0</code> conflates unknown with a known zero; generated timestamp churn obscures meaningful diffs.</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="rounded-xl border border-cyan-200 bg-cyan-50 p-5 text-sm leading-6 text-cyan-950">
+        <strong>Answer to “was the previous YAML better?”</strong> The file layout and operator mental model were better; the actual current records are richer. Reverting the schema would lose useful data. The right move is to restore the provider tree as the one writable catalog while retaining current fields and immutable runtime indexes.
+      </div>
+    </section>
+
+    <section id="dx" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Developer experience</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">What we gained—and what we lost</h2>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-5 py-3">Area</th>
+              <th class="px-5 py-3 text-emerald-800">Current gain worth keeping</th>
+              <th class="px-5 py-3 text-amber-800">DX regression to correct</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr>
+              <td class="px-5 py-4 font-semibold">Library reads</td>
+              <td class="px-5 py-4">Concrete immutable <code>*catalogs.Catalog</code>; non-failing O(1) access; safe retention across goroutines.</td>
+              <td class="px-5 py-4"><code>FindModel</code> now returns a definition without provider price/limits, requiring a second offering lookup for a common case.</td>
+            </tr>
+            <tr>
+              <td class="px-5 py-4 font-semibold">Local catalog</td>
+              <td class="px-5 py-4">Validated generations, CAS, retention, rollback, and atomic reader publication.</td>
+              <td class="px-5 py-4">One obvious local catalog became a machine database plus an optional editable export.</td>
+            </tr>
+            <tr>
+              <td class="px-5 py-4 font-semibold">Provider identity</td>
+              <td class="px-5 py-4">Provider-specific offering indexes correctly distinguish shared model IDs and prices.</td>
+              <td class="px-5 py-4">Provider YAML began being described as “legacy,” even though it remains the actual persisted model.</td>
+            </tr>
+            <tr>
+              <td class="px-5 py-4 font-semibold">Updates</td>
+              <td class="px-5 py-4">Candidate validation and immutable publication make runtime reads reliable.</td>
+              <td class="px-5 py-4">Input and output paths can refer to different trees; after restart, manual YAML edits can be ignored by a durable current generation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="architecture" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Architecture</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">Make the generation store a compiled product, not a competing source</h2>
+      </div>
+
+      <div class="grid gap-6 xl:grid-cols-2">
+        <article class="rounded-2xl border border-rose-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-bold text-rose-900">Current operational model</h3>
+          <div class="mermaid mt-5">
+flowchart TD
+  E["Embedded provider YAML"]
+  L["Local / exported YAML"]
+  D["Durable generation database"]
+  C["Immutable Catalog"]
+  S["Provider APIs + models.dev"]
+  E -->|"initial build"| D
+  L -.->|"consulted before first generation; optional export later"| D
+  S -->|"sync candidate"| D
+  D -->|"current generation"| C
+  classDef problem fill:#fff1f2,stroke:#e11d48,color:#881337;
+  class L,D problem;
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-600">Two things can look authoritative. The generated database wins operationally, so an operator can edit YAML and see no effect after restart.</p>
+        </article>
+
+        <article class="rounded-2xl border border-emerald-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-bold text-emerald-900">Proposed deep module</h3>
+          <div class="mermaid mt-5">
+flowchart TD
+  E["Verified embedded provider YAML<br/>bootstrap + versioned observation"]
+  L["One local human catalog<br/>~/.starmap/catalog/providers/..."]
+  O["Provider APIs + models.dev observations"]
+  R["One weighted authority + provenance implementation"]
+  V["Validate candidate"]
+  W["Stage + atomically replace YAML workspace"]
+  G["Compile immutable generation"]
+  P["CAS commit + atomic Catalog publication"]
+  Q["Starport and Go consumers"]
+  E -->|"seed when absent"| L
+  E -->|"new revision on explicit update"| R
+  O --> R
+  L --> R
+  R --> V
+  V --> W
+  V --> G
+  G --> P
+  P --> Q
+  classDef truth fill:#ecfdf5,stroke:#059669,color:#064e3b;
+  classDef deep fill:#ecfeff,stroke:#0891b2,color:#164e63;
+  class L truth;
+  class R,V,W,G,P deep;
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-600">The provider tree is the single human authoring model. The generation is a compiled, validated read product. A newer embedded catalog is reconciled as low-authority evidence on explicit update—never copied wholesale over an existing workspace.</p>
+        </article>
+      </div>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-950">Canonical persisted tree</h3>
+        <pre class="mt-4 overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm leading-6 text-slate-200"><code>~/.starmap/catalog/          # the one human-editable catalog
+├── providers.yaml
+├── authors.yaml
+├── provenance.yaml          # machine-owned evidence, not override configuration
+├── generation.json          # schema + applied embedded/workspace digests
+├── .state/                  # locks, staging, retained history; never hand-edited
+└── providers/
+    └── &lt;provider&gt;/
+        └── models/
+            └── &lt;model&gt;.yaml</code></pre>
+        <div class="mt-4 grid gap-4 md:grid-cols-3">
+          <div class="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Humans edit:</strong> provider records and their model facts.</div>
+          <div class="rounded-lg bg-cyan-50 p-4 text-sm text-cyan-950"><strong>Derive:</strong> definitions, offerings, author reverse indexes.</div>
+          <div class="rounded-lg bg-rose-50 p-4 text-sm text-rose-950"><strong>Do not add:</strong> <code>/definitions</code>, <code>/offerings</code>, <code>/overrides</code>. Machine metadata is state, not another configuration layer.</div>
+        </div>
+      </article>
+    </section>
+
+    <section id="lifecycle" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Upgrade and edit lifecycle</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">A new embedded catalog is evidence—not an overwrite</h2>
+        <p class="mt-2 max-w-4xl text-slate-600">The lifecycle needs a three-way semantic comparison: current YAML, the last materialized value recorded in provenance, and the newly observed value. That gives the catalog module depth without introducing override files.</p>
+      </div>
+
+      <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 px-6 py-4">
+          <h3 class="text-lg font-bold text-slate-950">Binary upgrade: embedded revision E1 → E2</h3>
+        </div>
+        <div class="p-6">
+          <div class="mermaid">
+sequenceDiagram
+  participant H as Human YAML workspace
+  participant P as Persisted provenance
+  participant E as New embedded revision E2
+  participant U as Update transaction
+  participant C as Immutable Catalog
+  Note over H,C: Installing the binary performs no implicit disk mutation
+  U->>H: Read one consistent workspace snapshot
+  U->>P: Load last emitted semantic values + source revisions
+  U->>E: Verify manifest and payload digest
+  U->>U: Classify changed YAML paths as local evidence
+  U->>U: Reconcile E2 + local + live observations by one authority table
+  U->>U: Validate complete candidate
+  U->>H: Stage, fsync, compare input digest, atomic replace
+  U->>C: Compile and atomically publish exact candidate
+          </div>
+        </div>
+      </article>
+
+      <div class="grid gap-5 lg:grid-cols-3">
+        <article class="rounded-xl border border-cyan-200 bg-cyan-50 p-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">No workspace</p>
+          <h3 class="mt-1 font-bold text-cyan-950">Use or seed embedded</h3>
+          <p class="mt-2 text-sm leading-6 text-cyan-900">A read-only library can use verified embedded data in memory. The first explicit CLI update atomically creates the provider YAML tree and retains embedded provenance.</p>
+        </article>
+        <article class="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Workspace exists</p>
+          <h3 class="mt-1 font-bold text-emerald-950">Never silently rewrite at construction</h3>
+          <p class="mt-2 text-sm leading-6 text-emerald-900">Construction loads and validates the configured workspace. A newer embedded revision is reported as available and joins the next normal update transaction.</p>
+        </article>
+        <article class="rounded-xl border border-violet-200 bg-violet-50 p-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-violet-700">Store-only composition</p>
+          <h3 class="mt-1 font-bold text-violet-950">No YAML dependency</h3>
+          <p class="mt-2 text-sm leading-6 text-violet-900">A Starport process using only a catalog store publishes generations without touching <code>~/.starmap</code>. Embedded supplies the empty-store baseline only.</p>
+        </article>
+      </div>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-950">How Starmap recognizes a human edit</h3>
+        <div class="mt-5 grid gap-4 md:grid-cols-3">
+          <div class="rounded-xl border border-slate-200 p-4">
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Unchanged generated value</p>
+            <p class="mt-2 text-sm leading-6">YAML equals the last provenance value. Keep its original provider, models.dev, or embedded source identity.</p>
+          </div>
+          <div class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Semantic value changed</p>
+            <p class="mt-2 text-sm leading-6 text-amber-950">Only that field becomes local evidence. Dynamic valid facts may later outrank it; fields absent from sources remain manual.</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-4">
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Formatting-only change</p>
+            <p class="mt-2 text-sm leading-6">Whitespace, key order, and quoting do not create evidence. Updates emit deterministic canonical YAML.</p>
+          </div>
+        </div>
+        <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+          <strong>Explicit authoring contract:</strong> semantic values are preserved; comments, whitespace, quoting style, and key order are not durable product data. Human notes that must survive belong in a recognized field or controlled extension—not only in comments. This avoids a complex comment-preserving YAML merge implementation.
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-950">What happens to an E1-derived field when E2 arrives?</h3>
+        <div class="mt-4 overflow-hidden rounded-xl border border-slate-200">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-100"><tr><th class="px-4 py-3">Workspace state</th><th class="px-4 py-3">E2 state</th><th class="px-4 py-3">Result</th></tr></thead>
+            <tbody class="divide-y divide-slate-200">
+              <tr><td class="px-4 py-3">Still matches E1 provenance</td><td class="px-4 py-3">New non-empty value</td><td class="px-4 py-3">Refresh to E2; provenance becomes embedded E2 unless a higher source wins.</td></tr>
+              <tr><td class="px-4 py-3">Human changed value</td><td class="px-4 py-3">Conflicting value</td><td class="px-4 py-3">Local beats embedded. A higher-authority live source may still replace it.</td></tr>
+              <tr><td class="px-4 py-3">Field missing</td><td class="px-4 py-3">New value</td><td class="px-4 py-3">E2 fills the gap.</td></tr>
+              <tr><td class="px-4 py-3">Old E1 value remains</td><td class="px-4 py-3">Field absent</td><td class="px-4 py-3">Retain last known good; absence alone is not deletion evidence.</td></tr>
+              <tr><td class="px-4 py-3">Manual model with same provider/model ID</td><td class="px-4 py-3">New E2 record</td><td class="px-4 py-3">Merge field by field; local values beat embedded and E2 fills missing fields.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section id="edge-cases" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Workflow and side-case matrix</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">Behavior must be unsurprising before it is automatic</h2>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-100">
+            <tr><th class="px-4 py-3">Scenario</th><th class="px-4 py-3">Required behavior</th><th class="px-4 py-3">Proof</th></tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 align-top">
+            <tr><td class="px-4 py-3 font-semibold">First CLI update</td><td class="px-4 py-3">Atomically seed an absent workspace from verified embedded data, then reconcile configured sources.</td><td class="px-4 py-3">Interruption leaves either no tree or one complete valid tree.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Binary upgraded, no manual edits</td><td class="px-4 py-3">The next explicit update refreshes values still attributed to old embedded revision E1 and adds E2 records.</td><td class="px-4 py-3">E1→E2 fixture updates only semantically changed paths.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Binary upgraded, manual edits exist</td><td class="px-4 py-3">Only actual changed paths become local; E2 fills gaps and cannot overwrite local values because embedded is lowest authority.</td><td class="px-4 py-3">One-field edit changes provenance for exactly one field.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Live source conflicts with human value</td><td class="px-4 py-3">Valid current provider/model evidence normally wins; the prior local candidate and selection reason remain inspectable.</td><td class="px-4 py-3">Authority table test plus persisted rejection/winner evidence.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Human deletes a field</td><td class="px-4 py-3">Deletion withdraws the local claim; an upstream or embedded source may refill it. Missing and explicit zero/false remain distinct.</td><td class="px-4 py-3">Presence-aware round-trip fixture.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Human deletes a model file</td><td class="px-4 py-3">A purely local record is removed. An upstream-backed model is rediscoverable; durable suppression requires an explicit in-record lifecycle/exclusion value, not an override file.</td><td class="px-4 py-3">Local-only delete and rediscovery fixtures.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Provider omits a model</td><td class="px-4 py-3">Absence is not deletion. Retain last-known-good unless explicit, validated retirement evidence exists.</td><td class="px-4 py-3">Complete, partial, and degraded omission tests.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Provider/model renamed</td><td class="px-4 py-3">Never infer rename from disappearance plus addition. IDs are opaque; relate records only with explicit alias/supersession evidence.</td><td class="px-4 py-3">Suspected rename remains two records.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Invalid local YAML</td><td class="px-4 py-3">Fail closed with exact path and location. Never fall back to embedded, overwrite the file, or publish an empty catalog.</td><td class="px-4 py-3">Workspace, stored current, and memory pointer remain unchanged.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Unknown source record shape</td><td class="px-4 py-3">Decode the envelope, quarantine only the malformed record, and retain valid siblings. Unknown local top-level fields fail unless under controlled extensions.</td><td class="px-4 py-3">Mixed valid/invalid provider-response fixture.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">All sources offline</td><td class="px-4 py-3">Continue serving the last valid catalog. Failed/incomplete observations have no deletion authority; update reports degradation.</td><td class="px-4 py-3">Every provider can fail without changing catalog contents.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Human edits during update</td><td class="px-4 py-3">Compare the input workspace digest immediately before swap; abort with a typed conflict rather than overwrite concurrent edits.</td><td class="px-4 py-3">Race fixture changes a file after candidate construction.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Two writer processes</td><td class="px-4 py-3">One context-aware workspace lock plus generation-store CAS. The loser retries or receives a typed busy/conflict result.</td><td class="px-4 py-3">No interleaved files; readers see complete before/after generations.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Process already running while YAML changes</td><td class="px-4 py-3">No implicit file watcher. Current immutable catalog stays stable until explicit reload/update; failed reload preserves it.</td><td class="px-4 py-3">Edit alone changes no reader result; successful reload changes one generation.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Schema upgrade</td><td class="px-4 py-3">Migrate a known older workspace inside the same staged transaction. Reject an unknown newer schema before mutation.</td><td class="px-4 py-3">Old fixture migrates; future fixture remains byte-identical.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Binary downgrade</td><td class="px-4 py-3">An older binary may read only declared compatible schema ranges and must never auto-down-migrate or apply older embedded data.</td><td class="px-4 py-3">Typed incompatibility error before any write.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Rollback</td><td class="px-4 py-3">Validate retained generation, atomically rematerialize its provider YAML and provenance, then republish that exact digest.</td><td class="px-4 py-3">YAML semantics, provenance, digest, and runtime reads all return to the selected generation.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Verified release import</td><td class="px-4 py-3">Verify checksum, statement, publisher, and schema; reconcile as trusted observations. Never wholesale-replace human data by default.</td><td class="px-4 py-3">Tampered import changes nothing; valid import preserves manual-only records.</td></tr>
+            <tr><td class="px-4 py-3 font-semibold">Secrets and permissions</td><td class="px-4 py-3">Catalog YAML may describe environment-variable names, never secret values. Preserve restrictive directory/file permissions and reject unsafe symlink traversal.</td><td class="px-4 py-3">Permission and symlink tests across stage/swap/rollback.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="changes" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Change candidates</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">A subtraction-first correction</h2>
+        <p class="mt-2 max-w-4xl text-slate-600">Each candidate deepens a useful module or removes a shallow seam. The goal is stronger leverage and locality: one place to understand authoring, one authority implementation, one publication path.</p>
+      </div>
+
+      <div class="space-y-5">
+        <article class="signal-strong rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Strong recommendation · local-substitutable</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Deepen the catalog lifecycle module around versioned observations</h3>
+            </div>
+            <span class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">P0–P2</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">client.go · internal/bootstrap · pkg/catalogs · pkg/provenance · internal/catalog/pipeline</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before · shallow lifecycle</h4>
+              <div class="mt-3 space-y-2 text-xs text-rose-950">
+                <div class="rounded border border-rose-200 bg-white p-2">New binary embeds E2</div>
+                <div class="pl-5 text-rose-500">↓ structural merge or ignored export</div>
+                <div class="rounded border border-rose-200 bg-white p-2">Local YAML loses source identity</div>
+                <div class="pl-5 text-rose-500">↓ callers must understand two stores</div>
+                <div class="rounded border border-rose-200 bg-white p-2">Generation store decides restart truth</div>
+              </div>
+            </div>
+            <div class="deep rounded-xl p-4 text-white">
+              <h4 class="font-semibold text-cyan-200">After · deep lifecycle module</h4>
+              <div class="mt-3 rounded-lg border-2 border-cyan-300 bg-slate-900 p-4 text-xs leading-6">
+                <div class="font-bold uppercase tracking-wider text-cyan-200">One interface</div>
+                <div class="mt-2 text-slate-200">embedded revision + human workspace + live observations</div>
+                <div class="my-2 border-t border-dashed border-slate-600"></div>
+                <div class="text-slate-400">internal implementation</div>
+                <div class="text-slate-300">classify → reconcile → validate → stage → publish</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 grid gap-4 md:grid-cols-3 text-sm">
+            <div><strong>Problem:</strong> upgrade, editing, and restart rules leak across shallow modules.</div>
+            <div><strong>Solution:</strong> one lifecycle implementation owns source identity and transactional ordering.</div>
+            <div><strong>Benefits:</strong> locality for failures; leverage across CLI, Starport, imports, and tests.</div>
+          </div>
+        </article>
+
+        <article class="signal-strong rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Strong recommendation</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Restore one real local catalog path</h3>
+            </div>
+            <span class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">P0–P1</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">client.go · sync.go · pkg/catalogs/catalog.go · pkg/catalogs/catalog_options.go · pkg/catalogs/load.go · pkg/catalogs/save.go · internal/catalog/pipeline</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before</h4>
+              <p class="mt-1 text-sm leading-6 text-rose-950">Machine generations live at the path called “catalog”; editable YAML lives at an export path. Input/output resolution can diverge, and existing generations can mask manual edits.</p>
+            </div>
+            <div class="rounded-xl bg-emerald-50 p-4">
+              <h4 class="font-semibold text-emerald-900">After</h4>
+              <p class="mt-1 text-sm leading-6 text-emerald-950">One <code>CatalogPath</code> names the human YAML workspace and update is in-place. Machine state is internal or explicitly injected. Embedded seeds an absent workspace and later participates as versioned low-authority evidence.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-700"><strong>Benefits:</strong> restores obvious DX, improves locality, removes path ambiguity, and keeps the compiled generation implementation free to be optimized independently.</p>
+        </article>
+
+        <article class="signal-strong rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Strong recommendation</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Collapse authority and provenance into one executable implementation</h3>
+            </div>
+            <span class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">P2</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">pkg/authority/authority.go · pkg/authority/canonical.go · pkg/reconciler/merger.go · pkg/provenance</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before</h4>
+              <p class="mt-1 text-sm leading-6 text-rose-950">Two policy vocabularies coexist; the newer one is used only for pricing. Local still outranks dynamic evidence for some discoverable fields. Provider-scoped provenance can collide on a bare model ID.</p>
+            </div>
+            <div class="rounded-xl bg-emerald-50 p-4">
+              <h4 class="font-semibold text-emerald-900">After</h4>
+              <p class="mt-1 text-sm leading-6 text-emerald-950">One field-sensitive priority table selects winners and records evidence. Dynamic valid facts generally beat local fallback; operator connection configuration remains local-first. Provider facts key evidence by provider/model.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-700"><strong>Benefits:</strong> one source of policy truth, explainable decisions, correct provider pricing, and no need for override files.</p>
+        </article>
+
+        <article class="signal-strong rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Strong recommendation</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Keep one persisted model; derive all read views</h3>
+            </div>
+            <span class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">P3</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">pkg/catalogs/payload.go · pkg/catalogs/readonly.go · pkg/catalogs/legacy_schema_migration.go · pkg/catalogs/save.go</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before</h4>
+              <p class="mt-1 text-sm leading-6 text-rose-950">The provider record remains persisted but is labeled legacy, then projected into definition/offering types on every build. Author model files duplicate provider data.</p>
+            </div>
+            <div class="rounded-xl bg-emerald-50 p-4">
+              <h4 class="font-semibold text-emerald-900">After</h4>
+              <p class="mt-1 text-sm leading-6 text-emerald-950">Provider records are the canonical persisted model. Definitions, offerings, and author membership are internal immutable indexes derived during publication.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-700"><strong>Benefits:</strong> retains provider-specific precision without creating a second schema, removes migration vocabulary, and eliminates 322 author-model files including 195 byte-identical duplicates.</p>
+        </article>
+
+        <article class="signal-strong rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Strong recommendation</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Make source updates non-destructive and YAML publication atomic</h3>
+            </div>
+            <span class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">P4</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">pkg/reconciler/collector.go · internal/sources/providers/providers.go · pkg/catalogs/save.go · sync.go</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before</h4>
+              <p class="mt-1 text-sm leading-6 text-rose-950">Absence from a provider listing can prune records; degraded observations can affect last-known-good state. YAML save removes managed trees before direct rewrites.</p>
+            </div>
+            <div class="rounded-xl bg-emerald-50 p-4">
+              <h4 class="font-semibold text-emerald-900">After</h4>
+              <p class="mt-1 text-sm leading-6 text-emerald-950">Absence is not deletion. Only validated explicit retirement evidence changes lifecycle. YAML is built in a staged sibling directory, synced, and atomically swapped.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-700"><strong>Benefits:</strong> manual additions survive, partial provider failures cannot erase good data, and readers always observe a complete before/after workspace.</p>
+        </article>
+
+        <article class="signal-medium rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Delete after characterization</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Remove shallow, duplicate, and unused modules</h3>
+            </div>
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">P5</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">pkg/enhancer · pkg/catalogdistribution · pkg/sourceevidence · pkg/types · pkg/authority/canonical.go · pkg/catalogs/legacy_v0.go · providers.yaml.bak</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-rose-50 p-4">
+              <h4 class="font-semibold text-rose-900">Before</h4>
+              <p class="mt-1 text-sm leading-6 text-rose-950">Several modules have no production caller, overlap working implementations, or preserve pre-launch compatibility. The codebase grew from 33,108 to 47,900 production Go lines across the comparison.</p>
+            </div>
+            <div class="rounded-xl bg-emerald-50 p-4">
+              <h4 class="font-semibold text-emerald-900">After</h4>
+              <p class="mt-1 text-sm leading-6 text-emerald-950">Delete confirmed unused implementations and compatibility surfaces. Keep distribution, scheduler, and server behavior only where a named Starport composition or product requirement exists.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-slate-700"><strong>Benefits:</strong> smaller public surface, fewer shallow seams, clearer ownership, and faster tests. This follows—not precedes—behavioral fixtures so subtraction is safe.</p>
+        </article>
+
+        <article class="signal-review rounded-2xl border border-l-4 border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-violet-700">Explicit product decision</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-950">Decide whether server and in-process scheduler belong in Starmap</h3>
+            </div>
+            <span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-800">Defer</span>
+          </div>
+          <p class="mt-4 file-ref text-slate-500">internal/server · pkg/catalogscheduler · realtime SSE/WebSocket adapters</p>
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-xl bg-violet-50 p-4">
+              <h4 class="font-semibold text-violet-900">Question</h4>
+              <p class="mt-1 text-sm leading-6 text-violet-950">Is Starmap itself a standalone distribution server and scheduler, or is Starport the process that owns serving and scheduling?</p>
+            </div>
+            <div class="rounded-xl bg-slate-100 p-4">
+              <h4 class="font-semibold text-slate-900">Decision rule</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-700">Keep only a concrete composition used by Starport or a documented standalone product mode. Otherwise prefer a deep catalog library plus repository workflow scheduling.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Authority contract</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">Manual data fills gaps; current valid evidence wins</h2>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-100">
+            <tr>
+              <th class="px-5 py-3">Field family / event</th>
+              <th class="px-5 py-3">Precedence or behavior</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr><td class="px-5 py-3 font-semibold">Valid provider pricing</td><td class="px-5 py-3"><strong>provider → models.dev → local → embedded</strong></td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Availability and provider limits</td><td class="px-5 py-3">provider → models.dev → local → embedded</td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Description, lineage, capabilities</td><td class="px-5 py-3">current source evidence → local → embedded, field-specific where necessary</td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Operator connection configuration</td><td class="px-5 py-3">local → embedded; discovery sources cannot overwrite secrets or routing choices</td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Manual model absent from observation</td><td class="px-5 py-3">retain; absence is not deletion evidence</td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Partial/degraded fetch</td><td class="px-5 py-3">cannot delete, retire, or replace a last-known-good value with absence</td></tr>
+            <tr><td class="px-5 py-3 font-semibold">Reloaded generated YAML</td><td class="px-5 py-3">if value still matches stored evidence, retain original source; only an actual human change becomes local provenance</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
+        <strong>Correctness defect to include in P2:</strong> persisted provenance currently keys some model fields by bare model ID. Provider-specific price or limit evidence can collide when providers share an ID. Provider-scoped fields must use a provider/model identity.
+      </div>
+    </section>
+
+    <section id="plan" class="space-y-6">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-cyan-700">Execution control plane</p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">Phased plan with verifiable gates</h2>
+      </div>
+
+      <div class="space-y-4">
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">P0</span><h3 class="text-lg font-bold">Lock the catalog contract and characterize current behavior</h3></div>
+          <p class="mt-2 text-sm text-slate-600">Record <code>/providers</code> as the sole human model tree. Supersede—do not rewrite—historical export/legacy decisions.</p>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+            <li>Golden fixture contains no persisted definitions, offerings, or overrides.</li>
+            <li>Contract states that installing a binary never silently mutates an existing workspace.</li>
+            <li>Embedded, local, live, and release data are versioned observations—not overlay directories.</li>
+            <li>Exact old/current YAML comparison and operator journey become executable fixtures.</li>
+            <li>Tests reproduce store-only sync failure, path divergence, local merge loss, pruning, and non-atomic save before implementation.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-cyan-200 bg-cyan-50 p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-cyan-700 px-2.5 py-1 text-xs font-bold text-white">P1</span><h3 class="text-lg font-bold text-cyan-950">Make the local workspace real</h3></div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-cyan-950">
+            <li>Absent workspace is seeded from embedded exactly once; existing workspace is never silently overlaid.</li>
+            <li>A newer embedded revision is detected and reconciled on the next explicit update without a separate migration command.</li>
+            <li>Unchanged embedded-derived fields refresh; human-edited fields retain local provenance and beat embedded.</li>
+            <li>One catalog path is read and atomically updated in place; input and output cannot diverge.</li>
+            <li>Embedded construction cannot default to writing inside the repository.</li>
+            <li>Store-only library sync succeeds without a YAML destination.</li>
+            <li>Restart from written YAML produces the same catalog.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">P2</span><h3 class="text-lg font-bold">Make reconciliation match the authority contract</h3></div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+            <li>One table governs all field selection; valid provider pricing wins atomically.</li>
+            <li>Dynamic facts replace local fallback; manual missing data and local-only configuration survive.</li>
+            <li>Comparing YAML to the last emitted provenance value marks only semantic human changes as local.</li>
+            <li>Explicit false/zero is distinguishable from absent/unknown.</li>
+            <li>Partial observations cannot delete or retire records.</li>
+            <li>Winner, provider/model scope, embedded revision, observation ID, checksum, reason, and rejected candidates survive restart.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">P3</span><h3 class="text-lg font-bold">Keep one persisted model and derive immutable views</h3></div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+            <li>Durable payload remains provider-oriented; no definition/offering collections are persisted.</li>
+            <li>Same ID at two providers produces distinct offerings and prices.</li>
+            <li><code>FindModel</code> is a deterministic provider-independent view using the same authority evidence—not alphabetical first-wins.</li>
+            <li>No exported “legacy migration” or <code>LegacyV0</code> vocabulary remains pre-launch.</li>
+            <li><code>Catalog()</code> remains non-failing, non-nil, O(1), allocation-free, and mutation-isolated.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">P4</span><h3 class="text-lg font-bold">Prove non-destructive, atomic updates</h3></div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+            <li>A missing provider response never deletes a manual or last-known-good model.</li>
+            <li>Injected parse, fetch, validation, write, fsync, rename, commit, and publication failures retain a complete prior catalog.</li>
+            <li>A human edit made after candidate construction causes a digest conflict; it is never overwritten.</li>
+            <li>One workspace lock prevents two processes from interleaving updates.</li>
+            <li>Concurrent readers observe exactly one complete generation before or after publication.</li>
+            <li>Recovery semantics are explicit when YAML materialization and generation commit cannot both complete.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">P5</span><h3 class="text-lg font-bold">Delete duplicate data and unused implementations</h3></div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+            <li>No author model files are loaded, written, embedded, or stored in payloads; derived author queries remain equivalent.</li>
+            <li>No production imports remain for each deleted module.</li>
+            <li>Public exports, package count, production Go LOC, embedded bytes, and binary size are reported before/after.</li>
+            <li>Scheduler/server remain only after an explicit named product composition is documented.</li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
+          <div class="flex items-center gap-3"><span class="rounded-lg bg-emerald-700 px-2.5 py-1 text-xs font-bold text-white">P6</span><h3 class="text-lg font-bold text-emerald-950">Prove the human and Starport workflows</h3></div>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm leading-6 text-emerald-950">
+            <li>Seed an absent catalog from embedded.</li>
+            <li>Add a private manual provider/model and a missing field to an existing model.</li>
+            <li>Upgrade to a binary with embedded E2; confirm unchanged E1-derived values refresh and the manual edit survives.</li>
+            <li>Fetch conflicting current data plus a degraded source; confirm authoritative dynamic values win and manual gaps survive.</li>
+            <li>Inspect provenance for every winner, restart, and obtain identical results.</li>
+            <li>Race two writers, roll back, attempt an incompatible downgrade, and reject a tampered artifact.</li>
+            <li>Run exact Go toolchain verification, race suite, fault suite, vet/lint/docs, diff check, accessor benchmark, and release artifact roundtrip.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="grid gap-6 lg:grid-cols-3">
+      <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+        <h2 class="text-xl font-bold text-emerald-950">Keep</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-emerald-950">
+          <li>Concrete immutable catalog</li>
+          <li>Builder isolation and precomputed indexes</li>
+          <li>CAS, generation retention, rollback</li>
+          <li>Provider-specific offering lookup</li>
+          <li>Schema-drift quarantine</li>
+          <li>Artifact verification and remote distribution</li>
+        </ul>
+      </article>
+      <article class="rounded-2xl border border-rose-200 bg-rose-50 p-6">
+        <h2 class="text-xl font-bold text-rose-950">Delete or fold</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-rose-950">
+          <li>Persisted author model mirrors</li>
+          <li>Export/legacy compatibility vocabulary</li>
+          <li>Duplicate canonical authority inventory</li>
+          <li><code>providers.yaml.bak</code> and empty endpoints surface</li>
+          <li>Confirmed unused enhancer, source-evidence, distribution, and type shims</li>
+        </ul>
+      </article>
+      <article class="rounded-2xl border border-violet-200 bg-violet-50 p-6">
+        <h2 class="text-xl font-bold text-violet-950">Decide, then act</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-violet-950">
+          <li>Standalone HTTP/SSE/WebSocket server</li>
+          <li>In-process scheduler versus GitHub workflow</li>
+          <li>Whether route aliases belong in Starport</li>
+          <li>Whether sparse YAML is worth presence-aware field types</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="decision" class="rounded-3xl bg-slate-950 p-8 text-white shadow-xl">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-cyan-300">Top recommendation</p>
+      <h2 class="mt-3 text-3xl font-bold">Start with P0 and P1: lock the upgrade contract and restore one editable provider catalog.</h2>
+      <p class="mt-4 max-w-4xl text-lg leading-8 text-slate-300">Do not revert the current rich YAML, immutable catalog, provider indexes, or atomic generation publication. Make <code class="text-cyan-200">/providers</code> the sole persisted human model. Treat every new embedded catalog as verified, low-authority evidence on explicit update—not a wholesale overlay—and make generations compiled products of the exact reconciled workspace.</p>
+      <div class="mt-6 rounded-xl border border-slate-700 bg-slate-900 p-5 text-sm leading-6 text-slate-300">
+        <strong class="text-white">Why first:</strong> until local YAML is genuinely the editable workspace and binary upgrades have deterministic merge semantics, every later provenance, scheduling, distribution, and source feature is being composed around the wrong operational contract.
+      </div>
+    </section>
+
+    <section class="rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-6 text-slate-600 shadow-sm">
+      <h2 class="font-bold text-slate-950">Evidence notes</h2>
+      <p class="mt-2">Historical baseline: <code>3787d7164433f2fcb713a2d81e0cb653f9df6be5</code>. Protected-main review: <code>9508ee7866e4683e001e7ad153319d348433045d</code>. Representative files include <code>client.go</code>, <code>sync.go</code>, <code>pkg/catalogs/{payload,readonly,catalog,save}.go</code>, <code>pkg/reconciler/{collector,merger,reconciler}.go</code>, and <code>pkg/authority/{authority,canonical}.go</code>.</p>
+      <p class="mt-2">Scale is diagnostic, not a verdict: production Go code grew from 33,108 to 47,900 lines; <code>pkg/catalogs</code> from 5,335 to 7,780 lines. The plan preserves deep reliability work and targets shallow or duplicated implementation.</p>
+      <p class="mt-2">Lifecycle recommendations explicitly cover embedded E1→E2 upgrades, human semantic edits, local deletions, source omissions, invalid YAML, schema migration, downgrade refusal, multi-process writes, rollback, and verified release imports.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-6 text-sm text-slate-500">Read-only architecture review. No repository files were changed.</div>
+  </footer>
+</body>
+</html>

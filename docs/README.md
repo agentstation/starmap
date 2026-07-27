@@ -4,6 +4,14 @@ Technical documentation for the Starmap AI Model Catalog project.
 
 ## Core Documentation
 
+### [STARMAP_ARCHITECTURE_CONTROL_PLANE.md](STARMAP_ARCHITECTURE_CONTROL_PLANE.md)
+**Architecture Execution Plan and Status Ledger**
+
+Durable `/goal` prompt, phase/task/finding/PR/worktree ledgers, verifiable
+success criteria, and final repository cleanup gates for the current Starmap
+architecture program. It is grounded in the
+[2026-07-27 HTML architecture review](reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html).
+
 ### [API.md](API.md)
 **Go Package API Reference**
 
