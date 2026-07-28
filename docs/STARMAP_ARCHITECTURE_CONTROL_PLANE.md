@@ -2,11 +2,10 @@
 
 Last updated: 2026-07-28
 
-Status: `IN_PROGRESS` — P0–P2, the P3.6a/P3.6b/P3.8 publication hotfix, P4,
-and P3.1–P3.5/P3.7/P3.9 are complete. P3.10 has implemented explicit
-transactional legacy-layout migration, restart recovery, and downgrade
-rejection and remains the sole active task through its exact-head local,
-hosted, merge, and cleanup gates.
+Status: `IN_PROGRESS` — P0–P4 are complete. P5.1 is the sole active task:
+retain provider YAML/payload as the one canonical persisted model while
+definitions, offerings, and author membership become immutable derived read
+views.
 
 ## Mission
 
@@ -466,15 +465,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-workspace-lifecycle`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-read-model-simplification`
 - Branch:
-  `codex/catalog-workspace-lifecycle`
+  `codex/catalog-read-model-simplification`
 - Base:
-  `origin/main@60f0cd3c6eecf0ecb9be7dc76961abf97919324d`
+  `origin/main@9609f4f4a74281a7f9692a97cc4926df5978d754`
 
-This worktree contains the remaining P3 human workspace lifecycle work. It was
-created from the exact protected main produced by merged PR #51 before the
-clean P4 worktree and local branch were removed.
+This worktree contains the P5 persisted-model and derived-read-view
+simplification. It was created from the exact protected main produced by
+merged PR #52 before the clean P3 worktree and local branch were removed.
 
 ### Provider expansion worktree
 
@@ -546,7 +545,7 @@ Live state inspected 2026-07-27.
 | [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@39b08d6d` | `DONE` | P2 characterization and production composition decisions merged as `f8973be3` | Exact head passed the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; merged; remote/local branch and worktree removed |
 | [#50](https://github.com/agentstation/starmap/pull/50) | `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | P3.6a/P3.6b/P3.8 commit-point and atomic-projection hotfix merged as `1dc811b5` | Final ledger head passed exact local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; F-003/F-031 and P3.6b are closed; remote/local branch and worktree are removed |
 | [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@7454e3b8` | `DONE` | P4 authority, provenance, presence, and source-resilience phase merged as `60f0cd3c` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree were removed before the remaining P3 lifecycle started |
-| [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@04a74036` | `IN_PROGRESS` | P3 human-workspace lifecycle and explicit legacy-layout migration | Exact head `b3acac86` closed F-049 with both hosted checks; outcome-review remediation `04a74036` closes F-050 and passes exact local verification; this evidence-only follow-up must pass its final local gate and both hosted checks before the protected merge pause |
+| [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | P3 human-workspace lifecycle and explicit legacy-layout migration merged as `9609f4f4` | Exact final head passed uninterrupted local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -568,9 +567,9 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P0 | `DONE` | Durable control plane and architecture report are reviewable | P0 tasks and plan PR green after the authorized dependency prerequisite |
 | P1 | `DONE` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
-| P3 | `IN_PROGRESS` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
+| P3 | `DONE` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
-| P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
+| P5 | `IN_PROGRESS` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
 | P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
 | P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
@@ -671,7 +670,7 @@ compile and performance baselines must also be green.
 | P3.7 | `DONE` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
 | P3.8 | `DONE` | Preserve store-only use | `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves a configured catalog store commits and publishes with a nil projection and no workspace path or filesystem operation |
 | P3.9 | `DONE` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
-| P3.10 | `IN_PROGRESS` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
+| P3.10 | `DONE` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
 
 ## P4 — Consolidate Authority, Provenance, and Source Resilience
 
@@ -692,7 +691,7 @@ compile and performance baselines must also be green.
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P5.1 | `PENDING` | Keep provider YAML/payload canonical | No persisted definition/offering tree or top-level duplicate collection exists |
+| P5.1 | `IN_PROGRESS` | Keep provider YAML/payload canonical | No persisted definition/offering tree or top-level duplicate collection exists |
 | P5.2 | `PENDING` | Internalize build projection | No exported “legacy migration” vocabulary remains before launch |
 | P5.3 | `PENDING` | Derive offerings | Same ID at two providers retains distinct exact price, limits, availability, endpoint, and lifecycle |
 | P5.4 | `PENDING` | Derive provider-independent definitions | Conflicts use the same authority/evidence implementation, never map iteration or alphabetical first-wins |
@@ -832,7 +831,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-029 | `PENDING` | Local main diverges and multiple stale worktrees/branches remain | P11.2–P11.5 |
 | F-030 | `PENDING` | Existing architecture docs contain superseded “YAML export” guidance | P10.5 |
 | F-031 | `DONE` | Sync saves YAML before the durable generation commit, making a fragile projection gate the durable product | P3.6a–P3.6b |
-| F-032 | `PENDING` | Reassigning `~/.starmap/catalog` from machine generations to human YAML lacks safe legacy-layout detection and migration | P3.1, P3.10 |
+| F-032 | `DONE` | Legacy machine layouts at `~/.starmap/catalog` are detected before mutation and require the explicit transactional migration, whose restart, rollback, concurrent-recreation, and downgrade behavior is proven | P3.1, P3.10 |
 | F-033 | `DONE` | Reconciliation consumes observation status, completeness, counts, issues, and volume history; strict mode additionally requires one complete, succeeded, nonempty observation for every configured source before reconciliation | P4.7, P4.9 |
 | F-034 | `PENDING` | Publication generations can reorder; current event identity is timestamp-based or provider-ambiguous | P7.2, P7.4 |
 | F-035 | `PENDING` | Server/background shutdown lacks owned joins; stopped or blocked subscriptions can hang | P7.5, P7.10 |
@@ -867,7 +866,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-contract-characterization` on `codex/catalog-contract-characterization@39b08d6d` | `DONE` | PR #49 merged as `f8973be3`; remote/local branch and worktree removed after the successor hotfix workspace was created |
 | `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | PR #50 merged as `1dc811b5`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@60f0cd3c` | `IN_PROGRESS` | Complete the remaining P3 lifecycle on a fresh phase branch, then pass exact local/hosted gates and remove the worktree/branch |
+| `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
+| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@9609f4f4` | `IN_PROGRESS` | Complete P5 on a fresh phase branch, pass exact local/hosted gates, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -983,6 +983,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P3.10 / F-049 | PR #52 exact head `b3acac860fc28ad901f8050bf02af9c875e20b7e` passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30361252089/job/90281308442) in `19m06s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30361252089/job/90281308500) in `2m43s`. This exact hosted proof, together with the three uninterrupted exact-head local `make verify` runs already recorded, closes F-049. Later review remediation changes migration failure semantics and therefore requires its own exact final local and hosted proof; it does not reopen the product-neutral harness finding. |
 | 2026-07-28 | P3.10 / F-050 | The complete F-050 remediation tree passed uninterrupted `make verify`: ordinary root and CLI-app suites completed in `45.029s` and `15.558s`; repository race-short passed with root `256.483s`, app `74.990s`, workspace `6.036s`, and migration CLI `1.468s`; vet and pinned golangci-lint v2.12.2 passed with zero issues; every coverage floor passed including `pkg/errors 84.3%`; docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `11.26–11.80 ns/op`, `0 B/op`, and `0 allocs/op`. The material remediation and review evidence must now be committed and this complete gate repeated on that exact clean commit before push. |
 | 2026-07-28 | P3.10 / F-050 | Committed the migration rollback hardening, failure tests, operator quiescence guidance, outcome review, and ledger as `04a74036633140ac8c3709c83e6adea142b66cb0`. That exact clean commit passed uninterrupted `make verify`: ordinary root and CLI-app suites completed in `42.595s` and `14.546s`; repository race-short passed with root `250.020s`, app `72.096s`, workspace `5.536s`, and migration CLI cached/green; vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor including `pkg/errors 84.3%`, docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `8.610–8.847 ns/op`, `0 B/op`, and `0 allocs/op`. This evidence-only ledger follow-up becomes the final P3 candidate and requires one final exact local gate before push and hosted proof; Rule 19 does not retrigger autoreview for that evidence-only change. |
+| 2026-07-28 | P3.10 / P5.1 | PR #52 exact final head `42295e4e8540a10137ffbbe4bf6b8d11c89b5505` passed uninterrupted local `make verify`: ordinary root `43.780s`, CLI app `14.660s`, race root `249.253s`, race app `73.329s`, and workspace `6.692s`; vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor including `pkg/errors 84.3%`, docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `11.33–11.61 ns/op`, `0 B/op`, and `0 allocs/op`. The same exact head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30364045985/job/90290602845) in `13m51s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30364045985/job/90290602858) in `2m04s`; protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, stale-review dismissal, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged as `9609f4f4a74281a7f9692a97cc4926df5978d754`. The remote topic branch was absent. A zero tree diff against merged `origin/main` and a clean status were proven before removing the P3 worktree and then its local branch. Created fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-read-model-simplification` on `codex/catalog-read-model-simplification` from that exact protected-main SHA. P3, P3.10, and F-032 are DONE; P5.1 is the sole active task. |
 
 ## Final Definition of Done
 
