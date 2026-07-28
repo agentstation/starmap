@@ -133,6 +133,39 @@ func TestFirstProjectionRejectsWorkspaceCreatedAfterObservation(t *testing.T) {
 	assertNoProjectionStaging(t, path)
 }
 
+func TestProjectExpectedRejectsSemanticEditAfterInputLoad(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	oldCatalog, oldIdentity := testCatalog(t, "old", "Old Model")
+	if _, err := Project(context.Background(), path, oldCatalog, oldIdentity); err != nil {
+		t.Fatalf("Project old catalog: %v", err)
+	}
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	loaded, err := catalogs.NewFromPath(path)
+	if err != nil {
+		t.Fatalf("NewFromPath: %v", err)
+	}
+	input, err = BindInputCatalog(input, mustCatalog(t, loaded))
+	if err != nil {
+		t.Fatalf("BindInputCatalog: %v", err)
+	}
+
+	editWorkspaceModel(t, path, "old", "Human Edit Before Projection")
+	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
+	_, err = ProjectExpected(context.Background(), path, newCatalog, newIdentity, input)
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("ProjectExpected error = %T %v, want *errors.ConflictError", err, err)
+	}
+	assertWorkspaceModel(t, path, "old", "Human Edit Before Projection")
+	assertWorkspaceModelMissing(t, path, "new")
+	assertNoProjectionStaging(t, path)
+}
+
 func TestProjectRejectsSymlinkedWriterLock(t *testing.T) {
 	t.Parallel()
 
@@ -387,6 +420,15 @@ func testCatalog(t *testing.T, modelID, modelName string) (*catalogs.Catalog, Id
 		GenerationID:    "generation-" + modelID,
 		PayloadChecksum: catalogs.DescribeCatalogPayload(payload).Checksum,
 	}
+}
+
+func mustCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catalog {
+	t.Helper()
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	return catalog
 }
 
 func editWorkspaceModel(t *testing.T, path, modelID, modelName string) {

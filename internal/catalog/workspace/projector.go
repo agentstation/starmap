@@ -51,11 +51,12 @@ type Receipt struct {
 	WorkspaceChecksum string
 }
 
-// InputExpectation records the workspace path and presence observed before
-// candidate construction. Projection rejects a different input state.
+// InputExpectation records workspace presence and, once loaded, its semantic
+// digest before candidate construction. Projection rejects a different input.
 type InputExpectation struct {
-	Path   string
-	Exists bool
+	Path     string
+	Exists   bool
+	Checksum string
 }
 
 // ObserveInput records the selected workspace's presence without creating or
@@ -86,6 +87,26 @@ func ObserveInput(path string) (InputExpectation, error) {
 // workspace that must be materialized even when catalog facts are unchanged.
 func (i InputExpectation) RequiresSeed() bool {
 	return i.Path != "" && !i.Exists
+}
+
+// BindInputCatalog records the semantic digest of the human catalog loaded
+// from an existing workspace before candidate construction.
+func BindInputCatalog(input InputExpectation, catalog *catalogs.Catalog) (InputExpectation, error) {
+	if input.Path == "" || !input.Exists {
+		return input, nil
+	}
+	if catalog == nil {
+		return InputExpectation{}, &errors.ValidationError{
+			Field:   "workspace_projection.input_catalog",
+			Message: "is required for an existing workspace",
+		}
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		return InputExpectation{}, errors.WrapResource("encode", "workspace projection input", input.Path, err)
+	}
+	input.Checksum = catalogs.DescribeCatalogPayload(payload).Checksum
+	return input, nil
 }
 
 // RepairStatus describes startup reconciliation between the durable current
@@ -256,7 +277,15 @@ func validateInputExpectation(target string, input semanticState, expectation In
 		}
 	}
 	if expectation.Exists == input.exists {
-		return nil
+		if !expectation.Exists || expectation.Checksum == "" || expectation.Checksum == input.checksum {
+			return nil
+		}
+		return &errors.ConflictError{
+			Resource: "catalog workspace projection input",
+			Expected: expectation.Checksum,
+			Actual:   input.checksum,
+			Message:  "workspace semantics changed after candidate construction",
+		}
 	}
 	return &errors.ConflictError{
 		Resource: "catalog workspace projection input",

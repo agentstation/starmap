@@ -337,6 +337,9 @@ starmap update --force -y
 # Specific sources only
 starmap update --source models.dev
 
+# Reload semantic edits from the human workspace; no filesystem watcher runs
+starmap update --source local
+
 # Reproducible Git verification requires an exact commit
 starmap update --source models.dev-git --models-dev-git-commit <40-or-64-hex-commit>
 ```
@@ -796,6 +799,31 @@ can advance with the embedded revision, embedded data can fill missing fields,
 and semantic human edits remain local evidence. Provider acquisition uses a
 derived configuration view that keeps human connection settings while adding
 providers introduced by the new embedded revision.
+
+Starmap never watches the workspace implicitly. A running client retains its
+current immutable catalog until the caller invokes
+`Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI equivalent is
+`starmap update --source local`. One semantic change publishes one generation.
+An unchanged or formatting-only reload publishes none.
+
+Rollback reactivates a retained immutable generation through the same
+generation-store compare-and-swap used by normal publication, then atomically
+reproduces that generation's provider YAML and provenance:
+
+```go
+result, err := sm.Rollback(ctx, generationID)
+if err != nil {
+    return err
+}
+if result.Projection != nil && result.Projection.Status == sync.ProjectionStatusPendingRepair {
+    // The generation is already active; preserve a concurrent human edit and
+    // surface that the workspace still needs repair.
+}
+```
+
+The generation payload digest and workspace semantic digest are intentionally
+separate: derived read views live only in the immutable catalog. Repeating a
+rollback to the current durable generation does not emit another publication.
 
 ```yaml
 # ~/.starmap/config.yaml

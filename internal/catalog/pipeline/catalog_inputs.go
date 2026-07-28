@@ -34,6 +34,10 @@ func (p *Pipeline) loadCatalogInputs(
 	if err != nil {
 		return catalogInputs{}, errors.WrapResource("publish", "human workspace catalog", "", err)
 	}
+	input, err = workspace.BindInputCatalog(input, humanCatalog)
+	if err != nil {
+		return catalogInputs{}, err
+	}
 	embeddedCatalog, err := embedded.Build()
 	if err != nil {
 		return catalogInputs{}, errors.WrapResource("publish", "embedded catalog", "", err)

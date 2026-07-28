@@ -687,6 +687,23 @@ projects YAML. Production readers consume the immutable catalog generation,
 while explicit updates treat semantic human workspace changes as local
 observations.
 
+There is no implicit filesystem watcher. A caller reloads the human workspace
+with `Client.Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI uses
+`starmap update --source local`. A semantic change publishes exactly one
+immutable generation and event, while unchanged or formatting-only input
+publishes none.
+
+`Client.Rollback` validates and decodes a retained generation off to the side,
+binds the pre-rollback workspace semantic digest, and reactivates the target
+through the catalog store's existing compare-and-swap. That store transition is
+the sole durable commit point. In-memory reads and one publication event then
+move to the exact target payload. YAML projection deterministically restores
+the target's prior workspace semantic digest and provenance. If a human edits
+the workspace between rollback preparation and projection, the committed
+generation remains active, the human edit is preserved, and the result reports
+pending repair. Repeating rollback to the current durable generation is
+idempotent and emits no second event.
+
 The root client makes that dependency explicit: `WithCatalogStore` is required
 before any non-dry manual, remote, server-triggered, or scheduled mutation. The
 preflight runs before source fetch, custom callbacks, remote HTTP, or scheduler

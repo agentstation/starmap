@@ -48,7 +48,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
 	cmd.Flags().StringVar(&flags.Source, "source", "",
-		"Update from a specific source: all, provider-api, models.dev, models.dev-git")
+		"Update from a specific source: all, local, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
 		"Preview changes without applying them")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,

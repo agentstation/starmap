@@ -32,6 +32,11 @@ func TestBuildUpdateOptionsMapsSourceFlag(t *testing.T) {
 			want:   []sources.ID{sources.ModelsDevGitID},
 		},
 		{
+			name:   "local workspace only",
+			source: "local",
+			want:   []sources.ID{sources.LocalCatalogID},
+		},
+		{
 			name:   "all leaves sources unset",
 			source: "all",
 			want:   nil,

@@ -95,19 +95,11 @@ func (c *Client) commitAndPublish(
 		)
 	}
 
-	oldCatalog := c.swapCatalogGeneration(published, generation.Manifest.GenerationID)
-	sequence := c.CurrentCatalogState().Sequence
-	event := CatalogPublishedEvent{
-		GenerationID: generation.Manifest.GenerationID,
-		SyncRunID:    generation.Manifest.SyncRunID,
-		Sequence:     sequence,
-		Catalog:      published,
-	}
-	c.hooks.dispatchUpdate(oldCatalog, published, event)
+	c.publishCommittedGeneration(published, generation)
 	return pipeline.Publication{
-		GenerationID:    event.GenerationID,
+		GenerationID:    generation.Manifest.GenerationID,
 		PayloadChecksum: generation.Manifest.Payload.Checksum,
-		SyncRunID:       event.SyncRunID,
+		SyncRunID:       generation.Manifest.SyncRunID,
 	}, nil
 }
 
@@ -133,6 +125,11 @@ func (c *Client) commitReceivedGeneration(ctx context.Context, published *catalo
 	if expectedGenerationID == generation.Manifest.GenerationID {
 		return nil
 	}
+	c.publishCommittedGeneration(published, generation)
+	return nil
+}
+
+func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generation catalogstore.Generation) {
 	oldCatalog := c.swapCatalogGeneration(published, generation.Manifest.GenerationID)
 	sequence := c.CurrentCatalogState().Sequence
 	event := CatalogPublishedEvent{
@@ -142,7 +139,6 @@ func (c *Client) commitReceivedGeneration(ctx context.Context, published *catalo
 		Catalog:      published,
 	}
 	c.hooks.dispatchUpdate(oldCatalog, published, event)
-	return nil
 }
 
 func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations []sources.Observation) (catalogstore.Generation, error) {

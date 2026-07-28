@@ -75,11 +75,13 @@ func sourceSelection(source string) ([]sources.ID, error) {
 		return []sources.ID{sources.ModelsDevHTTPID}, nil
 	case "models.dev-git", "modelsdev-git", "models-dev-git", "models_dev_git":
 		return []sources.ID{sources.ModelsDevGitID}, nil
+	case "local", "workspace", "local-catalog", "local_catalog":
+		return []sources.ID{sources.LocalCatalogID}, nil
 	default:
 		return nil, &pkgerrors.ValidationError{
 			Field:   "source",
 			Value:   source,
-			Message: "must be one of: all, provider-api, models.dev, models.dev-git",
+			Message: "must be one of: all, local, provider-api, models.dev, models.dev-git",
 		}
 	}
 }

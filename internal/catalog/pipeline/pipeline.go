@@ -197,7 +197,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		return syncResult, nil
 	}
 
-	if shouldSave(options, result.Changeset, workspaceInput.RequiresSeed()) {
+	if shouldSave(options, result.Changeset, inputs.workspaceInput.RequiresSeed()) {
 		changeset := result.Changeset
 		if changeset == nil {
 			changeset = &differ.Changeset{}
@@ -208,7 +208,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 			options,
 			changeset,
 			observations,
-			workspaceInput,
+			inputs.workspaceInput,
 		)
 		if err != nil {
 			return nil, err

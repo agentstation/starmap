@@ -36,6 +36,7 @@ generation state is separate and is never treated as editable configuration.`,
   starmap update --dry                      # Preview changes
   starmap update -y                         # Auto-approve changes
   starmap update --force                    # Force fresh update
+  starmap update --source local             # Reload semantic workspace edits
   starmap update openai --dry               # Preview OpenAI updates`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

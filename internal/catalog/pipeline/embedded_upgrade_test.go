@@ -269,6 +269,108 @@ func TestWorkspaceFormattingChangesDoNotBecomeLocalEvidence(t *testing.T) {
 	assertUpgradeEvidenceSource(t, reconciled, "Description", sources.EmbeddedCatalogID)
 }
 
+func TestWorkspaceChangesRequireExplicitReloadAndPublishOnce(t *testing.T) {
+	t.Parallel()
+
+	embedded := embeddedRevisionCatalog(t, "Embedded Name", "Embedded Description", 8192, 4096)
+	observation := completeObservation(
+		t,
+		sources.EmbeddedCatalogID,
+		embedded,
+		time.Date(2026, time.July, 28, 14, 0, 0, 0, time.UTC),
+	)
+	generated, err := reconcile(
+		context.Background(),
+		asSnapshot(catalogs.NewEmpty()),
+		[]sources.Observation{observation},
+	)
+	if err != nil {
+		t.Fatalf("reconcile embedded catalog: %v", err)
+	}
+	path := t.TempDir()
+	if err := generated.Catalog.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("save generated workspace: %v", err)
+	}
+
+	human, err := loadHumanWorkspace(path)
+	if err != nil {
+		t.Fatalf("load human workspace: %v", err)
+	}
+	provider, err := human.Provider("provider-a")
+	if err != nil {
+		t.Fatalf("human provider: %v", err)
+	}
+	provider.Models["model-a"].Name = "Human Reload Name"
+	if err := human.SetProvider(provider); err != nil {
+		t.Fatalf("set human provider: %v", err)
+	}
+	if err := human.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("save human edit: %v", err)
+	}
+
+	baseline := buildCatalog(t, generated.Catalog)
+	store := &pipelineTestStore{catalog: baseline}
+	if got, err := store.catalog.Provider("provider-a"); err != nil {
+		t.Fatalf("baseline provider: %v", err)
+	} else if got.Models["model-a"].Name != "Embedded Name" {
+		t.Fatalf("workspace edit was implicitly published: %#v", got.Models["model-a"])
+	}
+
+	runner := New(store)
+	runner.loadEmbedded = func() (*catalogs.Builder, error) {
+		return catalogs.NewBuilderFrom(embedded)
+	}
+	result, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(path),
+		pkgsync.WithSources(sources.LocalCatalogID),
+	)
+	if err != nil {
+		t.Fatalf("explicit local Sync: %v", err)
+	}
+	if !result.HasChanges() || store.applyCalls != 1 || store.appliedCatalog == nil {
+		t.Fatalf("semantic reload result = %#v, apply calls %d", result, store.applyCalls)
+	}
+	if store.workspaceInput.Checksum == "" {
+		t.Fatal("semantic reload did not bind its pre-candidate workspace digest")
+	}
+	published := buildCatalog(t, store.appliedCatalog)
+	if got, err := published.Provider("provider-a"); err != nil {
+		t.Fatalf("published provider: %v", err)
+	} else if got.Models["model-a"].Name != "Human Reload Name" {
+		t.Fatalf("published model = %#v, want human edit", got.Models["model-a"])
+	}
+	payload, err := catalogs.EncodeCatalogPayload(published)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload: %v", err)
+	}
+	if _, err := workspace.ProjectExpected(
+		context.Background(),
+		path,
+		published,
+		workspace.Identity{
+			GenerationID:    "explicit-reload",
+			PayloadChecksum: catalogs.DescribeCatalogPayload(payload).Checksum,
+		},
+		store.workspaceInput,
+	); err != nil {
+		t.Fatalf("project explicit reload: %v", err)
+	}
+	store.catalog = published
+
+	repeated, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(path),
+		pkgsync.WithSources(sources.LocalCatalogID),
+	)
+	if err != nil {
+		t.Fatalf("repeat local Sync: %v", err)
+	}
+	if repeated.HasChanges() || store.applyCalls != 1 {
+		t.Fatalf("unchanged reload republished: result %#v, apply calls %d", repeated, store.applyCalls)
+	}
+}
+
 func embeddedRevisionCatalog(
 	t testing.TB,
 	name, description string,

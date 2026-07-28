@@ -135,6 +135,7 @@ starmap update --force        # true when present
 **Value flags** (require argument):
 ```bash
 starmap update --source provider-api    # requires value
+starmap update --source local           # explicit human-workspace reload
 starmap serve --port 8080               # requires value
 ```
 

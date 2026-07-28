@@ -90,6 +90,7 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func \(c \*Client\) OnModelRemoved\(fn ModelRemovedHook\)](<#Client.OnModelRemoved>)
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
+  - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(opts ...save.Option\) error](<#Client.Save>)
   - [func \(c \*Client\) Sync\(ctx context.Context, opts ...sync.Option\) \(\*sync.Result, error\)](<#Client.Sync>)
   - [func \(c \*Client\) Update\(ctx context.Context\) error](<#Client.Update>)
@@ -109,6 +110,7 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
   - [func WithUpdateFunc\(fn UpdateFunc\) Option](<#WithUpdateFunc>)
 - [type ReadinessIssue](<#ReadinessIssue>)
+- [type RollbackResult](<#RollbackResult>)
 - [type UpdateFunc](<#UpdateFunc>)
 
 
@@ -296,6 +298,15 @@ func (c *Client) Readiness() CatalogReadiness
 ```
 
 Readiness evaluates catalog availability and configured embedded\-bootstrap age/size budgets without performing I/O.
+
+<a name="Client.Rollback"></a>
+### func \(\*Client\) [Rollback](<https://github.com/agentstation/starmap/blob/main/rollback.go#L31>)
+
+```go
+func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackResult, error)
+```
+
+Rollback atomically makes a retained generation current and projects its exact catalog semantics and provenance into the configured human workspace. Repeating a rollback to the current durable generation is idempotent.
 
 <a name="Client.Save"></a>
 ### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L14>)
@@ -486,6 +497,26 @@ ReadinessIssue is one stable machine\-readable reason a client is not ready.
 type ReadinessIssue struct {
     Code    string `json:"code"`
     Message string `json:"message"`
+}
+```
+
+<a name="RollbackResult"></a>
+## type [RollbackResult](<https://github.com/agentstation/starmap/blob/main/rollback.go#L15-L26>)
+
+RollbackResult describes activation of a retained immutable generation.
+
+```go
+type RollbackResult struct {
+    // FromGenerationID is the generation active before rollback.
+    FromGenerationID string
+    // GenerationID is the retained generation selected by rollback.
+    GenerationID string
+    // PayloadChecksum identifies the exact immutable generation payload.
+    PayloadChecksum string
+    // Sequence is the in-process publication sequence after rollback.
+    Sequence uint64
+    // Projection reports exact workspace restoration or pending repair.
+    Projection *pkgsync.ProjectionResult
 }
 ```
 

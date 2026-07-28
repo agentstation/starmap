@@ -3,8 +3,8 @@
 Last updated: 2026-07-28
 
 Status: `IN_PROGRESS` — P0–P2, the P3.6a/P3.6b/P3.8 publication hotfix, P4,
-and P3.1–P3.5/P3.7 are complete. P3.9 is the sole active task and defines
-explicit reload plus exact generation/workspace rollback behavior.
+and P3.1–P3.5/P3.7/P3.9 are complete. P3.10 is the sole active task and proves
+transactional legacy-layout migration, restart, and downgrade behavior.
 
 ## Mission
 
@@ -656,8 +656,8 @@ compile and performance baselines must also be green.
 | P3.6b | `DONE` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
 | P3.7 | `DONE` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
 | P3.8 | `DONE` | Preserve store-only use | `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves a configured catalog store commits and publishes with a nil projection and no workspace path or filesystem operation |
-| P3.9 | `IN_PROGRESS` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
-| P3.10 | `PENDING` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
+| P3.9 | `DONE` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
+| P3.10 | `IN_PROGRESS` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
 
 ## P4 — Consolidate Authority, Provenance, and Source Resilience
 
@@ -833,6 +833,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-044 | `DONE` | The first root gate after P4.6 found that canonical presence encoding required an embedded-manifest refresh and that a generic YAML map round trip collapsed a one-author slice into a mapping; direct typed YAML assembly plus a regenerated verified manifest repaired both before P4 continued | P4.7 |
 | F-045 | `DONE` | The first P4.10 repository gate found the authority package below its enforced coverage floor because stable provenance-path selection was not exercised; the exhaustive policy invariant now verifies both explicit evidence paths and path fallback, raising statement coverage from 88.9% to 95.6% | P4.10 |
 | F-046 | `DONE` | The P4 hosted race gate exposed a transport-test lifecycle race: its SSE request context and WebSocket read deadline expired while a valid full-catalog update was still computing on a slower runner; connection establishment is now separately bounded, stream lifetime is caller-owned, the read deadline starts only after publication, and readiness includes both broker adapters | P4.10 |
+| F-047 | `DONE` | YAML projection previously bound only workspace path/presence, so a semantic human edit after candidate construction but before post-commit projection could be overwritten; candidate input now carries the loaded semantic digest and projection returns a typed conflict while preserving the edit | P3.9 |
 
 ## Workspace Ledger
 
@@ -946,6 +947,10 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P3.7 | Projection and startup repair now share one nonblocking OS advisory writer lock in a machine-owned sibling file derived from the canonical absolute workspace path. Lock ownership spans input read, off-side staging, digest recheck, atomic directory promotion, and marker publication. Contention returns typed `errors.ConflictError` immediately; a symlinked or non-regular lock path fails typed validation. The persistent empty lock file is not catalog data, is never traversed by the human loader, and OS process exit releases ownership. Generation-store CAS remains the sole durable commit point and its separate store lock is unchanged. |
 | 2026-07-28 | P3.7 | A real two-child-process test holds the writer lock immediately before promotion, proves an unlocked reader still sees the complete prior workspace, proves a second projector and concurrent repair both receive typed conflicts, then releases the holder and observes exactly its complete new workspace with no losing model or staged directory. Ten consecutive focused runs passed. A second process test kills the holder while locked and proves the next projector succeeds, so a crash cannot wedge the workspace. A symlink-lock test preserves the referenced operator file and creates no workspace. |
 | 2026-07-28 | P3.7 | Exact final-tree ordinary suites passed across root (`39.121s`), workspace (`0.567s`), pipeline (`1.598s`), catalog store (`1.375s`), sync (`0.924s`), and CLI app (`11.143s`). The exact race command `go test -race . ./internal/catalog/workspace ./internal/catalog/pipeline ./pkg/catalogstore ./pkg/sync ./cmd/starmap/app -count=1` passed (`248.605s`, `3.659s`, `6.289s`, `2.652s`, `1.729s`, and `60.143s`). Focused `go vet`, pinned golangci-lint v2.12.2 with zero issues, generated GoDoc, `make docs-check`, and `git diff --check` passed. P3.7 is DONE; P3.9 is the sole active task. |
+| 2026-07-28 | P3.9 / F-047 | Review found that the optimistic projection expectation recorded only path/presence. The pipeline now binds the exact semantic digest of the human catalog loaded before candidate construction. A semantic edit made before projection returns typed `errors.ConflictError`, leaves the human edit and prior complete workspace visible, and creates no staging residue. This is a completed internal reliability finding, not an external blocker. |
+| 2026-07-28 | P3.9 | Starmap owns no filesystem watcher. `Client.Sync(ctx, sync.WithSources(sources.LocalCatalogID))` is the explicit library reload and `starmap update --source local` is the CLI spelling. A small real-workspace lifecycle test proves the running catalog remains unchanged after an edit, one semantic reload crosses the pipeline publication boundary exactly once, an unchanged repeat publishes zero times, and the existing comment/quote/key-order fixture publishes zero times. |
+| 2026-07-28 | P3.9 | Added `Client.Rollback` over the existing retained-generation `Store.Commit` compare-and-swap rather than a second rollback mechanism. The target is validated, identity-bound, decoded, and its workspace input digest captured before commit. Successful rollback restores exact retained generation bytes, in-memory reads, prior deterministic workspace semantic bytes/checksum, and provenance; retains the later generation; increments sequence and emits one event; and is idempotent on repeat. Injected commit failure changes neither store, catalog, nor workspace. A semantic edit injected after commit remains intact while the rolled-back generation stays active and projection reports `pending_repair`. |
+| 2026-07-28 | P3.9 | Exact final-tree ordinary suites passed across root (`52.710s`), workspace (`4.530s`), pipeline (`3.539s`), catalog store (`5.568s`), sync (`0.904s`), and update CLI (`1.221s`). The exact race command `go test -race . ./internal/catalog/workspace ./internal/catalog/pipeline ./pkg/catalogstore ./pkg/sync ./cmd/starmap/cmd/update -count=1` passed (`250.655s`, `3.638s`, `6.029s`, `2.575s`, `1.971s`, and `1.441s`). Focused `go vet`, pinned golangci-lint v2.12.2 with zero issues, generated GoDoc, `make docs-check`, and `git diff --check` passed. P3.9 and F-047 are DONE; P3.10 is the sole active task. |
 
 ## Final Definition of Done
 

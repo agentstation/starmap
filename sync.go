@@ -69,12 +69,7 @@ func (c *Client) save(
 	}
 
 	if options.CatalogPath != "" {
-		publication.Projection = &sync.ProjectionResult{
-			Path:         options.CatalogPath,
-			Status:       sync.ProjectionStatusPendingRepair,
-			GenerationID: publication.GenerationID,
-		}
-		receipt, projectionErr := projectCatalogWorkspace(
+		publication.Projection = projectCommittedCatalog(
 			ctx,
 			published,
 			options.CatalogPath,
@@ -84,17 +79,6 @@ func (c *Client) save(
 			},
 			workspaceInput,
 		)
-		publication.Projection.WorkspaceChecksum = receipt.WorkspaceChecksum
-		if projectionErr != nil {
-			publication.Projection.IssueCode = sync.ProjectionIssueWorkspaceFailed
-			logging.Warn().
-				Err(projectionErr).
-				Str("generation_id", publication.GenerationID).
-				Str("catalog_path", options.CatalogPath).
-				Msg("Catalog generation committed; YAML workspace projection is pending repair")
-		} else {
-			publication.Projection.Status = sync.ProjectionStatusApplied
-		}
 	}
 
 	logging.Info().
@@ -102,6 +86,33 @@ func (c *Client) save(
 		Msg("Sync completed successfully")
 
 	return publication, nil
+}
+
+func projectCommittedCatalog(
+	ctx context.Context,
+	catalog *catalogs.Catalog,
+	path string,
+	identity workspace.Identity,
+	input workspace.InputExpectation,
+) *sync.ProjectionResult {
+	result := &sync.ProjectionResult{
+		Path:         path,
+		Status:       sync.ProjectionStatusPendingRepair,
+		GenerationID: identity.GenerationID,
+	}
+	receipt, err := projectCatalogWorkspace(ctx, catalog, path, identity, input)
+	result.WorkspaceChecksum = receipt.WorkspaceChecksum
+	if err != nil {
+		result.IssueCode = sync.ProjectionIssueWorkspaceFailed
+		logging.Warn().
+			Err(err).
+			Str("generation_id", identity.GenerationID).
+			Str("catalog_path", path).
+			Msg("Catalog generation committed; YAML workspace projection is pending repair")
+		return result
+	}
+	result.Status = sync.ProjectionStatusApplied
+	return result
 }
 
 func projectCatalogWorkspace(
