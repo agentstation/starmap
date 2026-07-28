@@ -46,6 +46,24 @@ Commands may define their own short flags that don't conflict with global flags:
 | `-f`  | `--force`         | Force fresh update          |
 | `-y`  | `--yes`           | Auto-approve changes        |
 
+### Catalog Storage Migration
+
+```bash
+starmap migrate catalog
+```
+
+This is the only command that opts into changing a detected pre-plan local
+storage layout. It moves the validated immutable generation store from the
+configured `catalog_path` to `~/.starmap/state/catalog`, then materializes the
+current generation at `catalog_path` as editable provider YAML. It accepts no
+path arguments: `catalog_path` follows normal configuration precedence and the
+machine state destination is the canonical CLI-owned path.
+
+Every retained generation, the current pointer, payload binding, and schema
+compatibility are checked before the first rename. A normal failure restores
+the old store. An interrupted process after the atomic move is completed by
+normal startup projection repair; no new catalog generation is published.
+
 ### Serve Command
 
 | Short | Long      | Purpose                          |

@@ -318,6 +318,7 @@ starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 starmap update                  # Update all providers
 starmap update openai           # Update specific provider
 starmap update --dry            # Preview changes
+starmap migrate catalog         # Explicitly migrate the former local store layout
 
 # Development
 starmap validate                # Validate configurations
@@ -784,7 +785,19 @@ serializes projection and repair across processes; contention returns a typed
 conflict while readers continue to observe one complete old or new tree. The
 lock file carries no catalog data and an exited process cannot leave it held. A
 pre-plan generation-store layout found at `~/.starmap/catalog` fails with a
-typed migration error before mutation.
+typed migration error before mutation. Migrate that layout explicitly:
+
+```bash
+starmap migrate catalog
+```
+
+The command locks and validates the complete old store, including every
+retained generation and its schema compatibility, before moving anything. It
+then relocates the machine store to `~/.starmap/state/catalog` and projects the
+current generation back to `~/.starmap/catalog` as provider YAML. A normal
+failure restores the original layout. If the process exits after the atomic
+store move, the next startup reads the exact relocated current generation and
+repairs the missing YAML projection without publishing a new generation.
 
 Read-only construction uses the verified embedded catalog entirely in memory
 and creates no workspace. The first explicit update observes that catalog as

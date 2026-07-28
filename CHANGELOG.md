@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Explicit local layout migration**: `starmap migrate catalog` validates and
+  locks the complete pre-plan generation store at `catalog_path`, moves it to
+  the canonical machine state root, and projects the exact current generation
+  back as editable provider YAML. Failures roll back the move; restart repairs
+  a projection interrupted after relocation. Newer schema generations are
+  rejected before filesystem mutation.
 - Clients configured with `WithCatalogStore` now recover and publish the exact
   durable current generation during `starmap.New`, so server and remote updates
   survive process restart. Server updates may select a single source with the

@@ -717,7 +717,16 @@ one another. The same pre-read validation rejects an active models.dev cache
 or source-checkout root that contains, equals, or sits beneath the workspace.
 A selected workspace containing `current`, `generations/`, or `.commit.lock`
 is rejected with `errors.LegacyCatalogLayoutError` before any mutation and
-requires the explicit transactional migration defined by P3.10. Generation
+requires `starmap migrate catalog`. That explicit operation acquires the
+generation commit lock and workspace writer lock, validates the exact current
+and every retained generation against the running schema before mutation,
+atomically relocates the store to the separate state root, verifies the
+relocated current, and projects its canonical payload as human YAML. A
+process-visible failure rolls the relocation back; an exit after the atomic
+move is recoverable because startup activates the relocated durable current
+and repairs the still-missing projection without another generation commit.
+An older binary rejects a newer manifest schema before moving the store.
+Generation
 locks, current pointers, retained generations, and their temporary candidates
 remain under the catalog-store root. Atomic YAML projection alone stages beside
 the workspace so same-filesystem rename remains possible; its hidden staging is
@@ -760,6 +769,11 @@ identity and UTC time, and deterministically emits schema-v1 `CatalogPayload`
 bytes plus a validated manifest. Provider-specific and author model indexes are
 encoded separately because the legacy record structs intentionally exclude
 their runtime model maps from JSON/YAML indexes.
+
+That schema-v0 YAML adapter is distinct from `starmap migrate catalog`. The
+former converts an older catalog data schema without mutating its input; the
+latter safely reassigns the on-disk path that briefly held the current
+generation-store format before the single human-workspace contract was chosen.
 
 ### Reconciler Package
 
