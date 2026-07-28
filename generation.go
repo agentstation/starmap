@@ -105,8 +105,9 @@ func (c *Client) commitAndPublish(
 	}
 	c.hooks.dispatchUpdate(oldCatalog, published, event)
 	return pipeline.Publication{
-		GenerationID: event.GenerationID,
-		SyncRunID:    event.SyncRunID,
+		GenerationID:    event.GenerationID,
+		PayloadChecksum: generation.Manifest.Payload.Checksum,
+		SyncRunID:       event.SyncRunID,
 	}, nil
 }
 

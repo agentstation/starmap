@@ -70,13 +70,28 @@ func (m *Model) EncodeYAML() (string, error) {
 		yaml.HeadComment(" Timestamps"),
 	}
 
-	// Marshal with proper formatting options (using IndentSequence(false) as requested)
-	yamlData, err := yaml.MarshalWithOptions(m,
-		yaml.Indent(2),                        // 2-space indentation
-		yaml.IndentSequence(false),            // Keep sequences flush left
-		yaml.UseLiteralStyleIfMultiline(true), // Use block scalar for multiline descriptions
-		yaml.WithComment(commentMap),          // Apply comments
+	// goccy/go-yaml's literal-block encoder doubles backslashes on every
+	// encode/decode cycle. Force single-quoted scalars for affected models so
+	// those descriptions round-trip exactly.
+	var (
+		yamlData []byte
+		err      error
 	)
+	if strings.Contains(m.Description, `\`) {
+		yamlData, err = yaml.MarshalWithOptions(m,
+			yaml.Indent(2),
+			yaml.IndentSequence(false),
+			yaml.UseSingleQuote(true),
+			yaml.WithComment(commentMap),
+		)
+	} else {
+		yamlData, err = yaml.MarshalWithOptions(m,
+			yaml.Indent(2),
+			yaml.IndentSequence(false),
+			yaml.UseLiteralStyleIfMultiline(true),
+			yaml.WithComment(commentMap),
+		)
+	}
 	if err != nil {
 		// Fallback to basic marshal if comment marshaling fails
 		yamlData, err = yaml.Marshal(m)

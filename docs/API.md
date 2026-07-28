@@ -166,7 +166,7 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L73-L77>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L74-L78>)
 
 CatalogState atomically pairs the current immutable catalog with its logical generation identity for generation\-scoped caches and responses.
 
@@ -179,7 +179,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L140-L157>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L141-L158>)
 
 Client manages an immutable canonical catalog, explicit synchronization, persistence, and event hooks. It owns no scheduling goroutine or cadence.
 
@@ -190,16 +190,16 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L160>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L164>)
 
 ```go
 func New(opts ...Option) (*Client, error)
 ```
 
-New creates a new Client instance with the given options.
+New creates a new Client instance with the given options. When a durable generation and a marker\-backed unchanged YAML workspace are both configured, construction repairs a stale or interrupted projection by digest. It never overwrites an unrecognized semantic workspace change.
 
 <a name="Client.Catalog"></a>
-### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L64>)
+### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L65>)
 
 ```go
 func (c *Client) Catalog() *catalogs.Catalog
@@ -208,7 +208,7 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L80>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L81>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
@@ -226,7 +226,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation
 CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L95>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L96>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -298,16 +298,16 @@ func (c *Client) Readiness() CatalogReadiness
 Readiness evaluates catalog availability and configured embedded\-bootstrap age/size budgets without performing I/O.
 
 <a name="Client.Save"></a>
-### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L9>)
+### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L14>)
 
 ```go
 func (c *Client) Save(opts ...save.Option) error
 ```
 
-Save persists the current catalog to disk using the catalog's native save functionality.
+Save atomically materializes the current committed generation into a YAML workspace. It never publishes a new generation.
 
 <a name="Client.Sync"></a>
-### func \(\*Client\) [Sync](<https://github.com/agentstation/starmap/blob/main/sync.go#L18>)
+### func \(\*Client\) [Sync](<https://github.com/agentstation/starmap/blob/main/sync.go#L17>)
 
 ```go
 func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)

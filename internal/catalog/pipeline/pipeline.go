@@ -24,9 +24,10 @@ type Store interface {
 
 // Publication identifies the durable generation produced by Apply.
 type Publication struct {
-	GenerationID string
-	SyncRunID    string
-	Projection   *pkgsync.ProjectionResult
+	GenerationID    string
+	PayloadChecksum string
+	SyncRunID       string
+	Projection      *pkgsync.ProjectionResult
 }
 
 type loadLocalFunc func(string) (*catalogs.Builder, error)

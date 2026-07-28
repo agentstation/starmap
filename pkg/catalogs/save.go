@@ -11,7 +11,9 @@ import (
 	"github.com/agentstation/starmap/pkg/save"
 )
 
-// Save saves the catalog to the configured filesystem.
+// Save serializes a mutable builder into a caller-owned construction path.
+// It is intentionally not a publication primitive; committed catalogs are
+// materialized atomically by the Starmap client.
 func (cat *Builder) Save(opts ...save.Option) error {
 
 	// Apply the options

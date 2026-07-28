@@ -1901,13 +1901,13 @@ func (cat *Builder) ReplaceWith(source Reader) error
 ReplaceWith replaces this catalog's contents with another.
 
 <a name="Builder.Save"></a>
-### func \(\*Builder\) [Save](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/save.go#L15>)
+### func \(\*Builder\) [Save](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/save.go#L17>)
 
 ```go
 func (cat *Builder) Save(opts ...save.Option) error
 ```
 
-Save saves the catalog to the configured filesystem.
+Save serializes a mutable builder into a caller\-owned construction path. It is intentionally not a publication primitive; committed catalogs are materialized atomically by the Starmap client.
 
 <a name="Builder.SetAuthor"></a>
 ### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L363>)
@@ -2908,7 +2908,7 @@ func (m *Model) FormatYAML() string
 FormatYAML returns a well\-formatted YAML representation with comments and proper structure.
 
 <a name="Model.FormatYAMLHeaderComment"></a>
-### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_yaml.go#L192>)
+### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_yaml.go#L207>)
 
 ```go
 func (m *Model) FormatYAMLHeaderComment() string

@@ -397,6 +397,10 @@ const (
     // DefaultTimeout is the standard timeout for general operations.
     DefaultTimeout = 10 * time.Second
 
+    // DefaultCatalogProjectionTimeout bounds full-catalog filesystem
+    // projection and startup repair.
+    DefaultCatalogProjectionTimeout = time.Minute
+
     // UpdateContextTimeout is the timeout for each catalog update operation.
     UpdateContextTimeout = 5 * time.Minute
 

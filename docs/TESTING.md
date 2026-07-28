@@ -15,7 +15,7 @@ make verify
 - `go test ./...`
 - `go test ./... -race -short`
 - `go vet ./...`
-- `golangci-lint run` when available
+- exact pinned `golangci-lint` verification
 - critical seam coverage thresholds
 - `make docs-check`
 - `git diff --check`
