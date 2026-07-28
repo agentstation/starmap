@@ -56,7 +56,7 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 	result, err := c.Sync(
 		context.Background(),
 		pkgsync.WithDryRun(true),
-		pkgsync.WithOutputPath(outputPath),
+		pkgsync.WithCatalogPath(outputPath),
 		pkgsync.WithSources(sources.LocalCatalogID, sources.ProvidersID),
 	)
 	if err != nil {

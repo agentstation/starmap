@@ -24,9 +24,7 @@ type Config struct {
 	ConfigFile string
 
 	// Starmap configuration
-	// CatalogExportPath is an optional editable YAML import/export tree.
-	CatalogExportPath string
-	// CatalogPath is the durable canonical catalog database root.
+	// CatalogPath is the human-editable provider YAML workspace.
 	CatalogPath                   string
 	UseEmbeddedCatalog            bool
 	EmbeddedBootstrapMaxAge       time.Duration
@@ -92,7 +90,6 @@ func LoadConfig() (*Config, error) {
 		ConfigFile: configFileUsed,
 
 		// Starmap configuration
-		CatalogExportPath:             viper.GetString("catalog_export_path"),
 		CatalogPath:                   viper.GetString("catalog_path"),
 		UseEmbeddedCatalog:            viper.GetBool("use_embedded_catalog"),
 		EmbeddedBootstrapMaxAge:       viper.GetDuration("embedded_bootstrap_max_age"),

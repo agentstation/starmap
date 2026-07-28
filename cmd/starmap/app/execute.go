@@ -105,6 +105,7 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 	// Setup commands (getting started)
 	rootCmd.AddCommand(a.NewDepsCommand())
 	rootCmd.AddCommand(a.NewAuthCommand())
+	rootCmd.AddCommand(a.NewMigrateCommand())
 
 	// Catalog commands (working with models/providers)
 	rootCmd.AddCommand(a.NewProvidersCommand())

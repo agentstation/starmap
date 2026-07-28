@@ -14,6 +14,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
 	"github.com/agentstation/starmap/pkg/catalogstore"
@@ -233,14 +234,13 @@ func (a *App) Shutdown(ctx context.Context) error {
 func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option, error) {
 	opts := []starmap.Option{storeOption}
 
-	// Add the editable YAML catalog only when explicitly configured.
-	exportPath, err := a.configuredCatalogExportPath()
+	// The CLI always composes one human provider-YAML workspace. Merely
+	// constructing the client reads it when present and never creates it.
+	catalogPath, err := a.CatalogPath()
 	if err != nil {
 		return nil, err
 	}
-	if exportPath != "" {
-		opts = append(opts, starmap.WithCatalogExportPath(exportPath))
-	}
+	opts = append(opts, starmap.WithCatalogPath(catalogPath))
 
 	// Add embedded catalog if configured
 	if a.config.UseEmbeddedCatalog {
@@ -275,7 +275,7 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 }
 
 func (a *App) catalogStoreOption() (starmap.Option, error) {
-	path, err := a.catalogDatabasePath()
+	path, err := a.catalogStatePath()
 	if err != nil {
 		return nil, err
 	}
@@ -284,6 +284,28 @@ func (a *App) catalogStoreOption() (starmap.Option, error) {
 		return nil, errors.WrapResource("create", "catalog store", path, err)
 	}
 	return starmap.WithCatalogStore(store), nil
+}
+
+// MigrateCatalogWorkspace explicitly relocates the pre-plan generation store
+// from the configured human workspace path into the CLI's machine state root.
+func (a *App) MigrateCatalogWorkspace(ctx context.Context) (workspace.LegacyLayoutMigrationResult, error) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if a.starmap != nil {
+		return workspace.LegacyLayoutMigrationResult{}, &errors.ConflictError{
+			Resource: "catalog workspace migration",
+			Message:  "cannot migrate after the application catalog has been initialized",
+		}
+	}
+	catalogPath, err := a.CatalogPath()
+	if err != nil {
+		return workspace.LegacyLayoutMigrationResult{}, err
+	}
+	statePath, err := a.catalogStatePath()
+	if err != nil {
+		return workspace.LegacyLayoutMigrationResult{}, err
+	}
+	return workspace.MigrateLegacyLayout(ctx, catalogPath, statePath)
 }
 
 func expandHomePath(path string) (string, error) {

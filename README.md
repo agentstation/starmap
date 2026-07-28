@@ -239,7 +239,8 @@ The concrete immutable product for model data access. Advanced producers use a s
 A generation-oriented commit/read/CAS boundary. The same conformance contract covers memory, filesystem, SQLite, and conditional object-storage adapters while retaining old immutable generations.
 When a client starts with a configured store, it validates and publishes that
 store's current generation before returning from `starmap.New`; an empty store
-uses the verified embedded/local baseline until its first successful commit.
+uses either the exact configured human workspace or the verified embedded
+bootstrap until its first successful commit.
 
 Validated generations use a deterministic archive and detached in-toto
 statement for release/hosted distribution. See the
@@ -283,7 +284,7 @@ See [CONTRIBUTING.md § Project Structure](CONTRIBUTING.md#project-structure) fo
 Starmap provides two levels of data management complexity:
 
 **Use [Catalog Package](pkg/catalogs/README.md) (Simple) When:**
-- ✅ Merging embedded catalog with local overrides
+- ✅ Constructing or reading one provider-YAML catalog
 - ✅ Combining two provider responses
 - ✅ Testing with mock data
 - ✅ Building simple tools
@@ -317,6 +318,7 @@ starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 starmap update                  # Update all providers
 starmap update openai           # Update specific provider
 starmap update --dry            # Preview changes
+starmap migrate catalog         # Explicitly migrate the former local store layout
 
 # Development
 starmap validate                # Validate configurations
@@ -327,17 +329,17 @@ starmap completion bash         # Generate shell completion
 ### Advanced Update Workflows
 
 ```bash
-# Development: Use file-based catalog
-starmap update groq --input-dir ./catalog --dry
+# Development: Use a custom human workspace
+starmap update groq --catalog-path ./catalog --dry
 
 # Production: Fresh update with auto-approval
 starmap update --force -y
 
-# Custom directories
-starmap update --input ./dev --output ./prod
-
 # Specific sources only
 starmap update --source models.dev
+
+# Reload semantic edits from the human workspace; no filesystem watcher runs
+starmap update --source local
 
 # Reproducible Git verification requires an exact commit
 starmap update --source models.dev-git --models-dev-git-commit <40-or-64-hex-commit>
@@ -402,6 +404,7 @@ Dependency Status:
 ┌────────────────────────────┬────────────────────────┬──────────────────┬─────────┬───────────────────────┐
 │           SOURCE           │       DEPENDENCY       │      STATUS      │ VERSION │         PATH          │
 ├────────────────────────────┼────────────────────────┼──────────────────┼─────────┼───────────────────────┤
+│ embedded_catalog           │ -                      │ ✅ None required │ -       │ -                     │
 │ local_catalog (optional)   │ -                      │ ✅ None required │ -       │ -                     │
 │ providers                  │ -                      │ ✅ None required │ -       │ -                     │
 │ models_dev_git (optional)  │ Bun JavaScript runtime │ ✅ Available     │ 1.2.21  │ /opt/homebrew/bin/bun │
@@ -760,26 +763,89 @@ Local storage uses separate lifecycle roots:
 
 ```text
 ~/.starmap/
-├── catalog/          # canonical immutable generation database
+├── catalog/          # one human-editable provider-YAML workspace
+├── state/catalog/    # machine-owned immutable generation database
 │   ├── current
 │   └── generations/
-├── exports/catalog/  # optional editable/portable YAML tree
 ├── cache/
 ├── logs/
 ├── sources/
 └── config.yaml
 ```
 
-The canonical database is passive until the first commit. YAML exports are
-never used as the durable publication database, and Starmap rejects configured
-database/export paths that contain one another. Because this layout predates
-the first public launch, draft path names and configuration aliases are not
-carried forward as compatibility surface.
+The machine state directory is passive until the first commit. The catalog
+workspace is the only human model representation and is both the local
+observation and the post-commit YAML projection. Starmap rejects overlapping
+workspace/state roots and rejects models.dev cache or checkout roots that
+contain, equal, or sit beneath the workspace before reading or writing it.
+Atomic projection uses hidden sibling staging and a hidden sibling
+generation/digest marker; neither is loaded as provider configuration, and
+normal completion removes all staging. A sibling advisory writer lock
+serializes projection and repair across processes; contention returns a typed
+conflict while readers continue to observe one complete old or new tree. The
+lock file carries no catalog data and an exited process cannot leave it held. A
+pre-plan generation-store layout found at `~/.starmap/catalog` fails with a
+typed migration error before mutation. Migrate that layout explicitly:
+
+```bash
+starmap migrate catalog
+```
+
+The command locks and validates the complete old store, including every
+retained generation and its schema compatibility, before moving anything. It
+then relocates the machine store to `~/.starmap/state/catalog` and projects the
+current generation back to `~/.starmap/catalog` as provider YAML. Stop every
+older Starmap process that uses this path before migration and do not restart
+it afterward; older binaries do not understand the path's new meaning. A
+normal failure restores the original layout. If another actor recreates the
+vacated path, rollback preserves both it and the relocated store and returns a
+typed conflict rather than deleting either. If the process exits after the
+atomic store move, the next startup reads the exact relocated current
+generation and repairs the missing YAML projection without publishing a new
+generation.
+
+Read-only construction uses the verified embedded catalog entirely in memory
+and creates no workspace. The first explicit update observes that catalog as
+`embedded_catalog`, commits one immutable generation even when its facts are
+unchanged, and then atomically creates the complete provider-YAML workspace.
+An absent path is never reported as `local_catalog`; local evidence begins only
+after a real human workspace exists.
+
+Later explicit updates load the human workspace and the running binary's
+verified embedded revision as separate observations. Unchanged generated fields
+can advance with the embedded revision, embedded data can fill missing fields,
+and semantic human edits remain local evidence. Provider acquisition uses a
+derived configuration view that keeps human connection settings while adding
+providers introduced by the new embedded revision.
+
+Starmap never watches the workspace implicitly. A running client retains its
+current immutable catalog until the caller invokes
+`Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI equivalent is
+`starmap update --source local`. One semantic change publishes one generation.
+An unchanged or formatting-only reload publishes none.
+
+Rollback reactivates a retained immutable generation through the same
+generation-store compare-and-swap used by normal publication, then atomically
+reproduces that generation's provider YAML and provenance:
+
+```go
+result, err := sm.Rollback(ctx, generationID)
+if err != nil {
+    return err
+}
+if result.Projection != nil && result.Projection.Status == sync.ProjectionStatusPendingRepair {
+    // The generation is already active; preserve a concurrent human edit and
+    // surface that the workspace still needs repair.
+}
+```
+
+The generation payload digest and workspace semantic digest are intentionally
+separate: derived read views live only in the immutable catalog. Repeating a
+rollback to the current durable generation does not emit another publication.
 
 ```yaml
 # ~/.starmap/config.yaml
 catalog_path: ~/.starmap/catalog
-catalog_export_path: ~/.starmap/exports/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
 

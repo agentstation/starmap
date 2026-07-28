@@ -25,8 +25,8 @@ type options struct {
 	// Explicit update injection; cadence belongs to the deployment layer.
 	updateFunc UpdateFunc
 
-	// optional editable YAML catalog import/export tree
-	catalogExportPath string
+	// optional human-editable provider YAML workspace
+	catalogPath string
 
 	// durable generation store required by every non-dry mutation path
 	catalogStore catalogstore.Store
@@ -40,7 +40,7 @@ type options struct {
 func defaults() *options {
 	return &options{
 		updateFunc:                    nil,   // Default to pipeline-based updates
-		catalogExportPath:              "",    // Default to no YAML import/export tree
+		catalogPath:                   "",    // Default to no filesystem workspace
 		catalogStore:                  nil,   // Mutation requires an explicit writable store
 		embeddedCatalogEnabled:        false, // Default to no embedded catalog
 		embeddedBootstrapMaxAge:       0,     // Disabled until explicitly configured
@@ -141,17 +141,19 @@ func WithUpdateFunc(fn UpdateFunc) Option {
 // 	}
 // }
 
-// WithCatalogExportPath configures an optional editable YAML catalog tree for
-// import and explicit materialization. It is not the durable catalog database.
-func WithCatalogExportPath(path string) Option {
+// WithCatalogPath configures the human-editable provider YAML workspace used
+// for both local observation and post-commit materialization. Immutable
+// generation state remains in the separately supplied CatalogStore.
+func WithCatalogPath(path string) Option {
 	return func(o *options) error {
-		o.catalogExportPath = path
+		o.catalogPath = path
 		return nil
 	}
 }
 
 // WithEmbeddedCatalog configures whether to use an embedded catalog.
-// It defaults to false, but takes precedence over WithCatalogExportPath if set.
+// It defaults to false. A configured workspace remains the local observation;
+// the embedded catalog is its verified fallback when the workspace is absent.
 func WithEmbeddedCatalog() Option {
 	return func(o *options) error {
 		o.embeddedCatalogEnabled = true

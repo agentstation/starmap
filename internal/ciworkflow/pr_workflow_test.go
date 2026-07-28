@@ -97,6 +97,7 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
 		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
+		`go test ./... -race -short -timeout=20m`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
 	} {
 		if !strings.Contains(verifyScript, check) {

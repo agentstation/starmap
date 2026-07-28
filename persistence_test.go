@@ -83,9 +83,10 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 	publication, err := c.save(
 		context.Background(),
 		newCatalog,
-		&pkgsync.Options{OutputPath: blockingFile},
+		&pkgsync.Options{CatalogPath: blockingFile},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, newCatalog)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("save returned a pre-commit error after projection failure: %v", err)
@@ -122,9 +123,10 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 	publication, err := client.save(
 		context.Background(),
 		candidate,
-		&pkgsync.Options{OutputPath: path},
+		&pkgsync.Options{CatalogPath: path},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, candidate)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("save: %v", err)
@@ -175,6 +177,7 @@ func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
 		&pkgsync.Options{},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, candidate)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("store-only Apply: %v", err)
@@ -226,7 +229,7 @@ func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testi
 		t.Fatalf("Commit durable current: %v", err)
 	}
 
-	client, err := New(WithCatalogStore(store), WithCatalogExportPath(path))
+	client, err := New(WithCatalogStore(store), WithCatalogPath(path))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}

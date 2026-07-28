@@ -13,7 +13,7 @@ make verify
 `make verify` runs:
 
 - `go test ./...`
-- `go test ./... -race -short`
+- `go test ./... -race -short -timeout=20m`
 - `go vet ./...`
 - exact pinned `golangci-lint` verification
 - critical seam coverage thresholds
@@ -29,7 +29,7 @@ Use these while iterating:
 
 ```bash
 go test ./...
-go test ./... -race -short
+go test ./... -race -short -timeout=20m
 go vet ./...
 make docs-check
 make test-critical-coverage
@@ -118,7 +118,7 @@ Run `make catalog-generation-check` before changing embedded catalog tooling.
 The gate exercises an HTTP-error response, verifies the current embedded
 models.dev payload is retained on failure, requires typed and semantic source
 validation before an atomic file promotion, and command-spies the public CLI.
-The only supported update shape is a positional provider plus `--output-dir`;
+The only supported update shape is a positional provider plus `--catalog-path`;
 the generation workflow must finish with the actual `validate catalog`
 subcommand. Provider fixture refresh failures and successful no-op refreshes
 must both propagate non-zero.

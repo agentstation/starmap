@@ -3,10 +3,12 @@ package pipeline
 import (
 	"context"
 	stderrors "errors"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -25,6 +27,7 @@ type pipelineTestStore struct {
 	appliedOptions *pkgsync.Options
 	appliedChanges *differ.Changeset
 	observations   []sources.Observation
+	workspaceInput workspace.InputExpectation
 }
 
 func (s *pipelineTestStore) Catalog() (*catalogs.Catalog, error) {
@@ -34,12 +37,20 @@ func (s *pipelineTestStore) Catalog() (*catalogs.Catalog, error) {
 	return s.catalog, nil
 }
 
-func (s *pipelineTestStore) Apply(_ context.Context, catalog *catalogs.Builder, options *pkgsync.Options, changeset *differ.Changeset, observations []sources.Observation) (Publication, error) {
+func (s *pipelineTestStore) Apply(
+	_ context.Context,
+	catalog *catalogs.Builder,
+	options *pkgsync.Options,
+	changeset *differ.Changeset,
+	observations []sources.Observation,
+	workspaceInput workspace.InputExpectation,
+) (Publication, error) {
 	s.applyCalls++
 	s.appliedCatalog = catalog
 	s.appliedOptions = options
 	s.appliedChanges = changeset
 	s.observations = append([]sources.Observation(nil), observations...)
+	s.workspaceInput = workspaceInput
 	return Publication{}, nil
 }
 
@@ -57,12 +68,12 @@ func TestPipelineRequiresStore(t *testing.T) {
 func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := New(store)
-	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		sourceWorkStarted = true
 		return nil
 	}
@@ -76,11 +87,32 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 }
 
-// TestF001CharacterizationPipelineLoadsLocalFromOutputPath pins the current
-// input/output path divergence. The fixing phase must make the configured
-// human workspace the input and treat post-commit materialization as a
-// projection, not reinterpret an arbitrary output destination as source data.
-func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
+func TestPipelineRejectsSourceStateOverlapBeforeReadingWorkspace(t *testing.T) {
+	root := t.TempDir()
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := New(store)
+	workspaceRead := false
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
+		workspaceRead = true
+		return catalogs.NewEmpty(), nil
+	}
+
+	_, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(filepath.Join(root, "catalog")),
+		pkgsync.WithSourcesDir(root),
+		pkgsync.WithDryRun(true),
+	)
+	var configErr *pkgerrors.ConfigError
+	if !stderrors.As(err, &configErr) {
+		t.Fatalf("Sync error = %T %v, want *errors.ConfigError", err, err)
+	}
+	if workspaceRead {
+		t.Fatal("overlapping machine source state was rejected after reading the human workspace")
+	}
+}
+
+func TestPipelineUsesOneCatalogPathForLocalObservation(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, &reconciler.Result{
 		Catalog:           catalogs.NewEmpty(),
@@ -88,9 +120,9 @@ func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
 		ProviderAPICounts: map[catalogs.ProviderID]int{},
 		ModelProviderMap:  map[string]catalogs.ProviderID{},
 	})
-	outputPath := filepath.Join(t.TempDir(), "projection")
+	catalogPath := filepath.Join(t.TempDir(), "catalog")
 	var loadedPath string
-	runner.loadLocal = func(path string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(path string) (*catalogs.Builder, error) {
 		loadedPath = path
 		return catalogs.NewEmpty(), nil
 	}
@@ -98,12 +130,12 @@ func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
 	if _, err := runner.Sync(
 		context.Background(),
 		pkgsync.WithDryRun(true),
-		pkgsync.WithOutputPath(outputPath),
+		pkgsync.WithCatalogPath(catalogPath),
 	); err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
-	if loadedPath != outputPath {
-		t.Fatalf("F-001 characterization changed: local path = %q, want output path %q", loadedPath, outputPath)
+	if loadedPath != catalogPath {
+		t.Fatalf("local path = %q, want catalog path %q", loadedPath, catalogPath)
 	}
 }
 
@@ -170,6 +202,48 @@ func TestPipelineNoChangeStillReportsSourceFreshnessObservation(t *testing.T) {
 	}
 	if err := result.SourceObservations[0].Validate(); err != nil {
 		t.Fatalf("source freshness observation: %v", err)
+	}
+}
+
+func TestPipelineFirstExplicitUpdateAppliesUnchangedCandidateToAbsentWorkspace(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog: catalogs.NewEmpty(), Changeset: emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{}, ModelProviderMap: map[string]catalogs.ProviderID{},
+	})
+	path := filepath.Join(t.TempDir(), "catalog")
+
+	if _, err := runner.Sync(context.Background(), pkgsync.WithCatalogPath(path)); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if store.applyCalls != 1 {
+		t.Fatalf("apply calls = %d, want one seed publication", store.applyCalls)
+	}
+	if store.workspaceInput.Path != path || store.workspaceInput.Exists {
+		t.Fatalf("workspace input = %#v, want absent %q", store.workspaceInput, path)
+	}
+}
+
+func TestPipelineDryRunDoesNotSeedAbsentWorkspace(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog: catalogs.NewEmpty(), Changeset: emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{}, ModelProviderMap: map[string]catalogs.ProviderID{},
+	})
+	path := filepath.Join(t.TempDir(), "catalog")
+
+	if _, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(path),
+		pkgsync.WithDryRun(true),
+	); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if store.applyCalls != 0 {
+		t.Fatalf("dry-run apply calls = %d, want zero", store.applyCalls)
+	}
+	if _, err := os.Lstat(path); !stderrors.Is(err, os.ErrNotExist) {
+		t.Fatalf("dry run created workspace: %v", err)
 	}
 }
 
@@ -367,10 +441,13 @@ func TestPipelineFreshRejectsDegradedObservationBeforeEmptyBaselinePublication(t
 
 func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner := New(store)
-	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
+	runner.loadEmbedded = func() (*catalogs.Builder, error) {
+		return catalogs.NewEmpty(), nil
+	}
+	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {

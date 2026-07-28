@@ -677,43 +677,84 @@ requires exactly one success and one typed conflict. SQLite deployments use
 immediate transactions with bounded busy waiting; filesystem writers coordinate
 through a context-aware advisory lock shared across processes.
 
-`Builder.Save` materializes an optional editable YAML export using replacement
+`Builder.Save` materializes a human provider-YAML workspace using replacement
 semantics for its managed YAML indexes and provider/author model trees, so
 deleted records cannot survive a
 save/reload. It deliberately preserves unmanaged neighboring files such as
-logos and operator notes. It is a portable materialization, not a second
-transactional database: a process failure or rejected durable commit can leave
-that directory temporarily ahead of or behind the authoritative generation.
-Production readers must consume `catalogstore.Store`/the immutable distribution
-protocol rather than serve the YAML view directly; restart with a durable
-current deliberately ignores the export view. Catalog-generation jobs
-may still use it as an explicit checked export.
+logos and operator notes. Direct builder saves are construction tools; normal
+Starmap publication commits the immutable generation first and then atomically
+projects YAML. Production readers consume the immutable catalog generation,
+while explicit updates treat semantic human workspace changes as local
+observations.
+
+There is no implicit filesystem watcher. A caller reloads the human workspace
+with `Client.Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI uses
+`starmap update --source local`. A semantic change publishes exactly one
+immutable generation and event, while unchanged or formatting-only input
+publishes none.
+
+`Client.Rollback` validates and decodes a retained generation off to the side,
+binds the pre-rollback workspace semantic digest, and reactivates the target
+through the catalog store's existing compare-and-swap. That store transition is
+the sole durable commit point. In-memory reads and one publication event then
+move to the exact target payload. YAML projection deterministically restores
+the target's prior workspace semantic digest and provenance. If a human edits
+the workspace between rollback preparation and projection, the committed
+generation remains active, the human edit is preserved, and the result reports
+pending repair. Repeating rollback to the current durable generation is
+idempotent and emits no second event.
 
 The root client makes that dependency explicit: `WithCatalogStore` is required
 before any non-dry manual, remote, server-triggered, or scheduled mutation. The
 preflight runs before source fetch, custom callbacks, remote HTTP, or scheduler
 startup and returns a typed `errors.ConfigError` when the store is absent.
 Read-only construction, `Catalog`, and dry-run synchronization remain usable
-without a store. The CLI composition root supplies a passive filesystem store
-at `catalog_path` (default `~/.starmap/catalog`); constructing the adapter does
-not create storage until its first commit. Optional editable YAML uses
-`catalog_export_path` and defaults to `~/.starmap/exports/catalog` for CLI
-materialization. Database and export roots must not contain one another, even
-through an existing symlink. Cache, source evidence, logs, configuration, YAML
-exports, and immutable generations remain separate lifecycle domains.
+without a store. The CLI's `catalog_path` names the one human workspace and
+defaults to `~/.starmap/catalog`. Its passive machine-owned generation store
+defaults separately to `~/.starmap/state/catalog`; constructing either
+composition creates no directory. Workspace and state roots must not contain
+one another. The same pre-read validation rejects an active models.dev cache
+or source-checkout root that contains, equals, or sits beneath the workspace.
+A selected workspace containing `current`, `generations/`, or `.commit.lock`
+is rejected with `errors.LegacyCatalogLayoutError` before any mutation and
+requires `starmap migrate catalog`. That explicit operation acquires the
+generation commit lock and workspace writer lock, validates the exact current
+and every retained generation against the running schema before mutation,
+atomically relocates the store to the separate state root, verifies the
+relocated current, and projects its canonical payload as human YAML. A
+process-visible failure rolls the relocation back. If another actor recreates
+the vacated path, rollback preserves both that path and the relocated store and
+returns a typed conflict rather than deleting concurrent data. Operators must
+stop every older Starmap process before migration and must not restart it,
+because those binaries do not understand the path's new human-workspace
+meaning. An exit after the atomic move is recoverable because startup activates
+the relocated durable current and repairs the still-missing projection without
+another generation commit. An older binary rejects a newer manifest schema
+before moving the store.
+Generation
+locks, current pointers, retained generations, and their temporary candidates
+remain under the catalog-store root. Atomic YAML projection alone stages beside
+the workspace so same-filesystem rename remains possible; its hidden staging is
+cleaned and its sibling digest marker is never traversed by the provider-YAML
+loader. Projection and repair share a nonblocking OS advisory writer lock in
+another sibling file. A competing process receives a typed conflict; readers
+take no lock and observe the complete directory before or after atomic
+promotion. OS process exit releases ownership even though the empty lock file
+remains. Cache, source evidence, logs, configuration, YAML, and immutable
+generations remain separate lifecycle domains.
 
-An explicitly configured catalog export is optional only when its path does not
-exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded
-bootstrap. Malformed provider, author, and provenance structure plus filesystem
+An explicitly configured catalog workspace is optional only when its path does
+not exist. Construction loads an existing workspace exactly as human YAML; it
+does not pre-merge the running binary's embedded revision. A missing workspace
+uses the verified embedded bootstrap in memory and is seeded only by an explicit
+update. Malformed provider, author, and provenance structure plus filesystem
 failures remain typed fatal errors. Individual malformed model YAML files are
 quarantined with a typed `LoadReport` so valid siblings can form a degraded
 local observation; embedded bootstrap, legacy migration, and atomic projection
 validation require an empty report and remain fail-closed. When a configured
-CatalogStore has
-a current generation, that validated durable generation is authoritative and
-export YAML is not parsed; this prevents a stale or partially materialized
-export view from blocking restart. Export YAML is consulted only when no
-durable current exists.
+CatalogStore has a current generation, that validated durable generation is
+authoritative during construction; the workspace is reconciled by explicit
+reload or update rather than silently replacing the active generation.
 
 The embedded bootstrap has a strict embedded `generation.json` binding its
 generation ID, generation time, catalog schema version, canonical payload
@@ -733,6 +774,11 @@ identity and UTC time, and deterministically emits schema-v1 `CatalogPayload`
 bytes plus a validated manifest. Provider-specific and author model indexes are
 encoded separately because the legacy record structs intentionally exclude
 their runtime model maps from JSON/YAML indexes.
+
+That schema-v0 YAML adapter is distinct from `starmap migrate catalog`. The
+former converts an older catalog data schema without mutating its input; the
+latter safely reassigns the on-disk path that briefly held the current
+generation-store format before the single human-workspace contract was chosen.
 
 ### Reconciler Package
 
@@ -802,6 +848,7 @@ Location: `pkg/authority/`
         sources.ModelsDevHTTPID,
         sources.ModelsDevGitID,
         sources.LocalCatalogID,
+        sources.EmbeddedCatalogID,
     },
     Merge: authority.MergeReplace,
     Empty: authority.EmptyAbsent,
@@ -947,8 +994,13 @@ Observation outcomes use one explicit policy:
   with validated disk-cache and embedded last-known-good fallback
 - **models.dev Git** (`sources.ModelsDevGitID`) - Explicit build/verification
   transport; never runs alongside HTTP in one sync
-- **Local Catalog** (`sources.LocalCatalogID`) - User overrides
-- **Embedded** (`sources.EmbeddedID`) - Baseline data shipped with binary
+- **Local Catalog** (`sources.LocalCatalogID`) - Semantic values read from an
+  existing human workspace
+- **Embedded** (`sources.EmbeddedCatalogID`) - Verified lowest-authority
+  revision shipped with the binary; participates as a separate observation
+  without external dependencies, seeds an absent workspace, advances unchanged
+  embedded-derived fields, and fills gaps without replacing semantic human
+  edits
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence retention and replay.
@@ -982,13 +1034,13 @@ Used throughout for configuration:
 
 ```go
 // Creating with options
-store, err := catalogstore.NewFilesystem("./catalog")
+store, err := catalogstore.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
 sm, err := starmap.New(
 	starmap.WithCatalogStore(store),
-    starmap.WithCatalogExportPath("./exports/catalog"),
+    starmap.WithCatalogPath("./catalog"),
 )
 
 // Sync with options

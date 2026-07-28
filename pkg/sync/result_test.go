@@ -23,8 +23,8 @@ func TestChangesetToResultHandlesNilChangeset(t *testing.T) {
 	if !result.DryRun {
 		t.Fatal("Expected dry-run flag to be preserved")
 	}
-	if result.OutputDir != "/tmp/catalog" {
-		t.Fatalf("Expected output dir to be preserved, got %q", result.OutputDir)
+	if result.CatalogPath != "/tmp/catalog" {
+		t.Fatalf("Expected catalog path to be preserved, got %q", result.CatalogPath)
 	}
 }
 

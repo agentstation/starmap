@@ -5,16 +5,30 @@ import (
 	"testing"
 
 	"github.com/rs/zerolog"
+	"github.com/spf13/cobra"
 
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-type exportPathProviderStub struct {
+func TestUpdateFlagsExposeOneCatalogWorkspacePath(t *testing.T) {
+	command := &cobra.Command{Use: "update"}
+	flags := addUpdateFlags(command)
+	if flags == nil || command.Flags().Lookup("catalog-path") == nil {
+		t.Fatal("update command has no --catalog-path")
+	}
+	for _, removed := range []string{"input-dir", "output-dir"} {
+		if command.Flags().Lookup(removed) != nil {
+			t.Fatalf("prelaunch compatibility flag --%s is still exposed", removed)
+		}
+	}
+}
+
+type catalogPathProviderStub struct {
 	path  string
 	calls int
 }
 
-func (s *exportPathProviderStub) CatalogExportPath() (string, error) {
+func (s *catalogPathProviderStub) CatalogPath() (string, error) {
 	s.calls++
 	return s.path, nil
 }
@@ -76,7 +90,7 @@ func TestUpdateCatalogCommitBehavior(t *testing.T) {
 				confirmCount++
 				return tt.confirmed, nil
 			}
-			tt.flags.OutputDir = t.TempDir()
+			tt.flags.CatalogPath = t.TempDir()
 			logger := zerolog.Nop()
 			if err := updateCatalogWithConfirmation(context.Background(), client, &tt.flags, &logger, true, confirm); err != nil {
 				t.Fatalf("updateCatalogWithConfirmation: %v", err)
@@ -106,28 +120,28 @@ func TestUpdateCatalogLeavesOmittedOutputForConfiguredExportPath(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("updateCatalogWithConfirmation: %v", err)
 	}
-	if len(client.options) != 1 || client.options[0].OutputPath != "" {
-		t.Fatalf("sync options = %#v, want omitted output path", client.options)
+	if len(client.options) != 1 || client.options[0].CatalogPath != "" {
+		t.Fatalf("sync options = %#v, want omitted catalog path", client.options)
 	}
 }
 
-func TestResolveUpdateOutputPath(t *testing.T) {
+func TestResolveCatalogPath(t *testing.T) {
 	t.Run("explicit flag wins without config lookup", func(t *testing.T) {
-		app := &exportPathProviderStub{path: "/configured"}
-		got, err := resolveUpdateOutputPath(app, "/explicit")
+		app := &catalogPathProviderStub{path: "/configured"}
+		got, err := resolveCatalogPath(app, "/explicit")
 		if err != nil || got != "/explicit" {
-			t.Fatalf("resolveUpdateOutputPath = %q, %v", got, err)
+			t.Fatalf("resolveCatalogPath = %q, %v", got, err)
 		}
 		if app.calls != 0 {
-			t.Fatalf("CatalogExportPath calls = %d, want 0", app.calls)
+			t.Fatalf("CatalogPath calls = %d, want 0", app.calls)
 		}
 	})
 
 	t.Run("omitted flag uses configured or default path", func(t *testing.T) {
-		app := &exportPathProviderStub{path: "/configured"}
-		got, err := resolveUpdateOutputPath(app, "")
+		app := &catalogPathProviderStub{path: "/configured"}
+		got, err := resolveCatalogPath(app, "")
 		if err != nil || got != "/configured" {
-			t.Fatalf("resolveUpdateOutputPath = %q, %v", got, err)
+			t.Fatalf("resolveCatalogPath = %q, %v", got, err)
 		}
 	})
 }

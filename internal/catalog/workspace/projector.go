@@ -51,6 +51,64 @@ type Receipt struct {
 	WorkspaceChecksum string
 }
 
+// InputExpectation records workspace presence and, once loaded, its semantic
+// digest before candidate construction. Projection rejects a different input.
+type InputExpectation struct {
+	Path     string
+	Exists   bool
+	Checksum string
+}
+
+// ObserveInput records the selected workspace's presence without creating or
+// modifying it.
+func ObserveInput(path string) (InputExpectation, error) {
+	if strings.TrimSpace(path) == "" {
+		return InputExpectation{}, nil
+	}
+	target, err := resolveTarget(path)
+	if err != nil {
+		return InputExpectation{}, err
+	}
+	if err := ValidateHumanLayout(target, ""); err != nil {
+		return InputExpectation{}, err
+	}
+	_, err = os.Lstat(target)
+	switch {
+	case err == nil:
+		return InputExpectation{Path: target, Exists: true}, nil
+	case stderrors.Is(err, fs.ErrNotExist):
+		return InputExpectation{Path: target}, nil
+	default:
+		return InputExpectation{}, errors.WrapIO("inspect", target, err)
+	}
+}
+
+// RequiresSeed reports whether an explicit operation selected an absent human
+// workspace that must be materialized even when catalog facts are unchanged.
+func (i InputExpectation) RequiresSeed() bool {
+	return i.Path != "" && !i.Exists
+}
+
+// BindInputCatalog records the semantic digest of the human catalog loaded
+// from an existing workspace before candidate construction.
+func BindInputCatalog(input InputExpectation, catalog *catalogs.Catalog) (InputExpectation, error) {
+	if input.Path == "" || !input.Exists {
+		return input, nil
+	}
+	if catalog == nil {
+		return InputExpectation{}, &errors.ValidationError{
+			Field:   "workspace_projection.input_catalog",
+			Message: "is required for an existing workspace",
+		}
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		return InputExpectation{}, errors.WrapResource("encode", "workspace projection input", input.Path, err)
+	}
+	input.Checksum = catalogs.DescribeCatalogPayload(payload).Checksum
+	return input, nil
+}
+
 // RepairStatus describes startup reconciliation between the durable current
 // generation and its optional YAML projection.
 type RepairStatus string
@@ -80,10 +138,28 @@ type projector struct {
 
 // Project stages, validates, syncs, and atomically publishes one workspace.
 func Project(ctx context.Context, path string, catalog *catalogs.Catalog, identity Identity) (Receipt, error) {
-	return (projector{}).project(ctx, path, catalog, identity)
+	return (projector{}).project(ctx, path, catalog, identity, InputExpectation{})
 }
 
-func (p projector) project(ctx context.Context, path string, catalog *catalogs.Catalog, identity Identity) (Receipt, error) {
+// ProjectExpected projects one workspace only if its presence still matches
+// the state observed before candidate construction.
+func ProjectExpected(
+	ctx context.Context,
+	path string,
+	catalog *catalogs.Catalog,
+	identity Identity,
+	input InputExpectation,
+) (Receipt, error) {
+	return (projector{}).project(ctx, path, catalog, identity, input)
+}
+
+func (p projector) project(
+	ctx context.Context,
+	path string,
+	catalog *catalogs.Catalog,
+	identity Identity,
+	expectation InputExpectation,
+) (Receipt, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -103,12 +179,32 @@ func (p projector) project(ctx context.Context, path string, catalog *catalogs.C
 	if err != nil {
 		return Receipt{}, err
 	}
+	if err := ValidateHumanLayout(target, ""); err != nil {
+		return Receipt{}, err
+	}
 	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
 		return Receipt{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
+	release, err := acquireWriterLock(target)
+	if err != nil {
+		return Receipt{}, err
+	}
+	defer release()
+	return p.projectLocked(ctx, target, catalog, identity, expectation)
+}
 
+func (p projector) projectLocked(
+	ctx context.Context,
+	target string,
+	catalog *catalogs.Catalog,
+	identity Identity,
+	expectation InputExpectation,
+) (Receipt, error) {
 	input, err := readSemanticState(target)
 	if err != nil {
+		return Receipt{}, err
+	}
+	if err := validateInputExpectation(target, input, expectation); err != nil {
 		return Receipt{}, err
 	}
 	staged, stagedState, err := stageCatalog(target, catalog)
@@ -165,6 +261,47 @@ func (p projector) project(ctx context.Context, path string, catalog *catalogs.C
 	return receipt, nil
 }
 
+func validateInputExpectation(target string, input semanticState, expectation InputExpectation) error {
+	if expectation.Path == "" {
+		return nil
+	}
+	expectedPath, err := resolveTarget(expectation.Path)
+	if err != nil {
+		return err
+	}
+	if expectedPath != target {
+		return &errors.ValidationError{
+			Field:   "workspace_projection.input_path",
+			Value:   expectation.Path,
+			Message: "does not match the selected workspace path",
+		}
+	}
+	if expectation.Exists == input.exists {
+		if !expectation.Exists || expectation.Checksum == "" || expectation.Checksum == input.checksum {
+			return nil
+		}
+		return &errors.ConflictError{
+			Resource: "catalog workspace projection input",
+			Expected: expectation.Checksum,
+			Actual:   input.checksum,
+			Message:  "workspace semantics changed after candidate construction",
+		}
+	}
+	return &errors.ConflictError{
+		Resource: "catalog workspace projection input",
+		Expected: describePresence(expectation.Exists),
+		Actual:   input.describe(),
+		Message:  "workspace presence changed after candidate construction",
+	}
+}
+
+func describePresence(exists bool) string {
+	if exists {
+		return "present"
+	}
+	return "absent"
+}
+
 // Repair compares a workspace and its durable marker with current. It repairs
 // only a missing workspace or an unchanged prior projection.
 func Repair(ctx context.Context, path string, current *catalogs.Catalog, identity Identity) (RepairResult, error) {
@@ -191,6 +328,17 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	if err != nil {
 		return RepairResult{}, err
 	}
+	if err := ValidateHumanLayout(target, ""); err != nil {
+		return RepairResult{}, err
+	}
+	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
+		return RepairResult{}, errors.WrapIO("create", filepath.Dir(target), err)
+	}
+	release, err := acquireWriterLock(target)
+	if err != nil {
+		return RepairResult{}, err
+	}
+	defer release()
 	state, err := readSemanticState(target)
 	if err != nil {
 		return RepairResult{}, err
@@ -228,7 +376,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		return RepairResult{Status: RepairStatusSkippedDirty, IssueCode: IssueDirty}, nil
 	}
 
-	if _, err := p.project(ctx, target, current, identity); err != nil {
+	if _, err := p.projectLocked(ctx, target, current, identity, InputExpectation{}); err != nil {
 		return RepairResult{}, err
 	}
 	return RepairResult{Status: RepairStatusRepaired}, nil

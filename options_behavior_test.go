@@ -28,7 +28,7 @@ func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
 	); err != nil {
 		t.Fatalf("Write corrupt catalog: %v", err)
 	}
-	client, err := New(WithCatalogExportPath(path))
+	client, err := New(WithCatalogPath(path))
 	if err == nil || client != nil {
 		t.Fatalf("New = (%v, %v), want nil client and error", client, err)
 	}
@@ -38,7 +38,7 @@ func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
 	}
 }
 
-func TestEmbeddedCatalogTakesPrecedenceOverCatalogExportPath(t *testing.T) {
+func TestConfiguredCatalogPathTakesPrecedenceOverEmbeddedFallback(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "catalog")
 	local := catalogs.NewEmpty()
 	if err := local.SetProvider(catalogs.Provider{ID: "local-only", Name: "Local only"}); err != nil {
@@ -49,7 +49,7 @@ func TestEmbeddedCatalogTakesPrecedenceOverCatalogExportPath(t *testing.T) {
 	}
 
 	client, err := New(
-		WithCatalogExportPath(path),
+		WithCatalogPath(path),
 		WithEmbeddedCatalog(),
 	)
 	if err != nil {
@@ -59,8 +59,41 @@ func TestEmbeddedCatalogTakesPrecedenceOverCatalogExportPath(t *testing.T) {
 		t.Fatal("New returned a nil client")
 	}
 	catalog := client.Catalog()
-	if _, err := catalog.Provider("local-only"); err == nil {
-		t.Fatal("Explicit embedded catalog merged the configured local path")
+	if _, err := catalog.Provider("local-only"); err != nil {
+		t.Fatalf("configured workspace was not loaded: %v", err)
+	}
+}
+
+func TestConfiguredWorkspaceLoadsSemanticHumanValuesWithoutEmbeddedPreMerge(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "catalog")
+	human := catalogs.NewEmpty()
+	if err := human.SetProvider(catalogs.Provider{
+		ID:   "openai",
+		Name: "Human OpenAI",
+		Models: map[string]*catalogs.Model{
+			"gpt-4o": {ID: "gpt-4o", Name: "Human GPT-4o"},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := human.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("Save human workspace: %v", err)
+	}
+
+	client, err := New(WithCatalogPath(path))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	catalog := client.Catalog()
+	if got := catalog.Providers().Len(); got != 1 {
+		t.Fatalf("provider count = %d, want human workspace only", got)
+	}
+	model, err := catalog.ProviderModel("openai", "gpt-4o")
+	if err != nil {
+		t.Fatalf("ProviderModel: %v", err)
+	}
+	if model.Name != "Human GPT-4o" {
+		t.Fatalf("model name = %q, want semantic human value", model.Name)
 	}
 }
 
@@ -81,10 +114,14 @@ func TestCurrentGenerationIDTracksBootstrapAndDurablePublication(t *testing.T) {
 
 func TestConfiguredLocalCatalogHasNoInventedGenerationID(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "catalog")
-	if err := catalogs.NewEmpty().Save(save.WithPath(path)); err != nil {
+	local := catalogs.NewEmpty()
+	if err := local.SetProvider(catalogs.Provider{ID: "local", Name: "Local"}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := local.Save(save.WithPath(path)); err != nil {
 		t.Fatalf("Save local catalog: %v", err)
 	}
-	client, err := New(WithCatalogExportPath(path))
+	client, err := New(WithCatalogPath(path))
 	if err != nil {
 		t.Fatalf("New local: %v", err)
 	}

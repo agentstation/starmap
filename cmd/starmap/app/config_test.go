@@ -36,8 +36,20 @@ func TestConfigCatalogPathVocabularyHasNoPrelaunchAliases(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LoadConfig: %v", err)
 	}
-	if config.CatalogPath != "/canonical" || config.CatalogExportPath != "/exports" {
-		t.Fatalf("paths = %q %q", config.CatalogPath, config.CatalogExportPath)
+	if config.CatalogPath != "/canonical" {
+		t.Fatalf("catalog path = %q", config.CatalogPath)
+	}
+}
+
+func TestRemovedExportConfigurationDoesNotSelectWorkspace(t *testing.T) {
+	t.Setenv("CATALOG_PATH", "")
+	t.Setenv("CATALOG_EXPORT_PATH", "/ignored-export")
+	config, err := LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig: %v", err)
+	}
+	if config.CatalogPath != "" {
+		t.Fatalf("removed export configuration selected %q", config.CatalogPath)
 	}
 }
 
@@ -214,22 +226,16 @@ func TestConfig_LoggingOptions(t *testing.T) {
 	}
 }
 
-// TestConfig_CatalogExportPath verifies editable export path configuration.
-func TestConfig_CatalogExportPath(t *testing.T) {
-	// Save original env
-	oldPath := os.Getenv("CATALOG_EXPORT_PATH")
-	defer os.Setenv("CATALOG_EXPORT_PATH", oldPath)
-
-	// Set test value
+func TestConfigCatalogPathIsHumanWorkspace(t *testing.T) {
 	testPath := "/tmp/starmap-test"
-	os.Setenv("CATALOG_EXPORT_PATH", testPath)
+	t.Setenv("CATALOG_PATH", testPath)
 
 	config, err := LoadConfig()
 	if err != nil {
 		t.Fatalf("LoadConfig() failed: %v", err)
 	}
 
-	if config.CatalogExportPath != testPath {
-		t.Errorf("CatalogExportPath = %s, want %s", config.CatalogExportPath, testPath)
+	if config.CatalogPath != testPath {
+		t.Errorf("CatalogPath = %s, want %s", config.CatalogPath, testPath)
 	}
 }

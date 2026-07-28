@@ -23,19 +23,20 @@ from all configured sources:
 3. Embedded catalog - Baseline catalog data
 
 The command will:
-• Load the current catalog (embedded or from --input-dir)
+• Load the current catalog workspace, with embedded data as the offline fallback
 • Fetch live data from provider APIs (if keys configured)
 • Enrich with models.dev data (descriptions, features, pricing, limits, logos)
 • Reconcile all sources using field-level authority
-• Save the updated catalog to disk
+• Save the updated catalog to the same human workspace
 
-By default, materializes editable YAML at ~/.starmap/exports/catalog. The
-durable canonical generation database remains separate at ~/.starmap/catalog.`,
+By default, the human provider-YAML workspace is ~/.starmap/catalog. Machine
+generation state is separate and is never treated as editable configuration.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update openai                     # Update specific provider
   starmap update --dry                      # Preview changes
   starmap update -y                         # Auto-approve changes
   starmap update --force                    # Force fresh update
+  starmap update --source local             # Reload semantic workspace edits
   starmap update openai --dry               # Preview OpenAI updates`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

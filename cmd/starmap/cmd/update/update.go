@@ -25,8 +25,7 @@ type Flags struct {
 	DryRun             bool
 	Force              bool
 	AutoApprove        bool
-	OutputDir          string
-	InputDir           string
+	CatalogPath        string
 	Cleanup            bool
 	Reformat           bool
 	SourcesDir         string
@@ -40,8 +39,8 @@ type syncClient interface {
 	Sync(context.Context, ...sync.Option) (*sync.Result, error)
 }
 
-type catalogExportPathProvider interface {
-	CatalogExportPath() (string, error)
+type catalogPathProvider interface {
+	CatalogPath() (string, error)
 }
 
 // addUpdateFlags adds update-specific flags to the update command.
@@ -49,7 +48,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	flags := &Flags{}
 
 	cmd.Flags().StringVar(&flags.Source, "source", "",
-		"Update from a specific source: all, provider-api, models.dev, models.dev-git")
+		"Update from a specific source: all, local, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry", false,
 		"Preview changes without applying them")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
@@ -59,10 +58,8 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Force fresh update (delete and recreate)")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
-	cmd.Flags().StringVar(&flags.OutputDir, "output-dir", "",
-		"Save updated catalog to directory")
-	cmd.Flags().StringVar(&flags.InputDir, "input-dir", "",
-		"Load catalog from directory instead of embedded")
+	cmd.Flags().StringVar(&flags.CatalogPath, "catalog-path", "",
+		"Human provider-YAML workspace (default: ~/.starmap/catalog)")
 	cmd.Flags().BoolVar(&flags.Cleanup, "cleanup", false,
 		"Remove temporary models.dev repository after update")
 	cmd.Flags().BoolVar(&flags.Reformat, "reformat", false,
@@ -98,29 +95,29 @@ func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flag
 	}
 
 	// Load the appropriate catalog using app context
-	sm, err := LoadCatalog(app, flags.InputDir, quiet)
+	sm, err := LoadCatalog(app, flags.CatalogPath, quiet)
 	if err != nil {
 		return err
 	}
-	outputPath, err := resolveUpdateOutputPath(app, flags.OutputDir)
+	catalogPath, err := resolveCatalogPath(app, flags.CatalogPath)
 	if err != nil {
 		return err
 	}
 	resolvedFlags := *flags
-	resolvedFlags.OutputDir = outputPath
+	resolvedFlags.CatalogPath = catalogPath
 
 	// Execute the update operation
 	return updateCatalog(ctx, sm, &resolvedFlags, logger, quiet)
 }
 
-func resolveUpdateOutputPath(app any, explicit string) (string, error) {
+func resolveCatalogPath(app any, explicit string) (string, error) {
 	if explicit != "" {
 		return explicit, nil
 	}
-	if provider, ok := app.(catalogExportPathProvider); ok {
-		return provider.CatalogExportPath()
+	if provider, ok := app.(catalogPathProvider); ok {
+		return provider.CatalogPath()
 	}
-	return expandPath(constants.DefaultCatalogExportPath), nil
+	return expandPath(constants.DefaultCatalogPath), nil
 }
 
 // updateCatalog executes the update operation using app context.
@@ -129,9 +126,7 @@ func updateCatalog(ctx context.Context, sm syncClient, flags *Flags, logger *zer
 }
 
 func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Flags, logger *zerolog.Logger, quiet bool, confirm func() (bool, error)) error {
-	// Leave an omitted output path unset so the configured catalog export path
-	// at the composition root remains authoritative.
-	outputPath := flags.OutputDir
+	catalogPath := flags.CatalogPath
 	// Support environment variable fallback for sources directory
 	sourcesDir := flags.SourcesDir
 	if sourcesDir == "" {
@@ -139,7 +134,7 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	}
 
 	preview := flags.DryRun || !flags.AutoApprove
-	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, outputPath, preview, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, catalogPath, preview, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
 	if err != nil {
 		return err
 	}
@@ -166,10 +161,10 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	}
 
 	// Handle results
-	return handleResultsWithConfirmation(ctx, sm, result, flags, outputPath, sourcesDir, quiet, confirm)
+	return handleResultsWithConfirmation(ctx, sm, result, flags, catalogPath, sourcesDir, quiet, confirm)
 }
 
-func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *sync.Result, flags *Flags, outputPath string, sourcesDir string, quiet bool, confirm func() (bool, error)) error {
+func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *sync.Result, flags *Flags, catalogPath string, sourcesDir string, quiet bool, confirm func() (bool, error)) error {
 	if !result.HasChanges() {
 		if !quiet {
 			fmt.Fprintf(os.Stderr, emoji.Success+" All providers are up to date - no changes needed\n")
@@ -210,7 +205,7 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 	}
 
 	// Rebuild options without dry-run
-	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, outputPath, false, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
+	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, catalogPath, false, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)
 	if err != nil {
 		return err
 	}

@@ -195,7 +195,7 @@ func TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation(t *testing.T) {
 	starmapSpy := filepath.Join(directory, "starmap-spy")
 	spy := `#!/usr/bin/env bash
 set -euo pipefail
-	printf '[CATALOG_PATH=%s][CATALOG_EXPORT_PATH=%s]' "${CATALOG_PATH:-}" "${CATALOG_EXPORT_PATH:-}" >> "$STARMAP_COMMAND_LOG"
+	printf '[HOME=%s][CATALOG_PATH=%s]' "${HOME:-}" "${CATALOG_PATH:-}" >> "$STARMAP_COMMAND_LOG"
 for argument in "$@"; do printf '[%s]' "$argument" >> "$STARMAP_COMMAND_LOG"; done
 printf '\n' >> "$STARMAP_COMMAND_LOG"
 `
@@ -236,9 +236,9 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	if err != nil {
 		t.Fatalf("ReadFile command log: %v", err)
 	}
-	want := "[CATALOG_PATH=" + filepath.Join(generationStatePath, "update-store") + "][CATALOG_EXPORT_PATH=]" +
-		"[update][openai][--input-dir][" + catalogPath + "][--output-dir][" + catalogPath + "][-y]\n" +
-		"[CATALOG_PATH=" + filepath.Join(generationStatePath, "validation-store") + "][CATALOG_EXPORT_PATH=" + catalogPath + "]" +
+	want := "[HOME=" + filepath.Join(generationStatePath, "update-home") + "][CATALOG_PATH=" + catalogPath + "]" +
+		"[update][openai][--catalog-path][" + catalogPath + "][-y]\n" +
+		"[HOME=" + filepath.Join(generationStatePath, "validation-home") + "][CATALOG_PATH=" + catalogPath + "]" +
 		"[validate][catalog]\n"
 	if string(log) != want {
 		t.Fatalf("commands = %q, want %q", log, want)

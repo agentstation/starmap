@@ -127,6 +127,30 @@ func TestConfigError(t *testing.T) {
 	})
 }
 
+func TestLegacyCatalogLayoutError(t *testing.T) {
+	t.Run("identified entries and migration target", func(t *testing.T) {
+		err := &pkgerrors.LegacyCatalogLayoutError{
+			Path:            "/home/test/.starmap/catalog",
+			MigrationTarget: "/home/test/.starmap/state/catalog",
+			Entries:         []string{".commit.lock", "current", "generations"},
+		}
+		assert.Equal(
+			t,
+			`legacy catalog generation layout at "/home/test/.starmap/catalog" contains .commit.lock, current, generations; complete an explicit transactional migration to "/home/test/.starmap/state/catalog" before using this path as the human catalog workspace`,
+			err.Error(),
+		)
+	})
+
+	t.Run("fallback description without target", func(t *testing.T) {
+		err := &pkgerrors.LegacyCatalogLayoutError{Path: "/catalog"}
+		assert.Equal(
+			t,
+			`legacy catalog generation layout at "/catalog" contains generation-store metadata; complete an explicit transactional migration before using this path as the human catalog workspace`,
+			err.Error(),
+		)
+	})
+}
+
 func TestIOError(t *testing.T) {
 	t.Run("basic error", func(t *testing.T) {
 		err := &pkgerrors.IOError{

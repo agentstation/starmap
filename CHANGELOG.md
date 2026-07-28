@@ -9,24 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Explicit local layout migration**: `starmap migrate catalog` validates and
+  locks the complete pre-plan generation store at `catalog_path`, moves it to
+  the canonical machine state root, and projects the exact current generation
+  back as editable provider YAML. Failures roll back the move; restart repairs
+  a projection interrupted after relocation. Newer schema generations are
+  rejected before filesystem mutation.
 - Clients configured with `WithCatalogStore` now recover and publish the exact
   durable current generation during `starmap.New`, so server and remote updates
   survive process restart. Server updates may select a single source with the
-  `source` query parameter; a configured `WithCatalogExportPath` is also the default
-  sync input/output path when `sync.WithOutputPath` is omitted.
+  `source` query parameter; a configured `WithCatalogPath` is also the default
+  sync workspace when `sync.WithCatalogPath` is omitted.
 - Catalog publication observers no longer head-of-line block one another, and
   server logging middleware preserves SSE flushing and WebSocket hijacking.
   HTTP catalog responses, SSE, WebSocket, and cache state now correlate the
   same durable generation and sync-run identity after commit.
 
 ### BREAKING CHANGES
-- **Canonical local storage layout**: the durable generation database now uses
-  `catalog_path` and defaults to `~/.starmap/catalog`; optional editable YAML
-  uses `catalog_export_path` and defaults to `~/.starmap/exports/catalog` for
-  CLI updates. Configuration is read from `~/.starmap/config.yaml`.
-  `WithCatalogExportPath` replaces the ambiguous `WithLocalPath`. Starmap has
-  not launched, so draft path names and compatibility aliases are intentionally
-  not shipped.
+- **One canonical human catalog workspace**: `catalog_path`,
+  `WithCatalogPath`, and CLI `--catalog-path` all name the same provider-YAML
+  read/write workspace, defaulting to `~/.starmap/catalog`. Machine-owned
+  immutable generations are separate at `~/.starmap/state/catalog` in the CLI
+  composition. `catalog_export_path`, `WithCatalogExportPath`, `--input-dir`,
+  and `--output-dir` were removed before launch rather than retained as
+  compatibility aliases. A pre-plan generation-store layout at the new
+  workspace path returns `errors.LegacyCatalogLayoutError` before mutation and
+  must be moved through the explicit transactional migration flow.
 - **Scheduling moved above the core client**: `starmap.Client` no longer owns a
   ticker goroutine or cadence lifecycle. `AutoUpdatesOn`, `AutoUpdatesOff`,
   `WithAutoUpdatesEnabled`, `WithAutoUpdatesDisabled`,

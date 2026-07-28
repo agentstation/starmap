@@ -241,11 +241,11 @@ run-help: ## Show application help
 # Update examples:
 #   make update                                   # Update all providers (dry-run)
 #   make update PROVIDER=openai                  # Update specific provider (dry-run)
-#   make update OUTPUT=./custom-dir              # Update to custom directory (dry-run)
-#   make update PROVIDER=groq OUTPUT=./models    # Update specific provider to custom dir (dry-run)
-update: ## Run update command with dry-run (use PROVIDER=name OUTPUT=dir for options)
+#   make update CATALOG=./custom-dir             # Update a custom workspace (dry-run)
+#   make update PROVIDER=groq CATALOG=./models   # Update one provider in a custom workspace
+update: ## Run update command with dry-run (use PROVIDER=name CATALOG=dir for options)
 	@echo "$(BLUE)Running update command (dry-run)...$(NC)"
-	$(GOCMD) run $(MAIN_PATH) update --dry-run $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(OUTPUT),--output $(OUTPUT),)
+	$(GOCMD) run $(MAIN_PATH) update $(if $(PROVIDER),$(PROVIDER),) --dry $(if $(CATALOG),--catalog-path $(CATALOG),)
 
 list-models: ## List all models in catalog
 	@echo "$(BLUE)Listing all models...$(NC)"

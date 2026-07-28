@@ -46,7 +46,7 @@ func TestWritableStoreTriggerMatrixRejectsBeforeWork(t *testing.T) {
 		client := newWritableStoreTestClient(t, defaults())
 		err := syncError(client.Sync(
 			context.Background(),
-			pkgsync.WithOutputPath(outputPath),
+			pkgsync.WithCatalogPath(outputPath),
 			pkgsync.WithSources(sources.LocalCatalogID, sources.ProvidersID),
 		))
 		assertWritableStoreConfigError(t, err)
@@ -107,7 +107,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 		client := newWritableStoreTestClient(t, opts)
 		result, err := client.Sync(
 			context.Background(),
-			pkgsync.WithOutputPath(outputPath),
+			pkgsync.WithCatalogPath(outputPath),
 			pkgsync.WithSources(sources.LocalCatalogID),
 			pkgsync.WithReformat(true),
 		)

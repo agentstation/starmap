@@ -588,15 +588,16 @@ const (
 )
 ```
 
-<a name="DefaultCatalogDatabasePath"></a>Path constants.
+<a name="DefaultCatalogPath"></a>Path constants.
 
 ```go
 const (
-    // DefaultCatalogDatabasePath is the default durable canonical catalog root.
-    DefaultCatalogDatabasePath = "~/.starmap/catalog"
+    // DefaultCatalogPath is the default human-editable provider YAML workspace.
+    DefaultCatalogPath = "~/.starmap/catalog"
 
-    // DefaultCatalogExportPath is the default editable YAML catalog tree.
-    DefaultCatalogExportPath = "~/.starmap/exports/catalog"
+    // DefaultCatalogStatePath is the CLI's machine-owned immutable generation
+    // database. Go consumers normally provide their own catalogstore.Store.
+    DefaultCatalogStatePath = "~/.starmap/state/catalog"
 
     // DefaultConfigPath is the default path for configuration files.
     DefaultConfigPath = "~/.starmap/config.yaml"
@@ -616,8 +617,8 @@ const (
     // DefaultModelsDevCachePath is the default path for models.dev HTTP cache.
     DefaultModelsDevCachePath = "~/.starmap/cache/models.dev"
 
-    // DefaultProvenancePath is the default provenance file in the editable export.
-    DefaultProvenancePath = "~/.starmap/exports/catalog/provenance.yaml"
+    // DefaultProvenancePath is the default provenance file in the human workspace.
+    DefaultProvenancePath = "~/.starmap/catalog/provenance.yaml"
 )
 ```
 

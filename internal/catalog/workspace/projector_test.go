@@ -47,11 +47,16 @@ func TestProjectAtomicallyReplacesValidatedWorkspace(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Read marker: %v", err)
 	}
+	markerPath := projectionMarkerPath(path)
+	if pathsOverlap(path, markerPath) {
+		t.Fatalf("machine projection marker %q is inside human workspace %q", markerPath, path)
+	}
 	if marker.GenerationID != newIdentity.GenerationID ||
 		marker.PayloadChecksum != newIdentity.PayloadChecksum ||
 		marker.WorkspaceChecksum != receipt.WorkspaceChecksum {
 		t.Fatalf("Marker = %#v, want identity %#v and receipt %#v", marker, newIdentity, receipt)
 	}
+	assertNoProjectionStaging(t, path)
 }
 
 func TestProjectFailureBeforePromotePreservesOldWorkspace(t *testing.T) {
@@ -66,12 +71,123 @@ func TestProjectFailureBeforePromotePreservesOldWorkspace(t *testing.T) {
 	injected := stderrors.New("injected promotion failure")
 	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
 	_, err := (projector{beforePromote: func() error { return injected }}).
-		project(context.Background(), path, newCatalog, newIdentity)
+		project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	if !stderrors.Is(err, injected) {
 		t.Fatalf("Project error = %v, want injected failure", err)
 	}
 	assertWorkspaceModel(t, path, "old", "Old Model")
 	assertWorkspaceModelMissing(t, path, "new")
+	assertNoProjectionStaging(t, path)
+}
+
+func TestFirstProjectionFailureLeavesWorkspaceAbsent(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	if !input.RequiresSeed() {
+		t.Fatalf("input = %#v, want absent workspace seed", input)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	injected := stderrors.New("injected before first promotion")
+	_, err = (projector{beforePromote: func() error { return injected }}).
+		project(context.Background(), path, catalog, identity, input)
+	if !stderrors.Is(err, injected) {
+		t.Fatalf("Project error = %v, want injected failure", err)
+	}
+	if _, statErr := os.Lstat(path); !stderrors.Is(statErr, os.ErrNotExist) {
+		t.Fatalf("workspace exists after failed first projection: %v", statErr)
+	}
+	assertNoProjectionStaging(t, path)
+}
+
+func TestFirstProjectionRejectsWorkspaceCreatedAfterObservation(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	if err := os.MkdirAll(path, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	operatorNote := filepath.Join(path, "operator.txt")
+	if err := os.WriteFile(operatorNote, []byte("do not overwrite\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	_, err = ProjectExpected(context.Background(), path, catalog, identity, input)
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("Project error = %T %v, want *errors.ConflictError", err, err)
+	}
+	data, readErr := os.ReadFile(operatorNote)
+	if readErr != nil || string(data) != "do not overwrite\n" {
+		t.Fatalf("operator file = %q, %v", data, readErr)
+	}
+	assertWorkspaceModelMissing(t, path, "seed")
+	assertNoProjectionStaging(t, path)
+}
+
+func TestProjectExpectedRejectsSemanticEditAfterInputLoad(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	oldCatalog, oldIdentity := testCatalog(t, "old", "Old Model")
+	if _, err := Project(context.Background(), path, oldCatalog, oldIdentity); err != nil {
+		t.Fatalf("Project old catalog: %v", err)
+	}
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	loaded, err := catalogs.NewFromPath(path)
+	if err != nil {
+		t.Fatalf("NewFromPath: %v", err)
+	}
+	input, err = BindInputCatalog(input, mustCatalog(t, loaded))
+	if err != nil {
+		t.Fatalf("BindInputCatalog: %v", err)
+	}
+
+	editWorkspaceModel(t, path, "old", "Human Edit Before Projection")
+	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
+	_, err = ProjectExpected(context.Background(), path, newCatalog, newIdentity, input)
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("ProjectExpected error = %T %v, want *errors.ConflictError", err, err)
+	}
+	assertWorkspaceModel(t, path, "old", "Human Edit Before Projection")
+	assertWorkspaceModelMissing(t, path, "new")
+	assertNoProjectionStaging(t, path)
+}
+
+func TestProjectRejectsSymlinkedWriterLock(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	path := filepath.Join(root, "catalog")
+	operatorFile := filepath.Join(root, "operator.txt")
+	if err := os.WriteFile(operatorFile, []byte("preserve\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if err := os.Symlink(operatorFile, writerLockPath(path)); err != nil {
+		t.Fatalf("Symlink: %v", err)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	_, err := Project(context.Background(), path, catalog, identity)
+	var validation *errors.ValidationError
+	if !stderrors.As(err, &validation) {
+		t.Fatalf("Project error = %T %v, want *errors.ValidationError", err, err)
+	}
+	data, readErr := os.ReadFile(operatorFile)
+	if readErr != nil || string(data) != "preserve\n" {
+		t.Fatalf("operator file = %q, %v", data, readErr)
+	}
 }
 
 func TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload(t *testing.T) {
@@ -107,7 +223,7 @@ func TestProjectRejectsConcurrentSemanticEdit(t *testing.T) {
 	_, err := (projector{beforeInputCheck: func() error {
 		editWorkspaceModel(t, path, "old", "Human Edit")
 		return nil
-	}}).project(context.Background(), path, newCatalog, newIdentity)
+	}}).project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	var conflict *errors.ConflictError
 	if !stderrors.As(err, &conflict) {
 		t.Fatalf("Project error = %T %v, want *errors.ConflictError", err, err)
@@ -231,7 +347,7 @@ func TestRepairAcknowledgesSwapAfterMarkerFailure(t *testing.T) {
 	injected := stderrors.New("injected marker failure")
 	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
 	receipt, err := (projector{beforeMarker: func() error { return injected }}).
-		project(context.Background(), path, newCatalog, newIdentity)
+		project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	if !stderrors.Is(err, injected) {
 		t.Fatalf("Project error = %v, want injected marker failure", err)
 	}
@@ -306,6 +422,15 @@ func testCatalog(t *testing.T, modelID, modelName string) (*catalogs.Catalog, Id
 	}
 }
 
+func mustCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catalog {
+	t.Helper()
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	return catalog
+}
+
 func editWorkspaceModel(t *testing.T, path, modelID, modelName string) {
 	t.Helper()
 
@@ -346,5 +471,23 @@ func assertWorkspaceModelMissing(t *testing.T, path, modelID string) {
 	}
 	if _, err := builder.ProviderModel("test-provider", modelID); err == nil {
 		t.Fatalf("ProviderModel(%q) unexpectedly exists", modelID)
+	}
+}
+
+func assertNoProjectionStaging(t *testing.T, path string) {
+	t.Helper()
+	parent := filepath.Dir(path)
+	base := filepath.Base(path)
+	for _, pattern := range []string{
+		"." + base + ".candidate-*",
+		"." + base + ".candidate-*.verify-*",
+	} {
+		matches, err := filepath.Glob(filepath.Join(parent, pattern))
+		if err != nil {
+			t.Fatalf("Glob projection staging: %v", err)
+		}
+		if len(matches) != 0 {
+			t.Fatalf("projection staging survived: %v", matches)
+		}
 	}
 }

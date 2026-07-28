@@ -3,16 +3,19 @@ package pipeline
 import (
 	"slices"
 
+	embeddedsrc "github.com/agentstation/starmap/internal/sources/embedded"
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog, report catalogs.LoadReport) []sources.Source {
-	configuredSources := createSourcesWithConfig(options, localCatalog, report)
+func filterSources(
+	options *pkgsync.Options,
+	inputs catalogInputs,
+) []sources.Source {
+	configuredSources := createSourcesWithConfig(options, inputs)
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
@@ -22,7 +25,7 @@ func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog, rep
 	if len(options.Sources) > 0 {
 		filtered := make([]sources.Source, 0, len(options.Sources))
 		for _, src := range configuredSources {
-			if slices.Contains(options.Sources, src.ID()) {
+			if src.ID() == sources.EmbeddedCatalogID || slices.Contains(options.Sources, src.ID()) {
 				filtered = append(filtered, src)
 			}
 		}
@@ -34,12 +37,17 @@ func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog, rep
 
 func createSourcesWithConfig(
 	options *pkgsync.Options,
-	localCatalog *catalogs.Catalog,
-	report catalogs.LoadReport,
+	inputs catalogInputs,
 ) []sources.Source {
 	srcs := []sources.Source{
-		local.New(local.WithCatalogReport(localCatalog, report)),
-		providers.New(localCatalog.Providers()),
+		embeddedsrc.New(inputs.embedded),
+		providers.New(inputs.providerConfig.Providers()),
+	}
+	if inputs.workspaceInput.Exists {
+		srcs = append(
+			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport))},
+			srcs...,
+		)
 	}
 
 	useGit := slices.Contains(options.Sources, sources.ModelsDevGitID)

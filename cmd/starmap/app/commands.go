@@ -10,6 +10,7 @@ import (
 	"github.com/agentstation/starmap/cmd/starmap/cmd/completion"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/deps"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/embed"
+	"github.com/agentstation/starmap/cmd/starmap/cmd/migrate"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/models"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/providers"
 	"github.com/agentstation/starmap/cmd/starmap/cmd/serve"
@@ -79,6 +80,11 @@ func (a *App) NewDepsCommand() *cobra.Command {
 // NewAuthCommand returns a new auth command with app dependencies.
 func (a *App) NewAuthCommand() *cobra.Command {
 	return auth.NewCommand()
+}
+
+// NewMigrateCommand returns the explicit local-storage migration command.
+func (a *App) NewMigrateCommand() *cobra.Command {
+	return migrate.NewCommand(a)
 }
 
 // NewCompletionCommand returns a new completion command.

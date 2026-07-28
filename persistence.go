@@ -15,10 +15,10 @@ func (c *Client) Save(opts ...save.Option) error {
 	options := save.Defaults().Apply(opts...)
 	writePath := options.Path()
 	if writePath == "" && c.options != nil {
-		writePath = c.options.catalogExportPath
+		writePath = c.options.catalogPath
 	}
 	if c.options != nil {
-		if err := validateCatalogPathSeparation(c.options.catalogStore, writePath); err != nil {
+		if err := validateCatalogLayout(c.options.catalogStore, writePath); err != nil {
 			return err
 		}
 	}

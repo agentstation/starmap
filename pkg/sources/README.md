@@ -176,10 +176,11 @@ const (
 
 ```go
 const (
-    ProvidersID     = catalogmeta.ProvidersID
-    ModelsDevGitID  = catalogmeta.ModelsDevGitID
-    ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
-    LocalCatalogID  = catalogmeta.LocalCatalogID
+    ProvidersID       = catalogmeta.ProvidersID
+    ModelsDevGitID    = catalogmeta.ModelsDevGitID
+    ModelsDevHTTPID   = catalogmeta.ModelsDevHTTPID
+    LocalCatalogID    = catalogmeta.LocalCatalogID
+    EmbeddedCatalogID = catalogmeta.EmbeddedCatalogID
 )
 ```
 
@@ -229,7 +230,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L162-L180>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L163-L181>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -256,7 +257,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L183-L188>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L184-L189>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -306,7 +307,7 @@ type ID = catalogmeta.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L115>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L116>)
 
 ```go
 func IDs() []ID
@@ -315,7 +316,7 @@ func IDs() []ID
 IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L148-L159>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L149-L160>)
 
 Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
 
@@ -682,7 +683,7 @@ type RawFetchResult struct {
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L193>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L194>)
 
 ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
 
@@ -813,7 +814,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L124-L143>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L125-L144>)
 
 Source observes catalog information from one configured upstream.
 

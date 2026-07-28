@@ -30,7 +30,7 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 		t.Fatalf("Write corrupt local view: %v", err)
 	}
 
-	client, err := New(WithCatalogStore(store), WithCatalogExportPath(localPath))
+	client, err := New(WithCatalogStore(store), WithCatalogPath(localPath))
 	if err != nil {
 		t.Fatalf("New rejected valid durable current because local view was corrupt: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *
 		t.Fatalf("Save local workspace: %v", err)
 	}
 
-	client, err := New(WithCatalogStore(store), WithCatalogExportPath(localPath))
+	client, err := New(WithCatalogStore(store), WithCatalogPath(localPath))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}

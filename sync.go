@@ -16,12 +16,12 @@ import (
 // Sync synchronizes the catalog with provider APIs using staged source execution.
 func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 	options := sync.Defaults().Apply(opts...)
-	outputPath := options.OutputPath
-	if c.options != nil && outputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
-		outputPath = c.options.catalogExportPath
+	catalogPath := options.CatalogPath
+	if c.options != nil && catalogPath == "" && c.options.catalogPath != "" {
+		catalogPath = c.options.catalogPath
 	}
 	if c.options != nil {
-		if err := validateCatalogPathSeparation(c.options.catalogStore, outputPath); err != nil {
+		if err := validateCatalogLayout(c.options.catalogStore, catalogPath); err != nil {
 			return nil, err
 		}
 	}
@@ -38,8 +38,8 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	defer release()
 
 	effective := append([]sync.Option(nil), opts...)
-	if options.OutputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
-		effective = append(effective, sync.WithOutputPath(c.options.catalogExportPath))
+	if options.CatalogPath == "" && c.options.catalogPath != "" {
+		effective = append(effective, sync.WithCatalogPath(c.options.catalogPath))
 	}
 	return pipeline.New(pipelineStore{client: c}).Sync(ctx, effective...)
 }
@@ -50,7 +50,14 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 
 // save commits and publishes the catalog, then best-effort projects the
 // committed generation into an optional human YAML workspace.
-func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+func (c *Client) save(
+	ctx context.Context,
+	result *catalogs.Builder,
+	options *sync.Options,
+	changeset *differ.Changeset,
+	observations []sources.Observation,
+	workspaceInput workspace.InputExpectation,
+) (pipeline.Publication, error) {
 	published, err := snapshotBuilder(result)
 	if err != nil {
 		return pipeline.Publication{}, err
@@ -61,32 +68,17 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 		return pipeline.Publication{}, err
 	}
 
-	if options.OutputPath != "" {
-		publication.Projection = &sync.ProjectionResult{
-			Path:         options.OutputPath,
-			Status:       sync.ProjectionStatusPendingRepair,
-			GenerationID: publication.GenerationID,
-		}
-		receipt, projectionErr := projectCatalogWorkspace(
+	if options.CatalogPath != "" {
+		publication.Projection = projectCommittedCatalog(
 			ctx,
 			published,
-			options.OutputPath,
+			options.CatalogPath,
 			workspace.Identity{
 				GenerationID:    publication.GenerationID,
 				PayloadChecksum: publication.PayloadChecksum,
 			},
+			workspaceInput,
 		)
-		publication.Projection.WorkspaceChecksum = receipt.WorkspaceChecksum
-		if projectionErr != nil {
-			publication.Projection.IssueCode = sync.ProjectionIssueWorkspaceFailed
-			logging.Warn().
-				Err(projectionErr).
-				Str("generation_id", publication.GenerationID).
-				Str("output_path", options.OutputPath).
-				Msg("Catalog generation committed; YAML workspace projection is pending repair")
-		} else {
-			publication.Projection.Status = sync.ProjectionStatusApplied
-		}
 	}
 
 	logging.Info().
@@ -96,11 +88,39 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 	return publication, nil
 }
 
+func projectCommittedCatalog(
+	ctx context.Context,
+	catalog *catalogs.Catalog,
+	path string,
+	identity workspace.Identity,
+	input workspace.InputExpectation,
+) *sync.ProjectionResult {
+	result := &sync.ProjectionResult{
+		Path:         path,
+		Status:       sync.ProjectionStatusPendingRepair,
+		GenerationID: identity.GenerationID,
+	}
+	receipt, err := projectCatalogWorkspace(ctx, catalog, path, identity, input)
+	result.WorkspaceChecksum = receipt.WorkspaceChecksum
+	if err != nil {
+		result.IssueCode = sync.ProjectionIssueWorkspaceFailed
+		logging.Warn().
+			Err(err).
+			Str("generation_id", identity.GenerationID).
+			Str("catalog_path", path).
+			Msg("Catalog generation committed; YAML workspace projection is pending repair")
+		return result
+	}
+	result.Status = sync.ProjectionStatusApplied
+	return result
+}
+
 func projectCatalogWorkspace(
 	ctx context.Context,
 	catalog *catalogs.Catalog,
 	outputPath string,
 	identity workspace.Identity,
+	input workspace.InputExpectation,
 ) (workspace.Receipt, error) {
 	providers := catalog.Providers().List()
 	for _, provider := range providers {
@@ -110,7 +130,7 @@ func projectCatalogWorkspace(
 			Msg("Provider model count before workspace projection")
 	}
 
-	receipt, err := workspace.Project(ctx, outputPath, catalog, identity)
+	receipt, err := workspace.ProjectExpected(ctx, outputPath, catalog, identity, input)
 	if err != nil {
 		return receipt, err
 	}
@@ -142,6 +162,13 @@ func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
 	return s.client.Catalog(), nil
 }
 
-func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
-	return s.client.save(ctx, catalog, options, changeset, observations)
+func (s pipelineStore) Apply(
+	ctx context.Context,
+	catalog *catalogs.Builder,
+	options *sync.Options,
+	changeset *differ.Changeset,
+	observations []sources.Observation,
+	workspaceInput workspace.InputExpectation,
+) (pipeline.Publication, error) {
+	return s.client.save(ctx, catalog, options, changeset, observations, workspaceInput)
 }

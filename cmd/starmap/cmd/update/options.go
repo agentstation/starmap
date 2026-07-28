@@ -11,7 +11,7 @@ import (
 )
 
 // BuildUpdateOptions creates a slice of update options based on the provided flags.
-func BuildUpdateOptions(provider, source, output string, dryRun, force, cleanup, reformat bool, sourcesDir, modelsDevGitCommit string, autoInstallDeps, skipDepPrompts, requireAllSources bool) ([]sync.Option, error) {
+func BuildUpdateOptions(provider, source, catalogPath string, dryRun, force, cleanup, reformat bool, sourcesDir, modelsDevGitCommit string, autoInstallDeps, skipDepPrompts, requireAllSources bool) ([]sync.Option, error) {
 	var opts []sync.Option
 
 	if provider != "" {
@@ -29,8 +29,8 @@ func BuildUpdateOptions(provider, source, output string, dryRun, force, cleanup,
 	if dryRun {
 		opts = append(opts, sync.WithDryRun(true))
 	}
-	if output != "" {
-		opts = append(opts, sync.WithOutputPath(output))
+	if catalogPath != "" {
+		opts = append(opts, sync.WithCatalogPath(catalogPath))
 	}
 	// Use typed options for source-specific behavior
 	if force {
@@ -75,11 +75,13 @@ func sourceSelection(source string) ([]sources.ID, error) {
 		return []sources.ID{sources.ModelsDevHTTPID}, nil
 	case "models.dev-git", "modelsdev-git", "models-dev-git", "models_dev_git":
 		return []sources.ID{sources.ModelsDevGitID}, nil
+	case "local", "workspace", "local-catalog", "local_catalog":
+		return []sources.ID{sources.LocalCatalogID}, nil
 	default:
 		return nil, &pkgerrors.ValidationError{
 			Field:   "source",
 			Value:   source,
-			Message: "must be one of: all, provider-api, models.dev, models.dev-git",
+			Message: "must be one of: all, local, provider-api, models.dev, models.dev-git",
 		}
 	}
 }

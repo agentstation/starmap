@@ -74,10 +74,10 @@ type Result struct {
 	ProviderResults  map[catalogs.ProviderID]*ProviderResult // Results per provider
 
 	// Operation metadata
-	DryRun    bool   // Whether this was a dry run
-	Fresh     bool   // Whether this was a fresh sync
-	OutputDir string // Where files were written (empty means default)
-	Sources   []sources.ID
+	DryRun      bool   // Whether this was a dry run
+	Fresh       bool   // Whether this was a fresh sync
+	CatalogPath string // Human workspace used by the synchronization
+	Sources     []sources.ID
 	// SourceObservations contains caller-owned freshness/audit projections from
 	// every source used by this attempt, including no-change synchronizations.
 	SourceObservations []catalogs.SourceObservationLink
@@ -147,11 +147,11 @@ func (spr *ProviderResult) Summary() string {
 }
 
 // ChangesetToResult converts a reconcile.Changeset to a SyncResult.
-func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID, activeSources ...sources.ID) *Result {
+func ChangesetToResult(changeset *differ.Changeset, dryRun bool, catalogPath string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID, activeSources ...sources.ID) *Result {
 	return ChangesetToResultWithProvenance(
 		changeset,
 		dryRun,
-		outputDir,
+		catalogPath,
 		providerAPICounts,
 		modelProviderMap,
 		nil,
@@ -161,13 +161,13 @@ func ChangesetToResult(changeset *differ.Changeset, dryRun bool, outputDir strin
 
 // ChangesetToResultWithProvenance converts a reconcile.Changeset to a SyncResult
 // and uses field-level provenance to report models.dev enrichment counts.
-func ChangesetToResultWithProvenance(changeset *differ.Changeset, dryRun bool, outputDir string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID, fieldProvenance provenance.Map, activeSources ...sources.ID) *Result {
+func ChangesetToResultWithProvenance(changeset *differ.Changeset, dryRun bool, catalogPath string, providerAPICounts map[catalogs.ProviderID]int, modelProviderMap map[string]catalogs.ProviderID, fieldProvenance provenance.Map, activeSources ...sources.ID) *Result {
 	changeset = normalizeChangeset(changeset)
 
 	result := &Result{
 		TotalChanges:    changeset.Summary.TotalChanges,
 		DryRun:          dryRun,
-		OutputDir:       outputDir,
+		CatalogPath:     catalogPath,
 		Sources:         append([]sources.ID(nil), activeSources...),
 		ProviderResults: make(map[catalogs.ProviderID]*ProviderResult),
 	}

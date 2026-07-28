@@ -3,9 +3,11 @@ package pipeline
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/differ"
@@ -19,7 +21,14 @@ import (
 // Store is the catalog boundary required by the sync pipeline.
 type Store interface {
 	Catalog() (*catalogs.Catalog, error)
-	Apply(context.Context, *catalogs.Builder, *pkgsync.Options, *differ.Changeset, []sources.Observation) (Publication, error)
+	Apply(
+		context.Context,
+		*catalogs.Builder,
+		*pkgsync.Options,
+		*differ.Changeset,
+		[]sources.Observation,
+		workspace.InputExpectation,
+	) (Publication, error)
 }
 
 // Publication identifies the durable generation produced by Apply.
@@ -30,8 +39,9 @@ type Publication struct {
 	Projection      *pkgsync.ProjectionResult
 }
 
-type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source
+type loadWorkspaceFunc func(string) (*catalogs.Builder, error)
+type loadEmbeddedFunc func() (*catalogs.Builder, error)
+type sourcesFunc func(*pkgsync.Options, catalogInputs) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -41,7 +51,8 @@ type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observatio
 type Pipeline struct {
 	store Store
 
-	loadLocal           loadLocalFunc
+	loadWorkspace       loadWorkspaceFunc
+	loadEmbedded        loadEmbeddedFunc
 	createSources       sourcesFunc
 	resolveDependencies resolveDependenciesFunc
 	cleanup             cleanupFunc
@@ -53,7 +64,8 @@ type Pipeline struct {
 func New(store Store) *Pipeline {
 	return &Pipeline{
 		store:               store,
-		loadLocal:           catalogs.NewLocal,
+		loadWorkspace:       loadHumanWorkspace,
+		loadEmbedded:        catalogs.NewEmbedded,
 		createSources:       filterSources,
 		resolveDependencies: resolveDependencies,
 		cleanup:             cleanup,
@@ -71,41 +83,29 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 	}
 
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	if logging.RunID(ctx) == "" {
-		runID, runErr := uuid.NewRandom()
-		if runErr != nil {
-			return nil, pkgerrors.WrapResource("generate", "source run ID", "", runErr)
-		}
-		ctx = logging.WithRunID(ctx, "source-run-"+runID.String())
-	}
-
 	options := pkgsync.Defaults().Apply(opts...)
-
-	var cancel context.CancelFunc
-	if options.Timeout > 0 {
-		ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-	} else {
-		cancel = func() {}
+	if err := options.ValidateFilesystemLayout(); err != nil {
+		return nil, err
+	}
+	ctx, cancel, err := prepareSyncContext(ctx, options.Timeout)
+	if err != nil {
+		return nil, err
 	}
 	defer cancel()
 
-	local, err := p.loadLocal(options.OutputPath)
+	workspaceInput, err := workspace.ObserveInput(options.CatalogPath)
 	if err != nil {
-		return nil, pkgerrors.WrapResource("load", "catalog", "local", err)
+		return nil, err
 	}
-
-	if err = options.Validate(local.Providers()); err != nil {
+	inputs, err := p.loadCatalogInputs(options.CatalogPath, workspaceInput)
+	if err != nil {
+		return nil, err
+	}
+	if err = options.Validate(inputs.providerConfig.Providers()); err != nil {
 		return nil, err
 	}
 
-	localSnapshot, err := local.Build()
-	if err != nil {
-		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
-	}
-	srcs := p.createSources(options, localSnapshot, local.LoadReport())
+	srcs := p.createSources(options, inputs)
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	syncResult := pkgsync.ChangesetToResultWithProvenance(
 		result.Changeset,
 		options.DryRun,
-		options.OutputPath,
+		options.CatalogPath,
 		result.ProviderAPICounts,
 		result.ModelProviderMap,
 		result.Provenance,
@@ -197,12 +197,19 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		return syncResult, nil
 	}
 
-	if shouldSave(options, result.Changeset) {
+	if shouldSave(options, result.Changeset, inputs.workspaceInput.RequiresSeed()) {
 		changeset := result.Changeset
 		if changeset == nil {
 			changeset = &differ.Changeset{}
 		}
-		publication, err := p.store.Apply(ctx, result.Catalog, options, changeset, observations)
+		publication, err := p.store.Apply(
+			ctx,
+			result.Catalog,
+			options,
+			changeset,
+			observations,
+			inputs.workspaceInput,
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -212,6 +219,24 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 
 	return syncResult, nil
+}
+
+func prepareSyncContext(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if logging.RunID(ctx) == "" {
+		runID, err := uuid.NewRandom()
+		if err != nil {
+			return nil, nil, pkgerrors.WrapResource("generate", "source run ID", "", err)
+		}
+		ctx = logging.WithRunID(ctx, "source-run-"+runID.String())
+	}
+	if timeout <= 0 {
+		return ctx, func() {}, nil
+	}
+	bounded, cancel := context.WithTimeout(ctx, timeout)
+	return bounded, cancel, nil
 }
 
 func hasDegradedObservation(observations []sources.Observation) bool {
@@ -232,13 +257,14 @@ func activeSourceIDs(observations []sources.Observation) []sources.ID {
 	return ids
 }
 
-func shouldSave(options *pkgsync.Options, changeset *differ.Changeset) bool {
-	if options.Reformat || options.Fresh {
+func shouldSave(options *pkgsync.Options, changeset *differ.Changeset, seedWorkspace bool) bool {
+	if options.Reformat || options.Fresh || seedWorkspace {
 		if changeset == nil || !changeset.HasChanges() {
 			logging.Info().
 				Bool("reformat", options.Reformat).
 				Bool("force", options.Fresh).
-				Msg("Forcing save due to reformat/force flag")
+				Bool("seed_workspace", seedWorkspace).
+				Msg("Forcing save due to explicit materialization policy")
 		}
 		return true
 	}

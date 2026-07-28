@@ -46,6 +46,30 @@ Commands may define their own short flags that don't conflict with global flags:
 | `-f`  | `--force`         | Force fresh update          |
 | `-y`  | `--yes`           | Auto-approve changes        |
 
+### Catalog Storage Migration
+
+```bash
+starmap migrate catalog
+```
+
+This is the only command that opts into changing a detected pre-plan local
+storage layout. It moves the validated immutable generation store from the
+configured `catalog_path` to `~/.starmap/state/catalog`, then materializes the
+current generation at `catalog_path` as editable provider YAML. It accepts no
+path arguments: `catalog_path` follows normal configuration precedence and the
+machine state destination is the canonical CLI-owned path.
+
+Stop all older Starmap processes that use `catalog_path` before running the
+command, and do not restart those binaries afterward. They do not understand
+the path's new human-workspace meaning and can recreate machine state there.
+
+Every retained generation, the current pointer, payload binding, and schema
+compatibility are checked before the first rename. A normal failure restores
+the old store. If another actor recreates the vacated path, rollback preserves
+that data and the relocated store and returns a typed conflict instead of
+deleting either. An interrupted process after the atomic move is completed by
+normal startup projection repair; no new catalog generation is published.
+
 ### Serve Command
 
 | Short | Long      | Purpose                          |
@@ -135,6 +159,7 @@ starmap update --force        # true when present
 **Value flags** (require argument):
 ```bash
 starmap update --source provider-api    # requires value
+starmap update --source local           # explicit human-workspace reload
 starmap serve --port 8080               # requires value
 ```
 
@@ -310,9 +335,9 @@ starmap serve -v  # If -v meant "version" instead of "verbose"
 # ❌ Don't make resources into flags when positional is clearer
 starmap update --provider openai  # Use positional instead
 
-# ❌ Don't create ambiguous flag names
-starmap update --output catalog   # Does this mean format or directory?
-# Use: --output-dir for directory, --format for style
+# ❌ Don't split one workspace into input and output directories
+starmap update --input-dir old --output-dir new
+# Use: --catalog-path for the single human read/write workspace
 
 # ❌ Don't use short flags that aren't mnemonic without good reason
 starmap update -x  # What does -x mean? Not obvious

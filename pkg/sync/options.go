@@ -8,8 +8,10 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -23,11 +25,11 @@ type Options struct {
 	Timeout time.Duration // Timeout for the entire sync operation
 
 	// Source selection
-	Sources    []sources.ID         // Which sources to use (empty means default providers/local/models.dev HTTP)
+	Sources    []sources.ID         // Which external/human sources to use; verified embedded always participates.
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
-	// Output control (used AFTER merging)
-	OutputPath string // Where to save final catalog (empty means default location)
+	// Human workspace used for both local observation and materialization.
+	CatalogPath string
 
 	// Source behavior control
 	Fresh              bool   // Delete existing models and fetch fresh from APIs (destructive)
@@ -79,7 +81,7 @@ func Defaults() *Options {
 		Timeout:            constants.UpdateContextTimeout,
 		Sources:            nil,
 		ProviderID:         nil,
-		OutputPath:         "",
+		CatalogPath:        "",
 		Fresh:              false,
 		CleanModelsDevRepo: false,
 		Reformat:           false,
@@ -94,6 +96,10 @@ type Option func(*Options)
 
 // Validate checks if the sync options are valid.
 func (s *Options) Validate(providers catalogs.ProvidersReader) error {
+	if err := s.ValidateFilesystemLayout(); err != nil {
+		return err
+	}
+
 	// Validate timeout
 	if s.Timeout < 0 {
 		return &errors.ValidationError{
@@ -168,21 +174,58 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 		}
 	}
 
-	// Validate output path if specified
-	if s.OutputPath != "" {
-		// Check if parent directory exists
-		dir := filepath.Dir(s.OutputPath)
+	// Validate the workspace parent if specified.
+	if s.CatalogPath != "" {
+		dir := filepath.Dir(s.CatalogPath)
 		if dir != "." && dir != "/" {
 			if _, err := os.Stat(dir); os.IsNotExist(err) {
 				return &errors.ValidationError{
-					Field:   "OutputPath",
-					Value:   s.OutputPath,
-					Message: fmt.Sprintf("output directory '%s' does not exist", dir),
+					Field:   "CatalogPath",
+					Value:   s.CatalogPath,
+					Message: fmt.Sprintf("catalog workspace parent '%s' does not exist", dir),
 				}
 			}
 		}
 	}
 
+	return nil
+}
+
+// ValidateFilesystemLayout rejects machine-owned source/cache roots that
+// overlap the configured human provider-YAML workspace. It is safe to call
+// before reading the workspace or creating any source state.
+func (s *Options) ValidateFilesystemLayout() error {
+	if s == nil || strings.TrimSpace(s.CatalogPath) == "" {
+		return nil
+	}
+	if strings.TrimSpace(s.SourcesDir) != "" {
+		return workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			s.SourcesDir,
+			"source state",
+		)
+	}
+
+	useGit := slices.Contains(s.Sources, sources.ModelsDevGitID)
+	useHTTP := len(s.Sources) == 0 || slices.Contains(s.Sources, sources.ModelsDevHTTPID)
+	if useGit {
+		if err := workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			constants.DefaultSourcesPath,
+			"source checkout",
+		); err != nil {
+			return err
+		}
+	}
+	if useHTTP {
+		if err := workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			constants.DefaultCachePath,
+			"source cache",
+		); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -231,10 +274,11 @@ func WithProvider(providerID catalogs.ProviderID) Option {
 	}
 }
 
-// WithOutputPath configures the output path for saving.
-func WithOutputPath(path string) Option {
+// WithCatalogPath configures the single human workspace used for local
+// observation and post-commit materialization.
+func WithCatalogPath(path string) Option {
 	return func(opts *Options) {
-		opts.OutputPath = path
+		opts.CatalogPath = path
 	}
 }
 
