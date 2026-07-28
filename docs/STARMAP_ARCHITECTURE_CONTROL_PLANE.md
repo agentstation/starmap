@@ -2,9 +2,10 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0–P2 are complete. P3.6a now owns the narrow
-generation-store commit-point, atomic YAML projection, and store-only hotfix
-before authority/resilience implementation begins.
+Status: `IN_PROGRESS` — P0–P2 are complete. P3.6a and P3.8 now establish
+generation-store-first publication and store-only operation; P3.6b owns the
+atomic, digest-repairable YAML projection before authority/resilience
+implementation begins.
 
 ## Mission
 
@@ -650,10 +651,10 @@ compile and performance baselines must also be green.
 | P3.3 | `PENDING` | Make first-run seed atomic | Missing workspace becomes one complete embedded-seeded tree or remains absent after failure |
 | P3.4 | `PENDING` | Reconcile embedded E1→E2 after P4 | New embedded revision updates unchanged embedded-derived fields, fills gaps, and preserves actual human edits using the completed P4 authority/provenance model |
 | P3.5 | `PENDING` | Detect semantic human edits after P4 | Only changed semantic paths become local evidence under the completed P4 model; formatting-only changes do not |
-| P3.6a | `IN_PROGRESS` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; YAML failure cannot veto or corrupt a committed generation; a crash immediately after store commit leaves the generation usable and detectable for projection repair |
-| P3.6b | `PENDING` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
+| P3.6a | `DONE` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; post-commit YAML failure returns an observable `pending_repair` projection result without rolling back the store or immutable in-memory catalog; commit failure still publishes neither |
+| P3.6b | `IN_PROGRESS` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
 | P3.7 | `PENDING` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
-| P3.8 | `PENDING` | Preserve store-only use | Catalog-store sync succeeds without a YAML path and performs zero workspace filesystem operations |
+| P3.8 | `DONE` | Preserve store-only use | `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves a configured catalog store commits and publishes with a nil projection and no workspace path or filesystem operation |
 | P3.9 | `PENDING` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
 | P3.10 | `PENDING` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
 
@@ -786,7 +787,7 @@ machine evidence and does not require a follow-up documentation commit.
 | Finding | Status | Description | Owning task |
 | --- | --- | --- | --- |
 | F-001 | `PENDING` | Current behavior treats editable YAML as a secondary export after durable current exists, contrary to the selected human-workspace contract | P3.1–P3.5 |
-| F-002 | `PENDING` | Store-only sync still attempts YAML save | P3.8 |
+| F-002 | `DONE` | Store-only apply skips YAML entirely, commits the generation, and publishes the immutable catalog | P3.8 |
 | F-003 | `PENDING` | YAML replacement is destructive and non-atomic | P3.6b |
 | F-004 | `PENDING` | Embedded/local structural merge loses or rejects valid manual data | P3.4–P3.5 |
 | F-005 | `PENDING` | Provider omission/degradation can remove last-known-good models | P4.7 |
@@ -890,6 +891,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P2.8 | On code tree `892589f790f4a7b3b9c88d913924486017854fed`, production-import queries found zero importer of `pkg/catalogdistribution` and zero caller of `NewRunner`, `NewInitialRunController`, the lease/ledger/freshness constructors, or their `Operations` wiring options. [`reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md`](reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md) therefore retains one server manifest/immutable-payload/SSE protocol consumed by public `remote`, retains `catalogartifact` for independently versioned GitHub Release and offline artifacts, and directs deletion of the 767-production-line hosted protocol, the 2,314-production-line scheduler subsystem, and WebSocket. Cadence is owned by the embedding deployment over explicit `Sync`; a future `starmap.agentstation.ai` deployment uses the same server contract rather than a competing protocol. `make docs-check`, `git diff --check`, and shell assertions for the zero production callers passed. |
 | 2026-07-27 | P2.9 | Exact code-and-decision head `64177404c453a9e695be3e43a9d35d0f8108aa3b` passed the complete P2 affected-package `go test -race` command across root, pipeline, catalogs, reconciliation, source decoders, store, server, both characterized transports, and remote client. Current Go 1.26.5 `govulncheck v1.6.0` reported zero reachable and zero imported-package vulnerabilities. Exact `make verify` passed ordinary tests, repository-wide `-race -short`, vet, lint with zero issues, all coverage floors, docs, diff, build, 933-model catalog validation, and isolated CLI checks; `BenchmarkClientCatalog` measured 10.57–11.00 ns/op, 0 B/op, and 0 allocs/op. Opened protected phase PR [#49](https://github.com/agentstation/starmap/pull/49); its final ledger head still requires the same exact local and hosted proof. |
 | 2026-07-27 | P2.9 / P3.6a | PR #49 final exact head `39b08d6d898ce69de7c36e3d13abfb468137e43d` passed the complete affected-package race command, current `govulncheck v1.6.0` with zero reachable/imported-package vulnerabilities, and exact `make verify`; its catalog benchmark measured 11.32–14.61 ns/op, 0 B/op, and 0 allocs/op. The same head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30325378975/job/90169625012) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30325378975/job/90169625097). Protection required both exact contexts with strict checking, admin enforcement, conversation resolution, zero approvals, and no force-push/deletion; the PR had zero review threads and merged as `f8973be3a6f25960efb786b7620a8c7975cfbf1d`. Its remote/local branch and worktree were removed after creating fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-publication-hotfix` on `codex/catalog-publication-hotfix` at that protected-main SHA. |
+| 2026-07-27 | P3.6a / P3.8 | Inverted the green F-002 characterization into the desired contract. `Client.save` now builds and validates the immutable candidate, commits it through generation-store CAS, atomically activates it in memory, and only then attempts an optional YAML projection. A failed projection cannot veto or corrupt the committed generation and is returned as `ProjectionStatusPendingRepair` with stable issue code `workspace_projection_failed`; a successful projection is `applied`; a store-only apply has a nil projection and performs no save. `TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair` proves the store/current catalog survive a blocking filesystem path, and `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves no-path success. Focused and complete affected-package `go test -race . ./internal/catalog/pipeline ./pkg/sync -count=1` passed (`125.074s`, `1.744s`, `2.026s`); `git diff --check` passed. |
 
 ## Final Definition of Done
 
