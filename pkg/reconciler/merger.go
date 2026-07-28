@@ -17,13 +17,15 @@ import (
 
 // merger implements strategic three-way merge.
 type merger struct {
-	authorities    authority.Reader
-	strategy       Strategy
-	tracker        provenance.Tracker
-	baseline       *catalogs.Catalog // Baseline catalog for timestamp preservation
-	baselineModels map[catalogs.ProviderID]map[string]*catalogs.Model
-	pricingAt      time.Time
-	observations   map[sources.ID]sourceObservationEvidence
+	authorities     authority.Reader
+	strategy        Strategy
+	tracker         provenance.Tracker
+	baseline        *catalogs.Catalog // Baseline catalog for timestamp preservation
+	baselineModels  map[catalogs.ProviderID]map[string]*catalogs.Model
+	pricingAt       time.Time
+	observations    map[sources.ID]sourceObservationEvidence
+	sourceCatalogs  map[sources.ID]*catalogs.Catalog
+	carriedEvidence map[evidenceLocator]provenance.Provenance
 }
 
 type sourceObservationEvidence struct {
@@ -46,6 +48,7 @@ func newMerger(authorities authority.Reader, strategy Strategy, baseline *catalo
 
 func (merger *merger) setObservations(observations []sources.Observation) {
 	merger.observations = make(map[sources.ID]sourceObservationEvidence, len(observations))
+	merger.sourceCatalogs = make(map[sources.ID]*catalogs.Catalog, len(observations))
 	for _, observation := range observations {
 		merger.observations[observation.SourceID] = sourceObservationEvidence{
 			id:               observation.ID,
@@ -53,6 +56,7 @@ func (merger *merger) setObservations(observations []sources.Observation) {
 			revision:         observation.Revision,
 			evidenceChecksum: observation.EvidenceChecksum,
 		}
+		merger.sourceCatalogs[observation.SourceID] = observation.Catalog
 	}
 }
 
@@ -215,9 +219,22 @@ func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*ca
 			sourcePtrs[source] = p
 		}
 
-		merged, _ := merger.provider(providerID, sourcePtrs)
+		merged, history := merger.provider(providerID, sourcePtrs)
 		if merged != nil {
 			mergedProviders = append(mergedProviders, merged)
+		}
+		if merger.tracker != nil {
+			for field, fieldProvenance := range history {
+				if field == "Models" {
+					continue
+				}
+				merger.tracker.Track(
+					sources.ResourceTypeProvider,
+					string(providerID),
+					field,
+					fieldProvenance.Current,
+				)
+			}
 		}
 	}
 
@@ -244,9 +261,14 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		}
 	}
 	history := make(map[string]provenance.Field)
+	identity := modelIdentity{providerID: providerID, modelID: modelID}
 
 	for _, policy := range merger.authorities.Policies(sources.ResourceTypeModel) {
-		merger.applyModelPolicy(merged, policy, sourceModels, &history)
+		policySources := sourceModels
+		if policy.Path != "Limits" {
+			policySources = merger.modelSourcesForPolicy(providerID, modelID, policy, sourceModels)
+		}
+		merger.applyModelPolicy(identity, merged, policy, policySources, &history)
 	}
 
 	// Handle timestamps with change detection
@@ -276,11 +298,11 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 	// Update timestamps based on model state
 	if isNewModel {
 		now := utc.Now()
-		createdAt := merger.sourceTime("CreatedAt", sourceModels)
+		createdAt := merger.sourceTime(identity, "CreatedAt", sourceModels)
 		if createdAt.IsZero() {
 			createdAt = now
 		}
-		updatedAt := merger.sourceTime("UpdatedAt", sourceModels)
+		updatedAt := merger.sourceTime(identity, "UpdatedAt", sourceModels)
 		if updatedAt.IsZero() {
 			updatedAt = createdAt
 		}
@@ -296,11 +318,12 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 	return merged, history
 }
 
-func (merger *merger) sourceTime(path string, sourceModels map[sources.ID]*catalogs.Model) utc.Time {
+func (merger *merger) sourceTime(identity modelIdentity, path string, sourceModels map[sources.ID]*catalogs.Model) utc.Time {
 	policy, found := merger.authorities.Find(sources.ResourceTypeModel, path)
 	if !found {
 		return utc.Time{}
 	}
+	sourceModels = merger.modelSourcesForPolicy(identity.providerID, identity.modelID, policy, sourceModels)
 	for _, source := range policy.SourceOrder {
 		model := sourceModels[source]
 		if model == nil {
@@ -326,7 +349,8 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 
 	// Merge each field
 	for _, policy := range merger.authorities.Policies(sources.ResourceTypeProvider) {
-		merger.applyProviderPolicy(&merged, policy, sourceProviders, &history)
+		policySources := merger.providerSourcesForPolicy(providerID, policy, sourceProviders)
+		merger.applyProviderPolicy(providerID, &merged, policy, policySources, &history)
 	}
 
 	// Ensure ID is set
@@ -382,12 +406,30 @@ func (merger *merger) resolveConflict(resourceType sources.ResourceType, fieldPa
 	return merger.strategy.ResolveConflict(fieldPath, values)
 }
 
-func (merger *merger) recordModelHistory(history *map[string]provenance.Field, policy authority.Policy, source sources.ID, value any, reason string) {
+func (merger *merger) recordModelHistory(
+	identity modelIdentity,
+	history *map[string]provenance.Field,
+	policy authority.Policy,
+	source sources.ID,
+	value any,
+	reason string,
+) {
 	if history == nil {
 		return
 	}
 
 	provenancePath := policy.Evidence()
+	if carried, ok := merger.carried(
+		sources.ResourceTypeModel,
+		identity.resourceID(),
+		provenancePath,
+		source,
+	); ok {
+		carried.Field = provenancePath
+		carried.Value = value
+		(*history)[provenancePath] = provenance.Field{Current: carried}
+		return
+	}
 	current := provenance.Provenance{
 		Source:     source,
 		Field:      provenancePath,
@@ -524,50 +566,6 @@ func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any
 		}
 
 		current = field
-	}
-}
-
-type modelLimitFieldSet struct {
-	contextWindow bool
-	inputTokens   bool
-	outputTokens  bool
-}
-
-func (merger *merger) applyModelLimits(
-	target *catalogs.Model,
-	limits *catalogs.ModelLimits,
-	claimed *modelLimitFieldSet,
-	policy authority.Policy,
-	sourceType sources.ID,
-	history *map[string]provenance.Field,
-) {
-	if target == nil || limits == nil || claimed == nil {
-		return
-	}
-	if target.Limits == nil {
-		target.Limits = &catalogs.ModelLimits{}
-	}
-	reason := fmt.Sprintf("selected from %s (complex structure merge)", sourceType)
-	if limits.ContextWindow > 0 && !claimed.contextWindow {
-		target.Limits.ContextWindow = limits.ContextWindow
-		claimed.contextWindow = true
-		fieldPolicy := policy
-		fieldPolicy.EvidencePath = modelProvenanceLimitsContextWindow
-		merger.recordModelHistory(history, fieldPolicy, sourceType, limits.ContextWindow, reason)
-	}
-	if limits.InputTokens > 0 && !claimed.inputTokens {
-		target.Limits.InputTokens = limits.InputTokens
-		claimed.inputTokens = true
-		fieldPolicy := policy
-		fieldPolicy.EvidencePath = modelProvenanceLimitsInputTokens
-		merger.recordModelHistory(history, fieldPolicy, sourceType, limits.InputTokens, reason)
-	}
-	if limits.OutputTokens > 0 && !claimed.outputTokens {
-		target.Limits.OutputTokens = limits.OutputTokens
-		claimed.outputTokens = true
-		fieldPolicy := policy
-		fieldPolicy.EvidencePath = modelProvenanceLimitsOutputTokens
-		merger.recordModelHistory(history, fieldPolicy, sourceType, limits.OutputTokens, reason)
 	}
 }
 
@@ -758,6 +756,7 @@ func copyValuePtr[T any](source *T) *T {
 }
 
 func (merger *merger) mergeProviderExtensions(
+	providerID catalogs.ProviderID,
 	merged *catalogs.Provider,
 	policy authority.Policy,
 	sourceProviders map[sources.ID]*catalogs.Provider,
@@ -776,17 +775,14 @@ func (merger *merger) mergeProviderExtensions(
 		merged.Extensions = mergeSourceExtensions(merged.Extensions, provider.Extensions, protectedExtensionFields)
 	}
 	if history != nil && winner != "" {
-		(*history)[policy.Evidence()] = provenance.Field{
-			Current: provenance.Provenance{
-				Source:     winner,
-				Field:      policy.Evidence(),
-				Value:      merged.Extensions,
-				Timestamp:  time.Now(),
-				Authority:  policy.Authority(winner),
-				Confidence: merger.calculateConfidence(merged.Extensions),
-				Reason:     "merged namespaced extension fields by authority order",
-			},
-		}
+		merger.recordProviderHistory(
+			providerID,
+			history,
+			policy,
+			winner,
+			merged.Extensions,
+			"merged namespaced extension fields by authority order",
+		)
 	}
 }
 

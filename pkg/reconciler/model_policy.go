@@ -19,6 +19,7 @@ const (
 )
 
 func (merger *merger) applyModelPolicy(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
@@ -26,19 +27,19 @@ func (merger *merger) applyModelPolicy(
 ) {
 	switch policy.Path {
 	case "Limits":
-		merger.mergeModelLimits(target, policy, models, history)
+		merger.mergeModelLimits(identity, target, policy, models, history)
 	case "Metadata":
-		merger.mergeModelMetadata(target, policy, models, history)
+		merger.mergeModelMetadata(identity, target, policy, models, history)
 	case "Features":
-		merger.mergeModelFeatures(target, policy, models, history)
+		merger.mergeModelFeatures(identity, target, policy, models, history)
 	case "Modes":
-		merger.mergeModelModes(target, policy, models, history)
+		merger.mergeModelModes(identity, target, policy, models, history)
 	case "Pricing":
-		merger.mergeModelPricing(target, policy, models, history)
+		merger.mergeModelPricing(identity, target, policy, models, history)
 	case "Extensions":
-		merger.mergeModelExtensions(target, policy, models, history)
+		merger.mergeModelExtensions(identity, target, policy, models, history)
 	case "Authors":
-		merger.mergeModelAuthors(target, policy, models, history)
+		merger.mergeModelAuthors(identity, target, policy, models, history)
 	case "CreatedAt", "UpdatedAt":
 		// Timestamp publication is change-aware and executes after facts merge.
 	default:
@@ -47,39 +48,89 @@ func (merger *merger) applyModelPolicy(
 			return
 		}
 		merger.setModelFieldValue(target, policy.Path, value)
-		merger.recordModelHistory(history, policy, source, value, reason)
+		merger.recordModelHistory(identity, history, policy, source, value, reason)
 	}
 }
 
 func (merger *merger) mergeModelLimits(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	claimed := &modelLimitFieldSet{}
-	for _, source := range policy.SourceOrder {
-		model := models[source]
-		if model == nil || model.Limits == nil {
-			continue
+	fields := []struct {
+		evidence string
+		value    func(*catalogs.Model) int64
+		apply    func(*catalogs.ModelLimits, int64)
+	}{
+		{
+			evidence: modelProvenanceLimitsContextWindow,
+			value:    func(model *catalogs.Model) int64 { return model.Limits.ContextWindow },
+			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.ContextWindow = value },
+		},
+		{
+			evidence: modelProvenanceLimitsInputTokens,
+			value:    func(model *catalogs.Model) int64 { return model.Limits.InputTokens },
+			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.InputTokens = value },
+		},
+		{
+			evidence: modelProvenanceLimitsOutputTokens,
+			value:    func(model *catalogs.Model) int64 { return model.Limits.OutputTokens },
+			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.OutputTokens = value },
+		},
+	}
+	for _, field := range fields {
+		fieldPolicy := policy
+		fieldPolicy.EvidencePath = field.evidence
+		fieldSources := merger.modelSourcesForValue(
+			identity.providerID,
+			identity.modelID,
+			fieldPolicy,
+			models,
+			func(model *catalogs.Model) any {
+				if model == nil || model.Limits == nil || field.value(model) <= 0 {
+					return nil
+				}
+				return field.value(model)
+			},
+		)
+		for _, source := range policy.SourceOrder {
+			model := fieldSources[source]
+			if model == nil || model.Limits == nil {
+				continue
+			}
+			value := field.value(model)
+			if value <= 0 {
+				continue
+			}
+			if target.Limits == nil {
+				target.Limits = &catalogs.ModelLimits{}
+			}
+			field.apply(target.Limits, value)
+			merger.recordModelHistory(
+				identity,
+				history,
+				fieldPolicy,
+				source,
+				value,
+				fmt.Sprintf("selected from %s by limits authority order", source),
+			)
+			break
 		}
-		if target.Limits == nil {
-			target.Limits = &catalogs.ModelLimits{}
-		}
-		merger.applyModelLimits(target, model.Limits, claimed, policy, source, history)
 	}
 }
 
 func (merger *merger) mergeModelMetadata(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
 	var (
-		merged      *catalogs.ModelMetadata
-		winner      sources.ID
-		winnerValue *catalogs.ModelMetadata
+		merged *catalogs.ModelMetadata
+		winner sources.ID
 	)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
@@ -88,7 +139,6 @@ func (merger *merger) mergeModelMetadata(
 		}
 		if winner == "" {
 			winner = source
-			winnerValue = model.Metadata
 		}
 		merged = mergeSupplementalMetadata(merged, model.Metadata)
 	}
@@ -99,25 +149,26 @@ func (merger *merger) mergeModelMetadata(
 	target.Metadata = merged
 	if winner != "" {
 		merger.recordModelHistory(
+			identity,
 			history,
 			policy,
 			winner,
-			winnerValue,
+			merged,
 			fmt.Sprintf("merged by %s policy with lower-authority gap filling", policy.Path),
 		)
 	}
 }
 
 func (merger *merger) mergeModelFeatures(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
 	var (
-		winner      sources.ID
-		winnerValue *catalogs.ModelFeatures
-		merged      *catalogs.ModelFeatures
+		winner sources.ID
+		merged *catalogs.ModelFeatures
 	)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
@@ -126,7 +177,6 @@ func (merger *merger) mergeModelFeatures(
 		}
 		if winner == "" {
 			winner = source
-			winnerValue = model.Features
 			merged = copyModelFeatures(model.Features)
 			continue
 		}
@@ -138,10 +188,11 @@ func (merger *merger) mergeModelFeatures(
 	}
 	target.Features = merged
 	merger.recordModelHistory(
+		identity,
 		history,
 		policy,
 		winner,
-		winnerValue,
+		merged,
 		fmt.Sprintf("selected complete capabilities from %s; merged documented modalities", winner),
 	)
 }
@@ -155,13 +206,13 @@ func copyModelFeatures(features *catalogs.ModelFeatures) *catalogs.ModelFeatures
 }
 
 func (merger *merger) mergeModelModes(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
 	var winner sources.ID
-	var winnerValue map[string]catalogs.ModelMode
 	merged := make(map[string]catalogs.ModelMode)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
@@ -170,7 +221,6 @@ func (merger *merger) mergeModelModes(
 		}
 		if winner == "" {
 			winner = source
-			winnerValue = model.Modes
 		}
 		sourceCopy := catalogs.DeepCopyModel(catalogs.Model{Modes: model.Modes}).Modes
 		for name, mode := range sourceCopy {
@@ -187,10 +237,11 @@ func (merger *merger) mergeModelModes(
 	}
 	target.Modes = merged
 	merger.recordModelHistory(
+		identity,
 		history,
 		policy,
 		winner,
-		winnerValue,
+		merged,
 		fmt.Sprintf("merged named modes by %s policy", policy.Path),
 	)
 }
@@ -226,6 +277,7 @@ func fillModelMode(target, fallback catalogs.ModelMode) catalogs.ModelMode {
 }
 
 func (merger *merger) mergeModelPricing(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
@@ -258,7 +310,7 @@ func (merger *merger) mergeModelPricing(
 			}
 			reason += fmt.Sprintf(" after rejecting %s", strings.Join(reasons, "; "))
 		}
-		merger.recordModelHistory(history, policy, source, model.Pricing, reason)
+		merger.recordModelHistory(identity, history, policy, source, model.Pricing, reason)
 		if history != nil {
 			field := (*history)[policy.Evidence()]
 			field.Current.Rejections = append([]provenance.Rejection(nil), rejected...)
@@ -292,6 +344,7 @@ func (merger *merger) mergeModelPricing(
 }
 
 func (merger *merger) mergeModelExtensions(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
@@ -311,6 +364,7 @@ func (merger *merger) mergeModelExtensions(
 	}
 	if winner != "" {
 		merger.recordModelHistory(
+			identity,
 			history,
 			policy,
 			winner,
@@ -321,6 +375,7 @@ func (merger *merger) mergeModelExtensions(
 }
 
 func (merger *merger) mergeModelAuthors(
+	identity modelIdentity,
 	target *catalogs.Model,
 	policy authority.Policy,
 	models map[sources.ID]*catalogs.Model,
@@ -349,5 +404,5 @@ func (merger *merger) mergeModelAuthors(
 		return
 	}
 	target.Authors = merged
-	merger.recordModelHistory(history, policy, winner, merged, "merged non-duplicate authors by authority order")
+	merger.recordModelHistory(identity, history, policy, winner, merged, "merged non-duplicate authors by authority order")
 }

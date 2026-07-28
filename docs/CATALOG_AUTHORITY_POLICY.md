@@ -84,5 +84,18 @@ Local YAML is evidence, not an unconditional override layer:
 - current valid dynamic facts beat stale local copies for discoverable fields;
 - local values fill facts missing from dynamic sources;
 - operator connection configuration remains local-first; and
-- later workspace provenance work distinguishes unchanged generated YAML from
-  an actual semantic human edit, so generated facts are not relabeled local.
+- projected provenance is compared to the parsed semantic field value on
+  reload. An unchanged value retains its original source, observation identity,
+  revision, checksum, and timestamp;
+- when the original source is observed again, its current value replaces the
+  unchanged projection at that source's authority position—even for a normally
+  local-first operator field;
+- a semantic mismatch is a local claim and receives the current local
+  observation identity; and
+- comments, quoting, whitespace, and key order do not participate in the
+  comparison.
+
+Model comparisons use the exact provider/model provenance identity. Provider
+configuration uses provider/field identity. The legacy bare model evidence in
+the current embedded bootstrap is consulted only when that model ID occurs at
+exactly one provider; ambiguous evidence is never promoted across offerings.

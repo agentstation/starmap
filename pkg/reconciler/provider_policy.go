@@ -11,6 +11,7 @@ import (
 )
 
 func (merger *merger) applyProviderPolicy(
+	providerID catalogs.ProviderID,
 	target *catalogs.Provider,
 	policy authority.Policy,
 	providers map[sources.ID]*catalogs.Provider,
@@ -18,26 +19,27 @@ func (merger *merger) applyProviderPolicy(
 ) {
 	switch policy.Path {
 	case "Extensions":
-		merger.mergeProviderExtensions(target, policy, providers, history)
+		merger.mergeProviderExtensions(providerID, target, policy, providers, history)
 	case "Aliases":
-		merger.mergeProviderAliases(target, policy, providers, history)
+		merger.mergeProviderAliases(providerID, target, policy, providers, history)
 	case "PrivacyPolicy":
-		merger.mergeProviderPrivacy(target, policy, providers, history)
+		merger.mergeProviderPrivacy(providerID, target, policy, providers, history)
 	case "RetentionPolicy":
-		merger.mergeProviderRetention(target, policy, providers, history)
+		merger.mergeProviderRetention(providerID, target, policy, providers, history)
 	case "GovernancePolicy":
-		merger.mergeProviderGovernance(target, policy, providers, history)
+		merger.mergeProviderGovernance(providerID, target, policy, providers, history)
 	default:
 		value, source := merger.providerField(policy, providers)
 		if value == nil {
 			return
 		}
 		merger.setProviderFieldValue(target, policy.Path, value)
-		merger.recordProviderHistory(history, policy, source, value, "selected complete value by authority order")
+		merger.recordProviderHistory(providerID, history, policy, source, value, "selected complete value by authority order")
 	}
 }
 
 func (merger *merger) mergeProviderAliases(
+	providerID catalogs.ProviderID,
 	target *catalogs.Provider,
 	policy authority.Policy,
 	providers map[sources.ID]*catalogs.Provider,
@@ -66,10 +68,11 @@ func (merger *merger) mergeProviderAliases(
 		return
 	}
 	target.Aliases = aliases
-	merger.recordProviderHistory(history, policy, winner, aliases, "merged non-duplicate aliases by authority order")
+	merger.recordProviderHistory(providerID, history, policy, winner, aliases, "merged non-duplicate aliases by authority order")
 }
 
 func (merger *merger) mergeProviderPrivacy(
+	providerID catalogs.ProviderID,
 	target *catalogs.Provider,
 	policy authority.Policy,
 	providers map[sources.ID]*catalogs.Provider,
@@ -91,7 +94,7 @@ func (merger *merger) mergeProviderPrivacy(
 		return
 	}
 	target.PrivacyPolicy = merged
-	merger.recordProviderHistory(history, policy, winner, merged, "filled missing privacy fields by authority order")
+	merger.recordProviderHistory(providerID, history, policy, winner, merged, "filled missing privacy fields by authority order")
 }
 
 func fillProviderPrivacy(
@@ -125,6 +128,7 @@ func fillProviderPrivacy(
 }
 
 func (merger *merger) mergeProviderRetention(
+	providerID catalogs.ProviderID,
 	target *catalogs.Provider,
 	policy authority.Policy,
 	providers map[sources.ID]*catalogs.Provider,
@@ -146,7 +150,7 @@ func (merger *merger) mergeProviderRetention(
 		return
 	}
 	target.RetentionPolicy = merged
-	merger.recordProviderHistory(history, policy, winner, merged, "filled missing retention fields by authority order")
+	merger.recordProviderHistory(providerID, history, policy, winner, merged, "filled missing retention fields by authority order")
 }
 
 func fillProviderRetention(
@@ -175,6 +179,7 @@ func fillProviderRetention(
 }
 
 func (merger *merger) mergeProviderGovernance(
+	providerID catalogs.ProviderID,
 	target *catalogs.Provider,
 	policy authority.Policy,
 	providers map[sources.ID]*catalogs.Provider,
@@ -196,7 +201,7 @@ func (merger *merger) mergeProviderGovernance(
 		return
 	}
 	target.GovernancePolicy = merged
-	merger.recordProviderHistory(history, policy, winner, merged, "filled missing governance fields by authority order")
+	merger.recordProviderHistory(providerID, history, policy, winner, merged, "filled missing governance fields by authority order")
 }
 
 func fillProviderGovernance(
@@ -226,6 +231,7 @@ func fillProviderGovernance(
 }
 
 func (merger *merger) recordProviderHistory(
+	providerID catalogs.ProviderID,
 	history *map[string]provenance.Field,
 	policy authority.Policy,
 	source sources.ID,
@@ -236,15 +242,31 @@ func (merger *merger) recordProviderHistory(
 		return
 	}
 	path := policy.Evidence()
-	(*history)[path] = provenance.Field{
-		Current: provenance.Provenance{
-			Source:     source,
-			Field:      path,
-			Value:      value,
-			Timestamp:  time.Now(),
-			Authority:  policy.Authority(source),
-			Confidence: merger.calculateConfidence(value),
-			Reason:     fmt.Sprintf("%s: %s", policy.Path, reason),
-		},
+	if carried, ok := merger.carried(
+		sources.ResourceTypeProvider,
+		string(providerID),
+		path,
+		source,
+	); ok {
+		carried.Field = path
+		carried.Value = value
+		(*history)[path] = provenance.Field{Current: carried}
+		return
 	}
+	current := provenance.Provenance{
+		Source:     source,
+		Field:      path,
+		Value:      value,
+		Timestamp:  time.Now(),
+		Authority:  policy.Authority(source),
+		Confidence: merger.calculateConfidence(value),
+		Reason:     fmt.Sprintf("%s: %s", policy.Path, reason),
+	}
+	if evidence, exists := merger.observations[source]; exists {
+		current.ObservationID = evidence.id
+		current.ObservedAt = evidence.observedAt
+		current.Revision = evidence.revision
+		current.EvidenceChecksum = evidence.evidenceChecksum
+	}
+	(*history)[path] = provenance.Field{Current: current}
 }

@@ -1284,6 +1284,14 @@ Model provenance is provider-scoped durably. Consumers use
 providers that expose the same opaque model ID from combining price, limit, or
 lifecycle evidence.
 
+When a projected YAML workspace is read as a local observation, reconciliation
+compares each parsed semantic value with the projected evidence value.
+Unchanged generated values retain their original source and immutable
+observation evidence; an actually changed value becomes a local claim. A
+current observation from the original source replaces its unchanged projected
+copy at the original authority position. Formatting and comments never create
+local evidence.
+
 **Example:**
 
 ```
