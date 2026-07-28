@@ -2,10 +2,10 @@
 
 Last updated: 2026-07-28
 
-Status: `IN_PROGRESS` — P0–P2 and the P3.6a/P3.6b/P3.8 publication hotfix
-are complete. P4.10's deterministic policy/property tests and bounded decoder
-fuzzing are locally green; it now owns the exact-head P4 phase PR, hosted
-verification, merge, and cleanup before the remaining P3 lifecycle resumes.
+Status: `IN_PROGRESS` — P0–P2, the P3.6a/P3.6b/P3.8 publication hotfix, and
+P4 are complete. P3.1 is the sole active task and resumes the remaining human
+workspace lifecycle from exact protected main after the green P4 phase merge
+and cleanup.
 
 ## Mission
 
@@ -454,15 +454,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-authority-resilience`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-workspace-lifecycle`
 - Branch:
-  `codex/catalog-authority-resilience`
+  `codex/catalog-workspace-lifecycle`
 - Base:
-  `origin/main@1dc811b5ca9034c5c6ecf1a4b7a93786e7ecf08f`
+  `origin/main@60f0cd3c6eecf0ecb9be7dc76961abf97919324d`
 
-This worktree contains P4 authority, provenance, presence, and resilience work.
-It was created from the exact protected main produced by merged PR #50 after
-the clean P3 hotfix worktree and local/remote branches were removed.
+This worktree contains the remaining P3 human workspace lifecycle work. It was
+created from the exact protected main produced by merged PR #51 before the
+clean P4 worktree and local branch were removed.
 
 ### Provider expansion worktree
 
@@ -533,7 +533,7 @@ Live state inspected 2026-07-27.
 | [#48](https://github.com/agentstation/starmap/pull/48) | `codex/provider-donor-inventory@b7afa2df` | `DONE` | Closed P1 reconciliation and merged as `08f51ca9` | Exact head contained only the control-plane ledger and exhaustive #40 donor inventory; exact local verification, both hosted gates, protection, and zero review threads passed; merged; remote/local branch and worktree removed |
 | [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@39b08d6d` | `DONE` | P2 characterization and production composition decisions merged as `f8973be3` | Exact head passed the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; merged; remote/local branch and worktree removed |
 | [#50](https://github.com/agentstation/starmap/pull/50) | `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | P3.6a/P3.6b/P3.8 commit-point and atomic-projection hotfix merged as `1dc811b5` | Final ledger head passed exact local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; F-003/F-031 and P3.6b are closed; remote/local branch and worktree are removed |
-| [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@204b2c79` | `IN_PROGRESS` | P4 authority, provenance, presence, and source-resilience phase | Final ledger head passes exact local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected merge closes P4.10; remote/local branch and worktree are then removed before the remaining P3 lifecycle starts |
+| [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@7454e3b8` | `DONE` | P4 authority, provenance, presence, and source-resilience phase merged as `60f0cd3c` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree were removed before the remaining P3 lifecycle started |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -556,7 +556,7 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P1 | `DONE` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
 | P3 | `IN_PROGRESS` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
-| P4 | `IN_PROGRESS` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
+| P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
 | P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
 | P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
@@ -648,7 +648,7 @@ compile and performance baselines must also be green.
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P3.1 | `PENDING` | Restore one catalog path safely | One configured path names the human YAML tree; before mutation Starmap detects the pre-plan machine layout (`current`, `generations/`, `.commit.lock`) and returns a typed error that names the required migration unless an explicit transactional migration was selected |
+| P3.1 | `IN_PROGRESS` | Restore one catalog path safely | One configured path names the human YAML tree; before mutation Starmap detects the pre-plan machine layout (`current`, `generations/`, `.commit.lock`) and returns a typed error that names the required migration unless an explicit transactional migration was selected |
 | P3.2 | `PENDING` | Separate machine state | Locks, staging, generations, and caches are machine-owned and cannot be mistaken for override configuration |
 | P3.3 | `PENDING` | Make first-run seed atomic | Missing workspace becomes one complete embedded-seeded tree or remains absent after failure |
 | P3.4 | `PENDING` | Reconcile embedded E1→E2 after P4 | New embedded revision updates unchanged embedded-derived fields, fills gaps, and preserves actual human edits using the completed P4 authority/provenance model |
@@ -673,7 +673,7 @@ compile and performance baselines must also be green.
 | P4.7 | `DONE` | Consume observation health and make absence non-authoritative | Reconciliation consumes source status, completeness, issues, and volume history; complete omission, partial response, timeout, fetch failure, and suspicious volume collapse cannot hard-delete or retire |
 | P4.8 | `DONE` | Quarantine records independently | Every P2.4-characterized whole-collection decode site (models.dev envelope, provider list responses, local YAML walk, stored payload) isolates a malformed record while valid siblings survive; collection envelope remains bounded |
 | P4.9 | `DONE` | Make strict mode truthful | Every required source must be `Complete` and `Succeeded`; missing credentials, degraded/skipped state, stale fallback, or empty results without explicit issues fail before publication |
-| P4.10 | `IN_PROGRESS` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
+| P4.10 | `DONE` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
 
 ## P5 — Keep One Persisted Model and Derive Read Views
 
@@ -848,7 +848,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `provider-donor-inventory` on `codex/provider-donor-inventory@b7afa2df` | `DONE` | PR #48 merged; remote branch removed; local branch/worktree removed after the successor P2 workspace was created |
 | `catalog-contract-characterization` on `codex/catalog-contract-characterization@39b08d6d` | `DONE` | PR #49 merged as `f8973be3`; remote/local branch and worktree removed after the successor hotfix workspace was created |
 | `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | PR #50 merged as `1dc811b5`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-authority-resilience` on `codex/catalog-authority-resilience@1dc811b5` | `IN_PROGRESS` | Complete and merge P4 on exact green evidence, then remove the worktree/branch before resuming the remaining P3 lifecycle |
+| `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
+| `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@60f0cd3c` | `IN_PROGRESS` | Complete the remaining P3 lifecycle on a fresh phase branch, then pass exact local/hosted gates and remove the worktree/branch |
 
 ## Evidence Log
 
@@ -926,6 +927,8 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P4.10 | Committed the policy/property/fuzz work and evidence as `6c5c5fb7c75c40a496f0ef1e37adcb3c71169899`. That exact commit passed uninterrupted `make verify`: ordinary tests, repository race-short (root `319.476s`), vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor including authority at `95.6%`, current docs/diff, build, 933-model validation, and CLI smokes; `BenchmarkClientCatalog` measured `10.26–11.41 ns/op`, `0 B/op`, and `0 allocs/op`. Exact-head `go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...` found zero reachable and zero imported-package vulnerabilities. This evidence-only ledger follow-up becomes the final P4 candidate head and must repeat exact local verification before hosted evidence can close P4.10. |
 | 2026-07-28 | P4.10 | Ledger head `204b2c79b6e0d50c0621fb1552316d5eef36c34c` passed exact uninterrupted `make verify`: ordinary tests, repository race-short (root `295.168s`), vet, zero-issue pinned lint, every coverage floor, docs/diff, build, 933-model validation, and CLI smokes; `BenchmarkClientCatalog` measured `10.47–11.07 ns/op`, `0 B/op`, and `0 allocs/op`. Current exact-head govulncheck again found zero reachable/imported-package vulnerabilities. A normal push was safely rejected because the local branch inherited `origin/main` as its upstream and global `push.default=upstream`; no protected ref changed. An explicit `HEAD:refs/heads/codex/catalog-authority-resilience` refspec pushed only the topic branch and its upstream was corrected. Opened ready protected phase PR [#51](https://github.com/agentstation/starmap/pull/51); initial [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30340996361/job/90216315200) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30340996361/job/90216315266) runs started on `204b2c79`. This live-PR ledger commit becomes the final candidate head and must pass exact local and hosted gates before merge. |
 | 2026-07-28 | P4.10 / F-046 | PR #51 head `13431170` passed exact local `make verify` (race-short root `266.901s`; catalog access `8.958–11.31 ns/op`, `0 B/op`, `0 allocs/op`) and current govulncheck. Hosted [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30341046147/job/90216528917) passed in `2m43s`, but [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30341046147/job/90216528833) failed after `17m29s`: every ordinary package passed and every race package except `internal/server` passed; `TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteHookFaults` timed out reading WebSocket publication after its own five-second deadline expired during the slower full-catalog update. The test no longer binds the SSE stream lifetime to a connection timeout, bounds only WebSocket establishment, waits for both broker adapters plus both transport clients, and starts the read deadline after the committed generation is observable. Ten consecutive focused real-transport race runs passed (`89.995s`), followed by the complete `go test -race ./internal/server -count=1` (`165.560s`), focused vet, zero-issue pinned lint, docs check, and diff check. No production timeout, retry, or transport behavior changed. |
+| 2026-07-28 | P4.10 / F-046 | Final PR #51 head `7454e3b86ac27ee001752c2ff371677116e0f66a` passed exact uninterrupted `make verify`: ordinary tests, repository race-short (root `281.487s`; `internal/server` `171.345s`), vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor, current docs/diff, build, 933-model validation, and CLI smokes; `BenchmarkClientCatalog` measured `10.36–12.24 ns/op`, `0 B/op`, and `0 allocs/op`. Current exact-head govulncheck found zero reachable and zero imported-package vulnerabilities. |
+| 2026-07-28 | P4.10 / P3.1 | PR #51 exact head `7454e3b86ac27ee001752c2ff371677116e0f66a` passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30342739533/job/90221817277) in `20m30s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30342739533/job/90221817378) in `2m37s`. Protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, stale-review dismissal, and no force-push/deletion; the PR was ready, mergeable/clean, and had zero reviews or review threads. It squash-merged as `60f0cd3c6eecf0ecb9be7dc76961abf97919324d`; the remote branch was absent. Created fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle` from that exact protected-main SHA. The P4 worktree was clean and its tree matched `origin/main`; it was removed before deleting the local topic branch. P4 and P4.10 are DONE; P3.1 is the sole active task. |
 
 ## Final Definition of Done
 
