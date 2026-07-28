@@ -2,6 +2,7 @@ package local
 
 import (
 	"context"
+	stderrors "errors"
 	"os"
 	"path/filepath"
 	"sync"
@@ -9,8 +10,17 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+func TestSourceWithoutWorkspaceDoesNotMasqueradeAsEmbedded(t *testing.T) {
+	_, err := New().Observe(context.Background())
+	var configError *pkgerrors.ConfigError
+	if !stderrors.As(err, &configError) {
+		t.Fatalf("Observe error = %T %v, want *errors.ConfigError", err, err)
+	}
+}
 
 func TestSourcePublishesProvidedSnapshot(t *testing.T) {
 	builder := catalogs.NewEmpty()

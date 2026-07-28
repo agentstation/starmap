@@ -228,18 +228,18 @@ func New(opts ...Option) (*Client, error) {
 		}
 	}
 	if generationID == "" && catalogPath != "" {
-		local, localErr := catalogs.NewLocal(catalogPath)
-		if localErr != nil {
-			return nil, errors.WrapResource("create", "catalog workspace", catalogPath, localErr)
-		}
-		initial, err = local.Build()
-		if err != nil {
-			return nil, errors.WrapResource("publish", "initial catalog", catalogPath, err)
-		}
-		if _, statErr := os.Stat(catalogPath); statErr == nil {
+		human, humanErr := catalogs.NewFromPath(catalogPath)
+		switch {
+		case humanErr == nil:
+			initial, err = human.Build()
+			if err != nil {
+				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
+			}
 			usingEmbeddedBootstrap = false
-		} else if !stderrors.Is(statErr, os.ErrNotExist) {
-			return nil, errors.WrapIO("stat", catalogPath, statErr)
+		case stderrors.Is(humanErr, os.ErrNotExist):
+			// A missing workspace is seeded only by an explicit synchronization.
+		default:
+			return nil, errors.WrapResource("create", "human catalog workspace", catalogPath, humanErr)
 		}
 	}
 	sm.catalog = initial

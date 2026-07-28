@@ -3,9 +3,8 @@
 Last updated: 2026-07-28
 
 Status: `IN_PROGRESS` — P0–P2, the P3.6a/P3.6b/P3.8 publication hotfix, P4,
-and P3.1–P3.4 are complete. P3.5 is the sole active task and proves that only
-semantic human changes become local evidence while formatting-only edits retain
-their generated source identity.
+and P3.1–P3.5 are complete. P3.7 is the sole active task and establishes
+multi-process exclusion so competing workspace writers cannot interleave.
 
 ## Mission
 
@@ -652,10 +651,10 @@ compile and performance baselines must also be green.
 | P3.2 | `DONE` | Separate machine state | Locks, staging, generations, and caches are machine-owned and cannot be mistaken for override configuration |
 | P3.3 | `DONE` | Make first-run seed atomic | Missing workspace becomes one complete embedded-seeded tree or remains absent after failure |
 | P3.4 | `DONE` | Reconcile embedded E1→E2 after P4 | New embedded revision updates unchanged embedded-derived fields, fills gaps, and preserves actual human edits using the completed P4 authority/provenance model |
-| P3.5 | `IN_PROGRESS` | Detect semantic human edits after P4 | Only changed semantic paths become local evidence under the completed P4 model; formatting-only changes do not |
+| P3.5 | `DONE` | Detect semantic human edits after P4 | Only changed semantic paths become local evidence under the completed P4 model; formatting-only changes do not |
 | P3.6a | `DONE` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; post-commit YAML failure returns an observable `pending_repair` projection result without rolling back the store or immutable in-memory catalog; commit failure still publishes neither |
 | P3.6b | `DONE` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
-| P3.7 | `PENDING` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
+| P3.7 | `IN_PROGRESS` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
 | P3.8 | `DONE` | Preserve store-only use | `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves a configured catalog store commits and publishes with a nil projection and no workspace path or filesystem operation |
 | P3.9 | `PENDING` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
 | P3.10 | `PENDING` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
@@ -788,10 +787,10 @@ machine evidence and does not require a follow-up documentation commit.
 
 | Finding | Status | Description | Owning task |
 | --- | --- | --- | --- |
-| F-001 | `PENDING` | Current behavior treats editable YAML as a secondary export after durable current exists, contrary to the selected human-workspace contract | P3.1–P3.5 |
+| F-001 | `DONE` | One selected provider-YAML workspace is read exactly, observed independently, and atomically projected after commit; explicit reload/update reconciles semantic edits while construction never silently rewrites it | P3.1–P3.5 |
 | F-002 | `DONE` | Store-only apply skips YAML entirely, commits the generation, and publishes the immutable catalog | P3.8 |
 | F-003 | `DONE` | YAML replacement is destructive and non-atomic | P3.6b |
-| F-004 | `PENDING` | Embedded/local structural merge loses or rejects valid manual data | P3.4–P3.5 |
+| F-004 | `DONE` | Embedded and human catalogs enter reconciliation as separate observations; embedded revision upgrades preserve semantic human fields and formatting does not become local evidence | P3.4–P3.5 |
 | F-005 | `DONE` | Complete, partial, degraded, failed, and volume-regressed source attempts retain baseline-only models and exact provenance; stale fallback cannot regress known facts | P4.7 |
 | F-006 | `DONE` | One executable field table now selects dynamic facts, local fallback, and operator configuration without a second complex-field policy | P4.1–P4.3 |
 | F-007 | `DONE` | Provider/model identity is now part of every durable model-provenance key, report, payload round trip, and normal catalog lookup | P4.4 |
@@ -941,6 +940,9 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P3.4 | The sync pipeline no longer obtains its human observation from `catalogs.NewLocal`, which pre-merged running embedded bytes with the selected YAML. It now loads the human workspace and verified embedded revision independently and constructs a third derived provider-configuration catalog: embedded supplies newly introduced providers while an existing human provider record supplies its connection configuration. Local and embedded remain distinct immutable observations; embedded always participates and remains last in every field authority order. Missing workspaces still seed through embedded only. |
 | 2026-07-28 | P3.4 | The E1→E2 lifecycle test reconciles an E1 embedded observation, writes its provenance to real provider YAML, makes a semantic human name edit, injects E2, and runs the production pipeline over local plus embedded. E2 advances an unchanged description and context limit, fills a previously missing output limit, and retains the human name with local evidence. The resulting candidate atomically projects through the production workspace module and reloads with identical values and embedded/local provenance. A separate injected embedded-load failure performs no apply and leaves the existing workspace unchanged. Input tests prove workspace loading does not merge repository embedded data and provider configuration composition preserves a human endpoint while adding a provider introduced by E2. |
 | 2026-07-28 | P3.4 | Exact final-tree ordinary suites passed across root (`52.634s`), pipeline (`2.756s`), workspace (`0.632s`), embedded source (`0.815s`), local source (`3.602s`), reconciler (`1.049s`), catalogs (`25.454s`), authority (`2.580s`), sources (`1.732s`), sync (`2.137s`), catalog store (`1.487s`), and CLI app (`26.975s`). The exact race command `go test -race . ./internal/catalog/pipeline ./internal/catalog/workspace ./internal/sources/embedded ./internal/sources/local ./pkg/reconciler ./pkg/catalogs ./pkg/authority ./pkg/sources ./pkg/sync ./pkg/catalogstore ./cmd/starmap/app -count=1` passed (`299.483s`, `7.581s`, `3.363s`, `2.313s`, `9.365s`, `1.942s`, `67.065s`, `2.845s`, `3.892s`, `3.257s`, `2.542s`, and `127.475s`). The first pinned-lint pass reported that the new input branches raised `Pipeline.Sync` complexity from 30 to 32; catalog-input assembly was extracted as one named invariant instead of suppressing the limit, the exact race command was repeated on that final tree, focused `go vet` passed, pinned golangci-lint v2.12.2 reported zero issues, and generated GoDoc, `make docs-check`, and `git diff --check` passed. P3.4 is DONE; P3.5 is the sole active task. |
+| 2026-07-28 | P3.5 / F-001 / F-004 | Root construction with no durable generation now loads an existing human workspace exactly through `NewFromPath`; it no longer pre-merges the running embedded revision and therefore cannot erase a semantic human value before explicit reconciliation. A missing workspace still uses the verified in-memory bootstrap and is never created by construction. The local source likewise requires an injected catalog or actual path and cannot masquerade as embedded fallback. `rg` confirms `catalogs.NewLocal` has no production caller; the now-unused exported prelaunch helper remains explicitly owned by P5.8 rather than being silently retained as architecture. |
+| 2026-07-28 | P3.5 | The E1 workspace lifecycle now changes comment text, scalar quoting, and top-level key order without changing typed semantics. A production pipeline update over local plus embedded reports no changes, performs no apply or YAML rewrite, and retains embedded provenance for both tested fields. The paired E1→E2 test changes one semantic name: only that path becomes local evidence, while the unchanged description and limits advance or fill from embedded. A root construction test uses a real embedded-colliding OpenAI/GPT-4o identity and proves the exact human name and one-provider workspace load, catching the former pre-merge behavior. |
+| 2026-07-28 | P3.5 | Exact final-tree ordinary suites passed across root (`39.669s`), pipeline (`2.074s`), local source (`0.523s`), reconciler (`0.955s`), catalogs (`20.689s`), sync (`0.732s`), catalog store (`1.865s`), and CLI app (`11.944s`). The exact race command `go test -race . ./internal/catalog/pipeline ./internal/sources/local ./pkg/reconciler ./pkg/catalogs ./pkg/sync ./pkg/catalogstore ./cmd/starmap/app -count=1` passed (`249.989s`, `6.392s`, `1.278s`, `2.625s`, `53.218s`, `2.797s`, `2.178s`, and `61.823s`). Focused `go vet`, pinned golangci-lint v2.12.2 with zero issues, generated GoDoc, `make docs-check`, and `git diff --check` passed. P3.5, F-001, and F-004 are DONE; P3.7 is the sole active task. |
 
 ## Final Definition of Done
 

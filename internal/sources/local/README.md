@@ -85,7 +85,7 @@ func New(opts ...Option) *Source
 New creates a new local source.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L124>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L126>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -94,7 +94,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L131>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L133>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -112,7 +112,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L137>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L139>)
 
 ```go
 func (s *Source) IsOptional() bool

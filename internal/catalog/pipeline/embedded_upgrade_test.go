@@ -3,12 +3,17 @@ package pipeline
 import (
 	"context"
 	stderrors "errors"
+	"os"
+	"path/filepath"
 	"slices"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -185,6 +190,83 @@ func TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace(t *testing.T) {
 	if model := provider.Models["model-a"]; model == nil || model.Name != "Human Model" {
 		t.Fatalf("workspace model = %#v, want unchanged", model)
 	}
+}
+
+func TestWorkspaceFormattingChangesDoNotBecomeLocalEvidence(t *testing.T) {
+	t.Parallel()
+
+	embedded := embeddedRevisionCatalog(t, "Embedded Name", "Embedded Description", 8192, 4096)
+	observation := completeObservation(
+		t,
+		sources.EmbeddedCatalogID,
+		embedded,
+		time.Date(2026, time.July, 28, 13, 0, 0, 0, time.UTC),
+	)
+	generated, err := reconcile(
+		context.Background(),
+		asSnapshot(catalogs.NewEmpty()),
+		[]sources.Observation{observation},
+	)
+	if err != nil {
+		t.Fatalf("reconcile embedded catalog: %v", err)
+	}
+	path := t.TempDir()
+	if err := generated.Catalog.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("save generated workspace: %v", err)
+	}
+
+	modelPath := filepath.Join(path, "providers", "provider-a", "models", "model-a.yaml")
+	data, err := os.ReadFile(modelPath)
+	if err != nil {
+		t.Fatalf("ReadFile: %v", err)
+	}
+	const generatedHeader = "id: model-a\nname: Embedded Name\n"
+	if !strings.Contains(string(data), generatedHeader) {
+		t.Fatalf("generated model omitted expected header:\n%s", data)
+	}
+	formatted := "# retained operator comment\n" + strings.Replace(
+		string(data),
+		generatedHeader,
+		"name: 'Embedded Name'\nid: model-a\n",
+		1,
+	)
+	if err := os.WriteFile(modelPath, []byte(formatted), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+
+	store := &pipelineTestStore{catalog: buildCatalog(t, generated.Catalog)}
+	runner := New(store)
+	runner.loadEmbedded = func() (*catalogs.Builder, error) {
+		return catalogs.NewBuilderFrom(embedded)
+	}
+	var candidate *reconciler.Result
+	runner.reconcile = func(
+		ctx context.Context,
+		baseline *catalogs.Catalog,
+		observations []sources.Observation,
+	) (*reconciler.Result, error) {
+		result, reconcileErr := reconcile(ctx, baseline, observations)
+		candidate = result
+		return result, reconcileErr
+	}
+
+	result, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(path),
+		pkgsync.WithSources(sources.LocalCatalogID),
+	)
+	if err != nil {
+		t.Fatalf("Sync formatting-only workspace: %v", err)
+	}
+	if result.HasChanges() || store.applyCalls != 0 {
+		t.Fatalf("formatting-only sync changed catalog: result %#v, applies %d", result, store.applyCalls)
+	}
+	if candidate == nil {
+		t.Fatal("reconciliation candidate was not captured")
+	}
+	reconciled := buildCatalog(t, candidate.Catalog)
+	assertUpgradeEvidenceSource(t, reconciled, "Name", sources.EmbeddedCatalogID)
+	assertUpgradeEvidenceSource(t, reconciled, "Description", sources.EmbeddedCatalogID)
 }
 
 func embeddedRevisionCatalog(

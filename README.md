@@ -239,7 +239,8 @@ The concrete immutable product for model data access. Advanced producers use a s
 A generation-oriented commit/read/CAS boundary. The same conformance contract covers memory, filesystem, SQLite, and conditional object-storage adapters while retaining old immutable generations.
 When a client starts with a configured store, it validates and publishes that
 store's current generation before returning from `starmap.New`; an empty store
-uses the verified embedded/local baseline until its first successful commit.
+uses either the exact configured human workspace or the verified embedded
+bootstrap until its first successful commit.
 
 Validated generations use a deterministic archive and detached in-toto
 statement for release/hosted distribution. See the
@@ -283,7 +284,7 @@ See [CONTRIBUTING.md § Project Structure](CONTRIBUTING.md#project-structure) fo
 Starmap provides two levels of data management complexity:
 
 **Use [Catalog Package](pkg/catalogs/README.md) (Simple) When:**
-- ✅ Merging embedded catalog with local overrides
+- ✅ Constructing or reading one provider-YAML catalog
 - ✅ Combining two provider responses
 - ✅ Testing with mock data
 - ✅ Building simple tools

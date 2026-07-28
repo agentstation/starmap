@@ -708,9 +708,11 @@ cleaned and its sibling digest marker is never traversed by the provider-YAML
 loader. Cache, source evidence, logs, configuration, YAML, and immutable
 generations remain separate lifecycle domains.
 
-An explicitly configured catalog workspace is optional only when its path does not
-exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded
-bootstrap. Malformed provider, author, and provenance structure plus filesystem
+An explicitly configured catalog workspace is optional only when its path does
+not exist. Construction loads an existing workspace exactly as human YAML; it
+does not pre-merge the running binary's embedded revision. A missing workspace
+uses the verified embedded bootstrap in memory and is seeded only by an explicit
+update. Malformed provider, author, and provenance structure plus filesystem
 failures remain typed fatal errors. Individual malformed model YAML files are
 quarantined with a typed `LoadReport` so valid siblings can form a degraded
 local observation; embedded bootstrap, legacy migration, and atomic projection

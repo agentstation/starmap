@@ -73,13 +73,15 @@ func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observ
 		return s.observation(s.snapshot, s.loadReport)
 	}
 
-	// Otherwise, load using NewLocal logic
-	builder, err := catalogs.NewLocal(s.catalogPath)
-	if err != nil {
-		if s.catalogPath != "" {
-			return sources.Observation{}, errors.WrapResource("load", "catalog", s.catalogPath, err)
+	if s.catalogPath == "" {
+		return sources.Observation{}, &errors.ConfigError{
+			Component: "local catalog source",
+			Message:   "a human workspace path or preloaded catalog is required",
 		}
-		return sources.Observation{}, errors.WrapResource("load", "embedded catalog", "", err)
+	}
+	builder, err := catalogs.NewFromPath(s.catalogPath)
+	if err != nil {
+		return sources.Observation{}, errors.WrapResource("load", "human catalog", s.catalogPath, err)
 	}
 	builder.SetMergeStrategy(catalogs.MergeReplaceAll)
 	catalog, err := builder.Build()

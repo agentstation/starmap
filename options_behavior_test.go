@@ -64,6 +64,39 @@ func TestConfiguredCatalogPathTakesPrecedenceOverEmbeddedFallback(t *testing.T) 
 	}
 }
 
+func TestConfiguredWorkspaceLoadsSemanticHumanValuesWithoutEmbeddedPreMerge(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "catalog")
+	human := catalogs.NewEmpty()
+	if err := human.SetProvider(catalogs.Provider{
+		ID:   "openai",
+		Name: "Human OpenAI",
+		Models: map[string]*catalogs.Model{
+			"gpt-4o": {ID: "gpt-4o", Name: "Human GPT-4o"},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := human.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("Save human workspace: %v", err)
+	}
+
+	client, err := New(WithCatalogPath(path))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	catalog := client.Catalog()
+	if got := catalog.Providers().Len(); got != 1 {
+		t.Fatalf("provider count = %d, want human workspace only", got)
+	}
+	model, err := catalog.ProviderModel("openai", "gpt-4o")
+	if err != nil {
+		t.Fatalf("ProviderModel: %v", err)
+	}
+	if model.Name != "Human GPT-4o" {
+		t.Fatalf("model name = %q, want semantic human value", model.Name)
+	}
+}
+
 func TestCurrentGenerationIDTracksBootstrapAndDurablePublication(t *testing.T) {
 	client, err := New()
 	if err != nil {
