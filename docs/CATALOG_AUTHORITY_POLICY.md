@@ -43,9 +43,53 @@ models.dev dataset.
 | `deep_merge` | Merge named records or a documented structured field while preserving leaf authority |
 
 `absent` permits fallback for missing values. `authoritative` preserves a
-meaningful explicit zero or `false`. Pointers and containing-record presence
-currently establish explicit capability records; the dedicated presence phase
-extends that distinction to every affected scalar.
+meaningful explicit zero, `false`, or empty string when the source actually
+supplied it.
+
+## Presence semantics
+
+Starmap keeps ordinary catalog reads ergonomic while retaining source
+presence. `Model.Description`, feature booleans, limit integers, and
+`ModelMetadata.OpenWeights` remain their natural Go scalar types. Their owning
+types also expose typed presence methods:
+
+- `DescriptionValue`;
+- `ModelFeatures.Support`;
+- `ModelLimits.Value`; and
+- `OpenWeightsValue`.
+
+Each returns `ValueMissing`, `ValueUnknown`, or `ValueKnown`. Direct non-zero
+Go literals are known without setter boilerplate. A source adapter or catalog
+author uses `SetDescription`, `SetSupport`, `ModelLimits.Set`, or
+`SetOpenWeights` only when it must preserve an explicit scalar zero. The
+corresponding `SetDescriptionUnknown`, `SetSupportUnknown`,
+`ModelLimits.SetUnknown`, and `SetOpenWeightsUnknown` methods record an
+upstream `null`; matching `Unset` methods withdraw a claim.
+
+The human YAML remains ordinary scalars:
+
+```yaml
+description: ""
+status: unknown
+features:
+  tool_calls: false
+  tools: null
+limits:
+  context_window: 0
+  input_tokens: null
+```
+
+An omitted key is missing and makes no claim. `null` is explicitly unknown.
+`false`, `0`, and `""` are known values. Missing feature keys are omitted from
+generated YAML rather than expanded into misleading false claims. These states
+survive YAML, immutable catalog JSON, deep copy, merge, reconciliation,
+baseline comparison, and change reporting.
+
+Provider and models.dev decoders mark presence from the upstream wire keys.
+Inferred positive capabilities remain known; an unreported false or zero does
+not become an authoritative negative claim. During reconciliation, a known
+zero participates at its source's normal authority position, while missing and
+unknown values permit lower-authority fallback.
 
 ## Pricing
 
@@ -92,6 +136,8 @@ Local YAML is evidence, not an unconditional override layer:
   local-first operator field;
 - a semantic mismatch is a local claim and receives the current local
   observation identity; and
+- an explicitly present `false`, `0`, `""`, or `null` retains its distinct
+  presence state, while removing the key withdraws the local claim; and
 - comments, quoting, whitespace, and key order do not participate in the
   comparison.
 

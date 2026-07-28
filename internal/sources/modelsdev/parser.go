@@ -72,6 +72,9 @@ type Model struct {
 	Limit            Limit                            `json:"limit"`
 	Experimental     *Experimental                    `json:"experimental,omitempty"`
 	UnknownFields    []sourcepayload.UnknownJSONField `json:"-"`
+
+	featurePresence map[string]struct{}
+	featureKnown    map[string]struct{}
 }
 
 // UnmarshalJSON retains fingerprints for additive model fields.
@@ -87,6 +90,11 @@ func (m *Model) UnmarshalJSON(data []byte) error {
 	}
 	*m = Model(decoded)
 	m.UnknownFields = unknown
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	m.captureFeaturePresence(raw)
 	return nil
 }
 
@@ -198,6 +206,9 @@ type Limit struct {
 	Context int `json:"context"`
 	Input   int `json:"input"`
 	Output  int `json:"output"`
+
+	presence map[string]struct{}
+	known    map[string]struct{}
 }
 
 const modelsDevExtensionSource = "models.dev"
@@ -316,9 +327,8 @@ func (m *Model) ToStarmapModel() (*catalogs.Model, error) {
 
 	applyModelsDevLineage(model, m.Family)
 	if m.OpenWeights != nil {
-		model.Metadata = &catalogs.ModelMetadata{
-			OpenWeights: *m.OpenWeights,
-		}
+		model.Metadata = &catalogs.ModelMetadata{}
+		model.Metadata.SetOpenWeights(*m.OpenWeights)
 	}
 	applyModelsDevFeatures(model, m)
 	model.Limits = convertModelLimits(m.Limit)
@@ -349,14 +359,18 @@ func applyModelsDevFeatures(model *catalogs.Model, source *Model) {
 			Input:  convertModalities(source.Modalities.Input),
 			Output: convertModalities(source.Modalities.Output),
 		},
-		Temperature:       source.Temperature,
-		ToolCalls:         source.ToolCall,
-		Tools:             source.ToolCall,
-		ToolChoice:        source.ToolCall,
-		Reasoning:         source.Reasoning,
-		Attachments:       source.Attachment,
-		StructuredOutputs: source.StructuredOutput,
 	}
+	apply := func(feature catalogs.ModelFeature, sourceField string) {
+		value, state := source.featureValue(sourceField)
+		applyFeaturePresence(model.Features, feature, value, state)
+	}
+	apply(catalogs.ModelFeatureTemperature, "temperature")
+	apply(catalogs.ModelFeatureToolCalls, "tool_call")
+	apply(catalogs.ModelFeatureTools, "tool_call")
+	apply(catalogs.ModelFeatureToolChoice, "tool_call")
+	apply(catalogs.ModelFeatureReasoning, "reasoning")
+	apply(catalogs.ModelFeatureAttachments, "attachment")
+	apply(catalogs.ModelFeatureStructuredOutputs, "structured_output")
 
 	if levels := convertReasoningLevels(source.ReasoningOptions); len(levels) > 0 {
 		model.Features.ReasoningEffort = true
@@ -371,14 +385,30 @@ func applyModelsDevFeatures(model *catalogs.Model, source *Model) {
 }
 
 func convertModelLimits(limit Limit) *catalogs.ModelLimits {
-	if limit.Context == 0 && limit.Input == 0 && limit.Output == 0 {
+	limits := &catalogs.ModelLimits{}
+	hasClaim := false
+	for _, field := range []struct {
+		source string
+		target catalogs.ModelLimit
+	}{
+		{source: "context", target: catalogs.ModelLimitContextWindow},
+		{source: "input", target: catalogs.ModelLimitInputTokens},
+		{source: "output", target: catalogs.ModelLimitOutputTokens},
+	} {
+		value, state := limit.value(field.source)
+		switch state {
+		case catalogs.ValueKnown:
+			limits.Set(field.target, value)
+			hasClaim = true
+		case catalogs.ValueUnknown:
+			limits.SetUnknown(field.target)
+			hasClaim = true
+		}
+	}
+	if !hasClaim {
 		return nil
 	}
-	return &catalogs.ModelLimits{
-		ContextWindow: int64(limit.Context),
-		InputTokens:   int64(limit.Input),
-		OutputTokens:  int64(limit.Output),
-	}
+	return limits
 }
 
 func convertModelPricing(cost *Cost) *catalogs.ModelPricing {
@@ -503,12 +533,27 @@ func convertModalities(modalities []string) []catalogs.ModelModality {
 func hasFeatureData(model *Model) bool {
 	return len(model.Modalities.Input) > 0 ||
 		len(model.Modalities.Output) > 0 ||
+		len(model.featurePresence) > 0 ||
 		model.Temperature ||
 		model.ToolCall ||
 		model.Reasoning ||
 		model.Attachment ||
 		model.StructuredOutput ||
 		len(model.ReasoningOptions) > 0
+}
+
+func applyFeaturePresence(
+	features *catalogs.ModelFeatures,
+	feature catalogs.ModelFeature,
+	value bool,
+	state catalogs.ValuePresence,
+) {
+	switch state {
+	case catalogs.ValueKnown:
+		features.SetSupport(feature, value)
+	case catalogs.ValueUnknown:
+		features.SetSupportUnknown(feature)
+	}
 }
 
 func (m Model) hasCatalogData() bool {

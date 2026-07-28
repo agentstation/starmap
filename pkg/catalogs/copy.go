@@ -73,7 +73,7 @@ func DeepCopyModel(model Model) Model {
 	modelCopy.Delivery = deepCopyModelDelivery(model.Delivery)
 	modelCopy.Modes = deepCopyModelModes(model.Modes)
 	modelCopy.Pricing = deepCopyModelPricing(model.Pricing)
-	modelCopy.Limits = copyPtr(model.Limits)
+	modelCopy.Limits = deepCopyModelLimits(model.Limits)
 	modelCopy.Extensions = model.Extensions.Copy()
 	return modelCopy
 }
@@ -186,6 +186,14 @@ func deepCopyModelFeatures(features *ModelFeatures) *ModelFeatures {
 	copied := *features
 	copied.Modalities.Input = append([]ModelModality(nil), features.Modalities.Input...)
 	copied.Modalities.Output = append([]ModelModality(nil), features.Modalities.Output...)
+	return &copied
+}
+
+func deepCopyModelLimits(limits *ModelLimits) *ModelLimits {
+	if limits == nil {
+		return nil
+	}
+	copied := *limits
 	return &copied
 }
 

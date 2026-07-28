@@ -86,6 +86,81 @@ func TestLocalModelFactSurvivesWhenDynamicSourcesDoNotSupplyIt(t *testing.T) {
 	}
 }
 
+func TestExplicitEmptyLocalDescriptionSurvivesWhenDynamicSourcesOmitIt(t *testing.T) {
+	authorities := authority.New()
+	merger := newMerger(authorities, NewAuthorityStrategy(authorities), nil)
+	local := &catalogs.Model{ID: "model-1", Name: "Local Name"}
+	local.SetDescription("")
+
+	models, _, err := merger.Models(map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID:    {{ID: "model-1", Name: "Live Provider Name"}},
+		sources.LocalCatalogID: {local},
+	})
+	if err != nil {
+		t.Fatalf("Models: %v", err)
+	}
+	if len(models) != 1 {
+		t.Fatalf("models = %d, want 1", len(models))
+	}
+	if value, state := models[0].DescriptionValue(); value != "" || state != catalogs.ValueKnown {
+		t.Fatalf("description = %q, %v; want explicit empty", value, state)
+	}
+}
+
+func TestLimitPresenceControlsAuthorityFallback(t *testing.T) {
+	tests := []struct {
+		name      string
+		configure func(*catalogs.ModelLimits)
+		want      int64
+	}{
+		{
+			name: "explicit zero is authoritative",
+			configure: func(limits *catalogs.ModelLimits) {
+				limits.Set(catalogs.ModelLimitContextWindow, 0)
+			},
+			want: 0,
+		},
+		{
+			name: "unknown falls through",
+			configure: func(limits *catalogs.ModelLimits) {
+				limits.SetUnknown(catalogs.ModelLimitContextWindow)
+			},
+			want: 128_000,
+		},
+		{
+			name:      "missing falls through",
+			configure: func(*catalogs.ModelLimits) {},
+			want:      128_000,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			providerLimits := &catalogs.ModelLimits{}
+			test.configure(providerLimits)
+			authorities := authority.New()
+			merger := newMerger(authorities, NewAuthorityStrategy(authorities), nil)
+			models, _, err := merger.Models(map[sources.ID][]*catalogs.Model{
+				sources.ProvidersID: {{
+					ID: "model-1", Name: "Provider", Limits: providerLimits,
+				}},
+				sources.ModelsDevHTTPID: {{
+					ID: "model-1", Name: "Upstream",
+					Limits: &catalogs.ModelLimits{ContextWindow: 128_000},
+				}},
+			})
+			if err != nil {
+				t.Fatalf("Models: %v", err)
+			}
+			if len(models) != 1 || models[0].Limits == nil {
+				t.Fatalf("models = %#v", models)
+			}
+			if got := models[0].Limits.ContextWindow; got != test.want {
+				t.Fatalf("context window = %d, want %d", got, test.want)
+			}
+		})
+	}
+}
+
 func TestLocalOperatorConfigurationLeadsDiscoveredProviderMetadata(t *testing.T) {
 	authorities := authority.New()
 	merger := newMerger(authorities, NewAuthorityStrategy(authorities), nil)

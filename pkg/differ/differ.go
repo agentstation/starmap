@@ -299,13 +299,8 @@ func (diff *Differ) model(existing, updated catalogs.Model) *ModelUpdate {
 		})
 	}
 
-	if existing.Description != updated.Description && !diff.ignoreFields["description"] {
-		changes = append(changes, FieldChange{
-			Path:     "description",
-			OldValue: truncateString(existing.Description, 50),
-			NewValue: truncateString(updated.Description, 50),
-			Type:     ChangeTypeUpdate,
-		})
+	if !diff.ignoreFields["description"] {
+		changes = append(changes, diffModelDescription(existing, updated)...)
 	}
 
 	if existing.Status != updated.Status && !diff.ignoreFields["status"] {
@@ -440,32 +435,23 @@ func diffModelFeatures(existing, updated *catalogs.ModelFeatures) []FieldChange 
 		return changes
 	}
 
-	// Compare boolean features
-	if existing.Tools != updated.Tools {
-		changes = append(changes, FieldChange{
-			Path:     "features.tools",
-			OldValue: fmt.Sprintf("%v", existing.Tools),
-			NewValue: fmt.Sprintf("%v", updated.Tools),
-			Type:     ChangeTypeUpdate,
-		})
-	}
-
-	if existing.Reasoning != updated.Reasoning {
-		changes = append(changes, FieldChange{
-			Path:     "features.reasoning",
-			OldValue: fmt.Sprintf("%v", existing.Reasoning),
-			NewValue: fmt.Sprintf("%v", updated.Reasoning),
-			Type:     ChangeTypeUpdate,
-		})
-	}
-
-	if existing.Streaming != updated.Streaming {
-		changes = append(changes, FieldChange{
-			Path:     "features.streaming",
-			OldValue: fmt.Sprintf("%v", existing.Streaming),
-			NewValue: fmt.Sprintf("%v", updated.Streaming),
-			Type:     ChangeTypeUpdate,
-		})
+	// Compare the feature paths currently exposed by the change report,
+	// including missing/unknown/explicit-false transitions.
+	for _, feature := range []catalogs.ModelFeature{
+		catalogs.ModelFeatureTools,
+		catalogs.ModelFeatureReasoning,
+		catalogs.ModelFeatureStreaming,
+	} {
+		existingValue, existingPresence := existing.Support(feature)
+		updatedValue, updatedPresence := updated.Support(feature)
+		if existingValue != updatedValue || existingPresence != updatedPresence {
+			changes = append(changes, FieldChange{
+				Path:     "features." + string(feature),
+				OldValue: formatPresence(existingValue, existingPresence),
+				NewValue: formatPresence(updatedValue, updatedPresence),
+				Type:     ChangeTypeUpdate,
+			})
+		}
 	}
 
 	// Compare modalities
@@ -565,31 +551,21 @@ func diffModelLimits(existing, updated *catalogs.ModelLimits) []FieldChange {
 		return changes
 	}
 
-	if existing.ContextWindow != updated.ContextWindow {
-		changes = append(changes, FieldChange{
-			Path:     "limits.context_window",
-			OldValue: formatTokens(existing.ContextWindow),
-			NewValue: formatTokens(updated.ContextWindow),
-			Type:     ChangeTypeUpdate,
-		})
-	}
-
-	if existing.InputTokens != updated.InputTokens {
-		changes = append(changes, FieldChange{
-			Path:     "limits.input_tokens",
-			OldValue: formatTokens(existing.InputTokens),
-			NewValue: formatTokens(updated.InputTokens),
-			Type:     ChangeTypeUpdate,
-		})
-	}
-
-	if existing.OutputTokens != updated.OutputTokens {
-		changes = append(changes, FieldChange{
-			Path:     "limits.output_tokens",
-			OldValue: formatTokens(existing.OutputTokens),
-			NewValue: formatTokens(updated.OutputTokens),
-			Type:     ChangeTypeUpdate,
-		})
+	for _, limit := range []catalogs.ModelLimit{
+		catalogs.ModelLimitContextWindow,
+		catalogs.ModelLimitInputTokens,
+		catalogs.ModelLimitOutputTokens,
+	} {
+		existingValue, existingPresence := existing.Value(limit)
+		updatedValue, updatedPresence := updated.Value(limit)
+		if existingValue != updatedValue || existingPresence != updatedPresence {
+			changes = append(changes, FieldChange{
+				Path:     "limits." + string(limit),
+				OldValue: formatPresence(formatTokens(existingValue), existingPresence),
+				NewValue: formatPresence(formatTokens(updatedValue), updatedPresence),
+				Type:     ChangeTypeUpdate,
+			})
+		}
 	}
 
 	return changes
@@ -631,11 +607,13 @@ func diffModelMetadata(existing, updated *catalogs.ModelMetadata) []FieldChange 
 		})
 	}
 
-	if existing.OpenWeights != updated.OpenWeights {
+	existingOpen, existingOpenPresence := existing.OpenWeightsValue()
+	updatedOpen, updatedOpenPresence := updated.OpenWeightsValue()
+	if existingOpen != updatedOpen || existingOpenPresence != updatedOpenPresence {
 		changes = append(changes, FieldChange{
 			Path:     "metadata.open_weights",
-			OldValue: fmt.Sprintf("%v", existing.OpenWeights),
-			NewValue: fmt.Sprintf("%v", updated.OpenWeights),
+			OldValue: formatPresence(existingOpen, existingOpenPresence),
+			NewValue: formatPresence(updatedOpen, updatedOpenPresence),
 			Type:     ChangeTypeUpdate,
 		})
 	}

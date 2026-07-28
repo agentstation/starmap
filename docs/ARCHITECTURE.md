@@ -761,6 +761,16 @@ and contain no source-order table of their own. Tests verify schema coverage,
 real reflection paths, complete policy metadata, defensive copies, and
 deterministic selection.
 
+Presence is part of field evidence, not inferred from a Go zero value.
+Description, feature, limit, and open-weights records distinguish omitted,
+explicitly unknown, and known values. Normal readers keep scalar fields;
+algorithms and source adapters use `DescriptionValue`,
+`ModelFeatures.Support`, `ModelLimits.Value`, and `OpenWeightsValue` when the
+distinction matters. In the human YAML, omission means no claim, `null` means
+unknown, and `false`, `0`, or `""` are known values. Provider and models.dev
+decoders retain that wire-level distinction, and immutable JSON payloads,
+deep copies, reconciliation, and change detection preserve it.
+
 See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
 
 ### Authority Package
@@ -1290,7 +1300,8 @@ Unchanged generated values retain their original source and immutable
 observation evidence; an actually changed value becomes a local claim. A
 current observation from the original source replaces its unchanged projected
 copy at the original authority position. Formatting and comments never create
-local evidence.
+local evidence. Removing a YAML key withdraws its claim; writing `false`, `0`,
+`""`, or `null` is a distinct semantic edit.
 
 **Example:**
 

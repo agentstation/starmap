@@ -172,7 +172,7 @@ func defaultPolicies() []Policy {
 	return []Policy{
 		// Provider-scoped model facts.
 		policy(sources.ResourceTypeModel, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "The provider observation supplies the current provider-facing model name."),
-		policy(sources.ResourceTypeModel, "Description", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Current upstream descriptions lead and human YAML fills missing copy."),
+		policy(sources.ResourceTypeModel, "Description", "", modelsDevFirst, MergeReplace, EmptyAuthoritative, "Current upstream descriptions lead; an explicitly present empty human value is distinct from an omitted fallback."),
 		policy(sources.ResourceTypeModel, "Status", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed lifecycle data leads a manual fallback."),
 		policy(sources.ResourceTypeModel, "Authors", "", modelsDevFirst, MergeSetUnion, EmptyAbsent, "Observed authorship leads and non-duplicate lower-authority authors may fill gaps."),
 		policy(sources.ResourceTypeModel, "Lineage.Family", "lineage.family", modelsDevFirst, MergeReplace, EmptyAbsent, "Community model metadata leads provider and local fallback for canonical family."),

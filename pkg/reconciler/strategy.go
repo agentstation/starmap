@@ -163,11 +163,14 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.Resourc
 }
 
 func policyAccepts(policy authority.Policy, value any) bool {
-	if value == nil || value == "" {
+	if value == nil {
 		return false
 	}
 	if policy.Empty == authority.EmptyAuthoritative {
 		return true
+	}
+	if value == "" {
+		return false
 	}
 	return !reflect.ValueOf(value).IsZero()
 }
@@ -207,17 +210,19 @@ func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ 
 	// Check sources in priority order
 	for _, source := range s.sourcePriorityOrder {
 		if value, exists := values[source]; exists {
-			if value != nil && value != "" {
+			if value != nil {
 				return value, source, fmt.Sprintf("selected by source priority order (%s)", source)
 			}
 		}
 	}
 
-	// No priority source found, use first available non-empty value
+	// No priority source found, use the first available value. Candidate
+	// collection already excludes missing values, so an empty string here is
+	// an explicit known value.
 	for _, source := range sortedValueSources(values) {
 		value := values[source]
-		if value != nil && value != "" {
-			return value, source, "no priority source available, using deterministic non-empty fallback"
+		if value != nil {
+			return value, source, "no priority source available, using deterministic available fallback"
 		}
 	}
 

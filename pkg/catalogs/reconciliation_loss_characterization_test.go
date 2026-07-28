@@ -44,11 +44,10 @@ func TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits(t
 	}
 }
 
-// TestF008CharacterizationMergeModelsClearsFalseButKeepsOtherZeroValues pins
-// the current presence asymmetry. P4.6 must replace this reflection policy
-// with explicit presence so false, zero, empty, missing, and unknown remain
-// distinguishable.
-func TestF008CharacterizationMergeModelsClearsFalseButKeepsOtherZeroValues(t *testing.T) {
+// TestF008MergeModelsUsesExplicitPresence proves zero values clear only when a
+// source explicitly supplied them; missing and unknown claims retain a known
+// baseline.
+func TestF008MergeModelsUsesExplicitPresence(t *testing.T) {
 	existing := Model{
 		ID:          "presence",
 		Name:        "Presence",
@@ -56,30 +55,55 @@ func TestF008CharacterizationMergeModelsClearsFalseButKeepsOtherZeroValues(t *te
 		Features: &ModelFeatures{
 			ToolCalls: true,
 		},
+		Metadata: &ModelMetadata{OpenWeights: true},
 		Limits: &ModelLimits{
 			ContextWindow: 128000,
+			InputTokens:   64000,
+			OutputTokens:  8192,
 		},
 	}
 	updated := Model{
-		ID:          existing.ID,
-		Name:        existing.Name,
-		Description: "",
+		ID:   existing.ID,
+		Name: existing.Name,
 		Features: &ModelFeatures{
-			ToolCalls: false,
+			Tools: false,
 		},
-		Limits: &ModelLimits{
-			ContextWindow: 0,
-		},
+		Metadata: &ModelMetadata{},
+		Limits:   &ModelLimits{},
 	}
+	updated.SetDescription("")
+	updated.Features.SetSupport(ModelFeatureToolCalls, false)
+	updated.Features.SetSupportUnknown(ModelFeatureTools)
+	updated.Metadata.SetOpenWeights(false)
+	updated.Limits.Set(ModelLimitContextWindow, 0)
+	updated.Limits.SetUnknown(ModelLimitInputTokens)
 
 	got := MergeModels(existing, updated)
 	if got.Features == nil || got.Features.ToolCalls {
-		t.Fatalf("F-008 characterization changed: false did not clear true: %#v", got.Features)
+		t.Fatalf("explicit false did not clear true: %#v", got.Features)
 	}
-	if got.Description != existing.Description {
-		t.Fatalf("empty string cleared description: got %q, want %q", got.Description, existing.Description)
+	if got.Description != "" {
+		t.Fatalf("explicit empty description = %q, want empty", got.Description)
 	}
-	if got.Limits == nil || got.Limits.ContextWindow != existing.Limits.ContextWindow {
-		t.Fatalf("zero cleared context window: got %#v, want %d", got.Limits, existing.Limits.ContextWindow)
+	if got.Limits == nil || got.Limits.ContextWindow != 0 {
+		t.Fatalf("explicit zero did not clear context window: %#v", got.Limits)
+	}
+	if got.Limits.InputTokens != existing.Limits.InputTokens {
+		t.Fatalf("unknown input limit cleared known baseline: got %d, want %d", got.Limits.InputTokens, existing.Limits.InputTokens)
+	}
+	if got.Limits.OutputTokens != existing.Limits.OutputTokens {
+		t.Fatalf("missing output limit cleared known baseline: got %d, want %d", got.Limits.OutputTokens, existing.Limits.OutputTokens)
+	}
+	if got.Metadata == nil || got.Metadata.OpenWeights {
+		t.Fatalf("explicit false did not clear open weights: %#v", got.Metadata)
+	}
+	if _, state := got.Features.Support(ModelFeatureToolCalls); state != ValueKnown {
+		t.Fatalf("tool_calls presence = %v, want known", state)
+	}
+	if _, state := got.DescriptionValue(); state != ValueKnown {
+		t.Fatalf("description presence = %v, want known", state)
+	}
+	if _, state := got.Limits.Value(ModelLimitContextWindow); state != ValueKnown {
+		t.Fatalf("context window presence = %v, want known", state)
 	}
 }

@@ -676,19 +676,19 @@ func (c *Client) applyFeatureRule(features *catalogs.ModelFeatures, modelID stri
 
 	switch rule.Feature {
 	case "tools":
-		features.Tools = rule.Value
+		features.SetSupport(catalogs.ModelFeatureTools, rule.Value)
 	case "tool_choice":
-		features.ToolChoice = rule.Value
+		features.SetSupport(catalogs.ModelFeatureToolChoice, rule.Value)
 	case "tool_calls":
-		features.ToolCalls = rule.Value
+		features.SetSupport(catalogs.ModelFeatureToolCalls, rule.Value)
 	case "structured_outputs":
-		features.StructuredOutputs = rule.Value
+		features.SetSupport(catalogs.ModelFeatureStructuredOutputs, rule.Value)
 	case "reasoning":
-		features.Reasoning = rule.Value
+		features.SetSupport(catalogs.ModelFeatureReasoning, rule.Value)
 	case "top_k":
-		features.TopK = rule.Value
+		features.SetSupport(catalogs.ModelFeatureTopK, rule.Value)
 	case "format_response":
-		features.FormatResponse = rule.Value
+		features.SetSupport(catalogs.ModelFeatureFormatResponse, rule.Value)
 	}
 }
 

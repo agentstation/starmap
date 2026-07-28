@@ -56,6 +56,8 @@ type Model struct {
 	// Timestamps for record keeping and auditing
 	CreatedAt utc.Time `json:"created_at" yaml:"created_at"` // Created date (YYYY-MM or YYYY-MM-DD format)
 	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"` // Last updated date (YYYY-MM or YYYY-MM-DD format)
+
+	descriptionPresence ValuePresence
 }
 
 // ModelMetadata represents the metadata for a model.
@@ -65,6 +67,8 @@ type ModelMetadata struct {
 	KnowledgeCutoff *utc.Time          `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"` // Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
 	Tags            []ModelTag         `json:"tags,omitempty" yaml:"tags,omitempty"`                         // Use case tags for categorizing the model
 	Architecture    *ModelArchitecture `json:"architecture,omitempty" yaml:"architecture,omitempty"`         // Technical architecture details
+
+	openWeightsPresence ValuePresence
 }
 
 // ModelLineage represents model family and derivation metadata.
@@ -161,6 +165,8 @@ type ModelFeatures struct {
 	StructuredOutputs bool `json:"structured_outputs" yaml:"structured_outputs"` // Supports structured outputs (JSON schema validation)
 	Streaming         bool `json:"streaming" yaml:"streaming"`                   // Supports response streaming
 
+	featurePresence uint64
+	featureKnown    uint64
 }
 
 // ModelStatus represents a model lifecycle or availability state.
@@ -256,6 +262,9 @@ type ModelLimits struct {
 	ContextWindow int64 `json:"context_window" yaml:"context_window"` // Context window size in tokens
 	InputTokens   int64 `json:"input_tokens" yaml:"input_tokens"`     // Maximum input tokens
 	OutputTokens  int64 `json:"output_tokens" yaml:"output_tokens"`   // Maximum output tokens
+
+	limitPresence uint8
+	limitKnown    uint8
 }
 
 // ModelTools represents external tool and capability integrations.

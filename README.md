@@ -597,6 +597,29 @@ For detailed source hierarchy, authority rules, and how sources work together, s
 
 Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra, and more). Each package includes comprehensive documentation in its README.
 
+Catalog reads keep natural Go scalar fields. When an algorithm needs to
+distinguish an unreported value from an explicit zero, use the presence API:
+
+```go
+if model.Features != nil {
+    supported, presence := model.Features.Support(catalogs.ModelFeatureToolCalls)
+    switch presence {
+    case catalogs.ValueKnown:
+        fmt.Printf("tool calls reported: %t\n", supported)
+    case catalogs.ValueUnknown:
+        fmt.Println("tool call support explicitly unknown")
+    case catalogs.ValueMissing:
+        fmt.Println("source did not report tool call support")
+    }
+}
+```
+
+For source/plugin authors, non-zero literals need no extra ceremony. Use
+`SetSupport`, `ModelLimits.Set`, `SetDescription`, or `SetOpenWeights` when a
+reported `false`, `0`, or `""` must remain distinct from an omitted field.
+Human YAML uses the same intuitive contract: omitted means missing, `null`
+means unknown, and a zero-valued scalar is explicit.
+
 ## HTTP Server
 
 Start a production-ready REST API server for programmatic catalog access:

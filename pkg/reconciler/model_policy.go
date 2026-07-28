@@ -61,23 +61,19 @@ func (merger *merger) mergeModelLimits(
 ) {
 	fields := []struct {
 		evidence string
-		value    func(*catalogs.Model) int64
-		apply    func(*catalogs.ModelLimits, int64)
+		limit    catalogs.ModelLimit
 	}{
 		{
 			evidence: modelProvenanceLimitsContextWindow,
-			value:    func(model *catalogs.Model) int64 { return model.Limits.ContextWindow },
-			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.ContextWindow = value },
+			limit:    catalogs.ModelLimitContextWindow,
 		},
 		{
 			evidence: modelProvenanceLimitsInputTokens,
-			value:    func(model *catalogs.Model) int64 { return model.Limits.InputTokens },
-			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.InputTokens = value },
+			limit:    catalogs.ModelLimitInputTokens,
 		},
 		{
 			evidence: modelProvenanceLimitsOutputTokens,
-			value:    func(model *catalogs.Model) int64 { return model.Limits.OutputTokens },
-			apply:    func(limits *catalogs.ModelLimits, value int64) { limits.OutputTokens = value },
+			limit:    catalogs.ModelLimitOutputTokens,
 		},
 	}
 	for _, field := range fields {
@@ -89,10 +85,14 @@ func (merger *merger) mergeModelLimits(
 			fieldPolicy,
 			models,
 			func(model *catalogs.Model) any {
-				if model == nil || model.Limits == nil || field.value(model) <= 0 {
+				if model == nil || model.Limits == nil {
 					return nil
 				}
-				return field.value(model)
+				value, state := model.Limits.Value(field.limit)
+				if state != catalogs.ValueKnown {
+					return nil
+				}
+				return value
 			},
 		)
 		for _, source := range policy.SourceOrder {
@@ -100,14 +100,14 @@ func (merger *merger) mergeModelLimits(
 			if model == nil || model.Limits == nil {
 				continue
 			}
-			value := field.value(model)
-			if value <= 0 {
+			value, state := model.Limits.Value(field.limit)
+			if state != catalogs.ValueKnown {
 				continue
 			}
 			if target.Limits == nil {
 				target.Limits = &catalogs.ModelLimits{}
 			}
-			field.apply(target.Limits, value)
+			target.Limits.Set(field.limit, value)
 			merger.recordModelHistory(
 				identity,
 				history,

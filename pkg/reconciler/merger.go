@@ -291,8 +291,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		mergedCopy.UpdatedAt = utc.Time{}
 		baselineCopy.Extensions = catalogs.NormalizeSourceExtensions(baselineCopy.Extensions)
 		mergedCopy.Extensions = catalogs.NormalizeSourceExtensions(mergedCopy.Extensions)
-		// Compare using reflect.DeepEqual
-		hasContentChanged = !reflect.DeepEqual(baselineCopy, mergedCopy)
+		hasContentChanged = !baselineCopy.Equal(mergedCopy)
 	}
 
 	// Update timestamps based on model state
@@ -452,6 +451,16 @@ func (merger *merger) recordModelHistory(
 
 // getModelFieldValue extracts a field value from a model using reflection.
 func (merger *merger) modelFieldValue(model *catalogs.Model, fieldPath string) any {
+	if model == nil {
+		return nil
+	}
+	if fieldPath == "Description" {
+		value, state := model.DescriptionValue()
+		if state == catalogs.ValueKnown {
+			return value
+		}
+		return nil
+	}
 	return merger.fieldValue(reflect.ValueOf(model), fieldPath)
 }
 
@@ -495,6 +504,12 @@ func (merger *merger) fieldValue(v reflect.Value, fieldPath string) any {
 
 // setModelFieldValue sets a field value on a model using reflection.
 func (merger *merger) setModelFieldValue(model *catalogs.Model, fieldPath string, value any) {
+	if fieldPath == "Description" {
+		if description, ok := value.(string); ok {
+			model.SetDescription(description)
+			return
+		}
+	}
 	if fieldPath == "Features" {
 		if features, ok := value.(*catalogs.ModelFeatures); ok {
 			copied := *features
@@ -583,8 +598,13 @@ func mergeSupplementalMetadata(target, source *catalogs.ModelMetadata) *catalogs
 		knowledgeCutoff := *source.KnowledgeCutoff
 		target.KnowledgeCutoff = &knowledgeCutoff
 	}
-	if source.OpenWeights {
-		target.OpenWeights = true
+	openWeights, sourcePresence := source.OpenWeightsValue()
+	_, targetPresence := target.OpenWeightsValue()
+	switch {
+	case sourcePresence == catalogs.ValueKnown && targetPresence != catalogs.ValueKnown:
+		target.SetOpenWeights(openWeights)
+	case sourcePresence == catalogs.ValueUnknown && targetPresence == catalogs.ValueMissing:
+		target.SetOpenWeightsUnknown()
 	}
 	target.Tags = mergeModelTags(target.Tags, source.Tags)
 	target.Architecture = mergeModelArchitecture(target.Architecture, source.Architecture)

@@ -323,7 +323,7 @@ type ResultStatistics struct {
 ```
 
 <a name="SourceOrderStrategy"></a>
-## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L177-L180>)
+## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L180-L183>)
 
 SourceOrderStrategy resolves conflicts using a fixed source precedence order. Sources earlier in the priority slice have higher precedence than sources later in the slice.
 
@@ -334,7 +334,7 @@ type SourceOrderStrategy struct {
 ```
 
 <a name="NewSourceOrderStrategy"></a>
-### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L184>)
+### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L187>)
 
 ```go
 func NewSourceOrderStrategy(priorityOrder []sources.ID) *SourceOrderStrategy
@@ -343,7 +343,7 @@ func NewSourceOrderStrategy(priorityOrder []sources.ID) *SourceOrderStrategy
 NewSourceOrderStrategy creates a new source priority order strategy. The priorityOrder slice determines precedence: earlier elements have higher priority.
 
 <a name="SourceOrderStrategy.ResolveConflict"></a>
-### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L201>)
+### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L204>)
 
 ```go
 func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string)
@@ -352,7 +352,7 @@ func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]an
 ResolveConflict uses source priority order to resolve conflicts.
 
 <a name="SourceOrderStrategy.ResolveResourceConflict"></a>
-### func \(\*SourceOrderStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L206>)
+### func \(\*SourceOrderStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L209>)
 
 ```go
 func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ string, values map[sources.ID]any) (any, sources.ID, string)
