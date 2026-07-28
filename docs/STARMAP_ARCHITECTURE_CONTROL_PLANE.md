@@ -1,0 +1,845 @@
+# Starmap Architecture Execution Control Plane
+
+Last updated: 2026-07-27
+
+Status: `IN_PROGRESS` — P0.5 is revalidating the plan PR on the merged secure
+dependency baseline; architecture implementation has not started.
+
+## Mission
+
+Deliver a smaller, canonical, production-trustworthy Starmap that can be used:
+
+1. directly as an idiomatic Go library with an immutable in-process catalog;
+2. as an embeddable Starmap server composed by another Go program; and
+3. as a reactive remote catalog source for a Go consumer, with push notification
+   as the normal path and polling only as a documented fallback.
+
+The final repository must be ready for an enterprise LLM proxy gateway such as
+Starport. Reliability must come from explicit semantics, deep modules, narrow
+interfaces, fault isolation, and high-value tests—not from duplicated
+representations or speculative abstractions.
+
+## Authoritative Inputs
+
+This plan is the durable execution record.
+
+- Architecture report:
+  [`reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html`](reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html)
+- Architecture report SHA-256:
+  `de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235`
+- Independent Fable review prompt:
+  [`reviews/FABLE_STARMAP_PLAN_REVIEW_PROMPT.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_PROMPT.md)
+- Independent Fable review (full report):
+  [`reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md)
+- Independent Fable review SHA-256:
+  `b2f78de7be15762f9d0425f99a698dc3d63397b3c2e07e553eb16ed51a3495b2`
+- Independent Fable review disposition:
+  [`reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md)
+- Independent Fable review disposition SHA-256:
+  `df13364d205ca48848841f6aed20888ea0e8baf81e148ea1da73e2bc3406ae86`
+- Reviewed protected-main baseline:
+  `9508ee7866e4683e001e7ad153319d348433045d`
+- Historical pre-control-plane comparison:
+  `3787d7164433f2fcb713a2d81e0cb653f9df6be5`
+- Historical production catalog ledger:
+  [`STARPORT_CATALOG_CONTROL_PLANE.md`](STARPORT_CATALOG_CONTROL_PLANE.md)
+
+The historical production ledger remains evidence; this plan supersedes its
+prescriptive architecture where the new review found a conflict. Historical
+claims must not be silently rewritten.
+
+### Historical Supersession Map
+
+| Historical evidence | Earlier decision | Current disposition |
+| --- | --- | --- |
+| F-095 and P11.15–P11.18 | `~/.starmap/catalog` is a machine generation store; YAML is exported under `~/.starmap/exports/catalog` | Superseded for the target product contract by one human provider-YAML workspace, but existing installations require typed legacy-layout detection and an explicit transactional migration in P3.1/P3.10 |
+| P11.14 | Restart gives durable machine `current` precedence over editable YAML | Superseded by the selected human-workspace truth model only after P3 proves safe detection, migration, authority, provenance, restart, and downgrade behavior |
+| F-097 | Prelaunch clean break needs no compatibility or migration | Narrowly superseded: no public schema compatibility layer is retained, but a legacy layout detector is mandatory because the same path would otherwise change meaning destructively |
+| F-099 / P12.4 | Homebrew release flow remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
+| F-105 / P12.7 | Version stdout patch release remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
+| F-106 / P12.8 | Immutable draft-first release flow remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
+
+## Status Legend
+
+- `DONE`: criteria are proven and evidence is recorded.
+- `IN_PROGRESS`: exactly one task currently owns execution.
+- `PENDING`: ready or waiting on an earlier task.
+- `BLOCKED`: repeated external blocker prevents meaningful progress.
+- `REJECTED`: user accepted a documented non-action and residual risk.
+- `SUPERSEDED`: replaced by a named task with equal or stronger criteria.
+
+`DEFERRED` is not a terminal state. Every phase, task, finding, open pull
+request, branch, and worktree must end as `DONE`, `REJECTED`, or `SUPERSEDED`.
+
+## Operating Rules
+
+1. Read this file before every autonomous continuation and after every
+   compaction event.
+2. Keep at most one task `IN_PROGRESS`.
+3. Update the ledgers and evidence log in the same commit as the work they
+   describe. Two narrow exceptions apply: third-party PR merges are recorded in
+   the next control-plane commit with the exact merge SHA, and the closing
+   ledger PR records the exact post-merge machine-gate commands and expected
+   output before it merges; that gate then runs after merge without another
+   documentation commit.
+4. Never mark a task `DONE` from intention, code review, or a narrower test.
+5. Preserve immutable catalog publication, compare-and-swap, retained
+   generations, rollback, and O(1) catalog access.
+6. Do not add persisted `/definitions`, `/offerings`, or `/overrides` trees.
+7. Treat provider YAML as the single human-facing model representation.
+8. Do not silently mutate an existing local catalog during construction or
+   binary installation.
+9. Do not infer deletion from source absence or incomplete observation.
+10. Never persist credentials, secret values, or reusable secret fingerprints.
+11. No hidden long-lived goroutine may be owned by a constructor. Reactive
+    synchronization must have explicit context, start, and stop ownership.
+12. A failed parse, source read, validation, write, commit, remote fetch, or
+    publication must leave the prior catalog usable.
+13. Use typed errors. Panic is not an input, source, network, storage, or
+    lifecycle error strategy.
+14. Prefer deleting a shallow module over preserving an unused seam.
+15. One adapter is a hypothetical seam. Retain a seam only when at least two
+    real adapters or a concrete test substitution justify it.
+16. Never merge a phase PR until its exact head passes required local and hosted
+    gates.
+17. Do not publish an application or catalog release merely to complete this
+    plan. Release publication requires its own explicit authorization.
+18. Pause for the user when protected review approval, merge authority, release
+    authority, credentials, or a material product decision cannot be exercised
+    autonomously. Record the blocker and resume immediately after it is cleared.
+
+## `/goal` Prompt
+
+```text
+/goal Execute docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md to completion.
+
+Treat that document as the durable control plane and status ledger. Read it
+before acting and after every context-compaction event. Resume from the single
+IN_PROGRESS task, or the first PENDING task whose dependencies are DONE. Update
+the phase ledger, task ledger, finding ledger, PR ledger, workspace ledger, and
+evidence log in the same commit as each material result.
+
+Preserve the reviewed architecture contract:
+- one human-editable provider YAML catalog under ~/.starmap/catalog;
+- embedded catalogs are verified, versioned, lowest-authority observations;
+- installing or constructing Starmap never silently rewrites an existing
+  workspace;
+- definitions, offerings, and author membership are derived immutable read
+  views, not additional persisted configuration trees;
+- valid provider pricing wins for that provider offering;
+- source absence and degraded observations cannot delete last-known-good data;
+- build and validate candidates off to the side, then publish immutable
+  generations atomically;
+- starmap.Client.Catalog() remains non-failing, non-nil, O(1), allocation-free,
+  and returns the concrete immutable catalog;
+- the Go library remains independently useful without the CLI, acquisition
+  stack, or server;
+- an embeddable Starmap server is available to Go programs;
+- a remote Go consumer performs an initial verified fetch, then reacts to
+  post-commit server events through the sole SSE transport, verifies and
+  atomically activates immutable generations, uses flushed heartbeats to
+  establish stream health, reconnects with mandatory gap recovery, and polls
+  only as an explicit fallback;
+- all repository-authored Go files stay below 2,000 lines; files over 1,000
+  lines require review, and files over 1,500 require an explicit durable
+  modularity justification before they can remain;
+- tests must prove user-visible and failure semantics, not inflate counts.
+
+Use a fresh phase branch and worktree from the current protected main for each
+coherent phase. Do not use codex/provider-expansion-wave0 as an implementation
+base. Treat PR #40 as a read-only donor inventory, salvage only reviewed
+provider/connector work that fits the new contract, then close the PR and remove
+its branch/worktree. Resolve every open PR as merged or closed. Keep branch
+protection active. Do not force-push protected main.
+
+Run the smallest decisive tests while developing, then every task and phase
+gate named in the control plane. Record exact commands, commit SHAs, PR heads,
+hosted check URLs, benchmark results, and failure-injection evidence. A task is
+DONE only when every listed criterion is verified.
+
+Continue autonomously while safe in-scope work remains. Ask only for genuinely
+missing external authority or a product decision that materially changes the
+contract. Protected review approval and other user-owned GitHub decisions are
+explicit pauses, not reasons to weaken or bypass a gate. The goal is complete
+only when every phase/task/finding is terminal,
+all implementation PRs are merged or intentionally closed, GitHub has no open
+Starmap PR, protected main is green, local main exactly tracks origin/main, all
+temporary worktrees and obsolete local/remote branches are removed, the working
+tree is clean, and the final evidence audit proves Starmap is ready for an
+enterprise LLM proxy gateway.
+```
+
+## Target Architecture
+
+```text
+verified embedded catalog (bootstrap + versioned observation)
+                         |
+                         v
+one human workspace: ~/.starmap/catalog/providers/...
+            ^            |             ^
+            |            |             |
+ provider observations   |       models.dev observations
+            \             |            /
+             one authority + provenance implementation
+                              |
+                     validate complete candidate
+                              |
+                    immutable generation
+                 store / sole commit CAS
+                       |             \
+                       v              +--> atomic YAML workspace
+             atomic in-memory Catalog     post-commit projection,
+                         /          \      repaired by digest
+                Go library       Starmap server
+                                      |
+                       manifest + immutable payload
+                                      |
+                     post-commit SSE notification
+                                      |
+                      reactive Go remote consumer
+```
+
+### Catalog roles
+
+| Role | Contract |
+| --- | --- |
+| Embedded catalog | Verified offline bootstrap and lowest-authority versioned observation; never a wholesale overlay |
+| Local provider YAML | The one human-editable catalog; semantic edits are supported |
+| Provenance and generation metadata | Machine-owned evidence and lifecycle state, not competing configuration |
+| Immutable generation | Compiled, validated publication product; safe to retain and share |
+| Catalog store | Durable generation history, CAS, retention, and rollback |
+| Starmap server | Optional public Go module and binary composition over immutable generations |
+| Remote consumer | Verified initial fetch plus push-triggered immutable generation activation |
+
+### Human edit contract
+
+- Editing a semantic value creates local evidence for that field.
+- Formatting, comments, quoting, and key order are not durable data.
+- Generated values keep their original source when YAML still equals the last
+  materialized provenance value.
+- Valid current dynamic facts normally outrank manual fallback.
+- Manual fields survive when dynamic sources do not supply them.
+- Removing a field withdraws the local claim and permits source refill.
+- Removing a local-only model deletes it.
+- Removing an upstream-backed model does not permanently suppress
+  rediscovery. Persistent suppression must use an explicit in-record lifecycle
+  or exclusion value, not an override file.
+- A running process does not watch files implicitly. A successful explicit
+  reload or update publishes one new immutable generation.
+
+## Go Composition Contract
+
+### In-process library
+
+The normal consumer path remains:
+
+```go
+sm, err := starmap.New(...)
+if err != nil {
+    return err
+}
+
+catalog := sm.Catalog()
+model, err := catalog.FindModel("gpt-4o")
+```
+
+Success requires:
+
+- initialization errors occur in `New`;
+- `Catalog()` has no error result;
+- the returned static type is the concrete immutable catalog;
+- read methods return caller-owned values;
+- the root read path does not require server, scheduler, CLI, or provider
+  acquisition implementations;
+- provider-specific price and limits remain available through an unambiguous
+  provider/model query.
+
+### Embeddable server
+
+Another Go program must be able to compose the Starmap server without importing
+an `internal` package or invoking the CLI. The public server module must:
+
+- accept an already constructed Starmap/catalog dependency;
+- expose health/readiness, manifest, immutable generation, query, and event
+  endpoints;
+- publish events only after durable generation commit;
+- have explicit lifecycle and context ownership;
+- validate authentication, body limits, media types, origins, timeouts, and
+  streaming compatibility during construction;
+- avoid acquiring provider credentials unless the embedding program explicitly
+  composes acquisition.
+
+### Reactive remote library
+
+SSE is the sole remote notification transport because catalog publication is
+server-to-client. The existing WebSocket path is deleted; a future
+reintroduction requires a named bidirectional consumer and a new reviewed
+decision. SSE runs through the normal HTTP router, authentication, CORS,
+timeouts, proxies, and load balancers without a protocol upgrade.
+
+Publication events are hints that identify a committed immutable generation.
+They are not catalog data, and correctness never depends on replay or an
+unbroken stream. The server emits flushed SSE comment heartbeats on the same
+serialized writer as publication events. The default heartbeat interval is 20
+seconds and the default client liveness timeout is 60 seconds; both are
+configurable with validation that preserves a useful timeout margin. A
+heartbeat does not carry an event ID, advance publication sequence, or trigger
+a catalog fetch.
+
+Stream liveness and catalog freshness are separate states. If a publication
+cannot be written within its deadline, the server must coalesce toward the
+newest generation or terminate the connection so reconnect catch-up runs. It
+must never silently discard a generation hint while continuing to report a
+healthy stream.
+
+The remote consumer must:
+
+1. fetch and verify the current manifest and immutable payload;
+2. atomically publish the initial compatible generation;
+3. subscribe to post-commit SSE events;
+4. treat an event as a hint, never as catalog data;
+5. fetch the addressed immutable generation;
+6. verify schema compatibility, identity, size, digest, and publisher policy;
+7. deduplicate by generation ID and payload digest;
+8. atomically activate only a newer valid generation;
+9. reconnect with bounded exponential backoff and jitter;
+10. use `Last-Event-ID` where supported;
+11. refetch current state after every reconnect so dropped events cannot cause
+    permanent staleness;
+12. treat absence of an event or heartbeat before the liveness deadline as a
+    degraded stream that is canceled and reconnected;
+13. expose stream liveness, catalog freshness, and catch-up state separately;
+14. stop promptly when its caller-owned context is canceled; and
+15. poll only when streaming is unsupported or explicitly configured as
+    fallback.
+
+Delivery is at-least-once. Correctness must not depend on exactly-once event
+delivery or an unbroken connection.
+
+## Go Modularity and File-Size Policy
+
+The limit applies to every repository-authored `.go` file, including tests.
+Vendored code is not repository-authored. Generated files must be split at the
+generator when they exceed the hard limit.
+
+| Lines | Policy |
+| --- | --- |
+| `0–1000` | Normal |
+| `1001–1500` | Review required; record whether the module remains deep and conceptually local |
+| `1501–1999` | Durable justification required showing why splitting would reduce locality, testability, or leverage |
+| `>=2000` | Hard failure; split before merge |
+
+Protected-main baseline findings:
+
+| File | Lines | Required disposition |
+| --- | ---: | --- |
+| `pkg/reconciler/merger_test.go` | 2059 | Split; hard-limit violation |
+| `internal/providers/google/client.go` | 1206 | Review and extract wire, normalization, and error concepts if that improves locality |
+| `internal/providers/openai/client.go` | 1183 | Review and extract wire, normalization, and error concepts if that improves locality |
+| `pkg/reconciler/merger.go` | 1134 | Deepen reconciliation around one authority implementation; split by concept only |
+
+PR #40 also contains a 2044-line reconciler test and a 1565-line OpenAI
+connector. Salvaged work must satisfy this policy before entering a new phase
+branch.
+
+Naming review must cover:
+
+- package/import and exported-identifier stutter;
+- file names that repeat their package without adding a concept;
+- generic `util`, `helpers`, `common`, `manager`, or `service` names;
+- public packages with one production caller;
+- interfaces with only one real adapter;
+- tiny pass-through modules that fail the deletion test; and
+- broad interfaces used by commands or tests that should be defined at the use
+  site.
+
+Do not split a cohesive deep module only to reduce line count. Extract a named
+concept with its own invariant and test surface.
+
+## Test Value Policy
+
+Tests exist to prove contracts and prevent credible regressions.
+
+Priority order:
+
+1. end-to-end user and process workflows;
+2. integration tests across real seams;
+3. focused unit tests for deterministic policy;
+4. fuzzing for untrusted parsing and state-machine inputs;
+5. benchmarks for stated performance budgets.
+
+Required high-value suites:
+
+- first-run seed, manual edit, embedded E1→E2 upgrade, live source conflict,
+  degraded source, restart, and rollback;
+- store-only update with zero filesystem access;
+- multi-process workspace writer exclusion and CAS;
+- concurrent readers during publication;
+- provider-first atomic pricing with rejection evidence;
+- provider/model-scoped provenance;
+- per-record schema quarantine with valid sibling preservation;
+- server publication through manifest/payload/SSE to reactive Go consumer;
+- disconnect, reconnect, duplicate, stale, skipped, corrupt, incompatible,
+  unauthorized, missing-heartbeat, half-open, slow-consumer, and write-failure
+  remote events/generations;
+- package consumer compile tests for local, server, and remote compositions;
+- deterministic artifact/release reconstruction;
+- failure injection at parse, fetch, validate, stage, fsync, rename, commit,
+  callback, stream, fetch, and publication points; and
+- table/property tests for deterministic authority selection and presence
+  semantics;
+- fuzzing for untrusted provider envelopes, YAML/JSON
+  manifests/payloads/provenance, and SSE framing/event IDs.
+
+Do not:
+
+- assert implementation details available through the public interface;
+- duplicate the same behavior across many fixtures without a new failure class;
+- treat coverage percentage as proof;
+- add mocks for seams with no real variation; or
+- retain tests for deleted compatibility behavior before launch.
+
+## Worktree and Branch Strategy
+
+### Active control-plane worktree
+
+- Worktree:
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-architecture-control-plane`
+- Branch:
+  `codex/starmap-architecture-control-plane`
+- Base:
+  `origin/main@9508ee7866e4683e001e7ad153319d348433045d`
+
+This worktree contains only the durable plan/report archival work. It must
+become a small standalone PR.
+
+### Provider expansion worktree
+
+Do **not** reuse:
+
+- Worktree:
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/provider-expansion-wave0`
+- Branch:
+  `codex/provider-expansion-wave0`
+- PR:
+  [#40](https://github.com/agentstation/starmap/pull/40)
+
+Reason: the branch makes persisted definitions/offerings the sole schema, which
+contradicts the selected provider-YAML architecture. It also changes 576 files
+with `+45,142/-10,593`, preventing reliable conceptual review.
+
+The branch is a read-only donor until P1 records a file/commit inventory.
+Nothing is merged or cherry-picked wholesale. Each salvage candidate must:
+
+- serve the selected architecture;
+- have a named production composition;
+- satisfy current file-size and package rules;
+- receive focused tests;
+- be reapplied on a fresh phase branch; and
+- pass the full phase gate.
+
+### Phase worktrees
+
+After the control-plane PR merges, use one fresh worktree per coherent phase,
+created from the current protected `origin/main`. Phase IDs are stable ledger
+identifiers, not an instruction to execute strictly in numeric order. The
+required dependency order is:
+
+1. P1 existing-PR reconciliation;
+2. P2 green characterization and product decisions;
+3. P3.6a, P3.6b, and P3.8 as the narrow store-only/commit-point/YAML
+   atomicity hotfix;
+4. P4 authority, provenance, completeness, and resilience;
+5. the remaining P3 workspace lifecycle, including legacy-layout migration;
+6. P5 read views, P6 composition, P7 server/reactive delivery, P8 modularity,
+   P9 distribution, P10 verification, and P11 cleanup.
+
+Suggested branch names:
+
+- `codex/catalog-workspace-lifecycle`
+- `codex/catalog-authority-resilience`
+- `codex/catalog-read-model-simplification`
+- `codex/starmap-library-composition`
+- `codex/starmap-reactive-server`
+- `codex/starmap-go-modularity`
+- `codex/starmap-production-closeout`
+
+Do not run overlapping implementation phases against the same files. Each phase
+PR updates this control plane and lands before the next dependent phase starts.
+
+## Live Pull Request Ledger
+
+Live state inspected 2026-07-27.
+
+| PR | Head | Status | Disposition | Verifiable terminal criteria |
+| --- | --- | --- | --- | --- |
+| [#40](https://github.com/agentstation/starmap/pull/40) | `codex/provider-expansion-wave0@a14d2249` | `PENDING` | Supersede and close after donor inventory | Salvage map recorded; no rejected schema work copied; closing comment links this plan; PR closed; remote branch deleted; worktree removed |
+| [#43](https://github.com/agentstation/starmap/pull/43) | Dependabot Go modules `@5f5e54dd` | `SUPERSEDED` | Closed in favor of #46 | Recreated head retained vulnerable `grpc v1.82.0`; replacement exists with the regenerated dependency group plus the security patch; #43 is closed with an exact explanation |
+| [#44](https://github.com/agentstation/starmap/pull/44) | Dependabot Actions `@e1dcd1e6` | `PENDING` | Rebase after #46, re-run, then merge or recreate | Current GO-2026-5970 failure eliminated by rebased dependency graph; workflow structural tests and required hosted checks pass; merged or replaced by one equivalent PR; old PR closed |
+| [#45](https://github.com/agentstation/starmap/pull/45) | `codex/starmap-architecture-control-plane` rebased from `b1548a20` | `IN_PROGRESS` | Finish P0.5 on secure main | Exact rebased head passes Verification Gate and Security & Reliability; required review satisfied; merged; merge SHA recorded |
+| [#46](https://github.com/agentstation/starmap/pull/46) | `codex/dependency-security-prerequisite@2fbd4c6d` | `DONE` | Replaced #43 and merged as `53285f13` | Exact head contained regenerated direct updates, `x/text v0.40.0`, and `grpc v1.82.1`; current govulncheck, local verification, both hosted gates, and branch-protection readback passed; merged; remote branch removed |
+
+Current #44 failure is not caused by the action syntax itself. Both required
+jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
+GO-2026-5970, fixed in v0.39.0. Replacement PR #46 updated it to v0.40.0 and
+merged the additional grpc security fix. The remaining cleanup order is
+therefore rebase/recreate #44, then merge its replacement.
+
+Final PR gate:
+
+```bash
+test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
+  --json number --jq 'length')" -eq 0
+```
+
+## Phase Ledger
+
+| Phase | Status | Outcome | Gate |
+| --- | --- | --- | --- |
+| P0 | `IN_PROGRESS` | Durable control plane and architecture report are reviewable | P0 tasks and plan PR green after the authorized dependency prerequisite |
+| P1 | `PENDING` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
+| P2 | `PENDING` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
+| P3 | `PENDING` | One human provider-YAML workspace has deterministic lifecycle | Legacy detection plus seed/edit/upgrade/restart/rollback suite |
+| P4 | `PENDING` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
+| P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
+| P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
+| P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
+| P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
+| P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
+| P10 | `PENDING` | Production verification and documentation inspire trust | Full local/hosted/security/docs gates |
+| P11 | `PENDING` | GitHub and local machine end clean | No open PRs; clean protected main; obsolete work removed |
+
+Every phase has the following additional exit criteria:
+
+1. every task in the phase is terminal;
+2. every finding owned by the phase is terminal or explicitly remapped;
+3. the phase evidence names the exact commit and test commands;
+4. local verification passes on the exact phase head;
+5. required hosted checks pass on that same head;
+6. the phase PR is merged or intentionally closed;
+7. this ledger is updated on protected main; and
+8. no newly discovered finding is left outside the Finding Ledger.
+
+## P0 — Establish the Control Plane
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P0.1 | `DONE` | Inspect protected main, live PRs, branches, and worktrees | Baseline SHA, three open PRs, branch divergence, and worktree inventory are recorded |
+| P0.2 | `DONE` | Decide the implementation base | Fresh control-plane worktree exists from exact protected main; PR #40 is explicitly rejected as a base |
+| P0.3 | `DONE` | Write the durable plan and `/goal` prompt | Mission, invariants, phase/task/finding/PR/workspace ledgers, gates, and continuation rules exist |
+| P0.4 | `DONE` | Archive the architecture report in the repository | Repository HTML has a recorded SHA; this file uses a relative link; HTML parses locally; CDN-backed visual enhancement is not claimed to work offline |
+| P0.5 | `IN_PROGRESS` | Reconcile independent review and publish the plan PR | The full Fable review is archived with a recorded SHA-256 and every finding has an explicit disposition; historical supersessions are mapped; Markdown links, docs check, diff check, required local verification, and hosted checks pass on exact head; user authorized running #43 first because #45 inherits two reachable vulnerabilities |
+
+P0 gate:
+
+```bash
+test -f docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md
+rg -n '^## `/goal` Prompt|^## Phase Ledger|^## Finding Ledger|^## Evidence Log' \
+  docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md
+test -f docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html
+test -f docs/reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md
+test -f docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md
+make docs-check
+git diff --check
+```
+
+## P1 — Reconcile Existing Pull Requests and Donor Work
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P1.1 | `DONE` | Revalidate replacement PR #46 | Current exact head contains the regenerated #43 group, `x/text v0.40.0`, and `grpc >= v1.82.1`; exact-head local verification, race selection, current govulncheck, and hosted checks pass |
+| P1.2 | `DONE` | Merge replacement PR #46 | Protected merge succeeds; main contains x/text v0.40.0 and grpc >= v1.82.1; #43 is superseded; #46 and its branch are closed |
+| P1.3 | `PENDING` | Rebase/recreate and verify PR #44 | Exact head is based on post-#46 main; workflow fixture, actionlint, verification, and security checks pass |
+| P1.4 | `PENDING` | Merge PR #44 | Protected merge succeeds; old failed head is superseded; PR and branch are closed |
+| P1.5 | `PENDING` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale |
+| P1.6 | `PENDING` | Close PR #40 | Closing note links this plan and inventory; no open review threads are misrepresented as resolved |
+| P1.7 | `PENDING` | Remove #40 worktree and branches in safe order | Worktree is removed before its checked-out local branch; remote and local branches are absent; retained evidence lives in docs/Git history |
+| P1.8 | `PENDING` | Rebase control-plane/next phase on current main | No dependency/action regression; ledger records final PR SHAs |
+
+P1 gate:
+
+```bash
+gh pr list --repo agentstation/starmap --state open --limit 100
+git worktree list
+git branch -vv --all
+govulncheck ./...
+```
+
+No implementation task starts while #43/#44 are unresolved or #40 remains an
+active alternative architecture.
+
+## P2 — Characterize the Product Contract
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P2.1 | `PENDING` | Record domain vocabulary and decisions | Catalog, workspace, observation, generation, offering, definition, publication, and remote subscriber have one documented meaning |
+| P2.2 | `PENDING` | Characterize current local/store paths | Tests pin store-only failure before commit, input/output divergence, embedded write-path leakage, and durable-store restart precedence at their current call sites |
+| P2.3 | `PENDING` | Characterize reconciliation loss | Tests pin the reviewed defect sites: manual-model drop at `pkg/catalogs/catalog.go:483-491` (models without pricing/limits vanish), non-boolean zero-value clearing asymmetry in `pkg/catalogs/merge.go`, provider omission pruning through wholesale `SetProvider` replacement, degraded-source replacement, and the bare-model-ID provenance tracker keying (`pkg/reconciler/merger.go:202`, `pkg/provenance/provenance.go:147-149`) whose report winner is timestamp-race-dependent |
+| P2.4 | `PENDING` | Characterize schema resilience | A malformed sibling demonstrates whole-collection loss at each reviewed decode site: the monolithic models.dev unmarshal (`internal/sources/modelsdev/parser.go:241`), the single provider-response decode (`internal/transport/request.go:88`, including Google multi-page loss), the local YAML walk abort (`pkg/catalogs/load.go`), and the strict whole-payload decode (`pkg/catalogstore/payload.go:37-39`); invalid local YAML demonstrates fail-closed expectation; the resilient raw-message skip pattern already in `cmd/starmap/cmd/providers/fetch.go:460-478` is recorded as the reference remedy |
+| P2.5 | `PENDING` | Characterize server/remote flow | Real transport tests record manifest/payload behavior, absent Last-Event-ID handling, non-unique timestamp SSE IDs, opposite SSE/WebSocket backpressure, callback ordering, generation drop/reorder, and reconnect semantics |
+| P2.6 | `PENDING` | Measure public composition after #46 | Record exact root/catalog/server dependency closures and attribution (pre-#46 review measured 472 root packages and 448 through Google), plus binary size, allocations, latency, package count, Go LOC, embedded bytes, and file-size inventory |
+| P2.7 | `PENDING` | Freeze user journeys | Golden fixtures cover in-process library, CLI workspace, embedded upgrade, embeddable server, and remote reactive consumer |
+| P2.8 | `PENDING` | Decide production compositions before deletion | Name the retained distribution seam and scheduler owner/use case or record deletion; WebSocket is rejected absent a bidirectional consumer; decisions precede P6.5 |
+
+P2 never merges a failing test. Each known defect receives a green
+characterization test that pins the currently observed defective behavior,
+names its finding ID, and explains the intended correction. The fixing PR
+rewrites or inverts that expectation and proves the desired behavior. Consumer
+compile and performance baselines must also be green.
+
+## P3 — Restore One Human Catalog Workspace
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P3.1 | `PENDING` | Restore one catalog path safely | One configured path names the human YAML tree; before mutation Starmap detects the pre-plan machine layout (`current`, `generations/`, `.commit.lock`) and returns a typed error that names the required migration unless an explicit transactional migration was selected |
+| P3.2 | `PENDING` | Separate machine state | Locks, staging, generations, and caches are machine-owned and cannot be mistaken for override configuration |
+| P3.3 | `PENDING` | Make first-run seed atomic | Missing workspace becomes one complete embedded-seeded tree or remains absent after failure |
+| P3.4 | `PENDING` | Reconcile embedded E1→E2 after P4 | New embedded revision updates unchanged embedded-derived fields, fills gaps, and preserves actual human edits using the completed P4 authority/provenance model |
+| P3.5 | `PENDING` | Detect semantic human edits after P4 | Only changed semantic paths become local evidence under the completed P4 model; formatting-only changes do not |
+| P3.6a | `PENDING` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; YAML failure cannot veto or corrupt a committed generation; a crash immediately after store commit leaves the generation usable and detectable for projection repair |
+| P3.6b | `PENDING` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
+| P3.7 | `PENDING` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
+| P3.8 | `PENDING` | Preserve store-only use | Catalog-store sync succeeds without a YAML path and performs zero workspace filesystem operations |
+| P3.9 | `PENDING` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
+| P3.10 | `PENDING` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
+
+## P4 — Consolidate Authority, Provenance, and Source Resilience
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P4.1 | `PENDING` | Replace duplicate authority policies | One executable field table selects all winners; the shadow `complexModelStructures` policy and unused parallel inventory are deleted |
+| P4.2 | `PENDING` | Enforce provider pricing authority | Valid provider price wins atomically for its offering; invalid price records durable rejection evidence and falls back; rejection evidence remains when every candidate is invalid |
+| P4.3 | `PENDING` | Make local data fallback | Dynamic valid facts beat local for discoverable fields; manual missing data and operator configuration survive |
+| P4.4 | `PENDING` | Scope evidence by provider/model | Shared model IDs cannot collide in price, limit, availability, or lifecycle provenance |
+| P4.5 | `PENDING` | Preserve source identity through YAML | Reloading generated YAML does not relabel unchanged provider/models.dev/embedded values as local |
+| P4.6 | `PENDING` | Model presence explicitly | Tri-state or equivalent typed representation makes missing, explicit false, explicit zero, empty, and unknown round-trip distinctly for limits, features, and other affected fields |
+| P4.7 | `PENDING` | Consume observation health and make absence non-authoritative | Reconciliation consumes source status, completeness, issues, and volume history; complete omission, partial response, timeout, fetch failure, and suspicious volume collapse cannot hard-delete or retire |
+| P4.8 | `PENDING` | Quarantine records independently | Every P2.4-characterized whole-collection decode site (models.dev envelope, provider list responses, local YAML walk, stored payload) isolates a malformed record while valid siblings survive; collection envelope remains bounded |
+| P4.9 | `PENDING` | Make strict mode truthful | Every required source must be `Complete` and `Succeeded`; missing credentials, degraded/skipped state, stale fallback, or empty results without explicit issues fail before publication |
+| P4.10 | `PENDING` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
+
+## P5 — Keep One Persisted Model and Derive Read Views
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P5.1 | `PENDING` | Keep provider YAML/payload canonical | No persisted definition/offering tree or top-level duplicate collection exists |
+| P5.2 | `PENDING` | Internalize build projection | No exported “legacy migration” vocabulary remains before launch |
+| P5.3 | `PENDING` | Derive offerings | Same ID at two providers retains distinct exact price, limits, availability, endpoint, and lifecycle |
+| P5.4 | `PENDING` | Derive provider-independent definitions | Conflicts use the same authority/evidence implementation, never map iteration or alphabetical first-wins |
+| P5.5 | `PENDING` | Derive author membership | Author queries remain equivalent without loading, writing, embedding, or storing author model copies |
+| P5.6 | `PENDING` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
+| P5.7 | `PENDING` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
+| P5.8 | `PENDING` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
+
+## P6 — Deepen Go Library Composition
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P6.1 | `PENDING` | Map the package graph | Each public package has a named consumer and role; import cycles remain zero; growth from the protected-main baseline of 89 package directories has explicit rationale |
+| P6.2 | `PENDING` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory; a `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
+| P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
+| P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
+| P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, scheduler runner, `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed or connected to a named production composition selected in P2.8 |
+| P6.6 | `PENDING` | Validate concrete consumer examples | Separate external test modules compile local library, store-only, server embed, and remote subscriber programs |
+| P6.7 | `PENDING` | Measure improvement | Dependency closure, build time, binary size, package count, Go LOC, and public exports are no worse without explicit rationale |
+| P6.8 | `PENDING` | Make construction and access canonical | `Catalog()` has documented nil-receiver behavior consistent with neighboring methods; storage-backed construction has a caller-owned context/cancellation path; cancellation, timeout, successful construction, and O(1) non-failing access pass external consumer tests |
+
+## P7 — Embeddable Server and Reactive Remote Consumer
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P7.1 | `PENDING` | Expose an embeddable server module | A public server package accepts `*starmap.Client` or a narrower catalog/events role; an external Go fixture constructs, starts, drains, and stops it without importing `internal` or CLI packages |
+| P7.2 | `PENDING` | Make publication ordering exact | Generation CAS is the commit point; catalog swap, cache activation, manifest visibility, and event publication have one tested order; concurrent generations cannot reorder; overload coalesces to the newest generation or closes the stream and cannot silently drop a generation while the connection remains healthy |
+| P7.3 | `PENDING` | Keep one heartbeat-enabled reactive transport | SSE is canonical; delete WebSocket transport, hub, adapter, dependency, tests, and documentation; one serialized per-connection writer emits and flushes publication events plus comment-line heartbeats, defaults to a 20-second interval, applies write deadlines, and promptly cleans up a failed/dead connection |
+| P7.4 | `PENDING` | Define one stable publication event | The only event is catalog publication with generation ID and monotonic per-stream sequence; no per-model event or mutable catalog payload exists; heartbeat comments carry no ID, do not advance sequence, and do not trigger fetch; dedupe and mandatory catch-up survive reconnect |
+| P7.5 | `PENDING` | Implement explicit reactive lifecycle | Caller context owns initial fetch, stream, retry, activation, and shutdown; constructor starts no hidden goroutine; every owned loop is joinable within a bounded shutdown; absence of an event or heartbeat for the default 60-second liveness timeout marks the stream degraded, cancels it, and starts reconnect plus catch-up |
+| P7.6 | `PENDING` | Verify immutable generations | Client rejects wrong media, size, digest, ID, schema, redirect origin, publisher, or stale generation before activation |
+| P7.7 | `PENDING` | Recover from stream loss | Reconnect uses bounded backoff/jitter, Last-Event-ID when supported, and mandatory current-manifest catch-up; replay remains an optimization rather than a correctness dependency |
+| P7.8 | `PENDING` | Make polling last resort | No normal polling occurs while recent heartbeat/event activity establishes a healthy stream; fallback begins only through an explicit bounded streaming-failure policy, is observable, uses conditional manifest requests, and stops before streaming is declared healthy again |
+| P7.9 | `PENDING` | Prove concurrent read safety | Readers observe complete old/new generations while stream activates updates under `-race` |
+| P7.10 | `PENDING` | Exercise real transport failures | Tests prove heartbeats flush and are ignored as events; interval/timeout validation, missing-heartbeat, half-open connection, write failure, slow consumer, disconnect, duplicate, out-of-order, skipped, unauthorized, corrupt, incompatible, subscribe-after-stop, blocked subscriber, reconnect/catch-up, non-concurrent polling, cleanup, and shutdown/join cases pass |
+| P7.11 | `PENDING` | Expose distinct production health | Server and subscriber separately expose stream state, last heartbeat/event, last successful catch-up, active generation, catalog freshness, retry count, last error, and any coalesced/terminated publication delivery without secrets; heartbeat activity cannot falsely refresh catalog age and silent whole-generation loss is impossible |
+
+## P8 — Go Modularity, Naming, and Complexity
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P8.1 | `PENDING` | Add file-size verification | CI lists >1000, requires reviewed >1500 rationale, and fails every repository-authored file >=2000 |
+| P8.2 | `PENDING` | Split current hard-limit test | `pkg/reconciler/merger_test.go` is divided by behavior with no duplicated fixture machinery |
+| P8.3 | `PENDING` | Review >1000 production files | Each file is split by concept or receives recorded depth/locality rationale; `pkg/differ/differ.go` (exactly 1000 lines at baseline) joins the review set; no unreviewed concern remains |
+| P8.4 | `PENDING` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `format.Formatter`, `internal/utils/ptr`, and the seven-package `catalog*` family |
+| P8.5 | `PENDING` | Audit pockets of complexity | Cyclomatic/cognitive hot spots are mapped to domain concepts and deepened without pass-through modules |
+| P8.6 | `PENDING` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven; dead exported behavior with zero callers, including `differ.Changeset.Filter` and the inert `ApplyAdditive` strategy path, receives the same disposition |
+| P8.7 | `PENDING` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
+| P8.8 | `PENDING` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
+
+## P9 — Distribution and Embedded Upgrade Integrity
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P9.1 | `PENDING` | Publish exact committed generation | Release staging never reconstructs source lineage as one local observation |
+| P9.2 | `PENDING` | Separate semantic and evidence digests | Identical catalog facts do not create catalog releases solely from observation timestamps |
+| P9.3 | `PENDING` | Verify embedded manifest | Binary bootstrap bytes, generation ID, schema, digest, and size agree deterministically |
+| P9.4 | `PENDING` | Verify E1→E2 workspace upgrade | New embedded data merges by provenance/authority and never wholesale-overwrites human data |
+| P9.5 | `PENDING` | Verify release import | Checksum, detached statement, publisher identity, compatibility, reconciliation, and rollback pass |
+| P9.6 | `PENDING` | Implement the P2.8 distribution decision | The selected remote/server/release flow is wired end-to-end; unused competing protocols and packages are removed |
+| P9.7 | `PENDING` | Preserve offline/air-gap behavior | Embedded and pinned artifact startup work without network or provider credentials |
+
+## P10 — Production Verification and Documentation
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P10.1 | `PENDING` | Run exact toolchain verification | `make verify`, race-short suite, vet, lint, actionlint, docs, and diff checks pass |
+| P10.2 | `PENDING` | Run high-value integration suite | All P3–P9 end-to-end workflows pass repeatedly under race detection |
+| P10.3 | `PENDING` | Run fuzz and fault campaigns | Required fuzz targets and every named failure injection complete with no crash or state corruption |
+| P10.4 | `PENDING` | Re-measure budgets | Catalog access, publication, remote activation, dependency closure, binary, embedded size, packages, LOC, and file lengths are recorded |
+| P10.5 | `PENDING` | Align documentation | README, GoDoc, architecture, CLI/server/remote docs, examples, and control plane describe the same behavior |
+| P10.6 | `PENDING` | Run security review | Credentials, redirects, SSRF, auth, origins, body limits, decompression, symlinks, permissions, and supply chain pass |
+| P10.7 | `PENDING` | Run structured final review | Independent review has no unresolved P0/P1 finding; lower findings receive terminal disposition |
+| P10.8 | `PENDING` | Verify exact hosted PR head | Verification Gate and Security & Reliability pass; protection readback remains strict |
+
+## P11 — Final Repository and Machine Cleanup
+
+| Task | Status | Work | Verifiable success criteria |
+| --- | --- | --- | --- |
+| P11.1 | `PENDING` | Merge or close every plan PR | GitHub open PR count is zero; merged commits are on protected main |
+| P11.2 | `PENDING` | Remove remote topic branches | Every plan-created/superseded branch is deleted after reachability/evidence check |
+| P11.3 | `PENDING` | Remove temporary worktrees | Only the intended primary checkout remains; `git worktree prune` is clean |
+| P11.4 | `PENDING` | Reconcile divergent local main | Historical `3787d716` is first made reachable through a deliberate archive branch or annotated tag and verified; local main is then safely realigned to origin/main without losing unrecorded work |
+| P11.5 | `PENDING` | Remove obsolete local branches | Gone/merged/superseded branches are deleted only after reachability and worktree checks |
+| P11.6 | `PENDING` | Verify protected main | Local and remote main SHAs match; required checks, reviews, conversation resolution, admin enforcement, and no force-push/deletion remain configured |
+| P11.7 | `PENDING` | Run clean clone proof | Fresh clone passes documented library, server, reactive consumer, verification, and docs workflows |
+| P11.8 | `PENDING` | Close the ledger and define the post-merge gate | The closing ledger PR is the final plan commit; every phase/task/finding/PR/workspace row is terminal, evidence totals match, and the exact post-merge machine-gate commands/expected output are recorded |
+| P11.9 | `PENDING` | Resolve historical release work | Historical F-099/F-105/F-106 and P12.4/P12.7/P12.8 are completed, explicitly superseded, or user-accepted as rejected with residual risk; no release is published without separate authority |
+
+Final machine gate:
+
+```bash
+test -z "$(git status --porcelain)"
+test "$(git rev-parse main)" = "$(git rev-parse origin/main)"
+test "$(git rev-list --left-right --count main...origin/main)" = $'0\t0'
+test "$(git worktree list --porcelain | rg '^worktree ' | wc -l | tr -d ' ')" -eq 1
+test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
+  --json number --jq 'length')" -eq 0
+```
+
+P11.8 records this command block and the expected clean values in the closing
+ledger PR. Run it after that PR merges; the successful readback is the terminal
+machine evidence and does not require a follow-up documentation commit.
+
+## Finding Ledger
+
+| Finding | Status | Description | Owning task |
+| --- | --- | --- | --- |
+| F-001 | `PENDING` | Current behavior treats editable YAML as a secondary export after durable current exists, contrary to the selected human-workspace contract | P3.1–P3.5 |
+| F-002 | `PENDING` | Store-only sync still attempts YAML save | P3.8 |
+| F-003 | `PENDING` | YAML replacement is destructive and non-atomic | P3.6b |
+| F-004 | `PENDING` | Embedded/local structural merge loses or rejects valid manual data | P3.4–P3.5 |
+| F-005 | `PENDING` | Provider omission/degradation can remove last-known-good models | P4.7 |
+| F-006 | `PENDING` | Two authority policy implementations disagree | P4.1–P4.3 |
+| F-007 | `PENDING` | Provider-scoped provenance can collide on bare model ID | P4.4 |
+| F-008 | `PENDING` | Zero/false/unknown/absent are not consistently distinguishable | P4.6 |
+| F-009 | `PENDING` | Whole-collection decode defeats record quarantine | P4.8 |
+| F-010 | `PENDING` | “Require all sources” does not require successful complete sources | P4.9 |
+| F-011 | `PENDING` | Definitions/offerings are layered as runtime legacy migration vocabulary | P5.1–P5.4 |
+| F-012 | `PENDING` | Author model tree and payload duplicate provider models | P5.5 |
+| F-013 | `PENDING` | Derived offerings invent available/active state | P5.6 |
+| F-014 | `PENDING` | Prelaunch compatibility and unused public surfaces add shallow modules | P5.8, P6.5 |
+| F-015 | `PENDING` | Root library import pulls provider/cloud acquisition stack | P6.2–P6.3 |
+| F-016 | `PENDING` | Server is internal and cannot be cleanly embedded by another Go program | P7.1 |
+| F-017 | `PENDING` | Remote package consumer has no push-driven update lifecycle | P7.4–P7.10 |
+| F-018 | `PENDING` | SSE and WebSocket exist without one canonical remote client contract | P7.3–P7.10 |
+| F-019 | `PENDING` | Hook/event delivery is lossy, provider-ambiguous, and unordered | P7.2–P7.4 |
+| F-020 | `PENDING` | Current main has a 2059-line Go test file | P8.1–P8.2 |
+| F-021 | `PENDING` | >1000-line production files lack explicit modularity review | P8.3 |
+| F-022 | `PENDING` | Package/file stutter and unused seams have no terminal audit | P8.4–P8.6 |
+| F-023 | `PENDING` | Release staging can erase real source lineage | P9.1 |
+| F-024 | `PENDING` | Observation timestamps churn semantic catalog generations | P9.2 |
+| F-025 | `PENDING` | Multiple distribution implementations are not wired to one consumer | P9.6 |
+| F-026 | `PENDING` | PR #40 implements rejected persisted schema and is too broad | P1.5–P1.7 |
+| F-027 | `DONE` | Stale PR #43 was superseded by merged #46 after Dependabot recreation retained vulnerable grpc v1.82.0 | P1.1–P1.2 |
+| F-028 | `PENDING` | PR #44 fails on vulnerable pre-#43 dependency graph | P1.3–P1.4 |
+| F-029 | `PENDING` | Local main diverges and multiple stale worktrees/branches remain | P11.2–P11.5 |
+| F-030 | `PENDING` | Existing architecture docs contain superseded “YAML export” guidance | P10.5 |
+| F-031 | `PENDING` | Sync saves YAML before the durable generation commit, making a fragile projection gate the durable product | P3.6a–P3.6b |
+| F-032 | `PENDING` | Reassigning `~/.starmap/catalog` from machine generations to human YAML lacks safe legacy-layout detection and migration | P3.1, P3.10 |
+| F-033 | `PENDING` | Reconciliation/pipeline paths do not consistently consume observation status, completeness, and issues | P4.7, P4.9 |
+| F-034 | `PENDING` | Publication generations can reorder; current event identity is timestamp-based or provider-ambiguous | P7.2, P7.4 |
+| F-035 | `PENDING` | Server/background shutdown lacks owned joins; stopped or blocked subscriptions can hang | P7.5, P7.10 |
+| F-036 | `PENDING` | Hook overload can drop a whole generation and the counter is not an adequate operational contract | P7.2, P7.11 |
+| F-037 | `PENDING` | Historical F-099/F-105/F-106 release findings lack terminal mapping in the new plan | P0.5, P11.9 |
+| F-038 | `PENDING` | Hour-scale publication gaps require SSE heartbeats; without them intermediaries reap idle streams, half-open clients linger, and polling/stream health cannot be determined reliably | P7.3, P7.5, P7.8, P7.10–P7.11 |
+| F-039 | `IN_PROGRESS` | The plan PR's original dependency graph had reachable GO-2026-5970 (`x/text v0.38.0`) and GO-2026-6061 (`grpc v1.82.0`); replacement #46 resolved both on protected main and the rebased plan head still requires exact hosted proof | P0.5, P1.1–P1.2 |
+
+## Workspace Ledger
+
+| Workspace/ref | Status | Required terminal state |
+| --- | --- | --- |
+| Primary `/Users/jack/src/github.com/agentstation/starmap` on divergent `main@3787d716` | `PENDING` | Preserve the unique checkpoint under an explicit archive ref, then leave clean `main == origin/main`; no lost unrecorded work |
+| `architecture-review-20260727-clean` detached at `9508ee78` | `PENDING` | Removed after report archival |
+| `fresh-catalog-release` on `codex/immutable-release-pipeline@6d4d4c27` | `PENDING` | Verify #39 contains work; remove worktree and obsolete local branch |
+| `provider-expansion-wave0` on `a14d2249` | `PENDING` | Inventory, close #40, remove worktree/local/remote branch |
+| `starmap-architecture-control-plane` on fresh branch | `IN_PROGRESS` | Finish the user-authorized #43 security prerequisite, merge the plan PR, then remove worktree/branch |
+
+## Evidence Log
+
+Append evidence; do not rewrite historical entries.
+
+| Date | Task | Evidence |
+| --- | --- | --- |
+| 2026-07-27 | P0.1 | Protected main is `9508ee7866e4683e001e7ad153319d348433045d`. Open PRs are #40, #43, and #44. Local primary main is `1` ahead/`11` behind origin and not an ancestor of protected main. Four worktrees exist. |
+| 2026-07-27 | P0.1 | PR #40 is draft, mergeable, 576 files, `+45,142/-10,593`, exact head `a14d22497479cb944932274088cf806cb25e993b`, and explicitly persists definitions/offerings as schema v2. |
+| 2026-07-27 | P0.1 | PR #43 exact head `ebd36505216af8ba4def089dfbba2addb65849f3` changes only `go.mod`/`go.sum`, updates x/text from v0.38.0 to v0.40.0, and has green Verification Gate and Security & Reliability checks. |
+| 2026-07-27 | P0.1 | PR #44 exact head `e1dcd1e6168dc3777e5780c949fa15e09af4b0c2` changes three workflow files. Both required checks fail because `govulncheck` finds GO-2026-5970 in x/text v0.38.0, fixed in v0.39.0. |
+| 2026-07-27 | P0.1 | Protected main has `pkg/reconciler/merger_test.go` at 2059 lines and three production files above 1000 lines: Google client 1206, OpenAI client 1183, reconciler merger 1134. |
+| 2026-07-27 | P0.2 | Created `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-architecture-control-plane` on `codex/starmap-architecture-control-plane` from exact protected main. |
+| 2026-07-27 | P0.1 | All four pre-plan worktrees were clean. `fresh-catalog-release@6d4d4c27` has a tree identical to protected main and is a verified cleanup candidate. |
+| 2026-07-27 | P0.1 | PR #40 retains the store-only empty-path save defect and invalid `WithAuthorities` option condition while expanding package directories from 89 to 109. Its overlapping acquisition/source/provider vocabularies require concept-by-concept salvage rather than branch reuse. |
+| 2026-07-27 | P0.4 | Archived and parsed `docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html`; SHA-256 `de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235`. |
+| 2026-07-27 | P0.5 | Fable independently returned `GO WITH REQUIRED REVISIONS`. B-01 through B-13 and the canonical Go findings were dispositioned in `docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md` (SHA-256 `df13364d205ca48848841f6aed20888ea0e8baf81e148ea1da73e2bc3406ae86`); accepted changes added the green-characterization rule, legacy-layout protection, one durable commit point, corrected phase order, dependency budget mechanism, event/shutdown contracts, historical supersession map, and explicit approval pauses. |
+| 2026-07-27 | P0.5 | Archived the full Fable review as `docs/reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md` (SHA-256 `b2f78de7be15762f9d0425f99a698dc3d63397b3c2e07e553eb16ed51a3495b2`) so its file/line defect evidence is durable. Follow-up review pass pinned exact defect sites into P2.3/P2.4/P4.8, made the P6.2 dependency budget CI-enforced, added `pkg/differ/differ.go` and dead `Changeset.Filter`/`ApplyAdditive` behavior to the P8.3/P8.6 scope, and added `format.Formatter` to the P8.4 stutter audit. |
+| 2026-07-27 | P0.5 | User steering made SSE heartbeat behavior load-bearing: comment-line heartbeats establish stream liveness across intermediary idle timeouts, heartbeat absence drives degraded/reconnect/catch-up behavior, liveness remains distinct from catalog freshness, and delivery failure must coalesce or disconnect rather than silently lose a generation on a healthy stream. Recorded as F-038 and strengthened P7.2–P7.5/P7.7–P7.8/P7.10–P7.11. |
+| 2026-07-27 | P0.5 | PR #45 exact head `b1548a20359d2611f5e1e35ec435f36aba1c2168` failed [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30317369158/job/90145745252): current `govulncheck v1.6.0` found reachable GO-2026-5970 in `golang.org/x/text v0.38.0` (fixed in v0.39.0) and GO-2026-6061 in `google.golang.org/grpc v1.82.0` (fixed in v1.82.1). Its [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30317369158/job/90145745302) remained in progress at the final blocker readback. |
+| 2026-07-27 | P0.5 / P1.1 | A detached audit of #43 exact head `ebd36505216af8ba4def089dfbba2addb65849f3` changed only `google.golang.org/grpc v1.82.0` to `v1.82.1` plus its two `go.sum` records. Go 1.26.5 `go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...` reported zero reachable vulnerabilities, and exact `make verify` passed ordinary tests, `-race -short`, vet, the 0-allocation catalog benchmark (8.060–8.181 ns/op), lint, coverage gates, docs, diff, build, catalog validation, and isolated credential-free CLI checks. The temporary worktree/ref were removed. |
+| 2026-07-27 | P0.5 | After three consecutive goal turns, no user authorization, regenerated Dependabot head, replacement security PR, or passing #45 security check existed. Rule 18 prevents silently reordering the protected merge sequence; P0.5 and F-039 are therefore recorded `BLOCKED` pending the user's authorization to recreate/revalidate/approve #43 before rebasing #45. |
+| 2026-07-27 | P0.5 / P1.1 | User explicitly authorized fixing rather than retaining the Rule 18 pause. Requested `@dependabot recreate` on PR #43 in [comment 5098519498](https://github.com/agentstation/starmap/pull/43#issuecomment-5098519498); P0.5 and F-039 resumed `IN_PROGRESS`. |
+| 2026-07-27 | P0.5 / P1.1 | Dependabot recreated #43 as `5f5e54dd12a983d4dbbcd393e55e414ba1e93526`, updating the direct group but retaining vulnerable `grpc v1.82.0`; its new Security & Reliability run failed. Created replacement PR [#46](https://github.com/agentstation/starmap/pull/46) at exact head `2fbd4c6dea333ec575287a28e76233e8e148d224`, adding only the required grpc v1.82.1 module and checksum change on top of that regenerated head, then closed #43 as superseded. |
+| 2026-07-27 | P0.5 / P1.1 | On #46 exact head `2fbd4c6dea333ec575287a28e76233e8e148d224`, Go 1.26.5 current `govulncheck v1.6.0` reported zero reachable vulnerabilities and `make verify` passed tests, `-race -short`, vet, catalog benchmark (9.251–9.422 ns/op, 0 B/op, 0 allocs/op), lint, coverage gates, docs, diff, build, catalog validation, and isolated CLI checks. Hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149107028) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149106992) started on that exact head. |
+| 2026-07-27 | P0.5 / P1.1–P1.2 | PR #46 exact head `2fbd4c6dea333ec575287a28e76233e8e148d224` passed [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149107028) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149106992). Protection readback required both exact contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged to protected main as `53285f13ac9b97e7fa06d40ba2839507a2368e16`. The remote replacement branch was deleted. |
+| 2026-07-27 | P0.5 | Rebased the six control-plane commits onto secure protected main `53285f13ac9b97e7fa06d40ba2839507a2368e16` without conflict. On rebased head `ad682e4cd49f99baeac045869d7f70ff20891e92`, Go 1.26.5 `govulncheck v1.6.0` reported zero reachable vulnerabilities and `make verify` passed ordinary tests, `-race -short`, vet, the catalog benchmark (10.47–11.09 ns/op, 0 B/op, 0 allocs/op), lint, every coverage gate, docs, diff, build, catalog validation, and isolated CLI checks. |
+
+## Final Definition of Done
+
+The goal is complete only when:
+
+- every phase and task is terminal;
+- every finding is `DONE`, user-accepted `REJECTED`, or correctly
+  `SUPERSEDED`;
+- provider YAML is the only human model representation;
+- embedded/local/live/release upgrade semantics pass the lifecycle suite;
+- existing generation-store layouts are detected before mutation and receive a
+  tested explicit migration or typed rejection;
+- generation-store CAS is the sole commit point and interrupted YAML
+  projections repair by digest;
+- immutable Catalog DX and budgets remain intact;
+- provider pricing, source resilience, and provenance pass the authority suite;
+- the Go library, embeddable server, and reactive remote consumer compile and
+  pass real end-to-end tests;
+- SSE push is the normal remote path and polling is only a tested fallback;
+- flushed SSE heartbeats establish stream health, heartbeat loss forces
+  reconnect and manifest catch-up, and catalog freshness is never inferred from
+  connection liveness;
+- the unused WebSocket path and dependency are absent unless a later named
+  bidirectional consumer justified their reintroduction;
+- no repository-authored Go file reaches 2000 lines and every >1000 file has a
+  terminal review;
+- dead modules, duplicate persisted data, and rejected compatibility surfaces
+  are gone;
+- the exact final protected-main head passes all required local and hosted
+  checks;
+- GitHub has no open Starmap pull request;
+- local main exactly equals origin/main;
+- temporary worktrees and obsolete branches are removed;
+- a fresh clone reproduces the documented verification; and
+- the final evidence audit states why the result is ready for an enterprise LLM
+  proxy gateway without relying on an unpublished intention.
