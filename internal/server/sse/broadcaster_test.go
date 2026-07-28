@@ -293,7 +293,7 @@ verify:
 	}
 }
 
-func TestBroadcaster_ClientBufferFullRecordsSkippedDelivery(t *testing.T) {
+func TestF018CharacterizationSlowSSEClientSkipsAndStaysConnected(t *testing.T) {
 	logger := zerolog.Nop()
 	b := NewBroadcaster(&logger)
 

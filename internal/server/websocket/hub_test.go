@@ -259,7 +259,7 @@ func TestHub_ClientBufferFull(t *testing.T) {
 	}
 }
 
-func TestHub_ClientBufferFullRecordsDisconnect(t *testing.T) {
+func TestF018CharacterizationSlowWebSocketClientDisconnects(t *testing.T) {
 	logger := zerolog.Nop()
 	hub := NewHub(&logger)
 

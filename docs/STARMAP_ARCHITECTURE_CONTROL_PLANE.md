@@ -2,9 +2,10 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0 is complete and P1.8 is verifying the final
-existing-PR reconciliation ledger on current protected main; architecture
-implementation has not started.
+Status: `IN_PROGRESS` — P0 and P1 are complete. P2 has pinned current
+behavior, composition budgets, five golden consumer journeys, and the
+production keep/delete decisions; P2.9 owns its exact-head phase gate and
+protected PR before structural implementation begins.
 
 ## Mission
 
@@ -212,6 +213,54 @@ one human workspace: ~/.starmap/catalog/providers/...
 | Starmap server | Optional public Go module and binary composition over immutable generations |
 | Remote consumer | Verified initial fetch plus push-triggered immutable generation activation |
 
+### Canonical domain vocabulary
+
+These meanings are normative for code, GoDoc, tests, CLI help, APIs, and
+architecture documents. Historical evidence may retain earlier terms only when
+it is explicitly marked historical or superseded.
+
+| Term | One meaning | Not this |
+| --- | --- | --- |
+| **Provider model** | The one persisted human-readable model record under a provider in the YAML workspace. It contains provider-scoped identity and facts that can be observed or edited together. | A derived definition/offering split, an override fragment, or a remote event payload. |
+| **Catalog** | Starmap's concrete immutable in-memory product: a complete validated read model with precomputed indexes. Public consumers retain and share `*catalogs.Catalog`; read methods return caller-owned values. | A mutable builder, a filesystem directory, an acquisition response, a `Snapshot` public API, or a collection returned by reference. |
+| **Builder** | A mutable, unpublished construction mechanism used to assemble and validate a candidate catalog off to the side. It has one-way publication into a new immutable catalog. | The consumer-facing catalog, a concurrently shared mutable database, or the durable commit point. |
+| **Workspace** | The one human-editable provider-YAML tree rooted at the configured catalog path, normally `~/.starmap/catalog`. Semantic edits are evidence; formatting is not. | The generation store, cache, staging area, exports directory, persisted definitions/offerings/overrides, or an implicitly watched directory. |
+| **Source** | A configured acquisition adapter and identity, such as one provider API, models.dev transport, local workspace, or embedded bootstrap. | A field winner, a provider itself, a scheduler, or an anonymous blob with no identity. |
+| **Observation** | One source attempt's bounded candidate facts plus source identity, retrieval evidence, status, completeness, issues, and scope. An observation may be rejected, degraded, or reconciled; it is never directly published. | The canonical catalog, proof that absent records were deleted, a generation, or a reusable credential container. |
+| **Provenance** | Provider/model/field-scoped evidence explaining which observation or human edit supplied a selected value and why. | A bare model-ID map, one source label for an entire catalog, or persisted secrets/fingerprints. |
+| **Definition** | A provider-independent immutable read view derived from canonical provider models for discovery and identity-oriented queries. | A second persisted model tree, an authority source, or a first-wins merge product. |
+| **Offering** | A provider-specific immutable read view derived from one canonical provider model, preserving exact provider price, limits, endpoint, availability, and lifecycle knowledge. | A second persisted configuration record, invented availability, or a cross-provider aggregate price. |
+| **Candidate** | A complete off-side catalog plus evidence prepared by reconciliation and validation before commit. Failure discards it without changing the active generation or workspace. | The active catalog or a partially mutated shared object. |
+| **Generation** | An immutable, schema-identified, digest-verified catalog publication unit retained in the machine store with its evidence. Generation is lifecycle/storage vocabulary, not the normal consumer type name. | A timestamp-only event, mutable "current" data, a YAML directory, or the public `Catalog()` return vocabulary. |
+| **Catalog store** | The machine-owned durable history of immutable generations, compare-and-swap current identity, retention, and rollback. Its CAS is the sole durable commit point. | The human YAML workspace, a remote cache with no verification, or a second source of editable configuration. |
+| **YAML projection** | The atomic, digest-repairable post-commit materialization of the committed generation into the human workspace. | The durable commit point, a pre-commit gate, or an unconditional overwrite during construction/install. |
+| **Publication** | The successful ordered transition whose durable point is generation-store CAS, followed by in-memory activation, manifest visibility, repairable YAML projection, and post-commit notification according to the tested order. | Fetch completion, candidate validation alone, a callback before commit, or writing an SSE event. |
+| **Manifest** | Small verified metadata naming the current immutable generation, schema, digest, size, and publisher/trust information needed to fetch and verify it. | Mutable catalog data, an unverified redirect target, or a substitute for the generation payload. |
+| **Publication event** | A post-commit SSE hint containing committed generation identity and monotonic sequence. It triggers verified fetch/catch-up and contains no mutable catalog payload. | Exactly-once delivery, proof of freshness, a heartbeat, or the catalog itself. |
+| **Remote subscriber** | An explicitly started, caller-context-owned Go client lifecycle that performs verified initial fetch, consumes SSE hints, catches up after every reconnect, atomically activates newer generations, and joins on shutdown. | A constructor-owned hidden goroutine, an SSE connection mistaken for catalog freshness, or a normal polling loop. |
+| **Stream liveness** | Evidence from timely flushed SSE comments/events that the notification path is alive. | Evidence that the active catalog is current. |
+| **Catalog freshness** | Age/state derived from the last successfully verified and activated generation plus the applicable source/publication policy. | TCP/SSE connection state or heartbeat recency alone. |
+
+Normative decision consequences:
+
+1. Provider YAML is the only persisted human model representation.
+2. Definitions, offerings, and author membership are derived read views from
+   the immutable catalog and use the same authority/provenance result.
+3. Embedded bytes, local edits, models.dev, and provider APIs enter
+   reconciliation as identified observations; none replaces the whole catalog
+   merely because it was read later.
+4. Valid provider pricing is authoritative for that provider's offering.
+   Provider price does not become a provider-independent definition fact.
+5. Missing or degraded observations cannot prove deletion. Explicit lifecycle
+   evidence is required to retire data.
+6. Publication is atomic at generation-store CAS. YAML is a repairable
+   post-commit projection and an event is a post-commit hint.
+7. Public Go consumers say `catalog`; `snapshot` and `generation` remain
+   internal lifecycle/storage vocabulary.
+8. A remote subscriber treats stream liveness and catalog freshness as
+   independent states, always catches up after reconnect, and polls only under
+   an explicit fallback policy.
+
 ### Human edit contract
 
 - Editing a semantic value creates local evidence for that field.
@@ -405,14 +454,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/provider-donor-inventory`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-contract-characterization`
 - Branch:
-  `codex/provider-donor-inventory`
+  `codex/catalog-contract-characterization`
 - Base:
-  `origin/main@a87b64252f022c398589c5aad8652357ba8a174a`
+  `origin/main@08f51ca9d1d1c924a6637dc70d7f5b89944ed98a`
 
-This worktree contains the P1 donor inventory and cleanup ledger updates. It
-was created from the exact protected main produced by merged PR #47.
+This worktree contains P2 green characterization, vocabulary, measurements,
+journeys, and keep/delete decisions. It was created from the exact protected
+main produced by merged PR #48.
 
 ### Provider expansion worktree
 
@@ -480,6 +530,8 @@ Live state inspected 2026-07-27.
 | [#45](https://github.com/agentstation/starmap/pull/45) | `codex/starmap-architecture-control-plane@662d5714` | `DONE` | Merged as `2561456e` | Exact rebased head passed Verification Gate and Security & Reliability; protection required zero approvals and had no review threads; merged; remote/local branch and worktree removed |
 | [#46](https://github.com/agentstation/starmap/pull/46) | `codex/dependency-security-prerequisite@2fbd4c6d` | `DONE` | Replaced #43 and merged as `53285f13` | Exact head contained regenerated direct updates, `x/text v0.40.0`, and `grpc v1.82.1`; current govulncheck, local verification, both hosted gates, and branch-protection readback passed; merged; remote branch removed |
 | [#47](https://github.com/agentstation/starmap/pull/47) | `codex/starmap-pr-reconciliation@650f5406` | `DONE` | Replaced #44 and merged as `a87b6425` | Exact head contained only P0/P1 ledger evidence, the three reviewed action-pin updates, and matching structural assertions; actionlint, race fixture, current govulncheck, full local verification, both hosted gates, protection, and review-thread checks passed; merged; remote branch removed |
+| [#48](https://github.com/agentstation/starmap/pull/48) | `codex/provider-donor-inventory@b7afa2df` | `DONE` | Closed P1 reconciliation and merged as `08f51ca9` | Exact head contained only the control-plane ledger and exhaustive #40 donor inventory; exact local verification, both hosted gates, protection, and zero review threads passed; merged; remote/local branch and worktree removed |
+| [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@64177404` | `IN_PROGRESS` | P2 characterization and production composition decisions | Final ledger head must pass the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, protection readback, and review-thread inspection before merge |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -499,8 +551,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | Phase | Status | Outcome | Gate |
 | --- | --- | --- | --- |
 | P0 | `DONE` | Durable control plane and architecture report are reviewable | P0 tasks and plan PR green after the authorized dependency prerequisite |
-| P1 | `IN_PROGRESS` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
-| P2 | `PENDING` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
+| P1 | `DONE` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
+| P2 | `IN_PROGRESS` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
 | P3 | `PENDING` | One human provider-YAML workspace has deterministic lifecycle | Legacy detection plus seed/edit/upgrade/restart/rollback suite |
 | P4 | `PENDING` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
 | P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
@@ -556,7 +608,7 @@ git diff --check
 | P1.5 | `DONE` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale in [`reviews/PR40_DONOR_INVENTORY_2026-07-27.md`](reviews/PR40_DONOR_INVENTORY_2026-07-27.md) |
 | P1.6 | `DONE` | Close PR #40 | Closing note links this plan and inventory; no open review threads are misrepresented as resolved |
 | P1.7 | `DONE` | Remove #40 worktree and branches in safe order | Worktree is removed before its checked-out local branch; remote and local branches are absent; retained evidence lives in docs/Git history |
-| P1.8 | `IN_PROGRESS` | Rebase control-plane/next phase on current main | No dependency/action regression; ledger records final PR SHAs |
+| P1.8 | `DONE` | Rebase control-plane/next phase on current main | No dependency/action regression; ledger records final PR SHAs |
 
 P1 gate:
 
@@ -574,14 +626,15 @@ active alternative architecture.
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P2.1 | `PENDING` | Record domain vocabulary and decisions | Catalog, workspace, observation, generation, offering, definition, publication, and remote subscriber have one documented meaning |
-| P2.2 | `PENDING` | Characterize current local/store paths | Tests pin store-only failure before commit, input/output divergence, embedded write-path leakage, and durable-store restart precedence at their current call sites |
-| P2.3 | `PENDING` | Characterize reconciliation loss | Tests pin the reviewed defect sites: manual-model drop at `pkg/catalogs/catalog.go:483-491` (models without pricing/limits vanish), non-boolean zero-value clearing asymmetry in `pkg/catalogs/merge.go`, provider omission pruning through wholesale `SetProvider` replacement, degraded-source replacement, and the bare-model-ID provenance tracker keying (`pkg/reconciler/merger.go:202`, `pkg/provenance/provenance.go:147-149`) whose report winner is timestamp-race-dependent |
-| P2.4 | `PENDING` | Characterize schema resilience | A malformed sibling demonstrates whole-collection loss at each reviewed decode site: the monolithic models.dev unmarshal (`internal/sources/modelsdev/parser.go:241`), the single provider-response decode (`internal/transport/request.go:88`, including Google multi-page loss), the local YAML walk abort (`pkg/catalogs/load.go`), and the strict whole-payload decode (`pkg/catalogstore/payload.go:37-39`); invalid local YAML demonstrates fail-closed expectation; the resilient raw-message skip pattern already in `cmd/starmap/cmd/providers/fetch.go:460-478` is recorded as the reference remedy |
-| P2.5 | `PENDING` | Characterize server/remote flow | Real transport tests record manifest/payload behavior, absent Last-Event-ID handling, non-unique timestamp SSE IDs, opposite SSE/WebSocket backpressure, callback ordering, generation drop/reorder, and reconnect semantics |
-| P2.6 | `PENDING` | Measure public composition after #46 | Record exact root/catalog/server dependency closures and attribution (pre-#46 review measured 472 root packages and 448 through Google), plus binary size, allocations, latency, package count, Go LOC, embedded bytes, and file-size inventory |
-| P2.7 | `PENDING` | Freeze user journeys | Golden fixtures cover in-process library, CLI workspace, embedded upgrade, embeddable server, and remote reactive consumer |
-| P2.8 | `PENDING` | Decide production compositions before deletion | Name the retained distribution seam and scheduler owner/use case or record deletion; WebSocket is rejected absent a bidirectional consumer; decisions precede P6.5 |
+| P2.1 | `DONE` | Record domain vocabulary and decisions | Catalog, workspace, observation, generation, offering, definition, publication, and remote subscriber have one documented meaning |
+| P2.2 | `DONE` | Characterize current local/store paths | Green F-001/F-002 tests pin store-only failure before commit, input/output divergence, embedded write-path leakage, and durable-store restart precedence at their current call sites |
+| P2.3 | `DONE` | Characterize reconciliation loss | Green F-004/F-005/F-007/F-008 tests pin manual-model drop at `pkg/catalogs/catalog.go:483-491`, non-boolean zero-value clearing asymmetry in `pkg/catalogs/merge.go`, provider omission pruning through wholesale `SetProvider` replacement, degraded-source replacement, and the bare-model-ID provenance tracker keying (`pkg/reconciler/merger.go:202`, `pkg/provenance/provenance.go:147-149`) whose report winner is timestamp-order-dependent |
+| P2.4 | `DONE` | Characterize schema resilience | Green F-009 tests prove malformed-sibling whole-collection loss at the monolithic models.dev unmarshal (`internal/sources/modelsdev/parser.go:241`), single provider-response decode (`internal/transport/request.go:88`), Google multi-page loop, local YAML walk (`pkg/catalogs/load.go`), and strict stored-payload decode (`pkg/catalogstore/payload.go:37-39`); invalid configured YAML remains typed fail-closed; `cmd/starmap/cmd/providers/fetch.go:460-478` is the existing raw-message skip reference |
+| P2.5 | `DONE` | Characterize server/remote flow | Green real-transport and callback tests record verified manifest/payload behavior, ignored Last-Event-ID, duplicate second-resolution SSE IDs, opposite SSE/WebSocket backpressure, within-generation callback order, cross-generation overtaking, whole-generation hook drop, and one-shot remote fetch with no reconnect lifecycle |
+| P2.6 | `DONE` | Measure public composition after #46 | [`reviews/P2_COMPOSITION_BASELINE_2026-07-27.md`](reviews/P2_COMPOSITION_BASELINE_2026-07-27.md) records exact root/catalog/server/Google closures and attribution, frozen numeric ceilings, binary sizes, accessor allocations/latency, package/file/LOC totals, embedded bytes, and every >1000-line file |
+| P2.7 | `DONE` | Freeze user journeys | [`reviews/P2_USER_JOURNEYS_2026-07-27.md`](reviews/P2_USER_JOURNEYS_2026-07-27.md) and five parsed golden fixtures cover the in-process library, CLI workspace, embedded upgrade, public `server` package, and opt-in public `remote` subscriber |
+| P2.8 | `DONE` | Decide production compositions before deletion | [`reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md`](reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md) retains one server manifest/payload/SSE plus public `remote` flow and the immutable artifact format; it records deletion of the unused hosted distribution protocol, scheduler subsystem, and WebSocket path before P6.5/P7/P9.6 |
+| P2.9 | `IN_PROGRESS` | Close the characterization phase | The exact phase head passes `make verify`, current `govulncheck`, documentation/diff checks, and every P2 focused race suite; the protected PR passes Verification Gate and Security & Reliability, is merged, and its SHA is recorded before the P3.6a/P3.6b/P3.8 hotfix begins |
 
 P2 never merges a failing test. Each known defect receives a green
 characterization test that pins the currently observed defective behavior,
@@ -641,7 +694,7 @@ compile and performance baselines must also be green.
 | P6.2 | `PENDING` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory; a `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
 | P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
 | P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
-| P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, scheduler runner, `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed or connected to a named production composition selected in P2.8 |
+| P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, `catalogscheduler` (including the inert operations projection), `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed; real operational health moves to the production-owned state named by P7.11 |
 | P6.6 | `PENDING` | Validate concrete consumer examples | Separate external test modules compile local library, store-only, server embed, and remote subscriber programs |
 | P6.7 | `PENDING` | Measure improvement | Dependency closure, build time, binary size, package count, Go LOC, and public exports are no worse without explicit rationale |
 | P6.8 | `PENDING` | Make construction and access canonical | `Catalog()` has documented nil-receiver behavior consistent with neighboring methods; storage-backed construction has a caller-owned context/cancellation path; cancellation, timeout, successful construction, and O(1) non-failing access pass external consumer tests |
@@ -785,7 +838,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `provider-expansion-wave0` on `a14d2249` | `DONE` | Inventory committed; #40 closed; worktree removed before local branch; local and remote branches absent |
 | `starmap-architecture-control-plane` on fresh branch | `DONE` | PR #45 merged; remote/local branch and worktree removed |
 | `starmap-pr-reconciliation` on `codex/starmap-pr-reconciliation@650f5406` | `DONE` | PR #47 merged; remote branch removed; local branch/worktree removed after the successor P1 workspace was created |
-| `provider-donor-inventory` on `codex/provider-donor-inventory` | `IN_PROGRESS` | Inventory and close #40, remove its worktree/branches, merge the remaining P1 ledger, then remove this worktree/branch |
+| `provider-donor-inventory` on `codex/provider-donor-inventory@b7afa2df` | `DONE` | PR #48 merged; remote branch removed; local branch/worktree removed after the successor P2 workspace was created |
+| `catalog-contract-characterization` on `codex/catalog-contract-characterization` | `IN_PROGRESS` | Complete P2, merge its exact green phase PR, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -823,6 +877,18 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P1.6–P1.7 | PR #40 had zero review threads. Added [closing comment 5099100581](https://github.com/agentstation/starmap/pull/40#issuecomment-5099100581) linking the current plan and immutable inventory commit `3fff4465e1db94e95975c8ead57377dbcc3a2c55`, then closed the draft. Verified its donor worktree was clean at exact head `a14d22497479cb944932274088cf806cb25e993b`; removed the worktree before deleting the local branch, deleted the remote branch, verified local/remote refs and the worktree path were absent, and pruned the worktree registry. |
 | 2026-07-27 | P1.8 | After #40 cleanup, GitHub reported zero open Starmap PRs. The P1 ledger branch is a descendant of and has no code changes from current protected main `a87b64252f022c398589c5aad8652357ba8a174a`; only this control plane and the donor inventory differ. |
 | 2026-07-27 | P1.8 / F-041 | Exact head `c330b131ba5cf67d30b81c0beac5f8db39293779` passed `actionlint`, `go test -race ./internal/ciworkflow`, current `govulncheck v1.6.0` with zero reachable vulnerabilities, and full `make verify`: ordinary tests, repository race-short, vet, catalog benchmark (10.65–11.92 ns/op, 0 B/op, 0 allocs/op), lint, every coverage floor, docs, diff, build, catalog validation, and CLI smokes. The nominally “isolated credential-free provider listing” nevertheless reported Google Vertex `Configured` from ambient developer ADC; this pre-existing non-hermetic verification behavior is recorded as F-041 for P10.1/P10.6 rather than treated as a P1 regression. |
+| 2026-07-27 | P1.8 | PR #48 final exact head `b7afa2df93359db7dd420c83fccbb0085a6154d7` passed `actionlint`, `go test -race ./internal/ciworkflow`, current `govulncheck v1.6.0` with zero reachable vulnerabilities, and exact `make verify`; the catalog benchmark measured 8.473–10.43 ns/op, 0 B/op, and 0 allocs/op. The same head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30322875677/job/90162203582) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30322875677/job/90162203514). Protection required both exact contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged as `08f51ca9d1d1c924a6637dc70d7f5b89944ed98a`. Its remote branch was deleted and GitHub again reported zero open Starmap PRs. |
+| 2026-07-27 | P2.1 | Created fresh worktree `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-contract-characterization` on `codex/catalog-contract-characterization` from exact protected main `08f51ca9d1d1c924a6637dc70d7f5b89944ed98a`. Removed the clean merged P1 worktree and its local branch after confirming the remote branch was absent. |
+| 2026-07-27 | P2.1 | Added the normative canonical-domain table and decision consequences to this control plane. It gives one positive meaning and explicit non-meanings for provider model, catalog, builder, workspace, source, observation, provenance, definition, offering, candidate, generation, store, YAML projection, publication, manifest, event, remote subscriber, stream liveness, and catalog freshness. `rg` found every P2.1 required term in the table; `make docs-check` and `git diff --check` passed. |
+| 2026-07-27 | P2.2 | Added four green tests that name F-001/F-002 and pin the current defects at real call sites without changing production behavior: `TestF002CharacterizationStoreOnlyApplyFailsBeforeGenerationCommit` proves YAML failure precedes generation-store commit and in-memory publication; `TestF001CharacterizationPipelineLoadsLocalFromOutputPath` proves sync reuses the projection path as local input; `TestF001CharacterizationEmbeddedBuilderCarriesRepositoryWritePath` proves embedded construction carries `internal/embedded/catalog` as a write destination; and `TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace` proves restart ignores a valid human workspace when durable current exists. `go test -race . ./internal/catalog/pipeline ./pkg/catalogs -run 'F00[12]Characterization' -count=1` passed, followed by the complete affected-package command `go test -race . ./internal/catalog/pipeline ./pkg/catalogs -count=1` (`119.597s`, `1.898s`, and `44.872s` respectively); `git diff --check` passed. The fixing phases must invert these assertions while retaining failure atomicity. |
+| 2026-07-27 | P2.3 | Added five green characterization tests without production changes. `TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits` pins the `MergeEnrichEmpty` metadata-only model drop; `TestF008CharacterizationMergeModelsClearsFalseButKeepsOtherZeroValues` pins false clearing while empty string and numeric zero cannot clear; `TestF005CharacterizationPrimaryOmissionPrunesBaselineModel` pins primary omission plus wholesale provider replacement deleting a baseline model; `TestF005CharacterizationDegradedObservationStillPrunesBaselineModel` proves partial/degraded status, rejection count, and issue metadata do not prevent the same deletion; and `TestF007CharacterizationPersistedProvenanceCollidesAcrossProviders` proves two providers' shared model ID persists under one `model:shared:Name` tracker key and `GenerateReport` selects current by reconciliation timestamp. The focused `go test -race ./pkg/catalogs ./pkg/reconciler -run 'F00[4578]Characterization' -count=1` passed, then the full affected-package race suites passed (`44.414s` and `1.430s`); the later fixing phases must invert the loss expectations and make provenance provider-scoped durably. |
+| 2026-07-27 | P2.4 | Added six green F-009 characterization tests without production changes. A valid models.dev sibling is unavailable when another model has a drifted integer; generic `DecodeResponse` returns an error even after parsing a valid sibling; Google returns zero models when a malformed second page follows a valid first page; a valid local model becomes unavailable when a later YAML file is malformed; a present invalid workspace returns typed `*errors.ParseError` rather than optional absence; and one malformed stored model rejects the whole generation payload with typed parse failure. The focused `go test -race ./internal/sources/modelsdev ./internal/transport ./internal/providers/google ./pkg/catalogs ./pkg/catalogstore -run 'F009Characterization' -count=1` passed. Full affected-package race suites then passed (`35.686s`, `1.547s`, `1.309s`, `47.245s`, and `2.534s`). The bounded `json.RawMessage` loop in `cmd/starmap/cmd/providers/fetch.go:460-478`, which skips one invalid record while retaining siblings, is the existing reference pattern; P4.8 must generalize that behavior while keeping envelope, resource-budget, and configured-workspace structural failures fail-closed. |
+| 2026-07-27 | P2.5 | Preserved the existing real manifest/payload proof (`TestRemoteCatalogClientAndServerShareVersionedManifestSnapshotContract` and `TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility`) and added/renamed green finding-labelled characterizations. A real SSE connection proves `Last-Event-ID` does not change the connection-only handshake and two publications in one second both receive ID `1800000000`; slow SSE delivery is skipped while the client stays connected, whereas slow WebSocket delivery disconnects; publication callbacks complete before model-diff callbacks within one generation, but a blocked generation 1 is overtaken by generation 2; the 17th concurrent hook dispatch is silently dropped after the fixed 16-slot limit; and the remote client performs only manifest plus payload GETs with no event-stream or reconnect lifecycle. Focused `go test -race . ./internal/server/events/adapters ./internal/server/sse ./internal/server/websocket ./pkg/catalogremote -run 'F0(17|18|19|34|36)Characterization|F017F034Characterization' -count=1` passed. Full root/server/adapter/SSE/WebSocket/remote race suites passed (`115.703s`, `60.575s`, `1.382s`, `2.148s`, `3.901s`, and `2.033s`), including the existing post-commit HTTP+SSE+WebSocket correspondence test. P7 must retain verified immutable fetch and post-commit atomicity while replacing these notification/lifecycle defects. |
+| 2026-07-27 | P2.6 | Measured code tree `fa088d97d639d716f0593bbdff140d0def255718` with Go 1.26.5 darwin/arm64 and recorded the reproducible baseline in [`reviews/P2_COMPOSITION_BASELINE_2026-07-27.md`](reviews/P2_COMPOSITION_BASELINE_2026-07-27.md). Root/catalog/server/Google compile closures are 472/145/488/448 packages; the Google closure is a strict 448-package subset and 94.9% of root. Root attribution is 214 standard, 33 local, and 225 external packages; the current regression ceiling is 472 plus the P6.2 banned-implementation gate. The CLI is 37,552,946 bytes with `-trimpath` and 27,687,346 bytes stripped. Five `BenchmarkClientCatalog` runs measured 9.159–10.75 ns/op, 0 B/op, and 0 allocs/op. The repository has 89 Go packages, 466 Go files, 86,051 Go lines (47,900 non-test; 38,151 test), and 2,514,088 embedded catalog bytes across 966 files. The only >1000-line files are `pkg/reconciler/merger_test.go` 2,059; Google client 1,206; OpenAI client 1,183; and reconciler merger 1,134. |
+| 2026-07-27 | P2.6 | Follow-up closure measurement found the intended local core union, `pkg/catalogs` plus `pkg/catalogstore`, is 149 packages. The P6.2 read-only root acceptance budget is therefore frozen at no more than 160 packages, leaving at most 11 for the root/bootstrap façade; 472 remains only the pre-refactor regression ceiling. Meeting 160 does not waive the explicit GenAI/gRPC/OpenTelemetry/WebSocket/SQLite/Cobra/scheduler/server exclusion. The opt-in verified HTTP remote package currently has a separate 225-package closure and cannot be pulled into every local consumer merely to meet the remote journey. |
+| 2026-07-27 | P2.7 | Added [`reviews/P2_USER_JOURNEYS_2026-07-27.md`](reviews/P2_USER_JOURNEYS_2026-07-27.md) and five golden fixtures under `testdata/journeys`. The Go fixtures freeze the canonical root library DX, the public `github.com/agentstation/starmap/server` composition with caller-owned `Serve(ctx, listener)`, and the opt-in `github.com/agentstation/starmap/remote` lifecycle whose constructor is inert and whose `Start` performs verified initial fetch before reactive service. Machine-readable CLI-workspace and embedded E1→E2 fixtures freeze atomic seed, semantic edits, provider-price authority, explicit update, no install-time rewrite, restart, rollback, and the absence of persisted definitions/offerings/overrides. `TestP2UserJourneyGoldenFixtures` parses every fixture, rejects internal/CLI imports, and validates the required contract fields; later phases must promote the same artifacts into external compile and runtime suites. |
+| 2026-07-27 | P2.8 | On code tree `892589f790f4a7b3b9c88d913924486017854fed`, production-import queries found zero importer of `pkg/catalogdistribution` and zero caller of `NewRunner`, `NewInitialRunController`, the lease/ledger/freshness constructors, or their `Operations` wiring options. [`reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md`](reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md) therefore retains one server manifest/immutable-payload/SSE protocol consumed by public `remote`, retains `catalogartifact` for independently versioned GitHub Release and offline artifacts, and directs deletion of the 767-production-line hosted protocol, the 2,314-production-line scheduler subsystem, and WebSocket. Cadence is owned by the embedding deployment over explicit `Sync`; a future `starmap.agentstation.ai` deployment uses the same server contract rather than a competing protocol. `make docs-check`, `git diff --check`, and shell assertions for the zero production callers passed. |
+| 2026-07-27 | P2.9 | Exact code-and-decision head `64177404c453a9e695be3e43a9d35d0f8108aa3b` passed the complete P2 affected-package `go test -race` command across root, pipeline, catalogs, reconciliation, source decoders, store, server, both characterized transports, and remote client. Current Go 1.26.5 `govulncheck v1.6.0` reported zero reachable and zero imported-package vulnerabilities. Exact `make verify` passed ordinary tests, repository-wide `-race -short`, vet, lint with zero issues, all coverage floors, docs, diff, build, 933-model catalog validation, and isolated CLI checks; `BenchmarkClientCatalog` measured 10.57–11.00 ns/op, 0 B/op, and 0 allocs/op. Opened protected phase PR [#49](https://github.com/agentstation/starmap/pull/49); its final ledger head still requires the same exact local and hosted proof. |
 
 ## Final Definition of Done
 

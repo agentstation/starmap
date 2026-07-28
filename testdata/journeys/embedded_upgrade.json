@@ -1,0 +1,32 @@
+{
+  "id": "embedded-upgrade",
+  "given": [
+    "binary E1 seeded a workspace with model shared and embedded provenance E1",
+    "the operator changed shared.description but left shared.limits unchanged",
+    "binary E2 contains a changed embedded limit, a new field, and a new model"
+  ],
+  "when": [
+    "the E2 binary is installed without running an update",
+    "the operator later runs one explicit update"
+  ],
+  "then": [
+    "installation alone leaves workspace bytes unchanged",
+    "the explicit update preserves the human description edit",
+    "the explicit update advances unchanged embedded-derived limits from E1 to E2",
+    "the explicit update fills the new field and adds the new model",
+    "formatting-only differences do not become local evidence",
+    "restart produces the same generation and YAML semantics",
+    "rollback restores the exact prior generation, provenance, and workspace semantics"
+  ],
+  "forbidden_paths": [
+    "definitions",
+    "offerings",
+    "overrides"
+  ],
+  "future_gates": [
+    "P3.3-P3.6b",
+    "P3.9-P3.10",
+    "P4.1-P4.6",
+    "P9.3-P9.4"
+  ]
+}

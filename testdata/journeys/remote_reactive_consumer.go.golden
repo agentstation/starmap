@@ -1,0 +1,26 @@
+package consumer
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/agentstation/starmap/remote"
+)
+
+func consume(ctx context.Context, baseURL string, httpClient *http.Client) error {
+	subscriber, err := remote.New(remote.Config{
+		BaseURL:    baseURL,
+		HTTPClient: httpClient,
+	})
+	if err != nil {
+		return err
+	}
+	if err := subscriber.Start(ctx); err != nil {
+		return err
+	}
+	defer subscriber.Close()
+
+	catalog := subscriber.Catalog()
+	_, err = catalog.FindModel("gpt-4o")
+	return err
+}

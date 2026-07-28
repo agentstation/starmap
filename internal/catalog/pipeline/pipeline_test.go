@@ -3,6 +3,7 @@ package pipeline
 import (
 	"context"
 	stderrors "errors"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -72,6 +73,37 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 	if sourceWorkStarted {
 		t.Fatal("Expected validation to fail before source construction")
+	}
+}
+
+// TestF001CharacterizationPipelineLoadsLocalFromOutputPath pins the current
+// input/output path divergence. The fixing phase must make the configured
+// human workspace the input and treat post-commit materialization as a
+// projection, not reinterpret an arbitrary output destination as source data.
+func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, &reconciler.Result{
+		Catalog:           catalogs.NewEmpty(),
+		Changeset:         emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{},
+		ModelProviderMap:  map[string]catalogs.ProviderID{},
+	})
+	outputPath := filepath.Join(t.TempDir(), "projection")
+	var loadedPath string
+	runner.loadLocal = func(path string) (*catalogs.Builder, error) {
+		loadedPath = path
+		return catalogs.NewEmpty(), nil
+	}
+
+	if _, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithDryRun(true),
+		pkgsync.WithOutputPath(outputPath),
+	); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if loadedPath != outputPath {
+		t.Fatalf("F-001 characterization changed: local path = %q, want output path %q", loadedPath, outputPath)
 	}
 }
 

@@ -2,12 +2,15 @@ package starmap
 
 import (
 	"context"
+	stderrors "errors"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/differ"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/save"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -72,5 +75,42 @@ func TestSaveDoesNotPublishCatalogWhenPersistenceFails(t *testing.T) {
 	}
 	if _, err := current.Provider("new"); err == nil {
 		t.Fatal("New catalog was published even though persistence failed")
+	}
+}
+
+// TestF002CharacterizationStoreOnlyApplyFailsBeforeGenerationCommit pins the
+// current F-002 defect. P3.8 must invert this assertion: a configured catalog
+// store with no YAML workspace succeeds and performs no workspace filesystem
+// operation.
+func TestF002CharacterizationStoreOnlyApplyFailsBeforeGenerationCommit(t *testing.T) {
+	store := catalogstore.NewMemory()
+	opts := defaults()
+	opts.catalogStore = store
+	client := newWritableStoreTestClient(t, opts)
+
+	candidate := catalogs.NewEmpty()
+	if err := candidate.SetProvider(catalogs.Provider{ID: "store-only", Name: "Store Only"}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	_, err := (pipelineStore{client: client}).Apply(
+		context.Background(),
+		candidate,
+		&pkgsync.Options{},
+		&differ.Changeset{},
+		nil,
+	)
+	if err == nil {
+		t.Fatal("F-002 characterization changed: store-only apply unexpectedly succeeded")
+	}
+	var ioErr *pkgerrors.IOError
+	if !stderrors.As(err, &ioErr) {
+		t.Fatalf("store-only apply error = %T: %v, want *errors.IOError", err, err)
+	}
+	if _, currentErr := store.Current(context.Background()); !pkgerrors.IsNotFound(currentErr) {
+		t.Fatalf("generation store changed before YAML failure: %v", currentErr)
+	}
+	if _, currentErr := client.Catalog().Provider("store-only"); currentErr == nil {
+		t.Fatal("failed store-only apply published the candidate in memory")
 	}
 }

@@ -1,0 +1,21 @@
+package consumer
+
+import (
+	"context"
+	"net"
+
+	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/server"
+)
+
+func serve(ctx context.Context, listener net.Listener) error {
+	sm, err := starmap.New(starmap.WithEmbeddedCatalog())
+	if err != nil {
+		return err
+	}
+	srv, err := server.New(sm)
+	if err != nil {
+		return err
+	}
+	return srv.Serve(ctx, listener)
+}

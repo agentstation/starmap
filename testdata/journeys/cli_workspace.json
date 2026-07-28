@@ -1,0 +1,33 @@
+{
+  "id": "cli-workspace",
+  "given": [
+    "the configured human workspace ~/.starmap/catalog is absent",
+    "the verified embedded catalog contains provider model gpt-4o",
+    "the machine generation store is separate from the workspace"
+  ],
+  "when": [
+    "the operator runs starmap update --yes",
+    "the operator edits a semantic field in ~/.starmap/catalog/providers/openai/models/gpt-4o.yaml",
+    "the operator adds a metadata-only model under the same providers tree",
+    "a later explicit starmap update receives valid provider pricing"
+  ],
+  "then": [
+    "first run atomically seeds one provider-YAML workspace",
+    "construction and installation never silently rewrite the workspace",
+    "the semantic edit becomes local field evidence",
+    "the metadata-only manual model survives",
+    "valid provider pricing wins for the provider offering",
+    "manual fields missing from dynamic observations survive",
+    "one complete immutable generation is published or the previous generation and workspace remain usable"
+  ],
+  "forbidden_paths": [
+    "definitions",
+    "offerings",
+    "overrides"
+  ],
+  "future_gates": [
+    "P3.1-P3.9",
+    "P4.2-P4.7",
+    "P10.2"
+  ]
+}
