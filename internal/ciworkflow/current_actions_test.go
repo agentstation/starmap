@@ -10,12 +10,12 @@ import (
 func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 	t.Helper()
 	approved := map[string]string{
-		"actions/checkout":                  "9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0", // v7.0.0
-		"actions/setup-go":                  "924ae3a1cded613372ab5595356fb5720e22ba16", // v6.5.0
+		"actions/checkout":                  "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
+		"actions/setup-go":                  "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
 		"actions/attest-build-provenance":   "0f67c3f4856b2e3261c31976d6725780e5e4c373", // v4.1.1
 		"actions/upload-artifact":           "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
 		"anchore/sbom-action/download-syft": "e22c389904149dbc22b58101806040fa8d37a610", // v0.24.0
-		"docker/login-action":               "af1e73f918a031802d376d3c8bbc3fe56130a9b0", // v4.4.0
+		"docker/login-action":               "abd2ef45e78c5afb21d64d4ca52ee8550d9572c7", // v4.5.1
 		"goreleaser/goreleaser-action":      "f06c13b6b1a9625abc9e6e439d9c05a8f2190e94", // v7.2.3
 		"oras-project/setup-oras":           "1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d", // v2.0.1
 	}

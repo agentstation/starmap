@@ -16,7 +16,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"make verify",
 		"make release-check",
 		"goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3",
-		"docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0",
+		"docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1",
 		"anchore/sbom-action/download-syft@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0",
 		"syft-version: v1.46.0",
 		"actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
