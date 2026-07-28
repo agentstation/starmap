@@ -49,16 +49,32 @@ stack before adding its own composition.
 
 ### Frozen dependency budgets
 
-- Until P6.2 lands, the root closure may not exceed 472 packages.
+- Until P6.2 lands, the root closure may not exceed the current 472-package
+  regression ceiling.
 - The canonical catalog closure may not exceed 145 packages without a recorded
   product reason.
 - The server closure may not exceed 488 packages before its public composition
   is separated.
-- P6.2 is not successful merely by staying below 472: the root read-only
-  consumer closure must also contain none of GenAI, gRPC, OpenTelemetry,
-  WebSocket, SQLite, Cobra, scheduler, or server implementations. The budget is
-  a regression ceiling; the banned-implementation assertion is the
-  architectural gate.
+- The P6.2 acceptance budget for the root read-only consumer is **160 packages
+  maximum**. This is derived from the measured 149-package union of
+  `pkg/catalogs` plus `pkg/catalogstore`, leaving at most 11 packages for the
+  root façade and separated bootstrap composition.
+- P6.2 is not successful merely by meeting 160: the same closure must contain
+  none of GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or
+  server implementations.
+
+The measured 149-package core union is reproducible with:
+
+```bash
+go list -deps -f '{{.ImportPath}}' \
+  ./pkg/catalogs ./pkg/catalogstore | sort -u | wc -l
+```
+
+The verified-fetch remote package is a distinct composition whose current
+closure is 225 packages, primarily because a full HTTP/TLS client expands the
+standard library from 121 to 198 packages. It does not weaken the local
+read-only budget; P6 must keep remote consumption opt-in rather than make every
+local consumer compile it.
 
 Reproduction:
 
