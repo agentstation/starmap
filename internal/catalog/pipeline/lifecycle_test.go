@@ -154,8 +154,21 @@ func TestObserveCollectsSourceErrorsAndKeepsPartialCatalogs(t *testing.T) {
 	if !stderrors.Is(err, missingCatalogErr) {
 		t.Fatalf("Expected joined error to include missing-catalog source error, got %v", err)
 	}
-	if len(observations) != 2 {
-		t.Fatalf("Expected complete and partial observations to be retained, got %d", len(observations))
+	if len(observations) != 3 {
+		t.Fatalf("Expected complete, partial, and failed observations to be retained, got %d", len(observations))
+	}
+	var foundFailed bool
+	for _, observation := range observations {
+		if observation.SourceID != missing.ID() {
+			continue
+		}
+		foundFailed = observation.Status == sources.ObservationStatusDegraded &&
+			observation.Completeness == sources.ObservationCompletenessPartial &&
+			len(observation.Issues) == 1 &&
+			observation.Issues[0].Code == sources.ObservationIssueCodeFetchFailed
+	}
+	if !foundFailed {
+		t.Fatalf("missing source did not produce classified failed observation: %#v", observations)
 	}
 
 	for _, src := range []*lifecycleTestSource{success, partial, missing} {

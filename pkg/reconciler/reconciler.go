@@ -216,10 +216,6 @@ func (r *Reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 		primaryCatalog,
 	)
 
-	if len(modelSources) == 0 {
-		return modelResult{}, nil
-	}
-
 	// Track API count from primary source
 	apiCount := 0
 	if rctx.collector.primary != "" {
@@ -265,8 +261,6 @@ func (r *Reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 		if err != nil {
 			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
 		}
-		// Clear old provenance data - we'll regenerate it from the current reconciliation
-		catalog.ClearProvenance()
 	} else {
 		catalog = catalogs.NewEmpty()
 	}
@@ -334,10 +328,16 @@ func (r *Reconciler) result(rctx *reconcileContext, catalog *catalogs.Builder, c
 		maps.Copy(result.Provenance, providerScopedProvenance(providerID, mr.provenance))
 	}
 
-	// Copy tracker provenance into catalog for persistence
-	// This ensures the catalog contains the correctly-formatted provenance data
+	// Replace evidence for fields observed during this reconciliation while
+	// retaining exact evidence for baseline-only providers/models. Source
+	// absence is not lifecycle evidence and therefore cannot erase the
+	// last-known-good value or its provenance.
 	if r.provenance != nil {
-		catalog.MergeProvenance(r.provenance.Map())
+		combined := catalog.Provenance().Map()
+		for key, entries := range r.provenance.Map() {
+			combined[key] = entries
+		}
+		catalog.SetProvenance(combined)
 	}
 
 	// Build tracking maps from final catalog (not just current sync results)

@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/agentstation/starmap/internal/deps"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -46,9 +48,35 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 				errMutex.Unlock()
 
 				if observation.Catalog == nil {
-					logger.Warn().Str("source", string(src.ID())).Msg("No catalog returned, skipping source")
+					failed, failedErr := failedSourceObservation(src.ID(), err)
+					if failedErr != nil {
+						errMutex.Lock()
+						errs = append(errs, failedErr)
+						errMutex.Unlock()
+						return
+					}
+					errMutex.Lock()
+					observations = append(observations, failed)
+					errMutex.Unlock()
 					return
 				}
+			}
+
+			if observation.Catalog == nil {
+				missingErr := &pkgerrors.ValidationError{
+					Field:   "observation.catalog",
+					Message: "source returned neither a catalog nor an error",
+				}
+				failed, failedErr := failedSourceObservation(src.ID(), missingErr)
+				errMutex.Lock()
+				errs = append(errs, pkgerrors.WrapResource("observe", "source", string(src.ID()), missingErr))
+				if failedErr != nil {
+					errs = append(errs, failedErr)
+				} else {
+					observations = append(observations, failed)
+				}
+				errMutex.Unlock()
+				return
 			}
 
 			if observation.Catalog != nil {
@@ -89,6 +117,32 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 		return observations, errors.Join(errs...)
 	}
 	return observations, nil
+}
+
+func failedSourceObservation(sourceID sources.ID, cause error) (sources.Observation, error) {
+	empty, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		return sources.Observation{}, pkgerrors.WrapResource("build", "failed source observation", string(sourceID), err)
+	}
+	issueCode := sources.ObservationIssueCodeFetchFailed
+	if _, ok := cause.(*pkgerrors.ValidationError); ok {
+		issueCode = sources.ObservationIssueCodeConfiguration
+	}
+	observation, err := sources.NewObservation(sourceID, empty, sources.ObservationMetadata{
+		ObservedAt:   time.Now().UTC(),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessPartial,
+		Status:       sources.ObservationStatusDegraded,
+		Issues: []sources.ObservationIssue{{
+			Scope:   sources.ObservationIssueScopeSource,
+			Code:    issueCode,
+			Message: cause.Error(),
+		}},
+	})
+	if err != nil {
+		return sources.Observation{}, pkgerrors.WrapResource("create", "failed source observation", string(sourceID), err)
+	}
+	return observation, nil
 }
 
 func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, error) {

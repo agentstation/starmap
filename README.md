@@ -589,7 +589,7 @@ Starmap combines data from multiple sources:
 - **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, Alibaba Cloud, Fireworks AI, DeepInfra, etc.)
 - **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
 - **Embedded Catalog**: Baseline data shipped with starmap
-- **Local Files**: User customizations and overrides
+- **Local Files**: The human provider-YAML workspace and manual fallback data
 
 For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](docs/ARCHITECTURE.md#data-sources)**.
 

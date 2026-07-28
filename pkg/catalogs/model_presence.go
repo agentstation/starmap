@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"reflect"
 	"strings"
-
-	"github.com/goccy/go-yaml"
 )
 
 // ModelFeature identifies one boolean model capability.
@@ -368,32 +366,6 @@ func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence) {
 		return true, ValueKnown
 	}
 	return false, ValueMissing
-}
-
-func marshalPresenceYAML(entries yaml.MapSlice, key string, value any, state ValuePresence, after string) yaml.MapSlice {
-	if state == ValueMissing {
-		return entries
-	}
-	if state == ValueUnknown {
-		value = nil
-	}
-	for index := range entries {
-		if entries[index].Key == key {
-			entries[index].Value = value
-			return entries
-		}
-	}
-	insertAt := len(entries)
-	for index := range entries {
-		if entries[index].Key == after {
-			insertAt = index + 1
-			break
-		}
-	}
-	entries = append(entries, yaml.MapItem{})
-	copy(entries[insertAt+1:], entries[insertAt:])
-	entries[insertAt] = yaml.MapItem{Key: key, Value: value}
-	return entries
 }
 
 func isJSONNull(value json.RawMessage) bool {

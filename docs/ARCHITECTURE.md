@@ -839,6 +839,8 @@ type Observation struct {
     Revision         Revision
     Completeness     ObservationCompleteness
     Status           ObservationStatus
+    Records          ObservationRecordCounts
+    Issues           []ObservationIssue
     EvidenceChecksum string
     Catalog          *catalogs.Catalog
 }
@@ -902,9 +904,11 @@ can be retained independently of optional raw retention.
 
 Observation outcomes use one explicit policy:
 
-- a non-nil Go error means the source call failed and produced no policy-usable
-  observation (a diagnostic partial catalog may accompany it, but publication
-  stops);
+- a non-nil source error is retained as a partial/degraded attempt with a
+  bounded empty candidate when the adapter returned no usable catalog;
+  non-strict synchronization may still reconcile other valid sources against
+  the last-known-good baseline, while `RequireAllSources` fails and a canceled
+  caller context always stops;
 - a usable incomplete result returns nil error with `partial`/`degraded` state
   and typed issues, so valid sibling providers/records remain reconcilable;
 - issue scope is exactly `record`, `provider`, `source`, or `stale_fallback`;
@@ -913,7 +917,19 @@ Observation outcomes use one explicit policy:
 - missing provider credentials/configuration and provider fetch failures are
   provider-scoped partial degradation, not successful empty live fetches;
 - stale last-known-good fallback is explicitly degraded (and can remain
-  structurally complete), never mislabeled as a fresh success.
+  structurally complete), never mislabeled as a fresh success;
+- present valid fields from partial observations remain eligible at their
+  normal authority position, and their durable provenance records status,
+  completeness, accepted/rejected counts, and stable issue codes;
+- a stale cache or bootstrap fallback may fill an absent fact but cannot
+  regress a known baseline fact;
+- source absence is never lifecycle evidence: complete omission, record
+  quarantine, source failure, and a source-attributed model-count regression
+  retain the exact baseline model and provenance;
+- a source-attributed count regression adds a provider-scoped
+  `volume_collapse` issue and makes the observation partial/degraded; and
+- `Fresh` refuses an empty-baseline publication if any observation is
+  degraded or partial.
 
 **Source Types:**
 - **Provider APIs** (`sources.ProvidersID`) - Real-time model availability

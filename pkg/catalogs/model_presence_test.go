@@ -113,6 +113,35 @@ func TestModelFeaturePresenceFitsCompactRepresentation(t *testing.T) {
 	}
 }
 
+func TestModelPresenceYAMLPreservesTypedCollectionShapes(t *testing.T) {
+	model := Model{
+		ID:      "typed-shapes",
+		Name:    "Typed Shapes",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Modes: map[string]ModelMode{
+			"fast": {},
+		},
+	}
+	model.SetDescription("")
+	encoded, err := model.EncodeYAML()
+	if err != nil {
+		t.Fatalf("EncodeYAML: %v", err)
+	}
+	if !strings.Contains(encoded, "authors:\n- id: author") {
+		t.Fatalf("authors were not encoded as a sequence:\n%s", encoded)
+	}
+	var decoded Model
+	if err := yaml.Unmarshal([]byte(encoded), &decoded); err != nil {
+		t.Fatalf("Unmarshal YAML: %v\n%s", err, encoded)
+	}
+	if len(decoded.Authors) != 1 || decoded.Authors[0].ID != "author" {
+		t.Fatalf("authors = %#v", decoded.Authors)
+	}
+	if _, exists := decoded.Modes["fast"]; !exists {
+		t.Fatalf("modes = %#v", decoded.Modes)
+	}
+}
+
 func assertF008Presence(t *testing.T, model *Model) {
 	t.Helper()
 	if value, state := model.DescriptionValue(); value != "" || state != ValueKnown {

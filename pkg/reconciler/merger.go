@@ -33,6 +33,31 @@ type sourceObservationEvidence struct {
 	observedAt       time.Time
 	revision         sources.Revision
 	evidenceChecksum string
+	completeness     sources.ObservationCompleteness
+	status           sources.ObservationStatus
+	records          sources.ObservationRecordCounts
+	issues           []sources.ObservationIssue
+}
+
+func (e sourceObservationEvidence) healthReason() string {
+	if e.status == sources.ObservationStatusSucceeded &&
+		e.completeness == sources.ObservationCompletenessComplete &&
+		e.records.Rejected == 0 &&
+		len(e.issues) == 0 {
+		return ""
+	}
+	issueCodes := make([]string, 0, len(e.issues))
+	for _, issue := range e.issues {
+		issueCodes = append(issueCodes, string(issue.Code))
+	}
+	return fmt.Sprintf(
+		"observation health status=%s completeness=%s accepted=%d rejected=%d issues=%s",
+		e.status,
+		e.completeness,
+		e.records.Accepted,
+		e.records.Rejected,
+		strings.Join(issueCodes, ","),
+	)
 }
 
 // newMerger creates a new strategic merger.
@@ -55,6 +80,10 @@ func (merger *merger) setObservations(observations []sources.Observation) {
 			observedAt:       observation.ObservedAt,
 			revision:         observation.Revision,
 			evidenceChecksum: observation.EvidenceChecksum,
+			completeness:     observation.Completeness,
+			status:           observation.Status,
+			records:          observation.Records,
+			issues:           append([]sources.ObservationIssue(nil), observation.Issues...),
 		}
 		merger.sourceCatalogs[observation.SourceID] = observation.Catalog
 	}
@@ -164,6 +193,17 @@ func (merger *merger) ModelsForProvider(providerID catalogs.ProviderID, srcs map
 				modelsByID[model.ID] = make(map[sources.ID]*catalogs.Model)
 			}
 			modelsByID[model.ID][sourceType] = model
+		}
+	}
+	// Absence is not lifecycle evidence. Seed the identity set from the
+	// last-known-good baseline so a complete, partial, or degraded observation
+	// cannot retire a model merely by omitting it.
+	for _, model := range merger.baselineModels[providerID] {
+		if model == nil || model.ID == "" {
+			continue
+		}
+		if _, exists := modelsByID[model.ID]; !exists {
+			modelsByID[model.ID] = make(map[sources.ID]*catalogs.Model)
 		}
 	}
 
@@ -344,6 +384,11 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 
 	// Start with a base provider
 	var merged catalogs.Provider
+	if merger.baseline != nil {
+		if baseline, err := merger.baseline.Provider(providerID); err == nil {
+			merged = catalogs.DeepCopyProvider(baseline)
+		}
+	}
 	history := make(map[string]provenance.Field)
 
 	// Merge each field
@@ -443,6 +488,9 @@ func (merger *merger) recordModelHistory(
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		if health := evidence.healthReason(); health != "" {
+			current.Reason += "; " + health
+		}
 	}
 	(*history)[provenancePath] = provenance.Field{
 		Current: current,

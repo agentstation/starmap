@@ -267,6 +267,9 @@ func (merger *merger) recordProviderHistory(
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		if health := evidence.healthReason(); health != "" {
+			current.Reason += "; " + health
+		}
 	}
 	(*history)[path] = provenance.Field{Current: current}
 }

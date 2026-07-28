@@ -121,11 +121,6 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 	}()
 
-	observations, err := p.observe(ctx, srcs, options.SourceOptions())
-	if err != nil {
-		return nil, err
-	}
-
 	existing, err := p.store.Catalog()
 	if err != nil {
 		empty := catalogs.NewEmpty()
@@ -142,6 +137,32 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 			return nil, pkgerrors.WrapResource("publish", "fresh baseline snapshot", "", err)
 		}
 		logging.Info().Msg("Fresh sync uses an empty reconciliation baseline")
+	}
+
+	observations, observeErr := p.observe(ctx, srcs, options.SourceOptions())
+	if ctxErr := ctx.Err(); ctxErr != nil {
+		return nil, ctxErr
+	}
+	if observeErr != nil && options.RequireAllSources {
+		return nil, observeErr
+	}
+	if observeErr != nil {
+		logging.Warn().
+			Err(observeErr).
+			Msg("Continuing with degraded source observations and last-known-good data")
+	}
+	observations, err = guardObservationHealth(existing, observations)
+	if err != nil {
+		return nil, pkgerrors.WrapResource("guard", "source observations", "", err)
+	}
+	if options.Fresh && hasDegradedObservation(observations) {
+		return nil, &pkgerrors.SyncError{
+			Provider: "all",
+			Err: &pkgerrors.ValidationError{
+				Field:   "fresh",
+				Message: "cannot publish from an empty baseline while any source observation is degraded or partial",
+			},
+		}
 	}
 
 	result, err := p.reconcile(ctx, existing, observations)
@@ -186,6 +207,16 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 
 	return syncResult, nil
+}
+
+func hasDegradedObservation(observations []sources.Observation) bool {
+	for _, observation := range observations {
+		if observation.Status != sources.ObservationStatusSucceeded ||
+			observation.Completeness != sources.ObservationCompletenessComplete {
+			return true
+		}
+	}
+	return false
 }
 
 func activeSourceIDs(observations []sources.Observation) []sources.ID {

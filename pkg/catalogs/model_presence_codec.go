@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"encoding/json"
+	"reflect"
 
 	"github.com/goccy/go-yaml"
 )
@@ -296,17 +297,72 @@ func (m *ModelMetadata) UnmarshalJSON(data []byte) error {
 
 // MarshalYAML preserves an explicit empty or unknown description.
 func (m Model) MarshalYAML() (any, error) {
-	type plain Model
-	data, err := yaml.Marshal(plain(m))
-	if err != nil {
-		return nil, err
+	entries := yaml.MapSlice{
+		{Key: "id", Value: m.ID},
+		{Key: "name", Value: m.Name},
 	}
-	var entries yaml.MapSlice
-	if err := yaml.Unmarshal(data, &entries); err != nil {
-		return nil, err
+	if len(m.Authors) > 0 {
+		entries = append(entries, yaml.MapItem{Key: "authors", Value: m.Authors})
 	}
 	description, state := m.DescriptionValue()
-	return marshalPresenceYAML(entries, "description", description, state, "name"), nil
+	switch state {
+	case ValueKnown:
+		entries = append(entries, yaml.MapItem{Key: "description", Value: description})
+	case ValueUnknown:
+		entries = append(entries, yaml.MapItem{Key: "description", Value: nil})
+	}
+	if m.Status != "" {
+		entries = append(entries, yaml.MapItem{Key: "status", Value: m.Status})
+	}
+	for _, field := range []struct {
+		key   string
+		value any
+	}{
+		{key: "metadata", value: m.Metadata},
+		{key: "lineage", value: m.Lineage},
+		{key: "features", value: m.Features},
+		{key: "attachments", value: m.Attachments},
+		{key: "generation", value: m.Generation},
+		{key: "reasoning", value: m.Reasoning},
+		{key: "reasoning_tokens", value: m.ReasoningTokens},
+		{key: "verbosity", value: m.Verbosity},
+		{key: "tools", value: m.Tools},
+		{key: "response", value: m.Delivery},
+	} {
+		if !isNilPresenceValue(field.value) {
+			entries = append(entries, yaml.MapItem{Key: field.key, Value: field.value})
+		}
+	}
+	if len(m.Modes) > 0 {
+		entries = append(entries, yaml.MapItem{Key: "modes", Value: m.Modes})
+	}
+	for _, field := range []struct {
+		key   string
+		value any
+	}{
+		{key: "pricing", value: m.Pricing},
+		{key: "limits", value: m.Limits},
+	} {
+		if !isNilPresenceValue(field.value) {
+			entries = append(entries, yaml.MapItem{Key: field.key, Value: field.value})
+		}
+	}
+	if len(m.Extensions) > 0 {
+		entries = append(entries, yaml.MapItem{Key: "extensions", Value: m.Extensions})
+	}
+	entries = append(entries,
+		yaml.MapItem{Key: "created_at", Value: m.CreatedAt},
+		yaml.MapItem{Key: "updated_at", Value: m.UpdatedAt},
+	)
+	return entries, nil
+}
+
+func isNilPresenceValue(value any) bool {
+	if value == nil {
+		return true
+	}
+	reflected := reflect.ValueOf(value)
+	return reflected.Kind() == reflect.Pointer && reflected.IsNil()
 }
 
 // UnmarshalYAML restores description presence from the human YAML record.

@@ -55,6 +55,7 @@ func (merger *merger) modelSourcesForValue(
 	sourceModels map[sources.ID]*catalogs.Model,
 	value func(*catalogs.Model) any,
 ) map[sources.ID]*catalogs.Model {
+	sourceModels = merger.suppressStaleModelFallback(providerID, modelID, sourceModels, value)
 	localModel := sourceModels[sources.LocalCatalogID]
 	if localModel == nil {
 		return sourceModels
@@ -94,11 +95,35 @@ func (merger *merger) modelSourcesForValue(
 	return resolved
 }
 
+func (merger *merger) suppressStaleModelFallback(
+	providerID catalogs.ProviderID,
+	modelID string,
+	sourceModels map[sources.ID]*catalogs.Model,
+	value func(*catalogs.Model) any,
+) map[sources.ID]*catalogs.Model {
+	baseline := merger.baselineModel(providerID, modelID)
+	if baseline == nil || value(baseline) == nil {
+		return sourceModels
+	}
+	resolved := sourceModels
+	for source := range sourceModels {
+		if !merger.observationIsStaleFallback(source) {
+			continue
+		}
+		if len(resolved) == len(sourceModels) {
+			resolved = cloneModelSources(sourceModels)
+		}
+		delete(resolved, source)
+	}
+	return resolved
+}
+
 func (merger *merger) providerSourcesForPolicy(
 	providerID catalogs.ProviderID,
 	policy authority.Policy,
 	sourceProviders map[sources.ID]*catalogs.Provider,
 ) map[sources.ID]*catalogs.Provider {
+	sourceProviders = merger.suppressStaleProviderFallback(providerID, policy, sourceProviders)
 	localProvider := sourceProviders[sources.LocalCatalogID]
 	if localProvider == nil {
 		return sourceProviders
@@ -137,6 +162,46 @@ func (merger *merger) providerSourcesForPolicy(
 		evidence,
 	)
 	return resolved
+}
+
+func (merger *merger) suppressStaleProviderFallback(
+	providerID catalogs.ProviderID,
+	policy authority.Policy,
+	sourceProviders map[sources.ID]*catalogs.Provider,
+) map[sources.ID]*catalogs.Provider {
+	if merger.baseline == nil {
+		return sourceProviders
+	}
+	baseline, err := merger.baseline.Provider(providerID)
+	if err != nil || merger.providerFieldValue(baseline, policy.Path) == nil {
+		return sourceProviders
+	}
+	resolved := sourceProviders
+	for source := range sourceProviders {
+		if !merger.observationIsStaleFallback(source) {
+			continue
+		}
+		if len(resolved) == len(sourceProviders) {
+			resolved = cloneProviderSources(sourceProviders)
+		}
+		delete(resolved, source)
+	}
+	return resolved
+}
+
+func (merger *merger) observationIsStaleFallback(source sources.ID) bool {
+	evidence, exists := merger.observations[source]
+	if !exists || evidence.status != sources.ObservationStatusDegraded {
+		return false
+	}
+	for _, issue := range evidence.issues {
+		if issue.Scope == sources.ObservationIssueScopeStaleFallback ||
+			issue.Code == sources.ObservationIssueCodeStaleFallback ||
+			issue.Code == sources.ObservationIssueCodeBootstrapFallback {
+			return true
+		}
+	}
+	return false
 }
 
 func (merger *merger) projectedModelEvidence(

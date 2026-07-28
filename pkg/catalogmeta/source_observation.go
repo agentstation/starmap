@@ -87,6 +87,9 @@ const (
 	ObservationIssueCodeStaleFallback ObservationIssueCode = "stale_fallback"
 	// ObservationIssueCodeBootstrapFallback means embedded bootstrap evidence was used.
 	ObservationIssueCodeBootstrapFallback ObservationIssueCode = "bootstrap_fallback"
+	// ObservationIssueCodeVolumeCollapse means a source omitted records that
+	// its prior accepted evidence supplied, without explicit lifecycle proof.
+	ObservationIssueCodeVolumeCollapse ObservationIssueCode = "volume_collapse"
 )
 
 // ObservationIssue records one classified, non-fatal degradation.

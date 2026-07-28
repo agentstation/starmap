@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"context"
+	"strings"
 	"testing"
 	"time"
 
@@ -11,11 +12,11 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// TestF005CharacterizationPrimaryOmissionPrunesBaselineModel pins wholesale
-// provider replacement after a complete primary observation. P4.7 must invert
-// this expectation: absence alone is not explicit lifecycle evidence.
-func TestF005CharacterizationPrimaryOmissionPrunesBaselineModel(t *testing.T) {
+// TestF005CompletePrimaryOmissionPreservesBaselineModel proves that absence
+// alone is not explicit lifecycle evidence.
+func TestF005CompletePrimaryOmissionPreservesBaselineModel(t *testing.T) {
 	baseline := characterizationCatalog(t, "provider", "observed", "omitted")
+	baseline = withCharacterizationProvenance(t, baseline, "provider", "omitted", sources.ProvidersID)
 	primary := characterizationCatalog(t, "provider", "observed")
 	observation := characterizationObservation(t, primary, false)
 
@@ -24,16 +25,18 @@ func TestF005CharacterizationPrimaryOmissionPrunesBaselineModel(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Provider: %v", err)
 	}
-	if _, exists := provider.Models["omitted"]; exists {
-		t.Fatal("F-005 characterization changed: omitted baseline model survived provider replacement")
+	if _, exists := provider.Models["omitted"]; !exists {
+		t.Fatal("complete source omission deleted last-known-good baseline model")
+	}
+	entries := result.Catalog.Provenance().FindModelField("provider", "omitted", "Name")
+	if len(entries) != 1 || entries[0].Source != sources.ProvidersID {
+		t.Fatalf("retained model provenance = %#v, want exact provider evidence", entries)
 	}
 }
 
-// TestF005CharacterizationDegradedObservationStillPrunesBaselineModel pins the
-// current failure to consume observation status, completeness, and issues.
-// P4.7 must preserve last-known-good data when an observation is partial or
-// degraded.
-func TestF005CharacterizationDegradedObservationStillPrunesBaselineModel(t *testing.T) {
+// TestF005DegradedObservationPreservesBaselineModel proves partial record
+// rejection cannot delete its valid last-known-good sibling.
+func TestF005DegradedObservationPreservesBaselineModel(t *testing.T) {
 	baseline := characterizationCatalog(t, "provider", "observed", "rejected-sibling")
 	partial := characterizationCatalog(t, "provider", "observed")
 	observation := characterizationObservation(t, partial, true)
@@ -43,8 +46,74 @@ func TestF005CharacterizationDegradedObservationStillPrunesBaselineModel(t *test
 	if err != nil {
 		t.Fatalf("Provider: %v", err)
 	}
-	if _, exists := provider.Models["rejected-sibling"]; exists {
-		t.Fatal("F-005 characterization changed: degraded omission preserved last-known-good model")
+	if _, exists := provider.Models["rejected-sibling"]; !exists {
+		t.Fatal("degraded source omission deleted last-known-good baseline model")
+	}
+	observedEvidence := result.Catalog.Provenance().FindModelField("provider", "observed", "Name")
+	if len(observedEvidence) != 1 ||
+		!strings.Contains(observedEvidence[0].Reason, "status=degraded") ||
+		!strings.Contains(observedEvidence[0].Reason, "rejected=1") ||
+		!strings.Contains(observedEvidence[0].Reason, "issues=invalid_record") {
+		t.Fatalf("present degraded field lacks health evidence: %#v", observedEvidence)
+	}
+}
+
+func TestF005StaleFallbackCannotRegressKnownBaselineFacts(t *testing.T) {
+	baseline := characterizationCatalog(t, "provider", "model")
+	baselineBuilder, err := catalogs.NewBuilderFrom(baseline)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	baselineProvider, err := baselineBuilder.Provider("provider")
+	if err != nil {
+		t.Fatalf("baseline Provider: %v", err)
+	}
+	baselineProvider.Name = "Current Provider"
+	baselineProvider.Models["model"].Name = "Current Model"
+	if err := baselineBuilder.SetProvider(baselineProvider); err != nil {
+		t.Fatalf("SetProvider baseline: %v", err)
+	}
+	baseline, err = baselineBuilder.Build()
+	if err != nil {
+		t.Fatalf("Build baseline: %v", err)
+	}
+
+	staleBuilder := catalogs.NewEmpty()
+	if err := staleBuilder.SetProvider(catalogs.Provider{
+		ID:   "provider",
+		Name: "Stale Provider",
+		Models: map[string]*catalogs.Model{
+			"model": {ID: "model", Name: "Stale Model"},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider stale: %v", err)
+	}
+	stale, err := staleBuilder.Build()
+	if err != nil {
+		t.Fatalf("Build stale: %v", err)
+	}
+	observation, err := sources.NewObservation(sources.ProvidersID, stale, sources.ObservationMetadata{
+		ObservedAt:   time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusDegraded,
+		Records:      sources.ObservationRecordCounts{Accepted: 1},
+		Issues: []sources.ObservationIssue{{
+			Scope:   sources.ObservationIssueScopeStaleFallback,
+			Code:    sources.ObservationIssueCodeStaleFallback,
+			Message: "cached fallback",
+		}},
+	})
+	if err != nil {
+		t.Fatalf("NewObservation: %v", err)
+	}
+	result := characterizationReconcile(t, baseline, observation)
+	provider, err := result.Catalog.Provider("provider")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	if provider.Name != "Current Provider" || provider.Models["model"].Name != "Current Model" {
+		t.Fatalf("stale fallback regressed last-known-good facts: %#v", provider)
 	}
 }
 
@@ -176,6 +245,33 @@ func characterizationCatalog(t testing.TB, providerID catalogs.ProviderID, model
 		t.Fatalf("Build: %v", err)
 	}
 	return catalog
+}
+
+func withCharacterizationProvenance(
+	t testing.TB,
+	catalog *catalogs.Catalog,
+	providerID catalogs.ProviderID,
+	modelID string,
+	source sources.ID,
+) *catalogs.Catalog {
+	t.Helper()
+	builder, err := catalogs.NewBuilderFrom(catalog)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	builder.SetProvenance(provenance.Map{
+		"model:" + provenance.ModelResourceID(string(providerID), modelID) + ":Name": {{
+			Source:    source,
+			Field:     "Name",
+			Value:     modelID,
+			Timestamp: time.Date(2026, time.July, 26, 12, 0, 0, 0, time.UTC),
+		}},
+	})
+	updated, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build provenance catalog: %v", err)
+	}
+	return updated
 }
 
 func characterizationObservation(t testing.TB, catalog *catalogs.Catalog, degraded bool) sources.Observation {

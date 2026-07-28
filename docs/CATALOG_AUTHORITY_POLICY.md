@@ -91,6 +91,28 @@ not become an authoritative negative claim. During reconciliation, a known
 zero participates at its source's normal authority position, while missing and
 unknown values permit lower-authority fallback.
 
+## Observation health and absence
+
+Field authority applies only to values a source actually supplied. Omission is
+not a lifecycle claim, even when an observation reports `complete` and
+`succeeded`. Reconciliation therefore seeds model identity from the immutable
+last-known-good baseline and retains exact prior provenance for baseline-only
+models and providers.
+
+Valid present fields from a partial/degraded observation remain eligible at
+their normal authority position. Their provenance reason records observation
+status, completeness, accepted/rejected counts, and stable issue codes. A
+stale-cache or embedded-bootstrap fallback is narrower: it may fill a missing
+baseline fact but cannot replace a known fact.
+
+The pipeline compares each observation with models previously attributed to
+that same source. An unexplained count regression becomes a provider-scoped
+`volume_collapse` issue and partial/degraded evidence; it never becomes an
+implicit removal. A source error without a usable candidate becomes a bounded
+partial/degraded empty observation so non-strict sync can retain the baseline
+and reconcile healthy siblings. Caller cancellation stops, required-all mode
+fails, and a degraded `Fresh` run cannot publish from an empty baseline.
+
 ## Pricing
 
 Pricing is one atomic provider-offering fact. Selection:
