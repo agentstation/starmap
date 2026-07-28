@@ -3,23 +3,19 @@ package pipeline
 import (
 	"slices"
 
-	"github.com/agentstation/starmap/internal/catalog/workspace"
 	embeddedsrc "github.com/agentstation/starmap/internal/sources/embedded"
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/internal/sources/providers"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 func filterSources(
 	options *pkgsync.Options,
-	localCatalog *catalogs.Catalog,
-	report catalogs.LoadReport,
-	workspaceInput workspace.InputExpectation,
+	inputs catalogInputs,
 ) []sources.Source {
-	configuredSources := createSourcesWithConfig(options, localCatalog, report, workspaceInput)
+	configuredSources := createSourcesWithConfig(options, inputs)
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
@@ -41,20 +37,17 @@ func filterSources(
 
 func createSourcesWithConfig(
 	options *pkgsync.Options,
-	localCatalog *catalogs.Catalog,
-	report catalogs.LoadReport,
-	workspaceInput workspace.InputExpectation,
+	inputs catalogInputs,
 ) []sources.Source {
 	srcs := []sources.Source{
-		providers.New(localCatalog.Providers()),
+		embeddedsrc.New(inputs.embedded),
+		providers.New(inputs.providerConfig.Providers()),
 	}
-	if workspaceInput.Exists {
+	if inputs.workspaceInput.Exists {
 		srcs = append(
-			[]sources.Source{local.New(local.WithCatalogReport(localCatalog, report))},
+			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport))},
 			srcs...,
 		)
-	} else {
-		srcs = append([]sources.Source{embeddedsrc.New(localCatalog)}, srcs...)
 	}
 
 	useGit := slices.Contains(options.Sources, sources.ModelsDevGitID)

@@ -39,13 +39,9 @@ type Publication struct {
 	Projection      *pkgsync.ProjectionResult
 }
 
-type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(
-	*pkgsync.Options,
-	*catalogs.Catalog,
-	catalogs.LoadReport,
-	workspace.InputExpectation,
-) []sources.Source
+type loadWorkspaceFunc func(string) (*catalogs.Builder, error)
+type loadEmbeddedFunc func() (*catalogs.Builder, error)
+type sourcesFunc func(*pkgsync.Options, catalogInputs) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -55,7 +51,8 @@ type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observatio
 type Pipeline struct {
 	store Store
 
-	loadLocal           loadLocalFunc
+	loadWorkspace       loadWorkspaceFunc
+	loadEmbedded        loadEmbeddedFunc
 	createSources       sourcesFunc
 	resolveDependencies resolveDependenciesFunc
 	cleanup             cleanupFunc
@@ -67,7 +64,8 @@ type Pipeline struct {
 func New(store Store) *Pipeline {
 	return &Pipeline{
 		store:               store,
-		loadLocal:           catalogs.NewLocal,
+		loadWorkspace:       loadHumanWorkspace,
+		loadEmbedded:        catalogs.NewEmbedded,
 		createSources:       filterSources,
 		resolveDependencies: resolveDependencies,
 		cleanup:             cleanup,
@@ -99,20 +97,15 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, err
 	}
-	local, err := p.loadLocal(options.CatalogPath)
+	inputs, err := p.loadCatalogInputs(options.CatalogPath, workspaceInput)
 	if err != nil {
-		return nil, pkgerrors.WrapResource("load", "catalog", "local", err)
+		return nil, err
 	}
-
-	if err = options.Validate(local.Providers()); err != nil {
+	if err = options.Validate(inputs.providerConfig.Providers()); err != nil {
 		return nil, err
 	}
 
-	localSnapshot, err := local.Build()
-	if err != nil {
-		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
-	}
-	srcs := p.createSources(options, localSnapshot, local.LoadReport(), workspaceInput)
+	srcs := p.createSources(options, inputs)
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {

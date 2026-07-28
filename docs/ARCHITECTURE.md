@@ -955,9 +955,10 @@ Observation outcomes use one explicit policy:
 - **Local Catalog** (`sources.LocalCatalogID`) - Semantic values read from an
   existing human workspace
 - **Embedded** (`sources.EmbeddedCatalogID`) - Verified lowest-authority
-  baseline data shipped with the binary; seeds an absent workspace without
-  external dependencies. P3.4 completes the separate E1→E2 observation path
-  for an existing workspace.
+  revision shipped with the binary; participates as a separate observation
+  without external dependencies, seeds an absent workspace, advances unchanged
+  embedded-derived fields, and fills gaps without replacing semantic human
+  edits
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence retention and replay.

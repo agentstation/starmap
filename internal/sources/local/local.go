@@ -9,7 +9,8 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Source loads a catalog from either a file path or embedded catalog.
+// Source observes a human workspace catalog, either injected after validated
+// loading or loaded from its configured path.
 type Source struct {
 	catalogPath     string
 	snapshot        *catalogs.Catalog
@@ -38,8 +39,7 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
-// WithCatalog sets a pre-loaded catalog to reuse.
-// This allows reusing an already-merged catalog instead of loading again.
+// WithCatalog sets a pre-loaded human workspace catalog to reuse.
 func WithCatalog(catalog *catalogs.Catalog) Option {
 	return func(s *Source) {
 		s.snapshot = catalog
@@ -132,8 +132,8 @@ func (s *Source) Dependencies() []sources.Dependency {
 	return nil
 }
 
-// IsOptional returns whether this source is optional.
-// Local source is optional - we can fall back to embedded catalog.
+// IsOptional reports that a human workspace observation is optional when the
+// verified embedded observation is available.
 func (s *Source) IsOptional() bool {
 	return true
 }

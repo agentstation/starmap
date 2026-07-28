@@ -29,7 +29,7 @@ import "github.com/agentstation/starmap/internal/sources/local"
 
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L32>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L33>)
 
 Option configures a local source.
 
@@ -44,10 +44,10 @@ type Option func(*Source)
 func WithCatalog(catalog *catalogs.Catalog) Option
 ```
 
-WithCatalog sets a pre\-loaded catalog to reuse. This allows reusing an already\-merged catalog instead of loading again.
+WithCatalog sets a pre\-loaded human workspace catalog to reuse.
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L35>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L36>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -65,9 +65,9 @@ func WithCatalogReport(catalog *catalogs.Catalog, report catalogs.LoadReport) Op
 WithCatalogReport sets a pre\-loaded catalog and its source load diagnostics.
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L13-L18>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L14-L19>)
 
-Source loads a catalog from either a file path or embedded catalog.
+Source observes a human workspace catalog, either injected after validated loading or loaded from its configured path.
 
 ```go
 type Source struct {
@@ -76,7 +76,7 @@ type Source struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L23>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L24>)
 
 ```go
 func New(opts ...Option) *Source
@@ -118,7 +118,7 @@ ID returns the ID of this source.
 func (s *Source) IsOptional() bool
 ```
 
-IsOptional returns whether this source is optional. Local source is optional \- we can fall back to embedded catalog.
+IsOptional reports that a human workspace observation is optional when the verified embedded observation is available.
 
 <a name="Source.Name"></a>
 ### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L67>)

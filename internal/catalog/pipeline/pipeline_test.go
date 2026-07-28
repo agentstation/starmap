@@ -68,17 +68,12 @@ func TestPipelineRequiresStore(t *testing.T) {
 func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := New(store)
-	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(
-		*pkgsync.Options,
-		*catalogs.Catalog,
-		catalogs.LoadReport,
-		workspace.InputExpectation,
-	) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		sourceWorkStarted = true
 		return nil
 	}
@@ -97,7 +92,7 @@ func TestPipelineRejectsSourceStateOverlapBeforeReadingWorkspace(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := New(store)
 	workspaceRead := false
-	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		workspaceRead = true
 		return catalogs.NewEmpty(), nil
 	}
@@ -127,7 +122,7 @@ func TestPipelineUsesOneCatalogPathForLocalObservation(t *testing.T) {
 	})
 	catalogPath := filepath.Join(t.TempDir(), "catalog")
 	var loadedPath string
-	runner.loadLocal = func(path string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(path string) (*catalogs.Builder, error) {
 		loadedPath = path
 		return catalogs.NewEmpty(), nil
 	}
@@ -446,15 +441,13 @@ func TestPipelineFreshRejectsDegradedObservationBeforeEmptyBaselinePublication(t
 
 func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner := New(store)
-	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(
-		*pkgsync.Options,
-		*catalogs.Catalog,
-		catalogs.LoadReport,
-		workspace.InputExpectation,
-	) []sources.Source {
+	runner.loadEmbedded = func() (*catalogs.Builder, error) {
+		return catalogs.NewEmpty(), nil
+	}
+	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {

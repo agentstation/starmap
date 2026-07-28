@@ -786,6 +786,13 @@ unchanged, and then atomically creates the complete provider-YAML workspace.
 An absent path is never reported as `local_catalog`; local evidence begins only
 after a real human workspace exists.
 
+Later explicit updates load the human workspace and the running binary's
+verified embedded revision as separate observations. Unchanged generated fields
+can advance with the embedded revision, embedded data can fill missing fields,
+and semantic human edits remain local evidence. Provider acquisition uses a
+derived configuration view that keeps human connection settings while adding
+providers introduced by the new embedded revision.
+
 ```yaml
 # ~/.starmap/config.yaml
 catalog_path: ~/.starmap/catalog

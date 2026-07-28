@@ -16,11 +16,12 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 
 	filtered := filterSources(&pkgsync.Options{
 		Sources: []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID},
-	}, asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput())
+	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()))
 
 	got := sourceIDs(filtered)
 	want := []sources.ID{
 		sources.LocalCatalogID,
+		sources.EmbeddedCatalogID,
 		sources.ModelsDevHTTPID,
 	}
 	if len(got) != len(want) {
@@ -36,9 +37,7 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 func TestFilterSourcesFreshExcludesLocalCatalog(t *testing.T) {
 	filtered := filterSources(
 		&pkgsync.Options{Fresh: true},
-		asSnapshot(catalogs.NewEmpty()),
-		catalogs.LoadReport{},
-		existingWorkspaceInput(),
+		sourceTestInputs(asSnapshot(catalogs.NewEmpty()), catalogs.LoadReport{}, existingWorkspaceInput()),
 	)
 
 	for _, id := range sourceIDs(filtered) {
@@ -53,11 +52,12 @@ func TestCreateSourcesWithConfigUsesModelsDevSourcesDir(t *testing.T) {
 
 	srcs := createSourcesWithConfig(&pkgsync.Options{
 		SourcesDir: t.TempDir(),
-	}, asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput())
+	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()))
 
 	got := sourceIDs(srcs)
 	want := []sources.ID{
 		sources.LocalCatalogID,
+		sources.EmbeddedCatalogID,
 		sources.ProvidersID,
 		sources.ModelsDevHTTPID,
 	}
@@ -82,6 +82,7 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 			name: "default uses HTTP transport only",
 			want: []sources.ID{
 				sources.LocalCatalogID,
+				sources.EmbeddedCatalogID,
 				sources.ProvidersID,
 				sources.ModelsDevHTTPID,
 			},
@@ -89,17 +90,17 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 		{
 			name:    "explicit HTTP verification",
 			sources: []sources.ID{sources.ModelsDevHTTPID},
-			want:    []sources.ID{sources.ModelsDevHTTPID},
+			want:    []sources.ID{sources.EmbeddedCatalogID, sources.ModelsDevHTTPID},
 		},
 		{
 			name:    "explicit Git verification",
 			sources: []sources.ID{sources.ModelsDevGitID},
-			want:    []sources.ID{sources.ModelsDevGitID},
+			want:    []sources.ID{sources.EmbeddedCatalogID, sources.ModelsDevGitID},
 		},
 		{
 			name:    "provider-only does not add a models.dev fallback transport",
 			sources: []sources.ID{sources.ProvidersID},
-			want:    []sources.ID{sources.ProvidersID},
+			want:    []sources.ID{sources.EmbeddedCatalogID, sources.ProvidersID},
 		},
 	}
 
@@ -107,9 +108,7 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			got := sourceIDs(filterSources(
 				&pkgsync.Options{Sources: test.sources},
-				localCatalog,
-				catalogs.LoadReport{},
-				existingWorkspaceInput(),
+				sourceTestInputs(localCatalog, catalogs.LoadReport{}, existingWorkspaceInput()),
 			))
 			if len(got) != len(test.want) {
 				t.Fatalf("source IDs = %v, want %v", got, test.want)
@@ -143,12 +142,12 @@ func TestLocalLoadReportSurvivesPrebuiltPipelineCatalog(t *testing.T) {
 	}
 	srcs := filterSources(
 		&pkgsync.Options{Sources: []sources.ID{sources.LocalCatalogID}},
-		asSnapshot(builder),
-		report,
-		existingWorkspaceInput(),
+		sourceTestInputs(asSnapshot(builder), report, existingWorkspaceInput()),
 	)
-	if len(srcs) != 1 || srcs[0].ID() != sources.LocalCatalogID {
-		t.Fatalf("sources = %v, want local", sourceIDs(srcs))
+	if len(srcs) != 2 ||
+		srcs[0].ID() != sources.LocalCatalogID ||
+		srcs[1].ID() != sources.EmbeddedCatalogID {
+		t.Fatalf("sources = %v, want local plus embedded", sourceIDs(srcs))
 	}
 	observation, err := srcs[0].Observe(context.Background())
 	if err != nil {
@@ -165,9 +164,11 @@ func TestLocalLoadReportSurvivesPrebuiltPipelineCatalog(t *testing.T) {
 func TestAbsentWorkspaceIsNotObservedAsLocalConfiguration(t *testing.T) {
 	srcs := filterSources(
 		&pkgsync.Options{},
-		asSnapshot(catalogs.NewEmpty()),
-		catalogs.LoadReport{},
-		workspace.InputExpectation{Path: "/absent/catalog"},
+		sourceTestInputs(
+			asSnapshot(catalogs.NewEmpty()),
+			catalogs.LoadReport{},
+			workspace.InputExpectation{Path: "/absent/catalog"},
+		),
 	)
 	for _, source := range srcs {
 		if source.ID() == sources.LocalCatalogID {
@@ -181,4 +182,23 @@ func TestAbsentWorkspaceIsNotObservedAsLocalConfiguration(t *testing.T) {
 
 func existingWorkspaceInput() workspace.InputExpectation {
 	return workspace.InputExpectation{Path: "/catalog", Exists: true}
+}
+
+func sourceTestInputs(
+	human *catalogs.Catalog,
+	report catalogs.LoadReport,
+	input workspace.InputExpectation,
+) catalogInputs {
+	embedded := asSnapshot(catalogs.NewEmpty())
+	providerConfig := human
+	if !input.Exists {
+		providerConfig = embedded
+	}
+	return catalogInputs{
+		workspace:       human,
+		embedded:        embedded,
+		providerConfig:  providerConfig,
+		workspaceReport: report,
+		workspaceInput:  input,
+	}
 }
