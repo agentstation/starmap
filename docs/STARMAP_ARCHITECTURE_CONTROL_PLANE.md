@@ -2,8 +2,9 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0 is complete and P1.3 is reconciling the remaining
-GitHub Actions dependency PR; architecture implementation has not started.
+Status: `IN_PROGRESS` — P0 is complete and P1.5 is inventorying PR #40 as a
+read-only donor before closing the rejected alternative architecture;
+architecture implementation has not started.
 
 ## Mission
 
@@ -404,15 +405,14 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-pr-reconciliation`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/provider-donor-inventory`
 - Branch:
-  `codex/starmap-pr-reconciliation`
+  `codex/provider-donor-inventory`
 - Base:
-  `origin/main@2561456eee236faa739669d0739aa2a7c75a8272`
+  `origin/main@a87b64252f022c398589c5aad8652357ba8a174a`
 
-This worktree contains the P1 pull-request reconciliation and its ledger
-updates. It was created from the exact protected main produced by the merged
-control-plane PR.
+This worktree contains the P1 donor inventory and cleanup ledger updates. It
+was created from the exact protected main produced by merged PR #47.
 
 ### Provider expansion worktree
 
@@ -479,7 +479,7 @@ Live state inspected 2026-07-27.
 | [#44](https://github.com/agentstation/starmap/pull/44) | Dependabot Actions `@1edb7172` | `SUPERSEDED` | Closed in favor of #47 | Rebased action-only head resolved the vulnerable graph but left structural pin assertions stale; #47 carries equivalent action updates plus reviewed test expectations; #44 and its remote branch are closed |
 | [#45](https://github.com/agentstation/starmap/pull/45) | `codex/starmap-architecture-control-plane@662d5714` | `DONE` | Merged as `2561456e` | Exact rebased head passed Verification Gate and Security & Reliability; protection required zero approvals and had no review threads; merged; remote/local branch and worktree removed |
 | [#46](https://github.com/agentstation/starmap/pull/46) | `codex/dependency-security-prerequisite@2fbd4c6d` | `DONE` | Replaced #43 and merged as `53285f13` | Exact head contained regenerated direct updates, `x/text v0.40.0`, and `grpc v1.82.1`; current govulncheck, local verification, both hosted gates, and branch-protection readback passed; merged; remote branch removed |
-| [#47](https://github.com/agentstation/starmap/pull/47) | `codex/starmap-pr-reconciliation` | `IN_PROGRESS` | Merge the reviewed #44 replacement | Exact head contains only P0/P1 ledger evidence, the three reviewed action-pin updates, and matching structural assertions; actionlint, race fixture, current govulncheck, full local verification, both hosted gates, protection, and review-thread checks pass; merged; branch/worktree removed |
+| [#47](https://github.com/agentstation/starmap/pull/47) | `codex/starmap-pr-reconciliation@650f5406` | `DONE` | Replaced #44 and merged as `a87b6425` | Exact head contained only P0/P1 ledger evidence, the three reviewed action-pin updates, and matching structural assertions; actionlint, race fixture, current govulncheck, full local verification, both hosted gates, protection, and review-thread checks passed; merged; remote branch removed |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -551,9 +551,9 @@ git diff --check
 | --- | --- | --- | --- |
 | P1.1 | `DONE` | Revalidate replacement PR #46 | Current exact head contains the regenerated #43 group, `x/text v0.40.0`, and `grpc >= v1.82.1`; exact-head local verification, race selection, current govulncheck, and hosted checks pass |
 | P1.2 | `DONE` | Merge replacement PR #46 | Protected merge succeeds; main contains x/text v0.40.0 and grpc >= v1.82.1; #43 is superseded; #46 and its branch are closed |
-| P1.3 | `IN_PROGRESS` | Rebase/recreate and verify PR #44 | Exact head is based on post-#46 main; workflow fixture, actionlint, verification, and security checks pass |
-| P1.4 | `PENDING` | Merge PR #44 | Protected merge succeeds; old failed head is superseded; PR and branch are closed |
-| P1.5 | `PENDING` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale |
+| P1.3 | `DONE` | Rebase/recreate and verify PR #44 through replacement #47 | Exact head is based on post-#46 main; workflow fixture, actionlint, verification, and security checks pass |
+| P1.4 | `DONE` | Merge replacement PR #47 | Protected merge succeeds; old failed #44 head is superseded; PRs and remote branches are closed |
+| P1.5 | `IN_PROGRESS` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale |
 | P1.6 | `PENDING` | Close PR #40 | Closing note links this plan and inventory; no open review threads are misrepresented as resolved |
 | P1.7 | `PENDING` | Remove #40 worktree and branches in safe order | Worktree is removed before its checked-out local branch; remote and local branches are absent; retained evidence lives in docs/Git history |
 | P1.8 | `PENDING` | Rebase control-plane/next phase on current main | No dependency/action regression; ledger records final PR SHAs |
@@ -772,7 +772,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-037 | `PENDING` | Historical F-099/F-105/F-106 release findings lack terminal mapping in the new plan | P0.5, P11.9 |
 | F-038 | `PENDING` | Hour-scale publication gaps require SSE heartbeats; without them intermediaries reap idle streams, half-open clients linger, and polling/stream health cannot be determined reliably | P7.3, P7.5, P7.8, P7.10–P7.11 |
 | F-039 | `DONE` | The plan PR's original dependency graph had reachable GO-2026-5970 (`x/text v0.38.0`) and GO-2026-6061 (`grpc v1.82.0`); replacement #46 resolved both and rebased PR #45 passed exact local and hosted proof | P0.5, P1.1–P1.2 |
-| F-040 | `IN_PROGRESS` | Dependabot PR #44 updates reviewed action pins without updating the exact structural assertions in `internal/ciworkflow`, so its rebased head still cannot pass required verification | P1.3–P1.4 |
+| F-040 | `DONE` | Dependabot PR #44 updated reviewed action pins without updating the exact structural assertions in `internal/ciworkflow`; replacement PR #47 updated both and passed exact local and hosted verification | P1.3–P1.4 |
 
 ## Workspace Ledger
 
@@ -783,7 +783,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `fresh-catalog-release` on `codex/immutable-release-pipeline@6d4d4c27` | `PENDING` | Verify #39 contains work; remove worktree and obsolete local branch |
 | `provider-expansion-wave0` on `a14d2249` | `PENDING` | Inventory, close #40, remove worktree/local/remote branch |
 | `starmap-architecture-control-plane` on fresh branch | `DONE` | PR #45 merged; remote/local branch and worktree removed |
-| `starmap-pr-reconciliation` on `codex/starmap-pr-reconciliation` | `IN_PROGRESS` | Resolve #44 and #40, merge the P1 ledger PR, then remove worktree/branch |
+| `starmap-pr-reconciliation` on `codex/starmap-pr-reconciliation@650f5406` | `DONE` | PR #47 merged; remote branch removed; local branch/worktree removed after the successor P1 workspace was created |
+| `provider-donor-inventory` on `codex/provider-donor-inventory` | `IN_PROGRESS` | Inventory and close #40, remove its worktree/branches, merge the remaining P1 ledger, then remove this worktree/branch |
 
 ## Evidence Log
 
@@ -815,6 +816,8 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P0.5 / P1.3 | Created fresh P1 worktree `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-pr-reconciliation` on `codex/starmap-pr-reconciliation` from exact protected main `2561456eee236faa739669d0739aa2a7c75a8272`. Removed the clean merged control-plane worktree, its local branch, and the local replacement-#46 branch after confirming both remote topic branches were absent. |
 | 2026-07-27 | P1.3 | Requested Dependabot rebase in [comment 5098836095](https://github.com/agentstation/starmap/pull/44#issuecomment-5098836095), producing exact head `1edb71728e5ffba48d389defc4b431fc376e4099` on protected main `2561456eee236faa739669d0739aa2a7c75a8272`. The diff remained exactly three workflow files and 12 pin replacements; `actionlint` and `govulncheck v1.6.0` passed, but `go test -race ./internal/ciworkflow` and therefore `make verify` failed because the action allowlist plus PR/release exact-pin fixtures still required checkout 7.0.0, setup-go 6.5.0, and docker/login-action 4.4.0. Recorded as F-040; the P1 replacement carries the equivalent workflow changes and updates those exact structural expectations. |
 | 2026-07-27 | P1.3 | On replacement head `2092ec8a0414374fe3abd29814446de0986c8ea1`, `actionlint`, `go test -race ./internal/ciworkflow`, Go 1.26.5 current `govulncheck v1.6.0`, and `make verify` passed. Full verification included ordinary tests, `-race -short`, vet, catalog benchmark (10.62–11.30 ns/op, 0 B/op, 0 allocs/op), lint, all coverage gates, docs, diff, build, catalog validation, and isolated CLI checks. Opened replacement PR [#47](https://github.com/agentstation/starmap/pull/47), then closed #44 with an explicit supersession explanation and deleted its remote Dependabot branch; its temporary exact-head worktree/ref were removed cleanly. |
+| 2026-07-27 | P1.3–P1.4 | PR #47 final exact head `650f5406728e86e97c11ce92368c49e1bb4ad5fd` passed `actionlint`, current `govulncheck v1.6.0` with zero reachable vulnerabilities, and exact `make verify`; the catalog accessor benchmark measured 7.942–8.555 ns/op, 0 B/op, and 0 allocs/op. The same head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30321210906/job/90157323234) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30321210906/job/90157323226). Protection required both exact contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged as `a87b64252f022c398589c5aad8652357ba8a174a`. Its remote branch was deleted. |
+| 2026-07-27 | P1.5 | Created fresh worktree `/Users/jack/src/github.com/agentstation/starmap-worktrees/provider-donor-inventory` on `codex/provider-donor-inventory` from exact protected main `a87b64252f022c398589c5aad8652357ba8a174a` for the read-only PR #40 inventory and cleanup. |
 
 ## Final Definition of Done
 
