@@ -274,9 +274,15 @@ func appCatalogTree(t *testing.T, root string) map[string]string {
 
 func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 	t.Helper()
-	builder, err := catalogs.NewEmbedded()
-	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
+	builder := catalogs.NewEmpty()
+	if err := builder.SetProvider(catalogs.Provider{
+		ID:   "migration-provider",
+		Name: "Migration Provider",
+		Models: map[string]*catalogs.Model{
+			"migration-model": {ID: "migration-model", Name: "Migration Model"},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
 	}
 	catalog, err := builder.Build()
 	if err != nil {

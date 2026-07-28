@@ -23,10 +23,7 @@ func TestRollbackRestoresExactRetainedGenerationAndWorkspace(t *testing.T) {
 
 	path := t.TempDir() + "/catalog"
 	store := newRollbackTestStore()
-	client, err := New(WithCatalogStore(store), WithCatalogPath(path))
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
+	client := newRollbackClient(t, store, path)
 
 	first := publishRollbackFixture(t, client, path, "First Name", sources.EmbeddedCatalogID)
 	second := publishRollbackFixture(t, client, path, "Second Name", sources.ProvidersID)
@@ -109,10 +106,7 @@ func TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged(t *testing.T) {
 
 	path := t.TempDir() + "/catalog"
 	store := newRollbackTestStore()
-	client, err := New(WithCatalogStore(store), WithCatalogPath(path))
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
+	client := newRollbackClient(t, store, path)
 	first := publishRollbackFixture(t, client, path, "First Name", sources.EmbeddedCatalogID)
 	second := publishRollbackFixture(t, client, path, "Second Name", sources.ProvidersID)
 	assertCatalogPayload(t, client.Catalog(), second.generation.Payload)
@@ -141,10 +135,7 @@ func TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit(t *testi
 
 	path := t.TempDir() + "/catalog"
 	store := newRollbackTestStore()
-	client, err := New(WithCatalogStore(store), WithCatalogPath(path))
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
+	client := newRollbackClient(t, store, path)
 	first := publishRollbackFixture(t, client, path, "First Name", sources.EmbeddedCatalogID)
 	_ = publishRollbackFixture(t, client, path, "Second Name", sources.ProvidersID)
 	store.afterNextCommit(func() {
@@ -184,6 +175,15 @@ type rollbackTestStore struct {
 
 func newRollbackTestStore() *rollbackTestStore {
 	return &rollbackTestStore{Memory: catalogstore.NewMemory()}
+}
+
+func newRollbackClient(t testing.TB, store catalogstore.Store, path string) *Client {
+	t.Helper()
+	opts, err := defaults().apply(WithCatalogStore(store), WithCatalogPath(path))
+	if err != nil {
+		t.Fatalf("apply options: %v", err)
+	}
+	return newWritableStoreTestClient(t, opts)
 }
 
 func (s *rollbackTestStore) Commit(

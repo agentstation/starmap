@@ -76,10 +76,11 @@ func TestSyncRejectsExplicitLegacyWorkspaceBeforeGenerationCommit(t *testing.T) 
 	}
 	before := filesystemContents(t, workspace)
 	store := catalogstore.NewMemory()
-	client, err := New(WithCatalogStore(store))
+	opts, err := defaults().apply(WithCatalogStore(store))
 	if err != nil {
-		t.Fatalf("New: %v", err)
+		t.Fatalf("apply options: %v", err)
 	}
+	client := newWritableStoreTestClient(t, opts)
 
 	_, err = client.Sync(context.Background(), pkgsync.WithCatalogPath(workspace))
 	var layoutErr *pkgerrors.LegacyCatalogLayoutError

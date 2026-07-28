@@ -13,7 +13,7 @@ make verify
 `make verify` runs:
 
 - `go test ./...`
-- `go test ./... -race -short`
+- `go test ./... -race -short -timeout=20m`
 - `go vet ./...`
 - exact pinned `golangci-lint` verification
 - critical seam coverage thresholds
@@ -29,7 +29,7 @@ Use these while iterating:
 
 ```bash
 go test ./...
-go test ./... -race -short
+go test ./... -race -short -timeout=20m
 go vet ./...
 make docs-check
 make test-critical-coverage
