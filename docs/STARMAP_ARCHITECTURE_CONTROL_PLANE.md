@@ -131,9 +131,10 @@ Preserve the reviewed architecture contract:
   stack, or server;
 - an embeddable Starmap server is available to Go programs;
 - a remote Go consumer performs an initial verified fetch, then reacts to
-  post-commit server events through SSE by default, verifies and atomically
-  activates immutable generations, reconnects with gap recovery, and polls only
-  as an explicit fallback;
+  post-commit server events through the sole SSE transport, verifies and
+  atomically activates immutable generations, uses flushed heartbeats to
+  establish stream health, reconnects with mandatory gap recovery, and polls
+  only as an explicit fallback;
 - all repository-authored Go files stay below 2,000 lines; files over 1,000
   lines require review, and files over 1,500 require an explicit durable
   modularity justification before they can remain;
@@ -268,7 +269,23 @@ an `internal` package or invoking the CLI. The public server module must:
 SSE is the sole remote notification transport because catalog publication is
 server-to-client. The existing WebSocket path is deleted; a future
 reintroduction requires a named bidirectional consumer and a new reviewed
-decision.
+decision. SSE runs through the normal HTTP router, authentication, CORS,
+timeouts, proxies, and load balancers without a protocol upgrade.
+
+Publication events are hints that identify a committed immutable generation.
+They are not catalog data, and correctness never depends on replay or an
+unbroken stream. The server emits flushed SSE comment heartbeats on the same
+serialized writer as publication events. The default heartbeat interval is 20
+seconds and the default client liveness timeout is 60 seconds; both are
+configurable with validation that preserves a useful timeout margin. A
+heartbeat does not carry an event ID, advance publication sequence, or trigger
+a catalog fetch.
+
+Stream liveness and catalog freshness are separate states. If a publication
+cannot be written within its deadline, the server must coalesce toward the
+newest generation or terminate the connection so reconnect catch-up runs. It
+must never silently discard a generation hint while continuing to report a
+healthy stream.
 
 The remote consumer must:
 
@@ -284,9 +301,11 @@ The remote consumer must:
 10. use `Last-Event-ID` where supported;
 11. refetch current state after every reconnect so dropped events cannot cause
     permanent staleness;
-12. expose explicit health/freshness/degraded state;
-13. stop promptly when its caller-owned context is canceled; and
-14. poll only when streaming is unsupported or explicitly configured as
+12. treat absence of an event or heartbeat before the liveness deadline as a
+    degraded stream that is canceled and reconnected;
+13. expose stream liveness, catalog freshness, and catch-up state separately;
+14. stop promptly when its caller-owned context is canceled; and
+15. poll only when streaming is unsupported or explicitly configured as
     fallback.
 
 Delivery is at-least-once. Correctness must not depend on exactly-once event
@@ -355,14 +374,15 @@ Required high-value suites:
 - provider/model-scoped provenance;
 - per-record schema quarantine with valid sibling preservation;
 - server publication through manifest/payload/SSE to reactive Go consumer;
-- disconnect, reconnect, duplicate, stale, skipped, corrupt, incompatible, and
-  unauthorized remote events/generations;
+- disconnect, reconnect, duplicate, stale, skipped, corrupt, incompatible,
+  unauthorized, missing-heartbeat, half-open, slow-consumer, and write-failure
+  remote events/generations;
 - package consumer compile tests for local, server, and remote compositions;
 - deterministic artifact/release reconstruction;
 - failure injection at parse, fetch, validate, stage, fsync, rename, commit,
   callback, stream, fetch, and publication points; and
 - table/property tests for deterministic authority selection and presence
-  semantics; and
+  semantics;
 - fuzzing for untrusted provider envelopes, YAML/JSON
   manifests/payloads/provenance, and SSE framing/event IDs.
 
@@ -620,16 +640,16 @@ compile and performance baselines must also be green.
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
 | P7.1 | `PENDING` | Expose an embeddable server module | A public server package accepts `*starmap.Client` or a narrower catalog/events role; an external Go fixture constructs, starts, drains, and stops it without importing `internal` or CLI packages |
-| P7.2 | `PENDING` | Make publication ordering exact | Generation CAS is the commit point; catalog swap, cache activation, manifest visibility, and event publication have one tested order; concurrent generations cannot reorder and overload cannot silently drop a whole generation |
-| P7.3 | `PENDING` | Keep one reactive transport | SSE is canonical; delete WebSocket transport, hub, adapter, dependency, tests, and documentation; reintroduction requires a named bidirectional consumer |
-| P7.4 | `PENDING` | Define one stable publication event | The only event is catalog publication with generation ID and monotonic per-stream sequence; no per-model event or mutable catalog payload exists; dedupe and catch-up survive reconnect |
-| P7.5 | `PENDING` | Implement explicit reactive lifecycle | Caller context owns initial fetch, stream, retry, activation, and shutdown; constructor starts no hidden goroutine; every owned loop is joinable within a bounded shutdown |
+| P7.2 | `PENDING` | Make publication ordering exact | Generation CAS is the commit point; catalog swap, cache activation, manifest visibility, and event publication have one tested order; concurrent generations cannot reorder; overload coalesces to the newest generation or closes the stream and cannot silently drop a generation while the connection remains healthy |
+| P7.3 | `PENDING` | Keep one heartbeat-enabled reactive transport | SSE is canonical; delete WebSocket transport, hub, adapter, dependency, tests, and documentation; one serialized per-connection writer emits and flushes publication events plus comment-line heartbeats, defaults to a 20-second interval, applies write deadlines, and promptly cleans up a failed/dead connection |
+| P7.4 | `PENDING` | Define one stable publication event | The only event is catalog publication with generation ID and monotonic per-stream sequence; no per-model event or mutable catalog payload exists; heartbeat comments carry no ID, do not advance sequence, and do not trigger fetch; dedupe and mandatory catch-up survive reconnect |
+| P7.5 | `PENDING` | Implement explicit reactive lifecycle | Caller context owns initial fetch, stream, retry, activation, and shutdown; constructor starts no hidden goroutine; every owned loop is joinable within a bounded shutdown; absence of an event or heartbeat for the default 60-second liveness timeout marks the stream degraded, cancels it, and starts reconnect plus catch-up |
 | P7.6 | `PENDING` | Verify immutable generations | Client rejects wrong media, size, digest, ID, schema, redirect origin, publisher, or stale generation before activation |
-| P7.7 | `PENDING` | Recover from stream loss | Reconnect uses bounded backoff/jitter, Last-Event-ID when supported, and mandatory current-manifest catch-up |
-| P7.8 | `PENDING` | Make polling last resort | No normal polling occurs while stream is healthy; fallback is explicit, observable, bounded, uses conditional manifest requests, and is tested |
+| P7.7 | `PENDING` | Recover from stream loss | Reconnect uses bounded backoff/jitter, Last-Event-ID when supported, and mandatory current-manifest catch-up; replay remains an optimization rather than a correctness dependency |
+| P7.8 | `PENDING` | Make polling last resort | No normal polling occurs while recent heartbeat/event activity establishes a healthy stream; fallback begins only through an explicit bounded streaming-failure policy, is observable, uses conditional manifest requests, and stops before streaming is declared healthy again |
 | P7.9 | `PENDING` | Prove concurrent read safety | Readers observe complete old/new generations while stream activates updates under `-race` |
-| P7.10 | `PENDING` | Exercise real transport failures | Disconnect, duplicate, out-of-order, skipped, slow, unauthorized, corrupt, incompatible, subscribe-after-stop, blocked subscriber, and shutdown/join cases pass |
-| P7.11 | `PENDING` | Expose production health | Server and subscriber expose generation, freshness, connected/degraded state, retry count, last error, and any dropped/coalesced publication count without secrets; silent whole-generation loss is impossible |
+| P7.10 | `PENDING` | Exercise real transport failures | Tests prove heartbeats flush and are ignored as events; interval/timeout validation, missing-heartbeat, half-open connection, write failure, slow consumer, disconnect, duplicate, out-of-order, skipped, unauthorized, corrupt, incompatible, subscribe-after-stop, blocked subscriber, reconnect/catch-up, non-concurrent polling, cleanup, and shutdown/join cases pass |
+| P7.11 | `PENDING` | Expose distinct production health | Server and subscriber separately expose stream state, last heartbeat/event, last successful catch-up, active generation, catalog freshness, retry count, last error, and any coalesced/terminated publication delivery without secrets; heartbeat activity cannot falsely refresh catalog age and silent whole-generation loss is impossible |
 
 ## P8 — Go Modularity, Naming, and Complexity
 
@@ -739,6 +759,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-035 | `PENDING` | Server/background shutdown lacks owned joins; stopped or blocked subscriptions can hang | P7.5, P7.10 |
 | F-036 | `PENDING` | Hook overload can drop a whole generation and the counter is not an adequate operational contract | P7.2, P7.11 |
 | F-037 | `PENDING` | Historical F-099/F-105/F-106 release findings lack terminal mapping in the new plan | P0.5, P11.9 |
+| F-038 | `PENDING` | Hour-scale publication gaps require SSE heartbeats; without them intermediaries reap idle streams, half-open clients linger, and polling/stream health cannot be determined reliably | P7.3, P7.5, P7.8, P7.10–P7.11 |
 
 ## Workspace Ledger
 
@@ -766,6 +787,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P0.1 | PR #40 retains the store-only empty-path save defect and invalid `WithAuthorities` option condition while expanding package directories from 89 to 109. Its overlapping acquisition/source/provider vocabularies require concept-by-concept salvage rather than branch reuse. |
 | 2026-07-27 | P0.4 | Archived and parsed `docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html`; SHA-256 `de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235`. |
 | 2026-07-27 | P0.5 | Fable independently returned `GO WITH REQUIRED REVISIONS`. B-01 through B-13 and the canonical Go findings were dispositioned in `docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md` (SHA-256 `df13364d205ca48848841f6aed20888ea0e8baf81e148ea1da73e2bc3406ae86`); accepted changes added the green-characterization rule, legacy-layout protection, one durable commit point, corrected phase order, dependency budget mechanism, event/shutdown contracts, historical supersession map, and explicit approval pauses. |
+| 2026-07-27 | P0.5 | User steering made SSE heartbeat behavior load-bearing: comment-line heartbeats establish stream liveness across intermediary idle timeouts, heartbeat absence drives degraded/reconnect/catch-up behavior, liveness remains distinct from catalog freshness, and delivery failure must coalesce or disconnect rather than silently lose a generation on a healthy stream. Recorded as F-038 and strengthened P7.2–P7.5/P7.7–P7.8/P7.10–P7.11. |
 
 ## Final Definition of Done
 
@@ -785,6 +807,9 @@ The goal is complete only when:
 - the Go library, embeddable server, and reactive remote consumer compile and
   pass real end-to-end tests;
 - SSE push is the normal remote path and polling is only a tested fallback;
+- flushed SSE heartbeats establish stream health, heartbeat loss forces
+  reconnect and manifest catch-up, and catalog freshness is never inferred from
+  connection liveness;
 - the unused WebSocket path and dependency are absent unless a later named
   bidirectional consumer justified their reintroduction;
 - no repository-authored Go file reaches 2000 lines and every >1000 file has a
