@@ -24,11 +24,11 @@ import (
 
 // Reconciler combines data from multiple sources into a canonical catalog.
 // It is concrete because this package has one reconciliation engine; extension
-// points are accepted through the narrow Strategy, Authority, Source, and
-// Enhancer interfaces.
+// points are accepted through the narrow Strategy, authority.Reader, Source,
+// and Enhancer interfaces.
 type Reconciler struct {
 	strategy    Strategy
-	authorities authority.Authority
+	authorities authority.Reader
 	provenance  provenance.Tracker
 	tracking    bool
 	enhancers   *enhancer.Pipeline

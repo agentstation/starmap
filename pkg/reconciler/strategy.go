@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -106,11 +107,11 @@ func (s *baseStrategy) ValidateResult(result *Result) error {
 // AuthorityStrategy uses field authorities to resolve conflicts.
 type AuthorityStrategy struct {
 	baseStrategy
-	authorities authority.Authority
+	authorities authority.Reader
 }
 
 // NewAuthorityStrategy creates a new authority-based strategy.
-func NewAuthorityStrategy(authorities authority.Authority) *AuthorityStrategy {
+func NewAuthorityStrategy(authorities authority.Reader) *AuthorityStrategy {
 	return &AuthorityStrategy{
 		baseStrategy: baseStrategy{
 			typ:           StrategyTypeFieldAuthority,
@@ -133,37 +134,15 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 
 // ResolveResourceConflict uses resource-specific authorities to resolve conflicts.
 func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string) {
-	authorities := s.authoritiesFor(resourceType)
-
-	// Find all authorities that match this field, sorted by priority
-	var matchingAuthorities []authority.Field
-	for _, auth := range authorities {
-		if authority.MatchesPattern(field, auth.Path) {
-			matchingAuthorities = append(matchingAuthorities, auth)
-		}
-	}
-
-	// Sort by priority, then source identity, so equal-priority authorities are
-	// stable even if their configuration is assembled in a different order.
-	sort.Slice(matchingAuthorities, func(i, j int) bool {
-		if matchingAuthorities[i].Priority != matchingAuthorities[j].Priority {
-			return matchingAuthorities[i].Priority > matchingAuthorities[j].Priority
-		}
-		return string(matchingAuthorities[i].Source) < string(matchingAuthorities[j].Source)
-	})
-
-	// Filter authorities to only those with available sources
-	var availableAuthorities []authority.Field
-	for _, auth := range matchingAuthorities {
-		if _, exists := values[auth.Source]; exists {
-			availableAuthorities = append(availableAuthorities, auth)
-		}
-	}
-
-	// Try authorities in priority order
-	for _, authority := range availableAuthorities {
-		if value := values[authority.Source]; value != nil && value != "" {
-			return value, authority.Source, fmt.Sprintf("selected by authority (priority: %d)", authority.Priority)
+	if policy, found := s.authorities.Find(resourceType, field); found {
+		for index, source := range policy.SourceOrder {
+			if value, exists := values[source]; exists && policyAccepts(policy, value) {
+				return value, source, fmt.Sprintf(
+					"selected by %s policy (source rank: %d)",
+					policy.Path,
+					index+1,
+				)
+			}
 		}
 	}
 
@@ -183,17 +162,14 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.Resourc
 	return nil, "", "no value available"
 }
 
-func (s *AuthorityStrategy) authoritiesFor(resourceType sources.ResourceType) []authority.Field {
-	switch resourceType {
-	case sources.ResourceTypeModel:
-		return s.authorities.ModelFields()
-	case sources.ResourceTypeProvider:
-		return s.authorities.ProviderFields()
-	case sources.ResourceTypeAuthor:
-		return s.authorities.AuthorFields()
-	default:
-		return nil
+func policyAccepts(policy authority.Policy, value any) bool {
+	if value == nil || value == "" {
+		return false
 	}
+	if policy.Empty == authority.EmptyAuthoritative {
+		return true
+	}
+	return !reflect.ValueOf(value).IsZero()
 }
 
 // SourceOrderStrategy resolves conflicts using a fixed source precedence order.

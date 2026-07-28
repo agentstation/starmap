@@ -207,7 +207,7 @@ Constructors return concrete types when a package owns one implementation.
 | Catalog collection readers | 2 each | Mutable `Providers`/`Authors`/`Endpoints`/`Models`/`Provenance` and immutable reader wrappers | Retained read-only collection boundaries with two implementations each |
 | `catalogstore.Store` | 4 | memory, filesystem, SQLite, conditional object storage | Retained generation-storage boundary; all adapters run the same `TestCatalogStoreConformance` suite |
 | `catalogstore.ObjectBackend` | 2 | memory reference backend, recording alternate backend | Retained cloud-object input; `TestSeamConformanceObjectStoreAcceptsAlternateBackend` executes replacement injection |
-| `authority.Authority` | 2 | default authorities, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
+| `authority.Reader` | 2 | immutable default table, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
 | `provenance.Tracker` | 2 | in-memory tracker, custom `seamTracker` | Retained observation input; `TestSeamConformancePipelineAcceptsCustomTracker` proves replacement tracking |
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
 | `reconciler.Strategy` and internal `resourceConflictResolver` | 2 each | authority and source-order strategies | Retained policy boundaries with two production algorithms |
@@ -739,7 +739,7 @@ Location: `pkg/reconciler/`
 **Key Components:**
 - `Reconciler` concrete engine
 - `Strategy` - Defines how conflicts are resolved
-- Field rule catalog - Package-internal model/provider/author field inventory
+- `authority.Table` - The one executable field inventory and source order
 - `Result` - Reconciliation outcome with changeset and metadata
 
 **Strategies:**
@@ -753,8 +753,13 @@ Location: `pkg/reconciler/`
 4. Generate changeset with provenance
 5. Return result
 
-**Field Rules:**
-`pkg/reconciler/field_rules.go` is the canonical inventory for reconciled fields. Each rule carries the resource type, reflection path, authority path, and provenance path. The merger iterates this catalog instead of local string slices, so adding or renaming a catalog field requires updating one rule table and the matching authority entry. Tests verify that every model, provider, and author rule points at a real struct field and resolves through the authority system.
+**Field Policies:**
+`pkg/authority/authority.go` is the sole executable inventory for reconciled
+model, provider, and author fields. The merger iterates its immutable policies
+directly. Focused executors for structured fields accept the selected policy
+and contain no source-order table of their own. Tests verify schema coverage,
+real reflection paths, complete policy metadata, defensive copies, and
+deterministic selection.
 
 See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
 
@@ -765,29 +770,32 @@ Location: `pkg/authority/`
 **Purpose:** Field-level source authority system
 
 **How It Works:**
-- Each field (e.g., "Pricing", "Limits") has authority configuration
-- Sources ranked by priority for that field
-- Pattern matching supports wildcards: "Pricing.*"
-- Higher priority wins in conflicts
+- Each field family has one `Policy`
+- `SourceOrder` is highest to lowest
+- Merge and empty-value behavior are explicit
+- Pattern matching supports nested field families
+- Provenance authority is derived from order rather than arbitrary scores
 
 **Example Authorities:**
 
 ```go
-// Pricing - a valid provider-offering observation wins atomically
-{Path: "Pricing", Source: sources.ProvidersID, Priority: 110}
-{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 100}
-
-// Availability - Provider API is truth
-{Path: "Features", Source: sources.ProvidersID, Priority: 95}
-
-// Descriptions - prefer manual edits
-{Path: "Description", Source: sources.LocalCatalogID, Priority: 90}
+// Pricing - a valid provider observation wins atomically.
+{
+    Resource:    sources.ResourceTypeModel,
+    Path:        "Pricing",
+    SourceOrder: []sources.ID{
+        sources.ProvidersID,
+        sources.ModelsDevHTTPID,
+        sources.ModelsDevGitID,
+        sources.LocalCatalogID,
+    },
+    Merge: authority.MergeReplace,
+    Empty: authority.EmptyAbsent,
+}
 ```
 
-See `pkg/authority/authority.go` for legacy field authority configuration.
-The canonical definition/offering inventory and merge/empty semantics are
-documented in [CATALOG_AUTHORITY_POLICY.md](CATALOG_AUTHORITY_POLICY.md) and
-enforced by `pkg/authority.CanonicalPolicies` coverage tests.
+The complete table and its semantics are documented in
+[CATALOG_AUTHORITY_POLICY.md](CATALOG_AUTHORITY_POLICY.md).
 
 Source decoding uses scoped strictness rather than a global permissive or
 strict mode. Identity and container type drift rejects its source/record scope;
@@ -1034,11 +1042,11 @@ graph TD
 **Authority Resolution:**
 - **Pricing**: A semantically valid, currently effective provider observation
   wins for that provider offering; models.dev and local data are fallbacks
-- **Limits**: models.dev remains the legacy reconciler authority while the
-  canonical provider-offering policy is implemented
+- **Limits**: provider observations lead; models.dev and local evidence fill
+  dimensions the provider omits
 - **Model Existence**: Provider APIs determine what models actually exist
 - **API Configuration**: Local catalog takes precedence (user's environment)
-- **Baseline Data**: Embedded catalog provides defaults when other sources unavailable
+- **Baseline Data**: Embedded catalog provides lowest-authority defaults when other sources are unavailable
 
 **Provider Fetching Seam:**
 Provider API acquisition has one implementation in the public
@@ -1265,11 +1273,10 @@ compatibility boundary executable rather than release-version folklore.
 The default reconciliation strategy uses field-level authorities:
 
 **How it works:**
-1. Iterate the reconciler field-rule catalog for each resource type
-2. Use each rule's authority path to find matching authority
-3. Select value from highest-priority source
-4. Track provenance using each rule's provenance path
-5. Generate changeset by comparing with baseline
+1. Iterate the immutable authority policies for each resource type
+2. Select or compose the field according to its source order and merge policy
+3. Track provenance using the policy's stable evidence path
+4. Generate changeset by comparing with baseline
 
 **Example:**
 
@@ -1280,11 +1287,11 @@ Model "gpt-4o" exists in 3 sources:
   - Local:        { Description: "Custom description" }
 
 Reconciled result:
-  - Name:        "GPT-4o"         (Provider API, priority 90)
-  - Features:    {...}             (Provider API, priority 95)
+  - Name:        "GPT-4o"         (Provider API)
+  - Features:    {...}             (Provider API)
   - Pricing:     {...}             (Provider API, validated and atomic)
-  - Limits:      {...}             (models.dev, priority 100)
-  - Description: "Custom desc"     (Local, priority 90)
+  - Limits:      {...}             (Provider API, models.dev fills gaps)
+  - Description: "Upstream desc"   (models.dev, local fills absence)
 ```
 
 ### Reconciliation Flow Visualization
@@ -1309,22 +1316,22 @@ sequenceDiagram
         L-->>Rec: {Description}
     end
 
-    Note over Rec: Process model field rules
+    Note over Rec: Process the executable field policies
 
     Rec->>Auth: ResolveConflict("Name", values)
-    Auth-->>Rec: Provider API (priority 90)
+    Auth-->>Rec: Provider API
 
     Rec->>Auth: ResolveConflict("Features", values)
-    Auth-->>Rec: Provider API (priority 95)
+    Auth-->>Rec: Provider API
 
     Rec->>Auth: SelectValidOfferingPricing(values, effectiveAt)
     Auth-->>Rec: Provider API, or next valid fallback
 
     Rec->>Auth: ResolveConflict("Limits", values)
-    Auth-->>Rec: models.dev (priority 100)
+    Auth-->>Rec: Provider API, models.dev fills gaps
 
     Rec->>Auth: ResolveConflict("Description", values)
-    Auth-->>Rec: Local (priority 90)
+    Auth-->>Rec: models.dev, local fallback
 
     Note over Rec: Merge all reconciled fields
 

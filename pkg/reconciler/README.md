@@ -19,11 +19,11 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [func ConvertCatalogsMapToSources\(srcs map\[sources.ID\]\*catalogs.Builder\) \[\]sources.Observation](<#ConvertCatalogsMapToSources>)
 - [func NewMockSource\(sourceType sources.ID, catalog \*catalogs.Builder\) sources.Observation](<#NewMockSource>)
 - [type AuthorityStrategy](<#AuthorityStrategy>)
-  - [func NewAuthorityStrategy\(authorities authority.Authority\) \*AuthorityStrategy](<#NewAuthorityStrategy>)
+  - [func NewAuthorityStrategy\(authorities authority.Reader\) \*AuthorityStrategy](<#NewAuthorityStrategy>)
   - [func \(s \*AuthorityStrategy\) ResolveConflict\(field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveConflict>)
   - [func \(s \*AuthorityStrategy\) ResolveResourceConflict\(resourceType sources.ResourceType, field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveResourceConflict>)
 - [type Option](<#Option>)
-  - [func WithAuthorities\(authorities authority.Authority\) Option](<#WithAuthorities>)
+  - [func WithAuthorities\(authorities authority.Reader\) Option](<#WithAuthorities>)
   - [func WithBaseline\(catalog \*catalogs.Catalog\) Option](<#WithBaseline>)
   - [func WithEnhancers\(enhancers ...enhancer.Enhancer\) Option](<#WithEnhancers>)
   - [func WithProvenance\(enabled bool\) Option](<#WithProvenance>)
@@ -75,7 +75,7 @@ func NewMockSource(sourceType sources.ID, catalog *catalogs.Builder) sources.Obs
 NewMockSource creates a direct observation for testing.
 
 <a name="AuthorityStrategy"></a>
-## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L107-L110>)
+## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L108-L111>)
 
 AuthorityStrategy uses field authorities to resolve conflicts.
 
@@ -86,16 +86,16 @@ type AuthorityStrategy struct {
 ```
 
 <a name="NewAuthorityStrategy"></a>
-### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L113>)
+### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L114>)
 
 ```go
-func NewAuthorityStrategy(authorities authority.Authority) *AuthorityStrategy
+func NewAuthorityStrategy(authorities authority.Reader) *AuthorityStrategy
 ```
 
 NewAuthorityStrategy creates a new authority\-based strategy.
 
 <a name="AuthorityStrategy.ResolveConflict"></a>
-### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L130>)
+### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L131>)
 
 ```go
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
@@ -104,7 +104,7 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 ResolveConflict uses authorities to resolve conflicts.
 
 <a name="AuthorityStrategy.ResolveResourceConflict"></a>
-### func \(\*AuthorityStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L135>)
+### func \(\*AuthorityStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L136>)
 
 ```go
 func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
@@ -125,7 +125,7 @@ type Option func(*options) error
 ### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L61>)
 
 ```go
-func WithAuthorities(authorities authority.Authority) Option
+func WithAuthorities(authorities authority.Reader) Option
 ```
 
 WithAuthorities sets the field authorities.
@@ -169,7 +169,7 @@ WithStrategy sets the merge strategy.
 <a name="Reconciler"></a>
 ## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L29-L36>)
 
-Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow Strategy, Authority, Source, and Enhancer interfaces.
+Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow Strategy, authority.Reader, Source, and Enhancer interfaces.
 
 ```go
 type Reconciler struct {
@@ -323,7 +323,7 @@ type ResultStatistics struct {
 ```
 
 <a name="SourceOrderStrategy"></a>
-## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L201-L204>)
+## type [SourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L177-L180>)
 
 SourceOrderStrategy resolves conflicts using a fixed source precedence order. Sources earlier in the priority slice have higher precedence than sources later in the slice.
 
@@ -334,7 +334,7 @@ type SourceOrderStrategy struct {
 ```
 
 <a name="NewSourceOrderStrategy"></a>
-### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L208>)
+### func [NewSourceOrderStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L184>)
 
 ```go
 func NewSourceOrderStrategy(priorityOrder []sources.ID) *SourceOrderStrategy
@@ -343,7 +343,7 @@ func NewSourceOrderStrategy(priorityOrder []sources.ID) *SourceOrderStrategy
 NewSourceOrderStrategy creates a new source priority order strategy. The priorityOrder slice determines precedence: earlier elements have higher priority.
 
 <a name="SourceOrderStrategy.ResolveConflict"></a>
-### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L225>)
+### func \(\*SourceOrderStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L201>)
 
 ```go
 func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]any) (any, sources.ID, string)
@@ -352,7 +352,7 @@ func (s *SourceOrderStrategy) ResolveConflict(_ string, values map[sources.ID]an
 ResolveConflict uses source priority order to resolve conflicts.
 
 <a name="SourceOrderStrategy.ResolveResourceConflict"></a>
-### func \(\*SourceOrderStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L230>)
+### func \(\*SourceOrderStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L206>)
 
 ```go
 func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ string, values map[sources.ID]any) (any, sources.ID, string)
@@ -361,7 +361,7 @@ func (s *SourceOrderStrategy) ResolveResourceConflict(_ sources.ResourceType, _ 
 ResolveResourceConflict resolves conflicts by source order; resource type does not affect this strategy.
 
 <a name="Strategy"></a>
-## type [Strategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L43-L61>)
+## type [Strategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L44-L62>)
 
 Strategy defines how reconciliation should be performed.
 
@@ -388,7 +388,7 @@ type Strategy interface {
 ```
 
 <a name="StrategyType"></a>
-## type [StrategyType](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L15>)
+## type [StrategyType](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L16>)
 
 StrategyType represents the type of reconciliation strategy.
 
@@ -408,7 +408,7 @@ const (
 ```
 
 <a name="StrategyType.Name"></a>
-### func \(StrategyType\) [Name](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L23>)
+### func \(StrategyType\) [Name](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L24>)
 
 ```go
 func (s StrategyType) Name() string
@@ -417,7 +417,7 @@ func (s StrategyType) Name() string
 Name returns the name of the strategy type.
 
 <a name="StrategyType.String"></a>
-### func \(StrategyType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L18>)
+### func \(StrategyType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/strategy.go#L19>)
 
 ```go
 func (s StrategyType) String() string
