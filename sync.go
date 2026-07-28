@@ -50,7 +50,14 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 
 // save commits and publishes the catalog, then best-effort projects the
 // committed generation into an optional human YAML workspace.
-func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
+func (c *Client) save(
+	ctx context.Context,
+	result *catalogs.Builder,
+	options *sync.Options,
+	changeset *differ.Changeset,
+	observations []sources.Observation,
+	workspaceInput workspace.InputExpectation,
+) (pipeline.Publication, error) {
 	published, err := snapshotBuilder(result)
 	if err != nil {
 		return pipeline.Publication{}, err
@@ -75,6 +82,7 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 				GenerationID:    publication.GenerationID,
 				PayloadChecksum: publication.PayloadChecksum,
 			},
+			workspaceInput,
 		)
 		publication.Projection.WorkspaceChecksum = receipt.WorkspaceChecksum
 		if projectionErr != nil {
@@ -101,6 +109,7 @@ func projectCatalogWorkspace(
 	catalog *catalogs.Catalog,
 	outputPath string,
 	identity workspace.Identity,
+	input workspace.InputExpectation,
 ) (workspace.Receipt, error) {
 	providers := catalog.Providers().List()
 	for _, provider := range providers {
@@ -110,7 +119,7 @@ func projectCatalogWorkspace(
 			Msg("Provider model count before workspace projection")
 	}
 
-	receipt, err := workspace.Project(ctx, outputPath, catalog, identity)
+	receipt, err := workspace.ProjectExpected(ctx, outputPath, catalog, identity, input)
 	if err != nil {
 		return receipt, err
 	}
@@ -142,6 +151,13 @@ func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
 	return s.client.Catalog(), nil
 }
 
-func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
-	return s.client.save(ctx, catalog, options, changeset, observations)
+func (s pipelineStore) Apply(
+	ctx context.Context,
+	catalog *catalogs.Builder,
+	options *sync.Options,
+	changeset *differ.Changeset,
+	observations []sources.Observation,
+	workspaceInput workspace.InputExpectation,
+) (pipeline.Publication, error) {
+	return s.client.save(ctx, catalog, options, changeset, observations, workspaceInput)
 }

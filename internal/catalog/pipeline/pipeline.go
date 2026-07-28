@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/differ"
@@ -20,7 +21,14 @@ import (
 // Store is the catalog boundary required by the sync pipeline.
 type Store interface {
 	Catalog() (*catalogs.Catalog, error)
-	Apply(context.Context, *catalogs.Builder, *pkgsync.Options, *differ.Changeset, []sources.Observation) (Publication, error)
+	Apply(
+		context.Context,
+		*catalogs.Builder,
+		*pkgsync.Options,
+		*differ.Changeset,
+		[]sources.Observation,
+		workspace.InputExpectation,
+	) (Publication, error)
 }
 
 // Publication identifies the durable generation produced by Apply.
@@ -32,7 +40,12 @@ type Publication struct {
 }
 
 type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source
+type sourcesFunc func(
+	*pkgsync.Options,
+	*catalogs.Catalog,
+	catalogs.LoadReport,
+	workspace.InputExpectation,
+) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -82,6 +95,10 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 	defer cancel()
 
+	workspaceInput, err := workspace.ObserveInput(options.CatalogPath)
+	if err != nil {
+		return nil, err
+	}
 	local, err := p.loadLocal(options.CatalogPath)
 	if err != nil {
 		return nil, pkgerrors.WrapResource("load", "catalog", "local", err)
@@ -95,7 +112,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
 	}
-	srcs := p.createSources(options, localSnapshot, local.LoadReport())
+	srcs := p.createSources(options, localSnapshot, local.LoadReport(), workspaceInput)
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -187,12 +204,19 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		return syncResult, nil
 	}
 
-	if shouldSave(options, result.Changeset) {
+	if shouldSave(options, result.Changeset, workspaceInput.RequiresSeed()) {
 		changeset := result.Changeset
 		if changeset == nil {
 			changeset = &differ.Changeset{}
 		}
-		publication, err := p.store.Apply(ctx, result.Catalog, options, changeset, observations)
+		publication, err := p.store.Apply(
+			ctx,
+			result.Catalog,
+			options,
+			changeset,
+			observations,
+			workspaceInput,
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -240,13 +264,14 @@ func activeSourceIDs(observations []sources.Observation) []sources.ID {
 	return ids
 }
 
-func shouldSave(options *pkgsync.Options, changeset *differ.Changeset) bool {
-	if options.Reformat || options.Fresh {
+func shouldSave(options *pkgsync.Options, changeset *differ.Changeset, seedWorkspace bool) bool {
+	if options.Reformat || options.Fresh || seedWorkspace {
 		if changeset == nil || !changeset.HasChanges() {
 			logging.Info().
 				Bool("reformat", options.Reformat).
 				Bool("force", options.Fresh).
-				Msg("Forcing save due to reformat/force flag")
+				Bool("seed_workspace", seedWorkspace).
+				Msg("Forcing save due to explicit materialization policy")
 		}
 		return true
 	}

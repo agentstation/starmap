@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/reconciler"
@@ -73,7 +74,12 @@ func TestPipelineRequireAllSourcesRejectsUnhealthyObservationBeforeReconciliatio
 		t.Run(test.name, func(t *testing.T) {
 			store := &pipelineTestStore{catalog: modelCatalog}
 			runner := newStubPipeline(store, nil)
-			runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
+			runner.createSources = func(
+				*pkgsync.Options,
+				*catalogs.Catalog,
+				catalogs.LoadReport,
+				workspace.InputExpectation,
+			) []sources.Source {
 				return []sources.Source{requiredSource}
 			}
 			runner.observe = func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error) {
@@ -114,7 +120,12 @@ func TestPipelineRequireAllSourcesAcceptsCompleteNonemptyObservation(t *testing.
 	})
 	reconciled := false
 	runner := newStubPipeline(&pipelineTestStore{catalog: catalog}, nil)
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
+	runner.createSources = func(
+		*pkgsync.Options,
+		*catalogs.Catalog,
+		catalogs.LoadReport,
+		workspace.InputExpectation,
+	) []sources.Source {
 		return []sources.Source{requiredSource}
 	}
 	runner.observe = func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error) {

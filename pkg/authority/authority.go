@@ -149,24 +149,28 @@ func defaultPolicies() []Policy {
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
 		sources.LocalCatalogID,
+		sources.EmbeddedCatalogID,
 	}
 	modelsDevFirst := []sources.ID{
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
 		sources.ProvidersID,
 		sources.LocalCatalogID,
+		sources.EmbeddedCatalogID,
 	}
 	localFirst := []sources.ID{
 		sources.LocalCatalogID,
 		sources.ProvidersID,
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
+		sources.EmbeddedCatalogID,
 	}
 	localThenModelsDev := []sources.ID{
 		sources.LocalCatalogID,
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
 		sources.ProvidersID,
+		sources.EmbeddedCatalogID,
 	}
 
 	return []Policy{

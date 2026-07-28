@@ -71,12 +71,65 @@ func TestProjectFailureBeforePromotePreservesOldWorkspace(t *testing.T) {
 	injected := stderrors.New("injected promotion failure")
 	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
 	_, err := (projector{beforePromote: func() error { return injected }}).
-		project(context.Background(), path, newCatalog, newIdentity)
+		project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	if !stderrors.Is(err, injected) {
 		t.Fatalf("Project error = %v, want injected failure", err)
 	}
 	assertWorkspaceModel(t, path, "old", "Old Model")
 	assertWorkspaceModelMissing(t, path, "new")
+	assertNoProjectionStaging(t, path)
+}
+
+func TestFirstProjectionFailureLeavesWorkspaceAbsent(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	if !input.RequiresSeed() {
+		t.Fatalf("input = %#v, want absent workspace seed", input)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	injected := stderrors.New("injected before first promotion")
+	_, err = (projector{beforePromote: func() error { return injected }}).
+		project(context.Background(), path, catalog, identity, input)
+	if !stderrors.Is(err, injected) {
+		t.Fatalf("Project error = %v, want injected failure", err)
+	}
+	if _, statErr := os.Lstat(path); !stderrors.Is(statErr, os.ErrNotExist) {
+		t.Fatalf("workspace exists after failed first projection: %v", statErr)
+	}
+	assertNoProjectionStaging(t, path)
+}
+
+func TestFirstProjectionRejectsWorkspaceCreatedAfterObservation(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join(t.TempDir(), "catalog")
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	if err := os.MkdirAll(path, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	operatorNote := filepath.Join(path, "operator.txt")
+	if err := os.WriteFile(operatorNote, []byte("do not overwrite\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	_, err = ProjectExpected(context.Background(), path, catalog, identity, input)
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("Project error = %T %v, want *errors.ConflictError", err, err)
+	}
+	data, readErr := os.ReadFile(operatorNote)
+	if readErr != nil || string(data) != "do not overwrite\n" {
+		t.Fatalf("operator file = %q, %v", data, readErr)
+	}
+	assertWorkspaceModelMissing(t, path, "seed")
 	assertNoProjectionStaging(t, path)
 }
 
@@ -113,7 +166,7 @@ func TestProjectRejectsConcurrentSemanticEdit(t *testing.T) {
 	_, err := (projector{beforeInputCheck: func() error {
 		editWorkspaceModel(t, path, "old", "Human Edit")
 		return nil
-	}}).project(context.Background(), path, newCatalog, newIdentity)
+	}}).project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	var conflict *errors.ConflictError
 	if !stderrors.As(err, &conflict) {
 		t.Fatalf("Project error = %T %v, want *errors.ConflictError", err, err)
@@ -237,7 +290,7 @@ func TestRepairAcknowledgesSwapAfterMarkerFailure(t *testing.T) {
 	injected := stderrors.New("injected marker failure")
 	newCatalog, newIdentity := testCatalog(t, "new", "New Model")
 	receipt, err := (projector{beforeMarker: func() error { return injected }}).
-		project(context.Background(), path, newCatalog, newIdentity)
+		project(context.Background(), path, newCatalog, newIdentity, InputExpectation{})
 	if !stderrors.Is(err, injected) {
 		t.Fatalf("Project error = %v, want injected marker failure", err)
 	}

@@ -104,10 +104,11 @@ type ID = catalogmeta.SourceID
 
 // Common source identifiers - exported as package-level constants for convenience.
 const (
-	ProvidersID     = catalogmeta.ProvidersID
-	ModelsDevGitID  = catalogmeta.ModelsDevGitID
-	ModelsDevHTTPID = catalogmeta.ModelsDevHTTPID
-	LocalCatalogID  = catalogmeta.LocalCatalogID
+	ProvidersID       = catalogmeta.ProvidersID
+	ModelsDevGitID    = catalogmeta.ModelsDevGitID
+	ModelsDevHTTPID   = catalogmeta.ModelsDevHTTPID
+	LocalCatalogID    = catalogmeta.LocalCatalogID
+	EmbeddedCatalogID = catalogmeta.EmbeddedCatalogID
 )
 
 // IDs returns all available source identifiers.

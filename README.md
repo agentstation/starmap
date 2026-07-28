@@ -399,6 +399,7 @@ Dependency Status:
 ┌────────────────────────────┬────────────────────────┬──────────────────┬─────────┬───────────────────────┐
 │           SOURCE           │       DEPENDENCY       │      STATUS      │ VERSION │         PATH          │
 ├────────────────────────────┼────────────────────────┼──────────────────┼─────────┼───────────────────────┤
+│ embedded_catalog           │ -                      │ ✅ None required │ -       │ -                     │
 │ local_catalog (optional)   │ -                      │ ✅ None required │ -       │ -                     │
 │ providers                  │ -                      │ ✅ None required │ -       │ -                     │
 │ models_dev_git (optional)  │ Bun JavaScript runtime │ ✅ Available     │ 1.2.21  │ /opt/homebrew/bin/bun │
@@ -777,6 +778,13 @@ generation/digest marker; neither is loaded as provider configuration, and
 normal completion removes all staging. A pre-plan generation-store layout
 found at `~/.starmap/catalog` fails with a typed migration error before
 mutation.
+
+Read-only construction uses the verified embedded catalog entirely in memory
+and creates no workspace. The first explicit update observes that catalog as
+`embedded_catalog`, commits one immutable generation even when its facts are
+unchanged, and then atomically creates the complete provider-YAML workspace.
+An absent path is never reported as `local_catalog`; local evidence begins only
+after a real human workspace exists.
 
 ```yaml
 # ~/.starmap/config.yaml

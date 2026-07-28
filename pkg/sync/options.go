@@ -25,7 +25,7 @@ type Options struct {
 	Timeout time.Duration // Timeout for the entire sync operation
 
 	// Source selection
-	Sources    []sources.ID         // Which sources to use (empty means default providers/local/models.dev HTTP)
+	Sources    []sources.ID         // Which external/human sources to use; embedded seeds an absent workspace.
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
 	// Human workspace used for both local observation and materialization.

@@ -806,6 +806,7 @@ Location: `pkg/authority/`
         sources.ModelsDevHTTPID,
         sources.ModelsDevGitID,
         sources.LocalCatalogID,
+        sources.EmbeddedCatalogID,
     },
     Merge: authority.MergeReplace,
     Empty: authority.EmptyAbsent,
@@ -951,8 +952,12 @@ Observation outcomes use one explicit policy:
   with validated disk-cache and embedded last-known-good fallback
 - **models.dev Git** (`sources.ModelsDevGitID`) - Explicit build/verification
   transport; never runs alongside HTTP in one sync
-- **Local Catalog** (`sources.LocalCatalogID`) - User overrides
-- **Embedded** (`sources.EmbeddedID`) - Baseline data shipped with binary
+- **Local Catalog** (`sources.LocalCatalogID`) - Semantic values read from an
+  existing human workspace
+- **Embedded** (`sources.EmbeddedCatalogID`) - Verified lowest-authority
+  baseline data shipped with the binary; seeds an absent workspace without
+  external dependencies. P3.4 completes the separate E1→E2 observation path
+  for an existing workspace.
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence retention and replay.

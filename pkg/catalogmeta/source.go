@@ -24,6 +24,9 @@ const (
 
 	// LocalCatalogID identifies the local filesystem catalog source.
 	LocalCatalogID SourceID = "local_catalog"
+
+	// EmbeddedCatalogID identifies the verified catalog compiled into Starmap.
+	EmbeddedCatalogID SourceID = "embedded_catalog"
 )
 
 // SourceIDs returns all available source identifiers.
@@ -34,6 +37,7 @@ func SourceIDs() []SourceID {
 		ModelsDevGitID,
 		ModelsDevHTTPID,
 		LocalCatalogID,
+		EmbeddedCatalogID,
 	}
 }
 

@@ -86,6 +86,7 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		&pkgsync.Options{CatalogPath: blockingFile},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, newCatalog)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("save returned a pre-commit error after projection failure: %v", err)
@@ -125,6 +126,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 		&pkgsync.Options{CatalogPath: path},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, candidate)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("save: %v", err)
@@ -175,6 +177,7 @@ func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
 		&pkgsync.Options{},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, candidate)},
+		workspace.InputExpectation{},
 	)
 	if err != nil {
 		t.Fatalf("store-only Apply: %v", err)
