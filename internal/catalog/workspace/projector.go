@@ -164,7 +164,21 @@ func (p projector) project(
 	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
 		return Receipt{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
+	release, err := acquireWriterLock(target)
+	if err != nil {
+		return Receipt{}, err
+	}
+	defer release()
+	return p.projectLocked(ctx, target, catalog, identity, expectation)
+}
 
+func (p projector) projectLocked(
+	ctx context.Context,
+	target string,
+	catalog *catalogs.Catalog,
+	identity Identity,
+	expectation InputExpectation,
+) (Receipt, error) {
 	input, err := readSemanticState(target)
 	if err != nil {
 		return Receipt{}, err
@@ -288,6 +302,14 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	if err := ValidateHumanLayout(target, ""); err != nil {
 		return RepairResult{}, err
 	}
+	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
+		return RepairResult{}, errors.WrapIO("create", filepath.Dir(target), err)
+	}
+	release, err := acquireWriterLock(target)
+	if err != nil {
+		return RepairResult{}, err
+	}
+	defer release()
 	state, err := readSemanticState(target)
 	if err != nil {
 		return RepairResult{}, err
@@ -325,7 +347,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		return RepairResult{Status: RepairStatusSkippedDirty, IssueCode: IssueDirty}, nil
 	}
 
-	if _, err := p.project(ctx, target, current, identity, InputExpectation{}); err != nil {
+	if _, err := p.projectLocked(ctx, target, current, identity, InputExpectation{}); err != nil {
 		return RepairResult{}, err
 	}
 	return RepairResult{Status: RepairStatusRepaired}, nil

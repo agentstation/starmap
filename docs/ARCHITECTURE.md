@@ -705,7 +705,11 @@ locks, current pointers, retained generations, and their temporary candidates
 remain under the catalog-store root. Atomic YAML projection alone stages beside
 the workspace so same-filesystem rename remains possible; its hidden staging is
 cleaned and its sibling digest marker is never traversed by the provider-YAML
-loader. Cache, source evidence, logs, configuration, YAML, and immutable
+loader. Projection and repair share a nonblocking OS advisory writer lock in
+another sibling file. A competing process receives a typed conflict; readers
+take no lock and observe the complete directory before or after atomic
+promotion. OS process exit releases ownership even though the empty lock file
+remains. Cache, source evidence, logs, configuration, YAML, and immutable
 generations remain separate lifecycle domains.
 
 An explicitly configured catalog workspace is optional only when its path does

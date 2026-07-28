@@ -133,6 +133,30 @@ func TestFirstProjectionRejectsWorkspaceCreatedAfterObservation(t *testing.T) {
 	assertNoProjectionStaging(t, path)
 }
 
+func TestProjectRejectsSymlinkedWriterLock(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	path := filepath.Join(root, "catalog")
+	operatorFile := filepath.Join(root, "operator.txt")
+	if err := os.WriteFile(operatorFile, []byte("preserve\n"), constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if err := os.Symlink(operatorFile, writerLockPath(path)); err != nil {
+		t.Fatalf("Symlink: %v", err)
+	}
+	catalog, identity := testCatalog(t, "seed", "Embedded Seed")
+	_, err := Project(context.Background(), path, catalog, identity)
+	var validation *errors.ValidationError
+	if !stderrors.As(err, &validation) {
+		t.Fatalf("Project error = %T %v, want *errors.ValidationError", err, err)
+	}
+	data, readErr := os.ReadFile(operatorFile)
+	if readErr != nil || string(data) != "preserve\n" {
+		t.Fatalf("operator file = %q, %v", data, readErr)
+	}
+}
+
 func TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload(t *testing.T) {
 	t.Parallel()
 

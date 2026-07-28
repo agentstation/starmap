@@ -776,9 +776,12 @@ workspace/state roots and rejects models.dev cache or checkout roots that
 contain, equal, or sit beneath the workspace before reading or writing it.
 Atomic projection uses hidden sibling staging and a hidden sibling
 generation/digest marker; neither is loaded as provider configuration, and
-normal completion removes all staging. A pre-plan generation-store layout
-found at `~/.starmap/catalog` fails with a typed migration error before
-mutation.
+normal completion removes all staging. A sibling advisory writer lock
+serializes projection and repair across processes; contention returns a typed
+conflict while readers continue to observe one complete old or new tree. The
+lock file carries no catalog data and an exited process cannot leave it held. A
+pre-plan generation-store layout found at `~/.starmap/catalog` fails with a
+typed migration error before mutation.
 
 Read-only construction uses the verified embedded catalog entirely in memory
 and creates no workspace. The first explicit update observes that catalog as
