@@ -2,9 +2,9 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0 is complete and P1.5 is inventorying PR #40 as a
-read-only donor before closing the rejected alternative architecture;
-architecture implementation has not started.
+Status: `IN_PROGRESS` — P0 is complete and P1.6 is closing PR #40 after its
+exhaustive read-only donor inventory; architecture implementation has not
+started.
 
 ## Mission
 
@@ -553,8 +553,8 @@ git diff --check
 | P1.2 | `DONE` | Merge replacement PR #46 | Protected merge succeeds; main contains x/text v0.40.0 and grpc >= v1.82.1; #43 is superseded; #46 and its branch are closed |
 | P1.3 | `DONE` | Rebase/recreate and verify PR #44 through replacement #47 | Exact head is based on post-#46 main; workflow fixture, actionlint, verification, and security checks pass |
 | P1.4 | `DONE` | Merge replacement PR #47 | Protected merge succeeds; old failed #44 head is superseded; PRs and remote branches are closed |
-| P1.5 | `IN_PROGRESS` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale |
-| P1.6 | `PENDING` | Close PR #40 | Closing note links this plan and inventory; no open review threads are misrepresented as resolved |
+| P1.5 | `DONE` | Inventory PR #40 | Every changed production module is marked salvage, already-landed, reject, or superseded with rationale in [`reviews/PR40_DONOR_INVENTORY_2026-07-27.md`](reviews/PR40_DONOR_INVENTORY_2026-07-27.md) |
+| P1.6 | `IN_PROGRESS` | Close PR #40 | Closing note links this plan and inventory; no open review threads are misrepresented as resolved |
 | P1.7 | `PENDING` | Remove #40 worktree and branches in safe order | Worktree is removed before its checked-out local branch; remote and local branches are absent; retained evidence lives in docs/Git history |
 | P1.8 | `PENDING` | Rebase control-plane/next phase on current main | No dependency/action regression; ledger records final PR SHAs |
 
@@ -818,6 +818,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P1.3 | On replacement head `2092ec8a0414374fe3abd29814446de0986c8ea1`, `actionlint`, `go test -race ./internal/ciworkflow`, Go 1.26.5 current `govulncheck v1.6.0`, and `make verify` passed. Full verification included ordinary tests, `-race -short`, vet, catalog benchmark (10.62–11.30 ns/op, 0 B/op, 0 allocs/op), lint, all coverage gates, docs, diff, build, catalog validation, and isolated CLI checks. Opened replacement PR [#47](https://github.com/agentstation/starmap/pull/47), then closed #44 with an explicit supersession explanation and deleted its remote Dependabot branch; its temporary exact-head worktree/ref were removed cleanly. |
 | 2026-07-27 | P1.3–P1.4 | PR #47 final exact head `650f5406728e86e97c11ce92368c49e1bb4ad5fd` passed `actionlint`, current `govulncheck v1.6.0` with zero reachable vulnerabilities, and exact `make verify`; the catalog accessor benchmark measured 7.942–8.555 ns/op, 0 B/op, and 0 allocs/op. The same head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30321210906/job/90157323234) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30321210906/job/90157323226). Protection required both exact contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged as `a87b64252f022c398589c5aad8652357ba8a174a`. Its remote branch was deleted. |
 | 2026-07-27 | P1.5 | Created fresh worktree `/Users/jack/src/github.com/agentstation/starmap-worktrees/provider-donor-inventory` on `codex/provider-donor-inventory` from exact protected main `a87b64252f022c398589c5aad8652357ba8a174a` for the read-only PR #40 inventory and cleanup. |
+| 2026-07-27 | P1.5 | Compared PR #40 exact donor head `a14d22497479cb944932274088cf806cb25e993b` with merge base `9508ee7866e4683e001e7ad153319d348433045d` and current protected main `a87b64252f022c398589c5aad8652357ba8a174a`. [`reviews/PR40_DONOR_INVENTORY_2026-07-27.md`](reviews/PR40_DONOR_INVENTORY_2026-07-27.md) classifies all 66 changed production Go modules exactly once: 38 limited `SALVAGE`, 20 `SUPERSEDED`, and 8 `REJECT`; its non-Go inventory separately records newer workflow pins as already landed and bounds provider research, fixtures, credential-free verification, and cache ownership as evidence-only salvage. A generated module list and the table both contained 66 rows with an empty `comm -3` result; no donor code was copied. |
 
 ## Final Definition of Done
 
