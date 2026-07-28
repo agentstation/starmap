@@ -4,12 +4,11 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap/internal/catalog/pipeline"
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
-	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
 )
@@ -49,73 +48,12 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 // Helper Methods for Sync
 // ============================================================================
 
-// save applies the catalog changes if not in dry-run mode.
+// save commits and publishes the catalog, then best-effort projects the
+// committed generation into an optional human YAML workspace.
 func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
 	published, err := snapshotBuilder(result)
 	if err != nil {
 		return pipeline.Publication{}, err
-	}
-
-	// Persist first so a failed save does not publish unsaved in-memory state.
-	if options.OutputPath != "" {
-		// Debug: check what providers have models
-		providers := result.Providers().List()
-		for _, p := range providers {
-			modelCount := 0
-			if p.Models != nil {
-				modelCount = len(p.Models)
-			}
-			logging.Info().
-				Str("provider", string(p.ID)).
-				Int("models", modelCount).
-				Msg("Provider model count before save")
-		}
-
-		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
-			return pipeline.Publication{}, errors.WrapIO("write", options.OutputPath, err)
-		}
-
-		// Copy models.dev logos after successful save.
-		providerPtrs := make([]*catalogs.Provider, len(providers))
-		for i := range providers {
-			providerPtrs[i] = &providers[i]
-		}
-
-		// Copy provider logos if we have providers and an output path.
-		if len(providerPtrs) > 0 {
-			logging.Debug().
-				Int("provider_count", len(providerPtrs)).
-				Str("output_path", options.OutputPath).
-				Msg("Copying provider logos from models.dev")
-
-			if logoErr := modelsdev.CopyProviderLogos(options.OutputPath, providerPtrs); logoErr != nil {
-				logging.Warn().
-					Err(logoErr).
-					Msg("Could not copy provider logos")
-				// Non-fatal error - continue without logos
-			}
-		}
-
-		// Copy author logos from provider logos.
-		authors := result.Authors().List()
-		if len(authors) > 0 {
-			logging.Debug().
-				Int("author_count", len(authors)).
-				Str("output_path", options.OutputPath).
-				Msg("Copying author logos from models.dev provider logos")
-
-			if logoErr := modelsdev.CopyAuthorLogos(options.OutputPath, authors, result.Providers()); logoErr != nil {
-				logging.Warn().
-					Err(logoErr).
-					Msg("Could not copy author logos")
-				// Non-fatal error - continue without logos
-			}
-		}
-	} else {
-		// Save to default location
-		if err := result.Save(save.WithPath(options.OutputPath)); err != nil {
-			return pipeline.Publication{}, errors.WrapIO("write", "catalog", err)
-		}
 	}
 
 	publication, err := c.commitAndPublish(ctx, published, observations)
@@ -123,11 +61,77 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 		return pipeline.Publication{}, err
 	}
 
+	if options.OutputPath != "" {
+		publication.Projection = &sync.ProjectionResult{
+			Path:         options.OutputPath,
+			Status:       sync.ProjectionStatusPendingRepair,
+			GenerationID: publication.GenerationID,
+		}
+		receipt, projectionErr := projectCatalogWorkspace(
+			ctx,
+			published,
+			options.OutputPath,
+			workspace.Identity{
+				GenerationID:    publication.GenerationID,
+				PayloadChecksum: publication.PayloadChecksum,
+			},
+		)
+		publication.Projection.WorkspaceChecksum = receipt.WorkspaceChecksum
+		if projectionErr != nil {
+			publication.Projection.IssueCode = sync.ProjectionIssueWorkspaceFailed
+			logging.Warn().
+				Err(projectionErr).
+				Str("generation_id", publication.GenerationID).
+				Str("output_path", options.OutputPath).
+				Msg("Catalog generation committed; YAML workspace projection is pending repair")
+		} else {
+			publication.Projection.Status = sync.ProjectionStatusApplied
+		}
+	}
+
 	logging.Info().
 		Int("changes_applied", changeset.Summary.TotalChanges).
 		Msg("Sync completed successfully")
 
 	return publication, nil
+}
+
+func projectCatalogWorkspace(
+	ctx context.Context,
+	catalog *catalogs.Catalog,
+	outputPath string,
+	identity workspace.Identity,
+) (workspace.Receipt, error) {
+	providers := catalog.Providers().List()
+	for _, provider := range providers {
+		logging.Debug().
+			Str("provider", string(provider.ID)).
+			Int("models", len(provider.Models)).
+			Msg("Provider model count before workspace projection")
+	}
+
+	receipt, err := workspace.Project(ctx, outputPath, catalog, identity)
+	if err != nil {
+		return receipt, err
+	}
+
+	providerPtrs := make([]*catalogs.Provider, len(providers))
+	for i := range providers {
+		providerPtrs[i] = &providers[i]
+	}
+	if len(providerPtrs) > 0 {
+		if err := modelsdev.CopyProviderLogos(outputPath, providerPtrs); err != nil {
+			logging.Warn().Err(err).Msg("Could not copy provider logos")
+		}
+	}
+
+	authors := catalog.Authors().List()
+	if len(authors) > 0 {
+		if err := modelsdev.CopyAuthorLogos(outputPath, authors, catalog.Providers()); err != nil {
+			logging.Warn().Err(err).Msg("Could not copy author logos")
+		}
+	}
+	return receipt, nil
 }
 
 type pipelineStore struct {

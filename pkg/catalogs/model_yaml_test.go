@@ -8,10 +8,42 @@ import (
 	"time"
 
 	"github.com/agentstation/utc"
+	"github.com/goccy/go-yaml"
 
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/save"
 )
+
+func TestModelEncodeYAMLRoundTripsBackslashesWithoutSemanticDrift(t *testing.T) {
+	original := Model{
+		ID:          "backslash-description",
+		Name:        "Backslash Description",
+		Description: `Instruction control (e.g. \\speak slowly\\, \\excited tone\\)`,
+	}
+	encoded, err := original.EncodeYAML()
+	if err != nil {
+		t.Fatalf("EncodeYAML: %v", err)
+	}
+	var decoded Model
+	if err := yaml.Unmarshal([]byte(encoded), &decoded); err != nil {
+		t.Fatalf("Unmarshal encoded YAML: %v", err)
+	}
+	if decoded.Description != original.Description {
+		t.Fatalf("description = %q, want %q; YAML:\n%s", decoded.Description, original.Description, encoded)
+	}
+
+	reencoded, err := decoded.EncodeYAML()
+	if err != nil {
+		t.Fatalf("Re-encode YAML: %v", err)
+	}
+	var roundTripped Model
+	if err := yaml.Unmarshal([]byte(reencoded), &roundTripped); err != nil {
+		t.Fatalf("Unmarshal re-encoded YAML: %v", err)
+	}
+	if roundTripped.Description != original.Description {
+		t.Fatalf("second description = %q, want %q", roundTripped.Description, original.Description)
+	}
+}
 
 func TestNoPanicUnsupportedSerializationReturnsTypedError(t *testing.T) {
 	model := &Model{

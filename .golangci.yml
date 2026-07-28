@@ -29,7 +29,6 @@ linters:
     # Code quality
     - misspell     # Finds misspelled words
     - gosec        # Security checker
-    - goconst      # Finds repeated strings that could be constants
     - gocyclo      # Cyclomatic complexity checker
     - dupl         # Code duplication checker
     - revive       # Fast, configurable linter
@@ -47,5 +46,6 @@ linters:
     - depguard     # Too restrictive for general use
     - gochecknoglobals # We use some globals
     - gochecknoinits   # Init functions are sometimes needed
+    - goconst          # Mechanical string constants often reduce local readability
     - mnd          # Magic numbers are sometimes clear in context
     - wsl          # Too opinionated about whitespace

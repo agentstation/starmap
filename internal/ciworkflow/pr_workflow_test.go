@@ -39,7 +39,7 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"GOTOOLCHAIN: local",
 		`go-version: "` + preferredVersion[1] + `"`,
 		"run: make verify",
-		"golangci-lint@v2.5.0",
+		"golangci-lint@v2.12.2",
 		"gomarkdoc@v1.1.0",
 		"govulncheck@v1.6.0",
 		"govulncheck ./...",
@@ -96,10 +96,30 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	for _, check := range []string{
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
 		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
+		`GOLANGCI_LINT_VERSION="2.12.2"`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
 	} {
 		if !strings.Contains(verifyScript, check) {
 			t.Fatalf("repository verification script is missing isolated catalog state %q", check)
+		}
+	}
+	if strings.Contains(verifyScript, "skipping golangci-lint") {
+		t.Fatal("repository verification must not silently skip its pinned linter")
+	}
+}
+
+func TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces(t *testing.T) {
+	const version = "2.12.2"
+	fixtures := map[string]string{
+		"Devbox":           "../../devbox.json",
+		"Makefile":         "../../Makefile",
+		"verification":     "../../scripts/verify.sh",
+		"pull request":     "../../.github/workflows/pr.yaml",
+		"release workflow": "../../.github/workflows/release.yaml",
+	}
+	for name, path := range fixtures {
+		if contents := readFixture(t, path); !strings.Contains(contents, version) {
+			t.Errorf("%s does not pin golangci-lint %s", name, version)
 		}
 	}
 }

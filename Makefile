@@ -38,6 +38,8 @@ GOFMT=$(GOCMD) fmt
 GOVET=$(GOCMD) vet
 GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
+GOLANGCI_LINT_VERSION=2.12.2
+GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
 
 # Colors for output
 RED=\033[0;31m
@@ -178,7 +180,7 @@ test-all: test test-race test-integration ## Run all tests
 
 lint: ## Run golangci-lint only
 	@echo "$(BLUE)Running golangci-lint...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
 	$(RUN_PREFIX) golangci-lint run
 	@echo "$(GREEN)Linting complete$(NC)"
 
@@ -189,7 +191,7 @@ fmt: ## Format Go code with gofmt only
 
 check: ## Run all checks: vet + lint + test (no fixes)
 	@echo "$(BLUE)Running checks: go vet & golangci-lint & tests...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest$(NC)" && exit 1)
+	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
 	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOTEST) ./...
 	@echo "$(GREEN)All checks passed$(NC)"
 
@@ -212,7 +214,7 @@ vet: ## Run go vet only
 
 install-tools: ## Install development tools
 	@echo "$(BLUE)Installing development tools...$(NC)"
-	@$(RUN_PREFIX) go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	@$(RUN_PREFIX) go install $(GOLANGCI_LINT_INSTALL)
 	@$(RUN_PREFIX) go install golang.org/x/tools/cmd/goimports@latest
 	@$(RUN_PREFIX) go install golang.org/x/vuln/cmd/govulncheck@latest
 	@$(RUN_PREFIX) go install honnef.co/go/tools/cmd/staticcheck@latest

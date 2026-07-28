@@ -5,99 +5,89 @@
       "last_modified": "2025-09-02T13:16:47Z",
       "resolved": "github:NixOS/nixpkgs/aaff8c16d7fc04991cac6245bee1baa31f72b1e1?lastModified=1756819007&narHash=sha256-12V64nKG%2FO%2FguxSYnr5%2Fnq1EfqwJCdD2%2BcIGmhz3nrE%3D"
     },
-    "go@1.25.1": {
-      "last_modified": "2025-10-07T08:41:47Z",
-      "resolved": "github:NixOS/nixpkgs/bce5fe2bb998488d8e7e7856315f90496723793c#go",
+    "go@1.26.5": {
+      "last_modified": "2026-07-23T05:10:05Z",
+      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#go",
       "source": "devbox-search",
-      "version": "1.25.1",
+      "version": "1.26.5",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mkdfnr1nkfj2kznxyag9pypbxp3wqqdv-go-1.25.1",
+              "path": "/nix/store/naw4mj4s58ymzlc10a76y79m40w3wfpp-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mkdfnr1nkfj2kznxyag9pypbxp3wqqdv-go-1.25.1"
+          "store_path": "/nix/store/naw4mj4s58ymzlc10a76y79m40w3wfpp-go-1.26.5"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0jzj8p7k9wkr4l17sgrlg3z5di27sggf-go-1.25.1",
+              "path": "/nix/store/fhg6v8k9hbqpr4b2zcmd099afxh7qxw0-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0jzj8p7k9wkr4l17sgrlg3z5di27sggf-go-1.25.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/q2xylk8h3kbfajhw2lpdmyzyyqgqx8fl-go-1.25.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/q2xylk8h3kbfajhw2lpdmyzyyqgqx8fl-go-1.25.1"
+          "store_path": "/nix/store/fhg6v8k9hbqpr4b2zcmd099afxh7qxw0-go-1.26.5"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f01qkydd3c2jqwi4w6hkddkf3blp16kw-go-1.25.1",
+              "path": "/nix/store/rcz9i4msbg3178grqll9h98b07dwk7zg-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/f01qkydd3c2jqwi4w6hkddkf3blp16kw-go-1.25.1"
+          "store_path": "/nix/store/rcz9i4msbg3178grqll9h98b07dwk7zg-go-1.26.5"
         }
       }
     },
-    "golangci-lint@2.5.0": {
-      "last_modified": "2025-10-07T08:41:47Z",
-      "resolved": "github:NixOS/nixpkgs/bce5fe2bb998488d8e7e7856315f90496723793c#golangci-lint",
+    "golangci-lint@2.12.2": {
+      "last_modified": "2026-07-23T05:10:05Z",
+      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#golangci-lint",
       "source": "devbox-search",
-      "version": "2.5.0",
+      "version": "2.12.2",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/15bzlcc1h11sv9vwawrnfcw0avn3nhlw-golangci-lint-2.5.0",
+              "path": "/nix/store/l2j3j7nvynbk0gw5km9pknizq593633j-golangci-lint-2.12.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/15bzlcc1h11sv9vwawrnfcw0avn3nhlw-golangci-lint-2.5.0"
+          "store_path": "/nix/store/l2j3j7nvynbk0gw5km9pknizq593633j-golangci-lint-2.12.2"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/60qpwfy5bac8lflw12kffxdhvvylsr4k-golangci-lint-2.5.0",
+              "path": "/nix/store/gpyxbilsvyw9wv49nh4ng6lva95z38j3-golangci-lint-2.12.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/60qpwfy5bac8lflw12kffxdhvvylsr4k-golangci-lint-2.5.0"
+          "store_path": "/nix/store/gpyxbilsvyw9wv49nh4ng6lva95z38j3-golangci-lint-2.12.2"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/laxn1i91p32i319i5ixslxz4bl451hvq-golangci-lint-2.5.0",
+              "path": "/nix/store/w8c3i6vmxnnj0xixvjsa9lva3rcd2rvs-golangci-lint-2.12.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/laxn1i91p32i319i5ixslxz4bl451hvq-golangci-lint-2.5.0"
+          "store_path": "/nix/store/w8c3i6vmxnnj0xixvjsa9lva3rcd2rvs-golangci-lint-2.12.2"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/s95zr6py9ppj3hpm295mdzs40q59177p-golangci-lint-2.5.0",
+              "path": "/nix/store/47w5wfrc8bcvggamqqlvkyavpc9l2bsm-golangci-lint-2.12.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/s95zr6py9ppj3hpm295mdzs40q59177p-golangci-lint-2.5.0"
+          "store_path": "/nix/store/47w5wfrc8bcvggamqqlvkyavpc9l2bsm-golangci-lint-2.12.2"
         }
       }
     },

@@ -13,6 +13,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"group: release-",
 		`go-version: "1.26.5"`,
 		"git merge-base --is-ancestor",
+		"golangci-lint@v2.12.2",
 		"make verify",
 		"make release-check",
 		"goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3",

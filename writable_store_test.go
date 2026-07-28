@@ -105,13 +105,17 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 		opts := defaults()
 		opts.catalogStore = catalogstore.NewMemory()
 		client := newWritableStoreTestClient(t, opts)
-		if _, err := client.Sync(
+		result, err := client.Sync(
 			context.Background(),
 			pkgsync.WithOutputPath(outputPath),
 			pkgsync.WithSources(sources.LocalCatalogID),
 			pkgsync.WithReformat(true),
-		); err != nil {
+		)
+		if err != nil {
 			t.Fatalf("Sync: %v", err)
+		}
+		if result.Projection == nil || result.Projection.Status != pkgsync.ProjectionStatusApplied {
+			t.Fatalf("projection = %#v, want applied", result.Projection)
 		}
 	})
 

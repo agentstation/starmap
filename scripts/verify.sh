@@ -6,6 +6,7 @@ TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-verify.XXXXXX")"
 trap 'rm -rf "$TMPDIR"' EXIT
 VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"
 VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"
+GOLANGCI_LINT_VERSION="2.12.2"
 
 cd "$ROOT"
 
@@ -14,16 +15,29 @@ run() {
 	"$@"
 }
 
-run_optional_lint() {
-	if command -v golangci-lint >/dev/null 2>&1; then
-		run golangci-lint run
-		return
+require_lint_version() {
+	local output
+	output="$("$@" version 2>&1)"
+	if [[ "$output" != *"version $GOLANGCI_LINT_VERSION "* ]]; then
+		printf 'golangci-lint %s is required; found:\n%s\n' "$GOLANGCI_LINT_VERSION" "$output" >&2
+		exit 1
 	fi
+}
+
+run_lint() {
 	if command -v devbox >/dev/null 2>&1; then
+		require_lint_version devbox run golangci-lint
 		run devbox run golangci-lint run
 		return
 	fi
-	printf '\n==> skipping golangci-lint: command not found\n'
+	if command -v golangci-lint >/dev/null 2>&1; then
+		require_lint_version golangci-lint
+		run golangci-lint run
+		return
+	fi
+	printf 'golangci-lint %s is required; install it with:\n' "$GOLANGCI_LINT_VERSION" >&2
+	printf '  go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v%s\n' "$GOLANGCI_LINT_VERSION" >&2
+	exit 1
 }
 
 check_coverage() {
@@ -80,7 +94,7 @@ run go test ./...
 run go test ./... -race -short
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
-run_optional_lint
+run_lint
 
 check_critical_coverage
 

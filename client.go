@@ -53,6 +53,7 @@ import (
 	"time"
 
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -156,7 +157,10 @@ type Client struct {
 	hooks *hooks // Event hooks for catalog changes/updates
 }
 
-// New creates a new Client instance with the given options.
+// New creates a new Client instance with the given options. When a durable
+// generation and a marker-backed unchanged YAML workspace are both configured,
+// construction repairs a stale or interrupted projection by digest. It never
+// overwrites an unrecognized semantic workspace change.
 func New(opts ...Option) (*Client, error) {
 
 	// apply options
@@ -199,6 +203,7 @@ func New(opts ...Option) (*Client, error) {
 	initial := embeddedCatalog
 	generationID := ""
 	usingEmbeddedBootstrap := true
+	var durableCurrent *catalogstore.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
 		loadCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultTimeout)
 		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
@@ -212,6 +217,7 @@ func New(opts ...Option) (*Client, error) {
 			if err != nil {
 				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
+			durableCurrent = &stored
 			generationID = stored.Manifest.GenerationID
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(currentErr, errors.ErrNotFound):
@@ -239,6 +245,39 @@ func New(opts ...Option) (*Client, error) {
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
 	sm.embeddedBootstrap = bootstrapManifest
+
+	if durableCurrent != nil && exportPath != "" {
+		repairCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultCatalogProjectionTimeout)
+		repair, repairErr := workspace.Repair(
+			repairCtx,
+			exportPath,
+			initial,
+			workspace.Identity{
+				GenerationID:    durableCurrent.Manifest.GenerationID,
+				PayloadChecksum: durableCurrent.Manifest.Payload.Checksum,
+			},
+		)
+		cancel()
+		switch {
+		case repairErr != nil:
+			logging.Warn().
+				Err(repairErr).
+				Str("generation_id", durableCurrent.Manifest.GenerationID).
+				Str("workspace", exportPath).
+				Msg("Durable catalog is active; YAML workspace repair remains pending")
+		case repair.Status == workspace.RepairStatusSkippedDirty:
+			logging.Warn().
+				Str("generation_id", durableCurrent.Manifest.GenerationID).
+				Str("workspace", exportPath).
+				Str("issue_code", repair.IssueCode).
+				Msg("Durable catalog is active; YAML workspace has semantic human changes and was not overwritten")
+		case repair.Status == workspace.RepairStatusRepaired:
+			logging.Info().
+				Str("generation_id", durableCurrent.Manifest.GenerationID).
+				Str("workspace", exportPath).
+				Msg("Repaired YAML workspace from durable catalog generation")
+		}
+	}
 
 	// Get counts for logging
 	localProviders := initial.Providers().List()
