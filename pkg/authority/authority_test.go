@@ -71,6 +71,13 @@ func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
 				strings.TrimSpace(policy.Rationale) == "" {
 				t.Errorf("incomplete %s policy: %#v", resource, policy)
 			}
+			wantEvidence := policy.Path
+			if policy.EvidencePath != "" {
+				wantEvidence = policy.EvidencePath
+			}
+			if got := policy.Evidence(); got != wantEvidence || strings.TrimSpace(got) == "" {
+				t.Errorf("%s policy %q evidence = %q, want %q", resource, policy.Path, got, wantEvidence)
+			}
 		}
 		policies[0].SourceOrder[0] = "mutated"
 		if table.Policies(resource)[0].SourceOrder[0] == "mutated" {
@@ -123,6 +130,36 @@ func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
 	}
 	if got := policy.Authority("unknown"); got != 0 {
 		t.Fatalf("unknown authority = %v, want 0", got)
+	}
+}
+
+func TestEveryPolicyAuthorityRankIsUniqueAndStrictlyDescending(t *testing.T) {
+	table := New()
+	for _, resource := range []sources.ResourceType{
+		sources.ResourceTypeModel,
+		sources.ResourceTypeProvider,
+		sources.ResourceTypeAuthor,
+	} {
+		for _, policy := range table.Policies(resource) {
+			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {
+				seen := make(map[sources.ID]struct{}, len(policy.SourceOrder))
+				previous := 2.0
+				for _, source := range policy.SourceOrder {
+					if _, duplicate := seen[source]; duplicate {
+						t.Fatalf("source order contains duplicate %q", source)
+					}
+					seen[source] = struct{}{}
+					score := policy.Authority(source)
+					if score <= 0 || score >= previous {
+						t.Fatalf("authority(%q) = %v after %v; want positive strict descent", source, score, previous)
+					}
+					previous = score
+				}
+				if score := policy.Authority("unconfigured"); score != 0 {
+					t.Fatalf("unconfigured authority = %v, want 0", score)
+				}
+			})
+		}
 	}
 }
 

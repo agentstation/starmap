@@ -113,6 +113,127 @@ func TestModelFeaturePresenceFitsCompactRepresentation(t *testing.T) {
 	}
 }
 
+func TestEveryModelFeaturePresenceStateRoundTrips(t *testing.T) {
+	tests := []struct {
+		name      string
+		apply     func(*ModelFeatures, ModelFeature)
+		wantValue bool
+		wantState ValuePresence
+	}{
+		{name: "missing", apply: func(*ModelFeatures, ModelFeature) {}, wantState: ValueMissing},
+		{
+			name: "unknown", apply: func(features *ModelFeatures, feature ModelFeature) {
+				features.SetSupportUnknown(feature)
+			}, wantState: ValueUnknown,
+		},
+		{
+			name: "known-false", apply: func(features *ModelFeatures, feature ModelFeature) {
+				features.SetSupport(feature, false)
+			}, wantState: ValueKnown,
+		},
+		{
+			name: "known-true", apply: func(features *ModelFeatures, feature ModelFeature) {
+				features.SetSupport(feature, true)
+			}, wantValue: true, wantState: ValueKnown,
+		},
+	}
+
+	for _, feature := range modelFeatures() {
+		for _, test := range tests {
+			t.Run(string(feature)+"/"+test.name, func(t *testing.T) {
+				model := Model{ID: "presence", Name: "Presence", Features: &ModelFeatures{}}
+				test.apply(model.Features, feature)
+				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model) {
+					t.Helper()
+					value, state := decoded.Features.Support(feature)
+					if value != test.wantValue || state != test.wantState {
+						t.Fatalf("Support(%q) = %v/%v, want %v/%v", feature, value, state, test.wantValue, test.wantState)
+					}
+				})
+			})
+		}
+	}
+}
+
+func TestEveryModelLimitPresenceStateRoundTrips(t *testing.T) {
+	limits := []ModelLimit{
+		ModelLimitContextWindow,
+		ModelLimitInputTokens,
+		ModelLimitOutputTokens,
+	}
+	tests := []struct {
+		name      string
+		apply     func(*ModelLimits, ModelLimit)
+		wantValue int64
+		wantState ValuePresence
+	}{
+		{name: "missing", apply: func(*ModelLimits, ModelLimit) {}, wantState: ValueMissing},
+		{
+			name: "unknown", apply: func(limits *ModelLimits, limit ModelLimit) {
+				limits.SetUnknown(limit)
+			}, wantState: ValueUnknown,
+		},
+		{
+			name: "known-zero", apply: func(limits *ModelLimits, limit ModelLimit) {
+				limits.Set(limit, 0)
+			}, wantState: ValueKnown,
+		},
+		{
+			name: "known-positive", apply: func(limits *ModelLimits, limit ModelLimit) {
+				limits.Set(limit, 128000)
+			}, wantValue: 128000, wantState: ValueKnown,
+		},
+	}
+
+	for _, limit := range limits {
+		for _, test := range tests {
+			t.Run(string(limit)+"/"+test.name, func(t *testing.T) {
+				model := Model{ID: "presence", Name: "Presence", Limits: &ModelLimits{}}
+				test.apply(model.Limits, limit)
+				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model) {
+					t.Helper()
+					value, state := decoded.Limits.Value(limit)
+					if value != test.wantValue || state != test.wantState {
+						t.Fatalf("Value(%q) = %d/%v, want %d/%v", limit, value, state, test.wantValue, test.wantState)
+					}
+				})
+			})
+		}
+	}
+}
+
+func assertModelPresenceRoundTrips(
+	t *testing.T,
+	model Model,
+	assert func(*testing.T, *Model),
+) {
+	t.Helper()
+	assert(t, &model)
+
+	copied := DeepCopyModel(model)
+	assert(t, &copied)
+
+	jsonData, err := json.Marshal(model)
+	if err != nil {
+		t.Fatalf("Marshal JSON: %v", err)
+	}
+	var fromJSON Model
+	if err := json.Unmarshal(jsonData, &fromJSON); err != nil {
+		t.Fatalf("Unmarshal JSON: %v", err)
+	}
+	assert(t, &fromJSON)
+
+	yamlData, err := model.EncodeYAML()
+	if err != nil {
+		t.Fatalf("Encode YAML: %v", err)
+	}
+	var fromYAML Model
+	if err := yaml.Unmarshal([]byte(yamlData), &fromYAML); err != nil {
+		t.Fatalf("Unmarshal YAML: %v", err)
+	}
+	assert(t, &fromYAML)
+}
+
 func TestModelPresenceYAMLPreservesTypedCollectionShapes(t *testing.T) {
 	model := Model{
 		ID:      "typed-shapes",
