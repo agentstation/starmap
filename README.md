@@ -354,7 +354,7 @@ starmap update
 # CI/CD - Skip sources with missing dependencies
 starmap update --skip-dep-prompts
 
-# Strict mode - Fail if dependencies missing
+# Strict mode - Require every configured source to be healthy and nonempty
 starmap update --require-all-sources --skip-dep-prompts
 
 # Auto-install - Install dependencies automatically
@@ -369,7 +369,9 @@ source unless an explicit noninteractive dependency policy is configured.
 **Available Flags:**
 - `--auto-install-deps` - Automatically install missing dependencies
 - `--skip-dep-prompts` - Skip sources with missing dependencies without prompting
-- `--require-all-sources` - Fail if any dependencies are missing (CI/CD mode)
+- `--require-all-sources` - Fail before reconciliation unless every configured
+  source is available, complete, successful, and returns at least one model
+  (CI/CD mode)
 
 **Common Scenario:** The `models_dev_git` source requires `bun` for building. If missing, Starmap offers to install it or falls back to `models_dev_http` which provides the same data without dependencies.
 

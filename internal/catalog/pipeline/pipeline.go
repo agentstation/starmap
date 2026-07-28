@@ -155,6 +155,11 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, pkgerrors.WrapResource("guard", "source observations", "", err)
 	}
+	if options.RequireAllSources {
+		if err := requireHealthyObservations(srcs, observations); err != nil {
+			return nil, err
+		}
+	}
 	if options.Fresh && hasDegradedObservation(observations) {
 		return nil, &pkgerrors.SyncError{
 			Provider: "all",

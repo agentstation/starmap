@@ -39,7 +39,7 @@ type Options struct {
 	// Dependency control
 	AutoInstallDeps   bool // Automatically install missing dependencies without prompting
 	SkipDepPrompts    bool // Skip dependency prompts and continue without optional dependencies
-	RequireAllSources bool // Require all sources to succeed (fail if any dependencies are missing)
+	RequireAllSources bool // Require every configured source to return a complete, successful, nonempty observation
 
 	// DependencyDecisionHandler is supplied by an interactive adapter. It is nil
 	// for library, server, scheduler, and other noninteractive callers.
@@ -304,7 +304,8 @@ func WithDependencyDecisionHandler(handler DependencyDecisionHandler) Option {
 	}
 }
 
-// WithRequireAllSources configures whether all sources are required to succeed.
+// WithRequireAllSources requires every configured source to be available and
+// return a complete, successful observation containing at least one model.
 func WithRequireAllSources(require bool) Option {
 	return func(opts *Options) {
 		opts.RequireAllSources = require

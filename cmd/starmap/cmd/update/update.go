@@ -76,7 +76,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	cmd.Flags().BoolVar(&flags.SkipDepPrompts, "skip-dep-prompts", false,
 		"Skip dependency prompts and continue without optional dependencies")
 	cmd.Flags().BoolVar(&flags.RequireAllSources, "require-all-sources", false,
-		"Require all sources to succeed (fail if any dependencies are missing)")
+		"Require every source to be available, complete, successful, and nonempty")
 
 	return flags
 }

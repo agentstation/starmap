@@ -3,9 +3,9 @@
 Last updated: 2026-07-28
 
 Status: `IN_PROGRESS` — P0–P2 and the P3.6a/P3.6b/P3.8 publication hotfix
-are complete. P4.9 now owns truthful strict-source enforcement after independent
-malformed-record quarantine, observation health, and non-authoritative absence
-were enforced.
+are complete. P4.10 now owns deterministic policy/property tests and bounded
+decoder fuzzing after strict-source enforcement, malformed-record quarantine,
+observation health, and non-authoritative absence were completed.
 
 ## Mission
 
@@ -671,8 +671,8 @@ compile and performance baselines must also be green.
 | P4.6 | `DONE` | Model presence explicitly | Tri-state or equivalent typed representation makes missing, explicit false, explicit zero, empty, and unknown round-trip distinctly for limits, features, and other affected fields |
 | P4.7 | `DONE` | Consume observation health and make absence non-authoritative | Reconciliation consumes source status, completeness, issues, and volume history; complete omission, partial response, timeout, fetch failure, and suspicious volume collapse cannot hard-delete or retire |
 | P4.8 | `DONE` | Quarantine records independently | Every P2.4-characterized whole-collection decode site (models.dev envelope, provider list responses, local YAML walk, stored payload) isolates a malformed record while valid siblings survive; collection envelope remains bounded |
-| P4.9 | `IN_PROGRESS` | Make strict mode truthful | Every required source must be `Complete` and `Succeeded`; missing credentials, degraded/skipped state, stale fallback, or empty results without explicit issues fail before publication |
-| P4.10 | `PENDING` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
+| P4.9 | `DONE` | Make strict mode truthful | Every required source must be `Complete` and `Succeeded`; missing credentials, degraded/skipped state, stale fallback, or empty results without explicit issues fail before publication |
+| P4.10 | `IN_PROGRESS` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
 
 ## P5 — Keep One Persisted Model and Derive Read Views
 
@@ -796,7 +796,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-007 | `DONE` | Provider/model identity is now part of every durable model-provenance key, report, payload round trip, and normal catalog lookup | P4.4 |
 | F-008 | `DONE` | Compact typed presence now distinguishes missing, explicit false/zero/empty, and unknown through source decode, YAML/JSON, copy, merge, reconciliation, and change reporting | P4.6 |
 | F-009 | `DONE` | Provider APIs, models.dev, local YAML, and stored payloads now quarantine malformed model records independently with bounded typed evidence; valid siblings survive while malformed envelopes, identity graphs, and manifest-bound partial payloads remain fail-closed | P4.8 |
-| F-010 | `PENDING` | “Require all sources” does not require successful complete sources | P4.9 |
+| F-010 | `DONE` | `RequireAllSources` now rejects unavailable, missing, duplicate, degraded, partial, fallback, volume-regressed, quarantined, and unexplained empty observations before reconciliation; only exactly one complete, succeeded, nonempty observation per configured source passes | P4.9 |
 | F-011 | `PENDING` | Definitions/offerings are layered as runtime legacy migration vocabulary | P5.1–P5.4 |
 | F-012 | `PENDING` | Author model tree and payload duplicate provider models | P5.5 |
 | F-013 | `PENDING` | Derived offerings invent available/active state | P5.6 |
@@ -819,7 +819,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-030 | `PENDING` | Existing architecture docs contain superseded “YAML export” guidance | P10.5 |
 | F-031 | `DONE` | Sync saves YAML before the durable generation commit, making a fragile projection gate the durable product | P3.6a–P3.6b |
 | F-032 | `PENDING` | Reassigning `~/.starmap/catalog` from machine generations to human YAML lacks safe legacy-layout detection and migration | P3.1, P3.10 |
-| F-033 | `PENDING` | Reconciliation now consumes observation status, completeness, counts, issues, and volume history; strict required-source completeness/success remains to close in P4.9 | P4.7, P4.9 |
+| F-033 | `DONE` | Reconciliation consumes observation status, completeness, counts, issues, and volume history; strict mode additionally requires one complete, succeeded, nonempty observation for every configured source before reconciliation | P4.7, P4.9 |
 | F-034 | `PENDING` | Publication generations can reorder; current event identity is timestamp-based or provider-ambiguous | P7.2, P7.4 |
 | F-035 | `PENDING` | Server/background shutdown lacks owned joins; stopped or blocked subscriptions can hang | P7.5, P7.10 |
 | F-036 | `PENDING` | Hook overload can drop a whole generation and the counter is not an adequate operational contract | P7.2, P7.11 |
@@ -915,6 +915,8 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P4.8 / F-009 | Added one bounded `pkg/sourcepayload` record decoder and typed quarantine report rather than separate ad hoc loops or a new persisted representation. OpenAI-compatible, Anthropic, and Google AI Studio adapters now retain valid response siblings; Google also retains valid prior-page/current-page records, bounds the aggregate, and rejects repeating page tokens. models.dev decodes provider model maps deterministically under global provider/model/byte/nesting limits and preserves reviewable schema-drift evidence. Provider and models.dev observations carry accepted/rejected counts plus stable degraded issues instead of converting a partial response into complete success. |
 | 2026-07-28 | P4.8 / F-009 | Local YAML model files now quarantine independently into a caller-owned `LoadReport`; structural provider/author/provenance YAML and filesystem failures remain fatal. The pipeline preserves that report when it prebuilds the local catalog, while embedded bootstrap, bootstrap-manifest generation, legacy store migration, and atomic workspace validation explicitly require an empty report. Stored schema-v1 payloads decode model records independently for diagnostics, but byte/nesting/count limits, required collection identity, unknown/duplicate provider-author-endpoint identity, malformed collection envelopes, and partial manifest-bound activation remain fail-closed. The report implementation stays internal to `catalogstore`, avoiding a new public payload API. |
 | 2026-07-28 | P4.8 | Exact final-tree affected boundary gate `go test -race ./pkg/sourcepayload ./internal/transport ./internal/providers/openai ./internal/providers/anthropic ./internal/providers/google ./internal/sources/providers ./internal/sources/modelsdev ./internal/sources/local ./pkg/sources ./pkg/catalogs ./pkg/catalogstore ./internal/catalog/pipeline ./internal/catalog/workspace ./cmd/starmap-bootstrap-manifest -count=1` passed (`4.693s`, `4.818s`, `10.783s`, `5.001s`, `4.720s`, `5.072s`, `83.360s`, `11.730s`, `5.527s`, `67.814s`, `7.434s`, `6.373s`, `3.979s`, `13.317s`). The broader composition gate `go test -race . ./pkg/reconciler ./pkg/sync ./internal/catalog/pipeline ./pkg/sources ./pkg/catalogs ./pkg/catalogstore -count=1` passed (`279.325s`, `1.586s`, `2.366s`, `1.838s`, `2.132s`, `55.843s`, `3.147s`). Focused `go vet` passed; pinned golangci-lint v2.12.2 reported zero issues after extracting payload-envelope validation from catalog construction; generated GoDoc, `make docs-check`, and `git diff --check` passed. `internal/sources/modelsdev/parser.go` remains below review threshold at 967 lines; new record and payload modules are 141 and 271 lines. P4.8 and F-009 are DONE; P4.9 is the sole active task. |
+| 2026-07-28 | P4.9 / F-010 / F-033 | `RequireAllSources` is now an explicit pre-reconciliation health gate rather than only a dependency/transport-error check. It verifies that the resolved configured source set and returned observation set match one-to-one, then requires every observation to be `Succeeded`, `Complete`, and contain at least one canonical model definition. Typed sync/validation errors identify the source and failed condition. Missing credentials, stale fallback, record quarantine, volume collapse, missing or duplicate observations, skipped optional dependencies, and a complete/succeeded but unexplained empty result all fail before reconciliation or publication; a healthy nonempty source proceeds. Non-strict synchronization retains its prior degraded-evidence and last-known-good behavior. README, CLI help, option GoDoc, and architecture policy now state the same contract. |
+| 2026-07-28 | P4.9 | Exact focused `go test -race ./internal/catalog/pipeline ./pkg/sync ./cmd/starmap/cmd/update -count=1` passed (`1.896s`, `1.554s`, `1.306s`). The exact broader final-tree gate `go test -race . ./internal/catalog/pipeline ./pkg/sync ./cmd/starmap/cmd/update ./internal/sources/providers ./internal/sources/modelsdev ./internal/sources/local -count=1` passed (`323.174s`, `1.747s`, `3.202s`, `2.631s`, `2.464s`, `84.082s`, `8.613s`). Focused `go vet` passed; pinned golangci-lint v2.12.2 reported zero issues after replacing the legacy bare-ID model reader with the canonical immutable definitions view; generated GoDoc, `make docs-check`, and `git diff --check` passed. P4.9, F-010, and F-033 are DONE; P4.10 is the sole active task. |
 
 ## Final Definition of Done
 

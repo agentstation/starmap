@@ -913,6 +913,12 @@ Observation outcomes use one explicit policy:
   non-strict synchronization may still reconcile other valid sources against
   the last-known-good baseline, while `RequireAllSources` fails and a canceled
   caller context always stops;
+- `RequireAllSources` is a pre-publication health contract, not only a
+  dependency preflight: every configured source must return exactly one
+  `Complete`/`Succeeded` observation containing at least one model; skipped
+  dependencies, missing credentials, quarantine, stale/bootstrap fallback,
+  volume collapse, missing observations, and unexplained empty results fail
+  before reconciliation;
 - a usable incomplete result returns nil error with `partial`/`degraded` state
   and typed issues, so valid sibling providers/records remain reconcilable;
 - issue scope is exactly `record`, `provider`, `source`, or `stale_fallback`;

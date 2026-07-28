@@ -403,6 +403,31 @@ func TestResolveDependenciesFailsRequiredSourceWhenPromptsAreDisabled(t *testing
 	}
 }
 
+func TestResolveDependenciesRequireAllRejectsSkippedOptionalSource(t *testing.T) {
+	available := &lifecycleTestSource{id: "available"}
+	optionalMissing := &lifecycleTestSource{
+		id:       "optional-missing",
+		deps:     []sources.Dependency{missingDependencyForTest()},
+		optional: true,
+	}
+
+	_, err := resolveDependencies(
+		context.Background(),
+		[]sources.Source{available, optionalMissing},
+		&pkgsync.Options{SkipDepPrompts: true, RequireAllSources: true},
+	)
+	if err == nil {
+		t.Fatal("require-all accepted a skipped optional source")
+	}
+	var dependencyErr *pkgerrors.DependencyError
+	if !stderrors.As(err, &dependencyErr) {
+		t.Fatalf("error = %T: %v, want *errors.DependencyError", err, err)
+	}
+	if !strings.Contains(dependencyErr.Message, optionalMissing.ID().String()) {
+		t.Fatalf("dependency error does not name skipped source: %v", err)
+	}
+}
+
 func missingDependencyForTest() sources.Dependency {
 	return sources.Dependency{
 		Name:          "starmap-missing-test-tool",
