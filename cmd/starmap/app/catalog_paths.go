@@ -2,7 +2,7 @@ package app
 
 import "github.com/agentstation/starmap/pkg/constants"
 
-func (a *App) catalogDatabasePath() (string, error) {
+func (a *App) catalogStatePath() (string, error) {
 	return expandHomePath(constants.DefaultCatalogStatePath)
 }
 

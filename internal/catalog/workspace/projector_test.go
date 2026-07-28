@@ -47,11 +47,16 @@ func TestProjectAtomicallyReplacesValidatedWorkspace(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Read marker: %v", err)
 	}
+	markerPath := projectionMarkerPath(path)
+	if pathsOverlap(path, markerPath) {
+		t.Fatalf("machine projection marker %q is inside human workspace %q", markerPath, path)
+	}
 	if marker.GenerationID != newIdentity.GenerationID ||
 		marker.PayloadChecksum != newIdentity.PayloadChecksum ||
 		marker.WorkspaceChecksum != receipt.WorkspaceChecksum {
 		t.Fatalf("Marker = %#v, want identity %#v and receipt %#v", marker, newIdentity, receipt)
 	}
+	assertNoProjectionStaging(t, path)
 }
 
 func TestProjectFailureBeforePromotePreservesOldWorkspace(t *testing.T) {
@@ -72,6 +77,7 @@ func TestProjectFailureBeforePromotePreservesOldWorkspace(t *testing.T) {
 	}
 	assertWorkspaceModel(t, path, "old", "Old Model")
 	assertWorkspaceModelMissing(t, path, "new")
+	assertNoProjectionStaging(t, path)
 }
 
 func TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload(t *testing.T) {
@@ -346,5 +352,23 @@ func assertWorkspaceModelMissing(t *testing.T, path, modelID string) {
 	}
 	if _, err := builder.ProviderModel("test-provider", modelID); err == nil {
 		t.Fatalf("ProviderModel(%q) unexpectedly exists", modelID)
+	}
+}
+
+func assertNoProjectionStaging(t *testing.T, path string) {
+	t.Helper()
+	parent := filepath.Dir(path)
+	base := filepath.Base(path)
+	for _, pattern := range []string{
+		"." + base + ".candidate-*",
+		"." + base + ".candidate-*.verify-*",
+	} {
+		matches, err := filepath.Glob(filepath.Join(parent, pattern))
+		if err != nil {
+			t.Fatalf("Glob projection staging: %v", err)
+		}
+		if len(matches) != 0 {
+			t.Fatalf("projection staging survived: %v", matches)
+		}
 	}
 }

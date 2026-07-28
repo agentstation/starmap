@@ -274,7 +274,7 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 }
 
 func (a *App) catalogStoreOption() (starmap.Option, error) {
-	path, err := a.catalogDatabasePath()
+	path, err := a.catalogStatePath()
 	if err != nil {
 		return nil, err
 	}

@@ -770,8 +770,13 @@ Local storage uses separate lifecycle roots:
 The machine state directory is passive until the first commit. The catalog
 workspace is the only human model representation and is both the local
 observation and the post-commit YAML projection. Starmap rejects overlapping
-workspace/state roots. A pre-plan generation-store layout found at
-`~/.starmap/catalog` fails with a typed migration error before mutation.
+workspace/state roots and rejects models.dev cache or checkout roots that
+contain, equal, or sit beneath the workspace before reading or writing it.
+Atomic projection uses hidden sibling staging and a hidden sibling
+generation/digest marker; neither is loaded as provider configuration, and
+normal completion removes all staging. A pre-plan generation-store layout
+found at `~/.starmap/catalog` fails with a typed migration error before
+mutation.
 
 ```yaml
 # ~/.starmap/config.yaml

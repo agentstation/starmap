@@ -696,11 +696,17 @@ without a store. The CLI's `catalog_path` names the one human workspace and
 defaults to `~/.starmap/catalog`. Its passive machine-owned generation store
 defaults separately to `~/.starmap/state/catalog`; constructing either
 composition creates no directory. Workspace and state roots must not contain
-one another. A selected workspace containing `current`, `generations/`, or
-`.commit.lock` is rejected with `errors.LegacyCatalogLayoutError` before any
-mutation and requires the explicit transactional migration defined by P3.10.
-Cache, source evidence, logs, configuration, YAML, and immutable generations
-remain separate lifecycle domains.
+one another. The same pre-read validation rejects an active models.dev cache
+or source-checkout root that contains, equals, or sits beneath the workspace.
+A selected workspace containing `current`, `generations/`, or `.commit.lock`
+is rejected with `errors.LegacyCatalogLayoutError` before any mutation and
+requires the explicit transactional migration defined by P3.10. Generation
+locks, current pointers, retained generations, and their temporary candidates
+remain under the catalog-store root. Atomic YAML projection alone stages beside
+the workspace so same-filesystem rename remains possible; its hidden staging is
+cleaned and its sibling digest marker is never traversed by the provider-YAML
+loader. Cache, source evidence, logs, configuration, YAML, and immutable
+generations remain separate lifecycle domains.
 
 An explicitly configured catalog workspace is optional only when its path does not
 exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded

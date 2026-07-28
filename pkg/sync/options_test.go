@@ -3,6 +3,7 @@ package sync
 import (
 	"context"
 	stderrors "errors"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -108,5 +109,68 @@ func TestOptionsValidateRejectsConflictingDependencyPolicies(t *testing.T) {
 				t.Fatalf("Validation field = %q, want DependencyPolicy", validationErr.Field)
 			}
 		})
+	}
+}
+
+func TestOptionsValidateRejectsSourceStateOverlappingHumanWorkspace(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	exactCommit := strings.Repeat("a", 40)
+
+	tests := []struct {
+		name string
+		opts []Option
+	}{
+		{
+			name: "default HTTP cache contains workspace",
+			opts: []Option{
+				WithCatalogPath(filepath.Join(home, ".starmap", "cache", "human")),
+			},
+		},
+		{
+			name: "default Git checkout contains workspace",
+			opts: []Option{
+				WithCatalogPath(filepath.Join(home, ".starmap", "sources", "human")),
+				WithSources(sources.ModelsDevGitID),
+				WithModelsDevGitCommit(exactCommit),
+			},
+		},
+		{
+			name: "explicit source state equals workspace",
+			opts: []Option{
+				WithCatalogPath(filepath.Join(home, "catalog")),
+				WithSourcesDir(filepath.Join(home, "catalog")),
+			},
+		},
+		{
+			name: "explicit source state beneath workspace",
+			opts: []Option{
+				WithCatalogPath(filepath.Join(home, "catalog")),
+				WithSourcesDir(filepath.Join(home, "catalog", "cache")),
+			},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			err := Defaults().Apply(test.opts...).Validate(catalogs.NewProviders())
+			var configErr *errors.ConfigError
+			if !stderrors.As(err, &configErr) {
+				t.Fatalf("Validate() error = %T %v, want *errors.ConfigError", err, err)
+			}
+			if configErr.Component != "catalog filesystem layout" {
+				t.Fatalf("component = %q", configErr.Component)
+			}
+		})
+	}
+}
+
+func TestOptionsValidateAcceptsSeparatedHumanAndMachineRoots(t *testing.T) {
+	root := t.TempDir()
+	opts := Defaults().Apply(
+		WithCatalogPath(filepath.Join(root, "catalog")),
+		WithSourcesDir(filepath.Join(root, "source-state")),
+	)
+	if err := opts.Validate(catalogs.NewProviders()); err != nil {
+		t.Fatalf("Validate separated roots: %v", err)
 	}
 }

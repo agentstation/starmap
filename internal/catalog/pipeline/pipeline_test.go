@@ -76,6 +76,31 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 }
 
+func TestPipelineRejectsSourceStateOverlapBeforeReadingWorkspace(t *testing.T) {
+	root := t.TempDir()
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := New(store)
+	workspaceRead := false
+	runner.loadLocal = func(string) (*catalogs.Builder, error) {
+		workspaceRead = true
+		return catalogs.NewEmpty(), nil
+	}
+
+	_, err := runner.Sync(
+		context.Background(),
+		pkgsync.WithCatalogPath(filepath.Join(root, "catalog")),
+		pkgsync.WithSourcesDir(root),
+		pkgsync.WithDryRun(true),
+	)
+	var configErr *pkgerrors.ConfigError
+	if !stderrors.As(err, &configErr) {
+		t.Fatalf("Sync error = %T %v, want *errors.ConfigError", err, err)
+	}
+	if workspaceRead {
+		t.Fatal("overlapping machine source state was rejected after reading the human workspace")
+	}
+}
+
 func TestPipelineUsesOneCatalogPathForLocalObservation(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, &reconciler.Result{

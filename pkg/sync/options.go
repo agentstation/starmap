@@ -8,8 +8,10 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -94,6 +96,10 @@ type Option func(*Options)
 
 // Validate checks if the sync options are valid.
 func (s *Options) Validate(providers catalogs.ProvidersReader) error {
+	if err := s.ValidateFilesystemLayout(); err != nil {
+		return err
+	}
+
 	// Validate timeout
 	if s.Timeout < 0 {
 		return &errors.ValidationError{
@@ -182,6 +188,44 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 		}
 	}
 
+	return nil
+}
+
+// ValidateFilesystemLayout rejects machine-owned source/cache roots that
+// overlap the configured human provider-YAML workspace. It is safe to call
+// before reading the workspace or creating any source state.
+func (s *Options) ValidateFilesystemLayout() error {
+	if s == nil || strings.TrimSpace(s.CatalogPath) == "" {
+		return nil
+	}
+	if strings.TrimSpace(s.SourcesDir) != "" {
+		return workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			s.SourcesDir,
+			"source state",
+		)
+	}
+
+	useGit := slices.Contains(s.Sources, sources.ModelsDevGitID)
+	useHTTP := len(s.Sources) == 0 || slices.Contains(s.Sources, sources.ModelsDevHTTPID)
+	if useGit {
+		if err := workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			constants.DefaultSourcesPath,
+			"source checkout",
+		); err != nil {
+			return err
+		}
+	}
+	if useHTTP {
+		if err := workspace.ValidateMachineSeparation(
+			s.CatalogPath,
+			constants.DefaultCachePath,
+			"source cache",
+		); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

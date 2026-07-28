@@ -3,6 +3,8 @@ package catalogstore
 import (
 	"context"
 	stderrors "errors"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -70,5 +72,38 @@ func TestFilesystemCatalogStoreReopensCurrentGeneration(t *testing.T) {
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Fatalf("reopened generation mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot(t *testing.T) {
+	root := t.TempDir()
+	store, err := NewFilesystem(root)
+	if err != nil {
+		t.Fatalf("NewFilesystem: %v", err)
+	}
+	if err := store.Commit(context.Background(), testGeneration("layout", "payload"), ""); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+
+	for _, path := range []string{
+		filepath.Join(root, ".commit.lock"),
+		filepath.Join(root, "current"),
+		filepath.Join(root, "generations"),
+	} {
+		if _, err := os.Stat(path); err != nil {
+			t.Fatalf("machine state %q: %v", path, err)
+		}
+	}
+	for _, pattern := range []string{
+		filepath.Join(root, ".current-*"),
+		filepath.Join(root, "generations", ".candidate-*"),
+	} {
+		matches, err := filepath.Glob(pattern)
+		if err != nil {
+			t.Fatalf("Glob %q: %v", pattern, err)
+		}
+		if len(matches) != 0 {
+			t.Fatalf("machine staging survived commit: %v", matches)
+		}
 	}
 }

@@ -3,6 +3,7 @@ package pipeline
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -71,24 +72,13 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 	}
 
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	if logging.RunID(ctx) == "" {
-		runID, runErr := uuid.NewRandom()
-		if runErr != nil {
-			return nil, pkgerrors.WrapResource("generate", "source run ID", "", runErr)
-		}
-		ctx = logging.WithRunID(ctx, "source-run-"+runID.String())
-	}
-
 	options := pkgsync.Defaults().Apply(opts...)
-
-	var cancel context.CancelFunc
-	if options.Timeout > 0 {
-		ctx, cancel = context.WithTimeout(ctx, options.Timeout)
-	} else {
-		cancel = func() {}
+	if err := options.ValidateFilesystemLayout(); err != nil {
+		return nil, err
+	}
+	ctx, cancel, err := prepareSyncContext(ctx, options.Timeout)
+	if err != nil {
+		return nil, err
 	}
 	defer cancel()
 
@@ -212,6 +202,24 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 
 	return syncResult, nil
+}
+
+func prepareSyncContext(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if logging.RunID(ctx) == "" {
+		runID, err := uuid.NewRandom()
+		if err != nil {
+			return nil, nil, pkgerrors.WrapResource("generate", "source run ID", "", err)
+		}
+		ctx = logging.WithRunID(ctx, "source-run-"+runID.String())
+	}
+	if timeout <= 0 {
+		return ctx, func() {}, nil
+	}
+	bounded, cancel := context.WithTimeout(ctx, timeout)
+	return bounded, cancel, nil
 }
 
 func hasDegradedObservation(observations []sources.Observation) bool {

@@ -28,9 +28,9 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	if workspace != wantWorkspace {
 		t.Fatalf("workspace = %q, want %q", workspace, wantWorkspace)
 	}
-	state, err := app.catalogDatabasePath()
+	state, err := app.catalogStatePath()
 	if err != nil {
-		t.Fatalf("catalogDatabasePath: %v", err)
+		t.Fatalf("catalogStatePath: %v", err)
 	}
 	wantState := filepath.Join(home, ".starmap", "state", "catalog")
 	if state != wantState {
@@ -61,7 +61,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	}
 }
 
-func TestCatalogDatabasePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
+func TestCatalogStatePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	draft := filepath.Join(home, ".starmap", "catalog-store")
@@ -100,7 +100,7 @@ func TestCatalogDatabasePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 	}
 }
 
-func TestCatalogDatabasePathExplicitWinsWithoutDefaultInspection(t *testing.T) {
+func TestExplicitCatalogWorkspaceBypassesDefaultInspection(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	for _, name := range []string{"catalog", "catalog-store"} {

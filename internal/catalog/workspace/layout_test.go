@@ -92,3 +92,88 @@ func TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths(t *testing.T) {
 		t.Fatalf("provider YAML workspace: %v", err)
 	}
 }
+
+func TestValidateMachineSeparationRejectsOverlappingLifecycleRoots(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	workspace := filepath.Join(root, "catalog")
+	machine := filepath.Join(root, "state")
+	for _, test := range []struct {
+		name        string
+		humanPath   string
+		machinePath string
+		wantError   bool
+	}{
+		{name: "siblings", humanPath: workspace, machinePath: machine},
+		{name: "same", humanPath: workspace, machinePath: workspace, wantError: true},
+		{
+			name:        "machine contains workspace",
+			humanPath:   filepath.Join(machine, "catalog"),
+			machinePath: machine,
+			wantError:   true,
+		},
+		{
+			name:        "workspace contains machine",
+			humanPath:   workspace,
+			machinePath: filepath.Join(workspace, "cache"),
+			wantError:   true,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			err := ValidateMachineSeparation(test.humanPath, test.machinePath, "test state")
+			if (err != nil) != test.wantError {
+				t.Fatalf("ValidateMachineSeparation() error = %v, wantError %t", err, test.wantError)
+			}
+			if !test.wantError {
+				return
+			}
+			var configErr *pkgerrors.ConfigError
+			if !stderrors.As(err, &configErr) {
+				t.Fatalf("error = %T %v, want *errors.ConfigError", err, err)
+			}
+			if configErr.Component != "catalog filesystem layout" {
+				t.Fatalf("component = %q", configErr.Component)
+			}
+		})
+	}
+}
+
+func TestValidateMachineSeparationResolvesSymlinkedAncestors(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	real := filepath.Join(root, "real")
+	if err := os.MkdirAll(real, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	alias := filepath.Join(root, "alias")
+	if err := os.Symlink(real, alias); err != nil {
+		t.Fatalf("Symlink: %v", err)
+	}
+	err := ValidateMachineSeparation(
+		filepath.Join(real, "catalog"),
+		filepath.Join(alias, "catalog", "cache"),
+		"source cache",
+	)
+	var configErr *pkgerrors.ConfigError
+	if !stderrors.As(err, &configErr) {
+		t.Fatalf("error = %T %v, want *errors.ConfigError", err, err)
+	}
+}
+
+func TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	for kind, path := range map[string]string{
+		"catalog state":   constants.DefaultCatalogStatePath,
+		"source cache":    constants.DefaultCachePath,
+		"source checkout": constants.DefaultSourcesPath,
+		"logs":            constants.DefaultLogsPath,
+	} {
+		if err := ValidateMachineSeparation(constants.DefaultCatalogPath, path, kind); err != nil {
+			t.Errorf("%s overlaps human workspace: %v", kind, err)
+		}
+	}
+}
