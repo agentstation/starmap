@@ -36,19 +36,20 @@
 //	}
 //
 //	// Configure mutation with an explicit writable generation store
-//	store, err := catalogstore.NewFilesystem("./catalog")
+//	store, err := catalogstore.NewFilesystem("./state/catalog")
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
 //	sm, err = starmap.New(
 //	    WithCatalogStore(store),
-//	    WithCatalogExportPath("./catalog-export"),
+//	    WithCatalogPath("./catalog"),
 //	)
 package starmap
 
 import (
 	"context"
 	stderrors "errors"
+	"os"
 	"sync"
 	"time"
 
@@ -168,7 +169,7 @@ func New(opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := validateCatalogPathSeparation(options.catalogStore, options.catalogExportPath); err != nil {
+	if err := validateCatalogLayout(options.catalogStore, options.catalogPath); err != nil {
 		return nil, err
 	}
 
@@ -184,10 +185,7 @@ func New(opts ...Option) (*Client, error) {
 	// Load and verify the embedded bootstrap before any optional local overlay.
 	log := logging.Debug()
 	log.Msg("Creating local catalog (embedded or file-based)")
-	exportPath := sm.options.catalogExportPath
-	if sm.options.embeddedCatalogEnabled {
-		exportPath = ""
-	}
+	catalogPath := sm.options.catalogPath
 	embeddedBuilder, err := catalogs.NewEmbedded()
 	if err != nil {
 		return nil, errors.WrapResource("create", "embedded bootstrap catalog", "", err)
@@ -229,16 +227,20 @@ func New(opts ...Option) (*Client, error) {
 			return nil, errors.WrapResource("load", "stored current catalog generation", "current", currentErr)
 		}
 	}
-	if generationID == "" && exportPath != "" {
-		local, localErr := catalogs.NewLocal(exportPath)
+	if generationID == "" && catalogPath != "" {
+		local, localErr := catalogs.NewLocal(catalogPath)
 		if localErr != nil {
-			return nil, errors.WrapResource("create", "catalog export", exportPath, localErr)
+			return nil, errors.WrapResource("create", "catalog workspace", catalogPath, localErr)
 		}
 		initial, err = local.Build()
 		if err != nil {
-			return nil, errors.WrapResource("publish", "initial catalog", exportPath, err)
+			return nil, errors.WrapResource("publish", "initial catalog", catalogPath, err)
 		}
-		usingEmbeddedBootstrap = false
+		if _, statErr := os.Stat(catalogPath); statErr == nil {
+			usingEmbeddedBootstrap = false
+		} else if !stderrors.Is(statErr, os.ErrNotExist) {
+			return nil, errors.WrapIO("stat", catalogPath, statErr)
+		}
 	}
 	sm.catalog = initial
 	sm.generationID = generationID
@@ -246,11 +248,11 @@ func New(opts ...Option) (*Client, error) {
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
 	sm.embeddedBootstrap = bootstrapManifest
 
-	if durableCurrent != nil && exportPath != "" {
+	if durableCurrent != nil && catalogPath != "" {
 		repairCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultCatalogProjectionTimeout)
 		repair, repairErr := workspace.Repair(
 			repairCtx,
-			exportPath,
+			catalogPath,
 			initial,
 			workspace.Identity{
 				GenerationID:    durableCurrent.Manifest.GenerationID,
@@ -263,18 +265,18 @@ func New(opts ...Option) (*Client, error) {
 			logging.Warn().
 				Err(repairErr).
 				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", exportPath).
+				Str("workspace", catalogPath).
 				Msg("Durable catalog is active; YAML workspace repair remains pending")
 		case repair.Status == workspace.RepairStatusSkippedDirty:
 			logging.Warn().
 				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", exportPath).
+				Str("workspace", catalogPath).
 				Str("issue_code", repair.IssueCode).
 				Msg("Durable catalog is active; YAML workspace has semantic human changes and was not overwritten")
 		case repair.Status == workspace.RepairStatusRepaired:
 			logging.Info().
 				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", exportPath).
+				Str("workspace", catalogPath).
 				Msg("Repaired YAML workspace from durable catalog generation")
 		}
 	}

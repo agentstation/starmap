@@ -83,7 +83,7 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 	publication, err := c.save(
 		context.Background(),
 		newCatalog,
-		&pkgsync.Options{OutputPath: blockingFile},
+		&pkgsync.Options{CatalogPath: blockingFile},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, newCatalog)},
 	)
@@ -122,7 +122,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 	publication, err := client.save(
 		context.Background(),
 		candidate,
-		&pkgsync.Options{OutputPath: path},
+		&pkgsync.Options{CatalogPath: path},
 		&differ.Changeset{},
 		[]sources.Observation{persistenceObservation(t, candidate)},
 	)
@@ -226,7 +226,7 @@ func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testi
 		t.Fatalf("Commit durable current: %v", err)
 	}
 
-	client, err := New(WithCatalogStore(store), WithCatalogExportPath(path))
+	client, err := New(WithCatalogStore(store), WithCatalogPath(path))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}

@@ -13,39 +13,39 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-func TestCatalogDatabasePathFreshInstallIsCanonicalAndPassive(t *testing.T) {
+func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	path, err := app.catalogDatabasePath()
+	workspace, err := app.CatalogPath()
+	if err != nil {
+		t.Fatalf("CatalogPath: %v", err)
+	}
+	wantWorkspace := filepath.Join(home, ".starmap", "catalog")
+	if workspace != wantWorkspace {
+		t.Fatalf("workspace = %q, want %q", workspace, wantWorkspace)
+	}
+	state, err := app.catalogDatabasePath()
 	if err != nil {
 		t.Fatalf("catalogDatabasePath: %v", err)
 	}
-	want := filepath.Join(home, ".starmap", "catalog")
-	if path != want {
-		t.Fatalf("path = %q, want %q", path, want)
-	}
-	exportPath, err := app.CatalogExportPath()
-	if err != nil {
-		t.Fatalf("catalogExportPath: %v", err)
-	}
-	wantExport := filepath.Join(home, ".starmap", "exports", "catalog")
-	if exportPath != wantExport {
-		t.Fatalf("export path = %q, want %q", exportPath, wantExport)
+	wantState := filepath.Join(home, ".starmap", "state", "catalog")
+	if state != wantState {
+		t.Fatalf("state = %q, want %q", state, wantState)
 	}
 	if _, err := app.Starmap(); err != nil {
 		t.Fatalf("Starmap: %v", err)
 	}
-	if _, err := os.Stat(want); !os.IsNotExist(err) {
-		t.Fatalf("passive construction created %q: %v", want, err)
+	if _, err := os.Stat(wantWorkspace); !os.IsNotExist(err) {
+		t.Fatalf("passive construction created %q: %v", wantWorkspace, err)
 	}
-	if _, err := os.Stat(wantExport); !os.IsNotExist(err) {
-		t.Fatalf("passive construction created %q: %v", wantExport, err)
+	if _, err := os.Stat(wantState); !os.IsNotExist(err) {
+		t.Fatalf("passive construction created %q: %v", wantState, err)
 	}
-	store, err := catalogstore.NewFilesystem(want)
+	store, err := catalogstore.NewFilesystem(wantState)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -53,8 +53,11 @@ func TestCatalogDatabasePathFreshInstallIsCanonicalAndPassive(t *testing.T) {
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
 	}
-	if _, err := os.Stat(filepath.Join(want, "current")); err != nil {
+	if _, err := os.Stat(filepath.Join(wantState, "current")); err != nil {
 		t.Fatalf("canonical first commit: %v", err)
+	}
+	if _, err := os.Stat(wantWorkspace); !os.IsNotExist(err) {
+		t.Fatalf("state commit created human workspace: %v", err)
 	}
 }
 
@@ -74,9 +77,9 @@ func TestCatalogDatabasePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	path, err := app.catalogDatabasePath()
+	path, err := app.CatalogPath()
 	if err != nil {
-		t.Fatalf("catalogDatabasePath: %v", err)
+		t.Fatalf("CatalogPath: %v", err)
 	}
 	canonical := filepath.Join(home, ".starmap", "catalog")
 	if path != canonical {
@@ -93,7 +96,7 @@ func TestCatalogDatabasePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 		t.Fatalf("draft location changed: %q", retained)
 	}
 	if _, err := os.Stat(canonical); !os.IsNotExist(err) {
-		t.Fatalf("read-only startup created canonical path: %v", err)
+		t.Fatalf("read-only startup created workspace: %v", err)
 	}
 }
 
@@ -114,12 +117,15 @@ func TestCatalogDatabasePathExplicitWinsWithoutDefaultInspection(t *testing.T) {
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	path, err := app.catalogDatabasePath()
+	path, err := app.CatalogPath()
 	if err != nil {
-		t.Fatalf("catalogDatabasePath: %v", err)
+		t.Fatalf("CatalogPath: %v", err)
 	}
 	if path != explicit {
 		t.Fatalf("path = %q, want %q", path, explicit)
+	}
+	if _, err := app.Starmap(); err != nil {
+		t.Fatalf("explicit workspace inspected defaults: %v", err)
 	}
 }
 

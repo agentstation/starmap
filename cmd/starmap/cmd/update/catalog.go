@@ -10,19 +10,19 @@ import (
 )
 
 // LoadCatalog creates a starmap instance using app context.
-// If inputPath is provided, creates a custom instance. Otherwise, uses app's default.
-func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (*starmap.Client, error) {
+// If catalogPath is provided, it is the single local read/write workspace.
+// Otherwise, the application composition supplies its configured default.
+func LoadCatalog(app application.Application, catalogPath string, isQuiet bool) (*starmap.Client, error) {
 	var sm *starmap.Client
 	var err error
 
-	// If input path is provided, create custom starmap with that path
-	if inputPath != "" {
-		sm, err = app.Starmap(starmap.WithCatalogExportPath(inputPath))
+	if catalogPath != "" {
+		sm, err = app.Starmap(starmap.WithCatalogPath(catalogPath))
 		if err != nil {
-			return nil, errors.WrapResource("create", "starmap", "files catalog", err)
+			return nil, errors.WrapResource("create", "starmap", "catalog workspace", err)
 		}
 		if !isQuiet {
-			fmt.Fprintf(os.Stderr, "📁 Using catalog from: %s\n", inputPath)
+			fmt.Fprintf(os.Stderr, "📁 Using catalog workspace: %s\n", catalogPath)
 		}
 	} else {
 		// Use app's default starmap (may be embedded or configured via app config)
@@ -31,7 +31,7 @@ func LoadCatalog(app application.Application, inputPath string, isQuiet bool) (*
 			return nil, errors.WrapResource("get", "starmap", "", err)
 		}
 		if !isQuiet {
-			fmt.Fprintf(os.Stderr, "📦 Using default catalog\n")
+			fmt.Fprintf(os.Stderr, "📦 Using configured catalog workspace\n")
 		}
 	}
 

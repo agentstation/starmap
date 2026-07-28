@@ -233,14 +233,13 @@ func (a *App) Shutdown(ctx context.Context) error {
 func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option, error) {
 	opts := []starmap.Option{storeOption}
 
-	// Add the editable YAML catalog only when explicitly configured.
-	exportPath, err := a.configuredCatalogExportPath()
+	// The CLI always composes one human provider-YAML workspace. Merely
+	// constructing the client reads it when present and never creates it.
+	catalogPath, err := a.CatalogPath()
 	if err != nil {
 		return nil, err
 	}
-	if exportPath != "" {
-		opts = append(opts, starmap.WithCatalogExportPath(exportPath))
-	}
+	opts = append(opts, starmap.WithCatalogPath(catalogPath))
 
 	// Add embedded catalog if configured
 	if a.config.UseEmbeddedCatalog {

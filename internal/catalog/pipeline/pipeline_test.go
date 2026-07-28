@@ -76,11 +76,7 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 }
 
-// TestF001CharacterizationPipelineLoadsLocalFromOutputPath pins the current
-// input/output path divergence. The fixing phase must make the configured
-// human workspace the input and treat post-commit materialization as a
-// projection, not reinterpret an arbitrary output destination as source data.
-func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
+func TestPipelineUsesOneCatalogPathForLocalObservation(t *testing.T) {
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, &reconciler.Result{
 		Catalog:           catalogs.NewEmpty(),
@@ -88,7 +84,7 @@ func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
 		ProviderAPICounts: map[catalogs.ProviderID]int{},
 		ModelProviderMap:  map[string]catalogs.ProviderID{},
 	})
-	outputPath := filepath.Join(t.TempDir(), "projection")
+	catalogPath := filepath.Join(t.TempDir(), "catalog")
 	var loadedPath string
 	runner.loadLocal = func(path string) (*catalogs.Builder, error) {
 		loadedPath = path
@@ -98,12 +94,12 @@ func TestF001CharacterizationPipelineLoadsLocalFromOutputPath(t *testing.T) {
 	if _, err := runner.Sync(
 		context.Background(),
 		pkgsync.WithDryRun(true),
-		pkgsync.WithOutputPath(outputPath),
+		pkgsync.WithCatalogPath(catalogPath),
 	); err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
-	if loadedPath != outputPath {
-		t.Fatalf("F-001 characterization changed: local path = %q, want output path %q", loadedPath, outputPath)
+	if loadedPath != catalogPath {
+		t.Fatalf("local path = %q, want catalog path %q", loadedPath, catalogPath)
 	}
 }
 

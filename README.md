@@ -327,14 +327,11 @@ starmap completion bash         # Generate shell completion
 ### Advanced Update Workflows
 
 ```bash
-# Development: Use file-based catalog
-starmap update groq --input-dir ./catalog --dry
+# Development: Use a custom human workspace
+starmap update groq --catalog-path ./catalog --dry
 
 # Production: Fresh update with auto-approval
 starmap update --force -y
-
-# Custom directories
-starmap update --input ./dev --output ./prod
 
 # Specific sources only
 starmap update --source models.dev
@@ -760,26 +757,25 @@ Local storage uses separate lifecycle roots:
 
 ```text
 ~/.starmap/
-├── catalog/          # canonical immutable generation database
+├── catalog/          # one human-editable provider-YAML workspace
+├── state/catalog/    # machine-owned immutable generation database
 │   ├── current
 │   └── generations/
-├── exports/catalog/  # optional editable/portable YAML tree
 ├── cache/
 ├── logs/
 ├── sources/
 └── config.yaml
 ```
 
-The canonical database is passive until the first commit. YAML exports are
-never used as the durable publication database, and Starmap rejects configured
-database/export paths that contain one another. Because this layout predates
-the first public launch, draft path names and configuration aliases are not
-carried forward as compatibility surface.
+The machine state directory is passive until the first commit. The catalog
+workspace is the only human model representation and is both the local
+observation and the post-commit YAML projection. Starmap rejects overlapping
+workspace/state roots. A pre-plan generation-store layout found at
+`~/.starmap/catalog` fails with a typed migration error before mutation.
 
 ```yaml
 # ~/.starmap/config.yaml
 catalog_path: ~/.starmap/catalog
-catalog_export_path: ~/.starmap/exports/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
 

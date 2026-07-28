@@ -24,8 +24,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
-UPDATE_STORE_PATH="${GENERATION_STATE_ROOT}/update-store"
-VALIDATION_STORE_PATH="${GENERATION_STATE_ROOT}/validation-store"
+UPDATE_HOME="${GENERATION_STATE_ROOT}/update-home"
+VALIDATION_HOME="${GENERATION_STATE_ROOT}/validation-home"
 
 if [[ -n "$PROVIDER" && ! "$PROVIDER" =~ ^[a-z0-9-]+$ ]]; then
   printf 'provider must use lowercase letters, digits, or hyphens\n' >&2
@@ -56,16 +56,16 @@ run_manifest() {
 
 "$REFRESH_BIN"
 
-UPDATE_ARGS=(--input-dir "$CATALOG_DIR" --output-dir "$CATALOG_DIR" -y)
+UPDATE_ARGS=(--catalog-path "$CATALOG_DIR" -y)
 if [[ "${STARMAP_GENERATION_NONINTERACTIVE:-}" == "1" ]]; then
   UPDATE_ARGS+=(--skip-dep-prompts)
 fi
 
 if [[ -n "$PROVIDER" ]]; then
-  CATALOG_PATH="$UPDATE_STORE_PATH" run_starmap update "$PROVIDER" "${UPDATE_ARGS[@]}"
+  HOME="$UPDATE_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap update "$PROVIDER" "${UPDATE_ARGS[@]}"
 else
-  CATALOG_PATH="$UPDATE_STORE_PATH" run_starmap update "${UPDATE_ARGS[@]}"
+  HOME="$UPDATE_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap update "${UPDATE_ARGS[@]}"
 fi
 
 run_manifest --catalog-dir "$CATALOG_DIR" --output "$MANIFEST_PATH" > "$REPORT_PATH"
-CATALOG_PATH="$VALIDATION_STORE_PATH" CATALOG_EXPORT_PATH="$CATALOG_DIR" run_starmap validate catalog
+HOME="$VALIDATION_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap validate catalog

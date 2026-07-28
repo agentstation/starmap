@@ -677,43 +677,41 @@ requires exactly one success and one typed conflict. SQLite deployments use
 immediate transactions with bounded busy waiting; filesystem writers coordinate
 through a context-aware advisory lock shared across processes.
 
-`Builder.Save` materializes an optional editable YAML export using replacement
+`Builder.Save` materializes a human provider-YAML workspace using replacement
 semantics for its managed YAML indexes and provider/author model trees, so
 deleted records cannot survive a
 save/reload. It deliberately preserves unmanaged neighboring files such as
-logos and operator notes. It is a portable materialization, not a second
-transactional database: a process failure or rejected durable commit can leave
-that directory temporarily ahead of or behind the authoritative generation.
-Production readers must consume `catalogstore.Store`/the immutable distribution
-protocol rather than serve the YAML view directly; restart with a durable
-current deliberately ignores the export view. Catalog-generation jobs
-may still use it as an explicit checked export.
+logos and operator notes. Direct builder saves are construction tools; normal
+Starmap publication commits the immutable generation first and then atomically
+projects YAML. Production readers consume the immutable catalog generation,
+while explicit updates treat semantic human workspace changes as local
+observations.
 
 The root client makes that dependency explicit: `WithCatalogStore` is required
 before any non-dry manual, remote, server-triggered, or scheduled mutation. The
 preflight runs before source fetch, custom callbacks, remote HTTP, or scheduler
 startup and returns a typed `errors.ConfigError` when the store is absent.
 Read-only construction, `Catalog`, and dry-run synchronization remain usable
-without a store. The CLI composition root supplies a passive filesystem store
-at `catalog_path` (default `~/.starmap/catalog`); constructing the adapter does
-not create storage until its first commit. Optional editable YAML uses
-`catalog_export_path` and defaults to `~/.starmap/exports/catalog` for CLI
-materialization. Database and export roots must not contain one another, even
-through an existing symlink. Cache, source evidence, logs, configuration, YAML
-exports, and immutable generations remain separate lifecycle domains.
+without a store. The CLI's `catalog_path` names the one human workspace and
+defaults to `~/.starmap/catalog`. Its passive machine-owned generation store
+defaults separately to `~/.starmap/state/catalog`; constructing either
+composition creates no directory. Workspace and state roots must not contain
+one another. A selected workspace containing `current`, `generations/`, or
+`.commit.lock` is rejected with `errors.LegacyCatalogLayoutError` before any
+mutation and requires the explicit transactional migration defined by P3.10.
+Cache, source evidence, logs, configuration, YAML, and immutable generations
+remain separate lifecycle domains.
 
-An explicitly configured catalog export is optional only when its path does not
+An explicitly configured catalog workspace is optional only when its path does not
 exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded
 bootstrap. Malformed provider, author, and provenance structure plus filesystem
 failures remain typed fatal errors. Individual malformed model YAML files are
 quarantined with a typed `LoadReport` so valid siblings can form a degraded
 local observation; embedded bootstrap, legacy migration, and atomic projection
 validation require an empty report and remain fail-closed. When a configured
-CatalogStore has
-a current generation, that validated durable generation is authoritative and
-export YAML is not parsed; this prevents a stale or partially materialized
-export view from blocking restart. Export YAML is consulted only when no
-durable current exists.
+CatalogStore has a current generation, that validated durable generation is
+authoritative during construction; the workspace is reconciled by explicit
+reload or update rather than silently replacing the active generation.
 
 The embedded bootstrap has a strict embedded `generation.json` binding its
 generation ID, generation time, catalog schema version, canonical payload
@@ -982,13 +980,13 @@ Used throughout for configuration:
 
 ```go
 // Creating with options
-store, err := catalogstore.NewFilesystem("./catalog")
+store, err := catalogstore.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
 sm, err := starmap.New(
 	starmap.WithCatalogStore(store),
-    starmap.WithCatalogExportPath("./exports/catalog"),
+    starmap.WithCatalogPath("./catalog"),
 )
 
 // Sync with options

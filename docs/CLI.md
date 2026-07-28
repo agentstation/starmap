@@ -310,9 +310,9 @@ starmap serve -v  # If -v meant "version" instead of "verbose"
 # ❌ Don't make resources into flags when positional is clearer
 starmap update --provider openai  # Use positional instead
 
-# ❌ Don't create ambiguous flag names
-starmap update --output catalog   # Does this mean format or directory?
-# Use: --output-dir for directory, --format for style
+# ❌ Don't split one workspace into input and output directories
+starmap update --input-dir old --output-dir new
+# Use: --catalog-path for the single human read/write workspace
 
 # ❌ Don't use short flags that aren't mnemonic without good reason
 starmap update -x  # What does -x mean? Not obvious

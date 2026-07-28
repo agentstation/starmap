@@ -16,29 +16,29 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func TestDefaultCatalogDatabaseAndExportPathsAreDisjoint(t *testing.T) {
+func TestDefaultCatalogWorkspaceAndStatePathsAreDisjoint(t *testing.T) {
 	home := filepath.Join(string(filepath.Separator), "home", "starmap")
-	database := strings.Replace(constants.DefaultCatalogDatabasePath, "~", home, 1)
-	export := strings.Replace(constants.DefaultCatalogExportPath, "~", home, 1)
-	if pathsContainEachOther(database, export) {
-		t.Fatalf("default durable database %q overlaps editable export %q", database, export)
+	workspace := strings.Replace(constants.DefaultCatalogPath, "~", home, 1)
+	state := strings.Replace(constants.DefaultCatalogStatePath, "~", home, 1)
+	if pathsContainEachOther(workspace, state) {
+		t.Fatalf("default human workspace %q overlaps machine state %q", workspace, state)
 	}
-	if pathContains(export, database) || pathContains(database, export) {
+	if pathContains(workspace, state) || pathContains(state, workspace) {
 		t.Fatal("default lifecycle roots contain one another")
 	}
 }
 
-func TestCatalogExportReplacementCannotTouchSiblingDatabase(t *testing.T) {
+func TestCatalogWorkspaceReplacementCannotTouchSiblingState(t *testing.T) {
 	root := t.TempDir()
-	database := filepath.Join(root, "catalog")
-	export := filepath.Join(root, "exports", "catalog")
-	if pathsContainEachOther(database, export) {
+	state := filepath.Join(root, "state", "catalog")
+	workspace := filepath.Join(root, "catalog")
+	if pathsContainEachOther(state, workspace) {
 		t.Fatal("test lifecycle roots overlap")
 	}
-	if err := os.MkdirAll(database, constants.DirPermissions); err != nil {
-		t.Fatalf("MkdirAll database: %v", err)
+	if err := os.MkdirAll(state, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll state: %v", err)
 	}
-	markerPath := filepath.Join(database, "current")
+	markerPath := filepath.Join(state, "current")
 	marker := []byte("immutable-generation\n")
 	if err := os.WriteFile(markerPath, marker, constants.FilePermissions); err != nil {
 		t.Fatalf("WriteFile marker: %v", err)
@@ -47,14 +47,14 @@ func TestCatalogExportReplacementCannotTouchSiblingDatabase(t *testing.T) {
 	if err := builder.SetProvider(catalogs.Provider{ID: "example", Name: "Example"}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(export)); err != nil {
-		t.Fatalf("Save export: %v", err)
+	if err := builder.Save(save.WithPath(workspace)); err != nil {
+		t.Fatalf("Save workspace: %v", err)
 	}
 	if err := builder.DeleteProvider("example"); err != nil {
 		t.Fatalf("DeleteProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(export)); err != nil {
-		t.Fatalf("replacement Save export: %v", err)
+	if err := builder.Save(save.WithPath(workspace)); err != nil {
+		t.Fatalf("replacement Save workspace: %v", err)
 	}
 	retained, err := os.ReadFile(markerPath)
 	if err != nil {
@@ -71,7 +71,7 @@ func TestClientRejectsCatalogDatabaseAndExportOverlap(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
-	_, err = New(WithCatalogStore(store), WithCatalogExportPath(root))
+	_, err = New(WithCatalogStore(store), WithCatalogPath(root))
 	assertCatalogLayoutError(t, err)
 }
 
@@ -89,7 +89,7 @@ func TestClientRejectsSymlinkedCatalogDatabaseAndExportOverlap(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
-	_, err = New(WithCatalogStore(store), WithCatalogExportPath(alias))
+	_, err = New(WithCatalogStore(store), WithCatalogPath(alias))
 	assertCatalogLayoutError(t, err)
 }
 
@@ -105,7 +105,7 @@ func TestClientSaveAndSyncRejectDurableDatabaseTargets(t *testing.T) {
 		t.Fatalf("New: %v", err)
 	}
 	assertCatalogLayoutError(t, client.Save(save.WithPath(filepath.Join(database, "exports"))))
-	_, err = client.Sync(context.Background(), pkgsync.WithDryRun(true), pkgsync.WithOutputPath(root))
+	_, err = client.Sync(context.Background(), pkgsync.WithDryRun(true), pkgsync.WithCatalogPath(root))
 	assertCatalogLayoutError(t, err)
 }
 

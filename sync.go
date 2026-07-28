@@ -16,12 +16,12 @@ import (
 // Sync synchronizes the catalog with provider APIs using staged source execution.
 func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
 	options := sync.Defaults().Apply(opts...)
-	outputPath := options.OutputPath
-	if c.options != nil && outputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
-		outputPath = c.options.catalogExportPath
+	catalogPath := options.CatalogPath
+	if c.options != nil && catalogPath == "" && c.options.catalogPath != "" {
+		catalogPath = c.options.catalogPath
 	}
 	if c.options != nil {
-		if err := validateCatalogPathSeparation(c.options.catalogStore, outputPath); err != nil {
+		if err := validateCatalogLayout(c.options.catalogStore, catalogPath); err != nil {
 			return nil, err
 		}
 	}
@@ -38,8 +38,8 @@ func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, e
 	defer release()
 
 	effective := append([]sync.Option(nil), opts...)
-	if options.OutputPath == "" && c.options.catalogExportPath != "" && !c.options.embeddedCatalogEnabled {
-		effective = append(effective, sync.WithOutputPath(c.options.catalogExportPath))
+	if options.CatalogPath == "" && c.options.catalogPath != "" {
+		effective = append(effective, sync.WithCatalogPath(c.options.catalogPath))
 	}
 	return pipeline.New(pipelineStore{client: c}).Sync(ctx, effective...)
 }
@@ -61,16 +61,16 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 		return pipeline.Publication{}, err
 	}
 
-	if options.OutputPath != "" {
+	if options.CatalogPath != "" {
 		publication.Projection = &sync.ProjectionResult{
-			Path:         options.OutputPath,
+			Path:         options.CatalogPath,
 			Status:       sync.ProjectionStatusPendingRepair,
 			GenerationID: publication.GenerationID,
 		}
 		receipt, projectionErr := projectCatalogWorkspace(
 			ctx,
 			published,
-			options.OutputPath,
+			options.CatalogPath,
 			workspace.Identity{
 				GenerationID:    publication.GenerationID,
 				PayloadChecksum: publication.PayloadChecksum,
@@ -82,7 +82,7 @@ func (c *Client) save(ctx context.Context, result *catalogs.Builder, options *sy
 			logging.Warn().
 				Err(projectionErr).
 				Str("generation_id", publication.GenerationID).
-				Str("output_path", options.OutputPath).
+				Str("catalog_path", options.CatalogPath).
 				Msg("Catalog generation committed; YAML workspace projection is pending repair")
 		} else {
 			publication.Projection.Status = sync.ProjectionStatusApplied

@@ -103,6 +103,9 @@ func (p projector) project(ctx context.Context, path string, catalog *catalogs.C
 	if err != nil {
 		return Receipt{}, err
 	}
+	if err := ValidateHumanLayout(target, ""); err != nil {
+		return Receipt{}, err
+	}
 	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
 		return Receipt{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
@@ -189,6 +192,9 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	}
 	target, err := resolveTarget(path)
 	if err != nil {
+		return RepairResult{}, err
+	}
+	if err := ValidateHumanLayout(target, ""); err != nil {
 		return RepairResult{}, err
 	}
 	state, err := readSemanticState(target)

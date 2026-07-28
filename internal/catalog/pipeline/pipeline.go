@@ -92,7 +92,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 	defer cancel()
 
-	local, err := p.loadLocal(options.OutputPath)
+	local, err := p.loadLocal(options.CatalogPath)
 	if err != nil {
 		return nil, pkgerrors.WrapResource("load", "catalog", "local", err)
 	}
@@ -180,7 +180,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	syncResult := pkgsync.ChangesetToResultWithProvenance(
 		result.Changeset,
 		options.DryRun,
-		options.OutputPath,
+		options.CatalogPath,
 		result.ProviderAPICounts,
 		result.ModelProviderMap,
 		result.Provenance,

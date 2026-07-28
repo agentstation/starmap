@@ -234,7 +234,7 @@ Used throughout for configuration:
 ```go
 // Creating instances
 sm, _ := starmap.New(
-    starmap.WithCatalogExportPath("./exports/catalog"),
+    starmap.WithCatalogPath("./catalog"),
 )
 
 // Sync options

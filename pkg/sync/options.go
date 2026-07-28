@@ -26,8 +26,8 @@ type Options struct {
 	Sources    []sources.ID         // Which sources to use (empty means default providers/local/models.dev HTTP)
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
-	// Output control (used AFTER merging)
-	OutputPath string // Where to save final catalog (empty means default location)
+	// Human workspace used for both local observation and materialization.
+	CatalogPath string
 
 	// Source behavior control
 	Fresh              bool   // Delete existing models and fetch fresh from APIs (destructive)
@@ -79,7 +79,7 @@ func Defaults() *Options {
 		Timeout:            constants.UpdateContextTimeout,
 		Sources:            nil,
 		ProviderID:         nil,
-		OutputPath:         "",
+		CatalogPath:        "",
 		Fresh:              false,
 		CleanModelsDevRepo: false,
 		Reformat:           false,
@@ -168,16 +168,15 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 		}
 	}
 
-	// Validate output path if specified
-	if s.OutputPath != "" {
-		// Check if parent directory exists
-		dir := filepath.Dir(s.OutputPath)
+	// Validate the workspace parent if specified.
+	if s.CatalogPath != "" {
+		dir := filepath.Dir(s.CatalogPath)
 		if dir != "." && dir != "/" {
 			if _, err := os.Stat(dir); os.IsNotExist(err) {
 				return &errors.ValidationError{
-					Field:   "OutputPath",
-					Value:   s.OutputPath,
-					Message: fmt.Sprintf("output directory '%s' does not exist", dir),
+					Field:   "CatalogPath",
+					Value:   s.CatalogPath,
+					Message: fmt.Sprintf("catalog workspace parent '%s' does not exist", dir),
 				}
 			}
 		}
@@ -231,10 +230,11 @@ func WithProvider(providerID catalogs.ProviderID) Option {
 	}
 }
 
-// WithOutputPath configures the output path for saving.
-func WithOutputPath(path string) Option {
+// WithCatalogPath configures the single human workspace used for local
+// observation and post-commit materialization.
+func WithCatalogPath(path string) Option {
 	return func(opts *Options) {
-		opts.OutputPath = path
+		opts.CatalogPath = path
 	}
 }
 

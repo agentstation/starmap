@@ -6,6 +6,7 @@ package errors
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // New returns an error that formats as the given text.
@@ -166,6 +167,34 @@ type ConfigError struct {
 	Component string
 	Message   string
 	Err       error
+}
+
+// LegacyCatalogLayoutError reports that a path selected for the human YAML
+// workspace still contains the pre-plan immutable generation-store layout.
+// Callers can use the structured paths and entries to present or execute an
+// explicit transactional migration.
+type LegacyCatalogLayoutError struct {
+	Path            string
+	MigrationTarget string
+	Entries         []string
+}
+
+// Error implements the error interface.
+func (e *LegacyCatalogLayoutError) Error() string {
+	entries := strings.Join(e.Entries, ", ")
+	if entries == "" {
+		entries = "generation-store metadata"
+	}
+	target := ""
+	if e.MigrationTarget != "" {
+		target = fmt.Sprintf(" to %q", e.MigrationTarget)
+	}
+	return fmt.Sprintf(
+		"legacy catalog generation layout at %q contains %s; complete an explicit transactional migration%s before using this path as the human catalog workspace",
+		e.Path,
+		entries,
+		target,
+	)
 }
 
 // DependencyError indicates a required external dependency is missing.

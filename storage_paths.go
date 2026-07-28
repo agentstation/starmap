@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -13,26 +14,37 @@ type filesystemCatalogStore interface {
 	Root() string
 }
 
-func validateCatalogPathSeparation(store any, exportPath string) error {
+func validateCatalogLayout(store any, catalogPath string) error {
+	if err := validateCatalogPathSeparation(store, catalogPath); err != nil {
+		return err
+	}
+	migrationTarget := ""
+	if filesystemStore, ok := store.(filesystemCatalogStore); ok {
+		migrationTarget = filesystemStore.Root()
+	}
+	return workspace.ValidateHumanLayout(catalogPath, migrationTarget)
+}
+
+func validateCatalogPathSeparation(store any, catalogPath string) error {
 	filesystemStore, ok := store.(filesystemCatalogStore)
-	if !ok || strings.TrimSpace(exportPath) == "" {
+	if !ok || strings.TrimSpace(catalogPath) == "" {
 		return nil
 	}
-	databasePath, err := resolvedFilesystemPath(filesystemStore.Root())
+	statePath, err := resolvedFilesystemPath(filesystemStore.Root())
 	if err != nil {
 		return err
 	}
-	resolvedExportPath, err := resolvedFilesystemPath(exportPath)
+	resolvedCatalogPath, err := resolvedFilesystemPath(catalogPath)
 	if err != nil {
 		return err
 	}
-	if pathsContainEachOther(databasePath, resolvedExportPath) {
+	if pathsContainEachOther(statePath, resolvedCatalogPath) {
 		return &errors.ConfigError{
 			Component: "catalog filesystem layout",
 			Message: fmt.Sprintf(
-				"editable catalog export %q overlaps durable catalog database %q; configure separate catalog_export_path and catalog_path roots",
-				resolvedExportPath,
-				databasePath,
+				"human catalog workspace %q overlaps machine-owned catalog state %q; configure separate workspace and catalog-store roots",
+				resolvedCatalogPath,
+				statePath,
 			),
 		}
 	}
