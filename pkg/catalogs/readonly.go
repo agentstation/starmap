@@ -251,4 +251,10 @@ func (r provenanceReader) FindByField(resourceType catalogmeta.ResourceType, res
 func (r provenanceReader) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
 	return r.source.FindByResource(resourceType, resourceID)
 }
+func (r provenanceReader) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance {
+	return r.source.FindModelField(providerID, modelID, field)
+}
+func (r provenanceReader) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance {
+	return r.source.FindModel(providerID, modelID)
+}
 func (r provenanceReader) FormatYAML() string { return r.source.FormatYAML() }

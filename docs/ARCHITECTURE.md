@@ -1275,8 +1275,14 @@ The default reconciliation strategy uses field-level authorities:
 **How it works:**
 1. Iterate the immutable authority policies for each resource type
 2. Select or compose the field according to its source order and merge policy
-3. Track provenance using the policy's stable evidence path
+3. Track provenance using the policy's stable evidence path and the exact
+   provider/model identity
 4. Generate changeset by comparing with baseline
+
+Model provenance is provider-scoped durably. Consumers use
+`Catalog.Provenance().FindModel(providerID, modelID)`; this prevents two
+providers that expose the same opaque model ID from combining price, limit, or
+lifecycle evidence.
 
 **Example:**
 

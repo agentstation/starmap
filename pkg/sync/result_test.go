@@ -156,10 +156,10 @@ func TestChangesetToResultScopesEnhancedCountByProvider(t *testing.T) {
 		nil,
 		nil,
 		provenance.Map{
-			"models.provider-a.shared.pricing": {
+			"model:provider-a/shared:pricing": {
 				{Source: sources.ModelsDevHTTPID},
 			},
-			"models.provider-b.shared.pricing": {
+			"model:provider-b/shared:pricing": {
 				{Source: sources.ProvidersID},
 			},
 		},

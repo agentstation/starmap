@@ -127,6 +127,23 @@ func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resou
 	return result
 }
 
+// FindModelField retrieves provenance for one field of one provider model.
+func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance {
+	return p.FindByField(
+		catalogmeta.ResourceTypeModel,
+		provenance.ModelResourceID(string(providerID), modelID),
+		field,
+	)
+}
+
+// FindModel retrieves all provenance for one provider model.
+func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance {
+	return p.FindByResource(
+		catalogmeta.ResourceTypeModel,
+		provenance.ModelResourceID(string(providerID), modelID),
+	)
+}
+
 // FormatYAML returns the provenance data formatted as YAML.
 // This follows the same pattern as Authors and Providers containers.
 func (p *Provenance) FormatYAML() string {

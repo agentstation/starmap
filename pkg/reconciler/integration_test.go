@@ -492,7 +492,7 @@ func TestFieldEvidenceAllPricingRejectionsSurviveCatalogPayload(t *testing.T) {
 		t.Fatalf("decode payload: %v", err)
 	}
 
-	entries := decoded.Provenance().Map()["model:model-1:pricing"]
+	entries := decoded.Provenance().FindModelField("test-provider", "model-1", "pricing")
 	if len(entries) != 1 {
 		t.Fatalf("durable pricing evidence = %#v, want one entry", entries)
 	}

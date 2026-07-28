@@ -170,6 +170,7 @@ func (merger *merger) ModelsForProvider(providerID catalogs.ProviderID, srcs map
 	for modelID, sourceModels := range modelsByID {
 		merged, history := merger.model(providerID, modelID, sourceModels)
 		mergedModels = append(mergedModels, merged)
+		modelResourceID := provenance.ModelResourceID(string(providerID), modelID)
 
 		// Add provenance with model prefix
 		if merger.tracker != nil {
@@ -180,7 +181,7 @@ func (merger *merger) ModelsForProvider(providerID catalogs.ProviderID, srcs map
 				provInfos[0] = fieldProv.Current
 				provInfos = append(provInfos, fieldProv.History...)
 				allProvenance[key] = provInfos
-				merger.tracker.Track(sources.ResourceTypeModel, modelID, field, fieldProv.Current)
+				merger.tracker.Track(sources.ResourceTypeModel, modelResourceID, field, fieldProv.Current)
 			}
 		}
 	}

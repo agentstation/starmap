@@ -301,8 +301,17 @@ func indexModelProvenance(fieldProvenance provenance.Map, providerIDs map[catalo
 
 func splitModelProvenanceKey(key string, providerIDs map[catalogs.ProviderID]bool) (catalogs.ProviderID, string, string, bool) {
 	if rest, ok := strings.CutPrefix(key, "model:"); ok {
-		modelID, field, found := strings.Cut(rest, ":")
-		return "", modelID, field, found && modelID != "" && field != ""
+		resourceID, field, found := strings.Cut(rest, ":")
+		if !found || resourceID == "" || field == "" {
+			return "", "", "", false
+		}
+		if providerID, modelID, scoped := provenance.ParseModelResourceID(resourceID); scoped {
+			return catalogs.ProviderID(providerID), modelID, field, true
+		}
+		// Embedded catalogs created before provider-scoped evidence used a bare
+		// model resource ID. Read it as unscoped evidence until the workspace
+		// lifecycle phase rematerializes it through reconciliation.
+		return "", resourceID, field, true
 	}
 
 	rest, ok := strings.CutPrefix(key, "models.")

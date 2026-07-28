@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -12,14 +13,15 @@ import (
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/globals"
 	"github.com/agentstation/starmap/internal/cli/table"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // NewHistoryCommand creates the history subcommand for viewing model data sources.
 func NewHistoryCommand(app application.Application) *cobra.Command {
 	var fieldPatterns []string
+	var providerID string
 
 	cmd := &cobra.Command{
 		Use:   "history <model-id>",
@@ -36,15 +38,18 @@ Supports filtering to specific fields using the --fields flag with wildcards.
 Field matching is case-insensitive for convenience.`,
 		Args: cobra.ExactArgs(1),
 		Example: `  starmap models history gpt-4o                        # Show all history
+  starmap models history shared --provider=openrouter    # Select one provider offering
   starmap models history gpt-4o --fields=Name          # Show Name field only
   starmap models history gpt-4o --fields=Name,ID       # Multiple fields (comma-separated)
   starmap models history gpt-4o --fields='pricing.*'   # Show all Pricing fields (case-insensitive)
   starmap models history gpt-4o -o json                # Output as JSON`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return showModelHistory(cmd, app, args[0], fieldPatterns)
+			return showModelHistory(cmd, app, catalogs.ProviderID(providerID), args[0], fieldPatterns)
 		},
 	}
 
+	cmd.Flags().StringVar(&providerID, "provider", "",
+		"Provider that owns the model (required when the model ID exists at multiple providers)")
 	// Add fields filter flag
 	cmd.Flags().StringSliceVar(&fieldPatterns, "fields", []string{},
 		"Filter to specific fields (comma-separated, case-insensitive, supports wildcards like 'pricing.*')")
@@ -53,36 +58,33 @@ Field matching is case-insensitive for convenience.`,
 }
 
 // showModelHistory displays history data for a specific model.
-func showModelHistory(cmd *cobra.Command, app application.Application, modelID string, fieldPatterns []string) error {
+func showModelHistory(
+	cmd *cobra.Command,
+	app application.Application,
+	requestedProvider catalogs.ProviderID,
+	modelID string,
+	fieldPatterns []string,
+) error {
 	// Get catalog
 	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
 
-	// Find model across all providers
-	var found bool
-	providers := cat.Providers().List()
-	for _, provider := range providers {
-		if _, exists := provider.Models[modelID]; exists {
-			found = true
-			break
-		}
-	}
-
-	if !found {
+	providerID, err := resolveHistoryProvider(cat, requestedProvider, modelID)
+	if err != nil {
 		cmd.SilenceUsage = true
-		return &errors.NotFoundError{
-			Resource: "model",
-			ID:       modelID,
-		}
+		return err
 	}
 
-	// Query provenance container directly for this model
-	fieldProvenance := cat.Provenance().FindByResource(sources.ResourceTypeModel, modelID)
+	fieldProvenance := cat.Provenance().FindModel(providerID, modelID)
 
 	if len(fieldProvenance) == 0 {
-		return fmt.Errorf("no history data found for model %q\n\nRun 'starmap update' to generate history tracking data", modelID)
+		return fmt.Errorf(
+			"no history data found for provider model %q/%q\n\nRun 'starmap update' to generate history tracking data",
+			providerID,
+			modelID,
+		)
 	}
 
 	// Apply field filtering if requested
@@ -117,6 +119,47 @@ func showModelHistory(cmd *cobra.Command, app application.Application, modelID s
 	// For table output, print detailed view
 	printModelHistory(fieldProvenance, formatter)
 	return nil
+}
+
+func resolveHistoryProvider(
+	catalog catalogs.Reader,
+	requested catalogs.ProviderID,
+	modelID string,
+) (catalogs.ProviderID, error) {
+	if requested != "" {
+		if _, err := catalog.ProviderModel(requested, modelID); err != nil {
+			return "", err
+		}
+		return requested, nil
+	}
+
+	var matches []catalogs.ProviderID
+	for _, provider := range catalog.Providers().List() {
+		if _, exists := provider.Models[modelID]; exists {
+			matches = append(matches, provider.ID)
+		}
+	}
+	slices.Sort(matches)
+	switch len(matches) {
+	case 0:
+		return "", &errors.NotFoundError{Resource: "model", ID: modelID}
+	case 1:
+		return matches[0], nil
+	default:
+		return "", &errors.ValidationError{
+			Field:   "provider",
+			Value:   matches,
+			Message: fmt.Sprintf("is required because model %q exists at providers %s", modelID, strings.Join(providerIDStrings(matches), ", ")),
+		}
+	}
+}
+
+func providerIDStrings(providerIDs []catalogs.ProviderID) []string {
+	values := make([]string, len(providerIDs))
+	for index, providerID := range providerIDs {
+		values[index] = string(providerID)
+	}
+	return values
 }
 
 // printModelHistory prints detailed history information for a model.

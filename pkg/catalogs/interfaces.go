@@ -55,6 +55,8 @@ type ProvenanceReader interface {
 	Len() int
 	FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
 	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
+	FindModelField(ProviderID, string, string) []provenance.Provenance
+	FindModel(ProviderID, string) map[string][]provenance.Provenance
 	FormatYAML() string
 }
 

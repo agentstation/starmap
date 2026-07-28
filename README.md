@@ -309,6 +309,7 @@ starmap authors                  # List all authors
 
 # Model field history
 starmap models history gpt-4o                    # View field provenance
+starmap models history shared --provider=openrouter # Select a provider offering
 starmap models history gpt-4o --fields=Name      # Filter to specific field
 starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 

@@ -62,6 +62,21 @@ are fallback evidence, not fragments used to repair a rejected provider price.
 Routing preference is not an authority input and remains owned by the caller,
 such as Starport.
 
+## Provenance identity
+
+Model evidence is durable under the provider/model pair, never a bare model
+ID. The encoded resource identity escapes the provider and opaque provider
+model ID independently, so separators inside either value cannot collide.
+`Catalog.Provenance().FindModel(providerID, modelID)` is the normal read API;
+generic resource lookups remain available for algorithms that work across
+resource types.
+
+The flat reconciliation result also keeps provider-scoped paths. Catalog
+payload encode/decode and provenance reports preserve the same two independent
+resources when providers publish the same model ID. Price, each limit
+dimension, and lifecycle/availability status therefore retain the evidence for
+the exact offering they describe.
+
 ## Human YAML
 
 Local YAML is evidence, not an unconditional override layer:

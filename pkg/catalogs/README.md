@@ -804,6 +804,8 @@ func main() {
   - [func \(p \*Provenance\) EncodeYAML\(\) \(string, error\)](<#Provenance.EncodeYAML>)
   - [func \(p \*Provenance\) FindByField\(resourceType catalogmeta.ResourceType, resourceID string, field string\) \[\]provenance.Provenance](<#Provenance.FindByField>)
   - [func \(p \*Provenance\) FindByResource\(resourceType catalogmeta.ResourceType, resourceID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindByResource>)
+  - [func \(p \*Provenance\) FindModel\(providerID ProviderID, modelID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindModel>)
+  - [func \(p \*Provenance\) FindModelField\(providerID ProviderID, modelID, field string\) \[\]provenance.Provenance](<#Provenance.FindModelField>)
   - [func \(p \*Provenance\) FormatYAML\(\) string](<#Provenance.FormatYAML>)
   - [func \(p \*Provenance\) Len\(\) int](<#Provenance.Len>)
   - [func \(p \*Provenance\) Map\(\) provenance.Map](<#Provenance.Map>)
@@ -4112,7 +4114,7 @@ func (p *Provenance) Clear()
 Clear removes all provenance data.
 
 <a name="Provenance.EncodeYAML"></a>
-### func \(\*Provenance\) [EncodeYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L139>)
+### func \(\*Provenance\) [EncodeYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L156>)
 
 ```go
 func (p *Provenance) EncodeYAML() (string, error)
@@ -4138,8 +4140,26 @@ func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resou
 
 FindByResource retrieves all provenance for a resource. Returns a map of field names to their provenance entries.
 
+<a name="Provenance.FindModel"></a>
+### func \(\*Provenance\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L140>)
+
+```go
+func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance
+```
+
+FindModel retrieves all provenance for one provider model.
+
+<a name="Provenance.FindModelField"></a>
+### func \(\*Provenance\) [FindModelField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L131>)
+
+```go
+func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance
+```
+
+FindModelField retrieves provenance for one field of one provider model.
+
 <a name="Provenance.FormatYAML"></a>
-### func \(\*Provenance\) [FormatYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L132>)
+### func \(\*Provenance\) [FormatYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L149>)
 
 ```go
 func (p *Provenance) FormatYAML() string
@@ -4193,7 +4213,7 @@ type ProvenanceOption func(*Provenance)
 ```
 
 <a name="ProvenanceReader"></a>
-## type [ProvenanceReader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L53-L59>)
+## type [ProvenanceReader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L53-L61>)
 
 ProvenanceReader exposes provenance reads without mutation methods.
 
@@ -4203,6 +4223,8 @@ type ProvenanceReader interface {
     Len() int
     FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
     FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
+    FindModelField(ProviderID, string, string) []provenance.Provenance
+    FindModel(ProviderID, string) map[string][]provenance.Provenance
     FormatYAML() string
 }
 ```
@@ -5106,7 +5128,7 @@ func (q Quantization) String() string
 String returns the string representation of a Quantization.
 
 <a name="Reader"></a>
-## type [Reader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L62-L76>)
+## type [Reader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L64-L78>)
 
 Reader provides read\-only access to catalog data.
 
