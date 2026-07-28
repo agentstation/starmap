@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -188,6 +189,50 @@ func TestInvalidIdentityQuarantineMalformedProviderRecordsWithCounts(t *testing.
 	}
 	if observation.Records.Accepted != 2 || observation.Records.Rejected != 6 {
 		t.Fatalf("record counts = %#v, want accepted=2 rejected=6", observation.Records)
+	}
+}
+
+func TestDecodeQuarantineRetainsProviderSiblingsAndDegradesObservation(t *testing.T) {
+	providerSet := newProviderSet(providerForTest("provider-a"))
+	recordErr := &sourcepayload.QuarantineError{
+		Collection: "models",
+		Report: sourcepayload.RecordReport{
+			Accepted: 1,
+			Rejected: 1,
+			Issues: []sourcepayload.RecordIssue{{
+				Subject: "data[1]",
+				Err:     pkgerrors.NewParseError("json", "data[1]", "schema drift", nil),
+			}},
+		},
+	}
+	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+		return fakeProviderClient{
+			models: []catalogs.Model{{ID: "valid", Name: "Valid"}},
+			err:    recordErr,
+		}, nil
+	}))
+
+	observation, err := src.Observe(context.Background())
+	if err != nil {
+		t.Fatalf("Observe: %v", err)
+	}
+	if err := observation.Validate(); err != nil {
+		t.Fatalf("Validate: %v", err)
+	}
+	if observation.Records.Accepted != 1 || observation.Records.Rejected != 1 {
+		t.Fatalf("records = %#v, want accepted 1 rejected 1", observation.Records)
+	}
+	if len(observation.Issues) != 1 ||
+		observation.Issues[0].Scope != sources.ObservationIssueScopeRecord ||
+		observation.Issues[0].Code != sources.ObservationIssueCodeInvalidRecord {
+		t.Fatalf("issues = %#v, want one invalid record", observation.Issues)
+	}
+	models, err := observation.Catalog.ProviderModels("provider-a")
+	if err != nil {
+		t.Fatalf("ProviderModels: %v", err)
+	}
+	if !models.Exists("valid") {
+		t.Fatal("valid provider sibling was discarded")
 	}
 }
 

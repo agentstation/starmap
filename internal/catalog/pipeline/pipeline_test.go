@@ -62,7 +62,7 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
 		sourceWorkStarted = true
 		return nil
 	}
@@ -370,7 +370,7 @@ func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner.loadLocal = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {

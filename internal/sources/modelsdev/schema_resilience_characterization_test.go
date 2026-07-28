@@ -1,12 +1,15 @@
 package modelsdev
 
-import "testing"
+import (
+	"testing"
 
-// TestF009CharacterizationMalformedModelsDevSiblingRejectsWholeAPI pins the
-// monolithic models.dev decode. P4.8 must decode bounded records independently
-// so the valid sibling survives with typed rejection evidence for the invalid
-// record.
-func TestF009CharacterizationMalformedModelsDevSiblingRejectsWholeAPI(t *testing.T) {
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
+)
+
+// TestF009MalformedModelsDevSiblingIsQuarantined proves a malformed model does
+// not discard a valid sibling and becomes observation degradation evidence.
+func TestF009MalformedModelsDevSiblingIsQuarantined(t *testing.T) {
 	payload := []byte(`{
 		"provider": {
 			"id": "provider",
@@ -27,10 +30,28 @@ func TestF009CharacterizationMalformedModelsDevSiblingRejectsWholeAPI(t *testing
 	}`)
 
 	api, err := parseAPIData(payload)
-	if err == nil {
-		t.Fatal("F-009 characterization changed: malformed sibling did not reject models.dev API")
+	if err != nil {
+		t.Fatalf("parseAPIData: %v", err)
 	}
-	if api != nil {
-		t.Fatalf("F-009 characterization changed: partial models.dev API escaped: %#v", api)
+	provider := (*api)["provider"]
+	if len(provider.Models) != 1 || provider.Models["valid"].ID != "valid" {
+		t.Fatalf("valid models = %#v, want only valid sibling", provider.Models)
+	}
+	if provider.RecordReport.Rejected != 1 || len(provider.RecordReport.Issues) != 1 {
+		t.Fatalf("decode report = %#v, want one rejected record", provider.RecordReport)
+	}
+
+	builder := catalogs.NewEmpty()
+	added, rejected, issues, err := processFetch(builder, api)
+	if err != nil {
+		t.Fatalf("processFetch: %v", err)
+	}
+	if added != 1 || rejected != 1 {
+		t.Fatalf("records = accepted %d rejected %d, want 1/1", added, rejected)
+	}
+	if len(issues) != 1 ||
+		issues[0].Scope != sources.ObservationIssueScopeRecord ||
+		issues[0].Code != sources.ObservationIssueCodeInvalidRecord {
+		t.Fatalf("issues = %#v, want one invalid-record issue", issues)
 	}
 }

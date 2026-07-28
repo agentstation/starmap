@@ -31,7 +31,7 @@ type Publication struct {
 }
 
 type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog) []sources.Source
+type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -105,7 +105,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
 	}
-	srcs := p.createSources(options, localSnapshot)
+	srcs := p.createSources(options, localSnapshot, local.LoadReport())
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {

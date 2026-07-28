@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -165,6 +166,14 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 			logger := logging.WithProvider(ctx, string(p.ID))
 			models, err := s.fetcher.FetchModels(logger, p)
 			if err != nil {
+				var quarantineErr *sourcepayload.QuarantineError
+				if errors.As(err, &quarantineErr) {
+					result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+					result.rejected += quarantineErr.Report.Rejected
+					result.issues = append(result.issues, providerRecordIssues(p.ID, quarantineErr)...)
+					resultChan <- result
+					return
+				}
 				logging.Ctx(logger).Warn().
 					Err(err).
 					Str("provider_id", string(p.ID)).
@@ -285,6 +294,26 @@ func providerIssue(providerID catalogs.ProviderID, code sources.ObservationIssue
 		Subject: string(providerID),
 		Message: err.Error(),
 	}
+}
+
+func providerRecordIssues(providerID catalogs.ProviderID, quarantine *sourcepayload.QuarantineError) []sources.ObservationIssue {
+	if quarantine == nil {
+		return nil
+	}
+	issues := make([]sources.ObservationIssue, 0, len(quarantine.Report.Issues)+1)
+	for _, issue := range quarantine.Report.Issues {
+		issues = append(issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeRecord, Code: sources.ObservationIssueCodeInvalidRecord,
+			Subject: string(providerID) + "/" + issue.Subject, Message: issue.Err.Error(),
+		})
+	}
+	if quarantine.Report.Truncated {
+		issues = append(issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodePayloadLimit,
+			Subject: string(providerID), Message: "provider model count exceeds maximum; excess records quarantined",
+		})
+	}
+	return issues
 }
 
 func classifyProviderFetchIssue(providerID catalogs.ProviderID, err error) sources.ObservationIssue {

@@ -544,13 +544,13 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages. The providers parameter should contain the catalog providers to create clients for.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L324>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L327>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
 ```
 
-FetchModels fetches available models from a single provider's API. It handles credential loading, client creation, and API communication.
+FetchModels fetches available models from a single provider's API. It handles credential loading, client creation, and API communication. When a provider quarantines malformed records, FetchModels returns the valid siblings together with a non\-nil \*sourcepayload.QuarantineError wrapped in a SyncError; callers may consume the partial result only as degraded evidence.
 
 Example:
 
@@ -567,7 +567,7 @@ models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L363>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L366>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error)

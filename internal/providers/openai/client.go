@@ -20,6 +20,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
@@ -35,12 +36,15 @@ type Response struct {
 	Object        string                           `json:"object"`
 	Data          []Model                          `json:"data"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	RecordReport  sourcepayload.RecordReport       `json:"-"`
 }
 
 // UnmarshalJSON retains fingerprints for additive top-level fields.
 func (r *Response) UnmarshalJSON(data []byte) error {
-	type responseAlias Response
-	var decoded responseAlias
+	var decoded struct {
+		Object string          `json:"object"`
+		Data   json.RawMessage `json:"data"`
+	}
 	if err := json.Unmarshal(data, &decoded); err != nil {
 		return err
 	}
@@ -48,8 +52,22 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*r = Response(decoded)
-	r.UnknownFields = unknown
+	var records []Model
+	var report sourcepayload.RecordReport
+	if len(decoded.Data) != 0 && string(decoded.Data) != "null" {
+		records, report, err = sourcepayload.DecodeJSONArray[Model](
+			decoded.Data,
+			"data",
+			constants.MaxCatalogModels,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	*r = Response{
+		Object: decoded.Object, Data: records, UnknownFields: unknown,
+		RecordReport: report,
+	}
 	return nil
 }
 
@@ -314,7 +332,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		models = append(models, *model)
 	}
 
-	return models, nil
+	return models, result.RecordReport.Err("openai-compatible models")
 }
 
 // ConvertToModel converts an OpenAI model response to a starmap Model using dynamic configuration.

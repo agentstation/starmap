@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"maps"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +13,7 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -19,6 +21,45 @@ import (
 
 // API represents the structure of models.dev api.json.
 type API map[string]Provider
+
+// UnmarshalJSON bounds providers and model records before typed decoding.
+func (a *API) UnmarshalJSON(data []byte) error {
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	if raw == nil {
+		return &errors.ValidationError{Field: "models_dev", Message: "must be an object"}
+	}
+	if len(raw) > constants.MaxSourceProviders {
+		return &errors.ValidationError{
+			Field: "models_dev.providers", Value: len(raw), Message: "exceeds maximum provider count",
+		}
+	}
+	keys := make([]string, 0, len(raw))
+	for key := range raw {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	decoded := make(API, len(raw))
+	remaining := constants.MaxCatalogModels
+	for _, key := range keys {
+		provider, err := decodeProvider(raw[key], remaining)
+		if err != nil {
+			return err
+		}
+		decoded[key] = provider
+		processed := provider.RecordReport.Accepted + len(provider.RecordReport.Issues)
+		if processed >= remaining || provider.RecordReport.Truncated {
+			remaining = 0
+		} else {
+			remaining -= processed
+		}
+	}
+	*a = decoded
+	return nil
+}
 
 // Provider represents a provider in models.dev.
 type Provider struct {
@@ -30,22 +71,53 @@ type Provider struct {
 	Doc           string                           `json:"doc"`
 	Models        map[string]Model                 `json:"models"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	RecordReport  sourcepayload.RecordReport       `json:"-"`
 }
 
 // UnmarshalJSON retains fingerprints for additive provider fields.
 func (p *Provider) UnmarshalJSON(data []byte) error {
-	type providerAlias Provider
-	var decoded providerAlias
-	if err := json.Unmarshal(data, &decoded); err != nil {
-		return err
-	}
-	unknown, err := sourcepayload.UnknownJSONFields(data, decoded, "provider")
+	decoded, err := decodeProvider(data, constants.MaxCatalogModels)
 	if err != nil {
 		return err
 	}
-	*p = Provider(decoded)
-	p.UnknownFields = unknown
+	*p = decoded
 	return nil
+}
+
+func decodeProvider(data []byte, maxModels int) (Provider, error) {
+	var decoded struct {
+		ID     string          `json:"id"`
+		Env    []string        `json:"env"`
+		NPM    string          `json:"npm"`
+		API    *string         `json:"api,omitempty"`
+		Name   string          `json:"name"`
+		Doc    string          `json:"doc"`
+		Models json.RawMessage `json:"models"`
+	}
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return Provider{}, err
+	}
+	unknown, err := sourcepayload.UnknownJSONFields(data, decoded, "provider")
+	if err != nil {
+		return Provider{}, err
+	}
+	var models map[string]Model
+	var report sourcepayload.RecordReport
+	if len(decoded.Models) != 0 && string(decoded.Models) != "null" {
+		models, report, err = sourcepayload.DecodeJSONObject[Model](
+			decoded.Models,
+			"models",
+			maxModels,
+		)
+		if err != nil {
+			return Provider{}, err
+		}
+	}
+	return Provider{
+		ID: decoded.ID, Env: decoded.Env, NPM: decoded.NPM, API: decoded.API,
+		Name: decoded.Name, Doc: decoded.Doc, Models: models,
+		UnknownFields: unknown, RecordReport: report,
+	}, nil
 }
 
 // Model represents a model in models.dev.
@@ -883,8 +955,8 @@ func parseDate(dateStr string) (*time.Time, error) {
 }
 
 // GetProvider returns a specific provider from the API data.
-func (api *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool) {
-	provider, exists := (*api)[string(providerID)]
+func (a *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool) {
+	provider, exists := (*a)[string(providerID)]
 	return &provider, exists
 }
 

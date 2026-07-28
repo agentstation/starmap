@@ -31,11 +31,14 @@ type aiStudioModelsResponse struct {
 	Models        []aiStudioModel                  `json:"models"`
 	NextPageToken string                           `json:"nextPageToken,omitempty"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	RecordReport  sourcepayload.RecordReport       `json:"-"`
 }
 
 func (r *aiStudioModelsResponse) UnmarshalJSON(data []byte) error {
-	type responseAlias aiStudioModelsResponse
-	var decoded responseAlias
+	var decoded struct {
+		Models        json.RawMessage `json:"models"`
+		NextPageToken string          `json:"nextPageToken,omitempty"`
+	}
 	if err := json.Unmarshal(data, &decoded); err != nil {
 		return err
 	}
@@ -43,8 +46,22 @@ func (r *aiStudioModelsResponse) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*r = aiStudioModelsResponse(decoded)
-	r.UnknownFields = unknown
+	var records []aiStudioModel
+	var report sourcepayload.RecordReport
+	if len(decoded.Models) != 0 && string(decoded.Models) != "null" {
+		records, report, err = sourcepayload.DecodeJSONArray[aiStudioModel](
+			decoded.Models,
+			"models",
+			constants.MaxCatalogModels,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	*r = aiStudioModelsResponse{
+		Models: records, NextPageToken: decoded.NextPageToken,
+		UnknownFields: unknown, RecordReport: report,
+	}
 	return nil
 }
 
@@ -351,6 +368,10 @@ func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, erro
 			return models, nil
 		}
 	} else {
+		var quarantineErr *sourcepayload.QuarantineError
+		if stderrors.As(err, &quarantineErr) {
+			return models, err
+		}
 		var parseErr *errors.ParseError
 		if stderrors.As(err, &parseErr) {
 			return nil, err
@@ -379,7 +400,9 @@ func (c *Client) listModelsAIStudioREST(ctx context.Context) ([]catalogs.Model, 
 
 	httpClient := transport.New(provider)
 	pageToken := ""
+	seenPageTokens := make(map[string]struct{})
 	models := make([]catalogs.Model, 0)
+	report := sourcepayload.RecordReport{}
 	for {
 		requestURL, err := googleListURL(provider.CatalogEndpointURL(), pageToken)
 		if err != nil {
@@ -396,16 +419,42 @@ func (c *Client) listModelsAIStudioREST(ctx context.Context) ([]catalogs.Model, 
 		if result.Models == nil {
 			return nil, errors.NewParseError("json", "google AI Studio response", "required models array is missing or null", nil)
 		}
-		for _, rawModel := range result.Models {
+		report.Rejected += result.RecordReport.Rejected
+		report.Issues = append(report.Issues, result.RecordReport.Issues...)
+		report.Truncated = report.Truncated || result.RecordReport.Truncated
+		pageModels := result.Models
+		remaining := constants.MaxCatalogModels - len(models) - report.Rejected
+		if remaining < 0 {
+			remaining = 0
+		}
+		if len(pageModels) > remaining {
+			report.Rejected += len(pageModels) - remaining
+			report.Truncated = true
+			pageModels = pageModels[:remaining]
+		}
+		report.Accepted += len(pageModels)
+		for _, rawModel := range pageModels {
 			rawModel.UnknownFields = append(rawModel.UnknownFields, result.UnknownFields...)
 			models = append(models, *c.convertAIStudioModel(rawModel))
+		}
+		if report.Truncated {
+			break
 		}
 		if result.NextPageToken == "" {
 			break
 		}
+		if _, exists := seenPageTokens[result.NextPageToken]; exists {
+			return nil, errors.NewParseError(
+				"json",
+				"google AI Studio response",
+				"nextPageToken repeated without completing the collection",
+				nil,
+			)
+		}
+		seenPageTokens[result.NextPageToken] = struct{}{}
 		pageToken = result.NextPageToken
 	}
-	return models, nil
+	return models, report.Err("google AI Studio models")
 }
 
 func googleListURL(endpoint, pageToken string) (string, error) {

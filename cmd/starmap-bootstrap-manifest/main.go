@@ -42,6 +42,9 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if err != nil {
 		return err
 	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return err
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		return err

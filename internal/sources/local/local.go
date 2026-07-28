@@ -13,6 +13,7 @@ import (
 type Source struct {
 	catalogPath     string
 	snapshot        *catalogs.Catalog
+	loadReport      catalogs.LoadReport
 	catalogProvided bool // Track if catalog was provided via WithCatalog option
 }
 
@@ -46,6 +47,15 @@ func WithCatalog(catalog *catalogs.Catalog) Option {
 	}
 }
 
+// WithCatalogReport sets a pre-loaded catalog and its source load diagnostics.
+func WithCatalogReport(catalog *catalogs.Catalog, report catalogs.LoadReport) Option {
+	return func(s *Source) {
+		s.snapshot = catalog
+		s.loadReport = report
+		s.catalogProvided = true
+	}
+}
+
 // ID returns the ID of this source.
 func (s *Source) ID() sources.ID {
 	// For local source, we always return the constant name
@@ -60,7 +70,7 @@ func (s *Source) Name() string { return "Local Catalog" }
 func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error) {
 	// If catalog was provided via WithCatalog option, reuse it
 	if s.catalogProvided {
-		return s.observation(s.snapshot)
+		return s.observation(s.snapshot, s.loadReport)
 	}
 
 	// Otherwise, load using NewLocal logic
@@ -76,15 +86,37 @@ func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observ
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("publish", "local source observation", "", err)
 	}
-	return s.observation(catalog)
+	return s.observation(catalog, builder.LoadReport())
 }
 
-func (s *Source) observation(catalog *catalogs.Catalog) (sources.Observation, error) {
+func (s *Source) observation(catalog *catalogs.Catalog, report catalogs.LoadReport) (sources.Observation, error) {
+	issues := make([]sources.ObservationIssue, 0, len(report.Issues))
+	for _, issue := range report.Issues {
+		code := sources.ObservationIssueCodeInvalidRecord
+		scope := sources.ObservationIssueScopeRecord
+		if issue.Limit {
+			code = sources.ObservationIssueCodePayloadLimit
+			scope = sources.ObservationIssueScopeSource
+		}
+		issues = append(issues, sources.ObservationIssue{
+			Scope: scope, Code: code, Subject: issue.Path, Message: issue.Err.Error(),
+		})
+	}
+	completeness := sources.ObservationCompletenessComplete
+	status := sources.ObservationStatusSucceeded
+	if report.Rejected > 0 {
+		completeness = sources.ObservationCompletenessPartial
+		status = sources.ObservationStatusDegraded
+	}
 	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 		ObservedAt:   time.Now().UTC(),
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
-		Completeness: sources.ObservationCompletenessComplete,
-		Status:       sources.ObservationStatusSucceeded,
+		Completeness: completeness,
+		Status:       status,
+		Records: sources.ObservationRecordCounts{
+			Accepted: report.Accepted, Rejected: report.Rejected,
+		},
+		Issues: issues,
 	})
 }
 

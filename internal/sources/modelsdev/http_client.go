@@ -444,6 +444,7 @@ func validateAPISemantics(api *API) (apiSemanticStats, error) {
 				Field: "models_dev.provider.models", Value: providerKey, Message: "must be an object",
 			}
 		}
+		stats.rejectedModels += provider.RecordReport.Rejected
 
 		modelKeys := make([]string, 0, len(provider.Models))
 		for key := range provider.Models {

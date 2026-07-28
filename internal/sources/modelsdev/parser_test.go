@@ -90,6 +90,21 @@ func TestPayloadLimitModelsDevModelCount(t *testing.T) {
 	}
 }
 
+func TestParseAPIBoundsProviderEnvelope(t *testing.T) {
+	payload := make(map[string]any, constants.MaxSourceProviders+1)
+	for index := 0; index <= constants.MaxSourceProviders; index++ {
+		id := fmt.Sprintf("provider-%03d", index)
+		payload[id] = map[string]any{"id": id, "name": id, "models": map[string]any{}}
+	}
+	data, err := json.Marshal(payload)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	if api, err := parseAPIData(data); err == nil || api != nil {
+		t.Fatalf("parseAPIData = %#v, %v; want bounded provider-envelope error", api, err)
+	}
+}
+
 func TestUnknownSourceEnumProducesFingerprintEvidence(t *testing.T) {
 	model, err := (&Model{ID: "model", Name: "Model", Status: "new-lifecycle"}).ToStarmapModel()
 	if err != nil {

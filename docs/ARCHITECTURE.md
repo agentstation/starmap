@@ -704,8 +704,12 @@ exports, and immutable generations remain separate lifecycle domains.
 
 An explicitly configured catalog export is optional only when its path does not
 exist. `NewLocal` detects the wrapped `os.ErrNotExist` and uses the embedded
-bootstrap; malformed provider, author, provenance, or model YAML and other I/O
-or validation failures remain typed errors. When a configured CatalogStore has
+bootstrap. Malformed provider, author, and provenance structure plus filesystem
+failures remain typed fatal errors. Individual malformed model YAML files are
+quarantined with a typed `LoadReport` so valid siblings can form a degraded
+local observation; embedded bootstrap, legacy migration, and atomic projection
+validation require an empty report and remain fail-closed. When a configured
+CatalogStore has
 a current generation, that validated durable generation is authoritative and
 export YAML is not parsed; this prevents a stale or partially materialized
 export view from blocking restart. Export YAML is consulted only when no

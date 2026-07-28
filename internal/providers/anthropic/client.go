@@ -13,6 +13,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
@@ -21,11 +22,13 @@ import (
 type modelsResponse struct {
 	Data          []modelResponse                  `json:"data"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	RecordReport  sourcepayload.RecordReport       `json:"-"`
 }
 
 func (r *modelsResponse) UnmarshalJSON(data []byte) error {
-	type responseAlias modelsResponse
-	var decoded responseAlias
+	var decoded struct {
+		Data json.RawMessage `json:"data"`
+	}
 	if err := json.Unmarshal(data, &decoded); err != nil {
 		return err
 	}
@@ -33,8 +36,19 @@ func (r *modelsResponse) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*r = modelsResponse(decoded)
-	r.UnknownFields = unknown
+	var records []modelResponse
+	var report sourcepayload.RecordReport
+	if len(decoded.Data) != 0 && string(decoded.Data) != "null" {
+		records, report, err = sourcepayload.DecodeJSONArray[modelResponse](
+			decoded.Data,
+			"data",
+			constants.MaxCatalogModels,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	*r = modelsResponse{Data: records, UnknownFields: unknown, RecordReport: report}
 	return nil
 }
 
@@ -195,7 +209,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		models = append(models, *model)
 	}
 
-	return models, nil
+	return models, result.RecordReport.Err("anthropic models")
 }
 
 // convertToModel converts an Anthropic model response to a starmap Model.

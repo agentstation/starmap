@@ -2,19 +2,19 @@ package google
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"sync/atomic"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
-// TestF009CharacterizationMalformedGooglePageDropsEarlierPages pins the
-// pagination failure boundary. P4.8 must preserve accepted records from
-// completed pages and quarantine a malformed later-page record with
-// observation degradation evidence.
-func TestF009CharacterizationMalformedGooglePageDropsEarlierPages(t *testing.T) {
+// TestF009MalformedGooglePageRetainsValidRecords proves accepted records from
+// completed and current pages survive a malformed later-page sibling.
+func TestF009MalformedGooglePageRetainsValidRecords(t *testing.T) {
 	var requests atomic.Int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requests.Add(1)
@@ -46,11 +46,15 @@ func TestF009CharacterizationMalformedGooglePageDropsEarlierPages(t *testing.T) 
 		},
 	})
 	models, err := client.listModelsAIStudioREST(context.Background())
-	if err == nil {
-		t.Fatal("F-009 characterization changed: malformed later page did not fail")
+	var quarantineErr *sourcepayload.QuarantineError
+	if !errors.As(err, &quarantineErr) {
+		t.Fatalf("error = %T: %v, want *sourcepayload.QuarantineError", err, err)
 	}
-	if len(models) != 0 {
-		t.Fatalf("F-009 characterization changed: partial pages returned %d models, want 0", len(models))
+	if len(models) != 2 || models[0].ID != "page-one" || models[1].ID != "page-two-valid" {
+		t.Fatalf("models = %#v, want valid records from both pages", models)
+	}
+	if quarantineErr.Report.Rejected != 1 || len(quarantineErr.Report.Issues) != 1 {
+		t.Fatalf("quarantine report = %#v, want one rejected record", quarantineErr.Report)
 	}
 	if got := requests.Load(); got != 2 {
 		t.Fatalf("requests = %d, want 2 pages", got)

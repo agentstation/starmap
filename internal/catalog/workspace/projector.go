@@ -301,6 +301,9 @@ func readSemanticState(path string) (semanticState, error) {
 	if err != nil {
 		return semanticState{}, errors.WrapResource("load", "catalog workspace", path, err)
 	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return semanticState{}, errors.WrapResource("validate", "catalog workspace model files", path, err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		return semanticState{}, errors.WrapResource("build", "catalog workspace", path, err)
@@ -356,6 +359,9 @@ func validateStableProjection(staged string, state semanticState, source *catalo
 	builder, err := catalogs.NewFromPath(staged)
 	if err != nil {
 		return errors.WrapResource("load", "staged workspace projection", staged, err)
+	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return errors.WrapResource("validate", "staged workspace model files", staged, err)
 	}
 	catalog, err := builder.Build()
 	if err != nil {
