@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0.5 is running the user-authorized dependency security
-prerequisite before the plan PR; architecture implementation has not started.
+Status: `IN_PROGRESS` — P0.5 is revalidating the plan PR on the merged secure
+dependency baseline; architecture implementation has not started.
 
 ## Mission
 
@@ -476,7 +476,7 @@ Live state inspected 2026-07-27.
 | [#40](https://github.com/agentstation/starmap/pull/40) | `codex/provider-expansion-wave0@a14d2249` | `PENDING` | Supersede and close after donor inventory | Salvage map recorded; no rejected schema work copied; closing comment links this plan; PR closed; remote branch deleted; worktree removed |
 | [#43](https://github.com/agentstation/starmap/pull/43) | Dependabot Go modules `@5f5e54dd` | `SUPERSEDED` | Closed in favor of #46 | Recreated head retained vulnerable `grpc v1.82.0`; replacement exists with the regenerated dependency group plus the security patch; #43 is closed with an exact explanation |
 | [#44](https://github.com/agentstation/starmap/pull/44) | Dependabot Actions `@e1dcd1e6` | `PENDING` | Rebase after #46, re-run, then merge or recreate | Current GO-2026-5970 failure eliminated by rebased dependency graph; workflow structural tests and required hosted checks pass; merged or replaced by one equivalent PR; old PR closed |
-| [#45](https://github.com/agentstation/starmap/pull/45) | `codex/starmap-architecture-control-plane@b1548a20` | `IN_PROGRESS` | Rebase onto secure main, then finish P0.5 | Exact rebased head passes Verification Gate and Security & Reliability; required review satisfied; merged; merge SHA recorded |
+| [#45](https://github.com/agentstation/starmap/pull/45) | `codex/starmap-architecture-control-plane` rebased from `b1548a20` | `IN_PROGRESS` | Finish P0.5 on secure main | Exact rebased head passes Verification Gate and Security & Reliability; required review satisfied; merged; merge SHA recorded |
 | [#46](https://github.com/agentstation/starmap/pull/46) | `codex/dependency-security-prerequisite@2fbd4c6d` | `DONE` | Replaced #43 and merged as `53285f13` | Exact head contained regenerated direct updates, `x/text v0.40.0`, and `grpc v1.82.1`; current govulncheck, local verification, both hosted gates, and branch-protection readback passed; merged; remote branch removed |
 
 Current #44 failure is not caused by the action syntax itself. Both required
@@ -769,7 +769,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-036 | `PENDING` | Hook overload can drop a whole generation and the counter is not an adequate operational contract | P7.2, P7.11 |
 | F-037 | `PENDING` | Historical F-099/F-105/F-106 release findings lack terminal mapping in the new plan | P0.5, P11.9 |
 | F-038 | `PENDING` | Hour-scale publication gaps require SSE heartbeats; without them intermediaries reap idle streams, half-open clients linger, and polling/stream health cannot be determined reliably | P7.3, P7.5, P7.8, P7.10–P7.11 |
-| F-039 | `IN_PROGRESS` | The plan PR's pre-#43 dependency graph has reachable GO-2026-5970 (`x/text v0.38.0`) and GO-2026-6061 (`grpc v1.82.0`); #43 fixes only the first on its stale head, so the user-authorized protected security prerequisite must be recreated and merged before #45 can pass | P0.5, P1.1–P1.2 |
+| F-039 | `IN_PROGRESS` | The plan PR's original dependency graph had reachable GO-2026-5970 (`x/text v0.38.0`) and GO-2026-6061 (`grpc v1.82.0`); replacement #46 resolved both on protected main and the rebased plan head still requires exact hosted proof | P0.5, P1.1–P1.2 |
 
 ## Workspace Ledger
 
@@ -806,6 +806,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P0.5 / P1.1 | Dependabot recreated #43 as `5f5e54dd12a983d4dbbcd393e55e414ba1e93526`, updating the direct group but retaining vulnerable `grpc v1.82.0`; its new Security & Reliability run failed. Created replacement PR [#46](https://github.com/agentstation/starmap/pull/46) at exact head `2fbd4c6dea333ec575287a28e76233e8e148d224`, adding only the required grpc v1.82.1 module and checksum change on top of that regenerated head, then closed #43 as superseded. |
 | 2026-07-27 | P0.5 / P1.1 | On #46 exact head `2fbd4c6dea333ec575287a28e76233e8e148d224`, Go 1.26.5 current `govulncheck v1.6.0` reported zero reachable vulnerabilities and `make verify` passed tests, `-race -short`, vet, catalog benchmark (9.251–9.422 ns/op, 0 B/op, 0 allocs/op), lint, coverage gates, docs, diff, build, catalog validation, and isolated CLI checks. Hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149107028) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149106992) started on that exact head. |
 | 2026-07-27 | P0.5 / P1.1–P1.2 | PR #46 exact head `2fbd4c6dea333ec575287a28e76233e8e148d224` passed [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149107028) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30318460306/job/90149106992). Protection readback required both exact contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged to protected main as `53285f13ac9b97e7fa06d40ba2839507a2368e16`. The remote replacement branch was deleted. |
+| 2026-07-27 | P0.5 | Rebased the six control-plane commits onto secure protected main `53285f13ac9b97e7fa06d40ba2839507a2368e16` without conflict. On rebased head `ad682e4cd49f99baeac045869d7f70ff20891e92`, Go 1.26.5 `govulncheck v1.6.0` reported zero reachable vulnerabilities and `make verify` passed ordinary tests, `-race -short`, vet, the catalog benchmark (10.47–11.09 ns/op, 0 B/op, 0 allocs/op), lint, every coverage gate, docs, diff, build, catalog validation, and isolated CLI checks. |
 
 ## Final Definition of Done
 
