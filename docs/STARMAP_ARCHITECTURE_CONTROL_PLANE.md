@@ -2,10 +2,9 @@
 
 Last updated: 2026-07-27
 
-Status: `IN_PROGRESS` — P0 and P1 are complete. P2 has pinned current
-behavior, composition budgets, five golden consumer journeys, and the
-production keep/delete decisions; P2.9 owns its exact-head phase gate and
-protected PR before structural implementation begins.
+Status: `IN_PROGRESS` — P0–P2 are complete. P3.6a now owns the narrow
+generation-store commit-point, atomic YAML projection, and store-only hotfix
+before authority/resilience implementation begins.
 
 ## Mission
 
@@ -454,15 +453,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-contract-characterization`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-publication-hotfix`
 - Branch:
-  `codex/catalog-contract-characterization`
+  `codex/catalog-publication-hotfix`
 - Base:
-  `origin/main@08f51ca9d1d1c924a6637dc70d7f5b89944ed98a`
+  `origin/main@f8973be3a6f25960efb786b7620a8c7975cfbf1d`
 
-This worktree contains P2 green characterization, vocabulary, measurements,
-journeys, and keep/delete decisions. It was created from the exact protected
-main produced by merged PR #48.
+This worktree contains the P3.6a/P3.6b/P3.8 commit-point, atomic-projection,
+and store-only hotfix. It was created from the exact protected main produced
+by merged PR #49 after the P2 worktree and branches were removed.
 
 ### Provider expansion worktree
 
@@ -531,7 +530,7 @@ Live state inspected 2026-07-27.
 | [#46](https://github.com/agentstation/starmap/pull/46) | `codex/dependency-security-prerequisite@2fbd4c6d` | `DONE` | Replaced #43 and merged as `53285f13` | Exact head contained regenerated direct updates, `x/text v0.40.0`, and `grpc v1.82.1`; current govulncheck, local verification, both hosted gates, and branch-protection readback passed; merged; remote branch removed |
 | [#47](https://github.com/agentstation/starmap/pull/47) | `codex/starmap-pr-reconciliation@650f5406` | `DONE` | Replaced #44 and merged as `a87b6425` | Exact head contained only P0/P1 ledger evidence, the three reviewed action-pin updates, and matching structural assertions; actionlint, race fixture, current govulncheck, full local verification, both hosted gates, protection, and review-thread checks passed; merged; remote branch removed |
 | [#48](https://github.com/agentstation/starmap/pull/48) | `codex/provider-donor-inventory@b7afa2df` | `DONE` | Closed P1 reconciliation and merged as `08f51ca9` | Exact head contained only the control-plane ledger and exhaustive #40 donor inventory; exact local verification, both hosted gates, protection, and zero review threads passed; merged; remote/local branch and worktree removed |
-| [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@64177404` | `IN_PROGRESS` | P2 characterization and production composition decisions | Final ledger head must pass the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, protection readback, and review-thread inspection before merge |
+| [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@39b08d6d` | `DONE` | P2 characterization and production composition decisions merged as `f8973be3` | Exact head passed the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; merged; remote/local branch and worktree removed |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -552,8 +551,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | --- | --- | --- | --- |
 | P0 | `DONE` | Durable control plane and architecture report are reviewable | P0 tasks and plan PR green after the authorized dependency prerequisite |
 | P1 | `DONE` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
-| P2 | `IN_PROGRESS` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
-| P3 | `PENDING` | One human provider-YAML workspace has deterministic lifecycle | Legacy detection plus seed/edit/upgrade/restart/rollback suite |
+| P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
+| P3 | `IN_PROGRESS` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `PENDING` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
 | P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
 | P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
@@ -634,7 +633,7 @@ active alternative architecture.
 | P2.6 | `DONE` | Measure public composition after #46 | [`reviews/P2_COMPOSITION_BASELINE_2026-07-27.md`](reviews/P2_COMPOSITION_BASELINE_2026-07-27.md) records exact root/catalog/server/Google closures and attribution, frozen numeric ceilings, binary sizes, accessor allocations/latency, package/file/LOC totals, embedded bytes, and every >1000-line file |
 | P2.7 | `DONE` | Freeze user journeys | [`reviews/P2_USER_JOURNEYS_2026-07-27.md`](reviews/P2_USER_JOURNEYS_2026-07-27.md) and five parsed golden fixtures cover the in-process library, CLI workspace, embedded upgrade, public `server` package, and opt-in public `remote` subscriber |
 | P2.8 | `DONE` | Decide production compositions before deletion | [`reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md`](reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md) retains one server manifest/payload/SSE plus public `remote` flow and the immutable artifact format; it records deletion of the unused hosted distribution protocol, scheduler subsystem, and WebSocket path before P6.5/P7/P9.6 |
-| P2.9 | `IN_PROGRESS` | Close the characterization phase | The exact phase head passes `make verify`, current `govulncheck`, documentation/diff checks, and every P2 focused race suite; the protected PR passes Verification Gate and Security & Reliability, is merged, and its SHA is recorded before the P3.6a/P3.6b/P3.8 hotfix begins |
+| P2.9 | `DONE` | Close the characterization phase | Exact head `39b08d6d` passed `make verify`, current `govulncheck`, documentation/diff checks, and the complete P2 affected-package race suite; protected PR #49 passed Verification Gate and Security & Reliability and merged as `f8973be3` before the P3.6a/P3.6b/P3.8 hotfix began |
 
 P2 never merges a failing test. Each known defect receives a green
 characterization test that pins the currently observed defective behavior,
@@ -651,7 +650,7 @@ compile and performance baselines must also be green.
 | P3.3 | `PENDING` | Make first-run seed atomic | Missing workspace becomes one complete embedded-seeded tree or remains absent after failure |
 | P3.4 | `PENDING` | Reconcile embedded E1→E2 after P4 | New embedded revision updates unchanged embedded-derived fields, fills gaps, and preserves actual human edits using the completed P4 authority/provenance model |
 | P3.5 | `PENDING` | Detect semantic human edits after P4 | Only changed semantic paths become local evidence under the completed P4 model; formatting-only changes do not |
-| P3.6a | `PENDING` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; YAML failure cannot veto or corrupt a committed generation; a crash immediately after store commit leaves the generation usable and detectable for projection repair |
+| P3.6a | `IN_PROGRESS` | Establish one durable commit point before P4 | Generation-store CAS is the sole commit point; YAML failure cannot veto or corrupt a committed generation; a crash immediately after store commit leaves the generation usable and detectable for projection repair |
 | P3.6b | `PENDING` | Make YAML projection atomic and repairable before P4 | YAML is staged, validated, fsynced, input-digest checked, and atomically projected only after commit; startup compares digests and repairs an interrupted or stale projection without republishing the generation |
 | P3.7 | `PENDING` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
 | P3.8 | `PENDING` | Preserve store-only use | Catalog-store sync succeeds without a YAML path and performs zero workspace filesystem operations |
@@ -839,7 +838,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `starmap-architecture-control-plane` on fresh branch | `DONE` | PR #45 merged; remote/local branch and worktree removed |
 | `starmap-pr-reconciliation` on `codex/starmap-pr-reconciliation@650f5406` | `DONE` | PR #47 merged; remote branch removed; local branch/worktree removed after the successor P1 workspace was created |
 | `provider-donor-inventory` on `codex/provider-donor-inventory@b7afa2df` | `DONE` | PR #48 merged; remote branch removed; local branch/worktree removed after the successor P2 workspace was created |
-| `catalog-contract-characterization` on `codex/catalog-contract-characterization` | `IN_PROGRESS` | Complete P2, merge its exact green phase PR, then remove the worktree/branch |
+| `catalog-contract-characterization` on `codex/catalog-contract-characterization@39b08d6d` | `DONE` | PR #49 merged as `f8973be3`; remote/local branch and worktree removed after the successor hotfix workspace was created |
+| `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@f8973be3` | `IN_PROGRESS` | Complete P3.6a/P3.6b/P3.8, merge its exact green phase PR, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -889,6 +889,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P2.7 | Added [`reviews/P2_USER_JOURNEYS_2026-07-27.md`](reviews/P2_USER_JOURNEYS_2026-07-27.md) and five golden fixtures under `testdata/journeys`. The Go fixtures freeze the canonical root library DX, the public `github.com/agentstation/starmap/server` composition with caller-owned `Serve(ctx, listener)`, and the opt-in `github.com/agentstation/starmap/remote` lifecycle whose constructor is inert and whose `Start` performs verified initial fetch before reactive service. Machine-readable CLI-workspace and embedded E1→E2 fixtures freeze atomic seed, semantic edits, provider-price authority, explicit update, no install-time rewrite, restart, rollback, and the absence of persisted definitions/offerings/overrides. `TestP2UserJourneyGoldenFixtures` parses every fixture, rejects internal/CLI imports, and validates the required contract fields; later phases must promote the same artifacts into external compile and runtime suites. |
 | 2026-07-27 | P2.8 | On code tree `892589f790f4a7b3b9c88d913924486017854fed`, production-import queries found zero importer of `pkg/catalogdistribution` and zero caller of `NewRunner`, `NewInitialRunController`, the lease/ledger/freshness constructors, or their `Operations` wiring options. [`reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md`](reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md) therefore retains one server manifest/immutable-payload/SSE protocol consumed by public `remote`, retains `catalogartifact` for independently versioned GitHub Release and offline artifacts, and directs deletion of the 767-production-line hosted protocol, the 2,314-production-line scheduler subsystem, and WebSocket. Cadence is owned by the embedding deployment over explicit `Sync`; a future `starmap.agentstation.ai` deployment uses the same server contract rather than a competing protocol. `make docs-check`, `git diff --check`, and shell assertions for the zero production callers passed. |
 | 2026-07-27 | P2.9 | Exact code-and-decision head `64177404c453a9e695be3e43a9d35d0f8108aa3b` passed the complete P2 affected-package `go test -race` command across root, pipeline, catalogs, reconciliation, source decoders, store, server, both characterized transports, and remote client. Current Go 1.26.5 `govulncheck v1.6.0` reported zero reachable and zero imported-package vulnerabilities. Exact `make verify` passed ordinary tests, repository-wide `-race -short`, vet, lint with zero issues, all coverage floors, docs, diff, build, 933-model catalog validation, and isolated CLI checks; `BenchmarkClientCatalog` measured 10.57–11.00 ns/op, 0 B/op, and 0 allocs/op. Opened protected phase PR [#49](https://github.com/agentstation/starmap/pull/49); its final ledger head still requires the same exact local and hosted proof. |
+| 2026-07-27 | P2.9 / P3.6a | PR #49 final exact head `39b08d6d898ce69de7c36e3d13abfb468137e43d` passed the complete affected-package race command, current `govulncheck v1.6.0` with zero reachable/imported-package vulnerabilities, and exact `make verify`; its catalog benchmark measured 11.32–14.61 ns/op, 0 B/op, and 0 allocs/op. The same head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30325378975/job/90169625012) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30325378975/job/90169625097). Protection required both exact contexts with strict checking, admin enforcement, conversation resolution, zero approvals, and no force-push/deletion; the PR had zero review threads and merged as `f8973be3a6f25960efb786b7620a8c7975cfbf1d`. Its remote/local branch and worktree were removed after creating fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-publication-hotfix` on `codex/catalog-publication-hotfix` at that protected-main SHA. |
 
 ## Final Definition of Done
 
