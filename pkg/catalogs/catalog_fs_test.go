@@ -64,9 +64,14 @@ func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T
 	); err != nil {
 		t.Fatalf("Write corrupt model: %v", err)
 	}
-	_, err = NewLocal(corruptModel)
-	if !stderrors.As(err, &parseErr) {
-		t.Fatalf("corrupt model error = %T: %v, want *errors.ParseError", err, err)
+	loaded, err := NewLocal(corruptModel)
+	if err != nil {
+		t.Fatalf("corrupt model record should be quarantined: %v", err)
+	}
+	report := loaded.LoadReport()
+	if report.Rejected != 1 || len(report.Issues) != 1 ||
+		!stderrors.As(report.Issues[0].Err, &parseErr) {
+		t.Fatalf("corrupt model report = %#v, want one *errors.ParseError issue", report)
 	}
 }
 

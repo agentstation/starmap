@@ -10,6 +10,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -437,6 +438,66 @@ func TestFieldEvidencePricingFallbackQueryable(t *testing.T) {
 	}
 	if !strings.Contains(evidence.Rejections[0].Reason, "must not be negative") {
 		t.Fatalf("provider rejection reason = %q", evidence.Rejections[0].Reason)
+	}
+}
+
+func TestFieldEvidenceAllPricingRejectionsSurviveCatalogPayload(t *testing.T) {
+	providerCatalog := catalogs.NewEmpty()
+	if err := addModelsToProvider(providerCatalog, "test-provider", []*catalogs.Model{{
+		ID: "model-1", Name: "Provider Model", Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrencyUSD,
+			Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: -1}},
+		},
+	}}); err != nil {
+		t.Fatalf("add provider model: %v", err)
+	}
+	fallbackCatalog := catalogs.NewEmpty()
+	if err := addModelsToProvider(fallbackCatalog, "test-provider", []*catalogs.Model{{
+		ID: "model-1", Name: "Fallback Model", Pricing: &catalogs.ModelPricing{
+			Currency: catalogs.ModelPricingCurrency("dollars"),
+			Tokens:   &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: 0.5}},
+		},
+	}}); err != nil {
+		t.Fatalf("add fallback model: %v", err)
+	}
+	providerSnapshot, err := providerCatalog.Build()
+	if err != nil {
+		t.Fatalf("build provider catalog: %v", err)
+	}
+	fallbackSnapshot, err := fallbackCatalog.Build()
+	if err != nil {
+		t.Fatalf("build fallback catalog: %v", err)
+	}
+
+	reconcile, err := reconciler.New(
+		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
+		reconciler.WithProvenance(true),
+	)
+	if err != nil {
+		t.Fatalf("new reconciler: %v", err)
+	}
+	result, err := reconcile.Sources(context.Background(), sources.ProvidersID, []sources.Observation{
+		{ID: "provider-observation", SourceID: sources.ProvidersID, Catalog: providerSnapshot},
+		{ID: "modelsdev-observation", SourceID: sources.ModelsDevHTTPID, Catalog: fallbackSnapshot},
+	})
+	if err != nil {
+		t.Fatalf("reconcile: %v", err)
+	}
+	payload, err := catalogstore.EncodeCatalogPayload(result.Catalog)
+	if err != nil {
+		t.Fatalf("encode payload: %v", err)
+	}
+	decoded, err := catalogstore.DecodeCatalogPayload(payload)
+	if err != nil {
+		t.Fatalf("decode payload: %v", err)
+	}
+
+	entries := decoded.Provenance().FindModelField("test-provider", "model-1", "pricing")
+	if len(entries) != 1 {
+		t.Fatalf("durable pricing evidence = %#v, want one entry", entries)
+	}
+	if entries[0].Source != "" || len(entries[0].Rejections) != 2 {
+		t.Fatalf("durable pricing evidence = %#v, want no winner and two rejections", entries[0])
 	}
 }
 

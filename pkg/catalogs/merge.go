@@ -6,6 +6,11 @@ import "reflect"
 func MergeModels(existing, updated Model) Model {
 	result := existing // Start with existing model
 
+	mergeModelDescription(&result, &updated)
+	mergeModelFeaturesByPresence(&result, &updated)
+	mergeModelLimitsByPresence(&result, &updated)
+	mergeModelMetadataByPresence(&result, &updated)
+
 	// Use reflection to merge non-zero fields from updated model
 	existingVal := reflect.ValueOf(&result).Elem()
 	newVal := reflect.ValueOf(updated)
@@ -39,8 +44,9 @@ func mergeFields(dest, src reflect.Value) {
 			dest.SetFloat(src.Float())
 		}
 	case reflect.Bool:
-		// For booleans, always take the new value since false is a valid override
-		dest.SetBool(src.Bool())
+		if src.Bool() {
+			dest.SetBool(true)
+		}
 	case reflect.Slice:
 		if !src.IsNil() && src.Len() > 0 {
 			dest.Set(src)
@@ -75,4 +81,94 @@ func mergeFields(dest, src reflect.Value) {
 			dest.Set(src)
 		}
 	}
+}
+
+func mergeModelDescription(result, updated *Model) {
+	description, state := updated.DescriptionValue()
+	switch state {
+	case ValueKnown:
+		result.SetDescription(description)
+	case ValueUnknown:
+		if _, existingState := result.DescriptionValue(); existingState == ValueMissing {
+			result.SetDescriptionUnknown()
+		}
+	}
+	updated.UnsetDescription()
+}
+
+func mergeModelFeaturesByPresence(result, updated *Model) {
+	if updated.Features == nil {
+		return
+	}
+	if result.Features == nil {
+		result.Features = &ModelFeatures{}
+	}
+	if len(updated.Features.Modalities.Input) > 0 {
+		result.Features.Modalities.Input = append(
+			[]ModelModality(nil),
+			updated.Features.Modalities.Input...,
+		)
+	}
+	if len(updated.Features.Modalities.Output) > 0 {
+		result.Features.Modalities.Output = append(
+			[]ModelModality(nil),
+			updated.Features.Modalities.Output...,
+		)
+	}
+	for _, feature := range modelFeatures() {
+		value, state := updated.Features.Support(feature)
+		switch state {
+		case ValueKnown:
+			result.Features.SetSupport(feature, value)
+		case ValueUnknown:
+			if _, existingState := result.Features.Support(feature); existingState == ValueMissing {
+				result.Features.SetSupportUnknown(feature)
+			}
+		}
+	}
+	updated.Features = nil
+}
+
+func mergeModelLimitsByPresence(result, updated *Model) {
+	if updated.Limits == nil {
+		return
+	}
+	if result.Limits == nil {
+		result.Limits = &ModelLimits{}
+	}
+	for _, limit := range []ModelLimit{
+		ModelLimitContextWindow,
+		ModelLimitInputTokens,
+		ModelLimitOutputTokens,
+	} {
+		value, state := updated.Limits.Value(limit)
+		switch state {
+		case ValueKnown:
+			result.Limits.Set(limit, value)
+		case ValueUnknown:
+			if _, existingState := result.Limits.Value(limit); existingState == ValueMissing {
+				result.Limits.SetUnknown(limit)
+			}
+		}
+	}
+	updated.Limits = nil
+}
+
+func mergeModelMetadataByPresence(result, updated *Model) {
+	if updated.Metadata == nil {
+		return
+	}
+	if result.Metadata == nil {
+		result.Metadata = &ModelMetadata{}
+	}
+	open, state := updated.Metadata.OpenWeightsValue()
+	switch state {
+	case ValueKnown:
+		result.Metadata.SetOpenWeights(open)
+	case ValueUnknown:
+		if _, existingState := result.Metadata.OpenWeightsValue(); existingState == ValueMissing {
+			result.Metadata.SetOpenWeightsUnknown()
+		}
+	}
+	updated.Metadata.UnsetOpenWeights()
 }

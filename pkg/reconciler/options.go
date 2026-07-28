@@ -10,7 +10,7 @@ import (
 // Options configures a reconciler.
 type options struct {
 	strategy    Strategy
-	authorities authority.Authority
+	authorities authority.Reader
 	enhancers   []enhancer.Enhancer
 	tracking    bool
 	baseline    *catalogs.Catalog // Existing catalog for comparison
@@ -58,7 +58,7 @@ func WithStrategy(strategy Strategy) Option {
 }
 
 // WithAuthorities sets the field authorities.
-func WithAuthorities(authorities authority.Authority) Option {
+func WithAuthorities(authorities authority.Reader) Option {
 	return func(r *options) error {
 		if authorities == nil {
 			return &errors.ValidationError{
@@ -67,7 +67,7 @@ func WithAuthorities(authorities authority.Authority) Option {
 			}
 		}
 		r.authorities = authorities
-		if r.strategy != nil || r.strategy.Type() != StrategyTypeFieldAuthority {
+		if r.strategy == nil || r.strategy.Type() == StrategyTypeFieldAuthority {
 			r.strategy = NewAuthorityStrategy(authorities)
 		}
 		return nil

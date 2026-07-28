@@ -1,83 +1,169 @@
 # Catalog Authority Policy
 
-Starmap reconciles two canonical model resource types:
+Starmap persists one human-readable provider-model record. Reconciliation
+selects the facts in that record once; immutable definitions, offerings, and
+author membership are derived read views of the same result.
 
-- `ModelDefinition` contains provider-independent identity, authorship, lineage,
-  weights, and intrinsic capabilities.
-- `ProviderOffering` contains one provider's price, limits, availability,
-  regions, endpoint behavior, lifecycle, and named service modes.
+The sole executable source of field precedence is the immutable table returned
+by `authority.New`. Each `authority.Policy` owns:
 
-The executable source of truth is `pkg/authority.CanonicalPolicies`. A
-reflection gate walks every exported canonical schema leaf and fails whenever a
-new field is not covered by a policy containing an authority order, merge
-policy, empty policy, and rationale.
+- the catalog resource and reflected field path;
+- the stable provenance path, when it differs from the Go field path;
+- one highest-to-lowest source order;
+- merge and empty-value semantics; and
+- the rationale for that decision.
 
-## Policy semantics
+The reconciler iterates that table directly. Nested limits, metadata, features,
+modes, pricing, and source extensions use focused executors, but those
+executors receive their order and semantics from the same policy. They contain
+no second priority list. Tests fail when a reconciled catalog field lacks a
+policy, a policy names a nonexistent field, or returned policy state aliases
+the table.
 
-Authority order is highest to lowest. HTTP precedes Git when both represent the
-same models.dev dataset; Git remains an explicit verification transport.
+## Source roles
 
-| Merge policy | Meaning |
+| Fact | Normal order | Reason |
+| --- | --- | --- |
+| Provider price, limits, capabilities, modes, model name | provider → models.dev HTTP → models.dev Git → local | Current valid provider facts are offering-specific and lead fallback observations |
+| Model description, lifecycle, lineage family, definition metadata | models.dev HTTP → models.dev Git → provider → local | Maintained upstream metadata leads sparse provider APIs; human YAML fills missing facts |
+| Provider identity and discovery metadata | provider → models.dev HTTP → models.dev Git → local | Current observations lead a human fallback |
+| Provider API key shape, environment variables, catalog endpoint, inference endpoint | local → provider → models.dev HTTP → models.dev Git | Connection configuration is operator-owned |
+| Source extensions | local → models.dev HTTP → models.dev Git → provider | Namespaced extension leaves merge without competing with canonical fields |
+
+Git and HTTP remain distinct evidence identities even when they carry the same
+models.dev dataset.
+
+## Merge semantics
+
+| Policy | Meaning |
 | --- | --- |
-| `identity` | One stable value; disagreement is invalid rather than merged |
-| `replace` | Select one complete validated value; do not synthesize subfields |
-| `fill_missing` | The winner remains authoritative and lower sources fill only absent leaves |
-| `set_union` | Add unique values in authority order |
-| `deep_merge` | Merge named records/maps, applying leaf policy recursively |
+| `replace` | Select one complete value; never synthesize its subfields |
+| `fill_missing` | Higher-authority leaves win and lower sources fill only absent leaves |
+| `set_union` | Add unique members in authority order |
+| `deep_merge` | Merge named records or a documented structured field while preserving leaf authority |
 
-| Empty policy | Meaning |
-| --- | --- |
-| `reject` | Empty is invalid for the required field |
-| `absent` | Nil/empty container means no claim and permits fallback |
-| `authoritative` | Explicit zero or `false` is evidence and cannot be replaced as if missing |
+`absent` permits fallback for missing values. `authoritative` preserves a
+meaningful explicit zero, `false`, or empty string when the source actually
+supplied it.
 
-## Model definition inventory
+## Presence semantics
 
-| Attribute family | Authority order | Merge | Empty | Rationale |
-| --- | --- | --- | --- | --- |
-| `ID` | local, models.dev HTTP, models.dev Git, provider | identity | reject | Definition identity is curated and provider-independent |
-| `Name` | local, models.dev HTTP, models.dev Git, provider | replace | reject | Stable display names should not follow provider branding drift |
-| `AuthorIDs` | local, models.dev HTTP, models.dev Git, provider | set union | absent | Curated authorship leads; discoveries may add unique evidence |
-| `Description` | local, models.dev HTTP, models.dev Git, provider | replace | absent | Human-reviewed catalog copy leads |
-| `Metadata.*` | local, models.dev HTTP, models.dev Git, provider | fill missing | absent | Release, cutoff, and tags are definition facts |
-| `Lineage.*` | local, models.dev HTTP, models.dev Git, provider | fill missing | absent | Family and derivation are definition identity facts |
-| `Weights.Open` | local, models.dev HTTP, models.dev Git, provider | replace | authoritative | Explicit `false` is meaningful |
-| `Weights.Architecture.*` | local, models.dev HTTP, models.dev Git, provider | fill missing | absent | Architecture is provider-independent |
-| `Capabilities.Features.*` | provider, models.dev HTTP, models.dev Git, local | fill missing | authoritative | Explicit provider `false` must survive |
-| Other `Capabilities.*` | provider, models.dev HTTP, models.dev Git, local | fill missing | absent | Provider evidence leads optional intrinsic capability details |
-| `CreatedAt`, `UpdatedAt` | local, models.dev HTTP, models.dev Git, provider | replace | absent | Record times follow the winner, not ingestion time |
+Starmap keeps ordinary catalog reads ergonomic while retaining source
+presence. `Model.Description`, feature booleans, limit integers, and
+`ModelMetadata.OpenWeights` remain their natural Go scalar types. Their owning
+types also expose typed presence methods:
 
-## Provider offering inventory
+- `DescriptionValue`;
+- `ModelFeatures.Support`;
+- `ModelLimits.Value`; and
+- `OpenWeightsValue`.
 
-| Attribute family | Authority order | Merge | Empty | Rationale |
-| --- | --- | --- | --- | --- |
-| `ProviderID`, `ProviderModelID` | provider, models.dev HTTP, models.dev Git, local | identity | reject | Exact provider-scoped service identity |
-| `DefinitionID` | local, models.dev HTTP, models.dev Git, provider | identity | reject | Canonical resolution is curated separately from provider naming |
-| `Pricing.*` | provider, models.dev HTTP, models.dev Git, local | replace | absent | Valid provider price leads and is selected atomically |
-| `Limits.*` | provider, models.dev HTTP, models.dev Git, local | fill missing | absent | Provider limits lead; lower sources fill only missing dimensions |
-| `Availability` | provider, models.dev HTTP, models.dev Git, local | replace | reject | Current provider observation is authoritative |
-| `Regions` | provider, models.dev HTTP, models.dev Git, local | set union | absent | Provider regions lead; documented unique regions may be added |
-| `Endpoint.*` | provider, models.dev HTTP, models.dev Git, local | fill missing | absent | Provider behavior leads; catalog config may fill connection details |
-| `Lifecycle` | provider, models.dev HTTP, models.dev Git, local | replace | reject | Lifecycle belongs to the specific offering |
-| `Modes.*` | provider, models.dev HTTP, models.dev Git, local | deep merge | absent | Named modes merge while leaf authority remains provider-first |
+Each returns `ValueMissing`, `ValueUnknown`, or `ValueKnown`. Direct non-zero
+Go literals are known without setter boilerplate. A source adapter or catalog
+author uses `SetDescription`, `SetSupport`, `ModelLimits.Set`, or
+`SetOpenWeights` only when it must preserve an explicit scalar zero. The
+corresponding `SetDescriptionUnknown`, `SetSupportUnknown`,
+`ModelLimits.SetUnknown`, and `SetOpenWeightsUnknown` methods record an
+upstream `null`; matching `Unset` methods withdraw a claim.
 
-Pricing is an atomic offering fact. A provider observation wins only when it
-passes `ModelPricing.Validate` and is effective at the reconciliation instant.
-Selection then deep-copies that complete value; rejected provider price does
-not partially contaminate a models.dev fallback.
+The human YAML remains ordinary scalars:
 
-Pricing semantics are explicit:
+```yaml
+description: ""
+status: unknown
+features:
+  tool_calls: false
+  tools: null
+limits:
+  context_window: 0
+  input_tokens: null
+```
 
-- currency is a three-letter uppercase code;
-- token units are `per_token` and `per_1m`, and both must describe the same
-  amount when supplied together;
-- a non-nil cost pointer containing zero values is an explicit free price,
-  while a nil pointer is missing evidence;
-- all monetary values must be finite and non-negative;
-- context tiers have a positive, unique threshold and at least one price; and
-- `effective_from` and `effective_until` form an optional half-open interval.
+An omitted key is missing and makes no claim. `null` is explicitly unknown.
+`false`, `0`, and `""` are known values. Missing feature keys are omitted from
+generated YAML rather than expanded into misleading false claims. These states
+survive YAML, immutable catalog JSON, deep copy, merge, reconciliation,
+baseline comparison, and change reporting.
 
-Malformed, future, or expired observations are rejected at the pricing-field
-boundary so the rest of the offering remains usable and the next source can
-provide fallback evidence. Routing preference is not an authority input and
-remains owned by Starport.
+Provider and models.dev decoders mark presence from the upstream wire keys.
+Inferred positive capabilities remain known; an unreported false or zero does
+not become an authoritative negative claim. During reconciliation, a known
+zero participates at its source's normal authority position, while missing and
+unknown values permit lower-authority fallback.
+
+## Observation health and absence
+
+Field authority applies only to values a source actually supplied. Omission is
+not a lifecycle claim, even when an observation reports `complete` and
+`succeeded`. Reconciliation therefore seeds model identity from the immutable
+last-known-good baseline and retains exact prior provenance for baseline-only
+models and providers.
+
+Valid present fields from a partial/degraded observation remain eligible at
+their normal authority position. Their provenance reason records observation
+status, completeness, accepted/rejected counts, and stable issue codes. A
+stale-cache or embedded-bootstrap fallback is narrower: it may fill a missing
+baseline fact but cannot replace a known fact.
+
+The pipeline compares each observation with models previously attributed to
+that same source. An unexplained count regression becomes a provider-scoped
+`volume_collapse` issue and partial/degraded evidence; it never becomes an
+implicit removal. A source error without a usable candidate becomes a bounded
+partial/degraded empty observation so non-strict sync can retain the baseline
+and reconcile healthy siblings. Caller cancellation stops, required-all mode
+fails, and a degraded `Fresh` run cannot publish from an empty baseline.
+
+## Pricing
+
+Pricing is one atomic provider-offering fact. Selection:
+
+1. walks the model `Pricing` policy order;
+2. rejects malformed, future, or expired candidates with evidence;
+3. chooses the first semantically valid, currently effective candidate; and
+4. deep-copies the complete price without mixing currency, token, operation,
+   tier, or effective-period subfields.
+
+A provider price therefore wins when it is valid. models.dev and local prices
+are fallback evidence, not fragments used to repair a rejected provider price.
+Routing preference is not an authority input and remains owned by the caller,
+such as Starport.
+
+## Provenance identity
+
+Model evidence is durable under the provider/model pair, never a bare model
+ID. The encoded resource identity escapes the provider and opaque provider
+model ID independently, so separators inside either value cannot collide.
+`Catalog.Provenance().FindModel(providerID, modelID)` is the normal read API;
+generic resource lookups remain available for algorithms that work across
+resource types.
+
+The flat reconciliation result also keeps provider-scoped paths. Catalog
+payload encode/decode and provenance reports preserve the same two independent
+resources when providers publish the same model ID. Price, each limit
+dimension, and lifecycle/availability status therefore retain the evidence for
+the exact offering they describe.
+
+## Human YAML
+
+Local YAML is evidence, not an unconditional override layer:
+
+- current valid dynamic facts beat stale local copies for discoverable fields;
+- local values fill facts missing from dynamic sources;
+- operator connection configuration remains local-first; and
+- projected provenance is compared to the parsed semantic field value on
+  reload. An unchanged value retains its original source, observation identity,
+  revision, checksum, and timestamp;
+- when the original source is observed again, its current value replaces the
+  unchanged projection at that source's authority position—even for a normally
+  local-first operator field;
+- a semantic mismatch is a local claim and receives the current local
+  observation identity; and
+- an explicitly present `false`, `0`, `""`, or `null` retains its distinct
+  presence state, while removing the key withdraws the local claim; and
+- comments, quoting, whitespace, and key order do not participate in the
+  comparison.
+
+Model comparisons use the exact provider/model provenance identity. Provider
+configuration uses provider/field identity. The legacy bare model evidence in
+the current embedded bootstrap is consulted only when that model ID occurs at
+exactly one provider; ambiguous evidence is never promoted across offerings.

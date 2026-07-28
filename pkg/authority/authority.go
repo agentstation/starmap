@@ -1,294 +1,247 @@
-// Package authority manages source authority for catalog data reconciliation.
+// Package authority defines the executable field policy used by reconciliation.
 package authority
 
 import (
 	"path/filepath"
+	"slices"
 
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Authority determines which source is authoritative for each field.
-type Authority interface {
-	// Find returns the authority configuration for a specific field
-	Find(resourceType sources.ResourceType, fieldPath string) *Field
+// MergePolicy defines how accepted values compose after source selection.
+type MergePolicy string
 
-	// List returns all authorities for a resource type
-	ModelFields() []Field
-	ProviderFields() []Field
-	AuthorFields() []Field
+const (
+	// MergeReplace selects one complete value without mixing subfields.
+	MergeReplace MergePolicy = "replace"
+	// MergeFillMissing accepts lower-authority values only for absent subfields.
+	MergeFillMissing MergePolicy = "fill_missing"
+	// MergeSetUnion combines unique members while preserving authority order.
+	MergeSetUnion MergePolicy = "set_union"
+	// MergeDeep combines a structured value according to its field semantics.
+	MergeDeep MergePolicy = "deep_merge"
+)
+
+// EmptyPolicy defines whether a Go zero value carries source evidence.
+type EmptyPolicy string
+
+const (
+	// EmptyAbsent treats nil and empty values as no claim and permits fallback.
+	EmptyAbsent EmptyPolicy = "absent"
+	// EmptyAuthoritative preserves explicit zero and false values as evidence.
+	EmptyAuthoritative EmptyPolicy = "authoritative"
+)
+
+// Policy is the complete executable contract for one catalog field family.
+//
+// Path is both the reflected catalog path and the authority lookup pattern.
+// EvidencePath is used only when persisted provenance has a stable external
+// spelling that differs from Path.
+type Policy struct {
+	Resource     sources.ResourceType
+	Path         string
+	EvidencePath string
+	SourceOrder  []sources.ID
+	Merge        MergePolicy
+	Empty        EmptyPolicy
+	Rationale    string
 }
 
-// Field defines source priority for a specific field.
-type Field struct {
-	Path     string     `json:"path" yaml:"path"`         // e.g., "pricing.input", "metadata.knowledge_cutoff"
-	Source   sources.ID `json:"source" yaml:"source"`     // Which source is authoritative
-	Priority int        `json:"priority" yaml:"priority"` // Priority (higher = more authoritative)
-}
-
-// authorities provides standard field authorities.
-type authorities struct {
-	modelFields    []Field
-	providerFields []Field
-	authorFields   []Field
-}
-
-// New creates a new DefaultAuthorities with standard configurations.
-func New() Authority {
-	return &authorities{
-		modelFields:    defaultModelAuthorities(),
-		providerFields: defaultProviderAuthorities(),
-		authorFields:   defaultAuthorAuthorities(),
+// Evidence returns the stable provenance path for the policy.
+func (p Policy) Evidence() string {
+	if p.EvidencePath != "" {
+		return p.EvidencePath
 	}
+	return p.Path
 }
 
-// Find returns the authority configuration for a specific field.
-func (a *authorities) Find(resourceType sources.ResourceType, fieldPath string) *Field {
-	var authorities []Field
-
-	switch resourceType {
-	case sources.ResourceTypeModel:
-		authorities = a.modelFields
-	case sources.ResourceTypeProvider:
-		authorities = a.providerFields
-	case sources.ResourceTypeAuthor:
-		authorities = a.authorFields
-	default:
-		return nil
-	}
-
-	return findByFieldPath(authorities, fieldPath)
-}
-
-func (a *authorities) ModelFields() []Field {
-	return append([]Field(nil), a.modelFields...)
-}
-
-func (a *authorities) ProviderFields() []Field {
-	return append([]Field(nil), a.providerFields...)
-}
-
-func (a *authorities) AuthorFields() []Field {
-	return append([]Field(nil), a.authorFields...)
-}
-
-// ByField returns the highest priority authority for a given field path.
-func findByFieldPath(authorities []Field, fieldPath string) *Field {
-	var bestMatch *Field
-	var bestPriority int
-	var bestMatchLength int
-
-	for i, auth := range authorities {
-		if MatchesPattern(fieldPath, auth.Path) {
-			// Prioritize by: 1) priority, 2) pattern specificity (length), 3) order
-			patternLength := len(auth.Path)
-			if auth.Priority > bestPriority ||
-				(auth.Priority == bestPriority && patternLength > bestMatchLength) {
-				bestMatch = &authorities[i]
-				bestPriority = auth.Priority
-				bestMatchLength = patternLength
-			}
+// Authority returns a normalized score for source within the policy order.
+func (p Policy) Authority(source sources.ID) float64 {
+	for index, candidate := range p.SourceOrder {
+		if candidate == source {
+			return float64(len(p.SourceOrder)-index) / float64(len(p.SourceOrder))
 		}
 	}
-
-	return bestMatch
+	return 0
 }
 
-// MatchesPattern checks if a field path matches a pattern (supports * wildcards).
+// Reader is the narrow policy input consumed by reconciliation algorithms.
+type Reader interface {
+	Find(resource sources.ResourceType, path string) (Policy, bool)
+	Policies(resource sources.ResourceType) []Policy
+}
+
+// Table is Starmap's immutable default authority policy.
+type Table struct {
+	byResource map[sources.ResourceType][]Policy
+}
+
+// New returns the concrete immutable default authority table.
+func New() *Table {
+	return &Table{byResource: indexPolicies(defaultPolicies())}
+}
+
+// Find returns the most specific policy covering path.
+func (t *Table) Find(resource sources.ResourceType, path string) (Policy, bool) {
+	if t == nil {
+		return Policy{}, false
+	}
+	var (
+		best      Policy
+		bestWidth int
+		found     bool
+	)
+	for _, policy := range t.byResource[resource] {
+		if !MatchesPattern(path, policy.Path) {
+			continue
+		}
+		if width := len(policy.Path); !found || width > bestWidth {
+			best = clonePolicy(policy)
+			bestWidth = width
+			found = true
+		}
+	}
+	return best, found
+}
+
+// Policies returns caller-owned policies for resource in execution order.
+func (t *Table) Policies(resource sources.ResourceType) []Policy {
+	if t == nil {
+		return nil
+	}
+	policies := t.byResource[resource]
+	result := make([]Policy, len(policies))
+	for index, policy := range policies {
+		result[index] = clonePolicy(policy)
+	}
+	return result
+}
+
+func indexPolicies(policies []Policy) map[sources.ResourceType][]Policy {
+	indexed := make(map[sources.ResourceType][]Policy)
+	for _, policy := range policies {
+		indexed[policy.Resource] = append(indexed[policy.Resource], clonePolicy(policy))
+	}
+	return indexed
+}
+
+func clonePolicy(policy Policy) Policy {
+	policy.SourceOrder = slices.Clone(policy.SourceOrder)
+	return policy
+}
+
+// MatchesPattern reports whether a field path matches a policy pattern.
 func MatchesPattern(fieldPath, pattern string) bool {
-	// Handle exact matches
 	if fieldPath == pattern {
 		return true
 	}
-
-	// Handle simple wildcard at the end
 	if len(pattern) > 0 && pattern[len(pattern)-1] == '*' {
 		prefix := pattern[:len(pattern)-1]
 		return len(fieldPath) >= len(prefix) && fieldPath[:len(prefix)] == prefix
 	}
-
-	// Handle filepath.Match patterns
 	matched, err := filepath.Match(pattern, fieldPath)
-	if err != nil {
-		return false
-	}
-	return matched
+	return err == nil && matched
 }
 
-// defaultModelAuthorities returns the default field authorities for models.
-func defaultModelAuthorities() []Field {
-	return []Field{
-		// Pricing is provider-offering data. A semantically valid provider
-		// observation wins atomically; models.dev is fallback evidence.
-		{Path: "Pricing", Source: sources.ProvidersID, Priority: 110},
-		{Path: "Pricing", Source: sources.ModelsDevHTTPID, Priority: 100},
-		{Path: "Pricing", Source: sources.ModelsDevGitID, Priority: 90},
-		{Path: "Pricing", Source: sources.LocalCatalogID, Priority: 80},
+func defaultPolicies() []Policy {
+	providerFirst := []sources.ID{
+		sources.ProvidersID,
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+		sources.LocalCatalogID,
+	}
+	modelsDevFirst := []sources.ID{
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+		sources.ProvidersID,
+		sources.LocalCatalogID,
+	}
+	localFirst := []sources.ID{
+		sources.LocalCatalogID,
+		sources.ProvidersID,
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+	}
+	localThenModelsDev := []sources.ID{
+		sources.LocalCatalogID,
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+		sources.ProvidersID,
+	}
 
-		// Availability - Provider API is truth
-		{Path: "Features", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Features", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Features", Source: sources.ModelsDevGitID, Priority: 85},
+	return []Policy{
+		// Provider-scoped model facts.
+		policy(sources.ResourceTypeModel, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "The provider observation supplies the current provider-facing model name."),
+		policy(sources.ResourceTypeModel, "Description", "", modelsDevFirst, MergeReplace, EmptyAuthoritative, "Current upstream descriptions lead; an explicitly present empty human value is distinct from an omitted fallback."),
+		policy(sources.ResourceTypeModel, "Status", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed lifecycle data leads a manual fallback."),
+		policy(sources.ResourceTypeModel, "Authors", "", modelsDevFirst, MergeSetUnion, EmptyAbsent, "Observed authorship leads and non-duplicate lower-authority authors may fill gaps."),
+		policy(sources.ResourceTypeModel, "Lineage.Family", "lineage.family", modelsDevFirst, MergeReplace, EmptyAbsent, "Community model metadata leads provider and local fallback for canonical family."),
+		policy(sources.ResourceTypeModel, "Lineage.Root", "lineage.root", providerFirst, MergeReplace, EmptyAbsent, "Provider lineage identifiers lead upstream and local fallback."),
+		policy(sources.ResourceTypeModel, "Lineage.Parent", "lineage.parent", providerFirst, MergeReplace, EmptyAbsent, "Provider lineage identifiers lead upstream and local fallback."),
+		policy(sources.ResourceTypeModel, "Limits", "limits", providerFirst, MergeFillMissing, EmptyAbsent, "Current provider limits lead; upstream and human data fill dimensions the provider omits."),
+		policy(sources.ResourceTypeModel, "Metadata", "metadata", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Definition metadata comes from upstream observation with lower-authority gap filling."),
+		policy(sources.ResourceTypeModel, "Features", "", providerFirst, MergeDeep, EmptyAuthoritative, "A present provider capability record is authoritative; modalities accumulate documented support."),
+		policy(sources.ResourceTypeModel, "Attachments", "", providerFirst, MergeReplace, EmptyAbsent, "Provider capability evidence leads upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Generation", "", providerFirst, MergeReplace, EmptyAbsent, "Provider generation controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Reasoning", "", providerFirst, MergeReplace, EmptyAbsent, "Provider reasoning controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "ReasoningTokens", "", providerFirst, MergeReplace, EmptyAbsent, "Provider reasoning-token controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Verbosity", "", providerFirst, MergeReplace, EmptyAbsent, "Provider verbosity controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Tools", "", providerFirst, MergeReplace, EmptyAbsent, "Provider tool controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Delivery", "", providerFirst, MergeReplace, EmptyAbsent, "Provider delivery controls lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Modes", "modes", providerFirst, MergeDeep, EmptyAbsent, "Provider service modes lead upstream and human fallback."),
+		policy(sources.ResourceTypeModel, "Pricing", "pricing", providerFirst, MergeReplace, EmptyAbsent, "A semantically valid provider price wins atomically for its offering."),
+		policy(sources.ResourceTypeModel, "Extensions", "extensions", localThenModelsDev, MergeDeep, EmptyAbsent, "Namespaced source extensions merge fieldwise without replacing canonical facts."),
+		policy(sources.ResourceTypeModel, "CreatedAt", "", providerFirst, MergeReplace, EmptyAbsent, "Creation time follows the highest-authority observation that supplies it."),
+		policy(sources.ResourceTypeModel, "UpdatedAt", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Update time follows the highest-authority observation that supplies it."),
 
-		// Capability substructures - Provider API wins when it has explicit data;
-		// models.dev fills gaps for providers with sparse /models responses.
-		{Path: "Attachments", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Attachments", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Attachments", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Reasoning", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Reasoning", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Reasoning", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "ReasoningTokens", Source: sources.ProvidersID, Priority: 95},
-		{Path: "ReasoningTokens", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "ReasoningTokens", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Verbosity", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Verbosity", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Verbosity", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Tools", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Tools", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Tools", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Delivery", Source: sources.ProvidersID, Priority: 95},
-		{Path: "Delivery", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Delivery", Source: sources.ModelsDevGitID, Priority: 85},
+		// Provider discovery facts and operator configuration.
+		policy(sources.ResourceTypeProvider, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider identity leads upstream and human fallback."),
+		policy(sources.ResourceTypeProvider, "Headquarters", "", providerFirst, MergeReplace, EmptyAbsent, "Observed organization metadata leads upstream and human fallback."),
+		policy(sources.ResourceTypeProvider, "IconURL", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider branding leads upstream and human fallback."),
+		policy(sources.ResourceTypeProvider, "StatusPageURL", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider status metadata leads upstream and human fallback."),
+		policy(sources.ResourceTypeProvider, "Aliases", "", localThenModelsDev, MergeSetUnion, EmptyAbsent, "Human aliases lead and discovered aliases may add non-duplicate identifiers."),
+		policy(sources.ResourceTypeProvider, "APIKey", "", localFirst, MergeReplace, EmptyAbsent, "Credential parameter configuration is operator-owned."),
+		policy(sources.ResourceTypeProvider, "EnvVars", "", localFirst, MergeReplace, EmptyAbsent, "Environment configuration is operator-owned."),
+		policy(sources.ResourceTypeProvider, "Catalog", "", localFirst, MergeReplace, EmptyAbsent, "Acquisition endpoint configuration is operator-owned."),
+		policy(sources.ResourceTypeProvider, "ChatCompletions", "", localFirst, MergeReplace, EmptyAbsent, "Inference endpoint configuration is operator-owned."),
+		policy(sources.ResourceTypeProvider, "PrivacyPolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed policy data leads a human fallback."),
+		policy(sources.ResourceTypeProvider, "RetentionPolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed retention data leads a human fallback."),
+		policy(sources.ResourceTypeProvider, "GovernancePolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed governance data leads a human fallback."),
+		policy(sources.ResourceTypeProvider, "Models", "", providerFirst, MergeReplace, EmptyAbsent, "The live provider observation supplies its current model set."),
+		policy(sources.ResourceTypeProvider, "Extensions", "extensions", localThenModelsDev, MergeDeep, EmptyAbsent, "Namespaced source extensions merge fieldwise without replacing canonical facts."),
 
-		// Limits - models.dev has better data (HTTP preferred)
-		{Path: "Limits", Source: sources.ModelsDevHTTPID, Priority: 100},
-		{Path: "Limits", Source: sources.ModelsDevGitID, Priority: 90},
-		{Path: "Limits", Source: sources.ProvidersID, Priority: 85},
-
-		// Metadata - models.dev is authoritative (HTTP preferred)
-		{Path: "Metadata", Source: sources.ModelsDevHTTPID, Priority: 110},
-		{Path: "Metadata", Source: sources.ModelsDevGitID, Priority: 100},
-		{Path: "Metadata", Source: sources.ProvidersID, Priority: 80},
-
-		// Generation parameters - Provider API for current settings
-		{Path: "Generation", Source: sources.ProvidersID, Priority: 85},
-		{Path: "Generation", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Generation", Source: sources.ModelsDevGitID, Priority: 75},
-
-		// Descriptions - prefer manual edits, then models.dev
-		{Path: "Description", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 85},
-		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 80},
-		{Path: "Description", Source: sources.ProvidersID, Priority: 70},
-
-		// Lifecycle status - models.dev is authoritative until provider
-		// availability fields are mapped into the canonical status enum.
-		{Path: "Status", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Status", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Status", Source: sources.ProvidersID, Priority: 70},
-
-		// Lineage - models.dev is best for family; provider APIs can fill root/parent.
-		{Path: "Lineage", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Lineage", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Lineage", Source: sources.ProvidersID, Priority: 80},
-
-		// Modes - models.dev currently provides mode-specific pricing and request overrides.
-		{Path: "Modes", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "Modes", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "Modes", Source: sources.ProvidersID, Priority: 70},
-
-		// Core identity - Provider API is authoritative for names
-		{Path: "Name", Source: sources.ProvidersID, Priority: 90},
-		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 85},
-		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 80},
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 75},
-
-		// Authors field
-		{Path: "Authors", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Authors", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Authors", Source: sources.ModelsDevGitID, Priority: 75},
-		{Path: "Authors", Source: sources.ProvidersID, Priority: 70},
+		// Author records are currently sourced as catalog metadata, but the same
+		// table remains the only policy if reconciliation requests a winner.
+		policy(sources.ResourceTypeAuthor, "Name", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author identity leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "Aliases", "", localThenModelsDev, MergeSetUnion, EmptyAbsent, "Human aliases lead discovered non-duplicate aliases."),
+		policy(sources.ResourceTypeAuthor, "Description", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "Headquarters", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "IconURL", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "Website", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "HuggingFace", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "GitHub", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "Twitter", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(sources.ResourceTypeAuthor, "Catalog", "", localFirst, MergeReplace, EmptyAbsent, "Author attribution configuration is operator-owned."),
+		policy(sources.ResourceTypeAuthor, "Models", "", localFirst, MergeReplace, EmptyAbsent, "Derived author membership is not replaced by discovery metadata."),
 	}
 }
 
-// defaultProviderAuthorities returns the default field authorities for providers.
-func defaultProviderAuthorities() []Field {
-	return []Field{
-		// API configuration - local catalog for stability (using Go field names)
-		{Path: "APIKey", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "APIKey.*", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "EnvVars", Source: sources.LocalCatalogID, Priority: 100},
-		{Path: "EnvVars", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "EnvVars", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "EnvVars", Source: sources.ProvidersID, Priority: 80},
-		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "Catalog.*", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions.URL", Source: sources.LocalCatalogID, Priority: 95},
-		{Path: "ChatCompletions.HealthAPIURL", Source: sources.LocalCatalogID, Priority: 90},
-
-		// Core info - prefer manual edits (using Go field names)
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
-
-		// Policies - models.dev or manual (HTTP preferred, using Go field names)
-		{Path: "PrivacyPolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "RetentionPolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "RetentionPolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "GovernancePolicy", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "GovernancePolicy.*", Source: sources.ModelsDevHTTPID, Priority: 90},
-		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevHTTPID, Priority: 85},
-		{Path: "PrivacyPolicy", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "PrivacyPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "RetentionPolicy", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "RetentionPolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "GovernancePolicy", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "GovernancePolicy.*", Source: sources.ModelsDevGitID, Priority: 85},
-		{Path: "GovernancePolicy.ModerationRequired", Source: sources.ModelsDevGitID, Priority: 80},
-
-		// Status page - prefer local catalog (using Go field name)
-		{Path: "StatusPageURL", Source: sources.LocalCatalogID, Priority: 85},
-
-		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
-
-		// Runtime model maps are populated from provider/catalog sources.
-		{Path: "Models", Source: sources.ProvidersID, Priority: 90},
-		{Path: "Models", Source: sources.LocalCatalogID, Priority: 80},
-	}
-}
-
-// defaultAuthorAuthorities returns the default field authorities for authors.
-func defaultAuthorAuthorities() []Field {
-	return []Field{
-		// Core author info - prefer local catalog for stability
-		// Using capitalized field names to match Go struct fields
-		{Path: "Name", Source: sources.LocalCatalogID, Priority: 90},
-		{Path: "Description", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Headquarters", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "IconURL", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Website", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "HuggingFace", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "GitHub", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Twitter", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Catalog", Source: sources.LocalCatalogID, Priority: 85},
-		{Path: "Models", Source: sources.LocalCatalogID, Priority: 85},
-
-		// Aliases - prefer local catalog (using Go field name)
-		{Path: "Aliases", Source: sources.LocalCatalogID, Priority: 85},
-
-		// Fallback to models.dev
-		{Path: "Name", Source: sources.ModelsDevHTTPID, Priority: 80},
-		{Path: "Description", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Headquarters", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "IconURL", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Website", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "HuggingFace", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "GitHub", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Twitter", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Catalog", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Models", Source: sources.ModelsDevHTTPID, Priority: 75},
-		{Path: "Name", Source: sources.ModelsDevGitID, Priority: 70},
-		{Path: "Description", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Headquarters", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "IconURL", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Website", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "HuggingFace", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "GitHub", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Twitter", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Catalog", Source: sources.ModelsDevGitID, Priority: 65},
-		{Path: "Models", Source: sources.ModelsDevGitID, Priority: 65},
+func policy(
+	resource sources.ResourceType,
+	path string,
+	evidencePath string,
+	order []sources.ID,
+	merge MergePolicy,
+	empty EmptyPolicy,
+	rationale string,
+) Policy {
+	return Policy{
+		Resource:     resource,
+		Path:         path,
+		EvidencePath: evidencePath,
+		SourceOrder:  slices.Clone(order),
+		Merge:        merge,
+		Empty:        empty,
+		Rationale:    rationale,
 	}
 }

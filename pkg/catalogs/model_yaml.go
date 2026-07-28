@@ -191,7 +191,8 @@ func postProcessModelYAML(yamlContent string) string {
 		} else if strings.Contains(line, "per_1m: 10.0") && !strings.Contains(line, "per_1m: 10.00") {
 			// Format decimals to 2 places for pricing
 			processedLine = strings.Replace(line, "per_1m: 10.0", "per_1m: 10.00", 1)
-		} else if strings.Contains(line, "description: \"") {
+		} else if strings.Contains(line, "description: \"") &&
+			!strings.Contains(line, `description: ""`) {
 			// Convert quoted description to block scalar format
 			processedLine = strings.Replace(line, "description: \"", "description: |-\n  ", 1)
 			processedLine = strings.ReplaceAll(processedLine, "\"", "")

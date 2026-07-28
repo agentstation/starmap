@@ -47,6 +47,9 @@ func MigrateLegacyDirectory(ctx context.Context, path string, options LegacyMigr
 	if err != nil {
 		return Generation{}, errors.WrapResource("migrate", "legacy catalog", path, err)
 	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return Generation{}, errors.WrapResource("migrate", "legacy catalog model files", path, err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		return Generation{}, errors.WrapResource("publish", "legacy catalog", path, err)

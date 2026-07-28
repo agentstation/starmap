@@ -1,9 +1,11 @@
 package pipeline
 
 import (
+	"context"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -13,7 +15,7 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 
 	filtered := filterSources(&pkgsync.Options{
 		Sources: []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID},
-	}, asSnapshot(localCatalog))
+	}, asSnapshot(localCatalog), catalogs.LoadReport{})
 
 	got := sourceIDs(filtered)
 	want := []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID}
@@ -28,7 +30,11 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 }
 
 func TestFilterSourcesFreshExcludesLocalCatalog(t *testing.T) {
-	filtered := filterSources(&pkgsync.Options{Fresh: true}, asSnapshot(catalogs.NewEmpty()))
+	filtered := filterSources(
+		&pkgsync.Options{Fresh: true},
+		asSnapshot(catalogs.NewEmpty()),
+		catalogs.LoadReport{},
+	)
 
 	for _, id := range sourceIDs(filtered) {
 		if id == sources.LocalCatalogID {
@@ -42,7 +48,7 @@ func TestCreateSourcesWithConfigUsesModelsDevSourcesDir(t *testing.T) {
 
 	srcs := createSourcesWithConfig(&pkgsync.Options{
 		SourcesDir: t.TempDir(),
-	}, asSnapshot(localCatalog))
+	}, asSnapshot(localCatalog), catalogs.LoadReport{})
 
 	got := sourceIDs(srcs)
 	want := []sources.ID{
@@ -90,7 +96,11 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := sourceIDs(filterSources(&pkgsync.Options{Sources: test.sources}, localCatalog))
+			got := sourceIDs(filterSources(
+				&pkgsync.Options{Sources: test.sources},
+				localCatalog,
+				catalogs.LoadReport{},
+			))
 			if len(got) != len(test.want) {
 				t.Fatalf("source IDs = %v, want %v", got, test.want)
 			}
@@ -100,5 +110,43 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestLocalLoadReportSurvivesPrebuiltPipelineCatalog(t *testing.T) {
+	builder := catalogs.NewEmpty()
+	if err := builder.SetProvider(catalogs.Provider{
+		ID: "local", Name: "Local",
+		Models: map[string]*catalogs.Model{
+			"valid": {ID: "valid", Name: "Valid"},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	report := catalogs.LoadReport{
+		Accepted: 1,
+		Rejected: 1,
+		Issues: []catalogs.LoadIssue{{
+			Path: "providers/local/models/invalid.yaml",
+			Err:  pkgerrors.NewParseError("yaml", "invalid.yaml", "schema drift", nil),
+		}},
+	}
+	srcs := filterSources(
+		&pkgsync.Options{Sources: []sources.ID{sources.LocalCatalogID}},
+		asSnapshot(builder),
+		report,
+	)
+	if len(srcs) != 1 {
+		t.Fatalf("sources = %d, want one local source", len(srcs))
+	}
+	observation, err := srcs[0].Observe(context.Background())
+	if err != nil {
+		t.Fatalf("Observe: %v", err)
+	}
+	if observation.Status != sources.ObservationStatusDegraded ||
+		observation.Records.Accepted != 1 ||
+		observation.Records.Rejected != 1 ||
+		len(observation.Issues) != 1 {
+		t.Fatalf("observation = %#v, want propagated load degradation", observation)
 	}
 }

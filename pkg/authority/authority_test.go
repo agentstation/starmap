@@ -1,115 +1,183 @@
 package authority
 
 import (
+	"reflect"
+	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func TestFindResolvesExpectedDefaultAuthorities(t *testing.T) {
-	auth := New()
-
+func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 	tests := []struct {
-		name         string
-		resourceType sources.ResourceType
-		fieldPath    string
-		wantSource   sources.ID
-		wantPriority int
+		resource sources.ResourceType
+		typ      reflect.Type
+		ignored  map[string]bool
 	}{
 		{
-			name:         "model pricing prefers provider observation",
-			resourceType: sources.ResourceTypeModel,
-			fieldPath:    "Pricing",
-			wantSource:   sources.ProvidersID,
-			wantPriority: 110,
+			resource: sources.ResourceTypeModel,
+			typ:      reflect.TypeFor[catalogs.Model](),
+			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
 		{
-			name:         "provider catalog nested fields prefer local catalog",
-			resourceType: sources.ResourceTypeProvider,
-			fieldPath:    "Catalog.Endpoint.URL",
-			wantSource:   sources.LocalCatalogID,
-			wantPriority: 95,
+			resource: sources.ResourceTypeProvider,
+			typ:      reflect.TypeFor[catalogs.Provider](),
+			ignored:  map[string]bool{"ID": true, "EnvVarValues": true},
 		},
 		{
-			name:         "provider policy nested fields prefer models.dev HTTP",
-			resourceType: sources.ResourceTypeProvider,
-			fieldPath:    "PrivacyPolicy.URL",
-			wantSource:   sources.ModelsDevHTTPID,
-			wantPriority: 90,
-		},
-		{
-			name:         "author name prefers local catalog",
-			resourceType: sources.ResourceTypeAuthor,
-			fieldPath:    "Name",
-			wantSource:   sources.LocalCatalogID,
-			wantPriority: 90,
+			resource: sources.ResourceTypeAuthor,
+			typ:      reflect.TypeFor[catalogs.Author](),
+			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
 	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			field := auth.Find(tt.resourceType, tt.fieldPath)
-			if field == nil {
-				t.Fatalf("Find(%q, %q) returned nil", tt.resourceType, tt.fieldPath)
-			}
-			if field.Source != tt.wantSource {
-				t.Fatalf("source = %q, want %q", field.Source, tt.wantSource)
-			}
-			if field.Priority != tt.wantPriority {
-				t.Fatalf("priority = %d, want %d", field.Priority, tt.wantPriority)
+	table := New()
+	for _, test := range tests {
+		t.Run(test.resource.String(), func(t *testing.T) {
+			for index := range test.typ.NumField() {
+				field := test.typ.Field(index)
+				if field.PkgPath != "" || test.ignored[field.Name] {
+					continue
+				}
+				if !hasPolicyForField(table.Policies(test.resource), field.Name) {
+					t.Errorf("%s field %s has no executable authority policy", test.resource, field.Name)
+				}
 			}
 		})
 	}
 }
 
-func TestFindUnknownResourceOrFieldReturnsNil(t *testing.T) {
-	auth := New()
-
-	if got := auth.Find(sources.ResourceType("unknown"), "Name"); got != nil {
-		t.Fatalf("unknown resource returned %#v, want nil", got)
-	}
-	if got := auth.Find(sources.ResourceTypeModel, "UnknownField"); got != nil {
-		t.Fatalf("unknown field returned %#v, want nil", got)
+func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
+	table := New()
+	for _, resource := range []sources.ResourceType{
+		sources.ResourceTypeModel,
+		sources.ResourceTypeProvider,
+		sources.ResourceTypeAuthor,
+	} {
+		policies := table.Policies(resource)
+		if len(policies) == 0 {
+			t.Fatalf("%s policy table is empty", resource)
+		}
+		seen := make(map[string]struct{}, len(policies))
+		for _, policy := range policies {
+			if _, duplicate := seen[policy.Path]; duplicate {
+				t.Fatalf("duplicate %s policy %q", resource, policy.Path)
+			}
+			seen[policy.Path] = struct{}{}
+			if policy.Resource != resource ||
+				len(policy.SourceOrder) == 0 ||
+				policy.Merge == "" ||
+				policy.Empty == "" ||
+				strings.TrimSpace(policy.Rationale) == "" {
+				t.Errorf("incomplete %s policy: %#v", resource, policy)
+			}
+			wantEvidence := policy.Path
+			if policy.EvidencePath != "" {
+				wantEvidence = policy.EvidencePath
+			}
+			if got := policy.Evidence(); got != wantEvidence || strings.TrimSpace(got) == "" {
+				t.Errorf("%s policy %q evidence = %q, want %q", resource, policy.Path, got, wantEvidence)
+			}
+		}
+		policies[0].SourceOrder[0] = "mutated"
+		if table.Policies(resource)[0].SourceOrder[0] == "mutated" {
+			t.Fatalf("%s policies share caller-owned source order", resource)
+		}
 	}
 }
 
-func TestFieldListsAreDefensiveCopies(t *testing.T) {
-	auth := New()
-
-	fields := auth.ModelFields()
-	fields[0] = Field{Path: "Pricing", Source: sources.LocalCatalogID, Priority: 999}
-
-	field := auth.Find(sources.ResourceTypeModel, "Pricing")
-	if field == nil {
-		t.Fatal("Find(Pricing) returned nil")
+func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t *testing.T) {
+	table := New()
+	tests := []struct {
+		resource sources.ResourceType
+		path     string
+		want     sources.ID
+	}{
+		{sources.ResourceTypeModel, "Pricing", sources.ProvidersID},
+		{sources.ResourceTypeModel, "Limits", sources.ProvidersID},
+		{sources.ResourceTypeModel, "Metadata", sources.ModelsDevHTTPID},
+		{sources.ResourceTypeProvider, "Name", sources.ProvidersID},
+		{sources.ResourceTypeProvider, "Catalog", sources.LocalCatalogID},
+		{sources.ResourceTypeProvider, "APIKey", sources.LocalCatalogID},
 	}
-	if field.Source != sources.ProvidersID {
-		t.Fatalf("mutating returned field slice changed authority source to %q", field.Source)
+	for _, test := range tests {
+		policy, found := table.Find(test.resource, test.path)
+		if !found {
+			t.Fatalf("Find(%s, %q) returned no policy", test.resource, test.path)
+		}
+		if got := policy.SourceOrder[0]; got != test.want {
+			t.Errorf("Find(%s, %q) first source = %q, want %q", test.resource, test.path, got, test.want)
+		}
 	}
-	if field.Priority != 110 {
-		t.Fatalf("mutating returned field slice changed authority priority to %d", field.Priority)
+}
+
+func hasPolicyForField(policies []Policy, field string) bool {
+	for _, policy := range policies {
+		if policy.Path == field || strings.HasPrefix(policy.Path, field+".") {
+			return true
+		}
+	}
+	return false
+}
+
+func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
+	policy, found := New().Find(sources.ResourceTypeModel, "Pricing")
+	if !found {
+		t.Fatal("pricing policy not found")
+	}
+	if got := policy.Authority(sources.ProvidersID); got != 1 {
+		t.Fatalf("provider authority = %v, want 1", got)
+	}
+	if got := policy.Authority("unknown"); got != 0 {
+		t.Fatalf("unknown authority = %v, want 0", got)
+	}
+}
+
+func TestEveryPolicyAuthorityRankIsUniqueAndStrictlyDescending(t *testing.T) {
+	table := New()
+	for _, resource := range []sources.ResourceType{
+		sources.ResourceTypeModel,
+		sources.ResourceTypeProvider,
+		sources.ResourceTypeAuthor,
+	} {
+		for _, policy := range table.Policies(resource) {
+			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {
+				seen := make(map[sources.ID]struct{}, len(policy.SourceOrder))
+				previous := 2.0
+				for _, source := range policy.SourceOrder {
+					if _, duplicate := seen[source]; duplicate {
+						t.Fatalf("source order contains duplicate %q", source)
+					}
+					seen[source] = struct{}{}
+					score := policy.Authority(source)
+					if score <= 0 || score >= previous {
+						t.Fatalf("authority(%q) = %v after %v; want positive strict descent", source, score, previous)
+					}
+					previous = score
+				}
+				if score := policy.Authority("unconfigured"); score != 0 {
+					t.Fatalf("unconfigured authority = %v, want 0", score)
+				}
+			})
+		}
 	}
 }
 
 func TestMatchesPattern(t *testing.T) {
 	tests := []struct {
-		name      string
 		fieldPath string
 		pattern   string
 		want      bool
 	}{
-		{name: "exact", fieldPath: "Pricing", pattern: "Pricing", want: true},
-		{name: "prefix wildcard", fieldPath: "Catalog.Endpoint.URL", pattern: "Catalog.*", want: true},
-		{name: "filepath wildcard", fieldPath: "Metadata.ReleaseDate", pattern: "Metadata.*Date", want: true},
-		{name: "no match", fieldPath: "Metadata.ReleaseDate", pattern: "Pricing.*", want: false},
-		{name: "invalid pattern", fieldPath: "Metadata.ReleaseDate", pattern: "[", want: false},
+		{fieldPath: "Pricing", pattern: "Pricing", want: true},
+		{fieldPath: "Catalog.Endpoint.URL", pattern: "Catalog.*", want: true},
+		{fieldPath: "Metadata.ReleaseDate", pattern: "Metadata.*Date", want: true},
+		{fieldPath: "Metadata.ReleaseDate", pattern: "Pricing.*", want: false},
+		{fieldPath: "Metadata.ReleaseDate", pattern: "[", want: false},
 	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MatchesPattern(tt.fieldPath, tt.pattern); got != tt.want {
-				t.Fatalf("MatchesPattern(%q, %q) = %v, want %v", tt.fieldPath, tt.pattern, got, tt.want)
-			}
-		})
+	for _, test := range tests {
+		if got := MatchesPattern(test.fieldPath, test.pattern); got != test.want {
+			t.Errorf("MatchesPattern(%q, %q) = %v, want %v", test.fieldPath, test.pattern, got, test.want)
+		}
 	}
 }

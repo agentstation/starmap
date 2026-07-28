@@ -53,7 +53,7 @@ const (
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L93-L98>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L96-L101>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -95,6 +95,9 @@ const (
     ObservationIssueCodeStaleFallback ObservationIssueCode = "stale_fallback"
     // ObservationIssueCodeBootstrapFallback means embedded bootstrap evidence was used.
     ObservationIssueCodeBootstrapFallback ObservationIssueCode = "bootstrap_fallback"
+    // ObservationIssueCodeVolumeCollapse means a source omitted records that
+    // its prior accepted evidence supplied, without explicit lifecycle proof.
+    ObservationIssueCodeVolumeCollapse ObservationIssueCode = "volume_collapse"
 )
 ```
 

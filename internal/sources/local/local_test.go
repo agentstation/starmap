@@ -2,10 +2,14 @@ package local
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"sync"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestSourcePublishesProvidedSnapshot(t *testing.T) {
@@ -81,5 +85,41 @@ func TestSourceObserveIsConcurrentAndRepeatable(t *testing.T) {
 	}
 	if provider.Name != "Stable" {
 		t.Fatalf("Caller mutation escaped observation: %q", provider.Name)
+	}
+}
+
+func TestSourceReportsMalformedLocalSiblingAsDegradedObservation(t *testing.T) {
+	root := t.TempDir()
+	modelsDir := filepath.Join(root, "providers", "local-provider", "models")
+	if err := os.MkdirAll(modelsDir, constants.DirPermissions); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+	files := map[string]string{
+		"providers.yaml": "- id: local-provider\n  name: Local Provider\n",
+		filepath.Join("providers", "local-provider", "models", "valid.yaml"):   "id: valid\nname: Valid\nlimits:\n  context_window: 1\n",
+		filepath.Join("providers", "local-provider", "models", "invalid.yaml"): "id: invalid\nname: [unterminated\n",
+	}
+	for name, contents := range files {
+		if err := os.WriteFile(filepath.Join(root, name), []byte(contents), constants.FilePermissions); err != nil {
+			t.Fatalf("WriteFile %s: %v", name, err)
+		}
+	}
+
+	observation, err := New(WithCatalogPath(root)).Observe(context.Background())
+	if err != nil {
+		t.Fatalf("Observe: %v", err)
+	}
+	if observation.Status != sources.ObservationStatusDegraded ||
+		observation.Completeness != sources.ObservationCompletenessPartial ||
+		observation.Records.Accepted != 1 ||
+		observation.Records.Rejected != 1 {
+		t.Fatalf("observation health = %#v", observation)
+	}
+	models, err := observation.Catalog.ProviderModels("local-provider")
+	if err != nil {
+		t.Fatalf("ProviderModels: %v", err)
+	}
+	if !models.Exists("valid") || models.Exists("invalid") {
+		t.Fatalf("models = %#v, want only valid sibling", models.List())
 	}
 }

@@ -168,6 +168,7 @@ const (
     ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
     ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
     ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
+    ObservationIssueCodeVolumeCollapse     = catalogmeta.ObservationIssueCodeVolumeCollapse
 )
 ```
 
@@ -334,7 +335,7 @@ type Observation struct {
 ```
 
 <a name="NewObservation"></a>
-### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L100>)
+### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L101>)
 
 ```go
 func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata ObservationMetadata) (Observation, error)
@@ -343,7 +344,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 NewObservation binds an immutable catalog to typed, deterministic audit metadata.
 
 <a name="Observation.Link"></a>
-### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L135>)
+### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L136>)
 
 ```go
 func (o Observation) Link() catalogs.SourceObservationLink
@@ -352,7 +353,7 @@ func (o Observation) Link() catalogs.SourceObservationLink
 Link returns the immutable manifest/audit projection of this observation.
 
 <a name="Observation.Validate"></a>
-### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L144>)
+### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L145>)
 
 ```go
 func (o Observation) Validate() error
@@ -370,7 +371,7 @@ type ObservationCompleteness = catalogmeta.ObservationCompleteness
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L87>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L88>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -397,7 +398,7 @@ type ObservationIssueScope = catalogmeta.ObservationIssueScope
 ```
 
 <a name="ObservationMetadata"></a>
-## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L90-L97>)
+## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L91-L98>)
 
 ObservationMetadata supplies source\-owned metadata used to construct an observation.
 
@@ -543,13 +544,13 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages. The providers parameter should contain the catalog providers to create clients for.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L324>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L327>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
 ```
 
-FetchModels fetches available models from a single provider's API. It handles credential loading, client creation, and API communication.
+FetchModels fetches available models from a single provider's API. It handles credential loading, client creation, and API communication. When a provider quarantines malformed records, FetchModels returns the valid siblings together with a non\-nil \*sourcepayload.QuarantineError wrapped in a SyncError; callers may consume the partial result only as degraded evidence.
 
 Example:
 
@@ -566,7 +567,7 @@ models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L363>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L366>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error)

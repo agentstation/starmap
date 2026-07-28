@@ -11,8 +11,8 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
-	configuredSources := createSourcesWithConfig(options, localCatalog)
+func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog, report catalogs.LoadReport) []sources.Source {
+	configuredSources := createSourcesWithConfig(options, localCatalog, report)
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
@@ -32,9 +32,13 @@ func filterSources(options *pkgsync.Options, localCatalog *catalogs.Catalog) []s
 	return configuredSources
 }
 
-func createSourcesWithConfig(options *pkgsync.Options, localCatalog *catalogs.Catalog) []sources.Source {
+func createSourcesWithConfig(
+	options *pkgsync.Options,
+	localCatalog *catalogs.Catalog,
+	report catalogs.LoadReport,
+) []sources.Source {
 	srcs := []sources.Source{
-		local.New(local.WithCatalog(localCatalog)),
+		local.New(local.WithCatalogReport(localCatalog, report)),
 		providers.New(localCatalog.Providers()),
 	}
 

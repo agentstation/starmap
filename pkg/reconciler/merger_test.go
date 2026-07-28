@@ -347,7 +347,7 @@ func TestMergeProviders(t *testing.T) {
 			expected: []*catalogs.Provider{
 				{
 					ID:           "openai",
-					Name:         "OpenAI Embedded", // Local catalog is authoritative for provider metadata
+					Name:         "OpenAI API", // Current provider identity beats local fallback.
 					Headquarters: stringPtr("San Francisco, USA"),
 					Models: map[string]*catalogs.Model{
 						"model-1": createTestModel("model-1", "Test Model", 1000),
@@ -452,8 +452,8 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 	}
 
 	provider := result[0]
-	if provider.Name != "OpenAI Local" {
-		t.Fatalf("Expected local provider name, got %q", provider.Name)
+	if provider.Name != "OpenAI models.dev" {
+		t.Fatalf("Expected observed provider name, got %q", provider.Name)
 	}
 	if provider.APIKey == nil || provider.APIKey.Name != "LOCAL_KEY" {
 		t.Fatalf("Expected local API key configuration, got %#v", provider.APIKey)
@@ -1215,7 +1215,7 @@ func hasModelTag(tags []catalogs.ModelTag, want catalogs.ModelTag) bool {
 	return slices.Contains(tags, want)
 }
 
-func TestMergeModelsPreservesModelsDevInputTokenLimit(t *testing.T) {
+func TestMergeModelsUsesProviderInputTokenLimit(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
 	tracker := provenance.NewTracker(true)
@@ -1251,15 +1251,15 @@ func TestMergeModelsPreservesModelsDevInputTokenLimit(t *testing.T) {
 	if len(result) != 1 {
 		t.Fatalf("models = %d, want 1", len(result))
 	}
-	if result[0].Limits == nil || result[0].Limits.InputTokens != 272000 {
-		t.Fatalf("limits = %#v, want models.dev input token limit", result[0].Limits)
+	if result[0].Limits == nil || result[0].Limits.InputTokens != 64000 {
+		t.Fatalf("limits = %#v, want provider input token limit", result[0].Limits)
 	}
 	if _, ok := prov["models.model-1.limits.input_tokens"]; !ok {
 		t.Fatalf("missing input token limit provenance in %#v", prov)
 	}
 }
 
-func TestMergeModelsFillsMissingModelsDevInputTokenLimitFromProvider(t *testing.T) {
+func TestMergeModelsFillsMissingProviderLimitFromModelsDev(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
 	merger := newMerger(authorities, strategy, nil)
@@ -1271,7 +1271,6 @@ func TestMergeModelsFillsMissingModelsDevInputTokenLimitFromProvider(t *testing.
 				Name: "Provider Model",
 				Limits: &catalogs.ModelLimits{
 					ContextWindow: 128000,
-					InputTokens:   96000,
 					OutputTokens:  4096,
 				},
 			},
@@ -1282,6 +1281,7 @@ func TestMergeModelsFillsMissingModelsDevInputTokenLimitFromProvider(t *testing.
 				Name: "ModelsDev Model",
 				Limits: &catalogs.ModelLimits{
 					ContextWindow: 200000,
+					InputTokens:   96000,
 					OutputTokens:  8192,
 				},
 			},
@@ -1297,11 +1297,8 @@ func TestMergeModelsFillsMissingModelsDevInputTokenLimitFromProvider(t *testing.
 	if got == nil {
 		t.Fatal("limits missing")
 	}
-	if got.ContextWindow != 200000 || got.OutputTokens != 8192 {
-		t.Fatalf("models.dev limits were not authoritative: %#v", got)
-	}
-	if got.InputTokens != 96000 {
-		t.Fatalf("provider input token limit was not gap-filled: %#v", got)
+	if got.ContextWindow != 128000 || got.InputTokens != 96000 || got.OutputTokens != 4096 {
+		t.Fatalf("provider limits with models.dev gap fill = %#v", got)
 	}
 }
 
@@ -1675,7 +1672,7 @@ func TestMergeModelsCombinesLineageSubfields(t *testing.T) {
 	}
 }
 
-func TestMergeModelsUsesModelsDevModes(t *testing.T) {
+func TestMergeModelsUsesProviderModesWithUpstreamGapFilling(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)
 	tracker := provenance.NewTracker(true)
@@ -1732,8 +1729,8 @@ func TestMergeModelsUsesModelsDevModes(t *testing.T) {
 		fastMode.Pricing.Tokens.Input.Per1M != 3.50 ||
 		fastMode.Provider == nil ||
 		fastMode.Provider.Headers["anthropic-beta"] != "fast-mode" ||
-		fastMode.Provider.Body["service_tier"] != "priority" {
-		t.Fatalf("fast mode = %#v, want models.dev mode", fastMode)
+		fastMode.Provider.Body["service_tier"] != "standard" {
+		t.Fatalf("fast mode = %#v, want provider mode with models.dev pricing/header gaps filled", fastMode)
 	}
 	if _, ok := prov["models.model-1.modes"]; !ok {
 		t.Fatalf("missing modes provenance in %#v", prov)

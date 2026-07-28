@@ -11,11 +11,9 @@ import (
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
-// TestF009CharacterizationMalformedLocalSiblingAbortsCatalogWalk pins the
-// local YAML walk boundary. P4.8 must quarantine the bad record and retain the
-// valid sibling while preserving a fail-closed policy for invalid catalog
-// structure.
-func TestF009CharacterizationMalformedLocalSiblingAbortsCatalogWalk(t *testing.T) {
+// TestF009MalformedLocalSiblingIsQuarantined proves the local YAML walk retains
+// valid model files while reporting a malformed sibling.
+func TestF009MalformedLocalSiblingIsQuarantined(t *testing.T) {
 	catalogFS := fstest.MapFS{
 		"providers.yaml": {
 			Data: []byte("- id: provider\n  name: Provider\n"),
@@ -29,23 +27,29 @@ func TestF009CharacterizationMalformedLocalSiblingAbortsCatalogWalk(t *testing.T
 	}
 
 	catalog, err := New(WithFS(catalogFS))
-	if err == nil {
-		t.Fatal("F-009 characterization changed: malformed local sibling did not abort catalog load")
+	if err != nil {
+		t.Fatalf("New: %v", err)
 	}
-	if catalog != nil {
-		t.Fatalf("F-009 characterization changed: partial local catalog escaped: %#v", catalog)
+	models, err := catalog.ProviderModels("provider")
+	if err != nil {
+		t.Fatalf("ProviderModels: %v", err)
+	}
+	if model, found := models.Get("valid"); !found || model.Name != "Valid" {
+		t.Fatalf("valid model = %#v, found %v", model, found)
+	}
+	report := catalog.LoadReport()
+	if report.Accepted != 1 || report.Rejected != 1 || len(report.Issues) != 1 {
+		t.Fatalf("load report = %#v, want accepted 1 rejected 1", report)
 	}
 	var parseErr *pkgerrors.ParseError
-	if !stderrors.As(err, &parseErr) {
-		t.Fatalf("error = %T: %v, want *errors.ParseError", err, err)
+	if !stderrors.As(report.Issues[0].Err, &parseErr) {
+		t.Fatalf("issue = %T: %v, want *errors.ParseError", report.Issues[0].Err, report.Issues[0].Err)
 	}
 }
 
-// TestF009CharacterizationInvalidLocalWorkspaceFailsClosed pins the selected
-// safety expectation: a configured, present, invalid workspace is not treated
-// as optional absence. P4.8 may quarantine invalid records, but structural YAML
-// failure must still return a typed error and no catalog.
-func TestF009CharacterizationInvalidLocalWorkspaceFailsClosed(t *testing.T) {
+// TestF009InvalidLocalWorkspaceFailsClosed proves a configured, present,
+// structurally invalid workspace is not treated as optional absence.
+func TestF009InvalidLocalWorkspaceFailsClosed(t *testing.T) {
 	path := t.TempDir()
 	if err := os.WriteFile(
 		filepath.Join(path, "providers.yaml"),
@@ -65,5 +69,18 @@ func TestF009CharacterizationInvalidLocalWorkspaceFailsClosed(t *testing.T) {
 	var parseErr *pkgerrors.ParseError
 	if !stderrors.As(err, &parseErr) {
 		t.Fatalf("error = %T: %v, want *errors.ParseError", err, err)
+	}
+}
+
+func TestLocalModelWalkStopsAtRecordBudget(t *testing.T) {
+	builder := NewEmpty()
+	builder.loadReport.Accepted = constants.MaxCatalogModels
+	if !builder.modelLoadLimitReached("providers/provider/models/excess.yaml") {
+		t.Fatal("model load did not stop at the record budget")
+	}
+	report := builder.LoadReport()
+	if !report.Truncated || report.Rejected != 1 ||
+		len(report.Issues) != 1 || !report.Issues[0].Limit {
+		t.Fatalf("report = %#v, want one bounded truncation issue", report)
 	}
 }

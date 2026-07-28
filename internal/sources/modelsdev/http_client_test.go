@@ -179,11 +179,12 @@ func TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegressi
 	}
 }
 
-func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testing.T) {
+func TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift(t *testing.T) {
+	candidate := []byte(largeSchemaIncompatibleAPIJSON(t))
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(largeSchemaIncompatibleAPIJSON(t)))
+		_, _ = w.Write(candidate)
 	}))
 	defer server.Close()
 
@@ -196,9 +197,8 @@ func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testin
 		t.Fatalf("create cache directory: %v", err)
 	}
 
-	want := []byte(largeMockAPIJSON())
 	apiPath := client.GetAPIPath()
-	if err := os.WriteFile(apiPath, want, constants.FilePermissions); err != nil {
+	if err := os.WriteFile(apiPath, []byte(largeMockAPIJSON()), constants.FilePermissions); err != nil {
 		t.Fatalf("write last-known-good cache: %v", err)
 	}
 	staleTime := time.Now().Add(-2 * HTTPCacheTTL)
@@ -207,17 +207,21 @@ func TestHTTPClient_EnsureAPI_DoesNotPromoteSchemaIncompatibleDownload(t *testin
 	}
 
 	if err := client.EnsureAPI(context.Background()); err != nil {
-		t.Fatalf("EnsureAPI should retain last-known-good cache: %v", err)
+		t.Fatalf("EnsureAPI: %v", err)
 	}
 	got, err := os.ReadFile(apiPath)
 	if err != nil {
 		t.Fatalf("read retained cache: %v", err)
 	}
-	if string(got) != string(want) {
-		t.Fatal("schema-incompatible download replaced the last-known-good cache")
+	if !bytes.Equal(got, candidate) {
+		t.Fatal("record-local schema drift prevented exact source-byte promotion")
 	}
-	if _, err := ParseAPI(apiPath); err != nil {
-		t.Fatalf("retained cache is not typed-parseable: %v", err)
+	api, err := ParseAPI(apiPath)
+	if err != nil {
+		t.Fatalf("promoted cache is not typed-parseable: %v", err)
+	}
+	if report := (*api)["openai"].RecordReport; report.Rejected != 1 || len(report.Issues) != 1 {
+		t.Fatalf("record report = %#v, want one quarantined model", report)
 	}
 }
 

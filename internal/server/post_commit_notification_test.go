@@ -64,9 +64,14 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	httpServer := httptest.NewServer(server.Handler())
 	t.Cleanup(httpServer.Close)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	t.Cleanup(cancel)
-	sseRequest, err := http.NewRequestWithContext(ctx, http.MethodGet, httpServer.URL+"/api/v1/updates/stream", nil)
+	streamCtx, cancelStream := context.WithCancel(context.Background())
+	t.Cleanup(cancelStream)
+	sseRequest, err := http.NewRequestWithContext(
+		streamCtx,
+		http.MethodGet,
+		httpServer.URL+"/api/v1/updates/stream",
+		nil,
+	)
 	if err != nil {
 		t.Fatalf("New SSE request: %v", err)
 	}
@@ -80,7 +85,9 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	go readPublicationSSE(sseResponse.Body, sseEvents, sseErrors)
 
 	wsURL := "ws" + strings.TrimPrefix(httpServer.URL, "http") + "/api/v1/updates/ws"
-	wsConnection, wsResponse, err := websocket.DefaultDialer.DialContext(ctx, wsURL, nil)
+	connectCtx, cancelConnect := context.WithTimeout(context.Background(), 5*time.Second)
+	wsConnection, wsResponse, err := websocket.DefaultDialer.DialContext(connectCtx, wsURL, nil)
+	cancelConnect()
 	if err != nil {
 		if wsResponse != nil {
 			body, _ := io.ReadAll(wsResponse.Body)
@@ -89,16 +96,23 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 		t.Fatalf("Connect WebSocket: %v", err)
 	}
 	t.Cleanup(func() { _ = wsConnection.Close() })
-	if err := wsConnection.SetReadDeadline(time.Now().Add(5 * time.Second)); err != nil {
-		t.Fatalf("SetReadDeadline: %v", err)
-	}
 
 	deadline := time.Now().Add(time.Second)
-	for (server.SSEBroadcaster().ClientCount() != 1 || server.WSHub().ClientCount() != 1) && time.Now().Before(deadline) {
+	for (server.SSEBroadcaster().ClientCount() != 1 ||
+		server.WSHub().ClientCount() != 1 ||
+		server.broker.SubscriberCount() != 2) &&
+		time.Now().Before(deadline) {
 		time.Sleep(time.Millisecond)
 	}
-	if server.SSEBroadcaster().ClientCount() != 1 || server.WSHub().ClientCount() != 1 {
-		t.Fatalf("transport clients not registered: sse=%d ws=%d", server.SSEBroadcaster().ClientCount(), server.WSHub().ClientCount())
+	if server.SSEBroadcaster().ClientCount() != 1 ||
+		server.WSHub().ClientCount() != 1 ||
+		server.broker.SubscriberCount() != 2 {
+		t.Fatalf(
+			"notification path not ready: sse=%d ws=%d broker=%d",
+			server.SSEBroadcaster().ClientCount(),
+			server.WSHub().ClientCount(),
+			server.broker.SubscriberCount(),
+		)
 	}
 
 	if err := client.Update(context.Background()); err != nil {
@@ -117,6 +131,9 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	var websocketEvent struct {
 		Type string         `json:"type"`
 		Data map[string]any `json:"data"`
+	}
+	if err := wsConnection.SetReadDeadline(time.Now().Add(5 * time.Second)); err != nil {
+		t.Fatalf("SetReadDeadline: %v", err)
 	}
 	for websocketEvent.Type != string(events.CatalogPublished) {
 		if err := wsConnection.ReadJSON(&websocketEvent); err != nil {

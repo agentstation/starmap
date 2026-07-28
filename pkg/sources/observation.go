@@ -81,6 +81,7 @@ const (
 	ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
 	ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
 	ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
+	ObservationIssueCodeVolumeCollapse     = catalogmeta.ObservationIssueCodeVolumeCollapse
 )
 
 // ObservationIssue records one classified, non-fatal degradation.
@@ -291,7 +292,8 @@ func validateObservationIssue(index int, issue ObservationIssue) error {
 		ObservationIssueCodeConfiguration,
 		ObservationIssueCodeFetchFailed,
 		ObservationIssueCodeStaleFallback,
-		ObservationIssueCodeBootstrapFallback:
+		ObservationIssueCodeBootstrapFallback,
+		ObservationIssueCodeVolumeCollapse:
 	default:
 		return observationValidationError(prefix+".code", issue.Code, "is not supported")
 	}

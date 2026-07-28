@@ -48,7 +48,22 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 	if err := json.Unmarshal(jsonData, &fromJSON); err != nil {
 		t.Fatalf("Unmarshal JSON: %v", err)
 	}
-	if diff := cmp.Diff(definition, fromJSON); diff != "" {
+	featureComparer := cmp.Comparer(func(left, right ModelFeatures) bool {
+		if len(left.Modalities.Input) == 0 {
+			left.Modalities.Input = nil
+		}
+		if len(left.Modalities.Output) == 0 {
+			left.Modalities.Output = nil
+		}
+		if len(right.Modalities.Input) == 0 {
+			right.Modalities.Input = nil
+		}
+		if len(right.Modalities.Output) == 0 {
+			right.Modalities.Output = nil
+		}
+		return equalPresenceJSON(left, right)
+	})
+	if diff := cmp.Diff(definition, fromJSON, featureComparer); diff != "" {
 		t.Fatalf("JSON round trip (-want +got):\n%s", diff)
 	}
 
@@ -60,7 +75,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 	if err := yaml.Unmarshal(yamlData, &fromYAML); err != nil {
 		t.Fatalf("Unmarshal YAML: %v", err)
 	}
-	if diff := cmp.Diff(definition, fromYAML, cmpopts.EquateEmpty()); diff != "" {
+	if diff := cmp.Diff(definition, fromYAML, cmpopts.EquateEmpty(), featureComparer); diff != "" {
 		t.Fatalf("YAML round trip (-want +got):\n%s", diff)
 	}
 }

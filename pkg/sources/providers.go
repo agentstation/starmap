@@ -311,6 +311,9 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
 
 // FetchModels fetches available models from a single provider's API.
 // It handles credential loading, client creation, and API communication.
+// When a provider quarantines malformed records, FetchModels returns the valid
+// siblings together with a non-nil *sourcepayload.QuarantineError wrapped in a
+// SyncError; callers may consume the partial result only as degraded evidence.
 //
 // Example:
 //
@@ -346,7 +349,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	// Fetch models from API
 	models, err := client.ListModels(ctx)
 	if err != nil {
-		return nil, &errors.SyncError{
+		return models, &errors.SyncError{
 			Provider: string(provider.ID),
 			Err:      err,
 		}

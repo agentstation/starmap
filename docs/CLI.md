@@ -235,6 +235,9 @@ The `models history` command provides field-level source tracking for models, sh
 # View all field history for a model
 starmap models history gpt-4o
 
+# Select the provider when the same model ID exists at multiple providers
+starmap models history shared --provider=openrouter
+
 # Filter to specific fields (case-insensitive)
 starmap models history gpt-4o --fields=name
 starmap models history gpt-4o --fields=Name,ID,ContextWindow
@@ -260,6 +263,10 @@ The table output shows:
 - **Confidence**: Confidence level (percentage)
 - **When**: Timestamp of last update
 - **Reason**: Explanation for why this source was chosen
+
+History is scoped to one provider model. When a model ID is unique, Starmap
+infers its provider. When multiple providers expose the same ID, `--provider`
+is required so pricing, limits, and lifecycle evidence cannot be confused.
 
 ## Examples by Command
 

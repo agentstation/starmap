@@ -90,6 +90,21 @@ func TestPayloadLimitModelsDevModelCount(t *testing.T) {
 	}
 }
 
+func TestParseAPIBoundsProviderEnvelope(t *testing.T) {
+	payload := make(map[string]any, constants.MaxSourceProviders+1)
+	for index := 0; index <= constants.MaxSourceProviders; index++ {
+		id := fmt.Sprintf("provider-%03d", index)
+		payload[id] = map[string]any{"id": id, "name": id, "models": map[string]any{}}
+	}
+	data, err := json.Marshal(payload)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	if api, err := parseAPIData(data); err == nil || api != nil {
+		t.Fatalf("parseAPIData = %#v, %v; want bounded provider-envelope error", api, err)
+	}
+}
+
 func TestUnknownSourceEnumProducesFingerprintEvidence(t *testing.T) {
 	model, err := (&Model{ID: "model", Name: "Model", Status: "new-lifecycle"}).ToStarmapModel()
 	if err != nil {
@@ -646,6 +661,56 @@ func TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn(t *testing.T) {
 func TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData(t *testing.T) {
 	if !((Model{OpenWeights: boolPtr(false)}).hasCatalogData()) {
 		t.Fatal("explicit open_weights=false should still count as source data")
+	}
+}
+
+func TestModelToStarmapModelPreservesExplicitSourcePresence(t *testing.T) {
+	var source Model
+	if err := json.Unmarshal([]byte(`{
+		"id":"presence",
+		"name":"Presence",
+		"description":"",
+		"attachment":false,
+		"reasoning":null,
+		"structured_output":false,
+		"temperature":false,
+		"tool_call":false,
+		"open_weights":false,
+		"modalities":{"input":[],"output":[]},
+		"limit":{"context":0,"input":null}
+	}`), &source); err != nil {
+		t.Fatalf("Unmarshal: %v", err)
+	}
+	model, err := source.ToStarmapModel()
+	if err != nil {
+		t.Fatalf("ToStarmapModel: %v", err)
+	}
+	if value, state := model.Metadata.OpenWeightsValue(); value || state != catalogs.ValueKnown {
+		t.Fatalf("open weights = %v, %v; want false, known", value, state)
+	}
+	for _, feature := range []catalogs.ModelFeature{
+		catalogs.ModelFeatureAttachments,
+		catalogs.ModelFeatureStructuredOutputs,
+		catalogs.ModelFeatureTemperature,
+		catalogs.ModelFeatureToolCalls,
+		catalogs.ModelFeatureTools,
+		catalogs.ModelFeatureToolChoice,
+	} {
+		if value, state := model.Features.Support(feature); value || state != catalogs.ValueKnown {
+			t.Fatalf("%s = %v, %v; want false, known", feature, value, state)
+		}
+	}
+	if _, state := model.Features.Support(catalogs.ModelFeatureReasoning); state != catalogs.ValueUnknown {
+		t.Fatalf("reasoning presence = %v, want unknown", state)
+	}
+	if value, state := model.Limits.Value(catalogs.ModelLimitContextWindow); value != 0 || state != catalogs.ValueKnown {
+		t.Fatalf("context = %d, %v; want zero, known", value, state)
+	}
+	if _, state := model.Limits.Value(catalogs.ModelLimitInputTokens); state != catalogs.ValueUnknown {
+		t.Fatalf("input presence = %v, want unknown", state)
+	}
+	if _, state := model.Limits.Value(catalogs.ModelLimitOutputTokens); state != catalogs.ValueMissing {
+		t.Fatalf("output presence = %v, want missing", state)
 	}
 }
 

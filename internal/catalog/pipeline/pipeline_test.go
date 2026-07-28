@@ -62,7 +62,7 @@ func TestPipelineValidatesOptionsBeforeSourceWork(t *testing.T) {
 	}
 
 	sourceWorkStarted := false
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
 		sourceWorkStarted = true
 		return nil
 	}
@@ -275,12 +275,102 @@ func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
 	}
 }
 
+func TestPipelineContinuesNonStrictAfterSourceFailureWithDegradedEvidence(t *testing.T) {
+	existing := catalogs.NewEmpty()
+	if err := existing.SetProvider(catalogs.Provider{ID: "last-known-good", Name: "Last Known Good"}); err != nil {
+		t.Fatalf("SetProvider existing: %v", err)
+	}
+	store := &pipelineTestStore{catalog: asSnapshot(existing)}
+	runner := newStubPipeline(store, nil)
+	sourceErr := stderrors.New("provider timed out")
+	failed, err := failedSourceObservation(sources.ProvidersID, sourceErr)
+	if err != nil {
+		t.Fatalf("failedSourceObservation: %v", err)
+	}
+	runner.observe = func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error) {
+		return []sources.Observation{failed}, sourceErr
+	}
+	runner.reconcile = func(_ context.Context, baseline *catalogs.Catalog, observations []sources.Observation) (*reconciler.Result, error) {
+		if _, err := baseline.Provider("last-known-good"); err != nil {
+			t.Fatalf("baseline lost after source failure: %v", err)
+		}
+		if len(observations) != 1 ||
+			observations[0].Status != sources.ObservationStatusDegraded ||
+			observations[0].Completeness != sources.ObservationCompletenessPartial {
+			t.Fatalf("degraded observations = %#v", observations)
+		}
+		return &reconciler.Result{
+			Catalog:           existing,
+			Changeset:         emptyChangeset(),
+			ProviderAPICounts: map[catalogs.ProviderID]int{},
+			ModelProviderMap:  map[string]catalogs.ProviderID{},
+		}, nil
+	}
+
+	result, err := runner.Sync(context.Background(), pkgsync.WithDryRun(true))
+	if err != nil {
+		t.Fatalf("non-strict Sync: %v", err)
+	}
+	if len(result.SourceObservations) != 1 ||
+		result.SourceObservations[0].Status != sources.ObservationStatusDegraded {
+		t.Fatalf("sync observations = %#v", result.SourceObservations)
+	}
+}
+
+func TestPipelineRequireAllSourcesRejectsSourceFailureBeforeReconciliation(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, nil)
+	sourceErr := stderrors.New("provider timed out")
+	failed, err := failedSourceObservation(sources.ProvidersID, sourceErr)
+	if err != nil {
+		t.Fatalf("failedSourceObservation: %v", err)
+	}
+	runner.observe = func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error) {
+		return []sources.Observation{failed}, sourceErr
+	}
+	runner.reconcile = func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error) {
+		t.Fatal("strict source failure reached reconciliation")
+		return nil, nil
+	}
+
+	if _, err := runner.Sync(context.Background(), pkgsync.WithRequireAllSources(true)); !stderrors.Is(err, sourceErr) {
+		t.Fatalf("strict Sync error = %v, want source failure", err)
+	}
+}
+
+func TestPipelineFreshRejectsDegradedObservationBeforeEmptyBaselinePublication(t *testing.T) {
+	existing := catalogs.NewEmpty()
+	if err := existing.SetProvider(catalogs.Provider{ID: "last-known-good", Name: "Last Known Good"}); err != nil {
+		t.Fatalf("SetProvider existing: %v", err)
+	}
+	store := &pipelineTestStore{catalog: asSnapshot(existing)}
+	runner := newStubPipeline(store, nil)
+	failed, err := failedSourceObservation(sources.ProvidersID, stderrors.New("provider timed out"))
+	if err != nil {
+		t.Fatalf("failedSourceObservation: %v", err)
+	}
+	runner.observe = func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error) {
+		return []sources.Observation{failed}, nil
+	}
+	runner.reconcile = func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error) {
+		t.Fatal("degraded fresh sync reached reconciliation")
+		return nil, nil
+	}
+
+	if _, err := runner.Sync(context.Background(), pkgsync.WithFresh(true)); err == nil {
+		t.Fatal("degraded fresh Sync returned nil error")
+	}
+	if store.applyCalls != 0 {
+		t.Fatalf("degraded fresh Sync applied %d candidates", store.applyCalls)
+	}
+}
+
 func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner := New(store)
 	runner.loadLocal = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog) []sources.Source {
+	runner.createSources = func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
 	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {

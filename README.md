@@ -309,6 +309,7 @@ starmap authors                  # List all authors
 
 # Model field history
 starmap models history gpt-4o                    # View field provenance
+starmap models history shared --provider=openrouter # Select a provider offering
 starmap models history gpt-4o --fields=Name      # Filter to specific field
 starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 
@@ -353,7 +354,7 @@ starmap update
 # CI/CD - Skip sources with missing dependencies
 starmap update --skip-dep-prompts
 
-# Strict mode - Fail if dependencies missing
+# Strict mode - Require every configured source to be healthy and nonempty
 starmap update --require-all-sources --skip-dep-prompts
 
 # Auto-install - Install dependencies automatically
@@ -368,7 +369,9 @@ source unless an explicit noninteractive dependency policy is configured.
 **Available Flags:**
 - `--auto-install-deps` - Automatically install missing dependencies
 - `--skip-dep-prompts` - Skip sources with missing dependencies without prompting
-- `--require-all-sources` - Fail if any dependencies are missing (CI/CD mode)
+- `--require-all-sources` - Fail before reconciliation unless every configured
+  source is available, complete, successful, and returns at least one model
+  (CI/CD mode)
 
 **Common Scenario:** The `models_dev_git` source requires `bun` for building. If missing, Starmap offers to install it or falls back to `models_dev_http` which provides the same data without dependencies.
 
@@ -588,13 +591,36 @@ Starmap combines data from multiple sources:
 - **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, Alibaba Cloud, Fireworks AI, DeepInfra, etc.)
 - **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
 - **Embedded Catalog**: Baseline data shipped with starmap
-- **Local Files**: User customizations and overrides
+- **Local Files**: The human provider-YAML workspace and manual fallback data
 
 For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](docs/ARCHITECTURE.md#data-sources)**.
 
 ## Model Catalog
 
 Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra, and more). Each package includes comprehensive documentation in its README.
+
+Catalog reads keep natural Go scalar fields. When an algorithm needs to
+distinguish an unreported value from an explicit zero, use the presence API:
+
+```go
+if model.Features != nil {
+    supported, presence := model.Features.Support(catalogs.ModelFeatureToolCalls)
+    switch presence {
+    case catalogs.ValueKnown:
+        fmt.Printf("tool calls reported: %t\n", supported)
+    case catalogs.ValueUnknown:
+        fmt.Println("tool call support explicitly unknown")
+    case catalogs.ValueMissing:
+        fmt.Println("source did not report tool call support")
+    }
+}
+```
+
+For source/plugin authors, non-zero literals need no extra ceremony. Use
+`SetSupport`, `ModelLimits.Set`, `SetDescription`, or `SetOpenWeights` when a
+reported `false`, `0`, or `""` must remain distinct from an omitted field.
+Human YAML uses the same intuitive contract: omitted means missing, `null`
+means unknown, and a zero-valued scalar is explicit.
 
 ## HTTP Server
 

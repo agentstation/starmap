@@ -8,6 +8,7 @@ import (
 
 func FuzzParseAPIDataNoPanic(f *testing.F) {
 	f.Add([]byte(`{"provider":{"id":"provider","name":"Provider","models":{}}}`))
+	f.Add([]byte(`{"provider":{"id":"provider","name":"Provider","models":{"valid":{"id":"valid"},"invalid":{"id":["drift"]}}}}`))
 	f.Add([]byte(`{"provider":{"models":null}}`))
 	f.Add([]byte(`{"provider":{"models":[]}}`))
 	f.Fuzz(func(t *testing.T, data []byte) {

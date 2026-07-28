@@ -10,6 +10,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 type providerFetcherTestClient struct {
@@ -78,6 +79,37 @@ func TestProviderFetcherFetchModelsUsesInjectedFactory(t *testing.T) {
 	}
 	if len(models) != 1 || models[0].ID != "model-a" {
 		t.Fatalf("Expected fetched model, got %#v", models)
+	}
+}
+
+func TestProviderFetcherPreservesPartialModelsWithQuarantineError(t *testing.T) {
+	provider := providerForFetcherTest("provider-a")
+	quarantine := &sourcepayload.QuarantineError{
+		Collection: "models",
+		Report: sourcepayload.RecordReport{
+			Accepted: 1, Rejected: 1,
+			Issues: []sourcepayload.RecordIssue{{
+				Subject: "data[1]",
+				Err:     pkgerrors.NewParseError("json", "data[1]", "schema drift", nil),
+			}},
+		},
+	}
+	fetcher := NewProviderFetcher(newFetcherProviderSet(provider),
+		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) {
+			return providerFetcherTestClient{
+				models: []catalogs.Model{{ID: "valid", Name: "Valid"}},
+				err:    quarantine,
+			}, nil
+		}),
+	)
+
+	models, err := fetcher.FetchModels(context.Background(), &provider)
+	var gotQuarantine *sourcepayload.QuarantineError
+	if !stderrors.As(err, &gotQuarantine) {
+		t.Fatalf("error = %T: %v, want quarantine error", err, err)
+	}
+	if len(models) != 1 || models[0].ID != "valid" {
+		t.Fatalf("models = %#v, want valid partial result", models)
 	}
 }
 

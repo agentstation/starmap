@@ -75,6 +75,7 @@ type Builder struct {
 	authors    *Authors
 	endpoints  *Endpoints
 	provenance *Provenance
+	loadReport LoadReport
 }
 
 // New creates a new builder with the given options
@@ -103,7 +104,14 @@ func New(opt Option, opts ...Option) (*Builder, error) {
 // This is the recommended catalog for production use as it includes
 // all model data compiled into the binary.
 func NewEmbedded() (*Builder, error) {
-	return New(WithEmbedded())
+	builder, err := New(WithEmbedded())
+	if err != nil {
+		return nil, err
+	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return nil, errors.WrapResource("load", "embedded catalog model", "", err)
+	}
+	return builder, nil
 }
 
 // NewFromPath creates a catalog backed by files on disk.
@@ -157,6 +165,7 @@ func NewLocal(path string) (*Builder, error) {
 	if err := embedded.MergeWith(fileCatalog); err != nil {
 		return nil, errors.WrapResource("merge", "catalogs", "", err)
 	}
+	embedded.loadReport = fileCatalog.LoadReport()
 
 	return embedded, nil
 }
@@ -583,6 +592,7 @@ func (cat *Builder) Copy() (*Builder, error) {
 		endpoints:  NewEndpoints(),
 		provenance: NewProvenance(),
 		config:     cat.config.copy(),
+		loadReport: cat.LoadReport(),
 	}
 
 	// Copy all data

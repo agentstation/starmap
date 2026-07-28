@@ -20,6 +20,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
@@ -35,12 +36,15 @@ type Response struct {
 	Object        string                           `json:"object"`
 	Data          []Model                          `json:"data"`
 	UnknownFields []sourcepayload.UnknownJSONField `json:"-"`
+	RecordReport  sourcepayload.RecordReport       `json:"-"`
 }
 
 // UnmarshalJSON retains fingerprints for additive top-level fields.
 func (r *Response) UnmarshalJSON(data []byte) error {
-	type responseAlias Response
-	var decoded responseAlias
+	var decoded struct {
+		Object string          `json:"object"`
+		Data   json.RawMessage `json:"data"`
+	}
 	if err := json.Unmarshal(data, &decoded); err != nil {
 		return err
 	}
@@ -48,8 +52,22 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*r = Response(decoded)
-	r.UnknownFields = unknown
+	var records []Model
+	var report sourcepayload.RecordReport
+	if len(decoded.Data) != 0 && string(decoded.Data) != "null" {
+		records, report, err = sourcepayload.DecodeJSONArray[Model](
+			decoded.Data,
+			"data",
+			constants.MaxCatalogModels,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	*r = Response{
+		Object: decoded.Object, Data: records, UnknownFields: unknown,
+		RecordReport: report,
+	}
 	return nil
 }
 
@@ -314,7 +332,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		models = append(models, *model)
 	}
 
-	return models, nil
+	return models, result.RecordReport.Err("openai-compatible models")
 }
 
 // ConvertToModel converts an OpenAI model response to a starmap Model using dynamic configuration.
@@ -392,14 +410,14 @@ func (c *Client) applyProviderLimits(model *catalogs.Model, apiModel Model) {
 	if model.Limits == nil {
 		model.Limits = &catalogs.ModelLimits{}
 	}
-	if contextWindow != nil && model.Limits.ContextWindow == 0 {
-		model.Limits.ContextWindow = *contextWindow
+	if _, state := model.Limits.Value(catalogs.ModelLimitContextWindow); contextWindow != nil && state != catalogs.ValueKnown {
+		model.Limits.Set(catalogs.ModelLimitContextWindow, *contextWindow)
 	}
-	if apiModel.InputTokenLimit != nil && model.Limits.InputTokens == 0 {
-		model.Limits.InputTokens = *apiModel.InputTokenLimit
+	if _, state := model.Limits.Value(catalogs.ModelLimitInputTokens); apiModel.InputTokenLimit != nil && state != catalogs.ValueKnown {
+		model.Limits.Set(catalogs.ModelLimitInputTokens, *apiModel.InputTokenLimit)
 	}
-	if outputTokens != nil && model.Limits.OutputTokens == 0 {
-		model.Limits.OutputTokens = *outputTokens
+	if _, state := model.Limits.Value(catalogs.ModelLimitOutputTokens); outputTokens != nil && state != catalogs.ValueKnown {
+		model.Limits.Set(catalogs.ModelLimitOutputTokens, *outputTokens)
 	}
 }
 
@@ -407,8 +425,8 @@ func (c *Client) applyProviderMetadata(model *catalogs.Model, apiModel Model) {
 	if apiModel.Metadata == nil {
 		return
 	}
-	if model.Description == "" {
-		model.Description = apiModel.Metadata.Description
+	if _, state := model.DescriptionValue(); state != catalogs.ValueKnown && apiModel.Metadata.Description != "" {
+		model.SetDescription(apiModel.Metadata.Description)
 	}
 	if len(apiModel.Metadata.Tags) > 0 {
 		if model.Metadata == nil {
@@ -434,13 +452,13 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	if boolValue(apiModel.SupportsVideoIn) {
 		features.Modalities.Input = appendUniqueModality(features.Modalities.Input, catalogs.ModelModalityVideo)
 	}
-	if boolValue(apiModel.SupportsTools) {
-		features.Tools = true
-		features.ToolCalls = true
-		features.ToolChoice = true
+	if apiModel.SupportsTools != nil {
+		features.SetSupport(catalogs.ModelFeatureTools, *apiModel.SupportsTools)
+		features.SetSupport(catalogs.ModelFeatureToolCalls, *apiModel.SupportsTools)
+		features.SetSupport(catalogs.ModelFeatureToolChoice, *apiModel.SupportsTools)
 	}
-	if boolValue(apiModel.SupportsReasoning) {
-		features.Reasoning = true
+	if apiModel.SupportsReasoning != nil {
+		features.SetSupport(catalogs.ModelFeatureReasoning, *apiModel.SupportsReasoning)
 	}
 	for _, feature := range apiModel.SupportedFeatures {
 		switch strings.ToLower(feature) {
@@ -812,35 +830,35 @@ func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceVa
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
 		}
-		model.Limits.ContextWindow = c.toInt64(sourceValue)
+		model.Limits.Set(catalogs.ModelLimitContextWindow, c.toInt64(sourceValue))
 	case "limits.input_tokens":
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
 		}
-		model.Limits.InputTokens = c.toInt64(sourceValue)
+		model.Limits.Set(catalogs.ModelLimitInputTokens, c.toInt64(sourceValue))
 	case "limits.output_tokens":
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
 		}
-		model.Limits.OutputTokens = c.toInt64(sourceValue)
+		model.Limits.Set(catalogs.ModelLimitOutputTokens, c.toInt64(sourceValue))
 
 	// Direct model fields for backward compatibility
 	case "context_window":
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
 		}
-		model.Limits.ContextWindow = c.toInt64(sourceValue)
+		model.Limits.Set(catalogs.ModelLimitContextWindow, c.toInt64(sourceValue))
 	case "max_completion_tokens":
 		if model.Limits == nil {
 			model.Limits = &catalogs.ModelLimits{}
 		}
-		model.Limits.OutputTokens = c.toInt64(sourceValue)
+		model.Limits.Set(catalogs.ModelLimitOutputTokens, c.toInt64(sourceValue))
 
 	// Core model fields
 	case "name":
 		model.Name = c.toString(sourceValue)
 	case "description":
-		model.Description = c.toString(sourceValue)
+		model.SetDescription(c.toString(sourceValue))
 
 	case fieldMetadataTags:
 		if model.Metadata == nil {
@@ -1095,17 +1113,17 @@ func (c *Client) applyFeatureRule(features *catalogs.ModelFeatures, apiModel Mod
 	// Apply the feature value
 	switch rule.Feature {
 	case "tools":
-		features.Tools = rule.Value
+		features.SetSupport(catalogs.ModelFeatureTools, rule.Value)
 	case "tool_choice":
-		features.ToolChoice = rule.Value
+		features.SetSupport(catalogs.ModelFeatureToolChoice, rule.Value)
 	case "structured_outputs":
-		features.StructuredOutputs = rule.Value
+		features.SetSupport(catalogs.ModelFeatureStructuredOutputs, rule.Value)
 	case "reasoning":
-		features.Reasoning = rule.Value
+		features.SetSupport(catalogs.ModelFeatureReasoning, rule.Value)
 	case "top_k":
-		features.TopK = rule.Value
+		features.SetSupport(catalogs.ModelFeatureTopK, rule.Value)
 	case "format_response":
-		features.FormatResponse = rule.Value
+		features.SetSupport(catalogs.ModelFeatureFormatResponse, rule.Value)
 	}
 }
 

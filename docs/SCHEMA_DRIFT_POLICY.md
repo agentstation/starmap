@@ -48,11 +48,12 @@ validate-before-publication boundary.
 Every models.dev HTTP cache read and every HTTP/Git candidate therefore passes
 deterministic semantic validation. Provider map identities must match their
 records; provider names and model containers are required; and at least five
-providers must exist. Model identity or name failures are record-local: the raw
-source bytes remain available as evidence, invalid models are excluded from
-accepted-model counts, and observation quarantines them with typed issues while
-preserving valid siblings. Promotion reports both accepted and rejected model
-counts. A newly produced candidate must contain at least 100 accepted models.
+providers must exist. Model identity, name, or typed-field decode failures are
+record-local: the raw source bytes remain available as evidence, invalid models
+are excluded from accepted-model counts, and observation quarantines them with
+typed issues while preserving valid siblings. Promotion reports both accepted
+and rejected model counts. A newly produced candidate must contain at least 100
+accepted models.
 When a validated last-known-good HTTP cache exists, a candidate must also retain
 at least 80 percent of its provider count and 50 percent of its accepted-model
 count. These conservative floors reject truncation while allowing normal
@@ -81,9 +82,22 @@ typed accepted/rejected record counts. Non-zero rejection requires a
 partial/degraded observation; the counts participate in observation identity and
 are retained by minimized evidence capture/replay.
 
+Local provider-model YAML follows the same record scope: one malformed model
+file produces a degraded load report while valid siblings remain available.
+Provider, author, and provenance indexes plus filesystem failures remain
+structural and fail closed. Embedded bootstrap, legacy migration, and atomic
+workspace projection require an empty load report.
+
+Stored generation payloads expose valid siblings only as a typed partial
+diagnostic. Missing or malformed collection envelopes, inconsistent
+provider/author identity, byte/nesting/count limits, and any partial payload
+remain ineligible for manifest-bound activation, so the last committed
+generation stays active.
+
 ## Record scopes
 
 The policy inventory covers source observations, decoded catalogs, provider and
 model source records, and canonical model-definition/provider-offering records.
 This makes failure scope explicit before parser-specific mutation, quarantine,
-fuzz, and resource-bound gates are applied in P7.2-P7.11.
+fuzz, and resource-bound gates are applied in P4.8/P4.10 and the remote
+transport gates in P7.2-P7.11.

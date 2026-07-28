@@ -8,15 +8,63 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
+
+// LoadIssue describes one malformed model file quarantined during a catalog load.
+type LoadIssue struct {
+	// Path identifies the model file relative to the catalog root.
+	Path string
+	// Err is the typed parse or validation failure.
+	Err error
+	// Limit reports that the collection budget, rather than record syntax,
+	// caused the quarantine.
+	Limit bool
+}
+
+// LoadReport describes bounded model-file loading. Structural catalog files
+// remain fail-closed and are not represented here.
+type LoadReport struct {
+	// Accepted is the number of model files loaded successfully.
+	Accepted int
+	// Rejected includes malformed and excess model files.
+	Rejected int
+	// Issues contains bounded typed diagnostics.
+	Issues []LoadIssue
+	// Truncated reports that excess model files were not read.
+	Truncated bool
+}
+
+// Err joins quarantined record failures for callers that require a fully valid
+// catalog, such as embedded bootstrap and atomic projection validation.
+func (r LoadReport) Err() error {
+	if len(r.Issues) == 0 {
+		return nil
+	}
+	errs := make([]error, 0, len(r.Issues))
+	for _, issue := range r.Issues {
+		if issue.Err != nil {
+			errs = append(errs, issue.Err)
+		}
+	}
+	return stderrors.Join(errs...)
+}
+
+// LoadReport returns a caller-owned copy of the builder's load diagnostics.
+func (cat *Builder) LoadReport() LoadReport {
+	report := cat.loadReport
+	report.Issues = append([]LoadIssue(nil), report.Issues...)
+	return report
+}
 
 // Load loads the catalog from the configured filesystem.
 func (cat *Builder) Load() error {
 	if cat.config.readFilesystem() == nil {
 		return nil // Memory catalog - nothing to load
 	}
+	cat.loadReport = LoadReport{}
 
 	// Load providers.yaml
 	if err := cat.loadProvidersYAML(); err != nil {
@@ -171,6 +219,34 @@ func (cat *Builder) loadModelFile(path string, data []byte) error {
 	return nil
 }
 
+func (cat *Builder) loadModelRecord(path string, data []byte) {
+	if err := cat.loadModelFile(path, data); err != nil {
+		cat.loadReport.Rejected++
+		cat.loadReport.Issues = append(cat.loadReport.Issues, LoadIssue{Path: path, Err: err})
+		return
+	}
+	cat.loadReport.Accepted++
+}
+
+func (cat *Builder) modelLoadLimitReached(path string) bool {
+	if cat.loadReport.Accepted+cat.loadReport.Rejected < constants.MaxCatalogModels {
+		return false
+	}
+	if !cat.loadReport.Truncated {
+		cat.loadReport.Truncated = true
+		cat.loadReport.Rejected++
+		cat.loadReport.Issues = append(cat.loadReport.Issues, LoadIssue{
+			Path:  path,
+			Limit: true,
+			Err: &errors.ValidationError{
+				Field: "catalog.models", Value: constants.MaxCatalogModels,
+				Message: "model file count exceeds maximum; excess records quarantined",
+			},
+		})
+	}
+	return true
+}
+
 // loadProviderModelFiles walks the providers directory and loads all model files.
 func (cat *Builder) loadProviderModelFiles() error {
 	err := fs.WalkDir(cat.config.readFilesystem(), "providers", func(path string, d fs.DirEntry, err error) error {
@@ -183,13 +259,17 @@ func (cat *Builder) loadProviderModelFiles() error {
 		if d.IsDir() || !strings.HasSuffix(path, ".yaml") {
 			return nil
 		}
+		if cat.modelLoadLimitReached(path) {
+			return fs.SkipAll
+		}
 
 		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
 		if err != nil {
 			return errors.WrapIO("read", path, err)
 		}
 
-		return cat.loadModelFile(path, data)
+		cat.loadModelRecord(path, data)
+		return nil
 	})
 
 	if err != nil && !os.IsNotExist(err) {
@@ -216,13 +296,17 @@ func (cat *Builder) loadAuthorModelFiles() error {
 		if path == "authors.yaml" {
 			return nil
 		}
+		if cat.modelLoadLimitReached(path) {
+			return fs.SkipAll
+		}
 
 		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
 		if err != nil {
 			return errors.WrapIO("read", path, err)
 		}
 
-		return cat.loadModelFile(path, data)
+		cat.loadModelRecord(path, data)
+		return nil
 	})
 
 	if err != nil && !os.IsNotExist(err) {

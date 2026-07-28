@@ -494,6 +494,11 @@ const (
     // MaxProviders is the maximum number of providers.
     MaxProviders = 100
 
+    // MaxSourceProviders bounds provider records in one external source payload.
+    // Source catalogs may include aliases and upstreams that do not become
+    // canonical Starmap providers.
+    MaxSourceProviders = 512
+
     // MaxSourcePayloadBytes bounds one provider or catalog source JSON payload.
     MaxSourcePayloadBytes = 16 << 20
 )

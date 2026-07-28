@@ -31,7 +31,7 @@ type Publication struct {
 }
 
 type loadLocalFunc func(string) (*catalogs.Builder, error)
-type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog) []sources.Source
+type sourcesFunc func(*pkgsync.Options, *catalogs.Catalog, catalogs.LoadReport) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
@@ -105,7 +105,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err != nil {
 		return nil, pkgerrors.WrapResource("publish", "local catalog snapshot", "", err)
 	}
-	srcs := p.createSources(options, localSnapshot)
+	srcs := p.createSources(options, localSnapshot, local.LoadReport())
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -120,11 +120,6 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
 		}
 	}()
-
-	observations, err := p.observe(ctx, srcs, options.SourceOptions())
-	if err != nil {
-		return nil, err
-	}
 
 	existing, err := p.store.Catalog()
 	if err != nil {
@@ -142,6 +137,37 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 			return nil, pkgerrors.WrapResource("publish", "fresh baseline snapshot", "", err)
 		}
 		logging.Info().Msg("Fresh sync uses an empty reconciliation baseline")
+	}
+
+	observations, observeErr := p.observe(ctx, srcs, options.SourceOptions())
+	if ctxErr := ctx.Err(); ctxErr != nil {
+		return nil, ctxErr
+	}
+	if observeErr != nil && options.RequireAllSources {
+		return nil, observeErr
+	}
+	if observeErr != nil {
+		logging.Warn().
+			Err(observeErr).
+			Msg("Continuing with degraded source observations and last-known-good data")
+	}
+	observations, err = guardObservationHealth(existing, observations)
+	if err != nil {
+		return nil, pkgerrors.WrapResource("guard", "source observations", "", err)
+	}
+	if options.RequireAllSources {
+		if err := requireHealthyObservations(srcs, observations); err != nil {
+			return nil, err
+		}
+	}
+	if options.Fresh && hasDegradedObservation(observations) {
+		return nil, &pkgerrors.SyncError{
+			Provider: "all",
+			Err: &pkgerrors.ValidationError{
+				Field:   "fresh",
+				Message: "cannot publish from an empty baseline while any source observation is degraded or partial",
+			},
+		}
 	}
 
 	result, err := p.reconcile(ctx, existing, observations)
@@ -186,6 +212,16 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	}
 
 	return syncResult, nil
+}
+
+func hasDegradedObservation(observations []sources.Observation) bool {
+	for _, observation := range observations {
+		if observation.Status != sources.ObservationStatusSucceeded ||
+			observation.Completeness != sources.ObservationCompletenessComplete {
+			return true
+		}
+	}
+	return false
 }
 
 func activeSourceIDs(observations []sources.Observation) []sources.ID {

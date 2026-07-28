@@ -36,6 +36,15 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 		if options.ProviderID != nil && providerID != *options.ProviderID {
 			continue
 		}
+		for _, issue := range mdProvider.RecordReport.Issues {
+			issues = append(issues, modelsDevRecordIssue(providerID, issue.Subject, issue.Err))
+		}
+		if mdProvider.RecordReport.Truncated {
+			issues = append(issues, sources.ObservationIssue{
+				Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodePayloadLimit,
+				Subject: string(providerID), Message: "models.dev model count exceeds maximum; excess records quarantined",
+			})
+		}
 		if mdProvider.Models == nil {
 			issues = append(issues, sources.ObservationIssue{
 				Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodeSchemaDrift,
@@ -115,6 +124,7 @@ func modelsDevCandidateCount(api *API, providerFilter *catalogs.ProviderID) int 
 		if providerFilter != nil && catalogs.ProviderID(provider.ID) != *providerFilter {
 			continue
 		}
+		count += provider.RecordReport.Rejected
 		for _, model := range provider.Models {
 			if model.hasCatalogData() {
 				count++

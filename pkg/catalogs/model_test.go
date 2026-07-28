@@ -71,6 +71,8 @@ func TestModel_FormatYAML_EnhancedFormat(t *testing.T) {
 		CreatedAt: utc.New(time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)),
 		UpdatedAt: utc.New(time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)),
 	}
+	model.Features.SetSupport(ModelFeatureTemperature, false)
+	model.Features.SetSupport(ModelFeatureFormatResponse, false)
 
 	yaml := model.FormatYAML()
 

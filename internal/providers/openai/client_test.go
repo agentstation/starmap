@@ -256,6 +256,45 @@ func TestConvertToOpenAIModel(t *testing.T) {
 	}
 }
 
+func TestMappedZeroAndFalseValuesRemainExplicitSourceClaims(t *testing.T) {
+	client := &Client{}
+	model := &catalogs.Model{ID: "presence", Name: "Presence"}
+	client.applyMappedField(model, "limits.context_window", int64(0))
+	client.applyMappedField(model, "description", "")
+
+	if value, state := model.Limits.Value(catalogs.ModelLimitContextWindow); value != 0 || state != catalogs.ValueKnown {
+		t.Fatalf("context window = %d, %v; want zero, known", value, state)
+	}
+	if value, state := model.DescriptionValue(); value != "" || state != catalogs.ValueKnown {
+		t.Fatalf("description = %q, %v; want empty, known", value, state)
+	}
+
+	features := &catalogs.ModelFeatures{}
+	client.applyFeatureRule(features, Model{ID: "presence"}, catalogs.FeatureRule{
+		Field: "id", Contains: []string{"presence"}, Feature: "tools", Value: false,
+	})
+	if value, state := features.Support(catalogs.ModelFeatureTools); value || state != catalogs.ValueKnown {
+		t.Fatalf("tools = %v, %v; want false, known", value, state)
+	}
+
+	explicitFalse := false
+	providerModel := &catalogs.Model{ID: "provider-presence", Name: "Provider Presence"}
+	client.applyProviderFeatures(providerModel, Model{
+		SupportsTools:     &explicitFalse,
+		SupportsReasoning: &explicitFalse,
+	})
+	for _, feature := range []catalogs.ModelFeature{
+		catalogs.ModelFeatureTools,
+		catalogs.ModelFeatureToolCalls,
+		catalogs.ModelFeatureToolChoice,
+		catalogs.ModelFeatureReasoning,
+	} {
+		if value, state := providerModel.Features.Support(feature); value || state != catalogs.ValueKnown {
+			t.Fatalf("%s = %v, %v; want false, known", feature, value, state)
+		}
+	}
+}
+
 func TestConvertToModelWithWildcardAuthorMapping(t *testing.T) {
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDDeepInfra,
