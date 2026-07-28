@@ -121,6 +121,82 @@ func TestMigrateLegacyLayoutFailureRollsBackExactStore(t *testing.T) {
 	}
 }
 
+func TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	legacy := filepath.Join(root, "catalog")
+	state := filepath.Join(root, "state", "catalog")
+	store := migrationStore(t, legacy)
+	generation := migrationGeneration(t, "migration-projection-failure", "projection", "Projection")
+	if err := store.Commit(context.Background(), generation, ""); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+	before := migrationTree(t, legacy)
+	markerPath := projectionMarkerPath(legacy)
+	if err := os.Mkdir(markerPath, constants.DirPermissions); err != nil {
+		t.Fatalf("Mkdir blocking marker: %v", err)
+	}
+
+	_, err := MigrateLegacyLayout(context.Background(), legacy, state)
+	if err == nil {
+		t.Fatal("MigrateLegacyLayout succeeded with a blocking marker directory")
+	}
+	if after := migrationTree(t, legacy); !reflect.DeepEqual(after, before) {
+		t.Fatalf("legacy store changed after projection rollback:\nbefore=%v\nafter=%v", before, after)
+	}
+	if _, err := os.Lstat(state); !stderrors.Is(err, fs.ErrNotExist) {
+		t.Fatalf("migration target survived projection rollback: %v", err)
+	}
+	if _, err := os.Lstat(markerPath); !stderrors.Is(err, fs.ErrNotExist) {
+		t.Fatalf("blocking marker survived projection rollback: %v", err)
+	}
+}
+
+func TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath(t *testing.T) {
+	t.Parallel()
+
+	root := t.TempDir()
+	legacy := filepath.Join(root, "catalog")
+	state := filepath.Join(root, "state", "catalog")
+	store := migrationStore(t, legacy)
+	generation := migrationGeneration(t, "migration-concurrent", "concurrent", "Concurrent")
+	if err := store.Commit(context.Background(), generation, ""); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+	fault := stderrors.New("injected after concurrent recreation")
+	operatorFile := filepath.Join(legacy, "operator-data")
+
+	_, err := (legacyLayoutMigrator{afterMove: func() error {
+		if err := os.MkdirAll(legacy, constants.DirPermissions); err != nil {
+			return err
+		}
+		if err := os.WriteFile(operatorFile, []byte("preserve me"), constants.FilePermissions); err != nil {
+			return err
+		}
+		return fault
+	}}).migrate(context.Background(), legacy, state)
+	if !stderrors.Is(err, fault) {
+		t.Fatalf("migration error = %v, want injected fault", err)
+	}
+	var conflict *pkgerrors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("migration error = %T %v, want joined *errors.ConflictError", err, err)
+	}
+	data, readErr := os.ReadFile(operatorFile)
+	if readErr != nil || string(data) != "preserve me" {
+		t.Fatalf("recreated path data = %q, %v; want preserved", data, readErr)
+	}
+	relocated := migrationStore(t, state)
+	got, currentErr := relocated.Current(context.Background())
+	if currentErr != nil {
+		t.Fatalf("Current relocated: %v", currentErr)
+	}
+	if !sameMigrationGeneration(generation, got) {
+		t.Fatal("relocated generation changed after refused rollback")
+	}
+}
+
 func TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation(t *testing.T) {
 	t.Parallel()
 

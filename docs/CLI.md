@@ -59,9 +59,15 @@ current generation at `catalog_path` as editable provider YAML. It accepts no
 path arguments: `catalog_path` follows normal configuration precedence and the
 machine state destination is the canonical CLI-owned path.
 
+Stop all older Starmap processes that use `catalog_path` before running the
+command, and do not restart those binaries afterward. They do not understand
+the path's new human-workspace meaning and can recreate machine state there.
+
 Every retained generation, the current pointer, payload binding, and schema
 compatibility are checked before the first rename. A normal failure restores
-the old store. An interrupted process after the atomic move is completed by
+the old store. If another actor recreates the vacated path, rollback preserves
+that data and the relocated store and returns a typed conflict instead of
+deleting either. An interrupted process after the atomic move is completed by
 normal startup projection repair; no new catalog generation is published.
 
 ### Serve Command

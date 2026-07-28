@@ -39,7 +39,11 @@ back to catalog_path as the one human-editable provider-YAML workspace.
 
 The command validates every retained generation and the running binary's schema
 compatibility before moving anything. A validation or publication failure
-restores the original generation-store layout.`,
+restores the original generation-store layout.
+
+Stop every older Starmap process that uses catalog_path before running this
+command and do not restart it afterward. Older binaries do not understand the
+new workspace meaning and can recreate machine state at the vacated path.`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			result, err := app.MigrateCatalogWorkspace(cmd.Context())
 			if err != nil {

@@ -722,10 +722,15 @@ generation commit lock and workspace writer lock, validates the exact current
 and every retained generation against the running schema before mutation,
 atomically relocates the store to the separate state root, verifies the
 relocated current, and projects its canonical payload as human YAML. A
-process-visible failure rolls the relocation back; an exit after the atomic
-move is recoverable because startup activates the relocated durable current
-and repairs the still-missing projection without another generation commit.
-An older binary rejects a newer manifest schema before moving the store.
+process-visible failure rolls the relocation back. If another actor recreates
+the vacated path, rollback preserves both that path and the relocated store and
+returns a typed conflict rather than deleting concurrent data. Operators must
+stop every older Starmap process before migration and must not restart it,
+because those binaries do not understand the path's new human-workspace
+meaning. An exit after the atomic move is recoverable because startup activates
+the relocated durable current and repairs the still-missing projection without
+another generation commit. An older binary rejects a newer manifest schema
+before moving the store.
 Generation
 locks, current pointers, retained generations, and their temporary candidates
 remain under the catalog-store root. Atomic YAML projection alone stages beside

@@ -126,8 +126,8 @@ func (m legacyLayoutMigrator) migrate(
 	if err := os.Rename(legacy, state); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("relocate", legacy, err)
 	}
-	rollback := func(cause error) (LegacyLayoutMigrationResult, error) {
-		if rollbackErr := rollbackLegacyMove(legacy, state); rollbackErr != nil {
+	rollback := func(cause error, projectedChecksum string) (LegacyLayoutMigrationResult, error) {
+		if rollbackErr := rollbackLegacyMove(legacy, state, projectedChecksum); rollbackErr != nil {
 			return LegacyLayoutMigrationResult{}, errors.WrapResource(
 				"rollback",
 				"legacy catalog layout migration",
@@ -138,21 +138,21 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, cause
 	}
 	if err := syncMigrationParents(legacy, state); err != nil {
-		return rollback(errors.WrapIO("sync", state, err))
+		return rollback(errors.WrapIO("sync", state, err), "")
 	}
 	if m.afterMove != nil {
 		if err := m.afterMove(); err != nil {
-			return rollback(err)
+			return rollback(err, "")
 		}
 	}
 
 	relocated, err := catalogstore.NewFilesystem(state)
 	if err != nil {
-		return rollback(err)
+		return rollback(err, "")
 	}
 	relocatedCurrent, err := relocated.Current(ctx)
 	if err != nil {
-		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err))
+		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err), "")
 	}
 	if !sameMigrationGeneration(generation, relocatedCurrent) {
 		return rollback(&errors.ConflictError{
@@ -160,7 +160,7 @@ func (m legacyLayoutMigrator) migrate(
 			Expected: generation.Manifest.GenerationID,
 			Actual:   relocatedCurrent.Manifest.GenerationID,
 			Message:  "relocated current generation changed during migration",
-		})
+		}, "")
 	}
 
 	receipt, err := (projector{}).projectLocked(
@@ -171,7 +171,7 @@ func (m legacyLayoutMigrator) migrate(
 		InputExpectation{Path: legacy, Exists: false},
 	)
 	if err != nil {
-		return rollback(err)
+		return rollback(err, receipt.WorkspaceChecksum)
 	}
 	succeeded = true
 	return LegacyLayoutMigrationResult{
@@ -364,9 +364,38 @@ func sameMigrationGeneration(left, right catalogstore.Generation) bool {
 		bytes.Equal(left.Payload, right.Payload)
 }
 
-func rollbackLegacyMove(legacy, state string) error {
-	if err := os.RemoveAll(legacy); err != nil {
-		return errors.WrapIO("remove", legacy, err)
+func rollbackLegacyMove(legacy, state, projectedChecksum string) error {
+	info, err := os.Lstat(legacy)
+	switch {
+	case stderrors.Is(err, fs.ErrNotExist):
+		// Nothing became visible at the vacated path.
+	case err != nil:
+		return errors.WrapIO("inspect", legacy, err)
+	default:
+		if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+			return unexpectedMigrationRollbackPath(legacy)
+		}
+		if projectedChecksum == "" {
+			return unexpectedMigrationRollbackPath(legacy)
+		}
+		if err := ValidateHumanLayout(legacy, ""); err != nil {
+			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
+		}
+		visible, err := readSemanticState(legacy)
+		if err != nil {
+			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
+		}
+		if !visible.exists || visible.checksum != projectedChecksum {
+			return &errors.ConflictError{
+				Resource: "catalog migration rollback workspace",
+				Expected: projectedChecksum,
+				Actual:   visible.describe(),
+				Message:  "vacated catalog path changed after relocation; relocated state was preserved",
+			}
+		}
+		if err := os.RemoveAll(legacy); err != nil {
+			return errors.WrapIO("remove", legacy, err)
+		}
 	}
 	if err := os.Remove(projectionMarkerPath(legacy)); err != nil && !stderrors.Is(err, fs.ErrNotExist) {
 		return errors.WrapIO("remove", projectionMarkerPath(legacy), err)
@@ -375,6 +404,14 @@ func rollbackLegacyMove(legacy, state string) error {
 		return errors.WrapIO("restore", legacy, err)
 	}
 	return syncMigrationParents(legacy, state)
+}
+
+func unexpectedMigrationRollbackPath(path string) error {
+	return &errors.ConflictError{
+		Resource: "catalog migration rollback workspace",
+		Actual:   path,
+		Message:  "vacated catalog path was recreated after relocation; relocated state was preserved",
+	}
 }
 
 func syncMigrationParents(first, second string) error {
