@@ -266,6 +266,29 @@ func (merger *merger) mergeModelPricing(
 		}
 		return
 	}
+	if len(rejected) == 0 || history == nil {
+		return
+	}
+	reason := "no valid current pricing candidate"
+	var (
+		retained   any
+		confidence float64
+	)
+	if target.Pricing != nil {
+		reason += "; retained prior pricing"
+		retained = copyModelPricing(target.Pricing)
+		confidence = merger.calculateConfidence(target.Pricing)
+	}
+	(*history)[policy.Evidence()] = provenance.Field{
+		Current: provenance.Provenance{
+			Field:      policy.Evidence(),
+			Value:      retained,
+			Timestamp:  time.Now(),
+			Rejections: append([]provenance.Rejection(nil), rejected...),
+			Confidence: confidence,
+			Reason:     reason,
+		},
+	}
 }
 
 func (merger *merger) mergeModelExtensions(
