@@ -10,9 +10,11 @@ Technical documentation for the Starmap AI Model Catalog project.
 Durable `/goal` prompt, phase/task/finding/PR/worktree ledgers, verifiable
 success criteria, and final repository cleanup gates for the current Starmap
 architecture program. It is grounded in the
-[2026-07-27 HTML architecture review](reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html)
+[2026-07-27 HTML architecture review](reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html),
+the
+[independent Fable review](reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md),
 and its
-[independent Fable review disposition](reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md).
+[disposition record](reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md).
 
 ### [API.md](API.md)
 **Go Package API Reference**

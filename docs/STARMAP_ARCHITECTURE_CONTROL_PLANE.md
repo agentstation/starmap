@@ -28,6 +28,10 @@ This plan is the durable execution record.
   `de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235`
 - Independent Fable review prompt:
   [`reviews/FABLE_STARMAP_PLAN_REVIEW_PROMPT.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_PROMPT.md)
+- Independent Fable review (full report):
+  [`reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md)
+- Independent Fable review SHA-256:
+  `b2f78de7be15762f9d0425f99a698dc3d63397b3c2e07e553eb16ed51a3495b2`
 - Independent Fable review disposition:
   [`reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md`](reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md)
 - Independent Fable review disposition SHA-256:
@@ -520,7 +524,7 @@ Every phase has the following additional exit criteria:
 | P0.2 | `DONE` | Decide the implementation base | Fresh control-plane worktree exists from exact protected main; PR #40 is explicitly rejected as a base |
 | P0.3 | `DONE` | Write the durable plan and `/goal` prompt | Mission, invariants, phase/task/finding/PR/workspace ledgers, gates, and continuation rules exist |
 | P0.4 | `DONE` | Archive the architecture report in the repository | Repository HTML has a recorded SHA; this file uses a relative link; HTML parses locally; CDN-backed visual enhancement is not claimed to work offline |
-| P0.5 | `IN_PROGRESS` | Reconcile independent review and publish the plan PR | Fable's findings have explicit dispositions; historical supersessions are mapped; Markdown links, docs check, diff check, required local verification, and hosted checks pass on exact head |
+| P0.5 | `IN_PROGRESS` | Reconcile independent review and publish the plan PR | The full Fable review is archived with a recorded SHA-256 and every finding has an explicit disposition; historical supersessions are mapped; Markdown links, docs check, diff check, required local verification, and hosted checks pass on exact head |
 
 P0 gate:
 
@@ -529,6 +533,7 @@ test -f docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md
 rg -n '^## `/goal` Prompt|^## Phase Ledger|^## Finding Ledger|^## Evidence Log' \
   docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md
 test -f docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html
+test -f docs/reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md
 test -f docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md
 make docs-check
 git diff --check
@@ -565,8 +570,8 @@ active alternative architecture.
 | --- | --- | --- | --- |
 | P2.1 | `PENDING` | Record domain vocabulary and decisions | Catalog, workspace, observation, generation, offering, definition, publication, and remote subscriber have one documented meaning |
 | P2.2 | `PENDING` | Characterize current local/store paths | Tests pin store-only failure before commit, input/output divergence, embedded write-path leakage, and durable-store restart precedence at their current call sites |
-| P2.3 | `PENDING` | Characterize reconciliation loss | Tests reproduce local field loss, provider omission pruning, degraded-source replacement, and bare-model provenance collision |
-| P2.4 | `PENDING` | Characterize schema resilience | A malformed sibling currently demonstrates whole-collection loss; invalid local YAML demonstrates fail-closed expectation |
+| P2.3 | `PENDING` | Characterize reconciliation loss | Tests pin the reviewed defect sites: manual-model drop at `pkg/catalogs/catalog.go:483-491` (models without pricing/limits vanish), non-boolean zero-value clearing asymmetry in `pkg/catalogs/merge.go`, provider omission pruning through wholesale `SetProvider` replacement, degraded-source replacement, and the bare-model-ID provenance tracker keying (`pkg/reconciler/merger.go:202`, `pkg/provenance/provenance.go:147-149`) whose report winner is timestamp-race-dependent |
+| P2.4 | `PENDING` | Characterize schema resilience | A malformed sibling demonstrates whole-collection loss at each reviewed decode site: the monolithic models.dev unmarshal (`internal/sources/modelsdev/parser.go:241`), the single provider-response decode (`internal/transport/request.go:88`, including Google multi-page loss), the local YAML walk abort (`pkg/catalogs/load.go`), and the strict whole-payload decode (`pkg/catalogstore/payload.go:37-39`); invalid local YAML demonstrates fail-closed expectation; the resilient raw-message skip pattern already in `cmd/starmap/cmd/providers/fetch.go:460-478` is recorded as the reference remedy |
 | P2.5 | `PENDING` | Characterize server/remote flow | Real transport tests record manifest/payload behavior, absent Last-Event-ID handling, non-unique timestamp SSE IDs, opposite SSE/WebSocket backpressure, callback ordering, generation drop/reorder, and reconnect semantics |
 | P2.6 | `PENDING` | Measure public composition after #43 | Record exact root/catalog/server dependency closures and attribution (pre-#43 review measured 472 root packages and 448 through Google), plus binary size, allocations, latency, package count, Go LOC, embedded bytes, and file-size inventory |
 | P2.7 | `PENDING` | Freeze user journeys | Golden fixtures cover in-process library, CLI workspace, embedded upgrade, embeddable server, and remote reactive consumer |
@@ -605,7 +610,7 @@ compile and performance baselines must also be green.
 | P4.5 | `PENDING` | Preserve source identity through YAML | Reloading generated YAML does not relabel unchanged provider/models.dev/embedded values as local |
 | P4.6 | `PENDING` | Model presence explicitly | Tri-state or equivalent typed representation makes missing, explicit false, explicit zero, empty, and unknown round-trip distinctly for limits, features, and other affected fields |
 | P4.7 | `PENDING` | Consume observation health and make absence non-authoritative | Reconciliation consumes source status, completeness, issues, and volume history; complete omission, partial response, timeout, fetch failure, and suspicious volume collapse cannot hard-delete or retire |
-| P4.8 | `PENDING` | Quarantine records independently | Malformed source record is isolated while valid siblings survive; collection envelope remains bounded |
+| P4.8 | `PENDING` | Quarantine records independently | Every P2.4-characterized whole-collection decode site (models.dev envelope, provider list responses, local YAML walk, stored payload) isolates a malformed record while valid siblings survive; collection envelope remains bounded |
 | P4.9 | `PENDING` | Make strict mode truthful | Every required source must be `Complete` and `Succeeded`; missing credentials, degraded/skipped state, stale fallback, or empty results without explicit issues fail before publication |
 | P4.10 | `PENDING` | Test policy and fuzz untrusted decoders | Authority/presence pass deterministic table and property tests; provider envelopes and provenance decoding pass bounded fuzz corpora without panic |
 
@@ -627,7 +632,7 @@ compile and performance baselines must also be green.
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
 | P6.1 | `PENDING` | Map the package graph | Each public package has a named consumer and role; import cycles remain zero; growth from the protected-main baseline of 89 package directories has explicit rationale |
-| P6.2 | `PENDING` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory; a `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server implementation |
+| P6.2 | `PENDING` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory; a `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
 | P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
 | P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
 | P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, scheduler runner, `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed or connected to a named production composition selected in P2.8 |
@@ -657,10 +662,10 @@ compile and performance baselines must also be green.
 | --- | --- | --- | --- |
 | P8.1 | `PENDING` | Add file-size verification | CI lists >1000, requires reviewed >1500 rationale, and fails every repository-authored file >=2000 |
 | P8.2 | `PENDING` | Split current hard-limit test | `pkg/reconciler/merger_test.go` is divided by behavior with no duplicated fixture machinery |
-| P8.3 | `PENDING` | Review >1000 production files | Each file is split by concept or receives recorded depth/locality rationale; no unreviewed concern remains |
-| P8.4 | `PENDING` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `internal/utils/ptr`, and the seven-package `catalog*` family |
+| P8.3 | `PENDING` | Review >1000 production files | Each file is split by concept or receives recorded depth/locality rationale; `pkg/differ/differ.go` (exactly 1000 lines at baseline) joins the review set; no unreviewed concern remains |
+| P8.4 | `PENDING` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `format.Formatter`, `internal/utils/ptr`, and the seven-package `catalog*` family |
 | P8.5 | `PENDING` | Audit pockets of complexity | Cyclomatic/cognitive hot spots are mapped to domain concepts and deepened without pass-through modules |
-| P8.6 | `PENDING` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven |
+| P8.6 | `PENDING` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven; dead exported behavior with zero callers, including `differ.Changeset.Filter` and the inert `ApplyAdditive` strategy path, receives the same disposition |
 | P8.7 | `PENDING` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
 | P8.8 | `PENDING` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
 
@@ -787,6 +792,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-27 | P0.1 | PR #40 retains the store-only empty-path save defect and invalid `WithAuthorities` option condition while expanding package directories from 89 to 109. Its overlapping acquisition/source/provider vocabularies require concept-by-concept salvage rather than branch reuse. |
 | 2026-07-27 | P0.4 | Archived and parsed `docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html`; SHA-256 `de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235`. |
 | 2026-07-27 | P0.5 | Fable independently returned `GO WITH REQUIRED REVISIONS`. B-01 through B-13 and the canonical Go findings were dispositioned in `docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md` (SHA-256 `df13364d205ca48848841f6aed20888ea0e8baf81e148ea1da73e2bc3406ae86`); accepted changes added the green-characterization rule, legacy-layout protection, one durable commit point, corrected phase order, dependency budget mechanism, event/shutdown contracts, historical supersession map, and explicit approval pauses. |
+| 2026-07-27 | P0.5 | Archived the full Fable review as `docs/reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md` (SHA-256 `b2f78de7be15762f9d0425f99a698dc3d63397b3c2e07e553eb16ed51a3495b2`) so its file/line defect evidence is durable. Follow-up review pass pinned exact defect sites into P2.3/P2.4/P4.8, made the P6.2 dependency budget CI-enforced, added `pkg/differ/differ.go` and dead `Changeset.Filter`/`ApplyAdditive` behavior to the P8.3/P8.6 scope, and added `format.Formatter` to the P8.4 stutter audit. |
 | 2026-07-27 | P0.5 | User steering made SSE heartbeat behavior load-bearing: comment-line heartbeats establish stream liveness across intermediary idle timeouts, heartbeat absence drives degraded/reconnect/catch-up behavior, liveness remains distinct from catalog freshness, and delivery failure must coalesce or disconnect rather than silently lose a generation on a healthy stream. Recorded as F-038 and strengthened P7.2–P7.5/P7.7–P7.8/P7.10–P7.11. |
 
 ## Final Definition of Done
