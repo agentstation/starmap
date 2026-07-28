@@ -15,6 +15,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -38,6 +39,42 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 	}
 	if _, err := client.Catalog().Provider("remote-root"); err != nil {
 		t.Fatalf("durable catalog was not published: %v", err)
+	}
+}
+
+// TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace pins
+// the current restart precedence. The P3 workspace lifecycle must invert this
+// behavior through explicit edit detection/reconciliation and digest repair;
+// it must not silently ignore a valid human workspace merely because a durable
+// generation exists.
+func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *testing.T) {
+	store := catalogstore.NewMemory()
+	generation := rootRemoteGeneration(t)
+	if err := store.Commit(context.Background(), generation, ""); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+
+	localPath := t.TempDir()
+	local := catalogs.NewEmpty()
+	if err := local.SetProvider(catalogs.Provider{ID: "workspace-only", Name: "Workspace Only"}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	if err := local.Save(save.WithPath(localPath)); err != nil {
+		t.Fatalf("Save local workspace: %v", err)
+	}
+
+	client, err := New(WithCatalogStore(store), WithCatalogExportPath(localPath))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	if got := client.CurrentGenerationID(); got != generation.Manifest.GenerationID {
+		t.Fatalf("generation ID = %q, want %q", got, generation.Manifest.GenerationID)
+	}
+	if _, err := client.Catalog().Provider("remote-root"); err != nil {
+		t.Fatalf("durable provider missing: %v", err)
+	}
+	if _, err := client.Catalog().Provider("workspace-only"); err == nil {
+		t.Fatal("F-001 characterization changed: valid local workspace affected restart catalog")
 	}
 }
 
