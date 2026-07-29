@@ -48,9 +48,13 @@ graph TB
     end
 
     subgraph ROOT["Root Package - starmap.Client"]
-        SYNC[Sync Adapter<br/>Client.Sync]
+        READ[Immutable Catalog<br/>Client.Catalog]
+        PUBLISH[Atomic Publication<br/>Client.Update]
         HOOKS[Event Hooks<br/>Callbacks]
-        AUTO[Auto-Updates<br/>Background Sync]
+    end
+
+    subgraph ACQ["Opt-in Acquisition Package"]
+        SYNC[Source Orchestration<br/>acquisition.Syncer]
     end
 
     subgraph CORE["Core Packages - pkg/"]
@@ -73,7 +77,10 @@ graph TB
     HTTP --> APPIF
     APPIF -.implemented by.-> APPIMPL
     APPIMPL --> ROOT
-    ROOT --> PIPE
+    APPIMPL --> ACQ
+    ACQ --> PIPE
+    ACQ --> ROOT
+    ROOT --> CAT
     PIPE --> CORE
     PROVS & MODELS & LOCAL & EMBED -.implement.-> SOURCES
 
@@ -87,9 +94,10 @@ graph TB
 **Architecture Layers:**
 1. **User Interfaces**: Multiple entry points (CLI, Go package, HTTP API)
 2. **Application Layer**: Dependency injection pattern with interface/implementation separation
-3. **Root Package**: Public API with sync orchestration, hooks, and lifecycle management
-4. **Core Packages**: Reusable business logic for catalog management and reconciliation
-5. **Internal Implementations**: Provider-specific code and data sources
+3. **Root Package**: Small provider-independent API for immutable reads and atomic publication
+4. **Acquisition Package**: Explicit opt-in composition for provider/source synchronization
+5. **Core Packages**: Reusable business logic for catalog management and reconciliation
+6. **Internal Implementations**: Provider-specific code and data sources
 
 ## Design Principles
 
@@ -232,11 +240,13 @@ differ `Differ`, and provenance `Auditor`. `Builder`, `Client`, `Reconciler`,
 and `Differ` are now concrete product types; mutation and publication remain
 separate.
 
-The root client exposes explicit idempotent `Sync`/`Update` operations and owns
-no ticker, cadence lifecycle, retry loop, or constructor-started goroutine.
-Starport and deployment composition own scheduling, startup policy, jitter,
-leases, and HA coordination. Custom candidate construction uses the
-context-aware `WithUpdateFunc` seam; it does not imply cadence.
+The root client exposes explicit `Update` and `Activate` publication operations
+and owns no provider SDK, source pipeline, ticker, cadence lifecycle, retry
+loop, or constructor-started goroutine. Provider synchronization is the opt-in
+`acquisition.Syncer` composition. Starport and deployment composition own
+scheduling, startup policy, jitter, leases, and HA coordination. Custom
+candidate construction uses the context-aware callback passed directly to
+`Client.Update`; it does not imply cadence.
 
 ### Application dependency flow
 
@@ -680,8 +690,9 @@ authority. Production readers consume the immutable catalog generation, while
 explicit updates treat semantic human source-record changes as local
 observations.
 
-There is no implicit filesystem watcher. A caller reloads the human workspace
-with `Client.Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI uses
+There is no implicit filesystem watcher. A caller explicitly constructs an
+`acquisition.Syncer` and reloads the human workspace with
+`syncer.Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI uses
 `starmap update --source local`. A semantic change publishes exactly one
 immutable generation and event, while unchanged or formatting-only input
 publishes none.
@@ -993,9 +1004,10 @@ See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence
 
 ## Root Package (starmap.Client)
 
-Location: `client.go`, `sync.go`
+Location: `client.go`, `update.go`
 
-**Purpose:** Main public API with sync adapter, catalog access, persistence, and event hooks
+**Purpose:** Small provider-independent API for immutable catalog access,
+serialized publication, rollback, and event hooks
 
 ### Concrete Client API
 
@@ -1006,7 +1018,8 @@ type Client struct {
 
 func New(opts ...Option) (*Client, error)
 func (c *Client) Catalog() *catalogs.Catalog
-func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
+func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
+func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error)
 ```
 
 The root package returns concrete `*Client`; consumers that need substitution
@@ -1025,12 +1038,17 @@ if err != nil {
     return err
 }
 sm, err := starmap.New(
-	starmap.WithCatalogStore(store),
+    starmap.WithCatalogStore(store),
     starmap.WithCatalogPath("./catalog"),
 )
 
-// Sync with options
-result, err := sm.Sync(ctx,
+syncer, err := acquisition.New(sm)
+if err != nil {
+    return err
+}
+
+// Provider/source synchronization is an explicit opt-in composition.
+result, err := syncer.Sync(ctx,
     sync.WithProvider("openai"),
     sync.WithDryRun(true),
     sync.WithTimeout(5 * time.Minute),
@@ -1197,9 +1215,15 @@ for _, provider := range providerConfigs {
 
 ## Sync Pipeline
 
-Location: `internal/catalog/pipeline/` with public entry through `client.Sync` in `sync.go`
+Location: `acquisition/` and `internal/catalog/pipeline/`
 
-The sync pipeline is a deep internal module behind the public `starmap.Client.Sync` method. The root client supplies only a store adapter for reading the current catalog and applying a reconciled catalog after persistence succeeds. `internal/catalog/pipeline` owns execution ordering, source construction, dependency filtering, observation/cleanup fan-out, reconciliation, dry-run behavior, no-change behavior, and forced-save policy.
+The source pipeline is a deep internal module behind the opt-in
+`acquisition.Syncer.Sync` method. The acquisition layer prepares a complete
+candidate and delegates the sole durable compare-and-swap plus atomic in-memory
+publication to the root client. `internal/catalog/pipeline` owns execution
+ordering, source construction, dependency filtering, observation/cleanup
+fan-out, reconciliation, dry-run behavior, no-change behavior, and forced-save
+policy.
 
 The pipeline executes in 13 stages with comprehensive error handling and decision points:
 
@@ -1932,7 +1956,7 @@ starmap/
 │   │   └── ...               # Command support packages
 │   ├── catalog/
 │   │   ├── query/           # Shared CLI/HTTP catalog query behavior
-│   │   └── pipeline/        # Sync orchestration behind Client.Sync
+│   │   └── pipeline/        # Prepare-only source orchestration
 │   ├── providers/            # Provider API clients and registry
 │   │   ├── clients/          # Provider client registry and raw fetch
 │   │   ├── openai/           # OpenAI-compatible client
@@ -1963,10 +1987,10 @@ starmap/
 │   ├── attribution/          # Model author attribution and matcher
 │   └── transport/            # HTTP client utilities
 │
-├── client.go                 # Client implementation
-├── sync.go                   # Public sync adapter and persistence apply hook
+├── acquisition/              # Opt-in provider/source synchronization
+├── client.go                 # Immutable client reads and initialization
+├── update.go                 # Explicit candidate publication
 ├── hooks.go                  # Event hooks
-├── autoupdate.go             # Auto-updates
 ├── options.go                # Functional options
 └── persistence.go            # Save/load operations
 ```
@@ -2096,11 +2120,14 @@ go test -tags=integration ./pkg/reconciler -v
 ```go
 //go:build integration
 func TestFullSyncPipeline(t *testing.T) {
-    // Create real starmap with embedded catalog
-    sm, _ := starmap.New()
+    // Create a read-only Starmap client and the explicit acquisition adapter.
+    sm, err := starmap.New()
+    assert.NoError(t, err)
+    syncer, err := acquisition.New(sm)
+    assert.NoError(t, err)
 
-    // Perform actual sync
-    result, err := sm.Sync(context.Background(),
+    // Perform a dry-run acquisition; no writable store is required.
+    result, err := syncer.Sync(context.Background(),
         sync.WithProvider("openai"),
         sync.WithDryRun(true),
     )
@@ -2177,7 +2204,8 @@ func TestListModels(t *testing.T) {
 | File | Purpose | Lines |
 |------|---------|-------|
 | `client.go` | Concrete public Client API and immutable catalog publication | ~150 |
-| `sync.go` | Public sync adapter and persistence apply hook | ~120 |
+| `acquisition/syncer.go` | Explicit provider/source acquisition adapter | ~200 |
+| `update.go` | Serialized durable publication and activation | ~150 |
 | `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
 | `internal/application/application.go` | Application interface | ~97 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |

@@ -24,15 +24,13 @@ import (
 
 func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteHookFaults(t *testing.T) {
 	store := catalogstore.NewMemory()
-	client, err := starmap.New(
-		starmap.WithCatalogStore(store),
-		starmap.WithUpdateFunc(func(_ context.Context, candidate *catalogs.Builder) (*catalogs.Builder, error) {
-			if err := candidate.SetProvider(catalogs.Provider{ID: "correspondence", Name: "Correspondence"}); err != nil {
-				return nil, err
-			}
-			return candidate, nil
-		}),
-	)
+	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
+		if err := candidate.SetProvider(catalogs.Provider{ID: "correspondence", Name: "Correspondence"}); err != nil {
+			return err
+		}
+		return nil
+	})
+	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -115,7 +113,7 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 		)
 	}
 
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), update); err != nil {
 		t.Fatalf("Update: %v", err)
 	}
 	select {

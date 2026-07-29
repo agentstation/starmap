@@ -1,4 +1,5 @@
-// Package pipeline owns catalog sync orchestration behind *starmap.Client.Sync.
+// Package pipeline owns acquisition orchestration behind the public
+// acquisition package.
 package pipeline
 
 import (
@@ -18,7 +19,20 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-// Store is the catalog boundary required by the sync pipeline.
+// Prepared is one complete acquisition result ready for optional publication.
+// It remains internal because callers compose publication through starmap.Client.
+type Prepared struct {
+	Result         *pkgsync.Result
+	Catalog        *catalogs.Builder
+	Changeset      *differ.Changeset
+	Observations   []sources.Observation
+	Options        *pkgsync.Options
+	WorkspaceInput workspace.InputExpectation
+	Publish        bool
+}
+
+// Store is retained as an internal test adapter while acquisition migrates to
+// Prepare. Production composition publishes through starmap.Client.Update.
 type Store interface {
 	Catalog() (*catalogs.Catalog, error)
 	Apply(
@@ -31,7 +45,7 @@ type Store interface {
 	) (Publication, error)
 }
 
-// Publication identifies the durable generation produced by Apply.
+// Publication identifies a generation produced by the internal Store adapter.
 type Publication struct {
 	GenerationID    string
 	PayloadChecksum string
@@ -49,8 +63,7 @@ type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observatio
 
 // Pipeline executes catalog sync through source observation, reconciliation, and persistence.
 type Pipeline struct {
-	store Store
-
+	store               Store
 	loadWorkspace       loadWorkspaceFunc
 	loadEmbedded        loadEmbeddedFunc
 	createSources       sourcesFunc
@@ -60,13 +73,26 @@ type Pipeline struct {
 	reconcile           reconcileFunc
 }
 
-// New creates a catalog sync pipeline with production dependencies.
+// New creates the internal Store-backed adapter used by pipeline tests.
 func New(store Store) *Pipeline {
+	pipeline := newPipeline(nil)
+	pipeline.store = store
+	return pipeline
+}
+
+// NewAcquisition creates a prepare-only pipeline with the provider factory
+// injected by the opt-in acquisition composition.
+func NewAcquisition(providerFactory sources.ProviderClientFactory) *Pipeline {
+	return newPipeline(providerFactory)
+}
+
+func newPipeline(providerFactory sources.ProviderClientFactory) *Pipeline {
 	return &Pipeline{
-		store:               store,
-		loadWorkspace:       loadHumanWorkspace,
-		loadEmbedded:        catalogs.NewEmbedded,
-		createSources:       filterSources,
+		loadWorkspace: loadHumanWorkspace,
+		loadEmbedded:  catalogs.NewEmbedded,
+		createSources: func(options *pkgsync.Options, inputs catalogInputs) []sources.Source {
+			return filterSources(options, inputs, providerFactory)
+		},
 		resolveDependencies: resolveDependencies,
 		cleanup:             cleanup,
 		observe:             observe,
@@ -74,12 +100,70 @@ func New(store Store) *Pipeline {
 	}
 }
 
-// Sync synchronizes the catalog through source observation, reconciliation, and optional persistence.
+// Sync exercises the historical internal Store adapter through Prepare. New
+// production callers use the explicit acquisition package.
 func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.Result, error) {
-	if p.store == nil {
+	if p == nil || p.store == nil {
 		return nil, &pkgerrors.ConfigError{
 			Component: "pipeline",
 			Message:   "store is required",
+		}
+	}
+	existing, err := p.store.Catalog()
+	if err != nil {
+		return nil, err
+	}
+	options := pkgsync.Defaults().Apply(opts...)
+	bounded, cancel, err := prepareSyncContext(ctx, options.Timeout)
+	if err != nil {
+		return nil, err
+	}
+	defer cancel()
+	prepared, err := p.Prepare(bounded, existing, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if !prepared.Publish {
+		return prepared.Result, nil
+	}
+	changeset := prepared.Changeset
+	if changeset == nil {
+		changeset = &differ.Changeset{}
+	}
+	publication, err := p.store.Apply(
+		ctx,
+		prepared.Catalog,
+		prepared.Options,
+		changeset,
+		prepared.Observations,
+		prepared.WorkspaceInput,
+	)
+	if err != nil {
+		return nil, err
+	}
+	prepared.Result.GenerationID = publication.GenerationID
+	prepared.Result.SyncRunID = publication.SyncRunID
+	prepared.Result.Projection = publication.Projection
+	return prepared.Result, nil
+}
+
+// Prepare observes and reconciles sources against existing without mutating
+// shared state. Publication remains the root client's responsibility.
+func (p *Pipeline) Prepare(
+	ctx context.Context,
+	existing *catalogs.Catalog,
+	opts ...pkgsync.Option,
+) (*Prepared, error) {
+	if p == nil {
+		return nil, &pkgerrors.ValidationError{
+			Field:   "pipeline",
+			Message: "is required",
+		}
+	}
+	if existing == nil {
+		return nil, &pkgerrors.ValidationError{
+			Field:   "pipeline.existing_catalog",
+			Message: "is required",
 		}
 	}
 
@@ -87,12 +171,6 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	if err := options.ValidateFilesystemLayout(); err != nil {
 		return nil, err
 	}
-	ctx, cancel, err := prepareSyncContext(ctx, options.Timeout)
-	if err != nil {
-		return nil, err
-	}
-	defer cancel()
-
 	workspaceInput, err := workspace.ObserveInput(options.CatalogPath)
 	if err != nil {
 		return nil, err
@@ -121,15 +199,6 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		}
 	}()
 
-	existing, err := p.store.Catalog()
-	if err != nil {
-		empty := catalogs.NewEmpty()
-		existing, err = empty.Build()
-		if err != nil {
-			return nil, pkgerrors.WrapResource("publish", "empty baseline snapshot", "", err)
-		}
-		logging.Debug().Msg("No existing catalog found, using empty baseline")
-	}
 	if options.Fresh {
 		empty := catalogs.NewEmpty()
 		existing, err = empty.Build()
@@ -194,31 +263,25 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 
 	if options.DryRun {
 		logging.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")
-		return syncResult, nil
+		return &Prepared{
+			Result:         syncResult,
+			Catalog:        result.Catalog,
+			Changeset:      result.Changeset,
+			Observations:   observations,
+			Options:        options,
+			WorkspaceInput: inputs.workspaceInput,
+		}, nil
 	}
 
-	if shouldSave(options, result.Changeset, inputs.workspaceInput.RequiresSeed()) {
-		changeset := result.Changeset
-		if changeset == nil {
-			changeset = &differ.Changeset{}
-		}
-		publication, err := p.store.Apply(
-			ctx,
-			result.Catalog,
-			options,
-			changeset,
-			observations,
-			inputs.workspaceInput,
-		)
-		if err != nil {
-			return nil, err
-		}
-		syncResult.GenerationID = publication.GenerationID
-		syncResult.SyncRunID = publication.SyncRunID
-		syncResult.Projection = publication.Projection
-	}
-
-	return syncResult, nil
+	return &Prepared{
+		Result:         syncResult,
+		Catalog:        result.Catalog,
+		Changeset:      result.Changeset,
+		Observations:   observations,
+		Options:        options,
+		WorkspaceInput: inputs.workspaceInput,
+		Publish:        shouldSave(options, result.Changeset, inputs.workspaceInput.RequiresSeed()),
+	}, nil
 }
 
 func prepareSyncContext(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc, error) {

@@ -39,8 +39,6 @@ if fetcher.HasClient(providerID) {
 ## Index
 
 - [Constants](<#constants>)
-- [func RegisterProviderClientFactory\(factory ProviderClientFactory\) func\(\)](<#RegisterProviderClientFactory>)
-- [func RegisterProviderRawFetcher\(fetcher ProviderRawFetcher\) func\(\)](<#RegisterProviderRawFetcher>)
 - [func ValidateJSONPayload\(data \[\]byte\) error](<#ValidateJSONPayload>)
 - [type Dependency](<#Dependency>)
 - [type DependencyStatus](<#DependencyStatus>)
@@ -202,24 +200,6 @@ const (
 const MaxJSONNestingDepth = sourcepayload.MaxJSONNestingDepth
 ```
 
-<a name="RegisterProviderClientFactory"></a>
-## func [RegisterProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L114>)
-
-```go
-func RegisterProviderClientFactory(factory ProviderClientFactory) func()
-```
-
-RegisterProviderClientFactory registers the default provider client factory. It returns a restore function intended for tests and temporary integrations.
-
-<a name="RegisterProviderRawFetcher"></a>
-## func [RegisterProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L129>)
-
-```go
-func RegisterProviderRawFetcher(fetcher ProviderRawFetcher) func()
-```
-
-RegisterProviderRawFetcher registers the default raw provider fetcher. It returns a restore function intended for tests and temporary integrations.
-
 <a name="ValidateJSONPayload"></a>
 ## func [ValidateJSONPayload](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload.go#L9>)
 
@@ -271,7 +251,7 @@ type DependencyStatus struct {
 ```
 
 <a name="FetchStats"></a>
-## type [FetchStats](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L150-L159>)
+## type [FetchStats](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L83-L92>)
 
 FetchStats contains metadata about a fetch operation. This provides transparency into API requests for debugging and monitoring.
 
@@ -289,7 +269,7 @@ type FetchStats struct {
 ```
 
 <a name="FetchStats.HumanSize"></a>
-### func \(\*FetchStats\) [HumanSize](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L162>)
+### func \(\*FetchStats\) [HumanSize](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L95>)
 
 ```go
 func (s *FetchStats) HumanSize() string
@@ -503,7 +483,7 @@ func (o *Options) Apply(opts ...Option) *Options
 Apply applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
 <a name="ProviderClient"></a>
-## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L17-L21>)
+## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L15-L19>)
 
 ProviderClient fetches model information from a provider API.
 
@@ -516,7 +496,7 @@ type ProviderClient interface {
 ```
 
 <a name="ProviderClientFactory"></a>
-## type [ProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L24>)
+## type [ProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L22>)
 
 ProviderClientFactory creates provider API clients.
 
@@ -525,9 +505,9 @@ type ProviderClientFactory func(*catalogs.Provider) (ProviderClient, error)
 ```
 
 <a name="ProviderFetcher"></a>
-## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L45-L48>)
+## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L38-L41>)
 
-ProviderFetcher provides operations for fetching models from provider APIs. This is the public API for external packages to interact with provider data.
+ProviderFetcher provides operations for fetching models from provider APIs. Concrete provider clients are an explicit injected composition; use package acquisition for Starmap's built\-in provider implementations.
 
 ```go
 type ProviderFetcher struct {
@@ -536,16 +516,16 @@ type ProviderFetcher struct {
 ```
 
 <a name="NewProviderFetcher"></a>
-### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L222>)
+### func [NewProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L155>)
 
 ```go
 func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher
 ```
 
-NewProviderFetcher creates a new provider fetcher for interacting with provider APIs. It provides a clean public interface for external packages. The providers parameter should contain the catalog providers to create clients for.
+NewProviderFetcher creates a provider fetcher over the supplied catalog providers. Callers must inject the provider\-client and raw\-fetch roles they use; the root library never selects concrete provider implementations.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L327>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L263>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
@@ -556,19 +536,22 @@ FetchModels fetches available models from a single provider's API. It handles cr
 Example:
 
 ```
-fetcher := NewProviderFetcher()
+fetcher := NewProviderFetcher(providers, WithProviderClientFactory(factory))
 models, err := fetcher.FetchModels(ctx, provider)
 ```
 
 With options:
 
 ```
-fetcher := NewProviderFetcher(WithTimeout(30 * time.Second))
+fetcher := NewProviderFetcher(providers,
+    WithProviderClientFactory(factory),
+    WithTimeout(30*time.Second),
+)
 models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L366>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L302>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error)
@@ -579,7 +562,7 @@ FetchRawResponse fetches the raw API response from a provider's endpoint. This i
 The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing, along with fetch statistics.
 
 <a name="ProviderFetcher.HasClient"></a>
-### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L258>)
+### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L191>)
 
 ```go
 func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
@@ -588,7 +571,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
 HasClient checks if a provider ID has a client implementation.
 
 <a name="ProviderFetcher.List"></a>
-### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L247>)
+### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L180>)
 
 ```go
 func (pf *ProviderFetcher) List() []catalogs.ProviderID
@@ -597,7 +580,7 @@ func (pf *ProviderFetcher) List() []catalogs.ProviderID
 List returns all provider IDs that have client implementations.
 
 <a name="ProviderFetcher.Providers"></a>
-### func \(\*ProviderFetcher\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L232>)
+### func \(\*ProviderFetcher\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L165>)
 
 ```go
 func (pf *ProviderFetcher) Providers() *catalogs.Providers
@@ -606,7 +589,7 @@ func (pf *ProviderFetcher) Providers() *catalogs.Providers
 Providers returns the providers that can be used by the provider fetcher.
 
 <a name="ProviderOption"></a>
-## type [ProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L67>)
+## type [ProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L60>)
 
 ProviderOption configures ProviderFetcher behavior.
 
@@ -615,7 +598,7 @@ type ProviderOption func(*providerOptions)
 ```
 
 <a name="WithAllowMissingAPIKey"></a>
-### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L284>)
+### func [WithAllowMissingAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L217>)
 
 ```go
 func WithAllowMissingAPIKey() ProviderOption
@@ -624,7 +607,7 @@ func WithAllowMissingAPIKey() ProviderOption
 WithAllowMissingAPIKey allows operations even when API key is not configured. Useful for checking provider support without credentials.
 
 <a name="WithProviderClientFactory"></a>
-### func [WithProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L299>)
+### func [WithProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L232>)
 
 ```go
 func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption
@@ -633,7 +616,7 @@ func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption
 WithProviderClientFactory configures the factory used to create provider API clients.
 
 <a name="WithProviderRawFetcher"></a>
-### func [WithProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L306>)
+### func [WithProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L239>)
 
 ```go
 func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption
@@ -642,7 +625,7 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption
 WithProviderRawFetcher configures the raw provider response fetcher.
 
 <a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L292>)
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L225>)
 
 ```go
 func WithTimeout(d time.Duration) ProviderOption
@@ -651,7 +634,7 @@ func WithTimeout(d time.Duration) ProviderOption
 WithTimeout sets a timeout for provider operations. The timeout applies to the context passed to FetchModels.
 
 <a name="WithoutCredentialLoading"></a>
-### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L276>)
+### func [WithoutCredentialLoading](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L209>)
 
 ```go
 func WithoutCredentialLoading() ProviderOption
@@ -660,7 +643,7 @@ func WithoutCredentialLoading() ProviderOption
 WithoutCredentialLoading disables automatic credential loading from environment. Use this when credentials are already loaded or when testing.
 
 <a name="ProviderRawFetcher"></a>
-## type [ProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L35>)
+## type [ProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L33>)
 
 ProviderRawFetcher fetches a raw provider API response.
 
@@ -669,7 +652,7 @@ type ProviderRawFetcher func(context.Context, *catalogs.Provider, string) (*RawF
 ```
 
 <a name="RawFetchResult"></a>
-## type [RawFetchResult](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L27-L32>)
+## type [RawFetchResult](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L25-L30>)
 
 RawFetchResult contains the result of a raw provider fetch operation.
 

@@ -23,7 +23,10 @@ func TestPostCommitEventOrdering(t *testing.T) {
 		})
 
 		done := make(chan error, 1)
-		go func() { done <- client.Update(context.Background()) }()
+		go func() {
+			_, updateErr := client.Update(context.Background(), postCommitTestUpdate)
+			done <- updateErr
+		}()
 		<-store.entered
 		assertNoCatalogEvent(t, events)
 		close(store.release)
@@ -48,7 +51,10 @@ func TestPostCommitEventOrdering(t *testing.T) {
 		})
 
 		done := make(chan error, 1)
-		go func() { done <- client.Update(context.Background()) }()
+		go func() {
+			_, updateErr := client.Update(context.Background(), postCommitTestUpdate)
+			done <- updateErr
+		}()
 		<-store.entered
 		assertNoCatalogEvent(t, events)
 		close(store.release)
@@ -115,18 +121,16 @@ func newPostCommitEventClient(t testing.TB, store catalogstore.Store) *Client {
 	t.Helper()
 	client, err := New(
 		WithCatalogStore(store),
-		WithUpdateFunc(func(_ context.Context, catalog *catalogs.Builder) (*catalogs.Builder, error) {
-			if err := catalog.SetProvider(catalogs.Provider{ID: "post-commit", Name: "Post Commit"}); err != nil {
-				return nil, err
-			}
-			return catalog, nil
-		}),
 	)
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
 	return client
 }
+
+var postCommitTestUpdate = catalogUpdate(func(catalog *catalogs.Builder) error {
+	return catalog.SetProvider(catalogs.Provider{ID: "post-commit", Name: "Post Commit"})
+})
 
 func assertNoCatalogEvent(t testing.TB, events <-chan CatalogPublishedEvent) {
 	t.Helper()

@@ -1,7 +1,6 @@
 package starmap
 
 import (
-	"context"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -11,17 +10,11 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
-	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-type explicitCatalogSyncer interface {
-	Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
-}
-
-var _ explicitCatalogSyncer = (*Client)(nil)
 var _ catalogscheduler.CurrentGenerationReader = (*Client)(nil)
 
-func TestSchedulerOwnershipRootClientExposesSyncWithoutCadenceLifecycle(t *testing.T) {
+func TestSchedulerOwnershipRootClientExposesNoCadenceLifecycle(t *testing.T) {
 	clientType := reflect.TypeFor[*Client]()
 	for _, forbidden := range []string{"AutoUpdatesOn", "AutoUpdatesOff", "StartScheduler", "StopScheduler"} {
 		if _, found := clientType.MethodByName(forbidden); found {

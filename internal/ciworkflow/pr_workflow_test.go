@@ -35,8 +35,10 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"  security-reliability:",
 		"name: Security & Reliability",
 		"name: Test minimum supported Go version",
+		"name: Test minimum supported external consumer",
 		`go-version: "` + minimumPatchVersion + `"`,
 		"GOTOOLCHAIN: local",
+		"run: make test-consumer-deps",
 		`go-version: "` + preferredVersion[1] + `"`,
 		"run: make verify",
 		"golangci-lint@v2.12.2",
@@ -97,6 +99,7 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
 		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
+		`run ./scripts/verify-consumer-deps.sh`,
 		`go test ./... -race -short -timeout=20m`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
 	} {
@@ -106,6 +109,28 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	}
 	if strings.Contains(verifyScript, "skipping golangci-lint") {
 		t.Fatal("repository verification must not silently skip its pinned linter")
+	}
+}
+
+func TestExternalReadOnlyConsumerUsesCanonicalCatalogDX(t *testing.T) {
+	consumer := readFixture(t, "../../testdata/consumers/read-only/consumer.go")
+	for _, check := range []string{
+		"sm, err := starmap.New()",
+		"catalog := sm.Catalog()",
+		`catalog.FindModel("gpt-4o")`,
+	} {
+		if !strings.Contains(consumer, check) {
+			t.Fatalf("external read-only consumer is missing %q", check)
+		}
+	}
+	for _, forbidden := range []string{
+		"Snapshot",
+		"catalog, err := sm.Catalog()",
+		"acquisition",
+	} {
+		if strings.Contains(consumer, forbidden) {
+			t.Fatalf("external read-only consumer contains forbidden surface %q", forbidden)
+		}
 	}
 }
 

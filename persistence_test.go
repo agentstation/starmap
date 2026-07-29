@@ -8,12 +8,11 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
-	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 func TestSave(t *testing.T) {
@@ -80,21 +79,30 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 	opts.catalogStore = store
 	c := newWritableStoreTestClient(t, opts)
 
-	publication, err := c.save(
+	published := mustTestCatalog(t, newCatalog)
+	observation := persistenceObservation(t, newCatalog)
+	publication, err := c.Update(context.Background(), func(
+		context.Context,
+		*catalogs.Catalog,
+	) (*Candidate, error) {
+		return NewCandidate(published, observation.Link())
+	})
+	if err != nil {
+		t.Fatalf("Update: %v", err)
+	}
+	projection := projectRollbackCatalog(
 		context.Background(),
-		newCatalog,
-		&pkgsync.Options{CatalogPath: blockingFile},
-		&differ.Changeset{},
-		[]sources.Observation{persistenceObservation(t, newCatalog)},
+		published,
+		blockingFile,
+		workspace.Identity{
+			GenerationID:    publication.GenerationID,
+			PayloadChecksum: publication.PayloadChecksum,
+		},
 		workspace.InputExpectation{},
 	)
-	if err != nil {
-		t.Fatalf("save returned a pre-commit error after projection failure: %v", err)
-	}
-	if publication.Projection == nil ||
-		publication.Projection.Status != pkgsync.ProjectionStatusPendingRepair ||
-		publication.Projection.IssueCode != pkgsync.ProjectionIssueWorkspaceFailed {
-		t.Fatalf("projection = %#v, want pending repair", publication.Projection)
+	if projection.Status != catalogmeta.ProjectionStatusPendingRepair ||
+		projection.IssueCode != catalogmeta.ProjectionIssueWorkspaceFailed {
+		t.Fatalf("projection = %#v, want pending repair", projection)
 	}
 	current, err := store.Current(context.Background())
 	if err != nil {
@@ -120,34 +128,44 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 	client := newWritableStoreTestClient(t, opts)
 	path := filepath.Join(t.TempDir(), "catalog")
 
-	publication, err := client.save(
+	published := mustTestCatalog(t, candidate)
+	observation := persistenceObservation(t, candidate)
+	publication, err := client.Update(context.Background(), func(
+		context.Context,
+		*catalogs.Catalog,
+	) (*Candidate, error) {
+		return NewCandidate(published, observation.Link())
+	})
+	if err != nil {
+		t.Fatalf("Update: %v", err)
+	}
+	projection := projectRollbackCatalog(
 		context.Background(),
-		candidate,
-		&pkgsync.Options{CatalogPath: path},
-		&differ.Changeset{},
-		[]sources.Observation{persistenceObservation(t, candidate)},
+		published,
+		path,
+		workspace.Identity{
+			GenerationID:    publication.GenerationID,
+			PayloadChecksum: publication.PayloadChecksum,
+		},
 		workspace.InputExpectation{},
 	)
-	if err != nil {
-		t.Fatalf("save: %v", err)
+	if projection.Status != catalogmeta.ProjectionStatusApplied {
+		t.Fatalf("projection = %#v, want applied", projection)
 	}
-	if publication.Projection == nil || publication.Projection.Status != pkgsync.ProjectionStatusApplied {
-		t.Fatalf("projection = %#v, want applied", publication.Projection)
+	if projection.GenerationID != publication.GenerationID {
+		t.Fatalf("projection generation = %q, want %q", projection.GenerationID, publication.GenerationID)
 	}
-	if publication.Projection.GenerationID != publication.GenerationID {
-		t.Fatalf("projection generation = %q, want %q", publication.Projection.GenerationID, publication.GenerationID)
-	}
-	if publication.Projection.WorkspaceChecksum == "" || publication.Projection.IssueCode != "" {
-		t.Fatalf("projection = %#v, want checksum without issue", publication.Projection)
+	if projection.WorkspaceChecksum == "" || projection.IssueCode != "" {
+		t.Fatalf("projection = %#v, want checksum without issue", projection)
 	}
 	current, err := store.Current(context.Background())
 	if err != nil {
 		t.Fatalf("Current: %v", err)
 	}
-	if publication.Projection.WorkspaceChecksum != current.Manifest.Payload.Checksum {
+	if projection.WorkspaceChecksum != current.Manifest.Payload.Checksum {
 		t.Fatalf(
 			"workspace checksum = %q, want committed payload %q",
-			publication.Projection.WorkspaceChecksum,
+			projection.WorkspaceChecksum,
 			current.Manifest.Payload.Checksum,
 		)
 	}
@@ -171,19 +189,16 @@ func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
 		t.Fatalf("SetProvider: %v", err)
 	}
 
-	publication, err := (pipelineStore{client: client}).Apply(
-		context.Background(),
-		candidate,
-		&pkgsync.Options{},
-		&differ.Changeset{},
-		[]sources.Observation{persistenceObservation(t, candidate)},
-		workspace.InputExpectation{},
-	)
+	published := mustTestCatalog(t, candidate)
+	observation := persistenceObservation(t, candidate)
+	publication, err := client.Update(context.Background(), func(
+		context.Context,
+		*catalogs.Catalog,
+	) (*Candidate, error) {
+		return NewCandidate(published, observation.Link())
+	})
 	if err != nil {
-		t.Fatalf("store-only Apply: %v", err)
-	}
-	if publication.Projection != nil {
-		t.Fatalf("store-only projection = %#v, want nil", publication.Projection)
+		t.Fatalf("store-only Update: %v", err)
 	}
 	current, err := store.Current(context.Background())
 	if err != nil {

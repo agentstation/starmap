@@ -2,15 +2,11 @@ package starmap
 
 import (
 	"context"
-	"net/http"
-	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"sync/atomic"
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -81,47 +77,26 @@ func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *
 func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *testing.T) {
 	valid := rootRemoteGeneration(t)
 	for _, test := range []struct {
-		name         string
-		generation   catalogstore.Generation
-		corrupt      bool
-		wantSnapshot bool
+		name       string
+		generation catalogstore.Generation
+		corrupt    bool
 	}{
-		{name: "corrupt payload", generation: valid, corrupt: true, wantSnapshot: true},
+		{name: "corrupt payload", generation: valid, corrupt: true},
 		{name: "incompatible manifest", generation: incompatibleRemoteGeneration(t, valid)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			manifest, err := catalogremote.MarshalManifest(test.generation.Manifest)
-			if err != nil {
-				t.Fatalf("MarshalManifest: %v", err)
-			}
-			var snapshotRequests atomic.Int32
-			server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-				switch request.URL.Path {
-				case catalogremote.ManifestPath:
-					writer.Header().Set("Content-Type", catalogremote.ManifestMediaType)
-					_, _ = writer.Write(manifest)
-				case catalogremote.SnapshotPath(test.generation.Manifest.GenerationID):
-					snapshotRequests.Add(1)
-					writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
-					payload := append([]byte(nil), test.generation.Payload...)
-					if test.corrupt {
-						payload[len(payload)-1] ^= 1
-					}
-					_, _ = writer.Write(payload)
-				default:
-					http.NotFound(writer, request)
-				}
-			}))
-			defer server.Close()
-
 			store := catalogstore.NewMemory()
-			client, err := New(WithCatalogStore(store), WithRemoteServerOnly(server.URL))
+			client, err := New(WithCatalogStore(store))
 			if err != nil {
 				t.Fatalf("New: %v", err)
 			}
+			generation := test.generation.Copy()
+			if test.corrupt {
+				generation.Payload[len(generation.Payload)-1] ^= 1
+			}
 			beforeCatalog := client.Catalog()
 			beforeID := client.CurrentGenerationID()
-			if err := client.Update(context.Background()); err == nil {
+			if _, err := client.Activate(context.Background(), generation); err == nil {
 				t.Fatal("invalid remote generation replaced current catalog")
 			}
 			if client.Catalog() != beforeCatalog || client.CurrentGenerationID() != beforeID {
@@ -129,9 +104,6 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 			}
 			if _, err := store.Current(context.Background()); !pkgerrors.IsNotFound(err) {
 				t.Fatalf("invalid remote generation reached durable store: %v", err)
-			}
-			if (snapshotRequests.Load() > 0) != test.wantSnapshot {
-				t.Fatalf("snapshot requests = %d, want requested=%t", snapshotRequests.Load(), test.wantSnapshot)
 			}
 		})
 	}
@@ -155,7 +127,10 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 	if err != nil {
 		t.Fatalf("NewObservation: %v", err)
 	}
-	generation, err := generationTestClient(at).newGeneration(catalog, []sources.Observation{observation})
+	generation, err := generationTestClient(at).newGeneration(
+		catalog,
+		[]catalogs.SourceObservationLink{observation.Link()},
+	)
 	if err != nil {
 		t.Fatalf("newGeneration: %v", err)
 	}

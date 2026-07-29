@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/query"
@@ -17,7 +18,6 @@ import (
 	"github.com/agentstation/starmap/internal/cli/table"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // NewCommand creates the providers resource command.
@@ -91,7 +91,7 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 
 	// Create auth checker and get supported providers
 	checker := auth.NewChecker()
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 	supportedMap := make(map[string]bool)
 	for _, pid := range supportedProviders {

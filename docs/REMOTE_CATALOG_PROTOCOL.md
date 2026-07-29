@@ -28,6 +28,8 @@ immutable catalog pointer changes only after the exact received generation is
 durable. An optional API key is applied to both requests by a request-cloning
 transport so caller requests are not mutated.
 
-The old unversioned `GET /catalog` ad-hoc envelope is removed. Consumers should
-configure `WithRemoteServerURL` or `WithRemoteServerOnly` with the versioned API
-base URL, not just the origin.
+The old unversioned `GET /catalog` ad-hoc envelope is removed. Consumers
+explicitly construct `catalogremote.Client` with the versioned API base URL,
+fetch and verify one immutable generation with `FetchCurrent`, and pass it to
+`starmap.Client.Activate`. Importing the root `starmap` package never enables
+remote I/O or silently changes update behavior.

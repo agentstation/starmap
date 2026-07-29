@@ -131,13 +131,16 @@ Application Layer (internal/application/ interface, cmd/starmap/app/ implementat
 Root Package (starmap.Client - public API)
     ↓
 Core Packages (catalogs, catalogstore, reconciler, authority, sources)
+    ↑
+Explicit Acquisition (acquisition.Syncer)
     ↓
 Internal Implementations (embedded, providers, modelsdev)
 ```
 
 **Key files:**
-- `starmap.go` - Public API
-- `sync.go` - 13-step sync pipeline
+- `client.go` / `update.go` - Small immutable root API and publication
+- `acquisition/syncer.go` - Explicit opt-in provider/source synchronization
+- `internal/catalog/pipeline/` - Prepare-only source pipeline
 - `internal/application/application.go` - Application interface
 - `cmd/starmap/app/app.go` - App implementation
 
@@ -189,7 +192,8 @@ See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 See docs/ARCHITECTURE.md § Sync Pipeline for 12-step process.
 
-The sync pipeline is in `sync.go` with staged execution:
+The sync pipeline is in `internal/catalog/pipeline/` behind the explicit
+`acquisition.Syncer` composition:
 - Filter → Fetch (concurrent) → Reconcile → Save
 - Each stage has clear purpose and error handling
 
@@ -242,8 +246,8 @@ sm, _ := starmap.New(
     starmap.WithCatalogPath("./catalog"),
 )
 
-// Sync options
-result, _ := sm.Sync(ctx,
+syncer, _ := acquisition.New(sm)
+result, _ := syncer.Sync(ctx,
     sync.WithProvider("openai"),
     sync.WithDryRun(true),
 )
@@ -332,8 +336,9 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
 | File | Purpose |
 |------|---------|
-| `starmap.go` | Public API interface |
-| `sync.go` | 12-step sync pipeline |
+| `client.go` / `update.go` | Immutable root API and explicit publication |
+| `acquisition/syncer.go` | Opt-in provider/source synchronization |
+| `internal/catalog/pipeline/` | Prepare-only source pipeline |
 | `internal/application/application.go` | Application interface (idiomatic location) |
 | `cmd/starmap/app/app.go` | App implementation |
 | `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |

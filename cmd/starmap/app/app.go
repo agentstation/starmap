@@ -249,21 +249,13 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 		opts = append(opts, starmap.WithEmbeddedBootstrapMaxSizeBytes(a.config.EmbeddedBootstrapMaxSizeBytes))
 	}
 
-	// Add remote server if configured
+	// Reactive remote composition is explicit and does not belong to the root
+	// read-only Client. P7 supplies the public remote subscriber.
 	if a.config.RemoteServerURL != "" {
-		var apiKey *string
-		if a.config.RemoteServerAPIKey != "" {
-			apiKey = &a.config.RemoteServerAPIKey
-		}
-
-		if a.config.RemoteServerOnly {
-			opts = append(opts, starmap.WithRemoteServerOnly(a.config.RemoteServerURL))
-		} else {
-			opts = append(opts, starmap.WithRemoteServerURL(a.config.RemoteServerURL))
-		}
-
-		if apiKey != nil {
-			opts = append(opts, starmap.WithRemoteServerAPIKey(*apiKey))
+		return nil, &errors.ConfigError{
+			Component: "remote catalog",
+			Message: "remote catalog configuration requires the explicit " +
+				"reactive subscriber composition",
 		}
 	}
 

@@ -18,7 +18,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Options controls the overall sync orchestration in Starmap.Sync().
+// Options controls one explicit acquisition.Syncer.Sync operation.
 type Options struct {
 	// Orchestration control
 	DryRun  bool          // Show changes without applying them

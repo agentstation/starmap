@@ -25,7 +25,7 @@ func TestHookIsolation(t *testing.T) {
 		panic("hook panic")
 	})
 
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), postCommitTestUpdate); err != nil {
 		t.Fatalf("first Update: %v", err)
 	}
 	select {
@@ -36,7 +36,7 @@ func TestHookIsolation(t *testing.T) {
 
 	// The single delivery slot is occupied; another committed publication is
 	// dropped instead of blocking or spawning unbounded goroutines.
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), postCommitTestUpdate); err != nil {
 		t.Fatalf("second Update: %v", err)
 	}
 	stats := client.HookStats()

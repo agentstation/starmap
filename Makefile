@@ -50,7 +50,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -168,6 +168,9 @@ test-critical-coverage: ## Run critical seam coverage gates
 
 test-catalog-performance: ## Verify the immutable catalog accessor budget
 	@./scripts/verify-catalog-performance.sh
+
+test-consumer-deps: ## Compile the external read-only consumer and enforce its dependency budget
+	@./scripts/verify-consumer-deps.sh
 
 test-race: ## Run tests with race detector
 	@echo "$(BLUE)Running tests with race detector...$(NC)"

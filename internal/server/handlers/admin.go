@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -43,8 +44,14 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		opts = append(opts, sync.WithSources(sources.ID(sourceFilter)))
 	}
 
-	// Run sync
-	result, err := sm.Sync(r.Context(), opts...)
+	syncer, err := acquisition.New(sm)
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+
+	// Run explicitly composed acquisition.
+	result, err := syncer.Sync(r.Context(), opts...)
 	if err != nil {
 		response.InternalError(w, err)
 		return

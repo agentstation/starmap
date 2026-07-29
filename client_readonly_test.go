@@ -167,7 +167,13 @@ func TestCatalogPublicationRejectsNilBuilder(t *testing.T) {
 }
 
 func publishTestCatalog(client *Client, builder *catalogs.Builder) error {
-	published, err := snapshotBuilder(builder)
+	if builder == nil {
+		return &pkgerrors.ValidationError{
+			Field:   "catalog",
+			Message: "catalog builder cannot be nil",
+		}
+	}
+	published, err := builder.Build()
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,6 @@
 package starmap
 
 import (
-	"context"
 	stderrors "errors"
 	"os"
 	"path/filepath"
@@ -13,7 +12,6 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/save"
-	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 func TestDefaultCatalogWorkspaceAndStatePathsAreDisjoint(t *testing.T) {
@@ -141,7 +139,7 @@ func TestClientRejectsSymlinkedCatalogStateAndWorkspaceOverlap(t *testing.T) {
 	assertCatalogLayoutError(t, err)
 }
 
-func TestClientSaveAndSyncRejectDurableStateTargets(t *testing.T) {
+func TestClientSaveRejectsDurableStateTargets(t *testing.T) {
 	root := t.TempDir()
 	database := filepath.Join(root, "catalog")
 	store, err := catalogstore.NewFilesystem(database)
@@ -153,8 +151,6 @@ func TestClientSaveAndSyncRejectDurableStateTargets(t *testing.T) {
 		t.Fatalf("New: %v", err)
 	}
 	assertCatalogLayoutError(t, client.Save(save.WithPath(filepath.Join(database, "exports"))))
-	_, err = client.Sync(context.Background(), pkgsync.WithDryRun(true), pkgsync.WithCatalogPath(root))
-	assertCatalogLayoutError(t, err)
 }
 
 func mustFilesystemStore(t *testing.T, path string) *catalogstore.Filesystem {

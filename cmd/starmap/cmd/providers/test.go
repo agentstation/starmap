@@ -10,6 +10,7 @@ import (
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cli/emoji"
@@ -55,7 +56,7 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application.A
 	outputFormat := app.OutputFormat()
 	detectedFormat := format.DetectFormat(outputFormat)
 
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 
 	// Create auth checker for credential validation
@@ -389,7 +390,7 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)

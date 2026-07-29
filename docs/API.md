@@ -26,9 +26,9 @@ This document provides a complete API reference for Starmap's public interfaces.
 import "github.com/agentstation/starmap"
 ```
 
-Package starmap provides the main entry point for the Starmap AI model catalog system. It offers a high\-level interface for managing AI model catalogs with explicit synchronization, event hooks, and provider synchronization capabilities.
+Package starmap provides the small, provider\-independent entry point for the Starmap AI model catalog system.
 
-Starmap wraps the underlying catalog system with additional features including: \- Explicit, idempotent synchronization with provider APIs \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe access to an immutable canonical catalog \- Flexible configuration through functional options \- Support for multiple data sources and merge strategies
+Starmap wraps the underlying catalog system with additional features including: \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe access to an immutable canonical catalog \- Explicit, serialized publication of complete catalog generations \- Flexible configuration through functional options
 
 Example usage:
 
@@ -51,21 +51,18 @@ if err != nil {
     log.Fatal(err)
 }
 
-// Manually trigger a dry run (read-only; no store required)
-result, err := sm.Sync(ctx, sync.WithProvider("openai"), sync.WithDryRun(true))
+// Provider acquisition is an explicit opt-in composition.
+syncer, err := acquisition.New(sm)
 if err != nil {
     log.Fatal(err)
 }
-
-// Configure mutation with an explicit writable generation store
-store, err := catalogstore.NewFilesystem("./state/catalog")
-if err != nil {
-    log.Fatal(err)
-}
-sm, err = starmap.New(
-    WithCatalogStore(store),
-    WithCatalogPath("./catalog"),
+result, err := syncer.Sync(ctx,
+    sync.WithProvider("openai"),
+    sync.WithDryRun(true),
 )
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
@@ -73,12 +70,15 @@ Package starmap provides a unified AI model catalog system with automatic update
 ## Index
 
 - [Constants](<#constants>)
+- [type Candidate](<#Candidate>)
+  - [func NewCandidate\(catalog \*catalogs.Catalog, observations ...catalogs.SourceObservationLink\) \(\*Candidate, error\)](<#NewCandidate>)
 - [type CatalogPublishedEvent](<#CatalogPublishedEvent>)
 - [type CatalogPublishedHook](<#CatalogPublishedHook>)
 - [type CatalogReadiness](<#CatalogReadiness>)
 - [type CatalogState](<#CatalogState>)
 - [type Client](<#Client>)
   - [func New\(opts ...Option\) \(\*Client, error\)](<#New>)
+  - [func \(c \*Client\) Activate\(ctx context.Context, generation catalogstore.Generation\) \(Publication, error\)](<#Client.Activate>)
   - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogstore.Generation, error\)](<#Client.CurrentGeneration>)
@@ -92,8 +92,8 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(opts ...save.Option\) error](<#Client.Save>)
-  - [func \(c \*Client\) Sync\(ctx context.Context, opts ...sync.Option\) \(\*sync.Result, error\)](<#Client.Sync>)
-  - [func \(c \*Client\) Update\(ctx context.Context\) error](<#Client.Update>)
+  - [func \(c \*Client\) Update\(ctx context.Context, update UpdateFunc\) \(Publication, error\)](<#Client.Update>)
+  - [func \(c \*Client\) WorkspacePath\(\) string](<#Client.WorkspacePath>)
 - [type EmbeddedBootstrapInfo](<#EmbeddedBootstrapInfo>)
 - [type HookDeliveryStats](<#HookDeliveryStats>)
 - [type ModelAddedHook](<#ModelAddedHook>)
@@ -104,10 +104,7 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func WithCatalogStore\(store catalogstore.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
-  - [func WithRemoteServerAPIKey\(apiKey string\) Option](<#WithRemoteServerAPIKey>)
-  - [func WithRemoteServerOnly\(url string\) Option](<#WithRemoteServerOnly>)
-  - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
-  - [func WithUpdateFunc\(fn UpdateFunc\) Option](<#WithUpdateFunc>)
+- [type Publication](<#Publication>)
 - [type ReadinessIssue](<#ReadinessIssue>)
 - [type RollbackResult](<#RollbackResult>)
 - [type UpdateFunc](<#UpdateFunc>)
@@ -129,6 +126,26 @@ const (
     ReadinessIssueEmbeddedBootstrapOversize = "embedded_bootstrap_oversize"
 )
 ```
+
+<a name="Candidate"></a>
+## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L14-L17>)
+
+Candidate is a complete immutable catalog prepared off to the side for one atomic publication. Source observations are immutable generation evidence; they do not alter catalog facts.
+
+```go
+type Candidate struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewCandidate"></a>
+### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L22-L25>)
+
+```go
+func NewCandidate(catalog *catalogs.Catalog, observations ...catalogs.SourceObservationLink) (*Candidate, error)
+```
+
+NewCandidate validates and returns a publication candidate. An empty observation list is permitted for custom acquisition; Client.Update records a deterministic custom\-update observation in that case.
 
 <a name="CatalogPublishedEvent"></a>
 ## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L17-L22>)
@@ -167,7 +184,7 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L75-L79>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L70-L74>)
 
 CatalogState atomically pairs the current immutable catalog with its logical generation identity for generation\-scoped caches and responses.
 
@@ -180,9 +197,9 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L142-L159>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L129-L146>)
 
-Client manages an immutable canonical catalog, explicit synchronization, persistence, and event hooks. It owns no scheduling goroutine or cadence.
+Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
 ```go
 type Client struct {
@@ -191,7 +208,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L165>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L152>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -199,8 +216,17 @@ func New(opts ...Option) (*Client, error)
 
 New creates a new Client instance with the given options. When a durable generation and a marker\-backed unchanged YAML workspace are both configured, construction repairs a stale or interrupted projection by digest. It never overwrites an unrecognized semantic workspace change.
 
+<a name="Client.Activate"></a>
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L103>)
+
+```go
+func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error)
+```
+
+Activate validates, durably commits, and atomically activates an immutable generation obtained by an explicit trusted distribution adapter.
+
 <a name="Client.Catalog"></a>
-### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L66>)
+### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L61>)
 
 ```go
 func (c *Client) Catalog() *catalogs.Catalog
@@ -209,7 +235,7 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L82>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L77>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
@@ -218,7 +244,7 @@ func (c *Client) CurrentCatalogState() CatalogState
 CurrentCatalogState returns one atomic catalog/generation pair.
 
 <a name="Client.CurrentGeneration"></a>
-### func \(\*Client\) [CurrentGeneration](<https://github.com/agentstation/starmap/blob/main/generation.go#L21>)
+### func \(\*Client\) [CurrentGeneration](<https://github.com/agentstation/starmap/blob/main/generation.go#L19>)
 
 ```go
 func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation, error)
@@ -227,7 +253,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation
 CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L97>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L92>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -236,7 +262,7 @@ func (c *Client) CurrentGenerationID() string
 CurrentGenerationID returns the logical identity of the currently published catalog. Before the first durable mutation, this is the embedded bootstrap ID.
 
 <a name="Client.Generation"></a>
-### func \(\*Client\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L45>)
+### func \(\*Client\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L43>)
 
 ```go
 func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Generation, error)
@@ -316,23 +342,23 @@ func (c *Client) Save(opts ...save.Option) error
 
 Save atomically materializes the current committed generation into a YAML workspace. It never publishes a new generation.
 
-<a name="Client.Sync"></a>
-### func \(\*Client\) [Sync](<https://github.com/agentstation/starmap/blob/main/sync.go#L17>)
-
-```go
-func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-```
-
-Sync synchronizes the catalog with provider APIs using staged source execution.
-
 <a name="Client.Update"></a>
-### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L18>)
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L66>)
 
 ```go
-func (c *Client) Update(ctx context.Context) error
+func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
 ```
 
-Update manually triggers a catalog update.
+Update serializes candidate construction, generation\-store CAS, and atomic in\-memory publication. Acquisition and scheduling remain explicit caller composition above Client.
+
+<a name="Client.WorkspacePath"></a>
+### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L109>)
+
+```go
+func (c *Client) WorkspacePath() string
+```
+
+WorkspacePath returns the configured human\-editable YAML workspace. An empty path means this client has no filesystem projection.
 
 <a name="EmbeddedBootstrapInfo"></a>
 ## type [EmbeddedBootstrapInfo](<https://github.com/agentstation/starmap/blob/main/readiness.go#L27-L38>)
@@ -398,7 +424,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L82>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L67>)
 
 Option is a function that configures a Starmap instance.
 
@@ -407,7 +433,7 @@ type Option func(*options) error
 ```
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L145>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L82>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -416,7 +442,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath configures the human\-editable provider YAML workspace used for both local observation and post\-commit materialization. Immutable generation state remains in the separately supplied CatalogStore.
 
 <a name="WithCatalogStore"></a>
-### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L55>)
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L40>)
 
 ```go
 func WithCatalogStore(store catalogstore.Store) Option
@@ -425,7 +451,7 @@ func WithCatalogStore(store catalogstore.Store) Option
 WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L154>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L91>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -434,7 +460,7 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L166>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L103>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
@@ -442,41 +468,19 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
-<a name="WithRemoteServerAPIKey"></a>
-### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/main/options.go#L105>)
+<a name="Publication"></a>
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L56-L61>)
+
+Publication identifies the durable generation produced by a successful update. Published is false when the update function intentionally returns no candidate or an identical retained generation is activated again.
 
 ```go
-func WithRemoteServerAPIKey(apiKey string) Option
+type Publication struct {
+    Published       bool
+    GenerationID    string
+    PayloadChecksum string
+    SyncRunID       string
+}
 ```
-
-WithRemoteServerAPIKey configures the remote server API key.
-
-<a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/main/options.go#L114>)
-
-```go
-func WithRemoteServerOnly(url string) Option
-```
-
-WithRemoteServerOnly configures Client.Update to use only the versioned remote manifest and immutable generation snapshot contract at url.
-
-<a name="WithRemoteServerURL"></a>
-### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/main/options.go#L97>)
-
-```go
-func WithRemoteServerURL(url string) Option
-```
-
-WithRemoteServerURL configures a versioned remote API base URL, for example https://starmap.example.com/api/v1, without changing the update source. Use WithRemoteServerOnly to make Client.Update fetch exclusively from that server.
-
-<a name="WithUpdateFunc"></a>
-### func [WithUpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L127>)
-
-```go
-func WithUpdateFunc(fn UpdateFunc) Option
-```
-
-WithUpdateFunc configures an explicit context\-aware update implementation.
 
 <a name="ReadinessIssue"></a>
 ## type [ReadinessIssue](<https://github.com/agentstation/starmap/blob/main/readiness.go#L20-L23>)
@@ -506,17 +510,17 @@ type RollbackResult struct {
     // Sequence is the in-process publication sequence after rollback.
     Sequence uint64
     // Projection reports exact workspace restoration or pending repair.
-    Projection *pkgsync.ProjectionResult
+    Projection *catalogmeta.ProjectionResult
 }
 ```
 
 <a name="UpdateFunc"></a>
-## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L124>)
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L51>)
 
-UpdateFunc builds an explicit candidate catalog and must honor cancellation. Scheduling, retry, and high\-availability ownership remain above Client.
+UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. Returning nil performs no publication. The current catalog is immutable and safe to retain.
 
 ```go
-type UpdateFunc func(context.Context, *catalogs.Builder) (*catalogs.Builder, error)
+type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

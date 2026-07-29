@@ -1,12 +1,9 @@
 package starmap
 
 import (
-	"context"
 	"reflect"
 	"time"
 
-	"github.com/agentstation/starmap/internal/utils/ptr"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -17,14 +14,6 @@ import (
 
 // options holds the configuration for a Starmap instance.
 type options struct {
-	// Remote server configuration
-	remoteServerURL    *string
-	remoteServerAPIKey *string
-	remoteServerOnly   bool // If true (enabled), don't use any other sources for catalog updates including provider APIs
-
-	// Explicit update injection; cadence belongs to the deployment layer.
-	updateFunc UpdateFunc
-
 	// optional human-editable provider YAML workspace
 	catalogPath string
 
@@ -38,14 +27,10 @@ type options struct {
 
 func defaults() *options {
 	return &options{
-		updateFunc:                    nil,   // Default to pipeline-based updates
-		catalogPath:                   "",    // Default to no filesystem workspace
-		catalogStore:                  nil,   // Mutation requires an explicit writable store
-		embeddedBootstrapMaxAge:       0,     // Disabled until explicitly configured
-		embeddedBootstrapMaxSizeBytes: 0,     // Disabled until explicitly configured
-		remoteServerURL:               nil,   // Default to no remote server
-		remoteServerAPIKey:            nil,   // Default to no remote server API key
-		remoteServerOnly:              false, // Default to not only use remote server
+		catalogPath:                   "",  // Default to no filesystem workspace
+		catalogStore:                  nil, // Mutation requires an explicit writable store
+		embeddedBootstrapMaxAge:       0,   // Disabled until explicitly configured
+		embeddedBootstrapMaxSizeBytes: 0,   // Disabled until explicitly configured
 	}
 }
 
@@ -90,54 +75,6 @@ func (o *options) apply(opts ...Option) (*options, error) {
 	}
 	return o, nil
 }
-
-// WithRemoteServerURL configures a versioned remote API base URL, for example
-// https://starmap.example.com/api/v1, without changing the update source. Use
-// WithRemoteServerOnly to make Client.Update fetch exclusively from that server.
-func WithRemoteServerURL(url string) Option {
-	return func(o *options) error {
-		o.remoteServerURL = ptr.String(url)
-		return nil
-	}
-}
-
-// WithRemoteServerAPIKey configures the remote server API key.
-func WithRemoteServerAPIKey(apiKey string) Option {
-	return func(o *options) error {
-		o.remoteServerAPIKey = ptr.String(apiKey)
-		return nil
-	}
-}
-
-// WithRemoteServerOnly configures Client.Update to use only the versioned remote
-// manifest and immutable generation snapshot contract at url.
-func WithRemoteServerOnly(url string) Option {
-	return func(o *options) error {
-		o.remoteServerOnly = true
-		o.remoteServerURL = ptr.String(url)
-		return nil
-	}
-}
-
-// UpdateFunc builds an explicit candidate catalog and must honor cancellation.
-// Scheduling, retry, and high-availability ownership remain above Client.
-type UpdateFunc func(context.Context, *catalogs.Builder) (*catalogs.Builder, error)
-
-// WithUpdateFunc configures an explicit context-aware update implementation.
-func WithUpdateFunc(fn UpdateFunc) Option {
-	return func(o *options) error {
-		o.updateFunc = fn
-		return nil
-	}
-}
-
-// // WithInitialCatalog configures the initial catalog to use.
-// func WithInitialCatalog(catalog *catalogs.Builder) Option {
-// 	return func(o *options) error {
-// 		o.initialCatalog = &catalog
-// 		return nil
-// 	}
-// }
 
 // WithCatalogPath configures the human-editable provider YAML workspace used
 // for both local observation and post-commit materialization. Immutable

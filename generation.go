@@ -2,18 +2,16 @@ package starmap
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	stderrors "errors"
 	"time"
 
-	"github.com/google/uuid"
-
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
-	"github.com/agentstation/starmap/internal/catalog/pipeline"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // CurrentGeneration returns the exact immutable generation currently published
@@ -73,21 +71,21 @@ const (
 func (c *Client) commitAndPublish(
 	ctx context.Context,
 	published *catalogs.Catalog,
-	observations []sources.Observation,
-) (pipeline.Publication, error) {
+	observations []catalogs.SourceObservationLink,
+) (Publication, error) {
 	if err := c.requireWritableCatalogStore(); err != nil {
-		return pipeline.Publication{}, err
+		return Publication{}, err
 	}
 	generation, err := c.newGeneration(published, observations)
 	if err != nil {
-		return pipeline.Publication{}, err
+		return Publication{}, err
 	}
 
 	c.mu.RLock()
 	expectedGenerationID := c.generationID
 	c.mu.RUnlock()
 	if err := c.options.catalogStore.Commit(ctx, generation, expectedGenerationID); err != nil {
-		return pipeline.Publication{}, errors.WrapResource(
+		return Publication{}, errors.WrapResource(
 			"commit",
 			"catalog generation",
 			generation.Manifest.GenerationID,
@@ -96,37 +94,51 @@ func (c *Client) commitAndPublish(
 	}
 
 	c.publishCommittedGeneration(published, generation)
-	return pipeline.Publication{
+	return Publication{
+		Published:       true,
 		GenerationID:    generation.Manifest.GenerationID,
 		PayloadChecksum: generation.Manifest.Payload.Checksum,
 		SyncRunID:       generation.Manifest.SyncRunID,
 	}, nil
 }
 
-func (c *Client) commitReceivedGeneration(ctx context.Context, published *catalogs.Catalog, generation catalogstore.Generation) error {
+func (c *Client) commitReceivedGeneration(
+	ctx context.Context,
+	published *catalogs.Catalog,
+	generation catalogstore.Generation,
+) (Publication, error) {
 	if err := c.requireWritableCatalogStore(); err != nil {
-		return err
+		return Publication{}, err
 	}
 	if published == nil {
-		return &errors.ValidationError{Field: "remote catalog", Message: "decoded catalog is required"}
+		return Publication{}, &errors.ValidationError{Field: "catalog generation", Message: "decoded catalog is required"}
 	}
 	if err := generation.Validate(); err != nil {
-		return err
+		return Publication{}, err
 	}
 	c.mu.RLock()
 	expectedGenerationID := c.generationID
 	c.mu.RUnlock()
 	if err := c.options.catalogStore.Commit(ctx, generation, expectedGenerationID); err != nil {
-		return errors.WrapResource("commit", "remote catalog generation", generation.Manifest.GenerationID, err)
+		return Publication{}, errors.WrapResource("commit", "catalog generation", generation.Manifest.GenerationID, err)
 	}
 	// CatalogStore commits are idempotent so callers can safely retry an
 	// ambiguous response. Do not turn an identical retry into a second in-memory
 	// publication, sequence, or event.
 	if expectedGenerationID == generation.Manifest.GenerationID {
-		return nil
+		return Publication{
+			GenerationID:    generation.Manifest.GenerationID,
+			PayloadChecksum: generation.Manifest.Payload.Checksum,
+			SyncRunID:       generation.Manifest.SyncRunID,
+		}, nil
 	}
 	c.publishCommittedGeneration(published, generation)
-	return nil
+	return Publication{
+		Published:       true,
+		GenerationID:    generation.Manifest.GenerationID,
+		PayloadChecksum: generation.Manifest.Payload.Checksum,
+		SyncRunID:       generation.Manifest.SyncRunID,
+	}, nil
 }
 
 func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generation catalogstore.Generation) {
@@ -141,7 +153,10 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 	c.hooks.dispatchUpdate(oldCatalog, published, event)
 }
 
-func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations []sources.Observation) (catalogstore.Generation, error) {
+func (c *Client) newGeneration(
+	published *catalogs.Catalog,
+	sourceObservations []catalogs.SourceObservationLink,
+) (catalogstore.Generation, error) {
 	payload, err := catalogstore.EncodeCatalogPayload(published)
 	if err != nil {
 		return catalogstore.Generation{}, err
@@ -156,21 +171,42 @@ func (c *Client) newGeneration(published *catalogs.Catalog, sourceObservations [
 		return catalogstore.Generation{}, err
 	}
 	generatedAt := c.currentTime()
-	observations := make([]catalogs.SourceObservationLink, 0, len(sourceObservations))
+	observations := append([]catalogs.SourceObservationLink(nil), sourceObservations...)
+	if len(observations) == 0 {
+		observations = append(observations, catalogs.SourceObservationLink{
+			Source:        customUpdateSourceID,
+			ObservationID: "observation:" + syncRunID,
+			ObservedAt:    generatedAt,
+			Revision: catalogmeta.ObservationRevision{
+				Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+				Value: descriptor.Checksum,
+			},
+			Completeness:     catalogmeta.ObservationCompletenessComplete,
+			Status:           catalogmeta.ObservationStatusSucceeded,
+			EvidenceChecksum: descriptor.Checksum,
+		})
+	}
 	completeness := catalogs.GenerationCompletenessComplete
 	degraded := false
 	degradationReasons := make([]string, 0)
-	for _, observation := range sourceObservations {
+	for _, observation := range observations {
 		if err := observation.Validate(); err != nil {
-			return catalogstore.Generation{}, errors.WrapResource("validate", "source observation", observation.ID, err)
+			return catalogstore.Generation{}, errors.WrapResource(
+				"validate",
+				"source observation",
+				observation.ObservationID,
+				err,
+			)
 		}
-		observations = append(observations, observation.Link())
-		if observation.Completeness == sources.ObservationCompletenessPartial {
+		if observation.Completeness == catalogmeta.ObservationCompletenessPartial {
 			completeness = catalogs.GenerationCompletenessPartial
 		}
-		if observation.Status == sources.ObservationStatusDegraded {
+		if observation.Status == catalogmeta.ObservationStatusDegraded {
 			degraded = true
-			degradationReasons = append(degradationReasons, "source "+observation.SourceID.String()+" observation is degraded")
+			degradationReasons = append(
+				degradationReasons,
+				"source "+observation.Source.String()+" observation is degraded",
+			)
 		}
 	}
 	generation := catalogstore.Generation{
@@ -211,11 +247,17 @@ func (c *Client) nextID() (string, error) {
 	if c.newID != nil {
 		return c.newID()
 	}
-	id, err := uuid.NewRandom()
-	if err != nil {
+	var random [16]byte
+	if _, err := rand.Read(random[:]); err != nil {
 		return "", errors.WrapIO("generate", "catalog generation ID", err)
 	}
-	return id.String(), nil
+	// RFC 4122 version 4 / variant 1 bits preserve the established UUID-shaped
+	// generation identifier without importing an acquisition-unrelated module.
+	random[6] = (random[6] & 0x0f) | 0x40
+	random[8] = (random[8] & 0x3f) | 0x80
+	encoded := hex.EncodeToString(random[:])
+	return encoded[0:8] + "-" + encoded[8:12] + "-" + encoded[12:16] + "-" +
+		encoded[16:20] + "-" + encoded[20:32], nil
 }
 
 func (c *Client) currentTime() time.Time {

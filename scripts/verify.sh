@@ -89,6 +89,7 @@ if [ "${STARMAP_VERIFY_COVERAGE_ONLY:-}" = "1" ]; then
 fi
 
 run go test ./...
+run ./scripts/verify-consumer-deps.sh
 run go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh

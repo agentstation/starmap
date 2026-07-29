@@ -12,7 +12,7 @@ Package catalogs provides a unified catalog abstraction with pluggable storage b
 import "github.com/agentstation/starmap/pkg/catalogs"
 ```
 
-Package catalogs defines Starmap's provider\-oriented construction records and immutable canonical read model. Advanced producers use Builder to load or assemble provider models, then Build validates and derives definitions, provider offerings, and author membership into a concrete Catalog. Ordinary consumers retain and share that immutable Catalog.
+Package catalogs defines Starmap's authored\-model and provider\-serving construction records plus its immutable canonical read model. Advanced producers use Builder to load or assemble those records, then Build validates and derives definitions, provider offerings, and author membership into a concrete Catalog. Ordinary consumers retain and share that immutable Catalog.
 
 Example usage:
 

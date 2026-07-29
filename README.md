@@ -572,17 +572,24 @@ projection, not an editable source of truth.
 #### Syncing with Provider APIs
 ```go
 // Non-dry mutation requires an explicit writable generation store.
-store, err := catalogstore.NewFilesystem("./catalog")
+store, err := catalogstore.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
-sm, err := starmap.New(starmap.WithCatalogStore(store))
+sm, err := starmap.New(
+    starmap.WithCatalogStore(store),
+    starmap.WithCatalogPath("./catalog"),
+)
+if err != nil {
+    return err
+}
+syncer, err := acquisition.New(sm)
 if err != nil {
     return err
 }
 
 // Sync a selected provider API.
-result, err := sm.Sync(ctx,
+result, err := syncer.Sync(ctx,
     sync.WithProvider("openai"),
     sync.WithDryRun(false),
 )
@@ -600,20 +607,26 @@ fmt.Printf("Removed: %d models\n", result.Removed)
 
 #### Explicit Updates with Custom Logic
 ```go
-updateFunc := func(ctx context.Context, current *catalogs.Builder) (*catalogs.Builder, error) {
-    // Custom sync logic
-    // Honor ctx while calling providers or merging data.
-    return updatedCatalog, nil
-}
-
-sm, _ := starmap.New(
-    starmap.WithCatalogStore(store),
-    starmap.WithUpdateFunc(updateFunc),
-)
-
-// The deployment or Starport scheduler invokes this idempotent operation.
-if err := sm.Update(ctx); err != nil {
+publication, err := sm.Update(ctx, func(
+    ctx context.Context,
+    current *catalogs.Catalog,
+) (*starmap.Candidate, error) {
+    builder, err := catalogs.NewBuilderFrom(current)
+    if err != nil {
+        return nil, err
+    }
+    // Apply custom observations to builder while honoring ctx.
+    updated, err := builder.Build()
+    if err != nil {
+        return nil, err
+    }
+    return starmap.NewCandidate(updated)
+})
+if err != nil {
     return err
+}
+if publication.Published {
+    log.Printf("published catalog generation %s", publication.GenerationID)
 }
 ```
 

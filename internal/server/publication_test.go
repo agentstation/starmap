@@ -42,19 +42,17 @@ func (s *eventChannelSubscriber) Close() error { return nil }
 func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither(t *testing.T) {
 	store := &publicationFaultStore{Memory: catalogstore.NewMemory()}
 	var phase atomic.Int32
-	client, err := starmap.New(
-		starmap.WithCatalogStore(store),
-		starmap.WithUpdateFunc(func(_ context.Context, candidate *catalogs.Builder) (*catalogs.Builder, error) {
-			id := catalogs.ProviderID("published-one")
-			if phase.Add(1) > 1 {
-				id = "failed-two"
-			}
-			if err := candidate.SetProvider(catalogs.Provider{ID: id, Name: string(id)}); err != nil {
-				return nil, err
-			}
-			return candidate, nil
-		}),
-	)
+	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
+		id := catalogs.ProviderID("published-one")
+		if phase.Add(1) > 1 {
+			id = "failed-two"
+		}
+		if err := candidate.SetProvider(catalogs.Provider{ID: id, Name: string(id)}); err != nil {
+			return err
+		}
+		return nil
+	})
+	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -75,7 +73,7 @@ func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeith
 
 	initial := client.CurrentCatalogState()
 	server.cache.SetGeneration(initial.Sequence, initial.GenerationID, "models", "old")
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), update); err != nil {
 		t.Fatalf("Update: %v", err)
 	}
 	published := client.CurrentCatalogState()
@@ -97,7 +95,7 @@ func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeith
 	}
 
 	store.fail.Store(true)
-	if err := client.Update(context.Background()); err == nil {
+	if _, err := client.Update(context.Background(), update); err == nil {
 		t.Fatal("faulted commit succeeded")
 	}
 	if after := client.CurrentCatalogState(); after.GenerationID != published.GenerationID || after.Sequence != published.Sequence {

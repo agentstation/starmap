@@ -1,13 +1,11 @@
-// Package starmap provides the main entry point for the Starmap AI model catalog system.
-// It offers a high-level interface for managing AI model catalogs with explicit synchronization,
-// event hooks, and provider synchronization capabilities.
+// Package starmap provides the small, provider-independent entry point for the
+// Starmap AI model catalog system.
 //
 // Starmap wraps the underlying catalog system with additional features including:
-// - Explicit, idempotent synchronization with provider APIs
 // - Event hooks for model changes (added, updated, removed)
 // - Thread-safe access to an immutable canonical catalog
+// - Explicit, serialized publication of complete catalog generations
 // - Flexible configuration through functional options
-// - Support for multiple data sources and merge strategies
 //
 // Example usage:
 //
@@ -29,21 +27,18 @@
 //	    log.Fatal(err)
 //	}
 //
-//	// Manually trigger a dry run (read-only; no store required)
-//	result, err := sm.Sync(ctx, sync.WithProvider("openai"), sync.WithDryRun(true))
+//	// Provider acquisition is an explicit opt-in composition.
+//	syncer, err := acquisition.New(sm)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//
-//	// Configure mutation with an explicit writable generation store
-//	store, err := catalogstore.NewFilesystem("./state/catalog")
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//	sm, err = starmap.New(
-//	    WithCatalogStore(store),
-//	    WithCatalogPath("./catalog"),
+//	result, err := syncer.Sync(ctx,
+//	    sync.WithProvider("openai"),
+//	    sync.WithDryRun(true),
 //	)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
 package starmap
 
 import (
@@ -109,8 +104,13 @@ func (c *Client) CurrentGenerationID() string {
 	return ""
 }
 
-func (c *Client) catalogCopy() (*catalogs.Builder, error) {
-	return catalogs.NewBuilderFrom(c.Catalog())
+// WorkspacePath returns the configured human-editable YAML workspace. An
+// empty path means this client has no filesystem projection.
+func (c *Client) WorkspacePath() string {
+	if c == nil || c.options == nil {
+		return ""
+	}
+	return c.options.catalogPath
 }
 
 func (c *Client) requireWritableCatalogStore() error {
@@ -123,22 +123,9 @@ func (c *Client) requireWritableCatalogStore() error {
 	return nil
 }
 
-func snapshotBuilder(builder *catalogs.Builder) (*catalogs.Catalog, error) {
-	if builder == nil {
-		return nil, &errors.ValidationError{
-			Field:   "catalog",
-			Message: "catalog builder cannot be nil",
-		}
-	}
-	snapshot, err := builder.Build()
-	if err != nil {
-		return nil, errors.WrapResource("publish", "catalog snapshot", "", err)
-	}
-	return snapshot, nil
-}
-
-// Client manages an immutable canonical catalog, explicit synchronization,
-// persistence, and event hooks. It owns no scheduling goroutine or cadence.
+// Client manages an immutable canonical catalog, explicit publication,
+// persistence, and event hooks. It owns no provider acquisition, scheduling
+// goroutine, or cadence.
 type Client struct {
 
 	// options are the configured options for the client

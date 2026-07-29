@@ -41,16 +41,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `WithAutoUpdateInterval`, `AutoUpdateFunc`, `AutoUpdateContextFunc`,
   `WithAutoUpdateFunc`, and `WithAutoUpdateContextFunc` were removed.
   Deployments and Starport own cadence, jitter, retry, leases, and startup
-  policy and invoke the idempotent `Client.Sync` or `Client.Update` operation.
-  Custom candidate construction migrates to the context-aware
-  `UpdateFunc`/`WithUpdateFunc` seam:
+  policy. Provider/source synchronization is the explicit opt-in
+  `acquisition.Syncer`; custom publication passes a context-aware callback
+  directly to `Client.Update`:
 
   ```go
-  sm, err := starmap.New(
-      starmap.WithCatalogStore(store),
-      starmap.WithUpdateFunc(updateFunc),
-  )
-  err = sm.Update(ctx)
+  publication, err := sm.Update(ctx, func(
+      ctx context.Context,
+      current *catalogs.Catalog,
+  ) (*starmap.Candidate, error) {
+      return starmap.NewCandidate(updatedCatalog)
+  })
   ```
 
 - **Canonical model-definition and offering lookup**:
@@ -59,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `catalog.Offering(providerID, providerModelID)`. The prelaunch flattened
   `Models`, `ProviderModel`, `ProviderModels`, and `LegacyV0` reads were deleted
   because they discard provider identity. Canonical catalogs are schema
-  version 2.
+  version 3.
   The duplicate nested `tokens.cache` representation and unused
   `architecture.precision` alias were also removed; cache pricing persists only
   as `cache_read`/`cache_write`, and quantization has one typed field.
@@ -109,9 +110,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     option had an implementation. Use `sync.WithFresh(true)` for an explicitly
     destructive replacement sync. Default reconciliation remains non-destructive
     according to source merge and field-authority policy.
-  - `WithRemoteServerURL` now configures a remote endpoint without silently
-    diverting `Client.Update`. Use `WithRemoteServerOnly` when updates must come
-    exclusively from the configured remote endpoint.
+  - Removed the implicit root remote options. Construct
+    `catalogremote.Client` explicitly, call `FetchCurrent`, and pass the
+    verified generation to `starmap.Client.Activate`.
   - Programmatic `sync.WithSources` now rejects unknown source IDs and copies
     caller input. A fresh sync rejects `local_catalog` because an existing local
     catalog cannot also be the input to a replacement generation.
@@ -122,9 +123,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     source-observation revision metadata.
 
 - **Remote catalog protocol is generation-based and versioned**: the ad-hoc
-  unversioned `GET /catalog` envelope was removed. Configure
-  `WithRemoteServerURL`/`WithRemoteServerOnly` with the versioned API base (for
-  example `https://catalog.example.com/api/v1`). Consumers now read
+  unversioned `GET /catalog` envelope was removed. Construct
+  `catalogremote.Client` with the versioned API base (for example
+  `https://catalog.example.com/api/v1`). Consumers now read
   `GET /catalog/manifest` and then the immutable
   `GET /catalog/generations/{generation_id}/snapshot`; schema compatibility,
   media type, size, and SHA-256 are verified before durable publication.

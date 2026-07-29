@@ -8,9 +8,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/save"
@@ -233,19 +234,29 @@ func publishRollbackFixture(
 	if err != nil {
 		t.Fatalf("observeBoundWorkspaceInput: %v", err)
 	}
-	publication, err := client.save(
+	published := mustTestCatalog(t, builder)
+	observation := persistenceObservation(t, builder)
+	publication, err := client.Update(context.Background(), func(
+		context.Context,
+		*catalogs.Catalog,
+	) (*Candidate, error) {
+		return NewCandidate(published, observation.Link())
+	})
+	if err != nil {
+		t.Fatalf("publish rollback fixture: %v", err)
+	}
+	projection := projectRollbackCatalog(
 		context.Background(),
-		builder,
-		&pkgsync.Options{CatalogPath: path},
-		&differ.Changeset{},
-		[]sources.Observation{persistenceObservation(t, builder)},
+		published,
+		path,
+		workspace.Identity{
+			GenerationID:    publication.GenerationID,
+			PayloadChecksum: publication.PayloadChecksum,
+		},
 		input,
 	)
-	if err != nil {
-		t.Fatalf("save rollback fixture: %v", err)
-	}
-	if publication.Projection == nil || publication.Projection.Status != pkgsync.ProjectionStatusApplied {
-		t.Fatalf("fixture projection = %#v, want applied", publication.Projection)
+	if projection.Status != catalogmeta.ProjectionStatusApplied {
+		t.Fatalf("fixture projection = %#v, want applied", projection)
 	}
 	generation, err := client.CurrentGeneration(context.Background())
 	if err != nil {
@@ -253,7 +264,7 @@ func publishRollbackFixture(
 	}
 	return rollbackFixture{
 		generation:        generation,
-		workspaceChecksum: publication.Projection.WorkspaceChecksum,
+		workspaceChecksum: projection.WorkspaceChecksum,
 		workspacePayload:  loadWorkspacePayload(t, path),
 	}
 }

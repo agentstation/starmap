@@ -12,6 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -95,7 +96,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 	}
 
 	// Use provider fetcher
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Handle raw response mode
 	if raw {
@@ -224,7 +225,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 	}
 
 	providers := cat.Providers().List()
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Filter to only providers with clients
 	// Convert to pointer slice for compatibility

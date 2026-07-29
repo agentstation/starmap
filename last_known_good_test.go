@@ -44,12 +44,13 @@ func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalog
 type updateSyncer struct {
 	client *Client
 	store  catalogstore.Store
+	update UpdateFunc
 }
 
 const lastKnownGoodCommitGateTimeout = 30 * time.Second
 
 func (s updateSyncer) Sync(ctx context.Context, _ ...pkgsync.Option) (*pkgsync.Result, error) {
-	if err := s.client.Update(ctx); err != nil {
+	if _, err := s.client.Update(ctx, s.update); err != nil {
 		return nil, err
 	}
 	current, err := s.store.Current(ctx)
@@ -68,28 +69,26 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 		Memory: catalogstore.NewMemory(), entered: make(chan struct{}), release: make(chan struct{}),
 	}
 	var updateCalls atomic.Int32
-	client, err := New(
-		WithCatalogStore(store),
-		WithUpdateFunc(func(_ context.Context, candidate *catalogs.Builder) (*catalogs.Builder, error) {
-			if updateCalls.Add(1) == 1 {
-				if err := candidate.SetProvider(catalogs.Provider{ID: "last-known-good", Name: "Last Known Good"}); err != nil {
-					return nil, err
-				}
-				return candidate, nil
+	update := catalogUpdate(func(candidate *catalogs.Builder) error {
+		if updateCalls.Add(1) == 1 {
+			if err := candidate.SetProvider(catalogs.Provider{ID: "last-known-good", Name: "Last Known Good"}); err != nil {
+				return err
 			}
-			if err := candidate.DeleteProvider("last-known-good"); err != nil {
-				return nil, err
-			}
-			if err := candidate.SetProvider(catalogs.Provider{ID: "failed-candidate", Name: "Failed Candidate"}); err != nil {
-				return nil, err
-			}
-			return candidate, nil
-		}),
-	)
+			return nil
+		}
+		if err := candidate.DeleteProvider("last-known-good"); err != nil {
+			return err
+		}
+		if err := candidate.SetProvider(catalogs.Provider{ID: "failed-candidate", Name: "Failed Candidate"}); err != nil {
+			return err
+		}
+		return nil
+	})
+	client, err := New(WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), update); err != nil {
 		t.Fatalf("establish last known good: %v", err)
 	}
 	beforeCatalog := client.Catalog()
@@ -103,7 +102,7 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 
 	ledger := catalogscheduler.NewMemoryRunLedger()
 	runner, err := catalogscheduler.NewRunner(
-		updateSyncer{client: client, store: store}, catalogscheduler.NewMemoryLease(),
+		updateSyncer{client: client, store: store, update: update}, catalogscheduler.NewMemoryLease(),
 		catalogscheduler.LeaseRequest{Key: catalogscheduler.DefaultLeaseKey, Owner: "last-known-good-replica", TTL: catalogscheduler.DefaultLeaseTTL},
 		catalogscheduler.WithRetryPolicy(catalogscheduler.RetryPolicy{
 			MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond,
