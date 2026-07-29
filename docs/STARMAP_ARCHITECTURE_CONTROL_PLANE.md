@@ -1,6 +1,6 @@
 # Starmap Architecture Execution Control Plane
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 Status: `IN_PROGRESS` — P0–P5.12 and P6.1 are complete. P5.13 is the sole
 active task after user review reopened the author/model and endpoint identity
@@ -46,7 +46,7 @@ This plan is the durable execution record.
 - P5 author-model corpus disposition:
   [`reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md`](reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md)
 - P5 author-model corpus disposition SHA-256:
-  `ace18cac6b25e87b357b7ef4e872e53ae035bd42b652ad1d95bb0b405a1b047d`
+  `9bb58cbbb75c3db61737342eda086b26fe9d7b844e46f4658dd30b46874b3a72`
 - P5 catalog read-model outcome review:
   [`reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md`](reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md)
 - P5 catalog read-model outcome review SHA-256:
@@ -58,19 +58,19 @@ This plan is the durable execution record.
 - Author/slug and endpoint compatibility review:
   [`reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md`](reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md)
 - Author/slug and endpoint compatibility review SHA-256:
-  `a7ceee9de423fa28f82ced0b6dfa16d0e6411b3ae4860ae1127d8e0f22a78d34`
+  `49439a17edee71115fc06d28af3dbff6e73fe0de8d20e84bd48b7e6e1679296b`
 - Exact restored author-model corpus map:
   [`reviews/P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml`](reviews/P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml)
 - Exact restored author-model corpus map SHA-256:
-  `c5041eb6c0bc976a842ca68851f793c0293d359b3f7eca643b8017c4263555f7`
+  `e5af4b7b49176d0f3a91013189db456d2cfb23887a88473081e063c4c6326ca9`
 - Provider/model identity implementation review:
   [`reviews/P5_PROVIDER_MODEL_IDENTITY_REVIEW_2026-07-28.md`](reviews/P5_PROVIDER_MODEL_IDENTITY_REVIEW_2026-07-28.md)
 - Provider/model identity implementation review SHA-256:
-  `8c38a0568891a722450c0469978d2a822f2a16d8c33026a9d440e3f7e7aab265`
+  `e2c82fa085ab15936eea091ca3d1c6e7126d26398dc77b5b8abf064100b707d1`
 - Exact provider/model identity map:
   [`reviews/P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml`](reviews/P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml)
 - Exact provider/model identity map SHA-256:
-  `d73ffa3cf1926383c38928bec54f24e2603965ff7442f857340ab02df8d24880`
+  `16c2c34bf2303d33013b9969a888f5f7e62dd809d9ac984949481788fe6cc46c`
 - Reviewed protected-main baseline:
   `9508ee7866e4683e001e7ad153319d348433045d`
 - Historical pre-control-plane comparison:
@@ -523,15 +523,16 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-author-endpoint-restoration`
 - Branch:
-  `codex/starmap-library-composition`
+  `codex/catalog-author-endpoint-restoration`
 - Base:
   `origin/main@76dd317810815604b6c796814bce5b8887aaadd0`
 
-This worktree contains the P6 Go-library composition work. It was created from
-the exact protected main produced by merged PR #53 before the clean P5 worktree
-and local branch were removed.
+This worktree contains the user-steered P5.9–P5.13 author/model and endpoint
+restoration. It was created from the exact protected main produced by merged
+PR #53. The prior P6.1 measurement remains committed evidence; P6.2 resumes
+only after this restoration lands.
 
 ### Provider expansion worktree
 
@@ -762,11 +763,11 @@ compile and performance baselines must also be green.
 | P5.6 | `DONE` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
 | P5.7 | `DONE` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
 | P5.8 | `DONE` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
-| P5.9 | `DONE` | Restore and disposition the authored-model corpus | All 322 files deleted by PR #53 receive an exact machine-checkable disposition: 264 remain authored/history records and 58 provider-derived spelling, region, staging, model-garden, or suffix identities merge into canonical targets; exact provider offering IDs remain unchanged; 30 missing primary authors are repaired, lab authorship is independent from the serving provider, and provider status, price, limits, modes, and provider extensions are absent; ordinary and race-enabled exact corpus/bootstrap tests pass |
+| P5.9 | `DONE` | Restore and disposition the authored-model corpus | All 322 files deleted by PR #53 receive an exact machine-checkable disposition: the initial 264/58 split is explicitly superseded by the reviewed final 258 retained authored/history records and 64 provider-derived spelling, region, staging, model-garden, packaging, performance, or suffix identities merged into canonical targets; exact provider offering IDs remain unchanged; 30 missing primary authors are repaired, lab authorship is independent from the serving provider, and provider status, price, limits, modes, and provider extensions are absent; ordinary and race-enabled exact corpus/bootstrap tests pass |
 | P5.10 | `DONE` | Separate author and provider record ownership | Author models are the sole executable authority for intrinsic definition facts; provider records own serving facts and may retain overlapping upstream observations only as non-overriding evidence; every provider serving record has an explicit `model: author/slug` reference; provider identity is never authorship evidence; load/save/projection/payload/provenance round-trip both roles without first-wins or duplicate-field authority |
 | P5.11 | `DONE` | Generate and validate endpoints.yaml | A versioned deterministic digest-bound endpoint projection joins each provider serving record to its author model; projection is built off-side and atomically written post-commit; drift is detected and never silently overwritten; no row exists without a valid provider/model link and provider price remains exact |
 | P5.12 | `DONE` | Build canonical identity and offering indexes | Immutable publication precomputes canonical author/slug, author alias, model alias, provider offering, and model-to-offerings indexes; cross-provider IDs for one model produce one definition with distinct exact offerings; ambiguity/collisions return typed errors and cannot replace the current generation |
-| P5.13 | `IN_PROGRESS` | Prove restored catalog DX and corpus completeness | Tests prove Alibaba-served Moonshot/Zhipu models resolve to their labs, author and provider edits round-trip independently, all retained author records and provider links load, endpoint generation is deterministic, malformed siblings quarantine safely, strict/release coverage has no unresolved public identity, docs explain the two source roles and generated projection, and an outcome autoreview plus exact phase gate pass |
+| P5.13 | `IN_PROGRESS` | Prove restored catalog DX and corpus completeness | Tests prove Alibaba-served Moonshot/Zhipu models resolve to their labs, author and provider edits round-trip independently, complete local authored edits/deletions and additive embedded authored definitions reconcile without provider-inferred authorship, all retained author records and provider links load, endpoint generation is deterministic and operation-aware, malformed siblings quarantine safely, unresolved acquisition candidates cannot activate, strict/release coverage has no unresolved public identity, docs explain the two source roles and generated projection, and an outcome autoreview plus exact phase gate pass |
 
 ## P6 — Deepen Go Library Composition
 
@@ -818,7 +819,7 @@ compile and performance baselines must also be green.
 | P9.1 | `PENDING` | Publish exact committed generation | Release staging never reconstructs source lineage as one local observation |
 | P9.2 | `PENDING` | Separate semantic and evidence digests | Identical catalog facts do not create catalog releases solely from observation timestamps |
 | P9.3 | `PENDING` | Verify embedded manifest | Binary bootstrap bytes, generation ID, schema, digest, and size agree deterministically |
-| P9.4 | `PENDING` | Verify E1→E2 workspace upgrade | New embedded data merges by provenance/authority and never wholesale-overwrites human data |
+| P9.4 | `PENDING` | Verify E1→E2 workspace upgrade | New embedded provider facts merge by provenance/authority, new authored definitions are added without provider-inferred authorship, complete human authored edits remain authoritative, and no embedded revision wholesale-overwrites human data |
 | P9.5 | `PENDING` | Verify release import | Checksum, detached statement, publisher identity, compatibility, reconciliation, and rollback pass |
 | P9.6 | `PENDING` | Implement the P2.8 distribution decision | The selected remote/server/release flow is wired end-to-end; unused competing protocols and packages are removed |
 | P9.7 | `PENDING` | Preserve offline/air-gap behavior | Embedded and pinned artifact startup work without network or provider credentials |
@@ -937,16 +938,19 @@ machine evidence and does not require a follow-up documentation commit.
 | F-065 | `PENDING` | `(*Client).Catalog()` panics on a nil receiver while neighboring accessors define nil behavior, and storage-backed construction roots work in `context.Background`; construction needs documented nil semantics and a caller-owned cancellation path | P6.8 |
 | F-066 | `PENDING` | The 10-method `internal/application.Application` interface forces unrelated consumers and test doubles to implement dead build metadata and operational capabilities; consumer-local roles must replace the omnibus interface | P6.4 |
 | F-067 | `DONE` | Provider identity is not author identity: every retained provider record now carries an explicit validated `model: author/slug` link; authored records alone build canonical definitions, provider records build exact offerings, and reconciliation preserves the link through an executable authority rule rather than inferring authorship from the serving provider | P5.9–P5.12 |
-| F-068 | `DONE` | PR #53 removed the only persisted author/model corpus; all 322 historical records now have exact terminal dispositions—264 retained authored/history records and 58 provider-derived identities merged into canonical targets—while exact provider offering IDs remain served and exact-map corpus invariants pass ordinary and race tests | P5.9 |
-| F-069 | `PENDING` | `endpoints.yaml` is empty, the generic Endpoint type is not an OpenRouter endpoint row, and no generator or compatibility route exists; the endpoint projection must join authored models to exact provider serving records | P5.11, P7.12 |
+| F-068 | `DONE` | PR #53 removed the only persisted author/model corpus; all 322 historical records now have exact terminal dispositions—the initial 264/58 disposition is superseded by 258 retained authored/history records and 64 provider-derived identities merged into canonical targets—while exact provider offering IDs remain served and exact-map corpus invariants pass ordinary and race tests | P5.9 |
+| F-069 | `DONE` | The previously empty `endpoints.yaml` is now a deterministic generation/digest-bound join of canonical authored models to all 610 exact provider serving records; the unrelated generic Endpoint type is deleted. The public OpenRouter compatibility routes remain separately owned by P7.12 and do not keep the catalog projection finding open | P5.11, P7.12 |
 | F-070 | `DONE` | The pre-#53 `Author.Models` copy semantics remain deleted: dedicated authored construction records own intrinsic facts, explicitly linked provider records own serving facts, and generated endpoints join both identities without a nested mutable author-model mirror | P5.9–P5.11 |
 | F-071 | `DONE` | The first P5.13 structured review found provider-as-author mistakes for OpenAI, Canopy Labs, Meta, and Qwen plus Vertex deployment suffixes promoted into canonical identity; records now preserve exact opaque provider IDs while linking to independently reviewed lab-owned definitions | P5.10–P5.13 |
 | F-072 | `DONE` | The first P5.13 structured review found Groq prices understated by 10^6, provider float artifacts, and request overrides encoded as YAML byte arrays; provider prices are corrected and tolerance-normalized without changing units, native YAML values round-trip, and generated endpoint regressions cover both | P5.11, P5.13 |
 | F-073 | `DONE` | The first P5.13 structured review found Builder alias storage asymmetry, author deletion orphaning authored records, and an empty concurrency-test branch; canonical author storage, typed delete conflict, mutation isolation, and race-exercised authored reads now enforce the construction boundary | P5.10–P5.13 |
 | F-074 | `PENDING` | Restored historical source observations contain candidate capability/modality, release/knowledge-date, and timestamp-semantic contradictions that do not break the validated identity/endpoint join but require authoritative fact review rather than speculative bulk edits | P10.9 |
 | F-075 | `DONE` | The committed-head P5.13 review found nested JSON request objects escaping their body field in generated YAML; the codec now converts each raw JSON value to a native YAML value inside a deterministically ordered map, and semantic round-trip plus generated-projection tests prove `reasoning: {mode: pro}` remains nested | P5.11, P5.13 |
-| F-076 | `DONE` | The final P5.13 review found provider-derived Qwen region/staging/suffix identities surviving as canonical definitions, exposing the same issue in model-garden and deployment-resource records; the exact corpus map now merges all 58 reviewed artifacts into provider-independent targets, author display names come from canonical authors, and provider YAML retains only actual model authors while exact offering IDs remain unchanged | P5.9–P5.13 |
+| F-076 | `DONE` | The final P5.13 reviews found provider-derived Qwen region/staging/suffix identities surviving as canonical definitions, exposing the same issue in model-garden, deployment-resource, packaging, and performance records; the exact corpus map now merges all 64 reviewed artifacts into provider-independent targets, author display names come from canonical authors, and provider YAML retains only actual model authors while exact offering IDs remain unchanged | P5.9–P5.13 |
 | F-077 | `DONE` | The final P5.13 review found contradictory generation ranges, asymmetric alias deletion, silently discarded dangling/ambiguous lineage, and uncovered author-collection identity failures; range invariants now reject impossible defaults, unknown bounds are omitted, mutation resolves canonical authors, lineage shares the public alias map and fails closed except redundant self-reference, and focused tests cover every branch | P5.10–P5.13 |
+| F-078 | `DONE` | Endpoint derivation previously treated every offering as chat-compatible; authored tags and operation pricing now make route projection operation-aware, retaining all 610 offering rows and exact media/operation prices while emitting protocol routes only for the 504 compatible offerings | P5.11–P5.13 |
+| F-079 | `DONE` | Strict final catalog construction was incorrectly reused at source acquisition boundaries, so one unresolved provider row could prevent quarantine/reconciliation; source adapters and evidence replay now publish immutable observation catalogs that preserve candidates, while final Build/publication still rejects missing or dangling authored-model links | P4.8, P5.10–P5.13 |
+| F-080 | `DONE` | Authored construction data was seeded only when the durable baseline contained zero definitions, so later human authored edits and newly embedded definitions could be ignored. Reconciliation now keeps provider observations out of authorship, applies complete local authored records as editable authority, adds missing verified bootstrap definitions, permits complete local-only deletion, and treats degraded/partial absence as non-authoritative | P3.4, P5.10–P5.13, P9.4 |
 
 ## Workspace Ledger
 
@@ -964,7 +968,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@85e79cb9` | `IN_PROGRESS` | Complete P5.9–P5.13 on the user-steered successor branch, pass exact local/hosted gates, then remove the worktree/branch; P6.1 evidence remains committed and P6.2 resumes on a later fresh branch |
+| `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@413565d1` plus active P5.13 remediation | `IN_PROGRESS` | Complete P5.9–P5.13 on the user-steered successor branch, pass exact local/hosted gates, then remove the worktree/branch; P6.1 evidence remains committed and P6.2 resumes on a later fresh branch |
 
 ## Evidence Log
 
@@ -1104,6 +1108,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P5.13 / F-075 | The structured review of exact committed head `748e9cdf` completed five of seven corpus chunks without another blocker, then found the `pro` mode nested request object rendered as `reasoning: null` plus a sibling `mode: pro`. Direct inspection confirmed all three GPT-5.6 endpoint rows were malformed. `OfferingRequestBody.MarshalYAML` now emits a sorted native YAML map rather than per-value raw fragments; tests compare every scalar/array/object/null request value semantically after YAML round-trip, and the endpoint projection test decodes the nested `reasoning.mode` value. Regeneration preserves generation/payload identity while correcting endpoint bytes. `go test -race ./pkg/catalogs ./internal/catalog/workspace ./internal/bootstrap -count=1` passed in `37.860s`, `4.305s`, and `36.236s`; `git diff --check` passed. Because this changes public serialization, the corrected exact commit still requires one final structured review. |
 | 2026-07-29 | P5.13 / F-074 / F-076–F-077 | The seven-pass structured review of exact committed head `6191321a` returned 13 findings and correctly rejected the candidate. Material restoration findings were fixed rather than hidden: 57 historical provider spelling/region/model-garden/deployment identities now merge into canonical author slugs, all authored YAML display names come from `authors.yaml`, exact provider IDs remain unchanged, fabricated Groq co-authors are removed, and 610 offerings join 608 definitions with 519 served identities and 89 authored-only definitions. Impossible zero-bound generation ranges are omitted and a Builder invariant rejects any future out-of-range default. `DeleteAuthorModel` resolves aliases; lineage uses the same alias map as consumer reads, fails typed on dangling or ambiguous references, and discards only a resolvable self-reference; author payload identity branches have direct characterization. Generation `catalog-20260729T084810Z-921c4bfeac1a` has payload `sha256:921c4bfeac1a8e27f7defca300818603cbedcf54aa0d7aeb76571c79d5ed8f4e` and 610 endpoint rows. The remaining release-date/timestamp and source-fact questions stay visible as F-074/P10.9. `git diff --check` passed; exact focused race tests passed for catalogs (`37.948s`), store (`1.699s`), bootstrap (`35.840s`), workspace (`4.864s`), OpenAI (`5.882s`), and Groq (`6.019s`). Because remediation changes identity and failure semantics, the corrected committed head requires one outcome-oriented repeat review. |
 | 2026-07-29 | P5.13 / F-076 | The repeat structured review of exact committed head `3aeb0b19` completed five of six independent corpus passes before the external Claude session quota stopped the synthesis pass. The completed passes found no endpoint, price, request-YAML, immutable-read, schema, Builder, or lineage regression. They found one remaining authored-only Vertex MaaS duplicate (`google/gemma-4-26b-a4b-it-maas`), one provider-spelled Qwen 2.5 slug, one over-specific documentation sentence, and the stale workspace-ledger SHA. The Gemma history path now merges into `google/gemma-4-26b-a4b-it`; the exact Vertex provider ID remains unchanged; the Qwen definition is `qwen/qwen2.5-coder-32b-instruct`; wording is provider-neutral. Generation `catalog-20260729T092839Z-9565e4b5c07b` has payload `sha256:9565e4b5c07bce87f99f170888813849cc2cee175850b263cb61d3b735d82716`, 607 canonical definitions, 519 served definitions, 88 authored-only definitions, and all 610 provider endpoint rows. Exact race tests passed for bootstrap (`35.197s`) and catalogs (`37.679s`); `git diff --check` passed. Because the external reviewer could not synthesize, a final exact-head Codex autoreview remains required; it is not replaced by the partial result. |
+| 2026-07-29 | P5.13 / F-069 / F-076–F-080 | Completed the post-review restoration candidate on base `413565d1`. The exact executable corpus map now has 322 records split into 258 retained identities and 64 explicit merges; the provider identity map has 610/610 linked records. The embedded catalog contains 589 authored definitions, 610 exact offerings, 507 served definitions, 82 authored-only definitions, 610 generated endpoint rows, 504 protocol routes, 61 operation-priced rows, and zero authored self-root claims. Generation `catalog-20260729T110518Z-fcbf48a7fd90` binds payload `sha256:fcbf48a7fd90ca1611dae832644a07de32d5d70640a3563d97ba5e3e9dd181bf` (2,603,614 bytes) and the deterministic endpoint projection. Source adapters/evidence replay retain unresolved observation candidates while final publication fails closed; authored reconciliation applies complete local edits, adds missing embedded definitions, permits local-only deletion, and excludes provider-inferred authorship. `go test ./... -count=1` passed every package (root `43.962s`, app `15.794s`, catalogs `19.138s`, bootstrap `12.914s`, server `17.025s`, models.dev `9.394s`). The exact affected race command passed catalogs `39.686s`, store `1.849s`, reconciler `1.809s`, bootstrap `49.305s`, manifest `2.304s`, pipeline `8.368s`, workspace `5.350s`, local `3.210s`, providers `3.545s`, models.dev `65.330s`, and evidence `2.644s`. `go vet ./...`, pinned golangci-lint v2.12.2 with zero issues, regenerated OpenAPI/GoDoc, `make HAS_DEVBOX= docs-check`, and `git diff --check` passed. One final exact-commit Codex autoreview and the uninterrupted phase verification gate remain required. |
 
 ## Final Definition of Done
 

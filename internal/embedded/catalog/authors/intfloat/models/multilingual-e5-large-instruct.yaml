@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: intfloat/multilingual-e5-large-instruct
 
 # Model features
 features:

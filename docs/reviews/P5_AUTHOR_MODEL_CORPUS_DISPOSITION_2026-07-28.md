@@ -5,9 +5,9 @@ Baseline: `9609f4f4a74281a7f9692a97cc4926df5978d754`
 
 > Historical decision record. P5.13's outcome review superseded the literal
 > removal decision by restoring authored records as a distinct canonical
-> source, then normalized 58 provider-derived identity duplicates into their
+> source, then normalized 64 provider-derived identity duplicates into their
 > canonical targets. The current executable disposition is
-> `P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml` (264 `keep`, 58 `merge`).
+> `P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml` (258 `keep`, 64 `merge`).
 
 ## Finding
 

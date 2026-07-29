@@ -15,8 +15,6 @@ metadata:
   - vlm
   - vision
   - prompt_cache
-lineage:
-  root: stepfun-ai/Step-3.7-Flash
 
 # Model features
 features:

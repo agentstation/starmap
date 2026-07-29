@@ -1,11 +1,10 @@
-# bart-large-cnn - Google Vertex AI model: bart-large-cnn
+# bart-large-cnn - BART Large CNN
 id: bart-large-cnn
 name: bart-large-cnn
 authors:
 - id: meta
   name: Meta
-description: |-
-  Google Vertex AI model: bart-large-cnn
+description: BART large model fine-tuned on CNN/DailyMail for abstractive text summarization.
 
 # Model metadata
 metadata:

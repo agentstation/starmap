@@ -86,7 +86,7 @@ func Replay(record NormalizedRecord) (sources.Observation, error) {
 	if descriptor.Checksum != record.EvidenceChecksum {
 		return sources.Observation{}, evidenceValidation("evidence_checksum", record.EvidenceChecksum, "does not match normalized payload")
 	}
-	catalog, err := catalogstore.DecodeCatalogPayload(record.Payload)
+	catalog, err := catalogstore.DecodeSourceObservationPayload(record.Payload)
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("decode", "normalized source evidence", record.ObservationID, err)
 	}

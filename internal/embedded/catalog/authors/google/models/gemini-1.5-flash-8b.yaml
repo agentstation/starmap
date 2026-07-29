@@ -14,8 +14,6 @@ metadata:
   - vlm
   - vision
   - reasoning_effort
-lineage:
-  root: google/gemini-1.5-flash-8b
 
 # Model features
 features:

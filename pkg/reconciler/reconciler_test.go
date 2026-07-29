@@ -34,9 +34,9 @@ func createTestModel(id, name string, contextWindow int64) *catalogs.Model {
 
 func mustCatalogSnapshot(t testing.TB, reader catalogs.Reader) *catalogs.Catalog {
 	t.Helper()
-	snapshot, err := catalogs.NewCatalog(reader)
+	snapshot, err := catalogs.NewObservationCatalog(reader)
 	if err != nil {
-		t.Fatalf("NewCatalog: %v", err)
+		t.Fatalf("NewObservationCatalog: %v", err)
 	}
 	return snapshot
 }

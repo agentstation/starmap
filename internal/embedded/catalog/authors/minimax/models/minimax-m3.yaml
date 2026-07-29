@@ -18,7 +18,6 @@ metadata:
   - reasoning
 lineage:
   family: minimax
-  root: MiniMaxAI/MiniMax-M3
 
 # Model features
 features:

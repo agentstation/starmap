@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: nvidia/Cosmos3-Nano
 
 # Model features
 features:

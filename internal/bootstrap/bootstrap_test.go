@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"bytes"
+	stderrors "errors"
 	"io/fs"
 	"strings"
 	"testing"
@@ -11,6 +12,8 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
@@ -90,6 +93,29 @@ func TestEmbeddedBootstrapArtifactGenerationIsDeterministic(t *testing.T) {
 	if first.Manifest.GenerationID != second.Manifest.GenerationID ||
 		first.Manifest.Payload != second.Manifest.Payload || string(first.Payload) != string(second.Payload) {
 		t.Fatalf("embedded generations differ: %#v / %#v", first.Manifest, second.Manifest)
+	}
+}
+
+func TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine(t *testing.T) {
+	generation, err := Generation()
+	if err != nil {
+		t.Fatalf("Generation: %v", err)
+	}
+	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	if err != nil {
+		var quarantine *sourcepayload.QuarantineError
+		if stderrors.As(err, &quarantine) {
+			t.Fatalf(
+				"DecodeCatalogPayload quarantined %d records; first issue %s: %v",
+				quarantine.Report.Rejected,
+				quarantine.Report.Issues[0].Subject,
+				quarantine.Report.Issues[0].Err,
+			)
+		}
+		t.Fatalf("DecodeCatalogPayload: %v", err)
+	}
+	if catalog == nil {
+		t.Fatal("decoded catalog is nil")
 	}
 }
 
@@ -221,6 +247,66 @@ func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) 
 			providerID: "google-vertex", providerModelID: "gemma-4-26b-a4b-it-maas",
 			definitionID: "google/gemma-4-26b-a4b-it",
 		},
+		{
+			name:       "Groq instant label joins Meta Llama Instruct",
+			providerID: "groq", providerModelID: "llama-3.1-8b-instant",
+			definitionID: "meta/llama-3.1-8b-instruct",
+		},
+		{
+			name:       "Groq versatile label joins Meta Llama Instruct",
+			providerID: "groq", providerModelID: "llama-3.3-70b-versatile",
+			definitionID: "meta/llama-3.3-70b-instruct",
+		},
+		{
+			name:       "DeepInfra GPT Turbo tier joins base model",
+			providerID: "deepinfra", providerModelID: "openai/gpt-oss-120b-Turbo",
+			definitionID: "openai/gpt-oss-120b",
+		},
+		{
+			name:       "DeepInfra Qwen Turbo tier joins base model",
+			providerID: "deepinfra", providerModelID: "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+			definitionID: "qwen/qwen3-coder-480b-a35b-instruct",
+		},
+		{
+			name:       "DeepInfra MiniMax Turbo tier joins base model",
+			providerID: "deepinfra", providerModelID: "MiniMaxAI/MiniMax-M2.7-Turbo",
+			definitionID: "minimax/minimax-m2.7",
+		},
+		{
+			name:       "DeepInfra Gemma Turbo tier joins base model",
+			providerID: "deepinfra", providerModelID: "google/gemma-4-31B-it-turbo",
+			definitionID: "google/gemma-4-31b-it",
+		},
+		{
+			name:       "DeepInfra FP8 route joins base Meta model",
+			providerID: "deepinfra", providerModelID: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+			definitionID: "meta/llama-4-maverick-17b-128e-instruct",
+		},
+		{
+			name:       "Fireworks FP8 route joins base FLUX model",
+			providerID: "fireworks-ai", providerModelID: "accounts/fireworks/models/flux-1-schnell-fp8",
+			definitionID: "black-forest-labs/flux-1-schnell",
+		},
+		{
+			name:       "Vertex embedding alias joins EmbeddingGemma 300M",
+			providerID: "google-vertex", providerModelID: "embeddinggemma",
+			definitionID: "google/embeddinggemma-300m",
+		},
+		{
+			name:       "Nano Banana joins Gemini image model",
+			providerID: "google-ai-studio", providerModelID: "nano-banana-pro-preview",
+			definitionID: "google/gemini-3-pro-image-preview",
+		},
+		{
+			name:       "DeepInfra GTE route joins Alibaba model",
+			providerID: "deepinfra", providerModelID: "thenlper/gte-base",
+			definitionID: "alibaba/gte-base",
+		},
+		{
+			name:       "FastVideo route joins Lightricks model",
+			providerID: "deepinfra", providerModelID: "FastVideo/LTX-2.3-Distilled-Diffusers",
+			definitionID: "lightricks/ltx-2.3-distilled-diffusers",
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			offering, err := catalog.Offering(test.providerID, test.providerModelID)
@@ -248,6 +334,47 @@ func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) 
 		if len(offerings) != wantOfferings {
 			t.Fatalf("DefinitionOfferings(%s) = %d, want %d", definitionID, len(offerings), wantOfferings)
 		}
+	}
+}
+
+func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.T) {
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		t.Fatalf("NewEmbedded: %v", err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+
+	for _, test := range []struct {
+		providerID catalogs.ProviderID
+		modelID    catalogs.ProviderModelID
+	}{
+		{providerID: "deepinfra", modelID: "BAAI/bge-m3-multi"},
+		{providerID: "deepinfra", modelID: "FastVideo/LTX-2.3-Distilled-Diffusers"},
+		{providerID: "deepinfra", modelID: "black-forest-labs/FLUX-1-dev"},
+	} {
+		offering, err := catalog.Offering(test.providerID, test.modelID)
+		if err != nil {
+			t.Fatalf("Offering(%s, %s): %v", test.providerID, test.modelID, err)
+		}
+		if offering.Endpoint != (catalogs.ProviderOfferingEndpoint{}) {
+			t.Fatalf(
+				"Offering(%s, %s) endpoint = %#v, want no chat route",
+				test.providerID,
+				test.modelID,
+				offering.Endpoint,
+			)
+		}
+	}
+
+	chat, err := catalog.Offering("deepinfra", "meta-llama/Llama-3.3-70B-Instruct-Turbo")
+	if err != nil {
+		t.Fatalf("chat Offering: %v", err)
+	}
+	if chat.Endpoint.URL != "https://api.deepinfra.com/v1/openai/chat/completions" {
+		t.Fatalf("chat endpoint = %#v, want DeepInfra chat completions URL", chat.Endpoint)
 	}
 }
 

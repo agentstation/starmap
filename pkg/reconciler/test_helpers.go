@@ -9,7 +9,7 @@ import (
 
 // NewMockSource creates a direct observation for testing.
 func NewMockSource(sourceType sources.ID, catalog *catalogs.Builder) sources.Observation {
-	snapshot, err := catalog.Build()
+	snapshot, err := catalogs.NewObservationCatalog(catalog)
 	if err != nil {
 		return sources.Observation{SourceID: sourceType}
 	}

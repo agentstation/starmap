@@ -15,8 +15,6 @@ metadata:
   - chat
   - vlm
   - vision
-lineage:
-  root: meta-llama/Llama-Guard-4-12B
 
 # Model features
 features:

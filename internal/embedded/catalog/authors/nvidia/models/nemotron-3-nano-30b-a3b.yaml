@@ -15,7 +15,6 @@ metadata:
   - reasoning
 lineage:
   family: nemotron
-  root: nvidia/Nemotron-3-Nano-30B-A3B
 
 # Model features
 features:

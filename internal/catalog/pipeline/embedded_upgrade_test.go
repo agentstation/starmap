@@ -220,14 +220,14 @@ func TestWorkspaceFormattingChangesDoNotBecomeLocalEvidence(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ReadFile: %v", err)
 	}
-	const generatedHeader = "id: model-a\nname: Embedded Name\n"
+	const generatedHeader = "id: model-a\nmodel: test-author/provider-a--model-a\nname: Embedded Name\n"
 	if !strings.Contains(string(data), generatedHeader) {
 		t.Fatalf("generated model omitted expected header:\n%s", data)
 	}
 	formatted := "# retained operator comment\n" + strings.Replace(
 		string(data),
 		generatedHeader,
-		"name: 'Embedded Name'\nid: model-a\n",
+		"name: 'Embedded Name'\nmodel: test-author/provider-a--model-a\nid: model-a\n",
 		1,
 	)
 	if err := os.WriteFile(modelPath, []byte(formatted), constants.FilePermissions); err != nil {
@@ -424,6 +424,9 @@ func completeObservation(
 func buildCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catalog {
 	t.Helper()
 
+	if err := completePipelineTestCatalog(builder); err != nil {
+		t.Fatalf("Complete test catalog: %v", err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)

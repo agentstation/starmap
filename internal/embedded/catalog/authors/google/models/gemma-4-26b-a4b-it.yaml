@@ -17,7 +17,6 @@ metadata:
   - reasoning
 lineage:
   family: gemma
-  root: google/gemma-4-26B-A4B-it
 
 # Model features
 features:

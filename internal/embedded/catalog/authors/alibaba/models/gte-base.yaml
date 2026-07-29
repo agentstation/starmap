@@ -1,17 +1,17 @@
-# embeddinggemma - Google Vertex AI model: embeddinggemma
-id: embeddinggemma
-name: embeddinggemma
+# gte-base - GTE Base
+id: gte-base
+name: GTE Base
 authors:
-- id: google
-  name: Google
-description: |-
-  Google Vertex AI model: embeddinggemma
+- id: alibaba
+  name: Alibaba Cloud
+description: The GTE models are trained by Alibaba DAMO Academy. They are mainly based on the BERT framework and currently offer three different sizes of models, including GTE-large, GTE-base, and GTE-small. The GTE models are trained on a large-scale corpus of relevance text pairs, covering a wide range of domains and scenarios. This enables the GTE models to be applied to various downstream tasks of text embeddings, including information retrieval, semantic textual similarity, text reranking, etc.
 
 # Model metadata
 metadata:
-  release_date: "2025-09-10T03:09:39Z"
+  release_date: null
   open_weights: false
-
+  tags:
+  - embed
 # Model features
 features:
   modalities:
@@ -35,16 +35,16 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: false
-  top_p: false
+  temperature: true
+  top_p: true
   top_k: false
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
-  max_tokens: false
+  max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -71,8 +71,8 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: false
+  streaming: true
 
 # Timestamps
-created_at: null
-updated_at: 2026-07-11T23:53:11.613811Z
+created_at: 2026-07-11T20:15:13.086788Z
+updated_at: 2026-07-11T20:15:13.086788Z

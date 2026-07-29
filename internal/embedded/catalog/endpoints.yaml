@@ -1,6 +1,6 @@
 schema_version: 1
-generation_id: catalog-20260729T092839Z-9565e4b5c07b
-catalog_digest: sha256:9565e4b5c07bce87f99f170888813849cc2cee175850b263cb61d3b735d82716
+generation_id: catalog-20260729T110518Z-fcbf48a7fd90
+catalog_digest: sha256:fcbf48a7fd90ca1611dae832644a07de32d5d70640a3563d97ba5e3e9dd181bf
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -28,6 +28,36 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  - model: alibaba/gte-base
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: thenlper/gte-base
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.005
+          currency: USD
+        limits:
+          context_window: 512
+          input_tokens: 0
+          output_tokens: 512
+        availability: unknown
+        lifecycle: unknown
+  - model: alibaba/gte-large
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: thenlper/gte-large
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.01
+          currency: USD
+        limits:
+          context_window: 512
+          input_tokens: 0
+          output_tokens: 512
+        availability: unknown
+        lifecycle: unknown
   - model: alibaba/wan2.2-t2v-a14b
     endpoints:
       - provider: deepinfra
@@ -38,9 +68,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: alibaba/wan2.6-image
     endpoints:
       - provider: alibaba
@@ -67,9 +94,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: alibaba/wan2.6-t2v
     endpoints:
       - provider: deepinfra
@@ -80,9 +104,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: anthropic/claude-3-5-haiku-20241022
     endpoints:
       - provider: google-vertex
@@ -552,9 +573,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: baai/bge-en-icl
     endpoints:
       - provider: deepinfra
@@ -570,9 +588,6 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: baai/bge-large-en-v1.5
     endpoints:
       - provider: deepinfra
@@ -588,9 +603,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: baai/bge-m3
     endpoints:
       - provider: deepinfra
@@ -606,11 +618,6 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: baai/bge-m3-multi
-    endpoints:
       - provider: deepinfra
         provider_model_id: BAAI/bge-m3-multi
         pricing:
@@ -624,9 +631,6 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-1-dev
     endpoints:
       - provider: deepinfra
@@ -637,9 +641,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-1-redux-dev
     endpoints:
       - provider: deepinfra
@@ -650,9 +651,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-1-schnell
     endpoints:
       - provider: deepinfra
@@ -663,11 +661,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: black-forest-labs/flux-1-schnell-fp8
-    endpoints:
       - provider: fireworks-ai
         provider_model_id: accounts/fireworks/models/flux-1-schnell-fp8
         availability: unknown
@@ -685,9 +678,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-2-dev
     endpoints:
       - provider: deepinfra
@@ -698,9 +688,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-2-klein-4b
     endpoints:
       - provider: deepinfra
@@ -711,9 +698,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-2-klein-9b
     endpoints:
       - provider: deepinfra
@@ -724,9 +708,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-2-max
     endpoints:
       - provider: deepinfra
@@ -737,9 +718,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux-2-pro
     endpoints:
       - provider: deepinfra
@@ -750,9 +728,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: black-forest-labs/flux.1-kontext-dev
     endpoints:
       - provider: deepinfra
@@ -763,18 +738,12 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: boson-ai/higgsaudiov2.5
     endpoints:
       - provider: deepinfra
         provider_model_id: bosonai/HiggsAudioV2.5
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/blur_background
     endpoints:
       - provider: deepinfra
@@ -785,9 +754,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/bria-3.2
     endpoints:
       - provider: deepinfra
@@ -798,9 +764,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/bria-3.2-vector
     endpoints:
       - provider: deepinfra
@@ -811,9 +774,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/erase_foreground
     endpoints:
       - provider: deepinfra
@@ -824,9 +784,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/expand
     endpoints:
       - provider: deepinfra
@@ -837,9 +794,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/fibo
     endpoints:
       - provider: deepinfra
@@ -850,9 +804,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/fibo_edit
     endpoints:
       - provider: deepinfra
@@ -863,9 +814,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bria/remove_background
     endpoints:
       - provider: deepinfra
@@ -876,9 +824,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bytedance/seed-1.8
     endpoints:
       - provider: deepinfra
@@ -973,18 +918,12 @@ models:
         provider_model_id: ByteDance/Seedance-1.5-Pro
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bytedance/seedance-2.0
     endpoints:
       - provider: deepinfra
         provider_model_id: ByteDance/Seedance-2.0
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: bytedance/seedream-4
     endpoints:
       - provider: deepinfra
@@ -995,9 +934,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: canopy-labs/orpheus-arabic-saudi
     endpoints:
       - provider: groq
@@ -1018,9 +954,6 @@ models:
           output_tokens: 50000
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: canopy-labs/orpheus-v1-english
     endpoints:
       - provider: groq
@@ -1041,9 +974,6 @@ models:
           output_tokens: 50000
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: deepreinforce-ai/ornith-1.0-35b
     endpoints:
       - provider: deepinfra
@@ -1354,19 +1284,6 @@ models:
         endpoint:
           type: openai
           url: https://api.fireworks.ai/inference/v1/chat/completions
-  - model: fastvideo/ltx-2.3-distilled-diffusers
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
-        pricing:
-          operations:
-            audio_gen: 0.035
-          currency: USD
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: google/alphagenome-request
     endpoints:
       - provider: google-vertex
@@ -1585,15 +1502,6 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: google/embeddinggemma
-    endpoints:
-      - provider: google-vertex
-        provider_model_id: embeddinggemma
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/embeddinggemma-300m
     endpoints:
       - provider: deepinfra
@@ -1609,9 +1517,13 @@ models:
           output_tokens: 2048
         availability: unknown
         lifecycle: unknown
+      - provider: google-vertex
+        provider_model_id: embeddinggemma
+        availability: unknown
+        lifecycle: unknown
         endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/f-vlm-jax
     endpoints:
       - provider: google-vertex
@@ -1806,9 +1718,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash
         pricing:
@@ -1881,9 +1790,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash-lite
         pricing:
@@ -1903,9 +1809,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/gemini-2.5-flash-native-audio-latest
     endpoints:
       - provider: google-ai-studio
@@ -2102,9 +2005,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3-flash-preview
         pricing:
@@ -2124,18 +2024,12 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/gemini-3-pro-image
     endpoints:
       - provider: deepinfra
         provider_model_id: google/gemini-3-pro-image
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: google-ai-studio
         provider_model_id: gemini-3-pro-image
         limits:
@@ -2165,6 +2059,17 @@ models:
             output:
               per_1m: 120.0
           currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 131072
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google
+          url: https://generativelanguage.googleapis.com/v1beta/models
+      - provider: google-ai-studio
+        provider_model_id: nano-banana-pro-preview
         limits:
           context_window: 131072
           input_tokens: 131072
@@ -2287,9 +2192,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite
         pricing:
@@ -2309,9 +2211,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/gemini-3.1-flash-lite-image
     endpoints:
       - provider: google-ai-studio
@@ -2353,9 +2252,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: deprecated
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite-preview
         pricing:
@@ -2375,9 +2271,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: deprecated
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/gemini-3.1-flash-live-preview
     endpoints:
       - provider: google-ai-studio
@@ -2507,9 +2400,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3.5-flash
         pricing:
@@ -2529,9 +2419,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: google/gemini-3.5-live-translate-preview
     endpoints:
       - provider: google-ai-studio
@@ -2591,9 +2478,6 @@ models:
           output_tokens: 1
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-embedding-2
         availability: unknown
@@ -2611,9 +2495,6 @@ models:
           output_tokens: 1
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemini-flash-latest
     endpoints:
       - provider: google-ai-studio
@@ -2635,9 +2516,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemini-flash-lite-latest
     endpoints:
       - provider: google-ai-studio
@@ -2882,19 +2760,6 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-      - provider: google-ai-studio
-        provider_model_id: gemma-4-31b-it
-        limits:
-          context_window: 262144
-          input_tokens: 262144
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
-  - model: google/gemma-4-31b-it-turbo
-    endpoints:
       - provider: deepinfra
         provider_model_id: google/gemma-4-31B-it-turbo
         pricing:
@@ -2913,6 +2778,17 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: google-ai-studio
+        provider_model_id: gemma-4-31b-it
+        limits:
+          context_window: 262144
+          input_tokens: 262144
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google
+          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemma2
     endpoints:
       - provider: google-vertex
@@ -3262,19 +3138,6 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: google/nano-banana-pro-preview
-    endpoints:
-      - provider: google-ai-studio
-        provider_model_id: nano-banana-pro-preview
-        limits:
-          context_window: 131072
-          input_tokens: 131072
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/object-detector
     endpoints:
       - provider: google-vertex
@@ -3609,9 +3472,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: google/veo-3.1-fast
     endpoints:
       - provider: deepinfra
@@ -3622,9 +3482,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: google/veo-3.1-fast-generate-001
     endpoints:
       - provider: google-vertex
@@ -3797,9 +3654,6 @@ models:
         provider_model_id: hexgrad/Kokoro-82M
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: intfloat/e5-base-v2
     endpoints:
       - provider: deepinfra
@@ -3815,9 +3669,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: intfloat/e5-large-v2
     endpoints:
       - provider: deepinfra
@@ -3833,9 +3684,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: intfloat/multilingual-e5-large
     endpoints:
       - provider: deepinfra
@@ -3851,9 +3699,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: intfloat/multilingual-e5-large-instruct
     endpoints:
       - provider: deepinfra
@@ -3869,36 +3714,34 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: inworld-ai/realtime-tts-1.5-max
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-1.5-max
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: inworld-ai/realtime-tts-1.5-mini
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-1.5-mini
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: inworld-ai/realtime-tts-2
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-2
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: lightricks/ltx-2.3-distilled-diffusers
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
+        pricing:
+          operations:
+            audio_gen: 0.035
+          currency: USD
+        availability: unknown
+        lifecycle: unknown
   - model: meta/bart-large-cnn
     endpoints:
       - provider: google-vertex
@@ -3911,7 +3754,38 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3-1-405b-instruct
+  - model: meta/llama-3-1-70b-instruct
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.4
+            output:
+              per_1m: 0.4
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 131072
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: google-vertex
+        provider_model_id: llama-3-1-70b-instruct-maas
+        limits:
+          context_window: 128000
+          input_tokens: 0
+          output_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  - model: meta/llama-3.1-405b-instruct
     endpoints:
       - provider: google-vertex
         provider_model_id: llama-3-1-405b-instruct-maas
@@ -3924,34 +3798,26 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3-1-70b-instruct
+  - model: meta/llama-3.1-8b-instruct
     endpoints:
-      - provider: google-vertex
-        provider_model_id: llama-3-1-70b-instruct-maas
+      - provider: deepinfra
+        provider_model_id: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.02
+            output:
+              per_1m: 0.03
+          currency: USD
         limits:
-          context_window: 128000
+          context_window: 131072
           input_tokens: 0
-          output_tokens: 4096
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3-2-90b-vision-instruct
-    endpoints:
-      - provider: google-vertex
-        provider_model_id: llama-3-2-90b-vision-instruct-maas
-        limits:
-          context_window: 128000
-          input_tokens: 0
-          output_tokens: 4096
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3.1-8b-instant
-    endpoints:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: groq
         provider_model_id: llama-3.1-8b-instant
         pricing:
@@ -3972,10 +3838,20 @@ models:
           output_tokens: 131072
         availability: unknown
         lifecycle: active
+  - model: meta/llama-3.2-90b-vision-instruct
+    endpoints:
+      - provider: google-vertex
+        provider_model_id: llama-3-2-90b-vision-instruct-maas
+        limits:
+          context_window: 128000
+          input_tokens: 0
+          output_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
         endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: meta/llama-3.3-70b-instruct-turbo
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  - model: meta/llama-3.3-70b-instruct
     endpoints:
       - provider: deepinfra
         provider_model_id: meta-llama/Llama-3.3-70B-Instruct-Turbo
@@ -3995,8 +3871,6 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: meta/llama-3.3-70b-versatile
-    endpoints:
       - provider: groq
         provider_model_id: llama-3.3-70b-versatile
         pricing:
@@ -4017,10 +3891,7 @@ models:
           output_tokens: 32768
         availability: unknown
         lifecycle: active
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: meta/llama-4-maverick-17b-128e-instruct-fp8
+  - model: meta/llama-4-maverick-17b-128e-instruct
     endpoints:
       - provider: deepinfra
         provider_model_id: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
@@ -4080,9 +3951,6 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-guard-4-12b
     endpoints:
       - provider: deepinfra
@@ -4125,9 +3993,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-prompt-guard-2-86m
     endpoints:
       - provider: groq
@@ -4150,49 +4015,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: meta/meta-llama-3.1-70b-instruct-turbo
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.4
-            output:
-              per_1m: 0.4
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 131072
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: meta/meta-llama-3.1-8b-instruct-turbo
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.02
-            output:
-              per_1m: 0.03
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 131072
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: microsoft/phi-4
     endpoints:
       - provider: deepinfra
@@ -4235,8 +4057,6 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: minimax/minimax-m2.7-turbo
-    endpoints:
       - provider: deepinfra
         provider_model_id: MiniMaxAI/MiniMax-M2.7-Turbo
         pricing:
@@ -4347,9 +4167,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: mistral/voxtral-small-24b-2507
     endpoints:
       - provider: deepinfra
@@ -4360,9 +4177,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: moonshot-ai/kimi-k2.5
     endpoints:
       - provider: alibaba
@@ -4534,8 +4348,6 @@ models:
         endpoint:
           type: openai
           url: https://api.moonshot.ai/v1/chat/completions
-  - model: moonshot-ai/kimi-k2.7-code-highspeed
-    endpoints:
       - provider: moonshot-ai
         provider_model_id: kimi-k2.7-code-highspeed
         pricing:
@@ -4693,18 +4505,12 @@ models:
         provider_model_id: nvidia/Cosmos3-Nano
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: nvidia/cosmos3-super
     endpoints:
       - provider: deepinfra
         provider_model_id: nvidia/Cosmos3-Super
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: nvidia/llama-nemotron-embed-vl-1b-v2
     endpoints:
       - provider: deepinfra
@@ -4720,9 +4526,6 @@ models:
           output_tokens: 10240
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: nvidia/nemotron-3-nano-30b-a3b
     endpoints:
       - provider: deepinfra
@@ -4753,9 +4556,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: nvidia/nemotron-content-safety-3.5
     endpoints:
       - provider: deepinfra
@@ -6382,6 +6182,24 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: deepinfra
+        provider_model_id: openai/gpt-oss-120b-Turbo
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.15
+            output:
+              per_1m: 0.6
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 131072
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: fireworks-ai
         provider_model_id: accounts/fireworks/models/gpt-oss-120b
         pricing:
@@ -6422,29 +6240,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: active
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: openai/gpt-oss-120b-turbo
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: openai/gpt-oss-120b-Turbo
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.15
-            output:
-              per_1m: 0.6
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 131072
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: openai/gpt-oss-20b
     endpoints:
       - provider: deepinfra
@@ -6485,9 +6280,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: active
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: openai/gpt-oss-safeguard-20b
     endpoints:
       - provider: groq
@@ -6510,9 +6302,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: openai/gpt-realtime
     endpoints:
       - provider: openai
@@ -6562,9 +6351,6 @@ models:
           output_tokens: 32000
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.openai.com/v1/chat/completions
   - model: openai/gpt-realtime-2.1-mini
     endpoints:
       - provider: openai
@@ -6900,9 +6686,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: groq
         provider_model_id: whisper-large-v3
         pricing:
@@ -6927,9 +6710,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: groq
         provider_model_id: whisper-large-v3-turbo
         pricing:
@@ -6958,27 +6738,18 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: pixverse/pixverse-t2v
     endpoints:
       - provider: deepinfra
         provider_model_id: Pixverse/Pixverse-T2V
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: pixverse/pixverse-t2v-hd
     endpoints:
       - provider: deepinfra
         provider_model_id: Pixverse/Pixverse-T2V-HD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: pruna-ai/p-image
     endpoints:
       - provider: deepinfra
@@ -6989,9 +6760,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: pruna-ai/p-video
     endpoints:
       - provider: deepinfra
@@ -7002,9 +6770,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen-flash
     endpoints:
       - provider: alibaba
@@ -7058,9 +6823,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen-image-max
     endpoints:
       - provider: deepinfra
@@ -7071,9 +6833,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen-mt-flash
     endpoints:
       - provider: alibaba
@@ -7467,9 +7226,6 @@ models:
           output_tokens: 40960
         availability: unknown
         lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: qwen/qwen3-8b
     endpoints:
       - provider: alibaba
@@ -7550,8 +7306,6 @@ models:
         endpoint:
           type: openai
           url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: qwen/qwen3-coder-480b-a35b-instruct-turbo
-    endpoints:
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
         pricing:
@@ -7654,9 +7408,6 @@ models:
           output_tokens: 32768
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen3-embedding-4b
     endpoints:
       - provider: deepinfra
@@ -7672,9 +7423,6 @@ models:
           output_tokens: 32768
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen3-embedding-8b
     endpoints:
       - provider: deepinfra
@@ -7690,9 +7438,6 @@ models:
           output_tokens: 32768
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen3-max
     endpoints:
       - provider: alibaba
@@ -7837,18 +7582,12 @@ models:
         provider_model_id: Qwen/Qwen3-TTS
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen3-tts-voicedesign
     endpoints:
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-TTS-VoiceDesign
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: qwen/qwen3-vl-235b-a22b-instruct
     endpoints:
       - provider: alibaba
@@ -8303,9 +8042,6 @@ models:
           output_tokens: 32768
         availability: unknown
         lifecycle: active
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
   - model: qwen/qwen3.6-35b-a3b
     endpoints:
       - provider: alibaba
@@ -8530,19 +8266,13 @@ models:
         provider_model_id: ResembleAI/chatterbox-multilingual
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: resemble-ai/chatterbox-turbo
     endpoints:
       - provider: deepinfra
         provider_model_id: ResembleAI/chatterbox-turbo
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: sao10k/l3-8b-lunaris-v1-turbo
+  - model: sao10k/l3-8b-lunaris-v1
     endpoints:
       - provider: deepinfra
         provider_model_id: Sao10K/L3-8B-Lunaris-v1-Turbo
@@ -8610,9 +8340,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/all-minilm-l6-v2
     endpoints:
       - provider: deepinfra
@@ -8628,9 +8355,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/all-mpnet-base-v2
     endpoints:
       - provider: deepinfra
@@ -8646,9 +8370,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/clip-vit-b-32
     endpoints:
       - provider: deepinfra
@@ -8664,9 +8385,6 @@ models:
           output_tokens: 77
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/clip-vit-b-32-multilingual-v1
     endpoints:
       - provider: deepinfra
@@ -8682,9 +8400,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/multi-qa-mpnet-base-dot-v1
     endpoints:
       - provider: deepinfra
@@ -8700,9 +8415,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sentence-transformers/paraphrase-minilm-l6-v2
     endpoints:
       - provider: deepinfra
@@ -8718,18 +8430,12 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: sesame/csm-1b
     endpoints:
       - provider: deepinfra
         provider_model_id: sesame/csm-1b
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: shibing624/text2vec-base-chinese
     endpoints:
       - provider: deepinfra
@@ -8745,9 +8451,6 @@ models:
           output_tokens: 512
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: stability/sdxl-turbo
     endpoints:
       - provider: deepinfra
@@ -8758,9 +8461,6 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: stepfun/step-3.7-flash
     endpoints:
       - provider: deepinfra
@@ -8778,42 +8478,6 @@ models:
           context_window: 262144
           input_tokens: 0
           output_tokens: 262144
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: thenlper/gte-base
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: thenlper/gte-base
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.005
-          currency: USD
-        limits:
-          context_window: 512
-          input_tokens: 0
-          output_tokens: 512
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: thenlper/gte-large
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: thenlper/gte-large
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.01
-          currency: USD
-        limits:
-          context_window: 512
-          input_tokens: 0
-          output_tokens: 512
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8869,18 +8533,12 @@ models:
         provider_model_id: XiaomiMiMo/MiMo-V2.5-tts
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: xiaomi/mimo-v2.5-tts-voicedesign
     endpoints:
       - provider: deepinfra
         provider_model_id: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
   - model: zhipu-ai/glm-4.6
     endpoints:
       - provider: deepinfra

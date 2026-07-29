@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"errors"
+	"math"
 	"reflect"
 	"testing"
 
@@ -163,6 +164,38 @@ func TestSetAuthorModelCanonicalizesAuthorAliasAndDisplayName(t *testing.T) {
 	}
 }
 
+func TestSetAuthorModelCanonicalizesEveryCreditedAuthorAlias(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	for _, author := range []Author{
+		{ID: "primary", Aliases: []AuthorID{"primary-alias"}, Name: "Primary"},
+		{ID: "coauthor", Aliases: []AuthorID{"coauthor-alias"}, Name: "Coauthor"},
+	} {
+		if err := builder.SetAuthor(author); err != nil {
+			t.Fatalf("SetAuthor(%s): %v", author.ID, err)
+		}
+	}
+	if err := builder.SetAuthorModel("primary-alias", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{
+			{ID: "primary-alias", Name: "stale primary"},
+			{ID: "coauthor-alias", Name: "stale coauthor"},
+		},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+
+	record := builder.AuthoredModels()[0]
+	want := []Author{
+		{ID: "primary", Name: "Primary"},
+		{ID: "coauthor", Name: "Coauthor"},
+	}
+	if !reflect.DeepEqual(record.Model.Authors, want) {
+		t.Fatalf("canonical authors = %#v, want %#v", record.Model.Authors, want)
+	}
+}
+
 func TestDeleteAuthorRejectsOwnedAuthoredModels(t *testing.T) {
 	t.Parallel()
 
@@ -189,6 +222,35 @@ func TestDeleteAuthorRejectsOwnedAuthoredModels(t *testing.T) {
 	}
 	if _, err := builder.Build(); err != nil {
 		t.Fatalf("Build after rejected delete: %v", err)
+	}
+}
+
+func TestDeleteAuthorRejectsCreditedCoauthor(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	for _, author := range []Author{
+		{ID: "owner", Name: "Owner"},
+		{ID: "coauthor", Aliases: []AuthorID{"coauthor-alias"}, Name: "Coauthor"},
+	} {
+		if err := builder.SetAuthor(author); err != nil {
+			t.Fatalf("SetAuthor(%s): %v", author.ID, err)
+		}
+	}
+	if err := builder.SetAuthorModel("owner", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{
+			{ID: "owner", Name: "Owner"},
+			{ID: "coauthor-alias", Name: "Stale Coauthor"},
+		},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+
+	err := builder.DeleteAuthor("coauthor-alias")
+	var conflict *pkgerrors.ConflictError
+	if !errors.As(err, &conflict) {
+		t.Fatalf("DeleteAuthor error = %T %v, want ConflictError", err, err)
 	}
 }
 
@@ -236,6 +298,35 @@ func TestSetAuthorModelRejectsGenerationDefaultOutsideRange(t *testing.T) {
 	}
 	if validationErr.Field != "model.generation.top_p" {
 		t.Fatalf("validation field = %q, want model.generation.top_p", validationErr.Field)
+	}
+}
+
+func TestSetAuthorModelRejectsNonFiniteGenerationRange(t *testing.T) {
+	t.Parallel()
+
+	for name, value := range map[string]float64{
+		"nan":          math.NaN(),
+		"positive_inf": math.Inf(1),
+		"negative_inf": math.Inf(-1),
+	} {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			builder := NewEmpty()
+			if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+				t.Fatalf("SetAuthor: %v", err)
+			}
+			err := builder.SetAuthorModel("author", Model{
+				ID: "model", Name: "Model",
+				Authors: []Author{{ID: "author", Name: "Author"}},
+				Generation: &ModelGeneration{
+					TopP: &FloatRange{Min: 0, Max: 1, Default: value},
+				},
+			})
+			var validationErr *pkgerrors.ValidationError
+			if !errors.As(err, &validationErr) {
+				t.Fatalf("SetAuthorModel error = %T %v, want ValidationError", err, err)
+			}
+		})
 	}
 }
 

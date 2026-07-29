@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: shibing624/text2vec-base-chinese
 
 # Model features
 features:

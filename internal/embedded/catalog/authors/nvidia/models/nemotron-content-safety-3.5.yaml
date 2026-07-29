@@ -14,8 +14,6 @@ metadata:
   - chat
   - vlm
   - vision
-lineage:
-  root: nvidia/Nemotron-Content-Safety-3.5
 
 # Model features
 features:

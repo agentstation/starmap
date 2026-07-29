@@ -3,7 +3,6 @@ package catalogstore
 import (
 	"bytes"
 	"encoding/json"
-	stderrors "errors"
 	"fmt"
 	"io"
 	"sort"
@@ -35,29 +34,44 @@ type payloadEnvelope struct {
 }
 
 func (r payloadDecodeReport) err() error {
-	return stderrors.Join(
-		r.ProviderModels.Err("catalog payload provider models"),
-		r.AuthorModels.Err("catalog payload author models"),
-	)
+	combined := r.ProviderModels
+	mergeRecordReport(&combined, r.AuthorModels)
+	return combined.Err("catalog payload models")
 }
 
 // DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog together
 // with *sourcepayload.QuarantineError is a partial diagnostic result and must
 // not be activated as the manifest-bound generation.
 func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
-	catalog, report, err := decodeCatalogPayload(data)
+	catalog, report, err := decodeCatalogPayload(data, (*catalogs.Builder).Build)
 	if err != nil {
 		return nil, err
 	}
 	return catalog, report.err()
 }
 
-func decodeCatalogPayload(data []byte) (*catalogs.Catalog, payloadDecodeReport, error) {
+// DecodeSourceObservationPayload decodes a source candidate without requiring
+// every provider record to have resolved canonical authorship. The returned
+// catalog is suitable only for reconciliation; durable generation activation
+// must use DecodeCatalogPayload.
+func DecodeSourceObservationPayload(data []byte) (*catalogs.Catalog, error) {
+	catalog, report, err := decodeCatalogPayload(data, func(builder *catalogs.Builder) (*catalogs.Catalog, error) {
+		return catalogs.NewObservationCatalog(builder)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return catalog, report.err()
+}
+
+type catalogBuilder func(*catalogs.Builder) (*catalogs.Catalog, error)
+
+func decodeCatalogPayload(data []byte, build catalogBuilder) (*catalogs.Catalog, payloadDecodeReport, error) {
 	payload, err := decodePayloadEnvelope(data)
 	if err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
-	return buildDecodedCatalog(payload)
+	return buildDecodedCatalog(payload, build)
 }
 
 func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
@@ -128,7 +142,7 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 	return payload, nil
 }
 
-func buildDecodedCatalog(payload payloadEnvelope) (*catalogs.Catalog, payloadDecodeReport, error) {
+func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*catalogs.Catalog, payloadDecodeReport, error) {
 	builder := catalogs.NewEmpty()
 	providerIDs := make(map[string]struct{}, len(payload.Providers))
 	for _, provider := range payload.Providers {
@@ -232,7 +246,7 @@ func buildDecodedCatalog(payload payloadEnvelope) (*catalogs.Catalog, payloadDec
 		}
 	}
 	builder.SetProvenance(payload.Provenance)
-	catalog, err := builder.Build()
+	catalog, err := build(builder)
 	return catalog, report, err
 }
 

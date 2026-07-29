@@ -9,11 +9,9 @@ description: Mistral Small 3 is a 24B-parameter language model optimized for low
 # Model metadata
 metadata:
   release_date: null
-  open_weights: false
+  open_weights: true
   tags:
   - chat
-lineage:
-  root: mistralai/Mistral-Small-24B-Instruct-2501
 
 # Model features
 features:

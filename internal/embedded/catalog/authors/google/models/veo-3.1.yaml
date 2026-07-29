@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: google/veo-3.1
 
 # Model features
 features:

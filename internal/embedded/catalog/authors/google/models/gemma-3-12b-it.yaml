@@ -14,8 +14,6 @@ metadata:
   - chat
   - vlm
   - vision
-lineage:
-  root: google/gemma-3-12b-it
 
 # Model features
 features:

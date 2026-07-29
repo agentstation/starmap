@@ -202,3 +202,69 @@ func (c *collector) baseCatalog() *catalogs.Catalog {
 	}
 	return nil
 }
+
+// authoredBootstrap selects the lowest-authority complete construction corpus.
+// A human workspace is reconciled separately because it is editable input.
+// Provider observations never invent authorship.
+func (c *collector) authoredBootstrap() *catalogs.Catalog {
+	preferred := []sources.ID{
+		sources.EmbeddedCatalogID,
+		c.primary,
+		sources.ModelsDevHTTPID,
+		sources.ModelsDevGitID,
+	}
+	seen := make(map[sources.ID]struct{}, len(preferred))
+	for _, sourceID := range preferred {
+		if sourceID == "" {
+			continue
+		}
+		seen[sourceID] = struct{}{}
+		if catalog := c.catalogWithAuthoredCorpus(sourceID); catalog != nil {
+			return catalog
+		}
+	}
+	for _, observation := range c.sources {
+		if observation.SourceID == sources.LocalCatalogID {
+			continue
+		}
+		if _, found := seen[observation.SourceID]; found {
+			continue
+		}
+		if observation.Catalog != nil && len(observation.Catalog.AuthoredModels()) > 0 {
+			return observation.Catalog
+		}
+	}
+	return nil
+}
+
+func (c *collector) catalog(sourceID sources.ID) *catalogs.Catalog {
+	for _, observation := range c.sources {
+		if observation.SourceID == sourceID {
+			return observation.Catalog
+		}
+	}
+	return nil
+}
+
+func (c *collector) completeObservation(sourceID sources.ID) (sources.Observation, bool) {
+	for _, observation := range c.sources {
+		if observation.SourceID == sourceID &&
+			observation.Catalog != nil &&
+			observation.Status == sources.ObservationStatusSucceeded &&
+			observation.Completeness == sources.ObservationCompletenessComplete {
+			return observation, true
+		}
+	}
+	return sources.Observation{}, false
+}
+
+func (c *collector) catalogWithAuthoredCorpus(sourceID sources.ID) *catalogs.Catalog {
+	for _, observation := range c.sources {
+		if observation.SourceID == sourceID &&
+			observation.Catalog != nil &&
+			len(observation.Catalog.AuthoredModels()) > 0 {
+			return observation.Catalog
+		}
+	}
+	return nil
+}

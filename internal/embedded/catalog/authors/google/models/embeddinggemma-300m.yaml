@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: google/embeddinggemma-300m
 
 # Model features
 features:

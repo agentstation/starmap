@@ -217,16 +217,19 @@ ID: 32 alias/content overlaps, 25 models.dev-only records, and 64 presumed stale
 orphans. PR #53's terminal disposition is superseded for the authored-model
 corpus.
 
-The exact P5.9 review restored all 322 records for review. The final P5.13
-outcome retains 264 records as authored/history records and merges 58
-provider-derived spelling, region, staging, model-garden, or version artifacts
-into canonical model targets. Each historical record has a machine-readable disposition in
+The exact P5.9 review restored all 322 records for review. Its initial 264/58
+disposition was superseded after the P5.13 outcome review found six additional
+provider-derived packaging, deployment, and performance aliases. The corrected
+outcome retains 258 records as authored/history records and merges 64
+provider-derived spelling, region, staging, model-garden, packaging,
+performance, or version artifacts into canonical model targets. Each
+historical record has a machine-readable disposition in
 `P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml`. Retention does not claim current
 provider availability:
 
 - exact provider IDs remain unchanged in provider YAML even when their author
   record is merged into a region-independent canonical model;
-- 264 historical paths remain canonical authored records and 58 resolve to an
+- 258 historical paths remain canonical authored records and 64 resolve to an
   explicit canonical target;
 - all 30 records that lacked inline authors received the author named by their
   reviewed path;
@@ -237,6 +240,33 @@ provider availability:
 
 No author model manufactures a provider endpoint. An endpoint exists only when
 a provider serving record explicitly links to that author model.
+
+## P5.13 implementation review
+
+The restored implementation preserves the useful pre-PR-#53 structure without
+restoring its denormalized-copy behavior:
+
+- 589 canonical author-model YAML records own identity and intrinsic facts;
+- 610 exact provider-model YAML records own serving facts and all carry a
+  validated `model: author/slug` link;
+- the immutable catalog contains 589 definitions, 507 of which currently have
+  one or more provider offerings, leaving 82 authored-only definitions;
+- generated `endpoints.yaml` groups all 610 provider offering rows under those
+  507 served author/model identities and binds them to the immutable generation
+  ID and payload digest;
+- route derivation is operation-aware: 504 offerings expose a protocol route,
+  while media/operation-priced rows retain their exact provider pricing without
+  inventing a chat-completions route; and
+- provider observations can remain unresolved acquisition candidates, but
+  final publication rejects every missing or dangling authored-model link.
+
+Reconciliation treats authored records as a distinct construction role. A
+complete human workspace may add, edit, or delete local-only definitions; a
+verified embedded revision may add definitions missing from the durable
+baseline; an upstream-backed definition removed locally is rediscovered. A
+degraded or partial observation is never deletion evidence. Provider
+observations may update serving facts and provider pricing, but they cannot
+manufacture authorship or overwrite the linked authored definition.
 
 ## Verifiable success criteria
 
@@ -294,13 +324,13 @@ model is complete.
 P5 implemented the reviewed replacement without restoring the rejected
 `Author.Models` copy semantics:
 
-- 607 authored YAML records now produce 607 canonical definitions;
+- 589 authored YAML records now produce 589 canonical definitions;
 - 610 retained provider YAML records each carry an explicit canonical link;
 - the one metadata-free `pre-zhongyun-test-chat` record was removed rather than
   assigned an invented author;
-- all 610 offerings produce exactly 610 generated endpoint rows across 519
+- all 610 offerings produce exactly 610 generated endpoint rows across 507
   canonical models;
-- 88 authored-only definitions correctly produce no endpoint;
+- 82 authored-only definitions correctly produce no endpoint;
 - schema version 3 round-trips `author_models` and `provider_models`;
 - the immutable catalog precomputes canonical, alias, provider-offering, and
   definition-offering indexes;

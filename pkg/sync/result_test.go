@@ -299,6 +299,18 @@ func catalogWithProvider(t *testing.T, providerID catalogs.ProviderID, model cat
 
 	cat := catalogs.NewEmpty()
 	modelCopy := catalogs.DeepCopyModel(model)
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := cat.SetAuthor(author); err != nil {
+		t.Fatalf("Failed to seed author: %v", err)
+	}
+	modelCopy.ModelRef = catalogs.AuthoredModelID(author.ID, modelCopy.ID)
+	if err := cat.SetAuthorModel(author.ID, catalogs.Model{
+		ID:      modelCopy.ID,
+		Name:    modelCopy.Name,
+		Authors: []catalogs.Author{author},
+	}); err != nil {
+		t.Fatalf("Failed to seed authored model %q: %v", modelCopy.ID, err)
+	}
 	if err := cat.SetProvider(catalogs.Provider{
 		ID:   providerID,
 		Name: string(providerID),

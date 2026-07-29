@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: BAAI/bge-large-en-v1.5
 
 # Model features
 features:

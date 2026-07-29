@@ -154,11 +154,7 @@ func strictTestCatalog(t *testing.T, withModel bool) *catalogs.Catalog {
 	if err := builder.SetProvider(provider); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
-	}
-	return catalog
+	return buildCatalog(t, builder)
 }
 
 func strictTestObservation(

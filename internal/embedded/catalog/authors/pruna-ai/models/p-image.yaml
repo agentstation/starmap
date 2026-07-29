@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - image-gen
-lineage:
-  root: PrunaAI/p-image
 
 # Model features
 features:

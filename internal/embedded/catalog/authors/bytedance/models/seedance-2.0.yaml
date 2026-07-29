@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: ByteDance/Seedance-2.0
 
 # Model features
 features:

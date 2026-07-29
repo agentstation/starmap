@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: Wan-AI/Wan2.2-T2V-A14B
 
 # Model features
 features:

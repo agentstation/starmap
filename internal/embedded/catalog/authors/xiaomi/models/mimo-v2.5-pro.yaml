@@ -17,7 +17,6 @@ metadata:
   - reasoning
 lineage:
   family: mimo
-  root: XiaomiMiMo/MiMo-V2.5-Pro
 
 # Model features
 features:

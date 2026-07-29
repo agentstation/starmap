@@ -609,9 +609,9 @@ records:
   - path: providers/deepinfra/models/BAAI/bge-m3-multi.yaml
     provider: deepinfra
     provider_model_id: BAAI/bge-m3-multi
-    model: baai/bge-m3-multi
+    model: baai/bge-m3
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra multi route joins the canonical BGE-M3 definition
   - path: providers/deepinfra/models/BAAI/bge-m3.yaml
     provider: deepinfra
     provider_model_id: BAAI/bge-m3
@@ -711,9 +711,9 @@ records:
   - path: providers/deepinfra/models/FastVideo/LTX-2.3-Distilled-Diffusers.yaml
     provider: deepinfra
     provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
-    model: fastvideo/ltx-2.3-distilled-diffusers
+    model: lightricks/ltx-2.3-distilled-diffusers
     status: linked
-    evidence: reviewed model-publisher namespace and model metadata
+    evidence: FastVideo route serves the Lightricks LTX 2.3 checkpoint distilled by FastVideo
   - path: providers/deepinfra/models/Gryphe/MythoMax-L2-13b.yaml
     provider: deepinfra
     provider_model_id: Gryphe/MythoMax-L2-13b
@@ -723,9 +723,9 @@ records:
   - path: providers/deepinfra/models/MiniMaxAI/MiniMax-M2.7-Turbo.yaml
     provider: deepinfra
     provider_model_id: MiniMaxAI/MiniMax-M2.7-Turbo
-    model: minimax/minimax-m2.7-turbo
+    model: minimax/minimax-m2.7
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for the canonical MiniMax M2.7 model
   - path: providers/deepinfra/models/MiniMaxAI/MiniMax-M2.7.yaml
     provider: deepinfra
     provider_model_id: MiniMaxAI/MiniMax-M2.7
@@ -831,9 +831,9 @@ records:
   - path: providers/deepinfra/models/Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo.yaml
     provider: deepinfra
     provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
-    model: qwen/qwen3-coder-480b-a35b-instruct-turbo
+    model: qwen/qwen3-coder-480b-a35b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for the canonical Qwen3 Coder model
   - path: providers/deepinfra/models/Qwen/Qwen3-Embedding-0.6B.yaml
     provider: deepinfra
     provider_model_id: Qwen/Qwen3-Embedding-0.6B
@@ -957,9 +957,9 @@ records:
   - path: providers/deepinfra/models/Sao10K/L3-8B-Lunaris-v1-Turbo.yaml
     provider: deepinfra
     provider_model_id: Sao10K/L3-8B-Lunaris-v1-Turbo
-    model: sao10k/l3-8b-lunaris-v1-turbo
+    model: sao10k/l3-8b-lunaris-v1
     status: linked
-    evidence: reviewed model-publisher namespace and model metadata
+    evidence: exact DeepInfra Turbo route joins the provider-independent Lunaris model
   - path: providers/deepinfra/models/Sao10K/L3.1-70B-Euryale-v2.2.yaml
     provider: deepinfra
     provider_model_id: Sao10K/L3.1-70B-Euryale-v2.2
@@ -1245,9 +1245,9 @@ records:
   - path: providers/deepinfra/models/google/gemma-4-31B-it-turbo.yaml
     provider: deepinfra
     provider_model_id: google/gemma-4-31B-it-turbo
-    model: google/gemma-4-31b-it-turbo
+    model: google/gemma-4-31b-it
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for the canonical Gemma 4 31B model
   - path: providers/deepinfra/models/google/gemma-4-31B-it.yaml
     provider: deepinfra
     provider_model_id: google/gemma-4-31B-it
@@ -1317,15 +1317,15 @@ records:
   - path: providers/deepinfra/models/meta-llama/Llama-3.3-70B-Instruct-Turbo.yaml
     provider: deepinfra
     provider_model_id: meta-llama/Llama-3.3-70B-Instruct-Turbo
-    model: meta/llama-3.3-70b-instruct-turbo
+    model: meta/llama-3.3-70b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.3 70B Instruct
   - path: providers/deepinfra/models/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8.yaml
     provider: deepinfra
     provider_model_id: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
-    model: meta/llama-4-maverick-17b-128e-instruct-fp8
+    model: meta/llama-4-maverick-17b-128e-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact DeepInfra FP8 route joins the canonical Llama 4 Maverick definition
   - path: providers/deepinfra/models/meta-llama/Llama-4-Scout-17B-16E-Instruct.yaml
     provider: deepinfra
     provider_model_id: meta-llama/Llama-4-Scout-17B-16E-Instruct
@@ -1341,15 +1341,15 @@ records:
   - path: providers/deepinfra/models/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo.yaml
     provider: deepinfra
     provider_model_id: meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
-    model: meta/meta-llama-3.1-70b-instruct-turbo
+    model: meta/llama-3-1-70b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.1 70B Instruct
   - path: providers/deepinfra/models/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo.yaml
     provider: deepinfra
     provider_model_id: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-    model: meta/meta-llama-3.1-8b-instruct-turbo
+    model: meta/llama-3.1-8b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.1 8B Instruct
   - path: providers/deepinfra/models/microsoft/phi-4.yaml
     provider: deepinfra
     provider_model_id: microsoft/phi-4
@@ -1455,9 +1455,9 @@ records:
   - path: providers/deepinfra/models/openai/gpt-oss-120b-Turbo.yaml
     provider: deepinfra
     provider_model_id: openai/gpt-oss-120b-Turbo
-    model: openai/gpt-oss-120b-turbo
+    model: openai/gpt-oss-120b
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: DeepInfra Turbo is a serving tier for the canonical GPT OSS 120B model
   - path: providers/deepinfra/models/openai/gpt-oss-120b.yaml
     provider: deepinfra
     provider_model_id: openai/gpt-oss-120b
@@ -1551,15 +1551,15 @@ records:
   - path: providers/deepinfra/models/thenlper/gte-base.yaml
     provider: deepinfra
     provider_model_id: thenlper/gte-base
-    model: thenlper/gte-base
+    model: alibaba/gte-base
     status: linked
-    evidence: reviewed model-publisher namespace and model metadata
+    evidence: exact Hugging Face route joins the Alibaba DAMO Academy GTE Base definition
   - path: providers/deepinfra/models/thenlper/gte-large.yaml
     provider: deepinfra
     provider_model_id: thenlper/gte-large
-    model: thenlper/gte-large
+    model: alibaba/gte-large
     status: linked
-    evidence: reviewed model-publisher namespace and model metadata
+    evidence: exact Hugging Face route joins the Alibaba DAMO Academy GTE Large definition
   - path: providers/deepinfra/models/zai-org/GLM-4.6.yaml
     provider: deepinfra
     provider_model_id: zai-org/GLM-4.6
@@ -1617,9 +1617,9 @@ records:
   - path: providers/fireworks-ai/models/accounts/fireworks/models/flux-1-schnell-fp8.yaml
     provider: fireworks-ai
     provider_model_id: accounts/fireworks/models/flux-1-schnell-fp8
-    model: black-forest-labs/flux-1-schnell-fp8
+    model: black-forest-labs/flux-1-schnell
     status: linked
-    evidence: reviewed explicit identity mapping
+    evidence: exact Fireworks FP8 route joins the canonical FLUX.1 Schnell definition
   - path: providers/fireworks-ai/models/accounts/fireworks/models/glm-5p1.yaml
     provider: fireworks-ai
     provider_model_id: accounts/fireworks/models/glm-5p1
@@ -1953,9 +1953,9 @@ records:
   - path: providers/google-ai-studio/models/nano-banana-pro-preview.yaml
     provider: google-ai-studio
     provider_model_id: nano-banana-pro-preview
-    model: google/nano-banana-pro-preview
+    model: google/gemini-3-pro-image-preview
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: Nano Banana Pro is the serving alias for Gemini 3 Pro Image Preview
   - path: providers/google-ai-studio/models/veo-3.1-fast-generate-preview.yaml
     provider: google-ai-studio
     provider_model_id: veo-3.1-fast-generate-preview
@@ -2115,9 +2115,9 @@ records:
   - path: providers/google-vertex/models/embeddinggemma.yaml
     provider: google-vertex
     provider_model_id: embeddinggemma
-    model: google/embeddinggemma
+    model: google/embeddinggemma-300m
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: Vertex deployment alias resolves to the canonical EmbeddingGemma 300M model
   - path: providers/google-vertex/models/f-vlm-jax.yaml
     provider: google-vertex
     provider_model_id: f-vlm-jax
@@ -2451,9 +2451,9 @@ records:
   - path: providers/google-vertex/models/llama-3-1-405b-instruct-maas.yaml
     provider: google-vertex
     provider_model_id: llama-3-1-405b-instruct-maas
-    model: meta/llama-3-1-405b-instruct
+    model: meta/llama-3.1-405b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact Vertex MaaS deployment ID joins the canonical Meta Llama 3.1 definition
   - path: providers/google-vertex/models/llama-3-1-70b-instruct-maas.yaml
     provider: google-vertex
     provider_model_id: llama-3-1-70b-instruct-maas
@@ -2463,9 +2463,9 @@ records:
   - path: providers/google-vertex/models/llama-3-2-90b-vision-instruct-maas.yaml
     provider: google-vertex
     provider_model_id: llama-3-2-90b-vision-instruct-maas
-    model: meta/llama-3-2-90b-vision-instruct
+    model: meta/llama-3.2-90b-vision-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact Vertex MaaS deployment ID joins the canonical Meta Llama 3.2 definition
   - path: providers/google-vertex/models/lyria-002.yaml
     provider: google-vertex
     provider_model_id: lyria-002
@@ -2823,15 +2823,15 @@ records:
   - path: providers/groq/models/llama-3.1-8b-instant.yaml
     provider: groq
     provider_model_id: llama-3.1-8b-instant
-    model: meta/llama-3.1-8b-instant
+    model: meta/llama-3.1-8b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: Groq instant is a serving label for Meta Llama 3.1 8B Instruct
   - path: providers/groq/models/llama-3.3-70b-versatile.yaml
     provider: groq
     provider_model_id: llama-3.3-70b-versatile
-    model: meta/llama-3.3-70b-versatile
+    model: meta/llama-3.3-70b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: Groq versatile is a serving label for Meta Llama 3.3 70B Instruct
   - path: providers/groq/models/meta-llama/llama-4-scout-17b-16e-instruct.yaml
     provider: groq
     provider_model_id: meta-llama/llama-4-scout-17b-16e-instruct
@@ -2907,9 +2907,9 @@ records:
   - path: providers/moonshot-ai/models/kimi-k2.7-code-highspeed.yaml
     provider: moonshot-ai
     provider_model_id: kimi-k2.7-code-highspeed
-    model: moonshot-ai/kimi-k2.7-code-highspeed
+    model: moonshot-ai/kimi-k2.7-code
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: highspeed is a Moonshot serving tier for the canonical Kimi K2.7 Code model
   - path: providers/moonshot-ai/models/kimi-k2.7-code.yaml
     provider: moonshot-ai
     provider_model_id: kimi-k2.7-code

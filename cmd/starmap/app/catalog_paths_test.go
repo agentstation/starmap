@@ -275,11 +275,26 @@ func appCatalogTree(t *testing.T, root string) map[string]string {
 func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+		ID:      "migration-model",
+		Name:    "Migration Model",
+		Authors: []catalogs.Author{author},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	if err := builder.SetProvider(catalogs.Provider{
 		ID:   "migration-provider",
 		Name: "Migration Provider",
 		Models: map[string]*catalogs.Model{
-			"migration-model": {ID: "migration-model", Name: "Migration Model"},
+			"migration-model": {
+				ID:       "migration-model",
+				ModelRef: "test-author/migration-model",
+				Name:     "Migration Model",
+			},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)

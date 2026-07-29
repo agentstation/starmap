@@ -73,6 +73,7 @@ func TestConfiguredWorkspaceLoadsSemanticHumanValuesWithoutEmbeddedPreMerge(t *t
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
+	seedTestModelDefinitions(t, human)
 	if err := human.Save(save.WithPath(path)); err != nil {
 		t.Fatalf("Save human workspace: %v", err)
 	}

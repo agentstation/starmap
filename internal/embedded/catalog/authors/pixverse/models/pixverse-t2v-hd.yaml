@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: Pixverse/Pixverse-T2V-HD
 
 # Model features
 features:

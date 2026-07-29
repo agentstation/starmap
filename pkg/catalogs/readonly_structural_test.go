@@ -171,26 +171,31 @@ func TestBuilderFromCatalogCannotMutatePublishedCatalog(t *testing.T) {
 
 func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Published Offering")
 	if err := builder.SetProvider(Provider{
 		ID:      "provider-a",
 		Aliases: []ProviderID{"provider-alias"},
 		Models: map[string]*Model{
-			"shared": {ID: "shared", Name: "Published Offering"},
+			"shared": {
+				ID: "shared", ModelRef: "author/shared", Name: "Published Offering",
+			},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
 	catalog := mustCatalog(t, builder)
 
-	if err := builder.SetProviderModel("provider-a", Model{ID: "shared", Name: "Later Draft"}); err != nil {
+	if err := builder.SetProviderModel("provider-a", Model{
+		ID: "shared", ModelRef: "author/shared", Name: "Later Draft",
+	}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
 	offering, err := catalog.Offering("provider-alias", "shared")
 	if err != nil {
 		t.Fatalf("Offering through alias: %v", err)
 	}
-	if offering.DefinitionID != "shared" {
-		t.Fatalf("Indexed offering definition = %q, want shared", offering.DefinitionID)
+	if offering.DefinitionID != "author/shared" {
+		t.Fatalf("Indexed offering definition = %q, want author/shared", offering.DefinitionID)
 	}
 	definition, err := catalog.FindModel("shared")
 	if err != nil {
@@ -207,6 +212,7 @@ func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 
 func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Shared Model")
 	providers := []Provider{
 		{
 			ID: "provider-a", Aliases: []ProviderID{"provider-a-alias"}, Name: "Provider A",
@@ -227,7 +233,7 @@ func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) 
 		t.Fatalf("Build: %v", err)
 	}
 
-	definition, err := catalog.Definition("shared")
+	definition, err := catalog.Definition("author/shared")
 	if err != nil {
 		t.Fatalf("Definition: %v", err)
 	}

@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - chat
-lineage:
-  root: deepseek-ai/DeepSeek-V3
 
 # Model features
 features:

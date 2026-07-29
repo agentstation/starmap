@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: BAAI/bge-m3
 
 # Model features
 features:

@@ -903,26 +903,26 @@ func (c *Client) convertAIStudioModel(rawModel aiStudioModel) *catalogs.Model {
 		OutputTokenLimit: rawModel.OutputTokenLimit,
 		SupportedActions: rawModel.SupportedGenerationMethods,
 	})
-	if rawModel.Temperature != nil || rawModel.MaxTemperature != nil || rawModel.TopP != nil || rawModel.TopK != nil {
-		model.Generation = &catalogs.ModelGeneration{}
-		if rawModel.Temperature != nil || rawModel.MaxTemperature != nil {
-			model.Generation.Temperature = &catalogs.FloatRange{}
-			if rawModel.Temperature != nil {
-				model.Generation.Temperature.Default = *rawModel.Temperature
-				model.Features.Temperature = true
-			}
-			if rawModel.MaxTemperature != nil {
-				model.Generation.Temperature.Max = *rawModel.MaxTemperature
-			}
+	generation := &catalogs.ModelGeneration{}
+	if rawModel.Temperature != nil {
+		model.Features.Temperature = true
+	}
+	if rawModel.Temperature != nil && rawModel.MaxTemperature != nil {
+		generation.Temperature = &catalogs.FloatRange{
+			Min: 0, Max: *rawModel.MaxTemperature, Default: *rawModel.Temperature,
 		}
-		if rawModel.TopP != nil {
-			model.Generation.TopP = &catalogs.FloatRange{Default: *rawModel.TopP}
-			model.Features.TopP = true
-		}
-		if rawModel.TopK != nil {
-			model.Generation.TopK = &catalogs.IntRange{Default: int(*rawModel.TopK)}
-			model.Features.TopK = true
-		}
+	}
+	if rawModel.TopP != nil {
+		model.Features.TopP = true
+		generation.TopP = &catalogs.FloatRange{Min: 0, Max: 1, Default: *rawModel.TopP}
+	}
+	if rawModel.TopK != nil {
+		// The API reports the default but no maximum. Preserve support without
+		// manufacturing a complete range that would fail closed on reload.
+		model.Features.TopK = true
+	}
+	if generation.Temperature != nil || generation.TopP != nil {
+		model.Generation = generation
 	}
 	if rawModel.Thinking != nil {
 		model.Features.Reasoning = *rawModel.Thinking

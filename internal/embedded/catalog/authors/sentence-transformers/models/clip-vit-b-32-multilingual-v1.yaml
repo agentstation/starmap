@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: sentence-transformers/clip-ViT-B-32-multilingual-v1
 
 # Model features
 features:

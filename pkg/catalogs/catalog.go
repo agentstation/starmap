@@ -294,9 +294,17 @@ func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error {
 	if err != nil {
 		return err
 	}
-	if len(model.Authors) > 0 && (model.Authors[0].ID == authorID ||
-		model.Authors[0].ID == author.ID) {
-		model.Authors[0] = Author{ID: author.ID, Name: author.Name}
+	for index, modelAuthor := range model.Authors {
+		canonical, resolveErr := cat.Author(modelAuthor.ID)
+		if resolveErr != nil {
+			return errors.WrapResource(
+				"resolve",
+				"authored model author",
+				string(modelAuthor.ID),
+				resolveErr,
+			)
+		}
+		model.Authors[index] = Author{ID: canonical.ID, Name: canonical.Name}
 	}
 	if err := validateAuthoredModel(author.ID, model); err != nil {
 		return errors.WrapResource(
@@ -341,6 +349,24 @@ func (cat *Builder) DeleteAuthor(id AuthorID) error {
 				Resource: "author",
 				Actual:   string(author.ID),
 				Message:  "cannot be deleted while it owns authored models",
+			}
+		}
+		for _, modelAuthor := range record.Model.Authors {
+			canonical, resolveErr := cat.Author(modelAuthor.ID)
+			if resolveErr != nil {
+				return errors.WrapResource(
+					"resolve",
+					"authored model author",
+					string(modelAuthor.ID),
+					resolveErr,
+				)
+			}
+			if canonical.ID == author.ID {
+				return &errors.ConflictError{
+					Resource: "author",
+					Actual:   string(author.ID),
+					Message:  "cannot be deleted while it is credited by authored models",
+				}
 			}
 		}
 	}

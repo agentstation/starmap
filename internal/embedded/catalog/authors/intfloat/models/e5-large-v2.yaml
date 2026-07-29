@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: intfloat/e5-large-v2
 
 # Model features
 features:

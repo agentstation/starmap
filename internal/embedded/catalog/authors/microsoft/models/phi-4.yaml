@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - chat
-lineage:
-  root: microsoft/phi-4
 
 # Model features
 features:

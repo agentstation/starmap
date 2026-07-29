@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - stt
-lineage:
-  root: mistralai/Voxtral-Small-24B-2507
 
 # Model features
 features:

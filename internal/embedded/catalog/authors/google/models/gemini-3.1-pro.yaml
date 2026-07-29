@@ -16,8 +16,6 @@ metadata:
   - vision
   - reasoning_effort
   - reasoning
-lineage:
-  root: google/gemini-3.1-pro
 
 # Model features
 features:

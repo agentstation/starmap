@@ -24,6 +24,68 @@ func NewCatalog(source Reader) (*Catalog, error) {
 	return buildCatalog(builder)
 }
 
+// NewObservationCatalog copies source records into an immutable source
+// observation without deriving consumer definitions or offerings. It exists
+// for acquisition boundaries that must preserve provider records before
+// reconciliation resolves every ModelRef. Final publication must use
+// NewCatalog or Builder.Build, which fail closed on unresolved references.
+func NewObservationCatalog(source Reader) (*Catalog, error) {
+	if source == nil {
+		return nil, &errors.ValidationError{
+			Field:   "source",
+			Message: "catalog observation source cannot be nil",
+		}
+	}
+	builder, err := NewBuilderFrom(source)
+	if err != nil {
+		return nil, errors.WrapResource("create", "immutable catalog observation", "", err)
+	}
+	if err := validateCatalogIdentities(builder); err != nil {
+		return nil, errors.WrapResource("validate", "catalog observation identities", "", err)
+	}
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil {
+				continue
+			}
+			if modelID != model.ID {
+				return nil, &errors.ValidationError{
+					Field:   "provider.models",
+					Value:   string(provider.ID) + "/" + modelID,
+					Message: "map key must match model ID",
+				}
+			}
+			if err := validateProviderModelPathID(model.ID); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider observation model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
+			if err := validateModelGeneration(model.Generation); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider observation model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
+			if model.ModelRef != "" {
+				if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+					return nil, errors.WrapResource(
+						"validate", "provider observation model reference", string(model.ModelRef), err,
+					)
+				}
+			}
+		}
+	}
+	return &Catalog{
+		source:                     builder,
+		definitions:                map[ModelDefinitionID]ModelDefinition{},
+		offerings:                  map[OfferingKey]ProviderOffering{},
+		providerOfferings:          map[ProviderID][]OfferingKey{},
+		definitionOfferings:        map[ModelDefinitionID][]OfferingKey{},
+		authorDefinitions:          map[AuthorID][]ModelDefinitionID{},
+		definitionAliases:          map[string]ModelDefinitionID{},
+		ambiguousDefinitionAliases: map[string][]ModelDefinitionID{},
+	}, nil
+}
+
 var _ Reader = (*Catalog)(nil)
 
 // Catalog is Starmap's immutable canonical catalog. Its state is unexported,

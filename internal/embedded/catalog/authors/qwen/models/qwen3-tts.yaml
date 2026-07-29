@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: Qwen/Qwen3-TTS
 
 # Model features
 features:

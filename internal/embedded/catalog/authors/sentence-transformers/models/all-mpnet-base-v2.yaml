@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: sentence-transformers/all-mpnet-base-v2
 
 # Model features
 features:

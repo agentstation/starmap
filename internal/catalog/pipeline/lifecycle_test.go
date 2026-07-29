@@ -96,11 +96,50 @@ func TestObserveRetainsClassifiedDegradationWithoutSourceFailure(t *testing.T) {
 }
 
 func asSnapshot(reader catalogs.Reader) *catalogs.Catalog {
-	snapshot, err := catalogs.NewCatalog(reader)
+	builder, err := catalogs.NewBuilderFrom(reader)
+	if err != nil {
+		panic(err)
+	}
+	if err := completePipelineTestCatalog(builder); err != nil {
+		panic(err)
+	}
+	snapshot, err := builder.Build()
 	if err != nil {
 		panic(err)
 	}
 	return snapshot
+}
+
+func completePipelineTestCatalog(builder *catalogs.Builder) error {
+	const authorID catalogs.AuthorID = "test-author"
+	author := catalogs.Author{ID: authorID, Name: "Test Author"}
+	authorSet := false
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			if !authorSet {
+				if err := builder.SetAuthor(author); err != nil {
+					return err
+				}
+				authorSet = true
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(authorID, slug)
+			if err := builder.SetProviderModel(provider.ID, *model); err != nil {
+				return err
+			}
+			if err := builder.SetAuthorModel(authorID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (s *lifecycleTestSource) Cleanup() error {

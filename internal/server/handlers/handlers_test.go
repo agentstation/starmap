@@ -57,7 +57,7 @@ func TestHandleListModelsUsesSharedPagination(t *testing.T) {
 		t.Fatalf("Failed to seed catalog: %v", err)
 	}
 
-	h := newTestHandlers(cat)
+	h := newTestHandlers(t, cat)
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/models?limit=1&offset=1", nil)
 	rec := httptest.NewRecorder()
 
@@ -86,7 +86,7 @@ func TestHandleListModelsUsesSharedPagination(t *testing.T) {
 }
 
 func TestHandleListModelsRejectsInvalidSortAndFilterParameters(t *testing.T) {
-	h := newTestHandlers(catalogs.NewEmpty())
+	h := newTestHandlers(t, catalogs.NewEmpty())
 	for _, query := range []string{"sort=price", "limit=invalid", "feature=invented", "min_context=100&max_context=10"} {
 		req := httptest.NewRequest(http.MethodGet, "/api/v1/models?"+query, nil)
 		recorder := httptest.NewRecorder()
@@ -118,7 +118,7 @@ func TestHandleListModelsFiltersByProvider(t *testing.T) {
 		t.Fatalf("Failed to seed Anthropic provider: %v", err)
 	}
 
-	h := newTestHandlers(cat)
+	h := newTestHandlers(t, cat)
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/models?provider=openai", nil)
 	rec := httptest.NewRecorder()
 
@@ -166,7 +166,7 @@ func TestHandleListModelsPreservesSameIDAtDifferentProviders(t *testing.T) {
 		}
 	}
 
-	h := newTestHandlers(builder)
+	h := newTestHandlers(t, builder)
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/models", nil)
 	rec := httptest.NewRecorder()
 	h.HandleListModels(rec, req)
@@ -215,7 +215,7 @@ func TestHandleSearchModelsAppliesReleaseDateRange(t *testing.T) {
 		t.Fatalf("Failed to seed provider: %v", err)
 	}
 
-	h := newTestHandlers(cat)
+	h := newTestHandlers(t, cat)
 	req := httptest.NewRequest(
 		http.MethodPost,
 		"/api/v1/models/search",
@@ -252,7 +252,7 @@ func TestHandleListProvidersUsesSharedProviderQuery(t *testing.T) {
 		t.Fatalf("Failed to seed a provider: %v", err)
 	}
 
-	h := newTestHandlers(cat)
+	h := newTestHandlers(t, cat)
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/providers", nil)
 	rec := httptest.NewRecorder()
 
@@ -280,7 +280,31 @@ func TestHandleListProvidersUsesSharedProviderQuery(t *testing.T) {
 	}
 }
 
-func newTestHandlers(cat *catalogs.Builder) *Handlers {
+func newTestHandlers(t testing.TB, cat *catalogs.Builder) *Handlers {
+	t.Helper()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := cat.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, provider := range cat.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(author.ID, slug)
+			if err := cat.SetProviderModel(provider.ID, *model); err != nil {
+				t.Fatalf("SetProviderModel(%s/%s): %v", provider.ID, modelID, err)
+			}
+			if err := cat.SetAuthorModel(author.ID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
+	}
 	return &Handlers{
 		app: &application.Mock{
 			CatalogFunc: func() (*catalogs.Catalog, error) {

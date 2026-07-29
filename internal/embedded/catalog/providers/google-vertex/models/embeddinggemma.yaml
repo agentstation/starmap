@@ -1,6 +1,6 @@
 # embeddinggemma - Google Vertex AI model: embeddinggemma
 id: embeddinggemma
-model: google/embeddinggemma
+model: google/embeddinggemma-300m
 name: embeddinggemma
 authors:
 - id: google

@@ -13,8 +13,6 @@ metadata:
   tags:
   - chat
   - prompt_cache
-lineage:
-  root: deepseek-ai/DeepSeek-V3-0324
 
 # Model features
 features:

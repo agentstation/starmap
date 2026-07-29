@@ -9,11 +9,9 @@ description: Nemotron 3.5 ASR Streaming Multilingual is an open 0.6B-parameter p
 # Model metadata
 metadata:
   release_date: null
-  open_weights: false
+  open_weights: true
   tags:
   - stt
-lineage:
-  root: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
 
 # Model features
 features:

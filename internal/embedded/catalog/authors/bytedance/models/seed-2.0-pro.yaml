@@ -16,8 +16,6 @@ metadata:
   - vision
   - prompt_cache
   - reasoning
-lineage:
-  root: ByteDance/Seed-2.0-pro
 
 # Model features
 features:

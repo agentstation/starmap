@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - image-gen
-lineage:
-  root: black-forest-labs/FLUX-1-schnell
 
 # Model features
 features:

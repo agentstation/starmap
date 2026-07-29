@@ -75,7 +75,6 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 		return strings.Compare(string(left.ID), string(right.ID))
 	})
 	for _, provider := range providers {
-		endpoint := deriveProviderOfferingEndpoint(provider)
 		modelIDs := make([]string, 0, len(provider.Models))
 		for modelID := range provider.Models {
 			modelIDs = append(modelIDs, modelID)
@@ -101,29 +100,33 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
 				)
 			}
+			if err := validateModelGeneration(model.Generation); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
 			candidate := providerModelCandidate{
 				providerID:   provider.ID,
 				definitionID: model.ModelRef,
-				endpoint:     endpoint,
+				endpoint:     deriveProviderOfferingEndpoint(provider, *model),
 				model:        DeepCopyModel(*model),
 			}
 			if candidate.definitionID == "" {
-				// Construction records without the new explicit link remain
-				// usable for custom/test builders. Persisted Starmap records are
-				// separately required to carry model: author/slug.
-				candidate.definitionID = ModelDefinitionID(model.ID)
-			}
-			if model.ModelRef != "" {
-				if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
-					return nil, errors.WrapResource(
-						"validate", "provider model reference", string(model.ModelRef), err,
-					)
+				return nil, &errors.ValidationError{
+					Field:   "provider_model.model",
+					Value:   string(provider.ID) + "/" + model.ID,
+					Message: "explicit canonical author/model reference is required",
 				}
-				if _, exists := authoredDefinitions[candidate.definitionID]; !exists {
-					return nil, &errors.NotFoundError{
-						Resource: "authored model",
-						ID:       string(candidate.definitionID),
-					}
+			}
+			if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider model reference", string(model.ModelRef), err,
+				)
+			}
+			if _, exists := authoredDefinitions[candidate.definitionID]; !exists {
+				return nil, &errors.NotFoundError{
+					Resource: "authored model",
+					ID:       string(candidate.definitionID),
 				}
 			}
 			if _, authored := authoredDefinitions[candidate.definitionID]; !authored {
@@ -202,10 +205,17 @@ func normalizeDefinitionLineage(
 			}
 		}
 		if canonical == definition.ID {
-			// A source sometimes repeats the model's own provider ID as its
-			// lineage root. It is resolvable but carries no parent relation.
-			*reference = nil
-			return nil
+			if field == "root" {
+				// A source sometimes repeats the model's own provider ID as its
+				// lineage root. It is resolvable but carries no parent relation.
+				*reference = nil
+				return nil
+			}
+			return &errors.ValidationError{
+				Field:   "model.lineage." + field,
+				Value:   raw,
+				Message: "must not refer to the model itself",
+			}
 		}
 		*reference = &canonical
 		return nil

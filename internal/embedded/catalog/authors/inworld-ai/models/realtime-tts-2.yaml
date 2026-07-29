@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: inworld-ai/realtime-tts-2
 
 # Model features
 features:

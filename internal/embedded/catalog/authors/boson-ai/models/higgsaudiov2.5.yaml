@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: bosonai/HiggsAudioV2.5
 
 # Model features
 features:

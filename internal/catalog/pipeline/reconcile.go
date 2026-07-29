@@ -104,7 +104,7 @@ func filterCatalogToBaselineProviders(sourceCatalog, baseline *catalogs.Catalog)
 	if err != nil {
 		return nil, err
 	}
-	return filtered.Build()
+	return catalogs.NewObservationCatalog(filtered)
 }
 
 func filterCatalogToBaselineProvidersInto(filtered *catalogs.Builder, sourceCatalog, baseline catalogs.Reader) (*catalogs.Builder, error) {

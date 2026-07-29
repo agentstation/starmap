@@ -31,9 +31,38 @@ func addModelsToProvider(cat *catalogs.Builder, providerID string, models []*cat
 		provider.Models = make(map[string]*catalogs.Model)
 	}
 	for _, model := range models {
+		model.ModelRef = testDefinitionID(model.ID)
 		provider.Models[model.ID] = model
 	}
 	return cat.SetProvider(provider)
+}
+
+func testDefinitionID(modelID string) catalogs.ModelDefinitionID {
+	return catalogs.AuthoredModelID("test-author", strings.ReplaceAll(modelID, "/", "--"))
+}
+
+func testDefinitionBaseline(t testing.TB, modelIDs ...string) *catalogs.Catalog {
+	t.Helper()
+	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, modelID := range modelIDs {
+		slug := strings.ReplaceAll(modelID, "/", "--")
+		if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+			ID:      slug,
+			Name:    modelID,
+			Authors: []catalogs.Author{author},
+		}); err != nil {
+			t.Fatalf("SetAuthorModel(%q): %v", modelID, err)
+		}
+	}
+	baseline, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build definition baseline: %v", err)
+	}
+	return baseline
 }
 
 // TestIntegrationFullReconciliationFlow tests the complete reconciliation workflow.
@@ -329,6 +358,7 @@ func TestPricingAuthorityProviderOfferingSelection(t *testing.T) {
 			reconcile, err := reconciler.New(
 				reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
 				reconciler.WithProvenance(true),
+				reconciler.WithBaseline(testDefinitionBaseline(t, "model-1")),
 			)
 			if err != nil {
 				t.Fatalf("new reconciler: %v", err)
@@ -382,13 +412,13 @@ func TestFieldEvidencePricingFallbackQueryable(t *testing.T) {
 	}}); err != nil {
 		t.Fatalf("add fallback model: %v", err)
 	}
-	providerSnapshot, err := providerCatalog.Build()
+	providerSnapshot, err := catalogs.NewObservationCatalog(providerCatalog)
 	if err != nil {
-		t.Fatalf("build provider catalog: %v", err)
+		t.Fatalf("build provider observation: %v", err)
 	}
-	fallbackSnapshot, err := fallbackCatalog.Build()
+	fallbackSnapshot, err := catalogs.NewObservationCatalog(fallbackCatalog)
 	if err != nil {
-		t.Fatalf("build fallback catalog: %v", err)
+		t.Fatalf("build fallback observation: %v", err)
 	}
 	providerObservedAt := time.Date(2026, time.July, 10, 10, 0, 0, 0, time.UTC)
 	fallbackObservedAt := providerObservedAt.Add(time.Minute)
@@ -414,6 +444,7 @@ func TestFieldEvidencePricingFallbackQueryable(t *testing.T) {
 	reconcile, err := reconciler.New(
 		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
 		reconciler.WithProvenance(true),
+		reconciler.WithBaseline(testDefinitionBaseline(t, "model-1")),
 	)
 	if err != nil {
 		t.Fatalf("new reconciler: %v", err)
@@ -460,18 +491,19 @@ func TestFieldEvidenceAllPricingRejectionsSurviveCatalogPayload(t *testing.T) {
 	}}); err != nil {
 		t.Fatalf("add fallback model: %v", err)
 	}
-	providerSnapshot, err := providerCatalog.Build()
+	providerSnapshot, err := catalogs.NewObservationCatalog(providerCatalog)
 	if err != nil {
-		t.Fatalf("build provider catalog: %v", err)
+		t.Fatalf("build provider observation: %v", err)
 	}
-	fallbackSnapshot, err := fallbackCatalog.Build()
+	fallbackSnapshot, err := catalogs.NewObservationCatalog(fallbackCatalog)
 	if err != nil {
-		t.Fatalf("build fallback catalog: %v", err)
+		t.Fatalf("build fallback observation: %v", err)
 	}
 
 	reconcile, err := reconciler.New(
 		reconciler.WithStrategy(reconciler.NewAuthorityStrategy(authority.New())),
 		reconciler.WithProvenance(true),
+		reconciler.WithBaseline(testDefinitionBaseline(t, "model-1")),
 	)
 	if err != nil {
 		t.Fatalf("new reconciler: %v", err)

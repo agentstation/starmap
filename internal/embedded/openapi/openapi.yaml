@@ -35,7 +35,6 @@ components:
       - AuthorIDMistralAI
       - AuthorIDCohere
       - AuthorIDGroq
-      - AuthorIDAlibabaQwen
       - AuthorIDQwen
       - AuthorIDXAI
       - AuthorIDStanford
@@ -127,7 +126,6 @@ components:
             - AuthorIDMistralAI
             - AuthorIDCohere
             - AuthorIDGroq
-            - AuthorIDAlibabaQwen
             - AuthorIDQwen
             - AuthorIDXAI
             - AuthorIDStanford
@@ -915,7 +913,6 @@ components:
             - AuthorIDMistralAI
             - AuthorIDCohere
             - AuthorIDGroq
-            - AuthorIDAlibabaQwen
             - AuthorIDQwen
             - AuthorIDXAI
             - AuthorIDStanford

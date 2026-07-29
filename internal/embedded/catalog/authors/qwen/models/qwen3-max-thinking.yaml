@@ -14,8 +14,6 @@ metadata:
   - chat
   - prompt_cache
   - reasoning_effort
-lineage:
-  root: Qwen/Qwen3-Max-Thinking
 
 # Model features
 features:

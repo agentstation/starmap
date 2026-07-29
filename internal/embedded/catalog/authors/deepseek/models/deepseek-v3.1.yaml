@@ -15,8 +15,6 @@ metadata:
   - prompt_cache
   - reasoning_effort
   - reasoning
-lineage:
-  root: deepseek-ai/DeepSeek-V3.1
 
 # Model features
 features:

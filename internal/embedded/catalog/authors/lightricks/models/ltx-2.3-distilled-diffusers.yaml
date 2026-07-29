@@ -1,11 +1,11 @@
-# ltx-2.3-distilled-diffusers - A fast, step-distilled build of Lightricks' LTX-2.3 diffusio...
+# ltx-2.3-distilled-diffusers - LTX 2.3 Distilled Diffusers
 id: ltx-2.3-distilled-diffusers
-name: FastVideo/LTX-2.3-Distilled-Diffusers
+name: LTX 2.3 Distilled Diffusers
 authors:
-- id: fastvideo
-  name: FastVideo
 - id: lightricks
   name: Lightricks
+- id: fastvideo
+  name: FastVideo
 description: A fast, step-distilled build of Lightricks' LTX-2.3 diffusion-transformer video model (distilled by FastVideo). Generates high-fidelity text-to-video and image-to-video in just a few denoising steps.
 
 # Model metadata
@@ -14,9 +14,6 @@ metadata:
   open_weights: false
   tags:
   - video-gen
-lineage:
-  root: FastVideo/LTX-2.3-Distilled-Diffusers
-
 # Model features
 features:
   modalities:

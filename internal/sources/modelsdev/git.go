@@ -129,7 +129,7 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 		return sources.Observation{}, err
 	}
 
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("publish", "models.dev Git observation", "", err)
 	}

@@ -14,8 +14,6 @@ metadata:
   - chat
   - vlm
   - vision
-lineage:
-  root: mistralai/Mistral-Small-3.2-24B-Instruct-2506
 
 # Model features
 features:

@@ -5,6 +5,7 @@ import (
 	stderrors "errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -251,6 +252,17 @@ func TestProjectSeparatesCatalogAndGeneratedEndpointDigests(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
+	model.ModelRef = "test-author/org--model"
+	if err := builder.SetProviderModel("test-provider", *model); err != nil {
+		t.Fatalf("SetProviderModel: %v", err)
+	}
+	if err := builder.SetAuthorModel("test-author", catalogs.Model{
+		ID:      "org--model",
+		Name:    model.Name,
+		Authors: []catalogs.Author{{ID: "test-author", Name: "Test Author"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -292,7 +304,7 @@ func TestProjectSeparatesCatalogAndGeneratedEndpointDigests(t *testing.T) {
 	if err != nil {
 		t.Fatalf("AuthorModels: %v", err)
 	}
-	if len(authorModels) != 1 || authorModels[0].ID != catalogs.ModelDefinitionID(model.ID) {
+	if len(authorModels) != 1 || authorModels[0].ID != "test-author/org--model" {
 		t.Fatalf("derived author models = %#v, want %q", authorModels, model.ID)
 	}
 }
@@ -413,6 +425,7 @@ func testCatalog(t *testing.T, modelID, modelName string) (*catalogs.Catalog, Id
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
+	completeWorkspaceTestCatalog(t, builder)
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -429,11 +442,43 @@ func testCatalog(t *testing.T, modelID, modelName string) (*catalogs.Catalog, Id
 
 func mustCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catalog {
 	t.Helper()
+	completeWorkspaceTestCatalog(t, builder)
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
 	return catalog
+}
+
+func completeWorkspaceTestCatalog(t testing.TB, builder *catalogs.Builder) {
+	t.Helper()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	authorSet := false
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			if !authorSet {
+				if err := builder.SetAuthor(author); err != nil {
+					t.Fatalf("SetAuthor: %v", err)
+				}
+				authorSet = true
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(author.ID, slug)
+			if err := builder.SetProviderModel(provider.ID, *model); err != nil {
+				t.Fatalf("SetProviderModel(%s/%s): %v", provider.ID, modelID, err)
+			}
+			if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
+	}
 }
 
 func editWorkspaceModel(t *testing.T, path, modelID, modelName string) {
@@ -443,7 +488,12 @@ func editWorkspaceModel(t *testing.T, path, modelID, modelName string) {
 	if err != nil {
 		t.Fatalf("Load workspace for edit: %v", err)
 	}
-	if err := builder.SetProviderModel("test-provider", catalogs.Model{ID: modelID, Name: modelName}); err != nil {
+	model, err := builder.ProviderModel("test-provider", modelID)
+	if err != nil {
+		t.Fatalf("ProviderModel: %v", err)
+	}
+	model.Name = modelName
+	if err := builder.SetProviderModel("test-provider", model); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
 	if err := builder.Save(save.WithPath(path)); err != nil {

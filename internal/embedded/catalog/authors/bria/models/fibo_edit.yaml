@@ -1,10 +1,10 @@
-# fibo_edit - 🥳 For a limited time, Fibo Edit is free on DeepInfra 🥳...
+# fibo_edit - FIBO Edit
 id: fibo_edit
 name: Bria/fibo_edit
 authors:
 - id: bria
   name: Bria
-description: 🥳 For a limited time, Fibo Edit is free on DeepInfra 🥳 YOUR AI, YOUR RULES. Visual Generation for Production-Grade. FIBO Edit. An open-source image editing model with native masking and a lightweight 8B architecture.
+description: FIBO Edit is an open-source image editing model with native masking and a lightweight 8B architecture for production visual-generation workflows.
 
 # Model metadata
 metadata:
@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - image-gen
-lineage:
-  root: Bria/fibo_edit
 
 # Model features
 features:

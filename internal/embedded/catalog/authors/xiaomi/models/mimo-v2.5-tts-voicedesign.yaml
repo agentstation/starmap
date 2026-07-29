@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
 
 # Model features
 features:

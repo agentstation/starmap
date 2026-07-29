@@ -2,6 +2,7 @@ package starmap
 
 import (
 	"errors"
+	"strings"
 	"sync"
 	"testing"
 
@@ -56,11 +57,44 @@ func TestConsumerFindModelReturnsCanonicalDefinition(t *testing.T) {
 
 func mustTestCatalog(t testing.TB, reader catalogs.Reader) *catalogs.Catalog {
 	t.Helper()
-	catalog, err := catalogs.NewCatalog(reader)
+	builder, err := catalogs.NewBuilderFrom(reader)
 	if err != nil {
-		t.Fatalf("NewCatalog: %v", err)
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	seedTestModelDefinitions(t, builder)
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
 	}
 	return catalog
+}
+
+func seedTestModelDefinitions(t testing.TB, builder *catalogs.Builder) {
+	t.Helper()
+	const authorID catalogs.AuthorID = "test-author"
+	author := catalogs.Author{ID: authorID, Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(authorID, slug)
+			if err := builder.SetProviderModel(provider.ID, *model); err != nil {
+				t.Fatalf("SetProviderModel(%s/%s): %v", provider.ID, modelID, err)
+			}
+			if err := builder.SetAuthorModel(authorID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
+	}
 }
 
 func TestPublishedCatalogIsolatedFromReturnedBuilder(t *testing.T) {

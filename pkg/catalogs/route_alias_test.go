@@ -7,6 +7,7 @@ import (
 
 func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Shared Model")
 	providers := []Provider{
 		{ID: "available", Name: "Available", Models: map[string]*Model{"shared": testReadViewModel("shared", 1, "standard")}},
 		{ID: "unavailable", Name: "Unavailable", Models: map[string]*Model{"shared": testReadViewModel("shared", 2, "standard")}},
@@ -25,11 +26,11 @@ func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
 	// Eligibility is evaluated from the current offering facts. The test seam
 	// replaces only the immutable derived values, not ingestion configuration.
 	catalog.offerings[OfferingKey{ProviderID: "unavailable", ProviderModelID: "shared"}] = ProviderOffering{
-		ProviderID: "unavailable", ProviderModelID: "shared", DefinitionID: "shared",
+		ProviderID: "unavailable", ProviderModelID: "shared", DefinitionID: "author/shared",
 		Availability: OfferingAvailabilityUnavailable, Lifecycle: OfferingLifecycleActive,
 	}
 	catalog.offerings[OfferingKey{ProviderID: "retired", ProviderModelID: "shared"}] = ProviderOffering{
-		ProviderID: "retired", ProviderModelID: "shared", DefinitionID: "shared",
+		ProviderID: "retired", ProviderModelID: "shared", DefinitionID: "author/shared",
 		Availability: OfferingAvailabilityAvailable, Lifecycle: OfferingLifecycleRetired,
 	}
 

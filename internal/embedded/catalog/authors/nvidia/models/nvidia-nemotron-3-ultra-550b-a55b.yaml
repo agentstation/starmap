@@ -16,8 +16,6 @@ metadata:
   - vision
   - prompt_cache
   - reasoning
-lineage:
-  root: nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
 
 # Model features
 features:

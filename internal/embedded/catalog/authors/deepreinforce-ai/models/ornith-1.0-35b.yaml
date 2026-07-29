@@ -15,8 +15,6 @@ metadata:
   - chat
   - prompt_cache
   - reasoning
-lineage:
-  root: deepreinforce-ai/Ornith-1.0-35B
 
 # Model features
 features:

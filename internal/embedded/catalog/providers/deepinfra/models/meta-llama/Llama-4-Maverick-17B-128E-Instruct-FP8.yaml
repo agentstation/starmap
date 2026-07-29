@@ -1,6 +1,6 @@
 # meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 - Open multimodal Llama model for strong reasoning and fast re...
 id: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
-model: meta/llama-4-maverick-17b-128e-instruct-fp8
+model: meta/llama-4-maverick-17b-128e-instruct
 name: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
 authors:
 - id: meta

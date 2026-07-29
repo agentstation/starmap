@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: sesame/csm-1b
 
 # Model features
 features:

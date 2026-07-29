@@ -9,11 +9,9 @@ description: Kokoro is an open-weight TTS model with 82 million parameters. Desp
 # Model metadata
 metadata:
   release_date: null
-  open_weights: false
+  open_weights: true
   tags:
   - tts
-lineage:
-  root: hexgrad/Kokoro-82M
 
 # Model features
 features:

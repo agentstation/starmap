@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - embed
-lineage:
-  root: nvidia/llama-nemotron-embed-vl-1b-v2
 
 # Model features
 features:

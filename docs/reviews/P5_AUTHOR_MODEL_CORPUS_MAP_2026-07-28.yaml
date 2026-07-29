@@ -432,10 +432,10 @@ records:
   - path: authors/google/models/embeddinggemma.yaml
     author: google
     slug: embeddinggemma
-    canonical_model: google/embeddinggemma
-    disposition: keep
+    canonical_model: google/embeddinggemma-300m
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: Vertex deployment alias merges into the canonical EmbeddingGemma 300M identity
   - path: authors/google/models/embeddinggemma@embeddinggemma-300m.yaml
     author: google
     slug: embeddinggemma@embeddinggemma-300m
@@ -1034,10 +1034,10 @@ records:
   - path: authors/meta/models/llama-3-1-405b-instruct.yaml
     author: meta
     slug: llama-3-1-405b-instruct
-    canonical_model: meta/llama-3-1-405b-instruct
-    disposition: keep
+    canonical_model: meta/llama-3.1-405b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
+    evidence: dashed Vertex spelling merges into the canonical dotted Meta Llama identity
   - path: authors/meta/models/llama-3-1-70b-instruct.yaml
     author: meta
     slug: llama-3-1-70b-instruct
@@ -1048,10 +1048,10 @@ records:
   - path: authors/meta/models/llama-3-2-90b-vision-instruct.yaml
     author: meta
     slug: llama-3-2-90b-vision-instruct
-    canonical_model: meta/llama-3-2-90b-vision-instruct
-    disposition: keep
+    canonical_model: meta/llama-3.2-90b-vision-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
+    evidence: dashed Vertex spelling merges into the canonical dotted Meta Llama identity
   - path: authors/meta/models/llama-3.1-405b-instruct-maas@001.yaml
     author: meta
     slug: llama-3.1-405b-instruct-maas@001
@@ -1062,10 +1062,10 @@ records:
   - path: authors/meta/models/llama-3.1-8b-instant.yaml
     author: meta
     slug: llama-3.1-8b-instant
-    canonical_model: meta/llama-3.1-8b-instant
-    disposition: keep
+    canonical_model: meta/llama-3.1-8b-instruct
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: Groq instant is a serving label for canonical Meta Llama 3.1 8B Instruct
   - path: authors/meta/models/llama-3.2-90b-vision-instruct-maas@001.yaml
     author: meta
     slug: llama-3.2-90b-vision-instruct-maas@001
@@ -1083,10 +1083,10 @@ records:
   - path: authors/meta/models/llama-3.3-70b-versatile.yaml
     author: meta
     slug: llama-3.3-70b-versatile
-    canonical_model: meta/llama-3.3-70b-versatile
-    disposition: keep
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: Groq versatile is a serving label for canonical Meta Llama 3.3 70B Instruct
   - path: authors/meta/models/llama-3.3-70b.yaml
     author: meta
     slug: llama-3.3-70b
@@ -1181,7 +1181,7 @@ records:
   - path: authors/mistral/models/codestral-2501-self-deploy@001.yaml
     author: mistral
     slug: codestral-2501-self-deploy@001
-    canonical_model: mistral/codestral-2501-self-deploy
+    canonical_model: mistral/codestral-2501
     disposition: merge
     provider_id_match_count: 0
     evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
@@ -1258,10 +1258,10 @@ records:
   - path: authors/moonshot-ai/models/kimi-k2.7-code-highspeed.yaml
     author: moonshot-ai
     slug: kimi-k2.7-code-highspeed
-    canonical_model: moonshot-ai/kimi-k2.7-code-highspeed
-    disposition: keep
+    canonical_model: moonshot-ai/kimi-k2.7-code
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: highspeed is a serving tier and merges into the canonical Kimi K2.7 Code identity
   - path: authors/moonshot-ai/models/kimi-k2.7-code.yaml
     author: moonshot-ai
     slug: kimi-k2.7-code

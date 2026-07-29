@@ -1,6 +1,6 @@
 # llama-3.3-70b-versatile - Open Llama instruction model for multilingual chat, reasonin...
 id: llama-3.3-70b-versatile
-model: meta/llama-3.3-70b-versatile
+model: meta/llama-3.3-70b-instruct
 name: Llama 3.3 70B
 authors:
 - id: meta

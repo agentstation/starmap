@@ -14,10 +14,21 @@ func TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits(t
 
 	manualModel := Model{
 		ID:          "operator-model",
+		ModelRef:    "operator/operator-model",
 		Name:        "Operator Model",
 		Description: "hand-authored fallback metadata",
 	}
 	source := NewEmpty()
+	if err := source.SetAuthor(Author{ID: "operator", Name: "Operator"}); err != nil {
+		t.Fatalf("SetAuthor source: %v", err)
+	}
+	if err := source.SetAuthorModel("operator", Model{
+		ID: "operator-model", Name: "Operator Model",
+		Description: "hand-authored fallback metadata",
+		Authors:     []Author{{ID: "operator", Name: "Operator"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel source: %v", err)
+	}
 	if err := source.SetProvider(Provider{
 		ID:   "manual",
 		Name: "Manual",

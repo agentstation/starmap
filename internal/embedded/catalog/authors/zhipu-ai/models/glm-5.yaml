@@ -17,7 +17,6 @@ metadata:
   - reasoning
 lineage:
   family: glm
-  root: zai-org/GLM-5
 
 # Model features
 features:

@@ -4,6 +4,8 @@ name: mistralai/Mistral-Nemo-Instruct-2407
 authors:
 - id: mistral
   name: Mistral AI
+- id: nvidia
+  name: NVIDIA
 description: 12B model trained jointly by Mistral AI and NVIDIA, it significantly outperforms existing models smaller or similar in size.
 
 # Model metadata
@@ -12,8 +14,6 @@ metadata:
   open_weights: false
   tags:
   - chat
-lineage:
-  root: mistralai/Mistral-Nemo-Instruct-2407
 
 # Model features
 features:

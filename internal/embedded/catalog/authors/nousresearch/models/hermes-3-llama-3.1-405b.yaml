@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - chat
-lineage:
-  root: NousResearch/Hermes-3-Llama-3.1-405B
 
 # Model features
 features:

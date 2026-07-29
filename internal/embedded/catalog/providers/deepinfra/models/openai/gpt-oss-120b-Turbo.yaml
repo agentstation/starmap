@@ -1,6 +1,6 @@
 # openai/gpt-oss-120b-Turbo - AI model
 id: openai/gpt-oss-120b-Turbo
-model: openai/gpt-oss-120b-turbo
+model: openai/gpt-oss-120b
 name: openai/gpt-oss-120b-Turbo
 authors:
 - id: openai

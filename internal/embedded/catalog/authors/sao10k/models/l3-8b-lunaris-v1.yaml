@@ -1,26 +1,21 @@
-# kimi-k2.7-code-highspeed - Coding-focused Kimi model, stronger on long-horizon repo wor...
-id: kimi-k2.7-code-highspeed
-name: kimi-k2.7-code-highspeed
+# l3-8b-lunaris-v1 - L3 8B Lunaris v1
+id: l3-8b-lunaris-v1
+name: L3 8B Lunaris v1
 authors:
-- id: moonshot-ai
-  name: Moonshot AI
-description: Coding-focused Kimi model, stronger on long-horizon repo work with less overthinking
+- id: sao10k
+  name: Sao10K
 
 # Model metadata
 metadata:
-  release_date: 2026-06-12
-  open_weights: true
-  knowledge_cutoff: 2025-01-01
-lineage:
-  family: kimi-k2
-
+  release_date: null
+  open_weights: false
+  tags:
+  - chat
 # Model features
 features:
   modalities:
     input:
     - text
-    - image
-    - video
     output:
     - text
 
@@ -32,7 +27,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -76,13 +71,7 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
-extensions:
-  models.dev:
-    fields:
-      interleaved:
-        enabled: true
-        field: reasoning_content
 
 # Timestamps
-created_at: 2026-07-09T10:33:28Z
-updated_at: 2026-06-12T00:00:00Z
+created_at: 2026-07-11T20:15:13.088278Z
+updated_at: 2026-07-11T20:15:13.088278Z

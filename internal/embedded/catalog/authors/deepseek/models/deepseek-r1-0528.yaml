@@ -15,8 +15,6 @@ metadata:
   - chat
   - prompt_cache
   - reasoning
-lineage:
-  root: deepseek-ai/DeepSeek-R1-0528
 
 # Model features
 features:

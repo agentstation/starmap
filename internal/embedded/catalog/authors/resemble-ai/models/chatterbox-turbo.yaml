@@ -12,8 +12,6 @@ metadata:
   open_weights: false
   tags:
   - tts
-lineage:
-  root: ResembleAI/chatterbox-turbo
 
 # Model features
 features:

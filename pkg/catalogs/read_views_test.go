@@ -6,27 +6,29 @@ import (
 	"reflect"
 	"slices"
 	"testing"
-	"time"
 
-	"github.com/agentstation/utc"
-
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/provenance"
 )
 
 func testReadViewModel(id string, price float64, tier string) *Model {
 	return &Model{
-		ID:      id,
-		Name:    "Shared Model",
-		Authors: []Author{{ID: "author", Name: "Author"}},
+		ID:       id,
+		ModelRef: ModelDefinitionID("author/" + id),
+		Name:     "Shared Model",
+		Authors:  []Author{{ID: "author", Name: "Author"}},
 		Metadata: &ModelMetadata{
 			OpenWeights:  true,
 			Architecture: &ModelArchitecture{Type: ArchitectureTypeTransformer},
 		},
-		Features: &ModelFeatures{ToolCalls: true},
-		Pricing:  testOfferingPricing(price),
-		Limits:   &ModelLimits{ContextWindow: 1000},
+		Features: &ModelFeatures{
+			Modalities: ModelModalities{
+				Input:  []ModelModality{ModelModalityText},
+				Output: []ModelModality{ModelModalityText},
+			},
+			ToolCalls: true,
+		},
+		Pricing: testOfferingPricing(price),
+		Limits:  &ModelLimits{ContextWindow: 1000},
 		Modes: map[string]ModelMode{
 			"fast": {
 				Provider: &ModelProviderMode{Body: map[string]any{"service_tier": tier}},
@@ -35,8 +37,22 @@ func testReadViewModel(id string, price float64, tier string) *Model {
 	}
 }
 
+func setTestReadViewDefinition(t *testing.T, builder *Builder, id, name string) {
+	t.Helper()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor(author): %v", err)
+	}
+	if err := builder.SetAuthorModel("author", Model{
+		ID: id, Name: name,
+		Authors: []Author{{ID: "author", Name: "Author"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel(author/%s): %v", id, err)
+	}
+}
+
 func TestReadViewsRejectInvalidModelLifecycle(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "model", "Shared Model")
 	model := testReadViewModel("model", 1, "standard")
 	model.Status = "surprise"
 	if err := builder.SetProvider(Provider{
@@ -53,10 +69,11 @@ func TestReadViewsRejectInvalidModelLifecycle(t *testing.T) {
 
 func TestReadViewsPreserveUnknownProviderFacts(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "model", "Model")
 	if err := builder.SetProvider(Provider{
 		ID: "provider", Name: "Provider",
 		Models: map[string]*Model{
-			"model": {ID: "model", Name: "Model"},
+			"model": {ID: "model", ModelRef: "author/model", Name: "Model"},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
@@ -74,7 +91,7 @@ func TestReadViewsPreserveUnknownProviderFacts(t *testing.T) {
 		t.Fatalf("lifecycle = %q, want unknown", offering.Lifecycle)
 	}
 
-	definition, err := catalog.Definition("model")
+	definition, err := catalog.Definition("author/model")
 	if err != nil {
 		t.Fatalf("Definition: %v", err)
 	}
@@ -249,6 +266,90 @@ func TestReadViewsDiscardResolvableSelfLineage(t *testing.T) {
 	}
 }
 
+func TestReadViewsRejectResolvableSelfParent(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	parent := "provider-model"
+	if err := builder.SetAuthorModel("author", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Lineage: &ModelLineage{Parent: &parent},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		Models: map[string]*Model{
+			"provider-model": {
+				ID: "provider-model", ModelRef: "author/model", Name: "Model",
+			},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	_, err := builder.Build()
+	var validationErr *errors.ValidationError
+	if !stderrors.As(err, &validationErr) {
+		t.Fatalf("Build error = %T %v, want ValidationError", err, err)
+	}
+}
+
+func TestReadViewsRequireExplicitCanonicalModelReference(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		Models: map[string]*Model{"model": {ID: "model", Name: "Model"}},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	_, err := builder.Build()
+	var validationErr *errors.ValidationError
+	if !stderrors.As(err, &validationErr) {
+		t.Fatalf("Build error = %T %v, want ValidationError", err, err)
+	}
+	if validationErr.Field != "provider_model.model" {
+		t.Fatalf("validation field = %q, want provider_model.model", validationErr.Field)
+	}
+}
+
+func TestObservationCatalogPreservesUnresolvedRecordsWithoutPublishingReadViews(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		Models: map[string]*Model{"model": {ID: "model", Name: "Model"}},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	observation, err := NewObservationCatalog(builder)
+	if err != nil {
+		t.Fatalf("NewObservationCatalog: %v", err)
+	}
+	provider, err := observation.Provider("provider")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	if provider.Models["model"] == nil {
+		t.Fatal("unresolved provider record was not preserved")
+	}
+	if definitions := observation.Definitions(); len(definitions) != 0 {
+		t.Fatalf("observation definitions = %#v, want no consumer read views", definitions)
+	}
+	if _, err := observation.Offering("provider", "model"); err == nil {
+		t.Fatal("unresolved observation exposed a provider offering")
+	}
+}
+
 func TestBuildRejectsAmbiguousAliases(t *testing.T) {
 	tests := []struct {
 		name  string
@@ -321,6 +422,7 @@ func TestBuildRejectsAmbiguousAliases(t *testing.T) {
 
 func TestProviderOfferingsPreserveProviderSpecificFacts(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Shared Model")
 	url := "https://api.provider-a.example/v1/chat/completions"
 	first := testReadViewModel("shared", 1, "priority")
 	first.Status = ModelStatusPreview
@@ -387,138 +489,120 @@ func TestProviderOfferingsPreserveProviderSpecificFacts(t *testing.T) {
 	}
 }
 
-func TestDefinitionConflictsRequireAuthorityEvidenceForSelection(t *testing.T) {
-	newBuilder := func() *Builder {
-		builder := NewEmpty()
-		for _, provider := range []Provider{
-			{
-				ID: "provider-a", Name: "Provider A",
-				Models: map[string]*Model{"shared": {ID: "shared", Name: "Name A"}},
+func TestProviderOfferingOmitsChatURLForOperationPricedModel(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "image-model", "Image Model")
+	url := "https://api.example/v1/chat/completions"
+	perImage := 0.01
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		ChatCompletions: &ProviderChatCompletions{URL: &url},
+		Models: map[string]*Model{
+			"image-model": {
+				ID: "image-model", ModelRef: "author/image-model", Name: "Image Model",
+				Features: &ModelFeatures{Modalities: ModelModalities{
+					Input:  []ModelModality{ModelModalityText},
+					Output: []ModelModality{ModelModalityImage},
+				}},
+				Pricing: &ModelPricing{
+					Currency: ModelPricingCurrencyUSD,
+					Operations: &ModelOperationPricing{
+						ImageGen: &perImage,
+					},
+				},
 			},
-			{
-				ID: "provider-b", Name: "Provider B",
-				Models: map[string]*Model{"shared": {ID: "shared", Name: "Name B"}},
-			},
-		} {
-			if err := builder.SetProvider(provider); err != nil {
-				t.Fatalf("SetProvider(%s): %v", provider.ID, err)
-			}
-		}
-		return builder
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
 	}
 
-	t.Run("indistinguishable values remain unknown", func(t *testing.T) {
-		catalog := mustCatalog(t, newBuilder())
-		definition, err := catalog.Definition("shared")
-		if err != nil {
-			t.Fatalf("Definition: %v", err)
-		}
-		if definition.Name != "shared" {
-			t.Fatalf("definition name = %q, want identity fallback", definition.Name)
-		}
-	})
-
-	t.Run("source authority selects matching scoped evidence", func(t *testing.T) {
-		builder := newBuilder()
-		builder.SetProvenance(provenance.Map{
-			newKey(
-				catalogmeta.ResourceTypeModel,
-				provenance.ModelResourceID("provider-a", "shared"),
-				"Name",
-			): {{
-				Source: catalogmeta.ProvidersID,
-				Field:  "Name",
-				Value:  "Name A",
-			}},
-			newKey(
-				catalogmeta.ResourceTypeModel,
-				provenance.ModelResourceID("provider-b", "shared"),
-				"Name",
-			): {{
-				Source: catalogmeta.ModelsDevHTTPID,
-				Field:  "Name",
-				Value:  "Name B",
-			}},
-		})
-		catalog := mustCatalog(t, builder)
-		definition, err := catalog.Definition("shared")
-		if err != nil {
-			t.Fatalf("Definition: %v", err)
-		}
-		if definition.Name != "Name A" {
-			t.Fatalf("definition name = %q, want provider-authoritative value", definition.Name)
-		}
-	})
-
-	t.Run("stale mismatched evidence is ignored", func(t *testing.T) {
-		builder := newBuilder()
-		builder.SetProvenance(provenance.Map{
-			newKey(
-				catalogmeta.ResourceTypeModel,
-				provenance.ModelResourceID("provider-a", "shared"),
-				"Name",
-			): {{
-				Source: catalogmeta.ProvidersID,
-				Field:  "Name",
-				Value:  "Old Name",
-			}},
-		})
-		definition, err := mustCatalog(t, builder).Definition("shared")
-		if err != nil {
-			t.Fatalf("Definition: %v", err)
-		}
-		if definition.Name != "shared" {
-			t.Fatalf("definition name = %q, want identity fallback after stale evidence is ignored", definition.Name)
-		}
-	})
+	offering, err := mustCatalog(t, builder).Offering("provider", "image-model")
+	if err != nil {
+		t.Fatalf("Offering: %v", err)
+	}
+	if offering.Endpoint != (ProviderOfferingEndpoint{}) {
+		t.Fatalf("image offering endpoint = %#v, want omitted chat route", offering.Endpoint)
+	}
 }
 
-func TestDefinitionsComposeProviderIndependentFacts(t *testing.T) {
+func TestProviderLabelsCannotOverrideAuthoredIdentity(t *testing.T) {
 	builder := NewEmpty()
-	older := utc.New(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
-	newer := utc.New(time.Date(2025, 2, 1, 0, 0, 0, 0, time.UTC))
-	firstFeatures := &ModelFeatures{
-		Modalities: ModelModalities{Input: []ModelModality{ModelModalityText}},
-	}
-	firstFeatures.SetSupport(ModelFeatureToolCalls, false)
-	secondFeatures := &ModelFeatures{
-		Modalities: ModelModalities{
-			Input:  []ModelModality{ModelModalityImage},
-			Output: []ModelModality{ModelModalityText},
-		},
-	}
-	secondFeatures.SetSupport(ModelFeatureToolCalls, true)
-	first := &Model{
-		ID: "shared", Name: "Shared",
-		Metadata: &ModelMetadata{
-			Tags:         []ModelTag{ModelTagCoding},
-			Architecture: &ModelArchitecture{Type: ArchitectureTypeTransformer},
-		},
-		Features:  firstFeatures,
-		CreatedAt: newer,
-		UpdatedAt: older,
-	}
-	second := &Model{
-		ID: "shared", Name: "Shared",
-		Metadata: &ModelMetadata{
-			Tags: []ModelTag{ModelTagMath},
-			Architecture: &ModelArchitecture{
-				ParameterCount: "42",
-			},
-		},
-		Features:  secondFeatures,
-		CreatedAt: older,
-		UpdatedAt: newer,
-	}
+	setTestReadViewDefinition(t, builder, "shared", "Canonical Model")
 	for _, provider := range []Provider{
-		{ID: "provider-a", Name: "Provider A", Models: map[string]*Model{first.ID: first}},
-		{ID: "provider-b", Name: "Provider B", Models: map[string]*Model{second.ID: second}},
+		{
+			ID: "provider-a", Name: "Provider A",
+			Models: map[string]*Model{"deployment-a": {
+				ID: "deployment-a", ModelRef: "author/shared", Name: "Provider Label A",
+			}},
+		},
+		{
+			ID: "provider-b", Name: "Provider B",
+			Models: map[string]*Model{"deployment-b": {
+				ID: "deployment-b", ModelRef: "author/shared", Name: "Provider Label B",
+			}},
+		},
 	} {
 		if err := builder.SetProvider(provider); err != nil {
 			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
 		}
 	}
-	definition, err := mustCatalog(t, builder).Definition("shared")
+
+	definition, err := mustCatalog(t, builder).Definition("author/shared")
+	if err != nil {
+		t.Fatalf("Definition: %v", err)
+	}
+	if definition.Name != "Canonical Model" {
+		t.Fatalf("definition name = %q, want authored identity", definition.Name)
+	}
+}
+
+func TestDefinitionUsesProviderIndependentAuthoredFacts(t *testing.T) {
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	features := &ModelFeatures{
+		Modalities: ModelModalities{
+			Input:  []ModelModality{ModelModalityImage, ModelModalityText},
+			Output: []ModelModality{ModelModalityText},
+		},
+	}
+	features.SetSupport(ModelFeatureToolCalls, true)
+	if err := builder.SetAuthorModel("author", Model{
+		ID: "shared", Name: "Shared",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Metadata: &ModelMetadata{
+			Architecture: &ModelArchitecture{
+				Type:           ArchitectureTypeTransformer,
+				ParameterCount: "42",
+			},
+			Tags: []ModelTag{ModelTagCoding, ModelTagMath},
+		},
+		Features: features,
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+	for _, provider := range []Provider{
+		{
+			ID: "provider-a", Name: "Provider A",
+			Models: map[string]*Model{"deployment-a": {
+				ID: "deployment-a", ModelRef: "author/shared", Name: "Provider A label",
+			}},
+		},
+		{
+			ID: "provider-b", Name: "Provider B",
+			Models: map[string]*Model{"deployment-b": {
+				ID: "deployment-b", ModelRef: "author/shared", Name: "Provider B label",
+			}},
+		},
+	} {
+		if err := builder.SetProvider(provider); err != nil {
+			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
+		}
+	}
+	definition, err := mustCatalog(t, builder).Definition("author/shared")
 	if err != nil {
 		t.Fatalf("Definition: %v", err)
 	}
@@ -543,61 +627,9 @@ func TestDefinitionsComposeProviderIndependentFacts(t *testing.T) {
 	) {
 		t.Fatalf("modalities = %#v, want union", definition.Capabilities.Features.Modalities)
 	}
-	if !definition.CreatedAt.Equal(older) || !definition.UpdatedAt.Equal(newer) {
-		t.Fatalf("timestamps = (%v, %v), want earliest/latest", definition.CreatedAt, definition.UpdatedAt)
-	}
 }
 
-func TestArchitectureEvidenceWithoutArchitectureCannotPanicBuild(t *testing.T) {
-	builder := NewEmpty()
-	model := &Model{
-		ID:   "model",
-		Name: "Model",
-		Metadata: &ModelMetadata{
-			Architecture: &ModelArchitecture{
-				Type: ArchitectureTypeTransformer,
-			},
-		},
-	}
-	if err := builder.SetProvider(Provider{
-		ID:     "provider",
-		Name:   "Provider",
-		Models: map[string]*Model{model.ID: model},
-	}); err != nil {
-		t.Fatalf("SetProvider: %v", err)
-	}
-	builder.SetProvenance(provenance.Map{
-		newKey(
-			catalogmeta.ResourceTypeModel,
-			provenance.ModelResourceID("provider", "model"),
-			"metadata",
-		): {{
-			Source: catalogmeta.ProvidersID,
-			Field:  "metadata",
-			Value: map[string]any{
-				"release_date": "2025-01-01",
-			},
-		}},
-	})
-	if entries := builder.Provenance().FindModelField("provider", "model", "metadata"); len(entries) != 1 {
-		t.Fatalf("metadata evidence entries = %d, want the exact persisted evidence path", len(entries))
-	}
-
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
-	}
-	definition, err := catalog.Definition("model")
-	if err != nil {
-		t.Fatalf("Definition: %v", err)
-	}
-	if definition.Weights.Architecture == nil ||
-		definition.Weights.Architecture.Type != ArchitectureTypeTransformer {
-		t.Fatalf("architecture = %#v, want candidate architecture", definition.Weights.Architecture)
-	}
-}
-
-func TestAuthorMembershipIsDerivedFromProviderRecords(t *testing.T) {
+func TestAuthorMembershipUsesExplicitAuthoredCredits(t *testing.T) {
 	builder := NewEmpty()
 	authors := []Author{
 		{ID: "inline", Aliases: []AuthorID{"inline-alias"}, Name: "Inline"},
@@ -623,8 +655,14 @@ func TestAuthorMembershipIsDerivedFromProviderRecords(t *testing.T) {
 		}
 	}
 	model := &Model{
+		ID: "shared-model", ModelRef: "inline/shared-model", Name: "Shared",
+		Authors: []Author{{ID: "inline-alias", Name: "Inline Alias"}},
+	}
+	if err := builder.SetAuthorModel("inline", Model{
 		ID: "shared-model", Name: "Shared",
 		Authors: []Author{{ID: "inline-alias", Name: "Inline Alias"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
 	}
 	if err := builder.SetProvider(Provider{
 		ID: "provider", Name: "Provider",
@@ -633,11 +671,11 @@ func TestAuthorMembershipIsDerivedFromProviderRecords(t *testing.T) {
 		t.Fatalf("SetProvider: %v", err)
 	}
 	catalog := mustCatalog(t, builder)
-	definition, err := catalog.Definition("shared-model")
+	definition, err := catalog.Definition("inline/shared-model")
 	if err != nil {
 		t.Fatalf("Definition: %v", err)
 	}
-	want := []AuthorID{"global-pattern", "inline", "provider-owner", "provider-pattern"}
+	want := []AuthorID{"inline"}
 	if !slices.Equal(definition.AuthorIDs, want) {
 		t.Fatalf("author IDs = %#v, want %#v", definition.AuthorIDs, want)
 	}
@@ -646,7 +684,7 @@ func TestAuthorMembershipIsDerivedFromProviderRecords(t *testing.T) {
 		if err != nil {
 			t.Fatalf("AuthorModels(%s): %v", authorID, err)
 		}
-		if len(models) != 1 || models[0].ID != "shared-model" {
+		if len(models) != 1 || models[0].ID != "inline/shared-model" {
 			t.Fatalf("AuthorModels(%s) = %#v", authorID, models)
 		}
 	}
@@ -662,24 +700,27 @@ func TestProviderAuthorFetchScopeDoesNotInventAuthorship(t *testing.T) {
 		{"author-a", "author-b"},
 	} {
 		builder := NewEmpty()
+		setTestReadViewDefinition(t, builder, "model", "Model")
 		if err := builder.SetProvider(Provider{
 			ID: "marketplace", Name: "Marketplace",
 			Catalog: &ProviderCatalog{Authors: authors},
-			Models:  map[string]*Model{"model": {ID: "model", Name: "Model"}},
+			Models: map[string]*Model{"model": {
+				ID: "model", ModelRef: "author/model", Name: "Model",
+			}},
 		}); err != nil {
 			t.Fatalf("SetProvider: %v", err)
 		}
-		definition, err := mustCatalog(t, builder).Definition("model")
+		definition, err := mustCatalog(t, builder).Definition("author/model")
 		if err != nil {
 			t.Fatalf("Definition: %v", err)
 		}
-		if len(definition.AuthorIDs) != 0 {
+		if !slices.Equal(definition.AuthorIDs, []AuthorID{"author"}) {
 			t.Fatalf("fetch-scope authors %v produced definition authors %#v", authors, definition.AuthorIDs)
 		}
 	}
 }
 
-func TestMalformedAuthorAttributionGlobFailsBuild(t *testing.T) {
+func TestLegacyAuthorAttributionDoesNotOverrideExplicitAuthorship(t *testing.T) {
 	builder := NewEmpty()
 	if err := builder.SetAuthor(Author{
 		ID: "author", Name: "Author",
@@ -687,16 +728,30 @@ func TestMalformedAuthorAttributionGlobFailsBuild(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
+	if err := builder.SetAuthorModel("author", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	if err := builder.SetProvider(Provider{
 		ID: "provider", Name: "Provider",
-		Models: map[string]*Model{"model": {ID: "model", Name: "Model"}},
+		Models: map[string]*Model{"model": {
+			ID: "model", ModelRef: "author/model", Name: "Model",
+		}},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	_, err := builder.Build()
-	var parseErr *errors.ParseError
-	if !stderrors.As(err, &parseErr) {
-		t.Fatalf("Build error = %T %v, want *errors.ParseError", err, err)
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	definition, err := catalog.Definition("author/model")
+	if err != nil {
+		t.Fatalf("Definition: %v", err)
+	}
+	if !slices.Equal(definition.AuthorIDs, []AuthorID{"author"}) {
+		t.Fatalf("definition authors = %#v, want explicit author only", definition.AuthorIDs)
 	}
 }
 

@@ -16,7 +16,6 @@ metadata:
   - reasoning
 lineage:
   family: gpt-oss
-  root: openai/gpt-oss-20b
 
 # Model features
 features:

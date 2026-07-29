@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"fmt"
+	"math"
 	"slices"
 	"strings"
 	"sync"
@@ -170,7 +171,13 @@ func validateModelGeneration(generation *ModelGeneration) error {
 		if candidate.value == nil {
 			continue
 		}
-		if candidate.value.Min > candidate.value.Max ||
+		if math.IsNaN(candidate.value.Min) ||
+			math.IsNaN(candidate.value.Max) ||
+			math.IsNaN(candidate.value.Default) ||
+			math.IsInf(candidate.value.Min, 0) ||
+			math.IsInf(candidate.value.Max, 0) ||
+			math.IsInf(candidate.value.Default, 0) ||
+			candidate.value.Min > candidate.value.Max ||
 			candidate.value.Default < candidate.value.Min ||
 			candidate.value.Default > candidate.value.Max {
 			return &errors.ValidationError{

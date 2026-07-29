@@ -12,7 +12,7 @@ metadata:
   open_weights: false
   knowledge_cutoff: 2025-08-31
 lineage:
-  family: gpt-codex
+  family: gpt
 
 # Model features
 features:
