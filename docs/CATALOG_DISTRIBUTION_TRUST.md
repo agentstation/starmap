@@ -16,6 +16,12 @@ before atomic activation. Failure retains the last-known-good generation.
 
 - Air-gapped deployments pin the embedded or imported OCI/release generation and
   accept explicit freshness responsibility.
+- Portable release import uses `catalogartifact.VerifyRelease` followed by
+  `acquisition.Syncer.ImportRelease`: checksum, detached statement,
+  compatibility, and caller-owned publisher verification all complete before
+  mutation. The verified release is a low-authority observation above the
+  embedded fallback and below human workspace evidence; it is never a
+  wholesale replacement for manual data.
 - Restricted-egress deployments mirror an attested GitHub/OCI digest internally;
   they do not operate a transparent unverified proxy.
 - OCI consumers distinguish the OCI manifest digest from the archive-layer

@@ -584,6 +584,16 @@ directory; exact retries are idempotent and same-generation byte changes are
 typed conflicts. The GitHub tag workflow uploads these assets without an
 overwrite flag.
 
+Portable import is explicit and opt-in. `catalogartifact.VerifyRelease`
+strictly verifies the checksum asset, archive, detached statement, schema
+compatibility, and a caller-owned `PublisherVerifier`; no Starmap constructor
+performs release I/O. `acquisition.Syncer.ImportRelease` then reconciles the
+verified generation as a `release_artifact` observation with the human
+workspace and last-known-good baseline. Release facts rank above the embedded
+fallback and below human evidence. Only the resulting validated candidate
+enters generation-store CAS and atomic publication, so failure retains current
+state and rollback can reactivate the exact prior retained generation.
+
 `pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
 the current strict manifest or a retained generation-addressed manifest, then
 fetches the exact generation-addressed canonical payload. Strict media type,
@@ -1069,6 +1079,9 @@ Observation outcomes use one explicit policy:
   transport; never runs alongside HTTP in one sync
 - **Local Catalog** (`sources.LocalCatalogID`) - Semantic values read from an
   existing human workspace
+- **Release Artifact** (`sources.ReleaseArtifactID`) - Explicitly imported,
+  checksum/statement/compatibility/publisher-verified facts; reconciled above
+  embedded fallback and below semantic human evidence
 - **Embedded** (`sources.EmbeddedCatalogID`) - Verified lowest-authority
   revision shipped with the binary; participates as a separate observation
   without external dependencies, seeds an absent workspace, advances unchanged

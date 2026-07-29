@@ -340,6 +340,7 @@ Starmap provides two composition levels:
 **Use [`acquisition.Syncer`](acquisition/) When:**
 - ✅ Syncing with multiple provider APIs
 - ✅ Integrating models.dev for pricing
+- ✅ Importing a publisher-verified portable catalog release
 - ✅ Different sources own different fields
 - ✅ Need audit trail of data sources
 - ✅ Building production systems
@@ -669,6 +670,33 @@ fmt.Printf("Added: %d models\n", result.Added)
 fmt.Printf("Updated: %d models\n", result.Updated)
 fmt.Printf("Removed: %d models\n", result.Removed)
 ```
+
+#### Importing a Verified Catalog Release
+
+An importer supplies the three immutable release assets and a
+channel-specific `catalogartifact.PublisherVerifier`. For GitHub Releases, that
+verifier should require the exact `agentstation/starmap` repository and catalog
+generation workflow identity. Starmap verifies all trust inputs before
+mutation, reconciles release facts below human workspace evidence, and retains
+the prior generation for rollback:
+
+```go
+result, err := syncer.ImportRelease(ctx, catalogartifact.Release{
+    Archive:     archive,
+    Checksum:    checksum,
+    Attestation: statement,
+}, publisherVerifier)
+if err != nil {
+    return err
+}
+if result.Publication.Published {
+    fmt.Println(result.Publication.GenerationID)
+}
+```
+
+The deterministic detached statement authenticates content structure, not
+publisher identity. Credentials, network clients, and trust policy remain
+caller-owned.
 
 ### Advanced Patterns
 

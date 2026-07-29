@@ -43,6 +43,7 @@ const (
 	ModelsDevGitID    = catalogmeta.ModelsDevGitID
 	ModelsDevHTTPID   = catalogmeta.ModelsDevHTTPID
 	LocalCatalogID    = catalogmeta.LocalCatalogID
+	ReleaseArtifactID = catalogmeta.ReleaseArtifactID
 	EmbeddedCatalogID = catalogmeta.EmbeddedCatalogID
 )
 

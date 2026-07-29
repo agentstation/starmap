@@ -314,11 +314,15 @@ const (
 
     // EmbeddedCatalogID identifies the verified catalog compiled into Starmap.
     EmbeddedCatalogID SourceID = "embedded_catalog"
+
+    // ReleaseArtifactID identifies an explicitly imported and publisher-verified
+    // immutable catalog release.
+    ReleaseArtifactID SourceID = "release_artifact"
 )
 ```
 
 <a name="SourceIDs"></a>
-### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L34>)
+### func [SourceIDs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L38>)
 
 ```go
 func SourceIDs() []SourceID
@@ -327,7 +331,7 @@ func SourceIDs() []SourceID
 SourceIDs returns all available source identifiers. This provides a convenient way to iterate over all defined source IDs.
 
 <a name="SourceID.IsValid"></a>
-### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L46>)
+### func \(SourceID\) [IsValid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L51>)
 
 ```go
 func (id SourceID) IsValid() bool

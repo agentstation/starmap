@@ -208,6 +208,7 @@ func (c *collector) baseCatalog() *catalogs.Catalog {
 // Provider observations never invent authorship.
 func (c *collector) authoredBootstrap() *catalogs.Catalog {
 	preferred := []sources.ID{
+		sources.ReleaseArtifactID,
 		sources.EmbeddedCatalogID,
 		c.primary,
 		sources.ModelsDevHTTPID,
