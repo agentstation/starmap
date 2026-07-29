@@ -576,32 +576,28 @@ func validateProjectionCoverage(source, projected *catalogs.Catalog) error {
 		return projectionCoverageError("authors", len(sourceAuthors), got)
 	}
 	for _, author := range sourceAuthors {
-		projectedAuthor, err := projected.Author(author.ID)
-		if err != nil {
+		if _, err := projected.Author(author.ID); err != nil {
 			return errors.WrapResource("validate", "projected author", string(author.ID), err)
 		}
-		wantModels := 0
-		for modelID := range author.Models {
-			if strings.Contains(modelID, "/") {
-				continue
-			}
-			wantModels++
-			if _, exists := projectedAuthor.Models[modelID]; !exists {
+		sourceModels, err := source.AuthorModels(author.ID)
+		if err != nil {
+			return errors.WrapResource("validate", "source author models", string(author.ID), err)
+		}
+		projectedModels, err := projected.AuthorModels(author.ID)
+		if err != nil {
+			return errors.WrapResource("validate", "projected author models", string(author.ID), err)
+		}
+		if len(projectedModels) != len(sourceModels) {
+			return projectionCoverageError("author."+string(author.ID)+".models", len(sourceModels), len(projectedModels))
+		}
+		for index := range sourceModels {
+			if sourceModels[index].ID != projectedModels[index].ID {
 				return &errors.ValidationError{
 					Field:   "workspace_projection.coverage",
-					Value:   "author." + string(author.ID) + ".models." + modelID,
-					Message: "projected workspace omitted a persisted author model",
+					Value:   "author." + string(author.ID) + ".models",
+					Message: "projected workspace changed derived author membership",
 				}
 			}
-		}
-		gotModels := 0
-		for modelID := range projectedAuthor.Models {
-			if !strings.Contains(modelID, "/") {
-				gotModels++
-			}
-		}
-		if gotModels != wantModels {
-			return projectionCoverageError("author."+string(author.ID)+".models", wantModels, gotModels)
 		}
 	}
 

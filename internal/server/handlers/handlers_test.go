@@ -138,8 +138,55 @@ func TestHandleListModelsFiltersByProvider(t *testing.T) {
 		t.Fatalf("Expected one OpenAI model, got %d", len(models))
 	}
 	first := models[0].(map[string]any)
-	if first["id"] != "shared-model" || first["name"] != "OpenAI Offering" {
+	if first["provider_id"] != "openai" ||
+		first["id"] != "shared-model" ||
+		first["name"] != "OpenAI Offering" {
 		t.Fatalf("Expected OpenAI model, got %#v", first)
+	}
+}
+
+func TestHandleListModelsPreservesSameIDAtDifferentProviders(t *testing.T) {
+	builder := catalogs.NewEmpty()
+	for _, provider := range []catalogs.Provider{
+		{
+			ID: "provider-b", Name: "Provider B",
+			Models: map[string]*catalogs.Model{
+				"shared": {ID: "shared", Name: "Provider B Offering"},
+			},
+		},
+		{
+			ID: "provider-a", Name: "Provider A",
+			Models: map[string]*catalogs.Model{
+				"shared": {ID: "shared", Name: "Provider A Offering"},
+			},
+		},
+	} {
+		if err := builder.SetProvider(provider); err != nil {
+			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
+		}
+	}
+
+	h := newTestHandlers(builder)
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/models", nil)
+	rec := httptest.NewRecorder()
+	h.HandleListModels(rec, req)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d: %s", rec.Code, http.StatusOK, rec.Body.String())
+	}
+
+	var got response.Response
+	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
+		t.Fatalf("Decode response: %v", err)
+	}
+	models := got.Data.(map[string]any)["models"].([]any)
+	if len(models) != 2 {
+		t.Fatalf("models = %#v, want both provider offerings", models)
+	}
+	first := models[0].(map[string]any)
+	second := models[1].(map[string]any)
+	if first["provider_id"] != "provider-a" || first["name"] != "Provider A Offering" ||
+		second["provider_id"] != "provider-b" || second["name"] != "Provider B Offering" {
+		t.Fatalf("provider-scoped model records = %#v", models)
 	}
 }
 

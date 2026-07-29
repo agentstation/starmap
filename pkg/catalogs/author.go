@@ -24,9 +24,9 @@ type Author struct {
 	GitHub      *string `json:"github,omitempty" yaml:"github,omitempty"`           // GitHub profile/organization URL
 	Twitter     *string `json:"twitter,omitempty" yaml:"twitter,omitempty"`         // X (formerly Twitter) profile URL
 
-	// Catalog and models
-	Catalog *AuthorCatalog    `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Primary provider catalog for this author's models
-	Models  map[string]*Model `json:"-" yaml:"-"`                                 // Models published by this author - not serialized
+	// Catalog contains attribution rules used to derive author membership from
+	// canonical provider model records.
+	Catalog *AuthorCatalog `json:"catalog,omitempty" yaml:"catalog,omitempty"`
 
 	// Timestamps for record keeping and auditing
 	CreatedAt utc.Time `json:"created_at" yaml:"created_at"` // Created date (YYYY-MM or YYYY-MM-DD format)

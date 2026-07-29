@@ -125,11 +125,13 @@ func TestSourceReportsMalformedLocalSiblingAsDegradedObservation(t *testing.T) {
 		observation.Records.Rejected != 1 {
 		t.Fatalf("observation health = %#v", observation)
 	}
-	models, err := observation.Catalog.ProviderModels("local-provider")
+	provider, err := observation.Catalog.Provider("local-provider")
 	if err != nil {
-		t.Fatalf("ProviderModels: %v", err)
+		t.Fatalf("Provider: %v", err)
 	}
-	if !models.Exists("valid") || models.Exists("invalid") {
-		t.Fatalf("models = %#v, want only valid sibling", models.List())
+	_, hasValid := provider.Models["valid"]
+	_, hasInvalid := provider.Models["invalid"]
+	if !hasValid || hasInvalid {
+		t.Fatalf("models = %#v, want only valid sibling", provider.Models)
 	}
 }

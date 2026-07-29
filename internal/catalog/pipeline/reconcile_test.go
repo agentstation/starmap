@@ -36,7 +36,7 @@ func TestReconcileUsesSelectedSourceAsPrimaryWhenProvidersSourceAbsent(t *testin
 	if result == nil || result.Catalog == nil {
 		t.Fatal("expected reconciled catalog")
 	}
-	if _, err := result.Catalog.FindModel(model.ID); err != nil {
+	if _, err := result.Catalog.ProviderModel(provider.ID, model.ID); err != nil {
 		t.Fatalf("expected model from selected source: %v", err)
 	}
 }
@@ -202,7 +202,7 @@ func TestReconcileModelsDevPrimaryIsRestrictedToBaselineProviders(t *testing.T) 
 	if _, err := result.Catalog.Provider("unconfigured-provider"); err == nil {
 		t.Fatal("unconfigured models.dev provider was imported into baseline-scoped catalog")
 	}
-	if _, err := result.Catalog.FindModel(unconfiguredModel.ID); err == nil {
+	if _, err := result.Catalog.ProviderModel("unconfigured-provider", unconfiguredModel.ID); err == nil {
 		t.Fatal("unconfigured models.dev model was imported into baseline-scoped catalog")
 	}
 }

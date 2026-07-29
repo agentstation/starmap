@@ -163,8 +163,12 @@ starmap models list --provider openai
 starmap models list --capability vision
 
 # Export as JSON
-starmap models list --format json > models.json
+starmap models list --output json > models.json
 ```
+
+Unfiltered model rows include `provider_id`; equal model IDs at different
+providers remain separate so provider-specific prices and limits are never
+silently collapsed.
 
 ### Go Package: Basic Usage
 
@@ -317,7 +321,7 @@ starmap models history gpt-4o --fields=Name,ID   # Multiple fields
 # Update catalog
 starmap update                  # Update all providers
 starmap update openai           # Update specific provider
-starmap update --dry            # Preview changes
+starmap update --dry-run        # Preview changes
 starmap migrate catalog         # Explicitly migrate the former local store layout
 
 # Development
@@ -330,7 +334,7 @@ starmap completion bash         # Generate shell completion
 
 ```bash
 # Development: Use a custom human workspace
-starmap update groq --catalog-path ./catalog --dry
+starmap update groq --catalog-path ./catalog --dry-run
 
 # Production: Fresh update with auto-approval
 starmap update --force -y
@@ -386,10 +390,10 @@ Use `starmap deps check` to verify dependency status before running updates:
 starmap deps check
 
 # JSON output for tooling
-starmap deps check --format json
+starmap deps check --output json
 
 # YAML output
-starmap deps check --format yaml
+starmap deps check --output yaml
 ```
 
 The command shows:
@@ -482,11 +486,12 @@ if err != nil {
 }
 fmt.Printf("Model: %s\n", model.Name)
 
-// Explicit compatibility adapter for the old flattened Model shape.
-legacyModel, err := catalog.LegacyV0().FindModel("gpt-4o")
-if err == nil {
-    fmt.Printf("Legacy model: %s\n", legacyModel.Name)
+// Provider-specific facts remain exact and separately addressable.
+offering, err := catalog.Offering("openai", "gpt-4o")
+if err != nil {
+    return err
 }
+fmt.Printf("Input price: %v\n", offering.Pricing.Tokens.Input.Per1M)
 ```
 
 #### Event-Driven Updates
@@ -576,15 +581,24 @@ if err := sm.Update(ctx); err != nil {
 
 #### Filtering and Querying
 ```go
-// Find vision-capable models under $10/M tokens
-models := catalog.Models()
-models.ForEach(func(id string, model *catalogs.Model) bool {
-    if model.Features.Vision && model.Pricing.Input < 10 {
-        fmt.Printf("Vision model: %s ($%.2f/M)\n", 
-            model.ID, model.Pricing.Input)
+// Definitions describe the model; offerings preserve each provider's exact
+// service facts. Equal model IDs at two providers never overwrite each other.
+for _, definition := range catalog.Definitions() {
+    if definition.Capabilities.Features == nil ||
+        !slices.Contains(definition.Capabilities.Features.Modalities.Input, "image") {
+        continue
     }
-    return true
-})
+
+    offerings, err := catalog.ProviderOfferings("openai")
+    if err != nil {
+        return err
+    }
+    for _, offering := range offerings {
+        if offering.DefinitionID == definition.ID {
+            fmt.Printf("%s is offered by %s\n", definition.Name, offering.ProviderID)
+        }
+    }
+}
 ```
 
 ## Data Sources

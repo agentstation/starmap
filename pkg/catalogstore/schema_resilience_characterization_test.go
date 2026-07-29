@@ -15,7 +15,7 @@ import (
 // partial catalog from being activated as a manifest-bound generation.
 func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 	payload := []byte(`{
-		"schema_version": 1,
+		"schema_version": 2,
 		"providers": [{"id":"provider","name":"Provider"}],
 		"authors": [],
 		"endpoints": [],
@@ -25,7 +25,6 @@ func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 				{"id":"invalid","name":"Invalid","limits":{"context_window":"schema-drift","input_tokens":0,"output_tokens":0}}
 			]
 		},
-		"author_models": {},
 		"provenance": {}
 	}`)
 
@@ -37,14 +36,14 @@ func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 	if catalog == nil {
 		t.Fatal("partial diagnostic catalog is nil")
 	}
-	models, modelsErr := catalog.ProviderModels("provider")
-	if modelsErr != nil {
-		t.Fatalf("ProviderModels: %v", modelsErr)
+	provider, providerErr := catalog.Provider("provider")
+	if providerErr != nil {
+		t.Fatalf("Provider: %v", providerErr)
 	}
-	if valid, found := models.Get("valid"); !found || valid.Name != "Valid" {
+	if valid, found := provider.Models["valid"]; !found || valid.Name != "Valid" {
 		t.Fatalf("valid model = %#v, found %v", valid, found)
 	}
-	if models.Exists("invalid") {
+	if _, found := provider.Models["invalid"]; found {
 		t.Fatal("malformed model was not quarantined")
 	}
 	if quarantineErr.Report.Rejected != 1 || len(quarantineErr.Report.Issues) != 1 {
@@ -71,36 +70,22 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 		{
 			name: "null provider model collection",
 			payload: `{
-				"schema_version":1,
+				"schema_version":2,
 				"providers":[{"id":"provider","name":"Provider"}],
 				"authors":[],
 				"endpoints":[],
 				"provider_models":{"provider":null},
-				"author_models":{},
 				"provenance":{}
 			}`,
 		},
 		{
 			name: "missing provider model identity",
 			payload: `{
-				"schema_version":1,
+				"schema_version":2,
 				"providers":[{"id":"provider","name":"Provider"}],
 				"authors":[],
 				"endpoints":[],
 				"provider_models":{},
-				"author_models":{},
-				"provenance":{}
-			}`,
-		},
-		{
-			name: "missing author model identity",
-			payload: `{
-				"schema_version":1,
-				"providers":[],
-				"authors":[{"id":"author","name":"Author"}],
-				"endpoints":[],
-				"provider_models":{},
-				"author_models":{},
 				"provenance":{}
 			}`,
 		},

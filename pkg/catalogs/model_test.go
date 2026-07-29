@@ -60,11 +60,9 @@ func TestModel_FormatYAML_EnhancedFormat(t *testing.T) {
 		Pricing: &ModelPricing{
 			Currency: "USD",
 			Tokens: &ModelTokenPricing{
-				Input:  &ModelTokenCost{Per1M: 1.25},
-				Output: &ModelTokenCost{Per1M: 10.00},
-				Cache: &ModelTokenCachePricing{
-					Read: &ModelTokenCost{Per1M: 0.31},
-				},
+				Input:     &ModelTokenCost{Per1M: 1.25},
+				Output:    &ModelTokenCost{Per1M: 10.00},
+				CacheRead: &ModelTokenCost{Per1M: 0.31},
 			},
 		},
 

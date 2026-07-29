@@ -5,7 +5,6 @@ type ModelArchitecture struct {
 	ParameterCount string           `json:"parameter_count,omitempty" yaml:"parameter_count,omitempty"` // Model size (e.g., "7B", "70B", "405B")
 	Type           ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                       // Type of architecture
 	Tokenizer      Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`             // Tokenizer type used by the model
-	Precision      *string          `json:"precision,omitempty" yaml:"precision,omitempty"`             // Legacy precision format (use Quantization for filtering)
 	Quantization   Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"`       // Quantization level used by the model
 	Quantized      bool             `json:"quantized" yaml:"quantized"`                                 // Whether the model has been quantized
 	FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned"`                               // Whether this is a fine-tuned variant

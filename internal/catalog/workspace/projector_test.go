@@ -245,7 +245,9 @@ func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *te
 	}
 	if err := builder.SetAuthor(catalogs.Author{
 		ID: "test-author", Name: "Test Author",
-		Models: map[string]*catalogs.Model{model.ID: model},
+		Catalog: &catalogs.AuthorCatalog{
+			Attribution: &catalogs.AuthorAttribution{ProviderID: "test-provider"},
+		},
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
@@ -277,18 +279,22 @@ func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *te
 	if err != nil {
 		t.Fatalf("Load projection: %v", err)
 	}
-	if _, err := projected.ProviderModel("test-provider", model.ID); err != nil {
+	projectedCatalog, err := projected.Build()
+	if err != nil {
+		t.Fatalf("Build projection: %v", err)
+	}
+	if _, err := projectedCatalog.Offering("test-provider", catalogs.ProviderModelID(model.ID)); err != nil {
 		t.Fatalf("canonical provider model missing: %v", err)
 	}
-	if len(projected.Endpoints().List()) != 0 {
-		t.Fatalf("projected endpoints = %#v, want none", projected.Endpoints().List())
+	if len(projectedCatalog.Endpoints().List()) != 0 {
+		t.Fatalf("projected endpoints = %#v, want none", projectedCatalog.Endpoints().List())
 	}
-	author, err := projected.Author("test-author")
+	authorModels, err := projectedCatalog.AuthorModels("test-author")
 	if err != nil {
-		t.Fatalf("Author: %v", err)
+		t.Fatalf("AuthorModels: %v", err)
 	}
-	if len(author.Models) != 0 {
-		t.Fatalf("projected hierarchical author models = %#v, want none", author.Models)
+	if len(authorModels) != 1 || authorModels[0].ID != catalogs.ModelDefinitionID(model.ID) {
+		t.Fatalf("derived author models = %#v, want %q", authorModels, model.ID)
 	}
 }
 

@@ -104,7 +104,6 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func WithCatalogStore\(store catalogstore.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
-  - [func WithEmbeddedCatalog\(\) Option](<#WithEmbeddedCatalog>)
   - [func WithRemoteServerAPIKey\(apiKey string\) Option](<#WithRemoteServerAPIKey>)
   - [func WithRemoteServerOnly\(url string\) Option](<#WithRemoteServerOnly>)
   - [func WithRemoteServerURL\(url string\) Option](<#WithRemoteServerURL>)
@@ -132,7 +131,7 @@ const (
 ```
 
 <a name="CatalogPublishedEvent"></a>
-## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L16-L21>)
+## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L17-L22>)
 
 CatalogPublishedEvent identifies one durably committed immutable catalog. Catalog is safe to retain and share across goroutines.
 
@@ -146,7 +145,7 @@ type CatalogPublishedEvent struct {
 ```
 
 <a name="CatalogPublishedHook"></a>
-## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L25>)
+## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L26>)
 
 CatalogPublishedHook is called after a catalog generation is durably committed and atomically published.
 
@@ -246,7 +245,7 @@ func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Genera
 Generation returns one retained immutable generation by ID.
 
 <a name="Client.HookStats"></a>
-### func \(\*Client\) [HookStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L53>)
+### func \(\*Client\) [HookStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L54>)
 
 ```go
 func (c *Client) HookStats() HookDeliveryStats
@@ -255,7 +254,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.OnCatalogPublished"></a>
-### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L50>)
+### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L51>)
 
 ```go
 func (c *Client) OnCatalogPublished(fn CatalogPublishedHook)
@@ -264,7 +263,7 @@ func (c *Client) OnCatalogPublished(fn CatalogPublishedHook)
 OnCatalogPublished registers a callback for durable catalog publication.
 
 <a name="Client.OnModelAdded"></a>
-### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L56>)
+### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L57>)
 
 ```go
 func (c *Client) OnModelAdded(fn ModelAddedHook)
@@ -273,7 +272,7 @@ func (c *Client) OnModelAdded(fn ModelAddedHook)
 OnModelAdded registers a callback for when models are added.
 
 <a name="Client.OnModelRemoved"></a>
-### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L62>)
+### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L63>)
 
 ```go
 func (c *Client) OnModelRemoved(fn ModelRemovedHook)
@@ -282,7 +281,7 @@ func (c *Client) OnModelRemoved(fn ModelRemovedHook)
 OnModelRemoved registers a callback for when models are removed.
 
 <a name="Client.OnModelUpdated"></a>
-### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L59>)
+### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L60>)
 
 ```go
 func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
@@ -356,7 +355,7 @@ type EmbeddedBootstrapInfo struct {
 ```
 
 <a name="HookDeliveryStats"></a>
-## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L38-L45>)
+## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L39-L46>)
 
 HookDeliveryStats reports isolated callback delivery health.
 
@@ -372,7 +371,7 @@ type HookDeliveryStats struct {
 ```
 
 <a name="ModelAddedHook"></a>
-## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L28>)
+## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L29>)
 
 ModelAddedHook is called when a model is added to the catalog.
 
@@ -381,7 +380,7 @@ type ModelAddedHook func(model catalogs.Model)
 ```
 
 <a name="ModelRemovedHook"></a>
-## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L34>)
+## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L35>)
 
 ModelRemovedHook is called when a model is removed from the catalog.
 
@@ -390,7 +389,7 @@ type ModelRemovedHook func(model catalogs.Model)
 ```
 
 <a name="ModelUpdatedHook"></a>
-## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L31>)
+## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L32>)
 
 ModelUpdatedHook is called when a model is updated in the catalog.
 
@@ -399,7 +398,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L84>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L82>)
 
 Option is a function that configures a Starmap instance.
 
@@ -408,7 +407,7 @@ type Option func(*options) error
 ```
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L147>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L145>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -417,7 +416,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath configures the human\-editable provider YAML workspace used for both local observation and post\-commit materialization. Immutable generation state remains in the separately supplied CatalogStore.
 
 <a name="WithCatalogStore"></a>
-### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L57>)
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L55>)
 
 ```go
 func WithCatalogStore(store catalogstore.Store) Option
@@ -426,7 +425,7 @@ func WithCatalogStore(store catalogstore.Store) Option
 WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L166>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L154>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -435,7 +434,7 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L178>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L166>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
@@ -443,17 +442,8 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
-<a name="WithEmbeddedCatalog"></a>
-### func [WithEmbeddedCatalog](<https://github.com/agentstation/starmap/blob/main/options.go#L157>)
-
-```go
-func WithEmbeddedCatalog() Option
-```
-
-WithEmbeddedCatalog configures whether to use an embedded catalog. It defaults to false. A configured workspace remains the local observation; the embedded catalog is its verified fallback when the workspace is absent.
-
 <a name="WithRemoteServerAPIKey"></a>
-### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/main/options.go#L107>)
+### func [WithRemoteServerAPIKey](<https://github.com/agentstation/starmap/blob/main/options.go#L105>)
 
 ```go
 func WithRemoteServerAPIKey(apiKey string) Option
@@ -462,7 +452,7 @@ func WithRemoteServerAPIKey(apiKey string) Option
 WithRemoteServerAPIKey configures the remote server API key.
 
 <a name="WithRemoteServerOnly"></a>
-### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/main/options.go#L116>)
+### func [WithRemoteServerOnly](<https://github.com/agentstation/starmap/blob/main/options.go#L114>)
 
 ```go
 func WithRemoteServerOnly(url string) Option
@@ -471,7 +461,7 @@ func WithRemoteServerOnly(url string) Option
 WithRemoteServerOnly configures Client.Update to use only the versioned remote manifest and immutable generation snapshot contract at url.
 
 <a name="WithRemoteServerURL"></a>
-### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/main/options.go#L99>)
+### func [WithRemoteServerURL](<https://github.com/agentstation/starmap/blob/main/options.go#L97>)
 
 ```go
 func WithRemoteServerURL(url string) Option
@@ -480,7 +470,7 @@ func WithRemoteServerURL(url string) Option
 WithRemoteServerURL configures a versioned remote API base URL, for example https://starmap.example.com/api/v1, without changing the update source. Use WithRemoteServerOnly to make Client.Update fetch exclusively from that server.
 
 <a name="WithUpdateFunc"></a>
-### func [WithUpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L129>)
+### func [WithUpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L127>)
 
 ```go
 func WithUpdateFunc(fn UpdateFunc) Option
@@ -521,7 +511,7 @@ type RollbackResult struct {
 ```
 
 <a name="UpdateFunc"></a>
-## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L126>)
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/options.go#L124>)
 
 UpdateFunc builds an explicit candidate catalog and must honor cancellation. Scheduling, retry, and high\-availability ownership remain above Client.
 

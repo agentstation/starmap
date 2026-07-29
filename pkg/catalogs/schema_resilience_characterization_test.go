@@ -59,7 +59,7 @@ func TestF009InvalidLocalWorkspaceFailsClosed(t *testing.T) {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
-	catalog, err := NewLocal(path)
+	catalog, err := NewFromPath(path)
 	if err == nil {
 		t.Fatal("invalid configured workspace was treated as optional absence")
 	}

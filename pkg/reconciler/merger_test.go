@@ -1074,10 +1074,6 @@ func TestCopyModelPricingDeepCopiesNestedFields(t *testing.T) {
 			Reasoning:  &catalogs.ModelTokenCost{Per1M: 3},
 			CacheRead:  &catalogs.ModelTokenCost{Per1M: 4},
 			CacheWrite: &catalogs.ModelTokenCost{Per1M: 5},
-			Cache: &catalogs.ModelTokenCachePricing{
-				Read:  &catalogs.ModelTokenCost{Per1M: 6},
-				Write: &catalogs.ModelTokenCost{Per1M: 7},
-			},
 		},
 		Operations: &catalogs.ModelOperationPricing{
 			Request:      &request,
@@ -1105,7 +1101,8 @@ func TestCopyModelPricingDeepCopiesNestedFields(t *testing.T) {
 	copied := copyModelPricing(source)
 	if copied == nil ||
 		copied.Tokens == nil ||
-		copied.Tokens.Cache == nil ||
+		copied.Tokens.CacheRead == nil ||
+		copied.Tokens.CacheWrite == nil ||
 		copied.Operations == nil ||
 		len(copied.Tiers) != 1 {
 		t.Fatalf("pricing was not copied deeply: %#v", copied)
@@ -1123,9 +1120,8 @@ func TestCopyModelPricingDeepCopiesNestedFields(t *testing.T) {
 
 func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 	knowledge := utc.Now()
-	precision := "fp16"
-	wantPrecision := precision
 	baseModel := "base-model"
+	wantBaseModel := baseModel
 	source := &catalogs.ModelMetadata{
 		KnowledgeCutoff: &knowledge,
 		Tags:            []catalogs.ModelTag{catalogs.ModelTagResearch},
@@ -1133,7 +1129,6 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 			ParameterCount: "70B",
 			Type:           catalogs.ArchitectureTypeTransformer,
 			Tokenizer:      catalogs.TokenizerGPT,
-			Precision:      &precision,
 			Quantization:   catalogs.QuantizationFP16,
 			Quantized:      true,
 			FineTuned:      true,
@@ -1145,13 +1140,12 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 	if copied == nil ||
 		copied.KnowledgeCutoff == nil ||
 		copied.Architecture == nil ||
-		copied.Architecture.Precision == nil ||
 		copied.Architecture.BaseModel == nil {
 		t.Fatalf("metadata was not copied deeply: %#v", copied)
 	}
 	source.Tags[0] = catalogs.ModelTagMath
-	*source.Architecture.Precision = "int8"
-	if copied.Tags[0] != catalogs.ModelTagResearch || *copied.Architecture.Precision != wantPrecision {
+	*source.Architecture.BaseModel = "changed-base"
+	if copied.Tags[0] != catalogs.ModelTagResearch || *copied.Architecture.BaseModel != wantBaseModel {
 		t.Fatalf("copied metadata aliases source: %#v", copied)
 	}
 
@@ -1162,7 +1156,7 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 		!hasModelTag(filled.Tags, catalogs.ModelTagResearch) ||
 		filled.Architecture == nil ||
 		filled.Architecture.BaseModel == nil ||
-		*filled.Architecture.BaseModel != baseModel {
+		*filled.Architecture.BaseModel != wantBaseModel {
 		t.Fatalf("metadata missing fields were not filled: %#v", filled)
 	}
 }

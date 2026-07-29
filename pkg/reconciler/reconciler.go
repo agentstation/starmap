@@ -11,7 +11,6 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/attribution"
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
@@ -115,14 +114,6 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	catalog, err := r.catalog(providers, modelResults)
 	if err != nil {
 		return nil, err
-	}
-
-	// Step 5.5: Apply author attributions using the fresh catalog
-	// This populates author.Models based on attribution config from authors.yaml
-	// Attribution now uses the fresh catalog with API-fetched models instead of baseline
-	if err := attribution.Apply(catalog); err != nil {
-		rctx.logger.Warn().Err(err).Msg("Failed to apply author attributions")
-		// Non-fatal - continue with reconciliation
 	}
 
 	// Step 6: Compute changeset if we have a base catalog

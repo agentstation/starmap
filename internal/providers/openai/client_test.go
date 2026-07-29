@@ -619,9 +619,8 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 		model.Pricing.Tokens.Input.Per1M != promptPrice ||
 		model.Pricing.Tokens.Output == nil ||
 		model.Pricing.Tokens.Output.Per1M != completionPrice ||
-		model.Pricing.Tokens.Cache == nil ||
-		model.Pricing.Tokens.Cache.Read == nil ||
-		model.Pricing.Tokens.Cache.Read.Per1M != cacheReadPrice ||
+		model.Pricing.Tokens.CacheRead == nil ||
+		model.Pricing.Tokens.CacheRead.Per1M != cacheReadPrice ||
 		model.Pricing.Operations == nil ||
 		model.Pricing.Operations.Request == nil ||
 		*model.Pricing.Operations.Request != requestPrice ||
@@ -713,9 +712,8 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 		model.Pricing.Tokens.Input.Per1M != inputTokens ||
 		model.Pricing.Tokens.Output == nil ||
 		model.Pricing.Tokens.Output.Per1M != outputTokens ||
-		model.Pricing.Tokens.Cache == nil ||
-		model.Pricing.Tokens.Cache.Read == nil ||
-		model.Pricing.Tokens.Cache.Read.Per1M != cacheReadTokens ||
+		model.Pricing.Tokens.CacheRead == nil ||
+		model.Pricing.Tokens.CacheRead.Per1M != cacheReadTokens ||
 		model.Pricing.Operations == nil ||
 		model.Pricing.Operations.ImageGen == nil ||
 		*model.Pricing.Operations.ImageGen != perImage {

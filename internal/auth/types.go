@@ -46,12 +46,3 @@ type Checker struct {
 func NewChecker() *Checker {
 	return &Checker{}
 }
-
-// GCloudStatus represents Google Cloud authentication status.
-// Deprecated: Use GoogleCloudDetails instead.
-type GCloudStatus struct {
-	Authenticated     bool
-	Project           string
-	Location          string
-	HasVertexProvider bool
-}

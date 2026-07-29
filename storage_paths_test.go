@@ -95,9 +95,9 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 		}
 	}
 
-	loaded, err := catalogs.NewLocal(workspace)
+	loaded, err := catalogs.NewFromPath(workspace)
 	if err != nil {
-		t.Fatalf("NewLocal: %v", err)
+		t.Fatalf("NewFromPath: %v", err)
 	}
 	catalog, err := loaded.Build()
 	if err != nil {

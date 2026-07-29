@@ -194,10 +194,12 @@ func AssertProvidersEqual(t testing.TB, expected, actual *Provider) {
 func AssertCatalogHasModel(t testing.TB, catalog Reader, modelID string) {
 	t.Helper()
 
-	model, found := catalog.Models().Get(modelID)
-	if !found || model == nil {
-		t.Errorf("Expected catalog to have model %q", modelID)
+	for _, provider := range catalog.Providers().List() {
+		if model, found := provider.Models[modelID]; found && model != nil {
+			return
+		}
 	}
+	t.Errorf("Expected catalog to have model %q", modelID)
 }
 
 // AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.

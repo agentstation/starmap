@@ -63,6 +63,15 @@ func addTestModels(cat *catalogs.Builder, providerID string, models []*catalogs.
 	return cat.SetProvider(provider)
 }
 
+func mustProviderModels(t testing.TB, cat *catalogs.Builder, providerID catalogs.ProviderID) []catalogs.Model {
+	t.Helper()
+	models, err := cat.ProviderModels(providerID)
+	if err != nil {
+		t.Fatalf("ProviderModels(%q): %v", providerID, err)
+	}
+	return models.List()
+}
+
 func TestReconcilerBasic(t *testing.T) {
 	ctx := context.Background()
 
@@ -112,13 +121,13 @@ func TestReconcilerBasic(t *testing.T) {
 
 	// Check models were merged. The primary source determines model existence;
 	// secondary sources can enrich matching models but cannot add their own.
-	models := result.Catalog.Models().List()
+	models := mustProviderModels(t, result.Catalog, "test-provider")
 	if len(models) != 2 {
 		t.Errorf("Expected 2 primary models, got %d", len(models))
 	}
 
 	// Verify specific models
-	gpt4, err := result.Catalog.FindModel("gpt-4")
+	gpt4, err := result.Catalog.ProviderModel("test-provider", "gpt-4")
 	if err != nil {
 		t.Error("Expected gpt-4 model to exist")
 	}
@@ -126,7 +135,7 @@ func TestReconcilerBasic(t *testing.T) {
 		t.Error("gpt-4 model not properly loaded")
 	}
 
-	if _, err := result.Catalog.FindModel("claude-3"); err == nil {
+	if _, err := result.Catalog.ProviderModel("test-provider", "claude-3"); err == nil {
 		t.Error("Expected claude-3 to be excluded because it is not in the primary source")
 	}
 }
@@ -450,7 +459,7 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Find the reconciled model
-		reconciledModel, err := result.Catalog.FindModel("test-model")
+		reconciledModel, err := result.Catalog.ProviderModel("test-provider", "test-model")
 		if err != nil {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}
@@ -503,7 +512,7 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Find the reconciled model
-		reconciledModel, err := result.Catalog.FindModel("test-model")
+		reconciledModel, err := result.Catalog.ProviderModel("test-provider", "test-model")
 		if err != nil {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}
@@ -560,7 +569,7 @@ func TestTimestampPreservation(t *testing.T) {
 		}
 
 		// Find the reconciled model
-		reconciledModel, err := result.Catalog.FindModel("new-model")
+		reconciledModel, err := result.Catalog.ProviderModel("test-provider", "new-model")
 		if err != nil {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}

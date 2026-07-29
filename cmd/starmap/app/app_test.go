@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/rs/zerolog"
 
@@ -37,6 +38,28 @@ func TestApp_New(t *testing.T) {
 	}
 	if app.Config() == nil {
 		t.Error("Config() returned nil")
+	}
+}
+
+func TestRootCommandHasOneCanonicalPublicSpelling(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
+	application, err := New("1.0.0", "abc123", "2024-01-01", "test")
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	root := application.createRootCommand()
+	if root.PersistentFlags().Lookup("output") == nil {
+		t.Fatal("root command has no canonical --output flag")
+	}
+	for _, removed := range []string{"fmt", "format"} {
+		if root.PersistentFlags().Lookup(removed) != nil {
+			t.Fatalf("root command exposes prelaunch alias --%s", removed)
+		}
+	}
+	for _, command := range root.Commands() {
+		if len(command.Aliases) != 0 {
+			t.Errorf("command %q exposes prelaunch aliases %v", command.Name(), command.Aliases)
+		}
 	}
 }
 
@@ -141,7 +164,7 @@ func TestApp_Starmap_ThreadSafe(t *testing.T) {
 
 // TestApp_Catalog_ReturnsImmutableSnapshot verifies collection reads cannot
 // mutate the published generation.
-func TestApp_Catalog_ReturnsImmutableSnapshot(t *testing.T) {
+func TestApp_Catalog_ReturnsImmutableCatalog(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")
 	if err != nil {
 		t.Fatalf("New() failed: %v", err)
@@ -166,7 +189,7 @@ func TestApp_Catalog_ReturnsImmutableSnapshot(t *testing.T) {
 	providers[0].Name = "mutated caller value"
 	provider, ok := cat2.Providers().Get(providers[0].ID)
 	if !ok {
-		t.Fatalf("Provider %s missing from second snapshot", providers[0].ID)
+		t.Fatalf("Provider %s missing from second catalog", providers[0].ID)
 	}
 	if provider.Name != originalName {
 		t.Error("Catalog() returned shared provider state")
@@ -197,7 +220,7 @@ func TestApp_Catalog_ThreadSafe(t *testing.T) {
 			}
 
 			if cat.Providers().Len() == 0 {
-				errors[idx] = fmt.Errorf("snapshot has no providers")
+				errors[idx] = fmt.Errorf("catalog has no providers")
 			}
 		}(i)
 	}
@@ -219,13 +242,13 @@ func TestApp_StarmapWithOptions(t *testing.T) {
 		t.Fatalf("New() failed: %v", err)
 	}
 
-	// Create two starmaps with custom options (using embedded catalog as option)
-	sm1, err := app.Starmap(starmap.WithEmbeddedCatalog())
+	// Create two starmaps with custom options.
+	sm1, err := app.Starmap(starmap.WithEmbeddedBootstrapMaxAge(time.Hour))
 	if err != nil {
 		t.Fatalf("Starmap(opts...) failed: %v", err)
 	}
 
-	sm2, err := app.Starmap(starmap.WithEmbeddedCatalog())
+	sm2, err := app.Starmap(starmap.WithEmbeddedBootstrapMaxAge(time.Hour))
 	if err != nil {
 		t.Fatalf("Starmap(opts...) failed on second call: %v", err)
 	}

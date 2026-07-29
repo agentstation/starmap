@@ -88,18 +88,6 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 			{"cache_read", tokens.CacheRead},
 			{"cache_write", tokens.CacheWrite},
 		}
-		if tokens.Cache != nil {
-			costs = append(costs,
-				struct {
-					name string
-					cost *ModelTokenCost
-				}{"cache.read", tokens.Cache.Read},
-				struct {
-					name string
-					cost *ModelTokenCost
-				}{"cache.write", tokens.Cache.Write},
-			)
-		}
 		for _, item := range costs {
 			if item.cost == nil {
 				continue

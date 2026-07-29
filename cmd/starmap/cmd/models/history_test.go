@@ -12,7 +12,7 @@ func TestResolveHistoryProvider(t *testing.T) {
 	t.Parallel()
 
 	catalog := historyCatalog(t,
-		catalogs.Provider{ID: "provider-a", Name: "Provider A", Models: map[string]*catalogs.Model{
+		catalogs.Provider{ID: "provider-a", Aliases: []catalogs.ProviderID{"provider-a-alias"}, Name: "Provider A", Models: map[string]*catalogs.Model{
 			"shared": {ID: "shared", Name: "Shared A"},
 			"unique": {ID: "unique", Name: "Unique"},
 		}},
@@ -29,6 +29,11 @@ func TestResolveHistoryProvider(t *testing.T) {
 	providerID, err = resolveHistoryProvider(catalog, "provider-b", "shared")
 	if err != nil || providerID != "provider-b" {
 		t.Fatalf("explicit provider resolution = (%q, %v)", providerID, err)
+	}
+
+	providerID, err = resolveHistoryProvider(catalog, "provider-a-alias", "unique")
+	if err != nil || providerID != "provider-a" {
+		t.Fatalf("provider alias resolution = (%q, %v), want canonical provider-a", providerID, err)
 	}
 
 	if _, err = resolveHistoryProvider(catalog, "", "shared"); err == nil {

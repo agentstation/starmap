@@ -26,7 +26,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Verify it was added
-		models := cat.Models().List()
+		models := testBuilderModels(cat)
 		if len(models) != 1 {
 			t.Errorf("Expected 1 model, got %d", len(models))
 		}
@@ -43,7 +43,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.Models().List()
+		models := testBuilderModels(cat)
 		if len(models) == 0 {
 			t.Error("Embedded catalog should have models")
 		}
@@ -63,7 +63,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Check for models
-		models := cat.Models().List()
+		models := testBuilderModels(cat)
 		if len(models) == 0 {
 			t.Error("Files catalog should have models")
 		}
@@ -88,8 +88,8 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Compare model counts
-		embModels := embCat.Models().List()
-		fileModels := filesCat.Models().List()
+		embModels := testBuilderModels(embCat)
+		fileModels := testBuilderModels(filesCat)
 
 		if len(embModels) != len(fileModels) {
 			t.Errorf("Model count mismatch: embedded=%d, files=%d", len(embModels), len(fileModels))

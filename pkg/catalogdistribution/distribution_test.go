@@ -3,6 +3,7 @@ package catalogdistribution
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -246,14 +247,17 @@ func TestETagImmutableCacheAndRollbackRetainPriorGenerations(t *testing.T) {
 		}
 	}
 
-	assertConditionalCache(APIPrefix+"/latest?schema_version=1", LatestCacheControl)
+	assertConditionalCache(
+		fmt.Sprintf("%s/latest?schema_version=%d", APIPrefix, catalogs.CurrentCatalogSchemaVersion),
+		LatestCacheControl,
+	)
 	assertConditionalCache(APIPrefix+"/"+second.Generation.Manifest.GenerationID, ImmutableCacheControl)
 	assertConditionalCache(APIPrefix+"/"+first.Generation.Manifest.GenerationID, ImmutableCacheControl)
 
 	if err := repository.Rollback(ChannelStable, first.Generation.Manifest.GenerationID, "rollback fixture"); err != nil {
 		t.Fatalf("Rollback first: %v", err)
 	}
-	client, err := NewClient(server.URL, server.Client(), 1)
+	client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}

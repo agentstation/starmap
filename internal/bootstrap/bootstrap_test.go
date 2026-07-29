@@ -15,6 +15,25 @@ func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
+	if definitions := catalog.Definitions(); len(definitions) == 0 {
+		t.Fatal("embedded catalog published no canonical definitions")
+	}
+	offeringCount := 0
+	for _, provider := range catalog.Providers().List() {
+		offerings, err := catalog.ProviderOfferings(provider.ID)
+		if err != nil {
+			t.Fatalf("ProviderOfferings(%s): %v", provider.ID, err)
+		}
+		for _, offering := range offerings {
+			if err := offering.Validate(); err != nil {
+				t.Fatalf("Offering(%s/%s): %v", offering.ProviderID, offering.ProviderModelID, err)
+			}
+		}
+		offeringCount += len(offerings)
+	}
+	if offeringCount == 0 {
+		t.Fatal("embedded catalog published no provider offerings")
+	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)

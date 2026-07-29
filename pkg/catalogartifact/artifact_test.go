@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	wantArtifactFixtureChecksum    = "sha256:d3edcd5558e470540465abe65b92304326c2dc815c53895ece224ff222d13e2f"
-	wantAttestationFixtureChecksum = "sha256:669b186d808667cedaa120a25c38e6f1809b86abb24a584af703aa47ded07419"
+	wantArtifactFixtureChecksum    = "sha256:e4e2e5e2d6ca549f8808401e7db6f024dcaafc082a9fe611ff400a1e9896f247"
+	wantAttestationFixtureChecksum = "sha256:ecc485e811b9bc7cb19ea097e3b439edb3fd0e27185d12ce33654a5bda5c34e0"
 )
 
 func TestArtifactReproducibleFixtureHashes(t *testing.T) {

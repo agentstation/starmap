@@ -1,7 +1,10 @@
 package query
 
 import (
+	"strings"
 	"testing"
+
+	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -26,32 +29,38 @@ func TestPaginate(t *testing.T) {
 func TestModelsFiltersSortsAndLimits(t *testing.T) {
 	cheap := 0.25
 	expensive := 1.25
-	models := []catalogs.Model{
+	models := []ModelRecord{
 		{
-			ID:   "z-model",
-			Name: "Z Model",
-			Authors: []catalogs.Author{{
-				ID:   "openai",
-				Name: "OpenAI",
-			}},
-			Features: &catalogs.ModelFeatures{Reasoning: true},
-			Limits:   &catalogs.ModelLimits{ContextWindow: 128000},
-			Pricing: &catalogs.ModelPricing{Tokens: &catalogs.ModelTokenPricing{
-				Input: &catalogs.ModelTokenCost{Per1M: cheap},
-			}},
+			ProviderID: "openai",
+			Model: catalogs.Model{
+				ID:   "z-model",
+				Name: "Z Model",
+				Authors: []catalogs.Author{{
+					ID:   "openai",
+					Name: "OpenAI",
+				}},
+				Features: &catalogs.ModelFeatures{Reasoning: true},
+				Limits:   &catalogs.ModelLimits{ContextWindow: 128000},
+				Pricing: &catalogs.ModelPricing{Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{Per1M: cheap},
+				}},
+			},
 		},
 		{
-			ID:   "a-model",
-			Name: "A Model",
-			Authors: []catalogs.Author{{
-				ID:   "anthropic",
-				Name: "Anthropic",
-			}},
-			Features: &catalogs.ModelFeatures{Streaming: true},
-			Limits:   &catalogs.ModelLimits{ContextWindow: 200000},
-			Pricing: &catalogs.ModelPricing{Tokens: &catalogs.ModelTokenPricing{
-				Input: &catalogs.ModelTokenCost{Per1M: expensive},
-			}},
+			ProviderID: "anthropic",
+			Model: catalogs.Model{
+				ID:   "a-model",
+				Name: "A Model",
+				Authors: []catalogs.Author{{
+					ID:   "anthropic",
+					Name: "Anthropic",
+				}},
+				Features: &catalogs.ModelFeatures{Streaming: true},
+				Limits:   &catalogs.ModelLimits{ContextWindow: 200000},
+				Pricing: &catalogs.ModelPricing{Tokens: &catalogs.ModelTokenPricing{
+					Input: &catalogs.ModelTokenCost{Per1M: expensive},
+				}},
+			},
 		},
 	}
 
@@ -125,6 +134,25 @@ func TestModelsFiltersByProvider(t *testing.T) {
 	}
 }
 
+func TestModelRecordYAMLPreservesFlatProviderIdentity(t *testing.T) {
+	data, err := yaml.Marshal(ModelRecord{
+		ProviderID: "provider",
+		Model:      catalogs.Model{ID: "model", Name: "Model"},
+	})
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	document := string(data)
+	for _, required := range []string{"provider_id: provider", "id: model", "name: Model"} {
+		if !strings.Contains(document, required) {
+			t.Fatalf("YAML = %q, missing %q", document, required)
+		}
+	}
+	if strings.Contains(document, "\nmodel:") {
+		t.Fatalf("YAML nested the flat model record: %q", document)
+	}
+}
+
 func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 	catalog := catalogs.NewEmpty()
 	for _, provider := range []catalogs.Provider{
@@ -152,6 +180,18 @@ func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
+	all, err := CatalogModels(snapshot, "")
+	if err != nil {
+		t.Fatalf("CatalogModels(all): %v", err)
+	}
+	if len(all) != 2 {
+		t.Fatalf("CatalogModels(all) returned %d records, want both provider offerings", len(all))
+	}
+	if all[0].ProviderID != "a-provider" || all[0].Name != "Provider A Offering" ||
+		all[1].ProviderID != "b-provider" || all[1].Name != "Provider B Offering" {
+		t.Fatalf("CatalogModels(all) lost deterministic provider identity: %#v", all)
+	}
+
 	filtered, err := CatalogModels(snapshot, "a-provider")
 	if err != nil {
 		t.Fatalf("CatalogModels(a-provider): %v", err)
@@ -159,9 +199,13 @@ func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 	if len(filtered) != 1 || filtered[0].Name != "Provider A Offering" {
 		t.Fatalf("Provider A lookup returned flattened offering: %#v", filtered)
 	}
-	bOffering, err := snapshot.ProviderModel("b-provider", "shared-model")
+	bProvider, err := snapshot.Provider("b-provider")
 	if err != nil {
-		t.Fatalf("ProviderModel(b-provider/shared-model): %v", err)
+		t.Fatalf("Provider(b-provider): %v", err)
+	}
+	bOffering := bProvider.Models["shared-model"]
+	if bOffering == nil {
+		t.Fatal("Provider(b-provider) missing shared-model")
 	}
 	if bOffering.Name != "Provider B Offering" {
 		t.Fatalf("Provider B offering = %#v", bOffering)

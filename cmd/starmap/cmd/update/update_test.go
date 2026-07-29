@@ -16,7 +16,10 @@ func TestUpdateFlagsExposeOneCatalogWorkspacePath(t *testing.T) {
 	if flags == nil || command.Flags().Lookup("catalog-path") == nil {
 		t.Fatal("update command has no --catalog-path")
 	}
-	for _, removed := range []string{"input-dir", "output-dir"} {
+	if command.Flags().Lookup("dry-run") == nil {
+		t.Fatal("update command has no canonical --dry-run flag")
+	}
+	for _, removed := range []string{"dry", "input-dir", "output-dir"} {
 		if command.Flags().Lookup(removed) != nil {
 			t.Fatalf("prelaunch compatibility flag --%s is still exposed", removed)
 		}

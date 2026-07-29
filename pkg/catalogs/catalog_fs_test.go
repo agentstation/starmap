@@ -16,11 +16,8 @@ import (
 	"github.com/agentstation/starmap/pkg/save"
 )
 
-func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T) {
+func TestNewFromPathRejectsMissingAndQuarantinesCorruptRecords(t *testing.T) {
 	missing := filepath.Join(t.TempDir(), "missing")
-	if _, err := NewLocal(missing); err != nil {
-		t.Fatalf("missing optional path: %v", err)
-	}
 	if _, err := NewFromPath(missing); !stderrors.Is(err, os.ErrNotExist) {
 		t.Fatalf("NewFromPath missing error = %v, want errors.Is(os.ErrNotExist)", err)
 	}
@@ -36,7 +33,7 @@ func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T
 	); err != nil {
 		t.Fatalf("Write corrupt catalog: %v", err)
 	}
-	_, err := NewLocal(corrupt)
+	_, err := NewFromPath(corrupt)
 	if err == nil {
 		t.Fatal("corrupt configured catalog was treated as optional absence")
 	}
@@ -64,7 +61,7 @@ func TestNewLocalDistinguishesMissingOptionalPathFromCorruptCatalog(t *testing.T
 	); err != nil {
 		t.Fatalf("Write corrupt model: %v", err)
 	}
-	loaded, err := NewLocal(corruptModel)
+	loaded, err := NewFromPath(corruptModel)
 	if err != nil {
 		t.Fatalf("corrupt model record should be quarantined: %v", err)
 	}
@@ -177,7 +174,7 @@ func TestCatalogWithFS(t *testing.T) {
 			// Check loaded data
 			assert.Equal(t, tt.wantProviders, cat.Providers().Len())
 			assert.Equal(t, tt.wantAuthors, cat.Authors().Len())
-			assert.Equal(t, tt.wantModels, len(cat.Models().List()))
+			assert.Equal(t, tt.wantModels, len(testBuilderModels(cat)))
 		})
 	}
 }
@@ -208,13 +205,13 @@ name: Test Model
 
 	// Verify data loaded
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, len(cat.Models().List()))
+	assert.Equal(t, 1, len(testBuilderModels(cat)))
 
 	provider, err := cat.Provider("test-provider")
 	assert.NoError(t, err)
 	assert.Equal(t, "Test Provider", provider.Name)
 
-	model, err := cat.FindModel("test-model")
+	model, err := testBuilderFindModel(cat, "test-model")
 	assert.NoError(t, err)
 	assert.Equal(t, "Test Model", model.Name)
 }
@@ -241,7 +238,7 @@ func TestCatalogWrite(t *testing.T) {
 
 	assert.Equal(t, cat.Providers().Len(), cat2.Providers().Len())
 	assert.Equal(t, cat.Authors().Len(), cat2.Authors().Len())
-	assert.Equal(t, len(cat.Models().List()), len(cat2.Models().List()))
+	assert.Equal(t, len(testBuilderModels(cat)), len(testBuilderModels(cat2)))
 }
 
 func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
@@ -260,9 +257,6 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	if err := cat.SetAuthor(Author{
 		ID:   "replacement-author",
 		Name: "Replacement Author",
-		Models: map[string]*Model{
-			"stale-author-model": {ID: "stale-author-model", Name: "Stale Author Model"},
-		},
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
@@ -279,21 +273,23 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	); err != nil {
 		t.Fatalf("Write unmanaged provider file: %v", err)
 	}
+	staleAuthorModels := filepath.Join(tmpDir, "authors", "replacement-author", "models")
+	if err := os.MkdirAll(staleAuthorModels, constants.DirPermissions); err != nil {
+		t.Fatalf("Create obsolete author model tree: %v", err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(staleAuthorModels, "stale.yaml"),
+		[]byte("id: stale\nname: Stale\n"),
+		constants.FilePermissions,
+	); err != nil {
+		t.Fatalf("Write obsolete author model: %v", err)
+	}
 
 	if err := cat.DeleteProviderModel(provider.ID, "stale-provider-model"); err != nil {
 		t.Fatalf("DeleteProviderModel: %v", err)
 	}
 	if err := cat.SetProviderModel(provider.ID, Model{ID: "current-provider-model", Name: "Current"}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
-	}
-	if err := cat.SetAuthor(Author{
-		ID:   "replacement-author",
-		Name: "Replacement Author",
-		Models: map[string]*Model{
-			"current-author-model": {ID: "current-author-model", Name: "Current Author Model"},
-		},
-	}); err != nil {
-		t.Fatalf("replace author: %v", err)
 	}
 	if err := cat.Save(); err != nil {
 		t.Fatalf("Save replacement generation: %v", err)
@@ -309,15 +305,11 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	if _, err := reloaded.ProviderModel(provider.ID, "current-provider-model"); err != nil {
 		t.Fatalf("current provider model missing: %v", err)
 	}
-	author, err := reloaded.Author("replacement-author")
-	if err != nil {
+	if _, err := reloaded.Author("replacement-author"); err != nil {
 		t.Fatalf("Author: %v", err)
 	}
-	if _, found := author.Models["stale-author-model"]; found {
-		t.Fatal("stale author model reappeared")
-	}
-	if _, found := author.Models["current-author-model"]; !found {
-		t.Fatal("current author model missing")
+	if _, err := os.Stat(filepath.Join(tmpDir, "authors", "replacement-author", "models")); !os.IsNotExist(err) {
+		t.Fatalf("obsolete author model tree remains, error = %v", err)
 	}
 	if _, err := os.Stat(filepath.Join(tmpDir, "notes.txt")); err != nil {
 		t.Fatalf("unmanaged root file was removed: %v", err)
@@ -365,14 +357,14 @@ name: GPT-3.5 on Groq
 
 	cat, err := New(WithFS(nestedFS))
 	require.NoError(t, err)
-	assert.Equal(t, 2, len(cat.Models().List()))
+	assert.Equal(t, 2, len(testBuilderModels(cat)))
 
 	// Verify hierarchical IDs are preserved
-	model1, err := cat.FindModel("meta-llama/llama-3.1/70b")
+	model1, err := testBuilderFindModel(cat, "meta-llama/llama-3.1/70b")
 	assert.NoError(t, err)
 	assert.Equal(t, "Llama 3.1 70B", model1.Name)
 
-	model2, err := cat.FindModel("openai/gpt-3.5")
+	model2, err := testBuilderFindModel(cat, "openai/gpt-3.5")
 	assert.NoError(t, err)
 	assert.Equal(t, "GPT-3.5 on Groq", model2.Name)
 }
@@ -388,7 +380,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	// Reader 1
 	go func() {
 		for range 100 {
-			_ = len(cat.Models().List())
+			_ = len(testBuilderModels(cat))
 			_ = cat.Providers().Len()
 		}
 		done <- true
@@ -397,7 +389,7 @@ func TestCatalogConcurrentAccess(t *testing.T) {
 	// Reader 2
 	go func() {
 		for range 100 {
-			_, _ = cat.FindModel("gpt-4")
+			_, _ = testBuilderFindModel(cat, "gpt-4")
 			_, _ = cat.Provider("openai")
 		}
 		done <- true
@@ -437,7 +429,7 @@ func TestMemoryCatalog(t *testing.T) {
 	assert.NotNil(t, cat)
 
 	// Should start empty
-	assert.Equal(t, 0, len(cat.Models().List()))
+	assert.Equal(t, 0, len(testBuilderModels(cat)))
 	assert.Equal(t, 0, cat.Providers().Len())
 
 	// Add data programmatically
@@ -456,7 +448,7 @@ func TestMemoryCatalog(t *testing.T) {
 
 	// Verify data
 	assert.Equal(t, 1, cat.Providers().Len())
-	assert.Equal(t, 1, len(cat.Models().List()))
+	assert.Equal(t, 1, len(testBuilderModels(cat)))
 }
 
 // TestCatalogCopy tests deep copying of catalogs.
@@ -469,7 +461,7 @@ func TestCatalogCopy(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify copy has same data
-	assert.Equal(t, len(original.Models().List()), len(copied.Models().List()))
+	assert.Equal(t, len(testBuilderModels(original)), len(testBuilderModels(copied)))
 	assert.Equal(t, original.Providers().Len(), copied.Providers().Len())
 
 	// Modify original by adding a model to an existing provider
@@ -486,7 +478,7 @@ func TestCatalogCopy(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Copy should not be affected
-	assert.Equal(t, len(original.Models().List())-1, len(copied.Models().List()))
+	assert.Equal(t, len(testBuilderModels(original))-1, len(testBuilderModels(copied)))
 }
 
 // BenchmarkCatalogLoad benchmarks loading catalogs.
@@ -505,7 +497,7 @@ func BenchmarkCatalogWalk(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = len(cat.Models().List())
+		_ = len(testBuilderModels(cat))
 	}
 }
 

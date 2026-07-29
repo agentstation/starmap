@@ -67,10 +67,6 @@ when API keys are configured.`,
 	rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "output format: table, json, yaml, wide")
 	rootCmd.PersistentFlags().StringVar(&a.config.LogLevel, "log-level", "", "log level: trace, debug, info, warn, error (overrides -v/-q)")
 
-	// Add --format and --fmt as aliases for --output
-	rootCmd.PersistentFlags().StringVar(&a.config.Output, "fmt", "", "alias for --output")
-	rootCmd.PersistentFlags().StringVar(&a.config.Output, "format", "", "alias for --output")
-
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
 

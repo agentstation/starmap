@@ -111,41 +111,6 @@ func validateModelConsistency(app application.Application, verbose bool) error {
 		}
 	}
 
-	// Also validate models from authors
-	for _, author := range cat.Authors().List() {
-		if author.Models == nil {
-			continue
-		}
-
-		for _, model := range author.Models {
-			totalModels++
-
-			// Check required fields
-			if model.ID == "" {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model in author '%s' missing required field 'id'", author.ID))
-				continue
-			}
-
-			if model.Name == "" {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model %s missing required field 'name'", model.ID))
-			}
-
-			// Check author references if specified
-			for _, modelAuthor := range model.Authors {
-				if _, found := cat.Authors().Resolve(modelAuthor.ID); !found {
-					validationErrors = append(validationErrors,
-						fmt.Sprintf("model %s references unknown author: %s", model.ID, modelAuthor.ID))
-				}
-			}
-
-			if verbose {
-				fmt.Printf("  %s Validated model: %s (from author %s)\n", emoji.Success, model.Name, author.ID)
-			}
-		}
-	}
-
 	if len(validationErrors) > 0 {
 		for _, err := range validationErrors {
 			fmt.Printf("  %s %s\n", emoji.Error, err)

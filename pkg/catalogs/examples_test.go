@@ -38,7 +38,7 @@ func Example() {
 	}
 
 	// List all models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Found %d models\n", len(models))
 	// Output: Found 1 models
 }
@@ -56,7 +56,7 @@ func Example_embeddedCatalog() {
 	}
 
 	// Access pre-loaded models
-	models := catalog.Models().List()
+	models := catalog.Definitions()
 	fmt.Printf("Embedded catalog has %d+ models\n", len(models))
 
 	// Find a specific model
@@ -148,7 +148,7 @@ func Example_mergeCatalogs() {
 		log.Fatal(err)
 	}
 
-	model, _ := base.FindModel("model-1")
+	model, _ := base.ProviderModel("test", "model-1")
 	fmt.Printf("Model name: %s\n", model.Name)
 	// Output: Model name: Model One Enhanced
 }
@@ -180,21 +180,21 @@ func Example_mergeStrategies() {
 	cat1, _ := base.Copy()
 	cat1.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeAppendOnly))
 
-	m1, _ := cat1.FindModel("m1")
+	m1, _ := cat1.ProviderModel("test", "m1")
 	fmt.Printf("AppendOnly - m1: %s\n", m1.Name) // Original
 
 	// Example 2: Replace all
 	cat2, _ := base.Copy()
 	cat2.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeReplaceAll))
 
-	m1, _ = cat2.FindModel("m1")
+	m1, _ = cat2.ProviderModel("test", "m1")
 	fmt.Printf("ReplaceAll - m1: %s\n", m1.Name) // Updated
 
 	// Example 3: Enrich empty (smart merge)
 	cat3, _ := base.Copy()
 	cat3.MergeWith(updates, catalogs.WithStrategy(catalogs.MergeEnrichEmpty))
 
-	m1, _ = cat3.FindModel("m1")
+	m1, _ = cat3.ProviderModel("test", "m1")
 	fmt.Printf("EnrichEmpty - m1: %s\n", m1.Name) // Updated
 }
 
@@ -232,7 +232,10 @@ func Example_concurrentAccess() {
 				done <- true
 				return
 			default:
-				_ = catalog.Models().List()
+				models, _ := catalog.ProviderModels("test-provider")
+				if models != nil {
+					_ = models.List()
+				}
 				time.Sleep(10 * time.Millisecond)
 			}
 		}
@@ -242,7 +245,8 @@ func Example_concurrentAccess() {
 	<-done
 	<-done
 
-	fmt.Printf("Created %d models concurrently\n", len(catalog.Models().List()))
+	models, _ := catalog.ProviderModels("test-provider")
+	fmt.Printf("Created %d models concurrently\n", len(models.List()))
 }
 
 // Example_providerCapabilities demonstrates working with provider features.
@@ -274,12 +278,12 @@ func Example_providerCapabilities() {
 
 // Example_modelFiltering demonstrates filtering models.
 func Example_modelFiltering() {
-	catalog, _ := catalogs.New(catalogs.WithEmbedded())
+	builder, _ := catalogs.New(catalogs.WithEmbedded())
+	catalog, _ := builder.Build()
 
-	// Get all models for a specific provider
-	// In practice, models would be linked to providers via naming convention or metadata
-	var gptModels []catalogs.Model
-	for _, model := range catalog.Models().List() {
+	// Filter immutable provider-independent definitions.
+	var gptModels []catalogs.ModelDefinition
+	for _, model := range catalog.Definitions() {
 		if len(model.ID) > 3 && model.ID[:3] == "gpt" {
 			gptModels = append(gptModels, model)
 		}
@@ -287,12 +291,11 @@ func Example_modelFiltering() {
 	fmt.Printf("Found %d GPT models\n", len(gptModels))
 
 	// Filter by features
-	var visionModels []catalogs.Model
-	for _, model := range catalog.Models().List() {
-		if model.Features != nil {
-			if slices.Contains(model.Features.Modalities.Input, "image") {
-				visionModels = append(visionModels, model)
-			}
+	var visionModels []catalogs.ModelDefinition
+	for _, model := range catalog.Definitions() {
+		if model.Capabilities.Features != nil &&
+			slices.Contains(model.Capabilities.Features.Modalities.Input, "image") {
+			visionModels = append(visionModels, model)
 		}
 	}
 	fmt.Printf("Found %d models with vision\n", len(visionModels))
@@ -332,8 +335,10 @@ func Example_catalogCopy() {
 	_ = copy.SetProvider(copiedProvider)
 
 	// Original is unchanged
-	fmt.Printf("Original has %d models\n", len(original.Models().List()))
-	fmt.Printf("Copy has %d models\n", len(copy.Models().List()))
+	originalModels, _ := original.ProviderModels("test")
+	copyModels, _ := copy.ProviderModels("test")
+	fmt.Printf("Original has %d models\n", len(originalModels.List()))
+	fmt.Printf("Copy has %d models\n", len(copyModels.List()))
 	// Output:
 	// Original has 1 models
 	// Copy has 2 models

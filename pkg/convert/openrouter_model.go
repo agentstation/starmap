@@ -94,8 +94,8 @@ func ToOpenRouterModel(m *catalogs.Model) OpenRouterModel {
 			Image:             convertOperationCost(getOperationCost(m.Pricing, "image")),
 			WebSearch:         convertOperationCost(getOperationCost(m.Pricing, "web_search")),
 			InternalReasoning: convertTokenCost(getTokenCost(m.Pricing, "reasoning")),
-			InputCacheRead:    convertCacheCost(getCacheCost(m.Pricing), "read"),
-			InputCacheWrite:   convertCacheCost(getCacheCost(m.Pricing), "write"),
+			InputCacheRead:    convertTokenCost(getCacheCost(m.Pricing, "read")),
+			InputCacheWrite:   convertTokenCost(getCacheCost(m.Pricing, "write")),
 		}
 	} else {
 		// Default to all free if no pricing info
@@ -244,11 +244,18 @@ func getOperationCost(pricing *catalogs.ModelPricing, costType string) *float64 
 	}
 }
 
-func getCacheCost(pricing *catalogs.ModelPricing) *catalogs.ModelTokenCachePricing {
+func getCacheCost(pricing *catalogs.ModelPricing, operation string) *catalogs.ModelTokenCost {
 	if pricing == nil || pricing.Tokens == nil {
 		return nil
 	}
-	return pricing.Tokens.Cache
+	switch operation {
+	case "read":
+		return pricing.Tokens.CacheRead
+	case "write":
+		return pricing.Tokens.CacheWrite
+	default:
+		return nil
+	}
 }
 
 func convertModalities(modalities []catalogs.ModelModality) []string {
@@ -295,19 +302,4 @@ func convertOperationCost(cost *float64) string {
 		return "0"
 	}
 	return fmt.Sprintf("%.10f", *cost)
-}
-
-func convertCacheCost(cache *catalogs.ModelTokenCachePricing, operation string) string {
-	if cache == nil {
-		return "0"
-	}
-
-	switch operation {
-	case "read":
-		return convertTokenCost(cache.Read)
-	case "write":
-		return convertTokenCost(cache.Write)
-	default:
-		return "0"
-	}
 }

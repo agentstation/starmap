@@ -122,15 +122,16 @@ func showModelHistory(
 }
 
 func resolveHistoryProvider(
-	catalog catalogs.Reader,
+	catalog *catalogs.Catalog,
 	requested catalogs.ProviderID,
 	modelID string,
 ) (catalogs.ProviderID, error) {
 	if requested != "" {
-		if _, err := catalog.ProviderModel(requested, modelID); err != nil {
+		offering, err := catalog.Offering(requested, catalogs.ProviderModelID(modelID))
+		if err != nil {
 			return "", err
 		}
-		return requested, nil
+		return offering.ProviderID, nil
 	}
 
 	var matches []catalogs.ProviderID

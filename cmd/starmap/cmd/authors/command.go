@@ -81,7 +81,15 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 		for i := range filtered {
 			authorPointers[i] = &filtered[i]
 		}
-		tableData := table.AuthorsToTableData(authorPointers)
+		modelCounts := make(map[catalogs.AuthorID]int, len(filtered))
+		for _, author := range filtered {
+			models, modelsErr := cat.AuthorModels(author.ID)
+			if modelsErr != nil {
+				return modelsErr
+			}
+			modelCounts[author.ID] = len(models)
+		}
+		tableData := table.AuthorsToTableData(authorPointers, modelCounts)
 		outputData = format.Data{
 			Headers:         tableData.Headers,
 			Rows:            tableData.Rows,

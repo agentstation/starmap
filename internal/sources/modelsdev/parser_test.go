@@ -347,12 +347,11 @@ func TestModelToStarmapModelPreservesCurrentModelsDevFields(t *testing.T) {
 	if model.Pricing.Tokens.Reasoning == nil || model.Pricing.Tokens.Reasoning.Per1M != reasoningCost {
 		t.Fatalf("reasoning pricing = %#v, want %v", model.Pricing.Tokens.Reasoning, reasoningCost)
 	}
-	if model.Pricing.Tokens.Cache == nil ||
-		model.Pricing.Tokens.Cache.Read == nil ||
-		model.Pricing.Tokens.Cache.Read.Per1M != cacheReadCost ||
-		model.Pricing.Tokens.Cache.Write == nil ||
-		model.Pricing.Tokens.Cache.Write.Per1M != cacheWriteCost {
-		t.Fatalf("cache pricing = %#v", model.Pricing.Tokens.Cache)
+	if model.Pricing.Tokens.CacheRead == nil ||
+		model.Pricing.Tokens.CacheRead.Per1M != cacheReadCost ||
+		model.Pricing.Tokens.CacheWrite == nil ||
+		model.Pricing.Tokens.CacheWrite.Per1M != cacheWriteCost {
+		t.Fatalf("cache pricing = %#v", model.Pricing.Tokens)
 	}
 	if model.Pricing.Operations == nil ||
 		model.Pricing.Operations.AudioInput == nil ||
@@ -390,9 +389,8 @@ func TestModelToStarmapModelPreservesCurrentModelsDevFields(t *testing.T) {
 		fastMode.Pricing.Tokens == nil ||
 		fastMode.Pricing.Tokens.Input == nil ||
 		fastMode.Pricing.Tokens.Input.Per1M != modeInputCost ||
-		fastMode.Pricing.Tokens.Cache == nil ||
-		fastMode.Pricing.Tokens.Cache.Write == nil ||
-		fastMode.Pricing.Tokens.Cache.Write.Per1M != modeCacheWriteCost {
+		fastMode.Pricing.Tokens.CacheWrite == nil ||
+		fastMode.Pricing.Tokens.CacheWrite.Per1M != modeCacheWriteCost {
 		t.Fatalf("fast mode pricing = %#v", fastMode.Pricing)
 	}
 	if fastMode.Provider == nil ||

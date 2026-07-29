@@ -120,40 +120,6 @@ func (cat *Builder) saveTo(basePath string) error {
 		}
 	}
 
-	// Save author models under authors/<author>/models/<model>.yaml
-	// These are denormalized views - only save non-hierarchical model IDs
-	for _, author := range cat.authors.List() {
-		if author.Models == nil {
-			continue
-		}
-
-		for _, model := range author.Models {
-			// Skip hierarchical models (contain "/" in ID)
-			// These are provider-specific (e.g., "meta-llama/llama-3" from Groq)
-			// and should only exist in provider catalogs
-			if strings.Contains(model.ID, "/") {
-				logging.Debug().
-					Str("model_id", model.ID).
-					Str("author", string(author.ID)).
-					Msg("Skipping hierarchical model for author save")
-				continue
-			}
-
-			// Simple ID -> authors/<author>/models/<model>.yaml
-			modelPath := filepath.Join("authors", string(author.ID), "models", model.ID+".yaml")
-
-			// Use FormatYAML for nicely formatted output with comments
-			formatted, err := model.EncodeYAML()
-			if err != nil {
-				return err
-			}
-			data := []byte(formatted)
-			if err := writeFile(modelPath, data); err != nil {
-				return errors.WrapIO("write", "model "+model.ID, err)
-			}
-		}
-	}
-
 	return nil
 }
 

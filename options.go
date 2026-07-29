@@ -31,8 +31,7 @@ type options struct {
 	// durable generation store required by every non-dry mutation path
 	catalogStore catalogstore.Store
 
-	// embedded catalog
-	embeddedCatalogEnabled        bool
+	// embedded bootstrap policy
 	embeddedBootstrapMaxAge       time.Duration
 	embeddedBootstrapMaxSizeBytes int64
 }
@@ -42,7 +41,6 @@ func defaults() *options {
 		updateFunc:                    nil,   // Default to pipeline-based updates
 		catalogPath:                   "",    // Default to no filesystem workspace
 		catalogStore:                  nil,   // Mutation requires an explicit writable store
-		embeddedCatalogEnabled:        false, // Default to no embedded catalog
 		embeddedBootstrapMaxAge:       0,     // Disabled until explicitly configured
 		embeddedBootstrapMaxSizeBytes: 0,     // Disabled until explicitly configured
 		remoteServerURL:               nil,   // Default to no remote server
@@ -147,16 +145,6 @@ func WithUpdateFunc(fn UpdateFunc) Option {
 func WithCatalogPath(path string) Option {
 	return func(o *options) error {
 		o.catalogPath = path
-		return nil
-	}
-}
-
-// WithEmbeddedCatalog configures whether to use an embedded catalog.
-// It defaults to false. A configured workspace remains the local observation;
-// the embedded catalog is its verified fallback when the workspace is absent.
-func WithEmbeddedCatalog() Option {
-	return func(o *options) error {
-		o.embeddedCatalogEnabled = true
 		return nil
 	}
 }

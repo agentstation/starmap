@@ -21,9 +21,8 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			Availability:    OfferingAvailabilityAvailable,
 			Regions:         []string{"us-east", "eu-west"},
 			Endpoint: ProviderOfferingEndpoint{
-				Type:    EndpointTypeOpenAI,
-				BaseURL: "https://a.example/v1",
-				Path:    "/chat/completions",
+				Type: EndpointTypeOpenAI,
+				URL:  "https://a.example/v1/chat/completions",
 			},
 			Lifecycle: OfferingLifecycleActive,
 			Modes: map[string]ProviderOfferingMode{
@@ -44,9 +43,8 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			Availability:    OfferingAvailabilityRestricted,
 			Regions:         []string{"us-central"},
 			Endpoint: ProviderOfferingEndpoint{
-				Type:    EndpointTypeAnthropic,
-				BaseURL: "https://b.example",
-				Path:    "/messages",
+				Type: EndpointTypeAnthropic,
+				URL:  "https://b.example/messages",
 			},
 			Lifecycle: OfferingLifecyclePreview,
 			Modes: map[string]ProviderOfferingMode{

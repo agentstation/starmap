@@ -170,7 +170,7 @@ func (a *App) Starmap(opts ...starmap.Option) (*starmap.Client, error) {
 	return sm, nil
 }
 
-// Catalog returns the current structurally read-only snapshot from the starmap instance.
+// Catalog returns the current immutable catalog from the starmap instance.
 // This is a convenience method that handles the starmap initialization
 // and catalog retrieval in one call.
 //
@@ -242,10 +242,6 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 	}
 	opts = append(opts, starmap.WithCatalogPath(catalogPath))
 
-	// Add embedded catalog if configured
-	if a.config.UseEmbeddedCatalog {
-		opts = append(opts, starmap.WithEmbeddedCatalog())
-	}
 	if a.config.EmbeddedBootstrapMaxAge > 0 {
 		opts = append(opts, starmap.WithEmbeddedBootstrapMaxAge(a.config.EmbeddedBootstrapMaxAge))
 	}

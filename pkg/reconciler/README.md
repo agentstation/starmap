@@ -167,7 +167,7 @@ func WithStrategy(strategy Strategy) Option
 WithStrategy sets the merge strategy.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L29-L36>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L28-L35>)
 
 Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow Strategy, authority.Reader, Source, and Enhancer interfaces.
 
@@ -178,7 +178,7 @@ type Reconciler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L39>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L38>)
 
 ```go
 func New(opts ...Option) (*Reconciler, error)
@@ -187,7 +187,7 @@ func New(opts ...Option) (*Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Reconciler.Sources"></a>
-### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L77>)
+### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L76>)
 
 ```go
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error)

@@ -212,16 +212,16 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	// Check merged models. The provider API is the primary source, so
 	// models.dev/local data can enrich provider-returned models but cannot add
 	// models that the provider API did not return.
-	models := result.Catalog.Models().List()
+	models := mustProviderModels(t, result.Catalog, "test-provider")
 	if len(models) != 2 {
 		t.Errorf("Expected 2 primary models after reconciliation, got %d", len(models))
 	}
-	if _, err := result.Catalog.FindModel("claude-3"); err == nil {
+	if _, err := result.Catalog.ProviderModel("test-provider", "claude-3"); err == nil {
 		t.Error("Expected claude-3 to be excluded because it is not in the primary provider API source")
 	}
 
 	// Verify GPT-4 was properly merged
-	gpt4, err := result.Catalog.FindModel("gpt-4")
+	gpt4, err := result.Catalog.ProviderModel("test-provider", "gpt-4")
 	if err != nil {
 		t.Fatal("Expected gpt-4 to exist after reconciliation")
 	}
@@ -594,7 +594,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 			}
 
 			// Debug: Check what's in the result catalog
-			allModels := result.Catalog.Models().List()
+			allModels := mustProviderModels(t, result.Catalog, "test-provider")
 			t.Logf("Total models in result catalog: %d", len(allModels))
 			for _, m := range allModels {
 				t.Logf("  Model: ID=%s, Name=%s", m.ID, m.Name)
@@ -611,7 +611,7 @@ func TestIntegrationWithDifferentStrategies(t *testing.T) {
 				t.Logf("  Provider: ID=%s, Models=%d", p.ID, modelCount)
 			}
 
-			model, err := result.Catalog.FindModel("model-1")
+			model, err := result.Catalog.ProviderModel("test-provider", "model-1")
 			if err != nil {
 				t.Fatalf("Expected model-1 to exist, got error: %v", err)
 			}

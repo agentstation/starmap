@@ -17,7 +17,7 @@ make verify
 - `go vet ./...`
 - exact pinned `golangci-lint` verification
 - critical seam coverage thresholds
-- `make docs-check`
+- `make docs-check` (generated Go documentation and embedded OpenAPI schemas)
 - `git diff --check`
 - binary build plus local CLI smoke checks
 
@@ -52,8 +52,6 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 
 | Module | Minimum |
 | --- | ---: |
-| `internal/attribution` | 85% |
-| `internal/attribution/matcher` | 75% |
 | `internal/catalog/pipeline` | 70% |
 | `internal/catalog/query` | 75% |
 | `internal/providers/clients` | 80% |
@@ -70,6 +68,11 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `pkg/errors` | 80% |
 | `pkg/reconciler` | 75% |
 | `pkg/sources` | 35% |
+
+Author membership is derived while building the immutable catalog and is
+covered through the `pkg/catalogs` gate plus its behavior-focused derivation
+tests. It has no separate package threshold because there is no separate
+runtime attribution module.
 
 Raise these thresholds when a module gets stronger tests. Do not lower them to pass a change without documenting the reason.
 
