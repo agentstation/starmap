@@ -1,0 +1,15 @@
+# llama-guard-3-8b - Llama Guard 3 8B
+id: llama-guard-3-8b
+name: Llama Guard 3 8B
+authors:
+- id: meta
+  name: meta
+
+# Model metadata
+metadata:
+  release_date: 2024-07-23
+  open_weights: true
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

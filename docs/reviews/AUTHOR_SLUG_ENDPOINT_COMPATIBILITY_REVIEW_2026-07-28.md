@@ -215,14 +215,22 @@ catalog types remain provider-neutral.
 The P5 review found 121 deleted author-model IDs without an exact provider-model
 ID: 32 alias/content overlaps, 25 models.dev-only records, and 64 presumed stale
 orphans. PR #53's terminal disposition is superseded for the authored-model
-corpus:
+corpus.
 
-- 32 alias/content overlaps are reviewed as identity/alias evidence and merged
-  into one canonical author model where proven;
-- 25 models.dev-only records may remain authored models without endpoints when
-  current authorship and model evidence validate them;
-- 64 presumed orphans are individually retained, corrected, or rejected with
-  evidence rather than being restored blindly.
+The exact P5.9 review retained all 322 records as authored/history records. Each
+record has a machine-readable disposition in
+`P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml`. Retention does not claim current
+provider availability:
+
+- 201 records have at least one exact current provider model ID;
+- 121 records do not and therefore produce no endpoint until a provider serving
+  record links to them;
+- all 30 records that lacked inline authors received the author named by their
+  reviewed path;
+- two records whose inline author contradicted their old path were moved from
+  Alibaba to DeepSeek and Qwen respectively; and
+- every author model was stripped of provider status, price, limits, modes, and
+  provider extensions.
 
 No author model manufactures a provider endpoint. An endpoint exists only when
 a provider serving record explicitly links to that author model.
