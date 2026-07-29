@@ -2,9 +2,9 @@
 
 Last updated: 2026-07-28
 
-Status: `IN_PROGRESS` — P0–P4 and P5.1–P5.7 are complete. P5.8 is the sole
-active task: the exact material commit is locally verified; pass the protected
-phase PR before P6 begins.
+Status: `IN_PROGRESS` — P0–P5 and P6.1 are complete. P6.2 is the sole active
+task: remove acquisition implementation dependencies from the read-only root
+library and enforce its compile budget in CI.
 
 ## Mission
 
@@ -50,6 +50,10 @@ This plan is the durable execution record.
   [`reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md`](reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md)
 - P5 catalog read-model outcome review SHA-256:
   `974522d8a360302f9abfd12ef01385dc23510b31f86c50141a701f5095f6da1e`
+- P6 Go package graph review:
+  [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md)
+- P6 Go package graph review SHA-256:
+  `4207b43d0f828d8d34830314b68512af19e5068beb9a57d90f742f7205085e26`
 - Reviewed protected-main baseline:
   `9508ee7866e4683e001e7ad153319d348433045d`
 - Historical pre-control-plane comparison:
@@ -472,15 +476,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-read-model-simplification`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition`
 - Branch:
-  `codex/catalog-read-model-simplification`
+  `codex/starmap-library-composition`
 - Base:
-  `origin/main@9609f4f4a74281a7f9692a97cc4926df5978d754`
+  `origin/main@76dd317810815604b6c796814bce5b8887aaadd0`
 
-This worktree contains the P5 persisted-model and derived-read-view
-simplification. It was created from the exact protected main produced by
-merged PR #52 before the clean P3 worktree and local branch were removed.
+This worktree contains the P6 Go-library composition work. It was created from
+the exact protected main produced by merged PR #53 before the clean P5 worktree
+and local branch were removed.
 
 ### Provider expansion worktree
 
@@ -553,7 +557,7 @@ Live state inspected 2026-07-28.
 | [#50](https://github.com/agentstation/starmap/pull/50) | `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | P3.6a/P3.6b/P3.8 commit-point and atomic-projection hotfix merged as `1dc811b5` | Final ledger head passed exact local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; F-003/F-031 and P3.6b are closed; remote/local branch and worktree are removed |
 | [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@7454e3b8` | `DONE` | P4 authority, provenance, presence, and source-resilience phase merged as `60f0cd3c` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree were removed before the remaining P3 lifecycle started |
 | [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | P3 human-workspace lifecycle and explicit legacy-layout migration merged as `9609f4f4` | Exact final head passed uninterrupted local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely |
-| [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@fadccebf` | `IN_PROGRESS` | P5 single persisted model and derived immutable read views | Material and ledger heads passed exact local verification and current govulncheck; live-PR ledger head must repeat exact local gates, then pass Verification Gate, Security & Reliability, strict protection readback, and review-thread inspection before the protected merge pause |
+| [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@94157b42` | `DONE` | P5 single persisted model and derived immutable read views merged as `76dd3178` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6 |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -577,8 +581,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
 | P3 | `DONE` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
-| P5 | `IN_PROGRESS` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
-| P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
+| P5 | `DONE` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
+| P6 | `IN_PROGRESS` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
 | P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
 | P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
@@ -706,14 +710,14 @@ compile and performance baselines must also be green.
 | P5.5 | `DONE` | Derive author membership | Provider-backed author attribution is deterministic without author model copies; the 121 non-provider records receive the reviewed 32/25/64 terminal disposition in `docs/reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md` |
 | P5.6 | `DONE` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
 | P5.7 | `DONE` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
-| P5.8 | `IN_PROGRESS` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
+| P5.8 | `DONE` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
 
 ## P6 — Deepen Go Library Composition
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P6.1 | `PENDING` | Map the package graph | Each public package has a named consumer and role; import cycles remain zero; growth from the protected-main baseline of 89 package directories has explicit rationale |
-| P6.2 | `PENDING` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory; a `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
+| P6.1 | `DONE` | Map the package graph | [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md) names the role, production consumer, and disposition of every public/importable package; `go list` proves zero cycles; the 89→90 package change is exactly explained |
+| P6.2 | `IN_PROGRESS` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory and remove all remaining pipeline, models.dev, remote HTTP, and concrete acquisition imports from the root package; a real external `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, server, or acquisition implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
 | P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
 | P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
 | P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, `catalogscheduler` (including the inert operations projection), `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed; real operational health moves to the production-owned state named by P7.11 |
@@ -869,6 +873,11 @@ machine evidence and does not require a follow-up documentation commit.
 | F-059 | `DONE` | The second exact P5 verification run reached coverage after all tests, race, vet, performance, and lint gates passed, then found obsolete thresholds for the deleted attribution packages; verification and maintained testing guidance now follow the surviving catalog-derivation seam without weakening any live package threshold | P5.8, P10.1 |
 | F-060 | `DONE` | The final public-surface audit found generated OpenAPI still advertising the deleted `precision` field even though ordinary docs checks passed; the schemas are regenerated and `make docs-check` now reproducibly compares both embedded OpenAPI files with current Go types | P5.8, P10.1, P10.5 |
 | F-061 | `DONE` | PR #53’s first Verification Gate passed all product, race, performance, lint, and coverage checks but exposed that OpenAPI reproduction depended on a developer-only ambient `swag` binary; generation and checking now invoke the repository-pinned Swag module through Go on every environment, with a structural regression test | P5.8, P10.1 |
+| F-062 | `DONE` | Post-merge review questioned whether P5 deleted the embedded catalog; exact tree comparison proves all 611 canonical provider-model YAML files are unchanged while only the 322 duplicate author-model files were removed, and bootstrap now asserts every embedded provider YAML becomes exactly one published offering | P5.8, P6.1 |
+| F-063 | `IN_PROGRESS` | Inverting only `pkg/sources` → provider clients leaves a 244-package root closure because root still compiles pipeline, models.dev, remote HTTP, and `net/http`; P6.2/P6.3 now require one complete opt-in acquisition boundary rather than a cosmetic factory swap | P6.2–P6.3 |
+| F-064 | `PENDING` | Existing external journey goldens are parsed but not type-checked and the sketched server/remote import paths do not exist; real `GOWORK=off` consumer modules must replace this false compile evidence | P6.6, P7.1, P7.9 |
+| F-065 | `PENDING` | `(*Client).Catalog()` panics on a nil receiver while neighboring accessors define nil behavior, and storage-backed construction roots work in `context.Background`; construction needs documented nil semantics and a caller-owned cancellation path | P6.8 |
+| F-066 | `PENDING` | The 10-method `internal/application.Application` interface forces unrelated consumers and test doubles to implement dead build metadata and operational capabilities; consumer-local roles must replace the omnibus interface | P6.4 |
 
 ## Workspace Ledger
 
@@ -885,7 +894,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | PR #50 merged as `1dc811b5`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@fadccebf` | `IN_PROGRESS` | Complete P5 on a fresh phase branch, pass exact local/hosted gates, then remove the worktree/branch |
+| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
+| `starmap-library-composition` on `codex/starmap-library-composition@76dd3178` | `IN_PROGRESS` | Complete P6 on the fresh protected-main phase branch, pass exact local/hosted gates, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -1015,6 +1025,9 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P5.8 / F-052–F-060 | Exact clean material commit `c3ae6dee0e139cc5ad6f5a86d1ad9efd023bbe23` passed uninterrupted `make verify`: ordinary root `35.007s`, CLI app `12.261s`, catalogs `17.488s`, and server `13.178s`; repository race-short root `200.813s`, app `51.716s`, catalogs `32.017s`, server `55.285s`, and models.dev `67.176s`; vet; pinned lint with zero issues; all coverage floors; exact OpenAPI and generated-GoDoc checks; diff; build; 611-model catalog validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.69–11.35 ns/op`, `0 B/op`, and `0 allocs/op`. Current `govulncheck v1.6.0 ./...` found zero reachable vulnerabilities and zero vulnerabilities in imported packages; one required module contained a vulnerability in code Starmap does not call. The material P5 result is ready for its evidence-only ledger commit and protected PR lifecycle. |
 | 2026-07-28 | P5.8 | Evidence head `fadccebfd2cc6339ee949e613c156ae10b30017e` passed uninterrupted `make verify`: ordinary root `30.918s`, CLI app `10.995s`, catalogs `16.900s`, and server `11.865s`; repository race-short root `182.088s`, app `52.357s`, catalogs `32.760s`, server `56.575s`, and models.dev `67.248s`; vet; pinned lint with zero issues; all coverage, generated-schema/docs, diff, build, 611-model validation, and CLI smoke gates. `BenchmarkClientCatalog` measured `10.96–11.33 ns/op`, `0 B/op`, and `0 allocs/op`. Current exact-head `govulncheck v1.6.0 ./...` again found zero reachable vulnerabilities and zero vulnerabilities in imported packages. Explicitly pushed only `HEAD:refs/heads/codex/catalog-read-model-simplification` and opened ready protected phase PR [#53](https://github.com/agentstation/starmap/pull/53); initial [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30418323225/job/90469542726) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30418323225/job/90469542681) runs queued on that exact head. This live-PR ledger commit becomes the final candidate and must pass exact local and hosted gates before the protected merge pause. |
 | 2026-07-28 | P5.8 / F-061 | PR #53 exact head `e3fca420ae170105ae91319d360e861196864aa0` passed uninterrupted local `make verify` (ordinary root `30.698s`, app `10.521s`, catalogs `16.912s`; race root `184.851s`, app `54.286s`, catalogs `33.231s`, server `57.545s`, models.dev `69.158s`; catalog access `11.47–11.83 ns/op`, `0 B/op`, `0 allocs/op`) and current govulncheck. Hosted [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30418354846/job/90469682104) passed in `2m39s`. [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30418354846/job/90469682161) passed minimum-Go tests, ordinary/race tests, vet, performance, zero-issue lint, and every coverage floor, then failed at `make docs-check` because the new OpenAPI check required an ambient `swag` binary absent from CI. `openapi` and `openapi-check` now run `github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4` through the selected Go toolchain; the structural workflow fixture rejects ambient lookup. `make HAS_DEVBOX= openapi-check`, `make HAS_DEVBOX= docs-check`, `go test -race ./internal/ciworkflow -count=1`, and `git diff --check` pass without a Devbox-provided Swag binary. No product, schema, or runtime semantics changed. |
+| 2026-07-28 | P5.8 / P6.1 / F-061 | PR #53 exact final head `94157b42269bcb91e1cd5577817871a93ba0acd9` passed uninterrupted `make HAS_DEVBOX= verify`: ordinary root `31.010s`, CLI app `10.098s`, catalogs `16.649s`, and server `11.221s`; repository race-short root `183.271s`, app `51.668s`, catalogs `31.786s`, server `55.115s`, and models.dev `66.770s`; vet; pinned lint with zero issues; every coverage floor; self-contained OpenAPI plus generated-GoDoc checks; diff; build; 611-model validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.26–11.28 ns/op`, `0 B/op`, and `0 allocs/op`; current govulncheck found zero reachable/imported-package vulnerabilities. The same exact head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30419380178/job/90472784848) in `14m37s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30419380178/job/90472784819) in `2m32s`. Protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, stale-review dismissal, zero required approvals, and no force-push/deletion; the PR had zero reviews and zero review threads. After explicit user approval it squash-merged as `76dd317810815604b6c796814bce5b8887aaadd0`. The remote topic branch was absent; a zero tree diff and clean status were proven before removing the P5 worktree and local branch. Created fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition` on `codex/starmap-library-composition` from that exact protected-main SHA. P5 and P5.8 are DONE; P6.1 is the sole active task. |
+| 2026-07-28 | P5.8 / P6.1 / F-062 | Exact `git ls-tree` counts show 611 `internal/embedded/catalog/providers/**/models/*.yaml` files both before PR #53 (`9609f4f4`) and after its merge (`76dd3178`); `git diff --name-status` reports no change anywhere under that provider tree. The large catalog diff consists of 322 deleted `authors/*/models/*.yaml` mirror files plus the refreshed generation manifest; root `authors.yaml`, `providers.yaml`, endpoints, provenance, and all provider records remain embedded by `//go:embed catalog sources`. The corrected source and generated GoDoc now name provider-model YAML as canonical, and `make HAS_DEVBOX= docs-check` passes. `TestEmbeddedBootstrapManifestMatchesCanonicalCatalog` walks the actual embedded filesystem and requires its provider-YAML file count to equal the built immutable offering count; it passes ordinarily and under `-race` with exactly 611 of each. |
+| 2026-07-28 | P6.1 / F-063–F-066 | Accepted [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md) at SHA-256 `4207b43d0f828d8d34830314b68512af19e5068beb9a57d90f742f7205085e26`, measured from an isolated archive of protected main `76dd3178`. `go list ./...` reports 90 packages versus the P2 baseline 89: migrate/workspace/embedded-source were added and two attribution packages removed; root plus `pkg/*` remains 23 and `go list -deps ./...` proves zero cycles. Root/catalog/core-union closures are 472/147/152; root is 214 standard, 33 local, and 225 external packages and contains 1 GenAI, 64 gRPC, 21 OpenTelemetry, and 1 Gorilla WebSocket packages. A simulated provider-client-edge cut still leaves 244 packages, so P6.2/P6.3 now remove the complete acquisition implementation from root. Every public and importable command package has a named role, current consumer, and keep/delete/internalize disposition. |
 
 ## Final Definition of Done
 

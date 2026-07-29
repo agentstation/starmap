@@ -1,8 +1,11 @@
 package bootstrap
 
 import (
+	"io/fs"
+	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -33,6 +36,21 @@ func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
 	}
 	if offeringCount == 0 {
 		t.Fatal("embedded catalog published no provider offerings")
+	}
+	providerYAMLCount := 0
+	if err := fs.WalkDir(embedded.FS, "catalog/providers", func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !entry.IsDir() && strings.Contains(path, "/models/") && strings.HasSuffix(path, ".yaml") {
+			providerYAMLCount++
+		}
+		return nil
+	}); err != nil {
+		t.Fatalf("walk embedded provider YAML: %v", err)
+	}
+	if offeringCount != providerYAMLCount {
+		t.Fatalf("published offerings = %d, embedded provider-model YAML files = %d", offeringCount, providerYAMLCount)
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
