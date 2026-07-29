@@ -6,13 +6,14 @@ Status: `IN_PROGRESS` — P0–P7 are complete. The public embeddable server,
 reactive remote subscriber, complete external consumer matrix, transport
 failure matrix, distinct production-health surfaces, OpenRouter-compatible
 model/endpoint adapter, and pure-Go/static release contract are real. PR #55
-merged as `5e0eb9bd`; P8.4 is the sole active task after P8.9 removed
+merged as `5e0eb9bd`; P8.5 is the sole active task after P8.9 removed
 Starmap-owned relational storage, P8.10 made the external adapter contract
 executable, P8.11 made conditional S3-compatible storage production-real, and
 P8.12 proved explicit filesystem/object server compositions end to end.
 P8.1–P8.2 now enforce the Go file-size policy and removed the hard-limit test
-file, while P8.3 split both provider clients by real concepts and dispositioned
-every production file from the large-file review set.
+file, P8.3 split both provider clients by real concepts and dispositioned every
+production file from the large-file review set, and P8.4 removed or justified
+the remaining package, identifier, and filename stutter.
 
 ## Mission
 
@@ -90,6 +91,10 @@ This plan is the durable execution record.
   [`reviews/P8_PRODUCTION_FILE_MODULARITY_REVIEW_2026-07-29.md`](reviews/P8_PRODUCTION_FILE_MODULARITY_REVIEW_2026-07-29.md)
 - P8 production-file modularity review SHA-256:
   `c6ef036c2fb5013e3cfe9c593a0ef33438f9ff953d70ba38c55f2ba46c0fbb8a`
+- P8 Go naming and package-family audit:
+  [`reviews/P8_GO_NAMING_AUDIT_2026-07-29.md`](reviews/P8_GO_NAMING_AUDIT_2026-07-29.md)
+- P8 Go naming and package-family audit SHA-256:
+  `d9f5dc37c1544cca5d8364874d70f77a9a40a0067e28d30c6784601a276f4374`
 - Remote transport failure matrix:
   [`reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md`](reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md)
 - Remote transport failure matrix SHA-256:
@@ -890,8 +895,8 @@ compile and performance baselines must also be green.
 | P8.1 | `DONE` | Add file-size verification | CI lists >1000, requires reviewed >1500 rationale, and fails every repository-authored file >=2000 |
 | P8.2 | `DONE` | Split current hard-limit test | `pkg/reconciler/merger_test.go` is divided by behavior with no duplicated fixture machinery |
 | P8.3 | `DONE` | Review >1000 production files | Each file is split by concept or receives recorded depth/locality rationale; `pkg/differ/differ.go` (exactly 1000 lines at baseline) joins the review set; no unreviewed concern remains |
-| P8.4 | `IN_PROGRESS` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `format.Formatter`, `internal/utils/ptr`, and the seven-package `catalog*` family |
-| P8.5 | `PENDING` | Audit pockets of complexity | Cyclomatic/cognitive hot spots are mapped to domain concepts and deepened without pass-through modules |
+| P8.4 | `DONE` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `format.Formatter`, `internal/utils/ptr`, and the seven-package `catalog*` family |
+| P8.5 | `IN_PROGRESS` | Audit pockets of complexity | Cyclomatic/cognitive hot spots are mapped to domain concepts and deepened without pass-through modules |
 | P8.6 | `PENDING` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven; dead exported behavior with zero callers, including `differ.Changeset.Filter` and the inert `ApplyAdditive` strategy path, receives the same disposition |
 | P8.7 | `PENDING` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
 | P8.8 | `PENDING` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
@@ -986,7 +991,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-019 | `DONE` | Ordered generation callbacks feed one provider-independent `catalog.published` event; per-model/generic broker events are deleted, and connection overload terminates the stream instead of silently losing a hint while reporting health | P7.2–P7.3 |
 | F-020 | `DONE` | CI now hard-fails every repository-authored Go file at 2000 lines, and the former monolithic merger test is split into shared-fixture core, provider, pricing, and provenance behavior files with a 1446-line maximum | P8.1–P8.2 |
 | F-021 | `DONE` | Both oversized provider clients are split in-package into acquisition, bounded wire decoding, and normalization/mapping concepts without a new seam; the already-deepened reconciler merger and catalog differ have explicit locality rationales, and no production file exceeds 1000 lines | P8.3 |
-| F-022 | `PENDING` | Package/file stutter and unused seams have no terminal audit | P8.4–P8.6 |
+| F-022 | `IN_PROGRESS` | Naming is terminal: stuttered provenance/format/artifact identifiers and vague files are corrected without aliases; `internal/utils/ptr`, `catalogdistribution`, and `catalogscheduler` remain deleted; five concrete `catalog*` packages have importer/dependency rationales. Complexity and residual unused-seam dispositions remain in P8.5–P8.6 | P8.4–P8.6 |
 | F-023 | `PENDING` | Release staging can erase real source lineage | P9.1 |
 | F-024 | `PENDING` | Observation timestamps churn semantic catalog generations | P9.2 |
 | F-025 | `PENDING` | Multiple distribution implementations are not wired to one consumer | P9.6 |
@@ -1081,7 +1086,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | PR #54 merged as `6993b1e7`; remote/local branch and clean worktree removed after the fresh P6.2 successor worktree was created |
 | `starmap-library-composition` on `codex/starmap-library-composition@6df1acee` | `DONE` | PR #55 merged as `5e0eb9bd`; exact-main P8 successor created first; remote/local branch and clean worktree removed |
-| `starmap-go-modularity` on `codex/starmap-go-modularity@56f3ae1c` plus P8.3 candidate | `IN_PROGRESS` | Fresh P8 successor created from the exact PR #55 protected-main merge; storage ownership, production object composition, file-size enforcement, and production large-file review are complete; P8.4 is active |
+| `starmap-go-modularity` on `codex/starmap-go-modularity@1f0316d6` plus P8.4 candidate | `IN_PROGRESS` | Fresh P8 successor created from the exact PR #55 protected-main merge; storage ownership, production object composition, file-size enforcement, production large-file review, and naming audit are complete; P8.5 is active |
 
 ## Evidence Log
 
@@ -1265,6 +1270,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P8.12 / F-108 | Kept storage selection at the deployment boundary instead of adding a shallow second server constructor: standalone `starmap serve` retains the passive filesystem default, while an embedding program explicitly validates `filesystem` versus `object`, constructs the selected store, injects it through `WithCatalogStore`, and passes the resulting client to `server.New`. The isolated `GOWORK=off` `server-storage` module rejects missing, mixed, or ambiguous path/client/bucket/prefix configurations and proves both durable modes through the public server plus reactive remote consumer: inert store construction, validated bootstrap seed, SSE publication activation, exact catalog read, joinable shutdown, store reopen, and exact generation restoration. It also proves `NewContext` performs only bounded synchronous store initialization and leaves no hidden object-network lifecycle. Five ordinary matrix repetitions passed in `40.858s`, the final race matrix in `60.206s`, and the existing CLI filesystem-default test passed ten times under race in `43.564s`. The cgo-off composition gate passes with the opt-in matrix at `333/340` packages while ordinary read-only remains `31/32` non-standard and server/remote remain `246/260` and `230/240`, with AWS/Smithy explicitly absent. Focused workflow race, generated server GoDoc, docs, shell syntax, and diff checks pass. P8.12 and F-108 are DONE; P8.1 is the sole active task. |
 | 2026-07-29 | P8.1–P8.2 / F-020 | Added `scripts/verify-go-file-sizes.sh` behind `make test-file-sizes` and the canonical repository verification. It scans every authored Go file including tests, skips standard generated markers and vendored/build output, lists every file above 1000 lines, requires an exact path plus durable rationale above 1500, and unconditionally rejects 2000 or more. A fixture-driven workflow test proves all four thresholds, generated exclusion, and that a rationale cannot waive the hard limit. Split the 2050-line current merger test by provider, pricing, and provenance behavior while retaining its shared fixtures in-package; the resulting files are 1446, 307, 220, and 109 lines with no assertion or behavior loss. The live gate reports only Google client 1255, OpenAI client 1221, OpenAI client test 1036, and merger test 1446; no file needs a >1500 rationale. Ten race repetitions of workflow fixtures and the complete reconciler suite passed in `1.804s` and `1.997s`; shell syntax and diff checks pass. P8.1, P8.2, and F-020 are DONE; P8.3 is the sole active task. |
 | 2026-07-29 | P8.3 / F-021 | Archived [`reviews/P8_PRODUCTION_FILE_MODULARITY_REVIEW_2026-07-29.md`](reviews/P8_PRODUCTION_FILE_MODULARITY_REVIEW_2026-07-29.md) at SHA-256 `c6ef036c2fb5013e3cfe9c593a0ef33438f9ff953d70ba38c55f2ba46c0fbb8a`. The 1255-line Google provider client is now 626-line lifecycle/acquisition, 80-line bounded wire-decoding, and 570-line model-normalization files; the 1221-line OpenAI-compatible client is now 558-line acquisition/conversion, 203-line wire-decoding, and 476-line configured-mapping files. Both extractions remain in their existing package and add no interface, package, constructor, exported symbol, or dependency. The 915-line reconciler merger remains one deep authority/provenance implementation after earlier policy extraction; the 978-line catalog differ remains one algorithm pending its independent P8.6 deletion test. Ten race repetitions of both provider suites passed (`1.347s` Google, `5.494s` OpenAI), followed by the complete provider tree under race (Google `1.635s`, OpenAI `6.180s`, every package green), focused vet, generated documentation, the file-size gate, and diff check. The live size gate now lists only the P8.7-owned 1036-line OpenAI test and 1446-line merger test. P8.3 and F-021 are DONE; P8.4 is the sole active task. |
+| 2026-07-29 | P8.4 / F-022 | Archived [`reviews/P8_GO_NAMING_AUDIT_2026-07-29.md`](reviews/P8_GO_NAMING_AUDIT_2026-07-29.md) at SHA-256 `d9f5dc37c1544cca5d8364874d70f77a9a40a0067e28d30c6784601a276f4374`. Prelaunch clean-break renames produce `provenance.Entry`/`File`, `format.Kind`/`Renderer`/`New`, and `catalogartifact.Bundle`; implementation files now name tracking, rendering, bundling, and the verified remote client. No aliases or deprecated wrappers remain. The three-call `internal/utils/ptr` and the unused `catalogdistribution`/`catalogscheduler` packages remain deleted. Baseline's seven public `catalog*` packages are now five real boundaries with 2/9/3/42/10 direct production importers for artifact/meta/remote/catalogs/store; collapsing them would pull release, transport, or storage dependencies into read-only consumers. Affected domain packages passed under race (remote `1.273s`, artifact `1.677s`, reconciler `1.905s`, catalogs `21.070s`, provenance `1.182s`), as did internal catalog/CLI/command packages; generated OpenAPI/GoDoc, docs check, exact stale-name scans, and diff check pass. P8.4 is DONE; P8.5 is the sole active task, while F-022 remains active through the P8.6 unused-seam gate. |
 
 ## Final Definition of Done
 

@@ -253,7 +253,7 @@ func (merger *merger) recordProviderHistory(
 		(*history)[path] = provenance.Field{Current: carried}
 		return
 	}
-	current := provenance.Provenance{
+	current := provenance.Entry{
 		Source:     source,
 		Field:      path,
 		Value:      value,

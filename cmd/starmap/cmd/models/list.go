@@ -95,7 +95,7 @@ func listModels(cmd *cobra.Command, app application, logger *zerolog.Logger, fla
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any

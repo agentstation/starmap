@@ -255,7 +255,7 @@ func TestProvenanceTracking(t *testing.T) {
 		sources.ResourceTypeModel,
 		"gpt-4",
 		"pricing.input",
-		provenance.Provenance{
+		provenance.Entry{
 			Source:    sources.ModelsDevHTTPID,
 			Field:     "pricing.input",
 			Value:     0.01,

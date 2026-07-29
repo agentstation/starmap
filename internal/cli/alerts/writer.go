@@ -15,7 +15,7 @@ import (
 // FormatWriter writes alerts in different output formats.
 type FormatWriter struct {
 	writer io.Writer
-	format format.Format
+	format format.Kind
 	config WriterConfig
 }
 
@@ -27,7 +27,7 @@ type WriterConfig struct {
 }
 
 // NewFormatWriter creates a new FormatWriter for the specified format.
-func NewFormatWriter(w io.Writer, fmt format.Format) *FormatWriter {
+func NewFormatWriter(w io.Writer, fmt format.Kind) *FormatWriter {
 	return &FormatWriter{
 		writer: w,
 		format: fmt,

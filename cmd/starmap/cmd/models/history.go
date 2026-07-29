@@ -88,7 +88,7 @@ func showModelHistory(
 
 	// Apply field filtering if requested
 	if len(fieldPatterns) > 0 {
-		filtered := make(map[string][]provenance.Provenance)
+		filtered := make(map[string][]provenance.Entry)
 		for field, provList := range fieldProvenance {
 			if table.MatchField(field, fieldPatterns) {
 				filtered[field] = provList
@@ -108,7 +108,7 @@ func showModelHistory(
 	}
 
 	// Format output
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// For structured output (JSON/YAML), return raw data
 	if globalFlags.Output != constants.FormatTable && globalFlags.Output != "" {
@@ -163,7 +163,7 @@ func providerIDStrings(providerIDs []catalogs.ProviderID) []string {
 }
 
 // printModelHistory prints detailed history information for a model.
-func printModelHistory(fieldProvenance map[string][]provenance.Provenance, formatter format.Formatter) {
+func printModelHistory(fieldProvenance map[string][]provenance.Entry, formatter format.Renderer) {
 	// Use table format
 	tableData := table.ProvenanceToTableData(fieldProvenance)
 

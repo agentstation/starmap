@@ -14,7 +14,7 @@ import (
 // Models handles the common pattern of formatting models for output.
 // This encapsulates the switch logic for different output formats.
 func Models(models []*catalogs.Model, showDetails bool, globalFlags *globals.Flags) error {
-	formatter := NewFormatter(Format(globalFlags.Output))
+	formatter := New(Kind(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
@@ -30,7 +30,7 @@ func Models(models []*catalogs.Model, showDetails bool, globalFlags *globals.Fla
 
 // Providers handles the common pattern of formatting providers for output.
 func Providers(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool, globalFlags *globals.Flags) error {
-	formatter := NewFormatter(Format(globalFlags.Output))
+	formatter := New(Kind(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
@@ -47,6 +47,6 @@ func Providers(providers []*catalogs.Provider, checker *auth.Checker, supportedM
 // Any handles the common pattern of formatting any data type for output.
 // This is useful for commands with custom data structures.
 func Any(data any, globalFlags *globals.Flags) error {
-	formatter := NewFormatter(Format(globalFlags.Output))
+	formatter := New(Kind(globalFlags.Output))
 	return formatter.Format(os.Stdout, data)
 }

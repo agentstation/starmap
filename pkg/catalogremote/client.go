@@ -1,5 +1,5 @@
-// Package catalogremote defines the versioned online Starmap-to-Starmap
-// generation protocol.
+// Package catalogremote implements the versioned online Starmap-to-Starmap
+// generation protocol and its verified client.
 package catalogremote
 
 import (

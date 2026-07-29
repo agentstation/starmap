@@ -145,7 +145,7 @@ func runCatalog(cmd *cobra.Command, args []string, app application) error {
 	if outputFormat == format.FormatTable {
 		displayValidationTable(results, verbose)
 	} else {
-		formatter := format.NewFormatter(outputFormat)
+		formatter := format.New(outputFormat)
 		if err := formatter.Format(os.Stdout, results); err != nil {
 			return err
 		}

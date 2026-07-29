@@ -14,7 +14,7 @@ import (
 
 // ProvenanceToTableData converts provenance history to table format.
 // Shows all fields and their history in a single unified table.
-func ProvenanceToTableData(fieldProvenance map[string][]provenance.Provenance) Data {
+func ProvenanceToTableData(fieldProvenance map[string][]provenance.Entry) Data {
 	var rows [][]string
 
 	// Sort fields alphabetically
@@ -32,7 +32,7 @@ func ProvenanceToTableData(fieldProvenance map[string][]provenance.Provenance) D
 		}
 
 		// Sort by timestamp (newest first)
-		sortedHistory := make([]provenance.Provenance, len(history))
+		sortedHistory := make([]provenance.Entry, len(history))
 		copy(sortedHistory, history)
 		sort.Slice(sortedHistory, func(i, j int) bool {
 			return sortedHistory[i].Timestamp.After(sortedHistory[j].Timestamp)

@@ -102,7 +102,7 @@ func listProviders(cmd *cobra.Command, app application, logger *zerolog.Logger, 
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
@@ -151,7 +151,7 @@ func showProviderDetails(cmd *cobra.Command, app application, providerID string)
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// For table output, show detailed view
 	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {

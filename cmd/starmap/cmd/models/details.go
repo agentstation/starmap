@@ -15,7 +15,7 @@ import (
 
 // printModelDetails prints detailed model information in a single comprehensive table.
 func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 
 	fmt.Printf("Model: %s\n\n", model.ID)
 

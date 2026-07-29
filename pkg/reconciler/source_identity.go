@@ -208,10 +208,10 @@ func (merger *merger) projectedModelEvidence(
 	providerID catalogs.ProviderID,
 	modelID, field string,
 	value any,
-) (provenance.Provenance, bool) {
+) (provenance.Entry, bool) {
 	catalog := merger.sourceCatalogs[sources.LocalCatalogID]
 	if catalog == nil {
-		return provenance.Provenance{}, false
+		return provenance.Entry{}, false
 	}
 	entries := catalog.Provenance().FindModelField(providerID, modelID, field)
 	if len(entries) == 0 && modelIDIsUnique(catalog, modelID) {
@@ -224,10 +224,10 @@ func (merger *merger) projectedProviderEvidence(
 	providerID catalogs.ProviderID,
 	field string,
 	value any,
-) (provenance.Provenance, bool) {
+) (provenance.Entry, bool) {
 	catalog := merger.sourceCatalogs[sources.LocalCatalogID]
 	if catalog == nil {
-		return provenance.Provenance{}, false
+		return provenance.Entry{}, false
 	}
 	return matchingCurrentEvidence(
 		catalog.Provenance().FindByField(catalogmeta.ResourceTypeProvider, string(providerID), field),
@@ -235,9 +235,9 @@ func (merger *merger) projectedProviderEvidence(
 	)
 }
 
-func matchingCurrentEvidence(entries []provenance.Provenance, value any) (provenance.Provenance, bool) {
+func matchingCurrentEvidence(entries []provenance.Entry, value any) (provenance.Entry, bool) {
 	if len(entries) == 0 {
-		return provenance.Provenance{}, false
+		return provenance.Entry{}, false
 	}
 	current := entries[0]
 	for _, entry := range entries[1:] {
@@ -246,7 +246,7 @@ func matchingCurrentEvidence(entries []provenance.Provenance, value any) (proven
 		}
 	}
 	if current.Source == "" || !semanticValueEqual(current.Value, value) {
-		return provenance.Provenance{}, false
+		return provenance.Entry{}, false
 	}
 	return current, true
 }
@@ -296,10 +296,10 @@ func modelIDIsUnique(catalog catalogs.Reader, modelID string) bool {
 func (merger *merger) rememberCarriedEvidence(
 	resource catalogmeta.ResourceType,
 	resourceID, field string,
-	evidence provenance.Provenance,
+	evidence provenance.Entry,
 ) {
 	if merger.carriedEvidence == nil {
-		merger.carriedEvidence = make(map[evidenceLocator]provenance.Provenance)
+		merger.carriedEvidence = make(map[evidenceLocator]provenance.Entry)
 	}
 	evidence.Rejections = append([]provenance.Rejection(nil), evidence.Rejections...)
 	merger.carriedEvidence[evidenceLocator{
@@ -314,7 +314,7 @@ func (merger *merger) carried(
 	resource catalogmeta.ResourceType,
 	resourceID, field string,
 	source sources.ID,
-) (provenance.Provenance, bool) {
+) (provenance.Entry, bool) {
 	evidence, ok := merger.carriedEvidence[evidenceLocator{
 		resource: resource,
 		id:       resourceID,

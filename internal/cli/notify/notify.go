@@ -163,11 +163,11 @@ func (n *Notifier) WithConfig(config Config) *Notifier {
 }
 
 // detectOutputFormat determines the output format from a string.
-func detectOutputFormat(formatStr string) format.Format {
+func detectOutputFormat(formatStr string) format.Kind {
 	if formatStr == "" || formatStr == "auto" {
 		return format.DetectFormat("")
 	}
-	return format.Format(strings.ToLower(formatStr))
+	return format.Kind(strings.ToLower(formatStr))
 }
 
 // isTerminal checks if the given writer is a terminal.

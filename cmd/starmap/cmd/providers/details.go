@@ -10,7 +10,7 @@ import (
 
 // printProviderDetails prints detailed provider information.
 func printProviderDetails(provider *catalogs.Provider) {
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 
 	fmt.Printf("Provider: %s\n\n", provider.ID)
 

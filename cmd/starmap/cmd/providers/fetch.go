@@ -119,7 +119,7 @@ func fetchProviderModels(cmd *cobra.Command, app application, providerID string,
 		}
 
 		// Format raw response
-		formatter := format.NewFormatter(format.Format(outputFormat))
+		formatter := format.New(format.Kind(outputFormat))
 
 		// Parse JSON to allow re-formatting
 		var jsonData any
@@ -192,7 +192,7 @@ func fetchProviderModels(cmd *cobra.Command, app application, providerID string,
 	}
 
 	// Format output
-	formatter := format.NewFormatter(format.Format(outputFormat))
+	formatter := format.New(format.Kind(outputFormat))
 
 	// Transform to output format
 	var outputData any
@@ -322,7 +322,7 @@ func fetchAllProviders(ctx context.Context, app application, timeout int, quiet 
 	}
 
 	// Format output
-	formatter := format.NewFormatter(format.Format(outputFormat))
+	formatter := format.New(format.Kind(outputFormat))
 
 	// Transform to output format
 	var outputData any
@@ -419,7 +419,7 @@ func fetchAllProvidersRaw(ctx context.Context, app application, validProviders [
 	}
 
 	// Format raw responses
-	formatter := format.NewFormatter(format.Format(outputFormat))
+	formatter := format.New(format.Kind(outputFormat))
 	return formatter.Format(os.Stdout, rawResponses)
 }
 

@@ -157,7 +157,7 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	// Display results based on output format (checking if JSON logging is enabled)
 	if logger.GetLevel() == zerolog.TraceLevel {
 		// Assume structured output for trace level
-		formatter := format.NewFormatter(format.FormatJSON)
+		formatter := format.New(format.FormatJSON)
 		return formatter.Format(os.Stdout, result)
 	}
 

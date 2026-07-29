@@ -45,7 +45,7 @@ func (p *Provenance) Map() provenance.Map {
 	// Return deep copy
 	result := make(provenance.Map)
 	for k, v := range p.provenance {
-		result[k] = append([]provenance.Provenance{}, v...)
+		result[k] = append([]provenance.Entry{}, v...)
 	}
 	return result
 }
@@ -59,7 +59,7 @@ func (p *Provenance) Set(m provenance.Map) {
 	// Deep copy the input
 	p.provenance = make(provenance.Map)
 	for k, v := range m {
-		p.provenance[k] = append([]provenance.Provenance{}, v...)
+		p.provenance[k] = append([]provenance.Entry{}, v...)
 	}
 }
 
@@ -96,31 +96,31 @@ func (p *Provenance) Len() int {
 
 // FindByField retrieves provenance for a specific field of a resource.
 // Returns nil if no provenance is found.
-func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Provenance {
+func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Entry {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
 	key := newKey(resourceType, resourceID, field)
 	if entries, found := p.provenance[key]; found {
 		// Return a copy to prevent external modification
-		return append([]provenance.Provenance{}, entries...)
+		return append([]provenance.Entry{}, entries...)
 	}
 	return nil
 }
 
 // FindByResource retrieves all provenance for a resource.
 // Returns a map of field names to their provenance entries.
-func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
+func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
-	result := make(map[string][]provenance.Provenance)
+	result := make(map[string][]provenance.Entry)
 	prefix := fmt.Sprintf("%s:%s:", resourceType, resourceID)
 
 	for key, entries := range p.provenance {
 		if field, found := strings.CutPrefix(key, prefix); found {
 			// Return a copy to prevent external modification
-			result[field] = append([]provenance.Provenance{}, entries...)
+			result[field] = append([]provenance.Entry{}, entries...)
 		}
 	}
 
@@ -128,7 +128,7 @@ func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resou
 }
 
 // FindModelField retrieves provenance for one field of one provider model.
-func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance {
+func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry {
 	return p.FindByField(
 		catalogmeta.ResourceTypeModel,
 		provenance.ModelResourceID(string(providerID), modelID),
@@ -137,7 +137,7 @@ func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string
 }
 
 // FindModel retrieves all provenance for one provider model.
-func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance {
+func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Entry {
 	return p.FindByResource(
 		catalogmeta.ResourceTypeModel,
 		provenance.ModelResourceID(string(providerID), modelID),
@@ -157,8 +157,8 @@ func (p *Provenance) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
-	// Wrap in ProvenanceFile structure for consistent file format
-	pf := provenance.ProvenanceFile{
+	// Wrap in the provenance file structure for a consistent file format.
+	pf := provenance.File{
 		Provenance: p.provenance,
 	}
 

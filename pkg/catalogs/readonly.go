@@ -392,16 +392,16 @@ type provenanceReader struct{ source ProvenanceReader }
 
 func (r provenanceReader) Map() provenance.Map { return r.source.Map() }
 func (r provenanceReader) Len() int            { return r.source.Len() }
-func (r provenanceReader) FindByField(resourceType catalogmeta.ResourceType, resourceID, field string) []provenance.Provenance {
+func (r provenanceReader) FindByField(resourceType catalogmeta.ResourceType, resourceID, field string) []provenance.Entry {
 	return r.source.FindByField(resourceType, resourceID, field)
 }
-func (r provenanceReader) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance {
+func (r provenanceReader) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry {
 	return r.source.FindByResource(resourceType, resourceID)
 }
-func (r provenanceReader) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance {
+func (r provenanceReader) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry {
 	return r.source.FindModelField(providerID, modelID, field)
 }
-func (r provenanceReader) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance {
+func (r provenanceReader) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Entry {
 	return r.source.FindModel(providerID, modelID)
 }
 func (r provenanceReader) FormatYAML() string { return r.source.FormatYAML() }

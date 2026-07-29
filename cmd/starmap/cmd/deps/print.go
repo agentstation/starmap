@@ -12,7 +12,7 @@ import (
 // displayResults shows dependency check results in the requested format.
 func displayResults(results *CheckResults, flags *globals.Flags) error {
 	outputFormat := format.DetectFormat(flags.Output)
-	formatter := format.NewFormatter(outputFormat)
+	formatter := format.New(outputFormat)
 
 	// For structured output (JSON/YAML), return the entire results object
 	if outputFormat == format.FormatJSON || outputFormat == format.FormatYAML {
@@ -54,7 +54,7 @@ func displaySummaryTable(results *CheckResults) error {
 		Rows:    rows,
 	}
 
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 	return formatter.Format(os.Stdout, tableData)
 }
 
@@ -143,7 +143,7 @@ func displaySourceDetails(results *CheckResults) {
 			Rows:    rows,
 		}
 
-		formatter := format.NewFormatter(format.FormatTable)
+		formatter := format.New(format.FormatTable)
 		_ = formatter.Format(os.Stdout, tableData)
 
 		// Show alternative source if available

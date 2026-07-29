@@ -332,7 +332,7 @@ func (merger *merger) mergeModelPricing(
 		confidence = merger.calculateConfidence(target.Pricing)
 	}
 	(*history)[policy.Evidence()] = provenance.Field{
-		Current: provenance.Provenance{
+		Current: provenance.Entry{
 			Field:      policy.Evidence(),
 			Value:      retained,
 			Timestamp:  time.Now(),

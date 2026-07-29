@@ -1,4 +1,4 @@
-// Package format provides formatters for command output.
+// Package format renders command output.
 package format
 
 import (
@@ -19,42 +19,42 @@ import (
 	"github.com/agentstation/starmap/internal/cli/table"
 )
 
-// Format types for output.
-type Format string
+// Kind identifies an output format.
+type Kind string
 
 const (
 	// FormatTable represents table output format.
-	FormatTable Format = "table"
+	FormatTable Kind = "table"
 	// FormatJSON represents JSON output format.
-	FormatJSON Format = "json"
+	FormatJSON Kind = "json"
 	// FormatYAML represents YAML output format.
-	FormatYAML Format = "yaml"
+	FormatYAML Kind = "yaml"
 	// FormatWide represents wide table output format.
-	FormatWide Format = "wide"
+	FormatWide Kind = "wide"
 )
 
-// Formatter interface for all output types.
-type Formatter interface {
+// Renderer writes a value in one output format.
+type Renderer interface {
 	Format(w io.Writer, data any) error
 }
 
-// FormatterFunc allows functions to implement Formatter.
-type FormatterFunc func(io.Writer, any) error
+// RendererFunc allows functions to implement Renderer.
+type RendererFunc func(io.Writer, any) error
 
-// Format implements the Formatter interface.
-func (f FormatterFunc) Format(w io.Writer, data any) error {
+// Format implements Renderer.
+func (f RendererFunc) Format(w io.Writer, data any) error {
 	return f(w, data)
 }
 
-// NewFormatter creates appropriate formatter based on format.
-func NewFormatter(format Format) Formatter {
-	switch format {
+// New returns the renderer for kind.
+func New(kind Kind) Renderer {
+	switch kind {
 	case FormatJSON:
 		return &JSONFormatter{Indent: "  "}
 	case FormatYAML:
 		return &YAMLFormatter{}
 	case FormatTable, FormatWide:
-		return &TableFormatter{Wide: format == FormatWide}
+		return &TableFormatter{Wide: kind == FormatWide}
 	default:
 		return &TableFormatter{}
 	}
@@ -177,10 +177,10 @@ type Data struct {
 }
 
 // DetectFormat auto-detects format based on terminal and environment.
-func DetectFormat(explicitFormat string) Format {
+func DetectFormat(explicitFormat string) Kind {
 	// Use explicit format if provided
 	if explicitFormat != "" {
-		return Format(strings.ToLower(explicitFormat))
+		return Kind(strings.ToLower(explicitFormat))
 	}
 
 	// Check if output is a terminal
@@ -192,9 +192,9 @@ func DetectFormat(explicitFormat string) Format {
 	return FormatJSON
 }
 
-// ParseFormat converts string to Format with validation.
-func ParseFormat(s string) (Format, error) {
-	format := Format(strings.ToLower(s))
+// ParseFormat converts a string to Kind with validation.
+func ParseFormat(s string) (Kind, error) {
+	format := Kind(strings.ToLower(s))
 	switch format {
 	case FormatTable, FormatJSON, FormatYAML, FormatWide, "":
 		return format, nil

@@ -30,7 +30,7 @@ type providerModelCandidate struct {
 type rankedDefinitionValue[T any] struct {
 	value       T
 	providerID  ProviderID
-	evidence    provenance.Provenance
+	evidence    provenance.Entry
 	hasEvidence bool
 	authority   float64
 	recordTime  utc.Time
@@ -715,7 +715,7 @@ func selectDefinitionValue[T any](
 		)
 		authorityScore := policy.Authority(evidence.Source)
 		if hasEvidence && authorityScore == 0 {
-			evidence = provenance.Provenance{}
+			evidence = provenance.Entry{}
 			hasEvidence = false
 		}
 		rankedValues = append(rankedValues, rankedDefinitionValue[T]{
@@ -754,14 +754,14 @@ func currentDefinitionEvidence(
 	model Model,
 	field string,
 	matches func(any) bool,
-) (provenance.Provenance, bool) {
+) (provenance.Entry, bool) {
 	entries := matchingProvenanceValues(reader.Provenance().FindModelField(providerID, model.ID, field), matches)
 	if len(entries) == 0 {
 		bareEntries := reader.Provenance().FindByField(catalogmeta.ResourceTypeModel, model.ID, field)
 		entries = matchingProvenanceValues(bareEntries, matches)
 	}
 	if len(entries) == 0 {
-		return provenance.Provenance{}, false
+		return provenance.Entry{}, false
 	}
 	selected := entries[0]
 	for _, candidate := range entries[1:] {
@@ -773,8 +773,8 @@ func currentDefinitionEvidence(
 	return selected, true
 }
 
-func matchingProvenanceValues(entries []provenance.Provenance, matches func(any) bool) []provenance.Provenance {
-	matched := make([]provenance.Provenance, 0, len(entries))
+func matchingProvenanceValues(entries []provenance.Entry, matches func(any) bool) []provenance.Entry {
+	matched := make([]provenance.Entry, 0, len(entries))
 	for _, entry := range entries {
 		if matches(entry.Value) {
 			matched = append(matched, entry)

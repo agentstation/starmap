@@ -101,8 +101,8 @@ type AttestationStatement struct {
 	Predicate     AttestationPredicate `json:"predicate"`
 }
 
-// Artifact is one reproducible archive and its detached attestation statement.
-type Artifact struct {
+// Bundle contains one reproducible archive and its detached attestation.
+type Bundle struct {
 	GenerationID        string
 	Filename            string
 	MediaType           string
@@ -115,16 +115,16 @@ type Artifact struct {
 // Build validates a generation and deterministically packages it for
 // distribution. Rebuilding identical generation bytes produces identical
 // archive and attestation bytes.
-func Build(generation catalogstore.Generation) (Artifact, error) {
+func Build(generation catalogstore.Generation) (Bundle, error) {
 	if err := generation.Validate(); err != nil {
-		return Artifact{}, errors.WrapResource("validate", "catalog artifact generation", generation.Manifest.GenerationID, err)
+		return Bundle{}, errors.WrapResource("validate", "catalog artifact generation", generation.Manifest.GenerationID, err)
 	}
 	if err := validateCanonicalPayload(generation.Payload); err != nil {
-		return Artifact{}, errors.WrapResource("validate", "canonical catalog artifact payload", generation.Manifest.GenerationID, err)
+		return Bundle{}, errors.WrapResource("validate", "canonical catalog artifact payload", generation.Manifest.GenerationID, err)
 	}
 	manifest, err := json.Marshal(generation.Manifest)
 	if err != nil {
-		return Artifact{}, artifactValidation("manifest", generation.Manifest.GenerationID, err.Error())
+		return Bundle{}, artifactValidation("manifest", generation.Manifest.GenerationID, err.Error())
 	}
 	descriptor := Descriptor{
 		FormatVersion:         FormatVersion,
@@ -138,7 +138,7 @@ func Build(generation catalogstore.Generation) (Artifact, error) {
 	}
 	descriptorData, err := json.Marshal(descriptor)
 	if err != nil {
-		return Artifact{}, artifactValidation("descriptor", descriptor.GenerationID, err.Error())
+		return Bundle{}, artifactValidation("descriptor", descriptor.GenerationID, err.Error())
 	}
 	archive, err := encodeArchive([]archiveMember{
 		{name: descriptorFilename, data: descriptorData},
@@ -146,7 +146,7 @@ func Build(generation catalogstore.Generation) (Artifact, error) {
 		{name: payloadFilename, data: generation.Payload},
 	})
 	if err != nil {
-		return Artifact{}, err
+		return Bundle{}, err
 	}
 	archiveChecksum := checksum(archive)
 	statement := AttestationStatement{
@@ -165,9 +165,9 @@ func Build(generation catalogstore.Generation) (Artifact, error) {
 	}
 	attestation, err := json.Marshal(statement)
 	if err != nil {
-		return Artifact{}, artifactValidation("attestation", descriptor.GenerationID, err.Error())
+		return Bundle{}, artifactValidation("attestation", descriptor.GenerationID, err.Error())
 	}
-	return Artifact{
+	return Bundle{
 		GenerationID: descriptor.GenerationID, Filename: Filename, MediaType: MediaType, Data: archive, Checksum: archiveChecksum,
 		AttestationFilename: AttestationFilename, Attestation: attestation,
 	}, nil

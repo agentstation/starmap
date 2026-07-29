@@ -824,10 +824,10 @@ func main() {
   - [func NewProvenance\(opts ...ProvenanceOption\) \*Provenance](<#NewProvenance>)
   - [func \(p \*Provenance\) Clear\(\)](<#Provenance.Clear>)
   - [func \(p \*Provenance\) EncodeYAML\(\) \(string, error\)](<#Provenance.EncodeYAML>)
-  - [func \(p \*Provenance\) FindByField\(resourceType catalogmeta.ResourceType, resourceID string, field string\) \[\]provenance.Provenance](<#Provenance.FindByField>)
-  - [func \(p \*Provenance\) FindByResource\(resourceType catalogmeta.ResourceType, resourceID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindByResource>)
-  - [func \(p \*Provenance\) FindModel\(providerID ProviderID, modelID string\) map\[string\]\[\]provenance.Provenance](<#Provenance.FindModel>)
-  - [func \(p \*Provenance\) FindModelField\(providerID ProviderID, modelID, field string\) \[\]provenance.Provenance](<#Provenance.FindModelField>)
+  - [func \(p \*Provenance\) FindByField\(resourceType catalogmeta.ResourceType, resourceID string, field string\) \[\]provenance.Entry](<#Provenance.FindByField>)
+  - [func \(p \*Provenance\) FindByResource\(resourceType catalogmeta.ResourceType, resourceID string\) map\[string\]\[\]provenance.Entry](<#Provenance.FindByResource>)
+  - [func \(p \*Provenance\) FindModel\(providerID ProviderID, modelID string\) map\[string\]\[\]provenance.Entry](<#Provenance.FindModel>)
+  - [func \(p \*Provenance\) FindModelField\(providerID ProviderID, modelID, field string\) \[\]provenance.Entry](<#Provenance.FindModelField>)
   - [func \(p \*Provenance\) FormatYAML\(\) string](<#Provenance.FormatYAML>)
   - [func \(p \*Provenance\) Len\(\) int](<#Provenance.Len>)
   - [func \(p \*Provenance\) Map\(\) provenance.Map](<#Provenance.Map>)
@@ -4240,7 +4240,7 @@ EncodeYAML returns provenance YAML or a typed parse error when evidence values c
 ### func \(\*Provenance\) [FindByField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L99>)
 
 ```go
-func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Provenance
+func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Entry
 ```
 
 FindByField retrieves provenance for a specific field of a resource. Returns nil if no provenance is found.
@@ -4249,7 +4249,7 @@ FindByField retrieves provenance for a specific field of a resource. Returns nil
 ### func \(\*Provenance\) [FindByResource](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L113>)
 
 ```go
-func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Provenance
+func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry
 ```
 
 FindByResource retrieves all provenance for a resource. Returns a map of field names to their provenance entries.
@@ -4258,7 +4258,7 @@ FindByResource retrieves all provenance for a resource. Returns a map of field n
 ### func \(\*Provenance\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L140>)
 
 ```go
-func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Provenance
+func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Entry
 ```
 
 FindModel retrieves all provenance for one provider model.
@@ -4267,7 +4267,7 @@ FindModel retrieves all provenance for one provider model.
 ### func \(\*Provenance\) [FindModelField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L131>)
 
 ```go
-func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Provenance
+func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry
 ```
 
 FindModelField retrieves provenance for one field of one provider model.
@@ -4335,10 +4335,10 @@ ProvenanceReader exposes provenance reads without mutation methods.
 type ProvenanceReader interface {
     Map() provenance.Map
     Len() int
-    FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
-    FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
-    FindModelField(ProviderID, string, string) []provenance.Provenance
-    FindModel(ProviderID, string) map[string][]provenance.Provenance
+    FindByField(catalogmeta.ResourceType, string, string) []provenance.Entry
+    FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Entry
+    FindModelField(ProviderID, string, string) []provenance.Entry
+    FindModel(ProviderID, string) map[string][]provenance.Entry
     FormatYAML() string
 }
 ```

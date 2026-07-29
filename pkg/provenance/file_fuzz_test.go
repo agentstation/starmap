@@ -7,7 +7,7 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-func FuzzYAMLDecodeNoPanic(f *testing.F) {
+func FuzzFileYAMLDecodeNoPanic(f *testing.F) {
 	f.Add([]byte(`provenance:
   model:provider%2Fmodel:Name:
   - source: providers
@@ -21,7 +21,7 @@ func FuzzYAMLDecodeNoPanic(f *testing.F) {
 		if len(data) > constants.MaxSourcePayloadBytes {
 			t.Skip()
 		}
-		var file ProvenanceFile
+		var file File
 		if err := yaml.Unmarshal(data, &file); err != nil {
 			return
 		}

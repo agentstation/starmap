@@ -70,7 +70,7 @@ func listAuthors(cmd *cobra.Command, app application, logger *zerolog.Logger, fl
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// Transform to output format
 	var outputData any
@@ -127,7 +127,7 @@ func showAuthorDetails(cmd *cobra.Command, app application, authorID string) err
 	if err != nil {
 		return err
 	}
-	formatter := format.NewFormatter(format.Format(globalFlags.Output))
+	formatter := format.New(format.Kind(globalFlags.Output))
 
 	// For table output, show detailed view
 	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {

@@ -10,7 +10,7 @@ import (
 
 // printAuthorDetails prints detailed author information.
 func printAuthorDetails(author *catalogs.Author) {
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 
 	fmt.Printf("Author: %s\n\n", author.ID)
 

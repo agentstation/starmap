@@ -17,7 +17,7 @@ import (
 )
 
 type provenanceTracker interface {
-	Track(catalogmeta.ResourceType, string, string, provenance.Provenance)
+	Track(catalogmeta.ResourceType, string, string, provenance.Entry)
 }
 
 // merger implements strategic three-way merge.
@@ -30,7 +30,7 @@ type merger struct {
 	pricingAt       time.Time
 	observations    map[sources.ID]sourceObservationEvidence
 	sourceCatalogs  map[sources.ID]*catalogs.Catalog
-	carriedEvidence map[evidenceLocator]provenance.Provenance
+	carriedEvidence map[evidenceLocator]provenance.Entry
 }
 
 type sourceObservationEvidence struct {
@@ -226,7 +226,7 @@ func (merger *merger) ModelsForProvider(providerID catalogs.ProviderID, srcs map
 			for field, fieldProv := range history {
 				key := fmt.Sprintf("models.%s.%s", modelID, field)
 				// Convert FieldProvenance to []ProvenanceInfo
-				provInfos := make([]provenance.Provenance, 1, 1+len(fieldProv.History))
+				provInfos := make([]provenance.Entry, 1, 1+len(fieldProv.History))
 				provInfos[0] = fieldProv.Current
 				provInfos = append(provInfos, fieldProv.History...)
 				allProvenance[key] = provInfos
@@ -479,7 +479,7 @@ func (merger *merger) recordModelHistory(
 		(*history)[provenancePath] = provenance.Field{Current: carried}
 		return
 	}
-	current := provenance.Provenance{
+	current := provenance.Entry{
 		Source:     source,
 		Field:      provenancePath,
 		Value:      value,

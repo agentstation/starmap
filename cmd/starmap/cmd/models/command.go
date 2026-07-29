@@ -58,7 +58,7 @@ func showModelDetails(cmd *cobra.Command, app application, modelID string) error
 			if err != nil {
 				return err
 			}
-			formatter := format.NewFormatter(format.Format(globalFlags.Output))
+			formatter := format.New(format.Kind(globalFlags.Output))
 
 			// For table output, show detailed view
 			if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {

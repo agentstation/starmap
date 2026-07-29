@@ -18,7 +18,7 @@ const (
 	wantAttestationFixtureChecksum = "sha256:b1ff6893e1270f75cacbf54e89564dd2aa7ba4991dc050e8b61b933441666a73"
 )
 
-func TestArtifactReproducibleFixtureHashes(t *testing.T) {
+func TestBundleReproducibleFixtureHashes(t *testing.T) {
 	generation := artifactFixtureGeneration(t)
 	first, err := Build(generation)
 	if err != nil {

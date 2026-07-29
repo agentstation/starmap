@@ -236,7 +236,7 @@ func hasModelsDevSource(activeSources []sources.ID) bool {
 	return false
 }
 
-func countEnrichmentUpdates(updates []differ.ModelUpdate, provenanceIndex map[catalogs.ProviderID]map[string]map[string][]provenance.Provenance) int {
+func countEnrichmentUpdates(updates []differ.ModelUpdate, provenanceIndex map[catalogs.ProviderID]map[string]map[string][]provenance.Entry) int {
 	count := 0
 	for _, update := range updates {
 		provenanceByField := provenanceIndex[update.ProviderID][update.ID]
@@ -250,7 +250,7 @@ func countEnrichmentUpdates(updates []differ.ModelUpdate, provenanceIndex map[ca
 	return count
 }
 
-func hasEnrichmentChange(update differ.ModelUpdate, provenanceByField map[string][]provenance.Provenance) bool {
+func hasEnrichmentChange(update differ.ModelUpdate, provenanceByField map[string][]provenance.Entry) bool {
 	for _, change := range update.Changes {
 		if isModelsDevSource(change.Source) && isEnrichmentField(change.Path) {
 			return true
@@ -262,8 +262,8 @@ func hasEnrichmentChange(update differ.ModelUpdate, provenanceByField map[string
 	return false
 }
 
-func indexModelProvenance(fieldProvenance provenance.Map, providerIDs map[catalogs.ProviderID]bool) map[catalogs.ProviderID]map[string]map[string][]provenance.Provenance {
-	index := make(map[catalogs.ProviderID]map[string]map[string][]provenance.Provenance)
+func indexModelProvenance(fieldProvenance provenance.Map, providerIDs map[catalogs.ProviderID]bool) map[catalogs.ProviderID]map[string]map[string][]provenance.Entry {
+	index := make(map[catalogs.ProviderID]map[string]map[string][]provenance.Entry)
 	if len(fieldProvenance) == 0 {
 		return index
 	}
@@ -274,10 +274,10 @@ func indexModelProvenance(fieldProvenance provenance.Map, providerIDs map[catalo
 			continue
 		}
 		if index[providerID] == nil {
-			index[providerID] = make(map[string]map[string][]provenance.Provenance)
+			index[providerID] = make(map[string]map[string][]provenance.Entry)
 		}
 		if index[providerID][modelID] == nil {
-			index[providerID][modelID] = make(map[string][]provenance.Provenance)
+			index[providerID][modelID] = make(map[string][]provenance.Entry)
 		}
 		index[providerID][modelID][field] = entries
 	}
@@ -323,7 +323,7 @@ func splitProviderScopedModelKey(modelKey string, providerIDs map[catalogs.Provi
 	return "", modelKey
 }
 
-func provenanceIsModelsDev(fields map[string][]provenance.Provenance, changePath string) bool {
+func provenanceIsModelsDev(fields map[string][]provenance.Entry, changePath string) bool {
 	if len(fields) == 0 {
 		return false
 	}

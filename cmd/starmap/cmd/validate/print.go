@@ -13,7 +13,7 @@ func displayValidationTable(results []ValidationResult, verbose bool) {
 		return
 	}
 
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 
 	headers := []string{"Component", "Status", "Issues"}
 	if verbose {

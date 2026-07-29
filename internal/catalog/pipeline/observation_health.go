@@ -90,7 +90,7 @@ func sourceAttributedModelIDs(
 	return models
 }
 
-func currentProvenanceSource(entries []provenance.Provenance) sources.ID {
+func currentProvenanceSource(entries []provenance.Entry) sources.ID {
 	if len(entries) == 0 {
 		return ""
 	}

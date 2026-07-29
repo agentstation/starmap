@@ -114,7 +114,7 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 			displayTestTable(results, verbose)
 		} else {
 			// For non-table formats, output the raw results
-			formatter := format.NewFormatter(detectedFormat)
+			formatter := format.New(detectedFormat)
 			return formatter.Format(os.Stdout, results)
 		}
 	}
@@ -436,7 +436,7 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		if outputFormat == format.FormatTable {
 			displayTestTable([]testResult{result}, verbose)
 		} else {
-			formatter := format.NewFormatter(outputFormat)
+			formatter := format.New(outputFormat)
 			_ = formatter.Format(os.Stdout, []testResult{result})
 		}
 
@@ -452,7 +452,7 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 	if outputFormat == format.FormatTable {
 		displayTestTable([]testResult{result}, verbose)
 	} else {
-		formatter := format.NewFormatter(outputFormat)
+		formatter := format.New(outputFormat)
 		return formatter.Format(os.Stdout, []testResult{result})
 	}
 
@@ -470,7 +470,7 @@ func displayTestTableWithTitle(results []testResult, verbose bool, showTitle boo
 		return
 	}
 
-	formatter := format.NewFormatter(format.FormatTable)
+	formatter := format.New(format.FormatTable)
 
 	// Prepare table data
 	headers := []string{"Provider", "Status", "Response Time", "Models"}

@@ -21,7 +21,7 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 )
 
-func TestRemoteClientDefaultHTTPTimeout(t *testing.T) {
+func TestClientDefaultHTTPTimeout(t *testing.T) {
 	client, err := NewClient("https://starmap.example.com/api/v1", nil, catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)

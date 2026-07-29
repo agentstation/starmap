@@ -150,7 +150,7 @@ func (cat *Builder) loadProvenanceYAML() error {
 		return errors.WrapIO("read", "provenance.yaml", err)
 	}
 
-	var pf provenance.ProvenanceFile
+	var pf provenance.File
 	if err := yaml.Unmarshal(data, &pf); err != nil {
 		return errors.WrapParse("yaml", "provenance.yaml", err)
 	}
