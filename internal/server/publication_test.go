@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 	stderrors "errors"
+	"fmt"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -105,6 +107,99 @@ func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeith
 		t.Fatalf("failed commit changed cache: %#v", stats)
 	}
 	assertNoEventType(t, subscriber.events, events.CatalogPublished, 50*time.Millisecond)
+}
+
+func TestCatalogPublicationEventsAndCacheCannotReorder(t *testing.T) {
+	store := catalogstore.NewMemory()
+	var phase atomic.Int32
+	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
+		index := phase.Add(1)
+		id := catalogs.ProviderID(fmt.Sprintf("ordered-%d", index))
+		return candidate.SetProvider(catalogs.Provider{ID: id, Name: string(id)})
+	})
+	client, err := starmap.New(starmap.WithCatalogStore(store))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	firstStarted := make(chan struct{})
+	releaseFirst := make(chan struct{})
+	var releaseOnce sync.Once
+	t.Cleanup(func() { releaseOnce.Do(func() { close(releaseFirst) }) })
+	client.OnCatalogPublished(func(event starmap.CatalogPublishedEvent) error {
+		if event.Sequence == 2 {
+			close(firstStarted)
+			<-releaseFirst
+		}
+		return nil
+	})
+
+	logger := zerolog.Nop()
+	server, err := New(&mockApplication{logger: &logger, sm: client}, Config{
+		PathPrefix: "/api/v1", CacheTTL: time.Minute,
+	})
+	if err != nil {
+		t.Fatalf("New server: %v", err)
+	}
+	server.Start()
+	t.Cleanup(func() { _ = server.Shutdown(context.Background()) })
+	subscriber := &eventChannelSubscriber{events: make(chan events.Event, 32)}
+	server.broker.Subscribe(subscriber)
+	deadline := time.Now().Add(time.Second)
+	for server.broker.SubscriberCount() < 3 && time.Now().Before(deadline) {
+		time.Sleep(time.Millisecond)
+	}
+
+	if _, err := client.Update(context.Background(), update); err != nil {
+		t.Fatalf("first Update: %v", err)
+	}
+	select {
+	case <-firstStarted:
+	case <-time.After(time.Second):
+		t.Fatal("first publication hook did not start")
+	}
+	first := waitForEventType(t, subscriber.events, events.CatalogPublished)
+	if sequence := publicationEventSequence(t, first); sequence != 2 {
+		t.Fatalf("first event sequence = %d, want 2", sequence)
+	}
+
+	if _, err := client.Update(context.Background(), update); err != nil {
+		t.Fatalf("second Update: %v", err)
+	}
+	assertNoEventType(t, subscriber.events, events.CatalogPublished, 25*time.Millisecond)
+	releaseOnce.Do(func() { close(releaseFirst) })
+
+	second := waitForEventType(t, subscriber.events, events.CatalogPublished)
+	if sequence := publicationEventSequence(t, second); sequence != 3 {
+		t.Fatalf("second event sequence = %d, want 3", sequence)
+	}
+	state := client.CurrentCatalogState()
+	current, err := store.Current(context.Background())
+	if err != nil {
+		t.Fatalf("Current: %v", err)
+	}
+	if server.cache.GetStats().Sequence != state.Sequence ||
+		server.cache.GenerationID() != state.GenerationID ||
+		current.Manifest.GenerationID != state.GenerationID {
+		t.Fatalf(
+			"final ordering mismatch: cache=%#v state=%#v current=%#v",
+			server.cache.GetStats(),
+			state,
+			current.Manifest,
+		)
+	}
+}
+
+func publicationEventSequence(t testing.TB, event events.Event) uint64 {
+	t.Helper()
+	data, ok := event.Data.(map[string]any)
+	if !ok {
+		t.Fatalf("event data = %T, want map[string]any", event.Data)
+	}
+	sequence, ok := data["sequence"].(uint64)
+	if !ok {
+		t.Fatalf("event sequence = %#v, want uint64", data["sequence"])
+	}
+	return sequence
 }
 
 func waitForEventType(t *testing.T, source <-chan events.Event, eventType events.EventType) events.Event {

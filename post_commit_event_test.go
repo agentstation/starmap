@@ -83,6 +83,22 @@ func TestPostCommitEventOrdering(t *testing.T) {
 		if event.GenerationID != current.Manifest.GenerationID || event.SyncRunID != current.Manifest.SyncRunID {
 			t.Fatalf("event IDs = (%q, %q), manifest = (%q, %q)", event.GenerationID, event.SyncRunID, current.Manifest.GenerationID, current.Manifest.SyncRunID)
 		}
+		state := client.CurrentCatalogState()
+		if event.Sequence != state.Sequence || event.Catalog != state.Catalog ||
+			event.GenerationID != state.GenerationID {
+			t.Fatalf("event = %#v, atomic state = %#v", event, state)
+		}
+		retained, err := store.Get(context.Background(), event.GenerationID)
+		if err != nil {
+			t.Fatalf("Get published generation: %v", err)
+		}
+		if retained.Manifest.Payload.Checksum != current.Manifest.Payload.Checksum {
+			t.Fatalf(
+				"retained checksum = %q, current = %q",
+				retained.Manifest.Payload.Checksum,
+				current.Manifest.Payload.Checksum,
+			)
+		}
 		close(hookRelease)
 	})
 }

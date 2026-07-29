@@ -1273,16 +1273,27 @@ func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, opt
 - **Dry-run support**: Preview without applying
 - **Force-save support**: `--fresh` and `--reformat` persist even when there are no detected changes
 - **Safe publication**: A validated generation commits through `CatalogStore`
-  before the immutable in-memory swap; failed commits emit no callback
+  before the immutable catalog, generation ID, and monotonic sequence become
+  visible as one atomic state; failed commits emit no callback
 - **Restart recovery**: `New` reads, validates, decodes, and publishes the exact
   durable current generation before consulting the human YAML workspace; an
   empty store alone falls back to the verified bootstrap/local baseline, while
   corrupt or unavailable store state fails initialization
-- **Isolated hooks**: Post-commit callbacks run asynchronously through bounded
-  delivery slots; publication observers within a slot run independently so one
-  slow callback cannot head-of-line block cache/SSE/WebSocket notification.
-  Returned errors, panics, drops, and latency are observable through
-  `Client.HookStats` and cannot fail or delay the commit path
+- **Ordered isolated hooks**: Post-commit generations begin callback delivery
+  in sequence order. Publication observers for one generation run independently
+  so one slow callback cannot prevent its cache/event observer from running,
+  while the next generation waits for the complete callback boundary. The
+  dispatcher retains at most the running generation plus the newest pending
+  generation, making overload bounded and observable through sequence gaps and
+  `Client.HookStats().Coalesced`. Returned errors, panics, coalescing, and
+  latency cannot fail or delay the durable commit path
+
+The tested publication order is generation-store CAS, atomic in-memory
+catalog/generation/sequence activation, ordered callback dispatch, server cache
+activation, then publication-event enqueue. The store, catalog state, cache
+namespace, and event identity therefore agree for every delivered generation.
+Intermediate callback delivery may be coalesced, but a later generation cannot
+overtake one already being delivered.
 
 The HTTP logging middleware preserves the optional `http.Flusher`,
 `http.Hijacker`, and `http.Pusher` capabilities of the underlying response

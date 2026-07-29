@@ -541,8 +541,15 @@ sm.OnCatalogPublished(func(event starmap.CatalogPublishedEvent) error {
     return nil
 })
 
-stats := sm.HookStats() // failures, panics, drops, and callback latency
+stats := sm.HookStats() // failures, panics, coalesced generations, and callback latency
 ```
+
+Generation-store CAS is the durable commit point. The immutable catalog,
+generation identity, and sequence become visible atomically before callbacks
+begin. Callback delivery never lets a later generation overtake an earlier
+one. If callbacks lag, Starmap keeps the running generation plus the newest
+pending generation; skipped intermediate sequences are observable through the
+event sequence and `HookStats().Coalesced`.
 
 #### Advanced Catalog Construction
 ```go

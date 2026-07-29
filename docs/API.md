@@ -150,9 +150,9 @@ func NewCandidate(catalog *catalogs.Catalog, observations ...catalogs.SourceObse
 NewCandidate validates and returns a publication candidate. An empty observation list is permitted for custom acquisition; Client.Update records a deterministic custom\-update observation in that case.
 
 <a name="CatalogPublishedEvent"></a>
-## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L17-L22>)
+## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L19-L24>)
 
-CatalogPublishedEvent identifies one durably committed immutable catalog. Catalog is safe to retain and share across goroutines.
+CatalogPublishedEvent identifies one durably committed immutable catalog. Sequence increases with each in\-process activation; gaps tell observers that pending callback delivery coalesced to a newer generation. Catalog is safe to retain and share across goroutines.
 
 ```go
 type CatalogPublishedEvent struct {
@@ -164,7 +164,7 @@ type CatalogPublishedEvent struct {
 ```
 
 <a name="CatalogPublishedHook"></a>
-## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L26>)
+## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L28>)
 
 CatalogPublishedHook is called after a catalog generation is durably committed and atomically published.
 
@@ -282,7 +282,7 @@ func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Genera
 Generation returns one retained immutable generation by ID.
 
 <a name="Client.HookStats"></a>
-### func \(\*Client\) [HookStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L54>)
+### func \(\*Client\) [HookStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L64>)
 
 ```go
 func (c *Client) HookStats() HookDeliveryStats
@@ -291,16 +291,16 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.OnCatalogPublished"></a>
-### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L51>)
+### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L61>)
 
 ```go
 func (c *Client) OnCatalogPublished(fn CatalogPublishedHook)
 ```
 
-OnCatalogPublished registers a callback for durable catalog publication.
+OnCatalogPublished registers a callback for durable catalog publication. Generations begin callback delivery in sequence order. When callbacks lag, delivery retains the running generation and coalesces pending work to the newest committed generation.
 
 <a name="Client.OnModelAdded"></a>
-### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L57>)
+### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L67>)
 
 ```go
 func (c *Client) OnModelAdded(fn ModelAddedHook)
@@ -309,7 +309,7 @@ func (c *Client) OnModelAdded(fn ModelAddedHook)
 OnModelAdded registers a callback for when models are added.
 
 <a name="Client.OnModelRemoved"></a>
-### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L63>)
+### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L73>)
 
 ```go
 func (c *Client) OnModelRemoved(fn ModelRemovedHook)
@@ -318,7 +318,7 @@ func (c *Client) OnModelRemoved(fn ModelRemovedHook)
 OnModelRemoved registers a callback for when models are removed.
 
 <a name="Client.OnModelUpdated"></a>
-### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L60>)
+### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L70>)
 
 ```go
 func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
@@ -401,23 +401,30 @@ type EmbeddedBootstrapInfo struct {
 ```
 
 <a name="HookDeliveryStats"></a>
-## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L39-L46>)
+## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L41-L55>)
 
 HookDeliveryStats reports isolated callback delivery health.
 
 ```go
 type HookDeliveryStats struct {
-    Completed   uint64
-    Failures    uint64
-    Panics      uint64
-    Dropped     uint64
+    // Completed is the number of callback invocations that returned or panicked.
+    Completed uint64
+    // Failures is the number of callbacks that returned an error or panicked.
+    Failures uint64
+    // Panics is the number of isolated callback panics.
+    Panics uint64
+    // Coalesced is the number of pending catalog generations superseded by a
+    // newer committed generation before callback delivery began.
+    Coalesced uint64
+    // LastLatency is the duration of the most recently completed callback.
     LastLatency time.Duration
-    MaxLatency  time.Duration
+    // MaxLatency is the longest completed callback duration.
+    MaxLatency time.Duration
 }
 ```
 
 <a name="ModelAddedHook"></a>
-## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L29>)
+## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L31>)
 
 ModelAddedHook is called when a model is added to the catalog.
 
@@ -426,7 +433,7 @@ type ModelAddedHook func(model catalogs.Model)
 ```
 
 <a name="ModelRemovedHook"></a>
-## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L35>)
+## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L37>)
 
 ModelRemovedHook is called when a model is removed from the catalog.
 
@@ -435,7 +442,7 @@ type ModelRemovedHook func(model catalogs.Model)
 ```
 
 <a name="ModelUpdatedHook"></a>
-## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L32>)
+## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L34>)
 
 ModelUpdatedHook is called when a model is updated in the catalog.
 

@@ -58,11 +58,9 @@ func TestF019CharacterizationPublicationCallbacksPrecedeModelDiffCallbacks(t *te
 	}
 }
 
-// TestF034CharacterizationPublicationCallbacksCanCompleteOutOfGenerationOrder
-// pins independent per-generation goroutines. P7.2 must serialize committed
-// publication visibility and notification so later generations cannot overtake
-// earlier ones.
-func TestF034CharacterizationPublicationCallbacksCanCompleteOutOfGenerationOrder(t *testing.T) {
+// TestF034PublicationCallbacksCompleteInGenerationOrder proves a later
+// committed generation cannot overtake an earlier publication callback.
+func TestF034PublicationCallbacksCompleteInGenerationOrder(t *testing.T) {
 	hooks := newHooks()
 	catalog := mustTestCatalog(t, catalogs.NewEmpty())
 	firstStarted := make(chan struct{})
@@ -84,65 +82,79 @@ func TestF034CharacterizationPublicationCallbacksCanCompleteOutOfGenerationOrder
 
 	select {
 	case sequence := <-completed:
-		if sequence != 2 {
-			t.Fatalf("first completed sequence = %d, want overtaking sequence 2", sequence)
-		}
-	case <-time.After(time.Second):
-		t.Fatal("second generation did not overtake blocked first generation")
+		t.Fatalf("sequence %d overtook blocked generation 1", sequence)
+	case <-time.After(25 * time.Millisecond):
 	}
 	close(releaseFirst)
 	select {
 	case sequence := <-completed:
 		if sequence != 1 {
-			t.Fatalf("second completed sequence = %d, want 1", sequence)
+			t.Fatalf("first completed sequence = %d, want 1", sequence)
 		}
 	case <-time.After(time.Second):
 		t.Fatal("first generation did not complete after release")
 	}
+	select {
+	case sequence := <-completed:
+		if sequence != 2 {
+			t.Fatalf("second completed sequence = %d, want 2", sequence)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("second generation did not complete after generation 1")
+	}
 }
 
-// TestF036CharacterizationHookOverloadDropsWholeGeneration pins the fixed
-// delivery-slot overload behavior. P7 must coalesce toward the newest
-// generation or terminate the affected stream; it cannot silently discard the
-// publication while reporting healthy delivery.
-func TestF036CharacterizationHookOverloadDropsWholeGeneration(t *testing.T) {
+// TestF036HookOverloadCoalescesToNewestGeneration proves bounded asynchronous
+// delivery retains the running generation plus the newest pending generation.
+func TestF036HookOverloadCoalescesToNewestGeneration(t *testing.T) {
 	hooks := newHooks()
 	catalog := mustTestCatalog(t, catalogs.NewEmpty())
 	release := make(chan struct{})
-	started := make(chan uint64, defaultHookDeliveryConcurrency)
+	started := make(chan uint64, 2)
 	hooks.OnCatalogPublished(func(event CatalogPublishedEvent) error {
 		started <- event.Sequence
-		<-release
+		if event.Sequence == 1 {
+			<-release
+		}
 		return nil
 	})
 
-	for sequence := uint64(1); sequence <= defaultHookDeliveryConcurrency+1; sequence++ {
+	const newestSequence = uint64(17)
+	for sequence := uint64(1); sequence <= newestSequence; sequence++ {
 		hooks.dispatchUpdate(catalog, catalog, CatalogPublishedEvent{Sequence: sequence, Catalog: catalog})
 	}
-	if got := hooks.statsSnapshot().Dropped; got != 1 {
-		t.Fatalf("F-036 characterization changed: dropped generations = %d, want 1", got)
+	if got := hooks.statsSnapshot().Coalesced; got != newestSequence-2 {
+		t.Fatalf("coalesced generations = %d, want %d", got, newestSequence-2)
 	}
 
-	seen := make(map[uint64]struct{}, defaultHookDeliveryConcurrency)
-	for range defaultHookDeliveryConcurrency {
-		select {
-		case sequence := <-started:
-			seen[sequence] = struct{}{}
-		case <-time.After(time.Second):
-			t.Fatalf("started callbacks = %d, want %d", len(seen), defaultHookDeliveryConcurrency)
+	select {
+	case sequence := <-started:
+		if sequence != 1 {
+			t.Fatalf("first started sequence = %d, want 1", sequence)
 		}
+	case <-time.After(time.Second):
+		t.Fatal("generation 1 callback did not start")
 	}
-	if _, exists := seen[defaultHookDeliveryConcurrency+1]; exists {
-		t.Fatalf("overload generation %d unexpectedly delivered", defaultHookDeliveryConcurrency+1)
+	select {
+	case sequence := <-started:
+		t.Fatalf("pending sequence %d started before generation 1 completed", sequence)
+	case <-time.After(25 * time.Millisecond):
 	}
 	close(release)
-
+	select {
+	case sequence := <-started:
+		if sequence != newestSequence {
+			t.Fatalf("post-overload sequence = %d, want newest %d", sequence, newestSequence)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("newest pending generation did not run")
+	}
 	deadline := time.Now().Add(time.Second)
-	for hooks.statsSnapshot().Completed != defaultHookDeliveryConcurrency && time.Now().Before(deadline) {
+	for hooks.statsSnapshot().Completed != 2 && time.Now().Before(deadline) {
 		time.Sleep(time.Millisecond)
 	}
-	if got := hooks.statsSnapshot().Completed; got != defaultHookDeliveryConcurrency {
-		t.Fatalf("completed callbacks = %d, want %d", got, defaultHookDeliveryConcurrency)
+	if got := hooks.statsSnapshot().Completed; got != 2 {
+		t.Fatalf("completed callbacks = %d, want 2", got)
 	}
 }
 

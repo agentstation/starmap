@@ -142,8 +142,7 @@ func (c *Client) commitReceivedGeneration(
 }
 
 func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generation catalogstore.Generation) {
-	oldCatalog := c.swapCatalogGeneration(published, generation.Manifest.GenerationID)
-	sequence := c.CurrentCatalogState().Sequence
+	oldCatalog, sequence := c.swapCatalogGeneration(published, generation.Manifest.GenerationID)
 	event := CatalogPublishedEvent{
 		GenerationID: generation.Manifest.GenerationID,
 		SyncRunID:    generation.Manifest.SyncRunID,

@@ -37,6 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   server logging middleware preserves SSE flushing and WebSocket hijacking.
   HTTP catalog responses, SSE, WebSocket, and cache state now correlate the
   same durable generation and sync-run identity after commit.
+- Catalog publication callbacks now begin in generation order and use a
+  bounded newest-pending coalescing policy instead of silently dropping a
+  complete generation when fixed delivery slots are saturated. Atomic catalog
+  state supplies the event sequence directly; sequence gaps and
+  `HookStats().Coalesced` expose overload without delaying the durable commit.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,
