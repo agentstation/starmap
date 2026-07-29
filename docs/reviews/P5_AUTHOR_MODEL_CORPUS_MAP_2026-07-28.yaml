@@ -845,10 +845,10 @@ records:
   - path: authors/google/models/gemma-4-26b-a4b-it-maas.yaml
     author: google
     slug: gemma-4-26b-a4b-it-maas
-    canonical_model: google/gemma-4-26b-a4b-it-maas
-    disposition: keep
+    canonical_model: google/gemma-4-26b-a4b-it
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: Vertex MaaS deployment identity merges into the provider-independent Gemma model
   - path: authors/google/models/gemma.yaml
     author: google
     slug: gemma

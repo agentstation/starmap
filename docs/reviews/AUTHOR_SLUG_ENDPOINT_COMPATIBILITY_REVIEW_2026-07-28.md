@@ -218,15 +218,15 @@ orphans. PR #53's terminal disposition is superseded for the authored-model
 corpus.
 
 The exact P5.9 review restored all 322 records for review. The final P5.13
-outcome retains 265 records as authored/history records and merges 57
-provider-derived spelling, region, staging, model-garden, or version artifacts into canonical
-Qwen targets. Each historical record has a machine-readable disposition in
+outcome retains 264 records as authored/history records and merges 58
+provider-derived spelling, region, staging, model-garden, or version artifacts
+into canonical model targets. Each historical record has a machine-readable disposition in
 `P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml`. Retention does not claim current
 provider availability:
 
 - exact provider IDs remain unchanged in provider YAML even when their author
   record is merged into a region-independent canonical model;
-- 265 historical paths remain canonical authored records and 57 resolve to an
+- 264 historical paths remain canonical authored records and 58 resolve to an
   explicit canonical target;
 - all 30 records that lacked inline authors received the author named by their
   reviewed path;
@@ -294,13 +294,13 @@ model is complete.
 P5 implemented the reviewed replacement without restoring the rejected
 `Author.Models` copy semantics:
 
-- 608 authored YAML records now produce 608 canonical definitions;
+- 607 authored YAML records now produce 607 canonical definitions;
 - 610 retained provider YAML records each carry an explicit canonical link;
 - the one metadata-free `pre-zhongyun-test-chat` record was removed rather than
   assigned an invented author;
 - all 610 offerings produce exactly 610 generated endpoint rows across 519
   canonical models;
-- 89 authored-only definitions correctly produce no endpoint;
+- 88 authored-only definitions correctly produce no endpoint;
 - schema version 3 round-trips `author_models` and `provider_models`;
 - the immutable catalog precomputes canonical, alias, provider-offering, and
   definition-offering indexes;

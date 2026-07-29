@@ -1,11 +1,10 @@
-# gemma-4-26b-a4b-it-maas - Google model: gemma-4-26b-a4b-it-maas
-id: gemma-4-26b-a4b-it-maas
-name: gemma-4-26b-a4b-it-maas
+# qwen2.5-coder-32b-instruct - Qwen 2.5 Coder 32B Instruct
+id: qwen2.5-coder-32b-instruct
+name: Qwen 2.5 Coder 32B Instruct
 authors:
-- id: google
-  name: Google
-description: |-
-  Google model: gemma-4-26b-a4b-it-maas
+- id: qwen
+  name: Qwen Team
+description: Qwen 2.5 Coder 32B instruction-tuned model
 
 # Model features
 features:
@@ -30,16 +29,16 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: false
-  top_p: false
+  temperature: true
+  top_p: true
   top_k: false
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
-  max_tokens: false
+  max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -66,8 +65,8 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: false
+  streaming: true
 
 # Timestamps
-created_at: 2026-07-11T23:53:11.214905Z
-updated_at: 2026-07-11T23:53:11.214905Z
+created_at: 2026-07-11T23:53:11.592673Z
+updated_at: 2026-07-11T23:53:11.592673Z

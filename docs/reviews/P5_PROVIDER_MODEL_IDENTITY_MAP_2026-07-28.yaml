@@ -2589,9 +2589,9 @@ records:
   - path: providers/google-vertex/models/qwen2-5-coder-32b-instruct@001.yaml
     provider: google-vertex
     provider_model_id: qwen2-5-coder-32b-instruct@001
-    model: qwen/qwen2-5-coder-32b-instruct
+    model: qwen/qwen2.5-coder-32b-instruct
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact Vertex deployment ID joins the canonical Qwen 2.5 Coder model
   - path: providers/google-vertex/models/resnet50.yaml
     provider: google-vertex
     provider_model_id: resnet50

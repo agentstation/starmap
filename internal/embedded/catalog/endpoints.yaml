@@ -1,6 +1,6 @@
 schema_version: 1
-generation_id: catalog-20260729T084810Z-921c4bfeac1a
-catalog_digest: sha256:921c4bfeac1a8e27f7defca300818603cbedcf54aa0d7aeb76571c79d5ed8f4e
+generation_id: catalog-20260729T092839Z-9565e4b5c07b
+catalog_digest: sha256:9565e4b5c07bce87f99f170888813849cc2cee175850b263cb61d3b735d82716
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -7211,19 +7211,6 @@ models:
         endpoint:
           type: openai
           url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: qwen/qwen2-5-coder-32b-instruct
-    endpoints:
-      - provider: google-vertex
-        provider_model_id: qwen2-5-coder-32b-instruct@001
-        limits:
-          context_window: 32000
-          input_tokens: 0
-          output_tokens: 4096
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: qwen/qwen2.5-72b-instruct
     endpoints:
       - provider: deepinfra
@@ -7244,6 +7231,19 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen2.5-coder-32b-instruct
+    endpoints:
+      - provider: google-vertex
+        provider_model_id: qwen2-5-coder-32b-instruct@001
+        limits:
+          context_window: 32000
+          input_tokens: 0
+          output_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: qwen/qwen3-14b
     endpoints:
       - provider: alibaba
