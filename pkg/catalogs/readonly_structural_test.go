@@ -3,8 +3,6 @@ package catalogs
 import (
 	"reflect"
 	"testing"
-
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
@@ -136,10 +134,11 @@ func TestSeamConformanceReaderHasBuilderAndCatalogAdapters(t *testing.T) {
 
 func TestCatalogCannotBeSaved(t *testing.T) {
 	catalog := mustCatalog(t, NewEmpty())
-	if _, ok := any(catalog).(interface {
-		Save(...save.Option) error
-	}); ok {
+	if _, ok := any(catalog).(interface{ Save() error }); ok {
 		t.Fatal("Read-only catalog exposes Save")
+	}
+	if _, ok := any(catalog).(interface{ SaveTo(string) error }); ok {
+		t.Fatal("Read-only catalog exposes SaveTo")
 	}
 }
 

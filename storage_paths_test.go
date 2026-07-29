@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestDefaultCatalogWorkspaceAndStatePathsAreDisjoint(t *testing.T) {
@@ -39,13 +38,13 @@ func TestCatalogWorkspaceReplacementCannotTouchSiblingState(t *testing.T) {
 	if err := builder.SetProvider(catalogs.Provider{ID: "example", Name: "Example"}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(workspace)); err != nil {
+	if err := builder.SaveTo(workspace); err != nil {
 		t.Fatalf("Save workspace: %v", err)
 	}
 	if err := builder.DeleteProvider("example"); err != nil {
 		t.Fatalf("DeleteProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(workspace)); err != nil {
+	if err := builder.SaveTo(workspace); err != nil {
 		t.Fatalf("replacement Save workspace: %v", err)
 	}
 	retained, err := os.ReadFile(markerPath)
@@ -70,7 +69,7 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 		t.Fatalf("SetProvider human: %v", err)
 	}
 	seedTestModelDefinitions(t, human)
-	if err := human.Save(save.WithPath(workspace)); err != nil {
+	if err := human.SaveTo(workspace); err != nil {
 		t.Fatalf("Save human workspace: %v", err)
 	}
 
@@ -90,7 +89,7 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 		filepath.Join(root, "sources", "models.dev-git"),
 		filepath.Join(root, ".catalog.candidate-interrupted"),
 	} {
-		if err := machine.Save(save.WithPath(machineRoot)); err != nil {
+		if err := machine.SaveTo(machineRoot); err != nil {
 			t.Fatalf("Save machine fixture %q: %v", machineRoot, err)
 		}
 	}
@@ -150,7 +149,7 @@ func TestClientSaveRejectsDurableStateTargets(t *testing.T) {
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	assertCatalogLayoutError(t, client.Save(save.WithPath(filepath.Join(database, "exports"))))
+	assertCatalogLayoutError(t, client.SaveTo(filepath.Join(database, "exports")))
 }
 
 func mustFilesystemStore(t *testing.T, path string) *catalogstore.Filesystem {

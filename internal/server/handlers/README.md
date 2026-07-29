@@ -47,7 +47,6 @@ Package handlers provides HTTP request handlers for the Starmap API.
   - [func \(h \*Handlers\) HandleListProviders\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleListProviders>)
   - [func \(h \*Handlers\) HandleOpenAPIJSON\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIJSON>)
   - [func \(h \*Handlers\) HandleOpenAPIYAML\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIYAML>)
-  - [func \(h \*Handlers\) HandleOperations\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleOperations>)
   - [func \(h \*Handlers\) HandleReady\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleReady>)
   - [func \(h \*Handlers\) HandleSSE\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSSE>)
   - [func \(h \*Handlers\) HandleSearchModels\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSearchModels>)
@@ -180,15 +179,6 @@ func (h *Handlers) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request)
 ```
 
 HandleOpenAPIYAML serves the embedded OpenAPI 3.1 specification in YAML format. @Summary Get OpenAPI specification \(YAML\) @Description Returns the OpenAPI 3.1 specification for this API in YAML format @Tags meta @Produce application/x\-yaml @Success 200 \{string\} string "OpenAPI 3.1 specification" @Router /api/v1/openapi.yaml \[get\].
-
-<a name="Handlers.HandleOperations"></a>
-### func \(\*Handlers\) [HandleOperations](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/operations.go#L18>)
-
-```go
-func (h *Handlers) HandleOperations(w http.ResponseWriter, r *http.Request)
-```
-
-HandleOperations handles GET /api/v1/operations. @Summary Catalog operational state @Description Get current generation, source freshness, last synchronization, degraded sources, and scheduler state @Tags admin @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/operations \[get\].
 
 <a name="Handlers.HandleReady"></a>
 ### func \(\*Handlers\) [HandleReady](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/health.go#L35>)

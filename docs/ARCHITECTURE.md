@@ -186,10 +186,10 @@ type application interface {
 ```
 
 Commands that format output add `OutputFormat`; update commands request
-`Starmap` instead of `Catalog`. The HTTP server owns its wider operational
-role because it consumes catalog state, readiness, operations, logging, and
-client construction. Build metadata remains concrete on `*app.App` and is not
-forced onto unrelated command tests.
+`Starmap` instead of `Catalog`. The HTTP server owns its wider role because it
+consumes catalog state, readiness, logging, and client construction. Build
+metadata remains concrete on `*app.App` and is not forced onto unrelated
+command tests.
 
 ### Interface seam inventory
 
@@ -591,19 +591,11 @@ and compare-and-swap publication. The server and root remote-update path share
 these route constants; the old ad-hoc unversioned catalog envelope is removed.
 See [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
-`pkg/catalogdistribution` owns the separate hosted protocol. A small
-latest-compatible pointer selects immutable archive and attestation URLs under
-the same origin; the client verifies pointer compatibility, URL origin, media
-type, size, checksum, artifact, statement, and downloaded manifest identity.
-The handler reads through a narrow repository boundary. Hosted pointers are
-explicit `dev`, `canary`, or `stable` channels, with stable as the consumer
-default. Promotion is ordered dev-to-canary-to-stable; stable additionally
-requires recent hosted canary evidence for availability, generation freshness,
-latency, and exact archive identity. Promotion failures and successes are
-queryable telemetry. Reasoned rollback may select only a generation previously
-served by that channel and never deletes immutable history. See
-[Hosted Catalog Distribution](HOSTED_CATALOG_DISTRIBUTION.md).
-Channel-specific trust roots and availability/freshness tradeoffs are defined in
+The online server and offline artifact are the only distribution
+representations. A deployment at `starmap.agentstation.ai` uses the same
+manifest, immutable generation, and SSE contract rather than a second mutable
+channel/promotion protocol. Channel-specific trust roots and
+availability/freshness tradeoffs are defined in
 [Catalog Distribution Trust Model](CATALOG_DISTRIBUTION_TRUST.md).
 
 The embedded fallback has a separate checked-in budget gate for generation age,
@@ -617,26 +609,9 @@ new manifest identity only when canonical payload bytes change, validates and
 attests before immutable payload-digest release publication, and never uses
 Actions artifacts as runtime distribution.
 
-Deployment-owned [Durable Scheduling](DURABLE_SCHEDULING.md) composes a narrow
-Syncer with a named Lease. Contending replicas skip before source work. The
-reference lease uses expiry plus fencing, and the filesystem adapter coordinates
-independent processes on a shared volume; Starport can supply a distributed
-adapter without changing Starmap's core client. Scheduled triggers add bounded
-pre-lease jitter; typed retry is fail-closed and bounded while the lease remains
-held. An optional RunLedger begins before acquisition, records every attempt,
-and completes with the base and published generation identities. Memory and
-SQLite reference adapters make lifecycle semantics and crash-visible `running`
-records executable; Starport can bind the same narrow interface to its database.
-Successful Sync results also expose validated source-observation projections
-even when catalog bytes do not change. An explicit deployment FreshnessPolicy
-turns those observations into ready/degraded/unready states and stable alerts;
-there are no implicit SLA durations. Out-of-order completion cannot regress the
-latest source evidence, and a current generation can seed state after restart.
-An `InitialRunController` requires one of blocking, background, or schedule-only
-startup modes. It composes an explicit baseline-readiness probe, performs at
-most one startup attempt, and coalesces only scheduled due-times inside a
-configured window. Failed startup never suppresses the recovery tick. The
-controller remains passive and owns no ticker.
+The core library owns no scheduler, retry loop, lease, or startup goroutine.
+Deployments invoke the explicit acquisition operation under their own
+supervision and coordination policy.
 
 ### CatalogStore contract
 
@@ -663,9 +638,9 @@ requires exactly one success and one typed conflict. SQLite deployments use
 immediate transactions with bounded busy waiting; filesystem writers coordinate
 through a context-aware advisory lock shared across processes.
 
-`Builder.Save` materializes the human YAML workspace using replacement
-semantics for its managed author-model and provider-model trees, so deleted
-records cannot survive a save/reload. Authored records live under
+`Builder.Save` and `Builder.SaveTo` materialize the human YAML workspace using
+replacement semantics for its managed author-model and provider-model trees,
+so deleted records cannot survive a save/reload. Authored records live under
 `authors/{author}/models` and own canonical identity plus intrinsic facts.
 Provider records live under `providers/{provider}/models`, retain their exact
 opaque provider ID and serving facts, and link explicitly to one authored
@@ -921,23 +896,6 @@ completeness, typed status, and evidence checksum; they never substitute the
 final reconciled catalog checksum for source evidence. A partial observation
 forces partial/degraded generation state.
 
-`pkg/sourceevidence` implements the separate evidence-retention boundary. Its
-long-term normalized record contains the canonical catalog payload (including
-provenance), observation metadata, checksum, and machine-readable issue
-scope/code/subject. Diagnostic issue messages are deliberately omitted because
-they can contain upstream response text or credentials. Loading a normalized
-record verifies its payload checksum and reconstructs the same observation ID,
-candidate catalog bytes, and provenance before it can be used for replay.
-
-Raw evidence is response-body-only: request headers, query parameters, and
-credentials have no representation in the retained type. `Archive` encrypts it
-with AES-256-GCM using a caller-supplied 32-byte key, binds the ciphertext to
-the observation ID and expiry, writes directories/files with `0700`/`0600`
-permissions, and uses fsynced atomic replacement. The default raw retention is
-24 hours and the enforced maximum is seven days; `PurgeExpiredRaw` removes
-expired envelopes. Archive construction is passive, and normalized evidence
-can be retained independently of optional raw retention.
-
 Observation outcomes use one explicit policy:
 
 - a non-nil source error is retained as a partial/degraded attempt with a
@@ -988,7 +946,6 @@ Observation outcomes use one explicit policy:
   edits
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
-See [pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) for evidence retention and replay.
 
 ## Root Package (starmap.Client)
 
@@ -1065,16 +1022,6 @@ populate it. Only a successful durable commit swaps the catalog and emits the
 asynchronous `catalog.published` event containing the same generation,
 sync-run, and sequence identities. Failed commits change neither state nor
 events, and an identical remote-generation retry is not republished.
-
-`pkg/catalogscheduler.Operations` is the deployment composition boundary for
-operator telemetry. It owns no ticker or update lifecycle: the deployment
-injects its durable `RunLedger`, `FreshnessMonitor`, and optional
-`InitialRunController`, then supplies the atomic catalog identity when reading
-state. `GET /api/v1/operations` exposes the evaluated generation, source SLA
-report, degraded source IDs, latest actual sync (excluding lease/coalescing
-skips), and whether scheduler/startup telemetry is configured. A deployment
-that has not wired scheduling reports `scheduler.configured=false` explicitly
-instead of presenting fabricated freshness or success state.
 
 This keeps adapters thin without rebuilding a lossy cross-provider model map:
 

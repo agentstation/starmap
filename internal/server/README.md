@@ -58,7 +58,7 @@ Package server provides HTTP server implementation for the Starmap API.
 
 
 <a name="Application"></a>
-## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L14-L21>)
+## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L11-L17>)
 
 Application is the catalog and operational role consumed by the HTTP server.
 
@@ -67,7 +67,6 @@ type Application interface {
     Catalog() (*catalogs.Catalog, error)
     CatalogState() (starmap.CatalogState, error)
     Readiness() (starmap.CatalogReadiness, error)
-    OperationalState(context.Context) (catalogscheduler.OperationalState, error)
     Starmap(...starmap.Option) (*starmap.Client, error)
     Logger() *zerolog.Logger
 }

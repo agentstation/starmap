@@ -8,13 +8,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-
-	"github.com/agentstation/starmap/pkg/catalogscheduler"
 )
 
-var _ catalogscheduler.CurrentGenerationReader = (*Client)(nil)
-
-func TestSchedulerOwnershipRootClientExposesNoCadenceLifecycle(t *testing.T) {
+func TestRootClientExposesNoCadenceLifecycle(t *testing.T) {
 	clientType := reflect.TypeFor[*Client]()
 	for _, forbidden := range []string{"AutoUpdatesOn", "AutoUpdatesOff", "StartScheduler", "StopScheduler"} {
 		if _, found := clientType.MethodByName(forbidden); found {

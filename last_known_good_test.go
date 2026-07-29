@@ -11,10 +11,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogscheduler"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 type lastKnownGoodFaultStore struct {
@@ -41,30 +39,9 @@ func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalog
 	}
 }
 
-type updateSyncer struct {
-	client *Client
-	store  catalogstore.Store
-	update UpdateFunc
-}
-
 const lastKnownGoodCommitGateTimeout = 30 * time.Second
 
-func (s updateSyncer) Sync(ctx context.Context, _ ...pkgsync.Option) (*pkgsync.Result, error) {
-	if _, err := s.client.Update(ctx, s.update); err != nil {
-		return nil, err
-	}
-	current, err := s.store.Current(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return &pkgsync.Result{
-		GenerationID:       current.Manifest.GenerationID,
-		SyncRunID:          current.Manifest.SyncRunID,
-		SourceObservations: append([]catalogs.SourceObservationLink(nil), current.Manifest.SourceObservations...),
-	}, nil
-}
-
-func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
+func TestLastKnownGoodSurvivesFailedUpdateAndPublishesRetry(t *testing.T) {
 	store := &lastKnownGoodFaultStore{
 		Memory: catalogstore.NewMemory(), entered: make(chan struct{}), release: make(chan struct{}),
 	}
@@ -100,36 +77,20 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 		t.Fatalf("last-known-good provider: %v", err)
 	}
 
-	ledger := catalogscheduler.NewMemoryRunLedger()
-	runner, err := catalogscheduler.NewRunner(
-		updateSyncer{client: client, store: store, update: update}, catalogscheduler.NewMemoryLease(),
-		catalogscheduler.LeaseRequest{Key: catalogscheduler.DefaultLeaseKey, Owner: "last-known-good-replica", TTL: catalogscheduler.DefaultLeaseTTL},
-		catalogscheduler.WithRetryPolicy(catalogscheduler.RetryPolicy{
-			MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond,
-		}),
-		catalogscheduler.WithRunLedger(ledger, client),
-	)
-	if err != nil {
-		t.Fatalf("NewRunner: %v", err)
-	}
 	store.fail.Store(true)
 	releaseStore := sync.OnceFunc(func() { close(store.release) })
 	defer releaseStore()
-	type runOutcome struct {
-		result catalogscheduler.RunResult
-		err    error
-	}
-	outcomes := make(chan runOutcome, 1)
+	outcomes := make(chan error, 1)
 	go func() {
-		result, runErr := runner.RunScheduledOnce(context.Background(), 0)
-		outcomes <- runOutcome{result: result, err: runErr}
+		_, updateErr := client.Update(context.Background(), update)
+		outcomes <- updateErr
 	}()
 	commitGateTimer := time.NewTimer(lastKnownGoodCommitGateTimeout)
 	defer commitGateTimer.Stop()
 	select {
 	case <-store.entered:
-	case outcome := <-outcomes:
-		t.Fatalf("scheduled refresh exited before commit gate: %#v/%v", outcome.result, outcome.err)
+	case updateErr := <-outcomes:
+		t.Fatalf("update exited before commit gate: %v", updateErr)
 	case <-commitGateTimer.C:
 		t.Fatalf("failed candidate did not reach commit gate within %s", lastKnownGoodCommitGateTimeout)
 	}
@@ -152,10 +113,9 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 	}
 	readers.Wait()
 	releaseStore()
-	outcome := <-outcomes
-	result, runErr := outcome.result, outcome.err
-	if !stderrors.Is(runErr, pkgerrors.ErrProviderUnavailable) || result.Status != catalogscheduler.RunStatusFailed || result.Attempts != 2 {
-		t.Fatalf("scheduled failed refresh = %#v/%v", result, runErr)
+	updateErr := <-outcomes
+	if !stderrors.Is(updateErr, pkgerrors.ErrProviderUnavailable) {
+		t.Fatalf("failed update error = %v", updateErr)
 	}
 
 	afterGeneration, err := store.Current(context.Background())
@@ -181,12 +141,18 @@ func TestSchedulerLastKnownGoodSurvivesFailedRefreshAndRetry(t *testing.T) {
 	if diff := cmp.Diff(beforeGeneration, retained); diff != "" {
 		t.Fatalf("retained generation changed (-want +got):\n%s", diff)
 	}
-	record, err := ledger.Get(context.Background(), result.RunID)
-	if err != nil {
-		t.Fatalf("Get failed run: %v", err)
+
+	store.fail.Store(false)
+	if _, err := client.Update(context.Background(), update); err != nil {
+		t.Fatalf("retry update: %v", err)
 	}
-	if record.Status != catalogscheduler.RunStatusFailed || record.BaseGenerationID != beforeGeneration.Manifest.GenerationID ||
-		record.PublishedGenerationID != "" || len(record.Attempts) != 2 {
-		t.Fatalf("failed run record = %#v", record)
+	if client.CurrentGenerationID() == beforeGeneration.Manifest.GenerationID {
+		t.Fatal("successful retry did not publish a new generation")
+	}
+	if _, err := client.Catalog().Provider("failed-candidate"); err != nil {
+		t.Fatalf("retry candidate was not published: %v", err)
+	}
+	if _, err := client.Catalog().Provider("last-known-good"); err == nil {
+		t.Fatal("successful retry retained superseded provider")
 	}
 }

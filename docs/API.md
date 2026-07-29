@@ -91,7 +91,8 @@ Package starmap provides a unified AI model catalog system with automatic update
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
-  - [func \(c \*Client\) Save\(opts ...save.Option\) error](<#Client.Save>)
+  - [func \(c \*Client\) Save\(\) error](<#Client.Save>)
+  - [func \(c \*Client\) SaveTo\(path string\) error](<#Client.SaveTo>)
   - [func \(c \*Client\) Update\(ctx context.Context, update UpdateFunc\) \(Publication, error\)](<#Client.Update>)
   - [func \(c \*Client\) WorkspacePath\(\) string](<#Client.WorkspacePath>)
 - [type EmbeddedBootstrapInfo](<#EmbeddedBootstrapInfo>)
@@ -334,13 +335,22 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 Rollback atomically makes a retained generation current and projects its exact catalog semantics and provenance into the configured human workspace. Repeating a rollback to the current durable generation is idempotent.
 
 <a name="Client.Save"></a>
-### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L14>)
+### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L13>)
 
 ```go
-func (c *Client) Save(opts ...save.Option) error
+func (c *Client) Save() error
 ```
 
-Save atomically materializes the current committed generation into a YAML workspace. It never publishes a new generation.
+Save atomically materializes the current committed generation into a YAML workspace configured at construction. It never publishes a new generation.
+
+<a name="Client.SaveTo"></a>
+### func \(\*Client\) [SaveTo](<https://github.com/agentstation/starmap/blob/main/persistence.go#L19>)
+
+```go
+func (c *Client) SaveTo(path string) error
+```
+
+SaveTo atomically materializes the current committed generation into path. It never publishes a new generation.
 
 <a name="Client.Update"></a>
 ### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L66>)

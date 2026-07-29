@@ -61,23 +61,11 @@ and lossless source extensions.
 Daily/manual change detection, manifest derivation, validation, attestation,
 payload-digest deduplication, and immutable release publication.
 
-### [DURABLE_SCHEDULING.md](DURABLE_SCHEDULING.md)
-**Deployment-Owned HA Synchronization**
-
-Lease/single-flight composition above explicit Sync, with deterministic and
-shared-filesystem adapters.
-
 ### [REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md)
 **Versioned Online Generation Protocol**
 
 Strict current-manifest and immutable generation-snapshot routes, client
 compatibility/checksum verification, and atomic remote publication semantics.
-
-### [HOSTED_CATALOG_DISTRIBUTION.md](HOSTED_CATALOG_DISTRIBUTION.md)
-**Hosted Generation and Promotion Protocol**
-
-Verified immutable assets, schema-compatible pointers, dev/canary/stable
-promotion, SLO evidence, and rollback behavior.
 
 ### [CLI.md](CLI.md)
 **CLI Implementation Reference**
@@ -134,7 +122,6 @@ Individual package READMEs provide implementation details:
 - [../pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
 - [../pkg/authority/](../pkg/authority/) - Field-level authority system
 - [../pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
-- [../pkg/sourceevidence/README.md](../pkg/sourceevidence/README.md) - Source evidence retention and deterministic replay
 - [../pkg/errors/README.md](../pkg/errors/README.md) - Typed errors
 - [../pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 - [../internal/server/README.md](../internal/server/README.md) - HTTP server implementation

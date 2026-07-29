@@ -1,19 +1,15 @@
 package handlers
 
 import (
-	"context"
-
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogscheduler"
 )
 
 type testApplication struct {
-	CatalogFunc          func() (*catalogs.Catalog, error)
-	CatalogStateFunc     func() (starmap.CatalogState, error)
-	ReadinessFunc        func() (starmap.CatalogReadiness, error)
-	OperationalStateFunc func(context.Context) (catalogscheduler.OperationalState, error)
-	StarmapFunc          func(...starmap.Option) (*starmap.Client, error)
+	CatalogFunc      func() (*catalogs.Catalog, error)
+	CatalogStateFunc func() (starmap.CatalogState, error)
+	ReadinessFunc    func() (starmap.CatalogReadiness, error)
+	StarmapFunc      func(...starmap.Option) (*starmap.Client, error)
 }
 
 func (a *testApplication) Catalog() (*catalogs.Catalog, error) {
@@ -36,15 +32,6 @@ func (a *testApplication) Readiness() (starmap.CatalogReadiness, error) {
 		return a.ReadinessFunc()
 	}
 	return starmap.CatalogReadiness{Ready: true}, nil
-}
-
-func (a *testApplication) OperationalState(
-	ctx context.Context,
-) (catalogscheduler.OperationalState, error) {
-	if a.OperationalStateFunc != nil {
-		return a.OperationalStateFunc(ctx)
-	}
-	return catalogscheduler.OperationalState{}, nil
 }
 
 func (a *testApplication) Starmap(

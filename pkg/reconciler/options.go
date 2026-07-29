@@ -3,7 +3,6 @@ package reconciler
 import (
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/enhancer"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -11,7 +10,6 @@ import (
 type options struct {
 	strategy    Strategy
 	authorities authority.Reader
-	enhancers   []enhancer.Enhancer
 	tracking    bool
 	baseline    *catalogs.Catalog // Existing catalog for comparison
 }
@@ -21,7 +19,6 @@ func defaultOptions() *options {
 	return &options{
 		strategy:    NewAuthorityStrategy(authorities),
 		authorities: authorities,
-		enhancers:   []enhancer.Enhancer{},
 		tracking:    true,
 	}
 }
@@ -78,14 +75,6 @@ func WithAuthorities(authorities authority.Reader) Option {
 func WithProvenance(enabled bool) Option {
 	return func(r *options) error {
 		r.tracking = enabled
-		return nil
-	}
-}
-
-// WithEnhancers adds model enhancers to the pipeline.
-func WithEnhancers(enhancers ...enhancer.Enhancer) Option {
-	return func(r *options) error {
-		r.enhancers = enhancers
 		return nil
 	}
 }

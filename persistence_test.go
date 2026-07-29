@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -37,7 +36,7 @@ func TestSaveReturnsNilAfterSuccessfulCatalogSave(t *testing.T) {
 	}
 
 	path := t.TempDir()
-	if err := sm.Save(save.WithPath(path)); err != nil {
+	if err := sm.SaveTo(path); err != nil {
 		t.Fatalf("Save returned error after successful catalog save: %v", err)
 	}
 	projected, err := catalogs.NewFromPath(path)

@@ -1689,42 +1689,6 @@ paths:
       summary: Get OpenAPI specification (YAML)
       tags:
       - meta
-  /api/v1/operations:
-    get:
-      description: Get current generation, source freshness, last synchronization,
-        degraded sources, and scheduler state
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/error'
-                properties:
-                  data:
-                    type: object
-                  error:
-                    $ref: '#/components/schemas/response.Error'
-                type: object
-          description: OK
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/error'
-                properties:
-                  data:
-                    type: object
-                  error:
-                    $ref: '#/components/schemas/response.Error'
-                type: object
-          description: Internal Server Error
-      security:
-      - ApiKeyAuth: []
-      summary: Catalog operational state
-      tags:
-      - admin
   /api/v1/providers:
     get:
       description: List all providers

@@ -10,7 +10,6 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -62,7 +61,7 @@ func TestGeneratedYAMLRetainsSourceIdentityAndSemanticEditsBecomeLocal(t *testin
 
 	generated := sourceIdentityReconcile(t, sources.ProvidersID, providerObservationV1, modelsDevObservation)
 	workspace := filepath.Join(t.TempDir(), "catalog")
-	if err := generated.Catalog.Save(save.WithPath(workspace)); err != nil {
+	if err := generated.Catalog.SaveTo(workspace); err != nil {
 		t.Fatalf("Save generated workspace: %v", err)
 	}
 

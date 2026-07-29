@@ -8,18 +8,21 @@ import (
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
-// Save serializes a mutable builder into a caller-owned construction path.
+// Save serializes a mutable builder to its configured construction path.
 // It is intentionally not a publication primitive; committed catalogs are
 // materialized atomically by the Starmap client.
-func (cat *Builder) Save(opts ...save.Option) error {
+func (cat *Builder) Save() error {
+	return cat.save(cat.config.resolveWritePath(""))
+}
 
-	// Apply the options
-	options := save.Defaults().Apply(opts...)
+// SaveTo serializes a mutable builder to path.
+func (cat *Builder) SaveTo(path string) error {
+	return cat.save(path)
+}
 
-	writePath := cat.config.resolveWritePath(options.Path())
+func (cat *Builder) save(writePath string) error {
 	if writePath == "" {
 		return &errors.ConfigError{
 			Component: "catalog",

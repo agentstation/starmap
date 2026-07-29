@@ -14,7 +14,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -357,7 +356,7 @@ func editRollbackWorkspaceName(t testing.TB, path, name string) {
 	if err := builder.SetProvider(provider); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(path)); err != nil {
+	if err := builder.SaveTo(path); err != nil {
 		t.Fatalf("Save human edit: %v", err)
 	}
 }

@@ -14,7 +14,6 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testing.T) {
@@ -24,7 +23,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err := local.SetProvider(catalogs.Provider{ID: "before", Name: "Before"}); err != nil {
 		t.Fatalf("Set initial provider: %v", err)
 	}
-	if err := local.Save(save.WithPath(catalogPath)); err != nil {
+	if err := local.SaveTo(catalogPath); err != nil {
 		t.Fatalf("Save initial catalog: %v", err)
 	}
 	store, err := catalogstore.NewFilesystem(storePath)
@@ -39,7 +38,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err := local.SetProvider(catalogs.Provider{ID: "after-restart", Name: "After Restart"}); err != nil {
 		t.Fatalf("Set updated provider: %v", err)
 	}
-	if err := local.Save(save.WithPath(catalogPath)); err != nil {
+	if err := local.SaveTo(catalogPath); err != nil {
 		t.Fatalf("Save updated catalog: %v", err)
 	}
 	logger := zerolog.Nop()

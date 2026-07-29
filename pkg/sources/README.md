@@ -90,14 +90,6 @@ if fetcher.HasClient(providerID) {
 - [type SchemaFieldClass](<#SchemaFieldClass>)
 - [type SchemaRecord](<#SchemaRecord>)
 - [type Source](<#Source>)
-- [type Sources](<#Sources>)
-  - [func NewSources\(\) \*Sources](<#NewSources>)
-  - [func \(s \*Sources\) Delete\(id ID\)](<#Sources.Delete>)
-  - [func \(s \*Sources\) Get\(id ID\) \(Source, bool\)](<#Sources.Get>)
-  - [func \(s \*Sources\) IDs\(\) \[\]ID](<#Sources.IDs>)
-  - [func \(s \*Sources\) Len\(\) int](<#Sources.Len>)
-  - [func \(s \*Sources\) List\(\) \[\]Source](<#Sources.List>)
-  - [func \(s \*Sources\) Set\(id ID, src Source\)](<#Sources.Set>)
 
 
 ## Constants
@@ -210,7 +202,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L160-L178>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L95-L113>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -237,7 +229,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L181-L186>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L116-L121>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -278,7 +270,7 @@ func (s *FetchStats) HumanSize() string
 HumanSize returns the payload size in human\-readable format.
 
 <a name="ID"></a>
-## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L103>)
+## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L38>)
 
 ID represents the identifier of a data source. ID is a type alias for catalogmeta.SourceID to maintain backward compatibility. This allows existing code to continue using sources.ID while benefiting from the shared type definitions in pkg/catalogmeta.
 
@@ -287,7 +279,7 @@ type ID = catalogmeta.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L116>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L51>)
 
 ```go
 func IDs() []ID
@@ -296,7 +288,7 @@ func IDs() []ID
 IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L146-L157>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L81-L92>)
 
 Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
 
@@ -666,7 +658,7 @@ type RawFetchResult struct {
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L191>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L126>)
 
 ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
 
@@ -797,7 +789,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L125-L141>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L60-L76>)
 
 Source observes catalog information from one configured upstream.
 
@@ -822,80 +814,6 @@ type Source interface {
     IsOptional() bool
 }
 ```
-
-<a name="Sources"></a>
-## type [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L36-L39>)
-
-Sources is a thread\-safe container for managing multiple data sources.
-
-```go
-type Sources struct {
-    // contains filtered or unexported fields
-}
-```
-
-<a name="NewSources"></a>
-### func [NewSources](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L42>)
-
-```go
-func NewSources() *Sources
-```
-
-NewSources creates a new Sources instance.
-
-<a name="Sources.Delete"></a>
-### func \(\*Sources\) [Delete](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L64>)
-
-```go
-func (s *Sources) Delete(id ID)
-```
-
-Delete deletes a source by ID.
-
-<a name="Sources.Get"></a>
-### func \(\*Sources\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L49>)
-
-```go
-func (s *Sources) Get(id ID) (Source, bool)
-```
-
-Get returns a source by ID.
-
-<a name="Sources.IDs"></a>
-### func \(\*Sources\) [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L89>)
-
-```go
-func (s *Sources) IDs() []ID
-```
-
-IDs returns a slice of all source IDs.
-
-<a name="Sources.Len"></a>
-### func \(\*Sources\) [Len](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L71>)
-
-```go
-func (s *Sources) Len() int
-```
-
-Len returns the number of sources.
-
-<a name="Sources.List"></a>
-### func \(\*Sources\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L78>)
-
-```go
-func (s *Sources) List() []Source
-```
-
-List returns a slice of all sources.
-
-<a name="Sources.Set"></a>
-### func \(\*Sources\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L57>)
-
-```go
-func (s *Sources) Set(id ID, src Source)
-```
-
-Set sets a source by ID.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

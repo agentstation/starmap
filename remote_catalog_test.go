@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -55,7 +54,7 @@ func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *
 	if err := local.SetProvider(catalogs.Provider{ID: "workspace-only", Name: "Workspace Only"}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := local.Save(save.WithPath(localPath)); err != nil {
+	if err := local.SaveTo(localPath); err != nil {
 		t.Fatalf("Save local workspace: %v", err)
 	}
 

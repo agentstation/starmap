@@ -151,14 +151,6 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
-	mux.HandleFunc(prefix+"/operations", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			h.HandleOperations(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
 	// Real-time endpoints
 	mux.HandleFunc(prefix+"/updates/ws", h.HandleWebSocket)
 	mux.HandleFunc(prefix+"/updates/stream", h.HandleSSE)

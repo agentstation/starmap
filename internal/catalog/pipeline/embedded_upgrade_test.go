@@ -14,7 +14,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/reconciler"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -34,7 +33,7 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 		t.Fatalf("reconcile E1: %v", err)
 	}
 	workspacePath := t.TempDir()
-	if err := e1Result.Catalog.Save(save.WithPath(workspacePath)); err != nil {
+	if err := e1Result.Catalog.SaveTo(workspacePath); err != nil {
 		t.Fatalf("save E1 workspace: %v", err)
 	}
 
@@ -50,7 +49,7 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	if err := human.SetProvider(provider); err != nil {
 		t.Fatalf("set human provider: %v", err)
 	}
-	if err := human.Save(save.WithPath(workspacePath)); err != nil {
+	if err := human.SaveTo(workspacePath); err != nil {
 		t.Fatalf("save human edit: %v", err)
 	}
 
@@ -159,7 +158,7 @@ func TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := human.Save(save.WithPath(path)); err != nil {
+	if err := human.SaveTo(path); err != nil {
 		t.Fatalf("Save: %v", err)
 	}
 	store := &pipelineTestStore{catalog: buildCatalog(t, human)}
@@ -211,7 +210,7 @@ func TestWorkspaceFormattingChangesDoNotBecomeLocalEvidence(t *testing.T) {
 		t.Fatalf("reconcile embedded catalog: %v", err)
 	}
 	path := t.TempDir()
-	if err := generated.Catalog.Save(save.WithPath(path)); err != nil {
+	if err := generated.Catalog.SaveTo(path); err != nil {
 		t.Fatalf("save generated workspace: %v", err)
 	}
 
@@ -288,7 +287,7 @@ func TestWorkspaceChangesRequireExplicitReloadAndPublishOnce(t *testing.T) {
 		t.Fatalf("reconcile embedded catalog: %v", err)
 	}
 	path := t.TempDir()
-	if err := generated.Catalog.Save(save.WithPath(path)); err != nil {
+	if err := generated.Catalog.SaveTo(path); err != nil {
 		t.Fatalf("save generated workspace: %v", err)
 	}
 
@@ -304,7 +303,7 @@ func TestWorkspaceChangesRequireExplicitReloadAndPublishOnce(t *testing.T) {
 	if err := human.SetProvider(provider); err != nil {
 		t.Fatalf("set human provider: %v", err)
 	}
-	if err := human.Save(save.WithPath(path)); err != nil {
+	if err := human.SaveTo(path); err != nil {
 		t.Fatalf("save human edit: %v", err)
 	}
 

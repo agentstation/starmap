@@ -734,7 +734,6 @@ GET  /api/v1/catalog/generations/{generation_id}/snapshot
 # Admin
 POST /api/v1/update              # Trigger catalog sync
 GET  /api/v1/stats               # Catalog statistics
-GET  /api/v1/operations          # Generation, freshness, last sync, scheduler state
 
 # Health
 GET  /health                     # Liveness probe

@@ -6,14 +6,21 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 // Save atomically materializes the current committed generation into a YAML
-// workspace. It never publishes a new generation.
-func (c *Client) Save(opts ...save.Option) error {
-	options := save.Defaults().Apply(opts...)
-	writePath := options.Path()
+// workspace configured at construction. It never publishes a new generation.
+func (c *Client) Save() error {
+	return c.saveTo("")
+}
+
+// SaveTo atomically materializes the current committed generation into path.
+// It never publishes a new generation.
+func (c *Client) SaveTo(path string) error {
+	return c.saveTo(path)
+}
+
+func (c *Client) saveTo(writePath string) error {
 	if writePath == "" && c.options != nil {
 		writePath = c.options.catalogPath
 	}

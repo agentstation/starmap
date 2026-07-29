@@ -8,7 +8,7 @@
 import "github.com/agentstation/starmap/pkg/catalogremote"
 ```
 
-Package catalogremote defines the versioned online Starmap\-to\-Starmap generation protocol. Artifact distribution remains in catalogdistribution.
+Package catalogremote defines the versioned online Starmap\-to\-Starmap generation protocol.
 
 ## Index
 

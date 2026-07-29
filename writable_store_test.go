@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -37,7 +36,7 @@ func TestWritableStoreTriggerMatrixRejectsBeforeWork(t *testing.T) {
 		}); err != nil {
 			t.Fatalf("Seed provider: %v", err)
 		}
-		if err := seed.Save(save.WithPath(outputPath)); err != nil {
+		if err := seed.SaveTo(outputPath); err != nil {
 			t.Fatalf("Save seed catalog: %v", err)
 		}
 
@@ -83,7 +82,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 		if err := seed.SetProvider(catalogs.Provider{ID: "local-provider", Name: "Local Provider"}); err != nil {
 			t.Fatalf("Seed provider: %v", err)
 		}
-		if err := seed.Save(save.WithPath(outputPath)); err != nil {
+		if err := seed.SaveTo(outputPath); err != nil {
 			t.Fatalf("Save seed catalog: %v", err)
 		}
 

@@ -12,7 +12,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
@@ -40,7 +39,7 @@ func TestConfiguredCatalogPathLoadsHumanWorkspace(t *testing.T) {
 	if err := local.SetProvider(catalogs.Provider{ID: "local-only", Name: "Local only"}); err != nil {
 		t.Fatalf("Seed local provider: %v", err)
 	}
-	if err := local.Save(save.WithPath(path)); err != nil {
+	if err := local.SaveTo(path); err != nil {
 		t.Fatalf("Save local catalog: %v", err)
 	}
 
@@ -70,7 +69,7 @@ func TestConfiguredWorkspaceLoadsSemanticHumanValuesWithoutEmbeddedPreMerge(t *t
 		t.Fatalf("SetProvider: %v", err)
 	}
 	seedTestModelDefinitions(t, human)
-	if err := human.Save(save.WithPath(path)); err != nil {
+	if err := human.SaveTo(path); err != nil {
 		t.Fatalf("Save human workspace: %v", err)
 	}
 
@@ -112,7 +111,7 @@ func TestConfiguredLocalCatalogHasNoInventedGenerationID(t *testing.T) {
 	if err := local.SetProvider(catalogs.Provider{ID: "local", Name: "Local"}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := local.Save(save.WithPath(path)); err != nil {
+	if err := local.SaveTo(path); err != nil {
 		t.Fatalf("Save local catalog: %v", err)
 	}
 	client, err := New(WithCatalogPath(path))

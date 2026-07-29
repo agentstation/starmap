@@ -10,7 +10,6 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogscheduler"
 )
 
 func TestWebSocketOriginPolicy(t *testing.T) {
@@ -249,17 +248,6 @@ func (m *mockApplication) CatalogState() (starmap.CatalogState, error) {
 
 func (m *mockApplication) Readiness() (starmap.CatalogReadiness, error) {
 	return m.sm.Readiness(), nil
-}
-
-func (m *mockApplication) OperationalState(ctx context.Context) (catalogscheduler.OperationalState, error) {
-	state := m.sm.CurrentCatalogState()
-	operations, err := catalogscheduler.NewOperations()
-	if err != nil {
-		return catalogscheduler.OperationalState{}, err
-	}
-	return operations.State(ctx, catalogscheduler.CatalogIdentity{
-		GenerationID: state.GenerationID, Sequence: state.Sequence,
-	})
 }
 
 func (m *mockApplication) Starmap(...starmap.Option) (*starmap.Client, error) {

@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestLoadHumanWorkspaceReadsOnlySelectedYAML(t *testing.T) {
@@ -21,7 +20,7 @@ func TestLoadHumanWorkspaceReadsOnlySelectedYAML(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := human.Save(save.WithPath(path)); err != nil {
+	if err := human.SaveTo(path); err != nil {
 		t.Fatalf("Save: %v", err)
 	}
 

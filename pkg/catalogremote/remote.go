@@ -1,5 +1,5 @@
 // Package catalogremote defines the versioned online Starmap-to-Starmap
-// generation protocol. Artifact distribution remains in catalogdistribution.
+// generation protocol.
 package catalogremote
 
 import (
