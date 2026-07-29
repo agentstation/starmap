@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Pure-Go release contract**: required verification executes the external
+  library, store, server, remote, and CLI compositions with `CGO_ENABLED=0`;
+  race verification remains explicitly cgo-enabled. GoReleaser archives,
+  container images, and Homebrew installs now verify cgo-disabled metadata and
+  target-appropriate static/system-only linkage.
 - **Embeddable Go server**: the public `server` package accepts
   `*starmap.Client`, returns a concrete server, and exposes caller-owned
   `Serve`, `Handler`/`Start`, and draining `Shutdown` lifecycles. Read-only

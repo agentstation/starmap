@@ -35,6 +35,7 @@ jobs:
 
       - name: Test minimum supported external consumer
         env:
+          CGO_ENABLED: 0
           GOTOOLCHAIN: local
         run: make test-consumer-deps
 

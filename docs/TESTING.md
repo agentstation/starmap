@@ -158,7 +158,12 @@ Before release, run:
 
 ```bash
 make verify
+make test-pure-go
 make release-check
 ```
 
-`make release-check` adds release-specific CLI and GoReleaser checks. `make verify` remains the broader correctness gate.
+`make test-pure-go` executes the external library, store, server, remote, and
+CLI compositions with `CGO_ENABLED=0` and verifies the local binary linkage.
+`make verify` includes that gate, then runs the race suite separately with
+`CGO_ENABLED=1`. `make release-check` adds release-specific CLI and exact
+GoReleaser checks.

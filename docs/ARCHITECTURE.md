@@ -1060,6 +1060,14 @@ generation. A nil `*Client` has a defined zero-value read: `Catalog` returns
 nil. Storage-backed callers use `NewContext` so cancellation and deadlines
 bound constructor I/O; `New` uses a background context for convenience.
 
+The supported library, store, server, remote, and CLI compositions are pure Go
+and execute with `CGO_ENABLED=0`; repository-authored source has no
+`import "C"`. Release archives and the container use the same cgo-disabled
+contract. Reliability verification keeps the race suite explicitly
+cgo-enabled because the Go race detector normally requires it. The
+non-standard dependency budget is therefore independent of the optional
+standard-library `runtime/cgo` implementation package.
+
 ## Embeddable Server Package
 
 Location: `server/`

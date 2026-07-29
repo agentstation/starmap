@@ -107,6 +107,9 @@ jobs:
           MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
           MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
 
+      - name: Verify portable release binaries
+        run: ./scripts/verify-release-binaries.sh dist
+
       - name: Attest released archives and SBOMs
         uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
         with:
@@ -183,6 +186,12 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
+      - name: Set up release Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.5"
+          cache: false
+
       - name: Install from AgentStation tap
         run: brew install agentstation/tap/starmap
 
@@ -190,3 +199,6 @@ jobs:
         run: |
           EXPECTED=${GITHUB_REF_NAME#v}
           test "$(starmap version | awk '{print $2}')" = "$EXPECTED"
+          BINARY=$(command -v starmap)
+          go version -m "$BINARY" | grep -Eq '^[[:space:]]*build[[:space:]]+CGO_ENABLED=0$'
+          test -z "$(otool -L "$BINARY" | tail -n +2 | awk '{print $1}' | grep -Ev '^(/usr/lib/|/System/Library/)' || true)"

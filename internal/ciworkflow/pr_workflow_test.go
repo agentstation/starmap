@@ -36,6 +36,7 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"name: Security & Reliability",
 		"name: Test minimum supported Go version",
 		"name: Test minimum supported external consumer",
+		"CGO_ENABLED: 0",
 		`go-version: "` + minimumPatchVersion + `"`,
 		"GOTOOLCHAIN: local",
 		"run: make test-consumer-deps",
@@ -99,8 +100,8 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
 		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
-		`run ./scripts/verify-consumer-deps.sh`,
-		`go test ./... -race -short -timeout=20m`,
+		`run make test-pure-go`,
+		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
 	} {
 		if !strings.Contains(verifyScript, check) {
@@ -131,6 +132,49 @@ func TestExternalReadOnlyConsumerUsesCanonicalCatalogDX(t *testing.T) {
 		if strings.Contains(consumer, forbidden) {
 			t.Fatalf("external read-only consumer contains forbidden surface %q", forbidden)
 		}
+	}
+}
+
+func TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent(t *testing.T) {
+	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
+	for _, check := range []string{
+		"MAX_NON_STANDARD_PACKAGES=32",
+		"{{if not .Standard}}{{.ImportPath}}{{end}}",
+		`"$non_standard_package_count" -gt "$MAX_NON_STANDARD_PACKAGES"`,
+		`banned="$(grep -E "$banned_pattern" "$DEPS" || true)"`,
+	} {
+		if !strings.Contains(script, check) {
+			t.Fatalf("consumer dependency verification is missing %q", check)
+		}
+	}
+	if strings.Contains(script, "MAX_PACKAGES=160") {
+		t.Fatal("read-only dependency budget must not count platform-specific standard-library packages")
+	}
+}
+
+func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
+	makefile := readFixture(t, "../../Makefile")
+	pureGoScript := readFixture(t, "../../scripts/verify-pure-go.sh")
+	verifyScript := readFixture(t, "../../scripts/verify.sh")
+
+	if !strings.Contains(makefile, "test-pure-go:") {
+		t.Fatal("Makefile does not expose the pure-Go composition gate")
+	}
+	for _, check := range []string{
+		`CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"`,
+		`CGO_ENABLED=0 go build -trimpath`,
+		`CGO_ENABLED=0$`,
+		`import[[:space:]]+"C"`,
+	} {
+		if !strings.Contains(pureGoScript, check) {
+			t.Fatalf("pure-Go verification is missing %q", check)
+		}
+	}
+	if !strings.Contains(verifyScript, "run make test-pure-go") {
+		t.Fatal("repository verification does not run the pure-Go composition gate")
+	}
+	if !strings.Contains(verifyScript, "run env CGO_ENABLED=1 go test ./... -race") {
+		t.Fatal("repository race verification must remain explicitly cgo-enabled")
 	}
 }
 

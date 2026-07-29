@@ -22,6 +22,8 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"syft-version: v1.46.0",
 		"actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
 		"version: v2.17.0",
+		"Verify portable release binaries",
+		"./scripts/verify-release-binaries.sh dist",
 		"subject-checksums: dist/checksums.txt",
 		"Verify draft release assets before publication",
 		"Publish verified immutable release",
@@ -32,6 +34,8 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		`--repo "$GITHUB_REPOSITORY"`,
 		`--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml"`,
 		"brew install agentstation/tap/starmap",
+		`go version -m "$BINARY"`,
+		`grep -Ev '^(/usr/lib/|/System/Library/)'`,
 		"!contains(github.ref_name, '-')",
 	}
 	for _, check := range checks {
@@ -53,10 +57,12 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 
 func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	config := readFixture(t, "../../.goreleaser.yaml")
+	devbox := readFixture(t, "../../devbox.json")
 	for _, check := range []string{
 		"ignore_tags:\n    - \"catalog-payload-*\"",
 		"goos:\n      - linux\n      - darwin\n      - windows",
 		"goarch:\n      - amd64\n      - arm64",
+		"env:\n      - CGO_ENABLED=0",
 		"cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
 		`"{{ if not .Prerelease }}latest{{ end }}"`,
 		`make_latest: '{{ if .Prerelease }}false{{ else }}true{{ end }}'`,
@@ -75,5 +81,31 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	}
 	if strings.Contains(config, "static:latest") {
 		t.Error("container build uses a mutable base image tag")
+	}
+	if got := strings.Count(config, "CGO_ENABLED=0"); got != 2 {
+		t.Errorf("GoReleaser cgo-disabled build declarations = %d, want 2", got)
+	}
+	if !strings.Contains(devbox, `"goreleaser@2.17.0"`) {
+		t.Error("developer environment does not pin the hosted GoReleaser version")
+	}
+}
+
+func TestReleaseBinaryVerificationPinsPortableTargetMatrix(t *testing.T) {
+	script := readFixture(t, "../../scripts/verify-release-binaries.sh")
+	for _, check := range []string{
+		"darwin/amd64",
+		"darwin/arm64",
+		"linux/amd64",
+		"linux/arm64",
+		"windows/amd64",
+		"windows/arm64",
+		"CGO_ENABLED=0",
+		"readelf -lW",
+		"readelf -dW",
+		"msvcrt|ucrtbase|vcruntime|libgcc|libstdc",
+	} {
+		if !strings.Contains(script, check) {
+			t.Errorf("release binary verification is missing %q", check)
+		}
 	}
 }
