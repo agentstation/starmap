@@ -166,7 +166,6 @@ func needsBaselineEnrichment(baseline *catalogs.Catalog, srcs []sources.Observat
 func reconciliationPrimary(srcs []sources.Observation) sources.ID {
 	for _, preferred := range []sources.ID{
 		sources.ProvidersID,
-		sources.LocalCatalogID,
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
 	} {
