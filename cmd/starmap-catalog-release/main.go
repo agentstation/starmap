@@ -1,8 +1,9 @@
-// Command starmap-catalog-release stages the verified embedded generation as
+// Command starmap-catalog-release stages one exact committed generation as
 // immutable catalog release assets.
 package main
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/json"
 	"flag"
@@ -12,8 +13,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -36,6 +37,11 @@ func run(args []string, output io.Writer) error {
 	flags.SetOutput(io.Discard)
 	outputDir := flags.String("output-dir", "dist/catalog-release", "immutable catalog release staging root")
 	verifyDir := flags.String("verify-dir", "", "verify an existing catalog release asset directory")
+	generationStore := flags.String(
+		"generation-store",
+		"",
+		"filesystem store containing the exact committed generation to stage",
+	)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -49,8 +55,11 @@ func run(args []string, output io.Writer) error {
 		}
 	})
 	if strings.TrimSpace(*verifyDir) != "" {
-		if outputDirExplicit {
-			return &pkgerrors.ValidationError{Field: "catalog_release.mode", Message: "output-dir and verify-dir are mutually exclusive"}
+		if outputDirExplicit || strings.TrimSpace(*generationStore) != "" {
+			return &pkgerrors.ValidationError{
+				Field:   "catalog_release.mode",
+				Message: "verify-dir cannot be combined with output-dir or generation-store",
+			}
 		}
 		report, err := verifyReleaseDirectory(strings.TrimSpace(*verifyDir))
 		if err != nil {
@@ -58,9 +67,24 @@ func run(args []string, output io.Writer) error {
 		}
 		return json.NewEncoder(output).Encode(report)
 	}
-	generation, err := bootstrap.Generation()
+	if strings.TrimSpace(*generationStore) == "" {
+		return &pkgerrors.ValidationError{
+			Field:   "catalog_release.generation_store",
+			Message: "is required when staging release assets",
+		}
+	}
+	store, err := catalogstore.NewFilesystem(strings.TrimSpace(*generationStore))
 	if err != nil {
 		return err
+	}
+	generation, err := store.Current(context.Background())
+	if err != nil {
+		return pkgerrors.WrapResource(
+			"read",
+			"committed catalog generation",
+			strings.TrimSpace(*generationStore),
+			err,
+		)
 	}
 	artifact, err := catalogartifact.Build(generation)
 	if err != nil {

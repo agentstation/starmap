@@ -39,6 +39,8 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           STARMAP_GENERATION_NONINTERACTIVE: "1"
           STARMAP_GENERATION_REPORT_PATH: catalog-generation.json
+          STARMAP_GENERATION_STATE_PATH: ${{ runner.temp }}/starmap-catalog-generation
+          STARMAP_GENERATION_STORE_PATH: ${{ runner.temp }}/starmap-catalog-generation/update-home/.starmap/state/catalog
         run: ./scripts/generate-embedded-catalog.sh
 
       - name: Classify canonical payload change
@@ -91,7 +93,9 @@ jobs:
         if: ${{ steps.change.outputs.publish == 'true' }}
         id: assets
         run: |
-          go run ./cmd/starmap-catalog-release --output-dir dist/catalog-generation > catalog-release.json
+          go run ./cmd/starmap-catalog-release \
+            --generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog" \
+            --output-dir dist/catalog-generation > catalog-release.json
           printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
 
       - name: Attest scheduled catalog generation

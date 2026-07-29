@@ -216,6 +216,13 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	manifestPath := filepath.Join(catalogPath, "generation.json")
 	reportPath := filepath.Join(directory, "generation-report.json")
 	generationStatePath := filepath.Join(directory, "generation-state")
+	generationStorePath := filepath.Join(
+		generationStatePath,
+		"update-home",
+		".starmap",
+		"state",
+		"catalog",
+	)
 	command := exec.Command("bash", filepath.Join(root, "scripts", "generate-embedded-catalog.sh"), "openai")
 	command.Dir = root
 	command.Env = append(os.Environ(),
@@ -226,6 +233,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		"STARMAP_EMBEDDED_MANIFEST_PATH="+manifestPath,
 		"STARMAP_GENERATION_REPORT_PATH="+reportPath,
 		"STARMAP_GENERATION_STATE_PATH="+generationStatePath,
+		"STARMAP_GENERATION_STORE_PATH="+generationStorePath,
 		"STARMAP_BOOTSTRAP_MANIFEST_BIN="+manifestSpy,
 		"STARMAP_MANIFEST_LOG="+manifestLog,
 	)
@@ -248,7 +256,8 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		t.Fatalf("ReadFile manifest log: %v", err)
 	}
 	wantManifest := "--catalog-dir " + catalogPath + " --output " + manifestPath +
-		" --endpoints-output " + filepath.Join(catalogPath, "endpoints.yaml") + "\n"
+		" --endpoints-output " + filepath.Join(catalogPath, "endpoints.yaml") +
+		" --generation-store " + generationStorePath + "\n"
 	if string(manifestInvocation) != wantManifest {
 		t.Fatalf("manifest command = %q, want %q", manifestInvocation, wantManifest)
 	}

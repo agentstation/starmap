@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -63,4 +64,77 @@ func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generat
 		report.PreviousGenerationID = current.GenerationID
 	}
 	return manifest, report, nil
+}
+
+// DeriveCommitted binds changed embedded bytes to the identity of the exact
+// durable generation that produced them. It never reconstructs source
+// observations; release staging reads the same generation from its store.
+func DeriveCommitted(
+	reader catalogs.Reader,
+	generation catalogstore.Generation,
+	current *catalogs.BootstrapManifest,
+) (catalogs.BootstrapManifest, Report, error) {
+	if reader == nil {
+		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{
+			Field: "bootstrap_manifest.catalog", Message: "is required",
+		}
+	}
+	if err := generation.Validate(); err != nil {
+		return catalogs.BootstrapManifest{}, Report{}, errors.WrapResource(
+			"validate",
+			"committed catalog generation",
+			generation.Manifest.GenerationID,
+			err,
+		)
+	}
+	payload, err := catalogs.EncodeCatalogPayload(reader)
+	if err != nil {
+		return catalogs.BootstrapManifest{}, Report{}, err
+	}
+	descriptor := catalogs.DescribeCatalogPayload(payload)
+	if descriptor != generation.Manifest.Payload {
+		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{
+			Field:   "bootstrap_manifest.committed_payload",
+			Value:   descriptor.Checksum,
+			Message: "embedded catalog bytes do not match the committed generation",
+		}
+	}
+	if current != nil &&
+		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
+		current.Payload == descriptor {
+		return *current, unchangedReport(*current), nil
+	}
+
+	manifest := catalogs.BootstrapManifest{
+		ManifestVersion: catalogs.CurrentBootstrapManifestVersion,
+		GenerationID:    generation.Manifest.GenerationID,
+		GeneratedAt:     generation.Manifest.GeneratedAt,
+		SchemaVersion:   generation.Manifest.SchemaVersion,
+		Payload:         descriptor,
+	}
+	if err := manifest.Validate(); err != nil {
+		return catalogs.BootstrapManifest{}, Report{}, err
+	}
+	report := Report{
+		Changed:          true,
+		GenerationID:     manifest.GenerationID,
+		GeneratedAt:      manifest.GeneratedAt,
+		PayloadChecksum:  descriptor.Checksum,
+		PayloadSizeBytes: descriptor.SizeBytes,
+	}
+	if current != nil {
+		report.PreviousGenerationID = current.GenerationID
+	}
+	return manifest, report, nil
+}
+
+func unchangedReport(current catalogs.BootstrapManifest) Report {
+	return Report{
+		Changed:              false,
+		PreviousGenerationID: current.GenerationID,
+		GenerationID:         current.GenerationID,
+		GeneratedAt:          current.GeneratedAt,
+		PayloadChecksum:      current.Payload.Checksum,
+		PayloadSizeBytes:     current.Payload.SizeBytes,
+	}
 }

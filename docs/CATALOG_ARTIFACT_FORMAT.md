@@ -71,13 +71,16 @@ directory and atomically publishes one generation-keyed immutable directory.
 An exact retry is idempotent. Existing partial, tampered, or different bytes for
 the same generation ID return a typed conflict and are never overwritten.
 
-`go run ./cmd/starmap-catalog-release --output-dir <dir>` performs that staging
-for the verified embedded generation and emits a JSON report of exact paths.
-The scheduled catalog-generation workflow publishes those three paths in a
-catalog-only prerelease keyed by payload digest; a rerun cannot silently replace
-a published asset. Application releases never append catalog-generation assets.
-Hosted workflow execution evidence remains separate from deterministic local
-verification.
+`go run ./cmd/starmap-catalog-release --generation-store <store> --output-dir
+<dir>` reads and stages the filesystem store's exact current committed
+generation, including its original validation report and every source
+observation link. Staging has no embedded-catalog fallback because rebuilding a
+manifest from projected YAML would erase the commit's evidence lineage. The
+scheduled catalog-generation workflow retains its isolated machine store until
+staging completes and publishes those three paths in a catalog-only prerelease
+keyed by payload digest; a rerun cannot silently replace a published asset.
+Application releases never append catalog-generation assets. Hosted workflow
+execution evidence remains separate from deterministic local verification.
 
 The workflow uses GitHub's `actions/attest-build-provenance` v2 action pinned
 to an immutable commit with

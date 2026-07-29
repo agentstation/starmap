@@ -4,7 +4,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *testing.T) {
@@ -62,6 +64,112 @@ func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *test
 		changed.Payload.Checksum == first.Payload.Checksum || changed.GeneratedAt != firstTime.Add(24*time.Hour) {
 		t.Fatalf("changed report/manifest = %#v/%#v", changedReport, changed)
 	}
+}
+
+func TestDeriveCommittedPreservesExactGenerationIdentity(t *testing.T) {
+	catalog, generation := committedFixture(t, "committed-generation")
+
+	manifest, report, err := DeriveCommitted(catalog, generation, nil)
+	if err != nil {
+		t.Fatalf("DeriveCommitted: %v", err)
+	}
+	if manifest.GenerationID != generation.Manifest.GenerationID ||
+		manifest.GeneratedAt != generation.Manifest.GeneratedAt ||
+		manifest.Payload != generation.Manifest.Payload {
+		t.Fatalf("manifest = %#v, generation = %#v", manifest, generation.Manifest)
+	}
+	if !report.Changed || report.GenerationID != generation.Manifest.GenerationID {
+		t.Fatalf("report = %#v", report)
+	}
+
+	unchanged, unchangedReport, err := DeriveCommitted(
+		catalog,
+		generation,
+		&manifest,
+	)
+	if err != nil {
+		t.Fatalf("DeriveCommitted unchanged: %v", err)
+	}
+	if unchanged != manifest || unchangedReport.Changed {
+		t.Fatalf("unchanged = %#v / %#v", unchanged, unchangedReport)
+	}
+}
+
+func TestDeriveCommittedRejectsCatalogDifferentFromCommittedPayload(t *testing.T) {
+	catalog, generation := committedFixture(t, "committed-generation")
+	differentBuilder := catalogs.NewEmpty()
+	if err := differentBuilder.SetAuthor(*testAuthor()); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	different, err := differentBuilder.Build()
+	if err != nil {
+		t.Fatalf("Build different catalog: %v", err)
+	}
+	if _, _, err := DeriveCommitted(different, generation, nil); err == nil {
+		t.Fatal("DeriveCommitted accepted catalog bytes different from the commit")
+	}
+	if _, _, err := DeriveCommitted(catalog, catalogstore.Generation{}, nil); err == nil {
+		t.Fatal("DeriveCommitted accepted an invalid committed generation")
+	}
+}
+
+func committedFixture(
+	t *testing.T,
+	id string,
+) (*catalogs.Catalog, catalogstore.Generation) {
+	t.Helper()
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build empty catalog: %v", err)
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload: %v", err)
+	}
+	generatedAt := time.Date(2026, time.July, 29, 20, 0, 0, 0, time.UTC)
+	descriptor := catalogs.DescribeCatalogPayload(payload)
+	generation := catalogstore.Generation{
+		Manifest: catalogs.GenerationManifest{
+			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
+			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
+			GenerationID:    id,
+			GeneratedAt:     generatedAt,
+			Payload:         descriptor,
+			Validation: catalogs.GenerationValidationReport{
+				ValidatorVersion: "test/v1",
+				ValidatedAt:      generatedAt,
+				Status:           catalogs.GenerationValidationPassed,
+				Checks: []catalogs.GenerationValidationCheck{{
+					Name: "catalog", Status: catalogs.GenerationValidationCheckPassed,
+				}},
+			},
+			SyncRunID: "sync-" + id,
+			SourceObservations: []catalogs.SourceObservationLink{
+				{
+					Source:        catalogmeta.ModelsDevGitID,
+					ObservationID: "modelsdev-observation",
+					ObservedAt:    generatedAt,
+					Revision: catalogmeta.ObservationRevision{
+						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+						Value: descriptor.Checksum,
+					},
+					Completeness:     catalogmeta.ObservationCompletenessComplete,
+					Status:           catalogmeta.ObservationStatusSucceeded,
+					EvidenceChecksum: descriptor.Checksum,
+				},
+			},
+			Completeness: catalogs.GenerationCompletenessComplete,
+			ConsumerCompatibility: catalogs.ConsumerCompatibility{
+				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			},
+		},
+		Payload: payload,
+	}
+	if err := generation.Validate(); err != nil {
+		t.Fatalf("Validate generation: %v", err)
+	}
+	return catalog, generation
 }
 
 func testAuthor() *catalogs.Author {
