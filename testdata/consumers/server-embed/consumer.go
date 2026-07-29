@@ -4,13 +4,17 @@ package consumer
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/server"
 )
 
@@ -77,6 +81,13 @@ func ServeAndShutdown(ctx context.Context) error {
 		health.CatalogGeneratedAt.IsZero() {
 		return fmt.Errorf("unexpected serving health: %#v", health)
 	}
+	if err := validateOpenRouterCatalog(
+		ctx,
+		listener.Addr().String(),
+		client.Catalog(),
+	); err != nil {
+		return err
+	}
 	updateRequest, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPost,
@@ -122,4 +133,125 @@ func ServeAndShutdown(ctx context.Context) error {
 	case <-shutdownCtx.Done():
 		return shutdownCtx.Err()
 	}
+}
+
+func validateOpenRouterCatalog(
+	ctx context.Context,
+	address string,
+	catalog *catalogs.Catalog,
+) error {
+	author, slug, err := selectOpenRouterModel(catalog)
+	if err != nil {
+		return err
+	}
+	modelID := author + "/" + slug
+	escapedAuthor := url.PathEscape(author)
+	escapedSlug := url.PathEscape(slug)
+	for _, route := range []struct {
+		path string
+		read func(*json.Decoder) error
+	}{
+		{
+			path: "/api/v1/model/" + escapedAuthor + "/" + escapedSlug,
+			read: func(decoder *json.Decoder) error {
+				var response struct {
+					Data struct {
+						ID            string `json:"id"`
+						CanonicalSlug string `json:"canonical_slug"`
+					} `json:"data"`
+				}
+				if err := decoder.Decode(&response); err != nil {
+					return err
+				}
+				if response.Data.ID != modelID ||
+					response.Data.CanonicalSlug != modelID {
+					return fmt.Errorf("unexpected OpenRouter model: %#v", response.Data)
+				}
+				return nil
+			},
+		},
+		{
+			path: "/api/v1/models/" + escapedAuthor + "/" + escapedSlug + "/endpoints",
+			read: func(decoder *json.Decoder) error {
+				var response struct {
+					Data struct {
+						ID        string `json:"id"`
+						Endpoints []struct {
+							ModelID string `json:"model_id"`
+							Tag     string `json:"tag"`
+						} `json:"endpoints"`
+					} `json:"data"`
+				}
+				if err := decoder.Decode(&response); err != nil {
+					return err
+				}
+				if response.Data.ID != modelID ||
+					len(response.Data.Endpoints) == 0 ||
+					response.Data.Endpoints[0].ModelID == "" ||
+					response.Data.Endpoints[0].Tag == "" {
+					return fmt.Errorf("unexpected OpenRouter endpoints: %#v", response.Data)
+				}
+				return nil
+			},
+		},
+	} {
+		request, err := http.NewRequestWithContext(
+			ctx,
+			http.MethodGet,
+			"http://"+address+route.path,
+			nil,
+		)
+		if err != nil {
+			return err
+		}
+		response, err := http.DefaultClient.Do(request)
+		if err != nil {
+			return err
+		}
+		if response.StatusCode != http.StatusOK {
+			_ = response.Body.Close()
+			return fmt.Errorf(
+				"OpenRouter route %s status = %d, want %d",
+				route.path,
+				response.StatusCode,
+				http.StatusOK,
+			)
+		}
+		readErr := route.read(json.NewDecoder(response.Body))
+		closeErr := response.Body.Close()
+		if readErr != nil {
+			return readErr
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+	}
+	return nil
+}
+
+func selectOpenRouterModel(catalog *catalogs.Catalog) (string, string, error) {
+	if catalog == nil {
+		return "", "", fmt.Errorf("catalog is nil")
+	}
+	for _, definition := range catalog.Definitions() {
+		offerings, err := catalog.DefinitionOfferings(definition.ID)
+		if err != nil {
+			return "", "", err
+		}
+		for _, offering := range offerings {
+			if offering.Availability == catalogs.OfferingAvailabilityUnavailable ||
+				offering.Lifecycle == catalogs.OfferingLifecycleRetired {
+				continue
+			}
+			author, slug, found := strings.Cut(string(definition.ID), "/")
+			if !found || author == "" || slug == "" {
+				return "", "", fmt.Errorf(
+					"unexpected canonical model ID %q",
+					definition.ID,
+				)
+			}
+			return author, slug, nil
+		}
+	}
+	return "", "", fmt.Errorf("catalog has no eligible provider offering")
 }

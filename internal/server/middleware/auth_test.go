@@ -417,6 +417,61 @@ func TestAuth_ConcurrentRequests(t *testing.T) {
 	}
 }
 
+func TestAuthFailureOverrideCanOwnOneTransportEnvelope(t *testing.T) {
+	t.Parallel()
+
+	logger := zerolog.Nop()
+	for _, test := range []struct {
+		name       string
+		handled    bool
+		wantStatus int
+	}{
+		{name: "override handles response", handled: true, wantStatus: http.StatusTeapot},
+		{name: "override declines response", handled: false, wantStatus: http.StatusUnauthorized},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			overrideCalled := false
+			config := AuthConfig{
+				Enabled:    true,
+				APIKey:     "secret-key",
+				HeaderName: "X-API-Key",
+				FailureOverride: func(
+					w http.ResponseWriter,
+					_ *http.Request,
+				) bool {
+					overrideCalled = true
+					if test.handled {
+						w.WriteHeader(http.StatusTeapot)
+					}
+					return test.handled
+				},
+			}
+			nextCalled := false
+			handler := Auth(config, &logger)(http.HandlerFunc(
+				func(w http.ResponseWriter, _ *http.Request) {
+					nextCalled = true
+					w.WriteHeader(http.StatusOK)
+				},
+			))
+			recorder := httptest.NewRecorder()
+			handler.ServeHTTP(
+				recorder,
+				httptest.NewRequest(http.MethodGet, "/protected", nil),
+			)
+			if !overrideCalled || nextCalled || recorder.Code != test.wantStatus {
+				t.Fatalf(
+					"override/next/status = (%t, %t, %d), want (true, false, %d)",
+					overrideCalled,
+					nextCalled,
+					recorder.Code,
+					test.wantStatus,
+				)
+			}
+		})
+	}
+}
+
 // Helper function to check if a string contains a substring.
 func contains(s, substr string) bool {
 	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) && (s[:len(substr)] == substr || s[len(s)-len(substr):] == substr || containsInner(s, substr)))

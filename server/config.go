@@ -1,4 +1,11 @@
 // Package server provides an embeddable HTTP server for a Starmap catalog.
+//
+// Alongside Starmap's native catalog and reactive-generation routes, the
+// server exposes OpenRouter-compatible model discovery at
+// /api/v1/model/{author}/{slug} and
+// /api/v1/models/{author}/{slug}/endpoints. Those responses are server-local
+// projections over the same immutable catalog; they do not create a second
+// persisted catalog or make generated endpoints.yaml authoritative.
 package server
 
 import (

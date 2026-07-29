@@ -764,6 +764,8 @@ ordinary server embedding independent from provider credentials and cloud SDKs.
 
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering
+- **OpenRouter catalog compatibility**: Exact model-by-author/slug and
+  model-endpoints discovery routes over the same immutable catalog
 - **Reactive Updates**: SSE (`/api/v1/updates/stream`) emits heartbeat comments and one post-commit `catalog.published` hint containing generation ID and sequence
 - **Performance**: Generation-scoped in-memory caching, deterministic query sorting, rate limiting (per-IP)
 - **Security**: Optional API key authentication, CORS support
@@ -779,6 +781,10 @@ ordinary server embedding independent from provider credentials and cloud SDKs.
 GET  /api/v1/models              # List with filtering
 GET  /api/v1/models/{id}         # Get specific model
 POST /api/v1/models/search       # Advanced search
+
+# OpenRouter-compatible catalog discovery
+GET  /api/v1/model/{author}/{slug}
+GET  /api/v1/models/{author}/{slug}/endpoints
 
 # Providers
 GET  /api/v1/providers           # List providers
@@ -799,6 +805,29 @@ GET  /api/v1/stats               # Catalog statistics
 GET  /health                     # Liveness probe
 GET  /api/v1/ready               # Readiness check
 ```
+
+The OpenRouter-compatible adapter implements OpenRouter's documented
+[model-by-slug](https://openrouter.ai/docs/api/api-reference/models/get-a-model-by-its-slug)
+and
+[model-endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model)
+contracts. It resolves canonical author IDs, author aliases, known catalog model
+aliases, and explicitly configured mode suffixes such as `:free`. It returns
+authored identity and intrinsic facts from the model definition, then joins
+every eligible provider offering at response time.
+Endpoint rows therefore retain the serving provider and its exact opaque model
+ID even when that provider serves models from unrelated labs. The model summary
+uses the least expensive eligible USD provider price deterministically; each
+endpoint retains its own provider price and limits in OpenRouter's documented
+string units.
+
+The adapter does not read generated `endpoints.yaml` and does not create another
+catalog authority. That file remains the digest-bound, human-inspectable
+projection of the same definition/offering join. Runtime latency, throughput,
+and uptime fields are omitted because Starmap does not currently compose a
+provider-performance telemetry producer; catalog freshness and SSE health are
+not substitutes for provider performance. Optional server authentication still
+governs these routes, with OpenRouter-shaped numeric `401` error envelopes.
+Model detail links honor the server's configured path prefix.
 
 Go consumers can opt into reactive remote catalogs without adding network
 behavior to the root package:

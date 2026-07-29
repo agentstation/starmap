@@ -10,6 +10,8 @@ import "github.com/agentstation/starmap/server"
 
 Package server provides an embeddable HTTP server for a Starmap catalog.
 
+Alongside Starmap's native catalog and reactive\-generation routes, the server exposes OpenRouter\-compatible model discovery at /api/v1/model/\{author\}/\{slug\} and /api/v1/models/\{author\}/\{slug\}/endpoints. Those responses are server\-local projections over the same immutable catalog; they do not create a second persisted catalog or make generated endpoints.yaml authoritative.
+
 ## Index
 
 - [type Config](<#Config>)
@@ -33,7 +35,7 @@ Package server provides an embeddable HTTP server for a Starmap catalog.
 
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L14-L54>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L21-L61>)
 
 Config configures an embeddable Starmap HTTP server.
 
@@ -82,7 +84,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L57>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L64>)
 
 ```go
 func DefaultConfig() Config

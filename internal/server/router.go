@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/server/handlers"
 	"github.com/agentstation/starmap/internal/server/middleware"
+	"github.com/agentstation/starmap/internal/server/openrouter"
 )
 
 // setupRouter creates the HTTP handler with routes and middleware.
@@ -46,36 +47,7 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/health", h.HandleHealth)
 	mux.HandleFunc(prefix+"/ready", h.HandleReady)
 
-	// Models endpoints
-	mux.HandleFunc(prefix+"/models", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			// POST /api/v1/models is treated as search
-			if r.URL.Path == prefix+"/models" || r.URL.Path == prefix+"/models/" {
-				h.HandleSearchModels(w, r)
-				return
-			}
-		}
-
-		if r.Method == http.MethodGet {
-			h.HandleListModels(w, r)
-			return
-		}
-
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	mux.HandleFunc(prefix+"/models/", func(w http.ResponseWriter, r *http.Request) {
-		modelID, err := extractPathParam(r, prefix+"/models/")
-		if err != nil {
-			http.Error(w, "Invalid model ID", http.StatusBadRequest)
-			return
-		}
-		if modelID != "" && r.Method == http.MethodGet {
-			h.HandleGetModel(w, r, modelID)
-			return
-		}
-		http.Error(w, "Not found", http.StatusNotFound)
-	})
+	s.registerModelRoutes(mux, h)
 
 	// Providers endpoints
 	mux.HandleFunc(prefix+"/providers", func(w http.ResponseWriter, r *http.Request) {
@@ -189,6 +161,20 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 		authConfig := middleware.DefaultAuthConfig()
 		authConfig.Enabled = true
 		authConfig.HeaderName = cfg.AuthHeader
+		authConfig.FailureOverride = func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) bool {
+			if !openrouter.IsCompatibilityPath(r.URL.EscapedPath(), cfg.PathPrefix) {
+				return false
+			}
+			openrouter.WriteError(
+				w,
+				http.StatusUnauthorized,
+				"No auth credentials found",
+			)
+			return true
+		}
 		handler = middleware.Auth(authConfig, s.logger)(handler)
 	}
 
@@ -209,6 +195,35 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 	handler = middleware.Recovery(s.logger)(handler)
 
 	return handler
+}
+
+func extractExactPathSegments(
+	request *http.Request,
+	prefix string,
+	count int,
+) ([]string, error) {
+	escapedPath := request.URL.EscapedPath()
+	escapedPrefix := (&url.URL{Path: prefix}).EscapedPath()
+	if !strings.HasPrefix(escapedPath, escapedPrefix) {
+		return nil, nil
+	}
+	rawParts := strings.Split(strings.TrimPrefix(escapedPath, escapedPrefix), "/")
+	if len(rawParts) != count {
+		return nil, nil
+	}
+	parts := make([]string, len(rawParts))
+	for index, raw := range rawParts {
+		value, err := url.PathUnescape(raw)
+		if err != nil {
+			return nil, err
+		}
+		if value == "" || value == "." || value == ".." ||
+			strings.ContainsAny(value, `/\`) {
+			return nil, fmt.Errorf("invalid path segment")
+		}
+		parts[index] = value
+	}
+	return parts, nil
 }
 
 // extractPathParam extracts path parameter from URL.

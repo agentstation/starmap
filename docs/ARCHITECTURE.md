@@ -627,6 +627,53 @@ only transport liveness; catalog age is always derived from the atomic active
 generation timestamp. See
 [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
+### OpenRouter catalog compatibility adapter
+
+`internal/server/openrouter` is one concrete server-owned adapter over the
+immutable catalog interface. It implements the exact
+`GET /api/v1/model/{author}/{slug}` and
+`GET /api/v1/models/{author}/{slug}/endpoints` discovery routes without adding
+OpenRouter transport types to `pkg/catalogs` or changing the human YAML model.
+The adapter reads definitions and `DefinitionOfferings` directly; generated
+`endpoints.yaml` remains an inspectable digest-bound projection and is never a
+runtime authority. The transport shape follows OpenRouter's current
+[model-by-slug](https://openrouter.ai/docs/api/api-reference/models/get-a-model-by-its-slug)
+and
+[model-endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model)
+contracts.
+
+Resolution first canonicalizes an author alias, then checks the canonical
+author/slug identity and the catalog's precomputed model-alias index. A resolved
+alias must still belong to the requested author. Ambiguous aliases remain typed
+conflicts and are returned as deterministic not-found responses instead of
+selecting a map entry. A suffix such as `:free` is accepted only when at least
+one eligible offering defines that exact mode; the response contains only those
+offerings and applies the mode's provider price. Unknown suffixes return 404.
+Generated detail links honor the configured server path prefix. Authentication
+failures use OpenRouter's numeric `401` envelope only on the two compatibility
+route shapes; native Starmap routes retain their existing error contract.
+
+Model identity, description, dates, architecture, modalities, reasoning
+controls, and supported parameters come from the authored definition.
+Provider names, exact opaque provider model IDs, USD pricing, limits, cache
+pricing, and serving eligibility come from provider offerings. Cache price
+presence is not misreported as implicit caching; that field remains false until
+an explicit provider fact exists. Endpoint order is the catalog's stable
+provider/model-ID order. Unavailable and retired
+offerings are excluded; every included row uses status `0` to mean catalog
+eligible, not observed runtime health. The model summary deterministically
+selects the least expensive eligible USD offering for its price and top-provider
+summary while retaining the maximum eligible context as the aggregate model
+context. Non-USD prices are omitted because this compatibility shape has no
+currency field and Starmap does not invent exchange rates.
+
+Latency, throughput, and uptime fields are optional transport fields and remain
+absent without real provider-performance samples. Publisher health, SSE
+liveness, and catalog generation age cannot populate them. If a real telemetry
+producer is introduced later, it must join samples inside this server adapter at
+response time; telemetry must not enter catalog YAML, generation identity, or
+catalog freshness.
+
 The online server and offline artifact are the only distribution
 representations. A deployment at `starmap.agentstation.ai` uses the same
 manifest, immutable generation, and SSE contract rather than a second mutable

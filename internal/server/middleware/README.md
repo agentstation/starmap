@@ -27,7 +27,7 @@ Package middleware provides HTTP middleware for the Starmap API server. It inclu
 
 
 <a name="Auth"></a>
-## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L34>)
+## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L35>)
 
 ```go
 func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -81,22 +81,23 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
 Recovery recovers from panics and returns 500 error.
 
 <a name="AuthConfig"></a>
-## type [AuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L14-L20>)
+## type [AuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L14-L21>)
 
 AuthConfig holds authentication configuration.
 
 ```go
 type AuthConfig struct {
-    Enabled      bool
-    APIKey       string
-    HeaderName   string
-    PublicPaths  []string
-    BearerPrefix bool
+    Enabled         bool
+    APIKey          string
+    HeaderName      string
+    PublicPaths     []string
+    BearerPrefix    bool
+    FailureOverride func(http.ResponseWriter, *http.Request) bool
 }
 ```
 
 <a name="DefaultAuthConfig"></a>
-### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L23>)
+### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L24>)
 
 ```go
 func DefaultAuthConfig() AuthConfig

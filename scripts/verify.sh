@@ -69,6 +69,7 @@ check_critical_coverage() {
 	check_coverage ./internal/providers/clients 80
 	check_coverage ./internal/sources/providers 75
 	check_coverage ./internal/server/middleware 90
+	check_coverage ./internal/server/openrouter 85
 	check_coverage ./internal/server/params 95
 	check_coverage ./internal/server/response 95
 	check_coverage ./internal/server/sse 90

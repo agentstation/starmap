@@ -48,6 +48,8 @@ Package handlers provides HTTP request handlers for the Starmap API.
   - [func \(h \*Handlers\) HandleListProviders\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleListProviders>)
   - [func \(h \*Handlers\) HandleOpenAPIJSON\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIJSON>)
   - [func \(h \*Handlers\) HandleOpenAPIYAML\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIYAML>)
+  - [func \(h \*Handlers\) HandleOpenRouterEndpoints\(w http.ResponseWriter, \_ \*http.Request, authorID string, slug string\)](<#Handlers.HandleOpenRouterEndpoints>)
+  - [func \(h \*Handlers\) HandleOpenRouterModel\(w http.ResponseWriter, \_ \*http.Request, authorID string, slug string, pathPrefix string\)](<#Handlers.HandleOpenRouterModel>)
   - [func \(h \*Handlers\) HandleReady\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleReady>)
   - [func \(h \*Handlers\) HandleSSE\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSSE>)
   - [func \(h \*Handlers\) HandleSearchModels\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSearchModels>)
@@ -188,6 +190,24 @@ func (h *Handlers) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request)
 ```
 
 HandleOpenAPIYAML serves the embedded OpenAPI 3.1 specification in YAML format. @Summary Get OpenAPI specification \(YAML\) @Description Returns the OpenAPI 3.1 specification for this API in YAML format @Tags meta @Produce application/x\-yaml @Success 200 \{string\} string "OpenAPI 3.1 specification" @Router /api/v1/openapi.yaml \[get\].
+
+<a name="Handlers.HandleOpenRouterEndpoints"></a>
+### func \(\*Handlers\) [HandleOpenRouterEndpoints](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/openrouter.go#L65-L70>)
+
+```go
+func (h *Handlers) HandleOpenRouterEndpoints(w http.ResponseWriter, _ *http.Request, authorID string, slug string)
+```
+
+HandleOpenRouterEndpoints handles GET /api/v1/models/\{author\}/\{slug\}/endpoints. @Summary List OpenRouter\-compatible provider endpoints for a model @Description Project every eligible exact provider offering for one model @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.EndpointsEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/models/\{author\}/\{slug\}/endpoints \[get\].
+
+<a name="Handlers.HandleOpenRouterModel"></a>
+### func \(\*Handlers\) [HandleOpenRouterModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/openrouter.go#L23-L29>)
+
+```go
+func (h *Handlers) HandleOpenRouterModel(w http.ResponseWriter, _ *http.Request, authorID string, slug string, pathPrefix string)
+```
+
+HandleOpenRouterModel handles GET /api/v1/model/\{author\}/\{slug\}. @Summary Get an OpenRouter\-compatible model by author and slug @Description Resolve a canonical model, known alias, or configured variant @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.ModelEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/model/\{author\}/\{slug\} \[get\].
 
 <a name="Handlers.HandleReady"></a>
 ### func \(\*Handlers\) [HandleReady](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/health.go#L35>)
