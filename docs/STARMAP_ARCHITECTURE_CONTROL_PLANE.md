@@ -3,8 +3,8 @@
 Last updated: 2026-07-28
 
 Status: `IN_PROGRESS` — P0–P4 and P5.1–P5.7 are complete. P5.8 is the sole
-active task: finish exact verification of the prelaunch compatibility deletion,
-then pass the protected phase PR before P6 begins.
+active task: the exact material commit is locally verified; pass the protected
+phase PR before P6 begins.
 
 ## Mission
 
@@ -883,7 +883,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | PR #50 merged as `1dc811b5`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@9609f4f4` | `IN_PROGRESS` | Complete P5 on a fresh phase branch, pass exact local/hosted gates, then remove the worktree/branch |
+| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@c3ae6dee` | `IN_PROGRESS` | Complete P5 on a fresh phase branch, pass exact local/hosted gates, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -1010,6 +1010,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P5.8 | The third uninterrupted `make verify` passed ordinary tests (root `31.014s`, CLI app `10.366s`, catalogs `16.403s`), repository race-short (root `187.007s`, app `55.373s`, catalogs `35.236s`, server `59.305s`, models.dev `69.841s`), vet, pinned lint with zero issues, every surviving coverage floor, generated GoDoc, diff, build, 611-model catalog validation, and CLI smokes. `BenchmarkClientCatalog` measured `10.65–11.17 ns/op`, `0 B/op`, and `0 allocs/op`. A subsequent public-artifact audit found the generated OpenAPI inconsistency recorded as F-060, so the complete gate must run again after that verification-only repair. |
 | 2026-07-28 | P5.8 / F-060 | The Go `ModelArchitecture` correctly deleted legacy `Precision`, but the embedded OpenAPI JSON/YAML still advertised `precision`; `make docs-check` regenerated only package READMEs and therefore could report success while the served schema was stale. `make openapi` removed the field from both embedded specifications. New `make openapi-check` generates both schemas off to the side with pinned Swag v2 and compares exact bytes; `docs-check` depends on it, and the focused check passes. An independent read-only generated-surface audit reproduced both specs byte-for-byte, mapped every exposed `catalogs.*` schema to a current Go type, and found none of the deleted legacy APIs in OpenAPI, root API docs, or catalog GoDoc. No runtime API or catalog semantics changed. |
 | 2026-07-28 | P5.8 / F-060 | The complete verification-hardened P5 tree passed uninterrupted `make verify`: ordinary root `38.143s`, CLI app `10.301s`, and catalogs `16.230s`; repository race-short root `211.808s`, app `51.541s`, catalogs `32.148s`, server `55.195s`, and models.dev `66.552s`; vet; pinned golangci-lint v2.12.2 with zero issues; every surviving coverage floor including catalogs `69.9%`; exact OpenAPI reproduction plus generated GoDoc; diff; build; 611-model validation; and CLI smokes. `BenchmarkClientCatalog` measured `9.051–10.72 ns/op`, `0 B/op`, and `0 allocs/op`. This material tree is ready to commit; the exact clean commit must repeat repository verification and current vulnerability scanning before push. |
+| 2026-07-28 | P5.8 / F-052–F-060 | Exact clean material commit `c3ae6dee0e139cc5ad6f5a86d1ad9efd023bbe23` passed uninterrupted `make verify`: ordinary root `35.007s`, CLI app `12.261s`, catalogs `17.488s`, and server `13.178s`; repository race-short root `200.813s`, app `51.716s`, catalogs `32.017s`, server `55.285s`, and models.dev `67.176s`; vet; pinned lint with zero issues; all coverage floors; exact OpenAPI and generated-GoDoc checks; diff; build; 611-model catalog validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.69–11.35 ns/op`, `0 B/op`, and `0 allocs/op`. Current `govulncheck v1.6.0 ./...` found zero reachable vulnerabilities and zero vulnerabilities in imported packages; one required module contained a vulnerability in code Starmap does not call. The material P5 result is ready for its evidence-only ledger commit and protected PR lifecycle. |
 
 ## Final Definition of Done
 
