@@ -838,7 +838,10 @@ PollingFallback: &remote.PollingFallbackPolicy{
 The subscriber sends conditional current-manifest requests only after that
 stream-failure threshold. It never polls beside a healthy stream, consumes at
 a rate bounded by the configured interval, and exposes the current mode and
-cumulative counters through `PollingFallbackStatus()`.
+cumulative counters through `PollingFallbackStatus()`. Authentication failures
+(HTTP 401 or 403) are terminal for the active lifecycle: they do not retry or
+enter polling fallback. Construct a new subscriber after credentials or access
+policy have been corrected.
 
 `BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
 with a verified certificate chain, and redirects cannot change origin. Plain

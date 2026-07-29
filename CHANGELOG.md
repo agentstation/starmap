@@ -61,6 +61,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and a minimum request interval. Requests use `If-None-Match`,
   current fallback state is observable, and verified reconnect catch-up stops
   fallback before event consumption resumes.
+- **Terminal remote authentication failures**: HTTP 401 and 403 stop the
+  one-shot subscriber lifecycle across stream, catch-up, addressed fetch, and
+  conditional fallback paths. They never trigger hidden retry or polling;
+  callers construct a new subscriber after correcting credentials or policy.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,

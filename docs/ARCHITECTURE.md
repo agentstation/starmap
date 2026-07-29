@@ -611,7 +611,10 @@ the reconnect loop at a rate bounded by the configured interval, without
 creating a parallel scheduler. Successful stream establishment plus mandatory
 catch-up disables fallback before event consumption resumes.
 `PollingFallbackStatus` exposes the mode, entries, polls, and modified responses
-without treating stream liveness as catalog freshness. See
+without treating stream liveness as catalog freshness. HTTP 401 and 403 are
+terminal across stream open, addressed fetch, catch-up, and conditional
+fallback polling; the one-shot lifecycle stops instead of retrying credentials
+or access policy indefinitely. See
 [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 The online server and offline artifact are the only distribution

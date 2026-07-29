@@ -2,8 +2,10 @@ package remote
 
 import (
 	"context"
+	stderrors "errors"
 	"io"
 	"math/rand/v2"
+	"net/http"
 	"strconv"
 	"sync"
 	"time"
@@ -128,7 +130,9 @@ func (s *Subscriber) Catalog() *catalogs.Catalog {
 // lifecycle. Normally it establishes the event stream and closes the
 // fetch-to-subscribe gap with a mandatory current-state catch-up before
 // returning. When an explicit PollingFallbackPolicy is configured, an initial
-// stream failure starts bounded fallback/reconnect recovery instead.
+// stream failure starts bounded fallback/reconnect recovery instead. HTTP 401
+// and 403 responses are terminal for the active lifecycle and never retry or
+// enter polling fallback.
 func (s *Subscriber) Start(ctx context.Context) error {
 	if s == nil {
 		return &errors.ValidationError{
@@ -192,7 +196,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
-		if s.config.PollingFallback == nil {
+		if s.config.PollingFallback == nil || isTerminalRemoteError(err) {
 			return err
 		}
 		s.mu.Lock()
@@ -307,6 +311,9 @@ func (s *Subscriber) run(
 			if err == nil {
 				err = io.EOF
 			}
+			if isTerminalRemoteError(err) {
+				return
+			}
 			_ = err // P7.11 exposes terminal/retry health without changing recovery.
 			streamFailures++
 		}
@@ -326,6 +333,9 @@ func (s *Subscriber) run(
 			lastEventID := s.currentLastEventID()
 			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
 			if openErr != nil {
+				if isTerminalRemoteError(openErr) {
+					return
+				}
 				attempt++
 				streamFailures++
 				continue
@@ -335,6 +345,9 @@ func (s *Subscriber) run(
 			// resumes.
 			if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
 				_ = next.Close()
+				if isTerminalRemoteError(catchUpErr) {
+					return
+				}
 				attempt++
 				streamFailures++
 				continue
@@ -347,6 +360,13 @@ func (s *Subscriber) run(
 			break
 		}
 	}
+}
+
+func isTerminalRemoteError(err error) bool {
+	var apiErr *errors.APIError
+	return stderrors.As(err, &apiErr) &&
+		(apiErr.StatusCode == http.StatusUnauthorized ||
+			apiErr.StatusCode == http.StatusForbidden)
 }
 
 func (s *Subscriber) pollFallbackIfDue(
@@ -370,6 +390,9 @@ func (s *Subscriber) pollFallbackIfDue(
 	}
 	*nextPoll = time.Now().Add(policy.Interval)
 	s.recordFallbackPoll(modified)
+	if isTerminalRemoteError(err) {
+		return false
+	}
 	// A polling failure is observable later through P7.11 health, but it does
 	// not replace or delay the primary streaming reconnect path.
 	_ = err
