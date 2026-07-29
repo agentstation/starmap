@@ -181,6 +181,33 @@ func TestExternalStoreConsumerUsesCallerOwnedAdapter(t *testing.T) {
 	}
 }
 
+func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
+	storage := readFixture(t, "../../testdata/consumers/server-storage/storage.go")
+	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
+	for _, check := range []string{
+		"StorageFilesystem StorageMode",
+		"StorageObject StorageMode",
+		"s3store.New(c.S3Client",
+		"catalogstore.NewObject(backend, c.ObjectPrefix)",
+	} {
+		if !strings.Contains(storage, check) {
+			t.Fatalf("external server storage composition is missing %q", check)
+		}
+	}
+	for _, check := range []string{
+		`SERVER_STORAGE_MODULE=`,
+		`SERVER_STORAGE_MAX_PACKAGES=340`,
+		`go list -deps -test`,
+		`starmap/pkg/catalogstore/s3`,
+		`starmap/remote`,
+		`starmap/server`,
+	} {
+		if !strings.Contains(script, check) {
+			t.Fatalf("server-storage dependency verification is missing %q", check)
+		}
+	}
+}
+
 func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 	makefile := readFixture(t, "../../Makefile")
 	pureGoScript := readFixture(t, "../../scripts/verify-pure-go.sh")

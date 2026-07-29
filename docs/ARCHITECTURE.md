@@ -741,6 +741,24 @@ contract, concurrent same-base CAS, restart/reopen, retained rollback,
 digest-corruption rejection, and upload/promotion failure preservation through
 the real AWS SDK HTTP stack.
 
+Storage selection belongs to the server deployment, before `server.New`:
+
+- standalone `starmap serve` uses the CLI's filesystem store by default;
+- an embedding application explicitly selects filesystem or object mode,
+  validates that mode's path or client/bucket/prefix inputs, constructs the
+  store, and injects it through `starmap.WithCatalogStore`; and
+- `server.New` consumes the already-constructed `*starmap.Client`, so the
+  server package never discovers credentials, opens a database, creates an S3
+  client, or owns storage lifecycle.
+
+The isolated `testdata/consumers/server-storage` module makes both production
+compositions executable. For each mode it constructs the store without I/O,
+seeds a validated immutable generation, starts the public server, establishes a
+reactive SSE subscriber, publishes and pushes a new generation, shuts down,
+reopens the same store, and verifies the exact generation and catalog. The
+ordinary read-only, server, and remote consumer closures explicitly exclude
+AWS/Smithy; only the opt-in storage module imports the S3 adapter.
+
 `Builder.Save` and `Builder.SaveTo` materialize the human YAML workspace using
 replacement semantics for its managed author-model and provider-model trees,
 so deleted records cannot survive a save/reload. Authored records live under

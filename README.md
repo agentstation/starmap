@@ -271,6 +271,16 @@ The caller configures and owns the client, endpoint, credentials, transport,
 retries, and lifecycle. Construction performs no network request, and every
 write requires an S3-compatible `If-None-Match` or `If-Match` conditional
 write; there is no last-writer-wins fallback.
+
+The standalone `starmap serve` command uses the CLI's filesystem generation
+store by default. An embedding server selects storage before it constructs the
+Starmap client: use `catalogstore.NewFilesystem` for a persistent local path, or
+compose `s3store.New` with `catalogstore.NewObject` for an S3-compatible bucket,
+then inject the selected store through `starmap.WithCatalogStore`. Storage mode,
+paths, bucket, prefix, client, credentials, and lifecycle remain deployment
+configuration; `server.New` receives the already-constructed client and does
+not open storage.
+
 When a client starts with a configured store, it validates and publishes that
 store's current generation before returning from `starmap.New`; an empty store
 uses either the exact configured human workspace or the verified embedded
@@ -1013,7 +1023,7 @@ Local storage uses separate lifecycle roots:
 ```text
 ~/.starmap/
 ├── catalog/          # one human-editable provider-YAML workspace
-├── state/catalog/    # machine-owned immutable generation database
+├── state/catalog/    # machine-owned immutable generation store
 │   ├── current
 │   └── generations/
 ├── cache/

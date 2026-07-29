@@ -12,6 +12,8 @@ Package server provides an embeddable HTTP server for a Starmap catalog.
 
 Alongside Starmap's native catalog and reactive\-generation routes, the server exposes OpenRouter\-compatible model discovery at /api/v1/model/\{author\}/\{slug\} and /api/v1/models/\{author\}/\{slug\}/endpoints. Those responses are server\-local projections over the same immutable catalog; they do not create a second persisted catalog or make generated endpoints.yaml authoritative.
 
+Storage is explicit caller composition before New. Standalone CLI serving uses catalogstore.NewFilesystem by default. Embedding deployments without a persistent filesystem can pass a caller\-owned AWS SDK v2 client to New in package github.com/agentstation/starmap/pkg/catalogstore/s3, wrap that backend with catalogstore.NewObject, and inject the resulting store through starmap.WithCatalogStore when constructing the client. Server construction never discovers credentials, creates a storage client, or owns its lifecycle.
+
 ## Index
 
 - [type Config](<#Config>)
@@ -35,7 +37,7 @@ Alongside Starmap's native catalog and reactive\-generation routes, the server e
 
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L21-L61>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L29-L69>)
 
 Config configures an embeddable Starmap HTTP server.
 
@@ -84,7 +86,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L64>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L72>)
 
 ```go
 func DefaultConfig() Config
