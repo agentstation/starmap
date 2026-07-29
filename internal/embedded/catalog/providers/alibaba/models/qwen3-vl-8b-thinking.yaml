@@ -1,10 +1,10 @@
 # qwen3-vl-8b-thinking - AI model
 id: qwen3-vl-8b-thinking
-model: alibaba/qwen3-vl-8b-thinking
+model: qwen/qwen3-vl-8b-thinking
 name: qwen3-vl-8b-thinking
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

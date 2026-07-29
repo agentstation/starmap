@@ -1,8 +1,8 @@
 schema_version: 1
-generation_id: catalog-20260729T054053Z-eed665877d5a
-catalog_digest: sha256:eed665877d5a58d2dd73dc8de158d06fb1414586271944963add4153c51febad
+generation_id: catalog-20260729T065706Z-d0d18fa7fe24
+catalog_digest: sha256:d0d18fa7fe24fd2a0b25f651c55a2af2eb9baed3505e2a76bb6a8e21b285d2c8
 models:
-  - model: ai21/jamba-1-5-large@001
+  - model: ai21/jamba-1-5-large
     endpoints:
       - provider: google-vertex
         provider_model_id: jamba-1-5-large@001
@@ -15,7 +15,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: ai21/jamba-1-5-mini@001
+  - model: ai21/jamba-1-5-mini
     endpoints:
       - provider: google-vertex
         provider_model_id: jamba-1-5-mini@001
@@ -28,1610 +28,13 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: alibaba/gpt-oss-safeguard-20b
-    endpoints:
-      - provider: groq
-        provider_model_id: openai/gpt-oss-safeguard-20b
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 3.75e-08
-            input:
-              per_1m: 7.5e-08
-            output:
-              per_1m: 3e-07
-          operations:
-            request: 0.0
-            image_gen: 0.0
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: alibaba/orpheus-arabic-saudi
-    endpoints:
-      - provider: groq
-        provider_model_id: canopylabs/orpheus-arabic-saudi
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 2e-05
-            input:
-              per_1m: 4e-05
-          operations:
-            request: 0.0
-            image_gen: 0.0
-          currency: USD
-        limits:
-          context_window: 4000
-          input_tokens: 0
-          output_tokens: 50000
-        availability: unknown
-        lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: alibaba/orpheus-v1-english
-    endpoints:
-      - provider: groq
-        provider_model_id: canopylabs/orpheus-v1-english
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 1.1e-05
-            input:
-              per_1m: 2.2e-05
-          operations:
-            request: 0.0
-            image_gen: 0.0
-          currency: USD
-        limits:
-          context_window: 4000
-          input_tokens: 0
-          output_tokens: 50000
-        availability: unknown
-        lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: alibaba/qwen-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-flash
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.05
-            output:
-              per_1m: 0.4
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-flash-2025-07-28
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-flash-2025-07-28
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-flash-2025-07-28-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-flash-2025-07-28-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-flash-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-flash-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-image-edit
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen-Image-Edit
-        pricing:
-          operations:
-            image_gen: 0.025
-          currency: USD
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen-image-max
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen-Image-Max
-        pricing:
-          operations:
-            image_gen: 0.075
-          currency: USD
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen-mt-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-mt-flash
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-mt-lite
-    endpoints:
-      - provider: alibaba
-        provider_model_id: pre-qwen-mt-lite
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: alibaba
-        provider_model_id: qwen-mt-lite
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-mt-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-mt-plus
-        pricing:
-          tokens:
-            input:
-              per_1m: 2.46
-            output:
-              per_1m: 7.37
-          currency: USD
-        limits:
-          context_window: 16384
-          input_tokens: 0
-          output_tokens: 8192
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.4
-            output:
-              per_1m: 1.2
-            reasoning:
-              per_1m: 4.0
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus-2025-07-28
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus-2025-07-28
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus-2025-09-11
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus-2025-09-11
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus-2025-12-01
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus-2025-12-01
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus-2025-12-01-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus-2025-12-01-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-plus-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-plus-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-vl-ocr
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-vl-ocr
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.72
-            output:
-              per_1m: 0.72
-          currency: USD
-        limits:
-          context_window: 34096
-          input_tokens: 0
-          output_tokens: 4096
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen-vl-ocr-2025-11-20
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen-vl-ocr-2025-11-20
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen2.5-72b-instruct
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen2.5-72B-Instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.36
-            output:
-              per_1m: 0.4
-          currency: USD
-        limits:
-          context_window: 32768
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-14b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-14b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.35
-            output:
-              per_1m: 1.4
-            reasoning:
-              per_1m: 4.2
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 8192
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-14B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.12000000000000001
-            output:
-              per_1m: 0.24000000000000002
-          currency: USD
-        limits:
-          context_window: 40960
-          input_tokens: 0
-          output_tokens: 40960
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-235b-a22b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-235b-a22b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.7
-            output:
-              per_1m: 2.8
-            reasoning:
-              per_1m: 8.4
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 16384
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-235b-a22b-instruct-2507
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-235b-a22b-instruct-2507
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-235B-A22B-Instruct-2507
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.09
-            output:
-              per_1m: 0.1
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 262144
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-235b-a22b-thinking-2507
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-235b-a22b-thinking-2507
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-235B-A22B-Thinking-2507
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.20000000059999998
-            input:
-              per_1m: 0.22999999999999998
-            output:
-              per_1m: 2.3
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 262144
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-30b-a3b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-30b-a3b
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-30B-A3B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.12000000000000001
-            output:
-              per_1m: 0.5
-          currency: USD
-        limits:
-          context_window: 40960
-          input_tokens: 0
-          output_tokens: 40960
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-30b-a3b-instruct-2507
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-30b-a3b-instruct-2507
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-30b-a3b-thinking-2507
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-30b-a3b-thinking-2507
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-32b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-32b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.7
-            output:
-              per_1m: 2.8
-            reasoning:
-              per_1m: 8.4
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 16384
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-32B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.08
-            output:
-              per_1m: 0.28
-          currency: USD
-        limits:
-          context_window: 40960
-          input_tokens: 0
-          output_tokens: 16384
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-      - provider: groq
-        provider_model_id: qwen/qwen3-32b
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 1.45e-07
-            input:
-              per_1m: 2.9e-07
-            output:
-              per_1m: 5.9e-07
-          operations:
-            request: 0.0
-            image_gen: 0.0
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 40960
-        availability: unknown
-        lifecycle: preview
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: alibaba/qwen3-8b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-8b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.18
-            output:
-              per_1m: 0.7
-            reasoning:
-              per_1m: 2.1
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 8192
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-asr-flash-2025-09-08-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-asr-flash-2025-09-08-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-asr-flash-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-asr-flash-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-30b-a3b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-30b-a3b-instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.45
-            output:
-              per_1m: 2.25
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-480b-a35b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-480b-a35b-instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 1.5
-            output:
-              per_1m: 7.5
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-480b-a35b-instruct-turbo
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.09999999899999999
-            input:
-              per_1m: 0.3
-            output:
-              per_1m: 1.0
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 66536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-coder-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-flash
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.3
-            output:
-              per_1m: 1.5
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-flash-2025-07-28
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-flash-2025-07-28
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-plus
-        pricing:
-          tokens:
-            input:
-              per_1m: 1.0
-            output:
-              per_1m: 5.0
-          currency: USD
-        limits:
-          context_window: 1048576
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-plus-2025-07-22
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-plus-2025-07-22
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-coder-plus-2025-09-23
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-coder-plus-2025-09-23
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-embedding-0.6b
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Embedding-0.6B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.01
-          currency: USD
-        limits:
-          context_window: 32768
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-embedding-4b
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Embedding-4B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.02
-          currency: USD
-        limits:
-          context_window: 32768
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-embedding-8b
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Embedding-8B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.01
-          currency: USD
-        limits:
-          context_window: 32768
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-max
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-max
-        pricing:
-          tokens:
-            input:
-              per_1m: 1.2
-            output:
-              per_1m: 6.0
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Max
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.24
-            input:
-              per_1m: 1.2
-            output:
-              per_1m: 5.999999999999999
-          currency: USD
-        limits:
-          context_window: 256000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-max-2025-09-23
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-max-2025-09-23
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-max-preview
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-max-preview
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-max-thinking
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Max-Thinking
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.24
-            input:
-              per_1m: 1.2
-            output:
-              per_1m: 5.999999999999999
-          currency: USD
-        limits:
-          context_window: 256000
-          input_tokens: 0
-          output_tokens: 256000
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-next-80b-a3b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-next-80b-a3b-instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.5
-            output:
-              per_1m: 2.0
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-Next-80B-A3B-Instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.09
-            output:
-              per_1m: 1.1
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-next-80b-a3b-thinking
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-next-80b-a3b-thinking
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.5
-            output:
-              per_1m: 6.0
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-tts
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-TTS
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-tts-voicedesign
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-TTS-VoiceDesign
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-vl-235b-a22b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-235b-a22b-instruct
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-VL-235B-A22B-Instruct
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.11000000000000001
-            input:
-              per_1m: 0.2
-            output:
-              per_1m: 0.8799999999999999
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 262144
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-vl-235b-a22b-thinking
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-235b-a22b-thinking
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-30b-a3b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-30b-a3b-instruct
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3-VL-30B-A3B-Instruct
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.15
-            output:
-              per_1m: 0.6
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 262144
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3-vl-30b-a3b-thinking
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-30b-a3b-thinking
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-32b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-32b-instruct
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-32b-thinking
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-32b-thinking
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-8b-instruct
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-8b-instruct
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-8b-thinking
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-8b-thinking
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-flash
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-flash-2025-10-15
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-flash-2025-10-15
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-flash-2025-10-15-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-flash-2025-10-15-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-flash-2026-01-22-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-flash-2026-01-22-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-flash-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-flash-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-plus
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.2
-            output:
-              per_1m: 1.6
-            reasoning:
-              per_1m: 4.8
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-plus-2025-09-23
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-plus-2025-09-23
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-plus-2025-12-19
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-plus-2025-12-19
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3-vl-plus-2025-12-19-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3-vl-plus-2025-12-19-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.5-122b-a10b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-122b-a10b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.4
-            output:
-              per_1m: 3.2
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.5-122B-A10B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.29
-            output:
-              per_1m: 2.4
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.5-27b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-27b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.3
-            output:
-              per_1m: 2.4
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.5-27B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.26
-            output:
-              per_1m: 2.5999999999999996
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.5-35b-a3b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-35b-a3b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.25
-            output:
-              per_1m: 2.0
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.5-35B-A3B
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.05000000040000001
-            input:
-              per_1m: 0.14
-            output:
-              per_1m: 1.0
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 81920
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.5-397b-a17b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-397b-a17b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.6
-            output:
-              per_1m: 3.6
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.5-397B-A17B
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.22000000050000001
-            input:
-              per_1m: 0.45
-            output:
-              per_1m: 2.9999999999999996
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 81920
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.5-9b
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.5-9B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.1
-            output:
-              per_1m: 0.15
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.5-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-flash
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.5-flash-2026-02-23
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-flash-2026-02-23
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.5-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.5-plus
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.4
-            output:
-              per_1m: 2.4
-            reasoning:
-              per_1m: 2.4
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.6-27b
-    endpoints:
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.6-27B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.32
-            output:
-              per_1m: 3.2
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-      - provider: groq
-        provider_model_id: qwen/qwen3.6-27b
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 3e-07
-            input:
-              per_1m: 6e-07
-            output:
-              per_1m: 3e-06
-          operations:
-            request: 0.0
-            image_gen: 0.0
-          currency: USD
-        limits:
-          context_window: 131072
-          input_tokens: 0
-          output_tokens: 32768
-        availability: unknown
-        lifecycle: active
-        endpoint:
-          type: openai
-          url: https://api.groq.com/openai/v1/chat/completions
-  - model: alibaba/qwen3.6-35b-a3b
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.6-35b-a3b
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.248
-            output:
-              per_1m: 1.485
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.6-35B-A3B
-        pricing:
-          tokens:
-            input:
-              per_1m: 0.15
-            output:
-              per_1m: 0.95
-          currency: USD
-        limits:
-          context_window: 262144
-          input_tokens: 0
-          output_tokens: 81920
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.6-flash
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.6-flash
-        pricing:
-          tokens:
-            cache_write:
-              per_1m: 0.234375
-            input:
-              per_1m: 0.1875
-            output:
-              per_1m: 1.125
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.6-flash-2026-04-16
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.6-flash-2026-04-16
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.6-flash-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.6-flash-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.6-plus-2026-04-02
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.6-plus-2026-04-02
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-max
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-max
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.5
-            cache_write:
-              per_1m: 3.125
-            input:
-              per_1m: 2.5
-            output:
-              per_1m: 7.5
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-      - provider: deepinfra
-        provider_model_id: Qwen/Qwen3.7-Max
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.5
-            input:
-              per_1m: 2.5
-            output:
-              per_1m: 7.5
-          currency: USD
-        limits:
-          context_window: 256000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: alibaba/qwen3.7-max-2026-05-20
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-max-2026-05-20
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-max-2026-06-08
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-max-2026-06-08
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-max-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-max-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-plus
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-plus
-        pricing:
-          tokens:
-            cache_read:
-              per_1m: 0.05
-            cache_write:
-              per_1m: 0.625
-            input:
-              per_1m: 0.5
-            output:
-              per_1m: 3.0
-          tiers:
-            - type: context
-              size: 256000
-              tokens:
-                cache_read:
-                  per_1m: 0.2
-                cache_write:
-                  per_1m: 2.5
-                input:
-                  per_1m: 2.0
-                output:
-                  per_1m: 6.0
-            - name: context_over_200k
-              type: context
-              size: 200000
-              tokens:
-                cache_read:
-                  per_1m: 0.2
-                cache_write:
-                  per_1m: 2.5
-                input:
-                  per_1m: 2.0
-                output:
-                  per_1m: 6.0
-          currency: USD
-        limits:
-          context_window: 1000000
-          input_tokens: 0
-          output_tokens: 65536
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-plus-2026-05-26
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-plus-2026-05-26
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
-  - model: alibaba/qwen3.7-plus-us
-    endpoints:
-      - provider: alibaba
-        provider_model_id: qwen3.7-plus-us
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: openai
-          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
   - model: alibaba/wan2.2-t2v-a14b
     endpoints:
       - provider: deepinfra
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            audio_gen: 0.036000000000000004
+            audio_gen: 0.036
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1680,7 +83,7 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: anthropic/claude-3-5-haiku@20241022
+  - model: anthropic/claude-3-5-haiku-20241022
     endpoints:
       - provider: google-vertex
         provider_model_id: claude-3-5-haiku@20241022
@@ -1704,7 +107,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: anthropic/claude-3-5-sonnet@20241022
+  - model: anthropic/claude-3-5-sonnet-20241022
     endpoints:
       - provider: google-vertex
         provider_model_id: claude-3-5-sonnet@20241022
@@ -1717,7 +120,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: anthropic/claude-3-opus@20240229
+  - model: anthropic/claude-3-opus-20240229
     endpoints:
       - provider: google-vertex
         provider_model_id: claude-3-opus@20240229
@@ -1905,13 +308,7 @@ models:
               headers:
                 anthropic-beta: fast-mode-2026-02-01
               body:
-                speed:
-                  - 34
-                  - 102
-                  - 97
-                  - 115
-                  - 116
-                  - 34
+                speed: fast
   - model: anthropic/claude-opus-4-7
     endpoints:
       - provider: anthropic
@@ -1953,13 +350,7 @@ models:
               headers:
                 anthropic-beta: fast-mode-2026-02-01
               body:
-                speed:
-                  - 34
-                  - 102
-                  - 97
-                  - 115
-                  - 116
-                  - 34
+                speed: fast
       - provider: deepinfra
         provider_model_id: anthropic/claude-opus-4-7
         pricing:
@@ -2019,13 +410,7 @@ models:
               headers:
                 anthropic-beta: fast-mode-2026-02-01
               body:
-                speed:
-                  - 34
-                  - 102
-                  - 97
-                  - 115
-                  - 116
-                  - 34
+                speed: fast
       - provider: deepinfra
         provider_model_id: anthropic/claude-opus-4-8
         pricing:
@@ -2097,7 +482,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 2.9999999999999996
+              per_1m: 3.0
             output:
               per_1m: 15.0
           currency: USD
@@ -2248,7 +633,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-1-dev
         pricing:
           operations:
-            image_gen: 0.009000000000000001
+            image_gen: 0.009
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -2322,7 +707,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-klein-4b
         pricing:
           operations:
-            image_gen: 0.013999999999999999
+            image_gen: 0.014
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -2487,7 +872,7 @@ models:
         provider_model_id: Bria/remove_background
         pricing:
           operations:
-            image_gen: 0.018000000000000002
+            image_gen: 0.018
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -2527,7 +912,7 @@ models:
             input:
               per_1m: 0.5
             output:
-              per_1m: 2.9999999999999996
+              per_1m: 3.0
           currency: USD
         limits:
           context_window: 256000
@@ -2545,7 +930,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.020000000000000004
+              per_1m: 0.02
             input:
               per_1m: 0.1
             output:
@@ -2571,7 +956,7 @@ models:
             input:
               per_1m: 0.5
             output:
-              per_1m: 2.9999999999999996
+              per_1m: 3.0
           currency: USD
         limits:
           context_window: 256000
@@ -2613,6 +998,52 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: canopy-labs/orpheus-arabic-saudi
+    endpoints:
+      - provider: groq
+        provider_model_id: canopylabs/orpheus-arabic-saudi
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 20.0
+            input:
+              per_1m: 40.0
+          operations:
+            request: 0.0
+            image_gen: 0.0
+          currency: USD
+        limits:
+          context_window: 4000
+          input_tokens: 0
+          output_tokens: 50000
+        availability: unknown
+        lifecycle: preview
+        endpoint:
+          type: openai
+          url: https://api.groq.com/openai/v1/chat/completions
+  - model: canopy-labs/orpheus-v1-english
+    endpoints:
+      - provider: groq
+        provider_model_id: canopylabs/orpheus-v1-english
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 11.0
+            input:
+              per_1m: 22.0
+          operations:
+            request: 0.0
+            image_gen: 0.0
+          currency: USD
+        limits:
+          context_window: 4000
+          input_tokens: 0
+          output_tokens: 50000
+        availability: unknown
+        lifecycle: preview
+        endpoint:
+          type: openai
+          url: https://api.groq.com/openai/v1/chat/completions
   - model: deepreinforce-ai/ornith-1.0-35b
     endpoints:
       - provider: deepinfra
@@ -2620,7 +1051,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.05000000040000001
+              per_1m: 0.05
             input:
               per_1m: 0.14
             output:
@@ -2657,7 +1088,7 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: deepseek/deepseek-r1-distill-llama-70b@001
+  - model: deepseek/deepseek-r1-distill-llama-70b
     endpoints:
       - provider: google-vertex
         provider_model_id: deepseek-r1-distill-llama-70b@001
@@ -2670,7 +1101,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: deepseek/deepseek-r1-distill-qwen-32b@001
+  - model: deepseek/deepseek-r1-distill-qwen-32b
     endpoints:
       - provider: google-vertex
         provider_model_id: deepseek-r1-distill-qwen-32b@001
@@ -2692,7 +1123,7 @@ models:
             input:
               per_1m: 0.32
             output:
-              per_1m: 0.8899999999999999
+              per_1m: 0.89
           currency: USD
         limits:
           context_window: 163840
@@ -2712,7 +1143,7 @@ models:
             cache_read:
               per_1m: 0.135
             input:
-              per_1m: 0.24000000000000002
+              per_1m: 0.24
             output:
               per_1m: 0.9
           currency: USD
@@ -2732,11 +1163,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.1300000002
+              per_1m: 0.13
             input:
               per_1m: 0.21
             output:
-              per_1m: 0.7899999999999999
+              per_1m: 0.79
           currency: USD
         limits:
           context_window: 163840
@@ -2754,7 +1185,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.12999999960000003
+              per_1m: 0.13
             input:
               per_1m: 0.27
             output:
@@ -2863,11 +1294,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.10000000399999999
+              per_1m: 0.1
             input:
-              per_1m: 1.2999999999999998
+              per_1m: 1.3
             output:
-              per_1m: 2.5999999999999996
+              per_1m: 2.6
           currency: USD
         limits:
           context_window: 1048576
@@ -2997,18 +1428,6 @@ models:
     endpoints:
       - provider: google-vertex
         provider_model_id: automl-vision-image-object-detection
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: google/bart-large-cnn
-    endpoints:
-      - provider: google-vertex
-        provider_model_id: bart-large-cnn
-        pricing:
-          tokens: {}
-          currency: USD
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -3186,7 +1605,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.0019999999999999996
+              per_1m: 0.002
           currency: USD
         limits:
           context_window: 2048
@@ -3842,7 +2261,7 @@ models:
             input:
               per_1m: 0.25
             output:
-              per_1m: 1.4999999999999998
+              per_1m: 1.5
           currency: USD
         limits:
           context_window: 1000000
@@ -4005,7 +2424,7 @@ models:
             input:
               per_1m: 2.0
             output:
-              per_1m: 11.999999999999998
+              per_1m: 12.0
           currency: USD
         limits:
           context_window: 1000000
@@ -4060,7 +2479,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 1.4999999999999998
+              per_1m: 1.5
             output:
               per_1m: 9.0
           currency: USD
@@ -4398,7 +2817,7 @@ models:
             input:
               per_1m: 0.07
             output:
-              per_1m: 0.33999999999999997
+              per_1m: 0.34
           currency: USD
         limits:
           context_window: 262144
@@ -4420,8 +2839,6 @@ models:
         endpoint:
           type: google
           url: https://generativelanguage.googleapis.com/v1beta/models
-  - model: google/gemma-4-26b-a4b-it-maas
-    endpoints:
       - provider: google-vertex
         provider_model_id: gemma-4-26b-a4b-it-maas
         availability: unknown
@@ -4487,7 +2904,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.12000000000000001
+              per_1m: 0.12
             output:
               per_1m: 0.37
           currency: USD
@@ -5486,7 +3903,19 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: meta/llama-3-1-405b-instruct-maas
+  - model: meta/bart-large-cnn
+    endpoints:
+      - provider: google-vertex
+        provider_model_id: bart-large-cnn
+        pricing:
+          tokens: {}
+          currency: USD
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  - model: meta/llama-3-1-405b-instruct
     endpoints:
       - provider: google-vertex
         provider_model_id: llama-3-1-405b-instruct-maas
@@ -5499,7 +3928,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3-1-70b-instruct-maas
+  - model: meta/llama-3-1-70b-instruct
     endpoints:
       - provider: google-vertex
         provider_model_id: llama-3-1-70b-instruct-maas
@@ -5512,7 +3941,7 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
-  - model: meta/llama-3-2-90b-vision-instruct-maas
+  - model: meta/llama-3-2-90b-vision-instruct
     endpoints:
       - provider: google-vertex
         provider_model_id: llama-3-2-90b-vision-instruct-maas
@@ -5532,11 +3961,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 2.5e-08
+              per_1m: 0.025
             input:
-              per_1m: 5e-08
+              per_1m: 0.05
             output:
-              per_1m: 8e-08
+              per_1m: 0.08
           operations:
             request: 0.0
             image_gen: 0.0
@@ -5577,11 +4006,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 2.95e-07
+              per_1m: 0.295
             input:
-              per_1m: 5.9e-07
+              per_1m: 0.59
             output:
-              per_1m: 7.9e-07
+              per_1m: 0.79
           operations:
             request: 0.0
             image_gen: 0.0
@@ -5640,11 +4069,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 5.5e-08
+              per_1m: 0.055
             input:
-              per_1m: 1.1e-07
+              per_1m: 0.11
             output:
-              per_1m: 3.4e-07
+              per_1m: 0.34
           operations:
             request: 0.0
             image_gen: 0.0
@@ -5685,11 +4114,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 1.5e-08
+              per_1m: 0.015
             input:
-              per_1m: 3e-08
+              per_1m: 0.03
             output:
-              per_1m: 3e-08
+              per_1m: 0.03
           operations:
             request: 0.0
             image_gen: 0.0
@@ -5710,11 +4139,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 2e-08
+              per_1m: 0.02
             input:
-              per_1m: 4e-08
+              per_1m: 0.04
             output:
-              per_1m: 4e-08
+              per_1m: 0.04
           operations:
             request: 0.0
             image_gen: 0.0
@@ -5757,7 +4186,7 @@ models:
             input:
               per_1m: 0.02
             output:
-              per_1m: 0.030000000000000002
+              per_1m: 0.03
           currency: USD
         limits:
           context_window: 131072
@@ -5952,7 +4381,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.070000002
+              per_1m: 0.07
             input:
               per_1m: 0.45
             output:
@@ -6007,7 +4436,7 @@ models:
             cache_read:
               per_1m: 0.15
             input:
-              per_1m: 0.7499999999999999
+              per_1m: 0.75
             output:
               per_1m: 3.5
           currency: USD
@@ -6074,7 +4503,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.149999998
+              per_1m: 0.15
             input:
               per_1m: 0.74
             output:
@@ -6324,7 +4753,7 @@ models:
         provider_model_id: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
         pricing:
           operations:
-            audio_input: 3.3300000000000003e-06
+            audio_input: 3.33e-06
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -6358,7 +4787,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.08499999999999999
+              per_1m: 0.085
             output:
               per_1m: 0.4
           currency: USD
@@ -6665,6 +5094,17 @@ models:
           url: https://api.openai.com/v1/chat/completions
   - model: openai/gpt-4o-2024-08-06
     endpoints:
+      - provider: google-vertex
+        provider_model_id: gpt-4o-2024-08-06@001
+        limits:
+          context_window: 128000
+          input_tokens: 0
+          output_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: google-cloud
+          url: https://us-central1-aiplatform.googleapis.com/v1/projects
       - provider: openai
         provider_model_id: gpt-4o-2024-08-06
         pricing:
@@ -6685,19 +5125,6 @@ models:
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
-  - model: openai/gpt-4o-2024-08-06@001
-    endpoints:
-      - provider: google-vertex
-        provider_model_id: gpt-4o-2024-08-06@001
-        limits:
-          context_window: 128000
-          input_tokens: 0
-          output_tokens: 4096
-        availability: unknown
-        lifecycle: unknown
-        endpoint:
-          type: google-cloud
-          url: https://us-central1-aiplatform.googleapis.com/v1/projects
   - model: openai/gpt-4o-2024-11-20
     endpoints:
       - provider: openai
@@ -7365,17 +5792,7 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
   - model: openai/gpt-5.4-2026-03-05
     endpoints:
       - provider: openai
@@ -7420,17 +5837,7 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
   - model: openai/gpt-5.4-mini-2026-03-17
     endpoints:
       - provider: openai
@@ -7571,17 +5978,7 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
   - model: openai/gpt-5.5-2026-04-23
     endpoints:
       - provider: openai
@@ -7699,35 +6096,12 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
           pro:
             request:
               body:
                 reasoning:
-                  - 123
-                  - 34
-                  - 109
-                  - 111
-                  - 100
-                  - 101
-                  - 34
-                  - 58
-                  - 34
-                  - 112
-                  - 114
-                  - 111
-                  - 34
-                  - 125
+              mode: pro
   - model: openai/gpt-5.6-sol
     endpoints:
       - provider: openai
@@ -7791,35 +6165,12 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
           pro:
             request:
               body:
                 reasoning:
-                  - 123
-                  - 34
-                  - 109
-                  - 111
-                  - 100
-                  - 101
-                  - 34
-                  - 58
-                  - 34
-                  - 112
-                  - 114
-                  - 111
-                  - 34
-                  - 125
+              mode: pro
   - model: openai/gpt-5.6-terra
     endpoints:
       - provider: openai
@@ -7883,35 +6234,12 @@ models:
               currency: USD
             request:
               body:
-                service_tier:
-                  - 34
-                  - 112
-                  - 114
-                  - 105
-                  - 111
-                  - 114
-                  - 105
-                  - 116
-                  - 121
-                  - 34
+                service_tier: priority
           pro:
             request:
               body:
                 reasoning:
-                  - 123
-                  - 34
-                  - 109
-                  - 111
-                  - 100
-                  - 101
-                  - 34
-                  - 58
-                  - 34
-                  - 112
-                  - 114
-                  - 111
-                  - 34
-                  - 125
+              mode: pro
   - model: openai/gpt-audio
     endpoints:
       - provider: openai
@@ -8047,7 +6375,7 @@ models:
             input:
               per_1m: 0.037
             output:
-              per_1m: 0.16999999999999998
+              per_1m: 0.17
           currency: USD
         limits:
           context_window: 131072
@@ -8083,11 +6411,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 7.5e-08
+              per_1m: 0.075
             input:
-              per_1m: 1.5e-07
+              per_1m: 0.15
             output:
-              per_1m: 6e-07
+              per_1m: 0.6
           operations:
             request: 0.0
             image_gen: 0.0
@@ -8128,7 +6456,7 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.030000000000000002
+              per_1m: 0.03
             output:
               per_1m: 0.14
           currency: USD
@@ -8146,11 +6474,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 3.75e-08
+              per_1m: 0.0375
             input:
-              per_1m: 7.5e-08
+              per_1m: 0.075
             output:
-              per_1m: 3e-07
+              per_1m: 0.3
           operations:
             request: 0.0
             image_gen: 0.0
@@ -8161,6 +6489,31 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: active
+        endpoint:
+          type: openai
+          url: https://api.groq.com/openai/v1/chat/completions
+  - model: openai/gpt-oss-safeguard-20b
+    endpoints:
+      - provider: groq
+        provider_model_id: openai/gpt-oss-safeguard-20b
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.0375
+            input:
+              per_1m: 0.075
+            output:
+              per_1m: 0.3
+          operations:
+            request: 0.0
+            image_gen: 0.0
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: preview
         endpoint:
           type: openai
           url: https://api.groq.com/openai/v1/chat/completions
@@ -8574,7 +6927,7 @@ models:
         provider_model_id: openai/whisper-large-v3-turbo
         pricing:
           operations:
-            audio_input: 3.3300000000000003e-06
+            audio_input: 3.33e-06
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -8586,9 +6939,9 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.00051
+              per_1m: 510.0
             output:
-              per_1m: 0.00051
+              per_1m: 510.0
           currency: USD
         limits:
           context_window: 448
@@ -8656,7 +7009,221 @@ models:
         endpoint:
           type: openai
           url: https://api.deepinfra.com/v1/openai/chat/completions
-  - model: qwen/qwen2-5-coder-32b-instruct@001
+  - model: qwen/qwen-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-flash
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.05
+            output:
+              per_1m: 0.4
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-flash-2025-07-28
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-flash-2025-07-28
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-flash-2025-07-28-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-flash-2025-07-28-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-flash-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-flash-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-image-edit
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen-Image-Edit
+        pricing:
+          operations:
+            image_gen: 0.025
+          currency: USD
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen-image-max
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen-Image-Max
+        pricing:
+          operations:
+            image_gen: 0.075
+          currency: USD
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen-mt-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-mt-flash
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-mt-lite
+    endpoints:
+      - provider: alibaba
+        provider_model_id: pre-qwen-mt-lite
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: alibaba
+        provider_model_id: qwen-mt-lite
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-mt-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-mt-plus
+        pricing:
+          tokens:
+            input:
+              per_1m: 2.46
+            output:
+              per_1m: 7.37
+          currency: USD
+        limits:
+          context_window: 16384
+          input_tokens: 0
+          output_tokens: 8192
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.4
+            output:
+              per_1m: 1.2
+            reasoning:
+              per_1m: 4.0
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus-2025-07-28
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus-2025-07-28
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus-2025-09-11
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus-2025-09-11
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus-2025-12-01
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus-2025-12-01
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus-2025-12-01-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus-2025-12-01-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-plus-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-plus-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-vl-ocr
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-vl-ocr
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.72
+            output:
+              per_1m: 0.72
+          currency: USD
+        limits:
+          context_window: 34096
+          input_tokens: 0
+          output_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen-vl-ocr-2025-11-20
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen-vl-ocr-2025-11-20
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen2-5-coder-32b-instruct
     endpoints:
       - provider: google-vertex
         provider_model_id: qwen2-5-coder-32b-instruct@001
@@ -8669,6 +7236,1318 @@ models:
         endpoint:
           type: google-cloud
           url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  - model: qwen/qwen2.5-72b-instruct
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen2.5-72B-Instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.36
+            output:
+              per_1m: 0.4
+          currency: USD
+        limits:
+          context_window: 32768
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-14b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-14b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.35
+            output:
+              per_1m: 1.4
+            reasoning:
+              per_1m: 4.2
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 8192
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-14B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.12
+            output:
+              per_1m: 0.24
+          currency: USD
+        limits:
+          context_window: 40960
+          input_tokens: 0
+          output_tokens: 40960
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-235b-a22b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-235b-a22b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.7
+            output:
+              per_1m: 2.8
+            reasoning:
+              per_1m: 8.4
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 16384
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-235b-a22b-instruct-2507
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-235b-a22b-instruct-2507
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-235B-A22B-Instruct-2507
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.09
+            output:
+              per_1m: 0.1
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 262144
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-235b-a22b-thinking-2507
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-235b-a22b-thinking-2507
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-235B-A22B-Thinking-2507
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.2
+            input:
+              per_1m: 0.23
+            output:
+              per_1m: 2.3
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 262144
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-30b-a3b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-30b-a3b
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-30B-A3B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.12
+            output:
+              per_1m: 0.5
+          currency: USD
+        limits:
+          context_window: 40960
+          input_tokens: 0
+          output_tokens: 40960
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-30b-a3b-instruct-2507
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-30b-a3b-instruct-2507
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-30b-a3b-thinking-2507
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-30b-a3b-thinking-2507
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-32b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-32b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.7
+            output:
+              per_1m: 2.8
+            reasoning:
+              per_1m: 8.4
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 16384
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-32B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.08
+            output:
+              per_1m: 0.28
+          currency: USD
+        limits:
+          context_window: 40960
+          input_tokens: 0
+          output_tokens: 16384
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: groq
+        provider_model_id: qwen/qwen3-32b
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.145
+            input:
+              per_1m: 0.29
+            output:
+              per_1m: 0.59
+          operations:
+            request: 0.0
+            image_gen: 0.0
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 40960
+        availability: unknown
+        lifecycle: preview
+        endpoint:
+          type: openai
+          url: https://api.groq.com/openai/v1/chat/completions
+  - model: qwen/qwen3-8b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-8b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.18
+            output:
+              per_1m: 0.7
+            reasoning:
+              per_1m: 2.1
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 8192
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-asr-flash-2025-09-08-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-asr-flash-2025-09-08-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-asr-flash-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-asr-flash-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-30b-a3b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-30b-a3b-instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.45
+            output:
+              per_1m: 2.25
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-480b-a35b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-480b-a35b-instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 1.5
+            output:
+              per_1m: 7.5
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-480b-a35b-instruct-turbo
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.1
+            input:
+              per_1m: 0.3
+            output:
+              per_1m: 1.0
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 66536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-coder-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-flash
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.3
+            output:
+              per_1m: 1.5
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-flash-2025-07-28
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-flash-2025-07-28
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-plus
+        pricing:
+          tokens:
+            input:
+              per_1m: 1.0
+            output:
+              per_1m: 5.0
+          currency: USD
+        limits:
+          context_window: 1048576
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-plus-2025-07-22
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-plus-2025-07-22
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-coder-plus-2025-09-23
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-coder-plus-2025-09-23
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-embedding-0.6b
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Embedding-0.6B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.01
+          currency: USD
+        limits:
+          context_window: 32768
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-embedding-4b
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Embedding-4B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.02
+          currency: USD
+        limits:
+          context_window: 32768
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-embedding-8b
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Embedding-8B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.01
+          currency: USD
+        limits:
+          context_window: 32768
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-max
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-max
+        pricing:
+          tokens:
+            input:
+              per_1m: 1.2
+            output:
+              per_1m: 6.0
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Max
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.24
+            input:
+              per_1m: 1.2
+            output:
+              per_1m: 6.0
+          currency: USD
+        limits:
+          context_window: 256000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-max-2025-09-23
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-max-2025-09-23
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-max-preview
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-max-preview
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-max-thinking
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Max-Thinking
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.24
+            input:
+              per_1m: 1.2
+            output:
+              per_1m: 6.0
+          currency: USD
+        limits:
+          context_window: 256000
+          input_tokens: 0
+          output_tokens: 256000
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-next-80b-a3b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-next-80b-a3b-instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.5
+            output:
+              per_1m: 2.0
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-Next-80B-A3B-Instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.09
+            output:
+              per_1m: 1.1
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-next-80b-a3b-thinking
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-next-80b-a3b-thinking
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.5
+            output:
+              per_1m: 6.0
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-tts
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-TTS
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-tts-voicedesign
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-TTS-VoiceDesign
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-vl-235b-a22b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-235b-a22b-instruct
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-VL-235B-A22B-Instruct
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.11
+            input:
+              per_1m: 0.2
+            output:
+              per_1m: 0.88
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 262144
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-vl-235b-a22b-thinking
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-235b-a22b-thinking
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-30b-a3b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-30b-a3b-instruct
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3-VL-30B-A3B-Instruct
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.15
+            output:
+              per_1m: 0.6
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 262144
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3-vl-30b-a3b-thinking
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-30b-a3b-thinking
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-32b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-32b-instruct
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-32b-thinking
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-32b-thinking
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-8b-instruct
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-8b-instruct
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-8b-thinking
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-8b-thinking
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-flash
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-flash-2025-10-15
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-flash-2025-10-15
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-flash-2025-10-15-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-flash-2025-10-15-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-flash-2026-01-22-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-flash-2026-01-22-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-flash-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-flash-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-plus
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.2
+            output:
+              per_1m: 1.6
+            reasoning:
+              per_1m: 4.8
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-plus-2025-09-23
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-plus-2025-09-23
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-plus-2025-12-19
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-plus-2025-12-19
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3-vl-plus-2025-12-19-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3-vl-plus-2025-12-19-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.5-122b-a10b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-122b-a10b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.4
+            output:
+              per_1m: 3.2
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.5-122B-A10B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.29
+            output:
+              per_1m: 2.4
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.5-27b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-27b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.3
+            output:
+              per_1m: 2.4
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.5-27B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.26
+            output:
+              per_1m: 2.6
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.5-35b-a3b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-35b-a3b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.25
+            output:
+              per_1m: 2.0
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.5-35B-A3B
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.05
+            input:
+              per_1m: 0.14
+            output:
+              per_1m: 1.0
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 81920
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.5-397b-a17b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-397b-a17b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.6
+            output:
+              per_1m: 3.6
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.5-397B-A17B
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.22
+            input:
+              per_1m: 0.45
+            output:
+              per_1m: 3.0
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 81920
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.5-9b
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.5-9B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.1
+            output:
+              per_1m: 0.15
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.5-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-flash
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.5-flash-2026-02-23
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-flash-2026-02-23
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.5-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.5-plus
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.4
+            output:
+              per_1m: 2.4
+            reasoning:
+              per_1m: 2.4
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.6-27b
+    endpoints:
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.6-27B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.32
+            output:
+              per_1m: 3.2
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: groq
+        provider_model_id: qwen/qwen3.6-27b
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.3
+            input:
+              per_1m: 0.6
+            output:
+              per_1m: 3.0
+          operations:
+            request: 0.0
+            image_gen: 0.0
+          currency: USD
+        limits:
+          context_window: 131072
+          input_tokens: 0
+          output_tokens: 32768
+        availability: unknown
+        lifecycle: active
+        endpoint:
+          type: openai
+          url: https://api.groq.com/openai/v1/chat/completions
+  - model: qwen/qwen3.6-35b-a3b
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.6-35b-a3b
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.248
+            output:
+              per_1m: 1.485
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.6-35B-A3B
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.15
+            output:
+              per_1m: 0.95
+          currency: USD
+        limits:
+          context_window: 262144
+          input_tokens: 0
+          output_tokens: 81920
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.6-flash
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.6-flash
+        pricing:
+          tokens:
+            cache_write:
+              per_1m: 0.234375
+            input:
+              per_1m: 0.1875
+            output:
+              per_1m: 1.125
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.6-flash-2026-04-16
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.6-flash-2026-04-16
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.6-flash-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.6-flash-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.6-plus-2026-04-02
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.6-plus-2026-04-02
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-max
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-max
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.5
+            cache_write:
+              per_1m: 3.125
+            input:
+              per_1m: 2.5
+            output:
+              per_1m: 7.5
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+      - provider: deepinfra
+        provider_model_id: Qwen/Qwen3.7-Max
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.5
+            input:
+              per_1m: 2.5
+            output:
+              per_1m: 7.5
+          currency: USD
+        limits:
+          context_window: 256000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: qwen/qwen3.7-max-2026-05-20
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-max-2026-05-20
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-max-2026-06-08
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-max-2026-06-08
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-max-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-max-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-plus
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-plus
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.05
+            cache_write:
+              per_1m: 0.625
+            input:
+              per_1m: 0.5
+            output:
+              per_1m: 3.0
+          tiers:
+            - type: context
+              size: 256000
+              tokens:
+                cache_read:
+                  per_1m: 0.2
+                cache_write:
+                  per_1m: 2.5
+                input:
+                  per_1m: 2.0
+                output:
+                  per_1m: 6.0
+            - name: context_over_200k
+              type: context
+              size: 200000
+              tokens:
+                cache_read:
+                  per_1m: 0.2
+                cache_write:
+                  per_1m: 2.5
+                input:
+                  per_1m: 2.0
+                output:
+                  per_1m: 6.0
+          currency: USD
+        limits:
+          context_window: 1000000
+          input_tokens: 0
+          output_tokens: 65536
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-plus-2026-05-26
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-plus-2026-05-26
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  - model: qwen/qwen3.7-plus-us
+    endpoints:
+      - provider: alibaba
+        provider_model_id: qwen3.7-plus-us
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
   - model: resemble-ai/chatterbox-multilingual
     endpoints:
       - provider: deepinfra
@@ -8913,7 +8792,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.04000000000000001
+              per_1m: 0.04
             input:
               per_1m: 0.2
             output:
@@ -8971,7 +8850,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.08000000000000002
+              per_1m: 0.08
             input:
               per_1m: 0.4
             output:
@@ -8997,7 +8876,7 @@ models:
             input:
               per_1m: 1.0
             output:
-              per_1m: 2.9999999999999996
+              per_1m: 3.0
           currency: USD
         limits:
           context_window: 1048576
@@ -9033,7 +8912,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.0799999993
+              per_1m: 0.08
             input:
               per_1m: 0.43
             output:
@@ -9075,7 +8954,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.08000000000000002
+              per_1m: 0.08
             input:
               per_1m: 0.4
             output:
@@ -9097,9 +8976,9 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.0100000002
+              per_1m: 0.01
             input:
-              per_1m: 0.060000000000000005
+              per_1m: 0.06
             output:
               per_1m: 0.4
           currency: USD
@@ -9148,7 +9027,7 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.205000005
+              per_1m: 0.205
             input:
               per_1m: 1.05
             output:
@@ -9197,11 +9076,11 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.18000000269999997
+              per_1m: 0.18
             input:
-              per_1m: 0.9299999999999999
+              per_1m: 0.93
             output:
-              per_1m: 2.9999999999999996
+              per_1m: 3.0
           currency: USD
         limits:
           context_window: 1048576

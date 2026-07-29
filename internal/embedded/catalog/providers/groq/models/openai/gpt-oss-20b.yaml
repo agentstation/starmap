@@ -86,11 +86,11 @@ reasoning:
 pricing:
   tokens:
     cache_read:
-      per_1m: 3.75e-08
+      per_1m: 0.0375
     input:
-      per_1m: 7.5e-08
+      per_1m: 0.075
     output:
-      per_1m: 3e-07
+      per_1m: 0.3
   operations:
     request: 0.0
     image_gen: 0.0

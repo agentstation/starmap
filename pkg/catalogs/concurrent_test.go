@@ -84,6 +84,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						case 1:
 							_ = catalog.Authors().List()
 						case 2:
+							_ = catalog.AuthoredModels()
 						}
 						reads.Add(1)
 						time.Sleep(time.Millisecond) // Small delay

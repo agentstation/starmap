@@ -1,10 +1,10 @@
 # qwen-mt-lite - AI model
 id: qwen-mt-lite
-model: alibaba/qwen-mt-lite
+model: qwen/qwen-mt-lite
 name: qwen-mt-lite
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

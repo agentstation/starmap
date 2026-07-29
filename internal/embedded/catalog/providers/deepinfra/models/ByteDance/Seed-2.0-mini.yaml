@@ -85,7 +85,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.020000000000000004
+      per_1m: 0.02
     input:
       per_1m: 0.1
     output:

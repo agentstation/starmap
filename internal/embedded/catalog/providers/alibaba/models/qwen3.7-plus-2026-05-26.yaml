@@ -1,10 +1,10 @@
 # qwen3.7-plus-2026-05-26 - AI model
 id: qwen3.7-plus-2026-05-26
-model: alibaba/qwen3.7-plus-2026-05-26
+model: qwen/qwen3.7-plus-2026-05-26
 name: qwen3.7-plus-2026-05-26
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

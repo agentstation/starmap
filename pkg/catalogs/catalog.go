@@ -287,13 +287,23 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error {
 
 // SetAuthorModel sets one provider-independent model on its owning author.
 func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error {
-	if err := validateAuthoredModel(authorID, model); err != nil {
-		return errors.WrapResource("validate", "authored model", string(authorID)+"/"+model.ID, err)
-	}
-	if _, err := cat.Author(authorID); err != nil {
+	author, err := cat.Author(authorID)
+	if err != nil {
 		return err
 	}
-	return cat.authoredModels.set(AuthoredModel{AuthorID: authorID, Model: model})
+	if len(model.Authors) > 0 && (model.Authors[0].ID == authorID ||
+		model.Authors[0].ID == author.ID) {
+		model.Authors[0] = Author{ID: author.ID, Name: author.Name}
+	}
+	if err := validateAuthoredModel(author.ID, model); err != nil {
+		return errors.WrapResource(
+			"validate",
+			"authored model",
+			string(author.ID)+"/"+model.ID,
+			err,
+		)
+	}
+	return cat.authoredModels.set(AuthoredModel{AuthorID: author.ID, Model: model})
 }
 
 // SetProvenance replaces catalog provenance.
@@ -318,7 +328,20 @@ func (cat *Builder) DeleteProvider(id ProviderID) error {
 
 // DeleteAuthor deletes an author.
 func (cat *Builder) DeleteAuthor(id AuthorID) error {
-	return cat.authors.Delete(id)
+	author, err := cat.Author(id)
+	if err != nil {
+		return err
+	}
+	for _, record := range cat.authoredModels.list() {
+		if record.AuthorID == author.ID {
+			return &errors.ConflictError{
+				Resource: "author",
+				Actual:   string(author.ID),
+				Message:  "cannot be deleted while it owns authored models",
+			}
+		}
+	}
+	return cat.authors.Delete(author.ID)
 }
 
 // DeleteProviderModel deletes a model from a provider atomically.

@@ -1,10 +1,10 @@
 # qwen3-30b-a3b - AI model
 id: qwen3-30b-a3b
-model: alibaba/qwen3-30b-a3b
+model: qwen/qwen3-30b-a3b
 name: qwen3-30b-a3b
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

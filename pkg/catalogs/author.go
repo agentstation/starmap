@@ -84,10 +84,9 @@ const (
 	AuthorIDMistralAI AuthorID = "mistral"
 	AuthorIDCohere    AuthorID = "cohere"
 	// AuthorIDCerebras removed - Cerebras is an inference provider, not a model creator.
-	AuthorIDGroq        AuthorID = "groq"
-	AuthorIDAlibabaQwen AuthorID = "alibaba"
-	AuthorIDQwen        AuthorID = "qwen"
-	AuthorIDXAI         AuthorID = "xai"
+	AuthorIDGroq AuthorID = "groq"
+	AuthorIDQwen AuthorID = "qwen"
+	AuthorIDXAI  AuthorID = "xai"
 
 	// Research Institutions.
 	AuthorIDStanford    AuthorID = "stanford"

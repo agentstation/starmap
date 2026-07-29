@@ -33,9 +33,9 @@
           glm*: zhipu-ai
           kimi*: moonshot-ai
           minimax*: minimax
-          qvq*: alibaba
-          qwen*: alibaba
-          qwq*: alibaba
+          qvq*: qwen
+          qwen*: qwen
+          qwq*: qwen
           wan*: alibaba
   chat_completions:
     url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
@@ -216,7 +216,7 @@
           ByteDance/*: bytedance
           MiniMaxAI/*: minimax
           NousResearch/*: nousresearch
-          Qwen/*: alibaba
+          Qwen/*: qwen
           cognitivecomputations/*: cognitivecomputations
           deepseek-ai/*: deepseek
           google/*: google
@@ -319,7 +319,7 @@
           accounts/fireworks/models/llama*: meta
           accounts/fireworks/models/mistral*: mistral
           accounts/fireworks/models/mixtral*: mistral
-          accounts/fireworks/models/qwen*: alibaba
+          accounts/fireworks/models/qwen*: qwen
           accounts/fireworks/models/yi-*: 01.ai
           accounts/fireworks/routers/deepseek*: deepseek
           accounts/fireworks/routers/gpt-oss*: openai
@@ -327,7 +327,7 @@
           accounts/fireworks/routers/llama*: meta
           accounts/fireworks/routers/mistral*: mistral
           accounts/fireworks/routers/mixtral*: mistral
-          accounts/fireworks/routers/qwen*: alibaba
+          accounts/fireworks/routers/qwen*: qwen
           accounts/fireworks/routers/yi-*: 01.ai
   status_page_url: https://status.fireworks.ai
   chat_completions:

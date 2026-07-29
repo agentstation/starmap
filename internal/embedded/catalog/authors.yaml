@@ -135,6 +135,16 @@
   website: https://bytedance.com
   github: https://github.com/bytedance
 
+# Canopy Labs
+- id: canopy-labs
+  aliases:
+  - canopylabs
+  name: Canopy Labs
+  description: AI research company and creator of the Orpheus text-to-speech model family
+  website: https://canopylabs.ai
+  huggingface: https://huggingface.co/canopylabs
+  github: https://github.com/canopyai
+
 # California Institute of Technology
 - id: caltech
   name: California Institute of Technology

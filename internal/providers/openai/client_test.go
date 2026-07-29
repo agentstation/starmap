@@ -89,6 +89,34 @@ func TestResponseUnmarshalAcceptsStringPricing(t *testing.T) {
 	}
 }
 
+func TestProviderPricingNormalizationRemovesOnlyFloatRepresentationNoise(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		input float64
+		want  float64
+	}{
+		{name: "token under", input: 0.149999998, want: 0.15},
+		{name: "token over", input: 0.12000000000000001, want: 0.12},
+		{name: "whole token price", input: 5.999999999999999, want: 6},
+		{name: "meaningful sub-micro price", input: 0.00000079, want: 0.00000079},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if got := normalizeProviderTokenPrice(test.input); got != test.want {
+				t.Fatalf("normalizeProviderTokenPrice(%v) = %v, want %v", test.input, got, test.want)
+			}
+		})
+	}
+
+	operation := 3.3300000000000003e-06
+	normalized := normalizeProviderOperationPrice(&operation)
+	if normalized == nil || *normalized != 0.00000333 {
+		t.Fatalf("normalizeProviderOperationPrice(%v) = %v, want 0.00000333", operation, normalized)
+	}
+	if operation != 3.3300000000000003e-06 {
+		t.Fatalf("normalization mutated source observation: %v", operation)
+	}
+}
+
 // TestOpenAIModelDataParsing tests that we can properly parse OpenAI API responses.
 func TestOpenAIModelDataParsing(t *testing.T) {
 	// Test parsing the models list response
@@ -305,7 +333,7 @@ func TestConvertToModelWithWildcardAuthorMapping(t *testing.T) {
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "id",
 					Normalized: map[string]catalogs.AuthorID{
-						"Qwen/*":                             catalogs.AuthorIDAlibabaQwen,
+						"Qwen/*":                             catalogs.AuthorIDQwen,
 						"deepseek-ai/*":                      catalogs.AuthorIDDeepSeek,
 						"accounts/fireworks/models/kimi*":    "moonshot-ai",
 						"accounts/fireworks/models/gpt-oss*": catalogs.AuthorIDOpenAI,
@@ -325,7 +353,7 @@ func TestConvertToModelWithWildcardAuthorMapping(t *testing.T) {
 		{
 			name:   "deepinfra qwen namespace",
 			id:     "Qwen/Qwen3-235B-A22B-Thinking-2507",
-			author: catalogs.AuthorIDAlibabaQwen,
+			author: catalogs.AuthorIDQwen,
 		},
 		{
 			name:   "deepinfra deepseek namespace",
@@ -377,7 +405,7 @@ func TestConvertToModelPreservesUnknownAuthorshipWhenExplicitMappingMisses(t *te
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "id",
 					Normalized: map[string]catalogs.AuthorID{
-						"qwen*": catalogs.AuthorIDAlibabaQwen,
+						"qwen*": catalogs.AuthorIDQwen,
 					},
 				},
 			},

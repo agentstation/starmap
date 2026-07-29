@@ -108,6 +108,49 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 	}
 }
 
+func TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview(t *testing.T) {
+	historical := loadAuthorCorpusManifest(t)
+	serving := loadProviderModelIdentityManifest(t)
+	reviewed := make(map[string]struct{}, len(historical.Records)+len(serving.Records))
+	for _, record := range historical.Records {
+		reviewed[record.Path] = struct{}{}
+	}
+	for _, record := range serving.Records {
+		if record.Status != "linked" {
+			continue
+		}
+		identity := strings.SplitN(record.Model, "/", 2)
+		if len(identity) != 2 {
+			t.Fatalf("%s has invalid canonical model %q", record.Path, record.Model)
+		}
+		reviewed["authors/"+identity[0]+"/models/"+identity[1]+".yaml"] = struct{}{}
+	}
+
+	actual := make(map[string]struct{}, len(reviewed))
+	err := fs.WalkDir(embedded.FS, "catalog/authors", func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || !strings.Contains(path, "/models/") || !strings.HasSuffix(path, ".yaml") {
+			return nil
+		}
+		relative := strings.TrimPrefix(path, "catalog/")
+		actual[relative] = struct{}{}
+		if _, found := reviewed[relative]; !found {
+			t.Fatalf("authored model %q has neither historical nor serving identity review", relative)
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("walk embedded author models: %v", err)
+	}
+	for path := range reviewed {
+		if _, found := actual[path]; !found {
+			t.Fatalf("reviewed authored model %q is not embedded", path)
+		}
+	}
+}
+
 func loadProviderModelIdentityManifest(t testing.TB) providerModelIdentityManifest {
 	t.Helper()
 	path := filepath.Join("..", "..", "docs", "reviews", "P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml")

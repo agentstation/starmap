@@ -1,10 +1,10 @@
 # qwen3-vl-flash-2026-01-22-us - AI model
 id: qwen3-vl-flash-2026-01-22-us
-model: alibaba/qwen3-vl-flash-2026-01-22-us
+model: qwen/qwen3-vl-flash-2026-01-22-us
 name: qwen3-vl-flash-2026-01-22-us
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

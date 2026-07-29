@@ -266,7 +266,8 @@ a provider serving record explicitly links to that author model.
 ### Persistence and DX
 
 - Author model YAML owns intrinsic authored facts; provider model YAML owns
-  serving facts; their field sets do not overlap.
+  serving facts. Overlapping upstream observations may be retained as evidence
+  but never become a competing executable authority.
 - `endpoints.yaml` is generated from explicit links and is never an independent
   editable authority.
 - A human adds a new authored model once, then adds any number of provider
@@ -290,13 +291,13 @@ model is complete.
 P5 implemented the reviewed replacement without restoring the rejected
 `Author.Models` copy semantics:
 
-- 653 authored YAML records now produce 653 canonical definitions;
+- 649 authored YAML records now produce 649 canonical definitions;
 - 610 retained provider YAML records each carry an explicit canonical link;
 - the one metadata-free `pre-zhongyun-test-chat` record was removed rather than
   assigned an invented author;
-- all 610 offerings produce exactly 610 generated endpoint rows across 533
+- all 610 offerings produce exactly 610 generated endpoint rows across 531
   canonical models;
-- 120 authored-only definitions correctly produce no endpoint;
+- 118 authored-only definitions correctly produce no endpoint;
 - schema version 3 round-trips `author_models` and `provider_models`;
 - the immutable catalog precomputes canonical, alias, provider-offering, and
   definition-offering indexes;

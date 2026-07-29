@@ -1,6 +1,6 @@
 # deepseek-r1-distill-llama-70b@001 - DeepSeek R1 Distill Llama 70B model available through Vertex...
 id: deepseek-r1-distill-llama-70b@001
-model: deepseek/deepseek-r1-distill-llama-70b@001
+model: deepseek/deepseek-r1-distill-llama-70b
 name: DeepSeek R1 Distill Llama 70B
 authors:
 - id: deepseek

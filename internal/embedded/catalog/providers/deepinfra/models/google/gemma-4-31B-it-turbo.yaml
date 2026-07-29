@@ -84,7 +84,7 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 0.12000000000000001
+      per_1m: 0.12
     output:
       per_1m: 0.37
   currency: USD

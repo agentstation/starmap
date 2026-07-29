@@ -131,6 +131,67 @@ func TestAuthoredModelPublicationIsolation(t *testing.T) {
 	}
 }
 
+func TestSetAuthorModelCanonicalizesAuthorAliasAndDisplayName(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{
+		ID: "canonical", Aliases: []AuthorID{"alias"}, Name: "Canonical Author",
+	}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := builder.SetAuthorModel("alias", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "alias", Name: "stale name"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel(alias): %v", err)
+	}
+
+	records := builder.AuthoredModels()
+	if len(records) != 1 || records[0].AuthorID != "canonical" ||
+		records[0].Model.Authors[0].ID != "canonical" ||
+		records[0].Model.Authors[0].Name != "Canonical Author" {
+		t.Fatalf("canonical authored record = %#v", records)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	model, err := catalog.AuthorModel("alias", "model")
+	if err != nil || model.ID != "canonical/model" {
+		t.Fatalf("AuthorModel(alias, model) = %#v, %v", model, err)
+	}
+}
+
+func TestDeleteAuthorRejectsOwnedAuthoredModels(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{
+		ID: "canonical", Aliases: []AuthorID{"alias"}, Name: "Canonical Author",
+	}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := builder.SetAuthorModel("canonical", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "canonical", Name: "Canonical Author"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+
+	err := builder.DeleteAuthor("alias")
+	var conflict *pkgerrors.ConflictError
+	if !errors.As(err, &conflict) {
+		t.Fatalf("DeleteAuthor(alias) error = %T %v, want ConflictError", err, err)
+	}
+	if _, err := builder.Author("canonical"); err != nil {
+		t.Fatalf("author removed after rejected delete: %v", err)
+	}
+	if _, err := builder.Build(); err != nil {
+		t.Fatalf("Build after rejected delete: %v", err)
+	}
+}
+
 func TestAuthoredAndProviderRecordsRoundTripIndependently(t *testing.T) {
 	t.Parallel()
 

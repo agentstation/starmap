@@ -1,10 +1,10 @@
 # qwen3.5-397b-a17b - Large open Qwen multimodal MoE for visual agents and long te...
 id: qwen3.5-397b-a17b
-model: alibaba/qwen3.5-397b-a17b
+model: qwen/qwen3.5-397b-a17b
 name: qwen3.5-397b-a17b
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Large open Qwen multimodal MoE for visual agents and long technical tasks
 
 # Model metadata

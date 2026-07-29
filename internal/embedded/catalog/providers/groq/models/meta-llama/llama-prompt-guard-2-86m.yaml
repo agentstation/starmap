@@ -80,11 +80,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 2e-08
+      per_1m: 0.02
     input:
-      per_1m: 4e-08
+      per_1m: 0.04
     output:
-      per_1m: 4e-08
+      per_1m: 0.04
   operations:
     request: 0.0
     image_gen: 0.0

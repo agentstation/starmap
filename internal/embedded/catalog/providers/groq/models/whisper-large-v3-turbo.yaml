@@ -81,9 +81,9 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 0.00051
+      per_1m: 510
     output:
-      per_1m: 0.00051
+      per_1m: 510
   currency: USD
 
 # Model limits

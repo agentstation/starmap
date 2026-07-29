@@ -2,150 +2,150 @@ schema_version: 1
 deleted_by: pull request 53
 restored_from: 9609f4f4a74281a7f9692a97cc4926df5978d754
 records:
-  - path: authors/alibaba/models/pre-qwen-mt-lite.yaml
-    author: alibaba
+  - path: authors/qwen/models/pre-qwen-mt-lite.yaml
+    author: qwen
     slug: pre-qwen-mt-lite
-    canonical_model: alibaba/pre-qwen-mt-lite
+    canonical_model: qwen/pre-qwen-mt-lite
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-3-235b-a22b-instruct-2507.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-3-235b-a22b-instruct-2507.yaml
+    author: qwen
     slug: qwen-3-235b-a22b-instruct-2507
-    canonical_model: alibaba/qwen-3-235b-a22b-instruct-2507
+    canonical_model: qwen/qwen-3-235b-a22b-instruct-2507
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/alibaba/models/qwen-3-235b-a22b-thinking-2507.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-3-235b-a22b-thinking-2507.yaml
+    author: qwen
     slug: qwen-3-235b-a22b-thinking-2507
-    canonical_model: alibaba/qwen-3-235b-a22b-thinking-2507
+    canonical_model: qwen/qwen-3-235b-a22b-thinking-2507
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/alibaba/models/qwen-3-32b.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-3-32b.yaml
+    author: qwen
     slug: qwen-3-32b
-    canonical_model: alibaba/qwen-3-32b
+    canonical_model: qwen/qwen-3-32b
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/alibaba/models/qwen-3-coder-480b.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-3-coder-480b.yaml
+    author: qwen
     slug: qwen-3-coder-480b
-    canonical_model: alibaba/qwen-3-coder-480b
+    canonical_model: qwen/qwen-3-coder-480b
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/alibaba/models/qwen-flash-2025-07-28-us.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-flash-2025-07-28-us.yaml
+    author: qwen
     slug: qwen-flash-2025-07-28-us
-    canonical_model: alibaba/qwen-flash-2025-07-28-us
+    canonical_model: qwen/qwen-flash-2025-07-28-us
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-flash-2025-07-28.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-flash-2025-07-28.yaml
+    author: qwen
     slug: qwen-flash-2025-07-28
-    canonical_model: alibaba/qwen-flash-2025-07-28
+    canonical_model: qwen/qwen-flash-2025-07-28
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-flash-us.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-flash-us.yaml
+    author: qwen
     slug: qwen-flash-us
-    canonical_model: alibaba/qwen-flash-us
+    canonical_model: qwen/qwen-flash-us
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-flash.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-flash.yaml
+    author: qwen
     slug: qwen-flash
-    canonical_model: alibaba/qwen-flash
+    canonical_model: qwen/qwen-flash
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-mt-flash.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-mt-flash.yaml
+    author: qwen
     slug: qwen-mt-flash
-    canonical_model: alibaba/qwen-mt-flash
+    canonical_model: qwen/qwen-mt-flash
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-mt-lite.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-mt-lite.yaml
+    author: qwen
     slug: qwen-mt-lite
-    canonical_model: alibaba/qwen-mt-lite
+    canonical_model: qwen/qwen-mt-lite
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-mt-plus.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-mt-plus.yaml
+    author: qwen
     slug: qwen-mt-plus
-    canonical_model: alibaba/qwen-mt-plus
+    canonical_model: qwen/qwen-mt-plus
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus-2025-07-28.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus-2025-07-28.yaml
+    author: qwen
     slug: qwen-plus-2025-07-28
-    canonical_model: alibaba/qwen-plus-2025-07-28
+    canonical_model: qwen/qwen-plus-2025-07-28
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus-2025-09-11.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus-2025-09-11.yaml
+    author: qwen
     slug: qwen-plus-2025-09-11
-    canonical_model: alibaba/qwen-plus-2025-09-11
+    canonical_model: qwen/qwen-plus-2025-09-11
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus-2025-12-01-us.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus-2025-12-01-us.yaml
+    author: qwen
     slug: qwen-plus-2025-12-01-us
-    canonical_model: alibaba/qwen-plus-2025-12-01-us
+    canonical_model: qwen/qwen-plus-2025-12-01-us
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus-2025-12-01.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus-2025-12-01.yaml
+    author: qwen
     slug: qwen-plus-2025-12-01
-    canonical_model: alibaba/qwen-plus-2025-12-01
+    canonical_model: qwen/qwen-plus-2025-12-01
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus-us.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus-us.yaml
+    author: qwen
     slug: qwen-plus-us
-    canonical_model: alibaba/qwen-plus-us
+    canonical_model: qwen/qwen-plus-us
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-plus.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-plus.yaml
+    author: qwen
     slug: qwen-plus
-    canonical_model: alibaba/qwen-plus
+    canonical_model: qwen/qwen-plus
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-qwq-32b.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-qwq-32b.yaml
+    author: qwen
     slug: qwen-qwq-32b
-    canonical_model: alibaba/qwen-qwq-32b
+    canonical_model: qwen/qwen-qwq-32b
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/alibaba/models/qwen-vl-ocr-2025-11-20.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-vl-ocr-2025-11-20.yaml
+    author: qwen
     slug: qwen-vl-ocr-2025-11-20
-    canonical_model: alibaba/qwen-vl-ocr-2025-11-20
+    canonical_model: qwen/qwen-vl-ocr-2025-11-20
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
-  - path: authors/alibaba/models/qwen-vl-ocr.yaml
-    author: alibaba
+  - path: authors/qwen/models/qwen-vl-ocr.yaml
+    author: qwen
     slug: qwen-vl-ocr
-    canonical_model: alibaba/qwen-vl-ocr
+    canonical_model: qwen/qwen-vl-ocr
     disposition: keep
     provider_id_match_count: 1
     evidence: historical authored model has a current exact provider model ID
@@ -338,13 +338,13 @@ records:
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/deepseek/models/deepseek-r1-distill-qwen-32b@001.yaml
+  - path: authors/deepseek/models/deepseek-r1-distill-qwen-32b.yaml
     author: deepseek
-    slug: deepseek-r1-distill-qwen-32b@001
-    canonical_model: deepseek/deepseek-r1-distill-qwen-32b@001
+    slug: deepseek-r1-distill-qwen-32b
+    canonical_model: deepseek/deepseek-r1-distill-qwen-32b
     disposition: keep
-    provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex @001 deployment ID links through explicit ModelRef
   - path: authors/deepseek/models/deepseek-reasoner.yaml
     author: deepseek
     slug: deepseek-reasoner
@@ -1031,27 +1031,27 @@ records:
     disposition: keep
     provider_id_match_count: 0
     evidence: historical authored model retained without a current exact provider ID
-  - path: authors/meta/models/llama-3-1-405b-instruct-maas.yaml
+  - path: authors/meta/models/llama-3-1-405b-instruct.yaml
     author: meta
-    slug: llama-3-1-405b-instruct-maas
-    canonical_model: meta/llama-3-1-405b-instruct-maas
+    slug: llama-3-1-405b-instruct
+    canonical_model: meta/llama-3-1-405b-instruct
     disposition: keep
-    provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
-  - path: authors/meta/models/llama-3-1-70b-instruct-maas.yaml
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
+  - path: authors/meta/models/llama-3-1-70b-instruct.yaml
     author: meta
-    slug: llama-3-1-70b-instruct-maas
-    canonical_model: meta/llama-3-1-70b-instruct-maas
+    slug: llama-3-1-70b-instruct
+    canonical_model: meta/llama-3-1-70b-instruct
     disposition: keep
-    provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
-  - path: authors/meta/models/llama-3-2-90b-vision-instruct-maas.yaml
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
+  - path: authors/meta/models/llama-3-2-90b-vision-instruct.yaml
     author: meta
-    slug: llama-3-2-90b-vision-instruct-maas
-    canonical_model: meta/llama-3-2-90b-vision-instruct-maas
+    slug: llama-3-2-90b-vision-instruct
+    canonical_model: meta/llama-3-2-90b-vision-instruct
     disposition: keep
-    provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
   - path: authors/meta/models/llama-3.1-405b-instruct-maas@001.yaml
     author: meta
     slug: llama-3.1-405b-instruct-maas@001

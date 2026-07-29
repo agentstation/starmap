@@ -52,8 +52,8 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 			withoutExactProviderID++
 		}
 	}
-	if withoutExactProviderID != 121 {
-		t.Fatalf("records without exact provider ID = %d, want 121", withoutExactProviderID)
+	if withoutExactProviderID != 125 {
+		t.Fatalf("records without exact provider ID = %d, want 125", withoutExactProviderID)
 	}
 
 	reviewedPaths := make(map[string]struct{}, embeddedAuthorModelCount)

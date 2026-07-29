@@ -84,11 +84,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.1300000002
+      per_1m: 0.13
     input:
       per_1m: 0.21
     output:
-      per_1m: 0.7899999999999999
+      per_1m: 0.79
   currency: USD
 
 # Model limits

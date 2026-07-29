@@ -90,7 +90,7 @@ reasoning:
 pricing:
   tokens:
     input:
-      per_1m: 0.030000000000000002
+      per_1m: 0.03
     output:
       per_1m: 0.14
   currency: USD

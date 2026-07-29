@@ -1,10 +1,10 @@
 # Qwen/Qwen3-32B - Dense open Qwen model for self-hosted chat, reasoning, and c...
 id: Qwen/Qwen3-32B
-model: alibaba/qwen3-32b
+model: qwen/qwen3-32b
 name: Qwen/Qwen3-32B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Dense open Qwen model for self-hosted chat, reasoning, and coding
 
 # Model metadata

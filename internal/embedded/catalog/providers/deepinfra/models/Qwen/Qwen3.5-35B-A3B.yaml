@@ -1,10 +1,10 @@
 # Qwen/Qwen3.5-35B-A3B - Qwen vision-language model for visual reasoning, documents, ...
 id: Qwen/Qwen3.5-35B-A3B
-model: alibaba/qwen3.5-35b-a3b
+model: qwen/qwen3.5-35b-a3b
 name: Qwen/Qwen3.5-35B-A3B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata
@@ -90,7 +90,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.05000000040000001
+      per_1m: 0.05
     input:
       per_1m: 0.14
     output:

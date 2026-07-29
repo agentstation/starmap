@@ -1,10 +1,10 @@
 # qwen3.5-flash - AI model
 id: qwen3.5-flash
-model: alibaba/qwen3.5-flash
+model: qwen/qwen3.5-flash
 name: qwen3.5-flash
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

@@ -1,6 +1,6 @@
 # llama-3-1-70b-instruct-maas - Llama 3.1 70B Instruct model available through Vertex AI Mod...
 id: llama-3-1-70b-instruct-maas
-model: meta/llama-3-1-70b-instruct-maas
+model: meta/llama-3-1-70b-instruct
 name: Llama 3.1 70B Instruct
 authors:
 - id: meta

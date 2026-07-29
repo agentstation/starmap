@@ -1,6 +1,6 @@
 # claude-3-5-haiku@20241022 - Fast Claude model for responsive assistance, classification,...
 id: claude-3-5-haiku@20241022
-model: anthropic/claude-3-5-haiku@20241022
+model: anthropic/claude-3-5-haiku-20241022
 name: Claude 3.5 Haiku
 authors:
 - id: anthropic

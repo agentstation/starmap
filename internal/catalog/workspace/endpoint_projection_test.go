@@ -3,6 +3,7 @@ package workspace
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
@@ -26,6 +27,10 @@ func TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings(t *te
 	}
 	if !bytes.Equal(first, second) {
 		t.Fatal("identical catalog and generation produced different endpoint bytes")
+	}
+	if !bytes.Contains(first, []byte("service_tier: priority")) ||
+		bytes.Contains(first, []byte("- 34")) {
+		t.Fatalf("request body is not native readable YAML:\n%s", first)
 	}
 	for _, forbidden := range [][]byte{
 		[]byte("latency"), []byte("throughput"), []byte("uptime"),
@@ -155,6 +160,15 @@ func endpointProjectionProviderModel(id string, price float64) *catalogs.Model {
 			Currency: catalogs.ModelPricingCurrencyUSD,
 			Tokens: &catalogs.ModelTokenPricing{
 				Input: &catalogs.ModelTokenCost{Per1M: price},
+			},
+		},
+		Modes: map[string]catalogs.ModelMode{
+			"fast": {
+				Provider: &catalogs.ModelProviderMode{
+					Body: map[string]any{
+						"service_tier": json.RawMessage(`"priority"`),
+					},
+				},
 			},
 		},
 	}

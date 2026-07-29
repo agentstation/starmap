@@ -1,10 +1,10 @@
 # Qwen/Qwen-Image-Max - Compared with the Plus series, it significantly reduces the ...
 id: Qwen/Qwen-Image-Max
-model: alibaba/qwen-image-max
+model: qwen/qwen-image-max
 name: Qwen/Qwen-Image-Max
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Compared with the Plus series, it significantly reduces the “AI-like” feel in generated images, enhancing their realism. It delivers more lifelike material textures for human subjects, finer and more detailed natural textures, and more visually appealing text rendering.
 
 # Model metadata

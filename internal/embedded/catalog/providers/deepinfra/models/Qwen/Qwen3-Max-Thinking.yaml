@@ -1,10 +1,10 @@
 # Qwen/Qwen3-Max-Thinking - The latest flagship reasoning model in the Qwen3 family. Fur...
 id: Qwen/Qwen3-Max-Thinking
-model: alibaba/qwen3-max-thinking
+model: qwen/qwen3-max-thinking
 name: Qwen/Qwen3-Max-Thinking
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: The latest flagship reasoning model in the Qwen3 family. Further enhanced by multiple innovations like adaptive tool-use and advanced test-time scaling techniques
 
 # Model metadata
@@ -87,7 +87,7 @@ pricing:
     input:
       per_1m: 1.2
     output:
-      per_1m: 5.999999999999999
+      per_1m: 6
   currency: USD
 
 # Model limits

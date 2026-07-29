@@ -1,10 +1,10 @@
 # Qwen/Qwen3-Embedding-8B - The Qwen3 Embedding model series is the latest proprietary m...
 id: Qwen/Qwen3-Embedding-8B
-model: alibaba/qwen3-embedding-8b
+model: qwen/qwen3-embedding-8b
 name: Qwen/Qwen3-Embedding-8B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: The Qwen3 Embedding model series is the latest proprietary model of the Qwen family, specifically designed for text embedding and ranking tasks. Building upon the dense foundational models of the Qwen3 series, it provides a comprehensive range of text embeddings and reranking models in various sizes (0.6B, 4B, and 8B).
 
 # Model metadata

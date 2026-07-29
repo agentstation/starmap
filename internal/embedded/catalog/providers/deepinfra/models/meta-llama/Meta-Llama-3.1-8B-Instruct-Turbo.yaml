@@ -83,7 +83,7 @@ pricing:
     input:
       per_1m: 0.02
     output:
-      per_1m: 0.030000000000000002
+      per_1m: 0.03
   currency: USD
 
 # Model limits

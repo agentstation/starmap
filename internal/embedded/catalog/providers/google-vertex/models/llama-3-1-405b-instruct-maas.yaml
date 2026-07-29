@@ -1,6 +1,6 @@
 # llama-3-1-405b-instruct-maas - Llama 3.1 405B Instruct model available through Vertex AI Mo...
 id: llama-3-1-405b-instruct-maas
-model: meta/llama-3-1-405b-instruct-maas
+model: meta/llama-3-1-405b-instruct
 name: Llama 3.1 405B Instruct
 authors:
 - id: meta

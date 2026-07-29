@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/goccy/go-yaml"
@@ -105,6 +106,39 @@ func TestProviderOfferingValidation(t *testing.T) {
 				t.Fatal("Validate returned nil error")
 			}
 		})
+	}
+}
+
+func TestOfferingRequestBodyYAMLUsesNativeValuesNotRawBytes(t *testing.T) {
+	t.Parallel()
+
+	body := OfferingRequestBody{
+		"string": json.RawMessage(`"priority"`),
+		"number": json.RawMessage(`1.25`),
+		"bool":   json.RawMessage(`true`),
+		"array":  json.RawMessage(`["a",2]`),
+		"object": json.RawMessage(`{"mode":"pro"}`),
+		"null":   json.RawMessage(`null`),
+	}
+	data, err := yaml.Marshal(body)
+	if err != nil {
+		t.Fatalf("Marshal YAML: %v", err)
+	}
+	rendered := string(data)
+	for _, want := range []string{
+		"string: priority",
+		"number: 1.25",
+		"bool: true",
+		"- a",
+		"mode: pro",
+		`"null": null`,
+	} {
+		if !strings.Contains(rendered, want) {
+			t.Fatalf("YAML missing %q:\n%s", want, rendered)
+		}
+	}
+	if strings.Contains(rendered, "[34,") || strings.Contains(rendered, "- 34") {
+		t.Fatalf("YAML encoded JSON string bytes:\n%s", rendered)
 	}
 }
 

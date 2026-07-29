@@ -1,6 +1,6 @@
 # gemma-4-26b-a4b-it-maas - Google model: gemma-4-26b-a4b-it-maas
 id: gemma-4-26b-a4b-it-maas
-model: google/gemma-4-26b-a4b-it-maas
+model: google/gemma-4-26b-a4b-it
 name: gemma-4-26b-a4b-it-maas
 authors:
 - id: google

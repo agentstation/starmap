@@ -1,10 +1,10 @@
 # qwen-plus-2025-07-28 - AI model
 id: qwen-plus-2025-07-28
-model: alibaba/qwen-plus-2025-07-28
+model: qwen/qwen-plus-2025-07-28
 name: qwen-plus-2025-07-28
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

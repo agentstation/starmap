@@ -1,10 +1,10 @@
 # Qwen/Qwen3.5-397B-A17B - Qwen vision-language model for visual reasoning, documents, ...
 id: Qwen/Qwen3.5-397B-A17B
-model: alibaba/qwen3.5-397b-a17b
+model: qwen/qwen3.5-397b-a17b
 name: Qwen/Qwen3.5-397B-A17B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata
@@ -90,11 +90,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.22000000050000001
+      per_1m: 0.22
     input:
       per_1m: 0.45
     output:
-      per_1m: 2.9999999999999996
+      per_1m: 3
   currency: USD
 
 # Model limits

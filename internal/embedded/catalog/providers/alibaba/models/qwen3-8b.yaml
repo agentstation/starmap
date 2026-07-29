@@ -1,10 +1,10 @@
 # qwen3-8b - Qwen instruction model for multilingual chat, reasoning, and...
 id: qwen3-8b
-model: alibaba/qwen3-8b
+model: qwen/qwen3-8b
 name: qwen3-8b
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen instruction model for multilingual chat, reasoning, and tool use
 
 # Model metadata

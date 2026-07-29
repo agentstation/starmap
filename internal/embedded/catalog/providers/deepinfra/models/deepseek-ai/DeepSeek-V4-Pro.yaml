@@ -90,11 +90,11 @@ reasoning:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.10000000399999999
+      per_1m: 0.1
     input:
-      per_1m: 1.2999999999999998
+      per_1m: 1.3
     output:
-      per_1m: 2.5999999999999996
+      per_1m: 2.6
   currency: USD
 
 # Model limits

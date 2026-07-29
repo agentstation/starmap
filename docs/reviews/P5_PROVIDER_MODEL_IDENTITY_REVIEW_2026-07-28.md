@@ -53,23 +53,23 @@ and precomputes identity and join indexes.
 The exact reviewed provider identity map is
 [`P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml`](P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml),
 SHA-256
-`ccf76f104d3336e8da951e2650c042758e721cadccf52387d06718565c8eec6f`.
+`6d6fce188901b55bcad12df3fdb5624cda4747ff2802e3cdc3cb4a487e4f136c`.
 
 | Measurement | Before restoration | Reviewed result |
 | --- | ---: | ---: |
 | Provider model YAML records | 611 | 610 |
 | Provider records with explicit canonical link | 549 | 610 |
 | Provider records without a resolved link | 62 | 0 |
-| Authored model YAML records | 322 restored records | 653 total canonical records |
-| Canonical definitions with at least one offering | not available | 533 |
+| Authored model YAML records | 322 restored records | 649 total canonical records |
+| Canonical definitions with at least one offering | not available | 531 |
 | Generated endpoint rows | 0 | 610 |
-| Authored-only definitions | not available | 120 |
+| Authored-only definitions | not available | 118 |
 
-The 61 resolvable provider records received explicit links through reviewed
-inline authorship, namespace ownership, exact model matches, or specific
-publisher evidence. Twenty missing publisher metadata records were added.
-Fifty-nine additional authored records were created so every retained provider
-record resolves without using the serving provider as the author.
+Every retained provider record now has a reviewed explicit link derived from
+inline authorship, publisher namespace, exact model match, or named source
+evidence. The full map, rather than an inference rule, is the executable review
+boundary. Additional authored records were created only where a serving record
+had no retained canonical target.
 
 One record,
 `providers/alibaba/models/pre-zhongyun-test-chat.yaml`, was removed. It was an
@@ -82,7 +82,15 @@ Specific reviewed identities include:
 - Alibaba `kimi-k2.5` → `moonshot-ai/kimi-k2.5`;
 - Alibaba `glm-5.1` → `zhipu-ai/glm-5.1`;
 - Alibaba `pre-qwen-mt-lite` → `qwen/qwen-mt-lite`;
+- Alibaba and DeepInfra Qwen offerings → the independent `qwen` / Qwen Team
+  author namespace, not the Alibaba Cloud serving-provider namespace;
+- Groq `openai/gpt-oss-safeguard-20b` → OpenAI;
+- Groq `canopylabs/orpheus-*` → Canopy Labs;
+- Vertex `bart-large-cnn` → Meta;
 - Fireworks Kimi and GLM aliases → Moonshot AI and Zhipu AI respectively;
+- Vertex deployment suffixes such as `@001` and `-maas` remain exact opaque
+  provider model IDs while their links resolve to provider-independent author
+  slugs;
 - `FastVideo/LTX-2.3-Distilled-Diffusers` →
   `fastvideo/ltx-2.3-distilled-diffusers`, with Lightricks retained as a
   secondary author rather than inferred as the serving provider.
@@ -97,7 +105,15 @@ immutable join. It contains:
 - canonical `author/slug`;
 - exact provider ID and exact opaque provider model ID;
 - exact provider pricing, limits, availability, lifecycle, modes, and endpoint
-  behavior when known.
+behavior when known.
+
+The first structured outcome review found and the branch corrected four
+classes of generation defect before acceptance: serving provider mistaken for
+model author, Vertex deployment suffixes promoted into canonical author
+identity, Groq per-token literals mislabeled as per-million prices, and JSON
+request overrides encoded as YAML byte arrays. Provider float noise is snapped
+only when it is within a tight tolerance of a human decimal price; meaningful
+small prices are unchanged.
 
 It deliberately contains no invented latency, throughput, uptime, or other
 runtime telemetry. It is built in the off-side workspace candidate, verified

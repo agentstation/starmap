@@ -1,10 +1,10 @@
 # Qwen/Qwen-Image-Edit - Qwen-Image-Edit is a next-generation image editing model bui...
 id: Qwen/Qwen-Image-Edit
-model: alibaba/qwen-image-edit
+model: qwen/qwen-image-edit
 name: Qwen/Qwen-Image-Edit
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen-Image-Edit is a next-generation image editing model built on top of Qwen-Image, designed for both semantic and appearance-level edits. It excels at tasks like precise text modifications, style transfers, viewpoint transformations, and element adjustments while preserving overall visual consistency.
 
 # Model metadata

@@ -1,10 +1,10 @@
 # qwen/qwen3-32b - Qwen instruction model for multilingual chat, reasoning, and...
 id: qwen/qwen3-32b
-model: alibaba/qwen3-32b
+model: qwen/qwen3-32b
 name: Qwen3-32B
 authors:
-- id: alibaba
-  name: Alibaba Cloud
+- id: qwen
+  name: Qwen Team
 description: Qwen instruction model for multilingual chat, reasoning, and tool use
 status: beta
 
@@ -81,11 +81,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 1.45e-07
+      per_1m: 0.145
     input:
-      per_1m: 2.9e-07
+      per_1m: 0.29
     output:
-      per_1m: 5.9e-07
+      per_1m: 0.59
   operations:
     request: 0.0
     image_gen: 0.0

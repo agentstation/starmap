@@ -1,6 +1,6 @@
 # llama-3-2-90b-vision-instruct-maas - Llama 3.2 90B Vision Instruct model available through Vertex...
 id: llama-3-2-90b-vision-instruct-maas
-model: meta/llama-3-2-90b-vision-instruct-maas
+model: meta/llama-3-2-90b-vision-instruct
 name: Llama 3.2 90B Vision Instruct
 authors:
 - id: meta

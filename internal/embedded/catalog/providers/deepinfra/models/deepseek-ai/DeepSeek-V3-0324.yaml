@@ -84,7 +84,7 @@ pricing:
     cache_read:
       per_1m: 0.135
     input:
-      per_1m: 0.24000000000000002
+      per_1m: 0.24
     output:
       per_1m: 0.9
   currency: USD
