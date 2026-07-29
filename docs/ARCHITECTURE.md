@@ -604,7 +604,14 @@ republish or regress the immutable catalog. A per-stream reader is explicitly
 closed and joined. The validated 20-second expected-heartbeat and 60-second
 liveness defaults make a silent or half-open stream reconnect; caller
 cancellation and bounded `Close` own termination even while initial fetch is
-in progress. See
+in progress. Normal operation performs no polling. An optional
+`PollingFallbackPolicy` activates only after its explicit consecutive-stream
+failure threshold and serializes conditional current-manifest requests inside
+the reconnect loop at a rate bounded by the configured interval, without
+creating a parallel scheduler. Successful stream establishment plus mandatory
+catch-up disables fallback before event consumption resumes.
+`PollingFallbackStatus` exposes the mode, entries, polls, and modified responses
+without treating stream liveness as catalog freshness. See
 [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 The online server and offline artifact are the only distribution

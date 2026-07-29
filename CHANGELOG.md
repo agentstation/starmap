@@ -55,6 +55,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   redirects. Manifest-declared media and body limits are checked before the
   immutable payload is downloaded; any identity, size, digest, schema, or
   stale-generation failure leaves the active catalog unchanged.
+- **Explicit polling fallback**: reactive subscribers never poll during a
+  healthy heartbeat/event stream and keep polling disabled by default.
+  `PollingFallbackPolicy` can opt into a consecutive-stream-failure threshold,
+  and a minimum request interval. Requests use `If-None-Match`,
+  current fallback state is observable, and verified reconnect catch-up stops
+  fallback before event consumption resumes.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,

@@ -825,6 +825,21 @@ deadline without triggering a fetch. The caller context owns initial fetch,
 streaming, retry, and activation; `Close` cancels and joins that lifecycle
 within a bounded timeout.
 
+Polling is disabled by default. Deployments that must tolerate an unavailable
+SSE route may opt into a bounded last-resort policy:
+
+```go
+PollingFallback: &remote.PollingFallbackPolicy{
+    AfterFailures: 3,
+    Interval:      30 * time.Second,
+},
+```
+
+The subscriber sends conditional current-manifest requests only after that
+stream-failure threshold. It never polls beside a healthy stream, consumes at
+a rate bounded by the configured interval, and exposes the current mode and
+cumulative counters through `PollingFallbackStatus()`.
+
 `BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
 with a verified certificate chain, and redirects cannot change origin. Plain
 HTTP is accepted only for local loopback embedding and tests.

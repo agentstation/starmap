@@ -23,6 +23,17 @@ const (
 	minimumLivenessIntervals = 2
 )
 
+// PollingFallbackPolicy explicitly enables bounded conditional polling after
+// repeated streaming failures. Polling remains disabled when this policy is
+// nil.
+type PollingFallbackPolicy struct {
+	// AfterFailures is the number of consecutive stream open, read, or catch-up
+	// failures required before fallback polling begins.
+	AfterFailures int
+	// Interval is the minimum time between fallback manifest polls.
+	Interval time.Duration
+}
+
 // Config defines one remote Starmap catalog source. BaseURL is the versioned
 // API root, for example https://starmap.example.com/api/v1.
 type Config struct {
@@ -46,6 +57,9 @@ type Config struct {
 	// ShutdownTimeout bounds Close while it joins subscriber-owned loops. Zero
 	// selects the default.
 	ShutdownTimeout time.Duration
+	// PollingFallback explicitly enables bounded conditional polling after
+	// repeated streaming failures. Nil keeps polling disabled.
+	PollingFallback *PollingFallbackPolicy
 }
 
 func (c Config) normalized() (Config, error) {
@@ -112,6 +126,24 @@ func (c Config) normalized() (Config, error) {
 			Field:   "remote.shutdown_timeout",
 			Value:   c.ShutdownTimeout,
 			Message: "must be positive",
+		}
+	}
+	if c.PollingFallback != nil {
+		policy := *c.PollingFallback
+		c.PollingFallback = &policy
+		if policy.AfterFailures < 1 {
+			return Config{}, &errors.ValidationError{
+				Field:   "remote.polling_fallback.after_failures",
+				Value:   policy.AfterFailures,
+				Message: "must be positive",
+			}
+		}
+		if policy.Interval <= 0 {
+			return Config{}, &errors.ValidationError{
+				Field:   "remote.polling_fallback.interval",
+				Value:   policy.Interval,
+				Message: "must be positive",
+			}
 		}
 	}
 	return c, nil

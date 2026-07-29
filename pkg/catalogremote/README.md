@@ -14,11 +14,13 @@ Package catalogremote defines the versioned online Starmap\-to\-Starmap generati
 
 - [Constants](<#constants>)
 - [func GenerationManifestPath\(generationID string\) string](<#GenerationManifestPath>)
+- [func ManifestETag\(generationID string\) string](<#ManifestETag>)
 - [func MarshalManifest\(manifest catalogs.GenerationManifest\) \(\[\]byte, error\)](<#MarshalManifest>)
 - [func SnapshotPath\(generationID string\) string](<#SnapshotPath>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogstore.Generation, error\)](<#Client.FetchCurrent>)
+  - [func \(c \*Client\) FetchCurrentIfChanged\(ctx context.Context, generationID string\) \(generation catalogstore.Generation, changed bool, err error\)](<#Client.FetchCurrentIfChanged>)
   - [func \(c \*Client\) FetchGeneration\(ctx context.Context, generationID string\) \(catalogstore.Generation, error\)](<#Client.FetchGeneration>)
   - [func \(c \*Client\) OpenEventStream\(ctx context.Context, lastEventID string\) \(\*EventStream, error\)](<#Client.OpenEventStream>)
 - [type EventStream](<#EventStream>)
@@ -67,8 +69,17 @@ func GenerationManifestPath(generationID string) string
 
 GenerationManifestPath returns the immutable manifest route for generationID.
 
+<a name="ManifestETag"></a>
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L385>)
+
+```go
+func ManifestETag(generationID string) string
+```
+
+ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
+
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L328>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L390>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -114,8 +125,17 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, err
 
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed snapshot and validates their binding and compatibility.
 
+<a name="Client.FetchCurrentIfChanged"></a>
+### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L166-L169>)
+
+```go
+func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string) (generation catalogstore.Generation, changed bool, err error)
+```
+
+FetchCurrentIfChanged conditionally fetches the current manifest relative to generationID. It returns changed=false without fetching a payload when the publisher reports that generationID is still current.
+
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L164>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L193>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error)

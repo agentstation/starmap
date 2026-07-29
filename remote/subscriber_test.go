@@ -56,6 +56,25 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		subscriber.config.ShutdownTimeout != DefaultShutdownTimeout {
 		t.Fatalf("normalized lifecycle config = %#v", subscriber.config)
 	}
+	policy := &PollingFallbackPolicy{
+		AfterFailures: 2,
+		Interval:      time.Second,
+	}
+	withFallback, err := New(Config{
+		BaseURL:         server.URL,
+		PollingFallback: policy,
+	})
+	if err != nil {
+		t.Fatalf("New polling fallback: %v", err)
+	}
+	policy.AfterFailures = 99
+	if withFallback.config.PollingFallback == policy ||
+		withFallback.config.PollingFallback.AfterFailures != 2 {
+		t.Fatalf(
+			"subscriber retained mutable fallback config: %#v",
+			withFallback.config.PollingFallback,
+		)
+	}
 
 	for _, test := range []struct {
 		name   string
@@ -84,6 +103,24 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 			name: "negative shutdown",
 			config: Config{
 				BaseURL: server.URL, ShutdownTimeout: -time.Second,
+			},
+		},
+		{
+			name: "zero fallback threshold",
+			config: Config{
+				BaseURL: server.URL,
+				PollingFallback: &PollingFallbackPolicy{
+					Interval: time.Second,
+				},
+			},
+		},
+		{
+			name: "zero fallback interval",
+			config: Config{
+				BaseURL: server.URL,
+				PollingFallback: &PollingFallbackPolicy{
+					AfterFailures: 1,
+				},
 			},
 		},
 	} {
@@ -238,12 +275,18 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		"provider-heartbeat",
 		time.Date(2026, time.July, 29, 17, 0, 0, 0, time.UTC),
 	)
-	var streamCount atomic.Int32
+	var (
+		streamCount             atomic.Int32
+		conditionalManifestGets atomic.Int32
+	)
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			resourcePath := request.URL.Path[len("/api/v1"):]
 			switch resourcePath {
 			case catalogremote.ManifestPath:
+				if request.Header.Get("If-None-Match") != "" {
+					conditionalManifestGets.Add(1)
+				}
 				writeSubscriberManifest(t, writer, generation)
 			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
@@ -281,8 +324,12 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
 		ExpectedHeartbeatInterval: 5 * time.Millisecond,
-		LivenessTimeout:           20 * time.Millisecond,
+		LivenessTimeout:           100 * time.Millisecond,
 		ShutdownTimeout:           time.Second,
+		PollingFallback: &PollingFallbackPolicy{
+			AfterFailures: 1,
+			Interval:      time.Millisecond,
+		},
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -292,12 +339,196 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	if err := subscriber.Start(ctx); err != nil {
 		t.Fatalf("Start: %v", err)
 	}
-	time.Sleep(75 * time.Millisecond)
+	time.Sleep(150 * time.Millisecond)
 	if got := streamCount.Load(); got != 1 {
 		t.Fatalf("healthy heartbeat stream connections = %d, want 1", got)
 	}
+	if got := conditionalManifestGets.Load(); got != 0 {
+		t.Fatalf("healthy stream conditional polls = %d, want 0", got)
+	}
+	if status := subscriber.PollingFallbackStatus(); status.Active ||
+		status.Polls != 0 || status.Entries != 0 {
+		t.Fatalf("healthy stream fallback status = %#v", status)
+	}
 	if err := subscriber.Close(); err != nil {
 		t.Fatalf("Close: %v", err)
+	}
+}
+
+func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) {
+	t.Parallel()
+
+	first := subscriberTestGeneration(
+		t,
+		"generation-poll-first",
+		"provider-poll-first",
+		time.Date(2026, time.July, 29, 17, 30, 0, 0, time.UTC),
+	)
+	second := subscriberTestGeneration(
+		t,
+		"generation-poll-second",
+		"provider-poll-second",
+		first.Manifest.GeneratedAt.Add(time.Minute),
+	)
+	var (
+		mu              sync.RWMutex
+		current         = first
+		allowStream     atomic.Bool
+		streamRequests  atomic.Int32
+		conditionalGets atomic.Int32
+		snapshotGets    atomic.Int32
+		pollTimes       []time.Time
+		healthyStream   = make(chan struct{}, 1)
+	)
+	generations := map[string]catalogstore.Generation{
+		first.Manifest.GenerationID:  first,
+		second.Manifest.GenerationID: second,
+	}
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			resourcePath := request.URL.Path[len("/api/v1"):]
+			switch resourcePath {
+			case catalogremote.ManifestPath:
+				mu.RLock()
+				selected := current
+				mu.RUnlock()
+				etag := catalogremote.ManifestETag(selected.Manifest.GenerationID)
+				writer.Header().Set("ETag", etag)
+				ifNoneMatch := request.Header.Get("If-None-Match")
+				if ifNoneMatch == etag {
+					mu.Lock()
+					pollTimes = append(pollTimes, time.Now())
+					mu.Unlock()
+					if conditionalGets.Add(1) == 1 {
+						mu.Lock()
+						current = second
+						mu.Unlock()
+					}
+					writer.WriteHeader(http.StatusNotModified)
+					return
+				}
+				if ifNoneMatch != "" {
+					mu.Lock()
+					pollTimes = append(pollTimes, time.Now())
+					mu.Unlock()
+					conditionalGets.Add(1)
+				}
+				writeSubscriberManifest(t, writer, selected)
+				return
+			case catalogremote.EventStreamPath:
+				streamRequests.Add(1)
+				if !allowStream.Load() {
+					writer.WriteHeader(http.StatusServiceUnavailable)
+					return
+				}
+				writer.Header().Set(
+					"Content-Type",
+					catalogremote.EventStreamMediaType,
+				)
+				_, _ = fmt.Fprint(writer, ": connected\n\n")
+				writer.(http.Flusher).Flush()
+				select {
+				case healthyStream <- struct{}{}:
+				default:
+				}
+				ticker := time.NewTicker(time.Millisecond)
+				defer ticker.Stop()
+				for {
+					select {
+					case <-request.Context().Done():
+						return
+					case <-ticker.C:
+						_, _ = fmt.Fprint(writer, ": heartbeat\n\n")
+						writer.(http.Flusher).Flush()
+					}
+				}
+			}
+			for id, generation := range generations {
+				if resourcePath == catalogremote.SnapshotPath(id) {
+					snapshotGets.Add(1)
+					writer.Header().Set(
+						"Content-Type",
+						catalogs.CatalogPayloadMediaType,
+					)
+					_, _ = writer.Write(generation.Payload)
+					return
+				}
+			}
+			http.NotFound(writer, request)
+		},
+	))
+	defer server.Close()
+
+	subscriber, err := New(Config{
+		BaseURL:                   server.URL + "/api/v1",
+		HTTPClient:                server.Client(),
+		ReconnectMinDelay:         time.Millisecond,
+		ReconnectMaxDelay:         time.Millisecond,
+		ExpectedHeartbeatInterval: time.Millisecond,
+		LivenessTimeout:           3 * time.Millisecond,
+		ShutdownTimeout:           time.Second,
+		PollingFallback: &PollingFallbackPolicy{
+			AfterFailures: 2,
+			Interval:      25 * time.Millisecond,
+		},
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := subscriber.Start(ctx); err != nil {
+		t.Fatalf("Start with configured fallback: %v", err)
+	}
+	defer func() { _ = subscriber.Close() }()
+
+	waitForSubscriberCondition(t, func() bool {
+		status := subscriber.PollingFallbackStatus()
+		if !status.Active || status.Entries != 1 || status.Polls != 2 ||
+			status.Modified != 1 {
+			return false
+		}
+		_, err := subscriber.Catalog().Provider("provider-poll-second")
+		return err == nil
+	})
+	if got := conditionalGets.Load(); got != 2 {
+		t.Fatalf("conditional manifest GETs = %d, want bounded 2", got)
+	}
+	if got := snapshotGets.Load(); got != 2 {
+		t.Fatalf(
+			"snapshot GETs = %d, want initial plus changed fallback only",
+			got,
+		)
+	}
+	mu.RLock()
+	gotPollTimes := append([]time.Time(nil), pollTimes...)
+	mu.RUnlock()
+	if len(gotPollTimes) != 2 ||
+		gotPollTimes[1].Sub(gotPollTimes[0]) < 25*time.Millisecond {
+		t.Fatalf("poll cadence = %v, want two requests at least 25ms apart", gotPollTimes)
+	}
+
+	allowStream.Store(true)
+	select {
+	case <-healthyStream:
+	case <-ctx.Done():
+		t.Fatal("stream did not recover")
+	}
+	waitForSubscriberCondition(t, func() bool {
+		status := subscriber.PollingFallbackStatus()
+		return !status.Active
+	})
+	pollsAtRecovery := conditionalGets.Load()
+	time.Sleep(10 * time.Millisecond)
+	if got := conditionalGets.Load(); got != pollsAtRecovery {
+		t.Fatalf(
+			"healthy recovered stream triggered polling: %d -> %d",
+			pollsAtRecovery,
+			got,
+		)
+	}
+	if got := streamRequests.Load(); got < 2 {
+		t.Fatalf("stream requests = %d, want failed and recovered attempts", got)
 	}
 }
 

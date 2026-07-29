@@ -35,6 +35,7 @@ type Subscriber struct {
 	cancel      context.CancelFunc
 	done        chan struct{}
 	lastEventID string
+	fallback    PollingFallbackStatus
 
 	activationMu sync.Mutex
 	active       generationIdentity
@@ -46,6 +47,22 @@ type generationIdentity struct {
 	id          string
 	digest      string
 	generatedAt time.Time
+}
+
+// PollingFallbackStatus is an immutable snapshot of the subscriber's bounded
+// polling fallback. Counters are cumulative for the subscriber lifetime.
+type PollingFallbackStatus struct {
+	// Enabled reports whether construction configured a polling fallback.
+	Enabled bool
+	// Active reports that the stream failure threshold has been reached and
+	// streaming has not yet recovered.
+	Active bool
+	// Entries counts transitions into fallback mode.
+	Entries uint64
+	// Polls counts conditional current-manifest requests.
+	Polls uint64
+	// Modified counts verified non-304 responses handled by fallback polling.
+	Modified uint64
 }
 
 // New validates config and constructs an idle subscriber. It starts no
@@ -79,9 +96,22 @@ func New(config Config) (*Subscriber, error) {
 		protocol: protocol,
 		client:   client,
 		state:    stateIdle,
+		fallback: PollingFallbackStatus{
+			Enabled: normalized.PollingFallback != nil,
+		},
 	}
 	subscriber.retryDelay = subscriber.exponentialJitter
 	return subscriber, nil
+}
+
+// PollingFallbackStatus returns the current bounded polling fallback state.
+func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus {
+	if s == nil {
+		return PollingFallbackStatus{}
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.fallback
 }
 
 // Catalog returns the current immutable catalog. Before Start succeeds it is
@@ -94,9 +124,11 @@ func (s *Subscriber) Catalog() *catalogs.Catalog {
 	return s.client.Catalog()
 }
 
-// Start performs a verified initial fetch, establishes the event stream, closes
-// the fetch-to-subscribe gap with a mandatory current-state catch-up, and then
-// starts the caller-context-owned reconnect lifecycle.
+// Start performs a verified initial fetch and starts the caller-context-owned
+// lifecycle. Normally it establishes the event stream and closes the
+// fetch-to-subscribe gap with a mandatory current-state catch-up before
+// returning. When an explicit PollingFallbackPolicy is configured, an initial
+// stream failure starts bounded fallback/reconnect recovery instead.
 func (s *Subscriber) Start(ctx context.Context) error {
 	if s == nil {
 		return &errors.ValidationError{
@@ -157,7 +189,28 @@ func (s *Subscriber) Start(ctx context.Context) error {
 
 	stream, err := s.protocol.OpenEventStream(runCtx, "")
 	if err != nil {
-		return err
+		if runErr := runCtx.Err(); runErr != nil {
+			return runErr
+		}
+		if s.config.PollingFallback == nil {
+			return err
+		}
+		s.mu.Lock()
+		if s.state != stateStarting {
+			actual := s.state.String()
+			s.mu.Unlock()
+			return &errors.ConflictError{
+				Resource: "remote catalog subscriber",
+				Expected: "starting",
+				Actual:   actual,
+				Message:  "subscriber lifecycle changed while Start was initializing",
+			}
+		}
+		s.state = stateRunning
+		started = true
+		go s.run(runCtx, nil, done, 1)
+		s.mu.Unlock()
+		return nil
 	}
 	if err := s.catchUp(runCtx); err != nil {
 		_ = stream.Close()
@@ -178,7 +231,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 	}
 	s.state = stateRunning
 	started = true
-	go s.run(runCtx, stream, done)
+	go s.run(runCtx, stream, done, 0)
 	s.mu.Unlock()
 	return nil
 }
@@ -228,28 +281,44 @@ func (s *Subscriber) run(
 	ctx context.Context,
 	stream *catalogremote.EventStream,
 	done chan struct{},
+	streamFailures int,
 ) {
 	defer func() {
-		_ = stream.Close()
+		if stream != nil {
+			_ = stream.Close()
+		}
 		s.mu.Lock()
 		s.state = stateStopped
+		s.fallback.Active = false
 		s.mu.Unlock()
 		close(done)
 	}()
 
 	attempt := 0
+	var nextPoll time.Time
 	for {
-		err := s.consume(ctx, stream)
-		_ = stream.Close()
-		if ctx.Err() != nil {
-			return
+		if stream != nil {
+			err := s.consume(ctx, stream)
+			_ = stream.Close()
+			stream = nil
+			if ctx.Err() != nil {
+				return
+			}
+			if err == nil {
+				err = io.EOF
+			}
+			_ = err // P7.11 exposes terminal/retry health without changing recovery.
+			streamFailures++
 		}
-		if err == nil {
-			err = io.EOF
-		}
-		_ = err // P7.11 exposes terminal/retry health without changing recovery.
 
 		for {
+			if !s.pollFallbackIfDue(
+				ctx,
+				streamFailures,
+				&nextPoll,
+			) {
+				return
+			}
 			if !waitRetry(ctx, s.retryDelay(attempt)) {
 				return
 			}
@@ -258,6 +327,7 @@ func (s *Subscriber) run(
 			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
 			if openErr != nil {
 				attempt++
+				streamFailures++
 				continue
 			}
 			// Replay is only an optimization. Every established connection
@@ -266,13 +336,81 @@ func (s *Subscriber) run(
 			if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
 				_ = next.Close()
 				attempt++
+				streamFailures++
 				continue
 			}
+			s.finishPollingFallback()
 			stream = next
 			attempt = 0
+			streamFailures = 0
+			nextPoll = time.Time{}
 			break
 		}
 	}
+}
+
+func (s *Subscriber) pollFallbackIfDue(
+	ctx context.Context,
+	streamFailures int,
+	nextPoll *time.Time,
+) bool {
+	policy := s.config.PollingFallback
+	if policy == nil || streamFailures < policy.AfterFailures {
+		return ctx.Err() == nil
+	}
+	s.startPollingFallback()
+	now := time.Now()
+	if !nextPoll.IsZero() && now.Before(*nextPoll) {
+		return ctx.Err() == nil
+	}
+
+	modified, err := s.pollCurrent(ctx)
+	if ctx.Err() != nil {
+		return false
+	}
+	*nextPoll = time.Now().Add(policy.Interval)
+	s.recordFallbackPoll(modified)
+	// A polling failure is observable later through P7.11 health, but it does
+	// not replace or delay the primary streaming reconnect path.
+	_ = err
+	return true
+}
+
+func (s *Subscriber) pollCurrent(ctx context.Context) (bool, error) {
+	generationID := s.activeGenerationID()
+	generation, modified, err := s.protocol.FetchCurrentIfChanged(
+		ctx,
+		generationID,
+	)
+	if err != nil || !modified {
+		return false, err
+	}
+	_, err = s.activate(ctx, generation)
+	return err == nil, err
+}
+
+func (s *Subscriber) startPollingFallback() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if !s.fallback.Active {
+		s.fallback.Active = true
+		s.fallback.Entries++
+	}
+}
+
+func (s *Subscriber) recordFallbackPoll(modified bool) {
+	s.mu.Lock()
+	s.fallback.Polls++
+	if modified {
+		s.fallback.Modified++
+	}
+	s.mu.Unlock()
+}
+
+func (s *Subscriber) finishPollingFallback() {
+	s.mu.Lock()
+	s.fallback.Active = false
+	s.mu.Unlock()
 }
 
 func (s *Subscriber) consume(
@@ -435,6 +573,12 @@ func (s *Subscriber) isActiveGeneration(id string) bool {
 	s.activationMu.Lock()
 	defer s.activationMu.Unlock()
 	return id != "" && id == s.active.id
+}
+
+func (s *Subscriber) activeGenerationID() string {
+	s.activationMu.Lock()
+	defer s.activationMu.Unlock()
+	return s.active.id
 }
 
 func (s *Subscriber) recordEventID(id string) {

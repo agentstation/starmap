@@ -153,11 +153,40 @@ func (c *Client) verifyPublisher(response *http.Response) error {
 // FetchCurrent fetches the current manifest followed by its immutable,
 // generation-addressed snapshot and validates their binding and compatibility.
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error) {
-	manifest, err := c.fetchManifest(ctx, ManifestPath, "current")
+	manifest, _, err := c.fetchManifest(ctx, ManifestPath, "current", "")
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}
 	return c.fetchGenerationPayload(ctx, manifest)
+}
+
+// FetchCurrentIfChanged conditionally fetches the current manifest relative to
+// generationID. It returns changed=false without fetching a payload when the
+// publisher reports that generationID is still current.
+func (c *Client) FetchCurrentIfChanged(
+	ctx context.Context,
+	generationID string,
+) (generation catalogstore.Generation, changed bool, err error) {
+	if err := validateGenerationID(generationID); err != nil {
+		return catalogstore.Generation{}, false, err
+	}
+	manifest, notModified, err := c.fetchManifest(
+		ctx,
+		ManifestPath,
+		"current",
+		ManifestETag(generationID),
+	)
+	if err != nil {
+		return catalogstore.Generation{}, false, err
+	}
+	if notModified {
+		return catalogstore.Generation{}, false, nil
+	}
+	generation, err = c.fetchGenerationPayload(ctx, manifest)
+	if err != nil {
+		return catalogstore.Generation{}, false, err
+	}
+	return generation, true, nil
 }
 
 // FetchGeneration fetches and verifies one immutable generation by ID.
@@ -165,10 +194,11 @@ func (c *Client) FetchGeneration(ctx context.Context, generationID string) (cata
 	if err := validateGenerationID(generationID); err != nil {
 		return catalogstore.Generation{}, err
 	}
-	manifest, err := c.fetchManifest(
+	manifest, _, err := c.fetchManifest(
 		ctx,
 		GenerationManifestPath(generationID),
 		generationID,
+		"",
 	)
 	if err != nil {
 		return catalogstore.Generation{}, err
@@ -187,14 +217,23 @@ func (c *Client) fetchManifest(
 	ctx context.Context,
 	resourcePath string,
 	resourceID string,
-) (catalogs.GenerationManifest, error) {
-	manifestData, err := c.fetch(ctx, resourcePath, ManifestMediaType)
+	ifNoneMatch string,
+) (catalogs.GenerationManifest, bool, error) {
+	manifestData, notModified, err := c.fetchConditional(
+		ctx,
+		resourcePath,
+		ManifestMediaType,
+		ifNoneMatch,
+	)
 	if err != nil {
-		return catalogs.GenerationManifest{}, err
+		return catalogs.GenerationManifest{}, false, err
+	}
+	if notModified {
+		return catalogs.GenerationManifest{}, true, nil
 	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
-		return catalogs.GenerationManifest{}, errors.WrapResource(
+		return catalogs.GenerationManifest{}, false, errors.WrapResource(
 			"parse",
 			"remote catalog manifest",
 			resourceID,
@@ -202,29 +241,29 @@ func (c *Client) fetchManifest(
 		)
 	}
 	if err := validateGenerationID(manifest.GenerationID); err != nil {
-		return catalogs.GenerationManifest{}, err
+		return catalogs.GenerationManifest{}, false, err
 	}
 	if !manifest.ConsumerCompatibility.SupportsSchema(c.schemaVersion) {
-		return catalogs.GenerationManifest{}, &errors.ValidationError{
+		return catalogs.GenerationManifest{}, false, &errors.ValidationError{
 			Field: "catalog_remote.schema_version", Value: c.schemaVersion,
 			Message: fmt.Sprintf("is incompatible with remote range %d..%d", manifest.ConsumerCompatibility.MinSchemaVersion, manifest.ConsumerCompatibility.MaxSchemaVersion),
 		}
 	}
 	if manifest.Payload.MediaType != catalogs.CatalogPayloadMediaType {
-		return catalogs.GenerationManifest{}, &errors.ValidationError{
+		return catalogs.GenerationManifest{}, false, &errors.ValidationError{
 			Field:   "catalog_remote.payload.media_type",
 			Value:   manifest.Payload.MediaType,
 			Message: "does not match " + catalogs.CatalogPayloadMediaType,
 		}
 	}
 	if manifest.Payload.SizeBytes > maxBodyBytes {
-		return catalogs.GenerationManifest{}, &errors.ValidationError{
+		return catalogs.GenerationManifest{}, false, &errors.ValidationError{
 			Field:   "catalog_remote.payload.size_bytes",
 			Value:   manifest.Payload.SizeBytes,
 			Message: "exceeds maximum size",
 		}
 	}
-	return manifest, nil
+	return manifest, false, nil
 }
 
 func validateGenerationID(generationID string) error {
@@ -280,6 +319,16 @@ func (c *Client) fetchGenerationPayload(
 }
 
 func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]byte, error) {
+	data, _, err := c.fetchConditional(ctx, resourcePath, mediaType, "")
+	return data, err
+}
+
+func (c *Client) fetchConditional(
+	ctx context.Context,
+	resourcePath string,
+	mediaType string,
+	ifNoneMatch string,
+) ([]byte, bool, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -287,27 +336,34 @@ func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]b
 	target.Path = path.Join(strings.TrimSuffix(c.baseURL.Path, "/"), resourcePath)
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, target.String(), nil)
 	if err != nil {
-		return nil, errors.WrapResource("create", "remote catalog request", target.String(), err)
+		return nil, false, errors.WrapResource("create", "remote catalog request", target.String(), err)
 	}
 	request.Header.Set("Accept", mediaType)
+	if ifNoneMatch != "" {
+		request.Header.Set("If-None-Match", ifNoneMatch)
+	}
 	response, err := c.httpClient.Do(request)
 	if err != nil {
-		return nil, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), Message: "request failed", Err: err}
+		return nil, false, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), Message: "request failed", Err: err}
 	}
 	defer func() { _ = response.Body.Close() }()
 	if err := c.verifyPublisher(response); err != nil {
-		return nil, err
+		return nil, false, err
+	}
+	if response.StatusCode == http.StatusNotModified && ifNoneMatch != "" {
+		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
+		return nil, true, nil
 	}
 	if response.StatusCode != http.StatusOK {
 		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
-		return nil, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), StatusCode: response.StatusCode, Message: "unexpected response status"}
+		return nil, false, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), StatusCode: response.StatusCode, Message: "unexpected response status"}
 	}
 	actualMediaType, _, err := mime.ParseMediaType(response.Header.Get("Content-Type"))
 	if err != nil || actualMediaType != mediaType {
-		return nil, &errors.ValidationError{Field: "catalog_remote.content_type", Value: response.Header.Get("Content-Type"), Message: "does not match " + mediaType}
+		return nil, false, &errors.ValidationError{Field: "catalog_remote.content_type", Value: response.Header.Get("Content-Type"), Message: "does not match " + mediaType}
 	}
 	if response.ContentLength > maxBodyBytes {
-		return nil, &errors.ValidationError{
+		return nil, false, &errors.ValidationError{
 			Field:   "catalog_remote.body",
 			Value:   response.ContentLength,
 			Message: "exceeds maximum size",
@@ -316,12 +372,18 @@ func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]b
 	limited := io.LimitReader(response.Body, maxBodyBytes+1)
 	data, err := io.ReadAll(limited)
 	if err != nil {
-		return nil, errors.WrapIO("read", target.String(), err)
+		return nil, false, errors.WrapIO("read", target.String(), err)
 	}
 	if len(data) > maxBodyBytes {
-		return nil, &errors.ValidationError{Field: "catalog_remote.body", Value: len(data), Message: "exceeds maximum size"}
+		return nil, false, &errors.ValidationError{Field: "catalog_remote.body", Value: len(data), Message: "exceeds maximum size"}
 	}
-	return data, nil
+	return data, false, nil
+}
+
+// ManifestETag returns the strong entity tag for a generation manifest. A
+// generation ID is immutable and restricted to HTTP entity-tag-safe bytes.
+func ManifestETag(generationID string) string {
+	return `"` + generationID + `"`
 }
 
 // MarshalManifest returns strict JSON bytes for the server route.

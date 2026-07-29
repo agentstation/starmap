@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"slices"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -234,6 +235,122 @@ func TestFetchGenerationRequiresAddressedManifestAndPayload(t *testing.T) {
 	}
 	if !slices.Equal(paths, wantPaths) {
 		t.Fatalf("request paths = %#v, want %#v", paths, wantPaths)
+	}
+}
+
+func TestFetchCurrentIfChangedUsesConditionalManifest(t *testing.T) {
+	t.Parallel()
+
+	first := remoteTestGeneration(
+		t,
+		catalogs.CurrentCatalogSchemaVersion,
+		catalogs.ConsumerCompatibility{
+			MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		},
+	)
+	second := first.Copy()
+	second.Manifest.GenerationID += "-second"
+	second.Manifest.GeneratedAt = second.Manifest.GeneratedAt.Add(time.Minute)
+	if err := second.Validate(); err != nil {
+		t.Fatalf("second generation: %v", err)
+	}
+
+	var (
+		current       = first
+		mu            sync.RWMutex
+		manifestGets  atomic.Int32
+		snapshotGets  atomic.Int32
+		ifNoneMatches []string
+	)
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			mu.RLock()
+			selected := current
+			mu.RUnlock()
+			switch request.URL.Path {
+			case ManifestPath:
+				manifestGets.Add(1)
+				mu.Lock()
+				ifNoneMatches = append(
+					ifNoneMatches,
+					request.Header.Get("If-None-Match"),
+				)
+				mu.Unlock()
+				etag := ManifestETag(selected.Manifest.GenerationID)
+				writer.Header().Set("ETag", etag)
+				if request.Header.Get("If-None-Match") == etag {
+					writer.WriteHeader(http.StatusNotModified)
+					return
+				}
+				data, err := MarshalManifest(selected.Manifest)
+				if err != nil {
+					t.Fatalf("MarshalManifest: %v", err)
+				}
+				writer.Header().Set("Content-Type", ManifestMediaType)
+				_, _ = writer.Write(data)
+			case SnapshotPath(selected.Manifest.GenerationID):
+				snapshotGets.Add(1)
+				writer.Header().Set(
+					"Content-Type",
+					catalogs.CatalogPayloadMediaType,
+				)
+				_, _ = writer.Write(selected.Payload)
+			default:
+				http.NotFound(writer, request)
+			}
+		},
+	))
+	defer server.Close()
+
+	client, err := NewClient(
+		server.URL,
+		server.Client(),
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	generation, changed, err := client.FetchCurrentIfChanged(
+		context.Background(),
+		first.Manifest.GenerationID,
+	)
+	if err != nil || changed || generation.Manifest.GenerationID != "" {
+		t.Fatalf("unchanged fetch = %#v/%t/%v", generation, changed, err)
+	}
+	if got := snapshotGets.Load(); got != 0 {
+		t.Fatalf("unchanged snapshot GETs = %d, want 0", got)
+	}
+
+	mu.Lock()
+	current = second
+	mu.Unlock()
+	generation, changed, err = client.FetchCurrentIfChanged(
+		context.Background(),
+		first.Manifest.GenerationID,
+	)
+	if err != nil || !changed {
+		t.Fatalf("changed fetch = %#v/%t/%v", generation, changed, err)
+	}
+	if generation.Manifest.GenerationID != second.Manifest.GenerationID {
+		t.Fatalf(
+			"changed generation = %q, want %q",
+			generation.Manifest.GenerationID,
+			second.Manifest.GenerationID,
+		)
+	}
+	if got := snapshotGets.Load(); got != 1 {
+		t.Fatalf("changed snapshot GETs = %d, want 1", got)
+	}
+	mu.RLock()
+	gotMatches := append([]string(nil), ifNoneMatches...)
+	mu.RUnlock()
+	wantETag := ManifestETag(first.Manifest.GenerationID)
+	if !slices.Equal(gotMatches, []string{wantETag, wantETag}) {
+		t.Fatalf("If-None-Match values = %#v, want repeated %q", gotMatches, wantETag)
+	}
+	if got := manifestGets.Load(); got != 2 {
+		t.Fatalf("manifest GETs = %d, want 2", got)
 	}
 }
 

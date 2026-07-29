@@ -14,10 +14,13 @@ Package remote provides a reactive Starmap catalog consumer.
 
 - [Constants](<#constants>)
 - [type Config](<#Config>)
+- [type PollingFallbackPolicy](<#PollingFallbackPolicy>)
+- [type PollingFallbackStatus](<#PollingFallbackStatus>)
 - [type Subscriber](<#Subscriber>)
   - [func New\(config Config\) \(\*Subscriber, error\)](<#New>)
   - [func \(s \*Subscriber\) Catalog\(\) \*catalogs.Catalog](<#Subscriber.Catalog>)
   - [func \(s \*Subscriber\) Close\(\) error](<#Subscriber.Close>)
+  - [func \(s \*Subscriber\) PollingFallbackStatus\(\) PollingFallbackStatus](<#Subscriber.PollingFallbackStatus>)
   - [func \(s \*Subscriber\) Start\(ctx context.Context\) error](<#Subscriber.Start>)
 
 
@@ -41,7 +44,7 @@ const (
 ```
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L28-L49>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L39-L63>)
 
 Config defines one remote Starmap catalog source. BaseURL is the versioned API root, for example https://starmap.example.com/api/v1.
 
@@ -67,11 +70,50 @@ type Config struct {
     // ShutdownTimeout bounds Close while it joins subscriber-owned loops. Zero
     // selects the default.
     ShutdownTimeout time.Duration
+    // PollingFallback explicitly enables bounded conditional polling after
+    // repeated streaming failures. Nil keeps polling disabled.
+    PollingFallback *PollingFallbackPolicy
+}
+```
+
+<a name="PollingFallbackPolicy"></a>
+## type [PollingFallbackPolicy](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L29-L35>)
+
+PollingFallbackPolicy explicitly enables bounded conditional polling after repeated streaming failures. Polling remains disabled when this policy is nil.
+
+```go
+type PollingFallbackPolicy struct {
+    // AfterFailures is the number of consecutive stream open, read, or catch-up
+    // failures required before fallback polling begins.
+    AfterFailures int
+    // Interval is the minimum time between fallback manifest polls.
+    Interval time.Duration
+}
+```
+
+<a name="PollingFallbackStatus"></a>
+## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L54-L66>)
+
+PollingFallbackStatus is an immutable snapshot of the subscriber's bounded polling fallback. Counters are cumulative for the subscriber lifetime.
+
+```go
+type PollingFallbackStatus struct {
+    // Enabled reports whether construction configured a polling fallback.
+    Enabled bool
+    // Active reports that the stream failure threshold has been reached and
+    // streaming has not yet recovered.
+    Active bool
+    // Entries counts transitions into fallback mode.
+    Entries uint64
+    // Polls counts conditional current-manifest requests.
+    Polls uint64
+    // Modified counts verified non-304 responses handled by fallback polling.
+    Modified uint64
 }
 ```
 
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L28-L43>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L28-L44>)
 
 Subscriber owns one explicitly started remote catalog lifecycle.
 
@@ -82,7 +124,7 @@ type Subscriber struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L53>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L70>)
 
 ```go
 func New(config Config) (*Subscriber, error)
@@ -91,7 +133,7 @@ func New(config Config) (*Subscriber, error)
 New validates config and constructs an idle subscriber. It starts no goroutine and performs no remote request.
 
 <a name="Subscriber.Catalog"></a>
-### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L90>)
+### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L120>)
 
 ```go
 func (s *Subscriber) Catalog() *catalogs.Catalog
@@ -100,7 +142,7 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the current immutable catalog. Before Start succeeds it is the verified embedded bootstrap; afterward it is the latest activated remote generation.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L188>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L241>)
 
 ```go
 func (s *Subscriber) Close() error
@@ -108,14 +150,23 @@ func (s *Subscriber) Close() error
 
 Close cancels and joins the subscriber lifecycle within ShutdownTimeout. It is idempotent.
 
+<a name="Subscriber.PollingFallbackStatus"></a>
+### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L108>)
+
+```go
+func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
+```
+
+PollingFallbackStatus returns the current bounded polling fallback state.
+
 <a name="Subscriber.Start"></a>
-### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L100>)
+### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L132>)
 
 ```go
 func (s *Subscriber) Start(ctx context.Context) error
 ```
 
-Start performs a verified initial fetch, establishes the event stream, closes the fetch\-to\-subscribe gap with a mandatory current\-state catch\-up, and then starts the caller\-context\-owned reconnect lifecycle.
+Start performs a verified initial fetch and starts the caller\-context\-owned lifecycle. Normally it establishes the event stream and closes the fetch\-to\-subscribe gap with a mandatory current\-state catch\-up before returning. When an explicit PollingFallbackPolicy is configured, an initial stream failure starts bounded fallback/reconnect recovery instead.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 
