@@ -30,7 +30,8 @@ func NewListCommand(app application.Application) *cobra.Command {
   starmap models list --capability vision      # Filter by capability
   starmap models list --min-context 100000     # Filter by context window
   starmap models list --max-price 0.50         # Filter by price
-  starmap models list --details                # Show detailed information`,
+  starmap models list --details                # Show detailed information
+  starmap models list --provider openai --export openai  # Export one provider`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			// Get logger from app
 			logger := app.Logger()
@@ -58,7 +59,7 @@ func NewListCommand(app application.Application) *cobra.Command {
 	cmd.Flags().Float64("max-price", 0,
 		"Maximum price per 1M input tokens")
 	cmd.Flags().String("export", "",
-		"Export models in specified format (openai, openrouter)")
+		"Export one provider in a compatibility format (openai, openrouter; requires --provider when results span providers)")
 
 	return cmd
 }
@@ -87,11 +88,7 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 
 	// Handle export format if specified
 	if exportFormat != "" {
-		modelPointers := make([]*catalogs.Model, len(filtered))
-		for i := range filtered {
-			modelPointers[i] = &filtered[i]
-		}
-		return exportModels(modelPointers, exportFormat)
+		return exportModels(filtered, exportFormat)
 	}
 
 	// Get global flags and format output
@@ -107,9 +104,13 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	case constants.FormatTable, constants.FormatWide, "":
 		modelPointers := make([]*catalogs.Model, len(filtered))
 		for i := range filtered {
-			modelPointers[i] = &filtered[i]
+			modelPointers[i] = &filtered[i].Model
 		}
 		tableData := table.ModelsToTableData(modelPointers, showDetails)
+		tableData.Headers = append([]string{"Provider"}, tableData.Headers...)
+		for i := range tableData.Rows {
+			tableData.Rows[i] = append([]string{string(filtered[i].ProviderID)}, tableData.Rows[i]...)
+		}
 		outputData = format.Data{
 			Headers: tableData.Headers,
 			Rows:    tableData.Rows,
@@ -125,8 +126,23 @@ func listModels(cmd *cobra.Command, app application.Application, logger *zerolog
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// exportModels exports models in the specified format (openai or openrouter).
-func exportModels(models []*catalogs.Model, format string) error {
+// exportModels exports one provider's models in the specified compatibility
+// format. OpenAI and OpenRouter model-list schemas have no provider identity,
+// so mixing providers would make same-ID offerings ambiguous.
+func exportModels(records []query.ModelRecord, format string) error {
+	providers := make(map[catalogs.ProviderID]struct{})
+	models := make([]*catalogs.Model, len(records))
+	for index := range records {
+		providers[records[index].ProviderID] = struct{}{}
+		models[index] = &records[index].Model
+	}
+	if len(providers) > 1 {
+		return &errors.ValidationError{
+			Field:   "provider",
+			Message: "select one provider with --provider before using --export",
+		}
+	}
+
 	var output any
 	switch strings.ToLower(format) {
 	case "openai":

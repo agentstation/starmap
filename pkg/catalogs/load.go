@@ -86,11 +86,6 @@ func (cat *Builder) Load() error {
 		return err
 	}
 
-	// Load model files from authors/ (denormalized view)
-	if err := cat.loadAuthorModelFiles(); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -178,25 +173,6 @@ func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
 	return cat.SetProvider(provider)
 }
 
-// loadAuthorModel loads a model into an author's Models map.
-func (cat *Builder) loadAuthorModel(pathParts []string, model *Model) error {
-	if len(pathParts) < 4 || pathParts[0] != "authors" || pathParts[2] != "models" {
-		return nil // Not an author model path
-	}
-
-	authorID := AuthorID(pathParts[1])
-	author, err := cat.Author(authorID)
-	if err != nil {
-		return nil // Author doesn't exist, skip
-	}
-
-	if author.Models == nil {
-		author.Models = make(map[string]*Model)
-	}
-	author.Models[model.ID] = model
-	return cat.SetAuthor(author)
-}
-
 // loadModelFile parses and loads a model file.
 func (cat *Builder) loadModelFile(path string, data []byte) error {
 	var model Model
@@ -206,17 +182,7 @@ func (cat *Builder) loadModelFile(path string, data []byte) error {
 
 	pathParts := strings.Split(path, "/")
 
-	// Handle providers/[provider-id]/models/[model].yaml
-	if err := cat.loadProviderModel(pathParts, &model); err != nil {
-		return err
-	}
-
-	// Handle authors/[author-id]/models/[model].yaml
-	if err := cat.loadAuthorModel(pathParts, &model); err != nil {
-		return err
-	}
-
-	return nil
+	return cat.loadProviderModel(pathParts, &model)
 }
 
 func (cat *Builder) loadModelRecord(path string, data []byte) {
@@ -274,43 +240,6 @@ func (cat *Builder) loadProviderModelFiles() error {
 
 	if err != nil && !os.IsNotExist(err) {
 		return errors.WrapIO("walk", "providers directory", err)
-	}
-	return nil
-}
-
-// loadAuthorModelFiles walks the authors directory and loads all model files.
-// These files are a denormalized view - the source of truth is provider catalogs + attribution config.
-func (cat *Builder) loadAuthorModelFiles() error {
-	err := fs.WalkDir(cat.config.readFilesystem(), "authors", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			if os.IsNotExist(err) {
-				return nil
-			}
-			return err
-		}
-		if d.IsDir() || !strings.HasSuffix(path, ".yaml") {
-			return nil
-		}
-
-		// Skip authors.yaml itself
-		if path == "authors.yaml" {
-			return nil
-		}
-		if cat.modelLoadLimitReached(path) {
-			return fs.SkipAll
-		}
-
-		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
-		if err != nil {
-			return errors.WrapIO("read", path, err)
-		}
-
-		cat.loadModelRecord(path, data)
-		return nil
-	})
-
-	if err != nil && !os.IsNotExist(err) {
-		return errors.WrapIO("walk", "authors directory", err)
 	}
 	return nil
 }

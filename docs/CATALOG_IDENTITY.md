@@ -33,22 +33,14 @@ routing identity. These identifiers are not interchangeable.
 8. Every offering references exactly one existing provider and one existing
    definition. Every route target references an existing offering key.
 
-## Compatibility boundary
+## Canonical read boundary
 
-The current `catalogs.Model.ID`, provider `Models` map key, `Models`, and
-`FindModel` APIs predate this split and remain compatibility surfaces until the
-P4 migration is complete. New code must not treat the legacy bare-ID view as an
-offering identity. Provider-scoped reads use `ProviderModel(providerID,
-providerModelID)` today; P4 introduces explicit definition/offering types and a
-versioned compatibility adapter.
-
-The transition is explicit. `Catalog.FindModel` keeps the canonical consumer
-syntax but returns `ModelDefinition`; provider facts come from `Offering`.
-Callers that still require the pre-split `Model` use
-`Catalog.LegacyV0().FindModel`, `ProviderModel`, `ProviderModels`, or `Models`.
-The adapter declares schema version 0; canonical generation payloads declare
-schema version 1. Direct legacy collection methods on `Catalog` remain
-deprecated for source compatibility during the v1 transition.
+`Catalog.FindModel` and `Catalog.Definition` return the provider-independent
+`ModelDefinition`. Provider facts come from `Offering` and
+`ProviderOfferings`. The immutable catalog does not expose a flattened
+bare-model collection: flattening equal provider model IDs would discard
+provider identity and make price, limits, lifecycle, and request behavior
+ambiguous.
 
 `catalogs.ProviderOffering` is the first schema implementing this contract. It
 uses a comparable `OfferingKey`, typed `ProviderModelID` and
@@ -57,11 +49,6 @@ overrides retain exact JSON values rather than passing through `map[string]any`.
 `catalogs.ModelDefinition` is its structurally disjoint complement: it owns
 canonical authorship, release metadata, typed lineage, weights/architecture,
 and intrinsic capabilities, and cannot contain provider service facts.
-
-`catalogs.MigrateLegacySchema` converts the pre-split model records without
-mutating them and emits a review report for every default, missing value, or
-conflicting canonical definition. The embedded baseline is locked so catalog
-updates cannot silently alter the migration disposition.
 
 Immutable catalogs expose canonical `Definition`, `Offering`, and
 `ProviderOfferings` lookups. Offering reads are keyed by the exact provider
@@ -72,3 +59,11 @@ Starport passes `RouteAlias` values to `MaterializeRouteAlias`; aliases are not
 stored by catalog sources. Materialization separates eligible offerings from
 missing, unavailable, and retired targets without carrying weights, fallback,
 tenant, or strategy policy into Starmap.
+
+## Persisted source shape
+
+Provider YAML model records are the sole persisted model facts. Immutable
+definitions, offerings, and author membership are validated, precomputed read
+views built from those records and their provenance. Catalog schema version 2
+removed the duplicate author-model tree and the prelaunch schema-v0/v1
+compatibility adapters.

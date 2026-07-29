@@ -40,7 +40,7 @@ type ModelDefinitionLineage struct {
 
 // ModelDefinitionWeights describes provider-independent model weights and architecture.
 type ModelDefinitionWeights struct {
-	Open         bool               `json:"open" yaml:"open"`
+	Open         *bool              `json:"open,omitempty" yaml:"open,omitempty"`
 	Architecture *ModelArchitecture `json:"architecture,omitempty" yaml:"architecture,omitempty"`
 }
 
@@ -105,6 +105,10 @@ func copyModelDefinition(definition ModelDefinition) ModelDefinition {
 		copyDefinition.Lineage.Parent = &parent
 	}
 	copyDefinition.Weights.Architecture = deepCopyModelArchitecture(definition.Weights.Architecture)
+	if definition.Weights.Open != nil {
+		open := *definition.Weights.Open
+		copyDefinition.Weights.Open = &open
+	}
 	copyDefinition.Capabilities.Features = deepCopyModelFeatures(definition.Capabilities.Features)
 	copyDefinition.Capabilities.Attachments = deepCopyModelAttachments(definition.Capabilities.Attachments)
 	copyDefinition.Capabilities.Generation = deepCopyModelGeneration(definition.Capabilities.Generation)

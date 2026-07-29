@@ -434,8 +434,7 @@ Commands define their own flags that don't conflict with global flags:
 **Update Command:**
 - `-f` / `--force` - Force fresh update
 - `-y` / `--yes` - Auto-approve changes
-- `--dry` - Preview changes (primary)
-- `--dry-run` - Preview changes (deprecated alias)
+- `--dry-run` - Preview changes without publishing
 
 **Embed Commands:**
 - Custom help flag (`-?`) frees up `-h` and `-f`
@@ -451,10 +450,10 @@ Commands define their own flags that don't conflict with global flags:
 **Rationale:**
 ```bash
 # ✅ Good: Resource is positional, options are flags
-starmap update openai --dry
+starmap update openai --dry-run
 
 # ❌ Avoided: Resource as flag feels less natural
-starmap update --provider openai --dry
+starmap update --provider openai --dry-run
 ```
 
 **Pattern:**
@@ -500,24 +499,12 @@ cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
 LsCmd.Flags().BoolVarP(&lsHuman, "human-readable", "h", false, "...")
 ```
 
-#### 4. Hidden Alias Flags
+#### 4. One Canonical Flag Spelling
 
-**Decision**: Support backward compatibility via hidden aliases
-
-**Rationale:**
-- Users may have scripts depending on old flags
-- Hidden flags don't clutter help text
-- Smooth migration path
-
-**Example:**
-```go
-// Primary flag (shown in help)
-rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "...")
-
-// Hidden aliases (backward compat)
-rootCmd.PersistentFlags().StringVar(&a.config.Output, "format", "", "")
-_ = rootCmd.PersistentFlags().MarkHidden("format")
-```
+Before launch, each option has one long name and at most one conventional short
+name. Starmap does not retain hidden aliases or deprecated flag spellings that
+would become permanent compatibility surface. For example, structured output
+uses `--output`/`-o`, and update previews use `--dry-run`.
 
 ### Implementation Details
 
@@ -678,10 +665,10 @@ immediate transactions with bounded busy waiting; filesystem writers coordinate
 through a context-aware advisory lock shared across processes.
 
 `Builder.Save` materializes a human provider-YAML workspace using replacement
-semantics for its managed YAML indexes and provider/author model trees, so
-deleted records cannot survive a
-save/reload. It deliberately preserves unmanaged neighboring files such as
-logos and operator notes. Direct builder saves are construction tools; normal
+semantics for its managed indexes and provider model trees, and removes obsolete
+author-model directories, so deleted records cannot survive a save/reload. It
+deliberately preserves unmanaged neighboring files such as logos and operator
+notes. Direct builder saves are construction tools; normal
 Starmap publication commits the immutable generation first and then atomically
 projects YAML. Production readers consume the immutable catalog generation,
 while explicit updates treat semantic human workspace changes as local
@@ -748,10 +735,10 @@ not exist. Construction loads an existing workspace exactly as human YAML; it
 does not pre-merge the running binary's embedded revision. A missing workspace
 uses the verified embedded bootstrap in memory and is seeded only by an explicit
 update. Malformed provider, author, and provenance structure plus filesystem
-failures remain typed fatal errors. Individual malformed model YAML files are
-quarantined with a typed `LoadReport` so valid siblings can form a degraded
-local observation; embedded bootstrap, legacy migration, and atomic projection
-validation require an empty report and remain fail-closed. When a configured
+failures remain typed fatal errors. Individual malformed provider-model YAML
+files are quarantined with a typed `LoadReport` so valid siblings can form a
+degraded local observation; embedded bootstrap and atomic projection validation
+require an empty report and remain fail-closed. When a configured
 CatalogStore has a current generation, that validated durable generation is
 authoritative during construction; the workspace is reconciled by explicit
 reload or update rather than silently replacing the active generation.
@@ -767,18 +754,11 @@ The CLI/server composition root accepts the same policies through
 `embedded_bootstrap_max_age` and `embedded_bootstrap_max_size_bytes` (or their
 uppercase environment-variable forms).
 
-The documented pre-generation directory format is frozen under
-`pkg/catalogstore/testdata/legacy-v0/`. `MigrateLegacyDirectory` parses that
-format without mutation, requires caller-supplied generation/run/observation
-identity and UTC time, and deterministically emits schema-v1 `CatalogPayload`
-bytes plus a validated manifest. Provider-specific and author model indexes are
-encoded separately because the legacy record structs intentionally exclude
-their runtime model maps from JSON/YAML indexes.
-
-That schema-v0 YAML adapter is distinct from `starmap migrate catalog`. The
-former converts an older catalog data schema without mutating its input; the
-latter safely reassigns the on-disk path that briefly held the current
-generation-store format before the single human-workspace contract was chosen.
+`starmap migrate catalog` safely reassigns the on-disk path that briefly held
+the current generation-store format before the single human-workspace contract
+was chosen. This storage-layout migration remains necessary for development
+installations and is distinct from catalog payload compatibility, which is not
+retained before launch.
 
 ### Reconciler Package
 
@@ -1084,17 +1064,16 @@ skips), and whether scheduler/startup telemetry is configured. A deployment
 that has not wired scheduling reports `scheduler.configured=false` explicitly
 instead of presenting fabricated freshness or success state.
 
-This keeps adapters thin without moving UI-specific behavior into catalog storage:
+This keeps adapters thin without rebuilding a lossy cross-provider model map:
 
 ```go
-models := query.Models(cat.Models().List(), query.ModelOptions{
-    Author:     flags.Author,
-    Capability: capability,
-    Search:     flags.Search,
-    Limit:      flags.Limit,
-})
+definitions := cat.Definitions()
+offerings, err := cat.ProviderOfferings(providerID)
+if err != nil {
+    return err
+}
 
-page := query.Paginate(filteredModels, limit, offset)
+page := query.Paginate(offerings, limit, offset)
 ```
 
 ## Data Sources
@@ -1306,7 +1285,7 @@ func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, opt
 - **Safe publication**: A validated generation commits through `CatalogStore`
   before the immutable in-memory swap; failed commits emit no callback
 - **Restart recovery**: `New` reads, validates, decodes, and publishes the exact
-  durable current generation before consulting local compatibility YAML; an
+  durable current generation before consulting the human YAML workspace; an
   empty store alone falls back to the verified bootstrap/local baseline, while
   corrupt or unavailable store state fails initialization
 - **Isolated hooks**: Post-commit callbacks run asynchronously through bounded
@@ -1326,35 +1305,32 @@ Model definition, provider offering, alias, and Starport routing identities
 follow the normative [Catalog Identity Contract](CATALOG_IDENTITY.md). In
 particular, offering identity is the `(provider ID, provider model ID)` tuple;
 route aliases are policy-layer objects and never source-ingestion aliases.
-`catalogs.ProviderOffering` is the provider-specific schema: its comparable key
+`catalogs.ProviderOffering` is the provider-specific read schema: its comparable key
 is `(ProviderID, ProviderModelID)`, and it owns pricing, limits, availability,
 regions, endpoint behavior, provider lifecycle, modes, and typed request
-overrides. The legacy `Model` compatibility record remains in place until the
-P4 migration moves intrinsic definition fields into their canonical schema.
+overrides.
 `catalogs.ModelDefinition` is the complementary provider-independent record;
 reflection and round-trip tests keep its authorship, lineage, weights, and
 capabilities surface disjoint from every offering-owned field.
-Legacy embedded and source catalogs pass through `MigrateLegacySchema`, which
-uses deterministic provider ordering and classifies exact/defaulted/missing/
-conflicting transformations. Its checked embedded baseline currently contains
-516 offerings, 490 definitions, 1,073 defaults, 23 reviewed definition
-conflicts, 81 explicit missing-authorship records, and zero unclassified
-changes. Multi-author marketplace declarations are candidate sets and are never
-copied onto every model as invented joint authorship.
-Published catalogs precompute definition and offering indexes. Canonical reads
-use `Definition`, `Offering`, and `ProviderOfferings`; the latter two retain the
-exact provider-scoped identity and return deep copies of nested mutable values.
+Provider YAML model records are the sole persisted model facts. Published
+catalogs validate identity and lifecycle values, then precompute definition,
+offering, and author-membership indexes. Provider-independent conflicts use the
+same executable authority table and value-matched provenance as reconciliation;
+indistinguishable conflicting facts remain unknown instead of using map
+iteration or alphabetical order. The required definition name falls back to
+its stable definition ID. Multi-author marketplace declarations are candidate
+sets and are never copied onto every model as invented joint authorship.
+Canonical reads use `Definition`, `Offering`, `ProviderOfferings`, and
+`AuthorModels`; they return deep copies of nested mutable values.
 Route aliases remain caller-supplied policy-layer identities.
 `MaterializeRouteAlias` resolves their exact offering keys against a retained
 catalog generation and reports ineligible targets without storing routing
 weights or fallback policy in ingestion.
 
-Public compatibility is versioned through the concrete `LegacyCatalogV0`
-adapter. Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts
-come from `Offering`. Existing callers that require the former flattened
-`Model` use `catalog.LegacyV0()`. Direct legacy collection methods remain
-deprecated during the v1 transition, and schema-v0/v1 constants make the
-compatibility boundary executable rather than release-version folklore.
+Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
+from `Offering`. Because Starmap has not launched, schema version 2 deletes the
+pre-split flattened read adapter and duplicate author-model persistence rather
+than retaining unused compatibility code.
 
 ### Authority-Based Strategy
 
@@ -1581,12 +1557,12 @@ func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
 Collections return slices of values, not pointers:
 
 ```go
-// Safe: Returns copies
-models := catalog.Models().List()  // []Model (values)
+// Safe: returns caller-owned copies from the immutable catalog.
+definitions := catalog.Definitions() // []ModelDefinition
 
-// Each model is an independent copy
-for _, model := range models {
-    model.Name = "Modified"  // Only affects local copy
+// Each definition is independent of catalog state.
+for _, definition := range definitions {
+    definition.Name = "Modified" // Only affects the local copy.
 }
 ```
 
@@ -1611,7 +1587,10 @@ func (m Model) DeepCopy() Model {
 
 Catalog collection boundaries are copy-on-read and copy-on-write:
 
-- `Providers`, `Authors`, `Models`, and `Endpoints` store caller input as owned copies.
+- Builder `Providers`, `Authors`, and `Endpoints` store caller input as owned copies.
+- Provider models remain nested under their provider in the one construction
+  representation; the immutable catalog derives definitions, offerings, and
+  author membership at publication.
 - `Get`, `Resolve`, `List`, `Map`, and catalog convenience methods return caller-owned values or pointers to copies.
 - Batch writes (`AddBatch`, `SetBatch`) copy accepted values before storing them.
 - `ForEach` callbacks receive copies; callback mutation must not affect catalog internals.
@@ -1619,10 +1598,10 @@ Catalog collection boundaries are copy-on-read and copy-on-write:
 - `Builder.Build()` is the deep-copy publication boundary. `starmap.Client`
   stores only a concrete immutable `*catalogs.Catalog`, swaps it under one lock after persistence,
   and returns that immutable generation without a full-catalog read copy.
-- Catalog publication precomputes provider/model indexes keyed by canonical
-  provider ID and aliases. Provider-specific queries use `ProviderModels` or
-  `ProviderModel`; they never recover membership from the legacy flattened
-  `Models()` view, where equal model IDs from different providers are lossy.
+- Catalog publication precomputes definition, offering, and author-membership
+  indexes. Provider-specific queries use `Offering` or `ProviderOfferings`;
+  the immutable catalog exposes no flattened model view where equal model IDs
+  from different providers would be lossy.
 
 ### Safe Usage Patterns
 
@@ -1631,40 +1610,45 @@ Catalog collection boundaries are copy-on-read and copy-on-write:
 ```go
 // Multiple goroutines can safely read
 go func() {
-    models := catalog.Models().List()
-    // Process models...
+    definitions := catalog.Definitions()
+    // Process provider-independent definitions...
 }()
 
 go func() {
-    providers := catalog.Providers().List()
-    // Process providers...
+    offerings, err := catalog.ProviderOfferings("openai")
+    // Process exact provider offerings...
+    _ = offerings
+    _ = err
 }()
 ```
 
 #### ✅ Safe Concurrent Updates
 
 ```go
-// Updates are atomic and thread-safe
-catalog.SetModel(model1)
-catalog.SetModel(model2)
+// Construct and validate a complete candidate off to the side.
+builder := catalogs.NewEmpty()
+_ = builder.SetProvider(provider)
+next, err := builder.Build()
+if err != nil {
+    return err
+}
 
-// Concurrent writes are serialized internally
-go func() { catalog.SetProvider(p1) }()
-go func() { catalog.SetProvider(p2) }()
+// Publication swaps the complete immutable catalog atomically. Existing
+// readers retain the prior complete catalog; new readers receive next.
+publish(next)
 ```
 
 #### ❌ Avoid: Storing References Across Goroutines
 
 ```go
-// Don't do this - unnecessary
-models := catalog.Models().List()
+// No defensive full-catalog copy is needed before sharing.
+definitions := catalog.Definitions()
 go func() {
-    // models already contains values, safe to use
-    fmt.Println(models[0].Name)
+    fmt.Println(definitions[0].Name)
 }()
 
-// This is fine because models are values
-models[0].Name = "Modified"  // Only affects local copy
+// This is fine because definitions are caller-owned values.
+definitions[0].Name = "Modified" // Only affects the local copy.
 ```
 
 ### Visual Comparison: Safe vs Unsafe Patterns
@@ -1774,15 +1758,20 @@ go test -race -bench=. ./pkg/catalogs
 
 ```go
 func TestConcurrentCatalogAccess(t *testing.T) {
-    catalog := catalogs.Empty()
+    builder := catalogs.NewEmpty()
+    catalog, err := builder.Build()
+    if err != nil {
+        t.Fatal(err)
+    }
 
     var wg sync.WaitGroup
     for i := 0; i < 100; i++ {
         wg.Add(1)
         go func() {
             defer wg.Done()
-            models := catalog.Models().List()
-            // Use models...
+            definitions := catalog.Definitions()
+            // Use definitions...
+            _ = definitions
         }()
     }
 

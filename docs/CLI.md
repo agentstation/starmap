@@ -27,7 +27,7 @@ These short flags are **RESERVED** globally and must not be used for command-spe
 | `-o`  | `--output`   | Output format              | table, json, yaml, wide         |
 | `-h`  | `--help`     | Show help                  | Built-in Cobra flag             |
 
-**Aliases**: `--format` and `--fmt` are aliases for `--output` (all three flags accept the same values).
+Structured output has one spelling: `--output` (short form `-o`).
 
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:
@@ -127,8 +127,8 @@ Use flags for filtering, options, and modifiers:
 
 ```bash
 # ✅ Good - options as flags
-starmap update openai --dry --force
-starmap models list --provider openai --format json
+starmap update openai --dry-run --force
+starmap models list --provider openai --output json
 
 # Positional: what (resource/identity)
 # Flags: how (behavior modifiers)
@@ -142,7 +142,7 @@ When assigning short flags, follow this priority:
 2. **Common conventions** - Prefer industry standards:
    - `-f` for `--force` or `--file`
    - `-y` for `--yes` (auto-approve)
-   - `-n` for `--dry-run` (alternative to `--dry`)
+   - use the canonical `--dry-run` spelling for previews
    - `-a` for `--all`
    - `-l` for `--long` or `--list`
 3. **Mnemonic first letter** - Use first letter of long flag when possible
@@ -152,7 +152,7 @@ When assigning short flags, follow this priority:
 
 **Boolean flags** (presence = true):
 ```bash
-starmap update --dry          # true when present
+starmap update --dry-run      # true when present
 starmap update --force        # true when present
 ```
 
@@ -199,20 +199,17 @@ catCmd.Flags().StringVarP(&catFilename, "filename", "f", "", "...")
 
 **Example**: `embed` command uses `-?` for help, freeing `-h` for ls (human-readable) and `-f` for cat (filename).
 
-### Flag Aliases
+### Canonical Flag Names
 
-Support both long and short forms for common patterns:
+Use one descriptive long form and add a short form only when it is conventional
+and unambiguous:
 
 ```go
-// Primary flag
-cmd.Flags().BoolVar(&flags.Dry, "dry", false, "Preview changes")
-
-// Deprecated alias for compatibility
-cmd.Flags().BoolVar(&flags.Dry, "dry-run", false, "Preview changes (alias for --dry)")
-_ = cmd.Flags().MarkDeprecated("dry-run", "use --dry instead")
+cmd.Flags().BoolVar(&flags.Dry, "dry-run", false, "Preview changes")
+cmd.Flags().BoolVarP(&flags.Yes, "yes", "y", false, "Auto-approve changes")
 ```
 
-Prefer **shorter primary flags** (`--dry`) with longer deprecated aliases (`--dry-run`) for backward compatibility.
+Prefer one descriptive long flag. Do not add prelaunch compatibility aliases.
 
 ## Testing Flag Changes
 
@@ -227,9 +224,9 @@ Before committing flag changes:
 2. **Check for conflicts**
    ```bash
    # Verify global flags work
-   ./starmap <command> -v --dry
+   ./starmap <command> -v --dry-run
 
-   # Test deprecated flags show warnings
+   # Test removed flags fail with a clear unknown-flag error
    ./starmap <command> --old-flag
    ```
 
@@ -301,7 +298,7 @@ is required so pricing, limits, and lifecycle evidence cannot be confused.
 # Update command
 starmap update                    # Update all
 starmap update openai             # Positional argument for provider
-starmap update openai --dry       # Short flag for common option
+starmap update openai --dry-run   # Preview without publishing
 starmap update --force -y         # Multiple short flags
 
 # Providers fetch command
@@ -325,6 +322,10 @@ starmap models history gpt-4o -o json                # Output as JSON
 starmap embed ls -lah             # Unix-like combined short flags
 starmap embed ls -? # Custom help flag
 ```
+
+Model list rows always identify their provider. An unfiltered list preserves
+same-ID records from different providers instead of selecting an arbitrary
+price or limit.
 
 ### Anti-Patterns to Avoid
 
@@ -374,16 +375,10 @@ When Starmap reaches 1.0, we may need:
 - Compatibility shims
 - Version warnings
 
-### Command Aliases
+### Command Names
 
-Consider adding common aliases:
-```bash
-starmap ls             # Alias for "models list"
-starmap get            # Alias for "models list"
-starmap sync           # Alias for "update"
-```
-
-**Status**: Not implemented yet, under consideration for UX improvements.
+Each command has one canonical public spelling. Prelaunch aliases are omitted
+so scripts, documentation, telemetry, and support guidance share one vocabulary.
 
 ---
 
@@ -401,6 +396,6 @@ starmap sync           # Alias for "update"
 **Special Cases**:
 - Embed commands: Use `-?` for help
 - Update command: Removed `--provider` flag, use positional
-- Dry run: `--dry` is primary, `--dry-run` deprecated
+- Dry run: `--dry-run`
 
 **Questions?** See examples in this document or check `cmd/starmap/cmd/*/` source code.

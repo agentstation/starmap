@@ -25,6 +25,8 @@ type OfferingKey struct {
 type OfferingAvailability string
 
 const (
+	// OfferingAvailabilityUnknown means no source supplied current availability.
+	OfferingAvailabilityUnknown OfferingAvailability = "unknown"
 	// OfferingAvailabilityAvailable means the offering is generally available.
 	OfferingAvailabilityAvailable OfferingAvailability = "available"
 	// OfferingAvailabilityRestricted means access depends on region, account, or allowlisting.
@@ -37,6 +39,8 @@ const (
 type OfferingLifecycle string
 
 const (
+	// OfferingLifecycleUnknown means no source supplied a lifecycle state.
+	OfferingLifecycleUnknown OfferingLifecycle = "unknown"
 	// OfferingLifecycleActive means the offering is supported for production use.
 	OfferingLifecycleActive OfferingLifecycle = "active"
 	// OfferingLifecyclePreview means the offering is preview or beta quality.
@@ -49,9 +53,8 @@ const (
 
 // ProviderOfferingEndpoint describes provider-specific inference endpoint behavior.
 type ProviderOfferingEndpoint struct {
-	Type    EndpointType `json:"type,omitempty" yaml:"type,omitempty"`
-	BaseURL string       `json:"base_url,omitempty" yaml:"base_url,omitempty"`
-	Path    string       `json:"path,omitempty" yaml:"path,omitempty"`
+	Type EndpointType `json:"type,omitempty" yaml:"type,omitempty"`
+	URL  string       `json:"url,omitempty" yaml:"url,omitempty"`
 }
 
 // OfferingRequestHeaders is a typed set of provider request header overrides.
@@ -71,7 +74,6 @@ type ProviderRequestOverrides struct {
 // ProviderOfferingMode describes one named service mode for an offering.
 type ProviderOfferingMode struct {
 	Pricing *ModelPricing            `json:"pricing,omitempty" yaml:"pricing,omitempty"`
-	Limits  *ModelLimits             `json:"limits,omitempty" yaml:"limits,omitempty"`
 	Request ProviderRequestOverrides `json:"request" yaml:"request,omitempty"`
 }
 
@@ -111,10 +113,10 @@ func (o ProviderOffering) Validate() error {
 		}
 	}
 	if !validOfferingAvailability(o.Availability) {
-		return offeringValidationError("availability", o.Availability, "must be available, restricted, or unavailable")
+		return offeringValidationError("availability", o.Availability, "must be unknown, available, restricted, or unavailable")
 	}
 	if !validOfferingLifecycle(o.Lifecycle) {
-		return offeringValidationError("lifecycle", o.Lifecycle, "must be active, preview, deprecated, or retired")
+		return offeringValidationError("lifecycle", o.Lifecycle, "must be unknown, active, preview, deprecated, or retired")
 	}
 	seenRegions := make(map[string]struct{}, len(o.Regions))
 	for index, region := range o.Regions {
@@ -149,7 +151,7 @@ func (o ProviderOffering) Validate() error {
 
 func validOfferingAvailability(value OfferingAvailability) bool {
 	switch value {
-	case OfferingAvailabilityAvailable, OfferingAvailabilityRestricted, OfferingAvailabilityUnavailable:
+	case OfferingAvailabilityUnknown, OfferingAvailabilityAvailable, OfferingAvailabilityRestricted, OfferingAvailabilityUnavailable:
 		return true
 	default:
 		return false
@@ -158,7 +160,7 @@ func validOfferingAvailability(value OfferingAvailability) bool {
 
 func validOfferingLifecycle(value OfferingLifecycle) bool {
 	switch value {
-	case OfferingLifecycleActive, OfferingLifecyclePreview, OfferingLifecycleDeprecated, OfferingLifecycleRetired:
+	case OfferingLifecycleUnknown, OfferingLifecycleActive, OfferingLifecyclePreview, OfferingLifecycleDeprecated, OfferingLifecycleRetired:
 		return true
 	default:
 		return false
@@ -182,10 +184,6 @@ func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 		for name, mode := range offering.Modes {
 			copyMode := mode
 			copyMode.Pricing = deepCopyModelPricing(mode.Pricing)
-			if mode.Limits != nil {
-				limits := *mode.Limits
-				copyMode.Limits = &limits
-			}
 			copyMode.Request.Headers = make(OfferingRequestHeaders, len(mode.Request.Headers))
 			maps.Copy(copyMode.Request.Headers, mode.Request.Headers)
 			copyMode.Request.Body = make(OfferingRequestBody, len(mode.Request.Body))

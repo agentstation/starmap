@@ -44,22 +44,6 @@ func Providers(providers []*catalogs.Provider, checker *auth.Checker, supportedM
 	return formatter.Format(os.Stdout, outputData)
 }
 
-// Authors handles the common pattern of formatting authors for output.
-func Authors(authors []*catalogs.Author, globalFlags *globals.Flags) error {
-	formatter := NewFormatter(Format(globalFlags.Output))
-
-	// Transform to output format
-	var outputData any
-	switch globalFlags.Output {
-	case constants.FormatTable, constants.FormatWide, "":
-		outputData = table.AuthorsToTableData(authors)
-	default:
-		outputData = authors
-	}
-
-	return formatter.Format(os.Stdout, outputData)
-}
-
 // Any handles the common pattern of formatting any data type for output.
 // This is useful for commands with custom data structures.
 func Any(data any, globalFlags *globals.Flags) error {

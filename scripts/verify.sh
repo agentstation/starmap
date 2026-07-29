@@ -64,8 +64,6 @@ check_coverage() {
 }
 
 check_critical_coverage() {
-	check_coverage ./internal/attribution 85
-	check_coverage ./internal/attribution/matcher 75
 	check_coverage ./internal/catalog/pipeline 70
 	check_coverage ./internal/catalog/query 75
 	check_coverage ./internal/providers/clients 80

@@ -14,6 +14,7 @@ import (
 
 func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 	root := ModelDefinitionID("foundation-model")
+	open := true
 	definition := ModelDefinition{
 		ID:          "shared-model",
 		Name:        "Shared Model",
@@ -25,7 +26,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 		},
 		Lineage: ModelDefinitionLineage{Family: "shared", Root: &root},
 		Weights: ModelDefinitionWeights{
-			Open: true,
+			Open: &open,
 			Architecture: &ModelArchitecture{
 				Type: ArchitectureTypeTransformer,
 			},

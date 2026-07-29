@@ -165,8 +165,12 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 func incompatibleRemoteGeneration(t *testing.T, generation catalogstore.Generation) catalogstore.Generation {
 	t.Helper()
 	incompatible := generation.Copy()
-	incompatible.Manifest.SchemaVersion = 2
-	incompatible.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 2}
+	future := catalogs.CurrentCatalogSchemaVersion + 1
+	incompatible.Manifest.SchemaVersion = future
+	incompatible.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{
+		MinSchemaVersion: future,
+		MaxSchemaVersion: future,
+	}
 	if err := incompatible.Validate(); err != nil {
 		t.Fatalf("incompatible fixture must remain internally valid: %v", err)
 	}

@@ -8,9 +8,9 @@ import (
 func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
 	builder := NewEmpty()
 	providers := []Provider{
-		{ID: "available", Name: "Available", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 1, "standard")}},
-		{ID: "unavailable", Name: "Unavailable", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 2, "standard")}},
-		{ID: "retired", Name: "Retired", Models: map[string]*Model{"shared": legacyMigrationModel("shared", 3, "standard")}},
+		{ID: "available", Name: "Available", Models: map[string]*Model{"shared": testReadViewModel("shared", 1, "standard")}},
+		{ID: "unavailable", Name: "Unavailable", Models: map[string]*Model{"shared": testReadViewModel("shared", 2, "standard")}},
+		{ID: "retired", Name: "Retired", Models: map[string]*Model{"shared": testReadViewModel("shared", 3, "standard")}},
 	}
 	for _, provider := range providers {
 		if err := builder.SetProvider(provider); err != nil {

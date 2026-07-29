@@ -60,7 +60,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 
 <a name="DateRange"></a>
-## type [DateRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L168-L171>)
+## type [DateRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L167-L170>)
 
 DateRange represents a date range filter.
 
@@ -110,7 +110,7 @@ func (h *Handlers) HandleCatalogSnapshot(writer http.ResponseWriter, request *ht
 HandleCatalogSnapshot serves an immutable canonical payload by generation ID.
 
 <a name="Handlers.HandleGetModel"></a>
-### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L106>)
+### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L105>)
 
 ```go
 func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelID string)
@@ -119,7 +119,7 @@ func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelI
 HandleGetModel handles GET /api/v1/models/\{id\}. @Summary Get model by ID @Description Retrieve detailed information about a specific model @Tags models @Accept json @Produce json @Param id path string true "Model ID" @Success 200 \{object\} response.Response\{data=catalogs.ModelDefinition\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models/\{id\} \[get\].
 
 <a name="Handlers.HandleGetProvider"></a>
-### func \(\*Handlers\) [HandleGetProvider](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L82>)
+### func \(\*Handlers\) [HandleGetProvider](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L84>)
 
 ```go
 func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, providerID string)
@@ -128,7 +128,7 @@ func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, pro
 HandleGetProvider handles GET /api/v1/providers/\{id\}. @Summary Get provider by ID @Description Retrieve detailed information about a specific provider @Tags providers @Accept json @Produce json @Param id path string true "Provider ID" @Success 200 \{object\} response.Response\{data=catalogs.Provider\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/providers/\{id\} \[get\].
 
 <a name="Handlers.HandleGetProviderModels"></a>
-### func \(\*Handlers\) [HandleGetProviderModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L124>)
+### func \(\*Handlers\) [HandleGetProviderModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L126>)
 
 ```go
 func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Request, providerID string)
@@ -146,7 +146,7 @@ func (h *Handlers) HandleHealth(w http.ResponseWriter, _ *http.Request)
 HandleHealth handles GET /api/v1/health. @Summary Health check @Description Health check endpoint \(liveness probe\) @Tags health @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Router /api/v1/health \[get\].
 
 <a name="Handlers.HandleListModels"></a>
-### func \(\*Handlers\) [HandleListModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L43>)
+### func \(\*Handlers\) [HandleListModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L42>)
 
 ```go
 func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request)
@@ -155,7 +155,7 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request)
 HandleListModels handles GET /api/v1/models. @Summary List models @Description List all models with optional filtering @Tags models @Accept json @Produce json @Param id query string false "Filter by exact model ID" @Param name query string false "Filter by exact model name \(case\-insensitive\)" @Param name\_contains query string false "Filter by partial model name match" @Param provider query string false "Filter by provider ID" @Param status query string false "Filter by model lifecycle status" @Param modality\_input query string false "Filter by input modality \(comma\-separated\)" @Param modality\_output query string false "Filter by output modality \(comma\-separated\)" @Param feature query string false "Filter by feature \(streaming, tool\_calls, etc.\)" @Param tag query string false "Filter by tag \(comma\-separated\)" @Param open\_weights query boolean false "Filter by open weights status" @Param min\_context query integer false "Minimum context window size" @Param max\_context query integer false "Maximum context window size" @Param min\_input query integer false "Minimum input token limit" @Param max\_input query integer false "Maximum input token limit" @Param sort query string false "Sort field \(id, name, release\_date, context\_window, created\_at, updated\_at\)" @Param order query string false "Sort order \(asc, desc\)" @Param limit query integer false "Maximum number of results \(default: 100, max: 1000\)" @Param offset query integer false "Result offset for pagination" @Success 200 \{object\} response.Response\{data=object\} @Failure 400 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models \[get\].
 
 <a name="Handlers.HandleListProviders"></a>
-### func \(\*Handlers\) [HandleListProviders](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L21>)
+### func \(\*Handlers\) [HandleListProviders](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L23>)
 
 ```go
 func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request)
@@ -209,7 +209,7 @@ func (h *Handlers) HandleSSE(w http.ResponseWriter, r *http.Request)
 HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Server\-Sent Events stream for catalog change notifications @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Router /api/v1/updates/stream \[get\].
 
 <a name="Handlers.HandleSearchModels"></a>
-### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L185>)
+### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L184>)
 
 ```go
 func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request)
@@ -245,7 +245,7 @@ func (h *Handlers) HandleWebSocket(w http.ResponseWriter, r *http.Request)
 HandleWebSocket handles WebSocket connections at /api/v1/updates/ws. @Summary WebSocket updates @Description WebSocket connection for real\-time catalog updates @Tags updates @Success 101 "Switching Protocols" @Router /api/v1/updates/ws \[get\].
 
 <a name="IntRange"></a>
-## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L162-L165>)
+## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L161-L164>)
 
 IntRange represents an integer range filter.
 
@@ -257,7 +257,7 @@ type IntRange struct {
 ```
 
 <a name="SearchModalities"></a>
-## type [SearchModalities](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L156-L159>)
+## type [SearchModalities](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L155-L158>)
 
 SearchModalities specifies modality requirements.
 
@@ -269,7 +269,7 @@ type SearchModalities struct {
 ```
 
 <a name="SearchRequest"></a>
-## type [SearchRequest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L137-L153>)
+## type [SearchRequest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L136-L152>)
 
 SearchRequest represents the POST /api/v1/models/search request body.
 

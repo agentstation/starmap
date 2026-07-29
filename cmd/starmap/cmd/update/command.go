@@ -33,17 +33,16 @@ By default, the human provider-YAML workspace is ~/.starmap/catalog. Machine
 generation state is separate and is never treated as editable configuration.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update openai                     # Update specific provider
-  starmap update --dry                      # Preview changes
+  starmap update --dry-run                  # Preview changes
   starmap update -y                         # Auto-approve changes
   starmap update --force                    # Force fresh update
   starmap update --source local             # Reload semantic workspace edits
-  starmap update openai --dry               # Preview OpenAI updates`,
+  starmap update openai --dry-run           # Preview OpenAI updates`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 			logger := app.Logger()
 
-			// Extract provider from positional argument if present
-			// This takes precedence over the --provider flag
+			// Extract the optional provider identity from the positional argument.
 			if len(args) == 1 {
 				flags.Provider = args[0]
 			}

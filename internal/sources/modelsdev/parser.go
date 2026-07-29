@@ -525,33 +525,24 @@ func convertModelTokenPricing(cost *Cost) *catalogs.ModelTokenPricing {
 			Per1M: *cost.Reasoning,
 		}
 	}
-	tokenPricing.Cache = convertModelTokenCachePricing(cost)
-	return tokenPricing
-}
-
-func convertModelTokenCachePricing(cost *Cost) *catalogs.ModelTokenCachePricing {
-	if cost.CacheRead == nil && cost.CacheWrite == nil && cost.Cache == nil {
-		return nil
-	}
-
-	cacheCost := &catalogs.ModelTokenCachePricing{}
 	if cost.CacheRead != nil {
-		cacheCost.Read = &catalogs.ModelTokenCost{
+		tokenPricing.CacheRead = &catalogs.ModelTokenCost{
 			Per1M: *cost.CacheRead,
 		}
 	}
 	if cost.CacheWrite != nil {
-		cacheCost.Write = &catalogs.ModelTokenCost{
+		tokenPricing.CacheWrite = &catalogs.ModelTokenCost{
 			Per1M: *cost.CacheWrite,
 		}
 	}
-	// Legacy fallback: if no specific cache_read/cache_write, use cache for write.
-	if cost.Cache != nil && cacheCost.Read == nil && cacheCost.Write == nil {
-		cacheCost.Write = &catalogs.ModelTokenCost{
+	// models.dev's generic cache price means cache writes when neither
+	// operation-specific value is present.
+	if cost.Cache != nil && tokenPricing.CacheRead == nil && tokenPricing.CacheWrite == nil {
+		tokenPricing.CacheWrite = &catalogs.ModelTokenCost{
 			Per1M: *cost.Cache,
 		}
 	}
-	return cacheCost
+	return tokenPricing
 }
 
 func applyModelsDevDates(model *catalogs.Model, source *Model) {
@@ -740,15 +731,15 @@ func tierTokenPricing(prices TierPrices) *catalogs.ModelTokenPricing {
 		pricing.Output = &catalogs.ModelTokenCost{Per1M: *prices.Output}
 	}
 	if prices.CacheRead != nil || prices.CacheWrite != nil {
-		pricing.Cache = &catalogs.ModelTokenCachePricing{}
 		if prices.CacheRead != nil {
-			pricing.Cache.Read = &catalogs.ModelTokenCost{Per1M: *prices.CacheRead}
+			pricing.CacheRead = &catalogs.ModelTokenCost{Per1M: *prices.CacheRead}
 		}
 		if prices.CacheWrite != nil {
-			pricing.Cache.Write = &catalogs.ModelTokenCost{Per1M: *prices.CacheWrite}
+			pricing.CacheWrite = &catalogs.ModelTokenCost{Per1M: *prices.CacheWrite}
 		}
 	}
-	if pricing.Input == nil && pricing.Output == nil && pricing.Cache == nil {
+	if pricing.Input == nil && pricing.Output == nil &&
+		pricing.CacheRead == nil && pricing.CacheWrite == nil {
 		return nil
 	}
 	return pricing

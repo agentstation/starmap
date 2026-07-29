@@ -99,44 +99,6 @@ func TestDeepCopyProviderModels(t *testing.T) {
 	})
 }
 
-func TestDeepCopyAuthorModels(t *testing.T) {
-	// Test nil input
-	t.Run("nil input", func(t *testing.T) {
-		result := DeepCopyAuthorModels(nil)
-		if result != nil {
-			t.Error("Expected nil result for nil input")
-		}
-	})
-
-	// Test basic functionality (same logic as provider models)
-	t.Run("basic functionality", func(t *testing.T) {
-		model := &Model{
-			ID:        "author-model",
-			Name:      "Author Test Model",
-			CreatedAt: utc.New(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)),
-		}
-
-		input := map[string]*Model{
-			"author-model": model,
-		}
-
-		result := DeepCopyAuthorModels(input)
-
-		if len(result) != 1 {
-			t.Error("Expected one model in result")
-		}
-
-		resultModel := result["author-model"]
-		if resultModel == model {
-			t.Error("Expected different pointer (deep copy)")
-		}
-
-		if resultModel.ID != model.ID {
-			t.Error("Expected same content after copy")
-		}
-	})
-}
-
 func TestDeepCopyProvider(t *testing.T) {
 	t.Run("provider with models", func(t *testing.T) {
 		model := &Model{
@@ -198,18 +160,17 @@ func TestDeepCopyProvider(t *testing.T) {
 }
 
 func TestDeepCopyAuthor(t *testing.T) {
-	t.Run("author with models", func(t *testing.T) {
-		model := &Model{
-			ID:   "test-model",
-			Name: "Test Model",
-		}
-
+	t.Run("author metadata", func(t *testing.T) {
 		original := Author{
 			ID:          "test-author",
+			Aliases:     []AuthorID{"author-alias"},
 			Name:        "Test Author",
 			Description: stringPtr("Test description"),
-			Models: map[string]*Model{
-				"test-model": model,
+			Catalog: &AuthorCatalog{
+				Attribution: &AuthorAttribution{
+					ProviderID: "test-provider",
+					Patterns:   []string{"test-*"},
+				},
 			},
 		}
 
@@ -220,23 +181,25 @@ func TestDeepCopyAuthor(t *testing.T) {
 			t.Error("Author fields not copied correctly")
 		}
 
-		// Models map should be deep copied
-		if &copy.Models == &original.Models {
-			t.Error("Models map should be different instance")
+		if &copy.Aliases[0] == &original.Aliases[0] {
+			t.Error("Aliases should be deep copied")
+		}
+		if copy.Catalog == original.Catalog ||
+			copy.Catalog.Attribution == original.Catalog.Attribution {
+			t.Error("Catalog attribution should be deep copied")
+		}
+		if &copy.Catalog.Attribution.Patterns[0] ==
+			&original.Catalog.Attribution.Patterns[0] {
+			t.Error("Attribution patterns should be deep copied")
 		}
 
-		if copy.Models["test-model"] == original.Models["test-model"] {
-			t.Error("Model pointers should be different (deep copy)")
-		}
-
-		if copy.Models["test-model"].ID != original.Models["test-model"].ID {
-			t.Error("Model content should be the same")
-		}
-
-		// Test mutation independence
-		copy.Models["test-model"].Name = "Modified"
-		if original.Models["test-model"].Name == "Modified" {
-			t.Error("Original should not be affected by copy mutation")
+		copy.Aliases[0] = "mutated"
+		*copy.Description = "mutated"
+		copy.Catalog.Attribution.Patterns[0] = "mutated-*"
+		if original.Aliases[0] != "author-alias" ||
+			*original.Description != "Test description" ||
+			original.Catalog.Attribution.Patterns[0] != "test-*" {
+			t.Error("Original author should not be affected by copy mutation")
 		}
 	})
 }
@@ -272,33 +235,8 @@ func TestShallowCopyProviderModels(t *testing.T) {
 	})
 }
 
-func TestShallowCopyAuthorModels(t *testing.T) {
-	t.Run("shallow copy behavior", func(t *testing.T) {
-		model := &Model{
-			ID:   "test-model",
-			Name: "Test Model",
-		}
-
-		input := map[string]*Model{
-			"test-model": model,
-		}
-
-		result := ShallowCopyAuthorModels(input)
-
-		// Different map instances
-		if &input == &result {
-			t.Error("Expected different map instances")
-		}
-
-		// Same model pointers (shallow copy)
-		if result["test-model"] != input["test-model"] {
-			t.Error("Expected same model pointers (shallow copy)")
-		}
-	})
-}
-
 func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
-	precision := "fp16"
+	baseModel := "base-model"
 	searchPrompt := "find sources"
 	topLogprobs := 5
 	root := "root-model"
@@ -317,7 +255,7 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 		Metadata: &ModelMetadata{
 			Tags: []ModelTag{ModelTagCoding},
 			Architecture: &ModelArchitecture{
-				Precision: &precision,
+				BaseModel: &baseModel,
 			},
 		},
 		Features: &ModelFeatures{
@@ -377,7 +315,7 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	*copied.Lineage.Root = "changed-root"
 	*copied.Lineage.Parent = "changed-parent"
 	copied.Metadata.Tags[0] = ModelTagMath
-	*copied.Metadata.Architecture.Precision = "fp8"
+	*copied.Metadata.Architecture.BaseModel = "changed-base"
 	copied.Features.Modalities.Input[0] = ModelModalityImage
 	*copied.Generation.TopLogprobs = 10
 	*copied.Tools.WebSearch.SearchPrompt = "changed"
@@ -397,8 +335,8 @@ func TestDeepCopyModelCopiesNestedMutableFields(t *testing.T) {
 	if *original.Lineage.Root != "root-model" || *original.Lineage.Parent != "parent-model" {
 		t.Fatal("lineage pointers were shared between original and copy")
 	}
-	if *original.Metadata.Architecture.Precision != "fp16" {
-		t.Fatal("architecture precision pointer was shared between original and copy")
+	if *original.Metadata.Architecture.BaseModel != "base-model" {
+		t.Fatal("architecture base-model pointer was shared between original and copy")
 	}
 	if original.Features.Modalities.Input[0] != ModelModalityText {
 		t.Fatal("feature modality slice was shared between original and copy")

@@ -26,7 +26,6 @@ type Config struct {
 	// Starmap configuration
 	// CatalogPath is the human-editable provider YAML workspace.
 	CatalogPath                   string
-	UseEmbeddedCatalog            bool
 	EmbeddedBootstrapMaxAge       time.Duration
 	EmbeddedBootstrapMaxSizeBytes int64
 	RemoteServerURL               string
@@ -54,8 +53,7 @@ func LoadConfig() (*Config, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
-	// Bind output with FORMAT as backwards-compatible alias
-	_ = viper.BindEnv("output", "OUTPUT", "FORMAT")
+	_ = viper.BindEnv("output", "OUTPUT")
 
 	// Bind common API keys
 	bindAPIKeys()
@@ -91,7 +89,6 @@ func LoadConfig() (*Config, error) {
 
 		// Starmap configuration
 		CatalogPath:                   viper.GetString("catalog_path"),
-		UseEmbeddedCatalog:            viper.GetBool("use_embedded_catalog"),
 		EmbeddedBootstrapMaxAge:       viper.GetDuration("embedded_bootstrap_max_age"),
 		EmbeddedBootstrapMaxSizeBytes: viper.GetInt64("embedded_bootstrap_max_size_bytes"),
 		RemoteServerURL:               viper.GetString("remote_server_url"),

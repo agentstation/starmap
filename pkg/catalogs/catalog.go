@@ -1,11 +1,8 @@
-// Package catalogs provides the core catalog system for managing AI model metadata.
-// It offers multiple implementations (embedded, file-based, memory) and supports
-// CRUD operations, merging strategies, and persistence.
-//
-// The catalog system is designed to be thread-safe and extensible, with support
-// for providers, models, authors, and endpoints. Each catalog implementation
-// can be configured with different storage backends while maintaining a consistent
-// interface.
+// Package catalogs defines Starmap's provider-oriented construction records and
+// immutable canonical read model. Advanced producers use Builder to load or
+// assemble provider models, then Build validates and derives definitions,
+// provider offerings, and author membership into a concrete Catalog. Ordinary
+// consumers retain and share that immutable Catalog.
 //
 // Example usage:
 //
@@ -19,9 +16,8 @@
 //	    log.Fatal(err)
 //	}
 //
-//	// Access models
-//	models := catalog.Models()
-//	for _, model := range models.List() {
+//	// Access canonical model definitions
+//	for _, model := range catalog.Definitions() {
 //	    fmt.Printf("Model: %s\n", model.ID)
 //	}
 //
@@ -33,9 +29,7 @@
 package catalogs
 
 import (
-	stderrors "errors"
 	"io/fs"
-	"maps"
 	"os"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -130,44 +124,6 @@ func NewFromPath(path string) (*Builder, error) {
 		return nil, errors.WrapIO("stat", path, err)
 	}
 	return New(WithPath(path))
-}
-
-// NewLocal creates a catalog by merging embedded catalog with local file.
-// - Always loads embedded catalog (latest provider configs)
-// - Merges with file catalog if path provided and file exists
-// - Returns embedded-only if file doesn't exist or path is empty
-//
-// This ensures that the catalog always has the latest provider configurations
-// from the embedded catalog, while preserving saved model data from files.
-func NewLocal(path string) (*Builder, error) {
-	// Always start with embedded (latest provider configs)
-	embedded, err := NewEmbedded()
-	if err != nil {
-		return nil, errors.WrapResource("load", "embedded catalog", "", err)
-	}
-
-	// If no path specified, return embedded only
-	if path == "" {
-		return embedded, nil
-	}
-
-	// Try to load file catalog
-	fileCatalog, err := NewFromPath(path)
-	if err != nil {
-		if stderrors.Is(err, os.ErrNotExist) {
-			// An absent optional path is normal on first run.
-			return embedded, nil
-		}
-		return nil, errors.WrapResource("load", "local catalog", path, err)
-	}
-
-	// Merge file into embedded (preserves embedded configs, adds file models)
-	if err := embedded.MergeWith(fileCatalog); err != nil {
-		return nil, errors.WrapResource("merge", "catalogs", "", err)
-	}
-	embedded.loadReport = fileCatalog.LoadReport()
-
-	return embedded, nil
 }
 
 // NewEmpty creates an in-memory empty catalog.
@@ -311,54 +267,6 @@ func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model,
 		}
 	}
 	return DeepCopyModel(*model), nil
-}
-
-// Models returns all models from all providers and authors.
-func (cat *Builder) Models() ModelsReader {
-	models := NewModels()
-
-	// Collect models from providers
-	for _, provider := range cat.providers.List() {
-		if provider.Models != nil {
-			for _, model := range provider.Models {
-				_ = models.Set(model.ID, model) // Ignore error - models from providers are already validated
-			}
-		}
-	}
-
-	// Collect models from authors (avoiding duplicates)
-	modelIDs := make(map[string]bool)
-	for _, model := range models.List() {
-		modelIDs[model.ID] = true
-	}
-	for _, author := range cat.authors.List() {
-		if author.Models != nil {
-			for _, model := range author.Models {
-				if !modelIDs[model.ID] {
-					_ = models.Set(model.ID, model) // Ignore error - models from authors are already validated
-					modelIDs[model.ID] = true
-				}
-			}
-		}
-	}
-
-	return models
-}
-
-// FindModel searches for a model by ID.
-func (cat *Builder) FindModel(id string) (Model, error) {
-	// Check each model in the catalog for the given Model ID.
-	for _, model := range cat.Models().List() {
-		if model.ID == id {
-			return model, nil // Return the model if found.
-		}
-	}
-
-	// If the model is not found, return a not found error.
-	return Model{}, &errors.NotFoundError{
-		Resource: "model",
-		ID:       id,
-	}
 }
 
 // SetProvider sets a provider (upsert).
@@ -521,29 +429,6 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 		// Merge authors similarly
 		for _, sourceAuthor := range source.Authors().List() {
 			if existingAuthor, err := cat.Author(sourceAuthor.ID); err == nil {
-				// Author exists, merge models
-				if sourceAuthor.Models != nil {
-					// Create a new map to avoid concurrent modification
-					mergedModels := make(map[string]*Model)
-
-					// Copy existing models first
-					if existingAuthor.Models != nil {
-						maps.Copy(mergedModels, existingAuthor.Models)
-					}
-
-					// Merge source models
-					for modelID, sourceModel := range sourceAuthor.Models {
-						if existingModel, exists := mergedModels[modelID]; exists {
-							mergedModel := MergeModels(*existingModel, *sourceModel)
-							mergedModels[modelID] = &mergedModel
-						} else {
-							mergedModels[modelID] = sourceModel
-						}
-					}
-
-					// Update author with new models map
-					existingAuthor.Models = mergedModels
-				}
 				// Update the author
 				if err := cat.SetAuthor(existingAuthor); err != nil {
 					return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)

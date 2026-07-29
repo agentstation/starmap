@@ -3,7 +3,7 @@ package consumer
 import "github.com/agentstation/starmap"
 
 func lookup() error {
-	sm, err := starmap.New(starmap.WithEmbeddedCatalog())
+	sm, err := starmap.New()
 	if err != nil {
 		return err
 	}

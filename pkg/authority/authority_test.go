@@ -1,37 +1,38 @@
-package authority
+package authority_test
 
 import (
 	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/pkg/authority"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 	tests := []struct {
-		resource sources.ResourceType
+		resource catalogmeta.ResourceType
 		typ      reflect.Type
 		ignored  map[string]bool
 	}{
 		{
-			resource: sources.ResourceTypeModel,
+			resource: catalogmeta.ResourceTypeModel,
 			typ:      reflect.TypeFor[catalogs.Model](),
 			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
 		{
-			resource: sources.ResourceTypeProvider,
+			resource: catalogmeta.ResourceTypeProvider,
 			typ:      reflect.TypeFor[catalogs.Provider](),
 			ignored:  map[string]bool{"ID": true, "EnvVarValues": true},
 		},
 		{
-			resource: sources.ResourceTypeAuthor,
+			resource: catalogmeta.ResourceTypeAuthor,
 			typ:      reflect.TypeFor[catalogs.Author](),
 			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
 	}
-	table := New()
+	table := authority.New()
 	for _, test := range tests {
 		t.Run(test.resource.String(), func(t *testing.T) {
 			for index := range test.typ.NumField() {
@@ -48,11 +49,11 @@ func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 }
 
 func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
-	table := New()
-	for _, resource := range []sources.ResourceType{
-		sources.ResourceTypeModel,
-		sources.ResourceTypeProvider,
-		sources.ResourceTypeAuthor,
+	table := authority.New()
+	for _, resource := range []catalogmeta.ResourceType{
+		catalogmeta.ResourceTypeModel,
+		catalogmeta.ResourceTypeProvider,
+		catalogmeta.ResourceTypeAuthor,
 	} {
 		policies := table.Policies(resource)
 		if len(policies) == 0 {
@@ -87,18 +88,18 @@ func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
 }
 
 func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t *testing.T) {
-	table := New()
+	table := authority.New()
 	tests := []struct {
-		resource sources.ResourceType
+		resource catalogmeta.ResourceType
 		path     string
-		want     sources.ID
+		want     catalogmeta.SourceID
 	}{
-		{sources.ResourceTypeModel, "Pricing", sources.ProvidersID},
-		{sources.ResourceTypeModel, "Limits", sources.ProvidersID},
-		{sources.ResourceTypeModel, "Metadata", sources.ModelsDevHTTPID},
-		{sources.ResourceTypeProvider, "Name", sources.ProvidersID},
-		{sources.ResourceTypeProvider, "Catalog", sources.LocalCatalogID},
-		{sources.ResourceTypeProvider, "APIKey", sources.LocalCatalogID},
+		{catalogmeta.ResourceTypeModel, "Pricing", catalogmeta.ProvidersID},
+		{catalogmeta.ResourceTypeModel, "Limits", catalogmeta.ProvidersID},
+		{catalogmeta.ResourceTypeModel, "Metadata", catalogmeta.ModelsDevHTTPID},
+		{catalogmeta.ResourceTypeProvider, "Name", catalogmeta.ProvidersID},
+		{catalogmeta.ResourceTypeProvider, "Catalog", catalogmeta.LocalCatalogID},
+		{catalogmeta.ResourceTypeProvider, "APIKey", catalogmeta.LocalCatalogID},
 	}
 	for _, test := range tests {
 		policy, found := table.Find(test.resource, test.path)
@@ -111,7 +112,7 @@ func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t 
 	}
 }
 
-func hasPolicyForField(policies []Policy, field string) bool {
+func hasPolicyForField(policies []authority.Policy, field string) bool {
 	for _, policy := range policies {
 		if policy.Path == field || strings.HasPrefix(policy.Path, field+".") {
 			return true
@@ -121,11 +122,11 @@ func hasPolicyForField(policies []Policy, field string) bool {
 }
 
 func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
-	policy, found := New().Find(sources.ResourceTypeModel, "Pricing")
+	policy, found := authority.New().Find(catalogmeta.ResourceTypeModel, "Pricing")
 	if !found {
 		t.Fatal("pricing policy not found")
 	}
-	if got := policy.Authority(sources.ProvidersID); got != 1 {
+	if got := policy.Authority(catalogmeta.ProvidersID); got != 1 {
 		t.Fatalf("provider authority = %v, want 1", got)
 	}
 	if got := policy.Authority("unknown"); got != 0 {
@@ -134,15 +135,15 @@ func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
 }
 
 func TestEveryPolicyAuthorityRankIsUniqueAndStrictlyDescending(t *testing.T) {
-	table := New()
-	for _, resource := range []sources.ResourceType{
-		sources.ResourceTypeModel,
-		sources.ResourceTypeProvider,
-		sources.ResourceTypeAuthor,
+	table := authority.New()
+	for _, resource := range []catalogmeta.ResourceType{
+		catalogmeta.ResourceTypeModel,
+		catalogmeta.ResourceTypeProvider,
+		catalogmeta.ResourceTypeAuthor,
 	} {
 		for _, policy := range table.Policies(resource) {
 			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {
-				seen := make(map[sources.ID]struct{}, len(policy.SourceOrder))
+				seen := make(map[catalogmeta.SourceID]struct{}, len(policy.SourceOrder))
 				previous := 2.0
 				for _, source := range policy.SourceOrder {
 					if _, duplicate := seen[source]; duplicate {
@@ -176,7 +177,7 @@ func TestMatchesPattern(t *testing.T) {
 		{fieldPath: "Metadata.ReleaseDate", pattern: "[", want: false},
 	}
 	for _, test := range tests {
-		if got := MatchesPattern(test.fieldPath, test.pattern); got != test.want {
+		if got := authority.MatchesPattern(test.fieldPath, test.pattern); got != test.want {
 			t.Errorf("MatchesPattern(%q, %q) = %v, want %v", test.fieldPath, test.pattern, got, test.want)
 		}
 	}

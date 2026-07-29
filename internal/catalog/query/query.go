@@ -2,9 +2,12 @@
 package query
 
 import (
+	"encoding/json"
 	stderrors "errors"
 	"slices"
 	"strings"
+
+	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -17,6 +20,54 @@ type PageResult[T any] struct {
 	Limit  int
 	Offset int
 	Count  int
+}
+
+// ModelRecord identifies one exact provider-scoped model record. Embedding the
+// model preserves the existing flat JSON shape while provider_id prevents
+// equal model IDs from becoming ambiguous in unfiltered list results.
+type ModelRecord struct {
+	catalogs.Model
+	ProviderID catalogs.ProviderID
+}
+
+// MarshalJSON preserves the historical flat model object while adding its
+// provider-scoped identity. Model has a custom marshaler, so ordinary anonymous
+// embedding would otherwise consume the outer provider_id field.
+func (r ModelRecord) MarshalJSON() ([]byte, error) {
+	modelJSON, err := json.Marshal(r.Model)
+	if err != nil {
+		return nil, err
+	}
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(modelJSON, &fields); err != nil {
+		return nil, err
+	}
+	providerID, err := json.Marshal(r.ProviderID)
+	if err != nil {
+		return nil, err
+	}
+	fields["provider_id"] = providerID
+	return json.Marshal(fields)
+}
+
+// MarshalYAML preserves the same flat provider-scoped shape as MarshalJSON.
+func (r ModelRecord) MarshalYAML() (any, error) {
+	modelValue, err := r.Model.MarshalYAML()
+	if err != nil {
+		return nil, err
+	}
+	fields, ok := modelValue.(yaml.MapSlice)
+	if !ok {
+		return nil, &pkgerrors.ValidationError{
+			Field:   "model",
+			Value:   modelValue,
+			Message: "YAML representation must be a mapping",
+		}
+	}
+	result := make(yaml.MapSlice, 0, len(fields)+1)
+	result = append(result, yaml.MapItem{Key: "provider_id", Value: r.ProviderID})
+	result = append(result, fields...)
+	return result, nil
 }
 
 // Paginate returns a stable page from a result set.
@@ -64,9 +115,10 @@ type ModelOptions struct {
 	Limit      int
 }
 
-// CatalogModels returns either all legacy flattened models or the exact
-// provider-specific offerings from the catalog's provider index.
-func CatalogModels(catalog catalogs.Reader, provider string) ([]catalogs.Model, error) {
+// CatalogModels returns exact provider model records from the catalog's
+// provider index. With no provider filter, equal model IDs from different
+// providers remain distinct and are ordered by provider ID, then model ID.
+func CatalogModels(catalog *catalogs.Catalog, provider string) ([]ModelRecord, error) {
 	if catalog == nil {
 		return nil, &pkgerrors.ValidationError{
 			Field:   "catalog",
@@ -74,30 +126,65 @@ func CatalogModels(catalog catalogs.Reader, provider string) ([]catalogs.Model, 
 		}
 	}
 	if provider == "" {
-		return catalog.Models().List(), nil
+		var result []ModelRecord
+		for _, catalogProvider := range catalog.Providers().List() {
+			modelIDs := make([]string, 0, len(catalogProvider.Models))
+			for modelID := range catalogProvider.Models {
+				modelIDs = append(modelIDs, modelID)
+			}
+			slices.Sort(modelIDs)
+			for _, modelID := range modelIDs {
+				model := catalogProvider.Models[modelID]
+				if model != nil {
+					result = append(result, ModelRecord{
+						Model:      catalogs.DeepCopyModel(*model),
+						ProviderID: catalogProvider.ID,
+					})
+				}
+			}
+		}
+		return result, nil
 	}
-	models, err := catalog.ProviderModels(catalogs.ProviderID(provider))
+	catalogProvider, err := catalog.Provider(catalogs.ProviderID(provider))
 	if err != nil {
 		var notFound *pkgerrors.NotFoundError
 		if stderrors.As(err, &notFound) {
-			return []catalogs.Model{}, nil
+			return []ModelRecord{}, nil
 		}
 		return nil, err
 	}
-	return models.List(), nil
+	result := make([]ModelRecord, 0, len(catalogProvider.Models))
+	modelIDs := make([]string, 0, len(catalogProvider.Models))
+	for modelID := range catalogProvider.Models {
+		modelIDs = append(modelIDs, modelID)
+	}
+	slices.Sort(modelIDs)
+	for _, modelID := range modelIDs {
+		model := catalogProvider.Models[modelID]
+		if model != nil {
+			result = append(result, ModelRecord{
+				Model:      catalogs.DeepCopyModel(*model),
+				ProviderID: catalogProvider.ID,
+			})
+		}
+	}
+	return result, nil
 }
 
 // Models filters, sorts, and limits model results.
-func Models(models []catalogs.Model, opts ModelOptions) []catalogs.Model {
-	filtered := make([]catalogs.Model, 0, len(models))
+func Models(models []ModelRecord, opts ModelOptions) []ModelRecord {
+	filtered := make([]ModelRecord, 0, len(models))
 	for _, model := range models {
-		if modelMatches(model, opts) {
+		if modelMatches(model.Model, opts) {
 			filtered = append(filtered, model)
 		}
 	}
 
-	slices.SortFunc(filtered, func(a, b catalogs.Model) int {
-		return strings.Compare(a.ID, b.ID)
+	slices.SortStableFunc(filtered, func(a, b ModelRecord) int {
+		if result := strings.Compare(a.ID, b.ID); result != 0 {
+			return result
+		}
+		return strings.Compare(string(a.ProviderID), string(b.ProviderID))
 	})
 
 	if opts.Limit > 0 && len(filtered) > opts.Limit {

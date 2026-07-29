@@ -2,6 +2,7 @@ package starmap
 
 import (
 	"reflect"
+	"slices"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -166,29 +167,30 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	modelRemoved := append([]ModelRemovedHook(nil), h.modelRemoved...)
 	h.mu.RUnlock()
 
-	// Get old and new models for comparison
-	oldModels := old.Models().List()
-	newModels := updated.Models().List()
+	// Compare provider-scoped records. Bare model IDs are not globally unique:
+	// two providers may expose different offerings under the same model ID.
+	oldModels := readerProviderModels(old)
+	newModels := readerProviderModels(updated)
 
 	// Create maps for efficient lookup
-	oldModelMap := make(map[string]catalogs.Model)
+	oldModelMap := make(map[providerModelKey]catalogs.Model, len(oldModels))
 	for _, model := range oldModels {
-		oldModelMap[model.ID] = model
+		oldModelMap[model.key] = model.model
 	}
 
-	newModelMap := make(map[string]catalogs.Model)
+	newModelMap := make(map[providerModelKey]catalogs.Model, len(newModels))
 	for _, model := range newModels {
-		newModelMap[model.ID] = model
+		newModelMap[model.key] = model.model
 	}
 
 	// Detect changes and trigger hooks
 	for _, newModel := range newModels {
-		if oldModel, exists := oldModelMap[newModel.ID]; exists {
+		if oldModel, exists := oldModelMap[newModel.key]; exists {
 			// Check if model was updated
-			if !reflect.DeepEqual(oldModel, newModel) {
+			if !reflect.DeepEqual(oldModel, newModel.model) {
 				for _, hook := range modelUpdated {
 					h.invoke(func() error {
-						hook(oldModel, newModel)
+						hook(oldModel, newModel.model)
 						return nil
 					})
 				}
@@ -197,7 +199,7 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 			// Model was added
 			for _, hook := range modelAdded {
 				h.invoke(func() error {
-					hook(newModel)
+					hook(newModel.model)
 					return nil
 				})
 			}
@@ -206,15 +208,49 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 
 	// Check for removed models
 	for _, oldModel := range oldModels {
-		if _, exists := newModelMap[oldModel.ID]; !exists {
+		if _, exists := newModelMap[oldModel.key]; !exists {
 			for _, hook := range modelRemoved {
 				h.invoke(func() error {
-					hook(oldModel)
+					hook(oldModel.model)
 					return nil
 				})
 			}
 		}
 	}
+}
+
+type providerModelKey struct {
+	providerID catalogs.ProviderID
+	modelID    string
+}
+
+type providerModelRecord struct {
+	key   providerModelKey
+	model catalogs.Model
+}
+
+func readerProviderModels(reader catalogs.Reader) []providerModelRecord {
+	var result []providerModelRecord
+	for _, provider := range reader.Providers().List() {
+		modelIDs := make([]string, 0, len(provider.Models))
+		for modelID := range provider.Models {
+			modelIDs = append(modelIDs, modelID)
+		}
+		slices.Sort(modelIDs)
+		for _, modelID := range modelIDs {
+			model := provider.Models[modelID]
+			if model != nil {
+				result = append(result, providerModelRecord{
+					key: providerModelKey{
+						providerID: provider.ID,
+						modelID:    modelID,
+					},
+					model: catalogs.DeepCopyModel(*model),
+				})
+			}
+		}
+	}
+	return result
 }
 
 func (h *hooks) invoke(fn func() error) {

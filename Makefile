@@ -40,6 +40,8 @@ GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
 GOLANGCI_LINT_VERSION=2.12.2
 GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
+SWAG_VERSION=2.0.0-rc4
+SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)
 
 # Colors for output
 RED=\033[0;31m
@@ -48,7 +50,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc version catalog-generation-check embedded-catalog-budget-check
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -523,10 +525,9 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 # Documentation
 openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
-	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
 	@# Note: Filtering mProfCycleWrap warning - known swag v2 issue parsing Go runtime constants
-	@$(RUN_PREFIX) swag init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
+	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
 	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
 	@mv internal/embedded/openapi/swagger.yaml internal/embedded/openapi/openapi.yaml
@@ -551,7 +552,14 @@ godoc: ## Generate only Go documentation using go generate
 	$(RUN_PREFIX) env PATH="$(GOBIN):$$PATH" go generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
-docs-check: ## Check if documentation is up to date (for CI)
+openapi-check: ## Check if embedded OpenAPI specifications match Go types
+	@tmpdir="$$(mktemp -d)"; \
+	trap 'rm -rf "$$tmpdir"' EXIT HUP INT TERM; \
+	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > /dev/null 2>&1; \
+	cmp -s "$$tmpdir/swagger.json" internal/embedded/openapi/openapi.json || { echo "$(RED)internal/embedded/openapi/openapi.json is stale; run make openapi$(NC)"; exit 1; }; \
+	cmp -s "$$tmpdir/swagger.yaml" internal/embedded/openapi/openapi.yaml || { echo "$(RED)internal/embedded/openapi/openapi.yaml is stale; run make openapi$(NC)"; exit 1; }
+
+docs-check: openapi-check ## Check if documentation is up to date (for CI)
 	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
 	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
 	@for pkg in $$(find ./pkg ./internal -name "generate.go" -exec dirname {} \;); do \

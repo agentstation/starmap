@@ -228,13 +228,11 @@ func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
 		Pricing: &ModelPricing{
 			Currency: ModelPricingCurrencyUSD,
 			Tokens: &ModelTokenPricing{
-				Input:  &ModelTokenCost{Per1M: 1.50},
-				Output: &ModelTokenCost{Per1M: 6.00},
-				Cache: &ModelTokenCachePricing{
-					Read:  &ModelTokenCost{Per1M: 0.15},
-					Write: &ModelTokenCost{Per1M: 1.50},
-				},
-				Reasoning: &ModelTokenCost{Per1M: 10.00},
+				Input:      &ModelTokenCost{Per1M: 1.50},
+				Output:     &ModelTokenCost{Per1M: 6.00},
+				CacheRead:  &ModelTokenCost{Per1M: 0.15},
+				CacheWrite: &ModelTokenCost{Per1M: 1.50},
+				Reasoning:  &ModelTokenCost{Per1M: 10.00},
 			},
 			Operations: &ModelOperationPricing{
 				Request:      float64Ptr(0.001),

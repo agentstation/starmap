@@ -38,25 +38,6 @@ func DeepCopyProviderModels(models map[string]*Model) map[string]*Model {
 	return result
 }
 
-// DeepCopyAuthorModels creates a deep copy of an author's Models map.
-// Returns nil if the input map is nil.
-func DeepCopyAuthorModels(models map[string]*Model) map[string]*Model {
-	if models == nil {
-		return nil
-	}
-
-	result := make(map[string]*Model, len(models))
-	for k, v := range models {
-		if v != nil {
-			modelCopy := DeepCopyModel(*v)
-			result[k] = &modelCopy
-		} else {
-			result[k] = nil
-		}
-	}
-	return result
-}
-
 // DeepCopyModel creates a deep copy of a Model.
 func DeepCopyModel(model Model) Model {
 	modelCopy := model
@@ -121,11 +102,9 @@ func DeepCopyProvider(provider Provider) Provider {
 	return providerCopy
 }
 
-// DeepCopyAuthor creates a deep copy of an Author including its Models map.
+// DeepCopyAuthor creates a deep copy of an Author.
 func DeepCopyAuthor(author Author) Author {
-	authorCopy := deepCopyAuthorMetadata(author)
-	authorCopy.Models = DeepCopyAuthorModels(author.Models)
-	return authorCopy
+	return deepCopyAuthorMetadata(author)
 }
 
 // DeepCopyEndpoint creates a copy of an Endpoint.
@@ -144,7 +123,6 @@ func deepCopyAuthorMetadata(author Author) Author {
 	authorCopy.GitHub = copyPtr(author.GitHub)
 	authorCopy.Twitter = copyPtr(author.Twitter)
 	authorCopy.Catalog = deepCopyAuthorCatalog(author.Catalog)
-	authorCopy.Models = nil
 	return authorCopy
 }
 
@@ -164,7 +142,6 @@ func deepCopyModelArchitecture(architecture *ModelArchitecture) *ModelArchitectu
 		return nil
 	}
 	copied := *architecture
-	copied.Precision = copyPtr(architecture.Precision)
 	copied.BaseModel = copyPtr(architecture.BaseModel)
 	return &copied
 }
@@ -339,19 +316,8 @@ func deepCopyModelTokenPricing(pricing *ModelTokenPricing) *ModelTokenPricing {
 	copied.Input = copyPtr(pricing.Input)
 	copied.Output = copyPtr(pricing.Output)
 	copied.Reasoning = copyPtr(pricing.Reasoning)
-	copied.Cache = deepCopyModelTokenCachePricing(pricing.Cache)
 	copied.CacheRead = copyPtr(pricing.CacheRead)
 	copied.CacheWrite = copyPtr(pricing.CacheWrite)
-	return &copied
-}
-
-func deepCopyModelTokenCachePricing(pricing *ModelTokenCachePricing) *ModelTokenCachePricing {
-	if pricing == nil {
-		return nil
-	}
-	copied := *pricing
-	copied.Read = copyPtr(pricing.Read)
-	copied.Write = copyPtr(pricing.Write)
 	return &copied
 }
 
@@ -474,19 +440,6 @@ func deepCopyAuthorAttribution(attribution *AuthorAttribution) *AuthorAttributio
 // The map is copied but Model pointers are shared.
 // Returns nil if the input map is nil.
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model {
-	if models == nil {
-		return nil
-	}
-
-	result := make(map[string]*Model, len(models))
-	maps.Copy(result, models)
-	return result
-}
-
-// ShallowCopyAuthorModels creates a shallow copy of an author's Models map.
-// The map is copied but Model pointers are shared.
-// Returns nil if the input map is nil.
-func ShallowCopyAuthorModels(models map[string]*Model) map[string]*Model {
 	if models == nil {
 		return nil
 	}

@@ -227,11 +227,11 @@ func TestDecodeQuarantineRetainsProviderSiblingsAndDegradesObservation(t *testin
 		observation.Issues[0].Code != sources.ObservationIssueCodeInvalidRecord {
 		t.Fatalf("issues = %#v, want one invalid record", observation.Issues)
 	}
-	models, err := observation.Catalog.ProviderModels("provider-a")
+	provider, err := observation.Catalog.Provider("provider-a")
 	if err != nil {
-		t.Fatalf("ProviderModels: %v", err)
+		t.Fatalf("Provider: %v", err)
 	}
-	if !models.Exists("valid") {
+	if _, found := provider.Models["valid"]; !found {
 		t.Fatal("valid provider sibling was discarded")
 	}
 }

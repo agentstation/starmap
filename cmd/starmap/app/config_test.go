@@ -41,6 +41,27 @@ func TestConfigCatalogPathVocabularyHasNoPrelaunchAliases(t *testing.T) {
 	}
 }
 
+func TestConfigOutputHasNoPrelaunchEnvironmentAlias(t *testing.T) {
+	t.Setenv("OUTPUT", "")
+	t.Setenv("FORMAT", "json")
+	config, err := LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig: %v", err)
+	}
+	if config.Output != "" {
+		t.Fatalf("removed FORMAT alias selected output %q", config.Output)
+	}
+
+	t.Setenv("OUTPUT", "yaml")
+	config, err = LoadConfig()
+	if err != nil {
+		t.Fatalf("LoadConfig with OUTPUT: %v", err)
+	}
+	if config.Output != "yaml" {
+		t.Fatalf("OUTPUT selected %q, want yaml", config.Output)
+	}
+}
+
 func TestRemovedExportConfigurationDoesNotSelectWorkspace(t *testing.T) {
 	t.Setenv("CATALOG_PATH", "")
 	t.Setenv("CATALOG_EXPORT_PATH", "/ignored-export")
@@ -123,13 +144,6 @@ func TestConfig_BooleanFlags(t *testing.T) {
 		check    func(*Config) bool
 		want     bool
 	}{
-		{
-			name:     "UseEmbeddedCatalog",
-			envVar:   "USE_EMBEDDED_CATALOG",
-			envValue: "true",
-			check:    func(c *Config) bool { return c.UseEmbeddedCatalog },
-			want:     true,
-		},
 		{
 			name:     "NoColor",
 			envVar:   "NO_COLOR",

@@ -9,7 +9,7 @@ import (
 )
 
 func serve(ctx context.Context, listener net.Listener) error {
-	sm, err := starmap.New(starmap.WithEmbeddedCatalog())
+	sm, err := starmap.New()
 	if err != nil {
 		return err
 	}

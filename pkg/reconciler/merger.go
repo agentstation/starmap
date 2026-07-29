@@ -680,7 +680,6 @@ func copyModelTokenPricing(source *catalogs.ModelTokenPricing) *catalogs.ModelTo
 	copied.Input = copyModelTokenCost(source.Input)
 	copied.Output = copyModelTokenCost(source.Output)
 	copied.Reasoning = copyModelTokenCost(source.Reasoning)
-	copied.Cache = copyModelTokenCachePricing(source.Cache)
 	copied.CacheRead = copyModelTokenCost(source.CacheRead)
 	copied.CacheWrite = copyModelTokenCost(source.CacheWrite)
 	return &copied
@@ -688,16 +687,6 @@ func copyModelTokenPricing(source *catalogs.ModelTokenPricing) *catalogs.ModelTo
 
 func copyModelTokenCost(source *catalogs.ModelTokenCost) *catalogs.ModelTokenCost {
 	return copyValuePtr(source)
-}
-
-func copyModelTokenCachePricing(source *catalogs.ModelTokenCachePricing) *catalogs.ModelTokenCachePricing {
-	if source == nil {
-		return nil
-	}
-	copied := *source
-	copied.Read = copyModelTokenCost(source.Read)
-	copied.Write = copyModelTokenCost(source.Write)
-	return &copied
 }
 
 func copyModelOperationPricing(source *catalogs.ModelOperationPricing) *catalogs.ModelOperationPricing {
@@ -747,7 +736,6 @@ func copyModelArchitecture(source *catalogs.ModelArchitecture) *catalogs.ModelAr
 		return nil
 	}
 	copied := *source
-	copied.Precision = copyValuePtr(source.Precision)
 	copied.BaseModel = copyValuePtr(source.BaseModel)
 	return &copied
 }
@@ -767,9 +755,6 @@ func mergeModelArchitecture(target, source *catalogs.ModelArchitecture) *catalog
 	}
 	if target.Tokenizer == "" {
 		target.Tokenizer = source.Tokenizer
-	}
-	if target.Precision == nil {
-		target.Precision = copyValuePtr(source.Precision)
 	}
 	if target.Quantization == "" {
 		target.Quantization = source.Quantization

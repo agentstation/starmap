@@ -38,6 +38,22 @@ func deleteModelFromProvider(catalog *catalogs.Builder, providerID string, model
 	return catalog.DeleteProviderModel(catalogs.ProviderID(providerID), modelID)
 }
 
+func builderProviderModels(catalog *catalogs.Builder, providerID catalogs.ProviderID) []catalogs.Model {
+	models, err := catalog.ProviderModels(providerID)
+	if err != nil {
+		return []catalogs.Model{}
+	}
+	return models.List()
+}
+
+func allBuilderProviderModels(catalog *catalogs.Builder) []catalogs.Model {
+	models := make([]catalogs.Model, 0)
+	for _, provider := range catalog.Providers().List() {
+		models = append(models, builderProviderModels(catalog, provider.ID)...)
+	}
+	return models
+}
+
 // TestConcurrentCatalogAccess tests thread safety with multiple readers and writers.
 func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("concurrent_reads_and_writes", func(t *testing.T) {
@@ -224,7 +240,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						return
 					default:
 						// Should never panic or error
-						models := catalog.Models().List()
+						models := builderProviderModels(catalog, "test-provider")
 						if models == nil {
 							readErrors <- fmt.Errorf("got nil models list")
 						}
@@ -257,7 +273,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// Verify bulk write succeeded
-		models := catalog.Models().List()
+		models := builderProviderModels(catalog, "test-provider")
 		assert.GreaterOrEqual(t, len(models), 1000)
 	})
 
@@ -292,7 +308,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		// Verify all copies are independent and complete
 		for i, copy := range copies {
 			assert.NotNil(t, copy, "Copy %d is nil", i)
-			models := copy.Models().List()
+			models := builderProviderModels(copy, "test-provider")
 			assert.Len(t, models, 100, "Copy %d has wrong number of models", i)
 
 			// Modify copy shouldn't affect others
@@ -305,7 +321,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// Verify copies are independent
 		for i, copy := range copies {
-			models := copy.Models().List()
+			models := builderProviderModels(copy, "test-provider")
 			exclusiveCount := 0
 			for _, model := range models {
 				if model.ID == fmt.Sprintf("copy-%d-exclusive", i) {
@@ -346,7 +362,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		wg.Wait()
 
 		// The model should exist with data from one of the writers
-		model, err := catalog.FindModel(modelID)
+		model, err := catalog.ProviderModel("test-provider", modelID)
 		assert.NoError(t, err)
 		assert.NotEmpty(t, model.Name)
 		assert.NotNil(t, model.Description)
@@ -371,7 +387,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		// Goroutine 1: Copy from catalog1 to catalog2
 		go func() {
 			for range 100 {
-				models := catalog1.Models().List()
+				models := builderProviderModels(catalog1, "test-provider")
 				for _, model := range models {
 					_ = addModelToProvider(catalog2, "test-provider", model)
 				}
@@ -382,7 +398,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		// Goroutine 2: Copy from catalog2 to catalog1
 		go func() {
 			for range 100 {
-				models := catalog2.Models().List()
+				models := builderProviderModels(catalog2, "test-provider")
 				for _, model := range models {
 					_ = addModelToProvider(catalog1, "test-provider", model)
 				}
@@ -448,7 +464,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 		}
 
 		// All models should be deleted
-		models := catalog.Models().List()
+		models := allBuilderProviderModels(catalog)
 		if len(models) > 0 {
 			t.Errorf("Expected 0 models, got %d", len(models))
 			for _, m := range models {
@@ -474,7 +490,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				_ = catalog.Models().List()
+				_ = builderProviderModels(catalog, "test-provider")
 			}
 		})
 	})
@@ -520,7 +536,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 					})
 				} else {
 					// Read operation (90%)
-					_ = catalog.Models().List()
+					_ = builderProviderModels(catalog, "test-provider")
 				}
 				i++
 			}

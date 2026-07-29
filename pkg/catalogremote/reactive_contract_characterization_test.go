@@ -16,9 +16,10 @@ import (
 // lifecycle. P7 must add an explicitly started, caller-context-owned
 // subscriber around this verified fetch primitive.
 func TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch(t *testing.T) {
-	generation := remoteTestGeneration(t, 1, catalogs.ConsumerCompatibility{
-		MinSchemaVersion: 1,
-		MaxSchemaVersion: 1,
+	current := catalogs.CurrentCatalogSchemaVersion
+	generation := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{
+		MinSchemaVersion: current,
+		MaxSchemaVersion: current,
 	})
 	manifest, err := MarshalManifest(generation.Manifest)
 	if err != nil {

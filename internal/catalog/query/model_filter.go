@@ -146,6 +146,26 @@ func (f ModelFilter) Apply(models []catalogs.Model) []catalogs.Model {
 	return results
 }
 
+// ApplyRecords applies the model filter without discarding provider identity.
+func (f ModelFilter) ApplyRecords(records []ModelRecord) []ModelRecord {
+	var results []ModelRecord
+	for _, record := range records {
+		if f.matches(record.Model) {
+			results = append(results, record)
+		}
+	}
+	if f.Sort != "" {
+		slices.SortStableFunc(results, func(left, right ModelRecord) int {
+			result := f.compare(left.Model, right.Model)
+			if result == 0 {
+				result = strings.Compare(string(left.ProviderID), string(right.ProviderID))
+			}
+			return result
+		})
+	}
+	return results
+}
+
 // matches checks if a model matches the filter criteria.
 func (f ModelFilter) matches(model catalogs.Model) bool {
 	return f.matchesBasicFilters(model) &&
@@ -291,29 +311,32 @@ func (f ModelFilter) matchesDateFilters(model catalogs.Model) bool {
 
 // sort sorts models based on the sort field and order.
 func (f ModelFilter) sort(models []catalogs.Model) []catalogs.Model {
+	slices.SortStableFunc(models, func(left, right catalogs.Model) int {
+		return f.compare(left, right)
+	})
+	return models
+}
+
+func (f ModelFilter) compare(left, right catalogs.Model) int {
 	field := f.Sort
 	if field == "" {
 		field = sortID
 	}
-	descending := strings.EqualFold(f.Order, "desc")
-	slices.SortStableFunc(models, func(left, right catalogs.Model) int {
-		leftMissing, rightMissing := modelSortMissing(left, field), modelSortMissing(right, field)
-		if leftMissing != rightMissing {
-			if leftMissing {
-				return 1
-			}
-			return -1
+	leftMissing, rightMissing := modelSortMissing(left, field), modelSortMissing(right, field)
+	if leftMissing != rightMissing {
+		if leftMissing {
+			return 1
 		}
-		result := compareModelField(left, right, field)
-		if descending {
-			result = -result
-		}
-		if result == 0 {
-			result = strings.Compare(left.ID, right.ID)
-		}
-		return result
-	})
-	return models
+		return -1
+	}
+	result := compareModelField(left, right, field)
+	if strings.EqualFold(f.Order, "desc") {
+		result = -result
+	}
+	if result == 0 {
+		result = strings.Compare(left.ID, right.ID)
+	}
+	return result
 }
 
 func modelSortMissing(model catalogs.Model, field string) bool {

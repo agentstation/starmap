@@ -69,12 +69,10 @@ func TestAuthorsCopyOnReadWrite(t *testing.T) {
 		ID:          "author",
 		Aliases:     []AuthorID{"author-alias"},
 		Description: &description,
-		Models: map[string]*Model{
-			"model": {
-				ID: "model",
-				Metadata: &ModelMetadata{
-					Tags: []ModelTag{ModelTagCoding},
-				},
+		Catalog: &AuthorCatalog{
+			Attribution: &AuthorAttribution{
+				ProviderID: "provider",
+				Patterns:   []string{"model-*"},
 			},
 		},
 	}
@@ -85,7 +83,7 @@ func TestAuthorsCopyOnReadWrite(t *testing.T) {
 	}
 
 	*author.Description = "mutated input"
-	author.Models["model"].Metadata.Tags[0] = ModelTagMath
+	author.Catalog.Attribution.Patterns[0] = "mutated-*"
 
 	stored, ok := authors.Get("author")
 	if !ok {
@@ -94,12 +92,12 @@ func TestAuthorsCopyOnReadWrite(t *testing.T) {
 	if *stored.Description != "original" {
 		t.Fatal("Set stored caller-owned author references")
 	}
-	if stored.Models["model"].Metadata.Tags[0] != ModelTagCoding {
-		t.Fatal("Set stored caller-owned model references")
+	if stored.Catalog.Attribution.Patterns[0] != "model-*" {
+		t.Fatal("Set stored caller-owned attribution references")
 	}
 
 	*stored.Description = "mutated get"
-	stored.Models["model"].Metadata.Tags[0] = ModelTagMath
+	stored.Catalog.Attribution.Patterns[0] = "mutated-*"
 
 	resolved, ok := authors.Resolve("author-alias")
 	if !ok {
@@ -108,12 +106,13 @@ func TestAuthorsCopyOnReadWrite(t *testing.T) {
 	if *resolved.Description != "original" {
 		t.Fatal("Get returned author internals")
 	}
-	if resolved.Models["model"].Metadata.Tags[0] != ModelTagCoding {
-		t.Fatal("Get returned author model internals")
+	if resolved.Catalog.Attribution.Patterns[0] != "model-*" {
+		t.Fatal("Get returned author attribution internals")
 	}
 
 	mapped := authors.Map()
 	*mapped["author"].Description = "mutated map"
+	mapped["author"].Catalog.Attribution.Patterns[0] = "mutated-*"
 
 	again, ok := authors.Get("author")
 	if !ok {
@@ -121,6 +120,9 @@ func TestAuthorsCopyOnReadWrite(t *testing.T) {
 	}
 	if *again.Description != "original" {
 		t.Fatal("Map returned author internals")
+	}
+	if again.Catalog.Attribution.Patterns[0] != "model-*" {
+		t.Fatal("Map returned author attribution internals")
 	}
 }
 
@@ -272,29 +274,5 @@ func TestEndpointsWithMapCopyOnWrite(t *testing.T) {
 	}
 	if stored.Description != "original" {
 		t.Fatal("WithEndpointsMap stored caller-owned endpoint reference")
-	}
-}
-
-func TestDeepCopyAuthorDoesNotRecurseThroughModelAuthors(t *testing.T) {
-	model := &Model{ID: "model", Name: "Model"}
-	author := Author{
-		ID:   "author",
-		Name: "Author",
-		Models: map[string]*Model{
-			model.ID: model,
-		},
-	}
-	model.Authors = []Author{author}
-
-	copied := DeepCopyAuthor(author)
-	copiedModel := copied.Models[model.ID]
-	if copiedModel == nil {
-		t.Fatal("Expected author model to be copied")
-	}
-	if len(copiedModel.Authors) != 1 {
-		t.Fatalf("Expected copied model author metadata, got %d authors", len(copiedModel.Authors))
-	}
-	if copiedModel.Authors[0].Models != nil {
-		t.Fatal("Model author metadata copied nested author model indexes")
 	}
 }

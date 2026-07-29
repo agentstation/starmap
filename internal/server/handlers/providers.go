@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"slices"
 
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/provider"
 	"github.com/agentstation/starmap/internal/server/response"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // HandleListProviders handles GET /api/v1/providers.
@@ -136,12 +138,17 @@ func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Reques
 		return
 	}
 
-	modelsIndex, err := cat.LegacyV0().ProviderModels(prov.ID)
-	if err != nil {
-		response.ErrorFromType(w, err)
-		return
+	modelIDs := make([]string, 0, len(prov.Models))
+	for modelID := range prov.Models {
+		modelIDs = append(modelIDs, modelID)
 	}
-	models := modelsIndex.List()
+	slices.Sort(modelIDs)
+	models := make([]catalogs.Model, 0, len(modelIDs))
+	for _, modelID := range modelIDs {
+		if model := prov.Models[modelID]; model != nil {
+			models = append(models, catalogs.DeepCopyModel(*model))
+		}
+	}
 
 	result := map[string]any{
 		"provider": map[string]any{

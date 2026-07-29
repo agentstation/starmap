@@ -31,9 +31,6 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	if _, ok := any(catalog.Endpoints()).(interface{ Clear() }); ok {
 		t.Error("Read-only endpoints expose Clear")
 	}
-	if _, ok := any(catalog.Models()).(interface{ Clear() }); ok {
-		t.Error("Read-only models expose Clear")
-	}
 	if _, ok := any(catalog.Provenance()).(interface{ Clear() }); ok {
 		t.Error("Read-only provenance exposes Clear")
 	}
@@ -42,12 +39,59 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	for _, method := range []string{
 		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteEndpoint",
 		"DeleteProvider", "DeleteProviderModel", "MergeProvenance", "MergeWith",
-		"ReplaceWith", "Save", "SetAuthor", "SetEndpoint", "SetMergeStrategy",
-		"SetProvider", "SetProviderModel", "SetProvenance",
+		"Models", "ProviderModel", "ProviderModels", "ReplaceWith", "Save",
+		"SetAuthor", "SetEndpoint", "SetMergeStrategy", "SetProvider",
+		"SetProviderModel", "SetProvenance",
 	} {
 		if _, found := catalogType.MethodByName(method); found {
 			t.Errorf("Catalog exposes forbidden method %s", method)
 		}
+	}
+}
+
+func TestBuilderRequiresProviderScopedModelReads(t *testing.T) {
+	builderType := reflect.TypeFor[*Builder]()
+	for _, method := range []string{"FindModel", "Models"} {
+		if _, found := builderType.MethodByName(method); found {
+			t.Errorf("Builder exposes ambiguous cross-provider method %s", method)
+		}
+	}
+}
+
+func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
+	for _, check := range []struct {
+		name      string
+		structure reflect.Type
+		forbidden []string
+	}{
+		{
+			name:      "author",
+			structure: reflect.TypeFor[Author](),
+			forbidden: []string{"Models"},
+		},
+		{
+			name:      "catalog payload",
+			structure: reflect.TypeFor[CatalogPayload](),
+			forbidden: []string{"AuthorModels"},
+		},
+		{
+			name:      "model architecture",
+			structure: reflect.TypeFor[ModelArchitecture](),
+			forbidden: []string{"Precision"},
+		},
+		{
+			name:      "token pricing",
+			structure: reflect.TypeFor[ModelTokenPricing](),
+			forbidden: []string{"Cache"},
+		},
+	} {
+		t.Run(check.name, func(t *testing.T) {
+			for _, field := range check.forbidden {
+				if _, found := check.structure.FieldByName(field); found {
+					t.Errorf("%s exposes duplicate compatibility field %s", check.name, field)
+				}
+			}
+		})
 	}
 }
 
@@ -137,22 +181,23 @@ func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 	if err := builder.SetProviderModel("provider-a", Model{ID: "shared", Name: "Later Draft"}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
-	offering, err := catalog.ProviderModel("provider-alias", "shared")
+	offering, err := catalog.Offering("provider-alias", "shared")
 	if err != nil {
-		t.Fatalf("ProviderModel through alias: %v", err)
+		t.Fatalf("Offering through alias: %v", err)
 	}
-	if offering.Name != "Published Offering" {
-		t.Fatalf("Indexed offering name = %q, want published value", offering.Name)
+	if offering.DefinitionID != "shared" {
+		t.Fatalf("Indexed offering definition = %q, want shared", offering.DefinitionID)
 	}
-
-	models, err := catalog.ProviderModels("provider-a")
+	definition, err := catalog.FindModel("shared")
 	if err != nil {
-		t.Fatalf("ProviderModels: %v", err)
+		t.Fatalf("FindModel: %v", err)
 	}
-	if _, ok := any(models).(interface {
-		Set(string, *Model) error
-	}); ok {
-		t.Fatal("Provider offering index exposes model mutation")
+	if definition.Name != "Published Offering" {
+		t.Fatalf("Indexed definition name = %q, want published value", definition.Name)
+	}
+	offerings, err := catalog.ProviderOfferings("provider-a")
+	if err != nil || len(offerings) != 1 {
+		t.Fatalf("ProviderOfferings = (%#v, %v), want one", offerings, err)
 	}
 }
 
@@ -161,11 +206,11 @@ func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) 
 	providers := []Provider{
 		{
 			ID: "provider-a", Aliases: []ProviderID{"provider-a-alias"}, Name: "Provider A",
-			Models: map[string]*Model{"shared": legacyMigrationModel("shared", 1, "priority")},
+			Models: map[string]*Model{"shared": testReadViewModel("shared", 1, "priority")},
 		},
 		{
 			ID: "provider-b", Name: "Provider B",
-			Models: map[string]*Model{"shared": legacyMigrationModel("shared", 2, "standard")},
+			Models: map[string]*Model{"shared": testReadViewModel("shared", 2, "standard")},
 		},
 	}
 	for _, provider := range providers {

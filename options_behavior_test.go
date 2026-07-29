@@ -38,7 +38,7 @@ func TestNewRejectsCorruptConfiguredLocalCatalog(t *testing.T) {
 	}
 }
 
-func TestConfiguredCatalogPathTakesPrecedenceOverEmbeddedFallback(t *testing.T) {
+func TestConfiguredCatalogPathLoadsHumanWorkspace(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "catalog")
 	local := catalogs.NewEmpty()
 	if err := local.SetProvider(catalogs.Provider{ID: "local-only", Name: "Local only"}); err != nil {
@@ -48,12 +48,9 @@ func TestConfiguredCatalogPathTakesPrecedenceOverEmbeddedFallback(t *testing.T) 
 		t.Fatalf("Save local catalog: %v", err)
 	}
 
-	client, err := New(
-		WithCatalogPath(path),
-		WithEmbeddedCatalog(),
-	)
+	client, err := New(WithCatalogPath(path))
 	if err != nil {
-		t.Fatalf("New with explicit embedded catalog: %v", err)
+		t.Fatalf("New with catalog path: %v", err)
 	}
 	if client == nil {
 		t.Fatal("New returned a nil client")
@@ -88,9 +85,9 @@ func TestConfiguredWorkspaceLoadsSemanticHumanValuesWithoutEmbeddedPreMerge(t *t
 	if got := catalog.Providers().Len(); got != 1 {
 		t.Fatalf("provider count = %d, want human workspace only", got)
 	}
-	model, err := catalog.ProviderModel("openai", "gpt-4o")
+	model, err := catalog.FindModel("gpt-4o")
 	if err != nil {
-		t.Fatalf("ProviderModel: %v", err)
+		t.Fatalf("FindModel: %v", err)
 	}
 	if model.Name != "Human GPT-4o" {
 		t.Fatalf("model name = %q, want semantic human value", model.Name)

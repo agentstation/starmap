@@ -2,11 +2,9 @@
 
 Last updated: 2026-07-28
 
-Status: `IN_PROGRESS` — P0–P2, the P3.6a/P3.6b/P3.8 publication hotfix, P4,
-and P3.1–P3.5/P3.7/P3.9 are complete. P3.10 has implemented explicit
-transactional legacy-layout migration, restart recovery, and downgrade
-rejection and remains the sole active task through its exact-head local,
-hosted, merge, and cleanup gates.
+Status: `IN_PROGRESS` — P0–P4 and P5.1–P5.7 are complete. P5.8 is the sole
+active task: the exact material commit is locally verified; pass the protected
+phase PR before P6 begins.
 
 ## Mission
 
@@ -44,6 +42,14 @@ This plan is the durable execution record.
   [`reviews/P3_WORKSPACE_LIFECYCLE_OUTCOME_REVIEW_2026-07-28.md`](reviews/P3_WORKSPACE_LIFECYCLE_OUTCOME_REVIEW_2026-07-28.md)
 - P3 workspace lifecycle outcome review SHA-256:
   `0bb257ec3cb368b069a5101bf2af436d7ab214cdf28b15c1208a35e7a0ac9c88`
+- P5 author-model corpus disposition:
+  [`reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md`](reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md)
+- P5 author-model corpus disposition SHA-256:
+  `6ffc08afe7eb3e855e90d8a1ab4e43dbcb269d50432acd976df60b9b840f54df`
+- P5 catalog read-model outcome review:
+  [`reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md`](reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md)
+- P5 catalog read-model outcome review SHA-256:
+  `974522d8a360302f9abfd12ef01385dc23510b31f86c50141a701f5095f6da1e`
 - Reviewed protected-main baseline:
   `9508ee7866e4683e001e7ad153319d348433045d`
 - Historical pre-control-plane comparison:
@@ -466,15 +472,15 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-workspace-lifecycle`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-read-model-simplification`
 - Branch:
-  `codex/catalog-workspace-lifecycle`
+  `codex/catalog-read-model-simplification`
 - Base:
-  `origin/main@60f0cd3c6eecf0ecb9be7dc76961abf97919324d`
+  `origin/main@9609f4f4a74281a7f9692a97cc4926df5978d754`
 
-This worktree contains the remaining P3 human workspace lifecycle work. It was
-created from the exact protected main produced by merged PR #51 before the
-clean P4 worktree and local branch were removed.
+This worktree contains the P5 persisted-model and derived-read-view
+simplification. It was created from the exact protected main produced by
+merged PR #52 before the clean P3 worktree and local branch were removed.
 
 ### Provider expansion worktree
 
@@ -532,7 +538,7 @@ PR updates this control plane and lands before the next dependent phase starts.
 
 ## Live Pull Request Ledger
 
-Live state inspected 2026-07-27.
+Live state inspected 2026-07-28.
 
 | PR | Head | Status | Disposition | Verifiable terminal criteria |
 | --- | --- | --- | --- | --- |
@@ -546,7 +552,8 @@ Live state inspected 2026-07-27.
 | [#49](https://github.com/agentstation/starmap/pull/49) | `codex/catalog-contract-characterization@39b08d6d` | `DONE` | P2 characterization and production composition decisions merged as `f8973be3` | Exact head passed the complete P2 affected-package race run, current govulncheck, exact `make verify`, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; merged; remote/local branch and worktree removed |
 | [#50](https://github.com/agentstation/starmap/pull/50) | `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | P3.6a/P3.6b/P3.8 commit-point and atomic-projection hotfix merged as `1dc811b5` | Final ledger head passed exact local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; F-003/F-031 and P3.6b are closed; remote/local branch and worktree are removed |
 | [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@7454e3b8` | `DONE` | P4 authority, provenance, presence, and source-resilience phase merged as `60f0cd3c` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree were removed before the remaining P3 lifecycle started |
-| [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@04a74036` | `IN_PROGRESS` | P3 human-workspace lifecycle and explicit legacy-layout migration | Exact head `b3acac86` closed F-049 with both hosted checks; outcome-review remediation `04a74036` closes F-050 and passes exact local verification; this evidence-only follow-up must pass its final local gate and both hosted checks before the protected merge pause |
+| [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | P3 human-workspace lifecycle and explicit legacy-layout migration merged as `9609f4f4` | Exact final head passed uninterrupted local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely |
+| [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@fadccebf` | `IN_PROGRESS` | P5 single persisted model and derived immutable read views | Material and ledger heads passed exact local verification and current govulncheck; live-PR ledger head must repeat exact local gates, then pass Verification Gate, Security & Reliability, strict protection readback, and review-thread inspection before the protected merge pause |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -568,9 +575,9 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P0 | `DONE` | Durable control plane and architecture report are reviewable | P0 tasks and plan PR green after the authorized dependency prerequisite |
 | P1 | `DONE` | Existing PRs and donor work receive terminal dispositions | PR ledger terminal; no lost salvage |
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
-| P3 | `IN_PROGRESS` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
+| P3 | `DONE` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
-| P5 | `PENDING` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
+| P5 | `IN_PROGRESS` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
 | P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
 | P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
@@ -671,7 +678,7 @@ compile and performance baselines must also be green.
 | P3.7 | `DONE` | Add multi-process writer control | Two processes cannot interleave; loser receives typed busy/conflict; readers remain available |
 | P3.8 | `DONE` | Preserve store-only use | `TestStoreOnlyApplyCommitsWithoutWorkspaceAccess` proves a configured catalog store commits and publishes with a nil projection and no workspace path or filesystem operation |
 | P3.9 | `DONE` | Define reload and rollback | No implicit watcher; explicit reload publishes once; rollback restores exact YAML semantics, provenance, digest, and reads |
-| P3.10 | `IN_PROGRESS` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
+| P3.10 | `DONE` | Prove migration, restart, and downgrade behavior | Existing machine-layout fixtures are detected before mutation and explicitly migrated or rejected transactionally; restart is identical; unknown newer schema and older binary fail before mutation |
 
 ## P4 — Consolidate Authority, Provenance, and Source Resilience
 
@@ -692,14 +699,14 @@ compile and performance baselines must also be green.
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P5.1 | `PENDING` | Keep provider YAML/payload canonical | No persisted definition/offering tree or top-level duplicate collection exists |
-| P5.2 | `PENDING` | Internalize build projection | No exported “legacy migration” vocabulary remains before launch |
-| P5.3 | `PENDING` | Derive offerings | Same ID at two providers retains distinct exact price, limits, availability, endpoint, and lifecycle |
-| P5.4 | `PENDING` | Derive provider-independent definitions | Conflicts use the same authority/evidence implementation, never map iteration or alphabetical first-wins |
-| P5.5 | `PENDING` | Derive author membership | Author queries remain equivalent without loading, writing, embedding, or storing author model copies |
-| P5.6 | `PENDING` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
-| P5.7 | `PENDING` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
-| P5.8 | `PENDING` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
+| P5.1 | `DONE` | Keep provider YAML/payload canonical | No persisted definition/offering tree or top-level duplicate collection exists |
+| P5.2 | `DONE` | Internalize build projection | No exported “legacy migration” vocabulary remains before launch |
+| P5.3 | `DONE` | Derive offerings | Same ID at two providers retains distinct exact price, limits, availability, endpoint, and lifecycle |
+| P5.4 | `DONE` | Derive provider-independent definitions | Conflicts use the same authority/evidence implementation, never map iteration or alphabetical first-wins |
+| P5.5 | `DONE` | Derive author membership | Provider-backed author attribution is deterministic without author model copies; the 121 non-provider records receive the reviewed 32/25/64 terminal disposition in `docs/reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md` |
+| P5.6 | `DONE` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
+| P5.7 | `DONE` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
+| P5.8 | `IN_PROGRESS` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
 
 ## P6 — Deepen Go Library Composition
 
@@ -811,9 +818,9 @@ machine evidence and does not require a follow-up documentation commit.
 | F-008 | `DONE` | Compact typed presence now distinguishes missing, explicit false/zero/empty, and unknown through source decode, YAML/JSON, copy, merge, reconciliation, and change reporting | P4.6 |
 | F-009 | `DONE` | Provider APIs, models.dev, local YAML, and stored payloads now quarantine malformed model records independently with bounded typed evidence; valid siblings survive while malformed envelopes, identity graphs, and manifest-bound partial payloads remain fail-closed | P4.8 |
 | F-010 | `DONE` | `RequireAllSources` now rejects unavailable, missing, duplicate, degraded, partial, fallback, volume-regressed, quarantined, and unexplained empty observations before reconciliation; only exactly one complete, succeeded, nonempty observation per configured source passes | P4.9 |
-| F-011 | `PENDING` | Definitions/offerings are layered as runtime legacy migration vocabulary | P5.1–P5.4 |
-| F-012 | `PENDING` | Author model tree and payload duplicate provider models | P5.5 |
-| F-013 | `PENDING` | Derived offerings invent available/active state | P5.6 |
+| F-011 | `DONE` | Definitions and offerings are immutable build-time read views; the exported runtime legacy migration layer is deleted | P5.1–P5.4 |
+| F-012 | `DONE` | The 322-file author-model mirror and `author_models` payload collection are deleted; author membership derives from the one provider-model truth | P5.5 |
+| F-013 | `DONE` | Derived offerings and definitions preserve unknown availability, lifecycle, and open-weight claims without inventing available/active/false | P5.6 |
 | F-014 | `PENDING` | Prelaunch compatibility and unused public surfaces add shallow modules | P5.8, P6.5 |
 | F-015 | `PENDING` | Root library import pulls provider/cloud acquisition stack | P6.2–P6.3 |
 | F-016 | `PENDING` | Server is internal and cannot be cleanly embedded by another Go program | P7.1 |
@@ -832,7 +839,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-029 | `PENDING` | Local main diverges and multiple stale worktrees/branches remain | P11.2–P11.5 |
 | F-030 | `PENDING` | Existing architecture docs contain superseded “YAML export” guidance | P10.5 |
 | F-031 | `DONE` | Sync saves YAML before the durable generation commit, making a fragile projection gate the durable product | P3.6a–P3.6b |
-| F-032 | `PENDING` | Reassigning `~/.starmap/catalog` from machine generations to human YAML lacks safe legacy-layout detection and migration | P3.1, P3.10 |
+| F-032 | `DONE` | Legacy machine layouts at `~/.starmap/catalog` are detected before mutation and require the explicit transactional migration, whose restart, rollback, concurrent-recreation, and downgrade behavior is proven | P3.1, P3.10 |
 | F-033 | `DONE` | Reconciliation consumes observation status, completeness, counts, issues, and volume history; strict mode additionally requires one complete, succeeded, nonempty observation for every configured source before reconciliation | P4.7, P4.9 |
 | F-034 | `PENDING` | Publication generations can reorder; current event identity is timestamp-based or provider-ambiguous | P7.2, P7.4 |
 | F-035 | `PENDING` | Server/background shutdown lacks owned joins; stopped or blocked subscriptions can hang | P7.5, P7.10 |
@@ -851,7 +858,17 @@ machine evidence and does not require a follow-up documentation commit.
 | F-048 | `DONE` | Repository verification found the P3.1 `LegacyCatalogLayoutError` formatting contract untested, lowering `pkg/errors` below its enforced coverage floor; direct target/no-target and identified/fallback-entry tests raise coverage to 84.3% without weakening the gate | P3.10 |
 | F-049 | `DONE` | Hosted race verification exhausted Go's implicit 10-minute per-package timeout while unrelated migration/rollback fixtures repeatedly decoded and projected the full embedded catalog; focused fixtures now use the smallest catalog that proves their contract, tests that do not exercise construction use direct clients, and repository race verification has an explicit 20-minute package ceiling within the unchanged 45-minute job | P3.10 |
 | F-050 | `DONE` | Outcome review found that migration rollback could unconditionally delete a path recreated after store relocation; rollback now removes only its exact checksum-bound YAML projection, preserves unexpected concurrent data plus relocated state, and returns a typed conflict | P3.10 |
-| F-051 | `PENDING` | `WithEmbeddedCatalog` and `use_embedded_catalog` are inert and misleading now that verified embedded data is an unconditional lowest-authority observation | P5.8, P6.5 |
+| F-051 | `DONE` | Deleted inert `WithEmbeddedCatalog` and `use_embedded_catalog`; verified embedded data remains the unconditional lowest-authority observation | P5.8, P6.5 |
+| F-052 | `DONE` | The reviewed 32 alias/content overlaps, 25 models.dev-only records, and 64 stale orphans are not promoted into a second embedded truth; dynamic reconciliation may add current provider records | P5.5 |
+| F-053 | `DONE` | Indistinguishable conflicting definition values now remain unknown or use the stable identity fallback; only matching provider/model-scoped authority evidence may select a winner | P5.4 |
+| F-054 | `DONE` | Removed duplicate `Precision`/`Quantization` and nested/flat cache-pricing spellings so source payloads and human YAML cannot project different semantics | P5.1, P5.8 |
+| F-055 | `DONE` | Same-ID provider records remain distinct and carry canonical provider identity through offering indexes, hooks, queries, HTTP, CLI table/JSON/YAML, history aliases, and export policy | P5.3, P5.7 |
+| F-056 | `DONE` | Partial or null metadata provenance cannot nil-dereference architecture extraction during build/startup/decode; the exact persisted `metadata` evidence path has race-enabled regression proof | P5.4 |
+| F-057 | `DONE` | Structured review corrected stale CLI/GoDoc text, a digest-stale fixture ID, and full-corpus proof; the disproven package-example claim is explicitly dispositioned rather than silently accepted | P5.7, P5.8 |
+| F-058 | `DONE` | The first exact P5 lint gate found an unused immutable model-reader wrapper and a 36-complexity definition assembler; the wrapper is deleted and identity, lineage, capabilities, and timestamps are cohesive tested helpers with zero lint issues | P5.2, P5.8, P8.5 |
+| F-059 | `DONE` | The second exact P5 verification run reached coverage after all tests, race, vet, performance, and lint gates passed, then found obsolete thresholds for the deleted attribution packages; verification and maintained testing guidance now follow the surviving catalog-derivation seam without weakening any live package threshold | P5.8, P10.1 |
+| F-060 | `DONE` | The final public-surface audit found generated OpenAPI still advertising the deleted `precision` field even though ordinary docs checks passed; the schemas are regenerated and `make docs-check` now reproducibly compares both embedded OpenAPI files with current Go types | P5.8, P10.1, P10.5 |
+| F-061 | `DONE` | PR #53’s first Verification Gate passed all product, race, performance, lint, and coverage checks but exposed that OpenAPI reproduction depended on a developer-only ambient `swag` binary; generation and checking now invoke the repository-pinned Swag module through Go on every environment, with a structural regression test | P5.8, P10.1 |
 
 ## Workspace Ledger
 
@@ -867,7 +884,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-contract-characterization` on `codex/catalog-contract-characterization@39b08d6d` | `DONE` | PR #49 merged as `f8973be3`; remote/local branch and worktree removed after the successor hotfix workspace was created |
 | `catalog-publication-hotfix` on `codex/catalog-publication-hotfix@4f7756e0` | `DONE` | PR #50 merged as `1dc811b5`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@60f0cd3c` | `IN_PROGRESS` | Complete the remaining P3 lifecycle on a fresh phase branch, then pass exact local/hosted gates and remove the worktree/branch |
+| `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
+| `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@fadccebf` | `IN_PROGRESS` | Complete P5 on a fresh phase branch, pass exact local/hosted gates, then remove the worktree/branch |
 
 ## Evidence Log
 
@@ -983,6 +1001,20 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P3.10 / F-049 | PR #52 exact head `b3acac860fc28ad901f8050bf02af9c875e20b7e` passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30361252089/job/90281308442) in `19m06s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30361252089/job/90281308500) in `2m43s`. This exact hosted proof, together with the three uninterrupted exact-head local `make verify` runs already recorded, closes F-049. Later review remediation changes migration failure semantics and therefore requires its own exact final local and hosted proof; it does not reopen the product-neutral harness finding. |
 | 2026-07-28 | P3.10 / F-050 | The complete F-050 remediation tree passed uninterrupted `make verify`: ordinary root and CLI-app suites completed in `45.029s` and `15.558s`; repository race-short passed with root `256.483s`, app `74.990s`, workspace `6.036s`, and migration CLI `1.468s`; vet and pinned golangci-lint v2.12.2 passed with zero issues; every coverage floor passed including `pkg/errors 84.3%`; docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `11.26–11.80 ns/op`, `0 B/op`, and `0 allocs/op`. The material remediation and review evidence must now be committed and this complete gate repeated on that exact clean commit before push. |
 | 2026-07-28 | P3.10 / F-050 | Committed the migration rollback hardening, failure tests, operator quiescence guidance, outcome review, and ledger as `04a74036633140ac8c3709c83e6adea142b66cb0`. That exact clean commit passed uninterrupted `make verify`: ordinary root and CLI-app suites completed in `42.595s` and `14.546s`; repository race-short passed with root `250.020s`, app `72.096s`, workspace `5.536s`, and migration CLI cached/green; vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor including `pkg/errors 84.3%`, docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `8.610–8.847 ns/op`, `0 B/op`, and `0 allocs/op`. This evidence-only ledger follow-up becomes the final P3 candidate and requires one final exact local gate before push and hosted proof; Rule 19 does not retrigger autoreview for that evidence-only change. |
+| 2026-07-28 | P3.10 / P5.1 | PR #52 exact final head `42295e4e8540a10137ffbbe4bf6b8d11c89b5505` passed uninterrupted local `make verify`: ordinary root `43.780s`, CLI app `14.660s`, race root `249.253s`, race app `73.329s`, and workspace `6.692s`; vet, pinned golangci-lint v2.12.2 with zero issues, every coverage floor including `pkg/errors 84.3%`, docs/diff, build, 933-model validation, and CLI smokes passed. `BenchmarkClientCatalog` measured `11.33–11.61 ns/op`, `0 B/op`, and `0 allocs/op`. The same exact head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30364045985/job/90290602845) in `13m51s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30364045985/job/90290602858) in `2m04s`; protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, stale-review dismissal, zero required approvals, and no force-push/deletion; the PR had zero review threads and merged as `9609f4f4a74281a7f9692a97cc4926df5978d754`. The remote topic branch was absent. A zero tree diff against merged `origin/main` and a clean status were proven before removing the P3 worktree and then its local branch. Created fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-read-model-simplification` on `codex/catalog-read-model-simplification` from that exact protected-main SHA. P3, P3.10, and F-032 are DONE; P5.1 is the sole active task. |
+| 2026-07-28 | P5.1–P5.8 / F-052 | The P5 source audit found 322 unique persisted author-model records. Only 200 had an exact provider-model ID; strict legacy membership equivalence would lose 122 old memberships, add 311 currently derivable memberships, and preserve a second source of truth. The 121 non-provider IDs classify as 32 alias/content overlaps, 25 models.dev-only records, and 64 stale orphans. The reviewed terminal disposition is recorded in `docs/reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md`; dynamic sources may add current records through reconciliation, but embedded provider offerings are not manufactured from the obsolete mirror. Exact implementation and gate evidence remain pending. |
+| 2026-07-28 | P5.1–P5.6 / F-011–F-013 / F-052–F-054 | Schema v2 persists exactly `schema_version`, `providers`, `authors`, `endpoints`, `provider_models`, and `provenance`. Repository inspection found zero author-model YAML files, zero persisted definition directories, and zero persisted offering directories; 611 provider-model YAML records remain the human/embedded source of truth. The 322 obsolete author records and exported runtime legacy migration/flattening adapters are deleted. Derived definitions use provider/model-scoped authority evidence with conservative unknown/identity fallback; offerings preserve exact provider price, limits, endpoint, modes, lifecycle, and unknown availability; author membership derives deterministically from inline authors plus attribution. Flat cache pricing and `Quantization` are the only schema spellings. |
+| 2026-07-28 | P5.3–P5.8 / F-055–F-057 | Structured outcome review ran on complete 1,172,673-byte, 1,200,206-byte, and 1,212,013-byte three-pass bundles because the first two remediations materially changed public response/failure semantics. It found and closed provider-identity loss in hook/query/list/export/YAML paths, partial-metadata provenance nil dereference, canonical history-provider alias resolution, stale CLI/GoDoc text, a digest-stale fixture ID, and explicit embedded-corpus publication proof. One package-example claim was disproven by direct file inspection and recorded as such. The final run found no production defect; its sole finding was a test-only `Metadata`/`metadata` evidence-path mismatch, now corrected with exact lookup assertion and ten race-enabled repetitions. Full disposition is archived at `docs/reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md`. |
+| 2026-07-28 | P5.1–P5.8 | After final product remediation, `go test ./... -count=1` passed every package (root `32.280s`, CLI app `12.754s`, catalogs `17.206s`, bootstrap `4.513s`, server `11.787s`). `go test -race ./pkg/catalogs ./internal/catalog/query ./cmd/starmap/cmd/models ./internal/bootstrap ./internal/server/handlers -count=1` passed in `30.751s`, `1.209s`, `1.660s`, `13.060s`, and `4.942s`. The broader affected race gate had already passed root publication `177.458s`, catalogs `31.176s`, models.dev `66.601s`, app `51.392s`, workspace/store, reconciliation/pipeline/query, embedded/OpenAI sources, and update. `BenchmarkClientCatalog` measured `10.49–10.86 ns/op`, `0 B/op`, and `0 allocs/op`; generated docs and diff checks passed before the final review-only proof changes and must be regenerated in the exact repository gate. |
+| 2026-07-28 | P5.2 / P5.8 / F-058 | The first uninterrupted `make verify` passed ordinary tests, repository race-short (root `186.805s`, app `57.152s`, catalogs `34.961s`, server `58.140s`, models.dev `69.134s`), vet, and the catalog-access budget (`10.79–11.43 ns/op`, `0 B/op`, `0 allocs/op`) before lint found two real P5 issues: the deleted public reads left an unused `modelsReader`, and the new definition assembler had cyclomatic complexity 36. The wrapper is deleted; identity, lineage, capabilities, and timestamps are extracted as named tested concepts. Golangci-lint also replayed cached diagnostics from the already-removed P3 worktree; clearing only its cache removed those nonexistent paths. Focused suites passed and pinned golangci-lint v2.12.2 now reports `0 issues`. A complete uninterrupted verification rerun remains required. |
+| 2026-07-28 | P5.8 / F-059 | The second uninterrupted `make verify` passed ordinary tests (root `32.193s`, CLI app `11.899s`, catalogs `17.333s`), repository race-short (root `186.458s`, app `56.636s`, catalogs `35.217s`, server `57.944s`, models.dev `69.379s`), vet, catalog access (`11.32–11.62 ns/op`, `0 B/op`, `0 allocs/op`), and pinned lint with zero issues. It then correctly failed before coverage because `scripts/verify.sh` still named the now-deleted `internal/attribution` and `internal/attribution/matcher` packages. Those obsolete policy entries and their maintained documentation rows are removed; author membership is exercised as catalog derivation under `pkg/catalogs`, and no live-package threshold is reduced. Exact coverage and full repository verification remain required. |
+| 2026-07-28 | P5.8 / F-059 | `make test-critical-coverage` passed every surviving threshold: pipeline `79.7%`, query `77.7%`, provider clients `96.0%`, provider source `86.2%`, events `73.7%`, middleware `97.0%`, params `98.5%`, response `100.0%`, SSE `96.7%`, WebSocket `88.2%`, transport `58.4%`, authority `95.6%`, catalogs `69.9%`, errors `84.3%`, reconciler `80.4%`, and sources `56.1%`. The gate no longer invokes a deleted package; F-059 is DONE. |
+| 2026-07-28 | P5.8 | The third uninterrupted `make verify` passed ordinary tests (root `31.014s`, CLI app `10.366s`, catalogs `16.403s`), repository race-short (root `187.007s`, app `55.373s`, catalogs `35.236s`, server `59.305s`, models.dev `69.841s`), vet, pinned lint with zero issues, every surviving coverage floor, generated GoDoc, diff, build, 611-model catalog validation, and CLI smokes. `BenchmarkClientCatalog` measured `10.65–11.17 ns/op`, `0 B/op`, and `0 allocs/op`. A subsequent public-artifact audit found the generated OpenAPI inconsistency recorded as F-060, so the complete gate must run again after that verification-only repair. |
+| 2026-07-28 | P5.8 / F-060 | The Go `ModelArchitecture` correctly deleted legacy `Precision`, but the embedded OpenAPI JSON/YAML still advertised `precision`; `make docs-check` regenerated only package READMEs and therefore could report success while the served schema was stale. `make openapi` removed the field from both embedded specifications. New `make openapi-check` generates both schemas off to the side with pinned Swag v2 and compares exact bytes; `docs-check` depends on it, and the focused check passes. An independent read-only generated-surface audit reproduced both specs byte-for-byte, mapped every exposed `catalogs.*` schema to a current Go type, and found none of the deleted legacy APIs in OpenAPI, root API docs, or catalog GoDoc. No runtime API or catalog semantics changed. |
+| 2026-07-28 | P5.8 / F-060 | The complete verification-hardened P5 tree passed uninterrupted `make verify`: ordinary root `38.143s`, CLI app `10.301s`, and catalogs `16.230s`; repository race-short root `211.808s`, app `51.541s`, catalogs `32.148s`, server `55.195s`, and models.dev `66.552s`; vet; pinned golangci-lint v2.12.2 with zero issues; every surviving coverage floor including catalogs `69.9%`; exact OpenAPI reproduction plus generated GoDoc; diff; build; 611-model validation; and CLI smokes. `BenchmarkClientCatalog` measured `9.051–10.72 ns/op`, `0 B/op`, and `0 allocs/op`. This material tree is ready to commit; the exact clean commit must repeat repository verification and current vulnerability scanning before push. |
+| 2026-07-28 | P5.8 / F-052–F-060 | Exact clean material commit `c3ae6dee0e139cc5ad6f5a86d1ad9efd023bbe23` passed uninterrupted `make verify`: ordinary root `35.007s`, CLI app `12.261s`, catalogs `17.488s`, and server `13.178s`; repository race-short root `200.813s`, app `51.716s`, catalogs `32.017s`, server `55.285s`, and models.dev `67.176s`; vet; pinned lint with zero issues; all coverage floors; exact OpenAPI and generated-GoDoc checks; diff; build; 611-model catalog validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.69–11.35 ns/op`, `0 B/op`, and `0 allocs/op`. Current `govulncheck v1.6.0 ./...` found zero reachable vulnerabilities and zero vulnerabilities in imported packages; one required module contained a vulnerability in code Starmap does not call. The material P5 result is ready for its evidence-only ledger commit and protected PR lifecycle. |
+| 2026-07-28 | P5.8 | Evidence head `fadccebfd2cc6339ee949e613c156ae10b30017e` passed uninterrupted `make verify`: ordinary root `30.918s`, CLI app `10.995s`, catalogs `16.900s`, and server `11.865s`; repository race-short root `182.088s`, app `52.357s`, catalogs `32.760s`, server `56.575s`, and models.dev `67.248s`; vet; pinned lint with zero issues; all coverage, generated-schema/docs, diff, build, 611-model validation, and CLI smoke gates. `BenchmarkClientCatalog` measured `10.96–11.33 ns/op`, `0 B/op`, and `0 allocs/op`. Current exact-head `govulncheck v1.6.0 ./...` again found zero reachable vulnerabilities and zero vulnerabilities in imported packages. Explicitly pushed only `HEAD:refs/heads/codex/catalog-read-model-simplification` and opened ready protected phase PR [#53](https://github.com/agentstation/starmap/pull/53); initial [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30418323225/job/90469542726) and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30418323225/job/90469542681) runs queued on that exact head. This live-PR ledger commit becomes the final candidate and must pass exact local and hosted gates before the protected merge pause. |
+| 2026-07-28 | P5.8 / F-061 | PR #53 exact head `e3fca420ae170105ae91319d360e861196864aa0` passed uninterrupted local `make verify` (ordinary root `30.698s`, app `10.521s`, catalogs `16.912s`; race root `184.851s`, app `54.286s`, catalogs `33.231s`, server `57.545s`, models.dev `69.158s`; catalog access `11.47–11.83 ns/op`, `0 B/op`, `0 allocs/op`) and current govulncheck. Hosted [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30418354846/job/90469682104) passed in `2m39s`. [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30418354846/job/90469682161) passed minimum-Go tests, ordinary/race tests, vet, performance, zero-issue lint, and every coverage floor, then failed at `make docs-check` because the new OpenAPI check required an ambient `swag` binary absent from CI. `openapi` and `openapi-check` now run `github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4` through the selected Go toolchain; the structural workflow fixture rejects ambient lookup. `make HAS_DEVBOX= openapi-check`, `make HAS_DEVBOX= docs-check`, `go test -race ./internal/ciworkflow -count=1`, and `git diff --check` pass without a Devbox-provided Swag binary. No product, schema, or runtime semantics changed. |
 
 ## Final Definition of Done
 

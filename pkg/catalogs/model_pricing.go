@@ -121,15 +121,12 @@ type ModelTokenPricing struct {
 	Output *ModelTokenCost `json:"output,omitempty" yaml:"output,omitempty"` // Standard output tokens
 
 	// Advanced token types
-	Reasoning *ModelTokenCost         `json:"reasoning,omitempty" yaml:"reasoning,omitempty"` // Internal reasoning tokens
-	Cache     *ModelTokenCachePricing `json:"cache,omitempty" yaml:"cache,omitempty"`         // Cache operations
-
-	// Alternative flat cache structure (for backward compatibility)
+	Reasoning  *ModelTokenCost `json:"reasoning,omitempty" yaml:"reasoning,omitempty"`     // Internal reasoning tokens
 	CacheRead  *ModelTokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
 	CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
 }
 
-// MarshalYAML implements custom YAML marshaling for TokenPricing to use flat cache structure.
+// MarshalYAML implements custom YAML marshaling for token pricing.
 func (t *ModelTokenPricing) MarshalYAML() (any, error) {
 	result := make(map[string]any)
 
@@ -145,26 +142,15 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error) {
 		result["reasoning"] = t.Reasoning
 	}
 
-	// Use flat structure for cache pricing in YAML output, prioritizing Cache.Read over CacheRead
-	if t.Cache != nil && t.Cache.Read != nil {
-		result["cache_read"] = t.Cache.Read
-	} else if t.CacheRead != nil {
+	if t.CacheRead != nil {
 		result["cache_read"] = t.CacheRead
 	}
 
-	if t.Cache != nil && t.Cache.Write != nil {
-		result["cache_write"] = t.Cache.Write
-	} else if t.CacheWrite != nil {
+	if t.CacheWrite != nil {
 		result["cache_write"] = t.CacheWrite
 	}
 
 	return result, nil
-}
-
-// ModelTokenCachePricing represents cache-specific pricing.
-type ModelTokenCachePricing struct {
-	Read  *ModelTokenCost `json:"read,omitempty" yaml:"read,omitempty"`   // Cache read costs
-	Write *ModelTokenCost `json:"write,omitempty" yaml:"write,omitempty"` // Cache write costs
 }
 
 // ModelTokenCost represents cost per token with flexible units.

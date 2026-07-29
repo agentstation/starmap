@@ -507,7 +507,8 @@ func (c *Client) applyProviderPricing(model *catalogs.Model, apiModel Model) {
 	if apiModel.Metadata != nil {
 		applyOpenAICompatibleMetadataPricing(model.Pricing, apiModel.Metadata.Pricing)
 	}
-	if model.Pricing.Tokens.Input == nil && model.Pricing.Tokens.Output == nil && model.Pricing.Tokens.Cache == nil {
+	if model.Pricing.Tokens.Input == nil && model.Pricing.Tokens.Output == nil &&
+		model.Pricing.Tokens.CacheRead == nil && model.Pricing.Tokens.CacheWrite == nil {
 		model.Pricing.Tokens = nil
 	}
 }
@@ -539,9 +540,8 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.Completion}
 	}
 	if source.InputCacheRead != nil {
-		ensureTokenCachePricing(pricing.Tokens)
-		if pricing.Tokens.Cache.Read == nil {
-			pricing.Tokens.Cache.Read = &catalogs.ModelTokenCost{Per1M: *source.InputCacheRead}
+		if pricing.Tokens.CacheRead == nil {
+			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: *source.InputCacheRead}
 		}
 	}
 	if source.Request != nil || source.Image != nil {
@@ -568,9 +568,8 @@ func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source
 		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.OutputTokens}
 	}
 	if source.CacheReadTokens != nil {
-		ensureTokenCachePricing(pricing.Tokens)
-		if pricing.Tokens.Cache.Read == nil {
-			pricing.Tokens.Cache.Read = &catalogs.ModelTokenCost{Per1M: *source.CacheReadTokens}
+		if pricing.Tokens.CacheRead == nil {
+			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: *source.CacheReadTokens}
 		}
 	}
 	if source.PerImageUnit != nil || source.InputSeconds != nil || source.OutputSeconds != nil {
@@ -694,12 +693,6 @@ func appendUniqueModality(modalities []catalogs.ModelModality, modality catalogs
 
 func boolValue(value *bool) bool {
 	return value != nil && *value
-}
-
-func ensureTokenCachePricing(pricing *catalogs.ModelTokenPricing) {
-	if pricing.Cache == nil {
-		pricing.Cache = &catalogs.ModelTokenCachePricing{}
-	}
 }
 
 func ensureOperationPricing(pricing *catalogs.ModelPricing) {

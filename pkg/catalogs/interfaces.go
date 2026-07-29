@@ -66,13 +66,10 @@ type Reader interface {
 	Providers() ProvidersReader
 	Authors() AuthorsReader
 	Endpoints() EndpointsReader
-	Models() ModelsReader
 	Provenance() ProvenanceReader
 
 	// Gets a provider, author, or endpoint by id
 	Provider(id ProviderID) (Provider, error)
 	Author(id AuthorID) (Author, error)
 	Endpoint(id string) (Endpoint, error)
-	ProviderModels(id ProviderID) (ModelsReader, error)
-	ProviderModel(providerID ProviderID, modelID string) (Model, error)
 }

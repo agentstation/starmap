@@ -14,17 +14,13 @@ import (
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
-// CatalogPayload is the canonical catalog schema-v1 payload.
-type CatalogPayload = catalogs.CatalogPayload
-
-// EncodeCatalogPayload deterministically encodes a readable catalog as schema v1.
+// EncodeCatalogPayload deterministically encodes a readable catalog.
 func EncodeCatalogPayload(reader catalogs.Reader) ([]byte, error) {
 	return catalogs.EncodeCatalogPayload(reader)
 }
 
 type payloadDecodeReport struct {
 	ProviderModels sourcepayload.RecordReport
-	AuthorModels   sourcepayload.RecordReport
 }
 
 type payloadEnvelope struct {
@@ -33,22 +29,14 @@ type payloadEnvelope struct {
 	Authors        []catalogs.Author          `json:"authors"`
 	Endpoints      []catalogs.Endpoint        `json:"endpoints"`
 	ProviderModels map[string]json.RawMessage `json:"provider_models"`
-	AuthorModels   map[string]json.RawMessage `json:"author_models"`
 	Provenance     provenance.Map             `json:"provenance"`
 }
 
 func (r payloadDecodeReport) err() error {
-	report := sourcepayload.RecordReport{
-		Accepted:  r.ProviderModels.Accepted + r.AuthorModels.Accepted,
-		Rejected:  r.ProviderModels.Rejected + r.AuthorModels.Rejected,
-		Truncated: r.ProviderModels.Truncated || r.AuthorModels.Truncated,
-	}
-	report.Issues = append(report.Issues, r.ProviderModels.Issues...)
-	report.Issues = append(report.Issues, r.AuthorModels.Issues...)
-	return report.Err("catalog payload models")
+	return r.ProviderModels.Err("catalog payload models")
 }
 
-// DecodeCatalogPayload decodes a schema-v1 payload. A non-nil catalog together
+// DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog together
 // with *sourcepayload.QuarantineError is a partial diagnostic result and must
 // not be activated as the manifest-bound generation.
 func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
@@ -79,7 +67,7 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 	}
 	for _, field := range []string{
 		"schema_version", "providers", "authors", "endpoints",
-		"provider_models", "author_models", "provenance",
+		"provider_models", "provenance",
 	} {
 		if _, found := required[field]; !found {
 			return payloadEnvelope{}, &errors.ValidationError{Field: field, Message: "is required"}
@@ -114,7 +102,6 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 		{name: "authors", isNull: payload.Authors == nil},
 		{name: "endpoints", isNull: payload.Endpoints == nil},
 		{name: "provider_models", isNull: payload.ProviderModels == nil},
-		{name: "author_models", isNull: payload.AuthorModels == nil},
 		{name: "provenance", isNull: payload.Provenance == nil},
 	} {
 		if field.isNull {
@@ -195,36 +182,6 @@ func buildDecodedCatalog(payload payloadEnvelope) (*catalogs.Catalog, payloadDec
 			}
 		}
 		authorIDs[string(author.ID)] = struct{}{}
-	}
-	for authorID := range payload.AuthorModels {
-		if _, found := authorIDs[authorID]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
-				Field: "author_models", Value: authorID, Message: "references an unknown author",
-			}
-		}
-	}
-	for _, author := range payload.Authors {
-		author.Models = make(map[string]*catalogs.Model)
-		if _, found := payload.AuthorModels[string(author.ID)]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
-				Field: "author_models", Value: author.ID, Message: "is required for every author",
-			}
-		}
-		remaining := remainingRecordBudget(report.AuthorModels)
-		rawModels := payload.AuthorModels[string(author.ID)]
-		models, recordReport, err := sourcepayload.DecodeJSONArray[catalogs.Model](
-			rawModels,
-			"author_models["+string(author.ID)+"]",
-			remaining,
-		)
-		if err != nil {
-			return nil, payloadDecodeReport{}, err
-		}
-		mergeRecordReport(&report.AuthorModels, recordReport)
-		for _, model := range models {
-			modelCopy := catalogs.DeepCopyModel(model)
-			author.Models[model.ID] = &modelCopy
-		}
 		if err := builder.SetAuthor(author); err != nil {
 			return nil, payloadDecodeReport{}, errors.WrapResource("decode", "author", string(author.ID), err)
 		}

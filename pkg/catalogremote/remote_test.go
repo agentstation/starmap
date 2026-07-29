@@ -50,7 +50,11 @@ func TestRemoteClientRejectsCrossOriginRedirect(t *testing.T) {
 }
 
 func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *testing.T) {
-	valid := remoteTestGeneration(t, 1, catalogs.ConsumerCompatibility{MinSchemaVersion: 1, MaxSchemaVersion: 1})
+	current := catalogs.CurrentCatalogSchemaVersion
+	valid := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{
+		MinSchemaVersion: current,
+		MaxSchemaVersion: current,
+	})
 	for _, test := range []struct {
 		name            string
 		generation      catalogstore.Generation
@@ -68,7 +72,14 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 		}, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
 		{name: "wrong manifest media type", generation: valid, manifestType: "application/json", snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
 		{name: "wrong snapshot media type", generation: valid, manifestType: ManifestMediaType, snapshotType: "application/json", wantError: true, wantSnapshotGet: true},
-		{name: "incompatible before snapshot", generation: remoteTestGeneration(t, 2, catalogs.ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 2}), manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{
+			name: "incompatible before snapshot",
+			generation: remoteTestGeneration(t, current+1, catalogs.ConsumerCompatibility{
+				MinSchemaVersion: current + 1,
+				MaxSchemaVersion: current + 1,
+			}),
+			manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true,
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			manifest, err := MarshalManifest(test.generation.Manifest)

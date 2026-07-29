@@ -53,14 +53,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   err = sm.Update(ctx)
   ```
 
-- **Canonical model-definition lookup and explicit legacy adapter**:
+- **Canonical model-definition and offering lookup**:
   `catalog.FindModel(id)` now returns `catalogs.ModelDefinition`. Provider price,
   limits, availability, modes, and request behavior are read through
-  `catalog.Offering(providerID, providerModelID)`. Code that requires the former
-  flattened `catalogs.Model` result migrates mechanically to
-  `catalog.LegacyV0().FindModel(id)`; the same adapter exposes legacy `Models`,
-  `ProviderModel`, and `ProviderModels` reads. The adapter is schema version 0;
-  canonical catalogs are schema version 1.
+  `catalog.Offering(providerID, providerModelID)`. The prelaunch flattened
+  `Models`, `ProviderModel`, `ProviderModels`, and `LegacyV0` reads were deleted
+  because they discard provider identity. Canonical catalogs are schema
+  version 2.
+  The duplicate nested `tokens.cache` representation and unused
+  `architecture.precision` alias were also removed; cache pricing persists only
+  as `cache_read`/`cache_write`, and quantization has one typed field.
+- **One canonical CLI spelling**: structured output uses `--output`/`-o` and
+  update previews use `--dry-run`. The prelaunch `--format`, `--fmt`, `--dry`,
+  `FORMAT`, `inspect`, and `server` aliases were removed rather than becoming
+  permanent compatibility surface.
 
 - **`Client.Catalog()` now returns a concrete immutable catalog**: the old
   `Catalog() (catalogs.Snapshot, error)` signature is replaced by
@@ -87,9 +93,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The client deep-copies a builder once, validates/builds the immutable catalog,
   and atomically swaps one complete generation after persistence. Catalogs
-  precompute alias-aware provider/model indexes; use `ProviderModels` or
-  `ProviderModel` for provider-specific offerings rather than a lossy bare-ID
-  model view.
+  precompute alias-aware definition and offering indexes; use `Offering` or
+  `ProviderOfferings` for provider-specific service facts rather than a lossy
+  bare-ID model view. Advanced builders retain provider-scoped
+  `ProviderModel`/`ProviderModels` reads while constructing candidates.
 
 - **Sync option contract corrected**:
   - Removed `sync.WithAutoApprove`; confirmation belongs to the CLI and core
@@ -144,20 +151,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   conditional object-storage adapters. Generations are validated before commit,
   retained immutably, defensively copied, and activated only when the expected
   current ID matches; identical retries are idempotent.
-- **Deletion-correct catalog saves**: legacy builder saves now replace
-  Starmap-managed YAML indexes and provider/author model trees, preventing
-  deleted records from reappearing after reload while preserving unmanaged
-  neighboring files. Generation stores already replace the payload as one
-  immutable unit.
+- **Deletion-correct catalog saves**: builder saves replace Starmap-managed YAML
+  indexes and provider model trees and remove obsolete author-model
+  directories, preventing deleted records from reappearing after reload while
+  preserving unmanaged neighboring files. Generation stores already replace
+  the payload as one immutable unit.
 - **Configured local catalog failures are visible**: a missing optional path
   still falls back to the embedded bootstrap, while existing corrupt YAML,
   unreadable managed files, and invalid provider/author records now propagate
   typed errors and make `starmap.New` fail before publication.
-- **Legacy v0 migration reader**: the shipped multi-file YAML layout is frozen
-  as a fixture and can be converted deterministically into schema-v1 catalog
-  payload bytes and a validated generation. Migration requires explicit IDs,
-  UTC time, and validator version rather than inventing missing historical
-  metadata; corrupt legacy input remains a typed parse failure.
+- **Single persisted model source**: catalog schema version 2 persists provider
+  model records and provenance only. Definitions, offerings, and author
+  membership are immutable validated read views; the duplicate author-model
+  tree and its prelaunch migration adapter were removed.
 - **New `starmap auth` Command**: Top-level authentication helper in "setup" group
   - `starmap auth gcloud` → Google Cloud authentication setup (ADC configuration)
   - Provides guidance to use `starmap providers` for viewing auth status

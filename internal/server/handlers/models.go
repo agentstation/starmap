@@ -8,7 +8,6 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/server/params"
 	"github.com/agentstation/starmap/internal/server/response"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // HandleListModels handles GET /api/v1/models.
@@ -70,7 +69,7 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 		response.ErrorFromType(w, err)
 		return
 	}
-	filtered := f.Apply(allModels)
+	filtered := f.ApplyRecords(allModels)
 
 	page := query.Paginate(filtered, f.Limit, f.Offset)
 
@@ -258,11 +257,11 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 		response.ErrorFromType(w, err)
 		return
 	}
-	results := f.Apply(allModels)
+	results := f.ApplyRecords(allModels)
 
 	// Filter by IDs if specified
 	if len(req.IDs) > 0 {
-		filtered := make([]catalogs.Model, 0, len(req.IDs))
+		filtered := make([]query.ModelRecord, 0, len(req.IDs))
 		idMap := make(map[string]bool)
 		for _, id := range req.IDs {
 			idMap[id] = true

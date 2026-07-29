@@ -30,37 +30,22 @@ var _ Reader = (*Catalog)(nil)
 // safe to retain across goroutines, and accessible only through read methods.
 type Catalog struct {
 	source            Reader
-	models            ModelsReader
-	providerModels    map[ProviderID]ModelsReader
 	definitions       map[ModelDefinitionID]ModelDefinition
 	offerings         map[OfferingKey]ProviderOffering
 	providerOfferings map[ProviderID][]OfferingKey
+	authorDefinitions map[AuthorID][]ModelDefinitionID
 }
 
 func buildCatalog(source Reader) (*Catalog, error) {
-	providerModels := make(map[ProviderID]ModelsReader)
-	for _, provider := range source.Providers().List() {
-		models := NewModels()
-		for modelID, model := range provider.Models {
-			if model == nil {
-				continue
-			}
-			if err := models.Set(modelID, model); err != nil {
-				return nil, errors.WrapResource("index", "provider model", string(provider.ID)+"/"+modelID, err)
-			}
-		}
-		reader := modelsReader{source: models}
-		providerModels[provider.ID] = reader
-		for _, alias := range provider.Aliases {
-			providerModels[alias] = reader
-		}
+	if err := validateCatalogIdentities(source); err != nil {
+		return nil, errors.WrapResource("validate", "catalog identities", "", err)
 	}
-	migrated, err := MigrateLegacySchema(source)
+	views, err := deriveReadViews(source)
 	if err != nil {
-		return nil, errors.WrapResource("index", "definition and offering catalog", "", err)
+		return nil, errors.WrapResource("index", "catalog read views", "", err)
 	}
 	providerOfferings := make(map[ProviderID][]OfferingKey)
-	for key := range migrated.Offerings {
+	for key := range views.offerings {
 		providerOfferings[key.ProviderID] = append(providerOfferings[key.ProviderID], key)
 	}
 	for providerID, keys := range providerOfferings {
@@ -71,6 +56,10 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	}
 	for _, provider := range source.Providers().List() {
 		keys := providerOfferings[provider.ID]
+		if keys == nil {
+			keys = []OfferingKey{}
+			providerOfferings[provider.ID] = keys
+		}
 		for _, alias := range provider.Aliases {
 			providerOfferings[alias] = keys
 		}
@@ -78,11 +67,10 @@ func buildCatalog(source Reader) (*Catalog, error) {
 
 	return &Catalog{
 		source:            source,
-		models:            modelsReader{source: source.Models()},
-		providerModels:    providerModels,
-		definitions:       migrated.Definitions,
-		offerings:         migrated.Offerings,
+		definitions:       views.definitions,
+		offerings:         views.offerings,
 		providerOfferings: providerOfferings,
+		authorDefinitions: views.authorDefinitions,
 	}, nil
 }
 
@@ -101,13 +89,6 @@ func (r *Catalog) Endpoints() EndpointsReader {
 	return endpointsReader{source: r.source.Endpoints()}
 }
 
-// Models returns the immutable catalog's legacy bare-ID model reader.
-//
-// Deprecated: use Definition, Offering, ProviderOfferings, or LegacyV0.
-func (r *Catalog) Models() ModelsReader {
-	return r.LegacyV0().Models()
-}
-
 // Provenance returns the immutable catalog's provenance reader.
 func (r *Catalog) Provenance() ProvenanceReader {
 	return provenanceReader{source: r.source.Provenance()}
@@ -121,20 +102,6 @@ func (r *Catalog) Author(id AuthorID) (Author, error) { return r.source.Author(i
 
 // Endpoint returns a caller-owned copy of an endpoint.
 func (r *Catalog) Endpoint(id string) (Endpoint, error) { return r.source.Endpoint(id) }
-
-// ProviderModels returns legacy model records for a provider or alias.
-//
-// Deprecated: use ProviderOfferings or LegacyV0.
-func (r *Catalog) ProviderModels(id ProviderID) (ModelsReader, error) {
-	return r.LegacyV0().ProviderModels(id)
-}
-
-// ProviderModel returns one legacy provider-scoped model record.
-//
-// Deprecated: use Offering or LegacyV0.
-func (r *Catalog) ProviderModel(providerID ProviderID, modelID string) (Model, error) {
-	return r.LegacyV0().ProviderModel(providerID, modelID)
-}
 
 // Definition returns one caller-owned canonical model definition.
 func (r *Catalog) Definition(id ModelDefinitionID) (ModelDefinition, error) {
@@ -190,9 +157,23 @@ func (r *Catalog) ProviderOfferings(providerID ProviderID) ([]ProviderOffering, 
 	return offerings, nil
 }
 
+// AuthorModels returns caller-owned canonical model definitions attributed to
+// an author or one of its aliases, ordered by definition ID.
+func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error) {
+	author, found := r.source.Authors().Resolve(authorID)
+	if !found || author == nil {
+		return nil, &errors.NotFoundError{Resource: "author", ID: string(authorID)}
+	}
+	ids := r.authorDefinitions[author.ID]
+	definitions := make([]ModelDefinition, 0, len(ids))
+	for _, id := range ids {
+		definitions = append(definitions, copyModelDefinition(r.definitions[id]))
+	}
+	return definitions, nil
+}
+
 // FindModel returns the canonical provider-independent model definition.
-// Use Offering for provider price, limits, availability, and request behavior;
-// use LegacyV0 when migrating code that requires the old flattened Model.
+// Use Offering for provider price, limits, availability, and request behavior.
 func (r *Catalog) FindModel(id string) (ModelDefinition, error) {
 	return r.Definition(ModelDefinitionID(id))
 }
@@ -231,15 +212,6 @@ func (r endpointsReader) Len() int                                { return r.sou
 func (r endpointsReader) List() []Endpoint                        { return r.source.List() }
 func (r endpointsReader) Map() map[string]*Endpoint               { return r.source.Map() }
 func (r endpointsReader) ForEach(fn func(string, *Endpoint) bool) { r.source.ForEach(fn) }
-
-type modelsReader struct{ source ModelsReader }
-
-func (r modelsReader) Get(id string) (*Model, bool)         { return r.source.Get(id) }
-func (r modelsReader) Exists(id string) bool                { return r.source.Exists(id) }
-func (r modelsReader) Len() int                             { return r.source.Len() }
-func (r modelsReader) List() []Model                        { return r.source.List() }
-func (r modelsReader) Map() map[string]*Model               { return r.source.Map() }
-func (r modelsReader) ForEach(fn func(string, *Model) bool) { r.source.ForEach(fn) }
 
 type provenanceReader struct{ source ProvenanceReader }
 

@@ -238,8 +238,8 @@ func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker,
 	}
 }
 
-// AuthorsToTableData converts authors to table format.
-func AuthorsToTableData(authors []*catalogs.Author) Data {
+// AuthorsToTableData converts authors and derived model counts to table format.
+func AuthorsToTableData(authors []*catalogs.Author, modelCounts map[catalogs.AuthorID]int) Data {
 	headers := []string{"ID", "NAME", "WEBSITE", "MODELS"}
 
 	rows := make([][]string, 0, len(authors))
@@ -253,7 +253,7 @@ func AuthorsToTableData(authors []*catalogs.Author) Data {
 			string(author.ID),
 			author.Name,
 			website,
-			fmt.Sprintf("%d", len(author.Models)),
+			fmt.Sprintf("%d", modelCounts[author.ID]),
 		}
 		rows = append(rows, row)
 	}

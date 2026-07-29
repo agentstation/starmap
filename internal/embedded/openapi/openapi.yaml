@@ -275,9 +275,6 @@ components:
         parameter_count:
           description: Model size (e.g., "7B", "70B", "405B")
           type: string
-        precision:
-          description: Legacy precision format (use Quantization for filtering)
-          type: string
         quantization:
           $ref: '#/components/schemas/catalogs.Quantization'
         quantized:
