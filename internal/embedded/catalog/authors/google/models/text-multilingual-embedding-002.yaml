@@ -3,7 +3,7 @@ id: text-multilingual-embedding-002
 name: text-multilingual-embedding-002
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google model: text-multilingual-embedding-002
 

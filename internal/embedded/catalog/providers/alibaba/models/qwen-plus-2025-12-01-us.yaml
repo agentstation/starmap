@@ -1,6 +1,6 @@
 # qwen-plus-2025-12-01-us - AI model
 id: qwen-plus-2025-12-01-us
-model: qwen/qwen-plus-2025-12-01-us
+model: qwen/qwen-plus-2025-12-01
 name: qwen-plus-2025-12-01-us
 authors:
 - id: qwen

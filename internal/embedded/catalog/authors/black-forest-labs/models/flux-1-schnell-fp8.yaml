@@ -3,7 +3,7 @@ id: flux-1-schnell-fp8
 name: accounts/fireworks/models/flux-1-schnell-fp8
 authors:
 - id: black-forest-labs
-  name: black-forest-labs
+  name: Black Forest Labs
 
 # Model features
 features:

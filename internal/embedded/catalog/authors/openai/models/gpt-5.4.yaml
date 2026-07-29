@@ -3,7 +3,7 @@ id: gpt-5.4
 name: gpt-5.4
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Agent-ready GPT for coding and computer-use workflows at a lower cost
 
 # Model metadata

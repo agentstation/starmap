@@ -3,7 +3,7 @@ id: whisper-large-v3-turbo
 name: openai/whisper-large-v3-turbo
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper "Robust Speech Recognition via Large-Scale Weak Supervision" by Alec Radford et al. from OpenAI. Trained on >5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting. Whisper large-v3-turbo is a finetuned version of a pruned Whisper large-v3. In other words, it's the exact same model, except that the number of decoding layers have reduced from 32 to 4. As a result, the model is way faster, at the expense of a minor quality degradation.
 
 # Model metadata

@@ -3,7 +3,7 @@ id: gemini-embedding-2-preview
 name: Gemini Embedding 2 Preview
 authors:
 - id: google
-  name: google
+  name: Google
 description: Obtain a distributed representation of multimodal content.
 
 # Model features

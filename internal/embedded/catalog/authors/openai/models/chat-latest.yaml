@@ -3,7 +3,7 @@ id: chat-latest
 name: chat-latest
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

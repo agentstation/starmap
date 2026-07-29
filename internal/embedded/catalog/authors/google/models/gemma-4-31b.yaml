@@ -3,7 +3,7 @@ id: gemma-4-31b
 name: gemma-4-31b
 authors:
 - id: google
-  name: google
+  name: Google
 description: Largest Gemma 4 instruction model for open, self-hosted chat and reasoning
 
 # Model metadata

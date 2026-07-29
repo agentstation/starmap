@@ -3,7 +3,7 @@ id: jax-owl-vit-v2
 name: jax-owl-vit-v2
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: jax-owl-vit-v2
 

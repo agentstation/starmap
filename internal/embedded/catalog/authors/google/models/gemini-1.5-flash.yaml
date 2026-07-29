@@ -3,7 +3,7 @@ id: gemini-1.5-flash
 name: google/gemini-1.5-flash
 authors:
 - id: google
-  name: google
+  name: Google
 description: Gemini 1.5 Flash is Google's foundation model that performs well at a variety of multimodal tasks such as visual understanding, classification, summarization, and creating content from image, audio and video. It's adept at processing visual and text inputs such as photographs, documents, infographics, and screenshots. Gemini 1.5 Flash is designed for high-volume, high-frequency tasks where cost and latency matter.
 
 # Model metadata

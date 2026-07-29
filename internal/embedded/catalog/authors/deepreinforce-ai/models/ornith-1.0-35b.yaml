@@ -3,7 +3,7 @@ id: ornith-1.0-35b
 name: deepreinforce-ai/Ornith-1.0-35B
 authors:
 - id: deepreinforce-ai
-  name: deepreinforce-ai
+  name: DeepReinforce
 description: |-
   Ornith-1.0-35B is DeepReinforce's open (MIT-licensed) agentic-coding model: an RL post-train of Qwen3.5-35B-A3B, a 35B-total / ~3B-active Mixture-of-Experts with hybrid Gated-DeltaNet attention. It targets state-of-the-art open-model coding-agent performance (SWE-bench Verified 75.6, Terminal-Bench 2.1 64.2) with a 262K-token context, thinking/reasoning mode, tool calling, and image + video understanding.
 

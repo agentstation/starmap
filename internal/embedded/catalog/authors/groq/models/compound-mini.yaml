@@ -3,7 +3,7 @@ id: compound-mini
 name: Compound Mini
 authors:
 - id: groq
-  name: groq
+  name: Groq
 description: Efficient model for low-latency assistance, extraction, and routine automation
 
 # Model metadata

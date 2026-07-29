@@ -3,7 +3,7 @@ id: gpt-5.2
 name: gpt-5.2
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Reliable GPT generation for broad coding, writing, and tool-assisted product work
 
 # Model metadata

@@ -3,7 +3,7 @@ id: gemini-3.1-pro-preview-customtools
 name: Gemini 3.1 Pro Preview Custom Tools
 authors:
 - id: google
-  name: google
+  name: Google
 description: Advanced Gemini model for complex reasoning, coding, and multimodal analysis
 
 # Model metadata
@@ -83,14 +83,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 reasoning:
   levels:
   - low

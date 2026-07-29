@@ -3,7 +3,7 @@ id: kimi-k2.6
 name: kimi-k2.6
 authors:
 - id: moonshot-ai
-  name: moonshot-ai
+  name: Moonshot AI
 description: Multimodal Kimi workhorse for agent loops, coding tasks, and visual context
 
 # Model metadata

@@ -3,7 +3,7 @@ id: mimo-v2.5-tts
 name: XiaomiMiMo/MiMo-V2.5-tts
 authors:
 - id: xiaomi
-  name: xiaomi
+  name: Xiaomi
 description: Automatically convert input text into natural and fluent speech output. You can generate natural and vivid speech content by configuring parameters such as speech style and voice. Use the high-quality voices from the built-in voices list.
 
 # Model metadata

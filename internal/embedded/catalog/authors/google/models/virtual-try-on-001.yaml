@@ -3,7 +3,7 @@ id: virtual-try-on-001
 name: virtual-try-on-001
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google model: virtual-try-on-001
 

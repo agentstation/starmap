@@ -192,6 +192,53 @@ func TestDeleteAuthorRejectsOwnedAuthoredModels(t *testing.T) {
 	}
 }
 
+func TestDeleteAuthorModelResolvesAuthorAlias(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{
+		ID: "canonical", Aliases: []AuthorID{"alias"}, Name: "Canonical Author",
+	}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := builder.SetAuthorModel("alias", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "alias", Name: "Stale Author"}},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+
+	if err := builder.DeleteAuthorModel("alias", "model"); err != nil {
+		t.Fatalf("DeleteAuthorModel(alias): %v", err)
+	}
+	if records := builder.AuthoredModels(); len(records) != 0 {
+		t.Fatalf("authored models = %#v, want empty", records)
+	}
+}
+
+func TestSetAuthorModelRejectsGenerationDefaultOutsideRange(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	err := builder.SetAuthorModel("author", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Generation: &ModelGeneration{
+			TopP: &FloatRange{Min: 0, Max: 0, Default: 0.95},
+		},
+	})
+	var validationErr *pkgerrors.ValidationError
+	if !errors.As(err, &validationErr) {
+		t.Fatalf("SetAuthorModel error = %T %v, want ValidationError", err, err)
+	}
+	if validationErr.Field != "model.generation.top_p" {
+		t.Fatalf("validation field = %q, want model.generation.top_p", validationErr.Field)
+	}
+}
+
 func TestAuthoredAndProviderRecordsRoundTripIndependently(t *testing.T) {
 	t.Parallel()
 

@@ -1,6 +1,6 @@
 # qwen-flash-2025-07-28-us - AI model
 id: qwen-flash-2025-07-28-us
-model: qwen/qwen-flash-2025-07-28-us
+model: qwen/qwen-flash-2025-07-28
 name: qwen-flash-2025-07-28-us
 authors:
 - id: qwen

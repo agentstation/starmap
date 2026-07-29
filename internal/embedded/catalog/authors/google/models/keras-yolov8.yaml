@@ -3,7 +3,7 @@ id: keras-yolov8
 name: keras-yolov8
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: keras-yolov8
 

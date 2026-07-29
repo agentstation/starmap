@@ -3,7 +3,7 @@ id: seed-2.0-mini
 name: ByteDance/Seed-2.0-mini
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: Built for low-latency, high-concurrency, cost-sensitive use cases, with flexible deployment, four-tier thinking, and multimodal
 
 # Model metadata

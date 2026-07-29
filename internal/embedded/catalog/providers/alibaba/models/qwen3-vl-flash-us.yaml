@@ -1,6 +1,6 @@
 # qwen3-vl-flash-us - AI model
 id: qwen3-vl-flash-us
-model: qwen/qwen3-vl-flash-us
+model: qwen/qwen3-vl-flash
 name: qwen3-vl-flash-us
 authors:
 - id: qwen

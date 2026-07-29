@@ -41,8 +41,8 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 	reviewed := make(map[string]authorCorpusRecord, len(manifest.Records))
 	withoutExactProviderID := 0
 	for _, record := range manifest.Records {
-		if record.Disposition != "keep" {
-			t.Fatalf("%s disposition = %q, want keep", record.Path, record.Disposition)
+		if record.Disposition != "keep" && record.Disposition != "merge" {
+			t.Fatalf("%s disposition = %q, want keep or merge", record.Path, record.Disposition)
 		}
 		if _, duplicate := reviewed[record.Path]; duplicate {
 			t.Fatalf("duplicate manifest path %q", record.Path)
@@ -57,7 +57,20 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 	}
 
 	reviewedPaths := make(map[string]struct{}, embeddedAuthorModelCount)
-	err := fs.WalkDir(embedded.FS, "catalog/authors", func(path string, entry fs.DirEntry, walkErr error) error {
+	embeddedModels := make(map[string]struct{})
+	authorData, err := fs.ReadFile(embedded.FS, "catalog/authors.yaml")
+	if err != nil {
+		t.Fatalf("read authors.yaml: %v", err)
+	}
+	var authors []catalogs.Author
+	if err := yaml.Unmarshal(authorData, &authors); err != nil {
+		t.Fatalf("decode authors.yaml: %v", err)
+	}
+	authorNames := make(map[catalogs.AuthorID]string, len(authors))
+	for _, author := range authors {
+		authorNames[author.ID] = author.Name
+	}
+	err = fs.WalkDir(embedded.FS, "catalog/authors", func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
@@ -74,12 +87,19 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 		}
 		relative := strings.TrimPrefix(path, "catalog/")
 		assertAuthoredModelRecord(t, relative, model)
+		if got, want := model.Authors[0].Name, authorNames[model.Authors[0].ID]; got != want {
+			t.Fatalf("%s primary author name = %q, want canonical %q", relative, got, want)
+		}
+		parts := strings.Split(relative, "/")
+		embeddedModels[parts[1]+"/"+model.ID] = struct{}{}
 
 		record, found := reviewed[relative]
 		if !found {
 			return nil
 		}
-		parts := strings.Split(relative, "/")
+		if record.Disposition != "keep" {
+			t.Fatalf("merged historical model %q remains embedded", relative)
+		}
 		if record.Author != parts[1] || record.Slug != model.ID ||
 			record.CanonicalModel != record.Author+"/"+record.Slug {
 			t.Fatalf("manifest identity for %q = %#v, model ID %q", relative, record, model.ID)
@@ -90,12 +110,24 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 	if err != nil {
 		t.Fatalf("walk embedded author models: %v", err)
 	}
-	if len(reviewedPaths) != embeddedAuthorModelCount {
-		t.Fatalf("reviewed embedded author models = %d, want %d", len(reviewedPaths), embeddedAuthorModelCount)
-	}
-	for path := range reviewed {
-		if _, found := reviewedPaths[path]; !found {
-			t.Fatalf("reviewed author model %q is not embedded", path)
+	for path, record := range reviewed {
+		_, found := reviewedPaths[path]
+		switch record.Disposition {
+		case "keep":
+			if !found {
+				t.Fatalf("kept author model %q is not embedded", path)
+			}
+		case "merge":
+			if found {
+				t.Fatalf("merged author model %q remains embedded", path)
+			}
+			if _, exists := embeddedModels[record.CanonicalModel]; !exists {
+				t.Fatalf(
+					"merged author model %q targets missing canonical model %q",
+					path,
+					record.CanonicalModel,
+				)
+			}
 		}
 	}
 }

@@ -3,7 +3,7 @@ id: nemotron-3.5-asr-streaming-multilingual-0.6b
 name: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
 authors:
 - id: nvidia
-  name: nvidia
+  name: NVIDIA
 description: Nemotron 3.5 ASR Streaming Multilingual is an open 0.6B-parameter prompt-conditioned cache-aware FastConformer-RNNT model, engineered for low-latency streaming transcription across 40+ languages. It powers real-time captioning, voice agents, and multilingual transcription pipelines—replacing separate per-language Whisper deployments with a single inference pass.
 
 # Model metadata

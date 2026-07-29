@@ -3,7 +3,7 @@ id: o4-mini-deep-research
 name: o4-mini-deep-research
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

@@ -3,7 +3,7 @@ id: text-embedding-large-exp-03-07
 name: text-embedding-large-exp-03-07
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: text-embedding-large-exp-03-07
 

@@ -3,7 +3,7 @@ id: veo-3.1
 name: google/veo-3.1
 authors:
 - id: google
-  name: google
+  name: Google
 description: Veo 3.1 is the latest text-to-video model from Google that generates high-fidelity, cinematic videos with synchronized audio from a simple text prompt. It excels at creating realistic and imaginative scenes with a deep understanding of natural language and visual dynamics.
 
 # Model metadata

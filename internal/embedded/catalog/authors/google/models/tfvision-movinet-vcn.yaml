@@ -3,7 +3,7 @@ id: tfvision-movinet-vcn
 name: tfvision-movinet-vcn
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: tfvision-movinet-vcn
 

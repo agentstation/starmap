@@ -3,7 +3,7 @@ id: erase_foreground
 name: Bria/erase_foreground
 authors:
 - id: bria
-  name: bria
+  name: Bria
 description: Bria Erase Foreground precisely removes main subjects or foreground objects from images. Built entirely on licensed data, it is safe and optimized for professional and commercial use.
 
 # Model metadata

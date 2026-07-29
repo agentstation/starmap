@@ -3,7 +3,7 @@ id: bge-m3-multi
 name: BAAI/bge-m3-multi
 authors:
 - id: baai
-  name: baai
+  name: Beijing Academy of Artificial Intelligence
 description: BGE-M3 is a multilingual text embedding model developed by BAAI, distinguished by its Multi-Linguality (supporting 100+ languages), Multi-Functionality (unified dense, multi-vector, and sparse retrieval), and Multi-Granularity (handling inputs from short queries to 8192-token documents). It achieves state-of-the-art retrieval performance across diverse benchmarks while maintaining a single model for multiple retrieval modes.
 
 # Model metadata

@@ -3,7 +3,7 @@ id: kimi-k2.5
 name: kimi-k2.5
 authors:
 - id: moonshot-ai
-  name: moonshot-ai
+  name: Moonshot AI
 description: Earlier Kimi frontier model for long-context agents, coding, and multimodal work
 
 # Model metadata

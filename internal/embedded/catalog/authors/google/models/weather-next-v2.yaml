@@ -3,7 +3,7 @@ id: weather-next-v2
 name: weather-next-v2
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google model: weather-next-v2
 

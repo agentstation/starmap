@@ -3,7 +3,7 @@ id: gpt-oss-120b
 name: gpt-oss-120b
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Open GPT reasoning model for self-hosted agents and controllable deployments
 
 # Model metadata

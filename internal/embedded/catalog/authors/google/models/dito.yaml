@@ -3,7 +3,7 @@ id: dito
 name: dito
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: dito
 

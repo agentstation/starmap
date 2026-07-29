@@ -3,7 +3,7 @@ id: cosmos3-nano
 name: nvidia/Cosmos3-Nano
 authors:
 - id: nvidia
-  name: nvidia
+  name: NVIDIA
 description: Cosmos3 is a world foundation model that unifies understanding and generation within a single Mixture-of-Transformer (MoT) architecture. Two tightly coupled towers—a Reasoner (vision-language model) and a Generator (world simulator)—share latent representations so that structured perception directly grounds realistic, temporally consistent simulation.
 
 # Model metadata

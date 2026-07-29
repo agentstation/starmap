@@ -3,7 +3,7 @@ id: image-segmentation-001
 name: image-segmentation-001
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: image-segmentation-001
 

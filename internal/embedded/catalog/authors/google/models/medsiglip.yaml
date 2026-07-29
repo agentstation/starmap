@@ -3,7 +3,7 @@ id: medsiglip
 name: medsiglip
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: medsiglip
 

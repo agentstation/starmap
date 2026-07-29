@@ -3,7 +3,7 @@ id: deepseek-v4-pro
 name: deepseek-v4-pro
 authors:
 - id: deepseek
-  name: deepseek
+  name: DeepSeek
 description: Open MoE flagship with million-token context for coding and long agent runs
 
 # Model metadata

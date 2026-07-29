@@ -3,7 +3,7 @@ id: multilingual-e5-large
 name: intfloat/multilingual-e5-large
 authors:
 - id: intfloat
-  name: intfloat
+  name: Intfloat
 description: The Multilingual-E5-large model is a 24-layer text embedding model with an embedding size of 1024, trained on a mixture of multilingual datasets and supporting 100 languages.
 
 # Model metadata

@@ -3,7 +3,7 @@ id: pretrained-form-parser
 name: pretrained-form-parser
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: pretrained-form-parser
 

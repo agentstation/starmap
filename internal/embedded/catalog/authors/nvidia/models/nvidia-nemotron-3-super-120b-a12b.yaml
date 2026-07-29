@@ -3,7 +3,7 @@ id: nvidia-nemotron-3-super-120b-a12b
 name: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
 authors:
 - id: nvidia
-  name: nvidia
+  name: NVIDIA
 description: NVIDIA Nemotron 3 Super is a hybrid Mixture-of-Experts (MoE) model engineered for highest compute efficiency and accuracy in multi-agent applications and specialized agentic systems. It is optimized to run many collaborating agents per application on a single GPU, delivering high accuracy for reasoning, tool use, and instruction following.
 
 # Model metadata

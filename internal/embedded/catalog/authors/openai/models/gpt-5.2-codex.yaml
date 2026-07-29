@@ -3,7 +3,7 @@ id: gpt-5.2-codex
 name: gpt-5.2-codex
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Code-specialist GPT for repository edits, reviews, and long-running software agents
 
 # Model metadata

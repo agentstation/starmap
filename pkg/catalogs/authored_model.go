@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 	"sync"
@@ -116,6 +117,9 @@ func validateAuthoredModel(authorID AuthorID, model Model) error {
 	if strings.TrimSpace(model.Name) == "" {
 		return &errors.ValidationError{Field: "authored_model.name", Message: "is required"}
 	}
+	if err := validateModelGeneration(model.Generation); err != nil {
+		return err
+	}
 	if len(model.Authors) == 0 || model.Authors[0].ID != authorID {
 		return &errors.ValidationError{
 			Field: "authored_model.authors", Value: model.Authors,
@@ -133,6 +137,78 @@ func validateAuthoredModel(authorID AuthorID, model Model) error {
 			return &errors.ValidationError{
 				Field: "authored_model.extensions", Value: source,
 				Message: "must not contain provider-specific extensions",
+			}
+		}
+	}
+	return nil
+}
+
+func validateModelGeneration(generation *ModelGeneration) error {
+	if generation == nil {
+		return nil
+	}
+	floatRanges := []struct {
+		name  string
+		value *FloatRange
+	}{
+		{"temperature", generation.Temperature},
+		{"top_p", generation.TopP},
+		{"top_a", generation.TopA},
+		{"min_p", generation.MinP},
+		{"typical_p", generation.TypicalP},
+		{"tfs", generation.TFS},
+		{"frequency_penalty", generation.FrequencyPenalty},
+		{"presence_penalty", generation.PresencePenalty},
+		{"repetition_penalty", generation.RepetitionPenalty},
+		{"length_penalty", generation.LengthPenalty},
+		{"mirostat_tau", generation.MirostatTau},
+		{"mirostat_eta", generation.MirostatEta},
+		{"contrastive_search_penalty_alpha", generation.ContrastiveSearchPenaltyAlpha},
+		{"diversity_penalty", generation.DiversityPenalty},
+	}
+	for _, candidate := range floatRanges {
+		if candidate.value == nil {
+			continue
+		}
+		if candidate.value.Min > candidate.value.Max ||
+			candidate.value.Default < candidate.value.Min ||
+			candidate.value.Default > candidate.value.Max {
+			return &errors.ValidationError{
+				Field: "model.generation." + candidate.name,
+				Value: *candidate.value,
+				Message: fmt.Sprintf(
+					"default must be within the inclusive range [%v, %v]",
+					candidate.value.Min,
+					candidate.value.Max,
+				),
+			}
+		}
+	}
+	intRanges := []struct {
+		name  string
+		value *IntRange
+	}{
+		{"top_k", generation.TopK},
+		{"no_repeat_ngram_size", generation.NoRepeatNgramSize},
+		{"n", generation.N},
+		{"best_of", generation.BestOf},
+		{"num_beams", generation.NumBeams},
+	}
+	for _, candidate := range intRanges {
+		if candidate.value == nil {
+			continue
+		}
+		if candidate.value.Min > candidate.value.Max ||
+			candidate.value.Default < candidate.value.Min ||
+			candidate.value.Default > candidate.value.Max {
+			return &errors.ValidationError{
+				Field: "model.generation." + candidate.name,
+				Value: *candidate.value,
+				Message: fmt.Sprintf(
+					"default must be within the inclusive range [%d, %d]",
+					candidate.value.Min,
+					candidate.value.Max,
+				),
 			}
 		}
 	}

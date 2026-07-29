@@ -3,7 +3,7 @@ id: imagesegmentation-deeplabv3
 name: imagesegmentation-deeplabv3
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imagesegmentation-deeplabv3
 

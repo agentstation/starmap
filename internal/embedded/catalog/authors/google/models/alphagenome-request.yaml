@@ -3,7 +3,7 @@ id: alphagenome-request
 name: alphagenome-request
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google model: alphagenome-request
 

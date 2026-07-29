@@ -3,7 +3,7 @@ id: claude-haiku-4-5
 name: Claude Haiku 4.5
 authors:
 - id: anthropic
-  name: anthropic
+  name: Anthropic
 
 # Model metadata
 metadata:

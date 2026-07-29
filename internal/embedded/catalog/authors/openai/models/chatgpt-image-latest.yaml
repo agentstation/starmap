@@ -3,7 +3,7 @@ id: chatgpt-image-latest
 name: chatgpt-image-latest
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Image model for prompt-driven generation, editing, and visual design workflows
 
 # Model metadata

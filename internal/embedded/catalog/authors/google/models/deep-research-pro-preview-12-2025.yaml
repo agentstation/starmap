@@ -3,7 +3,7 @@ id: deep-research-pro-preview-12-2025
 name: Deep Research Pro Preview (Dec-12-2025)
 authors:
 - id: google
-  name: google
+  name: Google
 description: Preview release (December 12th, 2025) of Deep Research Pro
 
 # Model features
@@ -71,14 +71,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209072Z

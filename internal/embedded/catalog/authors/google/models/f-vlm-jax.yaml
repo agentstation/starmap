@@ -3,7 +3,7 @@ id: f-vlm-jax
 name: f-vlm-jax
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: f-vlm-jax
 

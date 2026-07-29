@@ -3,7 +3,7 @@ id: gpt-realtime-2.1
 name: gpt-realtime-2.1
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Realtime speech-to-speech model with configurable reasoning, tool use, and robust voice-agent behavior
 
 # Model metadata

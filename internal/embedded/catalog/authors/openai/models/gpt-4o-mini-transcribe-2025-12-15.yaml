@@ -3,7 +3,7 @@ id: gpt-4o-mini-transcribe-2025-12-15
 name: gpt-4o-mini-transcribe-2025-12-15
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

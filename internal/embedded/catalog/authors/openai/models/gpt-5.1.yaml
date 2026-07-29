@@ -3,7 +3,7 @@ id: gpt-5.1
 name: gpt-5.1
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Sharper GPT-5 generation for coding, product work, and tool-assisted tasks
 
 # Model metadata

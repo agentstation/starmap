@@ -3,7 +3,7 @@ id: claude-3-7-sonnet-latest
 name: Claude Sonnet 3.7
 authors:
 - id: anthropic
-  name: anthropic
+  name: Anthropic
 
 # Model metadata
 metadata:

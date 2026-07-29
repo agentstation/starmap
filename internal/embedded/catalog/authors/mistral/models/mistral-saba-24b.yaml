@@ -3,7 +3,7 @@ id: mistral-saba-24b
 name: Mistral Saba 24B
 authors:
 - id: mistral
-  name: mistral
+  name: Mistral AI
 
 # Model metadata
 metadata:

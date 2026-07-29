@@ -217,14 +217,17 @@ ID: 32 alias/content overlaps, 25 models.dev-only records, and 64 presumed stale
 orphans. PR #53's terminal disposition is superseded for the authored-model
 corpus.
 
-The exact P5.9 review retained all 322 records as authored/history records. Each
-record has a machine-readable disposition in
+The exact P5.9 review restored all 322 records for review. The final P5.13
+outcome retains 265 records as authored/history records and merges 57
+provider-derived spelling, region, staging, model-garden, or version artifacts into canonical
+Qwen targets. Each historical record has a machine-readable disposition in
 `P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml`. Retention does not claim current
 provider availability:
 
-- 201 records have at least one exact current provider model ID;
-- 121 records do not and therefore produce no endpoint until a provider serving
-  record links to them;
+- exact provider IDs remain unchanged in provider YAML even when their author
+  record is merged into a region-independent canonical model;
+- 265 historical paths remain canonical authored records and 57 resolve to an
+  explicit canonical target;
 - all 30 records that lacked inline authors received the author named by their
   reviewed path;
 - two records whose inline author contradicted their old path were moved from
@@ -291,19 +294,20 @@ model is complete.
 P5 implemented the reviewed replacement without restoring the rejected
 `Author.Models` copy semantics:
 
-- 649 authored YAML records now produce 649 canonical definitions;
+- 608 authored YAML records now produce 608 canonical definitions;
 - 610 retained provider YAML records each carry an explicit canonical link;
 - the one metadata-free `pre-zhongyun-test-chat` record was removed rather than
   assigned an invented author;
-- all 610 offerings produce exactly 610 generated endpoint rows across 531
+- all 610 offerings produce exactly 610 generated endpoint rows across 519
   canonical models;
-- 118 authored-only definitions correctly produce no endpoint;
+- 89 authored-only definitions correctly produce no endpoint;
 - schema version 3 round-trips `author_models` and `provider_models`;
 - the immutable catalog precomputes canonical, alias, provider-offering, and
   definition-offering indexes;
 - `FindModel("gpt-4o")`, canonical `author/slug`, exact provider IDs,
   `AuthorModel`, and `DefinitionOfferings` use those immutable indexes;
-- every embedded lineage root and parent resolves; and
+- every embedded lineage root and parent either resolves uniquely, normalizes a
+  redundant self-reference to empty, or fails publication with a typed error;
 - the generic unrelated `catalogs.Endpoint` collection and unused
   models.dev-only catalog wrapper were deleted.
 

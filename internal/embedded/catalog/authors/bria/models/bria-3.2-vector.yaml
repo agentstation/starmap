@@ -3,7 +3,7 @@ id: bria-3.2-vector
 name: Bria/Bria-3.2-vector
 authors:
 - id: bria
-  name: bria
+  name: Bria
 description: Bria 3.2 is the next-generation commercial-ready text-to-image model. With just 4 billion parameters, it provides exceptional aesthetics and text rendering, evaluated to be on par to leading open-source models, and outperforming other licensed models.
 
 # Model metadata

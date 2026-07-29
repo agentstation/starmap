@@ -3,7 +3,7 @@ id: tfvision-yolov7
 name: tfvision-yolov7
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: tfvision-yolov7
 

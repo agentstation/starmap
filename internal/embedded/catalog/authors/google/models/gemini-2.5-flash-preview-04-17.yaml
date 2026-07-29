@@ -3,7 +3,7 @@ id: gemini-2.5-flash-preview-04-17
 name: Gemini 2.5 Flash Preview 04-17
 authors:
 - id: google
-  name: google
+  name: Google
 
 # Model metadata
 metadata:

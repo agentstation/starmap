@@ -3,7 +3,7 @@ id: voxtral-small-24b-2507
 name: mistralai/Voxtral-Small-24B-2507
 authors:
 - id: mistral
-  name: mistral
+  name: Mistral AI
 description: Voxtral Small is an enhancement of Mistral Small 3, incorporating state-of-the-art audio input capabilities while retaining best-in-class text performance. It excels at speech transcription, translation and audio understanding.
 
 # Model metadata

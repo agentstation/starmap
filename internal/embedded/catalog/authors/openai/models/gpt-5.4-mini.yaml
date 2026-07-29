@@ -3,7 +3,7 @@ id: gpt-5.4-mini
 name: gpt-5.4-mini
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Strong small GPT for coding subagents, quick tool use, and high-volume work
 
 # Model metadata

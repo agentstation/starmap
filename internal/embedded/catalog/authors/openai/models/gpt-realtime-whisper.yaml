@@ -3,7 +3,7 @@ id: gpt-realtime-whisper
 name: gpt-realtime-whisper
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

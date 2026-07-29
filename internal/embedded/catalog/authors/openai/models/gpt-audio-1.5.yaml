@@ -3,7 +3,7 @@ id: gpt-audio-1.5
 name: gpt-audio-1.5
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

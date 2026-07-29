@@ -3,7 +3,7 @@ id: language-v1-analyze-entity-sentiment
 name: language-v1-analyze-entity-sentiment
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: language-v1-analyze-entity-sentiment
 

@@ -3,7 +3,7 @@ id: imageclassification-proprietary-vit
 name: imageclassification-proprietary-vit
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imageclassification-proprietary-vit
 

@@ -3,7 +3,7 @@ id: wan2.6-t2i
 name: wan2.6-t2i
 authors:
 - id: alibaba
-  name: alibaba
+  name: Alibaba Cloud
 
 # Model features
 features:

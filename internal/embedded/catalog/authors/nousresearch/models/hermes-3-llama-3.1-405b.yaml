@@ -3,7 +3,7 @@ id: hermes-3-llama-3.1-405b
 name: NousResearch/Hermes-3-Llama-3.1-405B
 authors:
 - id: nousresearch
-  name: nousresearch
+  name: Nous Research
 description: Hermes 3 is a cutting-edge language model that offers advanced capabilities in roleplaying, reasoning, and conversation. It's a fine-tuned version of the Llama-3.1 405B foundation model, designed to align with user needs and provide powerful control. Key features include reliable function calling, structured output, generalist assistant capabilities, and improved code generation. Hermes 3 is competitive with Llama-3.1 Instruct models, with its own strengths and weaknesses.
 
 # Model metadata

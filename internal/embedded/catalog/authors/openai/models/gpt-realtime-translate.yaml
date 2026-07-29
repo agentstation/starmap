@@ -3,7 +3,7 @@ id: gpt-realtime-translate
 name: gpt-realtime-translate
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

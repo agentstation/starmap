@@ -3,7 +3,7 @@ id: seed-1.8
 name: ByteDance/Seed-1.8
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: Optimized specifically for multimodal agent scenarios. It features enhanced agent capabilities, upgraded multimodal comprehension, and more flexible context management.
 
 # Model metadata

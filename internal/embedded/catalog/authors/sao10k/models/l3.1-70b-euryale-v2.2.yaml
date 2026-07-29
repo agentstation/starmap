@@ -3,7 +3,7 @@ id: l3.1-70b-euryale-v2.2
 name: Sao10K/L3.1-70B-Euryale-v2.2
 authors:
 - id: sao10k
-  name: sao10k
+  name: Sao10K
 description: |-
   Euryale 3.1 - 70B v2.2 is a model focused on creative roleplay from Sao10k
 

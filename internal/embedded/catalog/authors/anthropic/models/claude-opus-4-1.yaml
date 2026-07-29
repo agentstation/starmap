@@ -3,7 +3,7 @@ id: claude-opus-4-1
 name: Claude Opus 4.1
 authors:
 - id: anthropic
-  name: anthropic
+  name: Anthropic
 
 # Model metadata
 metadata:

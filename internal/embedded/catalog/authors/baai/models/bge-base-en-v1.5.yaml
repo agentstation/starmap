@@ -3,7 +3,7 @@ id: bge-base-en-v1.5
 name: BAAI/bge-base-en-v1.5
 authors:
 - id: baai
-  name: baai
+  name: Beijing Academy of Artificial Intelligence
 description: BGE embedding is a general Embedding Model. It is pre-trained using retromae and trained on large-scale pair data using contrastive learning. Note that the goal of pre-training is to reconstruct the text, and the pre-trained model cannot be used for similarity calculation directly, it needs to be fine-tuned
 
 # Model metadata

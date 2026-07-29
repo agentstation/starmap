@@ -3,7 +3,7 @@ id: llama-guard-3-8b
 name: Llama Guard 3 8B
 authors:
 - id: meta
-  name: meta
+  name: Meta
 
 # Model metadata
 metadata:

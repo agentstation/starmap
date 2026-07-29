@@ -3,7 +3,7 @@ id: automl-e2e
 name: automl-e2e
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: automl-e2e
 

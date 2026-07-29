@@ -113,6 +113,14 @@ func TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview(t *
 	serving := loadProviderModelIdentityManifest(t)
 	reviewed := make(map[string]struct{}, len(historical.Records)+len(serving.Records))
 	for _, record := range historical.Records {
+		if record.Disposition == "merge" {
+			identity := strings.SplitN(record.CanonicalModel, "/", 2)
+			if len(identity) != 2 {
+				t.Fatalf("%s has invalid canonical model %q", record.Path, record.CanonicalModel)
+			}
+			reviewed["authors/"+identity[0]+"/models/"+identity[1]+".yaml"] = struct{}{}
+			continue
+		}
 		reviewed[record.Path] = struct{}{}
 	}
 	for _, record := range serving.Records {

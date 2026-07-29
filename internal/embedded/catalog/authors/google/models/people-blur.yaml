@@ -3,7 +3,7 @@ id: people-blur
 name: people-blur
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: people-blur
 

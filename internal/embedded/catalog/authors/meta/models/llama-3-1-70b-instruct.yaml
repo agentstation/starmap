@@ -3,7 +3,7 @@ id: llama-3-1-70b-instruct
 name: Llama 3.1 70B Instruct
 authors:
 - id: meta
-  name: meta
+  name: Meta
 description: Meta Llama 3.1 70B Instruct
 
 # Model features

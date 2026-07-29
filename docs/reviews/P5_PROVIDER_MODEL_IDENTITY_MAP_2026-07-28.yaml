@@ -3,9 +3,9 @@ records:
   - path: providers/alibaba/models/deepseek-v4-flash-us.yaml
     provider: alibaba
     provider_model_id: deepseek-v4-flash-us
-    model: deepseek/deepseek-v4-flash-us
+    model: deepseek/deepseek-v4-flash
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical DeepSeek model
   - path: providers/alibaba/models/deepseek-v4-flash.yaml
     provider: alibaba
     provider_model_id: deepseek-v4-flash
@@ -15,9 +15,9 @@ records:
   - path: providers/alibaba/models/deepseek-v4-pro-us.yaml
     provider: alibaba
     provider_model_id: deepseek-v4-pro-us
-    model: deepseek/deepseek-v4-pro-us
+    model: deepseek/deepseek-v4-pro
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical DeepSeek model
   - path: providers/alibaba/models/deepseek-v4-pro.yaml
     provider: alibaba
     provider_model_id: deepseek-v4-pro
@@ -57,9 +57,9 @@ records:
   - path: providers/alibaba/models/qwen-flash-2025-07-28-us.yaml
     provider: alibaba
     provider_model_id: qwen-flash-2025-07-28-us
-    model: qwen/qwen-flash-2025-07-28-us
+    model: qwen/qwen-flash-2025-07-28
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen-flash-2025-07-28.yaml
     provider: alibaba
     provider_model_id: qwen-flash-2025-07-28
@@ -69,9 +69,9 @@ records:
   - path: providers/alibaba/models/qwen-flash-us.yaml
     provider: alibaba
     provider_model_id: qwen-flash-us
-    model: qwen/qwen-flash-us
+    model: qwen/qwen-flash
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen-flash.yaml
     provider: alibaba
     provider_model_id: qwen-flash
@@ -111,9 +111,9 @@ records:
   - path: providers/alibaba/models/qwen-plus-2025-12-01-us.yaml
     provider: alibaba
     provider_model_id: qwen-plus-2025-12-01-us
-    model: qwen/qwen-plus-2025-12-01-us
+    model: qwen/qwen-plus-2025-12-01
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen-plus-2025-12-01.yaml
     provider: alibaba
     provider_model_id: qwen-plus-2025-12-01
@@ -123,9 +123,9 @@ records:
   - path: providers/alibaba/models/qwen-plus-us.yaml
     provider: alibaba
     provider_model_id: qwen-plus-us
-    model: qwen/qwen-plus-us
+    model: qwen/qwen-plus
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen-plus.yaml
     provider: alibaba
     provider_model_id: qwen-plus
@@ -201,15 +201,15 @@ records:
   - path: providers/alibaba/models/qwen3-asr-flash-2025-09-08-us.yaml
     provider: alibaba
     provider_model_id: qwen3-asr-flash-2025-09-08-us
-    model: qwen/qwen3-asr-flash-2025-09-08-us
+    model: qwen/qwen3-asr-flash-2025-09-08
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-asr-flash-us.yaml
     provider: alibaba
     provider_model_id: qwen3-asr-flash-us
-    model: qwen/qwen3-asr-flash-us
+    model: qwen/qwen3-asr-flash
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-coder-30b-a3b-instruct.yaml
     provider: alibaba
     provider_model_id: qwen3-coder-30b-a3b-instruct
@@ -333,9 +333,9 @@ records:
   - path: providers/alibaba/models/qwen3-vl-flash-2025-10-15-us.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-flash-2025-10-15-us
-    model: qwen/qwen3-vl-flash-2025-10-15-us
+    model: qwen/qwen3-vl-flash-2025-10-15
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-vl-flash-2025-10-15.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-flash-2025-10-15
@@ -345,15 +345,15 @@ records:
   - path: providers/alibaba/models/qwen3-vl-flash-2026-01-22-us.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-flash-2026-01-22-us
-    model: qwen/qwen3-vl-flash-2026-01-22-us
+    model: qwen/qwen3-vl-flash-2026-01-22
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-vl-flash-us.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-flash-us
-    model: qwen/qwen3-vl-flash-us
+    model: qwen/qwen3-vl-flash
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-vl-flash.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-flash
@@ -369,9 +369,9 @@ records:
   - path: providers/alibaba/models/qwen3-vl-plus-2025-12-19-us.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-plus-2025-12-19-us
-    model: qwen/qwen3-vl-plus-2025-12-19-us
+    model: qwen/qwen3-vl-plus-2025-12-19
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3-vl-plus-2025-12-19.yaml
     provider: alibaba
     provider_model_id: qwen3-vl-plus-2025-12-19
@@ -441,9 +441,9 @@ records:
   - path: providers/alibaba/models/qwen3.6-flash-us.yaml
     provider: alibaba
     provider_model_id: qwen3.6-flash-us
-    model: qwen/qwen3.6-flash-us
+    model: qwen/qwen3.6-flash
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3.6-flash.yaml
     provider: alibaba
     provider_model_id: qwen3.6-flash
@@ -471,9 +471,9 @@ records:
   - path: providers/alibaba/models/qwen3.7-max-us.yaml
     provider: alibaba
     provider_model_id: qwen3.7-max-us
-    model: qwen/qwen3.7-max-us
+    model: qwen/qwen3.7-max
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3.7-max.yaml
     provider: alibaba
     provider_model_id: qwen3.7-max
@@ -489,9 +489,9 @@ records:
   - path: providers/alibaba/models/qwen3.7-plus-us.yaml
     provider: alibaba
     provider_model_id: qwen3.7-plus-us
-    model: qwen/qwen3.7-plus-us
+    model: qwen/qwen3.7-plus
     status: linked
-    evidence: explicit provider-model author metadata
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
   - path: providers/alibaba/models/qwen3.7-plus.yaml
     provider: alibaba
     provider_model_id: qwen3.7-plus

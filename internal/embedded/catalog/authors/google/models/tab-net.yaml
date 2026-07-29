@@ -3,7 +3,7 @@ id: tab-net
 name: tab-net
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: tab-net
 

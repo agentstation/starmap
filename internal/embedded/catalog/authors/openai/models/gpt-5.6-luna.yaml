@@ -3,7 +3,7 @@ id: gpt-5.6-luna
 name: gpt-5.6-luna
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Cost-efficient GPT-5.6 model for fast, high-volume workloads
 
 # Model metadata

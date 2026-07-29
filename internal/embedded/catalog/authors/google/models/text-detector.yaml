@@ -3,7 +3,7 @@ id: text-detector
 name: text-detector
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: text-detector
 

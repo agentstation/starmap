@@ -3,7 +3,7 @@ id: codex-mini-latest
 name: Codex Mini
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

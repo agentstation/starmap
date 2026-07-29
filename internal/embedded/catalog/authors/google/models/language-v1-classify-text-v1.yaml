@@ -3,7 +3,7 @@ id: language-v1-classify-text-v1
 name: language-v1-classify-text-v1
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: language-v1-classify-text-v1
 

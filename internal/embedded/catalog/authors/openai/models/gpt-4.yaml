@@ -3,7 +3,7 @@ id: gpt-4
 name: GPT-4
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

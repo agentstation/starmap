@@ -3,7 +3,7 @@ id: textembedding-gecko
 name: textembedding-gecko
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: textembedding-gecko
 

@@ -3,7 +3,7 @@ id: gpt-oss-20b
 name: openai/gpt-oss-20b
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Open-weight GPT model for self-hosted reasoning and instruction-following workloads
 
 # Model metadata

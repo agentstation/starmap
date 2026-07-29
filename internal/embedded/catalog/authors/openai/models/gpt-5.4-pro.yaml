@@ -3,7 +3,7 @@ id: gpt-5.4-pro
 name: gpt-5.4-pro
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: More exact GPT-5.4 tier for demanding professional reasoning and agent tasks
 
 # Model metadata

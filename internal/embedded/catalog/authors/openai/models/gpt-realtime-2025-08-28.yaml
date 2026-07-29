@@ -3,7 +3,7 @@ id: gpt-realtime-2025-08-28
 name: gpt-realtime-2025-08-28
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

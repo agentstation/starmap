@@ -3,7 +3,7 @@ id: gemini-pro
 name: gemini-pro
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: gemini-pro
 

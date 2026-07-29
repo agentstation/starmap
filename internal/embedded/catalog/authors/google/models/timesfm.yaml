@@ -3,7 +3,7 @@ id: timesfm
 name: timesfm
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: timesfm
 

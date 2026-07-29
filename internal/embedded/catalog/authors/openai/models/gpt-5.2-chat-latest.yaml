@@ -3,7 +3,7 @@ id: gpt-5.2-chat-latest
 name: gpt-5.2-chat-latest
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Chat-tuned GPT model for conversational assistance, writing, and tool workflows
 
 # Model metadata

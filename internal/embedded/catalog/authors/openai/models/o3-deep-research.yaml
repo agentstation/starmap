@@ -3,7 +3,7 @@ id: o3-deep-research
 name: o3-deep-research
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

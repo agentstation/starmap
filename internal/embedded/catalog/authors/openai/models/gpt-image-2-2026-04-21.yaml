@@ -3,7 +3,7 @@ id: gpt-image-2-2026-04-21
 name: gpt-image-2-2026-04-21
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

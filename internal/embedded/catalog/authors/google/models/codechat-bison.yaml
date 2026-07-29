@@ -3,7 +3,7 @@ id: codechat-bison
 name: codechat-bison
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: codechat-bison
 

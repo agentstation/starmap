@@ -3,7 +3,7 @@ id: o1-pro
 name: o1-pro
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

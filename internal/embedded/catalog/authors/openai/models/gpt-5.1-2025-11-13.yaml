@@ -3,7 +3,7 @@ id: gpt-5.1-2025-11-13
 name: gpt-5.1-2025-11-13
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

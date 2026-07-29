@@ -3,7 +3,7 @@ id: llama-guard-4-12b
 name: meta-llama/Llama-Guard-4-12B
 authors:
 - id: meta
-  name: meta
+  name: Meta
 description: |-
   Llama Guard 4 is a natively multimodal safety classifier with 12 billion parameters trained jointly on text and multiple images. Llama Guard 4 is a dense architecture pruned from the Llama 4 Scout pre-trained model and fine-tuned for content safety classification. Similar to previous versions, it can be used to classify content in both LLM inputs (prompt classification) and in LLM responses (response classification). It itself acts as an LLM: it generates text in its output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.
 

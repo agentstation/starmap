@@ -3,7 +3,7 @@ id: vehicle-detector
 name: vehicle-detector
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: vehicle-detector
 

@@ -3,7 +3,7 @@ id: text-translation
 name: text-translation
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: text-translation
 

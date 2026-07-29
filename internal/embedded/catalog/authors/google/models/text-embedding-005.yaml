@@ -3,7 +3,7 @@ id: text-embedding-005
 name: text-embedding-005
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google model: text-embedding-005
 

@@ -3,7 +3,7 @@ id: gemini-2.5-flash-preview-tts
 name: Gemini 2.5 Flash Preview TTS
 authors:
 - id: google
-  name: google
+  name: Google
 description: Gemini 2.5 Flash Preview TTS
 
 # Model metadata
@@ -81,14 +81,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Timestamps
 created_at: null

@@ -3,7 +3,7 @@ id: language-v1-moderate-text
 name: language-v1-moderate-text
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: language-v1-moderate-text
 

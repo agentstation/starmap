@@ -3,7 +3,7 @@ id: flux-1-dev
 name: black-forest-labs/FLUX-1-dev
 authors:
 - id: black-forest-labs
-  name: black-forest-labs
+  name: Black Forest Labs
 description: FLUX.1-dev is a state-of-the-art 12 billion parameter rectified flow transformer developed by Black Forest Labs. This model excels in text-to-image generation, providing highly accurate and detailed outputs. It is particularly well-regarded for its ability to follow complex prompts and generate anatomically accurate images, especially with challenging details like hands and faces.
 
 # Model metadata

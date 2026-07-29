@@ -3,7 +3,7 @@ id: aqa
 name: Model that performs Attributed Question Answering.
 authors:
 - id: google
-  name: google
+  name: Google
 description: Model trained to return answers to questions that are grounded in provided sources, along with estimating answerable probability.
 
 # Model metadata
@@ -72,18 +72,6 @@ features:
   structured_outputs: false
   streaming: false
 generation:
-  temperature:
-    min: 0.0
-    max: 0.0
-    default: 0.2
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 1.0
-  top_k:
-    min: 0
-    max: 0
-    default: 40
 
 # Timestamps
 created_at: null

@@ -3,7 +3,7 @@ id: imagen-4.0-generate-001
 name: Imagen 4
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imagen-4.0-generate-001
 

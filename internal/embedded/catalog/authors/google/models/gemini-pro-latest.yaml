@@ -3,7 +3,7 @@ id: gemini-pro-latest
 name: Gemini Pro Latest
 authors:
 - id: google
-  name: google
+  name: Google
 description: Latest release of Gemini Pro
 
 # Model metadata
@@ -77,14 +77,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Timestamps
 created_at: null

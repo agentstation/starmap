@@ -3,7 +3,7 @@ id: wan2.6-image
 name: wan2.6-image
 authors:
 - id: alibaba
-  name: alibaba
+  name: Alibaba Cloud
 
 # Model features
 features:

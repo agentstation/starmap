@@ -1,6 +1,6 @@
 # deepseek-v4-pro-us - AI model
 id: deepseek-v4-pro-us
-model: deepseek/deepseek-v4-pro-us
+model: deepseek/deepseek-v4-pro
 name: deepseek-v4-pro-us
 authors:
 - id: deepseek

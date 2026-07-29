@@ -5,45 +5,45 @@ records:
   - path: authors/qwen/models/pre-qwen-mt-lite.yaml
     author: qwen
     slug: pre-qwen-mt-lite
-    canonical_model: qwen/pre-qwen-mt-lite
-    disposition: keep
+    canonical_model: qwen/qwen-mt-lite
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: provider staging ID is retained only as an offering and joins the canonical Qwen MT Lite definition
   - path: authors/qwen/models/qwen-3-235b-a22b-instruct-2507.yaml
     author: qwen
     slug: qwen-3-235b-a22b-instruct-2507
-    canonical_model: qwen/qwen-3-235b-a22b-instruct-2507
-    disposition: keep
+    canonical_model: qwen/qwen3-235b-a22b-instruct-2507
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
   - path: authors/qwen/models/qwen-3-235b-a22b-thinking-2507.yaml
     author: qwen
     slug: qwen-3-235b-a22b-thinking-2507
-    canonical_model: qwen/qwen-3-235b-a22b-thinking-2507
-    disposition: keep
+    canonical_model: qwen/qwen3-235b-a22b-thinking-2507
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
   - path: authors/qwen/models/qwen-3-32b.yaml
     author: qwen
     slug: qwen-3-32b
-    canonical_model: qwen/qwen-3-32b
-    disposition: keep
+    canonical_model: qwen/qwen3-32b
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
   - path: authors/qwen/models/qwen-3-coder-480b.yaml
     author: qwen
     slug: qwen-3-coder-480b
-    canonical_model: qwen/qwen-3-coder-480b
-    disposition: keep
+    canonical_model: qwen/qwen3-coder-480b-a35b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: abbreviated provider spelling merges into the canonical Qwen 3 Coder definition
   - path: authors/qwen/models/qwen-flash-2025-07-28-us.yaml
     author: qwen
     slug: qwen-flash-2025-07-28-us
-    canonical_model: qwen/qwen-flash-2025-07-28-us
-    disposition: keep
+    canonical_model: qwen/qwen-flash-2025-07-28
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: region is an offering deployment fact and not part of canonical model identity
   - path: authors/qwen/models/qwen-flash-2025-07-28.yaml
     author: qwen
     slug: qwen-flash-2025-07-28
@@ -54,10 +54,10 @@ records:
   - path: authors/qwen/models/qwen-flash-us.yaml
     author: qwen
     slug: qwen-flash-us
-    canonical_model: qwen/qwen-flash-us
-    disposition: keep
+    canonical_model: qwen/qwen-flash
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: region is an offering deployment fact and not part of canonical model identity
   - path: authors/qwen/models/qwen-flash.yaml
     author: qwen
     slug: qwen-flash
@@ -103,10 +103,10 @@ records:
   - path: authors/qwen/models/qwen-plus-2025-12-01-us.yaml
     author: qwen
     slug: qwen-plus-2025-12-01-us
-    canonical_model: qwen/qwen-plus-2025-12-01-us
-    disposition: keep
+    canonical_model: qwen/qwen-plus-2025-12-01
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: region is an offering deployment fact and not part of canonical model identity
   - path: authors/qwen/models/qwen-plus-2025-12-01.yaml
     author: qwen
     slug: qwen-plus-2025-12-01
@@ -117,10 +117,10 @@ records:
   - path: authors/qwen/models/qwen-plus-us.yaml
     author: qwen
     slug: qwen-plus-us
-    canonical_model: qwen/qwen-plus-us
-    disposition: keep
+    canonical_model: qwen/qwen-plus
+    disposition: merge
     provider_id_match_count: 1
-    evidence: historical authored model has a current exact provider model ID
+    evidence: region is an offering deployment fact and not part of canonical model identity
   - path: authors/qwen/models/qwen-plus.yaml
     author: qwen
     slug: qwen-plus
@@ -376,10 +376,10 @@ records:
   - path: authors/google/models/chat-bison@002.yaml
     author: google
     slug: chat-bison@002
-    canonical_model: google/chat-bison@002
-    disposition: keep
+    canonical_model: google/chat-bison
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/code-bison.yaml
     author: google
     slug: code-bison
@@ -390,10 +390,10 @@ records:
   - path: authors/google/models/code-bison@002.yaml
     author: google
     slug: code-bison@002
-    canonical_model: google/code-bison@002
-    disposition: keep
+    canonical_model: google/code-bison
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/codechat-bison.yaml
     author: google
     slug: codechat-bison
@@ -404,10 +404,10 @@ records:
   - path: authors/google/models/codechat-bison@002.yaml
     author: google
     slug: codechat-bison@002
-    canonical_model: google/codechat-bison@002
-    disposition: keep
+    canonical_model: google/codechat-bison
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/codegemma.yaml
     author: google
     slug: codegemma
@@ -418,10 +418,10 @@ records:
   - path: authors/google/models/codegemma@codegemma-7b-it.yaml
     author: google
     slug: codegemma@codegemma-7b-it
-    canonical_model: google/codegemma@codegemma-7b-it
-    disposition: keep
+    canonical_model: google/codegemma-7b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/diffusiongemma.yaml
     author: google
     slug: diffusiongemma
@@ -439,10 +439,10 @@ records:
   - path: authors/google/models/embeddinggemma@embeddinggemma-300m.yaml
     author: google
     slug: embeddinggemma@embeddinggemma-300m
-    canonical_model: google/embeddinggemma@embeddinggemma-300m
-    disposition: keep
+    canonical_model: google/embeddinggemma-300m
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/functiongemma.yaml
     author: google
     slug: functiongemma
@@ -460,10 +460,10 @@ records:
   - path: authors/google/models/gemini-1.5-flash-002@default.yaml
     author: google
     slug: gemini-1.5-flash-002@default
-    canonical_model: google/gemini-1.5-flash-002@default
-    disposition: keep
+    canonical_model: google/gemini-1.5-flash-002
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-1.5-pro-002.yaml
     author: google
     slug: gemini-1.5-pro-002
@@ -474,10 +474,10 @@ records:
   - path: authors/google/models/gemini-1.5-pro-002@default.yaml
     author: google
     slug: gemini-1.5-pro-002@default
-    canonical_model: google/gemini-1.5-pro-002@default
-    disposition: keep
+    canonical_model: google/gemini-1.5-pro-002
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.0-flash-001.yaml
     author: google
     slug: gemini-2.0-flash-001
@@ -488,10 +488,10 @@ records:
   - path: authors/google/models/gemini-2.0-flash-001@default.yaml
     author: google
     slug: gemini-2.0-flash-001@default
-    canonical_model: google/gemini-2.0-flash-001@default
-    disposition: keep
+    canonical_model: google/gemini-2.0-flash-001
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.0-flash-lite-001.yaml
     author: google
     slug: gemini-2.0-flash-lite-001
@@ -502,10 +502,10 @@ records:
   - path: authors/google/models/gemini-2.0-flash-lite-001@default.yaml
     author: google
     slug: gemini-2.0-flash-lite-001@default
-    canonical_model: google/gemini-2.0-flash-lite-001@default
-    disposition: keep
+    canonical_model: google/gemini-2.0-flash-lite-001
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.0-flash-lite.yaml
     author: google
     slug: gemini-2.0-flash-lite
@@ -537,10 +537,10 @@ records:
   - path: authors/google/models/gemini-2.5-flash-image-preview@default.yaml
     author: google
     slug: gemini-2.5-flash-image-preview@default
-    canonical_model: google/gemini-2.5-flash-image-preview@default
-    disposition: keep
+    canonical_model: google/gemini-2.5-flash-image-preview
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.5-flash-image.yaml
     author: google
     slug: gemini-2.5-flash-image
@@ -572,10 +572,10 @@ records:
   - path: authors/google/models/gemini-2.5-flash-lite@default.yaml
     author: google
     slug: gemini-2.5-flash-lite@default
-    canonical_model: google/gemini-2.5-flash-lite@default
-    disposition: keep
+    canonical_model: google/gemini-2.5-flash-lite
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.5-flash-preview-04-17.yaml
     author: google
     slug: gemini-2.5-flash-preview-04-17
@@ -614,10 +614,10 @@ records:
   - path: authors/google/models/gemini-2.5-flash@default.yaml
     author: google
     slug: gemini-2.5-flash@default
-    canonical_model: google/gemini-2.5-flash@default
-    disposition: keep
+    canonical_model: google/gemini-2.5-flash
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-2.5-pro-preview-05-06.yaml
     author: google
     slug: gemini-2.5-pro-preview-05-06
@@ -649,10 +649,10 @@ records:
   - path: authors/google/models/gemini-2.5-pro@default.yaml
     author: google
     slug: gemini-2.5-pro@default
-    canonical_model: google/gemini-2.5-pro@default
-    disposition: keep
+    canonical_model: google/gemini-2.5-pro
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-3-flash-preview.yaml
     author: google
     slug: gemini-3-flash-preview
@@ -747,10 +747,10 @@ records:
   - path: authors/google/models/gemini-embedding-001@default.yaml
     author: google
     slug: gemini-embedding-001@default
-    canonical_model: google/gemini-embedding-001@default
-    disposition: keep
+    canonical_model: google/gemini-embedding-001
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-embedding-2.yaml
     author: google
     slug: gemini-embedding-2
@@ -796,10 +796,10 @@ records:
   - path: authors/google/models/gemini-pro-vision@default.yaml
     author: google
     slug: gemini-pro-vision@default
-    canonical_model: google/gemini-pro-vision@default
-    disposition: keep
+    canonical_model: google/gemini-pro-vision
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-pro.yaml
     author: google
     slug: gemini-pro
@@ -810,10 +810,10 @@ records:
   - path: authors/google/models/gemini-pro@default.yaml
     author: google
     slug: gemini-pro@default
-    canonical_model: google/gemini-pro@default
-    disposition: keep
+    canonical_model: google/gemini-pro
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-ultra-vision.yaml
     author: google
     slug: gemini-ultra-vision
@@ -824,10 +824,10 @@ records:
   - path: authors/google/models/gemini-ultra-vision@default.yaml
     author: google
     slug: gemini-ultra-vision@default
-    canonical_model: google/gemini-ultra-vision@default
-    disposition: keep
+    canonical_model: google/gemini-ultra-vision
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemini-ultra.yaml
     author: google
     slug: gemini-ultra
@@ -838,10 +838,10 @@ records:
   - path: authors/google/models/gemini-ultra@default.yaml
     author: google
     slug: gemini-ultra@default
-    canonical_model: google/gemini-ultra@default
-    disposition: keep
+    canonical_model: google/gemini-ultra
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemma-4-26b-a4b-it-maas.yaml
     author: google
     slug: gemma-4-26b-a4b-it-maas
@@ -866,10 +866,10 @@ records:
   - path: authors/google/models/gemma2@gemma-2-2b-it.yaml
     author: google
     slug: gemma2@gemma-2-2b-it
-    canonical_model: google/gemma2@gemma-2-2b-it
-    disposition: keep
+    canonical_model: google/gemma-2-2b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemma3.yaml
     author: google
     slug: gemma3
@@ -880,10 +880,10 @@ records:
   - path: authors/google/models/gemma3@gemma-3-1b-it.yaml
     author: google
     slug: gemma3@gemma-3-1b-it
-    canonical_model: google/gemma3@gemma-3-1b-it
-    disposition: keep
+    canonical_model: google/gemma-3-1b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemma3n.yaml
     author: google
     slug: gemma3n
@@ -894,10 +894,10 @@ records:
   - path: authors/google/models/gemma3n@gemma-3n-e4b-it.yaml
     author: google
     slug: gemma3n@gemma-3n-e4b-it
-    canonical_model: google/gemma3n@gemma-3n-e4b-it
-    disposition: keep
+    canonical_model: google/gemma-3n-e4b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/gemma4.yaml
     author: google
     slug: gemma4
@@ -908,10 +908,10 @@ records:
   - path: authors/google/models/gemma@gemma-2b.yaml
     author: google
     slug: gemma@gemma-2b
-    canonical_model: google/gemma@gemma-2b
-    disposition: keep
+    canonical_model: google/gemma-2b
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/medgemma.yaml
     author: google
     slug: medgemma
@@ -922,10 +922,10 @@ records:
   - path: authors/google/models/medgemma@medgemma-4b-it.yaml
     author: google
     slug: medgemma@medgemma-4b-it
-    canonical_model: google/medgemma@medgemma-4b-it
-    disposition: keep
+    canonical_model: google/medgemma-4b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/paligemma.yaml
     author: google
     slug: paligemma
@@ -936,10 +936,10 @@ records:
   - path: authors/google/models/paligemma@paligemma2-3b-pt-224.yaml
     author: google
     slug: paligemma@paligemma2-3b-pt-224
-    canonical_model: google/paligemma@paligemma2-3b-pt-224
-    disposition: keep
+    canonical_model: google/paligemma2-3b-pt-224
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/shieldgemma2.yaml
     author: google
     slug: shieldgemma2
@@ -950,10 +950,10 @@ records:
   - path: authors/google/models/shieldgemma2@shieldgemma-2-4b-it.yaml
     author: google
     slug: shieldgemma2@shieldgemma-2-4b-it
-    canonical_model: google/shieldgemma2@shieldgemma-2-4b-it
-    disposition: keep
+    canonical_model: google/shieldgemma-2-4b-it
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/t5gemma.yaml
     author: google
     slug: t5gemma
@@ -964,10 +964,10 @@ records:
   - path: authors/google/models/t5gemma@t5gemma.yaml
     author: google
     slug: t5gemma@t5gemma
-    canonical_model: google/t5gemma@t5gemma
-    disposition: keep
+    canonical_model: google/t5gemma
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/text-bison.yaml
     author: google
     slug: text-bison
@@ -978,10 +978,10 @@ records:
   - path: authors/google/models/text-bison@002.yaml
     author: google
     slug: text-bison@002
-    canonical_model: google/text-bison@002
-    disposition: keep
+    canonical_model: google/text-bison
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/google/models/translategemma.yaml
     author: google
     slug: translategemma
@@ -999,10 +999,10 @@ records:
   - path: authors/google/models/txgemma@txgemma-27b-predict.yaml
     author: google
     slug: txgemma@txgemma-27b-predict
-    canonical_model: google/txgemma@txgemma-27b-predict
-    disposition: keep
+    canonical_model: google/txgemma-27b-predict
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/groq/models/compound-beta-mini.yaml
     author: groq
     slug: compound-beta-mini
@@ -1020,17 +1020,17 @@ records:
   - path: authors/meta/models/codellama-7b-hf@codellama-7b-hf.yaml
     author: meta
     slug: codellama-7b-hf@codellama-7b-hf
-    canonical_model: meta/codellama-7b-hf@codellama-7b-hf
-    disposition: keep
+    canonical_model: meta/codellama-7b-hf
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-2-quantized@llama-2-7b-chat-gptq.yaml
     author: meta
     slug: llama-2-quantized@llama-2-7b-chat-gptq
-    canonical_model: meta/llama-2-quantized@llama-2-7b-chat-gptq
-    disposition: keep
+    canonical_model: meta/llama-2-7b-chat-gptq
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-3-1-405b-instruct.yaml
     author: meta
     slug: llama-3-1-405b-instruct
@@ -1055,10 +1055,10 @@ records:
   - path: authors/meta/models/llama-3.1-405b-instruct-maas@001.yaml
     author: meta
     slug: llama-3.1-405b-instruct-maas@001
-    canonical_model: meta/llama-3.1-405b-instruct-maas@001
-    disposition: keep
+    canonical_model: meta/llama-3.1-405b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-3.1-8b-instant.yaml
     author: meta
     slug: llama-3.1-8b-instant
@@ -1069,17 +1069,17 @@ records:
   - path: authors/meta/models/llama-3.2-90b-vision-instruct-maas@001.yaml
     author: meta
     slug: llama-3.2-90b-vision-instruct-maas@001
-    canonical_model: meta/llama-3.2-90b-vision-instruct-maas@001
-    disposition: keep
+    canonical_model: meta/llama-3.2-90b-vision-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-3.3-70b-instruct-maas@001.yaml
     author: meta
     slug: llama-3.3-70b-instruct-maas@001
-    canonical_model: meta/llama-3.3-70b-instruct-maas@001
-    disposition: keep
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-3.3-70b-versatile.yaml
     author: meta
     slug: llama-3.3-70b-versatile
@@ -1097,10 +1097,10 @@ records:
   - path: authors/meta/models/llama-4-maverick-17b-128e-instruct-maas@001.yaml
     author: meta
     slug: llama-4-maverick-17b-128e-instruct-maas@001
-    canonical_model: meta/llama-4-maverick-17b-128e-instruct-maas@001
-    disposition: keep
+    canonical_model: meta/llama-4-maverick-17b-128e-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama-4-maverick-17b-128e-instruct.yaml
     author: meta
     slug: llama-4-maverick-17b-128e-instruct
@@ -1125,87 +1125,87 @@ records:
   - path: authors/meta/models/llama-guard@llama-guard-4-12b.yaml
     author: meta
     slug: llama-guard@llama-guard-4-12b
-    canonical_model: meta/llama-guard@llama-guard-4-12b
-    disposition: keep
+    canonical_model: meta/llama-guard-4-12b
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama2@llama-2-7b.yaml
     author: meta
     slug: llama2@llama-2-7b
-    canonical_model: meta/llama2@llama-2-7b
-    disposition: keep
+    canonical_model: meta/llama-2-7b
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama3-2@llama-3.2-90b-vision.yaml
     author: meta
     slug: llama3-2@llama-3.2-90b-vision
-    canonical_model: meta/llama3-2@llama-3.2-90b-vision
-    disposition: keep
+    canonical_model: meta/llama-3.2-90b-vision
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama3-3@llama-3.3-70b-instruct.yaml
     author: meta
     slug: llama3-3@llama-3.3-70b-instruct
-    canonical_model: meta/llama3-3@llama-3.3-70b-instruct
-    disposition: keep
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama3@meta-llama-3-8b.yaml
     author: meta
     slug: llama3@meta-llama-3-8b
-    canonical_model: meta/llama3@meta-llama-3-8b
-    disposition: keep
+    canonical_model: meta/meta-llama-3-8b
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama3_1@llama-3.1-8b-instruct.yaml
     author: meta
     slug: llama3_1@llama-3.1-8b-instruct
-    canonical_model: meta/llama3_1@llama-3.1-8b-instruct
-    disposition: keep
+    canonical_model: meta/llama-3.1-8b-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/llama4@llama-4-maverick-17b-128e-instruct.yaml
     author: meta
     slug: llama4@llama-4-maverick-17b-128e-instruct
-    canonical_model: meta/llama4@llama-4-maverick-17b-128e-instruct
-    disposition: keep
+    canonical_model: meta/llama-4-maverick-17b-128e-instruct
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/meta/models/prompt-guard@llama-prompt-guard-2-22m.yaml
     author: meta
     slug: prompt-guard@llama-prompt-guard-2-22m
-    canonical_model: meta/prompt-guard@llama-prompt-guard-2-22m
-    disposition: keep
+    canonical_model: meta/llama-prompt-guard-2-22m
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/mistral/models/codestral-2501-self-deploy@001.yaml
     author: mistral
     slug: codestral-2501-self-deploy@001
-    canonical_model: mistral/codestral-2501-self-deploy@001
-    disposition: keep
+    canonical_model: mistral/codestral-2501-self-deploy
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/mistral/models/codestral-2501@001.yaml
     author: mistral
     slug: codestral-2501@001
-    canonical_model: mistral/codestral-2501@001
-    disposition: keep
+    canonical_model: mistral/codestral-2501
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/mistral/models/mistral-large-2411@001.yaml
     author: mistral
     slug: mistral-large-2411@001
-    canonical_model: mistral/mistral-large-2411@001
-    disposition: keep
+    canonical_model: mistral/mistral-large-2411
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/mistral/models/mistral-ocr-2505@001.yaml
     author: mistral
     slug: mistral-ocr-2505@001
-    canonical_model: mistral/mistral-ocr-2505@001
-    disposition: keep
+    canonical_model: mistral/mistral-ocr-2505
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/mistral/models/mistral-saba-24b.yaml
     author: mistral
     slug: mistral-saba-24b
@@ -1216,10 +1216,10 @@ records:
   - path: authors/mistral/models/mistral-small-2503@001.yaml
     author: mistral
     slug: mistral-small-2503@001
-    canonical_model: mistral/mistral-small-2503@001
-    disposition: keep
+    canonical_model: mistral/mistral-small-2503
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
   - path: authors/moonshot-ai/models/kimi-k2-0711-preview.yaml
     author: moonshot-ai
     slug: kimi-k2-0711-preview
@@ -2245,10 +2245,10 @@ records:
   - path: authors/qwen/models/qwen-image@qwen-image.yaml
     author: qwen
     slug: qwen-image@qwen-image
-    canonical_model: qwen/qwen-image@qwen-image
-    disposition: keep
+    canonical_model: qwen/qwen-image
+    disposition: merge
     provider_id_match_count: 0
-    evidence: historical authored model retained without a current exact provider ID
+    evidence: provider version suffix is removed from canonical author identity
   - path: authors/sdaia/models/allam-2-7b.yaml
     author: sdaia
     slug: allam-2-7b

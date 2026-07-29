@@ -3,7 +3,7 @@ id: product-recognizer
 name: product-recognizer
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: product-recognizer
 

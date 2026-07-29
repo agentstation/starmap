@@ -3,7 +3,7 @@ id: imageobjectdetection-proprietary-spinenet
 name: imageobjectdetection-proprietary-spinenet
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imageobjectdetection-proprietary-spinenet
 

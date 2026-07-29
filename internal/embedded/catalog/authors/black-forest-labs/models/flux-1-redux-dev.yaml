@@ -3,7 +3,7 @@ id: flux-1-redux-dev
 name: black-forest-labs/FLUX-1-Redux-dev
 authors:
 - id: black-forest-labs
-  name: black-forest-labs
+  name: Black Forest Labs
 description: FLUX.1 Redux [dev] is an image variation generation adapter for all FLUX.1 base models. It enables users to refine images with slight variations and supports text-based restyling via API. Integrated with FLUX1.1 [pro] Ultra, it allows for high-quality 4-megapixel outputs. The model can be used with Diffusers in Python for efficient image generation. While powerful, it has ethical and factual limitations and is governed by a non-commercial license.
 
 # Model metadata

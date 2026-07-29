@@ -3,7 +3,7 @@ id: automl-vision-image-object-detection
 name: automl-vision-image-object-detection
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: automl-vision-image-object-detection
 

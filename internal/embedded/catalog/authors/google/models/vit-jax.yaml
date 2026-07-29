@@ -3,7 +3,7 @@ id: vit-jax
 name: vit-jax
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: vit-jax
 

@@ -3,7 +3,7 @@ id: imageclassification-proprietary-efficientnet
 name: imageclassification-proprietary-efficientnet
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imageclassification-proprietary-efficientnet
 

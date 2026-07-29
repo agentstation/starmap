@@ -3,7 +3,7 @@ id: flux-2-max
 name: black-forest-labs/FLUX-2-max
 authors:
 - id: black-forest-labs
-  name: black-forest-labs
+  name: Black Forest Labs
 description: The new top-tier image model from Black Forest Labs, significantly pushing image quality and editing consistency
 
 # Model metadata

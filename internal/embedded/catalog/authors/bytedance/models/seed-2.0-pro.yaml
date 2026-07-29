@@ -3,7 +3,7 @@ id: seed-2.0-pro
 name: ByteDance/Seed-2.0-pro
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: Built for the Agent era, it delivers stable performance in complex reasoning and long-horizon tasks, including multi-step planning, visual-text reasoning, video understanding, and advanced analysis.
 
 # Model metadata

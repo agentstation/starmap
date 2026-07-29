@@ -3,7 +3,7 @@ id: gpt-realtime-1.5
 name: gpt-realtime-1.5
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

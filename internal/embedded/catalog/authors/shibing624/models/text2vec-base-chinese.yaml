@@ -3,7 +3,7 @@ id: text2vec-base-chinese
 name: shibing624/text2vec-base-chinese
 authors:
 - id: shibing624
-  name: shibing624
+  name: Shibing624
 description: A sentence similarity model that can be used for various NLP tasks such as text classification, sentiment analysis, named entity recognition, question answering, and more. It utilizes the CoSENT architecture, which consists of a transformer encoder and a pooling module, to encode input texts into vectors that capture their semantic meaning. The model was trained on the nli_zh dataset and achieved high performance on various benchmark datasets.
 
 # Model metadata

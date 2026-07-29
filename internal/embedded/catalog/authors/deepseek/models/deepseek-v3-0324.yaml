@@ -3,7 +3,7 @@ id: deepseek-v3-0324
 name: deepseek-ai/DeepSeek-V3-0324
 authors:
 - id: deepseek
-  name: deepseek
+  name: DeepSeek
 description: DeepSeek-V3-0324, a strong Mixture-of-Experts (MoE) language model with 671B total parameters with 37B activated for each token, an improved iteration over DeepSeek-V3.
 
 # Model metadata

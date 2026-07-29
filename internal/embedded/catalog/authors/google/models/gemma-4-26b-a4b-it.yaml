@@ -3,7 +3,7 @@ id: gemma-4-26b-a4b-it
 name: google/gemma-4-26B-A4B-it
 authors:
 - id: google
-  name: google
+  name: Google
 description: Open Gemma instruction model for efficient chat and self-hosted deployments
 
 # Model metadata

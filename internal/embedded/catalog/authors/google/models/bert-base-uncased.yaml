@@ -3,7 +3,7 @@ id: bert-base-uncased
 name: bert-base-uncased
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: bert-base-uncased
 

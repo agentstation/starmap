@@ -3,7 +3,7 @@ id: hear
 name: hear
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: hear
 

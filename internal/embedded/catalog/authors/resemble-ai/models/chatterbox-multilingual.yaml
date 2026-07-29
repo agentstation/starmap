@@ -3,7 +3,7 @@ id: chatterbox-multilingual
 name: ResembleAI/chatterbox-multilingual
 authors:
 - id: resemble-ai
-  name: resemble-ai
+  name: Resemble AI
 description: 09/04 🔥 Introducing Chatterbox Multilingual in 23 Languages! We're excited to introduce Chatterbox and Chatterbox Multilingual, Resemble AI's production-grade open source TTS models. Chatterbox Multilingual supports Arabic, Danish, German, Greek, English, Spanish, Finnish, French, Hebrew, Hindi, Italian, Japanese, Korean, Malay, Dutch, Norwegian, Polish, Portuguese, Russian, Swedish, Swahili, Turkish, Chinese out of the box. Licensed under MIT, Chatterbox has been benchmarked against leading closed-source systems like ElevenLabs, and is consistently preferred in side-by-side evaluations.
 
 # Model metadata

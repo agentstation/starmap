@@ -3,7 +3,7 @@ id: gpt-4-turbo
 name: GPT-4 Turbo
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

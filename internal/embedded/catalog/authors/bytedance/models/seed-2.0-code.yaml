@@ -3,7 +3,7 @@ id: seed-2.0-code
 name: ByteDance/Seed-2.0-code
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: A coding model optimized for real-world development environments, with reliable tool use in common IDEs such as Claude Code. It delivers strong front-end performance and supports Skills.
 
 # Model metadata

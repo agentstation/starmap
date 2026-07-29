@@ -3,7 +3,7 @@ id: all-minilm-l12-v2
 name: sentence-transformers/all-MiniLM-L12-v2
 authors:
 - id: sentence-transformers
-  name: sentence-transformers
+  name: Sentence Transformers
 description: We present a sentence transformation model that generates semantically similar sentences. Our model is based on the Sentence-Transformers architecture and was trained on a large dataset of sentence pairs. We evaluate the effectiveness of our model by measuring its ability to generate similar sentences that are close to the original sentence in meaning.
 
 # Model metadata

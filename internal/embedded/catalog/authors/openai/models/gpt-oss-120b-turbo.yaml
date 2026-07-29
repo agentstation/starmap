@@ -3,7 +3,7 @@ id: gpt-oss-120b-turbo
 name: openai/gpt-oss-120b-Turbo
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model metadata
 metadata:

@@ -3,7 +3,7 @@ id: ltx-2.3-distilled-diffusers
 name: FastVideo/LTX-2.3-Distilled-Diffusers
 authors:
 - id: fastvideo
-  name: fastvideo
+  name: FastVideo
 - id: lightricks
   name: Lightricks
 description: A fast, step-distilled build of Lightricks' LTX-2.3 diffusion-transformer video model (distilled by FastVideo). Generates high-fidelity text-to-video and image-to-video in just a few denoising steps.

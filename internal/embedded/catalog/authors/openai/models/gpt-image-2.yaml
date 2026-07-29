@@ -3,7 +3,7 @@ id: gpt-image-2
 name: gpt-image-2
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Image model for prompt-driven generation, editing, and visual design workflows
 
 # Model metadata

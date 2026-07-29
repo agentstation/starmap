@@ -1,6 +1,6 @@
 # qwen-plus-us - AI model
 id: qwen-plus-us
-model: qwen/qwen-plus-us
+model: qwen/qwen-plus
 name: qwen-plus-us
 authors:
 - id: qwen

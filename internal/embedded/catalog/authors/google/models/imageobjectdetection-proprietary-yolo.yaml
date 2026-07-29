@@ -3,7 +3,7 @@ id: imageobjectdetection-proprietary-yolo
 name: imageobjectdetection-proprietary-yolo
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: imageobjectdetection-proprietary-yolo
 

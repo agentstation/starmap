@@ -3,7 +3,7 @@ id: cxr-foundation
 name: cxr-foundation
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: cxr-foundation
 

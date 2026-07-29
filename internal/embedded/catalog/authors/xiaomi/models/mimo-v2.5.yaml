@@ -3,7 +3,7 @@ id: mimo-v2.5
 name: XiaomiMiMo/MiMo-V2.5
 authors:
 - id: xiaomi
-  name: xiaomi
+  name: Xiaomi
 description: Open MiMo model for multimodal coding agents and long-context automation
 
 # Model metadata

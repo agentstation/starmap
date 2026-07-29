@@ -3,7 +3,7 @@ id: seedance-1.5-pro
 name: ByteDance/Seedance-1.5-Pro
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: ByteDance's Seedance 1.5 Pro is a professional video model using V2A native generation for integrated, synced audio-visual output, enhancing efficiency of professional video creation.
 
 # Model metadata

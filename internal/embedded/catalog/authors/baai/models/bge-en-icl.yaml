@@ -3,7 +3,7 @@ id: bge-en-icl
 name: BAAI/bge-en-icl
 authors:
 - id: baai
-  name: baai
+  name: Beijing Academy of Artificial Intelligence
 description: A LLM-based embedding model with in-context learning capabilities that achieves SOTA performance on BEIR and AIR-Bench. It leverages few-shot examples to enhance task performance.
 
 # Model metadata

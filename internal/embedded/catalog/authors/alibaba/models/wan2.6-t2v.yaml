@@ -3,7 +3,7 @@ id: wan2.6-t2v
 name: Wan-AI/Wan2.6-T2V
 authors:
 - id: alibaba
-  name: alibaba
+  name: Alibaba Cloud
 description: Turn any prompt into a smooth video. Intelligent shot scheduling supports multi-shot storytelling, generating multi-shot narrative videos with consistent subjects, scenes, and atmosphere
 
 # Model metadata

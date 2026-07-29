@@ -3,7 +3,7 @@ id: qwen2-5-coder-32b-instruct
 name: Qwen 2.5 Coder 32B Instruct
 authors:
 - id: qwen
-  name: qwen
+  name: Qwen Team
 description: Qwen 2.5 Coder 32B instruction-tuned model
 
 # Model features

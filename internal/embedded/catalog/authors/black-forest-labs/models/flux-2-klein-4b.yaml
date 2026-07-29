@@ -3,7 +3,7 @@ id: flux-2-klein-4b
 name: black-forest-labs/FLUX-2-klein-4b
 authors:
 - id: black-forest-labs
-  name: black-forest-labs
+  name: Black Forest Labs
 description: The fastest model of the Flux 2 family. Frontier visual intelligence — state-of-the-art image generation and editing from Black Forest Labs
 
 # Model metadata

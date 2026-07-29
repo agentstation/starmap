@@ -3,7 +3,7 @@ id: gemini-3.1-pro
 name: google/gemini-3.1-pro
 authors:
 - id: google
-  name: google
+  name: Google
 description: Bring any idea to life with state-of-the-art reasoning to help you learn, build, and plan anything. Best for complex tasks and bringing creative concepts to life.
 
 # Model metadata

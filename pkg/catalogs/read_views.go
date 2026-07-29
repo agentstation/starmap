@@ -146,7 +146,6 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 
 	policies := authority.New()
 	definitions := make(map[ModelDefinitionID]ModelDefinition, len(byDefinition))
-	lineageAliases := buildDefinitionReferenceAliases(byDefinition, offerings)
 	definitionIDs := make([]ModelDefinitionID, 0, len(byDefinition))
 	for id := range byDefinition {
 		definitionIDs = append(definitionIDs, id)
@@ -157,7 +156,18 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 		if err != nil {
 			return nil, err
 		}
-		normalizeDefinitionLineage(&definition, lineageAliases)
+		definitions[id] = definition
+	}
+	lineageAliases, ambiguousLineageAliases := buildDefinitionAliases(definitions, offerings)
+	for _, id := range definitionIDs {
+		definition := definitions[id]
+		if err := normalizeDefinitionLineage(
+			&definition,
+			lineageAliases,
+			ambiguousLineageAliases,
+		); err != nil {
+			return nil, err
+		}
 		definitions[id] = definition
 	}
 
@@ -168,64 +178,42 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 	}, nil
 }
 
-func buildDefinitionReferenceAliases(
-	definitions map[ModelDefinitionID][]providerModelCandidate,
-	offerings map[OfferingKey]ProviderOffering,
-) map[string]ModelDefinitionID {
-	candidates := make(map[string]map[ModelDefinitionID]struct{})
-	add := func(alias string, definitionID ModelDefinitionID) {
-		for _, value := range []string{alias, strings.ToLower(alias)} {
-			if value == "" {
-				continue
-			}
-			if candidates[value] == nil {
-				candidates[value] = make(map[ModelDefinitionID]struct{})
-			}
-			candidates[value][definitionID] = struct{}{}
-		}
-	}
-	for definitionID := range definitions {
-		add(string(definitionID), definitionID)
-		if _, slug, err := ParseModelDefinitionID(definitionID); err == nil {
-			add(slug, definitionID)
-		}
-	}
-	for _, offering := range offerings {
-		add(string(offering.ProviderModelID), offering.DefinitionID)
-	}
-	aliases := make(map[string]ModelDefinitionID)
-	for alias, ids := range candidates {
-		if len(ids) != 1 {
-			continue
-		}
-		for id := range ids {
-			aliases[alias] = id
-		}
-	}
-	return aliases
-}
-
 func normalizeDefinitionLineage(
 	definition *ModelDefinition,
 	aliases map[string]ModelDefinitionID,
-) {
-	resolve := func(reference **ModelDefinitionID) {
+	ambiguous map[string][]ModelDefinitionID,
+) error {
+	resolve := func(field string, reference **ModelDefinitionID) error {
 		if *reference == nil {
-			return
+			return nil
 		}
 		raw := string(**reference)
 		canonical, found := aliases[raw]
-		if !found {
-			canonical, found = aliases[strings.ToLower(raw)]
+		if candidates := ambiguous[raw]; len(candidates) != 0 {
+			return &errors.ConflictError{
+				Resource: "model lineage " + field,
+				Message:  fmt.Sprintf("%q resolves ambiguously to %v", raw, candidates),
+			}
 		}
-		if !found || canonical == definition.ID {
+		if !found {
+			return &errors.NotFoundError{
+				Resource: "model lineage " + field,
+				ID:       raw,
+			}
+		}
+		if canonical == definition.ID {
+			// A source sometimes repeats the model's own provider ID as its
+			// lineage root. It is resolvable but carries no parent relation.
 			*reference = nil
-			return
+			return nil
 		}
 		*reference = &canonical
+		return nil
 	}
-	resolve(&definition.Lineage.Root)
-	resolve(&definition.Lineage.Parent)
+	if err := resolve("root", &definition.Lineage.Root); err != nil {
+		return err
+	}
+	return resolve("parent", &definition.Lineage.Parent)
 }
 
 func deriveModelDefinition(

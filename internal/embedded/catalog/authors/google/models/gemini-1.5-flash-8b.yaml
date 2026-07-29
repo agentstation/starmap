@@ -3,7 +3,7 @@ id: gemini-1.5-flash-8b
 name: google/gemini-1.5-flash-8b
 authors:
 - id: google
-  name: google
+  name: Google
 
 # Model metadata
 metadata:

@@ -1,6 +1,6 @@
 # qwen3.7-max-us - AI model
 id: qwen3.7-max-us
-model: qwen/qwen3.7-max-us
+model: qwen/qwen3.7-max
 name: qwen3.7-max-us
 authors:
 - id: qwen

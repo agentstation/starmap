@@ -3,7 +3,7 @@ id: compound
 name: Compound
 authors:
 - id: groq
-  name: groq
+  name: Groq
 description: General-purpose chat model for instruction following, writing, and analysis
 
 # Model metadata

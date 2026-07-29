@@ -3,7 +3,7 @@ id: t5-flan
 name: t5-flan
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: t5-flan
 

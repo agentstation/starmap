@@ -53,23 +53,30 @@ and precomputes identity and join indexes.
 The exact reviewed provider identity map is
 [`P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml`](P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml),
 SHA-256
-`6d6fce188901b55bcad12df3fdb5624cda4747ff2802e3cdc3cb4a487e4f136c`.
+`94bac32eeabc5519ca8d0293fef9061a749fd11e4945bc86bdf7968d566b20f4`.
 
 | Measurement | Before restoration | Reviewed result |
 | --- | ---: | ---: |
 | Provider model YAML records | 611 | 610 |
 | Provider records with explicit canonical link | 549 | 610 |
 | Provider records without a resolved link | 62 | 0 |
-| Authored model YAML records | 322 restored records | 649 total canonical records |
-| Canonical definitions with at least one offering | not available | 531 |
+| Authored model YAML records | 322 restored records | 608 total canonical records |
+| Canonical definitions with at least one offering | not available | 519 |
 | Generated endpoint rows | 0 | 610 |
-| Authored-only definitions | not available | 118 |
+| Authored-only definitions | not available | 89 |
 
 Every retained provider record now has a reviewed explicit link derived from
 inline authorship, publisher namespace, exact model match, or named source
 evidence. The full map, rather than an inference rule, is the executable review
 boundary. Additional authored records were created only where a serving record
 had no retained canonical target.
+
+Exact regional and staging provider IDs remain provider-owned serving
+identities. Thirteen Alibaba regional offerings now join region-independent
+Qwen definitions, while three date-specific US-only author records were renamed
+without losing their version identity. Fifty-seven historical provider-derived author
+paths have explicit `merge` dispositions rather than surviving as duplicate
+canonical definitions.
 
 One record,
 `providers/alibaba/models/pre-zhongyun-test-chat.yaml`, was removed. It was an

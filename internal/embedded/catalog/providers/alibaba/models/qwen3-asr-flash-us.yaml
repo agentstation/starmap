@@ -1,6 +1,6 @@
 # qwen3-asr-flash-us - AI model
 id: qwen3-asr-flash-us
-model: qwen/qwen3-asr-flash-us
+model: qwen/qwen3-asr-flash
 name: qwen3-asr-flash-us
 authors:
 - id: qwen

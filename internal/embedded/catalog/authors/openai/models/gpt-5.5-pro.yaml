@@ -3,7 +3,7 @@ id: gpt-5.5-pro
 name: gpt-5.5-pro
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Highest-accuracy GPT-5.5 tier for slower, precision-heavy reasoning and coding
 
 # Model metadata

@@ -3,7 +3,7 @@ id: label-detector-pali-001
 name: label-detector-pali-001
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: label-detector-pali-001
 

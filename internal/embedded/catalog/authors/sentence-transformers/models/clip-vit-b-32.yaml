@@ -3,7 +3,7 @@ id: clip-vit-b-32
 name: sentence-transformers/clip-ViT-B-32
 authors:
 - id: sentence-transformers
-  name: sentence-transformers
+  name: Sentence Transformers
 description: The CLIP model maps text and images to a shared vector space, enabling various applications such as image search, zero-shot image classification, and image clustering. The model can be used easily after installation, and its performance is demonstrated through zero-shot ImageNet validation set accuracy scores. Multilingual versions of the model are also available for 50+ languages.
 
 # Model metadata

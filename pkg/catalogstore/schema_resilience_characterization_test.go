@@ -144,6 +144,28 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 				"provenance":{}
 			}`,
 		},
+		{
+			name: "missing author model identity",
+			payload: `{
+				"schema_version":3,
+				"providers":[],
+				"authors":[{"id":"author","name":"Author"}],
+				"provider_models":{},
+				"author_models":{},
+				"provenance":{}
+			}`,
+		},
+		{
+			name: "author model identity references unknown author",
+			payload: `{
+				"schema_version":3,
+				"providers":[],
+				"authors":[],
+				"provider_models":{},
+				"author_models":{"author":[]},
+				"provenance":{}
+			}`,
+		},
 	}
 
 	for _, test := range tests {

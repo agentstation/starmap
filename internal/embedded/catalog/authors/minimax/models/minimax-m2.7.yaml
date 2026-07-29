@@ -3,7 +3,7 @@ id: minimax-m2.7
 name: MiniMaxAI/MiniMax-M2.7
 authors:
 - id: minimax
-  name: minimax
+  name: MiniMax
 description: Open MiniMax flagship for coding agents, office automation, and complex environments
 
 # Model metadata

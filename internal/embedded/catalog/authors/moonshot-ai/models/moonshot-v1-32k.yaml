@@ -3,7 +3,7 @@ id: moonshot-v1-32k
 name: moonshot-v1-32k
 authors:
 - id: moonshot-ai
-  name: moonshot-ai
+  name: Moonshot AI
 
 # Model features
 features:

@@ -3,7 +3,7 @@ id: kimi-k2.7-code
 name: kimi-k2.7-code
 authors:
 - id: moonshot-ai
-  name: moonshot-ai
+  name: Moonshot AI
 description: Coding-focused Kimi model, stronger on long-horizon repo work with less overthinking
 
 # Model metadata

@@ -3,7 +3,7 @@ id: gpt-5.4-pro-2026-03-05
 name: gpt-5.4-pro-2026-03-05
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 
 # Model features
 features:

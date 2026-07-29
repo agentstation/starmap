@@ -3,7 +3,7 @@ id: owlvit-base-patch32
 name: owlvit-base-patch32
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: owlvit-base-patch32
 

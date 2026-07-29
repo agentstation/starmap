@@ -3,7 +3,7 @@ id: llama-prompt-guard-2-22m
 name: Llama Prompt Guard 2 22M
 authors:
 - id: meta
-  name: meta
+  name: Meta
 description: Safety model for policy screening, moderation, and risk-aware routing workflows
 
 # Model metadata

@@ -3,7 +3,7 @@ id: expand
 name: Bria/expand
 authors:
 - id: bria
-  name: bria
+  name: Bria
 description: Bria Expand expands images beyond their borders in high quality. Resizing the image by generating new pixels to expand to the desired aspect ratio. Trained exclusively on licensed data for safe and risk-free commercial use.
 
 # Model metadata

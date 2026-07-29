@@ -3,7 +3,7 @@ id: seedance-2.0
 name: ByteDance/Seedance-2.0
 authors:
 - id: bytedance
-  name: bytedance
+  name: ByteDance
 description: A new-generation professional-grade multimodal video creation model developed, supports video generation with multimodal reference inputs including images, videos and audio.
 
 # Model metadata

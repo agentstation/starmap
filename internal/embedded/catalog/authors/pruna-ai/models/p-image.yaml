@@ -3,7 +3,7 @@ id: p-image
 name: PrunaAI/p-image
 authors:
 - id: pruna-ai
-  name: pruna-ai
+  name: Pruna AI
 description: P-Image is a state-of-the-art real-time generation model with exceptional text rendering, fine-detail accuracy, and rock-solid prompt adherence. It’s built for instant creativity at high-fidelity images in about one second at a fraction of typical model costs.
 
 # Model metadata

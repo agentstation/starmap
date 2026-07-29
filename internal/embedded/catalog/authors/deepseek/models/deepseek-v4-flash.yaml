@@ -3,7 +3,7 @@ id: deepseek-v4-flash
 name: deepseek-v4-flash
 authors:
 - id: deepseek
-  name: deepseek
+  name: DeepSeek
 description: Fast DeepSeek V4 lane for economical reasoning, coding, and long-context work
 
 # Model metadata

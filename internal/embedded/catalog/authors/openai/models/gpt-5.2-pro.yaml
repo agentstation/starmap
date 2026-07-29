@@ -3,7 +3,7 @@ id: gpt-5.2-pro
 name: gpt-5.2-pro
 authors:
 - id: openai
-  name: openai
+  name: OpenAI
 description: Higher-accuracy GPT-5.2 variant for tougher reasoning and review workflows
 
 # Model metadata

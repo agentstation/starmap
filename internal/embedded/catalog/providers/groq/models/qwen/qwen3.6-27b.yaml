@@ -5,24 +5,6 @@ name: Qwen/Qwen3.6-27B
 authors:
 - id: qwen
   name: Qwen Team
-- id: deepseek
-  name: deepseek
-- id: google
-  name: google
-- id: groq
-  name: groq
-- id: huggingfaceh4
-  name: huggingfaceh4
-- id: meta
-  name: meta
-- id: moonshot-ai
-  name: moonshot-ai
-- id: openai
-  name: openai
-- id: playai
-  name: playai
-- id: sdaia
-  name: sdaia
 status: active
 
 # Model features

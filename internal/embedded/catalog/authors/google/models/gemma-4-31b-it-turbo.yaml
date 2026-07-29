@@ -3,7 +3,7 @@ id: gemma-4-31b-it-turbo
 name: google/gemma-4-31B-it-turbo
 authors:
 - id: google
-  name: google
+  name: Google
 description: Gemma is a family of open models built by Google DeepMind. Gemma 4 models are multimodal, handling text and image input and generating text output.
 
 # Model metadata

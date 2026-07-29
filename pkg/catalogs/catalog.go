@@ -277,6 +277,9 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error {
 	if err := validateProviderModelPathID(model.ID); err != nil {
 		return errors.WrapResource("validate", "provider model", string(providerID)+"/"+model.ID, err)
 	}
+	if err := validateModelGeneration(model.Generation); err != nil {
+		return errors.WrapResource("validate", "provider model", string(providerID)+"/"+model.ID, err)
+	}
 	if model.ModelRef != "" {
 		if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
 			return errors.WrapResource("validate", "provider model reference", string(model.ModelRef), err)
@@ -351,7 +354,11 @@ func (cat *Builder) DeleteProviderModel(providerID ProviderID, modelID string) e
 
 // DeleteAuthorModel deletes one provider-independent model from an author.
 func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error {
-	return cat.authoredModels.delete(AuthoredModelID(authorID, slug))
+	author, err := cat.Author(authorID)
+	if err != nil {
+		return err
+	}
+	return cat.authoredModels.delete(AuthoredModelID(author.ID, slug))
 }
 
 // ReplaceWith replaces this catalog's contents with another.

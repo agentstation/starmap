@@ -3,7 +3,7 @@ id: lyria-002
 name: lyria-002
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: lyria-002
 

@@ -3,7 +3,7 @@ id: minimax-m3
 name: MiniMaxAI/MiniMax-M3
 authors:
 - id: minimax
-  name: minimax
+  name: MiniMax
 description: MiniMax multimodal model for long-context coding, perception, and agent planning
 
 # Model metadata

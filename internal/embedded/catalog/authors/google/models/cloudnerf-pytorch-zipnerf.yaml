@@ -3,7 +3,7 @@ id: cloudnerf-pytorch-zipnerf
 name: cloudnerf-pytorch-zipnerf
 authors:
 - id: google
-  name: google
+  name: Google
 description: |-
   Google Vertex AI model: cloudnerf-pytorch-zipnerf
 

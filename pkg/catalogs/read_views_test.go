@@ -83,6 +83,172 @@ func TestReadViewsPreserveUnknownProviderFacts(t *testing.T) {
 	}
 }
 
+func TestReadViewsResolveLineageThroughCanonicalAliases(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	root := "root-provider-id"
+	for _, model := range []Model{
+		{
+			ID: "root", Name: "Root",
+			Authors: []Author{{ID: "author", Name: "Author"}},
+		},
+		{
+			ID: "child", Name: "Child",
+			Authors: []Author{{ID: "author", Name: "Author"}},
+			Lineage: &ModelLineage{Root: &root},
+		},
+	} {
+		if err := builder.SetAuthorModel("author", model); err != nil {
+			t.Fatalf("SetAuthorModel(%s): %v", model.ID, err)
+		}
+	}
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		Models: map[string]*Model{
+			"root-provider-id": {
+				ID: "root-provider-id", Name: "Root",
+				ModelRef: "author/root",
+			},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	child, err := catalog.Definition("author/child")
+	if err != nil {
+		t.Fatalf("Definition: %v", err)
+	}
+	if child.Lineage.Root == nil || *child.Lineage.Root != "author/root" {
+		t.Fatalf("lineage root = %v, want author/root", child.Lineage.Root)
+	}
+}
+
+func TestReadViewsRejectDanglingLineage(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	missing := "missing"
+	if err := builder.SetAuthorModel("author", Model{
+		ID: "child", Name: "Child",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Lineage: &ModelLineage{Parent: &missing},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+
+	_, err := builder.Build()
+	var notFound *errors.NotFoundError
+	if !stderrors.As(err, &notFound) {
+		t.Fatalf("Build error = %T %v, want NotFoundError", err, err)
+	}
+}
+
+func TestReadViewsRejectAmbiguousLineage(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	for _, author := range []Author{
+		{ID: "first", Name: "First"},
+		{ID: "second", Name: "Second"},
+		{ID: "child-author", Name: "Child Author"},
+	} {
+		if err := builder.SetAuthor(author); err != nil {
+			t.Fatalf("SetAuthor(%s): %v", author.ID, err)
+		}
+	}
+	for _, record := range []struct {
+		author AuthorID
+		model  Model
+	}{
+		{
+			author: "first",
+			model: Model{
+				ID: "shared", Name: "First Shared",
+				Authors: []Author{{ID: "first", Name: "First"}},
+			},
+		},
+		{
+			author: "second",
+			model: Model{
+				ID: "shared", Name: "Second Shared",
+				Authors: []Author{{ID: "second", Name: "Second"}},
+			},
+		},
+		{
+			author: "child-author",
+			model: func() Model {
+				root := "shared"
+				return Model{
+					ID: "child", Name: "Child",
+					Authors: []Author{{ID: "child-author", Name: "Child Author"}},
+					Lineage: &ModelLineage{Root: &root},
+				}
+			}(),
+		},
+	} {
+		if err := builder.SetAuthorModel(record.author, record.model); err != nil {
+			t.Fatalf("SetAuthorModel(%s/%s): %v", record.author, record.model.ID, err)
+		}
+	}
+
+	_, err := builder.Build()
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("Build error = %T %v, want ConflictError", err, err)
+	}
+}
+
+func TestReadViewsDiscardResolvableSelfLineage(t *testing.T) {
+	t.Parallel()
+
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	root := "provider-model"
+	if err := builder.SetAuthorModel("author", Model{
+		ID: "model", Name: "Model",
+		Authors: []Author{{ID: "author", Name: "Author"}},
+		Lineage: &ModelLineage{Root: &root},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
+	if err := builder.SetProvider(Provider{
+		ID: "provider", Name: "Provider",
+		Models: map[string]*Model{
+			"provider-model": {
+				ID: "provider-model", Name: "Model",
+				ModelRef: "author/model",
+			},
+		},
+	}); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	definition, err := catalog.Definition("author/model")
+	if err != nil {
+		t.Fatalf("Definition: %v", err)
+	}
+	if definition.Lineage.Root != nil {
+		t.Fatalf("self lineage root = %v, want nil", *definition.Lineage.Root)
+	}
+}
+
 func TestBuildRejectsAmbiguousAliases(t *testing.T) {
 	tests := []struct {
 		name  string

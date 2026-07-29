@@ -3,7 +3,7 @@ id: claude-3-sonnet-20240229
 name: Claude Sonnet 3
 authors:
 - id: anthropic
-  name: anthropic
+  name: Anthropic
 
 # Model metadata
 metadata:
