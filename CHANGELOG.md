@@ -157,7 +157,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   media type, size, and SHA-256 are verified before durable publication. The
   public `remote` subscriber performs the verified initial fetch, listens for
   the sole `catalog.published` SSE hint, deduplicates immutable generations,
-  and performs mandatory catch-up after every reconnect.
+  and performs mandatory catch-up after every reconnect. Validated heartbeat
+  and liveness settings detect silent streams, while caller cancellation and a
+  bounded `Close` own and join initial fetch, stream reading, retry, and
+  activation lifecycles.
 
 - **Restructured Auth Commands**: Simplified authentication command structure
   - **Removed**: `starmap providers auth` (entire subcommand tree)

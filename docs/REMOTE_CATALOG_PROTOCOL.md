@@ -61,5 +61,15 @@ current-state catch-up. Duplicate generation IDs and identical payload digests
 do not republish the immutable catalog. An older retained event cannot regress
 the active generation.
 
+The subscriber expects the server's 20-second default heartbeat and uses a
+60-second default liveness deadline. Both are configurable; configuration must
+leave room for at least two expected heartbeat intervals. Every comment or
+publication resets the liveness deadline, but comments never trigger a catalog
+fetch or advance publication identity. Silence closes the response body, joins
+the per-stream reader, and enters reconnect/catch-up. The caller context owns
+initial fetch, streaming, retries, activation, and termination. `Close` cancels
+that context and joins the owned lifecycle within a configurable five-second
+default, returning a typed timeout instead of waiting forever.
+
 Importing the root `starmap` package never enables remote I/O or silently
 changes update behavior.

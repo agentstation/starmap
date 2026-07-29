@@ -19,6 +19,7 @@ type lifecycleState uint8
 
 const (
 	stateIdle lifecycleState = iota
+	stateStarting
 	stateRunning
 	stateStopped
 )
@@ -111,76 +112,115 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		return err
 	}
 
+	runCtx, cancel := context.WithCancel(ctx)
 	s.mu.Lock()
 	if s.state != stateIdle {
+		actual := s.state.String()
 		s.mu.Unlock()
+		cancel()
 		return &errors.ConflictError{
 			Resource: "remote catalog subscriber",
 			Expected: "idle",
-			Actual:   s.state.String(),
+			Actual:   actual,
 			Message:  "Start may be called only once",
 		}
 	}
+	s.state = stateStarting
+	s.cancel = cancel
+	s.done = make(chan struct{})
+	done := s.done
 	s.mu.Unlock()
 
-	initial, err := s.protocol.FetchCurrent(ctx)
+	started := false
+	defer func() {
+		if started {
+			return
+		}
+		cancel()
+		s.mu.Lock()
+		if s.state == stateStarting {
+			s.state = stateIdle
+			s.cancel = nil
+			s.done = nil
+		}
+		s.mu.Unlock()
+		close(done)
+	}()
+
+	initial, err := s.protocol.FetchCurrent(runCtx)
 	if err != nil {
 		return err
 	}
-	if _, err := s.activate(ctx, initial); err != nil {
+	if _, err := s.activate(runCtx, initial); err != nil {
 		return err
 	}
 
-	runCtx, cancel := context.WithCancel(ctx)
 	stream, err := s.protocol.OpenEventStream(runCtx, "")
 	if err != nil {
-		cancel()
 		return err
 	}
 	if err := s.catchUp(runCtx); err != nil {
 		_ = stream.Close()
-		cancel()
 		return err
 	}
 
 	s.mu.Lock()
-	if s.state != stateIdle {
+	if s.state != stateStarting {
+		actual := s.state.String()
 		s.mu.Unlock()
 		_ = stream.Close()
-		cancel()
 		return &errors.ConflictError{
 			Resource: "remote catalog subscriber",
-			Expected: "idle",
-			Actual:   s.state.String(),
+			Expected: "starting",
+			Actual:   actual,
 			Message:  "subscriber lifecycle changed while Start was initializing",
 		}
 	}
 	s.state = stateRunning
-	s.cancel = cancel
-	s.done = make(chan struct{})
-	done := s.done
+	started = true
 	go s.run(runCtx, stream, done)
 	s.mu.Unlock()
 	return nil
 }
 
-// Close cancels and joins the subscriber lifecycle. It is idempotent.
-func (s *Subscriber) Close() {
+// Close cancels and joins the subscriber lifecycle within ShutdownTimeout. It
+// is idempotent.
+func (s *Subscriber) Close() error {
 	if s == nil {
-		return
+		return nil
 	}
 	s.mu.Lock()
 	cancel := s.cancel
 	done := s.done
 	if s.state == stateIdle {
 		s.state = stateStopped
+		s.mu.Unlock()
+		return nil
 	}
+	if s.state == stateStopped && done == nil {
+		s.mu.Unlock()
+		return nil
+	}
+	s.state = stateStopped
 	s.mu.Unlock()
 	if cancel != nil {
 		cancel()
 	}
-	if done != nil {
-		<-done
+	if done == nil {
+		return nil
+	}
+
+	timer := time.NewTimer(s.config.ShutdownTimeout)
+	defer timer.Stop()
+	select {
+	case <-done:
+		return nil
+	case <-timer.C:
+		return errors.NewTimeoutError(
+			"close remote catalog subscriber",
+			s.config.ShutdownTimeout.String(),
+			"owned lifecycle did not stop",
+		)
 	}
 }
 
@@ -234,30 +274,89 @@ func (s *Subscriber) consume(
 	ctx context.Context,
 	stream *catalogremote.EventStream,
 ) error {
+	readerCtx, cancelReader := context.WithCancel(ctx)
+	results := make(chan streamReadResult, 1)
+	readerDone := make(chan struct{})
+	go readEventStream(readerCtx, stream, results, readerDone)
+	defer func() {
+		cancelReader()
+		_ = stream.Close()
+		<-readerDone
+	}()
+
+	liveness := time.NewTimer(s.config.LivenessTimeout)
+	defer liveness.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-liveness.C:
+			return errors.NewTimeoutError(
+				"read remote catalog event stream",
+				s.config.LivenessTimeout.String(),
+				"no heartbeat or publication was received",
+			)
+		case result := <-results:
+			if result.err != nil {
+				return result.err
+			}
+			resetTimer(liveness, s.config.LivenessTimeout)
+			event := result.event
+			if event.Publication == nil {
+				continue
+			}
+			if s.isActiveGeneration(event.Publication.GenerationID) {
+				s.recordEventID(event.EventID)
+				continue
+			}
+			generation, err := s.protocol.FetchGeneration(
+				ctx,
+				event.Publication.GenerationID,
+			)
+			if err != nil {
+				return err
+			}
+			if _, err := s.activate(ctx, generation); err != nil {
+				return err
+			}
+			s.recordEventID(event.EventID)
+		}
+	}
+}
+
+type streamReadResult struct {
+	event catalogremote.StreamEvent
+	err   error
+}
+
+func readEventStream(
+	ctx context.Context,
+	stream *catalogremote.EventStream,
+	results chan<- streamReadResult,
+	done chan<- struct{},
+) {
+	defer close(done)
 	for {
 		event, err := stream.Next()
+		select {
+		case <-ctx.Done():
+			return
+		case results <- streamReadResult{event: event, err: err}:
+		}
 		if err != nil {
-			return err
+			return
 		}
-		if event.Publication == nil {
-			continue
-		}
-		if s.isActiveGeneration(event.Publication.GenerationID) {
-			s.recordEventID(event.EventID)
-			continue
-		}
-		generation, err := s.protocol.FetchGeneration(
-			ctx,
-			event.Publication.GenerationID,
-		)
-		if err != nil {
-			return err
-		}
-		if _, err := s.activate(ctx, generation); err != nil {
-			return err
-		}
-		s.recordEventID(event.EventID)
 	}
+}
+
+func resetTimer(timer *time.Timer, duration time.Duration) {
+	if !timer.Stop() {
+		select {
+		case <-timer.C:
+		default:
+		}
+	}
+	timer.Reset(duration)
 }
 
 func (s *Subscriber) catchUp(ctx context.Context) error {
@@ -383,6 +482,8 @@ func (s lifecycleState) String() string {
 	switch s {
 	case stateIdle:
 		return "idle"
+	case stateStarting:
+		return "starting"
 	case stateRunning:
 		return "running"
 	case stateStopped:

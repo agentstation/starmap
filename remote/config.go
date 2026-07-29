@@ -13,6 +13,14 @@ const (
 	DefaultReconnectMinDelay = 100 * time.Millisecond
 	// DefaultReconnectMaxDelay bounds reconnect delay growth.
 	DefaultReconnectMaxDelay = 5 * time.Second
+	// DefaultExpectedHeartbeatInterval matches the server's default heartbeat.
+	DefaultExpectedHeartbeatInterval = 20 * time.Second
+	// DefaultLivenessTimeout bounds a stream with no heartbeat or event.
+	DefaultLivenessTimeout = 60 * time.Second
+	// DefaultShutdownTimeout bounds Close while joining owned loops.
+	DefaultShutdownTimeout = 5 * time.Second
+
+	minimumLivenessIntervals = 2
 )
 
 // Config defines one remote Starmap catalog source. BaseURL is the versioned
@@ -28,6 +36,15 @@ type Config struct {
 	// ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the
 	// default.
 	ReconnectMaxDelay time.Duration
+	// ExpectedHeartbeatInterval is the configured server heartbeat interval.
+	// Zero selects the server's default.
+	ExpectedHeartbeatInterval time.Duration
+	// LivenessTimeout is the maximum time without a comment or publication
+	// frame. Zero selects the default.
+	LivenessTimeout time.Duration
+	// ShutdownTimeout bounds Close while it joins subscriber-owned loops. Zero
+	// selects the default.
+	ShutdownTimeout time.Duration
 }
 
 func (c Config) normalized() (Config, error) {
@@ -36,6 +53,15 @@ func (c Config) normalized() (Config, error) {
 	}
 	if c.ReconnectMaxDelay == 0 {
 		c.ReconnectMaxDelay = DefaultReconnectMaxDelay
+	}
+	if c.ExpectedHeartbeatInterval == 0 {
+		c.ExpectedHeartbeatInterval = DefaultExpectedHeartbeatInterval
+	}
+	if c.LivenessTimeout == 0 {
+		c.LivenessTimeout = DefaultLivenessTimeout
+	}
+	if c.ShutdownTimeout == 0 {
+		c.ShutdownTimeout = DefaultShutdownTimeout
 	}
 	if c.ReconnectMinDelay < 0 {
 		return Config{}, &errors.ValidationError{
@@ -56,6 +82,35 @@ func (c Config) normalized() (Config, error) {
 			Field:   "remote.reconnect_max_delay",
 			Value:   c.ReconnectMaxDelay,
 			Message: "must be at least reconnect_min_delay",
+		}
+	}
+	if c.ExpectedHeartbeatInterval < 0 {
+		return Config{}, &errors.ValidationError{
+			Field:   "remote.expected_heartbeat_interval",
+			Value:   c.ExpectedHeartbeatInterval,
+			Message: "must be positive",
+		}
+	}
+	if c.LivenessTimeout < 0 {
+		return Config{}, &errors.ValidationError{
+			Field:   "remote.liveness_timeout",
+			Value:   c.LivenessTimeout,
+			Message: "must be positive",
+		}
+	}
+	minimumLiveness := minimumLivenessIntervals * c.ExpectedHeartbeatInterval
+	if c.LivenessTimeout < minimumLiveness {
+		return Config{}, &errors.ValidationError{
+			Field:   "remote.liveness_timeout",
+			Value:   c.LivenessTimeout,
+			Message: "must allow at least two expected heartbeat intervals",
+		}
+	}
+	if c.ShutdownTimeout < 0 {
+		return Config{}, &errors.ValidationError{
+			Field:   "remote.shutdown_timeout",
+			Value:   c.ShutdownTimeout,
+			Message: "must be positive",
 		}
 	}
 	return c, nil

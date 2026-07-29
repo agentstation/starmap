@@ -2,6 +2,7 @@ package remote
 
 import (
 	"context"
+	stderrors "errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,312 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
+
+func TestNewStartsNoRemoteRequest(t *testing.T) {
+	t.Parallel()
+
+	var requests atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(
+		func(http.ResponseWriter, *http.Request) {
+			requests.Add(1)
+		},
+	))
+	defer server.Close()
+	subscriber, err := New(Config{BaseURL: server.URL})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	if got := requests.Load(); got != 0 {
+		t.Fatalf("constructor remote requests = %d, want 0", got)
+	}
+	if err := subscriber.Close(); err != nil {
+		t.Fatalf("Close idle subscriber: %v", err)
+	}
+}
+
+func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.NotFoundHandler())
+	defer server.Close()
+	subscriber, err := New(Config{BaseURL: server.URL})
+	if err != nil {
+		t.Fatalf("New defaults: %v", err)
+	}
+	if subscriber.config.ExpectedHeartbeatInterval !=
+		DefaultExpectedHeartbeatInterval ||
+		subscriber.config.LivenessTimeout != DefaultLivenessTimeout ||
+		subscriber.config.ShutdownTimeout != DefaultShutdownTimeout {
+		t.Fatalf("normalized lifecycle config = %#v", subscriber.config)
+	}
+
+	for _, test := range []struct {
+		name   string
+		config Config
+	}{
+		{
+			name: "negative heartbeat",
+			config: Config{
+				BaseURL: server.URL, ExpectedHeartbeatInterval: -time.Second,
+			},
+		},
+		{
+			name: "insufficient liveness margin",
+			config: Config{
+				BaseURL: server.URL, ExpectedHeartbeatInterval: time.Second,
+				LivenessTimeout: time.Second,
+			},
+		},
+		{
+			name: "negative liveness",
+			config: Config{
+				BaseURL: server.URL, LivenessTimeout: -time.Second,
+			},
+		},
+		{
+			name: "negative shutdown",
+			config: Config{
+				BaseURL: server.URL, ShutdownTimeout: -time.Second,
+			},
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			if got, err := New(test.config); err == nil {
+				_ = got.Close()
+				t.Fatal("New accepted invalid lifecycle config")
+			}
+		})
+	}
+}
+
+func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
+	t.Parallel()
+
+	first := subscriberTestGeneration(
+		t,
+		"generation-liveness-first",
+		"provider-liveness-first",
+		time.Date(2026, time.July, 29, 16, 0, 0, 0, time.UTC),
+	)
+	second := subscriberTestGeneration(
+		t,
+		"generation-liveness-second",
+		"provider-liveness-second",
+		time.Date(2026, time.July, 29, 16, 1, 0, 0, time.UTC),
+	)
+	var (
+		mu          sync.RWMutex
+		current     = first
+		streamCount atomic.Int32
+	)
+	generations := map[string]catalogstore.Generation{
+		first.Manifest.GenerationID:  first,
+		second.Manifest.GenerationID: second,
+	}
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			resourcePath := request.URL.Path[len("/api/v1"):]
+			mu.RLock()
+			selected := current
+			mu.RUnlock()
+			switch resourcePath {
+			case catalogremote.ManifestPath:
+				writeSubscriberManifest(t, writer, selected)
+				return
+			case catalogremote.EventStreamPath:
+				streamCount.Add(1)
+				writer.Header().Set(
+					"Content-Type",
+					catalogremote.EventStreamMediaType,
+				)
+				_, _ = fmt.Fprint(writer, ": connected\n\n")
+				writer.(http.Flusher).Flush()
+				<-request.Context().Done()
+				return
+			}
+			for id, generation := range generations {
+				if resourcePath == catalogremote.SnapshotPath(id) {
+					writer.Header().Set(
+						"Content-Type",
+						catalogs.CatalogPayloadMediaType,
+					)
+					_, _ = writer.Write(generation.Payload)
+					return
+				}
+			}
+			http.NotFound(writer, request)
+		},
+	))
+	defer server.Close()
+
+	subscriber, err := New(Config{
+		BaseURL:                   server.URL + "/api/v1",
+		HTTPClient:                server.Client(),
+		ReconnectMinDelay:         time.Millisecond,
+		ReconnectMaxDelay:         time.Millisecond,
+		ExpectedHeartbeatInterval: 10 * time.Millisecond,
+		LivenessTimeout:           25 * time.Millisecond,
+		ShutdownTimeout:           time.Second,
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	subscriber.retryDelay = func(int) time.Duration { return 0 }
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := subscriber.Start(ctx); err != nil {
+		t.Fatalf("Start: %v", err)
+	}
+	mu.Lock()
+	current = second
+	mu.Unlock()
+
+	waitForSubscriberCondition(t, func() bool {
+		if streamCount.Load() < 2 {
+			return false
+		}
+		_, err := subscriber.Catalog().Provider("provider-liveness-second")
+		return err == nil
+	})
+	started := time.Now()
+	if err := subscriber.Close(); err != nil {
+		t.Fatalf("Close: %v", err)
+	}
+	if elapsed := time.Since(started); elapsed >= time.Second {
+		t.Fatalf("Close took %s, want bounded join below 1s", elapsed)
+	}
+}
+
+func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
+	t.Parallel()
+
+	generation := subscriberTestGeneration(
+		t,
+		"generation-heartbeat",
+		"provider-heartbeat",
+		time.Date(2026, time.July, 29, 17, 0, 0, 0, time.UTC),
+	)
+	var streamCount atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			resourcePath := request.URL.Path[len("/api/v1"):]
+			switch resourcePath {
+			case catalogremote.ManifestPath:
+				writeSubscriberManifest(t, writer, generation)
+			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
+				writer.Header().Set(
+					"Content-Type",
+					catalogs.CatalogPayloadMediaType,
+				)
+				_, _ = writer.Write(generation.Payload)
+			case catalogremote.EventStreamPath:
+				streamCount.Add(1)
+				writer.Header().Set(
+					"Content-Type",
+					catalogremote.EventStreamMediaType,
+				)
+				_, _ = fmt.Fprint(writer, ": connected\n\n")
+				writer.(http.Flusher).Flush()
+				ticker := time.NewTicker(5 * time.Millisecond)
+				defer ticker.Stop()
+				for {
+					select {
+					case <-request.Context().Done():
+						return
+					case <-ticker.C:
+						_, _ = fmt.Fprint(writer, ": heartbeat\n\n")
+						writer.(http.Flusher).Flush()
+					}
+				}
+			default:
+				http.NotFound(writer, request)
+			}
+		},
+	))
+	defer server.Close()
+
+	subscriber, err := New(Config{
+		BaseURL:                   server.URL + "/api/v1",
+		HTTPClient:                server.Client(),
+		ExpectedHeartbeatInterval: 5 * time.Millisecond,
+		LivenessTimeout:           20 * time.Millisecond,
+		ShutdownTimeout:           time.Second,
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := subscriber.Start(ctx); err != nil {
+		t.Fatalf("Start: %v", err)
+	}
+	time.Sleep(75 * time.Millisecond)
+	if got := streamCount.Load(); got != 1 {
+		t.Fatalf("healthy heartbeat stream connections = %d, want 1", got)
+	}
+	if err := subscriber.Close(); err != nil {
+		t.Fatalf("Close: %v", err)
+	}
+}
+
+func TestCloseReportsBoundedJoinTimeout(t *testing.T) {
+	t.Parallel()
+
+	subscriber := &Subscriber{
+		config: Config{ShutdownTimeout: 5 * time.Millisecond},
+		state:  stateRunning,
+		done:   make(chan struct{}),
+	}
+	err := subscriber.Close()
+	if !stderrors.Is(err, pkgerrors.ErrTimeout) {
+		t.Fatalf("Close error = %v, want typed timeout", err)
+	}
+}
+
+func TestCloseCancelsAndJoinsInitialFetch(t *testing.T) {
+	t.Parallel()
+
+	fetchStarted := make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(
+		func(_ http.ResponseWriter, request *http.Request) {
+			close(fetchStarted)
+			<-request.Context().Done()
+		},
+	))
+	defer server.Close()
+	subscriber, err := New(Config{
+		BaseURL:         server.URL,
+		HTTPClient:      server.Client(),
+		ShutdownTimeout: time.Second,
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	startResult := make(chan error, 1)
+	go func() {
+		startResult <- subscriber.Start(context.Background())
+	}()
+
+	select {
+	case <-fetchStarted:
+	case <-time.After(5 * time.Second):
+		t.Fatal("initial fetch did not start")
+	}
+	if err := subscriber.Close(); err != nil {
+		t.Fatalf("Close: %v", err)
+	}
+	select {
+	case err := <-startResult:
+		if err == nil {
+			t.Fatal("Start succeeded after Close canceled initialization")
+		}
+	case <-time.After(time.Second):
+		t.Fatal("Start did not return after Close")
+	}
+}
 
 func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testing.T) {
 	t.Parallel()
@@ -121,7 +427,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	if err := subscriber.Start(ctx); err != nil {
 		t.Fatalf("Start: %v", err)
 	}
-	defer subscriber.Close()
+	defer func() { _ = subscriber.Close() }()
 	if _, err := subscriber.Catalog().Provider("provider-first"); err != nil {
 		t.Fatalf("initial remote catalog not activated: %v", err)
 	}

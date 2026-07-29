@@ -17,7 +17,7 @@ Package remote provides a reactive Starmap catalog consumer.
 - [type Subscriber](<#Subscriber>)
   - [func New\(config Config\) \(\*Subscriber, error\)](<#New>)
   - [func \(s \*Subscriber\) Catalog\(\) \*catalogs.Catalog](<#Subscriber.Catalog>)
-  - [func \(s \*Subscriber\) Close\(\)](<#Subscriber.Close>)
+  - [func \(s \*Subscriber\) Close\(\) error](<#Subscriber.Close>)
   - [func \(s \*Subscriber\) Start\(ctx context.Context\) error](<#Subscriber.Start>)
 
 
@@ -31,11 +31,17 @@ const (
     DefaultReconnectMinDelay = 100 * time.Millisecond
     // DefaultReconnectMaxDelay bounds reconnect delay growth.
     DefaultReconnectMaxDelay = 5 * time.Second
+    // DefaultExpectedHeartbeatInterval matches the server's default heartbeat.
+    DefaultExpectedHeartbeatInterval = 20 * time.Second
+    // DefaultLivenessTimeout bounds a stream with no heartbeat or event.
+    DefaultLivenessTimeout = 60 * time.Second
+    // DefaultShutdownTimeout bounds Close while joining owned loops.
+    DefaultShutdownTimeout = 5 * time.Second
 )
 ```
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L20-L31>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L28-L48>)
 
 Config defines one remote Starmap catalog source. BaseURL is the versioned API root, for example https://starmap.example.com/api/v1.
 
@@ -51,11 +57,20 @@ type Config struct {
     // ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the
     // default.
     ReconnectMaxDelay time.Duration
+    // ExpectedHeartbeatInterval is the configured server heartbeat interval.
+    // Zero selects the server's default.
+    ExpectedHeartbeatInterval time.Duration
+    // LivenessTimeout is the maximum time without a comment or publication
+    // frame. Zero selects the default.
+    LivenessTimeout time.Duration
+    // ShutdownTimeout bounds Close while it joins subscriber-owned loops. Zero
+    // selects the default.
+    ShutdownTimeout time.Duration
 }
 ```
 
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L27-L42>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L28-L43>)
 
 Subscriber owns one explicitly started remote catalog lifecycle.
 
@@ -66,7 +81,7 @@ type Subscriber struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L52>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L53>)
 
 ```go
 func New(config Config) (*Subscriber, error)
@@ -75,7 +90,7 @@ func New(config Config) (*Subscriber, error)
 New validates config and constructs an idle subscriber. It starts no goroutine and performs no remote request.
 
 <a name="Subscriber.Catalog"></a>
-### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L89>)
+### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L90>)
 
 ```go
 func (s *Subscriber) Catalog() *catalogs.Catalog
@@ -84,16 +99,16 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the current immutable catalog. Before Start succeeds it is the verified embedded bootstrap; afterward it is the latest activated remote generation.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L168>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L188>)
 
 ```go
-func (s *Subscriber) Close()
+func (s *Subscriber) Close() error
 ```
 
-Close cancels and joins the subscriber lifecycle. It is idempotent.
+Close cancels and joins the subscriber lifecycle within ShutdownTimeout. It is idempotent.
 
 <a name="Subscriber.Start"></a>
-### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L99>)
+### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L100>)
 
 ```go
 func (s *Subscriber) Start(ctx context.Context) error

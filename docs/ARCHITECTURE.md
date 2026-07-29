@@ -597,7 +597,11 @@ another verified current fetch, and owns reconnection under the caller context.
 Every reconnect uses `Last-Event-ID` when available and performs mandatory
 current-state catch-up, so replay is never required for correctness. Duplicate
 generation IDs, duplicate payload digests, and stale retained events do not
-republish or regress the immutable catalog. See
+republish or regress the immutable catalog. A per-stream reader is explicitly
+closed and joined. The validated 20-second expected-heartbeat and 60-second
+liveness defaults make a silent or half-open stream reconnect; caller
+cancellation and bounded `Close` own termination even while initial fetch is
+in progress. See
 [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 The online server and offline artifact are the only distribution

@@ -820,7 +820,10 @@ model, err := catalog.FindModel("gpt-4o")
 The initial generation is verified before `Start` succeeds. SSE events are
 generation hints, not catalog payloads; reconnect always performs verified
 current-state catch-up, so dropped or replayed events cannot permanently stale
-or partially mutate the catalog.
+or partially mutate the catalog. Comment heartbeats reset the stream-liveness
+deadline without triggering a fetch. The caller context owns initial fetch,
+streaming, retry, and activation; `Close` cancels and joins that lifecycle
+within a bounded timeout.
 
 **Configuration Flags:**
 - `--port`: Server port (default: 8080)
