@@ -15,7 +15,7 @@ import (
 // without importing source acquisition, provider clients, or server code.
 func Publish(ctx context.Context) error {
 	store := catalogstore.NewMemory()
-	sm, err := starmap.New(starmap.WithCatalogStore(store))
+	sm, err := starmap.NewContext(ctx, starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
 	}

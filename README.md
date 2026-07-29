@@ -503,6 +503,25 @@ for _, offering := range offerings {
 }
 ```
 
+`New` is the convenient read-only constructor and uses a background context.
+When construction reads a configured generation store, use `NewContext` so the
+caller owns cancellation and deadlines:
+
+```go
+sm, err := starmap.NewContext(ctx,
+    starmap.WithCatalogStore(store),
+    starmap.WithCatalogPath("./catalog"),
+)
+if err != nil {
+    return err
+}
+catalog := sm.Catalog() // non-nil after successful construction
+```
+
+Calling `Catalog` on a nil `*starmap.Client` returns nil. For every successfully
+constructed client the accessor is non-failing, non-nil, O(1), allocation-free,
+and safe to retain across goroutines.
+
 #### Event-Driven Updates
 ```go
 // React to catalog changes

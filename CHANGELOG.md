@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Caller-owned construction lifecycle**: `starmap.NewContext` propagates the
+  caller's cancellation and deadline through storage-backed generation loading
+  and workspace repair. `starmap.New` remains the background-context
+  convenience constructor. `(*Client).Catalog()` now has explicit nil-receiver
+  semantics: it returns nil for a nil client while remaining non-failing,
+  non-nil, O(1), and allocation-free after successful construction.
 - **Explicit local layout migration**: `starmap migrate catalog` validates and
   locks the complete pre-plan generation store at `catalog_path`, moves it to
   the canonical machine state root, and projects the exact current generation

@@ -41,6 +41,13 @@ func TestConsumerCatalogReturnsConcreteImmutableCatalog(t *testing.T) {
 	}
 }
 
+func TestNilClientCatalogReturnsNil(t *testing.T) {
+	var client *Client
+	if catalog := client.Catalog(); catalog != nil {
+		t.Fatalf("nil Client.Catalog() = %#v, want nil", catalog)
+	}
+}
+
 func TestConsumerFindModelReturnsCanonicalDefinition(t *testing.T) {
 	client, err := New()
 	if err != nil {

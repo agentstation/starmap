@@ -677,12 +677,15 @@ before any non-dry manual, remote, server-triggered, or scheduled mutation. The
 preflight runs before source fetch, custom callbacks, remote HTTP, or scheduler
 startup and returns a typed `errors.ConfigError` when the store is absent.
 Read-only construction, `Catalog`, and dry-run synchronization remain usable
-without a store. The CLI's `catalog_path` names the one human workspace and
-defaults to `~/.starmap/catalog`. Its passive machine-owned generation store
-defaults separately to `~/.starmap/state/catalog`; constructing either
-composition creates no directory. Workspace and state roots must not contain
-one another. The same pre-read validation rejects an active models.dev cache
-or source-checkout root that contains, equals, or sits beneath the workspace.
+without a store. `NewContext` carries the caller's cancellation and deadline
+through durable-current loading and projection repair; `New` is the explicit
+background-context convenience wrapper. The CLI's `catalog_path` names the one
+human workspace and defaults to `~/.starmap/catalog`. Its passive machine-owned
+generation store defaults separately to `~/.starmap/state/catalog`; constructing
+either composition creates no directory. Workspace and state roots must not
+contain one another. The same pre-read validation rejects an active models.dev
+cache or source-checkout root that contains, equals, or sits beneath the
+workspace.
 A selected workspace containing `current`, `generations/`, or `.commit.lock`
 is rejected with `errors.LegacyCatalogLayoutError` before any mutation and
 requires `starmap migrate catalog`. That explicit operation acquires the
@@ -970,7 +973,9 @@ func (c *Client) Activate(ctx context.Context, generation catalogstore.Generatio
 The root package returns concrete `*Client`; consumers that need substitution
 define the smallest interface at their own use site. After `New` succeeds,
 `Catalog` is non-failing, non-nil, O(1), and returns a retained immutable
-generation.
+generation. A nil `*Client` has a defined zero-value read: `Catalog` returns
+nil. Storage-backed callers use `NewContext` so cancellation and deadlines
+bound constructor I/O; `New` uses a background context for convenience.
 
 ### Functional Options Pattern
 
@@ -982,7 +987,7 @@ store, err := catalogstore.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
-sm, err := starmap.New(
+sm, err := starmap.NewContext(ctx,
     starmap.WithCatalogStore(store),
     starmap.WithCatalogPath("./catalog"),
 )
