@@ -161,6 +161,7 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 		t.Fatal("Makefile does not expose the pure-Go composition gate")
 	}
 	for _, check := range []string{
+		`git -C "$ROOT" grep`,
 		`CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"`,
 		`CGO_ENABLED=0 go build -trimpath`,
 		`CGO_ENABLED=0$`,
@@ -169,6 +170,9 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 		if !strings.Contains(pureGoScript, check) {
 			t.Fatalf("pure-Go verification is missing %q", check)
 		}
+	}
+	if strings.Contains(pureGoScript, "rg -n") {
+		t.Fatal("pure-Go verification must use tooling available on the hosted runner")
 	}
 	if !strings.Contains(verifyScript, "run make test-pure-go") {
 		t.Fatal("repository verification does not run the pure-Go composition gate")

@@ -172,16 +172,21 @@ func TestStreamFlushesHeartbeatAndPublicationOnOneWriter(t *testing.T) {
 			t.Fatalf("publication frame %q does not contain %q", publication, part)
 		}
 	}
-	stats := broadcaster.Stats()
-	if stats.Sent != 1 || stats.Heartbeats == 0 || stats.Failed != 0 {
-		t.Fatalf("delivery stats = %#v", stats)
-	}
-	health := broadcaster.Health()
-	if health.State != StreamStateStreaming || health.Clients != 1 ||
-		health.LastHeartbeatAt.IsZero() || health.LastEventAt.IsZero() ||
-		health.LastGenerationID != "generation-7" ||
-		health.LastSequence != 7 || health.LastError != nil {
-		t.Fatalf("stream health = %#v", health)
+	deadline = time.Now().Add(time.Second)
+	for {
+		stats := broadcaster.Stats()
+		health := broadcaster.Health()
+		if stats.Sent == 1 && stats.Heartbeats > 0 && stats.Failed == 0 &&
+			health.State == StreamStateStreaming && health.Clients == 1 &&
+			!health.LastHeartbeatAt.IsZero() && !health.LastEventAt.IsZero() &&
+			health.LastGenerationID == "generation-7" &&
+			health.LastSequence == 7 && health.LastError == nil {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("delivery stats = %#v; stream health = %#v", stats, health)
+		}
+		time.Sleep(time.Millisecond)
 	}
 }
 

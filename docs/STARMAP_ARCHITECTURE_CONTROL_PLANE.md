@@ -123,6 +123,7 @@ claims must not be silently rewritten.
 | F-105 / P12.7 | Version stdout patch release remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
 | F-106 / P12.8 | Immutable draft-first release flow remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
 | PR #53 / F-012 / F-052 | Provider model YAML was the sole persisted model truth; the 322 author-model files and all 121 non-exact records were deleted | Superseded by user review in P5.9–P5.13: restore the corpus as authored identity/intrinsic metadata, keep provider records as explicitly linked serving facts, and generate endpoints from the join without restoring the old denormalized-copy semantics |
+| Historical P3 catalog-store evidence and P7.13a/F-107 SQLite measurement | Starmap shipped and tested a built-in generic SQL adapter backed by `modernc.org/sqlite` | Superseded for the target product by F-108 and P8.9–P8.12: Starmap owns memory, filesystem, and conditional object-generation stores; Starport owns every relational adapter, driver, schema, migration, connection, credential, backup, and lifecycle concern |
 
 ## Status Legend
 
@@ -215,6 +216,9 @@ Preserve the reviewed architecture contract:
   and returns the concrete immutable catalog;
 - the Go library remains independently useful without the CLI, acquisition
   stack, or server;
+- Starmap owns memory, filesystem, and conditional object-generation stores,
+  never a relational database adapter; embedding applications inject any
+  caller-owned relational implementation through `WithCatalogStore`;
 - an embeddable Starmap server is available to Go programs;
 - a remote Go consumer performs an initial verified fetch, then reacts to
   post-commit server events through the sole SSE transport, verifies and
@@ -295,7 +299,7 @@ authors/{author}/models             providers/{provider}/models
 | Generated endpoint YAML | Deterministic digest-bound join of authored models and provider serving records; inspectable/exportable but never an independent authority |
 | Provenance and generation metadata | Machine-owned evidence and lifecycle state, not competing configuration |
 | Immutable generation | Compiled, validated publication product; safe to retain and share |
-| Catalog store | Durable generation history, CAS, retention, and rollback |
+| Catalog store | Durable generation history, CAS, retention, and rollback through Starmap-owned memory, filesystem, or conditional object storage, or a caller-owned injected implementation |
 | Starmap server | Optional public Go module and binary composition over immutable generations |
 | Remote consumer | Verified initial fetch plus push-triggered immutable generation activation |
 
@@ -421,6 +425,28 @@ an `internal` package or invoking the CLI. The public server module must:
   streaming compatibility during construction;
 - avoid acquiring provider credentials unless the embedding program explicitly
   composes acquisition.
+
+### Catalog-store ownership
+
+Starmap's public `catalogstore.Store` remains the implementation-neutral
+`Current`, `Get`, and `Commit` generation contract. Starmap itself owns only:
+
+- memory storage for reference tests and ephemeral processes;
+- filesystem storage as the default durable standalone CLI/server choice; and
+- conditional object storage for a server without a durable local filesystem.
+
+Starmap does not open, configure, migrate, close, or depend on SQLite, MySQL,
+PostgreSQL, or another relational database. Starport may implement the same
+contract using any of those databases, but Starport owns its driver, pool,
+credentials, migrations, backups, lifecycle, transaction isolation, and
+dialect-specific compare-and-swap implementation and injects the result through
+`starmap.WithCatalogStore(...)`.
+
+The object-store composition uses immutable addressed generation objects plus
+a version/ETag-conditional current pointer. A backend without atomic
+conditional-write semantics is rejected; it must never silently degrade to
+last-writer-wins. The production S3-compatible adapter accepts a caller-owned
+client and credentials/lifecycle remain outside Starmap constructors.
 
 ### Reactive remote library
 
@@ -650,7 +676,7 @@ Live state inspected 2026-07-29.
 | [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | P3 human-workspace lifecycle and explicit legacy-layout migration merged as `9609f4f4` | Exact final head passed uninterrupted local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely |
 | [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@94157b42` | `DONE` | P5 single persisted model and derived immutable read views merged as `76dd3178` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6 |
 | [#54](https://github.com/agentstation/starmap/pull/54) | `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | Restored authored model identity and generated endpoint join merged as `6993b1e7` | Exact material commit passed uninterrupted local verification; exact PR head passed Verification Gate and Security & Reliability; protection remained strict with both contexts, admin enforcement, and conversation resolution; zero reviews and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6.2 |
-| [#55](https://github.com/agentstation/starmap/pull/55) | `codex/starmap-library-composition` with material commit `c45652c8` | `IN_PROGRESS` | P7.13 owns the coherent library/server/reactive-consumer phase PR; open and ready for review | OpenRouter compatibility, the four external consumers, the platform-independent dependency budget, and the pure-Go/static release gate are complete locally; the final head must pass Verification Gate and Security & Reliability before the authorized protected merge, whose exact SHA and cleanup are recorded next |
+| [#55](https://github.com/agentstation/starmap/pull/55) | `codex/starmap-library-composition@a60392bf` | `IN_PROGRESS` | P7.13 owns the coherent library/server/reactive-consumer phase PR; the accepted relational/object-storage boundary is recorded for the P8 successor rather than expanding this completed product unit | Security & Reliability passed exact head `a60392bf`; Verification Gate exposed a missing-runner-tool source scan and an asynchronous SSE bookkeeping assertion after all product/external-consumer behavior passed. The final corrected head must pass both required checks before the authorized protected merge, whose exact SHA and cleanup are recorded next |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -677,7 +703,7 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P5 | `DONE` | Linked authored models and provider serving records produce immutable read views and generated endpoints | Disjoint schema ownership; complete corpus disposition; identity, endpoint, DX, and benchmark gates green |
 | P6 | `IN_PROGRESS` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `IN_PROGRESS` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
-| P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
+| P8 | `PENDING` | Storage ownership is product-correct and Go modules have depth, locality, and compliant file sizes | No Starmap relational adapter; production conditional object storage is real; no hard-limit file; every concern dispositioned |
 | P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
 | P10 | `PENDING` | Production verification and documentation inspire trust | Full local/hosted/security/docs gates |
 | P11 | `PENDING` | GitHub and local machine end clean | No open PRs; clean protected main; obsolete work removed |
@@ -860,6 +886,16 @@ compile and performance baselines must also be green.
 | P8.6 | `PENDING` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven; dead exported behavior with zero callers, including `differ.Changeset.Filter` and the inert `ApplyAdditive` strategy path, receives the same disposition |
 | P8.7 | `PENDING` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
 | P8.8 | `PENDING` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
+| P8.9 | `PENDING` | Remove Starmap-owned relational storage | Delete `pkg/catalogstore/sql.go`, its SQLite tests and concurrency cases, `modernc.org/sqlite`, and all now-orphaned transitive modules; README, GoDoc, architecture, examples, generated docs, and current tests make no built-in SQL/SQLite claim; `go mod why -m modernc.org/sqlite` reports no dependency; memory/filesystem/object conformance and atomic publication remain green |
+| P8.10 | `PENDING` | Publish the external store behavioral contract | Document exact validation, immutable-generation, defensive-ownership, idempotency, CAS-conflict, cancellation, rollback, retained-history, corruption, and failure-preservation semantics; a small external `GOWORK=off` Starport-style module implements and injects a custom `catalogstore.Store` without importing CLI, server, acquisition, SQLite, MySQL, or PostgreSQL code; add a public conformance helper only if two real external adapters justify that API more deeply than the executable contract |
+| P8.11 | `PENDING` | Make S3-compatible storage production-real | One optional `pkg/catalogstore/s3` adapter accepts a caller-owned S3-compatible client and performs no network work in its constructor; immutable objects, digest verification, ETag/version conditional promotion, typed conflicts, reopen, rollback, retained generations, corruption rejection, and upload/promotion fault preservation pass the shared store, concurrency, corruption, and protocol-level fault matrix; backends lacking conditional writes fail construction or first use explicitly and never fall back to last-writer-wins |
+| P8.12 | `PENDING` | Compose explicit filesystem/object server storage | Standalone CLI/server defaults to filesystem; configuration explicitly selects filesystem or S3-compatible object storage and validates required bucket/prefix/client inputs; `starmap.New` performs no hidden database or object-network lifecycle; external server and remote-consumer drills pass against both durable modes; the optional S3 package does not enter the read-only 32-non-standard-package closure |
+
+P8 executes in dependency order
+`P8.9 → P8.10 → P8.11 → P8.12 → P8.1 → P8.2 → P8.3 → P8.4 → P8.5
+→ P8.6 → P8.7 → P8.8`. The storage boundary is resolved before the general
+package/deletion audit so that obsolete SQL code and its dependency graph are
+not reviewed or preserved as if they were target architecture.
 
 ## P9 — Distribution and Embedded Upgrade Integrity
 
@@ -1015,6 +1051,8 @@ machine evidence and does not require a follow-up documentation commit.
 | F-093 | `DONE` | The external server consumer initially pinned `openai/gpt-4o` as permanently eligible; it now derives an eligible canonical definition/offering from the current immutable catalog while still calling both exact compatibility routes | P7.12e |
 | F-094 | `DONE` | PR #55's first hosted Verification Gate proved the 160-total-package read-only budget was OS/architecture/CGO-sensitive rather than a stable composition metric: the unchanged consumer measured 159–163 total packages but exactly 31 non-standard packages on Darwin, Linux, and Windows. With explicit user approval, CI now enforces 31/32 non-standard packages while retaining the complete closure for every forbidden-family check; a structural test prevents regression to the non-hermetic metric | P6.2, P7.13 |
 | F-107 | `DONE` | Pure-Go operation was true but implicit: source had no `import "C"` and SQLite used `modernc.org/sqlite`, while local and hosted toolchains defaulted cgo on and releases relied on unverified GoReleaser environment declarations. A focused cgo-off gate now executes every supported composition, release verification inspects all six binaries and target-appropriate linkage, stable Homebrew rechecks its installed binary, and the cgo-required race gate is explicitly separate. Linux cgo mode changes only standard-library `runtime/cgo`, so the 31/32 non-standard budget remains unchanged | P7.13a, P9.7, P10.1 |
+| F-108 | `PENDING` | The built-in SQLite-specific `SQL` store makes Starmap own a relational driver, schema, migration, transaction, and dialect surface that belongs to embedding applications such as Starport, while the generic object store has no production S3-compatible composition. The accepted boundary retains memory/filesystem/object stores in Starmap, moves every relational implementation and lifecycle to Starport behind the unchanged narrow injected `Store`, and makes conditional object storage production-real | P8.9–P8.12 |
+| F-109 | `DONE` | PR #55 exact head `a60392bf` passed Security & Reliability and all product behavior before Verification Gate exposed two verification defects: `verify-pure-go.sh` depended on absent hosted-runner `rg`, silently skipping the no-`import "C"` scan, and an SSE test observed flushed bytes before post-flush delivery bookkeeping advanced. The gate now uses Git's tracked-source search, its structural fixture rejects an `rg` dependency, and 200 race-enabled SSE repetitions prove bounded eventual bookkeeping without moving counters before successful flush | P7.13 |
 
 ## Workspace Ledger
 
@@ -1034,6 +1072,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | PR #54 merged as `6993b1e7`; remote/local branch and clean worktree removed after the fresh P6.2 successor worktree was created |
 | `starmap-library-composition` on `codex/starmap-library-composition` with P7.12 material and converged review complete | `IN_PROGRESS` | P7.13 commits and lands the coherent P6/P7 protected phase PR, then creates a clean P8 successor before removing this worktree/branch |
+| Planned `starmap-go-modularity` on `codex/starmap-go-modularity` | `PENDING` | Create only after PR #55 merges, from its exact protected-main merge SHA; this successor owns F-108 and P8.9–P8.12 before the remaining P8 modularity audit |
 
 ## Evidence Log
 
@@ -1206,6 +1245,10 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P7.13 / F-094 | On exact head `36bd6679a73c709cb860c35ca1fa5df7eefd20a9`, [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30477140009/job/90661641826) passed while [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30477140009/job/90661641566) failed only after all external consumers executed because hosted Linux/CGO counted 163 total read-only packages against the Darwin-derived ceiling of 160. Cross-target measurement proved totals of Darwin 159, Linux 162/163, and Windows 163 but exactly 31 non-standard packages everywhere. The user explicitly approved replacing that non-hermetic policy with a 32 non-standard-package ceiling while retaining the complete forbidden-family scan. The focused CI workflow race test, shell syntax check, four-consumer gate, and direct Darwin/Linux/Windows measurements pass; the gate reports read-only 31/32 non-standard packages, server 247/260, and remote 231/240. The correction is archived in [`reviews/P7_CONSUMER_DEPENDENCY_BUDGET_CORRECTION_2026-07-29.md`](reviews/P7_CONSUMER_DEPENDENCY_BUDGET_CORRECTION_2026-07-29.md). P7.13 remains the sole active task pending exact-head local and hosted verification. |
 | 2026-07-29 | P7.13a / F-107 | Made the existing pure-Go property executable without changing product behavior. Source inspection reports zero `import "C"`; `modernc.org/sqlite` remains the pure-Go SQLite test adapter; Linux cgo-off/on closure comparison differs only by standard-library `runtime/cgo`. `make test-pure-go` executes read-only, store-only, server-embed, remote-subscriber, and CLI compositions with `CGO_ENABLED=0`, retains read-only 31/32 non-standard packages, and passes target-appropriate local linkage inspection. The race command now explicitly uses `CGO_ENABLED=1`. GoReleaser archive and static-container builds both pin cgo off; exact GoReleaser 2.17.0 is now aligned across devbox and hosted release tooling; configuration validation passes. A non-publishing exact snapshot built six Darwin/Linux/Windows amd64/arm64 binaries, archives, and SBOMs plus the Homebrew cask; `verify-release-binaries.sh` proved all six record cgo off, Linux is static, Windows imports no C/C++ runtime, and local Darwin artifacts use only system ABI libraries. The release workflow runs this before attestation/publication and stable Homebrew rechecks installed metadata/linkage. The outcome is archived in [`reviews/P7_PURE_GO_RELEASE_OUTCOME_2026-07-29.md`](reviews/P7_PURE_GO_RELEASE_OUTCOME_2026-07-29.md). The pre-steering exact `./scripts/verify.sh` baseline also passed ordinary root `89.859s`, cgo-enabled root race `494.523s`, accessor `8.278–8.735 ns/op` at zero allocations, vet, zero-issue lint, coverage, docs, diff, build, all 610 catalog records, and CLI smokes. P7.13a and F-107 are DONE; P7.13 remains active pending final-head gates. |
 | 2026-07-29 | P7.13 final local gate | The complete candidate repeated `./scripts/verify.sh` with the enforced build-mode separation: ordinary root `64.340s`; cgo-off read-only/store/server/remote/CLI green at 31/32 non-standard packages; explicitly cgo-on root race `278.626s`; accessor `8.862–11.60 ns/op`, `0 B/op`, `0 allocs/op`; vet; pinned lint with zero issues; every coverage floor; docs; diff; build; all 610 catalog records; and CLI smokes passed. Focused workflow tests passed under race; exact GoReleaser 2.17.0 configuration and the six-target snapshot verifier passed. Pinned govulncheck v1.6.0 reports zero reachable and zero imported-package vulnerabilities; one required module contains an unreachable vulnerability. P7.13 remains active only for commit/push, exact hosted checks, protected merge, and successor-worktree handoff. |
+| 2026-07-29 | P7.13 / F-109 | PR #55 exact head `a60392bf10a8ba776b73429e05896cdd1a29adda` passed [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30480366779/job/90672628932), minimum Go 1.25.12 tests, and the cgo-off external consumers. [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30480366779/job/90672628903) then exposed two harness defects: hosted Ubuntu lacks `rg`, so the no-`import "C"` check was skipped inside a conditional, and `TestStreamFlushesHeartbeatAndPublicationOnOneWriter` received the correct flushed event before the handler advanced its post-flush counters. The correction uses Git's available tracked-source search and retains post-flush accounting while waiting for it through a bounded eventual assertion; no stream, publication, or failure semantics change. |
+| 2026-07-29 | P8 plan / F-108 | User accepted the storage ownership boundary after P7.13 implementation completed: Starmap will own memory, filesystem, and conditional object-generation stores, while Starport owns SQLite/MySQL/PostgreSQL drivers, pools, credentials, migrations, backups, lifecycle, and dialect-specific CAS behind `WithCatalogStore`. Current inspection finds `Store` already limited to `Current`, `Get`, and `Commit`; `pkg/catalogstore/sql.go` owns SQLite-style question-mark SQL and schema initialization; `sql_test.go` plus SQL concurrency fixtures import direct `modernc.org/sqlite v1.54.0`; object storage already uses immutable generation objects plus a version-conditional current pointer but has only an in-memory backend; standalone CLI composition currently selects filesystem. P8.9–P8.12 remove the relational surface, make the external adapter contract executable, add an optional caller-owned S3-compatible adapter, and expose explicit filesystem/object server selection without expanding PR #55 or rewriting historical SQL evidence. |
+| 2026-07-29 | P7.13 / F-109 correction | `bash -n scripts/verify-pure-go.sh`, `git diff --check`, the focused workflow fixture under race, and 200 race-enabled repetitions of `TestStreamFlushesHeartbeatAndPublicationOnOneWriter` passed (`1.180s` and `3.848s`). The corrected `./scripts/verify-pure-go.sh` executed all four external modules plus the CLI with cgo disabled, proved 31/32 non-standard read-only packages and absent forbidden families, and passed local linkage inspection. F-109 is DONE; P7.13 remains the sole active task pending exact full local and hosted gates. |
+| 2026-07-29 | P7.13 corrected local gate | The corrected complete tree passed uninterrupted `./scripts/verify.sh`: ordinary root `50.099s`; cgo-off read-only/store/server/remote/CLI green at 31/32 non-standard packages; explicitly cgo-on root race `261.907s`, internal server `107.487s`, and SSE `1.361s`; accessor `8.111–9.181 ns/op`, `0 B/op`, `0 allocs/op`; vet; pinned lint with zero issues; all coverage floors including SSE `92.7%`; generated docs; diff; build; all 610 catalog records; and CLI smokes. P7.13 remains active for exact-head commit/push, both hosted required checks, protected merge, and successor-worktree handoff. |
 
 ## Final Definition of Done
 

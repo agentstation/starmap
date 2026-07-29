@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-pure-go.XXXXXX")"
 trap 'rm -rf "$TMPDIR"' EXIT
 
-if rg -n '^[[:space:]]*import[[:space:]]+"C"' "$ROOT" --glob '*.go'; then
+if git -C "$ROOT" grep -n -E '^[[:space:]]*import[[:space:]]+"C"' -- '*.go'; then
 	printf 'repository Go source imports C\n' >&2
 	exit 1
 fi
