@@ -11,16 +11,17 @@ import (
 )
 
 // CurrentBootstrapManifestVersion is the embedded-bootstrap metadata format.
-const CurrentBootstrapManifestVersion uint64 = 1
+const CurrentBootstrapManifestVersion uint64 = 2
 
 // BootstrapManifest binds the offline embedded catalog to exact canonical
 // catalog bytes and a generation time.
 type BootstrapManifest struct {
-	ManifestVersion uint64            `json:"manifest_version" yaml:"manifest_version"`
-	GenerationID    string            `json:"generation_id" yaml:"generation_id"`
-	GeneratedAt     time.Time         `json:"generated_at" yaml:"generated_at"`
-	SchemaVersion   uint64            `json:"schema_version" yaml:"schema_version"`
-	Payload         PayloadDescriptor `json:"payload" yaml:"payload"`
+	ManifestVersion  uint64            `json:"manifest_version" yaml:"manifest_version"`
+	GenerationID     string            `json:"generation_id" yaml:"generation_id"`
+	GeneratedAt      time.Time         `json:"generated_at" yaml:"generated_at"`
+	SchemaVersion    uint64            `json:"schema_version" yaml:"schema_version"`
+	SemanticChecksum string            `json:"semantic_checksum" yaml:"semantic_checksum"`
+	Payload          PayloadDescriptor `json:"payload" yaml:"payload"`
 }
 
 // Validate checks the embedded-bootstrap metadata contract.
@@ -41,6 +42,14 @@ func (m BootstrapManifest) Validate() error {
 	if m.SchemaVersion != CurrentCatalogSchemaVersion {
 		return bootstrapValidation("schema_version", m.SchemaVersion, "does not match the current catalog schema")
 	}
+	if !strings.HasPrefix(m.SemanticChecksum, checksumAlgorithmPrefix) ||
+		len(m.SemanticChecksum) != len(checksumAlgorithmPrefix)+64 {
+		return bootstrapValidation(
+			"semantic_checksum",
+			m.SemanticChecksum,
+			"must contain a canonical SHA-256 catalog checksum",
+		)
+	}
 	if m.Payload.MediaType != CatalogPayloadMediaType || m.Payload.SizeBytes <= 0 ||
 		!strings.HasPrefix(m.Payload.Checksum, checksumAlgorithmPrefix) || len(m.Payload.Checksum) != len(checksumAlgorithmPrefix)+64 {
 		return bootstrapValidation("payload", m.Payload, "must contain a canonical SHA-256 catalog descriptor")
@@ -54,7 +63,10 @@ func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error) {
 	if err := json.Unmarshal(data, &required); err != nil {
 		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: err.Error(), Err: err}
 	}
-	for _, field := range []string{"manifest_version", "generation_id", "generated_at", "schema_version", "payload"} {
+	for _, field := range []string{
+		"manifest_version", "generation_id", "generated_at", "schema_version",
+		"semantic_checksum", "payload",
+	} {
 		if _, exists := required[field]; !exists {
 			return BootstrapManifest{}, bootstrapValidation(field, nil, "is required")
 		}

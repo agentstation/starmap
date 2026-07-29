@@ -33,6 +33,8 @@ func TestArtifactReleaseCommandStagesExactCommittedGeneration(t *testing.T) {
 		t.Fatalf("Unmarshal report: %v", err)
 	}
 	if first.GenerationID != committed.Manifest.GenerationID ||
+		first.SemanticChecksum == "" ||
+		first.PayloadChecksum != committed.Manifest.Payload.Checksum ||
 		len(first.Files) != 3 ||
 		len(first.ArchiveChecksum) != len("sha256:")+64 {
 		t.Fatalf("report = %#v", first)
@@ -99,7 +101,11 @@ func TestArtifactReleaseCommandVerifiesDownloadedReleaseSet(t *testing.T) {
 	if err := json.Unmarshal(verifiedOutput.Bytes(), &verified); err != nil {
 		t.Fatalf("Unmarshal verified report: %v", err)
 	}
-	if verified.GenerationID != staged.GenerationID || verified.ArchiveChecksum != staged.ArchiveChecksum || len(verified.Files) != 3 {
+	if verified.GenerationID != staged.GenerationID ||
+		verified.SemanticChecksum != staged.SemanticChecksum ||
+		verified.PayloadChecksum != staged.PayloadChecksum ||
+		verified.ArchiveChecksum != staged.ArchiveChecksum ||
+		len(verified.Files) != 3 {
 		t.Fatalf("verified report = %#v, staged = %#v", verified, staged)
 	}
 }

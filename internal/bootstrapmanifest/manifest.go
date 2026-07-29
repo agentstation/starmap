@@ -19,6 +19,7 @@ type Report struct {
 	GenerationID         string    `json:"generation_id"`
 	GeneratedAt          time.Time `json:"generated_at"`
 	PayloadChecksum      string    `json:"payload_checksum"`
+	SemanticChecksum     string    `json:"semantic_checksum"`
 	PayloadSizeBytes     int64     `json:"payload_size_bytes"`
 }
 
@@ -33,32 +34,45 @@ func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generat
 		return catalogs.BootstrapManifest{}, Report{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	if current != nil && current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion && current.Payload == descriptor {
+	semanticChecksum, err := catalogs.CatalogSemanticChecksum(reader)
+	if err != nil {
+		return catalogs.BootstrapManifest{}, Report{}, err
+	}
+	if current != nil &&
+		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
+		current.SemanticChecksum == semanticChecksum {
 		return *current, Report{
 			Changed: false, PreviousGenerationID: current.GenerationID,
 			GenerationID: current.GenerationID, GeneratedAt: current.GeneratedAt,
-			PayloadChecksum: descriptor.Checksum, PayloadSizeBytes: descriptor.SizeBytes,
+			PayloadChecksum:  current.Payload.Checksum,
+			SemanticChecksum: current.SemanticChecksum,
+			PayloadSizeBytes: current.Payload.SizeBytes,
 		}, nil
 	}
 	if generatedAt.IsZero() {
 		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{Field: "bootstrap_manifest.generated_at", Message: "is required for a changed catalog"}
 	}
 	generatedAt = generatedAt.UTC()
-	digest := strings.TrimPrefix(descriptor.Checksum, "sha256:")
+	digest := strings.TrimPrefix(semanticChecksum, "sha256:")
 	if len(digest) < 12 {
-		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{Field: "bootstrap_manifest.payload_checksum", Value: descriptor.Checksum, Message: "is not a complete SHA-256 digest"}
+		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{
+			Field: "bootstrap_manifest.semantic_checksum", Value: semanticChecksum,
+			Message: "is not a complete SHA-256 digest",
+		}
 	}
 	manifest := catalogs.BootstrapManifest{
 		ManifestVersion: catalogs.CurrentBootstrapManifestVersion,
 		GenerationID:    fmt.Sprintf("catalog-%s-%s", generatedAt.Format("20060102T150405Z"), digest[:12]),
-		GeneratedAt:     generatedAt, SchemaVersion: catalogs.CurrentCatalogSchemaVersion, Payload: descriptor,
+		GeneratedAt:     generatedAt, SchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		SemanticChecksum: semanticChecksum, Payload: descriptor,
 	}
 	if err := manifest.Validate(); err != nil {
 		return catalogs.BootstrapManifest{}, Report{}, err
 	}
 	report := Report{
 		Changed: true, GenerationID: manifest.GenerationID, GeneratedAt: generatedAt,
-		PayloadChecksum: descriptor.Checksum, PayloadSizeBytes: descriptor.SizeBytes,
+		PayloadChecksum: descriptor.Checksum, SemanticChecksum: semanticChecksum,
+		PayloadSizeBytes: descriptor.SizeBytes,
 	}
 	if current != nil {
 		report.PreviousGenerationID = current.GenerationID
@@ -92,6 +106,10 @@ func DeriveCommitted(
 		return catalogs.BootstrapManifest{}, Report{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
+	semanticChecksum, err := catalogs.CatalogSemanticChecksum(reader)
+	if err != nil {
+		return catalogs.BootstrapManifest{}, Report{}, err
+	}
 	if descriptor != generation.Manifest.Payload {
 		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{
 			Field:   "bootstrap_manifest.committed_payload",
@@ -101,16 +119,17 @@ func DeriveCommitted(
 	}
 	if current != nil &&
 		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
-		current.Payload == descriptor {
+		current.SemanticChecksum == semanticChecksum {
 		return *current, unchangedReport(*current), nil
 	}
 
 	manifest := catalogs.BootstrapManifest{
-		ManifestVersion: catalogs.CurrentBootstrapManifestVersion,
-		GenerationID:    generation.Manifest.GenerationID,
-		GeneratedAt:     generation.Manifest.GeneratedAt,
-		SchemaVersion:   generation.Manifest.SchemaVersion,
-		Payload:         descriptor,
+		ManifestVersion:  catalogs.CurrentBootstrapManifestVersion,
+		GenerationID:     generation.Manifest.GenerationID,
+		GeneratedAt:      generation.Manifest.GeneratedAt,
+		SchemaVersion:    generation.Manifest.SchemaVersion,
+		SemanticChecksum: semanticChecksum,
+		Payload:          descriptor,
 	}
 	if err := manifest.Validate(); err != nil {
 		return catalogs.BootstrapManifest{}, Report{}, err
@@ -120,6 +139,7 @@ func DeriveCommitted(
 		GenerationID:     manifest.GenerationID,
 		GeneratedAt:      manifest.GeneratedAt,
 		PayloadChecksum:  descriptor.Checksum,
+		SemanticChecksum: semanticChecksum,
 		PayloadSizeBytes: descriptor.SizeBytes,
 	}
 	if current != nil {
@@ -135,6 +155,7 @@ func unchangedReport(current catalogs.BootstrapManifest) Report {
 		GenerationID:         current.GenerationID,
 		GeneratedAt:          current.GeneratedAt,
 		PayloadChecksum:      current.Payload.Checksum,
+		SemanticChecksum:     current.SemanticChecksum,
 		PayloadSizeBytes:     current.Payload.SizeBytes,
 	}
 }

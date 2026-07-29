@@ -14,15 +14,18 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogartifact"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 type releaseReport struct {
-	GenerationID    string   `json:"generation_id"`
-	ArchiveChecksum string   `json:"archive_checksum"`
-	Directory       string   `json:"directory"`
-	Files           []string `json:"files"`
+	GenerationID     string   `json:"generation_id"`
+	SemanticChecksum string   `json:"semantic_checksum"`
+	PayloadChecksum  string   `json:"payload_checksum"`
+	ArchiveChecksum  string   `json:"archive_checksum"`
+	Directory        string   `json:"directory"`
+	Files            []string `json:"files"`
 }
 
 func main() {
@@ -86,6 +89,10 @@ func run(args []string, output io.Writer) error {
 			err,
 		)
 	}
+	semanticChecksum, err := generationSemanticChecksum(generation)
+	if err != nil {
+		return err
+	}
 	artifact, err := catalogartifact.Build(generation)
 	if err != nil {
 		return err
@@ -95,8 +102,11 @@ func run(args []string, output io.Writer) error {
 		return err
 	}
 	return json.NewEncoder(output).Encode(releaseReport{
-		GenerationID: assets.GenerationID, ArchiveChecksum: assets.ArchiveChecksum,
-		Directory: assets.Directory, Files: assets.Files,
+		GenerationID:     generation.Manifest.GenerationID,
+		SemanticChecksum: semanticChecksum,
+		PayloadChecksum:  generation.Manifest.Payload.Checksum,
+		ArchiveChecksum:  assets.ArchiveChecksum,
+		Directory:        assets.Directory, Files: assets.Files,
 	})
 }
 
@@ -145,12 +155,40 @@ func verifyReleaseDirectory(directory string) (releaseReport, error) {
 	if err != nil {
 		return releaseReport{}, pkgerrors.WrapResource("verify", "catalog release", absolute, err)
 	}
+	semanticChecksum, err := generationSemanticChecksum(generation)
+	if err != nil {
+		return releaseReport{}, err
+	}
 	return releaseReport{
-		GenerationID:    generation.Manifest.GenerationID,
-		ArchiveChecksum: "sha256:" + digestHex,
-		Directory:       absolute,
-		Files:           files,
+		GenerationID:     generation.Manifest.GenerationID,
+		SemanticChecksum: semanticChecksum,
+		PayloadChecksum:  generation.Manifest.Payload.Checksum,
+		ArchiveChecksum:  "sha256:" + digestHex,
+		Directory:        absolute,
+		Files:            files,
 	}, nil
+}
+
+func generationSemanticChecksum(generation catalogstore.Generation) (string, error) {
+	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	if err != nil {
+		return "", pkgerrors.WrapResource(
+			"decode",
+			"catalog release semantics",
+			generation.Manifest.GenerationID,
+			err,
+		)
+	}
+	checksum, err := catalogs.CatalogSemanticChecksum(catalog)
+	if err != nil {
+		return "", pkgerrors.WrapResource(
+			"encode",
+			"catalog release semantics",
+			generation.Manifest.GenerationID,
+			err,
+		)
+	}
+	return checksum, nil
 }
 
 func readReleaseAsset(path string) ([]byte, error) {

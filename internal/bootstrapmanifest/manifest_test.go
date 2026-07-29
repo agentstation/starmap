@@ -7,6 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/provenance"
 )
 
 func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *testing.T) {
@@ -63,6 +64,52 @@ func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *test
 	if !changedReport.Changed || changed.GenerationID == first.GenerationID ||
 		changed.Payload.Checksum == first.Payload.Checksum || changed.GeneratedAt != firstTime.Add(24*time.Hour) {
 		t.Fatalf("changed report/manifest = %#v/%#v", changedReport, changed)
+	}
+}
+
+func TestScheduledGenerationManifestIgnoresObservationTimestampChurn(t *testing.T) {
+	builder := catalogs.NewEmpty()
+	if err := builder.SetProvider(*testProvider()); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	firstTime := time.Date(2026, time.July, 29, 20, 0, 0, 0, time.UTC)
+	setEvidence := func(observedAt time.Time, id string) {
+		builder.SetProvenance(provenance.Map{
+			"providers.test-provider.Name": {{
+				Source: catalogmeta.ProvidersID, Field: "Name", Value: "Test Provider",
+				Timestamp: observedAt, ObservedAt: observedAt, ObservationID: id,
+				EvidenceChecksum: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			}},
+		})
+	}
+	setEvidence(firstTime, "observation:first")
+	firstCatalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build first: %v", err)
+	}
+	first, _, err := Derive(firstCatalog, nil, firstTime)
+	if err != nil {
+		t.Fatalf("Derive first: %v", err)
+	}
+
+	setEvidence(firstTime.Add(time.Hour), "observation:second")
+	secondCatalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build second: %v", err)
+	}
+	second, report, err := Derive(secondCatalog, &first, firstTime.Add(time.Hour))
+	if err != nil {
+		t.Fatalf("Derive second: %v", err)
+	}
+	if report.Changed || second != first {
+		t.Fatalf("evidence-only refresh changed release identity: %#v / %#v", report, second)
+	}
+	secondPayload, err := catalogs.EncodeCatalogPayload(secondCatalog)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload second: %v", err)
+	}
+	if catalogs.DescribeCatalogPayload(secondPayload) == first.Payload {
+		t.Fatal("fixture did not change the exact evidence payload")
 	}
 }
 

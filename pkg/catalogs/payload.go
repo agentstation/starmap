@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"slices"
@@ -23,8 +24,40 @@ type CatalogPayload struct {
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.
 func EncodeCatalogPayload(reader Reader) ([]byte, error) {
+	payload, err := catalogPayload(reader)
+	if err != nil {
+		return nil, err
+	}
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return nil, &errors.ValidationError{Field: "catalog", Message: fmt.Sprintf("cannot encode payload: %v", err)}
+	}
+	return data, nil
+}
+
+// CatalogSemanticChecksum returns the stable SHA-256 identity of catalog facts.
+// It excludes provenance and observation evidence; EncodeCatalogPayload remains
+// the exact integrity representation for storage, transport, and audit.
+func CatalogSemanticChecksum(reader Reader) (string, error) {
+	payload, err := catalogPayload(reader)
+	if err != nil {
+		return "", err
+	}
+	payload.Provenance = nil
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return "", &errors.ValidationError{
+			Field:   "catalog",
+			Message: fmt.Sprintf("cannot encode semantic catalog: %v", err),
+		}
+	}
+	digest := sha256.Sum256(data)
+	return fmt.Sprintf("sha256:%x", digest), nil
+}
+
+func catalogPayload(reader Reader) (CatalogPayload, error) {
 	if reader == nil {
-		return nil, &errors.ValidationError{Field: "catalog", Message: "is required"}
+		return CatalogPayload{}, &errors.ValidationError{Field: "catalog", Message: "is required"}
 	}
 	payload := CatalogPayload{
 		SchemaVersion:  CurrentCatalogSchemaVersion,
@@ -58,9 +91,5 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 			DeepCopyModel(record.Model),
 		)
 	}
-	data, err := json.Marshal(payload)
-	if err != nil {
-		return nil, &errors.ValidationError{Field: "catalog", Message: fmt.Sprintf("cannot encode payload: %v", err)}
-	}
-	return data, nil
+	return payload, nil
 }

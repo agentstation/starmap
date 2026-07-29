@@ -1,5 +1,5 @@
 schema_version: 1
-generation_id: catalog-20260729T110518Z-fcbf48a7fd90
+generation_id: catalog-20260729T231854Z-5e71f3232a46
 catalog_digest: sha256:fcbf48a7fd90ca1611dae832644a07de32d5d70640a3563d97ba5e3e9dd181bf
 models:
   - model: ai21/jamba-1-5-large

@@ -690,8 +690,9 @@ evidence. See [Embedded Catalog Budgets](EMBEDDED_CATALOG_BUDGETS.md).
 
 Repository-owned [Scheduled Catalog Generation](SCHEDULED_CATALOG_GENERATION.md)
 runs daily or manually above the idempotent sync/generation boundary. It derives
-new manifest identity only when canonical payload bytes change, validates and
-attests before immutable payload-digest release publication, and never uses
+new release identity only when catalog facts change, while retaining the exact
+evidence-bearing payload checksum for integrity and audit. It validates and
+attests before immutable semantic-digest release publication and never uses
 Actions artifacts as runtime distribution.
 
 The core library owns no scheduler, retry loop, lease, or startup goroutine.
@@ -851,9 +852,10 @@ authoritative during construction; the workspace is reconciled by explicit
 reload or update rather than silently replacing the active generation.
 
 The embedded bootstrap has a strict embedded `generation.json` binding its
-generation ID, generation time, catalog schema version, canonical payload
-SHA-256, and byte size. `starmap.New` verifies that manifest entirely offline
-before publication. `Client.Readiness` reports the generation metadata and age;
+generation ID, generation time, catalog schema version, facts-only semantic
+SHA-256, and exact evidence-bearing payload SHA-256/byte size. `starmap.New`
+verifies both identities entirely offline before publication.
+`Client.Readiness` reports the generation metadata and age;
 `WithEmbeddedBootstrapMaxAge` and `WithEmbeddedBootstrapMaxSizeBytes` make the
 HTTP readiness endpoint fail with stable reason codes while an out-of-budget
 bootstrap remains active. A committed generation supersedes bootstrap budgets.

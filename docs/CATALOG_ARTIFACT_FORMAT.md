@@ -78,7 +78,9 @@ observation link. Staging has no embedded-catalog fallback because rebuilding a
 manifest from projected YAML would erase the commit's evidence lineage. The
 scheduled catalog-generation workflow retains its isolated machine store until
 staging completes and publishes those three paths in a catalog-only prerelease
-keyed by payload digest; a rerun cannot silently replace a published asset.
+keyed by the facts-only semantic digest. The generation manifest's payload
+descriptor continues to bind the exact evidence-bearing bytes; a rerun cannot
+silently replace a published asset.
 Application releases never append catalog-generation assets. Hosted workflow
 execution evidence remains separate from deterministic local verification.
 

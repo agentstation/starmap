@@ -8,13 +8,14 @@ concurrency group serializes publisher runs.
 The workflow performs these gates in order:
 
 1. refresh source and catalog candidates through the checked generation script;
-2. canonicalize the catalog and preserve the current manifest when payload bytes
-   are unchanged;
-3. derive a new logical generation only for a changed canonical payload;
+2. canonicalize the catalog and calculate separate facts-only semantic and
+   exact evidence-payload checksums;
+3. derive a new logical generation only when catalog facts change;
 4. run catalog-generation and embedded age/size/coverage gates;
 5. stage the validated deterministic archive and checksum assets;
 6. create and verify repository/workflow-bound provenance;
-7. publish an immutable GitHub prerelease keyed by canonical payload digest;
+7. publish an immutable GitHub prerelease keyed by semantic digest while the
+   artifact remains bound to its exact evidence payload;
 8. download the three public assets, reopen the archive and detached statement,
    verify the checksum and exact repository/workflow provenance, and compare the
    downloaded bytes with the staged publication set;
@@ -22,18 +23,18 @@ The workflow performs these gates in order:
    checksum, detached-statement, repository, and workflow identity checks so a
    rollback target remains demonstrably readable.
 
-Manual execution cannot force an unchanged publication. If a payload-digest
-release already exists, the workflow downloads its archive, extracts the bound
-manifest, and requires the embedded payload checksum to equal the candidate.
-It then exits without publishing. This makes retries and an unmerged embedded
-catalog refresh safe from duplicate releases while detecting a tag bound to the
-wrong payload.
+Manual execution cannot force an unchanged publication. If a semantic-digest
+release already exists, the workflow downloads all three assets, verifies the
+archive, checksum, detached statement, and facts-only digest, then exits without
+publishing. Exact payload checksums remain the integrity and evidence identity
+inside each generation; observation times can therefore change audit evidence
+without manufacturing a second release for identical catalog facts.
 
-The scheduled prerelease tag is catalog-payload followed by the full SHA-256 hex
-digest. It is a distribution identity, not a Starmap binary version and not a
-mutable latest pointer. Runtime channel promotion remains a separate hosted
-control-plane action. Expiring Actions artifacts are never used as the runtime
-catalog source.
+The scheduled prerelease tag is `catalog-semantic-` followed by the full
+facts-only SHA-256 hex digest. It is a distribution identity, not a Starmap
+binary version and not a mutable latest pointer. Runtime channel promotion
+remains a separate hosted control-plane action. Expiring Actions artifacts are
+never used as the runtime catalog source.
 
 Provider credentials are injected only into the refresh step. The workflow uses
 noninteractive dependency policy, and any refresh, typed validation, budget,

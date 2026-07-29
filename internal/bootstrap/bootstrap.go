@@ -29,6 +29,22 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 	if err := manifest.Payload.Verify(payload); err != nil {
 		return catalogs.BootstrapManifest{}, errors.WrapResource("verify", "embedded bootstrap catalog", manifest.GenerationID, err)
 	}
+	semanticChecksum, err := catalogs.CatalogSemanticChecksum(reader)
+	if err != nil {
+		return catalogs.BootstrapManifest{}, errors.WrapResource(
+			"encode",
+			"embedded bootstrap catalog semantics",
+			manifest.GenerationID,
+			err,
+		)
+	}
+	if semanticChecksum != manifest.SemanticChecksum {
+		return catalogs.BootstrapManifest{}, &errors.ValidationError{
+			Field:   "bootstrap_manifest.semantic_checksum",
+			Value:   semanticChecksum,
+			Message: "does not match the embedded catalog facts",
+		}
+	}
 	return manifest, nil
 }
 

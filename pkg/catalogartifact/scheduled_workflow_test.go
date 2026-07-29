@@ -16,10 +16,10 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		"schedule:", `cron: "17 3 * * *"`, "workflow_dispatch:", "cancel-in-progress: false",
 		"./scripts/generate-embedded-catalog.sh", "jq -er .changed catalog-generation.json",
 		"STARMAP_GENERATION_STATE_PATH:", "STARMAP_GENERATION_STORE_PATH:",
-		"TAG=catalog-payload-${PAYLOAD_DIGEST}", `if [[ "$CHANGED" != "true" ]]`,
+		"TAG=catalog-semantic-${SEMANTIC_DIGEST}", `if [[ "$CHANGED" != "true" ]]`,
 		`select(.isPrerelease == true and .isDraft == false`, `write_output previous_tag "$PREVIOUS_TAG"`,
-		`gh release view "$TAG"`, `tar -xOzf "$EXISTING/starmap-catalog.tar.gz" manifest.json`,
-		`test "$EXISTING_PAYLOAD_CHECKSUM" = "$PAYLOAD_CHECKSUM"`,
+		`gh release view "$TAG"`, `--verify-dir "$EXISTING"`,
+		`jq -er .semantic_checksum catalog-existing-verification.json`,
 		"Validate changed candidate", "make catalog-generation-check", "make embedded-catalog-budget-check",
 		"go run ./cmd/starmap-catalog-release", `--generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog"`,
 		"actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
@@ -36,7 +36,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		}
 	}
 	refresh := strings.Index(workflow, "Refresh candidate catalog")
-	classify := strings.Index(workflow, "Classify canonical payload change")
+	classify := strings.Index(workflow, "Classify catalog semantic change")
 	validate := strings.Index(workflow, "Validate changed candidate")
 	stage := strings.Index(workflow, "Stage validated immutable generation")
 	publish := strings.Index(workflow, "Publish changed validated catalog generation")
