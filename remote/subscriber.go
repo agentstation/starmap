@@ -249,24 +249,29 @@ func (s *Subscriber) run(
 		}
 		_ = err // P7.11 exposes terminal/retry health without changing recovery.
 
-		if !waitRetry(ctx, s.retryDelay(attempt)) {
-			return
-		}
-		attempt++
+		for {
+			if !waitRetry(ctx, s.retryDelay(attempt)) {
+				return
+			}
 
-		lastEventID := s.currentLastEventID()
-		next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
-		if openErr != nil {
-			continue
+			lastEventID := s.currentLastEventID()
+			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
+			if openErr != nil {
+				attempt++
+				continue
+			}
+			// Replay is only an optimization. Every established connection
+			// performs a verified current-state fetch before event consumption
+			// resumes.
+			if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
+				_ = next.Close()
+				attempt++
+				continue
+			}
+			stream = next
+			attempt = 0
+			break
 		}
-		// Replay is only an optimization. Every established connection performs
-		// a verified current-state fetch before event consumption resumes.
-		if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
-			_ = next.Close()
-			continue
-		}
-		stream = next
-		attempt = 0
 	}
 }
 

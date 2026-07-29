@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -93,6 +94,40 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 				t.Fatal("New accepted invalid lifecycle config")
 			}
 		})
+	}
+}
+
+func TestExponentialJitterStaysWithinBoundedSchedule(t *testing.T) {
+	t.Parallel()
+
+	subscriber := &Subscriber{config: Config{
+		ReconnectMinDelay: 100 * time.Millisecond,
+		ReconnectMaxDelay: 800 * time.Millisecond,
+	}}
+	for attempt, ceiling := range []time.Duration{
+		100 * time.Millisecond,
+		200 * time.Millisecond,
+		400 * time.Millisecond,
+		800 * time.Millisecond,
+		800 * time.Millisecond,
+		800 * time.Millisecond,
+	} {
+		for range 100 {
+			delay := subscriber.exponentialJitter(attempt)
+			if delay < ceiling/2 || delay > ceiling {
+				t.Fatalf(
+					"attempt %d delay = %s, want [%s, %s]",
+					attempt,
+					delay,
+					ceiling/2,
+					ceiling,
+				)
+			}
+		}
+	}
+	if delay := subscriber.exponentialJitter(1_000_000); delay < 400*time.Millisecond ||
+		delay > 800*time.Millisecond {
+		t.Fatalf("large-attempt delay = %s, want bounded max jitter", delay)
 	}
 }
 
@@ -346,6 +381,8 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 		firstFrames     = make(chan string, 1)
 		closeFirst      = make(chan struct{})
 		secondConnected = make(chan string, 1)
+		reconnectIDs    []string
+		retryAttempts   []int
 	)
 	generations := map[string]catalogstore.Generation{
 		first.Manifest.GenerationID:  first,
@@ -364,13 +401,25 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 				writeSubscriberManifest(t, writer, selected)
 				return
 			case catalogremote.EventStreamPath:
+				connection := streamCount.Add(1)
+				if connection > 1 {
+					mu.Lock()
+					reconnectIDs = append(
+						reconnectIDs,
+						request.Header.Get("Last-Event-ID"),
+					)
+					mu.Unlock()
+				}
+				if connection == 2 || connection == 3 {
+					writer.WriteHeader(http.StatusServiceUnavailable)
+					return
+				}
 				writer.Header().Set(
 					"Content-Type",
 					catalogremote.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
-				connection := streamCount.Add(1)
 				if connection == 1 {
 					for {
 						select {
@@ -420,7 +469,12 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	subscriber.retryDelay = func(int) time.Duration { return 0 }
+	subscriber.retryDelay = func(attempt int) time.Duration {
+		mu.Lock()
+		retryAttempts = append(retryAttempts, attempt)
+		mu.Unlock()
+		return 0
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -474,6 +528,29 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	})
 	if _, err := subscriber.Catalog().Provider("provider-first"); err == nil {
 		t.Fatal("catch-up exposed a partial old/new catalog")
+	}
+	mu.RLock()
+	gotRetryAttempts := append([]int(nil), retryAttempts...)
+	gotReconnectIDs := append([]string(nil), reconnectIDs...)
+	currentManifestGets := requestCounts[catalogremote.ManifestPath]
+	mu.RUnlock()
+	if !slices.Equal(gotRetryAttempts, []int{0, 1, 2}) {
+		t.Fatalf(
+			"reconnect retry attempts = %v, want exponential attempts [0 1 2]",
+			gotRetryAttempts,
+		)
+	}
+	if !slices.Equal(gotReconnectIDs, []string{"1", "1", "1"}) {
+		t.Fatalf(
+			"reconnect Last-Event-ID values = %v, want [1 1 1]",
+			gotReconnectIDs,
+		)
+	}
+	if currentManifestGets != 3 {
+		t.Fatalf(
+			"current manifest GETs = %d, want initial, post-subscribe, and reconnect catch-up",
+			currentManifestGets,
+		)
 	}
 }
 
