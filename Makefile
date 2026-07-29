@@ -40,6 +40,8 @@ GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
 GOLANGCI_LINT_VERSION=2.12.2
 GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
+SWAG_VERSION=2.0.0-rc4
+SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)
 
 # Colors for output
 RED=\033[0;31m
@@ -523,10 +525,9 @@ testdata: ## Update testdata for all providers (use PROVIDER=name for specific p
 # Documentation
 openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
-	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
 	@# Note: Filtering mProfCycleWrap warning - known swag v2 issue parsing Go runtime constants
-	@$(RUN_PREFIX) swag init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
+	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
 	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
 	@mv internal/embedded/openapi/swagger.yaml internal/embedded/openapi/openapi.yaml
@@ -552,10 +553,9 @@ godoc: ## Generate only Go documentation using go generate
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
 openapi-check: ## Check if embedded OpenAPI specifications match Go types
-	@$(RUN_PREFIX) which swag > /dev/null || (echo "$(RED)swag not found. Run 'devbox shell' to enter the development environment$(NC)" && exit 1)
 	@tmpdir="$$(mktemp -d)"; \
 	trap 'rm -rf "$$tmpdir"' EXIT HUP INT TERM; \
-	$(RUN_PREFIX) swag init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > /dev/null 2>&1; \
+	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > /dev/null 2>&1; \
 	cmp -s "$$tmpdir/swagger.json" internal/embedded/openapi/openapi.json || { echo "$(RED)internal/embedded/openapi/openapi.json is stale; run make openapi$(NC)"; exit 1; }; \
 	cmp -s "$$tmpdir/swagger.yaml" internal/embedded/openapi/openapi.yaml || { echo "$(RED)internal/embedded/openapi/openapi.yaml is stale; run make openapi$(NC)"; exit 1; }
 

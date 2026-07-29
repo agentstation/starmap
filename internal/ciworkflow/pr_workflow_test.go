@@ -125,6 +125,23 @@ func TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces(t *testing.T)
 	}
 }
 
+func TestOpenAPICheckPinsSelfContainedGenerator(t *testing.T) {
+	makefile := readFixture(t, "../../Makefile")
+	for _, check := range []string{
+		"SWAG_VERSION=2.0.0-rc4",
+		"SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)",
+		"openapi-check:",
+		"$(SWAG_RUN) init",
+	} {
+		if !strings.Contains(makefile, check) {
+			t.Fatalf("OpenAPI verification is missing %q", check)
+		}
+	}
+	if strings.Contains(makefile, "which swag") {
+		t.Fatal("OpenAPI verification must not depend on an ambient swag binary")
+	}
+}
+
 func readFixture(t testing.TB, path string) string {
 	t.Helper()
 	data, err := os.ReadFile(path)

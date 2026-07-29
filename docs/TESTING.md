@@ -17,7 +17,9 @@ make verify
 - `go vet ./...`
 - exact pinned `golangci-lint` verification
 - critical seam coverage thresholds
-- `make docs-check` (generated Go documentation and embedded OpenAPI schemas)
+- `make docs-check` (generated Go documentation and embedded OpenAPI schemas;
+  OpenAPI reproduction uses the Makefile-pinned Swag version and does not
+  require an ambient `swag` binary)
 - `git diff --check`
 - binary build plus local CLI smoke checks
 
