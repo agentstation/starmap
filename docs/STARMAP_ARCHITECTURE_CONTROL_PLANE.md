@@ -2,9 +2,10 @@
 
 Last updated: 2026-07-28
 
-Status: `IN_PROGRESS` — P0–P5 and P6.1 are complete. P6.2 is the sole active
-task: remove acquisition implementation dependencies from the read-only root
-library and enforce its compile budget in CI.
+Status: `IN_PROGRESS` — P0–P5.8 and P6.1 are complete. P5.9 is the sole active
+task after user review reopened the author/model and endpoint identity contract.
+P6.2 is paused until the restored authored-model corpus and generated endpoint
+projection are proven.
 
 ## Mission
 
@@ -54,6 +55,10 @@ This plan is the durable execution record.
   [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md)
 - P6 Go package graph review SHA-256:
   `4207b43d0f828d8d34830314b68512af19e5068beb9a57d90f742f7205085e26`
+- Author/slug and endpoint compatibility review:
+  [`reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md`](reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md)
+- Author/slug and endpoint compatibility review SHA-256:
+  `0e11d2e2f7b7e123e7e35a7bb0792d7b90fee3685db260d3bd7e53390a8a8040`
 - Reviewed protected-main baseline:
   `9508ee7866e4683e001e7ad153319d348433045d`
 - Historical pre-control-plane comparison:
@@ -75,6 +80,7 @@ claims must not be silently rewritten.
 | F-099 / P12.4 | Homebrew release flow remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
 | F-105 / P12.7 | Version stdout patch release remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
 | F-106 / P12.8 | Immutable draft-first release flow remained in progress | Must receive a terminal disposition in P11.9; publishing is not implied |
+| PR #53 / F-012 / F-052 | Provider model YAML was the sole persisted model truth; the 322 author-model files and all 121 non-exact records were deleted | Superseded by user review in P5.9–P5.13: restore the corpus as authored identity/intrinsic metadata, keep provider records as explicitly linked serving facts, and generate endpoints from the join without restoring the old denormalized-copy semantics |
 
 ## Status Legend
 
@@ -144,12 +150,18 @@ the phase ledger, task ledger, finding ledger, PR ledger, workspace ledger, and
 evidence log in the same commit as each material result.
 
 Preserve the reviewed architecture contract:
-- one human-editable provider YAML catalog under ~/.starmap/catalog;
+- one human-editable YAML workspace under ~/.starmap/catalog with authored
+  models under authors/{author}/models and serving records under
+  providers/{provider}/models;
 - embedded catalogs are verified, versioned, lowest-authority observations;
 - installing or constructing Starmap never silently rewrites an existing
   workspace;
-- definitions, offerings, and author membership are derived immutable read
-  views, not additional persisted configuration trees;
+- author models own intrinsic model facts, provider models own provider-serving
+  facts, and neither tree overrides the other's field set;
+- definitions, offerings, author membership, and endpoint relationships are
+  derived immutable read views over those linked records;
+- endpoints.yaml is a deterministic generated projection of authored models
+  joined to provider serving records, never an independent authority;
 - valid provider pricing wins for that provider offering;
 - source absence and degraded observations cannot delete last-known-good data;
 - build and validate candidates off to the side, then publish immutable
@@ -199,11 +211,16 @@ enterprise LLM proxy gateway.
 verified embedded catalog (bootstrap + versioned observation)
                          |
                          v
-one human workspace: ~/.starmap/catalog/providers/...
-            ^            |             ^
-            |            |             |
- provider observations   |       models.dev observations
-            \             |            /
+one human workspace: ~/.starmap/catalog
+       |                                  |
+       v                                  v
+authors/{author}/models             providers/{provider}/models
+ authored identity + facts   <----  explicit author/model link +
+                                    provider-serving facts
+       ^                                  ^
+       |                                  |
+ models.dev observations            provider observations
+       \                                  /
              one authority + provenance implementation
                               |
                      validate complete candidate
@@ -211,8 +228,8 @@ one human workspace: ~/.starmap/catalog/providers/...
                     immutable generation
                  store / sole commit CAS
                        |             \
-                       v              +--> atomic YAML workspace
-             atomic in-memory Catalog     post-commit projection,
+                       v              +--> atomic YAML workspace +
+             atomic in-memory Catalog     generated endpoints.yaml,
                          /          \      repaired by digest
                 Go library       Starmap server
                                       |
@@ -228,7 +245,9 @@ one human workspace: ~/.starmap/catalog/providers/...
 | Role | Contract |
 | --- | --- |
 | Embedded catalog | Verified offline bootstrap and lowest-authority versioned observation; never a wholesale overlay |
-| Local provider YAML | The one human-editable catalog; semantic edits are supported |
+| Local author-model YAML | Human-editable canonical author/model identity and intrinsic facts; never provider price, limits, availability, or endpoint behavior |
+| Local provider-model YAML | Human-editable provider-serving record with exact provider model ID, explicit author/model link, and provider-scoped facts |
+| Generated endpoint YAML | Deterministic digest-bound join of authored models and provider serving records; inspectable/exportable but never an independent authority |
 | Provenance and generation metadata | Machine-owned evidence and lifecycle state, not competing configuration |
 | Immutable generation | Compiled, validated publication product; safe to retain and share |
 | Catalog store | Durable generation history, CAS, retention, and rollback |
@@ -243,15 +262,17 @@ it is explicitly marked historical or superseded.
 
 | Term | One meaning | Not this |
 | --- | --- | --- |
-| **Provider model** | The one persisted human-readable model record under a provider in the YAML workspace. It contains provider-scoped identity and facts that can be observed or edited together. | A derived definition/offering split, an override fragment, or a remote event payload. |
+| **Author model** | One persisted human-readable model under `authors/{author}/models`, identified by canonical `{author}/{slug}` and owning intrinsic model facts. | A provider endpoint, a denormalized copy of provider price/limits, or an attribution-only membership entry. |
+| **Provider model** | One persisted human-readable serving record under a provider. It contains the exact provider model ID, an explicit author/model link, and provider-scoped facts. | The model author inferred from the provider, a duplicate authored payload, an override fragment, or a remote event payload. |
+| **Endpoint projection** | A generated, digest-bound join from one author model to one linked provider model, suitable for inspection, export, and OpenRouter-compatible server adaptation. | An independently editable authority, invented runtime telemetry, or a provider inferred from author identity. |
 | **Catalog** | Starmap's concrete immutable in-memory product: a complete validated read model with precomputed indexes. Public consumers retain and share `*catalogs.Catalog`; read methods return caller-owned values. | A mutable builder, a filesystem directory, an acquisition response, a `Snapshot` public API, or a collection returned by reference. |
 | **Builder** | A mutable, unpublished construction mechanism used to assemble and validate a candidate catalog off to the side. It has one-way publication into a new immutable catalog. | The consumer-facing catalog, a concurrently shared mutable database, or the durable commit point. |
-| **Workspace** | The one human-editable provider-YAML tree rooted at the configured catalog path, normally `~/.starmap/catalog`. Semantic edits are evidence; formatting is not. | The generation store, cache, staging area, exports directory, persisted definitions/offerings/overrides, or an implicitly watched directory. |
+| **Workspace** | The one human-editable YAML tree rooted at the configured catalog path, normally `~/.starmap/catalog`, containing disjoint author-model and provider-model records plus generated projections. Semantic edits to source records are evidence; formatting is not. | The generation store, cache, staging area, exports directory, persisted definitions/offerings/overrides, or an implicitly watched directory. |
 | **Source** | A configured acquisition adapter and identity, such as one provider API, models.dev transport, local workspace, or embedded bootstrap. | A field winner, a provider itself, a scheduler, or an anonymous blob with no identity. |
 | **Observation** | One source attempt's bounded candidate facts plus source identity, retrieval evidence, status, completeness, issues, and scope. An observation may be rejected, degraded, or reconciled; it is never directly published. | The canonical catalog, proof that absent records were deleted, a generation, or a reusable credential container. |
 | **Provenance** | Provider/model/field-scoped evidence explaining which observation or human edit supplied a selected value and why. | A bare model-ID map, one source label for an entire catalog, or persisted secrets/fingerprints. |
-| **Definition** | A provider-independent immutable read view derived from canonical provider models for discovery and identity-oriented queries. | A second persisted model tree, an authority source, or a first-wins merge product. |
-| **Offering** | A provider-specific immutable read view derived from one canonical provider model, preserving exact provider price, limits, endpoint, availability, and lifecycle knowledge. | A second persisted configuration record, invented availability, or a cross-provider aggregate price. |
+| **Definition** | A provider-independent immutable read view built from one canonical author model plus reconciled intrinsic observations for discovery and identity-oriented queries. | The author-model YAML record itself, a provider serving record, or a first-wins merge product. |
+| **Offering** | A provider-specific immutable read view derived from one linked provider model, preserving exact provider price, limits, endpoint, availability, and lifecycle knowledge. | A second persisted configuration tree, invented availability, or a cross-provider aggregate price. |
 | **Candidate** | A complete off-side catalog plus evidence prepared by reconciliation and validation before commit. Failure discards it without changing the active generation or workspace. | The active catalog or a partially mutated shared object. |
 | **Generation** | An immutable, schema-identified, digest-verified catalog publication unit retained in the machine store with its evidence. Generation is lifecycle/storage vocabulary, not the normal consumer type name. | A timestamp-only event, mutable "current" data, a YAML directory, or the public `Catalog()` return vocabulary. |
 | **Catalog store** | The machine-owned durable history of immutable generations, compare-and-swap current identity, retention, and rollback. Its CAS is the sole durable commit point. | The human YAML workspace, a remote cache with no verification, or a second source of editable configuration. |
@@ -265,21 +286,26 @@ it is explicitly marked historical or superseded.
 
 Normative decision consequences:
 
-1. Provider YAML is the only persisted human model representation.
-2. Definitions, offerings, and author membership are derived read views from
-   the immutable catalog and use the same authority/provenance result.
-3. Embedded bytes, local edits, models.dev, and provider APIs enter
+1. Author-model YAML is the persisted home for intrinsic authored facts.
+   Provider-model YAML is the persisted home for serving facts and references
+   its author model explicitly. Their owned field sets do not overlap.
+2. Definitions, offerings, author membership, and endpoint relationships are
+   derived read views from the immutable catalog and use the same
+   authority/provenance result.
+3. `endpoints.yaml` is generated from those explicit links and is never an
+   independent authority.
+4. Embedded bytes, local edits, models.dev, and provider APIs enter
    reconciliation as identified observations; none replaces the whole catalog
    merely because it was read later.
-4. Valid provider pricing is authoritative for that provider's offering.
+5. Valid provider pricing is authoritative for that provider's offering.
    Provider price does not become a provider-independent definition fact.
-5. Missing or degraded observations cannot prove deletion. Explicit lifecycle
+6. Missing or degraded observations cannot prove deletion. Explicit lifecycle
    evidence is required to retire data.
-6. Publication is atomic at generation-store CAS. YAML is a repairable
+7. Publication is atomic at generation-store CAS. YAML is a repairable
    post-commit projection and an event is a post-commit hint.
-7. Public Go consumers say `catalog`; `snapshot` and `generation` remain
+8. Public Go consumers say `catalog`; `snapshot` and `generation` remain
    internal lifecycle/storage vocabulary.
-8. A remote subscriber treats stream liveness and catalog freshness as
+9. A remote subscriber treats stream liveness and catalog freshness as
    independent states, always catches up after reconnect, and polls only under
    an explicit fallback policy.
 
@@ -296,6 +322,10 @@ Normative decision consequences:
 - Removing an upstream-backed model does not permanently suppress
   rediscovery. Persistent suppression must use an explicit in-record lifecycle
   or exclusion value, not an override file.
+- Author-model edits change intrinsic model facts. Provider-model edits change
+  only that provider's serving facts or its explicit author/model link.
+- `endpoints.yaml` is generated. Direct edits are diagnosed as projection drift
+  and are never silently overwritten or accepted as authority.
 - A running process does not watch files implicitly. A successful explicit
   reload or update publishes one new immutable generation.
 
@@ -524,7 +554,10 @@ required dependency order is:
    atomicity hotfix;
 4. P4 authority, provenance, completeness, and resilience;
 5. the remaining P3 workspace lifecycle, including legacy-layout migration;
-6. P5 read views, P6 composition, P7 server/reactive delivery, P8 modularity,
+6. P5 read views;
+7. the user-steered P5.9–P5.13 author-model restoration, explicit serving
+   links, endpoint projection, and immutable identity indexes;
+8. P6 composition, P7 server/reactive delivery, P8 modularity,
    P9 distribution, P10 verification, and P11 cleanup.
 
 Suggested branch names:
@@ -532,6 +565,7 @@ Suggested branch names:
 - `codex/catalog-workspace-lifecycle`
 - `codex/catalog-authority-resilience`
 - `codex/catalog-read-model-simplification`
+- `codex/catalog-author-endpoint-restoration`
 - `codex/starmap-library-composition`
 - `codex/starmap-reactive-server`
 - `codex/starmap-go-modularity`
@@ -581,8 +615,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
 | P3 | `DONE` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
-| P5 | `DONE` | One persisted provider model produces immutable read views | No persisted duplicate schema; read DX and benchmarks green |
-| P6 | `IN_PROGRESS` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
+| P5 | `IN_PROGRESS` | Linked authored models and provider serving records produce immutable read views and generated endpoints | Disjoint schema ownership; complete corpus disposition; identity, endpoint, DX, and benchmark gates green |
+| P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
 | P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
 | P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
@@ -711,13 +745,18 @@ compile and performance baselines must also be green.
 | P5.6 | `DONE` | Remove invented facts | Unknown availability/lifecycle remains unknown; migration/build does not invent “available” or “active” |
 | P5.7 | `DONE` | Preserve immutable catalog DX | Consumer compile example, mutation isolation, concurrent publication, and `BenchmarkClientCatalog` at 0 allocs/op and no more than 10 µs/op pass |
 | P5.8 | `DONE` | Remove prelaunch compatibility | Alias/deprecated types and schema readers with no named external consumer are deleted |
+| P5.9 | `IN_PROGRESS` | Restore and disposition the authored-model corpus | All 322 files deleted by PR #53 are restored as review input; every file receives an exact keep, merge/alias, or reject disposition; retained `authors/{author}/models/{slug}.yaml` records keep canonical identity and intrinsic facts while provider price, limits, availability, endpoint, modes, request overrides, and provider extensions are removed; the 32/25/64 historical classes are superseded by an exact machine-checkable map |
+| P5.10 | `PENDING` | Separate author and provider record ownership | Author model and provider model schemas have non-overlapping owned fields; every provider serving record has an explicit `model: author/slug` reference; provider identity is never authorship evidence; load/save/projection/payload/provenance round-trip both roles without first-wins or duplicate-field authority |
+| P5.11 | `PENDING` | Generate and validate endpoints.yaml | A versioned deterministic digest-bound endpoint projection joins each provider serving record to its author model; projection is built off-side and atomically written post-commit; drift is detected and never silently overwritten; no row exists without a valid provider/model link and provider price remains exact |
+| P5.12 | `PENDING` | Build canonical identity and offering indexes | Immutable publication precomputes canonical author/slug, author alias, model alias, provider offering, and model-to-offerings indexes; cross-provider IDs for one model produce one definition with distinct exact offerings; ambiguity/collisions return typed errors and cannot replace the current generation |
+| P5.13 | `PENDING` | Prove restored catalog DX and corpus completeness | Tests prove Alibaba-served Moonshot/Zhipu models resolve to their labs, author and provider edits round-trip independently, all retained author records and provider links load, endpoint generation is deterministic, malformed siblings quarantine safely, strict/release coverage has no unresolved public identity, docs explain the two source roles and generated projection, and an outcome autoreview plus exact phase gate pass |
 
 ## P6 — Deepen Go Library Composition
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
 | P6.1 | `DONE` | Map the package graph | [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md) names the role, production consumer, and disposition of every public/importable package; `go list` proves zero cycles; the 89→90 package change is exactly explained |
-| P6.2 | `IN_PROGRESS` | Keep read-only consumption small | Invert the `pkg/sources` → internal provider-client edge behind an injected factory and remove all remaining pipeline, models.dev, remote HTTP, and concrete acquisition imports from the root package; a real external `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, server, or acquisition implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
+| P6.2 | `PENDING` | Keep read-only consumption small | After P5.9–P5.13, invert the `pkg/sources` → internal provider-client edge behind an injected factory and remove all remaining pipeline, models.dev, remote HTTP, and concrete acquisition imports from the root package; a real external `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, server, or acquisition implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
 | P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
 | P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
 | P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, `catalogscheduler` (including the inert operations projection), `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed; real operational health moves to the production-owned state named by P7.11 |
@@ -740,6 +779,7 @@ compile and performance baselines must also be green.
 | P7.9 | `PENDING` | Prove concurrent read safety | Readers observe complete old/new generations while stream activates updates under `-race` |
 | P7.10 | `PENDING` | Exercise real transport failures | Tests prove heartbeats flush and are ignored as events; interval/timeout validation, missing-heartbeat, half-open connection, write failure, slow consumer, disconnect, duplicate, out-of-order, skipped, unauthorized, corrupt, incompatible, subscribe-after-stop, blocked subscriber, reconnect/catch-up, non-concurrent polling, cleanup, and shutdown/join cases pass |
 | P7.11 | `PENDING` | Expose distinct production health | Server and subscriber separately expose stream state, last heartbeat/event, last successful catch-up, active generation, catalog freshness, retry count, last error, and any coalesced/terminated publication delivery without secrets; heartbeat activity cannot falsely refresh catalog age and silent whole-generation loss is impossible |
+| P7.12 | `PENDING` | Expose OpenRouter model and endpoint compatibility | The public server implements exact `GET /api/v1/model/{author}/{slug}` and `GET /api/v1/models/{author}/{slug}/endpoints` route shapes through server-owned DTOs; aliases resolve deterministically; endpoint rows preserve provider identity, exact model ID, price, limits, parameters, and status; optional runtime metrics come from a separate role and are never invented or persisted into catalog YAML |
 
 ## P8 — Go Modularity, Naming, and Complexity
 
@@ -823,7 +863,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-009 | `DONE` | Provider APIs, models.dev, local YAML, and stored payloads now quarantine malformed model records independently with bounded typed evidence; valid siblings survive while malformed envelopes, identity graphs, and manifest-bound partial payloads remain fail-closed | P4.8 |
 | F-010 | `DONE` | `RequireAllSources` now rejects unavailable, missing, duplicate, degraded, partial, fallback, volume-regressed, quarantined, and unexplained empty observations before reconciliation; only exactly one complete, succeeded, nonempty observation per configured source passes | P4.9 |
 | F-011 | `DONE` | Definitions and offerings are immutable build-time read views; the exported runtime legacy migration layer is deleted | P5.1–P5.4 |
-| F-012 | `DONE` | The 322-file author-model mirror and `author_models` payload collection are deleted; author membership derives from the one provider-model truth | P5.5 |
+| F-012 | `SUPERSEDED` | P5 deleted the 322-file author-model mirror and derived membership from provider models; user review found the corpus also carried authored identity/metadata needed for author/slug compatibility, so P5.9–P5.13 restores it with disjoint ownership instead of the old denormalized-copy semantics | P5.5, P5.9–P5.13 |
 | F-013 | `DONE` | Derived offerings and definitions preserve unknown availability, lifecycle, and open-weight claims without inventing available/active/false | P5.6 |
 | F-014 | `PENDING` | Prelaunch compatibility and unused public surfaces add shallow modules | P5.8, P6.5 |
 | F-015 | `PENDING` | Root library import pulls provider/cloud acquisition stack | P6.2–P6.3 |
@@ -863,7 +903,7 @@ machine evidence and does not require a follow-up documentation commit.
 | F-049 | `DONE` | Hosted race verification exhausted Go's implicit 10-minute per-package timeout while unrelated migration/rollback fixtures repeatedly decoded and projected the full embedded catalog; focused fixtures now use the smallest catalog that proves their contract, tests that do not exercise construction use direct clients, and repository race verification has an explicit 20-minute package ceiling within the unchanged 45-minute job | P3.10 |
 | F-050 | `DONE` | Outcome review found that migration rollback could unconditionally delete a path recreated after store relocation; rollback now removes only its exact checksum-bound YAML projection, preserves unexpected concurrent data plus relocated state, and returns a typed conflict | P3.10 |
 | F-051 | `DONE` | Deleted inert `WithEmbeddedCatalog` and `use_embedded_catalog`; verified embedded data remains the unconditional lowest-authority observation | P5.8, P6.5 |
-| F-052 | `DONE` | The reviewed 32 alias/content overlaps, 25 models.dev-only records, and 64 stale orphans are not promoted into a second embedded truth; dynamic reconciliation may add current provider records | P5.5 |
+| F-052 | `SUPERSEDED` | The earlier 32 alias/content, 25 models.dev-only, and 64 presumed-orphan disposition rejected a second provider-model truth; P5.9 now reviews all 121 as authored-model identity/metadata while preserving the rule that none may manufacture a provider endpoint | P5.5, P5.9 |
 | F-053 | `DONE` | Indistinguishable conflicting definition values now remain unknown or use the stable identity fallback; only matching provider/model-scoped authority evidence may select a winner | P5.4 |
 | F-054 | `DONE` | Removed duplicate `Precision`/`Quantization` and nested/flat cache-pricing spellings so source payloads and human YAML cannot project different semantics | P5.1, P5.8 |
 | F-055 | `DONE` | Same-ID provider records remain distinct and carry canonical provider identity through offering indexes, hooks, queries, HTTP, CLI table/JSON/YAML, history aliases, and export policy | P5.3, P5.7 |
@@ -874,10 +914,14 @@ machine evidence and does not require a follow-up documentation commit.
 | F-060 | `DONE` | The final public-surface audit found generated OpenAPI still advertising the deleted `precision` field even though ordinary docs checks passed; the schemas are regenerated and `make docs-check` now reproducibly compares both embedded OpenAPI files with current Go types | P5.8, P10.1, P10.5 |
 | F-061 | `DONE` | PR #53’s first Verification Gate passed all product, race, performance, lint, and coverage checks but exposed that OpenAPI reproduction depended on a developer-only ambient `swag` binary; generation and checking now invoke the repository-pinned Swag module through Go on every environment, with a structural regression test | P5.8, P10.1 |
 | F-062 | `DONE` | Post-merge review questioned whether P5 deleted the embedded catalog; exact tree comparison proves all 611 canonical provider-model YAML files are unchanged while only the 322 duplicate author-model files were removed, and bootstrap now asserts every embedded provider YAML becomes exactly one published offering | P5.8, P6.1 |
-| F-063 | `IN_PROGRESS` | Inverting only `pkg/sources` → provider clients leaves a 244-package root closure because root still compiles pipeline, models.dev, remote HTTP, and `net/http`; P6.2/P6.3 now require one complete opt-in acquisition boundary rather than a cosmetic factory swap | P6.2–P6.3 |
+| F-063 | `PENDING` | Inverting only `pkg/sources` → provider clients leaves a 244-package root closure because root still compiles pipeline, models.dev, remote HTTP, and `net/http`; P6.2/P6.3 require one complete opt-in acquisition boundary after the reopened catalog identity work | P6.2–P6.3 |
 | F-064 | `PENDING` | Existing external journey goldens are parsed but not type-checked and the sketched server/remote import paths do not exist; real `GOWORK=off` consumer modules must replace this false compile evidence | P6.6, P7.1, P7.9 |
 | F-065 | `PENDING` | `(*Client).Catalog()` panics on a nil receiver while neighboring accessors define nil behavior, and storage-backed construction roots work in `context.Background`; construction needs documented nil semantics and a caller-owned cancellation path | P6.8 |
 | F-066 | `PENDING` | The 10-method `internal/application.Application` interface forces unrelated consumers and test doubles to implement dead build metadata and operational capabilities; consumer-local roles must replace the omnibus interface | P6.4 |
+| F-067 | `IN_PROGRESS` | Provider identity is not author identity: Alibaba serves Moonshot and Zhipu models, 539/611 provider records carry explicit authors, and 187 provider-native IDs are hierarchical; canonical author/slug identity therefore needs an explicit authored model plus provider serving link | P5.9–P5.12 |
+| F-068 | `PENDING` | PR #53 removed the only persisted author/model corpus, including 121 IDs without exact provider-model matches and richer authored metadata; the old files must be restored as review input and normalized rather than silently discarded or blindly copied | P5.9 |
+| F-069 | `PENDING` | `endpoints.yaml` is empty, the generic Endpoint type is not an OpenRouter endpoint row, and no generator or compatibility route exists; the endpoint projection must join authored models to exact provider serving records | P5.11, P7.12 |
+| F-070 | `PENDING` | The pre-#53 `Author.Models` implementation was explicitly a denormalized provider-model view, copied provider price/limits/extensions, skipped hierarchical IDs on save, and had no provider key; restoring those semantics would remain stale and cannot generate complete endpoints | P5.9–P5.11 |
 
 ## Workspace Ledger
 
@@ -895,7 +939,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `starmap-library-composition` on `codex/starmap-library-composition@76dd3178` | `IN_PROGRESS` | Complete P6 on the fresh protected-main phase branch, pass exact local/hosted gates, then remove the worktree/branch |
+| `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@dc81b90a` | `IN_PROGRESS` | Complete P5.9–P5.13 on the user-steered successor branch, pass exact local/hosted gates, then remove the worktree/branch; P6.1 evidence remains committed and P6.2 resumes on a later fresh branch |
 
 ## Evidence Log
 
@@ -1028,6 +1072,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-28 | P5.8 / P6.1 / F-061 | PR #53 exact final head `94157b42269bcb91e1cd5577817871a93ba0acd9` passed uninterrupted `make HAS_DEVBOX= verify`: ordinary root `31.010s`, CLI app `10.098s`, catalogs `16.649s`, and server `11.221s`; repository race-short root `183.271s`, app `51.668s`, catalogs `31.786s`, server `55.115s`, and models.dev `66.770s`; vet; pinned lint with zero issues; every coverage floor; self-contained OpenAPI plus generated-GoDoc checks; diff; build; 611-model validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.26–11.28 ns/op`, `0 B/op`, and `0 allocs/op`; current govulncheck found zero reachable/imported-package vulnerabilities. The same exact head passed hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30419380178/job/90472784848) in `14m37s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30419380178/job/90472784819) in `2m32s`. Protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, stale-review dismissal, zero required approvals, and no force-push/deletion; the PR had zero reviews and zero review threads. After explicit user approval it squash-merged as `76dd317810815604b6c796814bce5b8887aaadd0`. The remote topic branch was absent; a zero tree diff and clean status were proven before removing the P5 worktree and local branch. Created fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition` on `codex/starmap-library-composition` from that exact protected-main SHA. P5 and P5.8 are DONE; P6.1 is the sole active task. |
 | 2026-07-28 | P5.8 / P6.1 / F-062 | Exact `git ls-tree` counts show 611 `internal/embedded/catalog/providers/**/models/*.yaml` files both before PR #53 (`9609f4f4`) and after its merge (`76dd3178`); `git diff --name-status` reports no change anywhere under that provider tree. The large catalog diff consists of 322 deleted `authors/*/models/*.yaml` mirror files plus the refreshed generation manifest; root `authors.yaml`, `providers.yaml`, endpoints, provenance, and all provider records remain embedded by `//go:embed catalog sources`. The corrected source and generated GoDoc now name provider-model YAML as canonical, and `make HAS_DEVBOX= docs-check` passes. `TestEmbeddedBootstrapManifestMatchesCanonicalCatalog` walks the actual embedded filesystem and requires its provider-YAML file count to equal the built immutable offering count; it passes ordinarily and under `-race` with exactly 611 of each. |
 | 2026-07-28 | P6.1 / F-063–F-066 | Accepted [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md) at SHA-256 `4207b43d0f828d8d34830314b68512af19e5068beb9a57d90f742f7205085e26`, measured from an isolated archive of protected main `76dd3178`. `go list ./...` reports 90 packages versus the P2 baseline 89: migrate/workspace/embedded-source were added and two attribution packages removed; root plus `pkg/*` remains 23 and `go list -deps ./...` proves zero cycles. Root/catalog/core-union closures are 472/147/152; root is 214 standard, 33 local, and 225 external packages and contains 1 GenAI, 64 gRPC, 21 OpenTelemetry, and 1 Gorilla WebSocket packages. A simulated provider-client-edge cut still leaves 244 packages, so P6.2/P6.3 now remove the complete acquisition implementation from root. Every public and importable command package has a named role, current consumer, and keep/delete/internalize disposition. |
+| 2026-07-28 | P5.9 / F-067–F-070 | User review reopened the author/model identity contract after PR #53. Exact protected-main inspection proves 539/611 provider-model files carry explicit authors, 187 provider IDs are hierarchical, and Alibaba records explicitly attribute Kimi to Moonshot and GLM to Zhipu, disproving provider→author inference. PR #53 deleted 322 author-model files and the `author_models` payload; its parent implementation described those files as denormalized views, copied provider models into `Author.Models`, skipped hierarchical IDs on save, and retained no provider key, so that exact behavior cannot generate complete endpoint rows. `authors.yaml` remains 761 lines while `endpoints.yaml` is empty; the server implements neither OpenRouter author/slug route. [`reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md`](reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md) records the user-steered replacement: authored model files and provider serving files own disjoint facts, provider records link explicitly to `{author}/{slug}`, and `endpoints.yaml` is generated from the validated join. P5.9 is the sole active task; P6.2 is paused. |
 
 ## Final Definition of Done
 
