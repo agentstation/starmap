@@ -12,12 +12,19 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
-	"github.com/agentstation/starmap/internal/server"
+	"github.com/agentstation/starmap/server"
 )
 
+type application interface {
+	Starmap(...starmap.Option) (*starmap.Client, error)
+	Logger() *zerolog.Logger
+}
+
 // NewCommand creates the serve command using app context.
-func NewCommand(app server.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "serve",
 		GroupID: "server",
@@ -87,7 +94,7 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 }
 
 // runServer starts the API server.
-func runServer(cmd *cobra.Command, _ []string, app server.Application) error {
+func runServer(cmd *cobra.Command, _ []string, app application) error {
 	// Parse flags into configuration
 	cfg := parseConfig(cmd)
 	logger := app.Logger()
@@ -106,7 +113,20 @@ func runServer(cmd *cobra.Command, _ []string, app server.Application) error {
 
 	// Create server
 	logger.Debug().Msg("Creating server instance")
-	srv, err := server.New(app, cfg)
+	sm, err := app.Starmap()
+	if err != nil {
+		return fmt.Errorf("loading starmap client: %w", err)
+	}
+	syncer, err := acquisition.New(sm)
+	if err != nil {
+		return fmt.Errorf("composing catalog acquisition: %w", err)
+	}
+	srv, err := server.New(
+		sm,
+		cfg,
+		server.WithLogger(logger),
+		server.WithSyncer(syncer),
+	)
 	if err != nil {
 		return fmt.Errorf("creating server: %w", err)
 	}
@@ -114,7 +134,9 @@ func runServer(cmd *cobra.Command, _ []string, app server.Application) error {
 
 	// Start background services (WebSocket hub, SSE broadcaster, event broker)
 	logger.Debug().Msg("Starting background services")
-	srv.Start()
+	if err := srv.Start(); err != nil {
+		return fmt.Errorf("starting server services: %w", err)
+	}
 	logger.Debug().Msg("Background services started")
 
 	// Log that server is starting (after background services initialize)

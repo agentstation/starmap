@@ -4845,9 +4845,9 @@ ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
 ```go
 type ProviderRetentionPolicy struct {
-    Type     ProviderRetentionType `json:"type" yaml:"type"`                             // Type of retention policy
-    Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty"` // nil = forever, 0 = immediate deletion
-    Details  *string               `json:"details,omitempty" yaml:"details,omitempty"`   // Human-readable description
+    Type     ProviderRetentionType `json:"type" yaml:"type"`                                                   // Type of retention policy
+    Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty" swaggertype:"integer"` // nil = forever, 0 = immediate deletion
+    Details  *string               `json:"details,omitempty" yaml:"details,omitempty"`                         // Human-readable description
 }
 ```
 

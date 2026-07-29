@@ -1135,7 +1135,8 @@ components:
           description: Human-readable description
           type: string
         duration:
-          $ref: '#/components/schemas/time.Duration'
+          description: nil = forever, 0 = immediate deletion
+          type: integer
         type:
           $ref: '#/components/schemas/catalogs.ProviderRetentionType'
       type: object
@@ -1334,18 +1335,6 @@ components:
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
-    time.Duration:
-      description: nil = forever, 0 = immediate deletion
-      type: integer
-      x-enum-varnames:
-      - minDuration
-      - maxDuration
-      - Nanosecond
-      - Microsecond
-      - Millisecond
-      - Second
-      - Minute
-      - Hour
   securitySchemes:
     ApiKeyAuth:
       description: API key for authentication (optional, configurable)

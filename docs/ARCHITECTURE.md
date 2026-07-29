@@ -977,6 +977,26 @@ generation. A nil `*Client` has a defined zero-value read: `Catalog` returns
 nil. Storage-backed callers use `NewContext` so cancellation and deadlines
 bound constructor I/O; `New` uses a background context for convenience.
 
+## Embeddable Server Package
+
+Location: `server/`
+
+The public `server` package accepts the concrete `*starmap.Client` product and
+returns a concrete `*server.Server`. Construction opens no listener and starts
+no goroutine. `Serve(net.Listener)` starts the
+server-owned services and blocks; `Shutdown(ctx)` first drains that `net/http`
+server and then stops those services. `Handler` plus explicit `Start` support
+programs that already own an `http.Server`; those programs drain their own
+server before calling Starmap `Shutdown`.
+
+Catalog acquisition is an optional capability rather than a transitive
+dependency of read-only serving. `server.Syncer` is the narrow input boundary;
+`server.WithSyncer(acquisitionSyncer)` enables the update route. Without that
+option the route is absent, and the public server dependency closure contains no
+provider clients, catalog acquisition pipeline, Google GenAI, gRPC, or cloud
+SDK packages. The CLI explicitly composes the acquisition implementation and
+uses this same public server package.
+
 ### Functional Options Pattern
 
 Used throughout for configuration:

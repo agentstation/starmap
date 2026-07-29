@@ -135,13 +135,15 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 		http.Error(w, "Not found", http.StatusNotFound)
 	})
 
-	mux.HandleFunc(prefix+"/update", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			h.HandleUpdate(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
+	if s.app.UpdatesEnabled() {
+		mux.HandleFunc(prefix+"/update", func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodPost {
+				h.HandleUpdate(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+	}
 
 	mux.HandleFunc(prefix+"/stats", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {

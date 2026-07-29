@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -10,20 +11,23 @@ import (
 
 	"github.com/agentstation/utc"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func TestHandleUpdateRequiresWritableStoreBeforeSync(t *testing.T) {
-	client, err := starmap.New()
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
+func TestHandleUpdateReportsSyncFailure(t *testing.T) {
 	h := &Handlers{
-		app: &testApplication{StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
-			return client, nil
+		app: &testApplication{SyncFunc: func(
+			context.Context,
+			...pkgsync.Option,
+		) (*pkgsync.Result, error) {
+			return nil, &pkgerrors.ConfigError{
+				Component: "catalog store",
+				Message:   "an explicit writable store is required",
+			}
 		}},
 	}
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)

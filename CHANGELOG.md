@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Embeddable Go server**: the public `server` package accepts
+  `*starmap.Client`, returns a concrete server, and exposes caller-owned
+  `Serve`, `Handler`/`Start`, and draining `Shutdown` lifecycles. Read-only
+  serving does not import provider clients or acquisition implementations;
+  `server.WithSyncer` explicitly enables the update route when a deployment
+  wants live source acquisition. A real external `GOWORK=off` module constructs,
+  serves, reaches, drains, and stops it.
 - **Caller-owned construction lifecycle**: `starmap.NewContext` propagates the
   caller's cancellation and deadline through storage-backed generation loading
   and workspace repair. `starmap.New` remains the background-context

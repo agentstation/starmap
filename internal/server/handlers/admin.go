@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -29,12 +28,6 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	providerFilter := r.URL.Query().Get("provider")
 	sourceFilter := r.URL.Query().Get("source")
 
-	sm, err := h.app.Starmap()
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
-
 	// Build sync options
 	var opts []sync.Option
 	if providerFilter != "" {
@@ -44,14 +37,8 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		opts = append(opts, sync.WithSources(sources.ID(sourceFilter)))
 	}
 
-	syncer, err := acquisition.New(sm)
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
-
 	// Run explicitly composed acquisition.
-	result, err := syncer.Sync(r.Context(), opts...)
+	result, err := h.app.Sync(r.Context(), opts...)
 	if err != nil {
 		response.InternalError(w, err)
 		return

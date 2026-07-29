@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"context"
+
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 type testApplication struct {
@@ -10,6 +13,7 @@ type testApplication struct {
 	CatalogStateFunc func() (starmap.CatalogState, error)
 	ReadinessFunc    func() (starmap.CatalogReadiness, error)
 	StarmapFunc      func(...starmap.Option) (*starmap.Client, error)
+	SyncFunc         func(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
 }
 
 func (a *testApplication) Catalog() (*catalogs.Catalog, error) {
@@ -41,4 +45,14 @@ func (a *testApplication) Starmap(
 		return a.StarmapFunc(opts...)
 	}
 	return nil, nil
+}
+
+func (a *testApplication) Sync(
+	ctx context.Context,
+	options ...pkgsync.Option,
+) (*pkgsync.Result, error) {
+	if a.SyncFunc != nil {
+		return a.SyncFunc(ctx, options...)
+	}
+	return &pkgsync.Result{}, nil
 }

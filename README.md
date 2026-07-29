@@ -725,6 +725,36 @@ starmap serve --port 3000 --cors --auth --rate-limit 100
 starmap serve --cors-origins "https://example.com,https://app.example.com"
 ```
 
+Go programs can embed the same server directly. Construction starts no listener
+or background goroutine; `Serve` owns serving on the caller-provided listener,
+and `Shutdown` drains HTTP before stopping server services:
+
+```go
+sm, err := starmap.New()
+if err != nil {
+    return err
+}
+srv, err := server.New(sm, server.DefaultConfig())
+if err != nil {
+    return err
+}
+listener, err := net.Listen("tcp", "127.0.0.1:8080")
+if err != nil {
+    return err
+}
+go func() {
+    if err := srv.Serve(listener); err != nil {
+        log.Printf("starmap server: %v", err)
+    }
+}()
+defer srv.Shutdown(shutdownCtx)
+```
+
+The public server is read-only by default and does not import provider clients
+or acquisition implementations. To expose `POST /api/v1/update`, explicitly
+compose an `acquisition.Syncer` and pass `server.WithSyncer(syncer)`. This keeps
+ordinary server embedding independent from provider credentials and cloud SDKs.
+
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering
 - **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`) carry the same post-commit generation/sync-run identity
@@ -775,7 +805,7 @@ HTTP_HOST=0.0.0.0
 STARMAP_API_KEY=your-api-key  # If --auth enabled
 ```
 
-For full server documentation, see [internal/server/README.md](internal/server/README.md).
+For the embeddable API, see [server/README.md](server/README.md).
 
 ## Configuration
 

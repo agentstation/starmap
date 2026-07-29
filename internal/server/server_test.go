@@ -9,7 +9,9 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 func TestWebSocketOriginPolicy(t *testing.T) {
@@ -252,6 +254,21 @@ func (m *mockApplication) Readiness() (starmap.CatalogReadiness, error) {
 
 func (m *mockApplication) Starmap(...starmap.Option) (*starmap.Client, error) {
 	return m.sm, nil
+}
+
+func (m *mockApplication) Sync(
+	ctx context.Context,
+	options ...pkgsync.Option,
+) (*pkgsync.Result, error) {
+	syncer, err := acquisition.New(m.sm)
+	if err != nil {
+		return nil, err
+	}
+	return syncer.Sync(ctx, options...)
+}
+
+func (*mockApplication) UpdatesEnabled() bool {
+	return true
 }
 
 func (m *mockApplication) Logger() *zerolog.Logger {
