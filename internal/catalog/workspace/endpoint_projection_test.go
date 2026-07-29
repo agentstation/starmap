@@ -11,6 +11,7 @@ import (
 	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings(t *testing.T) {
@@ -71,6 +72,39 @@ func TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings(t *te
 	}
 }
 
+func TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip(t *testing.T) {
+	t.Parallel()
+
+	catalog, identity := endpointProjectionCatalog(t)
+	before, err := EncodeEndpointProjection(catalog, identity)
+	if err != nil {
+		t.Fatalf("EncodeEndpointProjection before: %v", err)
+	}
+	path := filepath.Join(t.TempDir(), "catalog")
+	builder, err := catalogs.NewBuilderFrom(catalog)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	if err := builder.Save(save.WithPath(path)); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+	reloadedBuilder, err := catalogs.NewFromPath(path)
+	if err != nil {
+		t.Fatalf("NewFromPath: %v", err)
+	}
+	reloaded, err := reloadedBuilder.Build()
+	if err != nil {
+		t.Fatalf("Build reloaded: %v", err)
+	}
+	after, err := EncodeEndpointProjection(reloaded, identity)
+	if err != nil {
+		t.Fatalf("EncodeEndpointProjection after: %v", err)
+	}
+	if !bytes.Equal(before, after) {
+		t.Fatalf("endpoint projection changed across workspace round trip\nbefore:\n%s\nafter:\n%s", before, after)
+	}
+}
+
 func TestEndpointProjectionDriftIsDetectedWithoutOverwrite(t *testing.T) {
 	t.Parallel()
 
@@ -106,6 +140,51 @@ func TestEndpointProjectionDriftIsDetectedWithoutOverwrite(t *testing.T) {
 	}
 	if !bytes.Equal(after, edited) {
 		t.Fatal("dirty endpoint projection was silently overwritten")
+	}
+}
+
+func TestEndpointProjectionEditBeforeProjectExpectedIsPreserved(t *testing.T) {
+	t.Parallel()
+
+	catalog, identity := endpointProjectionCatalog(t)
+	path := filepath.Join(t.TempDir(), "catalog")
+	if _, err := Project(context.Background(), path, catalog, identity); err != nil {
+		t.Fatalf("Project initial: %v", err)
+	}
+	input, err := ObserveInput(path)
+	if err != nil {
+		t.Fatalf("ObserveInput: %v", err)
+	}
+	input, err = BindInputCatalog(input, catalog)
+	if err != nil {
+		t.Fatalf("BindInputCatalog: %v", err)
+	}
+
+	endpointsPath := filepath.Join(path, endpointProjectionFilename)
+	original, err := os.ReadFile(endpointsPath)
+	if err != nil {
+		t.Fatalf("read endpoints: %v", err)
+	}
+	edited := append(append([]byte(nil), original...), []byte("# operator edit\n")...)
+	if err := os.WriteFile(endpointsPath, edited, 0o644); err != nil {
+		t.Fatalf("edit endpoints: %v", err)
+	}
+
+	if _, err := ProjectExpected(
+		context.Background(),
+		path,
+		catalog,
+		identity,
+		input,
+	); err == nil {
+		t.Fatal("ProjectExpected accepted endpoint projection drift")
+	}
+	after, err := os.ReadFile(endpointsPath)
+	if err != nil {
+		t.Fatalf("reread endpoints: %v", err)
+	}
+	if !bytes.Equal(after, edited) {
+		t.Fatal("edited endpoint projection was overwritten")
 	}
 }
 

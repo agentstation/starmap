@@ -770,6 +770,8 @@ func main() {
 - [type ModelPricingTierType](<#ModelPricingTierType>)
   - [func \(m ModelPricingTierType\) String\(\) string](<#ModelPricingTierType.String>)
 - [type ModelProviderMode](<#ModelProviderMode>)
+  - [func \(m ModelProviderMode\) MarshalYAML\(\) \(any, error\)](<#ModelProviderMode.MarshalYAML>)
+  - [func \(m \*ModelProviderMode\) UnmarshalYAML\(data \[\]byte\) error](<#ModelProviderMode.UnmarshalYAML>)
 - [type ModelResponseFormat](<#ModelResponseFormat>)
   - [func \(mrf ModelResponseFormat\) String\(\) string](<#ModelResponseFormat.String>)
 - [type ModelResponseProtocol](<#ModelResponseProtocol>)
@@ -1261,7 +1263,7 @@ const (
     AuthorID01AI       AuthorID = "01.ai"
     AuthorIDBaichuan   AuthorID = "baichuan"
     AuthorIDMiniMax    AuthorID = "minimax"
-    AuthorIDMoonshot   AuthorID = "moonshotai"
+    AuthorIDMoonshot   AuthorID = "moonshot-ai"
     AuthorIDShanghaiAI AuthorID = "shanghai-ai-lab"
     AuthorIDZhipuAI    AuthorID = "zhipu-ai"
     AuthorIDSenseTime  AuthorID = "sensetime"
@@ -2482,7 +2484,7 @@ const (
 ```
 
 <a name="Model"></a>
-## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L8-L64>)
+## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L16-L72>)
 
 Model represents a model configuration.
 
@@ -2707,7 +2709,7 @@ type ModelArchitecture struct {
 ```
 
 <a name="ModelAttachments"></a>
-## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L257-L261>)
+## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L316-L320>)
 
 ModelAttachments represents the attachment capabilities of a model.
 
@@ -2720,7 +2722,7 @@ type ModelAttachments struct {
 ```
 
 <a name="ModelControlLevel"></a>
-## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L240>)
+## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L299>)
 
 ModelControlLevel represents an effort/intensity level for model controls.
 
@@ -2741,7 +2743,7 @@ const (
 ```
 
 <a name="ModelControlLevel.String"></a>
-### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L243>)
+### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L302>)
 
 ```go
 func (mcl ModelControlLevel) String() string
@@ -2750,7 +2752,7 @@ func (mcl ModelControlLevel) String() string
 String returns the string representation of a ModelControlLevel.
 
 <a name="ModelControlLevels"></a>
-## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L234-L237>)
+## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L293-L296>)
 
 ModelControlLevels represents a set of effort/intensity levels for model controls.
 
@@ -2940,7 +2942,7 @@ const (
 ```
 
 <a name="ModelFeatures"></a>
-## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L97-L173>)
+## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L156-L232>)
 
 ModelFeatures represents a set of feature flags that describe what a model can do.
 
@@ -3159,7 +3161,7 @@ const (
 ```
 
 <a name="ModelLimits"></a>
-## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L264-L271>)
+## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L323-L330>)
 
 ModelLimits represents the limits for a model.
 
@@ -3245,7 +3247,7 @@ func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
 Value returns a model limit and its presence state.
 
 <a name="ModelLineage"></a>
-## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L78-L82>)
+## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L86-L90>)
 
 ModelLineage represents model family and derivation metadata.
 
@@ -3258,7 +3260,7 @@ type ModelLineage struct {
 ```
 
 <a name="ModelMetadata"></a>
-## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L67-L75>)
+## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L75-L83>)
 
 ModelMetadata represents the metadata for a model.
 
@@ -3346,7 +3348,7 @@ func (m *ModelMetadata) UnsetOpenWeights()
 UnsetOpenWeights removes the open\-weights claim.
 
 <a name="ModelModalities"></a>
-## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L193-L196>)
+## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L252-L255>)
 
 ModelModalities represents the input/output modalities supported by a model.
 
@@ -3358,7 +3360,7 @@ type ModelModalities struct {
 ```
 
 <a name="ModelModality"></a>
-## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L199>)
+## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L258>)
 
 ModelModality represents a supported input or output modality for AI models.
 
@@ -3380,7 +3382,7 @@ const (
 ```
 
 <a name="ModelModality.String"></a>
-### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L202>)
+### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L261>)
 
 ```go
 func (m ModelModality) String() string
@@ -3389,7 +3391,7 @@ func (m ModelModality) String() string
 String returns the string representation of a ModelModality.
 
 <a name="ModelMode"></a>
-## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L85-L88>)
+## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L93-L96>)
 
 ModelMode represents an alternate provider service mode for a model.
 
@@ -3563,7 +3565,7 @@ func (m ModelPricingTierType) String() string
 String returns the string representation of a ModelPricingTierType.
 
 <a name="ModelProviderMode"></a>
-## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L91-L94>)
+## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L99-L102>)
 
 ModelProviderMode represents provider request overrides for a model mode.
 
@@ -3573,6 +3575,24 @@ type ModelProviderMode struct {
     Body    map[string]any    `json:"body,omitempty" yaml:"body,omitempty"`       // JSON request body fields required by this mode
 }
 ```
+
+<a name="ModelProviderMode.MarshalYAML"></a>
+### func \(ModelProviderMode\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L107>)
+
+```go
+func (m ModelProviderMode) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves request\-body values as native YAML scalars, sequences, mappings, and nulls. The body is a JSON request fragment, so values that cannot be represented by JSON are rejected.
+
+<a name="ModelProviderMode.UnmarshalYAML"></a>
+### func \(\*ModelProviderMode\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L141>)
+
+```go
+func (m *ModelProviderMode) UnmarshalYAML(data []byte) error
+```
+
+UnmarshalYAML restores request\-body values through JSON so YAML library implementation types such as \[\]byte cannot leak into the provider request contract.
 
 <a name="ModelResponseFormat"></a>
 ## type [ModelResponseFormat](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_delivery.go#L12>)
@@ -3633,7 +3653,7 @@ const (
 ```
 
 <a name="ModelStatus"></a>
-## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L176>)
+## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L235>)
 
 ModelStatus represents a model lifecycle or availability state.
 
@@ -3654,7 +3674,7 @@ const (
 ```
 
 <a name="ModelStatus.String"></a>
-### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L179>)
+### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L238>)
 
 ```go
 func (ms ModelStatus) String() string
@@ -3797,7 +3817,7 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error)
 MarshalYAML implements custom YAML marshaling for token pricing.
 
 <a name="ModelTools"></a>
-## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L274-L284>)
+## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L333-L343>)
 
 ModelTools represents external tool and capability integrations.
 
@@ -3816,7 +3836,7 @@ type ModelTools struct {
 ```
 
 <a name="ModelWebSearch"></a>
-## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L287-L295>)
+## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L346-L354>)
 
 ModelWebSearch represents web search configuration for search\-enabled models.
 
@@ -5501,7 +5521,7 @@ func (t Tokenizer) String() string
 String returns the string representation of a Tokenizer.
 
 <a name="ToolChoice"></a>
-## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L218>)
+## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L277>)
 
 ToolChoice represents the strategy for selecting tools. Used in API requests as the "tool\_choice" parameter value.
 
@@ -5521,7 +5541,7 @@ const (
 ```
 
 <a name="ToolChoice.String"></a>
-### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L221>)
+### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L280>)
 
 ```go
 func (tc ToolChoice) String() string

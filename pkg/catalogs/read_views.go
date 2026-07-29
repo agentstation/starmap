@@ -129,10 +129,6 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 					ID:       string(candidate.definitionID),
 				}
 			}
-			if _, authored := authoredDefinitions[candidate.definitionID]; !authored {
-				byDefinition[candidate.definitionID] = append(byDefinition[candidate.definitionID], candidate)
-			}
-
 			offering, err := deriveProviderOffering(candidate)
 			if err != nil {
 				return nil, err

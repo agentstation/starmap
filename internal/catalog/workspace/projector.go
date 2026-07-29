@@ -55,9 +55,10 @@ type Receipt struct {
 // InputExpectation records workspace presence and, once loaded, its semantic
 // digest before candidate construction. Projection rejects a different input.
 type InputExpectation struct {
-	Path     string
-	Exists   bool
-	Checksum string
+	Path             string
+	Exists           bool
+	Checksum         string
+	EndpointChecksum string
 }
 
 // ObserveInput records the selected workspace's presence without creating or
@@ -107,6 +108,13 @@ func BindInputCatalog(input InputExpectation, catalog *catalogs.Catalog) (InputE
 		return InputExpectation{}, errors.WrapResource("encode", "workspace projection input", input.Path, err)
 	}
 	input.Checksum = catalogs.DescribeCatalogPayload(payload).Checksum
+	endpointChecksum, err := readEndpointProjectionChecksum(input.Path)
+	if stderrors.Is(err, fs.ErrNotExist) {
+		endpointChecksum = ""
+	} else if err != nil {
+		return InputExpectation{}, errors.WrapIO("read", endpointProjectionFilename, err)
+	}
+	input.EndpointChecksum = endpointChecksum
 	return input, nil
 }
 
@@ -280,15 +288,26 @@ func validateInputExpectation(target string, input semanticState, expectation In
 		}
 	}
 	if expectation.Exists == input.exists {
-		if !expectation.Exists || expectation.Checksum == "" || expectation.Checksum == input.checksum {
+		if !expectation.Exists || expectation.Checksum == "" {
 			return nil
 		}
-		return &errors.ConflictError{
-			Resource: "catalog workspace projection input",
-			Expected: expectation.Checksum,
-			Actual:   input.checksum,
-			Message:  "workspace semantics changed after candidate construction",
+		if expectation.Checksum != input.checksum {
+			return &errors.ConflictError{
+				Resource: "catalog workspace projection input",
+				Expected: expectation.Checksum,
+				Actual:   input.checksum,
+				Message:  "workspace semantics changed after candidate construction",
+			}
 		}
+		if expectation.EndpointChecksum != input.endpointChecksum {
+			return &errors.ConflictError{
+				Resource: "catalog endpoint projection input",
+				Expected: expectation.EndpointChecksum,
+				Actual:   input.endpointChecksum,
+				Message:  "generated endpoint projection changed after candidate construction",
+			}
+		}
+		return nil
 	}
 	return &errors.ConflictError{
 		Resource: "catalog workspace projection input",
@@ -577,6 +596,13 @@ func validateStableProjection(
 			Field:   "workspace_projection.workspace_checksum",
 			Value:   state.checksum,
 			Message: "YAML projection is not semantically stable across repeated save/load cycles",
+		}
+	}
+	if state.endpointChecksum != verified.endpointChecksum {
+		return &errors.ValidationError{
+			Field:   "workspace_projection.endpoint_checksum",
+			Value:   state.endpointChecksum,
+			Message: "endpoint projection is not byte-stable across repeated save/load cycles",
 		}
 	}
 	return nil

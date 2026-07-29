@@ -128,7 +128,7 @@ const (
 	AuthorID01AI       AuthorID = "01.ai"
 	AuthorIDBaichuan   AuthorID = "baichuan"
 	AuthorIDMiniMax    AuthorID = "minimax"
-	AuthorIDMoonshot   AuthorID = "moonshotai"
+	AuthorIDMoonshot   AuthorID = "moonshot-ai"
 	AuthorIDShanghaiAI AuthorID = "shanghai-ai-lab"
 	AuthorIDZhipuAI    AuthorID = "zhipu-ai"
 	AuthorIDSenseTime  AuthorID = "sensetime"

@@ -1,7 +1,15 @@
 package catalogs
 
 import (
+	"encoding/json"
+	"maps"
+	"slices"
+
+	"github.com/goccy/go-yaml"
+
 	"github.com/agentstation/utc"
+
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Model represents a model configuration.
@@ -91,6 +99,57 @@ type ModelMode struct {
 type ModelProviderMode struct {
 	Headers map[string]string `json:"headers,omitempty" yaml:"headers,omitempty"` // HTTP headers required by this mode
 	Body    map[string]any    `json:"body,omitempty" yaml:"body,omitempty"`       // JSON request body fields required by this mode
+}
+
+// MarshalYAML preserves request-body values as native YAML scalars,
+// sequences, mappings, and nulls. The body is a JSON request fragment, so
+// values that cannot be represented by JSON are rejected.
+func (m ModelProviderMode) MarshalYAML() (any, error) {
+	entries := make(yaml.MapSlice, 0, 2)
+	if len(m.Headers) > 0 {
+		headers := make(yaml.MapSlice, 0, len(m.Headers))
+		for _, header := range slices.Sorted(maps.Keys(m.Headers)) {
+			headers = append(headers, yaml.MapItem{Key: header, Value: m.Headers[header]})
+		}
+		entries = append(entries, yaml.MapItem{Key: "headers", Value: headers})
+	}
+	if len(m.Body) > 0 {
+		body := make(yaml.MapSlice, 0, len(m.Body))
+		for _, field := range slices.Sorted(maps.Keys(m.Body)) {
+			encoded, err := json.Marshal(m.Body[field])
+			if err != nil {
+				return nil, errors.WrapParse("json", "model mode provider body."+field, err)
+			}
+			yamlValue, err := yaml.JSONToYAML(encoded)
+			if err != nil {
+				return nil, errors.WrapParse("json", "model mode provider body."+field, err)
+			}
+			var native any
+			if err := yaml.Unmarshal(yamlValue, &native); err != nil {
+				return nil, errors.WrapParse("yaml", "model mode provider body."+field, err)
+			}
+			body = append(body, yaml.MapItem{Key: field, Value: native})
+		}
+		entries = append(entries, yaml.MapItem{Key: "body", Value: body})
+	}
+	return entries, nil
+}
+
+// UnmarshalYAML restores request-body values through JSON so YAML library
+// implementation types such as []byte cannot leak into the provider request
+// contract.
+func (m *ModelProviderMode) UnmarshalYAML(data []byte) error {
+	encoded, err := yaml.YAMLToJSON(data)
+	if err != nil {
+		return errors.WrapParse("yaml", "model mode provider", err)
+	}
+	type plain ModelProviderMode
+	var decoded plain
+	if err := json.Unmarshal(encoded, &decoded); err != nil {
+		return errors.WrapParse("json", "model mode provider", err)
+	}
+	*m = ModelProviderMode(decoded)
+	return nil
 }
 
 // ModelFeatures represents a set of feature flags that describe what a model can do.

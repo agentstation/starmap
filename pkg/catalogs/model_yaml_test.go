@@ -3,6 +3,7 @@ package catalogs
 import (
 	stderrors "errors"
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -42,6 +43,35 @@ func TestModelEncodeYAMLRoundTripsBackslashesWithoutSemanticDrift(t *testing.T) 
 	}
 	if roundTripped.Description != original.Description {
 		t.Fatalf("second description = %q, want %q", roundTripped.Description, original.Description)
+	}
+}
+
+func TestModelProviderModeYAMLRoundTripPreservesJSONValues(t *testing.T) {
+	t.Parallel()
+
+	original := ModelProviderMode{
+		Headers: map[string]string{"anthropic-beta": "fast-mode"},
+		Body: map[string]any{
+			"service_tier": "priority",
+			"reasoning":    map[string]any{"mode": "pro"},
+			"attempts":     float64(2),
+			"stream":       true,
+			"stop":         []any{"done", float64(3)},
+			"metadata":     nil,
+		},
+	}
+
+	data, err := yaml.Marshal(original)
+	if err != nil {
+		t.Fatalf("Marshal() error = %v", err)
+	}
+	var decoded ModelProviderMode
+	if err := yaml.Unmarshal(data, &decoded); err != nil {
+		t.Fatalf("Unmarshal() error = %v", err)
+	}
+
+	if !reflect.DeepEqual(original, decoded) {
+		t.Fatalf("round trip = %#v, want %#v\nYAML:\n%s", decoded, original, data)
 	}
 }
 

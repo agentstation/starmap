@@ -21,7 +21,7 @@ func reconcileAuthoredCorpus(
 	bootstrap := collector.authoredBootstrap()
 	local := collector.catalog(sources.LocalCatalogID)
 
-	if err := upsertAuthors(target, bootstrap); err != nil {
+	if err := addMissingAuthors(target, bootstrap); err != nil {
 		return err
 	}
 	if err := upsertAuthors(target, local); err != nil {
@@ -68,6 +68,21 @@ func reconcileAuthoredCorpus(
 		}
 	}
 
+	return nil
+}
+
+func addMissingAuthors(target *catalogs.Builder, source *catalogs.Catalog) error {
+	if source == nil {
+		return nil
+	}
+	for _, author := range source.Authors().List() {
+		if _, found := target.Authors().Resolve(author.ID); found {
+			continue
+		}
+		if err := target.SetAuthor(author); err != nil {
+			return errors.WrapResource("set", "author", string(author.ID), err)
+		}
+	}
 	return nil
 }
 

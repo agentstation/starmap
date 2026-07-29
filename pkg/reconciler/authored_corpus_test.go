@@ -19,11 +19,23 @@ func TestReconciliationRetainsCanonicalAuthoredCorpus(t *testing.T) {
 
 	t.Run("existing baseline remains authoritative", func(t *testing.T) {
 		baseline := corpusCatalog(t, "model", "Existing Model")
-		embedded := corpusCatalog(t, "model", "New Embedded Model")
+		baseline = withCorpusAuthorName(t, baseline, "Existing Author")
+		embedded := withCorpusAuthorName(
+			t,
+			corpusCatalog(t, "model", "New Embedded Model"),
+			"Embedded Author",
+		)
 		result := reconcileCorpus(t, baseline, []sources.Observation{
 			completeCorpusObservation(sources.EmbeddedCatalogID, embedded),
 		})
 		assertCorpusDefinition(t, result, "author/model", "Existing Model")
+		author, err := result.Author("author")
+		if err != nil {
+			t.Fatalf("Author: %v", err)
+		}
+		if author.Name != "Existing Author" {
+			t.Fatalf("author name = %q, want retained baseline metadata", author.Name)
+		}
 	})
 
 	t.Run("embedded adds a definition missing from the baseline", func(t *testing.T) {
@@ -38,13 +50,24 @@ func TestReconciliationRetainsCanonicalAuthoredCorpus(t *testing.T) {
 
 	t.Run("human workspace overrides an existing definition", func(t *testing.T) {
 		baseline := corpusCatalog(t, "model", "Existing Model")
-		human := corpusCatalog(t, "model", "Human Model")
+		human := withCorpusAuthorName(
+			t,
+			corpusCatalog(t, "model", "Human Model"),
+			"Human Author",
+		)
 		embedded := corpusCatalog(t, "model", "Embedded Model")
 		result := reconcileCorpus(t, baseline, []sources.Observation{
 			completeCorpusObservation(sources.EmbeddedCatalogID, embedded),
 			completeCorpusObservation(sources.LocalCatalogID, human),
 		})
 		assertCorpusDefinition(t, result, "author/model", "Human Model")
+		author, err := result.Author("author")
+		if err != nil {
+			t.Fatalf("Author: %v", err)
+		}
+		if author.Name != "Human Author" {
+			t.Fatalf("author name = %q, want human workspace metadata", author.Name)
+		}
 	})
 
 	t.Run("complete human workspace deletes a local-only definition", func(t *testing.T) {
@@ -118,6 +141,31 @@ func emptyAuthoredCorpus(t testing.TB) *catalogs.Catalog {
 	catalog, err := catalogs.NewEmpty().Build()
 	if err != nil {
 		t.Fatalf("Build empty authored corpus: %v", err)
+	}
+	return catalog
+}
+
+func withCorpusAuthorName(
+	t testing.TB,
+	source *catalogs.Catalog,
+	name string,
+) *catalogs.Catalog {
+	t.Helper()
+	builder, err := catalogs.NewBuilderFrom(source)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	author, err := builder.Author("author")
+	if err != nil {
+		t.Fatalf("Author: %v", err)
+	}
+	author.Name = name
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
 	}
 	return catalog
 }
