@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/acquisition"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/pkg/constants"
@@ -77,7 +76,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 }
 
 // ExecuteUpdate orchestrates the complete update process using app context.
-func ExecuteUpdate(ctx context.Context, app application.Application, flags *Flags, logger *zerolog.Logger) error {
+func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *zerolog.Logger) error {
 	// Determine quiet mode from logger level
 	quiet := logger.GetLevel() > zerolog.InfoLevel
 

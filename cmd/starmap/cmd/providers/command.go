@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/acquisition"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/constants"
@@ -21,7 +20,7 @@ import (
 )
 
 // NewCommand creates the providers resource command.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "providers [provider-id]",
 		GroupID: "catalog",
@@ -74,7 +73,7 @@ show provider details, and fetch from provider APIs.`,
 }
 
 // listProviders lists all providers.
-func listProviders(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listProviders(cmd *cobra.Command, app application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {
@@ -131,7 +130,7 @@ func listProviders(cmd *cobra.Command, app application.Application, logger *zero
 }
 
 // showProviderDetails shows detailed information about a specific provider.
-func showProviderDetails(cmd *cobra.Command, app application.Application, providerID string) error {
+func showProviderDetails(cmd *cobra.Command, app application, providerID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

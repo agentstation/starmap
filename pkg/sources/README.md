@@ -210,7 +210,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L163-L181>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L160-L178>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -237,7 +237,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L184-L189>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L181-L186>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -296,7 +296,7 @@ func IDs() []ID
 IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L149-L160>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L146-L157>)
 
 Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
 
@@ -666,7 +666,7 @@ type RawFetchResult struct {
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L194>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L191>)
 
 ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
 
@@ -797,7 +797,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L125-L144>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L125-L141>)
 
 Source observes catalog information from one configured upstream.
 
@@ -807,9 +807,6 @@ Implementations must be safe for repeated and concurrent Observe calls. Observe 
 type Source interface {
     // ID returns the stable identity of this source.
     ID() ID
-
-    // Name returns a human-friendly name for this source
-    Name() string
 
     // Observe retrieves and returns one immutable source result directly. Calls
     // must not depend on prior Observe calls or publish result state on Source.

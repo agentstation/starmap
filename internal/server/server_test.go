@@ -212,8 +212,10 @@ func (b *testBrokerWrapper) Subscribe(sub any) {
 
 // mockApplication is a minimal Application implementation for testing
 type mockApplication struct {
-	logger *zerolog.Logger
-	sm     *starmap.Client
+	logger       *zerolog.Logger
+	sm           *starmap.Client
+	catalog      *catalogs.Catalog
+	catalogState *starmap.CatalogState
 }
 
 func newMockApplication() *mockApplication {
@@ -232,10 +234,16 @@ func newMockApplication() *mockApplication {
 }
 
 func (m *mockApplication) Catalog() (*catalogs.Catalog, error) {
+	if m.catalog != nil {
+		return m.catalog, nil
+	}
 	return m.sm.Catalog(), nil
 }
 
 func (m *mockApplication) CatalogState() (starmap.CatalogState, error) {
+	if m.catalogState != nil {
+		return *m.catalogState, nil
+	}
 	return m.sm.CurrentCatalogState(), nil
 }
 

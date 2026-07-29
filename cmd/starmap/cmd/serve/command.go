@@ -12,13 +12,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/server"
 )
 
 // NewCommand creates the serve command using app context.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app server.Application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "serve",
 		GroupID: "server",
@@ -88,7 +87,7 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 }
 
 // runServer starts the API server.
-func runServer(cmd *cobra.Command, _ []string, app application.Application) error {
+func runServer(cmd *cobra.Command, _ []string, app server.Application) error {
 	// Parse flags into configuration
 	cfg := parseConfig(cmd)
 	logger := app.Logger()

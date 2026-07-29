@@ -36,7 +36,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 - [type DateRange](<#DateRange>)
 - [type Handlers](<#Handlers>)
-  - [func New\(app application.Application, cache \*cache.Cache, broker \*events.Broker, wsHub \*ws.Hub, sseBroadcaster \*sse.Broadcaster, upgrader websocket.Upgrader, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
+  - [func New\(app application, cache \*cache.Cache, broker \*events.Broker, wsHub \*ws.Hub, sseBroadcaster \*sse.Broadcaster, upgrader websocket.Upgrader, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
   - [func \(h \*Handlers\) HandleCatalogSnapshot\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogSnapshot>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
@@ -72,7 +72,7 @@ type DateRange struct {
 ```
 
 <a name="Handlers"></a>
-## type [Handlers](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L18-L27>)
+## type [Handlers](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L17-L26>)
 
 Handlers provides access to all HTTP handlers.
 
@@ -83,10 +83,10 @@ type Handlers struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L30-L39>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L29-L38>)
 
 ```go
-func New(app application.Application, cache *cache.Cache, broker *events.Broker, wsHub *ws.Hub, sseBroadcaster *sse.Broadcaster, upgrader websocket.Upgrader, logger *zerolog.Logger, startTime time.Time) *Handlers
+func New(app application, cache *cache.Cache, broker *events.Broker, wsHub *ws.Hub, sseBroadcaster *sse.Broadcaster, upgrader websocket.Upgrader, logger *zerolog.Logger, startTime time.Time) *Handlers
 ```
 
 New creates a new Handlers instance.

@@ -5,14 +5,13 @@ import (
 	"os"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // LoadCatalog creates a starmap instance using app context.
 // If catalogPath is provided, it is the single local read/write workspace.
 // Otherwise, the application composition supplies its configured default.
-func LoadCatalog(app application.Application, catalogPath string, isQuiet bool) (*starmap.Client, error) {
+func LoadCatalog(app application, catalogPath string, isQuiet bool) (*starmap.Client, error) {
 	var sm *starmap.Client
 	var err error
 

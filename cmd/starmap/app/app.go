@@ -13,16 +13,12 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
-
-// Ensure App implements application.Application at compile time.
-var _ application.Application = (*App)(nil)
 
 // App represents the starmap application with all its dependencies.
 // It provides a centralized place for configuration, logging, and

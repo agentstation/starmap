@@ -33,10 +33,15 @@ type Enhancer interface {
 	Priority() int
 }
 
+// ProvenanceTracker is the field-recording role accepted by Pipeline.
+type ProvenanceTracker interface {
+	Track(catalogmeta.ResourceType, string, string, provenance.Provenance)
+}
+
 // Pipeline manages a chain of enhancers.
 type Pipeline struct {
 	enhancers []Enhancer
-	tracker   provenance.Tracker
+	tracker   ProvenanceTracker
 }
 
 // NewPipeline creates a new enhancer pipeline.
@@ -59,7 +64,7 @@ func NewPipeline(enhancers ...Enhancer) *Pipeline {
 }
 
 // WithProvenance enables provenance tracking for enhancements.
-func (p *Pipeline) WithProvenance(tracker provenance.Tracker) *Pipeline {
+func (p *Pipeline) WithProvenance(tracker ProvenanceTracker) *Pipeline {
 	p.tracker = tracker
 	return p
 }

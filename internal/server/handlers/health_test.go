@@ -8,12 +8,11 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/response"
 )
 
 func TestEmbeddedBudgetReadinessEndpointFailsWithStableReason(t *testing.T) {
-	handler := &Handlers{app: &application.Mock{ReadinessFunc: func() (starmap.CatalogReadiness, error) {
+	handler := &Handlers{app: &testApplication{ReadinessFunc: func() (starmap.CatalogReadiness, error) {
 		return starmap.CatalogReadiness{
 			Issues: []starmap.ReadinessIssue{{
 				Code:    starmap.ReadinessIssueEmbeddedBootstrapStale,

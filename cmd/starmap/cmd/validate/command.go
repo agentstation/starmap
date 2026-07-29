@@ -2,12 +2,10 @@ package validate
 
 import (
 	"github.com/spf13/cobra"
-
-	"github.com/agentstation/starmap/internal/application"
 )
 
 // NewCommand creates the validate command using app context.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "validate",
 		GroupID: "development",

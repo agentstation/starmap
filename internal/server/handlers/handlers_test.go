@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -23,7 +22,7 @@ func TestHandleUpdateRequiresWritableStoreBeforeSync(t *testing.T) {
 		t.Fatalf("New: %v", err)
 	}
 	h := &Handlers{
-		app: &application.Mock{StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
+		app: &testApplication{StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
 			return client, nil
 		}},
 	}
@@ -306,7 +305,7 @@ func newTestHandlers(t testing.TB, cat *catalogs.Builder) *Handlers {
 		}
 	}
 	return &Handlers{
-		app: &application.Mock{
+		app: &testApplication{
 			CatalogFunc: func() (*catalogs.Catalog, error) {
 				return cat.Build()
 			},

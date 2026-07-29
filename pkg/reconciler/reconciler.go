@@ -28,7 +28,7 @@ import (
 type Reconciler struct {
 	strategy    Strategy
 	authorities authority.Reader
-	provenance  provenance.Tracker
+	provenance  *provenance.Tracker
 	tracking    bool
 	enhancers   *enhancer.Pipeline
 	baseline    *catalogs.Catalog // Baseline catalog for comparison

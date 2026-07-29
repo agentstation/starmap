@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogscheduler"
 )
@@ -25,7 +24,7 @@ func TestOperationsEndpointExposesGenerationFreshnessLastSyncDegradationAndSched
 		DegradedSources: []catalogmeta.SourceID{catalogmeta.ModelsDevHTTPID},
 		Scheduler:       catalogscheduler.SchedulerOperationalState{Configured: true},
 	}
-	handler := &Handlers{app: &application.Mock{OperationalStateFunc: func(context.Context) (catalogscheduler.OperationalState, error) {
+	handler := &Handlers{app: &testApplication{OperationalStateFunc: func(context.Context) (catalogscheduler.OperationalState, error) {
 		return state, nil
 	}}}
 	recorder := httptest.NewRecorder()

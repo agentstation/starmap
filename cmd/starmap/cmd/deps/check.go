@@ -64,6 +64,13 @@ type CheckResults struct {
 	SourcesWithNoDeps int               `json:"sources_with_no_deps" yaml:"sources_with_no_deps"`
 }
 
+type dependencySource interface {
+	ID() sources.ID
+	Name() string
+	Dependencies() []sources.Dependency
+	IsOptional() bool
+}
+
 // runCheck executes the dependency check command.
 func runCheck(cmd *cobra.Command) error {
 	ctx := context.Background()
@@ -115,19 +122,19 @@ func runCheck(cmd *cobra.Command) error {
 }
 
 // getAllSources creates all available sources.
-func getAllSources() []sources.Source {
+func getAllSources() []dependencySource {
 	// Load embedded catalog to get provider configs for dependency checking
 	embedded, err := catalogs.NewEmbedded()
 	if err != nil {
 		// If we can't load embedded catalog, return sources without providers
-		return []sources.Source{
+		return []dependencySource{
 			local.New(),
 			modelsdev.NewGitSource(),
 			modelsdev.NewHTTPSource(),
 		}
 	}
 
-	return []sources.Source{
+	return []dependencySource{
 		local.New(),
 		providers.New(embedded.Providers()),
 		modelsdev.NewGitSource(),
@@ -136,7 +143,7 @@ func getAllSources() []sources.Source {
 }
 
 // collectDependencyStatuses checks all sources and collects dependency statuses.
-func collectDependencyStatuses(ctx context.Context, srcs []sources.Source) *CheckResults {
+func collectDependencyStatuses(ctx context.Context, srcs []dependencySource) *CheckResults {
 	results := &CheckResults{
 		Sources: make([]SourceDepStatus, 0, len(srcs)),
 	}

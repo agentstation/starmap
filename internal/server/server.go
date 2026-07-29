@@ -12,7 +12,6 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/events/adapters"
@@ -23,7 +22,7 @@ import (
 
 // Server holds the HTTP server state and dependencies.
 type Server struct {
-	app            application.Application
+	app            Application
 	cache          *cache.Cache
 	broker         *events.Broker
 	wsHub          *ws.Hub
@@ -37,7 +36,7 @@ type Server struct {
 }
 
 // New creates a new server instance with the given configuration.
-func New(app application.Application, cfg Config) (*Server, error) {
+func New(app Application, cfg Config) (*Server, error) {
 	logger := app.Logger()
 
 	logger.Debug().Msg("Creating new server instance")

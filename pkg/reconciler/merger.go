@@ -9,17 +9,22 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap/pkg/authority"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
+type provenanceTracker interface {
+	Track(catalogmeta.ResourceType, string, string, provenance.Provenance)
+}
+
 // merger implements strategic three-way merge.
 type merger struct {
 	authorities     authority.Reader
 	strategy        Strategy
-	tracker         provenance.Tracker
+	tracker         provenanceTracker
 	baseline        *catalogs.Catalog // Baseline catalog for timestamp preservation
 	baselineModels  map[catalogs.ProviderID]map[string]*catalogs.Model
 	pricingAt       time.Time
@@ -90,7 +95,7 @@ func (merger *merger) setObservations(observations []sources.Observation) {
 }
 
 // newMergerWithProvenance creates a new strategic merger with provenance tracking.
-func newMergerWithProvenance(authorities authority.Reader, strategy Strategy, tracker provenance.Tracker, baseline *catalogs.Catalog) *merger {
+func newMergerWithProvenance(authorities authority.Reader, strategy Strategy, tracker provenanceTracker, baseline *catalogs.Catalog) *merger {
 	return &merger{
 		authorities:    authorities,
 		strategy:       strategy,

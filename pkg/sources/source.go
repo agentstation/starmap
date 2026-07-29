@@ -126,9 +126,6 @@ type Source interface {
 	// ID returns the stable identity of this source.
 	ID() ID
 
-	// Name returns a human-friendly name for this source
-	Name() string
-
 	// Observe retrieves and returns one immutable source result directly. Calls
 	// must not depend on prior Observe calls or publish result state on Source.
 	Observe(ctx context.Context, opts ...Option) (Observation, error)

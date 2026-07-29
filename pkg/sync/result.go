@@ -16,8 +16,12 @@ import (
 type ProjectionStatus = catalogmeta.ProjectionStatus
 
 const (
-	ProjectionStatusApplied        = catalogmeta.ProjectionStatusApplied
-	ProjectionStatusPendingRepair  = catalogmeta.ProjectionStatusPendingRepair
+	// ProjectionStatusApplied reports that the workspace projection was written.
+	ProjectionStatusApplied = catalogmeta.ProjectionStatusApplied
+	// ProjectionStatusPendingRepair reports that publication succeeded but the
+	// workspace projection needs repair.
+	ProjectionStatusPendingRepair = catalogmeta.ProjectionStatusPendingRepair
+	// ProjectionIssueWorkspaceFailed identifies a workspace projection failure.
 	ProjectionIssueWorkspaceFailed = catalogmeta.ProjectionIssueWorkspaceFailed
 )
 

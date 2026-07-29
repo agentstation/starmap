@@ -42,8 +42,8 @@ graph TB
         HTTP[HTTP Server<br/>REST API + WebSocket + SSE]
     end
 
-    subgraph APP["Application Layer - internal/application/"]
-        APPIF[Application Interface<br/>DI Pattern]
+    subgraph APP["Application Composition"]
+        APPIF[Consumer-local Roles<br/>cmd/* + internal/server]
         APPIMPL[App Implementation<br/>cmd/starmap/app/]
     end
 
@@ -73,7 +73,7 @@ graph TB
     end
 
     CLI --> APPIF
-    GO --> APPIF
+    GO --> ROOT
     HTTP --> APPIF
     APPIF -.implemented by.-> APPIMPL
     APPIMPL --> ROOT
@@ -93,7 +93,7 @@ graph TB
 
 **Architecture Layers:**
 1. **User Interfaces**: Multiple entry points (CLI, Go package, HTTP API)
-2. **Application Layer**: Dependency injection pattern with interface/implementation separation
+2. **Application Composition**: Concrete CLI app injected through consumer-local roles
 3. **Root Package**: Small provider-independent API for immutable reads and atomic publication
 4. **Acquisition Package**: Explicit opt-in composition for provider/source synchronization
 5. **Core Packages**: Reusable business logic for catalog management and reconciliation
@@ -103,7 +103,7 @@ graph TB
 
 ### 1. Interface Segregation
 - **Define interfaces where they're used** (Go proverb)
-- Application interface in `internal/application/` (reusable across binaries)
+- Command and server interfaces live in their consuming packages
 - Implementation in `cmd/starmap/app/` (concrete types)
 - Commands depend only on what they need
 
@@ -111,7 +111,7 @@ graph TB
 - Constructor injection via functional options
 - Interface-based contracts
 - Easy mocking for tests
-- Example: `NewCommand(app application.Application)`
+- Example: `NewCommand(app application)` where `application` is local to that command package
 
 ### 3. Thread Safety
 - Value semantics for collections
@@ -138,7 +138,7 @@ graph TB
 
 ### Layer Responsibilities
 
-1. **Application Layer** (`internal/application/`, `cmd/starmap/app/`)
+1. **Application Composition** (`cmd/starmap/app/`, command packages, `internal/server/`)
    - Dependency injection
    - Configuration management
    - Lifecycle control (startup/shutdown)
@@ -164,43 +164,32 @@ graph TB
    - Transport utilities
    - Shared catalog query behavior for CLI and HTTP adapters
 
-## Application Layer
+## Application Composition
 
-### Application Interface
+### Consumer-local application roles
 
-Location: `internal/application/application.go`
+Locations: `cmd/starmap/cmd/*/application.go`, `internal/server/application.go`
 
 **Design Philosophy:**
 - "Accept interfaces, return structs" (Go proverb)
 - "Define interfaces where they're used" (idiomatic Go)
-- Located in `internal/application` for internal package organization
+- Each consumer declares only the methods it calls
 - Zero import cycles (unidirectional dependency flow)
 
 **Interface Definition:**
 
 ```go
-type Application interface {
-    // Catalog adapts the concrete immutable catalog for command callers
+type application interface {
     Catalog() (*catalogs.Catalog, error)
-
-    // Starmap returns starmap instance with optional configuration
-    // Without options: returns cached instance (thread-safe singleton)
-    // With options: creates new instance (no caching)
-    Starmap(opts ...starmap.Option) (*starmap.Client, error)
-
-    // Logger returns the configured logger
     Logger() *zerolog.Logger
-
-    // OutputFormat returns configured output format
-    OutputFormat() string
-
-    // Version info methods
-    Version() string
-    Commit() string
-    Date() string
-    BuiltBy() string
 }
 ```
+
+Commands that format output add `OutputFormat`; update commands request
+`Starmap` instead of `Catalog`. The HTTP server owns its wider operational
+role because it consumes catalog state, readiness, operations, logging, and
+client construction. Build metadata remains concrete on `*app.App` and is not
+forced onto unrelated command tests.
 
 ### Interface seam inventory
 
@@ -216,12 +205,12 @@ Constructors return concrete types when a package owns one implementation.
 | `catalogstore.Store` | 4 | memory, filesystem, SQLite, conditional object storage | Retained generation-storage boundary; all adapters run the same `TestCatalogStoreConformance` suite |
 | `catalogstore.ObjectBackend` | 2 | memory reference backend, recording alternate backend | Retained cloud-object input; `TestSeamConformanceObjectStoreAcceptsAlternateBackend` executes replacement injection |
 | `authority.Reader` | 2 | immutable default table, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
-| `provenance.Tracker` | 2 | in-memory tracker, custom `seamTracker` | Retained observation input; `TestSeamConformancePipelineAcceptsCustomTracker` proves replacement tracking |
+| Enhancer/reconciler provenance inputs | 2 | concrete `*provenance.Tracker`, custom `seamTracker` | Retained as consumer-local `Track` roles; the provenance package returns its concrete tracker |
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
 | `reconciler.Strategy` and internal `resourceConflictResolver` | 2 each | authority and source-order strategies | Retained policy boundaries with two production algorithms |
 | `sources.Source` | 5+ | local, provider, models.dev HTTP, models.dev Git, test sources | Retained source/plugin boundary with four production adapters |
 | Public and internal provider-client seams | 4+ each | OpenAI-compatible, Anthropic, Google, injected fakes | Retained provider transport boundaries with three production families |
-| `application.Application` | 2 | CLI `App`, `application.Mock` | Retained consumer-owned command boundary; compile assertions cover both |
+| Command/server application roles | 2+ each | CLI `*app.App`, consumer-local test stubs | Retained at each use site with only the capabilities that consumer invokes |
 | Pipeline `Store` | 2 | root `pipelineStore`, `pipelineTestStore` | Retained consumer-owned persistence boundary |
 | Pipeline `providerSetter` | 2 | `*catalogs.Builder`, failing test adapter | Retained failure-injection boundary exercised by pipeline tests |
 | Update `syncClient` | 2 | `*starmap.Client`, `recordingSyncClient` | Retained command boundary exercised without network calls |
@@ -252,20 +241,20 @@ candidate construction uses the context-aware callback passed directly to
 
 ```mermaid
 flowchart BT
-    APP[cmd/starmap/app/<br/>App implements Application]
-    CMD[cmd/starmap/cmd/*<br/>Commands use Application]
-    INT[internal/application/<br/>Application interface]
+    APP[cmd/starmap/app/<br/>Concrete App]
+    CMD[cmd/starmap/cmd/*<br/>Consumer-local roles]
+    SERVER[internal/server/<br/>Server role]
 
-    APP -->|implements| INT
-    CMD -->|imports| INT
+    APP -.structurally satisfies.-> CMD
+    APP -.structurally satisfies.-> SERVER
 
-    style INT fill:#e3f2fd
     style CMD fill:#fff3e0
+    style SERVER fill:#e3f2fd
     style APP fill:#f3e5f5
 ```
 
 **Key Points:**
-- Commands depend only on the interface, not the implementation
+- Commands and the server depend only on their local roles, not the implementation
 - App is injected into commands at runtime
 - Zero import cycles (unidirectional dependencies)
 - Easy to test with mock implementations
@@ -873,7 +862,6 @@ Location: `pkg/sources/`
 ```go
 type Source interface {
     ID() ID
-    Name() string
     Observe(ctx context.Context, opts ...Option) (Observation, error)
     Cleanup() error
     Dependencies() []Dependency
@@ -2014,21 +2002,21 @@ graph BT
     end
 
     subgraph "Layer 3: App Implementation"
-        APPIMPL[cmd/starmap/app/<br/>App struct implements Application]
+        APPIMPL[cmd/starmap/app/<br/>Concrete App]
     end
 
     subgraph "Layer 2: Commands"
         CMDS[cmd/starmap/cmd/*<br/>list, update, serve commands]
     end
 
-    subgraph "Layer 1: Application Interface"
-        APPIF[internal/application/<br/>Application interface]
+    subgraph "Layer 1: Consumer Roles"
+        APPIF[cmd/* + internal/server<br/>Use-site interfaces]
     end
 
     INT --> PKG
     PKG --> ROOT
     ROOT --> APPIMPL
-    APPIMPL -.implements.-> APPIF
+    APPIMPL -.structurally satisfies.-> APPIF
     CMDS --> APPIF
 
     style APPIF fill:#e3f2fd
@@ -2047,7 +2035,7 @@ graph BT
 
 **Rules:**
 - Never import from higher layers
-- Commands import `internal/application/` interface, not `cmd/starmap/app/`
+- Commands declare local interfaces and do not import `cmd/starmap/app/`
 - Root package imports pkg packages
 - Internal packages can import pkg packages
 - Pkg packages are fully independent
@@ -2207,7 +2195,8 @@ func TestListModels(t *testing.T) {
 | `acquisition/syncer.go` | Explicit provider/source acquisition adapter | ~200 |
 | `update.go` | Serialized durable publication and activation | ~150 |
 | `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
-| `internal/application/application.go` | Application interface | ~97 |
+| `cmd/starmap/cmd/*/application.go` | Consumer-local command roles | <20 each |
+| `internal/server/application.go` | HTTP server application role | <30 |
 | `cmd/starmap/app/app.go` | App implementation | ~200 |
 | `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |
 | `pkg/authority/authority.go` | Field-level authorities | ~210 |

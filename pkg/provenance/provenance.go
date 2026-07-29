@@ -39,40 +39,22 @@ type Rejection struct {
 // Map tracks provenance for multiple resources.
 type Map map[string][]Provenance // key is "resourceType:resourceID:fieldPath"
 
-// Tracker manages provenance tracking during reconciliation.
-type Tracker interface {
-	// Track records provenance for a field
-	Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance)
-
-	// Find retrieves provenance for a specific field
-	FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance
-
-	// FindByResource retrieves all provenance for a resource
-	FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance
-
-	// Map returns the complete provenance map
-	Map() Map
-
-	// Clear removes all provenance data
-	Clear()
-}
-
-// tracker is the default implementation.
-type tracker struct {
+// Tracker records and queries field-level provenance.
+type Tracker struct {
 	provenance Map
 	enabled    bool
 }
 
 // NewTracker creates a new provenance tracker.
-func NewTracker(enabled bool) Tracker {
-	return &tracker{
+func NewTracker(enabled bool) *Tracker {
+	return &Tracker{
 		provenance: make(Map),
 		enabled:    enabled,
 	}
 }
 
 // Track records provenance for a field.
-func (p *tracker) Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance) {
+func (p *Tracker) Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Provenance) {
 	if !p.enabled {
 		return
 	}
@@ -87,8 +69,8 @@ func (p *tracker) Track(resourceType catalogmeta.ResourceType, resourceID string
 	p.provenance[key] = append(p.provenance[key], history)
 }
 
-// Find retrieves provenance for a specific field.
-func (p *tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance {
+// FindByField retrieves provenance for a specific field.
+func (p *Tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Provenance {
 	if !p.enabled {
 		return nil
 	}
@@ -97,8 +79,8 @@ func (p *tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID 
 	return cloneProvenance(p.provenance[key])
 }
 
-// GetResourceProvenance retrieves all provenance for a resource.
-func (p *tracker) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance {
+// FindByResource retrieves all provenance for a resource.
+func (p *Tracker) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Provenance {
 	if !p.enabled {
 		return nil
 	}
@@ -116,7 +98,7 @@ func (p *tracker) FindByResource(resourceType catalogmeta.ResourceType, resource
 }
 
 // Map returns the complete provenance map.
-func (p *tracker) Map() Map {
+func (p *Tracker) Map() Map {
 	if !p.enabled {
 		return nil
 	}
@@ -139,12 +121,12 @@ func cloneProvenance(source []Provenance) []Provenance {
 }
 
 // Clear removes all provenance data.
-func (p *tracker) Clear() {
+func (p *Tracker) Clear() {
 	p.provenance = make(Map)
 }
 
 // makeKey creates a unique key for provenance tracking.
-func (p *tracker) makeKey(resourceType string, resourceID string, field string) string {
+func (p *Tracker) makeKey(resourceType string, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }
 

@@ -7,7 +7,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -18,7 +17,7 @@ import (
 )
 
 // NewCommand creates the authors resource command.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "authors [author-id]",
 		GroupID: "catalog",
@@ -51,7 +50,7 @@ Show all authors or view detailed information about specific authors.`,
 }
 
 // listAuthors lists all authors.
-func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+func listAuthors(cmd *cobra.Command, app application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {
@@ -107,7 +106,7 @@ func listAuthors(cmd *cobra.Command, app application.Application, logger *zerolo
 }
 
 // showAuthorDetails shows detailed information about a specific author.
-func showAuthorDetails(cmd *cobra.Command, app application.Application, authorID string) error {
+func showAuthorDetails(cmd *cobra.Command, app application, authorID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

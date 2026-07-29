@@ -8,7 +8,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -20,7 +19,7 @@ import (
 )
 
 // NewListCommand creates the list subcommand for models.
-func NewListCommand(app application.Application) *cobra.Command {
+func NewListCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List models from catalog",
@@ -65,7 +64,7 @@ func NewListCommand(app application.Application) *cobra.Command {
 }
 
 // listModels lists all models with optional filters.
-func listModels(cmd *cobra.Command, app application.Application, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
+func listModels(cmd *cobra.Command, app application, logger *zerolog.Logger, flags *globals.ResourceFlags, capability string, minContext int64, maxPrice float64, showDetails bool, exportFormat string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

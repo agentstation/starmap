@@ -14,10 +14,12 @@ func NewProviderFetcher(
 	providers catalogs.ProvidersReader,
 	opts ...sources.ProviderOption,
 ) *sources.ProviderFetcher {
-	composed := []sources.ProviderOption{
+	composed := make([]sources.ProviderOption, 0, 2+len(opts))
+	composed = append(
+		composed,
 		sources.WithProviderClientFactory(defaultProviderClientFactory),
 		sources.WithProviderRawFetcher(defaultRawFetcher),
-	}
+	)
 	composed = append(composed, opts...)
 	return sources.NewProviderFetcher(providers, composed...)
 }

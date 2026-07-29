@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/sse"
@@ -16,7 +15,7 @@ import (
 
 // Handlers provides access to all HTTP handlers.
 type Handlers struct {
-	app            application.Application
+	app            application
 	cache          *cache.Cache
 	broker         *events.Broker
 	wsHub          *ws.Hub
@@ -28,7 +27,7 @@ type Handlers struct {
 
 // New creates a new Handlers instance.
 func New(
-	app application.Application,
+	app application,
 	cache *cache.Cache,
 	broker *events.Broker,
 	wsHub *ws.Hub,

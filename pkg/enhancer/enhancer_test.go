@@ -20,14 +20,6 @@ type seamTracker struct {
 func (t *seamTracker) Track(_ catalogmeta.ResourceType, _ string, _ string, value provenance.Provenance) {
 	t.tracked = append(t.tracked, value)
 }
-func (*seamTracker) FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance {
-	return nil
-}
-func (*seamTracker) FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance {
-	return nil
-}
-func (*seamTracker) Map() provenance.Map { return nil }
-func (t *seamTracker) Clear()            { t.tracked = nil }
 
 func TestSeamConformancePipelineAcceptsCustomTracker(t *testing.T) {
 	tracker := &seamTracker{}

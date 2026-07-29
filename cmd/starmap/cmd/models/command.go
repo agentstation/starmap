@@ -4,7 +4,6 @@ package models
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/globals"
@@ -12,7 +11,7 @@ import (
 )
 
 // NewCommand creates the models resource command.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "models [model-id]",
 		GroupID: "catalog",
@@ -44,7 +43,7 @@ List models with filtering options, or show detailed information about specific 
 }
 
 // showModelDetails shows detailed information about a specific model.
-func showModelDetails(cmd *cobra.Command, app application.Application, modelID string) error {
+func showModelDetails(cmd *cobra.Command, app application, modelID string) error {
 	// Get catalog from app
 	cat, err := app.Catalog()
 	if err != nil {

@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -45,13 +44,14 @@ func TestHierarchicalIDRoutePreservesCompleteOpaqueModelID(t *testing.T) {
 		t.Fatalf("New: %v", err)
 	}
 	logger := zerolog.Nop()
-	app := &application.Mock{
-		CatalogFunc: func() (*catalogs.Catalog, error) { return catalog, nil },
-		CatalogStateFunc: func() (starmap.CatalogState, error) {
-			return starmap.CatalogState{Catalog: catalog, GenerationID: "hierarchical-generation", Sequence: 1}, nil
-		},
-		StarmapFunc: func(...starmap.Option) (*starmap.Client, error) { return client, nil },
-		LoggerFunc:  func() *zerolog.Logger { return &logger },
+	state := starmap.CatalogState{
+		Catalog: catalog, GenerationID: "hierarchical-generation", Sequence: 1,
+	}
+	app := &mockApplication{
+		catalog:      catalog,
+		catalogState: &state,
+		sm:           client,
+		logger:       &logger,
 	}
 	server, err := New(app, Config{PathPrefix: "/api/v1", CacheTTL: time.Minute})
 	if err != nil {
