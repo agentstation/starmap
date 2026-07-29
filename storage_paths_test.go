@@ -9,7 +9,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 )
 

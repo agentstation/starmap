@@ -7,11 +7,11 @@ import (
 	"io"
 	"sort"
 
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.

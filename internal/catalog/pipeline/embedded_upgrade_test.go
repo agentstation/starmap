@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/reconciler"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )

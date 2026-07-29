@@ -15,10 +15,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/constants"
 )
 
 func TestClientDefaultHTTPTimeout(t *testing.T) {
@@ -121,7 +121,7 @@ func TestRemoteClientRequiresVerifiedTLSPublisherChain(t *testing.T) {
 			case ManifestPath:
 				writer.Header().Set("Content-Type", ManifestMediaType)
 				_, _ = writer.Write(manifest)
-			case SnapshotPath(generation.Manifest.GenerationID):
+			case PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -197,7 +197,7 @@ func TestFetchGenerationRequiresAddressedManifestAndPayload(t *testing.T) {
 			case GenerationManifestPath(generation.Manifest.GenerationID):
 				writer.Header().Set("Content-Type", ManifestMediaType)
 				_, _ = writer.Write(manifest)
-			case SnapshotPath(generation.Manifest.GenerationID):
+			case PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
 				_, _ = writer.Write(generation.Payload)
 			default:
@@ -231,7 +231,7 @@ func TestFetchGenerationRequiresAddressedManifestAndPayload(t *testing.T) {
 	}
 	wantPaths := []string{
 		GenerationManifestPath(generation.Manifest.GenerationID),
-		SnapshotPath(generation.Manifest.GenerationID),
+		PayloadPath(generation.Manifest.GenerationID),
 	}
 	if !slices.Equal(paths, wantPaths) {
 		t.Fatalf("request paths = %#v, want %#v", paths, wantPaths)
@@ -260,7 +260,7 @@ func TestFetchCurrentIfChangedUsesConditionalManifest(t *testing.T) {
 		current       = first
 		mu            sync.RWMutex
 		manifestGets  atomic.Int32
-		snapshotGets  atomic.Int32
+		payloadGets   atomic.Int32
 		ifNoneMatches []string
 	)
 	server := httptest.NewServer(http.HandlerFunc(
@@ -289,8 +289,8 @@ func TestFetchCurrentIfChangedUsesConditionalManifest(t *testing.T) {
 				}
 				writer.Header().Set("Content-Type", ManifestMediaType)
 				_, _ = writer.Write(data)
-			case SnapshotPath(selected.Manifest.GenerationID):
-				snapshotGets.Add(1)
+			case PayloadPath(selected.Manifest.GenerationID):
+				payloadGets.Add(1)
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -318,8 +318,8 @@ func TestFetchCurrentIfChangedUsesConditionalManifest(t *testing.T) {
 	if err != nil || changed || generation.Manifest.GenerationID != "" {
 		t.Fatalf("unchanged fetch = %#v/%t/%v", generation, changed, err)
 	}
-	if got := snapshotGets.Load(); got != 0 {
-		t.Fatalf("unchanged snapshot GETs = %d, want 0", got)
+	if got := payloadGets.Load(); got != 0 {
+		t.Fatalf("unchanged payload GETs = %d, want 0", got)
 	}
 
 	mu.Lock()
@@ -339,8 +339,8 @@ func TestFetchCurrentIfChangedUsesConditionalManifest(t *testing.T) {
 			second.Manifest.GenerationID,
 		)
 	}
-	if got := snapshotGets.Load(); got != 1 {
-		t.Fatalf("changed snapshot GETs = %d, want 1", got)
+	if got := payloadGets.Load(); got != 1 {
+		t.Fatalf("changed payload GETs = %d, want 1", got)
 	}
 	mu.RLock()
 	gotMatches := append([]string(nil), ifNoneMatches...)
@@ -370,8 +370,8 @@ func TestFetchGenerationRejectsAddressedManifestIdentityMismatch(t *testing.T) {
 		t.Fatalf("MarshalManifest: %v", err)
 	}
 	var (
-		requests     atomic.Int32
-		snapshotGets atomic.Int32
+		requests    atomic.Int32
+		payloadGets atomic.Int32
 	)
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
@@ -380,8 +380,8 @@ func TestFetchGenerationRejectsAddressedManifestIdentityMismatch(t *testing.T) {
 			case GenerationManifestPath("requested-generation"):
 				writer.Header().Set("Content-Type", ManifestMediaType)
 				_, _ = writer.Write(manifest)
-			case SnapshotPath(generation.Manifest.GenerationID):
-				snapshotGets.Add(1)
+			case PayloadPath(generation.Manifest.GenerationID):
+				payloadGets.Add(1)
 				http.Error(writer, "must not fetch", http.StatusInternalServerError)
 			default:
 				http.NotFound(writer, request)
@@ -413,12 +413,12 @@ func TestFetchGenerationRejectsAddressedManifestIdentityMismatch(t *testing.T) {
 	); err == nil {
 		t.Fatal("FetchGeneration accepted a manifest for another generation")
 	}
-	if got := snapshotGets.Load(); got != 0 {
-		t.Fatalf("snapshot GETs after identity mismatch = %d, want 0", got)
+	if got := payloadGets.Load(); got != 0 {
+		t.Fatalf("payload GETs after identity mismatch = %d, want 0", got)
 	}
 }
 
-func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *testing.T) {
+func TestRemoteCatalogFetchValidatesManifestPayloadChecksumAndCompatibility(t *testing.T) {
 	current := catalogs.CurrentCatalogSchemaVersion
 	valid := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{
 		MinSchemaVersion: current,
@@ -436,44 +436,44 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 	unsafeGenerationID := valid.Copy()
 	unsafeGenerationID.Manifest.GenerationID = ".."
 	for _, test := range []struct {
-		name                  string
-		generation            catalogstore.Generation
-		mutateSnapshot        func([]byte) []byte
-		manifestType          string
-		snapshotType          string
-		snapshotContentLength int64
-		wantError             bool
-		wantSnapshotGet       bool
+		name                 string
+		generation           catalogstore.Generation
+		mutatePayload        func([]byte) []byte
+		manifestType         string
+		payloadType          string
+		payloadContentLength int64
+		wantError            bool
+		wantPayloadGet       bool
 	}{
-		{name: "valid", generation: valid, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantSnapshotGet: true},
-		{name: "corrupt snapshot", generation: valid, mutateSnapshot: func(data []byte) []byte {
+		{name: "valid", generation: valid, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantPayloadGet: true},
+		{name: "corrupt payload", generation: valid, mutatePayload: func(data []byte) []byte {
 			copyData := append([]byte(nil), data...)
 			copyData[len(copyData)-1] ^= 1
 			return copyData
-		}, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
-		{name: "wrong manifest media type", generation: valid, manifestType: "application/json", snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
-		{name: "wrong snapshot media type", generation: valid, manifestType: ManifestMediaType, snapshotType: "application/json", wantError: true, wantSnapshotGet: true},
-		{name: "wrong descriptor media type before snapshot", generation: wrongDescriptorMedia, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
-		{name: "oversized descriptor before snapshot", generation: oversizedDescriptor, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
-		{name: "wrong descriptor size", generation: wrongDescriptorSize, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
-		{name: "wrong descriptor checksum", generation: wrongDescriptorChecksum, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
-		{name: "unsafe generation ID before snapshot", generation: unsafeGenerationID, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		}, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true, wantPayloadGet: true},
+		{name: "wrong manifest media type", generation: valid, manifestType: "application/json", payloadType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "wrong payload media type", generation: valid, manifestType: ManifestMediaType, payloadType: "application/json", wantError: true, wantPayloadGet: true},
+		{name: "wrong descriptor media type before payload", generation: wrongDescriptorMedia, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "oversized descriptor before payload", generation: oversizedDescriptor, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "wrong descriptor size", generation: wrongDescriptorSize, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true, wantPayloadGet: true},
+		{name: "wrong descriptor checksum", generation: wrongDescriptorChecksum, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true, wantPayloadGet: true},
+		{name: "unsafe generation ID before payload", generation: unsafeGenerationID, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true},
 		{
-			name:                  "oversized response before body read",
-			generation:            valid,
-			manifestType:          ManifestMediaType,
-			snapshotType:          catalogs.CatalogPayloadMediaType,
-			snapshotContentLength: maxBodyBytes + 1,
-			wantError:             true,
-			wantSnapshotGet:       true,
+			name:                 "oversized response before body read",
+			generation:           valid,
+			manifestType:         ManifestMediaType,
+			payloadType:          catalogs.CatalogPayloadMediaType,
+			payloadContentLength: maxBodyBytes + 1,
+			wantError:            true,
+			wantPayloadGet:       true,
 		},
 		{
-			name: "incompatible before snapshot",
+			name: "incompatible before payload",
 			generation: remoteTestGeneration(t, current+1, catalogs.ConsumerCompatibility{
 				MinSchemaVersion: current + 1,
 				MaxSchemaVersion: current + 1,
 			}),
-			manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true,
+			manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true,
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -481,26 +481,26 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 			if err != nil {
 				t.Fatalf("MarshalManifest: %v", err)
 			}
-			var snapshotGets atomic.Int32
+			var payloadGets atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 				switch request.URL.Path {
 				case ManifestPath:
 					writer.Header().Set("Content-Type", test.manifestType)
 					_, _ = writer.Write(manifest)
-				case SnapshotPath(test.generation.Manifest.GenerationID):
-					snapshotGets.Add(1)
-					writer.Header().Set("Content-Type", test.snapshotType)
-					if test.snapshotContentLength > 0 {
+				case PayloadPath(test.generation.Manifest.GenerationID):
+					payloadGets.Add(1)
+					writer.Header().Set("Content-Type", test.payloadType)
+					if test.payloadContentLength > 0 {
 						writer.Header().Set(
 							"Content-Length",
-							fmt.Sprint(test.snapshotContentLength),
+							fmt.Sprint(test.payloadContentLength),
 						)
 						writer.WriteHeader(http.StatusOK)
 						return
 					}
 					payload := test.generation.Payload
-					if test.mutateSnapshot != nil {
-						payload = test.mutateSnapshot(payload)
+					if test.mutatePayload != nil {
+						payload = test.mutatePayload(payload)
 					}
 					_, _ = writer.Write(payload)
 				default:
@@ -516,8 +516,8 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 			if (err != nil) != test.wantError {
 				t.Fatalf("FetchCurrent = %#v/%v", got, err)
 			}
-			if (snapshotGets.Load() > 0) != test.wantSnapshotGet {
-				t.Fatalf("snapshot GETs = %d, want requested=%t", snapshotGets.Load(), test.wantSnapshotGet)
+			if (payloadGets.Load() > 0) != test.wantPayloadGet {
+				t.Fatalf("payload GETs = %d, want requested=%t", payloadGets.Load(), test.wantPayloadGet)
 			}
 			if err == nil && got.Manifest.GenerationID != valid.Manifest.GenerationID {
 				t.Fatalf("generation ID = %q", got.Manifest.GenerationID)

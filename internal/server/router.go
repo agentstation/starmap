@@ -102,8 +102,8 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 			case "manifest":
 				h.HandleCatalogGenerationManifest(w, r, generationID)
 				return
-			case "snapshot":
-				h.HandleCatalogSnapshot(w, r, generationID)
+			case "payload":
+				h.HandleCatalogPayload(w, r, generationID)
 				return
 			}
 		}

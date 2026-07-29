@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-func TestRemoteCatalogClientAndServerShareVersionedManifestSnapshotContract(t *testing.T) {
+func TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract(t *testing.T) {
 	app := newMockApplication()
 	server, err := New(app, Config{PathPrefix: "/api/v1", CacheTTL: time.Minute})
 	if err != nil {

@@ -3,8 +3,8 @@ package google
 import (
 	"encoding/json"
 
-	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
+	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 type aiStudioModelsResponse struct {

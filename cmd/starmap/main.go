@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/agentstation/starmap/cmd/starmap/app"
+	"github.com/agentstation/starmap/internal/cli/app"
 )
 
 // Version information populated by goreleaser.

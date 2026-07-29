@@ -119,12 +119,12 @@ Located in the project root:
 Individual package READMEs provide implementation details:
 
 - [../pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage abstraction
-- [../pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
-- [../pkg/authority/](../pkg/authority/) - Field-level authority system
 - [../pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
 - [../pkg/errors/README.md](../pkg/errors/README.md) - Typed errors
 - [../pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 - [../internal/server/README.md](../internal/server/README.md) - HTTP server implementation
+- [../internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
+- [../internal/catalog/reconciler/README.md](../internal/catalog/reconciler/README.md) - Internal multi-source reconciliation
 
 ## Quick Links
 

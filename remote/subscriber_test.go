@@ -214,7 +214,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 				return
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.SnapshotPath(id) {
+				if resourcePath == catalogremote.PayloadPath(id) {
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -288,7 +288,7 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 					conditionalManifestGets.Add(1)
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
+			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -378,7 +378,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		allowStream     atomic.Bool
 		streamRequests  atomic.Int32
 		conditionalGets atomic.Int32
-		snapshotGets    atomic.Int32
+		payloadGets     atomic.Int32
 		pollTimes       []time.Time
 		healthyStream   = make(chan struct{}, 1)
 	)
@@ -446,8 +446,8 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.SnapshotPath(id) {
-					snapshotGets.Add(1)
+				if resourcePath == catalogremote.PayloadPath(id) {
+					payloadGets.Add(1)
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -496,9 +496,9 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 	if got := conditionalGets.Load(); got != 2 {
 		t.Fatalf("conditional manifest GETs = %d, want bounded 2", got)
 	}
-	if got := snapshotGets.Load(); got != 2 {
+	if got := payloadGets.Load(); got != 2 {
 		t.Fatalf(
-			"snapshot GETs = %d, want initial plus changed fallback only",
+			"payload GETs = %d, want initial plus changed fallback only",
 			got,
 		)
 	}
@@ -679,7 +679,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 				case catalogremote.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.SnapshotPath(id):
+				case catalogremote.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,

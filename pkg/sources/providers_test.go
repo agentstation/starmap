@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 type providerFetcherTestClient struct {

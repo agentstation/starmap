@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/constants"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
+	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 // Response is the bounded wire representation of an OpenAI-compatible model list.

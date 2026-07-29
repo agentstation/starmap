@@ -8,7 +8,7 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 // Config holds logger configuration options.
@@ -35,8 +35,7 @@ type Config struct {
 	Fields map[string]any
 }
 
-// DefaultConfig returns a configuration with sensible defaults.
-func DefaultConfig() *Config {
+func defaultConfig() *Config {
 	return &Config{
 		Level:      "info",
 		Format:     "auto", // auto-detect based on terminal
@@ -51,7 +50,7 @@ func DefaultConfig() *Config {
 // NewLoggerFromConfig creates a new logger from configuration.
 func NewLoggerFromConfig(cfg *Config) zerolog.Logger {
 	if cfg == nil {
-		cfg = DefaultConfig()
+		cfg = defaultConfig()
 	}
 
 	// Parse log level
@@ -83,26 +82,6 @@ func NewLoggerFromConfig(cfg *Config) zerolog.Logger {
 	}
 
 	return logger
-}
-
-// Configure updates the default logger with the given configuration.
-func Configure(cfg *Config) {
-	logger := NewLoggerFromConfig(cfg)
-	SetDefault(logger)
-}
-
-// ConfigureFromEnv configures the logger from environment variables.
-func ConfigureFromEnv() {
-	cfg := &Config{
-		Level:      getEnvOrDefault("LOG_LEVEL", "info"),
-		Format:     getEnvOrDefault("LOG_FORMAT", "auto"),
-		Output:     getEnvOrDefault("LOG_OUTPUT", "stderr"),
-		TimeFormat: getEnvOrDefault("LOG_TIME_FORMAT", "kitchen"),
-		NoColor:    os.Getenv("NO_COLOR") != "",
-		AddCaller:  os.Getenv("LOG_CALLER") == "true",
-		Fields:     parseFields(os.Getenv("LOG_FIELDS")),
-	}
-	Configure(cfg)
 }
 
 // getWriter creates the appropriate writer based on configuration.
@@ -212,24 +191,6 @@ func parseTimeFormat(format string) string {
 	}
 }
 
-// parseFields parses comma-separated key=value pairs.
-func parseFields(fields string) map[string]any {
-	result := make(map[string]any)
-	if fields == "" {
-		return result
-	}
-
-	for field := range strings.SplitSeq(fields, ",") {
-		parts := strings.SplitN(field, "=", 2)
-		if len(parts) == 2 {
-			key := strings.TrimSpace(parts[0])
-			value := strings.TrimSpace(parts[1])
-			result[key] = value
-		}
-	}
-	return result
-}
-
 // addField adds a field to the context based on its type.
 func addField(ctx zerolog.Context, key string, value any) zerolog.Context {
 	switch v := value.(type) {
@@ -250,12 +211,4 @@ func addField(ctx zerolog.Context, key string, value any) zerolog.Context {
 	default:
 		return ctx.Interface(key, v)
 	}
-}
-
-// getEnvOrDefault returns an environment variable value or default.
-func getEnvOrDefault(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
 }

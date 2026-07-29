@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 // Example demonstrates advanced catalog construction and publication.

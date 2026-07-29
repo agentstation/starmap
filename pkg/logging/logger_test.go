@@ -8,6 +8,7 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/testlogging"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
@@ -31,14 +32,13 @@ func TestDefaultLogger(t *testing.T) {
 
 func TestContextLogger(t *testing.T) {
 	// Create test logger
-	testLogger := logging.NewTestLogger(t)
+	testLogger := testlogging.New(t)
 
 	// Create context with logger
 	ctx := logging.WithLogger(context.Background(), testLogger.Logger)
 
 	// Add fields to context
 	ctx = logging.WithProvider(ctx, "test-provider")
-	ctx = logging.WithModel(ctx, "test-model")
 
 	// Get logger from context and log
 	logger := logging.FromContext(ctx)
@@ -46,7 +46,6 @@ func TestContextLogger(t *testing.T) {
 
 	// Verify output contains expected fields
 	testLogger.AssertContains(t, "test-provider")
-	testLogger.AssertContains(t, "test-model")
 	testLogger.AssertContains(t, "test message")
 }
 
@@ -100,7 +99,7 @@ func TestConfiguration(t *testing.T) {
 
 func TestTestLogger(t *testing.T) {
 	// Test the test logger utility
-	tl := logging.NewTestLogger(t)
+	tl := testlogging.New(t)
 
 	tl.Logger.Info().Msg("message 1")
 	tl.Logger.Error().Err(nil).Msg("message 2")

@@ -77,8 +77,8 @@ func headerETagMatches(value, etag string) bool {
 	return false
 }
 
-// HandleCatalogSnapshot serves an immutable canonical payload by generation ID.
-func (h *Handlers) HandleCatalogSnapshot(writer http.ResponseWriter, request *http.Request, generationID string) {
+// HandleCatalogPayload serves an immutable canonical payload by generation ID.
+func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *http.Request, generationID string) {
 	client, err := h.app.Starmap()
 	if err != nil {
 		response.InternalError(writer, err)

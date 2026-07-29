@@ -184,7 +184,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func main() {
@@ -563,23 +563,16 @@ func main() {
 ## Index
 
 - [Constants](<#constants>)
-- [func AssertCatalogHasModel\(t testing.TB, catalog Reader, modelID string\)](<#AssertCatalogHasModel>)
-- [func AssertCatalogHasProvider\(t testing.TB, catalog Reader, providerID ProviderID\)](<#AssertCatalogHasProvider>)
-- [func AssertModelsEqual\(t testing.TB, expected, actual \*Model\)](<#AssertModelsEqual>)
-- [func AssertProvidersEqual\(t testing.TB, expected, actual \*Provider\)](<#AssertProvidersEqual>)
 - [func DeepCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#DeepCopyProviderModels>)
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func PrintProviderValidationReport\(report \*ProviderValidationReport\)](<#PrintProviderValidationReport>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
-- [func TestAPIResponse\(models ...string\) map\[string\]any](<#TestAPIResponse>)
-- [func TestTimeNow\(\) time.Time](<#TestTimeNow>)
 - [type ArchitectureType](<#ArchitectureType>)
   - [func \(at ArchitectureType\) String\(\) string](<#ArchitectureType.String>)
 - [type Author](<#Author>)
   - [func DeepCopyAuthor\(author Author\) Author](<#DeepCopyAuthor>)
   - [func DeepCopyAuthors\(authors \[\]Author\) \[\]Author](<#DeepCopyAuthors>)
-  - [func TestAuthor\(t testing.TB\) \*Author](<#TestAuthor>)
 - [type AuthorAttribution](<#AuthorAttribution>)
 - [type AuthorCatalog](<#AuthorCatalog>)
 - [type AuthorID](<#AuthorID>)
@@ -621,7 +614,6 @@ func main() {
   - [func NewEmpty\(\) \*Builder](<#NewEmpty>)
   - [func NewFromFS\(fsys fs.FS, root string\) \(\*Builder, error\)](<#NewFromFS>)
   - [func NewFromPath\(path string\) \(\*Builder, error\)](<#NewFromPath>)
-  - [func TestCatalog\(t testing.TB\) \*Builder](<#TestCatalog>)
   - [func \(cat \*Builder\) Author\(id AuthorID\) \(Author, error\)](<#Builder.Author>)
   - [func \(cat \*Builder\) AuthoredModels\(\) \[\]AuthoredModel](<#Builder.AuthoredModels>)
   - [func \(cat \*Builder\) Authors\(\) AuthorsReader](<#Builder.Authors>)
@@ -697,8 +689,6 @@ func main() {
 - [type Model](<#Model>)
   - [func DeepCopyModel\(model Model\) Model](<#DeepCopyModel>)
   - [func MergeModels\(existing, updated Model\) Model](<#MergeModels>)
-  - [func TestModel\(t testing.TB\) \*Model](<#TestModel>)
-  - [func TestModelWithOptions\(t testing.TB, opts ...TestModelOption\) \*Model](<#TestModelWithOptions>)
   - [func \(m \*Model\) DescriptionValue\(\) \(string, ValuePresence\)](<#Model.DescriptionValue>)
   - [func \(m \*Model\) EncodeYAML\(\) \(string, error\)](<#Model.EncodeYAML>)
   - [func \(m Model\) Equal\(other Model\) bool](<#Model.Equal>)
@@ -837,8 +827,6 @@ func main() {
 - [type ProvenanceReader](<#ProvenanceReader>)
 - [type Provider](<#Provider>)
   - [func DeepCopyProvider\(provider Provider\) Provider](<#DeepCopyProvider>)
-  - [func TestProvider\(t testing.TB\) \*Provider](<#TestProvider>)
-  - [func TestProviderWithOptions\(t testing.TB, opts ...TestProviderOption\) \*Provider](<#TestProviderWithOptions>)
   - [func \(p \*Provider\) APIKeyValue\(\) \(string, error\)](<#Provider.APIKeyValue>)
   - [func \(p \*Provider\) CatalogEndpointURL\(\) string](<#Provider.CatalogEndpointURL>)
   - [func \(p \*Provider\) EnvVar\(name string\) string](<#Provider.EnvVar>)
@@ -923,13 +911,6 @@ func main() {
   - [func \(se SourceExtensions\) Copy\(\) SourceExtensions](<#SourceExtensions.Copy>)
 - [type SourceObservationLink](<#SourceObservationLink>)
   - [func \(o SourceObservationLink\) Validate\(\) error](<#SourceObservationLink.Validate>)
-- [type TestModelOption](<#TestModelOption>)
-  - [func WithModelID\(id string\) TestModelOption](<#WithModelID>)
-  - [func WithModelName\(name string\) TestModelOption](<#WithModelName>)
-- [type TestProviderOption](<#TestProviderOption>)
-  - [func WithProviderAPIKey\(name, pattern string\) TestProviderOption](<#WithProviderAPIKey>)
-  - [func WithProviderEnvVars\(envVars \[\]ProviderEnvVar\) TestProviderOption](<#WithProviderEnvVars>)
-  - [func WithProviderID\(id ProviderID\) TestProviderOption](<#WithProviderID>)
 - [type Tokenizer](<#Tokenizer>)
   - [func \(t Tokenizer\) String\(\) string](<#Tokenizer.String>)
 - [type ToolChoice](<#ToolChoice>)
@@ -962,42 +943,6 @@ const (
 ```go
 const CurrentBootstrapManifestVersion uint64 = 1
 ```
-
-<a name="AssertCatalogHasModel"></a>
-## func [AssertCatalogHasModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L186>)
-
-```go
-func AssertCatalogHasModel(t testing.TB, catalog Reader, modelID string)
-```
-
-AssertCatalogHasModel asserts that a catalog contains a model with the given ID.
-
-<a name="AssertCatalogHasProvider"></a>
-## func [AssertCatalogHasProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L198>)
-
-```go
-func AssertCatalogHasProvider(t testing.TB, catalog Reader, providerID ProviderID)
-```
-
-AssertCatalogHasProvider asserts that a catalog contains a provider with the given ID.
-
-<a name="AssertModelsEqual"></a>
-## func [AssertModelsEqual](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L152>)
-
-```go
-func AssertModelsEqual(t testing.TB, expected, actual *Model)
-```
-
-AssertModelsEqual asserts that two models are equal, providing detailed diff on failure.
-
-<a name="AssertProvidersEqual"></a>
-## func [AssertProvidersEqual](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L169>)
-
-```go
-func AssertProvidersEqual(t testing.TB, expected, actual *Provider)
-```
-
-AssertProvidersEqual asserts that two providers are equal.
 
 <a name="DeepCopyProviderModels"></a>
 ## func [DeepCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L24>)
@@ -1043,24 +988,6 @@ func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
 ```
 
 ShallowCopyProviderModels creates a shallow copy of a provider's Models map. The map is copied but Model pointers are shared. Returns nil if the input map is nil.
-
-<a name="TestAPIResponse"></a>
-## func [TestAPIResponse](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L213>)
-
-```go
-func TestAPIResponse(models ...string) map[string]any
-```
-
-TestAPIResponse creates a test API response for provider testing.
-
-<a name="TestTimeNow"></a>
-## func [TestTimeNow](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L208>)
-
-```go
-func TestTimeNow() time.Time
-```
-
-TestTimeNow returns a consistent time for testing.
 
 <a name="ArchitectureType"></a>
 ## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L15>)
@@ -1145,15 +1072,6 @@ func DeepCopyAuthors(authors []Author) []Author
 ```
 
 DeepCopyAuthors creates a deep copy of an Author slice.
-
-<a name="TestAuthor"></a>
-### func [TestAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L48>)
-
-```go
-func TestAuthor(t testing.TB) *Author
-```
-
-TestAuthor creates a test author with sensible defaults.
 
 <a name="AuthorAttribution"></a>
 ## type [AuthorAttribution](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L62-L65>)
@@ -1698,15 +1616,6 @@ if err != nil {
     log.Fatal(err)
 }
 ```
-
-<a name="TestCatalog"></a>
-### func [TestCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L57>)
-
-```go
-func TestCatalog(t testing.TB) *Builder
-```
-
-TestCatalog creates a test catalog with sample data.
 
 <a name="Builder.Author"></a>
 ### func \(\*Builder\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L215>)
@@ -2574,24 +2483,6 @@ func MergeModels(existing, updated Model) Model
 ```
 
 MergeModels performs a smart merge of two models, keeping existing values where the updated model has empty/nil values.
-
-<a name="TestModel"></a>
-### func [TestModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L38>)
-
-```go
-func TestModel(t testing.TB) *Model
-```
-
-TestModel creates a test model with sensible defaults.
-
-<a name="TestModelWithOptions"></a>
-### func [TestModelWithOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L99>)
-
-```go
-func TestModelWithOptions(t testing.TB, opts ...TestModelOption) *Model
-```
-
-TestModelWithOptions creates a test model with custom options.
 
 <a name="Model.DescriptionValue"></a>
 ### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L325>)
@@ -4393,24 +4284,6 @@ func DeepCopyProvider(provider Provider) Provider
 
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
-<a name="TestProvider"></a>
-### func [TestProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L10>)
-
-```go
-func TestProvider(t testing.TB) *Provider
-```
-
-TestProvider creates a test provider with sensible defaults. The t.Helper\(\) call ensures stack traces point to the test, not this function.
-
-<a name="TestProviderWithOptions"></a>
-### func [TestProviderWithOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L140>)
-
-```go
-func TestProviderWithOptions(t testing.TB, opts ...TestProviderOption) *Provider
-```
-
-TestProviderWithOptions creates a test provider with custom options.
-
 <a name="Provider.APIKeyValue"></a>
 ### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L327>)
 
@@ -5425,69 +5298,6 @@ func (o SourceObservationLink) Validate() error
 ```
 
 Validate verifies one complete source\-observation link.
-
-<a name="TestModelOption"></a>
-## type [TestModelOption](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L82>)
-
-TestModelOption is a functional option for configuring a test model.
-
-```go
-type TestModelOption func(*Model)
-```
-
-<a name="WithModelID"></a>
-### func [WithModelID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L85>)
-
-```go
-func WithModelID(id string) TestModelOption
-```
-
-WithModelID sets a custom ID for the test model.
-
-<a name="WithModelName"></a>
-### func [WithModelName](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L92>)
-
-```go
-func WithModelName(name string) TestModelOption
-```
-
-WithModelName sets a custom name for the test model.
-
-<a name="TestProviderOption"></a>
-## type [TestProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L111>)
-
-TestProviderOption is a functional option for configuring a test provider.
-
-```go
-type TestProviderOption func(*Provider)
-```
-
-<a name="WithProviderAPIKey"></a>
-### func [WithProviderAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L121>)
-
-```go
-func WithProviderAPIKey(name, pattern string) TestProviderOption
-```
-
-WithProviderAPIKey sets a custom API key configuration.
-
-<a name="WithProviderEnvVars"></a>
-### func [WithProviderEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L133>)
-
-```go
-func WithProviderEnvVars(envVars []ProviderEnvVar) TestProviderOption
-```
-
-WithProviderEnvVars sets environment variables for the test provider.
-
-<a name="WithProviderID"></a>
-### func [WithProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/testing.go#L114>)
-
-```go
-func WithProviderID(id ProviderID) TestProviderOption
-```
-
-WithProviderID sets a custom ID for the test provider.
 
 <a name="Tokenizer"></a>
 ## type [Tokenizer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L36>)

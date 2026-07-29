@@ -126,24 +126,24 @@ For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md). Here's a
 ```
 User Interfaces (CLI, Go Package)
     ↓
-Application Composition (cmd/starmap/app concrete implementation)
+Application Composition (internal/cli/app concrete implementation)
     ↓
 Root Package (starmap.Client - public API)
     ↓
-Core Packages (catalogs, catalogstore, reconciler, authority, sources)
+Public Contracts (catalogs, catalogstore, sources)
     ↑
 Explicit Acquisition (acquisition.Syncer)
     ↓
-Internal Implementations (embedded, providers, modelsdev)
+Internal Implementations (reconciliation, CLI, embedded, providers, modelsdev)
 ```
 
 **Key files:**
 - `client.go` / `update.go` - Small immutable root API and publication
 - `acquisition/syncer.go` - Explicit opt-in provider/source synchronization
 - `internal/catalog/pipeline/` - Prepare-only source pipeline
-- `cmd/starmap/cmd/*/application.go` - Consumer-local command roles
+- `internal/cli/commands/*/application.go` - Consumer-local command roles
 - `internal/server/application.go` - HTTP server application role
-- `cmd/starmap/app/app.go` - App implementation
+- `internal/cli/app/app.go` - App implementation
 
 ### Sync Pipeline (13 Steps)
 
@@ -202,8 +202,8 @@ The sync pipeline is in `internal/catalog/pipeline/` behind the explicit
 
 See docs/ARCHITECTURE.md § Reconciliation System for strategy details.
 
-- Modify authorities: `pkg/authority/authority.go`
-- Strategies: `pkg/reconciler/strategy.go`
+- Modify authorities: `internal/catalog/authority/authority.go`
+- Strategies: `internal/catalog/reconciler/strategy.go`
 - Field patterns support wildcards: "Pricing.*"
 
 ### Working with Commands
@@ -271,7 +271,7 @@ type application interface {
     Logger() *zerolog.Logger
 }
 
-// Implementation in cmd/starmap/app/
+// Implementation in internal/cli/app/
 type App struct { /* ... */ }
 func (a *App) Catalog() (*catalogs.Catalog, error) { /* ... */ }
 ```
@@ -298,11 +298,11 @@ for _, provider := range providers {
 
 ## Package Map
 
-**Core packages**: catalogs, catalogstore, reconciler, authority, sources, errors, logging, constants, convert
+**Public contracts**: catalogs, catalogstore, sources, errors, logging, constants
 
-**Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, transport
+**Internal**: catalog/{authority,reconciler}, cli/{app,commands,convert}, embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, sourcepayload, transport
 
-**Application**: consumer-local command/server roles, cmd/starmap/app (implementation)
+**Application**: consumer-local command/server roles, internal/cli/app (implementation)
 
 See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for full structure.
 
@@ -342,15 +342,15 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `client.go` / `update.go` | Immutable root API and explicit publication |
 | `acquisition/syncer.go` | Opt-in provider/source synchronization |
 | `internal/catalog/pipeline/` | Prepare-only source pipeline |
-| `cmd/starmap/cmd/*/application.go` | Consumer-local command dependency roles |
+| `internal/cli/commands/*/application.go` | Consumer-local command dependency roles |
 | `internal/server/application.go` | HTTP server application role |
-| `cmd/starmap/app/app.go` | App implementation |
-| `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |
+| `internal/cli/app/app.go` | App implementation |
+| `internal/cli/commands/serve/command.go` | HTTP server CLI command |
 | `internal/server/server.go` | Server lifecycle & dependencies |
 | `internal/server/router.go` | Route registration & middleware |
 | `internal/server/handlers/handlers.go` | Handler base structure |
-| `pkg/reconciler/reconciler.go` | Multi-source reconciliation |
-| `pkg/authority/authority.go` | Field-level authorities |
+| `internal/catalog/reconciler/reconciler.go` | Multi-source reconciliation |
+| `internal/catalog/authority/authority.go` | Field-level authorities |
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |
 | `internal/providers/clients/provider.go` | Provider client registry |
 | `internal/embedded/catalog/providers.yaml` | Provider configurations |
@@ -413,7 +413,7 @@ make docs-check     # Verify docs current (CI)
 **Import Cycles:**
 - Zero import cycles (validated)
 - Dependency flow is unidirectional (see docs/ARCHITECTURE.md)
-- Commands define the smallest interface they consume and do not import `cmd/starmap/app/`
+- Commands define the smallest interface they consume and do not import `internal/cli/app/`
 
 ## References
 

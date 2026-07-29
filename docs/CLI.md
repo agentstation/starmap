@@ -398,4 +398,4 @@ so scripts, documentation, telemetry, and support guidance share one vocabulary.
 - Update command: Removed `--provider` flag, use positional
 - Dry run: `--dry-run`
 
-**Questions?** See examples in this document or check `cmd/starmap/cmd/*/` source code.
+**Questions?** See examples in this document or check `internal/cli/commands/*/` source code.

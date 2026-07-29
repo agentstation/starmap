@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 )
 

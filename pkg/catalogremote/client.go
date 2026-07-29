@@ -14,9 +14,9 @@ import (
 	"path"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -25,7 +25,7 @@ const (
 	CatalogPath = "/catalog"
 	// ManifestPath returns the current strict generation manifest.
 	ManifestPath = CatalogPath + "/manifest"
-	// GenerationsPath prefixes immutable generation snapshot routes.
+	// GenerationsPath prefixes immutable generation resource routes.
 	GenerationsPath = CatalogPath + "/generations"
 	// EventStreamPath returns post-commit catalog publication hints over SSE.
 	EventStreamPath = "/updates/stream"
@@ -48,9 +48,9 @@ func GenerationManifestPath(generationID string) string {
 	return GenerationsPath + "/" + url.PathEscape(generationID) + "/manifest"
 }
 
-// SnapshotPath returns the immutable canonical payload route for generationID.
-func SnapshotPath(generationID string) string {
-	return GenerationsPath + "/" + url.PathEscape(generationID) + "/snapshot"
+// PayloadPath returns the immutable canonical payload route for generationID.
+func PayloadPath(generationID string) string {
+	return GenerationsPath + "/" + url.PathEscape(generationID) + "/payload"
 }
 
 // Client fetches one exact current generation from a versioned Starmap API.
@@ -151,7 +151,7 @@ func (c *Client) verifyPublisher(response *http.Response) error {
 }
 
 // FetchCurrent fetches the current manifest followed by its immutable,
-// generation-addressed snapshot and validates their binding and compatibility.
+// generation-addressed payload and validates their binding and compatibility.
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error) {
 	manifest, _, err := c.fetchManifest(ctx, ManifestPath, "current", "")
 	if err != nil {
@@ -307,7 +307,7 @@ func (c *Client) fetchGenerationPayload(
 	ctx context.Context,
 	manifest catalogs.GenerationManifest,
 ) (catalogstore.Generation, error) {
-	payload, err := c.fetch(ctx, SnapshotPath(manifest.GenerationID), catalogs.CatalogPayloadMediaType)
+	payload, err := c.fetch(ctx, PayloadPath(manifest.GenerationID), catalogs.CatalogPayloadMediaType)
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}

@@ -3,7 +3,7 @@ package provenance
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/goccy/go-yaml"
 )
 

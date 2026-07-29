@@ -16,7 +16,7 @@ Package catalogremote implements the versioned online Starmap\-to\-Starmap gener
 - [func GenerationManifestPath\(generationID string\) string](<#GenerationManifestPath>)
 - [func ManifestETag\(generationID string\) string](<#ManifestETag>)
 - [func MarshalManifest\(manifest catalogs.GenerationManifest\) \(\[\]byte, error\)](<#MarshalManifest>)
-- [func SnapshotPath\(generationID string\) string](<#SnapshotPath>)
+- [func PayloadPath\(generationID string\) string](<#PayloadPath>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogstore.Generation, error\)](<#Client.FetchCurrent>)
@@ -40,7 +40,7 @@ const (
     CatalogPath = "/catalog"
     // ManifestPath returns the current strict generation manifest.
     ManifestPath = CatalogPath + "/manifest"
-    // GenerationsPath prefixes immutable generation snapshot routes.
+    // GenerationsPath prefixes immutable generation resource routes.
     GenerationsPath = CatalogPath + "/generations"
     // EventStreamPath returns post-commit catalog publication hints over SSE.
     EventStreamPath = "/updates/stream"
@@ -87,14 +87,14 @@ func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 
 MarshalManifest returns strict JSON bytes for the server route.
 
-<a name="SnapshotPath"></a>
-## func [SnapshotPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/client.go#L52>)
+<a name="PayloadPath"></a>
+## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/client.go#L52>)
 
 ```go
-func SnapshotPath(generationID string) string
+func PayloadPath(generationID string) string
 ```
 
-SnapshotPath returns the immutable canonical payload route for generationID.
+PayloadPath returns the immutable canonical payload route for generationID.
 
 <a name="Client"></a>
 ## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/client.go#L57-L61>)
@@ -123,7 +123,7 @@ NewClient creates a remote generation client. baseURL is the trusted, versioned 
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error)
 ```
 
-FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed snapshot and validates their binding and compatibility.
+FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed payload and validates their binding and compatibility.
 
 <a name="Client.FetchCurrentIfChanged"></a>
 ### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/client.go#L166-L169>)

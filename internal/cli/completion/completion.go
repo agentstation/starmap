@@ -10,7 +10,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/emoji"
-	pkgconstants "github.com/agentstation/starmap/pkg/constants"
+	pkgconstants "github.com/agentstation/starmap/internal/constants"
 )
 
 // Install installs completion files to appropriate system locations.

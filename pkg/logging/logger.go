@@ -31,13 +31,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var (
-	// defaultLogger is the global logger instance.
-	defaultLogger zerolog.Logger
-
-	// Nop logger for discarding output.
-	Nop = zerolog.Nop()
-)
+// defaultLogger is the global logger instance.
+var defaultLogger zerolog.Logger
 
 func init() {
 	// Initialize with sensible defaults
@@ -90,44 +85,6 @@ func SetDefault(logger zerolog.Logger) {
 	log.Logger = logger // Also update zerolog's global logger
 }
 
-// New creates a new logger with the given writer.
-func New(w io.Writer) zerolog.Logger {
-	return zerolog.New(w).
-		Level(zerolog.GlobalLevel()).
-		With().
-		Timestamp().
-		Logger()
-}
-
-// NewConsole creates a new console logger for human-readable output.
-func NewConsole() zerolog.Logger {
-	writer := zerolog.ConsoleWriter{
-		Out:        os.Stderr,
-		TimeFormat: time.Kitchen,
-		NoColor:    os.Getenv("NO_COLOR") != "",
-	}
-
-	return New(writer)
-}
-
-// NewJSON creates a new JSON logger for structured output.
-func NewJSON(w io.Writer) zerolog.Logger {
-	if w == nil {
-		w = os.Stderr
-	}
-	return New(w)
-}
-
-// With creates a child logger with additional context fields.
-func With() zerolog.Context {
-	return defaultLogger.With()
-}
-
-// Level creates a child logger with the specified log level.
-func Level(level zerolog.Level) zerolog.Logger {
-	return defaultLogger.Level(level)
-}
-
 // Debug starts a new debug level log event.
 func Debug() *zerolog.Event {
 	return defaultLogger.Debug()
@@ -146,26 +103,6 @@ func Warn() *zerolog.Event {
 // Error starts a new error level log event.
 func Error() *zerolog.Event {
 	return defaultLogger.Error()
-}
-
-// Fatal starts a new fatal level log event (will exit after logging).
-func Fatal() *zerolog.Event {
-	return defaultLogger.Fatal()
-}
-
-// Panic starts a new panic level log event (will panic after logging).
-func Panic() *zerolog.Event {
-	return defaultLogger.Panic()
-}
-
-// WithLevel starts a new log event with the given level.
-func WithLevel(level zerolog.Level) *zerolog.Event {
-	return defaultLogger.WithLevel(level)
-}
-
-// Err creates a new error log event with the given error.
-func Err(err error) *zerolog.Event {
-	return defaultLogger.Err(err)
 }
 
 // isatty checks if stderr is a terminal.

@@ -8,7 +8,7 @@ import (
 
 	"github.com/agentstation/utc"
 
-	"github.com/agentstation/starmap/pkg/authority"
+	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"

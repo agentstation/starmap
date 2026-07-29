@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )

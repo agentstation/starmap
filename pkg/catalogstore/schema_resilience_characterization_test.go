@@ -5,9 +5,9 @@ import (
 	stderrors "errors"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 // TestF009MalformedPayloadSiblingReturnsPartialDiagnostic proves valid records

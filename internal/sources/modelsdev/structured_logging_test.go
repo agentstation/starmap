@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/testlogging"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
@@ -24,7 +25,7 @@ func TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput(t *testing.T)
 	}))
 	defer server.Close()
 	client := &HTTPClient{CacheDir: filepath.Join(t.TempDir(), "models.dev"), APIURL: server.URL, Client: server.Client()}
-	testLogger := logging.NewTestLogger(t)
+	testLogger := testlogging.New(t)
 	ctx := logging.WithLogger(context.Background(), testLogger.Logger)
 	ctx = logging.WithRunID(ctx, "source-run-123")
 

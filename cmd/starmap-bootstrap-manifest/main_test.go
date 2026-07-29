@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/bootstrapmanifest"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes(t *testing.T) {

@@ -44,7 +44,7 @@ graph TB
 
     subgraph APP["Application Composition"]
         APPIF[Consumer-local Roles<br/>cmd/* + internal/server]
-        APPIMPL[App Implementation<br/>cmd/starmap/app/]
+        APPIMPL[App Implementation<br/>internal/cli/app/]
     end
 
     subgraph ROOT["Root Package - starmap.Client"]
@@ -104,7 +104,7 @@ graph TB
 ### 1. Interface Segregation
 - **Define interfaces where they're used** (Go proverb)
 - Command and server interfaces live in their consuming packages
-- Implementation in `cmd/starmap/app/` (concrete types)
+- Implementation in `internal/cli/app/` (concrete types)
 - Commands depend only on what they need
 
 ### 2. Dependency Injection
@@ -124,7 +124,7 @@ graph TB
 ### 4. Single Responsibility
 - Each package has one clear purpose
 - Catalog: storage abstraction
-- Reconciler: multi-source merging
+- Internal reconciler: multi-source merging
 - Authority: field-level priorities
 - Sources: data fetching
 
@@ -138,7 +138,7 @@ graph TB
 
 ### Layer Responsibilities
 
-1. **Application Composition** (`cmd/starmap/app/`, command packages, `internal/server/`)
+1. **Application Composition** (`internal/cli/app/`, command packages, `internal/server/`)
    - Dependency injection
    - Configuration management
    - Lifecycle control (startup/shutdown)
@@ -150,14 +150,16 @@ graph TB
    - Event hooks
    - Atomic immutable generation publication
 
-3. **Core Packages** (`pkg/`)
+3. **Public Contracts**
    - Catalog domain and immutable reads (`pkg/catalogs/`)
    - Transactional generation storage (`pkg/catalogstore/`)
-   - Multi-source reconciliation (`pkg/reconciler/`)
-   - Field-level authority (`pkg/authority/`)
    - Data source abstractions (`pkg/sources/`)
 
 4. **Internal Implementations** (`internal/`)
+   - Multi-source reconciliation
+   - Field-level authority policy
+   - CLI composition, commands, and presentation conversion
+   - Tolerant source-payload decoding
    - Embedded catalog data
    - Provider API clients
    - models.dev integration
@@ -168,7 +170,7 @@ graph TB
 
 ### Consumer-local application roles
 
-Locations: `cmd/starmap/cmd/*/application.go`, `internal/server/application.go`
+Locations: `internal/cli/commands/*/application.go`, `internal/server/application.go`
 
 **Design Philosophy:**
 - "Accept interfaces, return structs" (Go proverb)
@@ -240,8 +242,8 @@ candidate construction uses the context-aware callback passed directly to
 
 ```mermaid
 flowchart BT
-    APP[cmd/starmap/app/<br/>Concrete App]
-    CMD[cmd/starmap/cmd/*<br/>Consumer-local roles]
+    APP[internal/cli/app/<br/>Concrete App]
+    CMD[internal/cli/commands/*<br/>Consumer-local roles]
     SERVER[internal/server/<br/>Server role]
 
     APP -.structurally satisfies.-> CMD
@@ -260,7 +262,7 @@ flowchart BT
 
 ### App Implementation
 
-Location: `cmd/starmap/app/app.go`
+Location: `internal/cli/app/app.go`
 
 **Responsibilities:**
 - Implements `Application` interface
@@ -490,7 +492,7 @@ starmap update openai
 
 **Implementation:**
 ```go
-// Parent: cmd/starmap/app/commands.go
+// Parent: internal/cli/app/commands.go
 cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
 
 // Now subcommands can use -h
@@ -509,10 +511,10 @@ uses `--output`/`-o`, and update previews use `--dry-run`.
 **Framework**: [Cobra](https://github.com/spf13/cobra) - Industry-standard Go CLI library
 
 **Key Files:**
-- `cmd/starmap/app/execute.go` - Root command and global flags
-- `cmd/starmap/app/commands.go` - Command registration
+- `internal/cli/app/execute.go` - Root command and global flags
+- `internal/cli/app/commands.go` - Command registration
 - `internal/cli/globals/` - Shared flag utilities
-- `cmd/starmap/cmd/*/` - Individual command implementations
+- `internal/cli/commands/*/` - Individual command implementations
 
 **For comprehensive CLI reference and implementation guidelines**, see **[CLI.md](CLI.md)**.
 
@@ -584,7 +586,7 @@ overwrite flag.
 
 `pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
 the current strict manifest or a retained generation-addressed manifest, then
-fetches the exact generation-addressed canonical snapshot. Strict media type,
+fetches the exact generation-addressed canonical payload. Strict media type,
 body bounds, catalog-schema compatibility, size, and checksum validation all
 precede decode and compare-and-swap publication. The same module owns the sole
 `catalog.published` SSE event shape: generation ID plus matching positive
@@ -865,9 +867,9 @@ was chosen. This storage-layout migration remains necessary for development
 installations and is distinct from catalog payload compatibility, which is not
 retained before launch.
 
-### Reconciler Package
+### Internal Reconciler
 
-Location: `pkg/reconciler/`
+Location: `internal/catalog/reconciler/`
 
 **Purpose:** Multi-source data reconciliation with conflict resolution
 
@@ -889,7 +891,7 @@ Location: `pkg/reconciler/`
 5. Return result
 
 **Field Policies:**
-`pkg/authority/authority.go` is the sole executable inventory for reconciled
+`internal/catalog/authority/authority.go` is the sole executable inventory for reconciled
 model, provider, and author fields. The merger iterates its immutable policies
 directly. Focused executors for structured fields accept the selected policy
 and contain no source-order table of their own. Tests verify schema coverage,
@@ -906,11 +908,13 @@ unknown, and `false`, `0`, or `""` are known values. Provider and models.dev
 decoders retain that wire-level distinction, and immutable JSON payloads,
 deep copies, reconciliation, and change detection preserve it.
 
-See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
+See [the internal reconciler documentation](../internal/catalog/reconciler/README.md)
+for implementation details. Consumers use `acquisition.Syncer`, not this
+package directly.
 
-### Authority Package
+### Internal Authority Policy
 
-Location: `pkg/authority/`
+Location: `internal/catalog/authority/`
 
 **Purpose:** Field-level source authority system
 
@@ -2052,11 +2056,11 @@ graph BT
     end
 
     subgraph "Layer 3: App Implementation"
-        APPIMPL[cmd/starmap/app/<br/>Concrete App]
+        APPIMPL[internal/cli/app/<br/>Concrete App]
     end
 
     subgraph "Layer 2: Commands"
-        CMDS[cmd/starmap/cmd/*<br/>list, update, serve commands]
+        CMDS[internal/cli/commands/*<br/>list, update, serve commands]
     end
 
     subgraph "Layer 1: Consumer Roles"
@@ -2085,7 +2089,7 @@ graph BT
 
 **Rules:**
 - Never import from higher layers
-- Commands declare local interfaces and do not import `cmd/starmap/app/`
+- Commands declare local interfaces and do not import `internal/cli/app/`
 - Root package imports pkg packages
 - Internal packages can import pkg packages
 - Pkg packages are fully independent
@@ -2150,7 +2154,7 @@ func TestListCommand(t *testing.T) {
 go test -tags=integration ./...
 
 # Run integration tests for specific package
-go test -tags=integration ./pkg/reconciler -v
+go test -tags=integration ./internal/catalog/reconciler -v
 ```
 
 **Example Integration Test:**
@@ -2245,20 +2249,23 @@ func TestListModels(t *testing.T) {
 | `acquisition/syncer.go` | Explicit provider/source acquisition adapter | ~200 |
 | `update.go` | Serialized durable publication and activation | ~150 |
 | `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
-| `cmd/starmap/cmd/*/application.go` | Consumer-local command roles | <20 each |
+| `internal/cli/commands/*/application.go` | Consumer-local command roles | <20 each |
 | `internal/server/application.go` | HTTP server application role | <30 |
-| `cmd/starmap/app/app.go` | App implementation | ~200 |
-| `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |
-| `pkg/authority/authority.go` | Field-level authorities | ~210 |
+| `internal/cli/app/app.go` | App implementation | ~200 |
+| `internal/catalog/reconciler/reconciler.go` | Reconciliation engine | ~300 |
+| `internal/catalog/authority/authority.go` | Field-level authorities | ~210 |
 
 ### Package Documentation
 
 - [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage
-- [pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
 - [pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
-- [pkg/authority/](../pkg/authority/) - Field-level authority system
+- [internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
 - [pkg/errors/README.md](../pkg/errors/README.md) - Error types
 - [pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
+
+Internal implementation documentation:
+
+- [internal/catalog/reconciler/README.md](../internal/catalog/reconciler/README.md) - Multi-source reconciliation
 
 ### Related Documentation
 
