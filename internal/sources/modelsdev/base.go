@@ -17,12 +17,9 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 	options := sources.Defaults().Apply(opts...)
 	candidateCount := modelsDevCandidateCount(api, options.ProviderID)
 
-	// Set the default merge strategy for models.dev catalog enrichment.
 	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
 
-	// Add providers with models that have mapped catalog data from models.dev.
 	added := 0
-	limitExceeded := false
 	issues := make([]sources.ObservationIssue, 0)
 	providerKeys := make([]string, 0, len(*api))
 	for providerKey := range *api {
@@ -31,81 +28,16 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 	sort.Strings(providerKeys)
 	for _, providerKey := range providerKeys {
 		mdProvider := (*api)[providerKey]
-		// Convert provider ID from models.dev format
-		providerID := catalogs.ProviderID(mdProvider.ID)
-		if options.ProviderID != nil && providerID != *options.ProviderID {
-			continue
-		}
-		for _, issue := range mdProvider.RecordReport.Issues {
-			issues = append(issues, modelsDevRecordIssue(providerID, issue.Subject, issue.Err))
-		}
-		if mdProvider.RecordReport.Truncated {
-			issues = append(issues, sources.ObservationIssue{
-				Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodePayloadLimit,
-				Subject: string(providerID), Message: "models.dev model count exceeds maximum; excess records quarantined",
-			})
-		}
-		if mdProvider.Models == nil {
-			issues = append(issues, sources.ObservationIssue{
-				Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodeSchemaDrift,
-				Subject: string(providerID), Message: "required models object is missing or null",
-			})
-			continue
-		}
-
-		// Get or create provider in catalog
-		provider, err := catalog.Provider(providerID)
+		providerAdded, providerIssues, limitExceeded, err := processModelsDevProvider(
+			catalog,
+			&mdProvider,
+			options.ProviderID,
+			constants.MaxCatalogModels-added,
+		)
+		added += providerAdded
+		issues = append(issues, providerIssues...)
 		if err != nil {
-			// Provider doesn't exist, create a minimal one
-			provider = catalogs.Provider{
-				ID:   providerID,
-				Name: mdProvider.ID, // Use ID as name for now
-			}
-		}
-		mergeModelsDevProviderMetadata(&provider, mdProvider.toStarmapProviderMetadata())
-
-		// Initialize models map if needed
-		if provider.Models == nil {
-			provider.Models = make(map[string]*catalogs.Model)
-		}
-
-		// Add models with pricing/limits data
-		modelKeys := make([]string, 0, len(mdProvider.Models))
-		for modelKey := range mdProvider.Models {
-			modelKeys = append(modelKeys, modelKey)
-		}
-		sort.Strings(modelKeys)
-		for _, modelKey := range modelKeys {
-			if added >= constants.MaxCatalogModels {
-				limitExceeded = true
-				issues = append(issues, sources.ObservationIssue{
-					Scope: sources.ObservationIssueScopeSource, Code: sources.ObservationIssueCodePayloadLimit,
-					Message: "models.dev model count exceeds maximum; excess records quarantined",
-				})
-				break
-			}
-			mdModel := mdProvider.Models[modelKey]
-			// Only include models that have data Starmap can map.
-			if mdModel.hasCatalogData() {
-				if err := validateModelsDevModelIdentity(modelKey, &mdModel); err != nil {
-					issues = append(issues, modelsDevRecordIssue(providerID, modelKey, err))
-					continue
-				}
-				model, err := mdModel.ToStarmapModel()
-				if err != nil {
-					issues = append(issues, modelsDevRecordIssue(providerID, modelKey, errors.WrapResource("convert", "model", mdModel.ID, err)))
-					continue
-				}
-				provider.Models[model.ID] = model
-				added++
-			}
-		}
-
-		// Update provider in catalog if we added any models
-		if len(provider.Models) > 0 {
-			if err := catalog.SetProvider(provider); err != nil {
-				return added, candidateCount - added, issues, errors.WrapResource("set", "provider", string(provider.ID), err)
-			}
+			return added, candidateCount - added, issues, err
 		}
 		if limitExceeded {
 			break
@@ -113,6 +45,105 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 	}
 
 	return added, candidateCount - added, issues, nil
+}
+
+func processModelsDevProvider(
+	catalog *catalogs.Builder,
+	mdProvider *Provider,
+	providerFilter *catalogs.ProviderID,
+	remaining int,
+) (int, []sources.ObservationIssue, bool, error) {
+	providerID := catalogs.ProviderID(mdProvider.ID)
+	if providerFilter != nil && providerID != *providerFilter {
+		return 0, nil, false, nil
+	}
+	issues := modelsDevProviderIssues(providerID, mdProvider)
+	if mdProvider.Models == nil {
+		return 0, append(issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodeSchemaDrift,
+			Subject: string(providerID), Message: "required models object is missing or null",
+		}), false, nil
+	}
+
+	provider, err := catalog.Provider(providerID)
+	if err != nil {
+		provider = catalogs.Provider{ID: providerID, Name: mdProvider.ID}
+	}
+	mergeModelsDevProviderMetadata(&provider, mdProvider.toStarmapProviderMetadata())
+	if provider.Models == nil {
+		provider.Models = make(map[string]*catalogs.Model)
+	}
+
+	added, modelIssues, limitExceeded := addModelsDevModels(&provider, mdProvider, remaining)
+	issues = append(issues, modelIssues...)
+	if len(provider.Models) > 0 {
+		if err := catalog.SetProvider(provider); err != nil {
+			return added, issues, limitExceeded, errors.WrapResource(
+				"set", "provider", string(provider.ID), err,
+			)
+		}
+	}
+	return added, issues, limitExceeded, nil
+}
+
+func modelsDevProviderIssues(
+	providerID catalogs.ProviderID,
+	provider *Provider,
+) []sources.ObservationIssue {
+	issues := make([]sources.ObservationIssue, 0, len(provider.RecordReport.Issues)+1)
+	for _, issue := range provider.RecordReport.Issues {
+		issues = append(issues, modelsDevRecordIssue(providerID, issue.Subject, issue.Err))
+	}
+	if provider.RecordReport.Truncated {
+		issues = append(issues, sources.ObservationIssue{
+			Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodePayloadLimit,
+			Subject: string(providerID), Message: "models.dev model count exceeds maximum; excess records quarantined",
+		})
+	}
+	return issues
+}
+
+func addModelsDevModels(
+	provider *catalogs.Provider,
+	mdProvider *Provider,
+	remaining int,
+) (int, []sources.ObservationIssue, bool) {
+	added := 0
+	issues := make([]sources.ObservationIssue, 0)
+	modelKeys := make([]string, 0, len(mdProvider.Models))
+	for modelKey := range mdProvider.Models {
+		modelKeys = append(modelKeys, modelKey)
+	}
+	sort.Strings(modelKeys)
+	for _, modelKey := range modelKeys {
+		if added >= remaining {
+			issues = append(issues, sources.ObservationIssue{
+				Scope: sources.ObservationIssueScopeSource, Code: sources.ObservationIssueCodePayloadLimit,
+				Message: "models.dev model count exceeds maximum; excess records quarantined",
+			})
+			return added, issues, true
+		}
+		mdModel := mdProvider.Models[modelKey]
+		if !mdModel.hasCatalogData() {
+			continue
+		}
+		if err := validateModelsDevModelIdentity(modelKey, &mdModel); err != nil {
+			issues = append(issues, modelsDevRecordIssue(provider.ID, modelKey, err))
+			continue
+		}
+		model, err := mdModel.ToStarmapModel()
+		if err != nil {
+			issues = append(issues, modelsDevRecordIssue(
+				provider.ID,
+				modelKey,
+				errors.WrapResource("convert", "model", mdModel.ID, err),
+			))
+			continue
+		}
+		provider.Models[model.ID] = model
+		added++
+	}
+	return added, issues, false
 }
 
 func modelsDevCandidateCount(api *API, providerFilter *catalogs.ProviderID) int {
@@ -173,53 +204,68 @@ func mergeModelsDevProviderMetadata(provider *catalogs.Provider, metadata *catal
 	if provider.Name == "" || provider.Name == string(provider.ID) {
 		provider.Name = metadata.Name
 	}
-	if metadata.Catalog != nil {
-		if provider.Catalog == nil {
-			catalogCopy := *metadata.Catalog
-			if metadata.Catalog.Docs != nil {
-				docs := *metadata.Catalog.Docs
-				catalogCopy.Docs = &docs
-			}
-			provider.Catalog = &catalogCopy
-		} else {
-			if provider.Catalog.Docs == nil && metadata.Catalog.Docs != nil {
-				docs := *metadata.Catalog.Docs
-				provider.Catalog.Docs = &docs
-			}
-			if provider.Catalog.Endpoint.URL == "" {
-				provider.Catalog.Endpoint.URL = metadata.Catalog.Endpoint.URL
-				provider.Catalog.Endpoint.AuthRequired = metadata.Catalog.Endpoint.AuthRequired
-			}
-		}
+	mergeModelsDevCatalogMetadata(provider, metadata)
+	mergeModelsDevEnvVars(provider, metadata)
+	mergeModelsDevExtensions(provider, metadata)
+}
+
+func mergeModelsDevCatalogMetadata(provider, metadata *catalogs.Provider) {
+	if metadata.Catalog == nil {
+		return
 	}
-	if len(metadata.EnvVars) > 0 {
-		existingEnvVars := make(map[string]struct{}, len(provider.EnvVars))
-		for _, envVar := range provider.EnvVars {
-			existingEnvVars[envVar.Name] = struct{}{}
+	if provider.Catalog == nil {
+		catalogCopy := *metadata.Catalog
+		if metadata.Catalog.Docs != nil {
+			docs := *metadata.Catalog.Docs
+			catalogCopy.Docs = &docs
 		}
-		for _, envVar := range metadata.EnvVars {
-			if _, exists := existingEnvVars[envVar.Name]; exists {
-				continue
-			}
-			provider.EnvVars = append(provider.EnvVars, envVar)
-		}
+		provider.Catalog = &catalogCopy
+		return
 	}
-	if len(metadata.Extensions) > 0 {
-		if provider.Extensions == nil {
-			provider.Extensions = metadata.Extensions.Copy()
-			return
+	if provider.Catalog.Docs == nil && metadata.Catalog.Docs != nil {
+		docs := *metadata.Catalog.Docs
+		provider.Catalog.Docs = &docs
+	}
+	if provider.Catalog.Endpoint.URL == "" {
+		provider.Catalog.Endpoint.URL = metadata.Catalog.Endpoint.URL
+		provider.Catalog.Endpoint.AuthRequired = metadata.Catalog.Endpoint.AuthRequired
+	}
+}
+
+func mergeModelsDevEnvVars(provider, metadata *catalogs.Provider) {
+	if len(metadata.EnvVars) == 0 {
+		return
+	}
+	existing := make(map[string]struct{}, len(provider.EnvVars))
+	for _, envVar := range provider.EnvVars {
+		existing[envVar.Name] = struct{}{}
+	}
+	for _, envVar := range metadata.EnvVars {
+		if _, found := existing[envVar.Name]; found {
+			continue
 		}
-		for source, extension := range metadata.Extensions {
-			existing := provider.Extensions[source]
-			if existing.Fields == nil {
-				existing.Fields = make(map[string]any)
-			}
-			for key, value := range extension.Copy().Fields {
-				if _, exists := existing.Fields[key]; !exists {
-					existing.Fields[key] = value
-				}
-			}
-			provider.Extensions[source] = existing
+		provider.EnvVars = append(provider.EnvVars, envVar)
+	}
+}
+
+func mergeModelsDevExtensions(provider, metadata *catalogs.Provider) {
+	if len(metadata.Extensions) == 0 {
+		return
+	}
+	if provider.Extensions == nil {
+		provider.Extensions = metadata.Extensions.Copy()
+		return
+	}
+	for source, extension := range metadata.Extensions {
+		existing := provider.Extensions[source]
+		if existing.Fields == nil {
+			existing.Fields = make(map[string]any)
 		}
+		for key, value := range extension.Copy().Fields {
+			if _, found := existing.Fields[key]; !found {
+				existing.Fields[key] = value
+			}
+		}
+		provider.Extensions[source] = existing
 	}
 }

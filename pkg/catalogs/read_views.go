@@ -47,30 +47,62 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 		return nil, &errors.ValidationError{Field: "catalog", Message: "reader is required"}
 	}
 
+	byDefinition, authoredDefinitions, err := indexAuthoredDefinitionCandidates(reader)
+	if err != nil {
+		return nil, err
+	}
+	offerings, err := indexProviderOfferings(reader, authoredDefinitions)
+	if err != nil {
+		return nil, err
+	}
+	definitions, definitionIDs, err := buildDefinitions(reader, byDefinition)
+	if err != nil {
+		return nil, err
+	}
+	if err := normalizeDefinitionLineages(definitions, offerings, definitionIDs); err != nil {
+		return nil, err
+	}
+
+	return &catalogReadViews{
+		definitions:       definitions,
+		offerings:         offerings,
+		authorDefinitions: deriveAuthorDefinitions(reader, definitions),
+	}, nil
+}
+
+func indexAuthoredDefinitionCandidates(
+	reader Reader,
+) (map[ModelDefinitionID][]providerModelCandidate, map[ModelDefinitionID]struct{}, error) {
 	byDefinition := make(map[ModelDefinitionID][]providerModelCandidate)
-	authoredDefinitions := make(map[ModelDefinitionID]struct{})
-	offerings := make(map[OfferingKey]ProviderOffering)
-	providers := reader.Providers().List()
+	authored := make(map[ModelDefinitionID]struct{})
 	for _, record := range reader.AuthoredModels() {
 		if err := validateAuthoredModel(record.AuthorID, record.Model); err != nil {
-			return nil, errors.WrapResource(
+			return nil, nil, errors.WrapResource(
 				"validate", "authored model", string(record.ID()), err,
 			)
 		}
 		definitionID := record.ID()
-		if _, exists := authoredDefinitions[definitionID]; exists {
-			return nil, &errors.ConflictError{
+		if _, exists := authored[definitionID]; exists {
+			return nil, nil, &errors.ConflictError{
 				Resource: "authored model",
 				Message:  "duplicate canonical identity " + string(definitionID),
 			}
 		}
-		authoredDefinitions[definitionID] = struct{}{}
+		authored[definitionID] = struct{}{}
 		byDefinition[definitionID] = []providerModelCandidate{{
 			definitionID: definitionID,
 			model:        DeepCopyModel(record.Model),
 		}}
 	}
+	return byDefinition, authored, nil
+}
 
+func indexProviderOfferings(
+	reader Reader,
+	authored map[ModelDefinitionID]struct{},
+) (map[OfferingKey]ProviderOffering, error) {
+	offerings := make(map[OfferingKey]ProviderOffering)
+	providers := reader.Providers().List()
 	slices.SortFunc(providers, func(left, right Provider) int {
 		return strings.Compare(string(left.ID), string(right.ID))
 	})
@@ -85,49 +117,14 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 			if model == nil {
 				continue
 			}
-			if mapModelID != model.ID {
-				return nil, &errors.ValidationError{
-					Field: "provider.models",
-					Value: string(provider.ID) + "/" + mapModelID,
-					Message: fmt.Sprintf(
-						"map key does not match model ID %q",
-						model.ID,
-					),
-				}
-			}
-			if err := validateProviderModelPathID(model.ID); err != nil {
-				return nil, errors.WrapResource(
-					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
-				)
-			}
-			if err := validateModelGeneration(model.Generation); err != nil {
-				return nil, errors.WrapResource(
-					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
-				)
-			}
-			candidate := providerModelCandidate{
-				providerID:   provider.ID,
-				definitionID: model.ModelRef,
-				endpoint:     deriveProviderOfferingEndpoint(provider, *model),
-				model:        DeepCopyModel(*model),
-			}
-			if candidate.definitionID == "" {
-				return nil, &errors.ValidationError{
-					Field:   "provider_model.model",
-					Value:   string(provider.ID) + "/" + model.ID,
-					Message: "explicit canonical author/model reference is required",
-				}
-			}
-			if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
-				return nil, errors.WrapResource(
-					"validate", "provider model reference", string(model.ModelRef), err,
-				)
-			}
-			if _, exists := authoredDefinitions[candidate.definitionID]; !exists {
-				return nil, &errors.NotFoundError{
-					Resource: "authored model",
-					ID:       string(candidate.definitionID),
-				}
+			candidate, err := validatedProviderModelCandidate(
+				provider,
+				mapModelID,
+				model,
+				authored,
+			)
+			if err != nil {
+				return nil, err
 			}
 			offering, err := deriveProviderOffering(candidate)
 			if err != nil {
@@ -142,7 +139,66 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 			offerings[offering.Key()] = offering
 		}
 	}
+	return offerings, nil
+}
 
+func validatedProviderModelCandidate(
+	provider Provider,
+	mapModelID string,
+	model *Model,
+	authored map[ModelDefinitionID]struct{},
+) (providerModelCandidate, error) {
+	if mapModelID != model.ID {
+		return providerModelCandidate{}, &errors.ValidationError{
+			Field: "provider.models",
+			Value: string(provider.ID) + "/" + mapModelID,
+			Message: fmt.Sprintf(
+				"map key does not match model ID %q",
+				model.ID,
+			),
+		}
+	}
+	if err := validateProviderModelPathID(model.ID); err != nil {
+		return providerModelCandidate{}, errors.WrapResource(
+			"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+		)
+	}
+	if err := validateModelGeneration(model.Generation); err != nil {
+		return providerModelCandidate{}, errors.WrapResource(
+			"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+		)
+	}
+	candidate := providerModelCandidate{
+		providerID:   provider.ID,
+		definitionID: model.ModelRef,
+		endpoint:     deriveProviderOfferingEndpoint(provider, *model),
+		model:        DeepCopyModel(*model),
+	}
+	if candidate.definitionID == "" {
+		return providerModelCandidate{}, &errors.ValidationError{
+			Field:   "provider_model.model",
+			Value:   string(provider.ID) + "/" + model.ID,
+			Message: "explicit canonical author/model reference is required",
+		}
+	}
+	if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+		return providerModelCandidate{}, errors.WrapResource(
+			"validate", "provider model reference", string(model.ModelRef), err,
+		)
+	}
+	if _, exists := authored[candidate.definitionID]; !exists {
+		return providerModelCandidate{}, &errors.NotFoundError{
+			Resource: "authored model",
+			ID:       string(candidate.definitionID),
+		}
+	}
+	return candidate, nil
+}
+
+func buildDefinitions(
+	reader Reader,
+	byDefinition map[ModelDefinitionID][]providerModelCandidate,
+) (map[ModelDefinitionID]ModelDefinition, []ModelDefinitionID, error) {
 	policies := authority.New()
 	definitions := make(map[ModelDefinitionID]ModelDefinition, len(byDefinition))
 	definitionIDs := make([]ModelDefinitionID, 0, len(byDefinition))
@@ -153,10 +209,18 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 	for _, id := range definitionIDs {
 		definition, err := deriveModelDefinition(reader, policies, id, byDefinition[id])
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		definitions[id] = definition
 	}
+	return definitions, definitionIDs, nil
+}
+
+func normalizeDefinitionLineages(
+	definitions map[ModelDefinitionID]ModelDefinition,
+	offerings map[OfferingKey]ProviderOffering,
+	definitionIDs []ModelDefinitionID,
+) error {
 	lineageAliases, ambiguousLineageAliases := buildDefinitionAliases(definitions, offerings)
 	for _, id := range definitionIDs {
 		definition := definitions[id]
@@ -165,16 +229,11 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 			lineageAliases,
 			ambiguousLineageAliases,
 		); err != nil {
-			return nil, err
+			return err
 		}
 		definitions[id] = definition
 	}
-
-	return &catalogReadViews{
-		definitions:       definitions,
-		offerings:         offerings,
-		authorDefinitions: deriveAuthorDefinitions(reader, definitions),
-	}, nil
+	return nil
 }
 
 func normalizeDefinitionLineage(

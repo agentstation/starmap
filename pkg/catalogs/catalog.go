@@ -424,105 +424,99 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 }
 
 // MergeWith merges another catalog into this one.
-//
-//nolint:gocyclo // Complex merge logic with many fields
 func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
-	// Parse merge options (defaults to MergeEnrichEmpty if not specified)
 	mergeOpts := &MergeOptions{Strategy: MergeEnrichEmpty}
 	for _, opt := range opts {
 		opt(mergeOpts)
 	}
-	strategy := mergeOpts.Strategy
 
-	switch strategy {
+	switch mergeOpts.Strategy {
 	case MergeReplaceAll:
 		return cat.ReplaceWith(source)
-
 	case MergeEnrichEmpty:
-		// Smart merge - merge providers and their models
-		for _, sourceProvider := range source.Providers().List() {
-			if existingProvider, err := cat.Provider(sourceProvider.ID); err == nil {
-				// Provider exists, merge models
-				if sourceProvider.Models != nil {
-					// Create a new map to avoid concurrent modification
-					mergedModels := make(map[string]Model)
-
-					// Copy existing models first
-					if existingProvider.Models != nil {
-						for k, v := range existingProvider.Models {
-							mergedModels[k] = *v
-						}
-					}
-
-					// Merge source models
-					for modelID, sourceModel := range sourceProvider.Models {
-						if existingModel, exists := mergedModels[modelID]; exists {
-							// Merge the models
-							mergedModels[modelID] = MergeModels(existingModel, *sourceModel)
-						} else if sourceModel.Pricing != nil || sourceModel.Limits != nil {
-							// Add new model with substantial data
-							mergedModels[modelID] = *sourceModel
-						}
-					}
-
-					mergedModelsCopy := make(map[string]*Model, len(mergedModels))
-					for k, v := range mergedModels {
-						mergedModelsCopy[k] = &v
-					}
-					// Update provider with new models map
-					existingProvider.Models = mergedModelsCopy
-				}
-				// Update the provider
-				if err := cat.SetProvider(existingProvider); err != nil {
-					return errors.WrapResource("set", "merged provider", string(existingProvider.ID), err)
-				}
-			} else {
-				// New provider
-				if err := cat.SetProvider(sourceProvider); err != nil {
-					return errors.WrapResource("set", "new provider", string(sourceProvider.ID), err)
-				}
-			}
-		}
-
-		// Merge authors similarly
-		for _, sourceAuthor := range source.Authors().List() {
-			if existingAuthor, err := cat.Author(sourceAuthor.ID); err == nil {
-				// Update the author
-				if err := cat.SetAuthor(existingAuthor); err != nil {
-					return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)
-				}
-			} else {
-				// New author
-				if err := cat.SetAuthor(sourceAuthor); err != nil {
-					return errors.WrapResource("set", "new author", string(sourceAuthor.ID), err)
-				}
-			}
-		}
-
-		// Merge provenance data
-		cat.provenance.Merge(source.Provenance().Map())
-
+		return cat.mergeEnrichEmpty(source)
 	case MergeAppendOnly:
-		// Only add new providers/authors
-		for _, provider := range source.Providers().List() {
-			if _, err := cat.Provider(provider.ID); err != nil {
-				if err := cat.SetProvider(provider); err != nil {
-					return errors.WrapResource("append", "provider", string(provider.ID), err)
-				}
-			}
-		}
-		for _, author := range source.Authors().List() {
-			if _, err := cat.Author(author.ID); err != nil {
-				if err := cat.SetAuthor(author); err != nil {
-					return errors.WrapResource("append", "author", string(author.ID), err)
-				}
-			}
-		}
-
-		// Merge provenance data
-		cat.provenance.Merge(source.Provenance().Map())
+		return cat.mergeAppendOnly(source)
 	}
 
+	return nil
+}
+
+func (cat *Builder) mergeEnrichEmpty(source Reader) error {
+	for _, provider := range source.Providers().List() {
+		if err := cat.mergeEnrichedProvider(provider); err != nil {
+			return err
+		}
+	}
+	for _, sourceAuthor := range source.Authors().List() {
+		existingAuthor, err := cat.Author(sourceAuthor.ID)
+		if err != nil {
+			if err := cat.SetAuthor(sourceAuthor); err != nil {
+				return errors.WrapResource("set", "new author", string(sourceAuthor.ID), err)
+			}
+			continue
+		}
+		if err := cat.SetAuthor(existingAuthor); err != nil {
+			return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)
+		}
+	}
+	cat.provenance.Merge(source.Provenance().Map())
+	return nil
+}
+
+func (cat *Builder) mergeEnrichedProvider(source Provider) error {
+	existing, err := cat.Provider(source.ID)
+	if err != nil {
+		if err := cat.SetProvider(source); err != nil {
+			return errors.WrapResource("set", "new provider", string(source.ID), err)
+		}
+		return nil
+	}
+	if source.Models != nil {
+		existing.Models = mergeEnrichedModels(existing.Models, source.Models)
+	}
+	if err := cat.SetProvider(existing); err != nil {
+		return errors.WrapResource("set", "merged provider", string(existing.ID), err)
+	}
+	return nil
+}
+
+func mergeEnrichedModels(existing, source map[string]*Model) map[string]*Model {
+	merged := make(map[string]Model, len(existing)+len(source))
+	for modelID, model := range existing {
+		merged[modelID] = *model
+	}
+	for modelID, sourceModel := range source {
+		if existingModel, found := merged[modelID]; found {
+			merged[modelID] = MergeModels(existingModel, *sourceModel)
+		} else if sourceModel.Pricing != nil || sourceModel.Limits != nil {
+			merged[modelID] = *sourceModel
+		}
+	}
+	result := make(map[string]*Model, len(merged))
+	for modelID, model := range merged {
+		modelCopy := model
+		result[modelID] = &modelCopy
+	}
+	return result
+}
+
+func (cat *Builder) mergeAppendOnly(source Reader) error {
+	for _, provider := range source.Providers().List() {
+		if _, err := cat.Provider(provider.ID); err != nil {
+			if err := cat.SetProvider(provider); err != nil {
+				return errors.WrapResource("append", "provider", string(provider.ID), err)
+			}
+		}
+	}
+	for _, author := range source.Authors().List() {
+		if _, err := cat.Author(author.ID); err != nil {
+			if err := cat.SetAuthor(author); err != nil {
+				return errors.WrapResource("append", "author", string(author.ID), err)
+			}
+		}
+	}
+	cat.provenance.Merge(source.Provenance().Map())
 	return nil
 }
 

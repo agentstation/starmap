@@ -18,6 +18,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+// Client acquires and normalizes model metadata from an OpenAI-compatible API.
 type Client struct {
 	// Transport client
 	transport *transport.Client

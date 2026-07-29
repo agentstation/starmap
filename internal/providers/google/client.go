@@ -24,6 +24,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
+// Client acquires and normalizes model metadata from Google AI Studio or Vertex AI.
 type Client struct {
 	provider *catalogs.Provider
 

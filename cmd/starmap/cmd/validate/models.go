@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // NewModelsCommand creates the validate models subcommand using app context.
@@ -42,72 +43,13 @@ func validateModelConsistency(app application, verbose bool) error {
 	}
 
 	providers := cat.Providers().List()
-	providerMap := make(map[string]bool)
-	for _, p := range providers {
-		providerMap[string(p.ID)] = true
-	}
-
 	var validationErrors []string
 	totalModels := 0
 
-	// Validate models per provider (proper scoping)
 	for _, provider := range providers {
-		if provider.Models == nil {
-			continue
-		}
-
-		seenIDs := make(map[string]bool)
-
-		for _, model := range provider.Models {
-			totalModels++
-
-			// Check required fields
-			if model.ID == "" {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model in provider '%s' missing required field 'id'", provider.ID))
-				continue
-			}
-
-			// Check for duplicate IDs within this provider
-			if seenIDs[model.ID] {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("duplicate model ID '%s' in provider '%s'", model.ID, provider.ID))
-			}
-			seenIDs[model.ID] = true
-
-			if model.Name == "" {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("model %s missing required field 'name'", model.ID))
-			}
-
-			// Check author references if specified
-			for _, author := range model.Authors {
-				if _, found := cat.Authors().Resolve(author.ID); !found {
-					validationErrors = append(validationErrors,
-						fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID))
-				}
-			}
-
-			// Validate limits if present
-			if model.Limits != nil {
-				if model.Limits.ContextWindow < 0 {
-					validationErrors = append(validationErrors,
-						fmt.Sprintf("model %s has invalid context_window: %d", model.ID, model.Limits.ContextWindow))
-				}
-				if model.Limits.InputTokens < 0 {
-					validationErrors = append(validationErrors,
-						fmt.Sprintf("model %s has invalid input_tokens: %d", model.ID, model.Limits.InputTokens))
-				}
-				if model.Limits.OutputTokens < 0 {
-					validationErrors = append(validationErrors,
-						fmt.Sprintf("model %s has invalid output_tokens: %d", model.ID, model.Limits.OutputTokens))
-				}
-			}
-
-			if verbose {
-				fmt.Printf("  %s Validated model: %s\n", emoji.Success, model.Name)
-			}
-		}
+		count, issues := validateProviderModels(cat, provider, verbose)
+		totalModels += count
+		validationErrors = append(validationErrors, issues...)
 	}
 
 	if len(validationErrors) > 0 {
@@ -121,4 +63,74 @@ func validateModelConsistency(app application, verbose bool) error {
 		fmt.Printf("%s Validated %d models successfully\n", emoji.Success, totalModels)
 	}
 	return nil
+}
+
+func validateProviderModels(
+	catalog *catalogs.Catalog,
+	provider catalogs.Provider,
+	verbose bool,
+) (int, []string) {
+	if provider.Models == nil {
+		return 0, nil
+	}
+	seenIDs := make(map[string]bool)
+	issues := make([]string, 0)
+	for _, model := range provider.Models {
+		if model.ID == "" {
+			issues = append(
+				issues,
+				fmt.Sprintf("model in provider '%s' missing required field 'id'", provider.ID),
+			)
+			continue
+		}
+		if seenIDs[model.ID] {
+			issues = append(
+				issues,
+				fmt.Sprintf("duplicate model ID '%s' in provider '%s'", model.ID, provider.ID),
+			)
+		}
+		seenIDs[model.ID] = true
+		issues = append(issues, modelConsistencyIssues(catalog, model)...)
+		if verbose {
+			fmt.Printf("  %s Validated model: %s\n", emoji.Success, model.Name)
+		}
+	}
+	return len(provider.Models), issues
+}
+
+func modelConsistencyIssues(catalog *catalogs.Catalog, model *catalogs.Model) []string {
+	issues := make([]string, 0)
+	if model.Name == "" {
+		issues = append(issues, fmt.Sprintf("model %s missing required field 'name'", model.ID))
+	}
+	for _, author := range model.Authors {
+		if _, found := catalog.Authors().Resolve(author.ID); !found {
+			issues = append(
+				issues,
+				fmt.Sprintf("model %s references unknown author: %s", model.ID, author.ID),
+			)
+		}
+	}
+	if model.Limits == nil {
+		return issues
+	}
+	if model.Limits.ContextWindow < 0 {
+		issues = append(
+			issues,
+			fmt.Sprintf("model %s has invalid context_window: %d", model.ID, model.Limits.ContextWindow),
+		)
+	}
+	if model.Limits.InputTokens < 0 {
+		issues = append(
+			issues,
+			fmt.Sprintf("model %s has invalid input_tokens: %d", model.ID, model.Limits.InputTokens),
+		)
+	}
+	if model.Limits.OutputTokens < 0 {
+		issues = append(
+			issues,
+			fmt.Sprintf("model %s has invalid output_tokens: %d", model.ID, model.Limits.OutputTokens),
+		)
+	}
+	return issues
 }

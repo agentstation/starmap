@@ -10,6 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
+// Response is the bounded wire representation of an OpenAI-compatible model list.
 type Response struct {
 	Object        string                           `json:"object"`
 	Data          []Model                          `json:"data"`
