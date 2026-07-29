@@ -5,9 +5,10 @@ package response
 
 import (
 	"encoding/json"
+	stderrors "errors"
 	"net/http"
 
-	"github.com/rs/zerolog/log"
+	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -98,9 +99,11 @@ func RateLimited(w http.ResponseWriter, message string) {
 }
 
 // InternalError writes a 500 error response.
-func InternalError(w http.ResponseWriter, err error) {
+func InternalError(w http.ResponseWriter, logger *zerolog.Logger, err error) {
 	// Log the actual error but don't expose details to client
-	log.Error().Err(err).Msg("Internal server error")
+	if logger != nil {
+		logger.Error().Err(err).Msg("Internal server error")
+	}
 	JSON(w, http.StatusInternalServerError, Fail(
 		"INTERNAL_ERROR",
 		"Internal server error",
@@ -118,21 +121,26 @@ func ServiceUnavailable(w http.ResponseWriter, message string) {
 }
 
 // ErrorFromType maps typed errors to appropriate HTTP responses.
-func ErrorFromType(w http.ResponseWriter, err error) {
-	switch e := err.(type) {
-	case *errors.NotFoundError:
-		NotFound(w, e.Error(), "")
-	case *errors.ValidationError:
-		BadRequest(w, e.Error(), "")
-	case *errors.SyncError:
-		InternalError(w, err)
-	case *errors.APIError:
-		if e.StatusCode >= 500 {
-			InternalError(w, err)
+func ErrorFromType(w http.ResponseWriter, logger *zerolog.Logger, err error) {
+	var notFound *errors.NotFoundError
+	var validation *errors.ValidationError
+	var syncErr *errors.SyncError
+	var apiErr *errors.APIError
+
+	switch {
+	case stderrors.As(err, &notFound):
+		NotFound(w, notFound.Error(), "")
+	case stderrors.As(err, &validation):
+		BadRequest(w, validation.Error(), "")
+	case stderrors.As(err, &syncErr):
+		InternalError(w, logger, err)
+	case stderrors.As(err, &apiErr):
+		if apiErr.StatusCode >= 500 {
+			InternalError(w, logger, err)
 		} else {
-			BadRequest(w, e.Error(), "")
+			BadRequest(w, apiErr.Error(), "")
 		}
 	default:
-		InternalError(w, err)
+		InternalError(w, logger, err)
 	}
 }

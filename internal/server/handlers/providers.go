@@ -23,7 +23,7 @@ import (
 func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 	state, err := h.app.CatalogState()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
@@ -84,7 +84,7 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, providerID string) {
 	state, err := h.app.CatalogState()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
@@ -101,7 +101,7 @@ func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, pro
 	// Get provider
 	prov, err := provider.Get(cat, providerID)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 
@@ -127,14 +127,14 @@ func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Reques
 	// Get catalog
 	cat, err := h.app.Catalog()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 
 	// Get provider
 	prov, err := provider.Get(cat, providerID)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 

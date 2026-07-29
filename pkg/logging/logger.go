@@ -25,18 +25,17 @@ package logging
 import (
 	"io"
 	"os"
+	"sync/atomic"
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
-// defaultLogger is the global logger instance.
-var defaultLogger zerolog.Logger
+// defaultLogger holds the process default as an immutable logger value.
+var defaultLogger atomic.Pointer[zerolog.Logger]
 
 func init() {
-	// Initialize with sensible defaults
-	defaultLogger = createDefaultLogger()
+	SetDefault(createDefaultLogger())
 }
 
 // createDefaultLogger creates a logger with default settings.
@@ -55,9 +54,7 @@ func createDefaultLogger() zerolog.Logger {
 		}
 	}
 
-	// Set global log level
 	level := getLogLevel()
-	zerolog.SetGlobalLevel(level)
 
 	// Create logger with context
 	logger := zerolog.New(writer).
@@ -74,35 +71,39 @@ func createDefaultLogger() zerolog.Logger {
 	return logger
 }
 
-// Default returns the default global logger.
-func Default() *zerolog.Logger {
-	return &defaultLogger
+// Default returns a copy of the default logger.
+func Default() zerolog.Logger {
+	return *defaultLogger.Load()
 }
 
-// SetDefault sets the default global logger.
+// SetDefault atomically replaces the logger used by this package. It does not
+// mutate zerolog's separate process-global logger or global level.
 func SetDefault(logger zerolog.Logger) {
-	defaultLogger = logger
-	log.Logger = logger // Also update zerolog's global logger
+	defaultLogger.Store(&logger)
 }
 
 // Debug starts a new debug level log event.
 func Debug() *zerolog.Event {
-	return defaultLogger.Debug()
+	logger := Default()
+	return logger.Debug()
 }
 
 // Info starts a new info level log event.
 func Info() *zerolog.Event {
-	return defaultLogger.Info()
+	logger := Default()
+	return logger.Info()
 }
 
 // Warn starts a new warning level log event.
 func Warn() *zerolog.Event {
-	return defaultLogger.Warn()
+	logger := Default()
+	return logger.Warn()
 }
 
 // Error starts a new error level log event.
 func Error() *zerolog.Event {
-	return defaultLogger.Error()
+	logger := Default()
+	return logger.Error()
 }
 
 // isatty checks if stderr is a terminal.

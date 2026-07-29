@@ -142,7 +142,7 @@ func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error
 CopyProviderLogos copies provider logos from models.dev to output directory. It tries the provider ID first, then checks aliases if the primary ID isn't found.
 
 <a name="API"></a>
-## type [API](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L23>)
+## type [API](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L24>)
 
 API represents the structure of models.dev api.json.
 
@@ -151,7 +151,7 @@ type API map[string]Provider
 ```
 
 <a name="ParseAPI"></a>
-### func [ParseAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L312>)
+### func [ParseAPI](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L313>)
 
 ```go
 func ParseAPI(apiPath string) (*API, error)
@@ -160,7 +160,7 @@ func ParseAPI(apiPath string) (*API, error)
 ParseAPI parses the api.json file and returns an API.
 
 <a name="API.GetProvider"></a>
-### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L949>)
+### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L950>)
 
 ```go
 func (a *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
@@ -169,7 +169,7 @@ func (a *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
 GetProvider returns a specific provider from the API data.
 
 <a name="API.UnmarshalJSON"></a>
-### func \(\*API\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L26>)
+### func \(\*API\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L27>)
 
 ```go
 func (a *API) UnmarshalJSON(data []byte) error
@@ -220,7 +220,7 @@ func NewClient(outputDir string) *Client
 NewClient creates a new models.dev git client.
 
 <a name="Cost"></a>
-## type [Cost](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L201-L212>)
+## type [Cost](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L202-L213>)
 
 Cost represents pricing information.
 
@@ -240,7 +240,7 @@ type Cost struct {
 ```
 
 <a name="CostTier"></a>
-## type [CostTier](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L215-L218>)
+## type [CostTier](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L216-L219>)
 
 CostTier represents a conditional pricing tier in models.dev.
 
@@ -252,7 +252,7 @@ type CostTier struct {
 ```
 
 <a name="CostTierInfo"></a>
-## type [CostTierInfo](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L221-L224>)
+## type [CostTierInfo](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L222-L225>)
 
 CostTierInfo represents the dimension and threshold for a models.dev pricing tier.
 
@@ -264,7 +264,7 @@ type CostTierInfo struct {
 ```
 
 <a name="Experimental"></a>
-## type [Experimental](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L236-L239>)
+## type [Experimental](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L237-L240>)
 
 Experimental represents experimental models.dev model metadata.
 
@@ -276,7 +276,7 @@ type Experimental struct {
 ```
 
 <a name="Experimental.UnmarshalJSON"></a>
-### func \(\*Experimental\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L255>)
+### func \(\*Experimental\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L256>)
 
 ```go
 func (e *Experimental) UnmarshalJSON(data []byte) error
@@ -285,7 +285,7 @@ func (e *Experimental) UnmarshalJSON(data []byte) error
 UnmarshalJSON accepts both the legacy boolean marker and the current object form containing mode overrides.
 
 <a name="ExperimentalMode"></a>
-## type [ExperimentalMode](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L242-L245>)
+## type [ExperimentalMode](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L243-L246>)
 
 ExperimentalMode represents a mode\-specific models.dev override.
 
@@ -297,7 +297,7 @@ type ExperimentalMode struct {
 ```
 
 <a name="ExperimentalModeProvider"></a>
-## type [ExperimentalModeProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L248-L251>)
+## type [ExperimentalModeProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L249-L252>)
 
 ExperimentalModeProvider represents provider request overrides for a mode.
 
@@ -727,7 +727,7 @@ func WithHTTPSourcesDir(dir string) HTTPSourceOption
 WithHTTPSourcesDir configures the sources directory for the HTTP source.
 
 <a name="Interleaved"></a>
-## type [Interleaved](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L195-L198>)
+## type [Interleaved](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L196-L199>)
 
 Interleaved represents models.dev interleaved reasoning response metadata.
 
@@ -739,7 +739,7 @@ type Interleaved struct {
 ```
 
 <a name="Interleaved.UnmarshalJSON"></a>
-### func \(\*Interleaved\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L289>)
+### func \(\*Interleaved\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L290>)
 
 ```go
 func (i *Interleaved) UnmarshalJSON(data []byte) error
@@ -748,7 +748,7 @@ func (i *Interleaved) UnmarshalJSON(data []byte) error
 UnmarshalJSON accepts both boolean and object forms of models.dev interleaved metadata.
 
 <a name="Limit"></a>
-## type [Limit](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L277-L284>)
+## type [Limit](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L278-L285>)
 
 Limit represents model limits.
 
@@ -771,7 +771,7 @@ func (l *Limit) UnmarshalJSON(data []byte) error
 UnmarshalJSON retains missing, null, zero, and non\-zero limit states.
 
 <a name="Modalities"></a>
-## type [Modalities](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L174-L177>)
+## type [Modalities](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L175-L178>)
 
 Modalities represents input/output modalities.
 
@@ -783,7 +783,7 @@ type Modalities struct {
 ```
 
 <a name="Model"></a>
-## type [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L124-L150>)
+## type [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L125-L151>)
 
 Model represents a model in models.dev.
 
@@ -816,7 +816,7 @@ type Model struct {
 ```
 
 <a name="Model.ToStarmapModel"></a>
-### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L392>)
+### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L393>)
 
 ```go
 func (m *Model) ToStarmapModel() (*catalogs.Model, error)
@@ -825,7 +825,7 @@ func (m *Model) ToStarmapModel() (*catalogs.Model, error)
 ToStarmapModel converts a Model to a starmap.Model.
 
 <a name="Model.UnmarshalJSON"></a>
-### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L153>)
+### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L154>)
 
 ```go
 func (m *Model) UnmarshalJSON(data []byte) error
@@ -834,7 +834,7 @@ func (m *Model) UnmarshalJSON(data []byte) error
 UnmarshalJSON retains fingerprints for additive model fields.
 
 <a name="ModelProvider"></a>
-## type [ModelProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L188-L192>)
+## type [ModelProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L189-L193>)
 
 ModelProvider represents model\-level provider invocation metadata.
 
@@ -847,7 +847,7 @@ type ModelProvider struct {
 ```
 
 <a name="Provider"></a>
-## type [Provider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L65-L75>)
+## type [Provider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L66-L76>)
 
 Provider represents a provider in models.dev.
 
@@ -866,7 +866,7 @@ type Provider struct {
 ```
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L955>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L956>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, bool)
@@ -875,7 +875,7 @@ func (p *Provider) Model(modelID string) (*Model, bool)
 Model returns a specific model from a provider.
 
 <a name="Provider.ToStarmapProvider"></a>
-### func \(\*Provider\) [ToStarmapProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L333>)
+### func \(\*Provider\) [ToStarmapProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L334>)
 
 ```go
 func (p *Provider) ToStarmapProvider() (*catalogs.Provider, error)
@@ -884,7 +884,7 @@ func (p *Provider) ToStarmapProvider() (*catalogs.Provider, error)
 ToStarmapProvider converts a Provider to a starmap.Provider.
 
 <a name="Provider.UnmarshalJSON"></a>
-### func \(\*Provider\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L78>)
+### func \(\*Provider\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L79>)
 
 ```go
 func (p *Provider) UnmarshalJSON(data []byte) error
@@ -893,7 +893,7 @@ func (p *Provider) UnmarshalJSON(data []byte) error
 UnmarshalJSON retains fingerprints for additive provider fields.
 
 <a name="ReasoningOption"></a>
-## type [ReasoningOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L180-L185>)
+## type [ReasoningOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L181-L186>)
 
 ReasoningOption represents a configurable reasoning option in models.dev.
 
@@ -907,7 +907,7 @@ type ReasoningOption struct {
 ```
 
 <a name="TierPrices"></a>
-## type [TierPrices](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L227-L233>)
+## type [TierPrices](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L228-L234>)
 
 TierPrices represents prices that may appear in a pricing tier.
 

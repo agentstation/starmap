@@ -73,7 +73,7 @@ type dependencySource interface {
 
 // runCheck executes the dependency check command.
 func runCheck(cmd *cobra.Command) error {
-	ctx := context.Background()
+	ctx := cmd.Context()
 
 	// Get all sources
 	allSources := getAllSources()

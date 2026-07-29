@@ -11,6 +11,7 @@ import (
 	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Entry records the origin and history of one field value.
@@ -331,20 +332,18 @@ type File struct {
 // Load reads provenance data from a YAML file.
 // Returns nil, nil if the file doesn't exist (not an error).
 func Load(path string) (*File, error) {
-	// Check if file exists
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil, nil
-	}
-
 	// Path is from catalog configuration, not user input
 	data, err := os.ReadFile(path) //nolint:gosec
 	if err != nil {
-		return nil, fmt.Errorf("failed to read provenance file: %w", err)
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, errors.WrapIO("read", path, err)
 	}
 
 	var pf File
 	if err := yaml.Unmarshal(data, &pf); err != nil {
-		return nil, fmt.Errorf("failed to parse provenance file: %w", err)
+		return nil, errors.WrapParse("yaml", path, err)
 	}
 
 	return &pf, nil

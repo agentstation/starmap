@@ -226,11 +226,7 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 		var models []catalogs.Model
 		var fetchErr error
 
-		// Suppress stderr to hide SDK warnings
-		_ = suppressStderr(func() error {
-			models, fetchErr = fetcher.FetchModels(ctx, &provider)
-			return nil
-		})
+		models, fetchErr = fetcher.FetchModels(ctx, &provider)
 
 		duration := time.Since(start)
 		cancel()
@@ -314,56 +310,54 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 		var wg sync.WaitGroup
 		resultChan := make(chan apiTestResult, len(providersToTest))
 
-		// Suppress stderr once for all concurrent operations
-		_ = suppressStderr(func() error {
-			for _, work := range providersToTest {
-				wg.Add(1)
-				go func(w apiTestWork) {
-					defer wg.Done()
-					defer func() {
-						if r := recover(); r != nil {
-							// Handle panics gracefully
-							resultChan <- apiTestResult{
-								index:     w.index,
-								status:    emoji.Error + " Failed",
-								errorMsg:  fmt.Sprintf("panic during test: %v", r),
-								succeeded: false,
-							}
-						}
-					}()
-
-					// Test the API with timeout
-					ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
-					defer cancel()
-
-					start := time.Now()
-					models, fetchErr := fetcher.FetchModels(ctx, &w.provider)
-					duration := time.Since(start)
-
-					if fetchErr != nil {
+		for _, work := range providersToTest {
+			wg.Add(1)
+			go func(w apiTestWork) {
+				defer wg.Done()
+				defer func() {
+					if r := recover(); r != nil {
+						// Convert a provider-client programming failure at this
+						// goroutine boundary so other provider results remain
+						// observable.
 						resultChan <- apiTestResult{
-							index:        w.index,
-							status:       emoji.Error + " Failed",
-							responseTime: duration.Truncate(time.Millisecond).String(),
-							errorMsg:     fetchErr.Error(),
-							succeeded:    false,
-						}
-					} else {
-						resultChan <- apiTestResult{
-							index:        w.index,
-							status:       emoji.Success + " Success",
-							responseTime: duration.Truncate(time.Millisecond).String(),
-							modelsFound:  fmt.Sprintf("%d", len(models)),
-							succeeded:    true,
+							index:     w.index,
+							status:    emoji.Error + " Failed",
+							errorMsg:  fmt.Sprintf("panic during test: %v", r),
+							succeeded: false,
 						}
 					}
-				}(work)
-			}
+				}()
 
-			// Wait for all goroutines to complete
-			wg.Wait()
-			return nil
-		})
+				// Test the API with timeout
+				ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
+				defer cancel()
+
+				start := time.Now()
+				models, fetchErr := fetcher.FetchModels(ctx, &w.provider)
+				duration := time.Since(start)
+
+				if fetchErr != nil {
+					resultChan <- apiTestResult{
+						index:        w.index,
+						status:       emoji.Error + " Failed",
+						responseTime: duration.Truncate(time.Millisecond).String(),
+						errorMsg:     fetchErr.Error(),
+						succeeded:    false,
+					}
+				} else {
+					resultChan <- apiTestResult{
+						index:        w.index,
+						status:       emoji.Success + " Success",
+						responseTime: duration.Truncate(time.Millisecond).String(),
+						modelsFound:  fmt.Sprintf("%d", len(models)),
+						succeeded:    true,
+					}
+				}
+			}(work)
+		}
+
+		// Wait for all goroutines to complete
+		wg.Wait()
 
 		close(resultChan)
 

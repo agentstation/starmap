@@ -39,7 +39,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	// Run explicitly composed acquisition.
 	result, err := h.app.Sync(r.Context(), opts...)
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 
@@ -66,7 +66,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 	cat, err := h.app.Catalog()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 
@@ -74,12 +74,12 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 	providers := cat.Providers().List()
 	state, err := h.app.CatalogState()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 	sm, err := h.app.Starmap()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 

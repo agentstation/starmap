@@ -19,7 +19,8 @@ const (
 // WithLogger adds a logger to the context.
 func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context {
 	if logger == nil {
-		logger = Default()
+		defaultLogger := Default()
+		logger = &defaultLogger
 	}
 	return context.WithValue(ctx, loggerKey, logger)
 }
@@ -27,14 +28,16 @@ func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context {
 // FromContext extracts the logger from context, or returns the default logger.
 func FromContext(ctx context.Context) *zerolog.Logger {
 	if ctx == nil {
-		return Default()
+		logger := Default()
+		return &logger
 	}
 
 	if logger, ok := ctx.Value(loggerKey).(*zerolog.Logger); ok && logger != nil {
 		return logger
 	}
 
-	return Default()
+	logger := Default()
+	return &logger
 }
 
 // Ctx returns a logger from the context or the default logger

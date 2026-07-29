@@ -16,10 +16,10 @@ import (
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/internal/auth/adc"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -456,39 +456,29 @@ func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error)
 		return nil, err
 	}
 
-	// Get models from GenAI SDK with timeout protection
-	type result struct {
-		models []catalogs.Model
-		err    error
-	}
-	resultChan := make(chan result, 1)
-
-	go func() {
-		models, err := c.listModelsViaGenAI(vertexCtx, client)
-		resultChan <- result{models: models, err: err}
-	}()
-
-	// Wait for result or timeout
-	select {
-	case res := <-resultChan:
-		if res.err != nil {
-			return nil, res.err
+	// The SDK accepts the bounded context, so call it directly instead of
+	// creating an unjoinable timeout goroutine around context-aware work.
+	models, err := c.listModelsViaGenAI(vertexCtx, client)
+	if err != nil {
+		if vertexCtx.Err() == nil {
+			return nil, err
 		}
-
-		// Add Model Garden models from pre-defined list
-		modelGardenModels := c.getModelGardenModels()
-		models := c.mergeModels(res.models, modelGardenModels)
-		return models, nil
-
-	case <-vertexCtx.Done():
+		message := fmt.Sprintf("request timed out after %s", constants.ProviderFetchTimeout)
+		if vertexCtx.Err() == context.Canceled {
+			message = "request canceled"
+		}
 		return nil, &errors.APIError{
 			Provider:   "google-vertex",
 			Endpoint:   "models",
 			StatusCode: 0,
-			Message:    fmt.Sprintf("request timed out after %s", constants.ProviderFetchTimeout),
+			Message:    message,
 			Err:        vertexCtx.Err(),
 		}
 	}
+
+	// Add Model Garden models from pre-defined list.
+	modelGardenModels := c.getModelGardenModels()
+	return c.mergeModels(models, modelGardenModels), nil
 }
 
 // listModelsViaGenAI uses the GenAI SDK to list models (works for both backends).

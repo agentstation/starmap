@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/cobra/doc"
 
 	"github.com/agentstation/starmap/internal/cli/commands/auth"
 	"github.com/agentstation/starmap/internal/cli/commands/authors"
@@ -114,9 +115,15 @@ func (a *App) NewManCommand() *cobra.Command {
 		Use:    "man",
 		Short:  "Generate man pages",
 		Hidden: true,
-		RunE: func(_ *cobra.Command, _ []string) error {
-			// TODO: Implement man page generation
-			return nil
+		Args:   cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			header := &doc.GenManHeader{
+				Title:   "STARMAP",
+				Section: "1",
+				Source:  "Starmap",
+				Manual:  "Starmap Manual",
+			}
+			return doc.GenMan(cmd.Root(), header, cmd.OutOrStdout())
 		},
 	}
 }

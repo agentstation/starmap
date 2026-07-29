@@ -49,7 +49,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 	force := mustGetBool(cmd, "force")
 	project := mustGetString(cmd, "project")
 
-	ctx := context.Background()
+	ctx := cmd.Context()
 
 	// Check current authentication status
 	// Error details are not needed - we only check the authenticated bool
@@ -78,7 +78,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 
 		// If project specified, update it
 		if project != "" && project != projectID {
-			return setGCloudProject(project)
+			return setGCloudProject(ctx, project)
 		}
 		return nil
 	}
@@ -106,7 +106,7 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 
 	// Set project if specified
 	if project != "" {
-		return setGCloudProject(project)
+		return setGCloudProject(ctx, project)
 	}
 
 	// Check if we need to set a project
@@ -155,10 +155,8 @@ func checkGCloudAuthentication(ctx context.Context) (bool, string, error) {
 	return true, projectID, nil
 }
 
-func setGCloudProject(project string) error {
+func setGCloudProject(ctx context.Context, project string) error {
 	fmt.Printf("Setting default project to: %s\n", project)
-
-	ctx := context.Background()
 
 	// Set using gcloud config
 	cmd := exec.CommandContext(ctx, "gcloud", "config", "set", "project", project) //nolint:gosec // gcloud executable is fixed; project is passed as an argument.

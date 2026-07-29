@@ -14,12 +14,12 @@ import (
 func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *http.Request) {
 	client, err := h.app.Starmap()
 	if err != nil {
-		response.InternalError(writer, err)
+		response.InternalError(writer, h.logger, err)
 		return
 	}
 	generation, err := client.CurrentGeneration(request.Context())
 	if err != nil {
-		response.InternalError(writer, err)
+		response.InternalError(writer, h.logger, err)
 		return
 	}
 	h.writeCatalogManifest(writer, request, generation)
@@ -33,7 +33,7 @@ func (h *Handlers) HandleCatalogGenerationManifest(
 ) {
 	client, err := h.app.Starmap()
 	if err != nil {
-		response.InternalError(writer, err)
+		response.InternalError(writer, h.logger, err)
 		return
 	}
 	generation, err := client.Generation(request.Context(), generationID)
@@ -51,7 +51,7 @@ func (h *Handlers) writeCatalogManifest(
 ) {
 	data, err := catalogremote.MarshalManifest(generation.Manifest)
 	if err != nil {
-		response.InternalError(writer, err)
+		response.InternalError(writer, h.logger, err)
 		return
 	}
 	writer.Header().Set("Content-Type", catalogremote.ManifestMediaType)
@@ -81,7 +81,7 @@ func headerETagMatches(value, etag string) bool {
 func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *http.Request, generationID string) {
 	client, err := h.app.Starmap()
 	if err != nil {
-		response.InternalError(writer, err)
+		response.InternalError(writer, h.logger, err)
 		return
 	}
 	generation, err := client.Generation(request.Context(), generationID)

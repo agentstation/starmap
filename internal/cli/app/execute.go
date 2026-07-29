@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // Execute runs the starmap CLI application with the given arguments.
@@ -91,6 +93,10 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	// Reinitialize logger with updated config
 	logger := NewLogger(a.config)
 	a.logger = &logger
+	// The executable is the process-level composition root. Install its logger
+	// explicitly so package-level diagnostics honor CLI flags without mutating
+	// zerolog's separate global logger or level.
+	logging.SetDefault(logger)
 
 	return nil
 }

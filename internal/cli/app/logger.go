@@ -29,7 +29,7 @@ func NewLogger(config *Config) zerolog.Logger {
 	}
 
 	// Create logger from config
-	return logging.NewLoggerFromConfig(logConfig)
+	return logging.New(logConfig)
 }
 
 // determineLogLevel determines the log level using clear precedence rules.

@@ -38,11 +38,11 @@ log.Error().
 
 - [func Ctx\(ctx context.Context\) \*zerolog.Logger](<#Ctx>)
 - [func Debug\(\) \*zerolog.Event](<#Debug>)
-- [func Default\(\) \*zerolog.Logger](<#Default>)
+- [func Default\(\) zerolog.Logger](<#Default>)
 - [func Error\(\) \*zerolog.Event](<#Error>)
 - [func FromContext\(ctx context.Context\) \*zerolog.Logger](<#FromContext>)
 - [func Info\(\) \*zerolog.Event](<#Info>)
-- [func NewLoggerFromConfig\(cfg \*Config\) zerolog.Logger](<#NewLoggerFromConfig>)
+- [func New\(cfg \*Config\) zerolog.Logger](<#New>)
 - [func RunID\(ctx context.Context\) string](<#RunID>)
 - [func SetDefault\(logger zerolog.Logger\)](<#SetDefault>)
 - [func Warn\(\) \*zerolog.Event](<#Warn>)
@@ -54,7 +54,7 @@ log.Error().
 
 
 <a name="Ctx"></a>
-## func [Ctx](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L42>)
+## func [Ctx](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L45>)
 
 ```go
 func Ctx(ctx context.Context) *zerolog.Logger
@@ -63,7 +63,7 @@ func Ctx(ctx context.Context) *zerolog.Logger
 Ctx returns a logger from the context or the default logger This is a shorter alias for FromContext.
 
 <a name="Debug"></a>
-## func [Debug](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L89>)
+## func [Debug](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L86>)
 
 ```go
 func Debug() *zerolog.Event
@@ -72,13 +72,13 @@ func Debug() *zerolog.Event
 Debug starts a new debug level log event.
 
 <a name="Default"></a>
-## func [Default](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L78>)
+## func [Default](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L75>)
 
 ```go
-func Default() *zerolog.Logger
+func Default() zerolog.Logger
 ```
 
-Default returns the default global logger.
+Default returns a copy of the default logger.
 
 <a name="Error"></a>
 ## func [Error](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L104>)
@@ -90,7 +90,7 @@ func Error() *zerolog.Event
 Error starts a new error level log event.
 
 <a name="FromContext"></a>
-## func [FromContext](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L28>)
+## func [FromContext](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L29>)
 
 ```go
 func FromContext(ctx context.Context) *zerolog.Logger
@@ -99,7 +99,7 @@ func FromContext(ctx context.Context) *zerolog.Logger
 FromContext extracts the logger from context, or returns the default logger.
 
 <a name="Info"></a>
-## func [Info](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L94>)
+## func [Info](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L92>)
 
 ```go
 func Info() *zerolog.Event
@@ -107,17 +107,17 @@ func Info() *zerolog.Event
 
 Info starts a new info level log event.
 
-<a name="NewLoggerFromConfig"></a>
-## func [NewLoggerFromConfig](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L51>)
+<a name="New"></a>
+## func [New](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L49>)
 
 ```go
-func NewLoggerFromConfig(cfg *Config) zerolog.Logger
+func New(cfg *Config) zerolog.Logger
 ```
 
-NewLoggerFromConfig creates a new logger from configuration.
+New creates a logger from cfg without changing process\-global zerolog state.
 
 <a name="RunID"></a>
-## func [RunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L53>)
+## func [RunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L56>)
 
 ```go
 func RunID(ctx context.Context) string
@@ -126,16 +126,16 @@ func RunID(ctx context.Context) string
 RunID extracts the run correlation ID from context.
 
 <a name="SetDefault"></a>
-## func [SetDefault](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L83>)
+## func [SetDefault](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L81>)
 
 ```go
 func SetDefault(logger zerolog.Logger)
 ```
 
-SetDefault sets the default global logger.
+SetDefault atomically replaces the logger used by this package. It does not mutate zerolog's separate process\-global logger or global level.
 
 <a name="Warn"></a>
-## func [Warn](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L99>)
+## func [Warn](<https://github.com/agentstation/starmap/blob/main/pkg/logging/logger.go#L98>)
 
 ```go
 func Warn() *zerolog.Event
@@ -153,7 +153,7 @@ func WithLogger(ctx context.Context, logger *zerolog.Logger) context.Context
 WithLogger adds a logger to the context.
 
 <a name="WithProvider"></a>
-## func [WithProvider](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L100>)
+## func [WithProvider](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L103>)
 
 ```go
 func WithProvider(ctx context.Context, providerID string) context.Context
@@ -162,7 +162,7 @@ func WithProvider(ctx context.Context, providerID string) context.Context
 WithProvider adds provider context to the logger.
 
 <a name="WithRunID"></a>
-## func [WithRunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L47>)
+## func [WithRunID](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L50>)
 
 ```go
 func WithRunID(ctx context.Context, runID string) context.Context
@@ -171,7 +171,7 @@ func WithRunID(ctx context.Context, runID string) context.Context
 WithRunID adds a run correlation ID to the context logger.
 
 <a name="WithSource"></a>
-## func [WithSource](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L105>)
+## func [WithSource](<https://github.com/agentstation/starmap/blob/main/pkg/logging/context.go#L108>)
 
 ```go
 func WithSource(ctx context.Context, source string) context.Context
@@ -180,7 +180,7 @@ func WithSource(ctx context.Context, source string) context.Context
 WithSource adds source context to the logger.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L15-L36>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/logging/config.go#L13-L34>)
 
 Config holds logger configuration options.
 
@@ -192,7 +192,7 @@ type Config struct {
     // Format is the output format (json, console, pretty)
     Format string
 
-    // Output is where to write logs (stderr, stdout, or file path)
+    // Output is where to write logs (stderr, stdout, discard, or none).
     Output string
 
     // TimeFormat for timestamps (kitchen, rfc3339, unix, etc.)

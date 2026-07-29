@@ -3,7 +3,11 @@ package logging_test
 import (
 	"bytes"
 	"context"
+	"io"
+	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/rs/zerolog"
@@ -13,6 +17,11 @@ import (
 )
 
 func TestDefaultLogger(t *testing.T) {
+	original := logging.Default()
+	t.Cleanup(func() {
+		logging.SetDefault(original)
+	})
+
 	// Create a buffer to capture output
 	buf := &bytes.Buffer{}
 	logger := zerolog.New(buf).Level(zerolog.DebugLevel).With().Timestamp().Logger()
@@ -28,6 +37,32 @@ func TestDefaultLogger(t *testing.T) {
 	if !strings.Contains(output, "info message") {
 		t.Errorf("Expected info message in output, got: %s", output)
 	}
+}
+
+func TestDefaultLoggerConcurrentSwapAndRead(t *testing.T) {
+	original := logging.Default()
+	t.Cleanup(func() {
+		logging.SetDefault(original)
+	})
+
+	const (
+		workers    = 8
+		iterations = 100
+	)
+	var wg sync.WaitGroup
+	wg.Add(workers)
+	for range workers {
+		go func() {
+			defer wg.Done()
+			for range iterations {
+				logger := zerolog.New(io.Discard)
+				logging.SetDefault(logger)
+				logging.Info().Msg("concurrent logger read")
+				_ = logging.Default().GetLevel()
+			}
+		}()
+	}
+	wg.Wait()
 }
 
 func TestContextLogger(t *testing.T) {
@@ -85,7 +120,7 @@ func TestConfiguration(t *testing.T) {
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
 			buf := &bytes.Buffer{}
-			logger := logging.NewLoggerFromConfig(tc.config)
+			logger := logging.New(tc.config)
 			logger = logger.Output(buf)
 
 			logger.Debug().Msg("debug")
@@ -95,6 +130,35 @@ func TestConfiguration(t *testing.T) {
 			tc.check(t, buf.String())
 		})
 	}
+}
+
+func TestNewOwnsNoProcessGlobalOrFileLifecycle(t *testing.T) {
+	originalLevel := zerolog.GlobalLevel()
+	t.Cleanup(func() {
+		zerolog.SetGlobalLevel(originalLevel)
+	})
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+
+	outputPath := filepath.Join(t.TempDir(), "starmap.log")
+	_ = logging.New(&logging.Config{
+		Level:  "debug",
+		Format: "json",
+		Output: outputPath,
+	})
+
+	if got := zerolog.GlobalLevel(); got != zerolog.ErrorLevel {
+		t.Fatalf("zerolog global level = %v, want %v", got, zerolog.ErrorLevel)
+	}
+	if _, err := os.Stat(outputPath); !os.IsNotExist(err) {
+		t.Fatalf("logger constructor created caller-unclosable file %q: %v", outputPath, err)
+	}
+
+	logger := logging.New(&logging.Config{
+		Level:  "info",
+		Format: "auto",
+		Output: "discard",
+	})
+	logger.Info().Msg("discarded")
 }
 
 func TestTestLogger(t *testing.T) {

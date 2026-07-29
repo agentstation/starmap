@@ -12,7 +12,7 @@ import (
 type collector struct {
 	sources []sources.Observation
 	primary sources.ID
-	logger  *zerolog.Logger
+	logger  zerolog.Logger
 }
 
 // newCollector creates a new data collector.

@@ -7,8 +7,6 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-
-	"github.com/agentstation/starmap/internal/constants"
 )
 
 // Config holds logger configuration options.
@@ -19,7 +17,7 @@ type Config struct {
 	// Format is the output format (json, console, pretty)
 	Format string
 
-	// Output is where to write logs (stderr, stdout, or file path)
+	// Output is where to write logs (stderr, stdout, discard, or none).
 	Output string
 
 	// TimeFormat for timestamps (kitchen, rfc3339, unix, etc.)
@@ -47,16 +45,14 @@ func defaultConfig() *Config {
 	}
 }
 
-// NewLoggerFromConfig creates a new logger from configuration.
-func NewLoggerFromConfig(cfg *Config) zerolog.Logger {
+// New creates a logger from cfg without changing process-global zerolog state.
+func New(cfg *Config) zerolog.Logger {
 	if cfg == nil {
 		cfg = defaultConfig()
 	}
 
 	// Parse log level
 	level := parseLevel(cfg.Level)
-	zerolog.SetGlobalLevel(level)
-
 	// Determine output writer
 	writer := getWriter(cfg)
 
@@ -96,25 +92,17 @@ func getWriter(cfg *Config) io.Writer {
 	case "discard", "none":
 		output = io.Discard
 	default:
-		// Treat as file path
-		if cfg.Output != "" && cfg.Output != "stderr" {
-			file, err := os.OpenFile(cfg.Output, os.O_CREATE|os.O_APPEND|os.O_WRONLY, constants.FilePermissions)
-			if err != nil {
-				// Fall back to stderr
-				output = os.Stderr
-			} else {
-				output = file
-			}
-		} else {
-			output = os.Stderr
-		}
+		// A logger constructor that returns no closer cannot safely own a file.
+		// Unknown output names therefore fall back to stderr.
+		output = os.Stderr
 	}
 
 	// Determine format
 	format := strings.ToLower(cfg.Format)
 	if format == "auto" {
-		// Auto-detect based on terminal
-		if fileInfo, _ := output.(*os.File).Stat(); output == os.Stderr && (fileInfo.Mode()&os.ModeCharDevice) != 0 {
+		// Auto-detect only real terminal files. Writers such as io.Discard are
+		// intentionally not *os.File and must remain valid in auto mode.
+		if file, ok := output.(*os.File); ok && isTerminalFile(file) {
 			format = "console"
 		} else {
 			format = "json"
@@ -133,6 +121,11 @@ func getWriter(cfg *Config) io.Writer {
 		// JSON format
 		return output
 	}
+}
+
+func isTerminalFile(file *os.File) bool {
+	info, err := file.Stat()
+	return err == nil && info.Mode()&os.ModeCharDevice != 0
 }
 
 // parseLevel parses a log level string.
