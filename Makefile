@@ -50,7 +50,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -174,6 +174,9 @@ test-consumer-deps: ## Compile the external read-only consumer and enforce its d
 
 test-pure-go: ## Execute supported compositions without cgo and verify the local binary
 	@./scripts/verify-pure-go.sh
+
+test-file-sizes: ## List large authored Go files and enforce review/hard limits
+	@./scripts/verify-go-file-sizes.sh
 
 test-race: ## Run tests with race detector
 	@echo "$(BLUE)Running tests with race detector...$(NC)"
