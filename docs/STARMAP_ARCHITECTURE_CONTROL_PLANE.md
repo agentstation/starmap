@@ -2,13 +2,12 @@
 
 Last updated: 2026-07-29
 
-Status: `IN_PROGRESS` — P0–P7 are complete. The public embeddable server,
+Status: `IN_PROGRESS` — P0–P8 are complete. The public embeddable server,
 reactive remote subscriber, complete external consumer matrix, transport
 failure matrix, distinct production-health surfaces, OpenRouter-compatible
-model/endpoint adapter, and pure-Go/static release contract are real. PR #55
-merged as `5e0eb9bd`; every P8 implementation task is complete and exact
-material head `e475ec41` is locally green. PR #56's hosted/protected merge gate
-is active.
+model/endpoint adapter, and pure-Go/static release contract are real. PR #56
+merged as `08f18cbe` after every P8 task, finding, local gate, hosted gate, and
+protection readback became terminal. P9.1 is the sole active task.
 P8.9 removed
 Starmap-owned relational storage, P8.10 made the external adapter contract
 executable, P8.11 made conditional S3-compatible storage production-real, and
@@ -714,7 +713,7 @@ Live state inspected 2026-07-29.
 | [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@94157b42` | `DONE` | P5 single persisted model and derived immutable read views merged as `76dd3178` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6 |
 | [#54](https://github.com/agentstation/starmap/pull/54) | `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | Restored authored model identity and generated endpoint join merged as `6993b1e7` | Exact material commit passed uninterrupted local verification; exact PR head passed Verification Gate and Security & Reliability; protection remained strict with both contexts, admin enforcement, and conversation resolution; zero reviews and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6.2 |
 | [#55](https://github.com/agentstation/starmap/pull/55) | `codex/starmap-library-composition@6df1acee` | `DONE` | Coherent P6/P7 library/server/reactive-consumer phase merged as `5e0eb9bd`; accepted storage-boundary implementation remains in P8 | Exact head passed Verification Gate and Security & Reliability, protection readback remained strict, zero review threads existed, authorized squash merge completed, and remote/local branch plus worktree were removed after the exact-main P8 successor was created |
-| [#56](https://github.com/agentstation/starmap/pull/56) | `codex/starmap-go-modularity@e475ec41` plus evidence-only ledger head | `IN_PROGRESS` | Coherent P8 storage-ownership, modularity, deletion, and canonical-Go phase | Exact material head passed uninterrupted local verification and its structured outcome review; evidence-only ledger head must pass Verification Gate and Security & Reliability before the protected merge pause |
+| [#56](https://github.com/agentstation/starmap/pull/56) | `codex/starmap-go-modularity@38fa31fa` | `DONE` | Coherent P8 storage-ownership, modularity, deletion, and canonical-Go phase merged as `08f18cbe` | Exact head passed Verification Gate and Security & Reliability; protection remained strict with both required contexts, admin enforcement, and conversation resolution; zero reviews and review threads existed; authorized squash merge completed; remote/local branch and clean worktree removed after the exact-main P9 successor was created |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -741,8 +740,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P5 | `DONE` | Linked authored models and provider serving records produce immutable read views and generated endpoints | Disjoint schema ownership; complete corpus disposition; identity, endpoint, DX, and benchmark gates green |
 | P6 | `DONE` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `DONE` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
-| P8 | `IN_PROGRESS` | Storage ownership is product-correct and Go modules have depth, locality, and compliant file sizes | No Starmap relational adapter; production conditional object storage is real; no hard-limit file; every concern dispositioned |
-| P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
+| P8 | `DONE` | Storage ownership is product-correct and Go modules have depth, locality, and compliant file sizes | No Starmap relational adapter; production conditional object storage is real; no hard-limit file; every concern dispositioned |
+| P9 | `IN_PROGRESS` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
 | P10 | `PENDING` | Production verification and documentation inspire trust | Full local/hosted/security/docs gates |
 | P11 | `PENDING` | GitHub and local machine end clean | No open PRs; clean protected main; obsolete work removed |
 
@@ -939,7 +938,7 @@ not reviewed or preserved as if they were target architecture.
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
-| P9.1 | `PENDING` | Publish exact committed generation | Release staging never reconstructs source lineage as one local observation |
+| P9.1 | `IN_PROGRESS` | Publish exact committed generation | Release staging never reconstructs source lineage as one local observation |
 | P9.2 | `PENDING` | Separate semantic and evidence digests | Identical catalog facts do not create catalog releases solely from observation timestamps |
 | P9.3 | `PENDING` | Verify embedded manifest | Binary bootstrap bytes, generation ID, schema, digest, and size agree deterministically |
 | P9.4 | `PENDING` | Verify E1→E2 workspace upgrade | New embedded provider facts merge by provenance/authority, new authored definitions are added without provider-inferred authorship, complete human authored edits remain authoritative, and no embedded revision wholesale-overwrites human data |
@@ -1117,7 +1116,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | PR #54 merged as `6993b1e7`; remote/local branch and clean worktree removed after the fresh P6.2 successor worktree was created |
 | `starmap-library-composition` on `codex/starmap-library-composition@6df1acee` | `DONE` | PR #55 merged as `5e0eb9bd`; exact-main P8 successor created first; remote/local branch and clean worktree removed |
-| `starmap-go-modularity` on `codex/starmap-go-modularity@e475ec41` plus evidence-only ledger head | `IN_PROGRESS` | Fresh P8 successor created from the exact PR #55 protected-main merge; every P8 task and finding is terminal, the canonical-Go outcome review is archived, and exact material head `e475ec41` passed uninterrupted local verification; PR #56 hosted checks, protected merge, and cleanup remain |
+| `starmap-go-modularity` on `codex/starmap-go-modularity@38fa31fa` | `DONE` | PR #56 merged as `08f18cbe`; exact-main P9 successor created first; remote/local branch and clean worktree removed |
+| `starmap-distribution-upgrades` on `codex/starmap-distribution-upgrades@08f18cbe` | `IN_PROGRESS` | Fresh P9 successor created from the exact protected-main PR #56 merge; P9.1 exact-generation staging is active |
 
 ## Evidence Log
 
@@ -1310,6 +1310,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P8.8 first exact gate / F-116 | The uninterrupted repository gate passed ordinary root `73.198s`, cgo-off external compositions at an improved `30/32` non-standard read-only closure, cgo-enabled root race `309.883s`, accessor `8.205–8.952 ns/op` at `0 B/op`/`0 allocs/op`, vet, zero-issue lint, every coverage floor, generated docs, diff, build, all 610 embedded models, and CLI smokes. Reviewing the smoke diagnostics then found the CLI logger propagation regression caused by deliberately removing zerolog-global mutation. The top-level executable now explicitly calls atomic `logging.SetDefault` after flags are parsed; construction remains side-effect free. Fifty focused race repetitions pass in `1.641s`. This small composition-root correction changes no public API, architecture, persistence, concurrency, security, or failure semantics, so the approved outcome-oriented cadence does not rerun structured review; the exact final gate is repeated on the corrected tree. |
 | 2026-07-29 | P8.8 / F-110–F-116 final local gate | Archived [`reviews/P8_CANONICAL_GO_REVIEW_2026-07-29.md`](reviews/P8_CANONICAL_GO_REVIEW_2026-07-29.md) at SHA-256 `6ba96806f524a7143e53205abfc969abf07e686bcad9bed85f4610ff8617e2b3`. The corrected candidate passed uninterrupted `./scripts/verify.sh`: ordinary root `44.016s`; all five external compositions with `CGO_ENABLED=0`; improved read-only closure `30/32` non-standard and `152` total with AWS/Smithy absent; cgo-enabled root race `265.056s`, CLI app `80.778s`, server `109.987s`, models.dev `72.977s`, and catalogs `42.184s`; vet; zero-issue lint; accessor `8.954–10.25 ns/op` at `0 B/op`/`0 allocs/op`; every coverage floor; generated docs; file-size and diff policy; build; all 11 providers, 104 authors, 610 models, and cross-references; and CLI smokes. The exact man pipeline `go run ./cmd/starmap man | gzip -c | gzip -t` passes. P8.8 and F-110–F-114 are DONE; every P8 implementation task/finding is terminal, and the phase PR/hosted/merge gate is next. |
 | 2026-07-29 | P8 phase candidate | Committed the exact locally verified material candidate as `e475ec41aaf8b1de7e68988cca0e3926c2a5150d`, pushed `codex/starmap-go-modularity`, and opened [PR #56](https://github.com/agentstation/starmap/pull/56). The only later change in the candidate is this PR/head evidence; product behavior is unchanged. Verification Gate, Security & Reliability, strict protection readback, review-thread inspection, protected merge, and successor-worktree cleanup remain before P8 can be marked DONE. |
+| 2026-07-29 | P8 merge and cleanup | PR #56 exact head `38fa31fafff6fedafbbc964c7442207f0ba97ebb` passed [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30496410496/job/90726236029) in `20m25s` and [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30496410496/job/90726236064) in `2m02s`. Protection required exactly those Actions-app-bound contexts with strict checking, zero approvals, stale-review dismissal, admin enforcement, conversation resolution, and no force-push/deletion; the PR was clean/mergeable with zero reviews and review threads. Standing user merge authority applied to the exact green head; the squash merge produced protected-main `08f18cbe6ee7195122c2d7eae8957da41facc1c8`. A fresh P9 worktree/branch was created from that exact SHA before the already-removed remote branch, local branch, and clean P8 worktree were pruned. P8 is DONE and P9.1 is the sole active task. |
 
 ## Final Definition of Done
 
