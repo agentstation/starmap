@@ -18,10 +18,7 @@ func (s *Server) setupRouter() http.Handler {
 	h := handlers.New(
 		s.app,
 		s.cache,
-		s.broker,
-		s.wsHub,
 		s.sseBroadcaster,
-		s.upgrader,
 		s.logger,
 		s.startTime,
 	)
@@ -154,7 +151,6 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	})
 
 	// Real-time endpoints
-	mux.HandleFunc(prefix+"/updates/ws", h.HandleWebSocket)
 	mux.HandleFunc(prefix+"/updates/stream", h.HandleSSE)
 
 	// OpenAPI specification endpoints

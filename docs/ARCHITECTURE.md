@@ -39,7 +39,7 @@ graph TB
     subgraph UI["User Interfaces"]
         CLI[CLI Tool<br/>cmd/starmap]
         GO[Go Package API]
-        HTTP[HTTP Server<br/>REST API + WebSocket + SSE]
+        HTTP[HTTP Server<br/>REST API + SSE]
     end
 
     subgraph APP["Application Composition"]
@@ -219,7 +219,6 @@ Constructors return concrete types when a package owns one implementation.
 | CLI `Formatter` | 4 | JSON, YAML, table, function adapter | Retained output boundary with four adapters |
 | CLI alerts `Writer` | 2 | function and structured format writers | Retained output boundary with two adapters |
 | Transport `Authenticator` | 5 | no-auth, bearer, header, query, provider auth | Retained transport policy boundary with five adapters |
-| Event `Subscriber` | 2 | SSE and WebSocket subscribers | Retained fan-out boundary with two production transports |
 
 Deleted one-adapter or unused abstractions include the exported `Snapshot`, the
 catalog `Builder`, `Writer`, `Merger`, `Copier`, and `Persistence` interfaces,
@@ -1295,10 +1294,10 @@ namespace, and event identity therefore agree for every delivered generation.
 Intermediate callback delivery may be coalesced, but a later generation cannot
 overtake one already being delivered.
 
-The HTTP logging middleware preserves the optional `http.Flusher`,
-`http.Hijacker`, and `http.Pusher` capabilities of the underlying response
-writer. This is required for SSE flushing and WebSocket upgrades; middleware
-must not accidentally turn supported streaming transports into HTTP 500s.
+The HTTP logging middleware preserves `http.Flusher`, error-returning flushes,
+`http.Pusher`, and `http.ResponseController` unwrapping from the underlying
+response writer. This is required for flushed, write-deadline-aware SSE;
+middleware must not accidentally turn a supported stream into an HTTP 500.
 
 ## Reconciliation System
 
@@ -1458,31 +1457,29 @@ type Changeset struct {
 
 ## Real-Time Event Delivery
 
-The server exposes catalog update events through WebSocket and Server-Sent Events (SSE). Event delivery is split into lifecycle adapters and one shared fan-out policy module:
+The server exposes one post-commit catalog publication event through
+Server-Sent Events. SSE is the sole reactive transport because publication is
+server-to-client; the unused WebSocket and generic event-broker paths were
+deleted.
 
-- `internal/server/events.Broker` accepts catalog events and delivers them to internal subscribers.
-- `internal/server/sse.Broadcaster` owns SSE client registration, HTTP streaming, and SSE formatting.
-- `internal/server/websocket.Hub` owns WebSocket client registration, ping/write pumps, and WebSocket message formatting.
-- `internal/server/events.Fanout` owns target delivery, cumulative counters, and backpressure policy.
+`internal/server/sse.Broadcaster` owns connection registration, SSE framing,
+delivery counters, and backpressure policy. Each request handler is the only
+writer for its connection, serializing publication events and heartbeat
+comments without an extra per-connection goroutine. Construction starts no
+background loop.
 
-Backpressure behavior is explicit per adapter:
+The only named event is `catalog.published`, containing a committed generation
+ID and monotonic sequence. It contains no model diff or mutable catalog
+payload. The server flushes comment-line heartbeats every 20 seconds by default;
+heartbeats carry no event ID and do not advance publication sequence.
 
-| Adapter | Policy | Behavior |
-| --- | --- | --- |
-| Broker subscribers | Skip/log failed delivery | Subscribers receive events through one bounded queue and worker per subscriber, so slow subscribers cannot stall the broker event loop and fan-out does not spawn one goroutine per subscriber per event |
-| SSE clients | Skip | A full SSE client buffer skips that event and keeps the client connected |
-| WebSocket clients | Disconnect | A full WebSocket client buffer removes and closes that client |
-
-`Fanout` exposes comparable delivery counters: sent, skipped, disconnected, and failed. Admin stats surface those counters for broker, SSE, and WebSocket delivery so production behavior can be monitored consistently.
-
-The broker, SSE broadcaster, and WebSocket hub still use buffered registration/unregistration channels so setup and cleanup do not depend on event-loop startup order.
-
-Browser WebSocket upgrades are same-origin by default and follow an explicit
-CORS allowlist only when CORS is enabled. The application rate limiter keys on
-the normalized socket-peer IP and deliberately ignores untrusted forwarding
-headers; deployments that need end-client limits behind a proxy should enforce
-them at a trusted ingress boundary. Cleanup is request-driven and owns no
-background goroutine or shutdown lifecycle.
+Each connection has one pending publication slot. If it cannot accept the next
+publication, or if a frame cannot be written and flushed within its 10-second
+default deadline, the server terminates the connection. The remote subscriber
+then performs mandatory manifest catch-up. This prevents silent loss while a
+stream continues to look healthy. Delivery counters expose publications,
+successful sends, heartbeats, disconnects, backpressure terminations, and write
+failures.
 
 ## Thread Safety
 
@@ -1803,76 +1800,18 @@ The codebase has been fully migrated to value semantics:
 - The fast path is guarded at zero allocations with a 10 microsecond ceiling
 - Collection materialization retains caller-owned copies and is outside this budget
 
-#### 4. Channel Buffering for Event-Driven Systems
+#### 4. Serialized Streaming Writers
 
-For event-driven systems using channels (event brokers, WebSocket hubs, SSE broadcasters), **ALWAYS buffer channels used for registration/unregistration**:
+Every SSE connection has exactly one writer: its request handler. Publication
+callbacks only offer immutable generation identities to a bounded queue; they
+never write to the response directly. The same handler writes both publication
+frames and heartbeat comments, applies a fresh per-frame deadline, and flushes
+before recording success.
 
-```go
-// ❌ WRONG: Unbuffered channels cause initialization deadlocks
-type Broker struct {
-    register   chan Subscriber    // Blocks if Run() not started
-    unregister chan Subscriber    // Blocks during cleanup
-}
-
-// ✅ CORRECT: Buffered channels prevent blocking
-type Broker struct {
-    register   chan Subscriber, 10    // Buffer for setup phase
-    unregister chan Subscriber, 10    // Buffer for cleanup phase
-}
-```
-
-**Why buffering is critical:**
-
-1. **Initialization Order Independence**: Components can be initialized and subscribed before event loops start
-2. **No Deadlocks**: `Subscribe()` doesn't block waiting for `Run()` to read from channel
-3. **Graceful Cleanup**: Unregister operations during shutdown don't block
-
-**Buffer sizing guidelines:**
-
-- **Registration channels**: Size based on typical number of subscribers registered during initialization (commonly 5-10)
-- **Unregistration channels**: Same size as registration channels
-- **Event channels**: Size based on burst capacity (commonly 256+ for high-throughput systems)
-
-**Real-world example from `internal/server/events/broker.go`:**
-
-```go
-func NewBroker(logger *zerolog.Logger) *Broker {
-    return &Broker{
-        subscribers: make([]Subscriber, 0),
-        events:      make(chan Event, 256),        // High-capacity event buffer
-        register:    make(chan Subscriber, 10),    // Prevents blocking during setup
-        unregister:  make(chan Subscriber, 10),    // Prevents blocking during shutdown
-        logger:      logger,
-    }
-}
-```
-
-**Testing for initialization order bugs:**
-
-Always write tests that verify subscriptions work before `Run()` starts:
-
-```go
-func TestBroker_SubscribeBeforeRun(t *testing.T) {
-    b := NewBroker(logger)
-
-    // Subscribe BEFORE starting Run() - should NOT block
-    done := make(chan struct{})
-    go func() {
-        sub := newSubscriber()
-        b.Subscribe(sub)  // Would deadlock with unbuffered channels
-        close(done)
-    }()
-
-    select {
-    case <-done:
-        // Success
-    case <-time.After(2 * time.Second):
-        t.Fatal("Deadlock detected - channels not buffered!")
-    }
-}
-```
-
-See `internal/server/events/broker_test.go:TestBroker_SubscribeBeforeRun` for a complete example.
+The queue is deliberately one element. A full queue terminates the connection
+instead of dropping a publication while leaving the stream healthy. Correctness
+comes from reconnect catch-up, not from an unbounded queue or an exactly-once
+stream.
 
 ### Thread Safety Checklist
 
@@ -1941,15 +1880,13 @@ starmap/
 │   │   ├── server.go         # Server struct & lifecycle
 │   │   ├── config.go         # Configuration management
 │   │   ├── router.go         # Route registration & middleware
-│   │   ├── events/           # Shared event fan-out and broker
-│   │   ├── sse/              # Server-Sent Events adapter
-│   │   ├── websocket/        # WebSocket adapter
+│   │   ├── sse/              # Serialized publication stream
 │   │   └── handlers/         # HTTP request handlers
 │   │       ├── models.go     # Model endpoints
 │   │       ├── providers.go  # Provider endpoints
 │   │       ├── admin.go      # Admin operations
 │   │       ├── health.go     # Health checks
-│   │       ├── realtime.go   # WebSocket/SSE
+│   │       ├── realtime.go   # SSE publications
 │   │       └── openapi.go    # OpenAPI spec endpoints
 │   ├── sources/              # Source implementations
 │   │   ├── providers/        # Provider-backed catalog source

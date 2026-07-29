@@ -6,7 +6,7 @@
 //   - providers.go: Provider listing, retrieval, and models
 //   - admin.go: Administrative operations (update, stats)
 //   - health.go: Health and readiness checks
-//   - realtime.go: WebSocket and SSE real-time updates
+//   - realtime.go: heartbeat-enabled SSE publication updates
 //   - openapi.go: OpenAPI 3.1 specification endpoints
 //
 // All handlers follow a consistent pattern:

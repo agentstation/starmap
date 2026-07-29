@@ -4,34 +4,23 @@ package server
 import (
 	"context"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/cache"
-	"github.com/agentstation/starmap/internal/server/events"
-	"github.com/agentstation/starmap/internal/server/events/adapters"
 	"github.com/agentstation/starmap/internal/server/sse"
-	ws "github.com/agentstation/starmap/internal/server/websocket"
-	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Server holds the HTTP server state and dependencies.
 type Server struct {
 	app            Application
 	cache          *cache.Cache
-	broker         *events.Broker
-	wsHub          *ws.Hub
 	sseBroadcaster *sse.Broadcaster
-	upgrader       websocket.Upgrader
 	logger         *zerolog.Logger
 	config         Config
-	ctx            context.Context
-	cancel         context.CancelFunc
 	startTime      time.Time
 }
 
@@ -46,84 +35,37 @@ func New(app Application, cfg Config) (*Server, error) {
 		cfg.CacheTTL = 5 * time.Minute
 	}
 
-	// Create unified event broker
-	logger.Debug().Msg("Creating event broker")
-	broker := events.NewBroker(logger)
-	logger.Debug().Msg("Event broker created")
-
-	// Create transport layers
-	logger.Debug().Msg("Creating WebSocket hub")
-	wsHub := ws.NewHub(logger)
-	logger.Debug().Msg("WebSocket hub created")
-
 	logger.Debug().Msg("Creating SSE broadcaster")
-	sseBroadcaster := sse.NewBroadcaster(logger)
+	sseBroadcaster, err := sse.NewBroadcaster(sse.Config{
+		HeartbeatInterval: cfg.SSEHeartbeatInterval,
+		WriteTimeout:      cfg.SSEWriteTimeout,
+	}, logger)
+	if err != nil {
+		return nil, err
+	}
 	logger.Debug().Msg("SSE broadcaster created")
-
-	// Subscribe transports to broker
-	logger.Debug().Msg("Subscribing WebSocket transport to event broker")
-	broker.Subscribe(adapters.NewWebSocketSubscriber(wsHub))
-	logger.Debug().Msg("WebSocket transport subscribed - real-time updates active")
-
-	logger.Debug().Msg("Subscribing SSE transport to event broker")
-	broker.Subscribe(adapters.NewSSESubscriber(sseBroadcaster))
-	logger.Debug().Msg("SSE transport subscribed - streaming updates active")
-
-	// Create context for managing background services
-	ctx, cancel := context.WithCancel(context.Background())
 
 	server := &Server{
 		app:            app,
 		cache:          cache.New(cfg.CacheTTL, cfg.CacheTTL*2),
-		broker:         broker,
-		wsHub:          wsHub,
 		sseBroadcaster: sseBroadcaster,
-		upgrader: websocket.Upgrader{
-			ReadBufferSize:  1024,
-			WriteBufferSize: 1024,
-			CheckOrigin: func(request *http.Request) bool {
-				return websocketOriginAllowed(cfg, request)
-			},
-		},
-		logger:    logger,
-		config:    cfg,
-		ctx:       ctx,
-		cancel:    cancel,
-		startTime: time.Now(),
+		logger:         logger,
+		config:         cfg,
+		startTime:      time.Now(),
 	}
 
-	// Connect Starmap hooks to event broker
-	logger.Debug().Msg("Connecting Starmap hooks to event broker")
+	// Connect the sole post-commit publication event to SSE.
+	logger.Debug().Msg("Connecting Starmap publication hook to SSE")
 	if err := server.connectHooks(); err != nil {
 		return nil, err
 	}
-	logger.Debug().Msg("Starmap hooks connected")
+	logger.Debug().Msg("Starmap publication hook connected")
 
 	logger.Debug().Msg("Server instance created successfully")
 	return server, nil
 }
 
-func websocketOriginAllowed(config Config, request *http.Request) bool {
-	origin := request.Header.Get("Origin")
-	if origin == "" {
-		return true
-	}
-	if config.CORSEnabled {
-		if len(config.CORSOrigins) == 0 {
-			return true
-		}
-		for _, allowed := range config.CORSOrigins {
-			if allowed == "*" || strings.EqualFold(strings.TrimRight(allowed, "/"), strings.TrimRight(origin, "/")) {
-				return true
-			}
-		}
-		return false
-	}
-	parsed, err := url.Parse(origin)
-	return err == nil && parsed.Host != "" && strings.EqualFold(parsed.Host, request.Host)
-}
-
-// connectHooks registers Starmap event hooks to publish to the broker.
+// connectHooks registers the one post-commit publication event.
 func (s *Server) connectHooks() error {
 	sm, err := s.app.Starmap()
 	if err != nil {
@@ -137,63 +79,19 @@ func (s *Server) connectHooks() error {
 		if sm.CurrentCatalogState().GenerationID == event.GenerationID {
 			s.cache.ActivateGeneration(event.Sequence, event.GenerationID)
 		}
-		s.broker.Publish(events.CatalogPublished, map[string]any{
-			"generation_id": event.GenerationID,
-			"sync_run_id":   event.SyncRunID,
-			"sequence":      event.Sequence,
+		return s.sseBroadcaster.Publish(sse.Publication{
+			GenerationID: event.GenerationID,
+			Sequence:     event.Sequence,
 		})
-		return nil
 	})
-
-	// Model added
-	sm.OnModelAdded(func(model catalogs.Model) {
-		s.broker.Publish(events.ModelAdded, map[string]any{
-			"model": model,
-		})
-		s.logger.Debug().
-			Str("model_id", model.ID).
-			Msg("Model added event published")
-	})
-
-	// Model updated
-	sm.OnModelUpdated(func(old, updated catalogs.Model) {
-		s.broker.Publish(events.ModelUpdated, map[string]any{
-			"old_model": old,
-			"new_model": updated,
-		})
-		s.logger.Debug().
-			Str("model_id", updated.ID).
-			Msg("Model updated event published")
-	})
-
-	// Model removed
-	sm.OnModelRemoved(func(model catalogs.Model) {
-		s.broker.Publish(events.ModelDeleted, map[string]any{
-			"model": model,
-		})
-		s.logger.Debug().
-			Str("model_id", model.ID).
-			Msg("Model deleted event published")
-	})
-
-	s.logger.Info().Msg("Starmap hooks connected to event broker")
+	s.logger.Info().Msg("Starmap publication hook connected to SSE")
 	return nil
 }
 
-// Start starts background services (broker, WebSocket hub, SSE broadcaster).
+// Start activates server-owned services. SSE connections are request-owned, so
+// no background transport goroutine is needed.
 func (s *Server) Start() {
-	s.logger.Debug().Msg("Starting background services")
-
-	s.logger.Debug().Msg("Starting event broker")
-	go s.broker.Run(s.ctx)
-
-	s.logger.Debug().Msg("Starting WebSocket hub")
-	go s.wsHub.Run(s.ctx)
-
-	s.logger.Debug().Msg("Starting SSE broadcaster")
-	go s.sseBroadcaster.Run(s.ctx)
-
-	s.logger.Debug().Msg("All background services started")
+	s.logger.Debug().Msg("Server services active")
 }
 
 // Handler returns the configured http.Handler with middleware chain applied.
@@ -201,35 +99,20 @@ func (s *Server) Handler() http.Handler {
 	return s.setupRouter()
 }
 
-// Shutdown gracefully shuts down background services.
-// The context controls the shutdown timeout - shutdown will abort if context is cancelled.
+// Shutdown terminates active SSE connections. The owning HTTP server drains
+// request handlers before calling this method.
 func (s *Server) Shutdown(ctx context.Context) error {
-	s.logger.Info().Msg("Shutting down server background services")
-
-	// Cancel the context to stop all background services
-	s.cancel()
-
-	// Give background services a grace period to finish in-flight operations
-	// The grace period is a minimum delay; context timeout is the maximum
-	gracePeriod := s.config.ShutdownGracePeriod
-	if gracePeriod == 0 {
-		gracePeriod = 100 * time.Millisecond // Fallback if not configured
+	if ctx == nil {
+		return &errors.ValidationError{
+			Field: "context", Message: "is required",
+		}
 	}
-
-	// Wait for grace period to allow services to complete cleanly
-	timer := time.NewTimer(gracePeriod)
-	defer timer.Stop()
-
-	select {
-	case <-ctx.Done():
-		// Context cancelled/timed out before grace period
-		s.logger.Warn().Msg("Background services shutdown interrupted by context")
-		return ctx.Err()
-	case <-timer.C:
-		// Grace period elapsed, services should be stopped
-		s.logger.Info().Msg("Background services shut down successfully")
-		return nil
+	s.sseBroadcaster.Close()
+	if err := ctx.Err(); err != nil {
+		return err
 	}
+	s.logger.Info().Msg("Server streaming services shut down")
+	return nil
 }
 
 // Cache returns the server's cache instance.
@@ -237,19 +120,9 @@ func (s *Server) Cache() *cache.Cache {
 	return s.cache
 }
 
-// WSHub returns the WebSocket hub.
-func (s *Server) WSHub() *ws.Hub {
-	return s.wsHub
-}
-
 // SSEBroadcaster returns the SSE broadcaster.
 func (s *Server) SSEBroadcaster() *sse.Broadcaster {
 	return s.sseBroadcaster
-}
-
-// Broker returns the event broker for publishing events.
-func (s *Server) Broker() *events.Broker {
-	return s.broker
 }
 
 // StartTime returns the server start time for uptime calculations.

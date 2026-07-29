@@ -1349,12 +1349,12 @@ info:
     name: Starmap Project
     url: https://github.com/agentstation/starmap
   description: |-
-    REST API for the Starmap AI model catalog with real-time updates via WebSocket and SSE.
+    REST API for the Starmap AI model catalog with reactive catalog publication updates over SSE.
 
     Features:
     - Comprehensive model and provider queries
     - Advanced filtering and search
-    - Real-time updates via WebSocket and Server-Sent Events
+    - Heartbeat-enabled catalog publication updates via Server-Sent Events
     - In-memory caching for performance
     - Rate limiting and authentication support
   license:
@@ -1970,7 +1970,7 @@ paths:
       - admin
   /api/v1/updates/stream:
     get:
-      description: Server-Sent Events stream for catalog change notifications
+      description: Heartbeat-enabled stream of post-commit catalog publication hints
       responses:
         "200":
           content:
@@ -1979,15 +1979,6 @@ paths:
                 type: string
           description: Event stream
       summary: SSE updates stream
-      tags:
-      - updates
-  /api/v1/updates/ws:
-    get:
-      description: WebSocket connection for real-time catalog updates
-      responses:
-        "101":
-          description: Switching Protocols
-      summary: WebSocket updates
       tags:
       - updates
 servers:

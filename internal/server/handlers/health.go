@@ -53,7 +53,6 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 		"cache": map[string]any{
 			"items": h.cache.ItemCount(),
 		},
-		"websocket_clients": h.wsHub.ClientCount(),
-		"sse_clients":       h.sseBroadcaster.ClientCount(),
+		"sse_clients": h.sseBroadcaster.ClientCount(),
 	})
 }

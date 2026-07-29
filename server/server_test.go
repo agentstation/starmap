@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -36,6 +37,18 @@ func TestNewRejectsInvalidConfigWithoutPanicking(t *testing.T) {
 		{name: "wildcard prefix", mutate: func(config *Config) { config.PathPrefix = "/api/{version}" }},
 		{name: "negative rate", mutate: func(config *Config) { config.RateLimit = -1 }},
 		{name: "negative read timeout", mutate: func(config *Config) { config.ReadTimeout = -1 }},
+		{
+			name: "negative SSE heartbeat",
+			mutate: func(config *Config) {
+				config.SSEHeartbeatInterval = -time.Second
+			},
+		},
+		{
+			name: "negative SSE write timeout",
+			mutate: func(config *Config) {
+				config.SSEWriteTimeout = -time.Second
+			},
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			config := DefaultConfig()
@@ -48,6 +61,16 @@ func TestNewRejectsInvalidConfigWithoutPanicking(t *testing.T) {
 				t.Fatal("New returned nil error for invalid config")
 			}
 		})
+	}
+}
+
+func TestDefaultConfigIncludesSSELivenessBudgets(t *testing.T) {
+	config := DefaultConfig()
+	if config.SSEHeartbeatInterval != 20*time.Second {
+		t.Fatalf("SSE heartbeat interval = %s, want 20s", config.SSEHeartbeatInterval)
+	}
+	if config.SSEWriteTimeout != 10*time.Second {
+		t.Fatalf("SSE write timeout = %s, want 10s", config.SSEWriteTimeout)
 	}
 }
 

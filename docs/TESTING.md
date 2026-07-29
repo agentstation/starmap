@@ -44,7 +44,7 @@ go test ./internal/catalog/pipeline ./pkg/sync .
 go test ./internal/sources/providers ./internal/providers/clients ./pkg/sources
 go test ./internal/catalog/query ./internal/server/params ./internal/server/handlers
 go test ./pkg/authority ./pkg/reconciler
-go test ./internal/server/events ./internal/server/sse ./internal/server/websocket
+go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
 
@@ -58,12 +58,10 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `internal/catalog/query` | 75% |
 | `internal/providers/clients` | 80% |
 | `internal/sources/providers` | 75% |
-| `internal/server/events` | 70% |
 | `internal/server/middleware` | 90% |
 | `internal/server/params` | 95% |
 | `internal/server/response` | 95% |
 | `internal/server/sse` | 90% |
-| `internal/server/websocket` | 85% |
 | `internal/transport` | 40% |
 | `pkg/authority` | 90% |
 | `pkg/catalogs` | 55% |
@@ -89,7 +87,9 @@ Tests should cross the same interface callers use:
 - Query modules: test filtering, provider alias membership, pagination, and sorting without HTTP or Cobra.
 - HTTP handlers: test request/response translation, cache behavior, and error mapping without retesting query internals.
 - Reconciliation: assert field-rule coverage, authority resolution, provenance names, and resource-specific merge behavior.
-- Event fan-out: test backpressure policy, initialization order, and race safety.
+- SSE publication: test serialized writes, flushed heartbeats, write deadlines,
+  disconnect-on-backpressure, cleanup, and race safety through real HTTP
+  transport where behavior depends on flushing.
 
 ## Source Completeness Tests
 

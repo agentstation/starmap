@@ -1,6 +1,6 @@
 # Starmap ⭐🗺️
 
-> An auto-updating AI Model Catalog available as a Golang Package, CLI Tool, or Server (RESTful, WebSockets, SSE).
+> An auto-updating AI Model Catalog available as a Go package, CLI tool, or HTTP server with REST and SSE.
 
 <div align="center">
 
@@ -78,7 +78,7 @@ Starmap provides:
 ✅ **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback
 ✅ **Real-time Synchronization**: Automatic updates from provider APIs
 ✅ **Flexible Architecture**: Simple merging or complex reconciliation
-✅ **Multiple Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
+✅ **Multiple Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 ✅ **Production Ready**: Thread-safe, well-tested, actively maintained  
 
 ## Installation
@@ -228,7 +228,7 @@ starmap update openai -y
 
 Starmap uses a layered architecture with clean separation of concerns:
 
-- **User Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
+- **User Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
 - **Generation Stores**: Memory, filesystem, SQLite, or conditional object storage
@@ -764,7 +764,7 @@ ordinary server embedding independent from provider credentials and cloud SDKs.
 
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering
-- **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`) carry the same post-commit generation/sync-run identity
+- **Reactive Updates**: SSE (`/api/v1/updates/stream`) emits heartbeat comments and one post-commit `catalog.published` hint containing generation ID and sequence
 - **Performance**: Generation-scoped in-memory caching, deterministic query sorting, rate limiting (per-IP)
 - **Security**: Optional API key authentication, CORS support
 - **Monitoring**: Health checks (`/health`, `/api/v1/ready`), metrics endpoint
@@ -786,6 +786,7 @@ GET  /api/v1/providers/{id}/models  # Get provider's models
 # Remote generation consumption
 GET  /api/v1/catalog/manifest
 GET  /api/v1/catalog/generations/{generation_id}/snapshot
+GET  /api/v1/updates/stream      # Heartbeat-enabled publication hints
 
 # Admin
 POST /api/v1/update              # Trigger catalog sync
@@ -804,6 +805,8 @@ GET  /api/v1/ready               # Readiness check
 - `--auth`: Enable API key authentication
 - `--rate-limit`: Requests per minute per IP (default: 100)
 - `--cache-ttl`: Cache TTL in seconds (default: 300)
+- `--sse-heartbeat-interval`: Flushed comment heartbeat interval (default: 20s)
+- `--sse-write-timeout`: Per-frame SSE write and flush deadline (default: 10s)
 
 **Environment Variables:**
 ```bash

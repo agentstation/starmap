@@ -1,193 +1,340 @@
-// Package sse provides Server-Sent Events support for real-time updates.
+// Package sse provides the sole reactive catalog-publication transport.
 package sse
 
 import (
-	"context"
 	"encoding/json"
+	stderrors "errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/server/events"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Broadcaster manages Server-Sent Events connections.
-type Broadcaster struct {
-	clients    map[chan Event]bool
-	newClients chan chan Event
-	closed     chan chan Event
-	events     chan Event
-	mu         sync.RWMutex
-	logger     *zerolog.Logger
-	fanout     *events.Fanout[Event]
+const (
+	// CatalogPublishedEvent is the stable SSE event name.
+	CatalogPublishedEvent = "catalog.published"
+	// DefaultHeartbeatInterval keeps idle streams alive through common proxies.
+	DefaultHeartbeatInterval = 20 * time.Second
+	// DefaultWriteTimeout bounds each event or heartbeat write and flush.
+	DefaultWriteTimeout = 10 * time.Second
+
+	publicationQueueSize = 1
+)
+
+// Config controls per-connection SSE liveness and write behavior.
+type Config struct {
+	HeartbeatInterval time.Duration
+	WriteTimeout      time.Duration
 }
 
-// NewBroadcaster creates a new SSE broadcaster.
-func NewBroadcaster(logger *zerolog.Logger) *Broadcaster {
-	return &Broadcaster{
-		clients:    make(map[chan Event]bool),
-		newClients: make(chan chan Event, 10), // Buffered to prevent blocking when clients connect before Run() starts
-		closed:     make(chan chan Event, 10), // Buffered to prevent blocking during client cleanup
-		events:     make(chan Event, 256),
-		logger:     logger,
-		fanout:     events.NewFanout[Event](events.BackpressureSkip, logger),
+// Publication identifies one committed immutable catalog generation.
+type Publication struct {
+	GenerationID string `json:"generation_id"`
+	Sequence     uint64 `json:"sequence"`
+}
+
+// DeliveryStats is a lock-free snapshot of SSE delivery behavior.
+type DeliveryStats struct {
+	Published              uint64 `json:"published"`
+	Sent                   uint64 `json:"sent"`
+	Heartbeats             uint64 `json:"heartbeats"`
+	Disconnected           uint64 `json:"disconnected"`
+	BackpressureTerminated uint64 `json:"backpressure_terminated"`
+	Failed                 uint64 `json:"failed"`
+}
+
+// Broadcaster delivers publications to HTTP SSE connections. Each connection
+// owns exactly one writer goroutine: its request handler. Publication overload
+// terminates that connection so reconnect catch-up can recover without a
+// silently healthy stream.
+type Broadcaster struct {
+	mu      sync.Mutex
+	clients map[*client]struct{}
+	closed  bool
+	config  Config
+	logger  *zerolog.Logger
+
+	published              atomic.Uint64
+	sent                   atomic.Uint64
+	heartbeats             atomic.Uint64
+	disconnected           atomic.Uint64
+	backpressureTerminated atomic.Uint64
+	failed                 atomic.Uint64
+}
+
+type client struct {
+	publications chan Publication
+	done         chan struct{}
+	stopOnce     sync.Once
+}
+
+func newClient() *client {
+	return &client{
+		publications: make(chan Publication, publicationQueueSize),
+		done:         make(chan struct{}),
 	}
 }
 
-// Run starts the broadcaster's main loop. Should be called in a goroutine.
-// The broadcaster will run until the context is cancelled.
-func (b *Broadcaster) Run(ctx context.Context) {
-	for {
-		select {
-		case <-ctx.Done():
-			// Graceful shutdown: close all client connections
-			b.mu.Lock()
-			for client := range b.clients {
-				close(client)
-			}
-			b.clients = make(map[chan Event]bool)
-			b.mu.Unlock()
-			b.logger.Info().Msg("SSE broadcaster shut down")
-			return
+func (c *client) stop() {
+	c.stopOnce.Do(func() { close(c.done) })
+}
 
-		case client := <-b.newClients:
-			b.mu.Lock()
-			b.clients[client] = true
-			b.mu.Unlock()
-			b.logger.Info().
-				Int("total_clients", len(b.clients)).
-				Msg("SSE client connected")
+func (c *client) offer(publication Publication) bool {
+	select {
+	case <-c.done:
+		return false
+	default:
+	}
+	select {
+	case <-c.done:
+		return false
+	case c.publications <- publication:
+		return true
+	default:
+		return false
+	}
+}
 
-		case client := <-b.closed:
-			b.mu.Lock()
-			delete(b.clients, client)
-			close(client)
-			b.mu.Unlock()
-			b.logger.Info().
-				Int("total_clients", len(b.clients)).
-				Msg("SSE client disconnected")
-
-		case event := <-b.events:
-			b.fanout.Deliver(b.deliveryTargets(), event)
+// NewBroadcaster constructs an idle broadcaster. It starts no goroutine.
+func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error) {
+	if logger == nil {
+		return nil, &errors.ValidationError{
+			Field: "sse.logger", Message: "is required",
 		}
 	}
-}
-
-// Broadcast sends an event to all connected SSE clients.
-func (b *Broadcaster) Broadcast(event Event) {
-	select {
-	case b.events <- event:
-	default:
-		b.logger.Warn().Msg("SSE broadcast channel full, event dropped")
+	if config.HeartbeatInterval == 0 {
+		config.HeartbeatInterval = DefaultHeartbeatInterval
 	}
+	if config.WriteTimeout == 0 {
+		config.WriteTimeout = DefaultWriteTimeout
+	}
+	if config.HeartbeatInterval < 0 {
+		return nil, &errors.ValidationError{
+			Field: "sse.heartbeat_interval", Value: config.HeartbeatInterval,
+			Message: "must be positive",
+		}
+	}
+	if config.WriteTimeout < 0 {
+		return nil, &errors.ValidationError{
+			Field: "sse.write_timeout", Value: config.WriteTimeout,
+			Message: "must be positive",
+		}
+	}
+	return &Broadcaster{
+		clients: make(map[*client]struct{}),
+		config:  config,
+		logger:  logger,
+	}, nil
 }
 
-// ClientCount returns the number of connected SSE clients.
+// Publish offers one committed generation to every connected stream. It never
+// blocks the catalog commit path. A connection that cannot accept the
+// publication is terminated instead of silently losing it.
+func (b *Broadcaster) Publish(publication Publication) error {
+	if publication.GenerationID == "" {
+		return &errors.ValidationError{
+			Field: "sse.publication.generation_id", Message: "is required",
+		}
+	}
+	if publication.Sequence == 0 {
+		return &errors.ValidationError{
+			Field: "sse.publication.sequence", Message: "must be positive",
+		}
+	}
+
+	b.published.Add(1)
+	b.mu.Lock()
+	if b.closed {
+		b.mu.Unlock()
+		return nil
+	}
+	clients := make([]*client, 0, len(b.clients))
+	for connection := range b.clients {
+		clients = append(clients, connection)
+	}
+	b.mu.Unlock()
+
+	for _, connection := range clients {
+		if connection.offer(publication) {
+			continue
+		}
+		if b.disconnect(connection) {
+			b.backpressureTerminated.Add(1)
+			b.logger.Warn().
+				Uint64("sequence", publication.Sequence).
+				Str("generation_id", publication.GenerationID).
+				Msg("SSE connection terminated after publication backpressure")
+		}
+	}
+	return nil
+}
+
+// ClientCount returns the number of currently registered SSE connections.
 func (b *Broadcaster) ClientCount() int {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
+	b.mu.Lock()
+	defer b.mu.Unlock()
 	return len(b.clients)
 }
 
-// DeliveryStats returns cumulative SSE client delivery counters.
-func (b *Broadcaster) DeliveryStats() events.DeliveryStats {
-	return b.fanout.Stats()
-}
-
-func (b *Broadcaster) deliveryTargets() []events.DeliveryTarget[Event] {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
-
-	targets := make([]events.DeliveryTarget[Event], 0, len(b.clients))
-	for client := range b.clients {
-		targets = append(targets, events.DeliveryTarget[Event]{
-			ID: fmt.Sprintf("%p", client),
-			Send: func(event Event) error {
-				return events.TrySend(client, event)
-			},
-		})
+// Stats returns cumulative delivery counters.
+func (b *Broadcaster) Stats() DeliveryStats {
+	return DeliveryStats{
+		Published:              b.published.Load(),
+		Sent:                   b.sent.Load(),
+		Heartbeats:             b.heartbeats.Load(),
+		Disconnected:           b.disconnected.Load(),
+		BackpressureTerminated: b.backpressureTerminated.Load(),
+		Failed:                 b.failed.Load(),
 	}
-	return targets
 }
 
-// ServeHTTP handles SSE connections.
-func (b *Broadcaster) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Set SSE headers
-	w.Header().Set("Content-Type", "text/event-stream")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+// Close terminates every active connection and rejects new ones.
+func (b *Broadcaster) Close() {
+	b.mu.Lock()
+	if b.closed {
+		b.mu.Unlock()
+		return
+	}
+	b.closed = true
+	clients := make([]*client, 0, len(b.clients))
+	for connection := range b.clients {
+		clients = append(clients, connection)
+		delete(b.clients, connection)
+	}
+	b.mu.Unlock()
+	for _, connection := range clients {
+		connection.stop()
+		b.disconnected.Add(1)
+	}
+}
 
-	// Create client channel
-	client := make(chan Event, 256)
+func (b *Broadcaster) register(connection *client) bool {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	if b.closed {
+		return false
+	}
+	b.clients[connection] = struct{}{}
+	return true
+}
 
-	// Register client
-	b.newClients <- client
+func (b *Broadcaster) disconnect(connection *client) bool {
+	b.mu.Lock()
+	_, found := b.clients[connection]
+	if found {
+		delete(b.clients, connection)
+	}
+	b.mu.Unlock()
+	if found {
+		connection.stop()
+		b.disconnected.Add(1)
+	}
+	return found
+}
 
-	// Ensure cleanup
-	defer func() {
-		b.closed <- client
-	}()
-
-	// Get flusher
-	flusher, ok := w.(http.Flusher)
-	if !ok {
-		http.Error(w, "Streaming not supported", http.StatusInternalServerError)
+// ServeHTTP serves one heartbeat-enabled SSE connection.
+func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodGet {
+		http.Error(writer, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if _, ok := writer.(http.Flusher); !ok {
+		http.Error(writer, "Streaming not supported", http.StatusInternalServerError)
 		return
 	}
 
-	// Send initial connection event
-	initialEvent := Event{
-		Event: "connected",
-		Data: map[string]any{
-			"message":   "Connected to Starmap updates stream",
-			"timestamp": time.Now(),
-		},
+	controller := http.NewResponseController(writer)
+	if err := controller.SetWriteDeadline(time.Now().Add(b.config.WriteTimeout)); err != nil {
+		http.Error(writer, "Streaming write deadlines not supported", http.StatusInternalServerError)
+		return
 	}
-	b.writeEvent(w, flusher, initialEvent)
 
-	// Stream events
+	connection := newClient()
+	if !b.register(connection) {
+		http.Error(writer, "Streaming unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	defer b.disconnect(connection)
+
+	writer.Header().Set("Content-Type", "text/event-stream")
+	writer.Header().Set("Cache-Control", "no-cache, no-transform")
+	writer.Header().Set("X-Accel-Buffering", "no")
+
+	if err := b.writeFrame(writer, controller, []byte(": connected\n\n")); err != nil {
+		b.recordWriteFailure(err)
+		return
+	}
+
+	heartbeat := time.NewTicker(b.config.HeartbeatInterval)
+	defer heartbeat.Stop()
 	for {
 		select {
-		case event := <-client:
-			b.writeEvent(w, flusher, event)
-
-		case <-r.Context().Done():
+		case <-request.Context().Done():
 			return
+		case <-connection.done:
+			return
+		case publication := <-connection.publications:
+			select {
+			case <-connection.done:
+				return
+			default:
+			}
+			frame, err := encodePublication(publication)
+			if err != nil {
+				b.recordWriteFailure(err)
+				return
+			}
+			if err := b.writeFrame(writer, controller, frame); err != nil {
+				b.recordWriteFailure(err)
+				return
+			}
+			b.sent.Add(1)
+		case <-heartbeat.C:
+			if err := b.writeFrame(writer, controller, []byte(": heartbeat\n\n")); err != nil {
+				b.recordWriteFailure(err)
+				return
+			}
+			b.heartbeats.Add(1)
 		}
 	}
 }
 
-// writeEvent writes an SSE event to the response writer.
-func (b *Broadcaster) writeEvent(w http.ResponseWriter, flusher http.Flusher, event Event) {
-	// Write event type if specified
-	if event.Event != "" {
-		_, _ = fmt.Fprintf(w, "event: %s\n", event.Event)
+func (b *Broadcaster) writeFrame(
+	writer http.ResponseWriter,
+	controller *http.ResponseController,
+	frame []byte,
+) error {
+	if err := controller.SetWriteDeadline(time.Now().Add(b.config.WriteTimeout)); err != nil {
+		return err
 	}
-
-	// Write event ID if specified
-	if event.ID != "" {
-		_, _ = fmt.Fprintf(w, "id: %s\n", event.ID)
+	if _, err := writer.Write(frame); err != nil {
+		return err
 	}
-
-	// Write data as JSON
-	data, err := json.Marshal(event.Data)
-	if err != nil {
-		b.logger.Error().Err(err).Msg("Failed to marshal SSE event data")
-		return
-	}
-	_, _ = fmt.Fprintf(w, "data: %s\n\n", data)
-
-	// Flush the response
-	flusher.Flush()
+	return controller.Flush()
 }
 
-// Event represents an SSE event.
-type Event struct {
-	Event string `json:"event,omitempty"` // Event type (optional)
-	ID    string `json:"id,omitempty"`    // Event ID (optional)
-	Data  any    `json:"data"`            // Event data
+func (b *Broadcaster) recordWriteFailure(err error) {
+	b.failed.Add(1)
+	if !stderrors.Is(err, http.ErrServerClosed) {
+		b.logger.Warn().Err(err).Msg("SSE connection write failed")
+	}
+}
+
+func encodePublication(publication Publication) ([]byte, error) {
+	data, err := json.Marshal(publication)
+	if err != nil {
+		return nil, errors.WrapParse("json", "SSE catalog publication", err)
+	}
+	return []byte(fmt.Sprintf(
+		"id: %s\nevent: %s\ndata: %s\n\n",
+		strconv.FormatUint(publication.Sequence, 10),
+		CatalogPublishedEvent,
+		data,
+	)), nil
 }

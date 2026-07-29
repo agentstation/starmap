@@ -27,7 +27,7 @@ Package server provides an embeddable HTTP server for a Starmap catalog.
 
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L14-L49>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L14-L54>)
 
 Config configures an embeddable Starmap HTTP server.
 
@@ -62,6 +62,11 @@ type Config struct {
     WriteTimeout time.Duration
     IdleTimeout  time.Duration
 
+    // SSEHeartbeatInterval controls flushed comment heartbeats on publication
+    // streams. SSEWriteTimeout bounds each event or heartbeat write and flush.
+    SSEHeartbeatInterval time.Duration
+    SSEWriteTimeout      time.Duration
+
     // ShutdownGracePeriod bounds internal service cleanup after HTTP draining.
     ShutdownGracePeriod time.Duration
 
@@ -71,7 +76,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L52>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L57>)
 
 ```go
 func DefaultConfig() Config

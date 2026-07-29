@@ -45,7 +45,7 @@ func CORS(config CORSConfig) func(http.Handler) http.Handler
 CORS middleware adds CORS headers to responses.
 
 <a name="Chain"></a>
-## func [Chain](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L16>)
+## func [Chain](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L13>)
 
 ```go
 func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) http.Handler
@@ -54,7 +54,7 @@ func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) ht
 Chain combines multiple middleware functions into a single middleware.
 
 <a name="Logger"></a>
-## func [Logger](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L26>)
+## func [Logger](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L23>)
 
 ```go
 func Logger(logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -72,7 +72,7 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler
 RateLimit middleware limits requests per IP address.
 
 <a name="Recovery"></a>
-## func [Recovery](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L60>)
+## func [Recovery](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L57>)
 
 ```go
 func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler

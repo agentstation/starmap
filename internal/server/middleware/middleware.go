@@ -3,9 +3,6 @@
 package middleware
 
 import (
-	"bufio"
-	"fmt"
-	"net"
 	"net/http"
 	"time"
 
@@ -98,18 +95,19 @@ func (rw *responseWriter) Unwrap() http.ResponseWriter { return rw.ResponseWrite
 
 // Flush preserves streaming support through the logging middleware.
 func (rw *responseWriter) Flush() {
-	if flusher, ok := rw.ResponseWriter.(http.Flusher); ok {
-		flusher.Flush()
-	}
+	_ = rw.FlushError()
 }
 
-// Hijack preserves WebSocket upgrades through the logging middleware.
-func (rw *responseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	hijacker, ok := rw.ResponseWriter.(http.Hijacker)
-	if !ok {
-		return nil, nil, fmt.Errorf("response writer does not support hijacking")
+// FlushError preserves an underlying error-returning flush when available.
+func (rw *responseWriter) FlushError() error {
+	if flusher, ok := rw.ResponseWriter.(interface{ FlushError() error }); ok {
+		return flusher.FlushError()
 	}
-	return hijacker.Hijack()
+	if flusher, ok := rw.ResponseWriter.(http.Flusher); ok {
+		flusher.Flush()
+		return nil
+	}
+	return http.ErrNotSupported
 }
 
 // Push preserves optional HTTP/2 server push support.

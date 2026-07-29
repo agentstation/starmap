@@ -7,12 +7,12 @@ package server
 
 // @title Starmap API
 // @version 1.0
-// @description REST API for the Starmap AI model catalog with real-time updates via WebSocket and SSE.
+// @description REST API for the Starmap AI model catalog with reactive catalog publication updates over SSE.
 // @description
 // @description Features:
 // @description - Comprehensive model and provider queries
 // @description - Advanced filtering and search
-// @description - Real-time updates via WebSocket and Server-Sent Events
+// @description - Heartbeat-enabled catalog publication updates via Server-Sent Events
 // @description - In-memory caching for performance
 // @description - Rate limiting and authentication support
 //

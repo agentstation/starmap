@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -14,35 +13,7 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func TestWebSocketOriginPolicy(t *testing.T) {
-	for _, test := range []struct {
-		name   string
-		config Config
-		host   string
-		origin string
-		want   bool
-	}{
-		{name: "no browser origin", host: "starmap.example", want: true},
-		{name: "same origin by default", host: "starmap.example", origin: "https://starmap.example", want: true},
-		{name: "cross origin rejected by default", host: "starmap.example", origin: "https://attacker.example"},
-		{name: "configured CORS origin", config: Config{CORSEnabled: true, CORSOrigins: []string{"https://console.example"}}, host: "starmap.example", origin: "https://console.example", want: true},
-		{name: "unconfigured CORS origin", config: Config{CORSEnabled: true, CORSOrigins: []string{"https://console.example"}}, host: "starmap.example", origin: "https://attacker.example"},
-		{name: "explicit allow all", config: Config{CORSEnabled: true}, host: "starmap.example", origin: "https://console.example", want: true},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			request := httptest.NewRequest("GET", "http://"+test.host+"/api/v1/updates/ws", nil)
-			if test.origin != "" {
-				request.Header.Set("Origin", test.origin)
-			}
-			if got := websocketOriginAllowed(test.config, request); got != test.want {
-				t.Fatalf("websocketOriginAllowed() = %t, want %t", got, test.want)
-			}
-		})
-	}
-}
-
-// TestServerInitialization tests that server.New() completes without blocking.
-// This test would catch the deadlock bug where Subscribe() is called before Run().
+// TestServerInitialization proves construction starts no transport goroutine.
 func TestServerInitialization(t *testing.T) {
 	// Create mock app instance
 	testApp := newMockApplication()
@@ -85,8 +56,7 @@ func TestServerInitialization(t *testing.T) {
 	}
 }
 
-// TestServerStartWithoutNew tests that calling Start() after New() doesn't deadlock.
-func TestServerStartWithoutNew(t *testing.T) {
+func TestServerStartDoesNotOwnAHiddenTransportLoop(t *testing.T) {
 	// Create mock app instance
 	testApp := newMockApplication()
 
@@ -104,18 +74,14 @@ func TestServerStartWithoutNew(t *testing.T) {
 		t.Fatalf("server.New() failed: %v", err)
 	}
 
-	// Start background services - should not block
 	done := make(chan struct{})
 	go func() {
 		srv.Start()
-		// Give services a moment to start
-		time.Sleep(100 * time.Millisecond)
 		close(done)
 	}()
 
 	select {
 	case <-done:
-		// Success - Start() completed without blocking
 	case <-time.After(5 * time.Second):
 		t.Fatal("srv.Start() appears to have deadlocked")
 	}
@@ -124,91 +90,6 @@ func TestServerStartWithoutNew(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	_ = srv.Shutdown(ctx)
-}
-
-// TestServerSubscribersWithoutRun tests that broker subscribers can be added before Run() starts.
-// This is the exact scenario that caused the deadlock bug.
-func TestServerSubscribersWithoutRun(t *testing.T) {
-	logger := zerolog.Nop()
-
-	// Create broker without starting Run()
-	broker := newTestBroker(&logger)
-
-	// Try to subscribe - this should NOT block with buffered channels
-	done := make(chan struct{})
-	go func() {
-		// Subscribe without calling broker.Run()
-		broker.Subscribe(newTestSubscriber())
-		close(done)
-	}()
-
-	select {
-	case <-done:
-		// Success - Subscribe() did not block
-	case <-time.After(2 * time.Second):
-		t.Fatal("broker.Subscribe() deadlocked without broker.Run() - channels are not buffered!")
-	}
-}
-
-// TestServerComponentChannelsBuffered verifies all server components use buffered channels.
-func TestServerComponentChannelsBuffered(t *testing.T) {
-	// Create mock app instance
-	testApp := newMockApplication()
-
-	serverCfg := Config{
-		Host:       "localhost",
-		Port:       18083,
-		PathPrefix: "/api/v1",
-		CacheTTL:   5 * time.Minute,
-	}
-
-	// Create server - this internally subscribes to broker before Run()
-	srv, err := New(testApp, serverCfg)
-	if err != nil {
-		t.Fatalf("server.New() failed: %v", err)
-	}
-	defer func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-		defer cancel()
-		_ = srv.Shutdown(ctx)
-	}()
-
-	// If we got here without blocking, channels are properly buffered
-	t.Log("Server initialized successfully with buffered channels")
-}
-
-// Helper types for testing
-
-type testSubscriber struct{}
-
-func newTestSubscriber() *testSubscriber {
-	return &testSubscriber{}
-}
-
-func (s *testSubscriber) Send(event any) error {
-	return nil
-}
-
-func (s *testSubscriber) Close() error {
-	return nil
-}
-
-// testBroker creates a broker instance for testing
-func newTestBroker(logger *zerolog.Logger) *testBrokerWrapper {
-	return &testBrokerWrapper{
-		register:   make(chan any, 10), // Buffered like production
-		unregister: make(chan any, 10), // Buffered like production
-	}
-}
-
-type testBrokerWrapper struct {
-	register   chan any
-	unregister chan any
-}
-
-func (b *testBrokerWrapper) Subscribe(sub any) {
-	// Simulate the broker.Subscribe() call
-	b.register <- sub
 }
 
 // mockApplication is a minimal Application implementation for testing

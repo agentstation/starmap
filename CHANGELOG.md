@@ -33,15 +33,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   survive process restart. Server updates may select a single source with the
   `source` query parameter; a configured `WithCatalogPath` is also the default
   sync workspace when `sync.WithCatalogPath` is omitted.
-- Catalog publication observers no longer head-of-line block one another, and
-  server logging middleware preserves SSE flushing and WebSocket hijacking.
-  HTTP catalog responses, SSE, WebSocket, and cache state now correlate the
-  same durable generation and sync-run identity after commit.
+- Catalog publication observers no longer head-of-line block one another.
+  Server logging middleware preserves error-reporting SSE flushes, while HTTP
+  catalog responses, SSE publication hints, and cache state correlate the same
+  durable generation identity after commit.
 - Catalog publication callbacks now begin in generation order and use a
   bounded newest-pending coalescing policy instead of silently dropping a
   complete generation when fixed delivery slots are saturated. Atomic catalog
   state supplies the event sequence directly; sequence gaps and
   `HookStats().Coalesced` expose overload without delaying the durable commit.
+- **One reactive transport**: SSE is the sole server-to-client publication
+  transport. Each connection has one serialized request-owned writer for
+  `catalog.published` hints and flushed comment heartbeats. The default
+  heartbeat interval is 20 seconds, every frame has a 10-second write deadline,
+  and a backpressured or failed connection is terminated so reconnect catch-up
+  can recover. The unused WebSocket, generic broker, model-event adapters, and
+  their public route were removed before launch.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,

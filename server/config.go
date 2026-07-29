@@ -41,6 +41,11 @@ type Config struct {
 	WriteTimeout time.Duration
 	IdleTimeout  time.Duration
 
+	// SSEHeartbeatInterval controls flushed comment heartbeats on publication
+	// streams. SSEWriteTimeout bounds each event or heartbeat write and flush.
+	SSEHeartbeatInterval time.Duration
+	SSEWriteTimeout      time.Duration
+
 	// ShutdownGracePeriod bounds internal service cleanup after HTTP draining.
 	ShutdownGracePeriod time.Duration
 
@@ -74,6 +79,12 @@ func (c Config) normalized() Config {
 	if c.ShutdownGracePeriod == 0 {
 		c.ShutdownGracePeriod = defaults.ShutdownGracePeriod
 	}
+	if c.SSEHeartbeatInterval == 0 {
+		c.SSEHeartbeatInterval = defaults.SSEHeartbeatInterval
+	}
+	if c.SSEWriteTimeout == 0 {
+		c.SSEWriteTimeout = defaults.SSEWriteTimeout
+	}
 	c.CORSOrigins = append([]string(nil), c.CORSOrigins...)
 	return c
 }
@@ -100,6 +111,10 @@ func (c Config) validate() error {
 		return &errors.ValidationError{Field: "server.write_timeout", Value: c.WriteTimeout, Message: "cannot be negative"}
 	case c.IdleTimeout < 0:
 		return &errors.ValidationError{Field: "server.idle_timeout", Value: c.IdleTimeout, Message: "cannot be negative"}
+	case c.SSEHeartbeatInterval <= 0:
+		return &errors.ValidationError{Field: "server.sse_heartbeat_interval", Value: c.SSEHeartbeatInterval, Message: "must be positive"}
+	case c.SSEWriteTimeout <= 0:
+		return &errors.ValidationError{Field: "server.sse_write_timeout", Value: c.SSEWriteTimeout, Message: "must be positive"}
 	case c.ShutdownGracePeriod <= 0:
 		return &errors.ValidationError{Field: "server.shutdown_grace_period", Value: c.ShutdownGracePeriod, Message: "must be positive"}
 	default:
@@ -114,6 +129,7 @@ func (c Config) internal() internalserver.Config {
 		AuthEnabled: c.AuthEnabled, AuthHeader: c.AuthHeader,
 		RateLimit: c.RateLimit, CacheTTL: c.CacheTTL,
 		ReadTimeout: c.ReadTimeout, WriteTimeout: c.WriteTimeout, IdleTimeout: c.IdleTimeout,
+		SSEHeartbeatInterval: c.SSEHeartbeatInterval, SSEWriteTimeout: c.SSEWriteTimeout,
 		ShutdownGracePeriod: c.ShutdownGracePeriod,
 		MetricsEnabled:      c.MetricsEnabled,
 	}
@@ -126,6 +142,7 @@ func configFromInternal(c internalserver.Config) Config {
 		AuthEnabled: c.AuthEnabled, AuthHeader: c.AuthHeader,
 		RateLimit: c.RateLimit, CacheTTL: c.CacheTTL,
 		ReadTimeout: c.ReadTimeout, WriteTimeout: c.WriteTimeout, IdleTimeout: c.IdleTimeout,
+		SSEHeartbeatInterval: c.SSEHeartbeatInterval, SSEWriteTimeout: c.SSEWriteTimeout,
 		ShutdownGracePeriod: c.ShutdownGracePeriod,
 		MetricsEnabled:      c.MetricsEnabled,
 	}

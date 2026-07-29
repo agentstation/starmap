@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -43,14 +42,6 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		response.InternalError(w, err)
 		return
 	}
-
-	// Broadcast update event
-	h.broker.Publish(events.SyncCompleted, map[string]any{
-		"total_changes":     result.TotalChanges,
-		"providers_changed": result.ProvidersChanged,
-		"generation_id":     result.GenerationID,
-		"sync_run_id":       result.SyncRunID,
-	})
 
 	response.OK(w, map[string]any{
 		"status":            "completed",
@@ -102,31 +93,10 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 			"models_total":    len(models),
 			"providers_total": len(providers),
 		},
-		"events": map[string]any{
-			"published_total": h.broker.EventsPublished(),
-			"dropped_total":   h.broker.EventsDropped(),
-			"queue_depth":     h.broker.QueueDepth(),
-			"delivery":        deliveryStatsMap(h.broker.DeliveryStats()),
-		},
 		"realtime": map[string]any{
-			"websocket_clients": h.wsHub.ClientCount(),
-			"sse_clients":       h.sseBroadcaster.ClientCount(),
-			"websocket_delivery": deliveryStatsMap(
-				h.wsHub.DeliveryStats(),
-			),
-			"sse_delivery": deliveryStatsMap(
-				h.sseBroadcaster.DeliveryStats(),
-			),
+			"sse_clients":  h.sseBroadcaster.ClientCount(),
+			"sse_delivery": h.sseBroadcaster.Stats(),
 		},
 		"cache": h.cache.GetStats(),
 	})
-}
-
-func deliveryStatsMap(stats events.DeliveryStats) map[string]uint64 {
-	return map[string]uint64{
-		"sent":         stats.Sent,
-		"skipped":      stats.Skipped,
-		"disconnected": stats.Disconnected,
-		"failed":       stats.Failed,
-	}
 }

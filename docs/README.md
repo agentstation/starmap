@@ -98,7 +98,7 @@ Complete REST API documentation including:
 - Authentication and security
 - Response format and error handling
 - All API endpoints (models, providers, admin, health)
-- Real-time updates (WebSocket, SSE)
+- Heartbeat-enabled catalog publication updates over SSE
 - Filtering and search
 - Rate limiting and CORS
 - Usage examples
@@ -136,7 +136,7 @@ Individual package READMEs provide implementation details:
 - [Sync Pipeline (13 Stages)](ARCHITECTURE.md#sync-pipeline)
 - [Reconciliation System](ARCHITECTURE.md#reconciliation-system)
 - [HTTP Server Configuration](REST_API.md#configuration)
-- [Real-time Updates (WebSocket/SSE)](REST_API.md#real-time-updates)
+- [Reactive Updates (SSE)](REST_API.md#real-time-updates)
 - [Go Package Usage](API.md#client)
 
 ## Contributing

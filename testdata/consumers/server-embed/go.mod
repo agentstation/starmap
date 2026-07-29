@@ -8,7 +8,6 @@ require (
 	github.com/agentstation/utc v0.2.0 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gofrs/flock v0.13.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect

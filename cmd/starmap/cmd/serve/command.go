@@ -33,8 +33,7 @@ func NewCommand(app application) *cobra.Command {
 
 Features:
   - RESTful endpoints for models, providers, and catalog management
-  - WebSocket support for real-time updates (/api/v1/updates/ws)
-  - Server-Sent Events (SSE) for streaming updates (/api/v1/updates/stream)
+  - Heartbeat-enabled Server-Sent Events for catalog publications (/api/v1/updates/stream)
   - In-memory caching with configurable TTL
   - Rate limiting (requests per minute per IP)
   - API key authentication (optional)
@@ -85,6 +84,8 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 	cmd.Flags().Duration("read-timeout", 10*time.Second, "HTTP read timeout")
 	cmd.Flags().Duration("write-timeout", 10*time.Second, "HTTP write timeout")
 	cmd.Flags().Duration("idle-timeout", 120*time.Second, "HTTP idle timeout")
+	cmd.Flags().Duration("sse-heartbeat-interval", 20*time.Second, "SSE comment heartbeat interval")
+	cmd.Flags().Duration("sse-write-timeout", 10*time.Second, "per-frame SSE write and flush timeout")
 
 	// Features flags
 	cmd.Flags().Bool("metrics", true, "Enable metrics endpoint")
@@ -132,12 +133,12 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 	}
 	logger.Debug().Msg("Server instance created")
 
-	// Start background services (WebSocket hub, SSE broadcaster, event broker)
-	logger.Debug().Msg("Starting background services")
+	// Activate server-owned services. SSE connections remain request-owned.
+	logger.Debug().Msg("Activating server services")
 	if err := srv.Start(); err != nil {
 		return fmt.Errorf("starting server services: %w", err)
 	}
-	logger.Debug().Msg("Background services started")
+	logger.Debug().Msg("Server services active")
 
 	// Log that server is starting (after background services initialize)
 	logger.Info().
@@ -181,6 +182,8 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	readTimeout := mustGetDuration(cmd, "read-timeout")
 	writeTimeout := mustGetDuration(cmd, "write-timeout")
 	idleTimeout := mustGetDuration(cmd, "idle-timeout")
+	sseHeartbeatInterval := mustGetDuration(cmd, "sse-heartbeat-interval")
+	sseWriteTimeout := mustGetDuration(cmd, "sse-write-timeout")
 	metricsEnabled := mustGetBool(cmd, "metrics")
 	pathPrefix := mustGetString(cmd, "prefix")
 
@@ -195,19 +198,21 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	}
 
 	return server.Config{
-		Host:           host,
-		Port:           port,
-		PathPrefix:     pathPrefix,
-		CORSEnabled:    corsEnabled,
-		CORSOrigins:    corsOrigins,
-		AuthEnabled:    authEnabled,
-		AuthHeader:     authHeader,
-		RateLimit:      rateLimit,
-		CacheTTL:       time.Duration(cacheTTL) * time.Second,
-		ReadTimeout:    readTimeout,
-		WriteTimeout:   writeTimeout,
-		IdleTimeout:    idleTimeout,
-		MetricsEnabled: metricsEnabled,
+		Host:                 host,
+		Port:                 port,
+		PathPrefix:           pathPrefix,
+		CORSEnabled:          corsEnabled,
+		CORSOrigins:          corsOrigins,
+		AuthEnabled:          authEnabled,
+		AuthHeader:           authHeader,
+		RateLimit:            rateLimit,
+		CacheTTL:             time.Duration(cacheTTL) * time.Second,
+		ReadTimeout:          readTimeout,
+		WriteTimeout:         writeTimeout,
+		IdleTimeout:          idleTimeout,
+		SSEHeartbeatInterval: sseHeartbeatInterval,
+		SSEWriteTimeout:      sseWriteTimeout,
+		MetricsEnabled:       metricsEnabled,
 	}
 }
 
