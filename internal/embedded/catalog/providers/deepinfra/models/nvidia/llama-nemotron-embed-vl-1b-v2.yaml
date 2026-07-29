@@ -1,5 +1,6 @@
 # nvidia/llama-nemotron-embed-vl-1b-v2 - The llama-nemotron-embed-vl-1b-v2 is a high-performance mult...
 id: nvidia/llama-nemotron-embed-vl-1b-v2
+model: nvidia/llama-nemotron-embed-vl-1b-v2
 name: nvidia/llama-nemotron-embed-vl-1b-v2
 authors:
 - id: nvidia

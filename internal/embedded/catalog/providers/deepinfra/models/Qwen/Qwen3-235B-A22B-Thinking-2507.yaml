@@ -1,9 +1,10 @@
 # Qwen/Qwen3-235B-A22B-Thinking-2507 - Qwen3-235B-A22B-Thinking-2507 is the Qwen3's new model with ...
 id: Qwen/Qwen3-235B-A22B-Thinking-2507
+model: qwen/qwen3-235b-a22b-thinking-2507
 name: Qwen/Qwen3-235B-A22B-Thinking-2507
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen3-235B-A22B-Thinking-2507 is the Qwen3's new model with scaling the thinking capability of Qwen3-235B-A22B, improving both the quality and depth of reasoning.
 
 # Model metadata
@@ -83,9 +84,9 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.20000000059999998
+      per_1m: 0.2
     input:
-      per_1m: 0.22999999999999998
+      per_1m: 0.23
     output:
       per_1m: 2.3
   currency: USD

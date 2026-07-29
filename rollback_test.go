@@ -276,6 +276,7 @@ func rollbackFixtureCatalog(t testing.TB, name string, source sources.ID) *catal
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
+	seedTestModelDefinitions(t, builder)
 	builder.SetProvenance(provenance.Map{
 		"model:" + provenance.ModelResourceID("provider-a", "model-a") + ":Name": {{
 			Source: source,

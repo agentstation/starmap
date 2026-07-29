@@ -1,5 +1,6 @@
 # claude-fable-5 - Claude model for creative writing, analysis, and controlled ...
 id: claude-fable-5
+model: anthropic/claude-fable-5
 name: Claude Fable 5
 authors:
 - id: anthropic

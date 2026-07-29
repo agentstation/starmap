@@ -1,5 +1,6 @@
 # aqa - Model trained to return answers to questions that are ground...
 id: aqa
+model: google/aqa
 name: Model that performs Attributed Question Answering.
 authors:
 - id: google
@@ -71,19 +72,6 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
-generation:
-  temperature:
-    min: 0.0
-    max: 0.0
-    default: 0.2
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 1.0
-  top_k:
-    min: 0
-    max: 0
-    default: 40
 
 # Model limits
 limits:

@@ -1,5 +1,6 @@
 # sentence-transformers/all-MiniLM-L6-v2 - We present a sentence transformation model that achieves sta...
 id: sentence-transformers/all-MiniLM-L6-v2
+model: sentence-transformers/all-minilm-l6-v2
 name: sentence-transformers/all-MiniLM-L6-v2
 description: We present a sentence transformation model that achieves state-of-the-art results on various NLP tasks without requiring task-specific architectures or fine-tuning. Our approach leverages contrastive learning and utilizes a variety of datasets to learn robust sentence representations. We evaluate our model on several benchmarks and demonstrate its effectiveness in various applications such as text classification, sentiment analysis, named entity recognition, and question answering.
 

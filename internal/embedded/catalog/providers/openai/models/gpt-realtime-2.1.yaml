@@ -1,5 +1,6 @@
 # gpt-realtime-2.1 - Realtime speech-to-speech model with configurable reasoning,...
 id: gpt-realtime-2.1
+model: openai/gpt-realtime-2.1
 name: gpt-realtime-2.1
 authors:
 - id: openai

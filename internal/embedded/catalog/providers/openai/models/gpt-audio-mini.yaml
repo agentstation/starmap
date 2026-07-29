@@ -1,5 +1,6 @@
 # gpt-audio-mini - AI model
 id: gpt-audio-mini
+model: openai/gpt-audio-mini
 name: gpt-audio-mini
 authors:
 - id: openai

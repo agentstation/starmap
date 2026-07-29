@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"encoding/json"
+	"slices"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -20,7 +21,7 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 	offering := ProviderOffering{
 		ProviderID:      candidate.providerID,
 		ProviderModelID: ProviderModelID(model.ID),
-		DefinitionID:    ModelDefinitionID(model.ID),
+		DefinitionID:    candidate.definitionID,
 		Pricing:         deepCopyModelPricing(model.Pricing),
 		Availability:    OfferingAvailabilityUnknown,
 		Endpoint:        candidate.endpoint,
@@ -66,15 +67,33 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 	return offering, nil
 }
 
-func deriveProviderOfferingEndpoint(provider Provider) ProviderOfferingEndpoint {
+func deriveProviderOfferingEndpoint(provider Provider, model Model) ProviderOfferingEndpoint {
 	endpoint := ProviderOfferingEndpoint{}
-	if provider.Catalog != nil {
-		endpoint.Type = provider.Catalog.Endpoint.Type
-	}
-	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil {
+	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil &&
+		isChatCompletionModel(model) {
+		if provider.Catalog != nil {
+			endpoint.Type = provider.Catalog.Endpoint.Type
+		}
 		endpoint.URL = *provider.ChatCompletions.URL
 	}
 	return endpoint
+}
+
+func isChatCompletionModel(model Model) bool {
+	if model.Pricing != nil && model.Pricing.Operations != nil {
+		return false
+	}
+	if model.Metadata != nil {
+		for _, tag := range model.Metadata.Tags {
+			switch tag {
+			case "embed", ModelTagEmbedding, "image-gen", "video-gen", "tts", "stt",
+				"rerank", ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText:
+				return false
+			}
+		}
+	}
+	return slices.Contains(model.Features.Modalities.Input, ModelModalityText) &&
+		slices.Contains(model.Features.Modalities.Output, ModelModalityText)
 }
 
 func offeringLifecycle(status ModelStatus) (OfferingLifecycle, error) {

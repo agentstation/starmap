@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-2-max - The new top-tier image model from Black Forest Labs, signifi...
 id: black-forest-labs/FLUX-2-max
+model: black-forest-labs/flux-2-max
 name: black-forest-labs/FLUX-2-max
 description: The new top-tier image model from Black Forest Labs, significantly pushing image quality and editing consistency
 

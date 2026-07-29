@@ -1,5 +1,6 @@
 # intfloat/e5-large-v2 - Text Embeddings by Weakly-Supervised Contrastive Pre-trainin...
 id: intfloat/e5-large-v2
+model: intfloat/e5-large-v2
 name: intfloat/e5-large-v2
 description: Text Embeddings by Weakly-Supervised Contrastive Pre-training. Model has 24 layers and 1024 out dim.
 

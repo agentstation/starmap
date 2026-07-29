@@ -1,9 +1,10 @@
 # Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo - Qwen coding model for software agents, repository edits, and...
 id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
+model: qwen/qwen3-coder-480b-a35b-instruct
 name: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen coding model for software agents, repository edits, and code reasoning
 
 # Model metadata
@@ -83,7 +84,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.09999999899999999
+      per_1m: 0.1
     input:
       per_1m: 0.3
     output:

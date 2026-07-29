@@ -86,6 +86,11 @@ func (cat *Builder) Load() error {
 		return err
 	}
 
+	// Load provider-independent model files from authors/.
+	if err := cat.loadAuthorModelFiles(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -173,6 +178,14 @@ func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
 	return cat.SetProvider(provider)
 }
 
+// loadAuthorModel loads one provider-independent model under its owning author.
+func (cat *Builder) loadAuthorModel(pathParts []string, model *Model) error {
+	if len(pathParts) != 4 || pathParts[0] != "authors" || pathParts[2] != "models" {
+		return nil
+	}
+	return cat.SetAuthorModel(AuthorID(pathParts[1]), *model)
+}
+
 // loadModelFile parses and loads a model file.
 func (cat *Builder) loadModelFile(path string, data []byte) error {
 	var model Model
@@ -182,7 +195,14 @@ func (cat *Builder) loadModelFile(path string, data []byte) error {
 
 	pathParts := strings.Split(path, "/")
 
-	return cat.loadProviderModel(pathParts, &model)
+	switch pathParts[0] {
+	case "providers":
+		return cat.loadProviderModel(pathParts, &model)
+	case "authors":
+		return cat.loadAuthorModel(pathParts, &model)
+	default:
+		return nil
+	}
 }
 
 func (cat *Builder) loadModelRecord(path string, data []byte) {
@@ -240,6 +260,35 @@ func (cat *Builder) loadProviderModelFiles() error {
 
 	if err != nil && !os.IsNotExist(err) {
 		return errors.WrapIO("walk", "providers directory", err)
+	}
+	return nil
+}
+
+// loadAuthorModelFiles walks the human-authored model tree.
+func (cat *Builder) loadAuthorModelFiles() error {
+	err := fs.WalkDir(cat.config.readFilesystem(), "authors", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			if os.IsNotExist(err) {
+				return nil
+			}
+			return err
+		}
+		if d.IsDir() || !strings.HasSuffix(path, ".yaml") || !strings.Contains(path, "/models/") {
+			return nil
+		}
+		if cat.modelLoadLimitReached(path) {
+			return fs.SkipAll
+		}
+
+		data, err := fs.ReadFile(cat.config.readFilesystem(), path)
+		if err != nil {
+			return errors.WrapIO("read", path, err)
+		}
+		cat.loadModelRecord(path, data)
+		return nil
+	})
+	if err != nil && !os.IsNotExist(err) {
+		return errors.WrapIO("walk", "authors directory", err)
 	}
 	return nil
 }

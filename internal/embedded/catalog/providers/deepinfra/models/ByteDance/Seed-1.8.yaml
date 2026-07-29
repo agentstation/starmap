@@ -1,5 +1,6 @@
 # ByteDance/Seed-1.8 - Optimized specifically for multimodal agent scenarios. It fe...
 id: ByteDance/Seed-1.8
+model: bytedance/seed-1.8
 name: ByteDance/Seed-1.8
 authors:
 - id: bytedance

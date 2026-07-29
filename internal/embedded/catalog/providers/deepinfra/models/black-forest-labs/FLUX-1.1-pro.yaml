@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-1.1-pro - Black Forest Labs' latest state-of-the art proprietary model...
 id: black-forest-labs/FLUX-1.1-pro
+model: black-forest-labs/flux-1.1-pro
 name: black-forest-labs/FLUX-1.1-pro
 description: Black Forest Labs' latest state-of-the art proprietary model sporting top of the line prompt following, visual quality, details and output diversity.
 

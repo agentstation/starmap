@@ -1,9 +1,10 @@
 # qwen3.7-plus-us - AI model
 id: qwen3.7-plus-us
+model: qwen/qwen3.7-plus
 name: qwen3.7-plus-us
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

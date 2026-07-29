@@ -1,5 +1,6 @@
 # google/gemini-3-pro-image - Nano Banana Pro (Gemini 3 Pro Image) is designed to tackle t...
 id: google/gemini-3-pro-image
+model: google/gemini-3-pro-image
 name: google/gemini-3-pro-image
 authors:
 - id: google

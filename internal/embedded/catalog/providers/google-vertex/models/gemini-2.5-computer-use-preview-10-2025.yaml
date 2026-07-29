@@ -1,5 +1,6 @@
 # gemini-2.5-computer-use-preview-10-2025 - Google model: gemini-2.5-computer-use-preview-10-2025
 id: gemini-2.5-computer-use-preview-10-2025
+model: google/gemini-2.5-computer-use-preview-10-2025
 name: gemini-2.5-computer-use-preview-10-2025
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # sentence-transformers/paraphrase-MiniLM-L6-v2 - We present a sentence similarity model based on the Sentence...
 id: sentence-transformers/paraphrase-MiniLM-L6-v2
+model: sentence-transformers/paraphrase-minilm-l6-v2
 name: sentence-transformers/paraphrase-MiniLM-L6-v2
 description: We present a sentence similarity model based on the Sentence Transformers architecture, which maps sentences to a 384-dimensional dense vector space. The model uses a pre-trained BERT encoder and applies mean pooling on top of the contextualized word embeddings to obtain sentence embeddings. We evaluate the model on the Sentence Embeddings Benchmark.
 

@@ -1,9 +1,10 @@
 # qwen3-vl-235b-a22b-instruct - AI model
 id: qwen3-vl-235b-a22b-instruct
+model: qwen/qwen3-vl-235b-a22b-instruct
 name: qwen3-vl-235b-a22b-instruct
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

@@ -1,5 +1,6 @@
 # nvidia/NVIDIA-Nemotron-3-Super-120B-A12B - NVIDIA Nemotron 3 Super is a hybrid Mixture-of-Experts (MoE)...
 id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+model: nvidia/nvidia-nemotron-3-super-120b-a12b
 name: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
 authors:
 - id: nvidia
@@ -81,7 +82,7 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 0.08499999999999999
+      per_1m: 0.085
     output:
       per_1m: 0.4
   currency: USD

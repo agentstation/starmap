@@ -1,5 +1,6 @@
 # gemini-embedding-001 - Obtain a distributed representation of a text.
 id: gemini-embedding-001
+model: google/gemini-embedding-001
 name: gemini-embedding-001
 authors:
 - id: google

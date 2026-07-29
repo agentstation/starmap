@@ -1,5 +1,6 @@
 # inworld-ai/realtime-tts-1.5-mini - Fast multilingual text-to-speech model by Inworld AI with 13...
 id: inworld-ai/realtime-tts-1.5-mini
+model: inworld-ai/realtime-tts-1.5-mini
 name: inworld-ai/realtime-tts-1.5-mini
 description: Fast multilingual text-to-speech model by Inworld AI with 130+ preset voices across 15 languages. Supports voice cloning, word-level timestamps, and streaming. Optimized for low-latency applications with <130ms time-to-first-audio.
 

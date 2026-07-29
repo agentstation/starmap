@@ -1,5 +1,6 @@
 # language-v1-analyze-entity-sentiment - Google Vertex AI model: language-v1-analyze-entity-sentiment
 id: language-v1-analyze-entity-sentiment
+model: google/language-v1-analyze-entity-sentiment
 name: language-v1-analyze-entity-sentiment
 authors:
 - id: google

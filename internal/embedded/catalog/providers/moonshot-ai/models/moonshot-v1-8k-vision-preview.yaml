@@ -1,5 +1,6 @@
 # moonshot-v1-8k-vision-preview - AI model
 id: moonshot-v1-8k-vision-preview
+model: moonshot-ai/moonshot-v1-8k-vision-preview
 name: moonshot-v1-8k-vision-preview
 authors:
 - id: moonshot-ai

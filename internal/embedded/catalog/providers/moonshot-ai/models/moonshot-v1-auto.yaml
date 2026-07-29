@@ -1,5 +1,6 @@
 # moonshot-v1-auto - AI model
 id: moonshot-v1-auto
+model: moonshot-ai/moonshot-v1-auto
 name: moonshot-v1-auto
 authors:
 - id: moonshot-ai

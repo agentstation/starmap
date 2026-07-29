@@ -1,5 +1,6 @@
 # openai/whisper-large-v3-turbo - Whisper is a state-of-the-art model for automatic speech rec...
 id: openai/whisper-large-v3-turbo
+model: openai/whisper-large-v3-turbo
 name: openai/whisper-large-v3-turbo
 authors:
 - id: openai
@@ -79,7 +80,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    audio_input: 3.3300000000000003e-06
+    audio_input: 3.33e-06
   currency: USD
 
 # Timestamps

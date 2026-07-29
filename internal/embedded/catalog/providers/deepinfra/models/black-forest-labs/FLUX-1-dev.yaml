@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-1-dev - FLUX.1-dev is a state-of-the-art 12 billion parameter rectif...
 id: black-forest-labs/FLUX-1-dev
+model: black-forest-labs/flux-1-dev
 name: black-forest-labs/FLUX-1-dev
 description: FLUX.1-dev is a state-of-the-art 12 billion parameter rectified flow transformer developed by Black Forest Labs. This model excels in text-to-image generation, providing highly accurate and detailed outputs. It is particularly well-regarded for its ability to follow complex prompts and generate anatomically accurate images, especially with challenging details like hands and faces.
 
@@ -76,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    image_gen: 0.009000000000000001
+    image_gen: 0.009
   currency: USD
 extensions:
   deepinfra:

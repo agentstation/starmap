@@ -1,5 +1,6 @@
 # claude-haiku-4-5-20251001 - Fast Claude model for responsive assistance, classification,...
 id: claude-haiku-4-5-20251001
+model: anthropic/claude-haiku-4-5-20251001
 name: Claude Haiku 4.5
 authors:
 - id: anthropic

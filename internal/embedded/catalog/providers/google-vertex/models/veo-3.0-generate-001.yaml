@@ -1,5 +1,6 @@
 # veo-3.0-generate-001 - Google model: veo-3.0-generate-001
 id: veo-3.0-generate-001
+model: google/veo-3.0-generate-001
 name: veo-3.0-generate-001
 authors:
 - id: google

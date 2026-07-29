@@ -150,7 +150,7 @@ func TestHostedDistributionRejectsArtifactChecksumDrift(t *testing.T) {
 func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
 	published := hostedFixture(t)
 	published.Generation.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{
-		MinSchemaVersion: 1, MaxSchemaVersion: 2,
+		MinSchemaVersion: 1, MaxSchemaVersion: 3,
 	}
 	artifact, err := catalogartifact.Build(published.Generation)
 	if err != nil {
@@ -174,14 +174,14 @@ func TestCompatibilityNegotiationUsesOnlyCatalogSchemaRange(t *testing.T) {
 		t.Fatalf("NewClient compatible: %v", err)
 	}
 	if _, err := compatible.FetchLatest(context.Background()); err != nil {
-		t.Fatalf("schema-2 consumer rejected declared compatible schema-1 payload: %v", err)
+		t.Fatalf("schema-2 consumer rejected declared compatible schema-3 payload: %v", err)
 	}
-	incompatible, err := NewClient(server.URL, server.Client(), 3)
+	incompatible, err := NewClient(server.URL, server.Client(), 4)
 	if err != nil {
 		t.Fatalf("NewClient incompatible: %v", err)
 	}
 	if _, err := incompatible.FetchLatest(context.Background()); err == nil {
-		t.Fatal("schema-3 consumer accepted range [1,2]")
+		t.Fatal("schema-4 consumer accepted range [1,3]")
 	}
 
 	typeOfPointer := reflect.TypeFor[LatestPointer]()

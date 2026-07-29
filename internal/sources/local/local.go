@@ -84,7 +84,7 @@ func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observ
 		return sources.Observation{}, errors.WrapResource("load", "human catalog", s.catalogPath, err)
 	}
 	builder.SetMergeStrategy(catalogs.MergeReplaceAll)
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("publish", "local source observation", "", err)
 	}

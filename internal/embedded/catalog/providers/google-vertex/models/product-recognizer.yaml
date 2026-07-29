@@ -1,5 +1,6 @@
 # product-recognizer - Google Vertex AI model: product-recognizer
 id: product-recognizer
+model: google/product-recognizer
 name: product-recognizer
 authors:
 - id: google

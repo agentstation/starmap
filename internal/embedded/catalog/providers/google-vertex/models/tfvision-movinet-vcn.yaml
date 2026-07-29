@@ -1,5 +1,6 @@
 # tfvision-movinet-vcn - Google Vertex AI model: tfvision-movinet-vcn
 id: tfvision-movinet-vcn
+model: google/tfvision-movinet-vcn
 name: tfvision-movinet-vcn
 authors:
 - id: google

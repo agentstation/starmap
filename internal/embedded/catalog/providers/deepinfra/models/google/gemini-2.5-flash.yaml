@@ -1,5 +1,6 @@
 # google/gemini-2.5-flash - Gemini 2.5 Flash is Google's latest thinking model, designed...
 id: google/gemini-2.5-flash
+model: google/gemini-2.5-flash
 name: google/gemini-2.5-flash
 authors:
 - id: google

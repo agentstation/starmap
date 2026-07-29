@@ -24,16 +24,81 @@ func NewCatalog(source Reader) (*Catalog, error) {
 	return buildCatalog(builder)
 }
 
+// NewObservationCatalog copies source records into an immutable source
+// observation without deriving consumer definitions or offerings. It exists
+// for acquisition boundaries that must preserve provider records before
+// reconciliation resolves every ModelRef. Final publication must use
+// NewCatalog or Builder.Build, which fail closed on unresolved references.
+func NewObservationCatalog(source Reader) (*Catalog, error) {
+	if source == nil {
+		return nil, &errors.ValidationError{
+			Field:   "source",
+			Message: "catalog observation source cannot be nil",
+		}
+	}
+	builder, err := NewBuilderFrom(source)
+	if err != nil {
+		return nil, errors.WrapResource("create", "immutable catalog observation", "", err)
+	}
+	if err := validateCatalogIdentities(builder); err != nil {
+		return nil, errors.WrapResource("validate", "catalog observation identities", "", err)
+	}
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil {
+				continue
+			}
+			if modelID != model.ID {
+				return nil, &errors.ValidationError{
+					Field:   "provider.models",
+					Value:   string(provider.ID) + "/" + modelID,
+					Message: "map key must match model ID",
+				}
+			}
+			if err := validateProviderModelPathID(model.ID); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider observation model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
+			if err := validateModelGeneration(model.Generation); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider observation model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
+			if model.ModelRef != "" {
+				if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+					return nil, errors.WrapResource(
+						"validate", "provider observation model reference", string(model.ModelRef), err,
+					)
+				}
+			}
+		}
+	}
+	return &Catalog{
+		source:                     builder,
+		definitions:                map[ModelDefinitionID]ModelDefinition{},
+		offerings:                  map[OfferingKey]ProviderOffering{},
+		providerOfferings:          map[ProviderID][]OfferingKey{},
+		definitionOfferings:        map[ModelDefinitionID][]OfferingKey{},
+		authorDefinitions:          map[AuthorID][]ModelDefinitionID{},
+		definitionAliases:          map[string]ModelDefinitionID{},
+		ambiguousDefinitionAliases: map[string][]ModelDefinitionID{},
+	}, nil
+}
+
 var _ Reader = (*Catalog)(nil)
 
 // Catalog is Starmap's immutable canonical catalog. Its state is unexported,
 // safe to retain across goroutines, and accessible only through read methods.
 type Catalog struct {
-	source            Reader
-	definitions       map[ModelDefinitionID]ModelDefinition
-	offerings         map[OfferingKey]ProviderOffering
-	providerOfferings map[ProviderID][]OfferingKey
-	authorDefinitions map[AuthorID][]ModelDefinitionID
+	source                     Reader
+	definitions                map[ModelDefinitionID]ModelDefinition
+	offerings                  map[OfferingKey]ProviderOffering
+	providerOfferings          map[ProviderID][]OfferingKey
+	definitionOfferings        map[ModelDefinitionID][]OfferingKey
+	authorDefinitions          map[AuthorID][]ModelDefinitionID
+	definitionAliases          map[string]ModelDefinitionID
+	ambiguousDefinitionAliases map[string][]ModelDefinitionID
 }
 
 func buildCatalog(source Reader) (*Catalog, error) {
@@ -45,8 +110,11 @@ func buildCatalog(source Reader) (*Catalog, error) {
 		return nil, errors.WrapResource("index", "catalog read views", "", err)
 	}
 	providerOfferings := make(map[ProviderID][]OfferingKey)
+	definitionOfferings := make(map[ModelDefinitionID][]OfferingKey)
 	for key := range views.offerings {
 		providerOfferings[key.ProviderID] = append(providerOfferings[key.ProviderID], key)
+		definitionID := views.offerings[key].DefinitionID
+		definitionOfferings[definitionID] = append(definitionOfferings[definitionID], key)
 	}
 	for providerID, keys := range providerOfferings {
 		slices.SortFunc(keys, func(left, right OfferingKey) int {
@@ -64,14 +132,76 @@ func buildCatalog(source Reader) (*Catalog, error) {
 			providerOfferings[alias] = keys
 		}
 	}
+	for definitionID := range views.definitions {
+		keys := definitionOfferings[definitionID]
+		slices.SortFunc(keys, compareOfferingKey)
+		if keys == nil {
+			keys = []OfferingKey{}
+		}
+		definitionOfferings[definitionID] = keys
+	}
+	definitionAliases, ambiguousDefinitionAliases := buildDefinitionAliases(
+		views.definitions, views.offerings,
+	)
 
 	return &Catalog{
-		source:            source,
-		definitions:       views.definitions,
-		offerings:         views.offerings,
-		providerOfferings: providerOfferings,
-		authorDefinitions: views.authorDefinitions,
+		source:                     source,
+		definitions:                views.definitions,
+		offerings:                  views.offerings,
+		providerOfferings:          providerOfferings,
+		definitionOfferings:        definitionOfferings,
+		authorDefinitions:          views.authorDefinitions,
+		definitionAliases:          definitionAliases,
+		ambiguousDefinitionAliases: ambiguousDefinitionAliases,
 	}, nil
+}
+
+func compareOfferingKey(left, right OfferingKey) int {
+	if compared := strings.Compare(string(left.ProviderID), string(right.ProviderID)); compared != 0 {
+		return compared
+	}
+	return strings.Compare(string(left.ProviderModelID), string(right.ProviderModelID))
+}
+
+func buildDefinitionAliases(
+	definitions map[ModelDefinitionID]ModelDefinition,
+	offerings map[OfferingKey]ProviderOffering,
+) (map[string]ModelDefinitionID, map[string][]ModelDefinitionID) {
+	candidates := make(map[string]map[ModelDefinitionID]struct{})
+	add := func(alias string, definitionID ModelDefinitionID) {
+		if alias == "" {
+			return
+		}
+		if candidates[alias] == nil {
+			candidates[alias] = make(map[ModelDefinitionID]struct{})
+		}
+		candidates[alias][definitionID] = struct{}{}
+	}
+	for definitionID := range definitions {
+		add(string(definitionID), definitionID)
+		if _, slug, err := ParseModelDefinitionID(definitionID); err == nil {
+			add(slug, definitionID)
+		}
+	}
+	for _, offering := range offerings {
+		add(string(offering.ProviderModelID), offering.DefinitionID)
+	}
+
+	aliases := make(map[string]ModelDefinitionID)
+	ambiguous := make(map[string][]ModelDefinitionID)
+	for alias, ids := range candidates {
+		values := make([]ModelDefinitionID, 0, len(ids))
+		for id := range ids {
+			values = append(values, id)
+		}
+		slices.Sort(values)
+		if len(values) == 1 {
+			aliases[alias] = values[0]
+		} else {
+			ambiguous[alias] = values
+		}
+	}
+	return aliases, ambiguous
 }
 
 // Providers returns the immutable catalog's provider collection reader.
@@ -84,9 +214,15 @@ func (r *Catalog) Authors() AuthorsReader {
 	return authorsReader{source: r.source.Authors()}
 }
 
-// Endpoints returns the immutable catalog's endpoint collection reader.
-func (r *Catalog) Endpoints() EndpointsReader {
-	return endpointsReader{source: r.source.Endpoints()}
+// AuthoredModels returns caller-owned provider-independent construction
+// records. Ordinary consumers normally use Definitions and AuthorModels.
+func (r *Catalog) AuthoredModels() []AuthoredModel {
+	records := r.source.AuthoredModels()
+	result := make([]AuthoredModel, len(records))
+	for i, record := range records {
+		result[i] = copyAuthoredModel(record)
+	}
+	return result
 }
 
 // Provenance returns the immutable catalog's provenance reader.
@@ -99,9 +235,6 @@ func (r *Catalog) Provider(id ProviderID) (Provider, error) { return r.source.Pr
 
 // Author returns a caller-owned copy of an author.
 func (r *Catalog) Author(id AuthorID) (Author, error) { return r.source.Author(id) }
-
-// Endpoint returns a caller-owned copy of an endpoint.
-func (r *Catalog) Endpoint(id string) (Endpoint, error) { return r.source.Endpoint(id) }
 
 // Definition returns one caller-owned canonical model definition.
 func (r *Catalog) Definition(id ModelDefinitionID) (ModelDefinition, error) {
@@ -157,6 +290,34 @@ func (r *Catalog) ProviderOfferings(providerID ProviderID) ([]ProviderOffering, 
 	return offerings, nil
 }
 
+// DefinitionOfferings returns caller-owned offerings for one canonical model,
+// ordered by provider and exact provider model ID.
+func (r *Catalog) DefinitionOfferings(id ModelDefinitionID) ([]ProviderOffering, error) {
+	keys, found := r.definitionOfferings[id]
+	if !found {
+		return nil, &errors.NotFoundError{Resource: "model definition", ID: string(id)}
+	}
+	offerings := make([]ProviderOffering, 0, len(keys))
+	for _, key := range keys {
+		offerings = append(offerings, copyProviderOffering(r.offerings[key]))
+	}
+	return offerings, nil
+}
+
+// AuthorModel resolves an author ID or alias plus a model slug.
+func (r *Catalog) AuthorModel(authorID AuthorID, slug string) (ModelDefinition, error) {
+	author, found := r.source.Authors().Resolve(authorID)
+	if !found || author == nil {
+		return ModelDefinition{}, &errors.NotFoundError{
+			Resource: "author", ID: string(authorID),
+		}
+	}
+	if err := validatePathSegment("model.slug", slug); err != nil {
+		return ModelDefinition{}, err
+	}
+	return r.Definition(AuthoredModelID(author.ID, slug))
+}
+
 // AuthorModels returns caller-owned canonical model definitions attributed to
 // an author or one of its aliases, ordered by definition ID.
 func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error) {
@@ -175,7 +336,30 @@ func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error) {
 // FindModel returns the canonical provider-independent model definition.
 // Use Offering for provider price, limits, availability, and request behavior.
 func (r *Catalog) FindModel(id string) (ModelDefinition, error) {
-	return r.Definition(ModelDefinitionID(id))
+	if _, found := r.definitions[ModelDefinitionID(id)]; found {
+		return r.Definition(ModelDefinitionID(id))
+	}
+	if definitionID, found := r.definitionAliases[id]; found {
+		return r.Definition(definitionID)
+	}
+	if candidates := r.ambiguousDefinitionAliases[id]; len(candidates) > 0 {
+		return ModelDefinition{}, &errors.ConflictError{
+			Resource: "model definition alias",
+			Actual:   id,
+			Message:  "matches multiple canonical models: " + joinDefinitionIDs(candidates),
+		}
+	}
+	return ModelDefinition{}, &errors.NotFoundError{
+		Resource: "model definition", ID: id,
+	}
+}
+
+func joinDefinitionIDs(ids []ModelDefinitionID) string {
+	values := make([]string, len(ids))
+	for index, id := range ids {
+		values[index] = string(id)
+	}
+	return strings.Join(values, ", ")
 }
 
 type providersReader struct{ source ProvidersReader }
@@ -203,15 +387,6 @@ func (r authorsReader) List() []Author                          { return r.sourc
 func (r authorsReader) Map() map[AuthorID]*Author               { return r.source.Map() }
 func (r authorsReader) ForEach(fn func(AuthorID, *Author) bool) { r.source.ForEach(fn) }
 func (r authorsReader) FormatYAML() string                      { return r.source.FormatYAML() }
-
-type endpointsReader struct{ source EndpointsReader }
-
-func (r endpointsReader) Get(id string) (*Endpoint, bool)         { return r.source.Get(id) }
-func (r endpointsReader) Exists(id string) bool                   { return r.source.Exists(id) }
-func (r endpointsReader) Len() int                                { return r.source.Len() }
-func (r endpointsReader) List() []Endpoint                        { return r.source.List() }
-func (r endpointsReader) Map() map[string]*Endpoint               { return r.source.Map() }
-func (r endpointsReader) ForEach(fn func(string, *Endpoint) bool) { r.source.ForEach(fn) }
 
 type provenanceReader struct{ source ProvenanceReader }
 

@@ -1,27 +1,10 @@
 # openai/gpt-oss-safeguard-20b - Safety model for policy screening, moderation, and risk-awar...
 id: openai/gpt-oss-safeguard-20b
+model: openai/gpt-oss-safeguard-20b
 name: Safety GPT OSS 20B
 authors:
-- id: alibaba
-  name: alibaba
-- id: deepseek
-  name: deepseek
-- id: google
-  name: google
-- id: groq
-  name: groq
-- id: huggingfaceh4
-  name: huggingfaceh4
-- id: meta
-  name: meta
-- id: moonshot-ai
-  name: moonshot-ai
 - id: openai
-  name: openai
-- id: playai
-  name: playai
-- id: sdaia
-  name: sdaia
+  name: OpenAI
 description: Safety model for policy screening, moderation, and risk-aware routing workflows
 status: beta
 
@@ -103,11 +86,11 @@ reasoning:
 pricing:
   tokens:
     cache_read:
-      per_1m: 3.75e-08
+      per_1m: 0.0375
     input:
-      per_1m: 7.5e-08
+      per_1m: 0.075
     output:
-      per_1m: 3e-07
+      per_1m: 0.3
   operations:
     request: 0.0
     image_gen: 0.0

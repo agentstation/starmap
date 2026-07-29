@@ -21,9 +21,10 @@ type catalogReadViews struct {
 }
 
 type providerModelCandidate struct {
-	providerID ProviderID
-	endpoint   ProviderOfferingEndpoint
-	model      Model
+	providerID   ProviderID
+	definitionID ModelDefinitionID
+	endpoint     ProviderOfferingEndpoint
+	model        Model
 }
 
 type rankedDefinitionValue[T any] struct {
@@ -47,13 +48,33 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 	}
 
 	byDefinition := make(map[ModelDefinitionID][]providerModelCandidate)
+	authoredDefinitions := make(map[ModelDefinitionID]struct{})
 	offerings := make(map[OfferingKey]ProviderOffering)
 	providers := reader.Providers().List()
+	for _, record := range reader.AuthoredModels() {
+		if err := validateAuthoredModel(record.AuthorID, record.Model); err != nil {
+			return nil, errors.WrapResource(
+				"validate", "authored model", string(record.ID()), err,
+			)
+		}
+		definitionID := record.ID()
+		if _, exists := authoredDefinitions[definitionID]; exists {
+			return nil, &errors.ConflictError{
+				Resource: "authored model",
+				Message:  "duplicate canonical identity " + string(definitionID),
+			}
+		}
+		authoredDefinitions[definitionID] = struct{}{}
+		byDefinition[definitionID] = []providerModelCandidate{{
+			definitionID: definitionID,
+			model:        DeepCopyModel(record.Model),
+		}}
+	}
+
 	slices.SortFunc(providers, func(left, right Provider) int {
 		return strings.Compare(string(left.ID), string(right.ID))
 	})
 	for _, provider := range providers {
-		endpoint := deriveProviderOfferingEndpoint(provider)
 		modelIDs := make([]string, 0, len(provider.Models))
 		for modelID := range provider.Models {
 			modelIDs = append(modelIDs, modelID)
@@ -74,14 +95,40 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 					),
 				}
 			}
-			candidate := providerModelCandidate{
-				providerID: provider.ID,
-				endpoint:   endpoint,
-				model:      DeepCopyModel(*model),
+			if err := validateProviderModelPathID(model.ID); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+				)
 			}
-			definitionID := ModelDefinitionID(model.ID)
-			byDefinition[definitionID] = append(byDefinition[definitionID], candidate)
-
+			if err := validateModelGeneration(model.Generation); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+				)
+			}
+			candidate := providerModelCandidate{
+				providerID:   provider.ID,
+				definitionID: model.ModelRef,
+				endpoint:     deriveProviderOfferingEndpoint(provider, *model),
+				model:        DeepCopyModel(*model),
+			}
+			if candidate.definitionID == "" {
+				return nil, &errors.ValidationError{
+					Field:   "provider_model.model",
+					Value:   string(provider.ID) + "/" + model.ID,
+					Message: "explicit canonical author/model reference is required",
+				}
+			}
+			if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+				return nil, errors.WrapResource(
+					"validate", "provider model reference", string(model.ModelRef), err,
+				)
+			}
+			if _, exists := authoredDefinitions[candidate.definitionID]; !exists {
+				return nil, &errors.NotFoundError{
+					Resource: "authored model",
+					ID:       string(candidate.definitionID),
+				}
+			}
 			offering, err := deriveProviderOffering(candidate)
 			if err != nil {
 				return nil, err
@@ -110,12 +157,69 @@ func deriveReadViews(reader Reader) (*catalogReadViews, error) {
 		}
 		definitions[id] = definition
 	}
+	lineageAliases, ambiguousLineageAliases := buildDefinitionAliases(definitions, offerings)
+	for _, id := range definitionIDs {
+		definition := definitions[id]
+		if err := normalizeDefinitionLineage(
+			&definition,
+			lineageAliases,
+			ambiguousLineageAliases,
+		); err != nil {
+			return nil, err
+		}
+		definitions[id] = definition
+	}
 
 	return &catalogReadViews{
 		definitions:       definitions,
 		offerings:         offerings,
 		authorDefinitions: deriveAuthorDefinitions(reader, definitions),
 	}, nil
+}
+
+func normalizeDefinitionLineage(
+	definition *ModelDefinition,
+	aliases map[string]ModelDefinitionID,
+	ambiguous map[string][]ModelDefinitionID,
+) error {
+	resolve := func(field string, reference **ModelDefinitionID) error {
+		if *reference == nil {
+			return nil
+		}
+		raw := string(**reference)
+		canonical, found := aliases[raw]
+		if candidates := ambiguous[raw]; len(candidates) != 0 {
+			return &errors.ConflictError{
+				Resource: "model lineage " + field,
+				Message:  fmt.Sprintf("%q resolves ambiguously to %v", raw, candidates),
+			}
+		}
+		if !found {
+			return &errors.NotFoundError{
+				Resource: "model lineage " + field,
+				ID:       raw,
+			}
+		}
+		if canonical == definition.ID {
+			if field == "root" {
+				// A source sometimes repeats the model's own provider ID as its
+				// lineage root. It is resolvable but carries no parent relation.
+				*reference = nil
+				return nil
+			}
+			return &errors.ValidationError{
+				Field:   "model.lineage." + field,
+				Value:   raw,
+				Message: "must not refer to the model itself",
+			}
+		}
+		*reference = &canonical
+		return nil
+	}
+	if err := resolve("root", &definition.Lineage.Root); err != nil {
+		return err
+	}
+	return resolve("parent", &definition.Lineage.Parent)
 }
 
 func deriveModelDefinition(

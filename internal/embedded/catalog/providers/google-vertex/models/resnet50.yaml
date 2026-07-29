@@ -1,5 +1,6 @@
 # resnet50 - Google Vertex AI model: resnet50
 id: resnet50
+model: google/resnet50
 name: resnet50
 authors:
 - id: google

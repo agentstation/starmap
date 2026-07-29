@@ -1,5 +1,6 @@
 # google/gemma-4-26B-A4B-it - Open Gemma instruction model for efficient chat and self-hos...
 id: google/gemma-4-26B-A4B-it
+model: google/gemma-4-26b-a4b-it
 name: google/gemma-4-26B-A4B-it
 authors:
 - id: google
@@ -87,7 +88,7 @@ pricing:
     input:
       per_1m: 0.07
     output:
-      per_1m: 0.33999999999999997
+      per_1m: 0.34
   currency: USD
 
 # Model limits

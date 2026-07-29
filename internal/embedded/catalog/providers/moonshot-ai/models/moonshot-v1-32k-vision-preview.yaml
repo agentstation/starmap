@@ -1,5 +1,6 @@
 # moonshot-v1-32k-vision-preview - AI model
 id: moonshot-v1-32k-vision-preview
+model: moonshot-ai/moonshot-v1-32k-vision-preview
 name: moonshot-v1-32k-vision-preview
 authors:
 - id: moonshot-ai

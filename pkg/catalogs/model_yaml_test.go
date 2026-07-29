@@ -3,6 +3,7 @@ package catalogs
 import (
 	stderrors "errors"
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -42,6 +43,35 @@ func TestModelEncodeYAMLRoundTripsBackslashesWithoutSemanticDrift(t *testing.T) 
 	}
 	if roundTripped.Description != original.Description {
 		t.Fatalf("second description = %q, want %q", roundTripped.Description, original.Description)
+	}
+}
+
+func TestModelProviderModeYAMLRoundTripPreservesJSONValues(t *testing.T) {
+	t.Parallel()
+
+	original := ModelProviderMode{
+		Headers: map[string]string{"anthropic-beta": "fast-mode"},
+		Body: map[string]any{
+			"service_tier": "priority",
+			"reasoning":    map[string]any{"mode": "pro"},
+			"attempts":     float64(2),
+			"stream":       true,
+			"stop":         []any{"done", float64(3)},
+			"metadata":     nil,
+		},
+	}
+
+	data, err := yaml.Marshal(original)
+	if err != nil {
+		t.Fatalf("Marshal() error = %v", err)
+	}
+	var decoded ModelProviderMode
+	if err := yaml.Unmarshal(data, &decoded); err != nil {
+		t.Fatalf("Unmarshal() error = %v", err)
+	}
+
+	if !reflect.DeepEqual(original, decoded) {
+		t.Fatalf("round trip = %#v, want %#v\nYAML:\n%s", decoded, original, data)
 	}
 }
 
@@ -530,6 +560,32 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 		if strings.Contains(yaml, section) {
 			t.Errorf("Minimal model YAML should not contain: %s", section)
 		}
+	}
+}
+
+func TestModel_FormatYAML_PreservesCanonicalModelReference(t *testing.T) {
+	t.Parallel()
+
+	model := Model{
+		ID:       "accounts/fireworks/models/kimi-k2p5",
+		ModelRef: "moonshot-ai/kimi-k2.5",
+		Name:     "Kimi K2.5",
+	}
+
+	encoded, err := model.EncodeYAML()
+	if err != nil {
+		t.Fatalf("EncodeYAML() error = %v", err)
+	}
+	if !strings.Contains(encoded, "model: moonshot-ai/kimi-k2.5\n") {
+		t.Fatalf("EncodeYAML() omitted canonical model reference:\n%s", encoded)
+	}
+
+	var decoded Model
+	if err := yaml.Unmarshal([]byte(encoded), &decoded); err != nil {
+		t.Fatalf("Unmarshal() error = %v", err)
+	}
+	if decoded.ModelRef != model.ModelRef {
+		t.Fatalf("round-trip ModelRef = %q, want %q", decoded.ModelRef, model.ModelRef)
 	}
 }
 

@@ -1,0 +1,16 @@
+# claude-3-5-haiku-latest - Claude Haiku 3.5
+id: claude-3-5-haiku-latest
+name: Claude Haiku 3.5
+authors:
+- id: anthropic
+  name: Anthropic
+
+# Model metadata
+metadata:
+  release_date: 2024-10-22
+  open_weights: false
+  knowledge_cutoff: 2024-07-31
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

@@ -107,11 +107,6 @@ func DeepCopyAuthor(author Author) Author {
 	return deepCopyAuthorMetadata(author)
 }
 
-// DeepCopyEndpoint creates a copy of an Endpoint.
-func DeepCopyEndpoint(endpoint Endpoint) Endpoint {
-	return endpoint
-}
-
 func deepCopyAuthorMetadata(author Author) Author {
 	authorCopy := author
 	authorCopy.Aliases = append([]AuthorID(nil), author.Aliases...)

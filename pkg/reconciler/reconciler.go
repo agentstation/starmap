@@ -111,7 +111,7 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	}
 
 	// Step 5: Build catalog with providers and models
-	catalog, err := r.catalog(providers, modelResults)
+	catalog, err := r.catalog(rctx, providers, modelResults)
 	if err != nil {
 		return nil, err
 	}
@@ -242,7 +242,11 @@ func (r *Reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 }
 
 // catalog creates the final catalog with providers and models.
-func (r *Reconciler) catalog(providers []*catalogs.Provider, modelResults map[catalogs.ProviderID]modelResult) (*catalogs.Builder, error) {
+func (r *Reconciler) catalog(
+	rctx *reconcileContext,
+	providers []*catalogs.Provider,
+	modelResults map[catalogs.ProviderID]modelResult,
+) (*catalogs.Builder, error) {
 	var catalog *catalogs.Builder
 	var err error
 
@@ -254,6 +258,9 @@ func (r *Reconciler) catalog(providers []*catalogs.Provider, modelResults map[ca
 		}
 	} else {
 		catalog = catalogs.NewEmpty()
+	}
+	if err := reconcileAuthoredCorpus(catalog, r.baseline, rctx.collector); err != nil {
+		return nil, err
 	}
 
 	// Add/update providers with their reconciled models

@@ -1,5 +1,6 @@
 # nvidia/Cosmos3-Super - Cosmos3 is a world foundation model that unifies understandi...
 id: nvidia/Cosmos3-Super
+model: nvidia/cosmos3-super
 name: nvidia/Cosmos3-Super
 authors:
 - id: nvidia

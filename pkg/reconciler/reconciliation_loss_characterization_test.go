@@ -73,9 +73,9 @@ func TestF005StaleFallbackCannotRegressKnownBaselineFacts(t *testing.T) {
 	if err := baselineBuilder.SetProvider(baselineProvider); err != nil {
 		t.Fatalf("SetProvider baseline: %v", err)
 	}
-	baseline, err = baselineBuilder.Build()
+	baseline, err = catalogs.NewObservationCatalog(baselineBuilder)
 	if err != nil {
-		t.Fatalf("Build baseline: %v", err)
+		t.Fatalf("Build baseline observation: %v", err)
 	}
 
 	staleBuilder := catalogs.NewEmpty()
@@ -88,9 +88,9 @@ func TestF005StaleFallbackCannotRegressKnownBaselineFacts(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetProvider stale: %v", err)
 	}
-	stale, err := staleBuilder.Build()
+	stale, err := catalogs.NewObservationCatalog(staleBuilder)
 	if err != nil {
-		t.Fatalf("Build stale: %v", err)
+		t.Fatalf("Build stale observation: %v", err)
 	}
 	observation, err := sources.NewObservation(sources.ProvidersID, stale, sources.ObservationMetadata{
 		ObservedAt:   time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC),
@@ -134,9 +134,10 @@ func TestF007PersistedProvenanceIsProviderModelScoped(t *testing.T) {
 	}
 	for _, fixture := range fixtures {
 		model := catalogs.Model{
-			ID:     "shared",
-			Name:   fixture.name,
-			Status: fixture.status,
+			ID:       "shared",
+			ModelRef: "test-author/shared",
+			Name:     fixture.name,
+			Status:   fixture.status,
 			Limits: &catalogs.ModelLimits{
 				ContextWindow: fixture.contextLimit,
 			},
@@ -157,13 +158,24 @@ func TestF007PersistedProvenanceIsProviderModelScoped(t *testing.T) {
 			t.Fatalf("SetProvider(%s): %v", fixture.providerID, err)
 		}
 	}
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := source.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	if err := source.SetAuthorModel(author.ID, catalogs.Model{
+		ID:      "shared",
+		Name:    "Shared",
+		Authors: []catalogs.Author{author},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	sourceCatalog, err := source.Build()
 	if err != nil {
-		t.Fatalf("Build source: %v", err)
+		t.Fatalf("Build source catalog: %v", err)
 	}
 	observation := characterizationObservation(t, sourceCatalog, false)
 
-	reconcile, err := New()
+	reconcile, err := New(WithBaseline(sourceCatalog))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -240,9 +252,9 @@ func characterizationCatalog(t testing.TB, providerID catalogs.ProviderID, model
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Build observation: %v", err)
 	}
 	return catalog
 }
@@ -267,9 +279,9 @@ func withCharacterizationProvenance(
 			Timestamp: time.Date(2026, time.July, 26, 12, 0, 0, 0, time.UTC),
 		}},
 	})
-	updated, err := builder.Build()
+	updated, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
-		t.Fatalf("Build provenance catalog: %v", err)
+		t.Fatalf("Build provenance observation catalog: %v", err)
 	}
 	return updated
 }

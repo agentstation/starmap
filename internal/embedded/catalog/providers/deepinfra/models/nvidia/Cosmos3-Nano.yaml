@@ -1,5 +1,6 @@
 # nvidia/Cosmos3-Nano - Cosmos3 is a world foundation model that unifies understandi...
 id: nvidia/Cosmos3-Nano
+model: nvidia/cosmos3-nano
 name: nvidia/Cosmos3-Nano
 authors:
 - id: nvidia

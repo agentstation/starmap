@@ -664,14 +664,20 @@ requires exactly one success and one typed conflict. SQLite deployments use
 immediate transactions with bounded busy waiting; filesystem writers coordinate
 through a context-aware advisory lock shared across processes.
 
-`Builder.Save` materializes a human provider-YAML workspace using replacement
-semantics for its managed indexes and provider model trees, and removes obsolete
-author-model directories, so deleted records cannot survive a save/reload. It
-deliberately preserves unmanaged neighboring files such as logos and operator
-notes. Direct builder saves are construction tools; normal
+`Builder.Save` materializes the human YAML workspace using replacement
+semantics for its managed author-model and provider-model trees, so deleted
+records cannot survive a save/reload. Authored records live under
+`authors/{author}/models` and own canonical identity plus intrinsic facts.
+Provider records live under `providers/{provider}/models`, retain their exact
+opaque provider ID and serving facts, and link explicitly to one authored
+record through `model: author/slug`. It deliberately preserves unmanaged
+neighboring files such as logos and operator notes. Direct builder saves are
+construction tools; normal
 Starmap publication commits the immutable generation first and then atomically
-projects YAML. Production readers consume the immutable catalog generation,
-while explicit updates treat semantic human workspace changes as local
+projects YAML plus a deterministic digest-bound `endpoints.yaml` join.
+`endpoints.yaml` is inspectable generated output, never an independent
+authority. Production readers consume the immutable catalog generation, while
+explicit updates treat semantic human source-record changes as local
 observations.
 
 There is no implicit filesystem watcher. A caller reloads the human workspace
@@ -1312,25 +1318,31 @@ overrides.
 `catalogs.ModelDefinition` is the complementary provider-independent record;
 reflection and round-trip tests keep its authorship, lineage, weights, and
 capabilities surface disjoint from every offering-owned field.
-Provider YAML model records are the sole persisted model facts. Published
-catalogs validate identity and lifecycle values, then precompute definition,
-offering, and author-membership indexes. Provider-independent conflicts use the
-same executable authority table and value-matched provenance as reconciliation;
+Authored model YAML owns canonical `author/slug` identity and intrinsic model
+facts. Provider model YAML owns provider-serving facts and an explicit link to
+the authored model; provider identity is never used as authorship evidence.
+Published catalogs validate every link and lifecycle value, then precompute
+definition, offering, author-membership, alias, provider-to-offering, and
+definition-to-offering indexes. Provider-independent conflicts use the same
+executable authority table and value-matched provenance as reconciliation;
 indistinguishable conflicting facts remain unknown instead of using map
 iteration or alphabetical order. The required definition name falls back to
-its stable definition ID. Multi-author marketplace declarations are candidate
-sets and are never copied onto every model as invented joint authorship.
-Canonical reads use `Definition`, `Offering`, `ProviderOfferings`, and
-`AuthorModels`; they return deep copies of nested mutable values.
+its stable definition ID. Multi-author declarations are retained only on the
+authored record and are never inferred from serving providers. Canonical reads
+use `Definition`, `Offering`, `ProviderOfferings`, `DefinitionOfferings`,
+`AuthorModel`, and `AuthorModels`; they return deep copies of nested mutable
+values.
 Route aliases remain caller-supplied policy-layer identities.
 `MaterializeRouteAlias` resolves their exact offering keys against a retained
 catalog generation and reports ineligible targets without storing routing
 weights or fallback policy in ingestion.
 
 Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
-from `Offering`. Because Starmap has not launched, schema version 2 deletes the
-pre-split flattened read adapter and duplicate author-model persistence rather
-than retaining unused compatibility code.
+from `Offering` or `DefinitionOfferings`. It accepts canonical `author/slug`
+identity plus unambiguous bare-slug and provider-ID aliases. Ambiguity returns a
+typed conflict. Because Starmap has not launched, schema version 3 makes a
+clean break from the provider-only schema version 2 and retains no compatibility
+reader.
 
 ### Authority-Based Strategy
 

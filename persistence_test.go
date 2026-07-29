@@ -264,10 +264,7 @@ func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testi
 
 func persistenceObservation(t testing.TB, builder *catalogs.Builder) sources.Observation {
 	t.Helper()
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build observation catalog: %v", err)
-	}
+	catalog := mustTestCatalog(t, builder)
 	observation, err := sources.NewObservation(sources.LocalCatalogID, catalog, sources.ObservationMetadata{
 		ObservedAt:   time.Date(2026, time.July, 27, 12, 0, 0, 0, time.UTC),
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},

@@ -232,6 +232,19 @@ func sourceIdentityCatalog(t testing.TB, catalogURL string, model catalogs.Model
 		}
 	}
 	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
+	if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+		ID:          model.ID,
+		Name:        model.Name,
+		Description: model.Description,
+		Authors:     []catalogs.Author{author},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	if err := builder.SetProvider(catalogs.Provider{
 		ID:      "provider-a",
 		Name:    "Provider A",
@@ -280,7 +293,11 @@ func sourceIdentityObservation(
 func sourceIdentityReconcile(t testing.TB, primary sources.ID, observations ...sources.Observation) *Result {
 	t.Helper()
 
-	reconcile, err := New()
+	var options []Option
+	if len(observations) > 0 {
+		options = append(options, WithBaseline(observations[0].Catalog))
+	}
+	reconcile, err := New(options...)
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}

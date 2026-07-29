@@ -1,5 +1,6 @@
 # deepseek-r1-distill-qwen-32b@001 - DeepSeek R1 Distill Qwen 32B model available through Vertex ...
 id: deepseek-r1-distill-qwen-32b@001
+model: deepseek/deepseek-r1-distill-qwen-32b
 name: DeepSeek R1 Distill Qwen 32B
 authors:
 - id: deepseek

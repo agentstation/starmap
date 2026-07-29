@@ -1,5 +1,6 @@
 # veo-3.1-lite-generate-preview - Veo 3.1 lite
 id: veo-3.1-lite-generate-preview
+model: google/veo-3.1-lite-generate-preview
 name: Veo 3.1 lite
 authors:
 - id: google

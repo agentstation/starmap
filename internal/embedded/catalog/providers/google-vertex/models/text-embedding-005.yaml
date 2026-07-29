@@ -1,5 +1,6 @@
 # text-embedding-005 - Google model: text-embedding-005
 id: text-embedding-005
+model: google/text-embedding-005
 name: text-embedding-005
 authors:
 - id: google

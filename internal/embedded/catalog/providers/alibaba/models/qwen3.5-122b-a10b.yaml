@@ -1,9 +1,10 @@
 # qwen3.5-122b-a10b - Qwen vision-language model for visual reasoning, documents, ...
 id: qwen3.5-122b-a10b
+model: qwen/qwen3.5-122b-a10b
 name: qwen3.5-122b-a10b
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata

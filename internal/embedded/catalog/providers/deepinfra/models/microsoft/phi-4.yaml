@@ -1,5 +1,6 @@
 # microsoft/phi-4 - Phi-4 is a model built upon a blend of synthetic datasets, d...
 id: microsoft/phi-4
+model: microsoft/phi-4
 name: microsoft/phi-4
 authors:
 - id: microsoft

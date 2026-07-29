@@ -67,5 +67,8 @@ else
   HOME="$UPDATE_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap update "${UPDATE_ARGS[@]}"
 fi
 
-run_manifest --catalog-dir "$CATALOG_DIR" --output "$MANIFEST_PATH" > "$REPORT_PATH"
+run_manifest \
+  --catalog-dir "$CATALOG_DIR" \
+  --output "$MANIFEST_PATH" \
+  --endpoints-output "$CATALOG_DIR/endpoints.yaml" > "$REPORT_PATH"
 HOME="$VALIDATION_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap validate catalog

@@ -1,0 +1,16 @@
+# mistral-saba-24b - Mistral Saba 24B
+id: mistral-saba-24b
+name: Mistral Saba 24B
+authors:
+- id: mistral
+  name: Mistral AI
+
+# Model metadata
+metadata:
+  release_date: 2025-02-06
+  open_weights: false
+  knowledge_cutoff: 2024-08-01
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

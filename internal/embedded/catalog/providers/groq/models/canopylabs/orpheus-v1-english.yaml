@@ -1,27 +1,10 @@
 # canopylabs/orpheus-v1-english - Speech generation model for controllable voice, narration, a...
 id: canopylabs/orpheus-v1-english
+model: canopy-labs/orpheus-v1-english
 name: Canopy Labs Orpheus V1 English
 authors:
-- id: alibaba
-  name: alibaba
-- id: deepseek
-  name: deepseek
-- id: google
-  name: google
-- id: groq
-  name: groq
-- id: huggingfaceh4
-  name: huggingfaceh4
-- id: meta
-  name: meta
-- id: moonshot-ai
-  name: moonshot-ai
-- id: openai
-  name: openai
-- id: playai
-  name: playai
-- id: sdaia
-  name: sdaia
+- id: canopy-labs
+  name: Canopy Labs
 description: Speech generation model for controllable voice, narration, and audio delivery
 status: beta
 
@@ -97,9 +80,9 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 1.1e-05
+      per_1m: 11
     input:
-      per_1m: 2.2e-05
+      per_1m: 22
   operations:
     request: 0.0
     image_gen: 0.0

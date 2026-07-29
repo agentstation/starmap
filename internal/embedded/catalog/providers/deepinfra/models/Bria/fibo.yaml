@@ -1,5 +1,6 @@
 # Bria/fibo - FIBO is an open-source, JSON-native text-to-image model trai...
 id: Bria/fibo
+model: bria/fibo
 name: Bria/fibo
 description: FIBO is an open-source, JSON-native text-to-image model trained on detailed structured descriptions (over 1,000+ words per image), providing fine-grained control over light, composition, and camera parameters.
 

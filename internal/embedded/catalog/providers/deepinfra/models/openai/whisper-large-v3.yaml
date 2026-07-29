@@ -1,5 +1,6 @@
 # openai/whisper-large-v3 - Whisper is a general-purpose speech recognition model. It is...
 id: openai/whisper-large-v3
+model: openai/whisper-large-v3
 name: openai/whisper-large-v3
 authors:
 - id: openai

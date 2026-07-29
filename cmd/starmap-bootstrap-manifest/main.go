@@ -3,6 +3,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/bootstrapmanifest"
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -29,6 +31,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 	flags.SetOutput(io.Discard)
 	catalogDir := flags.String("catalog-dir", "", "candidate embedded catalog directory")
 	manifestPath := flags.String("output", "", "bootstrap generation manifest path")
+	endpointsPath := flags.String("endpoints-output", "", "optional generated endpoint projection path")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -57,6 +60,16 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if err != nil {
 		return err
 	}
+	var endpointData []byte
+	if *endpointsPath != "" {
+		endpointData, err = workspace.EncodeEndpointProjection(catalog, workspace.Identity{
+			GenerationID:    manifest.GenerationID,
+			PayloadChecksum: manifest.Payload.Checksum,
+		})
+		if err != nil {
+			return err
+		}
+	}
 	if report.Changed {
 		data, marshalErr := json.MarshalIndent(manifest, "", "  ")
 		if marshalErr != nil {
@@ -65,6 +78,17 @@ func run(args []string, output io.Writer, now time.Time) error {
 		data = append(data, '\n')
 		if err := writeAtomic(*manifestPath, data); err != nil {
 			return err
+		}
+	}
+	if *endpointsPath != "" {
+		currentEndpoints, readErr := os.ReadFile(*endpointsPath) //nolint:gosec // Explicit repository tooling path.
+		if readErr != nil && !os.IsNotExist(readErr) {
+			return errors.WrapIO("read", *endpointsPath, readErr)
+		}
+		if !bytes.Equal(currentEndpoints, endpointData) {
+			if err := writeAtomic(*endpointsPath, endpointData); err != nil {
+				return err
+			}
 		}
 	}
 	return json.NewEncoder(output).Encode(report)

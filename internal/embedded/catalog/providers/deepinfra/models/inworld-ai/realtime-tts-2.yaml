@@ -1,5 +1,6 @@
 # inworld-ai/realtime-tts-2 - Realtime TTS 2.0 is a low-latency text-to-speech model with ...
 id: inworld-ai/realtime-tts-2
+model: inworld-ai/realtime-tts-2
 name: inworld-ai/realtime-tts-2
 description: Realtime TTS 2.0 is a low-latency text-to-speech model with natural language steering, allowing you to control tone and emotion directly in the prompt (e.g., “[be happy and upbeat] Hello!”). It supports cross-lingual voices and multiple languages, enabling the same voice to speak consistently across different languages. This is an early access preview ahead of full launch, with ongoing improvements to voice quality and steering.
 

@@ -1,5 +1,6 @@
 # mistralai/Voxtral-Small-24B-2507 - Voxtral Small is an enhancement of Mistral Small 3, incorpor...
 id: mistralai/Voxtral-Small-24B-2507
+model: mistral/voxtral-small-24b-2507
 name: mistralai/Voxtral-Small-24B-2507
 authors:
 - id: mistral

@@ -1,5 +1,6 @@
 # video-speech-transcription - Google Vertex AI model: video-speech-transcription
 id: video-speech-transcription
+model: google/video-speech-transcription
 name: video-speech-transcription
 authors:
 - id: google

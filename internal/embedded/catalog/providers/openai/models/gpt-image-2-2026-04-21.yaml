@@ -1,5 +1,6 @@
 # gpt-image-2-2026-04-21 - AI model
 id: gpt-image-2-2026-04-21
+model: openai/gpt-image-2-2026-04-21
 name: gpt-image-2-2026-04-21
 authors:
 - id: openai

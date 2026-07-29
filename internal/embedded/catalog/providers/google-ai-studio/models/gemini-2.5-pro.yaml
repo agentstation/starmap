@@ -1,5 +1,6 @@
 # gemini-2.5-pro - Stable release (June 17th, 2025) of Gemini 2.5 Pro
 id: gemini-2.5-pro
+model: google/gemini-2.5-pro
 name: Gemini 2.5 Pro
 authors:
 - id: google
@@ -83,14 +84,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 reasoning_tokens:
   min: 128
   max: 32768

@@ -1,5 +1,6 @@
 # gemini-2.5-flash-lite - Stable version of Gemini 2.5 Flash-Lite, released in July of...
 id: gemini-2.5-flash-lite
+model: google/gemini-2.5-flash-lite
 name: gemini-2.5-flash-lite
 authors:
 - id: google

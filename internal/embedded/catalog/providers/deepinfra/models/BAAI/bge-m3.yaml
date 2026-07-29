@@ -1,5 +1,6 @@
 # BAAI/bge-m3 - BGE-M3 is a versatile text embedding model that supports mul...
 id: BAAI/bge-m3
+model: baai/bge-m3
 name: BAAI/bge-m3
 authors:
 - id: baai

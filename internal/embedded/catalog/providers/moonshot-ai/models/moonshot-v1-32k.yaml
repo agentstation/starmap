@@ -1,5 +1,6 @@
 # moonshot-v1-32k - AI model
 id: moonshot-v1-32k
+model: moonshot-ai/moonshot-v1-32k
 name: moonshot-v1-32k
 authors:
 - id: moonshot-ai

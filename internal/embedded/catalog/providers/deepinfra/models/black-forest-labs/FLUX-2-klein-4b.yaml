@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-2-klein-4b - The fastest model of the Flux 2 family. Frontier visual inte...
 id: black-forest-labs/FLUX-2-klein-4b
+model: black-forest-labs/flux-2-klein-4b
 name: black-forest-labs/FLUX-2-klein-4b
 description: The fastest model of the Flux 2 family. Frontier visual intelligence — state-of-the-art image generation and editing from Black Forest Labs
 
@@ -76,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    image_gen: 0.013999999999999999
+    image_gen: 0.014
   currency: USD
 extensions:
   deepinfra:

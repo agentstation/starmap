@@ -175,10 +175,15 @@ See docs/ARCHITECTURE.md § Reconciliation System for details:
 See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 1. Add to `internal/embedded/catalog/providers.yaml`
-2. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
-3. If compatible: Configure in YAML. If not: Create custom client
-4. Register in `internal/providers/clients/provider.go`
-5. Update testdata: `go test ./internal/providers/<provider> -update`
+2. Add or reuse the canonical authored model under
+   `internal/embedded/catalog/authors/{author}/models/{slug}.yaml`
+3. Add the serving record under
+   `internal/embedded/catalog/providers/{provider}/models` with the exact
+   provider ID and an explicit `model: author/slug` link
+4. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
+5. If compatible: Configure in YAML. If not: Create custom client
+6. Register in `internal/providers/clients/provider.go`
+7. Update testdata: `go test ./internal/providers/<provider> -update`
 
 ### Modify Sync Logic
 
@@ -340,6 +345,9 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |
 | `internal/providers/clients/provider.go` | Provider client registry |
 | `internal/embedded/catalog/providers.yaml` | Provider configurations |
+| `internal/embedded/catalog/authors/*/models/*.yaml` | Canonical authored identity and intrinsic facts |
+| `internal/embedded/catalog/providers/*/models/**/*.yaml` | Exact provider-serving facts linked by `model: author/slug` |
+| `internal/embedded/catalog/endpoints.yaml` | Generated digest-bound endpoint projection, never editable authority |
 
 ## Development Commands
 

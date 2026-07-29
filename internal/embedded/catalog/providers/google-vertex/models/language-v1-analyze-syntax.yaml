@@ -1,5 +1,6 @@
 # language-v1-analyze-syntax - Google Vertex AI model: language-v1-analyze-syntax
 id: language-v1-analyze-syntax
+model: google/language-v1-analyze-syntax
 name: language-v1-analyze-syntax
 authors:
 - id: google

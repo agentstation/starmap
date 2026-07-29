@@ -1,5 +1,6 @@
 # accounts/fireworks/models/flux-1-schnell-fp8 - AI model
 id: accounts/fireworks/models/flux-1-schnell-fp8
+model: black-forest-labs/flux-1-schnell
 name: accounts/fireworks/models/flux-1-schnell-fp8
 
 # Model features

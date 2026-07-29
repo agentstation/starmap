@@ -1,5 +1,6 @@
 # gemini-3-pro-image-preview - Nano Banana Pro for higher-fidelity image generation and des...
 id: gemini-3-pro-image-preview
+model: google/gemini-3-pro-image-preview
 name: Nano Banana Pro
 authors:
 - id: google
@@ -81,14 +82,6 @@ generation:
     min: 0.0
     max: 1.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Model pricing
 pricing:

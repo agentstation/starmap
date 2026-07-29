@@ -1,5 +1,6 @@
 # google/gemini-3.5-flash - Gemini 3.5 Flash delivers near-Pro intelligence at Flash-tie...
 id: google/gemini-3.5-flash
+model: google/gemini-3.5-flash
 name: google/gemini-3.5-flash
 authors:
 - id: google
@@ -85,7 +86,7 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 1.4999999999999998
+      per_1m: 1.5
     output:
       per_1m: 9.0
   currency: USD

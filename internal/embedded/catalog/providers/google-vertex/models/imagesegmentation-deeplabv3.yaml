@@ -1,5 +1,6 @@
 # imagesegmentation-deeplabv3 - Google Vertex AI model: imagesegmentation-deeplabv3
 id: imagesegmentation-deeplabv3
+model: google/imagesegmentation-deeplabv3
 name: imagesegmentation-deeplabv3
 authors:
 - id: google

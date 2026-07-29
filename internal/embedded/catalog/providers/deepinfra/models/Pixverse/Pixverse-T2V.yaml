@@ -1,5 +1,6 @@
 # Pixverse/Pixverse-T2V - PixVerse's 720p resolution offers a fast and reliable option...
 id: Pixverse/Pixverse-T2V
+model: pixverse/pixverse-t2v
 name: Pixverse/Pixverse-T2V
 description: PixVerse's 720p resolution offers a fast and reliable option for generating standard HD videos, ideal for quick previews and social media content where generation speed is prioritized over maximum detail.
 

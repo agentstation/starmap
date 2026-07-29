@@ -1,5 +1,6 @@
 # ByteDance/Seedance-1.5-Pro - ByteDance's Seedance 1.5 Pro is a professional video model u...
 id: ByteDance/Seedance-1.5-Pro
+model: bytedance/seedance-1.5-pro
 name: ByteDance/Seedance-1.5-Pro
 authors:
 - id: bytedance

@@ -1,5 +1,6 @@
 # claude-3-5-sonnet@20241022 - Claude 3.5 Sonnet model available through Vertex AI Model Ga...
 id: claude-3-5-sonnet@20241022
+model: anthropic/claude-3-5-sonnet-20241022
 name: Claude 3.5 Sonnet
 authors:
 - id: anthropic

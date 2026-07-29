@@ -1,9 +1,10 @@
 # qwen-mt-flash - AI model
 id: qwen-mt-flash
+model: qwen/qwen-mt-flash
 name: qwen-mt-flash
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

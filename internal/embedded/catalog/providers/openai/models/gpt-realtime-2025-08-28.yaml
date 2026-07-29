@@ -1,5 +1,6 @@
 # gpt-realtime-2025-08-28 - AI model
 id: gpt-realtime-2025-08-28
+model: openai/gpt-realtime-2025-08-28
 name: gpt-realtime-2025-08-28
 authors:
 - id: openai

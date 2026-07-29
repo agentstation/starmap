@@ -1,5 +1,6 @@
 # gpt-4.1-nano-2025-04-14 - AI model
 id: gpt-4.1-nano-2025-04-14
+model: openai/gpt-4.1-nano-2025-04-14
 name: gpt-4.1-nano-2025-04-14
 authors:
 - id: openai

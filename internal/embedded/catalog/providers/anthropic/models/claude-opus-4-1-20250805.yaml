@@ -1,5 +1,6 @@
 # claude-opus-4-1-20250805 - Flagship Claude model for deep reasoning, coding, and long-h...
 id: claude-opus-4-1-20250805
+model: anthropic/claude-opus-4-1-20250805
 name: Claude Opus 4.1
 authors:
 - id: anthropic

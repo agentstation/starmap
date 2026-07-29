@@ -1,5 +1,6 @@
 # anthropic/claude-sonnet-5 - Claude Sonnet 5 is Anthropic's most capable Sonnet model yet...
 id: anthropic/claude-sonnet-5
+model: anthropic/claude-sonnet-5
 name: anthropic/claude-sonnet-5
 description: Claude Sonnet 5 is Anthropic's most capable Sonnet model yet, built for coding, agents, and professional work at scale. It brings near-Opus intelligence to the model teams run at scale every day, with the same balance of capability, cost, and speed teams already rely on Sonnet for.
 

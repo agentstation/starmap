@@ -1,5 +1,6 @@
 # kimi-k2.7-code - AI model
 id: kimi-k2.7-code
+model: moonshot-ai/kimi-k2.7-code
 name: kimi-k2.7-code
 authors:
 - id: moonshot-ai

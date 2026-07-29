@@ -1,9 +1,10 @@
 # qwen3-max-preview - AI model
 id: qwen3-max-preview
+model: qwen/qwen3-max-preview
 name: qwen3-max-preview
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

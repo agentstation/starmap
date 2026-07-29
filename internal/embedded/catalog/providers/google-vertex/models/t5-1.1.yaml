@@ -1,5 +1,6 @@
 # t5-1.1 - Google Vertex AI model: t5-1.1
 id: t5-1.1
+model: google/t5-1.1
 name: t5-1.1
 authors:
 - id: google

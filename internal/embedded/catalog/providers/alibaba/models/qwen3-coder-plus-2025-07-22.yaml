@@ -1,9 +1,10 @@
 # qwen3-coder-plus-2025-07-22 - AI model
 id: qwen3-coder-plus-2025-07-22
+model: qwen/qwen3-coder-plus-2025-07-22
 name: qwen3-coder-plus-2025-07-22
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

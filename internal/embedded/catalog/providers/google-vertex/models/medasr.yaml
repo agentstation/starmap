@@ -1,5 +1,6 @@
 # medasr - Google model: medasr
 id: medasr
+model: google/medasr
 name: medasr
 authors:
 - id: google

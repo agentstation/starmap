@@ -1,5 +1,6 @@
 # gpt-4o-transcribe - AI model
 id: gpt-4o-transcribe
+model: openai/gpt-4o-transcribe
 name: gpt-4o-transcribe
 authors:
 - id: openai

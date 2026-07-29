@@ -1,5 +1,6 @@
 # gpt-image-2 - Image model for prompt-driven generation, editing, and visua...
 id: gpt-image-2
+model: openai/gpt-image-2
 name: gpt-image-2
 authors:
 - id: openai

@@ -1,5 +1,6 @@
 # text-translation - Google Vertex AI model: text-translation
 id: text-translation
+model: google/text-translation
 name: text-translation
 authors:
 - id: google

@@ -28,19 +28,16 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	}); ok {
 		t.Error("Read-only authors expose Delete")
 	}
-	if _, ok := any(catalog.Endpoints()).(interface{ Clear() }); ok {
-		t.Error("Read-only endpoints expose Clear")
-	}
 	if _, ok := any(catalog.Provenance()).(interface{ Clear() }); ok {
 		t.Error("Read-only provenance exposes Clear")
 	}
 
 	catalogType := reflect.TypeFor[*Catalog]()
 	for _, method := range []string{
-		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteEndpoint",
+		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteAuthorModel",
 		"DeleteProvider", "DeleteProviderModel", "MergeProvenance", "MergeWith",
 		"Models", "ProviderModel", "ProviderModels", "ReplaceWith", "Save",
-		"SetAuthor", "SetEndpoint", "SetMergeStrategy", "SetProvider",
+		"SetAuthor", "SetAuthorModel", "SetMergeStrategy", "SetProvider",
 		"SetProviderModel", "SetProvenance",
 	} {
 		if _, found := catalogType.MethodByName(method); found {
@@ -58,7 +55,7 @@ func TestBuilderRequiresProviderScopedModelReads(t *testing.T) {
 	}
 }
 
-func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
+func TestCanonicalSchemaHasNoRemovedCompatibilityFields(t *testing.T) {
 	for _, check := range []struct {
 		name      string
 		structure reflect.Type
@@ -68,11 +65,6 @@ func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
 			name:      "author",
 			structure: reflect.TypeFor[Author](),
 			forbidden: []string{"Models"},
-		},
-		{
-			name:      "catalog payload",
-			structure: reflect.TypeFor[CatalogPayload](),
-			forbidden: []string{"AuthorModels"},
 		},
 		{
 			name:      "model architecture",
@@ -92,6 +84,18 @@ func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestCatalogPayloadCarriesDisjointAuthorAndProviderRecords(t *testing.T) {
+	payload := reflect.TypeFor[CatalogPayload]()
+	for _, field := range []string{"AuthorModels", "ProviderModels"} {
+		if _, found := payload.FieldByName(field); !found {
+			t.Errorf("catalog payload is missing required construction record field %s", field)
+		}
+	}
+	if _, found := reflect.TypeFor[Author]().FieldByName("Models"); found {
+		t.Error("Author metadata leaks the authored-model construction collection")
 	}
 }
 
@@ -167,26 +171,31 @@ func TestBuilderFromCatalogCannotMutatePublishedCatalog(t *testing.T) {
 
 func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Published Offering")
 	if err := builder.SetProvider(Provider{
 		ID:      "provider-a",
 		Aliases: []ProviderID{"provider-alias"},
 		Models: map[string]*Model{
-			"shared": {ID: "shared", Name: "Published Offering"},
+			"shared": {
+				ID: "shared", ModelRef: "author/shared", Name: "Published Offering",
+			},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
 	catalog := mustCatalog(t, builder)
 
-	if err := builder.SetProviderModel("provider-a", Model{ID: "shared", Name: "Later Draft"}); err != nil {
+	if err := builder.SetProviderModel("provider-a", Model{
+		ID: "shared", ModelRef: "author/shared", Name: "Later Draft",
+	}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
 	offering, err := catalog.Offering("provider-alias", "shared")
 	if err != nil {
 		t.Fatalf("Offering through alias: %v", err)
 	}
-	if offering.DefinitionID != "shared" {
-		t.Fatalf("Indexed offering definition = %q, want shared", offering.DefinitionID)
+	if offering.DefinitionID != "author/shared" {
+		t.Fatalf("Indexed offering definition = %q, want author/shared", offering.DefinitionID)
 	}
 	definition, err := catalog.FindModel("shared")
 	if err != nil {
@@ -203,6 +212,7 @@ func TestCatalogPrecomputesProviderOfferingIndex(t *testing.T) {
 
 func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) {
 	builder := NewEmpty()
+	setTestReadViewDefinition(t, builder, "shared", "Shared Model")
 	providers := []Provider{
 		{
 			ID: "provider-a", Aliases: []ProviderID{"provider-a-alias"}, Name: "Provider A",
@@ -223,7 +233,7 @@ func TestCatalogCanonicalOfferingLookupPreservesDuplicateModelIDs(t *testing.T) 
 		t.Fatalf("Build: %v", err)
 	}
 
-	definition, err := catalog.Definition("shared")
+	definition, err := catalog.Definition("author/shared")
 	if err != nil {
 		t.Fatalf("Definition: %v", err)
 	}

@@ -1,5 +1,6 @@
 # gpt-5.1-2025-11-13 - AI model
 id: gpt-5.1-2025-11-13
+model: openai/gpt-5.1-2025-11-13
 name: gpt-5.1-2025-11-13
 authors:
 - id: openai

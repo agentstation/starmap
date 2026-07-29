@@ -1,5 +1,6 @@
 # chirp-2 - Google Vertex AI model: chirp-2
 id: chirp-2
+model: google/chirp-2
 name: chirp-2
 authors:
 - id: google

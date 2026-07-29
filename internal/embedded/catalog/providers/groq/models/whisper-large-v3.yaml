@@ -1,5 +1,6 @@
 # whisper-large-v3 - Speech transcription model for accurate audio-to-text and ca...
 id: whisper-large-v3
+model: openai/whisper-large-v3
 name: Whisper
 authors:
 - id: openai

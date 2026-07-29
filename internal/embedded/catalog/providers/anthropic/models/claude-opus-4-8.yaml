@@ -1,5 +1,6 @@
 # claude-opus-4-8 - Top Claude Opus tier for the hardest reasoning, coding, and ...
 id: claude-opus-4-8
+model: anthropic/claude-opus-4-8
 name: Claude Opus 4.8
 authors:
 - id: anthropic

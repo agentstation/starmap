@@ -1,5 +1,6 @@
 # gpt-image-1-mini - Image model for prompt-driven generation, editing, and visua...
 id: gpt-image-1-mini
+model: openai/gpt-image-1-mini
 name: gpt-image-1-mini
 authors:
 - id: openai

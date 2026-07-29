@@ -32,9 +32,9 @@ func TestNormalizedEvidenceRoundTripReplaysCandidateAndProvenanceWithoutSecrets(
 			Timestamp: time.Date(2026, time.July, 10, 12, 0, 0, 0, time.UTC),
 		}},
 	})
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Build observation: %v", err)
 	}
 	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{
 		ObservedAt: time.Date(2026, time.July, 10, 12, 1, 0, 0, time.UTC),

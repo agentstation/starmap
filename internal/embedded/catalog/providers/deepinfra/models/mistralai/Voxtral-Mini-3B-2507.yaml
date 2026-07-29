@@ -1,5 +1,6 @@
 # mistralai/Voxtral-Mini-3B-2507 - Voxtral Mini is an enhancement of Ministral 3B, incorporatin...
 id: mistralai/Voxtral-Mini-3B-2507
+model: mistral/voxtral-mini-3b-2507
 name: mistralai/Voxtral-Mini-3B-2507
 authors:
 - id: mistral

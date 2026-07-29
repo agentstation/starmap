@@ -1,5 +1,6 @@
 # gemini-2.5-flash-native-audio-latest - Latest release of Gemini 2.5 Flash Native Audio
 id: gemini-2.5-flash-native-audio-latest
+model: google/gemini-2.5-flash-native-audio-latest
 name: Gemini 2.5 Flash Native Audio Latest
 authors:
 - id: google
@@ -77,14 +78,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Model limits
 limits:

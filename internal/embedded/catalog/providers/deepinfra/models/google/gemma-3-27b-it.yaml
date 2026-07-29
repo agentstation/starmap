@@ -1,5 +1,6 @@
 # google/gemma-3-27b-it - Gemma 3 introduces multimodality, supporting vision-language...
 id: google/gemma-3-27b-it
+model: google/gemma-3-27b-it
 name: google/gemma-3-27b-it
 authors:
 - id: google

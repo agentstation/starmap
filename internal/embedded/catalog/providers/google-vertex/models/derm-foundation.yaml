@@ -1,5 +1,6 @@
 # derm-foundation - Google Vertex AI model: derm-foundation
 id: derm-foundation
+model: google/derm-foundation
 name: derm-foundation
 authors:
 - id: google

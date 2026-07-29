@@ -1,5 +1,6 @@
 # object-detector - Google Vertex AI model: object-detector
 id: object-detector
+model: google/object-detector
 name: object-detector
 authors:
 - id: google

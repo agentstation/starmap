@@ -1,5 +1,6 @@
 # claude-sonnet-4-6 - Claude workhorse for coding agents, careful analysis, and pr...
 id: claude-sonnet-4-6
+model: anthropic/claude-sonnet-4-6
 name: Claude Sonnet 4.6
 authors:
 - id: anthropic

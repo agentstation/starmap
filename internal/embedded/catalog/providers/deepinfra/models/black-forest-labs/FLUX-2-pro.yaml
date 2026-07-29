@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-2-pro - Multi-reference visual intelligence with unprecedented detai...
 id: black-forest-labs/FLUX-2-pro
+model: black-forest-labs/flux-2-pro
 name: black-forest-labs/FLUX-2-pro
 description: Multi-reference visual intelligence with unprecedented detail, color precision, and spatial reasoning. The most advanced image generation and editing model. Generate photorealistic images with precise control.
 

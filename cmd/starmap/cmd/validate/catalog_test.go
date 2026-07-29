@@ -67,8 +67,16 @@ func testCatalogWithModelAuthor(t *testing.T, authorID catalogs.AuthorID) *catal
 	provider := catalogs.TestProvider(t)
 	provider.Catalog.Authors = []catalogs.AuthorID{authorID}
 	model := catalogs.TestModel(t)
+	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
 	model.Authors = []catalogs.Author{{ID: authorID, Name: authorID.String()}}
 	provider.Models = map[string]*catalogs.Model{model.ID: model}
+	if err := cat.SetAuthorModel(author.ID, catalogs.Model{
+		ID:      model.ID,
+		Name:    model.Name,
+		Authors: []catalogs.Author{*author},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel returned error: %v", err)
+	}
 
 	if err := cat.SetProvider(*provider); err != nil {
 		t.Fatalf("SetProvider returned error: %v", err)

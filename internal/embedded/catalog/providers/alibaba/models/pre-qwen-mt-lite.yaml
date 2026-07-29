@@ -1,5 +1,6 @@
 # pre-qwen-mt-lite - AI model
 id: pre-qwen-mt-lite
+model: qwen/qwen-mt-lite
 name: pre-qwen-mt-lite
 
 # Model features

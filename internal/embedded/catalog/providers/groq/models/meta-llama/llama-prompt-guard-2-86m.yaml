@@ -1,5 +1,6 @@
 # meta-llama/llama-prompt-guard-2-86m - Safety model for policy screening, moderation, and risk-awar...
 id: meta-llama/llama-prompt-guard-2-86m
+model: meta/llama-prompt-guard-2-86m
 name: Prompt Guard 2 86M
 authors:
 - id: meta
@@ -79,11 +80,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 2e-08
+      per_1m: 0.02
     input:
-      per_1m: 4e-08
+      per_1m: 0.04
     output:
-      per_1m: 4e-08
+      per_1m: 0.04
   operations:
     request: 0.0
     image_gen: 0.0

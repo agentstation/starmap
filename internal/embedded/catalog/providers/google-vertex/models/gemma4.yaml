@@ -1,5 +1,6 @@
 # gemma4 - Google model: gemma4
 id: gemma4
+model: google/gemma4
 name: gemma4
 authors:
 - id: google

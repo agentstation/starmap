@@ -1,5 +1,6 @@
 # gemma3n - Google Vertex AI model: gemma3n
 id: gemma3n
+model: google/gemma3n
 name: gemma3n
 authors:
 - id: google

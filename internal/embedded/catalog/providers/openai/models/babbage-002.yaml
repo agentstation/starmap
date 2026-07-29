@@ -1,5 +1,6 @@
 # babbage-002 - AI model
 id: babbage-002
+model: openai/babbage-002
 name: babbage-002
 authors:
 - id: openai

@@ -1,5 +1,6 @@
 # anthropic/claude-fable-5 - Claude Fable 5 is Anthropic's next generation of intelligenc...
 id: anthropic/claude-fable-5
+model: anthropic/claude-fable-5
 name: anthropic/claude-fable-5
 description: |-
   Claude Fable 5 is Anthropic's next generation of intelligence for the hardest knowledge work and coding problems. It works independently for longer than any prior generally available Claude model: run it in an agent harness and it can work for days at a time, planning across stages, delegating to sub-agents, and checking its own work.

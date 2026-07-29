@@ -64,12 +64,12 @@ var _ Reader = (*Builder)(nil)
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
 type Builder struct {
-	config     *options
-	providers  *Providers
-	authors    *Authors
-	endpoints  *Endpoints
-	provenance *Provenance
-	loadReport LoadReport
+	config         *options
+	providers      *Providers
+	authors        *Authors
+	authoredModels *authoredModelStore
+	provenance     *Provenance
+	loadReport     LoadReport
 }
 
 // New creates a new builder with the given options
@@ -77,11 +77,11 @@ type Builder struct {
 // WithFiles(path) = files catalog with auto-load.
 func New(opt Option, opts ...Option) (*Builder, error) {
 	cat := &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     defaults().apply(append([]Option{opt}, opts...)...),
+		providers:      NewProviders(),
+		authors:        NewAuthors(),
+		authoredModels: newAuthoredModelStore(),
+		provenance:     NewProvenance(),
+		config:         defaults().apply(append([]Option{opt}, opts...)...),
 	}
 
 	// Auto-load if configured and has filesystem
@@ -137,11 +137,11 @@ func NewFromPath(path string) (*Builder, error) {
 //	catalog.SetProvider(provider)
 func NewEmpty() *Builder {
 	return &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     defaults(),
+		providers:      NewProviders(),
+		authors:        NewAuthors(),
+		authoredModels: newAuthoredModelStore(),
+		provenance:     NewProvenance(),
+		config:         defaults(),
 	}
 }
 
@@ -186,9 +186,10 @@ func (cat *Builder) Authors() AuthorsReader {
 	return cat.authors
 }
 
-// Endpoints returns the endpoints collection.
-func (cat *Builder) Endpoints() EndpointsReader {
-	return cat.endpoints
+// AuthoredModels returns caller-owned provider-independent construction
+// records in canonical author/slug order.
+func (cat *Builder) AuthoredModels() []AuthoredModel {
+	return cat.authoredModels.list()
 }
 
 // Provenance returns the provenance collection.
@@ -220,18 +221,6 @@ func (cat *Builder) Author(id AuthorID) (Author, error) {
 		}
 	}
 	return DeepCopyAuthor(*author), nil
-}
-
-// Endpoint returns an endpoint by ID.
-func (cat *Builder) Endpoint(id string) (Endpoint, error) {
-	endpoint, ok := cat.endpoints.Get(id)
-	if !ok {
-		return Endpoint{}, &errors.NotFoundError{
-			Resource: "endpoint",
-			ID:       id,
-		}
-	}
-	return *endpoint, nil
 }
 
 // ProviderModels returns the models served by a provider or one of its aliases.
@@ -283,14 +272,49 @@ func (cat *Builder) SetAuthor(author Author) error {
 	return cat.authors.Set(authorCopy.ID, &authorCopy)
 }
 
-// SetEndpoint sets an endpoint (upsert).
-func (cat *Builder) SetEndpoint(endpoint Endpoint) error {
-	return cat.endpoints.Set(endpoint.ID, &endpoint)
-}
-
 // SetProviderModel sets a model on a provider atomically.
 func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error {
+	if err := validateProviderModelPathID(model.ID); err != nil {
+		return errors.WrapResource("validate", "provider model", string(providerID)+"/"+model.ID, err)
+	}
+	if err := validateModelGeneration(model.Generation); err != nil {
+		return errors.WrapResource("validate", "provider model", string(providerID)+"/"+model.ID, err)
+	}
+	if model.ModelRef != "" {
+		if _, _, err := ParseModelDefinitionID(model.ModelRef); err != nil {
+			return errors.WrapResource("validate", "provider model reference", string(model.ModelRef), err)
+		}
+	}
 	return cat.providers.SetModel(providerID, model)
+}
+
+// SetAuthorModel sets one provider-independent model on its owning author.
+func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error {
+	author, err := cat.Author(authorID)
+	if err != nil {
+		return err
+	}
+	for index, modelAuthor := range model.Authors {
+		canonical, resolveErr := cat.Author(modelAuthor.ID)
+		if resolveErr != nil {
+			return errors.WrapResource(
+				"resolve",
+				"authored model author",
+				string(modelAuthor.ID),
+				resolveErr,
+			)
+		}
+		model.Authors[index] = Author{ID: canonical.ID, Name: canonical.Name}
+	}
+	if err := validateAuthoredModel(author.ID, model); err != nil {
+		return errors.WrapResource(
+			"validate",
+			"authored model",
+			string(author.ID)+"/"+model.ID,
+			err,
+		)
+	}
+	return cat.authoredModels.set(AuthoredModel{AuthorID: author.ID, Model: model})
 }
 
 // SetProvenance replaces catalog provenance.
@@ -315,12 +339,38 @@ func (cat *Builder) DeleteProvider(id ProviderID) error {
 
 // DeleteAuthor deletes an author.
 func (cat *Builder) DeleteAuthor(id AuthorID) error {
-	return cat.authors.Delete(id)
-}
-
-// DeleteEndpoint deletes an endpoint.
-func (cat *Builder) DeleteEndpoint(id string) error {
-	return cat.endpoints.Delete(id)
+	author, err := cat.Author(id)
+	if err != nil {
+		return err
+	}
+	for _, record := range cat.authoredModels.list() {
+		if record.AuthorID == author.ID {
+			return &errors.ConflictError{
+				Resource: "author",
+				Actual:   string(author.ID),
+				Message:  "cannot be deleted while it owns authored models",
+			}
+		}
+		for _, modelAuthor := range record.Model.Authors {
+			canonical, resolveErr := cat.Author(modelAuthor.ID)
+			if resolveErr != nil {
+				return errors.WrapResource(
+					"resolve",
+					"authored model author",
+					string(modelAuthor.ID),
+					resolveErr,
+				)
+			}
+			if canonical.ID == author.ID {
+				return &errors.ConflictError{
+					Resource: "author",
+					Actual:   string(author.ID),
+					Message:  "cannot be deleted while it is credited by authored models",
+				}
+			}
+		}
+	}
+	return cat.authors.Delete(author.ID)
 }
 
 // DeleteProviderModel deletes a model from a provider atomically.
@@ -328,12 +378,21 @@ func (cat *Builder) DeleteProviderModel(providerID ProviderID, modelID string) e
 	return cat.providers.DeleteModel(providerID, modelID)
 }
 
+// DeleteAuthorModel deletes one provider-independent model from an author.
+func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error {
+	author, err := cat.Author(authorID)
+	if err != nil {
+		return err
+	}
+	return cat.authoredModels.delete(AuthoredModelID(author.ID, slug))
+}
+
 // ReplaceWith replaces this catalog's contents with another.
 func (cat *Builder) ReplaceWith(source Reader) error {
 	// Clear existing data
 	cat.providers.Clear()
 	cat.authors.Clear()
-	cat.endpoints.Clear()
+	cat.authoredModels.clear()
 	cat.provenance.Clear()
 
 	// Copy all data from source
@@ -352,10 +411,9 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 			return errors.WrapResource("set", "author", string(author.ID), err)
 		}
 	}
-
-	for _, endpoint := range source.Endpoints().List() {
-		if err := cat.SetEndpoint(endpoint); err != nil {
-			return errors.WrapResource("set", "endpoint", endpoint.ID, err)
+	for _, record := range source.AuthoredModels() {
+		if err := cat.SetAuthorModel(record.AuthorID, record.Model); err != nil {
+			return errors.WrapResource("set", "authored model", string(record.ID()), err)
 		}
 	}
 
@@ -472,12 +530,12 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 func (cat *Builder) Copy() (*Builder, error) {
 	// Create a new catalog with the same configuration
 	NewCat := &Builder{
-		providers:  NewProviders(),
-		authors:    NewAuthors(),
-		endpoints:  NewEndpoints(),
-		provenance: NewProvenance(),
-		config:     cat.config.copy(),
-		loadReport: cat.LoadReport(),
+		providers:      NewProviders(),
+		authors:        NewAuthors(),
+		authoredModels: newAuthoredModelStore(),
+		provenance:     NewProvenance(),
+		config:         cat.config.copy(),
+		loadReport:     cat.LoadReport(),
 	}
 
 	// Copy all data

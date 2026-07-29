@@ -1,5 +1,6 @@
 # lyria-002 - Google Vertex AI model: lyria-002
 id: lyria-002
+model: google/lyria-002
 name: lyria-002
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # moonshotai/Kimi-K2.7-Code - Coding-focused Kimi model, stronger on long-horizon repo wor...
 id: moonshotai/Kimi-K2.7-Code
+model: moonshot-ai/kimi-k2.7-code
 name: moonshotai/Kimi-K2.7-Code
 authors:
 - id: moonshot-ai
@@ -88,7 +89,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.149999998
+      per_1m: 0.15
     input:
       per_1m: 0.74
     output:

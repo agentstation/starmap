@@ -12,10 +12,22 @@ import (
 
 func TestSourceReturnsCompleteContentAddressedEmbeddedObservation(t *testing.T) {
 	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, model := range []catalogs.Model{
+		{ID: "embedded-one--model", Name: "Embedded Model", Authors: []catalogs.Author{author}},
+		{ID: "embedded-two--model", Name: "Provider-Scoped Embedded Model", Authors: []catalogs.Author{author}},
+	} {
+		if err := builder.SetAuthorModel(author.ID, model); err != nil {
+			t.Fatalf("SetAuthorModel(%s): %v", model.ID, err)
+		}
+	}
 	if err := builder.SetProvider(catalogs.Provider{
 		ID: "embedded-one",
 		Models: map[string]*catalogs.Model{
-			"model": {ID: "model", Name: "Embedded Model"},
+			"model": {ID: "model", ModelRef: "test-author/embedded-one--model", Name: "Embedded Model"},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
@@ -23,7 +35,7 @@ func TestSourceReturnsCompleteContentAddressedEmbeddedObservation(t *testing.T) 
 	if err := builder.SetProvider(catalogs.Provider{
 		ID: "embedded-two",
 		Models: map[string]*catalogs.Model{
-			"model": {ID: "model", Name: "Provider-Scoped Embedded Model"},
+			"model": {ID: "model", ModelRef: "test-author/embedded-two--model", Name: "Provider-Scoped Embedded Model"},
 		},
 	}); err != nil {
 		t.Fatalf("SetProvider second provider: %v", err)

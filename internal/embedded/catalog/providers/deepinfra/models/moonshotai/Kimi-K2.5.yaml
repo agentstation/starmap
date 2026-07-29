@@ -1,5 +1,6 @@
 # moonshotai/Kimi-K2.5 - Kimi multimodal agent model for visual understanding, coding...
 id: moonshotai/Kimi-K2.5
+model: moonshot-ai/kimi-k2.5
 name: moonshotai/Kimi-K2.5
 authors:
 - id: moonshot-ai
@@ -88,7 +89,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.070000002
+      per_1m: 0.07
     input:
       per_1m: 0.45
     output:

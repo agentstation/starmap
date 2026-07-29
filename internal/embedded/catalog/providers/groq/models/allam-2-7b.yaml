@@ -1,5 +1,6 @@
 # allam-2-7b - ALLaM-2-7b
 id: allam-2-7b
+model: sdaia/allam-2-7b
 name: ALLaM-2-7b
 authors:
 - id: sdaia

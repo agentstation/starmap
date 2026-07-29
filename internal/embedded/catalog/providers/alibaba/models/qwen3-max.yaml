@@ -1,9 +1,10 @@
 # qwen3-max - Flagship Qwen3 model for coding agents, complex reasoning, a...
 id: qwen3-max
+model: qwen/qwen3-max
 name: qwen3-max
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Flagship Qwen3 model for coding agents, complex reasoning, and tool use
 
 # Model metadata

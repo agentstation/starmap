@@ -1,9 +1,10 @@
 # qwen3-vl-plus-2025-09-23 - AI model
 id: qwen3-vl-plus-2025-09-23
+model: qwen/qwen3-vl-plus-2025-09-23
 name: qwen3-vl-plus-2025-09-23
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

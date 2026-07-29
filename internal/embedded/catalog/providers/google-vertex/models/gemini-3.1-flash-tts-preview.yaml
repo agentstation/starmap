@@ -1,5 +1,6 @@
 # gemini-3.1-flash-tts-preview - Google model: gemini-3.1-flash-tts-preview
 id: gemini-3.1-flash-tts-preview
+model: google/gemini-3.1-flash-tts-preview
 name: gemini-3.1-flash-tts-preview
 authors:
 - id: google

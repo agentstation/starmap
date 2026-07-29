@@ -1,0 +1,16 @@
+# gemini-2.5-flash-preview-04-17 - Gemini 2.5 Flash Preview 04-17
+id: gemini-2.5-flash-preview-04-17
+name: Gemini 2.5 Flash Preview 04-17
+authors:
+- id: google
+  name: Google
+
+# Model metadata
+metadata:
+  release_date: 2025-04-17
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+
+# Timestamps
+created_at: null
+updated_at: 2025-10-19T18:13:08Z

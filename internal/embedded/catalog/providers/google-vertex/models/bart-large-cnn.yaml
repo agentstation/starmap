@@ -1,9 +1,10 @@
 # bart-large-cnn - Google Vertex AI model: bart-large-cnn
 id: bart-large-cnn
+model: meta/bart-large-cnn
 name: bart-large-cnn
 authors:
-- id: google
-  name: Google
+- id: meta
+  name: Meta
 description: |-
   Google Vertex AI model: bart-large-cnn
 

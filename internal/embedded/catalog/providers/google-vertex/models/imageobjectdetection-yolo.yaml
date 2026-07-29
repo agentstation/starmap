@@ -1,5 +1,6 @@
 # imageobjectdetection-yolo - Google Vertex AI model: imageobjectdetection-yolo
 id: imageobjectdetection-yolo
+model: google/imageobjectdetection-yolo
 name: imageobjectdetection-yolo
 authors:
 - id: google

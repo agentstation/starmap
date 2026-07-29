@@ -1,5 +1,6 @@
 # gpt-5.5 - Default frontier GPT for coding, computer use, research, and...
 id: gpt-5.5
+model: openai/gpt-5.5
 name: gpt-5.5
 authors:
 - id: openai

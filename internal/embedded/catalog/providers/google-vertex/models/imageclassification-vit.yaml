@@ -1,5 +1,6 @@
 # imageclassification-vit - Google Vertex AI model: imageclassification-vit
 id: imageclassification-vit
+model: google/imageclassification-vit
 name: imageclassification-vit
 authors:
 - id: google

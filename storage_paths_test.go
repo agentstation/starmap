@@ -71,6 +71,7 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 	}); err != nil {
 		t.Fatalf("SetProvider human: %v", err)
 	}
+	seedTestModelDefinitions(t, human)
 	if err := human.Save(save.WithPath(workspace)); err != nil {
 		t.Fatalf("Save human workspace: %v", err)
 	}
@@ -84,6 +85,7 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 	}); err != nil {
 		t.Fatalf("SetProvider machine: %v", err)
 	}
+	seedTestModelDefinitions(t, machine)
 	for _, machineRoot := range []string{
 		filepath.Join(root, "state", "catalog"),
 		filepath.Join(root, "cache", "models.dev"),

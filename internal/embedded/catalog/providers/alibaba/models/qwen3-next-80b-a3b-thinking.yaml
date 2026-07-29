@@ -1,9 +1,10 @@
 # qwen3-next-80b-a3b-thinking - Efficient Qwen thinking model for local reasoning, math, and...
 id: qwen3-next-80b-a3b-thinking
+model: qwen/qwen3-next-80b-a3b-thinking
 name: qwen3-next-80b-a3b-thinking
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Efficient Qwen thinking model for local reasoning, math, and coding agents
 
 # Model metadata

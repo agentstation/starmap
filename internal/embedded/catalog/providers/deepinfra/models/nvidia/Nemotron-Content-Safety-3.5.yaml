@@ -1,5 +1,6 @@
 # nvidia/Nemotron-Content-Safety-3.5 - Nemotron Content Safety 3.5 is a multimodal safety classifie...
 id: nvidia/Nemotron-Content-Safety-3.5
+model: nvidia/nemotron-content-safety-3.5
 name: nvidia/Nemotron-Content-Safety-3.5
 authors:
 - id: nvidia

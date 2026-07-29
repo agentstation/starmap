@@ -1,5 +1,6 @@
 # virtual-try-on-001 - Google model: virtual-try-on-001
 id: virtual-try-on-001
+model: google/virtual-try-on-001
 name: virtual-try-on-001
 authors:
 - id: google

@@ -9,15 +9,15 @@ import (
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
-// CatalogPayload is the canonical provider-oriented JSON representation.
-// Provider models are the only persisted model records. Definitions,
-// offerings, and author membership are derived immutable read views.
+// CatalogPayload is the canonical construction-record JSON representation.
+// Author models own provider-independent facts; provider models own serving
+// facts and link to author models through Model.ModelRef.
 type CatalogPayload struct {
 	SchemaVersion  uint64             `json:"schema_version"`
 	Providers      []Provider         `json:"providers"`
 	Authors        []Author           `json:"authors"`
-	Endpoints      []Endpoint         `json:"endpoints"`
 	ProviderModels map[string][]Model `json:"provider_models"`
+	AuthorModels   map[string][]Model `json:"author_models"`
 	Provenance     provenance.Map     `json:"provenance"`
 }
 
@@ -30,8 +30,8 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 		SchemaVersion:  CurrentCatalogSchemaVersion,
 		Providers:      reader.Providers().List(),
 		Authors:        reader.Authors().List(),
-		Endpoints:      reader.Endpoints().List(),
 		ProviderModels: make(map[string][]Model),
+		AuthorModels:   make(map[string][]Model),
 		Provenance:     reader.Provenance().Map(),
 	}
 	for _, provider := range payload.Providers {
@@ -47,6 +47,16 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 			}
 		}
 		payload.ProviderModels[string(provider.ID)] = models
+	}
+	for _, author := range payload.Authors {
+		payload.AuthorModels[string(author.ID)] = []Model{}
+	}
+	for _, record := range reader.AuthoredModels() {
+		authorID := string(record.AuthorID)
+		payload.AuthorModels[authorID] = append(
+			payload.AuthorModels[authorID],
+			DeepCopyModel(record.Model),
+		)
 	}
 	data, err := json.Marshal(payload)
 	if err != nil {

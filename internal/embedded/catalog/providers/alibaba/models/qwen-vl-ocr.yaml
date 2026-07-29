@@ -1,9 +1,10 @@
 # qwen-vl-ocr - OCR model for extracting structured text from documents and ...
 id: qwen-vl-ocr
+model: qwen/qwen-vl-ocr
 name: qwen-vl-ocr
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: OCR model for extracting structured text from documents and screenshots
 
 # Model metadata

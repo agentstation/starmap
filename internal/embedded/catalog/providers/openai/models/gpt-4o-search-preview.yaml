@@ -1,5 +1,6 @@
 # gpt-4o-search-preview - AI model
 id: gpt-4o-search-preview
+model: openai/gpt-4o-search-preview
 name: gpt-4o-search-preview
 authors:
 - id: openai

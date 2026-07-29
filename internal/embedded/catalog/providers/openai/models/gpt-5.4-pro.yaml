@@ -1,5 +1,6 @@
 # gpt-5.4-pro - More exact GPT-5.4 tier for demanding professional reasoning...
 id: gpt-5.4-pro
+model: openai/gpt-5.4-pro
 name: gpt-5.4-pro
 authors:
 - id: openai

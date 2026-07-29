@@ -1,5 +1,6 @@
 # gpt-4o-2024-08-06@001 - GPT-4o model available through Vertex AI Model Garden
 id: gpt-4o-2024-08-06@001
+model: openai/gpt-4o-2024-08-06
 name: GPT-4o
 authors:
 - id: openai

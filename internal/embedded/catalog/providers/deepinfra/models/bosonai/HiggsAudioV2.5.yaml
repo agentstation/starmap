@@ -1,5 +1,6 @@
 # bosonai/HiggsAudioV2.5 - HiggsAudioV2.5 is a high-quality neural text-to-speech (TTS)...
 id: bosonai/HiggsAudioV2.5
+model: boson-ai/higgsaudiov2.5
 name: bosonai/HiggsAudioV2.5
 description: HiggsAudioV2.5 is a high-quality neural text-to-speech (TTS) model designed for natural-sounding voice generation across a wide range of use cases. It focuses on clarity, stable prosody, and consistent pacing, making it suitable for both short prompts and longer narration.
 

@@ -1,5 +1,6 @@
 # tag-recognizer - Google Vertex AI model: tag-recognizer
 id: tag-recognizer
+model: google/tag-recognizer
 name: tag-recognizer
 authors:
 - id: google

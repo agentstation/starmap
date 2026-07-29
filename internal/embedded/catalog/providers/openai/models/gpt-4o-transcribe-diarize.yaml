@@ -1,5 +1,6 @@
 # gpt-4o-transcribe-diarize - AI model
 id: gpt-4o-transcribe-diarize
+model: openai/gpt-4o-transcribe-diarize
 name: gpt-4o-transcribe-diarize
 authors:
 - id: openai

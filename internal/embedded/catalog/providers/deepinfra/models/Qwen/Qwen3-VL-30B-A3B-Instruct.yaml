@@ -1,9 +1,10 @@
 # Qwen/Qwen3-VL-30B-A3B-Instruct - Meet Qwen3-VL — the most powerful vision-language model in...
 id: Qwen/Qwen3-VL-30B-A3B-Instruct
+model: qwen/qwen3-vl-30b-a3b-instruct
 name: Qwen/Qwen3-VL-30B-A3B-Instruct
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: |-
   Meet Qwen3-VL — the most powerful vision-language model in the Qwen series to date. This generation delivers comprehensive upgrades across the board: superior text understanding & generation, deeper visual perception & reasoning, extended context length, enhanced spatial and video dynamics comprehension, and stronger agent interaction capabilities.
 

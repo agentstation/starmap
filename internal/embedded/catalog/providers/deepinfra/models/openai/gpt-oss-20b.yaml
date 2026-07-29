@@ -1,5 +1,6 @@
 # openai/gpt-oss-20b - Open-weight GPT model for self-hosted reasoning and instruct...
 id: openai/gpt-oss-20b
+model: openai/gpt-oss-20b
 name: openai/gpt-oss-20b
 authors:
 - id: openai
@@ -89,7 +90,7 @@ reasoning:
 pricing:
   tokens:
     input:
-      per_1m: 0.030000000000000002
+      per_1m: 0.03
     output:
       per_1m: 0.14
   currency: USD

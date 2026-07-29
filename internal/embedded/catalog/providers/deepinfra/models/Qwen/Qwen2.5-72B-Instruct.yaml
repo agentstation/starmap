@@ -1,9 +1,10 @@
 # Qwen/Qwen2.5-72B-Instruct - Qwen2.5 is a model pretrained on a large-scale dataset of up...
 id: Qwen/Qwen2.5-72B-Instruct
+model: qwen/qwen2.5-72b-instruct
 name: Qwen/Qwen2.5-72B-Instruct
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen2.5 is a model pretrained on a large-scale dataset of up to 18 trillion tokens, offering significant improvements in knowledge, coding, mathematics, and instruction following compared to its predecessor Qwen2. The model also features enhanced capabilities in generating long texts, understanding structured data, and generating structured outputs, while supporting multilingual capabilities for over 29 languages.
 
 # Model metadata

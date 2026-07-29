@@ -1,5 +1,6 @@
 # label-detector-pali-001 - Google Vertex AI model: label-detector-pali-001
 id: label-detector-pali-001
+model: google/label-detector-pali-001
 name: label-detector-pali-001
 authors:
 - id: google

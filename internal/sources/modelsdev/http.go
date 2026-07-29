@@ -103,7 +103,7 @@ func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sourc
 		return sources.Observation{}, err
 	}
 
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource("publish", "models.dev HTTP observation", "", err)
 	}

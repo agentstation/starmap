@@ -1,5 +1,6 @@
 # gpt-4.1-nano - Tiny GPT-4.1 option for classification, routing, and very hi...
 id: gpt-4.1-nano
+model: openai/gpt-4.1-nano
 name: gpt-4.1-nano
 authors:
 - id: openai

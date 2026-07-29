@@ -29,16 +29,6 @@ type AuthorsReader interface {
 	FormatYAML() string
 }
 
-// EndpointsReader exposes endpoint collection reads without mutation methods.
-type EndpointsReader interface {
-	Get(string) (*Endpoint, bool)
-	Exists(string) bool
-	Len() int
-	List() []Endpoint
-	Map() map[string]*Endpoint
-	ForEach(func(string, *Endpoint) bool)
-}
-
 // ModelsReader exposes model collection reads without mutation methods.
 type ModelsReader interface {
 	Get(string) (*Model, bool)
@@ -62,14 +52,13 @@ type ProvenanceReader interface {
 
 // Reader provides read-only access to catalog data.
 type Reader interface {
-	// Lists all providers, authors, and endpoints
+	// Lists providers, authors, authored models, and provenance.
 	Providers() ProvidersReader
 	Authors() AuthorsReader
-	Endpoints() EndpointsReader
+	AuthoredModels() []AuthoredModel
 	Provenance() ProvenanceReader
 
-	// Gets a provider, author, or endpoint by id
+	// Gets a provider or author by ID.
 	Provider(id ProviderID) (Provider, error)
 	Author(id AuthorID) (Author, error)
-	Endpoint(id string) (Endpoint, error)
 }

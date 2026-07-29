@@ -1,5 +1,6 @@
 # gemini-3.1-flash-lite-preview - Low-latency Gemini model for high-volume multimodal and agen...
 id: gemini-3.1-flash-lite-preview
+model: google/gemini-3.1-flash-lite-preview
 name: gemini-3.1-flash-lite-preview
 authors:
 - id: google

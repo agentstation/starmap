@@ -1,5 +1,6 @@
 # anthropic/claude-opus-4-8 - Claude Opus 4.8 is our most intelligent Opus model and the b...
 id: anthropic/claude-opus-4-8
+model: anthropic/claude-opus-4-8
 name: anthropic/claude-opus-4-8
 description: Claude Opus 4.8 is our most intelligent Opus model and the best generally available model for coding and agents, with deeper reasoning for enterprise workflows.
 

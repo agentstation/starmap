@@ -1,5 +1,6 @@
 # tts-1-hd-1106 - AI model
 id: tts-1-hd-1106
+model: openai/tts-1-hd-1106
 name: tts-1-hd-1106
 authors:
 - id: openai

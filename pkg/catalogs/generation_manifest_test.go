@@ -290,7 +290,7 @@ func TestGenerationManifestValidationReportConsistency(t *testing.T) {
 }
 
 func TestGenerationManifestPayloadDescriptor(t *testing.T) {
-	payload := []byte(`{"providers":[],"authors":[],"endpoints":[]}`)
+	payload := []byte(`{"providers":[],"authors":[]}`)
 	descriptor := DescribeCatalogPayload(payload)
 	if err := descriptor.Verify(payload); err != nil {
 		t.Fatalf("Verify original payload: %v", err)

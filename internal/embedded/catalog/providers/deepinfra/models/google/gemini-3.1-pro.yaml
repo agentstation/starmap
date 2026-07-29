@@ -1,5 +1,6 @@
 # google/gemini-3.1-pro - Bring any idea to life with state-of-the-art reasoning to he...
 id: google/gemini-3.1-pro
+model: google/gemini-3.1-pro
 name: google/gemini-3.1-pro
 authors:
 - id: google
@@ -86,7 +87,7 @@ pricing:
     input:
       per_1m: 2.0
     output:
-      per_1m: 11.999999999999998
+      per_1m: 12
   currency: USD
 
 # Model limits

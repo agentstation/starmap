@@ -1,5 +1,6 @@
 # wan2.6-image - AI model
 id: wan2.6-image
+model: alibaba/wan2.6-image
 name: wan2.6-image
 authors:
 - id: alibaba

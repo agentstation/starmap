@@ -1,5 +1,6 @@
 # intfloat/multilingual-e5-large-instruct - The Multilingual-E5 models, initialized from XLM-RoBERTa, su...
 id: intfloat/multilingual-e5-large-instruct
+model: intfloat/multilingual-e5-large-instruct
 name: intfloat/multilingual-e5-large-instruct
 description: The Multilingual-E5 models, initialized from XLM-RoBERTa, support up to 512 tokens per input — any longer text will be silently truncated. To ensure optimal performance, always prefix inputs with “query:” or “passage:”, as the model was explicitly trained with this format.
 

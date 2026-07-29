@@ -1,9 +1,10 @@
 # Qwen/Qwen3-Max - Flagship Qwen3 model for coding agents, complex reasoning, a...
 id: Qwen/Qwen3-Max
+model: qwen/qwen3-max
 name: Qwen/Qwen3-Max
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Flagship Qwen3 model for coding agents, complex reasoning, and tool use
 
 # Model metadata
@@ -88,7 +89,7 @@ pricing:
     input:
       per_1m: 1.2
     output:
-      per_1m: 5.999999999999999
+      per_1m: 6
   currency: USD
 
 # Model limits

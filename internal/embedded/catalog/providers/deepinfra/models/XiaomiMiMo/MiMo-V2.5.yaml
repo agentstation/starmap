@@ -1,5 +1,6 @@
 # XiaomiMiMo/MiMo-V2.5 - Open MiMo model for multimodal coding agents and long-contex...
 id: XiaomiMiMo/MiMo-V2.5
+model: xiaomi/mimo-v2.5
 name: XiaomiMiMo/MiMo-V2.5
 description: Open MiMo model for multimodal coding agents and long-context automation
 
@@ -86,7 +87,7 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.08000000000000002
+      per_1m: 0.08
     input:
       per_1m: 0.4
     output:

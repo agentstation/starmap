@@ -1,5 +1,6 @@
 # gpt-3.5-turbo-instruct - AI model
 id: gpt-3.5-turbo-instruct
+model: openai/gpt-3.5-turbo-instruct
 name: gpt-3.5-turbo-instruct
 authors:
 - id: openai

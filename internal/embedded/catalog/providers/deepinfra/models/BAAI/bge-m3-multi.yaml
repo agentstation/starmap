@@ -1,5 +1,6 @@
 # BAAI/bge-m3-multi - BGE-M3 is a multilingual text embedding model developed by B...
 id: BAAI/bge-m3-multi
+model: baai/bge-m3
 name: BAAI/bge-m3-multi
 authors:
 - id: baai

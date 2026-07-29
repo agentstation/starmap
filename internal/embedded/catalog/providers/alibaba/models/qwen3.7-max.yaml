@@ -1,9 +1,10 @@
 # qwen3.7-max - Qwen frontier model tuned for agent frameworks, coding assis...
 id: qwen3.7-max
+model: qwen/qwen3.7-max
 name: qwen3.7-max
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen frontier model tuned for agent frameworks, coding assistants, and long tasks
 
 # Model metadata

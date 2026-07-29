@@ -1,0 +1,3662 @@
+schema_version: 1
+records:
+  - path: providers/alibaba/models/deepseek-v4-flash-us.yaml
+    provider: alibaba
+    provider_model_id: deepseek-v4-flash-us
+    model: deepseek/deepseek-v4-flash
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical DeepSeek model
+  - path: providers/alibaba/models/deepseek-v4-flash.yaml
+    provider: alibaba
+    provider_model_id: deepseek-v4-flash
+    model: deepseek/deepseek-v4-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/deepseek-v4-pro-us.yaml
+    provider: alibaba
+    provider_model_id: deepseek-v4-pro-us
+    model: deepseek/deepseek-v4-pro
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical DeepSeek model
+  - path: providers/alibaba/models/deepseek-v4-pro.yaml
+    provider: alibaba
+    provider_model_id: deepseek-v4-pro
+    model: deepseek/deepseek-v4-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/glm-5.1.yaml
+    provider: alibaba
+    provider_model_id: glm-5.1
+    model: zhipu-ai/glm-5.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/glm-5.2.yaml
+    provider: alibaba
+    provider_model_id: glm-5.2
+    model: zhipu-ai/glm-5.2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/kimi-k2.5.yaml
+    provider: alibaba
+    provider_model_id: kimi-k2.5
+    model: moonshot-ai/kimi-k2.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/kimi-k2.7-code.yaml
+    provider: alibaba
+    provider_model_id: kimi-k2.7-code
+    model: moonshot-ai/kimi-k2.7-code
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/pre-qwen-mt-lite.yaml
+    provider: alibaba
+    provider_model_id: pre-qwen-mt-lite
+    model: qwen/qwen-mt-lite
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/alibaba/models/qwen-flash-2025-07-28-us.yaml
+    provider: alibaba
+    provider_model_id: qwen-flash-2025-07-28-us
+    model: qwen/qwen-flash-2025-07-28
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen-flash-2025-07-28.yaml
+    provider: alibaba
+    provider_model_id: qwen-flash-2025-07-28
+    model: qwen/qwen-flash-2025-07-28
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-flash-us.yaml
+    provider: alibaba
+    provider_model_id: qwen-flash-us
+    model: qwen/qwen-flash
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen-flash
+    model: qwen/qwen-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-mt-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen-mt-flash
+    model: qwen/qwen-mt-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-mt-lite.yaml
+    provider: alibaba
+    provider_model_id: qwen-mt-lite
+    model: qwen/qwen-mt-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-mt-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen-mt-plus
+    model: qwen/qwen-mt-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-plus-2025-07-28.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus-2025-07-28
+    model: qwen/qwen-plus-2025-07-28
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-plus-2025-09-11.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus-2025-09-11
+    model: qwen/qwen-plus-2025-09-11
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-plus-2025-12-01-us.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus-2025-12-01-us
+    model: qwen/qwen-plus-2025-12-01
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen-plus-2025-12-01.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus-2025-12-01
+    model: qwen/qwen-plus-2025-12-01
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-plus-us.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus-us
+    model: qwen/qwen-plus
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen-plus
+    model: qwen/qwen-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-vl-ocr-2025-11-20.yaml
+    provider: alibaba
+    provider_model_id: qwen-vl-ocr-2025-11-20
+    model: qwen/qwen-vl-ocr-2025-11-20
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen-vl-ocr.yaml
+    provider: alibaba
+    provider_model_id: qwen-vl-ocr
+    model: qwen/qwen-vl-ocr
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-14b.yaml
+    provider: alibaba
+    provider_model_id: qwen3-14b
+    model: qwen/qwen3-14b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-235b-a22b-instruct-2507.yaml
+    provider: alibaba
+    provider_model_id: qwen3-235b-a22b-instruct-2507
+    model: qwen/qwen3-235b-a22b-instruct-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-235b-a22b-thinking-2507.yaml
+    provider: alibaba
+    provider_model_id: qwen3-235b-a22b-thinking-2507
+    model: qwen/qwen3-235b-a22b-thinking-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-235b-a22b.yaml
+    provider: alibaba
+    provider_model_id: qwen3-235b-a22b
+    model: qwen/qwen3-235b-a22b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-30b-a3b-instruct-2507.yaml
+    provider: alibaba
+    provider_model_id: qwen3-30b-a3b-instruct-2507
+    model: qwen/qwen3-30b-a3b-instruct-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-30b-a3b-thinking-2507.yaml
+    provider: alibaba
+    provider_model_id: qwen3-30b-a3b-thinking-2507
+    model: qwen/qwen3-30b-a3b-thinking-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-30b-a3b.yaml
+    provider: alibaba
+    provider_model_id: qwen3-30b-a3b
+    model: qwen/qwen3-30b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-32b.yaml
+    provider: alibaba
+    provider_model_id: qwen3-32b
+    model: qwen/qwen3-32b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-8b.yaml
+    provider: alibaba
+    provider_model_id: qwen3-8b
+    model: qwen/qwen3-8b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-asr-flash-2025-09-08-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-asr-flash-2025-09-08-us
+    model: qwen/qwen3-asr-flash-2025-09-08
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-asr-flash-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-asr-flash-us
+    model: qwen/qwen3-asr-flash
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-coder-30b-a3b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-30b-a3b-instruct
+    model: qwen/qwen3-coder-30b-a3b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-480b-a35b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-480b-a35b-instruct
+    model: qwen/qwen3-coder-480b-a35b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-flash-2025-07-28.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-flash-2025-07-28
+    model: qwen/qwen3-coder-flash-2025-07-28
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-flash
+    model: qwen/qwen3-coder-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-plus-2025-07-22.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-plus-2025-07-22
+    model: qwen/qwen3-coder-plus-2025-07-22
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-plus-2025-09-23.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-plus-2025-09-23
+    model: qwen/qwen3-coder-plus-2025-09-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-coder-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen3-coder-plus
+    model: qwen/qwen3-coder-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-max-2025-09-23.yaml
+    provider: alibaba
+    provider_model_id: qwen3-max-2025-09-23
+    model: qwen/qwen3-max-2025-09-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-max-preview.yaml
+    provider: alibaba
+    provider_model_id: qwen3-max-preview
+    model: qwen/qwen3-max-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-max.yaml
+    provider: alibaba
+    provider_model_id: qwen3-max
+    model: qwen/qwen3-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-next-80b-a3b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-next-80b-a3b-instruct
+    model: qwen/qwen3-next-80b-a3b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-next-80b-a3b-thinking.yaml
+    provider: alibaba
+    provider_model_id: qwen3-next-80b-a3b-thinking
+    model: qwen/qwen3-next-80b-a3b-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-235b-a22b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-235b-a22b-instruct
+    model: qwen/qwen3-vl-235b-a22b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-235b-a22b-thinking.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-235b-a22b-thinking
+    model: qwen/qwen3-vl-235b-a22b-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-30b-a3b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-30b-a3b-instruct
+    model: qwen/qwen3-vl-30b-a3b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-30b-a3b-thinking.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-30b-a3b-thinking
+    model: qwen/qwen3-vl-30b-a3b-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-32b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-32b-instruct
+    model: qwen/qwen3-vl-32b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-32b-thinking.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-32b-thinking
+    model: qwen/qwen3-vl-32b-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-8b-instruct.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-8b-instruct
+    model: qwen/qwen3-vl-8b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-8b-thinking.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-8b-thinking
+    model: qwen/qwen3-vl-8b-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-flash-2025-10-15-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-flash-2025-10-15-us
+    model: qwen/qwen3-vl-flash-2025-10-15
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-vl-flash-2025-10-15.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-flash-2025-10-15
+    model: qwen/qwen3-vl-flash-2025-10-15
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-flash-2026-01-22-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-flash-2026-01-22-us
+    model: qwen/qwen3-vl-flash-2026-01-22
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-vl-flash-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-flash-us
+    model: qwen/qwen3-vl-flash
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-vl-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-flash
+    model: qwen/qwen3-vl-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-plus-2025-09-23.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-plus-2025-09-23
+    model: qwen/qwen3-vl-plus-2025-09-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-plus-2025-12-19-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-plus-2025-12-19-us
+    model: qwen/qwen3-vl-plus-2025-12-19
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3-vl-plus-2025-12-19.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-plus-2025-12-19
+    model: qwen/qwen3-vl-plus-2025-12-19
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3-vl-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen3-vl-plus
+    model: qwen/qwen3-vl-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-122b-a10b.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-122b-a10b
+    model: qwen/qwen3.5-122b-a10b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-27b.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-27b
+    model: qwen/qwen3.5-27b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-35b-a3b.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-35b-a3b
+    model: qwen/qwen3.5-35b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-397b-a17b.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-397b-a17b
+    model: qwen/qwen3.5-397b-a17b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-flash-2026-02-23.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-flash-2026-02-23
+    model: qwen/qwen3.5-flash-2026-02-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-flash
+    model: qwen/qwen3.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.5-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen3.5-plus
+    model: qwen/qwen3.5-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.6-35b-a3b.yaml
+    provider: alibaba
+    provider_model_id: qwen3.6-35b-a3b
+    model: qwen/qwen3.6-35b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.6-flash-2026-04-16.yaml
+    provider: alibaba
+    provider_model_id: qwen3.6-flash-2026-04-16
+    model: qwen/qwen3.6-flash-2026-04-16
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.6-flash-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3.6-flash-us
+    model: qwen/qwen3.6-flash
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3.6-flash.yaml
+    provider: alibaba
+    provider_model_id: qwen3.6-flash
+    model: qwen/qwen3.6-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.6-plus-2026-04-02.yaml
+    provider: alibaba
+    provider_model_id: qwen3.6-plus-2026-04-02
+    model: qwen/qwen3.6-plus-2026-04-02
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.7-max-2026-05-20.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-max-2026-05-20
+    model: qwen/qwen3.7-max-2026-05-20
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.7-max-2026-06-08.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-max-2026-06-08
+    model: qwen/qwen3.7-max-2026-06-08
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.7-max-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-max-us
+    model: qwen/qwen3.7-max
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3.7-max.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-max
+    model: qwen/qwen3.7-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.7-plus-2026-05-26.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-plus-2026-05-26
+    model: qwen/qwen3.7-plus-2026-05-26
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/qwen3.7-plus-us.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-plus-us
+    model: qwen/qwen3.7-plus
+    status: linked
+    evidence: exact regional provider ID joins the region-independent canonical Qwen model
+  - path: providers/alibaba/models/qwen3.7-plus.yaml
+    provider: alibaba
+    provider_model_id: qwen3.7-plus
+    model: qwen/qwen3.7-plus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/wan2.6-image.yaml
+    provider: alibaba
+    provider_model_id: wan2.6-image
+    model: alibaba/wan2.6-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/alibaba/models/wan2.6-t2i.yaml
+    provider: alibaba
+    provider_model_id: wan2.6-t2i
+    model: alibaba/wan2.6-t2i
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-fable-5.yaml
+    provider: anthropic
+    provider_model_id: claude-fable-5
+    model: anthropic/claude-fable-5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-haiku-4-5-20251001.yaml
+    provider: anthropic
+    provider_model_id: claude-haiku-4-5-20251001
+    model: anthropic/claude-haiku-4-5-20251001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-opus-4-1-20250805.yaml
+    provider: anthropic
+    provider_model_id: claude-opus-4-1-20250805
+    model: anthropic/claude-opus-4-1-20250805
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-opus-4-5-20251101.yaml
+    provider: anthropic
+    provider_model_id: claude-opus-4-5-20251101
+    model: anthropic/claude-opus-4-5-20251101
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-opus-4-6.yaml
+    provider: anthropic
+    provider_model_id: claude-opus-4-6
+    model: anthropic/claude-opus-4-6
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-opus-4-7.yaml
+    provider: anthropic
+    provider_model_id: claude-opus-4-7
+    model: anthropic/claude-opus-4-7
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-opus-4-8.yaml
+    provider: anthropic
+    provider_model_id: claude-opus-4-8
+    model: anthropic/claude-opus-4-8
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-sonnet-4-5-20250929.yaml
+    provider: anthropic
+    provider_model_id: claude-sonnet-4-5-20250929
+    model: anthropic/claude-sonnet-4-5-20250929
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-sonnet-4-6.yaml
+    provider: anthropic
+    provider_model_id: claude-sonnet-4-6
+    model: anthropic/claude-sonnet-4-6
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/anthropic/models/claude-sonnet-5.yaml
+    provider: anthropic
+    provider_model_id: claude-sonnet-5
+    model: anthropic/claude-sonnet-5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/cerebras/models/gemma-4-31b.yaml
+    provider: cerebras
+    provider_model_id: gemma-4-31b
+    model: google/gemma-4-31b
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/cerebras/models/gpt-oss-120b.yaml
+    provider: cerebras
+    provider_model_id: gpt-oss-120b
+    model: openai/gpt-oss-120b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/cerebras/models/zai-glm-4.7.yaml
+    provider: cerebras
+    provider_model_id: zai-glm-4.7
+    model: zhipu-ai/glm-4.7
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/deepinfra/models/BAAI/bge-base-en-v1.5.yaml
+    provider: deepinfra
+    provider_model_id: BAAI/bge-base-en-v1.5
+    model: baai/bge-base-en-v1.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/BAAI/bge-en-icl.yaml
+    provider: deepinfra
+    provider_model_id: BAAI/bge-en-icl
+    model: baai/bge-en-icl
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/BAAI/bge-large-en-v1.5.yaml
+    provider: deepinfra
+    provider_model_id: BAAI/bge-large-en-v1.5
+    model: baai/bge-large-en-v1.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/BAAI/bge-m3-multi.yaml
+    provider: deepinfra
+    provider_model_id: BAAI/bge-m3-multi
+    model: baai/bge-m3
+    status: linked
+    evidence: DeepInfra multi route joins the canonical BGE-M3 definition
+  - path: providers/deepinfra/models/BAAI/bge-m3.yaml
+    provider: deepinfra
+    provider_model_id: BAAI/bge-m3
+    model: baai/bge-m3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Bria/Bria-3.2-vector.yaml
+    provider: deepinfra
+    provider_model_id: Bria/Bria-3.2-vector
+    model: bria/bria-3.2-vector
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/Bria-3.2.yaml
+    provider: deepinfra
+    provider_model_id: Bria/Bria-3.2
+    model: bria/bria-3.2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/blur_background.yaml
+    provider: deepinfra
+    provider_model_id: Bria/blur_background
+    model: bria/blur_background
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/erase_foreground.yaml
+    provider: deepinfra
+    provider_model_id: Bria/erase_foreground
+    model: bria/erase_foreground
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/expand.yaml
+    provider: deepinfra
+    provider_model_id: Bria/expand
+    model: bria/expand
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/fibo.yaml
+    provider: deepinfra
+    provider_model_id: Bria/fibo
+    model: bria/fibo
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/fibo_edit.yaml
+    provider: deepinfra
+    provider_model_id: Bria/fibo_edit
+    model: bria/fibo_edit
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Bria/remove_background.yaml
+    provider: deepinfra
+    provider_model_id: Bria/remove_background
+    model: bria/remove_background
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/ByteDance/Seed-1.8.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seed-1.8
+    model: bytedance/seed-1.8
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seed-2.0-code.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seed-2.0-code
+    model: bytedance/seed-2.0-code
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seed-2.0-mini.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seed-2.0-mini
+    model: bytedance/seed-2.0-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seed-2.0-pro.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seed-2.0-pro
+    model: bytedance/seed-2.0-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seedance-1.5-Pro.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seedance-1.5-Pro
+    model: bytedance/seedance-1.5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seedance-2.0.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seedance-2.0
+    model: bytedance/seedance-2.0
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ByteDance/Seedream-4.yaml
+    provider: deepinfra
+    provider_model_id: ByteDance/Seedream-4
+    model: bytedance/seedream-4
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/FastVideo/LTX-2.3-Distilled-Diffusers.yaml
+    provider: deepinfra
+    provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
+    model: lightricks/ltx-2.3-distilled-diffusers
+    status: linked
+    evidence: FastVideo route serves the Lightricks LTX 2.3 checkpoint distilled by FastVideo
+  - path: providers/deepinfra/models/Gryphe/MythoMax-L2-13b.yaml
+    provider: deepinfra
+    provider_model_id: Gryphe/MythoMax-L2-13b
+    model: gryphe/mythomax-l2-13b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/MiniMaxAI/MiniMax-M2.7-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: MiniMaxAI/MiniMax-M2.7-Turbo
+    model: minimax/minimax-m2.7
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for the canonical MiniMax M2.7 model
+  - path: providers/deepinfra/models/MiniMaxAI/MiniMax-M2.7.yaml
+    provider: deepinfra
+    provider_model_id: MiniMaxAI/MiniMax-M2.7
+    model: minimax/minimax-m2.7
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/MiniMaxAI/MiniMax-M3.yaml
+    provider: deepinfra
+    provider_model_id: MiniMaxAI/MiniMax-M3
+    model: minimax/minimax-m3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/NousResearch/Hermes-3-Llama-3.1-405B.yaml
+    provider: deepinfra
+    provider_model_id: NousResearch/Hermes-3-Llama-3.1-405B
+    model: nousresearch/hermes-3-llama-3.1-405b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/NousResearch/Hermes-3-Llama-3.1-70B.yaml
+    provider: deepinfra
+    provider_model_id: NousResearch/Hermes-3-Llama-3.1-70B
+    model: nousresearch/hermes-3-llama-3.1-70b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Pixverse/Pixverse-6-T2V.yaml
+    provider: deepinfra
+    provider_model_id: Pixverse/Pixverse-6-T2V
+    model: pixverse/pixverse-6-t2v
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Pixverse/Pixverse-T2V-HD.yaml
+    provider: deepinfra
+    provider_model_id: Pixverse/Pixverse-T2V-HD
+    model: pixverse/pixverse-t2v-hd
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Pixverse/Pixverse-T2V.yaml
+    provider: deepinfra
+    provider_model_id: Pixverse/Pixverse-T2V
+    model: pixverse/pixverse-t2v
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/PrunaAI/p-image.yaml
+    provider: deepinfra
+    provider_model_id: PrunaAI/p-image
+    model: pruna-ai/p-image
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/PrunaAI/p-video.yaml
+    provider: deepinfra
+    provider_model_id: PrunaAI/p-video
+    model: pruna-ai/p-video
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Qwen/Qwen-Image-Edit.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen-Image-Edit
+    model: qwen/qwen-image-edit
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen-Image-Max.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen-Image-Max
+    model: qwen/qwen-image-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen2.5-72B-Instruct.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen2.5-72B-Instruct
+    model: qwen/qwen2.5-72b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-14B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-14B
+    model: qwen/qwen3-14b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-235B-A22B-Instruct-2507.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-235B-A22B-Instruct-2507
+    model: qwen/qwen3-235b-a22b-instruct-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-235B-A22B-Thinking-2507.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-235B-A22B-Thinking-2507
+    model: qwen/qwen3-235b-a22b-thinking-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-30B-A3B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-30B-A3B
+    model: qwen/qwen3-30b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-32B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-32B
+    model: qwen/qwen3-32b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
+    model: qwen/qwen3-coder-480b-a35b-instruct
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for the canonical Qwen3 Coder model
+  - path: providers/deepinfra/models/Qwen/Qwen3-Embedding-0.6B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Embedding-0.6B
+    model: qwen/qwen3-embedding-0.6b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Embedding-4B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Embedding-4B
+    model: qwen/qwen3-embedding-4b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Embedding-8B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Embedding-8B
+    model: qwen/qwen3-embedding-8b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Max-Thinking.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Max-Thinking
+    model: qwen/qwen3-max-thinking
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Max.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Max
+    model: qwen/qwen3-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-Next-80B-A3B-Instruct.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-Next-80B-A3B-Instruct
+    model: qwen/qwen3-next-80b-a3b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-TTS-VoiceDesign.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-TTS-VoiceDesign
+    model: qwen/qwen3-tts-voicedesign
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-TTS.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-TTS
+    model: qwen/qwen3-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-VL-235B-A22B-Instruct.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-VL-235B-A22B-Instruct
+    model: qwen/qwen3-vl-235b-a22b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3-VL-30B-A3B-Instruct.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3-VL-30B-A3B-Instruct
+    model: qwen/qwen3-vl-30b-a3b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.5-122B-A10B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.5-122B-A10B
+    model: qwen/qwen3.5-122b-a10b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.5-27B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.5-27B
+    model: qwen/qwen3.5-27b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.5-35B-A3B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.5-35B-A3B
+    model: qwen/qwen3.5-35b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.5-397B-A17B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.5-397B-A17B
+    model: qwen/qwen3.5-397b-a17b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.5-9B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.5-9B
+    model: qwen/qwen3.5-9b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.6-27B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.6-27B
+    model: qwen/qwen3.6-27b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.6-35B-A3B.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.6-35B-A3B
+    model: qwen/qwen3.6-35b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/Qwen/Qwen3.7-Max.yaml
+    provider: deepinfra
+    provider_model_id: Qwen/Qwen3.7-Max
+    model: qwen/qwen3.7-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/ResembleAI/chatterbox-multilingual.yaml
+    provider: deepinfra
+    provider_model_id: ResembleAI/chatterbox-multilingual
+    model: resemble-ai/chatterbox-multilingual
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/ResembleAI/chatterbox-turbo.yaml
+    provider: deepinfra
+    provider_model_id: ResembleAI/chatterbox-turbo
+    model: resemble-ai/chatterbox-turbo
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Sao10K/L3-8B-Lunaris-v1-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: Sao10K/L3-8B-Lunaris-v1-Turbo
+    model: sao10k/l3-8b-lunaris-v1
+    status: linked
+    evidence: exact DeepInfra Turbo route joins the provider-independent Lunaris model
+  - path: providers/deepinfra/models/Sao10K/L3.1-70B-Euryale-v2.2.yaml
+    provider: deepinfra
+    provider_model_id: Sao10K/L3.1-70B-Euryale-v2.2
+    model: sao10k/l3.1-70b-euryale-v2.2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Wan-AI/Wan2.2-T2V-A14B.yaml
+    provider: deepinfra
+    provider_model_id: Wan-AI/Wan2.2-T2V-A14B
+    model: alibaba/wan2.2-t2v-a14b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Wan-AI/Wan2.6-T2I.yaml
+    provider: deepinfra
+    provider_model_id: Wan-AI/Wan2.6-T2I
+    model: alibaba/wan2.6-t2i
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/Wan-AI/Wan2.6-T2V.yaml
+    provider: deepinfra
+    provider_model_id: Wan-AI/Wan2.6-T2V
+    model: alibaba/wan2.6-t2v
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/XiaomiMiMo/MiMo-V2.5-Pro.yaml
+    provider: deepinfra
+    provider_model_id: XiaomiMiMo/MiMo-V2.5-Pro
+    model: xiaomi/mimo-v2.5-pro
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/XiaomiMiMo/MiMo-V2.5-tts-voicedesign.yaml
+    provider: deepinfra
+    provider_model_id: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
+    model: xiaomi/mimo-v2.5-tts-voicedesign
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/XiaomiMiMo/MiMo-V2.5-tts.yaml
+    provider: deepinfra
+    provider_model_id: XiaomiMiMo/MiMo-V2.5-tts
+    model: xiaomi/mimo-v2.5-tts
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/XiaomiMiMo/MiMo-V2.5.yaml
+    provider: deepinfra
+    provider_model_id: XiaomiMiMo/MiMo-V2.5
+    model: xiaomi/mimo-v2.5
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/anthropic/claude-fable-5.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-fable-5
+    model: anthropic/claude-fable-5
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/anthropic/claude-haiku-4-5.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-haiku-4-5
+    model: anthropic/claude-haiku-4-5
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/anthropic/claude-opus-4-7.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-opus-4-7
+    model: anthropic/claude-opus-4-7
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/anthropic/claude-opus-4-8.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-opus-4-8
+    model: anthropic/claude-opus-4-8
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/anthropic/claude-sonnet-4-6.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-sonnet-4-6
+    model: anthropic/claude-sonnet-4-6
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/anthropic/claude-sonnet-5.yaml
+    provider: deepinfra
+    provider_model_id: anthropic/claude-sonnet-5
+    model: anthropic/claude-sonnet-5
+    status: linked
+    evidence: reviewed author namespace in provider model ID
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-1-Redux-dev.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-1-Redux-dev
+    model: black-forest-labs/flux-1-redux-dev
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-1-dev.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-1-dev
+    model: black-forest-labs/flux-1-dev
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-1-schnell.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-1-schnell
+    model: black-forest-labs/flux-1-schnell
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-1.1-pro.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-1.1-pro
+    model: black-forest-labs/flux-1.1-pro
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-2-dev.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-2-dev
+    model: black-forest-labs/flux-2-dev
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-2-klein-4b.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-2-klein-4b
+    model: black-forest-labs/flux-2-klein-4b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-2-klein-9b.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-2-klein-9b
+    model: black-forest-labs/flux-2-klein-9b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-2-max.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-2-max
+    model: black-forest-labs/flux-2-max
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX-2-pro.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX-2-pro
+    model: black-forest-labs/flux-2-pro
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/black-forest-labs/FLUX.1-Kontext-dev.yaml
+    provider: deepinfra
+    provider_model_id: black-forest-labs/FLUX.1-Kontext-dev
+    model: black-forest-labs/flux.1-kontext-dev
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/bosonai/HiggsAudioV2.5.yaml
+    provider: deepinfra
+    provider_model_id: bosonai/HiggsAudioV2.5
+    model: boson-ai/higgsaudiov2.5
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/deepreinforce-ai/Ornith-1.0-35B.yaml
+    provider: deepinfra
+    provider_model_id: deepreinforce-ai/Ornith-1.0-35B
+    model: deepreinforce-ai/ornith-1.0-35b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-R1-0528.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-R1-0528
+    model: deepseek/deepseek-r1-0528
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V3-0324.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V3-0324
+    model: deepseek/deepseek-v3-0324
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V3.1-Terminus.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V3.1-Terminus
+    model: deepseek/deepseek-v3.1-terminus
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V3.1.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V3.1
+    model: deepseek/deepseek-v3.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V3.2.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V3.2
+    model: deepseek/deepseek-v3.2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V3.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V3
+    model: deepseek/deepseek-v3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V4-Flash.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V4-Flash
+    model: deepseek/deepseek-v4-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/deepseek-ai/DeepSeek-V4-Pro.yaml
+    provider: deepinfra
+    provider_model_id: deepseek-ai/DeepSeek-V4-Pro
+    model: deepseek/deepseek-v4-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/embeddinggemma-300m.yaml
+    provider: deepinfra
+    provider_model_id: google/embeddinggemma-300m
+    model: google/embeddinggemma-300m
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-1.5-flash-8b.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-1.5-flash-8b
+    model: google/gemini-1.5-flash-8b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-1.5-flash.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-1.5-flash
+    model: google/gemini-1.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-2.5-flash.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-2.5-flash
+    model: google/gemini-2.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-2.5-pro.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-2.5-pro
+    model: google/gemini-2.5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-3-pro-image.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-3-pro-image
+    model: google/gemini-3-pro-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-3.1-flash-lite.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-3.1-flash-lite
+    model: google/gemini-3.1-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-3.1-pro.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-3.1-pro
+    model: google/gemini-3.1-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemini-3.5-flash.yaml
+    provider: deepinfra
+    provider_model_id: google/gemini-3.5-flash
+    model: google/gemini-3.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemma-3-12b-it.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-3-12b-it
+    model: google/gemma-3-12b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemma-3-27b-it.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-3-27b-it
+    model: google/gemma-3-27b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemma-3-4b-it.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-3-4b-it
+    model: google/gemma-3-4b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemma-4-26B-A4B-it.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-4-26B-A4B-it
+    model: google/gemma-4-26b-a4b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/gemma-4-31B-it-turbo.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-4-31B-it-turbo
+    model: google/gemma-4-31b-it
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for the canonical Gemma 4 31B model
+  - path: providers/deepinfra/models/google/gemma-4-31B-it.yaml
+    provider: deepinfra
+    provider_model_id: google/gemma-4-31B-it
+    model: google/gemma-4-31b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/veo-3.1-fast.yaml
+    provider: deepinfra
+    provider_model_id: google/veo-3.1-fast
+    model: google/veo-3.1-fast
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/google/veo-3.1.yaml
+    provider: deepinfra
+    provider_model_id: google/veo-3.1
+    model: google/veo-3.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/hexgrad/Kokoro-82M.yaml
+    provider: deepinfra
+    provider_model_id: hexgrad/Kokoro-82M
+    model: hexgrad/kokoro-82m
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/intfloat/e5-base-v2.yaml
+    provider: deepinfra
+    provider_model_id: intfloat/e5-base-v2
+    model: intfloat/e5-base-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/intfloat/e5-large-v2.yaml
+    provider: deepinfra
+    provider_model_id: intfloat/e5-large-v2
+    model: intfloat/e5-large-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/intfloat/multilingual-e5-large-instruct.yaml
+    provider: deepinfra
+    provider_model_id: intfloat/multilingual-e5-large-instruct
+    model: intfloat/multilingual-e5-large-instruct
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/intfloat/multilingual-e5-large.yaml
+    provider: deepinfra
+    provider_model_id: intfloat/multilingual-e5-large
+    model: intfloat/multilingual-e5-large
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/inworld-ai/realtime-tts-1.5-max.yaml
+    provider: deepinfra
+    provider_model_id: inworld-ai/realtime-tts-1.5-max
+    model: inworld-ai/realtime-tts-1.5-max
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/inworld-ai/realtime-tts-1.5-mini.yaml
+    provider: deepinfra
+    provider_model_id: inworld-ai/realtime-tts-1.5-mini
+    model: inworld-ai/realtime-tts-1.5-mini
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/inworld-ai/realtime-tts-2.yaml
+    provider: deepinfra
+    provider_model_id: inworld-ai/realtime-tts-2
+    model: inworld-ai/realtime-tts-2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/meta-llama/Llama-3.3-70B-Instruct-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Llama-3.3-70B-Instruct-Turbo
+    model: meta/llama-3.3-70b-instruct
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.3 70B Instruct
+  - path: providers/deepinfra/models/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
+    model: meta/llama-4-maverick-17b-128e-instruct
+    status: linked
+    evidence: exact DeepInfra FP8 route joins the canonical Llama 4 Maverick definition
+  - path: providers/deepinfra/models/meta-llama/Llama-4-Scout-17B-16E-Instruct.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Llama-4-Scout-17B-16E-Instruct
+    model: meta/llama-4-scout-17b-16e-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/meta-llama/Llama-Guard-4-12B.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Llama-Guard-4-12B
+    model: meta/llama-guard-4-12b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+    model: meta/llama-3-1-70b-instruct
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.1 70B Instruct
+  - path: providers/deepinfra/models/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+    model: meta/llama-3.1-8b-instruct
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for Meta Llama 3.1 8B Instruct
+  - path: providers/deepinfra/models/microsoft/phi-4.yaml
+    provider: deepinfra
+    provider_model_id: microsoft/phi-4
+    model: microsoft/phi-4
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/mistralai/Mistral-Nemo-Instruct-2407.yaml
+    provider: deepinfra
+    provider_model_id: mistralai/Mistral-Nemo-Instruct-2407
+    model: mistral/mistral-nemo-instruct-2407
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/mistralai/Mistral-Small-24B-Instruct-2501.yaml
+    provider: deepinfra
+    provider_model_id: mistralai/Mistral-Small-24B-Instruct-2501
+    model: mistral/mistral-small-24b-instruct-2501
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/mistralai/Mistral-Small-3.2-24B-Instruct-2506.yaml
+    provider: deepinfra
+    provider_model_id: mistralai/Mistral-Small-3.2-24B-Instruct-2506
+    model: mistral/mistral-small-3.2-24b-instruct-2506
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/mistralai/Voxtral-Mini-3B-2507.yaml
+    provider: deepinfra
+    provider_model_id: mistralai/Voxtral-Mini-3B-2507
+    model: mistral/voxtral-mini-3b-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/mistralai/Voxtral-Small-24B-2507.yaml
+    provider: deepinfra
+    provider_model_id: mistralai/Voxtral-Small-24B-2507
+    model: mistral/voxtral-small-24b-2507
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/moonshotai/Kimi-K2.5.yaml
+    provider: deepinfra
+    provider_model_id: moonshotai/Kimi-K2.5
+    model: moonshot-ai/kimi-k2.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/moonshotai/Kimi-K2.6.yaml
+    provider: deepinfra
+    provider_model_id: moonshotai/Kimi-K2.6
+    model: moonshot-ai/kimi-k2.6
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/moonshotai/Kimi-K2.7-Code.yaml
+    provider: deepinfra
+    provider_model_id: moonshotai/Kimi-K2.7-Code
+    model: moonshot-ai/kimi-k2.7-code
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/Cosmos3-Nano.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/Cosmos3-Nano
+    model: nvidia/cosmos3-nano
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/Cosmos3-Super.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/Cosmos3-Super
+    model: nvidia/cosmos3-super
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+    model: nvidia/nvidia-nemotron-3-super-120b-a12b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
+    model: nvidia/nvidia-nemotron-3-ultra-550b-a55b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/Nemotron-3-Nano-30B-A3B.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/Nemotron-3-Nano-30B-A3B
+    model: nvidia/nemotron-3-nano-30b-a3b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
+    model: nvidia/nemotron-3.5-asr-streaming-multilingual-0.6b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/Nemotron-Content-Safety-3.5.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/Nemotron-Content-Safety-3.5
+    model: nvidia/nemotron-content-safety-3.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/nvidia/llama-nemotron-embed-vl-1b-v2.yaml
+    provider: deepinfra
+    provider_model_id: nvidia/llama-nemotron-embed-vl-1b-v2
+    model: nvidia/llama-nemotron-embed-vl-1b-v2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/openai/gpt-oss-120b-Turbo.yaml
+    provider: deepinfra
+    provider_model_id: openai/gpt-oss-120b-Turbo
+    model: openai/gpt-oss-120b
+    status: linked
+    evidence: DeepInfra Turbo is a serving tier for the canonical GPT OSS 120B model
+  - path: providers/deepinfra/models/openai/gpt-oss-120b.yaml
+    provider: deepinfra
+    provider_model_id: openai/gpt-oss-120b
+    model: openai/gpt-oss-120b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/openai/gpt-oss-20b.yaml
+    provider: deepinfra
+    provider_model_id: openai/gpt-oss-20b
+    model: openai/gpt-oss-20b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/openai/whisper-large-v3-turbo.yaml
+    provider: deepinfra
+    provider_model_id: openai/whisper-large-v3-turbo
+    model: openai/whisper-large-v3-turbo
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/openai/whisper-large-v3.yaml
+    provider: deepinfra
+    provider_model_id: openai/whisper-large-v3
+    model: openai/whisper-large-v3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/sentence-transformers/all-MiniLM-L12-v2.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/all-MiniLM-L12-v2
+    model: sentence-transformers/all-minilm-l12-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/all-MiniLM-L6-v2.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/all-MiniLM-L6-v2
+    model: sentence-transformers/all-minilm-l6-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/all-mpnet-base-v2.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/all-mpnet-base-v2
+    model: sentence-transformers/all-mpnet-base-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/clip-ViT-B-32-multilingual-v1.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/clip-ViT-B-32-multilingual-v1
+    model: sentence-transformers/clip-vit-b-32-multilingual-v1
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/clip-ViT-B-32.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/clip-ViT-B-32
+    model: sentence-transformers/clip-vit-b-32
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/multi-qa-mpnet-base-dot-v1.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/multi-qa-mpnet-base-dot-v1
+    model: sentence-transformers/multi-qa-mpnet-base-dot-v1
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sentence-transformers/paraphrase-MiniLM-L6-v2.yaml
+    provider: deepinfra
+    provider_model_id: sentence-transformers/paraphrase-MiniLM-L6-v2
+    model: sentence-transformers/paraphrase-minilm-l6-v2
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/sesame/csm-1b.yaml
+    provider: deepinfra
+    provider_model_id: sesame/csm-1b
+    model: sesame/csm-1b
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/shibing624/text2vec-base-chinese.yaml
+    provider: deepinfra
+    provider_model_id: shibing624/text2vec-base-chinese
+    model: shibing624/text2vec-base-chinese
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/stabilityai/sdxl-turbo.yaml
+    provider: deepinfra
+    provider_model_id: stabilityai/sdxl-turbo
+    model: stability/sdxl-turbo
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/stepfun-ai/Step-3.7-Flash.yaml
+    provider: deepinfra
+    provider_model_id: stepfun-ai/Step-3.7-Flash
+    model: stepfun/step-3.7-flash
+    status: linked
+    evidence: reviewed model-publisher namespace and model metadata
+  - path: providers/deepinfra/models/thenlper/gte-base.yaml
+    provider: deepinfra
+    provider_model_id: thenlper/gte-base
+    model: alibaba/gte-base
+    status: linked
+    evidence: exact Hugging Face route joins the Alibaba DAMO Academy GTE Base definition
+  - path: providers/deepinfra/models/thenlper/gte-large.yaml
+    provider: deepinfra
+    provider_model_id: thenlper/gte-large
+    model: alibaba/gte-large
+    status: linked
+    evidence: exact Hugging Face route joins the Alibaba DAMO Academy GTE Large definition
+  - path: providers/deepinfra/models/zai-org/GLM-4.6.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-4.6
+    model: zhipu-ai/glm-4.6
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/zai-org/GLM-4.7-Flash.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-4.7-Flash
+    model: zhipu-ai/glm-4.7-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/zai-org/GLM-4.7.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-4.7
+    model: zhipu-ai/glm-4.7
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/zai-org/GLM-5.1.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-5.1
+    model: zhipu-ai/glm-5.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/zai-org/GLM-5.2.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-5.2
+    model: zhipu-ai/glm-5.2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepinfra/models/zai-org/GLM-5.yaml
+    provider: deepinfra
+    provider_model_id: zai-org/GLM-5
+    model: zhipu-ai/glm-5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepseek/models/deepseek-v4-flash.yaml
+    provider: deepseek
+    provider_model_id: deepseek-v4-flash
+    model: deepseek/deepseek-v4-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/deepseek/models/deepseek-v4-pro.yaml
+    provider: deepseek
+    provider_model_id: deepseek-v4-pro
+    model: deepseek/deepseek-v4-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/deepseek-v4-pro.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/deepseek-v4-pro
+    model: deepseek/deepseek-v4-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/flux-1-schnell-fp8.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/flux-1-schnell-fp8
+    model: black-forest-labs/flux-1-schnell
+    status: linked
+    evidence: exact Fireworks FP8 route joins the canonical FLUX.1 Schnell definition
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/glm-5p1.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/glm-5p1
+    model: zhipu-ai/glm-5.1
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/glm-5p2.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/glm-5p2
+    model: zhipu-ai/glm-5.2
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/gpt-oss-120b.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/gpt-oss-120b
+    model: openai/gpt-oss-120b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/kimi-k2p5.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/kimi-k2p5
+    model: moonshot-ai/kimi-k2.5
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/fireworks-ai/models/accounts/fireworks/models/kimi-k2p6.yaml
+    provider: fireworks-ai
+    provider_model_id: accounts/fireworks/models/kimi-k2p6
+    model: moonshot-ai/kimi-k2.6
+    status: linked
+    evidence: reviewed explicit identity mapping
+  - path: providers/google-ai-studio/models/antigravity-preview-05-2026.yaml
+    provider: google-ai-studio
+    provider_model_id: antigravity-preview-05-2026
+    model: google/antigravity-preview-05-2026
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/aqa.yaml
+    provider: google-ai-studio
+    provider_model_id: aqa
+    model: google/aqa
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/deep-research-max-preview-04-2026.yaml
+    provider: google-ai-studio
+    provider_model_id: deep-research-max-preview-04-2026
+    model: google/deep-research-max-preview-04-2026
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/deep-research-preview-04-2026.yaml
+    provider: google-ai-studio
+    provider_model_id: deep-research-preview-04-2026
+    model: google/deep-research-preview-04-2026
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/deep-research-pro-preview-12-2025.yaml
+    provider: google-ai-studio
+    provider_model_id: deep-research-pro-preview-12-2025
+    model: google/deep-research-pro-preview-12-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.0-flash-001.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.0-flash-001
+    model: google/gemini-2.0-flash-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.0-flash-lite-001.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.0-flash-lite-001
+    model: google/gemini-2.0-flash-lite-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.0-flash-lite.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.0-flash-lite
+    model: google/gemini-2.0-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.0-flash.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.0-flash
+    model: google/gemini-2.0-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-computer-use-preview-10-2025.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-computer-use-preview-10-2025
+    model: google/gemini-2.5-computer-use-preview-10-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-image.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-image
+    model: google/gemini-2.5-flash-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-lite.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-lite
+    model: google/gemini-2.5-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-native-audio-latest.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-native-audio-latest
+    model: google/gemini-2.5-flash-native-audio-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-native-audio-preview-09-2025.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-native-audio-preview-09-2025
+    model: google/gemini-2.5-flash-native-audio-preview-09-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-native-audio-preview-12-2025.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-native-audio-preview-12-2025
+    model: google/gemini-2.5-flash-native-audio-preview-12-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash-preview-tts.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash-preview-tts
+    model: google/gemini-2.5-flash-preview-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-flash.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-flash
+    model: google/gemini-2.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-pro-preview-tts.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-pro-preview-tts
+    model: google/gemini-2.5-pro-preview-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-2.5-pro.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-2.5-pro
+    model: google/gemini-2.5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3-flash-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3-flash-preview
+    model: google/gemini-3-flash-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3-pro-image-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3-pro-image-preview
+    model: google/gemini-3-pro-image-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3-pro-image.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3-pro-image
+    model: google/gemini-3-pro-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3-pro-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3-pro-preview
+    model: google/gemini-3-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-image-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-image-preview
+    model: google/gemini-3.1-flash-image-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-image.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-image
+    model: google/gemini-3.1-flash-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-lite-image.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-lite-image
+    model: google/gemini-3.1-flash-lite-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-lite-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-lite-preview
+    model: google/gemini-3.1-flash-lite-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-lite.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-lite
+    model: google/gemini-3.1-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-live-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-live-preview
+    model: google/gemini-3.1-flash-live-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-flash-tts-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-flash-tts-preview
+    model: google/gemini-3.1-flash-tts-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-pro-preview-customtools.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-pro-preview-customtools
+    model: google/gemini-3.1-pro-preview-customtools
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.1-pro-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.1-pro-preview
+    model: google/gemini-3.1-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.5-flash.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.5-flash
+    model: google/gemini-3.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-3.5-live-translate-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-3.5-live-translate-preview
+    model: google/gemini-3.5-live-translate-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-embedding-001.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-embedding-001
+    model: google/gemini-embedding-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-embedding-2-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-embedding-2-preview
+    model: google/gemini-embedding-2-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-embedding-2.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-embedding-2
+    model: google/gemini-embedding-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-flash-latest.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-flash-latest
+    model: google/gemini-flash-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-flash-lite-latest.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-flash-lite-latest
+    model: google/gemini-flash-lite-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-omni-flash-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-omni-flash-preview
+    model: google/gemini-omni-flash-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-pro-latest.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-pro-latest
+    model: google/gemini-pro-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-robotics-er-1.5-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-robotics-er-1.5-preview
+    model: google/gemini-robotics-er-1.5-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemini-robotics-er-1.6-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: gemini-robotics-er-1.6-preview
+    model: google/gemini-robotics-er-1.6-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemma-4-26b-a4b-it.yaml
+    provider: google-ai-studio
+    provider_model_id: gemma-4-26b-a4b-it
+    model: google/gemma-4-26b-a4b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/gemma-4-31b-it.yaml
+    provider: google-ai-studio
+    provider_model_id: gemma-4-31b-it
+    model: google/gemma-4-31b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/imagen-4.0-fast-generate-001.yaml
+    provider: google-ai-studio
+    provider_model_id: imagen-4.0-fast-generate-001
+    model: google/imagen-4.0-fast-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/imagen-4.0-generate-001.yaml
+    provider: google-ai-studio
+    provider_model_id: imagen-4.0-generate-001
+    model: google/imagen-4.0-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/imagen-4.0-ultra-generate-001.yaml
+    provider: google-ai-studio
+    provider_model_id: imagen-4.0-ultra-generate-001
+    model: google/imagen-4.0-ultra-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/lyria-3-clip-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: lyria-3-clip-preview
+    model: google/lyria-3-clip-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/lyria-3-pro-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: lyria-3-pro-preview
+    model: google/lyria-3-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/nano-banana-pro-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: nano-banana-pro-preview
+    model: google/gemini-3-pro-image-preview
+    status: linked
+    evidence: Nano Banana Pro is the serving alias for Gemini 3 Pro Image Preview
+  - path: providers/google-ai-studio/models/veo-3.1-fast-generate-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: veo-3.1-fast-generate-preview
+    model: google/veo-3.1-fast-generate-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/veo-3.1-generate-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: veo-3.1-generate-preview
+    model: google/veo-3.1-generate-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-ai-studio/models/veo-3.1-lite-generate-preview.yaml
+    provider: google-ai-studio
+    provider_model_id: veo-3.1-lite-generate-preview
+    model: google/veo-3.1-lite-generate-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/alphagenome-request.yaml
+    provider: google-vertex
+    provider_model_id: alphagenome-request
+    model: google/alphagenome-request
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/automl-e2e.yaml
+    provider: google-vertex
+    provider_model_id: automl-e2e
+    model: google/automl-e2e
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/automl-vision-image-classification.yaml
+    provider: google-vertex
+    provider_model_id: automl-vision-image-classification
+    model: google/automl-vision-image-classification
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/automl-vision-image-object-detection.yaml
+    provider: google-vertex
+    provider_model_id: automl-vision-image-object-detection
+    model: google/automl-vision-image-object-detection
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/bart-large-cnn.yaml
+    provider: google-vertex
+    provider_model_id: bart-large-cnn
+    model: meta/bart-large-cnn
+    status: linked
+    evidence: official facebook/bart-large-cnn publisher identity; Vertex is the serving provider
+  - path: providers/google-vertex/models/bert-base-uncased.yaml
+    provider: google-vertex
+    provider_model_id: bert-base-uncased
+    model: google/bert-base-uncased
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/bert-base.yaml
+    provider: google-vertex
+    provider_model_id: bert-base
+    model: google/bert-base
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/chirp-2.yaml
+    provider: google-vertex
+    provider_model_id: chirp-2
+    model: google/chirp-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/chirp-3.yaml
+    provider: google-vertex
+    provider_model_id: chirp-3
+    model: google/chirp-3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/claude-3-5-haiku@20241022.yaml
+    provider: google-vertex
+    provider_model_id: claude-3-5-haiku@20241022
+    model: anthropic/claude-3-5-haiku-20241022
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/claude-3-5-sonnet@20241022.yaml
+    provider: google-vertex
+    provider_model_id: claude-3-5-sonnet@20241022
+    model: anthropic/claude-3-5-sonnet-20241022
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/claude-3-opus@20240229.yaml
+    provider: google-vertex
+    provider_model_id: claude-3-opus@20240229
+    model: anthropic/claude-3-opus-20240229
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/cloudnerf-pytorch-zipnerf.yaml
+    provider: google-vertex
+    provider_model_id: cloudnerf-pytorch-zipnerf
+    model: google/cloudnerf-pytorch-zipnerf
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/codegemma.yaml
+    provider: google-vertex
+    provider_model_id: codegemma
+    model: google/codegemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/content-moderation.yaml
+    provider: google-vertex
+    provider_model_id: content-moderation
+    model: google/content-moderation
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/cxr-foundation.yaml
+    provider: google-vertex
+    provider_model_id: cxr-foundation
+    model: google/cxr-foundation
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/deepseek-r1-distill-llama-70b@001.yaml
+    provider: google-vertex
+    provider_model_id: deepseek-r1-distill-llama-70b@001
+    model: deepseek/deepseek-r1-distill-llama-70b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/deepseek-r1-distill-qwen-32b@001.yaml
+    provider: google-vertex
+    provider_model_id: deepseek-r1-distill-qwen-32b@001
+    model: deepseek/deepseek-r1-distill-qwen-32b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/derm-foundation.yaml
+    provider: google-vertex
+    provider_model_id: derm-foundation
+    model: google/derm-foundation
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/diffusiongemma.yaml
+    provider: google-vertex
+    provider_model_id: diffusiongemma
+    model: google/diffusiongemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/dito.yaml
+    provider: google-vertex
+    provider_model_id: dito
+    model: google/dito
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/earth-ai-imagery-mammut-eap-10-2025.yaml
+    provider: google-vertex
+    provider_model_id: earth-ai-imagery-mammut-eap-10-2025
+    model: google/earth-ai-imagery-mammut-eap-10-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/earth-ai-imagery-owlvit-eap-10-2025.yaml
+    provider: google-vertex
+    provider_model_id: earth-ai-imagery-owlvit-eap-10-2025
+    model: google/earth-ai-imagery-owlvit-eap-10-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/embeddinggemma.yaml
+    provider: google-vertex
+    provider_model_id: embeddinggemma
+    model: google/embeddinggemma-300m
+    status: linked
+    evidence: Vertex deployment alias resolves to the canonical EmbeddingGemma 300M model
+  - path: providers/google-vertex/models/f-vlm-jax.yaml
+    provider: google-vertex
+    provider_model_id: f-vlm-jax
+    model: google/f-vlm-jax
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/face-detector.yaml
+    provider: google-vertex
+    provider_model_id: face-detector
+    model: google/face-detector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/functiongemma.yaml
+    provider: google-vertex
+    provider_model_id: functiongemma
+    model: google/functiongemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-computer-use-preview-10-2025.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-computer-use-preview-10-2025
+    model: google/gemini-2.5-computer-use-preview-10-2025
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-flash-image.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-flash-image
+    model: google/gemini-2.5-flash-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-flash-lite.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-flash-lite
+    model: google/gemini-2.5-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-flash-tts.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-flash-tts
+    model: google/gemini-2.5-flash-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-flash.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-flash
+    model: google/gemini-2.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-pro-tts.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-pro-tts
+    model: google/gemini-2.5-pro-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-2.5-pro.yaml
+    provider: google-vertex
+    provider_model_id: gemini-2.5-pro
+    model: google/gemini-2.5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3-flash-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3-flash-preview
+    model: google/gemini-3-flash-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3-pro-image-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3-pro-image-preview
+    model: google/gemini-3-pro-image-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3-pro-image.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3-pro-image
+    model: google/gemini-3-pro-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3-pro-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3-pro-preview
+    model: google/gemini-3-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-image-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-image-preview
+    model: google/gemini-3.1-flash-image-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-image.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-image
+    model: google/gemini-3.1-flash-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-lite-image.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-lite-image
+    model: google/gemini-3.1-flash-lite-image
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-lite-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-lite-preview
+    model: google/gemini-3.1-flash-lite-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-lite.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-lite
+    model: google/gemini-3.1-flash-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-flash-tts-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-flash-tts-preview
+    model: google/gemini-3.1-flash-tts-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.1-pro-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.1-pro-preview
+    model: google/gemini-3.1-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-3.5-flash.yaml
+    provider: google-vertex
+    provider_model_id: gemini-3.5-flash
+    model: google/gemini-3.5-flash
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-embedding-001.yaml
+    provider: google-vertex
+    provider_model_id: gemini-embedding-001
+    model: google/gemini-embedding-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-embedding-2.yaml
+    provider: google-vertex
+    provider_model_id: gemini-embedding-2
+    model: google/gemini-embedding-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-live-2.5-flash-native-audio.yaml
+    provider: google-vertex
+    provider_model_id: gemini-live-2.5-flash-native-audio
+    model: google/gemini-live-2.5-flash-native-audio
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemini-omni-flash-preview.yaml
+    provider: google-vertex
+    provider_model_id: gemini-omni-flash-preview
+    model: google/gemini-omni-flash-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma-4-26b-a4b-it-maas.yaml
+    provider: google-vertex
+    provider_model_id: gemma-4-26b-a4b-it-maas
+    model: google/gemma-4-26b-a4b-it
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma.yaml
+    provider: google-vertex
+    provider_model_id: gemma
+    model: google/gemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma2.yaml
+    provider: google-vertex
+    provider_model_id: gemma2
+    model: google/gemma2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma3.yaml
+    provider: google-vertex
+    provider_model_id: gemma3
+    model: google/gemma3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma3n.yaml
+    provider: google-vertex
+    provider_model_id: gemma3n
+    model: google/gemma3n
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gemma4.yaml
+    provider: google-vertex
+    provider_model_id: gemma4
+    model: google/gemma4
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/gpt-4o-2024-08-06@001.yaml
+    provider: google-vertex
+    provider_model_id: gpt-4o-2024-08-06@001
+    model: openai/gpt-4o-2024-08-06
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/hear.yaml
+    provider: google-vertex
+    provider_model_id: hear
+    model: google/hear
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/image-segmentation-001.yaml
+    provider: google-vertex
+    provider_model_id: image-segmentation-001
+    model: google/image-segmentation-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageclassification-efficientnet.yaml
+    provider: google-vertex
+    provider_model_id: imageclassification-efficientnet
+    model: google/imageclassification-efficientnet
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageclassification-proprietary-efficientnet.yaml
+    provider: google-vertex
+    provider_model_id: imageclassification-proprietary-efficientnet
+    model: google/imageclassification-proprietary-efficientnet
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageclassification-proprietary-maxvit.yaml
+    provider: google-vertex
+    provider_model_id: imageclassification-proprietary-maxvit
+    model: google/imageclassification-proprietary-maxvit
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageclassification-proprietary-vit.yaml
+    provider: google-vertex
+    provider_model_id: imageclassification-proprietary-vit
+    model: google/imageclassification-proprietary-vit
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageclassification-vit.yaml
+    provider: google-vertex
+    provider_model_id: imageclassification-vit
+    model: google/imageclassification-vit
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageobjectdetection-proprietary-spinenet.yaml
+    provider: google-vertex
+    provider_model_id: imageobjectdetection-proprietary-spinenet
+    model: google/imageobjectdetection-proprietary-spinenet
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageobjectdetection-proprietary-yolo.yaml
+    provider: google-vertex
+    provider_model_id: imageobjectdetection-proprietary-yolo
+    model: google/imageobjectdetection-proprietary-yolo
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imageobjectdetection-yolo.yaml
+    provider: google-vertex
+    provider_model_id: imageobjectdetection-yolo
+    model: google/imageobjectdetection-yolo
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imagesegmentation-deeplabv3.yaml
+    provider: google-vertex
+    provider_model_id: imagesegmentation-deeplabv3
+    model: google/imagesegmentation-deeplabv3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/imagewatermarkdetector.yaml
+    provider: google-vertex
+    provider_model_id: imagewatermarkdetector
+    model: google/imagewatermarkdetector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/jamba-1-5-large@001.yaml
+    provider: google-vertex
+    provider_model_id: jamba-1-5-large@001
+    model: ai21/jamba-1-5-large
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/jamba-1-5-mini@001.yaml
+    provider: google-vertex
+    provider_model_id: jamba-1-5-mini@001
+    model: ai21/jamba-1-5-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/jax-owl-vit-v2.yaml
+    provider: google-vertex
+    provider_model_id: jax-owl-vit-v2
+    model: google/jax-owl-vit-v2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/keras-yolov8.yaml
+    provider: google-vertex
+    provider_model_id: keras-yolov8
+    model: google/keras-yolov8
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/label-detector-pali-001.yaml
+    provider: google-vertex
+    provider_model_id: label-detector-pali-001
+    model: google/label-detector-pali-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/language-v1-analyze-entity-sentiment.yaml
+    provider: google-vertex
+    provider_model_id: language-v1-analyze-entity-sentiment
+    model: google/language-v1-analyze-entity-sentiment
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/language-v1-analyze-sentiment.yaml
+    provider: google-vertex
+    provider_model_id: language-v1-analyze-sentiment
+    model: google/language-v1-analyze-sentiment
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/language-v1-analyze-syntax.yaml
+    provider: google-vertex
+    provider_model_id: language-v1-analyze-syntax
+    model: google/language-v1-analyze-syntax
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/language-v1-classify-text-v1.yaml
+    provider: google-vertex
+    provider_model_id: language-v1-classify-text-v1
+    model: google/language-v1-classify-text-v1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/language-v1-moderate-text.yaml
+    provider: google-vertex
+    provider_model_id: language-v1-moderate-text
+    model: google/language-v1-moderate-text
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/llama-3-1-405b-instruct-maas.yaml
+    provider: google-vertex
+    provider_model_id: llama-3-1-405b-instruct-maas
+    model: meta/llama-3.1-405b-instruct
+    status: linked
+    evidence: exact Vertex MaaS deployment ID joins the canonical Meta Llama 3.1 definition
+  - path: providers/google-vertex/models/llama-3-1-70b-instruct-maas.yaml
+    provider: google-vertex
+    provider_model_id: llama-3-1-70b-instruct-maas
+    model: meta/llama-3-1-70b-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/llama-3-2-90b-vision-instruct-maas.yaml
+    provider: google-vertex
+    provider_model_id: llama-3-2-90b-vision-instruct-maas
+    model: meta/llama-3.2-90b-vision-instruct
+    status: linked
+    evidence: exact Vertex MaaS deployment ID joins the canonical Meta Llama 3.2 definition
+  - path: providers/google-vertex/models/lyria-002.yaml
+    provider: google-vertex
+    provider_model_id: lyria-002
+    model: google/lyria-002
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/lyria-3-clip-preview.yaml
+    provider: google-vertex
+    provider_model_id: lyria-3-clip-preview
+    model: google/lyria-3-clip-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/lyria-3-pro-preview.yaml
+    provider: google-vertex
+    provider_model_id: lyria-3-pro-preview
+    model: google/lyria-3-pro-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/mammut.yaml
+    provider: google-vertex
+    provider_model_id: mammut
+    model: google/mammut
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/medasr.yaml
+    provider: google-vertex
+    provider_model_id: medasr
+    model: google/medasr
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/medgemma.yaml
+    provider: google-vertex
+    provider_model_id: medgemma
+    model: google/medgemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/medsiglip.yaml
+    provider: google-vertex
+    provider_model_id: medsiglip
+    model: google/medsiglip
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/multimodalembedding.yaml
+    provider: google-vertex
+    provider_model_id: multimodalembedding
+    model: google/multimodalembedding
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/object-detector.yaml
+    provider: google-vertex
+    provider_model_id: object-detector
+    model: google/object-detector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/occupancy-analytics.yaml
+    provider: google-vertex
+    provider_model_id: occupancy-analytics
+    model: google/occupancy-analytics
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/owlvit-base-patch32.yaml
+    provider: google-vertex
+    provider_model_id: owlvit-base-patch32
+    model: google/owlvit-base-patch32
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/paligemma.yaml
+    provider: google-vertex
+    provider_model_id: paligemma
+    model: google/paligemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/path-foundation.yaml
+    provider: google-vertex
+    provider_model_id: path-foundation
+    model: google/path-foundation
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/people-blur.yaml
+    provider: google-vertex
+    provider_model_id: people-blur
+    model: google/people-blur
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/pic2word.yaml
+    provider: google-vertex
+    provider_model_id: pic2word
+    model: google/pic2word
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/ppe-detector.yaml
+    provider: google-vertex
+    provider_model_id: ppe-detector
+    model: google/ppe-detector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/pretrained-form-parser.yaml
+    provider: google-vertex
+    provider_model_id: pretrained-form-parser
+    model: google/pretrained-form-parser
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/pretrained-ocr.yaml
+    provider: google-vertex
+    provider_model_id: pretrained-ocr
+    model: google/pretrained-ocr
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/product-recognizer.yaml
+    provider: google-vertex
+    provider_model_id: product-recognizer
+    model: google/product-recognizer
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/pt-test.yaml
+    provider: google-vertex
+    provider_model_id: pt-test
+    model: google/pt-test
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/qwen2-5-coder-32b-instruct@001.yaml
+    provider: google-vertex
+    provider_model_id: qwen2-5-coder-32b-instruct@001
+    model: qwen/qwen2.5-coder-32b-instruct
+    status: linked
+    evidence: exact Vertex deployment ID joins the canonical Qwen 2.5 Coder model
+  - path: providers/google-vertex/models/resnet50.yaml
+    provider: google-vertex
+    provider_model_id: resnet50
+    model: google/resnet50
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/shieldgemma2.yaml
+    provider: google-vertex
+    provider_model_id: shieldgemma2
+    model: google/shieldgemma2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/t5-1.1.yaml
+    provider: google-vertex
+    provider_model_id: t5-1.1
+    model: google/t5-1.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/t5-flan.yaml
+    provider: google-vertex
+    provider_model_id: t5-flan
+    model: google/t5-flan
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/t5gemma.yaml
+    provider: google-vertex
+    provider_model_id: t5gemma
+    model: google/t5gemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/tab-net.yaml
+    provider: google-vertex
+    provider_model_id: tab-net
+    model: google/tab-net
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/tag-recognizer.yaml
+    provider: google-vertex
+    provider_model_id: tag-recognizer
+    model: google/tag-recognizer
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/text-detector.yaml
+    provider: google-vertex
+    provider_model_id: text-detector
+    model: google/text-detector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/text-embedding-005.yaml
+    provider: google-vertex
+    provider_model_id: text-embedding-005
+    model: google/text-embedding-005
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/text-embedding-large-exp-03-07.yaml
+    provider: google-vertex
+    provider_model_id: text-embedding-large-exp-03-07
+    model: google/text-embedding-large-exp-03-07
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/text-multilingual-embedding-002.yaml
+    provider: google-vertex
+    provider_model_id: text-multilingual-embedding-002
+    model: google/text-multilingual-embedding-002
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/text-translation.yaml
+    provider: google-vertex
+    provider_model_id: text-translation
+    model: google/text-translation
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/textembedding-gecko.yaml
+    provider: google-vertex
+    provider_model_id: textembedding-gecko
+    model: google/textembedding-gecko
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/tfvision-movinet-var.yaml
+    provider: google-vertex
+    provider_model_id: tfvision-movinet-var
+    model: google/tfvision-movinet-var
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/tfvision-movinet-vcn.yaml
+    provider: google-vertex
+    provider_model_id: tfvision-movinet-vcn
+    model: google/tfvision-movinet-vcn
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/tfvision-yolov7.yaml
+    provider: google-vertex
+    provider_model_id: tfvision-yolov7
+    model: google/tfvision-yolov7
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/timesfm.yaml
+    provider: google-vertex
+    provider_model_id: timesfm
+    model: google/timesfm
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/translate-llm.yaml
+    provider: google-vertex
+    provider_model_id: translate-llm
+    model: google/translate-llm
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/translategemma.yaml
+    provider: google-vertex
+    provider_model_id: translategemma
+    model: google/translategemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/txgemma.yaml
+    provider: google-vertex
+    provider_model_id: txgemma
+    model: google/txgemma
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/vehicle-detector.yaml
+    provider: google-vertex
+    provider_model_id: vehicle-detector
+    model: google/vehicle-detector
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-2.0-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-2.0-generate-001
+    model: google/veo-2.0-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-3.0-fast-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-3.0-fast-generate-001
+    model: google/veo-3.0-fast-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-3.0-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-3.0-generate-001
+    model: google/veo-3.0-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-3.1-fast-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-3.1-fast-generate-001
+    model: google/veo-3.1-fast-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-3.1-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-3.1-generate-001
+    model: google/veo-3.1-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/veo-3.1-lite-generate-001.yaml
+    provider: google-vertex
+    provider_model_id: veo-3.1-lite-generate-001
+    model: google/veo-3.1-lite-generate-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/video-speech-transcription.yaml
+    provider: google-vertex
+    provider_model_id: video-speech-transcription
+    model: google/video-speech-transcription
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/video-text-detection.yaml
+    provider: google-vertex
+    provider_model_id: video-text-detection
+    model: google/video-text-detection
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/virtual-try-on-001.yaml
+    provider: google-vertex
+    provider_model_id: virtual-try-on-001
+    model: google/virtual-try-on-001
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/vit-jax.yaml
+    provider: google-vertex
+    provider_model_id: vit-jax
+    model: google/vit-jax
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/weather-next-v2.yaml
+    provider: google-vertex
+    provider_model_id: weather-next-v2
+    model: google/weather-next-v2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/google-vertex/models/weathernext.yaml
+    provider: google-vertex
+    provider_model_id: weathernext
+    model: google/weathernext
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/allam-2-7b.yaml
+    provider: groq
+    provider_model_id: allam-2-7b
+    model: sdaia/allam-2-7b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/canopylabs/orpheus-arabic-saudi.yaml
+    provider: groq
+    provider_model_id: canopylabs/orpheus-arabic-saudi
+    model: canopy-labs/orpheus-arabic-saudi
+    status: linked
+    evidence: official Canopy Labs publisher namespace and Orpheus model repository
+  - path: providers/groq/models/canopylabs/orpheus-v1-english.yaml
+    provider: groq
+    provider_model_id: canopylabs/orpheus-v1-english
+    model: canopy-labs/orpheus-v1-english
+    status: linked
+    evidence: official Canopy Labs publisher namespace and Orpheus model repository
+  - path: providers/groq/models/groq/compound-mini.yaml
+    provider: groq
+    provider_model_id: groq/compound-mini
+    model: groq/compound-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/groq/compound.yaml
+    provider: groq
+    provider_model_id: groq/compound
+    model: groq/compound
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/llama-3.1-8b-instant.yaml
+    provider: groq
+    provider_model_id: llama-3.1-8b-instant
+    model: meta/llama-3.1-8b-instruct
+    status: linked
+    evidence: Groq instant is a serving label for Meta Llama 3.1 8B Instruct
+  - path: providers/groq/models/llama-3.3-70b-versatile.yaml
+    provider: groq
+    provider_model_id: llama-3.3-70b-versatile
+    model: meta/llama-3.3-70b-instruct
+    status: linked
+    evidence: Groq versatile is a serving label for Meta Llama 3.3 70B Instruct
+  - path: providers/groq/models/meta-llama/llama-4-scout-17b-16e-instruct.yaml
+    provider: groq
+    provider_model_id: meta-llama/llama-4-scout-17b-16e-instruct
+    model: meta/llama-4-scout-17b-16e-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/meta-llama/llama-prompt-guard-2-22m.yaml
+    provider: groq
+    provider_model_id: meta-llama/llama-prompt-guard-2-22m
+    model: meta/llama-prompt-guard-2-22m
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/meta-llama/llama-prompt-guard-2-86m.yaml
+    provider: groq
+    provider_model_id: meta-llama/llama-prompt-guard-2-86m
+    model: meta/llama-prompt-guard-2-86m
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/openai/gpt-oss-120b.yaml
+    provider: groq
+    provider_model_id: openai/gpt-oss-120b
+    model: openai/gpt-oss-120b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/openai/gpt-oss-20b.yaml
+    provider: groq
+    provider_model_id: openai/gpt-oss-20b
+    model: openai/gpt-oss-20b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/openai/gpt-oss-safeguard-20b.yaml
+    provider: groq
+    provider_model_id: openai/gpt-oss-safeguard-20b
+    model: openai/gpt-oss-safeguard-20b
+    status: linked
+    evidence: official OpenAI gpt-oss-safeguard release and provider publisher namespace
+  - path: providers/groq/models/qwen/qwen3-32b.yaml
+    provider: groq
+    provider_model_id: qwen/qwen3-32b
+    model: qwen/qwen3-32b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/qwen/qwen3.6-27b.yaml
+    provider: groq
+    provider_model_id: qwen/qwen3.6-27b
+    model: qwen/qwen3.6-27b
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/whisper-large-v3-turbo.yaml
+    provider: groq
+    provider_model_id: whisper-large-v3-turbo
+    model: openai/whisper-large-v3-turbo
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/groq/models/whisper-large-v3.yaml
+    provider: groq
+    provider_model_id: whisper-large-v3
+    model: openai/whisper-large-v3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/kimi-k2.5.yaml
+    provider: moonshot-ai
+    provider_model_id: kimi-k2.5
+    model: moonshot-ai/kimi-k2.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/kimi-k2.6.yaml
+    provider: moonshot-ai
+    provider_model_id: kimi-k2.6
+    model: moonshot-ai/kimi-k2.6
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/kimi-k2.7-code-highspeed.yaml
+    provider: moonshot-ai
+    provider_model_id: kimi-k2.7-code-highspeed
+    model: moonshot-ai/kimi-k2.7-code
+    status: linked
+    evidence: highspeed is a Moonshot serving tier for the canonical Kimi K2.7 Code model
+  - path: providers/moonshot-ai/models/kimi-k2.7-code.yaml
+    provider: moonshot-ai
+    provider_model_id: kimi-k2.7-code
+    model: moonshot-ai/kimi-k2.7-code
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-128k-vision-preview.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-128k-vision-preview
+    model: moonshot-ai/moonshot-v1-128k-vision-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-128k.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-128k
+    model: moonshot-ai/moonshot-v1-128k
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-32k-vision-preview.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-32k-vision-preview
+    model: moonshot-ai/moonshot-v1-32k-vision-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-32k.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-32k
+    model: moonshot-ai/moonshot-v1-32k
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-8k-vision-preview.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-8k-vision-preview
+    model: moonshot-ai/moonshot-v1-8k-vision-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-8k.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-8k
+    model: moonshot-ai/moonshot-v1-8k
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/moonshot-v1-auto.yaml
+    provider: moonshot-ai
+    provider_model_id: moonshot-v1-auto
+    model: moonshot-ai/moonshot-v1-auto
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/babbage-002.yaml
+    provider: openai
+    provider_model_id: babbage-002
+    model: openai/babbage-002
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/chat-latest.yaml
+    provider: openai
+    provider_model_id: chat-latest
+    model: openai/chat-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/chatgpt-image-latest.yaml
+    provider: openai
+    provider_model_id: chatgpt-image-latest
+    model: openai/chatgpt-image-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/davinci-002.yaml
+    provider: openai
+    provider_model_id: davinci-002
+    model: openai/davinci-002
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo-0125.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo-0125
+    model: openai/gpt-3.5-turbo-0125
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo-1106.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo-1106
+    model: openai/gpt-3.5-turbo-1106
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo-16k.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo-16k
+    model: openai/gpt-3.5-turbo-16k
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo-instruct-0914.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo-instruct-0914
+    model: openai/gpt-3.5-turbo-instruct-0914
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo-instruct.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo-instruct
+    model: openai/gpt-3.5-turbo-instruct
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-3.5-turbo.yaml
+    provider: openai
+    provider_model_id: gpt-3.5-turbo
+    model: openai/gpt-3.5-turbo
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1-2025-04-14.yaml
+    provider: openai
+    provider_model_id: gpt-4.1-2025-04-14
+    model: openai/gpt-4.1-2025-04-14
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1-mini-2025-04-14.yaml
+    provider: openai
+    provider_model_id: gpt-4.1-mini-2025-04-14
+    model: openai/gpt-4.1-mini-2025-04-14
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1-mini.yaml
+    provider: openai
+    provider_model_id: gpt-4.1-mini
+    model: openai/gpt-4.1-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1-nano-2025-04-14.yaml
+    provider: openai
+    provider_model_id: gpt-4.1-nano-2025-04-14
+    model: openai/gpt-4.1-nano-2025-04-14
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1-nano.yaml
+    provider: openai
+    provider_model_id: gpt-4.1-nano
+    model: openai/gpt-4.1-nano
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4.1.yaml
+    provider: openai
+    provider_model_id: gpt-4.1
+    model: openai/gpt-4.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-2024-05-13.yaml
+    provider: openai
+    provider_model_id: gpt-4o-2024-05-13
+    model: openai/gpt-4o-2024-05-13
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-2024-08-06.yaml
+    provider: openai
+    provider_model_id: gpt-4o-2024-08-06
+    model: openai/gpt-4o-2024-08-06
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-2024-11-20.yaml
+    provider: openai
+    provider_model_id: gpt-4o-2024-11-20
+    model: openai/gpt-4o-2024-11-20
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-2024-07-18.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-2024-07-18
+    model: openai/gpt-4o-mini-2024-07-18
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-search-preview-2025-03-11.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-search-preview-2025-03-11
+    model: openai/gpt-4o-mini-search-preview-2025-03-11
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-search-preview.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-search-preview
+    model: openai/gpt-4o-mini-search-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-transcribe-2025-03-20.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-transcribe-2025-03-20
+    model: openai/gpt-4o-mini-transcribe-2025-03-20
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-transcribe-2025-12-15.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-transcribe-2025-12-15
+    model: openai/gpt-4o-mini-transcribe-2025-12-15
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-transcribe.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-transcribe
+    model: openai/gpt-4o-mini-transcribe
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-tts-2025-03-20.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-tts-2025-03-20
+    model: openai/gpt-4o-mini-tts-2025-03-20
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-tts-2025-12-15.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-tts-2025-12-15
+    model: openai/gpt-4o-mini-tts-2025-12-15
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini-tts.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini-tts
+    model: openai/gpt-4o-mini-tts
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-mini.yaml
+    provider: openai
+    provider_model_id: gpt-4o-mini
+    model: openai/gpt-4o-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-search-preview-2025-03-11.yaml
+    provider: openai
+    provider_model_id: gpt-4o-search-preview-2025-03-11
+    model: openai/gpt-4o-search-preview-2025-03-11
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-search-preview.yaml
+    provider: openai
+    provider_model_id: gpt-4o-search-preview
+    model: openai/gpt-4o-search-preview
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-transcribe-diarize.yaml
+    provider: openai
+    provider_model_id: gpt-4o-transcribe-diarize
+    model: openai/gpt-4o-transcribe-diarize
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o-transcribe.yaml
+    provider: openai
+    provider_model_id: gpt-4o-transcribe
+    model: openai/gpt-4o-transcribe
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-4o.yaml
+    provider: openai
+    provider_model_id: gpt-4o
+    model: openai/gpt-4o
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-2025-08-07.yaml
+    provider: openai
+    provider_model_id: gpt-5-2025-08-07
+    model: openai/gpt-5-2025-08-07
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-chat-latest.yaml
+    provider: openai
+    provider_model_id: gpt-5-chat-latest
+    model: openai/gpt-5-chat-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-codex.yaml
+    provider: openai
+    provider_model_id: gpt-5-codex
+    model: openai/gpt-5-codex
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-mini-2025-08-07.yaml
+    provider: openai
+    provider_model_id: gpt-5-mini-2025-08-07
+    model: openai/gpt-5-mini-2025-08-07
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-mini.yaml
+    provider: openai
+    provider_model_id: gpt-5-mini
+    model: openai/gpt-5-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-nano-2025-08-07.yaml
+    provider: openai
+    provider_model_id: gpt-5-nano-2025-08-07
+    model: openai/gpt-5-nano-2025-08-07
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-nano.yaml
+    provider: openai
+    provider_model_id: gpt-5-nano
+    model: openai/gpt-5-nano
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-pro-2025-10-06.yaml
+    provider: openai
+    provider_model_id: gpt-5-pro-2025-10-06
+    model: openai/gpt-5-pro-2025-10-06
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-pro.yaml
+    provider: openai
+    provider_model_id: gpt-5-pro
+    model: openai/gpt-5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-search-api-2025-10-14.yaml
+    provider: openai
+    provider_model_id: gpt-5-search-api-2025-10-14
+    model: openai/gpt-5-search-api-2025-10-14
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5-search-api.yaml
+    provider: openai
+    provider_model_id: gpt-5-search-api
+    model: openai/gpt-5-search-api
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1-2025-11-13.yaml
+    provider: openai
+    provider_model_id: gpt-5.1-2025-11-13
+    model: openai/gpt-5.1-2025-11-13
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1-chat-latest.yaml
+    provider: openai
+    provider_model_id: gpt-5.1-chat-latest
+    model: openai/gpt-5.1-chat-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1-codex-max.yaml
+    provider: openai
+    provider_model_id: gpt-5.1-codex-max
+    model: openai/gpt-5.1-codex-max
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1-codex-mini.yaml
+    provider: openai
+    provider_model_id: gpt-5.1-codex-mini
+    model: openai/gpt-5.1-codex-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1-codex.yaml
+    provider: openai
+    provider_model_id: gpt-5.1-codex
+    model: openai/gpt-5.1-codex
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.1.yaml
+    provider: openai
+    provider_model_id: gpt-5.1
+    model: openai/gpt-5.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2-2025-12-11.yaml
+    provider: openai
+    provider_model_id: gpt-5.2-2025-12-11
+    model: openai/gpt-5.2-2025-12-11
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2-chat-latest.yaml
+    provider: openai
+    provider_model_id: gpt-5.2-chat-latest
+    model: openai/gpt-5.2-chat-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2-codex.yaml
+    provider: openai
+    provider_model_id: gpt-5.2-codex
+    model: openai/gpt-5.2-codex
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2-pro-2025-12-11.yaml
+    provider: openai
+    provider_model_id: gpt-5.2-pro-2025-12-11
+    model: openai/gpt-5.2-pro-2025-12-11
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2-pro.yaml
+    provider: openai
+    provider_model_id: gpt-5.2-pro
+    model: openai/gpt-5.2-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.2.yaml
+    provider: openai
+    provider_model_id: gpt-5.2
+    model: openai/gpt-5.2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.3-chat-latest.yaml
+    provider: openai
+    provider_model_id: gpt-5.3-chat-latest
+    model: openai/gpt-5.3-chat-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.3-codex.yaml
+    provider: openai
+    provider_model_id: gpt-5.3-codex
+    model: openai/gpt-5.3-codex
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-2026-03-05.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-2026-03-05
+    model: openai/gpt-5.4-2026-03-05
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-mini-2026-03-17.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-mini-2026-03-17
+    model: openai/gpt-5.4-mini-2026-03-17
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-mini.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-mini
+    model: openai/gpt-5.4-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-nano-2026-03-17.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-nano-2026-03-17
+    model: openai/gpt-5.4-nano-2026-03-17
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-nano.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-nano
+    model: openai/gpt-5.4-nano
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-pro-2026-03-05.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-pro-2026-03-05
+    model: openai/gpt-5.4-pro-2026-03-05
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4-pro.yaml
+    provider: openai
+    provider_model_id: gpt-5.4-pro
+    model: openai/gpt-5.4-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.4.yaml
+    provider: openai
+    provider_model_id: gpt-5.4
+    model: openai/gpt-5.4
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.5-2026-04-23.yaml
+    provider: openai
+    provider_model_id: gpt-5.5-2026-04-23
+    model: openai/gpt-5.5-2026-04-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.5-pro-2026-04-23.yaml
+    provider: openai
+    provider_model_id: gpt-5.5-pro-2026-04-23
+    model: openai/gpt-5.5-pro-2026-04-23
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.5-pro.yaml
+    provider: openai
+    provider_model_id: gpt-5.5-pro
+    model: openai/gpt-5.5-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.5.yaml
+    provider: openai
+    provider_model_id: gpt-5.5
+    model: openai/gpt-5.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.6-luna.yaml
+    provider: openai
+    provider_model_id: gpt-5.6-luna
+    model: openai/gpt-5.6-luna
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.6-sol.yaml
+    provider: openai
+    provider_model_id: gpt-5.6-sol
+    model: openai/gpt-5.6-sol
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.6-terra.yaml
+    provider: openai
+    provider_model_id: gpt-5.6-terra
+    model: openai/gpt-5.6-terra
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-5.yaml
+    provider: openai
+    provider_model_id: gpt-5
+    model: openai/gpt-5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio-1.5.yaml
+    provider: openai
+    provider_model_id: gpt-audio-1.5
+    model: openai/gpt-audio-1.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio-2025-08-28.yaml
+    provider: openai
+    provider_model_id: gpt-audio-2025-08-28
+    model: openai/gpt-audio-2025-08-28
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio-mini-2025-10-06.yaml
+    provider: openai
+    provider_model_id: gpt-audio-mini-2025-10-06
+    model: openai/gpt-audio-mini-2025-10-06
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio-mini-2025-12-15.yaml
+    provider: openai
+    provider_model_id: gpt-audio-mini-2025-12-15
+    model: openai/gpt-audio-mini-2025-12-15
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio-mini.yaml
+    provider: openai
+    provider_model_id: gpt-audio-mini
+    model: openai/gpt-audio-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-audio.yaml
+    provider: openai
+    provider_model_id: gpt-audio
+    model: openai/gpt-audio
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-image-1-mini.yaml
+    provider: openai
+    provider_model_id: gpt-image-1-mini
+    model: openai/gpt-image-1-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-image-1.5.yaml
+    provider: openai
+    provider_model_id: gpt-image-1.5
+    model: openai/gpt-image-1.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-image-1.yaml
+    provider: openai
+    provider_model_id: gpt-image-1
+    model: openai/gpt-image-1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-image-2-2026-04-21.yaml
+    provider: openai
+    provider_model_id: gpt-image-2-2026-04-21
+    model: openai/gpt-image-2-2026-04-21
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-image-2.yaml
+    provider: openai
+    provider_model_id: gpt-image-2
+    model: openai/gpt-image-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-1.5.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-1.5
+    model: openai/gpt-realtime-1.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-2.1-mini.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-2.1-mini
+    model: openai/gpt-realtime-2.1-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-2.1.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-2.1
+    model: openai/gpt-realtime-2.1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-2.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-2
+    model: openai/gpt-realtime-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-2025-08-28.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-2025-08-28
+    model: openai/gpt-realtime-2025-08-28
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-mini-2025-10-06.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-mini-2025-10-06
+    model: openai/gpt-realtime-mini-2025-10-06
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-mini-2025-12-15.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-mini-2025-12-15
+    model: openai/gpt-realtime-mini-2025-12-15
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-mini.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-mini
+    model: openai/gpt-realtime-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-translate.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-translate
+    model: openai/gpt-realtime-translate
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime-whisper.yaml
+    provider: openai
+    provider_model_id: gpt-realtime-whisper
+    model: openai/gpt-realtime-whisper
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/gpt-realtime.yaml
+    provider: openai
+    provider_model_id: gpt-realtime
+    model: openai/gpt-realtime
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o1-2024-12-17.yaml
+    provider: openai
+    provider_model_id: o1-2024-12-17
+    model: openai/o1-2024-12-17
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o1.yaml
+    provider: openai
+    provider_model_id: o1
+    model: openai/o1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o3-2025-04-16.yaml
+    provider: openai
+    provider_model_id: o3-2025-04-16
+    model: openai/o3-2025-04-16
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o3-mini-2025-01-31.yaml
+    provider: openai
+    provider_model_id: o3-mini-2025-01-31
+    model: openai/o3-mini-2025-01-31
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o3-mini.yaml
+    provider: openai
+    provider_model_id: o3-mini
+    model: openai/o3-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o3.yaml
+    provider: openai
+    provider_model_id: o3
+    model: openai/o3
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o4-mini-2025-04-16.yaml
+    provider: openai
+    provider_model_id: o4-mini-2025-04-16
+    model: openai/o4-mini-2025-04-16
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/o4-mini.yaml
+    provider: openai
+    provider_model_id: o4-mini
+    model: openai/o4-mini
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/omni-moderation-2024-09-26.yaml
+    provider: openai
+    provider_model_id: omni-moderation-2024-09-26
+    model: openai/omni-moderation-2024-09-26
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/omni-moderation-latest.yaml
+    provider: openai
+    provider_model_id: omni-moderation-latest
+    model: openai/omni-moderation-latest
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/sora-2-pro.yaml
+    provider: openai
+    provider_model_id: sora-2-pro
+    model: openai/sora-2-pro
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/sora-2.yaml
+    provider: openai
+    provider_model_id: sora-2
+    model: openai/sora-2
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/text-embedding-3-large.yaml
+    provider: openai
+    provider_model_id: text-embedding-3-large
+    model: openai/text-embedding-3-large
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/text-embedding-3-small.yaml
+    provider: openai
+    provider_model_id: text-embedding-3-small
+    model: openai/text-embedding-3-small
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/text-embedding-ada-002.yaml
+    provider: openai
+    provider_model_id: text-embedding-ada-002
+    model: openai/text-embedding-ada-002
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/tts-1-1106.yaml
+    provider: openai
+    provider_model_id: tts-1-1106
+    model: openai/tts-1-1106
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/tts-1-hd-1106.yaml
+    provider: openai
+    provider_model_id: tts-1-hd-1106
+    model: openai/tts-1-hd-1106
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/tts-1-hd.yaml
+    provider: openai
+    provider_model_id: tts-1-hd
+    model: openai/tts-1-hd
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/tts-1.yaml
+    provider: openai
+    provider_model_id: tts-1
+    model: openai/tts-1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/openai/models/whisper-1.yaml
+    provider: openai
+    provider_model_id: whisper-1
+    model: openai/whisper-1
+    status: linked
+    evidence: explicit provider-model author metadata

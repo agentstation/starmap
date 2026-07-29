@@ -1,5 +1,6 @@
 # omni-moderation-latest - AI model
 id: omni-moderation-latest
+model: openai/omni-moderation-latest
 name: omni-moderation-latest
 authors:
 - id: openai

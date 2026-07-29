@@ -1,5 +1,6 @@
 # gemini-flash-latest - Latest release of Gemini Flash
 id: gemini-flash-latest
+model: google/gemini-flash-latest
 name: Gemini Flash Latest
 authors:
 - id: google
@@ -83,14 +84,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 reasoning_tokens:
   min: 0
   max: 24576

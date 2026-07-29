@@ -1,5 +1,6 @@
 # gemini-live-2.5-flash-native-audio - Google model: gemini-live-2.5-flash-native-audio
 id: gemini-live-2.5-flash-native-audio
+model: google/gemini-live-2.5-flash-native-audio
 name: gemini-live-2.5-flash-native-audio
 authors:
 - id: google

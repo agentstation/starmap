@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"path"
 	"reflect"
 	"slices"
@@ -534,23 +535,23 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 	// catalogs.ModelTokenCost.Per1M. Provider families with different units
 	// need an explicit provider-specific conversion before this mapping.
 	if source.Prompt != nil && pricing.Tokens.Input == nil {
-		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: *source.Prompt}
+		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.Prompt)}
 	}
 	if source.Completion != nil && pricing.Tokens.Output == nil {
-		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.Completion}
+		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.Completion)}
 	}
 	if source.InputCacheRead != nil {
 		if pricing.Tokens.CacheRead == nil {
-			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: *source.InputCacheRead}
+			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.InputCacheRead)}
 		}
 	}
 	if source.Request != nil || source.Image != nil {
 		ensureOperationPricing(pricing)
 		if source.Request != nil && pricing.Operations.Request == nil {
-			pricing.Operations.Request = source.Request
+			pricing.Operations.Request = normalizeProviderOperationPrice(source.Request)
 		}
 		if source.Image != nil && pricing.Operations.ImageGen == nil {
-			pricing.Operations.ImageGen = source.Image
+			pricing.Operations.ImageGen = normalizeProviderOperationPrice(source.Image)
 		}
 	}
 }
@@ -562,28 +563,54 @@ func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source
 	// DeepInfra's metadata.pricing token fields are reported in USD per 1M
 	// tokens by its public /v1/openai/models payload, matching Per1M.
 	if source.InputTokens != nil && pricing.Tokens.Input == nil {
-		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: *source.InputTokens}
+		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.InputTokens)}
 	}
 	if source.OutputTokens != nil && pricing.Tokens.Output == nil {
-		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: *source.OutputTokens}
+		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.OutputTokens)}
 	}
 	if source.CacheReadTokens != nil {
 		if pricing.Tokens.CacheRead == nil {
-			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: *source.CacheReadTokens}
+			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.CacheReadTokens)}
 		}
 	}
 	if source.PerImageUnit != nil || source.InputSeconds != nil || source.OutputSeconds != nil {
 		ensureOperationPricing(pricing)
 		if source.PerImageUnit != nil && pricing.Operations.ImageGen == nil {
-			pricing.Operations.ImageGen = source.PerImageUnit
+			pricing.Operations.ImageGen = normalizeProviderOperationPrice(source.PerImageUnit)
 		}
 		if source.InputSeconds != nil && pricing.Operations.AudioInput == nil {
-			pricing.Operations.AudioInput = source.InputSeconds
+			pricing.Operations.AudioInput = normalizeProviderOperationPrice(source.InputSeconds)
 		}
 		if source.OutputSeconds != nil && pricing.Operations.AudioGen == nil {
-			pricing.Operations.AudioGen = source.OutputSeconds
+			pricing.Operations.AudioGen = normalizeProviderOperationPrice(source.OutputSeconds)
 		}
 	}
+}
+
+// Provider APIs sometimes emit binary-float artifacts around human decimal
+// list prices. Normalize only representational noise; no unit conversion or
+// source precedence decision happens here.
+func normalizeProviderTokenPrice(price float64) float64 {
+	const decimals = 1_000_000
+	return snapProviderPrice(price, decimals)
+}
+
+func normalizeProviderOperationPrice(price *float64) *float64 {
+	if price == nil {
+		return nil
+	}
+	const decimals = 1_000_000_000
+	normalized := snapProviderPrice(*price, decimals)
+	return &normalized
+}
+
+func snapProviderPrice(price, decimalScale float64) float64 {
+	candidate := math.Round(price*decimalScale) / decimalScale
+	tolerance := math.Max(math.Abs(price), math.Abs(candidate)) * 1e-7
+	if math.Abs(price-candidate) <= tolerance {
+		return candidate
+	}
+	return price
 }
 
 func (c *Client) applyProviderExtensions(model *catalogs.Model, apiModel Model) {

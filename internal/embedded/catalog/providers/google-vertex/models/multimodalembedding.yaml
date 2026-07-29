@@ -1,5 +1,6 @@
 # multimodalembedding - Google Vertex AI model: multimodalembedding
 id: multimodalembedding
+model: google/multimodalembedding
 name: multimodalembedding
 authors:
 - id: google

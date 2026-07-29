@@ -1,5 +1,6 @@
 # gpt-oss-120b - Open GPT reasoning model for self-hosted agents and controll...
 id: gpt-oss-120b
+model: openai/gpt-oss-120b
 name: gpt-oss-120b
 authors:
 - id: openai

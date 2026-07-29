@@ -1,5 +1,6 @@
 # medsiglip - Google Vertex AI model: medsiglip
 id: medsiglip
+model: google/medsiglip
 name: medsiglip
 authors:
 - id: google

@@ -17,13 +17,25 @@ func Example() {
 	// Create a memory-based draft.
 	builder := catalogs.NewEmpty()
 
-	// Add a provider with a model
+	// Define the canonical model independently from where it is served.
+	if err := builder.SetAuthor(catalogs.Author{ID: "openai", Name: "OpenAI"}); err != nil {
+		log.Fatal(err)
+	}
+	if err := builder.SetAuthorModel("openai", catalogs.Model{
+		ID: "gpt-4", Name: "GPT-4", Description: "Advanced language model",
+		Authors: []catalogs.Author{{ID: "openai", Name: "OpenAI"}},
+	}); err != nil {
+		log.Fatal(err)
+	}
+
+	// Add the provider offering and join it to the canonical definition.
 	provider := catalogs.Provider{
 		ID:   "openai",
 		Name: "OpenAI",
 		Models: map[string]*catalogs.Model{
 			"gpt-4": {
 				ID:          "gpt-4",
+				ModelRef:    "openai/gpt-4",
 				Name:        "GPT-4",
 				Description: "Advanced language model",
 			},

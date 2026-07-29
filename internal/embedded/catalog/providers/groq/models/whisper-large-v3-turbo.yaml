@@ -1,5 +1,6 @@
 # whisper-large-v3-turbo - Speech transcription model for accurate audio-to-text and ca...
 id: whisper-large-v3-turbo
+model: openai/whisper-large-v3-turbo
 name: Whisper Large V3 Turbo
 authors:
 - id: openai
@@ -80,9 +81,9 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 0.00051
+      per_1m: 510
     output:
-      per_1m: 0.00051
+      per_1m: 510
   currency: USD
 
 # Model limits

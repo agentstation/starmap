@@ -1,5 +1,6 @@
 # gemini-2.5-flash-tts - Speech generation model for controllable voice, narration, a...
 id: gemini-2.5-flash-tts
+model: google/gemini-2.5-flash-tts
 name: gemini-2.5-flash-tts
 authors:
 - id: google

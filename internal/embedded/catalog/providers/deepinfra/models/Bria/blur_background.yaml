@@ -1,5 +1,6 @@
 # Bria/blur_background - Bria Blur Background softens and de-emphasizes image backgro...
 id: Bria/blur_background
+model: bria/blur_background
 name: Bria/blur_background
 description: Bria Blur Background softens and de-emphasizes image backgrounds while keeping the subject sharp and clear for professional-quality results. Trained fully on licensed data, it delivers safe, natural, and commercial-ready outputs.
 

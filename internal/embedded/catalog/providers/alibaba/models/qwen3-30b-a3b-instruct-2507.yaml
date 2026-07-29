@@ -1,9 +1,10 @@
 # qwen3-30b-a3b-instruct-2507 - AI model
 id: qwen3-30b-a3b-instruct-2507
+model: qwen/qwen3-30b-a3b-instruct-2507
 name: qwen3-30b-a3b-instruct-2507
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

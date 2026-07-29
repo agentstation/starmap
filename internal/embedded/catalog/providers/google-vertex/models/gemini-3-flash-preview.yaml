@@ -1,5 +1,6 @@
 # gemini-3-flash-preview - New Gemini flash lane bringing frontier-style multimodal rea...
 id: gemini-3-flash-preview
+model: google/gemini-3-flash-preview
 name: gemini-3-flash-preview
 authors:
 - id: google

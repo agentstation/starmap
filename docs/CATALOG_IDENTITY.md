@@ -51,9 +51,13 @@ canonical authorship, release metadata, typed lineage, weights/architecture,
 and intrinsic capabilities, and cannot contain provider service facts.
 
 Immutable catalogs expose canonical `Definition`, `Offering`, and
-`ProviderOfferings` lookups. Offering reads are keyed by the exact provider
-tuple and return caller-owned values; equal model IDs at two providers never
-share price, limits, modes, or request state.
+`ProviderOfferings` lookups. `DefinitionOfferings` performs the inverse lookup,
+and `AuthorModel` resolves an author plus slug. `FindModel` accepts a canonical
+`author/slug`, an unambiguous bare slug, or an unambiguous exact provider model
+ID. Ambiguous aliases return a typed conflict instead of selecting a winner.
+Offering reads are keyed by the exact provider tuple and return caller-owned
+values; equal model IDs at two providers never share price, limits, modes, or
+request state.
 
 Starport passes `RouteAlias` values to `MaterializeRouteAlias`; aliases are not
 stored by catalog sources. Materialization separates eligible offerings from
@@ -62,8 +66,22 @@ tenant, or strategy policy into Starmap.
 
 ## Persisted source shape
 
-Provider YAML model records are the sole persisted model facts. Immutable
-definitions, offerings, and author membership are validated, precomputed read
-views built from those records and their provenance. Catalog schema version 2
-removed the duplicate author-model tree and the prelaunch schema-v0/v1
-compatibility adapters.
+The human workspace has two model roles:
+
+- `authors/{author}/models/{slug}.yaml` owns canonical `author/slug` identity
+  and intrinsic model facts;
+- `providers/{provider}/models/**.yaml` owns the exact opaque provider model ID,
+  an explicit `model: author/slug` link, and provider-serving facts such as
+  price, limits, availability, lifecycle, modes, and endpoint behavior.
+
+Provider identity is never authorship evidence. Multiple providers may link to
+one authored model, and one provider may serve models from many independent
+authors. The immutable catalog validates those links and precomputes
+definitions, offerings, author membership, aliases, and model-to-offering
+indexes.
+
+`endpoints.yaml` is a versioned, digest-bound generated projection of that
+join. It is inspectable output, not an editable source or a third authority.
+Catalog schema version 3 persists the two construction-record collections as
+`author_models` and `provider_models`; no prelaunch reader for schema version 2
+is retained.

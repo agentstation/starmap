@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V3 - DeepSeek-V3, a strong Mixture-of-Experts (MoE) language mode...
 id: deepseek-ai/DeepSeek-V3
+model: deepseek/deepseek-v3
 name: deepseek-ai/DeepSeek-V3
 authors:
 - id: deepseek
@@ -82,7 +83,7 @@ pricing:
     input:
       per_1m: 0.32
     output:
-      per_1m: 0.8899999999999999
+      per_1m: 0.89
   currency: USD
 
 # Model limits

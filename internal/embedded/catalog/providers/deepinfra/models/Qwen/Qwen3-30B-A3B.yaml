@@ -1,9 +1,10 @@
 # Qwen/Qwen3-30B-A3B - Qwen3 is the latest generation of large language models in Q...
 id: Qwen/Qwen3-30B-A3B
+model: qwen/qwen3-30b-a3b
 name: Qwen/Qwen3-30B-A3B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen3 is the latest generation of large language models in Qwen series, offering a comprehensive suite of dense and mixture-of-experts (MoE) models. Built upon extensive training, Qwen3 delivers groundbreaking advancements in reasoning, instruction-following, agent capabilities, and multilingual support
 
 # Model metadata
@@ -82,7 +83,7 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 0.12000000000000001
+      per_1m: 0.12
     output:
       per_1m: 0.5
   currency: USD

@@ -15,6 +15,14 @@ func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *test
 	}
 	provider := catalogs.TestProvider(t)
 	model := catalogs.TestModel(t)
+	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
+	if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+		ID:      model.ID,
+		Name:    model.Name,
+		Authors: []catalogs.Author{*author},
+	}); err != nil {
+		t.Fatalf("SetAuthorModel: %v", err)
+	}
 	provider.Models = map[string]*catalogs.Model{model.ID: model}
 	if err := builder.SetProvider(*provider); err != nil {
 		t.Fatalf("SetProvider: %v", err)

@@ -104,6 +104,7 @@ func TestModelsFiltersByProvider(t *testing.T) {
 			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
 		}
 	}
+	completeQueryTestCatalog(t, catalog)
 	snapshot, err := catalog.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -176,6 +177,7 @@ func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 		}
 	}
 
+	completeQueryTestCatalog(t, catalog)
 	snapshot, err := catalog.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -209,6 +211,33 @@ func TestProviderFilterPreservesDuplicateModelOfferings(t *testing.T) {
 	}
 	if bOffering.Name != "Provider B Offering" {
 		t.Fatalf("Provider B offering = %#v", bOffering)
+	}
+}
+
+func completeQueryTestCatalog(t testing.TB, builder *catalogs.Builder) {
+	t.Helper()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(author.ID, slug)
+			if err := builder.SetProviderModel(provider.ID, *model); err != nil {
+				t.Fatalf("SetProviderModel(%s/%s): %v", provider.ID, modelID, err)
+			}
+			if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
 	}
 }
 

@@ -267,7 +267,7 @@ func (s *Source) observation(
 	issues []sources.ObservationIssue,
 	records sources.ObservationRecordCounts,
 ) (sources.Observation, error) {
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
 		return sources.Observation{}, pkgerrors.WrapResource("publish", "provider source observation", "", err)
 	}

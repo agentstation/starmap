@@ -1,5 +1,6 @@
 # chatgpt-image-latest - Image model for prompt-driven generation, editing, and visua...
 id: chatgpt-image-latest
+model: openai/chatgpt-image-latest
 name: chatgpt-image-latest
 authors:
 - id: openai

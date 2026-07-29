@@ -1,5 +1,6 @@
 # text-multilingual-embedding-002 - Google model: text-multilingual-embedding-002
 id: text-multilingual-embedding-002
+model: google/text-multilingual-embedding-002
 name: text-multilingual-embedding-002
 authors:
 - id: google

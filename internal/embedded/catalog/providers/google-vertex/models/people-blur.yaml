@@ -1,5 +1,6 @@
 # people-blur - Google Vertex AI model: people-blur
 id: people-blur
+model: google/people-blur
 name: people-blur
 authors:
 - id: google

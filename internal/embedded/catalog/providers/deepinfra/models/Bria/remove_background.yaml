@@ -1,5 +1,6 @@
 # Bria/remove_background - Bria RMBG 2.0 enables seamless removal of backgrounds from i...
 id: Bria/remove_background
+model: bria/remove_background
 name: Bria/remove_background
 description: Bria RMBG 2.0 enables seamless removal of backgrounds from images, ideal for professional editing tasks. Trained exclusively on licensed data for safe and risk-free commercial use.
 
@@ -76,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    image_gen: 0.018000000000000002
+    image_gen: 0.018
   currency: USD
 extensions:
   deepinfra:

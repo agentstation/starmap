@@ -1,5 +1,6 @@
 # pic2word - Google Vertex AI model: pic2word
 id: pic2word
+model: google/pic2word
 name: pic2word
 authors:
 - id: google

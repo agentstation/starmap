@@ -1,5 +1,6 @@
 # claude-3-opus@20240229 - Claude 3 Opus model available through Vertex AI Model Garden
 id: claude-3-opus@20240229
+model: anthropic/claude-3-opus-20240229
 name: Claude 3 Opus
 authors:
 - id: anthropic

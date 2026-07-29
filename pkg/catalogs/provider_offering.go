@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"maps"
+	"slices"
 	"strings"
+
+	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -64,6 +67,40 @@ type OfferingRequestHeaders map[string]string
 // RawMessage preserves booleans, numbers, strings, arrays, objects, and null
 // without routing values through map[string]any.
 type OfferingRequestBody map[string]json.RawMessage
+
+// MarshalYAML preserves each exact JSON value as its equivalent native YAML
+// scalar, sequence, mapping, or null instead of encoding RawMessage bytes as a
+// sequence of integers.
+func (b OfferingRequestBody) MarshalYAML() (any, error) {
+	values := make(yaml.MapSlice, 0, len(b))
+	for _, field := range slices.Sorted(maps.Keys(b)) {
+		value := b[field]
+		encoded, err := yaml.JSONToYAML(value)
+		if err != nil {
+			return nil, errors.WrapParse("json", "request.body."+field, err)
+		}
+		var native any
+		if err := yaml.Unmarshal(encoded, &native); err != nil {
+			return nil, errors.WrapParse("yaml", "request.body."+field, err)
+		}
+		values = append(values, yaml.MapItem{Key: field, Value: native})
+	}
+	return values, nil
+}
+
+// UnmarshalYAML restores native YAML values as exact JSON values.
+func (b *OfferingRequestBody) UnmarshalYAML(data []byte) error {
+	encoded, err := yaml.YAMLToJSON(data)
+	if err != nil {
+		return errors.WrapParse("yaml", "request.body", err)
+	}
+	var values map[string]json.RawMessage
+	if err := json.Unmarshal(encoded, &values); err != nil {
+		return errors.WrapParse("json", "request.body", err)
+	}
+	*b = values
+	return nil
+}
 
 // ProviderRequestOverrides contains provider-specific inference request changes.
 type ProviderRequestOverrides struct {

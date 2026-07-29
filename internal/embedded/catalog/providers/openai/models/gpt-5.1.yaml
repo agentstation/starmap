@@ -1,5 +1,6 @@
 # gpt-5.1 - Sharper GPT-5 generation for coding, product work, and tool-...
 id: gpt-5.1
+model: openai/gpt-5.1
 name: gpt-5.1
 authors:
 - id: openai

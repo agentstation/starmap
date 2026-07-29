@@ -1,9 +1,10 @@
 # qwen-mt-plus - Translation model for multilingual conversion, localization,...
 id: qwen-mt-plus
+model: qwen/qwen-mt-plus
 name: qwen-mt-plus
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Translation model for multilingual conversion, localization, and cross-language workflows
 
 # Model metadata

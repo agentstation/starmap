@@ -1,5 +1,6 @@
 # ByteDance/Seed-2.0-code - A coding model optimized for real-world development environm...
 id: ByteDance/Seed-2.0-code
+model: bytedance/seed-2.0-code
 name: ByteDance/Seed-2.0-code
 authors:
 - id: bytedance
@@ -88,7 +89,7 @@ pricing:
     input:
       per_1m: 0.5
     output:
-      per_1m: 2.9999999999999996
+      per_1m: 3
   currency: USD
 
 # Model limits

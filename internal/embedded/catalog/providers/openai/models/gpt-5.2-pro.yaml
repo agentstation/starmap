@@ -1,5 +1,6 @@
 # gpt-5.2-pro - Higher-accuracy GPT-5.2 variant for tougher reasoning and re...
 id: gpt-5.2-pro
+model: openai/gpt-5.2-pro
 name: gpt-5.2-pro
 authors:
 - id: openai

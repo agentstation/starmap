@@ -1,5 +1,6 @@
 # gpt-4o-mini - Small omni GPT for cheap multimodal assistance and productio...
 id: gpt-4o-mini
+model: openai/gpt-4o-mini
 name: gpt-4o-mini
 authors:
 - id: openai

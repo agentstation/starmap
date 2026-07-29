@@ -1,5 +1,6 @@
 # google/gemini-1.5-flash - Gemini 1.5 Flash is Google's foundation model that performs ...
 id: google/gemini-1.5-flash
+model: google/gemini-1.5-flash
 name: google/gemini-1.5-flash
 authors:
 - id: google

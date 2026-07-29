@@ -1,5 +1,6 @@
 # pt-test - Google Vertex AI model: pt-test
 id: pt-test
+model: google/pt-test
 name: pt-test
 authors:
 - id: google

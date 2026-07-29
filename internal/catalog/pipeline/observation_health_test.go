@@ -34,10 +34,7 @@ func TestObservationVolumeRegressionBecomesDegradedWithoutInventingDeletion(t *t
 			Source: sources.LocalCatalogID, Timestamp: observedAt.Add(-time.Hour),
 		}},
 	})
-	baseline, err := baselineBuilder.Build()
-	if err != nil {
-		t.Fatalf("Build baseline: %v", err)
-	}
+	baseline := buildCatalog(t, baselineBuilder)
 
 	currentBuilder := catalogs.NewEmpty()
 	if err := currentBuilder.SetProvider(catalogs.Provider{
@@ -49,10 +46,7 @@ func TestObservationVolumeRegressionBecomesDegradedWithoutInventingDeletion(t *t
 	}); err != nil {
 		t.Fatalf("SetProvider current: %v", err)
 	}
-	current, err := currentBuilder.Build()
-	if err != nil {
-		t.Fatalf("Build current: %v", err)
-	}
+	current := buildCatalog(t, currentBuilder)
 	observation, err := sources.NewObservation(sources.ProvidersID, current, sources.ObservationMetadata{
 		ObservedAt:   observedAt,
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},

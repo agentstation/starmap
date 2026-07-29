@@ -1,5 +1,6 @@
 # t5-flan - Google Vertex AI model: t5-flan
 id: t5-flan
+model: google/t5-flan
 name: t5-flan
 authors:
 - id: google

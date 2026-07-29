@@ -1,5 +1,6 @@
 # gemini-2.0-flash-lite-001 - Stable version of Gemini 2.0 Flash-Lite
 id: gemini-2.0-flash-lite-001
+model: google/gemini-2.0-flash-lite-001
 name: Gemini 2.0 Flash-Lite 001
 authors:
 - id: google
@@ -77,14 +78,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 40
 
 # Model limits
 limits:

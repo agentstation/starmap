@@ -1,9 +1,10 @@
 # Qwen/Qwen3-Next-80B-A3B-Instruct - Qwen instruction model for multilingual chat, reasoning, and...
 id: Qwen/Qwen3-Next-80B-A3B-Instruct
+model: qwen/qwen3-next-80b-a3b-instruct
 name: Qwen/Qwen3-Next-80B-A3B-Instruct
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen instruction model for multilingual chat, reasoning, and tool use
 
 # Model metadata

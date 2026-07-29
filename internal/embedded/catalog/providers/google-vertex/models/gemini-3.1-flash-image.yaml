@@ -1,5 +1,6 @@
 # gemini-3.1-flash-image - Google model: gemini-3.1-flash-image
 id: gemini-3.1-flash-image
+model: google/gemini-3.1-flash-image
 name: gemini-3.1-flash-image
 authors:
 - id: google

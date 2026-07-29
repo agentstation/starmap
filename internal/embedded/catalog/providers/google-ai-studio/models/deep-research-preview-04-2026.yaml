@@ -1,5 +1,6 @@
 # deep-research-preview-04-2026 - Preview release (April 21th, 2026) of Deep Research
 id: deep-research-preview-04-2026
+model: google/deep-research-preview-04-2026
 name: Deep Research Preview (Apr-21-2026)
 authors:
 - id: google
@@ -71,14 +72,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Model limits
 limits:

@@ -204,11 +204,13 @@ func TestConvertAIStudioModelPreservesRESTOnlyFields(t *testing.T) {
 	if model.Generation == nil ||
 		model.Generation.Temperature == nil ||
 		model.Generation.Temperature.Default != temperature ||
+		model.Generation.Temperature.Min != 0 ||
 		model.Generation.Temperature.Max != maxTemperature ||
 		model.Generation.TopP == nil ||
+		model.Generation.TopP.Min != 0 ||
+		model.Generation.TopP.Max != 1 ||
 		model.Generation.TopP.Default != topP ||
-		model.Generation.TopK == nil ||
-		model.Generation.TopK.Default != int(topK) {
+		model.Generation.TopK != nil {
 		t.Fatalf("generation = %#v", model.Generation)
 	}
 	if model.Features == nil ||

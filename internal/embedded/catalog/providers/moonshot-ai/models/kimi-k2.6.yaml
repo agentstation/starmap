@@ -1,5 +1,6 @@
 # kimi-k2.6 - Multimodal Kimi workhorse for agent loops, coding tasks, and...
 id: kimi-k2.6
+model: moonshot-ai/kimi-k2.6
 name: kimi-k2.6
 authors:
 - id: moonshot-ai

@@ -1,5 +1,6 @@
 # gemini-3.5-live-translate-preview - Gemini 3.5 Live Translate Preview
 id: gemini-3.5-live-translate-preview
+model: google/gemini-3.5-live-translate-preview
 name: Gemini 3.5 Live Translate Preview
 authors:
 - id: google
@@ -72,14 +73,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Model limits
 limits:

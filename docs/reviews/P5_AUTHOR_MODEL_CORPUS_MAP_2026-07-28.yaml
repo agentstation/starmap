@@ -1,0 +1,2258 @@
+schema_version: 1
+deleted_by: pull request 53
+restored_from: 9609f4f4a74281a7f9692a97cc4926df5978d754
+records:
+  - path: authors/qwen/models/pre-qwen-mt-lite.yaml
+    author: qwen
+    slug: pre-qwen-mt-lite
+    canonical_model: qwen/qwen-mt-lite
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: provider staging ID is retained only as an offering and joins the canonical Qwen MT Lite definition
+  - path: authors/qwen/models/qwen-3-235b-a22b-instruct-2507.yaml
+    author: qwen
+    slug: qwen-3-235b-a22b-instruct-2507
+    canonical_model: qwen/qwen3-235b-a22b-instruct-2507
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
+  - path: authors/qwen/models/qwen-3-235b-a22b-thinking-2507.yaml
+    author: qwen
+    slug: qwen-3-235b-a22b-thinking-2507
+    canonical_model: qwen/qwen3-235b-a22b-thinking-2507
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
+  - path: authors/qwen/models/qwen-3-32b.yaml
+    author: qwen
+    slug: qwen-3-32b
+    canonical_model: qwen/qwen3-32b
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider-derived dashed spelling merges into the canonical Qwen 3 model
+  - path: authors/qwen/models/qwen-3-coder-480b.yaml
+    author: qwen
+    slug: qwen-3-coder-480b
+    canonical_model: qwen/qwen3-coder-480b-a35b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: abbreviated provider spelling merges into the canonical Qwen 3 Coder definition
+  - path: authors/qwen/models/qwen-flash-2025-07-28-us.yaml
+    author: qwen
+    slug: qwen-flash-2025-07-28-us
+    canonical_model: qwen/qwen-flash-2025-07-28
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: region is an offering deployment fact and not part of canonical model identity
+  - path: authors/qwen/models/qwen-flash-2025-07-28.yaml
+    author: qwen
+    slug: qwen-flash-2025-07-28
+    canonical_model: qwen/qwen-flash-2025-07-28
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-flash-us.yaml
+    author: qwen
+    slug: qwen-flash-us
+    canonical_model: qwen/qwen-flash
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: region is an offering deployment fact and not part of canonical model identity
+  - path: authors/qwen/models/qwen-flash.yaml
+    author: qwen
+    slug: qwen-flash
+    canonical_model: qwen/qwen-flash
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-mt-flash.yaml
+    author: qwen
+    slug: qwen-mt-flash
+    canonical_model: qwen/qwen-mt-flash
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-mt-lite.yaml
+    author: qwen
+    slug: qwen-mt-lite
+    canonical_model: qwen/qwen-mt-lite
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-mt-plus.yaml
+    author: qwen
+    slug: qwen-mt-plus
+    canonical_model: qwen/qwen-mt-plus
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-plus-2025-07-28.yaml
+    author: qwen
+    slug: qwen-plus-2025-07-28
+    canonical_model: qwen/qwen-plus-2025-07-28
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-plus-2025-09-11.yaml
+    author: qwen
+    slug: qwen-plus-2025-09-11
+    canonical_model: qwen/qwen-plus-2025-09-11
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-plus-2025-12-01-us.yaml
+    author: qwen
+    slug: qwen-plus-2025-12-01-us
+    canonical_model: qwen/qwen-plus-2025-12-01
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: region is an offering deployment fact and not part of canonical model identity
+  - path: authors/qwen/models/qwen-plus-2025-12-01.yaml
+    author: qwen
+    slug: qwen-plus-2025-12-01
+    canonical_model: qwen/qwen-plus-2025-12-01
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-plus-us.yaml
+    author: qwen
+    slug: qwen-plus-us
+    canonical_model: qwen/qwen-plus
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: region is an offering deployment fact and not part of canonical model identity
+  - path: authors/qwen/models/qwen-plus.yaml
+    author: qwen
+    slug: qwen-plus
+    canonical_model: qwen/qwen-plus
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-qwq-32b.yaml
+    author: qwen
+    slug: qwen-qwq-32b
+    canonical_model: qwen/qwen-qwq-32b
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/qwen/models/qwen-vl-ocr-2025-11-20.yaml
+    author: qwen
+    slug: qwen-vl-ocr-2025-11-20
+    canonical_model: qwen/qwen-vl-ocr-2025-11-20
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/qwen/models/qwen-vl-ocr.yaml
+    author: qwen
+    slug: qwen-vl-ocr
+    canonical_model: qwen/qwen-vl-ocr
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-3-5-haiku-20241022.yaml
+    author: anthropic
+    slug: claude-3-5-haiku-20241022
+    canonical_model: anthropic/claude-3-5-haiku-20241022
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-5-haiku-latest.yaml
+    author: anthropic
+    slug: claude-3-5-haiku-latest
+    canonical_model: anthropic/claude-3-5-haiku-latest
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-5-sonnet-20240620.yaml
+    author: anthropic
+    slug: claude-3-5-sonnet-20240620
+    canonical_model: anthropic/claude-3-5-sonnet-20240620
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-5-sonnet-20241022.yaml
+    author: anthropic
+    slug: claude-3-5-sonnet-20241022
+    canonical_model: anthropic/claude-3-5-sonnet-20241022
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-7-sonnet-20250219.yaml
+    author: anthropic
+    slug: claude-3-7-sonnet-20250219
+    canonical_model: anthropic/claude-3-7-sonnet-20250219
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-7-sonnet-latest.yaml
+    author: anthropic
+    slug: claude-3-7-sonnet-latest
+    canonical_model: anthropic/claude-3-7-sonnet-latest
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-haiku-20240307.yaml
+    author: anthropic
+    slug: claude-3-haiku-20240307
+    canonical_model: anthropic/claude-3-haiku-20240307
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-opus-20240229.yaml
+    author: anthropic
+    slug: claude-3-opus-20240229
+    canonical_model: anthropic/claude-3-opus-20240229
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-3-sonnet-20240229.yaml
+    author: anthropic
+    slug: claude-3-sonnet-20240229
+    canonical_model: anthropic/claude-3-sonnet-20240229
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-fable-5.yaml
+    author: anthropic
+    slug: claude-fable-5
+    canonical_model: anthropic/claude-fable-5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-haiku-4-5-20251001.yaml
+    author: anthropic
+    slug: claude-haiku-4-5-20251001
+    canonical_model: anthropic/claude-haiku-4-5-20251001
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-haiku-4-5.yaml
+    author: anthropic
+    slug: claude-haiku-4-5
+    canonical_model: anthropic/claude-haiku-4-5
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-opus-4-0.yaml
+    author: anthropic
+    slug: claude-opus-4-0
+    canonical_model: anthropic/claude-opus-4-0
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-opus-4-1-20250805.yaml
+    author: anthropic
+    slug: claude-opus-4-1-20250805
+    canonical_model: anthropic/claude-opus-4-1-20250805
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-opus-4-1.yaml
+    author: anthropic
+    slug: claude-opus-4-1
+    canonical_model: anthropic/claude-opus-4-1
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-opus-4-20250514.yaml
+    author: anthropic
+    slug: claude-opus-4-20250514
+    canonical_model: anthropic/claude-opus-4-20250514
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-opus-4-5-20251101.yaml
+    author: anthropic
+    slug: claude-opus-4-5-20251101
+    canonical_model: anthropic/claude-opus-4-5-20251101
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-opus-4-6.yaml
+    author: anthropic
+    slug: claude-opus-4-6
+    canonical_model: anthropic/claude-opus-4-6
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-opus-4-7.yaml
+    author: anthropic
+    slug: claude-opus-4-7
+    canonical_model: anthropic/claude-opus-4-7
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-opus-4-8.yaml
+    author: anthropic
+    slug: claude-opus-4-8
+    canonical_model: anthropic/claude-opus-4-8
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-sonnet-4-0.yaml
+    author: anthropic
+    slug: claude-sonnet-4-0
+    canonical_model: anthropic/claude-sonnet-4-0
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-sonnet-4-20250514.yaml
+    author: anthropic
+    slug: claude-sonnet-4-20250514
+    canonical_model: anthropic/claude-sonnet-4-20250514
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-sonnet-4-5-20250929.yaml
+    author: anthropic
+    slug: claude-sonnet-4-5-20250929
+    canonical_model: anthropic/claude-sonnet-4-5-20250929
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-sonnet-4-5.yaml
+    author: anthropic
+    slug: claude-sonnet-4-5
+    canonical_model: anthropic/claude-sonnet-4-5
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/anthropic/models/claude-sonnet-4-6.yaml
+    author: anthropic
+    slug: claude-sonnet-4-6
+    canonical_model: anthropic/claude-sonnet-4-6
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/anthropic/models/claude-sonnet-5.yaml
+    author: anthropic
+    slug: claude-sonnet-5
+    canonical_model: anthropic/claude-sonnet-5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/deepseek/models/deepseek-chat.yaml
+    author: deepseek
+    slug: deepseek-chat
+    canonical_model: deepseek/deepseek-chat
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/deepseek/models/deepseek-r1-distill-qwen-32b.yaml
+    author: deepseek
+    slug: deepseek-r1-distill-qwen-32b
+    canonical_model: deepseek/deepseek-r1-distill-qwen-32b
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex @001 deployment ID links through explicit ModelRef
+  - path: authors/deepseek/models/deepseek-reasoner.yaml
+    author: deepseek
+    slug: deepseek-reasoner
+    canonical_model: deepseek/deepseek-reasoner
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/deepseek/models/deepseek-v4-flash.yaml
+    author: deepseek
+    slug: deepseek-v4-flash
+    canonical_model: deepseek/deepseek-v4-flash
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/deepseek/models/deepseek-v4-pro.yaml
+    author: deepseek
+    slug: deepseek-v4-pro
+    canonical_model: deepseek/deepseek-v4-pro
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/chat-bison.yaml
+    author: google
+    slug: chat-bison
+    canonical_model: google/chat-bison
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/chat-bison@002.yaml
+    author: google
+    slug: chat-bison@002
+    canonical_model: google/chat-bison
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/code-bison.yaml
+    author: google
+    slug: code-bison
+    canonical_model: google/code-bison
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/code-bison@002.yaml
+    author: google
+    slug: code-bison@002
+    canonical_model: google/code-bison
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/codechat-bison.yaml
+    author: google
+    slug: codechat-bison
+    canonical_model: google/codechat-bison
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/codechat-bison@002.yaml
+    author: google
+    slug: codechat-bison@002
+    canonical_model: google/codechat-bison
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/codegemma.yaml
+    author: google
+    slug: codegemma
+    canonical_model: google/codegemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/codegemma@codegemma-7b-it.yaml
+    author: google
+    slug: codegemma@codegemma-7b-it
+    canonical_model: google/codegemma-7b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/diffusiongemma.yaml
+    author: google
+    slug: diffusiongemma
+    canonical_model: google/diffusiongemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/embeddinggemma.yaml
+    author: google
+    slug: embeddinggemma
+    canonical_model: google/embeddinggemma-300m
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: Vertex deployment alias merges into the canonical EmbeddingGemma 300M identity
+  - path: authors/google/models/embeddinggemma@embeddinggemma-300m.yaml
+    author: google
+    slug: embeddinggemma@embeddinggemma-300m
+    canonical_model: google/embeddinggemma-300m
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/functiongemma.yaml
+    author: google
+    slug: functiongemma
+    canonical_model: google/functiongemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-1.5-flash-002.yaml
+    author: google
+    slug: gemini-1.5-flash-002
+    canonical_model: google/gemini-1.5-flash-002
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-1.5-flash-002@default.yaml
+    author: google
+    slug: gemini-1.5-flash-002@default
+    canonical_model: google/gemini-1.5-flash-002
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-1.5-pro-002.yaml
+    author: google
+    slug: gemini-1.5-pro-002
+    canonical_model: google/gemini-1.5-pro-002
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-1.5-pro-002@default.yaml
+    author: google
+    slug: gemini-1.5-pro-002@default
+    canonical_model: google/gemini-1.5-pro-002
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.0-flash-001.yaml
+    author: google
+    slug: gemini-2.0-flash-001
+    canonical_model: google/gemini-2.0-flash-001
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.0-flash-001@default.yaml
+    author: google
+    slug: gemini-2.0-flash-001@default
+    canonical_model: google/gemini-2.0-flash-001
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.0-flash-lite-001.yaml
+    author: google
+    slug: gemini-2.0-flash-lite-001
+    canonical_model: google/gemini-2.0-flash-lite-001
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.0-flash-lite-001@default.yaml
+    author: google
+    slug: gemini-2.0-flash-lite-001@default
+    canonical_model: google/gemini-2.0-flash-lite-001
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.0-flash-lite.yaml
+    author: google
+    slug: gemini-2.0-flash-lite
+    canonical_model: google/gemini-2.0-flash-lite
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.0-flash.yaml
+    author: google
+    slug: gemini-2.0-flash
+    canonical_model: google/gemini-2.0-flash
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-computer-use-preview-10-2025.yaml
+    author: google
+    slug: gemini-2.5-computer-use-preview-10-2025
+    canonical_model: google/gemini-2.5-computer-use-preview-10-2025
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-flash-image-preview.yaml
+    author: google
+    slug: gemini-2.5-flash-image-preview
+    canonical_model: google/gemini-2.5-flash-image-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-image-preview@default.yaml
+    author: google
+    slug: gemini-2.5-flash-image-preview@default
+    canonical_model: google/gemini-2.5-flash-image-preview
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.5-flash-image.yaml
+    author: google
+    slug: gemini-2.5-flash-image
+    canonical_model: google/gemini-2.5-flash-image
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-flash-lite-preview-06-17.yaml
+    author: google
+    slug: gemini-2.5-flash-lite-preview-06-17
+    canonical_model: google/gemini-2.5-flash-lite-preview-06-17
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-lite-preview-09-2025.yaml
+    author: google
+    slug: gemini-2.5-flash-lite-preview-09-2025
+    canonical_model: google/gemini-2.5-flash-lite-preview-09-2025
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-lite.yaml
+    author: google
+    slug: gemini-2.5-flash-lite
+    canonical_model: google/gemini-2.5-flash-lite
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-flash-lite@default.yaml
+    author: google
+    slug: gemini-2.5-flash-lite@default
+    canonical_model: google/gemini-2.5-flash-lite
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.5-flash-preview-04-17.yaml
+    author: google
+    slug: gemini-2.5-flash-preview-04-17
+    canonical_model: google/gemini-2.5-flash-preview-04-17
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-preview-05-20.yaml
+    author: google
+    slug: gemini-2.5-flash-preview-05-20
+    canonical_model: google/gemini-2.5-flash-preview-05-20
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-preview-09-2025.yaml
+    author: google
+    slug: gemini-2.5-flash-preview-09-2025
+    canonical_model: google/gemini-2.5-flash-preview-09-2025
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-flash-tts.yaml
+    author: google
+    slug: gemini-2.5-flash-tts
+    canonical_model: google/gemini-2.5-flash-tts
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-flash.yaml
+    author: google
+    slug: gemini-2.5-flash
+    canonical_model: google/gemini-2.5-flash
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-flash@default.yaml
+    author: google
+    slug: gemini-2.5-flash@default
+    canonical_model: google/gemini-2.5-flash
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-2.5-pro-preview-05-06.yaml
+    author: google
+    slug: gemini-2.5-pro-preview-05-06
+    canonical_model: google/gemini-2.5-pro-preview-05-06
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-pro-preview-06-05.yaml
+    author: google
+    slug: gemini-2.5-pro-preview-06-05
+    canonical_model: google/gemini-2.5-pro-preview-06-05
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-2.5-pro-tts.yaml
+    author: google
+    slug: gemini-2.5-pro-tts
+    canonical_model: google/gemini-2.5-pro-tts
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-pro.yaml
+    author: google
+    slug: gemini-2.5-pro
+    canonical_model: google/gemini-2.5-pro
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-2.5-pro@default.yaml
+    author: google
+    slug: gemini-2.5-pro@default
+    canonical_model: google/gemini-2.5-pro
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-3-flash-preview.yaml
+    author: google
+    slug: gemini-3-flash-preview
+    canonical_model: google/gemini-3-flash-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3-pro-image-preview.yaml
+    author: google
+    slug: gemini-3-pro-image-preview
+    canonical_model: google/gemini-3-pro-image-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3-pro-image.yaml
+    author: google
+    slug: gemini-3-pro-image
+    canonical_model: google/gemini-3-pro-image
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3-pro-preview.yaml
+    author: google
+    slug: gemini-3-pro-preview
+    canonical_model: google/gemini-3-pro-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-image-preview.yaml
+    author: google
+    slug: gemini-3.1-flash-image-preview
+    canonical_model: google/gemini-3.1-flash-image-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-image.yaml
+    author: google
+    slug: gemini-3.1-flash-image
+    canonical_model: google/gemini-3.1-flash-image
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-lite-image.yaml
+    author: google
+    slug: gemini-3.1-flash-lite-image
+    canonical_model: google/gemini-3.1-flash-lite-image
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-lite-preview.yaml
+    author: google
+    slug: gemini-3.1-flash-lite-preview
+    canonical_model: google/gemini-3.1-flash-lite-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-lite.yaml
+    author: google
+    slug: gemini-3.1-flash-lite
+    canonical_model: google/gemini-3.1-flash-lite
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-flash-tts-preview.yaml
+    author: google
+    slug: gemini-3.1-flash-tts-preview
+    canonical_model: google/gemini-3.1-flash-tts-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.1-pro-preview.yaml
+    author: google
+    slug: gemini-3.1-pro-preview
+    canonical_model: google/gemini-3.1-pro-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-3.5-flash.yaml
+    author: google
+    slug: gemini-3.5-flash
+    canonical_model: google/gemini-3.5-flash
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-embedding-001.yaml
+    author: google
+    slug: gemini-embedding-001
+    canonical_model: google/gemini-embedding-001
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-embedding-001@default.yaml
+    author: google
+    slug: gemini-embedding-001@default
+    canonical_model: google/gemini-embedding-001
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-embedding-2.yaml
+    author: google
+    slug: gemini-embedding-2
+    canonical_model: google/gemini-embedding-2
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-flash-latest.yaml
+    author: google
+    slug: gemini-flash-latest
+    canonical_model: google/gemini-flash-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-flash-lite-latest.yaml
+    author: google
+    slug: gemini-flash-lite-latest
+    canonical_model: google/gemini-flash-lite-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-live-2.5-flash-native-audio.yaml
+    author: google
+    slug: gemini-live-2.5-flash-native-audio
+    canonical_model: google/gemini-live-2.5-flash-native-audio
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-omni-flash-preview.yaml
+    author: google
+    slug: gemini-omni-flash-preview
+    canonical_model: google/gemini-omni-flash-preview
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemini-pro-vision.yaml
+    author: google
+    slug: gemini-pro-vision
+    canonical_model: google/gemini-pro-vision
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-pro-vision@default.yaml
+    author: google
+    slug: gemini-pro-vision@default
+    canonical_model: google/gemini-pro-vision
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-pro.yaml
+    author: google
+    slug: gemini-pro
+    canonical_model: google/gemini-pro
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-pro@default.yaml
+    author: google
+    slug: gemini-pro@default
+    canonical_model: google/gemini-pro
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-ultra-vision.yaml
+    author: google
+    slug: gemini-ultra-vision
+    canonical_model: google/gemini-ultra-vision
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-ultra-vision@default.yaml
+    author: google
+    slug: gemini-ultra-vision@default
+    canonical_model: google/gemini-ultra-vision
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemini-ultra.yaml
+    author: google
+    slug: gemini-ultra
+    canonical_model: google/gemini-ultra
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/gemini-ultra@default.yaml
+    author: google
+    slug: gemini-ultra@default
+    canonical_model: google/gemini-ultra
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemma-4-26b-a4b-it-maas.yaml
+    author: google
+    slug: gemma-4-26b-a4b-it-maas
+    canonical_model: google/gemma-4-26b-a4b-it
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: Vertex MaaS deployment identity merges into the provider-independent Gemma model
+  - path: authors/google/models/gemma.yaml
+    author: google
+    slug: gemma
+    canonical_model: google/gemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemma2.yaml
+    author: google
+    slug: gemma2
+    canonical_model: google/gemma2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemma2@gemma-2-2b-it.yaml
+    author: google
+    slug: gemma2@gemma-2-2b-it
+    canonical_model: google/gemma-2-2b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemma3.yaml
+    author: google
+    slug: gemma3
+    canonical_model: google/gemma3
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemma3@gemma-3-1b-it.yaml
+    author: google
+    slug: gemma3@gemma-3-1b-it
+    canonical_model: google/gemma-3-1b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemma3n.yaml
+    author: google
+    slug: gemma3n
+    canonical_model: google/gemma3n
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemma3n@gemma-3n-e4b-it.yaml
+    author: google
+    slug: gemma3n@gemma-3n-e4b-it
+    canonical_model: google/gemma-3n-e4b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/gemma4.yaml
+    author: google
+    slug: gemma4
+    canonical_model: google/gemma4
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/gemma@gemma-2b.yaml
+    author: google
+    slug: gemma@gemma-2b
+    canonical_model: google/gemma-2b
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/medgemma.yaml
+    author: google
+    slug: medgemma
+    canonical_model: google/medgemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/medgemma@medgemma-4b-it.yaml
+    author: google
+    slug: medgemma@medgemma-4b-it
+    canonical_model: google/medgemma-4b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/paligemma.yaml
+    author: google
+    slug: paligemma
+    canonical_model: google/paligemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/paligemma@paligemma2-3b-pt-224.yaml
+    author: google
+    slug: paligemma@paligemma2-3b-pt-224
+    canonical_model: google/paligemma2-3b-pt-224
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/shieldgemma2.yaml
+    author: google
+    slug: shieldgemma2
+    canonical_model: google/shieldgemma2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/shieldgemma2@shieldgemma-2-4b-it.yaml
+    author: google
+    slug: shieldgemma2@shieldgemma-2-4b-it
+    canonical_model: google/shieldgemma-2-4b-it
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/t5gemma.yaml
+    author: google
+    slug: t5gemma
+    canonical_model: google/t5gemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/t5gemma@t5gemma.yaml
+    author: google
+    slug: t5gemma@t5gemma
+    canonical_model: google/t5gemma
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/text-bison.yaml
+    author: google
+    slug: text-bison
+    canonical_model: google/text-bison
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/google/models/text-bison@002.yaml
+    author: google
+    slug: text-bison@002
+    canonical_model: google/text-bison
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/google/models/translategemma.yaml
+    author: google
+    slug: translategemma
+    canonical_model: google/translategemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/txgemma.yaml
+    author: google
+    slug: txgemma
+    canonical_model: google/txgemma
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/google/models/txgemma@txgemma-27b-predict.yaml
+    author: google
+    slug: txgemma@txgemma-27b-predict
+    canonical_model: google/txgemma-27b-predict
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/groq/models/compound-beta-mini.yaml
+    author: groq
+    slug: compound-beta-mini
+    canonical_model: groq/compound-beta-mini
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/groq/models/compound-beta.yaml
+    author: groq
+    slug: compound-beta
+    canonical_model: groq/compound-beta
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/meta/models/codellama-7b-hf@codellama-7b-hf.yaml
+    author: meta
+    slug: codellama-7b-hf@codellama-7b-hf
+    canonical_model: meta/codellama-7b-hf
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-2-quantized@llama-2-7b-chat-gptq.yaml
+    author: meta
+    slug: llama-2-quantized@llama-2-7b-chat-gptq
+    canonical_model: meta/llama-2-7b-chat-gptq
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-3-1-405b-instruct.yaml
+    author: meta
+    slug: llama-3-1-405b-instruct
+    canonical_model: meta/llama-3.1-405b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: dashed Vertex spelling merges into the canonical dotted Meta Llama identity
+  - path: authors/meta/models/llama-3-1-70b-instruct.yaml
+    author: meta
+    slug: llama-3-1-70b-instruct
+    canonical_model: meta/llama-3-1-70b-instruct
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: canonical authored identity; the current Vertex -maas deployment ID links through explicit ModelRef
+  - path: authors/meta/models/llama-3-2-90b-vision-instruct.yaml
+    author: meta
+    slug: llama-3-2-90b-vision-instruct
+    canonical_model: meta/llama-3.2-90b-vision-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: dashed Vertex spelling merges into the canonical dotted Meta Llama identity
+  - path: authors/meta/models/llama-3.1-405b-instruct-maas@001.yaml
+    author: meta
+    slug: llama-3.1-405b-instruct-maas@001
+    canonical_model: meta/llama-3.1-405b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-3.1-8b-instant.yaml
+    author: meta
+    slug: llama-3.1-8b-instant
+    canonical_model: meta/llama-3.1-8b-instruct
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: Groq instant is a serving label for canonical Meta Llama 3.1 8B Instruct
+  - path: authors/meta/models/llama-3.2-90b-vision-instruct-maas@001.yaml
+    author: meta
+    slug: llama-3.2-90b-vision-instruct-maas@001
+    canonical_model: meta/llama-3.2-90b-vision-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-3.3-70b-instruct-maas@001.yaml
+    author: meta
+    slug: llama-3.3-70b-instruct-maas@001
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-3.3-70b-versatile.yaml
+    author: meta
+    slug: llama-3.3-70b-versatile
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: Groq versatile is a serving label for canonical Meta Llama 3.3 70B Instruct
+  - path: authors/meta/models/llama-3.3-70b.yaml
+    author: meta
+    slug: llama-3.3-70b
+    canonical_model: meta/llama-3.3-70b
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/meta/models/llama-4-maverick-17b-128e-instruct-maas@001.yaml
+    author: meta
+    slug: llama-4-maverick-17b-128e-instruct-maas@001
+    canonical_model: meta/llama-4-maverick-17b-128e-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama-4-maverick-17b-128e-instruct.yaml
+    author: meta
+    slug: llama-4-maverick-17b-128e-instruct
+    canonical_model: meta/llama-4-maverick-17b-128e-instruct
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/meta/models/llama-4-scout-17b-16e-instruct.yaml
+    author: meta
+    slug: llama-4-scout-17b-16e-instruct
+    canonical_model: meta/llama-4-scout-17b-16e-instruct
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/meta/models/llama-guard-3-8b.yaml
+    author: meta
+    slug: llama-guard-3-8b
+    canonical_model: meta/llama-guard-3-8b
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/meta/models/llama-guard@llama-guard-4-12b.yaml
+    author: meta
+    slug: llama-guard@llama-guard-4-12b
+    canonical_model: meta/llama-guard-4-12b
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama2@llama-2-7b.yaml
+    author: meta
+    slug: llama2@llama-2-7b
+    canonical_model: meta/llama-2-7b
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama3-2@llama-3.2-90b-vision.yaml
+    author: meta
+    slug: llama3-2@llama-3.2-90b-vision
+    canonical_model: meta/llama-3.2-90b-vision
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama3-3@llama-3.3-70b-instruct.yaml
+    author: meta
+    slug: llama3-3@llama-3.3-70b-instruct
+    canonical_model: meta/llama-3.3-70b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama3@meta-llama-3-8b.yaml
+    author: meta
+    slug: llama3@meta-llama-3-8b
+    canonical_model: meta/meta-llama-3-8b
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama3_1@llama-3.1-8b-instruct.yaml
+    author: meta
+    slug: llama3_1@llama-3.1-8b-instruct
+    canonical_model: meta/llama-3.1-8b-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/llama4@llama-4-maverick-17b-128e-instruct.yaml
+    author: meta
+    slug: llama4@llama-4-maverick-17b-128e-instruct
+    canonical_model: meta/llama-4-maverick-17b-128e-instruct
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/meta/models/prompt-guard@llama-prompt-guard-2-22m.yaml
+    author: meta
+    slug: prompt-guard@llama-prompt-guard-2-22m
+    canonical_model: meta/llama-prompt-guard-2-22m
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/mistral/models/codestral-2501-self-deploy@001.yaml
+    author: mistral
+    slug: codestral-2501-self-deploy@001
+    canonical_model: mistral/codestral-2501
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/mistral/models/codestral-2501@001.yaml
+    author: mistral
+    slug: codestral-2501@001
+    canonical_model: mistral/codestral-2501
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/mistral/models/mistral-large-2411@001.yaml
+    author: mistral
+    slug: mistral-large-2411@001
+    canonical_model: mistral/mistral-large-2411
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/mistral/models/mistral-ocr-2505@001.yaml
+    author: mistral
+    slug: mistral-ocr-2505@001
+    canonical_model: mistral/mistral-ocr-2505
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/mistral/models/mistral-saba-24b.yaml
+    author: mistral
+    slug: mistral-saba-24b
+    canonical_model: mistral/mistral-saba-24b
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/mistral/models/mistral-small-2503@001.yaml
+    author: mistral
+    slug: mistral-small-2503@001
+    canonical_model: mistral/mistral-small-2503
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider deployment or model-garden resource identity merges into the provider-independent canonical model
+  - path: authors/moonshot-ai/models/kimi-k2-0711-preview.yaml
+    author: moonshot-ai
+    slug: kimi-k2-0711-preview
+    canonical_model: moonshot-ai/kimi-k2-0711-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/moonshot-ai/models/kimi-k2-0905-preview.yaml
+    author: moonshot-ai
+    slug: kimi-k2-0905-preview
+    canonical_model: moonshot-ai/kimi-k2-0905-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/moonshot-ai/models/kimi-k2-turbo-preview.yaml
+    author: moonshot-ai
+    slug: kimi-k2-turbo-preview
+    canonical_model: moonshot-ai/kimi-k2-turbo-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/moonshot-ai/models/kimi-k2.5.yaml
+    author: moonshot-ai
+    slug: kimi-k2.5
+    canonical_model: moonshot-ai/kimi-k2.5
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/moonshot-ai/models/kimi-k2.6.yaml
+    author: moonshot-ai
+    slug: kimi-k2.6
+    canonical_model: moonshot-ai/kimi-k2.6
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/moonshot-ai/models/kimi-k2.7-code-highspeed.yaml
+    author: moonshot-ai
+    slug: kimi-k2.7-code-highspeed
+    canonical_model: moonshot-ai/kimi-k2.7-code
+    disposition: merge
+    provider_id_match_count: 1
+    evidence: highspeed is a serving tier and merges into the canonical Kimi K2.7 Code identity
+  - path: authors/moonshot-ai/models/kimi-k2.7-code.yaml
+    author: moonshot-ai
+    slug: kimi-k2.7-code
+    canonical_model: moonshot-ai/kimi-k2.7-code
+    disposition: keep
+    provider_id_match_count: 2
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/moonshot-ai/models/kimi-latest.yaml
+    author: moonshot-ai
+    slug: kimi-latest
+    canonical_model: moonshot-ai/kimi-latest
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/moonshot-ai/models/kimi-thinking-preview.yaml
+    author: moonshot-ai
+    slug: kimi-thinking-preview
+    canonical_model: moonshot-ai/kimi-thinking-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/babbage-002.yaml
+    author: openai
+    slug: babbage-002
+    canonical_model: openai/babbage-002
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/chat-latest.yaml
+    author: openai
+    slug: chat-latest
+    canonical_model: openai/chat-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/chatgpt-image-latest.yaml
+    author: openai
+    slug: chatgpt-image-latest
+    canonical_model: openai/chatgpt-image-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/codex-mini-latest.yaml
+    author: openai
+    slug: codex-mini-latest
+    canonical_model: openai/codex-mini-latest
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/dall-e-2.yaml
+    author: openai
+    slug: dall-e-2
+    canonical_model: openai/dall-e-2
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/dall-e-3.yaml
+    author: openai
+    slug: dall-e-3
+    canonical_model: openai/dall-e-3
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/davinci-002.yaml
+    author: openai
+    slug: davinci-002
+    canonical_model: openai/davinci-002
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo-0125.yaml
+    author: openai
+    slug: gpt-3.5-turbo-0125
+    canonical_model: openai/gpt-3.5-turbo-0125
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo-1106.yaml
+    author: openai
+    slug: gpt-3.5-turbo-1106
+    canonical_model: openai/gpt-3.5-turbo-1106
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo-16k.yaml
+    author: openai
+    slug: gpt-3.5-turbo-16k
+    canonical_model: openai/gpt-3.5-turbo-16k
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo-instruct-0914.yaml
+    author: openai
+    slug: gpt-3.5-turbo-instruct-0914
+    canonical_model: openai/gpt-3.5-turbo-instruct-0914
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo-instruct.yaml
+    author: openai
+    slug: gpt-3.5-turbo-instruct
+    canonical_model: openai/gpt-3.5-turbo-instruct
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-3.5-turbo.yaml
+    author: openai
+    slug: gpt-3.5-turbo
+    canonical_model: openai/gpt-3.5-turbo
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4-turbo.yaml
+    author: openai
+    slug: gpt-4-turbo
+    canonical_model: openai/gpt-4-turbo
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4.1-2025-04-14.yaml
+    author: openai
+    slug: gpt-4.1-2025-04-14
+    canonical_model: openai/gpt-4.1-2025-04-14
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.1-mini-2025-04-14.yaml
+    author: openai
+    slug: gpt-4.1-mini-2025-04-14
+    canonical_model: openai/gpt-4.1-mini-2025-04-14
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.1-mini.yaml
+    author: openai
+    slug: gpt-4.1-mini
+    canonical_model: openai/gpt-4.1-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.1-nano-2025-04-14.yaml
+    author: openai
+    slug: gpt-4.1-nano-2025-04-14
+    canonical_model: openai/gpt-4.1-nano-2025-04-14
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.1-nano.yaml
+    author: openai
+    slug: gpt-4.1-nano
+    canonical_model: openai/gpt-4.1-nano
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.1.yaml
+    author: openai
+    slug: gpt-4.1
+    canonical_model: openai/gpt-4.1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4.yaml
+    author: openai
+    slug: gpt-4
+    canonical_model: openai/gpt-4
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-2024-05-13.yaml
+    author: openai
+    slug: gpt-4o-2024-05-13
+    canonical_model: openai/gpt-4o-2024-05-13
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-2024-08-06.yaml
+    author: openai
+    slug: gpt-4o-2024-08-06
+    canonical_model: openai/gpt-4o-2024-08-06
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-2024-11-20.yaml
+    author: openai
+    slug: gpt-4o-2024-11-20
+    canonical_model: openai/gpt-4o-2024-11-20
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-audio-preview-2024-10-01.yaml
+    author: openai
+    slug: gpt-4o-audio-preview-2024-10-01
+    canonical_model: openai/gpt-4o-audio-preview-2024-10-01
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-audio-preview-2024-12-17.yaml
+    author: openai
+    slug: gpt-4o-audio-preview-2024-12-17
+    canonical_model: openai/gpt-4o-audio-preview-2024-12-17
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-audio-preview-2025-06-03.yaml
+    author: openai
+    slug: gpt-4o-audio-preview-2025-06-03
+    canonical_model: openai/gpt-4o-audio-preview-2025-06-03
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-audio-preview.yaml
+    author: openai
+    slug: gpt-4o-audio-preview
+    canonical_model: openai/gpt-4o-audio-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-mini-2024-07-18.yaml
+    author: openai
+    slug: gpt-4o-mini-2024-07-18
+    canonical_model: openai/gpt-4o-mini-2024-07-18
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-audio-preview-2024-12-17.yaml
+    author: openai
+    slug: gpt-4o-mini-audio-preview-2024-12-17
+    canonical_model: openai/gpt-4o-mini-audio-preview-2024-12-17
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-mini-audio-preview.yaml
+    author: openai
+    slug: gpt-4o-mini-audio-preview
+    canonical_model: openai/gpt-4o-mini-audio-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/gpt-4o-mini-search-preview-2025-03-11.yaml
+    author: openai
+    slug: gpt-4o-mini-search-preview-2025-03-11
+    canonical_model: openai/gpt-4o-mini-search-preview-2025-03-11
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-search-preview.yaml
+    author: openai
+    slug: gpt-4o-mini-search-preview
+    canonical_model: openai/gpt-4o-mini-search-preview
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-transcribe-2025-03-20.yaml
+    author: openai
+    slug: gpt-4o-mini-transcribe-2025-03-20
+    canonical_model: openai/gpt-4o-mini-transcribe-2025-03-20
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-transcribe-2025-12-15.yaml
+    author: openai
+    slug: gpt-4o-mini-transcribe-2025-12-15
+    canonical_model: openai/gpt-4o-mini-transcribe-2025-12-15
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-transcribe.yaml
+    author: openai
+    slug: gpt-4o-mini-transcribe
+    canonical_model: openai/gpt-4o-mini-transcribe
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-tts-2025-03-20.yaml
+    author: openai
+    slug: gpt-4o-mini-tts-2025-03-20
+    canonical_model: openai/gpt-4o-mini-tts-2025-03-20
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-tts-2025-12-15.yaml
+    author: openai
+    slug: gpt-4o-mini-tts-2025-12-15
+    canonical_model: openai/gpt-4o-mini-tts-2025-12-15
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini-tts.yaml
+    author: openai
+    slug: gpt-4o-mini-tts
+    canonical_model: openai/gpt-4o-mini-tts
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-mini.yaml
+    author: openai
+    slug: gpt-4o-mini
+    canonical_model: openai/gpt-4o-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-search-preview-2025-03-11.yaml
+    author: openai
+    slug: gpt-4o-search-preview-2025-03-11
+    canonical_model: openai/gpt-4o-search-preview-2025-03-11
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-search-preview.yaml
+    author: openai
+    slug: gpt-4o-search-preview
+    canonical_model: openai/gpt-4o-search-preview
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-transcribe-diarize.yaml
+    author: openai
+    slug: gpt-4o-transcribe-diarize
+    canonical_model: openai/gpt-4o-transcribe-diarize
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o-transcribe.yaml
+    author: openai
+    slug: gpt-4o-transcribe
+    canonical_model: openai/gpt-4o-transcribe
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-4o.yaml
+    author: openai
+    slug: gpt-4o
+    canonical_model: openai/gpt-4o
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-2025-08-07.yaml
+    author: openai
+    slug: gpt-5-2025-08-07
+    canonical_model: openai/gpt-5-2025-08-07
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-chat-latest.yaml
+    author: openai
+    slug: gpt-5-chat-latest
+    canonical_model: openai/gpt-5-chat-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-codex.yaml
+    author: openai
+    slug: gpt-5-codex
+    canonical_model: openai/gpt-5-codex
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-mini-2025-08-07.yaml
+    author: openai
+    slug: gpt-5-mini-2025-08-07
+    canonical_model: openai/gpt-5-mini-2025-08-07
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-mini.yaml
+    author: openai
+    slug: gpt-5-mini
+    canonical_model: openai/gpt-5-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-nano-2025-08-07.yaml
+    author: openai
+    slug: gpt-5-nano-2025-08-07
+    canonical_model: openai/gpt-5-nano-2025-08-07
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-nano.yaml
+    author: openai
+    slug: gpt-5-nano
+    canonical_model: openai/gpt-5-nano
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-pro-2025-10-06.yaml
+    author: openai
+    slug: gpt-5-pro-2025-10-06
+    canonical_model: openai/gpt-5-pro-2025-10-06
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-pro.yaml
+    author: openai
+    slug: gpt-5-pro
+    canonical_model: openai/gpt-5-pro
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-search-api-2025-10-14.yaml
+    author: openai
+    slug: gpt-5-search-api-2025-10-14
+    canonical_model: openai/gpt-5-search-api-2025-10-14
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5-search-api.yaml
+    author: openai
+    slug: gpt-5-search-api
+    canonical_model: openai/gpt-5-search-api
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1-2025-11-13.yaml
+    author: openai
+    slug: gpt-5.1-2025-11-13
+    canonical_model: openai/gpt-5.1-2025-11-13
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1-chat-latest.yaml
+    author: openai
+    slug: gpt-5.1-chat-latest
+    canonical_model: openai/gpt-5.1-chat-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1-codex-max.yaml
+    author: openai
+    slug: gpt-5.1-codex-max
+    canonical_model: openai/gpt-5.1-codex-max
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1-codex-mini.yaml
+    author: openai
+    slug: gpt-5.1-codex-mini
+    canonical_model: openai/gpt-5.1-codex-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1-codex.yaml
+    author: openai
+    slug: gpt-5.1-codex
+    canonical_model: openai/gpt-5.1-codex
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.1.yaml
+    author: openai
+    slug: gpt-5.1
+    canonical_model: openai/gpt-5.1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2-2025-12-11.yaml
+    author: openai
+    slug: gpt-5.2-2025-12-11
+    canonical_model: openai/gpt-5.2-2025-12-11
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2-chat-latest.yaml
+    author: openai
+    slug: gpt-5.2-chat-latest
+    canonical_model: openai/gpt-5.2-chat-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2-codex.yaml
+    author: openai
+    slug: gpt-5.2-codex
+    canonical_model: openai/gpt-5.2-codex
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2-pro-2025-12-11.yaml
+    author: openai
+    slug: gpt-5.2-pro-2025-12-11
+    canonical_model: openai/gpt-5.2-pro-2025-12-11
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2-pro.yaml
+    author: openai
+    slug: gpt-5.2-pro
+    canonical_model: openai/gpt-5.2-pro
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.2.yaml
+    author: openai
+    slug: gpt-5.2
+    canonical_model: openai/gpt-5.2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.3-chat-latest.yaml
+    author: openai
+    slug: gpt-5.3-chat-latest
+    canonical_model: openai/gpt-5.3-chat-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.3-codex.yaml
+    author: openai
+    slug: gpt-5.3-codex
+    canonical_model: openai/gpt-5.3-codex
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-2026-03-05.yaml
+    author: openai
+    slug: gpt-5.4-2026-03-05
+    canonical_model: openai/gpt-5.4-2026-03-05
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-mini-2026-03-17.yaml
+    author: openai
+    slug: gpt-5.4-mini-2026-03-17
+    canonical_model: openai/gpt-5.4-mini-2026-03-17
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-mini.yaml
+    author: openai
+    slug: gpt-5.4-mini
+    canonical_model: openai/gpt-5.4-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-nano-2026-03-17.yaml
+    author: openai
+    slug: gpt-5.4-nano-2026-03-17
+    canonical_model: openai/gpt-5.4-nano-2026-03-17
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-nano.yaml
+    author: openai
+    slug: gpt-5.4-nano
+    canonical_model: openai/gpt-5.4-nano
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-pro-2026-03-05.yaml
+    author: openai
+    slug: gpt-5.4-pro-2026-03-05
+    canonical_model: openai/gpt-5.4-pro-2026-03-05
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4-pro.yaml
+    author: openai
+    slug: gpt-5.4-pro
+    canonical_model: openai/gpt-5.4-pro
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.4.yaml
+    author: openai
+    slug: gpt-5.4
+    canonical_model: openai/gpt-5.4
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.5-2026-04-23.yaml
+    author: openai
+    slug: gpt-5.5-2026-04-23
+    canonical_model: openai/gpt-5.5-2026-04-23
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.5-pro-2026-04-23.yaml
+    author: openai
+    slug: gpt-5.5-pro-2026-04-23
+    canonical_model: openai/gpt-5.5-pro-2026-04-23
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.5-pro.yaml
+    author: openai
+    slug: gpt-5.5-pro
+    canonical_model: openai/gpt-5.5-pro
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.5.yaml
+    author: openai
+    slug: gpt-5.5
+    canonical_model: openai/gpt-5.5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.6-luna.yaml
+    author: openai
+    slug: gpt-5.6-luna
+    canonical_model: openai/gpt-5.6-luna
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.6-sol.yaml
+    author: openai
+    slug: gpt-5.6-sol
+    canonical_model: openai/gpt-5.6-sol
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.6-terra.yaml
+    author: openai
+    slug: gpt-5.6-terra
+    canonical_model: openai/gpt-5.6-terra
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-5.yaml
+    author: openai
+    slug: gpt-5
+    canonical_model: openai/gpt-5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio-1.5.yaml
+    author: openai
+    slug: gpt-audio-1.5
+    canonical_model: openai/gpt-audio-1.5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio-2025-08-28.yaml
+    author: openai
+    slug: gpt-audio-2025-08-28
+    canonical_model: openai/gpt-audio-2025-08-28
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio-mini-2025-10-06.yaml
+    author: openai
+    slug: gpt-audio-mini-2025-10-06
+    canonical_model: openai/gpt-audio-mini-2025-10-06
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio-mini-2025-12-15.yaml
+    author: openai
+    slug: gpt-audio-mini-2025-12-15
+    canonical_model: openai/gpt-audio-mini-2025-12-15
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio-mini.yaml
+    author: openai
+    slug: gpt-audio-mini
+    canonical_model: openai/gpt-audio-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-audio.yaml
+    author: openai
+    slug: gpt-audio
+    canonical_model: openai/gpt-audio
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-image-1-mini.yaml
+    author: openai
+    slug: gpt-image-1-mini
+    canonical_model: openai/gpt-image-1-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-image-1.5.yaml
+    author: openai
+    slug: gpt-image-1.5
+    canonical_model: openai/gpt-image-1.5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-image-1.yaml
+    author: openai
+    slug: gpt-image-1
+    canonical_model: openai/gpt-image-1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-image-2-2026-04-21.yaml
+    author: openai
+    slug: gpt-image-2-2026-04-21
+    canonical_model: openai/gpt-image-2-2026-04-21
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-image-2.yaml
+    author: openai
+    slug: gpt-image-2
+    canonical_model: openai/gpt-image-2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-1.5.yaml
+    author: openai
+    slug: gpt-realtime-1.5
+    canonical_model: openai/gpt-realtime-1.5
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-2.1-mini.yaml
+    author: openai
+    slug: gpt-realtime-2.1-mini
+    canonical_model: openai/gpt-realtime-2.1-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-2.1.yaml
+    author: openai
+    slug: gpt-realtime-2.1
+    canonical_model: openai/gpt-realtime-2.1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-2.yaml
+    author: openai
+    slug: gpt-realtime-2
+    canonical_model: openai/gpt-realtime-2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-2025-08-28.yaml
+    author: openai
+    slug: gpt-realtime-2025-08-28
+    canonical_model: openai/gpt-realtime-2025-08-28
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-mini-2025-10-06.yaml
+    author: openai
+    slug: gpt-realtime-mini-2025-10-06
+    canonical_model: openai/gpt-realtime-mini-2025-10-06
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-mini-2025-12-15.yaml
+    author: openai
+    slug: gpt-realtime-mini-2025-12-15
+    canonical_model: openai/gpt-realtime-mini-2025-12-15
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-mini.yaml
+    author: openai
+    slug: gpt-realtime-mini
+    canonical_model: openai/gpt-realtime-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-translate.yaml
+    author: openai
+    slug: gpt-realtime-translate
+    canonical_model: openai/gpt-realtime-translate
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime-whisper.yaml
+    author: openai
+    slug: gpt-realtime-whisper
+    canonical_model: openai/gpt-realtime-whisper
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/gpt-realtime.yaml
+    author: openai
+    slug: gpt-realtime
+    canonical_model: openai/gpt-realtime
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o1-2024-12-17.yaml
+    author: openai
+    slug: o1-2024-12-17
+    canonical_model: openai/o1-2024-12-17
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o1-mini-2024-09-12.yaml
+    author: openai
+    slug: o1-mini-2024-09-12
+    canonical_model: openai/o1-mini-2024-09-12
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o1-mini.yaml
+    author: openai
+    slug: o1-mini
+    canonical_model: openai/o1-mini
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o1-preview.yaml
+    author: openai
+    slug: o1-preview
+    canonical_model: openai/o1-preview
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o1-pro.yaml
+    author: openai
+    slug: o1-pro
+    canonical_model: openai/o1-pro
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o1.yaml
+    author: openai
+    slug: o1
+    canonical_model: openai/o1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o3-2025-04-16.yaml
+    author: openai
+    slug: o3-2025-04-16
+    canonical_model: openai/o3-2025-04-16
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o3-deep-research.yaml
+    author: openai
+    slug: o3-deep-research
+    canonical_model: openai/o3-deep-research
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o3-mini-2025-01-31.yaml
+    author: openai
+    slug: o3-mini-2025-01-31
+    canonical_model: openai/o3-mini-2025-01-31
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o3-mini.yaml
+    author: openai
+    slug: o3-mini
+    canonical_model: openai/o3-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o3-pro.yaml
+    author: openai
+    slug: o3-pro
+    canonical_model: openai/o3-pro
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o3.yaml
+    author: openai
+    slug: o3
+    canonical_model: openai/o3
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o4-mini-2025-04-16.yaml
+    author: openai
+    slug: o4-mini-2025-04-16
+    canonical_model: openai/o4-mini-2025-04-16
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/o4-mini-deep-research.yaml
+    author: openai
+    slug: o4-mini-deep-research
+    canonical_model: openai/o4-mini-deep-research
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/openai/models/o4-mini.yaml
+    author: openai
+    slug: o4-mini
+    canonical_model: openai/o4-mini
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/omni-moderation-2024-09-26.yaml
+    author: openai
+    slug: omni-moderation-2024-09-26
+    canonical_model: openai/omni-moderation-2024-09-26
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/omni-moderation-latest.yaml
+    author: openai
+    slug: omni-moderation-latest
+    canonical_model: openai/omni-moderation-latest
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/sora-2-pro.yaml
+    author: openai
+    slug: sora-2-pro
+    canonical_model: openai/sora-2-pro
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/sora-2.yaml
+    author: openai
+    slug: sora-2
+    canonical_model: openai/sora-2
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/text-embedding-3-large.yaml
+    author: openai
+    slug: text-embedding-3-large
+    canonical_model: openai/text-embedding-3-large
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/text-embedding-3-small.yaml
+    author: openai
+    slug: text-embedding-3-small
+    canonical_model: openai/text-embedding-3-small
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/text-embedding-ada-002.yaml
+    author: openai
+    slug: text-embedding-ada-002
+    canonical_model: openai/text-embedding-ada-002
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/tts-1-1106.yaml
+    author: openai
+    slug: tts-1-1106
+    canonical_model: openai/tts-1-1106
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/tts-1-hd-1106.yaml
+    author: openai
+    slug: tts-1-hd-1106
+    canonical_model: openai/tts-1-hd-1106
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/tts-1-hd.yaml
+    author: openai
+    slug: tts-1-hd
+    canonical_model: openai/tts-1-hd
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/tts-1.yaml
+    author: openai
+    slug: tts-1
+    canonical_model: openai/tts-1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/openai/models/whisper-1.yaml
+    author: openai
+    slug: whisper-1
+    canonical_model: openai/whisper-1
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID
+  - path: authors/playai/models/playai-tts-arabic.yaml
+    author: playai
+    slug: playai-tts-arabic
+    canonical_model: playai/playai-tts-arabic
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/playai/models/playai-tts.yaml
+    author: playai
+    slug: playai-tts
+    canonical_model: playai/playai-tts
+    disposition: keep
+    provider_id_match_count: 0
+    evidence: historical authored model retained without a current exact provider ID
+  - path: authors/qwen/models/qwen-image@qwen-image.yaml
+    author: qwen
+    slug: qwen-image@qwen-image
+    canonical_model: qwen/qwen-image
+    disposition: merge
+    provider_id_match_count: 0
+    evidence: provider version suffix is removed from canonical author identity
+  - path: authors/sdaia/models/allam-2-7b.yaml
+    author: sdaia
+    slug: allam-2-7b
+    canonical_model: sdaia/allam-2-7b
+    disposition: keep
+    provider_id_match_count: 1
+    evidence: historical authored model has a current exact provider model ID

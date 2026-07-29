@@ -1,5 +1,6 @@
 # tab-net - Google Vertex AI model: tab-net
 id: tab-net
+model: google/tab-net
 name: tab-net
 authors:
 - id: google

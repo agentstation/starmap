@@ -1,5 +1,6 @@
 # NousResearch/Hermes-3-Llama-3.1-405B - Hermes 3 is a cutting-edge language model that offers advanc...
 id: NousResearch/Hermes-3-Llama-3.1-405B
+model: nousresearch/hermes-3-llama-3.1-405b
 name: NousResearch/Hermes-3-Llama-3.1-405B
 authors:
 - id: nousresearch

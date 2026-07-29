@@ -1,5 +1,6 @@
 # meta-llama/Llama-Guard-4-12B - Llama Guard 4 is a natively multimodal safety classifier wit...
 id: meta-llama/Llama-Guard-4-12B
+model: meta/llama-guard-4-12b
 name: meta-llama/Llama-Guard-4-12B
 authors:
 - id: meta

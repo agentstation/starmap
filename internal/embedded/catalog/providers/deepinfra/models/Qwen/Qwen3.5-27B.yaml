@@ -1,9 +1,10 @@
 # Qwen/Qwen3.5-27B - Qwen vision-language model for visual reasoning, documents, ...
 id: Qwen/Qwen3.5-27B
+model: qwen/qwen3.5-27b
 name: Qwen/Qwen3.5-27B
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata
@@ -90,7 +91,7 @@ pricing:
     input:
       per_1m: 0.26
     output:
-      per_1m: 2.5999999999999996
+      per_1m: 2.6
   currency: USD
 
 # Model limits

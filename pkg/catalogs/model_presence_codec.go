@@ -299,8 +299,11 @@ func (m *ModelMetadata) UnmarshalJSON(data []byte) error {
 func (m Model) MarshalYAML() (any, error) {
 	entries := yaml.MapSlice{
 		{Key: "id", Value: m.ID},
-		{Key: "name", Value: m.Name},
 	}
+	if m.ModelRef != "" {
+		entries = append(entries, yaml.MapItem{Key: "model", Value: m.ModelRef})
+	}
+	entries = append(entries, yaml.MapItem{Key: "name", Value: m.Name})
 	if len(m.Authors) > 0 {
 		entries = append(entries, yaml.MapItem{Key: "authors", Value: m.Authors})
 	}

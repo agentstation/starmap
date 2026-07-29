@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-2-klein-9b - The best quality-to-latency ratio, production apps model of ...
 id: black-forest-labs/FLUX-2-klein-9b
+model: black-forest-labs/flux-2-klein-9b
 name: black-forest-labs/FLUX-2-klein-9b
 description: The best quality-to-latency ratio, production apps model of the Flux 2 family. Frontier visual intelligence — state-of-the-art image generation and editing from Black Forest Labs
 

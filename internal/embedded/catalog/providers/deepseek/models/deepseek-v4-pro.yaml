@@ -1,5 +1,6 @@
 # deepseek-v4-pro - Open MoE flagship with million-token context for coding and ...
 id: deepseek-v4-pro
+model: deepseek/deepseek-v4-pro
 name: deepseek-v4-pro
 authors:
 - id: deepseek

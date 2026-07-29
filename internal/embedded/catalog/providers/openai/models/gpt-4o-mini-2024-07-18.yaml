@@ -1,5 +1,6 @@
 # gpt-4o-mini-2024-07-18 - AI model
 id: gpt-4o-mini-2024-07-18
+model: openai/gpt-4o-mini-2024-07-18
 name: gpt-4o-mini-2024-07-18
 authors:
 - id: openai

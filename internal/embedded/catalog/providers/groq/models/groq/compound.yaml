@@ -1,5 +1,6 @@
 # groq/compound - General-purpose chat model for instruction following, writin...
 id: groq/compound
+model: groq/compound
 name: Compound
 authors:
 - id: groq

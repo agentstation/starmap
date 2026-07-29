@@ -1,5 +1,6 @@
 # kimi-k2.7-code-highspeed - Coding-focused Kimi model, stronger on long-horizon repo wor...
 id: kimi-k2.7-code-highspeed
+model: moonshot-ai/kimi-k2.7-code
 name: kimi-k2.7-code-highspeed
 authors:
 - id: moonshot-ai

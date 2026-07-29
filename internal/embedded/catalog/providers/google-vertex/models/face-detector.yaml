@@ -1,5 +1,6 @@
 # face-detector - Google Vertex AI model: face-detector
 id: face-detector
+model: google/face-detector
 name: face-detector
 authors:
 - id: google

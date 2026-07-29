@@ -1,5 +1,6 @@
 # weather-next-v2 - Google model: weather-next-v2
 id: weather-next-v2
+model: google/weather-next-v2
 name: weather-next-v2
 authors:
 - id: google

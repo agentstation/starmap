@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-R1-0528 - DeepSeek reasoning model for multi-step analysis, math, codi...
 id: deepseek-ai/DeepSeek-R1-0528
+model: deepseek/deepseek-r1-0528
 name: deepseek-ai/DeepSeek-R1-0528
 authors:
 - id: deepseek

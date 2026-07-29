@@ -1,5 +1,6 @@
 # deepseek-v4-flash-us - AI model
 id: deepseek-v4-flash-us
+model: deepseek/deepseek-v4-flash
 name: deepseek-v4-flash-us
 authors:
 - id: deepseek

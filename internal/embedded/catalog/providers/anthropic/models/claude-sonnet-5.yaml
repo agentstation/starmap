@@ -1,5 +1,6 @@
 # claude-sonnet-5 - Everyday Claude agent model for coding, planning, browsing, ...
 id: claude-sonnet-5
+model: anthropic/claude-sonnet-5
 name: Claude Sonnet 5
 authors:
 - id: anthropic

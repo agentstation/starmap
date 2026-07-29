@@ -29,9 +29,9 @@ func TestArchiveRetainsOwnerOnlyReplayableEvidenceAcrossReopen(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	catalog, err := builder.Build()
+	catalog, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Build observation: %v", err)
 	}
 	observedAt := time.Date(2026, time.July, 10, 14, 0, 0, 0, time.UTC)
 	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{

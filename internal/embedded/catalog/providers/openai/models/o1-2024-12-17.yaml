@@ -1,5 +1,6 @@
 # o1-2024-12-17 - AI model
 id: o1-2024-12-17
+model: openai/o1-2024-12-17
 name: o1-2024-12-17
 authors:
 - id: openai

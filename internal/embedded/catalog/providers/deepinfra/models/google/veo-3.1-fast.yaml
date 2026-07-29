@@ -1,5 +1,6 @@
 # google/veo-3.1-fast - Veo 3.1 is the latest text-to-video model from Google that g...
 id: google/veo-3.1-fast
+model: google/veo-3.1-fast
 name: google/veo-3.1-fast
 authors:
 - id: google

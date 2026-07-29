@@ -1,5 +1,6 @@
 # language-v1-classify-text-v1 - Google Vertex AI model: language-v1-classify-text-v1
 id: language-v1-classify-text-v1
+model: google/language-v1-classify-text-v1
 name: language-v1-classify-text-v1
 authors:
 - id: google

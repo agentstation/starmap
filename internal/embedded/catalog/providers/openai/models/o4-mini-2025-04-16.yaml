@@ -1,5 +1,6 @@
 # o4-mini-2025-04-16 - AI model
 id: o4-mini-2025-04-16
+model: openai/o4-mini-2025-04-16
 name: o4-mini-2025-04-16
 authors:
 - id: openai

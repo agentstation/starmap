@@ -199,11 +199,14 @@ func main() {
         fmt.Printf("Model ID: %s\n", model.ID)
     }
 
-	// Provider price and service facts live on an offering.
-	offering, err := catalog.Offering("openai", "gpt-4o")
-	if err == nil && offering.Pricing != nil {
-		fmt.Printf("OpenAI pricing: %#v\n", offering.Pricing)
-	}
+    // Provider price and service facts live on offerings.
+    offerings, err := catalog.DefinitionOfferings(model.ID)
+    if err == nil {
+        for _, offering := range offerings {
+            fmt.Printf("%s serves %s as %s\n",
+                offering.ProviderID, model.ID, offering.ProviderModelID)
+        }
+    }
 }
 ```
 
@@ -486,12 +489,18 @@ if err != nil {
 }
 fmt.Printf("Model: %s\n", model.Name)
 
-// Provider-specific facts remain exact and separately addressable.
-offering, err := catalog.Offering("openai", "gpt-4o")
+// Provider-specific facts remain exact and separately addressable. Provider
+// identity is independent from the author/lab that created the model.
+offerings, err := catalog.DefinitionOfferings(model.ID)
 if err != nil {
     return err
 }
-fmt.Printf("Input price: %v\n", offering.Pricing.Tokens.Input.Per1M)
+for _, offering := range offerings {
+    if offering.Pricing != nil {
+        fmt.Printf("%s input price: %v\n",
+            offering.ProviderID, offering.Pricing.Tokens.Input.Per1M)
+    }
+}
 ```
 
 #### Event-Driven Updates
@@ -530,6 +539,35 @@ if err != nil {
     return err
 }
 ```
+
+The human workspace keeps canonical authored facts and provider-serving facts
+readable but separate:
+
+```yaml
+# authors/moonshot-ai/models/kimi-k2.5.yaml
+id: kimi-k2.5
+name: Kimi K2.5
+authors:
+  - id: moonshot-ai
+    name: Moonshot AI
+```
+
+```yaml
+# providers/alibaba/models/kimi-k2.5.yaml
+id: kimi-k2.5
+model: moonshot-ai/kimi-k2.5
+name: Kimi K2.5
+pricing:
+  currency: USD
+  tokens:
+    input:
+      per_1m: 0.60
+```
+
+Any number of providers may link to the same `author/slug`; a provider may also
+serve models from many unrelated authors. Starmap generates `endpoints.yaml`
+from these validated links. That file is a digest-bound inspection/export
+projection, not an editable source of truth.
 
 #### Syncing with Provider APIs
 ```go
@@ -608,7 +646,8 @@ Starmap combines data from multiple sources:
 - **Provider APIs**: Real-time model availability (OpenAI, Anthropic, Google, Alibaba Cloud, Fireworks AI, DeepInfra, etc.)
 - **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
 - **Embedded Catalog**: Baseline data shipped with starmap
-- **Local Files**: The human provider-YAML workspace and manual fallback data
+- **Local Files**: Human authored-model and provider-serving YAML plus manual
+  fallback data; generated `endpoints.yaml` is not an authority
 
 For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](docs/ARCHITECTURE.md#data-sources)**.
 

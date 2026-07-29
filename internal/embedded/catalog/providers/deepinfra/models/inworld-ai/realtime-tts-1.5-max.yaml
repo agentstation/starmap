@@ -1,5 +1,6 @@
 # inworld-ai/realtime-tts-1.5-max - High-quality multilingual text-to-speech model by Inworld AI...
 id: inworld-ai/realtime-tts-1.5-max
+model: inworld-ai/realtime-tts-1.5-max
 name: inworld-ai/realtime-tts-1.5-max
 description: High-quality multilingual text-to-speech model by Inworld AI with 130+ preset voices across 15 languages. Supports voice cloning, word-level timestamps, and streaming. Optimized for natural, expressive speech with <250ms time-to-first-audio.
 

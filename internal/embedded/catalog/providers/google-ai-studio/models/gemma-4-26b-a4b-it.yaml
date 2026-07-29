@@ -1,5 +1,6 @@
 # gemma-4-26b-a4b-it - Open Gemma instruction model for efficient chat and self-hos...
 id: gemma-4-26b-a4b-it
+model: google/gemma-4-26b-a4b-it
 name: Gemma 4 26B A4B IT
 authors:
 - id: google
@@ -79,14 +80,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 
 # Model limits
 limits:

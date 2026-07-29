@@ -1,5 +1,6 @@
 # omni-moderation-2024-09-26 - AI model
 id: omni-moderation-2024-09-26
+model: openai/omni-moderation-2024-09-26
 name: omni-moderation-2024-09-26
 authors:
 - id: openai

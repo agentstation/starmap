@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -59,7 +60,22 @@ func historyCatalog(t testing.TB, providers ...catalogs.Provider) *catalogs.Cata
 	t.Helper()
 
 	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
 	for _, provider := range providers {
+		for modelID, model := range provider.Models {
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(author.ID, slug)
+			if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
 		if err := builder.SetProvider(provider); err != nil {
 			t.Fatalf("SetProvider(%s): %v", provider.ID, err)
 		}

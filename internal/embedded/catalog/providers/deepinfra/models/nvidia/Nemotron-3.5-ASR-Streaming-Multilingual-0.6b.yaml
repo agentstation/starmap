@@ -1,5 +1,6 @@
 # nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b - Nemotron 3.5 ASR Streaming Multilingual is an open 0.6B-para...
 id: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
+model: nvidia/nemotron-3.5-asr-streaming-multilingual-0.6b
 name: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
 authors:
 - id: nvidia
@@ -79,7 +80,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    audio_input: 3.3300000000000003e-06
+    audio_input: 3.33e-06
   currency: USD
 
 # Timestamps

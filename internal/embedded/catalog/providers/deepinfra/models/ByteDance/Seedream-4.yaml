@@ -1,5 +1,6 @@
 # ByteDance/Seedream-4 - Seedream 4.0 is a SOTA multimodal image creation model built...
 id: ByteDance/Seedream-4
+model: bytedance/seedream-4
 name: ByteDance/Seedream-4
 authors:
 - id: bytedance

@@ -1,5 +1,6 @@
 # gemini-3-flash-preview - New Gemini flash lane bringing frontier-style multimodal rea...
 id: gemini-3-flash-preview
+model: google/gemini-3-flash-preview
 name: Gemini 3 Flash Preview
 authors:
 - id: google
@@ -83,14 +84,6 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
-  top_p:
-    min: 0.0
-    max: 0.0
-    default: 0.95
-  top_k:
-    min: 0
-    max: 0
-    default: 64
 reasoning:
   levels:
   - minimum

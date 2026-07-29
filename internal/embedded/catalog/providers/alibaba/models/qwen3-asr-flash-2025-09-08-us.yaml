@@ -1,9 +1,10 @@
 # qwen3-asr-flash-2025-09-08-us - AI model
 id: qwen3-asr-flash-2025-09-08-us
+model: qwen/qwen3-asr-flash-2025-09-08
 name: qwen3-asr-flash-2025-09-08-us
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 
 # Model features
 features:

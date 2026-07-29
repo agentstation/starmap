@@ -1,9 +1,10 @@
 # Qwen/Qwen3-VL-235B-A22B-Instruct - Meet Qwen3-VL — the most powerful vision-language model in...
 id: Qwen/Qwen3-VL-235B-A22B-Instruct
+model: qwen/qwen3-vl-235b-a22b-instruct
 name: Qwen/Qwen3-VL-235B-A22B-Instruct
 authors:
-- id: alibaba
-  name: alibaba
+- id: qwen
+  name: Qwen Team
 description: |-
   Meet Qwen3-VL — the most powerful vision-language model in the Qwen series to date. This generation delivers comprehensive upgrades across the board: superior text understanding & generation, deeper visual perception & reasoning, extended context length, enhanced spatial and video dynamics comprehension, and stronger agent interaction capabilities.
 
@@ -85,11 +86,11 @@ features:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.11000000000000001
+      per_1m: 0.11
     input:
       per_1m: 0.2
     output:
-      per_1m: 0.8799999999999999
+      per_1m: 0.88
   currency: USD
 
 # Model limits

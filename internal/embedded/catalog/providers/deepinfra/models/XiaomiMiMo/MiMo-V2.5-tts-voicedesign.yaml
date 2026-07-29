@@ -1,5 +1,6 @@
 # XiaomiMiMo/MiMo-V2.5-tts-voicedesign - Automatically convert input text into natural and fluent spe...
 id: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
+model: xiaomi/mimo-v2.5-tts-voicedesign
 name: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
 description: Automatically convert input text into natural and fluent speech output. You can generate natural and vivid speech content by configuring parameters such as speech style and voice. Automatically generate voices from text descriptions, without requiring presets or audio samples.
 

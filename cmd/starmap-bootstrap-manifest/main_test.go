@@ -14,10 +14,16 @@ import (
 
 func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes(t *testing.T) {
 	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
-	manifestPath := filepath.Join(t.TempDir(), "generation.json")
+	outputDir := t.TempDir()
+	manifestPath := filepath.Join(outputDir, "generation.json")
+	endpointsPath := filepath.Join(outputDir, "endpoints.yaml")
 	now := time.Date(2026, time.July, 10, 16, 0, 0, 0, time.UTC)
 	var firstOutput bytes.Buffer
-	if err := run([]string{"--catalog-dir", catalogDir, "--output", manifestPath}, &firstOutput, now); err != nil {
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+		"--endpoints-output", endpointsPath,
+	}, &firstOutput, now); err != nil {
 		t.Fatalf("run first: %v", err)
 	}
 	var first bootstrapmanifest.Report
@@ -34,9 +40,17 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	if info, err := os.Stat(manifestPath); err != nil || info.Mode().Perm() != constants.FilePermissions {
 		t.Fatalf("manifest permissions = %v, %v", info, err)
 	}
+	firstEndpoints, err := os.ReadFile(endpointsPath)
+	if err != nil || len(firstEndpoints) == 0 {
+		t.Fatalf("endpoint projection = %d bytes, %v", len(firstEndpoints), err)
+	}
 
 	var secondOutput bytes.Buffer
-	if err := run([]string{"--catalog-dir", catalogDir, "--output", manifestPath}, &secondOutput, now.Add(24*time.Hour)); err != nil {
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+		"--endpoints-output", endpointsPath,
+	}, &secondOutput, now.Add(24*time.Hour)); err != nil {
 		t.Fatalf("run second: %v", err)
 	}
 	var second bootstrapmanifest.Report
@@ -49,5 +63,9 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	}
 	if second.Changed || second.GenerationID != first.GenerationID || !bytes.Equal(secondBytes, firstBytes) {
 		t.Fatalf("unchanged rerun report/bytes = %#v/%v", second, bytes.Equal(secondBytes, firstBytes))
+	}
+	secondEndpoints, err := os.ReadFile(endpointsPath)
+	if err != nil || !bytes.Equal(secondEndpoints, firstEndpoints) {
+		t.Fatalf("unchanged endpoint bytes = %v, %v", bytes.Equal(secondEndpoints, firstEndpoints), err)
 	}
 }

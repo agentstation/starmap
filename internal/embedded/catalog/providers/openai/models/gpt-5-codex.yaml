@@ -1,5 +1,6 @@
 # gpt-5-codex - Coding-optimized GPT model for repository edits, reviews, an...
 id: gpt-5-codex
+model: openai/gpt-5-codex
 name: gpt-5-codex
 authors:
 - id: openai
