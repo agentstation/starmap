@@ -102,6 +102,9 @@ The library requires Go 1.25 or newer. Releases are built and verified with Go
 1.26.5, while required CI also tests the latest patched Go 1.25 toolchain.
 Supported library, CLI, server, and remote-consumer compositions require no C
 toolchain; release archives and containers are built with `CGO_ENABLED=0`.
+The external offline composition also verifies a compile-time-pinned catalog
+artifact and activates it without network access, provider credentials, or
+acquisition/server dependencies.
 
 ```bash
 # Add to your project

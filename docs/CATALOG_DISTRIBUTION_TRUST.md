@@ -16,6 +16,10 @@ before atomic activation. Failure retains the last-known-good generation.
 
 - Air-gapped deployments pin the embedded or imported OCI/release generation and
   accept explicit freshness responsibility.
+- The maintained external pinned-artifact composition proves this path with a
+  compile-time archive digest, blank provider credentials, no HTTP operation,
+  and no acquisition/server/remote dependency; verification precedes exact
+  activation in a caller-selected generation store.
 - Portable release import uses `catalogartifact.VerifyRelease` followed by
   `acquisition.Syncer.ImportRelease`: checksum, detached statement,
   compatibility, and caller-owned publisher verification all complete before

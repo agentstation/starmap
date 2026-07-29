@@ -56,4 +56,4 @@ darwin)
 	;;
 esac
 
-printf 'pure-Go verification passed: library, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0\n'
+printf 'pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0\n'

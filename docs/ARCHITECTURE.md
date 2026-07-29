@@ -693,6 +693,14 @@ channel/promotion protocol. Channel-specific trust roots and
 availability/freshness tradeoffs are defined in
 [Catalog Distribution Trust Model](CATALOG_DISTRIBUTION_TRUST.md).
 
+The external pinned-artifact composition makes air-gap startup executable: it
+uses a compile-time archive digest as its trust root, blanks provider
+credentials, performs no HTTP operation, verifies the checksum/statement and
+pin, then activates the exact compatible generation in a caller-selected
+store. It imports neither acquisition nor online server/remote
+implementations. Embedded-only startup exercises the same no-network property
+without requiring any artifact.
+
 The embedded fallback has a separate checked-in budget gate for generation age,
 canonical uncompressed payload size, deterministic compressed archive size, and
 minimum provider/model coverage. Runtime readiness and hosted CI report distinct
