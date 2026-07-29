@@ -6,7 +6,7 @@ Status: `IN_PROGRESS` — P0–P7 are complete. The public embeddable server,
 reactive remote subscriber, complete external consumer matrix, transport
 failure matrix, distinct production-health surfaces, OpenRouter-compatible
 model/endpoint adapter, and pure-Go/static release contract are real. PR #55
-merged as `5e0eb9bd`; P8.6 is the sole active task after P8.9 removed
+merged as `5e0eb9bd`; P8.8 is the sole active task after P8.9 removed
 Starmap-owned relational storage, P8.10 made the external adapter contract
 executable, P8.11 made conditional S3-compatible storage production-real, and
 P8.12 proved explicit filesystem/object server compositions end to end.
@@ -16,7 +16,8 @@ production file from the large-file review set, P8.4 removed or justified
 the remaining package, identifier, and filename stutter, and P8.5 halved the
 cognitive-complexity review inventory along real domain boundaries. P8.6
 removed the remaining public implementation/test surfaces and dead strategy
-behavior; P8.7 is the sole active task.
+behavior, and P8.7 gave every review-threshold test a terminal modularity
+disposition.
 
 ## Mission
 
@@ -106,6 +107,10 @@ This plan is the durable execution record.
   [`reviews/P8_RESIDUAL_DELETION_AUDIT_2026-07-29.md`](reviews/P8_RESIDUAL_DELETION_AUDIT_2026-07-29.md)
 - P8 residual deletion and public-surface audit SHA-256:
   `88354160da16de0d0e84fef93e71de6a274805270b373a27c159bf2b162a1fa3`
+- P8 test modularity review:
+  [`reviews/P8_TEST_MODULARITY_REVIEW_2026-07-29.md`](reviews/P8_TEST_MODULARITY_REVIEW_2026-07-29.md)
+- P8 test modularity review SHA-256:
+  `5d48cb6edc7b077fe964a3947cc1caf2cabcedbfa027bcc8c1516f752ca5fced`
 - Remote transport failure matrix:
   [`reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md`](reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md)
 - Remote transport failure matrix SHA-256:
@@ -909,8 +914,8 @@ compile and performance baselines must also be green.
 | P8.4 | `DONE` | Audit package/file stutter | Every finding is renamed, consolidated, deleted, retained with rationale, or rejected; explicitly review `provenance.ProvenanceFile`, `format.Formatter`, `internal/utils/ptr`, and the seven-package `catalog*` family |
 | P8.5 | `DONE` | Audit pockets of complexity | Cyclomatic/cognitive hot spots are mapped to domain concepts and deepened without pass-through modules |
 | P8.6 | `DONE` | Apply the residual deletion test | After P6.5, remaining public modules with no production caller and seams with one adapter are removed unless a concrete near-term composition is proven; dead exported behavior with zero callers, including `differ.Changeset.Filter` and the inert `ApplyAdditive` strategy path, receives the same disposition |
-| P8.7 | `IN_PROGRESS` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
-| P8.8 | `PENDING` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
+| P8.7 | `DONE` | Keep tests modular | No test file exceeds 1999 lines; shared fixtures hide setup, not assertions or behavior |
+| P8.8 | `IN_PROGRESS` | Preserve canonical Go | `go vet`, lint, race, error, context, cleanup, documentation, and package naming reviews pass |
 | P8.9 | `DONE` | Remove Starmap-owned relational storage | `pkg/catalogstore/sql.go`, its SQLite tests/concurrency cases, `modernc.org/sqlite`, and all orphaned transitive modules are absent; README, GoDoc, architecture, examples, generated docs, and current tests make no built-in SQL/SQLite claim; `go mod why -m modernc.org/sqlite` reports no dependency; memory/filesystem/object conformance and atomic publication remain green |
 | P8.10 | `DONE` | Publish the external store behavioral contract | The normative contract documents validation, immutable-generation, defensive-ownership, idempotency, CAS-conflict, cancellation, rollback, retained-history, corruption, and failure-preservation semantics; a `GOWORK=off` Starport-style module implements and injects a custom `catalogstore.Store` without CLI, server, acquisition, SQLite, MySQL, or PostgreSQL implementations; a public test helper is intentionally absent until multiple external adapters justify a deep API |
 | P8.11 | `DONE` | Make S3-compatible storage production-real | One optional `pkg/catalogstore/s3` adapter accepts a caller-owned S3-compatible client and performs no network work in its constructor; immutable objects, digest verification, ETag/version conditional promotion, typed conflicts, reopen, rollback, retained generations, corruption rejection, and upload/promotion fault preservation pass the shared store, concurrency, corruption, and protocol-level fault matrix; backends lacking conditional writes fail construction or first use explicitly and never fall back to last-writer-wins |
@@ -1097,7 +1102,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | PR #54 merged as `6993b1e7`; remote/local branch and clean worktree removed after the fresh P6.2 successor worktree was created |
 | `starmap-library-composition` on `codex/starmap-library-composition@6df1acee` | `DONE` | PR #55 merged as `5e0eb9bd`; exact-main P8 successor created first; remote/local branch and clean worktree removed |
-| `starmap-go-modularity` on `codex/starmap-go-modularity@2269b556` plus P8.6 candidate | `IN_PROGRESS` | Fresh P8 successor created from the exact PR #55 protected-main merge; storage ownership, production object composition, file-size enforcement, large-file/naming/complexity reviews, and the residual public-surface deletion gate are complete; P8.7 is active |
+| `starmap-go-modularity` on `codex/starmap-go-modularity@0dd842ee` plus P8.7 evidence candidate | `IN_PROGRESS` | Fresh P8 successor created from the exact PR #55 protected-main merge; storage ownership, production object composition, file-size enforcement, large-file/naming/complexity reviews, residual public-surface deletion, and test modularity are complete; P8.8 is active |
 
 ## Evidence Log
 
@@ -1284,6 +1289,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P8.4 / F-022 | Archived [`reviews/P8_GO_NAMING_AUDIT_2026-07-29.md`](reviews/P8_GO_NAMING_AUDIT_2026-07-29.md) at SHA-256 `d9f5dc37c1544cca5d8364874d70f77a9a40a0067e28d30c6784601a276f4374`. Prelaunch clean-break renames produce `provenance.Entry`/`File`, `format.Kind`/`Renderer`/`New`, and `catalogartifact.Bundle`; implementation files now name tracking, rendering, bundling, and the verified remote client. No aliases or deprecated wrappers remain. The three-call `internal/utils/ptr` and the unused `catalogdistribution`/`catalogscheduler` packages remain deleted. Baseline's seven public `catalog*` packages are now five real boundaries with 2/9/3/42/10 direct production importers for artifact/meta/remote/catalogs/store; collapsing them would pull release, transport, or storage dependencies into read-only consumers. Affected domain packages passed under race (remote `1.273s`, artifact `1.677s`, reconciler `1.905s`, catalogs `21.070s`, provenance `1.182s`), as did internal catalog/CLI/command packages; generated OpenAPI/GoDoc, docs check, exact stale-name scans, and diff check pass. P8.4 is DONE; P8.5 is the sole active task, while F-022 remains active through the P8.6 unused-seam gate. |
 | 2026-07-29 | P8.5 / F-022 | Archived [`reviews/P8_COMPLEXITY_AUDIT_2026-07-29.md`](reviews/P8_COMPLEXITY_AUDIT_2026-07-29.md) at SHA-256 `6c986c889cbea4e5ad15cfcc49e6cd4203a0c13c23fad9bcb620883824cdeafd`. Exact baseline measurement with pinned golangci-lint v2.12.2 found zero gocyclo functions above 30, 20 gocognit functions above 30, and 50 default-threshold cyclop branches. Domain extraction reduced the gocognit inventory to 10 while gocyclo remained zero and cyclop remained 50, confirming the lower branch threshold is not a useful modularity gate. Merge strategy, observation-link/revision validation, CLI model validation, authored-definition/offering construction, YAML projection roles, payload roles, models.dev provider/model/metadata/logo handling, and concurrent source observation now have named cohesive boundaries; no package, interface, public symbol, dependency, or compatibility wrapper was added. The source pipeline replaces mutex-protected shared result slices with isolated worker results over one bounded channel. Definitions remain authored-only while provider records remain serving/evidence inputs. The exact final candidate passed the complete ordinary repository suite (root `57.648s`, catalogs `26.280s`, models.dev `18.175s`, remote `14.102s`, server `10.716s`) and the affected race gate (catalogs `56.211s`, catalog store `3.956s`, pipeline `13.232s`, models.dev `84.602s`, validation `3.268s`); full vet, zero-issue lint, generated docs, file-size, catalog-zero-diff, and diff checks pass. P8.5 is DONE; P8.6 is the sole active task and F-022 remains active only for the residual deletion test. |
 | 2026-07-29 | P8.6 / F-022 | Archived [`reviews/P8_RESIDUAL_DELETION_AUDIT_2026-07-29.md`](reviews/P8_RESIDUAL_DELETION_AUDIT_2026-07-29.md) at SHA-256 `88354160da16de0d0e84fef93e71de6a274805270b373a27c159bf2b162a1fa3`. The deletion test reduces 21 public/importable library packages to 16: authority, reconciliation, CLI conversion, source-payload quarantine, and the 71-entry constants bag are internal; all 13 importable CLI implementation directories move below `internal`; constants retain only 23 called values. Dead differ apply strategies/filtering, the generic test-only reconciliation strategy, nineteen production catalog test helpers, and unused logging/test helpers are deleted. The immutable remote resource is now named `payload` in API and route vocabulary. Focused moved-package/CLI and catalogremote/remote/server race gates passed; the isolated consumer matrix remains read-only `31/32` non-standard and `153` total, server `241/260`, remote `225/240`, and server-storage `333/340`. The final generated-document-inclusive candidate passed uninterrupted `./scripts/verify.sh`: ordinary root `58.112s`; cgo-off compositions; cgo-enabled root race `251.308s`; accessor `8.724–8.922 ns/op` at zero allocations; vet; zero-issue lint; every coverage floor; generated docs; file-size/diff; CLI smokes; and all 610 embedded records. P8.6 and F-022 are DONE; P8.7 is the sole active task. |
+| 2026-07-29 | P8.7 | Archived [`reviews/P8_TEST_MODULARITY_REVIEW_2026-07-29.md`](reviews/P8_TEST_MODULARITY_REVIEW_2026-07-29.md) at SHA-256 `5d48cb6edc7b077fe964a3947cc1caf2cabcedbfa027bcc8c1516f752ca5fced`. The live inventory contains no test at or above 2000 lines and only two review-threshold files: the already concept-split 1446-line core model-merger contract and the 1036-line vertical OpenAI-compatible adapter contract. Their setup helpers construct explicit concrete inputs and do not choose or hide expected behavior; assertions remain at each call site. Ten focused race repetitions passed (`2.035s` reconciler, `5.460s` OpenAI), as did the exact file-size and diff gates. P8.7 is DONE and P8.8 is the sole active task. |
 
 ## Final Definition of Done
 
